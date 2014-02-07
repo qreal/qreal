@@ -8,6 +8,7 @@ CommonRobotModel::CommonRobotModel()
 	: mBrick(new robotParts::Brick())
 	, mDisplay(new robotParts::Display())
 {
+	rereadSettings();
 }
 
 CommonRobotModel::~CommonRobotModel()
@@ -68,6 +69,10 @@ QList<PluggableDeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port
 void CommonRobotModel::configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo)
 {
 	mConfiguration.configureDevice(createDevice(port, deviceInfo));
+}
+
+void CommonRobotModel::rereadSettings()
+{
 }
 
 void CommonRobotModel::setBrick(robotParts::Brick *brick)

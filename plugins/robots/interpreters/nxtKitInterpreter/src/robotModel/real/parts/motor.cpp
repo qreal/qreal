@@ -1,19 +1,23 @@
-#include "realMotorImplementation.h"
-using namespace qReal::interpreters::robots;
-using namespace details::robotImplementations::motorImplementations;
+#include "motor.h"
 
-RealMotorImplementation::RealMotorImplementation(int const port, RobotCommunicator *robotCommunicationInterface)
-	:  AbstractMotorImplementation(port)
-	, mRobotCommunicationInterface(robotCommunicationInterface)
+using namespace nxtKitInterpreter::robotModel::real::parts;
+using namespace interpreterBase;
+using namespace robotModel;
+using namespace utils;
+using namespace robotCommunication;
+
+Motor::Motor(PluggableDeviceInfo const &info, PortInfo const &port, RobotCommunicator *robotCommunicator)
+	: interpreterBase::robotModel::robotParts::Motor(info, port)
+	, mRobotCommunicator(robotCommunicator)
 {
 }
 
-void RealMotorImplementation::on(int speed, bool breakMode)
+void Motor::on(int speed, bool breakMode)
 {
 	on(speed, 0, breakMode);
 }
 
-void RealMotorImplementation::on(int speed, long unsigned int degrees, bool breakMode)
+void Motor::on(int speed, long unsigned int degrees, bool breakMode)
 {
 	int mode = enums::motorMode::MOTORON | enums::motorMode::REGULATED;
 	if (breakMode) {
@@ -23,18 +27,18 @@ void RealMotorImplementation::on(int speed, long unsigned int degrees, bool brea
 			, 100, enums::runState::MOTOR_RUN_STATE_RUNNING, degrees);
 }
 
-void RealMotorImplementation::stop(bool breakMode)
+void Motor::stop(bool breakMode)
 {
 	on(0, 0, breakMode);
 }
 
-void RealMotorImplementation::off()
+void Motor::off()
 {
 	setOutputState(0, enums::motorMode::REGULATED, enums::regulationMode::REGULATION_MODE_MOTOR_SPEED
 			, 100, enums::runState::MOTOR_RUN_STATE_IDLE, 0);
 }
 
-void RealMotorImplementation::setOutputState(int speed, int mode
+void Motor::setOutputState(int speed, int mode
 		, enums::regulationMode::RegulationModeEnum regulation, int turnRatio
 		, enums::runState::RunStateEnum runState, unsigned long tachoLimit)
 {
@@ -46,7 +50,7 @@ void RealMotorImplementation::setOutputState(int speed, int mode
 
 	command[3] = enums::commandCode::SETOUTPUTSTATE;
 
-	command[4] = mPort;  // output port
+	command[4] = port().name().at(0).toLatin1() - 'A';  // output port
 	command[5] = speed;  // power set point (range: -100 -- 100)
 	command[6] = mode;  // mode (bit field)
 
@@ -60,10 +64,10 @@ void RealMotorImplementation::setOutputState(int speed, int mode
 	command[12] = tachoLimit >> 16;  // TachoLimit
 	command[13] = tachoLimit >> 24;  // TachoLimit
 	command[14] = 0;                 // TachoLimit, suddenly
-	mRobotCommunicationInterface->send(this, command, 3);
+	mRobotCommunicator->send(this, command, 3);
 }
 
-void RealMotorImplementation::resetMotorPosition(bool relative)
+void Motor::resetMotorPosition(bool relative)
 {
 	QByteArray command(5, 0);
 	command[0] = 3;  // command length.
@@ -71,5 +75,5 @@ void RealMotorImplementation::resetMotorPosition(bool relative)
 	command[2] = enums::telegramType::directCommandNoResponse;
 	command[3] = enums::commandCode::RESETMOTORPOSITION;
 	command[4] = relative;
-	mRobotCommunicationInterface->send(this, command, 3);
+	mRobotCommunicator->send(this, command, 3);
 }

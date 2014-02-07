@@ -79,8 +79,8 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 	QObject::connect(this, SIGNAL(threadReconnect()), mRobotCommunicationThreadObject, SLOT(reconnect()));
 	QObject::connect(this, SIGNAL(threadDisconnect()), mRobotCommunicationThreadObject, SLOT(disconnect()));
 	QObject::connect(this, SIGNAL(threadSend(QObject*, QByteArray, unsigned)), mRobotCommunicationThreadObject, SLOT(send(QObject*, QByteArray, unsigned)));
-	QObject::connect(this, SIGNAL(threadSendI2C(QObject*, QByteArray, unsigned, robots::enums::inputPort::InputPortEnum))
-			, mRobotCommunicationThreadObject, SLOT(sendI2C(QObject*, QByteArray, unsigned, robots::enums::inputPort::InputPortEnum)));
+//	QObject::connect(this, SIGNAL(threadSendI2C(QObject*, QByteArray, unsigned, robots::enums::inputPort::InputPortEnum))
+//			, mRobotCommunicationThreadObject, SLOT(sendI2C(QObject*, QByteArray, unsigned, robots::enums::inputPort::InputPortEnum)));
 
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));

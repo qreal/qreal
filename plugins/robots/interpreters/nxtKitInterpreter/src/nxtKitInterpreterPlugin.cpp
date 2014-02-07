@@ -5,6 +5,10 @@ using namespace nxtKitInterpreter;
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
 {
+	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
+			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
+			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
 QString NxtKitInterpreterPlugin::kitId() const

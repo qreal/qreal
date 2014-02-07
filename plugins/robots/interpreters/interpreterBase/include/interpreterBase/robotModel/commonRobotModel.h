@@ -39,6 +39,9 @@ public:
 	///       hierarchy of device factories is needed, maybe not, if it will be main responsibility of a model.
 	void configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo) override;
 
+public slots:
+	void rereadSettings() override;
+
 protected:
 	void setBrick(robotParts::Brick *brick);  // Takes ownership.
 	void setDisplay(robotParts::Display *display);  // Takes ownership.

@@ -34,7 +34,7 @@ public:
 
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
-	robotModel::real::TwoDRobotModel mTwoDRobotModel;
+	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
 };
 

@@ -4,7 +4,7 @@
 
 namespace nxtKitInterpreter {
 namespace robotModel {
-namespace real {
+namespace twoD {
 
 class TwoDRobotModel : public NxtRobotModelBase
 {

@@ -15,6 +15,8 @@ HEADERS += \
 	$$PWD/nxtAdditionalPreferences.h \
 	$$PWD/robotModel/nxtRobotModelBase.h \
 	$$PWD/robotModel/real/realRobotModel.h \
+	$$PWD/robotModel/real/parts/motor.h \
+#	$$PWD/robotModel/real/parts/touchSensor.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 
 SOURCES += \
@@ -22,6 +24,8 @@ SOURCES += \
 	$$PWD/nxtAdditionalPreferences.cpp \
 	$$PWD/robotModel/nxtRobotModelBase.cpp \
 	$$PWD/robotModel/real/realRobotModel.cpp \
+	$$PWD/robotModel/real/parts/motor.cpp \
+#	$$PWD/robotModel/real/parts/touchSensor.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 
 FORMS += \

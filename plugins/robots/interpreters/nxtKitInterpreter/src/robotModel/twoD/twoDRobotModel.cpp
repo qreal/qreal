@@ -1,6 +1,6 @@
 #include "twoDRobotModel.h"
 
-using namespace nxtKitInterpreter::robotModel::real;
+using namespace nxtKitInterpreter::robotModel::twoD;
 
 QString TwoDRobotModel::name() const
 {

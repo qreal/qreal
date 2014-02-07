@@ -1,7 +1,6 @@
 #pragma once
 
 namespace nxtKitInterpreter {
-namespace communication {
 
 unsigned const maxMessageSize = 59;
 unsigned const i2cBufferSize = 24;
@@ -187,5 +186,4 @@ enum SonarReadingModeEnum {
 
 }
 
-}
 }

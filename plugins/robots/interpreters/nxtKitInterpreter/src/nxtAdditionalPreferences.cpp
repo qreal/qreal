@@ -29,6 +29,7 @@ void NxtAdditionalPreferences::save()
 	SettingsManager::setValue("NxtBluetoothPortName", selectedPortName());
 	SettingsManager::setValue("NxtValueOfCommunication", selectedCommunication());
 	SettingsManager::setValue("NxtManualComPortCheckboxChecked", mUi->manualComPortCheckbox->isChecked());
+	emit settingsChanged();
 }
 
 void NxtAdditionalPreferences::restoreSettings()
