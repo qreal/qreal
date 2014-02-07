@@ -1,10 +1,10 @@
 #include <time.h>
 
+#include <utils/tracer.h>
 #include "robotCommunicationThreadBase.h"
-#include "../tracer.h"
+#include "communicationConstants.h"
 
-using namespace qReal::interpreters;
-using namespace qReal::interpreters::robots::details;
+using namespace nxtKitInterpreter::communication;
 
 unsigned const lsGetStatusResponseSize = 6;
 
@@ -14,16 +14,16 @@ RobotCommunicationThreadBase::RobotCommunicationThreadBase()
 
 void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
-		, robots::enums::inputPort::InputPortEnum const port)
+		, interpreterBase::robotModel::PortInfo const &port)
 {
-	Tracer::debug(tracer::enums::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
+	utils::Tracer::debug(utils::Tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
 
 	QByteArray command(buffer.length() + 7, 0);
 	command[0] = buffer.length() + 5;
 	command[1] = 0x00;
 	command[2] = enums::telegramType::directCommandNoResponse;
 	command[3] = enums::commandCode::LSWRITE;
-	command[4] = port;
+	command[4] = toNxtInputPort(port);
 	command[5] = buffer.length();
 	command[6] = responseSize;
 	for (int i = 0; i < buffer.length(); ++i) {
@@ -34,7 +34,8 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 	send(command, 0, dumpOutput);
 
 	if (!waitForI2CBytes(responseSize, port)) {
-		Tracer::debug(tracer::enums::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "No response, connection error");
+		utils::Tracer::debug(utils::Tracer::robotCommunication
+				, "RobotCommunicationThreadBase::sendI2C", "No response, connection error");
 		emit response(addressee, QByteArray());
 		return;
 	}
@@ -47,7 +48,7 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 		command[1] = 0x00;
 		command[2] = enums::telegramType::directCommandResponseRequired;
 		command[3] = enums::commandCode::LSREAD;
-		command[4] = port;
+		command[4] = toNxtInputPort(port);
 
 		QByteArray result;
 		send(command, 22, result);
@@ -61,7 +62,7 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 	}
 }
 
-bool RobotCommunicationThreadBase::waitForI2CBytes(int bytes, robots::enums::inputPort::InputPortEnum port)
+bool RobotCommunicationThreadBase::waitForI2CBytes(int bytes, interpreterBase::robotModel::PortInfo const &port)
 {
 	time_t const startTime = clock();
 	do {
@@ -76,7 +77,7 @@ bool RobotCommunicationThreadBase::waitForI2CBytes(int bytes, robots::enums::inp
 	} while (true);
 }
 
-int RobotCommunicationThreadBase::i2cBytesReady(robots::enums::inputPort::InputPortEnum port)
+int RobotCommunicationThreadBase::i2cBytesReady(interpreterBase::robotModel::PortInfo const &port)
 {
 	QByteArray command(5, 0);
 	command[0] = 0x03;
@@ -84,7 +85,7 @@ int RobotCommunicationThreadBase::i2cBytesReady(robots::enums::inputPort::InputP
 
 	command[2] = enums::telegramType::directCommandResponseRequired;
 	command[3] = enums::commandCode::LSGETSTATUS;
-	command[4] = port;
+	command[4] = toNxtInputPort(port);
 
 	QByteArray result;
 	send(command, lsGetStatusResponseSize, result);
@@ -95,4 +96,14 @@ int RobotCommunicationThreadBase::i2cBytesReady(robots::enums::inputPort::InputP
 	} else {
 		return result[5];
 	}
+}
+
+char RobotCommunicationThreadBase::toNxtInputPort(interpreterBase::robotModel::PortInfo const &port)
+{
+	return static_cast<char>(port.name().toInt() - 1);
+}
+
+void RobotCommunicationThreadBase::SleeperThread::msleep(unsigned long msecs)
+{
+	QThread::msleep(msecs);
 }

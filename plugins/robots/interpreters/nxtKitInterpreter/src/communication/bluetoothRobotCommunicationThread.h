@@ -4,14 +4,8 @@
 
 class QextSerialPort;
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
-namespace details
-{
+namespace nxtKitInterpreter {
+namespace communication {
 
 class BluetoothRobotCommunicationThread : public RobotCommunicationThreadBase
 {
@@ -31,7 +25,7 @@ public slots:
 			QObject *addressee
 			, QByteArray const &buffer
 			, unsigned const responseSize
-			, robots::enums::inputPort::InputPortEnum const port
+			, interpreterBase::robotModel::PortInfo const &port
 			);
 
 	void allowLongJobs(bool allow = true);
@@ -53,7 +47,5 @@ private slots:
 	void checkForConnection();
 };
 
-}
-}
 }
 }

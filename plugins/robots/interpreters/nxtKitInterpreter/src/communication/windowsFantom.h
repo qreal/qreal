@@ -2,10 +2,8 @@
 
 #include <QtCore/QLibrary>
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
-namespace details {
+namespace nxtKitInterpreter {
+namespace communication {
 
 /// Proxy for Fantom driver DLL for Windows. Responsible for loading DLL and
 /// dispatching all calls to corresponding driver functions.
@@ -22,9 +20,11 @@ public:
 
 	unsigned long nFANTOM100_createNXT(char resString[], int status, unsigned char checkFVersion);
 	unsigned nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle, bool requireResponse
-			, const char *inputBufferPtr, int inputBufferSize, char *outputBufferPtr, int outputBufferSize, int &status);
+			, const char *inputBufferPtr, int inputBufferSize
+			, char *outputBufferPtr, int outputBufferSize, int &status);
 
-	unsigned long nFANTOM100_createNXTIterator(unsigned char searchBluetooth, unsigned long bluetoothSearchTimeout, int &status);
+	unsigned long nFANTOM100_createNXTIterator(unsigned char searchBluetooth
+			, unsigned long bluetoothSearchTimeout, int &status);
 	void nFANTOM100_iNXTIterator_getName(unsigned long NXTIterHandle, char resString[], int &status);
 	unsigned long nFANTOM100_iNXTIterator_getNXT(unsigned long nxtIterHandle, int &status);
 	void nFANTOM100_destroyNXTIterator(unsigned long nxtIteratorHandle, int &status);
@@ -39,7 +39,5 @@ private:
 	QLibrary mFantomLibrary;
 };
 
-}
-}
 }
 }

@@ -1,7 +1,8 @@
 #include "linuxFantom.h"
-#include <QObject>
 
-using namespace qReal::interpreters::robots::details;
+#include <QtCore/QObject>
+
+using namespace nxtKitInterpreter::communication;
 
 bool Fantom::isAvailable()
 {
@@ -33,7 +34,8 @@ void Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
 	Q_UNUSED(status);
 }
 
-unsigned long Fantom::nFANTOM100_createNXTIterator(unsigned char searchBluetooth, unsigned long bluetoothSearchTimeout, int &status)
+unsigned long Fantom::nFANTOM100_createNXTIterator(unsigned char searchBluetooth
+		, unsigned long bluetoothSearchTimeout, int &status)
 {
 	Q_UNUSED(searchBluetooth);
 	Q_UNUSED(bluetoothSearchTimeout);

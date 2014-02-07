@@ -2,10 +2,9 @@ QT += widgets
 
 INCLUDEPATH += \
 	$$PWD/../include \
-	$$PWD/../../utils/include \
-	$$PWD/../../../../../ \
+	$$PWD/../../../../ \
 
-LIBS += -L$$PWD/../../../../../bin/ -lqrkernel -lqrutils
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils
 
 DEFINES += ROBOTS_UTILS_LIBRARY
 
@@ -16,6 +15,9 @@ HEADERS += \
 	$$PWD/../include/utils/sensorsConfigurationWidget.h \
 	$$PWD/../include/utils/textExpressionProcessor.h \
 	$$PWD/../include/utils/tracer.h \
+	$$PWD/../include/utils/robotCommunication/robotCommunicationThreadInterface.h \
+	$$PWD/../include/utils/robotCommunication/robotCommunicator.h \
+	$$PWD/../include/utils/robotCommunication/robotCommunicationException.h \
 
 SOURCES += \
 	$$PWD/abstractTimer.cpp \
@@ -23,3 +25,5 @@ SOURCES += \
 	$$PWD/realTimer.cpp \
 	$$PWD/textExpressionProcessor.cpp \
 	$$PWD/tracer.cpp \
+	$$PWD/robotCommunication/robotCommunicator.cpp \
+	$$PWD/robotCommunication/robotCommunicationException.cpp \

@@ -1,18 +1,15 @@
 #include <QtCore/QMetaType>
 
-#include "robotCommunicator.h"
+#include "utils/robotCommunication/robotCommunicator.h"
 
-#include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
-#include "../../thirdparty/qextserialport/src/qextserialport.h"
+#include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
+#include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
 
-using namespace qReal::interpreters;
-using namespace qReal::interpreters::robots::details;
+using namespace utils::robotCommunication;
 
 RobotCommunicator::RobotCommunicator()
-		: mRobotCommunicationThreadObject(NULL)
+	: mRobotCommunicationThreadObject(nullptr)
 {
-	qRegisterMetaType<qReal::interpreters::robots::enums::inputPort::InputPortEnum>(
-			"robots::enums::inputPort::InputPortEnum");
 }
 
 RobotCommunicator::~RobotCommunicator()
@@ -28,11 +25,11 @@ void RobotCommunicator::send(QObject *addressee, QByteArray const &buffer, unsig
 	emit threadSend(addressee, buffer, responseSize);
 }
 
-void RobotCommunicator::sendI2C(QObject *addressee, QByteArray const &buffer
-		, unsigned const responseSize, robots::enums::inputPort::InputPortEnum const port)
-{
-	emit threadSendI2C(addressee, buffer, responseSize, static_cast<robots::enums::inputPort::InputPortEnum>(port));
-}
+//void RobotCommunicator::sendI2C(QObject *addressee, QByteArray const &buffer
+//		, unsigned const responseSize, robots::enums::inputPort::InputPortEnum const port)
+//{
+//	emit threadSendI2C(addressee, buffer, responseSize, static_cast<robots::enums::inputPort::InputPortEnum>(port));
+//}
 
 void RobotCommunicator::connect()
 {
