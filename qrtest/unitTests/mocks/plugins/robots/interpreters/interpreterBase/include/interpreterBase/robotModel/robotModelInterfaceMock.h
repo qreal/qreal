@@ -16,7 +16,8 @@ public:
 	MOCK_METHOD0(stopRobot, void());
 	MOCK_METHOD0(disconnectFromRobot, void());
 	MOCK_CONST_METHOD0(needsConnection, bool());
-	MOCK_CONST_METHOD0(configuration, interpreterBase::robotModel::ConfigurationInterface const &());
+	MOCK_CONST_METHOD0(configuration
+			, interpreterBase::robotModel::ConfigurationInterface const &());
 	MOCK_METHOD0(mutableConfiguration, interpreterBase::robotModel::ConfigurationInterface&());
 	MOCK_METHOD0(brick, interpreterBase::robotModel::robotParts::Brick&());
 	MOCK_METHOD0(display, interpreterBase::robotModel::robotParts::Display&());
@@ -24,6 +25,8 @@ public:
 	MOCK_CONST_METHOD0(configurablePorts, QList<interpreterBase::robotModel::PortInfo>());
 	MOCK_CONST_METHOD1(allowedDevices, QList<interpreterBase::robotModel::PluggableDeviceInfo>(
 			interpreterBase::robotModel::PortInfo const &port));
+	MOCK_METHOD2(configureDevice, void (interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::PluggableDeviceInfo const &deviceInfo));
 };
 
 }

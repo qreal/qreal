@@ -9,6 +9,8 @@ namespace interpreterBase {
 
 /// Mixin abstract class that shall be inherited by anyone who wants to change sensor configuration
 /// or keep in sync with various places where sensor configuration can be changed.
+///
+/// \todo Make all protected fields private. There is no public or protected fields, there is only private fields.
 class ROBOTS_INTERPRETER_BASE_EXPORT SensorsConfigurationProvider
 {
 public:
@@ -45,6 +47,7 @@ protected:
 
 	/// Redundant current sensor configuration to keep track of loops in provider network: if configuration is not
 	/// changed by incoming message, it is not broadcasted.
+	/// Hash structure is robotModel -> port -> device.
 	QHash<QString, QHash<robotModel::PortInfo, robotModel::PluggableDeviceInfo>> mCurrentConfiguration;
 
 	/// Name of the provider, which can be used in debug output.

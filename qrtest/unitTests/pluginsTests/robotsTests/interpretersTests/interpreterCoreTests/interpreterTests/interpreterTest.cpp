@@ -52,6 +52,8 @@ void InterpreterTest::SetUp()
 			);
 	EXPECT_CALL(mBlocksFactoryManager, providedBlocks()).Times(0);
 
+//	ON_CALL(configurationInterfaceMock, lock)
+
 	/// \todo Don't like it.
 	interpreterCore::textLanguage::RobotsBlockParser parser(
 			mQrguiFacade->mainWindowInterpretersInterface().errorReporter()

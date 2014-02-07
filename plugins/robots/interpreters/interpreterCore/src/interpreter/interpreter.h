@@ -10,6 +10,7 @@
 #include <qrutils/watchListWindow.h>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
+#include <interpreterBase/sensorsConfigurationProvider.h>
 
 #include "details/thread.h"
 #include "details/blocksTable.h"
@@ -20,7 +21,7 @@
 namespace interpreterCore {
 namespace interpreter {
 
-class Interpreter : public InterpreterInterface
+class Interpreter : public InterpreterInterface, public interpreterBase::SensorsConfigurationProvider
 {
 	Q_OBJECT
 

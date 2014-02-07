@@ -11,6 +11,7 @@
 
 using namespace qReal;
 using namespace interpreterCore::interpreter;
+using namespace interpreterBase::robotModel;
 
 int const maxThreadsCount = 100;
 
@@ -79,20 +80,37 @@ void Interpreter::interpret()
 	mBlocksTable->clear();
 	mState = waitingForSensorsConfiguredToLaunch;
 
-	details::Autoconfigurer configurer(
-				*mGraphicalModelApi
-				, mBlocksTable
-				, mInterpretersInterface->errorReporter()
-				, &mRobotModelManager.model()
-				);
+	/// @todo Temporarily loading initial configuration from registry
+	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
+	mRobotModelManager.model().mutableConfiguration().lockConfiguring();
 
-	bool configurationSucceeded = false;
+	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
+		QString const modelName = mRobotModelManager.model().name();
+		if (mCurrentConfiguration[modelName].contains(port)) {
+			PluggableDeviceInfo const &deviceInfo = mCurrentConfiguration[modelName].value(port);
+			mRobotModelManager.model().configureDevice(port, deviceInfo);
+		}
+	}
+
+	mRobotModelManager.model().mutableConfiguration().unlockConfiguring();
+
+	mRobotModelManager.model().mutableConfiguration().configure();
+
+
+//	details::Autoconfigurer configurer(
+//				*mGraphicalModelApi
+//				, mBlocksTable
+//				, mInterpretersInterface->errorReporter()
+//				, &mRobotModelManager.model()
+//				);
+
+//	bool configurationSucceeded = false;
 //	QVector<interpreterBase::robotModel::SensorId> const sensorConfiguration
 //			= configurer.configure(currentDiagramId, &configurationSucceeded);
 
-	if (!configurationSucceeded) {
-		return;
-	}
+//	if (!configurationSucceeded) {
+//		return;
+//	}
 
 //	mRobotModel->configureSensors(
 //			sensorConfiguration[0]
