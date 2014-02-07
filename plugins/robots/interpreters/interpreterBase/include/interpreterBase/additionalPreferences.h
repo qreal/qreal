@@ -27,9 +27,6 @@ public:
 	{
 		Q_UNUSED(robotModel)
 	}
-
-signals:
-	void settingsChanged();
 };
 
 }
