@@ -49,12 +49,14 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 //			, configurer.mainWindowInterpretersInterface().errorReporter()
 			);
 
+	mBlocksFactoryManager.addFactory(blocksFactory);
+
 	mInterpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
 			, configurer.mainWindowInterpretersInterface()
 			, configurer.projectManager()
-			, blocksFactory
+			, mBlocksFactoryManager
 			, mRobotModelManager
 			, *mParser
 			, mActionsManager.connectToRobotAction()

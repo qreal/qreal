@@ -4,8 +4,8 @@ using namespace qReal;
 using namespace interpreterBase::blocksBase;
 using namespace interpreterCore::interpreter::details;
 
-BlocksTable::BlocksTable(BlocksFactoryInterface *blocksFactory)
-	: mBlocksFactory(blocksFactory)
+BlocksTable::BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager)
+	: mBlocksFactoryManager(blocksFactoryManager)
 {
 }
 
@@ -20,7 +20,7 @@ BlockInterface *BlocksTable::block(Id const &element)
 		return mBlocks[element];
 	}
 
-	BlockInterface *newBlock = mBlocksFactory->block(element);
+	BlockInterface *newBlock = mBlocksFactoryManager.block(element);
 	mBlocks.insert(element, newBlock);
 	return newBlock;
 }
@@ -47,5 +47,5 @@ void BlocksTable::setIdleForBlocks()
 
 qReal::IdList BlocksTable::providedBlocks() const
 {
-	return mBlocksFactory->providedBlocks();
+	return mBlocksFactoryManager.providedBlocks();
 }

@@ -18,7 +18,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, qReal::ProjectManagementInterface const &projectManager
-		, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory
+		, BlocksFactoryManagerInterface &blocksFactoryManager
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, utils::ExpressionsParser &parser  // TODO: direct dependency from ExpressionsParser shall be removed.
 		, QAction &connectToRobotAction
@@ -32,7 +32,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	, mActionConnectToRobot(connectToRobotAction)
 	, mSensorVariablesUpdater(robotModelManager, parser)
 {
-	mBlocksTable = new details::BlocksTable(blocksFactory);
+	mBlocksTable = new details::BlocksTable(blocksFactoryManager);
 
 	/// @todo Reinit those connects when model changes, or add these slots to RobotModelManager and connect to them.
 	connect(
@@ -62,8 +62,6 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
-//	Tracer::debug(tracer::enums::initialization, "Interpreter::interpret", "Preparing for interpretation");
-
 	mInterpretersInterface->errorReporter()->clear();
 
 //	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();

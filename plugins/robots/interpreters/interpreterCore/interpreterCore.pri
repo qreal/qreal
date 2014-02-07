@@ -14,11 +14,13 @@ HEADERS += \
 	$$PWD/src/robotsPlugin.h \
 	$$PWD/src/robotsPluginFacade.h \
 	$$PWD/src/managers/actionsManager.h \
+	$$PWD/src/managers/blocksFactoryManager.h \
+	$$PWD/src/managers/blocksFactoryManagerInterface.h \
+	$$PWD/src/managers/graphicsWatcherManager.h \
 	$$PWD/src/managers/kitPluginManager.h \
 	$$PWD/src/managers/robotModelManager.h \
 	$$PWD/src/managers/sensorsConfigurationManager.h \
 	$$PWD/src/managers/titlesVisibilityManager.h \
-	$$PWD/src/managers/graphicsWatcherManager.h \
 	$$PWD/src/coreBlocks/coreBlocksFactory.h \
 	$$PWD/src/coreBlocks/details/finalBlock.h \
 	$$PWD/src/coreBlocks/details/initialBlock.h \
@@ -38,11 +40,12 @@ SOURCES += \
 	$$PWD/src/robotsPlugin.cpp \
 	$$PWD/src/robotsPluginFacade.cpp \
 	$$PWD/src/managers/actionsManager.cpp \
+	$$PWD/src/managers/blocksFactoryManager.cpp \
+	$$PWD/src/managers/graphicsWatcherManager.cpp \
 	$$PWD/src/managers/kitPluginManager.cpp \
 	$$PWD/src/managers/robotModelManager.cpp \
 	$$PWD/src/managers/sensorsConfigurationManager.cpp \
 	$$PWD/src/managers/titlesVisibilityManager.cpp \
-	$$PWD/src/managers/graphicsWatcherManager.cpp \
 	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
 	$$PWD/src/coreBlocks/details/finalBlock.cpp \
 	$$PWD/src/coreBlocks/details/initialBlock.cpp \

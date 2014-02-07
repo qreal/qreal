@@ -10,10 +10,27 @@ using namespace interpreterCore::interpreter::details;
 
 using namespace ::testing;
 
+void BlocksTableTest::SetUp()
+{
+	DummyBlockFactory *blocksFactory = new DummyBlockFactory();
+
+	ON_CALL(mBlocksFactoryManager, addFactory(_)).WillByDefault(Return());
+	EXPECT_CALL(mBlocksFactoryManager, addFactory(_)).Times(0);
+
+	ON_CALL(mBlocksFactoryManager, block(_)).WillByDefault(
+			Invoke([&] (qReal::Id const &id) { return blocksFactory->block(id); } )
+			);
+	EXPECT_CALL(mBlocksFactoryManager, block(_)).Times(AtLeast(0));
+
+	ON_CALL(mBlocksFactoryManager, providedBlocks()).WillByDefault(
+			Invoke([&] { return blocksFactory->providedBlocks(); } )
+			);
+	EXPECT_CALL(mBlocksFactoryManager, providedBlocks()).Times(0);
+}
+
 TEST_F(BlocksTableTest, blocksCreation)
 {
-	DummyBlockFactory *factory = new DummyBlockFactory();
-	BlocksTable table(factory);
+	BlocksTable table(mBlocksFactoryManager);
 	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
@@ -25,8 +42,7 @@ TEST_F(BlocksTableTest, blocksCreation)
 
 TEST_F(BlocksTableTest, clear)
 {
-	DummyBlockFactory *factory = new DummyBlockFactory();
-	BlocksTable table(factory);
+	BlocksTable table(mBlocksFactoryManager);
 	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));

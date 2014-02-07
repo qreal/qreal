@@ -5,9 +5,10 @@
 
 #include <qrkernel/ids.h>
 
-#include <interpreterBase/blocksBase/blocksFactoryInterface.h>
 #include <interpreterBase/blocksBase/blocksTableInterface.h>
 #include <interpreterBase/blocksBase/blockInterface.h>
+
+#include "src/managers/blocksFactoryManagerInterface.h"
 
 namespace interpreterCore {
 namespace interpreter {
@@ -22,8 +23,8 @@ class BlocksTable : public interpreterBase::blocksBase::BlocksTableInterface
 {
 public:
 	/// Constructor.
-	/// @param blocksFactory - a factory that is used to create new blocks when needed. BlocksTable takes ownership.
-	BlocksTable(interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactory);
+	/// @param blocksFactoryManager - a factory manager that is used to create new blocks when needed.
+	BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager);
 
 	~BlocksTable() override;
 
@@ -46,7 +47,7 @@ public:
 
 private:
 	QHash<qReal::Id, interpreterBase::blocksBase::BlockInterface *> mBlocks;  // Has ownership
-	QScopedPointer<interpreterBase::blocksBase::BlocksFactoryInterface> mBlocksFactory;
+	BlocksFactoryManagerInterface &mBlocksFactoryManager;
 };
 
 }

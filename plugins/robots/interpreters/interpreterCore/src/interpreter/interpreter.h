@@ -5,6 +5,8 @@
 
 #include <qrkernel/ids.h>
 #include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrutils/watchListWindow.h>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
@@ -27,7 +29,7 @@ public:
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
-			, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
+			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, utils::ExpressionsParser &parser
 			, QAction &connectToRobotAction
@@ -63,16 +65,13 @@ private slots:
 //	void loadSensorConfiguration(Id const &diagramId);
 
 private:
-//	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
-	void addThread(details::Thread * const thread);
-//	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
-//	void resetVariables();
-
 	enum InterpreterState {
 		interpreting
 		, waitingForSensorsConfiguredToLaunch
 		, idle
 	};
+
+	void addThread(details::Thread * const thread);
 
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
 	qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Does not have ownership
@@ -85,18 +84,11 @@ private:
 
 	bool mConnected;
 
-//	robots::enums::robotModelType::robotModelTypeEnum mImplementationType;
-
-//	utils::WatchListWindow *mWatchListWindow;  // Doesn`t have ownership
-
-//	utils::sensorsGraph::SensorsGraph *mGraphicsWatch;  // Doesn`t have ownership
-
 	/// Action responsible for the connection to the robot
 	QAction &mActionConnectToRobot;
 
 	details::SensorVariablesUpdater mSensorVariablesUpdater;
 
-//	QString mLastCommunicationValue;
 };
 
 }
