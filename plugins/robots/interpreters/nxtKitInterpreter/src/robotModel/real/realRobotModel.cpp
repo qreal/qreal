@@ -6,6 +6,13 @@
 #include "communication/usbRobotCommunicationThread.h"
 
 using namespace nxtKitInterpreter::robotModel::real;
+using namespace utils::robotCommunication;
+
+RealRobotModel::RealRobotModel()
+{
+	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
+	connect(&mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
+}
 
 QString RealRobotModel::name() const
 {
@@ -38,4 +45,14 @@ void RealRobotModel::rereadSettings()
 	}
 
 	mRobotCommunicator.setRobotCommunicationThreadObject(communicator);
+}
+
+void RealRobotModel::connectToRobot()
+{
+	mRobotCommunicator.connect();
+}
+
+void RealRobotModel::disconnectFromRobot()
+{
+	mRobotCommunicator.disconnect();
 }

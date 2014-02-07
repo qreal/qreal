@@ -12,14 +12,20 @@ class RealRobotModel : public NxtRobotModelBase
 	Q_OBJECT
 
 public:
+	RealRobotModel();
+
 	QString name() const override;
 	QString friendlyName() const override;
 	bool needsConnection() const override;
+
+	void disconnectFromRobot() override;
 
 public slots:
 	void rereadSettings() override;
 
 private:
+	void connectToRobot() override;
+
 	utils::robotCommunication::RobotCommunicator mRobotCommunicator;
 	QString mLastCommunicationValue;
 };
