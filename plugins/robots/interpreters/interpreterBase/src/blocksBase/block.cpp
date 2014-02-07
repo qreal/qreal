@@ -48,26 +48,26 @@ bool Block::initNextBlocks()
 		return false;
 	}
 
-//	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
+	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
-//	if (links.count() > 1) {
-//		error(tr("Too many outgoing links"));
-//		return false;
-//	}
+	if (links.count() > 1) {
+		error(tr("Too many outgoing links"));
+		return false;
+	}
 
-//	if (links.count() == 0) {
-//		error(tr("No outgoing links, please connect this block to something or use Final Node to end program"));
-//		return false;
-//	}
+	if (links.count() == 0) {
+		error(tr("No outgoing links, please connect this block to something or use Final Node to end program"));
+		return false;
+	}
 
-//	if (links.count() == 1) {
-//		Id const nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
-//		if (nextBlockId.isNull() || nextBlockId == Id::rootId()) {
-//			error(tr("Outgoing link is not connected"));
-//			return false;
-//		}
-//		mNextBlock = mBlocksTable->block(nextBlockId);
-//	}
+	if (links.count() == 1) {
+		Id const nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
+		if (nextBlockId.isNull() || nextBlockId == Id::rootId()) {
+			error(tr("Outgoing link is not connected"));
+			return false;
+		}
+		mNextBlockId = nextBlockId;
+	}
 
 	return true;
 }
