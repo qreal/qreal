@@ -14,8 +14,8 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
-	, mDiagram(diagramId)
 	, mIsMainGenerator(isThisDiagramMain)
+	, mDiagram(diagramId)
 	, mValidator(repo, errorReporter, customizer, diagramId)
 {
 }
