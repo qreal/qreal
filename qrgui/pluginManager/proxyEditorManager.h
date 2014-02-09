@@ -93,6 +93,8 @@ public:
 	IdList children(Id const &parent) const;
 	QString shape(Id const &id) const;
 	void updateShape(Id const &id, QString const &graphics) const;
+	void resetIsHidden(Id const &id) const;
+	QString getIsHidden(Id const &id) const;
 	void deleteElement(MainWindow *mainWindow, Id const &id) const;
 	bool isRootDiagramNode(Id const &id) const;
 	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const;

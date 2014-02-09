@@ -96,6 +96,8 @@ public:
 	virtual IdList children(Id const &parent) const;
 	virtual QString shape(Id const &id) const;
 	virtual void updateShape(Id const &id, QString const &graphics) const;
+	virtual void resetIsHidden(Id const &id) const;
+	virtual QString getIsHidden(Id const &id) const;
 	virtual void deleteElement(qReal::MainWindow *mainWindow, Id const &id) const;
 	virtual bool isRootDiagramNode(Id const &id) const;
 	virtual void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const;
@@ -122,6 +124,7 @@ private:
 	QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;  // Has ownership.
 	QString mMetamodelFile;
 
+	IdList propertiesWithTheSameName(Id const &id, QString const &propDisplayedName) const;
 	void setProperty(qrRepo::RepoApi* repo, Id const &id, QString const &property, QVariant const &propertyValue) const;
 	Id element(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;
 	Id diagramOrElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &editor) const;

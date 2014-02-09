@@ -607,6 +607,17 @@ void EditorManager::updateShape(Id const &id, QString const &graphics) const
 	Q_UNUSED(graphics);
 }
 
+void EditorManager::resetIsHidden(Id const &id) const
+{
+	Q_UNUSED(id);
+}
+
+QString EditorManager::getIsHidden(Id const &id) const
+{
+	Q_UNUSED(id);
+	return "false";
+}
+
 void EditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
 {
 	Q_UNUSED(mainWindow);

@@ -261,6 +261,16 @@ void ProxyEditorManager::updateShape(Id const &id, QString const &graphics) cons
 	mProxiedEditorManager->updateShape(id, graphics);
 }
 
+void ProxyEditorManager::resetIsHidden(Id const &id) const
+{
+	mProxiedEditorManager->resetIsHidden(id);
+}
+
+QString ProxyEditorManager::getIsHidden(Id const &id) const
+{
+	return mProxiedEditorManager->getIsHidden(id);
+}
+
 void ProxyEditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
 {
 	mProxiedEditorManager->deleteElement(mainWindow, id);

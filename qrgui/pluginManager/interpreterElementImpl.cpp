@@ -500,8 +500,7 @@ bool InterpreterElementImpl::hasPin() const
 
 bool InterpreterElementImpl::createChildrenFromMenu() const
 {
-	if (mEditorRepoApi->hasProperty(mId, "createChildrenFromMenu"))
-	{
+	if (mEditorRepoApi->hasProperty(mId, "createChildrenFromMenu")) {
 		return mEditorRepoApi->stringProperty(mId, "createChildrenFromMenu") == "true";
 	}
 	return false;

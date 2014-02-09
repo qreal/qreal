@@ -252,17 +252,17 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 
 	if (event->button() == Qt::RightButton) {
 		if (mEditorManagerProxy.isInterpretationMode()) {
-			QMenu menu;
-			QAction * const changePropertiesPaletteAction = menu.addAction(tr("Change Properties"));
+			QMenu *menu = new QMenu();
+			QAction * const changePropertiesPaletteAction = menu->addAction(tr("Change Properties"));
 			connect(changePropertiesPaletteAction, SIGNAL(triggered()), SLOT(changePropertiesPaletteActionTriggered()));
 			changePropertiesPaletteAction->setData(elementId.toVariant());
-			QAction * const changeAppearancePaletteAction = menu.addAction(tr("Change Appearance"));
+			QAction * const changeAppearancePaletteAction = menu->addAction(tr("Change Appearance"));
 			connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearancePaletteActionTriggered()));
 			changeAppearancePaletteAction->setData(elementId.toVariant());
-			QAction * const deleteElementPaletteAction = menu.addAction(tr("Delete Element"));
-			connect(deleteElementPaletteAction, SIGNAL(triggered()), SLOT(deleteElementPaletteActionTriggered()));
+			QAction * const deleteElementPaletteAction = menu->addAction(tr("Delete Element"));
+			connect(deleteElementPaletteAction, SIGNAL(triggered()), SLOT(deleteElementPaletteActionTriggered()), Qt::QueuedConnection);
 			deleteElementPaletteAction->setData(elementId.toVariant());
-			menu.exec(QCursor::pos());
+			menu->exec(QCursor::pos());
 		}
 	} else {
 		QByteArray itemData;

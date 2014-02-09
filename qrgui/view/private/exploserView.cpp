@@ -6,7 +6,7 @@
 #include "view/editorViewScene.h"
 #include "controller/commands/createElementCommand.h"
 #include "umllib/private/expandCommand.h"
-#include "../dialogs/metamodelingOnFly/propertiesDialog.h"
+#include "../../dialogs/metamodelingOnFly/propertiesDialog.h"
 
 using namespace qReal;
 using namespace view::details;
@@ -108,6 +108,12 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * 
 		QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
 		connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearanceActionTriggered()));
 		changeAppearancePaletteAction->setData(element->id().toVariant());
+		if (mMainWindow->editorManager().getIsHidden(element->id()) == "true")
+		{
+			QAction * const addElementToPaletteAction = contextMenu.addAction(tr("Add element to palette"));
+			connect(addElementToPaletteAction, SIGNAL(triggered()), SLOT(addElementToPaletteActionTriggered()));
+			addElementToPaletteAction->setData(element->id().toVariant());
+		}
 	}
 
 	QList<Explosion> const explosions = mMainWindow->editorManager().explosions(element->id().type());
@@ -225,4 +231,12 @@ void ExploserView::changeAppearanceActionTriggered()
 	Id const id = action->data().value<Id>();
 	QString const propertyValue = mMainWindow->editorManager().shape(id);
 	mMainWindow->openShapeEditor(id, propertyValue, &(mMainWindow->editorManager()), false);
+}
+
+void ExploserView::addElementToPaletteActionTriggered()
+{
+	QAction const * const action = static_cast<QAction const *>(sender());
+	Id const id = action->data().value<Id>();
+	mMainWindow->editorManager().resetIsHidden(id);
+	mMainWindow->loadPlugins();
 }
