@@ -4,7 +4,7 @@ using namespace qrTest::robotsTests::interpreterCoreTests;
 using namespace ::testing;
 
 QrguiFacade::QrguiFacade(QString const &modelName)
-		: mModels(modelName, mEditorManager)
+	: mModels(modelName, mEditorManager)
 {
 	ON_CALL(mMainWindowInterpretersInterfaceMock, errorReporter()).WillByDefault(Return(&mErrorReporterMock));
 

@@ -13,6 +13,7 @@ public:
 	CreateGroupCommand(EditorViewScene * const scene
 			, models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
+			, Exploser &exploser
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id
@@ -30,6 +31,7 @@ private:
 	EditorViewScene *mScene;
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
+	Exploser &mExploser;
 	Id const mLogicalParent;
 	Id const mGraphicalParent;
 	Id const mId;

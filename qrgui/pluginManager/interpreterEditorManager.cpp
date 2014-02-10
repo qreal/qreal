@@ -12,7 +12,7 @@
 #include "pluginManager/interpreterEditorManager.h"
 #include "umllib/nodeElement.h"
 #include "umllib/edgeElement.h"
-#include "pluginManager/interpreterElementImpl.h"
+#include "pluginManager/details/interpreterElementImpl.h"
 #include "mainwindow/mainWindow.h"
 
 using namespace qReal;

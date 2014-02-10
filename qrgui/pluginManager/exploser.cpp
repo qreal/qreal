@@ -125,23 +125,23 @@ void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const 
 }
 
 AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(Id const &source
-		, Id const &targetType, GraphicalModelAssistApi *graphicalApi)
+		, Id const &targetType, GraphicalModelAssistApi &graphicalApi)
 {
 	AbstractCommand *result = nullptr;
 	Id newElementId;
 	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.editor(), targetType.element())) {
 		QString const friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
 		newElementId = Id(targetType, QUuid::createUuid().toString());
-		result = new CreateElementCommand(mApi, *graphicalApi, Id::rootId()
+		result = new CreateElementCommand(mApi, graphicalApi, *this, Id::rootId()
 				, Id::rootId(), newElementId, false, friendlyTargetName, QPointF());
 	} else {
-		result = new CreateGroupCommand(nullptr, mApi, *graphicalApi, Id::rootId()
+		result = new CreateGroupCommand(nullptr, mApi, graphicalApi, *this, Id::rootId()
 				, Id::rootId(), targetType, false, QPointF());
 		newElementId = static_cast<CreateGroupCommand *>(result)->rootId();
 	}
 
-	result->addPostAction(addExplosionCommand(source, newElementId, graphicalApi));
-	result->addPostAction(new RenameExplosionCommand(mApi, graphicalApi, newElementId));
+	result->addPostAction(addExplosionCommand(source, newElementId, &graphicalApi));
+	result->addPostAction(new RenameExplosionCommand(mApi, &graphicalApi, *this, newElementId));
 	connect(result, SIGNAL(undoComplete(bool)), this, SIGNAL(explosionTargetRemoved()));
 	return result;
 }
@@ -165,7 +165,7 @@ Id Exploser::immediateExplosionTarget(Id const &id)
 }
 
 AbstractCommand *Exploser::addExplosionCommand(Id const &source, Id const &target
-		, GraphicalModelAssistApi *graphicalApi)
+		, GraphicalModelAssistApi * const graphicalApi)
 {
 	AbstractCommand *result = new ExplosionCommand(mApi, graphicalApi, source, target, true);
 	// Do not remove Qt::QueuedConnection flag.
@@ -185,7 +185,7 @@ AbstractCommand *Exploser::removeExplosionCommand(Id const &source, Id const &ta
 	return result;
 }
 
-AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &newNames)
+AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &newNames) const
 {
 	DoNothingCommand *result = new DoNothingCommand;
 
@@ -200,6 +200,7 @@ AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &new
 		connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
 		connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
 	}
+
 	return result;
 }
 

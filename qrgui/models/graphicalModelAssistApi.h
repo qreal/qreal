@@ -35,66 +35,65 @@ public:
 	/// Interface for accessing metamodel information.
 	EditorManagerInterface const &editorManagerInterface() const;
 
-	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
-	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
-	Id createElement(Id const &parent, Id const &type);
-	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel
-			, QString const &name, QPointF const &position
-			, Id const &preferedLogicalId = Id());
-	Id copyElement(Id const &source);
-	IdList children(Id const &element) const;
-	void changeParent(Id const &element, Id const &parent, QPointF const &position);
+	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const override;
+	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const override;
+	Id createElement(Id const &parent, Id const &type) override;
+	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name
+			, QPointF const &position, Id const &preferedLogicalId = Id()) override;
+	Id copyElement(Id const &source) override;
+	IdList children(Id const &element) const override;
+	void changeParent(Id const &element, Id const &parent, QPointF const &position) override;
 
-	void copyProperties(Id const &dest, Id const &src);
-	QMap<QString, QVariant> properties(Id const &id);
+	void copyProperties(Id const &dest, Id const &src) override;
+	QMap<QString, QVariant> properties(Id const &id) override;
 	void setProperties(Id const &id, QMap<QString, QVariant> const &properties);
 
-	virtual void stackBefore(Id const &element, Id const &sibling);
+	void stackBefore(Id const &element, Id const &sibling);
 
-	IdList temporaryRemovedLinksFrom(Id const &elem) const;
-	IdList temporaryRemovedLinksTo(Id const &elem) const;
-	IdList temporaryRemovedLinksNone(Id const &elem) const;
-	void removeTemporaryRemovedLinks(Id const &elem);
+	IdList temporaryRemovedLinksFrom(Id const &elem) const override;
+	IdList temporaryRemovedLinksTo(Id const &elem) const override;
+	IdList temporaryRemovedLinksNone(Id const &elem) const override;
+	void removeTemporaryRemovedLinks(Id const &elem) override;
 
 	void setConfiguration(Id const &elem, QPolygon const &newValue);
-	QPolygon configuration(Id const &elem) const;
+	QPolygon configuration(Id const &elem) const override;
 
-	void setPosition(Id const &elem, QPointF const &newValue);
-	QPointF position(Id const &elem) const;
+	void setPosition(Id const &elem, QPointF const &newValue) override;
+	QPointF position(Id const &elem) const override;
 
 	void setToPort(Id const &elem, qreal const &newValue);
-	qreal toPort(Id const &elem) const;
+	qreal toPort(Id const &elem) const override;
 
 	void setFromPort(Id const &elem, qreal const &newValue);
-	qreal fromPort(Id const &elem) const;
+	qreal fromPort(Id const &elem) const override;
 
-	void setName(Id const &elem, QString const &newValue);
-	QString name(Id const &elem) const;
+	void setName(Id const &elem, QString const &newValue) override;
+	QString name(Id const &elem) const override;
 
-	void setToolTip(Id const &elem, QString const &newValue);
-	QString toolTip(Id const &elem) const;
+	void setToolTip(Id const &elem, QString const &newValue) override;
+	QString toolTip(Id const &elem) const override;
 
-	Id logicalId(Id const &elem) const;
-	IdList graphicalIdsByLogicalId(Id const &logicalId) const;
+	Id logicalId(Id const &elem) const override;
+	IdList graphicalIdsByLogicalId(Id const &logicalId) const override;
 
-	bool isGraphicalId(Id const &id) const;
+	bool isGraphicalId(Id const &id) const override;
 
-	void setTo(Id const &elem, Id const &newValue);
-	Id to(Id const &elem) const;
+	void setTo(Id const &elem, Id const &newValue) override;
+	Id to(Id const &elem) const override;
 
-	void setFrom(Id const &elem, Id const &newValue);
-	Id from(Id const &elem) const;
+	void setFrom(Id const &elem, Id const &newValue) override;
+	Id from(Id const &elem) const override;
 
-	QModelIndex indexById(Id const &id) const;
-	Id idByIndex(QModelIndex const &index) const;
-	QPersistentModelIndex rootIndex() const;
-	Id rootId() const;
+	QModelIndex indexById(Id const &id) const override;
+	Id idByIndex(QModelIndex const &index) const override;
+	QPersistentModelIndex rootIndex() const override;
+	Id rootId() const override;
 
-	bool hasRootDiagrams() const;
-	int childrenOfRootDiagram() const;
-	int childrenOfDiagram(const Id &parent) const;
+	bool hasRootDiagrams() const override;
+	int childrenOfRootDiagram() const override;
+	int childrenOfDiagram(const Id &parent) const override;
 
-	void removeElement(Id const &graphicalId);
+	void removeElement(Id const &graphicalId) override;
 
 	/// Returns true, if a label already exists in repository.
 	/// @param graphicalId - id of an element.

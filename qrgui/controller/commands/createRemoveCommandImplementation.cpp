@@ -7,6 +7,7 @@ using namespace qReal::commands;
 CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 		models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
+		, Exploser &exploser
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, Id const &id
@@ -15,6 +16,7 @@ CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 		, QPointF const &position)
 	: mLogicalApi(logicalApi)
 	, mGraphicalApi(graphicalApi)
+	, mExploser(exploser)
 	, mLogicalParent(logicalParent)
 	, mGraphicalParent(graphicalParent)
 	, mId(id)
@@ -94,5 +96,5 @@ bool CreateRemoveCommandImplementation::equals(CreateRemoveCommandImplementation
 void CreateRemoveCommandImplementation::refreshAllPalettes()
 {
 	// Calling refreshing immideately may cause segfault because of deletting drag source
-	QTimer::singleShot(0, &mLogicalApi.exploser(), SLOT(refreshAllPalettes()));
+	QTimer::singleShot(0, &mExploser, SLOT(refreshAllPalettes()));
 }

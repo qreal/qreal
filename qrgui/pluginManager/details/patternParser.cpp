@@ -1,4 +1,4 @@
-#include "pluginManager/patternParser.h"
+#include "pluginManager/details/patternParser.h"
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomDocument>

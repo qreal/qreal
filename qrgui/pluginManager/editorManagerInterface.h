@@ -15,8 +15,8 @@
 #include "pluginManager/listenerManager.h"
 #include "editorPluginInterface/editorInterface.h"
 #include "pluginManager/pattern.h"
-#include "pluginManager/patternParser.h"
 #include "pluginManager/explosion.h"
+#include "pluginManager/details/patternParser.h"
 
 namespace qReal {
 

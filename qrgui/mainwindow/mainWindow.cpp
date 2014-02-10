@@ -103,6 +103,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	initDocks();
 	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
+	mExploser.reset(new Exploser(mModels->logicalModelAssistApi()));
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -247,13 +248,11 @@ void MainWindow::connectActions()
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeWindowTitle(int)));
 	connect(mTextManager, SIGNAL(textChanged(bool)), this, SLOT(setTextChanged(bool)));
 
-	connect(mProjectManager, SIGNAL(afterOpen(QString))
-			, &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
-	connect(mProjectManager, SIGNAL(closed()), &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
+	connect(mProjectManager, SIGNAL(afterOpen(QString)), mExploser.data(), SLOT(refreshAllPalettes()));
+	connect(mProjectManager, SIGNAL(closed()), mExploser.data(), SLOT(refreshAllPalettes()));
 	connect(mProjectManager, SIGNAL(closed()), mController, SLOT(projectClosed()));
 
-	connect(&mModels->logicalModelAssistApi().exploser(), SIGNAL(explosionTargetRemoved())
-			, this, SLOT(closeTabsWithRemovedRootElements()));
+	connect(mExploser.data(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
 
 	setDefaultShortcuts();
 }
@@ -799,6 +798,7 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 		return new RemoveElementCommand(
 				mModels->logicalModelAssistApi()
 				, mModels->graphicalModelAssistApi()
+				, exploser()
 				, mModels->logicalRepoApi().parent(id)
 				, Id()
 				, id
@@ -825,6 +825,7 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 	AbstractCommand *result = new RemoveElementCommand(
 				mModels->logicalModelAssistApi()
 				, mModels->graphicalModelAssistApi()
+				, exploser()
 				, mModels->logicalRepoApi().parent(logicalId)
 				, mModels->graphicalRepoApi().parent(id)
 				, id
@@ -869,12 +870,12 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 
 void MainWindow::appendExplosionsCommands(AbstractCommand *parentCommand, Id const &logicalId)
 {
-	IdList const toDelete = mModels->logicalModelAssistApi().exploser().elementsWithHardDependencyFrom(logicalId);
+	IdList const toDelete = mExploser->elementsWithHardDependencyFrom(logicalId);
 	foreach (Id const &logicalChild, toDelete) {
 		parentCommand->addPreAction(logicalDeleteCommand(logicalChild));
 	}
 
-	mModels->logicalModelAssistApi().exploser().handleRemoveCommand(logicalId, parentCommand);
+	mExploser->handleRemoveCommand(logicalId, parentCommand);
 }
 
 void MainWindow::deleteFromDiagram()
@@ -1317,7 +1318,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	tab->setMainWindow(this);
 	QModelIndex const index = rootIndex;
 
-	tab->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
+	tab->mvIface()->configure(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(), exploser());
 
 	tab->mvIface()->setModel(mModels->graphicalModel());
 	if (tab->sceneRect() == QRectF(0, 0, 0, 0)) {
@@ -1503,6 +1504,11 @@ models::Models *MainWindow::models() const
 	return mModels;
 }
 
+Exploser &MainWindow::exploser()
+{
+	return *mExploser.data();
+}
+
 Controller *MainWindow::controller() const
 {
 	return mController;
@@ -1644,7 +1650,7 @@ void MainWindow::createDiagram(QString const &idString)
 	} else {
 		// It is a group
 		CreateGroupCommand createGroupCommand(nullptr, mModels->logicalModelAssistApi()
-				, mModels->graphicalModelAssistApi(), Id::rootId(), Id::rootId()
+				, mModels->graphicalModelAssistApi(), exploser(), Id::rootId(), Id::rootId()
 				, id, false, QPointF());
 		createGroupCommand.redo();
 		created = createGroupCommand.rootId();
@@ -1966,7 +1972,7 @@ void MainWindow::initToolPlugins()
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
-	mModels->logicalModelAssistApi().exploser().customizeExplosionTitles(
+	mExploser->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
 }
@@ -2045,7 +2051,7 @@ void MainWindow::initExplorers()
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setController(mController);
 	mUi->graphicalModelExplorer->setAssistApi(&mModels->graphicalModelAssistApi());
-	mUi->graphicalModelExplorer->setExploser(&mModels->logicalModelAssistApi().exploser());
+	mUi->graphicalModelExplorer->setExploser(exploser());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
@@ -2054,7 +2060,7 @@ void MainWindow::initExplorers()
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 	mUi->logicalModelExplorer->setController(mController);
 	mUi->logicalModelExplorer->setAssistApi(&mModels->logicalModelAssistApi());
-	mUi->logicalModelExplorer->setExploser(&mModels->logicalModelAssistApi().exploser());
+	mUi->logicalModelExplorer->setExploser(exploser());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 

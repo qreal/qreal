@@ -2,7 +2,7 @@
 
 #include "controller/commands/abstractCommand.h"
 #include "toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
-#include "models/details/exploser.h"
+#include "pluginManager/exploser.h"
 
 namespace qReal {
 namespace commands {
@@ -14,19 +14,19 @@ public:
 	/// This overload gets old name automatically using models api
 	RenameCommand(details::ModelsAssistInterface &model
 			, Id const &id, QString const &newName
-			, models::Exploser * const exploser = NULL);
+			, Exploser const * const exploser = nullptr);
 
 	/// This overload alows to specify old name manually
 	RenameCommand(details::ModelsAssistInterface &model
 			, Id const &id, QString const &oldName, QString const &newName
-			, models::Exploser * const exploser = NULL);
+			, Exploser const * const exploser = nullptr);
 
 protected:
 	virtual bool execute();
 	virtual bool restoreState();
 
 private:
-	void initExplosions(models::Exploser * const exploser);
+	void initExplosions(Exploser const * const exploser);
 
 	bool rename(QString const &name);
 

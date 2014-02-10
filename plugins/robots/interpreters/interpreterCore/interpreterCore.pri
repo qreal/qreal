@@ -1,4 +1,4 @@
-QT += xml widgets
+QT += svg xml widgets
 
 INCLUDEPATH += \
 	$$PWD/src/ \

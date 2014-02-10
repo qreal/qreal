@@ -18,16 +18,16 @@ class AbstractCommand;
 namespace models {
 class LogicalModelAssistApi;
 class GraphicalModelAssistApi;
+}
 
 /// This class contains methods for processing all system explosion-based operations
 /// from the model aspect
-// TODO: Why it is in "details" folder, but not in "details" namespace?
 class Exploser : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit Exploser(LogicalModelAssistApi &api);
+	explicit Exploser(models::LogicalModelAssistApi &api);
 
 	void customizeExplosionTitles(QString const &userGroupTitle
 			, QString const &userGroupDescription);
@@ -51,7 +51,7 @@ public:
 	/// instances with explosion link and adds explosion instance into user blocks
 	/// palette if nessesary.
 	commands::AbstractCommand *addExplosionCommand(Id const &source, Id const &target
-			, GraphicalModelAssistApi *graphicalApi = NULL);
+			, models::GraphicalModelAssistApi * const graphicalApi = nullptr);
 
 	/// Produces and returns command that unbinds elements with explosion link and
 	/// removes explosion instance from user blocks palette if nessesary.
@@ -60,13 +60,13 @@ public:
 	/// Produces and returns command that creates element of target type and
 	/// binds given element with new element with explosion link
 	commands::AbstractCommand *createElementWithIncomingExplosionCommand(Id const &source
-			, Id const &targetType, GraphicalModelAssistApi *graphicalApi);
+			, Id const &targetType, models::GraphicalModelAssistApi &graphicalApi);
 
 	/// Produces and returns a command that performs the renaming of the whole
 	/// explosions  hierarchy and binded palette items
 	/// @param oneOfIds The id of one of the elements belonging to the hierarchy
 	/// @param newNames The name which will bew assigned to all the elements in heirarchy
-	commands::AbstractCommand *renameCommands(Id const &oneOfIds, QString const &newNames);
+	commands::AbstractCommand *renameCommands(Id const &oneOfIds, QString const &newNames) const;
 
 public slots:
 	void refreshAllPalettes();
@@ -93,12 +93,11 @@ private:
 
 	void refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram);
 
-	LogicalModelAssistApi &mApi;
+	models::LogicalModelAssistApi &mApi;
 	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;
 
 	QString mUserGroupTitle;
 	QString mUserGroupDescription;
 };
 
-}
 }

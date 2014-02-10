@@ -3,7 +3,7 @@ TARGET = robots_interpreterCore_unittests
 include(../../../../common.pri)
 
 include(../../../../../../plugins/robots/interpreters/interpreterCore/interpreterCore.pri)
-include(../../../../../../qrgui/qrgui.pri)
+include(../../../../../../qrgui/models/models.pri)
 
 INCLUDEPATH += \
 	../../../../../../plugins/robots/interpreters \

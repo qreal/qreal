@@ -480,7 +480,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 
 	if (mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
 		CreateGroupCommand *createGroupCommand = new CreateGroupCommand(
-				this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi()
+				this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->exploser()
 				, mMVIface->rootId(), mMVIface->rootId(), id, isFromLogicalModel, scenePos);
 		if (executeImmediately) {
 			mController->execute(createGroupCommand);
@@ -546,6 +546,7 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, boo
 	CreateElementCommand *createCommand = new CreateElementCommand(
 				*mMVIface->logicalAssistApi()
 				, *mMVIface->graphicalAssistApi()
+				, mWindow->exploser()
 				, mMVIface->rootId()
 				, parentId
 				, id
@@ -561,8 +562,9 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, boo
 		if (isNode) {
 			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInterface().iconSize(id);
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
-					*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), Id(), Id()
-					, parentId, position, QPointF(size.width(), size.height()), isFromLogicalModel, createCommand);
+					*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->exploser()
+					, Id(), Id(), parentId, position, QPointF(size.width(), size.height())
+					, isFromLogicalModel, createCommand);
 			mController->execute(insertCommand);
 		} else {
 			mController->execute(createCommand);
@@ -1234,8 +1236,8 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mWindow = mainWindow;
 	mController = mWindow->controller();
 	mClipboardHandler.setController(mController);
-	mExploser = new view::details::ExploserView(mainWindow, &mainWindow->models()->logicalModelAssistApi()
-			, &mainWindow->models()->graphicalModelAssistApi(), this);
+	mExploser = new view::details::ExploserView(*mainWindow, mainWindow->models()->logicalModelAssistApi()
+			, mainWindow->models()->graphicalModelAssistApi(), mainWindow->exploser(), this);
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
 			<< mWindow->actionCopyElementsOnDiagram()

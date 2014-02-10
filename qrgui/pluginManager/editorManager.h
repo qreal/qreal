@@ -14,8 +14,8 @@
 #include "pluginManager/listenerManager.h"
 #include "pluginManager/editorManagerInterface.h"
 #include "pluginManager/pattern.h"
-#include "pluginManager/patternParser.h"
 #include "editorPluginInterface/editorInterface.h"
+#include "pluginManager/details/patternParser.h"
 
 namespace qReal {
 
@@ -26,7 +26,7 @@ class EditorManager : public QObject, public EditorManagerInterface
 	Q_OBJECT
 
 public:
-	explicit EditorManager(QObject *parent = NULL);
+	explicit EditorManager(QObject *parent = nullptr);
 
 	~EditorManager();
 

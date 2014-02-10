@@ -34,21 +34,23 @@ NodeElement::NodeElement(ElementImpl *impl
 		, Id const &id
 		, models::GraphicalModelAssistApi &graphicalAssistApi
 		, models::LogicalModelAssistApi &logicalAssistApi
+		, Exploser &exploser
 		)
-		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
-		, mSwitchGridAction(tr("Switch on grid"), this)
-		, mDragState(None)
-		, mResizeCommand(NULL)
-		, mIsExpanded(false)
-		, mIsFolded(false)
-		, mLeftPressed(false)
-		, mParentNodeElement(NULL)
-		, mPos(QPointF(0,0))
-		, mSelectionNeeded(false)
-		, mConnectionInProgress(false)
-		, mPlaceholder(NULL)
-		, mHighlightedNode(NULL)
-		, mRenderTimer(this)
+	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
+	, mExploser(exploser)
+	, mSwitchGridAction(tr("Switch on grid"), this)
+	, mDragState(None)
+	, mResizeCommand(nullptr)
+	, mIsExpanded(false)
+	, mIsFolded(false)
+	, mLeftPressed(false)
+	, mParentNodeElement(nullptr)
+	, mPos(QPointF(0,0))
+	, mSelectionNeeded(false)
+	, mConnectionInProgress(false)
+	, mPlaceholder(nullptr)
+	, mHighlightedNode(nullptr)
+	, mRenderTimer(this)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -146,10 +148,10 @@ QMap<QString, QVariant> NodeElement::logicalProperties() const
 
 void NodeElement::setName(QString const &value, bool withUndoRedo)
 {
-	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi
-			, id(), value, &mLogicalAssistApi.exploser());
+	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
 	if (withUndoRedo) {
 		mController->execute(command);
+		// Controller will take ownership
 	} else {
 		command->redo();
 		delete command;
@@ -379,15 +381,15 @@ void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
 	// mHighlightedNode == newParent, but it's unapplicable here because
 	// of element could be moved inside his parent
 
-	if (newParent != NULL) {
+	if (newParent) {
 		if (mHighlightedNode) {
 			mHighlightedNode->erasePlaceholder(false);
 		}
 		mHighlightedNode = newParent;
 		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), mouseScenePos);
-	} else if (mHighlightedNode != NULL) {
+	} else if (mHighlightedNode != nullptr) {
 		mHighlightedNode->erasePlaceholder(true);
-		mHighlightedNode = NULL;
+		mHighlightedNode = nullptr;
 	}
 }
 
@@ -516,13 +518,13 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
-			*evScene, mLogicalAssistApi, mGraphicalAssistApi, id(), id(), Id::rootId()
+			*evScene, mLogicalAssistApi, mGraphicalAssistApi, mExploser, id(), id(), Id::rootId()
 			, event->scenePos(), boundingRect().bottomRight(), false);
 
 	bool shouldProcessResize = true;
 
 	// we should use mHighlightedNode to determine if there is a highlighted node
-	// insert current element into them and set mHighlightedNode to NULL
+	// insert current element into them and set mHighlightedNode to nullptr
 	// but because of mouseRelease twice triggering we can't do it
 	// This may cause more bugs
 	if (!isPort() && (flags() & ItemIsMovable)) {
@@ -531,13 +533,13 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
 			mHighlightedNode->erasePlaceholder(false);
 			// commented because of bug with double event sending (see #204)
-	//		mHighlightedNode = NULL;
+			// mHighlightedNode = nullptr;
 
 			QPointF newPos = mapToItem(newParent, mapFromScene(scenePos()));
 			AbstractCommand *parentCommand = changeParentCommand(newParent->id(), newPos);
 			mController->execute(parentCommand);
 			// Position change already processed in change parent command
-			shouldProcessResize = parentCommand == NULL;
+			shouldProcessResize = parentCommand == nullptr;
 			setPos(newPos);
 
 			if (insertBefore) {
@@ -555,7 +557,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			AbstractCommand *parentCommand = changeParentCommand(evScene->rootItemId(), scenePos());
 			mController->execute(parentCommand);
 			// Position change already processed in change parent command
-			shouldProcessResize = parentCommand == NULL;
+			shouldProcessResize = parentCommand == nullptr;
 		}
 	}
 
@@ -616,7 +618,7 @@ void NodeElement::endResize()
 		}
 
 		// Undo stack took ownership
-		mResizeCommand = NULL;
+		mResizeCommand = nullptr;
 	}
 }
 
@@ -987,11 +989,11 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 	}
 
 	// binary search? No because we need to know summary height of prev elements
-	NodeElement *nextItem = NULL;
+	NodeElement *nextItem = nullptr;
 
 	foreach (QGraphicsItem* childItem, childItems()) {
 		NodeElement *curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem != NULL) {
+		if (curItem) {
 			if (curItem->scenePos().y() > pos.y()) {
 				nextItem = curItem;
 				break;
@@ -1002,7 +1004,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 	erasePlaceholder(false);
 	mPlaceholder = placeholder;
 	mPlaceholder->setParentItem(this);
-	if(nextItem != NULL) {
+	if(nextItem) {
 		mPlaceholder->stackBefore(nextItem);
 	}
 
@@ -1011,21 +1013,21 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 
 Element* NodeElement::getPlaceholderNextElement()
 {
-	if(mPlaceholder == NULL) {
-		return NULL;
+	if(mPlaceholder == nullptr) {
+		return nullptr;
 	}
 	bool found = false;
 	// loking for child following the placeholder
 	foreach(QGraphicsItem *childItem, childItems()) {
 		Element *element = dynamic_cast<Element*>(childItem);
-		if(found && element != NULL) {
+		if(found && element != nullptr) {
 			return element;
 		}
 		if(childItem == mPlaceholder) {
 			found = true;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 void NodeElement::erasePlaceholder(bool redraw)
@@ -1037,7 +1039,7 @@ void NodeElement::erasePlaceholder(bool redraw)
 	}
 
 	delete mPlaceholder;
-	mPlaceholder = NULL;
+	mPlaceholder = nullptr;
 
 	if(redraw) {
 		resize();
@@ -1273,7 +1275,7 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	Element *oldParentElem = dynamic_cast<Element *>(parentItem());
 	Id const oldParent = oldParentElem ? oldParentElem->id() : evScene->rootItemId();
 	if (oldParent == newParent) {
-		return NULL;
+		return nullptr;
 	}
 	QPointF const oldPos = mResizeCommand ? mResizeCommand->geometryBeforeDrag().topLeft() : mPos;
 	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
@@ -1335,8 +1337,8 @@ void NodeElement::initRenderedDiagram()
 	openedScene->setMainWindow(window);
 	openedScene->setNeedDrawGrid(false);
 
-	view.mvIface()->setAssistApi(window->models()->graphicalModelAssistApi()
-			, window->models()->logicalModelAssistApi());
+	view.mvIface()->configure(window->models()->graphicalModelAssistApi()
+			, window->models()->logicalModelAssistApi(), mExploser);
 	view.mvIface()->setModel(window->models()->graphicalModel());
 	view.mvIface()->setLogicalModel(window->models()->logicalModel());
 	view.mvIface()->setRootIndex(window->models()->graphicalModelAssistApi().indexById(graphicalDiagram));
@@ -1367,6 +1369,7 @@ QRectF NodeElement::diagramRenderingRect() const
 			, id().sameTypeId()
 			, mGraphicalAssistApi
 			, mLogicalAssistApi
+			, mExploser
 			);
 
 	qreal const xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);

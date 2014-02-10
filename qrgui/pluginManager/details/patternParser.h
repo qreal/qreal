@@ -9,10 +9,12 @@
 
 namespace qReal {
 class EditorManager;
+
 class PatternParser
 {
 public:
 	PatternParser();
+
 	void loadXml(QString const &xml);
 	void parseGroups(EditorManager *editorManager, QString const &editor, const QString &diagram);
 	QList<Pattern> patterns() const;
@@ -25,7 +27,7 @@ private:
 	QString mXml;
 	QString mEditor;
 	QString mDiagram;
-	EditorManager * mEditorManager;
+	EditorManager *mEditorManager;
 	QList<Pattern> mPatterns;
 
 };

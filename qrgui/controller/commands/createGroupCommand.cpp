@@ -7,6 +7,7 @@ using namespace qReal::commands;
 CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 		, models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
+		, Exploser &exploser
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, Id const &id
@@ -15,6 +16,7 @@ CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 	: mScene(scene)
 	, mLogicalApi(logicalApi)
 	, mGraphicalApi(graphicalApi)
+	, mExploser(exploser)
 	, mLogicalParent(logicalParent)
 	, mGraphicalParent(graphicalParent)
 	, mId(id)
@@ -48,7 +50,7 @@ CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 			QPointF const nodePos(position.x() - size.x() / 2 + node.position.x()
 					, position.y() + node.position.y());
 			CreateElementCommand *createNodeCommand = new CreateElementCommand(
-					logicalApi, graphicalApi, logicalParent
+					logicalApi, graphicalApi, exploser, logicalParent
 					, createdNodesIds[node.parent], element, isFromLogicalModel
 					, mLogicalApi.editorManagerInterface().friendlyName(element.type()), nodePos);
 			mNodeCommands[node.id] = createNodeCommand;
@@ -63,7 +65,7 @@ CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 	for (GroupEdge const &edge : mPattern.edges()) {
 		Id const element(id.editor(), id.diagram(), edge.type, QUuid::createUuid().toString());
 		CreateElementCommand *createEdgeCommand = new CreateElementCommand(
-					logicalApi, graphicalApi, logicalParent, graphicalParent, element, isFromLogicalModel
+					logicalApi, graphicalApi, exploser, logicalParent, graphicalParent, element, isFromLogicalModel
 					, mLogicalApi.editorManagerInterface().friendlyName(element.type()), QPointF());
 		mEdgeCommands.append(createEdgeCommand);
 		addPreAction(createEdgeCommand);
@@ -93,8 +95,8 @@ bool CreateGroupCommand::execute()
 
 	if (mScene) {
 		InsertIntoEdgeCommand *insertCommand = new InsertIntoEdgeCommand(*mScene, mLogicalApi, mGraphicalApi
-				, nodes.value(mPattern.inNode()), nodes.value(mPattern.outNode()), mGraphicalParent, mPosition
-				, mPattern.size(), mIsFromLogicalModel);
+				, mExploser, nodes.value(mPattern.inNode()), nodes.value(mPattern.outNode()), mGraphicalParent
+				, mPosition, mPattern.size(), mIsFromLogicalModel);
 		insertCommand->redo();
 	}
 

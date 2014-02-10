@@ -3,7 +3,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/scalableItem.h>
 
-#include "pluginManager/interpreterPortImpl.h"
+#include "pluginManager/details/interpreterPortImpl.h"
 
 using namespace qReal;
 using namespace utils;

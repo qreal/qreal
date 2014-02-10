@@ -7,15 +7,16 @@
 #include <qrkernel/settingsManager.h>
 
 #include "editorPluginInterface/elementRepoInterface.h"
-#include "umllib/label.h"
-
-#include "umllib/contextMenuAction.h"
 #include "editorPluginInterface/elementImpl.h"
+
+#include "umllib/label.h"
+#include "umllib/contextMenuAction.h"
 
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
 
 #include "controller/controller.h"
+#include "pluginManager/exploser.h"
 
 namespace qReal {
 
