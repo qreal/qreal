@@ -169,7 +169,7 @@ void MainWindow::connectActionsForUXInfo()
 			<< mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
 			<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
 			<< mUi->actionPreferences << mUi->actionHelp
-			<< mUi->actionAbout << mUi->actionAboutQt 
+			<< mUi->actionAbout << mUi->actionAboutQt
 			<< mUi->actionFullscreen << mUi->actionFind;
 
 	foreach (QAction* const action, triggeredActions) {
@@ -444,10 +444,10 @@ void MainWindow::sceneSelectionChanged()
 			elements.append(element);
 			if (element->isSelected()) {
 				selected.append(element);
-				element->selectionState(true);
+				element->setSelectionState(true);
 			} else {
-				element->selectionState(false);
-				element->singleSelectionState(false);
+				element->setSelectionState(false);
+				element->select(false);
 			}
 		}
 	}
@@ -457,11 +457,11 @@ void MainWindow::sceneSelectionChanged()
 		mPropertyModel.clearModelIndexes();
 	} else if (selected.length() > 1) {
 		foreach(Element* notSingleSelected, selected) {
-			notSingleSelected->singleSelectionState(false);
+			notSingleSelected->select(false);
 		}
 	} else {
 		Element* const singleSelected = selected.at(0);
-		singleSelected->singleSelectionState(true);
+		singleSelected->select(true);
 		setIndexesOfPropertyEditor(singleSelected->id());
 
 		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
