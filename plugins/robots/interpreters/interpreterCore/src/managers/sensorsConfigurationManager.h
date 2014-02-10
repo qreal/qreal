@@ -30,7 +30,7 @@ public:
 			qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 			, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
-			, qReal::SystemEventsInterface &systemEvents
+			, qReal::SystemEvents &systemEvents
 			);
 
 	/// Serializes current sensors configuration into inner string representation.

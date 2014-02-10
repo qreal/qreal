@@ -17,11 +17,15 @@ HEADERS += \
 	kitPluginManagerTest.h \
 	interpreterTests/interpreterTest.h \
 	interpreterTests/detailsTests/blocksTableTest.h \
+	managersTests/sensorsConfigurationManagerTest.h \
+	support/dummySensorsConfigurer.h \
 
 SOURCES += \
 	kitPluginManagerTest.cpp \
 	interpreterTests/interpreterTest.cpp \
 	interpreterTests/detailsTests/blocksTableTest.cpp \
+	managersTests/sensorsConfigurationManagerTest.cpp \
+	support/dummySensorsConfigurer.cpp \
 
 # Mocks
 include(mocks.pri)

@@ -10,7 +10,7 @@
 using namespace qReal;
 using namespace gui;
 
-TextManager::TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWindow)
+TextManager::TextManager(SystemEvents *systemEvents, MainWindow *mainWindow)
 	: mMainWindow(mainWindow)
 	, mSystemEvents(systemEvents)
 
@@ -179,7 +179,7 @@ void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &gen
 			area = code(filePath);
 			area->show();
 			bindCode(mMainWindow->getCurrentTab(), filePath);
-			mSystemEvents->emitNewCodeAppeared(mMainWindow->activeDiagram(), QFileInfo(filePath));
+			emit mSystemEvents->newCodeAppeared(mMainWindow->activeDiagram(), QFileInfo(filePath));
 		} else {
 			area = code(filePath);
 		}
@@ -214,7 +214,7 @@ bool TextManager::saveText(bool saveAs)
 			out() << area->text();
 
 			if (saveAs) {
-				mSystemEvents->emitCodePathChanged(diagram(area)->mvIface()->rootId(), path(area), fileInfo);
+				emit mSystemEvents->codePathChanged(diagram(area)->mvIface()->rootId(), path(area), fileInfo);
 			}
 
 			if (defaultPath) {

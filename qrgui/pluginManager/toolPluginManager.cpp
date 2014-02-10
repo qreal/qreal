@@ -109,12 +109,12 @@ Customizer *ToolPluginManager::customizer() const
 
 void ToolPluginManager::updateSettings()
 {
-	mSystemEvents->emitSettingsUpdated();
+	emit mSystemEvents->settingsUpdated();
 }
 
 void ToolPluginManager::activeTabChanged(Id const & rootElementId)
 {
-	mSystemEvents->emitActiveTabChanged(rootElementId);
+	emit mSystemEvents->activeTabChanged(rootElementId);
 }
 
 QList<ToolPluginInterface *> ToolPluginManager::getPlugins()

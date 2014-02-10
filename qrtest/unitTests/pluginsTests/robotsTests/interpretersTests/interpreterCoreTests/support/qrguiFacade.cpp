@@ -51,3 +51,8 @@ qReal::ProjectManagementInterface &QrguiFacade::projectManagementInterface()
 {
 	return mProjectManagementInterfaceMock;
 }
+
+qReal::SystemEvents &QrguiFacade::systemEvents()
+{
+	return mSystemEvents;
+}

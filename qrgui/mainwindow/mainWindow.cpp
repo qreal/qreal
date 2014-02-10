@@ -313,7 +313,7 @@ EditorManagerInterface& MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	mSystemEvents->emitCloseMainWindow();
+	emit mSystemEvents->closedMainWindow();
 
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
@@ -1000,9 +1000,9 @@ void MainWindow::closeTab(int index)
 	if (isDiagram) {
 		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(mRootIndex);
 		mController->diagramClosed(diagramId);
-		mSystemEvents->emitDiagramClosed(diagramId);
+		emit mSystemEvents->diagramClosed(diagramId);
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {
-		mSystemEvents->emitCodeTabClosed(QFileInfo(path));
+		emit mSystemEvents->codeTabClosed(QFileInfo(path));
 	} else {
 		// TODO: process other tabs (for example, start tab)
 	}
@@ -1021,8 +1021,10 @@ void MainWindow::showPreferencesDialog()
 		connect(&mPreferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
 	connect(&mPreferencesDialog, SIGNAL(usabilityTestingModeChanged(bool)), this, SLOT(setUsabilityMode(bool)));
-	mPreferencesDialog.exec();
-	mToolManager.updateSettings();
+	if (mPreferencesDialog.exec() == QDialog::Accepted) {
+		mToolManager.updateSettings();
+	}
+
 	mProjectManager->reinitAutosaver();
 }
 

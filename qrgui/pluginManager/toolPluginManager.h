@@ -10,7 +10,7 @@
 #include "toolPluginInterface/pluginConfigurator.h"
 #include "dialogs/preferencesPages/preferencesPage.h"
 #include "toolPluginInterface/hotKeyActionInfo.h"
-#include "toolPluginInterface/systemEventsInterface.h"
+#include "toolPluginInterface/systemEvents.h"
 
 namespace qReal {
 
@@ -49,7 +49,7 @@ private:
 	/// An object and that is used to customize GUI with values from plugins
 	Customizer mCustomizer;
 
-	SystemEventsInterface *mSystemEvents;
+	SystemEvents *mSystemEvents;
 };
 
 }
