@@ -26,7 +26,7 @@ public:
 	virtual QList<robotModel::RobotModelInterface *> robotModels() = 0;
 
 	/// If overrided and returns some model as value that model will be used as default selected model for this kit
-	// TODO: is it possible that plugin does not provide default model? Maybe first model in robotModels() list will be
+	/// @todo is it possible that plugin does not provide default model? Maybe first model in robotModels() list will be
 	// enough?
 	virtual robotModel::RobotModelInterface *defaultRobotModel()
 	{

@@ -40,7 +40,7 @@ void GraphicsWatcherManager::updateSensorsList(QString const &currentRobotModel)
 	int index = 0;
 	for (PortInfo const &port : mCurrentConfiguration[currentRobotModel].keys()) {
 		PluggableDeviceInfo const device = mCurrentConfiguration[currentRobotModel][port];
-		// TODO: It must depend on port, port must return its variable
+		/// @todo It must depend on port, port must return its variable
 		QString const variableName = "Sensor" + QString::number(index + 1);
 		mWatcher->addTrackingObject(index, variableName, device.friendlyName());
 		++index;

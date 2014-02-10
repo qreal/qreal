@@ -19,7 +19,7 @@ class SensorVariablesUpdater : public QObject
 public:
 	SensorVariablesUpdater(
 			interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, utils::ExpressionsParser &parser  // TODO: direct dependency from ExpressionsParser shall be removed.
+			, utils::ExpressionsParser &parser  /// @todo direct dependency from ExpressionsParser shall be removed.
 			);
 
 	void run();

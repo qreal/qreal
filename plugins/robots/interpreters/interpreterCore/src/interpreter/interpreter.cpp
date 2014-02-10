@@ -26,7 +26,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::ProjectManagementInterface const &projectManager
 		, BlocksFactoryManagerInterface &blocksFactoryManager
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, utils::ExpressionsParser &parser  // TODO: direct dependency from ExpressionsParser shall be removed.
+		, utils::ExpressionsParser &parser  /// @todo direct dependency from ExpressionsParser shall be removed.
 		, QAction &connectToRobotAction
 		)
 	: mGraphicalModelApi(&graphicalModelApi)

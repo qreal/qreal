@@ -104,7 +104,7 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer
 			outputBufferPtr2[i] = 0;
 		}
 
-		// TODO: Sending RESETINPUTSCALEDVALUE for every sensor before reading their values.
+		/// @todo Sending RESETINPUTSCALEDVALUE for every sensor before reading their values.
 		// It is a dirty hack and will surely break some sensor functionality related to
 		// accumulated some values, but without it after nearly every command
 		// sensors start to return some random sh~ instead of correct value.

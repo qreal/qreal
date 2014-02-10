@@ -29,7 +29,7 @@ void SensorVariablesUpdater::run()
 		if (scalarSensor) {
 
 			if (!scalarSensor->ready()) {
-				// TODO: Error reporting
+				/// @todo Error reporting
 				continue;
 			}
 
@@ -65,7 +65,7 @@ void SensorVariablesUpdater::onScalarSensorResponse(int reading)
 {
 	robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(sender());
 	if (!scalarSensor) {
-		// TODO: Error reporting.
+		/// @todo Error reporting.
 		return;
 	}
 
@@ -81,7 +81,7 @@ void SensorVariablesUpdater::onTimerTimeout()
 		if (scalarSensor) {
 
 			if (!scalarSensor->ready()) {
-				// TODO: Error reporting
+				/// @todo Error reporting
 				continue;
 			}
 

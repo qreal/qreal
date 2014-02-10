@@ -28,7 +28,7 @@ void SensorsConfigurationWidget::loadRobotModel(RobotModelInterface &robotModel)
 	mRobotModelId = robotModelId;
 
 	if (layout()) {
-		// TODO: Clear it
+		/// @todo Clear it
 		delete layout();
 	}
 

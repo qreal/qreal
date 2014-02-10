@@ -124,7 +124,7 @@ private:
 	Beep mBeep;
 //	details::NxtDisplay *mDisplay;
 	QPointF mRotatePoint;
-	QHash<int, Engine*> mEngines;  // TODO: Arrays are not enough here?
+	QHash<int, Engine*> mEngines;  /// @todo Arrays are not enough here?
 	QHash<int, qreal> mTurnoverEngines;  // stores how many degrees the motor rotated on
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;

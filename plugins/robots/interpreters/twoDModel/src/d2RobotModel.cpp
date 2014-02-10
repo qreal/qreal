@@ -88,7 +88,7 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 
 void D2RobotModel::setNewMotor(int speed, uint degrees, int port, bool breakMode)
 {
-	// TODO: Hack for TRIK 2D model.
+	/// @todo Hack for TRIK 2D model.
 	if (port == 2) {
 		speed = -speed;
 	}

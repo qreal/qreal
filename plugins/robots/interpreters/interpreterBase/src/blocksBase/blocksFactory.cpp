@@ -60,7 +60,7 @@ BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModel
 
 void BlocksFactory::setParser(BlockParserInterface * const parser)
 {
-	// TODO: make sure there is no parser already.
+	/// @todo make sure there is no parser already.
 	mParser = parser;
 }
 

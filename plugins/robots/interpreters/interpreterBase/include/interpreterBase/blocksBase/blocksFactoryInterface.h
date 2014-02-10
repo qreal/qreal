@@ -12,7 +12,7 @@ class BlocksFactoryInterface
 public:
 	virtual ~BlocksFactoryInterface() {}
 
-	// TODO: Unneeded, we can supply a parser to a block when we execute it.
+	/// @todo Unneeded, we can supply a parser to a block when we execute it.
 	virtual void setParser(BlockParserInterface * const parser) = 0;
 
 	/// Transfers block ownership to caller.

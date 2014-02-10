@@ -57,7 +57,7 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 		QByteArray decodedResult = result.right(result.length() - 5);
 		emit response(addressee, decodedResult);
 	} else {
-		// TODO: Correctly process empty required response
+		/// @todo Correctly process empty required response
 		QByteArray result(1, 0);
 		emit response(addressee, result);
 	}

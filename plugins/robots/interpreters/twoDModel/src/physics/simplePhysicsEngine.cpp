@@ -48,7 +48,7 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 
 		QTransform map;
 		map.rotate(robotAngle);
-		// TODO: robotWidth / 2 shall actually be a distance between robot center and
+		/// @todo robotWidth / 2 shall actually be a distance between robot center and
 		// centers of the wheels by x axis.
 		map.translate(robotWidth / 2, actualRadius);
 		map.rotate(gammaDegrees);

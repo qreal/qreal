@@ -38,7 +38,7 @@ public:
 	void setFailure();
 
 	/// Sets "idle" state for all blocks, thus preparing them for another execution.
-	// TODO: possibly unneeded. It will not clean existing connections and pending signals, so it is safer to delete
+	/// @todo possibly unneeded. It will not clean existing connections and pending signals, so it is safer to delete
 	// and re-create all blocks before another run of a program.
 	void setIdleForBlocks();
 

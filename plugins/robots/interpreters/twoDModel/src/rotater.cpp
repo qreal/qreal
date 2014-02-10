@@ -38,7 +38,7 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 	mMaster->setFlag(ItemClipsToShape, false);
 	setParentItem(mMaster);
 
-	// TODO: Dispose of hardcoding
+	/// @todo Dispose of hardcoding
 	mX1 = rect.right();
 	// Placing rotater into the center of item`s rigth side
 	mY1 = rect.y() + rect.height() / 2;

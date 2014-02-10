@@ -931,7 +931,7 @@ void D2ModelWidget::handleNewRobotPosition()
 
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
 {
-	// TODO: Handle all cases equally
+	/// @todo Handle all cases equally
 	SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
 	if (sensor) {
 		int const port = mSensors.indexOf(sensor);
@@ -1103,7 +1103,7 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	QDomNodeList const worldList = worldModel.elementsByTagName("world");
 	QDomNodeList const robotList = worldModel.elementsByTagName("robot");
 	if (worldList.count() != 1 || robotList.count() != 1) {
-		// TODO: Report error
+		/// @todo Report error
 		return;
 	}
 

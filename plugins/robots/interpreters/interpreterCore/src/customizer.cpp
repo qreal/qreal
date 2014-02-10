@@ -18,7 +18,7 @@ QIcon Customizer::applicationIcon() const
 
 QString Customizer::productVersion() const
 {
-	// TODO: other storage for it?
+	/// @todo other storage for it?
 	return "2.5.2 (TRIK)";
 }
 

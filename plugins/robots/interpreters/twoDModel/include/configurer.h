@@ -8,13 +8,13 @@ class Configurer
 public:
 	virtual ~Configurer() {}
 
-	// TODO: move physical constants here
+	/// @todo move physical constants here
 
 	virtual QString robotImage() const = 0;
 
-	// TODO: sensor images here
+	/// @todo sensor images here
 
-	// TODO: display emulator here
+	/// @todo display emulator here
 };
 
 }

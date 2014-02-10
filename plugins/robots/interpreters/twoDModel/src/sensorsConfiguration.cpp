@@ -68,7 +68,7 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 void SensorsConfiguration::deserialize(QDomElement const &element)
 {
 	if (element.isNull()) {
-		// TODO: Report error
+		/// @todo Report error
 		return;
 	}
 

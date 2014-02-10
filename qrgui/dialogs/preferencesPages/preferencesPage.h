@@ -8,7 +8,7 @@ class PreferencesPage : public QWidget
 {
 	Q_OBJECT
 
-	/// TODO: friend to be able to call protected changeEvent() method. It seems to be bad idea.
+	//// @todo friend to be able to call protected changeEvent() method. It seems to be bad idea.
 	friend class PreferencesDialog;
 
 public:

@@ -31,7 +31,7 @@ PluggableDeviceInfo const &PluggableDevice::deviceInfo() const
 
 bool PluggableDevice::ready() const
 {
-	// TODO: Implement.
+	/// @todo Implement.
 	return true;
 }
 

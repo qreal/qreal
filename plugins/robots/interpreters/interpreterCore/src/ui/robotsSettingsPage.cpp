@@ -25,7 +25,7 @@ RobotsSettingsPage::RobotsSettingsPage(
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
 
-	// TODO: remove it
+	/// @todo remove it
 //	mKitPluginManager.selectKit(mKitPluginManager.kitIds()[0]);
 	initializeAdditionalWidgets();
 	initializeKitRadioButtons();
@@ -273,7 +273,7 @@ void RobotsSettingsPage::saveSelectedRobotModel()
 {
 	QAbstractButton * const selectedKitButton = mKitButtons->checkedButton();
 	if (!selectedKitButton) {
-		// TODO: inconsistent scenario
+		/// @todo inconsistent scenario
 		return;
 	}
 

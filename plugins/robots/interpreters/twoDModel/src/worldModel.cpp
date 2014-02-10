@@ -142,7 +142,7 @@ void WorldModel::clearScene()
 
 QPainterPath WorldModel::buildWallPath() const
 {
-	// TODO: Maintain a cache for this.
+	/// @todo Maintain a cache for this.
 	QPainterPath wallPath;
 
 	foreach (WallItem* wall, mWalls) {
@@ -177,7 +177,7 @@ QDomElement WorldModel::serialize(QDomDocument &document, QPointF const &topLeft
 void WorldModel::deserialize(QDomElement const &element)
 {
 	if (element.isNull()) {
-		// TODO: Report error
+		/// @todo Report error
 		return;
 	}
 	clearScene();
