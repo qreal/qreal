@@ -82,21 +82,8 @@
 						<contains type="AbstractNode"/>
 					</container>
 					<properties>
-						<property displayedName="Модель мира" type="string" name="worldModel">
-							<default></default>
-						</property>
-						<property displayedName="Сенсор1" type="string" name="sensor1Value">
-							<default>0</default>
-						</property>
-						<property displayedName="Сенсор2" type="string" name="sensor2Value">
-							<default>0</default>
-						</property>
-						<property displayedName="Сенсор3" type="string" name="sensor3Value">
-							<default>0</default>
-						</property>
-						<property displayedName="Сенсор4" type="string" name="sensor4Value">
-							<default>0</default>
-						</property>
+						<property displayedName="Модель мира" type="string" name="worldModel" />
+						<property displayedName="Конфигурация устройств" type="string" name="devicesConfiguration" />
 					</properties>
 				</logic>
 			</node>

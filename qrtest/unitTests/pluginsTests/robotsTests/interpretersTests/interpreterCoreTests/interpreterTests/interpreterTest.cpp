@@ -54,7 +54,7 @@ void InterpreterTest::SetUp()
 
 //	ON_CALL(configurationInterfaceMock, lock)
 
-	/// \todo Don't like it.
+	/// @todo Don't like it.
 	interpreterCore::textLanguage::RobotsBlockParser parser(
 			mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
 			);

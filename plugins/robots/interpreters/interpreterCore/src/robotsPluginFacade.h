@@ -64,7 +64,7 @@ private:
 	RobotModelManager mRobotModelManager;
 	ActionsManager mActionsManager;
 	QScopedPointer<TitlesVisibilityManager> mTitlesVisibilityManager;
-	SensorsConfigurationManager mSensorsConfigurationManager;
+	QScopedPointer<SensorsConfigurationManager> mSensorsConfigurationManager;
 
 	ui::SensorsConfigurationWidget *mDockSensorsConfigurer;  // Does not have ownership
 	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership

@@ -9,9 +9,19 @@ using namespace interpreterBase;
 using namespace robotModel;
 using namespace qReal;
 
-SensorsConfigurationManager::SensorsConfigurationManager()
+SensorsConfigurationManager::SensorsConfigurationManager(
+		qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
+		, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
+		, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
+		, qReal::SystemEventsInterface &systemEvents
+		)
 	: SensorsConfigurationProvider("SensorsConfigurationManager")
+	, mGraphicalModelAssistInterface(graphicalModelAssistInterface)
+	, mLogicalModelAssistInterface(logicalModelAssistInterface)
+	, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 {
+	QObject::connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
+			, [&] (Id const &diagramRootId) { this->onActiveTabChanged(diagramRootId); });
 }
 
 QString SensorsConfigurationManager::save() const
@@ -48,7 +58,7 @@ void SensorsConfigurationManager::load(QString const &configuration)
 			PortInfo const port = PortInfo::fromString(robotModelElement.attribute("port"));
 			PluggableDeviceInfo const device = PluggableDeviceInfo::fromString(robotModelElement.attribute("device"));
 			if (port.isValid()) {
-				mCurrentConfiguration[robotModel][port] = device;
+				sensorConfigurationChanged(robotModel, port, device);
 			}
 		}
 	}
@@ -59,25 +69,31 @@ void SensorsConfigurationManager::load(QString const &configuration)
 void SensorsConfigurationManager::onSensorConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, PluggableDeviceInfo const &sensor)
 {
-//	QString const key = portToSettingsKey(port);
-//	if (SettingsManager::value(key) != sensor) {
-//		SettingsManager::setValue(key, sensor);
-//	}
+	Q_UNUSED(robotModel)
+	Q_UNUSED(port)
+	Q_UNUSED(sensor)
+
+	/// @todo On refreshSensorsConfiguration() call it will save each device a number of times
+	/// equal to overall number of devices, at least (since there can be notifications from neighbouring
+	/// ConfigurationProvider which may trigger onSensorConfigurationChanged() here.
+	/// It is needed to be optimized somehow.
+
+	qReal::Id const activeDiagramGraphicalId = mMainWindowInterpretersInterface.activeDiagram();
+	if (activeDiagramGraphicalId.isNull()) {
+		return;
+	}
+
+	qReal::Id const logicalRootId = mGraphicalModelAssistInterface.logicalId(activeDiagramGraphicalId);
+
+	mLogicalModelAssistInterface.setPropertyByRoleName(logicalRootId, save(), "devicesConfiguration");
 }
 
-QString SensorsConfigurationManager::portToSettingsKey(PortInfo const &port)
+void SensorsConfigurationManager::onActiveTabChanged(Id const &graphicalRootId)
 {
-//	switch (port)
-//	{
-//	case enums::inputPort::port1:
-//		return "port1SensorType";
-//	case enums::inputPort::port2:
-//		return "port2SensorType";
-//	case enums::inputPort::port3:
-//		return "port3SensorType";
-//	case enums::inputPort::port4:
-//		return "port4SensorType";
-//	default:
-//		return QString();
-//	}
+	if (graphicalRootId.isNull()) {
+		return;
+	}
+
+	qReal::Id const logicalRootId = mGraphicalModelAssistInterface.logicalId(graphicalRootId);
+	load(mLogicalModelAssistInterface.propertyByRoleName(logicalRootId, "devicesConfiguration").toString());
 }

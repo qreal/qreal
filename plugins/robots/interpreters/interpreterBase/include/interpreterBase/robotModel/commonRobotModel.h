@@ -24,7 +24,6 @@ public:
 
 	void disconnectFromRobot() override;
 
-	ConfigurationInterface &mutableConfiguration() final;
 	ConfigurationInterface const &configuration() const final;
 
 	robotParts::Brick &brick() final;
@@ -46,6 +45,8 @@ protected:
 	void setBrick(robotParts::Brick *brick);  // Takes ownership.
 	void setDisplay(robotParts::Display *display);  // Takes ownership.
 	void addAllowedConnection(PortInfo const &port, QList<PluggableDeviceInfo> const &devices);
+
+	ConfigurationInterface &mutableConfiguration();
 
 private:
 	/// Shall be implemented in descendants to establish connection to a real robot. Default implementation emits

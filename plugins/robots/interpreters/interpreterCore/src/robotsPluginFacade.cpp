@@ -22,6 +22,13 @@ RobotsPluginFacade::~RobotsPluginFacade()
 
 void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 {
+	mSensorsConfigurationManager.reset(new SensorsConfigurationManager(
+			configurer.graphicalModelApi()
+			, configurer.logicalModelApi()
+			, configurer.mainWindowInterpretersInterface()
+			, configurer.systemEvents()
+			));
+
 	mTitlesVisibilityManager.reset(
 			new TitlesVisibilityManager(mActionsManager.titlesVisibilityAction(), configurer.sceneCustomizer())
 			);
@@ -138,7 +145,7 @@ void RobotsPluginFacade::initSensorWidgets()
 	mCustomizer.placeSensorsConfig(mDockSensorsConfigurer);
 	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
 
-	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mRobotSettingsPage);
-	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mDockSensorsConfigurer);
-	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mGraphicsWatcherManager);
+	mSensorsConfigurationManager->connectSensorsConfigurationProvider(mRobotSettingsPage);
+	mSensorsConfigurationManager->connectSensorsConfigurationProvider(mDockSensorsConfigurer);
+	mSensorsConfigurationManager->connectSensorsConfigurationProvider(mGraphicsWatcherManager);
 }

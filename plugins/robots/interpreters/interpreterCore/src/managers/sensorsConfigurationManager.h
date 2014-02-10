@@ -2,6 +2,11 @@
 
 #include <interpreterBase/sensorsConfigurationProvider.h>
 
+#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/toolPluginInterface/systemEvents.h>
+#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+
 namespace interpreterCore {
 
 /// A class that stores sensor configuration information in a registry and is responsible for synchronizing this
@@ -21,7 +26,12 @@ namespace interpreterCore {
 class SensorsConfigurationManager : public interpreterBase::SensorsConfigurationProvider
 {
 public:
-	SensorsConfigurationManager();
+	SensorsConfigurationManager(
+			qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
+			, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
+			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
+			, qReal::SystemEventsInterface &systemEvents
+			);
 
 	/// Serializes current sensors configuration into inner string representation.
 	QString save() const;
@@ -30,11 +40,15 @@ public:
 	void load(QString const &configuration);
 
 private:
-	static QString portToSettingsKey(interpreterBase::robotModel::PortInfo const &port);
-
 	void onSensorConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor) override;
+
+	void onActiveTabChanged(qReal::Id const &graphicalRootId);
+
+	qReal::GraphicalModelAssistInterface &mGraphicalModelAssistInterface;
+	qReal::LogicalModelAssistInterface &mLogicalModelAssistInterface;
+	qReal::gui::MainWindowInterpretersInterface &mMainWindowInterpretersInterface;
 };
 
 }

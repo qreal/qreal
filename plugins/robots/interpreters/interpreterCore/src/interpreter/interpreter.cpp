@@ -49,8 +49,8 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 			);
 
 	connect(
-			&mRobotModelManager.model()
-			, &interpreterBase::robotModel::RobotModelInterface::connected
+			&mRobotModelManager
+			, &interpreterBase::robotModel::RobotModelManagerInterface::connected
 			, this
 			, &Interpreter::connectedSlot
 			);
@@ -89,24 +89,25 @@ void Interpreter::interpret()
 	mBlocksTable->clear();
 	mState = waitingForSensorsConfiguredToLaunch;
 
-	/// @todo Temporarily loading initial configuration from registry
-	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
-	mRobotModelManager.model().mutableConfiguration().lockConfiguring();
+//	/// @todo Temporarily loading initial configuration from registry
+//	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
+//	mRobotModelManager.model().mutableConfiguration().lockConfiguring();
 
-	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
-		QString const modelName = mRobotModelManager.model().name();
-		if (mCurrentConfiguration[modelName].contains(port)) {
-			PluggableDeviceInfo const &deviceInfo = mCurrentConfiguration[modelName].value(port);
-			mRobotModelManager.model().configureDevice(port, deviceInfo);
-		}
-	}
+//	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
+//		QString const modelName = mRobotModelManager.model().name();
+//		if (mCurrentConfiguration[modelName].contains(port)) {
+//			PluggableDeviceInfo const &deviceInfo = mCurrentConfiguration[modelName].value(port);
+//			mRobotModelManager.model().configureDevice(port, deviceInfo);
+//		}
+//	}
 
-	mRobotModelManager.model().configureDevice(PortInfo("1")
-			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+//	mRobotModelManager.model().configureDevice(PortInfo("1")
+//			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
 
-	mRobotModelManager.model().mutableConfiguration().unlockConfiguring();
+//	mRobotModelManager.model().mutableConfiguration().unlockConfiguring();
 
-	mRobotModelManager.model().mutableConfiguration().configure();
+//	mRobotModelManager.model().mutableConfiguration().configure();
+
 
 
 //	details::Autoconfigurer configurer(

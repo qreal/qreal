@@ -22,6 +22,21 @@ public:
 signals:
 	/// Emitted every time when user selected other robot model
 	void robotModelChanged(RobotModelInterface &model);
+
+	/// Signal from underlying model, emitted when QReal physically connects to robot. If there is no need for
+	/// connection, it is emitted immediately. Signal correctly reconnects to a model when it is changed, so client
+	/// code shall connect to this signal instead of model.
+	/// @param success - true, if connected successfully.
+	void connected(bool success);
+
+	/// Signal from underlying model, emitted when robot is disconnected. Signal correctly reconnects to a model
+	/// when it is changed, so client code shall connect to this signal instead of model.
+	void disconnected();
+
+	/// Signal from underlying model, emitted when model is finished configuring pluggable devices.
+	/// Signal correctly reconnects to a model when it is changed, so client code shall connect to this signal
+	/// instead of model.
+	void allDevicesConfigured();
 };
 
 }

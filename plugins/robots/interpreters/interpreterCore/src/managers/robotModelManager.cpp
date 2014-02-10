@@ -3,20 +3,22 @@
 #include <qrkernel/settingsManager.h>
 
 using namespace interpreterCore;
+using namespace interpreterBase::robotModel;
 
 RobotModelManager::RobotModelManager()
 	: mRobotModel(&mDefaultRobotModel)
 {
 }
 
-interpreterBase::robotModel::RobotModelInterface &RobotModelManager::model() const
+RobotModelInterface &RobotModelManager::model() const
 {
 	return *mRobotModel;
 }
 
-void RobotModelManager::setModel(interpreterBase::robotModel::RobotModelInterface * const robotModel)
+void RobotModelManager::setModel(RobotModelInterface * const robotModel)
 {
 	if (mRobotModel != robotModel) {
+		disconnect(mRobotModel, nullptr, this, nullptr);
 		auto const actualModel = robotModel ? robotModel : &mDefaultRobotModel;
 		/// @todo implement hierarchical structure in settings manager
 		QString const selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
@@ -24,6 +26,12 @@ void RobotModelManager::setModel(interpreterBase::robotModel::RobotModelInterfac
 		QString const key = "SelectedModelFor" + selectedKit;
 		qReal::SettingsManager::setValue(key, actualModel->name());
 		mRobotModel = actualModel;
+
+		connect(mRobotModel, &RobotModelInterface::connected, this, &RobotModelManager::connected);
+		connect(mRobotModel, &RobotModelInterface::disconnected, this, &RobotModelManager::disconnected);
+		connect(mRobotModel, &RobotModelInterface::allDevicesConfigured
+				, this, &RobotModelManager::allDevicesConfigured);
+
 		emit robotModelChanged(*mRobotModel);
 	}
 }
