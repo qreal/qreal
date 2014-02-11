@@ -73,6 +73,10 @@ private:
 
 inline bool operator ==(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2)
 {
+	if (!device1.mDeviceType || !device2.mDeviceType) {
+		return device1.mDeviceType == device2.mDeviceType;
+	}
+
 	return QString(device1.mDeviceType->className()) == QString(device2.mDeviceType->className());
 }
 

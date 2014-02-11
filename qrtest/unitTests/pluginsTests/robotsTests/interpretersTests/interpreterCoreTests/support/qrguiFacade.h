@@ -26,6 +26,8 @@ public:
 	qReal::ProjectManagementInterface &projectManagementInterface();
 	qReal::SystemEvents &systemEvents();
 
+	void setActiveTab(qReal::Id const &id);
+
 private:
 	qReal::EditorManager mEditorManager;
 	qReal::models::Models mModels;
@@ -33,6 +35,8 @@ private:
 	qrTest::MainWindowInterpretersInterfaceMock mMainWindowInterpretersInterfaceMock;
 	qrTest::ProjectManagementInterfaceMock mProjectManagementInterfaceMock;
 	qrTest::ErrorReporterMock mErrorReporterMock;
+
+	qReal::Id mActiveTab;
 };
 
 }

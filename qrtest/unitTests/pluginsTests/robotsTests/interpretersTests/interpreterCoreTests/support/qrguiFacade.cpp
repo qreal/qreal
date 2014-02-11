@@ -8,14 +8,9 @@ QrguiFacade::QrguiFacade(QString const &modelName)
 {
 	ON_CALL(mMainWindowInterpretersInterfaceMock, errorReporter()).WillByDefault(Return(&mErrorReporterMock));
 
-	ON_CALL(mMainWindowInterpretersInterfaceMock, activeDiagram())
-			.WillByDefault(
-				Return(
-					qReal::Id::loadFromString(
-						"qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f08fa823-e187-4755-87ba-e4269ae4e798}"
-					)
-				)
-			);
+	ON_CALL(mMainWindowInterpretersInterfaceMock, activeDiagram()).WillByDefault(Invoke(
+			[this] () { return mActiveTab; }
+	));
 
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, errorReporter()).Times(AtLeast(0));
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, activeDiagram()).Times(AtLeast(0));
@@ -55,4 +50,10 @@ qReal::ProjectManagementInterface &QrguiFacade::projectManagementInterface()
 qReal::SystemEvents &QrguiFacade::systemEvents()
 {
 	return mSystemEvents;
+}
+
+void QrguiFacade::setActiveTab(qReal::Id const &id)
+{
+	mActiveTab = id;
+	emit systemEvents().activeTabChanged(id);
 }

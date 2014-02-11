@@ -28,11 +28,11 @@ void SensorsConfigurationProvider::sensorConfigurationChanged(QString const &rob
 		mCurrentConfiguration[robotModel][port] = sensor;
 
 		for (SensorsConfigurationProvider * const provider : mConnectedProviders) {
-			// Allow connected providers to react on configuration change.
-			provider->onSensorConfigurationChanged(robotModel, port, sensor);
-
 			// Broadcast change.
 			provider->sensorConfigurationChanged(robotModel, port, sensor);
+
+			// Allow connected providers to react on configuration change.
+			provider->onSensorConfigurationChanged(robotModel, port, sensor);
 		}
 	}
 }
@@ -41,7 +41,7 @@ void SensorsConfigurationProvider::refreshSensorsConfiguration()
 {
 	for (QString const &robotModel : mCurrentConfiguration.keys()) {
 		for (PortInfo const &port : mCurrentConfiguration[robotModel].keys()) {
-			onSensorConfigurationChanged(robotModel, port, mCurrentConfiguration[robotModel][port]);
+			sensorConfigurationChanged(robotModel, port, mCurrentConfiguration[robotModel][port]);
 		}
 	}
 }
@@ -52,4 +52,13 @@ void SensorsConfigurationProvider::onSensorConfigurationChanged(QString const &r
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port);
 	Q_UNUSED(sensor);
+}
+
+void SensorsConfigurationProvider::nullifyConfiguration()
+{
+	for (QString const &robotModel : mCurrentConfiguration.keys()) {
+		for (PortInfo const &port : mCurrentConfiguration[robotModel].keys()) {
+			sensorConfigurationChanged(robotModel, port, PluggableDeviceInfo());
+		}
+	}
 }

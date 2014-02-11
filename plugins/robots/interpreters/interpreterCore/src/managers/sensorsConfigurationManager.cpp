@@ -27,10 +27,12 @@ SensorsConfigurationManager::SensorsConfigurationManager(
 QString SensorsConfigurationManager::save() const
 {
 	QDomDocument result;
+	QDomElement rootElement = result.createElement("devicesConfiguration");
+	result.appendChild(rootElement);
 	for (QString const &robotModel : mCurrentConfiguration.keys()) {
 		QDomElement robotModelElement = result.createElement("robotModel");
 		robotModelElement.setAttribute("name", robotModel);
-		result.appendChild(robotModelElement);
+		rootElement.appendChild(robotModelElement);
 		for (PortInfo const &port : mCurrentConfiguration[robotModel].keys()) {
 			PluggableDeviceInfo const device = mCurrentConfiguration[robotModel][port];
 			QDomElement configurationElement = result.createElement("configuration");
@@ -45,25 +47,26 @@ QString SensorsConfigurationManager::save() const
 
 void SensorsConfigurationManager::load(QString const &configuration)
 {
-	mCurrentConfiguration.clear();
+	nullifyConfiguration();
+
 	QDomDocument parsedConfiguration;
 	parsedConfiguration.setContent(configuration);
-	for (QDomElement robotModelElement = parsedConfiguration.firstChildElement(); !robotModelElement.isNull()
+	QDomElement const rootElement = parsedConfiguration.documentElement();
+	for (QDomElement robotModelElement = rootElement.firstChildElement(); !robotModelElement.isNull()
 			; robotModelElement = robotModelElement.nextSiblingElement())
 	{
 		QString const robotModel = robotModelElement.attribute("name");
-		for (QDomElement configurationElement = parsedConfiguration.firstChildElement(); !configurationElement.isNull()
+		for (QDomElement configurationElement = robotModelElement.firstChildElement(); !configurationElement.isNull()
 				; configurationElement = configurationElement.nextSiblingElement())
 		{
-			PortInfo const port = PortInfo::fromString(robotModelElement.attribute("port"));
-			PluggableDeviceInfo const device = PluggableDeviceInfo::fromString(robotModelElement.attribute("device"));
+			PortInfo const port = PortInfo::fromString(configurationElement.attribute("port"));
+			PluggableDeviceInfo const device = PluggableDeviceInfo::fromString(
+					configurationElement.attribute("device"));
 			if (port.isValid()) {
 				sensorConfigurationChanged(robotModel, port, device);
 			}
 		}
 	}
-
-	refreshSensorsConfiguration();
 }
 
 void SensorsConfigurationManager::onSensorConfigurationChanged(QString const &robotModel

@@ -36,11 +36,15 @@ QString PluggableDeviceInfo::friendlyName() const
 
 QString PluggableDeviceInfo::toString() const
 {
-	return QString(mDeviceType->className());
+	return QString(mDeviceType ? mDeviceType->className() : QString());
 }
 
 PluggableDeviceInfo PluggableDeviceInfo::fromString(QString const &string)
 {
+	if (string.isEmpty()) {
+		return PluggableDeviceInfo();
+	}
+
 	if (!mCreatedInfos.contains(string)) {
 		throw qReal::Exception(QString("QMetaObject for %1 not found").arg(string));
 	}

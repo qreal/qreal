@@ -56,5 +56,10 @@ inline uint qHash(PortInfo const &key)
 	return qHash(key.name());
 }
 
+inline bool operator <(PortInfo const &left, PortInfo const &right)
+{
+	return left.name() < right.name();
+}
+
 }
 }

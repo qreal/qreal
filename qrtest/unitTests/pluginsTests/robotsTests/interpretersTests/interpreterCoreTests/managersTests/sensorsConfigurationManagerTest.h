@@ -18,11 +18,10 @@ class SensorsConfigurationManagerTest : public testing::Test
 protected:
 	void SetUp() override;
 
-private:
 	QScopedPointer<QrguiFacade> mQrguiFacade;
 	QScopedPointer<interpreterCore::SensorsConfigurationManager> mManager;
-	DummySensorsConfigurer mConfigurer1;
-	DummySensorsConfigurer mConfigurer2;
+	QScopedPointer<DummySensorsConfigurer> mConfigurer1;
+	QScopedPointer<DummySensorsConfigurer> mConfigurer2;
 };
 
 }
