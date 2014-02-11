@@ -32,3 +32,5 @@ INCLUDEPATH += \
 	$$PWD/../thirdparty/gmock-1.6.0/gtest/include \
 
 LIBS += -L$$PWD/../../bin -lgmock -lpthread
+
+include($$PWD/utils/utils.pri)

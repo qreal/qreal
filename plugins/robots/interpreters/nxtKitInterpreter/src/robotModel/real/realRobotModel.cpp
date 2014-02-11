@@ -50,7 +50,7 @@ void RealRobotModel::rereadSettings()
 	mRobotCommunicator.setRobotCommunicationThreadObject(communicator);
 }
 
-void RealRobotModel::connectToRobot()
+void RealRobotModel::doConnectToRobot()
 {
 	mRobotCommunicator.connect();
 }

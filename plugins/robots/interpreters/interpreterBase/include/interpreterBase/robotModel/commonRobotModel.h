@@ -19,6 +19,8 @@ public:
 
 	void init() final;
 
+	void connectToRobot() override;
+
 	/// Shall be implemented in descendants to stop all robot devices. Default implementation does nothing.
 	void stopRobot() override;
 
@@ -48,11 +50,14 @@ protected:
 
 	ConfigurationInterface &mutableConfiguration();
 
+private slots:
+	void onConnected();
+
 private:
 	/// Shall be implemented in descendants to establish connection to a real robot. Default implementation emits
 	/// connected() immediately, which is fine if model doesn't need connection.
 	/// Method shall return immediately, and when connection is made, connected() signal shall be emitted.
-	virtual void connectToRobot();
+	virtual void doConnectToRobot();
 
 	/// Shall be implemented in descendants to add to configuration devices that can not be changed by user
 	/// and shall be in a model every time (like Lego motors). Default implementation does nothing.

@@ -24,7 +24,7 @@ public slots:
 	void rereadSettings() override;
 
 private:
-	void connectToRobot() override;
+	void doConnectToRobot() override;
 
 	void configureKnownDevices() override;
 

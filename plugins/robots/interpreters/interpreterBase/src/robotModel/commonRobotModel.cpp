@@ -10,6 +10,8 @@ CommonRobotModel::CommonRobotModel()
 	: mBrick(new robotParts::Brick())
 	, mDisplay(new robotParts::Display())
 {
+	connect(&mConfiguration, &Configuration::allDevicesConfigured, this, &CommonRobotModel::allDevicesConfigured);
+	connect(this, &CommonRobotModel::connected, this, &CommonRobotModel::onConnected);
 }
 
 CommonRobotModel::~CommonRobotModel()
@@ -21,8 +23,13 @@ void CommonRobotModel::init()
 {
 	mConfiguration.lockConfiguring();
 	rereadSettings();
-	connectToRobot();
 	configureKnownDevices();
+}
+
+void CommonRobotModel::connectToRobot()
+{
+	mConfiguration.configure();
+	doConnectToRobot();
 }
 
 void CommonRobotModel::stopRobot()
@@ -31,6 +38,7 @@ void CommonRobotModel::stopRobot()
 
 void CommonRobotModel::disconnectFromRobot()
 {
+	emit disconnected();
 }
 
 ConfigurationInterface &CommonRobotModel::mutableConfiguration()
@@ -92,7 +100,12 @@ void CommonRobotModel::addAllowedConnection(PortInfo const &port, QList<Pluggabl
 	mAllowedConnections[port].append(devices);
 }
 
-void CommonRobotModel::connectToRobot()
+void CommonRobotModel::onConnected()
+{
+	mConfiguration.unlockConfiguring();
+}
+
+void CommonRobotModel::doConnectToRobot()
 {
 	emit connected(true);
 }
