@@ -1,4 +1,5 @@
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDateTime>
 #include <QtWidgets/QAction>
 
 #include "interpreter.h"
@@ -54,7 +55,9 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	mLogicalModelApi = &logicalModelApi;
 	mInterpretersInterface = &interpretersInterface;
 
-	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
+	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter(), [this] () {
+		return mState == interpreting ? QDateTime::currentMSecsSinceEpoch() - mInterpretationStartedTimestamp : 0;
+	});
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel
 			, mInterpretersInterface->errorReporter(), mParser);
 
@@ -196,7 +199,8 @@ void Interpreter::setRobotImplementation(robots::enums::robotModelType::robotMod
 	mConnected = false;
 	mActionConnectToRobot->setChecked(false);
 	robotImplementations::AbstractRobotModelImplementation *robotImpl
-			= robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
+			= robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType
+					, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
 	mImplementationType = implementationType;
 	if (mImplementationType != robots::enums::robotModelType::nxt) {
@@ -231,6 +235,7 @@ void Interpreter::sensorsConfiguredSlot()
 
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
+		mInterpretationStartedTimestamp = QDateTime::currentMSecsSinceEpoch();
 
 		runTimer();
 
@@ -469,7 +474,7 @@ void Interpreter::responseSlotC(int encoderValue)
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
-	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
+	mParser->variables()[sensorVariableName]->setProperty("Number", sensorValue);
 	Tracer::debug(
 			tracer::enums::autoupdatedSensorValues
 			, "Interpreter::updateSensorValues"

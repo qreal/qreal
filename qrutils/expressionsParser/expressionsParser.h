@@ -12,9 +12,10 @@ class QRUTILS_EXPORT ExpressionsParser
 {
 
 public:
-	ExpressionsParser(qReal::ErrorReporterInterface *errorReporter);
+	explicit ExpressionsParser(qReal::ErrorReporterInterface *errorReporter);
+	~ExpressionsParser();
 
-	Number parseExpression(QString const &stream, int &pos);
+	Number *parseExpression(QString const &stream, int &pos);
 	void parseProcess(QString const &stream, int& pos, qReal::Id const &curId);
 	bool parseConditionHelper(QString const &stream, int &pos);
 	bool parseCondition(QString const &stream, int& pos, qReal::Id const &curId);
@@ -23,8 +24,8 @@ public:
 	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
 	void clear();
 
-	QMap<QString, Number>* getVariables();
-	QMap<QString, QString>* getVariablesForWatch() const;
+	QMap<QString, Number *> const &variables() const;
+	QMap<QString, Number *> &mutableVariables();
 
 protected:
 	enum ParseErrorType {
@@ -61,11 +62,11 @@ protected:
 	bool isHtmlBrTag(QString const &stream, int &pos) const;
 
 	QString parseIdentifier(QString const &stream, int &pos);
-	Number parseNumber(QString const &stream, int &pos);
+	Number *parseNumber(QString const &stream, int &pos);
 	void skip(QString const &stream, int &pos) const;
 
-	Number parseTerm(QString const &stream, int &pos);
-	Number parseMult(QString const &stream, int&pos);
+	Number *parseTerm(QString const &stream, int &pos);
+	Number *parseMult(QString const &stream, int&pos);
 
 	virtual void parseVarPart(QString const &stream, int &pos);
 	void parseCommand(QString const &stream, int &pos);
@@ -88,11 +89,11 @@ protected:
 	virtual void checkForVariable(QString const &nameOfVariable, int &index);
 
 	bool isFunction(QString const &variable);
-	Number applyFunction(QString const &variable, Number value);
+	Number *applyFunction(QString const &variable, Number *value);
 
-	QMap<QString, Number> mVariables;
+	QMap<QString, Number *> mVariables;  // Takes ownership
 	bool mHasParseErrors;
-	qReal::ErrorReporterInterface *mErrorReporter;
+	qReal::ErrorReporterInterface *mErrorReporter;  // Does not take ownership
 	qReal::Id mCurrentId;
 
 };

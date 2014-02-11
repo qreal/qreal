@@ -1,12 +1,13 @@
 #pragma once
 
-#include <QVariant>
+#include <QtCore/QVariant>
 
-#include "../utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 
-class QRUTILS_EXPORT Number {
+class QRUTILS_EXPORT Number
+{
 public:
 	enum Type {
 		doubleType = 0,
@@ -14,28 +15,29 @@ public:
 	};
 
 public:
-	Number(QVariant n, Type t);
+	Number(QVariant const &n, Type t);
 	Number();
-	~Number();
+	virtual ~Number();
 
-	QVariant property(QString name);
-	void setProperty(QString name, QVariant value);
-	QString toString() const;
+	virtual QVariant property(QString const &name) const;
+	void setProperty(QString const &name, QVariant const &value);
+	virtual QString toString() const;
 
-	void operator+=(Number add);
-	void operator-=(Number sub);
-	void operator*=(Number mult);
-	void operator/=(Number div);
+	void operator+=(Number const &add);
+	void operator-=(Number const &sub);
+	void operator*=(Number const &mult);
+	void operator/=(Number const &div);
 	Number operator-();
-	bool operator<(Number arg);
-	bool operator>(Number arg);
-	bool operator==(Number arg);
-	bool operator<=(Number arg);
-	bool operator>=(Number arg);
-	bool operator!=(Number arg);
+	bool operator<(Number const &arg);
+	bool operator>(Number const &arg);
+	bool operator==(Number const &arg);
+	bool operator<=(Number const &arg);
+	bool operator>=(Number const &arg);
+	bool operator!=(Number const &arg);
 
-private:
+protected:
 	QVariant mNumber;
 	Type mType;
 };
+
 }

@@ -158,7 +158,8 @@ QList<Block::SensorPortPair> Block::usedSensors() const
 QVariant Block::evaluate(const QString &propertyName)
 {
 	int position = 0;
-	QVariant value = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId).property("Number");
+	utils::Number *result = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
+	QVariant const value = result->property("Number");
 	if (mParser->hasErrors()) {
 		mParser->deselect();
 		emit failure();
