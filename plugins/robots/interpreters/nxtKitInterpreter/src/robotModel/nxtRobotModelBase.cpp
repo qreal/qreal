@@ -43,6 +43,18 @@ QList<PortInfo> NxtRobotModelBase::configurablePorts() const
 			<< PortInfo("4");
 }
 
+QList<PluggableDeviceInfo> NxtRobotModelBase::convertibleBases() const
+{
+	return { PluggableDeviceInfo::create<robotParts::TouchSensor>()
+			, PluggableDeviceInfo::create<robotParts::RangeSensor>()
+			, PluggableDeviceInfo::create<robotParts::LightSensor>()
+			, PluggableDeviceInfo::create<robotParts::ColorSensor>()
+			, PluggableDeviceInfo::create<robotParts::SoundSensor>()
+			, PluggableDeviceInfo::create<robotParts::GyroscopeSensor>()
+			, PluggableDeviceInfo::create<robotParts::AccelerometerSensor>()
+	};
+}
+
 PluggableDeviceInfo NxtRobotModelBase::touchSensorInfo() const
 {
 	return PluggableDeviceInfo::create<robotParts::TouchSensor>(tr("Touch sensor"));

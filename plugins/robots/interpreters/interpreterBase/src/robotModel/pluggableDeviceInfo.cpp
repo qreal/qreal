@@ -34,6 +34,11 @@ QString PluggableDeviceInfo::friendlyName() const
 	return mFriendlyName;
 }
 
+bool PluggableDeviceInfo::isNull() const
+{
+	return mDeviceType == nullptr;
+}
+
 QString PluggableDeviceInfo::toString() const
 {
 	return QString(mDeviceType ? mDeviceType->className() : QString());

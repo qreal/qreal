@@ -37,15 +37,6 @@ void SensorsConfigurationProvider::sensorConfigurationChanged(QString const &rob
 	}
 }
 
-void SensorsConfigurationProvider::refreshSensorsConfiguration()
-{
-	for (QString const &robotModel : mCurrentConfiguration.keys()) {
-		for (PortInfo const &port : mCurrentConfiguration[robotModel].keys()) {
-			sensorConfigurationChanged(robotModel, port, mCurrentConfiguration[robotModel][port]);
-		}
-	}
-}
-
 void SensorsConfigurationProvider::onSensorConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, PluggableDeviceInfo const &sensor)
 {

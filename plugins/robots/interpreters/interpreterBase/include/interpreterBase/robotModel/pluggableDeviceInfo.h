@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 #include <QtCore/QMap>
 #include <QtCore/QMetaObject>
+#include <QtCore/QMetaType>
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
@@ -44,6 +45,8 @@ public:
 
 	/// Returns a string that can be displayed to a user as the name of the pluggable device.
 	QString friendlyName() const;
+
+	bool isNull() const;
 
 private:
 	/// Trait that tells if the Object has a Q_OBJECT macro.
@@ -87,3 +90,5 @@ inline bool operator !=(PluggableDeviceInfo const &device1, PluggableDeviceInfo 
 
 }
 }
+
+Q_DECLARE_METATYPE(interpreterBase::robotModel::PluggableDeviceInfo)

@@ -66,6 +66,16 @@ void KitPluginManager::selectKit(QString const &kitId)
 	mSelectedPlugin = mPluginInterfaces.value(kitId);
 }
 
+QList<interpreterBase::robotModel::RobotModelInterface *> KitPluginManager::allRobotModels() const
+{
+	QList<interpreterBase::robotModel::RobotModelInterface *> result;
+	for (interpreterBase::KitPluginInterface * const kit : mPluginInterfaces) {
+		result += kit->robotModels();
+	}
+
+	return result;
+}
+
 interpreterBase::KitPluginInterface &KitPluginManager::selectedKit()
 {
 	if (!mSelectedPlugin) {

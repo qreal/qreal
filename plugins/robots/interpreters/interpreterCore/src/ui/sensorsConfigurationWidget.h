@@ -8,6 +8,7 @@
 #include <interpreterBase/robotModel/pluggableDeviceInfo.h>
 
 class QComboBox;
+class QVBoxLayout;
 
 namespace interpreterBase {
 namespace robotModel {
@@ -28,22 +29,46 @@ public:
 	/// be called manually
 	explicit SensorsConfigurationWidget(QWidget *parent = 0, bool autosaveMode = false);
 
+	void loadRobotModels(QList<interpreterBase::robotModel::RobotModelInterface *> const &models);
+
 	/// Reinits current widget for the given robot model
-	void loadRobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	void selectRobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
 public slots:
 	void refresh();
 	void save();
 
 private:
-	QLayout *initPort(interpreterBase::robotModel::PortInfo const &port
+	QWidget *configurerForRobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel);
+
+	QLayout *initPort(QString const &robotModel
+			, interpreterBase::robotModel::PortInfo const &port
 			, QList<interpreterBase::robotModel::PluggableDeviceInfo> const &sensors);
 
-	QString settingsKey(interpreterBase::robotModel::PortInfo const &port) const;
+	void hideAllConfigurers();
+
+	void onSensorConfigurationChanged(QString const &robotModel
+			, interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor);
+
+	void propagateChanges(interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor);
+
+	bool areConvertible(interpreterBase::robotModel::PortInfo const &port1
+			, interpreterBase::robotModel::PortInfo const &port2) const;
+	interpreterBase::robotModel::PluggableDeviceInfo convertibleDevice(
+			interpreterBase::robotModel::RobotModelInterface const *robotModel
+			, interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::PluggableDeviceInfo const &device) const;
 
 	bool mAutosaveMode;
-	QString mRobotModelId;
-	QMap<QComboBox *, interpreterBase::robotModel::PortInfo> mBoxesToPorts;
+	QVBoxLayout *mLayout;
+	QString mCurrentModel;
+	QMap<QString, interpreterBase::robotModel::RobotModelInterface *> mRobotModels;  // Does not take ownership
+	QMap<QString, QWidget *> mRobotModelConfigurers;  // Does not take ownership
+	QList<QComboBox *> mConfigurers;
+	bool mSaving;
+	bool mRefreshing;
 };
 
 }

@@ -81,6 +81,11 @@ void CommonRobotModel::configureDevice(PortInfo const &port, PluggableDeviceInfo
 	mConfiguration.configureDevice(createDevice(port, deviceInfo));
 }
 
+QList<PluggableDeviceInfo> CommonRobotModel::convertibleBases() const
+{
+	return {};
+}
+
 void CommonRobotModel::rereadSettings()
 {
 }

@@ -63,3 +63,5 @@ inline bool operator <(PortInfo const &left, PortInfo const &right)
 
 }
 }
+
+Q_DECLARE_METATYPE(interpreterBase::robotModel::PortInfo)

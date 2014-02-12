@@ -33,18 +33,18 @@ public:
 			, qReal::SystemEvents &systemEvents
 			);
 
-	/// Serializes current sensors configuration into inner string representation.
-	QString save() const;
-
-	/// Parses given sensors configuration serialized by save() method and broadcasts it to all connected providers.
-	void load(QString const &configuration);
-
 private:
 	void onSensorConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor) override;
 
 	void onActiveTabChanged(qReal::Id const &graphicalRootId);
+
+	/// Serializes current sensors configuration into inner string representation.
+	QString save() const;
+
+	/// Parses given sensors configuration serialized by save() method and broadcasts it to all connected providers.
+	void load(QString const &configuration);
 
 	qReal::GraphicalModelAssistInterface &mGraphicalModelAssistInterface;
 	qReal::LogicalModelAssistInterface &mLogicalModelAssistInterface;

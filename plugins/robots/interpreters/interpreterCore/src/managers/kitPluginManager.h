@@ -27,6 +27,9 @@ public:
 
 	void selectKit(QString const &kitId);
 
+	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
+	QList<interpreterBase::robotModel::RobotModelInterface *> allRobotModels() const;
+
 private:
 	/// Maps kit plugin name to corresponding plugin interface.
 	/// Doesn't have ownership, objects are owned by mLoaders.

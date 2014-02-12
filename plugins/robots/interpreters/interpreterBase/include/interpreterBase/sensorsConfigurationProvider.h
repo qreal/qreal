@@ -33,10 +33,6 @@ protected:
 			, robotModel::PortInfo const &port
 			, robotModel::PluggableDeviceInfo const &sensor);
 
-	/// Calls onSensorConfigurationChanged on every port, so provider can synchronize its internal data with sensors
-	/// configuration if it was not able to do so for some reason.
-	void refreshSensorsConfiguration();
-
 	/// Must be implemented in descendants to react to sensor configuration changes and refresh their internal data.
 	/// Symmetric to sensorConfigurationChanged. Default implementation does nothing.
 	virtual void onSensorConfigurationChanged(QString const &robotModel

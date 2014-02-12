@@ -76,6 +76,14 @@ public:
 
 	virtual void configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo) = 0;
 
+	/// Returns a list of devices types that can be used for 'can convert' decision.
+	/// When user changes sensors configuration with some robot model as current it must be decided for
+	/// other robot models sensors configuration whether sensors on the same port must be changed to
+	/// convertible one or stayed the same. Convertible bases returned by this method are devices types
+	/// that can be used for answering that question. Two devices are considered to be convertible if
+	/// they both inherit some convertible base.
+	virtual QList<PluggableDeviceInfo> convertibleBases() const = 0;
+
 signals:
 	/// Emitted when model is connected to a robot. If there is no need to connect (for example, 2d model), emitted
 	/// immediately after init() call.

@@ -40,6 +40,8 @@ public:
 	///       hierarchy of device factories is needed, maybe not, if it will be main responsibility of a model.
 	void configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo) override;
 
+	QList<PluggableDeviceInfo> convertibleBases() const override;
+
 public slots:
 	virtual void rereadSettings();
 

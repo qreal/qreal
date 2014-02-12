@@ -30,7 +30,10 @@ RobotsSettingsPage::RobotsSettingsPage(
 	initializeAdditionalWidgets();
 	initializeKitRadioButtons();
 
-	mUi->sensorsConfigurator->connectSensorsConfigurationProvider(this);
+	mUi->sensorsConfigurer->connectSensorsConfigurationProvider(this);
+	mUi->sensorsConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, mUi->sensorsConfigurer, &ui::SensorsConfigurationWidget::selectRobotModel);
 
 	restoreSettings();
 	saveSelectedRobotModel();
@@ -95,7 +98,7 @@ void RobotsSettingsPage::save()
 	SettingsManager::setValue("textUpdateInterval", mUi->textUpdaterSpinBox->value());
 	SettingsManager::setValue("nxtFlashToolRunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
 
-	mUi->sensorsConfigurator->save();
+	mUi->sensorsConfigurer->save();
 
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
@@ -132,7 +135,7 @@ void RobotsSettingsPage::restoreSettings()
 
 	mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
 
-	mUi->sensorsConfigurator->refresh();
+	mUi->sensorsConfigurer->refresh();
 
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
@@ -203,7 +206,7 @@ void RobotsSettingsPage::onRobotModelRadioButtonToggled(bool checked)
 	QString const selectedKit = mKitButtons->checkedButton()->objectName();
 	QAbstractButton * const robotModelButton = static_cast<QAbstractButton *>(sender());
 	robotModel::RobotModelInterface * const selectedRobotModel = mButtonsToRobotModelsMapping[robotModelButton];
-	mUi->sensorsConfigurator->loadRobotModel(*selectedRobotModel);
+	mUi->sensorsConfigurer->selectRobotModel(*selectedRobotModel);
 	AdditionalPreferences * const selectedKitPreferences = mKitPluginManager.kitById(selectedKit).settingsWidget();
 	if (selectedKitPreferences) {
 		selectedKitPreferences->onRobotModelChanged(selectedRobotModel);
