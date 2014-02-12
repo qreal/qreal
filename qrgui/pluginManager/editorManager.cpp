@@ -240,7 +240,7 @@ QString EditorManager::mouseGesture(const Id &id) const
 	return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
 }
 
-QIcon EditorManager::icon(const Id &id) const
+QIcon EditorManager::icon(Id const &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	QString const iconFileWithoutExtension = ":/generated/shapes/" + id.element() + "Icon.";
@@ -251,17 +251,15 @@ QIcon EditorManager::icon(const Id &id) const
 	QString const classWtfFile = classFileWithoutExtension + "wtf";
 	QList<QString> files;
 	files << iconSdfFile << iconWtfFile << classSdfFile << classWtfFile;
-	SdfIconEngineV2Interface *engine;
 	foreach (QString const &file, files) {
 		QFileInfo fileInfo(file);
 		if (fileInfo.exists()) {
 			if (file.endsWith(".sdf")) {
-				engine = new SdfIconEngineV2(file);
+				return SdfIconLoader::iconOf(file);
 			} else {
-				engine = new WtfIconEngineV2(file);
+				return WtfIconLoader::pixmapOf(file);
 			}
-			// QIcon will take ownership of engine, no need for us to delete
-			return mPluginIface[id.editor()]->getIcon(engine);
+
 		}
 	}
 
@@ -271,8 +269,7 @@ QIcon EditorManager::icon(const Id &id) const
 QSize EditorManager::iconSize(Id const &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
-	return engine->preferedSize();
+	return SdfIconLoader::preferedSizeOf(":/generated/shapes/" + id.element() + "Class.sdf");
 }
 
 ElementImpl *EditorManager::elementImpl(const Id &id) const

@@ -52,11 +52,12 @@ private:
 class WtfIconLoader
 {
 public:
-	static WtfIconLoader *instance();
 	/// Returns a pixmap of widget in specified wtf-file
-	QPixmap pixmapOf(QString const &fileName);
+	static QPixmap pixmapOf(QString const &fileName);
 
 private:
+	static WtfIconLoader *instance();
+
 	WtfIconLoader();
 	~WtfIconLoader();
 

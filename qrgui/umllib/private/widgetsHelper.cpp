@@ -128,18 +128,18 @@ WtfIconLoader *WtfIconLoader::instance()
 
 QPixmap WtfIconLoader::pixmapOf(const QString &fileName)
 {
-	if (!mLoadedIcons.contains(fileName)) {
+	if (!instance()->mLoadedIcons.contains(fileName)) {
 		QPixmap pixmap;
-		if (mHelper->initWidget(fileName)) {
-			pixmap = QPixmap::grabWidget(mHelper->widget());
+		if (instance()->mHelper->initWidget(fileName)) {
+			pixmap = QPixmap::grabWidget(instance()->mHelper->widget());
 		}
-		mLoadedIcons.insert(fileName, pixmap);
+		instance()->mLoadedIcons.insert(fileName, pixmap);
 	}
-	return mLoadedIcons[fileName];
+	return instance()->mLoadedIcons[fileName];
 }
 
 WtfIconEngineV2::WtfIconEngineV2(const QString &fileName)
-	: mPixmap(WtfIconLoader::instance()->pixmapOf(fileName))
+	: mPixmap(WtfIconLoader::pixmapOf(fileName))
 {
 }
 

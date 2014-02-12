@@ -1099,3 +1099,20 @@ void EdgeElement::alignToGrid()
 	mHandler->alignToGrid();
 	updateLongestPart();
 }
+
+
+void EdgeElement::setPos(qreal x, qreal y)
+{
+	setPos(QPointF(x, y));
+}
+
+void EdgeElement::setPos(QPointF const &pos)
+{
+	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
+		Element::setPos(QPointF());
+		qDebug() << "NaN passed to EdgeElement::setPos(). That means that something went wrong."\
+				"Learn to reproduce this message. The position has been set to (0,0).";
+	} else {
+		Element::setPos(pos);
+	}
+}

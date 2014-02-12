@@ -121,12 +121,11 @@
         <translation>Порт 3:</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="606"/>
         <source>Noise</source>
-        <translation>Шум</translation>
+        <translation type="obsolete">Шум</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="612"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="619"/>
         <source>Realistic sensors</source>
         <oldsource>Enable sensor noise</oldsource>
         <translation>Реалистичные сенсоры</translation>
@@ -136,7 +135,7 @@
         <translation type="obsolete">Шум моторов</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="879"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="886"/>
         <source>Return a robot to initial position</source>
         <translation>Вернуть робот в начальное положение</translation>
     </message>
@@ -181,7 +180,7 @@
         <translation>Сенсор света</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="676"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="683"/>
         <source>Stop program (Esc)</source>
         <translation>Остановить программу (Esc)</translation>
     </message>
@@ -219,17 +218,27 @@ p, li { white-space: pre-wrap; }
         <translation>Высокая</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="619"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="606"/>
+        <source>Physics</source>
+        <translation>Физика</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2Form.ui" line="612"/>
+        <source>Realistic physics</source>
+        <translation>Реалистичная физика</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2Form.ui" line="626"/>
         <source>Realistic engines</source>
         <translation>Реалистичные моторы</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="725"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="732"/>
         <source>Save World Model (Ctrl+S)</source>
         <translation>Сохранить модель мира (Ctrl+S)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="741"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="748"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
@@ -239,33 +248,33 @@ p, li { white-space: pre-wrap; }
         <translation>Время в 2D модели</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="699"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="706"/>
         <source>Load World Model (Ctrl+O)</source>
         <oldsource>Load World Model (Crtl+O)</oldsource>
         <translation>Загрузить модель мира (Ctrl+O)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="715"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="722"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="754"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="761"/>
         <source>Hand dragging mode</source>
         <translation>Режим таскания сцены</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="780"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="787"/>
         <source>Multiselection mode</source>
         <translation>Режим выделения</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="841"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="848"/>
         <source>Camera following robot</source>
         <translation>Следование за роботом</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="650"/>
+        <location filename="details/d2RobotModel/d2Form.ui" line="657"/>
         <source>Run program (Enter)</source>
         <translation>Запустить программу (Enter)</translation>
     </message>
@@ -329,7 +338,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="373"/>
+        <location filename="robotSettingsPage.ui" line="306"/>
         <source>Sensors Settings</source>
         <translation>Настройки сенсоров</translation>
     </message>
@@ -421,53 +430,48 @@ p, li { white-space: pre-wrap; }
         <translation>IP-адрес сервера</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="306"/>
         <source>Noise</source>
-        <translation>Шум</translation>
+        <translation type="obsolete">Шум</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="327"/>
         <source>Realistic sensors</source>
         <oldsource>Enable sensor noise</oldsource>
-        <translation>Реалистичные сенсоры</translation>
+        <translation type="obsolete">Реалистичные сенсоры</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="334"/>
         <source>For higher value the behaviour is closer to realistic but performance is lower.</source>
-        <translation>Для больших значений поведение сенсоров и моторов ближе к реальному, но при этом производительность падает больше.</translation>
+        <translation type="obsolete">Для больших значений поведение сенсоров и моторов ближе к реальному, но при этом производительность падает больше.</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="337"/>
         <source>Approximation level</source>
-        <translation>Уровень приближения</translation>
+        <translation type="obsolete">Уровень приближения</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="363"/>
         <source>Realistic engines</source>
-        <translation>Реалистичные моторы</translation>
+        <translation type="obsolete">Реалистичные моторы</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="380"/>
+        <location filename="robotSettingsPage.ui" line="313"/>
         <source>Uploading &amp;&amp; Running</source>
         <translation>Загрузка и запуск программ</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="386"/>
+        <location filename="robotSettingsPage.ui" line="319"/>
         <source>Running after uploading:</source>
         <translation>Запуск после загрузки:</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="394"/>
+        <location filename="robotSettingsPage.ui" line="327"/>
         <source>Ask</source>
         <translation>Спрашивать</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="399"/>
+        <location filename="robotSettingsPage.ui" line="332"/>
         <source>Always run</source>
         <translation>Всегда запускать</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="404"/>
+        <location filename="robotSettingsPage.ui" line="337"/>
         <source>Never run</source>
         <translation>Никогда не запускать</translation>
     </message>
@@ -566,12 +570,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Сенсор4</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="49"/>
+        <location filename="robotsPlugin.cpp" line="48"/>
         <source>2d model</source>
         <translation>2D модель</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="53"/>
+        <location filename="robotsPlugin.cpp" line="52"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -580,32 +584,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="57"/>
+        <location filename="robotsPlugin.cpp" line="56"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="62"/>
+        <location filename="robotsPlugin.cpp" line="61"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="73"/>
+        <location filename="robotsPlugin.cpp" line="72"/>
         <source>Switch to 2d model</source>
         <translation>Переключиться в режим 2D-модели</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="78"/>
+        <location filename="robotsPlugin.cpp" line="77"/>
         <source>Switch to Lego NXT mode</source>
         <translation>Переключиться в режим Lego NXT</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="83"/>
+        <location filename="robotsPlugin.cpp" line="82"/>
         <source>Switch to TRIK mode</source>
         <translation>Переключиться в режим TRIK</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="102"/>
+        <location filename="robotsPlugin.cpp" line="101"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -614,7 +618,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="181"/>
+        <location filename="robotsPlugin.cpp" line="180"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -851,32 +855,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::RobotsPlugin</name>
     <message>
-        <location filename="robotsPlugin.cpp" line="106"/>
+        <location filename="robotsPlugin.cpp" line="105"/>
         <source>Text under pictogram</source>
         <translation>Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="127"/>
+        <location filename="robotsPlugin.cpp" line="126"/>
         <source>Show 2d model</source>
         <translation>Открыть окно 2D модели</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="128"/>
+        <location filename="robotsPlugin.cpp" line="127"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="129"/>
+        <location filename="robotsPlugin.cpp" line="128"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="131"/>
+        <location filename="robotsPlugin.cpp" line="130"/>
         <source>Toggle titles visibility</source>
         <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="186"/>
+        <location filename="robotsPlugin.cpp" line="185"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -895,27 +899,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::Interpreter</name>
     <message>
-        <location filename="details/interpreter.cpp" line="96"/>
+        <location filename="details/interpreter.cpp" line="94"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="100"/>
+        <location filename="details/interpreter.cpp" line="98"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="212"/>
+        <location filename="details/interpreter.cpp" line="209"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="216"/>
+        <location filename="details/interpreter.cpp" line="213"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="283"/>
+        <location filename="details/interpreter.cpp" line="280"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
@@ -1302,9 +1306,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
     <message>
-        <location filename="details/blocks/waitForGyroscopeSensorBlock.cpp" line="31"/>
         <source>Gyroscope</source>
-        <translation>Гироскоп</translation>
+        <translation type="obsolete">Гироскоп</translation>
     </message>
 </context>
 <context>
@@ -1362,43 +1365,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="105"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="109"/>
         <source>Black</source>
         <translation>Чёрный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="106"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="110"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="107"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="111"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="108"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="112"/>
         <source>Yellow</source>
         <translation>Жёлтый</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="109"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="113"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="786"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="792"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="786"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="806"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="792"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="812"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="806"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="812"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
