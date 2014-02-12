@@ -1,15 +1,9 @@
 #include "interpreterBase/robotModel/robotParts/touchSensor.h"
 
-#include <QtCore/QDebug>
-
 using namespace interpreterBase::robotModel::robotParts;
 
-void TouchSensor::read()
+TouchSensor::TouchSensor(interpreterBase::robotModel::PluggableDeviceInfo const &info
+		, interpreterBase::robotModel::PortInfo const &port)
+	: ScalarSensor(info, port)
 {
-	emit newData(mCount++ < 100 ? 0 : 1);
-}
-
-void TouchSensor::doConfiguration()
-{
-	configurationCompleted(true);
 }
