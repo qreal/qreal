@@ -123,13 +123,6 @@ void CommonRobotModel::configureKnownDevices()
 robotParts::PluggableDevice * CommonRobotModel::createDevice(
 		PortInfo const &port, PluggableDeviceInfo const &deviceInfo)
 {
-//	Q_UNUSED(port);
-//	Q_UNUSED(deviceInfo);
-
-	/// @todo Hack for testing.
-	if (deviceInfo.isA(PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>())) {
-		return new interpreterBase::robotModel::robotParts::TouchSensor(deviceInfo, port);
-	}
-
-	throw qReal::Exception("Unknown pluggable device");
+	Q_UNUSED(port);
+	Q_UNUSED(deviceInfo);
 }

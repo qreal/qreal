@@ -82,6 +82,11 @@ public:
 	/// convertible one or stayed the same. Convertible bases returned by this method are devices types
 	/// that can be used for answering that question. Two devices are considered to be convertible if
 	/// they both inherit some convertible base.
+	/// Example: user selects light sensor for nxt 2D model. We must propagate that modification over every
+	/// robot model`s sensors configuration. So, for example, for real Trik model we must set light sensor too.
+	/// But how to find Nxt light sensor analogue for Trik? Here helps convertible bases provided by trik plugin.
+	/// Both light sensors inherit interpreterBase::robotModel::robotParts::LightSensor, so if this class is
+	/// returned as convertible base we can simply convert Nxt`s light sensor to Trik`s one.
 	virtual QList<PluggableDeviceInfo> convertibleBases() const = 0;
 
 signals:
