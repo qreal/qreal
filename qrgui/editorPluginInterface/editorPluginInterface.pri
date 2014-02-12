@@ -8,4 +8,5 @@ HEADERS += \
 	$$PWD/listenerInterface.h \
 	$$PWD/listenerApiInterface.h \
 	$$PWD/portHelpers.h
-
+	$$PWD/widgetsHelperInterface.h \
+	$$PWD/propertyEditorInterface.h \

@@ -40,7 +40,8 @@ HEADERS += association.h \
 	stringType.h \
 	type.h \
 	xmlCompiler.h \
-	portType.h
+	documentLoader.h \
+	portType.h \
 
 SOURCES += association.cpp \
 	diagram.cpp \
@@ -62,4 +63,5 @@ SOURCES += association.cpp \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
-	portType.cpp
+	documentLoader.cpp \
+	portType.cpp \

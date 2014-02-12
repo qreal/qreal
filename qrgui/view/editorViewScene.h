@@ -187,6 +187,7 @@ private:
 	void enableActions();
 
 	inline bool isArrow(int key);
+	bool isInputWidgetFocused() const;
 
 	void moveSelectedItems(int direction);
 	bool moveNodes();

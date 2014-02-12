@@ -9,7 +9,8 @@ Element::Element(ElementImpl *elementImpl
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
-	: mMoving(false)
+	: QGraphicsProxyWidget()
+	, mMoving(false)
 	, mId(id)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(logicalAssistApi)
@@ -49,9 +50,9 @@ QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 	return QList<ContextMenuAction*>();
 }
 
-QString Element::logicalProperty(QString const &roleName) const
+QVariant Element::logicalProperty(QString const &roleName) const
 {
-	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
+	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName);
 }
 
 void Element::setLogicalProperty(QString const &roleName, QString const &value, bool withUndoRedo)
@@ -105,6 +106,25 @@ void Element::setSelectionState(const bool selected)
 ElementImpl* Element::elementImpl() const
 {
 	return mElementImpl;
+}
+
+void Element::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsProxyWidget::mousePressEvent(event);
+	event->accept();
+	QGraphicsItem::mousePressEvent(event);
+}
+
+void Element::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsProxyWidget::mouseMoveEvent(event);
+	QGraphicsItem::mouseMoveEvent(event);
+}
+
+void Element::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsProxyWidget::mouseReleaseEvent(event);
+	QGraphicsItem::mouseReleaseEvent(event);
 }
 
 bool Element::createChildrenFromMenu() const

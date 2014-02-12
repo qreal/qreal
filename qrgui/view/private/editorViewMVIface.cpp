@@ -167,19 +167,24 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect());
 			}
 
-			if (item(parent)) {
-				elem->setParentItem(item(parent));
-				QModelIndex next = current.sibling(current.row() + 1, 0);
-				if(next.isValid() && item(next) != NULL) {
-					elem->stackBefore(item(next));
+			Element *parentElem = item(parent);
+			if (parentElem) {
+				NodeElement *parentNode = dynamic_cast<NodeElement *>(parentElem);
+				if (elem && parentNode && parentNode->layoutFactory()->hasLayout()) {
+					parentNode->layoutFactory()->processBeforeFirstPlacing(elem);
+					parentNode->layoutFactory()->handleDropEvent(elem, ePos);
+				} else {
+					// setting position before parent definition 'itemChange' to work correctly
+					elem->setPos(ePos);
+					elem->setParentItem(parentElem);
 				}
 			} else {
+				elem->setPos(ePos);
 				mScene->addItem(elem);
 			}
 
 			setItem(current, elem);
 			elem->updateData();
-			elem->connectToPort();
 			elem->checkConnectionsToPort();
 			elem->initPossibleEdges();
 			elem->initTitles();
@@ -200,7 +205,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				elem->select(true);
 			}
 
-			NodeElement* nodeElem = dynamic_cast<NodeElement*>(elem);
+			NodeElement *nodeElem = dynamic_cast<NodeElement*>(elem);
 			if (nodeElem && currentId.element() == "Class" &&
 				mGraphicalAssistApi->children(currentId).empty())
 			{

@@ -16,7 +16,7 @@ const int maxLineLength = 80;
 class GraphicType : public Type
 {
 public:
-	GraphicType(Diagram *diagram);
+	explicit GraphicType(Diagram *diagram);
 	virtual ~GraphicType();
 	virtual bool init(QDomElement const &element, QString const &context);
 	virtual bool resolve();
@@ -50,7 +50,12 @@ protected:
 		bool hasMovableChildren;
 		bool minimizesToChildren;
 		bool maximizesChildren;
+		QString layout;
+		QString layoutBinding;
 	};
+
+	virtual bool isResolving() const;
+	virtual bool isWidgetBased(QDomElement const &graphics) const = 0;
 
 	QDomElement mLogic;
 	QDomElement mGraphics;
@@ -59,17 +64,18 @@ protected:
 	bool mVisible;
 	int mWidth;
 	int mHeight;
+	bool mIsWidgetBased;
+	bool mIsIconWidgetBased;
 	QList<Label*> mLabels;
 	QStringList mContains;
-	ContainerProperties mContainerProperties;
+	ContainerProperties *mContainerProperties;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
 	QMap<QString, QPair<bool, bool> > mExplosions;
 	bool mCreateChildrenFromMenu;
 
-	void copyFields(GraphicType *type) const;
-	QString resourceName(QString const &resourceType) const;
-	virtual bool isResolving() const;
+	virtual void copyFields(GraphicType *type) const;
+	virtual QString resourceName(QString const &resourceType) const;
 
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 
@@ -108,6 +114,8 @@ private:
 
 	bool addProperty(Property *property);
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
+
+	inline QString exensionByBase(bool widgetBased) const;
 
 	QVector<int> toIntVector(QString const &s, bool * isOk) const;
 

@@ -14,17 +14,20 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos, bool needResizePa
 {
 	newContents.moveTo(0, 0);
 
-	sortChildrenIfNeeded();
 	gripeIfMinimizesToChildrenContainer(newContents);
 
-	if (!mTargetNode->isFolded()) {
+	if (!mTargetNode->isFolded() &&
+		// if element has layout then we must not ban children shrinking,
+		// but not in case of sorting container
+			(!mTargetNode->layoutFactory()->hasLayout()
+			|| mElementImpl->isSortingContainer())) {
 		resizeAccordingToChildren(newContents, newPos);
 	}
 	normalizeSize(newContents);
 
 	newContents.moveTo(newPos);
 
-	mTargetNode->setGeometry(newContents);
+	mTargetNode->setGeom(newContents);
 	mTargetNode->storeGeometry();
 	mTargetNode->setPos(newPos);
 
@@ -186,7 +189,7 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 {
 	QVector<int> const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 
-	foreach (const QGraphicsItem * const childItem, mTargetNode->childItems()) {
+	foreach (QGraphicsItem const * const childItem, mTargetNode->childItems()) {
 		QRectF curChildItemBoundingRect = childBoundingRect(childItem, contents);
 
 		if (curChildItemBoundingRect.width() == 0 || curChildItemBoundingRect.height() == 0) {
@@ -222,7 +225,7 @@ QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, Q
 		return boundingRect;
 	}
 
-	const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
+	NodeElement const * const curItem = dynamic_cast<const NodeElement * const>(childItem);
 	if (curItem && !curItem->isPort()) {
 		boundingRect = curItem->contentsRect();
 	}

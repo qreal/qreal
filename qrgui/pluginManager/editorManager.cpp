@@ -243,7 +243,27 @@ QString EditorManager::mouseGesture(const Id &id) const
 QIcon EditorManager::icon(Id const &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	return SdfIconLoader::iconOf(":/generated/shapes/" + id.element() + "Class.sdf");
+	QString const iconFileWithoutExtension = ":/generated/shapes/" + id.element() + "Icon.";
+	QString const iconSdfFile = iconFileWithoutExtension + "sdf";
+	QString const iconWtfFile = iconFileWithoutExtension + "wtf";
+	QString const classFileWithoutExtension = ":/generated/shapes/" + id.element() + "Class.";
+	QString const classSdfFile = classFileWithoutExtension + "sdf";
+	QString const classWtfFile = classFileWithoutExtension + "wtf";
+	QList<QString> files;
+	files << iconSdfFile << iconWtfFile << classSdfFile << classWtfFile;
+	foreach (QString const &file, files) {
+		QFileInfo fileInfo(file);
+		if (fileInfo.exists()) {
+			if (file.endsWith(".sdf")) {
+				return SdfIconLoader::iconOf(file);
+			} else {
+				return WtfIconLoader::pixmapOf(file);
+			}
+
+		}
+	}
+
+	return QIcon();
 }
 
 QSize EditorManager::iconSize(Id const &id) const

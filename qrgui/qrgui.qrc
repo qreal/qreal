@@ -32,7 +32,41 @@
         <file>icons/collapseAll.png</file>
         <file>icons/expandAll.png</file>
         <file>icons/changeRepresentation.png</file>
+        <file>icons/widgetsEditor/breakLayout.png</file>
+        <file>icons/widgetsEditor/checkBox.png</file>
+        <file>icons/widgetsEditor/comboBox.png</file>
+        <file>icons/widgetsEditor/doubleSpinBox.png</file>
+        <file>icons/widgetsEditor/frame.png</file>
+        <file>icons/widgetsEditor/groupBox.png</file>
+        <file>icons/widgetsEditor/label.png</file>
+        <file>icons/widgetsEditor/layOutHorizontally.png</file>
+        <file>icons/widgetsEditor/layOutInAGrid.png</file>
+        <file>icons/widgetsEditor/layOutVertically.png</file>
+        <file>icons/widgetsEditor/lineEdit.png</file>
+        <file>icons/widgetsEditor/listWidget.png</file>
+        <file>icons/widgetsEditor/plainTextEdit.png</file>
+        <file>icons/widgetsEditor/pushButton.png</file>
+        <file>icons/widgetsEditor/radioButton.png</file>
+        <file>icons/widgetsEditor/scrollArea.png</file>
+        <file>icons/widgetsEditor/spinBox.png</file>
+        <file>icons/widgetsEditor/widget.png</file>
+        <file>icons/widgetsEditor/horizontalSpacer.png</file>
+        <file>icons/widgetsEditor/verticalSpacer.png</file>
+        <file>icons/widgetsEditor/trigger.png</file>
+        <file>icons/preview.png</file>
+        <file>icons/widgetsEditor/save.png</file>
+        <file>icons/widgetsEditor/saveToDisk.png</file>
         <file>qt_ru.qm</file>
+        <file>icons/widgetsEditor/shapeEditor.png</file>
+        <file>icons/widgetsEditor/widgetEditor.png</file>
+        <file>icons/widgetsEditor/loadFromDisk.png</file>
+        <file>icons/widgetsEditor/saveAsImage.png</file>
+        <file>icons/widgetsEditor/shapeIcon.png</file>
+        <file>icons/widgetsEditor/widgetIcon.png</file>
+        <file>icons/widgetsEditor/icon.png</file>
+        <file>icons/widgetsEditor/cancel.png</file>
+        <file>icons/widgetsEditor/ok.png</file>
+        <file>icons/widgetsEditor/outerBindings.png</file>
         <file>icons/open.png</file>
         <file>icons/save.png</file>
         <file>icons/full_screen.png</file>

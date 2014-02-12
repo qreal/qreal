@@ -21,6 +21,7 @@
 #include "umllib/private/copyHandler.h"
 #include "umllib/private/resizeCommand.h"
 #include "umllib/private/foldCommand.h"
+#include "umllib/private/widgetsHelper.h"
 
 #include "controller/commands/changeParentCommand.h"
 #include "controller/commands/renameCommand.h"
@@ -47,19 +48,23 @@ NodeElement::NodeElement(ElementImpl *impl
 		, mConnectionInProgress(false)
 		, mPlaceholder(NULL)
 		, mHighlightedNode(NULL)
+		, mLayoutFactory(new layouts::NodeElementLayoutFactory(impl->layoutBinding(), this))
+		, mWidgetsHelper(new WidgetsHelper(this))
 		, mRenderTimer(this)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
+	setFlag(ItemIsFocusable);
 
 	mRenderer = new SdfRenderer();
+
 	LabelFactory labelFactory(graphicalAssistApi, mId);
 	QList<LabelInterface*> titles;
 
 	QList<PortInterface *> ports;
 	PortFactory portFactory;
-	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, this);
+	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, mWidgetsHelper, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
 	foreach (LabelInterface * const labelInterface, titles) {
@@ -78,12 +83,16 @@ NodeElement::NodeElement(ElementImpl *impl
 	mSwitchGridAction.setCheckable(true);
 	connect(&mSwitchGridAction, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 
-	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
+	foreach (QString const &bonusField, mElementImpl->bonusContextMenuFields()) {
 		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
 	}
 
 	mGrid = new SceneGridHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
+	mWidgetsHelper->onIdChanged();
+
+	connect(this, SIGNAL(geometryChanged()), this, SLOT(synchronizeGeometries()));
+	mLayoutFactory->configure(impl);
 
 	initPortsVisibility();
 
@@ -155,16 +164,18 @@ void NodeElement::setName(QString const &value, bool withUndoRedo)
 	}
 }
 
-void NodeElement::setGeometry(QRectF const &geom)
+void NodeElement::setGeom(QRectF const &realGeom)
 {
 	prepareGeometryChange();
-	setPos(geom.topLeft());
-	if (geom.isValid()) {
-		mContents = geom.translated(-geom.topLeft());
+	setPos(realGeom.topLeft());
+	if (realGeom.isValid()) {
+		mContents = realGeom.translated(-realGeom.topLeft());
 	}
 	mTransform.reset();
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
+
+	QGraphicsProxyWidget::setGeometry(mContents.translated(mPos));
 }
 
 void NodeElement::setPos(QPointF const &pos)
@@ -330,11 +341,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::alignToGrid()
 {
-	if (SettingsManager::value("ActivateGrid").toBool()) {
-		NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
-		if (!parent || !parent->mElementImpl->isSortingContainer()) {
-			mGrid->alignToGrid();
-		}
+	if (!inLayout() && SettingsManager::value("ActivateGrid").toBool()) {
+		mGrid->alignToGrid();
 	}
 }
 
@@ -378,14 +386,16 @@ void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
 	// mHighlightedNode == newParent, but it's unapplicable here because
 	// of element could be moved inside his parent
 
-	if (newParent != NULL) {
+	if (newParent) {
 		if (mHighlightedNode) {
 			mHighlightedNode->erasePlaceholder(false);
 		}
+
 		mHighlightedNode = newParent;
-		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), mouseScenePos);
+		QPointF const nodePos = mHighlightedNode->mapFromScene(mouseScenePos);
+		mHighlightedNode->layoutFactory()->handleDragMove(this, nodePos);
 	} else if (mHighlightedNode != NULL) {
-		mHighlightedNode->erasePlaceholder(true);
+		mHighlightedNode->layoutFactory()->handleDragLeave();
 		mHighlightedNode = NULL;
 	}
 }
@@ -529,8 +539,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			NodeElement *newParent = mHighlightedNode;
 			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
 			mHighlightedNode->erasePlaceholder(false);
-			// commented because of bug with double event sending (see #204)
-	//		mHighlightedNode = NULL;
 
 			QPointF newPos = mapToItem(newParent, mapFromScene(scenePos()));
 			AbstractCommand *parentCommand = changeParentCommand(newParent->id(), newPos);
@@ -714,6 +722,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 {
 	bool isItemAddedOrDeleted = false;
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
+
 	switch (change) {
 	case ItemPositionHasChanged:
 		if (mDragState == None) {
@@ -778,9 +787,9 @@ void NodeElement::updateData()
 			}
 			newRect = QRectF(QPoint(minx, miny), QSize(maxx - minx, maxy - miny));
 		}
-
-		setGeometry(newRect.translated(newpos));
+		setGeom(newRect.translated(newpos));
 	}
+
 	mElementImpl->updateData(this);
 	updateLabels();
 	update();
@@ -821,15 +830,16 @@ void NodeElement::setPortsVisible(QStringList const &types)
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
 {
+	QGraphicsProxyWidget::paint(painter, style, w);
 	mElementImpl->paint(painter, mContents);
 	paint(painter, style);
 
 	if (mSelectionNeeded) {
 		painter->save();
 		painter->setPen(QPen(Qt::blue));
-		QRectF rect = boundingRect();
+		QRectF const rect = boundingRect();
 		double x1 = rect.x() + 9;
 		double y1 = rect.y() + 9;
 		double x2 = rect.x() + rect.width() - 9;
@@ -977,7 +987,7 @@ void NodeElement::setLinksVisible(bool isVisible)
 	}
 }
 
-void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
+void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, const QPointF &pos)
 {
 	// for non-sorting containers no need for drawing placeholder so just make them marked
 	if (!mElementImpl->isSortingContainer()) {
@@ -1072,6 +1082,7 @@ void NodeElement::updateByNewParent()
 	if (editorScene) {
 		editorScene->onElementParentChanged(this);
 	}
+
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (!parent || parent->mElementImpl->hasMovableChildren()) {
 		setFlag(ItemIsMovable, true);
@@ -1141,7 +1152,7 @@ void NodeElement::setColorRect(bool value)
 	mSelectionNeeded = value;
 }
 
-void NodeElement::checkConnectionsToPort() // it is strange method
+void NodeElement::checkConnectionsToPort()
 {
 	mPortHandler->checkConnectionsToPort();
 }
@@ -1190,10 +1201,12 @@ void NodeElement::resize(QRectF const &newContents)
 	resize(newContents, pos());
 }
 
-void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent)
+void NodeElement::resize(const QRectF &newContents, const QPointF &newPos, bool needResizeParent)
 {
 	ResizeHandler handler(this);
 	handler.resize(newContents, newPos, needResizeParent);
+	// It must be called here to avoid ifinite update loop
+	mWidgetsHelper->onElementGeometryChanged();
 }
 
 void NodeElement::drawLinesForResize(QPainter *painter)
@@ -1381,4 +1394,22 @@ QRectF NodeElement::diagramRenderingRect() const
 	result.setSize(mRenderedDiagram.size().scaled(result.size().toSize(), Qt::KeepAspectRatio));
 	result.moveCenter(oldCenter);
 	return result;
+}
+
+layouts::NodeElementLayoutFactory *NodeElement::layoutFactory() const
+{
+	return mLayoutFactory;
+}
+
+void NodeElement::synchronizeGeometries()
+{
+	if (mContents != geometry()) {
+		setGeom(geometry());
+	}
+}
+
+bool NodeElement::inLayout() const
+{
+	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
+	return parent && parent->layoutFactory()->hasLayout();
 }

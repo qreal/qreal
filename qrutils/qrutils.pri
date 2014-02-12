@@ -69,3 +69,6 @@ include($$PWD/uxInfo/uxInfo.pri)
 
 # Real-time plot
 include($$PWD/graphicsWatcher/sensorsGraph.pri)
+
+# Small framework for creating widgets with navigation
+include(navigationUtils/navigationUtils.pri)

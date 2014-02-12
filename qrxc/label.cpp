@@ -81,7 +81,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		if (list.first() == "name") {
 			resultStr = "repo->name()";
 		} else {
-			resultStr = "repo->logicalProperty(\"" + list.first() + "\")";
+			resultStr = "repo->logicalProperty(\"" + list.first() + "\").toString()";
 		}
 	} else {
 		int counter = 1;
@@ -91,7 +91,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 				if (listElement == "name") {
 					field = "repo->name()";
 				} else {
-					field = "repo->logicalProperty(\"" + listElement + "\")";
+					field = "repo->logicalProperty(\"" + listElement + "\").toString()";
 				}
 			} else {
 				field = "QString::fromUtf8(\"" + listElement + "\")";
@@ -115,5 +115,3 @@ void Label::generateCodeForFields(OutFile &out)
 {
 	out() << "		qReal::LabelInterface *" + titleName() + ";\n";
 }
-
-

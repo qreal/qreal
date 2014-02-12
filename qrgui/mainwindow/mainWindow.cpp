@@ -33,8 +33,9 @@
 #include "view/sceneCustomizer.h"
 #include "brandManager/brandManager.h"
 
+#include "elementEditor/elementEditor.h"
 #include "mainwindow/errorReporter.h"
-#include "mainwindow/shapeEdit/shapeEdit.h"
+#include "elementEditor/shapeEdit/shapeEdit.h"
 #include "mainwindow/propertyEditorProxyModel.h"
 #include "mainwindow/startWidget/startWidget.h"
 #include "mainwindow/referenceList.h"
@@ -505,6 +506,7 @@ void MainWindow::openRecentProjectsMenu()
 
 	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(QString const &))
 			, mProjectManager, SLOT(openExisting(QString const &)));
+
 }
 
 void MainWindow::closeAllTabs()
@@ -527,7 +529,8 @@ void MainWindow::setReference(QStringList const &data, QPersistentModelIndex con
 	}
 }
 
-void MainWindow::setData(QString const &data, QPersistentModelIndex const &index, int const &role)
+void MainWindow::setData(QString const &data, QPersistentModelIndex const &index
+		, int const &role)
 {
 	// const_cast here is ok, since we need to set data in a correct model, and
 	// not going to use this index anymore.
@@ -1055,37 +1058,41 @@ void MainWindow::setSceneFont()
 	}
 }
 
-// TODO: Unify overloads.
-void MainWindow::openShapeEditor(
+void MainWindow::openElementEditor(
 		QPersistentModelIndex const &index
 		, int role
 		, QString const &propertyValue
-		, bool useTypedPorts
-		)
+		, bool useTypedPorts)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
-			, index, role, useTypedPorts);
+	ElementEditor *elementEditor = new ElementEditor(index, role
+			, dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
+			, useTypedPorts);
+
 	if (!propertyValue.isEmpty()) {
-		shapeEdit->load(propertyValue);
+		elementEditor->load(propertyValue);
 	}
 
 	// Here we are going to actually modify model to set a value of a shape.
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
-	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &))
-			, this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
+	connect(elementEditor, SIGNAL(widgetSaved(QString, QPersistentModelIndex const &, int const &))
+		, this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
+	connect(elementEditor, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &))
+		,this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
 
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
+	mUi->tabs->addTab(elementEditor, tr("Element Editor"));
+	mUi->tabs->setCurrentWidget(elementEditor);
+	setConnectActionZoomTo(elementEditor);
 }
 
+/// TODO: unify element editor with conditional visibility in shape editor
 // This method is for Interpreter.
+//Does this methon need new elementEditor instead of shapeEdit?
 void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
-	, bool useTypedPorts)
+	, bool isIconEditor, bool useTypedPorts)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab()
-		, useTypedPorts);
+		, isIconEditor, useTypedPorts);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}
@@ -1113,14 +1120,6 @@ void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, in
 	mUi->tabs->addTab(textEdit, tr("Text Editor"));
 	mUi->tabs->setCurrentWidget(textEdit);
 	setConnectActionZoomTo(textEdit);
-}
-
-void MainWindow::openShapeEditor()
-{
-	ShapeEdit * const shapeEdit = new ShapeEdit;
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::openReferenceList(QPersistentModelIndex const &index
@@ -1514,8 +1513,7 @@ PropertyEditorView *MainWindow::propertyEditor() const
 }
 
 QTreeView *MainWindow::graphicalModelExplorer() const
-{
-	return mUi->graphicalModelExplorer;
+{	return mUi->graphicalModelExplorer;
 }
 
 QTreeView *MainWindow::logicalModelExplorer() const

@@ -570,7 +570,7 @@ void EditorGenerator::setContainerProperties(QDomElement &parent, Id const &id)
 {
 	IdList elements = mApi.children(id);
 
-	foreach (Id const idChild, elements) {
+	foreach (Id const &idChild, elements) {
 		if (idChild.element() == "MetaEntityPropertiesAsContainer") {
 			QDomElement properties = mDocument.createElement("properties");
 			parent.appendChild(properties);
@@ -582,6 +582,9 @@ void EditorGenerator::setContainerProperties(QDomElement &parent, Id const &id)
 			setBoolValuesForContainer("banChildrenMove", properties, idChild);
 			setBoolValuesForContainer("minimizeToChildren", properties, idChild);
 			setBoolValuesForContainer("maximizeChildren", properties, idChild);
+
+			setStringsForContainer("layout", properties, idChild);
+			setStringsForContainer("layoutBinding", properties, idChild);
 		}
 	}
 }
@@ -633,6 +636,13 @@ void EditorGenerator::setBoolValuesForContainer(QString const &propertyName, QDo
 		QDomElement property = mDocument.createElement(propertyName);
 		properties.appendChild(property);
 	}
+}
+
+void EditorGenerator::setStringsForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id)
+{
+	QDomElement property = mDocument.createElement(propertyName);
+	properties.appendChild(property);
+	property.setAttribute("value", mApi.stringProperty(id, propertyName));
 }
 
 void EditorGenerator::ensureCorrectness(

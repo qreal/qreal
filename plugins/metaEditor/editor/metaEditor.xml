@@ -28,6 +28,12 @@
 				<value>Static text</value>
 				<value>Dynamic text</value>
 			</enum>
+			<enum name="layoutTypes" displayedName="layoutTypes">
+				<value>None</value>
+				<value>Vertical</value>
+				<value>Horizontal</value>
+				<value>Grid</value>
+			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node name="PackageDiagram" displayedName="Package Diagram" description="Предназначен для описания связей между метамоделями. Также может быть корневым элементом метамодели">
@@ -200,6 +206,7 @@
 							<banChildrenMove/>
 							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
+							<layout value="Vertical"/>
 						</properties>
 					</container>
 				</logic>
@@ -287,6 +294,7 @@
 							<banChildrenMove/>
 							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
+							<layout value="Vertical"/>
 						</properties>
 					</container>
 				</logic>
@@ -327,6 +335,7 @@
 							<banChildrenMove/>
 							<forestalling size="5,25,5,5"/>
 							<childrenForestalling size="5"/>
+							<layout value="Vertical"/>
 						</properties>
 					</container>
 				</logic>
@@ -552,6 +561,10 @@
 						<property type="bool" name="maximizeChildren">
 							<default>false</default>
 						</property>
+						<property type="layoutTypes" name="layout">
+							<default>None</default>
+						</property>
+						<property type="string" name="layoutBinding"/>
 					</properties>
 				</logic>
 			</node>

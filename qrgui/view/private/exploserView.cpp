@@ -225,5 +225,6 @@ void ExploserView::changeAppearanceActionTriggered()
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
 	QString const propertyValue = mMainWindow->editorManager().shape(id);
-	mMainWindow->openShapeEditor(id, propertyValue, &(mMainWindow->editorManager()), false);
+	//what should be value for "bool useTypedPorts"?
+	mMainWindow->openShapeEditor(id, propertyValue, &(mMainWindow->editorManager()), false, false);
 }

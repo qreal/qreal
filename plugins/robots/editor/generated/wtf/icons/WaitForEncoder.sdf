@@ -1,0 +1,7 @@
+<icon>
+	<graphics>
+		<picture sizex="50" sizey="50">
+			<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="49" x2="49"/>
+		</picture>
+	</graphics>
+</icon>

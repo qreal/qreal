@@ -24,19 +24,23 @@ class SdfRenderer : public SdfRendererInterface
 public:
 	SdfRenderer();
 	SdfRenderer(QString const path);
+	SdfRenderer(QDomDocument const &document);
 	~SdfRenderer();
 
-	bool load (QString const &filename);
+	bool load(QString const &filename);
 	bool load(QDomDocument const &document);
 	void render(QPainter *painter, QRectF const &bounds, bool isIcon = false);
 	void noScale();
 
-	int pictureWidth() { return first_size_x; }
-	int pictureHeight() { return first_size_y; }
+	int pictureWidth() const { return mFirstSizeX; }
+	int pictureHeight() const { return mFirstSizeY; }
 
 	void setElementRepo(ElementRepoInterface *elementRepo);
 
 private:
+	void initWorkingDir();
+	void initFirstSizes();
+
 	QString mWorkingDirName;
 	QMap<QString, QString> mReallyUsedFiles;
 	QMap<QString, QByteArray> mMapFileImage;
@@ -44,6 +48,10 @@ private:
 	int first_size_y;
 	int current_size_x;
 	int current_size_y;
+	int mFirstSizeX;
+	int mFirstSizeY;
+	int mCurrentSizeX;
+	int mCurrentSizeY;
 	int mStartX;
 	int mStartY;
 	int i;
@@ -83,12 +91,14 @@ private:
 	void stylus_draw(QDomElement &element);
 	void curve_draw(QDomElement &element);
 	void image_draw(QDomElement &element);
-	float x1_def(QDomElement &element);
-	float y1_def(QDomElement &element);
-	float x2_def(QDomElement &element);
-	float y2_def(QDomElement &element);
-	float coord_def(QDomElement &element, QString coordName, int current_size, int first_size);
-	void logger(QString path, QString string);
+
+	qreal x1_def(QDomElement &element);
+	qreal y1_def(QDomElement &element);
+	qreal x2_def(QDomElement &element);
+	qreal y2_def(QDomElement &element);
+	qreal coord_def(QDomElement &element, QString const &coordName
+		, int current_size, int first_size);
+	void logger(QString const &path, QString const &string);
 
 	/// Reads byte array from the file that is obtained by inner rules from the given one.
 	/// Specified file path may be modified with storing into it really read file path.
@@ -96,7 +106,21 @@ private:
 	QByteArray loadPixmapFromExistingFile(QString &filePath);
 
 	/** @brief checks that str[i] is not L, C, M or Z*/
-	bool isNotLCMZ(QString str, int i);
+	bool isNotLCMZ(QString const &str, int i);
+
+	QPainter *mPainter;
+	QPen mPen;
+	QBrush mBrush;
+	QString mS1;
+	QString mS2;
+	QFont mFont;
+	QFile mLog;
+	QTextStream mLogText;
+	QDomDocument mDoc;
+	/** @brief is false if we don't need to scale according to absolute
+	 * coords, is useful for rendering icons. default is true
+	**/
+
 };
 
 /// Constructs QIcon instance by a given sdf description
