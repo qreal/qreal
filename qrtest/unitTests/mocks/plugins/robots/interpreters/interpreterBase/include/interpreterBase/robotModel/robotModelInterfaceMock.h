@@ -35,6 +35,8 @@ public:
 
 	MOCK_METHOD2(configureDevice, void (interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::PluggableDeviceInfo const &deviceInfo));
+
+	MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::PluggableDeviceInfo>());
 };
 
 }

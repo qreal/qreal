@@ -10,8 +10,8 @@ CommonRobotModel::CommonRobotModel()
 	: mBrick(new robotParts::Brick())
 	, mDisplay(new robotParts::Display())
 {
-	connect(&mConfiguration, &Configuration::allDevicesConfigured, this, &CommonRobotModel::allDevicesConfigured);
-	connect(this, &CommonRobotModel::connected, this, &CommonRobotModel::onConnected);
+	connect(&mConfiguration, &Configuration::allDevicesConfigured
+			, this, &CommonRobotModel::allDevicesConfigured);
 }
 
 CommonRobotModel::~CommonRobotModel()
@@ -107,12 +107,13 @@ void CommonRobotModel::addAllowedConnection(PortInfo const &port, QList<Pluggabl
 
 void CommonRobotModel::onConnected()
 {
+	emit connected(true);
 	mConfiguration.unlockConfiguring();
 }
 
 void CommonRobotModel::doConnectToRobot()
 {
-	emit connected(true);
+	onConnected();
 }
 
 void CommonRobotModel::configureKnownDevices()

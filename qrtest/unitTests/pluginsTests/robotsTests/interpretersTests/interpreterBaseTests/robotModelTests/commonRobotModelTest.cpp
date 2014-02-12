@@ -31,9 +31,14 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 
 	QObject::connect(&model, &CommonRobotModel::allDevicesConfigured, [&] () { model.disconnectFromRobot(); });
 
-	EXPECT_CALL(*this, onConnected(_)).Times(1);
-	EXPECT_CALL(*this, onAllDevicesConfigured()).Times(1);
-	EXPECT_CALL(*this, onDisconnected()).Times(1);
+	{
+		InSequence dummy;
+		Q_UNUSED(dummy);
+
+		EXPECT_CALL(*this, onConnected(_)).Times(1);
+		EXPECT_CALL(*this, onAllDevicesConfigured()).Times(1);
+		EXPECT_CALL(*this, onDisconnected()).Times(1);
+	}
 
 	model.init();
 

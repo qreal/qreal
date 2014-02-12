@@ -16,6 +16,7 @@ public:
 	MOCK_CONST_METHOD0(friendlyName, QString());
 	MOCK_CONST_METHOD0(needsConnection, bool());
 //	MOCK_METHOD0(doConnectToRobot, void());
+	MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::PluggableDeviceInfo>());
 };
 
 class CommonRobotModelTest : public testing::Test

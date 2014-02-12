@@ -52,7 +52,10 @@ protected:
 
 	ConfigurationInterface &mutableConfiguration();
 
-private slots:
+	/// Method that shall be called by descendant model when it finishes connecting to a robot. Descendants shall
+	/// not explicitly emit connected(), as there is a need to configure sensors immediately after that.
+	/// @todo Not good at all, too many assumptions about descendant implementation. Seems that there shall be separate
+	///       entities for plugins that handle plugin-specific activities, or it will quickly become "yo-yo" antipattern.
 	void onConnected();
 
 private:
