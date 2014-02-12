@@ -1,8 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
-
-#include "../layoutTool.h"
+#include <qrgui/elementEditor/widgetsEdit/tools/labelTool.h>
 
 namespace qReal
 {

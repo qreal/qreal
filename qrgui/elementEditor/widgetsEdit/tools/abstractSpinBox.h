@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QtWidgets/QAbstractSpinBox>
+#include <qrgui/elementEditor/widgetsEdit/private/toolController.h>
 
 #include "tool.h"
-#include "../private/toolController.h"
 
 namespace qReal
 {

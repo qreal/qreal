@@ -2,8 +2,8 @@
 
 #include <QtCore/QVector>
 #include <QtWidgets/QGraphicsGridLayout>
+#include <qrgui/elementEditor/widgetsEdit/tools/labelTool.h>
 
-#include "../layoutTool.h"
 #include "layoutHelperBase.h"
 
 namespace qReal

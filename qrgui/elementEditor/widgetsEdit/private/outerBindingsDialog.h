@@ -4,7 +4,7 @@
 #include <QtWidgets/QTableWidgetItem>
 #include <QtWidgets/QComboBox>
 
-#include "../propertyBinding/propertyProxyBase.h"
+#include <qrgui/elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.h>
 
 namespace Ui
 {

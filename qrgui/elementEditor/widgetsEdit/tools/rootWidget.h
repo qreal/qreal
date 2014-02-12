@@ -3,8 +3,7 @@
 #include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
 #include <qrgui/editorPluginInterface/elementRepoInterface.h>
-
-#include "../umllib/sdfRenderer.h"
+#include <umllib/sdfRenderer.h>
 
 namespace qReal
 {
