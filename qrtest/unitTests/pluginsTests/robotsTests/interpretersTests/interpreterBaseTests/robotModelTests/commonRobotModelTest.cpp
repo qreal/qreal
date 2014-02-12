@@ -24,11 +24,11 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 {
 	CommonRobotModelDescendantMock model;
 
-//	ProtocolTester protocolTester;
+	ProtocolTester protocolTester;
 
-//	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
-
-	QEventLoop eventLoop;
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::disconnected, "disconnected");
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
 	QTimer connectionTimer;
 	connectionTimer.setInterval(1000);
@@ -37,14 +37,6 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 		model.connectionDone();
 	});
 
-	QTimer checkTimer;
-	checkTimer.setInterval(1200);
-	checkTimer.setSingleShot(true);
-	QObject::connect(&checkTimer, &QTimer::timeout, [&] () {
-		eventLoop.exit(0);
-	});
-
-	checkTimer.start();
 
 	ON_CALL(model, doConnectToRobot()).WillByDefault(Invoke([&] () {
 		connectionTimer.start();
@@ -52,24 +44,7 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 
 	EXPECT_CALL(model, doConnectToRobot()).Times(AtLeast(1));
 
-
-	QObject::connect(&model, &CommonRobotModel::connected, [&] (bool x) {
-		this->onConnected(x);
-	});
-
-	QObject::connect(&model, &CommonRobotModel::allDevicesConfigured, [&] () { this->onAllDevicesConfigured(); });
-	QObject::connect(&model, &CommonRobotModel::disconnected, [&] () { this->onDisconnected(); });
-
 	QObject::connect(&model, &CommonRobotModel::allDevicesConfigured, [&] () { model.disconnectFromRobot(); });
-
-	{
-		InSequence dummy;
-		Q_UNUSED(dummy);
-
-		EXPECT_CALL(*this, onConnected(_)).Times(1);
-		EXPECT_CALL(*this, onAllDevicesConfigured()).Times(1);
-		EXPECT_CALL(*this, onDisconnected()).Times(1);
-	}
 
 	model.init();
 
@@ -78,7 +53,9 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 
 	model.connectToRobot();
 
-	eventLoop.exec();
+	protocolTester.wait(1200);
 
-//	ASSERT_TRUE(protocolTester.allIsGood());
+	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
+	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
+	ASSERT_TRUE(protocolTester.isSignalEmitted("disconnected"));
 }

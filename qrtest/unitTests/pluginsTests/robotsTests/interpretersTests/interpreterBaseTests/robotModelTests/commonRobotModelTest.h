@@ -23,10 +23,6 @@ public:
 		MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::PluggableDeviceInfo>());
 		void connectionDone() { onConnected(); }
 	};
-
-	MOCK_METHOD1(onConnected, void(bool success));
-	MOCK_METHOD0(onDisconnected, void());
-	MOCK_METHOD0(onAllDevicesConfigured, void());
 };
 
 }
