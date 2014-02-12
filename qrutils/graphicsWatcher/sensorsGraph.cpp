@@ -172,7 +172,7 @@ void SensorsGraph::updateValues()
 	TrackObject currentObject(mCurrentSlot);
 	int const index = mWatchList.indexOf(currentObject);
 	if (index != notExists) {
-		sensorsInput(mCurrentSlot, variables[mWatchList.at(index).inParserName]->property("Number").toDouble());
+		sensorsInput(mCurrentSlot, variables[mWatchList.at(index).inParserName]->value().toDouble());
 	}
 }
 

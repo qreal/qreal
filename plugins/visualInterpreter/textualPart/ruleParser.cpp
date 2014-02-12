@@ -249,7 +249,7 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 
 		setProperty(id, prop, QString(result ? "true" : "false"));
 	} else {
-		Number result = parseExpression(stream, pos);
+		Number *result = parseExpression(stream, pos);
 		if (hasErrors()) {
 			return;
 		}
@@ -266,7 +266,7 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 			return;
 		}
 
-		setProperty(id, prop, result.property("Number").toString());
+		setProperty(id, prop, result->toString());
 	}
 
 }
@@ -429,40 +429,46 @@ void RuleParser::parseVarPart(QString const &stream, int &pos)
 				}
 				skip(stream, pos);
 
-				Number n;
 				if (isEndOfStream(stream, pos)) {
 					return;
 				}
 				switch (stream.at(pos).toLatin1()) {
 				case '=':
-					pos++;
-					skip(stream, pos);
-					n = parseExpression(stream, pos);
-					n.setProperty("Type", curType);
-					mVariables[variable] = n;
-					break;
+					{
+						pos++;
+						skip(stream, pos);
+						Number *temp = parseExpression(stream, pos);
+						temp->setType(curType);
+						mVariables[variable] = temp;
+						break;
+					}
 				case ',':
-					pos++;
-					mVariables[variable] = n;
-					skip(stream, pos);
-					if (pos == stream.length()) {
-						error(unexpectedEndOfStream, QString::number(pos + 1));
-						return;
+					{
+						pos++;
+						mVariables[variable] = new Number();
+						skip(stream, pos);
+						if (pos == stream.length()) {
+							error(unexpectedEndOfStream, QString::number(pos + 1));
+							return;
+						}
+						if (stream.at(pos).toLatin1() == ';') {
+							error(unexpectedSymbol, QString::number(pos + 1),
+									tr("\'letter"),
+									QString(stream.at(pos).toLatin1())
+							);
+							return;
+						}
+						break;
 					}
-					if (stream.at(pos).toLatin1() == ';') {
-						error(unexpectedSymbol, QString::number(pos + 1),
-								tr("\'letter"),
-								QString(stream.at(pos).toLatin1())
-						);
-						return;
-					}
-					break;
 				default:
-					if (!checkForColon(stream, pos)) {
-						return;
+					{
+						if (!checkForColon(stream, pos)) {
+							return;
+						}
+
+						mVariables[variable] = new Number();
+						break;
 					}
-					mVariables[variable] = n;
-					break;
 				}
 				skip(stream, pos);
 			}
