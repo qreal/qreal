@@ -1,121 +1,86 @@
 #include "number.h"
+#include "mathUtils/math.h"
 
 using namespace utils;
 
-Number::Number(QVariant const &n, Type t)
-	: mNumber(n)
-	, mType(t)
+Number::Number(QVariant const &value, Type type)
+	: mValue(value)
+	, mType(type)
 {
 }
 
 Number::Number()
 {
 	mType = Number::intType;
-	mNumber = 0;
+	mValue = 0;
 }
 
 Number::~Number()
 {
 }
 
-QVariant Number::property(QString const &name) const
+Number::Type Number::type() const
 {
-	if (name.compare("Number") == 0) {
-		return mNumber;
-	} else if (name.compare("Type") == 0) {
-		return mType;
-	}
-
-	return QVariant();
+	return mType;
 }
 
-void Number::setProperty(QString const &name, QVariant const &value)
+void Number::setType(Number::Type type)
 {
-	if (name.compare("Number") == 0) {
-		mNumber = value;
-	} else if (name.compare("Type") == 0) {
-		mType = value.toInt() ? Number::intType : Number::doubleType;
-	}
+	mType = type;
+}
+
+QVariant Number::value() const
+{
+	return mValue;
+}
+
+void Number::setValue(QVariant const &value)
+{
+	mValue = value;
 }
 
 QString Number::toString() const
 {
-	return mNumber.toString();
+	return value().toString();
 }
 
 void Number::operator+=(Number const &add)
 {
-	Number::Type t = add.property("Type").toInt() ? Number::intType : Number::doubleType;
-	QVariant val = add.property("Number");
-	if (mType == t) {
-		switch (t) {
-			case Number::intType:
-				mNumber = mNumber.toInt() + val.toInt();
-				break;
-			case Number::doubleType:
-				mNumber = mNumber.toDouble() + val.toDouble();
-				break;
-		}
+	if (mType == intType && add.type() == intType) {
+		mValue = mValue.toInt() + add.value().toInt();
 	} else {
 		mType = Number::doubleType;
-		mNumber = mNumber.toDouble() + val.toDouble();
+		mValue = mValue.toDouble() + add.value().toDouble();
 	}
 }
 
 void Number::operator-=(Number const &sub)
 {
-	Number::Type t = sub.property("Type").toInt() ? Number::intType : Number::doubleType;
-	QVariant val = sub.property("Number");
-	if (mType == t) {
-		switch (t) {
-			case Number::intType:
-				mNumber = mNumber.toInt() - val.toInt();
-				break;
-			case Number::doubleType:
-				mNumber = mNumber.toDouble() - val.toDouble();
-				break;
-		}
+	if (mType == intType && sub.type() == intType) {
+		mValue = mValue.toInt() - sub.value().toInt();
 	} else {
 		mType = Number::doubleType;
-		mNumber = mNumber.toDouble() - val.toDouble();
+		mValue = mValue.toDouble() - sub.value().toDouble();
 	}
 }
 
 void Number::operator*=(Number const &mult)
 {
-	Number::Type t = mult.property("Type").toInt() ? Number::intType : Number::doubleType;
-	QVariant val = mult.property("Number");
-	if (mType == t) {
-		switch (t) {
-			case Number::intType:
-				mNumber = mNumber.toInt() * val.toInt();
-				break;
-			case Number::doubleType:
-				mNumber = mNumber.toDouble() * val.toDouble();
-				break;
-		}
+	if (mType == intType && mult.type() == intType) {
+		mValue = mValue.toInt() * mult.value().toInt();
 	} else {
 		mType = Number::doubleType;
-		mNumber = mNumber.toDouble() * val.toDouble();
+		mValue = mValue.toDouble() * mult.value().toDouble();
 	}
 }
 
 void Number::operator/=(Number const &div)
 {
-	Number::Type t = div.property("Type").toInt() ? Number::intType : Number::doubleType;
-	QVariant val = div.property("Number");
-	if (mType == t) {
-		switch (t) {
-			case Number::intType:
-				mNumber = mNumber.toInt() / val.toInt();
-				break;
-			case Number::doubleType:
-				mNumber = mNumber.toDouble() / val.toDouble();
-				break;
-		}
+	if (mType == intType && div.type() == intType) {
+		mValue = mValue.toInt() / div.value().toInt();
 	} else {
 		mType = Number::doubleType;
-		mNumber = mNumber.toDouble() / val.toDouble();
+		mValue = mValue.toDouble() / div.value().toDouble();
 	}
 }
 
@@ -123,10 +88,10 @@ Number Number::operator-()
 {
 	switch (mType) {
 		case Number::intType:
-			mNumber = -mNumber.toInt();
+			mValue = -mValue.toInt();
 			break;
 		case Number::doubleType:
-			mNumber = -mNumber.toDouble();
+			mValue = -mValue.toDouble();
 			break;
 	}
 
@@ -135,31 +100,20 @@ Number Number::operator-()
 
 bool Number::operator<(Number const &arg)
 {
-	Number::Type t = arg.property("Type").toInt() ? Number::intType : Number::doubleType;
-	QVariant val = arg.property("Number");
-	if (mType == Number::intType && t == Number::intType) {
-		return mNumber.toInt() < val.toInt();
-	} else if (mType == Number::intType && t == Number::doubleType) {
-		return mNumber.toInt() < val.toDouble();
-	} else if (mType == Number::doubleType && t == Number::intType) {
-		return mNumber.toDouble() < val.toInt();
-	} else {
-		return mNumber.toDouble() < val.toDouble();
-	}
+	return mValue.toDouble() < arg.value().toDouble();
 }
 
 bool Number::operator==(Number const &arg)
 {
-	Number::Type t = arg.property("Type").toInt() ? Number::intType : Number::doubleType;
-	QVariant val = arg.property("Number");
-	if (mType == Number::intType && t == Number::intType) {
-		return mNumber.toInt() == val.toInt();
-	} else if (mType == Number::intType && t == Number::doubleType) {
-		return mNumber.toInt() == val.toDouble();
-	} else if (mType == Number::doubleType && t == Number::intType) {
-		return mNumber.toDouble() == val.toInt();
+	Number::Type const argType = arg.type();
+	if (mType == Number::intType && argType == Number::intType) {
+		return mValue.toInt() == arg.value().toInt();
+	} else if (mType == Number::intType && argType == Number::doubleType) {
+		return mValue.toInt() == arg.value().toDouble();
+	} else if (mType == Number::doubleType && argType == Number::intType) {
+		return mValue.toDouble() == arg.value().toInt();
 	} else {
-		return mNumber.toDouble() == val.toDouble();
+		return mathUtils::Math::eq(mValue.toDouble(), arg.value().toDouble());
 	}
 }
 

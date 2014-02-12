@@ -15,13 +15,17 @@ public:
 	};
 
 public:
-	Number(QVariant const &n, Type t);
+	Number(QVariant const &value, Type type);
 	Number();
 	virtual ~Number();
 
-	virtual QVariant property(QString const &name) const;
-	void setProperty(QString const &name, QVariant const &value);
-	virtual QString toString() const;
+	Type type() const;
+	void setType(Type type);
+
+	virtual QVariant value() const;
+	void setValue(QVariant const &value);
+
+	QString toString() const;
 
 	void operator+=(Number const &add);
 	void operator-=(Number const &sub);
@@ -36,7 +40,7 @@ public:
 	bool operator!=(Number const &arg);
 
 protected:
-	QVariant mNumber;
+	QVariant mValue;
 	Type mType;
 };
 

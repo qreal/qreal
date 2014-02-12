@@ -246,7 +246,7 @@ Number *ExpressionsParser::parseTerm(QString const &stream, int &pos)
 					}
 				}
 			} else if (mVariables.contains(variable)) {
-				res = new Number(*mVariables[variable]);
+				res = new Number(mVariables[variable]->value(), mVariables[variable]->type());
 			} else {
 				error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
 			}
@@ -323,18 +323,16 @@ void ExpressionsParser::parseCommand(QString const &stream, int &pos)
 		Number *n = parseExpression(stream, pos);
 		if (!hasErrors()) {
 			bool const containsVariable = mVariables.keys().contains(variable);
-			Number::Type const t1 = containsVariable
-					? (mVariables[variable]->property("Type").toInt() ? Number::intType : Number::doubleType)
-					: Number::intType;
-			Number::Type const t2 = n->property("Type").toInt() ? Number::intType : Number::doubleType;
+			Number::Type const t1 = containsVariable ? mVariables[variable]->type() : Number::intType;
+			Number::Type const t2 = n->type();
 			if (!containsVariable || t1 == t2) {
 				mVariables[variable] = n;
 			} else {
 				if (t1 == Number::intType) {
-					mVariables[variable]->setProperty("Number", n->property("Number").toInt());
+					mVariables[variable]->setValue(n->value().toInt());
 					error(typesMismatch, QString::number(typesMismatchIndex + 1), "\'int\'", "\'double\'");
 				} else {
-					mVariables[variable]->setProperty("Number", n->property("Number").toDouble());
+					mVariables[variable]->setValue(n->value().toDouble());
 				}
 
 				delete n;
@@ -369,8 +367,8 @@ void ExpressionsParser::parseProcess(QString const &stream, int &pos, const Id &
 
 bool ExpressionsParser::parseSingleComprasion(QString const &stream, int &pos)
 {
-	QScopedPointer<Number> left(parseExpression(stream, pos));
-	QScopedPointer<Number> right;
+	Number *left = parseExpression(stream, pos);
+	Number *right = nullptr;
 	if (hasErrors() || isEndOfStream(stream, pos)) {
 		return false;
 	}
@@ -380,8 +378,8 @@ bool ExpressionsParser::parseSingleComprasion(QString const &stream, int &pos)
 		pos++;
 		if (checkForEqual(stream, pos)) {
 			pos++;
-			right.reset(parseExpression(stream, pos));
-			return left == right;
+			right = parseExpression(stream, pos);
+			return *left == *right;
 		} else {
 			return false;
 		}
@@ -390,8 +388,8 @@ bool ExpressionsParser::parseSingleComprasion(QString const &stream, int &pos)
 		pos++;
 		if (checkForEqual(stream, pos)) {
 			pos++;
-			right.reset(parseExpression(stream, pos));
-			return left != right;
+			right = parseExpression(stream, pos);
+			return *left != *right;
 		} else {
 			return false;
 		}
@@ -400,22 +398,22 @@ bool ExpressionsParser::parseSingleComprasion(QString const &stream, int &pos)
 		pos++;
 		if (pos < stream.length() && stream.at(pos).toLatin1() == '=') {
 			pos++;
-			right.reset(parseExpression(stream, pos));
-			return left.data() <= right.data();
+			right = parseExpression(stream, pos);
+			return *left <= *right;
 		} else {
-			right.reset(parseExpression(stream, pos));
-			return left.data() < right.data();
+			right = parseExpression(stream, pos);
+			return *left < *right;
 		}
 		break;
 	case '>':
 		pos++;
 		if (pos < stream.length() && stream.at(pos).toLatin1() == '=') {
 			pos++;
-			right.reset(parseExpression(stream, pos));
-			return left.data() >= right.data();
+			right = parseExpression(stream, pos);
+			return *left >= *right;
 		} else {
-			right.reset(parseExpression(stream, pos));
-			return left.data() > right.data();
+			right = parseExpression(stream, pos);
+			return *left > *right;
 		}
 		break;
 	}
@@ -715,7 +713,7 @@ bool ExpressionsParser::isFunction(QString const &variable)
 Number *ExpressionsParser::applyFunction(QString const &variable, Number *value)
 {
 	Number *result;
-	double argument = value->property("Number").toDouble();
+	double argument = value->value().toDouble();
 	if (variable == "cos") {
 		result = new Number(cos(argument), Number::doubleType);
 	} else if (variable == "sin") {

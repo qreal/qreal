@@ -12,16 +12,7 @@ ComputableNumber::ComputableNumber(IntComputer const &intComputer)
 {
 }
 
-QVariant ComputableNumber::property(QString const &name) const
+QVariant ComputableNumber::value() const
 {
-	if (name != "Number") {
-		return Number::property(name);
-	}
-
 	return mComputer();
-}
-
-QString ComputableNumber::toString() const
-{
-	return QString::number(mComputer());
 }

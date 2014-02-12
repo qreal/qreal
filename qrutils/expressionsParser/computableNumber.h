@@ -17,8 +17,7 @@ public:
 
 	explicit ComputableNumber(IntComputer const &intComputer);
 
-	QVariant property(QString const &name) const override;
-	QString toString() const override;
+	QVariant value() const override;
 
 private:
 	IntComputer mComputer;

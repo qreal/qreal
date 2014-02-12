@@ -474,7 +474,7 @@ void Interpreter::responseSlotC(int encoderValue)
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
-	mParser->variables()[sensorVariableName]->setProperty("Number", sensorValue);
+	mParser->variables()[sensorVariableName]->setValue(sensorValue);
 	Tracer::debug(
 			tracer::enums::autoupdatedSensorValues
 			, "Interpreter::updateSensorValues"
