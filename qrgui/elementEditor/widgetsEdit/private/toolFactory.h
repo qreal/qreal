@@ -5,9 +5,9 @@
 #include <QtCore/QListIterator>
 #include <QtGui/QPixmap>
 #include <QtWidgets/QListWidgetItem>
+#include <qrgui/elementEditor/widgetsEdit/tools/tool.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/root.h>
 
-#include "../tools/tool.h"
-#include "../tools/root.h"
 #include "toolController.h"
 
 namespace qReal

@@ -1,10 +1,10 @@
 #pragma once
 
 #include <QtWidgets/QComboBox>
+#include <qrgui/elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.h>
 
 #include "tool.h"
 #include "propertyEditor.h"
-#include "../propertyBinding/propertyProxyBase.h"
 
 namespace qReal
 {

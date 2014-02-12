@@ -2,10 +2,10 @@
 
 #include <QtCore/QDebug>
 #include <QtWidgets/QWidget>
+#include <umllib/sdfRenderer.h>
 
 #include "rootWidget.h"
 #include "layoutTool.h"
-#include "../../../umllib/sdfRenderer.h"
 
 namespace qReal
 {

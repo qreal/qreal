@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QtWidgets/QDoubleSpinBox>
+#include <qrgui/elementEditor/widgetsEdit/private/toolController.h>
 
 #include "abstractSpinBox.h"
-#include "../private/toolController.h"
 #include "propertyEditor.h"
 
 namespace qReal

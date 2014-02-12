@@ -2,9 +2,8 @@
 
 #include <QtCore/QString>
 #include <QtWidgets/QWidget>
-
-#include "../../../umllib/nodeElement.h"
-#include "../../../editorPluginInterface/propertyEditorInterface.h"
+#include <qrgui/umllib/nodeElement.h>
+#include <editorPluginInterface/propertyEditorInterface.h>
 
 namespace qReal
 {

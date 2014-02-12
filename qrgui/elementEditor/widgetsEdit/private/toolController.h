@@ -4,7 +4,7 @@
 #include <QtCore/QList>
 #include <QtCore/QPointF>
 
-#include "../tools/layoutHelpers/layoutTypes.h"
+#include <qrgui/elementEditor/widgetsEdit/tools/layoutHelpers/layoutTypes.h>
 #include "propertyBrowserController.h"
 
 namespace qReal

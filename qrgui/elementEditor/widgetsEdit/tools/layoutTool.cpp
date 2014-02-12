@@ -2,9 +2,9 @@
 #include <QtWidgets/QGraphicsSceneDragDropEvent>
 #include <QtWidgets/QGraphicsLinearLayout>
 #include <QtGui/QPainter>
+#include <qrgui/elementEditor/widgetsEdit/private/toolFactory.h>
 
 #include "layoutTool.h"
-#include "../private/toolFactory.h"
 #include "layoutHelpers/layoutHelperFactory.h"
 
 using namespace qReal::widgetsEdit;

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QtWidgets/QPlainTextEdit>
+#include <qrgui/elementEditor/widgetsEdit/private/toolController.h>
 
 #include "abstractScrollArea.h"
-#include "../private/toolController.h"
 #include "propertyEditor.h"
 
 namespace qReal
