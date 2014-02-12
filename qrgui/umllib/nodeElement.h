@@ -10,6 +10,7 @@
 #include <QtWidgets/QGraphicsSceneHoverEvent>
 #include <QtWidgets/QWidget>
 #include <QtCore/QList>
+
 #include <QtCore/QTimer>
 
 #include "umllib/sdfRenderer.h"
@@ -21,10 +22,13 @@
 #include "umllib/private/sceneGridHandler.h"
 #include "umllib/private/umlPortHandler.h"
 #include "umllib/private/portHandler.h"
+#include "umllib/private/nodeElementLayoutFactory.h"
+#include "umllib/private/widgetsHelper.h"
 
 #include "umllib/serializationData.h"
 
 namespace qReal {
+class WidgetsHelper;
 
 namespace commands {
 class ResizeCommand;
@@ -62,7 +66,7 @@ public:
 	QRectF foldedContentsRect() const;
 
 	virtual void updateData();
-	void setGeometry(QRectF const &geom);
+	virtual void setGeom(QRectF const &geom);
 	void setPos(QPointF const &pos);
 	void setPos(qreal x, qreal y);
 
@@ -73,7 +77,6 @@ public:
 
 	void storeGeometry();
 	virtual void setName(QString const &name, bool withUndoRedo = false);
-	//void shift(QPointF const &pos, EdgeElement* called);
 
 	/// Returns port position relative to the top left corner of NodeElement
 	/// (position of NodeElement).
@@ -117,7 +120,7 @@ public:
 
 	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 
-	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
+	virtual QList<ContextMenuAction *> contextMenuActions(QPointF const &pos);
 	void switchAlignment(bool isSwitchedOn);
 	void showAlignment(bool isChecked);
 
@@ -133,7 +136,7 @@ public:
 	virtual void checkConnectionsToPort();
 
 	/** @brief Drawing placeholder at the appropriate position (calculated using event data) */
-	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF scenePos);
+	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF const &scenePos);
 	void erasePlaceholder(bool);
 
 	/**
@@ -147,6 +150,8 @@ public:
 
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
+
+	qReal::layouts::NodeElementLayoutFactory *layoutFactory() const;
 
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
@@ -185,6 +190,8 @@ public slots:
 
 private slots:
 	void updateNodeEdges();
+	/// Sets QReal-engine geometry to Qt-engine one
+	void synchronizeGeometries();
 	void initRenderedDiagram();
 
 private:
@@ -229,7 +236,7 @@ private:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
+	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 	virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
@@ -254,6 +261,7 @@ private:
 
 	void initEmbeddedLinkers();
 
+	bool inLayout() const;
 	QRectF diagramRenderingRect() const;
 
 	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
@@ -303,6 +311,11 @@ private:
 
 	NodeData mData;
 
+	qReal::layouts::NodeElementLayoutFactory *mLayoutFactory;
+	WidgetsHelper *mWidgetsHelper;
+
+	int mTimeOfUpdate;
+	QTimer *mTimer;
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;
 };

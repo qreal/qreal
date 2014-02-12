@@ -1,0 +1,32 @@
+    <widget-template>
+	<Root layout="NoLayout">
+	    <CheckBox>
+		<property width="87" propertyName="geometry" x="10" y="47" height="22" type="Rect"/>
+		<property propertyName="enabled" type="Bool" value="true"/>
+		<property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+		<property width="0" propertyName="minimumSize" height="0" type="Size"/>
+		<property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+		<property propertyName="toolTip" type="String" value=""/>
+		<property propertyName="autoRepeat" type="Bool" value="false"/>
+		<property propertyName="autoRepeatDelay" type="Int" value="300"/>
+		<property propertyName="transparent" type="Bool" value="true"/>
+		<property propertyName="autoRepeatInterval" type="Int" value="100"/>
+		<property propertyName="checked" type="Bool" value="false"/>
+		<property propertyName="text" type="String" value="Условие"/>
+		<property propertyName="binding" type="String" value="Condition"/>
+	    </CheckBox>
+	    <property width="100" propertyName="geometry" x="0" y="0" height="75" type="Rect"/>
+	    <property propertyName="enabled" type="Bool" value="true"/>
+	    <property propertyName="maximumHeight" type="Int" value="16777215"/>
+	    <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+	    <property propertyName="maximumWidth" type="Int" value="16777215"/>
+	    <property propertyName="minimumHeight" type="Int" value="0"/>
+	    <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+	    <property propertyName="minimumWidth" type="Int" value="0"/>
+	    <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+	    <property propertyName="shapeXml" type="String" value="&lt;picture sizex=&quot;100&quot; sizey=&quot;75&quot;>&#xa;    &lt;rectangle fill=&quot;#ffffff&quot; stroke-style=&quot;none&quot; stroke=&quot;#006400&quot; y1=&quot;0&quot; stroke-width=&quot;0&quot; x1=&quot;0&quot; y2=&quot;74&quot; fill-style=&quot;none&quot; x2=&quot;99&quot;/>&#xa;    &lt;image y1=&quot;0&quot; name=&quot;images/ifBlock.png&quot; x1=&quot;25&quot; y2=&quot;50&quot; x2=&quot;75&quot;/>&#xa;&lt;/picture>&#xa;"/>
+	    <property propertyName="transparent" type="Bool" value="true"/>
+	    <property propertyName="toolTip" type="String" value=""/>
+	</Root>
+    </widget-template>
+

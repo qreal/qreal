@@ -47,7 +47,7 @@ public:
 	virtual void generateExplosionsMap(utils::OutFile &out) = 0;
 
 protected:
-	void copyFields(Type *type) const;
+	virtual void copyFields(Type *type) const;
 	QString nativeContext() const;
 
 	QMap<QString, Property*> mProperties;

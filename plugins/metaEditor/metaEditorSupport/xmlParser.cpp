@@ -1,5 +1,3 @@
-#include "xmlParser.h"
-
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
 #include <QtCore/QPointF>
@@ -8,6 +6,7 @@
 #include <QtGui/QPolygonF>
 #include <QtXml/QDomDocument>
 
+#include "xmlParser.h"
 #include "math.h"
 
 #include "../../../qrrepo/repoApi.h"

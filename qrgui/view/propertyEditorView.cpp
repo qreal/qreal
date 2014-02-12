@@ -89,12 +89,22 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 		QString typeName = mModel->typeName(valueCell).toLower();
 		QStringList values = mModel->enumValues(valueCell);
 		bool isButton = false;
-		if (typeName == "int") {
+		if (typeName == "int" || typeName == "integer") {
 			type = QVariant::Int;
-		} else if (typeName == "bool") {
+		} else if (typeName == "double" || typeName == "float") {
+			type = QVariant::Double;
+		} else if (typeName == "bool" || typeName == "boolean") {
 			type = QVariant::Bool;
 		} else if (typeName == "string") {
 			type = QVariant::String;
+		} else if (typeName == "rect" || typeName == "rectangle") {
+			type = QVariant::Rect;
+		} else if (typeName == "rectf" || typeName == "rectanglef") {
+			type = QVariant::RectF;
+		} else if (typeName == "size") {
+			type = QVariant::Size;
+		}  else if (typeName == "sizef") {
+			type = QVariant::SizeF;
 		} else if (typeName == "code" || typeName == "directorypath") {
 			isButton = true;
 		} else if (!values.isEmpty()) {
@@ -160,7 +170,7 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 	// there are only four types of buttons: shape, reference, text and directory path
 	if (name == "shape") {
-		mMainWindow->openShapeEditor(actualIndex, role, propertyValue, false);
+		mMainWindow->openElementEditor(actualIndex, role, propertyValue, false);
 	} else {
 		QString const typeName = mModel->typeName(index).toLower();
 		if (typeName == "code") {
@@ -199,6 +209,7 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 			value = values.at(intValue);
 		}
 	}
+
 	value = QVariant(value.toString());
 	QVariant const oldValue = mModel->data(index);
 

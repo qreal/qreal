@@ -8,6 +8,13 @@ HEADERS += \
 	$$PWD/rotateItem.h \
 	$$PWD/colorListEditor.h \
 	$$PWD/stylusImpl.h \
+	$$PWD/layoutHandlers/layoutTypes.h \
+	$$PWD/layoutHandlers/layoutHandler.h \
+	$$PWD/layoutHandlers/linearLayoutHandler.h \
+	$$PWD/layoutHandlers/gridLayoutHandler.h \
+	$$PWD/layoutHandlers/layoutHandlerFactory.h \
+	$$PWD/layoutHandlers/gridApproximizer.h \
+	$$PWD/layoutHandlers/gridIndex.h \
 	$$PWD/gridDrawer.h \
 	$$PWD/paintWidget.h \
 	$$PWD/painterInterface.h \
@@ -22,6 +29,12 @@ SOURCES += \
 	$$PWD/colorListEditor.cpp \
 	$$PWD/stylusImpl.cpp \
 	$$PWD/rotateItem.cpp \
+	$$PWD/layoutHandlers/layoutHandler.cpp \
+	$$PWD/layoutHandlers/linearLayoutHandler.cpp \
+	$$PWD/layoutHandlers/gridLayoutHandler.cpp \
+	$$PWD/layoutHandlers/layoutHandlerFactory.cpp \
+	$$PWD/layoutHandlers/gridApproximizer.cpp \
+	$$PWD/layoutHandlers/gridIndex.cpp \
 	$$PWD/gridDrawer.cpp \
 	$$PWD/paintWidget.cpp \
 	$$PWD/painterInterface.cpp \

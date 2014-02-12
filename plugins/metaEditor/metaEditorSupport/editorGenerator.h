@@ -50,6 +50,7 @@ private:
 	bool findPort(QString const &name) const;
 	void setBoolValuesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
 	void setSizesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
+	void setStringsForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
 	static void copyImages(QString const &pathToFile);
 	static QString calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource);
 	static QString calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource);

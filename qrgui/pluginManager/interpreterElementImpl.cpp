@@ -22,8 +22,8 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 			!element.isNull();
 			element = element.nextSiblingElement("label"))
 	{
-		ScalableCoordinate const x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
-		ScalableCoordinate const y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
+		ScalableCoordinate const x = ScalableItem::initCoordinate(element.attribute("x"), width);
+		ScalableCoordinate const y = ScalableItem::initCoordinate(element.attribute("y"), height);
 		QString const center = element.attribute("center", "false");
 		QString const text = element.attribute("text");
 		QString const textBinded = element.attribute("textBinded");
@@ -33,7 +33,7 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 		if (text.isEmpty() && textBinded.isEmpty()) {
 			qDebug() << "ERROR: can't parse label";
 		} else {
-			LabelInterface *title = NULL;
+			qReal::LabelInterface *title = NULL;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
 				title = factory.createLabel(index, x.value(), y.value(), textBinded, readOnly == "true", rotation);
@@ -131,9 +131,10 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 
 void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &portFactory
 		, QList<PortInterface *> &ports, LabelFactoryInterface &labelFactory
-		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
+		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, WidgetsHelperInterface *widgetsHelper, ElementRepoInterface *elementRepo)
 {
 	Q_UNUSED(elementRepo);
+	Q_UNUSED(widgetsHelper);
 	if (mId.element() == "MetaEntityNode") {
 		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
 		QDomDocument classDoc;
@@ -214,7 +215,7 @@ QString InterpreterElementImpl::getResultStr(QStringList const &list, ElementRep
 		if (list.first() == "name") {
 			resultStr = repo->name();
 		} else {
-			resultStr = repo->logicalProperty(list.first());
+			resultStr = repo->logicalProperty(list.first()).toString();
 		}
 	} else {
 		int counter = 1;
@@ -224,7 +225,7 @@ QString InterpreterElementImpl::getResultStr(QStringList const &list, ElementRep
 				if (listElement == "name") {
 					field = repo->name();
 				} else {
-					field = repo->logicalProperty(listElement);
+					field = repo->logicalProperty(listElement).toString();
 				}
 			} else {
 				field = listElement;
@@ -467,6 +468,18 @@ bool InterpreterElementImpl::minimizesToChildren() const
 bool InterpreterElementImpl::maximizesChildren() const
 {
 	return mEditorRepoApi->stringProperty(mId, "maximizeChildren") == "true";
+}
+
+QString InterpreterElementImpl::layout() const
+{
+	//TODO implement
+	return "";
+}
+
+QString InterpreterElementImpl::layoutBinding() const
+{
+	//TODO implement
+	return "";
 }
 
 QStringList InterpreterElementImpl::fromPortTypes() const

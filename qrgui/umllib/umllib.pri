@@ -28,6 +28,8 @@ HEADERS += \
 	$$PWD/private/curveLine.h \
 	$$PWD/private/lineFactory.h \
 	$$PWD/private/edgeArrangeCriteria.h \
+	$$PWD/private/widgetsHelper.h \
+	$$PWD/private/nodeElementLayoutFactory.h \
 
 SOURCES += \
 	$$PWD/edgeElement.cpp \
@@ -59,6 +61,8 @@ SOURCES += \
 	$$PWD/private/curveLine.cpp \
 	$$PWD/private/lineFactory.cpp \
 	$$PWD/private/edgeArrangeCriteria.cpp \
+	$$PWD/private/widgetsHelper.cpp \
+	$$PWD/private/nodeElementLayoutFactory.cpp \
 
 RESOURCES += \
 	$$PWD/contextIcons.qrc \

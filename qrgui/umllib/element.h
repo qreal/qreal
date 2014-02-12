@@ -1,7 +1,9 @@
 #pragma once
 
+#include <QtWidgets/QGraphicsProxyWidget>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QAction>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
@@ -23,7 +25,7 @@ namespace qReal {
 const int kvadratik = 10;
 
 /// base class for an element on a diagram
-class Element : public QObject, public QGraphicsItem, public ElementRepoInterface
+class Element : public QGraphicsProxyWidget, public ElementRepoInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)
@@ -49,15 +51,16 @@ public:
 
 	virtual void connectToPort() {}  // for edge
 	virtual void checkConnectionsToPort() {}  // for node
-	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
+	virtual QList<ContextMenuAction *> contextMenuActions(QPointF const &pos);
 
 	virtual bool initPossibleEdges() = 0;
 	virtual void initTitles();
 	// for inline editing we should be able to change properties value. right now via graphical
 	// representation. also labels could store indices and get data themselves
+
 	virtual void setLogicalProperty(QString const &roleName, QString const &value
 			, bool withUndoRedo = false);
-	QString logicalProperty(QString const &roleName) const;
+	QVariant logicalProperty(QString const &roleName) const;
 
 	virtual void setColorRect(bool bl) = 0;
 
@@ -77,6 +80,9 @@ signals:
 	void switchFolding(bool);
 
 protected:
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	void initTitlesBy(QRectF const& contents);
 	/// Sets titles visibility without state registering
 	void setTitlesVisiblePrivate(bool visible);

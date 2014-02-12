@@ -30,9 +30,9 @@ private:
 	static int const mMinSize = 10;
 
 	/**
-	 * Sorts child items in case node has
-	 * sortChildren container property.
-	 */
+	* Sorts child items in case node has
+	* sortChildren container property.
+	*/
 	void sortChildrenIfNeeded() const;
 
 	/**
