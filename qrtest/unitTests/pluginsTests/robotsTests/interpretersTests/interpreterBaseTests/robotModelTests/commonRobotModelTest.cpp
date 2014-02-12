@@ -1,11 +1,8 @@
 #include "commonRobotModelTest.h"
 
-#include <QtCore/QEventLoop>
-#include <QtCore/QDebug>
-
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 
-#include "utils/protocolTester.h"
+#include "utils/signalsTester.h"
 
 using namespace qrTest;
 using namespace qrTest::robotsTests::interpreterBaseTests;
@@ -15,36 +12,28 @@ using namespace interpreterBase::robotModel;
 
 using namespace ::testing;
 
+/// Basic model constructor check.
 TEST_F(CommonRobotModelTest, initializationTest)
 {
 	CommonRobotModelDescendantMock model;
 }
 
+/// Test for general model lifecycle --- creation, initialization, connecting, configuration and disconnecting, if all
+/// is well.
 TEST_F(CommonRobotModelTest, lifecycleTest)
 {
 	CommonRobotModelDescendantMock model;
 
-	ProtocolTester protocolTester;
+	SignalsTester protocolTester(SignalsTester::inOrder);
 
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
-	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::disconnected, "disconnected");
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::disconnected, "disconnected");
 
-	QTimer connectionTimer;
-	connectionTimer.setInterval(1000);
-	connectionTimer.setSingleShot(true);
-	QObject::connect(&connectionTimer, &QTimer::timeout, [&] () {
-		model.connectionDone();
-	});
-
-
-	ON_CALL(model, doConnectToRobot()).WillByDefault(Invoke([&] () {
-		connectionTimer.start();
-	}));
-
-	EXPECT_CALL(model, doConnectToRobot()).Times(AtLeast(1));
-
-	QObject::connect(&model, &CommonRobotModel::allDevicesConfigured, [&] () { model.disconnectFromRobot(); });
+	QObject::connect(&model, &CommonRobotModel::allDevicesConfigured
+			, [&] () {
+				model.disconnectFromRobot();
+			});
 
 	model.init();
 

@@ -78,7 +78,11 @@ QList<PluggableDeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port
 
 void CommonRobotModel::configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo)
 {
-	mConfiguration.configureDevice(createDevice(port, deviceInfo));
+	robotParts::PluggableDevice *device = createDevice(port, deviceInfo);
+	if (device) {
+		mConfiguration.configureDevice(device);
+	}
+	/// @todo Handle error
 }
 
 QList<PluggableDeviceInfo> CommonRobotModel::convertibleBases() const
@@ -125,4 +129,7 @@ robotParts::PluggableDevice * CommonRobotModel::createDevice(
 {
 	Q_UNUSED(port);
 	Q_UNUSED(deviceInfo);
+
+	/// @todo Handle error?
+	return nullptr;
 }

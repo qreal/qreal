@@ -140,7 +140,7 @@ void Configuration::reconfigureDevices()
 
 void Configuration::checkAllDevicesConfigured()
 {
-	if (mPendingDevices.isEmpty() && mConfigurationInProgress.isEmpty() && mWasConfigurationRequest) {
+	if (!mLocked && mPendingDevices.isEmpty() && mConfigurationInProgress.isEmpty() && mWasConfigurationRequest) {
 		mWasConfigurationRequest = false;
 		emit allDevicesConfigured();
 	}
