@@ -1,5 +1,7 @@
 QT += widgets
 
+CONFIG += c++11
+
 INCLUDEPATH += \
 	$$PWD/../../.. \
 	$$PWD/../../../qrgui/ \
