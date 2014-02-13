@@ -366,7 +366,7 @@ enums::variableType::VariableType Variables::expressionType(QString const &expre
 
 void Variables::appendManualDeclaration(QString const &variables)
 {
-	if (!mManualDeclarations.contains(variables)) {
+	if (!mManualDeclarations.contains(variables) && !variables.isEmpty()) {
 		mManualDeclarations << variables;
 	}
 }

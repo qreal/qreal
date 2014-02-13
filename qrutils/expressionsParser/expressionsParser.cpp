@@ -235,10 +235,9 @@ Number *ExpressionsParser::parseTerm(QString const &stream, int &pos)
 			QString variable = parseIdentifier(stream, pos);
 			if (isFunction(variable)) {
 				skip(stream, pos);
-				Number *value;
 				if (checkForOpeningBracket(stream, pos)) {
 					pos++;
-					value = parseExpression(stream, pos);
+					Number *value = parseExpression(stream, pos);
 					if (checkForClosingBracket(stream, pos)) {
 						pos++;
 						res = applyFunction(variable, value);

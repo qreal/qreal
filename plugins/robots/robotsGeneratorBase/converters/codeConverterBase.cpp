@@ -24,10 +24,10 @@ CodeConverterBase::~CodeConverterBase()
 
 QString CodeConverterBase::convert(QString const &data) const
 {
-	return replaceFunctionInvocations(replaceSensorAndEncoderVariables(data)).trimmed();
+	return replaceFunctionInvocations(replaceSystemVariables(data)).trimmed();
 }
 
-QString CodeConverterBase::replaceSensorAndEncoderVariables(QString const &expression) const
+QString CodeConverterBase::replaceSystemVariables(QString const &expression) const
 {
 	QString result = expression;
 	for (int port = 1; port <= 4; ++port) {
@@ -38,6 +38,8 @@ QString CodeConverterBase::replaceSensorAndEncoderVariables(QString const &expre
 	result.replace("EncoderA", encoderExpression("A"));
 	result.replace("EncoderB", encoderExpression("B"));
 	result.replace("EncoderC", encoderExpression("C"));
+
+	result.replace("Time", timelineExpression());
 	return result;
 }
 
@@ -107,4 +109,9 @@ QString CodeConverterBase::encoderExpression(QString const &port) const
 	// TODO: rewrite for arbitary case
 	result.replace("@@PORT@@", mOutputConverter->convert(port));
 	return result;
+}
+
+QString CodeConverterBase::timelineExpression() const
+{
+	return readTemplate("whatTime.t");
 }
