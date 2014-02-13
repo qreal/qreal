@@ -18,7 +18,9 @@ void BlocksTableTest::SetUp()
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_)).Times(0);
 
 	ON_CALL(mBlocksFactoryManager, block(_)).WillByDefault(
-			Invoke([&] (qReal::Id const &id) { return blocksFactory->block(id); } )
+			Invoke([=] (qReal::Id const &id) {
+					return blocksFactory->block(id);
+			} )
 			);
 	EXPECT_CALL(mBlocksFactoryManager, block(_)).Times(AtLeast(0));
 
