@@ -22,12 +22,12 @@ public:
 	public:
 		/// Constructor.
 		/// @param immediateConnection - if true, model connects to robot without delay, as 2d model, if false --- after
-		///        one second timeout.
+		///        some timeout.
 		CommonRobotModelDescendantMock(bool immediateConnection = false)
 			: mImmediateConnection(immediateConnection)
 		{
 			if (!immediateConnection) {
-				mConnectionTimer.setInterval(1000);
+				mConnectionTimer.setInterval(100);
 				mConnectionTimer.setSingleShot(true);
 				QObject::connect(&mConnectionTimer, &QTimer::timeout, [&] () {
 					onConnected();

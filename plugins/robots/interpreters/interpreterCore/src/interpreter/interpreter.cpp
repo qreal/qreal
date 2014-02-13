@@ -42,8 +42,8 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 
 	/// @todo Reinit those connects when model changes, or add these slots to RobotModelManager and connect to them.
 	connect(
-			&mRobotModelManager.model().configuration()
-			, &interpreterBase::robotModel::ConfigurationInterface::allDevicesConfigured
+			&mRobotModelManager
+			, &interpreterBase::robotModel::RobotModelManagerInterface::allDevicesConfigured
 			, this
 			, &Interpreter::sensorsConfiguredSlot
 			);
@@ -60,6 +60,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	qDebug() << "mRobotModelManager.model().init()";
 
 	mRobotModelManager.model().init();
+	mRobotModelManager.model().connectToRobot();
 }
 
 Interpreter::~Interpreter()
@@ -252,7 +253,7 @@ void Interpreter::connectToRobot()
 		mRobotModelManager.model().stopRobot();
 		mRobotModelManager.model().disconnectFromRobot();
 	} else {
-		mRobotModelManager.model().init();
+		mRobotModelManager.model().connectToRobot();
 //		configureSensors(
 //				  static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
 //				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())

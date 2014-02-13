@@ -31,13 +31,18 @@ void InterpreterTest::SetUp()
 	EXPECT_CALL(mModel, init()).Times(AtLeast(1));
 
 	ON_CALL(mModel, configuration()).WillByDefault(ReturnRef(configurationInterfaceMock));
-	EXPECT_CALL(mModel, configuration()).Times(AtLeast(1));
+	EXPECT_CALL(mModel, configuration()).Times(AtLeast(0));
+
+	ON_CALL(mModel, mutableConfiguration()).WillByDefault(ReturnRef(configurationInterfaceMock));
+	EXPECT_CALL(mModel, mutableConfiguration()).Times(AtLeast(0));
+
+	ON_CALL(mModel, connectToRobot()).WillByDefault(
+			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitConnected)
+			);
+	EXPECT_CALL(mModel, connectToRobot()).Times(1);
 
 	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
 	EXPECT_CALL(mModelManager, model()).Times(AtLeast(1));
-
-	ON_CALL(mModel, mutableConfiguration()).WillByDefault(ReturnRef(configurationInterfaceMock));
-	EXPECT_CALL(mModel, mutableConfiguration()).Times(AtLeast(1));
 
 	ON_CALL(mBlocksFactoryManager, addFactory(_)).WillByDefault(Return());
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_)).Times(0);

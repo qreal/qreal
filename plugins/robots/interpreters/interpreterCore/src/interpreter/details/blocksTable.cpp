@@ -24,7 +24,7 @@ BlockInterface *BlocksTable::block(Id const &element)
 
 	BlockInterface *newBlock = mBlocksFactoryManager.block(element);
 
-	/// @todo When it is bossible and what is appropriate behavior for this situation?
+	/// @todo When it is possible and what is appropriate behavior for this situation?
 	if (!newBlock) {
 		throw qReal::Exception("Unknown block");
 	}

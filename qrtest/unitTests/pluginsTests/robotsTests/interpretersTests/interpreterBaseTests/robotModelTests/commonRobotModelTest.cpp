@@ -42,9 +42,67 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 
 	model.connectToRobot();
 
-	protocolTester.wait(1200);
+	protocolTester.wait(120);
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("disconnected"));
+}
+
+/// Test for 2d model lifecycle --- it does not need connection to robot, but still has to emit correct signals.
+TEST_F(CommonRobotModelTest, twoDLifecycleTest)
+{
+	CommonRobotModelDescendantMock model(true);
+
+	SignalsTester protocolTester(SignalsTester::inOrder);
+
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
+
+	model.configureDevice(PortInfo("1")
+			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+
+	model.connectToRobot();
+
+	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
+	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
+
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::disconnected, "disconnected");
+	model.disconnectFromRobot();
+
+	ASSERT_TRUE(protocolTester.isSignalEmitted("disconnected"));
+}
+
+/// Check "real" model behavior when there are no devices to configure.
+TEST_F(CommonRobotModelTest, realNoSensorsLifecycleTest)
+{
+	CommonRobotModelDescendantMock model;
+
+	SignalsTester protocolTester(SignalsTester::inOrder);
+
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
+
+	model.connectToRobot();
+
+	protocolTester.wait(120);
+
+	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
+	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
+}
+
+/// Check "2d" model behavior when there are no devices to configure.
+TEST_F(CommonRobotModelTest, twoDNoSensorsLifecycleTest)
+{
+	CommonRobotModelDescendantMock model(true);
+
+	SignalsTester protocolTester(SignalsTester::inOrder);
+
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
+	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
+
+	model.connectToRobot();
+
+	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
+	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
 }
