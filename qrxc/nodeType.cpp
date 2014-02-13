@@ -263,7 +263,7 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\tvoid init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports\n"
 	<< "\t\t\t\t\t\t\t, qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles\n"
 	<< "\t\t\t\t\t\t\t, qReal::SdfRendererInterface *renderer, WidgetsHelperInterface *widgetsHelper,"
-	   + " qReal::ElementRepoInterface *elementRepo)\n\t\t{\n";
+	<< " qReal::ElementRepoInterface *elementRepo)\n\t\t{\n";
 
 	if (mPorts.empty()) {
 		out() << "\t\t\tQ_UNUSED(portFactory);\n";
