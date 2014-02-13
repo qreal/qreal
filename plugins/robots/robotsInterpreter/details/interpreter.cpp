@@ -56,7 +56,7 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	mInterpretersInterface = &interpretersInterface;
 
 	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter(), [this] () {
-		return mState == interpreting ? QDateTime::currentMSecsSinceEpoch() - mInterpretationStartedTimestamp : 0;
+		return mState == interpreting ? mRobotModel->timeline()->timestamp() - mInterpretationStartedTimestamp : 0;
 	});
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel
 			, mInterpretersInterface->errorReporter(), mParser);
@@ -235,7 +235,7 @@ void Interpreter::sensorsConfiguredSlot()
 
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
-		mInterpretationStartedTimestamp = QDateTime::currentMSecsSinceEpoch();
+		mInterpretationStartedTimestamp = mRobotModel->timeline()->timestamp();
 
 		runTimer();
 

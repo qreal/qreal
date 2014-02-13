@@ -31,6 +31,8 @@ HEADERS += \
 	details/autoconfigurer.h \
 	details/tracer.h \
 	details/debugHelper.h \
+	details/timelineInterface.h \
+	details/realTimeline.h \
 	details/abstractTimer.h \
 	details/realTimer.h \
 	details/sensorsConfigurationManager.h \
@@ -53,6 +55,7 @@ SOURCES += \
 	details/interpreter.cpp \
 	details/nullTimer.cpp \
 	details/nxtDisplay.cpp \
+	details/realTimeline.cpp \
 	details/realTimer.cpp \
 	details/robotsBlockParser.cpp \
 	details/sensorsConfigurationManager.cpp \
