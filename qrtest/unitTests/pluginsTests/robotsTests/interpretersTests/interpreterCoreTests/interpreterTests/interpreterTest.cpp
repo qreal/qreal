@@ -39,7 +39,16 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, connectToRobot()).WillByDefault(
 			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitConnected)
 			);
-	EXPECT_CALL(mModel, connectToRobot()).Times(1);
+	/// Shall be called twice for now: in init() method and when sensors are configured.
+	EXPECT_CALL(mModel, connectToRobot()).Times(2);
+
+	ON_CALL(mModel, disconnectFromRobot()).WillByDefault(
+			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitDisconnected)
+			);
+	EXPECT_CALL(mModel, disconnectFromRobot()).Times(AtLeast(0));
+
+	ON_CALL(mModel, configurablePorts()).WillByDefault(Return(QList<interpreterBase::robotModel::PortInfo>()));
+	EXPECT_CALL(mModel, configurablePorts()).Times(AtLeast(0));
 
 	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
 	EXPECT_CALL(mModelManager, model()).Times(AtLeast(1));

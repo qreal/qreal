@@ -21,6 +21,10 @@ public:
 	void emitAllDevicesConfigured() {
 		emit allDevicesConfigured();
 	}
+
+	void emitDisconnected() {
+		emit disconnected();
+	}
 };
 
 }
