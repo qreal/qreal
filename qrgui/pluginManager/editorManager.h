@@ -28,6 +28,7 @@ class EditorManager : public QObject, public EditorManagerInterface
 
 public:
 	explicit EditorManager(QObject *parent = NULL);
+	EditorManager(QString const &pathToFileRelativelyToQrealSources, QStringList const &fileNames);
 
 	~EditorManager();
 

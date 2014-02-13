@@ -59,7 +59,7 @@ public:
 	virtual QStringList propertiesWithDefaultValues(Id const &id) const = 0;
 
 	virtual IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-							  , qrRepo::GraphicalRepoApi const &graphicalApi) const = 0;
+			, qrRepo::GraphicalRepoApi const &graphicalApi) const = 0;
 	virtual bool hasElement(Id const &element) const = 0;
 
 	virtual Id findElementByType(QString const &type) const = 0;

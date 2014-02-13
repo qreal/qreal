@@ -14,7 +14,7 @@ namespace qrmc {
 	class Shape
 	{
 	public:
-		Shape(QString const &shape = "");
+		Shape(QString const generatedCodeDir, QString const &shape = "");
 		~Shape();
 
 		void init(QString const &shape);
@@ -45,5 +45,6 @@ namespace qrmc {
 		QList<Label*> mLabels;
 		QList<Port*> mPorts;
 		GraphicType *mNode;
+		QString mGeneratedCodeDir;
 	};
 }

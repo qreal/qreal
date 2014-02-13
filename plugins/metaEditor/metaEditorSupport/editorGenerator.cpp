@@ -24,21 +24,24 @@ EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api, ErrorReporte
 {
 }
 
-QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
+QHash<Id, QString > EditorGenerator::getMetamodelList(QString const &pathToQRealSources)
 {
 	IdList const metamodels = mApi.children(Id::rootId());
-	QHash<Id, QPair<QString, QString> > metamodelList;
+	QHash<Id, QString > metamodelList;
 
 	foreach (Id const key, metamodels) {
 		QString const objectType = key.element();
 		if (objectType == "MetamodelDiagram" && mApi.isLogicalElement(key)) {
-			// Now the user must specify the full path to the directory and the relative path to source files of QReal
+			// Now the user must specify the full path to the directory
 			QString const directoryName = mApi.stringProperty(key, "name of the directory");
-			QString const pathToQRealRoot = mApi.stringProperty(key, "path to QReal Source Files");
+			QString pathToQRealRoot;
+			if (pathToQRealSources == "") {
+				pathToQRealRoot = SettingsManager::value("pathToQRealSourceFiles").toString();
+			} else {
+				pathToQRealRoot = pathToQRealSources;
+			}
 			if (!directoryName.isEmpty() && !pathToQRealRoot.isEmpty()) {
-				QPair<QString, QString> savingData;
-				savingData.first = directoryName;
-				savingData.second = pathToQRealRoot;
+				QString savingData = directoryName;
 				metamodelList.insert(key, savingData);
 			} else {
 				mErrorReporter.addError(
@@ -50,11 +53,14 @@ QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 }
 
 QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
-		, QString const &pathToFile, QString const &pathToQRealSource)
+		, QString const &pathToFile
+		, QString const &pathToQrealRoot
+		, QString const &destDir)
 {
 	mErrorReporter.clear();
 	mErrorReporter.clearErrors();
-	QString const editorPath = calculateEditorPath(pathToFile, pathToQRealSource);
+
+	QString const editorPath = calculateEditorPath(pathToFile, pathToQrealRoot);
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
 	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
@@ -82,6 +88,7 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 
 	QRegExp patten;
 	patten.setPattern("[A-Za-z]+([A-Za-z0-9]*)");
+
 	if (!patten.exactMatch(fileBaseName) || fileBaseName.isEmpty()) {
 		mErrorReporter.addError(QObject::tr("wrong name\n"), metamodelId);
 		return QPair<QString, QString>("", "");
@@ -92,12 +99,19 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 		outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
 		if (includeProList != "") {
 			outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
+
 		}
 		outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
-		QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToFile, pathToQRealSource);
+
+		QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToQrealRoot);
+
 		outpro() << QString ("ROOT = %1\n").arg(relativeQRealSourcesPath);
 		outpro() << "\n";
-		outpro() << QString("include (%1)").arg(relativeQRealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
+
+		outpro() << QString("include (%1)\n").arg(pathToQrealRoot + "/plugins/editorsSdk/editorsCommon.pri");
+		if (!destDir.isEmpty()) {
+			outpro() << QString("DESTDIR = %1\n").arg(destDir);
+		}
 	}
 	catch (char* e) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file name"));
@@ -118,21 +132,42 @@ QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString 
 {
 	QFileInfo const pluginDir(pathToFile);
 	QFileInfo const sourcesDir(pathToQRealSource);
-	QFileInfo const qRealPluginsDir(sourcesDir.absoluteFilePath() + "/plugins/");
+	QFileInfo const qRealPluginsDir(sourcesDir.absoluteFilePath() + "/plugins/" + "editorsSdk");
 
 	return calculateRelativePath(qRealPluginsDir.absoluteFilePath(), pluginDir.absoluteFilePath());
 }
 
-QString EditorGenerator::calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource)
+QString EditorGenerator::calculateRelativeQRealSourcesPath(QString const &pathToQRealSource)
 {
-	QFileInfo const pluginDir(pathToFile);
+	QFileInfo const sdkDir(pathToQRealSource);
+	QFileInfo const pluginDir(sdkDir.absoluteFilePath() + "/plugins/" + "editorsSdk");
 	QFileInfo const sourcesDir(pathToQRealSource);
 
 	return calculateRelativePath(pluginDir.absoluteFilePath(), sourcesDir.absoluteFilePath());
 }
 
+QString EditorGenerator::newMethodForCalculatingEditorPath(QString const &pathToFile)
+{
+	QString result = "";
+
+	int const levels = pathToFile.split("/", QString::SkipEmptyParts).count();
+	for (int i = 0; i < levels; i++) {
+		result += "/..";
+	}
+
+	if (pathToFile.count() > 2 && pathToFile[1] == ':') {
+		// Remove drive letter
+		result += pathToFile.mid(2);
+	} else {
+		result += pathToFile;
+	}
+
+	return result;
+}
+
 QString EditorGenerator::calculateRelativePath(QString const &pathOne, QString const &pathTwo)
 {
+
 	int const levels = pathOne.split("/", QString::SkipEmptyParts).count();
 	QString result;
 	for (int i = 0; i < levels; ++i) {

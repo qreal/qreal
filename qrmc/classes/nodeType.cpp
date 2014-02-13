@@ -10,8 +10,11 @@
 using namespace qrmc;
 using namespace qReal;
 
-NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
-	mIsHavePin(false)
+NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id, QString const generatedCodeDir)
+		: GraphicType(diagram, api, id, generatedCodeDir)
+		, mIsPin(false)
+		, mIsHavePin(false)
+		, mGeneratedCodeDir(generatedCodeDir)
 {
 }
 
@@ -21,7 +24,7 @@ NodeType::~NodeType()
 
 Type* NodeType::clone() const
 {
-	NodeType *result = new NodeType(mDiagram, mApi, mId);
+	NodeType *result = new NodeType(mDiagram, mApi, mId, mGeneratedCodeDir);
 	GraphicType::copyFields(result);
 	return result;
 }
@@ -125,8 +128,14 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 					.replace(minimizeToChildrenTag, loadBoolProperty(child, "minimizeToChildren"))
 					.replace(maximizeChildrenTag, loadBoolProperty(child, "maximizeChildren"))
 					.replace(hasMovableChildrenTag, movableChildren)
-					.replace(forestallingSizeTag, loadIntVectorProperty(child, "forestallingSize"))
 					.replace(childrenForestallingSizeTag, loadIntProperty(child, "childrenForestallingSize"));
+			QStringList const &forestallingSizes = loadIntVectorProperty(child, "forestallingSize").split(",");
+			QString resultForestallingLine = "";
+			foreach (QString const &forestallingSize, forestallingSizes) {
+				resultForestallingLine.append(" << ");
+				resultForestallingLine.append(forestallingSize);
+			}
+			classTemplate.replace(forestallingSizeTag, resultForestallingLine);
 			break;
 		}
 	}
@@ -135,7 +144,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 				.replace(minimizeToChildrenTag, "false")
 				.replace(maximizeChildrenTag, "false")
 				.replace(hasMovableChildrenTag, "true")
-				.replace(forestallingSizeTag, "0")
+				.replace(forestallingSizeTag, " << 0")
 				.replace(childrenForestallingSizeTag, "0");
 }
 

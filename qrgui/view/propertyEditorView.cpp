@@ -93,16 +93,14 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			type = QVariant::Int;
 		} else if (typeName == "bool") {
 			type = QVariant::Bool;
-		} else if (typeName == "string") {
-			type = QVariant::String;
+		} else if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
+			isButton = true;
 		} else if (typeName == "code" || typeName == "directorypath") {
 			isButton = true;
+		} else if (typeName == "string") {
+			type = QVariant::String;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
-		} else {
-			if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
-				isButton = true;
-			}
 		}
 
 		QtProperty *item = NULL;

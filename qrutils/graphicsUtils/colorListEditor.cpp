@@ -1,27 +1,21 @@
-#include "colorListEditor.h"
+#include <QtWidgets>
+#include "colorlisteditor.h"
 
 using namespace graphicsUtils;
 
-ColorListEditor::ColorListEditor(QWidget *widget)
-	: QComboBox(widget)
+ColorListEditor::ColorListEditor(QWidget *widget) : QComboBox(widget)
 {
 }
 
 void ColorListEditor::setColorList(QStringList const &colorList, QStringList const &translatedColorList)
 {
-	mColorList = colorList;
-	mTranslatedColorList = (translatedColorList == QStringList()) ? colorList : translatedColorList;
-	populateList();
+    mColorList = colorList;
+    populateList();
 }
 
 QColor ColorListEditor::color() const
 {
 	return itemData(currentIndex(), Qt::DecorationRole).value<QColor>();
-}
-
-QColor ColorListEditor::colorByIndex(int index) const
-{
-	return itemData(index, Qt::DecorationRole).value<QColor>();
 }
 
 void ColorListEditor::setColor(QColor const &color)
@@ -31,10 +25,10 @@ void ColorListEditor::setColor(QColor const &color)
 
 void ColorListEditor::populateList()
 {
-	QStringList colorNames = mColorList;
+        QStringList colorNames = mColorList;
 	for (int i = 0; i < colorNames.size(); ++i) {
-		QColor const color(colorNames[i]);
-		insertItem(i, mTranslatedColorList[i]);
+		QColor color(colorNames[i]);
+		insertItem(i, colorNames[i]);
 		setItemData(i, color, Qt::DecorationRole);
 	}
 }

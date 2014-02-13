@@ -147,7 +147,6 @@ protected:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
-
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 	virtual void drawForeground(QPainter *painter, QRectF const &rect);

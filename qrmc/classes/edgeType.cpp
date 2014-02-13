@@ -9,7 +9,9 @@
 using namespace qrmc;
 using namespace qReal;
 
-EdgeType::EdgeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id) : GraphicType(diagram, api, id)
+EdgeType::EdgeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id, QString const generatedCodeDir)
+		: GraphicType(diagram, api, id, generatedCodeDir)
+		, mGeneratedCodeDir(generatedCodeDir)
 {
 	mLineType = mApi->stringProperty(id, "lineType");
 	initLabels();
@@ -21,7 +23,7 @@ EdgeType::~EdgeType()
 
 Type* EdgeType::clone() const
 {
-	EdgeType *result = new EdgeType(mDiagram, mApi, mId);
+	EdgeType *result = new EdgeType(mDiagram, mApi, mId, mGeneratedCodeDir);
 	GraphicType::copyFields(result);
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
@@ -150,10 +152,10 @@ void EdgeType::generateArrowEnd(QString &edgeClass, QString const &arrowEnd,
 void EdgeType::generateSdf() const
 {
 	QDir dir;
-	if (!dir.exists(generatedDir)) {
-		dir.mkdir(generatedDir);
+	if (!dir.exists(mGeneratedCodeDir)) {
+		dir.mkdir(mGeneratedCodeDir);
 	}
-	dir.cd(generatedDir);
+	dir.cd(mGeneratedCodeDir);
 	QString editorName = diagram()->editor()->name();
 	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);

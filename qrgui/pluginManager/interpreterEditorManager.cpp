@@ -813,16 +813,17 @@ void InterpreterEditorManager::updateShape(Id const &id, QString const &graphics
 
 void InterpreterEditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
 {
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
-	Id const metaId = repoAndMetaIdPair.second;
-	IdList const logicalIdList = mainWindow->models()->logicalRepoApi().logicalElements(id.type());
-	foreach (Id const &logicalId, logicalIdList) {
-		QModelIndex const index = mainWindow->models()->logicalModelAssistApi().indexById(logicalId);
-		mainWindow->models()->logicalModel()->removeRow(index.row(), index.parent());
-	}
-	repo->removeChild(repo->parent(metaId), metaId);
-	repo->removeElement(metaId);
+//	TODO : restore
+//	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+//	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
+//	Id const metaId = repoAndMetaIdPair.second;
+//	IdList const logicalIdList = mainWindow->models()->logicalRepoApi().logicalElements(id.type());
+//	foreach (Id const &logicalId, logicalIdList) {
+//		QModelIndex const index = mainWindow->models()->logicalModelAssistApi().indexById(logicalId);
+//		mainWindow->models()->logicalModel()->removeRow(index.row(), index.parent());
+//	}
+//	repo->removeChild(repo->parent(metaId), metaId);
+//	repo->removeElement(metaId);
 }
 
 bool InterpreterEditorManager::isRootDiagramNode(Id const &id) const

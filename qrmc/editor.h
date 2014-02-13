@@ -21,17 +21,23 @@ namespace qrmc {
 	class Editor
 	{
 	public:
-		Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, qReal::Id const &id, QString const generatedCodeDir);
 		~Editor();
 		MetaCompiler *metaCompiler();
 		qReal::Id id();
 
 		bool isLoaded();
 		bool load();
-		void generate(QString const &headerTemplate, QString const &sourceTemplate,
-					  QString const &nodeTemplate, QString const &edgeTemplate,
-					  QString const &elementsHeaderTemplate, QString const &resourceTemplate,
-					  QString const &projectTemplate, QMap<QString, QString> const &utils);
+		void generate(QString const &headerTemplate
+					, QString const &sourceTemplate
+					, QString const &nodeTemplate
+					, QString const &edgeTemplate
+					, QString const & elementsHeaderTemplate
+					, QString const &resourceTemplate
+					, QString const &projectTemplate
+					, QMap<QString, QString> const &utils
+					, QString const pathToQrealRoot
+					, QString const destinationDir);
 
 		Type *findType(QString const &name);
 		QSet<EnumType*> getAllEnumTypes();
@@ -52,6 +58,7 @@ namespace qrmc {
 		void generateNamesMap();
 		void generateMouseGesturesMap();
 		void generatePropertiesMap();
+		void generateDescriptionsMap();
 		void generatePropertyDisplayedNamesMap();
 		void generateParentsMap();
 		void generatePropertyDefaultsMap();
@@ -77,6 +84,9 @@ namespace qrmc {
 		QString mNodeTemplate;
 		QString mEdgeTemplate;
 		QString mElementsHeaderTemplate;
+		QString mGeneratedCodeDir;
+		QString mPathToQrealRoot;
+		QString mDestinationDir;
 
 		class MethodGenerator;
 		class ContainersGenerator;
@@ -88,6 +98,7 @@ namespace qrmc {
 		class NamesGenerator;
 		class MouseGesturesGenerator;
 		class PropertiesGenerator;
+		class DescriptionsGenerator;
 		class PropertyDefaultsGenerator;
 		class PropertyDisplayedNamesGenerator;
 		class ParentsMapGenerator;

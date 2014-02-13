@@ -1,0 +1,7 @@
+<xml>
+	<qmake>qmake</qmake>
+	<make>make</make>
+	<configuration>release</configuration>
+	<pluginExtension>so</pluginExtension>
+	<prefix>lib</prefix>
+</xml>

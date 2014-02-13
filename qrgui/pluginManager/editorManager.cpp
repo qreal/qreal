@@ -51,6 +51,38 @@ EditorManager::EditorManager(QObject *parent) : QObject(parent)
 	}
 }
 
+EditorManager::EditorManager(QString const &pathToFileRelativelyToQrealSources, QStringList const &fileNames)
+{
+	mPluginsDir = QDir(qApp->applicationDirPath());
+
+	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("bin")) {
+		mPluginsDir.cdUp();
+	}
+
+	mPluginsDir.cd(pathToFileRelativelyToQrealSources);
+
+	foreach (QString const &fileName, fileNames) {
+		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
+		QObject *plugin = loader->instance();
+
+		if (plugin) {
+			EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
+			if (iEditor) {
+				mPluginsLoaded += iEditor->id();
+				mPluginFileName.insert(iEditor->id(), fileName);
+				mPluginIface[iEditor->id()] = iEditor;
+				mLoaders.insert(fileName, loader);
+			} else {
+				delete loader;
+			}
+		} else {
+			qDebug() << "Plugin loading failed: " << loader->errorString();
+			loader->unload();
+			delete loader;
+		}
+	}
+}
+
 EditorManager::~EditorManager()
 {
 	foreach (QString const &id, mPluginIface.keys()) {
@@ -215,7 +247,7 @@ QString EditorManager::propertyDescription(const Id &id, QString const &property
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
-	if (id.idSize() != 4) {
+	if ((id.idSize() != 3) && (id.idSize() != 4)) {
 		return "";
 	}
 	return mPluginIface[id.editor()]->propertyDescription(id.diagram(), id.element(), propertyName);
@@ -225,7 +257,7 @@ QString EditorManager::propertyDisplayedName(Id const &id, QString const &proper
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
-	if (id.idSize() != 4) {
+	if ((id.idSize() != 3) && (id.idSize() != 4)) {
 		return "";
 	}
 	return mPluginIface[id.editor()]->propertyDisplayedName(id.diagram(), id.element(), propertyName);
@@ -596,8 +628,20 @@ QString EditorManager::propertyNameByDisplayedName(Id const &id, QString const &
 
 IdList EditorManager::children(Id const &parent) const
 {
-	Q_UNUSED(parent);
-	return IdList();
+	Q_ASSERT(parent.idSize() == 3);
+	EditorInterface const *plugin = mPluginIface[parent.editor()];
+	if (!plugin) {
+		return IdList();
+	}
+
+	IdList children;
+
+	foreach (Id const &id, elements(parent)) {
+		if ((isParentOf(id, parent)) && (id !=  parent)) {
+			children << id;
+		}
+	}
+	return children;
 }
 
 QString EditorManager::shape(Id const &id) const

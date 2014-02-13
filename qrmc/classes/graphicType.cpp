@@ -18,8 +18,8 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 	mResolvingFlag = true;
 }
 
-GraphicType::GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
-	: Type(false, diagram, api, id), mResolving(false)
+GraphicType::GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id, QString const generatedCodeDir)
+	: Type(false, diagram, api, id), mShape(generatedCodeDir), mResolving(false)
 {
 }
 
@@ -159,7 +159,13 @@ bool GraphicType::resolve()
 	mParents.removeDuplicates();
 	foreach (QString parentName, mParents) {
 		// searching for parents in native context. if it was imported, references will remain valid
-		QString qualifiedParentName = parentName.contains("::") ? parentName : nativeContext() + "::" + parentName;
+		if (parentName.contains("::")) {
+			QStringList parsedParentName = parentName.split("::");
+			parentName = NameNormalizer::normalize(parsedParentName.last());
+		} else {
+			parentName = NameNormalizer::normalize(parentName);
+		}
+		QString const qualifiedParentName = nativeContext() + "::" + parentName;
 
 		Type *parent = mDiagram->findType(qualifiedParentName);
 		if (parent == NULL) {
@@ -191,9 +197,6 @@ bool GraphicType::resolve()
 	}
 
 	mResolvingFinished = true;
-	return true;
-
-
 	return true;
 }
 
@@ -271,6 +274,21 @@ QString GraphicType::generatePropertyDisplayedNames(QString const &lineTemplate)
 	return displayedNamesString;
 }
 
+QString GraphicType::generateDescriptions(QString const &lineTemplate) const
+{
+
+	if (mApi->hasProperty(mId, "description")) {
+		QString descriptionLine = lineTemplate;
+		QString const description = mApi->stringProperty(mId, "description");
+
+		descriptionLine.replace(elementNameTag, name())
+				.replace(diagramNameTag, mContext)
+				.replace(descriptionTag, description);
+		return descriptionLine;
+	}
+	return "";
+}
+
 QString GraphicType::generateReferenceProperties(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
@@ -309,6 +327,7 @@ QString GraphicType::generateContainers(QString const &lineTemplate) const
 
 	QString containersList;
 	QString line = lineTemplate;
+
 	foreach(QString contains, mContains) {
 		containersList += "<< \"" + contains + "\" ";
 	}

@@ -70,12 +70,18 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 	QDir dir(".");
 
-	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
+	QString const pathToQrealRoot = SettingsManager::value("pathToQRealSourceFiles").toString();
+	if (pathToQrealRoot.isEmpty()) {
+		QMessageBox::information(NULL, tr("Path to source files is emtpy")
+				, "Path to Qreal source files is empty. Please fill it in compiler settings.", tr("Ok"));
+		return;
+	}
+
+	QHash<Id, QString > metamodelList = editorGenerator.getMetamodelList();
 	foreach (Id const &key, metamodelList.keys()) {
-		QString const nameOfTheDirectory = metamodelList[key].first;
-		QString const pathToQRealRoot = metamodelList[key].second;
+		QString const nameOfTheDirectory = metamodelList[key];
 		dir.mkpath(nameOfTheDirectory);
-		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory, pathToQRealRoot);
+		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory, pathToQrealRoot);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
@@ -88,7 +94,8 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 					, SettingsManager::value("pathToQmake").toString()
 					, SettingsManager::value("pathToMake").toString()
 					, SettingsManager::value("pluginExtension").toString()
-					, SettingsManager::value("prefix").toString());
+					, SettingsManager::value("prefix").toString()
+					, SettingsManager::value("qmakeArguments").toString());
 		}
 	}
 	if (metamodelList.isEmpty()) {
@@ -102,6 +109,13 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 	IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
 
+	QString const pathToQrealRoot = SettingsManager::value("pathToQRealSourceFiles").toString();
+	if (pathToQrealRoot.isEmpty()) {
+		QMessageBox::information(NULL, tr("Path to source files is emtpy")
+				, "Path to Qreal source files is empty. Please fill it in compiler settings.", tr("Ok"));
+		return;
+	}
+
 	QProgressBar *progress = new QProgressBar(mMainWindowInterface->windowWidget());
 	progress->show();
 	int const progressBarWidth = 240;
@@ -114,14 +128,12 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 	progress->setFixedHeight(progressBarHeight);
 	progress->setRange(0, 100);
 
-	int forEditor = 60 / metamodels.size();
-
 	foreach (Id const &key, metamodels) {
 		QString const objectType = key.element();
 		if (objectType == "MetamodelDiagram" && mLogicalRepoApi->isLogicalElement(key)) {
 			QString nameOfTheDirectory = mLogicalRepoApi->stringProperty(key, "name of the directory");
 			QString nameOfMetamodel = mLogicalRepoApi->stringProperty(key, "name");
-			QString nameOfPlugin = nameOfTheDirectory.split("/").last();
+			QString nameOfPlugin = nameOfMetamodel.split("/").last();
 
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
 					, tr("loading..")
@@ -132,62 +144,23 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 				continue;
 			}
 
-			progress->setValue(5);
-
-			if (!metaCompiler.compile(nameOfMetamodel)) { // generating source code for all metamodels
+			if (!metaCompiler.compile(nameOfMetamodel, pathToQrealRoot)) { // generating source code for all metamodels
 				QMessageBox::warning(mMainWindowInterface->windowWidget()
 						, tr("error")
 						, tr("Cannot generate source code for editor ") + nameOfPlugin);
 				continue;
 			}
-			progress->setValue(20);
 
-			QProcess builder;
-			builder.setWorkingDirectory("../qrmc/plugins");
-			builder.start(SettingsManager::value("pathToQmake").toString());
-			qDebug()  << "qmake";
-			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
-				progress->setValue(40);
-
-				builder.start(SettingsManager::value("pathToMake").toString());
-
-				bool finished = builder.waitForFinished(100000);
-				qDebug()  << "make";
-				if (finished && (builder.exitCode() == 0)) {
-					qDebug()  << "make ok";
-
-					progress->setValue(progress->value() + forEditor / 2);
-
-					QString normalizedName = nameOfPlugin.at(0).toUpper() + nameOfPlugin.mid(1);
-					if (!nameOfPlugin.isEmpty()) {
-						if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
-							QMessageBox::warning(mMainWindowInterface->windowWidget()
-									, tr("error")
-									, tr("cannot unload plugin ") + normalizedName);
-							progress->close();
-							delete progress;
-							continue;
-						}
-					}
-
-					QString const generatedPluginFileName = SettingsManager::value("prefix").toString()
-							+ nameOfPlugin
-							+ "."
-							+ SettingsManager::value("pluginExtension").toString()
-							;
-
-					if (mMainWindowInterface->loadPlugin(generatedPluginFileName, normalizedName)) {
-						progress->setValue(progress->value() + forEditor / 2);
-					}
-				}
-				progress->setValue(100);
-			}
+			QPair<QString, QString> metamodelNames = qMakePair(nameOfMetamodel, nameOfPlugin);
+			loadNewEditor(nameOfTheDirectory, metamodelNames
+					, SettingsManager::value("pathToQmake").toString()
+					, SettingsManager::value("pathToMake").toString()
+					, SettingsManager::value("pluginExtension").toString()
+					, SettingsManager::value("prefix").toString()
+					, SettingsManager::value("qmakeArguments").toString());
 		}
 	}
-	if (progress->value() != 100) {
-		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new editor"));
-	}
-	progress->setValue(100);
+
 	progress->close();
 	delete progress;
 }
@@ -230,7 +203,8 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 		, QString const &commandFirst
 		, QString const &commandSecond
 		, QString const &extension
-		, QString const &prefix)
+		, QString const &prefix
+		, QString const &qmakeArguments)
 {
 	int const progressBarWidth = 240;
 	int const progressBarHeight = 20;
@@ -267,7 +241,13 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 
 	QProcess builder;
 	builder.setWorkingDirectory(directoryName);
-	builder.start(commandFirst);
+	if (!qmakeArguments.isEmpty()) {
+		QStringList qmakeArgumentsList;
+		qmakeArgumentsList.append("CONFIG+=" + qmakeArguments);
+		builder.start(commandFirst, qmakeArgumentsList);
+	} else {
+		builder.start(commandFirst);
+	}
 
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);

@@ -10,10 +10,14 @@
 using namespace qReal;
 using namespace qrmc;
 
-Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
-	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
+Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, qReal::Id const &id, QString const generatedCodeDir)
+		: mMetaCompiler(metaCompiler)
+		, mApi(api)
+		, mId(id)
+		, mLoadingComplete(false)
+		, mGeneratedCodeDir(generatedCodeDir)
 {
-	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
+	mName = mApi->property(mId, "name").toString().section("/", -1);
 	//mName = mName.section("_", 0, 0) + "Plugin";
 }
 
@@ -50,7 +54,7 @@ bool Editor::load()
 			if (!mApi->isLogicalElement(metamodel))
 				continue;
 			if (mApi->name(metamodel) == metamodelName) {
-				includedEditor = mMetaCompiler->loadMetaModel(metamodel);
+				includedEditor = mMetaCompiler->loadMetaModel(metamodel, mGeneratedCodeDir);
 				break;
 			}
 		}
@@ -84,7 +88,7 @@ bool Editor::load()
 			return false;
 		}
 		qDebug() << "\tloading diagram" << diagramName;
-		Diagram *diagram = new Diagram(diagramId, mApi, this);
+		Diagram *diagram = new Diagram(diagramId, mApi, this, mGeneratedCodeDir);
 		if (!diagram->init())
 		{
 			qDebug() << "ERROR: error loading diagram" << diagramName;
@@ -163,10 +167,15 @@ QString Editor::name()
 	return mName;
 }
 
-void Editor::generate(QString const &headerTemplate, QString const &sourceTemplate,
-					QString const &nodeTemplate, QString const &edgeTemplate,
-					QString const &elementsHeaderTemplate, QString const &resourceTemplate,
-					QString const &projectTemplate, QMap<QString, QString> const &utils)
+void Editor::generate(QString const &headerTemplate, QString const &sourceTemplate
+					, QString const &nodeTemplate
+					, QString const &edgeTemplate
+					, QString const & elementsHeaderTemplate
+					, QString const &resourceTemplate
+					, QString const &projectTemplate
+					, QMap<QString, QString> const &utils
+					, QString const pathToQrealRoot
+					, QString const destinationDir)
 {
 	qDebug() << "generating plugin " << mName;
 
@@ -175,6 +184,8 @@ void Editor::generate(QString const &headerTemplate, QString const &sourceTempla
 	mNodeTemplate = nodeTemplate;
 	mEdgeTemplate = edgeTemplate;
 	mElementsHeaderTemplate = elementsHeaderTemplate;
+	mPathToQrealRoot = pathToQrealRoot;
+	mDestinationDir = destinationDir;
 
 	generatePluginHeader(headerTemplate);
 	generatePluginSource();
@@ -188,11 +199,13 @@ bool Editor::generatePluginHeader(QString const &hdrTemplate)
 	QString headerTemplate = hdrTemplate;
 	qDebug() << "generating plugin header for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mGeneratedCodeDir)) {
+		dir.mkdir(mGeneratedCodeDir);
+	}
+	dir.cd(mGeneratedCodeDir);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
 	dir.cd(mName);
 
 	QString fileName = dir.absoluteFilePath(pluginHeaderName);
@@ -202,7 +215,8 @@ bool Editor::generatePluginHeader(QString const &hdrTemplate)
 		return false;
 	}
 
-	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mName)); // header requires just plugin name customization
+	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mName)).replace(pathToSources, mPathToQrealRoot);
+	// header requires just plugin name customization and customization of path to qreal sources
 	QTextStream out(&pluginHeaderFile);
 	out.setCodec("UTF-8");
 	out << headerTemplate;
@@ -215,11 +229,13 @@ bool Editor::generatePluginSource()
 {
 	qDebug() << "generating plugin source for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mGeneratedCodeDir)) {
+		dir.mkdir(mGeneratedCodeDir);
+	}
+	dir.cd(mGeneratedCodeDir);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
 	dir.cd(mName);
 
 	QString fileName = dir.absoluteFilePath(pluginSourceName);
@@ -235,6 +251,7 @@ bool Editor::generatePluginSource()
 	generatePropertyDisplayedNamesMap();
 	generateMouseGesturesMap();
 	generatePropertiesMap();
+	generateDescriptionsMap();
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
 	generateContainers();
@@ -262,11 +279,13 @@ bool Editor::generateElementsClasses()
 {
 	qDebug() << "generating elements classes for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mGeneratedCodeDir)) {
+		dir.mkdir(mGeneratedCodeDir);
+	}
+	dir.cd(mGeneratedCodeDir);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
 	dir.cd(mName);
 
 	QString fileName = dir.absoluteFilePath(elementsFileName);
@@ -285,7 +304,7 @@ bool Editor::generateElementsClasses()
 	}
 
 	mElementsHeaderTemplate.replace(nodesListTag, generatedNodes)
-						.replace(edgesListTag, generatedEdges);
+						.replace(edgesListTag, generatedEdges).replace(pathToSources, mPathToQrealRoot);
 	// template is ready, writing it into a file
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
@@ -299,11 +318,13 @@ bool Editor::generateResourceFile(QString const &resourceTemplate)
 {
 	qDebug() << "generating resource file for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mGeneratedCodeDir)) {
+		dir.mkdir(mGeneratedCodeDir);
+	}
+	dir.cd(mGeneratedCodeDir);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
 	dir.cd(mName);
 
 	QString fileName = dir.absoluteFilePath(resourceFileName);
@@ -336,11 +357,13 @@ bool Editor::generateProjectFile(QString const &proTemplate)
 	QString projectTemplate = proTemplate;
 	qDebug() << "generating project file for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mGeneratedCodeDir)) {
+		dir.mkdir(mGeneratedCodeDir);
+	}
+	dir.cd(mGeneratedCodeDir);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
 	dir.cd(mName);
 
 	QString fileName = dir.absoluteFilePath(mName + ".pro");
@@ -350,7 +373,10 @@ bool Editor::generateProjectFile(QString const &proTemplate)
 		return false;
 	}
 
-	projectTemplate.replace(metamodelNameTag, mName); // .pro-file requires just plugin name customization
+	projectTemplate.replace(metamodelNameTag, mName)
+			.replace(pathToSources, mPathToQrealRoot)
+			.replace(destinationDir, mDestinationDir);
+	// .pro-file requires just plugin name customization and customization of path to qreal sources
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
 	out << projectTemplate;
@@ -414,6 +440,13 @@ public:
 	}
 };
 
+class Editor::DescriptionsGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateDescriptionsMap(lineTemplate);
+	}
+};
+
 class Editor::PropertyDefaultsGenerator: public Editor::MethodGenerator {
 public:
 	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
@@ -423,14 +456,14 @@ public:
 
 class Editor::PropertyDisplayedNamesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generatePropertyDisplayedNamesMap(lineTemplate);
 	}
 };
 
 class Editor::ParentsMapGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateParentsMap(lineTemplate);
 	}
 };
@@ -444,7 +477,7 @@ public:
 
 class Editor::ReferencePropertiesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
 		return diagram->generateReferenceProperties(lineTemplate);
 	}
 };
@@ -484,7 +517,7 @@ public:
 	}
 };
 
-void Editor::generatePluginMethod(QString const &tag, const MethodGenerator &generator)
+void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &generator)
 {
 	QString body = "";
 	QString const line = mUtilsTemplate[tag].replace("\\n", "\n");
@@ -519,6 +552,11 @@ void Editor::generateMouseGesturesMap()
 void Editor::generatePropertiesMap()
 {
 	generatePluginMethod(initPropertyTypesMapLineTag, PropertiesGenerator());
+}
+
+void Editor::generateDescriptionsMap()
+{
+	generatePluginMethod(initDescriptionsMapLineTag, DescriptionsGenerator());
 }
 
 void Editor::generatePropertyDefaultsMap()

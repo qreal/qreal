@@ -12,7 +12,9 @@
 
 using namespace qrmc;
 
-Shape::Shape(QString const &shape) : mNode(NULL)
+Shape::Shape(QString const generatedCodeDir, QString const &shape)
+		: mNode(NULL)
+		, mGeneratedCodeDir(generatedCodeDir)
 {
 	init(shape)	;
 }
@@ -28,8 +30,9 @@ void Shape::setNode(GraphicType *node)
 
 void Shape::init(QString const &shape)
 {
-	if (shape.isEmpty())
+	if (shape.isEmpty()) {
 		return;
+	}
 
 	QString error = "";
 	int errorLine = 0;
@@ -118,10 +121,10 @@ void Shape::initLinePorts(QDomElement const &portsElement)
 
 void Shape::changeDir(QDir &dir) const
 {
-	if (!dir.exists(generatedDir)) {
-		dir.mkdir(generatedDir);
+	if (!dir.exists(mGeneratedCodeDir)) {
+		dir.mkdir(mGeneratedCodeDir);
 	}
-	dir.cd(generatedDir);
+	dir.cd(mGeneratedCodeDir);
 	QString editorName = mNode->diagram()->editor()->name()	;
 	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);
@@ -147,11 +150,13 @@ void Shape::generate(QString &classTemplate) const
 	MetaCompiler *compiler = mNode->diagram()->editor()->metaCompiler();
 	QString unused;
 	if (!hasPointPorts()) {
-		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
+		unused += nodeIndent + "Q_UNUSED(ports)" + endline;
 	}
+	//TODO: fix ports for qrmc
+	/*
 	if (!hasLinePorts()) {
 		unused += nodeIndent + "Q_UNUSED(linePorts)" + endline;
-	}
+	}*/
 	if (!hasLabels()) {
 		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
 	}
@@ -243,7 +248,7 @@ bool Shape::hasPicture() const
 	return !mPicture.isEmpty();
 }
 
-QString Shape::generateResourceLine(QString const &resourceTemplate) const
+QString Shape::generateResourceLine(const QString &resourceTemplate) const
 {
 	QString result;
 

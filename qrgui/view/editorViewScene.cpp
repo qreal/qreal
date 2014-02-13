@@ -451,8 +451,8 @@ qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scen
 	return objectId;
 }
 
-void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &scenePos , bool searchForParents
-		, CreateElementCommand **createCommandPointer, bool executeImmediately)
+void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos
+		, bool searchForParents, CreateElementCommand **createCommandPointer, bool executeImmediately)
 {
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 	QDataStream inStream(&itemData, QIODevice::ReadOnly);

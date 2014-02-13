@@ -238,7 +238,7 @@ QVariant RepoApi::property(Id const &id, QString const &propertyName) const
 
 QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 {
-	Q_ASSERT(mRepository.property(id, propertyName).canConvert<QString>());
+	//Q_ASSERT(mRepository.property(id, propertyName).canConvert<QString>());
 	return mRepository.property(id, propertyName).toString();
 }
 

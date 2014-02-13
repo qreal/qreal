@@ -13,6 +13,7 @@
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
 #include <qrrepo/repoApi.h>
+#include "interpreterElementImpl.h"
 
 #include "pluginManager/listenerManager.h"
 #include "editorPluginInterface/editorInterface.h"

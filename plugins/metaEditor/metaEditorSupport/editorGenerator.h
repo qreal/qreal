@@ -17,8 +17,11 @@ class EditorGenerator
 public:
 	explicit EditorGenerator(qrRepo::LogicalRepoApi const &api, qReal::ErrorReporterInterface &errorReporter);
 
-	QHash<qReal::Id, QPair<QString, QString> > getMetamodelList();
-	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource);
+	QHash<qReal::Id, QString> getMetamodelList(QString const &pathToQRealSources = "");
+	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId
+			, QString const &pathToFile
+			, QString const &pathToQrealRoot
+			, QString const &destDir = "");
 
 private:
 	void serializeObjects(QDomElement &parent, qReal::Id const &idParent);
@@ -52,8 +55,10 @@ private:
 	void setSizesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
 	static void copyImages(QString const &pathToFile);
 	static QString calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource);
-	static QString calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource);
+	static QString calculateRelativeQRealSourcesPath(QString const &pathToQRealSource);
 	static QString calculateRelativePath(QString const &pathOne, QString const &pathTwo);
+
+	static QString newMethodForCalculatingEditorPath(QString const &pathToFile);
 
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;

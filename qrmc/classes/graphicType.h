@@ -16,7 +16,7 @@ namespace qrmc {
 	class GraphicType : public Type
 	{
 	public:
-		GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
+		GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id, QString const generatedCodeDir);
 		virtual ~GraphicType();
 		virtual bool init(QString const &context);
 		virtual bool resolve();
@@ -25,6 +25,7 @@ namespace qrmc {
 		virtual QString generateProperties(QString const &lineTemplate) const;
 		virtual QString generatePropertyDefaults(QString const &namesTemplate) const;
 		virtual QString generatePropertyDisplayedNames(QString const &lineTemplate) const;
+		virtual QString generateDescriptions(QString const &lineTemplate) const;
 		virtual QString generateReferenceProperties(QString const &lineTemplate) const;
 		virtual QString generateParents(QString const &lineTemplate) const;
 		virtual QString generateContainers(QString const &lineTemplate) const;

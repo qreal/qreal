@@ -10,8 +10,11 @@
 using namespace qReal;
 using namespace qrmc;
 
-Diagram::Diagram(qReal::Id const &id,  qrRepo::LogicalRepoApi *api, Editor *editor)
-	: mId(id), mApi(api), mEditor(editor)
+Diagram::Diagram(qReal::Id const &id,  qrRepo::LogicalRepoApi *api, Editor *editor, QString const generatedCodeDir)
+	: mId(id)
+	, mApi(api)
+	, mEditor(editor)
+	, mGeneratedCodeDir(generatedCodeDir)
 {
 	mDiagramName = mApi->name(id);
 	mDiagramDisplayedName = mApi->stringProperty(id, "displayedName");
@@ -32,7 +35,7 @@ bool Diagram::init()
 			continue;
 
 		if (id.element() == metaEntityNode) {
-			Type *nodeType = new NodeType(this, mApi, id);
+			Type *nodeType = new NodeType(this, mApi, id, mGeneratedCodeDir);
 			if (!nodeType->init(mDiagramName)) {
 				delete nodeType;
 				qDebug() << "can't load node";
@@ -40,7 +43,7 @@ bool Diagram::init()
 			}
 			mTypes[nodeType->name()] = nodeType;
 		} else if (id.element() == metaEntityEdge) {
-			Type *edgeType = new EdgeType(this, mApi, id);
+			Type *edgeType = new EdgeType(this, mApi, id, mGeneratedCodeDir);
 			if (!edgeType->init(mDiagramName)) {
 				delete edgeType;
 				qDebug() << "can't load edge";
@@ -103,8 +106,9 @@ Editor* Diagram::editor() const
 
 Type* Diagram::findType(QString name)
 {
-	if (mTypes.contains(name))
+	if (mTypes.contains(name)) {
 		return mTypes[name];
+	}
 
 	return mEditor->findType(name);
 }
@@ -162,6 +166,13 @@ public:
 	}
 };
 
+class Diagram::DescriptionsGenerator: public Diagram::MapMethodGenerator {
+public:
+	virtual QString generate(Type *type, QString const &lineTemplate) const {
+		return type->generateDescriptions(lineTemplate);
+	}
+};
+
 class Diagram::PropertyDefaultsGenerator: public Diagram::MapMethodGenerator {
 public:
 	virtual QString generate(Type *type, QString const &lineTemplate) const {
@@ -171,14 +182,14 @@ public:
 
 class Diagram::PropertyDisplayedNamesGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+    virtual QString generate(Type *type, QString const &lineTemplate) const {
 		return type->generatePropertyDisplayedNames(lineTemplate);
 	}
 };
 
 class Diagram::ParentsMapGenerator: public Diagram::MapMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+    virtual QString generate(Type *type, QString const &lineTemplate) const {
 		return type->generateParents(lineTemplate);
 	}
 };
@@ -204,7 +215,7 @@ public:
 	}
 };
 
-QString Diagram::generateMapMethod(QString const& lineTemplate, MapMethodGenerator const &generator) const
+QString Diagram::generateMapMethod(QString const &lineTemplate, MapMethodGenerator const &generator) const
 {
 	QString result;
 	foreach(Type* type, mTypes) {
@@ -215,7 +226,7 @@ QString Diagram::generateMapMethod(QString const& lineTemplate, MapMethodGenerat
 	return result;
 }
 
-QString Diagram::generateNamesMap(QString const& lineTemplate) const
+QString Diagram::generateNamesMap(QString const &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, NamesGenerator());
 }
@@ -228,6 +239,11 @@ QString Diagram::generateMouseGesturesMap(QString const &lineTemplate) const
 QString Diagram::generatePropertiesMap(QString const &lineTemplate) const
 {
 	return generateMapMethod(lineTemplate, PropertyNamesGenerator());
+}
+
+QString Diagram::generateDescriptionsMap(QString const &lineTemplate) const
+{
+	return generateMapMethod(lineTemplate, DescriptionsGenerator());
 }
 
 QString Diagram::generatePropertyDefaultsMap(QString const &lineTemplate) const
@@ -266,7 +282,7 @@ public:
 
 class Diagram::ReferencePropertiesGenerator: public Diagram::ListMethodGenerator {
 public:
-	virtual QString generate(Type *type, QString const &lineTemplate) const {
+    virtual QString generate(Type *type, QString const &lineTemplate) const {
 		return type->generateReferenceProperties(lineTemplate);
 	}
 };

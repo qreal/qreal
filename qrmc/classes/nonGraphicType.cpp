@@ -41,7 +41,13 @@ QString NonGraphicType::generatePropertyDisplayedNames(QString const &lineTempla
 	return "";
 }
 
-QString NonGraphicType::generateReferenceProperties(QString const &lineTemplate) const
+QString NonGraphicType::generateDescriptions(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}
+
+QString NonGraphicType::generateReferenceProperties(const QString &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
@@ -84,19 +90,19 @@ QString NonGraphicType::generatePossibleEdges(QString const &lineTemplate) const
 	return "";
 }
 
-QString NonGraphicType::generateNodeClass(QString const &classTemplate)
+QString NonGraphicType::generateNodeClass(const QString &classTemplate)
 {
 	Q_UNUSED(classTemplate)
 	return "";
 }
 
-QString NonGraphicType::generateEdgeClass(QString const &classTemplate) const
+QString NonGraphicType::generateEdgeClass(const QString &classTemplate) const
 {
 	Q_UNUSED(classTemplate)
 	return "";
 }
 
-QString NonGraphicType::generateResourceLine(QString const &resourceTemplate) const
+QString NonGraphicType::generateResourceLine(const QString &resourceTemplate) const
 {
 	Q_UNUSED(resourceTemplate)
 	return "";

@@ -14,7 +14,7 @@ namespace qrmc {
 	class Diagram
 	{
 	public:
-		Diagram(qReal::Id const &id, qrRepo::LogicalRepoApi *api, Editor *editor);
+		Diagram(qReal::Id const &id, qrRepo::LogicalRepoApi *api, Editor *editor, QString const generatedCodeDir);
 		~Diagram();
 		bool init();
 		bool resolve();
@@ -28,6 +28,7 @@ namespace qrmc {
 		QString generateNamesMap(QString const &lineTemplate) const;
 		QString generateMouseGesturesMap(QString const &lineTemplate) const;
 		QString generatePropertiesMap(QString const &lineTemplate) const;
+		QString generateDescriptionsMap(QString const &lineTemplate) const;
 		QString generatePropertyDefaultsMap(QString const &lineTemplate) const;
 		QString generatePropertyDisplayedNamesMap(QString const &lineTemplate) const;
 		QString generateParentsMap(QString const &lineTemplate) const;
@@ -60,6 +61,7 @@ namespace qrmc {
 		QString mDiagramNodeName; // TODO: replace with QStringList for multiple nodeNames
 		QString mDiagramDisplayedName;
 		Editor *mEditor;
+		QString mGeneratedCodeDir;
 		QList<ImportSpecification> mImports;
 
 		class ListMethodGenerator;
@@ -77,6 +79,7 @@ namespace qrmc {
 		class NamesGenerator;
 		class MouseGesturesGenerator;
 		class PropertyNamesGenerator;
+		class DescriptionsGenerator;
 		class PropertyDefaultsGenerator;
 		class PropertyDisplayedNamesGenerator;
 		class ParentsMapGenerator;

@@ -24,6 +24,7 @@ bool Type::init(QDomElement const &element, QString const &context)
 		qDebug() << "ERROR: anonymous type found";
 		return false;
 	}
+	qDebug() << "mName:" << element.attribute("name");
 	mDisplayedName = element.attribute("displayedName", mName);
 	mPath = element.attribute("path", "");
 	return true;

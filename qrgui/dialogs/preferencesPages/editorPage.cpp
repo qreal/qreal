@@ -60,9 +60,13 @@ PreferencesEditorPage::~PreferencesEditorPage()
 }
 
 void PreferencesEditorPage::manualFontCheckBoxChecked(bool state) {
-	SettingsManager::setValue("manualFontCheckBoxChecked", state);
+	bool oldState = SettingsManager::value("manualFontCheckBoxChecked").toBool();
 
-	mFontWasChanged = !mFontWasChanged;
+	if (oldState != state) {
+		SettingsManager::setValue("manualFontCheckBoxChecked", state);
+		mFontWasChanged = !mFontWasChanged;
+	}
+
 	mUi->fontSelectionButton->setVisible(state);
 }
 

@@ -10,7 +10,7 @@ namespace qrmc {
 	class NodeType : public GraphicType
 	{
 	public:
-		NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const id);
+		NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const id, QString const generatedCodeDir);
 		virtual Type* clone() const;
 		virtual ~NodeType();
 
@@ -32,5 +32,6 @@ namespace qrmc {
 
 		bool mIsPin;
 		bool mIsHavePin;
+		QString mGeneratedCodeDir;
 	};
 }
