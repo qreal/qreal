@@ -131,7 +131,8 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 
 void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &portFactory
 		, QList<PortInterface *> &ports, LabelFactoryInterface &labelFactory
-		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, WidgetsHelperInterface *widgetsHelper, ElementRepoInterface *elementRepo)
+		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer
+		, WidgetsHelperInterface *widgetsHelper, ElementRepoInterface *elementRepo)
 {
 	Q_UNUSED(elementRepo);
 	Q_UNUSED(widgetsHelper);

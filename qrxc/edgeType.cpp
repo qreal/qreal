@@ -230,7 +230,8 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tvoid init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, WidgetsHelperInterface *, qReal::ElementRepoInterface *) {}\n\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, WidgetsHelperInterface *"
+	<< ", qReal::ElementRepoInterface *) {}\n\n"
 	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty()) {

@@ -15,7 +15,8 @@ class AbstractSpinBoxProxy : public ToolProxy
 	Q_OBJECT
 
 	Q_PROPERTY(bool accelerated READ isAccelerated WRITE setAccelerated USER true DESIGNABLE true)
-	Q_PROPERTY(QAbstractSpinBox::CorrectionMode correctionMode READ correctionMode WRITE setCorrectionMode USER true DESIGNABLE true)
+	Q_PROPERTY(QAbstractSpinBox::CorrectionMode correctionMode
+			   READ correctionMode WRITE setCorrectionMode USER true DESIGNABLE true)
 	Q_PROPERTY(bool hasButtons READ hasButtons WRITE setHasButtons USER true DESIGNABLE true)
 	Q_PROPERTY(bool readonly READ isReadonly WRITE setReadonly USER true DESIGNABLE true)
 	Q_PROPERTY(QString specialValueText READ specialValueText WRITE setSpecialValueText USER true DESIGNABLE true)
