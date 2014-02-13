@@ -215,7 +215,7 @@ Number *ExpressionsParser::parseTerm(QString const &stream, int &pos)
 	case '-':
 		pos++;
 		skip(stream, pos);
-		*res = -*parseTerm(stream, pos);
+		res = new Number(-(*parseTerm(stream, pos)));
 		break;
 	case '(':
 		pos++;

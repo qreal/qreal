@@ -113,5 +113,6 @@ QString CodeConverterBase::encoderExpression(QString const &port) const
 
 QString CodeConverterBase::timelineExpression() const
 {
+	/// @todo: generate timestamps code in nxt c when required
 	return readTemplate("whatTime.t");
 }
