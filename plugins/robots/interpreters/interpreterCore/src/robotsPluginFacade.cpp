@@ -5,7 +5,8 @@
 using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
-	: mInterpreter(nullptr)
+	: mParser(nullptr)
+	, mInterpreter(nullptr)
 	, mKitPluginManager("plugins/kitPlugins")
 	, mActionsManager(mKitPluginManager)
 	, mDockSensorsConfigurer(nullptr)

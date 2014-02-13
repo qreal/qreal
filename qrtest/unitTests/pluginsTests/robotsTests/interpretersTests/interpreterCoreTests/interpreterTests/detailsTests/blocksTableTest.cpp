@@ -1,7 +1,8 @@
 #include "blocksTableTest.h"
 
-#include "src/interpreter/details/blocksTable.h"
+#include <QtCore/QSharedPointer>
 
+#include "src/interpreter/details/blocksTable.h"
 #include "support/dummyBlocksFactory.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
@@ -12,7 +13,7 @@ using namespace ::testing;
 
 void BlocksTableTest::SetUp()
 {
-	DummyBlockFactory *blocksFactory = new DummyBlockFactory();
+	QSharedPointer<DummyBlockFactory> blocksFactory(new DummyBlockFactory());
 
 	ON_CALL(mBlocksFactoryManager, addFactory(_)).WillByDefault(Return());
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_)).Times(0);
@@ -25,7 +26,7 @@ void BlocksTableTest::SetUp()
 	EXPECT_CALL(mBlocksFactoryManager, block(_)).Times(AtLeast(0));
 
 	ON_CALL(mBlocksFactoryManager, providedBlocks()).WillByDefault(
-			Invoke([&] { return blocksFactory->providedBlocks(); } )
+			Invoke([=] { return blocksFactory->providedBlocks(); } )
 			);
 	EXPECT_CALL(mBlocksFactoryManager, providedBlocks()).Times(0);
 }

@@ -14,7 +14,10 @@ RobotCommunicator::RobotCommunicator()
 
 RobotCommunicator::~RobotCommunicator()
 {
-	mRobotCommunicationThreadObject->allowLongJobs(false);
+	if (mRobotCommunicationThreadObject) {
+		mRobotCommunicationThreadObject->allowLongJobs(false);
+	}
+
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
 	delete mRobotCommunicationThreadObject;
