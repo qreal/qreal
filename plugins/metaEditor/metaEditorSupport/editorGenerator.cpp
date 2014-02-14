@@ -54,13 +54,13 @@ QHash<Id, QString > EditorGenerator::getMetamodelList(QString const &pathToQReal
 
 QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 		, QString const &pathToFile
-		, QString const &pathToQrealRoot
+		, QString const &pathToQRealRoot
 		, QString const &destDir)
 {
 	mErrorReporter.clear();
 	mErrorReporter.clearErrors();
 
-	QString const editorPath = calculateEditorPath(pathToFile, pathToQrealRoot);
+	QString const editorPath = calculateEditorPath(pathToFile, pathToQRealRoot);
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
 	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
@@ -103,12 +103,12 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 		}
 		outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
 
-		QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToQrealRoot);
+		QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToQRealRoot);
 
 		outpro() << QString ("ROOT = %1\n").arg(relativeQRealSourcesPath);
 		outpro() << "\n";
 
-		outpro() << QString("include (%1)\n").arg(pathToQrealRoot + "/plugins/editorsSdk/editorsCommon.pri");
+		outpro() << QString("include (%1)\n").arg(pathToQRealRoot + "/plugins/editorsSdk/editorsCommon.pri");
 		if (!destDir.isEmpty()) {
 			outpro() << QString("DESTDIR = %1\n").arg(destDir);
 		}
@@ -132,18 +132,18 @@ QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString 
 {
 	QFileInfo const pluginDir(pathToFile);
 	QFileInfo const sourcesDir(pathToQRealSource);
-	QFileInfo const qRealPluginsDir(sourcesDir.absoluteFilePath() + "/plugins/" + "editorsSdk");
+	QFileInfo const qRealEditorsSdk(sourcesDir.absoluteFilePath() + "/plugins/" + "editorsSdk");
 
-	return calculateRelativePath(qRealPluginsDir.absoluteFilePath(), pluginDir.absoluteFilePath());
+	return calculateRelativePath(qRealEditorsSdk.absoluteFilePath(), pluginDir.absoluteFilePath());
 }
 
 QString EditorGenerator::calculateRelativeQRealSourcesPath(QString const &pathToQRealSource)
 {
 	QFileInfo const sdkDir(pathToQRealSource);
-	QFileInfo const pluginDir(sdkDir.absoluteFilePath() + "/plugins/" + "editorsSdk");
+	QFileInfo const editorsDir(sdkDir.absoluteFilePath() + "/plugins/" + "editorsSdk");
 	QFileInfo const sourcesDir(pathToQRealSource);
 
-	return calculateRelativePath(pluginDir.absoluteFilePath(), sourcesDir.absoluteFilePath());
+	return calculateRelativePath(editorsDir.absoluteFilePath(), sourcesDir.absoluteFilePath());
 }
 
 QString EditorGenerator::newMethodForCalculatingEditorPath(QString const &pathToFile)
@@ -167,7 +167,6 @@ QString EditorGenerator::newMethodForCalculatingEditorPath(QString const &pathTo
 
 QString EditorGenerator::calculateRelativePath(QString const &pathOne, QString const &pathTwo)
 {
-
 	int const levels = pathOne.split("/", QString::SkipEmptyParts).count();
 	QString result;
 	for (int i = 0; i < levels; ++i) {

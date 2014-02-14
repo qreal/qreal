@@ -55,11 +55,13 @@ void PreferencesCompilerPage::changeSystem()
 		mUi->configurationSettingsWidget->setEnabled(true);
 		initConfigurationSettings(configuration());
 	}
+
 	if (mUi->windowsButton->isChecked()) {
 		initCompilersSettings("qmake", "mingw32-make", "dll", "");
 		mUi->configurationSettingsWidget->setEnabled(true);
 		initConfigurationSettings(configuration());
 	}
+
 	if (mUi->otherButton->isChecked()) {
 		mUi->compilerSettingsWidget->setEnabled(true);
 		mUi->configurationSettingsWidget->setEnabled(false);
@@ -99,9 +101,11 @@ QString PreferencesCompilerPage::configuration() const
 	if (mUi->debugButton->isChecked()) {
 		return "debug";
 	}
+
 	if (mUi->releaseButton->isChecked()) {
 		return "release";
 	}
+
 	return "";
 }
 

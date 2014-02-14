@@ -1,4 +1,4 @@
-TEMPLATE =  lib
+TEMPLATE = lib
 CONFIG += plugin
 
 QT += widgets
