@@ -59,7 +59,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	mBlocksFactoryManager.addFactory(blocksFactory);
 
-	mInterpreter = new interpreter::Interpreter(
+	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
 			, configurer.mainWindowInterpretersInterface()
@@ -69,6 +69,9 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, *mParser
 			, mActionsManager.connectToRobotAction()
 			);
+
+	mInterpreter = interpreter;
+	mSensorsConfigurationManager->connectSensorsConfigurationProvider(interpreter);
 
 	connectInterpreterToActions();
 

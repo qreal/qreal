@@ -8,7 +8,7 @@ namespace robotModel {
 namespace real {
 namespace parts {
 
-class TouchSensor : public interpreterBase::robotModel::robotParts::TouchSensor, public NxtInputDevice
+class TouchSensor : public interpreterBase::robotModel::robotParts::TouchSensor
 {
 	Q_OBJECT
 
@@ -18,10 +18,13 @@ public:
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;
+	void doConfiguration() override;
+
+private slots:
+	void sensorSpecificProcessResponse(QByteArray const &reading);
 
 private:
-	void sensorSpecificProcessResponse(QByteArray const &reading) override;
-	void onDeviceConfigured() override;
+	NxtInputDevice mImplementation;
 };
 
 }

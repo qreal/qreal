@@ -1,11 +1,13 @@
 #include "realRobotModel.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/exception/exception.h>
 
 #include "communication/bluetoothRobotCommunicationThread.h"
 #include "communication/usbRobotCommunicationThread.h"
 
 #include "parts/motor.h"
+#include "parts/touchSensor.h"
 
 using namespace nxtKitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
@@ -13,7 +15,8 @@ using namespace interpreterBase::robotModel;
 
 RealRobotModel::RealRobotModel()
 {
-	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
+	/// @todo: replace onConnected() with connected() signal
+	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::onConnected);
 	connect(&mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
 }
 
@@ -67,4 +70,13 @@ void RealRobotModel::configureKnownDevices()
 	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("A"), &mRobotCommunicator));
 	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("B"), &mRobotCommunicator));
 	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("C"), &mRobotCommunicator));
+}
+
+robotParts::PluggableDevice *RealRobotModel::createDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo)
+{
+	if (deviceInfo.isA(touchSensorInfo())) {
+		return new parts::TouchSensor(touchSensorInfo(), port, mRobotCommunicator);
+	}
+
+	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 }

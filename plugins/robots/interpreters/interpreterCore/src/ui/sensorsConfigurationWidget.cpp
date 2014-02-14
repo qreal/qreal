@@ -126,13 +126,17 @@ void SensorsConfigurationWidget::refresh()
 
 void SensorsConfigurationWidget::save()
 {
-	/// Refreshing may affect combobox current index. No saving is needed then.
+	// Refreshing may affect combobox current index. No saving is needed then.
 	if (mRefreshing) {
 		return;
 	}
 
 	mSaving = true;
 	for (QComboBox * const box : mConfigurers) {
+		if (!box->isVisible()) {
+			continue;
+		}
+
 		QString const robotModel = box->property("robotModel").toString();
 		PortInfo const port = box->property("port").value<PortInfo>();
 		PluggableDeviceInfo const device = box->itemData(box->currentIndex()).value<PluggableDeviceInfo>();

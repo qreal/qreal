@@ -96,7 +96,7 @@ void Interpreter::interpret()
 	/// @todo Also, temporarily dropping connection to robot until devices are ready to be configured. This is needed
 	/// because we want one "allDevicesConfigured()" signal, after all devices are configured and robot is ready for
 	/// interpretation. To be done more adequately (with "atomic" configureDevices() method).
-	mRobotModelManager.model().disconnectFromRobot();
+//	mRobotModelManager.model().disconnectFromRobot();
 
 	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
 		QString const modelName = mRobotModelManager.model().name();
@@ -109,7 +109,7 @@ void Interpreter::interpret()
 //	mRobotModelManager.model().configureDevice(PortInfo("1")
 //			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
 
-	mRobotModelManager.model().connectToRobot();
+//	mRobotModelManager.model().connectToRobot();
 
 //	details::Autoconfigurer configurer(
 //				*mGraphicalModelApi

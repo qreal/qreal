@@ -5,13 +5,12 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace utils;
 
-NxtInputDevice::NxtInputDevice(QObject *instance
+NxtInputDevice::NxtInputDevice(interpreterBase::robotModel::robotParts::AbstractSensor const &sensor
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator
 		, interpreterBase::robotModel::PortInfo const &port
 		, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, enums::sensorMode::SensorModeEnum const &sensorMode)
-	: mInstance(instance)
-	, mRobotCommunicator(robotCommunicator)
+	: mRobotCommunicator(robotCommunicator)
 	, mLowLevelPort(port.name().at(0).toLatin1() - '1')
 	, mLowLevelSensorType(lowLevelSensorType)
 	, mSensorMode(sensorMode)
@@ -19,11 +18,13 @@ NxtInputDevice::NxtInputDevice(QObject *instance
 	, mIsConfigured(false)
 	, mResetDone(false)
 {
+	QObject::connect(&mRobotCommunicator, &utils::robotCommunication::RobotCommunicator::response
+			, this, &NxtInputDevice::readingDone);
 }
 
 void NxtInputDevice::readingDone(QObject *addressee, QByteArray const &reading)
 {
-	if (addressee == mInstance) {
+	if (addressee == this) {
 		processResponse(reading);
 	}
 }
@@ -45,7 +46,7 @@ void NxtInputDevice::processResponse(QByteArray const &reading)
 				, "Status byte is: " + QString::number(static_cast<int>(reading[4])));
 		mState = idle;
 		mResetDone = true;
-		onDeviceConfigured();
+		emit configured(true);
 	} else if (reading.size() >= 5 && reading[3] == enums::commandCode::SETINPUTMODE) {
 		mState = idle;
 		Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
@@ -58,19 +59,15 @@ void NxtInputDevice::processResponse(QByteArray const &reading)
 		command[2] = enums::telegramType::directCommandResponseRequired;
 		command[3] = enums::commandCode::RESETINPUTSCALEDVALUE;
 		command[4] = mLowLevelPort;
-		mRobotCommunicator.send(mInstance, command, 5);
+		send(command, 5);
 
 		mIsConfigured = true;
 	} else {
-		sensorSpecificProcessResponse(reading);
+		emit sensorSpecificProcessResponse(reading);
 	}
 }
 
-void NxtInputDevice::onDeviceConfigured()
-{
-}
-
-void NxtInputDevice::configureNxtDevice()
+void NxtInputDevice::configure()
 {
 	QByteArray command(7, 0);
 	command[0] = 0x05;  //command length
@@ -80,5 +77,30 @@ void NxtInputDevice::configureNxtDevice()
 	command[4] = mLowLevelPort;
 	command[5] = mLowLevelSensorType;
 	command[6] = mSensorMode;
-	mRobotCommunicator.send(mInstance, command, 5);
+	send(command, 5);
+}
+
+void NxtInputDevice::send(QByteArray const &buffer, unsigned const responseSize)
+{
+	mRobotCommunicator.send(this, buffer, responseSize);
+}
+
+NxtInputDevice::State NxtInputDevice::state() const
+{
+	return mState;
+}
+
+void NxtInputDevice::setState(NxtInputDevice::State state)
+{
+	mState = state;
+}
+
+bool NxtInputDevice::isConfigured() const
+{
+	return mIsConfigured;
+}
+
+char NxtInputDevice::lowLevelPort() const
+{
+	return mLowLevelPort;
 }

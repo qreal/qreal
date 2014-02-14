@@ -28,6 +28,10 @@ private:
 
 	void configureKnownDevices() override;
 
+	interpreterBase::robotModel::robotParts::PluggableDevice *createDevice(
+			interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::PluggableDeviceInfo const &deviceInfo) override;
+
 	utils::robotCommunication::RobotCommunicator mRobotCommunicator;
 	QString mLastCommunicationValue;
 };
