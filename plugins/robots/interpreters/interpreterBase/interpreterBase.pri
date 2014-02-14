@@ -9,13 +9,9 @@ LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils
 
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
-HEADERS += \
-	$$PWD/src/blocksBase/blocksFactory.h \
-
 SOURCES += \
 	$$PWD/src/sensorsConfigurationProvider.cpp \
 	$$PWD/src/blocksBase/block.cpp \
-	$$PWD/src/blocksBase/blocksFactory.cpp \
 	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \

@@ -28,17 +28,11 @@ public:
 
 	ConfigurationInterface const &configuration() const final;
 
-	robotParts::Brick &brick() final;
-	robotParts::Display &display() final;
-
 	QList<PortInfo> availablePorts() const override;
 	QList<PortInfo> configurablePorts() const override;
 	QList<PluggableDeviceInfo> allowedDevices(PortInfo const &port) const override;
 
-	/// @todo Device configuration for common devices from interpreterBase::robotModel::robotParts can be done here,
-	///       in CommonRobotModel. Actual usage of a model as devices factory shall be revised. Maybe separate
-	///       hierarchy of device factories is needed, maybe not, if it will be main responsibility of a model.
-	void configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo) override;
+	void configureDevices(QHash<PortInfo, PluggableDeviceInfo> const &devices) final;
 
 	QList<PluggableDeviceInfo> convertibleBases() const override;
 
@@ -46,40 +40,31 @@ public slots:
 	virtual void rereadSettings();
 
 protected:
-	void setBrick(robotParts::Brick *brick);  // Takes ownership.
-	void setDisplay(robotParts::Display *display);  // Takes ownership.
+	void configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo);
+
 	void addAllowedConnection(PortInfo const &port, QList<PluggableDeviceInfo> const &devices);
 
 	ConfigurationInterface &mutableConfiguration();
 
-	/// Method that shall be called by descendant model when it finishes connecting to a robot. Descendants shall
-	/// not explicitly emit connected(), as there is a need to configure sensors immediately after that.
-	/// @todo Not good at all, too many assumptions about descendant implementation. Seems that there shall be separate
-	///       entities for plugins that handle plugin-specific activities, or it will quickly become "yo-yo" antipattern.
-	void onConnected();
+private slots:
+	void onConnected(bool success);
+	void onDisconnected();
 
 private:
-	/// Shall be implemented in descendants to establish connection to a real robot. Default implementation emits
-	/// connected() immediately, which is fine if model doesn't need connection.
-	/// Method shall return immediately, and when connection is made, connected() signal shall be emitted.
-	virtual void doConnectToRobot();
-
 	/// Shall be implemented in descendants to add to configuration devices that can not be changed by user
 	/// and shall be in a model every time (like Lego motors). Default implementation does nothing.
+	/// @todo Unneeded. Shall be done in constructors of derived models.
 	virtual void configureKnownDevices();
 
 	virtual robotParts::PluggableDevice * createDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo);
 
 	QHash<PortInfo, QList<PluggableDeviceInfo>> mAllowedConnections;
 
-	/// Robot control block (or brick). Shall be set in descendants to an actual implementation by setBrick() method.
-	QScopedPointer<robotParts::Brick> mBrick;
-
-	/// Robot display. Shall be set in descendants to an actual implementation by setDisplay() method.
-	QScopedPointer<robotParts::Display> mDisplay;
-
 	/// Devices configuration.
 	Configuration mConfiguration;
+
+	/// Model connection state.
+	ConnectionState mState;
 };
 
 }
