@@ -13,7 +13,7 @@ namespace details {
 class TextExpressionProcessor : public utils::TextExpressionProcessorBase
 {
 public:
-	explicit TextExpressionProcessor(QMap<QString, utils::Number> const &variables);
+	explicit TextExpressionProcessor(QMap<QString, utils::Number *> const &variables);
 
 	QString processExpression(QString const &expression) const;
 
@@ -22,7 +22,7 @@ protected:
 	virtual QString value(QString const &variable) const;
 
 private:
-	QMap<QString, utils::Number> const mVariables;
+	QMap<QString, utils::Number *> const &mVariables;
 };
 
 }

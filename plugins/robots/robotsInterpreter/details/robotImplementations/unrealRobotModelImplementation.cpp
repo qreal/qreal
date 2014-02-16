@@ -195,7 +195,7 @@ void UnrealRobotModelImplementation::startInterpretation()
 	mD2Model->startInterpretation();
 }
 
-AbstractTimer *UnrealRobotModelImplementation::produceTimer()
+TimelineInterface *UnrealRobotModelImplementation::timeline()
 {
-	return new d2Model::D2ModelTimer(mD2Model->timeline());
+	return mD2Model->timeline();
 }

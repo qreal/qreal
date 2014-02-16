@@ -4,7 +4,7 @@
 
 using namespace qReal::interpreters::robots::details;
 
-TextExpressionProcessor::TextExpressionProcessor(QMap<QString, utils::Number> const &variables)
+TextExpressionProcessor::TextExpressionProcessor(QMap<QString, utils::Number *> const &variables)
 	: mVariables(variables)
 {
 }
@@ -21,5 +21,5 @@ bool TextExpressionProcessor::variableExists(QString const &variable) const
 
 QString TextExpressionProcessor::value(QString const &variable) const
 {
-	return mVariables[variable].toString();
+	return mVariables[variable]->toString();
 }

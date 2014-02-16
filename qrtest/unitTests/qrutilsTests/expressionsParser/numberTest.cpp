@@ -9,22 +9,22 @@ TEST(NumberTest, ariphmeticsIntTest) {
 	Number n2(3, Number::intType);
 
 	n1 += n2;
-	EXPECT_EQ(n1.property("Number").toInt(), 5);
+	EXPECT_EQ(n1.value().toInt(), 5);
 
 	n1 -= n2;
-	EXPECT_EQ(n1.property("Number").toInt(), 2);
+	EXPECT_EQ(n1.value().toInt(), 2);
 
 	n1 *= n2;
-	EXPECT_EQ(n1.property("Number").toInt(), 6);
+	EXPECT_EQ(n1.value().toInt(), 6);
 
 	n1 /= n2;
-	EXPECT_EQ(n1.property("Number").toInt(), 2);
+	EXPECT_EQ(n1.value().toInt(), 2);
 
 	n1 /= n2;
-	EXPECT_EQ(n1.property("Number").toInt(), 0);
+	EXPECT_EQ(n1.value().toInt(), 0);
 
 	n1 = -n2;
-	EXPECT_EQ(n1.property("Number").toInt(), -3);
+	EXPECT_EQ(n1.value().toInt(), -3);
 }
 
 TEST(NumberTest, ariphmeticsDoubleTest) {
@@ -32,19 +32,19 @@ TEST(NumberTest, ariphmeticsDoubleTest) {
 	Number n2(2.2, Number::doubleType);
 
 	n1 += n2;
-	EXPECT_EQ(n1.property("Number").toDouble(), 4.5);
+	EXPECT_EQ(n1.value().toDouble(), 4.5);
 
 	n1 -= n2;
-	EXPECT_EQ(n1.property("Number").toDouble(), 2.3);
+	EXPECT_EQ(n1.value().toDouble(), 2.3);
 
 	n1 *= n2;
-	EXPECT_EQ(n1.property("Number").toDouble(), 5.06);
+	EXPECT_EQ(n1.value().toDouble(), 5.06);
 
 	n1 /= n2;
-	EXPECT_EQ(n1.property("Number").toDouble(), 2.3);
+	EXPECT_EQ(n1.value().toDouble(), 2.3);
 
 	n2 = -n1;
-	EXPECT_EQ(n2.property("Number").toDouble(), -2.3);
+	EXPECT_EQ(n2.value().toDouble(), -2.3);
 }
 
 TEST(NumberTest, ariphmeticsBothTypesTest) {
@@ -52,23 +52,23 @@ TEST(NumberTest, ariphmeticsBothTypesTest) {
 	Number n2(2.5, Number::doubleType);
 
 	n1 += n2;
-	EXPECT_EQ(n1.property("Type"), Number::doubleType);
-	EXPECT_EQ(n1.property("Number").toDouble(), 4.5);
+	EXPECT_EQ(n1.type(), Number::doubleType);
+	EXPECT_EQ(n1.value().toDouble(), 4.5);
 
-	n1.setProperty("Type", Number::intType);
+	n1.setType(Number::intType);
 	n1 -= n2;
-	EXPECT_EQ(n1.property("Type"), Number::doubleType);
-	EXPECT_EQ(n1.property("Number").toDouble(), 2.0);
+	EXPECT_EQ(n1.type(), Number::doubleType);
+	EXPECT_EQ(n1.value().toDouble(), 2.0);
 
-	n1.setProperty("Type", Number::intType);
+	n1.setType(Number::intType);
 	n1 *= n2;
-	EXPECT_EQ(n1.property("Type"), Number::doubleType);
-	EXPECT_EQ(n1.property("Number").toDouble(), 5.0);
+	EXPECT_EQ(n1.type(), Number::doubleType);
+	EXPECT_EQ(n1.value().toDouble(), 5.0);
 
-	n1.setProperty("Type", Number::intType);
+	n1.setType(Number::intType);
 	n1 /= n2;
-	EXPECT_EQ(n1.property("Type"), Number::doubleType);
-	EXPECT_EQ(n1.property("Number").toDouble(), 2.0);
+	EXPECT_EQ(n1.type(), Number::doubleType);
+	EXPECT_EQ(n1.value().toDouble(), 2.0);
 }
 
 TEST(NumberTest, comparisonTest) {
