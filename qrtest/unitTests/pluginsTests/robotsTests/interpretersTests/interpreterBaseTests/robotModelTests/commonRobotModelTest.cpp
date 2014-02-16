@@ -37,12 +37,16 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 
 	model.init();
 
-	model.configureDevice(PortInfo("1")
+	QHash<PortInfo, PluggableDeviceInfo> devices;
+	devices.insert(PortInfo("1")
 			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
 
 	model.connectToRobot();
 
 	protocolTester.wait(120);
+
+	/// @todo We can not configure devices when model is not connected, or it will not configure them on reconnect.
+	model.configureDevices(devices);
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
@@ -59,10 +63,13 @@ TEST_F(CommonRobotModelTest, twoDLifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
-	model.configureDevice(PortInfo("1")
+	QHash<PortInfo, PluggableDeviceInfo> devices;
+	devices.insert(PortInfo("1")
 			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
 
 	model.connectToRobot();
+
+	model.configureDevices(devices);
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
@@ -87,6 +94,9 @@ TEST_F(CommonRobotModelTest, realNoSensorsLifecycleTest)
 
 	protocolTester.wait(120);
 
+	/// @todo Ugly
+	model.configureDevices(QHash<PortInfo, PluggableDeviceInfo>());
+
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
 }
@@ -102,6 +112,9 @@ TEST_F(CommonRobotModelTest, twoDNoSensorsLifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
 	model.connectToRobot();
+
+	/// @todo Ugly
+	model.configureDevices(QHash<PortInfo, PluggableDeviceInfo>());
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));

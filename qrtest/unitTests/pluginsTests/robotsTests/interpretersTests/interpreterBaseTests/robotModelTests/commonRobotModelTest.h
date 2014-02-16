@@ -6,6 +6,7 @@
 #include <gmock/gmock.h>
 
 #include <interpreterBase/robotModel/commonRobotModel.h>
+#include <support/dummyPluggableDevice.h>
 
 namespace qrTest {
 namespace robotsTests {
@@ -30,7 +31,7 @@ public:
 				mConnectionTimer.setInterval(100);
 				mConnectionTimer.setSingleShot(true);
 				QObject::connect(&mConnectionTimer, &QTimer::timeout, [&] () {
-					onConnected();
+					emit connected(true);
 				});
 			}
 		}
@@ -39,18 +40,28 @@ public:
 		MOCK_CONST_METHOD0(friendlyName, QString());
 		MOCK_CONST_METHOD0(needsConnection, bool());
 
-		void doConnectToRobot() override
+		void connectToRobot() override
 		{
 			if (!mImmediateConnection) {
 				mConnectionTimer.start();
 			} else {
-				onConnected();
+				emit connected(true);
 			}
 		}
 
 		MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::PluggableDeviceInfo>());
 
 	private:
+		virtual interpreterBase::robotModel::robotParts::PluggableDevice * createDevice(
+				interpreterBase::robotModel::PortInfo const &port
+				, interpreterBase::robotModel::PluggableDeviceInfo const &deviceInfo
+				)
+		{
+			Q_UNUSED(deviceInfo)
+
+			return new DummyPluggableDevice(port);
+		}
+
 		QTimer mConnectionTimer;
 		bool mImmediateConnection;
 	};

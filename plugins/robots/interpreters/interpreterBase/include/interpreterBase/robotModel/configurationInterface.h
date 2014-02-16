@@ -51,10 +51,6 @@ public:
 	/// Force configuration to emit allDevicesConfigured() when all devices are actually configured, even if no
 	/// configuration requests are pending. In later case it will emit immediately.
 	virtual void configure() = 0;
-
-signals:
-	/// Emitted when all devices are configured (or failed to configure) and model is ready to work.
-	void allDevicesConfigured();
 };
 
 }
