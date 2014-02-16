@@ -2,10 +2,10 @@
 #include <QtXml/QDomDocument>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QPushButton>
+#include <qrgui/elementEditor/widgetsEdit/private/toolFactory.h>
 
 #include "trigger.h"
 #include "triggerWidget.h"
-#include "../private/toolFactory.h"
 
 using namespace qReal::widgetsEdit;
 

@@ -3,11 +3,11 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
 #include <QtGui/QDrag>
+#include <qrgui/elementEditor/widgetsEdit/private/toolFactory.h>
 
 #include "tool.h"
 #include "root.h"
 #include "propertyManager.h"
-#include "../private/toolFactory.h"
 
 using namespace qReal::widgetsEdit;
 

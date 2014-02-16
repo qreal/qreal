@@ -1,7 +1,7 @@
 #include <QtCore/QMetaProperty>
 
 #include "propertyManager.h"
-#include "../../../../qrutils/xmlUtils.h"
+#include<qrutils/xmlUtils.h>
 
 using namespace qReal::widgetsEdit;
 

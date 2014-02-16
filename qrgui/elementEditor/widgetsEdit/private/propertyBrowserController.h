@@ -2,22 +2,18 @@
 
 #include <QtCore/QObject>
 
-#include <thirdparty/qtpropertybrowser/src/QtTreePropertyBrowser.h>
-#include <thirdparty/qtpropertybrowser/src/QtVariantPropertyManager>
-#include <thirdparty/qtpropertybrowser/src/QtVariantProperty.h>
-#include <thirdparty/qtpropertybrowser/src/QtVariantEditorFactory>
+#include <thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h>
+#include <thirdparty/qtpropertybrowser/src/qtvariantproperty.h>
 
-namespace qReal
-{
-namespace widgetsEdit
-{
+namespace qReal {
+namespace widgetsEdit {
 
 class PropertyManager;
 
 class PropertyBrowserController
 {
 public:
-	PropertyBrowserController(QtTreePropertyBrowser *browser);
+	explicit PropertyBrowserController(QtTreePropertyBrowser *browser);
 	void setController(PropertyManager *manager);
 
 private:

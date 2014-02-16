@@ -1,7 +1,7 @@
 #include "toolController.h"
-#include "../tools/tool.h"
-#include "../tools/layoutTool.h"
-#include "../tools/layoutHelpers/layoutHelperFactory.h"
+#include <qrgui/elementEditor/widgetsEdit/tools/tool.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/layoutTool.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/layoutHelpers/layoutHelperFactory.h>
 
 using namespace qReal::widgetsEdit;
 

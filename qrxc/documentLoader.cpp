@@ -1,8 +1,8 @@
 #include <QtCore/QDebug>
 #include <QtCore/QDir>
+#include <qrutils/xmlUtils.h>
 
 #include "documentLoader.h"
-#include "../qrutils/xmlUtils.h"
 
 DocumentLoader::DocumentLoader()
 {

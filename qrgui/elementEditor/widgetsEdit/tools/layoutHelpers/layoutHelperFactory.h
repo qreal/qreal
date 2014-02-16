@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QtWidgets/QGraphicsLinearLayout>
+#include <qrgui/elementEditor/widgetsEdit/tools/labelTool.h>
 
-#include "../layoutTool.h"
 #include "layoutTypes.h"
 #include "layoutHelperBase.h"
 #include "gridLayoutHelper.h"

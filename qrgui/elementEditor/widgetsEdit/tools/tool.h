@@ -4,10 +4,9 @@
 #include <QtXml/QDomElement>
 #include <QtWidgets/QGraphicsProxyWidget>
 #include <QtGui/QIcon>
-
-#include "../private/toolController.h"
-#include "../propertyBinding/propertyProxyBase.h"
-#include "../../../editorPluginInterface/propertyEditorInterface.h"
+#include <qrgui/elementEditor/widgetsEdit/private/toolController.h>
+#include <qrgui/elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.h>
+#include <editorPluginInterface/propertyEditorInterface.h>
 
 namespace qReal
 {

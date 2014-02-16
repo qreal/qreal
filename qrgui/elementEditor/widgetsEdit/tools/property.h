@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../../qtpropertybrowser/src/qtvariantproperty.h"
-
+#include <thirdparty/qtpropertybrowser/src/qtvariantproperty.h>
 #include <QtCore/QObject>
 #include <QtCore/QString>
 

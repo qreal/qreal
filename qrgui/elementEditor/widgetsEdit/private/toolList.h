@@ -2,8 +2,7 @@
 
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QListWidgetItem>
-
-#include "../tools/tool.h"
+#include <qrgui/elementEditor/widgetsEdit/tools/tool.h>
 
 namespace qReal
 {

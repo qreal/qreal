@@ -15,8 +15,8 @@ StartPage::StartPage()
 
 	QPushButton *shapeEditorButton = new QPushButton;
 	QPushButton *widgetsEditorButton = new QPushButton;
-	connect(shapeEditorButton, SIGNAL(clicked()),
-			this, SLOT(onShapeSelected()));
+	connect(shapeEditorButton, SIGNAL(clicked())
+		, this, SLOT(onShapeSelected()));
 	connect(widgetsEditorButton, SIGNAL(clicked())
 		, this, SLOT(onWidgetSelected()));
 	shapeEditorButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);

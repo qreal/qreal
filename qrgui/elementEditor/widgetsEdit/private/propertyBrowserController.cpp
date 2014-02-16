@@ -1,6 +1,6 @@
 #include "propertyBrowserController.h"
-#include "../tools/property.h"
-#include "../tools/propertyManager.h"
+#include <qrgui/elementEditor/widgetsEdit/tools/property.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/propertyManager.h>
 
 using namespace qReal::widgetsEdit;
 

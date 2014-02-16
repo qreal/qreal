@@ -5,10 +5,10 @@
 #include <QtCore/QVariant>
 #include <QtCore/QList>
 #include <QtXml/QDomElement>
+#include <thirdparty/qtpropertybrowser/src/QtVariantPropertyManager>
 
 #include "property.h"
 #include "tool.h"
-#include "../../qtpropertybrowser/src/QtVariantPropertyManager"
 
 namespace qReal
 {

@@ -3,7 +3,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtGui/QIcon>
 
-#include "../tools/layoutHelpers/layoutTypes.h"
+#include <qrgui/elementEditor/widgetsEdit/tools/layoutHelpers/layoutTypes.h>
 
 namespace qReal
 {

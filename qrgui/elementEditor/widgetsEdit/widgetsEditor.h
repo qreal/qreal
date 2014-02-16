@@ -3,17 +3,17 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QGraphicsProxyWidget>
 #include <QtCore/QPersistentModelIndex>
+#include <qrutils/navigationUtils/navigationPageWithMenu.h>
+#include <umllib/sdfRenderer.h>
+#include <qrgui/editorPluginInterface/propertyEditorInterface.h>
+#include <qrgui/elementEditor/common/controlButtons.h>
+#include <qrgui/elementEditor/common/templateDocumentBuilder.h>
 
 #include "tools/tool.h"
 #include "tools/root.h"
 #include "tools/layoutHelpers/layoutTypes.h"
 #include "private/toolController.h"
 #include "private/layoutButtons.h"
-#include "../../../qrutils/navigationUtils/navigationPageWithMenu.h"
-#include "../../umllib/sdfRenderer.h"
-#include "../../editorPluginInterface/propertyEditorInterface.h"
-#include "../common/controlButtons.h"
-#include "../common/templateDocumentBuilder.h"
 
 namespace Ui
 {

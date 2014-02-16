@@ -1,21 +1,21 @@
 #include "toolFactory.h"
-#include "../tools/root.h"
-#include "../tools/pushButton.h"
-#include "../tools/radioButton.h"
-#include "../tools/checkBox.h"
-#include "../tools/groupBox.h"
-#include "../tools/scrollArea.h"
-#include "../tools/frame.h"
-#include "../tools/widget.h"
-#include "../tools/comboBox.h"
-#include "../tools/lineEdit.h"
-#include "../tools/plainTextEdit.h"
-#include "../tools/spinBox.h"
-#include "../tools/doubleSpinBox.h"
-#include "../tools/labelTool.h"
-#include "../tools/spacer.h"
-#include "../tools/trigger.h"
-#include "../tools/triggerWidget.h"
+#include <qrgui/elementEditor/widgetsEdit/tools/root.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/pushButton.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/radioButton.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/checkBox.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/groupBox.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/scrollArea.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/frame.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/widget.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/comboBox.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/lineEdit.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/plainTextEdit.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/spinBox.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/doubleSpinBox.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/labelTool.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/spacer.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/trigger.h>
+#include <qrgui/elementEditor/widgetsEdit/tools/triggerWidget.h>
 
 using namespace qReal::widgetsEdit;
 

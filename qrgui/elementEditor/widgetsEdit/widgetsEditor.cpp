@@ -4,6 +4,9 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtXml/QDomDocument>
+#include <qrutils/outFile.h>
+#include <qrutils/inFile.h>
+#include <qrutils/xmlUtils.h>
 
 #include "widgetsEditor.h"
 #include "ui_widgetsEditor.h"
@@ -13,10 +16,6 @@
 #include "private/outerBindingsDialog.h"
 #include "tools/root.h"
 #include "tools/layoutHelpers/layoutHelperFactory.h"
-
-#include "../../../../qrutils/outFile.h"
-#include "../../../../qrutils/inFile.h"
-#include "../../../../qrutils/xmlUtils.h"
 
 using namespace qReal::widgetsEdit;
 

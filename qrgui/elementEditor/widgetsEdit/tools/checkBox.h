@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QtWidgets/QCheckBox>
+#include <qrgui/elementEditor/widgetsEdit/private/toolController.h>
 
 #include "abstractButton.h"
-#include "../private/toolController.h"
 #include "propertyEditor.h"
 
 namespace qReal

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QtWidgets/QGraphicsLinearLayout>
+#include <qrgui/elementEditor/widgetsEdit/tools/labelTool.h>
 
-#include "../layoutTool.h"
 #include "layoutHelperBase.h"
 
 namespace qReal

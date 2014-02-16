@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../editorPluginInterface/elementImpl.h"
-#include "../../editorPluginInterface/propertyEditorInterface.h"
-#include "../../../qrutils/graphicsUtils/layoutHandlers/layoutHandlerFactory.h"
+#include <editorPluginInterface/elementImpl.h>
+#include <editorPluginInterface/propertyEditorInterface.h>
+#include <qrutils/graphicsUtils/layoutHandlers/layoutHandlerFactory.h>
 
 namespace qReal
 {

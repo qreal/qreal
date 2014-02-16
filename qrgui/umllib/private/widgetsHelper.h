@@ -2,11 +2,10 @@
 
 #include <QtCore/QMap>
 #include <QtGui/QPixmap>
-
-#include "../nodeElement.h"
-#include "../../editorPluginInterface/widgetsHelperInterface.h"
-#include "../../editorPluginInterface/sdfRendererInterface.h"
-#include "../../editorPluginInterface/propertyEditorInterface.h"
+#include <qrgui/umllib/nodeElement.h>
+#include <editorPluginInterface/widgetsHelperInterface.h>
+#include <editorPluginInterface/sdfRendererInterface.h>
+#include <editorPluginInterface/propertyEditorInterface.h>
 
 namespace qReal {
 class WidgetsHelper : public WidgetsHelperInterface

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QtWidgets/QLabel>
+#include <qrgui/elementEditor/widgetsEdit/private/toolController.h>
 
 #include "frame.h"
-#include "../private/toolController.h"
 #include "propertyEditor.h"
 
 namespace qReal
