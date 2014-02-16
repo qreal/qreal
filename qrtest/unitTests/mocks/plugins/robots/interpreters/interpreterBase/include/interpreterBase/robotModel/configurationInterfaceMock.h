@@ -23,7 +23,7 @@ public:
 			);
 
 	MOCK_METHOD1(clearDevice, void(interpreterBase::robotModel::PortInfo const &port));
-	MOCK_METHOD0(configure, void());
+	MOCK_METHOD0(forceResponse, void());
 };
 
 }

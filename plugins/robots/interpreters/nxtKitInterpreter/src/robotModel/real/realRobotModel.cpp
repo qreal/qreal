@@ -15,8 +15,7 @@ using namespace interpreterBase::robotModel;
 
 RealRobotModel::RealRobotModel()
 {
-	/// @todo: replace onConnected() with connected() signal
-	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::onConnected);
+	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(&mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
 
 	PluggableDeviceInfo motorInfo = PluggableDeviceInfo::create<parts::Motor>(tr("Motor"));

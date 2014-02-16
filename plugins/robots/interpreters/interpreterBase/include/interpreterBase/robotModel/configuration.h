@@ -31,7 +31,7 @@ public:
 
 	void clearDevice(PortInfo const &port) override;
 
-	void configure() override;
+	void forceResponse() override;
 
 signals:
 	/// Emitted when all pending devices are configured (or failed to configure).

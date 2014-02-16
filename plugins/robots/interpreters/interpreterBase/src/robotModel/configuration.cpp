@@ -92,7 +92,7 @@ void Configuration::clearDevice(PortInfo const &port)
 	mConfigurationInProgress.remove(port);
 }
 
-void Configuration::configure()
+void Configuration::forceResponse()
 {
 	mWasConfigurationRequest = true;
 	checkAllDevicesConfigured();

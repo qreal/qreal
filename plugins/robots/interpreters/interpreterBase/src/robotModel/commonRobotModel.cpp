@@ -51,6 +51,8 @@ void CommonRobotModel::onConnected(bool success)
 	} else {
 		mState = disconnectedState;
 	}
+
+	mConfiguration.unlockConfiguring();
 }
 
 void CommonRobotModel::onDisconnected()
@@ -86,8 +88,7 @@ void CommonRobotModel::configureDevices(QHash<PortInfo, PluggableDeviceInfo> con
 		configureDevice(port, devices.value(port));
 	}
 
-	/// @todo Bullsh~
-	mConfiguration.configure();
+	mConfiguration.forceResponse();
 	mConfiguration.unlockConfiguring();
 }
 

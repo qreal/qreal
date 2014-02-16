@@ -49,8 +49,8 @@ public:
 	virtual void clearDevice(PortInfo const &port) = 0;
 
 	/// Force configuration to emit allDevicesConfigured() when all devices are actually configured, even if no
-	/// configuration requests are pending. In later case it will emit immediately.
-	virtual void configure() = 0;
+	/// configuration requests are pending. In later case it will emit immediately, when configuration is unlocked.
+	virtual void forceResponse() = 0;
 };
 
 }
