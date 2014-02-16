@@ -35,8 +35,8 @@ public:
 	MOCK_CONST_METHOD1(allowedDevices, QList<interpreterBase::robotModel::PluggableDeviceInfo>(
 			interpreterBase::robotModel::PortInfo const &port));
 
-	MOCK_METHOD2(configureDevice, void (interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &deviceInfo));
+	MOCK_METHOD1(configureDevices, void (QHash<interpreterBase::robotModel::PortInfo
+			, interpreterBase::robotModel::PluggableDeviceInfo> const &devices));
 
 	MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::PluggableDeviceInfo>());
 };

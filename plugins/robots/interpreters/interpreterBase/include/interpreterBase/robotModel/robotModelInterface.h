@@ -28,7 +28,9 @@ namespace robotModel {
 /// - Model is initialized (by calling init() method), which fills configuration and loads plugin-specific info that can
 ///   not be loaded in constructor.
 /// - Model connects to a real robot by calling connectToRobot(). When connection is established
-///   (or failed to establish), model emits connected() signal and enters Connected state.
+///   (or failed to establish), model emits connected() signal and enters Connected state (note that exact sequence
+///   of this is undefined, so it can at first enter Connected state and then emit connected(), or at first emit, then
+///   change state).
 /// - If connection is successful, model will be able to perform configuration of its pluggable devices by
 ///   calling configureDevices(), when it is done it emits allDevicesConfigured() signal. Some devices may fail to
 ///   configure for some reason, so actual configuration status shall be retrieved by configuration() call.
@@ -64,9 +66,13 @@ public:
 
 	virtual QList<PortInfo> availablePorts() const = 0;
 
-	/// Returns a list of ports that are allowed to be configured by user.
-	/// @todo Why it is needed? We have allowedDevices() method, if it returns more than one device for a given port
-	///       and a given direction, it shall be configured.
+	/// Returns a list of ports that are allowed to be configured by user. Recommended implementation shall use
+	/// allowedDevices() and make port configurable only when allowedDevices() allows some choice, but this method
+	/// is provided to allow descendant models to hide some devices that actually can be configured.
+	/// Main example is NXT, where on output port there can be a motor or a lamp. Motors are used almost every time,
+	/// so we don't want to bother user with "lamp or motor" choice. Lamps still can be supported as separate devices
+	/// and even configured by autoconfigurer, but user can not do that manually.
+	/// @todo Maybe we don't need this?
 	virtual QList<PortInfo> configurablePorts() const = 0;
 
 	/// Returns a list of devices that are allowed to be connected on a given port.

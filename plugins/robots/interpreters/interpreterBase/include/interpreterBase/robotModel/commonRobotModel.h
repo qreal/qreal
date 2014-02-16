@@ -32,6 +32,7 @@ public:
 	QList<PortInfo> configurablePorts() const override;
 	QList<PluggableDeviceInfo> allowedDevices(PortInfo const &port) const override;
 
+	/// @todo We can not configure devices when model is not connected, or it will not configure them on reconnect.
 	void configureDevices(QHash<PortInfo, PluggableDeviceInfo> const &devices) final;
 
 	QList<PluggableDeviceInfo> convertibleBases() const override;
@@ -51,11 +52,6 @@ private slots:
 	void onDisconnected();
 
 private:
-	/// Shall be implemented in descendants to add to configuration devices that can not be changed by user
-	/// and shall be in a model every time (like Lego motors). Default implementation does nothing.
-	/// @todo Unneeded. Shall be done in constructors of derived models.
-	virtual void configureKnownDevices();
-
 	virtual robotParts::PluggableDevice * createDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo);
 
 	QHash<PortInfo, QList<PluggableDeviceInfo>> mAllowedConnections;

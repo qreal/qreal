@@ -23,7 +23,6 @@ CommonRobotModel::~CommonRobotModel()
 void CommonRobotModel::init()
 {
 	rereadSettings();
-	configureKnownDevices();
 }
 
 void CommonRobotModel::connectToRobot()
@@ -47,7 +46,11 @@ ConfigurationInterface &CommonRobotModel::mutableConfiguration()
 
 void CommonRobotModel::onConnected(bool success)
 {
-	mState = connectedState;
+	if (success) {
+		mState = connectedState;
+	} else {
+		mState = disconnectedState;
+	}
 }
 
 void CommonRobotModel::onDisconnected()
@@ -83,6 +86,8 @@ void CommonRobotModel::configureDevices(QHash<PortInfo, PluggableDeviceInfo> con
 		configureDevice(port, devices.value(port));
 	}
 
+	/// @todo Bullsh~
+	mConfiguration.configure();
 	mConfiguration.unlockConfiguring();
 }
 
@@ -107,10 +112,6 @@ void CommonRobotModel::rereadSettings()
 void CommonRobotModel::addAllowedConnection(PortInfo const &port, QList<PluggableDeviceInfo> const &devices)
 {
 	mAllowedConnections[port].append(devices);
-}
-
-void CommonRobotModel::configureKnownDevices()
-{
 }
 
 robotParts::PluggableDevice * CommonRobotModel::createDevice(

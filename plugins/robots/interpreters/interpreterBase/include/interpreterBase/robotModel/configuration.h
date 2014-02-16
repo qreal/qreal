@@ -33,6 +33,10 @@ public:
 
 	void configure() override;
 
+signals:
+	/// Emitted when all pending devices are configured (or failed to configure).
+	void allDevicesConfigured();
+
 private slots:
 	void deviceConfiguredSlot(bool success);
 

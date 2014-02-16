@@ -15,6 +15,12 @@ RealRobotModel::RealRobotModel()
 {
 	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(&mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
+
+	PluggableDeviceInfo motorInfo = PluggableDeviceInfo::create<parts::Motor>(tr("Motor"));
+
+	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("A"), &mRobotCommunicator));
+	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("B"), &mRobotCommunicator));
+	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("C"), &mRobotCommunicator));
 }
 
 QString RealRobotModel::name() const
@@ -50,7 +56,7 @@ void RealRobotModel::rereadSettings()
 	mRobotCommunicator.setRobotCommunicationThreadObject(communicator);
 }
 
-void RealRobotModel::doConnectToRobot()
+void RealRobotModel::connectToRobot()
 {
 	mRobotCommunicator.connect();
 }
@@ -58,13 +64,4 @@ void RealRobotModel::doConnectToRobot()
 void RealRobotModel::disconnectFromRobot()
 {
 	mRobotCommunicator.disconnect();
-}
-
-void RealRobotModel::configureKnownDevices()
-{
-	PluggableDeviceInfo motorInfo = PluggableDeviceInfo::create<parts::Motor>(tr("Motor"));
-
-	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("A"), &mRobotCommunicator));
-	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("B"), &mRobotCommunicator));
-	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("C"), &mRobotCommunicator));
 }

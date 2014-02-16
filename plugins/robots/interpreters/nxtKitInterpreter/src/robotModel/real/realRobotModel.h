@@ -18,16 +18,13 @@ public:
 	QString friendlyName() const override;
 	bool needsConnection() const override;
 
+	void connectToRobot() override;
 	void disconnectFromRobot() override;
 
 public slots:
 	void rereadSettings() override;
 
 private:
-	void doConnectToRobot() override;
-
-	void configureKnownDevices() override;
-
 	utils::robotCommunication::RobotCommunicator mRobotCommunicator;
 	QString mLastCommunicationValue;
 };

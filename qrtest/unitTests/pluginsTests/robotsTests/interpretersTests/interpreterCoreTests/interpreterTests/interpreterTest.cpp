@@ -24,10 +24,7 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, needsConnection()).WillByDefault(Return(false));
 	EXPECT_CALL(mModel, needsConnection()).Times(AtLeast(1));
 
-	ON_CALL(mModel, init()).WillByDefault(Invoke([&] {
-		QMetaObject::invokeMethod(&mModel, "connected", Q_ARG(bool, true));
-		QMetaObject::invokeMethod(&mModel.mutableConfiguration(), "allDevicesConfigured");
-	}));
+	ON_CALL(mModel, init()).WillByDefault(Return());
 	EXPECT_CALL(mModel, init()).Times(AtLeast(1));
 
 	ON_CALL(mModel, configuration()).WillByDefault(ReturnRef(configurationInterfaceMock));
@@ -39,8 +36,7 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, connectToRobot()).WillByDefault(
 			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitConnected)
 			);
-	/// Shall be called twice for now: in init() method and when sensors are configured.
-	EXPECT_CALL(mModel, connectToRobot()).Times(2);
+	EXPECT_CALL(mModel, connectToRobot()).Times(1);
 
 	ON_CALL(mModel, disconnectFromRobot()).WillByDefault(
 			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitDisconnected)

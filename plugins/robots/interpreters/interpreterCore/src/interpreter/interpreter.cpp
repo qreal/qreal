@@ -93,23 +93,17 @@ void Interpreter::interpret()
 	/// @todo Temporarily loading initial configuration from registry
 	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
 
-	/// @todo Also, temporarily dropping connection to robot until devices are ready to be configured. This is needed
-	/// because we want one "allDevicesConfigured()" signal, after all devices are configured and robot is ready for
-	/// interpretation. To be done more adequately (with "atomic" configureDevices() method).
-	mRobotModelManager.model().disconnectFromRobot();
+	QHash<PortInfo, PluggableDeviceInfo> devices;
 
 	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
 		QString const modelName = mRobotModelManager.model().name();
 		if (mCurrentConfiguration[modelName].contains(port)) {
 			PluggableDeviceInfo const &deviceInfo = mCurrentConfiguration[modelName].value(port);
-			mRobotModelManager.model().configureDevice(port, deviceInfo);
+			devices.insert(port, deviceInfo);
 		}
 	}
 
-//	mRobotModelManager.model().configureDevice(PortInfo("1")
-//			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
-
-	mRobotModelManager.model().connectToRobot();
+	mRobotModelManager.model().configureDevices(devices);
 
 //	details::Autoconfigurer configurer(
 //				*mGraphicalModelApi
