@@ -80,21 +80,21 @@ void Element::initTitles()
 {
 }
 
-void Element::singleSelectionState(const bool singleSelected)
+void Element::select(const bool singleSelected)
 {
 	if (singleSelected) {
-		selectionState(true);
+		setSelectionState(true);
 	}
 	emit switchFolding(!singleSelected);
 }
 
-void Element::selectionState(const bool selected)
+void Element::setSelectionState(const bool selected)
 {
 	if (isSelected() != selected) {
 		setSelected(selected);
 	}
 	if (!selected) {
-		singleSelectionState(false);
+		select(false);
 	}
 
 	foreach (Label * const label, mLabels) {

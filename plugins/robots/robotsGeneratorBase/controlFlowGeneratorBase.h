@@ -55,12 +55,12 @@ protected:
 	qrRepo::RepoApi const &mRepo;
 	ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
+	bool mErrorsOccured;
+	bool const mIsMainGenerator;
 
 private:
 	Id const mDiagram;
-	bool const mIsMainGenerator;
 	PrimaryControlFlowValidator mValidator;
-	bool mErrorsOccured;
 };
 
 }

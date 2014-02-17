@@ -1,8 +1,10 @@
 #include <QtCore/QDateTime>
 
 #include "timeline.h"
+#include "d2ModelTimer.h"
 
-using namespace qReal::interpreters::robots::details::d2Model;
+using namespace qReal::interpreters::robots::details;
+using namespace d2Model;
 
 Timeline::Timeline(QObject *parent)
 	: QObject(parent)
@@ -25,6 +27,7 @@ void Timeline::start()
 void Timeline::onTimer()
 {
 	for (int i = 0; i < ticksPerCycle; ++i) {
+		mTimestamp += timeInterval;
 		emit tick();
 		++mCyclesCount;
 		if (mCyclesCount >= mSpeedFactor) {
@@ -55,6 +58,16 @@ void Timeline::gotoNextFrame()
 int Timeline::speedFactor() const
 {
 	return mSpeedFactor;
+}
+
+quint64 Timeline::timestamp() const
+{
+	return mTimestamp;
+}
+
+AbstractTimer *Timeline::produceTimer()
+{
+	return new D2ModelTimer(this);
 }
 
 void Timeline::setSpeedFactor(int factor)

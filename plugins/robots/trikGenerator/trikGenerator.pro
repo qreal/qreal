@@ -1,5 +1,7 @@
 QT += widgets network
 
+CONFIG += c++11
+
 TEMPLATE = lib
 CONFIG += plugin
 CONFIG += c++11

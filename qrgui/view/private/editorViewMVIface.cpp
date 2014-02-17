@@ -197,7 +197,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 
 			if (!isEdgeFromEmbeddedLinker) {
 				mScene->clearSelection();
-				elem->setSelected(true);
+				elem->select(true);
 			}
 
 			NodeElement* nodeElem = dynamic_cast<NodeElement*>(elem);

@@ -167,15 +167,13 @@ void SensorsGraph::startJob()
 void SensorsGraph::updateValues()
 {
 	int const notExists = -1;
-	QMap<QString, QString> *variables = mParser->getVariablesForWatch();
+	QMap<QString, Number *> const &variables = mParser->variables();
 
 	TrackObject currentObject(mCurrentSlot);
 	int const index = mWatchList.indexOf(currentObject);
 	if (index != notExists) {
-		sensorsInput(mCurrentSlot, variables->value(mWatchList.at(index).inParserName).toDouble());
+		sensorsInput(mCurrentSlot, variables[mWatchList.at(index).inParserName]->value().toDouble());
 	}
-
-	delete variables;
 }
 
 void SensorsGraph::stopJob()

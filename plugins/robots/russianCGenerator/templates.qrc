@@ -104,5 +104,6 @@
         <file>templates/variables/floatVariableDeclaration.t</file>
         <file>templates/variables/intConstantDeclaration.t</file>
         <file>templates/variables/intVariableDeclaration.t</file>
+        <file>templates/whatTime.t</file>
     </qresource>
 </RCC>
