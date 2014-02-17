@@ -8,7 +8,6 @@ using namespace interpreterCore;
 
 KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 		: mPluginsDir(QDir(pluginDirectory))
-		, mSelectedPlugin(NULL)
 {
 	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
 		QFileInfo const fileInfo(fileName);
@@ -57,15 +56,6 @@ interpreterBase::KitPluginInterface &KitPluginManager::kitById(QString const &ki
 	return *mPluginInterfaces[kitId];
 }
 
-void KitPluginManager::selectKit(QString const &kitId)
-{
-	if (!mPluginInterfaces.contains(kitId)) {
-		throw qReal::Exception("Trying to select non-existing kit plugin");
-	}
-
-	mSelectedPlugin = mPluginInterfaces.value(kitId);
-}
-
 QList<interpreterBase::robotModel::RobotModelInterface *> KitPluginManager::allRobotModels() const
 {
 	QList<interpreterBase::robotModel::RobotModelInterface *> result;
@@ -74,13 +64,4 @@ QList<interpreterBase::robotModel::RobotModelInterface *> KitPluginManager::allR
 	}
 
 	return result;
-}
-
-interpreterBase::KitPluginInterface &KitPluginManager::selectedKit()
-{
-	if (!mSelectedPlugin) {
-		throw qReal::Exception("No kit selected");
-	}
-
-	return *mSelectedPlugin;
 }

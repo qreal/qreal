@@ -133,7 +133,6 @@ bool RobotsPluginFacade::selectKit(PluginConfigurator const &configurer)
 		return false;
 	}
 
-	mKitPluginManager.selectKit(selectedKit);
 	return true;
 }
 

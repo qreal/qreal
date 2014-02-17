@@ -23,10 +23,6 @@ public:
 
 	interpreterBase::KitPluginInterface &kitById(QString const &kitId);
 
-	interpreterBase::KitPluginInterface &selectedKit();
-
-	void selectKit(QString const &kitId);
-
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
 	QList<interpreterBase::robotModel::RobotModelInterface *> allRobotModels() const;
 
@@ -40,9 +36,6 @@ private:
 
 	/// Directory from which plugins shall be loaded.
 	QDir mPluginsDir;
-
-	/// Currently active kit plugin.
-	interpreterBase::KitPluginInterface *mSelectedPlugin;  // Doesn't have ownership.
 };
 
 }
