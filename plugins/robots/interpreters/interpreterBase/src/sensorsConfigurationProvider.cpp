@@ -22,7 +22,7 @@ void SensorsConfigurationProvider::connectSensorsConfigurationProvider(
 }
 
 void SensorsConfigurationProvider::sensorConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, PluggableDeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	if (mCurrentConfiguration[robotModel][port] != sensor) {
 		mCurrentConfiguration[robotModel][port] = sensor;
@@ -38,7 +38,7 @@ void SensorsConfigurationProvider::sensorConfigurationChanged(QString const &rob
 }
 
 void SensorsConfigurationProvider::onSensorConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, PluggableDeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port);
@@ -49,7 +49,7 @@ void SensorsConfigurationProvider::nullifyConfiguration()
 {
 	for (QString const &robotModel : mCurrentConfiguration.keys()) {
 		for (PortInfo const &port : mCurrentConfiguration[robotModel].keys()) {
-			sensorConfigurationChanged(robotModel, port, PluggableDeviceInfo());
+			sensorConfigurationChanged(robotModel, port, DeviceInfo());
 		}
 	}
 }

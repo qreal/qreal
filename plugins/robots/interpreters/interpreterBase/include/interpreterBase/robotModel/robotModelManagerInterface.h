@@ -33,9 +33,8 @@ signals:
 	/// when it is changed, so client code shall connect to this signal instead of model.
 	void disconnected();
 
-	/// Signal from underlying model, emitted when model is finished configuring pluggable devices.
-	/// Signal correctly reconnects to a model when it is changed, so client code shall connect to this signal
-	/// instead of model.
+	/// Signal from underlying model, emitted when model is finished configuring devices. Signal correctly reconnects
+	/// to a model when it is changed, so client code shall connect to this signal instead of model.
 	void allDevicesConfigured();
 };
 

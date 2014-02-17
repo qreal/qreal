@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/pluggableDevice.h>
+#include <interpreterBase/robotModel/robotParts/device.h>
 #include <interpreterBase/interpreterBaseDeclSpec.h>
 
 namespace interpreterBase {
@@ -12,13 +12,13 @@ namespace robotParts {
 /// Sensors can also work in "push" mode, providing values as soon as they are ready, in that case "read()" call is
 /// ignored.
 /// General workflow is to subscribe to "newData" and "failure" signals and call read().
-class ROBOTS_INTERPRETER_BASE_EXPORT AbstractSensor : public PluggableDevice
+class ROBOTS_INTERPRETER_BASE_EXPORT AbstractSensor : public Device
 {
 	Q_OBJECT
 
 public:
-	explicit AbstractSensor(PluggableDeviceInfo const &info, PortInfo const &port)
-			: PluggableDevice(info, port) {}
+	explicit AbstractSensor(DeviceInfo const &info, PortInfo const &port)
+			: Device(info, port) {}
 
 	virtual ~AbstractSensor() {}
 

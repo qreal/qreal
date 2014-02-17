@@ -6,7 +6,7 @@ using namespace robotModel;
 using namespace utils;
 using namespace robotCommunication;
 
-Motor::Motor(PluggableDeviceInfo const &info, PortInfo const &port, RobotCommunicator *robotCommunicator)
+Motor::Motor(DeviceInfo const &info, PortInfo const &port, RobotCommunicator *robotCommunicator)
 	: interpreterBase::robotModel::robotParts::Motor(info, port)
 	, mRobotCommunicator(robotCommunicator)
 {

@@ -15,9 +15,9 @@ SOURCES += \
 	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \
-	$$PWD/src/robotModel/pluggableDeviceInfo.cpp \
+	$$PWD/src/robotModel/deviceInfo.cpp \
 	$$PWD/src/robotModel/robotParts/motor.cpp \
-	$$PWD/src/robotModel/robotParts/pluggableDevice.cpp \
+	$$PWD/src/robotModel/robotParts/device.cpp \
 	$$PWD/src/robotModel/robotParts/touchSensor.cpp \
 
 HEADERS += \
@@ -34,7 +34,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/commonRobotModel.h \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \
 	$$PWD/include/interpreterBase/robotModel/portInfo.h \
-	$$PWD/include/interpreterBase/robotModel/pluggableDeviceInfo.h \
+	$$PWD/include/interpreterBase/robotModel/deviceInfo.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelManagerInterface.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelInterface.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/brick.h \
@@ -46,7 +46,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/robotParts/encoderSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/gyroscopeSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/lightSensor.h \
-	$$PWD/include/interpreterBase/robotModel/robotParts/pluggableDevice.h \
+	$$PWD/include/interpreterBase/robotModel/robotParts/device.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/rangeSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/scalarSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/soundSensor.h \

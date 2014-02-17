@@ -34,7 +34,7 @@ QString SensorsConfigurationManager::save() const
 		robotModelElement.setAttribute("name", robotModel);
 		rootElement.appendChild(robotModelElement);
 		for (PortInfo const &port : mCurrentConfiguration[robotModel].keys()) {
-			PluggableDeviceInfo const device = mCurrentConfiguration[robotModel][port];
+			DeviceInfo const device = mCurrentConfiguration[robotModel][port];
 			QDomElement configurationElement = result.createElement("configuration");
 			configurationElement.setAttribute("port", port.toString());
 			configurationElement.setAttribute("device", device.toString());
@@ -60,7 +60,7 @@ void SensorsConfigurationManager::load(QString const &configuration)
 				; configurationElement = configurationElement.nextSiblingElement())
 		{
 			PortInfo const port = PortInfo::fromString(configurationElement.attribute("port"));
-			PluggableDeviceInfo const device = PluggableDeviceInfo::fromString(
+			DeviceInfo const device = DeviceInfo::fromString(
 					configurationElement.attribute("device"));
 			if (port.isValid()) {
 				sensorConfigurationChanged(robotModel, port, device);
@@ -70,7 +70,7 @@ void SensorsConfigurationManager::load(QString const &configuration)
 }
 
 void SensorsConfigurationManager::onSensorConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, PluggableDeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)

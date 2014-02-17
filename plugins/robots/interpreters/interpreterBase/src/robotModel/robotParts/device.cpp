@@ -1,4 +1,4 @@
-#include "interpreterBase/robotModel/robotParts/pluggableDevice.h"
+#include "interpreterBase/robotModel/robotParts/device.h"
 
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
@@ -6,48 +6,48 @@ using namespace interpreterBase::robotModel::robotParts;
 /// Timeout (in milliseconds) for sensor configuration.
 static int const configurationTimeout = 5000;
 
-PluggableDevice::PluggableDevice(PluggableDeviceInfo const &info, PortInfo const &port)
+Device::Device(DeviceInfo const &info, PortInfo const &port)
 	: mInfo(info)
 	, mPort(port)
 {
 	mConfigurationTimeoutTimer.setSingleShot(true);
 	mConfigurationTimeoutTimer.setInterval(configurationTimeout);
-	connect(&mConfigurationTimeoutTimer, &QTimer::timeout, this, &PluggableDevice::configurationTimerTimeoutSlot);
+	connect(&mConfigurationTimeoutTimer, &QTimer::timeout, this, &Device::configurationTimerTimeoutSlot);
 }
 
-PluggableDevice::~PluggableDevice()
+Device::~Device()
 {
 }
 
-PortInfo const &PluggableDevice::port() const
+PortInfo const &Device::port() const
 {
 	return mPort;
 }
 
-PluggableDeviceInfo const &PluggableDevice::deviceInfo() const
+DeviceInfo const &Device::deviceInfo() const
 {
 	return mInfo;
 }
 
-bool PluggableDevice::ready() const
+bool Device::ready() const
 {
 	/// @todo Implement.
 	return true;
 }
 
-void PluggableDevice::configure()
+void Device::configure()
 {
 	mConfigurationTimeoutTimer.start();
 	doConfiguration();
 }
 
-void PluggableDevice::configurationCompleted(bool success)
+void Device::configurationCompleted(bool success)
 {
 	mConfigurationTimeoutTimer.stop();
 	emit configured(success);
 }
 
-void PluggableDevice::configurationTimerTimeoutSlot()
+void Device::configurationTimerTimeoutSlot()
 {
 	emit configured(false);
 }

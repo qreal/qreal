@@ -37,9 +37,9 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 
 	model.init();
 
-	QHash<PortInfo, PluggableDeviceInfo> devices;
+	QHash<PortInfo, DeviceInfo> devices;
 	devices.insert(PortInfo("1")
-			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+			, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
 
 	model.connectToRobot();
 
@@ -63,9 +63,9 @@ TEST_F(CommonRobotModelTest, twoDLifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
-	QHash<PortInfo, PluggableDeviceInfo> devices;
+	QHash<PortInfo, DeviceInfo> devices;
 	devices.insert(PortInfo("1")
-			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+			, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
 
 	model.connectToRobot();
 
@@ -95,7 +95,7 @@ TEST_F(CommonRobotModelTest, realNoSensorsLifecycleTest)
 	protocolTester.wait(120);
 
 	/// @todo Ugly
-	model.configureDevices(QHash<PortInfo, PluggableDeviceInfo>());
+	model.configureDevices(QHash<PortInfo, DeviceInfo>());
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
@@ -114,7 +114,7 @@ TEST_F(CommonRobotModelTest, twoDNoSensorsLifecycleTest)
 	model.connectToRobot();
 
 	/// @todo Ugly
-	model.configureDevices(QHash<PortInfo, PluggableDeviceInfo>());
+	model.configureDevices(QHash<PortInfo, DeviceInfo>());
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));

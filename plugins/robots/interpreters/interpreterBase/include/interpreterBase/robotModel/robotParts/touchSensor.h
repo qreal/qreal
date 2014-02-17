@@ -13,7 +13,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT TouchSensor : public ScalarSensor
 	Q_OBJECT
 
 public:
-	TouchSensor(PluggableDeviceInfo const &info, PortInfo const &port);
+	TouchSensor(DeviceInfo const &info, PortInfo const &port);
 };
 
 }

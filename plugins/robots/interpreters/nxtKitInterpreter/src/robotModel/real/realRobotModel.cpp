@@ -18,7 +18,7 @@ RealRobotModel::RealRobotModel()
 	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(&mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
 
-	PluggableDeviceInfo motorInfo = PluggableDeviceInfo::create<parts::Motor>(tr("Motor"));
+	DeviceInfo motorInfo = DeviceInfo::create<parts::Motor>(tr("Motor"));
 
 	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("A"), &mRobotCommunicator));
 	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("B"), &mRobotCommunicator));
@@ -68,7 +68,7 @@ void RealRobotModel::disconnectFromRobot()
 	mRobotCommunicator.disconnect();
 }
 
-robotParts::PluggableDevice *RealRobotModel::createDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo)
+robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
 	if (deviceInfo.isA(touchSensorInfo())) {
 		return new parts::TouchSensor(touchSensorInfo(), port, mRobotCommunicator);

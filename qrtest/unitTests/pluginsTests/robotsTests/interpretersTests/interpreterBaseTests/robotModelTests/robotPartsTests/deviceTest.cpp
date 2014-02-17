@@ -1,16 +1,16 @@
-#include "pluggableDeviceTest.h"
+#include "deviceTest.h"
 
-#include "support/dummyPluggableDevice.h"
+#include "support/dummyDevice.h"
 
 using namespace qrTest::robotsTests::interpreterBaseTests;
 
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
-TEST_F(PluggableDeviceTest, portTest)
+TEST_F(DeviceTest, portTest)
 {
 	PortInfo port("JM1", {"A"});
-	DummyPluggableDevice device(port);
+	DummyDevice device(port);
 
 	PortInfo result = device.port();
 	ASSERT_EQ(port.name(), result.name());

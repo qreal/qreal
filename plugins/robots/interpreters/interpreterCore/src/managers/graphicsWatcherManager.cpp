@@ -26,7 +26,7 @@ void GraphicsWatcherManager::forceStop()
 }
 
 void GraphicsWatcherManager::onSensorConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, PluggableDeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
@@ -39,7 +39,7 @@ void GraphicsWatcherManager::updateSensorsList(QString const &currentRobotModel)
 	mWatcher->clearTrackingObjects();
 	int index = 0;
 	for (PortInfo const &port : mCurrentConfiguration[currentRobotModel].keys()) {
-		PluggableDeviceInfo const device = mCurrentConfiguration[currentRobotModel][port];
+		DeviceInfo const device = mCurrentConfiguration[currentRobotModel][port];
 		/// @todo It must depend on port, port must return its variable
 		QString const variableName = "Sensor" + QString::number(index + 1);
 		mWatcher->addTrackingObject(index, variableName, device.friendlyName());

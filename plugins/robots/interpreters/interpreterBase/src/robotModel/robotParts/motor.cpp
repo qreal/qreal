@@ -2,8 +2,8 @@
 
 using namespace interpreterBase::robotModel::robotParts;
 
-Motor::Motor(PluggableDeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port)
-	: PluggableDevice(info, port)
+Motor::Motor(DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port)
+	: Device(info, port)
 {
 }
 

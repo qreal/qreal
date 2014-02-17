@@ -26,7 +26,7 @@ public slots:
 private:
 	void onSensorConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor) override;
+			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
 
 	void updateSensorsList(QString const &currentRobotModel);
 

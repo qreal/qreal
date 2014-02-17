@@ -14,20 +14,20 @@ public:
 	/// Configures given device bypassing broadcasting changes to the whole graph
 	void configureSilently(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &device);
+			, interpreterBase::robotModel::DeviceInfo const &device);
 
 	/// Configures given device with broadcasting changes to the whole graph
 	void configureBroadly(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &device);
+			, interpreterBase::robotModel::DeviceInfo const &device);
 
-	interpreterBase::robotModel::PluggableDeviceInfo device(QString const &robotModel
+	interpreterBase::robotModel::DeviceInfo device(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port) const;
 
 protected:
 	void onSensorConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor) override;
+			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
 };
 
 }

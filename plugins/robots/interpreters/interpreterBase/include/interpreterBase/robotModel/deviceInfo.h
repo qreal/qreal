@@ -10,40 +10,39 @@
 namespace interpreterBase {
 namespace robotModel {
 
-/// Describes a type of a pluggable device, not a concrete instance of it.
-/// Given a set of PluggableDeviceInfo corresponding to some pluggable devices
+/// Describes a type of a device, not a concrete instance of it. Given a set of DeviceInfo corresponding to some devices
 /// hierarchy original inheritance relations can be recovered with isA() method.
-class ROBOTS_INTERPRETER_BASE_EXPORT PluggableDeviceInfo
+class ROBOTS_INTERPRETER_BASE_EXPORT DeviceInfo
 {
 public:
-	/// Creates a new instance of a PluggableDevice descriptor. The resulting object will
+	/// Creates a new instance of a Device descriptor. The resulting object will
 	/// correspond to a given type only if Q_OBJECT macro is used inside its declaration.
 	template <typename T>
-	static PluggableDeviceInfo create(QString const &friendlyName = QString())
+	static DeviceInfo create(QString const &friendlyName = QString())
 	{
 		// This line performs Q_OBJECT macro checking in the given type declaration.
 		// Without Q_OBJECT macro incorrect metaObject will be passed and it will lead
 		// to invalid isA() method work.
 		static_assert(HasQObjectMacro<T>::Value, "No Q_OBJECT macro in the class that is passed into a template");
 		QMetaObject const *metaObject = &T::staticMetaObject;
-		PluggableDeviceInfo result(metaObject, friendlyName);
+		DeviceInfo result(metaObject, friendlyName);
 		mCreatedInfos[QString(metaObject->className())] = result;
 		return result;
 	}
 
 	/// Deserializes inner string representation obtained by toString()
-	static PluggableDeviceInfo fromString(QString const &string);
+	static DeviceInfo fromString(QString const &string);
 
-	/// Constructs invalid PluggableDeviceInfo instance
-	PluggableDeviceInfo();
+	/// Constructs invalid DeviceInfo instance
+	DeviceInfo();
 
-	/// Serializes given pluggable device info into inner string representation
+	/// Serializes given device info into inner string representation
 	QString toString() const;
 
 	/// Returns if the device corresponding to 'this' inherits a 'parent' one or they are the devices of the same type.
-	bool isA(PluggableDeviceInfo const &parent) const;
+	bool isA(DeviceInfo const &parent) const;
 
-	/// Returns a string that can be displayed to a user as the name of the pluggable device.
+	/// Returns a string that can be displayed to a user as the name of the device.
 	QString friendlyName() const;
 
 	bool isNull() const;
@@ -63,18 +62,18 @@ private:
 		enum { Value = sizeof(returnIntIfHasQObjectMacro(&Object::qt_metacall)) == sizeof(int) };
 	};
 
-	friend bool operator ==(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2);
-	friend bool operator !=(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2);
+	friend bool operator ==(DeviceInfo const &device1, DeviceInfo const &device2);
+	friend bool operator !=(DeviceInfo const &device1, DeviceInfo const &device2);
 
-	explicit PluggableDeviceInfo(QMetaObject const *deviceType, QString const &friendlyName);
+	explicit DeviceInfo(QMetaObject const *deviceType, QString const &friendlyName);
 
-	static QMap<QString, PluggableDeviceInfo> mCreatedInfos;
+	static QMap<QString, DeviceInfo> mCreatedInfos;
 
 	QMetaObject const *mDeviceType;
 	QString mFriendlyName;
 };
 
-inline bool operator ==(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2)
+inline bool operator ==(DeviceInfo const &device1, DeviceInfo const &device2)
 {
 	if (!device1.mDeviceType || !device2.mDeviceType) {
 		return device1.mDeviceType == device2.mDeviceType;
@@ -83,7 +82,7 @@ inline bool operator ==(PluggableDeviceInfo const &device1, PluggableDeviceInfo 
 	return QString(device1.mDeviceType->className()) == QString(device2.mDeviceType->className());
 }
 
-inline bool operator !=(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2)
+inline bool operator !=(DeviceInfo const &device1, DeviceInfo const &device2)
 {
 	return !(device1 == device2);
 }
@@ -91,4 +90,4 @@ inline bool operator !=(PluggableDeviceInfo const &device1, PluggableDeviceInfo 
 }
 }
 
-Q_DECLARE_METATYPE(interpreterBase::robotModel::PluggableDeviceInfo)
+Q_DECLARE_METATYPE(interpreterBase::robotModel::DeviceInfo)

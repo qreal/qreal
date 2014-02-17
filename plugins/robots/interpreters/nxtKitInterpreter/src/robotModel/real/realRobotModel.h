@@ -25,9 +25,9 @@ public slots:
 	void rereadSettings() override;
 
 private:
-	interpreterBase::robotModel::robotParts::PluggableDevice *createDevice(
+	interpreterBase::robotModel::robotParts::Device *createDevice(
 			interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &deviceInfo) override;
+			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
 
 	utils::robotCommunication::RobotCommunicator mRobotCommunicator;
 	QString mLastCommunicationValue;

@@ -8,7 +8,7 @@ using namespace robotModel;
 using namespace utils;
 using namespace robotCommunication;
 
-TouchSensor::TouchSensor(interpreterBase::robotModel::PluggableDeviceInfo const &info
+TouchSensor::TouchSensor(interpreterBase::robotModel::DeviceInfo const &info
 		, interpreterBase::robotModel::PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::TouchSensor(info, port)

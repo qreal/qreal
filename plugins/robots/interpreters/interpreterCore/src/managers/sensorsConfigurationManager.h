@@ -36,7 +36,7 @@ public:
 private:
 	void onSensorConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor) override;
+			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
 
 	void onActiveTabChanged(qReal::Id const &graphicalRootId);
 

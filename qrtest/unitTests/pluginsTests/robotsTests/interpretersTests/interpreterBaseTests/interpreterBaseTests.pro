@@ -12,19 +12,19 @@ HEADERS += \
 	robotModelTests/defaultRobotModelTest.h \
 	robotModelTests/commonRobotModelTest.h \
 	robotModelTests/configurationTest.h \
-	robotModelTests/robotPartsTests/pluggableDeviceTest.h \
-	robotModelTests/pluggableDeviceInfoTest.h \
+	robotModelTests/robotPartsTests/deviceTest.h \
+	robotModelTests/deviceInfoTest.h \
 
 SOURCES += \
 	robotModelTests/defaultRobotModelTest.cpp \
 	robotModelTests/commonRobotModelTest.cpp \
 	robotModelTests/configurationTest.cpp \
-	robotModelTests/robotPartsTests/pluggableDeviceTest.cpp \
-	robotModelTests/pluggableDeviceInfoTest.cpp \
+	robotModelTests/robotPartsTests/deviceTest.cpp \
+	robotModelTests/deviceInfoTest.cpp \
 
 # Support classes
 HEADERS += \
-	support/dummyPluggableDevice.h \
+	support/dummyDevice.h \
 
 SOURCES += \
-	support/dummyPluggableDevice.cpp \
+	support/dummyDevice.cpp \

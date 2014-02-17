@@ -23,8 +23,8 @@ void WaitForSensorBlock::run()
 	/// @todo Works only with scalar sensors.
 	for (interpreterBase::robotModel::PortInfo portInfo : mRobotModel.availablePorts()) {
 		if (portInfo.name() == port || portInfo.nameAliases().contains(port)) {
-			interpreterBase::robotModel::robotParts::PluggableDevice *device
-					= mRobotModel.configuration().pluggableDevice(portInfo
+			interpreterBase::robotModel::robotParts::Device *device
+					= mRobotModel.configuration().device(portInfo
 							, interpreterBase::robotModel::ConfigurationInterface::output);
 			interpreterBase::robotModel::robotParts::ScalarSensor *sensor
 					= static_cast<interpreterBase::robotModel::robotParts::ScalarSensor *>(device);
@@ -57,8 +57,8 @@ void WaitForSensorBlock::run()
 void WaitForSensorBlock::timerTimeout()
 {
 	/// @todo True horror.
-	interpreterBase::robotModel::robotParts::PluggableDevice *device
-			= mRobotModel.configuration().pluggableDevice(mPort
+	interpreterBase::robotModel::robotParts::Device *device
+			= mRobotModel.configuration().device(mPort
 					, interpreterBase::robotModel::ConfigurationInterface::output);
 
 	interpreterBase::robotModel::robotParts::ScalarSensor *sensor
@@ -72,8 +72,8 @@ void WaitForSensorBlock::timerTimeout()
 void WaitForSensorBlock::stop()
 {
 	/// @todo True horror.
-	interpreterBase::robotModel::robotParts::PluggableDevice *device
-			= mRobotModel.configuration().pluggableDevice(mPort
+	interpreterBase::robotModel::robotParts::Device *device
+			= mRobotModel.configuration().device(mPort
 					, interpreterBase::robotModel::ConfigurationInterface::output);
 
 	interpreterBase::robotModel::robotParts::ScalarSensor *sensor
@@ -93,8 +93,8 @@ void WaitForSensorBlock::stop()
 void WaitForSensorBlock::stopActiveTimerInBlock()
 {
 	/// @todo True horror.
-	interpreterBase::robotModel::robotParts::PluggableDevice *device
-			= mRobotModel.configuration().pluggableDevice(mPort
+	interpreterBase::robotModel::robotParts::Device *device
+			= mRobotModel.configuration().device(mPort
 					, interpreterBase::robotModel::ConfigurationInterface::output);
 
 	interpreterBase::robotModel::robotParts::ScalarSensor *sensor

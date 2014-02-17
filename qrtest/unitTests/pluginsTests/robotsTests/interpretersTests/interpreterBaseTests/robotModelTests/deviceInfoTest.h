@@ -6,7 +6,7 @@ namespace qrTest {
 namespace robotsTests {
 namespace interpreterBaseTests {
 
-class PluggableDeviceInfoTest : public testing::Test
+class DeviceInfoTest : public testing::Test
 {
 };
 

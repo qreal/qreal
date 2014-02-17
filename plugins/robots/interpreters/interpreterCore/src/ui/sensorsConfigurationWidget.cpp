@@ -61,15 +61,15 @@ QWidget *SensorsConfigurationWidget::configurerForRobotModel(RobotModelInterface
 }
 
 QLayout *SensorsConfigurationWidget::initPort(QString const &robotModel
-		, PortInfo const &port, QList<PluggableDeviceInfo> const &sensors)
+		, PortInfo const &port, QList<DeviceInfo> const &sensors)
 {
 	QLabel * const portLabel = new QLabel(tr("Port %1:").arg(port.name()), this);
 	QComboBox * const comboBox = new QComboBox(this);
 	comboBox->setProperty("robotModel", robotModel);
 	comboBox->setProperty("port", QVariant::fromValue(port));
 	mConfigurers << comboBox;
-	comboBox->addItem(tr("Unused"), QVariant::fromValue(PluggableDeviceInfo()));
-	for (PluggableDeviceInfo const &sensor : sensors) {
+	comboBox->addItem(tr("Unused"), QVariant::fromValue(DeviceInfo()));
+	for (DeviceInfo const &sensor : sensors) {
 		comboBox->addItem(sensor.friendlyName(), QVariant::fromValue(sensor));
 	}
 
@@ -94,7 +94,7 @@ void SensorsConfigurationWidget::hideAllConfigurers()
 }
 
 void SensorsConfigurationWidget::onSensorConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, PluggableDeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
@@ -113,7 +113,7 @@ void SensorsConfigurationWidget::refresh()
 	mRefreshing = true;
 	for (QComboBox * const box : mConfigurers) {
 		PortInfo const port = box->property("port").value<PortInfo>();
-		PluggableDeviceInfo const device = mCurrentConfiguration[mCurrentModel][port];
+		DeviceInfo const device = mCurrentConfiguration[mCurrentModel][port];
 		if (device.isNull()) {
 			box->setCurrentIndex(0);
 		} else {
@@ -139,7 +139,7 @@ void SensorsConfigurationWidget::save()
 
 		QString const robotModel = box->property("robotModel").toString();
 		PortInfo const port = box->property("port").value<PortInfo>();
-		PluggableDeviceInfo const device = box->itemData(box->currentIndex()).value<PluggableDeviceInfo>();
+		DeviceInfo const device = box->itemData(box->currentIndex()).value<DeviceInfo>();
 		if (mCurrentConfiguration[robotModel][port] != device) {
 			propagateChanges(port, device);
 		}
@@ -148,16 +148,16 @@ void SensorsConfigurationWidget::save()
 	mSaving = false;
 }
 
-void SensorsConfigurationWidget::propagateChanges(PortInfo const &port, PluggableDeviceInfo const &sensor)
+void SensorsConfigurationWidget::propagateChanges(PortInfo const &port, DeviceInfo const &sensor)
 {
 	for (QString const &robotModelId : mRobotModels.keys()) {
 		RobotModelInterface const *robotModel = mRobotModels[robotModelId];
 		for (PortInfo const &otherPort : robotModel->configurablePorts()) {
 			if (areConvertible(port, otherPort)) {
 				if (sensor.isNull()) {
-					sensorConfigurationChanged(robotModelId, otherPort, PluggableDeviceInfo());
+					sensorConfigurationChanged(robotModelId, otherPort, DeviceInfo());
 				} else {
-					PluggableDeviceInfo const otherDevice = convertibleDevice(robotModel, otherPort, sensor);
+					DeviceInfo const otherDevice = convertibleDevice(robotModel, otherPort, sensor);
 					if (!otherDevice.isNull()) {
 						sensorConfigurationChanged(robotModelId, otherPort, otherDevice);
 					}
@@ -174,17 +174,17 @@ bool SensorsConfigurationWidget::areConvertible(PortInfo const &port1, PortInfo 
 			|| port2.nameAliases().contains(port1.name());
 }
 
-PluggableDeviceInfo SensorsConfigurationWidget::convertibleDevice(RobotModelInterface const *robotModel
-		, PortInfo const &port, PluggableDeviceInfo const &device) const
+DeviceInfo SensorsConfigurationWidget::convertibleDevice(RobotModelInterface const *robotModel
+		, PortInfo const &port, DeviceInfo const &device) const
 {
-	QList<PluggableDeviceInfo> const convertibleBases = robotModel->convertibleBases();
-	for (PluggableDeviceInfo const &allowedDevice : robotModel->allowedDevices(port)) {
-		for (PluggableDeviceInfo const &convertibleBase : convertibleBases) {
+	QList<DeviceInfo> const convertibleBases = robotModel->convertibleBases();
+	for (DeviceInfo const &allowedDevice : robotModel->allowedDevices(port)) {
+		for (DeviceInfo const &convertibleBase : convertibleBases) {
 			if (device.isA(convertibleBase) && allowedDevice.isA(convertibleBase)) {
 				return allowedDevice;
 			}
 		}
 	}
 
-	return PluggableDeviceInfo();
+	return DeviceInfo();
 }

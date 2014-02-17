@@ -5,7 +5,7 @@
 
 #include <interpreterBase/sensorsConfigurationProvider.h>
 #include <interpreterBase/robotModel/portInfo.h>
-#include <interpreterBase/robotModel/pluggableDeviceInfo.h>
+#include <interpreterBase/robotModel/deviceInfo.h>
 
 class QComboBox;
 class QVBoxLayout;
@@ -43,23 +43,23 @@ private:
 
 	QLayout *initPort(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, QList<interpreterBase::robotModel::PluggableDeviceInfo> const &sensors);
+			, QList<interpreterBase::robotModel::DeviceInfo> const &sensors);
 
 	void hideAllConfigurers();
 
 	void onSensorConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor);
+			, interpreterBase::robotModel::DeviceInfo const &sensor);
 
 	void propagateChanges(interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor);
+			, interpreterBase::robotModel::DeviceInfo const &sensor);
 
 	bool areConvertible(interpreterBase::robotModel::PortInfo const &port1
 			, interpreterBase::robotModel::PortInfo const &port2) const;
-	interpreterBase::robotModel::PluggableDeviceInfo convertibleDevice(
+	interpreterBase::robotModel::DeviceInfo convertibleDevice(
 			interpreterBase::robotModel::RobotModelInterface const *robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::PluggableDeviceInfo const &device) const;
+			, interpreterBase::robotModel::DeviceInfo const &device) const;
 
 	bool mAutosaveMode;
 	QVBoxLayout *mLayout;

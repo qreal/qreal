@@ -1,7 +1,7 @@
 #pragma once
 
 #include "robotModel/portInfo.h"
-#include "robotModel/pluggableDeviceInfo.h"
+#include "robotModel/deviceInfo.h"
 
 #include <QtCore/QMap>
 
@@ -31,13 +31,13 @@ protected:
 	/// @param type - new type of a sensor on a given port.
 	void sensorConfigurationChanged(QString const &robotModel
 			, robotModel::PortInfo const &port
-			, robotModel::PluggableDeviceInfo const &sensor);
+			, robotModel::DeviceInfo const &sensor);
 
 	/// Must be implemented in descendants to react to sensor configuration changes and refresh their internal data.
 	/// Symmetric to sensorConfigurationChanged. Default implementation does nothing.
 	virtual void onSensorConfigurationChanged(QString const &robotModel
 			, robotModel::PortInfo const &port
-			, robotModel::PluggableDeviceInfo const &sensor);
+			, robotModel::DeviceInfo const &sensor);
 
 	/// Sets null devices to each known port of each known robot model
 	void nullifyConfiguration();
@@ -47,7 +47,7 @@ protected:
 	/// Redundant current sensor configuration to keep track of loops in provider network: if configuration is not
 	/// changed by incoming message, it is not broadcasted.
 	/// Hash structure is robotModel -> port -> device.
-	QMap<QString, QMap<robotModel::PortInfo, robotModel::PluggableDeviceInfo>> mCurrentConfiguration;
+	QMap<QString, QMap<robotModel::PortInfo, robotModel::DeviceInfo>> mCurrentConfiguration;
 
 	/// Name of the provider, which can be used in debug output.
 	QString mName;

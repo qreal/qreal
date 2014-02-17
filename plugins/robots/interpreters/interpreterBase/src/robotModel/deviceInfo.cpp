@@ -1,4 +1,4 @@
-#include <interpreterBase/robotModel/pluggableDeviceInfo.h>
+#include <interpreterBase/robotModel/deviceInfo.h>
 
 #include <QtCore/QStringList>
 
@@ -6,20 +6,20 @@
 
 using namespace interpreterBase::robotModel;
 
-QMap<QString, PluggableDeviceInfo> PluggableDeviceInfo::mCreatedInfos = QMap<QString, PluggableDeviceInfo>();
+QMap<QString, DeviceInfo> DeviceInfo::mCreatedInfos = QMap<QString, DeviceInfo>();
 
-PluggableDeviceInfo::PluggableDeviceInfo()
+DeviceInfo::DeviceInfo()
 	: mDeviceType(nullptr)
 {
 }
 
-PluggableDeviceInfo::PluggableDeviceInfo(QMetaObject const *deviceType, QString const &friendlyName)
+DeviceInfo::DeviceInfo(QMetaObject const *deviceType, QString const &friendlyName)
 	: mDeviceType(deviceType)
 	, mFriendlyName(friendlyName)
 {
 }
 
-bool PluggableDeviceInfo::isA(PluggableDeviceInfo const &parent) const
+bool DeviceInfo::isA(DeviceInfo const &parent) const
 {
 	QMetaObject const *currentParent = mDeviceType;
 	while (currentParent && QString(parent.mDeviceType->className()) != QString(currentParent->className())) {
@@ -29,25 +29,25 @@ bool PluggableDeviceInfo::isA(PluggableDeviceInfo const &parent) const
 	return currentParent != nullptr;
 }
 
-QString PluggableDeviceInfo::friendlyName() const
+QString DeviceInfo::friendlyName() const
 {
 	return mFriendlyName;
 }
 
-bool PluggableDeviceInfo::isNull() const
+bool DeviceInfo::isNull() const
 {
 	return mDeviceType == nullptr;
 }
 
-QString PluggableDeviceInfo::toString() const
+QString DeviceInfo::toString() const
 {
 	return QString(mDeviceType ? mDeviceType->className() : QString());
 }
 
-PluggableDeviceInfo PluggableDeviceInfo::fromString(QString const &string)
+DeviceInfo DeviceInfo::fromString(QString const &string)
 {
 	if (string.isEmpty()) {
-		return PluggableDeviceInfo();
+		return DeviceInfo();
 	}
 
 	if (!mCreatedInfos.contains(string)) {

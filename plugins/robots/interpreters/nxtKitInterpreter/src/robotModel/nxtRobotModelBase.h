@@ -14,16 +14,16 @@ public:
 
 	QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override;
 
-	QList<interpreterBase::robotModel::PluggableDeviceInfo> convertibleBases() const override;
+	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 
 protected:
-	virtual interpreterBase::robotModel::PluggableDeviceInfo touchSensorInfo() const;
-	virtual interpreterBase::robotModel::PluggableDeviceInfo sonarSensorInfo() const;
-	virtual interpreterBase::robotModel::PluggableDeviceInfo lightSensorInfo() const;
-	virtual interpreterBase::robotModel::PluggableDeviceInfo colorSensorInfo() const;
-	virtual interpreterBase::robotModel::PluggableDeviceInfo soundSensorInfo() const;
-	virtual interpreterBase::robotModel::PluggableDeviceInfo gyroscopeSensorInfo() const;
-	virtual interpreterBase::robotModel::PluggableDeviceInfo accelerometerSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo touchSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo sonarSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo lightSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo colorSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo soundSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo gyroscopeSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo accelerometerSensorInfo() const;
 };
 
 }

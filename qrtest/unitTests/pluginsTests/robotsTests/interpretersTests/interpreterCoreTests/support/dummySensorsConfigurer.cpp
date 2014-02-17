@@ -11,24 +11,24 @@ DummySensorsConfigurer::DummySensorsConfigurer(QString const &name)
 }
 
 void DummySensorsConfigurer::configureSilently(QString const &robotModel
-		, PortInfo const &port, PluggableDeviceInfo const &device)
+		, PortInfo const &port, DeviceInfo const &device)
 {
 	mCurrentConfiguration[robotModel][port] = device;
 }
 
 void DummySensorsConfigurer::configureBroadly(QString const &robotModel
-		, PortInfo const &port, PluggableDeviceInfo const &device)
+		, PortInfo const &port, DeviceInfo const &device)
 {
 	sensorConfigurationChanged(robotModel, port, device);
 }
 
-PluggableDeviceInfo DummySensorsConfigurer::device(QString const &robotModel, PortInfo const &port) const
+DeviceInfo DummySensorsConfigurer::device(QString const &robotModel, PortInfo const &port) const
 {
 	return mCurrentConfiguration[robotModel][port];
 }
 
 void DummySensorsConfigurer::onSensorConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, PluggableDeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)

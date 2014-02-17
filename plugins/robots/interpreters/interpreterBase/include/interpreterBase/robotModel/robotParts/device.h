@@ -4,7 +4,7 @@
 #include <QtCore/QTimer>
 
 #include "interpreterBase/robotModel/portInfo.h"
-#include "interpreterBase/robotModel/pluggableDeviceInfo.h"
+#include "interpreterBase/robotModel/deviceInfo.h"
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
@@ -14,22 +14,22 @@ namespace robotParts {
 
 /// Anything that can be plugged into a port on a robot. Bound to a port at creation time and shall be configured
 /// before it becomes ready to work. Base class for all engines/sensors.
-class ROBOTS_INTERPRETER_BASE_EXPORT PluggableDevice : public QObject
+class ROBOTS_INTERPRETER_BASE_EXPORT Device : public QObject
 {
 	Q_OBJECT
 
 public:
 	/// Constructor.
 	/// @param port - port on which this device shall be configured.
-	explicit PluggableDevice(PluggableDeviceInfo const &info, PortInfo const &port);
+	explicit Device(DeviceInfo const &info, PortInfo const &port);
 
-	virtual ~PluggableDevice();
+	virtual ~Device();
 
 	/// Returns port on which this device is or shall be configured.
 	PortInfo const &port() const;
 
 	/// Returns device type for non-abstract (physical) device.
-	virtual PluggableDeviceInfo const &deviceInfo() const;
+	virtual DeviceInfo const &deviceInfo() const;
 
 	/// Returns true if device is ready for work (i.e. configured).
 	bool ready() const;
@@ -41,7 +41,7 @@ signals:
 	/// Emitted when device finished its configuration, successfully or by failure. Note that configuration can be
 	/// synchronous or asynchronous for various devices (configure() can be in a stack when this signal is emitted).
 	/// Shall not be emitted directly from descendants, use configurationCompleted() instead due to timeout handling
-	/// performed by PluggableDevice class.
+	/// performed by Device class.
 	void configured(bool success);
 
 protected:
@@ -57,7 +57,7 @@ private slots:
 	void configurationTimerTimeoutSlot();
 
 private:
-	PluggableDeviceInfo const &mInfo;
+	DeviceInfo const &mInfo;
 	PortInfo mPort;
 	QTimer mConfigurationTimeoutTimer;
 };

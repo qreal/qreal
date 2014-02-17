@@ -75,12 +75,12 @@ QList<PortInfo> CommonRobotModel::configurablePorts() const
 	return availablePorts();
 }
 
-QList<PluggableDeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port) const
+QList<DeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port) const
 {
 	return mAllowedConnections[port];
 }
 
-void CommonRobotModel::configureDevices(QHash<PortInfo, PluggableDeviceInfo> const &devices)
+void CommonRobotModel::configureDevices(QHash<PortInfo, DeviceInfo> const &devices)
 {
 	mConfiguration.lockConfiguring();
 
@@ -92,16 +92,16 @@ void CommonRobotModel::configureDevices(QHash<PortInfo, PluggableDeviceInfo> con
 	mConfiguration.unlockConfiguring();
 }
 
-void CommonRobotModel::configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo)
+void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
-	robotParts::PluggableDevice *device = createDevice(port, deviceInfo);
+	robotParts::Device *device = createDevice(port, deviceInfo);
 	if (device) {
 		mConfiguration.configureDevice(device);
 	}
 	/// @todo Handle error
 }
 
-QList<PluggableDeviceInfo> CommonRobotModel::convertibleBases() const
+QList<DeviceInfo> CommonRobotModel::convertibleBases() const
 {
 	return {};
 }
@@ -110,13 +110,13 @@ void CommonRobotModel::rereadSettings()
 {
 }
 
-void CommonRobotModel::addAllowedConnection(PortInfo const &port, QList<PluggableDeviceInfo> const &devices)
+void CommonRobotModel::addAllowedConnection(PortInfo const &port, QList<DeviceInfo> const &devices)
 {
 	mAllowedConnections[port].append(devices);
 }
 
-robotParts::PluggableDevice * CommonRobotModel::createDevice(
-		PortInfo const &port, PluggableDeviceInfo const &deviceInfo)
+robotParts::Device * CommonRobotModel::createDevice(
+		PortInfo const &port, DeviceInfo const &deviceInfo)
 {
 	Q_UNUSED(port);
 	Q_UNUSED(deviceInfo);

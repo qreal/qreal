@@ -13,7 +13,7 @@ class TouchSensor : public interpreterBase::robotModel::robotParts::TouchSensor
 	Q_OBJECT
 
 public:
-	TouchSensor(interpreterBase::robotModel::PluggableDeviceInfo const &info
+	TouchSensor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 

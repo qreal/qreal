@@ -18,14 +18,14 @@ public:
 	Configuration();
 	~Configuration() override;
 
-	void configureDevice(robotParts::PluggableDevice * const device) override;
+	void configureDevice(robotParts::Device * const device) override;
 
 	void lockConfiguring() override;
 	void unlockConfiguring() override;
 
-	QList<robotParts::PluggableDevice *> pluggableDevices(PortDirection direction = defaultDirection) const override;
+	QList<robotParts::Device *> devices(PortDirection direction = defaultDirection) const override;
 
-	robotParts::PluggableDevice *pluggableDevice(
+	robotParts::Device *device(
 			PortInfo const &port
 			, PortDirection direction = defaultDirection) const override;
 
@@ -46,11 +46,11 @@ private:
 	void checkAllDevicesConfigured();
 
 	/// Contains currently configured and ready devices.
-	QHash<PortInfo, robotParts::PluggableDevice *> mConfiguredDevices;  // Has ownership.
+	QHash<PortInfo, robotParts::Device *> mConfiguredDevices;  // Has ownership.
 
 	/// Contains devices that are not configured yet but are added for configuration and possibly already requested
 	/// to configure themselves.
-	QHash<PortInfo, robotParts::PluggableDevice *> mPendingDevices;  // Has ownership.
+	QHash<PortInfo, robotParts::Device *> mPendingDevices;  // Has ownership.
 
 	/// Contains ports on which device is already requested to configure itself and we are waiting a signal about
 	/// result of configuration.

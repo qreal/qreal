@@ -2,7 +2,7 @@
 
 using namespace interpreterBase::robotModel::robotParts;
 
-TouchSensor::TouchSensor(interpreterBase::robotModel::PluggableDeviceInfo const &info
+TouchSensor::TouchSensor(interpreterBase::robotModel::DeviceInfo const &info
 		, interpreterBase::robotModel::PortInfo const &port)
 	: ScalarSensor(info, port)
 {

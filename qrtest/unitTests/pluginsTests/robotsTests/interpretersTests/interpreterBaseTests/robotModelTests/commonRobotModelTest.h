@@ -6,7 +6,7 @@
 #include <gmock/gmock.h>
 
 #include <interpreterBase/robotModel/commonRobotModel.h>
-#include <support/dummyPluggableDevice.h>
+#include <support/dummyDevice.h>
 
 namespace qrTest {
 namespace robotsTests {
@@ -49,17 +49,17 @@ public:
 			}
 		}
 
-		MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::PluggableDeviceInfo>());
+		MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::DeviceInfo>());
 
 	private:
-		virtual interpreterBase::robotModel::robotParts::PluggableDevice * createDevice(
+		virtual interpreterBase::robotModel::robotParts::Device * createDevice(
 				interpreterBase::robotModel::PortInfo const &port
-				, interpreterBase::robotModel::PluggableDeviceInfo const &deviceInfo
+				, interpreterBase::robotModel::DeviceInfo const &deviceInfo
 				)
 		{
 			Q_UNUSED(deviceInfo)
 
-			return new DummyPluggableDevice(port);
+			return new DummyDevice(port);
 		}
 
 		QTimer mConnectionTimer;

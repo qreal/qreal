@@ -4,10 +4,10 @@
 
 #include "interpreterBase/robotModel/configurationInterface.h"
 #include "interpreterBase/robotModel/portInfo.h"
-#include "interpreterBase/robotModel/robotParts/pluggableDevice.h"
+#include "interpreterBase/robotModel/robotParts/device.h"
 #include "interpreterBase/robotModel/robotParts/brick.h"
 #include "interpreterBase/robotModel/robotParts/display.h"
-#include "interpreterBase/robotModel/pluggableDeviceInfo.h"
+#include "interpreterBase/robotModel/deviceInfo.h"
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
@@ -15,11 +15,11 @@ namespace interpreterBase {
 namespace robotModel {
 
 /// Represents abstract robot model with general properties that every kit has, like the ability to connect to robot,
-/// configure pluggable devices or enumerate available ports. It also returns common robot parts like brick or display.
+/// configure devices or enumerate available ports. It also returns common robot parts like brick or display.
 /// It can be specialized in kit plugins to provide kit-specific functionality like new parts and to define kit-specific
 /// methods like establishing connection.
 ///
-/// Model can be connected or disconnected to robot, when it is disconnected, it will queue up pluggable device
+/// Model can be connected or disconnected to robot, when it is disconnected, it will queue up device
 /// configuration changes and ignore requests involving physical devices. Some models (like 2d model) are assumed to be
 /// always connected.
 ///
@@ -31,7 +31,7 @@ namespace robotModel {
 ///   (or failed to establish), model emits connected() signal and enters Connected state (note that exact sequence
 ///   of this is undefined, so it can at first enter Connected state and then emit connected(), or at first emit, then
 ///   change state).
-/// - If connection is successful, model will be able to perform configuration of its pluggable devices by
+/// - If connection is successful, model will be able to perform configuration of its devices by
 ///   calling configureDevices(), when it is done it emits allDevicesConfigured() signal. Some devices may fail to
 ///   configure for some reason, so actual configuration status shall be retrieved by configuration() call.
 /// - After allDevicesConfigured() signal model is ready to work and accept commands to a robot. Configuration still
@@ -76,9 +76,9 @@ public:
 	virtual QList<PortInfo> configurablePorts() const = 0;
 
 	/// Returns a list of devices that are allowed to be connected on a given port.
-	virtual QList<PluggableDeviceInfo> allowedDevices(PortInfo const &port) const = 0;
+	virtual QList<DeviceInfo> allowedDevices(PortInfo const &port) const = 0;
 
-	virtual void configureDevices(QHash<PortInfo, PluggableDeviceInfo> const &devices) = 0;
+	virtual void configureDevices(QHash<PortInfo, DeviceInfo> const &devices) = 0;
 
 	/// Returns a list of devices types that can be used for 'can convert' decision.
 	/// When user changes sensors configuration with some robot model as current it must be decided for
@@ -91,7 +91,7 @@ public:
 	/// But how to find Nxt light sensor analogue for Trik? Here helps convertible bases provided by Trik plugin.
 	/// Both light sensors inherit interpreterBase::robotModel::robotParts::LightSensor, so if this class is
 	/// returned as convertible base we can simply convert Nxt`s light sensor to Trik`s one.
-	virtual QList<PluggableDeviceInfo> convertibleBases() const = 0;
+	virtual QList<DeviceInfo> convertibleBases() const = 0;
 
 signals:
 	/// Emitted when model is connected to a robot. If there is no need to connect (for example, 2d model), emitted

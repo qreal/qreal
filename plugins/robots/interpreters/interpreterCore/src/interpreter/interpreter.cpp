@@ -93,12 +93,12 @@ void Interpreter::interpret()
 	/// @todo Temporarily loading initial configuration from registry
 	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
 
-	QHash<PortInfo, PluggableDeviceInfo> devices;
+	QHash<PortInfo, DeviceInfo> devices;
 
 	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
 		QString const modelName = mRobotModelManager.model().name();
 		if (mCurrentConfiguration[modelName].contains(port)) {
-			PluggableDeviceInfo const &deviceInfo = mCurrentConfiguration[modelName].value(port);
+			DeviceInfo const &deviceInfo = mCurrentConfiguration[modelName].value(port);
 			devices.insert(port, deviceInfo);
 		}
 	}

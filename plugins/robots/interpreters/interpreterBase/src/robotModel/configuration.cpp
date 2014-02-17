@@ -14,7 +14,7 @@ Configuration::~Configuration()
 	qDeleteAll(mConfiguredDevices);
 }
 
-void Configuration::configureDevice(robotParts::PluggableDevice * const device)
+void Configuration::configureDevice(robotParts::Device * const device)
 {
 	Q_ASSERT(device);
 
@@ -58,7 +58,7 @@ void Configuration::unlockConfiguring()
 	reconfigureDevices();
 }
 
-robotParts::PluggableDevice *Configuration::pluggableDevice(
+robotParts::Device *Configuration::device(
 		PortInfo const &port
 		, PortDirection direction) const
 {
@@ -68,7 +68,7 @@ robotParts::PluggableDevice *Configuration::pluggableDevice(
 	return mConfiguredDevices.value(port, nullptr);
 }
 
-QList<robotParts::PluggableDevice *> Configuration::pluggableDevices(PortDirection direction) const
+QList<robotParts::Device *> Configuration::devices(PortDirection direction) const
 {
 	Q_UNUSED(direction);
 
@@ -103,7 +103,7 @@ void Configuration::deviceConfiguredSlot(bool success)
 	/// @todo Do something with failure of configuration.
 	Q_UNUSED(success);
 
-	robotParts::PluggableDevice *device = dynamic_cast<robotParts::PluggableDevice *>(sender());
+	robotParts::Device *device = dynamic_cast<robotParts::Device *>(sender());
 	if (!device) {
 		/// @todo Implement more adequate assertions mechanism.
 		throw "Incorrect device configuration";
@@ -129,9 +129,9 @@ void Configuration::reconfigureDevices()
 
 	checkAllDevicesConfigured();
 
-	for (robotParts::PluggableDevice * const device : mPendingDevices.values()) {
+	for (robotParts::Device * const device : mPendingDevices.values()) {
 		if (!mConfigurationInProgress.contains(device->port())) {
-			connect(device, &robotParts::PluggableDevice::configured, this, &Configuration::deviceConfiguredSlot);
+			connect(device, &robotParts::Device::configured, this, &Configuration::deviceConfiguredSlot);
 			mConfigurationInProgress.insert(device->port());
 			device->configure();
 		}

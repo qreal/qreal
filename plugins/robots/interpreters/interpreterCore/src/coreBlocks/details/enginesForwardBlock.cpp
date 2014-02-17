@@ -26,8 +26,8 @@ void EnginesForwardBlock::run()
 	for (QString const &port : splitted) {
 		for (interpreterBase::robotModel::PortInfo portInfo : mRobotModel.availablePorts()) {
 			if (portInfo.name() == port || portInfo.nameAliases().contains(port)) {
-				interpreterBase::robotModel::robotParts::PluggableDevice *device
-						= mRobotModel.configuration().pluggableDevice(portInfo
+				interpreterBase::robotModel::robotParts::Device *device
+						= mRobotModel.configuration().device(portInfo
 								, interpreterBase::robotModel::ConfigurationInterface::output);
 				interpreterBase::robotModel::robotParts::Motor *motor
 						= static_cast<interpreterBase::robotModel::robotParts::Motor *>(device);

@@ -32,18 +32,18 @@ void SensorsConfigurationManagerTest::SetUp()
 
 TEST_F(SensorsConfigurationManagerTest, serializationTest)
 {
-	PluggableDeviceInfo const device1 = PluggableDeviceInfo::create<robotParts::TouchSensor>();
-	PluggableDeviceInfo const device2 = PluggableDeviceInfo::create<robotParts::ColorSensor>();
+	DeviceInfo const device1 = DeviceInfo::create<robotParts::TouchSensor>();
+	DeviceInfo const device2 = DeviceInfo::create<robotParts::ColorSensor>();
 
 	// Setting up initial configuration...
 	mConfigurer1->configureBroadly("model1", PortInfo("1"), device1);
-	mConfigurer1->configureBroadly("model1", PortInfo("2"), PluggableDeviceInfo());
+	mConfigurer1->configureBroadly("model1", PortInfo("2"), DeviceInfo());
 	mConfigurer1->configureBroadly("model2", PortInfo("A"), device1);
 	mConfigurer1->configureBroadly("model2", PortInfo("B"), device2);
 
 	// Checking up that second configurator was affected...
 	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1")), device1);
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2")), PluggableDeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2")), DeviceInfo());
 	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A")), device1);
 	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B")), device2);
 
@@ -53,23 +53,23 @@ TEST_F(SensorsConfigurationManagerTest, serializationTest)
 	mQrguiFacade->setActiveTab(qReal::Id());
 
 	// Setting another configuration...
-	mConfigurer1->configureBroadly("model1", PortInfo("1"), PluggableDeviceInfo());
+	mConfigurer1->configureBroadly("model1", PortInfo("1"), DeviceInfo());
 	mConfigurer1->configureBroadly("model1", PortInfo("2"), device2);
-	mConfigurer1->configureBroadly("model2", PortInfo("A"), PluggableDeviceInfo());
-	mConfigurer1->configureBroadly("model2", PortInfo("B"), PluggableDeviceInfo());
+	mConfigurer1->configureBroadly("model2", PortInfo("A"), DeviceInfo());
+	mConfigurer1->configureBroadly("model2", PortInfo("B"), DeviceInfo());
 
 	// Checking up that second configurator was affected...
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1")), PluggableDeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1")), DeviceInfo());
 	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2")), device2);
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A")), PluggableDeviceInfo());
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B")), PluggableDeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A")), DeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B")), DeviceInfo());
 
 	// This must restore configuration from repo
 	mQrguiFacade->setActiveTab(oldDiagram);
 
 	// Checking that old configuration was restored...
 	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1")), device1);
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2")), PluggableDeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2")), DeviceInfo());
 	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A")), device1);
 	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B")), device2);
 }

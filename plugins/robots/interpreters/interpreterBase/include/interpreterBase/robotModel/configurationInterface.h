@@ -4,7 +4,7 @@
 #include <QtCore/QHash>
 
 #include "interpreterBase/robotModel/portInfo.h"
-#include "interpreterBase/robotModel/robotParts/pluggableDevice.h"
+#include "interpreterBase/robotModel/robotParts/device.h"
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
@@ -27,7 +27,7 @@ public:
 	/// Adds device to robot configuration and initializes process of its configuring on a port device is bound to.
 	/// Device configuration can be deferred until unlockConfiguring is called.
 	/// @param device - device to be added to configuration. Transfers ownership.
-	virtual void configureDevice(robotParts::PluggableDevice * const device) = 0;
+	virtual void configureDevice(robotParts::Device * const device) = 0;
 
 	virtual void lockConfiguring() = 0;
 
@@ -36,15 +36,15 @@ public:
 	virtual void unlockConfiguring() = 0;
 
 	/// Returns all configured devices with given port direction. Allows to enumerate configured devices.
-	virtual QList<robotParts::PluggableDevice *> pluggableDevices(
+	virtual QList<robotParts::Device *> devices(
 			PortDirection direction = defaultDirection) const = 0;
 
 	/// Returns configured device on a given port or nullptr if no device is configured there.
-	virtual robotParts::PluggableDevice *pluggableDevice(
+	virtual robotParts::Device *device(
 			PortInfo const &port
 			, PortDirection direction = defaultDirection) const = 0;
 
-	/// \todo Implement some convenience methods that cast generic PluggableDevice to desired sensor/motor type.
+	/// \todo Implement some convenience methods that cast generic Device to desired sensor/motor type.
 
 	virtual void clearDevice(PortInfo const &port) = 0;
 
