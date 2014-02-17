@@ -1,1 +1,1 @@
-brick.motor(@@PORT@@).setPower(-(@@POWER@@));
+brick.servoMotor(@@PORT@@).setPower(-(@@POWER@@));

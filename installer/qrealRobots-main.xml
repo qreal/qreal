@@ -98,6 +98,9 @@
                     <origin>%1/bin/plugins/trikGenerator.dll</origin>
                 </distributionFile>
                 <distributionFile>
+                    <origin>%1/bin/plugins/russianCGenerator.dll</origin>
+                </distributionFile>
+                <distributionFile>
                     <origin>%1/bin/plugins/robotsInterpreter.dll</origin>
                 </distributionFile>
                 <distributionFile>

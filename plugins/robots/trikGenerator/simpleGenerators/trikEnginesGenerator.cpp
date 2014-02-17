@@ -3,7 +3,6 @@
 
 using namespace qReal::robots::generators::simple;
 
-// TODO: implement servos generation
 TrikEnginesGenerator::TrikEnginesGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
@@ -11,8 +10,8 @@ TrikEnginesGenerator::TrikEnginesGenerator(qrRepo::RepoApi const &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, engineType == "EnginesBackward"
-					? "engines/power/backward.t"
-					: "engines/power/forward.t"
+					? QString("engines/") + (repo.property(id, "powerMotors").toBool() ? "power" : "servo") + "/backward.t"
+					: QString("engines/") + (repo.property(id, "powerMotors").toBool() ? "power" : "servo") + "/forward.t"
 			, QList<Binding *>()
 					<< Binding::createMultiTarget("@@PORT@@", "Ports", customizer.factory()->enginesConverter())
 					<< Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter())

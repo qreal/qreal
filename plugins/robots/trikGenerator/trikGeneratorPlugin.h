@@ -8,7 +8,7 @@ namespace generators {
 namespace trik {
 
 /// Generation of QtScript program for TRIK, uploading and execution of a program.
-/// Uses settings "tcpServer" and "tcpPort" from RobotsInterpreter.
+/// Uses setting "tcpServer" from RobotsInterpreter.
 class TrikGeneratorPlugin : public RobotsGeneratorPluginBase
 {
 	Q_OBJECT
@@ -48,7 +48,7 @@ private:
 	QAction mGenerateCodeAction;
 
 	/// Action that generates and uploads program on a robot
-//	QAction mUploadProgramAction;
+	QAction mUploadProgramAction;
 
 	/// Action that generates and uploads program on a robot
 	QAction mRunProgramAction;

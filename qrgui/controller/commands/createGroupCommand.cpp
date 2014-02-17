@@ -53,8 +53,8 @@ CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 					, mLogicalApi.editorManagerInterface().friendlyName(element.type()), nodePos);
 			mNodeCommands[node.id] = createNodeCommand;
 			addPreAction(createNodeCommand);
-			toCreate.removeAll(node);
 			consideredNodes << node.id;
+			toCreate.removeAll(node);
 			somethingChangedThisIteration = true;
 		}
 	}
