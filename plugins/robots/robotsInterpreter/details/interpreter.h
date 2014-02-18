@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 
 #include <QtCore/QObject>
 
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
+#include <qrutils/watchListWindow.h>
+#include <qrutils/graphicsWatcher/sensorsGraph.h>
+#include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
 
 #include "details/robotCommunication/robotCommunicator.h"
 #include "sensorConstants.h"
@@ -10,14 +13,9 @@
 #include "details/thread.h"
 #include "details/blocksTable.h"
 #include "details/d2RobotModel/d2RobotModel.h"
-
-#include "../../../qrutils/watchListWindow.h"
-#include "../../../qrgui/mainwindow/projectManager/projectManagementInterface.h"
-
-
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
-#include "details/sensorsConfigurationWidget.h"
+#include "details/sensorsConfigurationProvider.h"
 #include "details/nxtDisplay.h"
 
 namespace qReal {
@@ -25,7 +23,7 @@ namespace interpreters {
 namespace robots {
 namespace details {
 
-class Interpreter : public QObject
+class Interpreter : public QObject, public SensorsConfigurationProvider
 {
 	Q_OBJECT
 
@@ -60,8 +58,6 @@ public:
 	/// Assigning a value to the field mActionConnectToRobot
 	void setConnectRobotAction(QAction *actionConnect);
 
-	void setNoiseSettings();
-
 	/// Enable Run and Stop buttons on 2d model widget
 	void enableD2ModelWidgetRunStopButtons();
 
@@ -69,13 +65,7 @@ public:
 	void disableD2ModelWidgetRunStopButtons();
 
 	utils::WatchListWindow *watchWindow() const;
-	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
-
-signals:
-	void noiseSettingsChanged();
-	void noiseSettingsChangedBy2DModelWidget();
-
-	void sensorsConfigurationChanged();
+	utils::sensorsGraph::SensorsGraph *graphicsWatchWindow() const;
 
 public slots:
 	void connectToRobot();
@@ -84,7 +74,6 @@ public slots:
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
 	void onTabChanged(Id const &diagramId, bool enabled);
-	void saveSensorConfiguration();
 
 private slots:
 	void threadStopped();
@@ -113,16 +102,23 @@ private slots:
 	void loadSensorConfiguration(Id const &diagramId);
 
 private:
-	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
-	void addThread(details::Thread * const thread);
-	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
-	void resetVariables();
-
 	enum InterpreterState {
 		interpreting
 		, waitingForSensorsConfiguredToLaunch
 		, idle
 	};
+
+	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
+	void addThread(details::Thread * const thread);
+	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
+	void resetVariables();
+	void saveSensorConfiguration();
+	void updateGraphicWatchSensorsList();
+
+	void onSensorConfigurationChanged(
+			qReal::interpreters::robots::enums::inputPort::InputPortEnum port
+			, qReal::interpreters::robots::enums::sensorType::SensorTypeEnum type
+			) override;
 
 	GraphicalModelAssistInterface const *mGraphicalModelApi;
 	LogicalModelAssistInterface *mLogicalModelApi;
@@ -142,7 +138,9 @@ private:
 
 	robots::enums::robotModelType::robotModelTypeEnum mImplementationType;
 
-	utils::WatchListWindow *mWatchListWindow;
+	utils::WatchListWindow *mWatchListWindow;  // Doesn`t have ownership
+
+	utils::sensorsGraph::SensorsGraph *mGraphicsWatch;  // Doesn`t have ownership
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;

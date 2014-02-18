@@ -1,45 +1,30 @@
 #include "d2RobotModel.h"
-#include "../tracer.h"
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../../../qrutils/mathUtils/gaussNoise.h"
+
+#include <qrkernel/settingsManager.h>
+
+#include "constants.h"
+#include "details/tracer.h"
+#include "physics/realisticPhysicsEngine.h"
+#include "physics/simplePhysicsEngine.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace d2Model;
-using namespace mathUtils;
-
-uint const black   = 0xFF000000;
-uint const white   = 0xFFFFFFFF;
-uint const red     = 0xFFFF0000;
-uint const green   = 0xFF008000;
-uint const blue    = 0xFF0000FF;
-uint const yellow  = 0xFFFFFF00;
-uint const cyan    = 0xFF00FFFF;
-uint const magenta = 0xFFFF00FF;
-
-unsigned const touchSensorPressedSignal = 1;
-unsigned const touchSensorNotPressedSignal = 0;
-
-qreal const spoilColorDispersion = 2.0;
-qreal const spoilLightDispersion = 1.0;
-qreal const spoilSonarDispersion = 1.5;
-qreal const varySpeedDispersion = 0.0125;
-qreal const percentSaltPepperNoise = 20.0;
 
 D2RobotModel::D2RobotModel(QObject *parent)
-		: QObject(parent)
-		, mD2ModelWidget(NULL)
-		, mMotorA(NULL)
-		, mMotorB(NULL)
-		, mMotorC(NULL)
-		, mDisplay(new NxtDisplay)
-		, mTimeline(new Timeline(this))
-		, mNoiseGen()
-		, mNeedSync(false)
-		, mNeedSensorNoise(SettingsManager::value("enableNoiseOfSensors").toBool())
-		, mNeedMotorNoise(SettingsManager::value("enableNoiseOfMotors").toBool())
+	: QObject(parent)
+	, mD2ModelWidget(nullptr)
+	, mEngineA(nullptr)
+	, mEngineB(nullptr)
+	, mEngineC(nullptr)
+	, mDisplay(new NxtDisplay)
+	, mPhysicsEngine(nullptr)
+	, mTimeline(new Timeline(this))
+	, mNoiseGen()
+	, mNeedSync(false)
+	, mPos(QPointF(0,0))
+	, mAngle(0)
 {
-	mAngle = 0;
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
 	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
@@ -48,22 +33,24 @@ D2RobotModel::D2RobotModel(QObject *parent)
 
 D2RobotModel::~D2RobotModel()
 {
+	delete mPhysicsEngine;
 }
 
 void D2RobotModel::initPosition()
 {
-	if (mMotorA) {
-		delete mMotorA;
+	if (mEngineA) {
+		delete mEngineA;
 	}
-	if (mMotorB) {
-		delete mMotorB;
+	if (mEngineB) {
+		delete mEngineB;
 	}
-	if (mMotorC) {
-		delete mMotorC;
+	if (mEngineC) {
+		delete mEngineC;
 	}
-	mMotorA = initMotor(robotWheelDiameterInPx / 2, 0, 0, 0, false);
-	mMotorB = initMotor(robotWheelDiameterInPx / 2, 0, 0, 1, false);
-	mMotorC = initMotor(robotWheelDiameterInPx / 2, 0, 0, 2, false);
+
+	mEngineA = initEngine(robotWheelDiameterInPx / 2, 0, 0, 0, false);
+	mEngineB = initEngine(robotWheelDiameterInPx / 2, 0, 0, 1, false);
+	mEngineC = initEngine(robotWheelDiameterInPx / 2, 0, 0, 2, false);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 }
@@ -75,21 +62,23 @@ void D2RobotModel::clear()
 	mPos = QPointF(0,0);
 }
 
-D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
+D2RobotModel::Engine *D2RobotModel::initEngine(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
 {
-	Motor *motor = new Motor();
-	motor->radius = radius;
-	motor->speed = speed;
-	motor->degrees = degrees;
-	motor->isUsed = isUsed;
+	Engine *engine = new Engine();
+	engine->radius = radius;
+	engine->speed = speed;
+	engine->degrees = degrees;
+	engine->isUsed = isUsed;
+	engine->breakMode = true;
 	if (degrees == 0) {
-		motor->activeTimeType = DoInf;
+		engine->activeTimeType = DoInf;
 	} else {
-		motor->activeTimeType = DoByLimit;
+		engine->activeTimeType = DoByLimit;
 	}
-	mMotors[port] = motor;
-	mTurnoverMotors[port] = 0;
-	return motor;
+
+	mEngines[port] = engine;
+	mTurnoverEngines[port] = 0;
+	return engine;
 }
 
 void D2RobotModel::setBeep(unsigned freq, unsigned time)
@@ -98,15 +87,16 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 	mBeep.time = time;
 }
 
-void D2RobotModel::setNewMotor(int speed, uint degrees, const int port)
+void D2RobotModel::setNewMotor(int speed, uint degrees, int port, bool breakMode)
 {
-	mMotors[port]->speed = speed;
-	mMotors[port]->degrees = degrees;
-	mMotors[port]->isUsed = true;
-	if (degrees == 0) {
-		mMotors[port]->activeTimeType = DoInf;
+	mEngines[port]->speed = speed;
+	mEngines[port]->degrees = degrees;
+	mEngines[port]->isUsed = true;
+	mEngines[port]->breakMode = breakMode;
+	if (degrees) {
+		mEngines[port]->activeTimeType = DoByLimit;
 	} else {
-		mMotors[port]->activeTimeType = DoByLimit;
+		mEngines[port]->activeTimeType = DoInf;
 	}
 }
 
@@ -118,11 +108,11 @@ int D2RobotModel::varySpeed(int const speed) const
 
 void D2RobotModel::countMotorTurnover()
 {
-	foreach (Motor * const motor, mMotors) {
-		int const port = mMotors.key(motor);
-		qreal const degrees = Timeline::timeInterval * motor->speed * onePercentAngularVelocity;
-		mTurnoverMotors[port] += degrees;
-		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
+	foreach (Engine * const motor, mEngines) {
+		int const port = mEngines.key(motor);
+		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
+		mTurnoverEngines[port] += degrees;
+		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverEngines[port] >= motor->degrees)) {
 			motor->speed = 0;
 			motor->activeTimeType = End;
 			emit d2MotorTimeout();
@@ -132,12 +122,12 @@ void D2RobotModel::countMotorTurnover()
 
 int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
 {
-	return mTurnoverMotors[port];
+	return mTurnoverEngines[port];
 }
 
 void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
 {
-	mTurnoverMotors[port] = 0;
+	mTurnoverEngines[port] = 0;
 }
 
 SensorsConfiguration &D2RobotModel::configuration()
@@ -171,7 +161,7 @@ int D2RobotModel::readTouchSensor(robots::enums::inputPort::InputPortEnum const 
 	QPointF sensorPosition(neededPosDir.first);
 	qreal const width = sensorWidth / 2.0;
 	QRectF const scanningRect = QRectF(
-			  sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
+			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
 			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
 			, 2 * width + touchSensorStrokeIncrement
 			, 2 * width + touchSensorStrokeIncrement);
@@ -194,9 +184,9 @@ int D2RobotModel::readSonarSensor(robots::enums::inputPort::InputPortEnum const 
 int D2RobotModel::spoilSonarReading(int const distance) const
 {
 	qreal const ran = mNoiseGen.generate(
-					mNoiseGen.approximationLevel()
-					, spoilSonarDispersion
-				);
+			mNoiseGen.approximationLevel()
+			, spoilSonarDispersion
+			);
 
 	return truncateToInterval(0, 255, round(distance + ran));
 }
@@ -393,7 +383,6 @@ uint D2RobotModel::spoilLight(uint const color) const
 	return color;
 }
 
-
 void D2RobotModel::startInit()
 {
 	initPosition();
@@ -408,9 +397,12 @@ void D2RobotModel::startInterpretation()
 
 void D2RobotModel::stopRobot()
 {
-	mMotorA->speed = 0;
-	mMotorB->speed = 0;
-	mMotorC->speed = 0;
+	mEngineA->speed = 0;
+	mEngineA->breakMode = true;
+	mEngineB->speed = 0;
+	mEngineB->breakMode = true;
+	mEngineC->speed = 0;
+	mEngineC->breakMode = true;
 	mD2ModelWidget->stopTimelineListening();
 }
 
@@ -424,88 +416,49 @@ void D2RobotModel::countBeep()
 	}
 }
 
-void D2RobotModel::countNewCoord()
+QPointF D2RobotModel::rotationCenter() const
 {
-	Motor *motor1 = mMotorA;
-	Motor *motor2 = mMotorB;
+	return QPointF(mPos.x() + robotWidth / 2, mPos.y() + robotHeight / 2);
+}
 
-	if (mMotorC->isUsed) {
-		if (!mMotorA->isUsed) {
-			motor1 = mMotorC;
-		} else if (!mMotorB->isUsed) {
-			motor2 = mMotorC;
-		}
-	}
-
-	int const sspeed1 = mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
-	int const sspeed2 = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
-
-	qreal const vSpeed = sspeed1 * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
-	qreal const uSpeed = sspeed2 * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
-
-	qreal deltaY = 0;
-	qreal deltaX = 0;
-	qreal const averageSpeed = (vSpeed + uSpeed) / 2;
-
-	qreal const oldAngle = mAngle;
-	QPointF const oldPosition = mPos;
-
-	if (sspeed1 != sspeed2) {
-		qreal const vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
-		qreal const averageRadius = vRadius - robotHeight / 2;
-		qreal angularSpeed = 0;
-		qreal actualRadius = 0;
-		if (vSpeed == -uSpeed) {
-			angularSpeed = vSpeed / vRadius;
-			actualRadius = 0;  // Radius is relative to the center of the robot.
-		} else {
-			angularSpeed = averageSpeed / averageRadius;
-			actualRadius = averageRadius;
-		}
-		qreal const gammaRadians = Timeline::timeInterval * angularSpeed;
-		qreal const gammaDegrees = gammaRadians * 180 / M_PI;
-
-		QTransform map;
-		map.rotate(mAngle);
-		// TODO: robotWidth / 2 shall actually be a distance between robot center and
-		// centers of the wheels by x axis.
-		map.translate(robotWidth / 2, actualRadius);
-		map.rotate(gammaDegrees);
-		map.translate(-robotWidth / 2, -actualRadius);
-
-		QPointF newStart = map.map(QPointF(0, 0));
-		deltaX = newStart.x();
-		deltaY = newStart.y();
-
-		mAngle += gammaDegrees;
-	} else {
-		deltaY = averageSpeed * Timeline::timeInterval * sin(mAngle * M_PI / 180);
-		deltaX = averageSpeed * Timeline::timeInterval * cos(mAngle * M_PI / 180);
-	}
-
-	QPointF const delta(deltaX, deltaY);
-	mPos += delta;
-
-	if(mAngle > 360) {
-		mAngle -= 360;
-	}
-
-	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
-	if (mWorldModel.checkCollision(boundingRegion)) {
-		mPos = oldPosition;
-		mAngle = oldAngle;
-	}
+void D2RobotModel::nextStep()
+{
+	mPos += mPhysicsEngine->shift().toPointF();
+	mAngle += mPhysicsEngine->rotation();
 }
 
 void D2RobotModel::recalculateParams()
 {
 	// do nothing until robot gets back on the ground
-	if (!mD2ModelWidget->isRobotOnTheGround()) {
+	if (!mD2ModelWidget->isRobotOnTheGround() || !mPhysicsEngine) {
 		mNeedSync = true;
 		return;
 	}
+
 	synchronizePositions();
-	countNewCoord();
+
+	Engine *engine1 = mEngineA;
+	Engine *engine2 = mEngineB;
+
+	if (mEngineC->isUsed) {
+		if (!mEngineA->isUsed) {
+			engine1 = mEngineC;
+		} else if (!mEngineB->isUsed) {
+			engine2 = mEngineC;
+		}
+	}
+
+	engine1->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine1->speed) : engine1->speed;
+	engine2->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine2->speed) : engine2->speed;
+
+	qreal const speed1 = engine1->spoiledSpeed * 2 * M_PI * engine1->radius * onePercentAngularVelocity / 360;
+	qreal const speed2 = engine2->spoiledSpeed * 2 * M_PI * engine2->radius * onePercentAngularVelocity / 360;
+
+	mPhysicsEngine->recalculateParams(Timeline::timeInterval, speed1, speed2
+			, engine1->breakMode, engine2->breakMode
+			, rotationCenter(), mAngle
+			, mD2ModelWidget->robotBoundingPolygon(mPos, mAngle));
+	nextStep();
 	countMotorTurnover();
 }
 
@@ -514,6 +467,7 @@ void D2RobotModel::nextFragment()
 	if (!mD2ModelWidget->isRobotOnTheGround()) {
 		return;
 	}
+
 	synchronizePositions();
 	countBeep();
 	mD2ModelWidget->draw(mPos, mAngle);
@@ -540,7 +494,7 @@ void D2RobotModel::setRotation(qreal angle)
 	mD2ModelWidget->draw(mPos, mAngle);
 }
 
-double D2RobotModel::rotateAngle() const
+qreal D2RobotModel::rotateAngle() const
 {
 	return mAngle;
 }
@@ -549,6 +503,12 @@ void D2RobotModel::setSpeedFactor(qreal speedMul)
 {
 	mSpeedFactor = speedMul;
 	mTimeline->setSpeedFactor(speedMul);
+}
+
+void D2RobotModel::setRobotPos(QPointF const &newPos)
+{
+	mPos = newPos;
+	mD2ModelWidget->draw(mPos, mAngle);
 }
 
 QPointF D2RobotModel::robotPos()
@@ -572,11 +532,8 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 	qreal const x = static_cast<qreal>(splittedStr[0].toDouble());
 	qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
 	mPos = QPointF(x, y);
-
 	mAngle = robotElement.attribute("direction", "0").toDouble();
-
 	configuration().deserialize(robotElement);
-
 	mNeedSync = false;
 	nextFragment();
 }
@@ -593,6 +550,21 @@ details::NxtDisplay *D2RobotModel::display()
 
 void D2RobotModel::setNoiseSettings()
 {
+	bool const oldPhysics = mIsRealisticPhysics;
+	mIsRealisticPhysics = SettingsManager::value("2DModelRealisticPhysics").toBool();
+	if (oldPhysics != mIsRealisticPhysics || !mPhysicsEngine) {
+		physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
+		if (mIsRealisticPhysics) {
+			mPhysicsEngine = new physics::RealisticPhysicsEngine(mWorldModel);
+		} else {
+			mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel);
+		}
+
+		if (oldEngine) {
+			delete oldEngine;
+		}
+	}
+
 	mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
 	mNeedMotorNoise = SettingsManager::value("enableNoiseOfMotors").toBool();
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());

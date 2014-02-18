@@ -7,7 +7,7 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-int const selectionDrift = 3;
+int const selectionDrift = 7;
 
 SensorItem::SensorItem(SensorsConfiguration &configuration
 		, robots::enums::inputPort::InputPortEnum port)
@@ -16,7 +16,7 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	, mPort(port)
 	, mDragged(false)
 	, mPointImpl()
-	, mRotater(NULL)
+	, mRotater(nullptr)
 	, mImageRect(imageRect())
 	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
 			, selectionDrift, selectionDrift))

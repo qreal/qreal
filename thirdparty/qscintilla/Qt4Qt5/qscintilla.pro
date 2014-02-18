@@ -44,7 +44,7 @@ RCC_DIR = .moc
 
 # Comment this in if you want the internal Scintilla classes to be placed in a
 # Scintilla namespace rather than pollute the global namespace.
-#DEFINES += SCI_NAMESPACE
+DEFINES += SCI_NAMESPACE
 
 HEADERS = \
 	ListBoxQt.h \
@@ -63,6 +63,7 @@ HEADERS = \
 	./Qsci/qscilexercustom.h \
 	./Qsci/qscilexerproperties.h \
 	./Qsci/qscilexerpython.h \
+	./Qsci/qscilexercpp.h \
 	./Qsci/qscimacro.h \
 	./Qsci/qsciprinter.h \
 	./Qsci/qscistyle.h \
@@ -123,6 +124,7 @@ SOURCES = \
 	qscilexercustom.cpp \
 	qscilexerproperties.cpp \
 	qscilexerpython.cpp \
+	qscilexercpp.cpp \
 	qscimacro.cpp \
 	qsciprinter.cpp \
 	qscistyle.cpp \
@@ -132,6 +134,7 @@ SOURCES = \
 	PlatQt.cpp \
 	ScintillaQt.cpp \
 	../lexers/LexPython.cpp \
+	../lexers/LexCPP.cpp \
 	../lexlib/Accessor.cpp \
 	../lexlib/CharacterSet.cpp \
 	../lexlib/LexerBase.cpp \

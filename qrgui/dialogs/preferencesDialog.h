@@ -3,9 +3,9 @@
 #include <QtCore/QModelIndex>
 #include <QtWidgets/QDialog>
 #include <QtCore/QSettings>
-#include <QtWidgets/QFileDialog>
 
 #include <qrkernel/settingsManager.h>
+#include <qrutils/qRealDialog.h>
 
 #include "dialogs/preferencesPages/preferencesPage.h"
 
@@ -13,7 +13,7 @@ namespace Ui {
 	class PreferencesDialog;
 }
 
-class PreferencesDialog : public QDialog
+class PreferencesDialog : public utils::QRealDialog
 {
 	Q_OBJECT
 
@@ -38,6 +38,7 @@ signals:
 	void settingsApplied();
 	void fontChanged();
 	void paletteRepresentationChanged();
+	void usabilityTestingModeChanged(bool on);
 
 public slots:
 	void changePaletteParameters();

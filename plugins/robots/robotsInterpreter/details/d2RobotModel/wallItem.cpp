@@ -1,9 +1,11 @@
+#include "wallItem.h"
+
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 
-#include "wallItem.h"
+#include <math.h>
+#include <qrkernel/settingsManager.h>
 
-#include "../../../../../qrkernel/settingsManager.h"
 #include "d2ModelScene.h"
 
 using namespace qReal::interpreters::robots;
@@ -24,7 +26,6 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 void WallItem::setPrivateData()
 {
 	setZValue(1);
-
 	mPen.setWidth(10);
 	mPen.setStyle(Qt::NoPen);
 	mBrush.setStyle(Qt::SolidPattern);
@@ -47,6 +48,7 @@ void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* optio
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	painter->drawPath(shape());
+	recalculateBorders();
 }
 
 void WallItem::drawExtractionForItem(QPainter *painter)
@@ -64,14 +66,15 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
-	mOldX1 = qAbs(mX1 - event->scenePos().x());
-	mOldY1 = qAbs(mY1 - event->scenePos().y());
+	mOldX1 = event->scenePos().x() - mX1;
+	mOldY1 = event->scenePos().y() - mY1;
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	QPointF const oldPos = pos();
-	if (SettingsManager::value("2dShowGrid").toBool() && mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)){
+	if (SettingsManager::value("2dShowGrid").toBool() && mDragged
+			&& ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		QPointF const pos = event->scenePos();
 		int const indexGrid = SettingsManager::value("2dGridCellSize").toInt();
 		qreal const deltaX = (mX1 - mX2);
@@ -80,13 +83,14 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		mY1 = pos.y() - mOldY1;
 		reshapeBeginWithGrid(indexGrid);
 		setDraggedEndWithGrid(deltaX, deltaY);
-		mCellNumbX1 = mX1/indexGrid;
-		mCellNumbY1 = mY1/indexGrid;
-		mCellNumbX2 = mX2/indexGrid;
-		mCellNumbY2 = mY2/indexGrid;
+		mCellNumbX1 = mX1 / indexGrid;
+		mCellNumbY1 = mY1 / indexGrid;
+		mCellNumbX2 = mX2 / indexGrid;
+		mCellNumbY2 = mY2 / indexGrid;
 	} else if (mDragged) {
 		QGraphicsItem::mouseMoveEvent(event);
 	}
+
 	// Items under cursor cannot be dragged when adding new item,
 	// but it mustn`t confuse the case when item is unmovable
 	// because overapped with robot
@@ -96,9 +100,14 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	event->accept();
 }
 
-bool WallItem::isDragged()
+bool WallItem::isDragged() const
 {
 	return mDragged;
+}
+
+qreal WallItem::width() const
+{
+	return mPen.width();
 }
 
 void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -126,4 +135,43 @@ void WallItem::deserializePenBrush(QDomElement const &element)
 void WallItem::onOverlappedWithRobot(bool overlapped)
 {
 	mOverlappedWithRobot = overlapped;
+}
+
+QPainterPath WallItem::path() const
+{
+	return mPath;
+}
+
+void WallItem::recalculateBorders()
+{
+	qreal const x1 = begin().x();
+	qreal const x2 = end().x();
+	qreal const y1 = begin().y();
+	qreal const y2 = end().y();
+
+	qreal dx = x2 - x1;
+	qreal dy = y2 - y1;
+	qreal const len = sqrt(dx * dx + dy * dy);
+	dx /= len;
+	dy /= len;
+	dx *= 5;
+	dy *= 5;
+
+	QVector2D norm(y1 - y2, x2 - x1);
+	norm.normalize();
+	norm *= mPen.widthF() / 2;
+
+	QPointF const point1(x1 - dx + norm.x(), y1 - dy + norm.y());
+	QPointF const point2(x1 - dx - norm.x(), y1 - dy - norm.y());
+	QPointF const point3(x2 + dx - norm.x(), y2 + dy - norm.y());
+	QPointF const point4(x2 + dx + norm.x(), y2 + dy + norm.y());
+
+	QPainterPath wallPath;
+	wallPath.moveTo(point1);
+	wallPath.lineTo(point2);
+	wallPath.lineTo(point3);
+	wallPath.lineTo(point4);
+	wallPath.lineTo(point1);
+
+	mPath = wallPath;
 }

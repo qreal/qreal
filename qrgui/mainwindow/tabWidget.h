@@ -14,6 +14,8 @@ public:
 	/// Constructor.
 	explicit TabWidget(QWidget *parent = 0);
 
+	void setTabUnclosable(int index);
+
 protected:
 	void mousePressEvent(QMouseEvent *event);
 };

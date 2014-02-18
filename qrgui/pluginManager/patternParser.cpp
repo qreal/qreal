@@ -22,60 +22,65 @@ void PatternParser::loadXml(QString const &xml)
 	mXml.replace("\\n", "\n");
 }
 
-void PatternParser::parseGroups(EditorManager * editorManager, QString const &editor, QString const &diagram)
+void PatternParser::parseGroups(EditorManager *editorManager, QString const &editor, QString const &diagram)
 {
-
 	QDomDocument doc;
 	if (mXml.isNull()){
-		qDebug() << "ERROR: no xml-file to parse";
+		qDebug() << "ERROR: pattern parser: no xml-file to parse";
 		return;
 	}
+
 	mEditorManager = editorManager;
 	mEditor = editor;
 	mDiagram = diagram;
 	doc.setContent(mXml);
 	QDomElement groups = doc.firstChildElement("groups");
-	if (groups.isNull()){
-		qDebug() << "ERROR: groups tag not found";
+	if (groups.isNull()) {
 		return;
 	}
-	for (QDomElement group = groups.firstChildElement("group"); !group.isNull();
-		 group = group.nextSiblingElement("group"))
+
+	for (QDomElement group = groups.firstChildElement("group"); !group.isNull()
+			; group = group.nextSiblingElement("group"))
 	{
 		parseGroup(group);
 	}
 }
 
-QList<Pattern> PatternParser::getPatterns()
+QList<Pattern> PatternParser::patterns() const
 {
 	return mPatterns;
 }
 
 void PatternParser::parseGroup(QDomElement const &group)
 {
-	Pattern pattern(mEditor, mDiagram, group.attribute("name"), group.attribute("inNode"), group.attribute("outNode"));
+	Pattern pattern(mEditor, mDiagram, group.attribute("name")
+			, group.attribute("inNode"), group.attribute("outNode")
+			, group.attribute("rootNode"));
 
-	for (QDomElement node = group.firstChildElement("groupNode"); !node.isNull();
-		 node = node.nextSiblingElement("groupNode"))
+	for (QDomElement node = group.firstChildElement("groupNode"); !node.isNull()
+			; node = node.nextSiblingElement("groupNode"))
 	{
 		parseNode(node, pattern);
 	}
-	for (QDomElement edge = group.firstChildElement("groupEdge"); !edge.isNull();
-		 edge = edge.nextSiblingElement("groupEdge"))
+
+	for (QDomElement edge = group.firstChildElement("groupEdge"); !edge.isNull()
+			; edge = edge.nextSiblingElement("groupEdge"))
 	{
 		parseEdge(edge, pattern);
 	}
+
 	pattern.countSize(mEditorManager);
-	mPatterns.operator +=(pattern);
+	mPatterns += pattern;
 
 }
 
 void PatternParser::parseNode(QDomElement const &node, Pattern &pattern)
 {
-	float x = node.attribute("xPosition").toFloat();
-	float y = node.attribute("yPosition").toFloat();
-	QPointF const pos = QPointF(x,y);
-	pattern.addNode(node.attribute("type"), node.attribute("name"), pos);
+	qreal const x = node.attribute("xPosition").toFloat();
+	qreal const y = node.attribute("yPosition").toFloat();
+	QString const parent = node.attribute("parent");
+	QPointF const pos = QPointF(x, y);
+	pattern.addNode(node.attribute("type"), node.attribute("name"), pos, parent);
 }
 
 void PatternParser::parseEdge(QDomElement const &edge, Pattern &pattern)

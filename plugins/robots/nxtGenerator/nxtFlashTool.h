@@ -1,8 +1,9 @@
 #pragma once
 
 #include <QtCore/QProcess>
+#include <QtCore/QFileInfo>
 
-#include "../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace qReal {
 namespace robots {
@@ -14,20 +15,30 @@ class NxtFlashTool : public QObject
 	Q_OBJECT
 
 public:
+	enum RunPolicy {
+		Ask = 0
+		, AlwaysRun
+		, NeverRun
+	};
+
 	explicit NxtFlashTool(qReal::ErrorReporterInterface *errorReporter);
 
-//signals:
-//	void showErrors(gui::ErrorReporter * const errorReporter);
 public slots:
 	void flashRobot();
-	void uploadProgram();
+	void uploadProgram(QFileInfo const &fileInfo);
+	void runProgram(QFileInfo const &fileInfo);
+	void runLastProgram();
 
 	void error(QProcess::ProcessError error);
 	void readNxtFlashData();
+	bool askToRun(QWidget *parent);
 	void nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitStatus);
 	void readNxtUploadData();
 	void nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
+signals:
+	void flashingComplete(bool success);
+	void uploadingComplete(bool success);
 
 private:
 	enum UploadState {
@@ -43,6 +54,12 @@ private:
 	qReal::ErrorReporterInterface *mErrorReporter;
 	QProcess mFlashProcess;
 	QProcess mUploadProcess;
+	QProcess mRunProcess;
+
+	bool mIsFlashing;
+	bool mIsUploading;
+
+	QFileInfo mSource;
 
 	UploadState mUploadState;
 };

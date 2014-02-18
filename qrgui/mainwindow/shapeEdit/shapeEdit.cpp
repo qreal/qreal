@@ -1,7 +1,6 @@
 #include "shapeEdit.h"
 #include "ui_shapeEdit.h"
 
-#include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGraphicsItem>
 #include <QtCore/QList>
 #include <QtWidgets/QComboBox>
@@ -11,7 +10,8 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
-#include <qrutils/graphicsUtils/colorlisteditor.h>
+#include <qrutils/qRealFileDialog.h>
+#include <qrutils/graphicsUtils/colorListEditor.h>
 
 #include "mainwindow/shapeEdit/xmlLoader.h"
 #include "mainwindow/mainWindow.h"
@@ -308,7 +308,7 @@ void ShapeEdit::exportToXml(QString const &fileName)
 void ShapeEdit::saveToXml()
 {
 	mDocument.clear();
-	QString fileName = QFileDialog::getSaveFileName(this);
+	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorXml", this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -343,7 +343,7 @@ void ShapeEdit::save()
 
 void ShapeEdit::savePicture()
 {
-	QString fileName = QFileDialog::getSaveFileName(this);
+	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorPicture", this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -365,7 +365,7 @@ void ShapeEdit::savePicture()
 void ShapeEdit::open()
 {
 	mDocument.clear();
-	QString fileName = QFileDialog::getOpenFileName(this);
+	QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorXml", this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -388,7 +388,7 @@ void ShapeEdit::addImage(bool checked)
 {
 	if (checked) {
 		setHighlightOneButton(mUi->addImageButton);
-		QString fileName = QFileDialog::getOpenFileName(this);
+		QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorImage", this);
 		if (fileName.isEmpty()) {
 			return;
 		}

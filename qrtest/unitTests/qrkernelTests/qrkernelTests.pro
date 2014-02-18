@@ -1,5 +1,7 @@
 TARGET = qrkernel_unittests
 
+CONFIG += c++11
+
 include(../common.pri)
 
 include(../../../qrkernel/qrkernel.pri)

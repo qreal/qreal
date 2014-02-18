@@ -23,7 +23,6 @@ Id Id::loadFromString(QString const &string)
 		// Fall-thru
 	}
 	Q_ASSERT(string == result.toString());
-	Q_ASSERT(string == result.toUrl().toString());
 	return result;
 }
 

@@ -3,7 +3,6 @@
         <file>robotsInterpreter_ru.qm</file>
         <file>icons/kroki.png</file>
         <file>icons/preferences/robot.png</file>
-        <file>icons/kcron.png</file>
         <file>icons/robot.png</file>
         <file>icons/beepRobot.png</file>
         <file>icons/2d_clear.png</file>
@@ -23,6 +22,7 @@
         <file>icons/2d_ruler.png</file>
         <file>icons/2d_save.png</file>
         <file>icons/2d_target.png</file>
+        <file>icons/2d_robot_back.png</file>
         <file>icons/sensors/2d_light.png</file>
         <file>icons/sensors/2d_sonar.png</file>
         <file>icons/sensors/2d_touch.png</file>
@@ -41,5 +41,14 @@
         <file>icons/leftButton.png</file>
         <file>icons/leftButtonPressed.png</file>
         <file>icons/rightButton.png</file>
+        <file>icons/2d_none.png</file>
+        <file>icons/2d_drawEllipseCursor.png</file>
+        <file>icons/2d_drawLineCursor.png</file>
+        <file>icons/2d_drawStylusCursor.png</file>
+        <file>icons/2d_drawWallCursor.png</file>
+        <file>icons/2d-model.svg</file>
+        <file>icons/switch-2d.svg</file>
+        <file>icons/switch-real-nxt.svg</file>
+        <file>icons/switch-real-trik.svg</file>
     </qresource>
 </RCC>

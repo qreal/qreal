@@ -9,6 +9,9 @@
 #include <QtGui/QPolygonF>
 #include <QtCore/QSignalMapper>
 
+#include <qrutils/qRealDialog.h>
+#include <qrutils/graphicsUtils/lineImpl.h>
+
 #include "lineItem.h"
 #include "stylusItem.h"
 #include "ellipseItem.h"
@@ -19,7 +22,7 @@
 #include "rotater.h"
 #include "timeline.h"
 #include "../nxtDisplay.h"
-#include "../../../../../qrutils/graphicsUtils/lineImpl.h"
+#include "details/sensorsConfigurationProvider.h"
 
 namespace Ui {
 class D2Form;
@@ -52,12 +55,17 @@ enum CursorType
 	NoDrag = 0
 	, hand
 	, multiselection
+	, drawWall
+	, drawLine
+	, drawStylus
+	, drawEllipse
 };
 }
 
 }
 
-class D2ModelWidget : public QWidget {
+class D2ModelWidget : public utils::QRealDialog, public details::SensorsConfigurationProvider
+{
 	Q_OBJECT
 
 public:
@@ -96,19 +104,20 @@ public:
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
-	/// Places in 2D model same sensors as selected in QReal settings
-	void syncronizeSensors();
-	/// Synchronizes noise settings in 2D model window with global ones
-	void rereadNoiseSettings();
+
 	/// Starts 2D model time counter
 	void startTimelineListening();
+
 	/// Stops 2D model time counter
 	void stopTimelineListening();
+	void saveInitialRobotBeforeRun();
+	void setInitialRobotBeforeRun();
 
 signals:
 	void d2WasClosed();
 
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
+
 	/// Emitted when such features as motor or sensor noise were
 	///enabled or disabled by user
 	void noiseSettingsChanged();
@@ -117,11 +126,13 @@ signals:
 	/// @param xml World model description in xml format
 	void modelChanged(QDomDocument const &xml);
 
+	/// Emitted when sensor settings are changed in 2d model widget.
+	void sensorChanged(int port, robots::enums::sensorType::SensorTypeEnum type);
+
 protected:
 	virtual void changeEvent(QEvent *e);
 	virtual void showEvent(QShowEvent *e);
 	virtual void keyPressEvent(QKeyEvent *event);
-
 
 private slots:
 	void addWall(bool on);
@@ -129,6 +140,7 @@ private slots:
 	void addStylus(bool on);
 	void addEllipse(bool on);
 	void clearScene(bool removeRobot = false);
+	void setNoneButton();
 	void resetButtons();
 
 	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
@@ -146,7 +158,7 @@ private slots:
 	void loadWorldModel();
 
 	void changePenWidth(int width);
-	void changePenColor(const QString &text);
+	void changePenColor(int textIndex);
 	void changePalette();
 
 	void changeSpeed(int curIndex);
@@ -159,7 +171,7 @@ private slots:
 	void setCursorType(enums::cursorType::CursorType cursor);
 
 	void alignWalls();
-	void changeNoiseSettings();
+	void changePhysicsSettings();
 
 	void onTimelineTick();
 
@@ -174,9 +186,19 @@ private:
 	static const int indexOfSonarSensor = 3;
 	static const int indexOfLightSensor = 4;
 
+	struct RobotState {
+		QPointF pos;
+		double rotation;
+	};
+
+	void onSensorConfigurationChanged(
+			robots::enums::inputPort::InputPortEnum port
+			, robots::enums::sensorType::SensorTypeEnum type
+			) override;
+
 	void connectUiButtons();
 	void initButtonGroups();
-	void setHighlightOneButton(QAbstractButton const *oneButton);
+	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void drawWalls();
 	void drawColorFields();
@@ -216,6 +238,9 @@ private:
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoPalette();
 
+	void setNoneStatus();
+	void setCursorTypeForDrawing(enums::cursorType::CursorType type);
+
 	void initWidget();
 	QList<graphicsUtils::AbstractItem *> selectedColorItems();
 	bool isColorItem(graphicsUtils::AbstractItem *item);
@@ -224,8 +249,8 @@ private:
 
 	void centerOnRobot();
 	QGraphicsView::DragMode cursorTypeToDragType(enums::cursorType::CursorType type) const;
-	Qt::CursorShape cursorTypeToShape(enums::cursorType::CursorType type) const;
-	void processDragMode(int mode);
+	QCursor cursorTypeToCursor(enums::cursorType::CursorType type) const;
+	void processDragMode();
 	void syncCursorButtons();
 
 	void onFirstShow();
@@ -279,11 +304,14 @@ private:
 	QButtonGroup mButtonGroup;
 	QButtonGroup mCursorButtonGroup;
 
-	enums::cursorType::CursorType mCursorType;
+	enums::cursorType::CursorType mNoneCursorType; // cursorType for noneStatus
+	enums::cursorType::CursorType mCursorType; // current cursorType
 	bool mFollowRobot;
 
 	bool mFirstShow;
 	Timeline const * mTimeline;
+
+	RobotState mInitialRobotBeforeRun;
 };
 
 }

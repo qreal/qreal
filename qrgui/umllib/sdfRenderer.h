@@ -38,7 +38,8 @@ public:
 
 private:
 	QString mWorkingDirName;
-	QMap<QString, QPixmap> mMapFileImage;
+	QMap<QString, QString> mReallyUsedFiles;
+	QMap<QString, QByteArray> mMapFileImage;
 	int first_size_x;
 	int first_size_y;
 	int current_size_x;
@@ -89,24 +90,49 @@ private:
 	float coord_def(QDomElement &element, QString coordName, int current_size, int first_size);
 	void logger(QString path, QString string);
 
+	/// Reads byte array from the file that is obtained by inner rules from the given one.
+	/// Specified file path may be modified with storing into it really read file path.
+	QByteArray loadPixmap(QString &filePath);
+	QByteArray loadPixmapFromExistingFile(QString &filePath);
+
 	/** @brief checks that str[i] is not L, C, M or Z*/
 	bool isNotLCMZ(QString str, int i);
 };
 
-class SdfIconEngineV2: public SdfIconEngineV2Interface
+/// Constructs QIcon instance by a given sdf description
+class SdfIconEngineV2 : public SdfIconEngineV2Interface
 {
 public:
-	SdfIconEngineV2(QString const &file);
-	SdfIconEngineV2(QDomDocument const &document);
+	explicit SdfIconEngineV2(QString const &file);
+	explicit SdfIconEngineV2(QDomDocument const &document);
 	QSize preferedSize() const;
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
-	virtual QIconEngine *clone() const
-	{
-		return NULL;
-	}
+	virtual QIconEngine *clone() const;
+
 private:
 	SdfRenderer mRenderer;
 	QSize mSize;
+};
+
+/// Caches sdf-descripted icons
+class SdfIconLoader
+{
+public:
+	/// Returns a pixmap of element in specified sdf-file
+	static QIcon iconOf(QString const &fileName);
+
+	/// Returns a size of the pixmap of element in specified sdf-file
+	static QSize preferedSizeOf(QString const &fileName);
+
+private:
+	static SdfIconLoader *instance();
+	static QIcon loadPixmap(QString const &fileName);
+
+	SdfIconLoader();
+	~SdfIconLoader();
+
+	QMap<QString, QIcon> mLoadedIcons;
+	QMap<QString, QSize> mPreferedSizes;
 };
 
 }

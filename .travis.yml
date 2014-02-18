@@ -1,6 +1,22 @@
 language: cpp
 compiler: gcc
+
+env:
+  - CONFIG=debug   PROJECT=qreal       VERA=true  TESTS=true
+  - CONFIG=release PROJECT=qreal       VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealRobots VERA=false TESTS=true
+  - CONFIG=release PROJECT=qrealRobots VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealBP     VERA=false TESTS=true
+  - CONFIG=release PROJECT=qrealBP     VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
+  - CONFIG=release PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
+
 install:
+  - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
+  - if [ "$CXX" = "g++" ]; then sudo apt-get update -qq; fi
+  - if [ "$CXX" = "g++" ]; then sudo apt-get install g++-4.8; fi
+  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50; fi
+  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50; fi
   - sudo add-apt-repository ppa:canonical-qt5-edgers/qt5-proper -y
   - sudo add-apt-repository ppa:ubuntu-sdk-team/ppa -y
   - sudo add-apt-repository ppa:smspillaz/verapp-latest -y
@@ -15,24 +31,14 @@ install:
   - export DISPLAY=:0
 
 script:
-  - tclsh buildScripts/vera++/generatePaths.tcl
-  - vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params
-  - qmake qreal.pro
+  - gcc --version
+  - if [ "$VERA" = "true" ]; then tclsh buildScripts/vera++/generatePaths.tcl; fi
+  - if [ "$VERA" = "true" ]; then vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params; fi
+  - qmake $PROJECT.pro CONFIG+=$CONFIG
   - make -j2
-  - qmake qrealRobots.pro
-  - make -j2
-  - qmake qrealBP.pro
-  - make -j2
-  - git clean -dfx
-  - qmake qrealTest.pro CONFIG+=debug
-  - make 
   - cd ./bin
   - ls -A
-  - ./exampleTests
-  - ./qrgui_unittests
-  - ./qrrepo_unittests
-  - ./qrutils_unittests
-  - ./visualDebugSupport_unittests
+  - sh -c "$TESTS"
 
 notifications:
   email:

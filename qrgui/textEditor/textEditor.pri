@@ -1,10 +1,12 @@
 HEADERS += \
-	$$PWD/codeEditor.h \
-	$$PWD/codeArea.h \
-	$$PWD/textHighlighter.h \
-	$$PWD/sqlHighlighter.h \
+        $$PWD/codeEditor.h \
+        $$PWD/textHighlighter.h \
+        $$PWD/sqlHighlighter.h \
+        $$PWD/textManager.h \
+        $$PWD/textManagerInterface.h
 
-SOURCES += $$PWD/codeEditor.cpp \
-	$$PWD/codeArea.cpp \
-	$$PWD/textHighlighter.cpp \
-	$$PWD/sqlHighlighter.cpp \
+SOURCES += \
+        $$PWD/codeEditor.cpp \
+        $$PWD/textHighlighter.cpp \
+        $$PWD/sqlHighlighter.cpp \
+        $$PWD/textManager.cpp

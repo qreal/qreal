@@ -17,6 +17,8 @@
 #include "controller/commands/insertIntoEdgeCommand.h"
 #include "umllib/private/expandCommand.h"
 
+#include "qrutils/uxInfo/uxInfo.h"
+
 using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui;
@@ -110,7 +112,7 @@ void EditorViewScene::printElementsOfRootDiagram()
 
 void EditorViewScene::initMouseMoveManager()
 {
-	if (!mMVIface || !mMVIface->graphicalAssistApi()) {
+	if (!mMVIface || !mMVIface->graphicalAssistApi() || mMouseMovementManager) {
 		return;
 	}
 
@@ -469,13 +471,16 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	inStream >> explosionTargetUuid;
 
 	Id const id = Id::loadFromString(uuid);
+	
+	utils::UXInfo::reportCreation(id.editor(), id.element());
+	
 	Id const explosionTarget = explosionTargetUuid.isEmpty()
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);
 
 	if (mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
 		CreateGroupCommand *createGroupCommand = new CreateGroupCommand(
-				*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi()
+				this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi()
 				, mMVIface->rootId(), mMVIface->rootId(), id, isFromLogicalModel, scenePos);
 		if (executeImmediately) {
 			mController->execute(createGroupCommand);
@@ -970,10 +975,15 @@ bool EditorViewScene::isEmptyClipboard()
 void EditorViewScene::getObjectByGesture()
 {
 	mTimer->stop();
-	qReal::Id id = mMouseMovementManager->getObject();
+	Id const id = mMouseMovementManager->getObject();
 	if (!id.element().isEmpty()) {
-		createElement(id.toString(), mMouseMovementManager->pos());
+		// Creating element with its center in the center of gesture (see #1086)
+		QSize const elementSize = mWindow->editorManager().iconSize(id);
+		QPointF const gestureCenter = mMouseMovementManager->pos();
+		QPointF const elementCenter(elementSize.width() / 2.0, elementSize.height() / 2.0);
+		createElement(id.toString(), gestureCenter - elementCenter);
 	}
+
 	deleteGesture();
 }
 
@@ -1036,8 +1046,8 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 
 void EditorViewScene::createEdge(QString const &idStr)
 {
-	QPointF start = mMouseMovementManager->firstPoint();
-	QPointF end = mMouseMovementManager->lastPoint();
+	QPointF const start = mMouseMovementManager->firstPoint();
+	QPointF const end = mMouseMovementManager->lastPoint();
 	CreateElementCommand *createCommand;
 	Id const id = createElement(idStr, start, true, &createCommand);
 	Element *edgeElement = getElem(id);
@@ -1045,6 +1055,8 @@ void EditorViewScene::createEdge(QString const &idStr)
 	edge->setSrc(NULL);
 	edge->setDst(NULL);
 
+	edge->setPos(start);
+	edge->placeStartTo(QPointF());
 	edge->placeEndTo(edge->mapFromScene(end));
 	edge->connectToPort();
 	if (edge->dst()) {
@@ -1089,6 +1101,11 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (!(mLeftButtonPressed && event->button() == Qt::RightButton)) {
 		QGraphicsScene::mouseReleaseEvent(event);
+		QGraphicsItem * const item = itemAt(event->scenePos(), QTransform());
+		Label * const label = dynamic_cast<Label *>(item);
+		if (label) {
+			sendEvent(label, event);
+		}
 	}
 
 	Element *element = getElemAt(event->scenePos());

@@ -105,6 +105,7 @@ public:
 	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const = 0;
 	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;
 	virtual QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const = 0;
+	virtual bool shallPaletteBeSorted(Id const &editor, Id const &diagram) const = 0;
 	virtual QStringList referenceProperties(Id const &id) const = 0;
 	virtual IdList groups(Id const &diagram) = 0;
 	virtual Pattern getPatternByName (QString const &str) const = 0;

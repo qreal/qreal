@@ -9,6 +9,12 @@ LIBS += -L$$PWD/../bin/thirdparty -lqscintilla2
 
 RESOURCES = $$PWD/qrgui.qrc
 
+HEADERS += \
+	$$PWD/qrealApplication.h \
+
+SOURCES += \
+	$$PWD/qrealApplication.cpp \
+
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
 
@@ -47,3 +53,6 @@ include(textEditor/textEditor.pri)
 
 # Hot Key Manager
 include(hotKeyManager/hotKeyManager.pri)
+
+# Manges styles, colors, fonts and so on
+include(brandManager/brandManager.pri)

@@ -13,7 +13,8 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 	mUi->setupUi(this);
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
-
+	connect(mUi->collectErgonomicValuesCheckBox, SIGNAL(clicked(bool))
+			, &mFilterObject, SLOT(setStatusCollectUsabilityStatistics(bool)));
 	restoreSettings();
 }
 
@@ -39,6 +40,18 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("Autosave", mUi->autoSaveCheckBox->isChecked());
 	SettingsManager::setValue("AutosaveInterval", mUi->autoSaveSpinBox->value());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
+	bool const usabilityTestingMode = mUi->usabilityModeCheckBox->isChecked();
+	SettingsManager::setValue("usabilityTestingMode", usabilityTestingMode);
+	SettingsManager::setValue("collectErgonomicValues", mUi->collectErgonomicValuesCheckBox->isChecked()
+			|| usabilityTestingMode);
+	if (mUsabilityTestingMode != usabilityTestingMode) {
+		if (usabilityTestingMode) {
+			mUi->collectErgonomicValuesCheckBox->setChecked(true);
+		}
+
+		mUsabilityTestingMode = usabilityTestingMode;
+		emit usabilityTestingModeChanged(mUsabilityTestingMode);
+	}
 }
 
 void PreferencesBehaviourPage::restoreSettings()
@@ -47,8 +60,14 @@ void PreferencesBehaviourPage::restoreSettings()
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
 	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
+	mUi->collectErgonomicValuesCheckBox->setChecked(SettingsManager::value("collectErgonomicValues").toBool());
+	mUsabilityTestingMode = SettingsManager::value("usabilityTestingMode").toBool();
+	mUi->usabilityModeCheckBox->setChecked(mUsabilityTestingMode);
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
+	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
+	mUi->paletteTabCheckBox->setVisible(editorsLoadedCount != 1);
+	mFilterObject.setStatusCollectUsabilityStatistics(mUi->collectErgonomicValuesCheckBox->isChecked());
 }
 
 void PreferencesBehaviourPage::showAutoSaveBox(bool show)

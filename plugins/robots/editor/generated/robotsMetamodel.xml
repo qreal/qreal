@@ -4,7 +4,7 @@
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
 	<namespace>UML 2.0</namespace>
-	<diagram displayedName="Диаграмма поведения робота" nodeName="RobotsDiagramNode" name="RobotsDiagram">
+	<diagram displayedName="Диаграмма поведения робота" nodeName="RobotsDiagramGroup" name="RobotsDiagram">
 		<nonGraphicTypes>
 			<enum name="SensorPort">
 				<value>1</value>
@@ -43,6 +43,16 @@
 				<value>тормозить</value>
 				<value>скользить</value>
 			</enum>
+			<groups>
+				<group name="RobotsDiagramGroup" rootNode="diagram">
+					<groupNode type="RobotsDiagramNode" name="diagram" xPosition="0" yPosition="0"/>
+					<groupNode type="InitialNode" name="initialNode" xPosition="50" yPosition="300" parent="diagram"/>
+				</group>
+				<group name="SubprogramDiagramGroup" rootNode="diagram">
+					<groupNode type="SubprogramDiagram" name="diagram" xPosition="0" yPosition="0"/>
+					<groupNode type="InitialNode" name="initialNode" xPosition="50" yPosition="300" parent="diagram"/>
+				</group>
+			</groups>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node displayedName="Диаграмма поведения робота"  name="RobotsDiagramNode">
@@ -88,6 +98,34 @@
 							<default>0</default>
 						</property>
 					</properties>
+				</logic>
+			</node>
+			<node displayedName="Подпрограмма" name="SubprogramDiagram">
+				<graphics>
+					<picture sizex="204" sizey="204">
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="22" y2="2" fill-style="none" x2="182"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="202" stroke-width="0" x1="22" y2="202" fill-style="none" x2="182"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="2" y2="182" fill-style="none" x2="2"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="202" y2="182" fill-style="none" x2="202"/>
+						<arc spanAngle="1440" startAngle="1440" y1="2" x1="2" y2="42" x2="42"/>
+						<arc spanAngle="1440" startAngle="0" y1="2" x1="162" y2="42" x2="202"/>
+						<arc spanAngle="1440" startAngle="2880" y1="162" x1="2" y2="202" x2="42"/>
+						<arc spanAngle="-1440" startAngle="0" y1="162" x1="162" y2="202" x2="202"/>
+					</picture>
+					<labels>
+						<label x="42" y="12" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="2" y="102"/>
+						<pointPort x="102" y="2"/>
+						<pointPort x="202" y="102"/>
+						<pointPort x="102" y="202"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container>
+						<contains type="AbstractNode"/>
+					</container>
 				</logic>
 			</node>
 			<node displayedName="Конец" name="FinalNode" path="13, 200 : 198, 15 :  | 12, 12 : 198, 198 : " description="Конец программы. Если программа состоит из нескольких параллельных участков выполнения, достижение этого блока завершает соответствующий участок выполнения. У данного блока не может быть исходящих связей.">
@@ -559,7 +597,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать сенсор звука" name="WaitForSound" path="12, 178 : 117, 178 :  | 117, 96 : 117, 178 :  | 13, 96 : 117, 96 :  | 13, 12 : 13, 96 :  | 13, 12 : 118, 12 : ">
+			<node displayedName="Ждать сенсор звука" name="WaitForSound" path="12, 178 : 117, 178 :  | 117, 96 : 117, 178 :  | 13, 96 : 117, 96 :  | 13, 12 : 13, 96 :  | 13, 12 : 118, 12 : " description="Ждать, пока громкость, считанная микрофоном на заданном порту, не будет выше или ниже заданного значения.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
@@ -607,7 +645,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать гироскоп" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="WaitForGyroscope">
+			<node displayedName="Ждать гироскоп" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="WaitForGyroscope" description="Ждать, пока значение, возвращаемое гироскопом на указанном порту, не будет сравнимо с указанным в значении параметра 'Градусы'.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
@@ -1260,7 +1298,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопок" name="WaitForButtons" path="55, 58 : 179, 58 : 179, 182 : 55, 182 : 55, 58 :  | 12, 12 : 221, 12 : 221, 221 : 12, 221 : 12, 12 : ">
+			<node displayedName="Ждать нажатия кнопок" name="WaitForButtons" path="55, 58 : 179, 58 : 179, 182 : 55, 182 : 55, 58 :  | 12, 12 : 221, 12 : 221, 221 : 12, 221 : 12, 12 : " description="Ждать, пока заданные кнопки на роботе не будут нажаты заданное количество раз. Счётчики нажатия можно задать для каждой кнопки отдельно, блок продолжит выполнение, только когда все счётчики сработают.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
@@ -1316,7 +1354,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Очистить экран" name="ClearScreen">
+			<node displayedName="Очистить экран" name="ClearScreen" description="Стереть всё, что нарисовано на экране.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/clearScreenBlock.png" x1="0" y2="50" x2="50"/>
@@ -1349,7 +1387,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать точку" name="DrawPixel">
+			<node displayedName="Нарисовать точку" name="DrawPixel" description="Нарисовать на экране точку в указанных координатах.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
@@ -1395,7 +1433,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать линию" name="DrawLine">
+			<node displayedName="Нарисовать линию" name="DrawLine" description="Нарисовать на экране отрезок. В качестве параметров блоку указываются концы отрезка.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
@@ -1451,7 +1489,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать прямоугольник" name="DrawRect">
+			<node displayedName="Нарисовать прямоугольник" name="DrawRect" description="Нарисовать на экране прямоугольник. В качестве параметров указываются координаты левого верхнего угла, ширина и высота прямоугольника.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
@@ -1507,7 +1545,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать круг" name="DrawCircle">
+			<node displayedName="Нарисовать круг" name="DrawCircle" description="Нарисовать на экране круг с заданным центром и заданным радиусом.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
@@ -1558,7 +1596,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Напечатать текст" name="PrintText">
+			<node displayedName="Напечатать текст" name="PrintText" description="Напечатать заданную строку в заданных координатах на экране. Можно использовать символ доллара ('$') перед идентификатором переменной для вывода ее значения. Данный сценарий игнорируется, если перед символом доллара стоит обратный слеш ('\\'). Пример: строка '\\$a = $a' напечатает '$a = 5', если значение переменной a равно 5.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
@@ -1595,12 +1633,14 @@
 					<container/>
 					<properties>
 						<property displayedName="X координата" type="string" name="XCoordinateText">
-							<default>0</default>
+							<default>1</default>
 						</property>
 						<property displayedName="Y координата" type="string" name="YCoordinateText">
-							<default>0</default>
+							<default>1</default>
 						</property>
-						<property displayedName="Текст" type="string" name="PrintText"/>
+						<property displayedName="Текст" type="string" name="PrintText">
+							<default>Введите текст...</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -1656,7 +1696,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Подпрограмма" name="Subprogram">
+			<node displayedName="Подпрограмма" name="Subprogram" description="Вызов подпрограммы. Подпрограммы используются для того, чтобы вынести повторяющиеся фрагменты программы на отдельную диаграмму, а потом вызывать фрагмент программы с этой диаграммы в нескольких местах основной программы или других подпрограмм. При добавлении этого блока на диаграмму будет предложено ввести имя подпрограммы, после чего двойным кликом на блоке можно будет перейти на диаграмму, соответствующую данной подпрограмме. Кроме того, появится дополнительная палитра со всеми подпрограммами, подпрограммы из неё можно перетаскивать на сцену и использовать как обычные блоки.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/subprogramRobots.png" x1="0" y2="50" x2="50"/>
@@ -1690,12 +1730,12 @@
 						<parent parentName="AbstractNode"/>
 					</generalizations>
 					<explodesTo>
-						<target type="RobotsDiagramNode" makeReusable="true" requireImmediateLinkage="true"/>
+						<target type="SubprogramDiagramGroup" makeReusable="true" requireImmediateLinkage="true"/>
 					</explodesTo>
 				</logic>
 			</node>
 		</graphicTypes>
-		<palette>
+		<palette sorted="true">
 			<group name="Действия">
 				<element name="Fork"/>
 				<element name="Beep"/>

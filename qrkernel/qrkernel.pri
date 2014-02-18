@@ -1,5 +1,7 @@
 DEFINES += QRKERNEL_LIBRARY
 
+CONFIG += c++11
+
 INCLUDEPATH += \
 	$$PWD/..
 
@@ -11,6 +13,7 @@ HEADERS += \
 	$$PWD/settingsManager.h \
 	$$PWD/kernelDeclSpec.h \
 	$$PWD/timeMeasurer.h \
+	$$PWD/uxInfoInterface.h \
 
 SOURCES += \
 	$$PWD/ids.cpp \

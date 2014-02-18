@@ -6,7 +6,7 @@
 #include "view/editorViewScene.h"
 #include "controller/commands/createElementCommand.h"
 #include "umllib/private/expandCommand.h"
-#include "../../dialogs/metamodelingOnFly/propertiesDialog.h"
+#include "dialogs/metamodelingOnFly/propertiesDialog.h"
 
 using namespace qReal;
 using namespace view::details;
@@ -220,7 +220,8 @@ void ExploserView::changePropertiesActionTriggered()
 {
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
-	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(*mMainWindow, mMainWindow->editorManager(), id);
+	qReal::gui::PropertiesDialog * const propertiesDialog
+			= new qReal::gui::PropertiesDialog(*mMainWindow, mMainWindow->editorManager(), id);
 	propertiesDialog->setModal(true);
 	propertiesDialog->show();
 }

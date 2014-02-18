@@ -29,7 +29,7 @@ public:
 		, PaletteElement const &paletteElement
 		, bool iconsOnly
 		, EditorManagerInterface &editorManagerProxy
-		, QWidget *parent = NULL
+		, QWidget *parent = nullptr
 		);
 
 	/// Icon of an element on palette.
@@ -61,7 +61,25 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *event);
 
 private:
+#ifdef Q_OS_WIN
+	/// This class performs win8 drag manager hack for workarround of
+	/// https://github.com/qreal/qreal/issues/1014
+	class HackTouchDragThread : public QThread
+	{
+	public:
+		explicit HackTouchDragThread(QObject *parent = 0);
+
+		static void simulateSystemPress();
+		static void simulateSystemMove();
+		static void simulateSystemRelease();
+
+	protected:
+		virtual void run();
+	};
+#endif
+
 	void checkElementForChildren();
+	void hackTouchDrag();
 
 	PaletteElement const mData;
 	QLabel *mLabel;

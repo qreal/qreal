@@ -2,10 +2,9 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
 
-#include "../../../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
+#include <qrutils/graphicsUtils/gridDrawer.h>
 #include "d2ModelScene.h"
-#include "../../../../../qrutils/graphicsUtils/gridDrawer.h"
-#include "../../../../../qrkernel/settingsManager.h"
 #include "wallItem.h"
 
 using namespace qReal::interpreters::robots;
@@ -64,6 +63,7 @@ void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 	}
+
 	update();
 }
 
@@ -76,7 +76,7 @@ void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &
 void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event, QRectF const &rect)
 {
 	reshapeItem(event, rect);
-	mGraphicsItem = NULL;
+	mGraphicsItem = nullptr;
 	update();
 }
 
@@ -89,9 +89,10 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &re
 		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
+
 		mGraphicsItem->resizeItem(event);
 
-		if (mGraphicsItem->realShape().intersects(rect) && dynamic_cast<WallItem *> (mGraphicsItem)) {
+		if (mGraphicsItem->realShape().intersects(rect) && dynamic_cast<WallItem *>(mGraphicsItem)) {
 			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
 		}
 	}
@@ -111,7 +112,7 @@ void D2ModelScene::keyPressEvent(QKeyEvent *event)
 void D2ModelScene::drawBackground(QPainter *painter, QRectF const &rect)
 {
 	if (SettingsManager::value("2dShowGrid").toBool()) {
-		mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
+		mWidthOfGrid = SettingsManager::value("GridWidth").toReal() / 100;
 		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		QGraphicsScene::drawBackground(painter, rect);
 		int const cellSize = SettingsManager::value("2dGridCellSize").toInt();

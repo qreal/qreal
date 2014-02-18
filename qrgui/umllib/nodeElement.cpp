@@ -9,6 +9,7 @@
 #include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include <math.h>
+#include <qrutils/mathUtils/geometry.h>
 
 #include "umllib/labelFactory.h"
 #include "view/editorViewScene.h"
@@ -790,11 +791,6 @@ QPointF const NodeElement::portPos(qreal id) const
 	return mPortHandler->portPos(id);
 }
 
-QPointF const NodeElement::nearestPort(QPointF const &location, QStringList const &types) const
-{
-	return mPortHandler->nearestPort(location, types);
-}
-
 bool NodeElement::isContainer() const
 {
 	return mElementImpl->isContainer();
@@ -805,14 +801,15 @@ int NodeElement::numberOfPorts() const
 	return mPortHandler->numberOfPorts();
 }
 
-int NodeElement::portNumber(qreal id)
-{
-	return PortHandler::portNumber(id);
-}
-
 qreal NodeElement::portId(QPointF const &location, QStringList const &types) const
 {
 	return mPortHandler->portId(location, types);
+}
+
+qreal NodeElement::shortestDistanceToPort(QPointF const &location, QStringList const &types) const
+{
+	QPointF const nearestPortPoint = mPortHandler->nearestPort(location, types);
+	return mathUtils::Geometry::distance(location, mapToScene(nearestPortPoint));
 }
 
 void NodeElement::setPortsVisible(QStringList const &types)

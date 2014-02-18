@@ -1,6 +1,8 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
 
+#include <qrutils/qRealFileDialog.h>
+
 #include "dialogs/preferencesPages/behaviourPage.h"
 #include "dialogs/preferencesPages/debuggerPage.h"
 #include "dialogs/preferencesPages/editorPage.h"
@@ -9,9 +11,10 @@
 #include "hotKeyManager/hotKeyManagerPage.h"
 
 using namespace qReal;
+using namespace utils;
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-	: QDialog(parent)
+	: QRealDialog("PreferencesDialog", parent)
 	, ui(new Ui::PreferencesDialog)
 {
 	ui->setupUi(this);
@@ -48,6 +51,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this
 		, SIGNAL(paletteRepresentationChanged()));
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
+	connect(behaviourPage, SIGNAL(usabilityTestingModeChanged(bool))
+			, this, SIGNAL(usabilityTestingModeChanged(bool)), Qt::UniqueConnection);
 
 	registerPage(tr("Behaviour"), behaviourPage);
 	registerPage(tr("Miscellanious"), miscellaniousPage);
@@ -65,6 +70,7 @@ void PreferencesDialog::applyChanges()
 		page->save();
 	}
 
+	SettingsManager::instance()->saveData();
 	emit settingsApplied();
 }
 
@@ -92,7 +98,7 @@ void PreferencesDialog::changeEvent(QEvent *e)
 void PreferencesDialog::showEvent(QShowEvent *e)
 {
 	restoreSettings();
-	QDialog::showEvent(e);
+	QRealDialog::showEvent(e);
 }
 
 void PreferencesDialog::saveAndClose()
@@ -136,7 +142,8 @@ void PreferencesDialog::changePaletteParameters()
 
 void PreferencesDialog::exportSettings()
 {
-	QString fileNameForExport = QFileDialog::getSaveFileName(this, tr("Save File"),"/mySettings",tr("*.ini"));
+	QString fileNameForExport = QRealFileDialog::getSaveFileName("SaveEnginePreferences", this
+			, tr("Save File"),"/mySettings",tr("*.ini"));
 	if (!fileNameForExport.endsWith(".ini")) {
 		fileNameForExport += ".ini";
 	}
@@ -145,6 +152,7 @@ void PreferencesDialog::exportSettings()
 
 void PreferencesDialog::importSettings()
 {
-	QString fileNameForImport = QFileDialog::getOpenFileName(this, tr("Open File"),"/mySettings",tr("*.ini"));
+	QString fileNameForImport = QRealFileDialog::getOpenFileName("OpenEnginePreferences", this
+			, tr("Open File"),"/mySettings",tr("*.ini"));
 	SettingsManager::instance()->loadSettings(fileNameForImport);
 }

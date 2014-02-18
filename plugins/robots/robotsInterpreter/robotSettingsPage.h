@@ -4,6 +4,7 @@
 
 #include "sensorConstants.h"
 #include "details/sensorsConfigurationWidget.h"
+#include "details/sensorsConfigurationProvider.h"
 
 namespace Ui {
 	class PreferencesRobotSettingsPage;
@@ -14,7 +15,7 @@ namespace interpreters {
 namespace robots {
 
 /// Preferences page for robots interpreter plugin
-class PreferencesRobotSettingsPage : public PreferencesPage
+class PreferencesRobotSettingsPage : public PreferencesPage, public details::SensorsConfigurationProvider
 {
 	Q_OBJECT
 
@@ -36,27 +37,20 @@ signals:
 protected:
 	void changeEvent(QEvent *e);
 
-public slots:
-	void rereadNoiseSettings();
-
 private slots:
 	void onSomethingChanged();
 	void manualComPortCheckboxChecked(bool state);
-	void refreshPorts();
 
 private:
 	void initRobotModelType(enums::robotModelType::robotModelTypeEnum type);
 	void initTypeOfCommunication(QString const &type);
 
-	enums::sensorType::SensorTypeEnum selectedPort1Sensor() const;
-	enums::sensorType::SensorTypeEnum selectedPort2Sensor() const;
-	enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
-	enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
 	enums::robotModelType::robotModelTypeEnum selectedRobotModel() const;
+	void refreshValuesOnUi();
 	bool textVisible() const;
-	bool enableSensorNoise() const;
-	bool enableMotorNoise() const;
-	int approximationLevel() const;
+	int sensorUpdateInterval() const;
+	int autoscalingInterval() const;
+	int textUpdateInterval() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 	details::SensorsConfigurationWidget *mSensorsWidget;

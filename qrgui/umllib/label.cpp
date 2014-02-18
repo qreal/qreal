@@ -4,7 +4,7 @@
 
 #include "umllib/nodeElement.h"
 #include "umllib/edgeElement.h"
-#include "umllib/private/fontCache.h"
+#include "brandManager/brandManager.h"
 
 using namespace qReal;
 
@@ -153,14 +153,14 @@ void Label::updateData(bool withUndoRedo)
 
 void Label::setTitleFont()
 {
-	setFont(FontCache::instance()->titlesFont());
+	setFont(BrandManager::fonts()->sceneLabelsFont());
 }
 
 void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (!mShouldMove) {
 		QGraphicsTextItem::mousePressEvent(event);
-		event->accept();
+		event->ignore();
 		return;
 	}
 
@@ -208,6 +208,7 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	updateData();
 
 	QGraphicsTextItem::mouseReleaseEvent(event);
+	setSelected(true);
 }
 
 void Label::init(QRectF const &contents)

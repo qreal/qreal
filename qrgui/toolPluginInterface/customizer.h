@@ -20,13 +20,19 @@ public:
 	/// Allows to customize main window's title from plugin
 	virtual QString windowTitle() const
 	{
-		return "";
+		return "QReal";
 	}
 
 	/// Customizes QReal's icon
 	virtual QIcon applicationIcon() const
 	{
 		return QIcon();
+	}
+
+	/// Customizes QReal`s logo in large format
+	virtual QImage applicationLogo() const
+	{
+		return QImage(":/icons/kroki6.png");
 	}
 
 	/// Customizes product version
@@ -39,6 +45,13 @@ public:
 	virtual QString aboutText() const
 	{
 		return "<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
+	}
+
+	/// Customizes default examples directory for current system.
+	/// Empty string as result means that the system doesn`t have examples
+	virtual QString examplesDirectory() const
+	{
+		return QString();
 	}
 
 	/// Tells if we should show trace connections menu or not

@@ -194,6 +194,14 @@ void DraggableElement::checkElementForChildren()
 	}
 }
 
+void DraggableElement::hackTouchDrag()
+{
+#ifdef Q_OS_WIN
+	HackTouchDragThread *thread = new HackTouchDragThread(this);
+	thread->start(QThread::LowestPriority);
+#endif
+}
+
 bool DraggableElement::event(QEvent *event)
 {
 	QTouchEvent *touchEvent = dynamic_cast<QTouchEvent *>(event);
@@ -205,50 +213,41 @@ bool DraggableElement::event(QEvent *event)
 
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
+		QCursor::setPos(mapToGlobal(pos));
 		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, pos
 				, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 		QApplication::postEvent(touchEvent->target(), mouseEvent);
+		hackTouchDrag();
 		break;
 	}
 	case QEvent::TouchEnd: {
 		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonRelease, pos
-				, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+				, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 		QApplication::postEvent(touchEvent->target(), mouseEvent);
+#ifdef Q_OS_WIN
+		HackTouchDragThread::simulateSystemRelease();
+#endif
 		break;
 	}
 	case QEvent::TouchUpdate: {
-		// TODO: This must move mouse cursor but no effect...
 		QCursor::setPos(mapToGlobal(pos));
 		break;
 	}
 	default:
 		break;
 	}
-	event->accept();
+
 	return true;
 }
 
 void DraggableElement::mousePressEvent(QMouseEvent *event)
 {
-	QWidget *atMouse = childAt(event->pos());
-	if (!atMouse || atMouse == this) {
-		return;
-	}
-
-	DraggableElement *child = dynamic_cast<DraggableElement *>(atMouse->parent());
-	if (!child) {
-		child = dynamic_cast<DraggableElement *>(atMouse);
-	}
-	if (!child) {
-		return;
-	}
-
-	Q_ASSERT(child->id().idSize() == 3);  // it should be element type
+	Q_ASSERT(id().idSize() == 3);  // it should be element type
 
 	// new element's ID is being generated here
 	// may this epic event should take place in some more appropriate place
 
-	Id elementId(child->id(), QUuid::createUuid().toString());
+	Id elementId(id(), QUuid::createUuid().toString());
 
 	if (event->button() == Qt::RightButton) {
 		if (mEditorManagerProxy.isInterpretationMode()) {
@@ -271,7 +270,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		QDataStream stream(&itemData, QIODevice::WriteOnly);
 		stream << elementId.toString();  // uuid
 		stream << Id::rootId().toString();  // pathToItem
-		stream << QString("(" + child->text() + ")");
+		stream << QString(text());
 		stream << QPointF(0, 0);
 		stream << isFromLogicalModel;
 		stream << mData.explosionTarget().toString();
@@ -282,16 +281,50 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		QDrag *drag = new QDrag(this);
 		drag->setMimeData(mimeData);
 
-		QPixmap const pixmap = child->icon().pixmap(mData.preferredSize());
+		QPixmap const pixmap = icon().pixmap(mData.preferredSize());
 
 		if (!pixmap.isNull()) {
 			drag->setPixmap(pixmap);
 		}
 
-		if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction) {
-			child->close();
-		} else {
-			child->show();
-		}
+		drag->exec(Qt::CopyAction);
 	}
 }
+
+#ifdef Q_OS_WIN
+
+#include <winuser.h>
+
+DraggableElement::HackTouchDragThread::HackTouchDragThread(QObject *parent)
+	: QThread(parent)
+{
+}
+
+void DraggableElement::HackTouchDragThread::simulateSystemPress()
+{
+	mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+}
+
+void DraggableElement::HackTouchDragThread::simulateSystemMove()
+{
+	mouse_event(MOUSEEVENTF_MOVE, -1, -1, 0, 0);
+}
+
+void DraggableElement::HackTouchDragThread::simulateSystemRelease()
+{
+	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+}
+
+void DraggableElement::HackTouchDragThread::run()
+{
+	// Simulating press for windows drag manager not to terminate drag as inconsistent
+	// when it would be unfrozen
+	simulateSystemPress();
+	// Actually sheduller can move mouse till the drag is started so repeating it for sufficient times
+	for (int i = 0; i < 10; ++i) {
+		// This will unfreeze windows drag manager when drag instance is created but mouse didn`t move
+		simulateSystemMove();
+		QThread::msleep(3);
+	}
+}
+#endif

@@ -14,76 +14,15 @@
    <string>2D Robot Model</string>
   </property>
   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="0,0,1,0,0">
-   <item row="12" column="0" colspan="2">
-    <widget class="QPushButton" name="autoCenteringButton">
-     <property name="toolTip">
-      <string>Camera following robot</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../robotsInterpreter.qrc">
-       <normaloff>:/icons/2d_target.png</normaloff>:/icons/2d_target.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>24</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="flat">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0" rowspan="4" colspan="2">
     <widget class="QGroupBox" name="toolsGroupBox">
      <property name="title">
       <string>Tools</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="1">
-       <widget class="QPushButton" name="wallButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>75</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Wall (W)</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../robotsInterpreter.qrc">
-          <normaloff>:/icons/2d_wall.png</normaloff>:/icons/2d_wall.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="shortcut">
-         <string>W</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
+      <property name="horizontalSpacing">
+       <number>9</number>
+      </property>
       <item row="0" column="0">
        <widget class="QPushButton" name="lineButton">
         <property name="sizePolicy">
@@ -125,8 +64,8 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="ellipseButton">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="wallButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -140,14 +79,14 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Ellipse (E)</string>
+         <string>Wall (W)</string>
         </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../robotsInterpreter.qrc">
-          <normaloff>:/icons/2d_ellipse.png</normaloff>:/icons/2d_ellipse.png</iconset>
+          <normaloff>:/icons/2d_wall.png</normaloff>:/icons/2d_wall.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -156,7 +95,7 @@
          </size>
         </property>
         <property name="shortcut">
-         <string>E</string>
+         <string>W</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -201,6 +140,44 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="ellipseButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>75</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Ellipse (E)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../robotsInterpreter.qrc">
+          <normaloff>:/icons/2d_ellipse.png</normaloff>:/icons/2d_ellipse.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="shortcut">
+         <string>E</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QPushButton" name="clearButton">
         <property name="sizePolicy">
@@ -233,6 +210,44 @@
         </property>
         <property name="checkable">
          <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="noneButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>75</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>None (N)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../robotsInterpreter.qrc">
+          <normaloff>:/icons/2d_none.png</normaloff>:/icons/2d_none.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="shortcut">
+         <string>N</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -586,22 +601,29 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="6" column="0" colspan="2">
-    <widget class="QGroupBox" name="noiseGroupBox">
+    <widget class="QGroupBox" name="physicsGroupBox">
      <property name="title">
-      <string>Noise</string>
+      <string>Physics</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="QCheckBox" name="realisticPhysicsCheckBox">
+        <property name="text">
+         <string>Realistic physics</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="enableSensorNoiseCheckBox">
         <property name="text">
-         <string>Enable sensor noise</string>
+         <string>Realistic sensors</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QCheckBox" name="enableMotorNoiseCheckBox">
         <property name="text">
-         <string>Enable motor noise</string>
+         <string>Realistic engines</string>
         </property>
        </widget>
       </item>
@@ -818,7 +840,61 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="0" column="2">
-    <widget class="qReal::interpreters::robots::details::d2Model::GridParameters" name="gridParametersBox">
+    <widget class="qReal::interpreters::robots::details::d2Model::GridParameters" name="gridParametersBox"/>
+   </item>
+   <item row="12" column="0">
+    <widget class="QPushButton" name="autoCenteringButton">
+     <property name="toolTip">
+      <string>Camera following robot</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../robotsInterpreter.qrc">
+       <normaloff>:/icons/2d_target.png</normaloff>:/icons/2d_target.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="1">
+    <widget class="QPushButton" name="initialStateButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Return a robot to initial position</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../robotsInterpreter.qrc">
+       <normaloff>:/icons/2d_robot_back.png</normaloff>:/icons/2d_robot_back.png</iconset>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>
@@ -832,7 +908,7 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>graphicsUtils::ColorListEditor</class>
    <extends>QComboBox</extends>
-   <header>../../../qrutils/graphicsUtils/colorlisteditor.h</header>
+   <header>../../../qrutils/graphicsUtils/colorListEditor.h</header>
   </customwidget>
   <customwidget>
    <class>qReal::interpreters::robots::details::d2Model::GridParameters</class>

@@ -4,64 +4,72 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="615"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="617"/>
         <source>Unexpected end of stream at %1. Mb you forget &apos;;&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Неожиданный конец выражения в позиции %1. Может быть, Вы забыли &apos;;&apos;?</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="619"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="621"/>
         <source>Unexpected symbol at %1 : expected %2, got %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Неожиданный символ в позиции %1 : ожидалось %2, получено %3</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="622"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="624"/>
         <source>Types mismatch at %1: %2 = %3. Possible loss of data</source>
-        <translation type="unfinished"></translation>
+        <translation>Несовпадение типов в позиции %1: %2 = %3. Возможна потеря данных</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="626"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="628"/>
         <source>Unknown identifier at %1 &apos; %2 &apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестный идентификатор в позиции %1: &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="629"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="631"/>
         <source>Empty process is unnecessary</source>
-        <translation type="unfinished"></translation>
+        <translation>Пустое выражение</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="633"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="635"/>
         <source>Condition can&apos;t be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Условие не может быть пустым</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="637"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="639"/>
         <source>Using reserved variable %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Использование зарезервированного слова в качестве идентификатора (%1)</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="641"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="643"/>
         <source>No value of expression</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует значение выражения</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="644"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="646"/>
         <source>Incorrect variable declaration: use function block for it</source>
-        <translation type="unfinished"></translation>
+        <translation>Некорректное объявление пременной: используйте блок &quot;Функция&quot; для этого</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="648"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="650"/>
         <source>Unexpected symbol after the end of expression</source>
-        <translation type="unfinished"></translation>
+        <translation>Неожиданный символ за концом выражения</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="652"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="654"/>
         <source>Unknown element property used</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестное свойство элемента</translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="656"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="658"/>
         <source>Unknown element name used</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестное имя элемента</translation>
+    </message>
+</context>
+<context>
+    <name>SensorsGraph</name>
+    <message>
+        <location filename="graphicsWatcher/sensorsGraph.ui" line="26"/>
+        <source>SensorsGraph</source>
+        <translation>График</translation>
     </message>
 </context>
 <context>
@@ -93,22 +101,30 @@
     <message>
         <location filename="metamodelGeneratorSupport.cpp" line="57"/>
         <source>Please, fill compiler settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Пожалуйста, заполните форму настроек копмилятора в настройках</translation>
     </message>
     <message>
         <location filename="metamodelGeneratorSupport.cpp" line="77"/>
         <source>Cannot unload plugin</source>
-        <translation type="unfinished"></translation>
+        <translation>Не могу отгрузить плагин</translation>
     </message>
     <message>
         <location filename="metamodelGeneratorSupport.cpp" line="100"/>
         <source>Cannot load new editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Не могу загрузить новый редактор</translation>
     </message>
     <message>
         <location filename="metamodelGeneratorSupport.cpp" line="106"/>
         <source>Cannot build new editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Не могу скомпилировать новый редактор. Проверьте имена элементов</translation>
+    </message>
+</context>
+<context>
+    <name>utils::sensorsGraph::SensorViewer</name>
+    <message>
+        <location filename="graphicsWatcher/sensorViewer.cpp" line="181"/>
+        <source>value: </source>
+        <translation>значение: </translation>
     </message>
 </context>
 <context>
