@@ -77,7 +77,7 @@ void Interpreter::interpret()
 
 //	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
 
-	if (!mConnected) {
+	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
 		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
 		return;
 	}
@@ -92,18 +92,15 @@ void Interpreter::interpret()
 
 	/// @todo Temporarily loading initial configuration from registry
 	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
-
-	QHash<PortInfo, DeviceInfo> devices;
-
 	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
 		QString const modelName = mRobotModelManager.model().name();
 		if (mCurrentConfiguration[modelName].contains(port)) {
 			DeviceInfo const &deviceInfo = mCurrentConfiguration[modelName].value(port);
-			devices.insert(port, deviceInfo);
+			mRobotModelManager.model().configureDevice(port, deviceInfo);
 		}
 	}
 
-	mRobotModelManager.model().configureDevices(devices);
+	mRobotModelManager.model().applyConfiguration();
 
 //	details::Autoconfigurer configurer(
 //				*mGraphicalModelApi
@@ -150,7 +147,6 @@ void Interpreter::connectedSlot(bool success)
 		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
 	}
 
-	mConnected = success;
 	mActionConnectToRobot.setChecked(success);
 }
 
@@ -162,8 +158,9 @@ void Interpreter::sensorsConfiguredSlot()
 
 //	mRobotModel->nextBlockAfterInitial(mConnected);
 
-	/// @todo ???
-	if (!mConnected) {
+	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
+		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
+		mState = idle;
 		return;
 	}
 
@@ -210,10 +207,6 @@ void Interpreter::newThread(Id const &startBlockId)
 //		, robots::enums::sensorType::SensorTypeEnum const &port3
 //		, robots::enums::sensorType::SensorTypeEnum const &port4)
 //{
-//	if (mConnected) {
-//		mRobotModel->configureSensors(port1, port2, port3, port4);
-//	}
-//
 //}
 
 void Interpreter::addThread(details::Thread * const thread)
@@ -243,7 +236,7 @@ void Interpreter::connectToRobot()
 		return;
 	}
 
-	if (mConnected) {
+	if (mRobotModelManager.model().connectionState() == RobotModelInterface::connectedState) {
 		mRobotModelManager.model().stopRobot();
 		mRobotModelManager.model().disconnectFromRobot();
 	} else {
@@ -255,13 +248,14 @@ void Interpreter::connectToRobot()
 //				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
 	}
 
-	mActionConnectToRobot.setChecked(mConnected);
+	mActionConnectToRobot.setChecked(
+			mRobotModelManager.model().connectionState() == RobotModelInterface::connectedState);
 }
 
 void Interpreter::disconnectSlot()
 {
 	mActionConnectToRobot.setChecked(false);
-	mConnected = false;
+	stopRobot();
 }
 
 //void Interpreter::setRobotModelType(robots::enums::robotModelType::robotModelTypeEnum robotModelType)

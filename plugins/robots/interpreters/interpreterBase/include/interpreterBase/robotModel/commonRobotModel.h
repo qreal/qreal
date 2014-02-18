@@ -26,14 +26,17 @@ public:
 
 	void disconnectFromRobot() override;
 
+	ConnectionState connectionState() const final;
+
 	ConfigurationInterface const &configuration() const final;
 
 	QList<PortInfo> availablePorts() const override;
 	QList<PortInfo> configurablePorts() const override;
 	QList<DeviceInfo> allowedDevices(PortInfo const &port) const override;
 
-	/// @todo We can not configure devices when model is not connected, or it will not configure them on reconnect.
-	void configureDevices(QHash<PortInfo, DeviceInfo> const &devices) final;
+	void configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo) final;
+
+	void applyConfiguration() final;
 
 	QList<DeviceInfo> convertibleBases() const override;
 
@@ -41,8 +44,6 @@ public slots:
 	virtual void rereadSettings();
 
 protected:
-	void configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo);
-
 	void addAllowedConnection(PortInfo const &port, QList<DeviceInfo> const &devices);
 
 	ConfigurationInterface &mutableConfiguration();
@@ -61,6 +62,8 @@ private:
 
 	/// Model connection state.
 	ConnectionState mState;
+
+	bool mConfigurationPostponed;
 };
 
 }

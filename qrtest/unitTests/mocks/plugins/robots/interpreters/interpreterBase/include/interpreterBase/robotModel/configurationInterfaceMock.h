@@ -10,8 +10,6 @@ class ConfigurationInterfaceMock : public interpreterBase::robotModel::Configura
 {
 public:
 	MOCK_METHOD1(configureDevice, void(interpreterBase::robotModel::robotParts::Device * const device));
-	MOCK_METHOD0(lockConfiguring, void());
-	MOCK_METHOD0(unlockConfiguring, void());
 
 	MOCK_CONST_METHOD2(device, interpreterBase::robotModel::robotParts::Device *(
 			interpreterBase::robotModel::PortInfo const &port
@@ -23,7 +21,7 @@ public:
 			);
 
 	MOCK_METHOD1(clearDevice, void(interpreterBase::robotModel::PortInfo const &port));
-	MOCK_METHOD0(forceResponse, void());
+	MOCK_METHOD0(applyConfiguration, void());
 };
 
 }

@@ -83,8 +83,6 @@ private:
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
 
-	bool mConnected;
-
 	/// Action responsible for the connection to the robot
 	QAction &mActionConnectToRobot;
 

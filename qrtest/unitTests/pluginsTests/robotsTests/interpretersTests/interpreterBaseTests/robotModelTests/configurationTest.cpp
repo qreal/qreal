@@ -25,7 +25,7 @@ TEST_F(ConfigurationTest, configureTest)
 	ASSERT_EQ(nullptr, configurationInterface.device(port1));
 	ASSERT_EQ(nullptr, configurationInterface.device(unknownPort));
 
-	configurationInterface.unlockConfiguring();
+	configurationInterface.applyConfiguration();
 
 	// If all devices support synchronous configuration (which is the case in this test),
 	// they all shall be configured by now.

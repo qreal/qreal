@@ -20,8 +20,7 @@ public:
 
 	void configureDevice(robotParts::Device * const device) override;
 
-	void lockConfiguring() override;
-	void unlockConfiguring() override;
+	void applyConfiguration() override;
 
 	QList<robotParts::Device *> devices(PortDirection direction = defaultDirection) const override;
 
@@ -31,8 +30,6 @@ public:
 
 	void clearDevice(PortInfo const &port) override;
 
-	void forceResponse() override;
-
 signals:
 	/// Emitted when all pending devices are configured (or failed to configure).
 	void allDevicesConfigured();
@@ -41,8 +38,6 @@ private slots:
 	void deviceConfiguredSlot(bool success);
 
 private:
-	void reconfigureDevices();
-
 	void checkAllDevicesConfigured();
 
 	/// Contains currently configured and ready devices.
@@ -55,13 +50,6 @@ private:
 	/// Contains ports on which device is already requested to configure itself and we are waiting a signal about
 	/// result of configuration.
 	QSet<PortInfo> mConfigurationInProgress;
-
-	/// True if configuration is deferred now. All configuration requests are queued.
-	bool mLocked;
-
-	/// Flag that is true when there was configuration requests to which we not responded with allDevicesConfigured yet.
-	/// @todo Not needed?
-	bool mWasConfigurationRequest;
 };
 
 }

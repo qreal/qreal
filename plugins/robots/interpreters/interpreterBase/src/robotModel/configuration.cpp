@@ -3,8 +3,6 @@
 using namespace interpreterBase::robotModel;
 
 Configuration::Configuration()
-	: mLocked(true)
-	, mWasConfigurationRequest(false)
 {
 }
 
@@ -18,12 +16,10 @@ void Configuration::configureDevice(robotParts::Device * const device)
 {
 	Q_ASSERT(device);
 
-	mWasConfigurationRequest = true;
-
 	if (mConfiguredDevices.contains(device->port())
 			&& mConfiguredDevices.value(device->port())->deviceInfo() == device->deviceInfo())
 	{
-		// It is same device that is already configured on that port, we need to do nothing.
+		// It is same device that is already configured on that port, we don't need to do anything.
 		return;
 	}
 
@@ -32,30 +28,18 @@ void Configuration::configureDevice(robotParts::Device * const device)
 
 	if (mPendingDevices.contains(device->port())) {
 		if (mPendingDevices.value(device->port())->deviceInfo() == device->deviceInfo()) {
-			// It is same device that is already pending for configuration on that port, we need to do nothing.
+			// It is same device that is already pending for configuration on that port, we don't need to do anything.
 			return;
 		}
 
 		// QObject shall automatically disconnect on deletion, so we just forget about device not finished configuring.
+		// It is not thread-safe, of course, so Configuration shall always run in one thread.
 		delete mPendingDevices.value(device->port());
 		mPendingDevices.remove(device->port());
 	}
 
 	mPendingDevices.insert(device->port(), device);
 	mConfigurationInProgress.remove(device->port());
-
-	reconfigureDevices();
-}
-
-void Configuration::lockConfiguring()
-{
-	mLocked = true;
-}
-
-void Configuration::unlockConfiguring()
-{
-	mLocked = false;
-	reconfigureDevices();
 }
 
 robotParts::Device *Configuration::device(
@@ -92,12 +76,6 @@ void Configuration::clearDevice(PortInfo const &port)
 	mConfigurationInProgress.remove(port);
 }
 
-void Configuration::forceResponse()
-{
-	mWasConfigurationRequest = true;
-	checkAllDevicesConfigured();
-}
-
 void Configuration::deviceConfiguredSlot(bool success)
 {
 	/// @todo Do something with failure of configuration.
@@ -121,12 +99,8 @@ void Configuration::deviceConfiguredSlot(bool success)
 	checkAllDevicesConfigured();
 }
 
-void Configuration::reconfigureDevices()
+void Configuration::applyConfiguration()
 {
-	if (mLocked) {
-		return;
-	}
-
 	checkAllDevicesConfigured();
 
 	for (robotParts::Device * const device : mPendingDevices.values()) {
@@ -140,8 +114,7 @@ void Configuration::reconfigureDevices()
 
 void Configuration::checkAllDevicesConfigured()
 {
-	if (!mLocked && mPendingDevices.isEmpty() && mConfigurationInProgress.isEmpty() && mWasConfigurationRequest) {
-		mWasConfigurationRequest = false;
+	if (mPendingDevices.isEmpty()) {
 		emit allDevicesConfigured();
 	}
 }

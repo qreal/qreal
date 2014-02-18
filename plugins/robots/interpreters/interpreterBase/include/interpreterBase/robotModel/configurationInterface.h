@@ -24,16 +24,12 @@ public:
 
 	virtual ~ConfigurationInterface() {}
 
-	/// Adds device to robot configuration and initializes process of its configuring on a port device is bound to.
-	/// Device configuration can be deferred until unlockConfiguring is called.
+	/// Adds device to pending configuration. Actual configuring of a device on a robot is done in applyConfiguration().
 	/// @param device - device to be added to configuration. Transfers ownership.
 	virtual void configureDevice(robotParts::Device * const device) = 0;
 
-	virtual void lockConfiguring() = 0;
-
-	/// Guaranteed to emit allDevicesConfigured() if there were requests for device configuration, if all devices
-	/// respond about their configuration status.
-	virtual void unlockConfiguring() = 0;
+	/// Guaranteed to emit allDevicesConfigured() if all devices respond about their configuration status.
+	virtual void applyConfiguration() = 0;
 
 	/// Returns all configured devices with given port direction. Allows to enumerate configured devices.
 	virtual QList<robotParts::Device *> devices(
@@ -47,10 +43,6 @@ public:
 	/// \todo Implement some convenience methods that cast generic Device to desired sensor/motor type.
 
 	virtual void clearDevice(PortInfo const &port) = 0;
-
-	/// Force configuration to emit allDevicesConfigured() when all devices are actually configured, even if no
-	/// configuration requests are pending. In later case it will emit immediately, when configuration is unlocked.
-	virtual void forceResponse() = 0;
 };
 
 }

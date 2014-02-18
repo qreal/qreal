@@ -7,9 +7,11 @@
 using namespace interpreterBase::robotModel;
 
 CommonRobotModel::CommonRobotModel()
+	: mState(disconnectedState)
+	, mConfigurationPostponed(false)
 {
 	connect(&mConfiguration, &Configuration::allDevicesConfigured
-			, this, &CommonRobotModel::allDevicesConfigured);
+			, this, &CommonRobotModel::allDevicesConfigured, Qt::QueuedConnection);
 
 	connect(this, &CommonRobotModel::connected, this, &CommonRobotModel::onConnected);
 	connect(this, &CommonRobotModel::disconnected, this, &CommonRobotModel::onDisconnected);
@@ -39,6 +41,11 @@ void CommonRobotModel::disconnectFromRobot()
 	emit disconnected();
 }
 
+CommonRobotModel::ConnectionState CommonRobotModel::connectionState() const
+{
+	return mState;
+}
+
 ConfigurationInterface &CommonRobotModel::mutableConfiguration()
 {
 	return mConfiguration;
@@ -48,11 +55,14 @@ void CommonRobotModel::onConnected(bool success)
 {
 	if (success) {
 		mState = connectedState;
+
+		if (mConfigurationPostponed) {
+			mConfiguration.applyConfiguration();
+			mConfigurationPostponed = false;
+		}
 	} else {
 		mState = disconnectedState;
 	}
-
-	mConfiguration.unlockConfiguring();
 }
 
 void CommonRobotModel::onDisconnected()
@@ -80,18 +90,6 @@ QList<DeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port) const
 	return mAllowedConnections[port];
 }
 
-void CommonRobotModel::configureDevices(QHash<PortInfo, DeviceInfo> const &devices)
-{
-	mConfiguration.lockConfiguring();
-
-	for (PortInfo const &port : devices.keys()) {
-		configureDevice(port, devices.value(port));
-	}
-
-	mConfiguration.forceResponse();
-	mConfiguration.unlockConfiguring();
-}
-
 void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
 	robotParts::Device *device = createDevice(port, deviceInfo);
@@ -99,6 +97,15 @@ void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &d
 		mConfiguration.configureDevice(device);
 	}
 	/// @todo Handle error
+}
+
+void CommonRobotModel::applyConfiguration()
+{
+	if (mState == connectedState) {
+		mConfiguration.applyConfiguration();
+	} else {
+		mConfigurationPostponed = true;
+	}
 }
 
 QList<DeviceInfo> CommonRobotModel::convertibleBases() const

@@ -14,6 +14,8 @@
 namespace interpreterBase {
 namespace robotModel {
 
+/// @todo Update comment.
+
 /// Represents abstract robot model with general properties that every kit has, like the ability to connect to robot,
 /// configure devices or enumerate available ports. It also returns common robot parts like brick or display.
 /// It can be specialized in kit plugins to provide kit-specific functionality like new parts and to define kit-specific
@@ -62,6 +64,8 @@ public:
 
 	virtual bool needsConnection() const = 0;
 
+	virtual ConnectionState connectionState() const = 0;
+
 	virtual ConfigurationInterface const &configuration() const = 0;
 
 	virtual QList<PortInfo> availablePorts() const = 0;
@@ -78,7 +82,9 @@ public:
 	/// Returns a list of devices that are allowed to be connected on a given port.
 	virtual QList<DeviceInfo> allowedDevices(PortInfo const &port) const = 0;
 
-	virtual void configureDevices(QHash<PortInfo, DeviceInfo> const &devices) = 0;
+	virtual void configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo) = 0;
+
+	virtual void applyConfiguration() = 0;
 
 	/// Returns a list of devices types that can be used for 'can convert' decision.
 	/// When user changes sensors configuration with some robot model as current it must be decided for

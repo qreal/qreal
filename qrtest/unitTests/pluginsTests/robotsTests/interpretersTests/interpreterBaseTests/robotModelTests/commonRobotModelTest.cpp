@@ -37,16 +37,14 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 
 	model.init();
 
-	QHash<PortInfo, DeviceInfo> devices;
-	devices.insert(PortInfo("1")
-			, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+	model.configureDevice(PortInfo("1"), DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+	model.applyConfiguration();
 
 	model.connectToRobot();
 
 	protocolTester.wait(120);
 
 	/// @todo We can not configure devices when model is not connected, or it will not configure them on reconnect.
-	model.configureDevices(devices);
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
@@ -63,13 +61,12 @@ TEST_F(CommonRobotModelTest, twoDLifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
-	QHash<PortInfo, DeviceInfo> devices;
-	devices.insert(PortInfo("1")
-			, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+	model.configureDevice(PortInfo("1"), DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+	model.applyConfiguration();
 
 	model.connectToRobot();
 
-	model.configureDevices(devices);
+	protocolTester.wait(1);
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
@@ -90,12 +87,11 @@ TEST_F(CommonRobotModelTest, realNoSensorsLifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
+	model.applyConfiguration();
+
 	model.connectToRobot();
 
 	protocolTester.wait(120);
-
-	/// @todo Ugly
-	model.configureDevices(QHash<PortInfo, DeviceInfo>());
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
@@ -111,10 +107,11 @@ TEST_F(CommonRobotModelTest, twoDNoSensorsLifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
+	model.applyConfiguration();
+
 	model.connectToRobot();
 
-	/// @todo Ugly
-	model.configureDevices(QHash<PortInfo, DeviceInfo>());
+	protocolTester.wait(1);
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
