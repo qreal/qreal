@@ -8,6 +8,7 @@
 #include <src/interpreter/interpreterInterface.h>
 #include <interpreterBase/robotModel/robotModelInterfaceMock.h>
 #include <interpreterBase/robotModel/robotModelManagerInterfaceMock.h>
+#include <interpreterBase/robotModel/configurationInterfaceMock.h>
 
 /// @todo /src/managers
 #include <interpreterCore/managers/blocksFactoryManagerInterfaceMock.h>
@@ -26,10 +27,11 @@ protected:
 
 	QScopedPointer<interpreterCore::interpreter::InterpreterInterface> mInterpreter;
 	QScopedPointer<QrguiFacade> mQrguiFacade;
-	qrTest::RobotModelInterfaceMock mModel;
-	qrTest::RobotModelManagerInterfaceMock mModelManager;
+	RobotModelInterfaceMock mModel;
+	RobotModelManagerInterfaceMock mModelManager;
 	QScopedPointer<QAction> mFakeConnectToRobotAction;
-	qrTest::BlocksFactoryManagerInterfaceMock mBlocksFactoryManager;
+	BlocksFactoryManagerInterfaceMock mBlocksFactoryManager;
+	ConfigurationInterfaceMock mConfigurationInterfaceMock;
 };
 
 }

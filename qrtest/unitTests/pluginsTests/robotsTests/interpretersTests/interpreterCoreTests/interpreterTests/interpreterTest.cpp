@@ -2,8 +2,6 @@
 
 #include <src/interpreter/interpreter.h>
 
-#include <interpreterBase/robotModel/configurationInterfaceMock.h>
-
 #include <src/textLanguage/robotsBlockParser.h>
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
@@ -13,13 +11,25 @@ using namespace ::testing;
 
 void InterpreterTest::SetUp()
 {
-	mQrguiFacade.reset(new QrguiFacade("unittests/testModel.qrs"));
+	mQrguiFacade.reset(new QrguiFacade("unittests/basicTest.qrs"));
 
-	DummyBlockFactory *blocksFactory = new DummyBlockFactory();
+	mQrguiFacade->setActiveTab(qReal::Id::loadFromString(
+			"qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f08fa823-e187-4755-87ba-e4269ae4e798}"));
+
+	DummyBlockFactory *blocksFactory = new DummyBlockFactory(
+			mQrguiFacade->graphicalModelAssistInterface()
+			, mQrguiFacade->logicalModelAssistInterface()
+			, mModelManager
+			, *mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
+			);
 
 	mFakeConnectToRobotAction.reset(new QAction(nullptr));
 
-	ConfigurationInterfaceMock configurationInterfaceMock;
+	ON_CALL(mConfigurationInterfaceMock, devices(_)).WillByDefault(
+			Return(QList<interpreterBase::robotModel::robotParts::Device *>())
+			);
+	EXPECT_CALL(mConfigurationInterfaceMock, devices(_)).Times(AtLeast(1));
+
 
 	ON_CALL(mModel, needsConnection()).WillByDefault(Return(false));
 	EXPECT_CALL(mModel, needsConnection()).Times(AtLeast(1));
@@ -27,10 +37,10 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, init()).WillByDefault(Return());
 	EXPECT_CALL(mModel, init()).Times(AtLeast(1));
 
-	ON_CALL(mModel, configuration()).WillByDefault(ReturnRef(configurationInterfaceMock));
+	ON_CALL(mModel, configuration()).WillByDefault(ReturnRef(mConfigurationInterfaceMock));
 	EXPECT_CALL(mModel, configuration()).Times(AtLeast(0));
 
-	ON_CALL(mModel, mutableConfiguration()).WillByDefault(ReturnRef(configurationInterfaceMock));
+	ON_CALL(mModel, mutableConfiguration()).WillByDefault(ReturnRef(mConfigurationInterfaceMock));
 	EXPECT_CALL(mModel, mutableConfiguration()).Times(AtLeast(0));
 
 	ON_CALL(mModel, connectToRobot()).WillByDefault(
@@ -46,6 +56,15 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, configurablePorts()).WillByDefault(Return(QList<interpreterBase::robotModel::PortInfo>()));
 	EXPECT_CALL(mModel, configurablePorts()).Times(AtLeast(0));
 
+	ON_CALL(mModel, applyConfiguration()).WillByDefault(
+			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitAllDevicesConfigured)
+			);
+	EXPECT_CALL(mModel, applyConfiguration()).Times(1);
+
+	ON_CALL(mModel, connectionState()).WillByDefault(Return(RobotModelInterfaceMock::connectedState));
+	EXPECT_CALL(mModel, connectionState()).Times(2);
+
+
 	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
 	EXPECT_CALL(mModelManager, model()).Times(AtLeast(1));
 
@@ -53,16 +72,14 @@ void InterpreterTest::SetUp()
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_)).Times(0);
 
 	ON_CALL(mBlocksFactoryManager, block(_)).WillByDefault(
-			Invoke([&] (qReal::Id const &id) { return blocksFactory->block(id); } )
+			Invoke([=] (qReal::Id const &id) { return blocksFactory->block(id); } )
 			);
 	EXPECT_CALL(mBlocksFactoryManager, block(_)).Times(AtLeast(0));
 
 	ON_CALL(mBlocksFactoryManager, providedBlocks()).WillByDefault(
-			Invoke([&] { return blocksFactory->providedBlocks(); } )
+			Invoke([=] { return blocksFactory->providedBlocks(); } )
 			);
 	EXPECT_CALL(mBlocksFactoryManager, providedBlocks()).Times(0);
-
-//	ON_CALL(configurationInterfaceMock, lock)
 
 	/// @todo Don't like it.
 	interpreterCore::textLanguage::RobotsBlockParser parser(
@@ -83,12 +100,15 @@ void InterpreterTest::SetUp()
 
 TEST_F(InterpreterTest, interpret)
 {
+	EXPECT_CALL(mModel, stopRobot()).Times(1);
+
 	mInterpreter->interpret();
 }
 
 TEST_F(InterpreterTest, stopRobot)
 {
-	EXPECT_CALL(mModel, stopRobot()).Times(1);
+	// It shall be called directly here and in destructor of a model.
+	EXPECT_CALL(mModel, stopRobot()).Times(2);
 
 	mInterpreter->interpret();
 	mInterpreter->stopRobot();

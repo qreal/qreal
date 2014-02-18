@@ -219,10 +219,7 @@ void Interpreter::addThread(details::Thread * const thread)
 	mThreads.append(thread);
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
-	connect(thread
-			, SIGNAL(newThread(Id const &))
-			, this, SLOT(newThread(Id const &))
-			);
+	connect(thread, &details::Thread::newThread, this, &Interpreter::newThread);
 
 	QCoreApplication::processEvents();
 	if (mState != idle) {
