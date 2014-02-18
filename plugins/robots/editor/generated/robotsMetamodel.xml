@@ -372,7 +372,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Порты" type="string" name="Ports">
-							<default>B, C</default>
+							<default>1, 2</default>
 						</property>
 						<property displayedName="Силовые моторы" type="bool" name="powerMotors">
 							<default>false</default>

@@ -92,16 +92,13 @@
         <file>templates/buttons/waitForBothButtons.t</file>
         <file>templates/buttons/waitForEnterOnly.t</file>
         <file>templates/buttons/waitForRunOnly.t</file>
-        <file>templates/engines/servo/backward.t</file>
-        <file>templates/engines/servo/forward.t</file>
-        <file>templates/engines/servo/stop.t</file>
-        <file>templates/engines/power/backward.t</file>
-        <file>templates/engines/power/forward.t</file>
-        <file>templates/engines/power/stop.t</file>
         <file>templates/variables/floatConstantDeclaration.t</file>
         <file>templates/variables/floatVariableDeclaration.t</file>
         <file>templates/variables/intConstantDeclaration.t</file>
         <file>templates/variables/intVariableDeclaration.t</file>
         <file>templates/whatTime.t</file>
+        <file>templates/engines/backward.t</file>
+        <file>templates/engines/forward.t</file>
+        <file>templates/engines/stop.t</file>
     </qresource>
 </RCC>
