@@ -125,18 +125,11 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 
 				foreach (Id const &diagramChild, repo->children(editorChild)) {
 					if (diagramChild.element() == "MetaEntityEdge"
-							|| !repo->stringProperty(diagramChild, "shape").isEmpty())
-					{
-						if (repo->hasProperty(diagramChild, "isHidden"))
-						{
-							if (repo->stringProperty(diagramChild, "isHidden") != "true")
-							{
-								result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
-							}
-						}
-						else
-						{
+							|| !repo->stringProperty(diagramChild, "shape").isEmpty()) {
+						if (!repo->hasProperty(diagramChild, "isHidden")) {
 							repo->setProperty(diagramChild, "isHidden", "false");
+						}
+						if (repo->stringProperty(diagramChild, "isHidden") != "true") {
 							result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
 						}
 					}
@@ -305,14 +298,19 @@ QStringList InterpreterEditorManager::propertiesFromParents(Id const &id
 {
 	QStringList result;
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
+	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
 	Id const &metaId = repoAndMetaIdPair.second;
 	foreach (Id const &link , repo->incomingLinks(metaId)) {
 		if (link.element() == "Inheritance") {
 			foreach (Id const &parentProperty, repo->children(repo->otherEntityFromLink(link, metaId))) {
-				QString const strProperty = checker.stringProperty(repo, parentProperty, propertyName);
-				if (!strProperty.isEmpty()) {
-					result << strProperty;
+				if (!repo->hasProperty(parentProperty, "isHidden")) {
+					repo->setProperty(parentProperty, "isHidden", "false");
+				}
+				if (repo->stringProperty(parentProperty, "isHidden") == "false") {
+					QString const strProperty = checker.stringProperty(repo, parentProperty, propertyName);
+					if (!strProperty.isEmpty()) {
+						result << strProperty;
+					}
 				}
 			}
 
@@ -492,7 +490,7 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 {
 	QStringList result;
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
+	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
 	Id const metaId = repoAndMetaIdPair.second;
 	QStringList const propertiesFromParentsList = propertiesFromParents(id, "MetaEntity_Attribute", GetProperty());
 	if (!propertiesFromParentsList.isEmpty()) {
@@ -501,7 +499,12 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 
 	foreach (Id const &idProperty, repo->children(metaId)) {
 		if (idProperty.element() == "MetaEntity_Attribute") {
-			result << repo->name(idProperty);
+			if (!repo->hasProperty(idProperty, "isHidden")) {
+				repo->setProperty(idProperty, "isHidden", "false");
+			}
+			if (repo->stringProperty(idProperty, "isHidden") != "true") {
+				result << repo->name(idProperty);
+			}
 		}
 	}
 
@@ -716,7 +719,8 @@ void InterpreterEditorManager::deletePropertyInElement(qrRepo::RepoApi *repo, Id
 			if (property.element() == "MetaEntity_Attribute") {
 				Id const &elementModel = Id(repo->name(editor), repo->name(diagram), repo->name(element));
 				if (propertyDisplayedName(elementModel, repo->name(property)) == propDisplayedName) {
-					repo->removeChild(element, property);
+					repo->setProperty(property, "isHidden", "true");
+					//repo->removeChild(element, property);
 				}
 			}
 		}
@@ -747,6 +751,7 @@ void InterpreterEditorManager::addProperty(Id const &id, QString const &propDisp
 	QStringList propertyNames;
 	propertyNames << propDisplayedName;
 	repoAndMetaIdPair.first->setProperty(newId, "maskedNames", propertyNames);
+	repoAndMetaIdPair.first->setProperty(newId, "isHidden", "false");
 }
 
 IdList InterpreterEditorManager::propertiesWithTheSameName(Id const &id, QString const &propDisplayedName) const
