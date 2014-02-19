@@ -73,6 +73,14 @@ void ErrorReporter::addCritical(QString const &message, Id const &position)
 	showError(error, mErrorListWidget);
 }
 
+void ErrorReporter::addHint(QString const &message, Id const &position)
+{
+    utils::UXInfo::reportErrors("critical", position.editor(), position.element(), message);
+    Error error(message, Error::critical, position);
+    mErrors.append(error);
+    showError(error, mErrorListWidget);
+}
+
 bool ErrorReporter::showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const
 {
 	errorListWidget->clear();
