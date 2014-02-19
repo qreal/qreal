@@ -13,7 +13,7 @@ namespace robotModel {
 namespace robotParts {
 
 /// Anything that can be plugged into a port on a robot. Bound to a port at creation time and shall be configured
-/// before it becomes ready to work. Base class for all engines/sensors.
+/// before it becomes ready to work. Base class for all engines/sensors/displays and so on.
 class ROBOTS_INTERPRETER_BASE_EXPORT Device : public QObject
 {
 	Q_OBJECT

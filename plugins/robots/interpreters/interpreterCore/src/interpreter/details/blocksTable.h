@@ -39,7 +39,7 @@ public:
 
 	/// Sets "idle" state for all blocks, thus preparing them for another execution.
 	/// @todo possibly unneeded. It will not clean existing connections and pending signals, so it is safer to delete
-	// and re-create all blocks before another run of a program.
+	/// and re-create all blocks before another run of a program.
 	void setIdleForBlocks();
 
 	/// Returns a list of blocks that can be created by this blocks table.

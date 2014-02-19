@@ -76,7 +76,7 @@ void Configuration::clearDevice(PortInfo const &port)
 	mConfigurationInProgress.remove(port);
 }
 
-void Configuration::deviceConfiguredSlot(bool success)
+void Configuration::onDeviceConfigured(bool success)
 {
 	/// @todo Do something with failure of configuration.
 	Q_UNUSED(success);
@@ -105,7 +105,7 @@ void Configuration::applyConfiguration()
 
 	for (robotParts::Device * const device : mPendingDevices.values()) {
 		if (!mConfigurationInProgress.contains(device->port())) {
-			connect(device, &robotParts::Device::configured, this, &Configuration::deviceConfiguredSlot);
+			connect(device, &robotParts::Device::configured, this, &Configuration::onDeviceConfigured);
 			mConfigurationInProgress.insert(device->port());
 			device->configure();
 		}

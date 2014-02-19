@@ -10,6 +10,7 @@
 namespace interpreterBase {
 namespace robotModel {
 
+/// Provides current configuration (devices connected to ports and ready to work) and ability to manage it.
 class ROBOTS_INTERPRETER_BASE_EXPORT Configuration : public ConfigurationInterface
 {
 	Q_OBJECT
@@ -24,9 +25,7 @@ public:
 
 	QList<robotParts::Device *> devices(PortDirection direction = defaultDirection) const override;
 
-	robotParts::Device *device(
-			PortInfo const &port
-			, PortDirection direction = defaultDirection) const override;
+	robotParts::Device *device(PortInfo const &port, PortDirection direction = defaultDirection) const override;
 
 	void clearDevice(PortInfo const &port) override;
 
@@ -35,9 +34,12 @@ signals:
 	void allDevicesConfigured();
 
 private slots:
-	void deviceConfiguredSlot(bool success);
+	/// Called when some device is finished configuring.
+	/// @param success - true if configuration was successful.
+	void onDeviceConfigured(bool success);
 
 private:
+	/// Check that there are no pending or "in progress" requests and emit allDevicesConfigured() if it is true.
 	void checkAllDevicesConfigured();
 
 	/// Contains currently configured and ready devices.
