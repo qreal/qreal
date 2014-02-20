@@ -37,6 +37,7 @@ QDomDocument TemplateDocumentBuilder::iconWtf() const
 	if (!mIconBuilder) {
 		return wtf();
 	}
+
 	return mIconBuilder->wtf();
 }
 
@@ -45,6 +46,7 @@ QDomDocument TemplateDocumentBuilder::iconShape()
 	if (!mIconBuilder) {
 		return shape();
 	}
+
 	return mIconBuilder->shape();
 }
 
@@ -53,6 +55,7 @@ QDomDocument TemplateDocumentBuilder::iconPicture() const
 	if (!mIconBuilder) {
 		return picture();
 	}
+
 	return mIconBuilder->picture();
 }
 
@@ -241,7 +244,8 @@ void TemplateDocumentBuilder::setWtfShape(QDomElement const &wtf
 	QDomElement rootChild = root.firstChildElement();
 	while (!rootChild.isNull()) {
 		if (rootChild.tagName() == "property" && rootChild.hasAttribute("propertyName")
-				&& rootChild.attribute("propertyName") == "shapeXml") {
+				&& rootChild.attribute("propertyName") == "shapeXml")
+		{
 			QDomDocument pictureDocument;
 			// To make it non-null
 			pictureDocument.createElement("");

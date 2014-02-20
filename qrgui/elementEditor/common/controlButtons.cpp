@@ -71,5 +71,5 @@ QPushButton *ControlButtons::createButton(QString const &toolTip
 QPushButton *ControlButtons::createOnlyFor(bool shape, const QString &toolTip
 		, const QString &icon)
 {
-	return shape == mForShapeEditor ? createButton(toolTip, icon) : NULL;
+	return shape == mForShapeEditor ? createButton(toolTip, icon) : nullptr;
 }

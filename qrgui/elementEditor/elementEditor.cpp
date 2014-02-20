@@ -6,11 +6,11 @@ using namespace qReal::elementEdit;
 using namespace navigation;
 
 ElementEditor::ElementEditor(const QPersistentModelIndex &index
-		, const int &role
-		, models::details::LogicalModel *model
-		, bool useTypedPorts
-		, QWidget *parent)
-		: NavigationView(QMap<NavigationPageInterface*, QWidget *>()
+	, const int &role
+	, models::details::LogicalModel *model
+	, bool useTypedPorts
+	, QWidget *parent)
+	: NavigationView(QMap<NavigationPageInterface*, QWidget *>()
 	, new NavigationController(new NavigationState), parent)
 	, mModel(model)
 	, mIndex(index)

@@ -6,8 +6,7 @@
 
 #include <qrutils/navigationUtils/navigationMenu.h>
 
-namespace qReal
-{
+namespace qReal {
 namespace elementEdit
 {
 
