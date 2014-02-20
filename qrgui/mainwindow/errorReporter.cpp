@@ -75,6 +75,14 @@ void ErrorReporter::addCritical(QString const &message, Id const &position)
 
 void ErrorReporter::addHint(QString const &message, Id const &position)
 {
+    utils::UXInfo::reportErrors("information", position.editor(), position.element(), message);
+    Error error(message, Error::information, position);
+    mErrors.append(error);
+    showError(error, mErrorListWidget);
+}
+
+void ErrorReporter::addHint(QString const &message, Id const &position)
+{
     utils::UXInfo::reportErrors("critical", position.editor(), position.element(), message);
     Error error(message, Error::critical, position);
     mErrors.append(error);

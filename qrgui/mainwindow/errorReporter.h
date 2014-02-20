@@ -10,11 +10,13 @@
 #include "mainwindow/error.h"
 #include "mainwindow/errorListWidget.h"
 #include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "toolPluginInterface/usedInterfaces/hintInterface.h"
+
 
 namespace qReal {
 namespace gui {
 
-class ErrorReporter : public QObject, public ErrorReporterInterface {
+class ErrorReporter : public QObject, public ErrorReporterInterface, public HintInterface {
 	Q_OBJECT
 
 public:
@@ -25,7 +27,10 @@ public:
 	virtual void addWarning(QString const &message, Id const &position = Id::rootId());
 	virtual void addError(QString const &message, Id const &position = Id::rootId());
 	virtual void addCritical(QString const &message, Id const &position = Id::rootId());
-	virtual bool wereErrors();
+
+    virtual void addHint(QString const &message, Id const &position = Id::rootId());
+
+    virtual bool wereErrors();
 
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 	void updateVisibility(bool isVisible);
