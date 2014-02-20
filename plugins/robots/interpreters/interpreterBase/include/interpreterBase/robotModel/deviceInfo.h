@@ -10,22 +10,33 @@
 namespace interpreterBase {
 namespace robotModel {
 
-/// Describes a type of a device, not a concrete instance of it. Given a set of DeviceInfo corresponding to some devices
-/// hierarchy original inheritance relations can be recovered with isA() method.
+/// Describes a type of a device, not a concrete instance of it. Given a set of DeviceInfo corresponding to
+/// some devices hierarchy original inheritance relations can be recovered with isA() method.
 class ROBOTS_INTERPRETER_BASE_EXPORT DeviceInfo
 {
 public:
+	/// Represents the direction of communication with this device
+	enum Direction
+	{
+		/// Device provides data
+		input = 0
+		/// Device accepts data
+		, output
+	};
+
 	/// Creates a new instance of a Device descriptor. The resulting object will
 	/// correspond to a given type only if Q_OBJECT macro is used inside its declaration.
+	/// @warning The given device type must contain friendlyName() and direction() static functions
+	/// and Q_OBJECT macro.
 	template <typename T>
-	static DeviceInfo create(QString const &friendlyName = QString())
+	static DeviceInfo create()
 	{
 		// This line performs Q_OBJECT macro checking in the given type declaration.
 		// Without Q_OBJECT macro incorrect metaObject will be passed and it will lead
 		// to invalid isA() method work.
 		static_assert(HasQObjectMacro<T>::Value, "No Q_OBJECT macro in the class that is passed into a template");
 		QMetaObject const *metaObject = &T::staticMetaObject;
-		DeviceInfo result(metaObject, friendlyName);
+		DeviceInfo result(metaObject, T::friendlyName(), T::direction());
 		mCreatedInfos[QString(metaObject->className())] = result;
 		return result;
 	}
@@ -45,6 +56,10 @@ public:
 	/// Returns a string that can be displayed to a user as the name of the device.
 	QString friendlyName() const;
 
+	/// Returns the direction of communication with devices of this type
+	Direction direction() const;
+
+	/// Returns true if device is empty (instantiated with DeviceInfo() constructor).
 	bool isNull() const;
 
 private:
@@ -65,12 +80,13 @@ private:
 	friend bool operator ==(DeviceInfo const &device1, DeviceInfo const &device2);
 	friend bool operator !=(DeviceInfo const &device1, DeviceInfo const &device2);
 
-	explicit DeviceInfo(QMetaObject const *deviceType, QString const &friendlyName);
+	DeviceInfo(QMetaObject const *deviceType, QString const &friendlyName, Direction direction);
 
 	static QMap<QString, DeviceInfo> mCreatedInfos;
 
 	QMetaObject const *mDeviceType;
 	QString mFriendlyName;
+	Direction mDirection;
 };
 
 inline bool operator ==(DeviceInfo const &device1, DeviceInfo const &device2)

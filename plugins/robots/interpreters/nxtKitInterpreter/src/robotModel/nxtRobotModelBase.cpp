@@ -57,35 +57,35 @@ QList<DeviceInfo> NxtRobotModelBase::convertibleBases() const
 
 DeviceInfo NxtRobotModelBase::touchSensorInfo() const
 {
-	return DeviceInfo::create<robotParts::TouchSensor>(tr("Touch sensor"));
+	return DeviceInfo::create<robotParts::TouchSensor>();
 }
 
 DeviceInfo NxtRobotModelBase::sonarSensorInfo() const
 {
-	return DeviceInfo::create<robotParts::RangeSensor>(tr("Sonar sensor"));
+	return DeviceInfo::create<robotParts::RangeSensor>();
 }
 
 DeviceInfo NxtRobotModelBase::lightSensorInfo() const
 {
-	return DeviceInfo::create<robotParts::LightSensor>(tr("Light sensor"));
+	return DeviceInfo::create<robotParts::LightSensor>();
 }
 
 DeviceInfo NxtRobotModelBase::colorSensorInfo() const
 {
-	return DeviceInfo::create<robotParts::ColorSensor>(tr("Color sensor"));
+	return DeviceInfo::create<robotParts::ColorSensor>();
 }
 
 DeviceInfo NxtRobotModelBase::soundSensorInfo() const
 {
-	return DeviceInfo::create<robotParts::SoundSensor>(tr("Sound sensor"));
+	return DeviceInfo::create<robotParts::SoundSensor>();
 }
 
 DeviceInfo NxtRobotModelBase::gyroscopeSensorInfo() const
 {
-	return DeviceInfo::create<robotParts::GyroscopeSensor>(tr("Gyroscope"));
+	return DeviceInfo::create<robotParts::GyroscopeSensor>();
 }
 
 DeviceInfo NxtRobotModelBase::accelerometerSensorInfo() const
 {
-	return DeviceInfo::create<robotParts::AccelerometerSensor>(tr("Accelerometer"));
+	return DeviceInfo::create<robotParts::AccelerometerSensor>();
 }

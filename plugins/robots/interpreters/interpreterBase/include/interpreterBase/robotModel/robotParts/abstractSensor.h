@@ -17,10 +17,9 @@ class ROBOTS_INTERPRETER_BASE_EXPORT AbstractSensor : public Device
 	Q_OBJECT
 
 public:
-	explicit AbstractSensor(DeviceInfo const &info, PortInfo const &port)
-			: Device(info, port) {}
+	AbstractSensor(DeviceInfo const &info, PortInfo const &port);
 
-	virtual ~AbstractSensor() {}
+	virtual ~AbstractSensor();
 
 	/// Ask sensor to provide new readings. Returns immediately. When reading is done, sensor emits "newData" signal
 	/// with reading as a parameter.

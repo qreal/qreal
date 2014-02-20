@@ -6,6 +6,11 @@ using namespace robotModel;
 using namespace utils;
 using namespace robotCommunication;
 
+QString Motor::friendlyName()
+{
+	return tr("Motor");
+}
+
 Motor::Motor(DeviceInfo const &info, PortInfo const &port, RobotCommunicator *robotCommunicator)
 	: interpreterBase::robotModel::robotParts::Motor(info, port)
 	, mRobotCommunicator(robotCommunicator)

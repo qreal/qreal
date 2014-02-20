@@ -13,8 +13,8 @@ class ROBOTS_INTERPRETER_BASE_EXPORT ScalarSensor : public AbstractSensor
 	Q_OBJECT
 
 public:
-	explicit ScalarSensor(DeviceInfo const &info, PortInfo const &port)
-		: AbstractSensor(info, port) {}
+	ScalarSensor(DeviceInfo const &info, PortInfo const &port);
+	virtual ~ScalarSensor();
 
 signals:
 	void newData(int reading);

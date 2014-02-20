@@ -1,23 +1,18 @@
 #pragma once
 
-#include "scalarSensor.h"
-
+#include "device.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {
 namespace robotModel {
 namespace robotParts {
 
-class ROBOTS_INTERPRETER_BASE_EXPORT RangeSensor : public ScalarSensor
+class ROBOTS_INTERPRETER_BASE_EXPORT Speaker : public Device
 {
-	Q_OBJECT
-
-public:
-	/// @todo: remove it
 	static QString friendlyName();
 	static DeviceInfo::Direction direction();
 
-	RangeSensor(DeviceInfo const &info, PortInfo const &port);
+	Speaker(DeviceInfo const &info, PortInfo const &port);
 };
 
 }

@@ -18,7 +18,7 @@ RealRobotModel::RealRobotModel()
 	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(&mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
 
-	DeviceInfo motorInfo = DeviceInfo::create<parts::Motor>(tr("Motor"));
+	DeviceInfo motorInfo = DeviceInfo::create<parts::Motor>();
 
 	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("A"), &mRobotCommunicator));
 	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("B"), &mRobotCommunicator));

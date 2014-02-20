@@ -14,6 +14,7 @@ namespace robotParts {
 
 /// Anything that can be plugged into a port on a robot. Bound to a port at creation time and shall be configured
 /// before it becomes ready to work. Base class for all engines/sensors/displays and so on.
+/// Each device should have static friendlyName() and direction() functions defined.
 class ROBOTS_INTERPRETER_BASE_EXPORT Device : public QObject
 {
 	Q_OBJECT
@@ -21,7 +22,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Device : public QObject
 public:
 	/// Constructor.
 	/// @param port - port on which this device shall be configured.
-	explicit Device(DeviceInfo const &info, PortInfo const &port);
+	Device(DeviceInfo const &info, PortInfo const &port);
 
 	virtual ~Device();
 
