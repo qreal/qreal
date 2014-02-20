@@ -14,7 +14,7 @@ namespace interpreterCore {
 class ActionsManager
 {
 public:
-	explicit ActionsManager(KitPluginManager const &kitPluginManager);
+	explicit ActionsManager(/*KitPluginManager const &kitPluginManager*/);
 
 	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
 
@@ -60,7 +60,7 @@ private:
 	/// List of plugin actions, for convenient initialization. Contains all actions which already present as fields.
 	QList<QAction *> mActions;  // Does not have ownership (actions already present as fields).
 
-	KitPluginManager const &mKitPluginManager;
+//	KitPluginManager const &mKitPluginManager;
 
 	/// Main window interface object, to ask about currently open tab and so on.
 	// Does not have ownership

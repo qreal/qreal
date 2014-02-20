@@ -8,7 +8,7 @@ RobotsPluginFacade::RobotsPluginFacade()
 	: mParser(nullptr)
 	, mInterpreter(nullptr)
 	, mKitPluginManager("plugins/kitPlugins")
-	, mActionsManager(mKitPluginManager)
+	, mActionsManager(/*mKitPluginManager*/)
 	, mDockSensorsConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
 {

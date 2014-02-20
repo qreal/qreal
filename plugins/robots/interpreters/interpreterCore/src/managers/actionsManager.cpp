@@ -7,7 +7,7 @@ using namespace interpreterCore;
 static qReal::Id const robotDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
 static qReal::Id const subprogramDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
-ActionsManager::ActionsManager(KitPluginManager const &kitPluginManager)
+ActionsManager::ActionsManager(/*KitPluginManager const &kitPluginManager*/)
 	: mRunAction((QIcon(":/icons/robots_run.png"), QObject::tr("Run"), nullptr))
 	, mStopRobotAction(
 			QIcon(":/icons/robots_stop.png")
@@ -24,7 +24,7 @@ ActionsManager::ActionsManager(KitPluginManager const &kitPluginManager)
 	, mTitlesAction(QObject::tr("Text under pictogram"), nullptr)
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
-	, mKitPluginManager(kitPluginManager)
+//	, mKitPluginManager(kitPluginManager)
 {
 	mConnectToRobotAction.setCheckable(true);
 
