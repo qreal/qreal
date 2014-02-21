@@ -20,14 +20,14 @@ TEST_F(ExpressionsParserTest, priorityTest) {
 	QString const stream = "2 + 2 * 2";
 	int pos = 0;
 
-	EXPECT_EQ(mParser->parseExpression(stream, pos).property("Number").toInt(), 6);
+	EXPECT_EQ(mParser->parseExpression(stream, pos)->value().toInt(), 6);
 }
 
 TEST_F(ExpressionsParserTest, multiplicativityTest) {
 	QString const stream = "(2 + 2) * 3 + 4";
 	int pos = 0;
 
-	EXPECT_EQ(mParser->parseExpression(stream, pos).property("Number").toInt(), 16);
+	EXPECT_EQ(mParser->parseExpression(stream, pos)->value().toInt(), 16);
 }
 
 TEST_F(ExpressionsParserTest, associativityTest) {
@@ -37,22 +37,22 @@ TEST_F(ExpressionsParserTest, associativityTest) {
 	QString const stream2 = "2 + (2 + 2)";
 	int pos2 = 0;
 
-	EXPECT_EQ(mParser->parseExpression(stream1, pos1).property("Number").toInt(), 6);
-	EXPECT_EQ(mParser->parseExpression(stream2, pos2).property("Number").toInt(), 6);
+	EXPECT_EQ(mParser->parseExpression(stream1, pos1)->value().toInt(), 6);
+	EXPECT_EQ(mParser->parseExpression(stream2, pos2)->value().toInt(), 6);
 }
 
 TEST_F(ExpressionsParserTest, doubleTest) {
 	QString const stream = "(2.2 + 2.2) * 5";
 	int pos = 0;
 
-	EXPECT_EQ(mParser->parseExpression(stream, pos).property("Number").toDouble(), 22.0);
+	EXPECT_EQ(mParser->parseExpression(stream, pos)->value().toDouble(), 22.0);
 }
 
 TEST_F(ExpressionsParserTest, unaryMinusTest) {
 	QString const stream = "-2 * 2 + 3";
 	int pos = 0;
 
-	EXPECT_EQ(mParser->parseExpression(stream, pos).property("Number").toInt(), -1);
+	EXPECT_EQ(mParser->parseExpression(stream, pos)->value().toInt(), -1);
 }
 
 TEST_F(ExpressionsParserTest, basicComparisonTest) {
