@@ -15,8 +15,7 @@
 namespace qrUpdater {
 //!
 //! @brief The UpdateProcessor class
-//! Logic of update process, makes updates
-//! and interaction with main application
+//! Logic of update process
 class UpdateProcessor : public QObject
 {
 	Q_OBJECT
@@ -41,8 +40,8 @@ protected:
 	//! restart main application after install finished
 	void restartMainApplication();
 
-	static int const retryTimerout = 5 * 60 * 1000;
-	static int const maxAttemptsCount = 3;
+	static int const retryTimerout = 5 * 60 * 1000;  // new try in 5 min
+	static int const maxAttemptsCount = 3;  // 3 times before quit
 	int mCurAttempt;
 	bool mHardUpdate;
 	QString mUpdatesFolder;

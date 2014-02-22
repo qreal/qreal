@@ -9,7 +9,7 @@ Communicator::Communicator(QObject *parent)
 
 void Communicator::readProgramPath()
 {
-	int const maxPathSize = 300;
+	int const maxPathSize = 500;
 	char buffer[maxPathSize];
 	fgets(buffer, maxPathSize, stdin);
 	mParentAppPath = QString(buffer);

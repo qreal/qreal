@@ -125,7 +125,7 @@ void UpdateProcessor::downloadingFinished()
 	if (mHardUpdate) {
 		mUpdatesInstaller << mParser->updatesParsed();
 		mUpdatesInstaller.installAll();
-	} else {
+	} else if (!mRetryTimer.isActive()) { // have no download-errors
 		jobDoneQuit();
 	}
 }
