@@ -67,10 +67,11 @@ QString CodeConverterBase::readSensorTemplatePath(
 		qReal::interpreters::robots::enums::sensorType::SensorTypeEnum sensorType) const
 {
 	switch (sensorType) {
+	case qReal::interpreters::robots::enums::sensorType::colorFull:
+		return "sensors/readColorRecognition.t";
 	case qReal::interpreters::robots::enums::sensorType::colorRed:
 	case qReal::interpreters::robots::enums::sensorType::colorGreen:
 	case qReal::interpreters::robots::enums::sensorType::colorBlue:
-	case qReal::interpreters::robots::enums::sensorType::colorFull:
 	case qReal::interpreters::robots::enums::sensorType::colorNone:
 		return "sensors/readColor.t";
 	case qReal::interpreters::robots::enums::sensorType::sonar:
