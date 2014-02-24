@@ -82,7 +82,7 @@ QString TrikGeneratorPlugin::generatorName() const
 
 bool TrikGeneratorPlugin::uploadProgram()
 {
-	QFileInfo const fileInfo = currentSource();
+	QFileInfo const fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo()) {
 		TcpRobotCommunicator communicator;
@@ -102,7 +102,7 @@ void TrikGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
 		TcpRobotCommunicator communicator;
-		QFileInfo const fileInfo = currentSource();
+		QFileInfo const fileInfo = generateCodeForProcessing();
 		communicator.runProgram(fileInfo.absoluteFilePath());
 	} else {
 		qDebug() << "Program upload failed, aborting";

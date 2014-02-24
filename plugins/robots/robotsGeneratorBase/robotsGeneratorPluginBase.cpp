@@ -61,13 +61,13 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	return fileInfo;
 }
 
-QFileInfo RobotsGeneratorPluginBase::currentSource()
+QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 {
 	QFileInfo fileInfo;
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	if (!activeDiagram.isNull()) {
-		if (generateCode()) {
+		if (generateCode(false)) {
 			foreach (QFileInfo const &path, mCodePath.values(activeDiagram)) {
 				if (mTextManager->isDefaultPath(path.absoluteFilePath())
 					&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
@@ -107,7 +107,7 @@ void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator)
 	connect(mSystemEvents, SIGNAL(codeTabClosed(QFileInfo)), this, SLOT(removeCode(QFileInfo)));
 }
 
-bool RobotsGeneratorPluginBase::generateCode()
+bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 {
 	mProjectManager->save();
 	mMainWindowInterface->errorReporter()->clearErrors();
@@ -125,10 +125,15 @@ bool RobotsGeneratorPluginBase::generateCode()
 		return false;
 	}
 
+	Id const activeDiagram = mMainWindowInterface->activeDiagram();
 
 	QString const generatedCode = utils::InFile::readAll(generatedSrcPath);
 	if (!generatedCode.isEmpty()) {
 		mTextManager->showInTextEditor(path, generatorName());
+	}
+
+	if (!openTab) {
+		mMainWindowInterface->activateItemOrDiagram(activeDiagram);
 	}
 
 	delete generator;

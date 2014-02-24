@@ -157,7 +157,7 @@ void NxtGeneratorPlugin::uploadProgram()
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-		QFileInfo const fileInfo = currentSource();
+		QFileInfo const fileInfo = generateCodeForProcessing();
 
 		if (fileInfo != QFileInfo()) {
 			mFlashTool->uploadProgram(fileInfo);

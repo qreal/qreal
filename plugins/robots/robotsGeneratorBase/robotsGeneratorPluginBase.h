@@ -25,7 +25,8 @@ public:
 
 protected slots:
 	/// Calls code generator. Returns true if operation was successful.
-	virtual bool generateCode();
+	/// @param openTab If true after code generation a tab with generated code will be opened.
+	virtual bool generateCode(bool openTab = true);
 
 	/// Changes path to code source file and regenerate necessary extra files.
 	void regenerateCode(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
@@ -48,7 +49,7 @@ protected:
 	virtual QFileInfo defaultFilePath(QString const &projectName) const;
 	virtual QString extension() const;
 	virtual QString extDescrition() const;
-	QFileInfo currentSource();
+	QFileInfo generateCodeForProcessing();
 	virtual QString generatorName() const;
 
 	/// Interface of MainWindow
