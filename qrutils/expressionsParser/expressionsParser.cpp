@@ -164,7 +164,7 @@ QString ExpressionsParser::parseIdentifier(QString const &stream, int &pos)
 		while (pos < stream.length() && (isDigit(stream.at(pos)) || isLetter(stream.at(pos)))) {
 			pos++;
 		}
-		return stream.mid(beginPos, pos - beginPos).trimmed();
+		return stream.mid(beginPos, pos - beginPos).trimmed().toLower();
 	}
 	return "";
 }

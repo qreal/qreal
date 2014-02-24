@@ -3,9 +3,9 @@
 using namespace qReal::interpreters::robots::details;
 using namespace utils;
 
-QString const sensorVariablePerfix = QObject::tr("Sensor");
-QString const encoderVariablePerfix = QObject::tr("Encoder");
-QString const timeVariableName = QObject::tr("Time");
+QString const sensorVariablePerfix = QObject::tr("sensor");
+QString const encoderVariablePerfix = QObject::tr("encoder");
+QString const timeVariableName = QObject::tr("time");
 
 RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface *errorReporter
 		, ComputableNumber::IntComputer const &timeComputer)
@@ -109,7 +109,7 @@ void RobotsBlockParser::setReservedVariables()
 	}
 
 	for (int i = 0; i < 3; ++i) {
-		QString const variable = encoderVariablePerfix + ('A' + i);
+		QString const variable = encoderVariablePerfix + ('a' + i);
 		mVariables.insert(variable, new Number(0, Number::intType));
 		mReservedVariables.append(variable);
 	}
