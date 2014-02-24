@@ -12,25 +12,24 @@ RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 	QApplication::installTranslator(&mAppTranslator);
 }
 
-QFileInfo RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) const
+QString RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) const
 {
-	Q_UNUSED(projectName);
-	return QFileInfo();
+	return projectName;
 }
 
 QString RobotsGeneratorPluginBase::extension() const
 {
-	return "";
+	return QString();
 }
 
 QString RobotsGeneratorPluginBase::extDescrition() const
 {
-	return "";
+	return QString();
 }
 
 QString RobotsGeneratorPluginBase::generatorName() const
 {
-	return "";
+	return QString();
 }
 
 QFileInfo RobotsGeneratorPluginBase::srcPath()
@@ -38,7 +37,7 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	QString const projectName = "example" + QString::number(mCurrentCodeNumber);
-	QFileInfo fileInfo = defaultFilePath(projectName);
+	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 	bool newCode = true;
 

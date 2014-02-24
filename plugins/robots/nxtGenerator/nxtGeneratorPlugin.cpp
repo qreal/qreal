@@ -29,9 +29,9 @@ NxtGeneratorPlugin::~NxtGeneratorPlugin()
 	delete mFlashTool;
 }
 
-QFileInfo NxtGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString NxtGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QFileInfo(QString("nxt-tools/%1/%1.c").arg(projectName));
+	return QString("nxt-tools/%1/%1.c").arg(projectName);
 }
 
 QString NxtGeneratorPlugin::extension() const

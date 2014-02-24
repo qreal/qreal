@@ -46,7 +46,7 @@ protected:
 
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo) = 0;
 	QFileInfo srcPath();
-	virtual QFileInfo defaultFilePath(QString const &projectName) const;
+	virtual QString defaultFilePath(QString const &projectName) const;
 	virtual QString extension() const;
 	virtual QString extDescrition() const;
 	QFileInfo generateCodeForProcessing();

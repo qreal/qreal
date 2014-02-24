@@ -60,9 +60,9 @@ void TrikGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 	Q_UNUSED(newFileInfo);
 }
 
-QFileInfo TrikGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString TrikGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QFileInfo(QString("trik/%1/%1.qts").arg(projectName));
+	return QString("trik/%1/%1.qts").arg(projectName);
 }
 
 QString TrikGeneratorPlugin::extension() const
