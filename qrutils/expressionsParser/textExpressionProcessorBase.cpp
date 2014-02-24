@@ -20,7 +20,7 @@ QString TextExpressionProcessorBase::processExpression(QString const &expression
 	int pos = 0;
 	while ((pos = variableRegexp.indexIn(result, pos)) != -1) {
 		int toSkip = variableRegexp.matchedLength();
-		QString const matchedDeclaration = variableRegexp.cap().remove(0, 1).toLower();
+		QString const matchedDeclaration = variableRegexp.cap().remove(0, 1);
 
 		if (pos > 0 && result[pos - 1] == '\\') {
 			result.remove(pos - 1, 1);

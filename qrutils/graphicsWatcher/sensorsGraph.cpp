@@ -10,7 +10,7 @@ struct SensorsGraph::TrackObject {
 
 	TrackObject(int const &id, QString const &internalName, QString const &externalName)
 		: index(id)
-		, inParserName(internalName.toLower())
+		, inParserName(internalName)
 		, displayName(externalName)
 	{
 	}

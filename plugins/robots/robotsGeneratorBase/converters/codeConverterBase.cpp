@@ -32,12 +32,12 @@ QString CodeConverterBase::replaceSystemVariables(QString const &expression) con
 	QString result = expression;
 	for (int port = 1; port <= 4; ++port) {
 		QString const stringSensor = QString::number(port);
-		result.replace("Sensor" + stringSensor, sensorExpression(port));
+		result.replace("sensor" + stringSensor, sensorExpression(port));
 	}
 
-	result.replace("EncoderA", encoderExpression("A"));
-	result.replace("EncoderB", encoderExpression("B"));
-	result.replace("EncoderC", encoderExpression("C"));
+	result.replace("encoderA", encoderExpression("A"));
+	result.replace("encoderB", encoderExpression("B"));
+	result.replace("encoderC", encoderExpression("C"));
 
 	result.replace("Time", timelineExpression());
 	return result;
