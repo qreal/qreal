@@ -1,4 +1,4 @@
-var version = "2.5.2.1 (TRIK)";
+var version = "2.5.2.2 (TRIK)";
 var year = 2013;
 
 window.onload = function() {

@@ -52,6 +52,7 @@ private:
 	int mFingersInGesture;
 	Qt::MouseButton mButton;
 	qint64 mLastTapTimestamp;
+	QPointF mLastTouchBeginPoint;
 };
 
 }
