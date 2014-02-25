@@ -1,1 +1,1 @@
-brick.sensor(@@PORT@@).read()
+brick.analogSensor("JA@@PORT@@@").read()
