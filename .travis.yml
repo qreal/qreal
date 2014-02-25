@@ -10,7 +10,7 @@ env:
   - CONFIG=release PROJECT=qrealBP     VERA=false TESTS=true
   - CONFIG=debug   PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
   - CONFIG=release PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
-  - CONFIG=release PROJECT=testTool    VERA=false TESTS="./editorPluginTestFramework testMetamodel.qrs 1"
+  - CONFIG=release PROJECT=testTool    VERA=false TESTS="./editorPluginTestFramework testMetamodel.qrs travisConfigurationParameters.xml"
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
