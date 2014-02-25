@@ -30,7 +30,7 @@ QString CodeConverterBase::convert(QString const &data) const
 QString CodeConverterBase::replaceSystemVariables(QString const &expression) const
 {
 	QString result = expression;
-	for (int port = 1; port <= 4; ++port) {
+	for (int port = 1; port <= 6; ++port) {
 		QString const stringSensor = QString::number(port);
 		result.replace("Sensor" + stringSensor, sensorExpression(port));
 	}
