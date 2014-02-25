@@ -32,7 +32,7 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	setZValue(1);
 
 	mPortItem.setParentItem(this);
-	mPortItem.moveBy(- 2 * portHintSize.width(), - 2 * portHintSize.height());
+	mPortItem.moveBy(-portHintSize.width() - 5, -portHintSize.height() - 5);
 	mPortItem.setFlag(ItemIgnoresTransformations);
 	mPortItem.hide();
 }
@@ -78,7 +78,7 @@ QRectF SensorItem::boundingRect() const
 void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
-	mPortItem.show();
+	mPortItem.hide();
 	mDragged = true;
 }
 
@@ -91,10 +91,21 @@ void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	}
 }
 
+void SensorItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+	AbstractItem::hoverEnterEvent(event);
+	mPortItem.show();
+}
+
+void SensorItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+	AbstractItem::hoverLeaveEvent(event);
+	mPortItem.hide();
+}
+
 void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
-	mPortItem.hide();
 	mDragged = false;
 }
 

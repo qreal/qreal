@@ -4,11 +4,11 @@
 #include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 
-#include "sensorsConfiguration.h"
+#include <qrutils/graphicsUtils/pointImpl.h>
+#include <qrutils/graphicsUtils/rotateItem.h>
+
 #include "rotater.h"
-#include "../../../../../qrutils/graphicsUtils/abstractItem.h"
-#include "../../../../../qrutils/graphicsUtils/pointImpl.h"
-#include "../../../../../qrutils/graphicsUtils/rotateItem.h"
+#include "sensorsConfiguration.h"
 
 namespace qReal {
 namespace interpreters {
@@ -23,25 +23,28 @@ class SensorItem : public QObject, public graphicsUtils::RotateItem
 public:
 	SensorItem(SensorsConfiguration &configuration, robots::enums::inputPort::InputPortEnum port);
 
-	virtual void rotate(double angle);
-	virtual QRectF rect() const;
-	virtual double rotateAngle() const;
-	virtual void setSelected(bool isSelected);
+	void rotate(double angle) override;
+	QRectF rect() const override;
+	double rotateAngle() const override;
+	void setSelected(bool isSelected) override;
 	void setRotater(Rotater *rotater);
-	virtual void checkSelection();
+	void checkSelection() override;
 
 	/// Draws selection rect around sensorBoundingBox
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
-	virtual void drawExtractionForItem(QPainter* painter);
+	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) override;
+	void drawExtractionForItem(QPainter* painter) override;
 
-	QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 
-	virtual void changeDragState(qreal x, qreal y);
-	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
+	void changeDragState(qreal x, qreal y) override;
+	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+
+	void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 	void setRotatePoint(QPointF rotatePoint);
 
@@ -69,7 +72,7 @@ protected:
 	QString name() const;
 	QString pathToImage() const;
 
-	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 	SensorsConfiguration &mConfiguration;
 	robots::enums::inputPort::InputPortEnum const mPort;
