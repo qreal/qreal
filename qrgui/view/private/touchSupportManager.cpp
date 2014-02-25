@@ -3,6 +3,8 @@
 #include <QtWidgets/QPinchGesture>
 #include <QtWidgets/QApplication>
 
+#include <qrutils/mathUtils/geometry.h>
+
 #include "view/editorView.h"
 
 using namespace qReal::view::details;
@@ -103,9 +105,11 @@ void TouchSupportManager::simulateDoubleClick(QTouchEvent *event)
 void TouchSupportManager::simulateRightClick(QTapAndHoldGesture *gesture)
 {
 	QPointF const position(mEditorView->viewport()->mapFromGlobal(gesture->position().toPoint()));
+
 	mButton = Qt::LeftButton;
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonPress, position, Qt::LeftButton);
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonRelease, position, Qt::NoButton);
+
 	mButton = Qt::RightButton;
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonPress, position, Qt::RightButton);
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonRelease, position, Qt::NoButton);
@@ -113,7 +117,13 @@ void TouchSupportManager::simulateRightClick(QTapAndHoldGesture *gesture)
 
 bool TouchSupportManager::isElementUnder(QPointF const &pos)
 {
-	return dynamic_cast<Element *>(mEditorView->itemAt(pos.toPoint()));
+	for (QGraphicsItem * const item : mEditorView->items(pos.toPoint())) {
+		if (dynamic_cast<Element *>(item)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
@@ -121,18 +131,24 @@ bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
 	if (gestureEvent->gesture(Qt::TapGesture)) {
 		mScroller.onTap();
 	} else if (QGesture *tapAndHold = gestureEvent->gesture(Qt::TapAndHoldGesture)) {
+		// Filters out tap & hold with mouse
 		if (mFingersInGesture > 0) {
 			processGestureState(tapAndHold);
 			simulateRightClick(static_cast<QTapAndHoldGesture *>(tapAndHold));
 		}
 	} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
 		processGestureState(pan);
-		mScroller.onPan(pan);
+		if (mFingersInGesture > 2) {
+			mScroller.onPan(pan);
+		}
 	} else if (QGesture *pinch = gestureEvent->gesture(Qt::PinchGesture)) {
 		processGestureState(pinch);
 		QPinchGesture *pinchGesture = static_cast<QPinchGesture *>(pinch);
+		mEditorView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 		mEditorView->zoom(pinchGesture->scaleFactor());
+		mEditorView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	}
+
 	return true;
 }
 
@@ -160,12 +176,12 @@ bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 
 void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 {
+	QPointF const touchPoint = event->touchPoints()[0].pos();
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
-		QCursor::setPos(mEditorView->viewport()->mapToGlobal(event->touchPoints()[0].pos().toPoint()));
 		mEditorView->scene()->clearSelection();
 		bool const elementUnder = isElementUnder(event->touchPoints()[0].pos());
-
+		moveCursor(event);
 		if (QDateTime::currentMSecsSinceEpoch() - mLastTapTimestamp <= QApplication::doubleClickInterval()) {
 			// Double tap occured. We don`t want to show context menu after double tap so disabling
 			// corresponding gesture event with enabling it later
@@ -195,21 +211,39 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 
 		mEditorView->scene()->update();
 		mLastTapTimestamp = QDateTime::currentMSecsSinceEpoch();
+		mLastTouchBeginPoint = touchPoint;
 		break;
 	}
-	case QEvent::TouchEnd:
+	case QEvent::TouchEnd: {
 		// This will not show context menu when we just tap on scene
 		if (mButton == Qt::RightButton) {
 			simulateMove(event);
 		}
 
 		simulateRelease(event);
+
+		// If user`s touch begin and end events points distinguish not more than this distance then the element
+		// under this point will be selected.
+		qreal const maxDistance = 10;
+		if (isElementUnder(touchPoint)
+				&& mathUtils::Geometry::distance(mLastTouchBeginPoint, touchPoint) < maxDistance) {
+			// Selecting the element under the finger
+			simulatePress(event);
+			simulateRelease(event);
+		}
+
 		mEditorView->scene()->update();
 		break;
+	}
 	case QEvent::TouchUpdate:
 		simulateMove(event);
 		break;
 	default:
 		break;
 	}
+}
+
+void TouchSupportManager::moveCursor(QTouchEvent *event)
+{
+	QCursor::setPos(mEditorView->viewport()->mapToGlobal(event->touchPoints()[0].pos().toPoint()));
 }

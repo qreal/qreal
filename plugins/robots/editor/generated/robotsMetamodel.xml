@@ -372,7 +372,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Порты" type="string" name="Ports">
-							<default>B, C</default>
+							<default>1, 2</default>
 						</property>
 						<property displayedName="Силовые моторы" type="bool" name="powerMotors">
 							<default>false</default>
@@ -1988,10 +1988,12 @@
 			</node>
 
 		</graphicTypes>
-		<palette>
+		<palette sorted="false">
 			<group name="ТРИК">
 <!--			<group name="Действия"> -->
 <!--				<element name="Fork"/> -->
+				<element name="InitialNode"/>
+				<element name="FinalNode"/>
 				<element name="Beep"/>
 				<element name="PlayTone"/>
 				<element name="Say"/>
@@ -2023,14 +2025,12 @@
 <!--			</group> -->
 <!--			<group name="Алгоритмы"> -->
 				<element name="IfBlock"/> 
+				<element name="Loop"/>
 				<element name="ControlFlow"/>
-<!--				<element name="Loop"/> -->
 				<element name="CommentBlock"/>
 <!--				<element name="Subprogram"/> -->
 <!--			</group> -->
 <!--			<group name="Инициализация"> -->
-				<element name="InitialNode"/>
-				<element name="FinalNode"/>
 				<element name="Smile"/>
 				<element name="SadSmile"/>
 				<element name="SetBackground"/>

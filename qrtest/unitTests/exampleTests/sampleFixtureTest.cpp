@@ -11,7 +11,7 @@ void BlockParserExampleTest::TearDown() {
 TEST_F(BlockParserExampleTest, expression) {
 	QString const stream = "(2+3)*5";
 	int pos = 0;
-	EXPECT_EQ(blockParser->parseExpression(stream, pos).property("Number").toInt(), 25);
+	EXPECT_EQ(blockParser->parseExpression(stream, pos)->value().toInt(), 25);
 }
 
 TEST_F(BlockParserExampleTest, condition) {

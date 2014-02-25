@@ -44,7 +44,7 @@ bool InsertIntoEdgeCommand::execute()
 	NodeElement *oldSrc = edge->src();
 	NodeElement *oldDst = edge->dst();
 
-	if (oldSrc && oldDst) {
+	if (oldSrc && oldDst && oldSrc->id() != mFirstId && oldDst->id() != mLastId) {
 		mParentId = (mParentId == Id::rootId()) ? mScene.rootItemId() : mParentId;
 		Id type = edge->id().type();
 

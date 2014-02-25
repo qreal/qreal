@@ -21,11 +21,9 @@ public:
 
 	virtual QString pathToTemplates() const;
 
-	virtual simple::Binding::MultiConverterInterface *enginesConverter() const;
+	simple::Binding::MultiConverterInterface *enginesConverter(bool powerMotors) const;
 
-	virtual simple::Binding::ConverterInterface *inputPortConverter() const;
-
-	virtual simple::Binding::ConverterInterface *outputPortConverter() const;
+	simple::Binding::ConverterInterface *inputPortConverter() const override;
 
 protected:
 	virtual void initVariables();

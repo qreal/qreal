@@ -4,15 +4,12 @@
 
 #include "abstractTimer.h"
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
-namespace details
-{
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
 
+/// Timer implementation for real-life time
 class RealTimer : public AbstractTimer
 {
 public:

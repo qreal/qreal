@@ -1,5 +1,6 @@
 #include "trikGeneratorFactory.h"
-#include "converters/trikEnginePortsConverter.h"
+#include "converters/servoMotorPortConverter.h"
+#include "converters/powerMotorPortConverter.h"
 #include "simpleGenerators/ledGenerator.h"
 #include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/sadSmileGenerator.h"
@@ -57,17 +58,16 @@ QString TrikGeneratorFactory::pathToTemplates() const
 	return ":/trik/templates";
 }
 
-Binding::MultiConverterInterface *TrikGeneratorFactory::enginesConverter() const
+Binding::MultiConverterInterface *TrikGeneratorFactory::enginesConverter(bool powerMotors) const
 {
-	return new converters::TrikEnginePortsConverter(pathToTemplates());
+	if (powerMotors) {
+		return new converters::PowerMotorPortConverter;
+	}
+
+	return new converters::ServoMotorPortConverter;
 }
 
 Binding::ConverterInterface *TrikGeneratorFactory::inputPortConverter() const
-{
-	return new Binding::EmptyConverter;
-}
-
-Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
 {
 	return new Binding::EmptyConverter;
 }

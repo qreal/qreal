@@ -14,7 +14,7 @@ using namespace trik;
 
 TrikGeneratorPlugin::TrikGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
-//		, mUploadProgramAction(NULL)
+		, mUploadProgramAction(NULL)
 		, mRunProgramAction(NULL)
 		, mStopRobotAction(NULL)
 {
@@ -32,9 +32,9 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
-//	mUploadProgramAction.setText(tr("Upload program"));
-//	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-//	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	mUploadProgramAction.setText(tr("Upload program"));
+	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
+	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	mRunProgramAction.setText(tr("Run program"));
 	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
@@ -46,7 +46,7 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 
 	return QList<ActionInfo>()
 			<< generateCodeActionInfo
-//			<< uploadProgramActionInfo
+			<< uploadProgramActionInfo
 			<< runProgramActionInfo
 			<< stopRobotActionInfo
 			;
@@ -64,9 +64,9 @@ void TrikGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 	Q_UNUSED(newFileInfo);
 }
 
-QFileInfo TrikGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString TrikGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QFileInfo(QString("trik/%1/%1.qts").arg(projectName));
+	return QString("trik/%1/%1.qts").arg(projectName);
 }
 
 QString TrikGeneratorPlugin::extension() const
@@ -86,7 +86,7 @@ QString TrikGeneratorPlugin::generatorName() const
 
 bool TrikGeneratorPlugin::uploadProgram()
 {
-	QFileInfo const fileInfo = currentSource();
+	QFileInfo const fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo()) {
 		TcpRobotCommunicator communicator;
@@ -106,7 +106,7 @@ void TrikGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
 		TcpRobotCommunicator communicator;
-		QFileInfo const fileInfo = currentSource();
+		QFileInfo const fileInfo = generateCodeForProcessing();
 		communicator.runProgram(fileInfo.fileName());
 	} else {
 		qDebug() << "Program upload failed, aborting";
@@ -119,5 +119,7 @@ void TrikGeneratorPlugin::stopRobot()
 	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
+
 	communicator.runDirectCommand("brick.system(\"killall aplay\")");
+	communicator.runDirectCommand("brick.system(\"killall vlc\")");
 }

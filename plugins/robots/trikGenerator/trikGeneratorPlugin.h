@@ -24,7 +24,7 @@ public:
 protected:
 	virtual MasterGeneratorBase *masterGenerator();
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
-	virtual QFileInfo defaultFilePath(QString const &projectName) const;
+	virtual QString defaultFilePath(QString const &projectName) const;
 	virtual QString extension() const;
 	virtual QString extDescrition() const;
 	virtual QString generatorName() const;
@@ -48,7 +48,7 @@ private:
 	QAction mGenerateCodeAction;
 
 	/// Action that generates and uploads program on a robot
-//	QAction mUploadProgramAction;
+	QAction mUploadProgramAction;
 
 	/// Action that generates and uploads program on a robot
 	QAction mRunProgramAction;

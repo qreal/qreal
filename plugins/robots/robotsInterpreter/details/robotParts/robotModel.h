@@ -83,8 +83,7 @@ public:
 
 	void nextBlockAfterInitial(bool success);
 
-	/// Creates new timer for specific implementation. Doesn`t take ownership
-	AbstractTimer *produceTimer();
+	TimelineInterface *timeline();
 
 signals:
 	void sensorsConfigured();

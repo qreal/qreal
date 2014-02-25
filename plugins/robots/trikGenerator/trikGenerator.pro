@@ -1,7 +1,10 @@
 QT += widgets network
 
+CONFIG += c++11
+
 TEMPLATE = lib
 CONFIG += plugin
+CONFIG += c++11
 DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
@@ -35,7 +38,8 @@ HEADERS += \
 	$$PWD/parts/trikVariables.h \
 	$$PWD/converters/backgroundColorConverter.h \
 	$$PWD/converters/ledColorConverter.h \
-	$$PWD/converters/trikEnginePortsConverter.h \
+	$$PWD/converters/powerMotorPortConverter.h \
+	$$PWD/converters/servoMotorPortConverter.h \
 	$$PWD/simpleGenerators/ledGenerator.h \
 	$$PWD/simpleGenerators/playToneGenerator.h \
 	$$PWD/simpleGenerators/sadSmileGenerator.h \
@@ -54,7 +58,8 @@ SOURCES += \
 	$$PWD/parts/trikVariables.cpp \
 	$$PWD/converters/backgroundColorConverter.cpp \
 	$$PWD/converters/ledColorConverter.cpp \
-	$$PWD/converters/trikEnginePortsConverter.cpp \
+	$$PWD/converters/powerMotorPortConverter.cpp \
+	$$PWD/converters/servoMotorPortConverter.cpp \
 	$$PWD/simpleGenerators/ledGenerator.cpp \
 	$$PWD/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/simpleGenerators/sadSmileGenerator.cpp \
