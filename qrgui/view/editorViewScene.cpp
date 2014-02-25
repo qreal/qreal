@@ -975,13 +975,29 @@ bool EditorViewScene::isEmptyClipboard()
 void EditorViewScene::getObjectByGesture()
 {
 	mTimer->stop();
-	Id const id = mMouseMovementManager->getObject();
-	if (!id.element().isEmpty()) {
+	gestures::MouseMovementManager::GestureResult const result = mMouseMovementManager->result();
+	switch (result.type()) {
+	case gestures::MouseMovementManager::invalidGesture:
+		break;
+	case gestures::MouseMovementManager::createElementGesture: {
 		// Creating element with its center in the center of gesture (see #1086)
+		Id const id = result.elementType();
 		QSize const elementSize = mWindow->editorManager().iconSize(id);
 		QPointF const gestureCenter = mMouseMovementManager->pos();
 		QPointF const elementCenter(elementSize.width() / 2.0, elementSize.height() / 2.0);
 		createElement(id.toString(), gestureCenter - elementCenter);
+		break;
+	}
+	case gestures::MouseMovementManager::deleteGesture:
+		// Deletting element under the gesture center
+		QPointF const gestureCenter = mMouseMovementManager->pos();
+		for (QGraphicsItem * const item : items(gestureCenter)) {
+			if (NodeElement * const node = dynamic_cast<NodeElement *>(item)) {
+				mWindow->deleteElementFromDiagram(node->id());
+				break;
+			}
+		}
+		break;
 	}
 
 	deleteGesture();
