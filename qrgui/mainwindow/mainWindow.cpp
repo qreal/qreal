@@ -434,14 +434,12 @@ void MainWindow::sceneSelectionChanged()
 		return;
 	}
 
-	QList<Element*> elements;
 	QList<Element*> selected;
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
 	foreach (QGraphicsItem* item, items) {
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
-			elements.append(element);
 			if (element->isSelected()) {
 				selected.append(element);
 				element->setSelectionState(true);

@@ -32,12 +32,12 @@ QString CodeConverterBase::replaceSystemVariables(QString const &expression) con
 	QString result = expression;
 	for (int port = 1; port <= 4; ++port) {
 		QString const stringSensor = QString::number(port);
-		result.replace("Sensor" + stringSensor, sensorExpression(port));
+		result.replace("sensor" + stringSensor, sensorExpression(port));
 	}
 
-	result.replace("EncoderA", encoderExpression("A"));
-	result.replace("EncoderB", encoderExpression("B"));
-	result.replace("EncoderC", encoderExpression("C"));
+	result.replace("encoderA", encoderExpression("A"));
+	result.replace("encoderB", encoderExpression("B"));
+	result.replace("encoderC", encoderExpression("C"));
 
 	result.replace("Time", timelineExpression());
 	return result;
@@ -67,10 +67,11 @@ QString CodeConverterBase::readSensorTemplatePath(
 		qReal::interpreters::robots::enums::sensorType::SensorTypeEnum sensorType) const
 {
 	switch (sensorType) {
+	case qReal::interpreters::robots::enums::sensorType::colorFull:
+		return "sensors/readColorRecognition.t";
 	case qReal::interpreters::robots::enums::sensorType::colorRed:
 	case qReal::interpreters::robots::enums::sensorType::colorGreen:
 	case qReal::interpreters::robots::enums::sensorType::colorBlue:
-	case qReal::interpreters::robots::enums::sensorType::colorFull:
 	case qReal::interpreters::robots::enums::sensorType::colorNone:
 		return "sensors/readColor.t";
 	case qReal::interpreters::robots::enums::sensorType::sonar:

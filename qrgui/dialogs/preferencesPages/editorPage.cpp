@@ -116,7 +116,6 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("EmbeddedLinkerSize", mUi->embeddedLinkerSizeSlider->value());
 	SettingsManager::setValue("LineType", mUi->lineMode->currentIndex() - 1);
 	SettingsManager::setValue("LoopEdgeBoundsIndent", mUi->loopEdgeBoundsIndent->value());
-	SettingsManager::setValue("zoomFactor", mUi->zoomFactorSlider->value());
 	SettingsManager::setValue("ShowGrid", mUi->showGridCheckBox->isChecked());
 	SettingsManager::setValue("ShowAlignment", mUi->showAlignmentCheckBox->isChecked());
 	SettingsManager::setValue("ActivateGrid", mUi->activateGridCheckBox->isChecked());
@@ -160,7 +159,6 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->activateAlignmentCheckBox->setChecked(SettingsManager::value("ActivateAlignment").toBool());
 	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent").toInt());
 	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
-	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor").toInt());
 	mUi->loopEdgeBoundsIndent->setValue(SettingsManager::value("LoopEdgeBoundsIndent").toInt());
 
 	mUi->enableMoveLabelsCheckBox->setChecked(SettingsManager::value("MoveLabels").toBool());

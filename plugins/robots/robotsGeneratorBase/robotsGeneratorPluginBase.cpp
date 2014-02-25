@@ -12,35 +12,45 @@ RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 	QApplication::installTranslator(&mAppTranslator);
 }
 
-QFileInfo RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) const
+QString RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) const
 {
-	Q_UNUSED(projectName);
-	return QFileInfo();
+	return projectName;
 }
 
 QString RobotsGeneratorPluginBase::extension() const
 {
-	return "";
+	return QString();
 }
 
 QString RobotsGeneratorPluginBase::extDescrition() const
 {
-	return "";
+	return QString();
 }
 
 QString RobotsGeneratorPluginBase::generatorName() const
 {
-	return "";
+	return QString();
+}
+
+bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
+{
+	/// @todo: In some scenarios user hand-coded programs will be rewritten with auto-generated
+	Q_UNUSED(project)
+	return true;
 }
 
 QFileInfo RobotsGeneratorPluginBase::srcPath()
 {
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
-	QString const projectName = "example" + QString::number(mCurrentCodeNumber);
-	QFileInfo fileInfo = defaultFilePath(projectName);
+	int exampleNumber = 0;
+	while (!canGenerateTo("example" + QString::number(exampleNumber))) {
+		++exampleNumber;
+	}
+
+	QString const projectName = "example" + QString::number(exampleNumber);
+	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
-	bool newCode = true;
 
 	if (!pathsList.isEmpty()) {
 		foreach (QFileInfo const &path, pathsList) {
@@ -48,26 +58,21 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 				&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
 				&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName())) {
 				fileInfo = path;
-				newCode = false;
 				break;
 			}
 		}
 	}
 
-	if (newCode) {
-		mCurrentCodeNumber++;
-	}
-
 	return fileInfo;
 }
 
-QFileInfo RobotsGeneratorPluginBase::currentSource()
+QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 {
 	QFileInfo fileInfo;
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	if (!activeDiagram.isNull()) {
-		if (generateCode()) {
+		if (generateCode(false)) {
 			foreach (QFileInfo const &path, mCodePath.values(activeDiagram)) {
 				if (mTextManager->isDefaultPath(path.absoluteFilePath())
 					&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
@@ -89,7 +94,6 @@ QFileInfo RobotsGeneratorPluginBase::currentSource()
 
 void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator)
 {
-	mCurrentCodeNumber = 0;
 	mProjectManager = &configurator.projectManager();
 	mSystemEvents = &configurator.systemEvents();
 	mTextManager = &configurator.textManager();
@@ -107,7 +111,7 @@ void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator)
 	connect(mSystemEvents, SIGNAL(codeTabClosed(QFileInfo)), this, SLOT(removeCode(QFileInfo)));
 }
 
-bool RobotsGeneratorPluginBase::generateCode()
+bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 {
 	mProjectManager->save();
 	mMainWindowInterface->errorReporter()->clearErrors();
@@ -125,10 +129,15 @@ bool RobotsGeneratorPluginBase::generateCode()
 		return false;
 	}
 
+	Id const activeDiagram = mMainWindowInterface->activeDiagram();
 
 	QString const generatedCode = utils::InFile::readAll(generatedSrcPath);
 	if (!generatedCode.isEmpty()) {
 		mTextManager->showInTextEditor(path, generatorName());
+	}
+
+	if (!openTab) {
+		mMainWindowInterface->activateItemOrDiagram(activeDiagram);
 	}
 
 	delete generator;

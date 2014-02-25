@@ -39,6 +39,9 @@ QString MasterGeneratorBase::generate()
 	}
 
 	beforeGeneration();
+	if (!QDir(mProjectDir).exists()) {
+		QDir().mkpath(mProjectDir);
+	}
 
 	mCustomizer->factory()->variables()->reinit(mRepo);
 
