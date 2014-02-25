@@ -196,7 +196,14 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			}
 
 			if (!isEdgeFromEmbeddedLinker) {
-				mScene->clearSelection();
+				for (QGraphicsItem *item : scene()->items()) {
+					Element* element = dynamic_cast<Element*>(item);
+					if (element) {
+						element->setSelectionState(false);
+						element->select(false);
+					}
+				}
+
 				elem->select(true);
 			}
 
