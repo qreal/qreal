@@ -1440,6 +1440,16 @@
         <translation>Режӥм юзабилити-тестирования</translation>
     </message>
     <message>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="129"/>
+        <source>Touch</source>
+        <translation>Тач</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="145"/>
+        <source>Touch Mode</source>
+        <translation>Режим работы на тач-экране</translation>
+    </message>
+    <message>
         <source>Warning window</source>
         <translation type="obsolete">Окно предупреждений</translation>
     </message>
@@ -4037,7 +4047,7 @@
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2247"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2249"/>
         <source>Getting Started</source>
         <translation>Добро пожаловать!</translation>
     </message>
@@ -4057,17 +4067,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2093"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2095"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2124"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2126"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2124"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2126"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
