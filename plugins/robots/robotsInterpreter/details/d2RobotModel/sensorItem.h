@@ -52,6 +52,19 @@ public:
 	void onDirectionChanged();
 
 protected:
+	class PortItem : public QGraphicsItem
+	{
+	public:
+		explicit PortItem(QString const &port);
+
+	protected:
+		void paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget) override;
+		QRectF boundingRect() const override;
+
+	private:
+		QString const mPort;
+	};
+
 	QRectF imageRect() const;
 	QString name() const;
 	QString pathToImage() const;
@@ -69,6 +82,7 @@ protected:
 	QRectF const mImageRect;
 	QRectF const mBoundingRect;
 	QImage const mImage;
+	PortItem mPortItem;
 };
 
 }

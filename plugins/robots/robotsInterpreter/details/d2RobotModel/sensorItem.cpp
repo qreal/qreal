@@ -8,6 +8,7 @@ using namespace details::d2Model;
 using namespace graphicsUtils;
 
 int const selectionDrift = 7;
+QSizeF const portHintSize(10, 15);
 
 SensorItem::SensorItem(SensorsConfiguration &configuration
 		, robots::enums::inputPort::InputPortEnum port)
@@ -21,6 +22,7 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
 			, selectionDrift, selectionDrift))
 	, mImage(pathToImage())
+	, mPortItem(QString::number(port + 1))
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 
@@ -28,6 +30,11 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
+
+	mPortItem.setParentItem(this);
+	mPortItem.moveBy(- 2 * portHintSize.width(), - 2 * portHintSize.height());
+	mPortItem.setFlag(ItemIgnoresTransformations);
+	mPortItem.hide();
 }
 
 void SensorItem::setRotatePoint(QPointF rotatePoint)
@@ -71,6 +78,7 @@ QRectF SensorItem::boundingRect() const
 void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
+	mPortItem.show();
 	mDragged = true;
 }
 
@@ -86,6 +94,7 @@ void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
+	mPortItem.hide();
 	mDragged = false;
 }
 
@@ -212,4 +221,41 @@ void SensorItem::onDirectionChanged()
 {
 	mConfiguration.setPosition(mPort, scenePos().toPoint());
 	mConfiguration.setDirection(mPort, rotation());
+}
+
+SensorItem::PortItem::PortItem(QString const &port)
+	: mPort(port)
+{
+}
+
+void SensorItem::PortItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget)
+{
+	Q_UNUSED(option)
+	Q_UNUSED(widget)
+
+	painter->save();
+
+	QPen pen;
+	pen.setWidth(2);
+	pen.setColor(Qt::yellow);
+
+	QBrush brush;
+	brush.setStyle(Qt::SolidPattern);
+	brush.setColor(Qt::yellow);
+
+	painter->setPen(pen);
+	painter->setBrush(brush);
+
+	painter->drawRoundedRect(boundingRect(), 2, 2);
+
+	pen.setColor(Qt::black);
+	painter->setPen(pen);
+	painter->drawText(boundingRect(), mPort, QTextOption(Qt::AlignCenter));
+
+	painter->restore();
+}
+
+QRectF SensorItem::PortItem::boundingRect() const
+{
+	return QRectF(QPointF(), portHintSize);
 }
