@@ -28,17 +28,18 @@ public:
 	NxtGeneratorPlugin();
 	virtual ~NxtGeneratorPlugin();
 
-	virtual void init(qReal::PluginConfigurator const &configurator);
-	virtual QList<qReal::ActionInfo> actions();
-	virtual QList<qReal::HotKeyActionInfo> hotKeyActions();
+	void init(qReal::PluginConfigurator const &configurator) override;
+	QList<qReal::ActionInfo> actions() override;
+	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 protected:
-	virtual MasterGeneratorBase *masterGenerator();
-	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
-	virtual QString defaultFilePath(QString const &projectName) const;
-	virtual QString extension() const;
-	virtual QString extDescrition() const;
-	virtual QString generatorName() const;
+	MasterGeneratorBase *masterGenerator() override;
+	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
+	QString defaultFilePath(QString const &projectName) const override;
+	QString extension() const override;
+	QString extDescrition() const override;
+	QString generatorName() const override;
+	bool canGenerateTo(QString const &project) override;
 
 private slots:
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.

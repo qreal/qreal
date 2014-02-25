@@ -52,6 +52,8 @@ protected:
 	QFileInfo generateCodeForProcessing();
 	virtual QString generatorName() const;
 
+	virtual bool canGenerateTo(QString const &project);
+
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
 
@@ -67,7 +69,6 @@ protected:
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 	qReal::SystemEventsInterface *mSystemEvents; // Does not have ownership
 	qReal::TextManagerInterface *mTextManager;
-	int mCurrentCodeNumber;
 	QMultiHash<qReal::Id, QFileInfo> mCodePath;
 };
 

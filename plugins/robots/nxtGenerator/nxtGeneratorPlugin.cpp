@@ -49,6 +49,21 @@ QString NxtGeneratorPlugin::generatorName() const
 	return "nxtOsek";
 }
 
+bool NxtGeneratorPlugin::canGenerateTo(QString const &project)
+{
+	QString const cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
+	QFileInfo const cFile(cFilePath);
+	QFileInfo const makeFile(cFile.absolutePath() + "/makefile");
+	if (!cFile.exists() || !makeFile.exists()) {
+		return true;
+	}
+
+	// If c file has much later timestamp then it was edited by user - restrincting generation to this file.
+	int const timestampMaxDifference = 100;
+	return cFile.lastModified().toMSecsSinceEpoch()
+			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference;
+}
+
 void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	RobotsGeneratorPluginBase::init(configurator);

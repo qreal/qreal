@@ -32,14 +32,25 @@ QString RobotsGeneratorPluginBase::generatorName() const
 	return QString();
 }
 
+bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
+{
+	/// @todo: In some scenarios user hand-coded programs will be rewritten with auto-generated
+	Q_UNUSED(project)
+	return true;
+}
+
 QFileInfo RobotsGeneratorPluginBase::srcPath()
 {
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
-	QString const projectName = "example" + QString::number(mCurrentCodeNumber);
+	int exampleNumber = 0;
+	while (!canGenerateTo("example" + QString::number(exampleNumber))) {
+		++exampleNumber;
+	}
+
+	QString const projectName = "example" + QString::number(exampleNumber);
 	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
-	bool newCode = true;
 
 	if (!pathsList.isEmpty()) {
 		foreach (QFileInfo const &path, pathsList) {
@@ -47,14 +58,9 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 				&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
 				&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName())) {
 				fileInfo = path;
-				newCode = false;
 				break;
 			}
 		}
-	}
-
-	if (newCode) {
-		mCurrentCodeNumber++;
 	}
 
 	return fileInfo;
@@ -88,7 +94,6 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 
 void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator)
 {
-	mCurrentCodeNumber = 0;
 	mProjectManager = &configurator.projectManager();
 	mSystemEvents = &configurator.systemEvents();
 	mTextManager = &configurator.textManager();
