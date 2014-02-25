@@ -4,6 +4,7 @@
 #include "view/copyPaste/clipboardHandler.h"
 #include "view/copyPaste/pasteGroupCommand.h"
 #include "view/editorViewScene.h"
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -22,6 +23,12 @@ void ClipboardHandler::setController(Controller * const controller)
 	mController = controller;
 }
 
+void ClipboardHandler::cut()
+{
+	copy();
+	mScene->mainWindow()->deleteFromScene();
+}
+
 void ClipboardHandler::copy()
 {
 	QList<NodeElement *> nodes = getNodesForCopying();
@@ -35,22 +42,24 @@ void ClipboardHandler::copy()
 QList<NodeData> ClipboardHandler::getNodesData(QList<NodeElement *> const &nodes)
 {
 	QList<NodeData> nodesData;
-	foreach (NodeElement* node, nodes) {
+	for (NodeElement * const node : nodes) {
 		nodesData << node->data();
 	}
+
 	return nodesData;
 }
 
 QList<NodeElement *> ClipboardHandler::getNodesForCopying()
 {
 	QList<NodeElement *> nodes;
-	foreach (QGraphicsItem *item, mScene->selectedItems()) {
+	for (QGraphicsItem * const item : mScene->selectedItems()) {
 		NodeElement *node = dynamic_cast<NodeElement *>(item);
 		if (node && !mScene->selectedItems().contains(node->parentItem())) {
 			nodes << node;
 		}
 	}
-	foreach (NodeElement *node, nodes) {
+
+	for (NodeElement * const node : nodes) {
 		addChildren(node, nodes);
 	}
 

@@ -118,6 +118,7 @@ public:
 public slots:
 	qReal::Id createElement(const QString &type);
 
+	void cut();
 	void copy();
 	void paste(bool logicalCopy);
 

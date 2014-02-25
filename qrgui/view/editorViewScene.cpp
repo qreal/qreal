@@ -695,6 +695,11 @@ QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 	return list;
 }
 
+void EditorViewScene::cut()
+{
+	mClipboardHandler.cut();
+}
+
 void EditorViewScene::copy()
 {
 	mClipboardHandler.copy();
@@ -949,6 +954,7 @@ void EditorViewScene::disableActions(Element *focusElement)
 {
 	if (!focusElement) {
 		mWindow->actionDeleteFromDiagram()->setEnabled(false);
+		mWindow->actionCutElementsOnDiagram()->setEnabled(false);
 		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
 	}
 	if (isEmptyClipboard()) {
@@ -960,6 +966,7 @@ void EditorViewScene::disableActions(Element *focusElement)
 void EditorViewScene::enableActions()
 {
 	mWindow->actionDeleteFromDiagram()->setEnabled(true);
+	mWindow->actionCutElementsOnDiagram()->setEnabled(true);
 	mWindow->actionCopyElementsOnDiagram()->setEnabled(true);
 	mWindow->actionPasteOnDiagram()->setEnabled(true);
 	mWindow->actionPasteCopyOfLogical()->setEnabled(true);
@@ -1253,9 +1260,14 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mExploser = new view::details::ExploserView(mainWindow, &mainWindow->models()->logicalModelAssistApi()
 			, &mainWindow->models()->graphicalModelAssistApi(), this);
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
+	QAction * const separator = new QAction(this);
+	separator->setSeparator(true);
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
+			<< separator
+			<< mWindow->actionCutElementsOnDiagram()
 			<< mWindow->actionCopyElementsOnDiagram()
-			<< mWindow->actionPasteOnDiagram() << mWindow->actionPasteCopyOfLogical();
+			<< mWindow->actionPasteOnDiagram()
+			<< mWindow->actionPasteCopyOfLogical();
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const
