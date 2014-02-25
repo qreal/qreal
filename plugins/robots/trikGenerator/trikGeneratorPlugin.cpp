@@ -121,4 +121,5 @@ void TrikGeneratorPlugin::stopRobot()
 	}
 
 	communicator.runDirectCommand("brick.system(\"killall aplay\")");
+	communicator.runDirectCommand("brick.system(\"killall vlc\")");
 }

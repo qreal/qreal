@@ -33,7 +33,7 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 
 	QString const command = "file:" + fileNameOnARobot + ":" + fileContents;
 	mSocket.write(command.toUtf8());
-	mSocket.waitForBytesWritten();
+	mSocket.waitForBytesWritten(3000);
 
 	disconnect();
 
@@ -49,7 +49,7 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 
 	QString const command = "run:" + programName;
 	mSocket.write(command.toUtf8());
-	mSocket.waitForBytesWritten();
+	mSocket.waitForBytesWritten(3000);
 
 	disconnect();
 
@@ -65,7 +65,7 @@ bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 
 	QString const command = "direct:" + directCommand;
 	mSocket.write(command.toUtf8());
-	mSocket.waitForBytesWritten();
+	mSocket.waitForBytesWritten(3000);
 
 	disconnect();
 
@@ -81,7 +81,7 @@ bool TcpRobotCommunicator::stopRobot()
 
 	QString const command = "stop";
 	mSocket.write(command.toUtf8());
-	mSocket.waitForBytesWritten();
+	mSocket.waitForBytesWritten(3000);
 
 	disconnect();
 
@@ -106,6 +106,8 @@ void TcpRobotCommunicator::connect()
 
 void TcpRobotCommunicator::disconnect()
 {
-	mSocket.disconnectFromHost();
-	mSocket.waitForDisconnected();
+	if (mSocket.state() == QTcpSocket::ConnectedState) {
+		mSocket.disconnectFromHost();
+		mSocket.waitForDisconnected(3000);
+	}
 }
