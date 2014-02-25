@@ -10,7 +10,7 @@ class QrmcLauncher
 public:
 
 	/// launches qrmc (gets fileName and path to qrmc-bin.pro and generates code)
-	void launchQrmc(QString const &fileName, QString const &pathToQrmc);
+	void launchQrmc(QString const &fileName, QString const &pathToQrmc, QString const &pathToGeneratedCode);
 };
 
 }

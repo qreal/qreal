@@ -26,24 +26,22 @@ MainClass::MainClass(
 {
 	setTempValueInSettingsManager();
 
-	deleteOldBinaries(binariesDir);
+	parseConfigurationFile(travisMode);
+
+	deleteOldBinaries(mGeneratedCodeDir);
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
 
-	if (travisMode) {
-		copyTestMetamodel(fileName);
-	}
-
-	parseConfigurationFile(travisMode);
+	copyTestMetamodel(fileName);
 
 	launchQrxc(normalizedFileName);
-	compilePlugin(pathToQrxcGeneratedCode);
-	EditorInterface* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrxcGeneratedPlugin);
+	compilePlugin(mGeneratedCodeDir + pathToQrxcGeneratedCode);
+	EditorInterface* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDir + pathToQrxcGeneratedPlugin);
 	appendPluginNames();
 
 	launchQrmc(fileName, pathToQrmc);
-	compilePlugin(pathToQrmcGeneratedCode);
-	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrmcGeneratedPlugin);
+	compilePlugin(mGeneratedCodeDir + pathToQrmcGeneratedCode);
+	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDir + pathToQrmcGeneratedPlugin);
 
 	InterpreterEditorManager interpreterEditorManager(fileName);
 	EditorManager qrxcEditorManager(destDirForQrxc, mQrxcGeneratedPluginsList);
@@ -61,12 +59,11 @@ MainClass::MainClass(
 				qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
 		QList<QPair<QString, QPair<QString, QString> > > methodsTesterOutput = methodsTester->generatedOutput();
-		if (!travisMode) {
+		if (mGenerateHtml == "yes") {
 			createHtml(methodsTesterOutput, interpreterMethodsTesterOutput);
-		} else {
-			mResultOfTesting = MethodsCheckerForTravis::calculateResult(methodsTesterOutput
-					, interpreterMethodsTesterOutput);
 		}
+		mResultOfTesting = MethodsCheckerForTravis::calculateResult(methodsTesterOutput
+				, interpreterMethodsTesterOutput);
 	} else {
 		qDebug() << "Generation of plugins failed";
 	}
@@ -89,11 +86,11 @@ void MainClass::createFolder(QString const &path)
 
 void MainClass::createNewFolders()
 {
-	createFolder(binariesDir);
-	createFolder(pluginsDir);
-	createFolder(sourcesDir);
-	createFolder(pathToQrmcGeneratedPlugin);
-	createFolder(pathToQrxcGeneratedPlugin);
+	createFolder(mGeneratedCodeDir);
+	createFolder(mGeneratedCodeDir + pluginsDir);
+	createFolder(mGeneratedCodeDir + sourcesDir);
+	createFolder(mGeneratedCodeDir + pathToQrmcGeneratedPlugin);
+	createFolder(mGeneratedCodeDir + pathToQrxcGeneratedPlugin);
 }
 
 QString MainClass::normalizedName(QString const &fileName)
@@ -150,7 +147,7 @@ void MainClass::returnOldValueOfTemp() const
 
 void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {
-	mQrmcLauncher.launchQrmc(fileName, pathToQrmc);
+	mQrmcLauncher.launchQrmc(fileName, pathToQrmc, mGeneratedCodeDir);
 }
 
 void MainClass::compilePlugin(QString const &directoryToCodeToCompile)
@@ -165,7 +162,7 @@ void MainClass::compilePlugin(QString const &directoryToCodeToCompile)
 
 void MainClass::launchQrxc(QString const &fileName)
 {
-	mQrxcLauncher.launchQrxc(fileName, mApplicationPath);
+	mQrxcLauncher.launchQrxc(fileName, mApplicationPath, mGeneratedCodeDir);
 }
 
 EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const &pathToFile)
@@ -176,7 +173,7 @@ EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const 
 void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
 		, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult)
 {
-	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult);
+	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, mGeneratedCodeDir);
 }
 
 void MainClass::appendPluginNames()
@@ -184,7 +181,7 @@ void MainClass::appendPluginNames()
 	mQrxcGeneratedPluginsList.append(mPluginLoader.pluginNames());
 }
 
-void MainClass::parseConfigurationFile(const bool &travisMode)
+void MainClass::parseConfigurationFile(bool const &travisMode)
 {
 	if (travisMode) {
 		mConfigurationFileParser.parseConfigurationFile(travisConfigurationFileName);
@@ -196,5 +193,8 @@ void MainClass::parseConfigurationFile(const bool &travisMode)
 	mConfigurationParameter = mConfigurationFileParser.configurationParameter();
 	mPluginExtension = mConfigurationFileParser.pluginExtension();
 	mPrefix = mConfigurationFileParser.prefix();
+	mQRealRootPath = mConfigurationFileParser.qRealRootPath();
+	mGenerateHtml = mConfigurationFileParser.htmlGenerationParameter();
+	mGeneratedCodeDir = mConfigurationFileParser.generatedCodeDir();
 }
 

@@ -78,9 +78,13 @@ SOURCES += \
 	configurationFileParser.cpp \
 	methodsCheckerForTravis.cpp
 
-
-
-
-
-
-
+win32 {
+	QMAKE_POST_LINK = "cmd /C "xcopy methodsToTest ..\\..\\bin /s /e /q /y /i &&"\
+						" copy configurationParameters.xml ..\\..\\bin /y &&"\
+						" copy travisConfigurationParameters.xml ..\\..\\bin /y""
+}
+else {
+	QMAKE_POST_LINK = " cp -r methodsToTest/* ../../bin/ &&"\
+						" cp configurationParameters.xml ../../bin/ &&"\
+						" cp travisConfigurationParameters.xml ../../bin/"
+}

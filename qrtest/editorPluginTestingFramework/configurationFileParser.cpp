@@ -10,13 +10,16 @@ using namespace editorPluginTestingFramework;
 
 void ConfigurationFileParser::parseConfigurationFile(QString const &configurationFile)
 {
-	mXml = utils::xmlUtils::loadDocument(pathToSourceCode + configurationFile);
+	mXml = utils::xmlUtils::loadDocument(configurationFile);
 
 	mQmakeParameter = valueByTag("qmake");
 	mMakeParameter = valueByTag("make");
 	mConfigurationParameter = valueByTag("configuration");
 	mPluginExtension = valueByTag("pluginExtension");
 	mPrefix = valueByTag("prefix");
+	mQRealRootPath = valueByTag("qrealRoot");
+	mGenerateHtml = valueByTag("generateHtml");
+	mGeneratedCodeDir = valueByTag("generatedCodeDir");
 }
 
 QString ConfigurationFileParser::valueByTag(QString const &tag) const
@@ -50,4 +53,19 @@ QString ConfigurationFileParser::pluginExtension() const
 QString ConfigurationFileParser::prefix() const
 {
 	return mPrefix;
+}
+
+QString ConfigurationFileParser::qRealRootPath() const
+{
+	return mQRealRootPath;
+}
+
+QString ConfigurationFileParser::htmlGenerationParameter() const
+{
+	return mGenerateHtml;
+}
+
+QString ConfigurationFileParser::generatedCodeDir() const
+{
+	return mGeneratedCodeDir;
 }

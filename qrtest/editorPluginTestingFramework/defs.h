@@ -3,28 +3,24 @@
 
 namespace editorPluginTestingFramework {
 
-QString const pathToQRealRoot = "../../";
+QString const sourcesDir = "/sources";
+QString const pluginsDir = "/plugins";
 
-QString const pathToSourceCode = "../qrtest/editorPluginTestingFramework/";
+QString const pathToQrmcGeneratedCode = "/sources/qrmc";
+QString const pathToQrxcGeneratedCode = "/sources/qrxc";
 
-QString const binariesDir = "../qrtest/binaries";
-QString const sourcesDir = "../qrtest/binaries/sources";
-QString const pluginsDir = "../qrtest/binaries/plugins";
-
-QString const pathToQrmcGeneratedCode = "../qrtest/binaries/sources/qrmc";
-QString const pathToQrxcGeneratedCode = "../qrtest/binaries/sources/qrxc";
-
-QString const pathToQrmcGeneratedPlugin = "../qrtest/binaries/plugins/qrmc";
-QString const pathToQrxcGeneratedPlugin = "../qrtest/binaries/plugins/qrxc";
+QString const pathToQrmcGeneratedPlugin = "/plugins/qrmc";
+QString const pathToQrxcGeneratedPlugin = "/plugins/qrxc";
 
 QString const pathToQRealRootFromQrmc = "../../../../../";
 QString const pathToQRealRootFromQrxc = "../../../../";
 
+/// Todo: remove qrtest/binaries from this part
 QString const destDirForQrmc = "qrtest/binaries/plugins/qrmc";
 QString const destDirForQrxc = "qrtest/binaries/plugins/qrxc";
 
-QString const pathToQrxcQrmcMethodsToTest = "methodsToTest/methodsToTestQrxcQrmc.txt";
-QString const pathToQrxcInterpreterMethodsToTest = "methodsToTest/methodsToTestInterpQrxc.txt";
+QString const pathToQrxcQrmcMethodsToTest = "methodsToTestQrxcQrmc.txt";
+QString const pathToQrxcInterpreterMethodsToTest = "methodsToTestInterpQrxc.txt";
 
 QString const configurationFileName = "configurationParameters.xml";
 QString const travisConfigurationFileName = "travisConfigurationParameters.xml";

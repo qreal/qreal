@@ -14,8 +14,10 @@
 using namespace editorPluginTestingFramework;
 using namespace utils;
 
-void HtmlMaker::makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult,
-			QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult)
+void HtmlMaker::makeHtml(
+			QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
+			, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
+			, QString const &pathToHtml)
 {
 	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
 
@@ -37,10 +39,10 @@ void HtmlMaker::makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAn
 	addTable(body, qrxcAndInterpreterResult, QObject::tr("Table with results of comparison between qrxc and interpreter")
 			, QObject::tr("Method name"), "QRXC", "Interpreter");
 
-	QString const &fileName = binariesDir + "/output.html";
+	QString const &fileName = pathToHtml + "/output.html";
 	OutFile outHtml(fileName);
 	mHtml.save(outHtml(), 4);
-	qDebug() << "binaries/output.html generated";
+	qDebug() << "output.html generated";
 }
 
 QDomElement HtmlMaker::newElement(QDomElement &parent, QString const &newElementName)

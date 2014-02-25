@@ -31,14 +31,14 @@ public:
 	int travisTestResult() const;
 
 private:
-	/// creates qrtest/binaries and all inner folders
-	static void createNewFolders();
 	/// returns normalized name (without extension)
 	static QString normalizedName(QString const &fileName);
-	/// creates one folder
-	static void createFolder(QString const &path);
 	/// deletes old qrtest/binaries and all inner folders and files
 	static void deleteOldBinaries(QString const &directory);
+	/// creates one folder
+	void createFolder(QString const &path);
+	/// creates qrtest/binaries and all inner folders
+	void createNewFolders();
 
 	/// copies testMetamodel.qrs from qrtest/editorPluginTestingFramework/fileToTestWithTravis to bin
 	static void copyTestMetamodel(QString const &fileName);
@@ -83,6 +83,12 @@ private:
 	QString mPluginExtension;
 	/// prefix (none for Windows, lib for linux)
 	QString mPrefix;
+	/// path to qreal root (from bin)
+	QString mQRealRootPath;
+	/// "yes" if we want to generate html and "no" otherwise
+	QString mGenerateHtml;
+	/// path to generated code (from root)
+	QString mGeneratedCodeDir;
 
 	/// result of testing for travis
 	int mResultOfTesting;

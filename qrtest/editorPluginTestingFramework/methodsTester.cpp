@@ -6,7 +6,7 @@ using namespace qReal;
 
 void MethodsTester::fillMethodsToTestList(QString const &fileName)
 {
-	QFile methodsToTest(pathToSourceCode + fileName);
+	QFile methodsToTest(fileName);
 	if (!methodsToTest.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		return;
 	}
