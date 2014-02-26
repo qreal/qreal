@@ -2,9 +2,9 @@
 
 #include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
-#include "../../../../../qrutils/graphicsUtils/abstractItem.h"
-#include "../../../../../qrutils/graphicsUtils/lineImpl.h"
-#include "../../../../../qrutils/graphicsUtils/rotateItem.h"
+
+#include <qrutils/graphicsUtils/lineImpl.h>
+#include <qrutils/graphicsUtils/rotateItem.h>
 
 namespace qReal {
 namespace interpreters {

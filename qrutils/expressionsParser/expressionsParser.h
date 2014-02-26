@@ -40,7 +40,8 @@ protected:
 		incorrectVariableDeclaration,
 		unexpectedSymbolAfterTheEndOfExpression,
 		unknownElementProperty,
-		unknownElementName
+		unknownElementName,
+		divisionByZero
 	};
 
 protected:

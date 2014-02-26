@@ -91,6 +91,7 @@ public:
 
 	QAction *actionDeleteFromDiagram() const;
 	QAction *actionCopyElementsOnDiagram() const;
+	QAction *actionCutElementsOnDiagram() const;
 	QAction *actionPasteOnDiagram() const;
 	QAction *actionPasteCopyOfLogical() const;
 
@@ -237,6 +238,7 @@ private slots:
 	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
 	void deleteFromDiagram();
+	void cutElementsOnDiagram();
 	void copyElementsOnDiagram();
 	void pasteOnDiagram();
 	void pasteCopyOfLogical();
