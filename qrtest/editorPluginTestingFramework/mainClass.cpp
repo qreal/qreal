@@ -184,7 +184,6 @@ void MainClass::appendPluginNames()
 
 void MainClass::parseConfigurationFile(QString const &fileName)
 {
-
 	mConfigurationFileParser.parseConfigurationFile(fileName);
 
 	mQmakeParameter = mConfigurationFileParser.qmakeParameter();
