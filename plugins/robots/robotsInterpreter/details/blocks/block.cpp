@@ -186,11 +186,11 @@ QVector<bool> Block::parseEnginePorts() const
 	QVector<bool> result(3, false);
 	QStringList splitted = ports.split(',', QString::SkipEmptyParts);
 	foreach (QString const &port, splitted) {
-		if (port.trimmed().toUpper() == "A") {
+		if (port.trimmed().toUpper() == "1") {
 			result[0] = true;
-		} else if (port.trimmed().toUpper() == "B") {
+		} else if (port.trimmed().toUpper() == "3") {
 			result[1] = true;
-		} else if (port.trimmed().toUpper() == "C") {
+		} else if (port.trimmed().toUpper() == "4") {
 			result[2] = true;
 		}
 	}
