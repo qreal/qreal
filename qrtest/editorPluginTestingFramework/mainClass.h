@@ -24,7 +24,7 @@ public:
 			QString const &fileName
 			, QString const &pathToQrmc
 			, QString const &applicationPath
-			, bool const &travisMode
+			, QString const &configurationFileName
 		);
 
 	/// returns result of comparison - 0, if all results are correct, and 1 otherwise
@@ -58,7 +58,7 @@ private:
 	void appendPluginNames();
 
 	/// parses file with configuration settings
-	void parseConfigurationFile(bool const &travisMode);
+	void parseConfigurationFile(QString const &fileName);
 
 	/// returns loaded editorInterface
 	qReal::EditorInterface* loadedPlugin(QString const &fileName, QString const &pathToFile);

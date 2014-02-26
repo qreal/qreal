@@ -20,13 +20,14 @@ MainClass::MainClass(
 		QString const &fileName
 		, QString const &pathToQrmc
 		, QString const &applicationPath
-		, bool const &travisMode)
+		, QString const &configurationFileName)
 		: mTempOldValue(SettingsManager::value("temp").toString())
 		, mApplicationPath(applicationPath)
 {
 	setTempValueInSettingsManager();
 
-	parseConfigurationFile(travisMode);
+	qDebug() << "configuration file: " << configurationFileName;
+	parseConfigurationFile(configurationFileName);
 
 	deleteOldBinaries(mGeneratedCodeDir);
 	createNewFolders();
@@ -181,13 +182,11 @@ void MainClass::appendPluginNames()
 	mQrxcGeneratedPluginsList.append(mPluginLoader.pluginNames());
 }
 
-void MainClass::parseConfigurationFile(bool const &travisMode)
+void MainClass::parseConfigurationFile(QString const &fileName)
 {
-	if (travisMode) {
-		mConfigurationFileParser.parseConfigurationFile(travisConfigurationFileName);
-	} else {
-		mConfigurationFileParser.parseConfigurationFile(configurationFileName);
-	}
+
+	mConfigurationFileParser.parseConfigurationFile(fileName);
+
 	mQmakeParameter = mConfigurationFileParser.qmakeParameter();
 	mMakeParameter = mConfigurationFileParser.makeParameter();
 	mConfigurationParameter = mConfigurationFileParser.configurationParameter();

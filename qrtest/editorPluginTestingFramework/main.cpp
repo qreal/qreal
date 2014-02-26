@@ -40,9 +40,9 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	QString const workingCopyDir = argv[1];
-	bool isTravis = argv[2] == "travisConfigurationFile.xml" ? true : false;
+	QString const &configurationFileName = argv[2];
 	MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/"
-			, qApp->applicationDirPath(), isTravis);
+			, qApp->applicationDirPath(), configurationFileName);
 	return newMainClass.travisTestResult();
 }
 
