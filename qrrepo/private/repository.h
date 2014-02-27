@@ -125,6 +125,8 @@ public:
 			, QVariant const &value
 			);
 
+	void generateGraphicalModel();
+
 private:
 	void init();
 

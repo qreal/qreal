@@ -51,7 +51,7 @@ bool EdgeType::initAssociations()
 	mBeginType = associationsElement.attribute("beginType");
 	mEndType = associationsElement.attribute("endType");
 	if (mBeginType.isEmpty() || mEndType.isEmpty()) {
-		qDebug() << "ERROR: can't parse associations";
+		qDebug() << "ERROR: can't parse associations 1";
 		return false;
 	}
 

@@ -275,7 +275,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "." + extension, normalizeDirName)) {
+			if (mMainWindowInterface->loadPlugin(prefix + normalizerMetamodelName + "." + extension, normalizeDirName)) {
 				progress->setValue(100);
 			}
 		}

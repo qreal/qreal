@@ -414,6 +414,11 @@ void RepoApi::save(qReal::IdList list) const
 	mRepository.save(list);
 }
 
+void RepoApi::generateGraphicalModel()
+{
+	mRepository.generateGraphicalModel();
+}
+
 QString RepoApi::workingFile() const
 {
 	return mRepository.workingFile();
