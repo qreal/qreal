@@ -8,7 +8,6 @@
 
 #include "mainwindow/mainWindow.h"
 #include "mainwindow/error.h"
-#include "mainwindow/hint.h"
 #include "mainwindow/errorListWidget.h"
 #include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 #include "toolPluginInterface/usedInterfaces/hintInterface.h"
@@ -43,10 +42,8 @@ public slots:
 private:
 	static QString severityMessage(Error const &error);
 	void showError(Error const &error, ErrorListWidget* const errorListWidget) const;
-    void showHint(Hint const &hint, ErrorListWidget* const errorListWidget) const;
 
 	QList<Error> mErrors;
-    QList<Hint> mHints;
 
 	ErrorListWidget* const mErrorListWidget;  // Doesn't have ownership
 	QDockWidget* const mErrorList;  // Doesn't have ownership
