@@ -363,6 +363,7 @@ private:
 	void initExplorers();
 	void initRecentProjectsMenu();
 	void openStartTab();
+	void addGreetingHint();
 
 	void setVersion(QString const &version);
 

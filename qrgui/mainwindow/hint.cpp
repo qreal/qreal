@@ -3,7 +3,7 @@
 using namespace qReal::gui;
 
 Hint::Hint(QString const &message, qReal::Id const &position)
-        : mMessage(message), mTimestamp(QTime::currentTime()), mPosition(position)
+	: mMessage(message), mTimestamp(QTime::currentTime()), mPosition(position)
 {
 }
 
@@ -14,10 +14,10 @@ QString Hint::message() const
 
 QString Hint::timestamp() const
 {
-    return "[" + mTimestamp.toString() + "]:";
+	return "[" + mTimestamp.toString() + "]:";
 }
 
 qReal::Id Hint::position() const
 {
-    return mPosition;
+	return mPosition;
 }

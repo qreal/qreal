@@ -158,6 +158,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mUsabilityTestingToolbar->addAction(mFinishTest);
 	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
 	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
+	addGreetingHint();
 }
 
 void MainWindow::connectActionsForUXInfo()
@@ -2235,4 +2236,9 @@ void MainWindow::openStartTab()
 	int const index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
 	mUi->tabs->setTabUnclosable(index);
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
+}
+
+void MainWindow::addGreetingHint()
+{
+	mErrorReporter->addHint("Hello, world!");
 }
