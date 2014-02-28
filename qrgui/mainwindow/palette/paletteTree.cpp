@@ -176,6 +176,7 @@ void PaletteTree::deletePaletteTree()
 	mEditorsTrees.clear();
 	mEditorsNames.clear();
 	mCategories.clear();
+	mCurrentEditor = 0;
 }
 
 PaletteTree::~PaletteTree()
