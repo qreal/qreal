@@ -29,6 +29,7 @@ signals:
 	void gridChanged();
 	void fontChanged();
 	void paletteRepresentationChanged();
+	void miniMapSizeChanged();
 
 private slots:
 	void widthGridSliderMoved(int value);
@@ -43,6 +44,8 @@ private slots:
 	void activateGrid(bool);
 	void activateAlignment(bool);
 
+	void miniMapSizeSliderMoved(int value);
+
 private:
 	Ui::PreferencesEditorPage *mUi;
 	bool mFontWasChanged;
@@ -50,7 +53,9 @@ private:
 	int mWidthGrid;
 	int mIndexGrid;
 	int mDragArea;
+	int mMiniMapSize;
 	QString mFont;
+
 
 	QAction * const mShowGridAction;
 	QAction * const mShowAlignmentAction;

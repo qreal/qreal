@@ -1,9 +1,15 @@
 #include "miniMap.h"
+#include "mainWindow.h"
+#include "../view/editorView.h"
+#include "../view/editorViewScene.h"
+#include "../../qrkernel/settingsManager.h"
 
 MiniMap::MiniMap(QWidget *parent)
 		: QGraphicsView(parent)
 		, mEditorView(NULL)
 		, mMode(None)
+		, showMiniMap(TRUE)
+		, showMiniMapButton(new QPushButton())
 {
 }
 

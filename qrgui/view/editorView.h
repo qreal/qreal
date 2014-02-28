@@ -1,10 +1,13 @@
 #pragma once
 
 #include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QLayout>
 
 #include "view/editorViewScene.h"
 #include "view/private/editorViewMVIface.h"
 #include "view/private/touchSupportManager.h"
+#include "mainwindow/miniMap.h"
+#include "miniMapShell.h"
 
 namespace qReal {
 
@@ -16,7 +19,7 @@ class EditorView : public QGraphicsView
 	Q_OBJECT
 
 public:
-	explicit EditorView(QWidget *parent);
+	explicit EditorView(QWidget *parent, MiniMap *mm = 0);
 	~EditorView();
 
 	EditorViewMViface *mvIface() const;
@@ -34,6 +37,9 @@ public slots:
 	void zoomOut();
 	void zoom(qreal const zoomFactor);
 	void invalidateScene();
+	void updateMiniMap();
+	void replaceMiniMap();
+	void moveMiniMap(QPoint miniMapPos);
 
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);
@@ -54,10 +60,18 @@ private slots:
 private:
 	void checkGrid();
 
+	void addMiniMap(MiniMap *mm);
+
 	void startAnimation(char const *slot);
 
 	EditorViewMViface *mMVIface;
 	EditorViewScene *mScene;
+
+	MiniMap *mMiniMap;
+	MiniMapShell *mMiniMapShell;
+	QHBoxLayout *mMainLayout;
+	QVBoxLayout *mAuxiliaryLayout;
+
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
 	view::details::TouchSupportManager mTouchManager;

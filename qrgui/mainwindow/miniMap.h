@@ -1,10 +1,13 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtWidgets>
 
-#include "view/editorView.h"
-#include "view/editorViewScene.h"
-#include "mainwindow/mainWindow.h"
+namespace qReal {
+
+class MainWindow;
+class EditorViewScene;
+class EditorView;
 
 /** @brief Minimap for the current viewed diagram
 *
@@ -58,4 +61,9 @@ private:
 	QRectF mEditorViewRect;
 
 	Mode mMode;
+
+	QPushButton *showMiniMapButton;
+	bool showMiniMap;
 };
+
+}

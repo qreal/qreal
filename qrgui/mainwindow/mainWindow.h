@@ -286,6 +286,8 @@ private slots:
 	void startUsabilityTest();
 	void finishUsabilityTest();
 
+	void replaceMiniMap(int index);
+
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
@@ -406,6 +408,8 @@ private:
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
+
+	MiniMap *mMiniMap;
 
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;

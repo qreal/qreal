@@ -43,6 +43,10 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 //	mUi->indexGridSlider->setVisible(false);
 //	mUi->label_20->setVisible(false);
 
+	connect(mUi->miniMapSize, SIGNAL(sliderMoved(int)), this, SLOT(miniMapSizeSliderMoved(int)));
+	mUi->miniMapSize->setMinimum(50);
+	mUi->miniMapSize->setMaximum(250);
+
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
 
@@ -150,6 +154,10 @@ void PreferencesEditorPage::save()
 		mFontWasChanged = false;
 		mFontButtonWasPressed = false;
 	}
+
+	mMiniMapSize = mUi->miniMapSize->value();
+	SettingsManager::setValue("MiniMapSize", mMiniMapSize);
+	mUi->miniMapSize->setValue(SettingsManager::value("MiniMapSize").toInt());
 }
 
 void PreferencesEditorPage::restoreSettings()
@@ -209,3 +217,11 @@ void PreferencesEditorPage::activateAlignment(bool activate)
 {
 	mUi->activateAlignmentCheckBox->setChecked(activate);
 }
+
+
+void PreferencesEditorPage::miniMapSizeSliderMoved(int value)
+{
+	SettingsManager::setValue("MiniMapSize", value);
+	emit  miniMapSizeChanged();
+}
+
