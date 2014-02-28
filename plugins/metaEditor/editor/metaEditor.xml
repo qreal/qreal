@@ -434,8 +434,12 @@
 				<logic>
 					<generalizations/>
 					<properties>
-						<property type="associationTypes" name="beginType"/>
-						<property type="associationTypes" name="endType"/>
+						<property type="associationTypes" name="beginType">
+							<default>no_arrow</default>
+						</property>
+						<property type="associationTypes" name="endType">
+							<default>no_arrow</default>
+						</property>
 						<property type="string" name="beginName"/>
 						<property type="string" name="endName"/>
 					</properties>
