@@ -5,18 +5,18 @@ using namespace qrUpdater;
 Downloader::Downloader(QObject *parent)
 	: QObject(parent)
 	, mLoadedFileIndex(0)
-	, mReply(NULL)
-	, mFile(NULL)
+	, mReply(nullptr)
+	, mFile(nullptr)
 {
 }
 
-void Downloader::getUpdateDetails(QUrl const url)
+void Downloader::getUpdateDetails(QUrl const &url)
 {
 	connect(&mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(detailsFileDownloaded(QNetworkReply*)));
 	sendRequest(url);
 }
 
-void Downloader::getUpdate(QUrl const url) throw(CreateFileException)
+void Downloader::getUpdate(QUrl const &url) throw(CreateFileException)
 {
 	QString fileName = QFileInfo(url.path()).fileName();
 	if (fileName.isEmpty())
@@ -29,16 +29,16 @@ void Downloader::getUpdate(QUrl const url) throw(CreateFileException)
 	mFile = new QFile(fileName);
 	if (!mFile->open(QIODevice::WriteOnly)) {
 		delete mFile;
-		mFile = NULL;
+		mFile = nullptr;
 		throw CreateFileException();
 	}
 
 	startFileDownloading(url);
 }
 
-void Downloader::getUpdateFiles(QList<QUrl> const urls)
+void Downloader::getUpdateFiles(QList<QUrl> const &urls)
 {
-	mFilesToDownload = urls;
+	mFilesToDownload.append(urls);
 	downloadNext();
 }
 
@@ -65,7 +65,7 @@ void Downloader::updatesFileDownloaded(QNetworkReply *reply)
 	}
 
 	mReply->deleteLater();
-	mReply = 0;
+	mReply = nullptr;
 	delete mFile;
 	downloadNext();
 }
@@ -77,13 +77,13 @@ void Downloader::fileReadyRead()
 	}
 }
 
-void Downloader::sendRequest(QUrl const url)
+void Downloader::sendRequest(QUrl const &url)
 {
 	QNetworkRequest request(url);
 	mReply = mManager.get(request);
 }
 
-void Downloader::startFileDownloading(QUrl const url)
+void Downloader::startFileDownloading(QUrl const &url)
 {
 	connect(&mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(updatesFileDownloaded(QNetworkReply*)));
 	sendRequest(url);

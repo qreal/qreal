@@ -1,5 +1,7 @@
 DESTDIR = ../bin/qrUpdater
 
+CONFIG += c++11
+
 QT       += core network
 
 CONFIG += console

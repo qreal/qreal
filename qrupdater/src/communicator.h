@@ -20,7 +20,8 @@ public:
 	void writeQuitMessage();
 	//! Sends 'resume' message. No action required
 	void writeResumeMessage();
-	void writeHelpMessage();
+	//! Prints to console your @arg message
+	void writeCustomMessage(QString const &message);
 
 	//! @return saved path to main application
 	QString parentAppPath() const;

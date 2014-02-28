@@ -34,7 +34,7 @@ protected:
 	void initConnections();
 	//! @param newVersion
 	//! @return True if new version is newer than current
-	bool hasNewUpdates(QString const newVersion);
+	bool hasNewUpdates(QString const &newVersion);
 	//! loads prepared update and installs it
 	void checkoutPreparedUpdates();
 	//! restart main application after install finished
@@ -55,9 +55,9 @@ protected:
 
 protected slots:
 	void detailsChanged();
-	void fileReady(QUrl url, QString const filePath);
+	void fileReady(QUrl const &url, QString const &filePath);
 	void downloadingFinished();
-	void installingFinished(bool hasSuccess);
+	void installingFinished(bool const &hasSuccess);
 	void downloadErrors(QString error = QString());
 	void jobDoneQuit();
 };

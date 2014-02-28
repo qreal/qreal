@@ -2,10 +2,10 @@
 
 using namespace qReal;
 
-QRealUpdater::QRealUpdater(char *applicationPath)
+QRealUpdater::QRealUpdater(char const *applicationPath)
 	: QObject()
 	, mHasNewUpdates(false)
-	, mUpdaterProcess(NULL)
+	, mUpdaterProcess(nullptr)
 	, mQRealPath(applicationPath)
 
 {
@@ -30,15 +30,11 @@ void QRealUpdater::startUpdater()
 void QRealUpdater::executeUpdater()
 {
 	QString const programPath = mUpdaterPath + "/qrUpdater";
-	QStringList arguments;
-	arguments << "-unit" << "windows" << "windows-qru::self"
-			<< "-version" << SettingsManager::value("version").toString()
-			<< "-url" << "http://localhost/updates.xml";
 
 	mUpdaterProcess = new QProcess();
 	mUpdaterProcess->setWorkingDirectory(mUpdaterPath);
 
-	mUpdaterProcess->start(programPath, arguments);
+	mUpdaterProcess->start(programPath, collectArguments());
 }
 
 void QRealUpdater::transferInfo()
@@ -46,6 +42,17 @@ void QRealUpdater::transferInfo()
 	mUpdaterProcess->write(QString(mQRealPath + "\n").toUtf8());
 	mUpdaterProcess->waitForReadyRead(updaterTimeout);
 	readAnswer();
+}
+
+QStringList QRealUpdater::collectArguments()
+{
+	QStringList arguments;
+	QStringList followingUnits;
+	followingUnits << "windows" << "windows-qru::self";
+	arguments << "-unit" << SettingsManager::value("updaterFollowUnits", followingUnits).toStringList()
+			<< "-version" << SettingsManager::value("version").toString()
+			<< "-url" << SettingsManager::value("updaterDetailsURL", "http://localhost/updates.xml").toString();
+	return arguments;
 }
 
 bool QRealUpdater::hasUpdatePermission()

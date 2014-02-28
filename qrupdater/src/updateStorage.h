@@ -16,17 +16,17 @@ class UpdateStorage : public QObject
 {
 	Q_OBJECT
 public:
-	UpdateStorage(QString updatesFolder, QObject *parent);
+	UpdateStorage(QString const &updatesFolder, QObject *parent);
 
 	//! saves all info of current unit in parser, moves setup-file to storage folder
-	void saveFileForLater(Update *concreteUpdate, QString const filePath);
+	void saveFileForLater(Update *concreteUpdate, QString const &filePath);
 	//! after-install cleaning
 	void removeUpdate(Update *update);
 
 	//! @return True is exists file with update descriptions
 	bool hasPreparedUpdatesInfo();
 	//! loads mPreparedUpdates
-	void loadUpdatesInfo(QStringList const units);
+	void loadUpdatesInfo(QStringList const &units);
 	void sync();
 
 	QList<Update *> preparedUpdates() const;
@@ -36,7 +36,7 @@ protected:
 
 	QList<Update *> mPreparedUpdates;
 	QString const mUpdatesFolder;
-	QString const settingsFile;
+	QString const mSettingsFile;
 	QSettings *mUpdateInfo;
 };
 

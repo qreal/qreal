@@ -6,24 +6,24 @@ DetailsParser::DetailsParser()
 {
 }
 
-Update *DetailsParser::update(QString const unit)
+Update *DetailsParser::update(QString const &unit)
 {
 	for (int i = 0; i < mUpdates.size(); i++) {
 		if (mUpdates.at(i)->unit() == unit) {
 			return mUpdates.at(i);
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
-Update *DetailsParser::update(QUrl const url)
+Update *DetailsParser::update(QUrl const &url)
 {
 	for (int i = 0; i < mUpdates.size(); i++) {
 		if (mUpdates.at(i)->url() == url) {
 			return mUpdates.at(i);
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 QStringList DetailsParser::units() const
@@ -40,7 +40,7 @@ void DetailsParser::processDevice(QIODevice *device)
 {
 	parseDevice(device);
 
-	foreach (QString const unit, units()) {
+	foreach (QString const &unit, units()) {
 		Update *newUpdate = new Update(this);
 		newUpdate->setUnitName(unit);
 		newUpdate->setData(

@@ -14,12 +14,12 @@ class Update : public QObject
 	Q_OBJECT
 public:
 	explicit Update(QObject *parent = 0);
-	Update(QString const filePath, QStringList const args, QString const version, QObject *parent = 0);
+	Update(QString const &filePath, QStringList const &args, QString const &version, QObject *parent = 0);
 
-	void setUrl(QUrl const link);
-	void setUnitName(QString const unit);
-	void setFilePath(QString const path);
-	void setData(QString const filePath, QStringList const args, QString const version, QUrl const link = QUrl());
+	void setUrl(QUrl const &link);
+	void setUnitName(QString const &unit);
+	void setFilePath(QString const &path);
+	void setData(QString const &filePath, QStringList const &args, QString const &version, QUrl const &link = QUrl());
 	//! removes update-file and clears all information
 	void clear();
 
@@ -39,8 +39,8 @@ public:
 	QStringList& arguments();
 
 signals:
-	//! @return True if process finished correctly
-	void installFinished(bool);
+	//! @arg True if process finished correctly
+	void installedSuccessfully(bool);
 
 protected:
 	bool mIsInstalled;

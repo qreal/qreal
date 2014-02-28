@@ -8,12 +8,12 @@ static QString const arguments = "args";
 
 using namespace qrUpdater;
 
-UpdateStorage::UpdateStorage(QString updatesFolder, QObject *parent)
+UpdateStorage::UpdateStorage(QString const &updatesFolder, QObject *parent)
 	: QObject(parent)
 	, mUpdatesFolder(updatesFolder)
-	, settingsFile(updatesFolder + "updateInfo.ini")
+	, mSettingsFile(updatesFolder + "updateInfo.ini")
 {
-	mUpdateInfo = new QSettings(settingsFile, QSettings::IniFormat, parent);
+	mUpdateInfo = new QSettings(mSettingsFile, QSettings::IniFormat, parent);
 }
 
 void UpdateStorage::saveUpdateInfo(Update *update)
@@ -25,15 +25,14 @@ void UpdateStorage::saveUpdateInfo(Update *update)
 	mUpdateInfo->endGroup();
 }
 
-void UpdateStorage::saveFileForLater(Update *concreteUpdate, QString const filePath)
+void UpdateStorage::saveFileForLater(Update *concreteUpdate, QString const &filePath)
 {
 	QDir().mkdir(mUpdatesFolder);
-
-	if (QFile::exists(mUpdatesFolder + QFileInfo(filePath).fileName())) {
-		QFile::remove(mUpdatesFolder + QFileInfo(filePath).fileName());
-	}
-
 	QString const endFilePath = mUpdatesFolder + QFileInfo(filePath).fileName();
+
+	if (QFile::exists(endFilePath)) {
+		QFile::remove(endFilePath);
+	}
 
 	QFile::rename(filePath, endFilePath);
 
@@ -51,16 +50,16 @@ void UpdateStorage::removeUpdate(Update *update)
 
 bool UpdateStorage::hasPreparedUpdatesInfo()
 {
-	return QDir(mUpdatesFolder).exists() && QFile::exists(settingsFile);
+	return QDir(mUpdatesFolder).exists() && QFile::exists(mSettingsFile);
 }
 
-void UpdateStorage::loadUpdatesInfo(QStringList const units)
+void UpdateStorage::loadUpdatesInfo(QStringList const &units)
 {
 	if (!hasPreparedUpdatesInfo()) {
 		return;
 	}
 
-	foreach (QString const unit, units) {
+	foreach (QString const &unit, units) {
 		Update *newUpdate = new Update(this);
 
 		mUpdateInfo->beginGroup(unit);
@@ -88,8 +87,8 @@ void UpdateStorage::sync()
 		}
 	}
 	mUpdateInfo->sync();
-	if (QDir(mUpdatesFolder).exists() && QFile::exists(settingsFile) && QFile(settingsFile).size() == 0) {
-		QFile::remove(settingsFile);
+	if (QDir(mUpdatesFolder).exists() && QFile::exists(mSettingsFile) && QFile(mSettingsFile).size() == 0) {
+		QFile::remove(mSettingsFile);
 		QDir(mUpdatesFolder).removeRecursively();
 	}
 }

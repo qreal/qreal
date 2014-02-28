@@ -11,14 +11,16 @@ UpdatesInstaller::UpdatesInstaller()
 {
 }
 
-void UpdatesInstaller::operator<<(Update *update)
+UpdatesInstaller& UpdatesInstaller::operator<<(Update *update)
 {
 	mUpdatesQueue.append(update);
+	return *this;
 }
 
-void UpdatesInstaller::operator<<(QList<Update *> updates)
+UpdatesInstaller& UpdatesInstaller::operator<<(QList<Update *> updates)
 {
 	mUpdatesQueue.append(updates);
+	return *this;
 }
 
 void UpdatesInstaller::installAll()
@@ -39,7 +41,7 @@ bool UpdatesInstaller::isEmpty() const
 
 void UpdatesInstaller::installNext()
 {
-	connect(mUpdatesQueue.first(), SIGNAL(installFinished(bool)), this, SLOT(singleInstallFinished(bool)));
+	connect(mUpdatesQueue.first(), SIGNAL(installedSuccessfully(bool)), this, SLOT(singleInstallFinished(bool)));
 	replaceExpressions(mUpdatesQueue.first());
 	mUpdatesQueue.first()->installUpdate();
 	if (mUpdatesQueue.first()->hasSelfInstallMarker()) {
@@ -56,7 +58,7 @@ void UpdatesInstaller::replaceExpressions(Update *update)
 	QMutableListIterator<QString> iterator(update->arguments());
 	while (iterator.hasNext()) {
 		iterator.next();
-		foreach (QString mask, replacement.keys()) {
+		foreach (QString const mask, replacement.keys()) {
 			QString curKey = iterator.value();
 			iterator.setValue(curKey.replace(mask, replacement.value(mask)()));
 		}
@@ -82,9 +84,9 @@ QString UpdatesInstaller::getInstallDir()
 	QDir current(QCoreApplication::applicationDirPath());
 	if (current.cdUp()) {
 		return current.absolutePath();
-	} else {
-		return QCoreApplication::applicationDirPath();
 	}
+
+	return QCoreApplication::applicationDirPath();
 }
 
 void UpdatesInstaller::singleInstallFinished(bool hasNoErrors)

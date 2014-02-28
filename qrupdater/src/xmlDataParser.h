@@ -6,6 +6,7 @@
 #include "detailsParser.h"
 
 namespace qrUpdater {
+//! @class XmlDataParser collects info from NetworkResponse
 class XmlDataParser : public DetailsParser
 {
 	Q_OBJECT

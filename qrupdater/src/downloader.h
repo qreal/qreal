@@ -7,7 +7,7 @@
 namespace qrUpdater {
 //!
 //! @brief The Downloader class
-//! provides two-way of downloading: to IODevice and to file
+//! provides two-ways of downloading: to IODevice and to file
 class Downloader : public QObject
 {
 	Q_OBJECT
@@ -16,21 +16,21 @@ public:
 
 	explicit Downloader(QObject *parent = 0);
 	//! downloads lightweight data and emits signal with IODevice
-	void getUpdateDetails(QUrl const url);
+	void getUpdateDetails(QUrl const &url);
 	//! downloads to file, emits filepath
-	void getUpdateFiles(QList<QUrl> const urls);
+	void getUpdateFiles(QList<QUrl> const &urls);
 
 signals:
 	void detailsDownloaded(QIODevice *reply);
-	void updateDownloaded(QUrl url, QString filePath);
+	void updateDownloaded(QUrl const &url, QString const &filePath);
 	void downloadingFinished();
-	void detailsLoadError(QString error);
-	void updatesLoadError(QString error);
+	void detailsLoadError(QString const &error);
+	void updatesLoadError(QString const &error);
 
 protected:
-	void sendRequest(QUrl const url);
-	void getUpdate(QUrl const url) throw(CreateFileException);
-	void startFileDownloading(QUrl const url);
+	void sendRequest(QUrl const &url);
+	void getUpdate(QUrl const &url) throw(CreateFileException);
+	void startFileDownloading(QUrl const &url);
 	void downloadNext();
 
 	int mLoadedFileIndex;

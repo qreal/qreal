@@ -6,15 +6,15 @@ UpdateProcessor::UpdateProcessor()
 	: mCurAttempt(0)
 	, mHardUpdate(false)
 	, mUpdatesFolder("ForwardUpdates/")
+	, mCommunicator(new Communicator(this))
+	, mDownloader(new Downloader(this))
+	, mParser(new XmlDataParser())
+	, mUpdateInfo(new UpdateStorage(mUpdatesFolder, this))
 {
-	mCommunicator = new Communicator(this);
-	mDownloader = new Downloader(this);
-	mParser = new XmlDataParser();
-	mUpdateInfo = new UpdateStorage(mUpdatesFolder, this);
 	try {
 		mArgsParser.parse();
-	} catch(ArgsParser::BadArguments const &) {
-		mCommunicator->writeHelpMessage();
+	} catch(ArgsParser::BadArguments const &exception) {
+		mCommunicator->writeCustomMessage(exception.errorMsg);
 	}
 
 	initConnections();
@@ -59,7 +59,7 @@ void UpdateProcessor::initConnections()
 	connect(mParser, SIGNAL(parseFinished()), this, SLOT(detailsChanged()));
 }
 
-bool UpdateProcessor::hasNewUpdates(QString const newVersion)
+bool UpdateProcessor::hasNewUpdates(QString const &newVersion)
 {
 	return newVersion > mArgsParser.version();
 }
@@ -115,7 +115,7 @@ void UpdateProcessor::detailsChanged()
 	}
 }
 
-void UpdateProcessor::fileReady(QUrl url, QString const filePath)
+void UpdateProcessor::fileReady(QUrl const &url, QString const &filePath)
 {
 	mUpdateInfo->saveFileForLater(mParser->update(url), filePath);
 }
@@ -130,7 +130,7 @@ void UpdateProcessor::downloadingFinished()
 	}
 }
 
-void UpdateProcessor::installingFinished(bool hasSuccess)
+void UpdateProcessor::installingFinished(bool const &hasSuccess)
 {
 	restartMainApplication();
 	jobDoneQuit();

@@ -19,9 +19,9 @@ public:
 	virtual ~DetailsParser(){}
 
 	//! @param unit module name
-	//! @returns Update from list or NULL if does not exist
-	Update* update(QString const unit);
-	Update* update(QUrl const url);
+	//! @returns Update from list or nullptr if does not exist
+	Update* update(QString const &unit);
+	Update* update(QUrl const &url);
 
 	//! @return true in case input is invalid
 	virtual bool hasErrors() const = 0;

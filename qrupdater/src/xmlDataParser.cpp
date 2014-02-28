@@ -11,7 +11,7 @@ XmlDataParser::XmlDataParser()
 
 XmlDataParser::~XmlDataParser()
 {
-	if (mXml != NULL) {
+	if (mXml != nullptr) {
 		delete mXml;
 	}
 }

@@ -9,34 +9,34 @@ using namespace qrUpdater;
 Update::Update(QObject *parent)
 	: QObject(parent)
 	, mIsInstalled(false)
-	, mProcess(NULL)
+	, mProcess(nullptr)
 {
 }
 
-Update::Update(QString const filePath, QStringList const args, QString const version, QObject *parent)
+Update::Update(QString const &filePath, QStringList const &args, QString const &version, QObject *parent)
 	: QObject(parent)
 	, mIsInstalled(false)
-	, mProcess(NULL)
+	, mProcess(nullptr)
 {
 	setData(filePath, args, version);
 }
 
-void Update::setUrl(const QUrl link)
+void Update::setUrl(QUrl const &link)
 {
 	mDownloadUrl = link;
 }
 
-void Update::setUnitName(const QString unit)
+void Update::setUnitName(QString const &unit)
 {
 	mModule = unit;
 }
 
-void Update::setFilePath(const QString path)
+void Update::setFilePath(QString const &path)
 {
 	mFilePath = path;
 }
 
-void Update::setData(const QString filePath, const QStringList args, const QString version, const QUrl link)
+void Update::setData(QString const &filePath, QStringList const &args, QString const &version, QUrl const &link)
 {
 	mFilePath = filePath;
 	mArguments = args;
@@ -56,7 +56,7 @@ void Update::clear()
 		mProcess->terminate();
 	}
 	mProcess->deleteLater();
-	mProcess = NULL;
+	mProcess = nullptr;
 	mIsInstalled = false;
 }
 
@@ -79,7 +79,7 @@ bool Update::isEmpty() const
 
 bool Update::isInstalling() const
 {
-	return (mProcess != NULL) && (mProcess->state() != QProcess::NotRunning);
+	return (mProcess != nullptr) && (mProcess->state() != QProcess::NotRunning);
 }
 
 bool Update::isInstalled() const
@@ -125,6 +125,6 @@ QStringList& Update::arguments()
 void Update::installingFinished(int exitCode, QProcess::ExitStatus status)
 {
 	mIsInstalled = true;
-	emit installFinished(status == QProcess::NormalExit);
+	emit installedSuccessfully(status == QProcess::NormalExit);
 	Q_UNUSED(exitCode);
 }
