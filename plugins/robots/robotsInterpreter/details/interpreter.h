@@ -125,6 +125,7 @@ private:
 	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 
 	InterpreterState mState;
+	quint64 mInterpretationStartedTimestamp;
 	QList<details::Thread *> mThreads;  // Has ownership
 	details::RobotModel *mRobotModel;
 	details::BlocksTable *mBlocksTable;  // Has ownership

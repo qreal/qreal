@@ -13,7 +13,7 @@
 #include "../robotCommunication/robotCommunicationThreadInterface.h"
 #include "../robotCommunication/robotCommunicator.h"
 #include "sensorsConfigurer.h"
-#include "../abstractTimer.h"
+#include "details/timelineInterface.h"
 
 namespace qReal {
 namespace interpreters {
@@ -81,7 +81,7 @@ public:
 	virtual sensorImplementations::AbstractEncoderImplementation &encoderB() = 0;
 	virtual sensorImplementations::AbstractEncoderImplementation &encoderC() = 0;
 
-	virtual AbstractTimer *produceTimer() = 0;
+	virtual TimelineInterface *timeline() = 0;
 
 	virtual void configureSensor(
 			robots::enums::sensorType::SensorTypeEnum const &sensorType

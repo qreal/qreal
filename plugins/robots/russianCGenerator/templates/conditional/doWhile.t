@@ -1,3 +1,3 @@
 выполнять {
 @@BODY@@
-} пока (@@CONDITION);
+} пока (@@CONDITION@@);
