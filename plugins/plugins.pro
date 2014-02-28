@@ -2,19 +2,19 @@ TEMPLATE = subdirs
 
 # editor plugins
 SUBDIRS	= \
-	dragonDiagram/dragonDiagram.pro \
-	blockDiagram/blockDiagram.pro \
+#	dragonDiagram/dragonDiagram.pro \
+#	blockDiagram/blockDiagram.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
-	requirements/requirements.pro \
+#	requirements/requirements.pro \
 
 
 # tool plugins
 SUBDIRS += \
 #	testInvocation/testInvocation.pro \
-	exterminatus/exterminatus.pro \
+#	exterminatus/exterminatus.pro \
 #	visualInterpreter/visualInterpreter.pro \
-	refactoring/refactoring.pro \
+#	refactoring/refactoring.pro \
 
 
 # QReal:Robots

@@ -117,7 +117,7 @@
 							<start startx="200" starty="40"/>
 							<end endx="200" endy="160"/>
 						</linePort>
-					</ports>
+					</ports>      
 				</graphics> 
 				<logic>
 					<generalizations>
