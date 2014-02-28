@@ -76,6 +76,7 @@ void PaletteTree::initDone()
 		mComboBox->hide();
 	} else {
 		connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
+		mComboBox->show();
 	}
 	setActiveEditor(SettingsManager::value("CurrentIndex", 0).toInt());
 	mTree->resizeIcons();
