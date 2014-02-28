@@ -52,6 +52,7 @@ private:
 			, bool thereWillBeMoreRules);
 
 	bool mTravelingForSecondTime;
+	bool mSomethingChangedThisIteration;
 	QMap<Id, bool> mAlreadyApplied;
 };
 

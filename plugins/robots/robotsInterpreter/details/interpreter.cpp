@@ -1,4 +1,5 @@
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDateTime>
 #include <QtWidgets/QAction>
 
 #include "interpreter.h"
@@ -54,7 +55,9 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	mLogicalModelApi = &logicalModelApi;
 	mInterpretersInterface = &interpretersInterface;
 
-	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
+	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter(), [this] () {
+		return mState == interpreting ? mRobotModel->timeline()->timestamp() - mInterpretationStartedTimestamp : 0;
+	});
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel
 			, mInterpretersInterface->errorReporter(), mParser);
 
@@ -196,7 +199,8 @@ void Interpreter::setRobotImplementation(robots::enums::robotModelType::robotMod
 	mConnected = false;
 	mActionConnectToRobot->setChecked(false);
 	robotImplementations::AbstractRobotModelImplementation *robotImpl
-			= robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
+			= robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType
+					, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
 	mImplementationType = implementationType;
 	if (mImplementationType != robots::enums::robotModelType::nxt) {
@@ -231,6 +235,7 @@ void Interpreter::sensorsConfiguredSlot()
 
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
+		mInterpretationStartedTimestamp = mRobotModel->timeline()->timestamp();
 
 		runTimer();
 
@@ -434,42 +439,42 @@ void Interpreter::slotFailure()
 
 void Interpreter::responseSlot1(int sensorValue)
 {
-	updateSensorValues("Sensor1", sensorValue);
+	updateSensorValues("sensor1", sensorValue);
 }
 
 void Interpreter::responseSlot2(int sensorValue)
 {
-	updateSensorValues("Sensor2", sensorValue);
+	updateSensorValues("sensor2", sensorValue);
 }
 
 void Interpreter::responseSlot3(int sensorValue)
 {
-	updateSensorValues("Sensor3", sensorValue);
+	updateSensorValues("sensor3", sensorValue);
 }
 
 void Interpreter::responseSlot4(int sensorValue)
 {
-	updateSensorValues("Sensor4", sensorValue);
+	updateSensorValues("sensor4", sensorValue);
 }
 
 void Interpreter::responseSlotA(int encoderValue)
 {
-	updateSensorValues("EncoderA", encoderValue);
+	updateSensorValues("encoderA", encoderValue);
 }
 
 void Interpreter::responseSlotB(int encoderValue)
 {
-	updateSensorValues("EncoderB", encoderValue);
+	updateSensorValues("encoderB", encoderValue);
 }
 
 void Interpreter::responseSlotC(int encoderValue)
 {
-	updateSensorValues("EncoderC", encoderValue);
+	updateSensorValues("encoderC", encoderValue);
 }
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
-	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
+	mParser->variables()[sensorVariableName]->setValue(sensorValue);
 	Tracer::debug(
 			tracer::enums::autoupdatedSensorValues
 			, "Interpreter::updateSensorValues"
@@ -606,16 +611,16 @@ utils::WatchListWindow *Interpreter::watchWindow() const
 
 void Interpreter::updateGraphicWatchSensorsList()
 {
-	mGraphicsWatch->addTrackingObject(0, QString("Sensor1")
+	mGraphicsWatch->addTrackingObject(0, QString("sensor1")
 			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port1SensorType").toInt())));
-	mGraphicsWatch->addTrackingObject(1, QString("Sensor2")
+	mGraphicsWatch->addTrackingObject(1, QString("sensor2")
 			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port2SensorType").toInt())));
-	mGraphicsWatch->addTrackingObject(2, QString("Sensor3")
+	mGraphicsWatch->addTrackingObject(2, QString("sensor3")
 			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port3SensorType").toInt())));
-	mGraphicsWatch->addTrackingObject(3, QString("Sensor4")
+	mGraphicsWatch->addTrackingObject(3, QString("sensor4")
 			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port4SensorType").toInt())));
 }

@@ -143,6 +143,12 @@ public:
 	/// Align link's intermediate points to grid
 	void alignToGrid();
 
+	/// Proxies QGraphicsItem`s setPos filtering out NaNs
+	void setPos(qreal x, qreal y);
+
+	/// Proxies QGraphicsItem`s setPos filtering out NaNs
+	void setPos(QPointF const &pos);
+
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

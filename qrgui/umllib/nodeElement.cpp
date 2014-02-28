@@ -1146,17 +1146,17 @@ void NodeElement::checkConnectionsToPort() // it is strange method
 	mPortHandler->checkConnectionsToPort();
 }
 
-void NodeElement::singleSelectionState(bool const singleSelected)
+void NodeElement::select(bool const singleSelected)
 {
 	initEmbeddedLinkers();
 	setVisibleEmbeddedLinkers(singleSelected);
 	setTitlesVisiblePrivate(singleSelected || mTitlesVisible);
-	Element::singleSelectionState(singleSelected);
+	Element::select(singleSelected);
 }
 
-void NodeElement::selectionState(bool const selected)
+void NodeElement::setSelectionState(bool const selected)
 {
-	Element::selectionState(selected);
+	Element::setSelectionState(selected);
 }
 
 NodeData& NodeElement::data()

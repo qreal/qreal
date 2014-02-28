@@ -73,6 +73,10 @@ QString QRealFileDialog::lastDirectoryKey(QString const &id)
 
 QString QRealFileDialog::directoryOf(QString const &file)
 {
+	if (file.isEmpty()) {
+		return QString();
+	}
+
 	return QFileInfo(file).absoluteDir().absolutePath();
 }
 

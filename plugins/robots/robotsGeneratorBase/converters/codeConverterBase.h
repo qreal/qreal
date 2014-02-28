@@ -29,7 +29,7 @@ public:
 protected:
 	/// Replaces all sensor and encoder variables occurences with corresponding
 	/// nxtOSEK API expression.
-	virtual QString replaceSensorAndEncoderVariables(QString const &expression) const;
+	virtual QString replaceSystemVariables(QString const &expression) const;
 
 	/// Replaces function invocations to calls of corresponding functions in C.
 	virtual QString replaceFunctionInvocations(QString const &expression) const;
@@ -38,6 +38,7 @@ protected:
 			qReal::interpreters::robots::enums::sensorType::SensorTypeEnum sensorType) const;
 	virtual QString sensorExpression(int port) const;
 	virtual QString encoderExpression(QString const &port) const;
+	virtual QString timelineExpression() const;
 
 	simple::Binding::ConverterInterface const *mInputConverter;  // Takes ownership
 	simple::Binding::ConverterInterface const *mOutputConverter;  // Takes ownership

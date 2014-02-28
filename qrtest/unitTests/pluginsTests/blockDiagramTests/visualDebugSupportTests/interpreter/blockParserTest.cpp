@@ -23,19 +23,19 @@ TEST_F(BlockParserTest, parseProcessTest) {
 
 	mParser->parseProcess(stream, pos, Id::rootId());
 
-	QMap<QString, Number>* variables = mParser->getVariables();
-	QStringList variableNames = variables->keys();
+	QMap<QString, Number *> const &variables = mParser->variables();
+	QStringList const variableNames = variables.keys();
 
 	ASSERT_EQ(variableNames.size(), 3);
 	ASSERT_TRUE(variableNames.contains("a"));
 	ASSERT_TRUE(variableNames.contains("b"));
 	ASSERT_TRUE(variableNames.contains("c"));
 
-	Number a = variables->value("a");
-	Number b = variables->value("b");
-	Number c = variables->value("c");
+	Number const *a = variables.value("a");
+	Number const *b = variables.value("b");
+	Number const *c = variables.value("c");
 
-	EXPECT_EQ(a.property("Number").toInt(), 5);
-	EXPECT_EQ(b.property("Number").toInt(), 3);
-	EXPECT_EQ(c.property("Number").toDouble(), 8);
+	EXPECT_EQ(a->value().toInt(), 5);
+	EXPECT_EQ(b->value().toInt(), 3);
+	EXPECT_EQ(c->value().toDouble(), 8);
 }

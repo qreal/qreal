@@ -69,7 +69,7 @@ public:
 	virtual sensorImplementations::UnrealEncoderImplementation &encoderB();
 	virtual sensorImplementations::UnrealEncoderImplementation &encoderC();
 
-	virtual AbstractTimer *produceTimer();
+	TimelineInterface *timeline() override;
 
 	virtual void startInterpretation();
 

@@ -1071,6 +1071,7 @@ QString InterpreterEditorManager::paletteGroupDescription(Id const &editor, cons
 bool InterpreterEditorManager::shallPaletteBeSorted(const Id &editor, Id const &diagram) const
 {
 	Q_UNUSED(editor);
+	Q_UNUSED(diagram);
 	return true;
 }
 
