@@ -677,6 +677,8 @@ void Repository::removeAllGraphicalElements()
 
 	foreach (Id const& id, toDelete) {
 		mObjects.remove(id);
+		if (mObjects[Id::rootId()]->children().contains(id))
+			mObjects[Id::rootId()]->removeChild(id);
 	}
 }
 
