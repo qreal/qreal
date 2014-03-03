@@ -351,3 +351,23 @@ QSize ProxyEditorManager::iconSize(Id const &id) const
 {
 	return mProxiedEditorManager->iconSize(id);
 }
+
+IdList ProxyEditorManager::propertiesWithTheSameName(Id const &id, QString const &propCurrentName, QString const &propNewName) const
+{
+	return mProxiedEditorManager->propertiesWithTheSameName(id, propCurrentName, propNewName);
+}
+
+QStringList ProxyEditorManager::getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const
+{
+	return mProxiedEditorManager->getSameNamePropertyParams(propertyId, propertyName);
+}
+
+void ProxyEditorManager::restoreRemovedProperty(Id const &propertyId, QString const &previousName) const
+{
+	mProxiedEditorManager->restoreRemovedProperty(propertyId, previousName);
+}
+
+void ProxyEditorManager::restoreRenamedProperty(Id const &propertyId, QString const &previousName) const
+{
+	mProxiedEditorManager->restoreRenamedProperty(propertyId, previousName);
+}

@@ -113,6 +113,10 @@ public:
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const override;
 	void saveMetamodel(QString const &newMetamodelFileName) override;
 	QString saveMetamodelFilePath() const override;
+	IdList propertiesWithTheSameName(Id const &id, QString const &propCurrentName, QString const &propNewName) const override;
+	QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const override;
+	void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const override;
+	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
 
 private:
 	QStringList mPluginsLoaded;

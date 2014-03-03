@@ -19,6 +19,7 @@ HEADERS += \
 	$$PWD/suggestToCreateDiagramDialog.h \
 	$$PWD/suggestToCreateProjectDialog.h \
 	$$PWD/renameDialog.h \
+	$$PWD/metamodelingOnFly/restorePropertiesDialog.h \
 
 SOURCES += \
 	$$PWD/gesturesShow/gesturesWidget.cpp \
@@ -40,6 +41,7 @@ SOURCES += \
 	$$PWD/suggestToCreateDiagramDialog.cpp \
 	$$PWD/suggestToCreateProjectDialog.cpp \
 	$$PWD/renameDialog.cpp \
+	$$PWD/metamodelingOnFly/restorePropertiesDialog.cpp \
 
 FORMS += \
 	$$PWD/gesturesShow/gesturesWidget.ui \
@@ -55,3 +57,4 @@ FORMS += \
 	$$PWD/preferencesPages/featuresPage.ui \
 	$$PWD/findReplaceDialog.ui \
 	$$PWD/preferencesDialog.ui \
+	$$PWD/metamodelingOnFly/restorePropertiesDialog.ui \
