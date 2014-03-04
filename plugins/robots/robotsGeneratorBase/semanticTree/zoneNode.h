@@ -22,6 +22,9 @@ public:
 	/// Adds given nodes list into child list`s end
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
 
+	/// Adds given node into the child list after the given otherNode node
+	void insertAfrer(SemanticNode *after, SemanticNode *node);
+
 	/// Removes given node from children list without deleting the child itself
 	void removeChild(SemanticNode *node);
 
@@ -32,13 +35,13 @@ public:
 	/// themselves and returns removed tail. Removes all if node is null.
 	QLinkedList<SemanticNode *> removeStartingFrom(SemanticNode *node);
 
-	virtual QString toString(GeneratorCustomizer &customizer, int indent) const;
 
 	/// Returns parent semantic node. The result is never NULL.
 	SemanticNode *parentNode();
 
 protected:
 	virtual QLinkedList<SemanticNode *> children() const;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
 
 private:
 	QLinkedList<SemanticNode *> mChildren;

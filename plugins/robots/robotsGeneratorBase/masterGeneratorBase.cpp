@@ -3,6 +3,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <readableControlFlowGenerator.h>
+#include <gotoControlFlowGenerator.h>
 
 using namespace qReal::robots::generators;
 
@@ -27,7 +28,9 @@ void MasterGeneratorBase::initialize()
 	mCustomizer->factory()->initialize();
 	setPathToTemplates(mCustomizer->factory()->pathToTemplates());
 
-	mReadableControlFlowGenerator = new ReadableControlFlowGenerator(mRepo
+//	mReadableControlFlowGenerator = new ReadableControlFlowGenerator(mRepo
+//			, mErrorReporter, *mCustomizer, mDiagram, this);
+	mReadableControlFlowGenerator = new GotoControlFlowGenerator(mRepo
 			, mErrorReporter, *mCustomizer, mDiagram, this);
 }
 

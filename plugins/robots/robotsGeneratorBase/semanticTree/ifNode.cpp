@@ -27,7 +27,7 @@ ZoneNode *IfNode::elseZone()
 	return mElseZone;
 }
 
-QString IfNode::toString(GeneratorCustomizer &customizer, int indent) const
+QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
 {
 	if (mThenZone->isEmpty() && mElseZone->isEmpty()) {
 		return QString();

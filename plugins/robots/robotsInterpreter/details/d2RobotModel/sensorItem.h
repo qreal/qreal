@@ -85,7 +85,7 @@ protected:
 	QRectF const mImageRect;
 	QRectF const mBoundingRect;
 	QImage const mImage;
-	PortItem mPortItem;
+	PortItem *mPortItem;  // Takes parentship
 };
 
 }
