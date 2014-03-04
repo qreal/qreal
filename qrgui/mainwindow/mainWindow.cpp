@@ -1254,6 +1254,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
 		EditorView * const view = new EditorView(this, mMiniMap);
+		mMiniMap->show();
 		if (view) {
 			Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(index);
 			mController->diagramOpened(diagramId);

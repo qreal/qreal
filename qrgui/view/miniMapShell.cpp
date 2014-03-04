@@ -46,6 +46,7 @@ void MiniMapShell::currentTabChanged()
 	this->parentWidget()->layout()->removeWidget(this);
 
 	mMiniMap->setParent(this);
+	mShowMiniMapButton->raise();
 }
 
 void MiniMapShell::turnMiniMap()

@@ -15,6 +15,7 @@ MiniMap::MiniMap(QWidget *parent)
 
 void MiniMap::init(qReal::MainWindow *window)
 {
+	this->hide();
 	mWindow = window;
 
 	setRenderHint(QPainter::Antialiasing, true);
