@@ -14,6 +14,7 @@
 #include "sensorImplementations/nullEncoderImplementation.h"
 #include "sensorImplementations/nullGyroscopeSensorImplementation.h"
 #include "sensorImplementations/nullAccelerometerSensorImplementation.h"
+#include "details/realTimeline.h"
 
 namespace qReal {
 namespace interpreters {
@@ -69,7 +70,7 @@ public:
 	virtual sensorImplementations::NullEncoderImplementation &encoderB();
 	virtual sensorImplementations::NullEncoderImplementation &encoderC();
 
-	virtual AbstractTimer *produceTimer();
+	TimelineInterface *timeline() override;
 
 private slots:
 	void timerTimeout();
@@ -86,6 +87,8 @@ private:
 	sensorImplementations::NullEncoderImplementation mEncoderA;
 	sensorImplementations::NullEncoderImplementation mEncoderB;
 	sensorImplementations::NullEncoderImplementation mEncoderC;
+
+	RealTimeline mTimeline;
 
 	virtual void addTouchSensor(robots::enums::inputPort::InputPortEnum const port);
 	virtual void addSonarSensor(robots::enums::inputPort::InputPortEnum const port);

@@ -3,6 +3,8 @@
 #include <QtWidgets/QPinchGesture>
 #include <QtWidgets/QApplication>
 
+#include <qrutils/mathUtils/geometry.h>
+
 #include "view/editorView.h"
 
 using namespace qReal::view::details;
@@ -115,7 +117,13 @@ void TouchSupportManager::simulateRightClick(QTapAndHoldGesture *gesture)
 
 bool TouchSupportManager::isElementUnder(QPointF const &pos)
 {
-	return dynamic_cast<Element *>(mEditorView->itemAt(pos.toPoint()));
+	for (QGraphicsItem * const item : mEditorView->items(pos.toPoint())) {
+		if (dynamic_cast<Element *>(item)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
@@ -168,6 +176,7 @@ bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 
 void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 {
+	QPointF const touchPoint = event->touchPoints()[0].pos();
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
 		mEditorView->scene()->clearSelection();
@@ -202,17 +211,30 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 
 		mEditorView->scene()->update();
 		mLastTapTimestamp = QDateTime::currentMSecsSinceEpoch();
+		mLastTouchBeginPoint = touchPoint;
 		break;
 	}
-	case QEvent::TouchEnd:
+	case QEvent::TouchEnd: {
 		// This will not show context menu when we just tap on scene
 		if (mButton == Qt::RightButton) {
 			simulateMove(event);
 		}
 
 		simulateRelease(event);
+
+		// If user`s touch begin and end events points distinguish not more than this distance then the element
+		// under this point will be selected.
+		qreal const maxDistance = 10;
+		if (isElementUnder(touchPoint)
+				&& mathUtils::Geometry::distance(mLastTouchBeginPoint, touchPoint) < maxDistance) {
+			// Selecting the element under the finger
+			simulatePress(event);
+			simulateRelease(event);
+		}
+
 		mEditorView->scene()->update();
 		break;
+	}
 	case QEvent::TouchUpdate:
 		simulateMove(event);
 		break;

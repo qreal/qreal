@@ -25,7 +25,8 @@ public:
 
 protected slots:
 	/// Calls code generator. Returns true if operation was successful.
-	virtual bool generateCode();
+	/// @param openTab If true after code generation a tab with generated code will be opened.
+	virtual bool generateCode(bool openTab = true);
 
 	/// Changes path to code source file and regenerate necessary extra files.
 	void regenerateCode(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
@@ -45,11 +46,13 @@ protected:
 
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo) = 0;
 	QFileInfo srcPath();
-	virtual QFileInfo defaultFilePath(QString const &projectName) const;
+	virtual QString defaultFilePath(QString const &projectName) const;
 	virtual QString extension() const;
 	virtual QString extDescrition() const;
-	QFileInfo currentSource();
+	QFileInfo generateCodeForProcessing();
 	virtual QString generatorName() const;
+
+	virtual bool canGenerateTo(QString const &project);
 
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
@@ -66,7 +69,6 @@ protected:
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 	qReal::SystemEventsInterface *mSystemEvents; // Does not have ownership
 	qReal::TextManagerInterface *mTextManager;
-	int mCurrentCodeNumber;
 	QMultiHash<qReal::Id, QFileInfo> mCodePath;
 };
 
