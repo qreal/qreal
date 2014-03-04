@@ -3,6 +3,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListWidgetItem>
 
+#include "dialogs/metamodelingOnFly/restorePropertiesDialog.h"
 #include "pluginManager/interpreterEditorManager.h"
 
 namespace Ui {
@@ -29,12 +30,13 @@ public:
 	/// Selects a property for editing.
 	/// @param propertyItem Item in a list of properties which we edit.
 	/// @param propertyName Name of a property which we edit.
-	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName);
+	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName, QString const &propertyDisplayedName);
 
 private slots:
 	void okButtonClicked();
 	void messageBoxCancel();
 	void updateProperties();
+	void acceptPropertyModifications();
 
 private:
 	enum Mode
@@ -47,6 +49,7 @@ private:
 
 	Ui::EditPropertiesDialog *mUi;
 	EditorManagerInterface &mInterperterEditorManager;
+	RestorePropertiesDialog *mRestorePropertiesDialog;
 	Id mId;
 	QString mPropertyName;
 	QListWidgetItem *mPropertyItem;
