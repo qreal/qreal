@@ -124,8 +124,8 @@
 							<start startx="200" starty="40"/>
 							<end endx="200" endy="160"/>
 						</linePort>
-					</ports>      
-				</graphics> 
+					</ports>
+				</graphics>
 				<logic>
 					<generalizations>
 						<parent parentName="KernelDiagram::Diagram"/>
@@ -272,7 +272,7 @@
 						<property type="lineTypes" name="lineType">
 							<default>solidLine</default>
 							<description>тип линии (прямая, пунктирная и т.д.)</description>
-						</property>	
+						</property>
 						<property type="reference" name="fromPorts">
 							<reference type="MetaEntityPort"/>
 						</property>
@@ -324,7 +324,7 @@
 				<logic>
 					<generalizations/>
 					<properties>
-						<property type="string" name="displayedName"/> 
+						<property type="string" name="displayedName"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntityValue"/>

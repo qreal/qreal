@@ -668,17 +668,19 @@ void Repository::removeAllGraphicalElements()
 {
 	IdList toDelete;
 
-	foreach (Object *object, mObjects.values()) {
+	for (Object *object : mObjects.values()) {
 		if (object->isLogicalObject()) {
 			continue;
 		}
+
 		toDelete.append(object->id());
 	}
 
-	foreach (Id const& id, toDelete) {
+	for (Id const& id : toDelete) {
 		mObjects.remove(id);
-		if (mObjects[Id::rootId()]->children().contains(id))
+		if (mObjects[Id::rootId()]->children().contains(id)) {
 			mObjects[Id::rootId()]->removeChild(id);
+		}
 	}
 }
 
