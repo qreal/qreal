@@ -54,6 +54,7 @@ public:
 
 private slots:
 	void setModified(gui::QScintillaTextEdit *code);
+	void onTabClosed(QFileInfo const &file);
 
 private:
 	QMap<QString, gui::QScintillaTextEdit *> mText;

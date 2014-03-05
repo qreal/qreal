@@ -3,7 +3,7 @@ ActivateAlignment=true
 Antialiasing=true
 arrangeLinks=true
 Autosave=true
-AutosaveInterval=180
+AutosaveInterval=60
 AutosaveDirPath=
 AutosaveFileName=autosave.qrs
 buildedFileName=builded
@@ -72,3 +72,4 @@ dragArea = 12
 robotsInterpreterStackSize=4000
 usabilityTestingMode=false
 collectErgonomicValues=truenxtFlashToolRunPolicy=0
+touchMode=false

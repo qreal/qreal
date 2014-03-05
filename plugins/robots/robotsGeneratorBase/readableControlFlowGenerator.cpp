@@ -38,16 +38,26 @@ semantics::SemanticTree *ReadableControlFlowGenerator::generate()
 	mAlreadyApplied.clear();
 	mTravelingForSecondTime = false;
 
-	ControlFlowGeneratorBase::generate();
-	if (!mSemanticTree) {
-		return NULL;
+	if (!preGenerationCheck()) {
+		mSemanticTree = nullptr;
+		return nullptr;
 	}
 
-	mTravelingForSecondTime = true;
-	startSearch(initialNode());
+	mErrorsOccured = false;
+	mSemanticTree = new semantics::SemanticTree(customizer(), initialNode(), mIsMainGenerator, this);
 
-	if (errorsOccured()) {
-		mSemanticTree = NULL;
+	for (int iteration = 0; iteration < 2; ++iteration) {
+		do {
+			mSomethingChangedThisIteration = false;
+			startSearch(initialNode());
+
+			if (mErrorsOccured) {
+				mSemanticTree = nullptr;
+				return nullptr;
+			}
+		} while (mSomethingChangedThisIteration);
+
+		mTravelingForSecondTime = true;
 	}
 
 	return mSemanticTree;
@@ -155,6 +165,7 @@ bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
 	foreach (SemanticTransformationRule * const rule, rules) {
 		if (rule->apply()) {
 			mAlreadyApplied[currentId] = true;
+			mSomethingChangedThisIteration = true;
 			return true;
 		}
 	}

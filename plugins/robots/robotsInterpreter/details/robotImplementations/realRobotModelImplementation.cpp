@@ -211,7 +211,7 @@ void RealRobotModelImplementation::disconnectedSlot()
 	emit disconnected();
 }
 
-AbstractTimer *RealRobotModelImplementation::produceTimer()
+TimelineInterface *RealRobotModelImplementation::timeline()
 {
-	return new RealTimer;
+	return &mTimeline;
 }
