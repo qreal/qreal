@@ -28,6 +28,10 @@
 				<value>Static text</value>
 				<value>Dynamic text</value>
 			</enum>
+			<enum name="buildConfiguration" displayedName="buildConfiguration">
+				<value>debug</value>
+				<value>release</value>
+			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node name="PackageDiagram" displayedName="Package Diagram" description="Предназначен для описания связей между метамоделями. Также может быть корневым элементом метамодели">
@@ -82,11 +86,14 @@
 					<properties>
 						<property type="string" name="displayedName"/>
 						<property type="string" name="include">
-						<description>xml-файлы, которые следует подключить к создаваемой метамодели</description>
+							<description>xml-файлы, которые следует подключить к создаваемой метамодели</description>
 						</property>
 						<property type="DirectoryPath" name="name of the directory" displayedName="directory to generated code"/>
 						<property type="DirectoryPath" name="path to QReal Source Files">
-						<description>путь до исходных файлов QReal</description>
+							<description>путь до исходных файлов QReal</description>
+						</property>
+						<property type="buildConfiguration" name="buildConfiguration" displayedName="Build Configuration">
+							<default>release</default>
 						</property>
 					</properties>
 					<containers/>
@@ -117,7 +124,7 @@
 							<start startx="200" starty="40"/>
 							<end endx="200" endy="160"/>
 						</linePort>
-					</ports>
+					</ports>      
 				</graphics> 
 				<logic>
 					<generalizations>
@@ -126,7 +133,7 @@
 					<properties>
 						<property type="string" name="displayedName"/>
 						<property type="string" name="nodeName">
-						<description>имя элемента, который будет корневым для диаграмм на создаваемом языке</description>
+							<description>имя элемента, который будет корневым для диаграмм на создаваемом языке</description>
 						</property>
 					</properties>
 					<container>

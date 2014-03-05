@@ -47,7 +47,14 @@ void GraphicalModel::init()
 void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 {
 	foreach (Id const &childId, mApi.children(parent->id())) {
-		if (mApi.isGraphicalElement(childId)) {
+		if (mApi.isGraphicalElement(childId) && !mApi.hasProperty(childId, "from")) {
+			GraphicalModelItem * const child = loadElement(parent, childId);
+			loadSubtreeFromClient(child);
+		}
+	}
+
+	foreach (Id const &childId, mApi.children(parent->id())) {
+		if (mApi.isGraphicalElement(childId) && mApi.hasProperty(childId, "from")) {
 			GraphicalModelItem * const child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
 		}

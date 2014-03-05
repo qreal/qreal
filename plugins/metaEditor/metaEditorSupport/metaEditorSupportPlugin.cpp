@@ -88,7 +88,8 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 					, SettingsManager::value("pathToQmake").toString()
 					, SettingsManager::value("pathToMake").toString()
 					, SettingsManager::value("pluginExtension").toString()
-					, SettingsManager::value("prefix").toString());
+					, SettingsManager::value("prefix").toString()
+					, mLogicalRepoApi->stringProperty(key, "buildConfiguration"));
 		}
 	}
 	if (metamodelList.isEmpty()) {
@@ -230,7 +231,9 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 		, QString const &commandFirst
 		, QString const &commandSecond
 		, QString const &extension
-		, QString const &prefix)
+		, QString const &prefix
+		, QString const &buildConfiguration
+		)
 {
 	int const progressBarWidth = 240;
 	int const progressBarHeight = 20;
@@ -267,7 +270,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 
 	QProcess builder;
 	builder.setWorkingDirectory(directoryName);
-	builder.start(commandFirst);
+	builder.start(commandFirst, {"CONFIG+=" + buildConfiguration});
 
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);
@@ -275,7 +278,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "." + extension, normalizeDirName)) {
+			if (mMainWindowInterface->loadPlugin(prefix + normalizerMetamodelName + "." + extension, normalizeDirName)) {
 				progress->setValue(100);
 			}
 		}
