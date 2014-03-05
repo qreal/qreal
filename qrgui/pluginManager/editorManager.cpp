@@ -670,11 +670,12 @@ QString EditorManager::saveMetamodelFilePath() const
 	return "";
 }
 
-IdList EditorManager::propertiesWithTheSameName(Id const &id, QString const &propCurrentName, QString const &propNewName) const
+IdList EditorManager::propertiesWithTheSameName(Id const &id, QString const &propertyCurrentName
+		, QString const &propertyNewName) const
 {
 	Q_UNUSED(id);
-	Q_UNUSED(propCurrentName);
-	Q_UNUSED(propNewName);
+	Q_UNUSED(propertyCurrentName);
+	Q_UNUSED(propertyNewName);
 	return IdList();
 }
 

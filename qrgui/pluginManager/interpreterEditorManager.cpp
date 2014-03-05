@@ -715,7 +715,8 @@ bool InterpreterEditorManager::isParentProperty(Id const &id, QString const &pro
 	return propertiesFromParentsList.contains(propertyName);
 }
 
-void InterpreterEditorManager::deletePropertyInElement(qrRepo::RepoApi *repo, Id const &diagram, QString const &propertyName) const
+void InterpreterEditorManager::deletePropertyInElement(qrRepo::RepoApi *repo
+		, Id const &diagram, QString const &propertyName) const
 {
 	foreach (Id const &element, repo->children(diagram)) {
 		foreach (Id const &property, repo->children(element)) {
