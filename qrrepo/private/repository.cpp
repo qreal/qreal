@@ -589,7 +589,20 @@ void Repository::generateGraphicalModel()
 	QMap<Id, Id> graphicalByLogical;
 	Id diagramId;
 
-	removeAllGraphicalElements();
+	QHash<qReal::Id, Object*> mObjectsNew;
+
+	IdList toDelete;
+
+	foreach (Object *object, mObjects.values()) {
+		if (object->isLogicalObject()) {
+			continue;
+		}
+		toDelete.append(object->id());
+	}
+
+	foreach (Id const& id, toDelete) {
+		mObjects.remove(id);
+	}
 
 	// step 1. create all graphocal objects
 
@@ -661,104 +674,6 @@ void Repository::generateGraphicalModel()
 
 	}
 
-	moveElements(graphicalByLogical);
-}
 
-void Repository::removeAllGraphicalElements()
-{
-	IdList toDelete;
-
-	for (Object *object : mObjects.values()) {
-		if (object->isLogicalObject()) {
-			continue;
-		}
-
-		toDelete.append(object->id());
-	}
-
-	for (Id const& id : toDelete) {
-		mObjects.remove(id);
-		if (mObjects[Id::rootId()]->children().contains(id)) {
-			mObjects[Id::rootId()]->removeChild(id);
-		}
-	}
-}
-
-void Repository::moveElements(QMap<Id, Id> const &graphicalByLogical)
-{
-	IdList toBeMoved;
-
-	foreach (Object *object, mObjects.values()) {
-		if (object->isLogicalObject()) {
-			continue;
-		}
-		GraphicalObject *graphicalObject = dynamic_cast<GraphicalObject *>(object);
-
-		qDebug() << "id" << graphicalObject->id() << "parent:" << graphicalObject->parent();
-
-		if (graphicalObject->parent().element() == "MetaEditorDiagramNode" && !graphicalObject->hasProperty("from")) {
-			toBeMoved.append(graphicalObject->id());
-		}
-	}
-
-	qDebug() << "to be moved:" << toBeMoved.size();
-
-	QPointF pos(150, 150);
-	QPolygon configuration;
-	configuration.insert(0, QPoint(0, 0));
-	configuration.insert(1, QPoint(150, 100));
-
-	foreach (Id const &id, toBeMoved) {
-		mObjects[id]->setProperty("configuration", configuration);
-		mObjects[id]->setProperty("position", pos);
-		qDebug() << "moved" << id << "to" << pos;
-		pos.setX(pos.x() + 200);
-	}
-
-	// reconnect the links
-
-	qDebug() << "\nLINKS:";
-	foreach (Object *object, mObjects.values()) {
-		if (object->isLogicalObject()) {
-			continue;
-		}
-
-		GraphicalObject *graphicalObject = dynamic_cast<GraphicalObject *>(object);
-		if (!graphicalObject->hasProperty("from")) {
-			continue;
-		}
-
-		Id fromId = graphicalObject->property("from").value<Id>();
-		Id toId = graphicalObject->property("to").value<Id>();
-
-		qDebug() << "id" << graphicalObject->id();
-		qDebug() << "    from " << mObjects[graphicalByLogical[fromId]]->property("name").toString();
-		qDebug() << "    to " << mObjects[graphicalByLogical[toId]]->property("name").toString();
-
-		QPoint fromPos = mObjects[graphicalByLogical[fromId]]->property("position").toPointF().toPoint() + QPoint(5, 5);
-		QPoint toPos = mObjects[graphicalByLogical[toId]]->property("position").toPointF().toPoint() + QPoint(5, 5);
-
-		QPolygon configuration;
-		configuration.insert(0, fromPos);
-		configuration.insert(1, toPos);
-		mObjects[graphicalObject->id()]->setProperty("configuration", configuration);
-
-		qDebug() << graphicalObject->id() << mObjects[graphicalObject->id()]->property("configuration");
-	}
-
-	// set the diagram size
-
-	foreach (Object *object, mObjects.values()) {
-		if (object->isLogicalObject()) {
-			continue;
-		}
-
-		GraphicalObject *graphicalObject = dynamic_cast<GraphicalObject *>(object);
-		if (graphicalObject->id().element() == "MetaEditorDiagramNode") {
-			QPolygon configuration;
-			configuration.insert(0, QPoint(0, 0));
-			configuration.insert(1, QPoint(1000, 1000));
-			graphicalObject->setProperty("configuration", configuration);
-		}
-	}
+	qDebug() << "graphical:" << graphicalElementsCount << ", logical:" << logicalElementsCount;
 }

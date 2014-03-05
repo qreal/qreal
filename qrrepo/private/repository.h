@@ -128,9 +128,6 @@ public:
 	void generateGraphicalModel();
 
 private:
-	void removeAllGraphicalElements();
-	void moveElements(const QMap<qReal::Id, qReal::Id> &graphicalByLogical);
-
 	void init();
 
 	void loadFromDisk();
