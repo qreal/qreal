@@ -67,7 +67,7 @@ UXInfo::UXInfo()
 
 	mSettingChangesNumber = 1;
 
-	mUserActionFile.setFileName(dir.absolutePath() + userActionFileName);
+	mUserActionFile.setFileName(dir + userActionFileName);
 	if (mUserActionFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		mUserActionStream.setDevice(&mUserActionFile);
 	}
