@@ -30,7 +30,9 @@ public:
 	/// Selects a property for editing.
 	/// @param propertyItem Item in a list of properties which we edit.
 	/// @param propertyName Name of a property which we edit.
-	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName, QString const &propertyDisplayedName);
+	/// @param propertyDisplayedName Displayed name of this property.
+	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName
+				, QString const &propertyDisplayedName);
 
 private slots:
 	void okButtonClicked();

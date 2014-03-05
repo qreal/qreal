@@ -125,10 +125,12 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 
 				foreach (Id const &diagramChild, repo->children(editorChild)) {
 					if (diagramChild.element() == "MetaEntityEdge"
-							|| !repo->stringProperty(diagramChild, "shape").isEmpty()) {
+							|| !repo->stringProperty(diagramChild, "shape").isEmpty())
+					{
 						if (!repo->hasProperty(diagramChild, "isHidden")) {
 							repo->setProperty(diagramChild, "isHidden", "false");
 						}
+
 						if (repo->stringProperty(diagramChild, "isHidden") != "true") {
 							result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
 						}
@@ -306,6 +308,7 @@ QStringList InterpreterEditorManager::propertiesFromParents(Id const &id
 				if (!repo->hasProperty(parentProperty, "isHidden")) {
 					repo->setProperty(parentProperty, "isHidden", "false");
 				}
+
 				if (repo->stringProperty(parentProperty, "isHidden") == "false") {
 					QString const strProperty = checker.stringProperty(repo, parentProperty, propertyName);
 					if (!strProperty.isEmpty()) {
@@ -502,6 +505,7 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 			if (!repo->hasProperty(idProperty, "isHidden")) {
 				repo->setProperty(idProperty, "isHidden", "false");
 			}
+
 			if (repo->stringProperty(idProperty, "isHidden") != "true") {
 				result << repo->name(idProperty);
 			}
@@ -752,9 +756,13 @@ void InterpreterEditorManager::addProperty(Id const &id, QString const &propDisp
 	repoAndMetaIdPair.first->setProperty(newId, "isHidden", "false");
 }
 
-IdList InterpreterEditorManager::propertiesWithTheSameName(Id const &id, QString const &propCurrentName, QString const &propNewName) const
+IdList InterpreterEditorManager::propertiesWithTheSameName(
+		Id const &id
+		, QString const &propertyCurrentName
+		, QString const &propertyNewName
+		) const
 {
-	if (propertyDisplayedName(id, propCurrentName) == propNewName) {
+	if (propertyDisplayedName(id, propertyCurrentName) == propertyNewName) {
 		return IdList();
 	}
 
@@ -766,14 +774,14 @@ IdList InterpreterEditorManager::propertiesWithTheSameName(Id const &id, QString
 	foreach (Id const &idProperty, repo->children(metaId)) {
 		if (idProperty.element() == "MetaEntity_Attribute") {
 			if (repo->hasProperty(idProperty, "maskedNames")) {
-				if (repo->property(idProperty, "maskedNames").toStringList().contains(propNewName)) {
+				if (repo->property(idProperty, "maskedNames").toStringList().contains(propertyNewName)) {
 					result << idProperty;
 				}
 			} else {
 				QStringList propertyNames;
 				propertyNames << repo->stringProperty(idProperty, "displayedName");
 				repo->setProperty(idProperty, "maskedNames", propertyNames);
-				if (repo->stringProperty(idProperty, "displayedName") == propNewName) {
+				if (repo->stringProperty(idProperty, "displayedName") == propertyNewName) {
 					result << idProperty;
 				}
 			}
@@ -786,11 +794,12 @@ IdList InterpreterEditorManager::propertiesWithTheSameName(Id const &id, QString
 QStringList InterpreterEditorManager::getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const
 {
 	QStringList paramsList;
-	qrRepo::RepoApi *repo;
-	foreach (qrRepo::RepoApi *repoApi, mEditorRepoApi.values()) {
+	qrRepo::RepoApi *repo = nullptr;
+	foreach (qrRepo::RepoApi * const repoApi, mEditorRepoApi.values()) {
 		if (repoApi->exist(propertyId))
 			repo = repoApi;
 	}
+
 	paramsList << propertyName;
 	QString state = "";
 	if (repo->hasProperty(propertyId, "isHidden")) {
@@ -798,6 +807,7 @@ QStringList InterpreterEditorManager::getSameNamePropertyParams(Id const &proper
 			state = tr("Deleted");
 		}
 	}
+
 	if (state.isEmpty()) {
 		if (propertyName.compare(repo->stringProperty(propertyId, "displayedName")) == 0) {
 			state = tr("Existed");
@@ -806,6 +816,7 @@ QStringList InterpreterEditorManager::getSameNamePropertyParams(Id const &proper
 			state += repo->stringProperty(propertyId, "displayedName");
 		}
 	}
+
 	paramsList << state;
 	paramsList << repo->stringProperty(propertyId, "attributeType");
 	paramsList << repo->stringProperty(propertyId, "defaultValue");
@@ -814,11 +825,12 @@ QStringList InterpreterEditorManager::getSameNamePropertyParams(Id const &proper
 
 void InterpreterEditorManager::restoreRemovedProperty(Id const &propertyId, QString const &previousName) const
 {
-	qrRepo::RepoApi *repo;
-	foreach (qrRepo::RepoApi *repoApi, mEditorRepoApi.values()) {
+	qrRepo::RepoApi *repo = nullptr;
+	foreach (qrRepo::RepoApi *const repoApi, mEditorRepoApi.values()) {
 		if (repoApi->exist(propertyId))
 			repo = repoApi;
 	}
+
 	repo->setProperty(propertyId, "isHidden", "false");
 	if (repo->stringProperty(propertyId, "displayedName") != previousName) {
 		repo->setProperty(propertyId, "displayedName", previousName);
@@ -832,6 +844,7 @@ void InterpreterEditorManager::restoreRenamedProperty(Id const &propertyId, QStr
 		if (repoApi->exist(propertyId))
 			repo = repoApi;
 	}
+
 	repo->setProperty(propertyId, "displayedName", previousName);
 }
 
@@ -861,9 +874,11 @@ void InterpreterEditorManager::updateProperties(Id const &id, QString const &pro
 	} else {
 		propertyNames << repo->stringProperty(propertyMetaId,"displayedName");
 	}
+
 	if (!propertyNames.contains(propertyDisplayedName)) {
 		propertyNames << propertyDisplayedName;
 	}
+
 	setProperty(repo, propertyMetaId, "maskedNames", propertyNames);
 	setProperty(repo, propertyMetaId, "displayedName", propertyDisplayedName);
 }

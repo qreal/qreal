@@ -128,6 +128,7 @@ bool ProjectManager::open(QString const &fileName)
 			, mMainWindow->models()->graphicalModel());
 	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models()->graphicalModel());
 	mMainWindow->logicalModelExplorer()->setModel(mMainWindow->models()->logicalModel());
+	/// @todo Crashes metamodeling on fly.
 	//mMainWindow->openFirstDiagram();
 
 	setSaveFilePath(fileName);

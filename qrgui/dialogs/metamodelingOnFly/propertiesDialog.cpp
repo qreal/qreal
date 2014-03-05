@@ -86,10 +86,17 @@ void PropertiesDialog::deleteProperty()
 void PropertiesDialog::change(QString const &text)
 {
 	if (!text.isEmpty()) {
-		mEditPropertiesDialog->changeProperty(mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow()), mPropertiesNames[mUi->propertiesNamesList->currentRow()], text);
+		mEditPropertiesDialog->changeProperty(
+				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
+				, mPropertiesNames[mUi->propertiesNamesList->currentRow()]
+				, text);
 	} else {
-		mEditPropertiesDialog->changeProperty(mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow()), "", text);
+		mEditPropertiesDialog->changeProperty(
+				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
+				, ""
+				, text);
 	}
+
 	mEditPropertiesDialog->setModal(true);
 	mEditPropertiesDialog->show();
 	connect(mEditPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
