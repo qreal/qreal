@@ -23,13 +23,15 @@ MiniMapShell::MiniMapShell(EditorView *parent, MiniMap *miniMap) :
 
 	mMiniMap->setGeometry(0, 0, size, size);
 	mShowMiniMapButton->setGeometry(0, 0, 20, 20);
-	  mShowMiniMapButton->raise();
+	mShowMiniMapButton->raise();
 
 	mMainLayout->addWidget(mMiniMap);
 
-    this->setLayout(mMainLayout);
+	this->setLayout(mMainLayout);
 
 	connect(this->mShowMiniMapButton, SIGNAL(released()), this, SLOT(turnMiniMap()));
+
+	mShowMiniMapButton->setIcon(QIcon(":/icons/show.png"));
 }
 
 void MiniMapShell::changeSize()
@@ -44,7 +46,6 @@ void MiniMapShell::currentTabChanged()
 {
 	mMiniMap->setScene(mEditorView->scene());
 	this->parentWidget()->layout()->removeWidget(this);
-
 	mMiniMap->setParent(this);
 	mShowMiniMapButton->raise();
 }
@@ -55,9 +56,11 @@ void MiniMapShell::turnMiniMap()
 	{
 		size = SettingsManager::value("MiniMapSize").toInt();
 		if (isMiniMapVisible){
+			mShowMiniMapButton->setIcon(QIcon(":/icons/show.png"));
 			mMiniMap->show();
 			setGeometry(this->x(), this->y(), this->x()+size+20 ,this->y()+size+20);
 		} else {
+			mShowMiniMapButton->setIcon(QIcon(":/icons/hide.png"));
 			mMiniMap->hide();
 			setGeometry(this->x(), this->y(), this->x()+20 ,this->y()+20);
 		}
@@ -66,4 +69,14 @@ void MiniMapShell::turnMiniMap()
 	} else {
 		mShowMiniMapButton->changeDragState(false);
 	}
+}
+
+QPoint MiniMapShell::getSceneCoordinates()
+{
+	return mSceneCoordinates;
+}
+
+void MiniMapShell::saveSceneCoordinates(QPoint sceneCoordinates)
+{
+	mSceneCoordinates = sceneCoordinates;
 }

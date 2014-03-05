@@ -299,19 +299,21 @@ void EditorView::addMiniMap(MiniMap *mm)
 	mMainLayout->addStretch();
 	mMainLayout->addLayout(mAuxiliaryLayout);
 	setLayout(mMainLayout);
+	connect(this, SIGNAL(changeMiniMapPos(QPoint)), mMiniMapShell, SLOT(saveSceneCoordinates(QPoint)));
+	mMiniMapShell->saveSceneCoordinates(QPoint (this->width() - mMiniMapShell->width()-10, this->height() - mMiniMapShell->height()-10));
 }
 
 void EditorView::replaceMiniMap()
 {
 	mMiniMapShell->currentTabChanged();
-	mAuxiliaryLayout->addWidget(mMiniMapShell);
+	QPoint mMiniMapPos = mMiniMapShell->getSceneCoordinates();
+	mMiniMapShell->move(mapFromGlobal(mMiniMapPos));
 	mMiniMap->show();
 }
 
 void EditorView::updateMiniMap()
 {
 	mMiniMapShell->changeSize();
-	//mMiniMap->changeSize();
 }
 
 void EditorView::moveMiniMap(QPoint miniMapPos)
@@ -323,40 +325,46 @@ void EditorView::moveMiniMap(QPoint miniMapPos)
 	int editorViewHeight = this->height();
 	int editorViewWidth = this->width();
 
-	if (miniMapPos.x() > (editorViewWidth + 130)) {
+	if (miniMapPos.x() > (editorViewWidth + 50)) {
 		mMiniMapShell->move(editorViewWidth - mMiniMapShell->width() -10, this->mapFromGlobal(miniMapPos).y());
 		if (miniMapPos.y() > (editorViewHeight-50)) {
-			mMiniMapShell->move(editorViewWidth - mMiniMapShell->width()-10, editorViewWidth - mMiniMapShell->height());
-		}
-		if (mapPos.y() < 50) {
-			mMiniMapShell->move(editorViewWidth - mMiniMapShell->width()-10, 0);
+			miniMapPos = QPoint(editorViewWidth - mMiniMapShell->width()-10, editorViewHeight - mMiniMapShell->height()-10);
+			mMiniMapShell->move(miniMapPos);
 		}
 	}
 	if (mapPos.x() < 50) {
 		mMiniMapShell->move(0, this->mapFromGlobal(miniMapPos).y());
 		if (miniMapPos.y() > (editorViewHeight-50)) {
-			mMiniMapShell->move(0, editorViewWidth - mMiniMapShell->height()-10);
+			miniMapPos = QPoint(0, editorViewWidth - mMiniMapShell->height()-10);
+			mMiniMapShell->move(miniMapPos);
 		}
 		if (mapPos.y() < 50) {
-			mMiniMapShell->move(0, 0);
+			miniMapPos = QPoint(0, 0);
+			mMiniMapShell->move(miniMapPos);
 		}
 	}
 	if (miniMapPos.y() > (editorViewHeight-50)) {
 		mMiniMapShell->move(this->mapFromGlobal(miniMapPos).x(), editorViewHeight - mMiniMapShell->height()-10);
-		if (miniMapPos.x() > (editorViewWidth + 130)) {
-			mMiniMapShell->move(editorViewWidth - mMiniMapShell->width()-10, editorViewHeight - mMiniMapShell->height()-10);
+		if (miniMapPos.x() > (editorViewWidth + 50)) {
+			miniMapPos = QPoint(editorViewWidth - mMiniMapShell->width()-10, editorViewHeight - mMiniMapShell->height()-10);
+			mMiniMapShell->move(miniMapPos);
 		}
 		if (mapPos.x() < 50) {
-			mMiniMapShell->move(0, editorViewHeight - mMiniMapShell->height()-10);
+			miniMapPos = QPoint(0, editorViewHeight - mMiniMapShell->height()-10);
+			mMiniMapShell->move(miniMapPos);
 		}
 	}
 	if (mapPos.y() < 50) {
 		mMiniMapShell->move(this->mapFromGlobal(miniMapPos).x(), 0);
-		if (miniMapPos.x() > (editorViewWidth+ 130)) {
-			mMiniMapShell->move(editorViewWidth - mMiniMapShell->width()-10 , 0);
+		if (miniMapPos.x() > (editorViewWidth+ 50)) {
+			miniMapPos = QPoint(editorViewWidth - mMiniMapShell->width()-10 , 0);
+			mMiniMapShell->move(miniMapPos);
 		}
 		if (mapPos.x() < 50) {
-			mMiniMapShell->move(0, 0);
+			miniMapPos = QPoint(0, 0);
+			mMiniMapShell->move(miniMapPos);
 		}
 	}
+
+	emit changeMiniMapPos(miniMapPos);
 }

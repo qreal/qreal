@@ -31,6 +31,9 @@ public:
 	void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
 	void setTitlesVisible(bool visible);
 
+signals:
+	void changeMiniMapPos(QPoint miniMapPos);
+
 public slots:
 	void toggleAntialiasing(bool);
 	void zoomIn();

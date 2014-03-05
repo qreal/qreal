@@ -19,6 +19,9 @@ public:
 
 	void changeSize();
 	void currentTabChanged();
+	QPoint getSceneCoordinates();
+public slots:
+	void saveSceneCoordinates(QPoint sceneCoordinates);
 
 private slots:
 	void turnMiniMap();
@@ -30,6 +33,7 @@ private:
 
 	EditorView *mEditorView;
 	MiniMap *mMiniMap;
+	QPoint mSceneCoordinates;
 	int size;
 	bool isMiniMapVisible;
 

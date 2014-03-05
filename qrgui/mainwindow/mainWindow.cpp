@@ -1008,6 +1008,11 @@ void MainWindow::closeTab(int index)
 	}
 
 	mUi->tabs->removeTab(index);
+
+	if (!mUi->tabs->count()){
+		mMiniMap->setParent(0);
+	}
+
 	delete widget;
 }
 
