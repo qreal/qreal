@@ -171,7 +171,7 @@ bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
 	}
 
 	if (!thereWillBeMoreRules) {
-		error(tr("This diagram cannot be generated into the structured code"), currentId);
+		mErrorsOccured = true;
 	}
 
 	return thereWillBeMoreRules;

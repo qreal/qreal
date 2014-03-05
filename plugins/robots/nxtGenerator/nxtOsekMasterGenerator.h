@@ -19,8 +19,10 @@ public:
 protected:
 	GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
+	bool supportsGotoGeneration() const override;
 
 	void afterGeneration() override;
+
 
 private:
 	void generateOilFile(QString const &projectName, QString const &projectDir);

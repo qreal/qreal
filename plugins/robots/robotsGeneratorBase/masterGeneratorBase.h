@@ -18,6 +18,8 @@ namespace generators {
 /// controls their work. Must be reimplemented in each concrete generator.
 class ROBOTS_GENERATOR_EXPORT MasterGeneratorBase : public QObject, public TemplateParametrizedEntity
 {
+	Q_OBJECT
+
 public:
 	MasterGeneratorBase(qrRepo::RepoApi const &repo
 			, ErrorReporterInterface &errorReporter
@@ -41,6 +43,8 @@ protected:
 	/// so concrete generators have time to 'prepare' this path
 	virtual QString targetPath() = 0;
 
+	virtual bool supportsGotoGeneration() const = 0;
+
 	virtual void beforeGeneration();
 	virtual void processGeneratedCode(QString &generatedCode);
 	virtual void afterGeneration();
@@ -51,7 +55,8 @@ protected:
 	ErrorReporterInterface &mErrorReporter;
 	Id const mDiagram;
 	GeneratorCustomizer *mCustomizer;
-	ControlFlowGeneratorBase *mReadableControlFlowGenerator;
+	ControlFlowGeneratorBase *mReadableControlFlowGenerator;  // Takes ownership
+	ControlFlowGeneratorBase *mGotoControlFlowGenerator;  // Takes ownership
 	QString mProjectName;
 	QString mProjectDir;
 	int mCurInitialNodeNumber;
