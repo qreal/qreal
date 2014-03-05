@@ -204,6 +204,7 @@ QWidget *StartWidget::createPluginsList()
 	circleWidget->setStyleSheet(BrandManager::styles()->startTabButtonStyle());
 
 	QVBoxLayout * const innerLayout = new QVBoxLayout;
+	innerLayout->addStretch();
 	foreach (Id const &editor, mMainWindow->editorManager().editors()) {
 		Id const editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
 		foreach (Id const &diagram, mMainWindow->editorManager().diagrams(editorTmpId)) {

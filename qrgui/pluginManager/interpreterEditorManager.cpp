@@ -715,7 +715,8 @@ bool InterpreterEditorManager::isParentProperty(Id const &id, QString const &pro
 	return propertiesFromParentsList.contains(propertyName);
 }
 
-void InterpreterEditorManager::deletePropertyInElement(qrRepo::RepoApi *repo, Id const &diagram, QString const &propertyName) const
+void InterpreterEditorManager::deletePropertyInElement(qrRepo::RepoApi *repo
+		, Id const &diagram, QString const &propertyName) const
 {
 	foreach (Id const &element, repo->children(diagram)) {
 		foreach (Id const &property, repo->children(element)) {
@@ -997,12 +998,24 @@ void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, 
 
 void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
 {
-	QString const shape = "<graphics>\n    <picture sizex=\"168\" sizey=\"111\">\n    <rectangle fill=\"#ffffff\" "
-			"stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" stroke-width=\"0\" x1=\"1\" y2=\"107\" "
-			"fill-style=\"none\" x2=\"125\"/>\n    </picture>\n    <labels>\n    <label x=\"41\" y=\"43\" "
-			"textBinded=\"name\"/>\n    </labels>\n    <ports>\n    <pointPort x=\"2\" y=\"52\"/>\n    "
-			"<pointPort x=\"134\" y=\"56\"/>\n    <linePort>\n    <start startx=\"29\" starty=\"110\"/>\n    "
-			"<end endx=\"95\" endy=\"111\"/>\n    </linePort>\n    </ports>\n</graphics>\n";
+	QString const shape =
+			"<graphics>\n"
+			"    <picture sizex=\"50\" sizey=\"50\">\n"
+			"        <image y1=\"0\" name=\"\" x1=\"0\" y2=\"50\" x2=\"50\"/>\n"
+			"    </picture>\n"
+			"    <labels>\n"
+			"        <label x=\"-10\" y=\"60\" textBinded=\"name\"/>\n"
+			"    </labels>\n"
+			"    <ports>\n"
+			"        <pointPort x=\"0\" y=\"25\"/>\n"
+			"        <pointPort x=\"50\" y=\"25\"/>\n"
+			"        <pointPort x=\"25\" y=\"0\"/>\n"
+			"        <pointPort x=\"25\" y=\"50\"/>\n"
+			"    </ports>\n"
+			"    <nonResizeable/>\n"
+			"</graphics>\n"
+			;
+
 	QPair<qrRepo::RepoApi*, Id> const repoAndDiagramPair = repoAndDiagram(diagram.editor(), diagram.diagram());
 	qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
 	Id const diag = repoAndDiagramPair.second;

@@ -54,10 +54,12 @@ void RestorePropertiesDialog::restoreButtonClicked()
 		QString state = mUi->sameNamePropertiesTW->item(firstSelectedRow, 1)->text();
 		QString propertyPreviousName = mUi->sameNamePropertiesTW->item(firstSelectedRow, 0)->text();
 		if (state == tr("Deleted")) {
-			mInterperterEditorManager.restoreRemovedProperty(mPropertiesWithTheSameNameList[firstSelectedRow], propertyPreviousName);
+			mInterperterEditorManager.restoreRemovedProperty(mPropertiesWithTheSameNameList[firstSelectedRow]
+					, propertyPreviousName);
 		} else if (state != tr("Existed")) {
 			// Restore renamed property
-			mInterperterEditorManager.restoreRenamedProperty(mPropertiesWithTheSameNameList[firstSelectedRow], propertyPreviousName);
+			mInterperterEditorManager.restoreRenamedProperty(mPropertiesWithTheSameNameList[firstSelectedRow]
+					, propertyPreviousName);
 		}
 		done(QDialog::Accepted);
 	}
