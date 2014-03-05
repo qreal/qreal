@@ -31,6 +31,7 @@ HEADERS += \
 	$$PWD/startWidget/listWidget.h \
 	$$PWD/startWidget/circleWidget.h \
 	$$PWD/startWidget/styledButton.h \
+	$$PWD/uxInfoEventFilters/eventFilterPaletteDraggableElement.h
 
 SOURCES += \
 	$$PWD/mainWindow.cpp \
@@ -60,6 +61,7 @@ SOURCES += \
 	$$PWD/startWidget/listWidget.cpp \
 	$$PWD/startWidget/circleWidget.cpp \
 	$$PWD/startWidget/styledButton.cpp \
+	$$PWD/uxInfoEventFilters/eventFilterPaletteDraggableElement.cpp
 
 win32 {
 	HEADERS += \

@@ -18,5 +18,6 @@ public:
 	/// @param oldValue old value of the settings.
 	/// @param newValue new value of the settings.
 	virtual void reportSettingsChanges(QString const &name, QVariant const &oldValue, QVariant const &newValue) = 0;
+	virtual void reportPaletteUserAction(QString const &userAction) = 0;
 };
 }

@@ -85,6 +85,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	initSettingsManager();
+    mUi->paletteTree->setUXInfo(utils::UXInfo::instance());
 	registerMetaTypes();
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setVisible(false);

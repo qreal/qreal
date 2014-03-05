@@ -15,6 +15,7 @@ PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWind
 	, mEditorTree(new PaletteTreeWidget(parent, *mainWindow, editorManagerProxy, false))
 	, mUserTree(new PaletteTreeWidget(parent, *mainWindow, editorManagerProxy, true))
 {
+	mEventFilter = new EventFilterPaletteDraggableElement();
 	initWidgets();
 }
 
@@ -29,6 +30,7 @@ PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWind
 	, mEditorTree(new PaletteTreeWidget(parent, *mainWindow, editorManagerProxy, false))
 	, mUserTree(new PaletteTreeWidget(parent, *mainWindow, editorManagerProxy, true))
 {
+	mEventFilter = new EventFilterPaletteDraggableElement();
 	mEditorManager = &editorManagerProxy;
 	initWidgets();
 	initEditorTree();
@@ -81,6 +83,7 @@ void PaletteTreeWidgets::initEditorTree()
 			addTopItemType(PaletteElement(*mEditorManager, element), mEditorTree);
 		}
 	}
+	mEditorTree->addGroupsTracking();
 }
 
 void PaletteTreeWidgets::initUserTree()
@@ -93,6 +96,7 @@ void PaletteTreeWidgets::addTopItemType(PaletteElement const &data, QTreeWidget 
 	QTreeWidgetItem *item = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(*mMainWindow, data
 			, mParentPalette->iconsView(), *mEditorManager);
+	element->installEventFilter(mEventFilter);
 
 	tree->addTopLevelItem(item);
 	tree->setItemWidget(item, 0, element);
@@ -117,6 +121,7 @@ void PaletteTreeWidgets::resizeIcons()
 					DraggableElement *element = dynamic_cast<DraggableElement*>(child);
 					if (element) {
 						element->setIconSize(newSize);
+						element->installEventFilter(mEventFilter);
 					}
 				}
 			}

@@ -1,5 +1,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QPointF>
+#include <QtGui/QScreen>
+#include <QApplication>
 
 #include "uxInfo.h"
 
@@ -13,6 +15,7 @@ QString const totalTimeFileName = "/totalTime.txt";
 QString const menuElementUsingFileName = "/menuElementUsing.txt";
 QString const mouseClickPositionFileName = "/mouseClickPosition.txt";
 QString const settingChangesFileName = "/settingChanges.txt";
+QString const userActionFileName = "/userActions.txt";
 QString const uxInfoDirName = "usabilityFiles";
 
 UXInfo::UXInfo()
@@ -60,8 +63,23 @@ UXInfo::UXInfo()
 
 	mSettingChangesNumber = 1;
 
+	mUserActionFile.setFileName(dir.absolutePath() + userActionFileName);
+	if (mUserActionFile.open(QFile::WriteOnly | QFile::Truncate)) {
+		mUserActionStream.setDevice(&mUserActionFile);
+	}
+
+	mUserActionNumber = 1;
+
 	mTestNumber = 1;
 	mNotEnoughDiskSpace = false;
+
+	mLastX = 0;
+	mLastY = 0;
+	mLength = 0;
+	mLastUserActionDateTime = QDateTime();
+
+	QScreen *screen = QApplication::screens().at(0);
+	mDpi = (qreal)screen->logicalDotsPerInch();
 }
 
 bool UXInfo::writeData(QTextStream const &stream)
@@ -139,9 +157,16 @@ void UXInfo::reportMouseClickPosition(const QPoint &pos)
 		return;
 	}
 
+	int currentPosX = pos.x();
+	int currentPosY = pos.y();
+	int currentLength = static_cast<int>(sqrt(pow((currentPosX - mLastX), 2) + pow((currentPosY - mLastY), 2)));
+	mLength += currentLength;
+	mLastX = currentPosX;
+	mLastY = currentPosY;
 	mMouseClickPositionStream << mMouseClickPositionNumber << " ("
-			<< QString::number(pos.x()) << ", "
-			<< QString::number(pos.y()) << ") "
+			//<< QString::number(pos.x()) << ", "
+			//<< QString::number(pos.y()) << ") "
+			<< QString::number(mLength) << ") "
 			<< currentDateTime() << "\n";
 
 	mMouseClickPositionNumber++;
@@ -160,6 +185,29 @@ void UXInfo::reportSettingsChangesInfo(const QString &name, const QString &oldVa
 			<< currentDateTime() << "\n";
 
 	mSettingChangesNumber++;
+}
+
+void UXInfo::reportPaletteUserActionInfo(const QString &userAction)
+{
+	if (!writeData(mUserActionStream)) {
+		return;
+	}
+
+	QString currentActionDateTime;
+	QDateTime current = QDateTime::currentDateTime();
+	if (mLastUserActionDateTime.isNull()) {
+		currentActionDateTime = currentDateTime();
+	}
+	else {
+		currentActionDateTime = "+" + QString::number(mLastUserActionDateTime.msecsTo(QDateTime::currentDateTime())) + " msec";
+	}
+	mLastUserActionDateTime = current;
+
+	mUserActionStream << mUserActionNumber << " "
+			<< userAction << " "
+			<< currentActionDateTime << "\n";
+
+	mUserActionNumber++;
 }
 
 void UXInfo::setActualStatus(bool status)
@@ -208,6 +256,7 @@ void UXInfo::closeUXFiles()
 	mMenuElementUsingFile.close();
 	mMouseClickPositionFile.close();
 	mSettingChangesFile.close();
+	mUserActionFile.close();
 }
 
 QString UXInfo::currentDateTime()
@@ -240,6 +289,7 @@ void UXInfo::closeUXInfo()
 	QString const oldMenuElementUsingName = mMenuElementUsingFile.fileName();
 	QString const oldMouseClickPositionName = mMouseClickPositionFile.fileName();
 	QString const oldSettingChangesName = mSettingChangesFile.fileName();
+	QString const oldUserActionName = mUserActionFile.fileName();
 
 	QString const newFileElementOnSceneCreationName = newDirName + elementCreationFileName;
 	QString const newFileErrorReporterName = newDirName + errorReporterFileName;
@@ -247,6 +297,7 @@ void UXInfo::closeUXInfo()
 	QString const newFileMenuElementUsingName = newDirName + menuElementUsingFileName;
 	QString const newFileMouseClickPositionName = newDirName + mouseClickPositionFileName;
 	QString const newFileSettingChangesName = newDirName + settingChangesFileName;
+	QString const newFileUserActionName = newDirName + userActionFileName;
 
 	if (dir.cdUp()) {
 		if (!dir.exists(uxInfoDirName)) {
@@ -261,6 +312,7 @@ void UXInfo::closeUXInfo()
 		QString const newMenuElementUsingName = dirAbsolutePathName + newFileMenuElementUsingName;
 		QString const newMouseClickPositionName = dirAbsolutePathName + newFileMouseClickPositionName;
 		QString const newSettingChangesName = dirAbsolutePathName + newFileSettingChangesName;
+		QString const newUserActionName = dirAbsolutePathName + newFileUserActionName;
 
 		dir.mkdir(newDirName);
 		QFile::copy(oldElementOnSceneCreationName, newElementOnSceneCreationName);
@@ -269,6 +321,7 @@ void UXInfo::closeUXInfo()
 		QFile::copy(oldMenuElementUsingName, newMenuElementUsingName);
 		QFile::copy(oldMouseClickPositionName, newMouseClickPositionName);
 		QFile::copy(oldSettingChangesName, newSettingChangesName);
+		QFile::copy(oldUserActionName, newUserActionName);
 	}
 }
 
@@ -301,6 +354,11 @@ void UXInfo::reportMouseClick(const QPoint &pos)
 void UXInfo::reportSettingsChanges(const QString &name, const QVariant &oldValue, const QVariant &newValue)
 {
 	instance()->reportSettingsChangesInfo(name, oldValue.toString(), newValue.toString());
+}
+
+void UXInfo::reportPaletteUserAction(const QString &userAction)
+{
+	instance()->reportPaletteUserActionInfo(userAction);
 }
 
 void UXInfo::setStatus(bool status)

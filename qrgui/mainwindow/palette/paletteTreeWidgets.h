@@ -3,6 +3,7 @@
 #include <QtWidgets/QSplitter>
 
 #include "mainwindow/palette/paletteTreeWidget.h"
+#include "mainwindow/uxInfoEventFilters/eventFilterPaletteDraggableElement.h"
 
 namespace qReal {
 namespace gui {
@@ -55,6 +56,7 @@ private:
 	Id mDiagram;
 	PaletteTreeWidget *mEditorTree; // Takes ownership
 	PaletteTreeWidget *mUserTree; // Takes ownership
+	EventFilterPaletteDraggableElement *mEventFilter;// Takes ownership
 };
 
 }

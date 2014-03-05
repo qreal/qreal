@@ -192,6 +192,14 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 	if (mimeData->hasFormat("application/x-real-uml-data")) {
+		QPoint pos = event->scenePos().toPoint();
+		QString action = "Scene: drag enter on scene at pos ("
+				+ QString::number(pos.x())
+				+ ", "
+				+ QString::number(pos.y())
+				+ ")";
+		utils::UXInfo::instance()->reportPaletteUserAction(action);
+
 		QGraphicsScene::dragEnterEvent(event);
 	} else {
 		event->ignore();
@@ -200,6 +208,14 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 
 void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
+	QPoint pos = event->scenePos().toPoint();
+	QString action = "Scene: drag move on scene at pos ("
+			+ QString::number(pos.x())
+			+ ", "
+			+ QString::number(pos.y())
+			+ ")";
+	utils::UXInfo::instance()->reportPaletteUserAction(action);
+
 	// forming id to check if we can put draggable element to element under cursor
 	QByteArray itemData = event->mimeData()->data("application/x-real-uml-data");
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
@@ -285,7 +301,15 @@ QGraphicsRectItem *EditorViewScene::getPlaceholder()
 
 void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_UNUSED(event);
+	/* Q_UNUSED(event); */
+	QPoint pos = event->scenePos().toPoint();
+	QString action = "Scene: drag leave on scene at pos ("
+			+ QString::number(pos.x())
+			+ ", "
+			+ QString::number(pos.y())
+			+ ")";
+	utils::UXInfo::instance()->reportPaletteUserAction(action);
+
 	if (mHighlightNode) {
 		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = NULL;
@@ -301,6 +325,13 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	if (!mMVIface->graphicalAssistApi()->hasRootDiagrams()) {
 		return;
 	}
+	QPoint pos = event->scenePos().toPoint();
+	QString action = "Scene: drop on scene at pos ("
+			+ QString::number(pos.x())
+			+ ", "
+			+ QString::number(pos.y())
+			+ ")";
+	utils::UXInfo::instance()->reportPaletteUserAction(action);
 
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode) {
@@ -877,6 +908,14 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 		Label * const label = dynamic_cast<Label *>(item);
 		if (label) {
+			QPoint pos = mCurrentMousePos.toPoint();
+			QString action = "Scene: mouse press event on scene (label) at pos ("
+					+ QString::number(pos.x())
+					+ ", "
+					+ QString::number(pos.y())
+					+ ") "
+					+ label->toPlainText();
+			utils::UXInfo::instance()->reportPaletteUserAction(action);
 			item = item->parentItem();
 		}
 

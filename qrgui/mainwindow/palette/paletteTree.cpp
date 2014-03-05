@@ -20,6 +20,7 @@ using namespace gui;
 PaletteTree::PaletteTree(QWidget *parent)
 	: QWidget(parent)
 	, mCurrentEditor(0)
+	, mUXInfoInterface(NULL)
 {
 	createPaletteTree();
 }
@@ -251,6 +252,9 @@ int PaletteTree::maxItemsCountInARow() const
 
 void PaletteTree::changeRepresentation()
 {
+	QString const changeView = (mIconsView) ? "regular" : "icon";
+	QString const userAction = "Palette: change representation to " + changeView + " view button clicked";
+	mUXInfoInterface->reportPaletteUserAction(userAction);
 	loadPalette(!mIconsView, mItemsCountInARow, mEditorManager);
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
@@ -284,8 +288,12 @@ void PaletteTree::changeExpansionState()
 {
 	mNodesStateButtonExpands = !mNodesStateButtonExpands;
 	if (mNodesStateButtonExpands) {
+		QString const userAction = "Palette: expand button clicked";
+		mUXInfoInterface->reportPaletteUserAction(userAction);
 		expand();
 	} else {
+		QString const userAction = "Palette: collapse button clicked";
+		mUXInfoInterface->reportPaletteUserAction(userAction);
 		collapse();
 	}
 	setExpansionButtonAppearance();
@@ -306,5 +314,15 @@ void PaletteTree::installEventFilter(QObject *obj)
 {
 	QWidget::installEventFilter(obj);
 	comboBox()->installEventFilter(obj);
+}
+
+void PaletteTree::setUXInfo(UXInfoInterface *uxInfo)
+{
+	mUXInfoInterface = uxInfo;
+}
+
+void PaletteTree::reportPaletteUserAction(const QString &userAction)
+{
+	mUXInfoInterface->reportPaletteUserAction(userAction);
 }
 

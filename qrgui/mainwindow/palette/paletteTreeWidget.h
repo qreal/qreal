@@ -5,6 +5,8 @@
 #include "mainwindow/palette/paletteElement.h"
 #include "pluginManager/editorManagerInterface.h"
 
+#include "mainwindow/uxInfoEventFilters/eventFilterPaletteDraggableElement.h"
+
 namespace qReal {
 namespace gui {
 
@@ -36,12 +38,17 @@ public:
 	static void sortByFriendlyName(QList<PaletteElement> &elements);
 
 	void editItem(QTreeWidgetItem * const item);
+	void addGroupsTracking();
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
+	void scrollContentsBy(int dx, int dy);
 
 private slots:
 	void addElementPaletteActionTriggered();
+	void groupExpanded(QTreeWidgetItem *item);
+	void groupCollapsed(QTreeWidgetItem *item);
+	void elementClicked(QTreeWidgetItem *item, int column);
 
 private:
 	/// Adds group of editor's elements to appropriate tree to some top element.
@@ -76,6 +83,7 @@ private:
 	MainWindow &mMainWindow;
 	PaletteTree &mPaletteTree;
 	bool mEditable;
+	EventFilterPaletteDraggableElement *mEventFilter;
 };
 
 }

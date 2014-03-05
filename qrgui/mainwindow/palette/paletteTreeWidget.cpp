@@ -19,6 +19,7 @@ PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindo
 	, mEditable(editable)
 {
 	mEditorManager = &editorManagerProxy;
+	mEventFilter = new EventFilterPaletteDraggableElement();
 }
 
 void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &groups
@@ -77,6 +78,7 @@ void PaletteTreeWidget::addItemType(PaletteElement const &data, QTreeWidgetItem 
 
 	parent->addChild(leaf);
 	setItemWidget(leaf, 0, element);
+	element->installEventFilter(mEventFilter);
 }
 
 void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWidgetItem *parent)
@@ -97,6 +99,7 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 			DraggableElement *element = new DraggableElement(mMainWindow, *it, true, *mEditorManager);
 			element->setToolTip((*it).description());
 			layout->addWidget(element, count > 0 ? 50 : 0);
+			element->installEventFilter(mEventFilter);
 		}
 
 		field->setLayout(layout);
@@ -119,6 +122,29 @@ void PaletteTreeWidget::addElementPaletteActionTriggered()
 	chooseTypeDialog->show();
 }
 
+void PaletteTreeWidget::groupExpanded(QTreeWidgetItem *item)
+{
+	int const topLevelIndex = 0;
+	QString const name = item->text(topLevelIndex);
+	QString const userAction = "Palette: group expand: " + name;
+	mPaletteTree.reportPaletteUserAction(userAction);
+}
+
+void PaletteTreeWidget::groupCollapsed(QTreeWidgetItem *item)
+{
+	int const topLevelIndex = 0;
+	QString const name = item->text(topLevelIndex);
+	QString const userAction = "Palette: group collapse: " + name;
+	mPaletteTree.reportPaletteUserAction(userAction);
+}
+
+void PaletteTreeWidget::elementClicked(QTreeWidgetItem *item, int column)
+{
+	QString const name = item->text(column);
+	QString const userAction = "Palette: element click: " + name;
+	mPaletteTree.reportPaletteUserAction(userAction);
+}
+
 void PaletteTreeWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton) {
@@ -131,6 +157,14 @@ void PaletteTreeWidget::mousePressEvent(QMouseEvent *event)
 	}
 
 	QTreeWidget::mousePressEvent(event);
+}
+
+void PaletteTreeWidget::scrollContentsBy(int dx, int dy)
+{
+	QString const direction = (dy == 1) ? "up" : "down";
+	QString const userAction = "Palette: scroll " + direction;
+	mPaletteTree.reportPaletteUserAction(userAction);
+	QTreeWidget::scrollContentsBy(dx, dy);
 }
 
 void PaletteTreeWidget::expand()
@@ -155,6 +189,13 @@ void PaletteTreeWidget::sortByFriendlyName(QList<PaletteElement> &elements)
 void PaletteTreeWidget::editItem(QTreeWidgetItem * const item)
 {
 	edit(indexFromItem(item));
+}
+
+void PaletteTreeWidget::addGroupsTracking()
+{
+	connect(this, SIGNAL(itemClicked(QTreeWidgetItem*,int)), this, SLOT(elementClicked(QTreeWidgetItem*,int)));
+	connect(this,SIGNAL(itemExpanded(QTreeWidgetItem *)), this,SLOT(groupExpanded(QTreeWidgetItem *)));
+	connect(this,SIGNAL(itemCollapsed(QTreeWidgetItem*)), this,SLOT(groupCollapsed(QTreeWidgetItem *)));
 }
 
 void PaletteTreeWidget::expandChildren(QTreeWidgetItem *item)
