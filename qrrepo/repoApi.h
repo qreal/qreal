@@ -117,9 +117,6 @@ public:
 	void importFromDisk(QString const &importedFile);
 	void saveAll() const;
 	void save(qReal::IdList list) const;
-
-	void generateGraphicalModel();
-
 	void saveTo(QString const &workingFile);
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 	void open(QString const &saveFile);

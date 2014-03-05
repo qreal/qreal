@@ -1104,8 +1104,6 @@ QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(QString const &na
 
 void InterpreterEditorManager::saveMetamodel(QString const &newMetamodelFileName)
 {
-	mEditorRepoApi.value("test")->generateGraphicalModel();
-
 	if (!newMetamodelFileName.isEmpty()) {
 		mEditorRepoApi.value("test")->saveTo(newMetamodelFileName);
 		mMetamodelFile = newMetamodelFileName;
