@@ -14,6 +14,9 @@ namespace qReal {
 namespace robots {
 namespace generators {
 
+class ReadableControlFlowGenerator;
+class GotoControlFlowGenerator;
+
 /// The main class for every code generator. Produces nessesary components and
 /// controls their work. Must be reimplemented in each concrete generator.
 class ROBOTS_GENERATOR_EXPORT MasterGeneratorBase : public QObject, public TemplateParametrizedEntity
@@ -55,8 +58,8 @@ protected:
 	ErrorReporterInterface &mErrorReporter;
 	Id const mDiagram;
 	GeneratorCustomizer *mCustomizer;
-	ControlFlowGeneratorBase *mReadableControlFlowGenerator;  // Takes ownership
-	ControlFlowGeneratorBase *mGotoControlFlowGenerator;  // Takes ownership
+	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership
+	GotoControlFlowGenerator *mGotoControlFlowGenerator;  // Takes ownership
 	QString mProjectName;
 	QString mProjectDir;
 	int mCurInitialNodeNumber;

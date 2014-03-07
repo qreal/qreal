@@ -56,11 +56,15 @@ QString MasterGeneratorBase::generate()
 
 	QString mainCode;
 	semantics::SemanticTree const *mainControlFlow = mReadableControlFlowGenerator->generate();
-	if (mainControlFlow) {
+	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
 		mainCode = mainControlFlow->toString(1);
 		bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
 		if (!subprogramsResult) {
 			mainCode = QString();
+		}
+	} else {
+		if (mReadableControlFlowGenerator->errorsOccured()) {
+			return QString();
 		}
 	}
 

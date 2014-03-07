@@ -47,6 +47,10 @@ public:
 	/// traversal stages.
 	void afterSearch() override;
 
+	/// Returns true if some generation errors occured but the generation process may be proceeded with other
+	/// control flow generators (non-fatal errors occured).
+	bool cantBeGeneratedIntoStructuredCode() const;
+
 private:
 	bool applyFirstPossible(Id const &currentId
 			, QList<semantics::SemanticTransformationRule *> const &rules
@@ -55,6 +59,7 @@ private:
 	bool mTravelingForSecondTime;
 	bool mSomethingChangedThisIteration;
 	QMap<Id, bool> mAlreadyApplied;
+	bool mCantBeGeneratedIntoStructuredCode;
 };
 
 }
