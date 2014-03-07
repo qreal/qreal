@@ -1804,11 +1804,7 @@ void MainWindow::updatePaletteIcons()
 
 void MainWindow::setUsabilityMode(bool mode)
 {
-	if (mode) {
-		mUsabilityTestingToolbar->show();
-	} else {
-		mUsabilityTestingToolbar->hide();
-	}
+	mUsabilityTestingToolbar->setVisible(mode);
 }
 
 void MainWindow::startUsabilityTest()
