@@ -11,15 +11,26 @@
 				<value>filled_arrow</value>
 				<value>empty_rhomb</value>
 				<value>filled_rhomb</value>
+				<value>crossed_line</value>
+                <value>empty_circle</value>
 			</enum>
 			<enum name="lineTypes" displayedName="lineTypes">
 				<value>solidLine</value>
 				<value>dashLine</value>
 				<value>dotLine</value>
 			</enum>
+			<enum name="linkShapeType" displayedName="linkShapeType">
+				<value>broken</value>
+				<value>square</value>
+				<value>curve</value>
+			</enum>
 			<enum name="labelTypes" displayedName="labelTypes">
 				<value>Static text</value>
 				<value>Dynamic text</value>
+			</enum>
+			<enum name="buildConfiguration" displayedName="buildConfiguration">
+				<value>debug</value>
+				<value>release</value>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
@@ -75,11 +86,14 @@
 					<properties>
 						<property type="string" name="displayedName"/>
 						<property type="string" name="include">
-						<description>xml-файлы, которые следует подключить к создаваемой метамодели</description>
+							<description>xml-файлы, которые следует подключить к создаваемой метамодели</description>
 						</property>
 						<property type="DirectoryPath" name="name of the directory" displayedName="directory to generated code"/>
 						<property type="DirectoryPath" name="path to QReal Source Files">
-						<description>путь до исходных файлов QReal</description>
+							<description>путь до исходных файлов QReal</description>
+						</property>
+						<property type="buildConfiguration" name="buildConfiguration" displayedName="Build Configuration">
+							<default>release</default>
 						</property>
 					</properties>
 					<containers/>
@@ -111,7 +125,7 @@
 							<end endx="200" endy="160"/>
 						</linePort>
 					</ports>
-				</graphics> 
+				</graphics>
 				<logic>
 					<generalizations>
 						<parent parentName="KernelDiagram::Diagram"/>
@@ -119,12 +133,13 @@
 					<properties>
 						<property type="string" name="displayedName"/>
 						<property type="string" name="nodeName">
-						<description>имя элемента, который будет корневым для диаграмм на создаваемом языке</description>
+							<description>имя элемента, который будет корневым для диаграмм на создаваемом языке</description>
 						</property>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntityNode"/>
 						<contains type="MetaEditor::MetaEntityEdge"/>
+						<contains type="MetaEditor::MetaEntityPort"/>
 						<contains type="MetaEditor::MetaEntityEnum"/>
 						<contains type="MetaEditor::MetaEntityImport"/>
 						<contains type="MetaEditor::Inheritance"/>
@@ -168,9 +183,6 @@
 					</generalizations>
 					<properties>
 						<property type="string" name="displayedName"/>
-						<property type="bool" name="isPin">
-							<default>false</default>
-						</property>
 						<property type="string" name="shape"/>
 						<property type="string" name="description"/>
 						<property type="bool" name="isAction">
@@ -180,6 +192,7 @@
 						<property type="bool" name="isResizeable">
 							<default>true</default>
 						</property>
+						<property type="bool" name="createChildrenFromMenu"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
@@ -192,10 +205,28 @@
 							<sortContainer/>
 							<minimizeToChildren/>
 							<banChildrenMove/>
-							<forestalling size="25"/>
+							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
 						</properties>
 					</container>
+				</logic>
+			</node>
+			<node name="MetaEntityPort" displayedName="Port" description="Элемент для описания нового типа портов для элементов создаваемого языка. Должен вкладываться в Meta Editor Diagram">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="50" stroke-width="2" x2="0" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="50" y2="50" stroke-width="2" x2="50" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="0" stroke-width="2" x2="50" fill-style="solid"/>
+						<line fill="#000000" stroke-style="solid" stroke="#2f4f4f" y1="50" x1="0" y2="50" stroke-width="2" x2="50" fill-style="solid"/>
+						<ellipse fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" stroke-width="1" x1="0" y2="50" fill-style="none" x2="50"/>
+					</picture>
+					<labels>
+						<label x="2" y="20a" textBinded="name" center="true"/>
+					</labels>
+				</graphics>
+				<logic>
+					<generalizations/>
+					<properties/>
 				</logic>
 			</node>
 			<node name="MetaEntityEdge" displayedName="Edge" description="Элемент для описания новой связи на диаграмме создаваемого языка. Должен вкладываться в Meta Editor Diagram">
@@ -241,7 +272,16 @@
 						<property type="lineTypes" name="lineType">
 							<default>solidLine</default>
 							<description>тип линии (прямая, пунктирная и т.д.)</description>
-						</property>	
+						</property>
+						<property type="reference" name="fromPorts">
+							<reference type="MetaEntityPort"/>
+						</property>
+						<property type="reference" name="toPorts">
+							<reference type="MetaEntityPort"/>
+						</property>
+						<property type="linkShapeType" name="shape">
+							<default>square</default>
+						</property>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
@@ -252,7 +292,7 @@
 							<sortContainer/>
 							<minimizeToChildren/>
 							<banChildrenMove/>
-							<forestalling size="25"/>
+							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
 						</properties>
 					</container>
@@ -284,7 +324,7 @@
 				<logic>
 					<generalizations/>
 					<properties>
-						<property type="string" name="displayedName"/> 
+						<property type="string" name="displayedName"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntityValue"/>
@@ -292,7 +332,7 @@
 							<sortContainer/>
 							<minimizeToChildren/>
 							<banChildrenMove/>
-							<forestalling size="5"/>
+							<forestalling size="5,25,5,5"/>
 							<childrenForestalling size="5"/>
 						</properties>
 					</container>
@@ -401,8 +441,12 @@
 				<logic>
 					<generalizations/>
 					<properties>
-						<property type="associationTypes" name="beginType"/>
-						<property type="associationTypes" name="endType"/>
+						<property type="associationTypes" name="beginType">
+							<default>no_arrow</default>
+						</property>
+						<property type="associationTypes" name="endType">
+							<default>no_arrow</default>
+						</property>
 						<property type="string" name="beginName"/>
 						<property type="string" name="endName"/>
 					</properties>
@@ -453,6 +497,23 @@
 					<generalizations>
 						<parent parentName="KernelDiagram::Relationship"/>
 					</generalizations>
+				</logic>
+			</edge>
+			<edge name="Explosion" displayedName="Explodes To" description="Связь, означающая 'раскрываемость' элемента в диаграмму (направление - от элемента, который раскрывается к элементу, являющимся корневым для диаграммы, в которую раскрывается элемент)">
+				<graphics>
+					<lineType type="solidLine"/>
+				</graphics>
+				<logic>
+					<associations endType="no_arrow" beginType="filled_arrow">
+						<association beginName="Explosion1" endName="Explosion2"/>
+					</associations>
+					<generalizations>
+						<parent parentName="KernelDiagram::Relationship"/>
+					</generalizations>
+					<properties>
+						<property type="bool" name="makeReusable" />
+						<property type="bool" name="requireImmediateLinkage" />
+					</properties>
 				</logic>
 			</edge>
 			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge" description="Сущность для указания элементов, которые можно присоединять к данному с помощью «вытягивания» из него связей. Вкладывается в соответствующий элемент Node">
@@ -541,6 +602,7 @@
 			<group name="DSL Elements" description="Элементы метаязыка для описания узлов и связей создаваемого языка">
 				<element name="MetaEntityNode"/>
 				<element name="MetaEntityEdge"/>
+				<element name="MetaEntityPort"/>
 				<element name="MetaEntityEnum"/>
 				<element name="MetaEntityImport"/>
 			</group>
@@ -564,6 +626,7 @@
 			<group name="Relationship" description="Связи метаязыка для описания вызимоотношений между элементами создаваемого языка">
 				<element name="Inheritance"/>
 				<element name="Container"/>
+				<element name="Explosion"/>
 			</group>
 		</palette>
 	</diagram>

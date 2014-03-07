@@ -1,6 +1,7 @@
 TEMPLATE = app
 QT += xml gui
 CONFIG += console
+CONFIG += c++11
 
 macx {
 	CONFIG -= app_bundle
@@ -10,6 +11,9 @@ MOC_DIR = .moc
 OBJECTS_DIR = .obj
 
 LIBS += -L../bin -lqrutils
+
+INCLUDEPATH += \
+	$$PWD/..
 
 DESTDIR += ../bin
 
@@ -36,6 +40,7 @@ HEADERS += association.h \
 	stringType.h \
 	type.h \
 	xmlCompiler.h \
+	portType.h
 
 SOURCES += association.cpp \
 	diagram.cpp \
@@ -57,3 +62,4 @@ SOURCES += association.cpp \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
+	portType.cpp

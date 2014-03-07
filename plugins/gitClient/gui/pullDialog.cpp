@@ -4,7 +4,7 @@
 #include "pullDialog.h"
 #include "../../../qrkernel/settingsManager.h"
 
-using namespace versioning::ui;
+using namespace git::ui;
 
 PullDialog::PullDialog(QWidget *parent)
 	: QDialog(parent)

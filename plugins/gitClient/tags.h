@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-namespace versioning
+namespace git
 {
 struct Tag
 {
@@ -24,4 +24,4 @@ struct Tag
 };
 }
 
-Q_DECLARE_METATYPE(versioning::Tag)
+Q_DECLARE_METATYPE(git::Tag)

@@ -1,28 +1,29 @@
 #include "abstractSensorImplementation.h"
 
+using namespace qReal::interpreters;
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
-AbstractSensorImplementation::AbstractSensorImplementation(inputPort::InputPortEnum const port
-		, sensorType::SensorTypeEnum const &type)
+AbstractSensorImplementation::AbstractSensorImplementation(robots::enums::inputPort::InputPortEnum const port
+		, robots::enums::sensorType::SensorTypeEnum const &type)
 	: mPort(port)
 	, mState(idle)
 	, mType(type)
 {
 }
 
-void AbstractSensorImplementation::setPort(inputPort::InputPortEnum const port)
+void AbstractSensorImplementation::setPort(robots::enums::inputPort::InputPortEnum const port)
 {
 	mPort = port;
 }
 
-inputPort::InputPortEnum AbstractSensorImplementation::port() const
+robots::enums::inputPort::InputPortEnum AbstractSensorImplementation::port() const
 {
 	return mPort;
 }
 
-sensorType::SensorTypeEnum AbstractSensorImplementation::type() const
+robots::enums::sensorType::SensorTypeEnum AbstractSensorImplementation::type() const
 {
 	return mType;
 }

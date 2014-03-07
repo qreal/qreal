@@ -3,14 +3,17 @@
 #include <QtCore/QProcess>
 #include <QtCore/QByteArray>
 #include <QtCore/QPair>
-#include "../models/graphicalModelAssistApi.h"
-#include "../models/logicalModelAssistApi.h"
-#include "../pluginManager/editorManager.h"
-#include "../../qrkernel/ids.h"
+
+#include <qrkernel/ids.h>
+
+#include "models/graphicalModelAssistApi.h"
+#include "models/logicalModelAssistApi.h"
+#include "pluginManager/editorManager.h"
 
 namespace qReal {
 
 // TODO: comments are required
+// TODO: required indeed
 class DotRunner : public QObject
 {
 	Q_OBJECT

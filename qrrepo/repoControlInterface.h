@@ -8,6 +8,7 @@
 namespace qrRepo {
 
 class RepoControlInterface : public WorkingCopyManagementInterface
+/// Provides repository control methods, like save or open saved contents.
 {
 public:
 	virtual ~RepoControlInterface() {}
@@ -32,6 +33,10 @@ public:
 	virtual void saveAll() = 0;
 	virtual void save(qReal::IdList list) = 0;
 	virtual void saveTo(QString const &workingFile) = 0;
+
+	/// exports repo contents to a single XML file
+	virtual void exportToXml(QString const &targetFile) const = 0;
+
 	/// saves choosen diagrams to target directory and file
 	/// @param diagramIds - map of the following structure:
 	/// key is a file path to save into, value is a list of diagrams to save

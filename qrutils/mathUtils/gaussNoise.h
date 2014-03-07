@@ -2,10 +2,9 @@
 
 #include <QtCore/QtGlobal>
 
-#include "../utilsDeclSpec.h"
+#include <qrutils/utilsDeclSpec.h>
 
-namespace mathUtils
-{
+namespace mathUtils {
 
 qreal const mu = 0.5;
 qreal const var = 0.083; // 1/12
@@ -32,7 +31,7 @@ public:
 
 private:
 	static const int defaultApproximationLevel = 12;
-	static const qreal defaultDispersion = 1.0;
+	static const int defaultDispersion = 1;
 
 	/// Body of function 'generate'. Uses for various realizations of 'generate'
 	qreal genBody(unsigned int const approximationLevel, qreal const variance) const;

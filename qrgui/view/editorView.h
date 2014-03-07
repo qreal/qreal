@@ -2,8 +2,9 @@
 
 #include <QtWidgets/QGraphicsView>
 
-#include "editorViewScene.h"
-#include "editorViewMVIface.h"
+#include "view/editorViewScene.h"
+#include "view/private/editorViewMVIface.h"
+#include "view/private/touchSupportManager.h"
 
 namespace qReal {
 
@@ -16,7 +17,9 @@ class EditorView : public QGraphicsView
 
 public:
 	explicit EditorView(QWidget *parent);
+
 	EditorView(EditorViewScene *scene, QWidget *parent);
+
 	~EditorView();
 
 	EditorViewMViface *mvIface() const;
@@ -28,17 +31,12 @@ public:
 	void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
 	void setTitlesVisible(bool visible);
 
-
-public slots:
+	public slots:
 	void toggleAntialiasing(bool);
-	void toggleOpenGL(bool);
 	void zoomIn();
 	void zoomOut();
+	void zoom(qreal const zoomFactor);
 	void invalidateScene();
-	void copyElementsOnDiagram();
-	void pasteOnDiagram();
-	void pasteCopyOfLogical();
-
 
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);
@@ -48,17 +46,25 @@ protected:
 
 	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void keyReleaseEvent(QKeyEvent *event);
+private:
+	virtual bool viewportEvent(QEvent *event);
+
+private slots:
+	void zoomInTime();
+	void zoomOutTime();
+	void animFinished();
 
 private:
 	void init();
 	void checkGrid();
 
+	void startAnimation(char const *slot);
+
 	EditorViewMViface *mMVIface;
 	EditorViewScene *mScene;
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
-	int mZoom;
-
+	view::details::TouchSupportManager mTouchManager;
 };
 
 }

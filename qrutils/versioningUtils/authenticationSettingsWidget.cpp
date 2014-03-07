@@ -2,7 +2,7 @@
 #include "ui_authenticationSettingsWidget.h"
 #include "../../qrkernel/settingsManager.h"
 
-using namespace versioning::ui;
+using namespace qReal::versioning::ui;
 
 AuthenticationSettingsWidget::AuthenticationSettingsWidget(QWidget *parent)
 	: QWidget(parent)

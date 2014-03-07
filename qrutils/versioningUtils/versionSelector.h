@@ -8,10 +8,9 @@ namespace Ui {
 class VersionSelector;
 }
 
-namespace versioning
-{
-namespace ui
-{
+namespace qReal {
+namespace versioning {
+namespace ui {
 
 /// @brief Dialog providing posibility to select revision.
 class QRUTILS_EXPORT VersionSelector : public QDialog
@@ -32,5 +31,6 @@ private:
 	Ui::VersionSelector *mUi;
 };
 
+}
 }
 }

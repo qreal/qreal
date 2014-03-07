@@ -3,44 +3,48 @@
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QAction>
 
-#include "../../qrkernel/ids.h"
-#include "../../qrkernel/settingsManager.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/settingsManager.h>
 
-#include "../editorPluginInterface/elementRepoInterface.h"
-#include "elementTitle.h"
+#include "editorPluginInterface/elementRepoInterface.h"
+#include "umllib/label.h"
 
-#include "contextMenuAction.h"
-#include "../editorPluginInterface/elementImpl.h"
+#include "umllib/contextMenuAction.h"
+#include "editorPluginInterface/elementImpl.h"
 
-#include "../models/graphicalModelAssistApi.h"
-#include "../models/logicalModelAssistApi.h"
+#include "models/graphicalModelAssistApi.h"
+#include "models/logicalModelAssistApi.h"
 
-#include "../controller/controller.h"
+#include "controller/controller.h"
 
-/** @brief size of a point port */
+namespace qReal {
+
+/// size of a point port
 const int kvadratik = 10;
 
-/**
- * @brief base class for an element on a diagram
- */
+/// base class for an element on a diagram
 class Element : public QObject, public QGraphicsItem, public ElementRepoInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-	Element(ElementImpl* elementImpl);
+	/// Constructor
+	/// @param elementImpl - pointer to implementation of the element. Takes ownership.
+	Element(ElementImpl *elementImpl
+			, Id const &id
+			, models::GraphicalModelAssistApi &graphicalAssistApi
+			, models::LogicalModelAssistApi &logicalAssistApi
+			);
 
 	virtual ~Element() {}
-
-	void setId(qReal::Id &id);
 
 	void initEmbeddedControls();
 
 	virtual void updateData();
 
-	virtual qReal::Id id() const;
-	virtual qReal::Id logicalId() const;
+	virtual Id id() const;
+	virtual Id logicalId() const;
 	virtual QString name() const;
 
 	virtual void connectToPort() {}  // for edge
@@ -51,23 +55,22 @@ public:
 	virtual void initTitles();
 	// for inline editing we should be able to change properties value. right now via graphical
 	// representation. also labels could store indices and get data themselves
-	virtual void setLogicalProperty(QString const &roleName, QString const &value);
+	virtual void setLogicalProperty(QString const &roleName, QString const &value
+			, bool withUndoRedo = false);
 	QString logicalProperty(QString const &roleName) const;
 
 	virtual void setColorRect(bool bl) = 0;
 
-	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
-
+	// TODO: Move this to constructor.
 	void setController(qReal::Controller *controller);
+	qReal::Controller *controller() const;
 
 	ElementImpl* elementImpl() const;
-	/// Perform element-specific actions before being deleted
-	virtual void deleteFromScene() = 0;
+	bool createChildrenFromMenu() const;
 
 public slots:
-	virtual void singleSelectionState(bool const singleSelected);
-	virtual void selectionState(bool const selected);
+	virtual void select(bool const singleSelected);
+	virtual void setSelectionState(bool const selected);
 	void setTitlesVisible(bool visible);
 
 signals:
@@ -79,12 +82,14 @@ protected:
 	void setTitlesVisiblePrivate(bool visible);
 
 	bool mMoving;
-	qReal::Id mId;
-	ElementImpl* const mElementImpl;
-	QList<ElementTitle *> mTitles;
+	Id const mId;
+	ElementImpl * const mElementImpl;  // Has ownership.
+	QList<Label *> mLabels;
 	bool mTitlesVisible;
 
-	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
-	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
-	qReal::Controller *mController;
+	models::LogicalModelAssistApi &mLogicalAssistApi;
+	models::GraphicalModelAssistApi &mGraphicalAssistApi;
+	Controller *mController;
 };
+
+}

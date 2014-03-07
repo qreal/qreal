@@ -8,7 +8,7 @@
 #include "gui/commitDialog.h"
 #include "gui/versioningPage.h"
 
-namespace versioning
+namespace svn
 {
 
 class SubversionPlugin;

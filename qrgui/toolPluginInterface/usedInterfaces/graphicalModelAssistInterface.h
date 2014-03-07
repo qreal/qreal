@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../../../qrkernel/ids.h"
-#include "details/modelsAssistInterface.h"
-#include "../../../qrrepo/graphicalRepoApi.h"
+#include <qrkernel/ids.h>
+#include <qrrepo/graphicalRepoApi.h>
+
+#include "toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
 
 namespace qReal {
 
@@ -36,9 +37,6 @@ public:
 
 	virtual void setFromPort(Id const &elem, qreal const &newValue) = 0;
 	virtual qreal fromPort(Id const &elem) const = 0;
-
-	virtual void setName(Id const &elem, QString const &newValue) = 0;
-	virtual QString name(Id const &elem) const = 0;
 
 	virtual void setToolTip(Id const &elem, QString const &newValue) = 0;
 	virtual QString toolTip(Id const &elem) const = 0;

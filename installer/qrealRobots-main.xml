@@ -30,12 +30,6 @@
         <folder>
             <description>Program Files</description>
             <destination>${installdir}</destination>
-            <name>programfileslinux</name>
-            <platforms>linux</platforms>
-        </folder>
-        <folder>
-            <description>Program Files</description>
-            <destination>${installdir}</destination>
             <name>programfileswindows</name>
             <platforms>windows</platforms>
             <distributionFileList>
@@ -43,88 +37,13 @@
                     <origin>%1/bin/qextserialport.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/bin/qrgui.exe</origin>
+                    <origin>%1/bin/robotsGeneratorBase.dll</origin>
                 </distributionFile>
-                <distributionFile>
-                    <origin>%1/bin/qrkernel.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%1/bin/qrrepo.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%1/bin/qrutils.dll</origin>
-                </distributionFile>
-                <distributionDirectory>
-                    <origin>%1/bin/plugins</origin>
-                </distributionDirectory>
                 <distributionDirectory>
                     <origin>%1/bin/help</origin>
                 </distributionDirectory>
                 <distributionFile>
-                    <origin>%2/Qt5Network.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/Qt5CLucene.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/Qt5Help.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/Qt5Sql.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/Qt5Core.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/Qt5Gui.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/Qt5Widgets.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/Qt5Svg.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/Qt5Xml.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/Qt5PrintSupport.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/icuin49.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/libgcc_s_sjlj-1.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/libwinpthread-1.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/libstdc++-6.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/icuuc49.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/icudt49.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/libGLESv2.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/libEGL.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/D3DCompiler_43.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%1/installer/icon.ico</origin>
-                </distributionFile>
-                <distributionFile>
                     <origin>%1/bin/changelog.txt</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%1/bin/DejaVuSansCondensed.ttf</origin>
                 </distributionFile>
                 <distributionDirectory>
                     <origin>%1/plugins/robots/editor/images</origin>
@@ -135,7 +54,7 @@
                     <comment></comment>
                     <exec></exec>
                     <icon>${installdir}/icon.ico</icon>
-                    <name>Run QReal-Robots</name>
+                    <name>QReal-Robots</name>
                     <path></path>
                     <platforms>windows</platforms>
                     <runAsAdmin>0</runAsAdmin>
@@ -148,47 +67,31 @@
             </shortcutList>
         </folder>
         <folder>
-            <description>Program Files</description>
             <destination>${installdir}</destination>
-            <name>programfilesosx</name>
-            <platforms>osx</platforms>
-        </folder>
-        <folder>
-            <destination>${installdir}/sqldrivers</destination>
-            <name>sqldriverswindows</name>
-            <platforms>windows</platforms>
-            <distributionFileList>
-                <distributionFile>
-                    <origin>%2/../plugins/sqldrivers/qsqlite.dll</origin>
-                </distributionFile>
-            </distributionFileList>
-        </folder>
-        <folder>
-            <destination>${installdir}/platforms</destination>
-            <name>platformswindows</name>
-            <platforms>windows</platforms>
-            <distributionFileList>
-                <distributionFile>
-                    <origin>%2/../plugins/platforms/qwindows.dll</origin>
-                </distributionFile>
-            </distributionFileList>
-        </folder>
-        <folder>
-            <destination>${installdir}/examples</destination>
             <name>examples</name>
             <platforms>windows</platforms>
             <distributionFileList>
+                <distributionDirectory>
+                    <origin>%1/plugins/robots/examples</origin>
+                </distributionDirectory>
+            </distributionFileList>
+        </folder>
+        <folder>
+            <destination>${installdir}/plugins</destination>
+            <name>plugins</name>
+            <platforms>windows</platforms>
+            <distributionFileList>
                 <distributionFile>
-                    <origin>%1/plugins/robots/examples/2dModelExample.qrs</origin>
+                    <origin>%1/bin/plugins/nxtGenerator.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/plugins/robots/examples/simultaneousSensorReading.qrs</origin>
+                    <origin>%1/bin/plugins/russianCGenerator.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/plugins/robots/examples/touchObstacle.qrs</origin>
+                    <origin>%1/bin/plugins/robotsInterpreter.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/plugins/robots/examples/movingAlongTheLine.qrs</origin>
+                    <origin>%1/bin/plugins/robotsMetamodel.dll</origin>
                 </distributionFile>
             </distributionFileList>
         </folder>
@@ -205,8 +108,8 @@
             <windowsPath>${installdir}/</windowsPath>
         </startMenuShortcut>
         <startMenuShortcut>
-            <comment>Run QReal:Robots</comment>
-            <name>Run QReal-Robots</name>
+            <comment>QReal:Robots</comment>
+            <name>QReal-Robots</name>
             <runAsAdmin>0</runAsAdmin>
             <runInTerminal>0</runInTerminal>
             <windowsExec>${installdir}/qrgui.exe</windowsExec>

@@ -1,12 +1,11 @@
 #pragma once
 
-#include "../pluginManager/toolPluginManager.h"
-#include "../../qrutils/versioningUtils/briefVersioningInterface.h"
-#include "../../qrrepo/workingCopyInspectionInterface.h"
-#include "../../qrrepo/workingCopyManagementInterface.h"
+#include <pluginManager/toolPluginManager.h>
+#include <qrutils/versioningUtils/briefVersioningInterface.h>
+#include <qrrepo/workingCopyInspectionInterface.h>
+#include <qrrepo/workingCopyManagementInterface.h>
 
-namespace qReal
-{
+namespace qReal {
 
 /// Base class for all VCS cliens. Consists of 3 parts: view part,
 /// repo part and brief interface. View part customizes UI with

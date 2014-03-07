@@ -13,7 +13,7 @@ EnginesForwardBlock::EnginesForwardBlock(robotParts::Motor &motor1, robotParts::
 
 void EnginesForwardBlock::run()
 {
-	Tracer::debug(tracer::blocks, "EnginesForwardBlock::run", "");
+	Tracer::debug(tracer::enums::blocks, "EnginesForwardBlock::run", "");
 	int const power = evaluate("Power").toInt();
 	bool const breakMode = stringProperty("Mode") != QString::fromUtf8("скользить");
 	QVector<bool> ports(parseEnginePorts());

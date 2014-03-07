@@ -3,8 +3,9 @@
 #include <QtXml/QDomElement>
 #include <QtCore/QPointF>
 
-#include "../../qrkernel/ids.h"
-#include "pattern.h"
+#include <qrkernel/ids.h>
+
+#include "pluginManager/pattern.h"
 
 namespace qReal {
 class EditorManager;
@@ -14,7 +15,7 @@ public:
 	PatternParser();
 	void loadXml(QString const &xml);
 	void parseGroups(EditorManager *editorManager, QString const &editor, const QString &diagram);
-	QList<Pattern> getPatterns();
+	QList<Pattern> patterns() const;
 
 private:
 	void parseGroup(QDomElement const &group);

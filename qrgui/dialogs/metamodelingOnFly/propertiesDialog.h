@@ -2,9 +2,9 @@
 
 #include <QtWidgets/QDialog>
 
-#include "../pluginManager/interpreterEditorManager.h"
-#include "../mainwindow/mainWindow.h"
-#include "editPropertiesDialog.h"
+#include "pluginManager/interpreterEditorManager.h"
+#include "mainwindow/mainWindow.h"
+#include "dialogs/metamodelingOnFly/editPropertiesDialog.h"
 
 namespace Ui {
 class PropertiesDialog;
@@ -45,6 +45,7 @@ private:
 	Id mId;
 	MainWindow &mMainWindow;
 	EditPropertiesDialog *mEditPropertiesDialog; // Does not have ownership.
+	QStringList mPropertiesNames;
 };
 
 }

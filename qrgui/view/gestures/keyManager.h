@@ -3,7 +3,7 @@
 #include <QtCore/QPointF>
 #include <QtCore/QList>
 
-#include "keyManagerInterface.h"
+#include "view/gestures/keyManagerInterface.h"
 
 namespace qReal {
 namespace gestures {

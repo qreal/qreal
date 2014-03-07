@@ -23,7 +23,6 @@ Id Id::loadFromString(QString const &string)
 		// Fall-thru
 	}
 	Q_ASSERT(string == result.toString());
-	Q_ASSERT(string == result.toUrl().toString());
 	return result;
 }
 
@@ -70,6 +69,12 @@ Id::Id(Id const &base, QString const &additional)
 		Q_ASSERT(!"Can not add a part to Id, it will be too long");
 	}
 	Q_ASSERT(checkIntegrity());
+}
+
+bool Id::isNull() const
+{
+	return mEditor.isEmpty() && mDiagram.isEmpty()
+			&& mElement.isEmpty() && mId.isEmpty();
 }
 
 QString Id::editor() const

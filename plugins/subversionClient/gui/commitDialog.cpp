@@ -2,7 +2,7 @@
 
 #include "commitDialog.h"
 
-using namespace versioning::ui;
+using namespace svn::ui;
 
 CommitDialog::CommitDialog(QWidget *parent) : QDialog(parent)
 {

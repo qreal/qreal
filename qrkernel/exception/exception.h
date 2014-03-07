@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include "../kernelDeclSpec.h"
+#include "qrkernel/kernelDeclSpec.h"
 
 namespace qReal {
 

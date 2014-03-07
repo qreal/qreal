@@ -1,17 +1,17 @@
 /** @file copyHandler.h
- * 	@brief Class for handling copyring of NodeElement.
- * */
+* 	@brief Class for handling copyring of NodeElement.
+**/
 
 #pragma once
 
-class NodeElement;
-// class qReal::models::GraphicalModelAssistApi; because warning
-
 namespace qReal {
+
 namespace models {
 class GraphicalModelAssistApi;
 }
-}
+
+class NodeElement;
+// class qReal::models::GraphicalModelAssistApi; because warning
 
 class CopyHandler {
 public:
@@ -20,7 +20,7 @@ public:
 	 * @param copyringNode Node that is actually dealt with.
 	 * @param graphicalAssistApi GraphicalModelAssistApi that used by node.
 	 */
-	CopyHandler(NodeElement * const copyringElement, qReal::models::GraphicalModelAssistApi * const graphicalAssistApi);
+	CopyHandler(NodeElement &copyingElement, qReal::models::GraphicalModelAssistApi &graphicalAssistApi);
 
 	/**
 	 * Makes copy of NodeElement that was used in constructor of CopyHandler.
@@ -36,7 +36,7 @@ private:
 	 * @param destination Node to that childrens of source will be copied.
 	 * @param source Node that children will be copied.
 	 */
-	void copyChildren(const NodeElement * const destination, const NodeElement * const source) const;
+	void copyChildren(NodeElement const &destination, NodeElement const &source) const;
 
 	/**
 	 * TODO: make realization
@@ -44,18 +44,20 @@ private:
 	 * @param destination Node to that edges will be copied from source.
 	 * @param source Node that edges will be copied.
 	 */
-	void copyEdges(const NodeElement * const destination, const NodeElement * const source) const;
+	void copyEdges(NodeElement const &destination, NodeElement const &source) const;
 
 	/**
 	 * Copies properties of source to destination using GraphicalModelAssistApi.
 	 * @param destination Node to that properties will be copied from source.
 	 * @param source Node that properties will be copied.
 	 */
-	void copyProperties(const NodeElement * const destination, const NodeElement * const source) const;
+	void copyProperties(NodeElement const &destination, NodeElement const &source) const;
 
 	/// Node that is actually dealt with.
-	NodeElement * const mNode;
+	NodeElement &mNode;
 
-	/// GraphicalModelAssistApi that used to creating new NodeElement.
-	qReal::models::GraphicalModelAssistApi * const mGraphicalAssistApi;
+	/// GraphicalModelAssistApi that is used for creating new NodeElement.
+	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
 };
+
+}

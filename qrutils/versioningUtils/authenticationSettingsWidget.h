@@ -8,10 +8,10 @@ namespace Ui {
 class AuthenticationSettingsWidget;
 }
 
-namespace versioning
-{
-namespace ui
-{
+
+namespace qReal {
+namespace versioning {
+namespace ui {
 
 /// @brief Represents credentials editor (username, address)
 /// Can be used by different plugins
@@ -70,5 +70,6 @@ private:
 	QString mSettingsPrefix;
 };
 
+}
 }
 }

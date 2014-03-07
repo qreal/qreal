@@ -10,7 +10,7 @@ namespace Ui {
 	class PreferencesVersioningPage;
 }
 
-namespace versioning
+namespace git
 {
 namespace ui
 {
@@ -36,7 +36,7 @@ private:
 	QComboBox *createComboBox(const QString &text = QString());
 
 	Ui::PreferencesVersioningPage *mUi;
-	AuthenticationSettingsWidget *mAuthenticationSettings;
+	qReal::versioning::ui::AuthenticationSettingsWidget *mAuthenticationSettings;
 	/*QComboBox *mEmailComboBox;
 	QLabel *mEmailLabel;*/
 

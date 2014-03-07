@@ -15,13 +15,11 @@
 #include "gui/logDialog.h"
 #include "gui/remoteListDialog.h"
 
-namespace versioning
-{
+namespace git {
 
 class GitPlugin;
 
-namespace details
-{
+namespace details {
 
 class ViewInteraction : public QObject
 {

@@ -2,7 +2,7 @@
 
 #include "logDialog.h"
 
-using namespace versioning::ui;
+using namespace git::ui;
 
 LogDialog::LogDialog(QWidget *parent) : QDialog(parent)
 {

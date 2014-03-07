@@ -4,7 +4,7 @@
 #include "checkoutDialog.h"
 #include "../../../qrkernel/settingsManager.h"
 
-using namespace versioning::ui;
+using namespace svn::ui;
 
 CheckoutDialog::CheckoutDialog(QWidget *parent)
 	: QDialog(parent)

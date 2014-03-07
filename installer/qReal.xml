@@ -2,12 +2,20 @@
     <shortName>QReal</shortName>
     <fullName>QReal</fullName>
     <version>%version%</version>
-    <licenseFile>gpl-3.0.txt</licenseFile>
+    <licenseFile>licenses/gpl-3.0.txt</licenseFile>
     <leftImage>left.png</leftImage>
     <logoImage>logo.png</logoImage>
-    <defaultLanguage>ru</defaultLanguage>
+    <defaultLanguage>en</defaultLanguage>
+    <outputDirectory>.</outputDirectory>
+    <width>600</width>
+    <vendor>SPbSU</vendor>
     <disableSplashScreen>1</disableSplashScreen>
+    <enableRollback>0</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <requireInstallationByRootUser>1</requireInstallationByRootUser>
+
     <componentList>
+        <include file="qRealBase.xml" />
         <component>
             <name>default</name>
             <description>Default Component</description>
@@ -40,59 +48,14 @@
                 <folder>
                     <description>Program Files</description>
                     <destination>${installdir}</destination>
-                    <name>programfileslinux</name>
-                    <platforms>linux</platforms>
-                </folder>
-                <folder>
-                    <description>Program Files</description>
-                    <destination>${installdir}</destination>
                     <name>programfileswindows</name>
                     <platforms>windows</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>../bin/qrgui.exe</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../bin/qrkernel.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../bin/qrrepo.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../bin/qrutils.dll</origin>
-                        </distributionFile>
-                        
-                        <distributionFile>
-                            <origin>%2/QtCore4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/QtGui4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/QtSvg4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/mingwm10.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/QtXml4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/libgcc_s_dw2-1.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>icon.ico</origin>
-                        </distributionFile>
-                        <distributionDirectory>
-                            <origin>../bin/plugins/</origin>
-                        </distributionDirectory>
-                    </distributionFileList>
                     <shortcutList>
                         <shortcut>
                             <comment></comment>
                             <exec></exec>
                             <icon>${installdir}/icon.ico</icon>
-                            <name>Run QReal</name>
+                            <name>QReal</name>
                             <path></path>
                             <platforms>windows</platforms>
                             <runAsAdmin>0</runAsAdmin>
@@ -103,12 +66,6 @@
                             <windowsPath>${installdir}</windowsPath>
                         </shortcut>
                     </shortcutList>
-                </folder>
-                <folder>
-                    <description>Program Files</description>
-                    <destination>${installdir}</destination>
-                    <name>programfilesosx</name>
-                    <platforms>osx</platforms>
                 </folder>
             </folderList>
             <startMenuShortcutList>
@@ -124,7 +81,7 @@
                 </startMenuShortcut>
                 <startMenuShortcut>
                     <comment></comment>
-                    <name>Run QReal</name>
+                    <name>QReal</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
                     <windowsExec>${installdir}/qrgui.exe</windowsExec>
@@ -138,7 +95,7 @@
     <postInstallationActionList>
         <copyFile>
             <destination>${windows_folder_desktopdirectory}/QReal.lnk</destination>
-            <origin>${installdir}/Run QReal.lnk</origin>
+            <origin>${installdir}/QReal.lnk</origin>
         </copyFile>
         <registrySet>
             <key>HKEY_CURRENT_USER\Software\SPbSU\QReal</key>
@@ -146,6 +103,24 @@
             <type>REG_SZ</type>
             <value>${installdir}</value>
         </registrySet>
+
+        <!-- Associating file extension -->
+        <associateWindowsFileExtension>
+            <extensions>.qrs</extensions>
+            <progID>QReal.Project.2</progID>
+            <friendlyName>QReal project</friendlyName>
+            <icon>${installdir}\icon.ico</icon>
+            <mimeType>application/octet-stream</mimeType>
+            <commandList>
+                <!-- Defining the 'Open' command -->
+                <command>
+                    <makeDefault>1</makeDefault>
+                    <verb>Open</verb>
+                    <runProgram>${installdir}\qrgui.exe</runProgram>
+                    <runProgramArguments>"%L"</runProgramArguments>
+                </command>
+            </commandList>
+        </associateWindowsFileExtension>
     </postInstallationActionList>
     <postUninstallationActionList>
         <deleteFile>
@@ -156,15 +131,11 @@
             <name>installDir</name>
         </registryDelete>
     </postUninstallationActionList>
-    <enableRollback>0</enableRollback>
-    <enableTimestamp>1</enableTimestamp>
-    <requireInstallationByRootUser>1</requireInstallationByRootUser>
-    <vendor>SPbSU</vendor>
     <finalPageActionList>
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
             <programArguments></programArguments>
-            <progressText>Запустить QReal</progressText>
+            <progressText>Launch QReal</progressText>
         </runProgram>
     </finalPageActionList>
     <parameterList>

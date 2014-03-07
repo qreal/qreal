@@ -6,7 +6,7 @@
 #include "../../qrutils/fileSystemUtils.h"
 #include "tags.h"
 
-using namespace versioning;
+using namespace git;
 using namespace qReal::versioning;
 
 QString const tempFolderName = "tempGit";
@@ -245,8 +245,8 @@ void GitPlugin::startReset(QString const &hash, QString const &targetFolder, con
 
 void GitPlugin::doUserNameConfig()
 {
-	QString const enabledKey = ui::AuthenticationSettingsWidget::enabledSettingsName("git");
-	QString const usernameKey = ui::AuthenticationSettingsWidget::usernameSettingsName("git");
+	QString const enabledKey = qReal::versioning::ui::AuthenticationSettingsWidget::enabledSettingsName("git");
+	QString const usernameKey = qReal::versioning::ui::AuthenticationSettingsWidget::usernameSettingsName("git");
 	QString username = "qReal";
 
 	bool const authenticationEnabled = qReal::SettingsManager::value(enabledKey, false).toBool();
@@ -264,8 +264,8 @@ void GitPlugin::doUserNameConfig()
 
 void GitPlugin::doUserEmailConfig()
 {
-	QString const enabledKey = ui::AuthenticationSettingsWidget::enabledSettingsName("git");
-	QString const emailKey = ui::AuthenticationSettingsWidget::usernameSettingsName("git");
+	QString const enabledKey = qReal::versioning::ui::AuthenticationSettingsWidget::enabledSettingsName("git");
+	QString const emailKey = qReal::versioning::ui::AuthenticationSettingsWidget::usernameSettingsName("git");
 	QString email = "qReal@qrealmail.com";
 
 	bool const authenticationEnabled = qReal::SettingsManager::value(enabledKey, false).toBool();
@@ -378,14 +378,14 @@ void GitPlugin::doAfterOperationIsFinished(QVariant const &tag)
 
 QString GitPlugin::getUsername()
 {
-	QString const usernameKey = ui::AuthenticationSettingsWidget::usernameSettingsName("git");
+	QString const usernameKey = qReal::versioning::ui::AuthenticationSettingsWidget::usernameSettingsName("git");
 	QString const username = qReal::SettingsManager::value(usernameKey, false).toString();
 	return username;
 }
 
 QString GitPlugin::getPassword()
 {
-	QString const passwordKey = ui::AuthenticationSettingsWidget::passwordSettingsName("git");
+	QString const passwordKey = qReal::versioning::ui::AuthenticationSettingsWidget::passwordSettingsName("git");
 	QString const password = qReal::SettingsManager::value(passwordKey, false).toString();
 	return password;
 }

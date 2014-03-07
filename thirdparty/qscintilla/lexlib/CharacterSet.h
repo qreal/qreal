@@ -40,10 +40,31 @@ public:
 		if (base & setDigits)
 			AddString("0123456789");
 	}
+	CharacterSet(const CharacterSet &other) {
+		size = other.size;
+		valueAfter = other.valueAfter;
+		bset = new bool[size];
+		for (int i=0; i < size; i++) {
+			bset[i] = other.bset[i];
+		}
+	}
 	~CharacterSet() {
 		delete []bset;
 		bset = 0;
 		size = 0;
+	}
+	CharacterSet &operator=(const CharacterSet &other) {
+		if (this != &other) {
+			bool *bsetNew = new bool[other.size];
+			for (int i=0; i < other.size; i++) {
+				bsetNew[i] = other.bset[i];
+			}
+			delete []bset;
+			size = other.size;
+			valueAfter = other.valueAfter;
+			bset = bsetNew;
+		}
+		return *this;
 	}
 	void Add(int val) {
 		assert(val >= 0);
@@ -59,7 +80,8 @@ public:
 		}
 	}
 	bool Contains(int val) const {
-		assert(val >= 0);
+        // val being -ve is valid (or there is a sign extension bug elsewhere.
+		//assert(val >= 0);
 		if (val < 0) return false;
 		return (val < size) ? bset[val] : valueAfter;
 	}
@@ -90,7 +112,15 @@ inline bool IsADigit(int ch, int base) {
 }
 
 inline bool IsASCII(int ch) {
-	return ch < 0x80;
+	return (ch >= 0) && (ch < 0x80);
+}
+
+inline bool IsLowerCase(int ch) {
+	return (ch >= 'a') && (ch <= 'z');
+}
+
+inline bool IsUpperCase(int ch) {
+	return (ch >= 'A') && (ch <= 'Z');
 }
 
 inline bool IsAlphaNumeric(int ch) {
@@ -109,15 +139,15 @@ inline bool isspacechar(int ch) {
 }
 
 inline bool iswordchar(int ch) {
-	return IsASCII(ch) && (IsAlphaNumeric(ch) || ch == '.' || ch == '_');
+	return IsAlphaNumeric(ch) || ch == '.' || ch == '_';
 }
 
 inline bool iswordstart(int ch) {
-	return IsASCII(ch) && (IsAlphaNumeric(ch) || ch == '_');
+	return IsAlphaNumeric(ch) || ch == '_';
 }
 
 inline bool isoperator(int ch) {
-	if (IsASCII(ch) && IsAlphaNumeric(ch))
+	if (IsAlphaNumeric(ch))
 		return false;
 	if (ch == '%' || ch == '^' || ch == '&' || ch == '*' ||
 	        ch == '(' || ch == ')' || ch == '-' || ch == '+' ||

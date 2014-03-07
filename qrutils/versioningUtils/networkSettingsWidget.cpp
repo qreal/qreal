@@ -2,7 +2,7 @@
 #include "ui_networkSettingsWidget.h"
 #include "../../qrkernel/settingsManager.h"
 
-using namespace versioning::ui;
+using namespace qReal::versioning::ui;
 
 NetworkSettingsWidget::NetworkSettingsWidget(QWidget *parent)
 	: QWidget(parent)

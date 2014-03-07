@@ -5,14 +5,21 @@
 #include <QtXml/QDomDocument>
 #include <QtWidgets/QButtonGroup>
 
-#include "scene.h"
-#include "item.h"
-#include "../../../qrutils/graphicsUtils/abstractItemView.h"
-#include "../../qrkernel/ids.h"
-#include "../pluginManager/editorManagerInterface.h"
-#include "ui_mainWindow.h"
-#include "../../models/details/logicalModel.h"
-#include "visibilityConditionsDialog.h"
+#include <qrutils/graphicsUtils/abstractItemView.h>
+#include <qrkernel/ids.h>
+
+#include "mainwindow/shapeEdit/scene.h"
+#include "mainwindow/shapeEdit/item.h"
+#include "pluginManager/editorManagerInterface.h"
+
+// TODO: lolwut?
+//#include "ui_mainWindow.h"
+
+// TODO: lolwut?
+#include "models/details/logicalModel.h"
+
+#include "mainwindow/shapeEdit/visibilityConditionsDialog.h"
+#include "view/editorView.h"
 
 namespace Ui {
 class ShapeEdit;
@@ -25,8 +32,11 @@ class ShapeEdit : public QWidget {
 
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
-	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role);
-	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow, EditorView *editorView);
+	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role
+		, bool useTypedPorts);
+	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy
+		, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow
+		, EditorView *editorView, bool useTypedPorts);
 	~ShapeEdit();
 	graphicsUtils::AbstractView* getView();
 	void load(QString const &text);
@@ -64,6 +74,8 @@ private slots:
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoFontPalette();
 	void setItemFontPalette(QPen const &penItem, QFont const &fontItem, QString const &name);
+	void setNoPortType();
+	void setPortType(QString const &type);
 	void changeTextName();
 	void resetHighlightAllButtons();
 
@@ -75,6 +87,7 @@ private:
 	QPoint mTopLeftPicture;
 	Ui::ShapeEdit *mUi;  // Has ownership.
 
+	// TODO: lolwut? Use assist API instead.
 	qReal::models::details::LogicalModel *mModel;  // Doesn't have ownership.
 	QPersistentModelIndex const mIndex;
 	int const mRole;
@@ -83,6 +96,8 @@ private:
 	IdList mGraphicalElements;
 	MainWindow *mMainWindow;  // Doesn't have ownership.
 	EditorView *mEditorView;  // Doesn't have ownership.
+
+	bool mUseTypedPorts;
 
 	void initButtonGroup();
 	void initFontPalette();
@@ -110,5 +125,6 @@ private:
 	QList<QDomElement> generateGraphics();
 
 	QMap<QString, VisibilityConditionsDialog::PropertyInfo> getProperties() const;
+	QStringList getPortTypes() const;
 };
 }

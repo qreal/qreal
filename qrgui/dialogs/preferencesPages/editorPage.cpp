@@ -1,10 +1,14 @@
-#include "../../../qrkernel/settingsManager.h"
 #include "editorPage.h"
 #include "ui_editorPage.h"
-#include <QMessageBox>
-#include "../../mainwindow/mainWindow.h"
+
+#include <QtWidgets/QMessageBox>
+
+#include <qrkernel/settingsManager.h>
+
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
+using namespace enums::linkShape;
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
@@ -25,6 +29,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	// changing grid size in QReal:Robots is forbidden
 	connect(mUi->gridWidthSlider, SIGNAL(sliderMoved(int)), this, SLOT(widthGridSliderMoved(int)));
 	connect(mUi->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
+	connect(mUi->dragAreaSizeSlider, SIGNAL(sliderMoved(int)), this, SLOT(dragAreaSliderMoved(int)));
 	connect(mUi->fontCheckBox, SIGNAL(toggled(bool)), this, SLOT(manualFontCheckBoxChecked(bool)));
 	connect(mUi->fontSelectionButton, SIGNAL(clicked()),this, SLOT(fontSelectionButtonClicked()));
 	connect(mUi->paletteComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(paletteComboBoxClicked(int)));
@@ -34,12 +39,15 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	connect(mActivateGridAction, SIGNAL(toggled(bool)), this, SLOT(activateGrid(bool)));
 	connect(mActivateAlignmentAction, SIGNAL(toggled(bool)), this, SLOT(activateAlignment(bool)));
 
-	mUi->indexGridSlider->setVisible(false);
-	mUi->label_20->setVisible(false);
+	// use customizer to blick it somehow
+//	mUi->indexGridSlider->setVisible(false);
+//	mUi->label_20->setVisible(false);
 
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
 
+	mDragArea = mUi->dragAreaSizeSlider->value();
+	SettingsManager::setValue("DragArea", mDragArea);
 	restoreSettings();
 }
 
@@ -97,11 +105,17 @@ void PreferencesEditorPage::indexGridSliderMoved(int value)
 	emit gridChanged();
 }
 
+void PreferencesEditorPage::dragAreaSliderMoved(int value)
+{
+	SettingsManager::setValue("DragArea", value);
+}
+
 void PreferencesEditorPage::save()
 {
 	SettingsManager::setValue("EmbeddedLinkerIndent", mUi->embeddedLinkerIndentSlider->value());
 	SettingsManager::setValue("EmbeddedLinkerSize", mUi->embeddedLinkerSizeSlider->value());
-	SettingsManager::setValue("zoomFactor", mUi->zoomFactorSlider->value());
+	SettingsManager::setValue("LineType", mUi->lineMode->currentIndex() - 1);
+	SettingsManager::setValue("LoopEdgeBoundsIndent", mUi->loopEdgeBoundsIndent->value());
 	SettingsManager::setValue("ShowGrid", mUi->showGridCheckBox->isChecked());
 	SettingsManager::setValue("ShowAlignment", mUi->showAlignmentCheckBox->isChecked());
 	SettingsManager::setValue("ActivateGrid", mUi->activateGridCheckBox->isChecked());
@@ -109,13 +123,18 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("CustomFont", mUi->fontCheckBox->isChecked());
 	SettingsManager::setValue("PaletteRepresentation", mUi->paletteComboBox->currentIndex());
 	SettingsManager::setValue("PaletteIconsInARowCount", mUi->paletteSpinBox->value());
+	SettingsManager::setValue("MoveLabels", mUi->enableMoveLabelsCheckBox->isChecked());
+	SettingsManager::setValue("ResizeLabels", mUi->enableResizeLabelsCheckBox->isChecked());
+	SettingsManager::setValue("LabelsDistance", mUi->labelDistanceSlider->value());
 
 	emit paletteRepresentationChanged();
 
 	mWidthGrid = mUi->gridWidthSlider->value();
 	mIndexGrid = mUi->indexGridSlider->value();
+	mDragArea = mUi->dragAreaSizeSlider->value();
 	SettingsManager::setValue("GridWidth", mWidthGrid);
 	SettingsManager::setValue("IndexGrid", mIndexGrid);
+	SettingsManager::setValue("DragArea", mDragArea);
 
 	mShowGridAction->setChecked(mUi->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(mUi->showAlignmentCheckBox->isChecked());
@@ -140,7 +159,14 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->activateAlignmentCheckBox->setChecked(SettingsManager::value("ActivateAlignment").toBool());
 	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent").toInt());
 	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
-	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor").toInt());
+	mUi->loopEdgeBoundsIndent->setValue(SettingsManager::value("LoopEdgeBoundsIndent").toInt());
+
+	mUi->enableMoveLabelsCheckBox->setChecked(SettingsManager::value("MoveLabels").toBool());
+	mUi->enableResizeLabelsCheckBox->setChecked(SettingsManager::value("ResizeLabels").toBool());
+	mUi->labelDistanceSlider->setValue(SettingsManager::value("LabelsDistance").toInt());
+
+	LinkShape const type = static_cast<LinkShape>(SettingsManager::value("LineType", unset).toInt());
+	mUi->lineMode->setCurrentIndex(type + 1);
 
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
 	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont").toBool());

@@ -7,10 +7,11 @@
 
 using namespace qReal;
 
-SettingsManager* SettingsManager::mInstance = NULL;
+SettingsManager* SettingsManager::mInstance = nullptr;
 
 SettingsManager::SettingsManager()
-		: mSettings("SPbSU", "QReal")
+	: mSettings("SPbSU", "QReal")
+	, mUXInfoInterface(NULL)
 {
 	initDefaultValues();
 	load();
@@ -18,8 +19,15 @@ SettingsManager::SettingsManager()
 
 void SettingsManager::setValue(QString const &name, QVariant const &value)
 {
+	instance()->reportValueSetting(name, instance()->value(name), value);
 	instance()->set(name, value);
 }
+
+void SettingsManager::setUXInfo(UXInfoInterface *uxInfo)
+{
+	instance()->setUXInfoInterface(uxInfo);
+}
+
 
 QVariant SettingsManager::value(QString const &key)
 {
@@ -33,7 +41,7 @@ QVariant SettingsManager::value(QString const &key, QVariant const &defaultValue
 
 SettingsManager* SettingsManager::instance()
 {
-	if (mInstance == NULL) {
+	if (mInstance == nullptr) {
 		mInstance = new SettingsManager();
 	}
 	return mInstance;
@@ -55,6 +63,22 @@ QVariant SettingsManager::get(QString const &name, QVariant const &defaultValue)
 	return defaultValue;
 }
 
+void SettingsManager::setUXInfoInterface(UXInfoInterface *uxInfo)
+{
+	mUXInfoInterface = uxInfo;
+}
+
+void SettingsManager::reportValueSetting(QString const &name, QVariant const &oldValue, QVariant const &newValue)
+{
+	if (oldValue == newValue) {
+		return;
+	}
+
+	if (mUXInfoInterface) {
+		mUXInfoInterface->reportSettingsChanges(name, oldValue, newValue);
+	}
+}
+
 void SettingsManager::saveData()
 {
 	foreach (QString const &name, mData.keys()) {
@@ -63,11 +87,28 @@ void SettingsManager::saveData()
 	mSettings.sync();
 }
 
+void SettingsManager::saveSettings(QString fileNameForExport)
+{
+	QSettings settingsForSave(fileNameForExport,QSettings::IniFormat);
+	foreach (QString const &name, mData.keys()) {
+		settingsForSave.setValue(name, mData[name]);
+	}
+}
+
 void SettingsManager::load()
 {
 	foreach (QString const &name, mSettings.allKeys()) {
 		mData[name] = mSettings.value(name);
 	}
+}
+
+void SettingsManager::loadSettings(QString  const &fileNameForImport)
+{
+	QSettings settings(fileNameForImport,QSettings::IniFormat);
+	foreach (QString const &name, settings.allKeys()) {
+		mData[name] = settings.value(name);
+	}
+	saveData();
 }
 
 void SettingsManager::initDefaultValues()

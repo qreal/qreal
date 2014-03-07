@@ -1,5 +1,6 @@
 #include "pointPort.h"
-#include "../qrutils/outFile.h"
+
+#include <qrutils/outFile.h>
 
 using namespace utils;
 
@@ -9,22 +10,20 @@ bool PointPort::init(QDomElement const &element, int width, int height)
 	mY = initCoordinate(element.attribute("y"), height);
 	mInitWidth = width;
 	mInitHeight = height;
+	mType = element.attribute("type", "NonTyped");
 	return true;
 }
 
-void PointPort::generateCode(OutFile &out)
+void PointPort::generateCode(OutFile &out, QStringList const &portTypes)
 {
-	out() <<"\t\t\t{\n"
-		<< "\t\t\t\tStatPoint pt;\n"
-		<< QString("\t\t\t\tpt.point = QPointF(%1, %2);\n").arg(mX.value()).arg(mY.value())
-		<< "\t\t\t\tpt.prop_x = "
-		<< ((mX.isScalable()) ? "true;\n" : "false;\n")
-		<< "\t\t\t\tpt.prop_y = "
-		<< ((mY.isScalable()) ? "true; \n" : "false; \n")
-		<< QString("\t\t\t\tpt.initWidth = %1;\n").arg(mInitWidth)
-		<< QString("\t\t\t\tpt.initHeight = %1;\n").arg(mInitHeight)
-		<< "\t\t\t\tpointPorts << pt;\n"
-		<< "\t\t\t};\n";
+	if (!portTypes.contains(mType)) {
+		mType = "NonTyped";
+	}
+
+	out() << QString("\t\t\tports << portFactory.createPort(QPointF(%1, %2), %3, %4, %5, %6, new %7());\n")
+			.arg(mX.value()).arg(mY.value())
+			.arg(mX.isScalable() ? "true" : "false").arg(mY.isScalable() ? "true" : "false")
+			.arg(mInitWidth).arg(mInitHeight).arg(mType);
 }
 
 Port* PointPort::clone() const
@@ -32,6 +31,7 @@ Port* PointPort::clone() const
 	PointPort *result = new PointPort();
 	result->mX = mX;
 	result->mY = mY;
+	result->mType = mType;
 	result->mInitWidth = mInitWidth;
 	result->mInitHeight = mInitHeight;
 	return result;

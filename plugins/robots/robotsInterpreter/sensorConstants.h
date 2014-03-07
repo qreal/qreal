@@ -1,10 +1,18 @@
-#pragma once
+﻿#pragma once
+
+#include <QtCore/QStringList>
 
 namespace qReal {
 namespace interpreters {
 namespace robots {
 
+namespace details {
+namespace d2Model {
 int const sensorWidth = 12;
+}
+}
+
+namespace enums {
 
 namespace sensorType {
 enum SensorTypeEnum {
@@ -38,11 +46,25 @@ enum InputPortEnum {
 namespace robotModelType {
 enum robotModelTypeEnum {
 	null
-	, real
-	, unreal
+	, twoD
+	, nxt
+	, trik
 };
 }
+}
+
+/// Contains everything about enumerating different NXT sensors types
+class SensorEnumerator
+{
+public:
+	/// Returns a list of all possible NXT sensors types
+	static QStringList sensorNamesList();
+
+	/// Converts internal sensor type to its friendly name
+	static QString sensorName(enums::sensorType::SensorTypeEnum sensor);
+};
 
 }
 }
+
 }

@@ -4,7 +4,7 @@
 #include "pushDialog.h"
 #include "../../../qrkernel/settingsManager.h"
 
-using namespace versioning::ui;
+using namespace git::ui;
 
 PushDialog::PushDialog(QWidget *parent)
 	: QDialog(parent)

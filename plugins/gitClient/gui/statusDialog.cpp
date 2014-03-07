@@ -2,7 +2,7 @@
 
 #include "statusDialog.h"
 
-using namespace versioning::ui;
+using namespace git::ui;
 
 StatusDialog::StatusDialog(QWidget *parent) : QDialog(parent)
 {

@@ -132,6 +132,18 @@ void EdgeType::generateArrowEnd(QString &edgeClass, QString const &arrowEnd,
 	} else if (arrowEnd == "filled_rhomb") {
 		edgeClass.replace(customTag, compiler->getTemplateUtils(rhombTemplateTag))
 				.replace(brushTag, compiler->getTemplateUtils(filledArrowColorTag));
+	} else if (arrowEnd == "crossed_line") {
+		edgeClass.replace(customTag, compiler->getTemplateUtils(crossedLineTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+	} else if (arrowEnd == "empty_circle") {
+		edgeClass.replace(customTag, compiler->getTemplateUtils(emptyCircleTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+	} else if (arrowEnd == "signal") {
+		edgeClass.replace(customTag, compiler->getTemplateUtils(signalTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+	} else if (arrowEnd == "timer") {
+		edgeClass.replace(customTag, compiler->getTemplateUtils(timerTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
 	}
 }
 

@@ -1,18 +1,16 @@
 #pragma once
 
-#include "../../models/graphicalModelAssistApi.h"
+#include "models/graphicalModelAssistApi.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class CreateRemoveCommandImplementation
 {
 public:
 	CreateRemoveCommandImplementation(
-			models::LogicalModelAssistApi *logicalApi
-			, models::GraphicalModelAssistApi *graphicalApi
+			models::LogicalModelAssistApi &logicalApi
+			, models::GraphicalModelAssistApi &graphicalApi
 			, const Id &logicalParent
 			, const Id &graphicalParent
 			, Id const &id
@@ -23,11 +21,15 @@ public:
 	Id create();
 	void remove();
 
+	Id id() const;
+
 	bool equals(CreateRemoveCommandImplementation const &other) const;
 
 private:
-	models::LogicalModelAssistApi * const mLogicalApi; // Doesn`t take ownership
-	models::GraphicalModelAssistApi * const mGraphicalApi; // Doesn`t take ownership
+	void refreshAllPalettes();
+
+	models::LogicalModelAssistApi &mLogicalApi;
+	models::GraphicalModelAssistApi &mGraphicalApi;
 	Id const mLogicalParent;
 	Id const mGraphicalParent;
 	Id mId;

@@ -18,17 +18,22 @@ SelectElementCommand::SelectElementCommand(EditorView const *view
 {
 }
 
+SelectElementCommand::~SelectElementCommand()
+{
+}
+
 bool SelectElementCommand::execute()
 {
-	ElementCommand::execute();
+	if (!ElementCommand::execute()) {
+		return false;
+	}
 	mOldState = isSelected();
 	return setSelectionState(mNewState);
 }
 
 bool SelectElementCommand::restoreState()
 {
-	ElementCommand::restoreState();
-	return setSelectionState(mOldState);
+	return ElementCommand::restoreState() && setSelectionState(mOldState);
 }
 
 bool SelectElementCommand::setSelectionState(bool select)

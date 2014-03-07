@@ -3,8 +3,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-namespace versioning
-{
+namespace svn {
+
 struct Tag
 {
 	Tag()
@@ -22,6 +22,7 @@ struct Tag
 	QString stringTag;
 	bool boolTag;
 };
+
 }
 
-Q_DECLARE_METATYPE(versioning::Tag)
+Q_DECLARE_METATYPE(svn::Tag)

@@ -17,8 +17,10 @@ bool ReshapeEdgeCommand::execute()
 	if (!mTrackStopped) {
 		return true;
 	}
-	EdgeElementCommand::execute();
-	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
+	if (!EdgeElementCommand::execute()) {
+		return false;
+	}
+	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos, mNewFromPort, mNewToPort);
 	return true;
 }
 
@@ -27,8 +29,10 @@ bool ReshapeEdgeCommand::restoreState()
 	if (!mTrackStopped) {
 		return true;
 	}
-	EdgeElementCommand::restoreState();
-	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos);
+	if (!EdgeElementCommand::restoreState()) {
+		return false;
+	}
+	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos, mOldFromPort, mOldToPort);
 	return true;
 }
 
@@ -36,47 +40,53 @@ void ReshapeEdgeCommand::startTracking()
 {
 	EdgeElementCommand::reinitElement();
 	TrackingEntity::startTracking();
-	saveConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos);
+	saveConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos, mOldFromPort, mOldToPort);
 }
 
 void ReshapeEdgeCommand::stopTracking()
 {
 	EdgeElementCommand::reinitElement();
 	TrackingEntity::stopTracking();
-	saveConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
+	saveConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos, mNewFromPort, mNewToPort);
+}
+
+bool ReshapeEdgeCommand::somethingChanged() const
+{
+	return mOldConfiguration != mNewConfiguration
+			|| mOldPos != mNewPos
+			|| mOldSrc != mNewSrc
+			|| mOldDst != mNewDst
+			|| mOldFromPort != mNewFromPort
+			|| mOldToPort != mNewToPort;
 }
 
 void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst
-		, QPointF &pos)
+		, QPointF &pos, qreal &fromPort, qreal &toPort)
 {
 	if (mEdge) {
 		target = mEdge->line();
 		src = mEdge->src() ? mEdge->src()->id() : Id();
 		dst = mEdge->dst() ? mEdge->dst()->id() : Id();
 		pos = mEdge->pos();
+		fromPort = mEdge->fromPort();
+		toPort = mEdge->toPort();
 	}
 }
 
 void ReshapeEdgeCommand::applyConfiguration(QPolygonF const &configuration
-		, Id const &src, Id const &dst, QPointF const &pos)
+		, Id const &src, Id const &dst, QPointF const &pos, qreal const &fromPort, qreal const &toPort)
 {
 	if (!mEdge) {
 		return;
 	}
 	NodeElement *srcElem = dynamic_cast<NodeElement *>(elementById(src));
 	NodeElement *dstElem = dynamic_cast<NodeElement *>(elementById(dst));
-	mEdge->setLine(configuration);
 	mEdge->setSrc(srcElem);
 	mEdge->setDst(dstElem);
+	mEdge->setLine(configuration);
+	mEdge->setFromPort(fromPort);
+	mEdge->setToPort(toPort);
+	mEdge->arrangeLinearPorts();
 	mEdge->setPos(pos);
-	mEdge->connectToPort();
-	if (srcElem) {
-		srcElem->arrangeLinks();
-		srcElem->adjustLinks();
-	}
-	if (dstElem) {
-		dstElem->arrangeLinks();
-		dstElem->adjustLinks();
-	}
 	mEdge->scene()->update();
 }

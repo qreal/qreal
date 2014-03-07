@@ -16,7 +16,7 @@ class SoundSensor : public Sensor
 	Q_OBJECT
 
 public:
-	SoundSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const port);
+	SoundSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, robots::enums::inputPort::InputPortEnum const port);
 };
 
 }

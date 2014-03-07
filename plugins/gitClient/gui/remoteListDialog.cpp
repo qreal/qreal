@@ -2,7 +2,7 @@
 
 #include "remoteListDialog.h"
 
-using namespace versioning::ui;
+using namespace git::ui;
 
 RemoteListDialog::RemoteListDialog(QWidget *parent) : QDialog(parent)
 {

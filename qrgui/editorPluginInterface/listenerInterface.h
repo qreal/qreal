@@ -1,14 +1,15 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include "listenerApiInterface.h"
+
+#include "editorPluginInterface/listenerApiInterface.h"
 
 namespace qReal {
 
 	class ListenerInterface : public QObject
 	{
 	public:
-		virtual ~ListenerInterface() {};
+		virtual ~ListenerInterface() {}
 		void init(ListenerApiInterface *listenerApiInterface)
 		{
 			mListenerApiInterface = listenerApiInterface;

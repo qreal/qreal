@@ -4,7 +4,7 @@
 #include "../../qrgui/toolPluginInterface/customizer.h"
 #include "viewInteraction.h"
 
-namespace versioning
+namespace git
 {
 
 class GitPlugin : public qReal::versioning::ExternalClientPluginBase

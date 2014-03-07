@@ -2,11 +2,12 @@
 
 #include <QtWidgets/QListWidget>
 
-#include "../../qrkernel/ids.h"
-#include "error.h"
+#include <qrkernel/ids.h>
+
+#include "mainwindow/error.h"
 
 namespace qReal {
-  class MainWindow;
+	class MainWindow;
 }
 
 class ErrorListWidget : public QListWidget

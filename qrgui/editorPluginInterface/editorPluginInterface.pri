@@ -1,9 +1,11 @@
 HEADERS += \
-	editorPluginInterface/editorInterface.h \
-	editorPluginInterface/elementImpl.h \
-	editorPluginInterface/elementRepoInterface.h \
-	editorPluginInterface/elementTitleHelpers.h \
-	editorPluginInterface/sdfRendererInterface.h \
-	editorPluginInterface/listenerInterface.h \
-	editorPluginInterface/listenerApiInterface.h \
+	$$PWD/editorInterface.h \
+	$$PWD/elementImpl.h \
+	$$PWD/elementRepoInterface.h \
+	$$PWD/labelInterface.h \
+	$$PWD/labelFactoryInterface.h \
+	$$PWD/sdfRendererInterface.h \
+	$$PWD/listenerInterface.h \
+	$$PWD/listenerApiInterface.h \
+	$$PWD/portHelpers.h
 

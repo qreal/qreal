@@ -4,12 +4,10 @@
 #include <QtCore/QProcess>
 
 #include "../utilsDeclSpec.h"
-#include "../../qrgui/versioning/versioningPluginInterface.h"
+#include <qrgui/versioning/versioningPluginInterface.h>
 
-namespace qReal
-{
-namespace versioning
-{
+namespace qReal {
+namespace versioning {
 
 /// Base class for all VCS clients that implement their functionality
 /// in some external process
@@ -20,7 +18,7 @@ class QRUTILS_EXPORT ExternalClientPluginBase : public VersioningPluginInterface
 public:
 	void setWorkingCopyManager(qrRepo::WorkingCopyManagementInterface *workingCopyManager);
 
-	virtual void init(PluginConfigurator const &configurator);
+	void init(PluginConfigurator const &configurator) override;
 
 	/// Starts process which executable`s path specified by setPathToClient() method and waits for its finish.
 	/// @param args Startup arguments

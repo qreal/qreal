@@ -1,10 +1,12 @@
 #pragma once
 
 #include <QtGui/QColor>
+#include <QtCore/QFileInfo>
 
-#include "../../qrkernel/ids.h"
-#include "../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../../qrutils/invocationUtils/longOperation.h"
+#include <qrkernel/ids.h>
+#include <qrutils/invocationUtils/longOperation.h>
+
+#include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
 namespace gui {
@@ -27,11 +29,6 @@ public:
 	virtual Id activeDiagram() = 0;
 
 	virtual void openSettingsDialog(QString const &tab) = 0;
-
-	/// Opens new tab with text editor and shows a text in it
-	/// @param title A title of the tab
-	/// @param text A text that should be shown in an editor
-	virtual void showInTextEditor(QString const &title, QString const &text) = 0;
 
 	/// Rereads model information from repository and reinitializes models
 	/// and all related views. Needs to be called after major changes in repo.
@@ -69,7 +66,8 @@ public:
 	/// returns selected elements on current tab
 	virtual IdList selectedElementsOnActiveDiagram() = 0;
 
-	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true) = 0;
+	/// Shows element`s tab if it is not active and selects element if @see setSelected is true
+	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true) = 0;
 
 	virtual void updateActiveDiagram() = 0;
 
@@ -79,6 +77,10 @@ public:
 	/// Shows progress bar on operation start
 	/// @param operation Operation that going to be invoced
 	virtual void reportOperation(invocation::LongOperation *operation) = 0;
+
+	virtual QWidget *currentTab() = 0;
+	virtual void openTab(QWidget *tab, QString const &title) = 0;
+	virtual void closeTab(QWidget *tab) = 0;
 };
 
 }

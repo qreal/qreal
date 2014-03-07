@@ -1,10 +1,9 @@
 #pragma once
 
-#include "nonGraphicType.h"
+#include <QtXml/QDomElement>
+#include <QtCore/QStringList>
 
-#include <QDomElement>
-#include <QStringList>
-#include <QDebug>
+#include "nonGraphicType.h"
 
 namespace utils {
 	class OutFile;
@@ -19,9 +18,10 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
+	virtual void generateExplosionsMap(utils::OutFile &out);
 
 private:
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
-	
+
 	QStringList mValues;
 };

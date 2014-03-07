@@ -1,6 +1,12 @@
 QT += widgets
 LIBS += -L../../bin -lqrkernel -lqrutils
 
+CONFIG += c++11
+
+INCLUDEPATH += \
+	$$PWD/../.. \
+	$$PWD/../../qrgui/ \
+
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../bin/plugins/

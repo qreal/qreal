@@ -8,40 +8,45 @@
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QListWidget>
 #include <QtSql/QSqlDatabase>
+#include <qrkernel/settingsManager.h>
 
-#include "mainWindowInterpretersInterface.h"
-#include "mainWindowDockInterface.h"
-#include "propertyEditorProxyModel.h"
-#include "gesturesPainterInterface.h"
-#include "findManager.h"
-#include "referenceList.h"
+#include "mainwindow/mainWindowInterpretersInterface.h"
+#include "mainwindow/mainWindowDockInterface.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/gesturesPainterInterface.h"
+#include "mainwindow/findManager.h"
+#include "mainwindow/referenceList.h"
 
-#include "projectManager/projectManager.h"
+#include "mainwindow/projectManager/projectManager.h"
 
-#include "../pluginManager/editorManagerInterface.h"
-#include "../pluginManager/editorManager.h"
-#include "../pluginManager/interpreterEditorManager.h"
-#include "../pluginManager/proxyEditorManager.h"
-#include "../pluginManager/toolPluginManager.h"
-#include "../models/logicalModelAssistApi.h"
-#include "../view/propertyEditorView.h"
-#include "../controller/controller.h"
-#include "../versioning/versioningPluginsManager.h"
-#include "../versioning/transparentMode/transparentMode.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "pluginManager/editorManager.h"
+#include "pluginManager/interpreterEditorManager.h"
+#include "pluginManager/proxyEditorManager.h"
+#include "pluginManager/toolPluginManager.h"
+#include "models/logicalModelAssistApi.h"
+#include "view/propertyEditorView.h"
+#include "controller/controller.h"
 
-#include "../../qrgui/dialogs/preferencesDialog.h"
-#include "../../qrgui/dialogs/findReplaceDialog.h"
-#include "../dialogs/startDialog/startDialog.h"
-#include "../dialogs/gesturesShow/gesturesWidget.h"
-#include "propertyEditorProxyModel.h"
-#include "gesturesPainterInterface.h"
-#include "../versioning/transparentMode/ChangeVersion.h"
+#include "dialogs/preferencesDialog.h"
+#include "dialogs/findReplaceDialog.h"
+#include "mainwindow/startWidget/startWidget.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/gesturesPainterInterface.h"
+#include "dialogs/gesturesShow/gesturesWidget.h"
 
-#include "../textEditor/codeEditor.h"
+#include "textEditor/codeEditor.h"
+#include "textEditor/textManager.h"
 
-#include "../../qrkernel/settingsManager.h"
-#include "../dialogs/suggestToCreateDiagramDialog.h"
-#include "tabWidget.h"
+#include "dialogs/suggestToCreateDiagramDialog.h"
+#include "mainwindow/tabWidget.h"
+#include "mainwindow/qscintillaTextEdit.h"
+#include "toolPluginInterface/systemEvents.h"
+#include "mainwindow/filterObject.h"
+
+#include "qrgui/versioning/versioningPluginInterface.h"
+#include "qrgui/versioning/versioningPluginsManager.h"
+#include "qrgui/versioning/transparentMode/ChangeVersion.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -74,6 +79,7 @@ public:
 
 	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
+	bool isCurrentTabShapeEdit() const;
 	ListenerManager *listenerManager() const;
 	models::Models *models() const;
 	Controller *controller() const;
@@ -88,6 +94,7 @@ public:
 
 	QAction *actionDeleteFromDiagram() const;
 	QAction *actionCopyElementsOnDiagram() const;
+	QAction *actionCutElementsOnDiagram() const;
 	QAction *actionPasteOnDiagram() const;
 	QAction *actionPasteCopyOfLogical() const;
 
@@ -96,9 +103,11 @@ public:
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
-	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
+	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
+		, bool useTypedPorts);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
-	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy);
+	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
+		, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
 			, int const &role);
 	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
@@ -109,8 +118,9 @@ public:
 
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
+	bool showUsagesRelatedMenus() const;
 
-	virtual void showInTextEditor(QString const &title, QString const &text);
+	//virtual void showInTextEditor(QFileInfo const &fileInfo);
 	virtual void reinitModels();
 
 	virtual QWidget *windowWidget();
@@ -126,16 +136,19 @@ public:
 	virtual void deleteElementFromDiagram(Id const &id);
 
 	virtual void reportOperation(invocation::LongOperation *operation);
+	virtual QWidget *currentTab();
+	virtual void openTab(QWidget *tab, QString const &title);
+	virtual void closeTab(QWidget *tab);
+
+	/// Closes tab having given id as root id. If there is no such tab, does nothing.
+	/// @param id Id of a diagram (root element) that we want to close.
+	void closeDiagramTab(Id const &id);
 
 	/// Returns editor manager proxy, which allows to change editor manager implementation.
 	ProxyEditorManager &editorManagerProxy();
 
 	/// Loads (or reloads) available editor plugins and reinits palette.
 	void loadPlugins();
-
-	/// Closes tab having given id as root id. If there is no such tab, does nothing.
-	/// @param id Id of a diagram (root element) that we want to close.
-	void closeDiagramTab(Id const &id);
 
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
@@ -156,6 +169,8 @@ public:
 
 	QListIterator<EditorView *> openedEditorViews() const;
 
+	void setTabText(QWidget *tab, QString const &text);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -166,8 +181,8 @@ public slots:
 	void deleteFromScene();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
-	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
-	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
+	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true);
+	void activateItemOrDiagram(QModelIndex const &idx, bool setSelected = true);
 	virtual void selectItem(Id const &id);
 	virtual void selectItemOrDiagram(Id const &graphicalId);
 
@@ -175,6 +190,7 @@ public slots:
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
 	void changePaletteRepresentation();
+	void closeStartTab();
 	void closeAllTabs();
 	void refreshRecentProjectsList(QString const &fileName);
 	void createDiagram(QString const &idString);
@@ -183,6 +199,7 @@ public slots:
 
 	void openFirstDiagram();
 	void closeTabsWithRemovedRootElements();
+	void changeWindowTitle(int index);
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -191,7 +208,7 @@ private slots:
 	void createProject();
 
 	/// Diagram opening must happen after plugins initialization
-	void initPluginsAndStartDialog();
+	void initPluginsAndStartWidget();
 	void initToolPlugins();
 
 	/// handler for menu 'button find' pressed
@@ -220,9 +237,6 @@ private slots:
 
 	void sceneSelectionChanged();
 
-	void exportToXmi();
-	void generateToJava();
-	void parseJavaLibraries();
 	void applySettings();
 
 	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
@@ -231,8 +245,13 @@ private slots:
 	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
 	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
 	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
+	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
 	void deleteFromDiagram();
+//	void cutElementsOnDiagram();
+//	void copyElementsOnDiagram();
+//	void pasteOnDiagram();
+//	void pasteCopyOfLogical();
 
 	void cropSceneToItems();
 
@@ -248,6 +267,7 @@ private slots:
 	void initSettingsManager();
 	void connectActions();
 	void initActionsFromSettings();
+	void connectActionsForUXInfo();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
@@ -265,17 +285,22 @@ private slots:
 	void switchAlignment(bool isChecked);
 
 	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
-	void setReference(QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role);
 	void openShapeEditor();
 
 	void updatePaletteIcons();
+	void setTextChanged(bool changed);
+
+	void setUsabilityMode(bool mode);
+	void startUsabilityTest();
+	void finishUsabilityTest();
 
 	void switchOffOrOnEasyVers(bool switchOnOrOFF);
 	void showChangeVersion();
 	void initMEasyVersioningLink();
 
 private:
-	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
+	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
@@ -296,9 +321,7 @@ private:
 	virtual void closeEvent(QCloseEvent *event);
 
 	void deleteFromExplorer(bool isLogicalModel);
-	void deleteItems(IdList &itemsToDelete);
-
-	void keyPressEvent(QKeyEvent *event);
+	void deleteItems(IdList &itemsToDelete, bool global = false);
 
 	QString getSaveFileName(QString const &dialogWindowTitle);
 	QString getOpenFileName(QString const &dialogWindowTitle);
@@ -340,6 +363,10 @@ private:
 	/// @param name Widget's name in internal map
 	void showDockWidget(QDockWidget *dockWidget, QString const &name);
 
+	/// Find edges that connect items from itemsToDelete and should be deleted with them
+	/// @param itemsToDelete selected items that should be deleted
+	void addEdgesToBeDeleted(IdList &itemsToDelete);
+
 	QString getNextDirName(QString const &name);
 
 	void initMiniMap();
@@ -348,6 +375,7 @@ private:
 	void initDocks();
 	void initExplorers();
 	void initRecentProjectsMenu();
+	void openStartTab();
 
 	void setVersion(QString const &version);
 
@@ -360,7 +388,7 @@ private:
 	FindReplaceDialog *mFindReplaceDialog;
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
-	QMap<EditorView*, CodeArea*> *mCodeTabManager;
+	QMap<EditorView*, gui::QScintillaTextEdit*> *mCodeTabManager;
 
 	models::Models *mModels;
 	Controller *mController;
@@ -370,8 +398,12 @@ private:
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;
+
 	ChangeVersion *mChangeVersion;
 	TransparentMode *mEasyVersioning;
+
+	SystemEvents *mSystemEvents;
+	TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;
 
@@ -395,13 +427,18 @@ private:
 
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
-	StartDialog *mStartDialog;
+	StartWidget *mStartWidget;
 
+	FilterObject *mFilterObject; // Has ownership
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
+
+	QToolBar *mUsabilityTestingToolbar; // Has ownership
+	QAction *mStartTest; // Has ownership
+	QAction *mFinishTest; // Has ownership
 };
 
 }

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "item.h"
-#include "ellipse.h"
-#include "../../../qrutils/graphicsUtils/pointImpl.h"
+#include <qrutils/graphicsUtils/pointImpl.h>
+
+#include "mainwindow/shapeEdit/item.h"
+#include "mainwindow/shapeEdit/ellipse.h"
 
 class PointPort : public Item
 {
@@ -21,8 +22,12 @@ public:
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
 
+	void setType(QString const &type);
+	QString getType() const;
+
 private:
 	qreal mRadius;
 	qreal mUnrealRadius;
 	graphicsUtils::PointImpl mPointImpl;
+	QString mType;
 };

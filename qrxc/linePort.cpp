@@ -1,5 +1,6 @@
 #include "linePort.h"
-#include "../qrutils/outFile.h"
+
+#include <qrutils/outFile.h>
 
 using namespace utils;
 
@@ -12,29 +13,26 @@ bool LinePort::init(QDomElement const &element, int width, int height)
 	mStartY = initCoordinate(portStartElement.attribute("starty"), height);
 	mEndX = initCoordinate(portEndElement.attribute("endx"), width);
 	mEndY = initCoordinate(portEndElement.attribute("endy"), height);
+	mType = element.attribute("type", "NonTyped");
 	mInitWidth = width;
 	mInitHeight = height;
+
 	return true;
 }
 
-void LinePort::generateCode(OutFile &out)
+void LinePort::generateCode(OutFile &out, QStringList const &portTypes)
 {
-	out() <<"\t\t\t{\n"
-		<< "\t\t\t\tStatLine ln;\n"
-		<< QString("\t\t\t\tln.line = QLineF(%1, %2, %3, %4);\n")
-		.arg(mStartX.value()).arg(mStartY.value()).arg(mEndX.value()).arg(mEndY.value())
-		<< "\t\t\t\tln.prop_x1 = "
-		<< ((mStartX.isScalable()) ? "true;\n" : "false;\n")
-		<< "\t\t\t\tln.prop_y1 = "
-		<< ((mStartY.isScalable()) ? "true; \n" : "false; \n")
-		<< "\t\t\t\tln.prop_x2 = "
-		<< ((mEndX.isScalable()) ? "true; \n" : "false; \n")
-		<< "\t\t\t\tln.prop_y2 = "
-		<< ((mEndY.isScalable()) ? "true; \n" : "false; \n")
-		<< QString("\t\t\t\tln.initWidth = %1;\n").arg(mInitWidth)
-		<< QString("\t\t\t\tln.initHeight = %1;\n").arg(mInitHeight)
-		<< "\t\t\t\tlinePorts << ln;\n"
-		<< "\t\t\t};\n";
+	QString line = QString("QLineF(%1, %2, %3, %4)").arg(mStartX.value()).arg(mStartY.value())
+			.arg(mEndX.value()).arg(mEndY.value());
+
+	if (!portTypes.contains(mType)) {
+		mType = "NonTyped";
+	}
+
+	out() << QString("\t\t\tports << portFactory.createPort(%1, %2, %3, %4, %5, %6, %7, new %8());\n").arg(line)
+			.arg(mStartX.isScalable() ? "true" : "false").arg(mStartY.isScalable() ? "true" : "false")
+			.arg(mEndX.isScalable() ? "true" : "false").arg(mEndY.isScalable() ? "true" : "false")
+			.arg(mInitWidth).arg(mInitHeight).arg(mType);
 }
 
 Port *LinePort::clone() const
@@ -44,6 +42,7 @@ Port *LinePort::clone() const
 	result->mEndY = mEndY;
 	result->mStartX = mStartX;
 	result->mStartY = mStartY;
+	result->mType = mType;
 	result->mInitWidth = mInitWidth;
 	result->mInitHeight = mInitHeight;
 	return result;

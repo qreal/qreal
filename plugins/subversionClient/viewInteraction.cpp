@@ -3,8 +3,8 @@
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrutils/versioningUtils/versionSelector.h"
 
-using namespace versioning::details;
-using namespace versioning::ui;
+using namespace svn::details;
+using namespace svn::ui;
 
 ViewInteraction::ViewInteraction(SubversionPlugin *pluginInstance)
 	: mPlugin(pluginInstance)

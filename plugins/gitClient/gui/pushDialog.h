@@ -6,10 +6,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 
-namespace versioning
-{
-namespace ui
-{
+namespace git {
+namespace ui {
 
 class PushDialog : public QDialog
 {

@@ -2,7 +2,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-NullEncoderImplementation::NullEncoderImplementation(const outputPort::OutputPortEnum &port)
+NullEncoderImplementation::NullEncoderImplementation(const enums::outputPort::OutputPortEnum &port)
 	: AbstractEncoderImplementation(port)
 {
 }

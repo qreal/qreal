@@ -2,19 +2,19 @@
 
 #include <QtCore/QTranslator>
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "../../../qrutils/expressionsParser/expressionsParser.h"
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrutils/expressionsParser/expressionsParser.h>
 
 #include "visualDebuggerPreferencesPage.h"
 
 #include "interpreter/visualDebugger.h"
 #include "interpreter/debuggerConnector.h"
 
-#include "../../../qrutils/watchListWindow.h"
-#include "../../../qrgui/mainwindow/errorReporter.h"
+#include <qrutils/watchListWindow.h>
+#include <qrgui/mainwindow/errorReporter.h>
 
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 namespace visualDebugger {
@@ -33,7 +33,6 @@ public:
 
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
-	virtual void activeTabChanged(qReal::Id const &rootElementId);
 
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 
@@ -88,6 +87,8 @@ private slots:
 	/// Show watch list with all declared variables and its values. List updates
 	/// dynamically
 	void showWatchList();
+
+	void activeTabChanged(qReal::Id const &rootElementId);
 
 private:
 	qReal::VisualDebugger *mVisualDebugger;

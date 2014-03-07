@@ -1,6 +1,9 @@
 #pragma once
 
-#include "projectManagementInterface.h"
+#include <QtCore/QFileInfo>
+
+#include "mainwindow/projectManager/projectManagementInterface.h"
+#include "textEditor/textManagerInterface.h"
 
 namespace qReal {
 
@@ -12,7 +15,7 @@ class ProjectManager : public ProjectManagementInterface
 	Q_OBJECT
 
 public:
-	explicit ProjectManager(MainWindow *mainWindow);
+	explicit ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager);
 
 public slots:
 	bool openExisting(QString const &fileName);
@@ -66,6 +69,7 @@ private:
 	void fileNotFoundMessage(QString const &fileName) const;
 
 	MainWindow *mMainWindow;
+	TextManagerInterface *mTextManager;
 	Autosaver *mAutosaver;
 	bool mUnsavedIndicator;
 	QString mSaveFilePath;

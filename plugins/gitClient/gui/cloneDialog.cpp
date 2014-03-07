@@ -4,7 +4,7 @@
 #include "cloneDialog.h"
 #include "../../../qrkernel/settingsManager.h"
 
-using namespace versioning::ui;
+using namespace git::ui;
 
 CloneDialog::CloneDialog(QWidget *parent)
 	: QDialog(parent)

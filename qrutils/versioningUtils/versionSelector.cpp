@@ -1,7 +1,7 @@
 #include "versionSelector.h"
 #include "ui_versionSelector.h"
 
-using namespace versioning::ui;
+using namespace qReal::versioning::ui;
 
 VersionSelector::VersionSelector(QWidget *parent)
 	: QDialog(parent)

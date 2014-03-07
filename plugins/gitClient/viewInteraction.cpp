@@ -3,9 +3,8 @@
 #include "../../qrutils/versioningUtils/versionSelector.h"
 #include "gitPlugin.h"
 
-
-using namespace versioning::details;
-using namespace versioning::ui;
+using namespace git::details;
+using namespace git::ui;
 
 ViewInteraction::ViewInteraction(GitPlugin *pluginInstance)
 	: mPlugin(pluginInstance)

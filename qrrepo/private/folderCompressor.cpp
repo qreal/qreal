@@ -1,29 +1,25 @@
 #include "folderCompressor.h"
 
-FolderCompressor::FolderCompressor()
-{
-}
-
 bool FolderCompressor::compressFolder(QString const &sourceFolder, QString const &destinationFile)
 {
-	if (!QDir(sourceFolder).exists()) { // folder not found
+	if (!QDir(sourceFolder).exists()) {
 		return false;
 	}
 
-	mFile.setFileName(destinationFile);
-	if (!mFile.open(QIODevice::WriteOnly)) { // could not open mFile
+	QFile file(destinationFile);
+	if (!file.open(QIODevice::WriteOnly)) {
 		return false;
 	}
 
-	mDataStream.setDevice(&mFile);
+	QDataStream dataStream(&file);
 
-	bool result = compress(sourceFolder, "");
-	mFile.close();
+	bool const result = compress(sourceFolder, "", dataStream);
+	file.close();
 
 	return result;
 }
 
-bool FolderCompressor::compress(QString const &sourceFolder, QString const &prefix)
+bool FolderCompressor::compress(QString const &sourceFolder, QString const &prefix, QDataStream &dataStream)
 {
 	QDir dir(sourceFolder);
 	if (!dir.exists()) {
@@ -40,7 +36,7 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 		QString folderName = folder.fileName();
 		QString folderPath = dir.absolutePath() + "/" + folderName;
 		QString newPrefix = prefix + "/" + folderName;
-		compress(folderPath, newPrefix);
+		compress(folderPath, newPrefix, dataStream);
 	}
 
 	// 3 - List all files inside the current folder
@@ -51,8 +47,8 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 	//       Writing '/' character to the end of path to distinguish it from files
 	//       (else we can have issue with subversion)
 	if (filesList.empty()) {
-		mDataStream << QString(prefix + "/");
-		mDataStream << QString(); //empty data part, need for correct decompression
+		dataStream << QString(prefix + "/");
+		dataStream << QString(); //empty data part, need for correct decompression
 		return true;
 	}
 	// 5 - Else: for each mFile in list: add mFile path and compressed binary data
@@ -62,8 +58,8 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 			return false;
 		}
 
-		mDataStream << QString(prefix + "/" + fileInfo.fileName());
-		mDataStream << qCompress(file.readAll());
+		dataStream << QString(prefix + "/" + fileInfo.fileName());
+		dataStream << qCompress(file.readAll());
 
 		file.close();
 	}
@@ -82,21 +78,21 @@ bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const
 		return false;
 	}
 
-	mFile.setFileName(sourceFile);
-	if (!mFile.open(QIODevice::ReadOnly)) {
+	QFile file(sourceFile);
+	if (!file.open(QIODevice::ReadOnly)) {
 		return false;
 	}
 
-	mDataStream.setDevice(&mFile);
+	QDataStream dataStream(&file);
 
-	while (!mDataStream.atEnd()) {
+	while (!dataStream.atEnd()) {
 		QString fileName;
 		QByteArray data;
 
-		mDataStream >> fileName >> data; // extract file name and data in order
+		dataStream >> fileName >> data; // extract file name and data in order
 
 		QString subfolder; // create any needed folder
-		for(int i = fileName.length() - 1; i > 0; i--) {
+		for (int i = fileName.length() - 1; i > 0; i--) {
 			if((QString(fileName.at(i)) == QString("\\"))
 					|| (QString(fileName.at(i)) == QString("/"))) {
 				subfolder = fileName.left(i);
@@ -105,20 +101,14 @@ bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const
 			}
 		}
 
-		if (!fileName.endsWith('/')) {
-			//we have an empty directory (see part 4 of compression),
-			// it was create earlier, continue
-			QFile outFile(destinationFolder + "/" + fileName);
-			if (!outFile.open(QIODevice::WriteOnly)) {
-				mFile.close();
-				return false;
-			}
-			outFile.write(qUncompress(data));
-			outFile.close();
+		QFile outFile(destinationFolder + "/" + fileName);
+		if (!outFile.open(QIODevice::WriteOnly)) {
+			file.close();
+			return false;
 		}
 	}
 
-	mFile.close();
+	file.close();
 	return true;
 }
 

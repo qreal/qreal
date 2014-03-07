@@ -1,11 +1,13 @@
 /** @file umlPortHandler.h
- * 	@brief Class for handling port item behaviour at move events.
- * 	Changes port position, parent if it is necessary.
- * */
+* 	@brief Class for handling port item behaviour at move events.
+* 	Changes port position, parent if it is necessary.
+**/
 
 #pragma once
 
 #include <QtCore/QPointF>
+
+namespace qReal {
 
 class NodeElement;
 
@@ -20,7 +22,7 @@ public:
 
 	/**
 	 * Handles NodeElement behaviour (sets its position and parent).
-	 * @param leftPressed Shows is left mouse button pressed of not. 
+	 * @param leftPressed Shows is left mouse button pressed of not.
 	 */
 	void handleMoveEvent(bool const leftPressed
 			, QPointF &pos, QPointF const &scenePos
@@ -35,3 +37,5 @@ private:
 	NodeElement * const mNode;
 	bool mBelongsToHorizontalBorders;
 };
+
+}

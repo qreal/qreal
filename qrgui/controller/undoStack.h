@@ -2,10 +2,9 @@
 
 #include <QtWidgets/QUndoStack>
 
-#include "commands/abstractCommand.h"
+#include "controller/commands/abstractCommand.h"
 
-namespace qReal
-{
+namespace qReal {
 
 class UndoStack : public QUndoStack
 {

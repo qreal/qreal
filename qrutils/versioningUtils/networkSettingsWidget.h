@@ -8,10 +8,10 @@ namespace Ui {
 class NetworkSettingsWidget;
 }
 
-namespace versioning
-{
-namespace ui
-{
+
+namespace qReal {
+namespace versioning{
+namespace ui{
 
 /// @brief Represents network settings editor
 /// Includes proxy settings (address, port, username, password, timeout)
@@ -72,5 +72,6 @@ private:
 	QString mSettingsPrefix;
 };
 
+}
 }
 }

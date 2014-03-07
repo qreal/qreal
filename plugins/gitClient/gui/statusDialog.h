@@ -5,7 +5,7 @@
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QPushButton>
 
-namespace versioning
+namespace git
 {
 namespace ui
 {

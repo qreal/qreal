@@ -67,24 +67,14 @@ QIcon ProxyEditorManager::icon(Id const &id) const
 	return mProxiedEditorManager->icon(id);
 }
 
-Element* ProxyEditorManager::graphicalObject(Id const &id) const
+ElementImpl *ProxyEditorManager::elementImpl(Id const &id) const
 {
-	return mProxiedEditorManager->graphicalObject(id);
+	return mProxiedEditorManager->elementImpl(id);
 }
 
 IdList ProxyEditorManager::containedTypes(const Id &id) const
 {
 	return mProxiedEditorManager->containedTypes(id);
-}
-
-IdList ProxyEditorManager::connectedTypes(const Id &id) const
-{
-	return mProxiedEditorManager->connectedTypes(id);
-}
-
-IdList ProxyEditorManager::usedTypes(const Id &id) const
-{
-	return mProxiedEditorManager->usedTypes(id);
 }
 
 QStringList ProxyEditorManager::enumValues(Id const &id, const QString &name) const
@@ -100,6 +90,11 @@ QString ProxyEditorManager::typeName(Id const &id, const QString &name) const
 QStringList ProxyEditorManager::allChildrenTypesOf(Id const &parent) const
 {
 	return mProxiedEditorManager->allChildrenTypesOf(parent);
+}
+
+QList<Explosion> ProxyEditorManager::explosions(Id const &source) const
+{
+	return mProxiedEditorManager->explosions(source);
 }
 
 bool ProxyEditorManager::isEditor(Id const &id) const
@@ -120,6 +115,11 @@ bool ProxyEditorManager::isElement(Id const &id) const
 QStringList ProxyEditorManager::propertyNames(Id const &id) const
 {
 	return mProxiedEditorManager->propertyNames(id);
+}
+
+QStringList ProxyEditorManager::portTypes(Id const &id) const
+{
+	return mProxiedEditorManager->portTypes(id);
 }
 
 QString ProxyEditorManager::defaultPropertyValue(Id const &id, QString name) const
@@ -261,6 +261,16 @@ void ProxyEditorManager::updateShape(Id const &id, QString const &graphics) cons
 	mProxiedEditorManager->updateShape(id, graphics);
 }
 
+void ProxyEditorManager::resetIsHidden(Id const &id) const
+{
+	mProxiedEditorManager->resetIsHidden(id);
+}
+
+QString ProxyEditorManager::getIsHidden(Id const &id) const
+{
+	return mProxiedEditorManager->getIsHidden(id);
+}
+
 void ProxyEditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
 {
 	mProxiedEditorManager->deleteElement(mainWindow, id);
@@ -276,8 +286,8 @@ void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name, 
 	mProxiedEditorManager->addNodeElement(diagram, name, isRootDiagramNode);
 }
 
-void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
-		, QString const &lineType, QString const &beginType, QString const &endType) const
+void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
 {
 	mProxiedEditorManager->addEdgeElement(diagram, name, labelText, labelType, lineType, beginType, endType);
 }
@@ -312,7 +322,12 @@ QString ProxyEditorManager::paletteGroupDescription(Id const &editor, const Id &
 	return mProxiedEditorManager->paletteGroupDescription(editor, diagram, group);
 }
 
-QStringList ProxyEditorManager::referenceProperties(const Id &id) const
+bool ProxyEditorManager::shallPaletteBeSorted(Id const &editor, Id const &diagram) const
+{
+	return mProxiedEditorManager->shallPaletteBeSorted(editor, diagram);
+}
+
+QStringList ProxyEditorManager::referenceProperties(Id const &id) const
 {
 	return mProxiedEditorManager->referenceProperties(id);
 }
@@ -335,4 +350,25 @@ QList<QString> ProxyEditorManager::getPatternNames() const
 QSize ProxyEditorManager::iconSize(Id const &id) const
 {
 	return mProxiedEditorManager->iconSize(id);
+}
+
+IdList ProxyEditorManager::propertiesWithTheSameName(Id const &id
+		, QString const &propCurrentName, QString const &propNewName) const
+{
+	return mProxiedEditorManager->propertiesWithTheSameName(id, propCurrentName, propNewName);
+}
+
+QStringList ProxyEditorManager::getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const
+{
+	return mProxiedEditorManager->getSameNamePropertyParams(propertyId, propertyName);
+}
+
+void ProxyEditorManager::restoreRemovedProperty(Id const &propertyId, QString const &previousName) const
+{
+	mProxiedEditorManager->restoreRemovedProperty(propertyId, previousName);
+}
+
+void ProxyEditorManager::restoreRenamedProperty(Id const &propertyId, QString const &previousName) const
+{
+	mProxiedEditorManager->restoreRenamedProperty(propertyId, previousName);
 }

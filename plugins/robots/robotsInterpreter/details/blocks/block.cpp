@@ -20,6 +20,10 @@ Block::Block()
 	connect(this, SIGNAL(done(blocks::Block*const)), this, SLOT(finishedRunning()));
 }
 
+Block::~Block()
+{
+}
+
 void Block::init(Id const &graphicalId
 		, GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
@@ -38,7 +42,7 @@ void Block::init(Id const &graphicalId
 
 bool Block::initNextBlocks()
 {
-	if (id() == Id() || id() == Id::rootId()) {
+	if (id().isNull() || id() == Id::rootId()) {
 		error(tr("Control flow break detected, stopping"));
 		return false;
 	}
@@ -57,7 +61,7 @@ bool Block::initNextBlocks()
 
 	if (links.count() == 1) {
 		Id const nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
-		if (nextBlockId == Id() || nextBlockId == Id::rootId()) {
+		if (nextBlockId.isNull() || nextBlockId == Id::rootId()) {
 			error(tr("Outgoing link is not connected"));
 			return false;
 		}
@@ -73,13 +77,13 @@ Id const Block::id() const
 
 void Block::interpret()
 {
-	if ((mState == running) || (mState == failed)) {
+	// mState == running is not filtered out due to recursions and forks
+	if (mState == failed) {
 		return;
 	}
 
 	mState = running;
-	bool result = initNextBlocks();
-	if (result) {
+	if (initNextBlocks()) {
 		run();
 	}
 }
@@ -154,12 +158,14 @@ QList<Block::SensorPortPair> Block::usedSensors() const
 QVariant Block::evaluate(const QString &propertyName)
 {
 	int position = 0;
-	QVariant value = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId).property("Number");
+	utils::Number *result = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
 	if (mParser->hasErrors()) {
 		mParser->deselect();
 		emit failure();
+		return QVariant();
 	}
-	return value;
+
+	return result->value();
 }
 
 bool Block::evaluateBool(QString const &propertyName)
@@ -170,6 +176,7 @@ bool Block::evaluateBool(QString const &propertyName)
 		mParser->deselect();
 		emit failure();
 	}
+
 	return value;
 }
 
@@ -190,6 +197,6 @@ QVector<bool> Block::parseEnginePorts() const
 	return result;
 }
 
-void Block::stopActiveTimerInBlock()
+void Block::finishedSteppingInto()
 {
 }

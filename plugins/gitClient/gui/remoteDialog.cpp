@@ -4,7 +4,7 @@
 #include "remoteDialog.h"
 #include "../../../qrkernel/settingsManager.h"
 
-using namespace versioning::ui;
+using namespace git::ui;
 
 RemoteDialog::RemoteDialog(QWidget *parent)
 	: QDialog(parent)

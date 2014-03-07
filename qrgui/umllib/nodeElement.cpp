@@ -1,3 +1,5 @@
+#include "nodeElement.h"
+
 #include <QtCore/QUuid>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
@@ -7,60 +9,68 @@
 #include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include <math.h>
+#include <qrutils/mathUtils/geometry.h>
 
-#include "nodeElement.h"
-#include "../view/editorViewScene.h"
-#include "../editorPluginInterface/editorInterface.h"
+#include "umllib/labelFactory.h"
+#include "view/editorViewScene.h"
+#include "editorPluginInterface/editorInterface.h"
+#include "mainwindow/mainWindow.h"
+#include "umllib/ports/portFactory.h"
 
-#include "private/resizeHandler.h"
-#include "private/copyHandler.h"
-#include "private/resizeCommand.h"
-#include "private/foldCommand.h"
+#include "umllib/private/resizeHandler.h"
+#include "umllib/private/copyHandler.h"
+#include "umllib/private/resizeCommand.h"
+#include "umllib/private/foldCommand.h"
 
-#include "../controller/commands/changeParentCommand.h"
+#include "controller/commands/changeParentCommand.h"
+#include "controller/commands/renameCommand.h"
+#include "controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
 
-NodeElement::NodeElement(ElementImpl* impl)
-	: Element(impl)
-	, mSwitchGridAction(tr("Switch on grid"), this)
-	, mPortsVisible(false)
-	, mDragState(None)
-	, mResizeCommand(NULL)
-	, mIsFolded(false)
-	, mLeftPressed(false)
-	, mParentNodeElement(NULL)
-	, mPos(QPointF(0,0))
-	, mSelectionNeeded(false)
-	, mConnectionInProgress(false)
-	, mPlaceholder(NULL)
-	, mHighlightedNode(NULL)
-	, mTimeOfUpdate(0)
-	, mTimer(new QTimer(this))
+NodeElement::NodeElement(ElementImpl *impl
+		, Id const &id
+		, models::GraphicalModelAssistApi &graphicalAssistApi
+		, models::LogicalModelAssistApi &logicalAssistApi
+		)
+		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
+		, mSwitchGridAction(tr("Switch on grid"), this)
+		, mDragState(None)
+		, mResizeCommand(NULL)
+		, mIsExpanded(false)
+		, mIsFolded(false)
+		, mLeftPressed(false)
+		, mParentNodeElement(NULL)
+		, mPos(QPointF(0,0))
+		, mSelectionNeeded(false)
+		, mConnectionInProgress(false)
+		, mPlaceholder(NULL)
+		, mHighlightedNode(NULL)
+		, mRenderTimer(this)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
-	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();
-	ElementTitleFactory factory;
-	QList<ElementTitleInterface*> titles;
+	LabelFactory labelFactory(graphicalAssistApi, mId);
+	QList<LabelInterface*> titles;
 
-	QList<StatPoint> pointPorts;
-	QList<StatLine> linePorts;
-	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer, this);
-	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
+	QList<PortInterface *> ports;
+	PortFactory portFactory;
+	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, this);
+	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
-	foreach (ElementTitleInterface *titleIface, titles) {
-		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
-		if (!title) {
+	foreach (LabelInterface * const labelInterface, titles) {
+		Label * const label = dynamic_cast<Label *>(labelInterface);
+		if (!label) {
 			continue;
 		}
-		title->init(mContents);
-		title->setParentItem(this);
-		mTitles.append(title);
+
+		label->init(mContents);
+		label->setParentItem(this);
+		mLabels.append(label);
 	}
 
 	mFoldedContents = mContents;
@@ -73,25 +83,23 @@ NodeElement::NodeElement(ElementImpl* impl)
 	}
 
 	mGrid = new SceneGridHandler(this);
-	mUmlPortHandler = new UmlPortHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateNodeEdges()));
+	initPortsVisibility();
+
+	connect(&mRenderTimer, SIGNAL(timeout()), this, SLOT(initRenderedDiagram()));
 }
 
 NodeElement::~NodeElement()
 {
-	highlightEdges();
-
 	foreach (EdgeElement *edge, mEdgeList) {
 		edge->removeLink(this);
 	}
 
-	foreach (ElementTitle *title, mTitles) {
+	foreach (Label *title, mLabels) {
 		delete title;
 	}
 
-	delete mPortRenderer;
 	delete mRenderer;
 	delete mElementImpl;
 
@@ -100,13 +108,19 @@ NodeElement::~NodeElement()
 	}
 
 	delete mGrid;
-	delete mUmlPortHandler;
 	delete mPortHandler;
+}
+
+void NodeElement::initPortsVisibility()
+{
+	foreach (QString const &portType, mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())) {
+		mPortsVisibility.insert(portType, false);
+	}
 }
 
 NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
 {
-	CopyHandler copyHandler(this, mGraphicalAssistApi);
+	CopyHandler copyHandler(*this, mGraphicalAssistApi);
 	return copyHandler.clone(toCursorPos, searchForParents);
 }
 
@@ -121,17 +135,24 @@ NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
 
 QMap<QString, QVariant> NodeElement::graphicalProperties() const
 {
-	return mGraphicalAssistApi->properties(id());
+	return mGraphicalAssistApi.properties(id());
 }
 
 QMap<QString, QVariant> NodeElement::logicalProperties() const
 {
-	return mGraphicalAssistApi->properties(logicalId());
+	return mGraphicalAssistApi.properties(logicalId());
 }
 
-void NodeElement::setName(QString value)
+void NodeElement::setName(QString const &value, bool withUndoRedo)
 {
-	mGraphicalAssistApi->setName(id(), value);
+	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi
+			, id(), value, &mLogicalAssistApi.exploser());
+	if (withUndoRedo) {
+		mController->execute(command);
+	} else {
+		command->redo();
+		delete command;
+	}
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
@@ -144,11 +165,6 @@ void NodeElement::setGeometry(QRectF const &geom)
 	mTransform.reset();
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
-
-	foreach (ElementTitle * const title, mTitles) {
-		title->transform(geom);
-	}
-
 }
 
 void NodeElement::setPos(QPointF const &pos)
@@ -162,48 +178,47 @@ void NodeElement::setPos(qreal x, qreal y)
 	setPos(QPointF(x, y));
 }
 
-void NodeElement::adjustLinks(bool isDragging)
+void NodeElement::adjustLinks()
 {
 	foreach (EdgeElement *edge, mEdgeList) {
-		edge->adjustLink(isDragging);
+		edge->adjustLink();
 	}
 
 	foreach (QGraphicsItem *child, childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
-			element->adjustLinks(isDragging);
+			element->adjustLinks();
 		}
 	}
 }
 
-void NodeElement::arrangeLinearPorts() {
+void NodeElement::arrangeLinearPorts()
+{
 	mPortHandler->arrangeLinearPorts();
+	adjustLinks();
 }
 
-void NodeElement::arrangeLinks() {
+void NodeElement::arrangeLinks()
+{
 	//Episode I: Home Jumps
-	//qDebug() << "I";
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
-		edge->reconnectToNearestPorts(this == src, this == dst, true);
+		edge->reconnectToNearestPorts(this == src, this == dst);
 	}
 
 	//Episode II: Home Ports Arranging
-	//qDebug() << "II";
 	arrangeLinearPorts();
 
 	//Episode III: Remote Jumps
-	//qDebug() << "III";
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
 		NodeElement* other = edge->otherSide(this);
-		edge->reconnectToNearestPorts(other == src, other == dst, true);
+		edge->reconnectToNearestPorts(other == src, other == dst);
 	}
 
 	//Episode IV: Remote Arrangigng
-	//qDebug() << "IV";
 	QSet<NodeElement*> arranged;
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* other = edge->otherSide(this);
@@ -216,14 +231,14 @@ void NodeElement::arrangeLinks() {
 
 void NodeElement::storeGeometry()
 {
-	QRectF contents = mContents; // saving correct current contents
+	QPolygon const contents(mContents.toAlignedRect()); // saving correct current contents
 
-	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
-		mGraphicalAssistApi->setPosition(id(), pos());
+	if ((pos() != mGraphicalAssistApi.position(id()))) { // check if it's been changed
+		mGraphicalAssistApi.setPosition(id(), pos());
 	}
 
-	if (QPolygon(contents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
-		mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
+	if (contents != mGraphicalAssistApi.configuration(id())) { // check if it's been changed
+		mGraphicalAssistApi.setConfiguration(id(), contents);
 	}
 }
 
@@ -255,11 +270,8 @@ void NodeElement::switchGrid(bool isChecked)
 	if (isChecked) {
 		alignToGrid();
 
-		// Align mode doesn`t work in a square mode
-		if (!SettingsManager::value("SquareLine").toBool()) {
-			foreach (EdgeElement * const edge, mEdgeList) {
-				edge->alignToGrid();
-			}
+		foreach (EdgeElement * const edge, mEdgeList) {
+			edge->alignToGrid();
 		}
 	}
 }
@@ -276,23 +288,32 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	mResizeCommand = new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id());
-	mResizeCommand->startTracking();
+	startResize();
 	if (isSelected()) {
-		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		int dragArea = SettingsManager::instance()->value("DragArea").toInt();
+		if (QRectF(mContents.topLeft(), QSizeF(dragArea, dragArea)).contains(event->pos())
+				&& mElementImpl->isResizeable())
+		{
 			mDragState = TopLeft;
-		} else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		} else if (QRectF(mContents.topRight(), QSizeF(-dragArea, dragArea)).contains(event->pos())
+				&& mElementImpl->isResizeable())
+		{
 			mDragState = TopRight;
-		} else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		} else if (QRectF(mContents.bottomRight(), QSizeF(-dragArea, -dragArea)).contains(event->pos())
+				&& mElementImpl->isResizeable())
+		{
 			mDragState = BottomRight;
-		} else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		} else if (QRectF(mContents.bottomLeft(), QSizeF(dragArea, -dragArea)).contains(event->pos())
+				&& mElementImpl->isResizeable())
+		{
 			mDragState = BottomLeft;
-		} else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos()) && mElementImpl->isContainer()) {
+		} else if (QRectF(QPointF(-20, 0), QPointF(0, 20)).contains(event->pos())
+				&& mElementImpl->isContainer())
+		{
 			changeFoldState();
 		} else {
 			Element::mousePressEvent(event);
 		}
-
 	} else {
 		Element::mousePressEvent(event);
 	}
@@ -309,7 +330,12 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::alignToGrid()
 {
-	mGrid->alignToGrid();
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
+		if (!parent || !parent->mElementImpl->isSortingContainer()) {
+			mGrid->alignToGrid();
+		}
+	}
 }
 
 void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
@@ -353,6 +379,9 @@ void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
 	// of element could be moved inside his parent
 
 	if (newParent != NULL) {
+		if (mHighlightedNode) {
+			mHighlightedNode->erasePlaceholder(false);
+		}
 		mHighlightedNode = newParent;
 		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), mouseScenePos);
 	} else if (mHighlightedNode != NULL) {
@@ -377,19 +406,29 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	QRectF newContents = mContents;
 	QPointF newPos = mPos;
 
+	// expanding containers are turned off
+	// TODO: bring them back (but not their bugs =))
+	bool needResizeParent = false;
+
 	if (mDragState == None) {
-		if (!isPort() && (flags() & ItemIsMovable)) {
-			recalculateHighlightedNode(event->scenePos());
+		if (!(flags() & ItemIsMovable)) {
+			return;
 		}
 
+		recalculateHighlightedNode(event->scenePos());
+
 		// it is needed for sendEvent() to every isSelected element thro scene
+		event->setPos(event->lastPos());
+
 		Element::mouseMoveEvent(event);
+
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
 		newPos = pos();
-
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
+
+		needResizeParent = true;
 
 		QPointF parentPos = QPointF(0, 0);
 		QGraphicsItem *parItem = parentItem();
@@ -397,12 +436,12 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			parentPos = parItem->scenePos();
 		}
 
-		qreal const newX = event->pos().x();
-		qreal const newY = event->pos().y();
+		qreal newX = event->pos().x();
+		qreal newY = event->pos().y();
 
 		switch (mDragState) {
 		case TopLeft: {
-			newContents.setTopLeft(QPoint(newX, newY));
+			newContents.setTopLeft(event->pos() - event->lastPos());
 			newPos = event->scenePos() - parentPos;
 			break;
 		}
@@ -412,8 +451,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			break;
 		}
 		case TopRight: {
-			newContents.setTopRight(QPoint(newX, newY));
-			newPos = QPoint(pos().x(), event->scenePos().y() - parentPos.y());
+			newContents.setTopRight(QPoint(newX, event->pos().y() - event->lastPos().y()));
+			newPos = QPoint(newPos.x(), event->scenePos().y() - parentPos.y());
 			break;
 		}
 		case Left: {
@@ -426,7 +465,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			break;
 		}
 		case BottomLeft: {
-			newContents.setBottomLeft(QPoint(newX, newY));
+			newContents.setBottomLeft(QPoint(event->pos().x() - event->lastPos().x(), newY));
 			newPos = QPoint(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
 		}
@@ -447,49 +486,26 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			newContents.setWidth(size);
 			newContents.setHeight(size);
 		}
-
 	}
 
-	resize(newContents, newPos);
-
-	if (isPort()) {
-		mUmlPortHandler->handleMoveEvent(
-				  mLeftPressed
-				, mPos
-				, event->scenePos()
-				, mParentNodeElement
-			);
-	}
-
-	if (mTimeOfUpdate == 14) {
-		mTimeOfUpdate = 0;
-		foreach (EdgeElement* edge, mEdgeList) {
-			edge->adjustNeighborLinks();
-		}
-		arrangeLinks();
-	} else {
-		mTimeOfUpdate++;
-	}
-	mTimer->start(400);
+	resize(newContents, newPos, needResizeParent);
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	mTimer->stop();
-	mTimeOfUpdate = 0;
+	if (dynamic_cast<NodeElement *>(scene()->mouseGrabberItem()) == this) {
+		ungrabMouse();
+	}
+
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
 	delUnusedLines();
 
-	if (SettingsManager::value("ActivateGrid").toBool() || mSwitchGridAction.isChecked()) {
-		alignToGrid();
-	}
-
 	storeGeometry();
 
-	if (scene() && scene()->selectedItems().size() == 1 && isSelected()) {
+	if (scene() && (scene()->selectedItems().size() == 1) && isSelected()) {
 		setVisibleEmbeddedLinkers(true);
 	}
 
@@ -498,11 +514,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-	QList<NodeElement*> element;
-	element.append(this);
-	QSize size = mGraphicalAssistApi->editorManagerInterface().iconSize(id());
-	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
-			, QPointF(size.width(), size.height()), element);
+	commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
+			*evScene, mLogicalAssistApi, mGraphicalAssistApi, id(), id(), Id::rootId()
+			, event->scenePos(), boundingRect().bottomRight(), false);
 
 	bool shouldProcessResize = true;
 
@@ -526,7 +540,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			setPos(newPos);
 
 			if (insertBefore) {
-				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
+				mGraphicalAssistApi.stackBefore(id(), insertBefore->id());
 			}
 
 			newParent->resize();
@@ -543,28 +557,18 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			shouldProcessResize = parentCommand == NULL;
 		}
 	}
-	if (shouldProcessResize && mResizeCommand) {
-		mResizeCommand->stopTracking();
-		if (mResizeCommand->modificationsHappened()) {
-			mController->execute(mResizeCommand);
-		} else {
-			delete mResizeCommand;
-		}
-		// Undo stack took ownership
-		mResizeCommand = NULL;
-	}
 
-	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
-		edge->adjustNeighborLinks();
-	}
-	adjustLinks();
-	foreach (EdgeElement* edge, mEdgeList) {
-		edge->setGraphicApiPos();
-		edge->saveConfiguration(QPointF());
-		if (SettingsManager::value("ActivateGrid").toBool() && !SettingsManager::value("SquareLine").toBool()) {
+		edge->layOut();
+		if (SettingsManager::value("ActivateGrid").toBool())
+		{
 			edge->alignToGrid();
 		}
+	}
+
+	if (shouldProcessResize && mResizeCommand) {
+		mResizeCommand->addPostAction(insertCommand);
+		endResize();
 	}
 
 	mDragState = None;
@@ -594,6 +598,27 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 	Q_UNUSED(event);
 }
 
+void NodeElement::startResize()
+{
+	mResizeCommand = new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id());
+	mResizeCommand->startTracking();
+}
+
+void NodeElement::endResize()
+{
+	if (mResizeCommand) {
+		mResizeCommand->stopTracking();
+		if (mResizeCommand->modificationsHappened()) {
+			mController->execute(mResizeCommand);
+		} else {
+			delete mResizeCommand;
+		}
+
+		// Undo stack took ownership
+		mResizeCommand = NULL;
+	}
+}
+
 bool NodeElement::connectionInProgress()
 {
 	return mConnectionInProgress;
@@ -610,19 +635,28 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInterface().elements(id().editor(),id().diagram())) {
-		int ne = mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
+	foreach (QString const &elementName, mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
+			, id().diagram())) {
+		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> const list =  mGraphicalAssistApi->editorManagerInterface().possibleEdges(id().editor(), elementName);
-			foreach(StringPossibleEdge pEdge, list) {
-				if (mGraphicalAssistApi->editorManagerInterface().isParentOf(id().editor(), id().diagram()
-						, pEdge.first.first, id().diagram(), id().element())
-						|| (mGraphicalAssistApi->editorManagerInterface().isParentOf(id().editor(), id().diagram()
-						, pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
+			QList<StringPossibleEdge> const list = mGraphicalAssistApi.editorManagerInterface()
+					.possibleEdges(id().editor(), elementName);
+			foreach (StringPossibleEdge const &pEdge, list) {
+				QStringList const portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
+				if (portTypes.contains(pEdge.first.first)
+						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
 				{
-					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
-					mPossibleEdges.insert(possibleEdge);
-					mPossibleEdgeTypes.insert(possibleEdge.second);
+					PossibleEdgeType edge(pEdge.second.first, Id(id().editor(), id().diagram(), pEdge.second.second));
+					QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
+					if (elementPairs.empty()) {
+						continue;
+					}
+
+					foreach (ElementPair const &elementPair, elementPairs) {
+						mPossibleEdges.insert(qMakePair(elementPair, edge));
+					}
+
+					mPossibleEdgeTypes.insert(edge);
 				}
 			}
 		}
@@ -637,7 +671,7 @@ void NodeElement::initEmbeddedLinkers()
 		return;
 	}
 	QSet<qReal::Id> usedEdges;
-	foreach (PossibleEdgeType type, mPossibleEdgeTypes) {
+	foreach (PossibleEdgeType const &type, mPossibleEdgeTypes) {
 		if (usedEdges.contains(type.second)) {
 			continue;
 		}
@@ -682,8 +716,10 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
 	switch (change) {
 	case ItemPositionHasChanged:
-		alignToGrid();
-		adjustLinks(true);
+		if (mDragState == None) {
+			alignToGrid();
+		}
+		adjustLinks();
 		return value;
 
 	case ItemChildAddedChange:
@@ -709,18 +745,16 @@ QRectF NodeElement::contentsRect() const
 
 QRectF NodeElement::boundingRect() const
 {
-	return mContents.adjusted(-kvadratik, -kvadratik, kvadratik, kvadratik);
+	return mContents.adjusted(-2 * kvadratik, -2 * kvadratik, kvadratik, kvadratik);
 }
 
 void NodeElement::updateData()
 {
 	Element::updateData();
 	if (!mMoving) {
-		mMoving = true;
-		storeGeometry();
-		mMoving = false;
-		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
+		QPointF newpos = mGraphicalAssistApi.position(id());
+		QPolygon newpoly = mGraphicalAssistApi.configuration(id());
+
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
@@ -744,9 +778,11 @@ void NodeElement::updateData()
 			}
 			newRect = QRectF(QPoint(minx, miny), QSize(maxx - minx, maxy - miny));
 		}
+
 		setGeometry(newRect.translated(newpos));
 	}
 	mElementImpl->updateData(this);
+	updateLabels();
 	update();
 }
 
@@ -755,51 +791,40 @@ QPointF const NodeElement::portPos(qreal id) const
 	return mPortHandler->portPos(id);
 }
 
-QPointF const NodeElement::nearestPort(QPointF const &location) const
-{
-	return mPortHandler->nearestPort(location);
-}
-
 bool NodeElement::isContainer() const
 {
 	return mElementImpl->isContainer();
 }
 
-int NodeElement::portNumber(qreal id)
+int NodeElement::numberOfPorts() const
 {
-	return PortHandler::portNumber(id);
+	return mPortHandler->numberOfPorts();
 }
 
-qreal NodeElement::portId(QPointF const &location) const
+qreal NodeElement::portId(QPointF const &location, QStringList const &types) const
 {
-	return mPortHandler->portId(location);
+	return mPortHandler->portId(location, types);
 }
 
-void NodeElement::setPortsVisible(bool value)
+qreal NodeElement::shortestDistanceToPort(QPointF const &location, QStringList const &types) const
+{
+	QPointF const nearestPortPoint = mPortHandler->nearestPort(location, types);
+	return mathUtils::Geometry::distance(location, mapToScene(nearestPortPoint));
+}
+
+void NodeElement::setPortsVisible(QStringList const &types)
 {
 	prepareGeometryChange();
-	mPortsVisible = value;
-}
 
-NodeElement *NodeElement::getNodeAt(QPointF const &position)
-{
-	foreach (QGraphicsItem *item, scene()->items(position)) {
-		NodeElement *e = dynamic_cast<NodeElement *>(item);
-		if (e && (item != this)) {
-			return e;
-		}
+	foreach (QString const &portType, mPortsVisibility.keys()) {
+		mPortsVisibility[portType] = types.contains(portType);
 	}
-	return 0;
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *)
 {
 	mElementImpl->paint(painter, mContents);
-	if (mElementImpl->hasPorts()) {
-		paint(painter, style, w, mPortRenderer);
-	} else {
-		paint(painter, style, w, 0);
-	}
+	paint(painter, style);
 
 	if (mSelectionNeeded) {
 		painter->save();
@@ -814,71 +839,91 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
-		, QWidget *, SdfRenderer* portRenderer)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option)
 {
 	if (option->levelOfDetail >= 0.5) {
 		if (option->state & QStyle::State_Selected) {
 			painter->save();
 
 			QBrush b;
-			b.setStyle(Qt::SolidPattern);
-
-			if (mIsFolded) {
-				b.setColor(Qt::red);
-				painter->setPen(Qt::red);
-			}
-			else {
-				b.setColor(Qt::green);
-				painter->setPen(Qt::green);
-			}
-			painter->setBrush(b);
 
 			if (mElementImpl->isContainer()) {
-				painter->drawRect(QRectF(mContents.topLeft(), QSizeF(20, 20)));
+				b.setStyle(Qt::NoBrush);
+				painter->setBrush(b);
+
+				painter->drawRect(QRectF(QPointF(-20, 0), QPointF(0, 20)));
+
+				painter->drawLine(-15, 10, -5, 10);
+				if (mIsFolded) {
+					painter->drawLine(-10, 5, -10, 15);
+				}
 			}
 
+			b.setStyle(Qt::SolidPattern);
 			b.setColor(Qt::blue);
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
 
-			painter->drawRect(QRectF(mContents.topLeft(), QSizeF(4, 4)));
-			painter->drawRect(QRectF(mContents.topRight(), QSizeF(-4, 4)));
-			painter->drawRect(QRectF(mContents.bottomLeft(), QSizeF(4, -4)));
-
 			if (mElementImpl->isResizeable()) {
-				painter->translate(mContents.bottomRight());
-				painter->drawLine(QLineF(-4, 0, 0, -4));
-				painter->drawLine(QLineF(-8, 0, 0, -8));
-				painter->drawLine(QLineF(-12, 0, 0, -12));
+				drawLinesForResize(painter);
 			} else {
 				painter->drawRect(QRectF(mContents.bottomRight(), QSizeF(-4, -4)));
 			}
 
 			painter->restore();
 		}
-		if (((option->state & QStyle::State_MouseOver) || mPortsVisible) && portRenderer) {
-			painter->save();
-			painter->setOpacity(0.7);
-			portRenderer->render(painter, mContents);
-			painter->restore();
+
+		drawPorts(painter, option->state & QStyle::State_MouseOver);
+
+		if (mIsExpanded && mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != qReal::Id()) {
+			QRectF rect = diagramRenderingRect();
+			painter->drawImage(rect, mRenderedDiagram.scaled(rect.size().toSize()
+					, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 	}
 }
 
-QList<EdgeElement*> NodeElement::getEdges()
+void NodeElement::drawPorts(QPainter *painter, bool mouseOver)
+{
+	painter->save();
+	painter->setOpacity(0.7);
+
+	QStringList const portTypes = mouseOver ? mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())
+			: mPortsVisibility.keys(true);
+	mPortHandler->drawPorts(painter, mContents, portTypes);
+
+	painter->restore();
+}
+
+QList<EdgeElement*> NodeElement::getEdges() const
 {
 	return mEdgeList;
 }
 
 void NodeElement::addEdge(EdgeElement *edge)
 {
-	mEdgeList << edge;
+	if (!mEdgeList.contains(edge)) {
+		mEdgeList << edge;
+	}
+	arrangeLinearPorts();
 }
 
 void NodeElement::delEdge(EdgeElement *edge)
 {
 	mEdgeList.removeAll(edge);
+	arrangeLinearPorts();
+}
+
+void NodeElement::changeExpanded()
+{
+	mIsExpanded = !mIsExpanded;
+	if (mIsExpanded) {
+		mRenderTimer.start(1000);
+		initRenderedDiagram();
+	} else {
+		mRenderTimer.stop();
+	}
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "expanded", mIsExpanded ? "true" : "false");
 }
 
 void NodeElement::changeFoldState()
@@ -902,10 +947,19 @@ void NodeElement::changeFoldState()
 		mCurUnfoldedContents.moveTo(pos());
 		setGeometry(mCurUnfoldedContents);
 	}
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "folded", mIsFolded ? "true" : "false");
 
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (parent) {
 		parent->resize();
+	}
+	updateLabels();
+}
+
+void NodeElement::updateLabels()
+{
+	foreach (Label *title, mLabels) {
+		title->setParentContents(mContents);
 	}
 }
 
@@ -976,10 +1030,14 @@ Element* NodeElement::getPlaceholderNextElement()
 void NodeElement::erasePlaceholder(bool redraw)
 {
 	setOpacity(1);
-	if(mPlaceholder != NULL) {
-		delete mPlaceholder;
-		mPlaceholder = NULL;
+
+	if (!mPlaceholder) {
+		return;
 	}
+
+	delete mPlaceholder;
+	mPlaceholder = NULL;
+
 	if(redraw) {
 		resize();
 	}
@@ -1001,6 +1059,10 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 		changeFoldState();
 	}
 
+	if (mElementImpl->isSortingContainer()) {
+		updateChildrenOrder();
+	}
+
 	resize();
 }
 
@@ -1018,20 +1080,55 @@ void NodeElement::updateByNewParent()
 	}
 }
 
+void NodeElement::updateChildrenOrder()
+{
+	QStringList ids;
+	if (mGraphicalAssistApi.properties(mId).contains("childrenOrder")) {
+		ids = mGraphicalAssistApi.graphicalRepoApi().property(mId, "childrenOrder").toStringList();
+	}
+
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	if (evScene) {
+		foreach (QString const &id, ids) {
+			if (!evScene->getNodeById(Id::loadFromString(id))) {
+				ids.removeAll(id);
+			}
+		}
+	}
+
+	QList<NodeElement *> children = childNodes();
+	foreach (NodeElement *child, children) {
+		if (!ids.contains(child->id().toString())) {
+			ids << child->id().toString();
+		}
+	}
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "childrenOrder", ids);
+
+}
+
 QList<double> NodeElement::borderValues() const
 {
 	return mElementImpl->border();
 }
 
-PossibleEdge NodeElement::toPossibleEdge(StringPossibleEdge const &strPossibleEdge)
+QSet<ElementPair> NodeElement::elementsForPossibleEdge(StringPossibleEdge const &edge)
 {
-	QString editor = id().editor();
-	QString diagram = id().diagram();
-	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first),
-									  qReal::Id(editor, diagram, strPossibleEdge.first.second));
-	QPair<bool, qReal::Id> link(strPossibleEdge.second.first,
-								qReal::Id(editor, diagram, strPossibleEdge.second.second));
-	return QPair<QPair<qReal::Id, qReal::Id>, PossibleEdgeType>(nodes, link);
+	QStringList elements = mGraphicalAssistApi.editorManagerInterface().elements(id().editor(), id().diagram());
+	QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
+
+	QSet<ElementPair> result;
+	foreach (QString const &element, elements) {
+		QStringList otherPortTypes
+				= mGraphicalAssistApi.editorManagerInterface().portTypes(Id(id().editor(), id().diagram(), element));
+		if (portTypes.contains(edge.first.first) && otherPortTypes.contains(edge.first.second)) {
+			result.insert(qMakePair(id().type(), Id(id().editor(), id().diagram(), element)));
+		}
+		if (otherPortTypes.contains(edge.first.first) && portTypes.contains(edge.first.second)) {
+			result.insert(qMakePair(Id(id().editor(), id().diagram(), element), id().type()));
+		}
+	}
+
+	return result;
 }
 
 QList<PossibleEdge> NodeElement::getPossibleEdges()
@@ -1049,53 +1146,17 @@ void NodeElement::checkConnectionsToPort() // it is strange method
 	mPortHandler->checkConnectionsToPort();
 }
 
-void NodeElement::connectLinksToPorts()
-{
-	mPortHandler->connectLinksToPorts();
-}
-
-void NodeElement::singleSelectionState(bool const singleSelected)
+void NodeElement::select(bool const singleSelected)
 {
 	initEmbeddedLinkers();
 	setVisibleEmbeddedLinkers(singleSelected);
 	setTitlesVisiblePrivate(singleSelected || mTitlesVisible);
-	Element::singleSelectionState(singleSelected);
+	Element::select(singleSelected);
 }
 
-void NodeElement::selectionState(bool const selected)
+void NodeElement::setSelectionState(bool const selected)
 {
-	Element::selectionState(selected);
-}
-
-void NodeElement::highlightEdges()
-{
-	foreach (EdgeElement *edge, mEdgeList) {
-		edge->highlight();
-	}
-}
-
-void NodeElement::disconnectEdges()
-{
-	foreach (EdgeElement *edge, mEdgeList) {
-		if (edge->src() == this) {
-			mGraphicalAssistApi->setFrom(edge->id(), Id::rootId());
-			mLogicalAssistApi->setFrom(edge->logicalId(), Id::rootId());
-		}
-
-		if (edge->dst() == this) {
-			mGraphicalAssistApi->setTo(edge->id(), Id::rootId());
-			mLogicalAssistApi->setTo(edge->logicalId(), Id::rootId());
-		}
-
-		edge->removeLink(this);
-	}
-	mEdgeList.clear();
-}
-
-void NodeElement::deleteFromScene()
-{
-	highlightEdges();
-	disconnectEdges();
+	Element::setSelectionState(selected);
 }
 
 NodeData& NodeElement::data()
@@ -1129,10 +1190,40 @@ void NodeElement::resize(QRectF const &newContents)
 	resize(newContents, pos());
 }
 
-void NodeElement::resize(QRectF const &newContents, QPointF const &newPos)
+void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent)
 {
 	ResizeHandler handler(this);
-	handler.resize(newContents, newPos);
+	handler.resize(newContents, newPos, needResizeParent);
+}
+
+void NodeElement::drawLinesForResize(QPainter *painter)
+{
+	painter->save();
+	painter->translate(mContents.topRight());
+	drawSeveralLines(painter, -1, 1);
+	painter->save();
+	painter->translate(mContents.bottomRight());
+	drawSeveralLines(painter, -1, -1);
+	painter->save();
+	painter->translate(mContents.bottomLeft());
+	drawSeveralLines(painter, 1, -1);
+	painter->save();
+	painter->translate(mContents.topLeft());
+	drawSeveralLines(painter, 1, 1);
+}
+
+void NodeElement::drawSeveralLines(QPainter *painter, int dx, int dy)
+{
+	int dragArea = SettingsManager::instance()->value("DragArea").toInt();
+	for (int i = 1; i * 4 < dragArea + 1; i++) {
+		painter->drawLine(QLineF(4 * dx * i, 0, 0, 4 * dy * i));
+	}
+	painter->restore();
+}
+
+bool NodeElement::isExpanded() const
+{
+	return mIsExpanded;
 }
 
 bool NodeElement::isFolded() const
@@ -1167,20 +1258,11 @@ QList<NodeElement *> const NodeElement::childNodes() const
 	return result;
 }
 
-void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
-{
-	Element::setAssistApi(graphicalAssistApi, logicalAssistApi);
-	mPortHandler->setGraphicalAssistApi(graphicalAssistApi);
-}
-
-
 void NodeElement::updateNodeEdges()
 {
-	mTimer->stop();
-	mTimeOfUpdate = 0;
 	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
-		edge->adjustNeighborLinks();
+		edge->adjustLink();
 	}
 }
 
@@ -1192,7 +1274,7 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	if (oldParent == newParent) {
 		return NULL;
 	}
-	QPointF const oldPos = mResizeCommand->geometryBeforeDrag().topLeft();
+	QPointF const oldPos = mResizeCommand ? mResizeCommand->geometryBeforeDrag().topLeft() : mPos;
 	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
 	// Without pre-translating into new position parent gets wrong child coords
 	// when redo happens and resizes when he doesn`t need it.
@@ -1217,4 +1299,86 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 void NodeElement::updateShape(QString const &shape) const
 {
 	mElementImpl->updateRendererContent(shape);
+}
+
+IdList NodeElement::sortedChildren() const
+{
+	IdList result;
+	if (mGraphicalAssistApi.properties(mId).contains("childrenOrder")) {
+		foreach (QString const &id, mGraphicalAssistApi.graphicalRepoApi().property(mId, "childrenOrder")
+				.toStringList()) {
+			result << Id::loadFromString(id);
+		}
+	}
+	return result;
+}
+
+void NodeElement::initRenderedDiagram()
+{
+	if (!mIsExpanded || mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) == qReal::Id()) {
+		return;
+	}
+
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	if (!evScene) {
+		return;
+	}
+
+	MainWindow *window = evScene->mainWindow();
+
+	Id const diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	Id const graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
+
+	EditorView view(window);
+	EditorViewScene *openedScene = dynamic_cast<EditorViewScene *>(view.scene());
+	openedScene->setMainWindow(window);
+	openedScene->setNeedDrawGrid(false);
+
+	view.mvIface()->setAssistApi(window->models()->graphicalModelAssistApi()
+			, window->models()->logicalModelAssistApi());
+	view.mvIface()->setModel(window->models()->graphicalModel());
+	view.mvIface()->setLogicalModel(window->models()->logicalModel());
+	view.mvIface()->setRootIndex(window->models()->graphicalModelAssistApi().indexById(graphicalDiagram));
+
+	QRectF sceneRect = openedScene->itemsBoundingRect();
+	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
+	QPainter painter(&image);
+
+	QBrush brush(Qt::SolidPattern);
+	brush.setColor(Qt::white);
+	painter.setBrush(brush);
+	painter.setPen(QPen(Qt::white));
+	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::HighQualityAntialiasing);
+
+	sceneRect.moveTo(QPointF());
+	painter.drawRect(sceneRect);
+
+	openedScene->render(&painter);
+
+	mRenderedDiagram = image;
+}
+
+QRectF NodeElement::diagramRenderingRect() const
+{
+	EditorViewScene const *evScene = dynamic_cast<EditorViewScene *>(scene());
+	NodeElement const *initial = new NodeElement(
+			evScene->mainWindow()->editorManager().elementImpl(id())
+			, id().sameTypeId()
+			, mGraphicalAssistApi
+			, mLogicalAssistApi
+			);
+
+	qreal const xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);
+	qreal const yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);
+
+	delete initial;
+
+	// QReal:BP hardcode
+	// TODO: Remove this.
+	QRectF result(QPointF(25 * xCoeff, 25 * yCoeff), QPointF(185 * xCoeff, 115 * yCoeff));
+
+	QPointF oldCenter(result.center());
+	result.setSize(mRenderedDiagram.size().scaled(result.size().toSize(), Qt::KeepAspectRatio));
+	result.moveCenter(oldCenter);
+	return result;
 }

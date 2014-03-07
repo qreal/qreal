@@ -3,8 +3,8 @@
 using namespace qReal::commands;
 
 CreateElementCommand::CreateElementCommand(
-		models::LogicalModelAssistApi *logicalApi
-		, models::GraphicalModelAssistApi *graphicalApi
+		models::LogicalModelAssistApi &logicalApi
+		, models::GraphicalModelAssistApi &graphicalApi
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, Id const &id

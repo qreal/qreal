@@ -7,20 +7,22 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-int const selectionDrift = 3;
+int const selectionDrift = 7;
+QSizeF const portHintSize(10, 15);
 
 SensorItem::SensorItem(SensorsConfiguration &configuration
-		, inputPort::InputPortEnum port)
+		, robots::enums::inputPort::InputPortEnum port)
 	: RotateItem()
 	, mConfiguration(configuration)
 	, mPort(port)
 	, mDragged(false)
 	, mPointImpl()
-	, mRotater(NULL)
+	, mRotater(nullptr)
 	, mImageRect(imageRect())
 	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
 			, selectionDrift, selectionDrift))
 	, mImage(pathToImage())
+	, mPortItem(QString::number(port + 1))
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 
@@ -28,6 +30,11 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
+
+	mPortItem.setParentItem(this);
+	mPortItem.moveBy(-portHintSize.width() - 5, -portHintSize.height() - 5);
+	mPortItem.setFlag(ItemIgnoresTransformations);
+	mPortItem.hide();
 }
 
 void SensorItem::setRotatePoint(QPointF rotatePoint)
@@ -71,6 +78,7 @@ QRectF SensorItem::boundingRect() const
 void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
+	mPortItem.hide();
 	mDragged = true;
 }
 
@@ -83,6 +91,18 @@ void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	}
 }
 
+void SensorItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+	AbstractItem::hoverEnterEvent(event);
+	mPortItem.show();
+}
+
+void SensorItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+	AbstractItem::hoverLeaveEvent(event);
+	mPortItem.hide();
+}
+
 void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
@@ -92,20 +112,20 @@ void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 QString SensorItem::name() const
 {
 	switch (mConfiguration.type(mPort)) {
-	case sensorType::touchBoolean:
+	case robots::enums::sensorType::touchBoolean:
 		return "touch";
-	case sensorType::colorFull:
-	case sensorType::colorNone:
+	case robots::enums::sensorType::colorFull:
+	case robots::enums::sensorType::colorNone:
 		return "color_empty";
-	case sensorType::colorBlue:
+	case robots::enums::sensorType::colorBlue:
 		return "color_blue";
-	case sensorType::colorGreen:
+	case robots::enums::sensorType::colorGreen:
 		return "color_green";
-	case sensorType::colorRed:
+	case robots::enums::sensorType::colorRed:
 		return "color_red";
-	case sensorType::sonar:
+	case robots::enums::sensorType::sonar:
 		return "sonar";
-	case sensorType::light:
+	case robots::enums::sensorType::light:
 		return "light";
 	default:
 		Q_ASSERT(!"Unknown sensor type");
@@ -116,16 +136,16 @@ QString SensorItem::name() const
 QRectF SensorItem::imageRect() const
 {
 	switch (mConfiguration.type(mPort)) {
-	case sensorType::touchBoolean:
+	case robots::enums::sensorType::touchBoolean:
 		return QRectF(-12, -5, 25, 10);
-	case sensorType::colorFull:
-	case sensorType::colorNone:
-	case sensorType::colorBlue:
-	case sensorType::colorGreen:
-	case sensorType::colorRed:
-	case sensorType::light:
+	case robots::enums::sensorType::colorFull:
+	case robots::enums::sensorType::colorNone:
+	case robots::enums::sensorType::colorBlue:
+	case robots::enums::sensorType::colorGreen:
+	case robots::enums::sensorType::colorRed:
+	case robots::enums::sensorType::light:
 		return QRectF(-6, -6, 12, 12);
-	case sensorType::sonar:
+	case robots::enums::sensorType::sonar:
 		return QRectF(-20, -10, 40, 20);
 	default:
 		Q_ASSERT(!"Unknown sensor type");
@@ -212,4 +232,41 @@ void SensorItem::onDirectionChanged()
 {
 	mConfiguration.setPosition(mPort, scenePos().toPoint());
 	mConfiguration.setDirection(mPort, rotation());
+}
+
+SensorItem::PortItem::PortItem(QString const &port)
+	: mPort(port)
+{
+}
+
+void SensorItem::PortItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget)
+{
+	Q_UNUSED(option)
+	Q_UNUSED(widget)
+
+	painter->save();
+
+	QPen pen;
+	pen.setWidth(2);
+	pen.setColor(Qt::yellow);
+
+	QBrush brush;
+	brush.setStyle(Qt::SolidPattern);
+	brush.setColor(Qt::yellow);
+
+	painter->setPen(pen);
+	painter->setBrush(brush);
+
+	painter->drawRoundedRect(boundingRect(), 2, 2);
+
+	pen.setColor(Qt::black);
+	painter->setPen(pen);
+	painter->drawText(boundingRect(), mPort, QTextOption(Qt::AlignCenter));
+
+	painter->restore();
+}
+
+QRectF SensorItem::PortItem::boundingRect() const
+{
+	return QRectF(QPointF(), portHintSize);
 }

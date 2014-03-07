@@ -6,7 +6,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 
-namespace versioning
+namespace svn
 {
 namespace ui
 {

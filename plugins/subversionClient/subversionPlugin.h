@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../../qrutils/versioningUtils/externalClientPluginBase.h"
-#include "../../qrgui/toolPluginInterface/customizer.h"
+#include <qrutils/versioningUtils/externalClientPluginBase.h>
+#include <qrgui/toolPluginInterface/customizer.h>
 #include "viewInteraction.h"
 
-namespace versioning
+namespace svn
 {
 
 class SubversionPlugin : public qReal::versioning::ExternalClientPluginBase
@@ -47,7 +47,7 @@ public:
 	virtual bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false
 								, bool const &prepareAndProcess = false);
 	virtual QString friendlyName();
-	virtual QString getLog(QString const &format = QString(), bool const &quiet = false){}
+	virtual QString getLog(QString const &format = QString(), bool const &quiet = false);
 	virtual void setVersion(QString hash, bool const &quiet = false){}
 
 	void editProxyConfiguration();

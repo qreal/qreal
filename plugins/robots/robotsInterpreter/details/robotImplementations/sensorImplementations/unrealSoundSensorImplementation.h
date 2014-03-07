@@ -14,7 +14,11 @@ class UnrealSoundSensorImplementation : public UnrealSensorImplementation
 	Q_OBJECT
 
 public:
-	UnrealSoundSensorImplementation(inputPort::InputPortEnum const port, d2Model::D2RobotModel *d2Model);
+	UnrealSoundSensorImplementation(
+			robots::enums::inputPort::InputPortEnum const port
+			, d2Model::D2RobotModel *d2Model
+			);
+
 	virtual void read();
 };
 

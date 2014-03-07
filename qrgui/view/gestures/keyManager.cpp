@@ -1,6 +1,7 @@
 #include "keyManager.h"
-#include <QPointF>
-#include <QString>
+
+#include <QtCore/QPointF>
+#include <QtCore/QString>
 
 static QString const strBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 

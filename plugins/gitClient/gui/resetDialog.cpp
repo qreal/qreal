@@ -4,7 +4,7 @@
 #include "resetDialog.h"
 #include "../../../qrkernel/settingsManager.h"
 
-using namespace versioning::ui;
+using namespace git::ui;
 
 ResetDialog::ResetDialog(QWidget *parent)
 	: QDialog(parent)

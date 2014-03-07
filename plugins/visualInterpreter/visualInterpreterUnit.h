@@ -3,9 +3,11 @@
 #include "../../qrgui/mainwindow/errorReporter.h"
 #include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
 #include "../../qrutils/graphUtils/baseGraphTransformationUnit.h"
-#include "ruleParser.h"
-#include "pythonGenerator.h"
-#include "pythonInterpreter.h"
+#include "textualPart/ruleParser.h"
+#include "textualPart/pythonGenerator.h"
+#include "textualPart/pythonInterpreter.h"
+#include "textualPart/qtScriptGenerator.h"
+#include "textualPart/qtScriptInterpreter.h"
 
 namespace qReal {
 
@@ -39,8 +41,9 @@ public:
 	utils::ExpressionsParser* ruleParser();
 
 private slots:
-	void processPythonInterpreterStdOutput(QHash<QPair<QString, QString>, QString> const &output);
-	void processPythonInterpreterErrOutput(QString const &output);
+	void processTextCodeInterpreterStdOutput(QHash<QPair<QString, QString>, QString> const &output
+			, TextCodeInterpreter::CodeLanguage const language);
+	void processTextCodeInterpreterErrOutput(QString const &output);
 
 protected:
 	/// For debug uses only
@@ -68,6 +71,9 @@ protected:
 
 	/// Checks rule application conditions on concrete match
 	bool checkApplicationCondition(QHash<Id, Id> const &match, QString const &ruleName) const;
+
+	/// Checks rule application conditions on concrete match based on QtScript
+	bool checkApplicationConditionQtScript(QHash<Id, Id> const &match, QString const &ruleName) const;
 
 	/// Checks rule application conditions on concrete match based on C-like language
 	bool checkApplicationConditionCStyle(QHash<Id, Id> const &match, QString const &appCond) const;
@@ -102,6 +108,9 @@ protected:
 
 	/// Interpret rule reaction written on python
 	bool interpretPythonReaction();
+
+	/// Interpret rule reaction written on QtScript
+	bool interpretQtScriptReaction();
 
 	/// Arranges connections between newly created elements
 	void arrangeConnections();
@@ -177,6 +186,9 @@ protected:
 
 	PythonGenerator *mPythonGenerator;
 	PythonInterpreter *mPythonInterpreter;
+
+	QtScriptGenerator *mQtScriptGenerator;
+	QtScriptInterpreter *mQtScriptInterpreter;
 };
 
 }

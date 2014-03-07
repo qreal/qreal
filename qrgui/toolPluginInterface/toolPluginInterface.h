@@ -5,13 +5,13 @@
 #include <QtCore/QList>
 #include <QtWidgets/QAction>
 
-#include "../../qrrepo/repoControlInterface.h"
-#include "../dialogs/preferencesPages/preferencesPage.h"
+#include <qrrepo/repoControlInterface.h>
+#include "dialogs/preferencesPages/preferencesPage.h"
 
-#include "customizer.h"
-#include "pluginConfigurator.h"
-#include "actionInfo.h"
-#include "hotKeyActionInfo.h"
+#include "toolPluginInterface/customizer.h"
+#include "toolPluginInterface/pluginConfigurator.h"
+#include "toolPluginInterface/actionInfo.h"
+#include "toolPluginInterface/hotKeyActionInfo.h"
 
 namespace qReal {
 
@@ -29,12 +29,6 @@ public:
 	virtual Customizer* customizationInterface()
 	{
 		return NULL;
-	}
-
-	/// Shall be overriden in plugin to react on application settings changes.
-	/// Called when user clicks Ok or Apply in preferences dialog, for example.
-	virtual void updateSettings()
-	{
 	}
 
 	/// Shall be overriden to return QAction or QMenu objects along with where to put them in
@@ -65,21 +59,6 @@ public:
 	{
 		return QList<HotKeyActionInfo>();
 	}
-
-	/// Shall be overriden if plugin needs to do some action on closing of main window,
-	/// like closing its own windows.
-	// TODO: Properly rename it or remove at all.
-	virtual void closeNeededWidget()
-	{
-	}
-
-	/// Event that is sent to a plugin by GUI when user switches or closes a tab
-	/// @param rootElementId Id of the root element of a new tab, whose diagram is shown
-	virtual void activeTabChanged(Id const & rootElementId)
-	{
-		Q_UNUSED(rootElementId);
-	}
-
 };
 
 }

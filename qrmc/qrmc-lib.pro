@@ -1,10 +1,15 @@
 TEMPLATE = lib
 QT += xml
 
+CONFIG += c++11
+
 TARGET = qrmc
 
 DEPENDPATH += . \
 	templates
+
+INCLUDEPATH += \
+	$$PWD/.. \
 
 LIBS += -L../bin -lqrkernel -lqrrepo
 

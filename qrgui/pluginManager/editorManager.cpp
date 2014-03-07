@@ -4,17 +4,16 @@
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
-#include "../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/exception/exception.h>
+#include <qrrepo/repoApi.h>
 
-#include "../../qrrepo/repoApi.h"
-#include "../umllib/nodeElement.h"
-#include "../umllib/edgeElement.h"
-#include "../../qrkernel/exception/exception.h"
+#include "umllib/nodeElement.h"
+#include "umllib/edgeElement.h"
 
 using namespace qReal;
 
-EditorManager::EditorManager(QObject *parent)
-	: QObject(parent)
+EditorManager::EditorManager(QObject *parent) : QObject(parent)
 {
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
@@ -144,14 +143,20 @@ QString EditorManager::paletteGroupDescription(Id const &editor, const Id &diagr
 	return mPluginIface[editor.editor()]->diagramPaletteGroupDescription(diagram.diagram(), group);
 }
 
+bool EditorManager::shallPaletteBeSorted(Id const &editor, Id const &diagram) const
+{
+	return mPluginIface[editor.editor()]->shallPaletteBeSorted(diagram.diagram());
+}
+
 IdList EditorManager::elements(Id const &diagram) const
 {
 	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-	foreach (QString const &e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
+	for (QString const &e : mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
 		elements.append(Id(diagram.editor(), diagram.diagram(), e));
 	}
+
 	return elements;
 }
 
@@ -235,34 +240,28 @@ QString EditorManager::mouseGesture(const Id &id) const
 	return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
 }
 
-QIcon EditorManager::icon(const Id &id) const
+QIcon EditorManager::icon(Id const &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
-	// QIcon will take ownership of engine, no need for us to delete
-	return mPluginIface[id.editor()]->getIcon(engine);
+	return SdfIconLoader::iconOf(":/generated/shapes/" + id.element() + "Class.sdf");
 }
 
 QSize EditorManager::iconSize(Id const &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
-	return engine->preferedSize();
+	return SdfIconLoader::preferedSizeOf(":/generated/shapes/" + id.element() + "Class.sdf");
 }
 
-Element* EditorManager::graphicalObject(const Id &id) const
+ElementImpl *EditorManager::elementImpl(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
-	if( !impl ) {
+	if (!impl) {
 		qDebug() << "no impl";
 		return 0;
 	}
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
 
-	return  new EdgeElement(impl);
+	return impl;
 }
 
 QStringList EditorManager::propertyNames(const Id &id) const
@@ -270,6 +269,13 @@ QStringList EditorManager::propertyNames(const Id &id) const
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
+}
+
+QStringList EditorManager::portTypes(Id const &id) const
+{
+	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getPortTypes(id.diagram(), id.element());
 }
 
 QStringList EditorManager::referenceProperties(const Id &id) const
@@ -286,35 +292,14 @@ IdList EditorManager::containedTypes(const Id &id) const
 
 	IdList result;
 	foreach (QString const &type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
-		result.append(Id(type));
-	}
-	return result;
-}
-
-IdList EditorManager::connectedTypes(const Id &id) const
-{
-	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
-
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	IdList result;
-	foreach (QString const &type, mPluginIface[id.editor()]->getConnectedTypes(id.element())) {
-		// a hack caused by absence of ID entity in editors generator
-		result.append(Id("?", "?", type));
+		result.append(Id(id.editor(), id.diagram(), type));
 	}
 
-	return result;
-}
+	typedef QPair<QString, QString> StringPair;
+	QList<StringPair> const parents = mPluginIface[id.editor()]->getParentsOf(id.diagram(), id.element());
 
-IdList EditorManager::usedTypes(const Id &id) const
-{
-	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
-
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	IdList result;
-	foreach (QString const &type, mPluginIface[id.editor()]->getUsedTypes(id.element())) {
-		result.append(Id("?", "?", type));
+	foreach (StringPair const &pair, parents) {
+		result.append(containedTypes(Id(id.editor(), pair.first, pair.second)));
 	}
 
 	return result;
@@ -472,6 +457,20 @@ QStringList EditorManager::allChildrenTypesOf(Id const &parent) const
 	return result;
 }
 
+QList<Explosion> EditorManager::explosions(Id const &source) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(source.editor()));
+	EditorInterface const *plugin = mPluginIface[source.editor()];
+	QList<Explosion> result;
+	QList<EditorInterface::ExplosionData> const rawExplosions =
+			plugin->explosions(source.diagram(), source.element());
+	foreach (EditorInterface::ExplosionData const &rawExplosion, rawExplosions) {
+		Id const target(source.editor(), rawExplosion.targetDiagram, rawExplosion.targetElement, "");
+		result << Explosion(source, target, rawExplosion.isReusable, rawExplosion.requiresImmediateLinkage);
+	}
+	return result;
+}
+
 bool EditorManager::isGraphicalElementNode(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
@@ -511,12 +510,14 @@ IdList EditorManager::groups(Id const &diagram)
 	PatternParser parser;
 	parser.loadXml((mPluginIface.value(diagram.editor()))->getGroupsXML());
 	parser.parseGroups(this, diagram.editor(), diagram.diagram());
-	foreach(Pattern const &pattern, parser.getPatterns()) {
+	foreach(Pattern const &pattern, parser.patterns()) {
 		mGroups.insert(pattern.name(), pattern);
 	}
 
 	foreach (QString const &group, mGroups.keys()) {
-		elements.append(Id(diagram.editor(), diagram.diagram(), group));
+		if (diagram.diagram() == mGroups[group].diagram()) {
+			elements.append(Id(diagram.editor(), diagram.diagram(), group));
+		}
 	}
 
 	return elements;
@@ -611,6 +612,17 @@ void EditorManager::updateShape(Id const &id, QString const &graphics) const
 	Q_UNUSED(graphics);
 }
 
+void EditorManager::resetIsHidden(Id const &id) const
+{
+	Q_UNUSED(id);
+}
+
+QString EditorManager::getIsHidden(Id const &id) const
+{
+	Q_UNUSED(id);
+	return "false";
+}
+
 void EditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
 {
 	Q_UNUSED(mainWindow);
@@ -630,8 +642,8 @@ void EditorManager::addNodeElement(Id const &diagram, QString const &name, bool 
 	Q_UNUSED(isRootDiagramNode);
 }
 
-void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
-		, QString const &lineType, QString const &beginType, QString const &endType) const
+void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
 {
 	Q_UNUSED(diagram);
 	Q_UNUSED(name);
@@ -656,4 +668,31 @@ void EditorManager::saveMetamodel(QString const &newMetamodelFileName)
 QString EditorManager::saveMetamodelFilePath() const
 {
 	return "";
+}
+
+IdList EditorManager::propertiesWithTheSameName(Id const &id, QString const &propertyCurrentName
+		, QString const &propertyNewName) const
+{
+	Q_UNUSED(id);
+	Q_UNUSED(propertyCurrentName);
+	Q_UNUSED(propertyNewName);
+	return IdList();
+}
+
+QStringList EditorManager::getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const
+{
+	Q_UNUSED(propertyId);
+	Q_UNUSED(propertyName);
+	return QStringList();
+}
+
+void EditorManager::restoreRemovedProperty(Id const &propertyId, QString const &previousName) const
+{
+	Q_UNUSED(propertyId);
+	Q_UNUSED(previousName);
+}
+void EditorManager::restoreRenamedProperty(Id const &propertyId, QString const &previousName) const
+{
+	Q_UNUSED(propertyId);
+	Q_UNUSED(previousName);
 }

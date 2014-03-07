@@ -1,11 +1,13 @@
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/settingsManager.h>
+#include <qrutils/fileSystemUtils.h>
+#include <qrutils/versioningUtils/authenticationSettingsWidget.h>
+
 #include "subversionPlugin.h"
-#include "../../qrkernel/settingsManager.h"
-#include "../../qrutils/fileSystemUtils.h"
 #include "tags.h"
 
-using namespace versioning;
+using namespace svn;
 using namespace qReal::versioning;
 
 QString const tempFolderName = "tempSvn";
@@ -125,6 +127,12 @@ bool SubversionPlugin::isMyWorkingCopy(QString const &directory, bool const &qui
 QString SubversionPlugin::friendlyName()
 {
 	return "Subversion Plugin";
+}
+
+QString SubversionPlugin::getLog(const QString &format, const bool &quiet)
+{
+	Q_UNUSED(format)
+	Q_UNUSED(quiet)
 }
 
 int SubversionPlugin::timeout() const
@@ -345,9 +353,9 @@ QStringList SubversionPlugin::authenticationArgs() const
 {
 	QStringList result;
 
-	QString const enabledKey = ui::AuthenticationSettingsWidget::enabledSettingsName("svn");
-	QString const usernameKey = ui::AuthenticationSettingsWidget::usernameSettingsName("svn");
-	QString const passwordKey = ui::AuthenticationSettingsWidget::passwordSettingsName("svn");
+	QString const enabledKey = versioning::ui::AuthenticationSettingsWidget::enabledSettingsName("svn");
+	QString const usernameKey = versioning::ui::AuthenticationSettingsWidget::usernameSettingsName("svn");
+	QString const passwordKey = versioning::ui::AuthenticationSettingsWidget::passwordSettingsName("svn");
 
 	bool const authenticationEnabled = qReal::SettingsManager::value(enabledKey, false).toBool();
 	if (!authenticationEnabled) {
