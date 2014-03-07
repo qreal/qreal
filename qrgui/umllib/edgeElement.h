@@ -41,7 +41,8 @@ public:
 	EdgeElement(ElementImpl *impl
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			, UXInfoInterface *uxInfoInterface);
 
 	virtual ~EdgeElement();
 

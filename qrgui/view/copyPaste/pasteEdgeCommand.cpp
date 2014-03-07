@@ -9,8 +9,9 @@ PasteEdgeCommand::PasteEdgeCommand(EditorViewScene *scene
 		, EdgeData const &data
 		, QPointF const &offset
 		, bool isGraphicalCopy
-		, QHash<qReal::Id, qReal::Id> *copiedIds)
-	: PasteCommand(scene, mvIface, offset, isGraphicalCopy, copiedIds)
+		, QHash<qReal::Id, qReal::Id> *copiedIds
+		, UXInfoInterface *uxInfoInterface)
+	: PasteCommand(scene, mvIface, offset, isGraphicalCopy, copiedIds, uxInfoInterface)
 	, mEdgeData(data), mCreateCommand(NULL)
 {
 }
@@ -55,7 +56,7 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 			, resultId
 			, *mMVIface->graphicalAssistApi()
 			, *mMVIface->logicalAssistApi()
-			);
+			, mUXInfoInterface);
 
 	newEdge->setController(mScene->mainWindow()->controller());
 

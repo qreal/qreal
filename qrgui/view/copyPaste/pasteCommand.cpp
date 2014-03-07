@@ -6,10 +6,12 @@ PasteCommand::PasteCommand(EditorViewScene *scene
 		, EditorViewMViface const *mvIface
 		, QPointF const &offset
 		, bool isGraphicalCopy
-		, QHash<Id, Id> *copiedIds)
+		, QHash<Id, Id> *copiedIds
+		, UXInfoInterface *uxInfoInterface)
 	: mScene(scene), mMVIface(mvIface)
 	, mOffset(offset), mCopiedIds(copiedIds)
 	, mIsGraphicalCopy(isGraphicalCopy)
+	, mUXInfoInterface(uxInfoInterface)
 {
 }
 

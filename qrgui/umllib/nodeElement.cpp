@@ -33,8 +33,8 @@ NodeElement::NodeElement(ElementImpl *impl
 		, Id const &id
 		, models::GraphicalModelAssistApi &graphicalAssistApi
 		, models::LogicalModelAssistApi &logicalAssistApi
-		)
-		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
+		, UXInfoInterface *uxInfoInterface)
+		: Element(impl, id, graphicalAssistApi, logicalAssistApi, uxInfoInterface)
 		, mSwitchGridAction(tr("Switch on grid"), this)
 		, mDragState(None)
 		, mResizeCommand(NULL)
@@ -48,6 +48,7 @@ NodeElement::NodeElement(ElementImpl *impl
 		, mPlaceholder(NULL)
 		, mHighlightedNode(NULL)
 		, mRenderTimer(this)
+
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -585,7 +586,13 @@ void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-	Q_UNUSED(event);
+	QPoint pos = event->scenePos().toPoint();
+	QString const userAction = "NodeElement: enter element " + this->name() + " on scene at pos ("
+			+ QString::number(pos.x())
+			+ ", "
+			+ QString::number(pos.y())
+			+ ")";
+	mUXInfoInterface->reportPaletteUserAction(userAction);
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
@@ -595,7 +602,13 @@ void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-	Q_UNUSED(event);
+	QPoint pos = event->scenePos().toPoint();
+	QString const userAction = "NodeElement: leave element " + this->name() + " on scene at pos ("
+			+ QString::number(pos.x())
+			+ ", "
+			+ QString::number(pos.y())
+			+ ")";
+	mUXInfoInterface->reportPaletteUserAction(userAction);
 }
 
 void NodeElement::startResize()
@@ -1329,7 +1342,7 @@ void NodeElement::initRenderedDiagram()
 	Id const diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	Id const graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(window);
+	EditorView view(window, mUXInfoInterface);
 	EditorViewScene *openedScene = dynamic_cast<EditorViewScene *>(view.scene());
 	openedScene->setMainWindow(window);
 	openedScene->setNeedDrawGrid(false);
@@ -1366,7 +1379,7 @@ QRectF NodeElement::diagramRenderingRect() const
 			, id().sameTypeId()
 			, mGraphicalAssistApi
 			, mLogicalAssistApi
-			);
+			, mUXInfoInterface);
 
 	qreal const xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);
 	qreal const yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);

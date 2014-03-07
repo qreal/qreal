@@ -9,8 +9,9 @@ PasteNodeCommand::PasteNodeCommand(EditorViewScene *scene
 		, NodeData const &data
 		, QPointF const &offset
 		, bool isGraphicalCopy
-		, QHash<Id, Id> *copiedIds)
-	: PasteCommand(scene, mvIface, offset, isGraphicalCopy, copiedIds)
+		, QHash<Id, Id> *copiedIds
+		, UXInfoInterface *uxInfoInterface)
+	: PasteCommand(scene, mvIface, offset, isGraphicalCopy, copiedIds, uxInfoInterface)
 	, mNodeData(data)
 	, mCreateCommand(NULL)
 {

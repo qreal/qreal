@@ -9,9 +9,11 @@ using namespace qReal::commands;
 
 PasteGroupCommand::PasteGroupCommand(EditorViewScene *scene
 		, EditorViewMViface const *mvIface
-		, bool isGraphicalCopy)
+		, bool isGraphicalCopy
+		, UXInfoInterface *uxInfoInterface)
 	: mScene(scene), mMVIface(mvIface)
 	, mIsGraphicalCopy(isGraphicalCopy), mIsEmpty(false)
+	, mUXInfoInterface(uxInfoInterface)
 {
 	prepareCommands();
 }
@@ -54,7 +56,7 @@ QHash<Id, Id> *PasteGroupCommand::preparePasteNodesCommands(QList<NodeData> &nod
 	while (!nodesData.isEmpty()) {
 		NodeData const &nextToPaste = nodesData[0];
 		PasteNodeCommand *pasteCommand = new PasteNodeCommand(mScene, mMVIface
-				, nextToPaste, offset, mIsGraphicalCopy, copiedIds);
+				, nextToPaste, offset, mIsGraphicalCopy, copiedIds, mUXInfoInterface);
 		addPreAction(pasteCommand);
 		nodesData.removeAll(nextToPaste);
 	}
@@ -65,7 +67,7 @@ QHash<Id, Id> *PasteGroupCommand::preparePasteNodesCommands(QList<NodeData> &nod
 void PasteGroupCommand::preparePasteEdgeCommand(EdgeData const &edgeData, QPointF const &offset)
 {
 	PasteEdgeCommand *pasteCommand = new PasteEdgeCommand(mScene, mMVIface
-			, edgeData, offset, mIsGraphicalCopy, mCopiedIds);
+			, edgeData, offset, mIsGraphicalCopy, mCopiedIds, mUXInfoInterface);
 	addPreAction(pasteCommand);
 }
 

@@ -6,6 +6,8 @@
 #include "umllib/edgeElement.h"
 #include "umllib/serializationData.h"
 
+#include "qrkernel/uxInfoInterface.h"
+
 namespace qReal
 {
 
@@ -19,6 +21,7 @@ public:
 
 	void setMVIface(EditorViewMViface * const mvIface);
 	void setController(Controller * const controller);
+	void setUXInfoInterface(UXInfoInterface *uxInfoInterface);
 
 	void cut();
 	void copy();
@@ -34,6 +37,7 @@ private:
 	EditorViewScene *mScene;
 	EditorViewMViface *mMVIface;
 	Controller *mController;
+	UXInfoInterface *mUXInfoInterface;
 };
 
 }

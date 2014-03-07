@@ -9,11 +9,12 @@ using namespace qReal;
 int const zoomAnimationInterval = 20;
 int const zoomAnimationTimes = 4;
 
-EditorView::EditorView(QWidget *parent)
+EditorView::EditorView(QWidget *parent, UXInfoInterface *uxInfoInterface)
 	: QGraphicsView(parent)
 	, mMouseOldPosition()
 	, mWheelPressed(false)
 	, mTouchManager(this)
+	, mUXInfoInterface(uxInfoInterface)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
@@ -26,7 +27,7 @@ EditorView::EditorView(QWidget *parent)
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
 
-	mMVIface = new EditorViewMViface(this, mScene);
+	mMVIface = new EditorViewMViface(this, mScene, mUXInfoInterface);
 	setScene(mScene);
 
 	setAcceptDrops(true);

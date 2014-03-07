@@ -49,6 +49,7 @@ EditorViewScene::EditorViewScene(QObject *parent)
 
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
+	mClipboardHandler.setUXInfoInterface(utils::UXInfo::instance());
 
 	initCorners();
 

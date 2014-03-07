@@ -16,7 +16,8 @@ public:
 			, EdgeData const &data
 			, QPointF const &offset
 			, bool isGraphicalCopy
-			, QHash<qReal::Id, qReal::Id> *copiedIds);
+			, QHash<qReal::Id, qReal::Id> *copiedIds
+			, UXInfoInterface *uxInfoInterface);
 	virtual ~PasteEdgeCommand() {}
 
 protected:

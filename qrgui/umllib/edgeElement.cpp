@@ -29,13 +29,12 @@ const int standartReductCoeff = 3;
 
 /** @brief indicator of edges' movement */
 
-EdgeElement::EdgeElement(
-		ElementImpl *impl
+EdgeElement::EdgeElement(ElementImpl *impl
 		, Id const &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
-		)
-		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
+		, UXInfoInterface *uxInfoInterface)
+		: Element(impl, id, graphicalAssistApi, logicalAssistApi, uxInfoInterface)
 		, mPenStyle(Qt::SolidLine)
 		, mPenWidth(1)
 		, mPenColor(Qt::black)
