@@ -61,10 +61,10 @@ QStringList PropertiesDialog::getPropertiesDisplayedNamesList(QStringList const 
 void PropertiesDialog::updatePropertiesNamesList()
 {
 	QStringList const propertiesNames = mInterperterEditorManager.propertyNames(mId);
+	mPropertiesNames = propertiesNames;
 	QStringList const propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
-	if (mUi->propertiesNamesList->count() < propertiesDisplayedNames.length()) {
-		mUi->propertiesNamesList->addItem(propertiesDisplayedNames.last());
-	}
+	mUi->propertiesNamesList->clear();
+	mUi->propertiesNamesList->addItems(propertiesDisplayedNames);
 }
 
 void PropertiesDialog::closeDialog()
@@ -78,14 +78,25 @@ void PropertiesDialog::deleteProperty()
 		return;
 	}
 
-	QListWidgetItem *selectedItem = mUi->propertiesNamesList->takeItem(mUi->propertiesNamesList->currentRow());
-	QString const &propDisplayedName = selectedItem->text();
-	mInterperterEditorManager.deleteProperty(propDisplayedName);
+	QString const &propertyName = mPropertiesNames[mUi->propertiesNamesList->currentRow()];
+	mInterperterEditorManager.deleteProperty(propertyName);
+	updatePropertiesNamesList();
 }
 
 void PropertiesDialog::change(QString const &text)
 {
-	mEditPropertiesDialog->changeProperty(mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow()), text);
+	if (!text.isEmpty()) {
+		mEditPropertiesDialog->changeProperty(
+				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
+				, mPropertiesNames[mUi->propertiesNamesList->currentRow()]
+				, text);
+	} else {
+		mEditPropertiesDialog->changeProperty(
+				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
+				, ""
+				, text);
+	}
+
 	mEditPropertiesDialog->setModal(true);
 	mEditPropertiesDialog->show();
 	connect(mEditPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
