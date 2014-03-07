@@ -30,6 +30,8 @@ public:
 
 	qReal::IdList unsupportedBlocks() const override;
 
+	QList<qReal::ActionInfo> customActions() const override;
+
 private:
 	NullRobotModel mRobotModel;
 };

@@ -14,7 +14,7 @@ namespace interpreterCore {
 class ActionsManager
 {
 public:
-	explicit ActionsManager(/*KitPluginManager const &kitPluginManager*/);
+	explicit ActionsManager(KitPluginManager const &kitPluginManager);
 
 	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
 
@@ -35,8 +35,8 @@ private:
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.
 	void updateEnabledActions();
 
-	/// Action that shows 2d model widget
-//	QAction *m2dModelAction;
+	/// Loads actions from kit plugins.
+	void initKitPluginActions();
 
 	/// Action that runs program
 	QAction mRunAction;
@@ -60,7 +60,11 @@ private:
 	/// List of plugin actions, for convenient initialization. Contains all actions which already present as fields.
 	QList<QAction *> mActions;  // Does not have ownership (actions already present as fields).
 
-//	KitPluginManager const &mKitPluginManager;
+	/// List of actions from kit plugins.
+	QList<qReal::ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
+
+	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
+	KitPluginManager const &mKitPluginManager;
 
 	/// Main window interface object, to ask about currently open tab and so on.
 	// Does not have ownership

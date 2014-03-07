@@ -7,7 +7,7 @@ using namespace interpreterCore;
 static qReal::Id const robotDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
 static qReal::Id const subprogramDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
-ActionsManager::ActionsManager(/*KitPluginManager const &kitPluginManager*/)
+ActionsManager::ActionsManager(KitPluginManager const &kitPluginManager)
 	: mRunAction((QIcon(":/icons/robots_run.png"), QObject::tr("Run"), nullptr))
 	, mStopRobotAction(
 			QIcon(":/icons/robots_stop.png")
@@ -24,8 +24,10 @@ ActionsManager::ActionsManager(/*KitPluginManager const &kitPluginManager*/)
 	, mTitlesAction(QObject::tr("Text under pictogram"), nullptr)
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
-//	, mKitPluginManager(kitPluginManager)
+	, mKitPluginManager(kitPluginManager)
 {
+	initKitPluginActions();
+
 	mConnectToRobotAction.setCheckable(true);
 
 	mTitlesAction.setCheckable(true);
@@ -48,10 +50,12 @@ ActionsManager::ActionsManager(/*KitPluginManager const &kitPluginManager*/)
 QList<qReal::ActionInfo> ActionsManager::actions()
 {
 	QList<qReal::ActionInfo> result;
+
+	result << mPluginActionInfos;
+
 	result
 			<< qReal::ActionInfo(&mRunAction, "interpreters", "tools")
 			<< qReal::ActionInfo(&mStopRobotAction, "interpreters", "tools")
-			<< qReal::ActionInfo(&mConnectToRobotAction, "interpreters", "tools")
 			<< qReal::ActionInfo(&mConnectToRobotAction, "interpreters", "tools")
 			<< qReal::ActionInfo(&mSeparator1, "interpreters", "tools")
 			/// @todo Actions for quick changing of a model shall go here.
@@ -122,5 +126,13 @@ void ActionsManager::updateEnabledActions()
 
 	for (QAction * const action : mActions) {
 		action->setEnabled(enabled);
+	}
+}
+
+void ActionsManager::initKitPluginActions()
+{
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		interpreterBase::KitPluginInterface &kitPlugin = mKitPluginManager.kitById(kitId);
+		mPluginActionInfos << kitPlugin.customActions();
 	}
 }

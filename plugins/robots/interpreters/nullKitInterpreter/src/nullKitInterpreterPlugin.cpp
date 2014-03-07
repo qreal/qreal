@@ -41,3 +41,8 @@ qReal::IdList NullKitInterpreterPlugin::unsupportedBlocks() const
 {
 	return qReal::IdList();
 }
+
+QList<qReal::ActionInfo> NullKitInterpreterPlugin::customActions() const override
+{
+	return {};
+}

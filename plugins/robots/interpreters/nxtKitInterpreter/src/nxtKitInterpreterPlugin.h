@@ -29,8 +29,9 @@ public:
 
 //	qReal::IdList specificBlocks() const override;
 
-	// Override.
 	qReal::IdList unsupportedBlocks() const override;
+
+	QList<qReal::ActionInfo> customActions() const override;
 
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;

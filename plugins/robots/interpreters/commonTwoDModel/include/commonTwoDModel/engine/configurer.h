@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QString>
+
 namespace twoDModel {
 
 /// Can be used for customizing different 2D emulator aspects in concrete interpreter

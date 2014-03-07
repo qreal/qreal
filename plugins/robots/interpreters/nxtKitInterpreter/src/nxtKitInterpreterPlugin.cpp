@@ -46,3 +46,8 @@ qReal::IdList NxtKitInterpreterPlugin::unsupportedBlocks() const
 {
 	return qReal::IdList();
 }
+
+QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions() const override
+{
+
+}
