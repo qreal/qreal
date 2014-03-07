@@ -64,8 +64,6 @@ HEADERS += \
 	$$PWD/rules/loopRules/loopWithBothUnvisitedRule.h \
 	$$PWD/rules/loopRules/loopWithIterationVisitedRule.h \
 	$$PWD/rules/loopRules/loopWithNextVisitedRule.h \
-    simpleGenerators/labelGenerator.h \
-    simpleGenerators/gotoSimpleGenerator.h
 
 SOURCES += \
 	$$PWD/robotsGeneratorPluginBase.cpp \
@@ -109,8 +107,6 @@ SOURCES += \
 	$$PWD/rules/loopRules/loopWithBothUnvisitedRule.cpp \
 	$$PWD/rules/loopRules/loopWithIterationVisitedRule.cpp \
 	$$PWD/rules/loopRules/loopWithNextVisitedRule.cpp \
-    simpleGenerators/labelGenerator.cpp \
-    simpleGenerators/gotoSimpleGenerator.cpp
 
 # Simple element generators & converters
 
@@ -171,6 +167,8 @@ HEADERS += \
 	$$PWD/simpleGenerators/subprogramsSimpleGenerator.h \
 	$$PWD/simpleGenerators/breakGenerator.h \
 	$$PWD/simpleGenerators/continueGenerator.h \
+	$$PWD/simpleGenerators/labelGenerator.h \
+	$$PWD/simpleGenerators/gotoSimpleGenerator.h \
 
 SOURCES += \
 	$$PWD/converters/templateParametrizedConverter.cpp \
@@ -229,3 +227,5 @@ SOURCES += \
 	$$PWD/simpleGenerators/subprogramsSimpleGenerator.cpp \
 	$$PWD/simpleGenerators/breakGenerator.cpp \
 	$$PWD/simpleGenerators/continueGenerator.cpp \
+	$$PWD/simpleGenerators/labelGenerator.cpp \
+	$$PWD/simpleGenerators/gotoSimpleGenerator.cpp \

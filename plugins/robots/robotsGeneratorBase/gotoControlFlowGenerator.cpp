@@ -80,7 +80,6 @@ void GotoControlFlowGenerator::visitSwitch(Id const &id, QList<LinkInfo> const &
 {
 	Q_UNUSED(id)
 	Q_UNUSED(links)
-
 }
 
 void GotoControlFlowGenerator::visitFork(Id const &id, QList<LinkInfo> const &links)
