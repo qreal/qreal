@@ -1,6 +1,7 @@
 #include <QtCore/QDateTime>
 
 #include "timeline.h"
+#include "d2ModelTimer.h"
 
 using namespace twoDModel;
 
@@ -25,6 +26,7 @@ void Timeline::start()
 void Timeline::onTimer()
 {
 	for (int i = 0; i < ticksPerCycle; ++i) {
+		mTimestamp += timeInterval;
 		emit tick();
 		++mCyclesCount;
 		if (mCyclesCount >= mSpeedFactor) {
@@ -56,6 +58,16 @@ int Timeline::speedFactor() const
 {
 	return mSpeedFactor;
 }
+
+quint64 Timeline::timestamp() const
+{
+	return mTimestamp;
+}
+
+//AbstractTimer *Timeline::produceTimer()
+//{
+//	return new D2ModelTimer(this);
+//}
 
 void Timeline::setSpeedFactor(int factor)
 {

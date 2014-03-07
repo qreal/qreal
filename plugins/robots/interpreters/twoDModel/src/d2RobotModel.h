@@ -131,7 +131,7 @@ private:
 	physics::PhysicsEngineBase *mPhysicsEngine;
 	Timeline *mTimeline;
 	qreal mSpeedFactor;
-	utils::GaussNoise mNoiseGen;
+	mathUtils::GaussNoise mNoiseGen;
 	bool mNeedSync;
 	bool mIsRealisticPhysics;
 	bool mNeedSensorNoise;

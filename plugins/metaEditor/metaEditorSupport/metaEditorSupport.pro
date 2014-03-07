@@ -1,15 +1,12 @@
-QT += xml
+QT += xml widgets
 
 TEMPLATE = lib
-CONFIG += plugin
+CONFIG += plugin c++11
 
-CONFIG += c++11
 
 DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
-
-QT += widgets
 
 INCLUDEPATH += \
 	$$PWD/../../.. \

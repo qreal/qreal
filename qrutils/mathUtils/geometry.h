@@ -8,7 +8,7 @@
 #include <qrutils/utilsDeclSpec.h>
 #include "math.h"
 
-namespace utils {
+namespace mathUtils {
 
 /// Contains some useful methods for working with vectors, lines, pathes, etc.
 class QRUTILS_EXPORT Geometry

@@ -4,7 +4,7 @@
 
 #include <qrutils/utilsDeclSpec.h>
 
-namespace utils {
+namespace mathUtils {
 
 qreal const mu = 0.5;
 qreal const var = 0.083; // 1/12

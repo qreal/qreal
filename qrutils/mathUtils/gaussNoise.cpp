@@ -6,7 +6,7 @@
 
 #include "gaussNoise.h"
 
-using namespace utils;
+using namespace mathUtils;
 
 GaussNoise::GaussNoise()
 	: mApproximationLevel(defaultApproximationLevel)

@@ -108,7 +108,7 @@ void SensorVariablesUpdater::updateScalarSensorVariables(PortInfo const &sensorP
 
 void SensorVariablesUpdater::updateScalarSensorVariable(QString const &variable, int reading)
 {
-	(*(mParser.getVariables()))[variable] = utils::Number(reading, utils::Number::intType);
+	mParser.mutableVariables()[variable] = new utils::Number(reading, utils::Number::intType);
 //	Tracer::debug(
 //			tracer::enums::autoupdatedSensorValues
 //			, "SensorVariablesUpdater::updateScalarSensorVariable"

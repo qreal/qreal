@@ -43,6 +43,7 @@ private slots:
 	void expandExplosionActionTriggered();
 	void changePropertiesActionTriggered();
 	void changeAppearanceActionTriggered();
+	void addElementToPaletteActionTriggered();
 
 private:
 	void createAddExplosionMenu(Element const * const element

@@ -9,7 +9,7 @@
 
 using namespace twoDModel;
 using namespace twoDModel::physics;
-using namespace utils;
+using namespace mathUtils;
 
 RealisticPhysicsEngine::RealisticPhysicsEngine(WorldModel const &worldModel)
 	: PhysicsEngineBase(worldModel)

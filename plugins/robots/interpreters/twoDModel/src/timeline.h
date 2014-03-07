@@ -2,9 +2,11 @@
 
 #include <QtCore/QTimer>
 
+//#include "details/timelineInterface.h"
 namespace twoDModel {
 
-class Timeline : public QObject
+/// A timeline returning 2D-model time in ms
+class Timeline : public QObject/*, public TimelineInterface*/
 {
 	Q_OBJECT
 
@@ -20,6 +22,10 @@ public:
 	explicit Timeline(QObject *parent = 0);
 
 	int speedFactor() const;
+
+	quint64 timestamp() const /*override*/;
+
+//	AbstractTimer *produceTimer() override;
 
 public slots:
 	void start();
@@ -43,6 +49,7 @@ private:
 	int mCyclesCount;
 	qint64 mFrameStartTimestamp;
 	bool mIsStarted;
+	quint64 mTimestamp;
 };
 
 }

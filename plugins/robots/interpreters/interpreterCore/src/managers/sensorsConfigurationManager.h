@@ -26,11 +26,10 @@ namespace interpreterCore {
 class SensorsConfigurationManager : public interpreterBase::SensorsConfigurationProvider
 {
 public:
-	SensorsConfigurationManager(
-			qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
+	SensorsConfigurationManager(qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 			, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
-			, qReal::SystemEvents &systemEvents
+			, qReal::SystemEventsInterface &systemEvents
 			);
 
 private:

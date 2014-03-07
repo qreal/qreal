@@ -8,7 +8,7 @@
 
 using namespace twoDModel;
 using namespace graphicsUtils;
-using namespace utils;
+using namespace mathUtils;
 
 Rotater::Rotater() : AbstractItem()
 {

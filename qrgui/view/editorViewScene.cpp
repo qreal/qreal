@@ -697,6 +697,11 @@ QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 	return list;
 }
 
+void EditorViewScene::cut()
+{
+	mClipboardHandler.cut();
+}
+
 void EditorViewScene::copy()
 {
 	mClipboardHandler.copy();
@@ -951,6 +956,7 @@ void EditorViewScene::disableActions(Element *focusElement)
 {
 	if (!focusElement) {
 		mWindow->actionDeleteFromDiagram()->setEnabled(false);
+		mWindow->actionCutElementsOnDiagram()->setEnabled(false);
 		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
 	}
 	if (isEmptyClipboard()) {
@@ -962,6 +968,7 @@ void EditorViewScene::disableActions(Element *focusElement)
 void EditorViewScene::enableActions()
 {
 	mWindow->actionDeleteFromDiagram()->setEnabled(true);
+	mWindow->actionCutElementsOnDiagram()->setEnabled(true);
 	mWindow->actionCopyElementsOnDiagram()->setEnabled(true);
 	mWindow->actionPasteOnDiagram()->setEnabled(true);
 	mWindow->actionPasteCopyOfLogical()->setEnabled(true);
@@ -977,13 +984,29 @@ bool EditorViewScene::isEmptyClipboard()
 void EditorViewScene::getObjectByGesture()
 {
 	mTimer->stop();
-	Id const id = mMouseMovementManager->getObject();
-	if (!id.element().isEmpty()) {
+	gestures::MouseMovementManager::GestureResult const result = mMouseMovementManager->result();
+	switch (result.type()) {
+	case gestures::MouseMovementManager::invalidGesture:
+		break;
+	case gestures::MouseMovementManager::createElementGesture: {
 		// Creating element with its center in the center of gesture (see #1086)
+		Id const id = result.elementType();
 		QSize const elementSize = mWindow->editorManager().iconSize(id);
 		QPointF const gestureCenter = mMouseMovementManager->pos();
 		QPointF const elementCenter(elementSize.width() / 2.0, elementSize.height() / 2.0);
 		createElement(id.toString(), gestureCenter - elementCenter);
+		break;
+	}
+	case gestures::MouseMovementManager::deleteGesture:
+		// Deletting element under the gesture center
+		QPointF const gestureCenter = mMouseMovementManager->pos();
+		for (QGraphicsItem * const item : items(gestureCenter)) {
+			if (NodeElement * const node = dynamic_cast<NodeElement *>(item)) {
+				mWindow->deleteElementFromDiagram(node->id());
+				break;
+			}
+		}
+		break;
 	}
 
 	deleteGesture();
@@ -1239,9 +1262,14 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mExploser = new view::details::ExploserView(*mainWindow, mainWindow->models()->logicalModelAssistApi()
 			, mainWindow->models()->graphicalModelAssistApi(), mainWindow->exploser(), this);
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
+	QAction * const separator = new QAction(this);
+	separator->setSeparator(true);
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
+			<< separator
+			<< mWindow->actionCutElementsOnDiagram()
 			<< mWindow->actionCopyElementsOnDiagram()
-			<< mWindow->actionPasteOnDiagram() << mWindow->actionPasteCopyOfLogical();
+			<< mWindow->actionPasteOnDiagram()
+			<< mWindow->actionPasteCopyOfLogical();
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const

@@ -6,7 +6,7 @@
 
 #include "textManagerInterface.h"
 #include "view/editorView.h"
-#include "toolPluginInterface/systemEvents.h"
+#include "toolPluginInterface/systemEventsInterface.h"
 
 namespace qReal {
 
@@ -15,7 +15,7 @@ class TextManager : public TextManagerInterface
 	Q_OBJECT
 
 public:
-	TextManager(SystemEvents *systemEvents, MainWindow *mainWindow);
+	TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWindow);
 
 	/// Reads code source file and create new QScintillaTextEdit associated with this file (rather with filepath)
 	bool openFile(QString const &filePath, QString const &genName);
@@ -54,6 +54,7 @@ public:
 
 private slots:
 	void setModified(gui::QScintillaTextEdit *code);
+	void onTabClosed(QFileInfo const &file);
 
 private:
 	QMap<QString, gui::QScintillaTextEdit *> mText;
@@ -73,7 +74,7 @@ private:
 	/// Contains info about file extensions (extension, description of extension). Need for save dialog.
 	QMap<QString, QString> mExtensions;
 	MainWindow *mMainWindow;
-	SystemEvents *mSystemEvents;
+	SystemEventsInterface *mSystemEvents;
 };
 
 }

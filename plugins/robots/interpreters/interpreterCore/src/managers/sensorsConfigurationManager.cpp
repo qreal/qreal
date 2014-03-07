@@ -13,14 +13,14 @@ SensorsConfigurationManager::SensorsConfigurationManager(
 		qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 		, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 		, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
-		, qReal::SystemEvents &systemEvents
+		, qReal::SystemEventsInterface &systemEvents
 		)
 	: SensorsConfigurationProvider("SensorsConfigurationManager")
 	, mGraphicalModelAssistInterface(graphicalModelAssistInterface)
 	, mLogicalModelAssistInterface(logicalModelAssistInterface)
 	, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 {
-	QObject::connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
+	QObject::connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
 			, [&] (Id const &diagramRootId) { this->onActiveTabChanged(diagramRootId); });
 }
 

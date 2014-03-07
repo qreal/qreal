@@ -91,6 +91,8 @@ public:
 	virtual IdList children(Id const &parent) const = 0;
 	virtual QString shape(Id const &id) const = 0;
 	virtual void updateShape(Id const &id, QString const &graphics) const = 0;
+	virtual void resetIsHidden(Id const &id) const = 0;
+	virtual QString getIsHidden(Id const &id) const = 0;
 	virtual void deleteElement(MainWindow *mainWindow, Id const &id) const = 0;
 	virtual bool isRootDiagramNode(Id const &id) const = 0;
 	virtual void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const = 0;
@@ -109,6 +111,13 @@ public:
 	virtual Pattern getPatternByName (QString const &str) const = 0;
 	virtual QList<QString> getPatternNames() const = 0;
 	virtual QSize iconSize(Id const &id) const = 0;
+
+	virtual IdList propertiesWithTheSameName(Id const &id, QString const &propCurrentName
+			, QString const &propNewName) const = 0;
+
+	virtual QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const = 0;
+	virtual void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const = 0;
+	virtual void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const = 0;
 };
 
 }

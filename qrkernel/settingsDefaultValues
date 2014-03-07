@@ -3,7 +3,7 @@ ActivateAlignment=true
 Antialiasing=true
 arrangeLinks=true
 Autosave=true
-AutosaveInterval=180
+AutosaveInterval=60
 AutosaveDirPath=
 AutosaveFileName=autosave.qrs
 buildedFileName=builded
@@ -41,7 +41,7 @@ ShowAlignment=true
 ShowGrid=true
 size=@Size(1024 800)
 Splashscreen=true
-LineType=-1
+LineType=0
 MoveLabels = true
 ResizeLabels = true
 LabelsDistance = 100
@@ -72,4 +72,4 @@ dragArea = 12
 robotsInterpreterStackSize=4000
 usabilityTestingMode=false
 collectErgonomicValues=truenxtFlashToolRunPolicy=0
-SelectedRobotKit=nxtKit
+touchMode=falseSelectedRobotKit=nxtKit

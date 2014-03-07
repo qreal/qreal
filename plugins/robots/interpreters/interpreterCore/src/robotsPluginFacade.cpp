@@ -39,7 +39,9 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 		return;
 	}
 
-	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter());
+	/// @todo Give parser a real time computation function.
+	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter()
+			, []() { return 0; });
 
 	initSensorWidgets();
 	/// @todo connect 2d model

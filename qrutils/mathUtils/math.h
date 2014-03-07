@@ -4,7 +4,7 @@
 
 #include <qrutils/utilsDeclSpec.h>
 
-namespace utils {
+namespace mathUtils {
 
 // Default precision for all floating point numbers comparison methods
 qreal const EPS = 0.0000000001;

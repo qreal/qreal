@@ -284,7 +284,7 @@ void RobotModel::nextBlockAfterInitial(bool success)
 	emit goToNextBlock(success);
 }
 
-AbstractTimer *RobotModel::produceTimer()
+TimelineInterface *RobotModel::timeline()
 {
-	return mRobotImpl->produceTimer();
+	return mRobotImpl->timeline();
 }

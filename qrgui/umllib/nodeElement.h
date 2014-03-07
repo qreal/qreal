@@ -180,8 +180,8 @@ public:
 	IdList sortedChildren() const;
 
 public slots:
-	virtual void singleSelectionState(bool const singleSelected);
-	virtual void selectionState(bool const selected);
+	virtual void select(bool const singleSelected);
+	virtual void setSelectionState(bool const selected);
 	void switchGrid(bool isChecked);
 	NodeElement *copyAndPlaceOnDiagram(QPointF const &offset);
 

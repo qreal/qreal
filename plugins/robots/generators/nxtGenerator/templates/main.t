@@ -8,6 +8,7 @@
 #include <stdarg.h>
 #include <math.h>
 
+U32 __interpretation_started_timestamp__ = 0;
 @@VARIABLES@@
 
 @@BMP_FILES@@
@@ -34,5 +35,6 @@ void user_1ms_isr_type2(void)
 /* Main task */
 TASK(OSEK_Task_Number_0)
 {
+	__interpretation_started_timestamp__ = systick_get_ms();
 @@MAIN_CODE@@
 }

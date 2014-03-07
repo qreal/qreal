@@ -13,7 +13,7 @@
 #include "sensorImplementations/bluetoothSoundSensorImplementation.h"
 #include "sensorImplementations/bluetoothAccelerometerSensorImplementation.h"
 #include "sensorImplementations/bluetoothGyroscopeSensorImplementation.h"
-
+#include "details/realTimeline.h"
 
 namespace qReal {
 namespace interpreters {
@@ -50,7 +50,7 @@ public:
 	virtual sensorImplementations::BluetoothEncoderImplementation &encoderB();
 	virtual sensorImplementations::BluetoothEncoderImplementation &encoderC();
 
-	virtual AbstractTimer *produceTimer();
+	TimelineInterface *timeline() override;
 
 	bool needsConnection() const;
 
@@ -70,6 +70,8 @@ private:
 	sensorImplementations::BluetoothEncoderImplementation mEncoderA;
 	sensorImplementations::BluetoothEncoderImplementation mEncoderB;
 	sensorImplementations::BluetoothEncoderImplementation mEncoderC;
+
+	RealTimeline mTimeline;
 
 	virtual void addTouchSensor(robots::enums::inputPort::InputPortEnum const port);
 	virtual void addSonarSensor(robots::enums::inputPort::InputPortEnum const port);

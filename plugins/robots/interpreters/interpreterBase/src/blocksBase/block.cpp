@@ -160,13 +160,15 @@ void Block::error(QString const &message)
 QVariant Block::evaluate(QString const &propertyName)
 {
 	int position = 0;
-	QVariant value = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId).property("Number");
+	utils::Number *result = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
 //	if (mParser->hasErrors()) {
 //		mParser->deselect();
 //		emit failure();
+//		return QVariant();
 //	}
 
-	return value;
+
+	return result->value();
 }
 
 bool Block::evaluateBool(QString const &propertyName)

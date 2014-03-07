@@ -612,6 +612,17 @@ void EditorManager::updateShape(Id const &id, QString const &graphics) const
 	Q_UNUSED(graphics);
 }
 
+void EditorManager::resetIsHidden(Id const &id) const
+{
+	Q_UNUSED(id);
+}
+
+QString EditorManager::getIsHidden(Id const &id) const
+{
+	Q_UNUSED(id);
+	return "false";
+}
+
 void EditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
 {
 	Q_UNUSED(mainWindow);
@@ -657,4 +668,31 @@ void EditorManager::saveMetamodel(QString const &newMetamodelFileName)
 QString EditorManager::saveMetamodelFilePath() const
 {
 	return "";
+}
+
+IdList EditorManager::propertiesWithTheSameName(Id const &id, QString const &propertyCurrentName
+		, QString const &propertyNewName) const
+{
+	Q_UNUSED(id);
+	Q_UNUSED(propertyCurrentName);
+	Q_UNUSED(propertyNewName);
+	return IdList();
+}
+
+QStringList EditorManager::getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const
+{
+	Q_UNUSED(propertyId);
+	Q_UNUSED(propertyName);
+	return QStringList();
+}
+
+void EditorManager::restoreRemovedProperty(Id const &propertyId, QString const &previousName) const
+{
+	Q_UNUSED(propertyId);
+	Q_UNUSED(previousName);
+}
+void EditorManager::restoreRenamedProperty(Id const &propertyId, QString const &previousName) const
+{
+	Q_UNUSED(propertyId);
+	Q_UNUSED(previousName);
 }

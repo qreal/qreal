@@ -1,9 +1,7 @@
 QT += xml script widgets
 
 TEMPLATE = lib
-CONFIG += plugin
-
-CONFIG += c++11
+CONFIG += plugin c++11
 
 DESTDIR = ../../bin/plugins/
 

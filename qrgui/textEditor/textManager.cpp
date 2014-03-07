@@ -10,11 +10,12 @@
 using namespace qReal;
 using namespace gui;
 
-TextManager::TextManager(SystemEvents *systemEvents, MainWindow *mainWindow)
+TextManager::TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWindow)
 	: mMainWindow(mainWindow)
 	, mSystemEvents(systemEvents)
 
 {
+	connect(mSystemEvents, &SystemEventsInterface::codeTabClosed, this, &TextManager::onTabClosed);
 }
 
 bool TextManager::openFile(QString const &filePath, QString const &genName)
@@ -157,6 +158,11 @@ void TextManager::setModified(gui::QScintillaTextEdit *code)
 	}
 }
 
+void TextManager::onTabClosed(QFileInfo const &file)
+{
+	closeFile(file.absoluteFilePath());
+}
+
 void TextManager::addExtension(QString const &name, QString const &description)
 {
 	mExtensions.insert(name, description);
@@ -172,17 +178,15 @@ void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &gen
 	if (dynamic_cast<EditorView *>(mMainWindow->getCurrentTab())) {
 		QString const filePath = fileInfo.absoluteFilePath();
 
-		QScintillaTextEdit * area;
-
-		if (!contains(filePath)) {
-			openFile(filePath, genName);
-			area = code(filePath);
-			area->show();
-			bindCode(mMainWindow->getCurrentTab(), filePath);
-			emit mSystemEvents->newCodeAppeared(mMainWindow->activeDiagram(), QFileInfo(filePath));
-		} else {
-			area = code(filePath);
+		if (contains(filePath)) {
+			mMainWindow->closeTab(code(filePath));
 		}
+
+		openFile(filePath, genName);
+		QScintillaTextEdit *area = code(filePath);
+		area->show();
+		bindCode(mMainWindow->getCurrentTab(), filePath);
+		mSystemEvents->emitNewCodeAppeared(mMainWindow->activeDiagram(), QFileInfo(filePath));
 
 		mMainWindow->openTab(area,  fileInfo.fileName());
 	}

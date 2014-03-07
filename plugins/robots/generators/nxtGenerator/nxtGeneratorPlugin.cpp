@@ -29,9 +29,9 @@ NxtGeneratorPlugin::~NxtGeneratorPlugin()
 	delete mFlashTool;
 }
 
-QFileInfo NxtGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString NxtGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QFileInfo(QString("nxt-tools/%1/%1.c").arg(projectName));
+	return QString("nxt-tools/%1/%1.c").arg(projectName);
 }
 
 QString NxtGeneratorPlugin::extension() const
@@ -47,6 +47,21 @@ QString NxtGeneratorPlugin::extDescrition() const
 QString NxtGeneratorPlugin::generatorName() const
 {
 	return "nxtOsek";
+}
+
+bool NxtGeneratorPlugin::canGenerateTo(QString const &project)
+{
+	QString const cFilePath = QApplication::applicationDirPath() + "/" + defaultFilePath(project);
+	QFileInfo const cFile(cFilePath);
+	QFileInfo const makeFile(cFile.absolutePath() + "/makefile");
+	if (!cFile.exists() || !makeFile.exists()) {
+		return true;
+	}
+
+	// If c file has much later timestamp then it was edited by user - restrincting generation to this file.
+	int const timestampMaxDifference = 100;
+	return cFile.lastModified().toMSecsSinceEpoch()
+			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference;
 }
 
 void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
@@ -157,7 +172,7 @@ void NxtGeneratorPlugin::uploadProgram()
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-		QFileInfo const fileInfo = currentSource();
+		QFileInfo const fileInfo = generateCodeForProcessing();
 
 		if (fileInfo != QFileInfo()) {
 			mFlashTool->uploadProgram(fileInfo);
