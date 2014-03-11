@@ -16,8 +16,6 @@ EditorView::EditorView(QWidget *parent, MiniMap *mm)
 	, mWheelPressed(false)
 	, mTouchManager(this)
 	, mMiniMapShell(NULL)
-	, mMainLayout(new QHBoxLayout())
-	, mAuxiliaryLayout(new QVBoxLayout())
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
@@ -293,21 +291,24 @@ void EditorView::addMiniMap(MiniMap *mm)
 {
 	mMiniMap = mm;
 	mMiniMapShell = new MiniMapShell(this, mm);
+	mMiniMapShell->setParent(this);
 
-	mAuxiliaryLayout->addStretch();
-	mAuxiliaryLayout->addWidget(mMiniMapShell);
-	mMainLayout->addStretch();
-	mMainLayout->addLayout(mAuxiliaryLayout);
-	setLayout(mMainLayout);
 	connect(this, SIGNAL(changeMiniMapPos(QPoint)), mMiniMapShell, SLOT(saveSceneCoordinates(QPoint)));
-	mMiniMapShell->saveSceneCoordinates(QPoint (this->width() - mMiniMapShell->width()-10, this->height() - mMiniMapShell->height()-10));
+
+	emit changeMiniMapPos(QPoint(0, 0));
+
+	QPoint mMiniMapPos = mMiniMapShell->getSceneCoordinates();
+	mMiniMapShell->move(mMiniMapPos);
+	qDebug()<<mMiniMapPos;
+	qDebug()<<this->width();
+	qDebug()<< mMiniMapShell->width();
 }
 
 void EditorView::replaceMiniMap()
 {
 	mMiniMapShell->currentTabChanged();
 	QPoint mMiniMapPos = mMiniMapShell->getSceneCoordinates();
-	mMiniMapShell->move(mapFromGlobal(mMiniMapPos));
+	mMiniMapShell->move(mMiniMapPos);
 	mMiniMap->show();
 }
 
@@ -366,5 +367,6 @@ void EditorView::moveMiniMap(QPoint miniMapPos)
 		}
 	}
 
-	emit changeMiniMapPos(miniMapPos);
+	emit changeMiniMapPos(mMiniMapShell->pos());
+	qDebug()<<this->width() + "&&&";
 }

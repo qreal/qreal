@@ -72,8 +72,6 @@ private:
 
 	MiniMap *mMiniMap;
 	MiniMapShell *mMiniMapShell;
-	QHBoxLayout *mMainLayout;
-	QVBoxLayout *mAuxiliaryLayout;
 
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;

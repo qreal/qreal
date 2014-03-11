@@ -45,7 +45,6 @@ void MiniMapShell::changeSize()
 void MiniMapShell::currentTabChanged()
 {
 	mMiniMap->setScene(mEditorView->scene());
-	this->parentWidget()->layout()->removeWidget(this);
 	mMiniMap->setParent(this);
 	mShowMiniMapButton->raise();
 }
