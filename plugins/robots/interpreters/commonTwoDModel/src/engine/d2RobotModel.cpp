@@ -4,8 +4,8 @@
 #include <utils/tracer.h>
 #include "constants.h"
 //#include "details/tracer.h"
-#include "src/physics/realisticPhysicsEngine.h"
-#include "src/physics/simplePhysicsEngine.h"
+#include "src/engine/physics/realisticPhysicsEngine.h"
+#include "src/engine/physics/simplePhysicsEngine.h"
 
 using namespace twoDModel;
 using namespace twoDModel::physics;

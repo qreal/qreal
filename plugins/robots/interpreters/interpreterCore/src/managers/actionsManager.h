@@ -14,7 +14,7 @@ namespace interpreterCore {
 class ActionsManager
 {
 public:
-	explicit ActionsManager(KitPluginManager const &kitPluginManager);
+	explicit ActionsManager(KitPluginManager &kitPluginManager);
 
 	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
 
@@ -64,7 +64,7 @@ private:
 	QList<qReal::ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
 
 	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
-	KitPluginManager const &mKitPluginManager;
+	KitPluginManager &mKitPluginManager;
 
 	/// Main window interface object, to ask about currently open tab and so on.
 	// Does not have ownership

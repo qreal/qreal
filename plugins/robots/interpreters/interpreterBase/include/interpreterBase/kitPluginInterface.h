@@ -52,7 +52,7 @@ public:
 
 	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
 	/// goes here.
-	virtual QList<qReal::ActionInfo> customActions() const = 0;
+	virtual QList<qReal::ActionInfo> customActions() = 0;
 };
 
 }

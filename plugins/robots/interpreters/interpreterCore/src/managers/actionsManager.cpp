@@ -7,20 +7,11 @@ using namespace interpreterCore;
 static qReal::Id const robotDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
 static qReal::Id const subprogramDiagramType = qReal::Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
-ActionsManager::ActionsManager(KitPluginManager const &kitPluginManager)
-	: mRunAction((QIcon(":/icons/robots_run.png"), QObject::tr("Run"), nullptr))
-	, mStopRobotAction(
-			QIcon(":/icons/robots_stop.png")
-			, QObject::tr("Stop robot")
-			, nullptr)
-	, mConnectToRobotAction(
-			QIcon(":/icons/robots_connect.png")
-			, QObject::tr("Connect to robot")
-			, nullptr)
-	, mRobotSettingsAction(
-			QIcon(":/icons/robots_settings.png")
-			, QObject::tr("Robot settings")
-			, nullptr)
+ActionsManager::ActionsManager(KitPluginManager &kitPluginManager)
+	: mRunAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), nullptr)
+	, mStopRobotAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr)
+	, mConnectToRobotAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr)
+	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
 	, mTitlesAction(QObject::tr("Text under pictogram"), nullptr)
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)

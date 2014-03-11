@@ -1,6 +1,6 @@
 #include "physicsEngineBase.h"
 
-#include "src/worldModel.h"
+#include "src/engine/worldModel.h"
 
 using namespace twoDModel;
 using namespace twoDModel::physics;

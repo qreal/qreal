@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtWidgets/QAction>
+
 #include <interpreterBase/kitPluginInterface.h>
 #include "nxtAdditionalPreferences.h"
 #include "robotModel/real/realRobotModel.h"
@@ -31,12 +33,13 @@ public:
 
 	qReal::IdList unsupportedBlocks() const override;
 
-	QList<qReal::ActionInfo> customActions() const override;
+	QList<qReal::ActionInfo> customActions() override;
 
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
+	QAction mTwoDModelAction;
 };
 
 }
