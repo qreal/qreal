@@ -299,9 +299,6 @@ void EditorView::addMiniMap(MiniMap *mm)
 
 	QPoint mMiniMapPos = mMiniMapShell->getSceneCoordinates();
 	mMiniMapShell->move(mMiniMapPos);
-	qDebug()<<mMiniMapPos;
-	qDebug()<<this->width();
-	qDebug()<< mMiniMapShell->width();
 }
 
 void EditorView::replaceMiniMap()
@@ -368,5 +365,4 @@ void EditorView::moveMiniMap(QPoint miniMapPos)
 	}
 
 	emit changeMiniMapPos(mMiniMapShell->pos());
-	qDebug()<<this->width() + "&&&";
 }
