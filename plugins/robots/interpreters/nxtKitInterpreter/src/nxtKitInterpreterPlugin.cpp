@@ -11,6 +11,8 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
 			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 
+	/// @todo: why it can't be done in constructor?
+	mTwoDModel.createModelWidget();
 	connect(&mTwoDModelAction, &QAction::triggered, &mTwoDModel, &twoDModel::D2RobotModel::showModelWidget);
 }
 
