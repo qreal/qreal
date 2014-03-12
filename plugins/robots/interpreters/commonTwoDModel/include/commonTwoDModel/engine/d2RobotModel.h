@@ -5,10 +5,10 @@
 #include <QtCore/qmath.h>
 
 #include <qrutils/mathUtils/gaussNoise.h>
-#include "d2ModelWidget.h"
+//#include "d2ModelWidget.h"
 #include "robotModelInterface.h"
-#include "worldModel.h"
-#include "timeline.h"
+//#include "worldModel.h"
+//#include "timeline.h"
 //#include "details/nxtDisplay.h"
 
 namespace twoDModel {
@@ -30,8 +30,8 @@ public:
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
 	void setNewMotor(int speed, uint degrees, int port, bool breakMode);
-	virtual SensorsConfiguration &configuration();
-	D2ModelWidget *createModelWidget();
+//	virtual SensorsConfiguration &configuration();
+//	D2ModelWidget *createModelWidget();
 	int readEncoder(int const port) const;
 	void resetEncoder(int const port);
 
@@ -53,7 +53,7 @@ public:
 	virtual void serialize(QDomDocument &target);
 	virtual void deserialize(const QDomElement &robotElement);
 
-	Timeline *timeline() const;
+//	Timeline *timeline() const;
 
 	void setNoiseSettings();
 
@@ -117,7 +117,7 @@ private:
 
 	void nextStep();
 
-	D2ModelWidget *mD2ModelWidget;
+//	D2ModelWidget *mD2ModelWidget;
 	Engine *mEngineA;
 	Engine *mEngineB;
 	Engine *mEngineC;
@@ -126,10 +126,10 @@ private:
 	QPointF mRotatePoint;
 	QHash<int, Engine*> mEngines;  /// @todo Arrays are not enough here?
 	QHash<int, qreal> mTurnoverEngines;  // stores how many degrees the motor rotated on
-	SensorsConfiguration mSensorsConfiguration;
-	WorldModel mWorldModel;
+//	SensorsConfiguration mSensorsConfiguration;
+//	WorldModel mWorldModel;
 	physics::PhysicsEngineBase *mPhysicsEngine;
-	Timeline *mTimeline;
+//	Timeline *mTimeline;
 	qreal mSpeedFactor;
 	mathUtils::GaussNoise mNoiseGen;
 	bool mNeedSync;

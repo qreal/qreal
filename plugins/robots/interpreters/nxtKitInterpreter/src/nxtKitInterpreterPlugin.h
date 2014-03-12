@@ -7,6 +7,8 @@
 #include "robotModel/real/realRobotModel.h"
 #include "robotModel/twoD/twoDRobotModel.h"
 
+#include <commonTwoDModel/engine/d2RobotModel.h>
+
 namespace nxtKitInterpreter {
 
 class NxtKitInterpreterPlugin : public QObject, public interpreterBase::KitPluginInterface
@@ -40,6 +42,7 @@ private:
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
 	QAction mTwoDModelAction;
+	twoDModel::D2RobotModel mTwoDModel;
 };
 
 }

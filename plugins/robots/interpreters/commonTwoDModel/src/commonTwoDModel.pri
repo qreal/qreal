@@ -9,16 +9,16 @@ LIBS += -L$$PWD/../../../../../bin/ -lqrkernel -lqrutils -lutils -linterpreterBa
 
 HEADERS += \
 	$$PWD/../include/commonTwoDModel/engine/configurer.h \
+	$$PWD/../include/commonTwoDModel/engine/d2RobotModel.h \
+	$$PWD/../include/commonTwoDModel/engine/robotModelInterface.h \
 
 HEADERS += \
 	$$PWD/engine/d2ModelWidget.h \
 	$$PWD/engine/d2ModelScene.h \
-	$$PWD/engine/d2RobotModel.h \
 	$$PWD/engine/robotItem.h \
 	$$PWD/engine/sensorItem.h \
 	$$PWD/engine/rotater.h \
 	$$PWD/engine/sonarSensorItem.h \
-	$$PWD/engine/robotModelInterface.h \
 	$$PWD/engine/sensorsConfiguration.h \
 	$$PWD/engine/worldModel.h \
 	$$PWD/engine/wallItem.h \

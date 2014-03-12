@@ -16,7 +16,7 @@
 #include "stylusItem.h"
 #include "ellipseItem.h"
 #include "worldModel.h"
-#include "robotModelInterface.h"
+#include "commonTwoDModel/engine/robotModelInterface.h"
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"

@@ -4,12 +4,14 @@ using namespace nxtKitInterpreter;
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
-	, mTwoDModelAction(nullptr)
+	, mTwoDModelAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 {
 	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
 			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
 	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
 			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
+
+	connect(&mTwoDModelAction, &QAction::triggered, &mTwoDModel, &twoDModel::D2RobotModel::showModelWidget);
 }
 
 QString NxtKitInterpreterPlugin::kitId() const
