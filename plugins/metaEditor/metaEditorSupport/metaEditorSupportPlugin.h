@@ -46,6 +46,7 @@ private:
 			, QString const &commandSecond  ///< make command
 			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
 			, QString const &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
+			, QString const &buildConfiguration  ///< debug or release, passed to CONFIG variable of qmake
 			);
 
 	/// Action that starts generation of .xml file with metamodel for qrxc

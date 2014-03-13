@@ -142,6 +142,8 @@ QString EditorGenerator::calculateRelativePath(QString const &pathOne, QString c
 	if (pathTwo.count() > 2 && pathTwo[1] == ':') {
 		// Remove drive letter on Windows.
 		result += pathTwo.mid(2);
+		// Remove extra /.. added due to "/" after drive letter.
+		result = result.mid(3);
 	} else {
 		result += pathTwo;
 	}
