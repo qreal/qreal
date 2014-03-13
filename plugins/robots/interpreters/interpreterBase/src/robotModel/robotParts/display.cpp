@@ -3,6 +3,11 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
+QString Display::friendlyName()
+{
+	return tr("Display");
+}
+
 DeviceInfo::Direction Display::direction()
 {
 	return DeviceInfo::output;

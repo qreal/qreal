@@ -14,6 +14,9 @@ public:
 	static DeviceInfo::Direction direction();
 
 	EncoderSensor(DeviceInfo const &info, PortInfo const &port);
+	virtual ~EncoderSensor();
+
+	virtual void nullificate() = 0;
 };
 
 }

@@ -9,6 +9,7 @@ namespace robotParts {
 
 class ROBOTS_INTERPRETER_BASE_EXPORT Speaker : public Device
 {
+public:
 	static QString friendlyName();
 	static DeviceInfo::Direction direction();
 

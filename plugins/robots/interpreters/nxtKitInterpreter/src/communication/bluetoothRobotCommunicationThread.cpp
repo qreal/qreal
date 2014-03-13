@@ -1,6 +1,8 @@
 #include "bluetoothRobotCommunicationThread.h"
 
 #include <QtCore/QMetaType>
+#include <QtCore/QTimer>
+#include <QtCore/QThread>
 #include <time.h>
 
 #include <qrkernel/settingsManager.h>
@@ -15,8 +17,8 @@ unsigned const getFirmwareVersionResponseSize = 9;
 using namespace nxtKitInterpreter::communication;
 
 BluetoothRobotCommunicationThread::BluetoothRobotCommunicationThread()
-		: mPort(nullptr)
-		, mKeepAliveTimer(new QTimer(this))
+	: mPort(nullptr)
+	, mKeepAliveTimer(new QTimer(this))
 {
 	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 }
@@ -47,7 +49,7 @@ void BluetoothRobotCommunicationThread::connect()
 {
 	if (mPort) {
 		disconnect();
-		SleeperThread::msleep(1000);  // Give port some time to close
+		QThread::msleep(1000);  // Give port some time to close
 	}
 
 	QString const portName = qReal::SettingsManager::value("NxtBluetoothPortName").toString();
@@ -93,20 +95,6 @@ void BluetoothRobotCommunicationThread::disconnect()
 		mKeepAliveTimer->stop();
 	}
 	emit disconnected();
-}
-
-void BluetoothRobotCommunicationThread::sendI2C(
-		QObject *addressee
-		, QByteArray const &buffer
-		, unsigned const responseSize
-		, interpreterBase::robotModel::PortInfo const &port
-		)
-{
-	if (!mPort) {
-		emit response(addressee, QByteArray());
-		return;
-	}
-	RobotCommunicationThreadBase::sendI2C(addressee, buffer, responseSize, port);
 }
 
 void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)

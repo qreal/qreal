@@ -17,3 +17,7 @@ EncoderSensor::EncoderSensor(DeviceInfo const &info, PortInfo const &port)
 	: ScalarSensor(info, port)
 {
 }
+
+EncoderSensor::~EncoderSensor()
+{
+}

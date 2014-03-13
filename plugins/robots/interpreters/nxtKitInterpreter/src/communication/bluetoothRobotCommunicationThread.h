@@ -3,6 +3,7 @@
 #include "robotCommunicationThreadBase.h"
 
 class QextSerialPort;
+class QTimer;
 
 namespace nxtKitInterpreter {
 namespace communication {
@@ -20,13 +21,6 @@ public slots:
 	void connect();
 	void reconnect();
 	void disconnect();
-
-	void sendI2C(
-			QObject *addressee
-			, QByteArray const &buffer
-			, unsigned const responseSize
-			, interpreterBase::robotModel::PortInfo const &port
-			);
 
 	void allowLongJobs(bool allow = true);
 	void checkConsistency();

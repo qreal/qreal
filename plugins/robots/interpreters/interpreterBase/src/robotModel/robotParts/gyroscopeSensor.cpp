@@ -14,6 +14,6 @@ DeviceInfo::Direction GyroscopeSensor::direction()
 }
 
 GyroscopeSensor::GyroscopeSensor(DeviceInfo const &info, PortInfo const &port)
-	: VectorSensor(info, port)
+	: ScalarSensor(info, port)
 {
 }

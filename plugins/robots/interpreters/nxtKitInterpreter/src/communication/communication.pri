@@ -5,11 +5,13 @@ HEADERS += \
 	$$PWD/fantom.h \
 	$$PWD/fantomMethods.h \
 	$$PWD/robotCommunicationException.h \
+	$$PWD/i2cCommunicator.h \
 
 SOURCES += \
 	$$PWD/robotCommunicationThreadBase.cpp \
 	$$PWD/bluetoothRobotCommunicationThread.cpp \
 	$$PWD/usbRobotCommunicationThread.cpp \
+	$$PWD/i2cCommunicator.cpp \
 
 win32 {
 	HEADERS += \

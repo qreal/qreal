@@ -13,7 +13,6 @@ class ROBOTS_INTERPRETER_BASE_EXPORT RangeSensor : public ScalarSensor
 	Q_OBJECT
 
 public:
-	/// @todo: remove it
 	static QString friendlyName();
 	static DeviceInfo::Direction direction();
 

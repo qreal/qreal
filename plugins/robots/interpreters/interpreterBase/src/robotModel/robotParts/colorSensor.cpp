@@ -5,7 +5,7 @@ using namespace robotParts;
 
 QString ColorSensor::friendlyName()
 {
-	return tr("Color sensor");
+	return QString();
 }
 
 DeviceInfo::Direction ColorSensor::direction()

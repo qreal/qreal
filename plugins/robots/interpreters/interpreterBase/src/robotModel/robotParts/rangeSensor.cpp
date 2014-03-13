@@ -5,7 +5,7 @@ using namespace robotParts;
 
 QString RangeSensor::friendlyName()
 {
-	return tr("Range sensor");
+	return QString();
 }
 
 DeviceInfo::Direction RangeSensor::direction()
