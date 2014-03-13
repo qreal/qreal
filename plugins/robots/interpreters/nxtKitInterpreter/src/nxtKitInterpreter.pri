@@ -3,12 +3,12 @@ QT += widgets
 INCLUDEPATH += \
 	$$PWD \
 	$$PWD/../../interpreterBase/include \
-	$$PWD/../../twoDModel/include \
+	$$PWD/../../commonTwoDModel/include \
 	$$PWD/../../../utils/include \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lutils -linterpreterBase -ltwoDModel -lqextserialport
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport
 
 HEADERS += \
 	$$PWD/nxtKitInterpreterPlugin.h \

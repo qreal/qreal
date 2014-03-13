@@ -5,10 +5,7 @@
 #include <QtCore/qmath.h>
 
 #include <qrutils/mathUtils/gaussNoise.h>
-#include "d2ModelWidget.h"
 #include "robotModelInterface.h"
-#include "worldModel.h"
-#include "timeline.h"
 //#include "details/nxtDisplay.h"
 
 namespace twoDModel {
@@ -16,6 +13,10 @@ namespace twoDModel {
 namespace physics {
 class PhysicsEngineBase;
 }
+
+class D2ModelWidget;
+class WorldModel;
+class Timeline;
 
 class D2RobotModel : public QObject, public RobotModelInterface
 {
@@ -30,7 +31,7 @@ public:
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
 	void setNewMotor(int speed, uint degrees, int port, bool breakMode);
-	virtual SensorsConfiguration &configuration();
+//	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
 	int readEncoder(int const port) const;
 	void resetEncoder(int const port);
@@ -126,8 +127,8 @@ private:
 	QPointF mRotatePoint;
 	QHash<int, Engine*> mEngines;  /// @todo Arrays are not enough here?
 	QHash<int, qreal> mTurnoverEngines;  // stores how many degrees the motor rotated on
-	SensorsConfiguration mSensorsConfiguration;
-	WorldModel mWorldModel;
+//	SensorsConfiguration mSensorsConfiguration;
+	WorldModel *mWorldModel;
 	physics::PhysicsEngineBase *mPhysicsEngine;
 	Timeline *mTimeline;
 	qreal mSpeedFactor;

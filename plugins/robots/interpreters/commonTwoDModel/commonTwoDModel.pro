@@ -8,4 +8,4 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 UI_DIR = .ui
 
-include(src/twoDModel.pri)
+include(src/commonTwoDModel.pri)

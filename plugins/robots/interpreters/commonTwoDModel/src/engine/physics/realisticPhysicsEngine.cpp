@@ -3,9 +3,9 @@
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
-#include "src/constants.h"
-#include "src/worldModel.h"
-#include "src/wallItem.h"
+#include "src/engine/constants.h"
+#include "src/engine/worldModel.h"
+#include "src/engine/wallItem.h"
 
 using namespace twoDModel;
 using namespace twoDModel::physics;

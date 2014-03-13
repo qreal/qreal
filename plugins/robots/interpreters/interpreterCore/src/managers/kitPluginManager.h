@@ -26,6 +26,7 @@ public:
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
 	QList<interpreterBase::robotModel::RobotModelInterface *> allRobotModels() const;
 
+	/// @todo Return a notion of selected kit, it is needed to hide actions on a toolbar from all kits except selected.
 private:
 	/// Maps kit plugin name to corresponding plugin interface.
 	/// Doesn't have ownership, objects are owned by mLoaders.
