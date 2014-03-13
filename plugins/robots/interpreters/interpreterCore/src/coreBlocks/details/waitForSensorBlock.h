@@ -12,7 +12,7 @@ class WaitForSensorBlock : public WaitBlock
 	Q_OBJECT
 
 public:
-	WaitForSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel
+	explicit WaitForSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel
 //			, robots::enums::sensorType::SensorTypeEnum type
 			);
 

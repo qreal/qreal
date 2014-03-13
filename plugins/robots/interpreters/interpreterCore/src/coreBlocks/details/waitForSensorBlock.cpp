@@ -18,17 +18,18 @@ WaitForSensorBlock::~WaitForSensorBlock()
 
 void WaitForSensorBlock::run()
 {
-	QString port = stringProperty("Port");
+	QString const port = stringProperty("Port");
 
 	/// @todo Works only with scalar sensors.
-	for (interpreterBase::robotModel::PortInfo portInfo : mRobotModel.availablePorts()) {
+	/// @todo Move port search code into a common place
+	for (interpreterBase::robotModel::PortInfo const &portInfo : mRobotModel.availablePorts()) {
 		if (portInfo.name() == port || portInfo.nameAliases().contains(port)) {
 			interpreterBase::robotModel::robotParts::Device *device
 					= mRobotModel.configuration().device(portInfo
 							, interpreterBase::robotModel::ConfigurationInterface::output);
 			interpreterBase::robotModel::robotParts::ScalarSensor *sensor
-					= static_cast<interpreterBase::robotModel::robotParts::ScalarSensor *>(device);
-			if (sensor != nullptr) {
+					= dynamic_cast<interpreterBase::robotModel::robotParts::ScalarSensor *>(device);
+			if (sensor) {
 				mPort = portInfo;
 				connect(sensor, &interpreterBase::robotModel::robotParts::ScalarSensor::newData
 						, this, &WaitForSensorBlock::responseSlot);

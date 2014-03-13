@@ -16,7 +16,8 @@ class EngineCommandBlock : public interpreterBase::blocksBase::Block
 	Q_OBJECT
 
 public:
-	EngineCommandBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	explicit EngineCommandBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+
 	virtual void run() = 0;
 
 protected slots:

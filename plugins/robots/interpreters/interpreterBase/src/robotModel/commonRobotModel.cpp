@@ -1,6 +1,7 @@
 #include "interpreterBase/robotModel/commonRobotModel.h"
 
 #include <qrkernel/exception/exception.h>
+#include <utils/realTimer.h>
 
 #include "interpreterBase/robotModel/robotParts/touchSensor.h"
 
@@ -111,6 +112,11 @@ void CommonRobotModel::applyConfiguration()
 QList<DeviceInfo> CommonRobotModel::convertibleBases() const
 {
 	return {};
+}
+
+utils::AbstractTimer *CommonRobotModel::produceTimer()
+{
+	return new utils::RealTimer;
 }
 
 void CommonRobotModel::rereadSettings()

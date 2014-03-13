@@ -2,10 +2,11 @@ QT += widgets
 
 INCLUDEPATH += \
 	$$PWD/include/ \
+	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils
 
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 

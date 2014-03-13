@@ -1,14 +1,15 @@
 #include "timerBlock.h"
 
-//#include "../tracer.h"
+#include <utils/tracer.h>
+#include <utils/abstractTimer.h>
 
 using namespace interpreterCore::coreBlocks::details;
 
-TimerBlock::TimerBlock(/*AbstractTimer * const timer*/)
-//	: mTimer(timer)
+TimerBlock::TimerBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+	: mTimer(robotModel.produceTimer())
 {
-//	mTimer->setParent(this);
-	connect(&mTimer, &QTimer::timeout, this, &TimerBlock::timeout);
+	mTimer->setParent(this);
+	connect(mTimer, &utils::AbstractTimer::timeout, this, &TimerBlock::timeout);
 }
 
 TimerBlock::~TimerBlock()
@@ -18,13 +19,13 @@ TimerBlock::~TimerBlock()
 void TimerBlock::run()
 {
 	int const interval = evaluate("Delay").toInt();
-//	Tracer::debug(tracer::enums::blocks, "TimerBlock::run", "interval=" + QString(interval));
+	utils::Tracer::debug(utils::Tracer::blocks, "TimerBlock::run", "interval=" + QString(interval));
 
-	mTimer.start(interval);
+	mTimer->start(interval);
 }
 
 void TimerBlock::timeout()
 {
-//	Tracer::debug(tracer::enums::blocks, "TimerBlock::timeout", "emit done(mNextBlock)");
+	utils::Tracer::debug(utils::Tracer::blocks, "TimerBlock::timeout", "emit done(mNextBlock)");
 	emit done(mNextBlockId);
 }

@@ -13,6 +13,10 @@ LIBS += -L$$PWD/../../../../../bin -lqrkernel -lutils -linterpreterBase -ltwoDMo
 HEADERS += \
 	$$PWD/nxtKitInterpreterPlugin.h \
 	$$PWD/nxtAdditionalPreferences.h \
+	$$PWD/blocks/nxtBlocksFactory.h \
+	$$PWD/blocks/details/speakerBlock.h \
+	$$PWD/blocks/details/beepBlock.h \
+	$$PWD/blocks/details/playToneBlock.h \
 	$$PWD/robotModel/nxtRobotModelBase.h \
 	$$PWD/robotModel/real/realRobotModel.h \
 	$$PWD/robotModel/real/parts/nxtInputDevice.h \
@@ -36,6 +40,10 @@ HEADERS += \
 SOURCES += \
 	$$PWD/nxtKitInterpreterPlugin.cpp \
 	$$PWD/nxtAdditionalPreferences.cpp \
+	$$PWD/blocks/nxtBlocksFactory.cpp \
+	$$PWD/blocks/details/speakerBlock.cpp \
+	$$PWD/blocks/details/beepBlock.cpp \
+	$$PWD/blocks/details/playToneBlock.cpp \
 	$$PWD/robotModel/nxtRobotModelBase.cpp \
 	$$PWD/robotModel/real/realRobotModel.cpp \
 	$$PWD/robotModel/real/parts/nxtInputDevice.cpp \

@@ -3,10 +3,11 @@ QT += svg xml widgets
 INCLUDEPATH += \
 	$$PWD/src/ \
 	$$PWD/../interpreterBase/include/ \
+	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils
 
 HEADERS += \
 	$$PWD/src/customizer.h \

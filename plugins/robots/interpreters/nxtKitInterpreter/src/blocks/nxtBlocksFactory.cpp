@@ -1,16 +1,11 @@
-#include "coreBlocksFactory.h"
+#include "nxtBlocksFactory.h"
 
-//#include "blocks/beepBlock.h"
-#include "details/initialBlock.h"
-#include "details/finalBlock.h"
+#include "details/beepBlock.h"
+#include "details/playToneBlock.h"
 //#include "blocks/nullificationEncoderBlock.h"
 
-#include "details/enginesForwardBlock.h"
-#include "details/enginesBackwardBlock.h"
 //#include "blocks/enginesStopBlock.h"
 
-#include "details/timerBlock.h"
-//#include "blocks/playToneBlock.h"
 //#include "blocks/functionBlock.h"
 //#include "blocks/beepBlock.h"
 
@@ -28,7 +23,6 @@
 //#include "blocks/drawCircleBlock.h"
 //#include "blocks/printTextBlock.h"
 
-#include "details/waitForTouchSensorBlock.h"
 //#include "blocks/waitForSonarDistanceBlock.h"
 //#include "blocks/waitForColorBlock.h"
 //#include "blocks/waitForColorIntensityBlock.h"
@@ -39,9 +33,10 @@
 //#include "blocks/waitForEncoderBlock.h"
 //#include "blocks/waitForButtonsBlock.h"
 
-using namespace interpreterCore::coreBlocks;
+using namespace nxtKitInterpreter::blocks;
+using namespace details;
 
-CoreBlocksFactory::CoreBlocksFactory(
+NxtBlocksFactory::NxtBlocksFactory(
 		qReal::GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::LogicalModelAssistInterface const &logicalModelApi
 		, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
@@ -61,25 +56,13 @@ CoreBlocksFactory::CoreBlocksFactory(
 //	return mParser;
 //}
 
-interpreterBase::blocksBase::BlockInterface *CoreBlocksFactory::block(qReal::Id const &element)
+interpreterBase::blocksBase::BlockInterface *NxtBlocksFactory::block(qReal::Id const &element)
 {
 	interpreterBase::blocksBase::Block * newBlock = nullptr;
-	if (elementMetatypeIs(element, "InitialNode")) {
-		newBlock = new details::InitialBlock();
-	} else if (elementMetatypeIs(element, "FinalNode")) {
-		newBlock = new details::FinalBlock();
-//	} else if (elementMetatypeIs(element, "Beep")) {
-//		newBlock = new BeepBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
-	} else if (elementMetatypeIs(element, "Timer")) {
-		newBlock = new details::TimerBlock(mRobotModelManager.model());
-	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
-		newBlock = new details::WaitForTouchSensorBlock(mRobotModelManager.model());
+	if (elementMetatypeIs(element, "Beep")) {
+		newBlock = new BeepBlock(mRobotModelManager.model());
 //	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
 //		newBlock = new WaitForSonarDistanceBlock(mRobotModel);
-	} else if (elementMetatypeIs(element, "EnginesForward")) {
-		newBlock = new details::EnginesForwardBlock(mRobotModelManager.model());
-	} else if (elementMetatypeIs(element, "EnginesBackward")) {
-		newBlock = new details::EnginesBackwardBlock(mRobotModelManager.model());
 //	} else if (elementMetatypeIs(element, "EnginesStop")) {
 //		newBlock = new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
 //	} else if (elementMetatypeIs(element, "Loop")) {
@@ -88,8 +71,8 @@ interpreterBase::blocksBase::BlockInterface *CoreBlocksFactory::block(qReal::Id 
 //		newBlock = new ForkBlock();
 //	} else if (elementMetatypeIs(element, "Subprogram")) {
 //		newBlock = new SubprogramBlock();
-//	} else if (elementMetatypeIs(element, "PlayTone")) {
-//		newBlock = new PlayToneBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
+	} else if (elementMetatypeIs(element, "PlayTone")) {
+		newBlock = new PlayToneBlock(mRobotModelManager.model());
 //	} else if (elementMetatypeIs(element, "Function")) {
 //		newBlock = new FunctionBlock();
 //	} else if (elementMetatypeIs(element, "WaitForColor")) {
@@ -139,13 +122,13 @@ interpreterBase::blocksBase::BlockInterface *CoreBlocksFactory::block(qReal::Id 
 	return newBlock;
 }
 
-void CoreBlocksFactory::setParser(interpreterBase::blocksBase::BlockParserInterface * const parser)
+void NxtBlocksFactory::setParser(interpreterBase::blocksBase::BlockParserInterface * const parser)
 {
 	/// @todo ??? is this ****?
 	mParser = parser;
 }
 
-qReal::IdList CoreBlocksFactory::providedBlocks() const
+qReal::IdList NxtBlocksFactory::providedBlocks() const
 {
 	qReal::IdList result;
 

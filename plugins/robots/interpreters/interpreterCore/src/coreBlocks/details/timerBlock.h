@@ -4,7 +4,7 @@
 #include <QtCore/QTimer>
 
 #include <interpreterBase/blocksBase/block.h>
-//#include "../abstractTimer.h"
+#include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace interpreterCore {
 namespace coreBlocks {
@@ -15,18 +15,16 @@ class TimerBlock : public interpreterBase::blocksBase::Block
 	Q_OBJECT
 
 public:
-	explicit TimerBlock(/*AbstractTimer * const timer*/ /* Takes ownership */);
+	explicit TimerBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 	~TimerBlock() override;
 
-	virtual void run();
+	void run() override;
 
 private slots:
 	void timeout();
 
 private:
-//	AbstractTimer * const mTimer;
-	/// @todo Reimplement model time timer.
-	QTimer mTimer;
+	utils::AbstractTimer * const mTimer;  // Takes ownership
 };
 
 }

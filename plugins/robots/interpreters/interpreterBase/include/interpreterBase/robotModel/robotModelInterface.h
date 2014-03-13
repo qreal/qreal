@@ -9,6 +9,10 @@
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
+namespace utils {
+class AbstractTimer;
+}
+
 namespace interpreterBase {
 namespace robotModel {
 
@@ -126,6 +130,9 @@ public:
 	/// Both light sensors inherit interpreterBase::robotModel::robotParts::LightSensor, so if this class is
 	/// returned as convertible base we can simply convert Nxt`s light sensor to Trik`s one.
 	virtual QList<DeviceInfo> convertibleBases() const = 0;
+
+	/// Produces and transfers ownership the timer object that will be used for some blocks invocation.
+	virtual utils::AbstractTimer *produceTimer() = 0;
 
 signals:
 	/// Emitted when model is connected to a robot. If there is no need to connect (for example, 2d model), emitted

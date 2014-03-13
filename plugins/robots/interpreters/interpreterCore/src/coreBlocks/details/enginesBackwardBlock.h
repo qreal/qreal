@@ -13,7 +13,8 @@ class EnginesBackwardBlock : public EngineCommandBlock
 	Q_OBJECT
 
 public:
-	EnginesBackwardBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	explicit EnginesBackwardBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+
 	void run() override;
 };
 

@@ -2,8 +2,7 @@
 
 #include <QtCore/QTimer>
 
-#include "utils/abstractTimer.h"
-
+#include "abstractTimer.h"
 #include "utilsDeclSpec.h"
 
 namespace utils {
