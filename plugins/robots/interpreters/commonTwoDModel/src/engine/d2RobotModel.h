@@ -4,6 +4,8 @@
 #include <QtCore/QTimer>
 #include <QtCore/qmath.h>
 
+#include <interpreterBase/sensorsConfigurationProvider.h>
+
 #include <qrutils/mathUtils/gaussNoise.h>
 #include "robotModelInterface.h"
 //#include "details/nxtDisplay.h"
@@ -18,7 +20,7 @@ class D2ModelWidget;
 class WorldModel;
 class Timeline;
 
-class D2RobotModel : public QObject, public RobotModelInterface
+class D2RobotModel : public QObject, public RobotModelInterface, public interpreterBase::SensorsConfigurationProvider
 {
 	Q_OBJECT
 
