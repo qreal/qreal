@@ -2,6 +2,7 @@ QT += widgets xml
 
 INCLUDEPATH += \
 	$$PWD/include/ \
+	$$PWD/../../utils/include/ \
 	$$PWD/../interpreterBase/include/ \
 	$$PWD/../../../../ \
 

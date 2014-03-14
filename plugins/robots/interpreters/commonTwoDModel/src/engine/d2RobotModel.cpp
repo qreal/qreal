@@ -1,4 +1,4 @@
-#include "commonTwoDModel/engine/d2RobotModel.h"
+#include "src/engine/d2RobotModel.h"
 
 #include <qrkernel/settingsManager.h>
 #include <utils/tracer.h>

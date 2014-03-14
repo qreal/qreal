@@ -51,15 +51,29 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	/// @todo Pass nullptr here in case when there is no kit.
 //	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
 
-	interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory =
-			new coreBlocks::CoreBlocksFactory(
-			configurer.graphicalModelApi()
+	interpreterBase::blocksBase::BlocksFactoryInterface * const coreFactory = new coreBlocks::CoreBlocksFactory();
+	coreFactory->configure(configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
 			, mRobotModelManager
 			, *configurer.mainWindowInterpretersInterface().errorReporter()
 			);
+	mBlocksFactoryManager.addFactory(coreFactory);
 
-	mBlocksFactoryManager.addFactory(blocksFactory);
+	/// @todo: Check that this code works when different kit is selected
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		interpreterBase::KitPluginInterface &kit = mKitPluginManager.kitById(kitId);
+		for (interpreterBase::robotModel::RobotModelInterface const *model : kit.robotModels()) {
+			interpreterBase::blocksBase::BlocksFactoryInterface * const factory = kit.blocksFactoryFor(model);
+			if (factory) {
+				factory->configure(configurer.graphicalModelApi()
+						, configurer.logicalModelApi()
+						, mRobotModelManager
+						, *configurer.mainWindowInterpretersInterface().errorReporter()
+						);
+				mBlocksFactoryManager.addFactory(factory);
+			}
+		}
+	}
 
 	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()
@@ -80,7 +94,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
 
-	blocksFactory->setParser(mParser);
+	coreFactory->setParser(mParser);
 }
 
 PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const

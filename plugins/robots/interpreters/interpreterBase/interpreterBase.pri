@@ -13,6 +13,7 @@ DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 SOURCES += \
 	$$PWD/src/sensorsConfigurationProvider.cpp \
 	$$PWD/src/blocksBase/block.cpp \
+	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
 	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \
@@ -43,6 +44,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/blocksBase/blockParserInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/blocksTableInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/blocksFactoryInterface.h \
+	$$PWD/include/interpreterBase/blocksBase/commonBlocksFactory.h \
 	$$PWD/include/interpreterBase/robotModel/configuration.h \
 	$$PWD/include/interpreterBase/robotModel/commonRobotModel.h \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \

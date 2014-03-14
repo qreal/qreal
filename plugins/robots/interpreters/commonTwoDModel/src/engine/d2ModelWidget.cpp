@@ -9,7 +9,7 @@
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
 
-#include "commonTwoDModel/engine/d2RobotModel.h"
+#include "d2RobotModel.h"
 #include "constants.h"
 #include "sensorItem.h"
 #include "sonarSensorItem.h"

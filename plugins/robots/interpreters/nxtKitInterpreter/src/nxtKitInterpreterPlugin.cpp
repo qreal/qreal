@@ -29,6 +29,13 @@ QList<interpreterBase::robotModel::RobotModelInterface *> NxtKitInterpreterPlugi
 	return {&mRealRobotModel, &mTwoDRobotModel};
 }
 
+interpreterBase::blocksBase::BlocksFactoryInterface *NxtKitInterpreterPlugin::blocksFactoryFor(
+		interpreterBase::robotModel::RobotModelInterface const *model)
+{
+	Q_UNUSED(model);
+	return &mBlocksFactory;
+}
+
 interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defaultRobotModel()
 {
 	return &mTwoDRobotModel;

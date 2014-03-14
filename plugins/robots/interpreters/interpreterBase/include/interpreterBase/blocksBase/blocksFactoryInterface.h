@@ -1,8 +1,14 @@
 #pragma once
 
+#include <qrkernel/ids.h>
+
+#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+
 #include <interpreterBase/blocksBase/blockInterface.h>
 #include <interpreterBase/blocksBase/blockParserInterface.h>
-#include <qrkernel/ids.h>
+#include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 namespace interpreterBase {
 namespace blocksBase {
@@ -19,12 +25,10 @@ public:
 	virtual BlockInterface *block(qReal::Id const &element) = 0;
 	virtual qReal::IdList providedBlocks() const = 0;
 
-protected:
-	/// @todo: other place for it?
-	bool elementMetatypeIs(qReal::Id const &element, QString const &metatype)
-	{
-		return element.type() == qReal::Id("RobotsMetamodel", "RobotsDiagram", metatype);
-	}
+	virtual void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
+			, qReal::LogicalModelAssistInterface const &logicalModelApi
+			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, qReal::ErrorReporterInterface &errorReporter) = 0;
 };
 
 }

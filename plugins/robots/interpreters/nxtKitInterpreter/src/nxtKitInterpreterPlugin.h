@@ -6,6 +6,7 @@
 #include <commonTwoDModel/engine/twoDModelControlInterface.h>
 
 #include "nxtAdditionalPreferences.h"
+#include "blocks/nxtBlocksFactory.h"
 #include "robotModel/real/realRobotModel.h"
 #include "robotModel/twoD/twoDRobotModel.h"
 
@@ -26,6 +27,9 @@ public:
 
 	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
 
+	interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
+			interpreterBase::robotModel::RobotModelInterface const *model) override;
+
 	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
 	// Transfers ownership.
@@ -40,6 +44,7 @@ public:
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
+	blocks::NxtBlocksFactory mBlocksFactory;
 	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 };

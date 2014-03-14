@@ -7,6 +7,7 @@
 #include <qrkernel/ids.h>
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
+#include <interpreterBase/blocksBase/blocksFactoryInterface.h>
 #include <qrgui/toolPluginInterface/actionInfo.h>
 
 namespace interpreterBase {
@@ -25,6 +26,10 @@ public:
 
 	/// Returns a list of robot models supported by this kit plugin.
 	virtual QList<robotModel::RobotModelInterface *> robotModels() = 0;
+
+	/// Returns a blocks factory for a given robot model. Nullptr can be returned and means that no factory is provided
+	/// by this plugin.
+	virtual blocksBase::BlocksFactoryInterface *blocksFactoryFor(robotModel::RobotModelInterface const *model) = 0;
 
 	/// If overrided and returns some model as value that model will be used as default selected model for this kit
 	/// @todo is it possible that plugin does not provide default model? Maybe first model in robotModels() list will be

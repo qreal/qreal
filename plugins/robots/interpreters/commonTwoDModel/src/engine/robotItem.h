@@ -9,7 +9,7 @@
 
 #include "sensorItem.h"
 #include "rotater.h"
-#include "commonTwoDModel/engine/robotModelInterface.h"
+#include "robotModelInterface.h"
 
 namespace twoDModel {
 

@@ -17,6 +17,13 @@ QList<interpreterBase::robotModel::RobotModelInterface *> NullKitInterpreterPlug
 	return QList<interpreterBase::robotModel::RobotModelInterface *>() << &mRobotModel;
 }
 
+interpreterBase::blocksBase::BlocksFactoryInterface *NullKitInterpreterPlugin::blocksFactoryFor(
+		interpreterBase::robotModel::RobotModelInterface const *model)
+{
+	Q_UNUSED(model)
+	return nullptr;
+}
+
 interpreterBase::AdditionalPreferences *NullKitInterpreterPlugin::settingsWidget()
 {
 	return nullptr;

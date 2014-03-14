@@ -41,120 +41,81 @@
 
 using namespace interpreterCore::coreBlocks;
 
-CoreBlocksFactory::CoreBlocksFactory(
-		qReal::GraphicalModelAssistInterface const &graphicalModelApi
-		, qReal::LogicalModelAssistInterface const &logicalModelApi
-		, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
-		, qReal::ErrorReporterInterface &errorReporter
-		)
-	: mRobotModelManager(robotModelManager)
-	, mGraphicalModelApi(graphicalModelApi)
-	, mLogicalModelApi(logicalModelApi)
-	, mErrorReporter(errorReporter)
-//	, mBlocksTable(blocksTable)
-	, mParser(nullptr)
+interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id const &element)
 {
-}
-
-//RobotsBlockParser * CoreBlocksFactory::getParser()
-//{
-//	return mParser;
-//}
-
-interpreterBase::blocksBase::BlockInterface *CoreBlocksFactory::block(qReal::Id const &element)
-{
-	interpreterBase::blocksBase::Block * newBlock = nullptr;
 	if (elementMetatypeIs(element, "InitialNode")) {
-		newBlock = new details::InitialBlock();
+		return new details::InitialBlock();
 	} else if (elementMetatypeIs(element, "FinalNode")) {
-		newBlock = new details::FinalBlock();
+		return new details::FinalBlock();
 //	} else if (elementMetatypeIs(element, "Beep")) {
-//		newBlock = new BeepBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
+//		return new BeepBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "Timer")) {
-		newBlock = new details::TimerBlock(mRobotModelManager.model());
+		return new details::TimerBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
-		newBlock = new details::WaitForTouchSensorBlock(mRobotModelManager.model());
+		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
 //	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
-//		newBlock = new WaitForSonarDistanceBlock(mRobotModel);
+//		return new WaitForSonarDistanceBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "EnginesForward")) {
-		newBlock = new details::EnginesForwardBlock(mRobotModelManager.model());
+		return new details::EnginesForwardBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "EnginesBackward")) {
-		newBlock = new details::EnginesBackwardBlock(mRobotModelManager.model());
+		return new details::EnginesBackwardBlock(mRobotModelManager->model());
 //	} else if (elementMetatypeIs(element, "EnginesStop")) {
-//		newBlock = new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
+//		return new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
 //	} else if (elementMetatypeIs(element, "Loop")) {
-//		newBlock = new LoopBlock();
+//		return new LoopBlock();
 //	} else if (elementMetatypeIs(element, "Fork")) {
-//		newBlock = new ForkBlock();
+//		return new ForkBlock();
 //	} else if (elementMetatypeIs(element, "Subprogram")) {
-//		newBlock = new SubprogramBlock();
+//		return new SubprogramBlock();
 //	} else if (elementMetatypeIs(element, "PlayTone")) {
-//		newBlock = new PlayToneBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
+//		return new PlayToneBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
 //	} else if (elementMetatypeIs(element, "Function")) {
-//		newBlock = new FunctionBlock();
+//		return new FunctionBlock();
 //	} else if (elementMetatypeIs(element, "WaitForColor")) {
-//		newBlock = new WaitForColorBlock(mRobotModel);
+//		return new WaitForColorBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element, "WaitForColorIntensity")) {
-//		newBlock = new WaitForColorIntensityBlock(mRobotModel);
+//		return new WaitForColorIntensityBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element, "IfBlock")) {
-//		newBlock = new IfBlock();
+//		return new IfBlock();
 //	} else if (elementMetatypeIs(element, "WaitForEncoder")) {
-//		newBlock = new WaitForEncoderBlock(mRobotModel);
+//		return new WaitForEncoderBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element, "NullificationEncoder")) {
-//		newBlock = new NullificationEncoderBlock(mRobotModel);
+//		return new NullificationEncoderBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element, "WaitForLight")) {
-//		newBlock = new WaitForLightSensorBlock(mRobotModel);
+//		return new WaitForLightSensorBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element, "WaitForSound")) {
-//		newBlock = new WaitForSoundSensorBlock(mRobotModel);
+//		return new WaitForSoundSensorBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element, "WaitForGyroscope")) {
-//		newBlock = new WaitForGyroscopeSensorBlock(mRobotModel);
+//		return new WaitForGyroscopeSensorBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element,"WaitForAccelerometer")) {
-//		newBlock = new WaitForAccelerometerSensorBlock(mRobotModel);
+//		return new WaitForAccelerometerSensorBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element, "CommentBlock")) {
-//		newBlock = new CommentBlock();
+//		return new CommentBlock();
 //	} else if (elementMetatypeIs(element, "WaitForButtons")) {
-//		newBlock = new WaitForButtonsBlock(mRobotModel, mRobotModel->display());
+//		return new WaitForButtonsBlock(mRobotModel, mRobotModel->display());
 //	} else if (elementMetatypeIs(element, "DrawPixel")) {
-//		newBlock = new DrawPixelBlock(mRobotModel->display());
+//		return new DrawPixelBlock(mRobotModel->display());
 //	} else if (elementMetatypeIs(element, "DrawLine")) {
-//		newBlock = new DrawLineBlock(mRobotModel->display());
+//		return new DrawLineBlock(mRobotModel->display());
 //	} else if (elementMetatypeIs(element, "DrawCircle")) {
-//		newBlock = new DrawCircleBlock(mRobotModel->display());
+//		return new DrawCircleBlock(mRobotModel->display());
 //	} else if (elementMetatypeIs(element, "PrintText")) {
-//		newBlock = new PrintTextBlock(mRobotModel->display());
+//		return new PrintTextBlock(mRobotModel->display());
 //	} else if (elementMetatypeIs(element, "DrawRect")) {
-//		newBlock = new DrawRectBlock(mRobotModel->display());
+//		return new DrawRectBlock(mRobotModel->display());
 //	} else if (elementMetatypeIs(element, "ClearScreen")) {
-//		newBlock = new ClearScreenBlock(mRobotModel->display());
+//		return new ClearScreenBlock(mRobotModel->display());
 //	} else {
-//		newBlock = new DummyBlock();
+//		return new DummyBlock();
 	}
 
-	if (newBlock) {
-		newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, &mErrorReporter, mParser, mRobotModelManager);
-	} else {
-		qDebug() << element;
-	}
-
-	return newBlock;
-}
-
-void CoreBlocksFactory::setParser(interpreterBase::blocksBase::BlockParserInterface * const parser)
-{
-	/// @todo ??? is this ****?
-	mParser = parser;
+	return nullptr;
 }
 
 qReal::IdList CoreBlocksFactory::providedBlocks() const
 {
-	qReal::IdList result;
-
-	auto id = [] (QString const &metatype) { return qReal::Id("RobotsMetamodel", "RobotsDiagram", metatype); };
-
-	result
-			<< id("InitialNode")
-			<< id("FinalNode")
-			;
-
-	return result;
+	return {
+		id("InitialNode")
+		, id("FinalNode")
+	};
 }

@@ -20,6 +20,9 @@ public:
 
 	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
 
+	interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
+			interpreterBase::robotModel::RobotModelInterface const *model) override;
+
 	// Transfers ownership.
 	interpreterBase::AdditionalPreferences *settingsWidget() override;
 
