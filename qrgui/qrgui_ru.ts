@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU" sourcelanguage="en">
+<TS version="2.1" language="ru_RU" sourcelanguage="en">
 <context>
     <name>AddNodeDialog</name>
     <message>
@@ -1586,6 +1586,7 @@
     <message>
         <location filename="dialogs/preferencesDialog.cpp" line="59"/>
         <location filename="dialogs/preferencesDialog.cpp" line="138"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="139"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
@@ -2949,6 +2950,29 @@
     </message>
 </context>
 <context>
+    <name>RestorePropertiesDialog</name>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation>Восстановление свойства</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.ui" line="20"/>
+        <source>In earlier language versions already used the properties with the same name:</source>
+        <translation>В ранних версиях языка уже использовались свойства с таким именем:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.ui" line="30"/>
+        <source>Restore</source>
+        <translation>Восстановить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.ui" line="37"/>
+        <source>Create New</source>
+        <translation>Создать новое</translation>
+    </message>
+</context>
+<context>
     <name>RobotSettingsDialog</name>
     <message>
         <source>Dialog</source>
@@ -3678,22 +3702,27 @@
 <context>
     <name>qReal::EditPropertiesDialog</name>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="59"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="92"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="59"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="92"/>
         <source>All required properties should be filled!</source>
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="92"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="99"/>
+        <source>Restore properties</source>
+        <translation>Восстановление свойств</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="117"/>
         <source>Add new property</source>
         <translation>Добавление нового свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="95"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="120"/>
         <source>Properties editor: </source>
         <translation>Редактор свойств: </translation>
     </message>
@@ -3702,13 +3731,13 @@
         <translation type="obsolete">Добавление нового свойства:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="71"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="75"/>
         <source>Warning:</source>
         <oldsource>Warning</oldsource>
         <translation>Внимание:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="72"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="76"/>
         <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.</source>
         <translation>Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства.</translation>
     </message>
@@ -3717,12 +3746,12 @@
         <translation type="obsolete">Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="75"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="79"/>
         <source>Proceed anyway</source>
         <translation>Продолжить все равно</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="76"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="80"/>
         <source>Cancel the type conversion</source>
         <oldsource>Cancel the type cinversion</oldsource>
         <translation>Отменить преобразование типа</translation>
@@ -3778,6 +3807,24 @@
         <location filename="view/editorViewScene.cpp" line="933"/>
         <source>Add child</source>
         <translation>Добавить элемент</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::InterpreterEditorManager</name>
+    <message>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="798"/>
+        <source>Deleted</source>
+        <translation>Удалено</translation>
+    </message>
+    <message>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="803"/>
+        <source>Existed</source>
+        <translation>Используется</translation>
+    </message>
+    <message>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="805"/>
+        <source>Renamed to </source>
+        <translation>Переименовано в </translation>
     </message>
 </context>
 <context>
@@ -4304,6 +4351,39 @@
     </message>
 </context>
 <context>
+    <name>qReal::RestorePropertiesDialog</name>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="13"/>
+        <source>Property name</source>
+        <translation>Имя свойства</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="15"/>
+        <source>State</source>
+        <translation>Состояние</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="17"/>
+        <source>Type</source>
+        <translation>Тип</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="19"/>
+        <source>Default value</source>
+        <translation>Значение</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="53"/>
+        <source>Deleted</source>
+        <translation>Удалено</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="55"/>
+        <source>Existed</source>
+        <translation>Используется</translation>
+    </message>
+</context>
+<context>
     <name>qReal::ShapeEdit</name>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="340"/>
@@ -4737,12 +4817,12 @@
         <translation>Свойства:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="114"/>
+        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="118"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="115"/>
+        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="119"/>
         <source>For adding a new property from the scene and from the explorer of logical modelshould be removed all the elements of the object and its inheritors!</source>
         <translation>Для добавления нового свойства со сцены и обозревателя логической модели должны быть удалены все элементы данного объекта и его наследников!</translation>
     </message>
@@ -5048,7 +5128,7 @@
     <name>qReal::view::details::ExploserView</name>
     <message>
         <location filename="view/private/exploserView.cpp" line="55"/>
-        <location filename="view/private/exploserView.cpp" line="174"/>
+        <location filename="view/private/exploserView.cpp" line="180"/>
         <source>New </source>
         <translation>Новый </translation>
     </message>
@@ -5061,6 +5141,11 @@
         <location filename="view/private/exploserView.cpp" line="108"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
+    </message>
+    <message>
+        <location filename="view/private/exploserView.cpp" line="113"/>
+        <source>Add element to palette</source>
+        <translation>Добавить элемент в палитру</translation>
     </message>
 </context>
 </TS>
