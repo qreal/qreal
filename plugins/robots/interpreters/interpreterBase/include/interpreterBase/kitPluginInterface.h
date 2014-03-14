@@ -7,6 +7,7 @@
 #include <qrkernel/ids.h>
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
+#include <qrgui/toolPluginInterface/actionInfo.h>
 
 namespace interpreterBase {
 
@@ -27,7 +28,7 @@ public:
 
 	/// If overrided and returns some model as value that model will be used as default selected model for this kit
 	/// @todo is it possible that plugin does not provide default model? Maybe first model in robotModels() list will be
-	// enough?
+	/// enough?
 	virtual robotModel::RobotModelInterface *defaultRobotModel()
 	{
 		return nullptr;
@@ -48,6 +49,10 @@ public:
 
 	/// A list of common blocks which shall be disabled by this plugin.
 	virtual qReal::IdList unsupportedBlocks() const = 0;
+
+	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
+	/// goes here.
+	virtual QList<qReal::ActionInfo> customActions() = 0;
 };
 
 }

@@ -1,6 +1,10 @@
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include <interpreterBase/kitPluginInterface.h>
+#include <commonTwoDModel/engine/twoDModelControlInterface.h>
+
 #include "nxtAdditionalPreferences.h"
 #include "robotModel/real/realRobotModel.h"
 #include "robotModel/twoD/twoDRobotModel.h"
@@ -29,13 +33,15 @@ public:
 
 //	qReal::IdList specificBlocks() const override;
 
-	// Override.
 	qReal::IdList unsupportedBlocks() const override;
+
+	QList<qReal::ActionInfo> customActions() override;
 
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 };
 
 }

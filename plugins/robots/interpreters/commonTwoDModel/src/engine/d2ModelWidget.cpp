@@ -9,7 +9,7 @@
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
 
-#include "d2RobotModel.h"
+#include "commonTwoDModel/engine/d2RobotModel.h"
 #include "constants.h"
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
@@ -43,7 +43,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	, mWidth(defaultPenWidth)
 	, mClearing(false)
 	, mFirstShow(true)
-	, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
+//	, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 

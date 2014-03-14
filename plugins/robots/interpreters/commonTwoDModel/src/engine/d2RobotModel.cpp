@@ -1,11 +1,15 @@
-#include "d2RobotModel.h"
+#include "commonTwoDModel/engine/d2RobotModel.h"
 
 #include <qrkernel/settingsManager.h>
 #include <utils/tracer.h>
 #include "constants.h"
 //#include "details/tracer.h"
-#include "src/physics/realisticPhysicsEngine.h"
-#include "src/physics/simplePhysicsEngine.h"
+#include "src/engine/physics/realisticPhysicsEngine.h"
+#include "src/engine/physics/simplePhysicsEngine.h"
+#include "src/engine/worldModel.h"
+#include "src/engine/d2ModelWidget.h"
+#include "src/engine/timeline.h"
+#include "src/engine/worldModel.h"
 
 using namespace twoDModel;
 using namespace twoDModel::physics;
@@ -17,6 +21,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 	, mEngineB(nullptr)
 	, mEngineC(nullptr)
 //	, mDisplay(new NxtDisplay)
+	, mWorldModel(new WorldModel())
 	, mPhysicsEngine(nullptr)
 	, mTimeline(new Timeline(this))
 	, mNoiseGen()
@@ -134,14 +139,14 @@ void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
 	mTurnoverEngines[port] = 0;
 }
 
-SensorsConfiguration &D2RobotModel::configuration()
-{
-	return mSensorsConfiguration;
-}
+//SensorsConfiguration &D2RobotModel::configuration()
+//{
+//	return mSensorsConfiguration;
+//}
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
-	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel/*, mDisplay*/);
+	mD2ModelWidget = new D2ModelWidget(this, mWorldModel/*, mDisplay*/);
 	return mD2ModelWidget;
 }
 
@@ -525,7 +530,7 @@ void D2RobotModel::serialize(QDomDocument &target)
 	QDomElement robot = target.createElement("robot");
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", mAngle);
-	configuration().serialize(robot, target);
+//	configuration().serialize(robot, target);
 	target.firstChildElement("root").appendChild(robot);
 }
 
@@ -537,7 +542,7 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 	qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
 	mPos = QPointF(x, y);
 	mAngle = robotElement.attribute("direction", "0").toDouble();
-	configuration().deserialize(robotElement);
+//	configuration().deserialize(robotElement);
 	mNeedSync = false;
 	nextFragment();
 }
@@ -559,9 +564,9 @@ void D2RobotModel::setNoiseSettings()
 	if (oldPhysics != mIsRealisticPhysics || !mPhysicsEngine) {
 		physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
 		if (mIsRealisticPhysics) {
-			mPhysicsEngine = new physics::RealisticPhysicsEngine(mWorldModel);
+			mPhysicsEngine = new physics::RealisticPhysicsEngine(*mWorldModel);
 		} else {
-			mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel);
+			mPhysicsEngine = new physics::SimplePhysicsEngine(*mWorldModel);
 		}
 
 		if (oldEngine) {

@@ -5,9 +5,10 @@ SUBDIRS = \
 	interpreterBase \
 	nullKitInterpreter \
 	nxtKitInterpreter \
-	twoDModel \
+	commonTwoDModel \
 
 interpreterCore.depends = interpreterBase
 nullKitInterpreter.depends = interpreterBase
 nxtKitInterpreter.depends = interpreterBase
-nxtKitInterpreter.depends = twoDModel
+nxtKitInterpreter.depends = commonTwoDModel
+commonTwoDModel.depends = interpreterBase

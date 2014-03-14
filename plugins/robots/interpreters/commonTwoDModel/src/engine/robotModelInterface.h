@@ -1,14 +1,16 @@
 #pragma once
 
 #include <QtWidgets/QAction>
-#include "sensorsConfiguration.h"
+#include <QtXml/QDomElement>
+
+//s#include "sensorsConfiguration.h"
 
 namespace twoDModel {
 
 class RobotModelInterface
 {
 public:
-	virtual SensorsConfiguration &configuration() = 0;
+//	virtual SensorsConfiguration &configuration() = 0;
 	virtual void clear() = 0;
 	virtual void setRotation(double angle) = 0;
 	virtual qreal rotateAngle() const = 0;

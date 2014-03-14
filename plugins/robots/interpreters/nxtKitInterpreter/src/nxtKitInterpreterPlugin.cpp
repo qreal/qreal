@@ -1,9 +1,12 @@
 #include "nxtKitInterpreterPlugin.h"
 
+#include <commonTwoDModel/engine/twoDModelFacade.h>
+
 using namespace nxtKitInterpreter;
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
+	, mTwoDModel(new twoDModel::TwoDModelFacade())
 {
 	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
 			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
@@ -23,8 +26,7 @@ QString NxtKitInterpreterPlugin::friendlyKitName() const
 
 QList<interpreterBase::robotModel::RobotModelInterface *> NxtKitInterpreterPlugin::robotModels()
 {
-	return QList<interpreterBase::robotModel::RobotModelInterface *>()
-			<< &mRealRobotModel << &mTwoDRobotModel;
+	return {&mRealRobotModel, &mTwoDRobotModel};
 }
 
 interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defaultRobotModel()
@@ -44,5 +46,10 @@ interpreterBase::AdditionalPreferences *NxtKitInterpreterPlugin::settingsWidget(
 
 qReal::IdList NxtKitInterpreterPlugin::unsupportedBlocks() const
 {
-	return qReal::IdList();
+	return {};
+}
+
+QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
+{
+	return {mTwoDModel->showTwoDModelWidgetActionInfo()};
 }
