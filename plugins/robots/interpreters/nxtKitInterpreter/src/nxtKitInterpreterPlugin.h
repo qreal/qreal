@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QtWidgets/QAction>
+#include <QtCore/QScopedPointer>
 
 #include <interpreterBase/kitPluginInterface.h>
+#include <commonTwoDModel/engine/twoDModelControlInterface.h>
+
 #include "nxtAdditionalPreferences.h"
 #include "robotModel/real/realRobotModel.h"
 #include "robotModel/twoD/twoDRobotModel.h"
-
-#include <commonTwoDModel/engine/d2RobotModel.h>
 
 namespace nxtKitInterpreter {
 
@@ -41,8 +41,7 @@ private:
 	robotModel::real::RealRobotModel mRealRobotModel;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
-	QAction mTwoDModelAction;
-	twoDModel::D2RobotModel mTwoDModel;
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 };
 
 }
