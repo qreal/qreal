@@ -315,7 +315,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() con
 
 Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter() const
 {
-	return new converters::EnginePortsConverter(pathToTemplates(), outputPortConverter());
+	return new converters::EnginePortsConverter(outputPortConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::inputPortConverter() const

@@ -100,5 +100,6 @@
         <file>templates/engines/backward.t</file>
         <file>templates/engines/forward.t</file>
         <file>templates/engines/stop.t</file>
+        <file>templates/engines/nullifyEncoder.t</file>
     </qresource>
 </RCC>

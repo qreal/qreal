@@ -1221,7 +1221,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Порты" type="string" name="Ports">
-							<default>A, B, C</default>
+							<default>1, 2, 3, 4</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2035,7 +2035,7 @@
 				<element name="SadSmile"/>
 				<element name="SetBackground"/>
 				<element name="Led"/>
-<!--				<element name="NullificationEncoder"/> -->
+				<element name="NullificationEncoder"/>
 <!--			</group> -->
 <!--			<group name="Сегвей">
 				<element name="Balance"/>

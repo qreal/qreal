@@ -7,10 +7,12 @@ namespace robots {
 namespace generators {
 namespace converters {
 
-class PowerMotorPortConverter : public simple::Binding::MultiConverterInterface
+class PowerMotorPortConverter : public simple::Binding::ConverterInterface
 {
 public:
-	QStringList convert(QString const &data) const override;
+	static QString splitRegexp();
+
+	QString convert(QString const &data) const override;
 };
 
 }

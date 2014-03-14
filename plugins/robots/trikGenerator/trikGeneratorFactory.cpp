@@ -1,4 +1,5 @@
 #include "trikGeneratorFactory.h"
+#include <converters/regexpMultiConverter.h>
 #include "converters/servoMotorPortConverter.h"
 #include "converters/powerMotorPortConverter.h"
 #include "simpleGenerators/ledGenerator.h"
@@ -61,15 +62,27 @@ QString TrikGeneratorFactory::pathToTemplates() const
 Binding::MultiConverterInterface *TrikGeneratorFactory::enginesConverter(bool powerMotors) const
 {
 	if (powerMotors) {
-		return new converters::PowerMotorPortConverter;
+		return new converters::RegexpMultiConverter(converters::PowerMotorPortConverter::splitRegexp()
+				, new converters::PowerMotorPortConverter);
 	}
 
-	return new converters::ServoMotorPortConverter;
+	return new converters::RegexpMultiConverter(converters::ServoMotorPortConverter::splitRegexp()
+			, new converters::ServoMotorPortConverter);
+}
+
+Binding::MultiConverterInterface *TrikGeneratorFactory::enginesConverter() const
+{
+	return enginesConverter(true);
 }
 
 Binding::ConverterInterface *TrikGeneratorFactory::inputPortConverter() const
 {
 	return new Binding::EmptyConverter;
+}
+
+Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
+{
+	return new converters::PowerMotorPortConverter;
 }
 
 void TrikGeneratorFactory::initVariables()

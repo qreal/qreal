@@ -114,6 +114,7 @@ HEADERS += \
 	$$PWD/converters/templateParametrizedConverter.h \
 	$$PWD/converters/templateParametrizedMultiConverter.h \
 	$$PWD/converters/enumConverterBase.h \
+	$$PWD/converters/regexpMultiConverter.h \
 	$$PWD/converters/codeConverterBase.h \
 	$$PWD/converters/intPropertyConverter.h \
 	$$PWD/converters/floatPropertyConverter.h \
@@ -172,6 +173,7 @@ SOURCES += \
 	$$PWD/converters/templateParametrizedConverter.cpp \
 	$$PWD/converters/templateParametrizedMultiConverter.cpp \
 	$$PWD/converters/enumConverterBase.cpp \
+	$$PWD/converters/regexpMultiConverter.cpp \
 	$$PWD/converters/codeConverterBase.cpp \
 	$$PWD/converters/intPropertyConverter.cpp \
 	$$PWD/converters/floatPropertyConverter.cpp \
