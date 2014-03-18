@@ -5,8 +5,9 @@
 
 #include <QtCore/QDebug>
 
-#include "../../../../qrkernel/settingsManager.h"
-#include "../../../../qrutils/inFile.h"
+#include <qrkernel/settingsManager.h>
+#include <qrkernel/exception/exception.h>
+#include <qrutils/inFile.h>
 
 using namespace qReal::robots::generators::trik;
 
@@ -27,7 +28,13 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 		return false;
 	}
 
-	QString const fileContents = utils::InFile::readAll(programName);
+	QString fileContents;
+	try {
+		fileContents = utils::InFile::readAll(programName);
+	} catch (qReal::Exception const &) {
+		return false;
+	}
+
 	connect();
 	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
