@@ -23,6 +23,10 @@ TcpRobotCommunicator::~TcpRobotCommunicator()
 
 bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 {
+	if (programName.isEmpty()) {
+		return false;
+	}
+
 	QString const fileContents = utils::InFile::readAll(programName);
 	connect();
 	if (mSocket.state() != QAbstractSocket::ConnectedState) {

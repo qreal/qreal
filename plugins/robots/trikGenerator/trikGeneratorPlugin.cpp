@@ -88,7 +88,7 @@ bool TrikGeneratorPlugin::uploadProgram()
 {
 	QFileInfo const fileInfo = generateCodeForProcessing();
 
-	if (fileInfo != QFileInfo()) {
+	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
 		TcpRobotCommunicator communicator;
 		bool const result = communicator.uploadProgram(fileInfo.absoluteFilePath());
 		if (!result) {
