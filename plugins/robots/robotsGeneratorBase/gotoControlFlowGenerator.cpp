@@ -28,11 +28,11 @@ void GotoControlFlowGenerator::visitRegular(Id const &id, QList<LinkInfo> const 
 {
 	SimpleNode * const thisNode = static_cast<SimpleNode *>(mSemanticTree->findNodeFor(id));
 	SemanticNode *nextNode = nullptr;
-	if (!links[0].targetVisited) {
+	if (mSemanticTree->findNodeFor(links[0].target)) {
+		nextNode = produceGotoNode(links[0].target);
+	} else {
 		nextNode = mSemanticTree->produceNodeFor(links[0].target);
 		nextNode->addLabel();
-	} else {
-		nextNode = produceGotoNode(links[0].target);
 	}
 
 	thisNode->insertSiblingAfterThis(nextNode);
@@ -103,7 +103,7 @@ SemanticNode *GotoControlFlowGenerator::produceGotoNode(qReal::Id const &id)
 
 void GotoControlFlowGenerator::produceNextNodeIfNeeded(LinkInfo const &info, NonZoneNode * const parent)
 {
-	if (!info.targetVisited) {
+	if (!mSemanticTree->findNodeFor(info.target)) {
 		SemanticNode * const nextNode = mSemanticTree->produceNodeFor(info.target);
 		nextNode->addLabel();
 		parent->appendSibling(nextNode);
