@@ -39,6 +39,8 @@ private:
 	QStringList getPropertiesDisplayedNamesList(QStringList const &propertiesNames);
 	void change(QString const &text);
 	bool checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
+	void findElementsOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
+	void disableParentProperties(QStringList const propertiesDisplayedNames);
 
 	Ui::PropertiesDialog *mUi;
 	EditorManagerInterface &mInterperterEditorManager;
@@ -46,6 +48,7 @@ private:
 	MainWindow &mMainWindow;
 	EditPropertiesDialog *mEditPropertiesDialog; // Does not have ownership.
 	QStringList mPropertiesNames;
+	qReal::IdList mElementsOnDiagram;
 };
 
 }

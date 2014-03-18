@@ -8,12 +8,14 @@
 using namespace qReal;
 
 EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager
-		, Id const &id, QWidget *parent)
+		, Id const &id, QWidget *parent, qrRepo::LogicalRepoApi &api)
 		: QDialog(parent)
 		, mUi(new Ui::EditPropertiesDialog)
 		, mInterperterEditorManager(interpreterEditorManager)
 		, mId(id)
 		, mMode(addNew)
+		, mApi(api)
+		, mElementsOnDiagram(IdList())
 {
 	mUi->setupUi(this);
 	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
@@ -65,6 +67,11 @@ void EditPropertiesDialog::acceptPropertyModifications()
 		}
 
 		mInterperterEditorManager.addProperty(mId, mPropertyName);
+		// set property default value for elements on diagram
+		foreach (Id elementOnDiagram, mElementsOnDiagram) {
+			mApi.setProperty(elementOnDiagram, mPropertyName, mUi->defaultValueEdit->text());
+		}
+		mElementsOnDiagram.clear();
 	}
 
 	if (mMode == editExisting
@@ -107,11 +114,13 @@ void EditPropertiesDialog::okButtonClicked()
 	}
 }
 
-void EditPropertiesDialog::changeProperty(QListWidgetItem *propertyItem, QString const &propertyName, QString const &propertyDisplayedName)
+void EditPropertiesDialog::changeProperty(QListWidgetItem *propertyItem, QString const &propertyName
+		, QString const &propertyDisplayedName, qReal::IdList elementsOnDiagram)
 {
 	//mPropertyName = mInterperterEditorManager.propertyNameByDisplayedName(mId, propertyDisplayedName);
 	mPropertyName = propertyName;
 	mPropertyItem = propertyItem;
+	mElementsOnDiagram = elementsOnDiagram;
 
 	if (propertyName.isEmpty()) {
 		setWindowTitle(tr("Add new property"));
