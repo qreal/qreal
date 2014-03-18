@@ -262,20 +262,25 @@ void EditorView::setTitlesVisible(bool visible)
 	mScene->setTitlesVisible(visible);
 }
 
-//void EditorView::copyElementsOnDiagram()
-//{
-//	mScene->copy();
-//}
+void EditorView::copyElementsOnDiagram()
+{
+	mScene->copy();
+}
 
-//void EditorView::pasteOnDiagram()
-//{
-//	mScene->paste(false);
-//}
+void EditorView::pasteOnDiagram()
+{
+	mScene->paste(false);
+}
 
-//void EditorView::pasteCopyOfLogical()
-//{
-//	mScene->paste(true);
-//}
+void EditorView::CutElementsOnDiagram()
+{
+	mScene->cut();
+}
+
+void EditorView::pasteCopyOfLogical()
+{
+	mScene->paste(true);
+}
 
 void EditorView::zoomInTime()
 {

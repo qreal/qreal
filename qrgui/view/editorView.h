@@ -31,13 +31,17 @@ public:
 	void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
 	void setTitlesVisible(bool visible);
 
-	public slots:
+public slots:
 	void toggleAntialiasing(bool);
 	void zoomIn();
 	void zoomOut();
 	void zoom(qreal const zoomFactor);
 	void invalidateScene();
 
+	void pasteCopyOfLogical();
+	void copyElementsOnDiagram();
+	void pasteOnDiagram();
+	void CutElementsOnDiagram();
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);
 	virtual void mouseReleaseEvent(QMouseEvent *event);

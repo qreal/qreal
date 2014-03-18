@@ -1448,6 +1448,7 @@ void MainWindow::currentTabChanged(int newIndex)
 			connect(actionCopyElementsOnDiagram(), SIGNAL(triggered()), changeViewTab, SLOT(copyElementsOnDiagram()));
 			connect(actionPasteOnDiagram(), SIGNAL(triggered()), changeViewTab, SLOT(pasteOnDiagram()));
 			connect(actionPasteCopyOfLogical(), SIGNAL(triggered()), changeViewTab, SLOT(pasteCopyOfLogical()));
+			connect(actionCutElementsOnDiagram(), SIGNAL(triggered()), changeViewTab, SLOT(CutElementsOnDiagram()));
 		}
 		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
 		mToolManager.activeTabChanged(currentTabId);

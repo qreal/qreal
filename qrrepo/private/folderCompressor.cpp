@@ -26,7 +26,7 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 		return false;
 	}
 
-	// 1 - list all folders inside the current folder including hidden
+	// 1 - list all folders inside the current folder
 	//      ones, like '.svn/' and '.git/' needed for correct versioning
 	dir.setFilter(QDir::NoDotAndDotDot | QDir::Dirs | QDir::Hidden);
 	QFileInfoList foldersList = dir.entryInfoList();
@@ -51,7 +51,8 @@ bool FolderCompressor::compress(QString const &sourceFolder, QString const &pref
 		dataStream << QString(); //empty data part, need for correct decompression
 		return true;
 	}
-	// 5 - Else: for each mFile in list: add mFile path and compressed binary data
+
+	// 5- For each mFile in list: add mFile path and compressed binary data
 	foreach (QFileInfo const &fileInfo, filesList) {
 		QFile file(dir.absolutePath() + "/" + fileInfo.fileName());
 		if (!file.open(QIODevice::ReadOnly)) { // couldn't open file
@@ -94,18 +95,26 @@ bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const
 		QString subfolder; // create any needed folder
 		for (int i = fileName.length() - 1; i > 0; i--) {
 			if((QString(fileName.at(i)) == QString("\\"))
-					|| (QString(fileName.at(i)) == QString("/"))) {
+					|| (QString(fileName.at(i)) == QString("/")))
+			{
 				subfolder = fileName.left(i);
 				dir.mkpath(destinationFolder+"/"+subfolder);
 				break;
 			}
 		}
 
-		QFile outFile(destinationFolder + "/" + fileName);
-		if (!outFile.open(QIODevice::WriteOnly)) {
-			file.close();
-			return false;
+		if (!fileName.endsWith('/')) {
+			//we have an empty directory (see part 4 of compression),
+			// it was create earlier, continue
+			QFile outFile(destinationFolder + "/" + fileName);
+			if (!outFile.open(QIODevice::WriteOnly)) {
+				file.close();
+				return false;
+			}
+			outFile.write(qUncompress(data));
+			outFile.close();
 		}
+
 	}
 
 	file.close();
