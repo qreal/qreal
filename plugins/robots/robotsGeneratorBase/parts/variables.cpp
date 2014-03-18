@@ -142,6 +142,10 @@ QMap<QString, enums::variableType::VariableType> Variables::nonGenerableReserved
 	result.insert("sensor2", enums::variableType::intType);
 	result.insert("sensor3", enums::variableType::intType);
 	result.insert("sensor4", enums::variableType::intType);
+	result.insert("encoder1", enums::variableType::intType);
+	result.insert("encoder2", enums::variableType::intType);
+	result.insert("encoder3", enums::variableType::intType);
+	result.insert("encoder4", enums::variableType::intType);
 	result.insert("encoderA", enums::variableType::intType);
 	result.insert("encoderB", enums::variableType::intType);
 	result.insert("encoderC", enums::variableType::intType);

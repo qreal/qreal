@@ -459,17 +459,17 @@ void Interpreter::responseSlot4(int sensorValue)
 
 void Interpreter::responseSlotA(int encoderValue)
 {
-	updateSensorValues("encoderA", encoderValue);
+	updateSensorValues("encoder1", encoderValue);
 }
 
 void Interpreter::responseSlotB(int encoderValue)
 {
-	updateSensorValues("encoderB", encoderValue);
+	updateSensorValues("encoder2", encoderValue);
 }
 
 void Interpreter::responseSlotC(int encoderValue)
 {
-	updateSensorValues("encoderC", encoderValue);
+	updateSensorValues("encoder3", encoderValue);
 }
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
