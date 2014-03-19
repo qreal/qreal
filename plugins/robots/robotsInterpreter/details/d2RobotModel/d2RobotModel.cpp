@@ -518,6 +518,7 @@ QPointF D2RobotModel::robotPos()
 
 void D2RobotModel::serialize(QDomDocument &target)
 {
+	synchronizePositions();
 	QDomElement robot = target.createElement("robot");
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", mAngle);
