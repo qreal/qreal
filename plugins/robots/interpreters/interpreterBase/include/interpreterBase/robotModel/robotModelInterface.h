@@ -101,7 +101,6 @@ public:
 	/// Main example is NXT, where on output port there can be a motor or a lamp. Motors are used almost every time,
 	/// so we don't want to bother user with "lamp or motor" choice. Lamps still can be supported as separate devices
 	/// and even configured by autoconfigurer, but user can not do that manually.
-	/// @todo Maybe we don't need this?
 	virtual QList<PortInfo> configurablePorts() const = 0;
 
 	/// Returns a list of devices that are allowed to be connected on a given port.

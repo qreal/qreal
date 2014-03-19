@@ -7,3 +7,7 @@ Display::Display(DeviceInfo const &info, PortInfo const &port)
 	: interpreterBase::robotModel::robotParts::Display(info, port)
 {
 }
+
+void Display::doConfiguration()
+{
+}

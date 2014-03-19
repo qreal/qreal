@@ -68,6 +68,9 @@ protected:
 	/// Configuration that can be changed by descendants to register their devices.
 	ConfigurationInterface &mutableConfiguration();
 
+	/// Configures devices that can be configured automaticly (non-user configured, such as display and speakers)
+	virtual void configureKnownDevices();
+
 private slots:
 	void onConnected(bool success);
 

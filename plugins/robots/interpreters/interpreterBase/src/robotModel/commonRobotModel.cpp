@@ -26,6 +26,7 @@ CommonRobotModel::~CommonRobotModel()
 void CommonRobotModel::init()
 {
 	rereadSettings();
+	configureKnownDevices();
 }
 
 void CommonRobotModel::connectToRobot()
@@ -50,6 +51,16 @@ CommonRobotModel::ConnectionState CommonRobotModel::connectionState() const
 ConfigurationInterface &CommonRobotModel::mutableConfiguration()
 {
 	return mConfiguration;
+}
+
+void CommonRobotModel::configureKnownDevices()
+{
+	QSet<PortInfo> const nonConfigurablePorts = availablePorts().toSet() - configurablePorts().toSet();
+	for (PortInfo const &port : nonConfigurablePorts.toList()) {
+		for (DeviceInfo const &device : allowedDevices(port)) {
+			configureDevice(port, device);
+		}
+	}
 }
 
 void CommonRobotModel::onConnected(bool success)
@@ -83,7 +94,23 @@ QList<PortInfo> CommonRobotModel::availablePorts() const
 
 QList<PortInfo> CommonRobotModel::configurablePorts() const
 {
-	return availablePorts();
+	QList<PortInfo> result;
+
+	for (PortInfo const &port : availablePorts()) {
+		QList<DeviceInfo> const devices = allowedDevices(port);
+		if (devices.empty()) {
+			/// @todo: Display error?
+		}
+
+		// Device can be automaticly configured if it is the only one that can be plugged into this port
+		// (for example display) or if two devices with different directions can be plugged into this port
+		// (fer example motor and encoder). Otherwise this device must be configured manually by user.
+		if (devices.count() > 2 || (devices.count() == 2 && devices[0].direction() == devices[1].direction())) {
+			result << port;
+		}
+	}
+
+	return result;
 }
 
 QList<DeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port) const

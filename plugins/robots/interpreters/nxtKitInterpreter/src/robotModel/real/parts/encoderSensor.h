@@ -29,6 +29,8 @@ private:
 		, pending
 	};
 
+	void doConfiguration() override;
+
 	void sensorSpecificProcessResponse(QByteArray const &reading);
 
 	char lowLevelPort() const;

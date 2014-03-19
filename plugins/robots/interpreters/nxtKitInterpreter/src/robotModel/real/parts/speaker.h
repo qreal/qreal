@@ -19,6 +19,8 @@ public:
 	void playTone(unsigned freq, unsigned time);
 
 private:
+	void doConfiguration() override;
+
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };
 

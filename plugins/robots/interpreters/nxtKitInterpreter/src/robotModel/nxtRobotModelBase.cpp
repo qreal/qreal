@@ -1,5 +1,9 @@
 #include "nxtRobotModelBase.h"
 
+#include <interpreterBase/robotModel/robotParts/display.h>
+#include <interpreterBase/robotModel/robotParts/speaker.h>
+#include <interpreterBase/robotModel/robotParts/motor.h>
+#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
@@ -14,17 +18,23 @@ using namespace interpreterBase::robotModel;
 NxtRobotModelBase::NxtRobotModelBase()
 {
 	/// @todo Implement.
-	QList<DeviceInfo> const outputPortConnections;
-	QList<DeviceInfo> const inputPortConnections = QList<DeviceInfo>()
-			<< touchSensorInfo()
-			<< sonarSensorInfo()
-			<< lightSensorInfo()
-			<< colorSensorInfo()
-			<< soundSensorInfo()
-			<< gyroscopeSensorInfo()
-			<< accelerometerSensorInfo();
+	QList<DeviceInfo> const outputPortConnections = {
+		motorInfo()
+		/// @todo: implement multidevice architecture
+		//, encoderInfo()
+	};
+	QList<DeviceInfo> const inputPortConnections = {
+			touchSensorInfo()
+			, sonarSensorInfo()
+			, lightSensorInfo()
+			, colorSensorInfo()
+			, soundSensorInfo()
+			, gyroscopeSensorInfo()
+			, accelerometerSensorInfo()
+	};
 
-	addAllowedConnection(PortInfo("A"), outputPortConnections);
+	addAllowedConnection(PortInfo("DisplayPort"), { displayInfo() });
+	addAllowedConnection(PortInfo("SpeakerPort"), { speakerInfo() });
 	addAllowedConnection(PortInfo("A"), outputPortConnections);
 	addAllowedConnection(PortInfo("B"), outputPortConnections);
 	addAllowedConnection(PortInfo("C"), outputPortConnections);
@@ -32,15 +42,6 @@ NxtRobotModelBase::NxtRobotModelBase()
 	addAllowedConnection(PortInfo("2"), inputPortConnections);
 	addAllowedConnection(PortInfo("3"), inputPortConnections);
 	addAllowedConnection(PortInfo("4"), inputPortConnections);
-}
-
-QList<PortInfo> NxtRobotModelBase::configurablePorts() const
-{
-	return QList<PortInfo>()
-			<< PortInfo("1")
-			<< PortInfo("2")
-			<< PortInfo("3")
-			<< PortInfo("4");
 }
 
 QList<DeviceInfo> NxtRobotModelBase::convertibleBases() const
@@ -53,6 +54,26 @@ QList<DeviceInfo> NxtRobotModelBase::convertibleBases() const
 			, DeviceInfo::create<robotParts::GyroscopeSensor>()
 			, DeviceInfo::create<robotParts::AccelerometerSensor>()
 	};
+}
+
+DeviceInfo NxtRobotModelBase::displayInfo() const
+{
+	return DeviceInfo::create<robotParts::Display>();
+}
+
+DeviceInfo NxtRobotModelBase::speakerInfo() const
+{
+	return DeviceInfo::create<robotParts::Speaker>();
+}
+
+DeviceInfo NxtRobotModelBase::motorInfo() const
+{
+	return DeviceInfo::create<robotParts::Motor>();
+}
+
+DeviceInfo NxtRobotModelBase::encoderInfo() const
+{
+	return DeviceInfo::create<robotParts::EncoderSensor>();
 }
 
 DeviceInfo NxtRobotModelBase::touchSensorInfo() const

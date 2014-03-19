@@ -9,6 +9,8 @@ namespace robotParts {
 
 class ROBOTS_INTERPRETER_BASE_EXPORT Display : public Device
 {
+	Q_OBJECT
+
 public:
 	static QString friendlyName();
 	static DeviceInfo::Direction direction();

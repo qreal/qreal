@@ -11,7 +11,7 @@ QString Motor::friendlyName()
 	return tr("Motor");
 }
 
-Motor::Motor(DeviceInfo const &info, PortInfo const &port, RobotCommunicator *robotCommunicator)
+Motor::Motor(DeviceInfo const &info, PortInfo const &port, RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::Motor(info, port)
 	, mRobotCommunicator(robotCommunicator)
 {
@@ -69,7 +69,7 @@ void Motor::setOutputState(int speed, int mode
 	command[12] = tachoLimit >> 16;  // TachoLimit
 	command[13] = tachoLimit >> 24;  // TachoLimit
 	command[14] = 0;                 // TachoLimit, suddenly
-	mRobotCommunicator->send(this, command, 3);
+	mRobotCommunicator.send(this, command, 3);
 }
 
 void Motor::resetMotorPosition(bool relative)
@@ -80,7 +80,7 @@ void Motor::resetMotorPosition(bool relative)
 	command[2] = enums::telegramType::directCommandNoResponse;
 	command[3] = enums::commandCode::RESETMOTORPOSITION;
 	command[4] = relative;
-	mRobotCommunicator->send(this, command, 3);
+	mRobotCommunicator.send(this, command, 3);
 }
 
 

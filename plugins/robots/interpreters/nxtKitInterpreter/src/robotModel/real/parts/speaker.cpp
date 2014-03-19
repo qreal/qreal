@@ -29,3 +29,7 @@ void Speaker::playTone(unsigned freq, unsigned time)
 	command[7] = time >> 8;
 	mRobotCommunicator.send(this, command, 5);
 }
+
+void Speaker::doConfiguration()
+{
+}
