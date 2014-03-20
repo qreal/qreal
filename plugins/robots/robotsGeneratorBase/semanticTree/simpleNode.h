@@ -18,17 +18,18 @@ public:
 		noSytheticBinding = 0
 		, breakNode
 		, continueNode
+		, gotoNode
 	};
 
 	explicit SimpleNode(Id const &idBinded, QObject *parent = 0);
-
-	virtual QString toString(GeneratorCustomizer &customizer, int indent) const;
 
 	/// Binds this block to given artificial construction instead of binding to id.
 	void bindToSyntheticConstruction(SyntheticBlockType type);
 
 protected:
-	virtual QLinkedList<SemanticNode *> children() const;
+	QLinkedList<SemanticNode *> children() const override;
+
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
 
 private:
 	SyntheticBlockType mSyntheticBinding;

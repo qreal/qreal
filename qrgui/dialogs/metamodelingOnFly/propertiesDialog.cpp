@@ -89,9 +89,17 @@ void PropertiesDialog::deleteProperty()
 void PropertiesDialog::change(QString const &text)
 {
 	if (!text.isEmpty()) {
-		mEditPropertiesDialog->changeProperty(mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow()), mPropertiesNames[mUi->propertiesNamesList->currentRow()], text, IdList());
+		mEditPropertiesDialog->changeProperty(
+				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
+				, mPropertiesNames[mUi->propertiesNamesList->currentRow()]
+				, text
+				, IdList());
 	} else {
-		mEditPropertiesDialog->changeProperty(mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow()), "", text, mElementsOnDiagram);
+		mEditPropertiesDialog->changeProperty(
+				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
+				, ""
+				, text
+				, mElementsOnDiagram);
 	}
 
 	mElementsOnDiagram.clear();

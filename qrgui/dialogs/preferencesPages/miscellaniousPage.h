@@ -19,6 +19,7 @@ public:
 
 signals:
 	void iconsetChanged();
+	void toolbarSizeChanged(int size);
 
 protected:
 	void changeEvent(QEvent *e);

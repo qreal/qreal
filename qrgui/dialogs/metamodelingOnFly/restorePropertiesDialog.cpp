@@ -3,10 +3,11 @@
 
 using namespace qReal;
 
-RestorePropertiesDialog::RestorePropertiesDialog(QWidget *parent, EditorManagerInterface const &interperterEditorManager)
-		: QDialog(parent)
-		, mUi(new Ui::RestorePropertiesDialog)
-		, mInterperterEditorManager(interperterEditorManager)
+RestorePropertiesDialog::RestorePropertiesDialog(QWidget *parent
+		, EditorManagerInterface const &interperterEditorManager)
+	: QDialog(parent)
+	, mUi(new Ui::RestorePropertiesDialog)
+	, mInterperterEditorManager(interperterEditorManager)
 {
 	mUi->setupUi(this);
 	mUi->sameNamePropertiesTW->insertColumn(0);
@@ -20,8 +21,8 @@ RestorePropertiesDialog::RestorePropertiesDialog(QWidget *parent, EditorManagerI
 	mUi->sameNamePropertiesTW->adjustSize();
 	this->setMinimumSize(mUi->sameNamePropertiesTW->size());
 	mUi->sameNamePropertiesTW->horizontalHeader()->setStretchLastSection(true);
-	connect(mUi->restoreButton, SIGNAL(clicked()), this, SLOT(restoreButtonClicked()));
-	connect(mUi->createNewButton, SIGNAL(clicked()), this, SLOT(createButtonClicked()));
+	connect(mUi->restoreButton, &QPushButton::clicked, this, &RestorePropertiesDialog::restoreButtonClicked);
+	connect(mUi->createNewButton, &QPushButton::clicked, this, &RestorePropertiesDialog::createButtonClicked);
 }
 
 RestorePropertiesDialog::~RestorePropertiesDialog()
@@ -29,12 +30,14 @@ RestorePropertiesDialog::~RestorePropertiesDialog()
 	delete mUi;
 }
 
-void RestorePropertiesDialog::fillSameNamePropertiesTW(IdList propertiesWithTheSameNameList, QString const &propertyName)
+void RestorePropertiesDialog::fillSameNamePropertiesTW(IdList const &propertiesWithTheSameNameList
+		, QString const &propertyName)
 {
 	mPropertiesWithTheSameNameList = propertiesWithTheSameNameList;
 	for (int i = 0; i < mPropertiesWithTheSameNameList.count(); i++) {
 		mUi->sameNamePropertiesTW->insertRow(i);
-		QStringList propertyParams = mInterperterEditorManager.getSameNamePropertyParams(mPropertiesWithTheSameNameList[i], propertyName);
+		QStringList propertyParams = mInterperterEditorManager.getSameNamePropertyParams(
+				mPropertiesWithTheSameNameList[i], propertyName);
 		for (int j = 0; j < propertyParams.count(); j++) {
 			mUi->sameNamePropertiesTW->setItem(i, j, new QTableWidgetItem(propertyParams[j]));
 		}
@@ -48,10 +51,12 @@ void RestorePropertiesDialog::restoreButtonClicked()
 		QString state = mUi->sameNamePropertiesTW->item(firstSelectedRow, 1)->text();
 		QString propertyPreviousName = mUi->sameNamePropertiesTW->item(firstSelectedRow, 0)->text();
 		if (state == tr("Deleted")) {
-			mInterperterEditorManager.restoreRemovedProperty(mPropertiesWithTheSameNameList[firstSelectedRow], propertyPreviousName);
+			mInterperterEditorManager.restoreRemovedProperty(mPropertiesWithTheSameNameList[firstSelectedRow]
+					, propertyPreviousName);
 		} else if (state != tr("Existed")) {
 			// Restore renamed property
-			mInterperterEditorManager.restoreRenamedProperty(mPropertiesWithTheSameNameList[firstSelectedRow], propertyPreviousName);
+			mInterperterEditorManager.restoreRenamedProperty(mPropertiesWithTheSameNameList[firstSelectedRow]
+					, propertyPreviousName);
 		}
 		done(QDialog::Accepted);
 	}

@@ -352,7 +352,8 @@ QSize ProxyEditorManager::iconSize(Id const &id) const
 	return mProxiedEditorManager->iconSize(id);
 }
 
-IdList ProxyEditorManager::propertiesWithTheSameName(Id const &id, QString const &propCurrentName, QString const &propNewName) const
+IdList ProxyEditorManager::propertiesWithTheSameName(Id const &id
+		, QString const &propCurrentName, QString const &propNewName) const
 {
 	return mProxiedEditorManager->propertiesWithTheSameName(id, propCurrentName, propNewName);
 }

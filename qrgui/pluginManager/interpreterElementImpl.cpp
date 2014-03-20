@@ -485,6 +485,7 @@ enums::linkShape::LinkShape InterpreterElementImpl::shapeType() const
 	if (mEditorRepoApi->hasProperty(mId, "shape")) {
 		shape = mEditorRepoApi->stringProperty(mId, "shape");
 	}
+
 	return shapeTypeByString(shape);
 }
 

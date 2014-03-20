@@ -18,7 +18,7 @@ EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interpreterEd
 		, mElementsOnDiagram(IdList())
 {
 	mUi->setupUi(this);
-	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
+	connect(mUi->okPushButton, &QPushButton::clicked, this, &EditPropertiesDialog::okButtonClicked);
 }
 
 EditPropertiesDialog::~EditPropertiesDialog()
@@ -86,8 +86,10 @@ void EditPropertiesDialog::acceptPropertyModifications()
 				, QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
 		messageBox.button(QMessageBox::Ok)->setText(tr("Proceed anyway"));
 		messageBox.button(QMessageBox::Cancel)->setText(tr("Cancel the type conversion"));
-		connect(messageBox.button(QMessageBox::Cancel), SIGNAL(clicked()), this, SLOT(messageBoxCancel()));
-		connect(messageBox.button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(updateProperties()));
+		connect(messageBox.button(QMessageBox::Cancel), &QAbstractButton::clicked
+				, this, &EditPropertiesDialog::messageBoxCancel);
+		connect(messageBox.button(QMessageBox::Ok), &QAbstractButton::clicked
+				, this, &EditPropertiesDialog::updateProperties);
 		messageBox.exec();
 	} else {
 		updateProperties();
@@ -99,24 +101,32 @@ void EditPropertiesDialog::okButtonClicked()
 	if (mUi->attributeTypeEdit->text().isEmpty() || mUi->displayedNameEdit->text().isEmpty()) {
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
 	} else {
-		IdList propertiesWithTheSameNameList = mInterperterEditorManager.propertiesWithTheSameName(mId, mPropertyName, mUi->displayedNameEdit->text());
+		IdList const propertiesWithTheSameNameList = mInterperterEditorManager.propertiesWithTheSameName(mId
+				, mPropertyName, mUi->displayedNameEdit->text());
 		if (!propertiesWithTheSameNameList.isEmpty()) {
 			hide();
 			mRestorePropertiesDialog = new RestorePropertiesDialog(this, mInterperterEditorManager);
-			mRestorePropertiesDialog->fillSameNamePropertiesTW(propertiesWithTheSameNameList, mUi->displayedNameEdit->text());
+			mRestorePropertiesDialog->fillSameNamePropertiesTW(propertiesWithTheSameNameList
+					, mUi->displayedNameEdit->text());
 			mRestorePropertiesDialog->setWindowTitle(tr("Restore properties"));
 			mRestorePropertiesDialog->setModal(true);
 			mRestorePropertiesDialog->show();
-			connect(mRestorePropertiesDialog, SIGNAL(createNewChosen()), this, SLOT(acceptPropertyModifications()));
-			connect(mRestorePropertiesDialog, SIGNAL(finished(int)), this, SLOT(done(int)));
+			connect(mRestorePropertiesDialog, &qReal::RestorePropertiesDialog::createNewChosen
+					, this, &EditPropertiesDialog::acceptPropertyModifications);
+			connect(mRestorePropertiesDialog, &qReal::RestorePropertiesDialog::finished
+					, this, &EditPropertiesDialog::done);
 		} else {
 			acceptPropertyModifications();
 		}
 	}
 }
 
-void EditPropertiesDialog::changeProperty(QListWidgetItem *propertyItem, QString const &propertyName
-		, QString const &propertyDisplayedName, qReal::IdList elementsOnDiagram)
+void EditPropertiesDialog::changeProperty(
+		QListWidgetItem *propertyItem
+		, QString const &propertyName
+		, QString const &propertyDisplayedName
+		, qReal::IdList elementsOnDiagram
+		)
 {
 	//mPropertyName = mInterperterEditorManager.propertyNameByDisplayedName(mId, propertyDisplayedName);
 	mPropertyName = propertyName;

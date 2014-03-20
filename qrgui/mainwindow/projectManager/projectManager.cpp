@@ -5,9 +5,6 @@
 
 #include "mainwindow/mainWindow.h"
 
-// TODO: lolwut?
-//#include "ui_mainWindow.h"
-
 #include "models/models.h"
 #include "view/editorViewScene.h"
 #include "view/editorView.h"
@@ -30,7 +27,9 @@ void ProjectManager::setSaveFilePath(QString const &filePath /* = "" */)
 {
 	mSaveFilePath = filePath.isEmpty()
 			? mAutosaver->tempFilePath()
-			: mAutosaver->originalFile(filePath);
+			: mAutosaver->isTempFile(filePath)
+					? filePath
+					: mAutosaver->originalFile(filePath);
 }
 
 QString ProjectManager::saveFilePath() const
@@ -128,7 +127,9 @@ bool ProjectManager::open(QString const &fileName)
 			, mMainWindow->models()->graphicalModel());
 	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models()->graphicalModel());
 	mMainWindow->logicalModelExplorer()->setModel(mMainWindow->models()->logicalModel());
-	//mMainWindow->openFirstDiagram();
+
+	/// @todo Crashes metamodeling on fly.
+	mMainWindow->openFirstDiagram();
 
 	setSaveFilePath(fileName);
 	refreshApplicationStateAfterOpen();

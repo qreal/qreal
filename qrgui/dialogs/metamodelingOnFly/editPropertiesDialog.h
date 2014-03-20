@@ -31,11 +31,10 @@ public:
 	/// Selects a property for editing.
 	/// @param propertyItem Item in a list of properties which we edit.
 	/// @param propertyName Name of a property which we edit.
-	/// @param propertyDisplayedName DisplayedName of a property which we edit.
+	/// @param propertyDisplayedName Displayed name of this property.
 	/// @param elementsOnDiagram logical elements on the diagram.
 	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName
-			, QString const &propertyDisplayedName, qReal::IdList elementsOnDiagram);
-
+				, QString const &propertyDisplayedName, qReal::IdList elementsOnDiagram);
 private slots:
 	void okButtonClicked();
 	void messageBoxCancel();

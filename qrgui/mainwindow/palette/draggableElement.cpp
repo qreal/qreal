@@ -259,7 +259,9 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearancePaletteActionTriggered()));
 			changeAppearancePaletteAction->setData(elementId.toVariant());
 			QAction * const deleteElementPaletteAction = menu->addAction(tr("Delete Element"));
-			connect(deleteElementPaletteAction, SIGNAL(triggered()), SLOT(deleteElementPaletteActionTriggered()), Qt::QueuedConnection);
+			connect(deleteElementPaletteAction, &QAction::triggered
+					, this, &DraggableElement::deleteElementPaletteActionTriggered
+					, Qt::QueuedConnection);
 			deleteElementPaletteAction->setData(elementId.toVariant());
 			menu->exec(QCursor::pos());
 		}
