@@ -17,10 +17,9 @@ public:
 	/// (for example, terminating task vs 'return')
 	FinalNode(Id const &idBinded, bool inMainDigram, QObject *parent = 0);
 
-	virtual QString toString(GeneratorCustomizer &customizer, int indent) const;
-
 protected:
-	virtual QLinkedList<SemanticNode *> children() const;
+	QLinkedList<SemanticNode *> children() const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
 
 private:
 	bool const mInMainDiagram;

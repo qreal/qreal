@@ -8,6 +8,7 @@ using namespace qReal::interpreters::robots::details;
 static uint const port = 8888;
 
 TcpRobotCommunicationThread::TcpRobotCommunicationThread()
+	: mSocket(nullptr)
 {
 }
 
@@ -17,6 +18,10 @@ TcpRobotCommunicationThread::~TcpRobotCommunicationThread()
 
 void TcpRobotCommunicationThread::send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize)
 {
+	if (!mSocket) {
+		return;
+	}
+
 	mSocket->write(buffer);
 	mSocket->waitForBytesWritten();
 	if (responseSize == 2) {
@@ -41,7 +46,7 @@ void TcpRobotCommunicationThread::connect()
 	QString const server = SettingsManager::value("tcpServer").toString();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
-		QString const message = tr("Unable to resolve %1. Check server address anfd try again");
+		QString const message = tr("Unable to resolve %1. Check server address and try again.");
 		emit errorOccured(message.arg(server));
 		emit connected(false);
 		return;
@@ -53,6 +58,10 @@ void TcpRobotCommunicationThread::connect()
 
 void TcpRobotCommunicationThread::disconnect()
 {
+	if (!mSocket) {
+		return;
+	}
+
 	mSocket->disconnectFromHost();
 	mSocket->waitForDisconnected();
 	emit disconnected();

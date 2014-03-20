@@ -547,18 +547,18 @@ p, li { white-space: pre-wrap; }
         <location filename="details/robotsBlockParser.cpp" line="6"/>
         <source>sensor</source>
         <oldsource>Sensor</oldsource>
-        <translation type="unfinished">Сенсор</translation>
+        <translation>sensor</translation>
     </message>
     <message>
         <location filename="details/robotsBlockParser.cpp" line="7"/>
         <source>encoder</source>
         <oldsource>Encoder</oldsource>
-        <translation type="unfinished">Энкодер</translation>
+        <translation>encoder</translation>
     </message>
     <message>
         <location filename="details/robotsBlockParser.cpp" line="8"/>
         <source>time</source>
-        <translation type="unfinished"></translation>
+        <translation>time</translation>
     </message>
     <message>
         <source>Sensor1</source>
@@ -989,9 +989,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::TcpRobotCommunicationThread</name>
     <message>
-        <location filename="details/robotCommunication/tcpRobotCommunicationThread.cpp" line="43"/>
         <source>Unable to resolve %1. Check server address anfd try again</source>
-        <translation>Сервер %1 не найден. Проверьте адрес и попробуйте еще раз </translation>
+        <translation type="obsolete">Сервер %1 не найден. Проверьте адрес и попробуйте еще раз </translation>
+    </message>
+    <message>
+        <location filename="details/robotCommunication/tcpRobotCommunicationThread.cpp" line="48"/>
+        <source>Unable to resolve %1. Check server address and try again.</source>
+        <translation>Сервер %1 не найден. Проверьте адрес и попробуйте еще раз.</translation>
     </message>
 </context>
 <context>
@@ -1313,8 +1317,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
     <message>
+        <location filename="details/blocks/waitForGyroscopeSensorBlock.cpp" line="31"/>
         <source>Gyroscope</source>
-        <translation type="obsolete">Гироскоп</translation>
+        <translation>Гироскоп</translation>
     </message>
 </context>
 <context>
@@ -1397,18 +1402,18 @@ p, li { white-space: pre-wrap; }
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="798"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="799"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="798"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="818"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="799"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="819"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="818"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="819"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>

@@ -495,6 +495,7 @@ void D2ModelWidget::clearScene(bool removeRobot)
 		foreach (QGraphicsItem *item, mScene->items()) {
 			if (!dynamic_cast<RobotItem *>(item)
 					&& !dynamic_cast<SensorItem *>(item)
+					&& !dynamic_cast<SensorItem::PortItem *>(item)
 					&& !dynamic_cast<Rotater *>(item)
 					&& !dynamic_cast<BeepItem *>(item)) {
 				mScene->removeItem(item);

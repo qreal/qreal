@@ -36,6 +36,8 @@
 #include "simpleGenerators/subprogramsSimpleGenerator.h"
 #include "simpleGenerators/breakGenerator.h"
 #include "simpleGenerators/continueGenerator.h"
+#include "simpleGenerators/labelGenerator.h"
+#include "simpleGenerators/gotoSimpleGenerator.h"
 
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
@@ -248,6 +250,18 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::continueGenerator(Id cons
 		, GeneratorCustomizer &customizer)
 {
 	return new ContinueGenerator(mRepo, customizer, id, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::labelGenerator(qReal::Id const &id
+		, GeneratorCustomizer &customizer)
+{
+	return new LabelGenerator(mRepo, customizer, id, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::gotoSimpleGenerator(qReal::Id const &id
+		, GeneratorCustomizer &customizer)
+{
+	return new GotoSimpleGenerator(mRepo, customizer, id, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id const &id
