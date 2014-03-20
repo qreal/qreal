@@ -17,9 +17,29 @@ public:
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, Id const &diagramId
-			, QObject *parent = 0);
+			, QObject *parent = 0
+			, bool isThisDiagramMain = true);
 
-	// TODO: implement it
+
+	/// Implementation of clone operation for goto generator
+	ControlFlowGeneratorBase *cloneFor(Id const &diagramId) override;
+
+	void beforeSearch();
+
+	void visitRegular(Id const &id, QList<LinkInfo> const &links) override;
+	void visitFinal(Id const &id, QList<LinkInfo> const &links) override;
+	void visitConditional(Id const &id, QList<LinkInfo> const &links) override;
+	void visitLoop(Id const &id, QList<LinkInfo> const &links) override;
+	void visitSwitch(Id const &id, QList<LinkInfo> const &links) override;
+	void visitFork(Id const &id, QList<LinkInfo> const &links) override;
+
+	/// This method can be used for semantic tree debug printing after all
+	/// traversal stages.
+	void afterSearch() override;
+
+private:
+	semantics::SemanticNode *produceGotoNode(Id const &id);
+	void produceNextNodeIfNeeded(LinkInfo const &info, semantics::NonZoneNode * const parent);
 };
 
 }

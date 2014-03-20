@@ -1,11 +1,13 @@
 #include "semanticNode.h"
+#include <qrutils/stringUtils.h>
 
 using namespace qReal::robots::generators::semantics;
 
 SemanticNode::SemanticNode(Id const &idBinded, QObject *parent)
 	: QObject(parent)
 	, mId(idBinded)
-	, mParentNode(NULL)
+	, mParentNode(nullptr)
+	, mLabeled(false)
 {
 }
 
@@ -24,6 +26,19 @@ void SemanticNode::setParentNode(SemanticNode * const parent)
 	mParentNode = parent;
 }
 
+void SemanticNode::addLabel()
+{
+	mLabeled = true;
+}
+
+QString SemanticNode::toString(qReal::robots::generators::GeneratorCustomizer &customizer, int indent) const
+{
+	return (mLabeled
+			? utils::StringUtils::addIndent(customizer.factory()->labelGenerator(mId
+					, customizer)->generate(), indent) + "\n"
+			: QString()) + toStringImpl(customizer, indent);
+}
+
 SemanticNode *SemanticNode::findNodeFor(qReal::Id const &id)
 {
 	if (id == mId) {
@@ -38,5 +53,5 @@ SemanticNode *SemanticNode::findNodeFor(qReal::Id const &id)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }

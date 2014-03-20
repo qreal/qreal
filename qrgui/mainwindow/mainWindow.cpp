@@ -1805,11 +1805,7 @@ void MainWindow::updatePaletteIcons()
 
 void MainWindow::setUsabilityMode(bool mode)
 {
-	if (mode) {
-		mUsabilityTestingToolbar->show();
-	} else {
-		mUsabilityTestingToolbar->hide();
-	}
+	mUsabilityTestingToolbar->setVisible(mode);
 }
 
 void MainWindow::startUsabilityTest()
@@ -1829,8 +1825,8 @@ void MainWindow::finishUsabilityTest()
 void MainWindow::applySettings()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
-		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
+		EditorView * const tab = dynamic_cast<EditorView *>(mUi->tabs->widget(i));
+		EditorViewScene *scene = tab ? dynamic_cast <EditorViewScene *>(tab->scene()) : nullptr;
 		if (scene) {
 			scene->updateEdgeElements();
 			scene->invalidate();

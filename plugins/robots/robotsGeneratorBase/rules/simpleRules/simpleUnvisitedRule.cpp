@@ -11,7 +11,7 @@ SimpleUnvisitedRule::SimpleUnvisitedRule(SemanticTree *tree, Id const &id
 
 bool SimpleUnvisitedRule::apply()
 {
-	if (mNextLink.targetVisited) {
+	if (alreadyCreated(mNextLink)) {
 		return false;
 	}
 

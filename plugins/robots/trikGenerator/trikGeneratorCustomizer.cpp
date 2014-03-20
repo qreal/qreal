@@ -4,11 +4,11 @@ using namespace qReal::robots::generators::trik;
 
 TrikGeneratorCustomizer::TrikGeneratorCustomizer(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter)
-	: mFactory(new TrikGeneratorFactory(repo, errorReporter))
+	: mFactory(repo, errorReporter)
 {
 }
 
 qReal::robots::generators::GeneratorFactoryBase *TrikGeneratorCustomizer::factory()
 {
-	return mFactory;
+	return &mFactory;
 }
