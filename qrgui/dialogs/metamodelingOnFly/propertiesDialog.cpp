@@ -93,6 +93,7 @@ void PropertiesDialog::change(QString const &text)
 	} else {
 		mEditPropertiesDialog->changeProperty(mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow()), "", text, mElementsOnDiagram);
 	}
+
 	mElementsOnDiagram.clear();
 	mEditPropertiesDialog->setModal(true);
 	mEditPropertiesDialog->show();

@@ -96,7 +96,9 @@ public:
 	void updateShape(Id const &id, QString const &graphics) const override;
 	virtual void resetIsHidden(Id const &id) const;
 	virtual QString getIsHidden(Id const &id) const;
-	void deleteElement(qReal::MainWindow *mainWindow, Id const &id) const override;	bool isRootDiagramNode(Id const &id) const override;	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const override;
+	void deleteElement(qReal::MainWindow *mainWindow, Id const &id) const override;
+	bool isRootDiagramNode(Id const &id) const override;
+	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const override;
 	void addEdgeElement(
 			Id const &diagram
 			, QString const &name

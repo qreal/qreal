@@ -59,7 +59,8 @@ void EditPropertiesDialog::updateProperties()
 void EditPropertiesDialog::acceptPropertyModifications()
 {
 	if (mPropertyName.isEmpty()) {
-		IdList sameNameProperties = mInterperterEditorManager.propertiesWithTheSameName(mId, "", mUi->displayedNameEdit->text());
+		IdList const sameNameProperties = mInterperterEditorManager.propertiesWithTheSameName(mId, ""
+				, mUi->displayedNameEdit->text());
 		if (sameNameProperties.isEmpty()) {
 			mPropertyName = mUi->displayedNameEdit->text();
 		} else {

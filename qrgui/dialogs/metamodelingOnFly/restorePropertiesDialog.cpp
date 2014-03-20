@@ -17,11 +17,8 @@ RestorePropertiesDialog::RestorePropertiesDialog(QWidget *parent, EditorManagerI
 	mUi->sameNamePropertiesTW->setHorizontalHeaderItem(2, new QTableWidgetItem(tr("Type")));
 	mUi->sameNamePropertiesTW->insertColumn(3);
 	mUi->sameNamePropertiesTW->setHorizontalHeaderItem(3, new QTableWidgetItem(tr("Default value")));
-	//mUi->sameNamePropertiesTW->resizeColumnsToContents();
-	//mUi->sameNamePropertiesTW->horizontalHeader()->setSectionResizeMode(ResizeToContents);
 	mUi->sameNamePropertiesTW->adjustSize();
 	this->setMinimumSize(mUi->sameNamePropertiesTW->size());
-	//this->resize(mUi->sameNamePropertiesTW->size());
 	mUi->sameNamePropertiesTW->horizontalHeader()->setStretchLastSection(true);
 	connect(mUi->restoreButton, SIGNAL(clicked()), this, SLOT(restoreButtonClicked()));
 	connect(mUi->createNewButton, SIGNAL(clicked()), this, SLOT(createButtonClicked()));
@@ -32,7 +29,7 @@ RestorePropertiesDialog::~RestorePropertiesDialog()
 	delete mUi;
 }
 
-void RestorePropertiesDialog::fillSameNamePropertiesTW(IdList propertiesWithTheSameNameList, QString propertyName)
+void RestorePropertiesDialog::fillSameNamePropertiesTW(IdList propertiesWithTheSameNameList, QString const &propertyName)
 {
 	mPropertiesWithTheSameNameList = propertiesWithTheSameNameList;
 	for (int i = 0; i < mPropertiesWithTheSameNameList.count(); i++) {
