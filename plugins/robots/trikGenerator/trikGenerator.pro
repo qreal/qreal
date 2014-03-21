@@ -40,7 +40,10 @@ HEADERS += \
 	$$PWD/converters/ledColorConverter.h \
 	$$PWD/converters/powerMotorPortConverter.h \
 	$$PWD/converters/servoMotorPortConverter.h \
+	$$PWD/simpleGenerators/detectLineGenerator.h \
+	$$PWD/simpleGenerators/initCameraGenerator.h \
 	$$PWD/simpleGenerators/ledGenerator.h \
+	$$PWD/simpleGenerators/lineDetectorToVariableGenerator.h \
 	$$PWD/simpleGenerators/playToneGenerator.h \
 	$$PWD/simpleGenerators/sadSmileGenerator.h \
 	$$PWD/simpleGenerators/sayGenerator.h \
@@ -60,7 +63,10 @@ SOURCES += \
 	$$PWD/converters/ledColorConverter.cpp \
 	$$PWD/converters/powerMotorPortConverter.cpp \
 	$$PWD/converters/servoMotorPortConverter.cpp \
+	$$PWD/simpleGenerators/detectLineGenerator.cpp \
+	$$PWD/simpleGenerators/initCameraGenerator.cpp \
 	$$PWD/simpleGenerators/ledGenerator.cpp \
+	$$PWD/simpleGenerators/lineDetectorToVariableGenerator.cpp \
 	$$PWD/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/simpleGenerators/sadSmileGenerator.cpp \
 	$$PWD/simpleGenerators/sayGenerator.cpp \

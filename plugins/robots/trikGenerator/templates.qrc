@@ -3,6 +3,9 @@
         <file>templates/beep.t</file>
         <file>templates/break.t</file>
         <file>templates/continue.t</file>
+        <file>templates/detectLine.t</file>
+        <file>templates/lineDetectorToVariable.t</file>
+        <file>templates/initCamera.t</file>
         <file>templates/finalNodeMain.t</file>
         <file>templates/finalNodeSubprogram.t</file>
         <file>templates/function.t</file>

@@ -263,7 +263,7 @@
 					<container/>
 				</logic>
 			</node>
-			<node displayedName="Моторы назад" name="EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
+			<node displayedName="Моторы назад" name="EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются  цифрами 1, 2, 3 или 4, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
@@ -307,7 +307,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Моторы вперёд" name="EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Включить моторы по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.">
+			<node displayedName="Моторы вперёд" name="EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Включить моторы по заданным портам с заданной мощностью. Порты задаются буквами 1, 2, 3 или 4, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
@@ -358,10 +358,10 @@
 						<property displayedName="Мощность (%)" type="string" name="Power">
 							<default>100</default>
 						</property>
-						<property displayedName="Режим" type="BreakEngineMode" name="Mode">
+<!-- 						<property displayedName="Режим" type="BreakEngineMode" name="Mode">
 							<default>тормозить</default>
 						</property>
-					</properties>
+ -->					</properties>
 					<generalizations>
 						<parent parentName="EngineCommand"/>
 					</generalizations>
@@ -1262,7 +1262,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Тело функции" type="string" name="Body"/>
-						<property displayedName="Инициализация" type="bool" name="Init"/>
+<!-- 						<property displayedName="Инициализация" type="bool" name="Init"/> -->
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -1325,9 +1325,9 @@
 						<label x="75" y="120" textBinded="DownButtonClicks"/>
 						<label x="-20" y="120" text="Вниз: "/>
 						<label x="75" y="140" textBinded="DownLeftButtonClicks"/>
-						<label x="-20" y="140" text="Вниз-влево: "/>
+						<label x="-20" y="140" text="Ввод: "/>
 						<label x="75" y="160" textBinded="AttachButtonClicks"/>
-						<label x="-20" y="160" text="Направление: "/>
+						<label x="-20" y="160" text="Мета: "/>
 						<label x="75" y="180" textBinded="OnButtonClicks"/>
 						<label x="-20" y="180" text="Включить: "/>
 					</labels>
@@ -1986,62 +1986,171 @@
 					</generalizations>
 				</logic>
 			</node>
-
+			<node displayedName="Включить видеокамеру" name="InitCamera" description="Включить датчик линии по видеокамере, вывести на экран картинку">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/InitCamera.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<labels>
+						<label x="-15" y="60" text="Включить видеокамеру"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Детектировать линию по видео" name="DetectLine" description="Инициализировать датчик линии по видеокамере цветом объекта в центре поля зрения камеры">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/detect.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<labels>
+						<label x="-15" y="60" text="Детектировать линию"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Датчик линии в переменную" name="LineDetectorToVariable" description="Сохранить текущее значение датчика линии по видеокамере в заданную переменную">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/lineDetectorToVariable.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<labels>
+						<label x="-15" y="60" text="Датчик линии в переменную"/>
+						<label x="-15" y="80" text="Переменная:"/>
+						<label x="55" y="80" textBinded="Variable"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Имя переменной" type="string" name="Variable" />
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 		</graphicTypes>
 		<palette sorted="false">
-			<group name="ТРИК">
-<!--			<group name="Действия"> -->
-<!--				<element name="Fork"/> -->
+<!--			<group name="ТРИК">-->
+			<group name="Алгоритмы">
 				<element name="InitialNode"/>
 				<element name="FinalNode"/>
+				<element name="IfBlock"/>
+<!--				<element name="Loop"/> -->
+				<element name="ControlFlow"/>
+				<element name="CommentBlock"/>
+<!--				<element name="Subprogram"/> -->
+				<element name="Function"/>
+			</group>
+			<group name="Действия">
+<!--				<element name="Fork"/> -->
 				<element name="Beep"/>
 				<element name="PlayTone"/>
 				<element name="Say"/>
 				<element name="EnginesForward"/>
 				<element name="EnginesBackward"/>
 				<element name="EnginesStop"/>
-				<element name="Function"/>
 				<element name="System"/>
-<!--			</group> -->
-<!--			<group name="Рисование на дисплее"> -->
+				<element name="Led"/>
+				<element name="NullificationEncoder"/>
+				<element name="InitCamera"/>
+				<element name="DetectLine"/>
+				<element name="LineDetectorToVariable"/>
+			</group>
+			<group name="Рисование на дисплее">
 				<element name="ClearScreen"/>
+				<element name="Smile"/>
+				<element name="SadSmile"/>
+				<element name="SetBackground"/>
 <!--				<element name="DrawRect"/>
 				<element name="DrawPixel"/>
 				<element name="DrawLine"/>
 				<element name="DrawCircle"/>
-				<element name="PrintText"/>
-			</group> -->
-<!--			<group name="Ожидания"> -->
+				<element name="PrintText"/> -->
+			</group>
+			<group name="Ожидания">
 				<element name="Timer"/>
 <!--				<element name="WaitForTouchSensor"/>
 				<element name="WaitForSonarDistance"/>
 				<element name="WaitForColor"/>
 				<element name="WaitForEncoder"/>
-				<element name="WaitForColorIntensity"/>
+				<element name="WaitForColorIntensity"/> -->
 				<element name="WaitForLight"/>
-				<element name="WaitForSound"/>
+<!--				<element name="WaitForSound"/>
 				<element name="WaitForGyroscope"/> -->
 				<element name="WaitForButtons"/>
-<!--			</group> -->
-<!--			<group name="Алгоритмы"> -->
-				<element name="IfBlock"/> 
-				<element name="Loop"/>
-				<element name="ControlFlow"/>
-				<element name="CommentBlock"/>
-<!--				<element name="Subprogram"/> -->
-<!--			</group> -->
+			</group>
 <!--			<group name="Инициализация"> -->
-				<element name="Smile"/>
-				<element name="SadSmile"/>
-				<element name="SetBackground"/>
-				<element name="Led"/>
-				<element name="NullificationEncoder"/>
 <!--			</group> -->
 <!--			<group name="Сегвей">
 				<element name="Balance"/>
 				<element name="BalanceInit"/>
 			</group> -->
-			</group>
+<!--			</group> -->
 		</palette>
 	</diagram>
 </metamodel>

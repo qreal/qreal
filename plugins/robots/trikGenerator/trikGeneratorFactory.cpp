@@ -2,7 +2,10 @@
 #include <converters/regexpMultiConverter.h>
 #include "converters/servoMotorPortConverter.h"
 #include "converters/powerMotorPortConverter.h"
+#include "simpleGenerators/detectLineGenerator.h"
+#include "simpleGenerators/initCameraGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
+#include "simpleGenerators/lineDetectorToVariableGenerator.h"
 #include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/sadSmileGenerator.h"
 #include "simpleGenerators/sayGenerator.h"
@@ -49,6 +52,12 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new SystemGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Led") {
 		return new LedGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "DetectLine") {
+		return new DetectLineGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "InitCamera") {
+		return new InitCameraGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "LineDetectorToVariable") {
+		return new LineDetectorToVariableGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
