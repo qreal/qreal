@@ -2349,7 +2349,7 @@
 				<element name="WaitForColor"/>
 				<element name="WaitForEncoder"/>
 				<element name="WaitForColorIntensity"/> -->
-				<element name="WaitForLight"/>
+<!--				<element name="WaitForLight"/> -->
 <!--				<element name="WaitForSound"/>
 				<element name="WaitForGyroscope"/> -->
 				<element name="WaitForEnter"/>

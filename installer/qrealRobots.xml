@@ -103,7 +103,7 @@
                 <command>
                     <makeDefault>1</makeDefault>
                     <verb>Open</verb>
-                    <runProgram>${backslashInstallDir}\qrgui.exe</runProgram>
+                    <runProgram>${backslashInstallDir}\trikStudio.exe</runProgram>
                     <runProgramArguments>"%L"</runProgramArguments>
                 </command>
             </commandList>
@@ -111,7 +111,7 @@
         
         <!-- Clearing registry values -->
         <runProgram>
-            <program>${backslashInstallDir}\qrgui.exe</program>
+            <program>${backslashInstallDir}\trikStudio.exe</program>
             <programArguments>--clear-conf</programArguments>
         </runProgram>
     </postInstallationActionList>
@@ -119,7 +119,7 @@
     <!-- Clearing registry values before deinstallation -->
     <preUninstallationActionList>
         <runProgram>
-            <program>${backslashInstallDir}\qrgui.exe</program>
+            <program>${backslashInstallDir}\trikStudio.exe</program>
             <programArguments>--clear-conf</programArguments>
         </runProgram>
     </preUninstallationActionList>
@@ -166,7 +166,7 @@
     <!-- Proposing to launch TRIK Studio -->
     <finalPageActionList>
         <runProgram>
-            <program>${installdir}/qrgui.exe</program>
+            <program>${installdir}/trikStudio.exe</program>
             <programArguments></programArguments>
             <progressText>Запустить TRIK Studio</progressText>
         </runProgram>

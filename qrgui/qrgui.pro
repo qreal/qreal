@@ -1,4 +1,5 @@
 DESTDIR = ../bin
+TARGET = trikStudio
 
 CONFIG += c++11
 
