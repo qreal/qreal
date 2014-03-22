@@ -256,6 +256,7 @@ void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTransp
 		mTranspaentMode = new TransparentMode(mPlugins, mProjectManager);
 		emit transparentClassIsReady();
 	} else {
+		mTranspaentMode->disconnect();
 		delete mTranspaentMode;
 	}
 }

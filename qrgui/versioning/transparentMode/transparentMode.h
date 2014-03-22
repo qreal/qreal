@@ -20,9 +20,11 @@ signals:
 public slots:
 	void listLog();
 	void setVersion(QString hash);
-	void saveVersion();
+	bool suggestToSaveAs();
+	bool saveOrSuggestToSaveAs();
 
 private:
+	void saveVersion();
 	ProjectManager *mProjectManager;
 	BriefVersioningInterface *mPlugin;
 	void isInit(const QString &directory = "", bool const &prepareAndProcess = true);

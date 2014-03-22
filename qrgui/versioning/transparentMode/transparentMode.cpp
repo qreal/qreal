@@ -20,7 +20,7 @@ qReal::TransparentMode::TransparentMode(QList<VersioningPluginInterface *> mPlug
 void TransparentMode::isInit(QString const &directory, const bool &prepareAndProcess)
 {
 	if (!mPlugin->isMyWorkingCopy(directory, false, prepareAndProcess)){
-		mPlugin->beginWorkingCopyDownloading(QString(),QString(), -1, true);
+		mPlugin->beginWorkingCopyDownloading(QString(), QString(), -1, true);
 	}
 }
 
@@ -30,10 +30,10 @@ void TransparentMode::listLog()
 	{
 		QString format = "--pretty=format:\"%H\ -\ %an%ad\ :\ %s\"";
 		QString log = mPlugin->getLog(format, true);
-		QList<QPair<QString , QString> > listlog = parseLog(log);
+		QList<QPair<QString, QString> > listlog = parseLog(log);
 		emit listLogIsReady(listlog);
 	} else {
-		emit listLogIsReady(QList<QPair<QString , QString> >());
+		emit listLogIsReady(QList<QPair<QString, QString> >());
 	}
 }
 
@@ -44,13 +44,29 @@ void TransparentMode::setVersion(QString hash)
 	mPlugin->setVersion(hash, true);
 }
 
+bool TransparentMode::suggestToSaveAs()
+{
+	bool tmp = mProjectManager->suggestToSaveAs();
+	if (tmp) {
+		saveVersion();
+	}
+	return tmp;
+}
+
+bool TransparentMode::saveOrSuggestToSaveAs()
+{
+	bool tmp = mProjectManager->saveOrSuggestToSaveAs();
+	if (tmp) {
+		saveVersion();
+	}
+	return tmp;
+}
+
 void TransparentMode::saveVersion()
 {
-	if (mProjectManager->saveOrSuggestToSaveAs()){
-		isInit();
-		mPlugin->beginChangesSubmitting("version was saved in a transparent mode",QString(),true);
-		listLog();
-	}
+	isInit();
+	mPlugin->beginChangesSubmitting("version was saved in a transparent mode", QString(), true);
+	listLog();
 }
 
 QList<QPair<QString , QString> >TransparentMode::parseLog(QString log) //hash & mainPart

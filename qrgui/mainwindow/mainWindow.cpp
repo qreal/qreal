@@ -2002,12 +2002,12 @@ void MainWindow::initToolPlugins()
 	connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
 	connect(mVersioningManager, SIGNAL(transparentClassIsReady()), this, SLOT(initMEasyVersioningLink()));
 	connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), this, SLOT(switchOffOrOnEasyVers(bool)));
-	connect(mUi->actionList_of_version, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
+	connect(mUi->actionList_of_version_3, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
 
 	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins()), this);
 	mVersioningManager->switchOffOrOnAllPluginsAction(true);
-	mUi->actionList_of_version->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
-	mUi->actionSave_version->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_S));
+	mUi->actionList_of_version_3->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
+	//mUi->actionSave_version->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_S));
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
@@ -2274,7 +2274,21 @@ void MainWindow::setVersion(QString const &version)
 
 void MainWindow::switchOffOrOnEasyVers(bool switchOnOrOFF)
 {
-	mUi->menuEasy_versioning->menuAction()->setVisible(switchOnOrOFF);
+	mUi->actionList_of_version_3->setVisible(switchOnOrOFF);
+	if (switchOnOrOFF){
+		disconnect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
+		disconnect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
+		connect(mUi->actionSave, SIGNAL(triggered()), mEasyVersioning, SLOT(saveOrSuggestToSaveAs()));
+		connect(mUi->actionSave_as, SIGNAL(triggered()), mEasyVersioning, SLOT(suggestToSaveAs()));
+	} else {
+		connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
+		connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
+		mChangeVersion->close();
+		int index = mUi->tabs->indexOf(mChangeVersion);
+		if (index != -1){
+			mUi->tabs->removeTab(index);
+		}
+	}
 }
 
 void MainWindow::showChangeVersion()
@@ -2294,7 +2308,7 @@ void MainWindow::showChangeVersion()
 void MainWindow::initMEasyVersioningLink()
 {
 	mEasyVersioning = mVersioningManager->getLinkOnTransparentMode();
-	connect(mUi->actionSave_version, SIGNAL(triggered()), mEasyVersioning, SLOT(saveVersion()));
+	switchOffOrOnEasyVers(true); // because we turn on transparent mode default
 }
 
 void MainWindow::openStartTab()
