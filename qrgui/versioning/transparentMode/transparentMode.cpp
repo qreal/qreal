@@ -46,10 +46,11 @@ void TransparentMode::setVersion(QString hash)
 
 void TransparentMode::saveVersion()
 {
-	mProjectManager->saveOrSuggestToSaveAs();
-	isInit();
-	mPlugin->beginChangesSubmitting("version was saved in a transparent mode",QString(),true);
-	listLog();
+	if (mProjectManager->saveOrSuggestToSaveAs()){
+		isInit();
+		mPlugin->beginChangesSubmitting("version was saved in a transparent mode",QString(),true);
+		listLog();
+	}
 }
 
 QList<QPair<QString , QString> >TransparentMode::parseLog(QString log) //hash & mainPart
