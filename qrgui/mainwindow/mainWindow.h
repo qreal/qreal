@@ -408,9 +408,7 @@ private:
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
-
 	MiniMap *mMiniMap;
-
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
 	StartWidget *mStartWidget;

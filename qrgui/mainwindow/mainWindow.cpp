@@ -339,7 +339,7 @@ void MainWindow::loadPlugins()
 void MainWindow::clearSelectionOnTabs()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i),mMiniMap);
+		EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i), mMiniMap);
 		if (tab != NULL) {
 			tab->scene()->clearSelection();
 		}
@@ -2247,7 +2247,7 @@ void MainWindow::replaceMiniMap(int index)
 {
 	mMiniMap->parentWidget()->layout()->removeWidget(mMiniMap);
 	EditorView *currentTab = dynamic_cast<EditorView *>(mUi->tabs->widget(index));
-	mMiniMap->changeSource(index);
+	//mMiniMap->changeSource(index);
 	if (currentTab) {
 		currentTab->replaceMiniMap();
 	}

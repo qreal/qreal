@@ -1,14 +1,12 @@
 #include "editorView.h"
 #include "miniMapButton.h"
 
-
 using namespace qReal;
-
 MiniMapButton::MiniMapButton(EditorView *editorView)
 	: mWidgetMoved(false)
 {
-	this->raise();
-	connect(this, SIGNAL(moveMiniMap(QPoint)), editorView, SLOT(moveMiniMap(QPoint)));
+	raise();
+	connect(this, &MiniMapButton::moveMiniMap, editorView, &EditorView::moveMiniMap);
 }
 
 void MiniMapButton::mouseMoveEvent(QMouseEvent *event)

@@ -18,6 +18,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 		, mFontButtonWasPressed(false)
 		, mWidthGrid(SettingsManager::value("GridWidth").toInt())
 		, mIndexGrid(SettingsManager::value("IndexGrid").toInt())
+		, mMiniMapSize(SettingsManager::value("MiniMapSize").toInt())
 		, mShowGridAction(showGridAction)
 		, mShowAlignmentAction(showAlignmentAction)
 		, mActivateGridAction(activateGridAction)
@@ -43,12 +44,13 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 //	mUi->indexGridSlider->setVisible(false);
 //	mUi->label_20->setVisible(false);
 
-	connect(mUi->miniMapSize, SIGNAL(sliderMoved(int)), this, SLOT(miniMapSizeSliderMoved(int)));
+	//connect(mUi->miniMapSize, SIGNAL(sliderMoved(int)), this, SLOT(miniMapSizeSliderMoved(int)));
 	mUi->miniMapSize->setMinimum(50);
 	mUi->miniMapSize->setMaximum(250);
 
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
+	mUi->miniMapSize->setValue(mMiniMapSize);
 
 	mDragArea = mUi->dragAreaSizeSlider->value();
 	SettingsManager::setValue("DragArea", mDragArea);
@@ -109,6 +111,12 @@ void PreferencesEditorPage::indexGridSliderMoved(int value)
 	emit gridChanged();
 }
 
+void PreferencesEditorPage::miniMapSizeSliderMoved(int value)
+{
+	SettingsManager::setValue("MiniMapSize", value);
+	emit  miniMapSizeChanged();
+}
+
 void PreferencesEditorPage::dragAreaSliderMoved(int value)
 {
 	SettingsManager::setValue("DragArea", value);
@@ -132,14 +140,17 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("ResizeLabels", mUi->enableResizeLabelsCheckBox->isChecked());
 	SettingsManager::setValue("LabelsDistance", mUi->labelDistanceSlider->value());
 
+	emit miniMapSizeChanged();
 	emit paletteRepresentationChanged();
 
 	mWidthGrid = mUi->gridWidthSlider->value();
 	mIndexGrid = mUi->indexGridSlider->value();
 	mDragArea = mUi->dragAreaSizeSlider->value();
+	mMiniMapSize = mUi->miniMapSize->value();
 	SettingsManager::setValue("GridWidth", mWidthGrid);
 	SettingsManager::setValue("IndexGrid", mIndexGrid);
 	SettingsManager::setValue("DragArea", mDragArea);
+	SettingsManager::setValue("MiniMapSize", mMiniMapSize);
 
 	mShowGridAction->setChecked(mUi->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(mUi->showAlignmentCheckBox->isChecked());
@@ -154,10 +165,6 @@ void PreferencesEditorPage::save()
 		mFontWasChanged = false;
 		mFontButtonWasPressed = false;
 	}
-
-	mMiniMapSize = mUi->miniMapSize->value();
-	SettingsManager::setValue("MiniMapSize", mMiniMapSize);
-	mUi->miniMapSize->setValue(SettingsManager::value("MiniMapSize").toInt());
 }
 
 void PreferencesEditorPage::restoreSettings()
@@ -185,6 +192,8 @@ void PreferencesEditorPage::restoreSettings()
 	paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
 	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount").toInt());
 	mFont = SettingsManager::value("CurrentFont").toString();
+	mUi->miniMapSize->setValue(SettingsManager::value("MiniMapSize").toInt());
+
 }
 
 void PreferencesEditorPage::paletteComboBoxClicked(int index)
@@ -218,10 +227,4 @@ void PreferencesEditorPage::activateAlignment(bool activate)
 	mUi->activateAlignmentCheckBox->setChecked(activate);
 }
 
-
-void PreferencesEditorPage::miniMapSizeSliderMoved(int value)
-{
-	SettingsManager::setValue("MiniMapSize", value);
-	emit  miniMapSizeChanged();
-}
 

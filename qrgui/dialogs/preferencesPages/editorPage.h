@@ -34,6 +34,7 @@ signals:
 private slots:
 	void widthGridSliderMoved(int value);
 	void indexGridSliderMoved(int value);
+	void miniMapSizeSliderMoved(int value);
 	void dragAreaSliderMoved(int value);
 	void manualFontCheckBoxChecked(bool);
 	void fontSelectionButtonClicked();
@@ -44,16 +45,14 @@ private slots:
 	void activateGrid(bool);
 	void activateAlignment(bool);
 
-	void miniMapSizeSliderMoved(int value);
-
 private:
 	Ui::PreferencesEditorPage *mUi;
 	bool mFontWasChanged;
 	bool mFontButtonWasPressed;
 	int mWidthGrid;
 	int mIndexGrid;
-	int mDragArea;
 	int mMiniMapSize;
+	int mDragArea;
 	QString mFont;
 
 

@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtWidgets>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QGraphicsView>
+
 
 namespace qReal {
 

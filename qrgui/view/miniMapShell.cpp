@@ -3,26 +3,28 @@
 
 using namespace qReal;
 
-MiniMapShell::MiniMapShell(EditorView *parent, MiniMap *miniMap) :
-	QWidget()
+MiniMapShell::MiniMapShell(EditorView *parent, MiniMap *miniMap)
+	: QWidget()
 	, mMainLayout(new QVBoxLayout())
 	, mAuxiliaryLayout(new QHBoxLayout())
 	, mMiniMap(miniMap)
-	, size (SettingsManager::value("miniMapSize").toInt())
+	, mSize(SettingsManager::value("MiniMapSize").toInt())
 	, isMiniMapVisible(true)
 	, mShowMiniMapButton(new MiniMapButton(parent))
 	, mEditorView(parent)
+	, mButtonSize(20)
 
 {
-	size = SettingsManager::value("MiniMapSize").toInt();
+	mSize = SettingsManager::value("MiniMapSize").toInt();
 
 	mMiniMap->setParent(this);
+	mMiniMap->show();
 	mShowMiniMapButton->setParent(this);
 
-	setFixedSize(size+20, size+20);
+	setFixedSize(mSize + mButtonSize, mSize + mButtonSize);
 
-	mMiniMap->setGeometry(0, 0, size, size);
-	mShowMiniMapButton->setGeometry(0, 0, 20, 20);
+	mMiniMap->setGeometry(0, 0, mSize, mSize);
+	mShowMiniMapButton->setGeometry(0, 0, mButtonSize, mButtonSize);
 	mShowMiniMapButton->raise();
 
 	mMainLayout->addWidget(mMiniMap);
@@ -36,10 +38,10 @@ MiniMapShell::MiniMapShell(EditorView *parent, MiniMap *miniMap) :
 
 void MiniMapShell::changeSize()
 {
-	size = SettingsManager::value("MiniMapSize").toInt();
-	setFixedSize(size, size);
-	mMiniMap->setGeometry(0, 0, size, size);
-	setFixedSize(size+20, size+20);
+	mSize = SettingsManager::value("MiniMapmSize").toInt();
+	setFixedSize(mSize, mSize);
+	mMiniMap->setGeometry(0, 0, mSize, mSize);
+	setFixedSize(mSize + mButtonSize, mSize + mButtonSize);
 }
 
 void MiniMapShell::currentTabChanged()
@@ -51,18 +53,18 @@ void MiniMapShell::currentTabChanged()
 
 void MiniMapShell::turnMiniMap()
 {
-	if (!mShowMiniMapButton->getDragState())
-	{
-		size = SettingsManager::value("MiniMapSize").toInt();
+	if (!mShowMiniMapButton->getDragState()) {
+		mSize = SettingsManager::value("MiniMapmSize").toInt();
 		if (isMiniMapVisible){
 			mShowMiniMapButton->setIcon(QIcon(":/icons/show.png"));
 			mMiniMap->show();
-			setGeometry(this->x(), this->y(), this->x()+size+20 ,this->y()+size+20);
+			setGeometry(this->x(), this->y(), this->x() + mSize + mButtonSize, this->y() + mSize+mButtonSize);
 		} else {
 			mShowMiniMapButton->setIcon(QIcon(":/icons/hide.png"));
 			mMiniMap->hide();
-			setGeometry(this->x(), this->y(), this->x()+20 ,this->y()+20);
+			setGeometry(this->x(), this->y(), this->x() + mButtonSize, this->y()+mButtonSize);
 		}
+
 		isMiniMapVisible= !isMiniMapVisible;
 		mShowMiniMapButton->changeDragState(false);
 	} else {
@@ -70,12 +72,12 @@ void MiniMapShell::turnMiniMap()
 	}
 }
 
-QPoint MiniMapShell::getSceneCoordinates()
+QPoint const MiniMapShell::sceneCoordinates()
 {
 	return mSceneCoordinates;
 }
 
-void MiniMapShell::saveSceneCoordinates(QPoint sceneCoordinates)
+void MiniMapShell::saveSceneCoordinates(QPoint const sceneCoordinates)
 {
 	mSceneCoordinates = sceneCoordinates;
 }

@@ -19,7 +19,7 @@ class EditorView : public QGraphicsView
 	Q_OBJECT
 
 public:
-	explicit EditorView(QWidget *parent, MiniMap *mm = 0);
+	explicit EditorView(QWidget *parent, MiniMap *miniMap = 0);
 	~EditorView();
 
 	EditorViewMViface *mvIface() const;
@@ -42,7 +42,7 @@ public slots:
 	void invalidateScene();
 	void updateMiniMap();
 	void replaceMiniMap();
-	void moveMiniMap(QPoint miniMapPos);
+	void moveMiniMap(QPoint const miniMapPos);
 
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);
@@ -75,6 +75,8 @@ private:
 
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
+
+	int mStickDistance;
 	view::details::TouchSupportManager mTouchManager;
 };
 

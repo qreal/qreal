@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtWidgets/QBoxLayout>
+
 #include <qrkernel/settingsManager.h>
 #include "mainwindow/miniMap.h"
 #include "miniMapButton.h"
@@ -15,13 +17,13 @@ class MiniMapShell : public QWidget
 	Q_OBJECT
 
 public:
-	explicit MiniMapShell(EditorView *parent, MiniMap *miniMap);
+	MiniMapShell(EditorView *parent, MiniMap *miniMap);
 
 	void changeSize();
 	void currentTabChanged();
-	QPoint getSceneCoordinates();
+	QPoint const sceneCoordinates();
 public slots:
-	void saveSceneCoordinates(QPoint sceneCoordinates);
+	void saveSceneCoordinates(QPoint const sceneCoordinates);
 
 private slots:
 	void turnMiniMap();
@@ -34,7 +36,8 @@ private:
 	EditorView *mEditorView;
 	MiniMap *mMiniMap;
 	QPoint mSceneCoordinates;
-	int size;
+	int mSize;
+	int mButtonSize;
 	bool isMiniMapVisible;
 
 };

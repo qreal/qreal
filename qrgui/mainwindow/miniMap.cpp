@@ -1,8 +1,9 @@
 #include "miniMap.h"
 #include "mainWindow.h"
-#include "../view/editorView.h"
-#include "../view/editorViewScene.h"
-#include "../../qrkernel/settingsManager.h"
+#include "view/editorView.h"
+#include "view/editorViewScene.h"
+
+#include <qrkernel/settingsManager.h>
 
 MiniMap::MiniMap(QWidget *parent)
 		: QGraphicsView(parent)
@@ -15,7 +16,7 @@ MiniMap::MiniMap(QWidget *parent)
 
 void MiniMap::init(qReal::MainWindow *window)
 {
-	this->hide();
+	hide();
 	mWindow = window;
 
 	setRenderHint(QPainter::Antialiasing, true);
