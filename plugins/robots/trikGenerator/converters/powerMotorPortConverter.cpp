@@ -2,38 +2,33 @@
 
 using namespace qReal::robots::generators::converters;
 
-QStringList PowerMotorPortConverter::convert(QString const &data) const
+QString PowerMotorPortConverter::splitRegexp()
 {
-	QStringList const ports = data.toUpper().split(QRegExp("[^\\d|A|B|C|JM\\d|M1]"), QString::SkipEmptyParts);
-	QStringList result;
-	for (QString const &port : ports) {
-		switch (port[0].toLatin1()) {
-		case 'A':
-			result << "JM1";
-			break;
-		case 'B':
-			result << "JM2";
-			break;
-		case 'C':
-			/// @todo this M1 disapoints me :(
-			result << "M1";
-			break;
-		case '1':
-			result << "JM1";
-			break;
-		case '2':
-			result << "JM2";
-			break;
-		case '3':
-			result << "M1";
-			break;
-		case '4':
-			result << "JM3";
-			break;
-		default:
-			result << port;
-		}
-	}
+	return "[^\\d|A|B|C|JM\\d|M1]";
+}
 
-	return result;
+QString PowerMotorPortConverter::convert(QString const &data) const
+{
+	switch (data[0].toLatin1()) {
+	case 'A':
+		return "JM1";
+	case 'B':
+		return "JM2";
+	case 'C':
+		/// @todo this M1 disapoints me :(
+		return "M1";
+	case 'J':
+		// Got JM-form port
+		return data.length() == 3 ? convert(data[2]) : data;
+	case '1':
+		return "JM1";
+	case '2':
+		return "JM2";
+	case '3':
+		return "M1";
+	case '4':
+		return "JM3";
+	default:
+		return data;
+	}
 }

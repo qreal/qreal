@@ -273,8 +273,16 @@ Number *ExpressionsParser::parseMult(QString const &stream, int &pos)
 			*res *= *parseTerm(stream, pos);
 			break;
 		case '/':
-			*res /= *parseTerm(stream, pos);
-			break;
+			{
+				Number *divisor = parseTerm(stream, pos);
+				if (divisor->type() == Number::intType && divisor->value().toInt() == 0) {
+					error(divisionByZero);
+				} else {
+					*res /= *divisor;
+				}
+
+				break;
+			}
 		}
 	}
 
@@ -616,7 +624,8 @@ bool ExpressionsParser::isEmpty(QString const &stream, int &pos) const
 	return pos == stream.length();
 }
 
-void ExpressionsParser::error(const ParseErrorType &type, QString const &pos, QString const &expected, QString const &got)
+void ExpressionsParser::error(ParseErrorType const &type, QString const &pos
+		, QString const &expected, QString const &got)
 {
 	switch (type) {
 	case unexpectedEndOfStream:
@@ -664,6 +673,9 @@ void ExpressionsParser::error(const ParseErrorType &type, QString const &pos, QS
 		mHasParseErrors = true;
 		mErrorReporter->addCritical(QObject::tr("Unknown element name used"), mCurrentId);
 		break;
+	case divisionByZero:
+		mHasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("Integer division by zero"), mCurrentId);
 	}
 }
 

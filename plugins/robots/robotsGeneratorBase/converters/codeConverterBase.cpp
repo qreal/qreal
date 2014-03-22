@@ -35,11 +35,16 @@ QString CodeConverterBase::replaceSystemVariables(QString const &expression) con
 		result.replace("sensor" + stringSensor, sensorExpression(port));
 	}
 
+	for (int port = 1; port <= 4; ++port) {
+		QString const stringEncoder = QString::number(port);
+		result.replace("encoder" + stringEncoder, encoderExpression(stringEncoder));
+	}
+
 	result.replace("encoderA", encoderExpression("A"));
 	result.replace("encoderB", encoderExpression("B"));
 	result.replace("encoderC", encoderExpression("C"));
 
-	result.replace("Time", timelineExpression());
+	result.replace("time", timelineExpression());
 	return result;
 }
 

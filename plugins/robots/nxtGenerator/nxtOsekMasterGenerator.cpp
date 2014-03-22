@@ -25,6 +25,11 @@ QString NxtOsekMasterGenerator::targetPath()
 	return QString("%1/%2.c").arg(mProjectDir, mProjectName);
 }
 
+bool NxtOsekMasterGenerator::supportsGotoGeneration() const
+{
+	return true;
+}
+
 void NxtOsekMasterGenerator::afterGeneration()
 {
 	generateOilFile(mProjectName, mProjectDir);

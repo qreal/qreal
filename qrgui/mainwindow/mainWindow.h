@@ -91,6 +91,7 @@ public:
 
 	QAction *actionDeleteFromDiagram() const;
 	QAction *actionCopyElementsOnDiagram() const;
+	QAction *actionCutElementsOnDiagram() const;
 	QAction *actionPasteOnDiagram() const;
 	QAction *actionPasteCopyOfLogical() const;
 
@@ -227,6 +228,7 @@ private slots:
 	void sceneSelectionChanged();
 
 	void applySettings();
+	void resetToolbarSize(int size);
 
 	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
 	commands::AbstractCommand *graphicalDeleteCommand(QGraphicsItem *target);
@@ -237,6 +239,7 @@ private slots:
 	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
 	void deleteFromDiagram();
+	void cutElementsOnDiagram();
 	void copyElementsOnDiagram();
 	void pasteOnDiagram();
 	void pasteCopyOfLogical();

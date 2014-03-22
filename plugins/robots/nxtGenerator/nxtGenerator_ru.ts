@@ -108,18 +108,18 @@
         <translation>Файл исходного кода Lego NXT</translation>
     </message>
     <message>
-        <location filename="nxtGeneratorPlugin.cpp" line="62"/>
-        <location filename="nxtGeneratorPlugin.cpp" line="87"/>
+        <location filename="nxtGeneratorPlugin.cpp" line="77"/>
+        <location filename="nxtGeneratorPlugin.cpp" line="102"/>
         <source>Generate code</source>
         <translation>Генерировать код</translation>
     </message>
     <message>
-        <location filename="nxtGeneratorPlugin.cpp" line="67"/>
+        <location filename="nxtGeneratorPlugin.cpp" line="82"/>
         <source>Flash robot</source>
         <translation>Прошить</translation>
     </message>
     <message>
-        <location filename="nxtGeneratorPlugin.cpp" line="71"/>
+        <location filename="nxtGeneratorPlugin.cpp" line="86"/>
         <source>Upload program</source>
         <translation>Загрузить программу</translation>
     </message>
@@ -128,17 +128,17 @@
         <translation type="obsolete">Запустить программу</translation>
     </message>
     <message>
-        <location filename="nxtGeneratorPlugin.cpp" line="88"/>
+        <location filename="nxtGeneratorPlugin.cpp" line="103"/>
         <source>Upload program to robot</source>
         <translation>Загрузить программу на робота</translation>
     </message>
     <message>
-        <location filename="nxtGeneratorPlugin.cpp" line="148"/>
+        <location filename="nxtGeneratorPlugin.cpp" line="163"/>
         <source>flash.sh not found. Make sure it is present in QReal installation directory</source>
         <translation>Не найден скрипт flash.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>
     <message>
-        <location filename="nxtGeneratorPlugin.cpp" line="158"/>
+        <location filename="nxtGeneratorPlugin.cpp" line="173"/>
         <source>upload.sh not found. Make sure it is present in QReal installation directory</source>
         <translation>Не найден скрипт upload.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>

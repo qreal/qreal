@@ -8,10 +8,12 @@ namespace generators {
 namespace converters {
 
 /// Splits given string selecting just numbers and returns converted output port values
-class ServoMotorPortConverter : public simple::Binding::MultiConverterInterface
+class ServoMotorPortConverter : public simple::Binding::ConverterInterface
 {
 public:
-	QStringList convert(QString const &data) const override;
+	static QString splitRegexp();
+
+	QString convert(QString const &data) const override;
 };
 
 }

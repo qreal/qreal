@@ -10,7 +10,7 @@ LoopWithIterationVisitedRule::LoopWithIterationVisitedRule(SemanticTree *tree
 
 bool LoopWithIterationVisitedRule::apply()
 {
-	if (!mIterationLink.targetVisited || mNextLink.targetVisited) {
+	if (!alreadyCreated(mIterationLink) || alreadyCreated(mNextLink)) {
 		return false;
 	}
 

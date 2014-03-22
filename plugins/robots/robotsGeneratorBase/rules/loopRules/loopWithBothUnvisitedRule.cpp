@@ -10,7 +10,7 @@ LoopWithBothUnvisitedRule::LoopWithBothUnvisitedRule(SemanticTree *tree, Id cons
 
 bool LoopWithBothUnvisitedRule::apply()
 {
-	if (mIterationLink.targetVisited || mNextLink.targetVisited) {
+	if (alreadyCreated(mIterationLink) || alreadyCreated(mNextLink)) {
 		return false;
 	}
 

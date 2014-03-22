@@ -21,7 +21,39 @@ PaletteTree::PaletteTree(QWidget *parent)
 	: QWidget(parent)
 	, mCurrentEditor(0)
 {
+	initUi();
 	createPaletteTree();
+}
+
+void PaletteTree::initUi()
+{
+	mLayout = new QVBoxLayout(this);
+	mLayout->setSpacing(0);
+	QHBoxLayout * const controlButtonsLayout = new QHBoxLayout;
+	controlButtonsLayout->setSpacing(0);
+
+	mComboBox = new QComboBox;
+	mComboBox->setGeometry(0, 0, 300, 50);
+	mLayout->addWidget(mComboBox);
+	mLayout->addLayout(controlButtonsLayout);
+
+	mNodesStateButtonExpands = SettingsManager::value("nodesStateButtonExpands").toBool();
+	mChangeExpansionState = new QToolButton;
+	mChangeExpansionState->setGeometry(0, 0, 30, 30);
+	setExpansionButtonAppearance();
+	mChangeExpansionState->setIconSize(QSize(30, 30));
+	connect(mChangeExpansionState, SIGNAL(clicked()), this, SLOT(changeExpansionState()));
+	controlButtonsLayout->addWidget(mChangeExpansionState);
+
+	mChangeRepresentation = new QToolButton;
+	mChangeRepresentation->setGeometry(0, 0, 30, 30);
+	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
+	mChangeRepresentation->setToolTip(tr("Change representation"));
+	mChangeRepresentation->setIconSize(QSize(30, 30));
+	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
+	controlButtonsLayout->addWidget(mChangeRepresentation);
+
+	setMinimumSize(200, 100);
 }
 
 void PaletteTree::expand()
@@ -76,6 +108,7 @@ void PaletteTree::initDone()
 		mComboBox->hide();
 	} else {
 		connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
+		mComboBox->show();
 	}
 	setActiveEditor(SettingsManager::value("CurrentIndex", 0).toInt());
 	mTree->resizeIcons();
@@ -126,49 +159,17 @@ void PaletteTree::recreateTrees()
 
 void PaletteTree::createPaletteTree()
 {
-	mLayout = new QVBoxLayout(this);
-	mLayout->setSpacing(0);
-
-	mComboBox = new QComboBox;
-	mComboBox->setGeometry(0, 0, 300, 50);
-	mLayout->addWidget(mComboBox);
-
-	QHBoxLayout *hLayout = new QHBoxLayout;
-	hLayout->setSpacing(0);
-
-	mNodesStateButtonExpands = SettingsManager::value("nodesStateButtonExpands").toBool();
-	mChangeExpansionState = new QToolButton;
-	mChangeExpansionState->setGeometry(0, 0, 30, 30);
-	setExpansionButtonAppearance();
-	mChangeExpansionState->setIconSize(QSize(30, 30));
-	connect(mChangeExpansionState, SIGNAL(clicked()), this, SLOT(changeExpansionState()));
-	hLayout->addWidget(mChangeExpansionState);
-
-	mChangeRepresentation = new QToolButton;
-	mChangeRepresentation->setGeometry(0, 0, 30, 30);
-	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
-	mChangeRepresentation->setToolTip(tr("Change representation"));
-	mChangeRepresentation->setIconSize(QSize(30, 30));
-	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
-	hLayout->addWidget(mChangeRepresentation);
-
-	mLayout->addLayout(hLayout);
-
 	mTree = new PaletteTreeWidgets(*this, mMainWindow, *mEditorManager);
 	mTree->setMinimumHeight(0);
-
 	mLayout->addWidget(mTree);
-	setMinimumSize(200, 100);
 }
 
 void PaletteTree::deletePaletteTree()
 {
-	delete mChangeExpansionState;
-	delete mChangeRepresentation;
-	delete mComboBox;
-	delete mLayout;
+	mComboBox->clear();
 	if (mTree) {
 		mEditorsTrees.removeAll(mTree);
+		mLayout->removeWidget(mTree);
 		delete mTree;
 	}
 
@@ -176,6 +177,7 @@ void PaletteTree::deletePaletteTree()
 	mEditorsTrees.clear();
 	mEditorsNames.clear();
 	mCategories.clear();
+	mCurrentEditor = 0;
 }
 
 PaletteTree::~PaletteTree()
@@ -307,4 +309,3 @@ void PaletteTree::installEventFilter(QObject *obj)
 	QWidget::installEventFilter(obj);
 	comboBox()->installEventFilter(obj);
 }
-

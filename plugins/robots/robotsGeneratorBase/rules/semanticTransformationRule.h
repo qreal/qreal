@@ -25,6 +25,12 @@ protected:
 
 	LoopNode *makeLoopStartingFrom(NonZoneNode *node);
 
+	/// Returns true if semantic node for the given id was already created.
+	bool alreadyCreated(Id const &id);
+
+	/// Returns true if semantic node for the link dst node was already created.
+	bool alreadyCreated(LinkInfo const &link);
+
 	SemanticTree *mTree;  // Does not take ownership
 	Id const mId;
 };

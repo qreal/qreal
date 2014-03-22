@@ -108,8 +108,8 @@ void RobotsBlockParser::setReservedVariables()
 		mReservedVariables.append(variable);
 	}
 
-	for (int i = 0; i < 3; ++i) {
-		QString const variable = encoderVariablePerfix + ('A' + i);
+	for (int i = 0; i < 4; ++i) {
+		QString const variable = encoderVariablePerfix + ('1' + i);
 		mVariables.insert(variable, new Number(0, Number::intType));
 		mReservedVariables.append(variable);
 	}

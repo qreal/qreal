@@ -1,7 +1,11 @@
 #include "trikGeneratorFactory.h"
+#include <converters/regexpMultiConverter.h>
 #include "converters/servoMotorPortConverter.h"
 #include "converters/powerMotorPortConverter.h"
+#include "simpleGenerators/detectLineGenerator.h"
+#include "simpleGenerators/initCameraGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
+#include "simpleGenerators/lineDetectorToVariableGenerator.h"
 #include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/sadSmileGenerator.h"
 #include "simpleGenerators/sayGenerator.h"
@@ -48,6 +52,12 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new SystemGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Led") {
 		return new LedGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "DetectLine") {
+		return new DetectLineGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "InitCamera") {
+		return new InitCameraGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "LineDetectorToVariable") {
+		return new LineDetectorToVariableGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
@@ -61,15 +71,27 @@ QString TrikGeneratorFactory::pathToTemplates() const
 Binding::MultiConverterInterface *TrikGeneratorFactory::enginesConverter(bool powerMotors) const
 {
 	if (powerMotors) {
-		return new converters::PowerMotorPortConverter;
+		return new converters::RegexpMultiConverter(converters::PowerMotorPortConverter::splitRegexp()
+				, new converters::PowerMotorPortConverter);
 	}
 
-	return new converters::ServoMotorPortConverter;
+	return new converters::RegexpMultiConverter(converters::ServoMotorPortConverter::splitRegexp()
+			, new converters::ServoMotorPortConverter);
+}
+
+Binding::MultiConverterInterface *TrikGeneratorFactory::enginesConverter() const
+{
+	return enginesConverter(true);
 }
 
 Binding::ConverterInterface *TrikGeneratorFactory::inputPortConverter() const
 {
 	return new Binding::EmptyConverter;
+}
+
+Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
+{
+	return new converters::PowerMotorPortConverter;
 }
 
 void TrikGeneratorFactory::initVariables()

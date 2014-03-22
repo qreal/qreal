@@ -114,6 +114,7 @@ HEADERS += \
 	$$PWD/converters/templateParametrizedConverter.h \
 	$$PWD/converters/templateParametrizedMultiConverter.h \
 	$$PWD/converters/enumConverterBase.h \
+	$$PWD/converters/regexpMultiConverter.h \
 	$$PWD/converters/codeConverterBase.h \
 	$$PWD/converters/intPropertyConverter.h \
 	$$PWD/converters/floatPropertyConverter.h \
@@ -167,11 +168,14 @@ HEADERS += \
 	$$PWD/simpleGenerators/subprogramsSimpleGenerator.h \
 	$$PWD/simpleGenerators/breakGenerator.h \
 	$$PWD/simpleGenerators/continueGenerator.h \
+	$$PWD/simpleGenerators/labelGenerator.h \
+	$$PWD/simpleGenerators/gotoSimpleGenerator.h \
 
 SOURCES += \
 	$$PWD/converters/templateParametrizedConverter.cpp \
 	$$PWD/converters/templateParametrizedMultiConverter.cpp \
 	$$PWD/converters/enumConverterBase.cpp \
+	$$PWD/converters/regexpMultiConverter.cpp \
 	$$PWD/converters/codeConverterBase.cpp \
 	$$PWD/converters/intPropertyConverter.cpp \
 	$$PWD/converters/floatPropertyConverter.cpp \
@@ -225,3 +229,5 @@ SOURCES += \
 	$$PWD/simpleGenerators/subprogramsSimpleGenerator.cpp \
 	$$PWD/simpleGenerators/breakGenerator.cpp \
 	$$PWD/simpleGenerators/continueGenerator.cpp \
+	$$PWD/simpleGenerators/labelGenerator.cpp \
+	$$PWD/simpleGenerators/gotoSimpleGenerator.cpp \
