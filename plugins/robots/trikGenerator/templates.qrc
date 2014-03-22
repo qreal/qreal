@@ -95,6 +95,12 @@
         <file>templates/buttons/waitForBothButtons.t</file>
         <file>templates/buttons/waitForEnterOnly.t</file>
         <file>templates/buttons/waitForRunOnly.t</file>
+        <file>templates/buttons/waitForEnter.t</file>
+        <file>templates/buttons/waitForUp.t</file>
+        <file>templates/buttons/waitForDown.t</file>
+        <file>templates/buttons/waitForLeft.t</file>
+        <file>templates/buttons/waitForRight.t</file>
+        <file>templates/buttons/waitForPower.t</file>
         <file>templates/variables/floatConstantDeclaration.t</file>
         <file>templates/variables/floatVariableDeclaration.t</file>
         <file>templates/variables/intConstantDeclaration.t</file>

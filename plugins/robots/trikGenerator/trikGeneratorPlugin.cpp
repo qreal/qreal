@@ -120,6 +120,9 @@ void TrikGeneratorPlugin::stopRobot()
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
 
-	communicator.runDirectCommand("brick.system(\"killall aplay\")");
-	communicator.runDirectCommand("brick.system(\"killall vlc\")");
+	communicator.runDirectCommand(
+			"brick.system(\"killall aplay\"); \n"
+			"brick.system(\"killall vlc\"); \n"
+			"brick.system(\"killall rover-cv\");"
+			);
 }

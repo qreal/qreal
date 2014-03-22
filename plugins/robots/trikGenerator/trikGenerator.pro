@@ -52,6 +52,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/smileGenerator.h \
 	$$PWD/simpleGenerators/trikEnginesGenerator.h \
 	$$PWD/simpleGenerators/trikEnginesStopGenerator.h \
+	$$PWD/simpleGenerators/waitForButtonGenerator.h \
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \
@@ -75,5 +76,6 @@ SOURCES += \
 	$$PWD/simpleGenerators/smileGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesStopGenerator.cpp \
+	$$PWD/simpleGenerators/waitForButtonGenerator.cpp \
 
 include(robotCommunication/robotCommunication.pri)

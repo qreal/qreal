@@ -1310,7 +1310,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопок" name="WaitForButtons" path="55, 58 : 179, 58 : 179, 182 : 55, 182 : 55, 58 :  | 12, 12 : 221, 12 : 221, 221 : 12, 221 : 12, 12 : " description="Ждать, пока заданные кнопки на роботе не будут нажаты заданное количество раз. Счётчики нажатия можно задать для каждой кнопки отдельно, блок продолжит выполнение, только когда все счётчики сработают.">
+<!-- 			<node displayedName="Ждать нажатия кнопок" name="WaitForButtons" path="55, 58 : 179, 58 : 179, 182 : 55, 182 : 55, 58 :  | 12, 12 : 221, 12 : 221, 221 : 12, 221 : 12, 12 : " description="Ждать, пока заданные кнопки на роботе не будут нажаты заданное количество раз. Счётчики нажатия можно задать для каждой кнопки отдельно, блок продолжит выполнение, только когда все счётчики сработают.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
@@ -1381,7 +1381,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Очистить экран" name="ClearScreen" description="Стереть всё, что нарисовано на экране.">
+ -->			<node displayedName="Очистить экран" name="ClearScreen" description="Стереть всё, что нарисовано на экране.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/clearScreenBlock.png" x1="0" y2="50" x2="50"/>
@@ -2080,7 +2080,7 @@
 					<labels>
 						<label x="-15" y="60" text="Датчик линии в переменную"/>
 						<label x="-15" y="80" text="Переменная:"/>
-						<label x="55" y="80" textBinded="Variable"/>
+						<label x="85" y="80" textBinded="Variable"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2088,6 +2088,216 @@
 					<properties>
 						<property displayedName="Имя переменной" type="string" name="Variable" />
 					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки Ввод" name="WaitForEnter" description="Ждать нажатия на кнопку Ввод.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Ввод"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки Влево" name="WaitForLeft" description="Ждать нажатия на кнопку Влево.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Влево"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки Вправо" name="WaitForRight" description="Ждать нажатия на кнопку Вправо.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Вправо"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки Вниз" name="WaitForDown" description="Ждать нажатия на кнопку Вниз.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Вниз"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки Вверх" name="WaitForUp" description="Ждать нажатия на кнопку Вверх.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Вверх"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки Питание" name="WaitForPower" description="Ждать нажатия на кнопку Питание.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Питание"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
@@ -2142,8 +2352,13 @@
 				<element name="WaitForLight"/>
 <!--				<element name="WaitForSound"/>
 				<element name="WaitForGyroscope"/> -->
-				<element name="WaitForButtons"/>
-			</group>
+				<element name="WaitForEnter"/>
+				<element name="WaitForLeft"/>
+				<element name="WaitForRight"/>
+				<element name="WaitForUp"/>
+				<element name="WaitForDown"/>
+<!-- 				<element name="WaitForPower"/>
+ -->			</group>
 <!--			<group name="Инициализация"> -->
 <!--			</group> -->
 <!--			<group name="Сегвей">

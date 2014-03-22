@@ -14,6 +14,7 @@
 #include "simpleGenerators/systemGenerator.h"
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/trikEnginesStopGenerator.h"
+#include "simpleGenerators/waitForButtonGenerator.h"
 #include "parts/trikVariables.h"
 
 using namespace qReal::robots::generators;
@@ -58,6 +59,18 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new InitCameraGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "LineDetectorToVariable") {
 		return new LineDetectorToVariableGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "WaitForEnter") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
+	} else if (elementType == "WaitForLeft") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
+	} else if (elementType == "WaitForRight") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
+	} else if (elementType == "WaitForUp") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForUp.t", this);
+	} else if (elementType == "WaitForDown") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
+	} else if (elementType == "WaitForPower") {
+		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForPower.t", this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
