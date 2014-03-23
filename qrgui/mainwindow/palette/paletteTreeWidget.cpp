@@ -141,7 +141,7 @@ void PaletteTreeWidget::groupCollapsed(QTreeWidgetItem *item)
 void PaletteTreeWidget::elementClicked(QTreeWidgetItem *item, int column)
 {
 	QString const name = item->text(column);
-	QString const userAction = "Palette: element click: " + name;
+	QString const userAction = QString::fromUtf8("Нажать на элемент в палитре — название элемента: ") + name + "|";
 	mPaletteTree.reportPaletteUserAction(userAction);
 }
 
@@ -161,8 +161,8 @@ void PaletteTreeWidget::mousePressEvent(QMouseEvent *event)
 
 void PaletteTreeWidget::scrollContentsBy(int dx, int dy)
 {
-	QString const direction = (dy == 1) ? "up" : "down";
-	QString const userAction = "Palette: scroll " + direction;
+	QString const direction = (dy == 1) ? QString::fromUtf8("вверх") : QString::fromUtf8("вниз");
+	QString const userAction = QString::fromUtf8("Прокрутить палитру — направление: ") + direction + QString::fromUtf8("|шагов: 1|");
 	mPaletteTree.reportPaletteUserAction(userAction);
 	QTreeWidget::scrollContentsBy(dx, dy);
 }

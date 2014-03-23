@@ -254,8 +254,8 @@ int PaletteTree::maxItemsCountInARow() const
 
 void PaletteTree::changeRepresentation()
 {
-	QString const changeView = (mIconsView) ? "regular" : "icon";
-	QString const userAction = "Palette: change representation to " + changeView + " view button clicked";
+	//QString const changeView = (mIconsView) ? "regular" : "icon";
+	QString const userAction = QString::fromUtf8("Нажать на кнопку в палитре — название: иконки/обычный вид|");
 	mUXInfoInterface->reportPaletteUserAction(userAction);
 	loadPalette(!mIconsView, mItemsCountInARow, mEditorManager);
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
@@ -290,14 +290,16 @@ void PaletteTree::changeExpansionState()
 {
 	mNodesStateButtonExpands = !mNodesStateButtonExpands;
 	if (mNodesStateButtonExpands) {
-		QString const userAction = "Palette: expand button clicked";
-		mUXInfoInterface->reportPaletteUserAction(userAction);
+		//QString const userAction = "Palette: expand button clicked";
+		//mUXInfoInterface->reportPaletteUserAction(userAction);
 		expand();
 	} else {
-		QString const userAction = "Palette: collapse button clicked";
-		mUXInfoInterface->reportPaletteUserAction(userAction);
+		//QString const userAction = "Palette: collapse button clicked";
+		//mUXInfoInterface->reportPaletteUserAction(userAction);
 		collapse();
 	}
+	QString const userAction = QString::fromUtf8("Нажать на кнопку в палитре — название: свернуть/развернуть|");
+	mUXInfoInterface->reportPaletteUserAction(userAction);
 	setExpansionButtonAppearance();
 }
 
