@@ -10,7 +10,7 @@ IfWithBothUnvisitedRule::IfWithBothUnvisitedRule(SemanticTree *tree, Id const &i
 
 bool IfWithBothUnvisitedRule::apply()
 {
-	if (mThenLink.targetVisited || mElseLink.targetVisited) {
+	if (alreadyCreated(mThenLink) || alreadyCreated(mElseLink)) {
 		return false;
 	}
 

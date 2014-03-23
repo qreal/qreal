@@ -22,7 +22,39 @@ PaletteTree::PaletteTree(QWidget *parent)
 	, mCurrentEditor(0)
 	, mUXInfoInterface(NULL)
 {
+	initUi();
 	createPaletteTree();
+}
+
+void PaletteTree::initUi()
+{
+	mLayout = new QVBoxLayout(this);
+	mLayout->setSpacing(0);
+	QHBoxLayout * const controlButtonsLayout = new QHBoxLayout;
+	controlButtonsLayout->setSpacing(0);
+
+	mComboBox = new QComboBox;
+	mComboBox->setGeometry(0, 0, 300, 50);
+	mLayout->addWidget(mComboBox);
+	mLayout->addLayout(controlButtonsLayout);
+
+	mNodesStateButtonExpands = SettingsManager::value("nodesStateButtonExpands").toBool();
+	mChangeExpansionState = new QToolButton;
+	mChangeExpansionState->setGeometry(0, 0, 30, 30);
+	setExpansionButtonAppearance();
+	mChangeExpansionState->setIconSize(QSize(30, 30));
+	connect(mChangeExpansionState, SIGNAL(clicked()), this, SLOT(changeExpansionState()));
+	controlButtonsLayout->addWidget(mChangeExpansionState);
+
+	mChangeRepresentation = new QToolButton;
+	mChangeRepresentation->setGeometry(0, 0, 30, 30);
+	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
+	mChangeRepresentation->setToolTip(tr("Change representation"));
+	mChangeRepresentation->setIconSize(QSize(30, 30));
+	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
+	controlButtonsLayout->addWidget(mChangeRepresentation);
+
+	setMinimumSize(200, 100);
 }
 
 void PaletteTree::expand()
@@ -128,49 +160,17 @@ void PaletteTree::recreateTrees()
 
 void PaletteTree::createPaletteTree()
 {
-	mLayout = new QVBoxLayout(this);
-	mLayout->setSpacing(0);
-
-	mComboBox = new QComboBox;
-	mComboBox->setGeometry(0, 0, 300, 50);
-	mLayout->addWidget(mComboBox);
-
-	QHBoxLayout *hLayout = new QHBoxLayout;
-	hLayout->setSpacing(0);
-
-	mNodesStateButtonExpands = SettingsManager::value("nodesStateButtonExpands").toBool();
-	mChangeExpansionState = new QToolButton;
-	mChangeExpansionState->setGeometry(0, 0, 30, 30);
-	setExpansionButtonAppearance();
-	mChangeExpansionState->setIconSize(QSize(30, 30));
-	connect(mChangeExpansionState, SIGNAL(clicked()), this, SLOT(changeExpansionState()));
-	hLayout->addWidget(mChangeExpansionState);
-
-	mChangeRepresentation = new QToolButton;
-	mChangeRepresentation->setGeometry(0, 0, 30, 30);
-	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
-	mChangeRepresentation->setToolTip(tr("Change representation"));
-	mChangeRepresentation->setIconSize(QSize(30, 30));
-	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
-	hLayout->addWidget(mChangeRepresentation);
-
-	mLayout->addLayout(hLayout);
-
 	mTree = new PaletteTreeWidgets(*this, mMainWindow, *mEditorManager);
 	mTree->setMinimumHeight(0);
-
 	mLayout->addWidget(mTree);
-	setMinimumSize(200, 100);
 }
 
 void PaletteTree::deletePaletteTree()
 {
-	delete mChangeExpansionState;
-	delete mChangeRepresentation;
-	delete mComboBox;
-	delete mLayout;
+	mComboBox->clear();
 	if (mTree) {
 		mEditorsTrees.removeAll(mTree);
+		mLayout->removeWidget(mTree);
 		delete mTree;
 	}
 
@@ -255,7 +255,7 @@ int PaletteTree::maxItemsCountInARow() const
 void PaletteTree::changeRepresentation()
 {
 	//QString const changeView = (mIconsView) ? "regular" : "icon";
-	QString const userAction = QString::fromUtf8("ÐÐ°Ð¶Ð°Ñ‚ÑŒ Ð½Ð° ÐºÐ½Ð¾Ð¿ÐºÑƒ Ð² Ð¿Ð°Ð»Ð¸Ñ‚Ñ€Ðµ â€” Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ: Ð¸ÐºÐ¾Ð½ÐºÐ¸/Ð¾Ð±Ñ‹Ñ‡Ð½Ñ‹Ð¹ Ð²Ð¸Ð´|");
+	QString const userAction = QString::fromUtf8("Íàæàòü íà êíîïêó â ïàëèòðå — íàçâàíèå: èêîíêè/îáû÷íûé âèä|");
 	mUXInfoInterface->reportPaletteUserAction(userAction);
 	loadPalette(!mIconsView, mItemsCountInARow, mEditorManager);
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
@@ -298,7 +298,7 @@ void PaletteTree::changeExpansionState()
 		//mUXInfoInterface->reportPaletteUserAction(userAction);
 		collapse();
 	}
-	QString const userAction = QString::fromUtf8("ÐÐ°Ð¶Ð°Ñ‚ÑŒ Ð½Ð° ÐºÐ½Ð¾Ð¿ÐºÑƒ Ð² Ð¿Ð°Ð»Ð¸Ñ‚Ñ€Ðµ â€” Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ: ÑÐ²ÐµÑ€Ð½ÑƒÑ‚ÑŒ/Ñ€Ð°Ð·Ð²ÐµÑ€Ð½ÑƒÑ‚ÑŒ|");
+	QString const userAction = QString::fromUtf8("Íàæàòü íà êíîïêó â ïàëèòðå — íàçâàíèå: ñâåðíóòü/ðàçâåðíóòü|");
 	mUXInfoInterface->reportPaletteUserAction(userAction);
 	setExpansionButtonAppearance();
 }

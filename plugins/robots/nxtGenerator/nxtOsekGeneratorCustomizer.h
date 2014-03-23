@@ -17,7 +17,7 @@ public:
 	virtual GeneratorFactoryBase *factory();
 
 private:
-	NxtOsekGeneratorFactory *mFactory;
+	NxtOsekGeneratorFactory mFactory;
 };
 
 }

@@ -3,6 +3,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <readableControlFlowGenerator.h>
+#include <gotoControlFlowGenerator.h>
 
 using namespace qReal::robots::generators;
 
@@ -29,6 +30,8 @@ void MasterGeneratorBase::initialize()
 
 	mReadableControlFlowGenerator = new ReadableControlFlowGenerator(mRepo
 			, mErrorReporter, *mCustomizer, mDiagram, this);
+	mGotoControlFlowGenerator = new GotoControlFlowGenerator(mRepo
+			, mErrorReporter, *mCustomizer, mDiagram, this);
 }
 
 QString MasterGeneratorBase::generate()
@@ -51,14 +54,40 @@ QString MasterGeneratorBase::generate()
 		generator->reinit();
 	}
 
+	QString mainCode;
 	semantics::SemanticTree const *mainControlFlow = mReadableControlFlowGenerator->generate();
-	if (!mainControlFlow) {
-		return QString();
+	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
+		mainCode = mainControlFlow->toString(1);
+		bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
+		if (!subprogramsResult) {
+			mainCode = QString();
+		}
+	} else {
+		if (mReadableControlFlowGenerator->errorsOccured()) {
+			return QString();
+		}
 	}
 
-	QString const mainCode = mainControlFlow->toString(1);
-	bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
-	if (!subprogramsResult) {
+	if (mainCode.isEmpty() && supportsGotoGeneration()) {
+		mErrorReporter.addInformation(tr("This diagram cannot be generated into the structured code."\
+				" Generating it into the code with 'goto' statements."));
+		semantics::SemanticTree const *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
+		if (gotoMainControlFlow) {
+			mainCode = gotoMainControlFlow->toString(1);
+			bool const gotoSubprogramsResult = mCustomizer->factory()
+					->subprograms()->generate(mGotoControlFlowGenerator);
+			if (!gotoSubprogramsResult) {
+				mainCode = QString();
+			}
+		}
+	}
+
+	if (mainCode.isEmpty()) {
+		QString const errorMessage = supportsGotoGeneration()
+				? tr("This diagram cannot be even generated into the code with 'goto'"\
+						"statements. Please contact the developers (WTF did you do?)")
+				: tr("This diagram cannot be generated into the structured code.");
+		mErrorReporter.addError(errorMessage);
 		return QString();
 	}
 

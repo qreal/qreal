@@ -93,6 +93,14 @@ public:
 	virtual simple::AbstractSimpleGenerator *continueGenerator(Id const &id
 			, GeneratorCustomizer &customizer);
 
+	/// Returns a pointer to a code generator for goto label declaration
+	virtual simple::AbstractSimpleGenerator *labelGenerator(Id const &id
+			, GeneratorCustomizer &customizer);
+
+	/// Returns a pointer to a code generator for 'goto' instruction
+	virtual simple::AbstractSimpleGenerator *gotoSimpleGenerator(Id const &id
+			, GeneratorCustomizer &customizer);
+
 	/// Returns a pointer to a code generator for blocks with final-blocks semantics
 	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(Id const &id
 			, GeneratorCustomizer &customizer, bool fromMainGenerator);
