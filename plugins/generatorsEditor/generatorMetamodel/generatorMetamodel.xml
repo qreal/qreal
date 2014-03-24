@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram name="GeneratorEditor" nodeName="GeneratorRoot" displayedName="Generator Editor">
+        <nonGraphicTypes>
+            <enum name="languageType">
+                <value>other</value>
+                <value>behavioral</value>
+                <value>structural</value>
+            </enum>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node name="GeneratorRoot" displayedName="Generator Root" description="Корневой элемент модели генератора">
+                <graphics>
+                    <picture sizex="31" sizey="31">
+                        <ellipse stroke="#000000" y1="0" y2="29" x1="0" stroke-style="dot" x2="29" stroke-width="1" fill-style="solid" fill="#ffffff"/>
+                        <ellipse stroke="#000000" y1="5" y2="24" x1="5" stroke-style="solid" x2="24" stroke-width="1" fill-style="solid" fill="#00f000"/>
+                        <text font-size="15" font-name="Arial" y1="6" b="0" x1="10" u="0" font-fill="#000000" i="0">G</text>
+                    </picture>
+                    <labels/>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="GeneratorDiagram"/>
+                    </container>
+                    <properties>
+                        <property name="toGeneratePath" displayedName="directory to generate" type="string"/>
+                        <property name="toQrealPath" displayedName="path to QReal Source" type="string"/>
+                        <property name="languageType" displayedName="language type" type="languageType">
+                            <default>other</default>
+                        </property>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="GeneratorDiagram" displayedName="Generator Diagram" description="Элемент описания части генератора">
+                <graphics>
+                    <picture sizex="201" sizey="201">
+                        <line stroke="#000000" y1="40" y2="160" x1="0" stroke-style="solid" x2="0" stroke-width="0" fill-style="none" fill="#000000"/>
+                        <line stroke="#000000" y1="40" y2="160" x1="200" stroke-style="solid" x2="200" stroke-width="0" fill-style="none" fill="#000000"/>
+                        <arc y1="0" y2="79" x1="0" x2="79" spanAngle="1440" startAngle="1440"/>
+                        <arc y1="0" y2="79" x1="120" x2="199" spanAngle="1440" startAngle="0"/>
+                        <arc y1="120" y2="199" x1="0" x2="79" spanAngle="1440" startAngle="2880"/>
+                        <arc y1="120" y2="199" x1="120" x2="199" spanAngle="-1440" startAngle="0"/>
+                    </picture>
+                    <labels>
+                        <label x="30" y="15" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort type="NonTyped">
+                            <start startx="-1" starty="40"/>
+                            <end endx="0" endy="159"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="199" starty="40"/>
+                            <end endx="200" endy="159"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="SemanticNode"/>
+                        <contains type="ForeachNode"/>
+                        <contains type="ConverterNode"/>
+                    </container>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="SemanticNode" displayedName="Semantic Node" description="Элемент для задания генерируемого кода">
+                <graphics>
+                    <picture sizex="164" sizey="101">
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="100" y2="100" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="25a" y2="25a" x1="0a" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" textBinded="Semantic / ##elementName##"/>
+                    </labels>
+                    <ports>
+                        <linePort type="NonTyped">
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="149" starty="10"/>
+                            <end endx="150" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="-1"/>
+                            <end endx="139" endy="0"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="99"/>
+                            <end endx="139" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property name="elementName" displayedName="Name of Element" type="string"/>
+                        <property name="textCode" displayedName="text code" type="string"/>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="AbstractElement">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property name="markName" displayedName="mark name" type="string"/>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="ForeachNode" displayedName="Foreach" description="Элемент позволяющий пройти по всем дочерним элементам">
+                <graphics>
+                    <picture sizex="151" sizey="101">
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="100" y2="100" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="25a" y2="25a" x1="0a" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" textBinded="Foreach / ##markName##"/>
+                    </labels>
+                    <ports>
+                        <linePort type="NonTyped">
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="149" starty="10"/>
+                            <end endx="150" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="-1"/>
+                            <end endx="139" endy="0"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="99"/>
+                            <end endx="139" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="SemanticNode"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="AbstractElement"/>
+                    </generalizations>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="ConverterNode" displayedName="Converter" description="Элемент, позволяющий описать новый конвертер данных">
+                <graphics>
+                    <picture sizex="155" sizey="101">
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="100" y2="100" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="25a" y2="25a" x1="0a" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" textBinded="Converter / ##markName##"/>
+                    </labels>
+                    <ports>
+                        <linePort type="NonTyped">
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="149" starty="10"/>
+                            <end endx="150" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="-1"/>
+                            <end endx="139" endy="0"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="99"/>
+                            <end endx="139" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="converterSemantic"/>
+                        <contains type="converterRead"/>
+                        <contains type="converterMerge"/>
+                        <contains type="converterForeach"/>
+                    </container>
+                    <generalizations>
+                        <parent parentName="AbstractElement"/>
+                    </generalizations>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="converterSemantic" displayedName="Converter Semantic" description="Элемент, описывающий существующий конвертер">
+                <graphics>
+                    <picture sizex="151" sizey="101">
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="100" y2="100" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="25a" y2="25a" x1="0a" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" text="Converter Semantic"/>
+                    </labels>
+                    <ports>
+                        <linePort type="NonTyped">
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="149" starty="10"/>
+                            <end endx="150" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="-1"/>
+                            <end endx="139" endy="0"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="99"/>
+                            <end endx="139" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property name="converterFileName" displayedName="converter file name" type="string"/>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="converterForeach" displayedName="Converter Foreach" description="Элемент, позволяющий проходить по полученному списку элементов">
+                <graphics>
+                    <picture sizex="151" sizey="101">
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="100" y2="100" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="25a" y2="25a" x1="0a" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" text="Converter Foreach"/>
+                    </labels>
+                    <ports>
+                        <linePort type="NonTyped">
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="149" starty="10"/>
+                            <end endx="150" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="-1"/>
+                            <end endx="139" endy="0"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="99"/>
+                            <end endx="139" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="converterMerge" displayedName="Merge" description="Элемент, позволяющий объединить список объектов в один">
+                <graphics>
+                    <picture sizex="151" sizey="101">
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="100" y2="100" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="25a" y2="25a" x1="0a" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" text="Merge"/>
+                    </labels>
+                    <ports>
+                        <linePort type="NonTyped">
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="149" starty="10"/>
+                            <end endx="150" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="-1"/>
+                            <end endx="139" endy="0"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="99"/>
+                            <end endx="139" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="converterRead" displayedName="Read" description="Элемент, позволяющий читать из поля элмента языка">
+                <graphics>
+                    <picture sizex="151" sizey="101">
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="100" y2="100" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="25a" y2="25a" x1="0a" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" text="Read"/>
+                    </labels>
+                    <ports>
+                        <linePort type="NonTyped">
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="149" starty="10"/>
+                            <end endx="150" endy="89"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="-1"/>
+                            <end endx="139" endy="0"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="99"/>
+                            <end endx="139" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property name="propertyName" displayedName="property name" type="string"/>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <edge name="SimpleEdge" displayedName="To Edge">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <shape type="square"/>
+                </graphics>
+                <logic>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+            <edge name="ControlFlow" displayedName="Control Flow">
+                <graphics>
+                    <lineType type="dashLine"/>
+                    <shape type="square"/>
+                    <labels>
+                        <label text="to"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+</metamodel>

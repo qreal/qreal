@@ -7,6 +7,7 @@ SUBDIRS	= \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 	requirements/requirements.pro \
+	generatorsEditor/generatorMetamodel/generatorMetamodel.pro \
 
 
 # tool plugins
@@ -19,7 +20,7 @@ SUBDIRS += \
 
 # QReal:Robots
 SUBDIRS += \
-#	robots/robots.pro \
+	robots/robots.pro \
 
 
 # QReal:BP
