@@ -18,6 +18,7 @@ public:
 protected:
 	GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
+	bool supportsGotoGeneration() const override;
 };
 
 }

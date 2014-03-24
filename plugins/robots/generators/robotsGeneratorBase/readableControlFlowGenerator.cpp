@@ -37,6 +37,7 @@ semantics::SemanticTree *ReadableControlFlowGenerator::generate()
 {
 	mAlreadyApplied.clear();
 	mTravelingForSecondTime = false;
+	mCantBeGeneratedIntoStructuredCode = false;
 
 	if (!preGenerationCheck()) {
 		mSemanticTree = nullptr;
@@ -154,6 +155,11 @@ void ReadableControlFlowGenerator::afterSearch()
 {
 }
 
+bool ReadableControlFlowGenerator::cantBeGeneratedIntoStructuredCode() const
+{
+	return mCantBeGeneratedIntoStructuredCode;
+}
+
 bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
 		, QList<SemanticTransformationRule *> const &rules
 		, bool thereWillBeMoreRules)
@@ -171,7 +177,7 @@ bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
 	}
 
 	if (!thereWillBeMoreRules) {
-		error(tr("This diagram cannot be generated into the structured code"), currentId);
+		mCantBeGeneratedIntoStructuredCode = true;
 	}
 
 	return thereWillBeMoreRules;

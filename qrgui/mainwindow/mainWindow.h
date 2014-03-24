@@ -241,6 +241,7 @@ private slots:
 	void sceneSelectionChanged();
 
 	void applySettings();
+	void resetToolbarSize(int size);
 
 	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
 	commands::AbstractCommand *graphicalDeleteCommand(QGraphicsItem *target);

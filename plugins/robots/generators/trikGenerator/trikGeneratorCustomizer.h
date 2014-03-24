@@ -17,7 +17,7 @@ public:
 	virtual GeneratorFactoryBase *factory();
 
 private:
-	TrikGeneratorFactory *mFactory;
+	TrikGeneratorFactory mFactory;
 };
 
 }

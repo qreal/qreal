@@ -26,24 +26,30 @@ void ZoneNode::appendChildren(QLinkedList<SemanticNode *> const &nodes)
 	}
 }
 
+void ZoneNode::insertAfrer(SemanticNode *after, SemanticNode *node)
+{
+	mChildren.insert(qFind(mChildren.begin(), mChildren.end(), after) + 1, node);
+	node->setParentNode(this);
+}
+
 void ZoneNode::removeChild(SemanticNode *node)
 {
 	mChildren.removeOne(node);
-	node->setParentNode(NULL);
+	node->setParentNode(nullptr);
 }
 
 SemanticNode *ZoneNode::removeLast()
 {
 	SemanticNode * const result = mChildren.last();
 	mChildren.removeLast();
-	result->setParentNode(NULL);
+	result->setParentNode(nullptr);
 	return result;
 }
 
 QLinkedList<SemanticNode *> ZoneNode::removeStartingFrom(SemanticNode *node)
 {
 	QLinkedList<SemanticNode *> result;
-	bool foundNode = node == NULL;
+	bool foundNode = node == nullptr;
 
 	foreach (SemanticNode * const current, mChildren) {
 		if (!foundNode) {
@@ -51,7 +57,7 @@ QLinkedList<SemanticNode *> ZoneNode::removeStartingFrom(SemanticNode *node)
 		}
 
 		if (foundNode) {
-			current->setParentNode(NULL);
+			current->setParentNode(nullptr);
 			mChildren.removeOne(current);
 			result << current;
 		}
@@ -60,7 +66,7 @@ QLinkedList<SemanticNode *> ZoneNode::removeStartingFrom(SemanticNode *node)
 	return result;
 }
 
-QString ZoneNode::toString(GeneratorCustomizer &customizer, int indent) const
+QString ZoneNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
 {
 	QString result;
 	foreach (SemanticNode const * const child, mChildren) {
