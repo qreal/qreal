@@ -6,12 +6,12 @@ namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
 
-class EnginesForwardBlock : public EngineCommandBlock
+class EnginesStopBlock : public EngineCommandBlock
 {
 	Q_OBJECT
 
 public:
-	explicit EnginesForwardBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	explicit EnginesStopBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
 	void run() override;
 };

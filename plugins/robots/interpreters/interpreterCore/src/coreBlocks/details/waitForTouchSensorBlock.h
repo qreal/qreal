@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QTimer>
-
 #include "waitForSensorBlock.h"
 
 namespace interpreterCore {

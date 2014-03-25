@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QtCore/QObject>
-
 #include "engineCommandBlock.h"
 
 namespace interpreterCore {

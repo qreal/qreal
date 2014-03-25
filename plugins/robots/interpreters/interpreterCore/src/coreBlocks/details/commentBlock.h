@@ -6,7 +6,7 @@ namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
 
-class FinalBlock : public interpreterBase::blocksBase::Block
+class CommentBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
 

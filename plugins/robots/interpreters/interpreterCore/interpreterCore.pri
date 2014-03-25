@@ -15,9 +15,11 @@ HEADERS += \
 	$$PWD/src/robotsPlugin.h \
 	$$PWD/src/robotsPluginFacade.h \
 	$$PWD/src/coreBlocks/coreBlocksFactory.h \
+	$$PWD/src/coreBlocks/details/commentBlock.h \
 	$$PWD/src/coreBlocks/details/engineCommandBlock.h \
 	$$PWD/src/coreBlocks/details/enginesBackwardBlock.h \
 	$$PWD/src/coreBlocks/details/enginesForwardBlock.h \
+	$$PWD/src/coreBlocks/details/enginesStopBlock.h \
 	$$PWD/src/coreBlocks/details/finalBlock.h \
 	$$PWD/src/coreBlocks/details/initialBlock.h \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
@@ -48,9 +50,11 @@ SOURCES += \
 	$$PWD/src/robotsPlugin.cpp \
 	$$PWD/src/robotsPluginFacade.cpp \
 	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
+	$$PWD/src/coreBlocks/details/commentBlock.cpp \
 	$$PWD/src/coreBlocks/details/engineCommandBlock.cpp \
 	$$PWD/src/coreBlocks/details/enginesBackwardBlock.cpp \
 	$$PWD/src/coreBlocks/details/enginesForwardBlock.cpp \
+	$$PWD/src/coreBlocks/details/enginesStopBlock.cpp \
 	$$PWD/src/coreBlocks/details/finalBlock.cpp \
 	$$PWD/src/coreBlocks/details/initialBlock.cpp \
 	$$PWD/src/coreBlocks/details/timerBlock.cpp \

@@ -2,8 +2,6 @@
 
 #include <interpreterBase/robotModel/robotParts/motor.h>
 
-//#include "../tracer.h"
-
 using namespace interpreterCore::coreBlocks::details;
 
 EnginesForwardBlock::EnginesForwardBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
@@ -13,7 +11,6 @@ EnginesForwardBlock::EnginesForwardBlock(interpreterBase::robotModel::RobotModel
 
 void EnginesForwardBlock::run()
 {
-//	Tracer::debug(tracer::enums::blocks, "EnginesForwardBlock::run", "");
 	int const power = evaluate("Power").toInt();
 
 	/// @todo Makes sense only for NXT.
@@ -30,8 +27,8 @@ void EnginesForwardBlock::run()
 						= mRobotModel.configuration().device(portInfo
 								, interpreterBase::robotModel::ConfigurationInterface::output);
 				interpreterBase::robotModel::robotParts::Motor *motor
-						= static_cast<interpreterBase::robotModel::robotParts::Motor *>(device);
-				if (motor != nullptr) {
+						= dynamic_cast<interpreterBase::robotModel::robotParts::Motor *>(device);
+				if (motor) {
 					motor->on(power, breakMode);
 				}
 			}

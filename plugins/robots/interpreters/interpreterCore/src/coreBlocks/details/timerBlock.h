@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QTimer>
-
 #include <interpreterBase/blocksBase/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 

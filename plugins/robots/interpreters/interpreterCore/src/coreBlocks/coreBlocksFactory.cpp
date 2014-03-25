@@ -1,32 +1,22 @@
 #include "coreBlocksFactory.h"
 
-//#include "blocks/beepBlock.h"
 #include "details/initialBlock.h"
 #include "details/finalBlock.h"
 //#include "blocks/nullificationEncoderBlock.h"
 
 #include "details/enginesForwardBlock.h"
 #include "details/enginesBackwardBlock.h"
-//#include "blocks/enginesStopBlock.h"
+#include "details/enginesStopBlock.h"
 
 #include "details/timerBlock.h"
-//#include "blocks/playToneBlock.h"
 //#include "blocks/functionBlock.h"
-//#include "blocks/beepBlock.h"
 
 //#include "blocks/loopBlock.h"
 //#include "blocks/forkBlock.h"
 //#include "blocks/ifBlock.h"
 //#include "blocks/dummyBlock.h"
-//#include "blocks/commentBlock.h"
+#include "details/commentBlock.h"
 //#include "blocks/subprogramBlock.h"
-
-//#include "blocks/clearScreenBlock.h"
-//#include "blocks/drawPixelBlock.h"
-//#include "blocks/drawLineBlock.h"
-//#include "blocks/drawRectBlock.h"
-//#include "blocks/drawCircleBlock.h"
-//#include "blocks/printTextBlock.h"
 
 #include "details/waitForTouchSensorBlock.h"
 //#include "blocks/waitForSonarDistanceBlock.h"
@@ -47,30 +37,26 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::InitialBlock();
 	} else if (elementMetatypeIs(element, "FinalNode")) {
 		return new details::FinalBlock();
-//	} else if (elementMetatypeIs(element, "Beep")) {
-//		return new BeepBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "Timer")) {
 		return new details::TimerBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
-		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
-//		return new WaitForSonarDistanceBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "EnginesForward")) {
 		return new details::EnginesForwardBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "EnginesBackward")) {
 		return new details::EnginesBackwardBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "EnginesStop")) {
-//		return new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
+	} else if (elementMetatypeIs(element, "EnginesStop")) {
+		return new details::EnginesStopBlock(mRobotModelManager->model());
 //	} else if (elementMetatypeIs(element, "Loop")) {
 //		return new LoopBlock();
 //	} else if (elementMetatypeIs(element, "Fork")) {
 //		return new ForkBlock();
 //	} else if (elementMetatypeIs(element, "Subprogram")) {
 //		return new SubprogramBlock();
-//	} else if (elementMetatypeIs(element, "PlayTone")) {
-//		return new PlayToneBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
 //	} else if (elementMetatypeIs(element, "Function")) {
 //		return new FunctionBlock();
+	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
+		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
+//	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
+//		return new WaitForSonarDistanceBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element, "WaitForColor")) {
 //		return new WaitForColorBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element, "WaitForColorIntensity")) {
@@ -89,22 +75,10 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 //		return new WaitForGyroscopeSensorBlock(mRobotModel);
 //	} else if (elementMetatypeIs(element,"WaitForAccelerometer")) {
 //		return new WaitForAccelerometerSensorBlock(mRobotModel);
-//	} else if (elementMetatypeIs(element, "CommentBlock")) {
-//		return new CommentBlock();
+	} else if (elementMetatypeIs(element, "CommentBlock")) {
+		return new details::CommentBlock;
 //	} else if (elementMetatypeIs(element, "WaitForButtons")) {
 //		return new WaitForButtonsBlock(mRobotModel, mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "DrawPixel")) {
-//		return new DrawPixelBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "DrawLine")) {
-//		return new DrawLineBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "DrawCircle")) {
-//		return new DrawCircleBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "PrintText")) {
-//		return new PrintTextBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "DrawRect")) {
-//		return new DrawRectBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "ClearScreen")) {
-//		return new ClearScreenBlock(mRobotModel->display());
 //	} else {
 //		return new DummyBlock();
 	}

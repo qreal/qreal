@@ -1,21 +1,16 @@
-#include "enginesBackwardBlock.h"
+#include "enginesStopBlock.h"
 
 #include <interpreterBase/robotModel/robotParts/motor.h>
 
 using namespace interpreterCore::coreBlocks::details;
 
-EnginesBackwardBlock::EnginesBackwardBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+EnginesStopBlock::EnginesStopBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: EngineCommandBlock(robotModel)
 {
 }
 
-void EnginesBackwardBlock::run()
+void EnginesStopBlock::run()
 {
-	int const power = -evaluate("Power").toInt();
-
-	/// @todo Makes sense only for NXT.
-	bool const breakMode = stringProperty("Mode") != QString::fromUtf8("скользить");
-
 	/// @todo Move to model or some helper.
 	QString const ports = stringProperty("Ports");
 	QStringList const splitted = ports.split(',', QString::SkipEmptyParts);
@@ -29,7 +24,7 @@ void EnginesBackwardBlock::run()
 				interpreterBase::robotModel::robotParts::Motor *motor
 						= dynamic_cast<interpreterBase::robotModel::robotParts::Motor *>(device);
 				if (motor) {
-					motor->on(power, breakMode);
+					motor->off();
 				}
 			}
 		}
