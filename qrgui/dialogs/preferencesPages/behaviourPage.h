@@ -20,6 +20,7 @@ public:
 
 signals:
 	void usabilityTestingModeChanged(bool on);
+	void transparentVersioningModeChanged(bool turn);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -31,4 +32,5 @@ private:
 	Ui::PreferencesBehaviourPage *mUi;
 	FilterObject mFilterObject;
 	bool mUsabilityTestingMode;
+	bool mTransparentVersioningMode;
 };

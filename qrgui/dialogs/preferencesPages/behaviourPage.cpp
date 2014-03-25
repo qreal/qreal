@@ -45,14 +45,20 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("collectErgonomicValues", mUi->collectErgonomicValuesCheckBox->isChecked()
 			|| usabilityTestingMode);
 	SettingsManager::setValue("touchMode", mUi->touchModeChackBox->isChecked());
-	SettingsManager::setValue("transparentVersioningMode", mUi->touchModeChackBox->isChecked());
+	SettingsManager::setValue("transparentVersioningMode", mUi->TransparentModeCheckBox->isChecked());
+
 	if (mUsabilityTestingMode != usabilityTestingMode) {
 		if (usabilityTestingMode) {
 			mUi->collectErgonomicValuesCheckBox->setChecked(true);
 		}
-
 		mUsabilityTestingMode = usabilityTestingMode;
 		emit usabilityTestingModeChanged(mUsabilityTestingMode);
+	}
+
+	if (mTransparentVersioningMode != mUi->TransparentModeCheckBox->isChecked())
+	{
+		mTransparentVersioningMode = !mTransparentVersioningMode;
+		emit transparentVersioningModeChanged(mTransparentVersioningMode);
 	}
 }
 
@@ -63,10 +69,13 @@ void PreferencesBehaviourPage::restoreSettings()
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
 	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
 	mUi->collectErgonomicValuesCheckBox->setChecked(SettingsManager::value("collectErgonomicValues").toBool());
-	mUsabilityTestingMode = SettingsManager::value("usabilityTestingMode").toBool();
+
 	mUi->usabilityModeCheckBox->setChecked(mUsabilityTestingMode);
 	mUi->touchModeChackBox->setChecked(SettingsManager::value("touchMode").toBool());
 	mUi->touchModeChackBox->setChecked(SettingsManager::value("transparentVersioningMode").toBool());
+
+	mUsabilityTestingMode = SettingsManager::value("usabilityTestingMode").toBool();
+	mTransparentVersioningMode = SettingsManager::value("transparentVersioningMode").toBool();
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();

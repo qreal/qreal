@@ -1998,11 +1998,13 @@ void MainWindow::initToolPlugins()
 
 	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter, mProjectManager);
 
-	//to do: catching change of "transparentVersioningMode"
+	//to do: show/hide checkBox in preferences
 	//connect(mVersioningManager, SIGNAL(OnButton(bool)), mUi->actionTransparent_mode, SLOT(setVisible(bool)));
-	//connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
-	//connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), this, SLOT(switchOffOrOnEasyVers(bool)));
 
+	connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
+								, mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
+	connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
+								, this, SLOT(switchOffOrOnEasyVers(bool)));
 	connect(mVersioningManager, SIGNAL(transparentClassIsReady()), this, SLOT(initMEasyVersioningLink()));
 	connect(mUi->actionList_of_version_3, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
 
