@@ -45,6 +45,7 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("collectErgonomicValues", mUi->collectErgonomicValuesCheckBox->isChecked()
 			|| usabilityTestingMode);
 	SettingsManager::setValue("touchMode", mUi->touchModeChackBox->isChecked());
+	SettingsManager::setValue("transparentVersioningMode", mUi->touchModeChackBox->isChecked());
 	if (mUsabilityTestingMode != usabilityTestingMode) {
 		if (usabilityTestingMode) {
 			mUi->collectErgonomicValuesCheckBox->setChecked(true);
@@ -65,6 +66,7 @@ void PreferencesBehaviourPage::restoreSettings()
 	mUsabilityTestingMode = SettingsManager::value("usabilityTestingMode").toBool();
 	mUi->usabilityModeCheckBox->setChecked(mUsabilityTestingMode);
 	mUi->touchModeChackBox->setChecked(SettingsManager::value("touchMode").toBool());
+	mUi->touchModeChackBox->setChecked(SettingsManager::value("transparentVersioningMode").toBool());
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();

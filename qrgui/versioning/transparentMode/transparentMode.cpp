@@ -3,15 +3,18 @@
 #include <QtCore/QRegExp>
 #include <QtCore/QString>
 
+//all versioning plugins must contain method "friendly name"
+static const QStringList requiredPlugins = QStringList("Git Plugin");
+
 using namespace qReal;
 
+// to do: if we need several working plugins: to change mPlugin to list of Plugins and change methods
 qReal::TransparentMode::TransparentMode(QList<VersioningPluginInterface *> mPlugins
 		, ProjectManager *projectManager):
 	mPlugin(NULL), mProjectManager(projectManager)
 {
 	foreach (VersioningPluginInterface *plugin, mPlugins){
-		qDebug() << plugin->friendlyName();
-		if (plugin->friendlyName() == "Git Plugin"){
+		if (requiredPlugins.contains(plugin->friendlyName())){
 			mPlugin = plugin;
 		}
 	}
@@ -40,7 +43,6 @@ void TransparentMode::listLog()
 void TransparentMode::setVersion(QString hash)
 {
 	isInit();
-	qDebug() << hash;
 	mPlugin->setVersion(hash, true);
 }
 

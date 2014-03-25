@@ -51,7 +51,7 @@ void PreferencesVersioningPage::restoreSettings()
 
 void PreferencesVersioningPage::on_browseGitClientButton_clicked()
 {
-	QString const path = QFileDialog::getOpenFileName(this, tr("Open File"), QString(), "svn*");
+	QString const path = QFileDialog::getOpenFileName(this, tr("Open File"), QString(), "git*");
 	if (!path.isNull()) {
 		mUi->pathToGitClientLineEdit->setText(path);
 	}

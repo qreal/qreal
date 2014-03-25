@@ -1997,17 +1997,19 @@ void MainWindow::initToolPlugins()
 
 
 	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter, mProjectManager);
-	mUi->actionTransparent_mode->setChecked(true);
-	connect(mVersioningManager, SIGNAL(OnButton(bool)), mUi->actionTransparent_mode, SLOT(setVisible(bool)));
-	connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
+
+	//to do: catching change of "transparentVersioningMode"
+	//connect(mVersioningManager, SIGNAL(OnButton(bool)), mUi->actionTransparent_mode, SLOT(setVisible(bool)));
+	//connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
+	//connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), this, SLOT(switchOffOrOnEasyVers(bool)));
+
 	connect(mVersioningManager, SIGNAL(transparentClassIsReady()), this, SLOT(initMEasyVersioningLink()));
-	connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), this, SLOT(switchOffOrOnEasyVers(bool)));
 	connect(mUi->actionList_of_version_3, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
 
+	SettingsManager::setValue("transparentVersioningMode", true); // default
 	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins()), this);
-	mVersioningManager->switchOffOrOnAllPluginsAction(true);
+	mVersioningManager->switchOffOrOnAllPluginsAction(SettingsManager::value("transparentVersioningMode").toBool());
 	mUi->actionList_of_version_3->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
-	//mUi->actionSave_version->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_S));
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
@@ -2283,7 +2285,6 @@ void MainWindow::switchOffOrOnEasyVers(bool switchOnOrOFF)
 	} else {
 		connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
 		connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
-		mChangeVersion->close();
 		int index = mUi->tabs->indexOf(mChangeVersion);
 		if (index != -1){
 			mUi->tabs->removeTab(index);
@@ -2308,7 +2309,7 @@ void MainWindow::showChangeVersion()
 void MainWindow::initMEasyVersioningLink()
 {
 	mEasyVersioning = mVersioningManager->getLinkOnTransparentMode();
-	switchOffOrOnEasyVers(true); // because we turn on transparent mode default
+	switchOffOrOnEasyVers(SettingsManager::value("transparentVersioningMode").toBool());
 }
 
 void MainWindow::openStartTab()

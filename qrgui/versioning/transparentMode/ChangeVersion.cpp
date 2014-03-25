@@ -43,7 +43,7 @@ void ChangeVersion::updateLog(QList<QPair<QString , QString> > listLog) // hash 
 		mUi->listWidgetForLog->clear();
 		disconnect(mUi->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(obtainHash(QListWidgetItem*)));
 		QListWidgetItem *item = new QListWidgetItem;
-		item->setText(tr("There are not version of the project or project was not versioned."));
+		item->setText(tr("There are not version of the project or project was not versioned. \n Or project isn't loaded"));
 		mUi->listWidgetForLog->addItem(item);
 	}
 }
