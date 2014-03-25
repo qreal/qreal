@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU" sourcelanguage="en">
+<TS version="2.0" language="ru_RU" sourcelanguage="en">
 <context>
     <name>AddNodeDialog</name>
     <message>
@@ -1584,31 +1584,30 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="59"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="138"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="139"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="61"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="141"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="60"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="62"/>
         <source>Shortcuts</source>
         <translation>Горячие клавиши</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="146"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="149"/>
         <source>Save File</source>
         <translation>Сохранить файл
 </translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="146"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="156"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="149"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="159"/>
         <source>*.ini</source>
         <translation>*.ini</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="156"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="159"/>
         <source>Open File</source>
         <translation>Открыть файл
 </translation>
@@ -1670,7 +1669,7 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="58"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="60"/>
         <source>Miscellanious</source>
         <translation>Разное</translation>
     </message>
@@ -1700,7 +1699,7 @@
         <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="57"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="59"/>
         <source>Behaviour</source>
         <translation>Поведение</translation>
     </message>
@@ -2088,6 +2087,16 @@
         <translation>Длина списка недавних проектов</translation>
     </message>
     <message>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="214"/>
+        <source>Toolbars</source>
+        <translation>Панель инструментов</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="230"/>
+        <source>Size</source>
+        <translation>Размер панели инструментов</translation>
+    </message>
+    <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Limit recent projects list:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="obsolete">Длина списка недавних проектов:</translation>
     </message>
@@ -2128,6 +2137,11 @@
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="49"/>
         <source>Other</source>
         <translation>Прочее</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.cpp" line="43"/>
+        <source>Open Directory</source>
+        <translation>Выберите директорию</translation>
     </message>
 </context>
 <context>
@@ -3702,27 +3716,27 @@
 <context>
     <name>qReal::EditPropertiesDialog</name>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="92"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="95"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="92"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="95"/>
         <source>All required properties should be filled!</source>
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="99"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="104"/>
         <source>Restore properties</source>
         <translation>Восстановление свойств</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="117"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="128"/>
         <source>Add new property</source>
         <translation>Добавление нового свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="120"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="131"/>
         <source>Properties editor: </source>
         <translation>Редактор свойств: </translation>
     </message>
@@ -3731,13 +3745,13 @@
         <translation type="obsolete">Добавление нового свойства:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="75"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="76"/>
         <source>Warning:</source>
         <oldsource>Warning</oldsource>
         <translation>Внимание:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="76"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="77"/>
         <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.</source>
         <translation>Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства.</translation>
     </message>
@@ -3746,12 +3760,12 @@
         <translation type="obsolete">Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="79"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="80"/>
         <source>Proceed anyway</source>
         <translation>Продолжить все равно</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="80"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="81"/>
         <source>Cancel the type conversion</source>
         <oldsource>Cancel the type cinversion</oldsource>
         <translation>Отменить преобразование типа</translation>
@@ -3812,17 +3826,17 @@
 <context>
     <name>qReal::InterpreterEditorManager</name>
     <message>
-        <location filename="pluginManager/interpreterEditorManager.cpp" line="798"/>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="808"/>
         <source>Deleted</source>
         <translation>Удалено</translation>
     </message>
     <message>
-        <location filename="pluginManager/interpreterEditorManager.cpp" line="803"/>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="814"/>
         <source>Existed</source>
         <translation>Используется</translation>
     </message>
     <message>
-        <location filename="pluginManager/interpreterEditorManager.cpp" line="805"/>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="816"/>
         <source>Renamed to </source>
         <translation>Переименовано в </translation>
     </message>
@@ -3873,7 +3887,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="933"/>
+        <location filename="mainwindow/mainWindow.cpp" line="934"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -4024,77 +4038,77 @@
         <translation>Завершить тест</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1120"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1121"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1397"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1398"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1398"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1399"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1399"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1400"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1400"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1401"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1401"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1402"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1402"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1403"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1403"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1404"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1404"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1405"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1405"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1406"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1406"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1407"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1407"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1408"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1408"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1409"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1409"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1410"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2249"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2259"/>
         <source>Getting Started</source>
         <translation>Добро пожаловать!</translation>
     </message>
@@ -4103,9 +4117,9 @@
         <translation type="obsolete">Добро пожаловать!</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1085"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1100"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1128"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1086"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1101"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1129"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -4114,17 +4128,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2095"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2105"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2126"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2136"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2126"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2136"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -4145,7 +4159,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1628"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1629"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -4252,60 +4266,60 @@
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="145"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="147"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="216"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="218"/>
         <source>Unsaved project</source>
         <translation>Несохраненный проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="378"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="380"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="379"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="381"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="379"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="381"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="176"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="178"/>
         <source>There are missing plugins</source>
         <translation>Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="177"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="179"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="321"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="323"/>
         <source>Select file to save current metamodel to</source>
         <translation>Выберите файл для сохранения метамодели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="327"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="329"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения модели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="350"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="362"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="352"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="364"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="223"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="225"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>
@@ -4353,32 +4367,32 @@
 <context>
     <name>qReal::RestorePropertiesDialog</name>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="13"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="14"/>
         <source>Property name</source>
         <translation>Имя свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="15"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="16"/>
         <source>State</source>
         <translation>Состояние</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="17"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="18"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="19"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="20"/>
         <source>Default value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="53"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="56"/>
         <source>Deleted</source>
         <translation>Удалено</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="55"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="59"/>
         <source>Existed</source>
         <translation>Используется</translation>
     </message>
@@ -4542,12 +4556,12 @@
         <translation type="obsolete">Создать проект:</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="258"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="259"/>
         <source>Editor: </source>
         <translation>Редактор: </translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="258"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="259"/>
         <source>; Diagram: </source>
         <translation>; Диаграмма: </translation>
     </message>
@@ -4578,24 +4592,24 @@
         <translation>Создать интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="254"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="255"/>
         <source>Create </source>
         <translation>Создать </translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="271"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="272"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="308"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="311"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="309"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="312"/>
         <source>Enter the diagram name:</source>
         <translation>Введите имя диаграммы:</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="308"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="311"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="309"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="312"/>
         <source>diagram name:</source>
         <translation>имя диаграммы:</translation>
     </message>
@@ -4786,17 +4800,17 @@
         <translation type="obsolete">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/paletteTree.cpp" line="301"/>
+        <location filename="mainwindow/palette/paletteTree.cpp" line="303"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/paletteTree.cpp" line="298"/>
+        <location filename="mainwindow/palette/paletteTree.cpp" line="300"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/paletteTree.cpp" line="150"/>
+        <location filename="mainwindow/palette/paletteTree.cpp" line="151"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>
@@ -4817,12 +4831,12 @@
         <translation>Свойства:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="118"/>
+        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="125"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="119"/>
+        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="126"/>
         <source>For adding a new property from the scene and from the explorer of logical modelshould be removed all the elements of the object and its inheritors!</source>
         <translation>Для добавления нового свойства со сцены и обозревателя логической модели должны быть удалены все элементы данного объекта и его наследников!</translation>
     </message>

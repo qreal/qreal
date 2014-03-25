@@ -17,6 +17,7 @@ public:
 
 	void appendSibling(SemanticNode *node);
 	void appendSiblings(QLinkedList<SemanticNode *> const &nodes);
+	void insertSiblingAfterThis(SemanticNode *node);
 };
 
 }

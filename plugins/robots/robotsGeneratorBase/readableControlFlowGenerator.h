@@ -27,24 +27,29 @@ public:
 			, bool isThisDiagramMain = true);
 
 	/// Implementation of clone operation for readable generator
-	virtual ControlFlowGeneratorBase *cloneFor(Id const &diagramId);
+	ControlFlowGeneratorBase *cloneFor(Id const &diagramId) override;
 
 	/// Implementation of generation process for readable generator.
 	/// Important: the graph in the model would be traversed two times
 	/// for the emulation of some priority for semantic rules.
-	virtual semantics::SemanticTree *generate();
+	semantics::SemanticTree *generate() override;
 
-	virtual void beforeSearch();
-	virtual void visitRegular(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitFinal(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitConditional(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitLoop(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitSwitch(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitFork(Id const &id, QList<LinkInfo> const &links);
+	void beforeSearch() override;
+
+	void visitRegular(Id const &id, QList<LinkInfo> const &links) override;
+	void visitFinal(Id const &id, QList<LinkInfo> const &links) override;
+	void visitConditional(Id const &id, QList<LinkInfo> const &links) override;
+	void visitLoop(Id const &id, QList<LinkInfo> const &links) override;
+	void visitSwitch(Id const &id, QList<LinkInfo> const &links) override;
+	void visitFork(Id const &id, QList<LinkInfo> const &links) override;
 
 	/// This method can be used for semantic tree debug printing after all
 	/// traversal stages.
-	virtual void afterSearch();
+	void afterSearch() override;
+
+	/// Returns true if some generation errors occured but the generation process may be proceeded with other
+	/// control flow generators (non-fatal errors occured).
+	bool cantBeGeneratedIntoStructuredCode() const;
 
 private:
 	bool applyFirstPossible(Id const &currentId
@@ -54,6 +59,7 @@ private:
 	bool mTravelingForSecondTime;
 	bool mSomethingChangedThisIteration;
 	QMap<Id, bool> mAlreadyApplied;
+	bool mCantBeGeneratedIntoStructuredCode;
 };
 
 }
