@@ -3,9 +3,6 @@
 #include <utils/tracer.h>
 #include <utils/abstractTimer.h>
 
-/// @todo: use common speaker interface
-#include "robotModel/real/parts/speaker.h"
-
 using namespace nxtKitInterpreter::blocks::details;
 
 SpeakerBlock::SpeakerBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
@@ -28,8 +25,8 @@ void SpeakerBlock::run()
 			interpreterBase::robotModel::robotParts::Device *device
 					= mRobotModel.configuration().device(portInfo
 							, interpreterBase::robotModel::ConfigurationInterface::output);
-			robotModel::real::parts::Speaker * const speaker
-					= dynamic_cast<robotModel::real::parts::Speaker *>(device);
+			robotModel::parts::NxtSpeaker * const speaker
+					= dynamic_cast<robotModel::parts::NxtSpeaker *>(device);
 			if (speaker) {
 				doJob(*speaker);
 			} else {

@@ -19,6 +19,8 @@ public:
 	void robotsClearVariables();
 	void setReservedVariables();
 
+	QMap<QString, utils::Number *> const &variables() const override;
+
 private:
 	virtual bool isLetter(QChar const &symbol);
 

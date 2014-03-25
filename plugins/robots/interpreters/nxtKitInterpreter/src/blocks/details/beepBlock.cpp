@@ -19,7 +19,7 @@ int BeepBlock::duration()
 	return 500;
 }
 
-void BeepBlock::doJob(nxtKitInterpreter::robotModel::real::parts::Speaker &speaker)
+void BeepBlock::doJob(nxtKitInterpreter::robotModel::parts::NxtSpeaker &speaker)
 {
 	speaker.beep(duration());
 }
