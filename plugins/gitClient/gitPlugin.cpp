@@ -140,7 +140,56 @@ QString GitPlugin::friendlyName()
 
 void GitPlugin::setVersion(QString hash, bool const &quiet)
 {
-	this->startReset(hash, QString(), quiet);
+	//because if we have unsaved changes, it would be a crash
+	if (!this->isMyWorkingCopy(QString(), false, true)){
+		this->beginWorkingCopyDownloading(QString(), QString(), -1, true);
+	}
+	this->beginChangesSubmitting("version was saved in a transparent mode", QString(), quiet);
+
+	//some magic with git branches
+	QStringList args;
+	args << "branch" << "tmp";
+	invokeOperation(args, true, QString(), false, false, QString(), QString(), !quiet);
+
+	args.clear();
+	args << "checkout" << "tmp";
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+
+	args.clear();
+	args << "reset" << "--hard" << hash;
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+
+	args.clear();
+	args << "checkout" << "master";
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+
+	args.clear();
+	args << "cherry-pick" << "tmp" << "--allow-empty" << "--keep-redundant-commits" << "--strategy=ours";
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+
+	args.clear();
+	args << "branch" << "branchTEMP";
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+
+	args.clear();
+	args << "reset" << "--hard" << "tmp";
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+
+	args.clear();
+	args << "reset" << "--soft" << "branchTEMP";
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), quiet);
+
+	args.clear();
+	args << "commit" << "--amend" << "-m" << "version was saved in a transparent mode";
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+
+	args.clear();
+	args << "branch" << "-D" << "branchTEMP";
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
+
+	args.clear();
+	args << "branch" << "-D" << "tmp";
+	invokeOperation(args, false, QString(), false, true, QString(), QString(), !quiet);
 }
 
 QString GitPlugin::getLog(QString const &format, bool const &quiet)

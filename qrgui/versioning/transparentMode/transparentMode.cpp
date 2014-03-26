@@ -44,6 +44,7 @@ void TransparentMode::setVersion(QString hash)
 {
 	isInit();
 	mPlugin->setVersion(hash, true);
+	mProjectManager->reload();
 }
 
 bool TransparentMode::suggestToSaveAs()
