@@ -44,6 +44,7 @@
 #include "mainwindow/qscintillaTextEdit.h"
 #include "toolPluginInterface/systemEvents.h"
 #include "mainwindow/filterObject.h"
+#include "scriptAPI/scriptAPI.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -62,6 +63,7 @@ class Models;
 namespace gui {
 class ErrorReporter;
 class PaletteTree;
+class ScriptAPI;
 }
 
 class MainWindow : public QMainWindow
@@ -363,7 +365,6 @@ private:
 	void initExplorers();
 	void initRecentProjectsMenu();
 	void openStartTab();
-	void addGreetingHint();
 
 	void setVersion(QString const &version);
 
@@ -422,6 +423,8 @@ private:
 	QToolBar *mUsabilityTestingToolbar; // Has ownership
 	QAction *mStartTest; // Has ownership
 	QAction *mFinishTest; // Has ownership
+
+	gui::ScriptAPI *mScriptAPI;
 };
 
 }

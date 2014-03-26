@@ -7,7 +7,8 @@ namespace qReal {
 
 class HintInterface {
 public:
-	virtual void addHint(QString const &message, Id const &position = Id::rootId()) = 0;
+	Q_INVOKABLE void addHint(QString const &message);
+	Q_INVOKABLE void arrowToWidget(QWidget const &target);
 };
 
 }

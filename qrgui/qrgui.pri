@@ -56,3 +56,6 @@ include(hotKeyManager/hotKeyManager.pri)
 
 # Manges styles, colors, fonts and so on
 include(brandManager/brandManager.pri)
+
+# Script API for hints
+include(scriptAPI/scriptAPI.pri)

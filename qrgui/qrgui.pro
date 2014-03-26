@@ -28,3 +28,5 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 }
 
 include(qrgui.pri)
+
+OTHER_FILES +=

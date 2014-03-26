@@ -80,6 +80,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mStartWidget(nullptr)
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
+		, mScriptAPI(nullptr)
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
@@ -106,6 +107,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
+
+	mScriptAPI = new ScriptAPI(mErrorReporter, this);
 
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
 			, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
@@ -158,7 +161,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mUsabilityTestingToolbar->addAction(mFinishTest);
 	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
 	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
-	addGreetingHint();
 }
 
 void MainWindow::connectActionsForUXInfo()
@@ -2238,7 +2240,3 @@ void MainWindow::openStartTab()
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 }
 
-void MainWindow::addGreetingHint()
-{
-	mErrorReporter->addHint("Hello, world!");
-}

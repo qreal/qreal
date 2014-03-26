@@ -2,6 +2,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QList>
+#include <QtScript/QScriptEngine>
 
 #include <qrkernel/ids.h>
 #include <qrkernel/definitions.h>
@@ -11,13 +12,15 @@
 #include "mainwindow/hint.h"
 #include "mainwindow/errorListWidget.h"
 #include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "toolPluginInterface/usedInterfaces/hintInterface.h"
+#include "scriptAPI/scriptAPI.h"
 
 
 namespace qReal {
 namespace gui {
 
-class ErrorReporter : public QObject, public ErrorReporterInterface, public HintInterface {
+class ScriptAPI;
+
+class ErrorReporter : public QObject, public ErrorReporterInterface {
 	Q_OBJECT
 
 public:
@@ -28,10 +31,9 @@ public:
 	virtual void addWarning(QString const &message, Id const &position = Id::rootId());
 	virtual void addError(QString const &message, Id const &position = Id::rootId());
 	virtual void addCritical(QString const &message, Id const &position = Id::rootId());
-
 	virtual void addHint(QString const &message, Id const &position = Id::rootId());
 
-    virtual bool wereErrors();
+	virtual bool wereErrors();
 
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 	void updateVisibility(bool isVisible);
@@ -53,6 +55,7 @@ private:
 
 	/// Should error window be shown or not
 	bool mIsVisible;
+
 };
 
 }
