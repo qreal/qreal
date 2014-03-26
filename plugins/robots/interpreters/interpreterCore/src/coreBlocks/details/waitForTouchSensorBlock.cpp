@@ -1,7 +1,5 @@
 #include "waitForTouchSensorBlock.h"
 
-//#include "../../sensorConstants.h"
-
 using namespace interpreterCore::coreBlocks::details;
 
 WaitForTouchSensorBlock::WaitForTouchSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)

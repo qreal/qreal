@@ -26,6 +26,15 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/waitBlock.h \
 	$$PWD/src/coreBlocks/details/waitForSensorBlock.h \
 	$$PWD/src/coreBlocks/details/waitForTouchSensorBlock.h \
+#	$$PWD/src/coreBlocks/details/waitForSonarDistanceBlock.h \
+#	$$PWD/src/coreBlocks/details/waitForColorSensorBlockBase.h \
+#	$$PWD/src/coreBlocks/details/waitForColorBlock.h \
+#	$$PWD/src/coreBlocks/details/waitForColorIntensityBlock.h \
+#	$$PWD/src/coreBlocks/details/waitForEncoderBlock.h \
+#	$$PWD/src/coreBlocks/details/waitForLightBlock.h \
+#	$$PWD/src/coreBlocks/details/waitForSoundBlock.h \
+#	$$PWD/src/coreBlocks/details/waitForGyroscopeBlock.h \
+#	$$PWD/src/coreBlocks/details/waitForAccelerometerBlock.h \
 	$$PWD/src/interpreter/interpreter.h \
 	$$PWD/src/interpreter/interpreterInterface.h \
 	$$PWD/src/interpreter/details/autoconfigurer.h \
@@ -61,6 +70,15 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/waitBlock.cpp \
 	$$PWD/src/coreBlocks/details/waitForSensorBlock.cpp \
 	$$PWD/src/coreBlocks/details/waitForTouchSensorBlock.cpp \
+#	$$PWD/src/coreBlocks/details/waitForSonarDistanceBlock.cpp \
+#	$$PWD/src/coreBlocks/details/waitForColorSensorBlockBase.cpp \
+#	$$PWD/src/coreBlocks/details/waitForColorBlock.cpp \
+#	$$PWD/src/coreBlocks/details/waitForColorIntensityBlock.cpp \
+#	$$PWD/src/coreBlocks/details/waitForEncoderBlock.cpp \
+#	$$PWD/src/coreBlocks/details/waitForLightBlock.cpp \
+#	$$PWD/src/coreBlocks/details/waitForSoundBlock.cpp \
+#	$$PWD/src/coreBlocks/details/waitForGyroscopeBlock.cpp \
+#	$$PWD/src/coreBlocks/details/waitForAccelerometerBlock.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \

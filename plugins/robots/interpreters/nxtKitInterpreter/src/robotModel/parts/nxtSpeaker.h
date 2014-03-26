@@ -9,6 +9,8 @@ namespace parts {
 
 class NxtSpeaker : public interpreterBase::robotModel::robotParts::Speaker
 {
+	Q_OBJECT
+
 public:
 	NxtSpeaker(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);

@@ -17,6 +17,8 @@ class ROBOTS_INTERPRETER_BASE_EXPORT AbstractSensor : public Device
 	Q_OBJECT
 
 public:
+	static DeviceInfo::Direction direction();
+
 	AbstractSensor(DeviceInfo const &info, PortInfo const &port);
 
 	virtual ~AbstractSensor();

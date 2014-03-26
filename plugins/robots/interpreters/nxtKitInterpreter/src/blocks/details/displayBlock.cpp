@@ -1,10 +1,12 @@
 #include "displayBlock.h"
 
 #include <utils/tracer.h>
+#include <interpreterBase/robotModel/robotModelUtils.h>
 
 using namespace nxtKitInterpreter::blocks::details;
+using namespace interpreterBase::robotModel;
 
-DisplayBlock::DisplayBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+DisplayBlock::DisplayBlock(RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)
 {
 }
@@ -16,19 +18,12 @@ DisplayBlock::~DisplayBlock()
 void DisplayBlock::run()
 {
 	QString const port = "DisplayPort";
-	for (interpreterBase::robotModel::PortInfo const &portInfo : mRobotModel.availablePorts()) {
-		if (portInfo.name() == port || portInfo.nameAliases().contains(port)) {
-			interpreterBase::robotModel::robotParts::Device *device
-					= mRobotModel.configuration().device(portInfo
-							, interpreterBase::robotModel::ConfigurationInterface::output);
-			robotModel::parts::NxtDisplay * const display
-					= dynamic_cast<robotModel::parts::NxtDisplay *>(device);
-			if (display) {
-				doJob(*display);
-			} else {
-				error(tr("Display is not configured (WTF?)"));
-				return;
-			}
-		}
+	robotModel::parts::NxtDisplay * const display
+			= RobotModelUtils::findDevice<robotModel::parts::NxtDisplay>(mRobotModel, port);
+	if (display) {
+		doJob(*display);
+	} else {
+		error(tr("Display is not configured (WTF?)"));
+		return;
 	}
 }

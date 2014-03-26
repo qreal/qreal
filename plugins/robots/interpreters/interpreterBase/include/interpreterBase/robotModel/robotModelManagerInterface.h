@@ -2,8 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "interpreterBase/robotModel/robotModelInterface.h"
-
+#include "robotModelInterface.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {

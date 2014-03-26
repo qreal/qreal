@@ -16,6 +16,7 @@ SOURCES += \
 	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
 	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
+	$$PWD/src/robotModel/robotModelUtils.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \
 	$$PWD/src/robotModel/deviceInfo.cpp \
 	$$PWD/src/robotModel/robotParts/speaker.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/deviceInfo.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelManagerInterface.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelInterface.h \
+	$$PWD/include/interpreterBase/robotModel/robotModelUtils.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/speaker.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/motor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/display.h \
