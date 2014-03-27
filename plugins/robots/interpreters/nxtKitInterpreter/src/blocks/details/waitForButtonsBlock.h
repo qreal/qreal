@@ -1,12 +1,19 @@
 #pragma once
 
-#include "waitBlock.h"
+#include <interpreterBase/blocksBase/common/waitBlock.h>
 
-namespace interpreterCore {
-namespace coreBlocks {
+namespace nxtKitInterpreter {
+
+namespace robotModel {
+namespace parts {
+class NxtDisplay;
+}
+}
+
+namespace blocks {
 namespace details {
 
-class WaitForButtonsBlock : public WaitBlock
+class WaitForButtonsBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT
 public:
@@ -14,9 +21,6 @@ public:
 	~WaitForButtonsBlock() override;
 
 	void run() override;
-
-protected:
-	QString name() const override;
 
 protected slots:
 	void responseSlot(bool leftIsDown, bool rightIsDown, bool centralIsDown, bool bottomIsDown);
@@ -35,7 +39,7 @@ private:
 	bool mCentralWasDown;
 	bool mBottomWasDown;
 
-	robotParts::Display &mDisplay;
+	robotModel::parts::NxtDisplay *mDisplay;  // Does not take ownership
 };
 
 }

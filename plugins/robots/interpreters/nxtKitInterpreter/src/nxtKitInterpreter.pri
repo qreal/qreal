@@ -24,6 +24,7 @@ HEADERS += \
 	$$PWD/blocks/details/drawPixelBlock.h \
 	$$PWD/blocks/details/drawRectBlock.h \
 	$$PWD/blocks/details/printTextBlock.h \
+	$$PWD/blocks/details/waitForButtonsBlock.h \
 	$$PWD/robotModel/nxtRobotModelBase.h \
 	$$PWD/robotModel/parts/nxtDisplay.h \
 	$$PWD/robotModel/parts/nxtSpeaker.h \
@@ -60,6 +61,7 @@ SOURCES += \
 	$$PWD/blocks/details/drawPixelBlock.cpp \
 	$$PWD/blocks/details/drawRectBlock.cpp \
 	$$PWD/blocks/details/printTextBlock.cpp \
+	$$PWD/blocks/details/waitForButtonsBlock.cpp \
 	$$PWD/robotModel/nxtRobotModelBase.cpp \
 	$$PWD/robotModel/parts/nxtDisplay.cpp \
 	$$PWD/robotModel/parts/nxtSpeaker.cpp \

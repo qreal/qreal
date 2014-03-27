@@ -1,6 +1,6 @@
-#include "waitBlock.h"
+#include "interpreterBase/blocksBase/common/waitBlock.h"
 
-using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::blocksBase::common;
 
 WaitBlock::WaitBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)

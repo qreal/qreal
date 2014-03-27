@@ -1,6 +1,6 @@
 #pragma once
 
-#include "waitBlock.h"
+#include <interpreterBase/blocksBase/common/waitBlock.h>
 
 namespace interpreterBase {
 namespace robotModel {
@@ -14,7 +14,7 @@ namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
 
-class WaitForEncoderBlock : public WaitBlock
+class WaitForEncoderBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT
 
@@ -29,7 +29,7 @@ private slots:
 	void timerTimeout() override;
 
 private:
-	interpreterBase::robotModel::robotParts::EncoderSensor *mEncoderSensor;
+	interpreterBase::robotModel::robotParts::EncoderSensor *mEncoderSensor;  // Does not take ownership
 };
 
 }

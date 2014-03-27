@@ -1,13 +1,13 @@
 #pragma once
 
-#include "waitBlock.h"
+#include <interpreterBase/blocksBase/common/waitBlock.h>
 
 namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
 
 /// @todo Move abstract blocks to interpreterBase::blocksBase
-class WaitForSensorBlock : public WaitBlock
+class WaitForSensorBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT
 

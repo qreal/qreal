@@ -14,6 +14,7 @@ SOURCES += \
 	$$PWD/src/sensorsConfigurationProvider.cpp \
 	$$PWD/src/blocksBase/block.cpp \
 	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
+	$$PWD/src/blocksBase/common/waitBlock.cpp \
 	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/robotModelUtils.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/blocksBase/blocksTableInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/blocksFactoryInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/commonBlocksFactory.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitBlock.h \
 	$$PWD/include/interpreterBase/robotModel/configuration.h \
 	$$PWD/include/interpreterBase/robotModel/commonRobotModel.h \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \

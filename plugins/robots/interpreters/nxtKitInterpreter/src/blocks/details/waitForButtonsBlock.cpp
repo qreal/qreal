@@ -1,13 +1,19 @@
 #include "waitForButtonsBlock.h"
-#include "../robotParts/robotModel.h"
 
-using namespace qReal;
-using namespace interpreters::robots;
-using namespace qReal::interpreters::robots::details::blocks;
+#include <interpreterBase/robotModel/robotModelUtils.h>
 
-WaitForButtonsBlock::WaitForButtonsBlock(RobotModel * const robotModel, robotParts::Display &display)
+#include "robotModel/parts/nxtDisplay.h"
+
+using namespace nxtKitInterpreter::blocks::details;
+using namespace interpreterBase::robotModel;
+
+WaitForButtonsBlock::WaitForButtonsBlock(RobotModelInterface &robotModel)
 	: WaitBlock(robotModel)
-	, mDisplay(display)
+	, mDisplay(nullptr)
+{
+}
+
+WaitForButtonsBlock::~WaitForButtonsBlock()
 {
 }
 
@@ -23,20 +29,26 @@ void WaitForButtonsBlock::run()
 	mCentralWasDown = false;
 	mBottomWasDown = false;
 
-	connect(mDisplay.displayImpl(), SIGNAL(response(bool,bool,bool,bool)), this, SLOT(responseSlot(bool,bool,bool,bool)));
+	QString const port = "DisplayPort";
+	mDisplay = RobotModelUtils::findDevice<robotModel::parts::NxtDisplay>(mRobotModel, port);
 
-	mDisplay.read();
+	if (!mDisplay) {
+		mActiveWaitingTimer.stop();
+		error(tr("Display is not configured (WTF?)"));
+		return;
+	}
+
+
+	/// @todo: create buttons device and use it jedi
+//	connect(mDisplay, &robotModel::parts::NxtDisplay, this, SLOT(responseSlot(bool,bool,bool,bool)));
+
+//	mDisplay.read();
 	mActiveWaitingTimer.start();
 }
 
 void WaitForButtonsBlock::timerTimeout()
 {
-	mDisplay.read();
-}
-
-QString WaitForButtonsBlock::name() const
-{
-	return tr("Buttons");
+//	mDisplay.read();
 }
 
 void WaitForButtonsBlock::responseSlot(bool leftIsDown, bool rightIsDown, bool centralIsDown, bool bottomIsDown)
@@ -64,11 +76,9 @@ void WaitForButtonsBlock::clicksCounter(bool &buttonWasDown, bool buttonIsDown, 
 	if (buttonIsDown) {
 		buttonWasDown = true;
 	}
+
 	if (buttonWasDown && !buttonIsDown) {
 		clicks++;
 		buttonWasDown = false;
 	}
 }
-
-
-
