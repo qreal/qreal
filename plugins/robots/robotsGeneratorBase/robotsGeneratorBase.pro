@@ -167,6 +167,8 @@ HEADERS += \
 	$$PWD/simpleGenerators/subprogramsSimpleGenerator.h \
 	$$PWD/simpleGenerators/breakGenerator.h \
 	$$PWD/simpleGenerators/continueGenerator.h \
+	$$PWD/simpleGenerators/labelGenerator.h \
+	$$PWD/simpleGenerators/gotoSimpleGenerator.h \
 
 SOURCES += \
 	$$PWD/converters/templateParametrizedConverter.cpp \
@@ -225,3 +227,5 @@ SOURCES += \
 	$$PWD/simpleGenerators/subprogramsSimpleGenerator.cpp \
 	$$PWD/simpleGenerators/breakGenerator.cpp \
 	$$PWD/simpleGenerators/continueGenerator.cpp \
+	$$PWD/simpleGenerators/labelGenerator.cpp \
+	$$PWD/simpleGenerators/gotoSimpleGenerator.cpp \

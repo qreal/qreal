@@ -468,8 +468,9 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\n\n";
 }
 
-bool NodeType::generatePorts(OutFile &out, bool isNotFirst) const
+bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 {
+	qDebug() << "dfboj;flbd";
 	GraphicType::generateOneCase(out, isNotFirst);
 
 	QSet<QString> portTypes;

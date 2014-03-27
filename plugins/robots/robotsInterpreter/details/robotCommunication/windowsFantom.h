@@ -33,6 +33,8 @@ public:
 	void nFANTOM100_destroyNXT(unsigned long nxtHandle, int &status);
 
 private:
+	unsigned long onDriverUnavailable();
+
 	/// Instance of the Fantom library, if it is present.
 	QLibrary mFantomLibrary;
 };

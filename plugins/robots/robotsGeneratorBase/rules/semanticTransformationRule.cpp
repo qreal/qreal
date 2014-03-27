@@ -24,3 +24,13 @@ LoopNode *SemanticTransformationRule::makeLoopStartingFrom(NonZoneNode *node)
 
 	return endlessLoop;
 }
+
+bool SemanticTransformationRule::alreadyCreated(qReal::Id const &id)
+{
+	return mTree->findNodeFor(id) != nullptr;
+}
+
+bool SemanticTransformationRule::alreadyCreated(SemanticTransformationRule::LinkInfo const &link)
+{
+	return alreadyCreated(link.target);
+}

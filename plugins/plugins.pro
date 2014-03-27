@@ -7,6 +7,7 @@ SUBDIRS	= \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 	requirements/requirements.pro \
+	robots/robots.pro \
 
 
 # tool plugins

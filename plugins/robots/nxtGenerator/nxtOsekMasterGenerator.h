@@ -17,15 +17,13 @@ public:
 	void generateOilAndMakeFiles();
 
 protected:
-	virtual GeneratorCustomizer *createCustomizer();
-	virtual QString targetPath();
+	GeneratorCustomizer *createCustomizer() override;
+	QString targetPath() override;
+	bool supportsGotoGeneration() const override;
 
-	virtual void beforeGeneration();
-	virtual void afterGeneration();
+	void afterGeneration() override;
 
 private:
-	void createProjectDir(QString const &projectDir);
-
 	void generateOilFile(QString const &projectName, QString const &projectDir);
 	void generateMakeFile(QString const &projectName, QString const &projectDir);
 	void saveImages(QString const &projectDir);

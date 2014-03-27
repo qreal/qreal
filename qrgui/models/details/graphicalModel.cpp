@@ -46,8 +46,20 @@ void GraphicalModel::init()
 
 void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 {
+	/// @todo There must be a way to tell nodes from edges in repository, or we need to implement correct loading
+	/// at higher level. For now we check the existence of "from" property, which is bad, because a node can also
+	/// have this property.
+	/// Nodes need to be loaded before adges due to bugs in scene which connects edges to incorrect nodes or does
+	/// not connect edges at all. Proper fix for that shall possibly be in scene instead of this place.
 	foreach (Id const &childId, mApi.children(parent->id())) {
-		if (mApi.isGraphicalElement(childId)) {
+		if (mApi.isGraphicalElement(childId) && !mApi.hasProperty(childId, "from")) {
+			GraphicalModelItem * const child = loadElement(parent, childId);
+			loadSubtreeFromClient(child);
+		}
+	}
+
+	foreach (Id const &childId, mApi.children(parent->id())) {
+		if (mApi.isGraphicalElement(childId) && mApi.hasProperty(childId, "from")) {
 			GraphicalModelItem * const child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
 		}

@@ -20,17 +20,7 @@ QString TrikMasterGenerator::targetPath()
 	return QString("%1/%2.qts").arg(mProjectDir, mProjectName);
 }
 
-void TrikMasterGenerator::beforeGeneration()
+bool TrikMasterGenerator::supportsGotoGeneration() const
 {
-	createProjectDir(mProjectDir);
-}
-
-void TrikMasterGenerator::createProjectDir(QString const &projectDir)
-{
-	if (!QDir(projectDir).exists()) {
-		if (!QDir("trik/").exists()) {
-			QDir().mkdir("trik/");
-		}
-		QDir().mkdir(projectDir);
-	}
+	return false;
 }
