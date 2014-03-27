@@ -1,6 +1,6 @@
 #pragma once
 
-#include "waitForSensorBlock.h"
+#include "waitForColorSensorBlockBase.h"
 
 namespace interpreterCore {
 namespace coreBlocks {
@@ -11,11 +11,11 @@ class WaitForColorBlock : public WaitForColorSensorBlockBase
 	Q_OBJECT
 
 public:
-	explicit WaitForColorBlock(RobotModel * const robotModel);
-	virtual ~WaitForColorBlock() {}
+	explicit WaitForColorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	~WaitForColorBlock() override;
 
 protected slots:
-	virtual void responseSlot(int reading);
+	void responseSlot(int reading) override;
 };
 
 }

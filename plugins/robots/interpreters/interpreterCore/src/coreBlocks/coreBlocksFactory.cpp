@@ -14,20 +14,18 @@
 //#include "details/loopBlock.h"
 //#include "details/forkBlock.h"
 //#include "details/ifBlock.h"
-//#include "details/dummyBlock.h"
 #include "details/commentBlock.h"
 //#include "details/subprogramBlock.h"
 
 #include "details/waitForTouchSensorBlock.h"
-//#include "details/waitForSonarDistanceBlock.h"
-//#include "details/waitForColorBlock.h"
-//#include "details/waitForColorIntensityBlock.h"
-//#include "details/waitForLightSensorBlock.h"
-//#include "details/waitForSoundSensorBlock.h"
-//#include "details/waitforGyroscopeSensorBlock.h"
-//#include "details/waitForAccelerometerBlock.h"
-//#include "details/waitForEncoderBlock.h"
-//#include "details/waitForButtonsBlock.h"
+#include "details/waitForSonarDistanceBlock.h"
+#include "details/waitForColorBlock.h"
+#include "details/waitForColorIntensityBlock.h"
+#include "details/waitForLightSensorBlock.h"
+#include "details/waitForSoundSensorBlock.h"
+#include "details/waitforGyroscopeBlock.h"
+#include "details/waitForAccelerometerBlock.h"
+#include "details/waitForEncoderBlock.h"
 
 using namespace interpreterCore::coreBlocks;
 
@@ -61,10 +59,22 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 //		return new details::NullificationEncoderBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
 		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "WaitForButtons")) {
-//		return new WaitForButtonsBlock(mRobotModel, mRobotModel->display());
-//	} else {
-//		return new DummyBlock();
+	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
+		return new details::WaitForSonarDistanceBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForColor")) {
+		return new details::WaitForColorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForColorIntensity")) {
+		return new details::WaitForColorIntensityBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForEncoder")) {
+		return new details::WaitForEncoderBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForLight")) {
+		return new details::WaitForLightSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForSound")) {
+		return new details::WaitForSoundSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForGyroscope")) {
+		return new details::WaitForGyroscopeSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForAccelerometer")) {
+		return new details::WaitForAccelerometerSensorBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;

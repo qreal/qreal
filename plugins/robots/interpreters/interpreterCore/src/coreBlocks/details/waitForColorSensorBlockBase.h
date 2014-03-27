@@ -11,12 +11,12 @@ class WaitForColorSensorBlockBase : public WaitForSensorBlock
 	Q_OBJECT
 
 public:
-	WaitForColorSensorBlockBase(RobotModel * const robotModel, robots::enums::sensorType::SensorTypeEnum type);
-	virtual ~WaitForColorSensorBlockBase() {}
+	explicit WaitForColorSensorBlockBase(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	~WaitForColorSensorBlockBase() override;
 
 protected:
-	virtual robotParts::Sensor *sensor() const;
-	virtual QString name() const;
+//	virtual robotParts::Sensor *sensor() const;
+	QString name() const override;
 };
 
 }

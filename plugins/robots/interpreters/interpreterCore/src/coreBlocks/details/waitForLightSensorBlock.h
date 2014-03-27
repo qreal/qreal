@@ -1,38 +1,26 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QTimer>
-
 #include "waitForSensorBlock.h"
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
-namespace details
-{
-namespace blocks
-{
+namespace interpreterCore {
+namespace coreBlocks {
+namespace details {
 
 class WaitForLightSensorBlock : public WaitForSensorBlock
 {
 	Q_OBJECT
 
 public:
-	explicit WaitForLightSensorBlock(RobotModel * const robotModel);
-	virtual ~WaitForLightSensorBlock() {}
+	explicit WaitForLightSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	~WaitForLightSensorBlock() override;
 
 protected slots:
-	virtual void responseSlot(int reading);
+	void responseSlot(int reading) override;
 
 protected:
-	virtual robotParts::Sensor *sensor() const;
-	virtual QString name() const;
+//	virtual robotParts::Sensor *sensor() const;
+	QString name() const override;
 };
-}
-}
 }
 }
 }

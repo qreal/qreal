@@ -1,17 +1,20 @@
 #include "waitForColorSensorBlockBase.h"
 
-using namespace qReal::interpreters::robots::details::blocks;
+using namespace interpreterCore::coreBlocks::details;
 
-WaitForColorSensorBlockBase::WaitForColorSensorBlockBase(details::RobotModel * const robotModel
-		, robots::enums::sensorType::SensorTypeEnum type)
-	: WaitForSensorBlock(robotModel, type)
+WaitForColorSensorBlockBase::WaitForColorSensorBlockBase(interpreterBase::robotModel::RobotModelInterface &robotModel)
+	: WaitForSensorBlock(robotModel)
 {
 }
 
-qReal::interpreters::robots::details::robotParts::Sensor *WaitForColorSensorBlockBase::sensor() const
+WaitForColorSensorBlockBase::~WaitForColorSensorBlockBase()
 {
-	return mRobotModel->colorSensor(mPort);
 }
+
+//qReal::interpreters::robots::details::robotParts::Sensor *WaitForColorSensorBlockBase::sensor() const
+//{
+//	return mRobotModel->colorSensor(mPort);
+//}
 
 QString WaitForColorSensorBlockBase::name() const
 {

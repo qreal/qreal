@@ -1,36 +1,34 @@
 #include "waitForEncoderBlock.h"
 
-#include "../../sensorConstants.h"
+#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
+#include <interpreterBase/robotModel/robotModelUtils.h>
 
-using namespace qReal;
-using namespace interpreters::robots;
-using namespace interpreters::robots::details::blocks;
+using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::robotModel;
 
-WaitForEncoderBlock::WaitForEncoderBlock(details::RobotModel * const robotModel)
+WaitForEncoderBlock::WaitForEncoderBlock(RobotModelInterface &robotModel)
 	: WaitBlock(robotModel)
-	, mEncoderSensor(NULL)
+	, mEncoderSensor(nullptr)
+{
+}
+
+WaitForEncoderBlock::~WaitForEncoderBlock()
 {
 }
 
 void WaitForEncoderBlock::run()
 {
 	QString const port = stringProperty("Port");
-	if (port.trimmed().toUpper() == "A") {
-		mEncoderSensor = &mRobotModel->encoderA();
-	} else if (port.trimmed().toUpper() == "B") {
-		mEncoderSensor = &mRobotModel->encoderB();
-	} else if (port.trimmed().toUpper() == "C") {
-		mEncoderSensor = &mRobotModel->encoderC();
-	}
+	mEncoderSensor = RobotModelUtils::findDevice<robotParts::EncoderSensor>(mRobotModel, port);
 
 	if (!mEncoderSensor) {
 		mActiveWaitingTimer.stop();
-		error(tr("Encoder sensor is not configured on this port "));
+		error(tr("Encoder sensor is not configured on port %1").arg(port));
 		return;
 	}
 
-	connect(mEncoderSensor->encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(mEncoderSensor->encoderImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
+	connect(mEncoderSensor, &robotParts::EncoderSensor::newData, this, &WaitForEncoderBlock::responseSlot);
+	connect(mEncoderSensor, &robotParts::EncoderSensor::failure, this, &WaitForEncoderBlock::failureSlot);
 
 	mEncoderSensor->read();
 	mActiveWaitingTimer.start();

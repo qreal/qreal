@@ -1,33 +1,26 @@
 #pragma once
 
 #include "waitBlock.h"
-#include "../robotParts/robotModel.h"
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
-namespace details
-{
-namespace blocks
-{
+namespace interpreterCore {
+namespace coreBlocks {
+namespace details {
 
 class WaitForButtonsBlock : public WaitBlock
 {
 	Q_OBJECT
 public:
-	WaitForButtonsBlock(RobotModel * const robotModel, robotParts::Display &display);
-	virtual ~WaitForButtonsBlock() {}
-	virtual void run();
+	explicit WaitForButtonsBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	~WaitForButtonsBlock() override;
+
+	void run() override;
 
 protected:
-	virtual QString name() const;
+	QString name() const override;
 
 protected slots:
-	virtual void responseSlot(bool leftIsDown, bool rightIsDown, bool centralIsDown, bool bottomIsDown);
-	virtual void timerTimeout();
+	void responseSlot(bool leftIsDown, bool rightIsDown, bool centralIsDown, bool bottomIsDown);
+	void timerTimeout() override;
 
 private:
 	void clicksCounter(bool &buttonWasDown, bool buttonIsDown, int &clicks);
@@ -45,8 +38,6 @@ private:
 	robotParts::Display &mDisplay;
 };
 
-}
-}
 }
 }
 }

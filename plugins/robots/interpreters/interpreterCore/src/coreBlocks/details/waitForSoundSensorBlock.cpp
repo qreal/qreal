@@ -1,13 +1,9 @@
 #include "waitForSoundSensorBlock.h"
 
-#include "../../sensorConstants.h"
+using namespace interpreterCore::coreBlocks::details;
 
-using namespace qReal;
-using namespace interpreters::robots;
-using namespace interpreters::robots::details::blocks;
-
-WaitForSoundSensorBlock::WaitForSoundSensorBlock(details::RobotModel * const robotModel)
-	: WaitForSensorBlock(robotModel, robots::enums::sensorType::sound)
+WaitForSoundSensorBlock::WaitForSoundSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+	: WaitForSensorBlock(robotModel)
 {
 }
 
@@ -21,10 +17,10 @@ void WaitForSoundSensorBlock::responseSlot(int reading)
 	processResponce(reading, targetPercents);
 }
 
-interpreters::robots::details::robotParts::Sensor *WaitForSoundSensorBlock::sensor() const
-{
-	return mRobotModel->soundSensor(mPort);
-}
+//interpreters::robots::details::robotParts::Sensor *WaitForSoundSensorBlock::sensor() const
+//{
+//	return mRobotModel->soundSensor(mPort);
+//}
 
 QString WaitForSoundSensorBlock::name() const
 {

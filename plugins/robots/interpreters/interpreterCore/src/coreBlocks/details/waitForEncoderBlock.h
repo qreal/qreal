@@ -2,6 +2,14 @@
 
 #include "waitBlock.h"
 
+namespace interpreterBase {
+namespace robotModel {
+namespace robotParts {
+class EncoderSensor;
+}
+}
+}
+
 namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
@@ -11,17 +19,17 @@ class WaitForEncoderBlock : public WaitBlock
 	Q_OBJECT
 
 public:
-	explicit WaitForEncoderBlock(RobotModel * const robotModel);
-	virtual ~WaitForEncoderBlock() {}
+	explicit WaitForEncoderBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	~WaitForEncoderBlock() override;
 
-	virtual void run();
+	void run() override;
 
 private slots:
 	void responseSlot(int reading);
-	void timerTimeout();
+	void timerTimeout() override;
 
 private:
-	robotParts::EncoderSensor * mEncoderSensor;  // Doesn't have ownership
+	interpreterBase::robotModel::robotParts::EncoderSensor *mEncoderSensor;
 };
 
 }

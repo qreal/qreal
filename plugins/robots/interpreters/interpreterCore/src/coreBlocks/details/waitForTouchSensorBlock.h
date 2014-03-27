@@ -15,11 +15,11 @@ public:
 	~WaitForTouchSensorBlock() override;
 
 protected slots:
-	virtual void responseSlot(int reading);
+	void responseSlot(int reading) override;
 
 protected:
 //	virtual robotParts::Sensor *sensor() const;
-	virtual QString name() const;
+	QString name() const override;
 };
 
 }

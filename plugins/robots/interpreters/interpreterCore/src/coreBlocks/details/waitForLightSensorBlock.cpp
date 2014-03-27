@@ -1,13 +1,13 @@
 #include "waitForLightSensorBlock.h"
 
-#include "../../sensorConstants.h"
+using namespace interpreterCore::coreBlocks::details;
 
-using namespace qReal;
-using namespace interpreters::robots;
-using namespace interpreters::robots::details::blocks;
+WaitForLightSensorBlock::WaitForLightSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+	: WaitForSensorBlock(robotModel)
+{
+}
 
-WaitForLightSensorBlock::WaitForLightSensorBlock(details::RobotModel * const robotModel)
-	: WaitForSensorBlock(robotModel, robots::enums::sensorType::light)
+WaitForLightSensorBlock::~WaitForLightSensorBlock()
 {
 }
 
@@ -17,10 +17,10 @@ void WaitForLightSensorBlock::responseSlot(int reading)
 	processResponce(reading, targetPercents);
 }
 
-interpreters::robots::details::robotParts::Sensor *WaitForLightSensorBlock::sensor() const
-{
-	return mRobotModel->lightSensor(mPort);
-}
+//interpreters::robots::details::robotParts::Sensor *WaitForLightSensorBlock::sensor() const
+//{
+//	return mRobotModel->lightSensor(mPort);
+//}
 
 QString WaitForLightSensorBlock::name() const
 {

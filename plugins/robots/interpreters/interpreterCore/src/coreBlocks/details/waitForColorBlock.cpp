@@ -1,13 +1,13 @@
 #include "waitForColorBlock.h"
 
-#include "../../sensorConstants.h"
+using namespace interpreterCore::coreBlocks::details;
 
-using namespace qReal;
-using namespace interpreters::robots;
-using namespace interpreters::robots::details::blocks;
+WaitForColorBlock::WaitForColorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+	: WaitForColorSensorBlockBase(robotModel)
+{
+}
 
-WaitForColorBlock::WaitForColorBlock(details::RobotModel * const robotModel)
-	: WaitForColorSensorBlockBase(robotModel, robots::enums::sensorType::colorFull)
+WaitForColorBlock::~WaitForColorBlock()
 {
 }
 
