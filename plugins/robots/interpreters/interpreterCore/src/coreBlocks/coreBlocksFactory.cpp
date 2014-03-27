@@ -2,20 +2,20 @@
 
 #include "details/initialBlock.h"
 #include "details/finalBlock.h"
-//#include "details/nullificationEncoderBlock.h"
+#include "details/nullificationEncoderBlock.h"
 
 #include "details/enginesForwardBlock.h"
 #include "details/enginesBackwardBlock.h"
 #include "details/enginesStopBlock.h"
 
 #include "details/timerBlock.h"
-//#include "details/functionBlock.h"
+#include "details/functionBlock.h"
 
-//#include "details/loopBlock.h"
-//#include "details/forkBlock.h"
-//#include "details/ifBlock.h"
+#include "details/loopBlock.h"
+#include "details/forkBlock.h"
+#include "details/ifBlock.h"
 #include "details/commentBlock.h"
-//#include "details/subprogramBlock.h"
+#include "details/subprogramBlock.h"
 
 #include "details/waitForTouchSensorBlock.h"
 #include "details/waitForSonarDistanceBlock.h"
@@ -45,18 +45,18 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::EnginesStopBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "CommentBlock")) {
 		return new details::CommentBlock;
-//	} else if (elementMetatypeIs(element, "IfBlock")) {
-//		return new IfBlock();
-//	} else if (elementMetatypeIs(element, "Loop")) {
-//		return new LoopBlock();
-//	} else if (elementMetatypeIs(element, "Fork")) {
-//		return new ForkBlock();
-//	} else if (elementMetatypeIs(element, "Subprogram")) {
-//		return new SubprogramBlock();
-//	} else if (elementMetatypeIs(element, "Function")) {
-//		return new FunctionBlock();
-//	} else if (elementMetatypeIs(element, "NullificationEncoder")) {
-//		return new details::NullificationEncoderBlock(mRobotModel);
+	} else if (elementMetatypeIs(element, "IfBlock")) {
+		return new IfBlock();
+	} else if (elementMetatypeIs(element, "Loop")) {
+		return new LoopBlock();
+	} else if (elementMetatypeIs(element, "Fork")) {
+		return new ForkBlock();
+	} else if (elementMetatypeIs(element, "Subprogram")) {
+		return new SubprogramBlock();
+	} else if (elementMetatypeIs(element, "Function")) {
+		return new FunctionBlock();
+	} else if (elementMetatypeIs(element, "NullificationEncoder")) {
+		return new details::NullificationEncoderBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
 		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
@@ -85,5 +85,25 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 	return {
 		id("InitialNode")
 		, id("FinalNode")
+		, id("Timer")
+		, id("EnginesForward")
+		, id("EnginesBackward")
+		, id("EnginesStop")
+		, id("CommentBlock")
+		, id("IfBlock")
+		, id("Loop")
+		, id("Fork")
+		, id("Subprogram")
+		, id("Function")
+		, id("NullificationEncoder")
+		, id("WaitForTouchSensor")
+		, id("WaitForSonarDistance")
+		, id("WaitForColor")
+		, id("WaitForColorIntensity")
+		, id("WaitForEncoder")
+		, id("WaitForLight")
+		, id("WaitForSound")
+		, id("WaitForGyroscope")
+		, id("WaitForAccelerometer")
 	};
 }

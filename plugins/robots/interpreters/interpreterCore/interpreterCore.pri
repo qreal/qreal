@@ -22,6 +22,12 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/enginesStopBlock.h \
 	$$PWD/src/coreBlocks/details/finalBlock.h \
 	$$PWD/src/coreBlocks/details/initialBlock.h \
+	$$PWD/src/coreBlocks/details/ifBlock.h \
+	$$PWD/src/coreBlocks/details/loopBlock.h \
+	$$PWD/src/coreBlocks/details/forkBlock.h \
+	$$PWD/src/coreBlocks/details/subprogramBlock.h \
+	$$PWD/src/coreBlocks/details/functionBlock.h \
+	$$PWD/src/coreBlocks/details/nullificationEncoderBlock.h \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
 	$$PWD/src/coreBlocks/details/waitForSensorBlock.h \
 	$$PWD/src/coreBlocks/details/waitForTouchSensorBlock.h \
@@ -65,6 +71,12 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/enginesStopBlock.cpp \
 	$$PWD/src/coreBlocks/details/finalBlock.cpp \
 	$$PWD/src/coreBlocks/details/initialBlock.cpp \
+	$$PWD/src/coreBlocks/details/ifBlock.cpp \
+	$$PWD/src/coreBlocks/details/loopBlock.cpp \
+	$$PWD/src/coreBlocks/details/forkBlock.cpp \
+	$$PWD/src/coreBlocks/details/subprogramBlock.cpp \
+	$$PWD/src/coreBlocks/details/functionBlock.cpp \
+	$$PWD/src/coreBlocks/details/nullificationEncoderBlock.cpp \
 	$$PWD/src/coreBlocks/details/timerBlock.cpp \
 	$$PWD/src/coreBlocks/details/waitForSensorBlock.cpp \
 	$$PWD/src/coreBlocks/details/waitForTouchSensorBlock.cpp \

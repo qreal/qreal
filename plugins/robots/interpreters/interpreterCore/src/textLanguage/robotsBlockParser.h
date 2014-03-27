@@ -20,6 +20,7 @@ public:
 	void setReservedVariables();
 
 	QMap<QString, utils::Number *> const &variables() const override;
+	bool hasErrors() const override;
 
 private:
 	virtual bool isLetter(QChar const &symbol);
