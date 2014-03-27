@@ -14,12 +14,11 @@ class TemplateDocumentBuilder
 {
 public:
 	TemplateDocumentBuilder();
-
 	/// Collects all provided info into result document
+
 	QDomDocument buildTemplate() const;
 	/// Creates builder instance from specified document
 	static TemplateDocumentBuilder *fromDocument(QDomDocument const &document);
-
 	/// Returns widget template part from provided info
 	QDomDocument wtf() const;
 	/// Returns shape graphics (picture + other graphics)
