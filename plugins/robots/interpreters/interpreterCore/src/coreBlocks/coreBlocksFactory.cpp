@@ -46,17 +46,17 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "CommentBlock")) {
 		return new details::CommentBlock;
 	} else if (elementMetatypeIs(element, "IfBlock")) {
-		return new IfBlock();
+		return new details::IfBlock();
 	} else if (elementMetatypeIs(element, "Loop")) {
-		return new LoopBlock();
+		return new details::LoopBlock();
 	} else if (elementMetatypeIs(element, "Fork")) {
-		return new ForkBlock();
+		return new details::ForkBlock();
 	} else if (elementMetatypeIs(element, "Subprogram")) {
-		return new SubprogramBlock();
+		return new details::SubprogramBlock();
 	} else if (elementMetatypeIs(element, "Function")) {
-		return new FunctionBlock();
+		return new details::FunctionBlock();
 	} else if (elementMetatypeIs(element, "NullificationEncoder")) {
-		return new details::NullificationEncoderBlock(mRobotModel);
+		return new details::NullificationEncoderBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
 		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
