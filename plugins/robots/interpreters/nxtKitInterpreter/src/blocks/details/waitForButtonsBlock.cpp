@@ -2,14 +2,14 @@
 
 #include <interpreterBase/robotModel/robotModelUtils.h>
 
-#include "robotModel/parts/nxtDisplay.h"
+#include "robotModel/parts/nxtButtons.h"
 
 using namespace nxtKitInterpreter::blocks::details;
 using namespace interpreterBase::robotModel;
 
 WaitForButtonsBlock::WaitForButtonsBlock(RobotModelInterface &robotModel)
 	: WaitBlock(robotModel)
-	, mDisplay(nullptr)
+	, mButtons(nullptr)
 {
 }
 
@@ -29,26 +29,25 @@ void WaitForButtonsBlock::run()
 	mCentralWasDown = false;
 	mBottomWasDown = false;
 
-	QString const port = "DisplayPort";
-	mDisplay = RobotModelUtils::findDevice<robotModel::parts::NxtDisplay>(mRobotModel, port);
+	QString const port = "ButtonsPort";
+	mButtons = RobotModelUtils::findDevice<robotModel::parts::NxtButtons>(mRobotModel, port);
 
-	if (!mDisplay) {
+	if (!mButtons) {
 		mActiveWaitingTimer.stop();
-		error(tr("Display is not configured (WTF?)"));
+		error(tr("Buttons are not configured (WTF?)"));
 		return;
 	}
 
 
-	/// @todo: create buttons device and use it jedi
-//	connect(mDisplay, &robotModel::parts::NxtDisplay, this, SLOT(responseSlot(bool,bool,bool,bool)));
+	connect(mButtons, &robotModel::parts::NxtButtons::response, this, &WaitForButtonsBlock::responseSlot);
 
-//	mDisplay.read();
+	mButtons->read();
 	mActiveWaitingTimer.start();
 }
 
 void WaitForButtonsBlock::timerTimeout()
 {
-//	mDisplay.read();
+	mButtons->read();
 }
 
 void WaitForButtonsBlock::responseSlot(bool leftIsDown, bool rightIsDown, bool centralIsDown, bool bottomIsDown)

@@ -28,10 +28,12 @@ HEADERS += \
 	$$PWD/robotModel/nxtRobotModelBase.h \
 	$$PWD/robotModel/parts/nxtDisplay.h \
 	$$PWD/robotModel/parts/nxtSpeaker.h \
+	$$PWD/robotModel/parts/nxtButtons.h \
 	$$PWD/robotModel/real/realRobotModel.h \
 	$$PWD/robotModel/real/parts/nxtInputDevice.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
+	$$PWD/robotModel/real/parts/buttons.h \
 	$$PWD/robotModel/real/parts/motor.h \
 	$$PWD/robotModel/real/parts/touchSensor.h \
 	$$PWD/robotModel/real/parts/colorSensor.h \
@@ -65,10 +67,12 @@ SOURCES += \
 	$$PWD/robotModel/nxtRobotModelBase.cpp \
 	$$PWD/robotModel/parts/nxtDisplay.cpp \
 	$$PWD/robotModel/parts/nxtSpeaker.cpp \
+	$$PWD/robotModel/parts/nxtButtons.cpp \
 	$$PWD/robotModel/real/realRobotModel.cpp \
 	$$PWD/robotModel/real/parts/nxtInputDevice.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \
+	$$PWD/robotModel/real/parts/buttons.cpp \
 	$$PWD/robotModel/real/parts/motor.cpp \
 	$$PWD/robotModel/real/parts/touchSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensor.cpp \

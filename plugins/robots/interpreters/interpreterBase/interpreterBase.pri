@@ -23,6 +23,7 @@ SOURCES += \
 	$$PWD/src/robotModel/robotParts/speaker.cpp \
 	$$PWD/src/robotModel/robotParts/motor.cpp \
 	$$PWD/src/robotModel/robotParts/display.cpp \
+	$$PWD/src/robotModel/robotParts/buttons.cpp \
 	$$PWD/src/robotModel/robotParts/abstractSensor.cpp \
 	$$PWD/src/robotModel/robotParts/accelerometerSensor.cpp \
 	$$PWD/src/robotModel/robotParts/colorSensor.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/robotParts/speaker.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/motor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/display.h \
+	$$PWD/include/interpreterBase/robotModel/robotParts/buttons.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/abstractSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/accelerometerSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensor.h \

@@ -8,6 +8,7 @@
 
 #include "parts/display.h"
 #include "parts/speaker.h"
+#include "parts/buttons.h"
 #include "parts/motor.h"
 #include "parts/encoderSensor.h"
 #include "parts/touchSensor.h"
@@ -78,6 +79,10 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 	if (deviceInfo.isA(speakerInfo())) {
 		return new parts::Speaker(speakerInfo(), port, mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(buttonsInfo())) {
+		return new parts::Buttons(speakerInfo(), port);
 	}
 
 	if (deviceInfo.isA(motorInfo())) {
