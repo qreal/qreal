@@ -7,7 +7,7 @@ SUBDIRS	= \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 	requirements/requirements.pro \
-	generatorsEditor/generatorMetamodel/generatorMetamodel.pro \
+	generatorsEditor/generatorsEditor.pro \
 
 
 # tool plugins
