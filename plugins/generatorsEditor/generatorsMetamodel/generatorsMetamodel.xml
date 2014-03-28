@@ -67,9 +67,9 @@
                     <explodesTo/>
                 </logic>
             </node>
-			<node name="ApplicationNode" displayedName="Application Node" description="Элемент для задания общего кода генерируемого приложения">
+			<node name="ApplicationNode" displayedName="Application" description="Элемент для задания общего кода генерируемого приложения">
                 <graphics>
-                    <picture sizex="164" sizey="100">
+                    <picture sizex="150" sizey="100">
                         <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
                         <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
                         <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
@@ -77,7 +77,7 @@
                         <line stroke="#2f4f4f" y1="25a" y2="25a" x1="0a" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
                     </picture>
                     <labels>
-                        <label x="5" y="3" textBinded="Application" hard="true"/>
+                        <label x="5" y="3" text="Application" hard="true"/>
                     </labels>
                     <ports>
                         <linePort type="NonTyped">
@@ -105,7 +105,7 @@
                     <explodesTo/>
                 </logic>
             </node>
-			<node name="TemplateNode" displayedName="Template Node" description="Элемент для задания шаблона конкретного генерируемого кода">
+			<node name="TemplateNode" displayedName="Template" description="Элемент для задания шаблона конкретного генерируемого кода">
                 <graphics>
                     <picture sizex="150" sizey="100">
                         <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
@@ -148,9 +148,9 @@
                     <explodesTo/>
                 </logic>
             </node>
-            <node name="SemanticNode" displayedName="Semantic Node" description="Элемент для задания генерируемого кода">
+            <node name="SemanticNode" displayedName="Semantic" description="Элемент для задания генерируемого кода">
                 <graphics>
-                    <picture sizex="164" sizey="100">
+                    <picture sizex="150" sizey="100">
                         <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
                         <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
                         <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
@@ -395,7 +395,12 @@
                     </ports>
                 </graphics>
                 <logic>
-                    <container/>
+                    <container>
+                        <contains type="TemplateNode"/>
+                    </container>
+                    <properties>
+                        <property name="mergeFileName" displayedName="file name of special merger" type="string"/>
+                    </properties>
                     <explodesTo/>
                 </logic>
             </node>
