@@ -4,15 +4,17 @@
 
 using namespace twoDModel;
 
-TwoDModelFacade::TwoDModelFacade()
+TwoDModelFacade::TwoDModelFacade(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: mTwoDModelActionInfo(
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 			, "interpreters"
 			, "tools")
-	, mTwoDModel(new D2RobotModel())
+	, mTwoDModel(new D2RobotModel(robotModel))
 {
 	/// @todo: why it can't be done in constructor?
 	mTwoDModel->createModelWidget();
+
+	connectSensorsConfigurationProvider(mTwoDModel.data());
 
 	QObject::connect(mTwoDModelActionInfo.action(), &QAction::triggered
 			, mTwoDModel.data(), &twoDModel::D2RobotModel::showModelWidget);

@@ -113,7 +113,7 @@ void SensorsConfigurationWidget::refresh()
 	mRefreshing = true;
 	for (QComboBox * const box : mConfigurers) {
 		PortInfo const port = box->property("port").value<PortInfo>();
-		DeviceInfo const device = mCurrentConfiguration[mCurrentModel][port];
+		DeviceInfo const device = currentConfiguration(mCurrentModel, port);
 		if (device.isNull()) {
 			box->setCurrentIndex(0);
 		} else {
@@ -140,7 +140,7 @@ void SensorsConfigurationWidget::save()
 		QString const robotModel = box->property("robotModel").toString();
 		PortInfo const port = box->property("port").value<PortInfo>();
 		DeviceInfo const device = box->itemData(box->currentIndex()).value<DeviceInfo>();
-		if (mCurrentConfiguration[robotModel][port] != device) {
+		if (currentConfiguration(robotModel, port) != device) {
 			propagateChanges(port, device);
 		}
 	}

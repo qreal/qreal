@@ -8,6 +8,7 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtGui/QPolygonF>
 #include <QtCore/QSignalMapper>
+#include <QtCore/QHash>
 
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
@@ -24,6 +25,7 @@
 //#include "../nxtDisplay.h"
 
 #include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace Ui {
 class D2Form;
@@ -66,7 +68,8 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Sensors
 	Q_OBJECT
 
 public:
-	D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
+	D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
+			, interpreterBase::robotModel::RobotModelInterface &robotModel
 			/*, NxtDisplay *nxtDisplay*/, QWidget *parent = 0);
 	~D2ModelWidget();
 	void init(bool isActive = true);
@@ -131,8 +134,9 @@ protected:
 	virtual void showEvent(QShowEvent *e);
 	virtual void keyPressEvent(QKeyEvent *event);
 
-	void onSensorConfigurationChanged(QString const &robotModel, interpreterBase::robotModel::PortInfo const &port
-			, const interpreterBase::robotModel::DeviceInfo &sensor);
+	void onSensorConfigurationChanged(QString const &robotModel
+			, interpreterBase::robotModel::PortInfo const &port
+			, const interpreterBase::robotModel::DeviceInfo &device) override;
 
 private slots:
 	void addWall(bool on);
@@ -149,7 +153,7 @@ private slots:
 
 	void deleteItem(QGraphicsItem *);
 
-	void addPort(int const port);
+	void addPort(int const index);
 
 	void handleNewRobotPosition();
 
@@ -198,6 +202,7 @@ private:
 
 	void connectUiButtons();
 	void initButtonGroups();
+	void initPorts();
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void drawWalls();
@@ -265,7 +270,7 @@ private:
 	/// robot position gets recalculated too frequently (about 10 times for single pixel of a movement).
 	int mMaxDrawCyclesBetweenPathElements;
 
-	RobotModelInterface *mRobotModel;
+	TwoDRobotRobotModelInterface *mTwoDRobotModel;
 	WorldModel *mWorldModel;
 //	NxtDisplay *mNxtDisplay;
 
@@ -312,6 +317,11 @@ private:
 	Timeline const * mTimeline;
 
 	RobotState mInitialRobotBeforeRun;
+
+	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
+
+	/// Does not have ownership, combo boxes are owned by form layout.
+	QHash<QComboBox *, interpreterBase::robotModel::PortInfo> mComboBoxesToPortsMap;
 };
 
 }

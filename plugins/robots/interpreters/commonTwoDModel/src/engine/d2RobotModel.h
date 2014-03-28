@@ -5,6 +5,7 @@
 #include <QtCore/qmath.h>
 
 #include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include <qrutils/mathUtils/gaussNoise.h>
 #include "robotModelInterface.h"
@@ -20,12 +21,13 @@ class D2ModelWidget;
 class WorldModel;
 class Timeline;
 
-class D2RobotModel : public QObject, public RobotModelInterface, public interpreterBase::SensorsConfigurationProvider
+class D2RobotModel : public QObject, public TwoDRobotRobotModelInterface, public interpreterBase::SensorsConfigurationProvider
 {
 	Q_OBJECT
 
 public:
-	explicit D2RobotModel(QObject *parent = 0);
+	explicit D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
+			, QObject *parent = 0);
 	~D2RobotModel();
 	virtual void clear();
 	void startInit();
@@ -142,6 +144,8 @@ private:
 
 	QPointF mPos;
 	qreal mAngle;
+
+	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 };
 
 }

@@ -2,10 +2,11 @@
 
 #include <QtCore/QString>
 #include <qrgui/toolPluginInterface/actionInfo.h>
+#include <interpreterBase/sensorsConfigurationProvider.h>
 
 namespace twoDModel {
 
-class TwoDModelControlInterface
+class TwoDModelControlInterface : public interpreterBase::SensorsConfigurationProvider
 {
 public:
 	virtual ~TwoDModelControlInterface() {}

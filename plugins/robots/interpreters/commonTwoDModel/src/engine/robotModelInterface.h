@@ -7,7 +7,7 @@
 
 namespace twoDModel {
 
-class RobotModelInterface
+class TwoDRobotRobotModelInterface
 {
 public:
 //	virtual SensorsConfiguration &configuration() = 0;

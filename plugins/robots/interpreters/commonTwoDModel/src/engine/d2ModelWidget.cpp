@@ -20,8 +20,10 @@ using namespace twoDModel;
 using namespace qReal;
 using namespace utils;
 using namespace graphicsUtils;
+using namespace interpreterBase::robotModel;
 
-D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
+D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
+		, RobotModelInterface &robotModel
 		/* , NxtDisplay *nxtDisplay*/, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 //	, details::SensorsConfigurationProvider("D2ModelWidget")
@@ -29,7 +31,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	, mScene(nullptr)
 	, mRobot(nullptr)
 	, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
-	, mRobotModel(robotModel)
+	, mTwoDRobotModel(twoDRobotModel)
 	, mWorldModel(worldModel)
 //	, mNxtDisplay(nxtDisplay)
 	, mDrawingAction(enums::drawingAction::none)
@@ -43,6 +45,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	, mWidth(defaultPenWidth)
 	, mClearing(false)
 	, mFirstShow(true)
+	, mRobotModel(robotModel)
 //	, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
@@ -105,12 +108,14 @@ void D2ModelWidget::initWidget()
 			<< "Green"
 			<< "Yellow"
 			<< "Red";
+
 	QStringList translatedColorList = QStringList()
 			<< tr("Black")
 			<< tr("Blue")
 			<< tr("Green")
 			<< tr("Yellow")
 			<< tr("Red");
+
 	mUi->penColorComboBox->setColorList(colorList, translatedColorList);
 	mUi->penColorComboBox->setColor(QColor("black"));
 
@@ -120,6 +125,8 @@ void D2ModelWidget::initWidget()
 //	mNxtDisplay->setMaximumSize(displaySize);
 //	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mNxtDisplay);
 	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
+
+	initPorts();
 }
 
 void D2ModelWidget::connectUiButtons()
@@ -141,8 +148,8 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->saveWorldModelPushButton, SIGNAL(clicked()), this, SLOT(saveWorldModel()));
 	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
 
-	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
-	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(saveToRepo()));
+//	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
+//	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(saveToRepo()));
 
 //	connect(mUi->port1Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
 //	mPortsMapper.setMapping(mUi->port1Box, robots::enums::inputPort::port1);
@@ -177,6 +184,39 @@ void D2ModelWidget::initButtonGroups()
 	mCursorButtonGroup.addButton(mUi->multiselectionCursorButton);
 }
 
+void D2ModelWidget::initPorts()
+{
+	QList<PortInfo> ports = mRobotModel.configurablePorts();
+	qSort(ports.begin(), ports.end()
+			, [](PortInfo const &port1, PortInfo const &port2) { return port1.name() < port2.name(); }
+	);
+
+	for (PortInfo const &port : ports) {
+		DeviceInfo const currentlyConfiguredDevice = currentConfiguration(mRobotModel.name(), port);
+
+		mUi->portsFrame->layout()->addWidget(new QLabel(tr("Port ") + port.name()));
+
+		QComboBox *portsSelectionComboBox = new QComboBox();
+		mUi->portsFrame->layout()->addWidget(portsSelectionComboBox);
+
+		portsSelectionComboBox->addItem(tr("none"));
+		for (DeviceInfo device : mRobotModel.allowedDevices(port)) {
+			QVariant deviceVariant;
+			deviceVariant.setValue(device);
+			portsSelectionComboBox->addItem(device.friendlyName(), deviceVariant);
+
+			if (currentlyConfiguredDevice == device) {
+				portsSelectionComboBox->setCurrentIndex(portsSelectionComboBox->count() - 1);
+			}
+		}
+
+		connect(portsSelectionComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated)
+				, this, &D2ModelWidget::addPort);
+
+		mComboBoxesToPortsMap.insert(portsSelectionComboBox, port);
+	}
+}
+
 void D2ModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)
 {
 	foreach (QAbstractButton * const button, mButtonGroup.buttons()) {
@@ -194,16 +234,16 @@ void D2ModelWidget::changeSpeed(int curIndex)
 {
 	switch(curIndex){
 	case 0:
-		mRobotModel->setSpeedFactor(Timeline::slowSpeedFactor);
+		mTwoDRobotModel->setSpeedFactor(Timeline::slowSpeedFactor);
 		break;
 	case 1:
-		mRobotModel->setSpeedFactor(Timeline::normalSpeedFactor);
+		mTwoDRobotModel->setSpeedFactor(Timeline::normalSpeedFactor);
 		break;
 	case 2:
-		mRobotModel->setSpeedFactor(Timeline::fastSpeedFactor);
+		mTwoDRobotModel->setSpeedFactor(Timeline::fastSpeedFactor);
 		break;
 	default:
-		mRobotModel->setSpeedFactor(Timeline::normalSpeedFactor);
+		mTwoDRobotModel->setSpeedFactor(Timeline::normalSpeedFactor);
 	}
 }
 
@@ -263,7 +303,7 @@ void D2ModelWidget::drawInitialRobot()
 	rotater->setVisible(false);
 
 	mRobot->setRotater(rotater);
-	mRobot->setRobotModel(mRobotModel);
+	mRobot->setRobotModel(mTwoDRobotModel);
 
 	mUi->graphicsView->centerOn(mRobot);
 }
@@ -478,7 +518,7 @@ void D2ModelWidget::clearScene(bool removeRobot)
 {
 	mClearing = true;
 	mWorldModel->clearScene();
-	mRobotModel->clear();
+	mTwoDRobotModel->clear();
 	if (removeRobot) {
 //		removeSensor(robots::enums::inputPort::port1);
 //		removeSensor(robots::enums::inputPort::port2);
@@ -533,15 +573,19 @@ QComboBox *D2ModelWidget::currentComboBox()
 	return nullptr;
 }
 
-void D2ModelWidget::addPort(int const port)
+void D2ModelWidget::addPort(int const index)
 {
 	if (!isVisible() && mFirstShow) {
 		return;
 	}
 
-	QPointF const sensorPos = mSensors[port]
-			? mSensors[port]->scenePos()
-			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
+	QComboBox * const comboBox = dynamic_cast<QComboBox *>(sender());
+	PortInfo const port = mComboBoxesToPortsMap.value(comboBox);
+	DeviceInfo const device = comboBox->itemData(index).value<DeviceInfo>();
+
+//	QPointF const sensorPos = mSensors[port]
+//			? mSensors[port]->scenePos()
+//			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
 //	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
 
 	switch (currentComboBox()->currentIndex()) {
@@ -585,6 +629,8 @@ void D2ModelWidget::addPort(int const port)
 //	}
 
 	resetButtons();
+
+	sensorConfigurationChanged(mRobotModel.name(), port, device);
 }
 
 void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
@@ -1094,7 +1140,7 @@ QDomDocument D2ModelWidget::generateXml() const
 	QDomElement root = save.createElement("root");
 	save.appendChild(root);
 	root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
-	mRobotModel->serialize(save);
+	mTwoDRobotModel->serialize(save);
 	return save;
 }
 
@@ -1109,7 +1155,7 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	}
 
 	mWorldModel->deserialize(worldList.at(0).toElement());
-	mRobotModel->deserialize(robotList.at(0).toElement());
+	mTwoDRobotModel->deserialize(robotList.at(0).toElement());
 
 	for (int i = 0; i < 4; ++i) {
 //		reinitSensor(static_cast<robots::enums::inputPort::InputPortEnum>(i));
@@ -1157,7 +1203,7 @@ void D2ModelWidget::changePhysicsSettings()
 	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
 	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->isChecked());
 
-	static_cast<D2RobotModel *>(mRobotModel)->setNoiseSettings();
+	static_cast<D2RobotModel *>(mTwoDRobotModel)->setNoiseSettings();
 }
 
 void D2ModelWidget::startTimelineListening()
@@ -1284,8 +1330,27 @@ void D2ModelWidget::alignWalls()
 //}
 
 
-void twoDModel::D2ModelWidget::onSensorConfigurationChanged(const QString &robotModel
-		, const interpreterBase::robotModel::PortInfo &port, const interpreterBase::robotModel::DeviceInfo &sensor)
+void D2ModelWidget::onSensorConfigurationChanged(const QString &robotModel
+		, const PortInfo &port, const DeviceInfo &device)
 {
+	if (robotModel != mRobotModel.name()) {
+		/// @todo Convert configuration between models or something?
+		return;
+	}
 
+	/// @todo Isomorphic map with constant lookup both ways?
+	QComboBox *comboBox = mComboBoxesToPortsMap.key(port, nullptr);
+	if (!comboBox) {
+		/// @todo Report internal error.
+		return;
+	}
+
+	for (int index = 0; index < comboBox->count(); ++index) {
+		if (comboBox->itemData(index).value<DeviceInfo>() == device) {
+			comboBox->setCurrentIndex(index);
+			return;
+		}
+	}
+
+	/// @todo Report internal error.
 }

@@ -29,12 +29,12 @@ QString SensorsConfigurationManager::save() const
 	QDomDocument result;
 	QDomElement rootElement = result.createElement("devicesConfiguration");
 	result.appendChild(rootElement);
-	for (QString const &robotModel : mCurrentConfiguration.keys()) {
+	for (QString const &robotModel : configuredModels()) {
 		QDomElement robotModelElement = result.createElement("robotModel");
 		robotModelElement.setAttribute("name", robotModel);
 		rootElement.appendChild(robotModelElement);
-		for (PortInfo const &port : mCurrentConfiguration[robotModel].keys()) {
-			DeviceInfo const device = mCurrentConfiguration[robotModel][port];
+		for (PortInfo const &port : configuredPorts(robotModel)) {
+			DeviceInfo const device = currentConfiguration(robotModel, port);
 			QDomElement configurationElement = result.createElement("configuration");
 			configurationElement.setAttribute("port", port.toString());
 			configurationElement.setAttribute("device", device.toString());

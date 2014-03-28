@@ -107,7 +107,7 @@ public:
 	virtual QList<DeviceInfo> allowedDevices(PortInfo const &port) const = 0;
 
 	/// Adds a device on a given port to pending configuration. Configuration is actualized by applyConfiguration()
-	/// call.
+	/// call. If deviceInfo is empty, clears configuration on that port. If there is no such port, does nothing.
 	virtual void configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo) = 0;
 
 	/// Uploads current configuration on a robot (as soon as it becomes connected). Emits allDevicesConfigured() when

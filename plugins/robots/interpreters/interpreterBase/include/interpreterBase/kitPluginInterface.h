@@ -6,6 +6,7 @@
 
 #include <qrkernel/ids.h>
 #include <interpreterBase/additionalPreferences.h>
+#include <interpreterBase/sensorsConfigurationProvider.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 #include <interpreterBase/blocksBase/blocksFactoryInterface.h>
 #include <qrgui/toolPluginInterface/actionInfo.h>
@@ -58,6 +59,13 @@ public:
 	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
 	/// goes here.
 	virtual QList<qReal::ActionInfo> customActions() = 0;
+
+	/// Sensor configuration provider object for this plugin that needs to be registered in providers network.
+	/// Can be a root of plugin-specific providers network. Null, if there is no need for sensors configuration.
+	/// Does not transfer ownership.
+	virtual interpreterBase::SensorsConfigurationProvider * sensorsConfigurationProvider() {
+		return nullptr;
+	}
 };
 
 }

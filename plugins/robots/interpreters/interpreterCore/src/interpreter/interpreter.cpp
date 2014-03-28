@@ -94,10 +94,8 @@ void Interpreter::interpret()
 	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
 	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
 		QString const modelName = mRobotModelManager.model().name();
-		if (mCurrentConfiguration[modelName].contains(port)) {
-			DeviceInfo const &deviceInfo = mCurrentConfiguration[modelName].value(port);
-			mRobotModelManager.model().configureDevice(port, deviceInfo);
-		}
+		DeviceInfo const &deviceInfo = currentConfiguration(modelName, port);
+		mRobotModelManager.model().configureDevice(port, deviceInfo);
 	}
 
 	mRobotModelManager.model().applyConfiguration();

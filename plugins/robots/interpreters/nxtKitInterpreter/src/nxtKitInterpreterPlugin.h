@@ -41,6 +41,8 @@ public:
 
 	QList<qReal::ActionInfo> customActions() override;
 
+	interpreterBase::SensorsConfigurationProvider * sensorsConfigurationProvider() override;
+
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;

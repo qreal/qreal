@@ -3,7 +3,7 @@
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
 
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include "commonTwoDModel/engine/twoDModelControlInterface.h"
 
@@ -11,10 +11,10 @@ namespace twoDModel {
 
 class D2RobotModel;
 
-class TwoDModelFacade : public TwoDModelControlInterface, public interpreterBase::SensorsConfigurationProvider
+class TwoDModelFacade : public TwoDModelControlInterface
 {
 public:
-	TwoDModelFacade();
+	TwoDModelFacade(interpreterBase::robotModel::RobotModelInterface &robotModel);
 	~TwoDModelFacade();
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
 

@@ -113,7 +113,7 @@ void RobotItem::setRotater(Rotater *rotater)
 	mRotater = rotater;
 }
 
-void RobotItem::setRobotModel(RobotModelInterface *robotModel)
+void RobotItem::setRobotModel(TwoDRobotRobotModelInterface *robotModel)
 {
 	mRobotModel = robotModel;
 }

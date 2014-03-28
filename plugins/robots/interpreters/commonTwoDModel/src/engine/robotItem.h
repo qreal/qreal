@@ -61,7 +61,7 @@ public:
 	/** @brief Returns false if we're dragging robot item somewhere */
 	bool isOnTheGround() const;
 
-	void setRobotModel(RobotModelInterface *robotModel);
+	void setRobotModel(TwoDRobotRobotModelInterface *robotModel);
 	void setNeededBeep(bool isNeededBeep);
 
 	void addSensorsShapes(QPainterPath &target);
@@ -94,7 +94,7 @@ private:
 	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;
 
-	RobotModelInterface *mRobotModel;
+	TwoDRobotRobotModelInterface *mRobotModel;
 };
 
 }

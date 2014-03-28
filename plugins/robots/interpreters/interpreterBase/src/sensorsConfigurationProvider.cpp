@@ -15,6 +15,10 @@ SensorsConfigurationProvider::~SensorsConfigurationProvider()
 void SensorsConfigurationProvider::connectSensorsConfigurationProvider(
 		SensorsConfigurationProvider * const otherProvider)
 {
+	if (!otherProvider) {
+		return;
+	}
+
 	if (!mConnectedProviders.contains(otherProvider)) {
 		mConnectedProviders << otherProvider;
 		otherProvider->connectSensorsConfigurationProvider(this);
@@ -22,17 +26,17 @@ void SensorsConfigurationProvider::connectSensorsConfigurationProvider(
 }
 
 void SensorsConfigurationProvider::sensorConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &device)
 {
-	if (mCurrentConfiguration[robotModel][port] != sensor) {
-		mCurrentConfiguration[robotModel][port] = sensor;
+	if (mCurrentConfiguration[robotModel][port] != device) {
+		mCurrentConfiguration[robotModel][port] = device;
 
 		for (SensorsConfigurationProvider * const provider : mConnectedProviders) {
 			// Broadcast change.
-			provider->sensorConfigurationChanged(robotModel, port, sensor);
+			provider->sensorConfigurationChanged(robotModel, port, device);
 
 			// Allow connected providers to react on configuration change.
-			provider->onSensorConfigurationChanged(robotModel, port, sensor);
+			provider->onSensorConfigurationChanged(robotModel, port, device);
 		}
 	}
 }
@@ -52,4 +56,28 @@ void SensorsConfigurationProvider::nullifyConfiguration()
 			sensorConfigurationChanged(robotModel, port, DeviceInfo());
 		}
 	}
+}
+
+QStringList SensorsConfigurationProvider::configuredModels() const
+{
+	return mCurrentConfiguration.keys();
+}
+
+QList<robotModel::PortInfo> SensorsConfigurationProvider::configuredPorts(QString const &modelName) const
+{
+	if (!mCurrentConfiguration.contains(modelName)) {
+		return {};
+	}
+
+	return mCurrentConfiguration[modelName].keys();
+}
+
+robotModel::DeviceInfo SensorsConfigurationProvider::currentConfiguration(QString const &modelName
+		, robotModel::PortInfo const &port) const
+{
+	if (!mCurrentConfiguration.contains(modelName) || !mCurrentConfiguration[modelName].contains(port)) {
+		return robotModel::DeviceInfo();
+	}
+
+	return mCurrentConfiguration[modelName][port];
 }

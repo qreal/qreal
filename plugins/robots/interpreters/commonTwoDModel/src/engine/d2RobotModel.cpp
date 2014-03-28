@@ -14,7 +14,8 @@
 using namespace twoDModel;
 using namespace twoDModel::physics;
 
-D2RobotModel::D2RobotModel(QObject *parent)
+D2RobotModel::D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
+		, QObject *parent)
 	: QObject(parent)
 	, mD2ModelWidget(nullptr)
 	, mEngineA(nullptr)
@@ -28,6 +29,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 	, mNeedSync(false)
 	, mPos(QPointF(0,0))
 	, mAngle(0)
+	, mRobotModel(robotModel)
 {
 	mNoiseGen.setApproximationLevel(qReal::SettingsManager::value("approximationLevel").toUInt());
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
@@ -146,7 +148,8 @@ void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
-	mD2ModelWidget = new D2ModelWidget(this, mWorldModel/*, mDisplay*/);
+	mD2ModelWidget = new D2ModelWidget(this, mWorldModel, mRobotModel/*, mDisplay*/);
+	connectSensorsConfigurationProvider(mD2ModelWidget);
 	return mD2ModelWidget;
 }
 

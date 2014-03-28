@@ -6,7 +6,7 @@ using namespace nxtKitInterpreter;
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
-	, mTwoDModel(new twoDModel::TwoDModelFacade())
+	, mTwoDModel(new twoDModel::TwoDModelFacade(mTwoDRobotModel))
 {
 	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
 			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
@@ -59,4 +59,9 @@ qReal::IdList NxtKitInterpreterPlugin::unsupportedBlocks() const
 QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 {
 	return {mTwoDModel->showTwoDModelWidgetActionInfo()};
+}
+
+interpreterBase::SensorsConfigurationProvider * NxtKitInterpreterPlugin::sensorsConfigurationProvider()
+{
+	return mTwoDModel.data();
 }

@@ -120,6 +120,14 @@ QList<DeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port) const
 
 void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
+	if (!availablePorts().contains(port)) {
+		return;
+	}
+
+	if (deviceInfo.isNull()) {
+		mConfiguration.clearDevice(port);
+	}
+
 	robotParts::Device *device = createDevice(port, deviceInfo);
 	if (device) {
 		mConfiguration.configureDevice(device);

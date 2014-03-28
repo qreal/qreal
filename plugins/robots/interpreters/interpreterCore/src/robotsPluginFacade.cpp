@@ -73,6 +73,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 				mBlocksFactoryManager.addFactory(factory);
 			}
 		}
+
+		mSensorsConfigurationManager->connectSensorsConfigurationProvider(kit.sensorsConfigurationProvider());
 	}
 
 	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
