@@ -1,10 +1,8 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-
 #include <interpreterBase/blocksBase/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
+#include <interpreterBase/robotModel/robotParts/motor.h>
 
 namespace interpreterCore {
 namespace coreBlocks {
@@ -18,12 +16,14 @@ class EngineCommandBlock : public interpreterBase::blocksBase::Block
 public:
 	explicit EngineCommandBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
-	virtual void run() = 0;
-
 protected slots:
 	void timeout();
 
 protected:
+	/// Splits 'Port' property for the blocks and returns motor devices on them. Implementation may consider
+	/// that devices are non-null.
+	QList<interpreterBase::robotModel::robotParts::Motor *> parsePorts() const;
+
 	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 };
 

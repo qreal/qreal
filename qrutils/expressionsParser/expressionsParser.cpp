@@ -532,7 +532,7 @@ ErrorReporterInterface& ExpressionsParser::getErrors()
 	return *mErrorReporter;
 }
 
-bool ExpressionsParser::hasErrors()
+bool ExpressionsParser::hasErrors() const
 {
 	return mHasParseErrors;
 }

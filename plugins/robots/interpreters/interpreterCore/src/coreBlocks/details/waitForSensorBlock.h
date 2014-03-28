@@ -1,13 +1,13 @@
 #pragma once
 
-#include "waitBlock.h"
+#include <interpreterBase/blocksBase/common/waitBlock.h>
 
 namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
 
 /// @todo Move abstract blocks to interpreterBase::blocksBase
-class WaitForSensorBlock : public WaitBlock
+class WaitForSensorBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT
 
@@ -24,12 +24,12 @@ public:
 
 protected slots:
 	virtual void responseSlot(int reading) = 0;
-	virtual void timerTimeout();
+	void timerTimeout() override;
 
 protected:
 //	virtual robotParts::Sensor *sensor() const = 0;
 	virtual QString name() const = 0;
-	virtual void stop();
+	void stop() override;
 
 //	robots::enums::sensorType::SensorTypeEnum mType;
 	interpreterBase::robotModel::PortInfo mPort;

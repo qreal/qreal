@@ -19,7 +19,7 @@ public:
 
 	Motor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port
-			, utils::robotCommunication::RobotCommunicator *robotCommunicator);
+			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void on(int speed, bool breakMode = true) override;
 	void on(int speed, long unsigned int degrees, bool breakMode = true) override;
@@ -28,7 +28,7 @@ public:
 	void resetMotorPosition(bool relative);
 
 protected:
-	void doConfiguration();
+	void doConfiguration() override;
 
 private:
 	void setOutputState(int speed
@@ -38,7 +38,7 @@ private:
 			, enums::runState::RunStateEnum runState
 			, unsigned long tachoLimit);
 
-	utils::robotCommunication::RobotCommunicator *mRobotCommunicator;
+	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };
 
 }

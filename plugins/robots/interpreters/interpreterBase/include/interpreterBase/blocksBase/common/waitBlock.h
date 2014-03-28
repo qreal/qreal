@@ -1,14 +1,12 @@
 #pragma once
 
 #include <interpreterBase/blocksBase/block.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
 
-namespace interpreterCore {
-namespace coreBlocks {
-namespace details {
+namespace interpreterBase {
+namespace blocksBase {
+namespace common {
 
-/// @todo Move abstract blocks to interpreterBase::blocksBase
-class WaitBlock : public interpreterBase::blocksBase::Block
+class ROBOTS_INTERPRETER_BASE_EXPORT WaitBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
 

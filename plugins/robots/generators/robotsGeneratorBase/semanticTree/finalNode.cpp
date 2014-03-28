@@ -9,7 +9,7 @@ FinalNode::FinalNode(Id const &idBinded, bool inMainDigram, QObject *parent)
 {
 }
 
-QString FinalNode::toString(GeneratorCustomizer &customizer, int indent) const
+QString FinalNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
 {
 	return utils::StringUtils::addIndent(customizer.factory()->finalNodeGenerator(mId
 			, customizer, mInMainDiagram)->generate(), indent);

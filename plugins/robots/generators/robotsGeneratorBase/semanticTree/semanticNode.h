@@ -4,7 +4,7 @@
 #include <QtCore/QLinkedList>
 
 #include <qrkernel/ids.h>
-#include "../generatorCustomizer.h"
+#include "generatorCustomizer.h"
 
 namespace qReal {
 namespace robots {
@@ -24,8 +24,11 @@ public:
 	/// Attaches this node to given parent
 	void setParentNode(SemanticNode *parent);
 
+	/// Places goto label near this node
+	void addLabel();
+
 	/// Generates code for this semantic node
-	virtual QString toString(GeneratorCustomizer &customizer, int indent) const = 0;
+	QString toString(GeneratorCustomizer &customizer, int indent) const;
 
 	/// Performs deep (recursive) search in children subhierarchy and returns
 	/// a node with specified id binded if such was found or NULL otherwise.
@@ -36,8 +39,11 @@ protected:
 
 	virtual QLinkedList<SemanticNode *> children() const = 0;
 
+	virtual QString toStringImpl(GeneratorCustomizer &customizer, int indent) const = 0;
+
 	Id mId;
 	SemanticNode *mParentNode;
+	bool mLabeled;
 };
 
 }

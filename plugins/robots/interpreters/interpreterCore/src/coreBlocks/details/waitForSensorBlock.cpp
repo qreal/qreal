@@ -1,10 +1,12 @@
 #include "waitForSensorBlock.h"
 
 #include <interpreterBase/robotModel/robotParts/scalarSensor.h>
+#include <interpreterBase/robotModel/robotModelUtils.h>
 
 using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::robotModel;
 
-WaitForSensorBlock::WaitForSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel
+WaitForSensorBlock::WaitForSensorBlock(RobotModelInterface &robotModel
 //		, robots::enums::sensorType::SensorTypeEnum type
 		)
 	: WaitBlock(robotModel)
@@ -21,28 +23,16 @@ void WaitForSensorBlock::run()
 	QString const port = stringProperty("Port");
 
 	/// @todo Works only with scalar sensors.
-	/// @todo Move port search code into a common place
-	for (interpreterBase::robotModel::PortInfo const &portInfo : mRobotModel.availablePorts()) {
-		if (portInfo.name() == port || portInfo.nameAliases().contains(port)) {
-			interpreterBase::robotModel::robotParts::Device *device
-					= mRobotModel.configuration().device(portInfo
-							, interpreterBase::robotModel::ConfigurationInterface::output);
-			interpreterBase::robotModel::robotParts::ScalarSensor *sensor
-					= dynamic_cast<interpreterBase::robotModel::robotParts::ScalarSensor *>(device);
-			if (sensor) {
-				mPort = portInfo;
-				connect(sensor, &interpreterBase::robotModel::robotParts::ScalarSensor::newData
-						, this, &WaitForSensorBlock::responseSlot);
-				connect(sensor, &interpreterBase::robotModel::robotParts::AbstractSensor::failure
-						, this, &WaitForSensorBlock::failureSlot);
-				sensor->read();
-				mActiveWaitingTimer.start();
-			} else {
-				mActiveWaitingTimer.stop();
-				error(tr("%1 is not configured on port %2").arg(name(), portInfo.name()));
-				return;
-			}
-		}
+	mPort = RobotModelUtils::findPort(mRobotModel, port);
+	robotParts::ScalarSensor * const sensor = RobotModelUtils::findDevice<robotParts::ScalarSensor>(mRobotModel, mPort);
+	if (sensor) {
+		connect(sensor, &robotParts::ScalarSensor::newData, this, &WaitForSensorBlock::responseSlot);
+		connect(sensor, &robotParts::AbstractSensor::failure, this, &WaitForSensorBlock::failureSlot);
+		sensor->read();
+		mActiveWaitingTimer.start();
+	} else {
+		mActiveWaitingTimer.stop();
+		error(tr("%1 is not configured on port %2").arg(name(), mPort.name()));
 	}
 }
 
@@ -58,13 +48,8 @@ void WaitForSensorBlock::run()
 void WaitForSensorBlock::timerTimeout()
 {
 	/// @todo True horror.
-	interpreterBase::robotModel::robotParts::Device *device
-			= mRobotModel.configuration().device(mPort
-					, interpreterBase::robotModel::ConfigurationInterface::output);
-
-	interpreterBase::robotModel::robotParts::ScalarSensor *sensor
-			= static_cast<interpreterBase::robotModel::robotParts::ScalarSensor *>(device);
-
+	robotParts::Device * const device = mRobotModel.configuration().device(mPort, ConfigurationInterface::output);
+	robotParts::ScalarSensor *sensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 	if (sensor) {
 		sensor->read();
 	}
@@ -73,18 +58,18 @@ void WaitForSensorBlock::timerTimeout()
 void WaitForSensorBlock::stop()
 {
 	/// @todo True horror.
-	interpreterBase::robotModel::robotParts::Device *device
+	robotParts::Device *device
 			= mRobotModel.configuration().device(mPort
-					, interpreterBase::robotModel::ConfigurationInterface::output);
+					, ConfigurationInterface::output);
 
-	interpreterBase::robotModel::robotParts::ScalarSensor *sensor
-			= static_cast<interpreterBase::robotModel::robotParts::ScalarSensor *>(device);
+	robotParts::ScalarSensor *sensor
+			= static_cast<robotParts::ScalarSensor *>(device);
 
 	if (sensor) {
-		disconnect(sensor, &interpreterBase::robotModel::robotParts::ScalarSensor::newData
+		disconnect(sensor, &robotParts::ScalarSensor::newData
 				, this, &WaitForSensorBlock::responseSlot);
 
-		disconnect(sensor, &interpreterBase::robotModel::robotParts::AbstractSensor::failure
+		disconnect(sensor, &robotParts::AbstractSensor::failure
 				, this, &WaitForSensorBlock::failureSlot);
 	}
 
@@ -94,18 +79,18 @@ void WaitForSensorBlock::stop()
 void WaitForSensorBlock::stopActiveTimerInBlock()
 {
 	/// @todo True horror.
-	interpreterBase::robotModel::robotParts::Device *device
+	robotParts::Device *device
 			= mRobotModel.configuration().device(mPort
-					, interpreterBase::robotModel::ConfigurationInterface::output);
+					, ConfigurationInterface::output);
 
-	interpreterBase::robotModel::robotParts::ScalarSensor *sensor
-			= static_cast<interpreterBase::robotModel::robotParts::ScalarSensor *>(device);
+	robotParts::ScalarSensor *sensor
+			= static_cast<robotParts::ScalarSensor *>(device);
 
 	if (sensor) {
-		disconnect(sensor, &interpreterBase::robotModel::robotParts::ScalarSensor::newData
+		disconnect(sensor, &robotParts::ScalarSensor::newData
 				, this, &WaitForSensorBlock::responseSlot);
 
-		disconnect(sensor, &interpreterBase::robotModel::robotParts::AbstractSensor::failure
+		disconnect(sensor, &robotParts::AbstractSensor::failure
 				, this, &WaitForSensorBlock::failureSlot);
 	}
 

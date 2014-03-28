@@ -35,6 +35,7 @@ protected:
 signals:
 	void gridChanged();
 	void iconsetChanged();
+	void toolbarSizeChanged(int size);
 	void settingsApplied();
 	void fontChanged();
 	void paletteRepresentationChanged();
@@ -53,7 +54,6 @@ private slots:
 	void importSettings();
 
 private:
-
-	Ui::PreferencesDialog *ui;
+	Ui::PreferencesDialog *mUi;
 	QMap<QString, PreferencesPage *> mCustomPages;
 };

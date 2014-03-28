@@ -114,6 +114,8 @@ private:
 
 	virtual void resizeEvent(QResizeEvent *);
 
+	void initUi();
+
 	/// Creates all PaletteTree widgets.
 	void createPaletteTree();
 

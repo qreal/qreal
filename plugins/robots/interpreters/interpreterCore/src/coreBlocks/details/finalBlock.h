@@ -11,10 +11,10 @@ class FinalBlock : public interpreterBase::blocksBase::Block
 	Q_OBJECT
 
 public:
-	virtual void run();
+	void run() override;
 
 private:
-	virtual bool initNextBlocks();
+	bool initNextBlocks() override;
 };
 
 }

@@ -2,13 +2,12 @@
 
 #include <utils/tracer.h>
 #include <utils/abstractTimer.h>
-
-/// @todo: use common speaker interface
-#include "robotModel/real/parts/speaker.h"
+#include <interpreterBase/robotModel/robotModelUtils.h>
 
 using namespace nxtKitInterpreter::blocks::details;
+using namespace interpreterBase::robotModel;
 
-SpeakerBlock::SpeakerBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+SpeakerBlock::SpeakerBlock(RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)
 	, mTimer(robotModel.produceTimer())
 {
@@ -23,20 +22,13 @@ SpeakerBlock::~SpeakerBlock()
 void SpeakerBlock::run()
 {
 	QString const port = "SpeakerPort";
-	for (interpreterBase::robotModel::PortInfo const &portInfo : mRobotModel.availablePorts()) {
-		if (portInfo.name() == port || portInfo.nameAliases().contains(port)) {
-			interpreterBase::robotModel::robotParts::Device *device
-					= mRobotModel.configuration().device(portInfo
-							, interpreterBase::robotModel::ConfigurationInterface::output);
-			robotModel::real::parts::Speaker * const speaker
-					= dynamic_cast<robotModel::real::parts::Speaker *>(device);
-			if (speaker) {
-				doJob(*speaker);
-			} else {
-				error(tr("Speaker is not configured (WTF?)"));
-				return;
-			}
-		}
+	robotModel::parts::NxtSpeaker * const speaker
+			= RobotModelUtils::findDevice<robotModel::parts::NxtSpeaker>(mRobotModel, port);
+	if (speaker) {
+		doJob(*speaker);
+	} else {
+		error(tr("Speaker is not configured (WTF?)"));
+		return;
 	}
 
 	if (!boolProperty("WaitForCompletion"))

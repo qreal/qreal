@@ -14,13 +14,16 @@ SOURCES += \
 	$$PWD/src/sensorsConfigurationProvider.cpp \
 	$$PWD/src/blocksBase/block.cpp \
 	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
+	$$PWD/src/blocksBase/common/waitBlock.cpp \
 	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
+	$$PWD/src/robotModel/robotModelUtils.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \
 	$$PWD/src/robotModel/deviceInfo.cpp \
 	$$PWD/src/robotModel/robotParts/speaker.cpp \
 	$$PWD/src/robotModel/robotParts/motor.cpp \
 	$$PWD/src/robotModel/robotParts/display.cpp \
+	$$PWD/src/robotModel/robotParts/buttons.cpp \
 	$$PWD/src/robotModel/robotParts/abstractSensor.cpp \
 	$$PWD/src/robotModel/robotParts/accelerometerSensor.cpp \
 	$$PWD/src/robotModel/robotParts/colorSensor.cpp \
@@ -45,6 +48,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/blocksBase/blocksTableInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/blocksFactoryInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/commonBlocksFactory.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitBlock.h \
 	$$PWD/include/interpreterBase/robotModel/configuration.h \
 	$$PWD/include/interpreterBase/robotModel/commonRobotModel.h \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \
@@ -52,9 +56,11 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/deviceInfo.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelManagerInterface.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelInterface.h \
+	$$PWD/include/interpreterBase/robotModel/robotModelUtils.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/speaker.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/motor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/display.h \
+	$$PWD/include/interpreterBase/robotModel/robotParts/buttons.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/abstractSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/accelerometerSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensor.h \

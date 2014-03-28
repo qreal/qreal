@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QTimer>
-
 #include "speakerBlock.h"
 
 namespace nxtKitInterpreter {
@@ -19,7 +16,7 @@ public:
 
 protected:
 	int duration() override;
-	void doJob(robotModel::real::parts::Speaker &speaker) override;
+	void doJob(robotModel::parts::NxtSpeaker &speaker) override;
 };
 
 }

@@ -6,14 +6,9 @@ using namespace interpreterBase::robotModel;
 
 Speaker::Speaker(DeviceInfo const &info, PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: interpreterBase::robotModel::robotParts::Speaker(info, port)
+	: robotModel::parts::NxtSpeaker(info, port)
 	, mRobotCommunicator(robotCommunicator)
 {
-}
-
-void Speaker::beep(unsigned time)
-{
-	playTone(1000, time);
 }
 
 void Speaker::playTone(unsigned freq, unsigned time)

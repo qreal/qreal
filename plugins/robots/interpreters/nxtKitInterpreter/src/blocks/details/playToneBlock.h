@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QTimer>
-
 #include "speakerBlock.h"
 
 namespace nxtKitInterpreter {
@@ -15,12 +12,11 @@ class PlayToneBlock : public SpeakerBlock
 
 public:
 	explicit PlayToneBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~PlayToneBlock() override;
 
 protected:
 	int frequency();
 	int duration() override;
-	void doJob(robotModel::real::parts::Speaker &speaker) override;
+	void doJob(robotModel::parts::NxtSpeaker &speaker) override;
 };
 
 }

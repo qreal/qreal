@@ -10,10 +10,6 @@ PlayToneBlock::PlayToneBlock(interpreterBase::robotModel::RobotModelInterface &r
 {
 }
 
-PlayToneBlock::~PlayToneBlock()
-{
-}
-
 int PlayToneBlock::frequency()
 {
 	return evaluate("Frequency").toInt();
@@ -24,7 +20,7 @@ int PlayToneBlock::duration()
 	return evaluate("Duration").toInt();
 }
 
-void PlayToneBlock::doJob(nxtKitInterpreter::robotModel::real::parts::Speaker &speaker)
+void PlayToneBlock::doJob(nxtKitInterpreter::robotModel::parts::NxtSpeaker &speaker)
 {
 	speaker.playTone(frequency(), duration());
 }

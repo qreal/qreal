@@ -1,43 +1,31 @@
 #include "coreBlocksFactory.h"
 
-//#include "blocks/beepBlock.h"
 #include "details/initialBlock.h"
 #include "details/finalBlock.h"
-//#include "blocks/nullificationEncoderBlock.h"
+#include "details/nullificationEncoderBlock.h"
 
 #include "details/enginesForwardBlock.h"
 #include "details/enginesBackwardBlock.h"
-//#include "blocks/enginesStopBlock.h"
+#include "details/enginesStopBlock.h"
 
 #include "details/timerBlock.h"
-//#include "blocks/playToneBlock.h"
-//#include "blocks/functionBlock.h"
-//#include "blocks/beepBlock.h"
+#include "details/functionBlock.h"
 
-//#include "blocks/loopBlock.h"
-//#include "blocks/forkBlock.h"
-//#include "blocks/ifBlock.h"
-//#include "blocks/dummyBlock.h"
-//#include "blocks/commentBlock.h"
-//#include "blocks/subprogramBlock.h"
-
-//#include "blocks/clearScreenBlock.h"
-//#include "blocks/drawPixelBlock.h"
-//#include "blocks/drawLineBlock.h"
-//#include "blocks/drawRectBlock.h"
-//#include "blocks/drawCircleBlock.h"
-//#include "blocks/printTextBlock.h"
+#include "details/loopBlock.h"
+#include "details/forkBlock.h"
+#include "details/ifBlock.h"
+#include "details/commentBlock.h"
+#include "details/subprogramBlock.h"
 
 #include "details/waitForTouchSensorBlock.h"
-//#include "blocks/waitForSonarDistanceBlock.h"
-//#include "blocks/waitForColorBlock.h"
-//#include "blocks/waitForColorIntensityBlock.h"
-//#include "blocks/waitForLightSensorBlock.h"
-//#include "blocks/waitForSoundSensorBlock.h"
-//#include "blocks/waitforGyroscopeSensorBlock.h"
-//#include "blocks/waitForAccelerometerBlock.h"
-//#include "blocks/waitForEncoderBlock.h"
-//#include "blocks/waitForButtonsBlock.h"
+#include "details/waitForSonarDistanceBlock.h"
+#include "details/waitForColorBlock.h"
+#include "details/waitForColorIntensityBlock.h"
+#include "details/waitForLightSensorBlock.h"
+#include "details/waitForSoundSensorBlock.h"
+#include "details/waitforGyroscopeBlock.h"
+#include "details/waitForAccelerometerBlock.h"
+#include "details/waitForEncoderBlock.h"
 
 using namespace interpreterCore::coreBlocks;
 
@@ -47,66 +35,46 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::InitialBlock();
 	} else if (elementMetatypeIs(element, "FinalNode")) {
 		return new details::FinalBlock();
-//	} else if (elementMetatypeIs(element, "Beep")) {
-//		return new BeepBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "Timer")) {
 		return new details::TimerBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
-		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
-//		return new WaitForSonarDistanceBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "EnginesForward")) {
 		return new details::EnginesForwardBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "EnginesBackward")) {
 		return new details::EnginesBackwardBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "EnginesStop")) {
-//		return new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
-//	} else if (elementMetatypeIs(element, "Loop")) {
-//		return new LoopBlock();
-//	} else if (elementMetatypeIs(element, "Fork")) {
-//		return new ForkBlock();
-//	} else if (elementMetatypeIs(element, "Subprogram")) {
-//		return new SubprogramBlock();
-//	} else if (elementMetatypeIs(element, "PlayTone")) {
-//		return new PlayToneBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
-//	} else if (elementMetatypeIs(element, "Function")) {
-//		return new FunctionBlock();
-//	} else if (elementMetatypeIs(element, "WaitForColor")) {
-//		return new WaitForColorBlock(mRobotModel);
-//	} else if (elementMetatypeIs(element, "WaitForColorIntensity")) {
-//		return new WaitForColorIntensityBlock(mRobotModel);
-//	} else if (elementMetatypeIs(element, "IfBlock")) {
-//		return new IfBlock();
-//	} else if (elementMetatypeIs(element, "WaitForEncoder")) {
-//		return new WaitForEncoderBlock(mRobotModel);
-//	} else if (elementMetatypeIs(element, "NullificationEncoder")) {
-//		return new NullificationEncoderBlock(mRobotModel);
-//	} else if (elementMetatypeIs(element, "WaitForLight")) {
-//		return new WaitForLightSensorBlock(mRobotModel);
-//	} else if (elementMetatypeIs(element, "WaitForSound")) {
-//		return new WaitForSoundSensorBlock(mRobotModel);
-//	} else if (elementMetatypeIs(element, "WaitForGyroscope")) {
-//		return new WaitForGyroscopeSensorBlock(mRobotModel);
-//	} else if (elementMetatypeIs(element,"WaitForAccelerometer")) {
-//		return new WaitForAccelerometerSensorBlock(mRobotModel);
-//	} else if (elementMetatypeIs(element, "CommentBlock")) {
-//		return new CommentBlock();
-//	} else if (elementMetatypeIs(element, "WaitForButtons")) {
-//		return new WaitForButtonsBlock(mRobotModel, mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "DrawPixel")) {
-//		return new DrawPixelBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "DrawLine")) {
-//		return new DrawLineBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "DrawCircle")) {
-//		return new DrawCircleBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "PrintText")) {
-//		return new PrintTextBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "DrawRect")) {
-//		return new DrawRectBlock(mRobotModel->display());
-//	} else if (elementMetatypeIs(element, "ClearScreen")) {
-//		return new ClearScreenBlock(mRobotModel->display());
-//	} else {
-//		return new DummyBlock();
+	} else if (elementMetatypeIs(element, "EnginesStop")) {
+		return new details::EnginesStopBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "CommentBlock")) {
+		return new details::CommentBlock;
+	} else if (elementMetatypeIs(element, "IfBlock")) {
+		return new details::IfBlock();
+	} else if (elementMetatypeIs(element, "Loop")) {
+		return new details::LoopBlock();
+	} else if (elementMetatypeIs(element, "Fork")) {
+		return new details::ForkBlock();
+	} else if (elementMetatypeIs(element, "Subprogram")) {
+		return new details::SubprogramBlock();
+	} else if (elementMetatypeIs(element, "Function")) {
+		return new details::FunctionBlock();
+	} else if (elementMetatypeIs(element, "NullificationEncoder")) {
+		return new details::NullificationEncoderBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
+		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
+		return new details::WaitForSonarDistanceBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForColor")) {
+		return new details::WaitForColorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForColorIntensity")) {
+		return new details::WaitForColorIntensityBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForEncoder")) {
+		return new details::WaitForEncoderBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForLight")) {
+		return new details::WaitForLightSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForSound")) {
+		return new details::WaitForSoundSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForGyroscope")) {
+		return new details::WaitForGyroscopeSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "WaitForAccelerometer")) {
+		return new details::WaitForAccelerometerSensorBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -117,5 +85,25 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 	return {
 		id("InitialNode")
 		, id("FinalNode")
+		, id("Timer")
+		, id("EnginesForward")
+		, id("EnginesBackward")
+		, id("EnginesStop")
+		, id("CommentBlock")
+		, id("IfBlock")
+		, id("Loop")
+		, id("Fork")
+		, id("Subprogram")
+		, id("Function")
+		, id("NullificationEncoder")
+		, id("WaitForTouchSensor")
+		, id("WaitForSonarDistance")
+		, id("WaitForColor")
+		, id("WaitForColorIntensity")
+		, id("WaitForEncoder")
+		, id("WaitForLight")
+		, id("WaitForSound")
+		, id("WaitForGyroscope")
+		, id("WaitForAccelerometer")
 	};
 }

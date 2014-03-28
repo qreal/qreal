@@ -40,9 +40,12 @@ public:
 	/// Takes ownership on result.
 	virtual semantics::SemanticTree *generate();
 
+	/// Returns true if some generation errors occured and the generation process can`t be proceeded with other
+	/// control flow generators (fatal errors occured).
+	bool errorsOccured() const;
+
 protected:
 	void error(QString const &message, Id const &id = Id(), bool critical = true);
-	bool errorsOccured() const;
 
 	enums::semantics::Semantics semanticsOf(Id const &id) const;
 	Id initialNode() const;

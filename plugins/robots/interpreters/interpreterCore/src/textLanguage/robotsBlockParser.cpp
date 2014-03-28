@@ -115,3 +115,13 @@ void RobotsBlockParser::setReservedVariables()
 		mReservedVariables.append(variable);
 	}
 }
+
+QMap<QString, Number *> const &RobotsBlockParser::variables() const
+{
+	return ExpressionsParser::variables();
+}
+
+bool RobotsBlockParser::hasErrors() const
+{
+	return ExpressionsParser::hasErrors();
+}

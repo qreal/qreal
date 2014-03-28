@@ -12,11 +12,14 @@ class NxtRobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 public:
 	NxtRobotModelBase();
 
-	QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override;
-
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 
 protected:
+	virtual interpreterBase::robotModel::DeviceInfo displayInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo speakerInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo buttonsInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo motorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo encoderInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo touchSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo sonarSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo lightSensorInfo() const;

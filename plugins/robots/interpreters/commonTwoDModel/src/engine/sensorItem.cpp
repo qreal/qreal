@@ -21,6 +21,7 @@ QSizeF const portHintSize(10, 15);
 //	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
 //			, selectionDrift, selectionDrift))
 //	, mImage(pathToImage())
+//	, mPortItem(new PortItem(QString::number(port + 1)))
 //{
 //	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 
@@ -29,10 +30,10 @@ QSizeF const portHintSize(10, 15);
 //	setCursor(QCursor(Qt::PointingHandCursor));
 //	setZValue(1);
 
-//	mPortItem.setParentItem(this);
-//	mPortItem.moveBy(-portHintSize.width() - 5, -portHintSize.height() - 5);
-//	mPortItem.setFlag(ItemIgnoresTransformations);
-//	mPortItem.hide();
+//	mPortItem->setParentItem(this);
+//	mPortItem->moveBy(-portHintSize.width() - 5, -portHintSize.height() - 5);
+//	mPortItem->setFlag(ItemIgnoresTransformations);
+//	mPortItem->hide();
 //}
 
 void SensorItem::setRotatePoint(QPointF rotatePoint)
@@ -76,7 +77,7 @@ QRectF SensorItem::boundingRect() const
 void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
-	mPortItem.hide();
+	mPortItem->hide();
 	mDragged = true;
 }
 
@@ -92,13 +93,13 @@ void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void SensorItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	AbstractItem::hoverEnterEvent(event);
-	mPortItem.show();
+	mPortItem->show();
 }
 
 void SensorItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	AbstractItem::hoverLeaveEvent(event);
-	mPortItem.hide();
+	mPortItem->hide();
 }
 
 void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)

@@ -1,13 +1,9 @@
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QTimer>
-
 #include <interpreterBase/blocksBase/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
-/// @todo: use common speaker interface
-#include "robotModel/real/parts/speaker.h"
+#include "robotModel/parts/nxtSpeaker.h"
 
 namespace nxtKitInterpreter {
 namespace blocks {
@@ -27,7 +23,7 @@ protected:
 	virtual int duration() = 0;
 
 	/// Implementation may consider that speaker is configured and ready to work
-	virtual void doJob(robotModel::real::parts::Speaker &speaker) = 0;
+	virtual void doJob(robotModel::parts::NxtSpeaker &speaker) = 0;
 
 private slots:
 	void timeout();

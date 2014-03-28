@@ -20,6 +20,11 @@ QString RussianCMasterGenerator::targetPath()
 	return QString("%1/%2.c").arg(mProjectDir, mProjectName);
 }
 
+bool RussianCMasterGenerator::supportsGotoGeneration() const
+{
+	return false;
+}
+
 void RussianCMasterGenerator::afterGeneration()
 {
 	saveImages(mProjectDir);

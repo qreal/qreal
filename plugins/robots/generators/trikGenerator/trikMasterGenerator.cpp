@@ -19,3 +19,8 @@ QString TrikMasterGenerator::targetPath()
 {
 	return QString("%1/%2.qts").arg(mProjectDir, mProjectName);
 }
+
+bool TrikMasterGenerator::supportsGotoGeneration() const
+{
+	return false;
+}
