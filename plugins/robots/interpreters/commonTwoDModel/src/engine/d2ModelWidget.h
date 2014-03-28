@@ -22,7 +22,8 @@
 #include "rotater.h"
 #include "timeline.h"
 //#include "../nxtDisplay.h"
-//#include "details/sensorsConfigurationProvider.h"
+
+#include <interpreterBase/sensorsConfigurationProvider.h>
 
 namespace Ui {
 class D2Form;
@@ -60,7 +61,7 @@ enum CursorType
 
 }
 
-class D2ModelWidget : public utils::QRealDialog // , public details::SensorsConfigurationProvider
+class D2ModelWidget : public utils::QRealDialog, public interpreterBase::SensorsConfigurationProvider
 {
 	Q_OBJECT
 
@@ -129,6 +130,9 @@ protected:
 	virtual void changeEvent(QEvent *e);
 	virtual void showEvent(QShowEvent *e);
 	virtual void keyPressEvent(QKeyEvent *event);
+
+	void onSensorConfigurationChanged(QString const &robotModel, interpreterBase::robotModel::PortInfo const &port
+			, const interpreterBase::robotModel::DeviceInfo &sensor);
 
 private slots:
 	void addWall(bool on);

@@ -485,10 +485,10 @@ void D2ModelWidget::clearScene(bool removeRobot)
 //		removeSensor(robots::enums::inputPort::port3);
 //		removeSensor(robots::enums::inputPort::port4);
 		int const noneSensorIndex = 0;
-		mUi->port1Box->setCurrentIndex(noneSensorIndex);
-		mUi->port2Box->setCurrentIndex(noneSensorIndex);
-		mUi->port3Box->setCurrentIndex(noneSensorIndex);
-		mUi->port4Box->setCurrentIndex(noneSensorIndex);
+//		mUi->port1Box->setCurrentIndex(noneSensorIndex);
+//		mUi->port2Box->setCurrentIndex(noneSensorIndex);
+//		mUi->port3Box->setCurrentIndex(noneSensorIndex);
+//		mUi->port4Box->setCurrentIndex(noneSensorIndex);
 		mScene->clear();
 		drawInitialRobot();
 	} else {
@@ -1281,3 +1281,10 @@ void D2ModelWidget::alignWalls()
 //	changeSensorType(port, type);
 //	addPort(port);
 //}
+
+
+void twoDModel::D2ModelWidget::onSensorConfigurationChanged(const QString &robotModel
+		, const interpreterBase::robotModel::PortInfo &port, const interpreterBase::robotModel::DeviceInfo &sensor)
+{
+
+}
