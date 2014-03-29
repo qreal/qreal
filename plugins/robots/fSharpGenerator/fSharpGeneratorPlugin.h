@@ -7,8 +7,8 @@ namespace robots {
 namespace generators {
 namespace fSharp {
 
-/// Plugin for generation code on F#
-///
+/// Generation of QtScript program for TRIK on F#, uploading and execution of a program.
+
 class FSharpGeneratorPlugin : public RobotsGeneratorPluginBase
 {
     Q_OBJECT
@@ -17,23 +17,19 @@ class FSharpGeneratorPlugin : public RobotsGeneratorPluginBase
 public:
     FSharpGeneratorPlugin();
 
-    ~FSharpGeneratorPlugin() override;
+    virtual ~FSharpGeneratorPlugin();
 
-    QList<qReal::ActionInfo> actions() override;
+    virtual QList<qReal::ActionInfo> actions();
 
 protected:
-    virtual MasterGeneratorBase *masterGenerator() override;
-    virtual void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
-    virtual QString defaultFilePath(QString const &projectName) const override;
-    virtual QString extension() const override;
-    virtual QString extDescrition() const override;
-    virtual QString generatorName() const override;
-
-    /// Translator object for this plugin
-    QTranslator mAppTranslator;
+    virtual MasterGeneratorBase *masterGenerator();
+    virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
+    virtual QString defaultFilePath(QString const &projectName) const;
+    virtual QString extension() const;
+    virtual QString extDescrition() const;
+    virtual QString generatorName() const;
 
 private:
-    /// Action that launches code generator
     QAction mGenerateCodeAction;
 
     /// Action that generates and uploads program on a robot

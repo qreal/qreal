@@ -1,7 +1,7 @@
 #include "fSharpMasterGenerator.h"
 #include "fSharpGeneratorCustomizer.h"
 
-using namespace qReal::robots::generators::sample;
+using namespace qReal::robots::generators::fSharp;
 
 FSharpMasterGenerator::FSharpMasterGenerator(qrRepo::RepoApi const &repo
         , ErrorReporterInterface &errorReporter
@@ -12,7 +12,7 @@ FSharpMasterGenerator::FSharpMasterGenerator(qrRepo::RepoApi const &repo
 
 qReal::robots::generators::GeneratorCustomizer *FSharpMasterGenerator::createCustomizer()
 {
-    return new FSharpMasterCustomizer(mRepo, mErrorReporter);
+    return new FSharpGeneratorCustomizer(mRepo, mErrorReporter);
 }
 
 QString FSharpMasterGenerator::targetPath()

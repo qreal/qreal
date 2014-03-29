@@ -1,6 +1,5 @@
 #include "fSharpGeneratorFactory.h"
 
-
 using namespace qReal::robots::generators;
 using namespace fSharp;
 
@@ -16,10 +15,6 @@ FSharpGeneratorFactory::~FSharpGeneratorFactory()
 
 QString FSharpGeneratorFactory::pathToTemplates() const
 {
-    return ":/russianC/templates";
+    return ":/fSharp/templates";
 }
 
-simple::Binding::ConverterInterface *FSharpGeneratorFactory::stringPropertyConverter() const
-{
-    return new converters::RussianCStringPropertyConverter(*mVariables);
-}

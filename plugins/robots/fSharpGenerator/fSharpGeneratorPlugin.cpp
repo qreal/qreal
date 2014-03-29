@@ -10,6 +10,10 @@ using namespace qReal::robots::generators;
 using namespace fSharp;
 
 FSharpGeneratorPlugin::FSharpGeneratorPlugin()
+    : mGenerateCodeAction(NULL)
+    , mUploadProgramAction(NULL)
+    , mRunProgramAction(NULL)
+    , mStopRobotAction(NULL)
 {
     mAppTranslator.load(":/sampleGenerator_" + QLocale::system().name());
     QApplication::installTranslator(&mAppTranslator);
@@ -22,8 +26,8 @@ FSharpGeneratorPlugin::~FSharpGeneratorPlugin()
 QList<ActionInfo> FSharpGeneratorPlugin::actions()
 {
     QAction * const generateCodeAction = new QAction(tr("Generate F# code"), this);
-    ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-    connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+    ActionInfo generateCodeActionInfo(generateCodeAction, "generators", "tools");
+    connect(generateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
     return { generateCodeActionInfo };
 }
@@ -31,8 +35,8 @@ QList<ActionInfo> FSharpGeneratorPlugin::actions()
 MasterGeneratorBase *FSharpGeneratorPlugin::masterGenerator()
 {
     return new FSharpMasterGenerator(*mRepo
-            , *mMainWindowInterface->errorReporter()
-            , mMainWindowInterface->activeDiagram());
+                                     , *mMainWindowInterface->errorReporter()
+                                     , mMainWindowInterface->activeDiagram());
 }
 
 void FSharpGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
@@ -42,7 +46,7 @@ void FSharpGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 
 QString FSharpGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-    return QString("F#/%1/%1.qts").arg(projectName);
+    return QString("f#/%1/%1.qts").arg(projectName);
 }
 
 QString FSharpGeneratorPlugin::extension() const

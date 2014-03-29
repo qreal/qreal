@@ -6,9 +6,10 @@ SUBDIRS = \
 	robotsGeneratorBase \
 	nxtGenerator \
 	trikGenerator \
-        fSharpGenerator \
 	russianCGenerator \
 	qextserialport \
+        fSharpGenerator \
+
 
 
 qextserialport.file = thirdparty/qextserialport/qextserialport.pro

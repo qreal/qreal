@@ -1,6 +1,6 @@
 #include "fSharpGeneratorCustomizer.h"
 
-using namespace qReal::robots::generators::sample;
+using namespace qReal::robots::generators::fSharp;
 
 FSharpGeneratorCustomizer::FSharpGeneratorCustomizer(qrRepo::RepoApi const &repo
         , ErrorReporterInterface &errorReporter)

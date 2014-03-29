@@ -11,7 +11,7 @@ namespace fSharp {
 class FSharpMasterGenerator : public MasterGeneratorBase
 {
 public:
-    SampleMasterGenerator(qrRepo::RepoApi const &repo
+    FSharpMasterGenerator(qrRepo::RepoApi const &repo
             , ErrorReporterInterface &errorReporter
             , Id const &diagramId);
 
