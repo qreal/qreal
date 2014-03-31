@@ -588,15 +588,15 @@ void D2ModelWidget::addPort(int const index)
 //			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
 //	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
 
-	switch (currentComboBox()->currentIndex()) {
-	case 0:
+//	switch (currentComboBox()->currentIndex()) {
+//	case 0:
 //		mCurrentSensorType = robots::enums::sensorType::unused;
-		break;
-	case 1:
+//		break;
+//	case 1:
 //		mCurrentSensorType = robots::enums::sensorType::touchBoolean;
-		break;
-	case 2:
-	{
+//		break;
+//	case 2:
+//	{
 //		QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
 //		robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
 //		mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
@@ -609,15 +609,15 @@ void D2ModelWidget::addPort(int const index)
 //			mCurrentSensorType = defaultValue;
 //		}
 
-		break;
-	}
-	case 3:
+//		break;
+//	}
+//	case 3:
 //		mCurrentSensorType = robots::enums::sensorType::sonar;
-		break;
-	case 4:
+//		break;
+//	case 4:
 //		mCurrentSensorType = robots::enums::sensorType::light;
-		break;
-	}
+//		break;
+//	}
 
 //	if (mCurrentSensorType != mRobotModel->configuration().type(mCurrentPort)) {
 //		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, sensorPos.toPoint(), 0);

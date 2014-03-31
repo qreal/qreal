@@ -10,6 +10,7 @@ QMap<QString, DeviceInfo> DeviceInfo::mCreatedInfos = QMap<QString, DeviceInfo>(
 
 DeviceInfo::DeviceInfo()
 	: mDeviceType(nullptr)
+	, mDirection(input)
 {
 }
 

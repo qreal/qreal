@@ -40,5 +40,5 @@ PortInfo PortInfo::fromString(QString const &string)
 		return PortInfo();
 	}
 
-	return PortInfo(parts[0], parts[1].split("$$$"));
+	return PortInfo(parts[0], parts[1].split("$$$", QString::SkipEmptyParts));
 }
