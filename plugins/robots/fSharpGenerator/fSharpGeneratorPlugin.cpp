@@ -3,6 +3,8 @@
 #include <QtWidgets/QApplication>
 #include <QtCore/QFileInfo>
 
+#include <QtCore/QDebug>
+
 #include "fSharpMasterGenerator.h"
 
 using namespace qReal;
@@ -10,13 +12,10 @@ using namespace qReal::robots::generators;
 using namespace fSharp;
 
 FSharpGeneratorPlugin::FSharpGeneratorPlugin()
-    : mGenerateCodeAction(NULL)
-    , mUploadProgramAction(NULL)
-    , mRunProgramAction(NULL)
-    , mStopRobotAction(NULL)
+		: mGenerateCodeAction(NULL)
 {
-    mAppTranslator.load(":/sampleGenerator_" + QLocale::system().name());
-    QApplication::installTranslator(&mAppTranslator);
+    mAppTranslator.load(":/FSharpGenerator_" + QLocale::system().name());
+	QApplication::installTranslator(&mAppTranslator);
 }
 
 FSharpGeneratorPlugin::~FSharpGeneratorPlugin()
@@ -25,41 +24,42 @@ FSharpGeneratorPlugin::~FSharpGeneratorPlugin()
 
 QList<ActionInfo> FSharpGeneratorPlugin::actions()
 {
-    QAction * const generateCodeAction = new QAction(tr("Generate F# code"), this);
-    ActionInfo generateCodeActionInfo(generateCodeAction, "generators", "tools");
-    connect(generateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+    mGenerateCodeAction.setText(tr("Generate FSharp code"));
+	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
+	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
-    return { generateCodeActionInfo };
+
+    return {generateCodeActionInfo};
 }
 
 MasterGeneratorBase *FSharpGeneratorPlugin::masterGenerator()
 {
     return new FSharpMasterGenerator(*mRepo
-                                     , *mMainWindowInterface->errorReporter()
-                                     , mMainWindowInterface->activeDiagram());
+			, *mMainWindowInterface->errorReporter()
+			, mMainWindowInterface->activeDiagram());
 }
 
 void FSharpGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 {
-    Q_UNUSED(newFileInfo);
+	Q_UNUSED(newFileInfo);
 }
 
 QString FSharpGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-    return QString("f#/%1/%1.qts").arg(projectName);
+    return QString("FSharp/%1/%1.qts").arg(projectName);
 }
 
 QString FSharpGeneratorPlugin::extension() const
 {
-    return "smpl";
+	return "qts";
 }
 
 QString FSharpGeneratorPlugin::extDescrition() const
 {
-    return tr("F# Source File");
+    return tr("FSharp Source File");
 }
 
 QString FSharpGeneratorPlugin::generatorName() const
 {
-    return "F#";
+    return "FSharp";
 }

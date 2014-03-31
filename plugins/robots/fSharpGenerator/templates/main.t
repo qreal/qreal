@@ -2,8 +2,7 @@
 
 @@SUBPROGRAMS@@
 
-var main = function() {
+let main () =
 @@MAIN_CODE@@
-}
 
-main();
+main ()

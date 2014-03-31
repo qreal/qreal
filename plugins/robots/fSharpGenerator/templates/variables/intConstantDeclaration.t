@@ -1,1 +1,1 @@
-const var @@NAME@@ = @@VALUE@@;
+let @@NAME@@ = @@VALUE@@

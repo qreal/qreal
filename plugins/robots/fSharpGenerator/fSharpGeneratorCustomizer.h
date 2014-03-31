@@ -8,14 +8,13 @@ namespace robots {
 namespace generators {
 namespace fSharp {
 
-/// Generator customizer for F# language generation process
 class FSharpGeneratorCustomizer : public GeneratorCustomizer
 {
 public:
     FSharpGeneratorCustomizer(qrRepo::RepoApi const &repo
-            , ErrorReporterInterface &errorReporter);
+			, ErrorReporterInterface &errorReporter);
 
-    GeneratorFactoryBase *factory() override;
+	virtual GeneratorFactoryBase *factory();
 
 private:
     FSharpGeneratorFactory mFactory;

@@ -1,4 +1,3 @@
-@@NAME@@ = function()
-{
-@@BODY@@
-}
+@@NAME@@ () = 
+   @@BODY@@
+

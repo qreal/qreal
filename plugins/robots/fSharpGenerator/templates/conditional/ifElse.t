@@ -1,5 +1,4 @@
-if (@@CONDITION@@) {
-@@THEN_BODY@@
-} else {
-@@ELSE_BODY@@
-}
+if (@@CONDITION@@)
+    @@THEN_BODY@@
+ else
+    @@ELSE_BODY@@

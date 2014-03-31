@@ -1,1 +1,1 @@
-var @@NAME@@;
+let mutable @@NAME@@ = 0

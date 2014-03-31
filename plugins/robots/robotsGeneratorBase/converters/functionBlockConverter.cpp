@@ -20,8 +20,9 @@ QString FunctionBlockConverter::convert(QString const &data) const
 	QStringList const lines = preparedCode.split(';', QString::SkipEmptyParts);
 	QStringList result;
 	foreach (QString const &line, lines) {
-		result.append(line.trimmed() + ";");
+        result.append(line.trimmed() + ";");
 	}
+
 
 	return result.join('\n');
 }

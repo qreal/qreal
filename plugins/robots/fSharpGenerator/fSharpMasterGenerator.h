@@ -7,18 +7,18 @@ namespace robots {
 namespace generators {
 namespace fSharp {
 
-/// Master generator implementation for F# language
+/// Master generator implementation for FSharp platform
 class FSharpMasterGenerator : public MasterGeneratorBase
 {
 public:
     FSharpMasterGenerator(qrRepo::RepoApi const &repo
-            , ErrorReporterInterface &errorReporter
-            , Id const &diagramId);
+			, ErrorReporterInterface &errorReporter
+			, Id const &diagramId);
 
-private:
-    GeneratorCustomizer *createCustomizer() override;
-    QString targetPath() override;
-    bool supportsGotoGeneration() const override;
+protected:
+	GeneratorCustomizer *createCustomizer() override;
+	QString targetPath() override;
+	bool supportsGotoGeneration() const override;
 };
 
 }

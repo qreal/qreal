@@ -3,12 +3,12 @@
 using namespace qReal::robots::generators::fSharp;
 
 FSharpGeneratorCustomizer::FSharpGeneratorCustomizer(qrRepo::RepoApi const &repo
-        , ErrorReporterInterface &errorReporter)
-    : mFactory(repo, errorReporter)
+		, ErrorReporterInterface &errorReporter)
+	: mFactory(repo, errorReporter)
 {
 }
 
 qReal::robots::generators::GeneratorFactoryBase *FSharpGeneratorCustomizer::factory()
 {
-    return &mFactory;
+	return &mFactory;
 }

@@ -4,9 +4,9 @@
 using namespace qReal::robots::generators::fSharp;
 
 FSharpMasterGenerator::FSharpMasterGenerator(qrRepo::RepoApi const &repo
-        , ErrorReporterInterface &errorReporter
-        , Id const &diagramId)
-    : MasterGeneratorBase(repo, errorReporter, diagramId)
+		, ErrorReporterInterface &errorReporter
+		, Id const &diagramId)
+	: MasterGeneratorBase(repo, errorReporter, diagramId)
 {
 }
 
@@ -17,10 +17,10 @@ qReal::robots::generators::GeneratorCustomizer *FSharpMasterGenerator::createCus
 
 QString FSharpMasterGenerator::targetPath()
 {
-    return QString("%1/%2.smpl").arg(mProjectDir, mProjectName);
+	return QString("%1/%2.qts").arg(mProjectDir, mProjectName);
 }
 
 bool FSharpMasterGenerator::supportsGotoGeneration() const
 {
-    return false;
+	return false;
 }

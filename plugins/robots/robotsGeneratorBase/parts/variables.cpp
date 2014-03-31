@@ -57,7 +57,7 @@ QString Variables::generateVariableString() const
 		result += pattern.replace("@@NAME@@", curVariable);
 	}
 
-	result += mManualDeclarations.join('\n');
+    result += mManualDeclarations.join('\n');
 
 	return result;
 }
@@ -122,7 +122,7 @@ QMap<QString, QStringList> Variables::variablesExpressionsMap(QStringList const 
 	QString const joinedExpressions = expressions.join("; ");
 	QStringList const standaloneExpressions = joinedExpressions.split(";", QString::SkipEmptyParts);
 	foreach (QString const &expression, standaloneExpressions) {
-		QStringList const parts = expression.split("=", QString::SkipEmptyParts);
+        QStringList const parts = expression.split("=", QString::SkipEmptyParts);
 		if (parts.count() != 2) {
 			// TODO: Do something
 			continue;
