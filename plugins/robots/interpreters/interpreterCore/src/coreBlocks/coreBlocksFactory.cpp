@@ -23,7 +23,7 @@
 #include "details/waitForColorIntensityBlock.h"
 #include "details/waitForLightSensorBlock.h"
 #include "details/waitForSoundSensorBlock.h"
-#include "details/waitforGyroscopeBlock.h"
+#include "details/waitForGyroscopeBlock.h"
 #include "details/waitForAccelerometerBlock.h"
 #include "details/waitForEncoderBlock.h"
 

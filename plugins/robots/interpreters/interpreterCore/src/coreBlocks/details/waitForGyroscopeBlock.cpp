@@ -1,4 +1,4 @@
-#include "waitforGyroscopeBlock.h"
+#include "waitForGyroscopeBlock.h"
 
 using namespace interpreterCore::coreBlocks::details;
 
