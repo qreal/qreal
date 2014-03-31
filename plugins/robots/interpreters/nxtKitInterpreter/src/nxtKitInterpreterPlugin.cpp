@@ -63,5 +63,5 @@ QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 
 interpreterBase::SensorsConfigurationProvider * NxtKitInterpreterPlugin::sensorsConfigurationProvider()
 {
-	return mTwoDModel.data();
+	return &mTwoDModel->sensorsConfigurationProvider();
 }

@@ -17,6 +17,7 @@ public:
 	TwoDModelFacade(interpreterBase::robotModel::RobotModelInterface &robotModel);
 	~TwoDModelFacade();
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
+	interpreterBase::SensorsConfigurationProvider &sensorsConfigurationProvider() override;
 
 private:
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.

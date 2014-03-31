@@ -14,8 +14,6 @@ TwoDModelFacade::TwoDModelFacade(interpreterBase::robotModel::RobotModelInterfac
 	/// @todo: why it can't be done in constructor?
 	mTwoDModel->createModelWidget();
 
-	connectSensorsConfigurationProvider(mTwoDModel.data());
-
 	QObject::connect(mTwoDModelActionInfo.action(), &QAction::triggered
 			, mTwoDModel.data(), &twoDModel::D2RobotModel::showModelWidget);
 }
@@ -29,3 +27,9 @@ qReal::ActionInfo &TwoDModelFacade::showTwoDModelWidgetActionInfo()
 {
 	return mTwoDModelActionInfo;
 }
+
+interpreterBase::SensorsConfigurationProvider &TwoDModelFacade::sensorsConfigurationProvider()
+{
+	return *mTwoDModel;
+}
+

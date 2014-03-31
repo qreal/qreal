@@ -6,11 +6,12 @@
 
 namespace twoDModel {
 
-class TwoDModelControlInterface : public interpreterBase::SensorsConfigurationProvider
+class TwoDModelControlInterface
 {
 public:
 	virtual ~TwoDModelControlInterface() {}
 	virtual qReal::ActionInfo &showTwoDModelWidgetActionInfo() = 0;
+	virtual interpreterBase::SensorsConfigurationProvider &sensorsConfigurationProvider() = 0;
 };
 
 }
