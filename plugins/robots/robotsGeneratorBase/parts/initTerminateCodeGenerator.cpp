@@ -17,7 +17,7 @@ void InitTerminateCodeGenerator::reinit()
 
 QString InitTerminateCodeGenerator::initCode()
 {
-	return QString();
+    return QString();
 }
 
 QString InitTerminateCodeGenerator::terminateCode()

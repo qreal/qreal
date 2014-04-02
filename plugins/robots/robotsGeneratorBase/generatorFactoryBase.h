@@ -52,7 +52,7 @@ public:
 	/// Returns a pointer to an entity processing everything about sensors
 	virtual parts::Sensors *sensors();
 
-	/// Returns a pointer to an entity processing everything about functions
+    /// Returns a pointer to an entity processing everything about tiotions
 	/// with property 'Initialization' set to 'true'
 	virtual parts::Functions *functions();
 

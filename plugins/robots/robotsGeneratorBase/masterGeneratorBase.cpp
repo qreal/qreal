@@ -127,5 +127,5 @@ void MasterGeneratorBase::afterGeneration()
 void MasterGeneratorBase::outputCode(QString const &path, QString const &code)
 {
 	utils::OutFile out(path);
-	out() << code;
+    out() << code;
 }
