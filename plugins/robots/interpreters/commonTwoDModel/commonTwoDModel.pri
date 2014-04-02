@@ -10,8 +10,11 @@ LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -linterpreterBase
 
 HEADERS += \
 	$$PWD/include/commonTwoDModel/engine/configurer.h \
-	$$PWD/include/commonTwoDModel/engine/twoDModelFacade.h \
+	$$PWD/include/commonTwoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelControlInterface.h \
+	$$PWD/include/commonTwoDModel/engine/twoDModelEngineInterface.h \
+	$$PWD/include/commonTwoDModel/robotModel/twoDRobotModel.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/motor.h \
 
 HEADERS += \
 	$$PWD/src/engine/d2ModelWidget.h \
@@ -55,10 +58,12 @@ SOURCES += \
 	$$PWD/src/engine/timeline.cpp \
 	$$PWD/src/engine/d2ModelTimer.cpp \
 	$$PWD/src/engine/gridParameters.cpp \
-	$$PWD/src/engine/twoDModelFacade.cpp \
+	$$PWD/src/engine/twoDModelEngineFacade.cpp \
 	$$PWD/src/engine/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/physics/realisticPhysicsEngine.cpp \
+	$$PWD/src/robotModel/twoDRobotModel.cpp \
+	$$PWD/src/robotModel/parts/motor.cpp \
 
 FORMS += \
 	$$PWD/src/engine/d2Form.ui \

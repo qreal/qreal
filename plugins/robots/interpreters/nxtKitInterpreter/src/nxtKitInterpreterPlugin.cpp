@@ -1,13 +1,17 @@
 #include "nxtKitInterpreterPlugin.h"
 
-#include <commonTwoDModel/engine/twoDModelFacade.h>
+#include <commonTwoDModel/engine/twoDModelEngineFacade.h>
 
 using namespace nxtKitInterpreter;
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
-	, mTwoDModel(new twoDModel::TwoDModelFacade(mTwoDRobotModel))
 {
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
+
+	mTwoDRobotModel.setEngine(modelEngine->engine());
+	mTwoDModel.reset(modelEngine);
+
 	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged
 			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
 	connect(mAdditionalPreferences, &NxtAdditionalPreferences::settingsChanged

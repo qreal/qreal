@@ -1,19 +1,19 @@
 #pragma once
 
-#include <robotModel/nxtRobotModelBase.h>
+#include <commonTwoDModel/robotModel/twoDRobotModel.h>
 
 namespace nxtKitInterpreter {
 namespace robotModel {
 namespace twoD {
 
-class TwoDRobotModel : public NxtRobotModelBase
+class TwoDRobotModel : public twoDModel::robotModel::TwoDRobotModel
 {
 	Q_OBJECT
 
 public:
+	TwoDRobotModel();
 	QString name() const override;
 	QString friendlyName() const override;
-	bool needsConnection() const override;
 };
 
 }

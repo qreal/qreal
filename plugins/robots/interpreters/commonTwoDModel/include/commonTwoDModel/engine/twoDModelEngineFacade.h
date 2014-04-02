@@ -6,22 +6,28 @@
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include "commonTwoDModel/engine/twoDModelControlInterface.h"
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
 namespace twoDModel {
 
 class D2RobotModel;
 
-class TwoDModelFacade : public TwoDModelControlInterface
+namespace engine {
+
+class TwoDModelEngineFacade : public TwoDModelControlInterface
 {
 public:
-	TwoDModelFacade(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~TwoDModelFacade();
+	TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	~TwoDModelEngineFacade();
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
 	interpreterBase::SensorsConfigurationProvider &sensorsConfigurationProvider() override;
+
+	TwoDModelEngineInterface &engine();
 
 private:
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 	QScopedPointer<D2RobotModel> mTwoDModel;
 };
 
+}
 }

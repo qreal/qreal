@@ -8,6 +8,9 @@
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include <qrutils/mathUtils/gaussNoise.h>
+
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
 #include "robotModelInterface.h"
 //#include "details/nxtDisplay.h"
 
@@ -21,7 +24,10 @@ class D2ModelWidget;
 class WorldModel;
 class Timeline;
 
-class D2RobotModel : public QObject, public TwoDRobotRobotModelInterface, public interpreterBase::SensorsConfigurationProvider
+class D2RobotModel : public QObject
+		, public TwoDRobotRobotModelInterface
+		, public interpreterBase::SensorsConfigurationProvider
+		, public engine::TwoDModelEngineInterface
 {
 	Q_OBJECT
 
@@ -34,7 +40,7 @@ public:
 	void startInterpretation();
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
-	void setNewMotor(int speed, uint degrees, int port, bool breakMode);
+	void setNewMotor(int speed, uint degrees, int port, bool breakMode) override;
 //	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
 	int readEncoder(int const port) const;

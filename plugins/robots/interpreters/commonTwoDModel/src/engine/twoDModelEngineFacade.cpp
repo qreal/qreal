@@ -1,10 +1,10 @@
-#include "commonTwoDModel/engine/twoDModelFacade.h"
+#include "commonTwoDModel/engine/twoDModelEngineFacade.h"
 
 #include "src/engine/d2RobotModel.h"
 
-using namespace twoDModel;
+using namespace twoDModel::engine;
 
-TwoDModelFacade::TwoDModelFacade(interpreterBase::robotModel::RobotModelInterface &robotModel)
+TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: mTwoDModelActionInfo(
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 			, "interpreters"
@@ -18,18 +18,22 @@ TwoDModelFacade::TwoDModelFacade(interpreterBase::robotModel::RobotModelInterfac
 			, mTwoDModel.data(), &twoDModel::D2RobotModel::showModelWidget);
 }
 
-TwoDModelFacade::~TwoDModelFacade()
+TwoDModelEngineFacade::~TwoDModelEngineFacade()
 {
 	delete mTwoDModelActionInfo.action();
 }
 
-qReal::ActionInfo &TwoDModelFacade::showTwoDModelWidgetActionInfo()
+qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()
 {
 	return mTwoDModelActionInfo;
 }
 
-interpreterBase::SensorsConfigurationProvider &TwoDModelFacade::sensorsConfigurationProvider()
+interpreterBase::SensorsConfigurationProvider &TwoDModelEngineFacade::sensorsConfigurationProvider()
 {
 	return *mTwoDModel;
 }
 
+TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
+{
+	return *mTwoDModel;
+}

@@ -22,7 +22,7 @@ QList<robotParts::Motor *> EngineCommandBlock::parsePorts() const
 	QStringList const splitted = ports.split(',', QString::SkipEmptyParts);
 
 	for (QString const &port : splitted) {
-		robotParts::Motor * const motor = RobotModelUtils::findDevice<robotParts::Motor>(mRobotModel, port);
+		robotParts::Motor * const motor = RobotModelUtils::findDevice<robotParts::Motor>(mRobotModel, port.trimmed());
 		if (motor) {
 			result << motor;
 		}

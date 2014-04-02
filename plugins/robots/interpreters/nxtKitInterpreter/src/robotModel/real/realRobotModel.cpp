@@ -82,7 +82,7 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 	}
 
 	if (deviceInfo.isA(buttonsInfo())) {
-		return new parts::Buttons(speakerInfo(), port);
+		return new parts::Buttons(buttonsInfo(), port);
 	}
 
 	if (deviceInfo.isA(motorInfo())) {
