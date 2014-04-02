@@ -18,8 +18,8 @@ class ScriptAPI : public QObject, public HintInterface{
 public:
 	ScriptAPI(ErrorReporter *errorReporter, MainWindow *mainWindow);
 
-	Q_INVOKABLE void addHint(QString const &message);
-	Q_INVOKABLE void arrowToWidget();
+	Q_INVOKABLE void addHint(QString const &message); ///Message in error reporter
+	Q_INVOKABLE void arrowToWidget(QWidget *target, qreal angle); ///Draw arrow near target
 
 private:
 	QScriptEngine mScriptEngine;

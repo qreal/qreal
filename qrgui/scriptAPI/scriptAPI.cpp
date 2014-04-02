@@ -1,9 +1,11 @@
-#include "scriptAPI.h"
+#include "arrow.h"
 
 #include <math.h>
+#include <QtCore/qmath.h>
 
-#include "arrow.h"
 #include <qrkernel/exception/exception.h>
+
+#include "scriptAPI.h"
 
 using namespace qReal;
 using namespace gui;
@@ -23,8 +25,6 @@ ScriptAPI::ScriptAPI(ErrorReporter *errorReporter, MainWindow *mainWindow)
 	QTextStream stream(&scriptFile);
 	mScriptEngine.evaluate(stream.readAll(), fileName);
 	scriptFile.close();
-
-	arrowToWidget();
 }
 
 void ScriptAPI::addHint(QString const &message)
@@ -32,10 +32,13 @@ void ScriptAPI::addHint(QString const &message)
 	mErrorReporter->addHint(message);
 }
 
-void ScriptAPI::arrowToWidget()
+void ScriptAPI::arrowToWidget(QWidget *target, qreal angle)
 {
-	QPoint one = QPoint(0,0);
-	QPoint two = QPoint(100,100);
-	Arrow *line = new Arrow(one, two, mMainWindow);
+	int const sourcePointDeviation = 50;
+	int const intoTargetDeviation = 10;
+	QPoint sourcePoint = QPoint(target->x() - sourcePointDeviation * qSin(angle)
+						, target->y() + sourcePointDeviation * qCos(angle));
+	QPoint destPoint = QPoint(target->x() + intoTargetDeviation,target->y() + intoTargetDeviation);
+	Arrow *line = new Arrow(sourcePoint, destPoint, mMainWindow);
 	line->show();
 }
