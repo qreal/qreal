@@ -109,6 +109,14 @@ Binding::ConverterInterface *FSharpGeneratorFactory::outputPortConverter() const
     return new converters::PowerMotorPortConverter;
 }
 
+Binding::ConverterInterface *FSharpGeneratorFactory::functionBlockConverter() const
+{
+    return new converters::FunctionFSharpBlockConverter(pathToTemplates()
+                            , inputPortConverter()
+                            , outputPortConverter()
+                            , functionInvocationConverter());
+}
+
 void FSharpGeneratorFactory::initVariables()
 {
     mVariables = new parts::FSharpVariables(pathToTemplates());

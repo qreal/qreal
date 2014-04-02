@@ -1,2 +1,2 @@
-if (@@CONDITION@@)
-@@THEN_BODY@@
+if @@CONDITION@@ then
+    @@THEN_BODY@@

@@ -26,6 +26,7 @@ public:
 
 	simple::Binding::ConverterInterface *inputPortConverter() const override;
 	simple::Binding::ConverterInterface *outputPortConverter() const override;
+    simple::Binding::ConverterInterface *functionBlockConverter() const override;
 
 protected:
 	virtual void initVariables();

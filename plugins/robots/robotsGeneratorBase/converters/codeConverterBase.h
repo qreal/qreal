@@ -2,6 +2,7 @@
 
 #include "templateParametrizedConverter.h"
 #include "plugins/robots/robotsInterpreter/sensorConstants.h"
+#include "robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {
@@ -12,7 +13,7 @@ namespace converters {
 /// replacing sensor and encoder variables with code specified in templates from
 /// "sensors" folder, and function invocations with code specified in templates
 /// from "functions" folder
-class CodeConverterBase : public TemplateParametrizedConverter
+class ROBOTS_GENERATOR_EXPORT CodeConverterBase : public TemplateParametrizedConverter
 {
 public:
 	CodeConverterBase(QString const &pathToTemplates

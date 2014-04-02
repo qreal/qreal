@@ -362,7 +362,7 @@ QString GeneratorFactoryBase::initCode()
 	QStringList result;
 	QList<parts::InitTerminateCodeGenerator *> const generators(initTerminateGenerators());
 	foreach (parts::InitTerminateCodeGenerator *generator, generators) {
-		result << generator->initCode();
+        result << generator->initCode();
 	}
 
 	return result.join('\n');

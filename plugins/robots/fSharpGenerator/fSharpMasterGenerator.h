@@ -19,6 +19,8 @@ protected:
 	GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
+    void outputCode(QString const &path, QString const &code);
+
 };
 
 }

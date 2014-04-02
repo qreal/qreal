@@ -23,6 +23,5 @@ QString FunctionBlockConverter::convert(QString const &data) const
         result.append(line.trimmed() + ";");
 	}
 
-
 	return result.join('\n');
 }
