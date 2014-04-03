@@ -778,7 +778,7 @@ void SdfRenderer::logger(QString path, QString string)
 QByteArray SdfRenderer::loadPixmap(QString &filePath)
 {
 	QFileInfo const fileInfo(filePath);
-	if (fileInfo.exists()) {
+	if (fileInfo.exists() || QFileInfo(QString(filePath).replace(filePath.size() - 3, 3, "svg")).exists()) {
 		return loadPixmapFromExistingFile(filePath);
 	}
 

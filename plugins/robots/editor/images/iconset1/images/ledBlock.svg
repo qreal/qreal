@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str1 {stroke:#CCFF66;stroke-width:79.375}
+    .str0 {stroke:white;stroke-width:317.5}
+    .fil1 {fill:none}
+    .fil3 {fill:url(#id0)}
+    .fil2 {fill:url(#id1)}
+    .fil0 {fill:url(#id2)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="7690.44" y1="9368.05" x2="7690.44" y2="8330">
+   <stop offset="0" style="stop-color:#33CC33"/>
+   <stop offset="1" style="stop-color:lime"/>
+  </linearGradient>
+  <radialGradient id="id1" gradientUnits="objectBoundingBox" cx="28.9999%" cy="28.0001%" r="50%" fx="28.9999%" fy="28.0001%">
+   <stop offset="0" style="stop-color:white"/>
+   <stop offset="0.121569" style="stop-color:#CCFF66"/>
+   <stop offset="0.419608" style="stop-color:#99FF00"/>
+   <stop offset="1" style="stop-color:#33CC33"/>
+  </radialGradient>
+  <radialGradient id="id2" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+   <stop offset="0" style="stop-color:#FAA032"/>
+   <stop offset="0.74902" style="stop-color:#F29322"/>
+   <stop offset="1" style="stop-color:#CE7F22"/>
+  </radialGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M2824 264l9430 0c1429,0 2587,1159 2587,2587l0 9430c0,1429 -1159,2587 -2587,2587l-9430 0c-1429,0 -2587,-1159 -2587,-2588l0 -9430c0,-1429 1159,-2587 2588,-2587z"/>
+ </g>
+ <g id="Layer_x0020_1_0">
+  <metadata id="CorelCorpID_1Corel-Layer"/>
+  <line class="fil1 str0" x1="6272" y1="7698" x2="6272" y2= "13343" />
+  <line class="fil1 str0" x1="8982" y1="7714" x2="8982" y2= "13340" />
+  <path class="fil2 str1" d="M4956 8298c0,-1618 0,-4647 -1,-4702 -23,-2292 5439,-2356 5459,19 1,61 -15,3108 -15,4683l-5443 0z"/>
+  <rect class="fil3 str1" x="4357" y="8330" width="6668" height="1038" rx="194" ry="216"/>
+ </g>
+</svg>

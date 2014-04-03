@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str1 {stroke:#E6FFB5;stroke-width:35.56}
+    .str0 {stroke:#E6E6E6;stroke-width:317.5}
+    .fil6 {fill:url(#id0)}
+    .fil1 {fill:url(#id1)}
+    .fil5 {fill:url(#id2)}
+    .fil2 {fill:url(#id3)}
+    .fil7 {fill:url(#id4)}
+    .fil3 {fill:url(#id5)}
+    .fil0 {fill:url(#id6)}
+    .fil4 {fill:url(#id7)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="9986.73" y1="7319.35" x2="12649.1" y2="7319.35">
+   <stop offset="0" style="stop-color:#B3B3B3"/>
+   <stop offset="1" style="stop-color:#E6E6E6"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" xlink:href="#id0" x1="8813.74" y1="7310.48" x2="10821.6" y2="7310.48">
+  </linearGradient>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" xlink:href="#id0" x1="9422.28" y1="7292.9" x2="11691.6" y2="7292.9">
+  </linearGradient>
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="5410.82" y1="11622.6" x2="5410.82" y2="3163.53">
+   <stop offset="0" style="stop-color:#999999"/>
+   <stop offset="1" style="stop-color:#CCCCCC"/>
+  </linearGradient>
+  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="9204.84" y1="11329.3" x2="9204.84" y2="8183.61">
+   <stop offset="0" style="stop-color:#99CC33"/>
+   <stop offset="1" style="stop-color:#CCFF66"/>
+  </linearGradient>
+  <linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="4870.07" y1="5825.88" x2="9158.99" y2="8865.63">
+   <stop offset="0" style="stop-color:#666666"/>
+   <stop offset="1" style="stop-color:#E6E6E6"/>
+  </linearGradient>
+  <radialGradient id="id6" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+   <stop offset="0" style="stop-color:#906BB3"/>
+   <stop offset="0.619608" style="stop-color:#906BB3"/>
+   <stop offset="1" style="stop-color:#684A83"/>
+  </radialGradient>
+  <radialGradient id="id7" gradientUnits="objectBoundingBox" cx="-5.99998%" cy="20%" r="36%" fx="-5.99998%" fy="20%">
+   <stop offset="0" style="stop-color:white"/>
+   <stop offset="1" style="stop-color:#333333"/>
+  </radialGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M2817 285l9362 0c1418,0 2569,1150 2569,2569l0 9362c0,1418 -1150,2569 -2569,2569l-9362 0c-1418,0 -2569,-1150 -2569,-2569l0 -9362c0,-1418 1150,-2569 2569,-2569z"/>
+  <path class="fil1" d="M8814 5106l326 -379c1444,1693 1682,3228 176,5168l-423 -318c416,-500 975,-1617 949,-2222 -48,-1103 -731,-1817 -1029,-2250z"/>
+  <path class="fil2 str0" d="M2862 7320c-10,1716 2036,2456 3732,3617 1001,686 1375,-7774 209,-7173 -475,245 -3932,1840 -3942,3556z"/>
+  <ellipse class="fil3 str0" cx="7015" cy="7346" rx="1474" ry="3792"/>
+  <ellipse class="fil4" cx="6432" cy="7275" rx="582" ry="1094"/>
+  <path class="fil5" d="M9422 4512l318 -390c1852,1943 1952,4087 256,6341l-388 -301c489,-540 1231,-1879 1126,-2969 -169,-1752 -926,-2211 -1311,-2682z"/>
+  <path class="fil6" d="M9987 3974l331 -390c1940,1920 2332,4809 207,7470l-370 -389c489,-540 1430,-2043 1355,-3366 -126,-2210 -1137,-2855 -1522,-3325z"/>
+  <path class="fil7 str1" d="M9878 8765c172,90 477,290 517,595 21,161 -28,312 -41,323 -17,15 -104,-108 -201,-190 -174,-148 -424,-336 -624,-394l0 1437c0,6 -1,13 -2,19 3,158 -39,384 -179,512 -285,261 -661,263 -822,205 -534,-192 -449,-630 -16,-849 236,-119 541,-124 791,-58l0 -2093c0,-49 40,-88 88,-88l51 0c49,0 88,40 88,88l0 231c45,50 128,147 349,262z"/>
+ </g>
+</svg>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str3 {stroke:#33CC66;stroke-width:10}
+    .str4 {stroke:#99FFFF;stroke-width:10}
+    .str5 {stroke:#CC99CC;stroke-width:10}
+    .str1 {stroke:#FF6666;stroke-width:10}
+    .str2 {stroke:#FFFF66;stroke-width:10}
+    .str0 {stroke:#996633;stroke-width:127}
+    .fil4 {fill:#FF9933;fill-rule:nonzero}
+    .fil1 {fill:url(#id0)}
+    .fil8 {fill:url(#id1)}
+    .fil5 {fill:url(#id2)}
+    .fil7 {fill:url(#id3)}
+    .fil3 {fill:url(#id4)}
+    .fil2 {fill:url(#id5)}
+    .fil6 {fill:url(#id6)}
+    .fil0 {fill:url(#id7)}
+   ]]>
+  </style>
+  <radialGradient id="id0" gradientUnits="objectBoundingBox" cx="31%" cy="25%" r="50%" fx="31%" fy="25%">
+   <stop offset="0" style="stop-color:#FAFAAF"/>
+   <stop offset="1" style="stop-color:#E8E85A"/>
+  </radialGradient>
+  <radialGradient id="id1" gradientUnits="objectBoundingBox" cx="23%" cy="32.9999%" r="50%" fx="23%" fy="32.9999%">
+   <stop offset="0" style="stop-color:#CC66FF"/>
+   <stop offset="1" style="stop-color:#660066"/>
+  </radialGradient>
+  <radialGradient id="id2" gradientUnits="objectBoundingBox" cx="25%" cy="32%" r="50%" fx="25%" fy="32%">
+   <stop offset="0" style="stop-color:yellow"/>
+   <stop offset="1" style="stop-color:#DBDB21"/>
+  </radialGradient>
+  <radialGradient id="id3" gradientUnits="objectBoundingBox" cx="25%" cy="28.0001%" r="50%" fx="25%" fy="28.0001%">
+   <stop offset="0" style="stop-color:#00CCFF"/>
+   <stop offset="1" style="stop-color:#336699"/>
+  </radialGradient>
+  <radialGradient id="id4" gradientUnits="objectBoundingBox" cx="26.0001%" cy="27%" r="50%" fx="26.0001%" fy="27%">
+   <stop offset="0" style="stop-color:#FBC780"/>
+   <stop offset="1" style="stop-color:#FF6600"/>
+  </radialGradient>
+  <radialGradient id="id5" gradientUnits="objectBoundingBox" cx="27.9999%" cy="22.0001%" r="50%" fx="27.9999%" fy="22.0001%">
+   <stop offset="0" style="stop-color:#F39FA1"/>
+   <stop offset="1" style="stop-color:red"/>
+  </radialGradient>
+  <radialGradient id="id6" gradientUnits="objectBoundingBox" cx="28.9999%" cy="32%" r="50%" fx="28.9999%" fy="32%">
+   <stop offset="0" style="stop-color:#33CC33"/>
+   <stop offset="1" style="stop-color:#006633"/>
+  </radialGradient>
+  <radialGradient id="id7" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+   <stop offset="0" style="stop-color:#9CD448"/>
+   <stop offset="0.721569" style="stop-color:#9CD448"/>
+   <stop offset="1" style="stop-color:#74A336"/>
+  </radialGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M2817 285l9362 0c1418,0 2569,1150 2569,2569l0 9362c0,1418 -1150,2569 -2569,2569l-9362 0c-1418,0 -2569,-1150 -2569,-2569l0 -9362c0,-1418 1150,-2569 2569,-2569z"/>
+  <path class="fil1 str0" d="M13633 6839c2208,6326 -8051,5964 -5895,4904 2273,-1117 1224,-3381 40,-1439 -1184,1942 -5227,4214 -6331,479 -1702,-5755 8967,-13165 12186,-3944z"/>
+  <circle class="fil2 str1" cx="11590" cy="9317" r="847"/>
+  <g>
+   <path class="fil3" d="M11431 7130c536,0 970,-434 970,-970 0,-536 -434,-970 -970,-970 -536,0 -970,434 -970,970 0,536 434,970 970,970z"/>
+   <path id="1" class="fil4" d="M12396 6160l10 0 0 0 -1 50 -4 49 -6 49 -9 48 -11 47 -13 46 -15 45 -17 44 -19 43 -21 42 -23 41 -25 39 -27 38 -29 37 -31 35 -32 34 -34 32 -35 31 -37 29 -38 27 -39 25 -41 23 -42 21 -43 19 -44 17 -45 15 -46 13 -47 11 -48 9 -49 6 -50 4 -51 1 0 -2 49 -1 48 -4 48 -6 47 -8 47 -11 46 -13 45 -15 44 -17 43 -19 42 -21 41 -23 39 -25 38 -27 37 -29 35 -30 34 -32 32 -34 30 -35 29 -37 27 -38 25 -39 23 -41 21 -42 19 -43 17 -44 15 -45 13 -46 11 -47 9 -48 6 -49 4 -49 1 -50 0 0zm-965 -969l0 -2 0 0 51 1 50 4 49 6 48 9 47 11 46 13 45 15 44 17 43 19 42 21 41 23 39 25 38 27 37 29 35 31 34 32 32 34 31 35 29 37 27 38 25 39 23 41 21 42 19 43 17 44 15 45 13 46 11 47 9 48 6 49 4 49 1 50 -10 0 -1 -50 -4 -49 -6 -49 -9 -48 -11 -47 -13 -46 -15 -45 -17 -44 -19 -43 -21 -42 -23 -41 -25 -39 -27 -38 -29 -37 -30 -35 -32 -34 -34 -32 -35 -30 -37 -29 -38 -27 -39 -25 -41 -23 -42 -21 -43 -19 -44 -17 -45 -15 -46 -13 -47 -11 -47 -8 -48 -6 -48 -4 -49 -1 0 0zm-965 969l-10 0 0 0 1 -50 4 -49 6 -49 9 -48 11 -47 13 -46 15 -45 17 -44 19 -43 21 -42 23 -41 25 -39 27 -38 29 -37 31 -35 32 -34 34 -32 35 -31 37 -29 38 -27 39 -25 41 -23 42 -21 43 -19 44 -17 45 -15 46 -13 47 -11 48 -9 49 -6 50 -4 51 -1 0 2 -49 1 -48 4 -48 6 -47 8 -47 11 -46 13 -45 15 -44 17 -43 19 -42 21 -41 23 -39 25 -38 27 -37 29 -35 30 -34 32 -32 34 -30 35 -29 37 -27 38 -25 39 -23 41 -21 42 -19 43 -17 44 -15 45 -13 46 -11 47 -9 48 -6 49 -4 49 -1 50 0 0zm965 969l0 2 0 0 -51 -1 -50 -4 -49 -6 -48 -9 -47 -11 -46 -13 -45 -15 -44 -17 -43 -19 -42 -21 -41 -23 -39 -25 -38 -27 -37 -29 -35 -31 -34 -32 -32 -34 -31 -35 -29 -37 -27 -38 -25 -39 -23 -41 -21 -42 -19 -43 -17 -44 -15 -45 -13 -46 -11 -47 -9 -48 -6 -49 -4 -49 -1 -50 10 0 1 50 4 49 6 49 9 48 11 47 13 46 15 45 17 44 19 43 21 42 23 41 25 39 27 38 29 37 30 35 32 34 34 32 35 30 37 29 38 27 39 25 41 23 42 21 43 19 44 17 45 15 46 13 47 11 47 8 48 6 48 4 49 1 0 0z"/>
+  </g>
+  <circle class="fil5 str2" cx="9015" cy="4307" r="1129"/>
+  <circle class="fil6 str3" cx="5699" cy="5331" r="1129"/>
+  <circle class="fil7 str4" cx="3582" cy="7941" r="1129"/>
+  <circle class="fil8 str5" cx="3793" cy="11081" r="1129"/>
+ </g>
+</svg>

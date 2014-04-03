@@ -1886,12 +1886,16 @@ void MainWindow::fullscreen()
 		hideDockWidget(mUi->logicalModelDock, "logicalModel");
 		hideDockWidget(mUi->propertyDock, "propertyEditor");
 		hideDockWidget(mUi->errorDock, "errorReporter");
+
+		mUi->actionFullscreen->setIcon(QIcon(":/icons/unFullScreen.svg"));
 	} else {
 		showDockWidget(mUi->minimapDock, "minimap");
 		showDockWidget(mUi->graphicalModelDock, "graphicalModel");
 		showDockWidget(mUi->logicalModelDock, "logicalModel");
 		showDockWidget(mUi->propertyDock, "propertyEditor");
 		showDockWidget(mUi->errorDock, "errorReporter");
+
+		mUi->actionFullscreen->setIcon(QIcon(":/icons/fullScreen.svg"));
 	}
 	foreach (QDockWidget *dock, mAdditionalDocks) {
 		if (mIsFullscreen) {
