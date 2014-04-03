@@ -1737,13 +1737,12 @@
 		</graphicTypes>
 		<palette sorted="true">
 			<group name="Действия">
-				<element name="Fork"/>
 				<element name="Beep"/>
 				<element name="PlayTone"/>
 				<element name="EnginesForward"/>
 				<element name="EnginesBackward"/>
 				<element name="EnginesStop"/>
-				<element name="Function"/>
+				<element name="NullificationEncoder"/>
 			</group>
 			<group name="Рисование на дисплее">
 				<element name="ClearScreen"/>
@@ -1766,16 +1765,15 @@
 				<element name="WaitForButtons"/>
 			</group>
 			<group name="Алгоритмы">
+				<element name="InitialNode"/>
+				<element name="FinalNode"/>
+				<element name="Function"/>
 				<element name="IfBlock"/>
 				<element name="ControlFlow"/>
 				<element name="Loop"/>
 				<element name="CommentBlock"/>
 				<element name="Subprogram"/>
-			</group>
-			<group name="Инициализация">
-				<element name="InitialNode"/>
-				<element name="FinalNode"/>
-				<element name="NullificationEncoder"/>
+				<element name="Fork"/>
 			</group>
 <!--			<group name="Сегвей">
 				<element name="Balance"/>
