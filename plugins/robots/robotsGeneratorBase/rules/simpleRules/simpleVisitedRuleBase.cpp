@@ -10,7 +10,7 @@ SimpleVisitedRuleBase::SimpleVisitedRuleBase(SemanticTree *tree, Id const &id
 
 bool SimpleVisitedRuleBase::apply()
 {
-	if (!mNextLink.targetVisited) {
+	if (!alreadyCreated(mNextLink)) {
 		return false;
 	}
 

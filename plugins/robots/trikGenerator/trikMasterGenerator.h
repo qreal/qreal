@@ -16,13 +16,9 @@ public:
 			, Id const &diagramId);
 
 protected:
-	virtual GeneratorCustomizer *createCustomizer();
-	virtual QString targetPath();
-
-	virtual void beforeGeneration();
-
-private:
-	void createProjectDir(QString const &projectDir);
+	GeneratorCustomizer *createCustomizer() override;
+	QString targetPath() override;
+	bool supportsGotoGeneration() const override;
 };
 
 }

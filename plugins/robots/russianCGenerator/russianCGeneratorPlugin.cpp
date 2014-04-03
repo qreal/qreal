@@ -15,9 +15,9 @@ RussianCGeneratorPlugin::RussianCGeneratorPlugin()
 	QApplication::installTranslator(&mAppTranslator);
 }
 
-QFileInfo RussianCGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString RussianCGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QFileInfo(QString("russianC/%1/%1.c").arg(projectName));
+	return QString("russianC/%1/%1.c").arg(projectName);
 }
 
 QString RussianCGeneratorPlugin::extension() const

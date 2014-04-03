@@ -60,9 +60,9 @@ void TrikGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 	Q_UNUSED(newFileInfo);
 }
 
-QFileInfo TrikGeneratorPlugin::defaultFilePath(QString const &projectName) const
+QString TrikGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QFileInfo(QString("trik/%1/%1.qts").arg(projectName));
+	return QString("trik/%1/%1.qts").arg(projectName);
 }
 
 QString TrikGeneratorPlugin::extension() const
@@ -82,7 +82,7 @@ QString TrikGeneratorPlugin::generatorName() const
 
 bool TrikGeneratorPlugin::uploadProgram()
 {
-	QFileInfo const fileInfo = currentSource();
+	QFileInfo const fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo()) {
 		TcpRobotCommunicator communicator;
@@ -102,8 +102,8 @@ void TrikGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
 		TcpRobotCommunicator communicator;
-		QFileInfo const fileInfo = currentSource();
-		communicator.runProgram(fileInfo.absoluteFilePath());
+		QFileInfo const fileInfo = generateCodeForProcessing();
+		communicator.runProgram(fileInfo.fileName());
 	} else {
 		qDebug() << "Program upload failed, aborting";
 	}

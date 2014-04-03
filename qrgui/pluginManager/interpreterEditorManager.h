@@ -86,7 +86,7 @@ public:
 	bool isInterpretationMode() const override;
 
 	bool isParentProperty(Id const &id, QString const &propertyName) const override;
-	void deleteProperty(QString const &propDisplayedName) const override;
+	void deleteProperty(QString const &propertyName) const override;
 	void addProperty(Id const &id, QString const &propDisplayedName) const override;
 	void updateProperties(Id const &id, QString const &property, QString const &propertyType
 			, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const override;
@@ -94,10 +94,11 @@ public:
 	IdList children(Id const &parent) const override;
 	QString shape(Id const &id) const override;
 	void updateShape(Id const &id, QString const &graphics) const override;
+	virtual void resetIsHidden(Id const &id) const;
+	virtual QString getIsHidden(Id const &id) const;
 	void deleteElement(qReal::MainWindow *mainWindow, Id const &id) const override;
 	bool isRootDiagramNode(Id const &id) const override;
 	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const override;
-
 	void addEdgeElement(
 			Id const &diagram
 			, QString const &name
@@ -121,6 +122,15 @@ public:
 	QList<QString> getPatternNames() const override;
 	QSize iconSize(Id const &id) const override;
 
+	IdList propertiesWithTheSameName(
+			Id const &id
+			, QString const &propCurrentName
+			, QString const &propNewName) const override;
+
+	QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const override;
+	void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const override;
+	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
+
 private:
 	class CheckPropertyForParent;
 	class CompareProperty;
@@ -141,8 +151,7 @@ private:
 	QStringList propertiesFromParents(Id const &id, QString const &propertyName
 			, CheckPropertyForParent const &checker) const;
 	QString valueOfProperty(Id const &id, QString const &propertyName, QString const &value) const;
-	void deletePropertyInElement(qrRepo::RepoApi *repo, Id const &editor, Id const &diagram
-			, QString const &propDisplayedName) const;
+	void deletePropertyInElement(qrRepo::RepoApi *repo, Id const &diagram, QString const &propDisplayedName) const;
 };
 
 }

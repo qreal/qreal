@@ -1,4 +1,7 @@
 #include "number.h"
+
+#include <qrkernel/exception/exception.h>
+
 #include "mathUtils/math.h"
 
 using namespace utils;
@@ -77,6 +80,10 @@ void Number::operator*=(Number const &mult)
 void Number::operator/=(Number const &div)
 {
 	if (mType == intType && div.type() == intType) {
+		if (div.value().toInt() == 0) {
+			throw qReal::Exception("Division by zero");
+		}
+
 		mValue = mValue.toInt() / div.value().toInt();
 	} else {
 		mType = Number::doubleType;

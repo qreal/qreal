@@ -13,7 +13,6 @@ class LoopNode : public ConditionalNode
 public:
 	explicit LoopNode(Id const &idBinded, QObject *parent = 0);
 
-	virtual QString toString(GeneratorCustomizer &customizer, int indent) const;
 
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
 
@@ -23,7 +22,8 @@ public:
 	ZoneNode *bodyZone();
 
 protected:
-	virtual QLinkedList<SemanticNode *> children() const;
+	QLinkedList<SemanticNode *> children() const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
 
 private:
 	ZoneNode *mBodyZone;  // Takes ownership

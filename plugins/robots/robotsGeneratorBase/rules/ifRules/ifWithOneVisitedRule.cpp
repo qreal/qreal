@@ -12,11 +12,11 @@ bool IfWithOneVisitedRule::apply()
 {
 	int visitedCount = 0;
 
-	if (mThenLink.targetVisited) {
+	if (alreadyCreated(mThenLink)) {
 		++visitedCount;
 	}
 
-	if (mElseLink.targetVisited) {
+	if (alreadyCreated(mElseLink)) {
 		++visitedCount;
 	}
 
@@ -24,13 +24,15 @@ bool IfWithOneVisitedRule::apply()
 		return false;
 	}
 
-	IfNode * const thisNode = static_cast<IfNode *>(mTree->findNodeFor(mId));
+	LinkInfo const &visitedLink = alreadyCreated(mThenLink) ? mThenLink : mElseLink;
+	LinkInfo const &unvisitedLink = alreadyCreated(mThenLink) ? mElseLink : mThenLink;
 
-	LinkInfo const &visitedLink = mThenLink.targetVisited ? mThenLink : mElseLink;
-	LinkInfo const &unvisitedLink = mThenLink.targetVisited ? mElseLink : mThenLink;
+	IfNode * const thisNode = static_cast<IfNode *>(mTree->findNodeFor(mId));
+	SemanticNode *newNode = mTree->produceNodeFor(unvisitedLink.target);
 
 	NonZoneNode * const nextNode = mTree->findNodeFor(visitedLink.target);
 	if (nextNode->parentZone() != thisNode->parentZone()) {
+		(alreadyCreated(mThenLink) ? thisNode->elseZone() : thisNode->thenZone())->appendChild(newNode);
 		return false;
 	}
 
@@ -38,11 +40,10 @@ bool IfWithOneVisitedRule::apply()
 	loop->bodyZone()->removeChild(thisNode);
 	loop->bindTo(mId);
 	loop->setForm(true);
-	if (mElseLink.targetVisited) {
+	if (alreadyCreated(mElseLink)) {
 		loop->invertCondition();
 	}
 
-	SemanticNode *newNode = mTree->produceNodeFor(unvisitedLink.target);
 	loop->appendSibling(newNode);
 
 	return true;

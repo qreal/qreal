@@ -3,7 +3,7 @@
 
 using namespace qReal;
 
-MiniMapShell::MiniMapShell(EditorView *parent, MiniMap *miniMap)
+MiniMapShell::MiniMapShell(EditorView *parent, MiniMap * miniMap)
 	: QWidget()
 	, mMainLayout(new QVBoxLayout())
 	, mAuxiliaryLayout(new QHBoxLayout())
