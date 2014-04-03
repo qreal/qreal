@@ -10,6 +10,6 @@ HEADERS += \
         $$PWD/hotKeyActionInfo.h \
         $$PWD/systemEvents.h \
         $$PWD/systemEventsInterface.h \
-    toolPluginInterface/usedInterfaces/hintInterface.h
+		$$PWD/usedInterfaces/hintInterface.h
 
 SOURCES +=

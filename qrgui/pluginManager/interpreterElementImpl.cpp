@@ -481,7 +481,12 @@ QStringList InterpreterElementImpl::toPortTypes() const
 
 enums::linkShape::LinkShape InterpreterElementImpl::shapeType() const
 {
-	return shapeTypeByString(mEditorRepoApi->stringProperty(mId, "shape"));
+	QString shape = "";
+	if (mEditorRepoApi->hasProperty(mId, "shape")) {
+		shape = mEditorRepoApi->stringProperty(mId, "shape");
+	}
+
+	return shapeTypeByString(shape);
 }
 
 enums::linkShape::LinkShape InterpreterElementImpl::shapeTypeByString(QString const &type) const

@@ -207,6 +207,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
+	connect(mUi->actionCutElementsOnDiagram, SIGNAL(triggered()), this, SLOT(cutElementsOnDiagram()));
 	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
 	connect(mUi->actionPasteReference, SIGNAL(triggered()), this, SLOT(pasteCopyOfLogical()));
@@ -238,6 +239,7 @@ void MainWindow::connectActions()
 	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
 
 	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this, SLOT(changePaletteRepresentation()));
+	connect(&mPreferencesDialog, &PreferencesDialog::toolbarSizeChanged, this, &MainWindow::resetToolbarSize);
 	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged()), &mPreferencesDialog, SLOT(changePaletteParameters()));
 
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
@@ -435,14 +437,12 @@ void MainWindow::sceneSelectionChanged()
 		return;
 	}
 
-	QList<Element*> elements;
 	QList<Element*> selected;
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
 	foreach (QGraphicsItem* item, items) {
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
-			elements.append(element);
 			if (element->isSelected()) {
 				selected.append(element);
 				element->setSelectionState(true);
@@ -898,9 +898,17 @@ void MainWindow::deleteFromDiagram()
 	}
 }
 
+void MainWindow::cutElementsOnDiagram()
+{
+	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
+	if (scene) {
+		scene->cut();
+	}
+}
+
 void MainWindow::copyElementsOnDiagram()
 {
-	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
+	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
 	if (scene) {
 		scene->copy();
 	}
@@ -908,7 +916,7 @@ void MainWindow::copyElementsOnDiagram()
 
 void MainWindow::pasteOnDiagram()
 {
-	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
+	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
 	if (scene) {
 		scene->paste(false);
 	}
@@ -916,7 +924,7 @@ void MainWindow::pasteOnDiagram()
 
 void MainWindow::pasteCopyOfLogical()
 {
-	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
+	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
 	if (scene) {
 		scene->paste(true);
 	}
@@ -1725,6 +1733,11 @@ QAction *MainWindow::actionCopyElementsOnDiagram() const
 	return mUi->actionCopyElementsOnDiagram;
 }
 
+QAction *MainWindow::actionCutElementsOnDiagram() const
+{
+	return mUi->actionCutElementsOnDiagram;
+}
+
 QAction *MainWindow::actionPasteOnDiagram() const
 {
 	return mUi->actionPasteOnDiagram;
@@ -1793,11 +1806,7 @@ void MainWindow::updatePaletteIcons()
 
 void MainWindow::setUsabilityMode(bool mode)
 {
-	if (mode) {
-		mUsabilityTestingToolbar->show();
-	} else {
-		mUsabilityTestingToolbar->hide();
-	}
+	mUsabilityTestingToolbar->setVisible(mode);
 }
 
 void MainWindow::startUsabilityTest()
@@ -1817,14 +1826,22 @@ void MainWindow::finishUsabilityTest()
 void MainWindow::applySettings()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
-		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
+		EditorView * const tab = dynamic_cast<EditorView *>(mUi->tabs->widget(i));
+		EditorViewScene *scene = tab ? dynamic_cast <EditorViewScene *>(tab->scene()) : nullptr;
 		if (scene) {
 			scene->updateEdgeElements();
 			scene->invalidate();
 		}
 	}
+
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
+}
+
+void MainWindow::resetToolbarSize(int size)
+{
+	for (QToolBar * const bar : findChildren<QToolBar *>()) {
+		bar->setIconSize(QSize(size, size));
+	}
 }
 
 void MainWindow::setBackReference(QPersistentModelIndex const &index, QString const &data)
@@ -2033,6 +2050,7 @@ void MainWindow::initDocks()
 	mUi->errorDock->setWidget(mUi->errorListWidget);
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);
+	resetToolbarSize(SettingsManager::value("toolbarSize").toInt());
 }
 
 void MainWindow::initGridProperties()
@@ -2050,6 +2068,7 @@ void MainWindow::initExplorers()
 	mUi->propertyEditor->setModel(&mPropertyModel);
 
 	mUi->graphicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
+	mUi->graphicalModelExplorer->addAction(mUi->actionCutElementsOnDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionPasteReference);
@@ -2059,6 +2078,7 @@ void MainWindow::initExplorers()
 	mUi->graphicalModelExplorer->setExploser(&mModels->logicalModelAssistApi().exploser());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
+	mUi->logicalModelExplorer->addAction(mUi->actionCutElementsOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionPasteReference);

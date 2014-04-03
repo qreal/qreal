@@ -1,12 +1,14 @@
+#include "uxInfo.h"
+
 #include <QtCore/QDir>
 #include <QtCore/QPointF>
-
-#include "uxInfo.h"
+#include <QtWidgets/QApplication>
 
 using namespace utils;
 
-UXInfo* UXInfo::object = NULL;
+UXInfo* UXInfo::object = nullptr;
 
+QString const uxDir = "uxInfo";
 QString const elementCreationFileName = "/elementOnSceneCreation.txt";
 QString const errorReporterFileName = "/errorReporter.txt";
 QString const totalTimeFileName = "/totalTime.txt";
@@ -17,43 +19,46 @@ QString const uxInfoDirName = "usabilityFiles";
 
 UXInfo::UXInfo()
 {
-	QDir dir(".");
+	QString const dir = QApplication::applicationDirPath() + "/" + uxDir;
+	if (!QDir(dir).exists()) {
+		QDir(dir).mkpath(dir);
+	}
 
 	///create and open all files
-	mElementOnSceneCreationFile.setFileName(dir.absolutePath() + elementCreationFileName);
+	mElementOnSceneCreationFile.setFileName(dir + elementCreationFileName);
 	if (mElementOnSceneCreationFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		mElementOnSceneCreationStream.setDevice(&mElementOnSceneCreationFile);
 	}
 
 	mCreationNumber = 1;
 
-	mErrorReporterFile.setFileName(dir.absolutePath() + errorReporterFileName);
+	mErrorReporterFile.setFileName(dir + errorReporterFileName);
 	if (mErrorReporterFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		mErrorReporterStream.setDevice(&mErrorReporterFile);
 	}
 
 	mErrorReporterNumber = 1;
 
-	mTotalTimeFile.setFileName(dir.absolutePath() + totalTimeFileName);
+	mTotalTimeFile.setFileName(dir + totalTimeFileName);
 	if (mTotalTimeFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		mTotalTimeStream.setDevice(&mTotalTimeFile);
 	}
 
-	mMenuElementUsingFile.setFileName(dir.absolutePath() + menuElementUsingFileName);
+	mMenuElementUsingFile.setFileName(dir + menuElementUsingFileName);
 	if (mMenuElementUsingFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		mMenuElementUsingStream.setDevice(&mMenuElementUsingFile);
 	}
 
 	mMenuElementUsingNumber = 1;
 
-	mMouseClickPositionFile.setFileName(dir.absolutePath() + mouseClickPositionFileName);
+	mMouseClickPositionFile.setFileName(dir + mouseClickPositionFileName);
 	if (mMouseClickPositionFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		mMouseClickPositionStream.setDevice(&mMouseClickPositionFile);
 	}
 
 	mMouseClickPositionNumber = 1;
 
-	mSettingChangesFile.setFileName(dir.absolutePath() + settingChangesFileName);
+	mSettingChangesFile.setFileName(dir + settingChangesFileName);
 	if (mSettingChangesFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		mSettingChangesStream.setDevice(&mSettingChangesFile);
 	}

@@ -14,6 +14,7 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 	mUi->setupUi(this);
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
+	connect(mUi->toolbarSizeSlider, &QSlider::valueChanged, this, &PreferencesMiscellaniousPage::toolbarSizeChanged);
 
 	mUi->colorComboBox->addItems(QColor::colorNames());
 
@@ -38,9 +39,10 @@ void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 
 void PreferencesMiscellaniousPage::browseImagesPath()
 {
-	QString path = utils::QRealFileDialog::getExistingDirectory("OpenImagesOnMiscellaniousPage", this, "Open Directory");
+	QString const path = utils::QRealFileDialog::getExistingDirectory("OpenImagesOnMiscellaniousPage"
+			, this, tr("Open Directory")).replace("\\", "/");
 	if (!path.isEmpty()) {
-		mUi->imagesPathEdit->setText(path.replace("\\", "/"));
+		mUi->imagesPathEdit->setText(path);
 	}
 }
 
@@ -53,6 +55,8 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("recentProjectsLimit", mUi->recentProjectsLimitSpinBox->value());
 	SettingsManager::setValue("PaintOldEdgeMode", mUi->paintOldLineCheckBox->isChecked());
 	SettingsManager::setValue("oldLineColor", mUi->colorComboBox->currentText());
+
+	SettingsManager::setValue("toolbarSize", mUi->toolbarSizeSlider->value());
 
 	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
 		emit iconsetChanged();
@@ -69,6 +73,8 @@ void PreferencesMiscellaniousPage::restoreSettings()
 	QString curColor = SettingsManager::value("oldLineColor").toString();
 	int curColorIndex = mUi->colorComboBox->findText(curColor);
 	mUi->colorComboBox->setCurrentIndex(curColorIndex);
+
+	mUi->toolbarSizeSlider->setValue(SettingsManager::value("toolbarSize").toInt());
 
 	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
 	mUi->imagesPathEdit->setText(mLastIconsetPath);

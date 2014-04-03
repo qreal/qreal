@@ -27,9 +27,9 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->setupUi(this);
 
 	// changing grid size in QReal:Robots is forbidden
-	connect(mUi->gridWidthSlider, SIGNAL(sliderMoved(int)), this, SLOT(widthGridSliderMoved(int)));
-	connect(mUi->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
-	connect(mUi->dragAreaSizeSlider, SIGNAL(sliderMoved(int)), this, SLOT(dragAreaSliderMoved(int)));
+	connect(mUi->gridWidthSlider, SIGNAL(valueChanged(int)), this, SLOT(widthGridSliderMoved(int)));
+	connect(mUi->indexGridSlider, SIGNAL(valueChanged(int)), this, SLOT(indexGridSliderMoved(int)));
+	connect(mUi->dragAreaSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(dragAreaSliderMoved(int)));
 	connect(mUi->fontCheckBox, SIGNAL(toggled(bool)), this, SLOT(manualFontCheckBoxChecked(bool)));
 	connect(mUi->fontSelectionButton, SIGNAL(clicked()),this, SLOT(fontSelectionButtonClicked()));
 	connect(mUi->paletteComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(paletteComboBoxClicked(int)));
@@ -116,7 +116,6 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("EmbeddedLinkerSize", mUi->embeddedLinkerSizeSlider->value());
 	SettingsManager::setValue("LineType", mUi->lineMode->currentIndex() - 1);
 	SettingsManager::setValue("LoopEdgeBoundsIndent", mUi->loopEdgeBoundsIndent->value());
-	SettingsManager::setValue("zoomFactor", mUi->zoomFactorSlider->value());
 	SettingsManager::setValue("ShowGrid", mUi->showGridCheckBox->isChecked());
 	SettingsManager::setValue("ShowAlignment", mUi->showAlignmentCheckBox->isChecked());
 	SettingsManager::setValue("ActivateGrid", mUi->activateGridCheckBox->isChecked());
@@ -160,7 +159,6 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->activateAlignmentCheckBox->setChecked(SettingsManager::value("ActivateAlignment").toBool());
 	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent").toInt());
 	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
-	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor").toInt());
 	mUi->loopEdgeBoundsIndent->setValue(SettingsManager::value("LoopEdgeBoundsIndent").toInt());
 
 	mUi->enableMoveLabelsCheckBox->setChecked(SettingsManager::value("MoveLabels").toBool());

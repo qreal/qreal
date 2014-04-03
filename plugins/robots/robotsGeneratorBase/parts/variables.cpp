@@ -138,13 +138,13 @@ QMap<QString, QStringList> Variables::variablesExpressionsMap(QStringList const 
 QMap<QString, enums::variableType::VariableType> Variables::nonGenerableReservedVariables() const
 {
 	QMap<QString, enums::variableType::VariableType> result;
-	result.insert("Sensor1", enums::variableType::intType);
-	result.insert("Sensor2", enums::variableType::intType);
-	result.insert("Sensor3", enums::variableType::intType);
-	result.insert("Sensor4", enums::variableType::intType);
-	result.insert("EncoderA", enums::variableType::intType);
-	result.insert("EncoderB", enums::variableType::intType);
-	result.insert("EncoderC", enums::variableType::intType);
+	result.insert("sensor1", enums::variableType::intType);
+	result.insert("sensor2", enums::variableType::intType);
+	result.insert("sensor3", enums::variableType::intType);
+	result.insert("sensor4", enums::variableType::intType);
+	result.insert("encoderA", enums::variableType::intType);
+	result.insert("encoderB", enums::variableType::intType);
+	result.insert("encoderC", enums::variableType::intType);
 	return result;
 }
 

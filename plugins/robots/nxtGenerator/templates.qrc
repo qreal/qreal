@@ -108,5 +108,8 @@
         <file>templates/variables/intConstantDeclaration.t</file>
         <file>templates/variables/intVariableDeclaration.t</file>
         <file>templates/whatTime.t</file>
+        <file>templates/sensors/readColorRecognition.t</file>
+        <file>templates/goto.t</file>
+        <file>templates/label.t</file>
     </qresource>
 </RCC>

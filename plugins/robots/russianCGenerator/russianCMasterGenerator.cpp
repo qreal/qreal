@@ -20,24 +20,14 @@ QString RussianCMasterGenerator::targetPath()
 	return QString("%1/%2.c").arg(mProjectDir, mProjectName);
 }
 
-void RussianCMasterGenerator::beforeGeneration()
+bool RussianCMasterGenerator::supportsGotoGeneration() const
 {
-	createProjectDir(mProjectDir);
+	return false;
 }
 
 void RussianCMasterGenerator::afterGeneration()
 {
 	saveImages(mProjectDir);
-}
-
-void RussianCMasterGenerator::createProjectDir(QString const &projectDir)
-{
-	if (!QDir(projectDir).exists()) {
-		if (!QDir("russianC/").exists()) {
-			QDir().mkdir("russianC/");
-		}
-		QDir().mkdir(projectDir);
-	}
 }
 
 void RussianCMasterGenerator::saveImages(QString const &projectDir)

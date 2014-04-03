@@ -45,6 +45,7 @@ private:
 	Id mId;
 	MainWindow &mMainWindow;
 	EditPropertiesDialog *mEditPropertiesDialog; // Does not have ownership.
+	QStringList mPropertiesNames;
 };
 
 }

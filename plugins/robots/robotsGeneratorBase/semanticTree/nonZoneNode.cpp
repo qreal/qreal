@@ -21,3 +21,8 @@ void NonZoneNode::appendSiblings(QLinkedList<SemanticNode *> const &nodes)
 {
 	parentZone()->appendChildren(nodes);
 }
+
+void NonZoneNode::insertSiblingAfterThis(SemanticNode *node)
+{
+	parentZone()->insertAfrer(this, node);
+}

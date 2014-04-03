@@ -25,9 +25,9 @@ QString NxtOsekMasterGenerator::targetPath()
 	return QString("%1/%2.c").arg(mProjectDir, mProjectName);
 }
 
-void NxtOsekMasterGenerator::beforeGeneration()
+bool NxtOsekMasterGenerator::supportsGotoGeneration() const
 {
-	createProjectDir(mProjectDir);
+	return true;
 }
 
 void NxtOsekMasterGenerator::afterGeneration()
@@ -35,16 +35,6 @@ void NxtOsekMasterGenerator::afterGeneration()
 	generateOilFile(mProjectName, mProjectDir);
 	generateMakeFile(mProjectName, mProjectDir);
 	saveImages(mProjectDir);
-}
-
-void NxtOsekMasterGenerator::createProjectDir(QString const &projectDir)
-{
-	if (!QDir(projectDir).exists()) {
-		if (!QDir("nxt-tools/").exists()) {
-			QDir().mkdir("nxt-tools/");
-		}
-		QDir().mkdir(projectDir);
-	}
 }
 
 void NxtOsekMasterGenerator::generateOilFile(QString const &projectName

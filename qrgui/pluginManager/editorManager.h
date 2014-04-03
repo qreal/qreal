@@ -102,6 +102,8 @@ public:
 	IdList children(Id const &parent) const override;
 	QString shape(Id const &id) const override;
 	void updateShape(Id const &id, QString const &graphics) const override;
+	virtual void resetIsHidden(Id const &id) const;
+	virtual QString getIsHidden(Id const &id) const;
 	void deleteElement(MainWindow *mainWindow, Id const &id) const override;
 	bool isRootDiagramNode(Id const &id) const override;
 	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const override;
@@ -111,6 +113,13 @@ public:
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const override;
 	void saveMetamodel(QString const &newMetamodelFileName) override;
 	QString saveMetamodelFilePath() const override;
+
+	IdList propertiesWithTheSameName(Id const &id
+			, QString const &propertyCurrentName, QString const &propertyNewName) const override;
+
+	QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const override;
+	void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const override;
+	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
 
 private:
 	QStringList mPluginsLoaded;

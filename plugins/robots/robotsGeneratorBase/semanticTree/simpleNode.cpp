@@ -10,7 +10,7 @@ SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
 {
 }
 
-QString SimpleNode::toString(GeneratorCustomizer &customizer, int indent) const
+QString SimpleNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
 {
 	switch (mSyntheticBinding) {
 	case breakNode:
@@ -18,6 +18,9 @@ QString SimpleNode::toString(GeneratorCustomizer &customizer, int indent) const
 				, customizer)->generate(), indent);
 	case continueNode:
 		return utils::StringUtils::addIndent(customizer.factory()->continueGenerator(mId
+				, customizer)->generate(), indent);
+	case gotoNode:
+		return utils::StringUtils::addIndent(customizer.factory()->gotoSimpleGenerator(mId
 				, customizer)->generate(), indent);
 	default:
 		return utils::StringUtils::addIndent(customizer.factory()->simpleGenerator(mId

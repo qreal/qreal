@@ -545,13 +545,20 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="details/robotsBlockParser.cpp" line="6"/>
-        <source>Sensor</source>
-        <translation>Сенсор</translation>
+        <source>sensor</source>
+        <oldsource>Sensor</oldsource>
+        <translation>sensor</translation>
     </message>
     <message>
         <location filename="details/robotsBlockParser.cpp" line="7"/>
-        <source>Encoder</source>
-        <translation>Энкодер</translation>
+        <source>encoder</source>
+        <oldsource>Encoder</oldsource>
+        <translation>encoder</translation>
+    </message>
+    <message>
+        <location filename="details/robotsBlockParser.cpp" line="8"/>
+        <source>time</source>
+        <translation>time</translation>
     </message>
     <message>
         <source>Sensor1</source>
@@ -899,27 +906,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::Interpreter</name>
     <message>
-        <location filename="details/interpreter.cpp" line="94"/>
+        <location filename="details/interpreter.cpp" line="99"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="98"/>
+        <location filename="details/interpreter.cpp" line="103"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="209"/>
+        <location filename="details/interpreter.cpp" line="215"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="213"/>
+        <location filename="details/interpreter.cpp" line="219"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="280"/>
+        <location filename="details/interpreter.cpp" line="287"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
@@ -982,9 +989,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::TcpRobotCommunicationThread</name>
     <message>
-        <location filename="details/robotCommunication/tcpRobotCommunicationThread.cpp" line="43"/>
         <source>Unable to resolve %1. Check server address anfd try again</source>
-        <translation>Сервер %1 не найден. Проверьте адрес и попробуйте еще раз </translation>
+        <translation type="obsolete">Сервер %1 не найден. Проверьте адрес и попробуйте еще раз </translation>
+    </message>
+    <message>
+        <location filename="details/robotCommunication/tcpRobotCommunicationThread.cpp" line="48"/>
+        <source>Unable to resolve %1. Check server address and try again.</source>
+        <translation>Сервер %1 не найден. Проверьте адрес и попробуйте еще раз.</translation>
     </message>
 </context>
 <context>
@@ -1306,8 +1317,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
     <message>
+        <location filename="details/blocks/waitForGyroscopeSensorBlock.cpp" line="31"/>
         <source>Gyroscope</source>
-        <translation type="obsolete">Гироскоп</translation>
+        <translation>Гироскоп</translation>
     </message>
 </context>
 <context>
@@ -1390,18 +1402,18 @@ p, li { white-space: pre-wrap; }
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="792"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="799"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="792"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="812"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="799"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="819"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="812"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="819"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
