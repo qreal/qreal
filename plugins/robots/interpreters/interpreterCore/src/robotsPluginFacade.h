@@ -4,6 +4,7 @@
 #include <QtCore/QScopedPointer>
 
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <interpreterBase/eventsForKitPluginInterface.h>
 
 #include "customizer.h"
 #include "managers/kitPluginManager.h"
@@ -47,6 +48,10 @@ private:
 
 	void initSensorWidgets();
 
+	void initKitPlugins(qReal::PluginConfigurator const &configurer);
+
+	void connectEventsForKitPlugin();
+
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
 
@@ -71,6 +76,8 @@ private:
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
 
 	BlocksFactoryManager mBlocksFactoryManager;
+
+	interpreterBase::EventsForKitPluginInterface mEventsForKitPlugin;
 };
 
 }

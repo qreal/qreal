@@ -3,11 +3,12 @@
 #include <QtCore/QObject>
 
 #include <qrkernel/ids.h>
+#include <interpreterBase/interpreterControlInterface.h>
 
 namespace interpreterCore {
 namespace interpreter {
 
-class InterpreterInterface : public QObject
+class InterpreterInterface : public interpreterBase::InterpreterControlInterface
 {
 	Q_OBJECT
 
@@ -17,9 +18,11 @@ public:
 	/// @todo What it is doing here?
 	virtual qReal::IdList providedBlocks() const = 0;
 
+signals:
+	void started();
+	void stopped();
+
 public slots:
-	virtual void interpret() = 0;
-	virtual void stopRobot() = 0;
 	virtual void connectToRobot() = 0;
 };
 

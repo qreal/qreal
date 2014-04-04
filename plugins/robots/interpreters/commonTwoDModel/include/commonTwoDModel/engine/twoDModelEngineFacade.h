@@ -16,6 +16,8 @@ namespace engine {
 
 class TwoDModelEngineFacade : public TwoDModelControlInterface
 {
+	Q_OBJECT
+
 public:
 	TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel);
 	~TwoDModelEngineFacade();
@@ -23,6 +25,10 @@ public:
 	interpreterBase::SensorsConfigurationProvider &sensorsConfigurationProvider() override;
 
 	TwoDModelEngineInterface &engine();
+
+public slots:
+	void onStartInterpretation() override;
+	void onStopInterpretation() override;
 
 private:
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.

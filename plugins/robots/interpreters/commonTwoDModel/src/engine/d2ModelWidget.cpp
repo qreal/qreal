@@ -47,6 +47,7 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	, mFirstShow(true)
 	, mRobotModel(robotModel)
 //	, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
+	, mTimeline(nullptr)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -168,6 +169,8 @@ void D2ModelWidget::connectUiButtons()
 
 	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(setInitialRobotBeforeRun()));
 	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
+
+	initRunStopButtons();
 }
 
 void D2ModelWidget::initButtonGroups()
@@ -270,13 +273,13 @@ void D2ModelWidget::init(bool isActive)
 	update();
 }
 
-void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
-{
-	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
-	connect(mUi->runButton, SIGNAL(clicked()), this, SLOT(saveInitialRobotBeforeRun()), Qt::UniqueConnection);
-	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
-	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
-}
+//void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
+//{
+//	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
+//	connect(mUi->runButton, SIGNAL(clicked()), this, SLOT(saveInitialRobotBeforeRun()), Qt::UniqueConnection);
+//	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
+//	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
+//}
 
 void D2ModelWidget::saveInitialRobotBeforeRun()
 {
@@ -1353,4 +1356,10 @@ void D2ModelWidget::onSensorConfigurationChanged(const QString &robotModel
 	}
 
 	/// @todo Report internal error.
+}
+
+void D2ModelWidget::initRunStopButtons()
+{
+	connect(mUi->runButton, &QPushButton::clicked, this, &D2ModelWidget::runButtonPressed);
+	connect(mUi->stopButton, &QPushButton::clicked, this, &D2ModelWidget::stopButtonPressed);
 }

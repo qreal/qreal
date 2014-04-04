@@ -77,6 +77,10 @@ public:
 signals:
 	void d2MotorTimeout();
 
+	void runButtonPressed();
+
+	void stopButtonPressed();
+
 private slots:
 	void recalculateParams();
 	void nextFragment();

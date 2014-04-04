@@ -42,6 +42,8 @@ HEADERS += \
 	$$PWD/include/interpreterBase/kitPluginInterface.h \
 	$$PWD/include/interpreterBase/additionalPreferences.h \
 	$$PWD/include/interpreterBase/sensorsConfigurationProvider.h \
+	$$PWD/include/interpreterBase/eventsForKitPluginInterface.h \
+	$$PWD/include/interpreterBase/interpreterControlInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/block.h \
 	$$PWD/include/interpreterBase/blocksBase/blockInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/blockParserInterface.h \

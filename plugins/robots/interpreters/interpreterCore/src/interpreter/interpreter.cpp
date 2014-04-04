@@ -130,6 +130,7 @@ void Interpreter::stopRobot()
 	qDeleteAll(mThreads);
 	mThreads.clear();
 	mBlocksTable->setFailure();
+	emit stopped();
 }
 
 void Interpreter::connectedSlot(bool success)
@@ -176,6 +177,8 @@ void Interpreter::sensorsConfiguredSlot()
 				, *mInterpretersInterface, currentDiagramId, *mBlocksTable);
 
 		addThread(initialThread);
+
+		emit started();
 	}
 }
 

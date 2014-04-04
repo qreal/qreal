@@ -150,6 +150,8 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 {
 	mD2ModelWidget = new D2ModelWidget(this, mWorldModel, mRobotModel/*, mDisplay*/);
 	connectSensorsConfigurationProvider(mD2ModelWidget);
+	connect(mD2ModelWidget, &D2ModelWidget::runButtonPressed, this, &D2RobotModel::runButtonPressed);
+	connect(mD2ModelWidget, &D2ModelWidget::stopButtonPressed, this, &D2RobotModel::stopButtonPressed);
 	return mD2ModelWidget;
 }
 

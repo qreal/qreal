@@ -21,6 +21,9 @@ class NxtKitInterpreterPlugin : public QObject, public interpreterBase::KitPlugi
 public:
 	NxtKitInterpreterPlugin();
 
+	void init(interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
+
 	QString kitId() const override;
 
 	QString friendlyKitName() const override;
@@ -49,6 +52,7 @@ private:
 	blocks::NxtBlocksFactory mBlocksFactory;
 	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
+	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 };
 
 }

@@ -126,8 +126,9 @@ signals:
 	/// @param xml World model description in xml format
 	void modelChanged(QDomDocument const &xml);
 
-	/// Emitted when sensor settings are changed in 2d model widget.
-//	void sensorChanged(int port, robots::enums::sensorType::SensorTypeEnum type);
+	void runButtonPressed();
+
+	void stopButtonPressed();
 
 protected:
 	virtual void changeEvent(QEvent *e);
@@ -259,6 +260,8 @@ private:
 	void syncCursorButtons();
 
 	void onFirstShow();
+
+	void initRunStopButtons();
 
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;

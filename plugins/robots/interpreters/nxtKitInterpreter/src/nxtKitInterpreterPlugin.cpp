@@ -18,6 +18,34 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
+void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+		, interpreterBase::InterpreterControlInterface &interpreterControl)
+{
+	connect(&eventsForKitPlugin
+			, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
+			, mTwoDModel.data()
+			, &twoDModel::TwoDModelControlInterface::onStartInterpretation
+			);
+
+	connect(&eventsForKitPlugin
+			, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
+			, mTwoDModel.data()
+			, &twoDModel::TwoDModelControlInterface::onStopInterpretation
+			);
+
+	connect(mTwoDModel.data()
+			, &twoDModel::TwoDModelControlInterface::runButtonPressed
+			, &interpreterControl
+			, &interpreterBase::InterpreterControlInterface::interpret
+			);
+
+	connect(mTwoDModel.data()
+			, &twoDModel::TwoDModelControlInterface::stopButtonPressed
+			, &interpreterControl
+			, &interpreterBase::InterpreterControlInterface::stopRobot
+			);
+}
+
 QString NxtKitInterpreterPlugin::kitId() const
 {
 	return "nxtKit";

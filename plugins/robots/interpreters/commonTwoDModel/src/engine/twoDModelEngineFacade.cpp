@@ -14,8 +14,11 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotM
 	/// @todo: why it can't be done in constructor?
 	mTwoDModel->createModelWidget();
 
-	QObject::connect(mTwoDModelActionInfo.action(), &QAction::triggered
+	connect(mTwoDModelActionInfo.action(), &QAction::triggered
 			, mTwoDModel.data(), &twoDModel::D2RobotModel::showModelWidget);
+
+	connect(mTwoDModel.data(), &D2RobotModel::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
+	connect(mTwoDModel.data(), &D2RobotModel::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
 }
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()
@@ -36,4 +39,14 @@ interpreterBase::SensorsConfigurationProvider &TwoDModelEngineFacade::sensorsCon
 TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 {
 	return *mTwoDModel;
+}
+
+void TwoDModelEngineFacade::onStartInterpretation()
+{
+	mTwoDModel->startInterpretation();
+}
+
+void TwoDModelEngineFacade::onStopInterpretation()
+{
+	mTwoDModel->stopRobot();
 }

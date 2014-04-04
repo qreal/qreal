@@ -7,6 +7,8 @@
 #include <qrkernel/ids.h>
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/eventsForKitPluginInterface.h>
+#include <interpreterBase/interpreterControlInterface.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 #include <interpreterBase/blocksBase/blocksFactoryInterface.h>
 #include <qrgui/toolPluginInterface/actionInfo.h>
@@ -18,6 +20,17 @@ class KitPluginInterface
 {
 public:
 	virtual ~KitPluginInterface() {}
+
+	/// Passes to kit plugin objects that allow it to communicate with engine.
+	/// @param eventsForKitPlugin - object with events raised in interpreter that plugin can use to perform custom
+	///        actions, for example, starting and stopping of interpretation.
+	/// @param interpreterControl - interface with methods that allow plugin to control interpreter, such as starting
+	///        and stopping it.
+	virtual void init(EventsForKitPluginInterface &eventsForKitPlugin, InterpreterControlInterface &interpreterControl)
+	{
+		Q_UNUSED(eventsForKitPlugin)
+		Q_UNUSED(interpreterControl)
+	}
 
 	/// Unique identifier of constructor kit.
 	virtual QString kitId() const = 0;
