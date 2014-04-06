@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QDialog>
 
+#include "restoreElementDialog.h"
 #include "pluginManager/editorManagerInterface.h"
 
 namespace Ui {
@@ -28,12 +29,15 @@ public:
 
 private slots:
 	void okButtonClicked();
+	void addNode();
 
 private:
 	Ui::AddNodeDialog *mUi;
 	MainWindow &mMainWindow;
 	Id const mDiagram;
+	QString mNodeName;
 	EditorManagerInterface const &mEditorManagerProxy;
+	RestoreElementDialog *mRestoreElementDialog;
 };
 
 }

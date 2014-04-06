@@ -95,8 +95,8 @@ public:
 	virtual QString getIsHidden(Id const &id) const = 0;
 	virtual void deleteElement(MainWindow *mainWindow, Id const &id) const = 0;
 	virtual bool isRootDiagramNode(Id const &id) const = 0;
-	virtual void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const = 0;
-	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+	virtual void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName, bool isRootDiagramNode) const = 0;
+	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName, QString const &labelText
 			, QString const &labelType, QString const &lineType
 			, QString const &beginType, QString const &endType) const = 0;
 	virtual QPair<Id, Id> createEditorAndDiagram(QString const &name) const = 0;
@@ -112,9 +112,11 @@ public:
 	virtual QList<QString> getPatternNames() const = 0;
 	virtual QSize iconSize(Id const &id) const = 0;
 
+	virtual IdList elementsWithTheSameName(Id const &diagram, QString const &name, QString const type) const = 0;
 	virtual IdList propertiesWithTheSameName(Id const &id, QString const &propCurrentName
 			, QString const &propNewName) const = 0;
 
+	virtual QStringList getPropertiesInformation(Id const &id) const = 0;
 	virtual QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const = 0;
 	virtual void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const = 0;
 	virtual void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const = 0;

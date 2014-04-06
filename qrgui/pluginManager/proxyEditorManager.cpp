@@ -281,15 +281,15 @@ bool ProxyEditorManager::isRootDiagramNode(Id const &id) const
 	return mProxiedEditorManager->isRootDiagramNode(id);
 }
 
-void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
+void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name, QString const &displayedName, bool isRootDiagramNode) const
 {
-	mProxiedEditorManager->addNodeElement(diagram, name, isRootDiagramNode);
+	mProxiedEditorManager->addNodeElement(diagram, name, displayedName, isRootDiagramNode);
 }
 
-void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName, QString const &labelText
 		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
 {
-	mProxiedEditorManager->addEdgeElement(diagram, name, labelText, labelType, lineType, beginType, endType);
+	mProxiedEditorManager->addEdgeElement(diagram, name, displayedName, labelText, labelType, lineType, beginType, endType);
 }
 
 QPair<Id, Id> ProxyEditorManager::createEditorAndDiagram(QString const &name) const
@@ -352,10 +352,20 @@ QSize ProxyEditorManager::iconSize(Id const &id) const
 	return mProxiedEditorManager->iconSize(id);
 }
 
+IdList ProxyEditorManager::elementsWithTheSameName(Id const &diagram, QString const &name, QString const type) const
+{
+	return mProxiedEditorManager->elementsWithTheSameName(diagram, name, type);
+}
+
 IdList ProxyEditorManager::propertiesWithTheSameName(Id const &id
 		, QString const &propCurrentName, QString const &propNewName) const
 {
 	return mProxiedEditorManager->propertiesWithTheSameName(id, propCurrentName, propNewName);
+}
+
+QStringList ProxyEditorManager::getPropertiesInformation(Id const &id) const
+{
+	return mProxiedEditorManager->getPropertiesInformation(id);
 }
 
 QStringList ProxyEditorManager::getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const

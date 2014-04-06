@@ -1,7 +1,7 @@
 #include "addNodeDialog.h"
-
 #include "ui_addNodeDialog.h"
 #include "mainwindow/mainWindow.h"
+#include "restoreElementDialog.h"
 
 using namespace qReal;
 using namespace gui;
@@ -28,8 +28,26 @@ void AddNodeDialog::okButtonClicked()
 	if (mUi->nameEdit->text().isEmpty()) {
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
 	} else {
-		mEditorManagerProxy.addNodeElement(mDiagram, mUi->nameEdit->text(), mUi->checkBox->isChecked());
-		mMainWindow.loadPlugins();
-		done(QDialog::Accepted);
+		mNodeName = mUi->nameEdit->text();
+		IdList const nodesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram, mUi->nameEdit->text(), "MetaEntityNode");
+		if (!nodesWithTheSameNameList.isEmpty()) {
+			mNodeName = mUi->nameEdit->text() + "_" + nodesWithTheSameNameList.count();
+			mRestoreElementDialog = new RestoreElementDialog(this, mMainWindow, mEditorManagerProxy, nodesWithTheSameNameList);
+			mRestoreElementDialog->setModal(true);
+			mRestoreElementDialog->show();
+			connect(mRestoreElementDialog, &qReal::RestoreElementDialog::createNewChosen
+					, this, &AddNodeDialog::addNode);
+			connect(mRestoreElementDialog, &qReal::RestoreElementDialog::restoreChosen
+					, this, &AddNodeDialog::done);
+		} else {
+			addNode();
+		}
 	}
+}
+
+void AddNodeDialog::addNode()
+{
+	mEditorManagerProxy.addNodeElement(mDiagram, mNodeName, mUi->nameEdit->text(), mUi->checkBox->isChecked());
+	mMainWindow.loadPlugins();
+	done(QDialog::Accepted);
 }
