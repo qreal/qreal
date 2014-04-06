@@ -8,6 +8,8 @@
 #include <QtGui/QFont>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+#include <QtCore/QFileInfo>
+#include <QtCore/QHash>
 #include <QtGui/QIconEngine>
 
 #include <qrkernel/settingsManager.h>
@@ -38,8 +40,7 @@ public:
 
 private:
 	QString mWorkingDirName;
-	QMap<QString, QString> mReallyUsedFiles;
-	QMap<QString, QByteArray> mMapFileImage;
+	QHash<QString, QByteArray> mMapFileImage;
 	int first_size_x;
 	int first_size_y;
 	int current_size_x;
@@ -90,12 +91,20 @@ private:
 	float coord_def(QDomElement &element, QString coordName, int current_size, int first_size);
 	void logger(QString path, QString string);
 
-	/// Reads byte array from the file that is obtained by inner rules from the given one.
-	/// Specified file path may be modified with storing into it really read file path.
-	QByteArray loadPixmap(QString &filePath);
-	QByteArray loadPixmapFromExistingFile(QString &filePath);
+	/// Selects "best available" image file, using following rules:
+	/// - if there is .svg file with given name in a directory from filePath, it is used as actual image file.
+	/// - else if there is a file with other extension but with correct name, it is used.
+	/// - else, if there is no such file, it tries to select a file with name "default" in given directory, using the
+	///   rules above.
+	/// - if everything above fails, system default image file, from qrgui/icons (or, when compiled,
+	///   from ":/icons/default.svg"), is used.
+	static QFileInfo selectBestImageFile(QString const &filePath);
 
-	/** @brief checks that str[i] is not L, C, M or Z*/
+	/// Loads pixmap from given file, returns empty QByteArray if file does not exist.
+	static QByteArray loadPixmap(QFileInfo const &fileInfo);
+
+	/// checks that str[i] is not L, C, M or Z
+	/// @todo Not so helpful comment
 	bool isNotLCMZ(QString str, int i);
 };
 
