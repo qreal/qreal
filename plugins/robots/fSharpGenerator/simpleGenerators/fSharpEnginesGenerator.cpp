@@ -16,7 +16,7 @@ FSharpEnginesGenerator::FSharpEnginesGenerator(qrRepo::RepoApi const &repo
 					: "engines/forward.t"
 			, QList<Binding *>()
 					<< Binding::createMultiTarget("@@PORT@@", "Ports"
-                            , dynamic_cast<fSharp::FSharpGeneratorFactory *>(customizer.factory())->
+							, dynamic_cast<fSharp::FSharpGeneratorFactory *>(customizer.factory())->
 									enginesConverter(repo.property(id, "powerMotors").toBool()))
 					<< Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter())
 			, parent)

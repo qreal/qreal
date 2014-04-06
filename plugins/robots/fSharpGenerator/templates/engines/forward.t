@@ -1,1 +1,1 @@
-brick.motor("@@PORT@@").setPower(@@POWER@@);
+PowerMotor("@@PORT@@").SetPower(@@POWER@@)

@@ -1,4 +1,4 @@
 if @@CONDITION@@ then
-    @@THEN_BODY@@
+@@THEN_BODY@@
 else
-    @@ELSE_BODY@@
+@@ELSE_BODY@@

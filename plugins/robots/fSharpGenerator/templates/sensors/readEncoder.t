@@ -1,1 +1,1 @@
-brick.encoder("@@PORT@@").read()
+AnalogSensor("JA@@PORT@@").Read

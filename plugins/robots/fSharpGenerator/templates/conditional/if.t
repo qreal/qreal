@@ -1,2 +1,2 @@
 if @@CONDITION@@ then
-    @@THEN_BODY@@
+@@THEN_BODY@@

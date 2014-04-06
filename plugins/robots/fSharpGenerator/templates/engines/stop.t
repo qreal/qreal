@@ -1,1 +1,1 @@
-brick.motor("@@PORT@@").setPower(0);
+PowerMotor("@@PORT@@").setPower(0)
