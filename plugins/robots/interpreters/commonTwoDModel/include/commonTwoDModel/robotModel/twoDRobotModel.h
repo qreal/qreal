@@ -27,6 +27,8 @@ public:
 
 	void setEngine(engine::TwoDModelEngineInterface &engine);
 
+	utils::AbstractTimer *produceTimer() override;
+
 //protected:
 //	virtual interpreterBase::robotModel::DeviceInfo displayInfo() const;
 //	virtual interpreterBase::robotModel::DeviceInfo speakerInfo() const;

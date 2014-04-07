@@ -65,6 +65,8 @@ public:
 
 	Timeline *timeline() const;
 
+	utils::AbstractTimer *modelTimer() const override;
+
 	void setNoiseSettings();
 
 	enum ATime {

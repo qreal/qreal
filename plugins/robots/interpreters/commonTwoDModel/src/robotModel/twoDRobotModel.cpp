@@ -4,6 +4,8 @@
 
 #include "commonTwoDModel/robotModel/parts/motor.h"
 
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
 using namespace twoDModel::robotModel;
 using namespace interpreterBase::robotModel;
 
@@ -33,6 +35,11 @@ QList<DeviceInfo> TwoDRobotModel::convertibleBases() const
 void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 {
 	mEngine = &engine;
+}
+
+utils::AbstractTimer *TwoDRobotModel::produceTimer()
+{
+	return mEngine->modelTimer();
 }
 
 robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
@@ -90,4 +97,3 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 //	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 	return nullptr;
 }
-

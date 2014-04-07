@@ -10,6 +10,7 @@
 #include "src/engine/d2ModelWidget.h"
 #include "src/engine/timeline.h"
 #include "src/engine/worldModel.h"
+#include "src/engine/d2ModelTimer.h"
 
 using namespace twoDModel;
 using namespace twoDModel::physics;
@@ -590,4 +591,9 @@ void D2RobotModel::setNoiseSettings()
 int D2RobotModel::truncateToInterval(int const a, int const b, int const res) const
 {
 	return (res >= a && res <= b) ? res : (res < a ? a : b);
+}
+
+utils::AbstractTimer *D2RobotModel::modelTimer() const
+{
+	return new D2ModelTimer(mTimeline);
 }
