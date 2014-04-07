@@ -166,7 +166,7 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		interpreterBase::KitPluginInterface &kit = mKitPluginManager.kitById(kitId);
 
-		kit.init(mEventsForKitPlugin, *mInterpreter);
+		kit.init(mEventsForKitPlugin, configurer.systemEvents(), *mInterpreter);
 
 		for (interpreterBase::robotModel::RobotModelInterface const *model : kit.robotModels()) {
 			interpreterBase::blocksBase::BlocksFactoryInterface * const factory = kit.blocksFactoryFor(model);

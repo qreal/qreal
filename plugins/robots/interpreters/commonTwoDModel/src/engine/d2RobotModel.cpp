@@ -35,6 +35,8 @@ D2RobotModel::D2RobotModel(interpreterBase::robotModel::RobotModelInterface &rob
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
 	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
 	initPosition();
+
+	createModelWidget();
 }
 
 D2RobotModel::~D2RobotModel()
