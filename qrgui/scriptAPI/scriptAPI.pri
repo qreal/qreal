@@ -2,8 +2,10 @@ QT += script
 
 HEADERS += \
 	$$PWD/scriptAPI.h \
-    scriptAPI/arrow.h
+	$$PWD/arrow.h \
+	$$PWD/virtualMouse.h
 
 SOURCES += \
 	$$PWD/scriptAPI.cpp \
-    scriptAPI/arrow.cpp
+	$$PWD/arrow.cpp \
+	$$PWD/virtuaMouse.cpp
