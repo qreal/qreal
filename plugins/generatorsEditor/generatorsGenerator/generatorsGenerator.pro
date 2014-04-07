@@ -16,6 +16,14 @@ MOC_DIR = .moc
 
 HEADERS = \
 	generatorsGeneratorPlugin.h \
+	generator.h \
+	behavioralGenerator.h \
+	structuralGenerator.h \
+	myAbstractGenerator.h \
 
 SOURCES = \
 	generatorsGeneratorPlugin.cpp \
+	generator.cpp \
+	behavioralGenerator.cpp \
+	structuralGenerator.cpp \
+	myAbstractGenerator.cpp \
