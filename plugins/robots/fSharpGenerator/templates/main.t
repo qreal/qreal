@@ -2,6 +2,7 @@
 
 open Trik
 open Trik.Helpers
+open System.Threading
 
 use model = new Model()
 
