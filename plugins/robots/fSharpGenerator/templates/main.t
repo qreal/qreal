@@ -3,6 +3,7 @@
 open Trik
 open Trik.Helpers
 
+use model = new Model()
 
 @@VARIABLES@@
 

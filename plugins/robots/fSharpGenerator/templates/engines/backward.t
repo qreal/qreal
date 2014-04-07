@@ -1,1 +1,1 @@
-PowerMotor("@@PORT@@").setPower(-(@@POWER@@))
+model.Motor.["@@PORT@@"].setPower -@@POWER@@

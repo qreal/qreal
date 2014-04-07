@@ -1,1 +1,1 @@
-PowerMotor("@@PORT@@").SetPower(@@POWER@@)
+model.Motor.["@@PORT@@"].setPower @@POWER@@
