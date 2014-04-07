@@ -4,6 +4,8 @@
 
 #include <interpreterBase/robotModel/commonRobotModel.h>
 
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
+
 namespace twoDModel {
 
 namespace engine {
@@ -12,7 +14,7 @@ class TwoDModelEngineInterface;
 
 namespace robotModel {
 
-class TwoDRobotModel : public interpreterBase::robotModel::CommonRobotModel
+class COMMON_TWO_D_MODEL_EXPORT TwoDRobotModel : public interpreterBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT
 
@@ -24,6 +26,8 @@ public:
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 
 	void setEngine(engine::TwoDModelEngineInterface &engine);
+
+	utils::AbstractTimer *produceTimer() override;
 
 //protected:
 //	virtual interpreterBase::robotModel::DeviceInfo displayInfo() const;

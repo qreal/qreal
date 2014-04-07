@@ -46,8 +46,7 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	, mClearing(false)
 	, mFirstShow(true)
 	, mRobotModel(robotModel)
-//	, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
-	, mTimeline(nullptr)
+	, mTimeline(dynamic_cast<D2RobotModel *>(twoDRobotModel)->timeline())
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 

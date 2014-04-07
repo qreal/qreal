@@ -42,7 +42,6 @@ public:
 	void setBeep(unsigned freq, unsigned time);
 	void setNewMotor(int speed, uint degrees, int port, bool breakMode) override;
 //	virtual SensorsConfiguration &configuration();
-	D2ModelWidget *createModelWidget();
 	int readEncoder(int const port) const;
 	void resetEncoder(int const port);
 
@@ -65,6 +64,8 @@ public:
 	virtual void deserialize(const QDomElement &robotElement);
 
 	Timeline *timeline() const;
+
+	utils::AbstractTimer *modelTimer() const override;
 
 	void setNoiseSettings();
 
@@ -131,6 +132,8 @@ private:
 	int truncateToInterval(int const a, int const b, int const res) const;
 
 	void nextStep();
+
+	D2ModelWidget *createModelWidget();
 
 	D2ModelWidget *mD2ModelWidget;
 	Engine *mEngineA;

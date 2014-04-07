@@ -21,7 +21,8 @@ class NxtKitInterpreterPlugin : public QObject, public interpreterBase::KitPlugi
 public:
 	NxtKitInterpreterPlugin();
 
-	void init(interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+			, qReal::SystemEventsInterface const &systemEvents
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	QString kitId() const override;
@@ -45,6 +46,10 @@ public:
 	QList<qReal::ActionInfo> customActions() override;
 
 	interpreterBase::SensorsConfigurationProvider * sensorsConfigurationProvider() override;
+
+private slots:
+	/// Shows or hides 2d model action depending on whether current tab is robots diagram.
+	void onActiveTabChanged(qReal::Id const &rootElementId);
 
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;

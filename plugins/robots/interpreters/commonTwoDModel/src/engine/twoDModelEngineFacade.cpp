@@ -11,9 +11,6 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotM
 			, "tools")
 	, mTwoDModel(new D2RobotModel(robotModel))
 {
-	/// @todo: why it can't be done in constructor?
-	mTwoDModel->createModelWidget();
-
 	connect(mTwoDModelActionInfo.action(), &QAction::triggered
 			, mTwoDModel.data(), &twoDModel::D2RobotModel::showModelWidget);
 

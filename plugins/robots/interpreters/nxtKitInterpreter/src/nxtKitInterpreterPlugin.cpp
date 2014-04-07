@@ -3,6 +3,10 @@
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
 
 using namespace nxtKitInterpreter;
+using namespace qReal;
+
+Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
@@ -18,7 +22,8 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
-void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
+void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+		, SystemEventsInterface const &systemEvents
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
@@ -44,6 +49,11 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 			, &interpreterControl
 			, &interpreterBase::InterpreterControlInterface::stopRobot
 			);
+
+	connect(&systemEvents
+			, &qReal::SystemEventsInterface::activeTabChanged
+			, this
+			, &NxtKitInterpreterPlugin::onActiveTabChanged);
 }
 
 QString NxtKitInterpreterPlugin::kitId() const
@@ -96,4 +106,10 @@ QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 interpreterBase::SensorsConfigurationProvider * NxtKitInterpreterPlugin::sensorsConfigurationProvider()
 {
 	return &mTwoDModel->sensorsConfigurationProvider();
+}
+
+void NxtKitInterpreterPlugin::onActiveTabChanged(Id const &rootElementId)
+{
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
+	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(enabled);
 }

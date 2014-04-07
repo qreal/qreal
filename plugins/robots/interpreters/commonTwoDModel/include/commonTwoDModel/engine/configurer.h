@@ -2,10 +2,12 @@
 
 #include <QtCore/QString>
 
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
+
 namespace twoDModel {
 
 /// Can be used for customizing different 2D emulator aspects in concrete interpreter
-class Configurer
+class COMMON_TWO_D_MODEL_EXPORT Configurer
 {
 public:
 	virtual ~Configurer() {}

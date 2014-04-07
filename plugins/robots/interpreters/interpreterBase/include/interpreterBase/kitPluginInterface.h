@@ -5,13 +5,15 @@
 #include <QtWidgets/QWidget>
 
 #include <qrkernel/ids.h>
+#include <qrgui/toolPluginInterface/actionInfo.h>
+#include <qrgui/toolPluginInterface/systemEventsInterface.h>
+
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/sensorsConfigurationProvider.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/interpreterControlInterface.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 #include <interpreterBase/blocksBase/blocksFactoryInterface.h>
-#include <qrgui/toolPluginInterface/actionInfo.h>
 
 namespace interpreterBase {
 
@@ -24,11 +26,15 @@ public:
 	/// Passes to kit plugin objects that allow it to communicate with engine.
 	/// @param eventsForKitPlugin - object with events raised in interpreter that plugin can use to perform custom
 	///        actions, for example, starting and stopping of interpretation.
+	/// @param systemEvents - object with events from qrgui, like tab switching.
 	/// @param interpreterControl - interface with methods that allow plugin to control interpreter, such as starting
 	///        and stopping it.
-	virtual void init(EventsForKitPluginInterface &eventsForKitPlugin, InterpreterControlInterface &interpreterControl)
+	virtual void init(EventsForKitPluginInterface const &eventsForKitPlugin
+			, qReal::SystemEventsInterface const &systemEvents
+			, InterpreterControlInterface &interpreterControl)
 	{
 		Q_UNUSED(eventsForKitPlugin)
+		Q_UNUSED(systemEvents)
 		Q_UNUSED(interpreterControl)
 	}
 
