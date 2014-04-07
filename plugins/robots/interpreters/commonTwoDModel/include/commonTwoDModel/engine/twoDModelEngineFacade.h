@@ -8,13 +8,15 @@
 #include "commonTwoDModel/engine/twoDModelControlInterface.h"
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
+
 namespace twoDModel {
 
 class D2RobotModel;
 
 namespace engine {
 
-class TwoDModelEngineFacade : public TwoDModelControlInterface
+class COMMON_TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlInterface
 {
 	Q_OBJECT
 

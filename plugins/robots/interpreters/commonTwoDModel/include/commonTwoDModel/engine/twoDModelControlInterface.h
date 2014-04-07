@@ -4,9 +4,11 @@
 #include <qrgui/toolPluginInterface/actionInfo.h>
 #include <interpreterBase/sensorsConfigurationProvider.h>
 
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
+
 namespace twoDModel {
 
-class TwoDModelControlInterface : public QObject
+class COMMON_TWO_D_MODEL_EXPORT TwoDModelControlInterface : public QObject
 {
 	Q_OBJECT
 

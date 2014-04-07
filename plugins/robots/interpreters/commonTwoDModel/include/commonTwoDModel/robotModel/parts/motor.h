@@ -3,6 +3,8 @@
 #include <interpreterBase/robotModel/portInfo.h>
 #include <interpreterBase/robotModel/robotParts/motor.h>
 
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
+
 namespace twoDModel {
 
 namespace engine {
@@ -12,7 +14,7 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
-class Motor : public interpreterBase::robotModel::robotParts::Motor
+class COMMON_TWO_D_MODEL_EXPORT Motor : public interpreterBase::robotModel::robotParts::Motor
 {
 	Q_OBJECT
 
