@@ -29,8 +29,8 @@ public:
 	/// @param systemEvents - object with events from qrgui, like tab switching.
 	/// @param interpreterControl - interface with methods that allow plugin to control interpreter, such as starting
 	///        and stopping it.
-	virtual void init(EventsForKitPluginInterface &eventsForKitPlugin
-			, qReal::SystemEventsInterface &systemEvents
+	virtual void init(EventsForKitPluginInterface const &eventsForKitPlugin
+			, qReal::SystemEventsInterface const &systemEvents
 			, InterpreterControlInterface &interpreterControl)
 	{
 		Q_UNUSED(eventsForKitPlugin)

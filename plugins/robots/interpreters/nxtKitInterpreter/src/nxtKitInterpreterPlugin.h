@@ -21,8 +21,8 @@ class NxtKitInterpreterPlugin : public QObject, public interpreterBase::KitPlugi
 public:
 	NxtKitInterpreterPlugin();
 
-	void init(interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
-			, qReal::SystemEventsInterface &systemEvents
+	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+			, qReal::SystemEventsInterface const &systemEvents
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	QString kitId() const override;

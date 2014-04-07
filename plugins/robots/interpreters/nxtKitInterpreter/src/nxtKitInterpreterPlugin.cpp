@@ -22,8 +22,8 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
-void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface &eventsForKitPlugin
-		, qReal::SystemEventsInterface &systemEvents
+void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+		, SystemEventsInterface const &systemEvents
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
