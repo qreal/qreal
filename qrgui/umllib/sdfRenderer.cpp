@@ -297,31 +297,18 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float const y1 = y1_def(element);
 	float const x2 = x2_def(element);
 	float const y2 = y2_def(element);
-	QString fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "error");
 
-	if (fileName.startsWith("./")) {
-		fileName = QApplication::applicationDirPath() + "/" + fileName;
-	}
-
-	QByteArray rawImage;
-
-	QFileInfo const actualFile = selectBestImageFile(fileName);
-
-	if (mMapFileImage.contains(actualFile.absoluteFilePath())) {
-		rawImage = mMapFileImage.value(actualFile.absoluteFilePath());
-	} else {
-		rawImage = loadPixmap(actualFile);
-		mMapFileImage.insert(actualFile.absoluteFilePath(), rawImage);
-	}
+	QString const fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "default");
+	ImagesCache::ImageInfo const imageInfo = mImagesCache.image(fileName);
 
 	QRect const rect(x1, y1, x2 - x1, y2 - y1);
 
-	if (actualFile.suffix() == "svg") {
-		QSvgRenderer renderer(rawImage);
+	if (imageInfo.renderer == ImagesCache::svg) {
+		QSvgRenderer renderer(imageInfo.imageContents);
 		renderer.render(painter, rect);
 	} else {
 		QPixmap pixmap;
-		pixmap.loadFromData(rawImage);
+		pixmap.loadFromData(imageInfo.imageContents);
 		painter->drawPixmap(rect, pixmap);
 	}
 }
@@ -774,7 +761,38 @@ void SdfRenderer::logger(QString path, QString string)
 	log.close();
 }
 
-QFileInfo SdfRenderer::selectBestImageFile(QString const &filePath)
+void SdfRenderer::noScale()
+{
+	mNeedScale = false;
+}
+
+SdfRenderer::ImagesCache::ImageInfo SdfRenderer::ImagesCache::image(QString const &fileName)
+{
+	Renderer renderer = common;
+	QByteArray rawImage;
+
+	if (mMapFileImage.contains(fileName)) {
+		// Cache hit - getting image contents and appropriate renderer from cache.
+		rawImage = mMapFileImage.value(fileName);
+		renderer = mFileImageRendererMap.value(fileName);
+	} else {
+		// Cache miss - finding best file to load and loading it.
+		QString const actualFileName = fileName.startsWith("./")
+				? QApplication::applicationDirPath() + "/" + fileName
+				: fileName;
+
+		QFileInfo const actualFile = selectBestImageFile(actualFileName);
+
+		rawImage = loadPixmap(actualFile);
+		renderer = actualFile.suffix() == "svg" ? svg : common;
+		mMapFileImage.insert(fileName, rawImage);
+		mFileImageRendererMap.insert(fileName, renderer);
+	}
+
+	return {rawImage, renderer};
+}
+
+QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(QString const &filePath)
 {
 	QFileInfo svgVersion(QString(filePath).replace(filePath.size() - 3, 3, "svg"));
 
@@ -800,7 +818,7 @@ QFileInfo SdfRenderer::selectBestImageFile(QString const &filePath)
 	return QFileInfo(":/icons/default.svg");
 }
 
-QByteArray SdfRenderer::loadPixmap(QFileInfo const &fileInfo)
+QByteArray SdfRenderer::ImagesCache::loadPixmap(QFileInfo const &fileInfo)
 {
 	QFile file(fileInfo.absoluteFilePath());
 	if (!file.open(QIODevice::ReadOnly)) {
@@ -808,11 +826,6 @@ QByteArray SdfRenderer::loadPixmap(QFileInfo const &fileInfo)
 	}
 
 	return file.readAll();
-}
-
-void SdfRenderer::noScale()
-{
-	mNeedScale = false;
 }
 
 
