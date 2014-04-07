@@ -55,6 +55,13 @@ public:
 	/// Returns if the device corresponding to 'this' inherits a 'parent' one or they are the devices of the same type.
 	bool isA(DeviceInfo const &parent) const;
 
+	/// Template shorthand notation for inheritance check.
+	template<typename T>
+	bool isA() const
+	{
+		return isA(create<T>());
+	}
+
 	/// Returns a string that can be displayed to a user as the name of the device.
 	QString friendlyName() const;
 

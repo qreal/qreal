@@ -19,7 +19,7 @@ void Motor::on(int speed, bool breakMode)
 
 void Motor::on(int speed, long unsigned int degrees, bool breakMode)
 {
-	mEngine.setNewMotor(speed, degrees, 1, breakMode);
+	mEngine.setNewMotor(speed, degrees, port(), breakMode);
 }
 
 void Motor::stop(bool breakMode)

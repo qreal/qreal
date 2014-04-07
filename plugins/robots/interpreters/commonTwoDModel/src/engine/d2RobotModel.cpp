@@ -12,16 +12,17 @@
 #include "src/engine/worldModel.h"
 #include "src/engine/d2ModelTimer.h"
 
+#include <interpreterBase/robotModel/robotParts/motor.h>
+
 using namespace twoDModel;
 using namespace twoDModel::physics;
+using namespace interpreterBase::robotModel;
+using namespace interpreterBase::robotModel::robotParts;
 
 D2RobotModel::D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
 		, QObject *parent)
 	: QObject(parent)
 	, mD2ModelWidget(nullptr)
-	, mEngineA(nullptr)
-	, mEngineB(nullptr)
-	, mEngineC(nullptr)
 //	, mDisplay(new NxtDisplay)
 	, mWorldModel(new WorldModel())
 	, mPhysicsEngine(nullptr)
@@ -47,19 +48,18 @@ D2RobotModel::~D2RobotModel()
 
 void D2RobotModel::initPosition()
 {
-	if (mEngineA) {
-		delete mEngineA;
-	}
-	if (mEngineB) {
-		delete mEngineB;
-	}
-	if (mEngineC) {
-		delete mEngineC;
+	qDeleteAll(mEngines);
+	mEngines.clear();
+
+	for (Device const * const device : mRobotModel.configuration().devices()) {
+		if (device->deviceInfo().isA<Motor>()) {
+			initEngine(robotWheelDiameterInPx / 2, 0, 0, device->port(), false);
+		}
 	}
 
-	mEngineA = initEngine(robotWheelDiameterInPx / 2, 0, 0, 0, false);
-	mEngineB = initEngine(robotWheelDiameterInPx / 2, 0, 0, 1, false);
-	mEngineC = initEngine(robotWheelDiameterInPx / 2, 0, 0, 2, false);
+//	mEngineA = initEngine(robotWheelDiameterInPx / 2, 0, 0, 0, false);
+//	mEngineB = initEngine(robotWheelDiameterInPx / 2, 0, 0, 1, false);
+//	mEngineC = initEngine(robotWheelDiameterInPx / 2, 0, 0, 2, false);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 }
@@ -71,7 +71,8 @@ void D2RobotModel::clear()
 	mPos = QPointF(0,0);
 }
 
-D2RobotModel::Engine *D2RobotModel::initEngine(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
+D2RobotModel::Engine *D2RobotModel::initEngine(int radius, int speed, long unsigned int degrees
+		, PortInfo const &port, bool isUsed)
 {
 	Engine *engine = new Engine();
 	engine->radius = radius;
@@ -96,12 +97,12 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 	mBeep.time = time;
 }
 
-void D2RobotModel::setNewMotor(int speed, uint degrees, int port, bool breakMode)
+void D2RobotModel::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
 {
 	/// @todo Hack for TRIK 2D model.
-	if (port == 2) {
-		speed = -speed;
-	}
+//	if (port == 2) {
+//		speed = -speed;
+//	}
 
 	mEngines[port]->speed = speed;
 	mEngines[port]->degrees = degrees;
@@ -123,7 +124,7 @@ int D2RobotModel::varySpeed(int const speed) const
 void D2RobotModel::countMotorTurnover()
 {
 	foreach (Engine * const motor, mEngines) {
-		int const port = mEngines.key(motor);
+		PortInfo const port = mEngines.key(motor);
 		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
 		mTurnoverEngines[port] += degrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverEngines[port] >= motor->degrees)) {
@@ -134,12 +135,12 @@ void D2RobotModel::countMotorTurnover()
 	}
 }
 
-int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
+int D2RobotModel::readEncoder(PortInfo const &port) const
 {
 	return mTurnoverEngines[port];
 }
 
-void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
+void D2RobotModel::resetEncoder(PortInfo const &port)
 {
 	mTurnoverEngines[port] = 0;
 }
@@ -414,12 +415,12 @@ void D2RobotModel::startInterpretation()
 
 void D2RobotModel::stopRobot()
 {
-	mEngineA->speed = 0;
-	mEngineA->breakMode = true;
-	mEngineB->speed = 0;
-	mEngineB->breakMode = true;
-	mEngineC->speed = 0;
-	mEngineC->breakMode = true;
+//	mEngineA->speed = 0;
+//	mEngineA->breakMode = true;
+//	mEngineB->speed = 0;
+//	mEngineB->breakMode = true;
+//	mEngineC->speed = 0;
+//	mEngineC->breakMode = true;
 	mD2ModelWidget->stopTimelineListening();
 }
 
@@ -454,27 +455,27 @@ void D2RobotModel::recalculateParams()
 
 	synchronizePositions();
 
-	Engine *engine1 = mEngineA;
-	Engine *engine2 = mEngineB;
+//	Engine *engine1 = mEngineA;
+//	Engine *engine2 = mEngineB;
 
-	if (mEngineC->isUsed) {
-		if (!mEngineA->isUsed) {
-			engine1 = mEngineC;
-		} else if (!mEngineB->isUsed) {
-			engine2 = mEngineC;
-		}
-	}
+//	if (mEngineC->isUsed) {
+//		if (!mEngineA->isUsed) {
+//			engine1 = mEngineC;
+//		} else if (!mEngineB->isUsed) {
+//			engine2 = mEngineC;
+//		}
+//	}
 
-	engine1->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine1->speed) : engine1->speed;
-	engine2->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine2->speed) : engine2->speed;
+//	engine1->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine1->speed) : engine1->speed;
+//	engine2->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine2->speed) : engine2->speed;
 
-	qreal const speed1 = engine1->spoiledSpeed * 2 * M_PI * engine1->radius * onePercentAngularVelocity / 360;
-	qreal const speed2 = engine2->spoiledSpeed * 2 * M_PI * engine2->radius * onePercentAngularVelocity / 360;
+//	qreal const speed1 = engine1->spoiledSpeed * 2 * M_PI * engine1->radius * onePercentAngularVelocity / 360;
+//	qreal const speed2 = engine2->spoiledSpeed * 2 * M_PI * engine2->radius * onePercentAngularVelocity / 360;
 
-	mPhysicsEngine->recalculateParams(Timeline::timeInterval, speed1, speed2
-			, engine1->breakMode, engine2->breakMode
-			, rotationCenter(), mAngle
-			, mD2ModelWidget->robotBoundingPolygon(mPos, mAngle));
+//	mPhysicsEngine->recalculateParams(Timeline::timeInterval, speed1, speed2
+//			, engine1->breakMode, engine2->breakMode
+//			, rotationCenter(), mAngle
+//			, mD2ModelWidget->robotBoundingPolygon(mPos, mAngle));
 	nextStep();
 	countMotorTurnover();
 }
@@ -578,9 +579,7 @@ void D2RobotModel::setNoiseSettings()
 			mPhysicsEngine = new physics::SimplePhysicsEngine(*mWorldModel);
 		}
 
-		if (oldEngine) {
-			delete oldEngine;
-		}
+		delete oldEngine;
 	}
 
 	mNeedSensorNoise = qReal::SettingsManager::value("enableNoiseOfSensors").toBool();

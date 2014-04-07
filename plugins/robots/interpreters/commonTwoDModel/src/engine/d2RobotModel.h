@@ -6,6 +6,7 @@
 
 #include <interpreterBase/sensorsConfigurationProvider.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
+#include <interpreterBase/robotModel/portInfo.h>
 
 #include <qrutils/mathUtils/gaussNoise.h>
 
@@ -34,16 +35,20 @@ class D2RobotModel : public QObject
 public:
 	explicit D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
 			, QObject *parent = 0);
+
 	~D2RobotModel();
 	virtual void clear();
 	void startInit();
 	void startInterpretation();
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
-	void setNewMotor(int speed, uint degrees, int port, bool breakMode) override;
+
+	void setNewMotor(int speed, uint degrees
+			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) override;
+
 //	virtual SensorsConfiguration &configuration();
-	int readEncoder(int const port) const;
-	void resetEncoder(int const port);
+	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
+	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);
 
 //	details::NxtDisplay *display()
 
@@ -109,7 +114,10 @@ private:
 
 	void setSpeedFactor(qreal speedMul);
 	void initPosition();
-	Engine *initEngine(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
+
+	Engine *initEngine(int radius, int speed, long unsigned int degrees
+			, interpreterBase::robotModel::PortInfo const &port, bool isUsed);
+
 	void countNewForces();
 	void countBeep();
 
@@ -136,14 +144,17 @@ private:
 	D2ModelWidget *createModelWidget();
 
 	D2ModelWidget *mD2ModelWidget;
-	Engine *mEngineA;
-	Engine *mEngineB;
-	Engine *mEngineC;
 	Beep mBeep;
 //	details::NxtDisplay *mDisplay;
 	QPointF mRotatePoint;
-	QHash<int, Engine*> mEngines;  /// @todo Arrays are not enough here?
-	QHash<int, qreal> mTurnoverEngines;  // stores how many degrees the motor rotated on
+
+	/// Simulated robot engines.
+	/// Has ownership.
+	QHash<interpreterBase::robotModel::PortInfo, Engine*> mEngines;
+
+	/// Stores how many degrees the motor rotated on.
+	QHash<interpreterBase::robotModel::PortInfo, qreal> mTurnoverEngines;
+
 //	SensorsConfiguration mSensorsConfiguration;
 	WorldModel *mWorldModel;
 	physics::PhysicsEngineBase *mPhysicsEngine;
