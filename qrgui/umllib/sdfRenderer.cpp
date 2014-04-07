@@ -298,7 +298,9 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float const x2 = x2_def(element);
 	float const y2 = y2_def(element);
 
-	QString const fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "default");
+	QString const fileName = SettingsManager::value("pathToImages").toString() + "/"
+			+ element.attribute("name", "default");
+
 	ImagesCache::ImageInfo const imageInfo = mImagesCache.image(fileName);
 
 	QRect const rect(x1, y1, x2 - x1, y2 - y1);
