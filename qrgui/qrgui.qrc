@@ -33,15 +33,18 @@
         <file>icons/expandAll.png</file>
         <file>icons/changeRepresentation.png</file>
         <file>qt_ru.qm</file>
-        <file>icons/open.png</file>
-        <file>icons/save.png</file>
-        <file>icons/full_screen.png</file>
+        <file>icons/open.svg</file>
+        <file>icons/fullScreen.svg</file>
+        <file>icons/unFullScreen.svg</file>
+        <file>icons/save.svg</file>
         <file>icons/save_as.png</file>
         <file>icons/undo.png</file>
         <file>icons/redo.png</file>
         <file>icons/hotkeys.png</file>
         <file>icons/kroki6.png</file>
         <file>icons/default.svg</file>
+        <file>icons/newDiagram.svg</file>
+        <file>icons/newProject.svg</file>
         <file>icons/startTab/new.svg</file>
         <file>icons/startTab/open.svg</file>
         <file>icons/startTab/createInterpreted.svg</file>

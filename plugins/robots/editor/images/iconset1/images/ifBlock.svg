@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#E6E6E6;stroke-width:39.69}
+    .fil2 {fill:url(#id0)}
+    .fil6 {fill:url(#id1)}
+    .fil1 {fill:url(#id2)}
+    .fil8 {fill:url(#id3)}
+    .fil4 {fill:url(#id4)}
+    .fil5 {fill:url(#id5)}
+    .fil3 {fill:url(#id6)}
+    .fil7 {fill:url(#id7)}
+    .fil0 {fill:url(#id8)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="9697.63" y1="12711.9" x2="9697.63" y2="2334.72">
+   <stop offset="0" style="stop-color:gray"/>
+   <stop offset="1" style="stop-color:#E6E6E6"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="4652.35" y1="12824.3" x2="4652.35" y2="11617">
+   <stop offset="0" style="stop-color:gray"/>
+   <stop offset="1" style="stop-color:#B3B3B3"/>
+  </linearGradient>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="12605.2" y1="3841.87" x2="12605.2" y2="2164.68">
+   <stop offset="0" style="stop-color:#CCCCCC"/>
+   <stop offset="1" style="stop-color:#999999"/>
+  </linearGradient>
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="4459.82" y1="5039.92" x2="4459.82" y2="3170.19">
+   <stop offset="0" style="stop-color:#B3B3B3"/>
+   <stop offset="1" style="stop-color:#E6E6E6"/>
+  </linearGradient>
+  <linearGradient id="id4" gradientUnits="userSpaceOnUse" xlink:href="#id3" x1="9486.31" y1="7055.02" x2="9486.31" y2="5281.43">
+  </linearGradient>
+  <linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="3107.7" y1="6995.13" x2="3107.7" y2="5631.04">
+   <stop offset="0" style="stop-color:#B3B3B3"/>
+   <stop offset="1" style="stop-color:gray"/>
+  </linearGradient>
+  <linearGradient id="id6" gradientUnits="userSpaceOnUse" xlink:href="#id3" x1="6437.28" y1="13064.8" x2="6437.28" y2="11258.5">
+  </linearGradient>
+  <linearGradient id="id7" gradientUnits="userSpaceOnUse" x1="4502.72" y1="12677.3" x2="4502.72" y2="5850.94">
+   <stop offset="0" style="stop-color:#838383"/>
+   <stop offset="1" style="stop-color:#E1E1E1"/>
+  </linearGradient>
+  <radialGradient id="id8" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+   <stop offset="0" style="stop-color:yellow"/>
+   <stop offset="0.74902" style="stop-color:yellow"/>
+   <stop offset="1" style="stop-color:#E6DA33"/>
+  </radialGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M2824 264l9430 0c1429,0 2587,1159 2587,2587l0 9430c0,1429 -1159,2587 -2587,2587l-9430 0c-1429,0 -2587,-1159 -2587,-2588l0 -9430c0,-1429 1159,-2587 2588,-2587z"/>
+  <path class="fil1 str0" d="M11573 2346c560,-18 2064,-181 2008,741 -36,591 -862,755 -1309,449 -602,-412 -335,-1071 -699,-1190z"/>
+  <path class="fil2 str0" d="M11751 2337c-1541,1 -3371,1499 -3058,5314 185,2258 -1093,4895 -1087,4990 36,71 2116,-356 2518,-2830 323,-1992 233,-4014 667,-5303 566,-1682 1004,-2164 992,-2171 -6,-3 -14,0 -31,-1z"/>
+  <path class="fil3 str0" d="M6866 12860c513,-107 801,-210 852,-220 5,-1 2,-16 1,-26 -22,-139 -526,-822 -776,-1042 -357,-313 -796,-288 -952,-180 -839,578 -104,1674 876,1469z"/>
+  <path class="fil4 str0" d="M8868 5662c737,-160 1529,-381 2204,17 411,242 668,375 947,826 52,84 118,156 96,172 -72,52 -636,-105 -1082,-80 -448,25 -1648,458 -2768,368 -817,-66 -1353,-819 -1427,-1624 680,394 1157,512 2031,322z"/>
+ </g>
+ <g id="Слой_x0020_1">
+  <metadata id="CorelCorpID_1Corel-Layer"/>
+  <path class="fil5 str0" d="M2952 5763c-271,-132 -541,547 -154,910 244,228 1007,322 886,-102 -59,-206 -297,-621 -732,-808z"/>
+  <path class="fil6 str0" d="M4561 12792c122,94 703,2 714,-476 3,-125 -99,-286 -213,-416 -227,-257 -1088,-471 -1029,-21 29,218 115,658 529,913z"/>
+  <path class="fil7 str0" d="M2923 5756c746,322 1232,1523 517,2632 -1115,1729 -1112,4431 1219,4431 -36,-310 -1307,-626 85,-3170 1937,-3539 -2122,-3941 -1821,-3893z"/>
+  <circle class="fil8 str0" cx="4460" cy="4105" r="935"/>
+ </g>
+</svg>

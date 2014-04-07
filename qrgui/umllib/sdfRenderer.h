@@ -8,6 +8,8 @@
 #include <QtGui/QFont>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+#include <QtCore/QFileInfo>
+#include <QtCore/QHash>
 #include <QtGui/QIconEngine>
 
 #include <qrkernel/settingsManager.h>
@@ -37,9 +39,56 @@ public:
 	void setElementRepo(ElementRepoInterface *elementRepo);
 
 private:
+
+	/// Cache for images used in elements. Can automatically select best appropriate image by given file name.
+	class ImagesCache {
+	public:
+		/// Describes which renderer shall be used to draw an image - common for .png, .jpg and so on,
+		/// or special for .svg
+		enum Renderer {
+			common
+			, svg
+		};
+
+		/// Describes cached image.
+		struct ImageInfo {
+			/// Contents of an image as a sequence of bytes.
+			QByteArray imageContents;
+
+			/// Renderer that shall be used to draw image contents.
+			Renderer renderer;
+		};
+
+		/// Get image data from cache or load it if it was not used before. Note that it can return file that is not
+		/// actually corresponds to fileName, it uses selectBestImageFile and its logic to determine appropriate
+		/// image file.
+		ImageInfo image(QString const &fileName);
+
+	private:
+		/// Selects "best available" image file, using following rules:
+		/// - if there is .svg file with given name in a directory from filePath, it is used as actual image file.
+		/// - else if there is a file with other extension but with correct name, it is used.
+		/// - else, if there is no such file, it tries to select a file with name "default" in given directory, using the
+		///   rules above.
+		/// - if everything above fails, system default image file, from qrgui/icons (or, when compiled,
+		///   from ":/icons/default.svg"), is used.
+		static QFileInfo selectBestImageFile(QString const &filePath);
+
+		/// Loads pixmap from given file, returns empty QByteArray if file does not exist.
+		static QByteArray loadPixmap(QFileInfo const &fileInfo);
+
+		/// Image files cache, maps original image file name to byte array with image data.
+		QHash<QString, QByteArray> mMapFileImage;
+
+		/// Maps original image file name to appropriate renderer (svg/default).
+		QHash<QString, Renderer> mFileImageRendererMap;
+	};
+
 	QString mWorkingDirName;
-	QMap<QString, QString> mReallyUsedFiles;
-	QMap<QString, QByteArray> mMapFileImage;
+
+	/// Smart cache for images, to avoid loading image from disc on every paint() call.
+	ImagesCache mImagesCache;
+
 	int first_size_x;
 	int first_size_y;
 	int current_size_x;
@@ -90,12 +139,8 @@ private:
 	float coord_def(QDomElement &element, QString coordName, int current_size, int first_size);
 	void logger(QString path, QString string);
 
-	/// Reads byte array from the file that is obtained by inner rules from the given one.
-	/// Specified file path may be modified with storing into it really read file path.
-	QByteArray loadPixmap(QString &filePath);
-	QByteArray loadPixmapFromExistingFile(QString &filePath);
-
-	/** @brief checks that str[i] is not L, C, M or Z*/
+	/// checks that str[i] is not L, C, M or Z
+	/// @todo Not so helpful comment
 	bool isNotLCMZ(QString str, int i);
 };
 

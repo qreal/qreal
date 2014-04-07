@@ -9,6 +9,8 @@ This software may use following third-party components:
 
 It also uses Pfennig font by Daniel Johnson, licensed under SIL Open Font License (OFL). Copy of this license can be found in licenses/OFL.txt.
 
+Some icons are provided by Tatiana Yanchuk and are available under Creative Commons Attribution 4.0 International license (http://creativecommons.org/licenses/by/4.0/legalcode)
+
 We are very grateful to the authors of components and resources above for allowing us to use their work in our product.
 
 Considering license information, our product is licensed under GPL v3 (licenses/gpl-3.0.txt). 

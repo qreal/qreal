@@ -293,36 +293,24 @@ void SdfRenderer::polygon(QDomElement &element)
 
 void SdfRenderer::image_draw(QDomElement &element)
 {
-	float x1 = x1_def(element);
-	float y1 = y1_def(element);
-	float x2 = x2_def(element);
-	float y2 = y2_def(element);
-	QString fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "error");
-	// TODO: rewrite this ugly spike
-	if (fileName.startsWith("./")) {
-		fileName = QApplication::applicationDirPath() + "/" + fileName;
-	}
+	float const x1 = x1_def(element);
+	float const y1 = y1_def(element);
+	float const x2 = x2_def(element);
+	float const y2 = y2_def(element);
 
-	QByteArray rawImage;
+	QString const fileName = SettingsManager::value("pathToImages").toString() + "/"
+			+ element.attribute("name", "default");
 
-	if (mMapFileImage.contains(fileName)) {
-		rawImage = mMapFileImage.value(fileName);
-		fileName = mReallyUsedFiles[fileName];
-	} else {
-		QString const oldFileName = fileName;
-		rawImage = loadPixmap(fileName);
-		mReallyUsedFiles[oldFileName] = oldFileName;
-		mMapFileImage.insert(fileName, rawImage);
-	}
+	ImagesCache::ImageInfo const imageInfo = mImagesCache.image(fileName);
 
-	QRect const rect(x1, y1, x2-x1, y2-y1);
+	QRect const rect(x1, y1, x2 - x1, y2 - y1);
 
-	if (fileName.endsWith(".svg")) {
-		QSvgRenderer renderer(rawImage);
+	if (imageInfo.renderer == ImagesCache::svg) {
+		QSvgRenderer renderer(imageInfo.imageContents);
 		renderer.render(painter, rect);
 	} else {
 		QPixmap pixmap;
-		pixmap.loadFromData(rawImage);
+		pixmap.loadFromData(imageInfo.imageContents);
 		painter->drawPixmap(rect, pixmap);
 	}
 }
@@ -775,50 +763,71 @@ void SdfRenderer::logger(QString path, QString string)
 	log.close();
 }
 
-QByteArray SdfRenderer::loadPixmap(QString &filePath)
+void SdfRenderer::noScale()
 {
-	QFileInfo const fileInfo(filePath);
-	if (fileInfo.exists()) {
-		return loadPixmapFromExistingFile(filePath);
-	}
-
-	// Our file does not exist, falling back to 'default.svg' or 'default.png' from this directory
-	QString const defaultImagePath = fileInfo.absoluteDir().path() + "/default.";
-	QString const defaultPngPath = defaultImagePath + "png";
-	QString const defaultSvgPath = defaultImagePath + "svg";
-	QFileInfo const defaultPngInfo(defaultPngPath);
-	QFileInfo const defaultSvgInfo(defaultSvgPath);
-	if (defaultSvgInfo.exists() || defaultPngInfo.exists()) {
-		filePath = defaultPngPath;
-		return loadPixmapFromExistingFile(filePath);
-	}
-
-	// Our file does not exist, falling back to system-scoped default icon, we are pretty sure in its existance
-	filePath = QString(":/icons/default.svg");
-	return loadPixmapFromExistingFile(filePath);
+	mNeedScale = false;
 }
 
-QByteArray SdfRenderer::loadPixmapFromExistingFile(QString &filePath)
+SdfRenderer::ImagesCache::ImageInfo SdfRenderer::ImagesCache::image(QString const &fileName)
 {
-	// HACK: Trying to load SVG version first, and use default file name as fallback. It is needed to test SVG images.
-	if (!filePath.endsWith("svg")) {
-		QFileInfo const svgVersion(QString(filePath).replace(filePath.size() - 3, 3, "svg"));
-		if (svgVersion.exists()) {
-			filePath = svgVersion.filePath();
-		}
+	Renderer renderer = common;
+	QByteArray rawImage;
+
+	if (mMapFileImage.contains(fileName)) {
+		// Cache hit - getting image contents and appropriate renderer from cache.
+		rawImage = mMapFileImage.value(fileName);
+		renderer = mFileImageRendererMap.value(fileName);
+	} else {
+		// Cache miss - finding best file to load and loading it.
+		QString const actualFileName = fileName.startsWith("./")
+				? QApplication::applicationDirPath() + "/" + fileName
+				: fileName;
+
+		QFileInfo const actualFile = selectBestImageFile(actualFileName);
+
+		rawImage = loadPixmap(actualFile);
+		renderer = actualFile.suffix() == "svg" ? svg : common;
+		mMapFileImage.insert(fileName, rawImage);
+		mFileImageRendererMap.insert(fileName, renderer);
 	}
 
-	QFile file(filePath);
+	return {rawImage, renderer};
+}
+
+QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(QString const &filePath)
+{
+	QFileInfo svgVersion(QString(filePath).replace(filePath.size() - 3, 3, "svg"));
+
+	if (svgVersion.exists()) {
+		return svgVersion;
+	}
+
+	QFileInfo const fileInfo(filePath);
+	if (fileInfo.exists()) {
+		return fileInfo;
+	}
+
+	QDir dir(fileInfo.absolutePath());
+	auto candidates = dir.entryInfoList({fileInfo.completeBaseName() + ".*"}, QDir::Files);
+	if (!candidates.empty()) {
+		return candidates.at(0);
+	}
+
+	if (fileInfo.completeBaseName() != "default") {
+		return selectBestImageFile(fileInfo.absolutePath() + "/default.svg");
+	}
+
+	return QFileInfo(":/icons/default.svg");
+}
+
+QByteArray SdfRenderer::ImagesCache::loadPixmap(QFileInfo const &fileInfo)
+{
+	QFile file(fileInfo.absoluteFilePath());
 	if (!file.open(QIODevice::ReadOnly)) {
 		return QByteArray();
 	}
 
 	return file.readAll();
-}
-
-void SdfRenderer::noScale()
-{
-	mNeedScale = false;
 }
 
 
