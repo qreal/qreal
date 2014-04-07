@@ -4,13 +4,9 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-QString SonarSensor::friendlyName()
-{
-	return tr("Sonar sensor");
-}
-
 SonarSensor::SonarSensor(DeviceInfo const &info, PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
+
 	: interpreterBase::robotModel::robotParts::RangeSensor(info, port)
 	, mImplementation(*this, robotCommunicator, port
 			, enums::lowLevelSensorType::LOWSPEED_9V, enums::sensorMode::RAWMODE)

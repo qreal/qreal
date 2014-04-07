@@ -12,11 +12,6 @@ Motor::Motor(DeviceInfo const &info, PortInfo const &port, engine::TwoDModelEngi
 {
 }
 
-QString Motor::friendlyName()
-{
-	return tr("Motor");
-}
-
 void Motor::on(int speed, bool breakMode)
 {
 	on(speed, 0, breakMode);

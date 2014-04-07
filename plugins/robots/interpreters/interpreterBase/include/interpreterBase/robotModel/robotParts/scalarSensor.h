@@ -13,8 +13,6 @@ class ROBOTS_INTERPRETER_BASE_EXPORT ScalarSensor : public AbstractSensor
 	Q_OBJECT
 
 public:
-	static QString friendlyName();
-
 	ScalarSensor(DeviceInfo const &info, PortInfo const &port);
 	virtual ~ScalarSensor();
 

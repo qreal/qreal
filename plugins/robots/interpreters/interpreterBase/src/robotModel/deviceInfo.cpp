@@ -63,3 +63,21 @@ DeviceInfo DeviceInfo::fromString(QString const &string)
 
 	return mCreatedInfos[string];
 }
+
+QString DeviceInfo::property(QMetaObject const * const metaObject, QString const &name)
+{
+	if (!metaObject) {
+		return QString();
+	}
+
+	// Superclass infos are have less indeces so iterating backwards for meeting device`s
+	// friendly name earlier than its parent`s one.
+	for (int i = metaObject->classInfoCount() - 1; i >= 0 ; --i) {
+		QMetaClassInfo const classInfo = metaObject->classInfo(i);
+		if (QString(classInfo.name()) == name) {
+			return QString(classInfo.value());
+		}
+	}
+
+	return QString();
+}

@@ -3,7 +3,7 @@
 #include <QtCore/QString>
 #include <QtCore/QMap>
 #include <QtCore/QMetaObject>
-#include <QtCore/QMetaType>
+#include <QtCore/QMetaProperty>
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
@@ -36,7 +36,9 @@ public:
 		// to invalid isA() method work.
 		static_assert(HasQObjectMacro<T>::Value, "No Q_OBJECT macro in the class that is passed into a template");
 		QMetaObject const *metaObject = &T::staticMetaObject;
-		DeviceInfo result(metaObject, T::friendlyName(), T::direction());
+		QString const friendlyName = property(metaObject, "friendlyName");
+		Direction const direction = property(metaObject, "direction").toLower() == "input" ? input : output;
+		DeviceInfo result(metaObject, friendlyName, direction);
 		mCreatedInfos[QString(metaObject->className())] = result;
 		return result;
 	}
@@ -82,6 +84,8 @@ private:
 
 	DeviceInfo(QMetaObject const *deviceType, QString const &friendlyName, Direction direction);
 
+	static QString property(QMetaObject const * const metaObject, QString const &name);
+
 	static QMap<QString, DeviceInfo> mCreatedInfos;
 
 	QMetaObject const *mDeviceType;
@@ -106,4 +110,5 @@ inline bool operator !=(DeviceInfo const &device1, DeviceInfo const &device2)
 }
 }
 
+Q_DECLARE_METATYPE(interpreterBase::robotModel::DeviceInfo::Direction)
 Q_DECLARE_METATYPE(interpreterBase::robotModel::DeviceInfo)

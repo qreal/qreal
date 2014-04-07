@@ -17,8 +17,6 @@ class Motor : public interpreterBase::robotModel::robotParts::Motor
 	Q_OBJECT
 
 public:
-	static QString friendlyName();
-
 	Motor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port
 			, engine::TwoDModelEngineInterface &engine

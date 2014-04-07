@@ -3,16 +3,6 @@
 using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-QString Motor::friendlyName()
-{
-	return tr("Motor");
-}
-
-DeviceInfo::Direction Motor::direction()
-{
-	return DeviceInfo::output;
-}
-
 Motor::Motor(DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port)
 	: Device(info, port)
 {

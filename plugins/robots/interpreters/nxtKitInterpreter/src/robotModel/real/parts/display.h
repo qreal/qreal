@@ -9,6 +9,8 @@ namespace parts {
 
 class Display : public robotModel::parts::NxtDisplay
 {
+	Q_OBJECT
+
 public:
 	Display(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
 

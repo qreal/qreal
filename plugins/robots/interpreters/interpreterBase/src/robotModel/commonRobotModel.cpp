@@ -126,6 +126,7 @@ void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &d
 
 	if (deviceInfo.isNull()) {
 		mConfiguration.clearDevice(port);
+		return;
 	}
 
 	robotParts::Device *device = createDevice(port, deviceInfo);

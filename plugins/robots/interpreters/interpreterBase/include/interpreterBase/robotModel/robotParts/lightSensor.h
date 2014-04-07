@@ -10,11 +10,9 @@ namespace robotParts {
 class ROBOTS_INTERPRETER_BASE_EXPORT LightSensor : public ScalarSensor
 {
 	Q_OBJECT
+	Q_CLASSINFO("friendlyName", tr("Light sensor"))
 
 public:
-	static QString friendlyName();
-	static DeviceInfo::Direction direction();
-
 	LightSensor(DeviceInfo const &info, PortInfo const &port);
 };
 

@@ -9,6 +9,8 @@ namespace parts {
 
 class Buttons : public robotModel::parts::NxtButtons
 {
+	Q_OBJECT
+
 public:
 	Buttons(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
 

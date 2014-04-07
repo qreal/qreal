@@ -12,10 +12,9 @@ namespace parts {
 class SonarSensor : public interpreterBase::robotModel::robotParts::RangeSensor
 {
 	Q_OBJECT
+	Q_CLASSINFO("friendlyName", tr("Sonar sensor"))
 
 public:
-	static QString friendlyName();
-
 	SonarSensor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);

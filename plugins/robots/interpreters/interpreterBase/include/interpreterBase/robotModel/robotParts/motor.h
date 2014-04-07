@@ -11,11 +11,10 @@ namespace robotParts {
 class ROBOTS_INTERPRETER_BASE_EXPORT Motor : public Device
 {
 	Q_OBJECT
+	Q_CLASSINFO("friendlyName", tr("Motor"))
+	Q_CLASSINFO("direction", "output")
 
 public:
-	static QString friendlyName();
-	static DeviceInfo::Direction direction();
-
 	Motor(DeviceInfo const &info, PortInfo const &port);
 
 	virtual void on(int speed, bool breakMode = true);

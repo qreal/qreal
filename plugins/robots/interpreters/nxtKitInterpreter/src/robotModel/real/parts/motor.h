@@ -14,9 +14,8 @@ namespace parts {
 class Motor : public interpreterBase::robotModel::robotParts::Motor
 {
 	Q_OBJECT
-public:
-	static QString friendlyName();
 
+public:
 	Motor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
