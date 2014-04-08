@@ -1,1 +1,1 @@
-brick.wait(@@DELAY@@);
+Thread.Sleep(@@DELAY@@)
