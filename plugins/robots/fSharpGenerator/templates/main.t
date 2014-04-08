@@ -3,7 +3,6 @@
 open Trik
 open Trik.Helpers
 
-
 @@VARIABLES@@
 
 @@SUBPROGRAMS@@
