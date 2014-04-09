@@ -12,7 +12,7 @@
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
-#include "robotModelInterface.h"
+#include "twoDRobotModelInterface.h"
 //#include "details/nxtDisplay.h"
 
 namespace twoDModel {
@@ -33,6 +33,13 @@ class D2RobotModel : public QObject
 	Q_OBJECT
 
 public:
+
+	enum ATime {
+		DoInf,
+		DoByLimit,
+		End
+	};
+
 	explicit D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
 			, QObject *parent = 0);
 
@@ -77,11 +84,7 @@ public:
 
 	void setNoiseSettings();
 
-	enum ATime {
-		DoInf,
-		DoByLimit,
-		End
-	};
+	void setMotorPortOnWheel(Wheel wheel, interpreterBase::robotModel::PortInfo const &port) override;
 
 signals:
 	void d2MotorTimeout();
@@ -157,6 +160,9 @@ private:
 
 	/// Stores how many degrees the motor rotated on.
 	QHash<interpreterBase::robotModel::PortInfo, qreal> mTurnoverEngines;
+
+	/// Describes which wheel is driven by which motor.
+	QHash<Wheel, interpreterBase::robotModel::PortInfo> mWheelsToMotorPortsMap;
 
 //	SensorsConfiguration mSensorsConfiguration;
 	WorldModel *mWorldModel;

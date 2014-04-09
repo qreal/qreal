@@ -176,9 +176,9 @@ void Interpreter::devicesConfiguredSlot()
 		details::Thread * const initialThread = new details::Thread(mGraphicalModelApi
 				, *mInterpretersInterface, currentDiagramId, *mBlocksTable);
 
-		addThread(initialThread);
-
 		emit started();
+
+		addThread(initialThread);
 	}
 }
 

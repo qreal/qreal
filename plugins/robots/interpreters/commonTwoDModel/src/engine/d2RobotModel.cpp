@@ -127,7 +127,7 @@ int D2RobotModel::varySpeed(int const speed) const
 
 void D2RobotModel::countMotorTurnover()
 {
-	foreach (Engine * const motor, mEngines) {
+	for (Engine * const motor : mEngines) {
 		PortInfo const port = mEngines.key(motor);
 		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
 		mTurnoverEngines[port] += degrees;
@@ -419,12 +419,11 @@ void D2RobotModel::startInterpretation()
 
 void D2RobotModel::stopRobot()
 {
-//	mEngineA->speed = 0;
-//	mEngineA->breakMode = true;
-//	mEngineB->speed = 0;
-//	mEngineB->breakMode = true;
-//	mEngineC->speed = 0;
-//	mEngineC->breakMode = true;
+	for (Engine * const engine : mEngines) {
+		engine->speed = 0;
+		engine->breakMode = true;
+	}
+
 	mD2ModelWidget->stopTimelineListening();
 }
 
@@ -459,27 +458,33 @@ void D2RobotModel::recalculateParams()
 
 	synchronizePositions();
 
-//	Engine *engine1 = mEngineA;
-//	Engine *engine2 = mEngineB;
+	struct EngineOutput {
+		qreal speed;
+		bool breakMode;
+	};
 
-//	if (mEngineC->isUsed) {
-//		if (!mEngineA->isUsed) {
-//			engine1 = mEngineC;
-//		} else if (!mEngineB->isUsed) {
-//			engine2 = mEngineC;
-//		}
-//	}
+	auto calculateMotorOutput = [&](Wheel wheel) {
+		PortInfo const &port = mWheelsToMotorPortsMap.value(wheel, PortInfo());
+		if (!port.isValid() || port.name() == "None") {
+			return EngineOutput{0, true};
+		}
 
-//	engine1->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine1->speed) : engine1->speed;
-//	engine2->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine2->speed) : engine2->speed;
+		Engine * const engine = mEngines.value(port, nullptr);
+		engine->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine->speed) : engine->speed;
+		return EngineOutput{
+				engine->spoiledSpeed * 2 * M_PI * engine->radius * onePercentAngularVelocity / 360
+				, engine->breakMode
+				};
+	};
 
-//	qreal const speed1 = engine1->spoiledSpeed * 2 * M_PI * engine1->radius * onePercentAngularVelocity / 360;
-//	qreal const speed2 = engine2->spoiledSpeed * 2 * M_PI * engine2->radius * onePercentAngularVelocity / 360;
+	EngineOutput const outputLeft = calculateMotorOutput(left);
+	EngineOutput const outputRight = calculateMotorOutput(right);
 
-//	mPhysicsEngine->recalculateParams(Timeline::timeInterval, speed1, speed2
-//			, engine1->breakMode, engine2->breakMode
-//			, rotationCenter(), mAngle
-//			, mD2ModelWidget->robotBoundingPolygon(mPos, mAngle));
+	mPhysicsEngine->recalculateParams(Timeline::timeInterval, outputLeft.speed, outputRight.speed
+			, outputLeft.breakMode, outputRight.breakMode
+			, rotationCenter(), mAngle
+			, mD2ModelWidget->robotBoundingPolygon(mPos, mAngle));
+
 	nextStep();
 	countMotorTurnover();
 }
@@ -589,6 +594,11 @@ void D2RobotModel::setNoiseSettings()
 	mNeedSensorNoise = qReal::SettingsManager::value("enableNoiseOfSensors").toBool();
 	mNeedMotorNoise = qReal::SettingsManager::value("enableNoiseOfMotors").toBool();
 	mNoiseGen.setApproximationLevel(qReal::SettingsManager::value("approximationLevel").toUInt());
+}
+
+void D2RobotModel::setMotorPortOnWheel(Wheel wheel, interpreterBase::robotModel::PortInfo const &port)
+{
+	mWheelsToMotorPortsMap[wheel] = port;
 }
 
 int D2RobotModel::truncateToInterval(int const a, int const b, int const res) const

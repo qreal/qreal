@@ -78,11 +78,21 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
 	mUi->noneButton->setChecked(true);
 
-//	connect(mUi->leftWheelComboBox, static_cast<void*(int)>(&QComboBox::activated)
-//			, [this](int index) { onWheelMotorChanged(0, index); });
+	connect(mUi->leftWheelComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated)
+			, [this](int index) {
+					mTwoDRobotModel->setMotorPortOnWheel(
+							TwoDRobotRobotModelInterface::left
+							, mUi->leftWheelComboBox->itemData(index).value<PortInfo>()
+							);
+			});
 
-//	connect(mUi->rightWheelComboBox, static_cast<void*(int)>(&QComboBox::activated)
-//			, [this](int index) { onWheelMotorChanged(1, index); });
+	connect(mUi->rightWheelComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated)
+			, [this](int index) {
+					mTwoDRobotModel->setMotorPortOnWheel(
+							TwoDRobotRobotModelInterface::left
+							, mUi->leftWheelComboBox->itemData(index).value<PortInfo>()
+							);
+			});
 
 	drawInitialRobot();
 

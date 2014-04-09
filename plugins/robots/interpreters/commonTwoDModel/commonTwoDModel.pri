@@ -38,7 +38,7 @@ HEADERS += \
 	$$PWD/src/engine/gridParameters.h \
 	$$PWD/src/engine/constants.h \
 	$$PWD/src/engine/d2RobotModel.h \
-	$$PWD/src/engine/robotModelInterface.h \
+	$$PWD/src/engine/twoDRobotModelInterface.h \
 	$$PWD/src/engine/physics/physicsEngineBase.h \
 	$$PWD/src/engine/physics/simplePhysicsEngine.h \
 	$$PWD/src/engine/physics/realisticPhysicsEngine.h \
