@@ -23,6 +23,9 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlI
 public:
 	TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel);
 	~TwoDModelEngineFacade();
+
+	void init() override;
+
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
 	interpreterBase::SensorsConfigurationProvider &sensorsConfigurationProvider() override;
 

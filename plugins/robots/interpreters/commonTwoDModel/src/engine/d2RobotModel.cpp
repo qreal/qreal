@@ -46,6 +46,10 @@ D2RobotModel::~D2RobotModel()
 	delete mPhysicsEngine;
 }
 
+void D2RobotModel::init()
+{
+}
+
 void D2RobotModel::initPosition()
 {
 	qDeleteAll(mEngines);

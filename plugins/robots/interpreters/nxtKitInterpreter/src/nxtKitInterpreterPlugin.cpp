@@ -54,6 +54,8 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 			, &qReal::SystemEventsInterface::activeTabChanged
 			, this
 			, &NxtKitInterpreterPlugin::onActiveTabChanged);
+
+	mTwoDModel->init();
 }
 
 QString NxtKitInterpreterPlugin::kitId() const

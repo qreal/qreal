@@ -44,7 +44,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, []() { return 0; });
 
 	initSensorWidgets();
-	/// @todo connect 2d model
 	/// @todo connect configuration serialization/deserialization into repository
 
 	/// @todo Load currently selected model from registry.

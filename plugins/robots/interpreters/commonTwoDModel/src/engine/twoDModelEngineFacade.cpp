@@ -23,6 +23,11 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 	delete mTwoDModelActionInfo.action();
 }
 
+void TwoDModelEngineFacade::init()
+{
+	mTwoDModel->init();
+}
+
 qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()
 {
 	return mTwoDModelActionInfo;

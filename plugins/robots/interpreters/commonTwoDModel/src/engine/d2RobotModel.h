@@ -37,6 +37,9 @@ public:
 			, QObject *parent = 0);
 
 	~D2RobotModel();
+
+	void init();
+
 	virtual void clear();
 	void startInit();
 	void startInterpretation();

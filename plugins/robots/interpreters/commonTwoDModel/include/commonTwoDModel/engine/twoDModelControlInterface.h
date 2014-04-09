@@ -16,6 +16,7 @@ public:
 	virtual ~TwoDModelControlInterface() {}
 	virtual qReal::ActionInfo &showTwoDModelWidgetActionInfo() = 0;
 	virtual interpreterBase::SensorsConfigurationProvider &sensorsConfigurationProvider() = 0;
+	virtual void init() = 0;
 
 public slots:
 	virtual void onStartInterpretation() = 0;

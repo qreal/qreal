@@ -83,8 +83,6 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	setFocus();
 
 	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);
-
-	updateWheelComboBoxes();
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -275,6 +273,7 @@ void D2ModelWidget::init(bool isActive)
 	}
 
 	update();
+	updateWheelComboBoxes();
 }
 
 //void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
@@ -1362,6 +1361,9 @@ void D2ModelWidget::initRunStopButtons()
 
 void D2ModelWidget::updateWheelComboBoxes()
 {
+	mUi->leftWheelComboBox->clear();
+	mUi->rightWheelComboBox->clear();
+
 	mUi->leftWheelComboBox->addItem("None");
 	mUi->rightWheelComboBox->addItem("None");
 
