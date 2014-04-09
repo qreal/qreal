@@ -11,7 +11,7 @@ INCLUDEPATH += \
 LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -linterpreterBase
 
 HEADERS += \
-	$$PWD/include/commonTwoDModel/engine/commonTwoDModelDeclSpec.h \
+	$$PWD/include/commonTwoDModel/commonTwoDModelDeclSpec.h \
 	$$PWD/include/commonTwoDModel/engine/configurer.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelControlInterface.h \

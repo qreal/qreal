@@ -4,7 +4,6 @@ HEADERS += \
 	$$PWD/usbRobotCommunicationThread.h \
 	$$PWD/fantom.h \
 	$$PWD/fantomMethods.h \
-	$$PWD/robotCommunicationException.h \
 	$$PWD/i2cCommunicator.h \
 
 SOURCES += \
