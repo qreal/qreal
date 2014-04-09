@@ -80,5 +80,5 @@ void SonarSensor::writeRegister(nxtKitInterpreter::enums::sonarRegisters::SonarR
 
 void SonarSensor::sendCommand(QByteArray const &command, int responseSize)
 {
-	mI2C.sendI2C(this, command, responseSize, port());
+	mI2C.sendI2C(&mImplementation, command, responseSize, port());
 }
