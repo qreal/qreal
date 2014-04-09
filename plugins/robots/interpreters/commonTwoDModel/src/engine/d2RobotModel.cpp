@@ -46,6 +46,10 @@ D2RobotModel::~D2RobotModel()
 	delete mPhysicsEngine;
 }
 
+void D2RobotModel::init()
+{
+}
+
 void D2RobotModel::initPosition()
 {
 	qDeleteAll(mEngines);
@@ -153,7 +157,7 @@ void D2RobotModel::resetEncoder(PortInfo const &port)
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
 	mD2ModelWidget = new D2ModelWidget(this, mWorldModel, mRobotModel/*, mDisplay*/);
-	connectSensorsConfigurationProvider(mD2ModelWidget);
+	connectDevicesConfigurationProvider(mD2ModelWidget);
 	connect(mD2ModelWidget, &D2ModelWidget::runButtonPressed, this, &D2RobotModel::runButtonPressed);
 	connect(mD2ModelWidget, &D2ModelWidget::stopButtonPressed, this, &D2RobotModel::stopButtonPressed);
 	return mD2ModelWidget;

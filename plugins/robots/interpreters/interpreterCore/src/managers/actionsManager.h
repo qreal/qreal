@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QtCore/QList>
+#include <QtCore/QObject>
 #include <QtWidgets/QAction>
+
 #include <qrgui/toolPluginInterface/actionInfo.h>
 #include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
@@ -11,8 +13,10 @@
 namespace interpreterCore {
 
 /// Class that initializes, holds and keeps up-to-date actions added to toolbar and into user menus.
-class ActionsManager
+class ActionsManager : public QObject
 {
+	Q_OBJECT
+
 public:
 	explicit ActionsManager(KitPluginManager &kitPluginManager);
 
@@ -30,6 +34,9 @@ public:
 	QAction &titlesVisibilityAction();
 
 	QAction &robotSettingsAction();
+
+public slots:
+	void onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model);
 
 private:
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.

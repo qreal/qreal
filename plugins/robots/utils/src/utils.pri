@@ -12,7 +12,6 @@ HEADERS += \
 	$$PWD/../include/utils/abstractTimer.h \
 	$$PWD/../include/utils/debugHelper.h \
 	$$PWD/../include/utils/realTimer.h \
-	$$PWD/../include/utils/sensorsConfigurationWidget.h \
 	$$PWD/../include/utils/textExpressionProcessor.h \
 	$$PWD/../include/utils/tracer.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationThreadInterface.h \

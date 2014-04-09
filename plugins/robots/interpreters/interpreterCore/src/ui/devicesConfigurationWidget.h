@@ -3,7 +3,7 @@
 #include <QtCore/QMap>
 #include <QtWidgets/QWidget>
 
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/robotModel/portInfo.h>
 #include <interpreterBase/robotModel/deviceInfo.h>
 
@@ -19,15 +19,15 @@ class RobotModelInterface;
 namespace interpreterCore {
 namespace ui {
 
-/// A number of combo boxes for sensors selection
-class SensorsConfigurationWidget : public QWidget, public interpreterBase::SensorsConfigurationProvider
+/// A number of combo boxes for devices selection
+class DevicesConfigurationWidget : public QWidget, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
 public:
 	/// @param autosaveMode Should save happed on each modification or would
 	/// be called manually
-	explicit SensorsConfigurationWidget(QWidget *parent = 0, bool autosaveMode = false);
+	explicit DevicesConfigurationWidget(QWidget *parent = 0, bool autosaveMode = false);
 
 	void loadRobotModels(QList<interpreterBase::robotModel::RobotModelInterface *> const &models);
 
@@ -47,7 +47,7 @@ private:
 
 	void hideAllConfigurers();
 
-	void onSensorConfigurationChanged(QString const &robotModel
+	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &sensor);
 

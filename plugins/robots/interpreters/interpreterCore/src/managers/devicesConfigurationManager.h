@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
@@ -9,31 +9,28 @@
 
 namespace interpreterCore {
 
-/// A class that stores sensor configuration information in a registry and is responsible for synchronizing this
+/// A class that stores device configuration information in a registry and is responsible for synchronizing this
 /// information between various places where it can be changed.
-/// General architecture for sensors settings management is this: everybody who has sensor configuration controls
-/// (2d model, SensorsConfigurationWidget, preferences page), or contains them, inherits from
-/// SensorsConfigurationProvider and connects to other providers and eventually to SensorsSettingsManager object
-/// (by calling connectSensorsConfigurationProvider method).
+/// General architecture for device settings management is this: everybody who has device configuration controls
+/// or can alter device configurtion (2d model, DevicesConfigurationWidget, preferences page, actual robot model),
+/// or contains them, inherits from DevicesConfigurationProvider and connects to other providers and eventually to
+/// DevicesConfigurationManager object (by calling connectDevicesConfigurationProvider method).
 ///
-/// Then any sensorConfigurationChanged calls are propagated through resulting network of interconnected
-/// SensorsConfigurationProvider-s so they are kept in sync with each other.
-/// SensorsConfigurationManager is a center of this network and is the one place which saves sensor settings
+/// Then any devicesConfigurationChanged calls are propagated through resulting network of interconnected
+/// DevicesConfigurationProvider-s so they are kept in sync with each other.
+/// DevicesConfigurationManager is a center of this network and is the one place which saves sensor settings
 /// in a registry.
-///
-/// Initialization is also centralized, SensorsSettingsManager::refresh() shall be called after all clients are
-/// connected and this will initialize everything.
-class SensorsConfigurationManager : public interpreterBase::SensorsConfigurationProvider
+class DevicesConfigurationManager : public interpreterBase::DevicesConfigurationProvider
 {
 public:
-	SensorsConfigurationManager(qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
+	DevicesConfigurationManager(qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 			, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
 			, qReal::SystemEventsInterface &systemEvents
 			);
 
 private:
-	void onSensorConfigurationChanged(QString const &robotModel
+	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
 

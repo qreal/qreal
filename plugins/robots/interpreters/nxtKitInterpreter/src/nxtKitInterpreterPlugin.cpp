@@ -54,6 +54,8 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 			, &qReal::SystemEventsInterface::activeTabChanged
 			, this
 			, &NxtKitInterpreterPlugin::onActiveTabChanged);
+
+	mTwoDModel->init();
 }
 
 QString NxtKitInterpreterPlugin::kitId() const
@@ -103,9 +105,9 @@ QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 	return {mTwoDModel->showTwoDModelWidgetActionInfo()};
 }
 
-interpreterBase::SensorsConfigurationProvider * NxtKitInterpreterPlugin::sensorsConfigurationProvider()
+interpreterBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()
 {
-	return &mTwoDModel->sensorsConfigurationProvider();
+	return &mTwoDModel->devicesConfigurationProvider();
 }
 
 void NxtKitInterpreterPlugin::onActiveTabChanged(Id const &rootElementId)

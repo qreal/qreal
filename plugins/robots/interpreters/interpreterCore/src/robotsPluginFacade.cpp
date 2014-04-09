@@ -9,9 +9,12 @@ RobotsPluginFacade::RobotsPluginFacade()
 	, mInterpreter(nullptr)
 	, mKitPluginManager("plugins/kitPlugins")
 	, mActionsManager(mKitPluginManager)
-	, mDockSensorsConfigurer(nullptr)
+	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
 {
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, &mActionsManager, &ActionsManager::onRobotModelChanged);
+
 	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
 }
 
@@ -23,7 +26,7 @@ RobotsPluginFacade::~RobotsPluginFacade()
 
 void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 {
-	mSensorsConfigurationManager.reset(new SensorsConfigurationManager(
+	mDevicesConfigurationManager.reset(new DevicesConfigurationManager(
 			configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
 			, configurer.mainWindowInterpretersInterface()
@@ -44,7 +47,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, []() { return 0; });
 
 	initSensorWidgets();
-	/// @todo connect 2d model
 	/// @todo connect configuration serialization/deserialization into repository
 
 	/// @todo Load currently selected model from registry.
@@ -74,7 +76,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	initKitPlugins(configurer);
 
-	mSensorsConfigurationManager->connectSensorsConfigurationProvider(interpreter);
+	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
 
 	connectInterpreterToActions();
 
@@ -143,21 +145,21 @@ bool RobotsPluginFacade::selectKit(PluginConfigurator const &configurer)
 
 void RobotsPluginFacade::initSensorWidgets()
 {
-	mDockSensorsConfigurer = new ui::SensorsConfigurationWidget(nullptr, true);
-	mDockSensorsConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
+	mDockDevicesConfigurer = new ui::DevicesConfigurationWidget(nullptr, true);
+	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mDockSensorsConfigurer, &ui::SensorsConfigurationWidget::selectRobotModel);
-	mDockSensorsConfigurer->selectRobotModel(mRobotModelManager.model());
+			, mDockDevicesConfigurer, &ui::DevicesConfigurationWidget::selectRobotModel);
+	mDockDevicesConfigurer->selectRobotModel(mRobotModelManager.model());
 
 	mWatchListWindow = new utils::WatchListWindow(mParser);
 	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
 
-	mCustomizer.placeSensorsConfig(mDockSensorsConfigurer);
+	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);
 	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
 
-	mSensorsConfigurationManager->connectSensorsConfigurationProvider(mRobotSettingsPage);
-	mSensorsConfigurationManager->connectSensorsConfigurationProvider(mDockSensorsConfigurer);
-	mSensorsConfigurationManager->connectSensorsConfigurationProvider(mGraphicsWatcherManager);
+	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
+	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer);
+	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mGraphicsWatcherManager);
 }
 
 void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configurer)
@@ -180,7 +182,7 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 			}
 		}
 
-		mSensorsConfigurationManager->connectSensorsConfigurationProvider(kit.sensorsConfigurationProvider());
+		mDevicesConfigurationManager->connectDevicesConfigurationProvider(kit.devicesConfigurationProvider());
 	}
 }
 

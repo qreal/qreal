@@ -110,6 +110,11 @@ QAction &ActionsManager::robotSettingsAction()
 	return mRobotSettingsAction;
 }
 
+void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model)
+{
+	mConnectToRobotAction.setVisible(model.needsConnection());
+}
+
 void ActionsManager::updateEnabledActions()
 {
 	qReal::Id const &rootElementId = mMainWindowInterpretersInterface->activeDiagram();

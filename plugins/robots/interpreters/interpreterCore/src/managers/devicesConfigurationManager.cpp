@@ -1,4 +1,4 @@
-#include "sensorsConfigurationManager.h"
+#include "devicesConfigurationManager.h"
 
 #include <QtXml/QDomDocument>
 
@@ -9,13 +9,13 @@ using namespace interpreterBase;
 using namespace robotModel;
 using namespace qReal;
 
-SensorsConfigurationManager::SensorsConfigurationManager(
+DevicesConfigurationManager::DevicesConfigurationManager(
 		qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 		, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 		, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
 		, qReal::SystemEventsInterface &systemEvents
 		)
-	: SensorsConfigurationProvider("SensorsConfigurationManager")
+	: DevicesConfigurationProvider("DevicesConfigurationManager")
 	, mGraphicalModelAssistInterface(graphicalModelAssistInterface)
 	, mLogicalModelAssistInterface(logicalModelAssistInterface)
 	, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
@@ -24,7 +24,7 @@ SensorsConfigurationManager::SensorsConfigurationManager(
 			, [&] (Id const &diagramRootId) { this->onActiveTabChanged(diagramRootId); });
 }
 
-QString SensorsConfigurationManager::save() const
+QString DevicesConfigurationManager::save() const
 {
 	QDomDocument result;
 	QDomElement rootElement = result.createElement("devicesConfiguration");
@@ -45,9 +45,9 @@ QString SensorsConfigurationManager::save() const
 	return result.toString();
 }
 
-void SensorsConfigurationManager::load(QString const &configuration)
+void DevicesConfigurationManager::load(QString const &configuration)
 {
-	nullifyConfiguration();
+	clearConfiguration();
 
 	QDomDocument parsedConfiguration;
 	parsedConfiguration.setContent(configuration);
@@ -63,23 +63,18 @@ void SensorsConfigurationManager::load(QString const &configuration)
 			DeviceInfo const device = DeviceInfo::fromString(
 					configurationElement.attribute("device"));
 			if (port.isValid()) {
-				sensorConfigurationChanged(robotModel, port, device);
+				deviceConfigurationChanged(robotModel, port, device);
 			}
 		}
 	}
 }
 
-void SensorsConfigurationManager::onSensorConfigurationChanged(QString const &robotModel
+void DevicesConfigurationManager::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
-
-	/// @todo On refreshSensorsConfiguration() call it will save each device a number of times
-	/// equal to overall number of devices, at least (since there can be notifications from neighbouring
-	/// ConfigurationProvider which may trigger onSensorConfigurationChanged() here.
-	/// It is needed to be optimized somehow.
 
 	qReal::Id const activeDiagramGraphicalId = mMainWindowInterpretersInterface.activeDiagram();
 	if (activeDiagramGraphicalId.isNull()) {
@@ -91,7 +86,7 @@ void SensorsConfigurationManager::onSensorConfigurationChanged(QString const &ro
 	mLogicalModelAssistInterface.setPropertyByRoleName(logicalRootId, save(), "devicesConfiguration");
 }
 
-void SensorsConfigurationManager::onActiveTabChanged(Id const &graphicalRootId)
+void DevicesConfigurationManager::onActiveTabChanged(Id const &graphicalRootId)
 {
 	if (graphicalRootId.isNull()) {
 		return;

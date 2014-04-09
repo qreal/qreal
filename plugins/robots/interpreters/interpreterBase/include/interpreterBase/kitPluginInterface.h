@@ -9,7 +9,7 @@
 #include <qrgui/toolPluginInterface/systemEventsInterface.h>
 
 #include <interpreterBase/additionalPreferences.h>
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/interpreterControlInterface.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
@@ -82,7 +82,7 @@ public:
 	/// Sensor configuration provider object for this plugin that needs to be registered in providers network.
 	/// Can be a root of plugin-specific providers network. Null, if there is no need for sensors configuration.
 	/// Does not transfer ownership.
-	virtual interpreterBase::SensorsConfigurationProvider * sensorsConfigurationProvider() {
+	virtual interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() {
 		return nullptr;
 	}
 };

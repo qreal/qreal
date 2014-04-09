@@ -40,12 +40,11 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 {
 	mBlocksTable = new details::BlocksTable(blocksFactoryManager);
 
-	/// @todo Reinit those connects when model changes, or add these slots to RobotModelManager and connect to them.
 	connect(
 			&mRobotModelManager
 			, &interpreterBase::robotModel::RobotModelManagerInterface::allDevicesConfigured
 			, this
-			, &Interpreter::sensorsConfiguredSlot
+			, &Interpreter::devicesConfiguredSlot
 			);
 
 	connect(
@@ -89,7 +88,7 @@ void Interpreter::interpret()
 	}
 
 	mBlocksTable->clear();
-	mState = waitingForSensorsConfiguredToLaunch;
+	mState = waitingForDevicesConfiguredToLaunch;
 
 	/// @todo Temporarily loading initial configuration from registry
 	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
@@ -150,11 +149,11 @@ void Interpreter::connectedSlot(bool success)
 	mActionConnectToRobot.setChecked(success);
 }
 
-void Interpreter::sensorsConfiguredSlot()
+void Interpreter::devicesConfiguredSlot()
 {
-//	Tracer::debug(tracer::enums::initialization, "Interpreter::sensorsConfiguredSlot", "Sensors are configured");
+//	Tracer::debug(tracer::enums::initialization, "Interpreter::devicesConfiguredSlot", "Sensors are configured");
 
-	qDebug() << "Interpreter::sensorsConfiguredSlot";
+	qDebug() << "Interpreter::devicesConfiguredSlot";
 
 //	mRobotModel->nextBlockAfterInitial(mConnected);
 
@@ -164,12 +163,12 @@ void Interpreter::sensorsConfiguredSlot()
 		return;
 	}
 
-	if (mState == waitingForSensorsConfiguredToLaunch) {
+	if (mState == waitingForDevicesConfiguredToLaunch) {
 		mState = interpreting;
 
 		mSensorVariablesUpdater.run();
 
-//		Tracer::debug(tracer::enums::initialization, "Interpreter::sensorsConfiguredSlot", "Starting interpretation");
+//		Tracer::debug(tracer::enums::initialization, "Interpreter::devicesConfiguredSlot", "Starting interpretation");
 //		mRobotModel->startInterpretation();
 
 		Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
@@ -306,7 +305,7 @@ void Interpreter::disconnectSlot()
 //	SettingsManager::setValue("port4SensorType", sensor4Value);
 
 //	if (somethingChanged) {
-//		emit sensorsConfigurationChanged();
+//		emit devicesConfigurationChanged();
 //	}
 //}
 

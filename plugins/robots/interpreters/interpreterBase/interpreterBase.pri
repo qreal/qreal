@@ -11,7 +11,7 @@ LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
 SOURCES += \
-	$$PWD/src/sensorsConfigurationProvider.cpp \
+	$$PWD/src/devicesConfigurationProvider.cpp \
 	$$PWD/src/blocksBase/block.cpp \
 	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
 	$$PWD/src/blocksBase/common/waitBlock.cpp \
@@ -41,7 +41,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/interpreterBaseDeclSpec.h \
 	$$PWD/include/interpreterBase/kitPluginInterface.h \
 	$$PWD/include/interpreterBase/additionalPreferences.h \
-	$$PWD/include/interpreterBase/sensorsConfigurationProvider.h \
+	$$PWD/include/interpreterBase/devicesConfigurationProvider.h \
 	$$PWD/include/interpreterBase/eventsForKitPluginInterface.h \
 	$$PWD/include/interpreterBase/interpreterControlInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/block.h \

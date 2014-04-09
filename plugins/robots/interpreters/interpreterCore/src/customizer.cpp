@@ -45,10 +45,10 @@ void Customizer::customizeDocks(qReal::gui::MainWindowDockInterface *dockInterfa
 	dockInterface->graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 }
 
-void Customizer::placeSensorsConfig(QWidget *sensorsWidget)
+void Customizer::placeDevicesConfig(QWidget *devicesWidget)
 {
-	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
-	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
+	QDockWidget *devicesDock = produceDockWidget(QObject::tr("Configure devices"), devicesWidget);
+	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, devicesDock);
 }
 
 void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch)

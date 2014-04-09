@@ -25,7 +25,7 @@ void GraphicsWatcherManager::forceStop()
 	mWatcher->stopJob();
 }
 
-void GraphicsWatcherManager::onSensorConfigurationChanged(QString const &robotModel
+void GraphicsWatcherManager::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	Q_UNUSED(port)

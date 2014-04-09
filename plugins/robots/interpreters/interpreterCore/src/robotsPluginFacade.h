@@ -11,13 +11,13 @@
 #include "managers/robotModelManager.h"
 #include "managers/titlesVisibilityManager.h"
 #include "managers/actionsManager.h"
-#include "managers/sensorsConfigurationManager.h"
+#include "managers/devicesConfigurationManager.h"
 #include "managers/graphicsWatcherManager.h"
 #include "managers/blocksFactoryManager.h"
 #include "interpreter/interpreter.h"
 #include "textLanguage/robotsBlockParser.h"
 #include "ui/robotsSettingsPage.h"
-#include "ui/sensorsConfigurationWidget.h"
+#include "ui/devicesConfigurationWidget.h"
 
 namespace interpreterCore {
 
@@ -69,9 +69,9 @@ private:
 	RobotModelManager mRobotModelManager;
 	ActionsManager mActionsManager;
 	QScopedPointer<TitlesVisibilityManager> mTitlesVisibilityManager;
-	QScopedPointer<SensorsConfigurationManager> mSensorsConfigurationManager;
+	QScopedPointer<DevicesConfigurationManager> mDevicesConfigurationManager;
 
-	ui::SensorsConfigurationWidget *mDockSensorsConfigurer;  // Does not have ownership
+	ui::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
 	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
 

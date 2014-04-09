@@ -3,12 +3,12 @@
 #include <QtCore/QObject>
 
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 
 namespace interpreterCore {
 
 /// Incapsulates inner operations on managing graphics watcher on the dock
-class GraphicsWatcherManager : public QObject, public interpreterBase::SensorsConfigurationProvider
+class GraphicsWatcherManager : public QObject, public interpreterBase::DevicesConfigurationProvider
 {
 public:
 	explicit GraphicsWatcherManager(utils::ExpressionsParser * const parser, QObject *parent = 0);
@@ -24,7 +24,7 @@ public slots:
 	void forceStop();
 
 private:
-	void onSensorConfigurationChanged(QString const &robotModel
+	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
 
