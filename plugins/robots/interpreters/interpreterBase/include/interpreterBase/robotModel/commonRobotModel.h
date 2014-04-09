@@ -79,8 +79,10 @@ private slots:
 private:
 	/// Device factory. Shall be reimplemented to create concrete devices on given port by given device info.
 	/// If device is unknown to a model, shall throw exception, as a list of available devices is provided by model
-	/// itself by allowedDevices() method.
-	virtual robotParts::Device * createDevice(PortInfo const &port, DeviceInfo const &deviceInfo);
+	/// itself by allowedDevices() method. Implementation must not take ownership on created devices, it will be taken
+	/// automaticly later.
+	/// @todo: see what`s with ownership
+	virtual robotParts::Device *createDevice(PortInfo const &port, DeviceInfo const &deviceInfo);
 
 	/// Shows which types of devices can be connected to which ports.
 	/// @todo Add a notion of direction.
