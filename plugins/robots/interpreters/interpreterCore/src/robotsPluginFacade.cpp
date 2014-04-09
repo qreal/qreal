@@ -12,6 +12,9 @@ RobotsPluginFacade::RobotsPluginFacade()
 	, mDockSensorsConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
 {
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, &mActionsManager, &ActionsManager::onRobotModelChanged);
+
 	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
 }
 
