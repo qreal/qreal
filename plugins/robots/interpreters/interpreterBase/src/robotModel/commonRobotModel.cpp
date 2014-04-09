@@ -139,7 +139,7 @@ void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &d
 		return;
 	}
 
-	robotParts::Device *device = createDevice(port, deviceInfo);
+	robotParts::Device * const device = createDevice(port, deviceInfo);
 	if (device) {
 		mConfiguration.configureDevice(device);
 	}

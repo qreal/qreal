@@ -58,8 +58,8 @@ private slots:
 	void configurationTimerTimeoutSlot();
 
 private:
-	DeviceInfo const &mInfo;
-	PortInfo mPort;
+	DeviceInfo const mInfo;
+	PortInfo const mPort;
 	QTimer mConfigurationTimeoutTimer;
 };
 
