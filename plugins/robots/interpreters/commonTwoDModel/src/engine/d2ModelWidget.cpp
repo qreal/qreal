@@ -78,6 +78,12 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
 	mUi->noneButton->setChecked(true);
 
+//	connect(mUi->leftWheelComboBox, static_cast<void*(int)>(&QComboBox::activated)
+//			, [this](int index) { onWheelMotorChanged(0, index); });
+
+//	connect(mUi->rightWheelComboBox, static_cast<void*(int)>(&QComboBox::activated)
+//			, [this](int index) { onWheelMotorChanged(1, index); });
+
 	drawInitialRobot();
 
 	setFocus();
@@ -206,9 +212,7 @@ void D2ModelWidget::initPorts()
 
 		portsSelectionComboBox->addItem(tr("none"));
 		for (DeviceInfo device : mRobotModel.allowedDevices(port)) {
-			QVariant deviceVariant;
-			deviceVariant.setValue(device);
-			portsSelectionComboBox->addItem(device.friendlyName(), deviceVariant);
+			portsSelectionComboBox->addItem(device.friendlyName(), QVariant::fromValue(device));
 
 			if (currentlyConfiguredDevice == device) {
 				portsSelectionComboBox->setCurrentIndex(portsSelectionComboBox->count() - 1);
@@ -1361,16 +1365,48 @@ void D2ModelWidget::initRunStopButtons()
 
 void D2ModelWidget::updateWheelComboBoxes()
 {
+	/// @todo Automatically configure wheel ports if there is only two motors are used in a program.
+	PortInfo const leftWheelOldPort = mUi->leftWheelComboBox->currentData().value<PortInfo>();
+	PortInfo const rightWheelOldPort = mUi->rightWheelComboBox->currentData().value<PortInfo>();
+
 	mUi->leftWheelComboBox->clear();
 	mUi->rightWheelComboBox->clear();
 
-	mUi->leftWheelComboBox->addItem("None");
-	mUi->rightWheelComboBox->addItem("None");
+	mUi->leftWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None")));
+	mUi->rightWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None")));
 
-	for (Device const * const device : mRobotModel.configuration().devices()) {
-		if (device->deviceInfo().isA<Motor>()) {
-			mUi->leftWheelComboBox->addItem(device->deviceInfo().friendlyName());
-			mUi->rightWheelComboBox->addItem(device->deviceInfo().friendlyName());
+	for (PortInfo const &port : mRobotModel.availablePorts()) {
+		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
+			if (device.isA<Motor>()) {
+				QString const item = device.friendlyName() + " (port " + port.name() + ")";
+				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
+				mUi->rightWheelComboBox->addItem(item, QVariant::fromValue(port));
+			}
+		}
+	}
+
+	auto restoreOldPort = [](QComboBox * const comboBox, PortInfo const &oldPort) {
+		for (int i = 0; i < comboBox->count(); ++i) {
+			if (comboBox->itemData(i).value<PortInfo>() == oldPort) {
+				comboBox->setCurrentIndex(i);
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	if (!restoreOldPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
+		if (mUi->leftWheelComboBox->count() > 1) {
+			mUi->leftWheelComboBox->setCurrentIndex(1);
+		}
+	}
+
+	if (!restoreOldPort(mUi->rightWheelComboBox, rightWheelOldPort)) {
+		if (mUi->rightWheelComboBox->count() > 2) {
+			mUi->rightWheelComboBox->setCurrentIndex(2);
+		} else if (mUi->rightWheelComboBox->count() > 1) {
+			mUi->rightWheelComboBox->setCurrentIndex(1);
 		}
 	}
 }
