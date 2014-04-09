@@ -30,10 +30,10 @@ RobotsSettingsPage::RobotsSettingsPage(
 	initializeAdditionalWidgets();
 	initializeKitRadioButtons();
 
-	mUi->sensorsConfigurer->connectSensorsConfigurationProvider(this);
-	mUi->sensorsConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
+	mUi->devicesConfigurer->connectDevicesConfigurationProvider(this);
+	mUi->devicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mUi->sensorsConfigurer, &ui::SensorsConfigurationWidget::selectRobotModel);
+			, mUi->devicesConfigurer, &ui::DevicesConfigurationWidget::selectRobotModel);
 
 	restoreSettings();
 	saveSelectedRobotModel();
@@ -98,7 +98,7 @@ void RobotsSettingsPage::save()
 	SettingsManager::setValue("textUpdateInterval", mUi->textUpdaterSpinBox->value());
 	SettingsManager::setValue("nxtFlashToolRunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
 
-	mUi->sensorsConfigurer->save();
+	mUi->devicesConfigurer->save();
 
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
@@ -135,7 +135,7 @@ void RobotsSettingsPage::restoreSettings()
 
 	mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
 
-	mUi->sensorsConfigurer->refresh();
+	mUi->devicesConfigurer->refresh();
 
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
@@ -206,7 +206,7 @@ void RobotsSettingsPage::onRobotModelRadioButtonToggled(bool checked)
 	QString const selectedKit = mKitButtons->checkedButton()->objectName();
 	QAbstractButton * const robotModelButton = static_cast<QAbstractButton *>(sender());
 	robotModel::RobotModelInterface * const selectedRobotModel = mButtonsToRobotModelsMapping[robotModelButton];
-	mUi->sensorsConfigurer->selectRobotModel(*selectedRobotModel);
+	mUi->devicesConfigurer->selectRobotModel(*selectedRobotModel);
 	AdditionalPreferences * const selectedKitPreferences = mKitPluginManager.kitById(selectedKit).settingsWidget();
 	if (selectedKitPreferences) {
 		selectedKitPreferences->onRobotModelChanged(selectedRobotModel);

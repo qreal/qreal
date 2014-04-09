@@ -45,7 +45,7 @@ public:
 
 	QList<qReal::ActionInfo> customActions() override;
 
-	interpreterBase::SensorsConfigurationProvider * sensorsConfigurationProvider() override;
+	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
 
 private slots:
 	/// Shows or hides 2d model action depending on whether current tab is robots diagram.

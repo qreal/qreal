@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 #include <qrgui/toolPluginInterface/actionInfo.h>
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
@@ -15,7 +15,7 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDModelControlInterface : public QObject
 public:
 	virtual ~TwoDModelControlInterface() {}
 	virtual qReal::ActionInfo &showTwoDModelWidgetActionInfo() = 0;
-	virtual interpreterBase::SensorsConfigurationProvider &sensorsConfigurationProvider() = 0;
+	virtual interpreterBase::DevicesConfigurationProvider &devicesConfigurationProvider() = 0;
 	virtual void init() = 0;
 
 public slots:

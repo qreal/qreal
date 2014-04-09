@@ -16,7 +16,7 @@ public:
 	virtual QString examplesDirectory() const;
 
 	virtual void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface);
-	void placeSensorsConfig(QWidget *sensorsWidget);
+	void placeDevicesConfig(QWidget *devicesWidget);
 	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
 
 	virtual bool showInterpeterButton() const;

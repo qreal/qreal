@@ -10,7 +10,7 @@
 #include <qrutils/watchListWindow.h>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 
 #include "details/thread.h"
 #include "details/blocksTable.h"
@@ -21,7 +21,7 @@
 namespace interpreterCore {
 namespace interpreter {
 
-class Interpreter : public InterpreterInterface, public interpreterBase::SensorsConfigurationProvider
+class Interpreter : public InterpreterInterface, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -55,7 +55,7 @@ private slots:
 	void newThread(qReal::Id const &startBlockId);
 
 	void connectedSlot(bool success);
-	void sensorsConfiguredSlot();
+	void devicesConfiguredSlot();
 
 	/// Actions when robot disconnect
 	void disconnectSlot();
@@ -68,7 +68,7 @@ private slots:
 private:
 	enum InterpreterState {
 		interpreting
-		, waitingForSensorsConfiguredToLaunch
+		, waitingForDevicesConfiguredToLaunch
 		, idle
 	};
 

@@ -636,7 +636,7 @@ void D2ModelWidget::addPort(int const index)
 
 	resetButtons();
 
-	sensorConfigurationChanged(mRobotModel.name(), port, device);
+	deviceConfigurationChanged(mRobotModel.name(), port, device);
 }
 
 void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
@@ -1326,7 +1326,7 @@ void D2ModelWidget::alignWalls()
 	}
 }
 
-void D2ModelWidget::onSensorConfigurationChanged(const QString &robotModel
+void D2ModelWidget::onDeviceConfigurationChanged(const QString &robotModel
 		, const PortInfo &port, const DeviceInfo &device)
 {
 	if (robotModel != mRobotModel.name()) {

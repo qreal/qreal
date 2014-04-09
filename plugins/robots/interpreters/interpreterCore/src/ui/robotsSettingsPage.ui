@@ -176,7 +176,7 @@
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
-    <widget class="QGroupBox" name="sensorsSettingsGroupBox">
+    <widget class="QGroupBox" name="deviceSettingsGroupBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -186,9 +186,9 @@
      <property name="title">
       <string>Sensors Settings</string>
      </property>
-     <layout class="QVBoxLayout" name="sensorsConfiguratorLayout">
+     <layout class="QVBoxLayout" name="devicesConfiguratorLayout">
       <item>
-       <widget class="interpreterCore::ui::SensorsConfigurationWidget" name="sensorsConfigurer" native="true"/>
+       <widget class="interpreterCore::ui::DevicesConfigurationWidget" name="devicesConfigurer" native="true"/>
       </item>
      </layout>
     </widget>
@@ -314,9 +314,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>interpreterCore::ui::SensorsConfigurationWidget</class>
+   <class>interpreterCore::ui::DevicesConfigurationWidget</class>
    <extends>QWidget</extends>
-   <header>ui/sensorsConfigurationWidget.h</header>
+   <header>ui/devicesConfigurationWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

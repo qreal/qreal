@@ -33,7 +33,7 @@ qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()
 	return mTwoDModelActionInfo;
 }
 
-interpreterBase::SensorsConfigurationProvider &TwoDModelEngineFacade::sensorsConfigurationProvider()
+interpreterBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurationProvider()
 {
 	return *mTwoDModel;
 }

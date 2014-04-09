@@ -4,7 +4,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/qmath.h>
 
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 #include <interpreterBase/robotModel/portInfo.h>
 
@@ -27,7 +27,7 @@ class Timeline;
 
 class D2RobotModel : public QObject
 		, public TwoDRobotRobotModelInterface
-		, public interpreterBase::SensorsConfigurationProvider
+		, public interpreterBase::DevicesConfigurationProvider
 		, public engine::TwoDModelEngineInterface
 {
 	Q_OBJECT

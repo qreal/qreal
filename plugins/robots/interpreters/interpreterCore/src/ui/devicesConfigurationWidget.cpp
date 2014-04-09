@@ -1,4 +1,4 @@
-#include "sensorsConfigurationWidget.h"
+#include "devicesConfigurationWidget.h"
 
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QComboBox>
@@ -9,7 +9,7 @@
 using namespace interpreterCore::ui;
 using namespace interpreterBase::robotModel;
 
-SensorsConfigurationWidget::SensorsConfigurationWidget(QWidget *parent, bool autosaveMode)
+DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool autosaveMode)
 	: QWidget(parent)
 	, mAutosaveMode(autosaveMode)
 	, mLayout(new QVBoxLayout)
@@ -22,7 +22,7 @@ SensorsConfigurationWidget::SensorsConfigurationWidget(QWidget *parent, bool aut
 	setLayout(mLayout);
 }
 
-void SensorsConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> const &models)
+void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> const &models)
 {
 	for (RobotModelInterface * const model : models) {
 		QString const name = model->name();
@@ -35,7 +35,7 @@ void SensorsConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 	hideAllConfigurers();
 }
 
-void SensorsConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
+void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
 	QString const robotModelId = robotModel.name();
 	mCurrentModel = robotModelId;
@@ -46,7 +46,7 @@ void SensorsConfigurationWidget::selectRobotModel(RobotModelInterface &robotMode
 	}
 }
 
-QWidget *SensorsConfigurationWidget::configurerForRobotModel(RobotModelInterface &robotModel)
+QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface &robotModel)
 {
 	/// @todo: What if robot model has no configurable sensors?
 	QWidget *result = new QWidget;
@@ -60,7 +60,7 @@ QWidget *SensorsConfigurationWidget::configurerForRobotModel(RobotModelInterface
 	return result;
 }
 
-QLayout *SensorsConfigurationWidget::initPort(QString const &robotModel
+QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
 		, PortInfo const &port, QList<DeviceInfo> const &sensors)
 {
 	QLabel * const portLabel = new QLabel(tr("Port %1:").arg(port.name()), this);
@@ -74,7 +74,7 @@ QLayout *SensorsConfigurationWidget::initPort(QString const &robotModel
 	}
 
 	if (mAutosaveMode) {
-		connect(comboBox, &QComboBox::currentTextChanged, this, &SensorsConfigurationWidget::save);
+		connect(comboBox, &QComboBox::currentTextChanged, this, &DevicesConfigurationWidget::save);
 	}
 
 	QHBoxLayout * const layout = new QHBoxLayout;
@@ -86,14 +86,14 @@ QLayout *SensorsConfigurationWidget::initPort(QString const &robotModel
 	return layout;
 }
 
-void SensorsConfigurationWidget::hideAllConfigurers()
+void DevicesConfigurationWidget::hideAllConfigurers()
 {
 	for (QWidget * const configurer : mRobotModelConfigurers.values()) {
 		configurer->hide();
 	}
 }
 
-void SensorsConfigurationWidget::onSensorConfigurationChanged(QString const &robotModel
+void DevicesConfigurationWidget::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	Q_UNUSED(robotModel)
@@ -108,7 +108,7 @@ void SensorsConfigurationWidget::onSensorConfigurationChanged(QString const &rob
 }
 
 
-void SensorsConfigurationWidget::refresh()
+void DevicesConfigurationWidget::refresh()
 {
 	mRefreshing = true;
 	for (QComboBox * const box : mConfigurers) {
@@ -124,7 +124,7 @@ void SensorsConfigurationWidget::refresh()
 	mRefreshing = false;
 }
 
-void SensorsConfigurationWidget::save()
+void DevicesConfigurationWidget::save()
 {
 	// Refreshing may affect combobox current index. No saving is needed then.
 	if (mRefreshing) {
@@ -148,18 +148,18 @@ void SensorsConfigurationWidget::save()
 	mSaving = false;
 }
 
-void SensorsConfigurationWidget::propagateChanges(PortInfo const &port, DeviceInfo const &sensor)
+void DevicesConfigurationWidget::propagateChanges(PortInfo const &port, DeviceInfo const &sensor)
 {
 	for (QString const &robotModelId : mRobotModels.keys()) {
 		RobotModelInterface const *robotModel = mRobotModels[robotModelId];
 		for (PortInfo const &otherPort : robotModel->configurablePorts()) {
 			if (areConvertible(port, otherPort)) {
 				if (sensor.isNull()) {
-					sensorConfigurationChanged(robotModelId, otherPort, DeviceInfo());
+					deviceConfigurationChanged(robotModelId, otherPort, DeviceInfo());
 				} else {
 					DeviceInfo const otherDevice = convertibleDevice(robotModel, otherPort, sensor);
 					if (!otherDevice.isNull()) {
-						sensorConfigurationChanged(robotModelId, otherPort, otherDevice);
+						deviceConfigurationChanged(robotModelId, otherPort, otherDevice);
 					}
 				}
 			}
@@ -167,14 +167,14 @@ void SensorsConfigurationWidget::propagateChanges(PortInfo const &port, DeviceIn
 	}
 }
 
-bool SensorsConfigurationWidget::areConvertible(PortInfo const &port1, PortInfo const &port2) const
+bool DevicesConfigurationWidget::areConvertible(PortInfo const &port1, PortInfo const &port2) const
 {
 	return port1.name() == port2.name()
 			|| port1.nameAliases().contains(port2.name())
 			|| port2.nameAliases().contains(port1.name());
 }
 
-DeviceInfo SensorsConfigurationWidget::convertibleDevice(RobotModelInterface const *robotModel
+DeviceInfo DevicesConfigurationWidget::convertibleDevice(RobotModelInterface const *robotModel
 		, PortInfo const &port, DeviceInfo const &device) const
 {
 	QList<DeviceInfo> const convertibleBases = robotModel->convertibleBases();

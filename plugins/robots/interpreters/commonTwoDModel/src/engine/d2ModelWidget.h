@@ -24,7 +24,7 @@
 #include "timeline.h"
 //#include "../nxtDisplay.h"
 
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace Ui {
@@ -63,7 +63,7 @@ enum CursorType
 
 }
 
-class D2ModelWidget : public utils::QRealDialog, public interpreterBase::SensorsConfigurationProvider
+class D2ModelWidget : public utils::QRealDialog, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -135,7 +135,7 @@ protected:
 	virtual void showEvent(QShowEvent *e);
 	virtual void keyPressEvent(QKeyEvent *event);
 
-	void onSensorConfigurationChanged(QString const &robotModel
+	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
 			, const interpreterBase::robotModel::DeviceInfo &device) override;
 

@@ -27,7 +27,7 @@ public:
 	void init() override;
 
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
-	interpreterBase::SensorsConfigurationProvider &sensorsConfigurationProvider() override;
+	interpreterBase::DevicesConfigurationProvider &devicesConfigurationProvider() override;
 
 	TwoDModelEngineInterface &engine();
 

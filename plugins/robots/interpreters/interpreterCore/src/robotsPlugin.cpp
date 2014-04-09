@@ -21,9 +21,6 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mRobotsPluginFacade.init(configurator);
 
 	SettingsManager::setValue("IndexGrid", gridWidth);
-//	mCustomizer.placeSensorsConfig(produceSensorsConfigurer());
-//	mCustomizer.placeWatchPlugins(mInterpreter.watchWindow(), mInterpreter.graphicsWatchWindow());
-
 
 //	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing done");
 }
@@ -100,19 +97,6 @@ void RobotsPlugin::activeTabChanged(Id const &rootElementId)
 //	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 //	mInterpreter.onTabChanged(rootElementId, enabled);
 }
-
-//interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produceSensorsConfigurer() const
-//{
-//	interpreters::robots::details::SensorsConfigurationWidget *result =
-//			new interpreters::robots::details::SensorsConfigurationWidget;
-//	connect(mRobotSettingsPage, SIGNAL(saved()), result, SLOT(refresh()));
-//	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
-//	connect(result, SIGNAL(saved()), &mInterpreter, SLOT(saveSensorConfiguration()));
-//	connect(&mInterpreter, SIGNAL(sensorsConfigurationChanged()), result, SLOT(refresh()));
-//	connect(result, SIGNAL(saved()), &mInterpreter, SLOT(updateGraphicWatchSensorsList()));
-//	mInterpreter.connectSensorConfigurer(result);
-//	return result;
-//}
 
 void RobotsPlugin::rereadSettings()
 {
