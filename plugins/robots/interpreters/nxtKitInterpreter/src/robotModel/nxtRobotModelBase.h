@@ -23,7 +23,11 @@ protected:
 	virtual interpreterBase::robotModel::DeviceInfo touchSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo sonarSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo lightSensorInfo() const;
-	virtual interpreterBase::robotModel::DeviceInfo colorSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo colorFullSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo colorRedSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo colorGreenSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo colorBlueSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo colorPassiveSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo soundSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo gyroscopeSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo accelerometerSensorInfo() const;

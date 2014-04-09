@@ -3,7 +3,8 @@
 #include <qrkernel/exception/exception.h>
 #include <utils/realTimer.h>
 
-#include "interpreterBase/robotModel/robotParts/touchSensor.h"
+#include "interpreterBase/robotModel/robotParts/motor.h"
+
 
 using namespace interpreterBase::robotModel;
 
@@ -36,6 +37,13 @@ void CommonRobotModel::connectToRobot()
 
 void CommonRobotModel::stopRobot()
 {
+	for (robotParts::Device * const device : mConfiguration.devices()) {
+		robotParts::Motor * const motor = dynamic_cast<robotParts::Motor *>(device);
+		if (motor) {
+			motor->off();
+		}
+	}
+	/// @todo: add known deinotialization methods here (for example sensors termination after extending their inteface)
 }
 
 void CommonRobotModel::disconnectFromRobot()
@@ -89,7 +97,9 @@ ConfigurationInterface const &CommonRobotModel::configuration() const
 
 QList<PortInfo> CommonRobotModel::availablePorts() const
 {
-	return mAllowedConnections.keys();
+	QList<PortInfo> result = mAllowedConnections.keys();
+	qSort(result);
+	return result;
 }
 
 QList<PortInfo> CommonRobotModel::configurablePorts() const

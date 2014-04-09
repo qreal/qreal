@@ -8,7 +8,12 @@
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
-#include <interpreterBase/robotModel/robotParts/colorSensor.h>
+/// @todo: use common sensors
+#include "real/parts/colorSensorFull.h"
+#include "real/parts/colorSensorRed.h"
+#include "real/parts/colorSensorGreen.h"
+#include "real/parts/colorSensorBlue.h"
+#include "real/parts/colorSensorPassive.h"
 #include <interpreterBase/robotModel/robotParts/soundSensor.h>
 #include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
 #include <interpreterBase/robotModel/robotParts/accelerometerSensor.h>
@@ -28,7 +33,11 @@ NxtRobotModelBase::NxtRobotModelBase()
 			touchSensorInfo()
 			, sonarSensorInfo()
 			, lightSensorInfo()
-			, colorSensorInfo()
+			, colorFullSensorInfo()
+			, colorRedSensorInfo()
+			, colorGreenSensorInfo()
+			, colorBlueSensorInfo()
+			, colorPassiveSensorInfo()
 			, soundSensorInfo()
 			, gyroscopeSensorInfo()
 			, accelerometerSensorInfo()
@@ -51,7 +60,11 @@ QList<DeviceInfo> NxtRobotModelBase::convertibleBases() const
 	return { DeviceInfo::create<robotParts::TouchSensor>()
 			, DeviceInfo::create<robotParts::RangeSensor>()
 			, DeviceInfo::create<robotParts::LightSensor>()
-			, DeviceInfo::create<robotParts::ColorSensor>()
+			, DeviceInfo::create<robotModel::real::parts::ColorSensorFull>()
+			, DeviceInfo::create<robotModel::real::parts::ColorSensorRed>()
+			, DeviceInfo::create<robotModel::real::parts::ColorSensorGreen>()
+			, DeviceInfo::create<robotModel::real::parts::ColorSensorBlue>()
+			, DeviceInfo::create<robotModel::real::parts::ColorSensorPassive>()
 			, DeviceInfo::create<robotParts::SoundSensor>()
 			, DeviceInfo::create<robotParts::GyroscopeSensor>()
 			, DeviceInfo::create<robotParts::AccelerometerSensor>()
@@ -98,9 +111,29 @@ DeviceInfo NxtRobotModelBase::lightSensorInfo() const
 	return DeviceInfo::create<robotParts::LightSensor>();
 }
 
-DeviceInfo NxtRobotModelBase::colorSensorInfo() const
+DeviceInfo NxtRobotModelBase::colorFullSensorInfo() const
 {
-	return DeviceInfo::create<robotParts::ColorSensor>();
+	return DeviceInfo::create<robotModel::real::parts::ColorSensorFull>();
+}
+
+DeviceInfo NxtRobotModelBase::colorRedSensorInfo() const
+{
+	return DeviceInfo::create<robotModel::real::parts::ColorSensorRed>();
+}
+
+DeviceInfo NxtRobotModelBase::colorGreenSensorInfo() const
+{
+	return DeviceInfo::create<robotModel::real::parts::ColorSensorGreen>();
+}
+
+DeviceInfo NxtRobotModelBase::colorBlueSensorInfo() const
+{
+	return DeviceInfo::create<robotModel::real::parts::ColorSensorBlue>();
+}
+
+DeviceInfo NxtRobotModelBase::colorPassiveSensorInfo() const
+{
+	return DeviceInfo::create<robotModel::real::parts::ColorSensorPassive>();
 }
 
 DeviceInfo NxtRobotModelBase::soundSensorInfo() const

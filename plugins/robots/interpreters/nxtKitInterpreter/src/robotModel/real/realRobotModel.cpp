@@ -14,7 +14,11 @@
 #include "parts/touchSensor.h"
 #include "parts/sonarSensor.h"
 #include "parts/lightSensor.h"
-#include "parts/colorSensor.h"
+#include "parts/colorSensorFull.h"
+#include "parts/colorSensorRed.h"
+#include "parts/colorSensorGreen.h"
+#include "parts/colorSensorBlue.h"
+#include "parts/colorSensorPassive.h"
 #include "parts/soundSensor.h"
 #include "parts/gyroscopeSensor.h"
 
@@ -105,10 +109,24 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::LightSensor(lightSensorInfo(), port, mRobotCommunicator);
 	}
 
-	if (deviceInfo.isA(colorSensorInfo())) {
-		/// @todo: support different colors
-		return new parts::ColorSensor(colorSensorInfo(), port
-				, mRobotCommunicator, enums::lowLevelSensorType::COLORBLUE);
+	if (deviceInfo.isA(colorFullSensorInfo())) {
+		return new parts::ColorSensorFull(colorFullSensorInfo(), port, mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(colorRedSensorInfo())) {
+		return new parts::ColorSensorRed(colorRedSensorInfo(), port, mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(colorGreenSensorInfo())) {
+		return new parts::ColorSensorGreen(colorGreenSensorInfo(), port, mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(colorBlueSensorInfo())) {
+		return new parts::ColorSensorBlue(colorBlueSensorInfo(), port, mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(colorPassiveSensorInfo())) {
+		return new parts::ColorSensorPassive(colorPassiveSensorInfo(), port, mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(soundSensorInfo())) {

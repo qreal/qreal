@@ -97,11 +97,9 @@ void SensorVariablesUpdater::onFailure()
 
 void SensorVariablesUpdater::updateScalarSensorVariables(PortInfo const &sensorPortInfo, int reading)
 {
-	updateScalarSensorVariable("Sensor" + sensorPortInfo.name(), reading);
 	updateScalarSensorVariable("sensor" + sensorPortInfo.name(), reading);
 
 	for (QString const &alias : sensorPortInfo.nameAliases()) {
-		updateScalarSensorVariable("Sensor" + alias, reading);
 		updateScalarSensorVariable("sensor" + alias, reading);
 	}
 }
