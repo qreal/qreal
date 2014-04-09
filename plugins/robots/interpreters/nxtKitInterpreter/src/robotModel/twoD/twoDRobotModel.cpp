@@ -25,6 +25,7 @@ TwoDRobotModel::TwoDRobotModel()
 		/// @todo: implement multidevice architecture
 		//, encoderInfo()
 	};
+
 	QList<DeviceInfo> const inputPortConnections = {
 			DeviceInfo::create<robotParts::TouchSensor>()
 			, DeviceInfo::create<robotParts::RangeSensor>()

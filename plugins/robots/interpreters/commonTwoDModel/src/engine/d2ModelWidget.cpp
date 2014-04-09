@@ -9,6 +9,8 @@
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
 
+#include <interpreterBase/robotModel/robotParts/motor.h>
+
 #include "d2RobotModel.h"
 #include "constants.h"
 #include "sensorItem.h"
@@ -21,6 +23,7 @@ using namespace qReal;
 using namespace utils;
 using namespace graphicsUtils;
 using namespace interpreterBase::robotModel;
+using namespace interpreterBase::robotModel::robotParts;
 
 D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
 		, RobotModelInterface &robotModel
@@ -80,6 +83,8 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	setFocus();
 
 	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);
+
+	updateWheelComboBoxes();
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -196,10 +201,10 @@ void D2ModelWidget::initPorts()
 	for (PortInfo const &port : ports) {
 		DeviceInfo const currentlyConfiguredDevice = currentConfiguration(mRobotModel.name(), port);
 
-		mUi->portsFrame->layout()->addWidget(new QLabel(tr("Port ") + port.name()));
+		mUi->portsGroupBox->layout()->addWidget(new QLabel(tr("Port ") + port.name()));
 
 		QComboBox *portsSelectionComboBox = new QComboBox();
-		mUi->portsFrame->layout()->addWidget(portsSelectionComboBox);
+		mUi->portsGroupBox->layout()->addWidget(portsSelectionComboBox);
 
 		portsSelectionComboBox->addItem(tr("none"));
 		for (DeviceInfo device : mRobotModel.allowedDevices(port)) {
@@ -1322,16 +1327,6 @@ void D2ModelWidget::alignWalls()
 	}
 }
 
-//void D2ModelWidget::onSensorConfigurationChanged(
-//		robots::enums::inputPort::InputPortEnum port
-//		, robots::enums::sensorType::SensorTypeEnum type
-//		)
-//{
-//	changeSensorType(port, type);
-//	addPort(port);
-//}
-
-
 void D2ModelWidget::onSensorConfigurationChanged(const QString &robotModel
 		, const PortInfo &port, const DeviceInfo &device)
 {
@@ -1339,6 +1334,8 @@ void D2ModelWidget::onSensorConfigurationChanged(const QString &robotModel
 		/// @todo Convert configuration between models or something?
 		return;
 	}
+
+	updateWheelComboBoxes();
 
 	/// @todo Isomorphic map with constant lookup both ways?
 	QComboBox *comboBox = mComboBoxesToPortsMap.key(port, nullptr);
@@ -1361,4 +1358,17 @@ void D2ModelWidget::initRunStopButtons()
 {
 	connect(mUi->runButton, &QPushButton::clicked, this, &D2ModelWidget::runButtonPressed);
 	connect(mUi->stopButton, &QPushButton::clicked, this, &D2ModelWidget::stopButtonPressed);
+}
+
+void D2ModelWidget::updateWheelComboBoxes()
+{
+	mUi->leftWheelComboBox->addItem("None");
+	mUi->rightWheelComboBox->addItem("None");
+
+	for (Device const * const device : mRobotModel.configuration().devices()) {
+		if (device->deviceInfo().isA<Motor>()) {
+			mUi->leftWheelComboBox->addItem(device->deviceInfo().friendlyName());
+			mUi->rightWheelComboBox->addItem(device->deviceInfo().friendlyName());
+		}
+	}
 }
