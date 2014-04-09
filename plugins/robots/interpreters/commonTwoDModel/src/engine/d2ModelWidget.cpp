@@ -89,7 +89,7 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	connect(mUi->rightWheelComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated)
 			, [this](int index) {
 					mTwoDRobotModel->setMotorPortOnWheel(
-							TwoDRobotRobotModelInterface::left
+							TwoDRobotRobotModelInterface::right
 							, mUi->leftWheelComboBox->itemData(index).value<PortInfo>()
 							);
 			});
