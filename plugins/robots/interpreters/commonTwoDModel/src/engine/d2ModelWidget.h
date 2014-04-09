@@ -263,6 +263,8 @@ private:
 
 	void initRunStopButtons();
 
+	void updateWheelComboBoxes();
+
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
 	RobotItem *mRobot;

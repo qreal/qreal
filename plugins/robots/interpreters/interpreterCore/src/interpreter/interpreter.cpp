@@ -60,6 +60,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	qDebug() << "mRobotModelManager.model().init()";
 
 	mRobotModelManager.model().init();
+
 	mRobotModelManager.model().connectToRobot();
 }
 
