@@ -3,6 +3,8 @@
 #include <QtCore/QObject>
 
 #include <qrkernel/ids.h>
+#include <interpreterBase/robotModel/portInfo.h>
+#include <interpreterBase/robotModel/deviceInfo.h>
 #include <interpreterBase/interpreterBaseDeclSpec.h>
 
 namespace interpreterBase {
@@ -22,6 +24,9 @@ public:
 	virtual void setIdleStatus() = 0;
 
 	virtual qReal::Id const id() const = 0;
+
+	/// Returns an information about the devices that must be configured for correct work of this block.
+	virtual QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedSensors() const = 0;
 
 	/// Called each time when control flow has reached the end block of the requested for stepping into diagram.
 	virtual void finishedSteppingInto() = 0;

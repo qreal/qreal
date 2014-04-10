@@ -1,7 +1,7 @@
 #pragma once
 
-//#include <interpreterBase/robotModel/sensorId.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
@@ -11,23 +11,29 @@ namespace interpreterCore {
 namespace interpreter {
 namespace details {
 
-class Autoconfigurer {
+/// Extended devices configuration validator.
+class Autoconfigurer : public interpreterBase::DevicesConfigurationProvider
+{
 public:
 	Autoconfigurer(qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, BlocksTable * const blocksTable
-			, qReal::ErrorReporterInterface * const errorReporter
-			, interpreterBase::robotModel::RobotModelInterface *robotModel
-			);
+			, BlocksTable &blocksTable
+			, qReal::ErrorReporterInterface &errorReporter);
 
-//	QVector<interpreterBase::robotModel::SensorId> configure(qReal::Id const &diagram, bool *success);
+	/// Performs extended validation of devices correspondence to the user-defined configuration.
+	/// May display errors or automaticly modify sensors configuration.
+	/// @param success Output parameter that will be stored false if two configurations have conflicts
+	///        and true if everything is ok.
+	/// @return The devices configuration desired by blocks on diagram
+	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> configure(
+			QList<qReal::Id> const &diagrams
+			, interpreterBase::robotModel::RobotModelInterface &robotModel
+			, bool &success);
 
 private:
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
-	BlocksTable *mBlocksTable;  // Does not have ownership
-	qReal::ErrorReporterInterface * const mErrorReporter;  // Does not have ownership
-	interpreterBase::robotModel::RobotModelInterface *mRobotModel;  // Does not have ownership
-
-//	QVector<interpreterBase::robotModel::SensorId> mUsedSensors;
+	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	BlocksTable &mBlocksTable;
+	qReal::ErrorReporterInterface &mErrorReporter;
+	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> mUsedSensors;
 };
 
 }

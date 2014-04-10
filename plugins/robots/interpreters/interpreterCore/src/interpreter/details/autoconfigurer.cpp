@@ -4,63 +4,48 @@
 
 #include <interpreterBase/blocksBase/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
-//#include "tracer.h"
+#include <utils/tracer.h>
 
 using namespace interpreterCore::interpreter::details;
-
 using namespace qReal;
 using namespace interpreterBase::robotModel;
 
 Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalModelApi
-		, BlocksTable * const blocksTable
-		, ErrorReporterInterface * const errorReporter
-		, RobotModelInterface *robotModel
-		)
-	: mGraphicalModelApi(&graphicalModelApi)
+		, BlocksTable &blocksTable
+		, qReal::ErrorReporterInterface &errorReporter)
+	: mGraphicalModelApi(graphicalModelApi)
 	, mBlocksTable(blocksTable)
 	, mErrorReporter(errorReporter)
-	, mRobotModel(robotModel)
 {
 }
 
-//QVector<SensorId> Autoconfigurer::configure(Id const &diagram, bool *success)
-//{
-//	if (!success) {
-//		throw Exception("Pass correct pointer to boolean as 'success' parameter");
-//	}
+QHash<PortInfo, DeviceInfo> Autoconfigurer::configure(QList<qReal::Id> const &diagrams
+		, RobotModelInterface &robotModel, bool &success)
+{
+	success = true;
 
-//	*success = true;
+	for (PortInfo const &port : robotModel.availablePorts()) {
+		mUsedSensors[port] = currentConfiguration(robotModel.name(), port);
+	}
 
-//	mUsedSensors[0] = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt());
-//	mUsedSensors[1] = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt());
-//	mUsedSensors[2] = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt());
-//	mUsedSensors[3] = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt());
+	for (Id const &diagram : diagrams) {
+		IdList const children = mGraphicalModelApi.graphicalRepoApi().children(diagram);
 
-//	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
+		for (Id const &child : children) {
+			interpreterBase::blocksBase::BlockInterface const * const block = mBlocksTable.block(child);
+			QMap<PortInfo, DeviceInfo> const usedSensors = block->usedSensors();
+			foreach (PortInfo const &port, usedSensors.keys()) {
+				DeviceInfo const device = usedSensors[port];
+				if (!mUsedSensors[port].isNull() && mUsedSensors[port] != device) {
+					mErrorReporter.addError(QObject::tr("Sensor configuration conflict, please check that sensor"\
+							" ports are used consistently in a program"), child);
+					success = false;
+				} else if (mUsedSensors[port].isNull()) {
+					mUsedSensors[port] = device;
+				}
+			}
+		}
+	}
 
-//	foreach (Id const &child, children) {
-//		blocks::Block const * const block = mBlocksTable->block(child);
-//		foreach (blocks::Block::SensorPortPair const &sensorPortPair, block->usedSensors()) {
-//			robots::enums::sensorType::SensorTypeEnum const sensor = sensorPortPair.first;
-//			int const port = sensorPortPair.second;
-//			if (mUsedSensors[port] != robots::enums::sensorType::unused && mUsedSensors[port] != sensor) {
-//				mErrorReporter->addError(QObject::tr("Sensor configuration conflict, please check that sensor ports are used consistently in a program"), child);
-//				result = false;
-//			} else if (mUsedSensors[port] == robots::enums::sensorType::unused) {
-//				mUsedSensors[port] = sensor;
-//			}
-//		}
-//	}
-
-//	if (result) {
-//		Tracer::debug(tracer::enums::initialization, "Autoconfigurer::configure", "Autoconfiguring sensors in a model");
-//		mRobotModel->configureSensors(
-//				mUsedSensors[0]
-//				, mUsedSensors[1]
-//				, mUsedSensors[2]
-//				, mUsedSensors[3]
-//			);
-//	}
-
-//	return QVector<SensorId>();
-//}
+	return QHash<PortInfo, DeviceInfo>();
+}

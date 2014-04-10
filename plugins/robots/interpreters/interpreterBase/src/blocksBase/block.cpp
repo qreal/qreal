@@ -3,7 +3,8 @@
 //#include <QtCore/QDebug>
 //#include "../robotsBlockParser.h"
 
-using namespace interpreterBase::blocksBase;
+using namespace interpreterBase;
+using namespace blocksBase;
 using namespace qReal;
 
 Block::Block()
@@ -152,10 +153,10 @@ void Block::error(QString const &message)
 	emit failure();
 }
 
-//QList<Block::SensorPortPair> Block::usedSensors() const
-//{
-//	return QList<SensorPortPair>();
-//}
+QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedSensors() const
+{
+	return QMap<robotModel::PortInfo, robotModel::DeviceInfo>();
+}
 
 QVariant Block::evaluate(QString const &propertyName)
 {
