@@ -16,4 +16,5 @@ void NxtSpeaker::beep(unsigned time)
 
 void NxtSpeaker::doConfiguration()
 {
+	configurationCompleted(true);
 }

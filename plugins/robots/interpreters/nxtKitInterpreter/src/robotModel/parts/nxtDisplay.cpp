@@ -10,4 +10,5 @@ NxtDisplay::NxtDisplay(DeviceInfo const &info, PortInfo const &port)
 
 void NxtDisplay::doConfiguration()
 {
+	configurationCompleted(true);
 }

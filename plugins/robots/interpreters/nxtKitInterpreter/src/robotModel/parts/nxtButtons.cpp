@@ -10,4 +10,5 @@ NxtButtons::NxtButtons(DeviceInfo const &info, PortInfo const &port)
 
 void NxtButtons::doConfiguration()
 {
+	configurationCompleted(true);
 }
