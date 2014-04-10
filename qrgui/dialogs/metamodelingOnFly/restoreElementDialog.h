@@ -22,8 +22,8 @@ public:
 	/// @param mainWindow Reference to QReal main window.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param elementsWithTheSameNameList IdList of elements with the same name.
-	explicit RestoreElementDialog(QWidget *parent, MainWindow &mainWindow, EditorManagerInterface const &interpreterEditorManager
-			, IdList const &elementsWithTheSameNameList);
+	explicit RestoreElementDialog(QWidget *parent, MainWindow &mainWindow
+			, EditorManagerInterface const &interpreterEditorManager, IdList const &elementsWithTheSameNameList);
 
 	/// Destructor.
 	~RestoreElementDialog();

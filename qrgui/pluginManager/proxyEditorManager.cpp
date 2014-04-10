@@ -281,15 +281,18 @@ bool ProxyEditorManager::isRootDiagramNode(Id const &id) const
 	return mProxiedEditorManager->isRootDiagramNode(id);
 }
 
-void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name, QString const &displayedName, bool isRootDiagramNode) const
+void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name
+		, QString const &displayedName, bool isRootDiagramNode) const
 {
 	mProxiedEditorManager->addNodeElement(diagram, name, displayedName, isRootDiagramNode);
 }
 
-void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName, QString const &labelText
-		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
+void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name
+		, QString const &displayedName, QString const &labelText, QString const &labelType
+		, QString const &lineType, QString const &beginType, QString const &endType) const
 {
-	mProxiedEditorManager->addEdgeElement(diagram, name, displayedName, labelText, labelType, lineType, beginType, endType);
+	mProxiedEditorManager->addEdgeElement(diagram, name, displayedName, labelText, labelType
+			, lineType, beginType, endType);
 }
 
 QPair<Id, Id> ProxyEditorManager::createEditorAndDiagram(QString const &name) const

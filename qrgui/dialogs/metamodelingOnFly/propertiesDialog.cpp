@@ -23,7 +23,8 @@ PropertiesDialog::PropertiesDialog(MainWindow &mainWindow, EditorManagerInterfac
 {
 	mUi->setupUi(this);
 
-	mEditPropertiesDialog = new EditPropertiesDialog(interpreterEditorManager, id, &mMainWindow, mMainWindow.models()->mutableLogicalRepoApi());
+	mEditPropertiesDialog = new EditPropertiesDialog(interpreterEditorManager, id, &mMainWindow
+			, mMainWindow.models()->mutableLogicalRepoApi());
 	setWindowTitle(tr("Properties: ") + mInterpreterEditorManager.friendlyName(mId));
 	mUi->propertiesNamesList->setWrapping(true);
 	updatePropertiesNamesList();

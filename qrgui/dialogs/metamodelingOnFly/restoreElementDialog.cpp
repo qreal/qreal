@@ -6,8 +6,8 @@
 
 using namespace qReal;
 
-RestoreElementDialog::RestoreElementDialog(QWidget *parent, MainWindow &mainWindow, EditorManagerInterface const &interpreterEditorManager
-		, IdList const &elementsWithTheSameNameList)
+RestoreElementDialog::RestoreElementDialog(QWidget *parent, MainWindow &mainWindow
+		, EditorManagerInterface const &interpreterEditorManager, IdList const &elementsWithTheSameNameList)
 	: QDialog(parent)
 	, mUi(new Ui::RestoreElementDialog)
 	, mMainWindow(mainWindow)
@@ -35,7 +35,8 @@ void RestoreElementDialog::fillSameNameElementsTV()
 		if (mInterpreterEditorManager.getIsHidden(element) == "true") {
 			state = tr("Deleted");
 		}
-		QList<QStandardItem *> elementRow = prepareRow(mInterpreterEditorManager.friendlyName(element) + " (" + state + ")", "", "");
+		QList<QStandardItem *> elementRow = prepareRow(mInterpreterEditorManager.friendlyName(element)
+				+ " (" + state + ")", "", "");
 		for (QStandardItem *item: elementRow) {
 			item->setEditable(false);
 		}
@@ -58,7 +59,8 @@ void RestoreElementDialog::fillSameNameElementsTV()
 	mUi->sameNameElementsTV->expandAll();
 }
 
-QList<QStandardItem *> RestoreElementDialog::prepareRow(QString const &first, QString const &second, QString const &third)
+QList<QStandardItem *> RestoreElementDialog::prepareRow(QString const &first, QString const &second
+		, QString const &third)
 {
 	 QList<QStandardItem *> rowItems;
 	 rowItems << new QStandardItem(first);

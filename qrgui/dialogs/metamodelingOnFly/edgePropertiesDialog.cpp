@@ -33,7 +33,8 @@ void EdgePropertiesDialog::okButtonClicked()
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
 	} else {
 		mEdgeName = mUi->nameEdit->text();
-		IdList const edgesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram, mUi->nameEdit->text(), "MetaEntityEdge");
+		IdList const edgesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram
+				, mUi->nameEdit->text(), "MetaEntityEdge");
 		if (!edgesWithTheSameNameList.isEmpty()) {
 			mEdgeName = mUi->nameEdit->text() + "_" + edgesWithTheSameNameList.count();
 			mRestoreElementDialog = new RestoreElementDialog(this, mMainWindow, mEditorManagerProxy, edgesWithTheSameNameList);

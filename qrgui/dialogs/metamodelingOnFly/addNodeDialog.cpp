@@ -29,7 +29,8 @@ void AddNodeDialog::okButtonClicked()
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
 	} else {
 		mNodeName = mUi->nameEdit->text();
-		IdList const nodesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram, mUi->nameEdit->text(), "MetaEntityNode");
+		IdList const nodesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram
+				, mUi->nameEdit->text(), "MetaEntityNode");
 		if (!nodesWithTheSameNameList.isEmpty()) {
 			mNodeName = mUi->nameEdit->text() + "_" + nodesWithTheSameNameList.count();
 			mRestoreElementDialog = new RestoreElementDialog(this, mMainWindow, mEditorManagerProxy, nodesWithTheSameNameList);

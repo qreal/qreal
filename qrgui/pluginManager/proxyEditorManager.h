@@ -98,10 +98,12 @@ public:
 	QString getIsHidden(Id const &id) const;
 	void deleteElement(MainWindow *mainWindow, Id const &id) const override;
 	bool isRootDiagramNode(Id const &id) const override;
-	void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName, bool isRootDiagramNode) const override;
+	void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
+			, bool isRootDiagramNode) const override;
 
-	void addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName, QString const &labelText, QString const &labelType
-			, QString const &lineType, QString const &beginType, QString const &endType) const override;
+	void addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName
+			, QString const &labelText, QString const &labelType, QString const &lineType
+			, QString const &beginType, QString const &endType) const override;
 
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const override;
 	void saveMetamodel(QString const &newMetamodelFileName) override;

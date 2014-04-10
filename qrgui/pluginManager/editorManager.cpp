@@ -635,7 +635,8 @@ bool EditorManager::isRootDiagramNode(Id const &id) const
 	return false;
 }
 
-void EditorManager::addNodeElement(Id const &diagram, QString const &name, QString const &displayedName, bool isRootDiagramNode) const
+void EditorManager::addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
+		, bool isRootDiagramNode) const
 {
 	Q_UNUSED(diagram);
 	Q_UNUSED(name);
@@ -643,8 +644,9 @@ void EditorManager::addNodeElement(Id const &diagram, QString const &name, QStri
 	Q_UNUSED(isRootDiagramNode);
 }
 
-void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName, QString const &labelText
-		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
+void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName
+		, QString const &labelText, QString const &labelType, QString const &lineType
+		, QString const &beginType, QString const &endType) const
 {
 	Q_UNUSED(diagram);
 	Q_UNUSED(name);

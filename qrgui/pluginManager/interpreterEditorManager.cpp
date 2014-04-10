@@ -769,7 +769,8 @@ IdList InterpreterEditorManager::elementsWithTheSameName(
 	Id const diag = repoAndDiagramPair.second;
 
 	foreach (Id const &element, repo->children(diag)) {
-		if (repo->stringProperty(element, "displayedName") == name && element.element() == type && repo->isLogicalElement(element)) {
+		if (repo->stringProperty(element, "displayedName") == name && element.element() == type
+				&& repo->isLogicalElement(element)) {
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, element);
 			result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(element));
 		}
@@ -1031,7 +1032,8 @@ void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, 
 }
 
 
-void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &name, QString const &displayedName, bool isRootDiagramNode) const
+void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &name
+		, QString const &displayedName, bool isRootDiagramNode) const
 {
 	QString const shape =
 			"<graphics>\n"
@@ -1085,8 +1087,9 @@ void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &
 	}
 }
 
-void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName, QString const &labelText
-		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
+void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &name
+		, QString const &displayedName, QString const &labelText, QString const &labelType
+		, QString const &lineType, QString const &beginType, QString const &endType) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndDiagramPair = repoAndDiagram(diagram.editor(), diagram.diagram());
 	qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
