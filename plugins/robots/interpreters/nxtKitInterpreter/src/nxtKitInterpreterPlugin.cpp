@@ -9,7 +9,8 @@ Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
-	: mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
+	: mBlocksFactory(new blocks::NxtBlocksFactory)
+	, mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
 {
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
 
@@ -77,7 +78,7 @@ interpreterBase::blocksBase::BlocksFactoryInterface *NxtKitInterpreterPlugin::bl
 		interpreterBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model);
-	return &mBlocksFactory;
+	return mBlocksFactory;
 }
 
 interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defaultRobotModel()

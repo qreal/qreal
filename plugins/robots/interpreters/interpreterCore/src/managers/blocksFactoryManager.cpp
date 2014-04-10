@@ -3,14 +3,21 @@
 using namespace interpreterCore;
 using namespace interpreterBase::blocksBase;
 
+BlocksFactoryManager::~BlocksFactoryManager()
+{
+	qDeleteAll(mFactories);
+}
+
 void BlocksFactoryManager::addFactory(BlocksFactoryInterface * const factory)
 {
-	mFactories << QSharedPointer<BlocksFactoryInterface>(factory);
+	if (!mFactories.contains(factory)) {
+		mFactories << factory;
+	}
 }
 
 BlockInterface *BlocksFactoryManager::block(qReal::Id const &element)
 {
-	for (QSharedPointer<BlocksFactoryInterface> const &factory : mFactories) {
+	for (BlocksFactoryInterface * const factory : mFactories) {
 		BlockInterface * const block = factory->block(element);
 		if (block) {
 			return block;
@@ -24,7 +31,7 @@ qReal::IdList BlocksFactoryManager::providedBlocks() const
 {
 	qReal::IdList result;
 
-	for (QSharedPointer<BlocksFactoryInterface> const &factory : mFactories) {
+	for (BlocksFactoryInterface * const factory : mFactories) {
 		result << factory->providedBlocks();
 	}
 

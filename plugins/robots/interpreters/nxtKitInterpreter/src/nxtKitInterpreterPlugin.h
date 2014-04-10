@@ -54,7 +54,7 @@ private slots:
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
-	blocks::NxtBlocksFactory mBlocksFactory;
+	blocks::NxtBlocksFactory *mBlocksFactory;  // Transfers ownership
 	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.

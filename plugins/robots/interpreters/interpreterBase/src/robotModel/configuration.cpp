@@ -61,8 +61,8 @@ robotParts::Device *Configuration::device(
 QList<robotParts::Device *> Configuration::devices(PortDirection direction) const
 {
 	return direction == defaultDirection
-			? mConfiguredDevices[direction].values()
-			: mConfiguredDevices[input].values() + mConfiguredDevices[output].values();
+			? mConfiguredDevices[input].values() + mConfiguredDevices[output].values()
+			: mConfiguredDevices[direction].values();
 }
 
 void Configuration::clearDevice(PortInfo const &port)

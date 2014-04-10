@@ -143,9 +143,11 @@ void UsbRobotCommunicationThread::disconnect()
 	if (!mFantom.isAvailable()) {
 		return;
 	}
+
 	mKeepAliveTimer->stop();
 	int status = 0;
 	mFantom.nFANTOM100_destroyNXT(mNXTHandle, status);
+	mNXTHandle = 0;
 	mActive = false;
 	emit disconnected();
 }

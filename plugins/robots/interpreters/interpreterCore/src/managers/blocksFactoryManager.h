@@ -10,6 +10,8 @@ namespace interpreterCore {
 class BlocksFactoryManager : public BlocksFactoryManagerInterface
 {
 public:
+	~BlocksFactoryManager();
+
 	void addFactory(interpreterBase::blocksBase::BlocksFactoryInterface * const factory) override;
 
 	interpreterBase::blocksBase::BlockInterface *block(qReal::Id const &element) override;
@@ -17,7 +19,7 @@ public:
 	qReal::IdList providedBlocks() const override;
 
 private:
-	QList<QSharedPointer<interpreterBase::blocksBase::BlocksFactoryInterface>> mFactories;
+	QList<interpreterBase::blocksBase::BlocksFactoryInterface *> mFactories;
 
 };
 

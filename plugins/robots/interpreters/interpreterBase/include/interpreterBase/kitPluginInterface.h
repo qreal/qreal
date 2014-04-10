@@ -48,7 +48,7 @@ public:
 	virtual QList<robotModel::RobotModelInterface *> robotModels() = 0;
 
 	/// Returns a blocks factory for a given robot model. Nullptr can be returned and means that no factory is provided
-	/// by this plugin.
+	/// by this plugin. Ownership must be transfered.
 	virtual blocksBase::BlocksFactoryInterface *blocksFactoryFor(robotModel::RobotModelInterface const *model) = 0;
 
 	/// If overrided and returns some model as value that model will be used as default selected model for this kit
