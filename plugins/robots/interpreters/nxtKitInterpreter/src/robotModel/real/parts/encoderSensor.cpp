@@ -55,6 +55,7 @@ void EncoderSensor::readingDone(QObject *addressee, QByteArray const &reading)
 
 void EncoderSensor::doConfiguration()
 {
+	configurationCompleted(true);
 }
 
 void EncoderSensor::sensorSpecificProcessResponse(QByteArray const &reading)

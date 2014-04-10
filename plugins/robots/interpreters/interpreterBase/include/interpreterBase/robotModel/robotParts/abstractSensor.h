@@ -15,6 +15,7 @@ namespace robotParts {
 class ROBOTS_INTERPRETER_BASE_EXPORT AbstractSensor : public Device
 {
 	Q_OBJECT
+	Q_CLASSINFO("direction", "input")
 
 public:
 	AbstractSensor(DeviceInfo const &info, PortInfo const &port);

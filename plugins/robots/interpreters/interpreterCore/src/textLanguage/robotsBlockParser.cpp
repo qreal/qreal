@@ -97,6 +97,7 @@ bool RobotsBlockParser::isLetter(const QChar &symbol)
 
 void RobotsBlockParser::setReservedVariables()
 {
+	/// @todo: Reinitialize it each time before interpretation from robot model
 	QString const pi = "pi";
 	Number * const piValue = new Number(3.14159265, Number::doubleType);
 	mVariables.insert(pi, piValue);

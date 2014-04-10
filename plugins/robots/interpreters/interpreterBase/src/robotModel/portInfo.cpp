@@ -6,9 +6,10 @@ PortInfo::PortInfo()
 {
 }
 
-PortInfo::PortInfo(QString const &name, QStringList const &nameAliases)
+PortInfo::PortInfo(QString const &name, QStringList const &nameAliases, QString const &reservedVariableName)
 	: mName(name)
 	, mNameAliases(nameAliases)
+	, mReservedVariable(reservedVariableName)
 {
 }
 
@@ -27,18 +28,23 @@ QStringList PortInfo::nameAliases() const
 	return mNameAliases;
 }
 
+QString PortInfo::reservedVariable() const
+{
+	return mReservedVariable;
+}
+
 QString PortInfo::toString() const
 {
-	return QString("%1###%2").arg(mName, mNameAliases.join("$$$"));
+	return QString("%1###%2###%3").arg(mName, mNameAliases.join("$$$"), mReservedVariable);
 }
 
 PortInfo PortInfo::fromString(QString const &string)
 {
 	QStringList const parts = string.split("###");
-	if (parts.count() != 2) {
+	if (parts.count() != 3) {
 		// Q_ASSERT?
 		return PortInfo();
 	}
 
-	return PortInfo(parts[0], parts[1].split("$$$", QString::SkipEmptyParts));
+	return PortInfo(parts[0], parts[1].split("$$$", QString::SkipEmptyParts), parts[2]);
 }

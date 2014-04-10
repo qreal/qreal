@@ -43,15 +43,15 @@ private:
 	void checkAllDevicesConfigured();
 
 	/// Contains currently configured and ready devices.
-	QHash<PortInfo, robotParts::Device *> mConfiguredDevices;  // Has ownership.
+	QHash<PortDirection, QHash<PortInfo, robotParts::Device *>> mConfiguredDevices;  // Has ownership.
 
 	/// Contains devices that are not configured yet but are added for configuration and possibly already requested
 	/// to configure themselves.
-	QHash<PortInfo, robotParts::Device *> mPendingDevices;  // Has ownership.
+	QHash<PortDirection, QHash<PortInfo, robotParts::Device *>> mPendingDevices;  // Has ownership.
 
 	/// Contains ports on which device is already requested to configure itself and we are waiting a signal about
 	/// result of configuration.
-	QSet<PortInfo> mConfigurationInProgress;
+	QSet<QPair<PortInfo, PortDirection>> mConfigurationInProgress;
 };
 
 }

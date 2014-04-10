@@ -25,8 +25,9 @@ void SensorVariablesUpdater::run()
 	for (robotParts::Device * const device
 		 : mRobotModelManager.model().configuration().devices(ConfigurationInterface::input))
 	{
+		/// @todo: Works only with scalar sensors
 		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
-		if (scalarSensor) {
+		if (scalarSensor && !scalarSensor->port().reservedVariable().isEmpty()) {
 
 			if (!scalarSensor->ready()) {
 				/// @todo Error reporting
@@ -78,7 +79,7 @@ void SensorVariablesUpdater::onTimerTimeout()
 		 : mRobotModelManager.model().configuration().devices(ConfigurationInterface::input))
 	{
 		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
-		if (scalarSensor) {
+		if (scalarSensor && !scalarSensor->port().reservedVariable().isEmpty()) {
 
 			if (!scalarSensor->ready()) {
 				/// @todo Error reporting
@@ -97,11 +98,11 @@ void SensorVariablesUpdater::onFailure()
 
 void SensorVariablesUpdater::updateScalarSensorVariables(PortInfo const &sensorPortInfo, int reading)
 {
-	updateScalarSensorVariable("sensor" + sensorPortInfo.name(), reading);
-
-	for (QString const &alias : sensorPortInfo.nameAliases()) {
-		updateScalarSensorVariable("sensor" + alias, reading);
-	}
+	updateScalarSensorVariable(sensorPortInfo.reservedVariable(), reading);
+	/// @todo: Do we need it?
+//	for (QString const &alias : sensorPortInfo.nameAliases()) {
+//		updateScalarSensorVariable("sensor" + alias, reading);
+//	}
 }
 
 void SensorVariablesUpdater::updateScalarSensorVariable(QString const &variable, int reading)

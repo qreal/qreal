@@ -37,7 +37,6 @@ public:
 	/// If no suitable ports found invalid instance is returned.
 	static PortInfo findPort(RobotModelInterface const &robotModel, QString const &stringRepresentation);
 
-private:
 	static ConfigurationInterface::PortDirection convertDirection(DeviceInfo::Direction direction);
 };
 

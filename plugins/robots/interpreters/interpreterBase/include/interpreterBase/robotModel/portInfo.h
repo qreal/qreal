@@ -20,7 +20,8 @@ public:
 	PortInfo();
 
 	/// Constructs new PortInfo instance. If name is empty then the port is considered to be invalid.
-	explicit PortInfo(QString const &name, QStringList const &nameAliases = QStringList());
+	explicit PortInfo(QString const &name, QStringList const &nameAliases = QStringList()
+			, QString const &reservedVariableName = QString());
 
 	/// Returns true if this PortInfo is non-empty (i.e. really describes some port)
 	bool isValid() const;
@@ -32,12 +33,17 @@ public:
 	/// Useful for compability of diagrams for the different robot models (e.g. '1' for TRIK and 'A' for NXT).
 	QStringList nameAliases() const;
 
+	/// Returns a name of the reserved variable for this port (that varible can be used to access
+	/// devices values on this port).
+	QString reservedVariable() const;
+
 	/// Serializes this PortInfo instance into the inner string representation.
 	QString toString() const;
 
 private:
 	QString mName;
 	QStringList mNameAliases;
+	QString mReservedVariable;
 };
 
 inline bool operator ==(PortInfo const &left, PortInfo const &right)

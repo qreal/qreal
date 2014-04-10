@@ -26,8 +26,7 @@ NxtRobotModelBase::NxtRobotModelBase()
 	/// @todo Implement.
 	QList<DeviceInfo> const outputPortConnections = {
 		motorInfo()
-		/// @todo: implement multidevice architecture
-		//, encoderInfo()
+		, encoderInfo()
 	};
 	QList<DeviceInfo> const inputPortConnections = {
 			touchSensorInfo()
@@ -46,13 +45,13 @@ NxtRobotModelBase::NxtRobotModelBase()
 	addAllowedConnection(PortInfo("DisplayPort"), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort"), { speakerInfo() });
 	addAllowedConnection(PortInfo("ButtonsPort"), { buttonsInfo() });
-	addAllowedConnection(PortInfo("A"), outputPortConnections);
-	addAllowedConnection(PortInfo("B"), outputPortConnections);
-	addAllowedConnection(PortInfo("C"), outputPortConnections);
-	addAllowedConnection(PortInfo("1"), inputPortConnections);
-	addAllowedConnection(PortInfo("2"), inputPortConnections);
-	addAllowedConnection(PortInfo("3"), inputPortConnections);
-	addAllowedConnection(PortInfo("4"), inputPortConnections);
+	addAllowedConnection(PortInfo("A", {}, "encoderA"), outputPortConnections);
+	addAllowedConnection(PortInfo("B", {}, "encoderB"), outputPortConnections);
+	addAllowedConnection(PortInfo("C", {}, "encoderC"), outputPortConnections);
+	addAllowedConnection(PortInfo("1", {}, "sensor1"), inputPortConnections);
+	addAllowedConnection(PortInfo("2", {}, "sensor2"), inputPortConnections);
+	addAllowedConnection(PortInfo("3", {}, "sensor3"), inputPortConnections);
+	addAllowedConnection(PortInfo("4", {}, "sensor4"), inputPortConnections);
 }
 
 QList<DeviceInfo> NxtRobotModelBase::convertibleBases() const
