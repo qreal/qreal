@@ -17,7 +17,14 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/engine/twoDModelControlInterface.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineInterface.h \
 	$$PWD/include/commonTwoDModel/robotModel/twoDRobotModel.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/buttons.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensor.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/display.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/encoderSensor.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/lightSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/motor.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/sonarSensor.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/touchSensor.h \
 
 HEADERS += \
 	$$PWD/src/engine/d2ModelWidget.h \
