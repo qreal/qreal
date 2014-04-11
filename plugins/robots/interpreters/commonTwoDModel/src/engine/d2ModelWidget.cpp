@@ -10,6 +10,7 @@
 #include <qrutils/qRealFileDialog.h>
 
 #include <interpreterBase/robotModel/robotParts/motor.h>
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 
 #include "d2RobotModel.h"
 #include "constants.h"
@@ -43,13 +44,11 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	, mCurrentLine(nullptr)
 	, mCurrentStylus(nullptr)
 	, mCurrentEllipse(nullptr)
-//	, mCurrentPort(robots::enums::inputPort::none)
-//	, mCurrentSensorType(robots::enums::sensorType::unused)
 	, mWidth(defaultPenWidth)
 	, mClearing(false)
 	, mFirstShow(true)
-	, mRobotModel(robotModel)
 	, mTimeline(dynamic_cast<D2RobotModel *>(twoDRobotModel)->timeline())
+	, mRobotModel(robotModel)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -78,21 +77,18 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
 	mUi->noneButton->setChecked(true);
 
-	connect(mUi->leftWheelComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated)
-			, [this](int index) {
-					mTwoDRobotModel->setMotorPortOnWheel(
-							TwoDRobotRobotModelInterface::left
-							, mUi->leftWheelComboBox->itemData(index).value<PortInfo>()
-							);
-			});
+	auto connectWheelComboBox = [this](QComboBox * const comboBox, TwoDRobotRobotModelInterface::WheelEnum wheel) {
+			connect(comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated)
+					, [this, wheel, comboBox](int index) {
+							mTwoDRobotModel->setMotorPortOnWheel(
+									wheel
+									, comboBox->itemData(index).value<PortInfo>()
+									);
+					});
+	};
 
-	connect(mUi->rightWheelComboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated)
-			, [this](int index) {
-					mTwoDRobotModel->setMotorPortOnWheel(
-							TwoDRobotRobotModelInterface::right
-							, mUi->leftWheelComboBox->itemData(index).value<PortInfo>()
-							);
-			});
+	connectWheelComboBox(mUi->leftWheelComboBox, TwoDRobotRobotModelInterface::left);
+	connectWheelComboBox(mUi->rightWheelComboBox, TwoDRobotRobotModelInterface::right);
 
 	drawInitialRobot();
 
@@ -113,7 +109,6 @@ void D2ModelWidget::initWidget()
 	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 
 	mUi->setupUi(this);
-	mSensors.resize(4);
 
 	mScene = new D2ModelScene(mUi->graphicsView);
 	mUi->graphicsView->setScene(mScene);
@@ -289,14 +284,6 @@ void D2ModelWidget::init(bool isActive)
 	update();
 	updateWheelComboBoxes();
 }
-
-//void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
-//{
-//	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
-//	connect(mUi->runButton, SIGNAL(clicked()), this, SLOT(saveInitialRobotBeforeRun()), Qt::UniqueConnection);
-//	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
-//	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
-//}
 
 void D2ModelWidget::saveInitialRobotBeforeRun()
 {
@@ -540,24 +527,21 @@ void D2ModelWidget::clearScene(bool removeRobot)
 	mWorldModel->clearScene();
 	mTwoDRobotModel->clear();
 	if (removeRobot) {
-//		removeSensor(robots::enums::inputPort::port1);
-//		removeSensor(robots::enums::inputPort::port2);
-//		removeSensor(robots::enums::inputPort::port3);
-//		removeSensor(robots::enums::inputPort::port4);
-		int const noneSensorIndex = 0;
-//		mUi->port1Box->setCurrentIndex(noneSensorIndex);
-//		mUi->port2Box->setCurrentIndex(noneSensorIndex);
-//		mUi->port3Box->setCurrentIndex(noneSensorIndex);
-//		mUi->port4Box->setCurrentIndex(noneSensorIndex);
+		for (PortInfo const &port : mSensors.keys()) {
+			removeSensor(port);
+		}
+
+		clearConfiguration();  // Well...
 		mScene->clear();
 		drawInitialRobot();
 	} else {
-		foreach (QGraphicsItem *item, mScene->items()) {
+		for (QGraphicsItem * const item : mScene->items()) {
 			if (!dynamic_cast<RobotItem *>(item)
 					&& !dynamic_cast<SensorItem *>(item)
 					&& !dynamic_cast<SensorItem::PortItem *>(item)
 					&& !dynamic_cast<Rotater *>(item)
-					&& !dynamic_cast<BeepItem *>(item)) {
+					&& !dynamic_cast<BeepItem *>(item))
+			{
 				mScene->removeItem(item);
 				delete item;
 			}
@@ -602,51 +586,6 @@ void D2ModelWidget::addPort(int const index)
 	QComboBox * const comboBox = dynamic_cast<QComboBox *>(sender());
 	PortInfo const port = mComboBoxesToPortsMap.value(comboBox);
 	DeviceInfo const device = comboBox->itemData(index).value<DeviceInfo>();
-
-//	QPointF const sensorPos = mSensors[port]
-//			? mSensors[port]->scenePos()
-//			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
-//	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
-
-//	switch (currentComboBox()->currentIndex()) {
-//	case 0:
-//		mCurrentSensorType = robots::enums::sensorType::unused;
-//		break;
-//	case 1:
-//		mCurrentSensorType = robots::enums::sensorType::touchBoolean;
-//		break;
-//	case 2:
-//	{
-//		QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
-//		robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
-//		mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
-//		if (mCurrentSensorType != robots::enums::sensorType::colorFull
-//				&& mCurrentSensorType != robots::enums::sensorType::colorBlue
-//				&& mCurrentSensorType != robots::enums::sensorType::colorGreen
-//				&& mCurrentSensorType != robots::enums::sensorType::colorRed
-//				&& mCurrentSensorType != robots::enums::sensorType::colorNone)
-//		{
-//			mCurrentSensorType = defaultValue;
-//		}
-
-//		break;
-//	}
-//	case 3:
-//		mCurrentSensorType = robots::enums::sensorType::sonar;
-//		break;
-//	case 4:
-//		mCurrentSensorType = robots::enums::sensorType::light;
-//		break;
-//	}
-
-//	if (mCurrentSensorType != mRobotModel->configuration().type(mCurrentPort)) {
-//		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, sensorPos.toPoint(), 0);
-//		reinitSensor(mCurrentPort);
-//		sensorConfigurationChanged(
-//				static_cast<robots::enums::inputPort::InputPortEnum>(port)
-//				, static_cast<robots::enums::sensorType::SensorTypeEnum>(mCurrentSensorType)
-//				);
-//	}
 
 	resetButtons();
 
@@ -903,107 +842,60 @@ void D2ModelWidget::handleNewRobotPosition()
 	}
 }
 
-//void D2ModelWidget::removeSensor(robots::enums::inputPort::InputPortEnum port)
-//{
-//	// Here's the point where all interested entities are notified about sensor deletion,
-//	// so if this code gets broken or worked around, we'll have some almost undebuggable
-//	// dangling pointers in scene and in robot item. But what could possibly go wrong?
-//	if (!mSensors[port] || !mRobot) {
-//		return;
-//	}
+void D2ModelWidget::removeSensor(PortInfo const &port)
+{
+	// Here's the point where all interested entities are notified about sensor deletion,
+	// so if this code gets broken or worked around, we'll have some almost undebuggable
+	// dangling pointers in scene and in robot item. But what could possibly go wrong?
+	if (!mSensors.contains(port) || !mSensors.value(port) || !mRobot) {
+		return;
+	}
 
-//	mRobot->removeSensor(mSensors[port]);
-//	mScene->removeItem(mSensors[port]);
-//	delete mSensors[port];
-//	mSensors[port] = nullptr;
+	mRobot->removeSensor(mSensors[port]);
+	mScene->removeItem(mSensors[port]);
+	delete mSensors[port];
+	mSensors[port] = nullptr;
+}
 
-//	changeSensorType(port, robots::enums::sensorType::unused);
-//}
+void D2ModelWidget::reinitSensor(PortInfo const &port)
+{
+	removeSensor(port);
 
-//void D2ModelWidget::changeSensorType(robots::enums::inputPort::InputPortEnum const port
-//		, robots::enums::sensorType::SensorTypeEnum const type)
-//{
-//	switch (port) {
-//	case robots::enums::inputPort::port1:
-//		mUi->port1Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
-//		break;
-//	case robots::enums::inputPort::port2:
-//		mUi->port2Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
-//		break;
-//	case robots::enums::inputPort::port3:
-//		mUi->port3Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
-//		break;
-//	case robots::enums::inputPort::port4:
-//		mUi->port4Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
-//		break;
-//	default:
-//		break;
-//	}
-//}
+	DeviceInfo const &device = currentConfiguration(mRobotModel.name(), port);
 
-//int D2ModelWidget::sensorTypeToComboBoxIndex(robots::enums::sensorType::SensorTypeEnum const type)
-//{
-//	switch(type) {
-//	case robots::enums::sensorType::unused:
-//		return indexOfNoneSensor;
-//	case robots::enums::sensorType::touchBoolean:
-//	case robots::enums::sensorType::touchRaw:
-//		return indexOfTouchSensor;
-//	case robots::enums::sensorType::colorFull:
-//	case robots::enums::sensorType::colorRed:
-//	case robots::enums::sensorType::colorGreen:
-//	case robots::enums::sensorType::colorBlue:
-//	case robots::enums::sensorType::colorNone:
-//		return indexOfColorSensor;
-//	case robots::enums::sensorType::sonar:
-//		return indexOfSonarSensor;
-//	case robots::enums::sensorType::light:
-//		return indexOfLightSensor;
-//	default:
-//		return indexOfNoneSensor;
-//	}
+	if (device.isNull()) {
+		return;
+	}
 
-//	return indexOfNoneSensor
-//}
+	SensorItem *sensor = device.isA<RangeSensor>()
+			? new SonarSensorItem(*mWorldModel, mTwoDRobotModel->configuration(), port)
+			: new SensorItem(mTwoDRobotModel->configuration(), port);
 
-//void D2ModelWidget::reinitSensor(robots::enums::inputPort::InputPortEnum port)
-//{
-//	removeSensor(port);
+	mRobot->addSensor(sensor);
+	mScene->addItem(sensor);
 
-//	if (mRobotModel->configuration().type(port) == robots::enums::sensorType::unused) {
-//		return;
-//	}
+	sensor->addStickyItem(mRobot);
 
-//	SensorItem *sensor = mRobotModel->configuration().type(port) == robots::enums::sensorType::sonar
-//			? new SonarSensorItem(*mWorldModel, mRobotModel->configuration(), port)
-//			: new SensorItem(mRobotModel->configuration(), port);
+	Rotater * const rotater = new Rotater();
+	rotater->setMasterItem(sensor);
+	rotater->setVisible(false);
+	sensor->setRotater(rotater);
+	sensor->setRotation(mTwoDRobotModel->configuration().direction(port));
 
-//	mRobot->addSensor(sensor);
-//	mScene->addItem(sensor);
+	sensor->setParentItem(mRobot);
+	sensor->setPos(mRobot->mapFromScene(mTwoDRobotModel->configuration().position(port)));
 
-//	sensor->addStickyItem(mRobot);
-
-//	Rotater * const rotater = new Rotater();
-//	rotater->setMasterItem(sensor);
-//	rotater->setVisible(false);
-//	sensor->setRotater(rotater);
-//	sensor->setRotation(mRobotModel->configuration().direction(port));
-
-//	sensor->setParentItem(mRobot);
-//	sensor->setPos(mRobot->mapFromScene(mRobotModel->configuration().position(port)));
-
-//	changeSensorType(port, mRobotModel->configuration().type(port));
-//	mSensors[port] = sensor;
-//}
+	mSensors[port] = sensor;
+}
 
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
 {
 	/// @todo Handle all cases equally
 	SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
 	if (sensor) {
-		int const port = mSensors.indexOf(sensor);
-		if (port != -1) {
-//			removeSensor(static_cast<robots::enums::inputPort::InputPortEnum>(port));
+		PortInfo const port = mSensors.key(sensor, PortInfo());
+		if (port.isValid()) {
+			removeSensor(port);
 		}
 		return;
 	}
@@ -1144,10 +1036,10 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit d2WasClosed();
 }
 
-QVector<SensorItem *> D2ModelWidget::sensorItems() const
-{
-	return mSensors;
-}
+//QVector<SensorItem *> D2ModelWidget::sensorItems() const
+//{
+//	return mSensors;
+//}
 
 void D2ModelWidget::saveToRepo()
 {
@@ -1332,7 +1224,7 @@ void D2ModelWidget::syncCursorButtons()
 
 void D2ModelWidget::alignWalls()
 {
-	foreach (WallItem * const wall, mWorldModel->walls()) {
+	for (WallItem * const wall : mWorldModel->walls()) {
 		if (mScene->items().contains(wall)) {
 			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
@@ -1360,11 +1252,16 @@ void D2ModelWidget::onDeviceConfigurationChanged(const QString &robotModel
 	for (int index = 0; index < comboBox->count(); ++index) {
 		if (comboBox->itemData(index).value<DeviceInfo>() == device) {
 			comboBox->setCurrentIndex(index);
-			return;
+			break;
 		}
 	}
 
-	/// @todo Report internal error.
+	QPointF const sensorPos = mSensors.contains(port) && mSensors.value(port)
+			? mSensors.value(port)->scenePos()
+			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
+
+	mTwoDRobotModel->configuration().setSensor(port, device, sensorPos.toPoint(), 0);
+	reinitSensor(port);
 }
 
 void D2ModelWidget::initRunStopButtons()

@@ -78,13 +78,11 @@ public:
 	void drawBeep(bool isNeededBeep);
 	QPainterPath const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
-	/// Get current scene position of mRobot
+	/// Get current scene position of robot
 	QPointF robotPos() const;
 
-	/// Returns false if we click on robot and move it somewhere
+	/// Returns false if we clicked on robot and are moving it somewhere
 	bool isRobotOnTheGround();
-
-	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 
 	/// Enables Run and Stop buttons
 	void enableRunStopButtons();
@@ -97,7 +95,7 @@ public:
 
 	void closeEvent(QCloseEvent *event);
 
-	QVector<SensorItem *> sensorItems() const;
+//	QVector<SensorItem *> sensorItems() const;
 
 	void loadXml(QDomDocument const &worldModel);
 
@@ -167,8 +165,6 @@ private slots:
 	void changePalette();
 
 	void changeSpeed(int curIndex);
-//	void changeSensorType(robots::enums::inputPort::InputPortEnum const port
-//			, robots::enums::sensorType::SensorTypeEnum const type);
 
 	void enableRobotFollowing(bool on);
 	void onHandCursorButtonToggled(bool on);
@@ -224,7 +220,7 @@ private:
 	QPushButton *currentPortButton();
 
 	/// Deletes sensor for given port and removes it from scene and the robot
-//	void removeSensor(robots::enums::inputPort::InputPortEnum port);
+	void removeSensor(interpreterBase::robotModel::PortInfo const &port);
 
 	/// Adds sensor to a scene and a robot
 //	void addSensor(robots::enums::inputPort::InputPortEnum port
@@ -232,7 +228,7 @@ private:
 //			);
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
-//	void reinitSensor(robots::enums::inputPort::InputPortEnum port);
+	void reinitSensor(interpreterBase::robotModel::PortInfo const &port);
 
 	void reshapeWall(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
@@ -250,8 +246,6 @@ private:
 	void initWidget();
 	QList<graphicsUtils::AbstractItem *> selectedColorItems();
 	bool isColorItem(graphicsUtils::AbstractItem *item);
-
-//	int sensorTypeToComboBoxIndex(robots::enums::sensorType::SensorTypeEnum const type);
 
 	void centerOnRobot();
 	QGraphicsView::DragMode cursorTypeToDragType(enums::cursorType::CursorType type) const;
@@ -291,20 +285,20 @@ private:
 	StylusItem *mCurrentStylus;
 	EllipseItem *mCurrentEllipse;
 
-	/// Signal mapper for handling addPortButtons' clicks
+	/// Signal mapper for handling addPortButtons' clicks.
 	QSignalMapper mPortsMapper;
 
-//	/// Current port that we're trying to add to 2D model scene
-//	robots::enums::inputPort::InputPortEnum mCurrentPort;
+	/// Current port that we're trying to add to 2D model scene.
+	interpreterBase::robotModel::PortInfo mCurrentPort;
 
-//	/// Type of current sensor that we add
-//	robots::enums::sensorType::SensorTypeEnum mCurrentSensorType;
+	/// Type of current sensor that we add.
+	interpreterBase::robotModel::DeviceInfo mCurrentSensorType;
 
-	/// List of flags showing which panel button is active now
+	/// List of flags showing which panel button is active now.
 	QList<bool> mButtonFlags;
 
-	/// List of sensors, index is port of sensor
-	QVector<SensorItem *> mSensors;
+	/// Modeled sensors.
+	QHash<interpreterBase::robotModel::PortInfo, SensorItem *> mSensors;
 
 	int mWidth;
 
@@ -316,6 +310,7 @@ private:
 
 	enums::cursorType::CursorType mNoneCursorType; // cursorType for noneStatus
 	enums::cursorType::CursorType mCursorType; // current cursorType
+
 	bool mFollowRobot;
 
 	bool mFirstShow;

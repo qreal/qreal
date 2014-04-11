@@ -1,15 +1,17 @@
 #include "sonarSensorItem.h"
 
 using namespace twoDModel;
+using namespace interpreterBase::robotModel;
 
-//SonarSensorItem::SonarSensorItem(WorldModel const &worldModel
-//		, SensorsConfiguration &configuration, robots::enums::inputPort::InputPortEnum port)
-//	: SensorItem(configuration, port)
-//	, mWorldModel(worldModel)
-//	, mIcon(":/icons/sensors/2d_sonar.png")
-//{
-//	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
-//}
+SonarSensorItem::SonarSensorItem(WorldModel const &worldModel
+		, SensorsConfiguration &configuration
+		, PortInfo const &port)
+	: SensorItem(configuration, port)
+	, mWorldModel(worldModel)
+	, mIcon(":/icons/sensors/2d_sonar.png")
+{
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
+}
 
 void SonarSensorItem::drawItem(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget)
 {

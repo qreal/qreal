@@ -3,65 +3,68 @@
 #include "sensorsConfiguration.h"
 
 using namespace twoDModel;
+using namespace interpreterBase::robotModel;
 
 SensorsConfiguration::SensorsConfiguration()
 {
-	mSensors.resize(4);
 }
 
-//void SensorsConfiguration::setSensor(robots::enums::inputPort::InputPortEnum const port
-//		, robots::enums::sensorType::SensorTypeEnum const &type
-//		, QPointF const &position
-//		, qreal const &direction)
-//{
-//	mSensors[port] = SensorInfo(position, direction, type);
-//}
+void SensorsConfiguration::setSensor(PortInfo const &port
+		, DeviceInfo const &type
+		, QPointF const &position
+		, qreal const &direction)
+{
+	mSensors[port] = SensorInfo(position, direction, type);
+}
 
-//void SensorsConfiguration::setPosition(robots::enums::inputPort::InputPortEnum const port, QPointF const &position)
-//{
-//	mSensors[port].setPosition(position);
-//}
+void SensorsConfiguration::setPosition(PortInfo const &port, QPointF const &position)
+{
+	mSensors[port].setPosition(position);
+}
 
-//QPointF SensorsConfiguration::position(robots::enums::inputPort::InputPortEnum const port) const
-//{
-//	return mSensors[port].position();
-//}
+QPointF SensorsConfiguration::position(PortInfo const &port) const
+{
+	return mSensors[port].position();
+}
 
-//void SensorsConfiguration::setDirection(robots::enums::inputPort::InputPortEnum const port, qreal direction)
-//{
-//	mSensors[port].setDirection(direction);
-//}
+void SensorsConfiguration::setDirection(PortInfo const &port, qreal direction)
+{
+	mSensors[port].setDirection(direction);
+}
 
-//qreal SensorsConfiguration::direction(robots::enums::inputPort::InputPortEnum const port) const
-//{
-//	return mSensors[port].direction();
-//}
+qreal SensorsConfiguration::direction(PortInfo const &port) const
+{
+	return mSensors[port].direction();
+}
 
-//robots::enums::sensorType::SensorTypeEnum SensorsConfiguration::type(robots::enums::inputPort::InputPortEnum const port) const
-//{
-//	return mSensors[port].type();
-//}
+DeviceInfo SensorsConfiguration::type(PortInfo const &port) const
+{
+	return mSensors[port].type();
+}
 
-//void SensorsConfiguration::clearSensor(robots::enums::inputPort::InputPortEnum const port)
-//{
-//	mSensors[port] = SensorInfo();
-//}
+void SensorsConfiguration::clearSensor(PortInfo const &port)
+{
+	mSensors[port] = SensorInfo();
+}
 
 void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document) const
 {
 	QDomElement sensorsElem = document.createElement("sensors");
 	robot.appendChild(sensorsElem);
 
-	int port = 0;
-	foreach (SensorInfo const &sensor, mSensors) {
+	for (PortInfo const &port: mSensors.keys()) {
+		SensorInfo const &sensor = mSensors.value(port);
 		QDomElement sensorElem = document.createElement("sensor");
 		sensorsElem.appendChild(sensorElem);
-		sensorElem.setAttribute("port", port);
-//		sensorElem.setAttribute("type", sensor.type());
-		sensorElem.setAttribute("position", QString::number(sensor.position().x()) + ":" + QString::number(sensor.position().y()));
+		sensorElem.setAttribute("port", port.toString());
+		sensorElem.setAttribute("type", sensor.type().toString());
+
+		sensorElem.setAttribute("position"
+				, QString::number(sensor.position().x()) + ":" + QString::number(sensor.position().y()));
+
 		sensorElem.setAttribute("direction", sensor.direction());
-		++port;
 	}
+
 	robot.appendChild(sensorsElem);
 }
 
@@ -73,44 +76,41 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 	}
 
 	mSensors.clear();
-	mSensors.resize(4);
 
 	QDomNodeList sensors = element.elementsByTagName("sensor");
 	for (int i = 0; i < sensors.count(); ++i) {
 		QDomElement const sensorNode = sensors.at(i).toElement();
 
-//		robots::enums::inputPort::InputPortEnum const port
-//				= static_cast<robots::enums::inputPort::InputPortEnum>(sensorNode.attribute("port", "0").toInt());
+		PortInfo const port = PortInfo::fromString(sensorNode.attribute("port"));
 
-//		robots::enums::sensorType::SensorTypeEnum const type
-//				= static_cast<robots::enums::sensorType::SensorTypeEnum>(sensorNode.attribute("type", "0").toInt());
+		DeviceInfo const type = DeviceInfo::fromString(sensorNode.attribute("type"));
 
-//		QString const positionStr = sensorNode.attribute("position", "0:0");
-//		QStringList const splittedStr = positionStr.split(":");
-//		qreal const x = static_cast<qreal>(splittedStr[0].toDouble());
-//		qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
-//		QPointF const position = QPoint(x, y);
+		QString const positionStr = sensorNode.attribute("position", "0:0");
+		QStringList const splittedStr = positionStr.split(":");
+		qreal const x = static_cast<qreal>(splittedStr[0].toDouble());
+		qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
+		QPointF const position = QPoint(x, y);
 
-//		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
+		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
 
-//		setSensor(port, type, position, direction);
+		setSensor(port, type, position, direction);
 	}
 }
 
 
 SensorsConfiguration::SensorInfo::SensorInfo()
-	: mDirection(0)  //, mSensorType(robots::enums::sensorType::unused)
+	: mDirection(0)
 {
 }
 
-//SensorsConfiguration::SensorInfo::SensorInfo(QPointF const &position
-//		, qreal direction
-//		, robots::enums::sensorType::SensorTypeEnum const &sensorType)
-//	: mPosition(position)
-//	, mDirection(direction)
-//	, mSensorType(sensorType)
-//{
-//}
+SensorsConfiguration::SensorInfo::SensorInfo(QPointF const &position
+		, qreal direction
+		, DeviceInfo const &sensorType)
+	: mPosition(position)
+	, mDirection(direction)
+	, mSensorType(sensorType)
+{
+}
 
 QPointF SensorsConfiguration::SensorInfo::position() const
 {
@@ -132,7 +132,7 @@ void SensorsConfiguration::SensorInfo::setDirection(qreal direction)
 	mDirection = direction;
 }
 
-//robots::enums::sensorType::SensorTypeEnum SensorsConfiguration::SensorInfo::type() const
-//{
-//	return mSensorType;
-//}
+DeviceInfo const &SensorsConfiguration::SensorInfo::type() const
+{
+	return mSensorType;
+}

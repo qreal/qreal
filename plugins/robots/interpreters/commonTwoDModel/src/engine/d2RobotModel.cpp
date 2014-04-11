@@ -149,10 +149,10 @@ void D2RobotModel::resetEncoder(PortInfo const &port)
 	mTurnoverEngines[port] = 0;
 }
 
-//SensorsConfiguration &D2RobotModel::configuration()
-//{
-//	return mSensorsConfiguration;
-//}
+SensorsConfiguration &D2RobotModel::configuration()
+{
+	return mSensorsConfiguration;
+}
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
@@ -463,7 +463,7 @@ void D2RobotModel::recalculateParams()
 		bool breakMode;
 	};
 
-	auto calculateMotorOutput = [&](Wheel wheel) {
+	auto calculateMotorOutput = [&](WheelEnum wheel) {
 		PortInfo const &port = mWheelsToMotorPortsMap.value(wheel, PortInfo());
 		if (!port.isValid() || port.name() == "None") {
 			return EngineOutput{0, true};
@@ -596,7 +596,7 @@ void D2RobotModel::setNoiseSettings()
 	mNoiseGen.setApproximationLevel(qReal::SettingsManager::value("approximationLevel").toUInt());
 }
 
-void D2RobotModel::setMotorPortOnWheel(Wheel wheel, interpreterBase::robotModel::PortInfo const &port)
+void D2RobotModel::setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port)
 {
 	mWheelsToMotorPortsMap[wheel] = port;
 }
