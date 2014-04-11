@@ -22,9 +22,7 @@ void SensorVariablesUpdater::run()
 {
 	resetVariables();
 
-	for (robotParts::Device * const device
-		 : mRobotModelManager.model().configuration().devices(ConfigurationInterface::input))
-	{
+	for (robotParts::Device * const device : mRobotModelManager.model().configuration().devices()) {
 		/// @todo: Works only with scalar sensors
 		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 		if (scalarSensor && !scalarSensor->port().reservedVariable().isEmpty()) {
@@ -75,9 +73,7 @@ void SensorVariablesUpdater::onScalarSensorResponse(int reading)
 
 void SensorVariablesUpdater::onTimerTimeout()
 {
-	for (robotParts::Device * const device
-		 : mRobotModelManager.model().configuration().devices(ConfigurationInterface::input))
-	{
+	for (robotParts::Device * const device : mRobotModelManager.model().configuration().devices()) {
 		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 		if (scalarSensor && !scalarSensor->port().reservedVariable().isEmpty()) {
 
@@ -117,9 +113,7 @@ void SensorVariablesUpdater::updateScalarSensorVariable(QString const &variable,
 
 void SensorVariablesUpdater::resetVariables()
 {
-	for (robotParts::Device * const device
-		 : mRobotModelManager.model().configuration().devices(ConfigurationInterface::input))
-	{
+	for (robotParts::Device * const device : mRobotModelManager.model().configuration().devices()) {
 		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 		if (scalarSensor) {
 			updateScalarSensorVariables(scalarSensor->port(), 0);

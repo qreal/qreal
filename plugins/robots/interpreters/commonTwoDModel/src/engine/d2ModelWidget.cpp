@@ -1382,8 +1382,8 @@ void D2ModelWidget::updateWheelComboBoxes()
 	mUi->leftWheelComboBox->clear();
 	mUi->rightWheelComboBox->clear();
 
-	mUi->leftWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None")));
-	mUi->rightWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None")));
+	mUi->leftWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None", output)));
+	mUi->rightWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None", output)));
 
 	for (PortInfo const &port : mRobotModel.availablePorts()) {
 		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {

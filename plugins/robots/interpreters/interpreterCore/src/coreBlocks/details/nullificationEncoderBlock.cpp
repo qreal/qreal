@@ -14,10 +14,7 @@ NullificationEncoderBlock::NullificationEncoderBlock(RobotModelInterface &robotM
 
 void NullificationEncoderBlock::run()
 {
-	QString const ports = stringProperty("Ports");
-	QStringList const splitted = ports.split(',', QString::SkipEmptyParts);
-
-	for (QString const &port : splitted) {
+	for (QString const &port : stringProperty("Ports").split(',', QString::SkipEmptyParts)) {
 		robotParts::EncoderSensor * const encoder = RobotModelUtils::findDevice<robotParts::EncoderSensor>(
 				mRobotModel, port);
 		if (encoder) {
@@ -26,4 +23,19 @@ void NullificationEncoderBlock::run()
 	}
 
 	emit done(mNextBlockId);
+}
+
+QMap<PortInfo, DeviceInfo> NullificationEncoderBlock::usedSensors() const
+{
+	/// @todo: remove copy-paste
+	QMap<PortInfo, DeviceInfo> result;
+	for (QString const &port : stringProperty("Ports").split(',', QString::SkipEmptyParts)) {
+		robotParts::EncoderSensor * const encoder = RobotModelUtils::findDevice<robotParts::EncoderSensor>(
+				mRobotModel, port);
+		if (encoder) {
+			result[encoder->port()] = encoder->deviceInfo();
+		}
+	}
+
+	return result;
 }

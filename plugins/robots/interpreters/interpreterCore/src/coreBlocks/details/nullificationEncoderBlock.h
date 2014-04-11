@@ -15,6 +15,8 @@ public:
 
 	void run() override;
 
+	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> usedSensors() const override;
+
 private:
 	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 };

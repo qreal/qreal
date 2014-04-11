@@ -23,7 +23,7 @@ void WaitForSensorBlock::run()
 	QString const port = stringProperty("Port");
 
 	/// @todo Works only with scalar sensors.
-	mPort = RobotModelUtils::findPort(mRobotModel, port);
+	mPort = RobotModelUtils::findPort(mRobotModel, port, input);
 	robotParts::ScalarSensor * const sensor = RobotModelUtils::findDevice<robotParts::ScalarSensor>(mRobotModel, mPort);
 	if (sensor) {
 		connect(sensor, &robotParts::ScalarSensor::newData, this, &WaitForSensorBlock::responseSlot);
@@ -48,7 +48,7 @@ void WaitForSensorBlock::run()
 void WaitForSensorBlock::timerTimeout()
 {
 	/// @todo True horror.
-	robotParts::Device * const device = mRobotModel.configuration().device(mPort, ConfigurationInterface::output);
+	robotParts::Device * const device = mRobotModel.configuration().device(mPort);
 	robotParts::ScalarSensor *sensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 	if (sensor) {
 		sensor->read();
@@ -58,19 +58,12 @@ void WaitForSensorBlock::timerTimeout()
 void WaitForSensorBlock::stop()
 {
 	/// @todo True horror.
-	robotParts::Device *device
-			= mRobotModel.configuration().device(mPort
-					, ConfigurationInterface::output);
-
-	robotParts::ScalarSensor *sensor
-			= static_cast<robotParts::ScalarSensor *>(device);
+	robotParts::Device * const device = mRobotModel.configuration().device(mPort);
+	robotParts::ScalarSensor * const sensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 
 	if (sensor) {
-		disconnect(sensor, &robotParts::ScalarSensor::newData
-				, this, &WaitForSensorBlock::responseSlot);
-
-		disconnect(sensor, &robotParts::AbstractSensor::failure
-				, this, &WaitForSensorBlock::failureSlot);
+		disconnect(sensor, &robotParts::ScalarSensor::newData, this, &WaitForSensorBlock::responseSlot);
+		disconnect(sensor, &robotParts::AbstractSensor::failure, this, &WaitForSensorBlock::failureSlot);
 	}
 
 	WaitBlock::stop();
@@ -79,19 +72,12 @@ void WaitForSensorBlock::stop()
 void WaitForSensorBlock::stopActiveTimerInBlock()
 {
 	/// @todo True horror.
-	robotParts::Device *device
-			= mRobotModel.configuration().device(mPort
-					, ConfigurationInterface::output);
-
-	robotParts::ScalarSensor *sensor
-			= static_cast<robotParts::ScalarSensor *>(device);
+	robotParts::Device * const device = mRobotModel.configuration().device(mPort);
+	robotParts::ScalarSensor * const sensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 
 	if (sensor) {
-		disconnect(sensor, &robotParts::ScalarSensor::newData
-				, this, &WaitForSensorBlock::responseSlot);
-
-		disconnect(sensor, &robotParts::AbstractSensor::failure
-				, this, &WaitForSensorBlock::failureSlot);
+		disconnect(sensor, &robotParts::ScalarSensor::newData, this, &WaitForSensorBlock::responseSlot);
+		disconnect(sensor, &robotParts::AbstractSensor::failure, this, &WaitForSensorBlock::failureSlot);
 	}
 
 	WaitBlock::stopActiveTimerInBlock();

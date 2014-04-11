@@ -19,12 +19,7 @@ using namespace interpreterBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel()
 {
-	/// @todo Implement.
-	QList<DeviceInfo> const outputPortConnections = {
-		DeviceInfo::create<robotParts::Motor>()
-		/// @todo: implement multidevice architecture
-		//, encoderInfo()
-	};
+	/// @todo: This is copy-paste from base model. It is unneeded!
 
 	QList<DeviceInfo> const inputPortConnections = {
 			DeviceInfo::create<robotParts::TouchSensor>()
@@ -36,16 +31,19 @@ TwoDRobotModel::TwoDRobotModel()
 			, DeviceInfo::create<robotParts::AccelerometerSensor>()
 	};
 
-	addAllowedConnection(PortInfo("DisplayPort"), { DeviceInfo::create<robotParts::Display>() });
-	addAllowedConnection(PortInfo("SpeakerPort"), { DeviceInfo::create<robotParts::Speaker>() });
-	addAllowedConnection(PortInfo("ButtonsPort"), { DeviceInfo::create<robotParts::Buttons>() });
-	addAllowedConnection(PortInfo("A"), outputPortConnections);
-	addAllowedConnection(PortInfo("B"), outputPortConnections);
-	addAllowedConnection(PortInfo("C"), outputPortConnections);
-	addAllowedConnection(PortInfo("1"), inputPortConnections);
-	addAllowedConnection(PortInfo("2"), inputPortConnections);
-	addAllowedConnection(PortInfo("3"), inputPortConnections);
-	addAllowedConnection(PortInfo("4"), inputPortConnections);
+	addAllowedConnection(PortInfo("DisplayPort", output), { DeviceInfo::create<robotParts::Display>() });
+	addAllowedConnection(PortInfo("SpeakerPort", output), { DeviceInfo::create<robotParts::Speaker>() });
+	addAllowedConnection(PortInfo("ButtonsPort", input), { DeviceInfo::create<robotParts::Buttons>() });
+	addAllowedConnection(PortInfo("A", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("B", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("C", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("A", input, {}, "encoderA"), { DeviceInfo::create<robotParts::EncoderSensor>() });
+	addAllowedConnection(PortInfo("B", input, {}, "encoderB"), { DeviceInfo::create<robotParts::EncoderSensor>() });
+	addAllowedConnection(PortInfo("C", input, {}, "encoderC"), { DeviceInfo::create<robotParts::EncoderSensor>() });
+	addAllowedConnection(PortInfo("1", input, {}, "sensor1"), inputPortConnections);
+	addAllowedConnection(PortInfo("2", input, {}, "sensor2"), inputPortConnections);
+	addAllowedConnection(PortInfo("3", input, {}, "sensor3"), inputPortConnections);
+	addAllowedConnection(PortInfo("4", input, {}, "sensor4"), inputPortConnections);
 }
 
 QString TwoDRobotModel::name() const
