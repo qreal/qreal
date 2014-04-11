@@ -91,7 +91,7 @@ QDomDocument TemplateDocumentBuilder::buildTemplate() const
 		icon.appendChild(mIconBuilder->buildTemplate().cloneNode());
 		graphics.appendChild(icon);
 	}
-	foreach (QDomElement const &element, mOtherGraphics) {
+	for (QDomElement const &element: mOtherGraphics) {
 		graphics.appendChild(element.cloneNode());
 	}
 	result.appendChild(graphics);
@@ -204,7 +204,7 @@ void TemplateDocumentBuilder::processPicture(QDomElement const &picture)
 void TemplateDocumentBuilder::processOtherGraphics(QDomElement const &someGraphics)
 {
 	QString const tagName = someGraphics.tagName();
-	foreach(QDomElement const &someOldGraphics, mOtherGraphics) {
+	for (QDomElement const &someOldGraphics: mOtherGraphics) {
 		if (someOldGraphics.tagName() == tagName) {
 			mOtherGraphics.removeOne(someOldGraphics);
 			mOtherGraphics.append(someGraphics);
@@ -223,7 +223,8 @@ QDomElement TemplateDocumentBuilder::wtfShape(QDomElement const &wtf)
 	QDomElement rootChild = root.firstChildElement();
 	while (!rootChild.isNull()) {
 		if (rootChild.tagName() == "property" && rootChild.hasAttribute("propertyName")
-				&& rootChild.attribute("propertyName") == "shapeXml") {
+				&& rootChild.attribute("propertyName") == "shapeXml")
+		{
 			QString const shapeString = rootChild.attribute("value");
 			QDomDocument shapeDocument;
 			shapeDocument.setContent(shapeString);

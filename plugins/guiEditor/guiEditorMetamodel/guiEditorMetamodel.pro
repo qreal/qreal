@@ -1,6 +1,6 @@
 QREAL_XML = guiEditorMetamodel.xml
 QREAL_XML_DEPENDS =  ../../commonMetamodels/kernelMetamodel.xml
-QREAL_EDITOR_PATH = /../../../../../study/qqqreal/qreal/plugins/guiEditor/guiEditorMetamodel
-ROOT = /../../../../../../../study/qqqreal/qreal
+QREAL_EDITOR_PATH = /../../plugins/guiEditor/guiEditorMetamodel
+ROOT = /../../../../../qreal
 
-include (/../../../../../../../study/qqqreal/qreal/plugins/editorsSdk/editorsCommon.pri)
+include (/../../../../plugins/editorsSdk/editorsCommon.pri)
