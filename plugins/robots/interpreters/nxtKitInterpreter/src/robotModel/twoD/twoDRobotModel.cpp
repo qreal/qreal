@@ -26,9 +26,10 @@ TwoDRobotModel::TwoDRobotModel()
 			, DeviceInfo::create<robotParts::RangeSensor>()
 			, DeviceInfo::create<robotParts::LightSensor>()
 			, DeviceInfo::create<robotParts::ColorSensor>()
-			, DeviceInfo::create<robotParts::SoundSensor>()
-			, DeviceInfo::create<robotParts::GyroscopeSensor>()
-			, DeviceInfo::create<robotParts::AccelerometerSensor>()
+// These are not supported in 2d model.
+//			, DeviceInfo::create<robotParts::SoundSensor>()
+//			, DeviceInfo::create<robotParts::GyroscopeSensor>()
+//			, DeviceInfo::create<robotParts::AccelerometerSensor>()
 	};
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { DeviceInfo::create<robotParts::Display>() });

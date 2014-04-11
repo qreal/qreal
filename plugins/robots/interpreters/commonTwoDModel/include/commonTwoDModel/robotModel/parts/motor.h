@@ -28,7 +28,6 @@ public:
 	void on(int speed, long unsigned int degrees, bool breakMode = true) override;
 	void stop(bool breakMode = true) override;
 	void off() override;
-//	void resetMotorPosition(bool relative);
 
 protected:
 	void doConfiguration() override;

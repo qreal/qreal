@@ -1,5 +1,7 @@
 #pragma once
 
+#include <interpreterBase/robotModel/portInfo.h>
+
 #include "sensorItem.h"
 #include "worldModel.h"
 #include "sensorsConfiguration.h"
@@ -13,11 +15,11 @@ class SonarSensorItem : public SensorItem
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-//	SonarSensorItem(
-//			WorldModel const &worldModel
-//			, SensorsConfiguration &configuration
-//			, robots::enums::inputPort::InputPortEnum port
-//			);
+	SonarSensorItem(
+			WorldModel const &worldModel
+			, SensorsConfiguration &configuration
+			, interpreterBase::robotModel::PortInfo const &port
+			);
 
 	virtual void drawItem(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget);
 	virtual void drawExtractionForItem(QPainter *painter);

@@ -56,7 +56,7 @@ public:
 	void setNewMotor(int speed, uint degrees
 			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) override;
 
-//	virtual SensorsConfiguration &configuration();
+	SensorsConfiguration &configuration() override;
 	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);
 
@@ -84,7 +84,7 @@ public:
 
 	void setNoiseSettings();
 
-	void setMotorPortOnWheel(Wheel wheel, interpreterBase::robotModel::PortInfo const &port) override;
+	void setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port) override;
 
 signals:
 	void d2MotorTimeout();
@@ -162,9 +162,9 @@ private:
 	QHash<interpreterBase::robotModel::PortInfo, qreal> mTurnoverEngines;
 
 	/// Describes which wheel is driven by which motor.
-	QHash<Wheel, interpreterBase::robotModel::PortInfo> mWheelsToMotorPortsMap;
+	QHash<WheelEnum, interpreterBase::robotModel::PortInfo> mWheelsToMotorPortsMap;
 
-//	SensorsConfiguration mSensorsConfiguration;
+	SensorsConfiguration mSensorsConfiguration;
 	WorldModel *mWorldModel;
 	physics::PhysicsEngineBase *mPhysicsEngine;
 	Timeline *mTimeline;
