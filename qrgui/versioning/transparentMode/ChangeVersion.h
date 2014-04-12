@@ -24,7 +24,8 @@ public slots:
 
 
 private slots:
-	void obtainHash(QListWidgetItem* item);
+	void obtainHash();
+	void showDiff(QListWidgetItem* item);
 
 private:
 	Ui::ChangeVersion *mUi;

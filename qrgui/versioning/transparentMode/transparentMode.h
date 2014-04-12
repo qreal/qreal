@@ -22,6 +22,7 @@ public slots:
 	void setVersion(QString hash);
 	bool suggestToSaveAs();
 	bool saveOrSuggestToSaveAs();
+	void getAndUpdateLog();
 
 private:
 	void saveVersion();

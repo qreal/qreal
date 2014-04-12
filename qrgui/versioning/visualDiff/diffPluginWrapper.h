@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "../../qrgui/versioning/diffPluginBase.h"
+#include "../versioning/diffPluginBase.h"
 #include "model/modelLoader.h"
 
 namespace versioning
