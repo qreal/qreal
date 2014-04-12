@@ -44,3 +44,8 @@ void WaitForEncoderBlock::timerTimeout()
 {
 	mEncoderSensor->read();
 }
+
+DeviceInfo WaitForEncoderBlock::device() const
+{
+	return DeviceInfo::create<robotParts::EncoderSensor>();
+}

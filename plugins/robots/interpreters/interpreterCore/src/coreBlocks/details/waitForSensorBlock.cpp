@@ -32,18 +32,9 @@ void WaitForSensorBlock::run()
 		mActiveWaitingTimer.start();
 	} else {
 		mActiveWaitingTimer.stop();
-		error(tr("%1 is not configured on port %2").arg(name(), mPort.name()));
+		error(tr("%1 is not configured on port %2").arg(device().friendlyName(), mPort.name()));
 	}
 }
-
-//QList<Block::SensorPortPair> WaitForSensorBlock::usedSensors() const
-//{
-//	if (mType == robots::enums::sensorType::unused) {
-//		return QList<SensorPortPair>();
-//	}
-//	robots::enums::inputPort::InputPortEnum const port = static_cast<robots::enums::inputPort::InputPortEnum>(intProperty("Port") - 1);
-//	return QList<SensorPortPair>() << qMakePair(mType, static_cast<int>(port));
-//}
 
 void WaitForSensorBlock::timerTimeout()
 {

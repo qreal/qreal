@@ -1,8 +1,12 @@
 #include "interpreterBase/blocksBase/common/waitBlock.h"
 
-using namespace interpreterBase::blocksBase::common;
+#include "interpreterBase/robotModel/robotModelUtils.h"
 
-WaitBlock::WaitBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+using namespace interpreterBase;
+using namespace blocksBase::common;
+using namespace robotModel;
+
+WaitBlock::WaitBlock(RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)
 {
 	mActiveWaitingTimer.setInterval(20);
@@ -50,4 +54,17 @@ void WaitBlock::failureSlot()
 void WaitBlock::stopActiveTimerInBlock()
 {
 	mActiveWaitingTimer.stop();
+}
+
+QMap<PortInfo, DeviceInfo> WaitBlock::usedSensors() const
+{
+	DeviceInfo const deviceInfo = device();
+	QString const port = stringProperty("Port");
+	PortInfo const portInfo = RobotModelUtils::findPort(mRobotModel, port, deviceInfo.direction());
+	QMap<PortInfo, DeviceInfo> result;
+	if (!deviceInfo.isNull() && portInfo.isValid()) {
+		result[portInfo] = deviceInfo;
+	}
+
+	return result;
 }

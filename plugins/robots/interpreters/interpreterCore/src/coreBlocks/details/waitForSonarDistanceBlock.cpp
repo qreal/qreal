@@ -1,6 +1,9 @@
 #include "waitForSonarDistanceBlock.h"
 
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+
 using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::robotModel;
 
 WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
@@ -17,12 +20,7 @@ void WaitForSonarDistanceBlock::responseSlot(int reading)
 	processResponce(reading, targetDistance);
 }
 
-//interpreters::robots::details::robotParts::Sensor *WaitForSonarDistanceBlock::sensor() const
-//{
-//	return mRobotModel->sonarSensor(mPort);
-//}
-
-QString WaitForSonarDistanceBlock::name() const
+interpreterBase::robotModel::DeviceInfo WaitForSonarDistanceBlock::device() const
 {
-	return tr("Sonar sensor");
+	return DeviceInfo::create<robotParts::RangeSensor>();
 }

@@ -28,6 +28,7 @@ protected slots:
 
 private:
 	void clicksCounter(bool &buttonWasDown, bool buttonIsDown, int &clicks);
+	interpreterBase::robotModel::DeviceInfo device() const override;
 
 	int mLeftButtonClicks;
 	int mRightButtonClicks;

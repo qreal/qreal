@@ -1,6 +1,9 @@
 #include "waitForSoundSensorBlock.h"
 
+#include <interpreterBase/robotModel/robotParts/soundSensor.h>
+
 using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::robotModel;
 
 WaitForSoundSensorBlock::WaitForSoundSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
@@ -17,12 +20,7 @@ void WaitForSoundSensorBlock::responseSlot(int reading)
 	processResponce(reading, targetPercents);
 }
 
-//interpreters::robots::details::robotParts::Sensor *WaitForSoundSensorBlock::sensor() const
-//{
-//	return mRobotModel->soundSensor(mPort);
-//}
-
-QString WaitForSoundSensorBlock::name() const
+interpreterBase::robotModel::DeviceInfo WaitForSoundSensorBlock::device() const
 {
-	return tr("Sound sensor");
+	return DeviceInfo::create<robotParts::SoundSensor>();
 }
