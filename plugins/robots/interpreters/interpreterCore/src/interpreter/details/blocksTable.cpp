@@ -22,14 +22,11 @@ BlockInterface *BlocksTable::block(Id const &element)
 		return mBlocks[element];
 	}
 
-	BlockInterface *newBlock = mBlocksFactoryManager.block(element);
-
-	/// @todo When it is possible and what is appropriate behavior for this situation?
-	if (!newBlock) {
-		throw qReal::Exception("Unknown block");
+	BlockInterface * const newBlock = mBlocksFactoryManager.block(element);
+	if (newBlock) {
+		mBlocks.insert(element, newBlock);
 	}
 
-	mBlocks.insert(element, newBlock);
 	return newBlock;
 }
 

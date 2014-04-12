@@ -60,8 +60,7 @@ void DevicesConfigurationManager::load(QString const &configuration)
 				; configurationElement = configurationElement.nextSiblingElement())
 		{
 			PortInfo const port = PortInfo::fromString(configurationElement.attribute("port"));
-			DeviceInfo const device = DeviceInfo::fromString(
-					configurationElement.attribute("device"));
+			DeviceInfo const device = DeviceInfo::fromString(configurationElement.attribute("device"));
 			if (port.isValid()) {
 				deviceConfigurationChanged(robotModel, port, device);
 			}

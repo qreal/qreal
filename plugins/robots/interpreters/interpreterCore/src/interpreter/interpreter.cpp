@@ -6,7 +6,6 @@
 
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
-#include "details/autoconfigurer.h"
 //#include "details/tracer.h"
 //#include "details/debugHelper.h"
 
@@ -29,17 +28,16 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, utils::ExpressionsParser &parser  /// @todo direct dependency from ExpressionsParser shall be removed.
 		, QAction &connectToRobotAction
 		)
-	: mGraphicalModelApi(&graphicalModelApi)
-	, mLogicalModelApi(&logicalModelApi)
-	, mInterpretersInterface(&interpretersInterface)
+	: mGraphicalModelApi(graphicalModelApi)
+	, mLogicalModelApi(logicalModelApi)
+	, mInterpretersInterface(interpretersInterface)
 	, mState(idle)
 	, mRobotModelManager(robotModelManager)
-	, mBlocksTable(nullptr)
+	, mBlocksTable(new details::BlocksTable(blocksFactoryManager))
 	, mActionConnectToRobot(connectToRobotAction)
 	, mSensorVariablesUpdater(robotModelManager, parser)
+	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
 {
-	mBlocksTable = new details::BlocksTable(blocksFactoryManager);
-
 	connect(
 			&mRobotModelManager
 			, &interpreterBase::robotModel::RobotModelManagerInterface::allDevicesConfigured
@@ -56,10 +54,11 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 
 	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
 
+	connectDevicesConfigurationProvider(&mAutoconfigurer);
+
 	qDebug() << "mRobotModelManager.model().init()";
 
 	mRobotModelManager.model().init();
-
 	mRobotModelManager.model().connectToRobot();
 }
 
@@ -73,22 +72,26 @@ void Interpreter::interpret()
 {
 	qDebug() << "Interpreter::interpret()";
 
-	mInterpretersInterface->errorReporter()->clear();
+	mInterpretersInterface.errorReporter()->clear();
 
 //	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
 
 	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
-		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
+		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
 		return;
 	}
 
 	if (mState != idle) {
-		mInterpretersInterface->errorReporter()->addInformation(tr("Interpreter is already running"));
+		mInterpretersInterface.errorReporter()->addInformation(tr("Interpreter is already running"));
 		return;
 	}
 
 	mBlocksTable->clear();
 	mState = waitingForDevicesConfiguredToLaunch;
+
+	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().name())) {
+		return;
+	}
 
 	/// @todo Temporarily loading initial configuration from registry
 	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
@@ -139,11 +142,11 @@ void Interpreter::connectedSlot(bool success)
 
 	if (success) {
 		if (mRobotModelManager.model().needsConnection()) {
-			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
+			mInterpretersInterface.errorReporter()->addInformation(tr("Connected successfully"));
 		}
 	} else {
 //		Tracer::debug(tracer::enums::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
-		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
+		mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
 	}
 
 	mActionConnectToRobot.setChecked(success);
@@ -158,7 +161,7 @@ void Interpreter::devicesConfiguredSlot()
 //	mRobotModel->nextBlockAfterInitial(mConnected);
 
 	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
-		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
+		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
 		mState = idle;
 		return;
 	}
@@ -171,10 +174,10 @@ void Interpreter::devicesConfiguredSlot()
 //		Tracer::debug(tracer::enums::initialization, "Interpreter::devicesConfiguredSlot", "Starting interpretation");
 //		mRobotModel->startInterpretation();
 
-		Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
+		Id const &currentDiagramId = mInterpretersInterface.activeDiagram();
 
-		details::Thread * const initialThread = new details::Thread(mGraphicalModelApi
-				, *mInterpretersInterface, currentDiagramId, *mBlocksTable);
+		details::Thread * const initialThread = new details::Thread(&mGraphicalModelApi
+				, mInterpretersInterface, currentDiagramId, *mBlocksTable);
 
 		emit started();
 
@@ -196,8 +199,8 @@ void Interpreter::threadStopped()
 
 void Interpreter::newThread(Id const &startBlockId)
 {
-	details::Thread * const thread = new details::Thread(mGraphicalModelApi
-			, *mInterpretersInterface, *mBlocksTable, startBlockId);
+	details::Thread * const thread = new details::Thread(&mGraphicalModelApi
+			, mInterpretersInterface, *mBlocksTable, startBlockId);
 
 	addThread(thread);
 }
