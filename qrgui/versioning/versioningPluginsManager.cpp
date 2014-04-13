@@ -248,10 +248,15 @@ void VersioningPluginsManager::onChangesSubmitted(const bool success)
 void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTranspMode)
 {
 	foreach (VersioningPluginInterface *plugin, mPlugins){
-		foreach(ActionInfo const &actionInfo,plugin->actions()) {
+		foreach(ActionInfo const &actionInfo, plugin->actions()) {
 			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
 		}
 	}
+
+	foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
+		actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
+	}
+
 	if (switchOnTranspMode){
 		mTranspaentMode = new TransparentMode(mPlugins, mProjectManager);
 		emit transparentClassIsReady();

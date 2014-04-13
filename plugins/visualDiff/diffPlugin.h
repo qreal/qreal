@@ -21,6 +21,9 @@ public:
 private slots:
 	void diffClicked();
 	void diffBetweenClicked();
+
+private:
+	QList<qReal::ActionInfo> mMenu;
 };
 
 }

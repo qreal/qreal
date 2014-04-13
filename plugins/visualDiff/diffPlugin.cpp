@@ -5,12 +5,11 @@ using namespace versioning;
 
 DiffPlugin::DiffPlugin()
 {
-	qDebug() << "diffpl is ready";
 }
 
 QList<qReal::ActionInfo> DiffPlugin::actions()
 {
-	QMenu *diffMenu = new QMenu(tr("Visual diff"));
+	QMenu *diffMenu = new QMenu(tr("Visual diff"));diffMenu->setObjectName("Visual diff");
 
 	QAction *diffAction = diffMenu->addAction(tr("Diff"));
 	connect(diffAction, SIGNAL(triggered()), this, SLOT(diffClicked()));
@@ -18,9 +17,8 @@ QList<qReal::ActionInfo> DiffPlugin::actions()
 	QAction *diffBetweenAction = diffMenu->addAction(tr("View diff between..."));
 	connect(diffBetweenAction, SIGNAL(triggered()), this, SLOT(diffBetweenClicked()));
 
-	QList<qReal::ActionInfo> result;
-	result << qReal::ActionInfo(diffMenu, "tools");
-	return result;
+	mMenu << qReal::ActionInfo(diffMenu, "tools");
+	return mMenu;
 }
 
 void DiffPlugin::diffClicked()
