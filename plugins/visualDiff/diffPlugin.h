@@ -11,10 +11,11 @@ class DiffPlugin : public QObject, public qReal::DiffPluginBase
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.versioning.diffPlugin")
 
 public:
+	DiffPlugin();
 	virtual ~DiffPlugin() {}
-
 	QList<qReal::ActionInfo> actions();
 
 private slots:

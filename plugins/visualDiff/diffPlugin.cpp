@@ -1,8 +1,12 @@
 #include "diffPlugin.h"
-
-Q_EXPORT_PLUGIN2(visualDiff, versioning::DiffPlugin)
+#include <qdebug.h>
 
 using namespace versioning;
+
+DiffPlugin::DiffPlugin()
+{
+	qDebug() << "diffpl is ready";
+}
 
 QList<qReal::ActionInfo> DiffPlugin::actions()
 {

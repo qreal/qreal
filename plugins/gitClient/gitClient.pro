@@ -1,8 +1,6 @@
 QT += widgets
 LIBS += -L../../bin -lqrkernel -lqrutils
 
-CONFIG += c++11
-
 INCLUDEPATH += \
 	$$PWD/../.. \
 	$$PWD/../../qrgui/ \

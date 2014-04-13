@@ -17,6 +17,7 @@ SUBDIRS += \
 	refactoring/refactoring.pro \
 	subversionClient/subversionClient.pro \
 	gitClient/gitClient.pro \
+	visualDiff/visualDiff.pro \
 
 # QReal:Robots
 SUBDIRS += \
