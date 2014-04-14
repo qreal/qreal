@@ -1,5 +1,4 @@
 #include "interpreterBase/robotModel/configuration.h"
-#include "interpreterBase/robotModel/robotModelUtils.h"
 
 using namespace interpreterBase::robotModel;
 
@@ -9,78 +8,64 @@ Configuration::Configuration()
 
 Configuration::~Configuration()
 {
-	qDeleteAll(mPendingDevices[input]);
-	qDeleteAll(mPendingDevices[output]);
-	qDeleteAll(mConfiguredDevices[input]);
-	qDeleteAll(mConfiguredDevices[output]);
+	qDeleteAll(mPendingDevices);
+	qDeleteAll(mConfiguredDevices);
 }
 
 void Configuration::configureDevice(robotParts::Device * const device)
 {
 	Q_ASSERT(device);
 
-	PortDirection const direction = RobotModelUtils::convertDirection(device->deviceInfo().direction());
-
-	if (mConfiguredDevices.contains(direction) && mConfiguredDevices[direction].contains(device->port())
-			&& mConfiguredDevices[direction].value(device->port())->deviceInfo() == device->deviceInfo())
+	if (mConfiguredDevices.contains(device->port())
+			&& mConfiguredDevices.value(device->port())->deviceInfo() == device->deviceInfo())
 	{
 		// It is same device that is already configured on that port, we don't need to do anything.
 		return;
 	}
 
-	delete mConfiguredDevices[direction].value(device->port());
-	mConfiguredDevices[direction].remove(device->port());
+	delete mConfiguredDevices.value(device->port());
+	mConfiguredDevices.remove(device->port());
 
-	if (mConfiguredDevices.contains(direction) && mPendingDevices[direction].contains(device->port())) {
-		if (mPendingDevices[direction].value(device->port())->deviceInfo() == device->deviceInfo()) {
+	if (mPendingDevices.contains(device->port())) {
+		if (mPendingDevices.value(device->port())->deviceInfo() == device->deviceInfo()) {
 			// It is same device that is already pending for configuration on that port, we don't need to do anything.
 			return;
 		}
 
 		// QObject shall automatically disconnect on deletion, so we just forget about device not finished configuring.
 		// It is not thread-safe, of course, so Configuration shall always run in one thread.
-		delete mPendingDevices[direction].value(device->port());
-		mPendingDevices[direction].remove(device->port());
+		delete mPendingDevices.value(device->port());
+		mPendingDevices.remove(device->port());
 	}
 
-	mPendingDevices[direction].insert(device->port(), device);
-	mConfigurationInProgress.remove(qMakePair(device->port(), direction));
+	mPendingDevices.insert(device->port(), device);
+	mConfigurationInProgress.remove(device->port());
 }
 
-robotParts::Device *Configuration::device(
-		PortInfo const &port
-		, PortDirection direction) const
+robotParts::Device *Configuration::device(PortInfo const &port) const
 {
-	if (direction == defaultDirection) {
-		direction = mConfiguredDevices[input].contains(port) ? input : output;
-	}
-
-	return mConfiguredDevices[direction].value(port, nullptr);
+	return mConfiguredDevices.value(port, nullptr);
 }
 
-QList<robotParts::Device *> Configuration::devices(PortDirection direction) const
+QList<robotParts::Device *> Configuration::devices() const
 {
-	return direction == defaultDirection
-			? mConfiguredDevices[input].values() + mConfiguredDevices[output].values()
-			: mConfiguredDevices[direction].values();
+	return mConfiguredDevices.values();
 }
 
 void Configuration::clearDevice(PortInfo const &port)
 {
-	for (PortDirection const direction : {input, output}) {
-		if (mConfiguredDevices.contains(direction) && mConfiguredDevices[direction].contains(port)) {
-			delete mConfiguredDevices[direction].value(port);
-			mConfiguredDevices[direction].remove(port);
-		}
-
-		if (mPendingDevices.contains(direction) && mPendingDevices[direction].contains(port)) {
-			// QObject shall automatically disconnect on deletion, so it is safe to just delete it now.
-			delete mPendingDevices[direction].value(port);
-			mPendingDevices[direction].remove(port);
-		}
-
-		mConfigurationInProgress.remove(qMakePair(port, direction));
+	if (mConfiguredDevices.contains(port)) {
+		delete mConfiguredDevices.value(port);
+		mConfiguredDevices.remove(port);
 	}
+
+	if (mPendingDevices.contains(port)) {
+		// QObject shall automatically disconnect on deletion, so it is safe to just delete it now.
+		delete mPendingDevices.value(port);
+		mPendingDevices.remove(port);
+	}
+
+	mConfigurationInProgress.remove(port);
 }
 
 void Configuration::onDeviceConfigured(bool success)
@@ -94,15 +79,15 @@ void Configuration::onDeviceConfigured(bool success)
 		throw "Incorrect device configuration";
 	}
 
-	PortDirection const direction = RobotModelUtils::convertDirection(device->deviceInfo().direction());
-	if (mPendingDevices[direction].value(device->port()) == device) {
-		mPendingDevices[direction].remove(device->port());
-		mConfigurationInProgress.remove(qMakePair(device->port(), direction));
+	Direction const direction = device->deviceInfo().direction();
+	if (mPendingDevices.value(device->port()) == device) {
+		mPendingDevices.remove(device->port());
+		mConfigurationInProgress.remove(device->port());
 	} else {
 		throw "mPendingDevices became corrupted during device initialization";
 	}
 
-	mConfiguredDevices[direction].insert(device->port(), device);
+	mConfiguredDevices.insert(device->port(), device);
 
 	checkAllDevicesConfigured();
 }
@@ -111,20 +96,18 @@ void Configuration::applyConfiguration()
 {
 	checkAllDevicesConfigured();
 
-	for (PortDirection const direction : mPendingDevices.keys()) {
-		for (robotParts::Device * const device : mPendingDevices[direction].values()) {
-			if (!mConfigurationInProgress.contains(qMakePair(device->port(), direction))) {
-				mConfigurationInProgress.insert(qMakePair(device->port(), direction));
-				connect(device, &robotParts::Device::configured, this, &Configuration::onDeviceConfigured);
-				device->configure();
-			}
+	for (robotParts::Device * const device : mPendingDevices.values()) {
+		if (!mConfigurationInProgress.contains(device->port())) {
+			mConfigurationInProgress.insert(device->port());
+			connect(device, &robotParts::Device::configured, this, &Configuration::onDeviceConfigured);
+			device->configure();
 		}
 	}
 }
 
 void Configuration::checkAllDevicesConfigured()
 {
-	if (mPendingDevices[input].isEmpty() && mPendingDevices[output].isEmpty()) {
+	if (mPendingDevices.isEmpty()) {
 		emit allDevicesConfigured();
 	}
 }

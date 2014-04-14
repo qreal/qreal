@@ -29,6 +29,8 @@ private slots:
 	void timerTimeout() override;
 
 private:
+	interpreterBase::robotModel::DeviceInfo device() const override;
+
 	interpreterBase::robotModel::robotParts::EncoderSensor *mEncoderSensor;  // Does not take ownership
 };
 

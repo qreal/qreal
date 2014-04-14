@@ -16,6 +16,8 @@ class EngineCommandBlock : public interpreterBase::blocksBase::Block
 public:
 	explicit EngineCommandBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
+	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> usedSensors() const override;
+
 protected slots:
 	void timeout();
 

@@ -36,7 +36,7 @@ QString DeviceInfo::friendlyName() const
 	return mFriendlyName;
 }
 
-DeviceInfo::Direction DeviceInfo::direction() const
+Direction DeviceInfo::direction() const
 {
 	return mDirection;
 }

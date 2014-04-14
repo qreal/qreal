@@ -12,14 +12,11 @@ class WaitForSensorBlock : public interpreterBase::blocksBase::common::WaitBlock
 	Q_OBJECT
 
 public:
-	explicit WaitForSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel
-//			, robots::enums::sensorType::SensorTypeEnum type
-			);
+	explicit WaitForSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
 	~WaitForSensorBlock() override;
 
 	void run() override;
-//	virtual QList<Block::SensorPortPair> usedSensors() const;
 	void stopActiveTimerInBlock() override;
 
 protected slots:
@@ -27,11 +24,8 @@ protected slots:
 	void timerTimeout() override;
 
 protected:
-//	virtual robotParts::Sensor *sensor() const = 0;
-	virtual QString name() const = 0;
 	void stop() override;
 
-//	robots::enums::sensorType::SensorTypeEnum mType;
 	interpreterBase::robotModel::PortInfo mPort;
 };
 

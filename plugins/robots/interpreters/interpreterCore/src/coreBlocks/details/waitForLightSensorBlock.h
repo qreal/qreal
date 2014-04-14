@@ -18,8 +18,7 @@ protected slots:
 	void responseSlot(int reading) override;
 
 protected:
-//	virtual robotParts::Sensor *sensor() const;
-	QString name() const override;
+	interpreterBase::robotModel::DeviceInfo device() const override;
 };
 }
 }

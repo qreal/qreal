@@ -81,3 +81,8 @@ void WaitForButtonsBlock::clicksCounter(bool &buttonWasDown, bool buttonIsDown, 
 		buttonWasDown = false;
 	}
 }
+
+DeviceInfo WaitForButtonsBlock::device() const
+{
+	return DeviceInfo::create<robotModel::parts::NxtButtons>();
+}

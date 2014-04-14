@@ -1,6 +1,9 @@
 #include "waitForTouchSensorBlock.h"
 
+#include <interpreterBase/robotModel/robotParts/touchSensor.h>
+
 using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::robotModel;
 
 WaitForTouchSensorBlock::WaitForTouchSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
@@ -11,19 +14,14 @@ WaitForTouchSensorBlock::~WaitForTouchSensorBlock()
 {
 }
 
-//interpreters::robots::details::robotParts::Sensor *WaitForTouchSensorBlock::sensor() const
-//{
-//	return mRobotModel->touchSensor(mPort);
-//}
-
-QString WaitForTouchSensorBlock::name() const
-{
-	return tr("Touch sensor");
-}
-
 void WaitForTouchSensorBlock::responseSlot(int reading)
 {
 	if (reading == 1) {
 		stop();
 	}
+}
+
+interpreterBase::robotModel::DeviceInfo WaitForTouchSensorBlock::device() const
+{
+	return DeviceInfo::create<robotParts::TouchSensor>();
 }

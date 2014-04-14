@@ -15,6 +15,7 @@
 #include "details/thread.h"
 #include "details/blocksTable.h"
 #include "details/sensorVariablesUpdater.h"
+#include "details/autoconfigurer.h"
 
 #include "interpreterInterface.h"
 
@@ -74,9 +75,9 @@ private:
 
 	void addThread(details::Thread * const thread);
 
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
-	qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Does not have ownership
-	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;  // Does not have ownership
+	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	qReal::LogicalModelAssistInterface &mLogicalModelApi;
+	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 
 	InterpreterState mState;
 	QList<details::Thread *> mThreads;  // Has ownership
@@ -87,7 +88,7 @@ private:
 	QAction &mActionConnectToRobot;
 
 	details::SensorVariablesUpdater mSensorVariablesUpdater;
-
+	details::Autoconfigurer mAutoconfigurer;
 };
 
 }

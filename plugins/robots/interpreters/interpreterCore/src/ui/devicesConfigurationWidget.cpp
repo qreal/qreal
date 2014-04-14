@@ -169,9 +169,10 @@ void DevicesConfigurationWidget::propagateChanges(PortInfo const &port, DeviceIn
 
 bool DevicesConfigurationWidget::areConvertible(PortInfo const &port1, PortInfo const &port2) const
 {
-	return port1.name() == port2.name()
+	return (port1.name() == port2.name()
 			|| port1.nameAliases().contains(port2.name())
-			|| port2.nameAliases().contains(port1.name());
+			|| port2.nameAliases().contains(port1.name()))
+			&& port1.direction() == port2.direction();
 }
 
 DeviceInfo DevicesConfigurationWidget::convertibleDevice(RobotModelInterface const *robotModel

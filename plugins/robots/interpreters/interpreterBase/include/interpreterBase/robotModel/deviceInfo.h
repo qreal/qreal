@@ -5,6 +5,7 @@
 #include <QtCore/QMetaObject>
 #include <QtCore/QMetaProperty>
 
+#include "direction.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {
@@ -15,15 +16,6 @@ namespace robotModel {
 class ROBOTS_INTERPRETER_BASE_EXPORT DeviceInfo
 {
 public:
-	/// Represents the direction of communication with this device
-	enum Direction
-	{
-		/// Device provides data
-		input = 0
-		/// Device accepts data
-		, output
-	};
-
 	/// Creates a new instance of a Device descriptor. The resulting object will
 	/// correspond to a given type only if Q_OBJECT macro is used inside its declaration.
 	/// @warning The given device type must contain friendlyName() and direction() static functions
@@ -117,5 +109,4 @@ inline bool operator !=(DeviceInfo const &device1, DeviceInfo const &device2)
 }
 }
 
-Q_DECLARE_METATYPE(interpreterBase::robotModel::DeviceInfo::Direction)
 Q_DECLARE_METATYPE(interpreterBase::robotModel::DeviceInfo)

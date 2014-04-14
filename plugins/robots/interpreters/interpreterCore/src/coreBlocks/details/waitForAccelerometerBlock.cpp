@@ -1,9 +1,11 @@
 #include "waitForAccelerometerBlock.h"
 
-using namespace interpreterCore::coreBlocks::details;
+#include <interpreterBase/robotModel/robotParts/accelerometerSensor.h>
 
-WaitForAccelerometerSensorBlock::WaitForAccelerometerSensorBlock(
-		interpreterBase::robotModel::RobotModelInterface &robotModel)
+using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::robotModel;
+
+WaitForAccelerometerSensorBlock::WaitForAccelerometerSensorBlock(RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
 {
 }
@@ -18,12 +20,7 @@ void WaitForAccelerometerSensorBlock::responseSlot(int reading)
 	processResponce(reading, targetAcceleration);
 }
 
-//interpreters::robots::details::robotParts::Sensor *WaitForAccelerometerSensorBlock::sensor() const
-//{
-//	return mRobotModel->accelerometerSensor(mPort);
-//}
-
-QString WaitForAccelerometerSensorBlock::name() const
+DeviceInfo WaitForAccelerometerSensorBlock::device() const
 {
-	return tr("Accelerometer");
+	return DeviceInfo::create<robotParts::AccelerometerSensor>();
 }

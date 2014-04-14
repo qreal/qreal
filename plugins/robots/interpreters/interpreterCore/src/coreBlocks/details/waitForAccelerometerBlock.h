@@ -15,11 +15,10 @@ public:
 	~WaitForAccelerometerSensorBlock() override;
 
 protected slots:
-	virtual void responseSlot(int reading);
+	void responseSlot(int reading) override;
 
 protected:
-//	virtual robotParts::Sensor *sensor() const;
-	virtual QString name() const;
+	interpreterBase::robotModel::DeviceInfo device() const override;
 };
 
 }

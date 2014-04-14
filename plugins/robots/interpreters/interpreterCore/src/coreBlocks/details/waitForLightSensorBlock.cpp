@@ -1,6 +1,9 @@
 #include "waitForLightSensorBlock.h"
 
+#include <interpreterBase/robotModel/robotParts/lightSensor.h>
+
 using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::robotModel;
 
 WaitForLightSensorBlock::WaitForLightSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
@@ -17,12 +20,7 @@ void WaitForLightSensorBlock::responseSlot(int reading)
 	processResponce(reading, targetPercents);
 }
 
-//interpreters::robots::details::robotParts::Sensor *WaitForLightSensorBlock::sensor() const
-//{
-//	return mRobotModel->lightSensor(mPort);
-//}
-
-QString WaitForLightSensorBlock::name() const
+interpreterBase::robotModel::DeviceInfo WaitForLightSensorBlock::device() const
 {
-	return tr("Light sensor");
+	return DeviceInfo::create<robotParts::LightSensor>();
 }

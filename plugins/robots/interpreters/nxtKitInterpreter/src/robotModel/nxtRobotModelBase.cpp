@@ -23,11 +23,6 @@ using namespace interpreterBase::robotModel;
 
 NxtRobotModelBase::NxtRobotModelBase()
 {
-	/// @todo Implement.
-	QList<DeviceInfo> const outputPortConnections = {
-		motorInfo()
-		, encoderInfo()
-	};
 	QList<DeviceInfo> const inputPortConnections = {
 			touchSensorInfo()
 			, sonarSensorInfo()
@@ -42,16 +37,19 @@ NxtRobotModelBase::NxtRobotModelBase()
 			, accelerometerSensorInfo()
 	};
 
-	addAllowedConnection(PortInfo("DisplayPort"), { displayInfo() });
-	addAllowedConnection(PortInfo("SpeakerPort"), { speakerInfo() });
-	addAllowedConnection(PortInfo("ButtonsPort"), { buttonsInfo() });
-	addAllowedConnection(PortInfo("A", {}, "encoderA"), outputPortConnections);
-	addAllowedConnection(PortInfo("B", {}, "encoderB"), outputPortConnections);
-	addAllowedConnection(PortInfo("C", {}, "encoderC"), outputPortConnections);
-	addAllowedConnection(PortInfo("1", {}, "sensor1"), inputPortConnections);
-	addAllowedConnection(PortInfo("2", {}, "sensor2"), inputPortConnections);
-	addAllowedConnection(PortInfo("3", {}, "sensor3"), inputPortConnections);
-	addAllowedConnection(PortInfo("4", {}, "sensor4"), inputPortConnections);
+	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
+	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
+	addAllowedConnection(PortInfo("ButtonsPort", input), { buttonsInfo() });
+	addAllowedConnection(PortInfo("A", output), { motorInfo() });
+	addAllowedConnection(PortInfo("B", output), { motorInfo() });
+	addAllowedConnection(PortInfo("C", output), { motorInfo() });
+	addAllowedConnection(PortInfo("A", input, {}, "encoderA"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B", input, {}, "encoderB"), { encoderInfo() });
+	addAllowedConnection(PortInfo("C", input, {}, "encoderC"), { encoderInfo() });
+	addAllowedConnection(PortInfo("1", input, {}, "sensor1"), inputPortConnections);
+	addAllowedConnection(PortInfo("2", input, {}, "sensor2"), inputPortConnections);
+	addAllowedConnection(PortInfo("3", input, {}, "sensor3"), inputPortConnections);
+	addAllowedConnection(PortInfo("4", input, {}, "sensor4"), inputPortConnections);
 }
 
 QList<DeviceInfo> NxtRobotModelBase::convertibleBases() const

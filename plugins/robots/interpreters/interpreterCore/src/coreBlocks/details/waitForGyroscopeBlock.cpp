@@ -1,6 +1,9 @@
 #include "waitForGyroscopeBlock.h"
 
+#include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
+
 using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::robotModel;
 
 WaitForGyroscopeSensorBlock::WaitForGyroscopeSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
@@ -17,12 +20,7 @@ void WaitForGyroscopeSensorBlock::responseSlot(int reading)
 	processResponce(reading, targetDegrees);
 }
 
-//interpreters::robots::details::robotParts::Sensor *WaitForGyroscopeSensorBlock::sensor() const
-//{
-//	return mRobotModel->gyroscopeSensor(mPort);
-//}
-
-QString WaitForGyroscopeSensorBlock::name() const
+interpreterBase::robotModel::DeviceInfo WaitForGyroscopeSensorBlock::device() const
 {
-	return tr("Gyroscope");
+	return DeviceInfo::create<robotParts::GyroscopeSensor>();
 }
