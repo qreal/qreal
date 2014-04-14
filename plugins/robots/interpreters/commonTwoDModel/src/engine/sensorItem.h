@@ -21,6 +21,8 @@ class SensorItem : public QObject, public graphicsUtils::RotateItem
 	Q_OBJECT
 
 public:
+	static int const sensorWidth = 12;
+
 	class PortItem : public QGraphicsItem
 	{
 	public:

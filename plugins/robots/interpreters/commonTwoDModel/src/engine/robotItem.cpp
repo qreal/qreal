@@ -200,10 +200,10 @@ void RobotItem::recoverDragStartPosition()
 
 void RobotItem::addSensorsShapes(QPainterPath &target)
 {
-//	foreach (SensorItem *const sensor, mSensors) {
-//		target.addRect(QRectF(sensor->pos() - QPointF(sensorWidth / 2, sensorWidth / 2)
-//				, QSizeF(sensorWidth, sensorWidth)));
-//	}
+	for (SensorItem const * const sensor : mSensors) {
+		target.addRect({sensor->pos() - QPointF(SensorItem::sensorWidth / 2, SensorItem::sensorWidth / 2)
+				, QSizeF{SensorItem::sensorWidth, SensorItem::sensorWidth}});
+	}
 }
 
 void BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option

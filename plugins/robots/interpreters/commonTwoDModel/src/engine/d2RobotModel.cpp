@@ -20,8 +20,6 @@ using namespace twoDModel::physics;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
-static int const sensorWidth = 12;
-
 D2RobotModel::D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
 		, QObject *parent)
 	: QObject(parent)
@@ -183,7 +181,7 @@ int D2RobotModel::readTouchSensor(interpreterBase::robotModel::PortInfo const &p
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
-	qreal const width = sensorWidth / 2.0;
+	qreal const width = SensorItem::sensorWidth / 2.0;
 	QRectF const scanningRect = QRectF(
 			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
 			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
