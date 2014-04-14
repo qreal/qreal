@@ -18,7 +18,7 @@ public:
 signals:
 	void hashObtained(QString hash);
 	void showDiff();
-	void showDiff(QString, QString);
+	void showDiff(QString, QString, QWidget*);
 	void swapTab();
 
 public slots:

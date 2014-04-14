@@ -57,7 +57,7 @@ public slots:
 	QString getLog(QString const &format = QString(), bool const &quiet = false);
 	void setVersion(QString hash, bool const &quiet = false);
 	void switchOffOrOnAllPluginsAction(bool switchOnTranspMode);
-	void showDiff(QString fstHash, QString sndHash);
+	void showDiff(QString fstHash, QString sndHash, QWidget *widget);
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);

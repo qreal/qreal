@@ -20,10 +20,10 @@ public:
 			, qReal::EditorManagerInterface *manager);
 
 public slots:
-	void showDiff(QString const &targetProject);
-	void showDiff(QString repoRevision, QString const &targetProject);
+	void showDiff(QString const &targetProject, QWidget *parentWidget);
+	void showDiff(QString repoRevision, QString const &targetProject, QWidget *parentWidget);
 	void showDiff(QString oldRepoRevision , QString newRepoRevision
-			, QString const &targetProject);
+			, QString const &targetProject, QWidget *parentWidget);
 
 private slots:
 	void onModelLoaded(DiffModel *model);
@@ -36,6 +36,7 @@ private:
 	qReal::ErrorReporterInterface *mErrorReporter;
 	qReal::ProjectManagementInterface *mProjectManager;
 	details::ModelLoader *mLoader;
+	QWidget *mParentWidget;
 };
 
 }

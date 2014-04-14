@@ -23,7 +23,7 @@ QList<qReal::ActionInfo> DiffPlugin::actions()
 
 void DiffPlugin::diffClicked()
 {
-	showDiff(mProjectManager->saveFilePath());
+	showDiff(mProjectManager->saveFilePath(), NULL);
 }
 
 void DiffPlugin::diffBetweenClicked()

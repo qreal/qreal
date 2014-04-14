@@ -12,7 +12,7 @@
 namespace versioning
 {
 
-class DiffWindow : public QDialog
+class DiffWindow : public QWidget
 {
 	Q_OBJECT
 

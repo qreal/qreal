@@ -4,7 +4,7 @@ using namespace versioning;
 
 DiffWindow::DiffWindow(qReal::MainWindow *mainWindow
 		, DiffModel *diffModel, QWidget *parent)
-	: QDialog(parent), mDiffModel(diffModel), mMainWindow(mainWindow)
+	: QWidget(parent), mDiffModel(diffModel), mMainWindow(mainWindow)
 {
 	initWindow();
 	initLayout();
@@ -30,7 +30,7 @@ versioning::details::DiffView *DiffWindow::getNewModel()
 void DiffWindow::initWindow()
 {
 	setWindowTitle(tr("Diff"));
-	setWindowState(Qt::WindowMaximized | Qt::WindowActive);
+	//setWindowState(Qt::WindowMaximized | Qt::WindowActive);
 	setWindowFlags(Qt::Window | Qt::WindowMinMaxButtonsHint);
 	setWindowOpacity(1.00);
 }

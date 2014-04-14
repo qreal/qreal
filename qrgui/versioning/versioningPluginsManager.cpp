@@ -268,9 +268,9 @@ void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTransp
 	}
 }
 
-void VersioningPluginsManager::showDiff(QString fstHash, QString sndHash)
+void VersioningPluginsManager::showDiff(QString fstHash, QString sndHash, QWidget *widget)
 {
-	mDiffPlugin->showDiff(sndHash, fstHash, QString());
+	mDiffPlugin->showDiff(sndHash, fstHash, widget);
 }
 
 TransparentMode *VersioningPluginsManager::getLinkOnTransparentMode()

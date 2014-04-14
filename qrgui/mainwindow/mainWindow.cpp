@@ -2300,8 +2300,8 @@ void MainWindow::showChangeVersion()
 	mUi->tabs->addTab(mChangeVersion, tr("Change version"));
 	mUi->tabs->setCurrentWidget(mChangeVersion);
 
-	connect(mChangeVersion, SIGNAL(showDiff(QString,QString))
-			, mVersioningManager, SLOT(showDiff(QString,QString)));
+	connect(mChangeVersion, SIGNAL(showDiff(QString,QString,QWidget*))
+			, mVersioningManager, SLOT(showDiff(QString,QString,QWidget*)));
 	connect(this, SIGNAL(changeVersionShowed()), mEasyVersioning, SLOT(listLog()));
 	connect(mEasyVersioning, SIGNAL(listLogIsReady(QList<QPair<QString , QString> >)),
 				mChangeVersion, SLOT(updateLog(QList<QPair<QString , QString> >)));

@@ -19,19 +19,22 @@ DiffPluginWrapper::DiffPluginWrapper(DiffPluginBase *plugin
 			, this, SLOT(onModelLoaded(DiffModel*)));
 }
 
-void DiffPluginWrapper::showDiff(const QString &targetProject)
+void DiffPluginWrapper::showDiff(const QString &targetProject, QWidget *parentWidget)
 {
+	mParentWidget = parentWidget;
 	mLoader->startModelLoading(targetProject);
 }
 
-void DiffPluginWrapper::showDiff(QString repoRevision, const QString &targetProject)
+void DiffPluginWrapper::showDiff(QString repoRevision, const QString &targetProject, QWidget *parentWidget)
 {
+	mParentWidget = parentWidget;
 	mLoader->startModelLoading(repoRevision, targetProject);
 }
 
 void DiffPluginWrapper::showDiff(QString oldRepoRevision, QString newRepoRevision
-		, const QString &targetProject)
+		, const QString &targetProject, QWidget *parentWidget)
 {
+	mParentWidget = parentWidget;
 	mLoader->startModelLoading(oldRepoRevision, newRepoRevision, targetProject);
 }
 
@@ -41,11 +44,6 @@ void DiffPluginWrapper::onModelLoaded(DiffModel *model)
 		return;
 	}
 	DiffWindow *diffWindow = new DiffWindow(mMainWindow, model, mMainWindow);
-	if (SettingsManager::value("transparentVersioningMode").toBool()){
-//		emit viewForTransparentModeIsReady(diffWindow->getNewModel());
-	} else {
-		diffWindow->exec();
-	}
-	delete diffWindow;
+	mParentWidget->layout()->addWidget(diffWindow);
 }
 

@@ -41,9 +41,9 @@ void ChangeVersion::showDiff(QListWidgetItem *item)
 	int row = mUi->listWidgetForLog->row(item);
 	QListWidgetItem *item2 = mUi->listWidgetForLog->item(row + 1);
 	if (item2 != NULL){
-		emit showDiff(firstHash, item2->data(Qt::UserRole).toString());
+		emit showDiff(firstHash, item2->data(Qt::UserRole).toString(), this);
 	} else {
-		emit showDiff(firstHash, firstHash);
+		emit showDiff(firstHash, firstHash, this);
 	}
 }
 
