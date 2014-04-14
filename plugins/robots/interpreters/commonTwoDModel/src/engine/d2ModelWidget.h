@@ -95,7 +95,7 @@ public:
 
 	void closeEvent(QCloseEvent *event);
 
-//	QVector<SensorItem *> sensorItems() const;
+	SensorItem const *sensorItem(interpreterBase::robotModel::PortInfo const &port) const;
 
 	void loadXml(QDomDocument const &worldModel);
 

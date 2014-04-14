@@ -23,7 +23,7 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/parts/encoderSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/lightSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/motor.h \
-	$$PWD/include/commonTwoDModel/robotModel/parts/sonarSensor.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/rangeSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/touchSensor.h \
 
 HEADERS += \
@@ -73,7 +73,14 @@ SOURCES += \
 	$$PWD/src/engine/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/physics/realisticPhysicsEngine.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
+	$$PWD/src/robotModel/parts/buttons.cpp \
+	$$PWD/src/robotModel/parts/colorSensor.cpp \
+	$$PWD/src/robotModel/parts/display.cpp \
+	$$PWD/src/robotModel/parts/encoderSensor.cpp \
+	$$PWD/src/robotModel/parts/lightSensor.cpp \
 	$$PWD/src/robotModel/parts/motor.cpp \
+	$$PWD/src/robotModel/parts/rangeSensor.cpp \
+	$$PWD/src/robotModel/parts/touchSensor.cpp \
 
 FORMS += \
 	$$PWD/src/engine/d2Form.ui \

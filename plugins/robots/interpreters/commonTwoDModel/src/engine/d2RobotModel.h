@@ -62,7 +62,7 @@ public:
 
 //	details::NxtDisplay *display()
 
-//	int readTouchSensor(robots::enums::inputPort::InputPortEnum const port);
+	int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 //	int readSonarSensor(robots::enums::inputPort::InputPortEnum const port) const;
 //	int readColorSensor(robots::enums::inputPort::InputPortEnum const port) const;
 //	int readLightSensor(robots::enums::inputPort::InputPortEnum const port) const;
@@ -127,9 +127,7 @@ private:
 	void countNewForces();
 	void countBeep();
 
-//	QPair<QPointF, qreal> countPositionAndDirection(
-//			robots::enums::inputPort::InputPortEnum const port
-//			) const;
+	QPair<QPointF, qreal> countPositionAndDirection(interpreterBase::robotModel::PortInfo const &port) const;
 
 	void countMotorTurnover();
 

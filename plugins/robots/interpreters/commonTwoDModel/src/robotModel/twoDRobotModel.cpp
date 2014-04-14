@@ -2,7 +2,14 @@
 
 #include <qrkernel/exception/exception.h>
 
+#include "commonTwoDModel/robotModel/parts/buttons.h"
+#include "commonTwoDModel/robotModel/parts/colorSensor.h"
+#include "commonTwoDModel/robotModel/parts/display.h"
+#include "commonTwoDModel/robotModel/parts/encoderSensor.h"
+#include "commonTwoDModel/robotModel/parts/lightSensor.h"
 #include "commonTwoDModel/robotModel/parts/motor.h"
+#include "commonTwoDModel/robotModel/parts/rangeSensor.h"
+#include "commonTwoDModel/robotModel/parts/touchSensor.h"
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
@@ -48,15 +55,11 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 //		return new parts::Display(displayInfo(), port);
 //	}
 
-//	if (deviceInfo.isA(speakerInfo())) {
-//		return new parts::Speaker(speakerInfo(), port, mRobotCommunicator);
-//	}
-
 //	if (deviceInfo.isA(buttonsInfo())) {
 //		return new parts::Buttons(buttonsInfo(), port);
 //	}
 
-	if (deviceInfo.isA(DeviceInfo::create<robotParts::Motor>())) {
+	if (deviceInfo.isA<robotParts::Motor>()) {
 		return new parts::Motor(deviceInfo, port, *mEngine);
 	}
 
@@ -64,9 +67,9 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 //		return new parts::EncoderSensor(encoderInfo(), port, mRobotCommunicator);
 //	}
 
-//	if (deviceInfo.isA(touchSensorInfo())) {
-//		return new parts::TouchSensor(touchSensorInfo(), port, mRobotCommunicator);
-//	}
+	if (deviceInfo.isA<robotParts::TouchSensor>()) {
+		return new parts::TouchSensor(deviceInfo, port, *mEngine);
+	}
 
 //	if (deviceInfo.isA(sonarSensorInfo())) {
 //		return new parts::SonarSensor(sonarSensorInfo(), port, mRobotCommunicator);

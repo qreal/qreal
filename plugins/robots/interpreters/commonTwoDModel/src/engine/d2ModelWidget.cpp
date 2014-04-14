@@ -1041,6 +1041,11 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 //	return mSensors;
 //}
 
+SensorItem const *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port) const
+{
+	return mSensors.value(port);
+}
+
 void D2ModelWidget::saveToRepo()
 {
 	emit modelChanged(generateXml());

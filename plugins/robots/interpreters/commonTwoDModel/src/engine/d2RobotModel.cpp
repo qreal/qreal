@@ -13,11 +13,14 @@
 #include "src/engine/d2ModelTimer.h"
 
 #include <interpreterBase/robotModel/robotParts/motor.h>
+#include <interpreterBase/robotModel/robotParts/touchSensor.h>
 
 using namespace twoDModel;
 using namespace twoDModel::physics;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
+
+static int const sensorWidth = 12;
 
 D2RobotModel::D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
 		, QObject *parent)
@@ -163,37 +166,36 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 	return mD2ModelWidget;
 }
 
-//QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(robots::enums::inputPort::InputPortEnum const port) const
-//{
-//	QVector<SensorItem *> items = mD2ModelWidget->sensorItems();
-//	SensorItem *sensor = items[port];
-//	QPointF const position = sensor ? sensor->scenePos() : QPointF();
-//	qreal const direction = sensor ? items[port]->rotation() + mAngle : 0;
-//	return QPair<QPointF, qreal>(position, direction);
-//}
+QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(interpreterBase::robotModel::PortInfo const &port) const
+{
+	SensorItem const *sensor = mD2ModelWidget->sensorItem(port);
+	QPointF const position = sensor ? sensor->scenePos() : QPointF();
+	qreal const direction = sensor ? sensor->rotation() + mAngle : 0;
+	return {position, direction};
+}
 
-//int D2RobotModel::readTouchSensor(robots::enums::inputPort::InputPortEnum const port)
-//{
-//	if (mSensorsConfiguration.type(port) != robots::enums::sensorType::touchBoolean
-//			&& mSensorsConfiguration.type(port) != robots::enums::sensorType::touchRaw)
-//	{
-//		return touchSensorNotPressedSignal;
-//	}
-//	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
-//	QPointF sensorPosition(neededPosDir.first);
-//	qreal const width = sensorWidth / 2.0;
-//	QRectF const scanningRect = QRectF(
-//			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
-//			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
-//			, 2 * width + touchSensorStrokeIncrement
-//			, 2 * width + touchSensorStrokeIncrement);
+int D2RobotModel::readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const
+{
+	if (!mSensorsConfiguration.type(port).isA<TouchSensor>())
+	{
+		return touchSensorNotPressedSignal;
+	}
 
-//	QPainterPath sensorPath;
-//	sensorPath.addRect(scanningRect);
-//	bool const res = mWorldModel.checkCollision(sensorPath, touchSensorWallStrokeIncrement);
+	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
+	QPointF sensorPosition(neededPosDir.first);
+	qreal const width = sensorWidth / 2.0;
+	QRectF const scanningRect = QRectF(
+			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
+			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
+			, 2 * width + touchSensorStrokeIncrement
+			, 2 * width + touchSensorStrokeIncrement);
 
-//	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
-//}
+	QPainterPath sensorPath;
+	sensorPath.addRect(scanningRect);
+	bool const res = mWorldModel->checkCollision(sensorPath, touchSensorWallStrokeIncrement);
+
+	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
+}
 
 //int D2RobotModel::readSonarSensor(robots::enums::inputPort::InputPortEnum const port) const
 //{
@@ -549,7 +551,7 @@ void D2RobotModel::serialize(QDomDocument &target)
 	QDomElement robot = target.createElement("robot");
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", mAngle);
-//	configuration().serialize(robot, target);
+	configuration().serialize(robot, target);
 	target.firstChildElement("root").appendChild(robot);
 }
 
@@ -561,7 +563,7 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 	qreal const y = static_cast<qreal>(splittedStr[1].toDouble());
 	mPos = QPointF(x, y);
 	mAngle = robotElement.attribute("direction", "0").toDouble();
-//	configuration().deserialize(robotElement);
+	configuration().deserialize(robotElement);
 	mNeedSync = false;
 	nextFragment();
 }

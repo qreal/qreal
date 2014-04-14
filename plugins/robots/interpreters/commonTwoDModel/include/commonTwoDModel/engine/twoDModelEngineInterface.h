@@ -17,6 +17,8 @@ public:
 	virtual void setNewMotor(int speed, uint degrees
 			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) = 0;
 
+	virtual int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const = 0;
+
 	virtual utils::AbstractTimer *modelTimer() const = 0;
 };
 
