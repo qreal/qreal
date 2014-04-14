@@ -17,10 +17,13 @@ public:
 
 signals:
 	void hashObtained(QString hash);
+	void showDiff();
+	void showDiff(QString, QString);
 	void swapTab();
 
 public slots:
 	void updateLog(QList<QPair<QString, QString> > listLog);
+	void onViewForTransparentModeIsReady(QGraphicsView* mView);
 
 
 private slots:

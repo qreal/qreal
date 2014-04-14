@@ -22,6 +22,11 @@ DiffWindow::~DiffWindow()
 {
 }
 
+versioning::details::DiffView *DiffWindow::getNewModel()
+{
+	return mNewView;
+}
+
 void DiffWindow::initWindow()
 {
 	setWindowTitle(tr("Diff"));

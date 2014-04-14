@@ -80,9 +80,18 @@ bool GitPlugin::onFileChanged(QString const &filePath, QString const &workingDir
 
 void GitPlugin::beginWorkingCopyDownloading(QString const &repoAddress
 		, QString const &targetProject
-		, int revisionNumber, bool quiet)
+		, QString revisionNumber, bool quiet)
 {
-	doInit(tempFolder(), quiet);
+	if (repoAddress == "" || targetProject == "" || revisionNumber == ""){
+		doInit(tempFolder(), quiet);
+	} else {
+		if(invokeOperation(QStringList(), true, tempFolderName, true, false, QString(), QString(), false)){
+			QStringList args;
+			args << "reset" << "--hard" << revisionNumber;
+			bool result = invokeOperation(args, false, tempFolderName, false, true, targetProject, QString(), false);
+			emit workingCopyDownloaded(result, targetProject);
+		}
+	}
 }
 
 void GitPlugin::beginWorkingCopyUpdating(QString const &targetProject)
@@ -113,7 +122,7 @@ int GitPlugin::revisionNumber(QString const &targetProject)
 
 QString GitPlugin::remoteRepositoryUrl(QString const &targetProject)
 {
-	return qReal::SettingsManager::value("remoteAdress", "").toString();
+	return qReal::SettingsManager::value("remoteAdress", tempFolderName).toString();
 }
 
 bool GitPlugin::isMyWorkingCopy(QString const &directory, const bool &quiet, bool const &prepareAndProcess)
@@ -142,7 +151,7 @@ void GitPlugin::setVersion(QString hash, bool const &quiet)
 {
 	//because if we have unsaved changes, it would be a crash
 	if (!this->isMyWorkingCopy(QString(), false, true)){
-		this->beginWorkingCopyDownloading(QString(), QString(), -1, true);
+		this->beginWorkingCopyDownloading(QString(), QString(), QString(), true);
 	}
 	this->beginChangesSubmitting("version was saved in a transparent mode", QString(), quiet);
 
@@ -215,9 +224,8 @@ void GitPlugin::doInit(QString const &targetFolder, bool const &quiet)
 void GitPlugin::startClone(QString const &from
 		, QString const &targetFolder)
 {
-	//QString cloneDist = targetFolder.isEmpty() ? tempFolder() : targetFolder;
 	QStringList arguments;
-	arguments << "clone" << from + ".git";
+	arguments << "clone" << from << targetFolder;
 
 	const Tag tagStruct("clone");
 	QVariant tagVariant;
@@ -281,7 +289,7 @@ void GitPlugin::startPull(const QString &remote, QString const &targetFolder)
 
 void GitPlugin::startReset(QString const &hash, QString const &targetFolder, const bool &quiet)
 {
-	//QString targetDir = targetFolder.isEmpty() ? tempFolder() : targetFolder;
+	QString targetDir = targetFolder.isEmpty() ? tempFolder() : targetFolder;
 	QStringList arguments;
 	// TODO: Add different variants
 	arguments << "reset" << hash << "--hard";
@@ -289,7 +297,7 @@ void GitPlugin::startReset(QString const &hash, QString const &targetFolder, con
 	const Tag tagStruct("reset", QString(), quiet);
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
-	invokeOperationAsync(arguments, tagVariant, true, QString(), QString(), true, !quiet);
+	invokeOperationAsync(arguments, tagVariant, true, targetDir, QString(), true, !quiet);
 }
 
 void GitPlugin::doUserNameConfig()
@@ -415,7 +423,7 @@ void GitPlugin::doAfterOperationIsFinished(QVariant const &tag)
 {
 	Tag tagStruct = tag.value<Tag>();
 	if (tagStruct.operation == "clone"){
-		onCloneComplete(true);
+		onCloneComplete(true, tagStruct.boolTag);
 	} else if (tagStruct.operation == "push"){
 		onPushComplete(true);
 	} else if (tagStruct.operation == "pull"){
@@ -439,11 +447,14 @@ QString GitPlugin::getPassword()
 	return password;
 }
 
-void GitPlugin::onCloneComplete(bool const result)
+//to do: made it correct
+void GitPlugin::onCloneComplete(bool const result, const bool quiet)
 {
 	processWorkingCopy();
-	emit cloneComplete(result);
-	emit operationComplete("clone", result);
+	if (!quiet) {
+		emit cloneComplete(result);
+		emit operationComplete("clone", result);
+	}
 }
 
 void GitPlugin::onPushComplete(bool const result)

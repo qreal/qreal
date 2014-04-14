@@ -24,12 +24,12 @@ void DiffPluginWrapper::showDiff(const QString &targetProject)
 	mLoader->startModelLoading(targetProject);
 }
 
-void DiffPluginWrapper::showDiff(int repoRevision, const QString &targetProject)
+void DiffPluginWrapper::showDiff(QString repoRevision, const QString &targetProject)
 {
 	mLoader->startModelLoading(repoRevision, targetProject);
 }
 
-void DiffPluginWrapper::showDiff(int oldRepoRevision, int newRepoRevision
+void DiffPluginWrapper::showDiff(QString oldRepoRevision, QString newRepoRevision
 		, const QString &targetProject)
 {
 	mLoader->startModelLoading(oldRepoRevision, newRepoRevision, targetProject);
@@ -41,6 +41,11 @@ void DiffPluginWrapper::onModelLoaded(DiffModel *model)
 		return;
 	}
 	DiffWindow *diffWindow = new DiffWindow(mMainWindow, model, mMainWindow);
-	diffWindow->exec();
+	if (SettingsManager::value("transparentVersioningMode").toBool()){
+//		emit viewForTransparentModeIsReady(diffWindow->getNewModel());
+	} else {
+		diffWindow->exec();
+	}
 	delete diffWindow;
 }
+

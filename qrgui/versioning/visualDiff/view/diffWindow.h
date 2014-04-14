@@ -19,6 +19,7 @@ class DiffWindow : public QDialog
 public:
 	DiffWindow(qReal::MainWindow *mainWindow, DiffModel *diffModel, QWidget *parent = 0);
 	~DiffWindow();
+	details::DiffView *getNewModel();
 
 private:
 	void initWindow();

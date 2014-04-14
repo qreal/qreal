@@ -34,7 +34,7 @@ public:
 	// Brief VCS interface
 	virtual void beginWorkingCopyDownloading(QString const &repoAddress
 			, QString const &targetProject
-			, int revisionNumber = -1
+			, QString revisionNumber = "-1"
 			, bool quiet = false);
 	virtual void beginWorkingCopyUpdating(QString const &targetProject = QString());
 	virtual void beginChangesSubmitting(const QString &description, QString const &targetProject = QString()
@@ -92,7 +92,7 @@ protected:
 	virtual int timeout() const;
 	virtual QString tempFolder() const;
 private:
-	void onCloneComplete(bool const result);
+	void onCloneComplete(bool const result, const bool quiet);
 	void onRemoteComplete(bool const result);
 	void onPushComplete(bool const result);
 	void onPullComplete(bool const result);

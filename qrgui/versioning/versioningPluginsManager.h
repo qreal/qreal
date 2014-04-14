@@ -34,15 +34,16 @@ public:
 	bool onFileRemoved(QString const &filePath, QString const &workingDir);
 	bool onFileChanged(QString const &filePath, QString const &workingDir);
 	TransparentMode *getLinkOnTransparentMode();
+
 signals:
 	void OnButton(bool);
 	void transparentClassIsReady();
+	void viewForTransparentModeIsReady(QGraphicsView*);
 
 public slots:
-	void beginWorkingCopyDownloading(
-			  QString const &repoAddress
+	void beginWorkingCopyDownloading(QString const &repoAddress
 			, QString const &targetProject
-			, int revisionNumber = -1
+			, QString revisionNumber = "-1"
 			, bool quiet = false);
 	void beginWorkingCopyUpdating(QString const &targetProject = QString());
 	void beginChangesSubmitting(QString const &description, QString const &targetProject = QString(), bool const &quiet = false);
@@ -56,6 +57,7 @@ public slots:
 	QString getLog(QString const &format = QString(), bool const &quiet = false);
 	void setVersion(QString hash, bool const &quiet = false);
 	void switchOffOrOnAllPluginsAction(bool switchOnTranspMode);
+	void showDiff(QString fstHash, QString sndHash);
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);

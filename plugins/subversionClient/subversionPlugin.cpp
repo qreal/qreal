@@ -80,7 +80,7 @@ bool SubversionPlugin::onFileChanged(QString const &filePath, QString const &wor
 
 void SubversionPlugin::beginWorkingCopyDownloading(QString const &repoAddress
 		, QString const &targetProject
-		, int revisionNumber, bool quiet)
+		, QString revisionNumber, bool quiet)
 {
 	startCheckout(repoAddress, targetProject, tempFolder(), revisionNumber, quiet);
 }
@@ -148,15 +148,15 @@ QString SubversionPlugin::tempFolder() const
 void SubversionPlugin::startCheckout(QString const &from
 		, QString const &targetProject
 		, QString const &targetFolder
-		, int revision, bool quiet)
+		, QString revision, bool quiet)
 {
 	QString checkoutDist = targetFolder.isEmpty() ? tempFolder() : targetFolder;
 	qReal::FileSystemUtils::removeDir(checkoutDist);
 	QStringList arguments;
 	arguments << "checkout" << from << checkoutDist;
-	if (revision > 0) {
+	if (revision.toInt() > 0) {
 		arguments << "--revision";
-		arguments << QString::number(revision);
+		arguments << revision;
 	}
 	arguments << authenticationArgs();
 

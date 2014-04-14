@@ -20,10 +20,10 @@ public:
 			, qReal::EditorManagerInterface *manager);
 
 public slots:
-	void showDiff(QString const &targetProject = QString());
-	void showDiff(int repoRevision, QString const &targetProject = QString());
-	void showDiff(int oldRepoRevision , int newRepoRevision
-			, QString const &targetProject = QString());
+	void showDiff(QString const &targetProject);
+	void showDiff(QString repoRevision, QString const &targetProject);
+	void showDiff(QString oldRepoRevision , QString newRepoRevision
+			, QString const &targetProject);
 
 private slots:
 	void onModelLoaded(DiffModel *model);

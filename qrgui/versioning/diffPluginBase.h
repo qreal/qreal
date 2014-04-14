@@ -23,21 +23,21 @@ public:
 		mProjectManager = &(configurator.projectManager());
 	}
 
-	virtual void showDiff(QString const &targetProject = QString())
+	virtual void showDiff(QString const &targetProject)
 	{
 		if (mHandler) {
 			mHandler->showDiff(targetProject);
 		}
 	}
 
-	virtual void showDiff(int repoRevision, QString const &targetProject = QString())
+	virtual void showDiff(QString repoRevision, QString const &targetProject)
 	{
 		if (mHandler) {
 			mHandler->showDiff(repoRevision, targetProject);
 		}
 	}
 
-	virtual void showDiff(int oldRepoRevision , int newRepoRevision
+	virtual void showDiff(QString oldRepoRevision , QString newRepoRevision
 			, QString const &targetProject = QString())
 	{
 		if (mHandler) {

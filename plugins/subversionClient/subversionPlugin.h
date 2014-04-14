@@ -34,7 +34,7 @@ public:
 	// Brief VCS interface
 	virtual void beginWorkingCopyDownloading(QString const &repoAddress
 			, QString const &targetProject
-			, int revisionNumber = -1
+			, QString revisionNumber = "-1"
 			, bool quiet = false);
 
 	virtual void beginWorkingCopyUpdating(QString const &targetProject = QString());
@@ -56,7 +56,7 @@ public slots:
 	void startCheckout(QString const &from
 			, QString const &targetProject = QString()
 			, QString const &targetFolder = QString()
-			, int revision = -1, bool quiet = false);
+			, QString revision = "-1", bool quiet = false);
 	void startUpdate(QString const &to = QString()
 			, QString const &sourceProject = QString());
 	void startCommit(QString const &message = QString(), QString const &from = QString()

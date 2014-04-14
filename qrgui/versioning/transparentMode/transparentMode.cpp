@@ -23,7 +23,7 @@ qReal::TransparentMode::TransparentMode(QList<VersioningPluginInterface *> mPlug
 void TransparentMode::isInit(QString const &directory, const bool &prepareAndProcess)
 {
 	if (!mPlugin->isMyWorkingCopy(directory, false, prepareAndProcess)){
-		mPlugin->beginWorkingCopyDownloading(QString(), QString(), -1, true);
+		mPlugin->beginWorkingCopyDownloading(QString(), QString(), QString(), true);
 	}
 }
 

@@ -12,16 +12,19 @@ public:
 
 	/// Must be implemented to show diff between working copy and HEAD revision
 	/// in remote repository.
-	virtual void showDiff(QString const &targetProject = QString()) = 0;
+	virtual void showDiff(QString const &targetProject) = 0;
 
 	/// Must be implemented to show diff between working copy and specified revision
 	/// in remote repository.
-	virtual void showDiff(int repoRevision, QString const &targetProject = QString()) = 0;
+	virtual void showDiff(QString repoRevision, QString const &targetProject) = 0;
 
 	/// Must be implemented to show diff between two specified revisions
 	/// in remote repository.
-	virtual void showDiff(int oldRepoRevision , int newRepoRevision
-			, QString const &targetProject = QString()) = 0;
+	virtual void showDiff(QString oldRepoRevision , QString newRepoRevision
+			, QString const &targetProject) = 0;
+
+signals:
+	void viewForTransparentModeIsReady(QGraphicsView*);
 
 };
 

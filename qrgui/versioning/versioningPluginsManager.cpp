@@ -59,6 +59,8 @@ void VersioningPluginsManager::initFromToolPlugins(
 			mDiffPlugin = diffPlugin;
 			mDiffPlugin->setHandler(new versioning::DiffPluginWrapper(mDiffPlugin, mRepoApi
 					, this, mainWindow, &mainWindow->editorManager()));
+//			connect(mDiffPlugin, SIGNAL(viewForTransparentModeIsReady(QGraphicsView*))
+//					,this , SIGNAL(viewForTransparentModeIsReady(QGraphicsView*)));
 		}
 	}
 	if (versionPluginsLoaded)
@@ -124,7 +126,7 @@ bool VersioningPluginsManager::onFileChanged(const QString &filePath, const QStr
 void VersioningPluginsManager::beginWorkingCopyDownloading(
 		  QString const &repoAddress
 		, QString const &targetProject
-		, int revisionNumber
+		, QString revisionNumber
 		, bool quiet)
 {
 	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
@@ -266,11 +268,15 @@ void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTransp
 	}
 }
 
+void VersioningPluginsManager::showDiff(QString fstHash, QString sndHash)
+{
+	mDiffPlugin->showDiff(sndHash, fstHash, QString());
+}
+
 TransparentMode *VersioningPluginsManager::getLinkOnTransparentMode()
 {
 	return mTranspaentMode;
 }
-
 
 void VersioningPluginsManager::setVersion(QString hash, const bool &quiet)
 {

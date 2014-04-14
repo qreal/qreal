@@ -28,7 +28,7 @@ public slots:
 	/// @param quiet Should system inform about the errors and open project after downloading
 	virtual void beginWorkingCopyDownloading(QString const &repoAddress
 			, QString const &targetProject
-			, int revisionNumber = -1
+			, QString revisionNumber = "-1"
 			, bool quiet = false) = 0;
 
 	/// Starts updating specified project to last revision

@@ -24,6 +24,7 @@ ChangeVersion::~ChangeVersion()
 void ChangeVersion::obtainHash()
 {
 	QString hash = mUi->listWidgetForLog->currentItem()->data(Qt::UserRole).toString();
+	emit swapTab();
 	mUi->listWidgetForLog->clear();
 	mUi->listWidgetForLog->deleteLater();
 	emit hashObtained(hash);
@@ -35,6 +36,14 @@ void ChangeVersion::showDiff(QListWidgetItem *item)
 		mUi->pushButton->show();
 	}else{
 		mUi->pushButton->hide();
+	}
+	QString firstHash = item->data(Qt::UserRole).toString();
+	int row = mUi->listWidgetForLog->row(item);
+	QListWidgetItem *item2 = mUi->listWidgetForLog->item(row + 1);
+	if (item2 != NULL){
+		emit showDiff(firstHash, item2->data(Qt::UserRole).toString());
+	} else {
+		emit showDiff(firstHash, firstHash);
 	}
 }
 
@@ -56,11 +65,17 @@ void ChangeVersion::updateLog(QList<QPair<QString , QString> > listLog) // hash 
 			number++;
 		}
 		mUi->listWidgetForLog->item(0)->setSelected(true);
+		showDiff(mUi->listWidgetForLog->item(0));
 	} else {
 		mUi->listWidgetForLog->clear();
 		QString text = "There are not version of the project or project was not versioned. \n Or project isn't loaded";
 		mUi->label->setText(text);
 		mUi->label->showMaximized();
 	}
+}
+
+void ChangeVersion::onViewForTransparentModeIsReady(QGraphicsView *mView)
+{
+	mUi->gridLayout->addWidget(mView);
 }
 

@@ -44,10 +44,10 @@ void ModelLoader::startModelLoading(QString const &targetProject)
 	}
 	connect(this, SIGNAL(internalModelLoaded(qReal::models::Models*))
 			, this, SLOT(onNewModelLoaded(qReal::models::Models*)));
-	mVcs->beginWorkingCopyDownloading(repoUrl, tempProject(), -1, true);
+	mVcs->beginWorkingCopyDownloading(repoUrl, tempProject(), "-1", true);
 }
 
-void ModelLoader::startModelLoading(int repoRevision, QString const &targetProject)
+void ModelLoader::startModelLoading(QString repoRevision, QString const &targetProject)
 {
 	mOldModel = loadFromDisk(targetProject);
 	if (!mOldModel) {
@@ -64,7 +64,7 @@ void ModelLoader::startModelLoading(int repoRevision, QString const &targetProje
 	mVcs->beginWorkingCopyDownloading(repoUrl, tempProject(), repoRevision, true);
 }
 
-void ModelLoader::startModelLoading(int oldRepoRevision, int newRepoRevision, QString const &targetProject)
+void ModelLoader::startModelLoading(QString oldRepoRevision, QString newRepoRevision, QString const &targetProject)
 {
 	mRepoUrl = mVcs->remoteRepositoryUrl(targetProject);
 	mNewRevision = newRepoRevision;

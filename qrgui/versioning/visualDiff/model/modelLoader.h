@@ -21,9 +21,9 @@ public:
 			, qReal::EditorManagerInterface *editorManager
 			, qrRepo::WorkingCopyManagementInterface *workingCopyManager);
 
-	void startModelLoading(QString const &targetProject = QString());
-	void startModelLoading(int repoRevision, QString const &targetProject = QString());
-	void startModelLoading(int oldRepoRevision, int newRepoRevision, QString const &targetProject = QString());
+	void startModelLoading(QString const &targetProject);
+	void startModelLoading(QString repoRevision, QString const &targetProject);
+	void startModelLoading(QString oldRepoRevision, QString newRepoRevision, QString const &targetProject);
 
 signals:
 	void modelLoaded(DiffModel *model);
@@ -53,7 +53,7 @@ private:
 	qReal::models::Models *mOldModel;
 	qReal::models::Models *mNewModel;
 	QString mRepoUrl;
-	int mNewRevision;
+	QString mNewRevision;
 };
 
 }
