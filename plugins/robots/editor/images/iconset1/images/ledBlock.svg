@@ -7,63 +7,67 @@ viewBox="0 0 10000 10000"
  <defs>
   <style type="text/css">
    <![CDATA[
-    .str1 {stroke:#CCFF66;stroke-width:52.9167}
-    .str0 {stroke:white;stroke-width:211.667}
-    .fil45 {fill:none}
-    .fil0 {fill:#CE7F22}
-    .fil2 {fill:#CF7F22}
-    .fil3 {fill:#CF8022}
-    .fil4 {fill:#D08022}
-    .fil5 {fill:#D18022}
-    .fil6 {fill:#D18122}
-    .fil7 {fill:#D28122}
-    .fil8 {fill:#D38122}
-    .fil9 {fill:#D38222}
-    .fil10 {fill:#D48222}
-    .fil11 {fill:#D58322}
-    .fil12 {fill:#D68322}
-    .fil13 {fill:#D78422}
-    .fil14 {fill:#D88422}
-    .fil15 {fill:#D98522}
-    .fil16 {fill:#DA8522}
-    .fil17 {fill:#DA8622}
-    .fil18 {fill:#DB8622}
-    .fil19 {fill:#DC8722}
-    .fil20 {fill:#DD8722}
-    .fil21 {fill:#DE8822}
-    .fil22 {fill:#DF8822}
-    .fil23 {fill:#E08922}
-    .fil24 {fill:#E18922}
-    .fil25 {fill:#E28A22}
-    .fil26 {fill:#E38A22}
-    .fil27 {fill:#E48B22}
-    .fil28 {fill:#E58B22}
-    .fil29 {fill:#E68C22}
-    .fil30 {fill:#E78D22}
-    .fil31 {fill:#E88D22}
-    .fil32 {fill:#E98E22}
-    .fil33 {fill:#EA8E22}
-    .fil34 {fill:#EB8F22}
-    .fil35 {fill:#EC8F22}
-    .fil36 {fill:#EC9022}
-    .fil37 {fill:#ED9022}
-    .fil38 {fill:#EE9022}
-    .fil39 {fill:#EE9122}
-    .fil40 {fill:#EF9122}
-    .fil41 {fill:#F09122}
-    .fil42 {fill:#F09222}
-    .fil43 {fill:#F19222}
-    .fil44 {fill:#F29322}
+    .str1 {stroke:#E6FFB5;stroke-width:23.7067}
+    .str0 {stroke:#E6E6E6;stroke-width:211.667}
+    .fil48 {fill:none}
+    .fil0 {fill:#5E4377}
+    .fil2 {fill:#5E4378}
+    .fil3 {fill:#5F4378}
+    .fil4 {fill:#5F4479}
+    .fil5 {fill:#60447A}
+    .fil6 {fill:#61457B}
+    .fil7 {fill:#61457C}
+    .fil8 {fill:#62457C}
+    .fil9 {fill:#62467D}
+    .fil10 {fill:#63467D}
+    .fil11 {fill:#63467E}
+    .fil12 {fill:#64477F}
+    .fil13 {fill:#654780}
+    .fil14 {fill:#654881}
+    .fil15 {fill:#664881}
+    .fil16 {fill:#664882}
+    .fil17 {fill:#674882}
+    .fil18 {fill:#674983}
+    .fil19 {fill:#684984}
+    .fil20 {fill:#694A85}
+    .fil21 {fill:#694A86}
+    .fil22 {fill:#6A4A86}
+    .fil23 {fill:#6A4B87}
+    .fil24 {fill:#6B4B88}
+    .fil25 {fill:#6B4C89}
+    .fil26 {fill:#6C4C89}
+    .fil27 {fill:#6C4C8A}
+    .fil28 {fill:#6D4D8B}
+    .fil29 {fill:#6E4D8C}
+    .fil30 {fill:#6E4E8D}
+    .fil31 {fill:#6F4E8D}
+    .fil32 {fill:#6F4E8E}
+    .fil33 {fill:#704E8E}
+    .fil34 {fill:#704F8F}
+    .fil35 {fill:#714F90}
+    .fil36 {fill:#725091}
+    .fil37 {fill:#725092}
+    .fil38 {fill:#735092}
+    .fil39 {fill:#735193}
+    .fil40 {fill:#745193}
+    .fil41 {fill:#745194}
+    .fil42 {fill:#755295}
+    .fil43 {fill:#765296}
+    .fil44 {fill:#765397}
+    .fil45 {fill:#775397}
+    .fil46 {fill:#775398}
+    .fil47 {fill:#785499}
     .fil1 {fill:black;fill-opacity:0.000000}
     .fil47 {fill:url(#id2)}
     .fil46 {fill:url(#id3)}
+    
    ]]>
   </style>
       <clipPath id="id0">
-       <path d="M1598 9372l6817 0c525,0 955,-430 955,-955l0 -6817c0,-525 -430,-955 -955,-955l-6817 0c-525,0 -955,430 -955,955l0 6817c0,525 430,955 955,955z"/>
+       <path d="M1585 9379l6838 0c527,0 958,-431 958,-958l0 -6838c0,-527 -431,-958 -958,-958l-6838 0c-527,0 -958,431 -958,958l0 6838c0,527 431,958 958,958z"/>
       </clipPath>
       <clipPath id="id1">
-       <path d="M1598 9372l6817 0c525,0 955,-430 955,-955l0 -6817c0,-525 -430,-955 -955,-955l-6817 0c-525,0 -955,430 -955,955l0 6817c0,525 430,955 955,955z"/>
+       <path d="M1585 9379l6838 0c527,0 958,-431 958,-958l0 -6838c0,-527 -431,-958 -958,-958l-6838 0c-527,0 -958,431 -958,958l0 6838c0,527 431,958 958,958z"/>
       </clipPath>
   <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="5126.96" y1="6192.74" x2="5126.96" y2="5531.59">
    <stop offset="0" style="stop-color:#33CC33"/>
@@ -78,12 +82,12 @@ viewBox="0 0 10000 10000"
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_353516272">
-   <g id="_348901672">
-    <path class="fil0" d="M1459 53l7095 0c778,0 1409,631 1409,1409l0 7095c0,778 -631,1409 -1409,1409l-7095 0c-778,0 -1409,-631 -1409,-1409l0 -7095c0,-778 631,-1409 1409,-1409z"/>
+  <g id="_353699536">
+   <g id="_348901048">
+    <path class="fil0" d="M1446 30l7117 0c780,0 1413,633 1413,1413l0 7117c0,780 -633,1413 -1413,1413l-7117 0c-780,0 -1413,-633 -1413,-1413l0 -7117c0,-780 633,-1413 1413,-1413z"/>
     <g>
      <g style="clip-path:url(#id0)">
-      <polygon class="fil1" points="643,646 9369,646 9369,9372 643,9372 "/>
+      <polygon class="fil1" points="627,625 9381,625 9381,9379 627,9379 "/>
      </g>
      <g style="clip-path:url(#id1)">
       <g>
@@ -389,11 +393,10 @@ viewBox="0 0 10000 10000"
        <polygon id="_299" class="fil44" points="4992,4995 5021,4995 5021,5024 4992,5024 "/>
       </g>
      </g>
-     <path class="fil45" d="M1598 9372l6817 0c525,0 955,-430 955,-955l0 -6817c0,-525 -430,-955 -955,-955l-6817 0c-525,0 -955,430 -955,955l0 6817c0,525 430,955 955,955z"/>
+     <path class="fil48" d="M1585 9379l6838 0c527,0 958,-431 958,-958l0 -6838c0,-527 -431,-958 -958,-958l-6838 0c-527,0 -958,431 -958,958l0 6838c0,527 431,958 958,958z"/>
     </g>
    </g>
   </g>
- </g>
  <g id="Layer_x0020_1_0">
   <metadata id="CorelCorpID_1Corel-Layer"/>
   <line class="fil45 str0" x1="4224" y1="5129" x2="4224" y2= "8725" />
@@ -401,7 +404,6 @@ viewBox="0 0 10000 10000"
   <path class="fil46 str1" d="M3385 5511c0,-1030 0,-2960 0,-2995 -15,-1460 3464,-1500 3477,12 0,39 -10,1979 -10,2983l-3466 0z"/>
   <rect class="fil47 str1" x="3004" y="5532" width="4247" height="661" rx="123" ry="137"/>
  </g>
- <g id="Направляющие">
-  <metadata id="CorelCorpID_2Corel-Layer"/>
+
  </g>
 </svg>
