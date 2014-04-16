@@ -15,7 +15,7 @@ INCLUDEPATH += \
 	$$PWD/../../../ \
 	$$PWD/../../../qrgui \
 
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo
 
 TRANSLATIONS = robotsGeneratorBase_ru.ts
 

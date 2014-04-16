@@ -3,7 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	editor \
 	interpreters \
-	#generators \
+	generators \
 	qextserialport \
 	utils \
 
