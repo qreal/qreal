@@ -21,7 +21,7 @@ public:
 
 	QList<QString> kitIds() const;
 
-	interpreterBase::KitPluginInterface &kitById(QString const &kitId);
+	QList<interpreterBase::KitPluginInterface *> kitsById(QString const &kitId) const;
 
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.
 	QList<interpreterBase::robotModel::RobotModelInterface *> allRobotModels() const;

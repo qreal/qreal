@@ -69,12 +69,6 @@ public:
 	/// List of tool widgets specific to this plugin which will be added as dock windows to an interface.
 //	virtual QList<QWidget *> toolWidgets() const = 0;
 
-	/// A list of additional blocks whose implementations are provided by this plugin or shall override defaults.
-//	virtual qReal::IdList specificBlocks() const = 0;
-
-	/// A list of common blocks which shall be disabled by this plugin.
-	virtual qReal::IdList unsupportedBlocks() const = 0;
-
 	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
 	/// goes here.
 	virtual QList<qReal::ActionInfo> customActions() = 0;

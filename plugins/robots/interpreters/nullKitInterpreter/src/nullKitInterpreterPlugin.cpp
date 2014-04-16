@@ -34,21 +34,6 @@ interpreterBase::AdditionalPreferences *NullKitInterpreterPlugin::settingsWidget
 //	return QList<QWidget *>();
 //}
 
-//QList<robotsInterpreterCore::SensorId> NullKitInterpreterInterface::sensorIds() const
-//{
-//	return QList<robotsInterpreterCore::SensorId>();
-//}
-
-//qReal::IdList NullKitInterpreterInterface::specificBlocks() const
-//{
-//	return qReal::IdList();
-//}
-
-qReal::IdList NullKitInterpreterPlugin::unsupportedBlocks() const
-{
-	return qReal::IdList();
-}
-
 QList<qReal::ActionInfo> NullKitInterpreterPlugin::customActions()
 {
 	return {};

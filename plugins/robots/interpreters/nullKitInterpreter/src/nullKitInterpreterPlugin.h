@@ -29,9 +29,6 @@ public:
 	// Transfers ownership.
 //	virtual QList<QWidget *> toolWidgets() const;
 
-//	qReal::IdList specificBlocks() const override;
-
-	qReal::IdList unsupportedBlocks() const override;
 
 	QList<qReal::ActionInfo> customActions() override;
 

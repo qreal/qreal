@@ -47,9 +47,11 @@ RobotsSettingsPage::~RobotsSettingsPage()
 void RobotsSettingsPage::initializeAdditionalWidgets()
 {
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
-		if (kitPreferences) {
-			mUi->settingsExtensionFrame->layout()->addWidget(kitPreferences);
+		for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+			AdditionalPreferences * const kitPreferences = kitPlugin->settingsWidget();
+			if (kitPreferences) {
+				mUi->settingsExtensionFrame->layout()->addWidget(kitPreferences);
+			}
 		}
 	}
 }
@@ -59,13 +61,18 @@ void RobotsSettingsPage::initializeKitRadioButtons()
 	QLabel * const emptyCaseLabel = new QLabel(tr("No constructor kit plugins loaded"), this);
 	mKitButtons = new QButtonGroup(this);
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		KitPluginInterface const &kit = mKitPluginManager.kitById(kitId);
-		QRadioButton * const kitRadioButton = new QRadioButton(kit.friendlyKitName(), this);
-		kitRadioButton->hide();
-		kitRadioButton->setObjectName(kitId);
-		mKitButtons->addButton(kitRadioButton);
-		connect(kitRadioButton, &QRadioButton::toggled, this, &RobotsSettingsPage::onKitRadioButtonToggled);
-		mKitRobotModels[kitRadioButton] = initializeRobotModelsButtons(kitId, kitRadioButton);
+		for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+			QString const &kitFriendlyName = kitPlugin->friendlyKitName();
+			if (!kitFriendlyName.isEmpty()) {
+				QRadioButton * const kitRadioButton = new QRadioButton(kitFriendlyName, this);
+				kitRadioButton->hide();
+				kitRadioButton->setObjectName(kitId);
+				mKitButtons->addButton(kitRadioButton);
+				connect(kitRadioButton, &QRadioButton::toggled, this, &RobotsSettingsPage::onKitRadioButtonToggled);
+				mKitRobotModels[kitRadioButton] = initializeRobotModelsButtons(kitId, kitRadioButton);
+				break;
+			}
+		}
 	}
 
 	showRadioButtonGroup(mUi->constructorKitGroupBox, mKitButtons, emptyCaseLabel);
@@ -74,14 +81,15 @@ void RobotsSettingsPage::initializeKitRadioButtons()
 QButtonGroup *RobotsSettingsPage::initializeRobotModelsButtons(QString const &kitId, QRadioButton * const kitButton)
 {
 	QButtonGroup * const result = new QButtonGroup(kitButton);
-	for (auto &robotModel : mKitPluginManager.kitById(kitId).robotModels()) {
-		QString const name = robotModel->name();
-		QRadioButton * const button = new QRadioButton(robotModel->friendlyName(), this);
-		button->setObjectName(kitId + robotModel->name());
-		button->hide();
-		mButtonsToRobotModelsMapping[button] = robotModel;
-		connect(button, &QRadioButton::toggled, this, &RobotsSettingsPage::onRobotModelRadioButtonToggled);
-		result->addButton(button);
+	for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+		for (auto &robotModel : kitPlugin->robotModels()) {
+			QRadioButton * const button = new QRadioButton(robotModel->friendlyName(), this);
+			button->setObjectName(kitId + robotModel->name());
+			button->hide();
+			mButtonsToRobotModelsMapping[button] = robotModel;
+			connect(button, &QRadioButton::toggled, this, &RobotsSettingsPage::onRobotModelRadioButtonToggled);
+			result->addButton(button);
+		}
 	}
 
 	return result;
@@ -101,9 +109,11 @@ void RobotsSettingsPage::save()
 	mUi->devicesConfigurer->save();
 
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
-		if (kitPreferences) {
-			kitPreferences->save();
+		for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+			AdditionalPreferences * const kitPreferences = kitPlugin->settingsWidget();
+			if (kitPreferences) {
+				kitPreferences->save();
+			}
 		}
 	}
 
@@ -138,9 +148,11 @@ void RobotsSettingsPage::restoreSettings()
 	mUi->devicesConfigurer->refresh();
 
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
-		if (kitPreferences) {
-			kitPreferences->restoreSettings();
+		for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+			AdditionalPreferences * const kitPreferences = kitPlugin->settingsWidget();
+			if (kitPreferences) {
+				kitPreferences->restoreSettings();
+			}
 		}
 	}
 }
@@ -177,9 +189,16 @@ void RobotsSettingsPage::checkSelectedRobotModelButtonFor(QAbstractButton * cons
 	QString const key = "SelectedModelFor" + kitId;
 	QString selectedRobotModel = SettingsManager::value(key).toString();
 	if (selectedRobotModel.isEmpty()) {
-		// Robot model for this kit was never selected. Falling back to default one
-		robotModel::RobotModelInterface * const defaultRobotModel
-				= mKitPluginManager.kitById(kitId).defaultRobotModel();
+		robotModel::RobotModelInterface const *defaultRobotModel = nullptr;
+		for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+			// Robot model for this kit was never selected. Falling back to default one
+			robotModel::RobotModelInterface const *kitDefaultRobotModel = kitPlugin->defaultRobotModel();
+			if (kitDefaultRobotModel) {
+				defaultRobotModel = kitDefaultRobotModel;
+				break;
+			}
+		}
+
 		selectedRobotModel = defaultRobotModel ? defaultRobotModel->name() : QString();
 	}
 
@@ -207,24 +226,30 @@ void RobotsSettingsPage::onRobotModelRadioButtonToggled(bool checked)
 	QAbstractButton * const robotModelButton = static_cast<QAbstractButton *>(sender());
 	robotModel::RobotModelInterface * const selectedRobotModel = mButtonsToRobotModelsMapping[robotModelButton];
 	mUi->devicesConfigurer->selectRobotModel(*selectedRobotModel);
-	AdditionalPreferences * const selectedKitPreferences = mKitPluginManager.kitById(selectedKit).settingsWidget();
-	if (selectedKitPreferences) {
-		selectedKitPreferences->onRobotModelChanged(selectedRobotModel);
+	for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(selectedKit)) {
+		AdditionalPreferences * const selectedKitPreferences = kitPlugin->settingsWidget();
+		if (selectedKitPreferences) {
+			selectedKitPreferences->onRobotModelChanged(selectedRobotModel);
+		}
 	}
 }
 
 void RobotsSettingsPage::showAdditionalPreferences(QString const &kitId)
 {
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
-		if (kitPreferences) {
-			kitPreferences->hide();
+		for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+			AdditionalPreferences * const kitPreferences = kitPlugin->settingsWidget();
+			if (kitPreferences) {
+				kitPreferences->hide();
+			}
 		}
 	}
 
-	AdditionalPreferences * const selectedKitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
-	if (selectedKitPreferences) {
-		selectedKitPreferences->show();
+	for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+		AdditionalPreferences * const selectedKitPreferences = kitPlugin->settingsWidget();
+		if (selectedKitPreferences) {
+			selectedKitPreferences->show();
+		}
 	}
 }
 

@@ -130,6 +130,7 @@ void RobotsPluginFacade::connectInterpreterToActions()
 bool RobotsPluginFacade::selectKit(PluginConfigurator const &configurer)
 {
 	/// @todo reinit it each time when robot model changes
+	/// @todo: do we need this method?
 	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
 	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
 		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
@@ -166,23 +167,23 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 {
 	/// @todo: Check that this code works when different kit is selected
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		interpreterBase::KitPluginInterface &kit = mKitPluginManager.kitById(kitId);
+		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
+			kit->init(mEventsForKitPlugin, configurer.systemEvents(), *mInterpreter);
 
-		kit.init(mEventsForKitPlugin, configurer.systemEvents(), *mInterpreter);
-
-		for (interpreterBase::robotModel::RobotModelInterface const *model : kit.robotModels()) {
-			interpreterBase::blocksBase::BlocksFactoryInterface * const factory = kit.blocksFactoryFor(model);
-			if (factory) {
-				factory->configure(configurer.graphicalModelApi()
-						, configurer.logicalModelApi()
-						, mRobotModelManager
-						, *configurer.mainWindowInterpretersInterface().errorReporter()
-						);
-				mBlocksFactoryManager.addFactory(factory);
+			for (interpreterBase::robotModel::RobotModelInterface const *model : kit->robotModels()) {
+				interpreterBase::blocksBase::BlocksFactoryInterface * const factory = kit->blocksFactoryFor(model);
+				if (factory) {
+					factory->configure(configurer.graphicalModelApi()
+							, configurer.logicalModelApi()
+							, mRobotModelManager
+							, *configurer.mainWindowInterpretersInterface().errorReporter()
+							);
+					mBlocksFactoryManager.addFactory(factory);
+				}
 			}
-		}
 
-		mDevicesConfigurationManager->connectDevicesConfigurationProvider(kit.devicesConfigurationProvider());
+			mDevicesConfigurationManager->connectDevicesConfigurationProvider(kit->devicesConfigurationProvider());
+		}
 	}
 }
 

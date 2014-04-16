@@ -9,7 +9,6 @@
 //#include "details/tracer.h"
 //#include "details/debugHelper.h"
 
-
 /// @todo Temporary
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 

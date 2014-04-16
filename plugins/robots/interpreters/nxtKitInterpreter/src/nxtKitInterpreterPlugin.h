@@ -39,10 +39,6 @@ public:
 	// Transfers ownership.
 	interpreterBase::AdditionalPreferences *settingsWidget() override;
 
-//	qReal::IdList specificBlocks() const override;
-
-	qReal::IdList unsupportedBlocks() const override;
-
 	QList<qReal::ActionInfo> customActions() override;
 
 	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;

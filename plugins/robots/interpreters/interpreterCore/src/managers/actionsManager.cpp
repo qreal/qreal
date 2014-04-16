@@ -128,7 +128,8 @@ void ActionsManager::updateEnabledActions()
 void ActionsManager::initKitPluginActions()
 {
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		interpreterBase::KitPluginInterface &kitPlugin = mKitPluginManager.kitById(kitId);
-		mPluginActionInfos << kitPlugin.customActions();
+		for (interpreterBase::KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
+			mPluginActionInfos << kitPlugin->customActions();
+		}
 	}
 }

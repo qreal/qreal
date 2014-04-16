@@ -91,16 +91,6 @@ interpreterBase::AdditionalPreferences *NxtKitInterpreterPlugin::settingsWidget(
 	return mAdditionalPreferences;
 }
 
-//qReal::IdList NxtKitInterpreterInterface::specificBlocks() const
-//{
-//	return qReal::IdList();
-//}
-
-qReal::IdList NxtKitInterpreterPlugin::unsupportedBlocks() const
-{
-	return {};
-}
-
 QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 {
 	return {mTwoDModel->showTwoDModelWidgetActionInfo()};

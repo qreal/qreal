@@ -9,7 +9,7 @@ using namespace interpreterCore;
 KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 		: mPluginsDir(QDir(pluginDirectory))
 {
-	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
+	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
 		QFileInfo const fileInfo(fileName);
 
 		if (fileInfo.suffix() != "dll" && fileInfo.suffix() != "so") {
@@ -23,7 +23,7 @@ KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 			interpreterBase::KitPluginInterface * const kitPlugin
 					= qobject_cast<interpreterBase::KitPluginInterface *>(plugin);
 			if (kitPlugin) {
-				mPluginInterfaces[kitPlugin->kitId()] = kitPlugin;
+				mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
 				mLoaders.insert(fileName, loader);
 			} else {
 				// loader->unload();
@@ -47,13 +47,13 @@ QList<QString> KitPluginManager::kitIds() const
 	return mPluginInterfaces.keys();
 }
 
-interpreterBase::KitPluginInterface &KitPluginManager::kitById(QString const &kitId)
+QList<interpreterBase::KitPluginInterface *> KitPluginManager::kitsById(QString const &kitId) const
 {
 	if (!mPluginInterfaces.contains(kitId)) {
 		throw qReal::Exception("Requesting non-existing kit plugin");
 	}
 
-	return *mPluginInterfaces[kitId];
+	return mPluginInterfaces.values(kitId);
 }
 
 QList<interpreterBase::robotModel::RobotModelInterface *> KitPluginManager::allRobotModels() const
