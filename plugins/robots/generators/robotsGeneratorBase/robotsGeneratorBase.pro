@@ -4,7 +4,7 @@ CONFIG += c++11
 
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../bin/
+DESTDIR = ../../../../bin/
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
@@ -12,8 +12,8 @@ OBJECTS_DIR = .obj
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 
 INCLUDEPATH += \
-	$$PWD/../../../ \
-	$$PWD/../../../qrgui \
+	$$PWD/../../../../ \
+	$$PWD/../../../../qrgui \
 
 LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo
 

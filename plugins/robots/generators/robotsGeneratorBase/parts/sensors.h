@@ -2,7 +2,7 @@
 
 #include "initTerminateCodeGenerator.h"
 #include "simpleGenerators/binding.h"
-#include "plugins/robots/robotsInterpreter/sensorConstants.h"
+//#include "plugins/robots/robotsInterpreter/sensorConstants.h"
 
 namespace qReal {
 namespace robots {
@@ -24,14 +24,14 @@ public:
 protected:
 	void reinitPort(int port);
 
-	virtual QString initCode(QString const &port
-			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
+//	virtual QString initCode(QString const &port
+//			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
 
-	virtual QString terminateCode(QString const &port
-			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
+//	virtual QString terminateCode(QString const &port
+//			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
 
-	virtual QString isrHooks(QString const &port
-			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
+//	virtual QString isrHooks(QString const &port
+//			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
 
 private:
 	simple::Binding::ConverterInterface const *mInputPortConverter;  // Takes ownership

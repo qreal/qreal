@@ -63,44 +63,45 @@ QString CodeConverterBase::replaceFunctionInvocations(QString const &expression)
 	return result;
 }
 
-QString CodeConverterBase::readSensorTemplatePath(
-		qReal::interpreters::robots::enums::sensorType::SensorTypeEnum sensorType) const
-{
-	switch (sensorType) {
-	case qReal::interpreters::robots::enums::sensorType::colorFull:
-		return "sensors/readColorRecognition.t";
-	case qReal::interpreters::robots::enums::sensorType::colorRed:
-	case qReal::interpreters::robots::enums::sensorType::colorGreen:
-	case qReal::interpreters::robots::enums::sensorType::colorBlue:
-	case qReal::interpreters::robots::enums::sensorType::colorNone:
-		return "sensors/readColor.t";
-	case qReal::interpreters::robots::enums::sensorType::sonar:
-		return "sensors/readSonar.t";
-	case qReal::interpreters::robots::enums::sensorType::light:
-		return "sensors/readLight.t";
-	case qReal::interpreters::robots::enums::sensorType::sound:
-		return "sensors/readSound.t";
-	case qReal::interpreters::robots::enums::sensorType::gyroscope:
-		return "sensors/readGyroscope.t";
-	default:
-		// TODO: display error when no sensor specified
-		return "sensors/readTouch.t";
-	}
-}
+//QString CodeConverterBase::readSensorTemplatePath(
+//		qReal::interpreters::robots::enums::sensorType::SensorTypeEnum sensorType) const
+//{
+//	switch (sensorType) {
+//	case qReal::interpreters::robots::enums::sensorType::colorFull:
+//		return "sensors/readColorRecognition.t";
+//	case qReal::interpreters::robots::enums::sensorType::colorRed:
+//	case qReal::interpreters::robots::enums::sensorType::colorGreen:
+//	case qReal::interpreters::robots::enums::sensorType::colorBlue:
+//	case qReal::interpreters::robots::enums::sensorType::colorNone:
+//		return "sensors/readColor.t";
+//	case qReal::interpreters::robots::enums::sensorType::sonar:
+//		return "sensors/readSonar.t";
+//	case qReal::interpreters::robots::enums::sensorType::light:
+//		return "sensors/readLight.t";
+//	case qReal::interpreters::robots::enums::sensorType::sound:
+//		return "sensors/readSound.t";
+//	case qReal::interpreters::robots::enums::sensorType::gyroscope:
+//		return "sensors/readGyroscope.t";
+//	default:
+//		// TODO: display error when no sensor specified
+//		return "sensors/readTouch.t";
+//	}
+//}
 
 QString CodeConverterBase::sensorExpression(int port) const
 {
-	QString const portString = QString::number(port);
+//	QString const portString = QString::number(port);
 
-	int const portValue = SettingsManager::value("port" + portString + "SensorType").toInt();
+//	int const portValue = SettingsManager::value("port" + portString + "SensorType").toInt();
 
-	QString const templatePath = readSensorTemplatePath(
-			static_cast<qReal::interpreters::robots::enums::sensorType::SensorTypeEnum>(portValue));
-	QString result = readTemplate(templatePath);
+//	QString const templatePath = readSensorTemplatePath(
+//			static_cast<qReal::interpreters::robots::enums::sensorType::SensorTypeEnum>(portValue));
+//	QString result = readTemplate(templatePath);
 
-	// Converter must take a string like "1" or "2" (and etc) and return correct value
-	result.replace("@@PORT@@", mInputConverter->convert(portString));
-	return result;
+//	// Converter must take a string like "1" or "2" (and etc) and return correct value
+//	result.replace("@@PORT@@", mInputConverter->convert(portString));
+//	return result;
+	return "";
 }
 
 QString CodeConverterBase::encoderExpression(QString const &port) const

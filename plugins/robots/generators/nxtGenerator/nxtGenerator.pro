@@ -4,7 +4,7 @@ CONFIG += c++11
 
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../bin/plugins/
+DESTDIR = ../../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
@@ -13,8 +13,8 @@ LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lrobotsGeneratorBase
 
 INCLUDEPATH += \
 	$$PWD/../robotsGeneratorBase/ \
-	$$PWD/../../../ \
-	$$PWD/../../../qrgui \
+	$$PWD/../../../../ \
+	$$PWD/../../../../qrgui \
 
 # workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # when fixed it would become possible to use QMAKE_LFLAGS_RPATH

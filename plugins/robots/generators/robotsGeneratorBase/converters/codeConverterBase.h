@@ -1,7 +1,7 @@
 #pragma once
 
 #include "templateParametrizedConverter.h"
-#include "plugins/robots/robotsInterpreter/sensorConstants.h"
+//#include "plugins/robots/robotsInterpreter/sensorConstants.h"
 
 namespace qReal {
 namespace robots {
@@ -34,8 +34,8 @@ protected:
 	/// Replaces function invocations to calls of corresponding functions in C.
 	virtual QString replaceFunctionInvocations(QString const &expression) const;
 
-	virtual QString readSensorTemplatePath(
-			qReal::interpreters::robots::enums::sensorType::SensorTypeEnum sensorType) const;
+//	virtual QString readSensorTemplatePath(
+//			qReal::interpreters::robots::enums::sensorType::SensorTypeEnum sensorType) const;
 	virtual QString sensorExpression(int port) const;
 	virtual QString encoderExpression(QString const &port) const;
 	virtual QString timelineExpression() const;
