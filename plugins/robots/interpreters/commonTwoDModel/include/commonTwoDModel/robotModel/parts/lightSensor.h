@@ -1,33 +1,36 @@
-//#pragma once
+#pragma once
 
-//#include <interpreterBase/robotModel/robotParts/lightSensor.h>
-//#include "nxtInputDevice.h"
+#include <interpreterBase/robotModel/robotParts/lightSensor.h>
 
-//namespace nxtKitInterpreter {
-//namespace robotModel {
-//namespace real {
-//namespace parts {
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
-//class LightSensor : public interpreterBase::robotModel::robotParts::LightSensor
-//{
-//	Q_OBJECT
+namespace twoDModel {
 
-//public:
-//	LightSensor(interpreterBase::robotModel::DeviceInfo const &info
-//			, interpreterBase::robotModel::PortInfo const &port
-//			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
+namespace engine {
+class TwoDModelEngineInterface;
+}
 
-//	void read() override;
-//	void doConfiguration() override;
+namespace robotModel {
+namespace parts {
 
-//private slots:
-//	void sensorSpecificProcessResponse(QByteArray const &reading);
+class COMMON_TWO_D_MODEL_EXPORT LightSensor : public interpreterBase::robotModel::robotParts::LightSensor
+{
+	Q_OBJECT
 
-//private:
-//	NxtInputDevice mImplementation;
-//};
+public:
+	LightSensor(interpreterBase::robotModel::DeviceInfo const &info
+			, interpreterBase::robotModel::PortInfo const &port
+			, engine::TwoDModelEngineInterface &engine);
 
-//}
-//}
-//}
-//}
+	void read() override;
+
+protected:
+	void doConfiguration() override;
+
+private:
+	engine::TwoDModelEngineInterface &mEngine;
+};
+
+}
+}
+}

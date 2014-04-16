@@ -63,9 +63,9 @@ public:
 //	details::NxtDisplay *display()
 
 	int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const override;
-//	int readSonarSensor(robots::enums::inputPort::InputPortEnum const port) const;
-//	int readColorSensor(robots::enums::inputPort::InputPortEnum const port) const;
-//	int readLightSensor(robots::enums::inputPort::InputPortEnum const port) const;
+	int readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const override;
+//	int readColorSensor(interpreterBase::robotModel::PortInfo const &port) const override;
+//	int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 
 	void showModelWidget();
 

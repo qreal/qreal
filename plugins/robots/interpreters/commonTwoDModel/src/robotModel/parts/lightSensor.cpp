@@ -1,9 +1,24 @@
-#include "interpreterBase/robotModel/robotParts/lightSensor.h"
+#include "commonTwoDModel/robotModel/parts/lightSensor.h"
 
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
+using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
-using namespace robotParts;
 
-LightSensor::LightSensor(DeviceInfo const &info, PortInfo const &port)
-	: ScalarSensor(info, port)
+LightSensor::LightSensor(DeviceInfo const &info
+		, PortInfo const &port
+		, engine::TwoDModelEngineInterface &engine)
+	: robotParts::LightSensor(info, port)
+	, mEngine(engine)
+{
+}
+
+void LightSensor::read()
+{
+	/// @todo Implement.
+//	emit newData(mEngine.readLightSensor(port()));
+}
+
+void LightSensor::doConfiguration()
 {
 }

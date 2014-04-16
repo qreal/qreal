@@ -47,10 +47,11 @@ void RussianCGeneratorPlugin::init(PluginConfigurator const &configurator)
 QList<ActionInfo> RussianCGeneratorPlugin::actions()
 {
 	mGenerateCodeAction.setText(tr("Generate to Russian C"));
+	mGenerateCodeAction.setIcon(QIcon(":/images/generateRussianCCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
-	return QList<ActionInfo>() << generateCodeActionInfo;
+	return { generateCodeActionInfo };
 }
 
 MasterGeneratorBase *RussianCGeneratorPlugin::masterGenerator()

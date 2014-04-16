@@ -1,35 +1,36 @@
-//#pragma once
+#pragma once
 
-//#include <interpreterBase/robotModel/robotParts/colorSensor.h>
-//#include "nxtInputDevice.h"
+#include <interpreterBase/robotModel/robotParts/colorSensor.h>
 
-//namespace nxtKitInterpreter {
-//namespace robotModel {
-//namespace real {
-//namespace parts {
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
-//class ColorSensor : public interpreterBase::robotModel::robotParts::ColorSensor
-//{
-//	Q_OBJECT
+namespace twoDModel {
 
-//public:
-//	ColorSensor(interpreterBase::robotModel::DeviceInfo const &info
-//			, interpreterBase::robotModel::PortInfo const &port
-//			, utils::robotCommunication::RobotCommunicator &robotCommunicator
-//			, enums::lowLevelSensorType::SensorTypeEnum lowLevelType);
+namespace engine {
+class TwoDModelEngineInterface;
+}
 
-//	void read() override;
-//	void doConfiguration() override;
+namespace robotModel {
+namespace parts {
 
-//private slots:
-//	void sensorSpecificProcessResponse(QByteArray const &reading);
+class COMMON_TWO_D_MODEL_EXPORT ColorSensor : public interpreterBase::robotModel::robotParts::ColorSensor
+{
+	Q_OBJECT
 
-//private:
-//	NxtInputDevice mImplementation;
-//	enums::lowLevelSensorType::SensorTypeEnum mLowLevelType;
-//};
+public:
+	ColorSensor(interpreterBase::robotModel::DeviceInfo const &info
+			, interpreterBase::robotModel::PortInfo const &port
+			, engine::TwoDModelEngineInterface &engine);
 
-//}
-//}
-//}
-//}
+	void read() override;
+
+protected:
+	void doConfiguration() override;
+
+private:
+	engine::TwoDModelEngineInterface &mEngine;
+};
+
+}
+}
+}

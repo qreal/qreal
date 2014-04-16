@@ -1,40 +1,36 @@
-//#pragma once
+#pragma once
 
-//#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
-//#include "nxtInputDevice.h"
-//#include "communication/i2cCommunicator.h"
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 
-//namespace nxtKitInterpreter {
-//namespace robotModel {
-//namespace real {
-//namespace parts {
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
-//class SonarSensor : public interpreterBase::robotModel::robotParts::RangeSensor
-//{
-//	Q_OBJECT
-//	Q_CLASSINFO("friendlyName", tr("Sonar sensor"))
+namespace twoDModel {
 
-//public:
-//	SonarSensor(interpreterBase::robotModel::DeviceInfo const &info
-//			, interpreterBase::robotModel::PortInfo const &port
-//			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
+namespace engine {
+class TwoDModelEngineInterface;
+}
 
-//	void read() override;
-//	void doConfiguration() override;
+namespace robotModel {
+namespace parts {
 
-//private slots:
-//	void sensorSpecificProcessResponse(QByteArray const &reading);
+class COMMON_TWO_D_MODEL_EXPORT RangeSensor : public interpreterBase::robotModel::robotParts::RangeSensor
+{
+	Q_OBJECT
 
-//private:
-//	void setMode(enums::sonarMode::SonarModeEnum mode);
-//	void writeRegister(enums::sonarRegisters::SonarRegistersEnum reg, int value);
-//	void sendCommand(QByteArray const &command, int responseSize);
+public:
+	RangeSensor(interpreterBase::robotModel::DeviceInfo const &info
+			, interpreterBase::robotModel::PortInfo const &port
+			, engine::TwoDModelEngineInterface &engine);
 
-//	NxtInputDevice mImplementation;
-//	communication::I2CCommunicator mI2C;
-//};
+	void read() override;
 
-//}
-//}
-//}
-//}
+protected:
+	void doConfiguration() override;
+
+private:
+	engine::TwoDModelEngineInterface &mEngine;
+};
+
+}
+}
+}

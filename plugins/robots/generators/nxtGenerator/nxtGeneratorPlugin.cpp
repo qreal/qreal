@@ -75,7 +75,7 @@ void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
 QList<ActionInfo> NxtGeneratorPlugin::actions()
 {
 	mGenerateCodeAction.setText(tr("Generate code"));
-	mGenerateCodeAction.setIcon(QIcon(":/icons/robots_generate_nxt.png"));
+	mGenerateCodeAction.setIcon(QIcon(":/images/generateCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
