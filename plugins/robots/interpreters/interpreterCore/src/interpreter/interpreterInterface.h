@@ -15,9 +15,6 @@ class InterpreterInterface : public interpreterBase::InterpreterControlInterface
 public:
 	virtual ~InterpreterInterface() {}
 
-	/// @todo What it is doing here?
-	virtual qReal::IdList providedBlocks() const = 0;
-
 signals:
 	void started();
 	void stopped();

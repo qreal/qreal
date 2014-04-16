@@ -1,6 +1,7 @@
 #include "robotsPluginFacade.h"
 
 #include "src/coreBlocks/coreBlocksFactory.h"
+#include "managers/paletteUpdateManager.h"
 
 using namespace interpreterCore;
 
@@ -46,6 +47,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter()
 			, []() { return 0; });
 
+
 	initSensorWidgets();
 	/// @todo connect configuration serialization/deserialization into repository
 
@@ -76,6 +78,11 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	initKitPlugins(configurer);
 
+	auto paletteUpdateManager = new PaletteUpdateManager(configurer.mainWindowInterpretersInterface()
+			, mBlocksFactoryManager, this);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, paletteUpdateManager, &PaletteUpdateManager::updatePalette);
+	paletteUpdateManager->updatePalette(mRobotModelManager.model());
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
 
 	connectInterpreterToActions();
@@ -193,7 +200,7 @@ void RobotsPluginFacade::initFactoriesFor(QString const &kitId
 					, mRobotModelManager
 					, *configurer.mainWindowInterpretersInterface().errorReporter()
 					);
-			mBlocksFactoryManager.addFactory(factory);
+			mBlocksFactoryManager.addFactory(factory, model);
 		}
 	}
 }

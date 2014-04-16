@@ -48,6 +48,11 @@ void CommonBlocksFactory::configure(qReal::GraphicalModelAssistInterface const &
 	mErrorReporter = &errorReporter;
 }
 
+qReal::IdList CommonBlocksFactory::blocksToDisable() const
+{
+	return {};
+}
+
 qReal::Id CommonBlocksFactory::id(QString const &metatype)
 {
 	return qReal::Id("RobotsMetamodel", "RobotsDiagram", metatype);

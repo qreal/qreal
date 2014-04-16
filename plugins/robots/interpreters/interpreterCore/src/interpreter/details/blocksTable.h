@@ -42,9 +42,6 @@ public:
 	/// and re-create all blocks before another run of a program.
 	void setIdleForBlocks();
 
-	/// Returns a list of blocks that can be created by this blocks table.
-	qReal::IdList providedBlocks() const;
-
 private:
 	QHash<qReal::Id, interpreterBase::blocksBase::BlockInterface *> mBlocks;  // Has ownership
 	BlocksFactoryManagerInterface &mBlocksFactoryManager;

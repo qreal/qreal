@@ -1,24 +1,27 @@
 #include "paletteUpdateManager.h"
 
-#include <qrkernel/settingsManager.h>
-
 using namespace interpreterCore;
+using namespace interpreterBase;
 
-PaletteUpdateManager::PaletteUpdateManager(qReal::gui::MainWindowInterpretersInterface &paletteProvider)
-	: mPaletteProvider(paletteProvider)
+PaletteUpdateManager::PaletteUpdateManager(qReal::gui::MainWindowInterpretersInterface &paletteProvider
+		, BlocksFactoryManager const &factoryManager, QObject *parent)
+	: QObject(parent)
+	, mPaletteProvider(paletteProvider)
+	, mFactoryManager(factoryManager)
 {
 }
 
-void PaletteUpdateManager::updatePalette()
+void PaletteUpdateManager::updatePalette(robotModel::RobotModelInterface &currentModel)
 {
-//	QString const selectedKitId = qReal::SettingsManager::value("SelectedRobotKit").toString();
-//	if (mKitPluginManager.kitIds().isEmpty() || !mKitPluginManager.kitIds().contains(selectedKitId)) {
-//		mPaletteProvider.setEnabledForAllElementsInPalette(false);
-//		return;
-//	}
+	QSet<qReal::Id> enabledBlocks;
 
-//	interpreterBase::KitPluginInterface const selectedKit = mKitPluginManager.kitById(kitId);
-//	qReal::IdList const toEnable = selectedKit.specificBlocks();
-//	qReal::IdList const toDisable = selectedKit.unsupportedBlocks();
+	for (blocksBase::BlocksFactoryInterface const *factory : mFactoryManager.factoriesFor(currentModel)) {
+		enabledBlocks += factory->providedBlocks().toSet();
+		enabledBlocks -= factory->blocksToDisable().toSet();
+	}
 
+	mPaletteProvider.setEnabledForAllElementsInPalette(false);
+	for (qReal::Id const &id : enabledBlocks) {
+		mPaletteProvider.setElementInPaletteEnabled(id, true);
+	}
 }

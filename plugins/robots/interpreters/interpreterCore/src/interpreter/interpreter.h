@@ -39,8 +39,6 @@ public:
 
 	~Interpreter() override;
 
-	qReal::IdList providedBlocks() const override;
-
 public slots:
 	void connectToRobot() override;
 	void interpret() override;

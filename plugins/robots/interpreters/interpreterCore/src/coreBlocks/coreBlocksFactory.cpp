@@ -83,7 +83,8 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 qReal::IdList CoreBlocksFactory::providedBlocks() const
 {
 	return {
-		id("InitialNode")
+		id("ControlFlow")
+		, id("InitialNode")
 		, id("FinalNode")
 		, id("Timer")
 		, id("EnginesForward")

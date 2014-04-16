@@ -310,8 +310,3 @@ void Interpreter::disconnectSlot()
 //		emit devicesConfigurationChanged();
 //	}
 //}
-
-qReal::IdList Interpreter::providedBlocks() const
-{
-	return mBlocksTable->providedBlocks();
-}

@@ -1,23 +1,30 @@
 #include "blocksFactoryManager.h"
 
 using namespace interpreterCore;
-using namespace interpreterBase::blocksBase;
+using namespace interpreterBase;
+using namespace blocksBase;
+using namespace robotModel;
 
 BlocksFactoryManager::~BlocksFactoryManager()
 {
-	qDeleteAll(mFactories);
+	qDeleteAll(mFactories.values().toSet());
 }
 
-void BlocksFactoryManager::addFactory(BlocksFactoryInterface * const factory)
+void BlocksFactoryManager::addFactory(BlocksFactoryInterface * const factory, RobotModelInterface const *robotModel)
 {
-	if (!mFactories.contains(factory)) {
-		mFactories << factory;
+	if (!mFactories.values(robotModel).contains(factory)) {
+		mFactories.insertMulti(robotModel, factory);
 	}
+}
+
+QList<BlocksFactoryInterface *> BlocksFactoryManager::factoriesFor(RobotModelInterface const &robotModel) const
+{
+	return mFactories.values(nullptr) + mFactories.values(&robotModel);
 }
 
 BlockInterface *BlocksFactoryManager::block(qReal::Id const &element)
 {
-	for (BlocksFactoryInterface * const factory : mFactories) {
+	for (BlocksFactoryInterface * const factory : mFactories.values()) {
 		BlockInterface * const block = factory->block(element);
 		if (block) {
 			return block;
@@ -25,15 +32,4 @@ BlockInterface *BlocksFactoryManager::block(qReal::Id const &element)
 	}
 
 	return nullptr;
-}
-
-qReal::IdList BlocksFactoryManager::providedBlocks() const
-{
-	qReal::IdList result;
-
-	for (BlocksFactoryInterface * const factory : mFactories) {
-		result << factory->providedBlocks();
-	}
-
-	return result;
 }

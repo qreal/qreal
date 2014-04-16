@@ -24,6 +24,7 @@ public:
 	/// Transfers block ownership to caller.
 	virtual BlockInterface *block(qReal::Id const &element) = 0;
 	virtual qReal::IdList providedBlocks() const = 0;
+	virtual qReal::IdList blocksToDisable() const = 0;
 
 	virtual void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi

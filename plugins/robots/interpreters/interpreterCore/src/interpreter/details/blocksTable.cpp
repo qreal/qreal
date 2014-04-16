@@ -49,8 +49,3 @@ void BlocksTable::setIdleForBlocks()
 		block->setIdleStatus();
 	}
 }
-
-qReal::IdList BlocksTable::providedBlocks() const
-{
-	return mBlocksFactoryManager.providedBlocks();
-}

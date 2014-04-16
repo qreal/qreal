@@ -25,6 +25,10 @@ public:
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter) override;
 
+	/// May be overrided to disable some blocks from palette when binded to this factory
+	/// robot model is active. Default implementation disables nothing.
+	qReal::IdList blocksToDisable() const override;
+
 protected:
 	static qReal::Id id(QString const &metatype);
 	static bool elementMetatypeIs(qReal::Id const &element, QString const &metatype);
