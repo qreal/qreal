@@ -96,5 +96,15 @@
                 </distributionFile>
             </distributionFileList>
         </folder>
+        <folder>
+            <destination>${installdir}/iconengines</destination>
+            <name>iconengineswindows</name>
+            <platforms>windows</platforms>
+            <distributionFileList>
+                <distributionFile>
+                    <origin>%2/../plugins/iconengines/qsvgicon.dll</origin>
+                </distributionFile>
+            </distributionFileList>
+        </folder>
     </folderList>
 </component>

@@ -840,13 +840,16 @@ void InterpreterEditorManager::restoreRemovedProperty(Id const &propertyId, QStr
 
 void InterpreterEditorManager::restoreRenamedProperty(Id const &propertyId, QString const &previousName) const
 {
-	qrRepo::RepoApi *repo;
-	foreach (qrRepo::RepoApi *repoApi, mEditorRepoApi.values()) {
-		if (repoApi->exist(propertyId))
+	qrRepo::RepoApi *repo = nullptr;
+	for (qrRepo::RepoApi * const repoApi : mEditorRepoApi.values()) {
+		if (repoApi->exist(propertyId)) {
 			repo = repoApi;
+		}
 	}
 
-	repo->setProperty(propertyId, "displayedName", previousName);
+	if (repo) {
+		repo->setProperty(propertyId, "displayedName", previousName);
+	}
 }
 
 void InterpreterEditorManager::setProperty(qrRepo::RepoApi *repo, Id const &id
