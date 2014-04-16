@@ -36,7 +36,7 @@ public:
 
 	PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
 
-	interpreterCore::Customizer &customizer();
+	Customizer &customizer();
 
 	ActionsManager &actionsManager();
 
@@ -49,6 +49,10 @@ private:
 	void initSensorWidgets();
 
 	void initKitPlugins(qReal::PluginConfigurator const &configurer);
+
+	void initFactoriesFor(QString const &kitId
+			, interpreterBase::robotModel::RobotModelInterface const *model
+			, qReal::PluginConfigurator const &configurer);
 
 	void connectEventsForKitPlugin();
 

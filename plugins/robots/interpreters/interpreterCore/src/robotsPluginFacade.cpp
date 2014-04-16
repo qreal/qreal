@@ -171,18 +171,29 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 			kit->init(mEventsForKitPlugin, configurer.systemEvents(), *mInterpreter);
 
 			for (interpreterBase::robotModel::RobotModelInterface const *model : kit->robotModels()) {
-				interpreterBase::blocksBase::BlocksFactoryInterface * const factory = kit->blocksFactoryFor(model);
-				if (factory) {
-					factory->configure(configurer.graphicalModelApi()
-							, configurer.logicalModelApi()
-							, mRobotModelManager
-							, *configurer.mainWindowInterpretersInterface().errorReporter()
-							);
-					mBlocksFactoryManager.addFactory(factory);
-				}
+				initFactoriesFor(kitId, model, configurer);
 			}
 
 			mDevicesConfigurationManager->connectDevicesConfigurationProvider(kit->devicesConfigurationProvider());
+		}
+	}
+}
+
+void RobotsPluginFacade::initFactoriesFor(QString const &kitId
+		, interpreterBase::robotModel::RobotModelInterface const *model
+		, PluginConfigurator const &configurer)
+{
+	// Pulling each robot model to each kit plugin with same ids. We need it for supporting
+	// plugin-based blocks set extension for concrete roobt model.
+	for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
+		interpreterBase::blocksBase::BlocksFactoryInterface * const factory = kit->blocksFactoryFor(model);
+		if (factory) {
+			factory->configure(configurer.graphicalModelApi()
+					, configurer.logicalModelApi()
+					, mRobotModelManager
+					, *configurer.mainWindowInterpretersInterface().errorReporter()
+					);
+			mBlocksFactoryManager.addFactory(factory);
 		}
 	}
 }
