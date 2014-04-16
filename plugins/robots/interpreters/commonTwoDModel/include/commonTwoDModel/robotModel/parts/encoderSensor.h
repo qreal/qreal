@@ -1,45 +1,37 @@
-//#pragma once
+#pragma once
 
-//#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
-//#include <utils/robotCommunication/robotCommunicator.h>
+#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 
-//namespace nxtKitInterpreter {
-//namespace robotModel {
-//namespace real {
-//namespace parts {
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
-//class EncoderSensor : public interpreterBase::robotModel::robotParts::EncoderSensor
-//{
-//	Q_OBJECT
+namespace twoDModel {
 
-//public:
-//	EncoderSensor(interpreterBase::robotModel::DeviceInfo const &info
-//			, interpreterBase::robotModel::PortInfo const &port
-//			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
+namespace engine {
+class TwoDModelEngineInterface;
+}
 
-//	void read() override;
-//	void nullificate() override;
+namespace robotModel {
+namespace parts {
 
-//private slots:
-//	void readingDone(QObject *addressee, QByteArray const &reading);
+class COMMON_TWO_D_MODEL_EXPORT EncoderSensor : public interpreterBase::robotModel::robotParts::EncoderSensor
+{
+	Q_OBJECT
 
-//private:
-//	enum State {
-//		idle
-//		, pending
-//	};
+public:
+	EncoderSensor(interpreterBase::robotModel::DeviceInfo const &info
+			, interpreterBase::robotModel::PortInfo const &port
+			, engine::TwoDModelEngineInterface &engine);
 
-//	void doConfiguration() override;
+	void read() override;
+	void nullificate() override;
 
-//	void sensorSpecificProcessResponse(QByteArray const &reading);
+protected:
+	void doConfiguration() override;
 
-//	char lowLevelPort() const;
+private:
+	engine::TwoDModelEngineInterface &mEngine;
+};
 
-//	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
-//	State mState;
-//};
-
-//}
-//}
-//}
-//}
+}
+}
+}

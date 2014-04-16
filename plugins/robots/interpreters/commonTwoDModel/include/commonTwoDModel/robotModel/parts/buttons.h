@@ -1,23 +1,33 @@
-//#pragma once
+#pragma once
 
-//#include "robotModel/parts/nxtButtons.h"
+#include <interpreterBase/robotModel/robotParts/buttons.h>
 
-//namespace nxtKitInterpreter {
-//namespace robotModel {
-//namespace real {
-//namespace parts {
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
-//class Buttons : public robotModel::parts::NxtButtons
-//{
-//	Q_OBJECT
+namespace twoDModel {
 
-//public:
-//	Buttons(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
+namespace engine {
+class TwoDModelEngineInterface;
+}
 
-//	void read() override;
-//};
+namespace robotModel {
+namespace parts {
 
-//}
-//}
-//}
-//}
+class Buttons : public interpreterBase::robotModel::robotParts::Buttons
+{
+	Q_OBJECT
+
+public:
+	Buttons(interpreterBase::robotModel::DeviceInfo const &info
+			, interpreterBase::robotModel::PortInfo const &port
+			, engine::TwoDModelEngineInterface &engine);
+
+	void read() override;
+
+private:
+	engine::TwoDModelEngineInterface &mEngine;
+};
+
+}
+}
+}

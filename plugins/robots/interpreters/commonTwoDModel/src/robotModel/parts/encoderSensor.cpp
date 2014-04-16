@@ -1,13 +1,28 @@
-#include "interpreterBase/robotModel/robotParts/encoderSensor.h"
+#include "commonTwoDModel/robotModel/parts/encoderSensor.h"
 
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
+using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
-using namespace robotParts;
 
-EncoderSensor::EncoderSensor(DeviceInfo const &info, PortInfo const &port)
-	: ScalarSensor(info, port)
+EncoderSensor::EncoderSensor(DeviceInfo const &info
+		, PortInfo const &port
+		, engine::TwoDModelEngineInterface &engine)
+	: robotParts::EncoderSensor(info, port)
+	, mEngine(engine)
 {
 }
 
-EncoderSensor::~EncoderSensor()
+void EncoderSensor::read()
+{
+	/// @todo Implement.
+}
+
+void EncoderSensor::nullificate()
+{
+	/// @todo Implement.
+}
+
+void EncoderSensor::doConfiguration()
 {
 }

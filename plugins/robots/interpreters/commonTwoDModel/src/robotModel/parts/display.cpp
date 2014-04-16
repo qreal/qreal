@@ -1,9 +1,14 @@
-#include "interpreterBase/robotModel/robotParts/display.h"
+#include "commonTwoDModel/robotModel/parts/display.h"
 
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
+using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
-using namespace robotParts;
 
-Display::Display(DeviceInfo const &info, PortInfo const &port)
-	: Device(info, port)
+Display::Display(DeviceInfo const &info
+		, PortInfo const &port
+		, engine::TwoDModelEngineInterface &engine)
+	: robotParts::Display(info, port)
+	, mEngine(engine)
 {
 }

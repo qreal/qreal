@@ -1,9 +1,21 @@
-#include "interpreterBase/robotModel/robotParts/rangeSensor.h"
+#include "commonTwoDModel/robotModel/parts/rangeSensor.h"
 
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
+using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
-using namespace robotParts;
 
-RangeSensor::RangeSensor(DeviceInfo const &info, PortInfo const &port)
-	: ScalarSensor(info, port)
+RangeSensor::RangeSensor(DeviceInfo const &info, PortInfo const &port, engine::TwoDModelEngineInterface &engine)
+	: robotParts::RangeSensor(info, port)
+	, mEngine(engine)
+{
+}
+
+void RangeSensor::read()
+{
+	emit newData(mEngine.readSonarSensor(port()));
+}
+
+void RangeSensor::doConfiguration()
 {
 }

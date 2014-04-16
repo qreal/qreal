@@ -195,13 +195,13 @@ int D2RobotModel::readTouchSensor(interpreterBase::robotModel::PortInfo const &p
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
 
-//int D2RobotModel::readSonarSensor(robots::enums::inputPort::InputPortEnum const port) const
-//{
-//	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
-//	int const res = mWorldModel.sonarReading(neededPosDir.first, neededPosDir.second);
+int D2RobotModel::readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const
+{
+	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
+	int const res = mWorldModel->sonarReading(neededPosDir.first, neededPosDir.second);
 
-//	return mNeedSensorNoise ? spoilSonarReading(res) : res;
-//}
+	return mNeedSensorNoise ? spoilSonarReading(res) : res;
+}
 
 int D2RobotModel::spoilSonarReading(int const distance) const
 {

@@ -1,8 +1,19 @@
-#include "interpreterBase/robotModel/robotParts/buttons.h"
+#include "commonTwoDModel/robotModel/parts/buttons.h"
 
-using namespace interpreterBase::robotModel::robotParts;
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
-Buttons::Buttons(DeviceInfo const &info, PortInfo const &port)
-	: Device(info, port)
+using namespace twoDModel::robotModel::parts;
+using namespace interpreterBase::robotModel;
+
+Buttons::Buttons(interpreterBase::robotModel::DeviceInfo const &info
+		, interpreterBase::robotModel::PortInfo const &port
+		, engine::TwoDModelEngineInterface &engine)
+	: robotParts::Buttons(info, port)
+	, mEngine(engine)
 {
+}
+
+void Buttons::read()
+{
+	/// @todo Implement.
 }
