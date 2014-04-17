@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>russianCGenerator_ru.qm</file>
+        <file>images/generateRussianCCode.svg</file>
     </qresource>
 </RCC>

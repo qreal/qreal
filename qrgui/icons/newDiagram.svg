@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:black;stroke-width:158.75}
+    .fil3 {fill:none}
+    .fil4 {fill:url(#id0)}
+    .fil1 {fill:url(#id1)}
+    .fil0 {fill:url(#id2)}
+    .fil2 {fill:url(#id3)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="2316.78" y1="9491.41" x2="3707.57" y2="14681.9">
+   <stop offset="0" style="stop-color:#669933"/>
+   <stop offset="1" style="stop-color:#CCFF66"/>
+  </linearGradient>
+  <radialGradient id="id1" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+   <stop offset="0" style="stop-color:#906BB3"/>
+   <stop offset="0.619608" style="stop-color:#906BB3"/>
+   <stop offset="1" style="stop-color:#684A83"/>
+  </radialGradient>
+  <radialGradient id="id2" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+   <stop offset="0" style="stop-color:#6FC0F2"/>
+   <stop offset="0.709804" style="stop-color:#6FC0F2"/>
+   <stop offset="1" style="stop-color:#7F98C7"/>
+  </radialGradient>
+  <radialGradient id="id3" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+   <stop offset="0" style="stop-color:#FAA032"/>
+   <stop offset="0.74902" style="stop-color:#F29322"/>
+   <stop offset="1" style="stop-color:#CE7F22"/>
+  </radialGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M1282 1088l2599 0c394,0 713,319 713,713l0 2599c0,394 -319,713 -713,713l-2599 0c-394,0 -713,-319 -713,-713l0 -2599c0,-394 319,-713 713,-713z"/>
+  <path class="fil1" d="M6422 1121l2580 0c391,0 708,317 708,708l0 2580c0,391 -317,708 -708,708l-2580 0c-391,0 -708,-317 -708,-708l0 -2580c0,-391 317,-708 708,-708z"/>
+  <path class="fil1" d="M6307 7156l2580 0c391,0 708,317 708,708l0 2580c0,391 -317,708 -708,708l-2580 0c-391,0 -708,-317 -708,-708l0 -2580c0,-391 317,-708 708,-708z"/>
+  <path class="fil2" d="M11255 7127l2581 0c391,0 708,317 708,708l0 2581c0,391 -317,708 -708,708l-2581 0c-391,0 -708,-317 -708,-708l0 -2581c0,-391 317,-708 708,-708z"/>
+  <line class="fil3 str0" x1="7643" y1="5114" x2="7643" y2= "7084" />
+  <path class="fil3 str0" d="M7593 7094l606 -517m-496 517l-606 -517"/>
+  <line class="fil3 str0" x1="4597" y1="3108" x2="5504" y2= "3108" />
+  <path class="fil3 str0" d="M5663 3163l-517 -606m517 496l-517 606"/>
+  <line class="fil3 str0" x1="9595" y1="9233" x2="10440" y2= "9233" />
+  <path class="fil3 str0" d="M10487 9288l-517 -606m517 496l-517 606"/>
+  <line class="fil3 str0" x1="12588" y1="3033" x2="9849" y2= "3033" />
+  <path class="fil3 str0" d="M9784 2983l517 606m-517 -496l517 -606"/>
+  <path class="fil4" d="M5450 11870l0 432c0,259 -212,472 -472,472l-1278 0 0 1278c0,259 -212,472 -472,472l-432 0c-259,0 -472,-212 -472,-472l0 -1278 -1278 0c-259,0 -472,-212 -472,-472l0 -432c0,-259 212,-472 472,-472l1278 0 0 -1278c0,-259 212,-472 472,-472l432 0c259,0 472,212 472,472l0 1278 1278 0c259,0 472,212 472,472z"/>
+  <line class="fil3 str0" x1="12502" y1="3091" x2="12502" y2= "7127" />
+ </g>
+</svg>

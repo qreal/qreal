@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil4 {fill:#9ADB39}
+    .fil3 {fill:#C70A17}
+    .fil1 {fill:url(#id0)}
+    .fil2 {fill:url(#id1)}
+    .fil0 {fill:url(#id2)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="9989.91" y1="12941.4" x2="9989.91" y2="2902.53">
+   <stop offset="0" style="stop-color:gray"/>
+   <stop offset="1" style="stop-color:#B3B3B3"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" xlink:href="#id0" x1="4980.46" y1="1922.96" x2="4980.46" y2="11920">
+  </linearGradient>
+  <radialGradient id="id2" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+   <stop offset="0" style="stop-color:yellow"/>
+   <stop offset="0.74902" style="stop-color:yellow"/>
+   <stop offset="1" style="stop-color:#E6DA33"/>
+  </radialGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M2824 264l9430 0c1429,0 2587,1159 2587,2587l0 9430c0,1429 -1159,2587 -2587,2587l-9430 0c-1429,0 -2587,-1159 -2587,-2588l0 -9430c0,-1429 1159,-2587 2588,-2587z"/>
+  <path class="fil1" d="M8972 2911c3,-8 57,2232 63,2232 2134,0 2738,1622 2738,2271 0,649 -590,2204 -2985,2204l0 -1331 -2595 2377 2595 2277 0 -1127c2742,-215 5001,-1137 5001,-4330 0,-2959 -2316,-4556 -4816,-4573z"/>
+  <path class="fil2" d="M6007 11896c-3,8 -66,-2203 -71,-2203 -2134,0 -2738,-1593 -2738,-2242 0,-649 590,-2204 2985,-2204l0 1331 2595 -2377 -2595 -2277 0 1127c-2742,215 -5001,1137 -5001,4330 0,2663 1922,4411 4364,4540 220,-6 255,-24 461,-24z"/>
+  <polygon class="fil3" points="5530,9671 6165,9671 6165,11920 5530,11920 "/>
+  <polygon class="fil4" points="8785,2911 9420,2911 9419,5159 8784,5159 "/>
+ </g>
+</svg>
