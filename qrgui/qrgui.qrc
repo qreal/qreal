@@ -47,6 +47,7 @@
         <file>icons/startTab/createInterpreted.svg</file>
         <file>icons/startTab/openInterpreted.svg</file>
         <file>hintScripts/test.js</file>
+        <file>icons/virtcursor.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

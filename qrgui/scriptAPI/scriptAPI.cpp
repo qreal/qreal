@@ -1,19 +1,23 @@
-#include "arrow.h"
+#include "scriptAPI.h"
 
-#include <math.h>
+#include <QtCore/QPropertyAnimation>
 #include <QtCore/qmath.h>
+#include <QCoreApplication>
 
 #include <qrkernel/exception/exception.h>
 
-#include "scriptAPI.h"
+#include "virtualCursor.h"
+#include "arrow.h"
 
 using namespace qReal;
 using namespace gui;
 
-ScriptAPI::ScriptAPI(ErrorReporter *errorReporter, MainWindow *mainWindow)
+ScriptAPI::ScriptAPI(MainWindow *mainWindow)
 	: mScriptEngine(new QScriptEngine)
-	, mErrorReporter(errorReporter)
 	, mMainWindow (mainWindow)
+	, mHintReporter (new HintReporter(mainWindow))
+	, mVirtualCursor (new VirtualCursor(mainWindow))
+	, animation (new QPropertyAnimation(mVirtualCursor, "geometry"))
 {
 	QScriptValue scriptAPI = mScriptEngine.newQObject(this);
 	mScriptEngine.globalObject().setProperty("scriptAPI", scriptAPI);
@@ -24,12 +28,14 @@ ScriptAPI::ScriptAPI(ErrorReporter *errorReporter, MainWindow *mainWindow)
 	scriptFile.open(QIODevice::ReadOnly);
 	QTextStream stream(&scriptFile);
 	mScriptEngine.evaluate(stream.readAll(), fileName);
+
 	scriptFile.close();
+	moveVirtualCursor(50,50);
 }
 
 void ScriptAPI::addHint(QString const &message)
 {
-	mErrorReporter->addHint(message);
+	mHintReporter->addHint(message);
 }
 
 void ScriptAPI::arrowToWidget(QWidget *target, qreal angle)
@@ -42,3 +48,34 @@ void ScriptAPI::arrowToWidget(QWidget *target, qreal angle)
 	Arrow *line = new Arrow(sourcePoint, destPoint, mMainWindow);
 	line->show();
 }
+
+void ScriptAPI::moveVirtualCursor(int xcoord, int ycoord)
+{
+//	int targetXCoord = target->pos().x() + target->width()/2;
+//	int targetYCoord = target->pos().x() + target->height()/2;
+
+
+	animation->setDuration(10000); //
+	animation->setStartValue(QRect(0, 0, 100, 30));
+	animation->setEndValue(QRect(250, 250, 100, 30));
+
+	animation->start();
+	//QTest::mouseClick( mMainWindow, Qt::LeftButton, 0, QPoint(250,250));
+	QTimer *timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), mMainWindow, SLOT(virtualClick()));
+
+	timer->setSingleShot (true);
+	timer->start (10000);
+}
+
+void ScriptAPI::dragPaletteElement()
+{
+	//mVirtualCursor->attachPaletteElement();
+}
+
+void ScriptAPI::createBlockOnScene()
+{
+	//mVirtualCursor->attachPaletteElement();
+}
+
+

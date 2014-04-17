@@ -17,6 +17,8 @@
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
+#include <QtGui/QMouseEvent>
+#include <QCoreApplication>
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
@@ -51,6 +53,8 @@
 #include "dialogs/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
 #include "dialogs/gesturesShow/gesturesWidget.h"
+
+#include "scriptAPI/scriptAPI.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -159,6 +163,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mUsabilityTestingToolbar->addAction(mFinishTest);
 	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
 	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
+
+	mScriptAPI = new ScriptAPI(this);
 }
 
 void MainWindow::connectActionsForUXInfo()
@@ -2258,3 +2264,22 @@ void MainWindow::openStartTab()
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 }
 
+void MainWindow::virtualClick()
+{
+	QEvent *event = new QMouseEvent(QMouseEvent::MouseButtonPress, QPoint(50, 10), Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
+	QEvent *event1 = new QMouseEvent(QMouseEvent::MouseButtonRelease, QPoint(50, 10), Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
+	//QApplication::postEvent(mUi->actionFullscreen, event);
+	QList<QWidget *> widgets = mUi->actionFullscreen->associatedWidgets();
+	for(int i=0; i<widgets.count(); i++)
+	{
+		QWidget *e = widgets[i];
+		if (i==2)
+		{
+			QApplication::postEvent(e, event);
+			QApplication::postEvent(e, event1);
+		}
+	}
+
+	//mUi->actionFullscreen
+	//QApplication::processEvents();
+}

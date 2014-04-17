@@ -49,6 +49,7 @@ void Customizer::placeSensorsConfig(QWidget *sensorsWidget)
 {
 	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
+	sensorsDock->lower();
 }
 
 void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch)

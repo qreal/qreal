@@ -44,7 +44,6 @@
 #include "mainwindow/qscintillaTextEdit.h"
 #include "toolPluginInterface/systemEvents.h"
 #include "mainwindow/filterObject.h"
-#include "scriptAPI/scriptAPI.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -61,9 +60,9 @@ class Models;
 }
 
 namespace gui {
+class ScriptAPI;
 class ErrorReporter;
 class PaletteTree;
-class ScriptAPI;
 }
 
 class MainWindow : public QMainWindow
@@ -198,6 +197,8 @@ public slots:
 	void openFirstDiagram();
 	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle(int index);
+
+	void virtualClick();
 
 private slots:
 	/// Suggests user to select a root diagram for the new project

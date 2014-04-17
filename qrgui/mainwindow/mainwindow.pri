@@ -31,7 +31,6 @@ HEADERS += \
 	$$PWD/startWidget/listWidget.h \
 	$$PWD/startWidget/circleWidget.h \
 	$$PWD/startWidget/styledButton.h \
-    mainwindow/hint.h
 
 SOURCES += \
 	$$PWD/mainWindow.cpp \
@@ -61,7 +60,6 @@ SOURCES += \
 	$$PWD/startWidget/listWidget.cpp \
 	$$PWD/startWidget/circleWidget.cpp \
 	$$PWD/startWidget/styledButton.cpp \
-    mainwindow/hint.cpp
 
 win32 {
 	HEADERS += \

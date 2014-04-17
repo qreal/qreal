@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QGraphicsItem>
-#include <qwidget.h>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QWidget>
 #include "mainwindow/mainWindow.h"
 
 

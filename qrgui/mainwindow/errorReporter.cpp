@@ -45,7 +45,7 @@ void ErrorReporter::addInformation(QString const &message, Id const &position)
 {
 	utils::UXInfo::reportErrors("information", position.editor(), position.element(), message);
 	Error error(message, Error::information, position);
-    mErrors.append(error);
+	mErrors.append(error);
 	showError(error, mErrorListWidget);
 }
 
@@ -73,14 +73,6 @@ void ErrorReporter::addCritical(QString const &message, Id const &position)
 	showError(error, mErrorListWidget);
 }
 
-void ErrorReporter::addHint(QString const &message, Id const &position)
-{
-	utils::UXInfo::reportErrors("hint", position.editor(), position.element(), message);
-	Hint hint(message, position);
-	mHints.append(hint);
-	showHint(hint, mErrorListWidget);
-}
-
 bool ErrorReporter::showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const
 {
 	errorListWidget->clear();
@@ -93,9 +85,6 @@ bool ErrorReporter::showErrors(ErrorListWidget* const errorListWidget, QDockWidg
 	errorList->setVisible(true);
 	foreach (Error error, mErrors) {
 		showError(error, errorListWidget);
-	}
-	foreach (Hint hint, mHints) {
-		showHint(hint, errorListWidget);
 	}
 	return false;
 }
@@ -158,29 +147,6 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 	label->setAlignment(Qt::AlignVCenter);
 	label->setOpenExternalLinks(true);
 	item->setToolTip(error.position().toString());
-	errorListWidget->addItem(item);
-	errorListWidget->setItemWidget(item, label);
-	errorListWidget->setCurrentItem(item);
-}
-
-void ErrorReporter::showHint(Hint const &hint, ErrorListWidget* const errorListWidget) const
-{
-	if (!errorListWidget) {
-	 return;
-	}
-
-	if (mErrorList && !mErrorList->isVisible() &&  mIsVisible) {
-	 mErrorList->setVisible(true);
-	}
-
-	QListWidgetItem* item = new QListWidgetItem(errorListWidget);
-	QString const message = QString(" <font color='gray'>%1</font> <u>%2</u> %3").arg(
-		 hint.timestamp(), tr("HINT:"), hint.message());
-	item->setIcon(QIcon(":/icons/information.png"));
-	QLabel *label = new QLabel(message.trimmed());
-	label->setAlignment(Qt::AlignVCenter);
-	label->setOpenExternalLinks(true);
-	item->setToolTip(hint.position().toString());
 	errorListWidget->addItem(item);
 	errorListWidget->setItemWidget(item, label);
 	errorListWidget->setCurrentItem(item);
