@@ -21,7 +21,7 @@ void PaletteUpdateManager::updatePalette(robotModel::RobotModelInterface &curren
 
 	// The order is very important for avoiding collisions cases
 	for (blocksBase::BlocksFactoryInterface const *factory : mFactoryManager.factoriesFor(currentModel)) {
-		enabledBlocks -= factory->providedBlocks().toSet();
+		enabledBlocks -= factory->blocksToDisable().toSet();
 	}
 
 	mPaletteProvider.setEnabledForAllElementsInPalette(false);
