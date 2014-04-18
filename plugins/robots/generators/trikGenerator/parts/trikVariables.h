@@ -1,6 +1,6 @@
 #pragma once
 
-#include <parts/variables.h>
+#include <generatorBase/parts/variables.h>
 
 namespace qReal {
 namespace robots {

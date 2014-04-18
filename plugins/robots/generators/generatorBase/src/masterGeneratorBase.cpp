@@ -1,9 +1,14 @@
-#include "masterGeneratorBase.h"
+#include "generatorBase/masterGeneratorBase.h"
 
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
-#include <readableControlFlowGenerator.h>
-#include <gotoControlFlowGenerator.h>
+#include "readableControlFlowGenerator.h"
+#include "gotoControlFlowGenerator.h"
+
+#include "parts/variables.h"
+#include "parts/images.h"
+#include "parts/subprograms.h"
+#include "parts/initTerminateCodeGenerator.h"
 
 using namespace qReal::robots::generators;
 
@@ -47,7 +52,6 @@ QString MasterGeneratorBase::generate()
 	}
 
 	mCustomizer->factory()->variables()->reinit(mRepo);
-
 	mCustomizer->factory()->images()->reinit();
 
 	foreach (parts::InitTerminateCodeGenerator *generator, mCustomizer->factory()->initTerminateGenerators()) {

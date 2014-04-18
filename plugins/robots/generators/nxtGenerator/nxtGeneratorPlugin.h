@@ -8,7 +8,7 @@
 #include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/toolPluginInterface/systemEventsInterface.h>
 #include <qrgui/textEditor/textManagerInterface.h>
-#include <robotsGeneratorPluginBase.h>
+#include <generatorBase/robotsGeneratorPluginBase.h>
 #include "nxtFlashTool.h"
 
 namespace qReal {

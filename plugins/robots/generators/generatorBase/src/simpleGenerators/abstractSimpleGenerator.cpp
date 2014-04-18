@@ -1,5 +1,5 @@
-#include "abstractSimpleGenerator.h"
-#include "../generatorCustomizer.h"
+#include "generatorBase/simpleGenerators/abstractSimpleGenerator.h"
+#include "generatorBase/generatorCustomizer.h"
 
 using namespace qReal::robots::generators::simple;
 

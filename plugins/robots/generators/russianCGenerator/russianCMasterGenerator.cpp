@@ -1,6 +1,8 @@
 #include "russianCMasterGenerator.h"
 #include "russianCGeneratorCustomizer.h"
 
+#include <generatorBase/parts/images.h>
+
 using namespace qReal::robots::generators::russianC;
 
 RussianCMasterGenerator::RussianCMasterGenerator(qrRepo::RepoApi const &repo

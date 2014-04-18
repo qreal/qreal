@@ -4,8 +4,8 @@
 #include <QtCore/QMap>
 #include <QtGui/QImage>
 
-#include "robotsGeneratorDeclSpec.h"
-#include "templateParametrizedEntity.h"
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+#include "generatorBase/templateParametrizedEntity.h"
 
 namespace qReal {
 namespace robots {

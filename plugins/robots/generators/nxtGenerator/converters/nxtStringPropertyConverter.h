@@ -1,9 +1,9 @@
 #pragma once
 
-#include <converters/stringPropertyConverter.h>
+#include <generatorBase/converters/stringPropertyConverter.h>
+#include <generatorBase/parts/variables.h>
+#include <generatorBase/parts/subprograms.h>
 #include <qrutils/expressionsParser/textExpressionProcessorBase.h>
-#include <parts/variables.h>
-#include <parts/subprograms.h>
 
 namespace qReal {
 namespace robots {

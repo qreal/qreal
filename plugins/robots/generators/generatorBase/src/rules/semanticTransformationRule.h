@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 
 #include <qrutils/graphUtils/deepFirstSearcher.h>
-#include "../semanticTree/semanticTree.h"
+#include "generatorBase/semanticTree/semanticTree.h"
 
 namespace qReal {
 namespace robots {

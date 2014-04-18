@@ -1,5 +1,5 @@
 #include "simpleUnvisitedRule.h"
-#include "../../semanticTree/simpleNode.h"
+#include "generatorBase/semanticTree/simpleNode.h"
 
 using namespace qReal::robots::generators::semantics;
 

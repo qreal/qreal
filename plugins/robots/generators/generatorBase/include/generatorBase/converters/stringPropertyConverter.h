@@ -1,7 +1,7 @@
 #pragma once
 
-#include "simpleGenerators/binding.h"
-#include "robotsGeneratorDeclSpec.h"
+#include "generatorBase/simpleGenerators/binding.h"
+#include "generatorBase/robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {
@@ -13,7 +13,7 @@ namespace converters {
 class ROBOTS_GENERATOR_EXPORT StringPropertyConverter : public simple::Binding::ConverterInterface
 {
 public:
-	virtual QString convert(QString const &data) const;
+	QString convert(QString const &data) const override;
 };
 
 }

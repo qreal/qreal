@@ -1,4 +1,4 @@
-#include "templateParametrizedEntity.h"
+#include "generatorBase/templateParametrizedEntity.h"
 
 #include <QtCore/QDebug>
 

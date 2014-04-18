@@ -1,6 +1,6 @@
 #pragma once
 
-#include <simpleGenerators/bindingGenerator.h>
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
 
 namespace qReal {
 namespace robots {

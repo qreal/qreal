@@ -1,5 +1,6 @@
 #include "labelGenerator.h"
-#include "generatorCustomizer.h"
+
+#include "generatorBase/generatorCustomizer.h"
 
 using namespace qReal::robots::generators::simple;
 

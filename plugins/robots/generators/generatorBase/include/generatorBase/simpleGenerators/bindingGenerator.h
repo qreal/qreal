@@ -1,8 +1,8 @@
 #pragma once
 
-#include "abstractSimpleGenerator.h"
-#include "binding.h"
-#include "robotsGeneratorDeclSpec.h"
+#include "generatorBase/simpleGenerators/abstractSimpleGenerator.h"
+#include "generatorBase/simpleGenerators/binding.h"
+#include "generatorBase/robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {

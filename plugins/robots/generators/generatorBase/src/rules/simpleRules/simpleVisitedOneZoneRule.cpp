@@ -1,5 +1,6 @@
 #include "simpleVisitedOneZoneRule.h"
-#include "../../semanticTree/loopNode.h"
+
+#include "generatorBase/semanticTree/loopNode.h"
 
 using namespace qReal::robots::generators::semantics;
 

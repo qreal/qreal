@@ -1,4 +1,6 @@
 #include "nxtOsekMasterGenerator.h"
+
+#include <generatorBase/parts/images.h>
 #include "nxtOsekGeneratorCustomizer.h"
 
 using namespace qReal::robots::generators::nxtOsek;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../simpleGenerators/binding.h"
-#include "../templateParametrizedEntity.h"
+#include "generatorBase/simpleGenerators/binding.h"
+#include "generatorBase/templateParametrizedEntity.h"
 
 namespace qReal {
 namespace robots {

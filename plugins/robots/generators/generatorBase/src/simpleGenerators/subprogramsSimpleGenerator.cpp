@@ -1,5 +1,7 @@
 #include "subprogramsSimpleGenerator.h"
-#include "../generatorCustomizer.h"
+
+#include "generatorBase/generatorCustomizer.h"
+#include "src/parts/subprograms.h"
 
 using namespace qReal::robots::generators::simple;
 

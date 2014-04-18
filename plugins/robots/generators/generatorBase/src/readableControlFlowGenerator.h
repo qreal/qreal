@@ -1,8 +1,8 @@
 #pragma once
 
-#include "robotsGeneratorDeclSpec.h"
-#include "controlFlowGeneratorBase.h"
-#include "semanticTree/semanticTree.h"
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+#include "generatorBase/controlFlowGeneratorBase.h"
+#include "generatorBase/semanticTree/semanticTree.h"
 #include "rules/semanticTransformationRule.h"
 
 namespace qReal {

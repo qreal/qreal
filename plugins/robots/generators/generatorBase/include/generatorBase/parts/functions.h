@@ -3,7 +3,7 @@
 #include <QtCore/QSet>
 
 #include "initTerminateCodeGenerator.h"
-#include "simpleGenerators/binding.h"
+#include "generatorBase/simpleGenerators/binding.h"
 
 namespace qReal {
 namespace robots {
@@ -15,10 +15,10 @@ namespace parts {
 class Functions : public InitTerminateCodeGenerator
 {
 public:
-	Functions(QString const &pathToTemplates);
+	explicit Functions(QString const &pathToTemplates);
 
-	virtual void reinit();
-	virtual QString initCode();
+	void reinit() override;
+	QString initCode() override;
 
 	/// Adds given function block body into resulting initialization code.
 	void registerFunctionInInitialization(QString const &body);

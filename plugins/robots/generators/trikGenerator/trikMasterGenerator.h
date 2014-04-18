@@ -1,6 +1,6 @@
 #pragma once
 
-#include <masterGeneratorBase.h>
+#include <generatorBase/masterGeneratorBase.h>
 
 namespace qReal {
 namespace robots {

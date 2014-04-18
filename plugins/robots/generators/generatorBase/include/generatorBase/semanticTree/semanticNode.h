@@ -4,7 +4,7 @@
 #include <QtCore/QLinkedList>
 
 #include <qrkernel/ids.h>
-#include "generatorCustomizer.h"
+#include "generatorBase/generatorCustomizer.h"
 
 namespace qReal {
 namespace robots {

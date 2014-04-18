@@ -1,5 +1,7 @@
 #include "enginesGenerator.h"
-#include "../generatorCustomizer.h"
+
+#include "generatorBase/generatorCustomizer.h"
+#include "src/parts/engines.h"
 
 using namespace qReal::robots::generators::simple;
 

@@ -1,5 +1,5 @@
-#include "generatorFactoryBase.h"
-#include "generatorCustomizer.h"
+#include "generatorBase/generatorFactoryBase.h"
+#include "generatorBase/generatorCustomizer.h"
 
 #include "simpleGenerators/nullGenerator.h"
 #include "simpleGenerators/commentElementGenerator.h"
@@ -53,6 +53,13 @@
 #include "converters/floatPropertyConverter.h"
 #include "converters/boolPropertyConverter.h"
 #include "converters/stringPropertyConverter.h"
+
+#include "parts/variables.h"
+#include "parts/subprograms.h"
+#include "parts/engines.h"
+#include "parts/sensors.h"
+#include "parts/functions.h"
+#include "parts/images.h"
 
 using namespace qReal::robots::generators;
 using namespace simple;

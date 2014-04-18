@@ -1,5 +1,7 @@
 #include "functionElementGenerator.h"
-#include "../generatorCustomizer.h"
+
+#include "generatorBase/generatorCustomizer.h"
+#include "src/parts/functions.h"
 
 using namespace qReal;
 using namespace robots::generators::simple;

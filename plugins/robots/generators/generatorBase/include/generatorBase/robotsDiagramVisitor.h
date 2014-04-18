@@ -3,7 +3,7 @@
 #include <qrrepo/repoApi.h>
 #include <qrutils/graphUtils/deepFirstSearcher.h>
 
-#include "generatorCustomizer.h"
+#include "generatorBase/generatorCustomizer.h"
 
 namespace qReal {
 namespace robots {
@@ -14,8 +14,7 @@ namespace generators {
 class RobotsDiagramVisitor : public utils::DeepFirstSearcher::VisitorInterface
 {
 public:
-	RobotsDiagramVisitor(qrRepo::RepoApi const &repo
-			, GeneratorCustomizer &customizer);
+	RobotsDiagramVisitor(qrRepo::RepoApi const &repo, GeneratorCustomizer &customizer);
 	virtual ~RobotsDiagramVisitor();
 
 protected:

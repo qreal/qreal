@@ -4,7 +4,7 @@
 #include <qrrepo/repoApi.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-#include "generatorCustomizer.h"
+#include "generatorBase/generatorCustomizer.h"
 #include "robotsDiagramVisitor.h"
 
 namespace qReal {

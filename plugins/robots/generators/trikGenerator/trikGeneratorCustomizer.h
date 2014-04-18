@@ -1,6 +1,6 @@
 #pragma once
 
-#include <generatorCustomizer.h>
+#include <generatorBase/generatorCustomizer.h>
 #include "trikGeneratorFactory.h"
 
 namespace qReal {

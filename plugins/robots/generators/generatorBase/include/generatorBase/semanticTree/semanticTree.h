@@ -7,7 +7,7 @@
 #include "ifNode.h"
 #include "loopNode.h"
 #include "finalNode.h"
-#include "../generatorCustomizer.h"
+#include "generatorBase/generatorCustomizer.h"
 
 namespace qReal {
 namespace robots {

@@ -6,19 +6,22 @@
 
 #include "robotsGeneratorDeclSpec.h"
 
-#include "simpleGenerators/abstractSimpleGenerator.h"
-#include "simpleGenerators/binding.h"
-
-#include "parts/variables.h"
-#include "parts/subprograms.h"
-#include "parts/engines.h"
-#include "parts/sensors.h"
-#include "parts/functions.h"
-#include "parts/images.h"
+#include "generatorBase/simpleGenerators/abstractSimpleGenerator.h"
+#include "generatorBase/simpleGenerators/binding.h"
 
 namespace qReal {
 namespace robots {
 namespace generators {
+
+namespace parts {
+class Variables;
+class Subprograms;
+class Engines;
+class Sensors;
+class Functions;
+class Images;
+class InitTerminateCodeGenerator;
+}
 
 class GeneratorCustomizer;
 

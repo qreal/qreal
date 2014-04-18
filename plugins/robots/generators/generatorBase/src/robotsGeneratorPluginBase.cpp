@@ -1,4 +1,4 @@
-#include "robotsGeneratorPluginBase.h"
+#include "generatorBase/robotsGeneratorPluginBase.h"
 
 #include <qrutils/inFile.h>
 #include <qrgui/mainwindow/qscintillaTextEdit.h>

@@ -7,9 +7,9 @@
 #include <qrrepo/repoApi.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-#include "robotsGeneratorDeclSpec.h"
-#include "templateParametrizedEntity.h"
-#include "simpleGenerators/binding.h"
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+#include "generatorBase/templateParametrizedEntity.h"
+#include "generatorBase/simpleGenerators/binding.h"
 
 namespace qReal {
 namespace robots {

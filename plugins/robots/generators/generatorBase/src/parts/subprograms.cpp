@@ -1,6 +1,6 @@
 #include "subprograms.h"
 
-#include "../controlFlowGeneratorBase.h"
+#include "generatorBase/controlFlowGeneratorBase.h"
 
 using namespace qReal;
 using namespace robots::generators::parts;

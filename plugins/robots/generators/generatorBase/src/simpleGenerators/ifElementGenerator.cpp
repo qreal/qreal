@@ -1,5 +1,5 @@
 #include "ifElementGenerator.h"
-#include "../generatorCustomizer.h"
+#include "generatorBase/generatorCustomizer.h"
 
 using namespace qReal;
 using namespace robots::generators::simple;

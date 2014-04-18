@@ -1,4 +1,6 @@
-#include "controlFlowGeneratorBase.h"
+#include "generatorBase/controlFlowGeneratorBase.h"
+
+#include "generatorBase/semanticTree/semanticTree.h"
 
 using namespace qReal::robots::generators;
 

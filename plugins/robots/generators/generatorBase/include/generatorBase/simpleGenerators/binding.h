@@ -3,7 +3,7 @@
 #include <QtCore/QString>
 
 #include <qrrepo/repoApi.h>
-#include "robotsGeneratorDeclSpec.h"
+#include "generatorBase/robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {

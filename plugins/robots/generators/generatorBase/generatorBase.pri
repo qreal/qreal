@@ -23,29 +23,29 @@ HEADERS += \
 	$$PWD/include/generatorBase/controlFlowGeneratorBase.h \
 	$$PWD/include/generatorBase/generatorFactoryBase.h \
 	$$PWD/include/generatorBase/templateParametrizedEntity.h \
+	$$PWD/include/generatorBase/robotsDiagramVisitor.h \
+	$$PWD/include/generatorBase/primaryControlFlowValidator.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree/semanticNode.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree/nonZoneNode.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree/zoneNode.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree/simpleNode.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree/finalNode.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree/conditionalNode.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree/ifNode.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree/loopNode.h \
+	$$PWD/include/generatorBase/semanticTree/semanticTree/rootNode.h \
+	$$PWD/include/generatorBase/parts/variables.h \
+	$$PWD/include/generatorBase/parts/subprograms.h \
+	$$PWD/include/generatorBase/parts/engines.h \
+	$$PWD/include/generatorBase/parts/initTerminateCodeGenerator.h \
+	$$PWD/include/generatorBase/parts/sensors.h \
+	$$PWD/include/generatorBase/parts/functions.h \
+	$$PWD/include/generatorBase/parts/images.h \
 
 HEADERS += \
 	$$PWD/src/readableControlFlowGenerator.h \
 	$$PWD/src/gotoControlFlowGenerator.h \
-	$$PWD/src/robotsDiagramVisitor.h \
-	$$PWD/src/primaryControlFlowValidator.h \
-	$$PWD/src/parts/variables.h \
-	$$PWD/src/parts/subprograms.h \
-	$$PWD/src/parts/engines.h \
-	$$PWD/src/parts/initTerminateCodeGenerator.h \
-	$$PWD/src/parts/sensors.h \
-	$$PWD/src/parts/functions.h \
-	$$PWD/src/parts/images.h \
-	$$PWD/src/semanticTree/semanticTree.h \
-	$$PWD/src/semanticTree/semanticNode.h \
-	$$PWD/src/semanticTree/nonZoneNode.h \
-	$$PWD/src/semanticTree/zoneNode.h \
-	$$PWD/src/semanticTree/simpleNode.h \
-	$$PWD/src/semanticTree/finalNode.h \
-	$$PWD/src/semanticTree/conditionalNode.h \
-	$$PWD/src/semanticTree/ifNode.h \
-	$$PWD/src/semanticTree/loopNode.h \
-	$$PWD/src/semanticTree/rootNode.h \
 	$$PWD/src/rules/semanticTransformationRule.h \
 	$$PWD/src/rules/simpleRules/simpleBlockRuleBase.h \
 	$$PWD/src/rules/simpleRules/simpleUnvisitedRule.h \
@@ -107,14 +107,19 @@ SOURCES += \
 # Simple element generators & converters
 
 HEADERS += \
-	$$PWD/src/converters/templateParametrizedConverter.h \
-	$$PWD/src/converters/templateParametrizedMultiConverter.h \
+	$$PWD/include/generatorBase/converters/templateParametrizedConverter.h \
+	$$PWD/include/generatorBase/converters/templateParametrizedMultiConverter.h \
+	$$PWD/include/generatorBase/converters/stringPropertyConverter.h \
+	$$PWD/include/generatorBase/simpleGenerators/abstractSimpleGenerator.h \
+	$$PWD/include/generatorBase/simpleGenerators/binding.h \
+	$$PWD/include/generatorBase/simpleGenerators/bindingGenerator.h \
+
+HEADERS += \
 	$$PWD/src/converters/enumConverterBase.h \
 	$$PWD/src/converters/codeConverterBase.h \
 	$$PWD/src/converters/intPropertyConverter.h \
 	$$PWD/src/converters/floatPropertyConverter.h \
 	$$PWD/src/converters/boolPropertyConverter.h \
-	$$PWD/src/converters/stringPropertyConverter.h \
 	$$PWD/src/converters/nameNormalizerConverter.h \
 	$$PWD/src/converters/functionBlockConverter.h \
 	$$PWD/src/converters/inequalitySignConverter.h \
@@ -125,7 +130,6 @@ HEADERS += \
 	$$PWD/src/converters/typeConverter.h \
 	$$PWD/src/converters/inputPortConverter.h \
 	$$PWD/src/converters/functionInvocationConverter.h \
-	$$PWD/src/simpleGenerators/abstractSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/nullGenerator.h \
 	$$PWD/src/simpleGenerators/commentElementGenerator.h \
 	$$PWD/src/simpleGenerators/functionElementGenerator.h \
@@ -133,8 +137,6 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/infiniteLoopGenerator.h \
 	$$PWD/src/simpleGenerators/forLoopGenerator.h \
 	$$PWD/src/simpleGenerators/whileLoopGenerator.h \
-	$$PWD/src/simpleGenerators/bindingGenerator.h \
-	$$PWD/src/simpleGenerators/binding.h \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
 	$$PWD/src/simpleGenerators/timerGenerator.h \
 	$$PWD/src/simpleGenerators/beepGenerator.h \
