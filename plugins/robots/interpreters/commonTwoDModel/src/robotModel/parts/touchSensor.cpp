@@ -20,4 +20,5 @@ void TouchSensor::read()
 
 void TouchSensor::doConfiguration()
 {
+	configurationCompleted(true);
 }

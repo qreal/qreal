@@ -25,4 +25,5 @@ void EncoderSensor::nullificate()
 
 void EncoderSensor::doConfiguration()
 {
+	configurationCompleted(true);
 }

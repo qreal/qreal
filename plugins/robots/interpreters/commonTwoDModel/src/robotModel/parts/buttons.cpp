@@ -20,4 +20,5 @@ void Buttons::read()
 
 void Buttons::doConfiguration()
 {
+	configurationCompleted(true);
 }

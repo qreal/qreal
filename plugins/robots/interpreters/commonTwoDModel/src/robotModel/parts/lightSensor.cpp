@@ -20,4 +20,5 @@ void LightSensor::read()
 
 void LightSensor::doConfiguration()
 {
+	configurationCompleted(true);
 }

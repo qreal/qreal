@@ -15,4 +15,5 @@ Display::Display(DeviceInfo const &info
 
 void Display::doConfiguration()
 {
+	configurationCompleted(true);
 }
