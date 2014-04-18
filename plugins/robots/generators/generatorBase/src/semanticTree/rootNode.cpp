@@ -1,5 +1,6 @@
-#include "rootNode.h"
-#include "simpleNode.h"
+#include "generatorBase/semanticTree/rootNode.h"
+
+#include "generatorBase/semanticTree/simpleNode.h"
 
 using namespace qReal::robots::generators::semantics;
 

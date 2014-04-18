@@ -1,4 +1,4 @@
-#include "initTerminateCodeGenerator.h"
+#include "generatorBase/parts/initTerminateCodeGenerator.h"
 
 using namespace qReal::robots::generators::parts;
 

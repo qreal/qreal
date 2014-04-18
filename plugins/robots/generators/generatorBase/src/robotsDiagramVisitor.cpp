@@ -1,4 +1,4 @@
-#include "robotsDiagramVisitor.h"
+#include "generatorBase/robotsDiagramVisitor.h"
 
 using namespace qReal::robots::generators;
 

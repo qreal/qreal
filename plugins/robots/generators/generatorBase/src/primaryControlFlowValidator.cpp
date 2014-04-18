@@ -1,4 +1,5 @@
-#include "primaryControlFlowValidator.h"
+
+#include "generatorBase/primaryControlFlowValidator.h"
 
 using namespace qReal::robots::generators;
 

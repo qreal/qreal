@@ -1,4 +1,4 @@
-#include "nonZoneNode.h"
+#include "generatorBase/semanticTree/nonZoneNode.h"
 
 using namespace qReal::robots::generators::semantics;
 

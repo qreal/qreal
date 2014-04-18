@@ -1,4 +1,4 @@
-#include "images.h"
+#include "generatorBase/parts/images.h"
 
 #include <QtCore/QStringList>
 

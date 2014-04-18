@@ -5,10 +5,10 @@
 #include "readableControlFlowGenerator.h"
 #include "gotoControlFlowGenerator.h"
 
-#include "parts/variables.h"
-#include "parts/images.h"
-#include "parts/subprograms.h"
-#include "parts/initTerminateCodeGenerator.h"
+#include "generatorBase/parts/variables.h"
+#include "generatorBase/parts/images.h"
+#include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/initTerminateCodeGenerator.h"
 
 using namespace qReal::robots::generators;
 

@@ -1,4 +1,4 @@
-#include "conditionalNode.h"
+#include "generatorBase/semanticTree/conditionalNode.h"
 
 using namespace qReal::robots::generators::semantics;
 

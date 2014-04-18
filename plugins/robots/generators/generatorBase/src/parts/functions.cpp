@@ -1,4 +1,4 @@
-#include "functions.h"
+#include "generatorBase/parts/functions.h"
 
 using namespace qReal::robots::generators::parts;
 

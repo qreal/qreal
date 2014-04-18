@@ -1,4 +1,4 @@
-#include "variables.h"
+#include "generatorBase/parts/variables.h"
 
 using namespace qReal;
 using namespace robots::generators;

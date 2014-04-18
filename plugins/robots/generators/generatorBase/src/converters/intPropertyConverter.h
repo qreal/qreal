@@ -1,7 +1,7 @@
 #pragma once
 
 #include "codeConverterBase.h"
-#include "../parts/variables.h"
+#include "generatorBase/parts/variables.h"
 
 namespace qReal {
 namespace robots {

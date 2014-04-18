@@ -1,4 +1,5 @@
-#include "bindingGenerator.h"
+#include "generatorBase/simpleGenerators/bindingGenerator.h"
+
 #include "generatorBase/generatorCustomizer.h"
 
 using namespace qReal::robots::generators::simple;

@@ -1,4 +1,5 @@
-#include "finalNode.h"
+#include "generatorBase/semanticTree/finalNode.h"
+
 #include <qrutils/stringUtils.h>
 
 using namespace qReal::robots::generators::semantics;

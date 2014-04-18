@@ -1,7 +1,7 @@
 #include "waitForButtonsBlockGenerator.h"
 
 #include "generatorBase/generatorCustomizer.h"
-#include "src/parts/variables.h"
+#include "generatorBase/parts/variables.h"
 
 using namespace qReal::robots::generators::simple;
 

@@ -1,7 +1,8 @@
-#include "semanticTree.h"
-#include "simpleNode.h"
-#include "ifNode.h"
-#include "loopNode.h"
+#include "generatorBase/semanticTree/semanticTree.h"
+
+#include "generatorBase/semanticTree/simpleNode.h"
+#include "generatorBase/semanticTree/ifNode.h"
+#include "generatorBase/semanticTree/loopNode.h"
 
 using namespace qReal::robots::generators::semantics;
 

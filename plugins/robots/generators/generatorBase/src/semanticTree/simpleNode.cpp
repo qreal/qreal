@@ -1,6 +1,7 @@
-#include "simpleNode.h"
-#include "zoneNode.h"
+#include "generatorBase/semanticTree/simpleNode.h"
+
 #include <qrutils/stringUtils.h>
+#include "generatorBase/semanticTree/zoneNode.h"
 
 using namespace qReal::robots::generators::semantics;
 

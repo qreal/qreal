@@ -1,4 +1,5 @@
-#include "zoneNode.h"
+#include "generatorBase/semanticTree/zoneNode.h"
+
 #include <qrutils/stringUtils.h>
 
 using namespace qReal::robots::generators::semantics;

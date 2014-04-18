@@ -1,4 +1,4 @@
-#include "stringPropertyConverter.h"
+#include "generatorBase/converters/stringPropertyConverter.h"
 
 using namespace qReal::robots::generators::converters;
 

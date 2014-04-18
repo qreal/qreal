@@ -1,8 +1,8 @@
 #include "drawBlockGenerator.h"
 
 #include "generatorBase/generatorCustomizer.h"
-#include "src/parts/images.h"
-#include "src/parts/variables.h"
+#include "generatorBase/parts/images.h"
+#include "generatorBase/parts/variables.h"
 
 using namespace qReal::robots::generators::simple;
 

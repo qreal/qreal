@@ -1,4 +1,4 @@
-#include "templateParametrizedMultiConverter.h"
+#include "generatorBase/converters/templateParametrizedMultiConverter.h"
 
 using namespace qReal::robots::generators::converters;
 

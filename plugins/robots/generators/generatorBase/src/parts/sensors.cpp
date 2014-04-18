@@ -1,4 +1,4 @@
-#include "sensors.h"
+#include "generatorBase/parts/sensors.h"
 
 #include <qrkernel/settingsManager.h>
 

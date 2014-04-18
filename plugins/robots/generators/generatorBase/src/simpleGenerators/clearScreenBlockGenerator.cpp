@@ -1,7 +1,7 @@
 #include "clearScreenBlockGenerator.h"
 
 #include "generatorBase/generatorCustomizer.h"
-#include "src/parts/images.h"
+#include "generatorBase/parts/images.h"
 
 using namespace qReal::robots::generators::simple;
 

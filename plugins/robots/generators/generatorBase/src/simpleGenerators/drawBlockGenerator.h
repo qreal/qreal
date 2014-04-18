@@ -3,7 +3,7 @@
 #include <QtGui/QImage>
 #include <QtGui/QPainter>
 
-#include "bindingGenerator.h"
+#include "generatorBase/simpleGenerators/bindingGenerator.h"
 
 namespace qReal {
 namespace robots {

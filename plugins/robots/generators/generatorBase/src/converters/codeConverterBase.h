@@ -3,7 +3,7 @@
 #include <interpreterBase/robotModel/portInfo.h>
 #include <interpreterBase/robotModel/deviceInfo.h>
 
-#include "templateParametrizedConverter.h"
+#include "generatorBase/converters/templateParametrizedConverter.h"
 
 namespace qReal {
 namespace robots {

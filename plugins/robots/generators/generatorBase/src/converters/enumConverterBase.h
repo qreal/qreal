@@ -2,7 +2,7 @@
 
 #include <QtCore/QMap>
 
-#include "templateParametrizedConverter.h"
+#include "generatorBase/converters/templateParametrizedConverter.h"
 
 namespace qReal {
 namespace robots {

@@ -1,4 +1,5 @@
-#include "loopNode.h"
+#include "generatorBase/semanticTree/loopNode.h"
+
 #include <qrutils/stringUtils.h>
 
 using namespace qReal::robots::generators::semantics;

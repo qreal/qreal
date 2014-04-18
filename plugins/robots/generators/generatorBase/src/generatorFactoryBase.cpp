@@ -7,7 +7,7 @@
 #include "simpleGenerators/infiniteLoopGenerator.h"
 #include "simpleGenerators/forLoopGenerator.h"
 #include "simpleGenerators/whileLoopGenerator.h"
-#include "simpleGenerators/bindingGenerator.h"
+#include "generatorBase/simpleGenerators/bindingGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
@@ -52,14 +52,14 @@
 #include "converters/intPropertyConverter.h"
 #include "converters/floatPropertyConverter.h"
 #include "converters/boolPropertyConverter.h"
-#include "converters/stringPropertyConverter.h"
+#include "generatorBase/converters/stringPropertyConverter.h"
 
-#include "parts/variables.h"
-#include "parts/subprograms.h"
-#include "parts/engines.h"
-#include "parts/sensors.h"
-#include "parts/functions.h"
-#include "parts/images.h"
+#include "generatorBase/parts/variables.h"
+#include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/engines.h"
+#include "generatorBase/parts/sensors.h"
+#include "generatorBase/parts/functions.h"
+#include "generatorBase/parts/images.h"
 
 using namespace qReal::robots::generators;
 using namespace simple;
