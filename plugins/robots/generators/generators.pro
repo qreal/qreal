@@ -1,11 +1,11 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	robotsGeneratorBase \
+	generatorBase \
 	nxtGenerator \
 	trikGenerator \
 	russianCGenerator \
 
-nxtGenerator.depends = robotsGeneratorBase
-trikGenerator.depends = robotsGeneratorBase
-russianCGenerator.depends = robotsGeneratorBase
+nxtGenerator.depends = generatorBase
+trikGenerator.depends = generatorBase
+russianCGenerator.depends = generatorBase

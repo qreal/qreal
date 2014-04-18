@@ -9,10 +9,10 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lrobotsGeneratorBase
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -generatorBase
 
 INCLUDEPATH += \
-	$$PWD/../robotsGeneratorBase/ \
+	$$PWD/../generatorBase/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui \
 

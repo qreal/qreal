@@ -10,3 +10,4 @@ SUBDIRS = \
 qextserialport.file = thirdparty/qextserialport/qextserialport.pro
 interpreters.depends = qextserialport
 interpreters.depends = utils
+generators.depends = interpreters

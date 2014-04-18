@@ -76,7 +76,8 @@ public:
 	/// Sensor configuration provider object for this plugin that needs to be registered in providers network.
 	/// Can be a root of plugin-specific providers network. Null, if there is no need for sensors configuration.
 	/// Does not transfer ownership.
-	virtual interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() {
+	virtual interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider()
+	{
 		return nullptr;
 	}
 };

@@ -32,7 +32,7 @@ QString CodeConverterBase::replaceSystemVariables(QString const &expression) con
 	QString result = expression;
 	for (int port = 1; port <= 4; ++port) {
 		QString const stringSensor = QString::number(port);
-		result.replace("sensor" + stringSensor, sensorExpression(port));
+//		result.replace("sensor" + stringSensor, sensorExpression(port));
 	}
 
 	result.replace("encoderA", encoderExpression("A"));
@@ -63,9 +63,8 @@ QString CodeConverterBase::replaceFunctionInvocations(QString const &expression)
 	return result;
 }
 
-//QString CodeConverterBase::readSensorTemplatePath(
-//		qReal::interpreters::robots::enums::sensorType::SensorTypeEnum sensorType) const
-//{
+QString CodeConverterBase::readSensorTemplatePath(interpreterBase::robotModel::DeviceInfo const &sensor) const
+{
 //	switch (sensorType) {
 //	case qReal::interpreters::robots::enums::sensorType::colorFull:
 //		return "sensors/readColorRecognition.t";
@@ -86,22 +85,17 @@ QString CodeConverterBase::replaceFunctionInvocations(QString const &expression)
 //		// TODO: display error when no sensor specified
 //		return "sensors/readTouch.t";
 //	}
-//}
+}
 
-QString CodeConverterBase::sensorExpression(int port) const
+QString CodeConverterBase::sensorExpression(interpreterBase::robotModel::PortInfo const &port) const
 {
-//	QString const portString = QString::number(port);
-
-//	int const portValue = SettingsManager::value("port" + portString + "SensorType").toInt();
-
-//	QString const templatePath = readSensorTemplatePath(
-//			static_cast<qReal::interpreters::robots::enums::sensorType::SensorTypeEnum>(portValue));
+	/// @todo: Parse it!
+//	QString const templatePath = readSensorTemplatePath();
 //	QString result = readTemplate(templatePath);
 
 //	// Converter must take a string like "1" or "2" (and etc) and return correct value
 //	result.replace("@@PORT@@", mInputConverter->convert(portString));
 //	return result;
-	return "";
 }
 
 QString CodeConverterBase::encoderExpression(QString const &port) const

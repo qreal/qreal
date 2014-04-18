@@ -56,6 +56,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \
 	$$PWD/include/interpreterBase/robotModel/portInfo.h \
 	$$PWD/include/interpreterBase/robotModel/deviceInfo.h \
+	$$PWD/include/interpreterBase/robotModel/direction.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelManagerInterface.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelInterface.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelUtils.h \
@@ -75,7 +76,6 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/robotParts/soundSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/touchSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/vectorSensor.h \
-    include/interpreterBase/robotModel/direction.h
 
 # qrgui code
 HEADERS += \
