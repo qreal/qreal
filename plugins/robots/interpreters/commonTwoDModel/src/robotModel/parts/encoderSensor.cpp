@@ -15,12 +15,12 @@ EncoderSensor::EncoderSensor(DeviceInfo const &info
 
 void EncoderSensor::read()
 {
-	/// @todo Implement.
+	emit newData(mEngine.readEncoder(port()));
 }
 
 void EncoderSensor::nullificate()
 {
-	/// @todo Implement.
+	mEngine.resetEncoder(port());
 }
 
 void EncoderSensor::doConfiguration()

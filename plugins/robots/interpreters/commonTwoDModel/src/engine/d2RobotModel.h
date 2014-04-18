@@ -57,8 +57,8 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) override;
 
 	SensorsConfiguration &configuration() override;
-	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
-	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);
+	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const override;
+	void resetEncoder(interpreterBase::robotModel::PortInfo const &port) override;
 
 //	details::NxtDisplay *display()
 
@@ -177,6 +177,8 @@ private:
 	qreal mAngle;
 
 	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
+
+	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::PortInfo> mMotorToEncoderPortMap;
 };
 
 }

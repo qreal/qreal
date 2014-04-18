@@ -13,6 +13,7 @@
 #include "src/engine/d2ModelTimer.h"
 
 #include <interpreterBase/robotModel/robotParts/motor.h>
+#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 
 using namespace twoDModel;
@@ -92,7 +93,17 @@ D2RobotModel::Engine *D2RobotModel::initEngine(int radius, int speed, long unsig
 	}
 
 	mEngines[port] = engine;
-	mTurnoverEngines[port] = 0;
+
+	/// @todo We need some mechanism to set correspondence between motors and encoders. In NXT motors and encoders are
+	///       physically plugged into one port, so we can find corresponding port by name. But in TRIK encoders can be
+	///       connected differently.
+	for (Device const * const device : mRobotModel.configuration().devices()) {
+		if (device->deviceInfo().isA<EncoderSensor>() && device->port().name() == port.name()) {
+			mMotorToEncoderPortMap[port] = device->port();
+			mTurnoverEngines[mMotorToEncoderPortMap[port]] = 0;
+		}
+	}
+
 	return engine;
 }
 
@@ -131,8 +142,10 @@ void D2RobotModel::countMotorTurnover()
 	for (Engine * const motor : mEngines) {
 		PortInfo const port = mEngines.key(motor);
 		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
-		mTurnoverEngines[port] += degrees;
-		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverEngines[port] >= motor->degrees)) {
+		mTurnoverEngines[mMotorToEncoderPortMap[port]] += degrees;
+		if (motor->isUsed && (motor->activeTimeType == DoByLimit)
+				&& (mTurnoverEngines[mMotorToEncoderPortMap[port]] >= motor->degrees))
+		{
 			motor->speed = 0;
 			motor->activeTimeType = End;
 			emit d2MotorTimeout();
