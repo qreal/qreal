@@ -15,10 +15,10 @@ LightSensor::LightSensor(DeviceInfo const &info
 
 void LightSensor::read()
 {
-	/// @todo Implement.
-//	emit newData(mEngine.readLightSensor(port()));
+	emit newData(mEngine.readLightSensor(port()));
 }
 
 void LightSensor::doConfiguration()
 {
+	configurationCompleted(true);
 }

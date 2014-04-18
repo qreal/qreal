@@ -91,11 +91,12 @@ public:
 	void disableRunStopButtons();
 
 	D2ModelScene* scene();
-//	void setSensorVisible(robots::enums::inputPort::InputPortEnum port, bool isVisible);
+
+	void setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible);
 
 	void closeEvent(QCloseEvent *event);
 
-	SensorItem const *sensorItem(interpreterBase::robotModel::PortInfo const &port) const;
+	SensorItem *sensorItem(interpreterBase::robotModel::PortInfo const &port);
 
 	void loadXml(QDomDocument const &worldModel);
 

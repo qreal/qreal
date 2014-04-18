@@ -19,6 +19,10 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/twoDRobotModel.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/buttons.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensor.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorBlue.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorGreen.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorPassive.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorRed.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/display.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/encoderSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/lightSensor.h \
@@ -75,6 +79,10 @@ SOURCES += \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/buttons.cpp \
 	$$PWD/src/robotModel/parts/colorSensor.cpp \
+	$$PWD/src/robotModel/parts/colorSensorBlue.cpp \
+	$$PWD/src/robotModel/parts/colorSensorGreen.cpp \
+	$$PWD/src/robotModel/parts/colorSensorPassive.cpp \
+	$$PWD/src/robotModel/parts/colorSensorRed.cpp \
 	$$PWD/src/robotModel/parts/display.cpp \
 	$$PWD/src/robotModel/parts/encoderSensor.cpp \
 	$$PWD/src/robotModel/parts/lightSensor.cpp \

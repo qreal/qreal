@@ -92,8 +92,8 @@ void Interpreter::interpret()
 		return;
 	}
 
-	/// @todo Temporarily loading initial configuration from registry
-	/// (actually, from a network of SensorConfigurationProviders). To be done more adequately.
+	/// @todo Temporarily loading initial configuration from a network of SensorConfigurationProviders.
+	///       To be done more adequately.
 	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
 		QString const modelName = mRobotModelManager.model().name();
 		DeviceInfo const deviceInfo = currentConfiguration(modelName, port);

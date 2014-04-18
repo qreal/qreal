@@ -1012,12 +1012,12 @@ D2ModelScene* D2ModelWidget::scene()
 	return mScene;
 }
 
-//void D2ModelWidget::setSensorVisible(robots::enums::inputPort::InputPortEnum port, bool isVisible)
-//{
-//	if (mSensors[port]) {
-//		mSensors[port]->setVisible(isVisible);
-//	}
-//}
+void D2ModelWidget::setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible)
+{
+	if (mSensors[port]) {
+		mSensors[port]->setVisible(isVisible);
+	}
+}
 
 void D2ModelWidget::enableRunStopButtons()
 {
@@ -1041,7 +1041,7 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 //	return mSensors;
 //}
 
-SensorItem const *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port) const
+SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
 {
 	return mSensors.value(port);
 }

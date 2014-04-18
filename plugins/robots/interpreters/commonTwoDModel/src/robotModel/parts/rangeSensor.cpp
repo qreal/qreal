@@ -18,4 +18,5 @@ void RangeSensor::read()
 
 void RangeSensor::doConfiguration()
 {
+	configurationCompleted(true);
 }

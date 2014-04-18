@@ -57,15 +57,15 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) override;
 
 	SensorsConfiguration &configuration() override;
-	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
-	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);
+	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const override;
+	void resetEncoder(interpreterBase::robotModel::PortInfo const &port) override;
 
 //	details::NxtDisplay *display()
 
 	int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 	int readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 //	int readColorSensor(interpreterBase::robotModel::PortInfo const &port) const override;
-//	int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const override;
+	int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 
 	void showModelWidget();
 
@@ -131,7 +131,7 @@ private:
 
 	void countMotorTurnover();
 
-//	QImage printColorSensor(robots::enums::inputPort::InputPortEnum const port) const;
+	QImage printColorSensor(interpreterBase::robotModel::PortInfo const &port) const;
 	int readColorFullSensor(QHash<uint, int> const &countsColor) const;
 	int readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const;
 	int readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const;
@@ -177,6 +177,8 @@ private:
 	qreal mAngle;
 
 	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
+
+	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::PortInfo> mMotorToEncoderPortMap;
 };
 
 }

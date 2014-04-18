@@ -13,6 +13,7 @@
 #include "src/engine/d2ModelTimer.h"
 
 #include <interpreterBase/robotModel/robotParts/motor.h>
+#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 
 using namespace twoDModel;
@@ -92,7 +93,17 @@ D2RobotModel::Engine *D2RobotModel::initEngine(int radius, int speed, long unsig
 	}
 
 	mEngines[port] = engine;
-	mTurnoverEngines[port] = 0;
+
+	/// @todo We need some mechanism to set correspondence between motors and encoders. In NXT motors and encoders are
+	///       physically plugged into one port, so we can find corresponding port by name. But in TRIK encoders can be
+	///       connected differently.
+	for (Device const * const device : mRobotModel.configuration().devices()) {
+		if (device->deviceInfo().isA<EncoderSensor>() && device->port().name() == port.name()) {
+			mMotorToEncoderPortMap[port] = device->port();
+			mTurnoverEngines[mMotorToEncoderPortMap[port]] = 0;
+		}
+	}
+
 	return engine;
 }
 
@@ -131,8 +142,10 @@ void D2RobotModel::countMotorTurnover()
 	for (Engine * const motor : mEngines) {
 		PortInfo const port = mEngines.key(motor);
 		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
-		mTurnoverEngines[port] += degrees;
-		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverEngines[port] >= motor->degrees)) {
+		mTurnoverEngines[mMotorToEncoderPortMap[port]] += degrees;
+		if (motor->isUsed && (motor->activeTimeType == DoByLimit)
+				&& (mTurnoverEngines[mMotorToEncoderPortMap[port]] >= motor->degrees))
+		{
 			motor->speed = 0;
 			motor->activeTimeType = End;
 			emit d2MotorTimeout();
@@ -260,35 +273,35 @@ uint D2RobotModel::spoilColor(uint const color) const
 	return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
 }
 
-//QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum const port) const
-//{
-//	if (mSensorsConfiguration.type(port) == robots::enums::sensorType::unused) {
-//		return QImage();
-//	}
+QImage D2RobotModel::printColorSensor(interpreterBase::robotModel::PortInfo const &port) const
+{
+	if (mSensorsConfiguration.type(port).isNull()) {
+		return QImage();
+	}
 
-//	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
-//	QPointF const position = neededPosDir.first;
-//	qreal const width = sensorWidth / 2.0;
-//	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width
-//			, 2 * width, 2 * width);
+	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
+	QPointF const position = neededPosDir.first;
+	qreal const width = SensorItem::sensorWidth / 2.0;
+	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width
+			, 2 * width, 2 * width);
 
-//	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
-//	QPainter painter(&image);
+	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
+	QPainter painter(&image);
 
-//	QBrush brush(Qt::SolidPattern);
-//	brush.setColor(Qt::white);
-//	painter.setBrush(brush);
-//	painter.setPen(QPen(Qt::white));
-//	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
+	QBrush brush(Qt::SolidPattern);
+	brush.setColor(Qt::white);
+	painter.setBrush(brush);
+	painter.setPen(QPen(Qt::white));
+	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
 
-//	bool const wasSelected = mD2ModelWidget->sensorItems()[port]->isSelected();
-//	mD2ModelWidget->setSensorVisible(port, false);
-//	mD2ModelWidget->scene()->render(&painter, QRectF(), scanningRect);
-//	mD2ModelWidget->setSensorVisible(port, true);
-//	mD2ModelWidget->sensorItems()[port]->setSelected(wasSelected);
+	bool const wasSelected = mD2ModelWidget->sensorItem(port)->isSelected();
+	mD2ModelWidget->setSensorVisible(port, false);
+	mD2ModelWidget->scene()->render(&painter, QRectF(), scanningRect);
+	mD2ModelWidget->setSensorVisible(port, true);
+	mD2ModelWidget->sensorItem(port)->setSelected(wasSelected);
 
-//	return image;
-//}
+	return image;
+}
 
 int D2RobotModel::readColorFullSensor(QHash<uint, int> const &countsColor) const
 {
@@ -361,33 +374,33 @@ int D2RobotModel::readColorNoneSensor(QHash<uint, int> const &countsColor, int n
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
-//int D2RobotModel::readLightSensor(robots::enums::inputPort::InputPortEnum const port) const
-//{
-//	// Must return 1023 on white and 0 on black normalized to percents
-//	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
+int D2RobotModel::readLightSensor(interpreterBase::robotModel::PortInfo const &port) const
+{
+	// Must return 1023 on white and 0 on black normalized to percents
+	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
-//	QImage const image = printColorSensor(port);
-//	if (image.isNull()) {
-//		return 0;
-//	}
+	QImage const image = printColorSensor(port);
+	if (image.isNull()) {
+		return 0;
+	}
 
-//	uint sum = 0;
-//	uint const *data = reinterpret_cast<uint const *>(image.bits());
-//	int const n = image.byteCount() / 4;
+	uint sum = 0;
+	uint const *data = reinterpret_cast<uint const *>(image.bits());
+	int const n = image.byteCount() / 4;
 
-//	for (int i = 0; i < n; ++i) {
-//		int const color = mNeedSensorNoise ? spoilLight(data[i]) : data[i];
-//		int const b = (color >> 0) & 0xFF;
-//		int const g = (color >> 8) & 0xFF;
-//		int const r = (color >> 16) & 0xFF;
-//		// brightness in [0..256]
-//		int const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+	for (int i = 0; i < n; ++i) {
+		int const color = mNeedSensorNoise ? spoilLight(data[i]) : data[i];
+		int const b = (color >> 0) & 0xFF;
+		int const g = (color >> 8) & 0xFF;
+		int const r = (color >> 16) & 0xFF;
+		// brightness in [0..256]
+		int const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-//		sum += 4 * brightness; // 4 = max sensor value / max brightness value
-//	}
-//	qreal const rawValue = sum / n; // Average by whole region
-//	return rawValue * 100 / maxLightSensorValur; // Normalizing to percents
-//}
+		sum += 4 * brightness; // 4 = max sensor value / max brightness value
+	}
+	qreal const rawValue = sum / n; // Average by whole region
+	return rawValue * 100 / maxLightSensorValur; // Normalizing to percents
+}
 
 uint D2RobotModel::spoilLight(uint const color) const
 {

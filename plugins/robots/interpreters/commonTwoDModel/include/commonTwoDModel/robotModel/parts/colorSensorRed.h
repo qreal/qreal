@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/buttons.h>
+#include "colorSensor.h"
 
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
@@ -13,22 +13,15 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
-class Buttons : public interpreterBase::robotModel::robotParts::Buttons
+class COMMON_TWO_D_MODEL_EXPORT ColorSensorRed : public ColorSensor
 {
 	Q_OBJECT
+	Q_CLASSINFO("friendlyName", tr("Color sensor (red)"))
 
 public:
-	Buttons(interpreterBase::robotModel::DeviceInfo const &info
+	ColorSensorRed(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port
 			, engine::TwoDModelEngineInterface &engine);
-
-	void read() override;
-
-protected:
-	void doConfiguration() override;
-
-private:
-	engine::TwoDModelEngineInterface &mEngine;
 };
 
 }

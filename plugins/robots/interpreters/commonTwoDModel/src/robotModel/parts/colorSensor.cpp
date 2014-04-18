@@ -21,4 +21,5 @@ void ColorSensor::read()
 
 void ColorSensor::doConfiguration()
 {
+	configurationCompleted(true);
 }
