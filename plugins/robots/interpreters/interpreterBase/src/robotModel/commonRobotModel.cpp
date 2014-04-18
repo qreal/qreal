@@ -5,6 +5,7 @@
 
 #include "interpreterBase/robotModel/robotParts/motor.h"
 
+#include <QtCore/QDebug>
 
 using namespace interpreterBase::robotModel;
 
@@ -142,6 +143,8 @@ void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &d
 	robotParts::Device * const device = createDevice(port, deviceInfo);
 	if (device) {
 		mConfiguration.configureDevice(device);
+	} else {
+		qDebug() << "Can not create device for " << deviceInfo.toString();
 	}
 	/// @todo Handle error
 }

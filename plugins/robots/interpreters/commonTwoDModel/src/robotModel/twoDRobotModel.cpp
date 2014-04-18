@@ -51,51 +51,38 @@ utils::AbstractTimer *TwoDRobotModel::produceTimer()
 
 robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
-//	if (deviceInfo.isA(DeviceInfo::create<robotParts::Display>())) {
-//		return new parts::Display(displayInfo(), port);
-//	}
+	if (deviceInfo.isA<robotParts::Display>()) {
+		return new parts::Display(deviceInfo, port, *mEngine);
+	}
 
-//	if (deviceInfo.isA(buttonsInfo())) {
-//		return new parts::Buttons(buttonsInfo(), port);
-//	}
+	if (deviceInfo.isA<robotParts::Buttons>()) {
+		return new parts::Buttons(deviceInfo, port, *mEngine);
+	}
 
 	if (deviceInfo.isA<robotParts::Motor>()) {
 		return new parts::Motor(deviceInfo, port, *mEngine);
 	}
 
-//	if (deviceInfo.isA(encoderInfo())) {
-//		return new parts::EncoderSensor(encoderInfo(), port, mRobotCommunicator);
-//	}
+	if (deviceInfo.isA<robotParts::EncoderSensor>()) {
+		return new parts::EncoderSensor(deviceInfo, port, *mEngine);
+	}
 
 	if (deviceInfo.isA<robotParts::TouchSensor>()) {
 		return new parts::TouchSensor(deviceInfo, port, *mEngine);
 	}
 
-//	if (deviceInfo.isA(sonarSensorInfo())) {
-//		return new parts::SonarSensor(sonarSensorInfo(), port, mRobotCommunicator);
-//	}
+	if (deviceInfo.isA<robotParts::RangeSensor>()) {
+		return new parts::RangeSensor(deviceInfo, port, *mEngine);
+	}
 
-//	if (deviceInfo.isA(lightSensorInfo())) {
-//		return new parts::LightSensor(lightSensorInfo(), port, mRobotCommunicator);
-//	}
+	if (deviceInfo.isA<robotParts::LightSensor>()) {
+		return new parts::LightSensor(deviceInfo, port, *mEngine);
+	}
 
-//	if (deviceInfo.isA(colorSensorInfo())) {
-//		/// @todo: support different colors
-//		return new parts::ColorSensor(colorSensorInfo(), port
-//				, mRobotCommunicator, enums::lowLevelSensorType::COLORBLUE);
-//	}
-
-//	if (deviceInfo.isA(soundSensorInfo())) {
-//		return new parts::SoundSensor(soundSensorInfo(), port, mRobotCommunicator);
-//	}
-
-//	if (deviceInfo.isA(gyroscopeSensorInfo())) {
-//		return new parts::GyroscopeSensor(gyroscopeSensorInfo(), port, mRobotCommunicator);
-//	}
-
-//	if (deviceInfo.isA(accelerometerSensorInfo())) {
-//		return new parts::TouchSensor(accelerometerSensorInfo(), port, mRobotCommunicator);
-//	}
+	if (deviceInfo.isA<robotParts::ColorSensor>()) {
+		/// @todo: support different colors
+		return new parts::ColorSensor(deviceInfo, port, *mEngine);
+	}
 
 //	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 	return nullptr;

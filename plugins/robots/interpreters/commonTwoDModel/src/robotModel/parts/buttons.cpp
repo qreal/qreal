@@ -17,3 +17,7 @@ void Buttons::read()
 {
 	/// @todo Implement.
 }
+
+void Buttons::doConfiguration()
+{
+}
