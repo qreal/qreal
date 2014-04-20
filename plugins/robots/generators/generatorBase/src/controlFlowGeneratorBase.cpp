@@ -2,7 +2,8 @@
 
 #include "generatorBase/semanticTree/semanticTree.h"
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 
 ControlFlowGeneratorBase::ControlFlowGeneratorBase(
 		qrRepo::RepoApi const &repo

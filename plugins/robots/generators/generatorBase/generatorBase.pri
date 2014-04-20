@@ -26,15 +26,15 @@ HEADERS += \
 	$$PWD/include/generatorBase/robotsDiagramVisitor.h \
 	$$PWD/include/generatorBase/primaryControlFlowValidator.h \
 	$$PWD/include/generatorBase/semanticTree/semanticTree.h \
-	$$PWD/include/generatorBase/semanticTree/semanticTree/semanticNode.h \
-	$$PWD/include/generatorBase/semanticTree/semanticTree/nonZoneNode.h \
-	$$PWD/include/generatorBase/semanticTree/semanticTree/zoneNode.h \
-	$$PWD/include/generatorBase/semanticTree/semanticTree/simpleNode.h \
-	$$PWD/include/generatorBase/semanticTree/semanticTree/finalNode.h \
-	$$PWD/include/generatorBase/semanticTree/semanticTree/conditionalNode.h \
-	$$PWD/include/generatorBase/semanticTree/semanticTree/ifNode.h \
-	$$PWD/include/generatorBase/semanticTree/semanticTree/loopNode.h \
-	$$PWD/include/generatorBase/semanticTree/semanticTree/rootNode.h \
+	$$PWD/include/generatorBase/semanticTree/semanticNode.h \
+	$$PWD/include/generatorBase/semanticTree/nonZoneNode.h \
+	$$PWD/include/generatorBase/semanticTree/zoneNode.h \
+	$$PWD/include/generatorBase/semanticTree/simpleNode.h \
+	$$PWD/include/generatorBase/semanticTree/finalNode.h \
+	$$PWD/include/generatorBase/semanticTree/conditionalNode.h \
+	$$PWD/include/generatorBase/semanticTree/ifNode.h \
+	$$PWD/include/generatorBase/semanticTree/loopNode.h \
+	$$PWD/include/generatorBase/semanticTree/rootNode.h \
 	$$PWD/include/generatorBase/parts/variables.h \
 	$$PWD/include/generatorBase/parts/subprograms.h \
 	$$PWD/include/generatorBase/parts/engines.h \

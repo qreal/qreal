@@ -9,9 +9,7 @@
 #include "finalNode.h"
 #include "generatorBase/generatorCustomizer.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A tree representing control flow of some language. Consists of semantic nodes.
@@ -19,7 +17,7 @@ namespace semantics {
 class SemanticTree : public QObject
 {
 public:
-	SemanticTree(GeneratorCustomizer &customizer, Id const &initialBlock
+	SemanticTree(GeneratorCustomizer &customizer, qReal::Id const &initialBlock
 			, bool isMainTree, QObject *parent = 0);
 
 	/// Generates code by this tree. Target language is defined with customizer
@@ -28,23 +26,23 @@ public:
 
 	/// Produces new instance of semantic node binded to specified block
 	/// autodetecting block`s semantics
-	SemanticNode *produceNodeFor(Id const &id);
+	SemanticNode *produceNodeFor(qReal::Id const &id);
 
 	/// Produces new instance of simple node binded to specified block
-	SimpleNode *produceSimple(Id const &id = Id());
+	SimpleNode *produceSimple(qReal::Id const &id = qReal::Id());
 
 	/// Produces new instance of if node binded to specified block
-	IfNode *produceConditional(Id const &id = Id());
+	IfNode *produceConditional(qReal::Id const &id = qReal::Id());
 
 	/// Produces new instance of loop node binded to specified block
-	LoopNode *produceLoop(Id const &id = Id());
+	LoopNode *produceLoop(qReal::Id const &id = qReal::Id());
 
 	/// Produces new instance of final node binded to specified block
-	FinalNode *produceFinal(Id const &id = Id());
+	FinalNode *produceFinal(qReal::Id const &id = qReal::Id());
 
 	/// Performs deep (recursive) search in this tree and returns
 	/// a node with specified id binded if such was found or NULL otherwise.
-	NonZoneNode *findNodeFor(Id const &id);
+	NonZoneNode *findNodeFor(qReal::Id const &id);
 
 private:
 	GeneratorCustomizer &mCustomizer;
@@ -52,7 +50,5 @@ private:
 	RootNode *mRoot;  // Takes ownership
 };
 
-}
-}
 }
 }

@@ -3,9 +3,7 @@
 #include "generatorBase/simpleGenerators/binding.h"
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Replaces all inappropriate symbols in input string for valid usage in
@@ -16,7 +14,5 @@ public:
 	QString convert(QString const &data) const override;
 };
 
-}
-}
 }
 }

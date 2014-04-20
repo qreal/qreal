@@ -2,9 +2,7 @@
 
 #include "generatorBase/simpleGenerators/bindingGenerator.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace simple {
 
 /// Generator for 'Function' block
@@ -13,7 +11,7 @@ class FunctionElementGenerator : public BindingGenerator
 public:
 	FunctionElementGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
-		, Id const &id
+		, qReal::Id const &id
 		, QObject *parent = 0);
 
 	virtual QString generate();
@@ -22,7 +20,5 @@ private:
 	bool const mGenerateToInit;
 };
 
-}
-}
 }
 }

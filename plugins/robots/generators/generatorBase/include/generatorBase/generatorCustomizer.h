@@ -4,9 +4,7 @@
 #include "generatorFactoryBase.h"
 #include "robotsGeneratorDeclSpec.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 namespace enums {
 namespace semantics {
@@ -33,13 +31,13 @@ public:
 	GeneratorCustomizer();
 
 	/// Implementation must tell if block with given id has initial node semantics
-	virtual bool isInitialNode(Id const &block) const;
+	virtual bool isInitialNode(qReal::Id const &block) const;
 
 	/// Implementation must tell if block with given id has final node semantics
-	virtual bool isFinalNode(Id const &block) const;
+	virtual bool isFinalNode(qReal::Id const &block) const;
 
 	/// Returns semantics type of the given block
-	enums::semantics::Semantics semanticsOf(Id const &block) const;
+	enums::semantics::Semantics semanticsOf(qReal::Id const &block) const;
 
 	/// Initializes everything that couldn`t be initialized in constructor
 	/// (for example, everything about pure virtual methods)
@@ -51,25 +49,23 @@ public:
 
 protected:
 	/// Implementation must tell if block with given id has if-block semantics
-	virtual bool isConditional(Id const &block) const;
+	virtual bool isConditional(qReal::Id const &block) const;
 
 	/// Implementation must tell if block with given id has loop semantics
-	virtual bool isLoop(Id const &block) const;
+	virtual bool isLoop(qReal::Id const &block) const;
 
 	/// Implementation must tell if block with given id has switch semantics
-	virtual bool isSwitch(Id const &block) const;
+	virtual bool isSwitch(qReal::Id const &block) const;
 
 	/// Implementation must tell if block with given id has fork semantics
-	virtual bool isFork(Id const &block) const;
+	virtual bool isFork(qReal::Id const &block) const;
 
 private:
-	Id const mDefaultInitialBlockType;
-	Id const mDefaultFinalBlockType;
-	Id const mDefaultConditionalBlockType;
-	Id const mDefaultLoopBlockType;
-	Id const mDefaultForkBlockType;
+	qReal::Id const mDefaultInitialBlockType;
+	qReal::Id const mDefaultFinalBlockType;
+	qReal::Id const mDefaultConditionalBlockType;
+	qReal::Id const mDefaultLoopBlockType;
+	qReal::Id const mDefaultForkBlockType;
 };
 
-}
-}
 }

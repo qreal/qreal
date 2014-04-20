@@ -2,9 +2,7 @@
 
 #include "generatorBase/converters/templateParametrizedMultiConverter.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Splits given string selecting just 'A', 'B' and 'C' symbols and returns
@@ -22,7 +20,5 @@ private:
 	simple::Binding::ConverterInterface const *mOneEngineConverter;  // Takes ownership
 };
 
-}
-}
 }
 }

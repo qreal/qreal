@@ -5,9 +5,7 @@
 #include <qrrepo/repoApi.h>
 #include "../templateParametrizedEntity.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 class GeneratorCustomizer;
 
@@ -19,7 +17,7 @@ class AbstractSimpleGenerator : public QObject, public TemplateParametrizedEntit
 public:
 	AbstractSimpleGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
-			, Id const &id
+			, qReal::Id const &id
 			, QObject *parent = 0);
 
 	virtual ~AbstractSimpleGenerator();
@@ -31,10 +29,8 @@ protected:
 	qrRepo::RepoApi const &mRepo;
 	GeneratorCustomizer &mCustomizer;
 
-	Id const mId;
+	qReal::Id const mId;
 };
 
-}
-}
 }
 }

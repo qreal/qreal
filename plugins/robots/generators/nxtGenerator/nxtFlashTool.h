@@ -5,9 +5,7 @@
 
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace nxtOsek {
 
 /// Class that handles flashing NXT robot via USB.
 class NxtFlashTool : public QObject
@@ -64,6 +62,4 @@ private:
 	UploadState mUploadState;
 };
 
-}
-}
 }

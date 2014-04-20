@@ -1,6 +1,7 @@
 #include "drawPixelBlockGenerator.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 DrawPixelBlockGenerator::DrawPixelBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

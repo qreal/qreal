@@ -4,10 +4,10 @@
 
 #include <QtCore/QDebug>
 
-#include "../../../../qrkernel/settingsManager.h"
-#include "../../../../qrutils/inFile.h"
+#include <qrkernel/settingsManager.h>
+#include <qrutils/inFile.h>
 
-using namespace qReal::robots::generators::trik;
+using namespace trik;
 
 TcpRobotCommunicator::TcpRobotCommunicator()
 {

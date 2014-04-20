@@ -2,36 +2,30 @@
 
 #include <generatorBase/generatorFactoryBase.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace trik {
 
 /// Generator factory implemtation for TRIK platform
-class TrikGeneratorFactory : public GeneratorFactoryBase
+class TrikGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
 	TrikGeneratorFactory(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter);
 
 	virtual ~TrikGeneratorFactory();
 
-	virtual simple::AbstractSimpleGenerator *simpleGenerator(Id const &id
-			, GeneratorCustomizer &customizer);
+	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
+			, generatorBase::GeneratorCustomizer &customizer) override;
 
-	virtual QString pathToTemplates() const;
+	QString pathToTemplates() const override;
 
-	virtual simple::Binding::MultiConverterInterface *enginesConverter() const;
+	generatorBase::simple::Binding::MultiConverterInterface *enginesConverter() const override;
 
-	virtual simple::Binding::ConverterInterface *inputPortConverter() const;
+	generatorBase::simple::Binding::ConverterInterface *inputPortConverter() const override;
 
-	virtual simple::Binding::ConverterInterface *outputPortConverter() const;
+	generatorBase::simple::Binding::ConverterInterface *outputPortConverter() const override;
 
 protected:
-	virtual void initVariables();
+	void initVariables() override;
 };
 
-}
-}
-}
 }

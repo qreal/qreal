@@ -2,9 +2,7 @@
 
 #include "enumConverterBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Converts an input port with given number into generator-dependent port representation.
@@ -15,7 +13,5 @@ public:
 	explicit InputPortConverter(QString const &pathToTemplates);
 };
 
-}
-}
 }
 }

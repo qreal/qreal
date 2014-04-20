@@ -2,9 +2,7 @@
 
 #include "codeConverterBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Processes input string treating it as a set of expressions in some 'function'
@@ -20,7 +18,5 @@ public:
 	virtual QString convert(QString const &data) const;
 };
 
-}
-}
 }
 }

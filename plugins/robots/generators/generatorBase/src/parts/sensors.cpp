@@ -2,7 +2,8 @@
 
 #include <qrkernel/settingsManager.h>
 
-using namespace qReal::robots::generators::parts;
+using namespace generatorBase::parts;
+using namespace qReal;
 
 Sensors::Sensors(QString const &pathToTemplates
 		, simple::Binding::ConverterInterface const *inputPortConverter)

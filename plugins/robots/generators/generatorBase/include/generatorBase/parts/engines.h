@@ -6,9 +6,7 @@
 #include "generatorBase/simpleGenerators/binding.h"
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace parts {
 
 /// Inspects engines usage and generates code for their initialization and termination.
@@ -39,7 +37,5 @@ private:
 	simple::Binding::MultiConverterInterface const *mOutputPortsConverter;  // Takes ownership
 };
 
-}
-}
 }
 }

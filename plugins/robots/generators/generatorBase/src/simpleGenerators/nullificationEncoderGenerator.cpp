@@ -1,7 +1,8 @@
 #include "nullificationEncoderGenerator.h"
 #include "generatorBase/generatorCustomizer.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 NullificationEncoderGenerator::NullificationEncoderGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

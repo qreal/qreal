@@ -5,17 +5,15 @@
 #include <generatorBase/parts/variables.h>
 #include <generatorBase/parts/subprograms.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace russianC {
 namespace converters {
 
 /// Splits given string selecting just numbers and returns converted output port values
-class RussianCStringPropertyConverter : public StringPropertyConverter
+class RussianCStringPropertyConverter : public generatorBase::converters::StringPropertyConverter
 		, public utils::TextExpressionProcessorBase
 {
 public:
-	explicit RussianCStringPropertyConverter(parts::Variables const &variables);
+	explicit RussianCStringPropertyConverter(generatorBase::parts::Variables const &variables);
 
 	QString convert(QString const &data) const override;
 
@@ -24,10 +22,8 @@ protected:
 	QString value(QString const &variable) const override;
 
 private:
-	parts::Variables const &mVariables;
+	generatorBase::parts::Variables const &mVariables;
 };
 
-}
-}
 }
 }

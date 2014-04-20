@@ -1,6 +1,6 @@
 #include "trikVariables.h"
 
-using namespace qReal::robots::generators::parts;
+using namespace trik::parts;
 
 TrikVariables::TrikVariables(QString const &pathToTemplates)
 	: Variables(pathToTemplates)

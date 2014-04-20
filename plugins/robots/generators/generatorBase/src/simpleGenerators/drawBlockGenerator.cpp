@@ -4,7 +4,8 @@
 #include "generatorBase/parts/images.h"
 #include "generatorBase/parts/variables.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 DrawBlockGenerator::DrawBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

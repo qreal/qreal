@@ -1,6 +1,7 @@
 #include "nullGenerator.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 NullGenerator::NullGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

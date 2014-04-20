@@ -1,6 +1,7 @@
 #include "typeConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 TypeConverter::TypeConverter(QString const &pathToTemplates)
 	: EnumConverterBase(pathToTemplates)

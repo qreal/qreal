@@ -3,24 +3,18 @@
 #include <generatorBase/generatorCustomizer.h>
 #include "russianCGeneratorFactory.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace russianC {
 
-class RussianCGeneratorCustomizer : public GeneratorCustomizer
+class RussianCGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
 	RussianCGeneratorCustomizer(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter);
 
-	virtual GeneratorFactoryBase *factory();
+	generatorBase::GeneratorFactoryBase *factory() override;
 
 private:
 	RussianCGeneratorFactory *mFactory;
 };
 
-}
-}
-}
 }

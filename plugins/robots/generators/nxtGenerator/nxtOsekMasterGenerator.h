@@ -2,22 +2,19 @@
 
 #include <generatorBase/masterGeneratorBase.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace nxtOsek {
 
-class NxtOsekMasterGenerator : public MasterGeneratorBase
+class NxtOsekMasterGenerator : public generatorBase::MasterGeneratorBase
 {
 public:
 	NxtOsekMasterGenerator(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter
-			, Id const &diagramId);
+			, qReal::ErrorReporterInterface &errorReporter
+			, qReal::Id const &diagramId);
 
 	void generateOilAndMakeFiles();
 
 protected:
-	GeneratorCustomizer *createCustomizer() override;
+	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
 
@@ -29,7 +26,4 @@ private:
 	void saveImages(QString const &projectDir);
 };
 
-}
-}
-}
 }

@@ -2,9 +2,7 @@
 
 #include "ifBlockRuleBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// This rule is applied to blocks with if semantics with both branches unvisited.
@@ -12,13 +10,11 @@ namespace semantics {
 class IfWithBothUnvisitedRule : public IfBlockRuleBase
 {
 public:
-	IfWithBothUnvisitedRule(SemanticTree *tree, Id const &id
+	IfWithBothUnvisitedRule(SemanticTree *tree, qReal::Id const &id
 			, LinkInfo const &thenLink, LinkInfo const &elseLink);
 
 	virtual bool apply();
 };
 
-}
-}
 }
 }

@@ -1,6 +1,7 @@
 #include "generatorBase/converters/templateParametrizedMultiConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 TemplateParametrizedMultiConverter::TemplateParametrizedMultiConverter(QString const &pathToTemplates)
 	: TemplateParametrizedEntity(pathToTemplates)

@@ -2,9 +2,7 @@
 
 #include "generatorBase/templateParametrizedEntity.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace parts {
 
 /// A base for entity that inspects some robot part usage and generates code
@@ -32,7 +30,5 @@ public:
 	virtual QString isrHooksCode();
 };
 
-}
-}
 }
 }

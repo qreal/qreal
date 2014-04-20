@@ -1,6 +1,7 @@
 #include "drawCircleBlockGenerator.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 DrawCircleBlockGenerator::DrawCircleBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

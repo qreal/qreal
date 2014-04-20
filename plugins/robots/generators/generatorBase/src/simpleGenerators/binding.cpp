@@ -1,6 +1,7 @@
 #include "generatorBase/simpleGenerators/binding.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 Binding::ConverterInterface::~ConverterInterface()
 {

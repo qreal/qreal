@@ -2,24 +2,18 @@
 
 #include <generatorBase/generatorFactoryBase.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace nxtOsek {
 
-class NxtOsekGeneratorFactory : public GeneratorFactoryBase
+class NxtOsekGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
 	NxtOsekGeneratorFactory(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter);
 	virtual ~NxtOsekGeneratorFactory();
 
-	virtual QString pathToTemplates() const;
+	QString pathToTemplates() const override;
 
-	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
+	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
 };
 
-}
-}
-}
 }

@@ -4,8 +4,8 @@
 #include <QtCore/QDir>
 #include <QtWidgets/QMessageBox>
 
+using namespace nxtOsek;
 using namespace qReal;
-using namespace qReal::robots::generators;
 
 NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 		: mErrorReporter(errorReporter)

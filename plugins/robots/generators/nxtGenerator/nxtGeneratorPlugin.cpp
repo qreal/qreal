@@ -7,9 +7,8 @@
 #include <qrgui/mainwindow/qscintillaTextEdit.h>
 #include <nxtOsekMasterGenerator.h>
 
-
+using namespace nxtOsek;
 using namespace qReal;
-using namespace qReal::robots::generators;
 using namespace gui;
 
 NxtGeneratorPlugin::NxtGeneratorPlugin()
@@ -133,7 +132,7 @@ QList<HotKeyActionInfo> NxtGeneratorPlugin::hotKeyActions()
 	return mHotKeyActionInfos;
 }
 
-MasterGeneratorBase *NxtGeneratorPlugin::masterGenerator()
+generatorBase::MasterGeneratorBase *NxtGeneratorPlugin::masterGenerator()
 {
 	return new nxtOsek::NxtOsekMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()

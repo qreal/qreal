@@ -3,8 +3,8 @@
 #include "generatorBase/generatorCustomizer.h"
 #include "generatorBase/parts/functions.h"
 
+using namespace generatorBase::simple;
 using namespace qReal;
-using namespace robots::generators::simple;
 
 FunctionElementGenerator::FunctionElementGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

@@ -2,9 +2,6 @@
 
 #include <QtNetwork/QTcpSocket>
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace trik {
 
 /// Class that handles connection to robot and sends commands to it.
@@ -35,7 +32,4 @@ private:
 	QTcpSocket mSocket;
 };
 
-}
-}
-}
 }

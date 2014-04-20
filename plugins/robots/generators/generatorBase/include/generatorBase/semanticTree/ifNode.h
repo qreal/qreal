@@ -2,16 +2,14 @@
 
 #include "conditionalNode.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for the block with if semantics
 class IfNode : public ConditionalNode
 {
 public:
-	explicit IfNode(Id const &idBinded, QObject *parent = 0);
+	explicit IfNode(qReal::Id const &idBinded, QObject *parent = 0);
 
 	ZoneNode *parentZone() const;
 
@@ -28,7 +26,5 @@ private:
 	ZoneNode *mElseZone;  // Takes ownership
 };
 
-}
-}
 }
 }

@@ -2,9 +2,7 @@
 
 #include "generatorBase/simpleGenerators/abstractSimpleGenerator.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace simple {
 
 /// This generator always returns an empty string
@@ -13,13 +11,11 @@ class NullGenerator : public AbstractSimpleGenerator
 public:
 	NullGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
-			, Id const &id
+			, qReal::Id const &id
 			, QObject *parent = 0);
 
 	virtual QString generate();
 };
 
-}
-}
 }
 }

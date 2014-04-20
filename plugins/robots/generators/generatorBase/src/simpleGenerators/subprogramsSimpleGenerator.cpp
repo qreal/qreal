@@ -3,7 +3,8 @@
 #include "generatorBase/generatorCustomizer.h"
 #include "generatorBase/parts/subprograms.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 SubprogramsSimpleGenerator::SubprogramsSimpleGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

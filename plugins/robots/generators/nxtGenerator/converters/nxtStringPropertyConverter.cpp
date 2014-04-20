@@ -1,7 +1,8 @@
 #include "nxtStringPropertyConverter.h"
 
-using namespace qReal::robots::generators;
+using namespace nxtOsek;
 using namespace converters;
+using namespace generatorBase;
 using namespace parts;
 
 NxtStringPropertyConverter::NxtStringPropertyConverter(Variables const &variables

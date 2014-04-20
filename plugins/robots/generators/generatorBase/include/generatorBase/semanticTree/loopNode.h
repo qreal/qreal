@@ -2,16 +2,14 @@
 
 #include "conditionalNode.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for loops inside program
 class LoopNode : public ConditionalNode
 {
 public:
-	explicit LoopNode(Id const &idBinded, QObject *parent = 0);
+	explicit LoopNode(qReal::Id const &idBinded, QObject *parent = 0);
 
 
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
@@ -30,7 +28,5 @@ private:
 	bool mDoWhileForm;
 };
 
-}
-}
 }
 }

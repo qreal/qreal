@@ -10,7 +10,8 @@
 #include "generatorBase/parts/subprograms.h"
 #include "generatorBase/parts/initTerminateCodeGenerator.h"
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 
 MasterGeneratorBase::MasterGeneratorBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter

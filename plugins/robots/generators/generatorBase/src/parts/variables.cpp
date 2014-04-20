@@ -1,8 +1,8 @@
 #include "generatorBase/parts/variables.h"
 
-using namespace qReal;
-using namespace robots::generators;
+using namespace generatorBase;
 using namespace parts;
+using namespace qReal;
 
 Variables::Variables(QString const &pathToTemplates)
 	: TemplateParametrizedEntity(pathToTemplates)

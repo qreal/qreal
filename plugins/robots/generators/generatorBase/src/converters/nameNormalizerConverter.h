@@ -2,9 +2,7 @@
 
 #include "generatorBase/simpleGenerators/binding.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Transforms input string into a valid cpp-style indentifier skipping all
@@ -15,7 +13,5 @@ public:
 	QString convert(QString const &data) const override;
 };
 
-}
-}
 }
 }

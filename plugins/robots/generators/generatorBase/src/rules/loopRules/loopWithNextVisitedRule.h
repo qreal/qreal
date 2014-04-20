@@ -2,9 +2,7 @@
 
 #include "loopBlockRuleBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// This rule is applied to blocks with loop semantics with non-iteration branch visited.
@@ -13,13 +11,11 @@ namespace semantics {
 class LoopWithNextVisitedRule : public LoopBlockRuleBase
 {
 public:
-	LoopWithNextVisitedRule(SemanticTree *tree, Id const &id
+	LoopWithNextVisitedRule(SemanticTree *tree, qReal::Id const &id
 			, LinkInfo const &iterationLink, LinkInfo const &nextLink);
 
 	virtual bool apply();
 };
 
-}
-}
 }
 }

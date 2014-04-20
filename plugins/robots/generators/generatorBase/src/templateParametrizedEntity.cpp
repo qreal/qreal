@@ -5,7 +5,8 @@
 #include <qrutils/inFile.h>
 #include <qrkernel/exception/exception.h>
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 
 TemplateParametrizedEntity::TemplateParametrizedEntity()
 {

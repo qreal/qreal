@@ -1,6 +1,7 @@
 #include "gotoControlFlowGenerator.h"
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 using namespace semantics;
 
 GotoControlFlowGenerator::GotoControlFlowGenerator(

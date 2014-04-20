@@ -5,9 +5,7 @@
 
 #include "generatorBase/converters/templateParametrizedConverter.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// A base class for all converters processing code. Processes input string
@@ -46,7 +44,5 @@ protected:
 	simple::Binding::ConverterInterface const *mFunctionInvocationsConverter;  // Takes ownership
 };
 
-}
-}
 }
 }

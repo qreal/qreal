@@ -1,6 +1,7 @@
 #include "ifWithBothUnvisitedRule.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 IfWithBothUnvisitedRule::IfWithBothUnvisitedRule(SemanticTree *tree, Id const &id
 		, LinkInfo const &thenLink, LinkInfo const &elseLink)

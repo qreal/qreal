@@ -2,9 +2,7 @@
 
 #include "semanticNode.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// Stores a list of semantic nodes. In fact an analogue of block operator in c++
@@ -47,7 +45,5 @@ private:
 	QLinkedList<SemanticNode *> mChildren;
 };
 
-}
-}
 }
 }

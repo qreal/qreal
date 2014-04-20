@@ -4,9 +4,7 @@
 #include "generatorBase/simpleGenerators/binding.h"
 //#include "plugins/robots/robotsInterpreter/sensorConstants.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace parts {
 
 /// Inspects sensors usage and generates code for their initialization and termination.
@@ -40,7 +38,5 @@ private:
 	QStringList mIsrHooksCode;
 };
 
-}
-}
 }
 }

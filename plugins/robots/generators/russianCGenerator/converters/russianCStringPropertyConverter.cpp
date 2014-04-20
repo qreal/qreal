@@ -1,10 +1,9 @@
 #include "russianCStringPropertyConverter.h"
 
-using namespace qReal::robots::generators;
+using namespace russianC;
 using namespace converters;
-using namespace parts;
 
-RussianCStringPropertyConverter::RussianCStringPropertyConverter(Variables const &variables)
+RussianCStringPropertyConverter::RussianCStringPropertyConverter(generatorBase::parts::Variables const &variables)
 	: mVariables(variables)
 {
 }
@@ -19,7 +18,7 @@ QString RussianCStringPropertyConverter::convert(QString const &data) const
 	// (we print each float variable like two int ones separated with '.')
 	QStringList hackedVariables;
 	foreach (QString const &variable, metVariables) {
-		if (mVariables.expressionType(variable) == enums::variableType::intType) {
+		if (mVariables.expressionType(variable) == generatorBase::enums::variableType::intType) {
 			hackedVariables << variable;
 		} else {
 			hackedVariables << "(целое)" + variable
@@ -35,10 +34,10 @@ QString RussianCStringPropertyConverter::convert(QString const &data) const
 
 bool RussianCStringPropertyConverter::variableExists(QString const &variable) const
 {
-	return mVariables.expressionType(variable) != enums::variableType::unknown;
+	return mVariables.expressionType(variable) != generatorBase::enums::variableType::unknown;
 }
 
 QString RussianCStringPropertyConverter::value(QString const &variable) const
 {
-	return mVariables.expressionType(variable) == enums::variableType::intType ? "%ц" : "%ц.%ц";
+	return mVariables.expressionType(variable) == generatorBase::enums::variableType::intType ? "%ц" : "%ц.%ц";
 }

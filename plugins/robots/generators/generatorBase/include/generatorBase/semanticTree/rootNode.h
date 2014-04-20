@@ -2,16 +2,14 @@
 
 #include "zoneNode.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A root node for all semantic tree
 class RootNode : public SemanticNode
 {
 public:
-	explicit RootNode(Id const &initialBlock, QObject *parent = 0);
+	explicit RootNode(qReal::Id const &initialBlock, QObject *parent = 0);
 
 
 protected:
@@ -22,7 +20,5 @@ private:
 	ZoneNode *mZone;  // Takes ownership
 };
 
-}
-}
 }
 }

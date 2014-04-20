@@ -1,6 +1,7 @@
 #include "generatorBase/robotsDiagramVisitor.h"
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 
 RobotsDiagramVisitor::RobotsDiagramVisitor(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer)

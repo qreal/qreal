@@ -2,7 +2,8 @@
 
 #include <qrutils/stringUtils.h>
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 FinalNode::FinalNode(Id const &idBinded, bool inMainDigram, QObject *parent)
 	: NonZoneNode(idBinded, parent)

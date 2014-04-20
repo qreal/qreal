@@ -3,7 +3,9 @@
 
 #include <generatorBase/parts/images.h>
 
-using namespace qReal::robots::generators::russianC;
+using namespace russianC;
+using namespace generatorBase;
+using namespace qReal;
 
 RussianCMasterGenerator::RussianCMasterGenerator(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
@@ -12,7 +14,7 @@ RussianCMasterGenerator::RussianCMasterGenerator(qrRepo::RepoApi const &repo
 {
 }
 
-qReal::robots::generators::GeneratorCustomizer *RussianCMasterGenerator::createCustomizer()
+generatorBase::GeneratorCustomizer *RussianCMasterGenerator::createCustomizer()
 {
 	return new RussianCGeneratorCustomizer(mRepo, mErrorReporter);
 }

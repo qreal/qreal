@@ -5,9 +5,7 @@
 
 #include "generatorBase/generatorCustomizer.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 /// A base for those entities who must travel through model and process every block
 /// differentiating their semantics
@@ -29,44 +27,42 @@ protected:
 	};
 
 	/// Starts repo graph dfs-traversal
-	void startSearch(Id const &startingBlock);
+	void startSearch(qReal::Id const &startingBlock);
 
 	/// Terminates current graph traversal
 	void terminateSearch();
 
 	/// Parses guard property of given link in repo-representation and returns
 	/// corresponding value of LinkGuard enumeration
-	LinkGuard guardOf(Id const &linkId) const;
+	LinkGuard guardOf(qReal::Id const &linkId) const;
 
 	/// This method is called when traverser gets into a block with regular semantics
-	virtual void visitRegular(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
+	virtual void visitRegular(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 
 	/// This method is called when traverser gets into a block with final-block semantics
-	virtual void visitFinal(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
+	virtual void visitFinal(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 
 	/// This method is called when traverser gets into a block with if semantics
-	virtual void visitConditional(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
+	virtual void visitConditional(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 
 	/// This method is called when traverser gets into a block with loop semantics
-	virtual void visitLoop(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
+	virtual void visitLoop(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 
 	/// This method is called when traverser gets into a block with switch semantics
-	virtual void visitSwitch(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
+	virtual void visitSwitch(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 
 	/// This method is called when traverser gets into a block with fork semantics
-	virtual void visitFork(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
+	virtual void visitFork(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 
 	/// This method is called when traverser gets into a block with unknown semantics
-	virtual void visitUnknown(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitUnknown(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 
 private:
-	virtual void visit(Id const &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visit(qReal::Id const &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 
 	qrRepo::RepoApi const &mRepo;
 	GeneratorCustomizer &mCustomizer;
 	utils::DeepFirstSearcher mDfser;
 };
 
-}
-}
 }

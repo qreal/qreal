@@ -2,9 +2,7 @@
 
 #include "generatorBase/simpleGenerators/bindingGenerator.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace simple {
 
 /// Generator for 'EnginesForward' and 'EnginesBackward' block
@@ -13,12 +11,10 @@ class EnginesGenerator : public BindingGenerator
 public:
 	EnginesGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
-			, Id const &id
+			, qReal::Id const &id
 			, QString const &engineType
 			, QObject *parent);
 };
 
-}
-}
 }
 }

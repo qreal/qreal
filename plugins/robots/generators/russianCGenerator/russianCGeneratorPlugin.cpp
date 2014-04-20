@@ -5,8 +5,8 @@
 
 #include "russianCMasterGenerator.h"
 
-using namespace qReal;
-using namespace qReal::robots::generators;
+using namespace russianC;
+using namespace generatorBase;
 
 RussianCGeneratorPlugin::RussianCGeneratorPlugin()
 	: mGenerateCodeAction(NULL)
@@ -56,7 +56,7 @@ QList<ActionInfo> RussianCGeneratorPlugin::actions()
 
 MasterGeneratorBase *RussianCGeneratorPlugin::masterGenerator()
 {
-	return new russianC::RussianCMasterGenerator(*mRepo
+	return new RussianCMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, mMainWindowInterface->activeDiagram());
 }

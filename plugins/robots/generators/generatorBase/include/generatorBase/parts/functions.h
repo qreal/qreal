@@ -5,9 +5,7 @@
 #include "initTerminateCodeGenerator.h"
 #include "generatorBase/simpleGenerators/binding.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace parts {
 
 /// Inspects function blocks with initialization marker and generates code
@@ -27,7 +25,5 @@ private:
 	QStringList mFunctions;
 };
 
-}
-}
 }
 }

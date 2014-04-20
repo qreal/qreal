@@ -2,9 +2,7 @@
 
 #include "enumConverterBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Processes input string treating it as repository property of the 'BreakMode'
@@ -16,7 +14,5 @@ public:
 	explicit BreakModeConverter(QString const &pathToTemplates);
 };
 
-}
-}
 }
 }

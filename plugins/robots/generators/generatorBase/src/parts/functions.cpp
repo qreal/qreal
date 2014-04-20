@@ -1,6 +1,7 @@
 #include "generatorBase/parts/functions.h"
 
-using namespace qReal::robots::generators::parts;
+using namespace generatorBase::parts;
+using namespace qReal;
 
 Functions::Functions(QString const &pathToTemplates)
 	: InitTerminateCodeGenerator(pathToTemplates)

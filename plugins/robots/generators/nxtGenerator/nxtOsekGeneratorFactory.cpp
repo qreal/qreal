@@ -2,11 +2,10 @@
 
 #include "converters/nxtStringPropertyConverter.h"
 
-using namespace qReal::robots::generators;
 using namespace nxtOsek;
 
 NxtOsekGeneratorFactory::NxtOsekGeneratorFactory(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter)
+		, qReal::ErrorReporterInterface &errorReporter)
 	: GeneratorFactoryBase(repo, errorReporter)
 {
 }
@@ -20,7 +19,7 @@ QString NxtOsekGeneratorFactory::pathToTemplates() const
 	return ":/nxtOSEK/templates";
 }
 
-simple::Binding::ConverterInterface *NxtOsekGeneratorFactory::stringPropertyConverter() const
+generatorBase::simple::Binding::ConverterInterface *NxtOsekGeneratorFactory::stringPropertyConverter() const
 {
 	return new converters::NxtStringPropertyConverter(*mVariables, *mSubprograms);
 }

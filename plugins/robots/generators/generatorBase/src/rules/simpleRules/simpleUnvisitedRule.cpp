@@ -1,7 +1,8 @@
 #include "simpleUnvisitedRule.h"
 #include "generatorBase/semanticTree/simpleNode.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 SimpleUnvisitedRule::SimpleUnvisitedRule(SemanticTree *tree, Id const &id
 		, LinkInfo const &next)

@@ -2,9 +2,7 @@
 
 #include "simpleVisitedRuleBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// This rule is applied to blocks with simple semantics when it leads to a coupled
@@ -13,12 +11,10 @@ namespace semantics {
 class SimpleMergedIfBranchesRule : public SimpleVisitedRuleBase
 {
 public:
-	SimpleMergedIfBranchesRule(SemanticTree *tree, Id const &id, LinkInfo const &next);
+	SimpleMergedIfBranchesRule(SemanticTree *tree, qReal::Id const &id, LinkInfo const &next);
 
 	virtual bool apply();
 };
 
-}
-}
 }
 }

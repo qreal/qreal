@@ -1,6 +1,7 @@
 #include "enumConverterBase.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 EnumConverterBase::EnumConverterBase(QString const &pathToTemplatesDir
 		, QMap<QString, QString> const &valuesToTemplatePaths)

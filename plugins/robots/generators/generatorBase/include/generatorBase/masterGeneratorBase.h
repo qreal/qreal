@@ -10,9 +10,7 @@
 #include "controlFlowGeneratorBase.h"
 #include "templateParametrizedEntity.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 class ReadableControlFlowGenerator;
 class GotoControlFlowGenerator;
@@ -25,8 +23,8 @@ class ROBOTS_GENERATOR_EXPORT MasterGeneratorBase : public QObject, public Templ
 
 public:
 	MasterGeneratorBase(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter
-			, Id const &diagramId);
+			, qReal::ErrorReporterInterface &errorReporter
+			, qReal::Id const &diagramId);
 
 	void setProjectDir(QFileInfo const &fileInfo);
 
@@ -55,8 +53,8 @@ protected:
 	void outputCode(QString const &path, QString const &code);
 
 	qrRepo::RepoApi const &mRepo;
-	ErrorReporterInterface &mErrorReporter;
-	Id const mDiagram;
+	qReal::ErrorReporterInterface &mErrorReporter;
+	qReal::Id const mDiagram;
 	GeneratorCustomizer *mCustomizer;
 	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership
 	GotoControlFlowGenerator *mGotoControlFlowGenerator;  // Takes ownership
@@ -66,6 +64,3 @@ protected:
 };
 
 }
-}
-}
-

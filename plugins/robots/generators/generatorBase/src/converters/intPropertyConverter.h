@@ -3,9 +3,7 @@
 #include "codeConverterBase.h"
 #include "generatorBase/parts/variables.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Processes input string treating it as an expression of the int type.
@@ -30,7 +28,5 @@ private:
 	parts::Variables const *mVariables;  // Does not take ownership
 };
 
-}
-}
 }
 }

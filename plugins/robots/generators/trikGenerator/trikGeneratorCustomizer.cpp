@@ -1,14 +1,14 @@
 #include "trikGeneratorCustomizer.h"
 
-using namespace qReal::robots::generators::trik;
+using namespace trik;
 
 TrikGeneratorCustomizer::TrikGeneratorCustomizer(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter)
+		, qReal::ErrorReporterInterface &errorReporter)
 	: mFactory(repo, errorReporter)
 {
 }
 
-qReal::robots::generators::GeneratorFactoryBase *TrikGeneratorCustomizer::factory()
+generatorBase::GeneratorFactoryBase *TrikGeneratorCustomizer::factory()
 {
 	return &mFactory;
 }

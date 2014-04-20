@@ -2,20 +2,17 @@
 
 #include <generatorBase/masterGeneratorBase.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace russianC {
 
-class RussianCMasterGenerator : public MasterGeneratorBase
+class RussianCMasterGenerator : public generatorBase::MasterGeneratorBase
 {
 public:
 	RussianCMasterGenerator(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter
-			, Id const &diagramId);
+			, qReal::ErrorReporterInterface &errorReporter
+			, qReal::Id const &diagramId);
 
 protected:
-	GeneratorCustomizer *createCustomizer() override;
+	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
 
@@ -27,7 +24,4 @@ private:
 	int mCurInitialNodeNumber;
 };
 
-}
-}
-}
 }

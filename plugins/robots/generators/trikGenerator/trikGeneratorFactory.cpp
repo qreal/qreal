@@ -4,12 +4,12 @@
 #include "simpleGenerators/trikEnginesStopGenerator.h"
 #include "parts/trikVariables.h"
 
-using namespace qReal::robots::generators;
-using namespace simple;
 using namespace trik;
+using namespace simple;
+using namespace generatorBase::simple;
 
 TrikGeneratorFactory::TrikGeneratorFactory(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter)
+		, qReal::ErrorReporterInterface &errorReporter)
 	: GeneratorFactoryBase(repo, errorReporter)
 {
 }
@@ -19,7 +19,7 @@ TrikGeneratorFactory::~TrikGeneratorFactory()
 }
 
 AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &id
-		, GeneratorCustomizer &customizer)
+		, generatorBase::GeneratorCustomizer &customizer)
 {
 	QString const elementType = id.element();
 	if (elementType == "EnginesForward" || elementType == "EnginesBackward") {

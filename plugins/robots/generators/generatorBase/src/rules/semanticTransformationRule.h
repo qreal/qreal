@@ -5,9 +5,7 @@
 #include <qrutils/graphUtils/deepFirstSearcher.h>
 #include "generatorBase/semanticTree/semanticTree.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A base for all commands that perform semantic tree transformations.
@@ -20,22 +18,20 @@ public:
 	virtual bool apply() = 0;
 
 protected:
-	SemanticTransformationRule(SemanticTree *tree, Id const &id);
+	SemanticTransformationRule(SemanticTree *tree, qReal::Id const &id);
 	virtual ~SemanticTransformationRule();
 
 	LoopNode *makeLoopStartingFrom(NonZoneNode *node);
 
 	/// Returns true if semantic node for the given id was already created.
-	bool alreadyCreated(Id const &id);
+	bool alreadyCreated(qReal::Id const &id);
 
 	/// Returns true if semantic node for the link dst node was already created.
 	bool alreadyCreated(LinkInfo const &link);
 
 	SemanticTree *mTree;  // Does not take ownership
-	Id const mId;
+	qReal::Id const mId;
 };
 
-}
-}
 }
 }

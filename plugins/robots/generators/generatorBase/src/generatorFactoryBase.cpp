@@ -61,7 +61,8 @@
 #include "generatorBase/parts/functions.h"
 #include "generatorBase/parts/images.h"
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 using namespace simple;
 
 GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo

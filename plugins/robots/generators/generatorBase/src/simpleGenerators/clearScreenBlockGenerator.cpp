@@ -3,7 +3,8 @@
 #include "generatorBase/generatorCustomizer.h"
 #include "generatorBase/parts/images.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 ClearScreenBlockGenerator::ClearScreenBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

@@ -1,6 +1,7 @@
 #include "functionInvocationConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 FunctionInvocationConverter::FunctionInvocationConverter(QString const &pathToTemplates)
 	: EnumConverterBase(pathToTemplates)

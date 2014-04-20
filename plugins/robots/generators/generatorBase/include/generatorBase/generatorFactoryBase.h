@@ -9,9 +9,7 @@
 #include "generatorBase/simpleGenerators/abstractSimpleGenerator.h"
 #include "generatorBase/simpleGenerators/binding.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 namespace parts {
 class Variables;
@@ -32,7 +30,7 @@ class ROBOTS_GENERATOR_EXPORT GeneratorFactoryBase : public QObject
 {
 public:
 	GeneratorFactoryBase(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter);
 
 	virtual ~GeneratorFactoryBase();
 
@@ -65,47 +63,47 @@ public:
 	// ----------------------------- Generators --------------------------------
 
 	/// Returns a pointer to a code generator for blocks with if semantics
-	virtual simple::AbstractSimpleGenerator *ifGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *ifGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer
 			, bool elseIsEmpty
 			, bool needInverting);
 
 	/// Returns a pointer to a code generator for infinite loops
-	virtual simple::AbstractSimpleGenerator *infiniteLoopGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *infiniteLoopGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for 'while-do' and 'do-while' loops
-	virtual simple::AbstractSimpleGenerator *whileLoopGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *whileLoopGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer
 			, bool doWhileForm
 			, bool needInverting);
 
 	/// Returns a pointer to a code generator for loops in 'for' form
-	virtual simple::AbstractSimpleGenerator *forLoopGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *forLoopGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for blocks with regular semantics
-	virtual simple::AbstractSimpleGenerator *simpleGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for 'break' instruction
-	virtual simple::AbstractSimpleGenerator *breakGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *breakGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for 'continue' instruction
-	virtual simple::AbstractSimpleGenerator *continueGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *continueGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for goto label declaration
-	virtual simple::AbstractSimpleGenerator *labelGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *labelGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for 'goto' instruction
-	virtual simple::AbstractSimpleGenerator *gotoSimpleGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *gotoSimpleGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
 
 	/// Returns a pointer to a code generator for blocks with final-blocks semantics
-	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(Id const &id
+	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer, bool fromMainGenerator);
 
 	/// Implementation must return a path to a folder containing templates for
@@ -202,7 +200,7 @@ protected:
 	virtual void initImages();
 
 	qrRepo::RepoApi const &mRepo;
-	ErrorReporterInterface &mErrorReporter;
+	qReal::ErrorReporterInterface &mErrorReporter;
 	parts::Variables *mVariables;
 	parts::Subprograms *mSubprograms;
 	parts::Engines *mEngines;
@@ -211,6 +209,4 @@ protected:
 	parts::Images *mImages;
 };
 
-}
-}
 }

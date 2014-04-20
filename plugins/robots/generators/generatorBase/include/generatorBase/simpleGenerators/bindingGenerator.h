@@ -4,9 +4,7 @@
 #include "generatorBase/simpleGenerators/binding.h"
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace simple {
 
 /// A base for all generators that use bindings and templates for generating code
@@ -15,7 +13,7 @@ class ROBOTS_GENERATOR_EXPORT BindingGenerator : public AbstractSimpleGenerator
 public:
 	BindingGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
-			, Id const &id
+			, qReal::Id const &id
 			, QString const &pathToTemplate
 			, QList<Binding *> const &bindings
 			, QObject *parent = 0);
@@ -29,7 +27,5 @@ private:
 	QList<Binding *> const mBindings;  // Takes ownership
 };
 
-}
-}
 }
 }

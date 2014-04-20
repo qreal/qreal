@@ -7,9 +7,7 @@
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 #include "generatorBase/templateParametrizedEntity.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace parts {
 
 // TODO: rewrite it with generating code that generates buffer
@@ -50,7 +48,5 @@ private:
 	QMap<QString, QImage> mBmpFiles;
 };
 
-}
-}
 }
 }

@@ -2,9 +2,7 @@
 
 #include "nonZoneNode.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for the block with simple semantics
@@ -21,7 +19,7 @@ public:
 		, gotoNode
 	};
 
-	explicit SimpleNode(Id const &idBinded, QObject *parent = 0);
+	explicit SimpleNode(qReal::Id const &idBinded, QObject *parent = 0);
 
 	/// Binds this block to given artificial construction instead of binding to id.
 	void bindToSyntheticConstruction(SyntheticBlockType type);
@@ -35,7 +33,5 @@ private:
 	SyntheticBlockType mSyntheticBinding;
 };
 
-}
-}
 }
 }

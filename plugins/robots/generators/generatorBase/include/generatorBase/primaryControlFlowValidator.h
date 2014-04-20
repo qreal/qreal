@@ -7,9 +7,7 @@
 #include "generatorBase/generatorCustomizer.h"
 #include "robotsDiagramVisitor.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 
@@ -20,9 +18,9 @@ class PrimaryControlFlowValidator : public RobotsDiagramVisitor
 {
 public:
 	PrimaryControlFlowValidator(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter
+			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, Id const &diagramId);
+			, qReal::Id const &diagramId);
 	virtual ~PrimaryControlFlowValidator();
 
 	/// Validates diagram with id specified in constructor. Returns 'true' if
@@ -31,43 +29,41 @@ public:
 
 	/// Returns id of the only node with initial semantics on diagram. The result
 	/// is ready only after validation process was successfully finished.
-	Id initialNode() const;
+	qReal::Id initialNode() const;
 
 	/// Returns branches of the given block with if semantics. First value in the
 	/// resulting pair is the first block of 'then' branch, second - 'else'. The
 	/// result is ready only after validation process was successfully finished.
-	QPair<LinkInfo, LinkInfo> ifBranchesFor(Id const &id) const;
+	QPair<LinkInfo, LinkInfo> ifBranchesFor(qReal::Id const &id) const;
 
 	/// Returns branches of the given block with loop semantics. First value in the
 	/// resulting pair is the first block of 'iteration' branch, second - of the
 	/// non-marked one. The result is ready only after validation process was
 	/// successfully finished.
-	QPair<LinkInfo, LinkInfo> loopBranchesFor(Id const &id) const;
+	QPair<LinkInfo, LinkInfo> loopBranchesFor(qReal::Id const &id) const;
 
 private:
 	void findInitialNode();
-	void error(QString const &message, Id const &id);
+	void error(QString const &message, qReal::Id const &id);
 	bool checkForConnected(LinkInfo const &link);
 
-	virtual void visitRegular(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitFinal(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitConditional(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitLoop(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitSwitch(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitFork(Id const &id, QList<LinkInfo> const &links);
-	virtual void visitUnknown(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links);
+	virtual void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links);
+	virtual void visitConditional(qReal::Id const &id, QList<LinkInfo> const &links);
+	virtual void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links);
+	virtual void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links);
+	virtual void visitFork(qReal::Id const &id, QList<LinkInfo> const &links);
+	virtual void visitUnknown(qReal::Id const &id, QList<LinkInfo> const &links);
 
 	qrRepo::RepoApi const &mRepo;
-	ErrorReporterInterface &mErrorReporter;
+	qReal::ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
-	Id const mDiagram;
+	qReal::Id const mDiagram;
 	bool mErrorsOccured;
 
-	Id mInitialNode;
-	QMap<Id, QPair<LinkInfo, LinkInfo> > mIfBranches;
-	QMap<Id, QPair<LinkInfo, LinkInfo> > mLoopBranches;
+	qReal::Id mInitialNode;
+	QMap<qReal::Id, QPair<LinkInfo, LinkInfo> > mIfBranches;
+	QMap<qReal::Id, QPair<LinkInfo, LinkInfo> > mLoopBranches;
 };
 
-}
-}
 }

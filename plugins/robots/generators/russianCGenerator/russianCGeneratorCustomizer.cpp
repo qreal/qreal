@@ -1,14 +1,14 @@
 #include "russianCGeneratorCustomizer.h"
 
-using namespace qReal::robots::generators::russianC;
+using namespace russianC;
 
 RussianCGeneratorCustomizer::RussianCGeneratorCustomizer(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter)
+		, qReal::ErrorReporterInterface &errorReporter)
 	: mFactory(new RussianCGeneratorFactory(repo, errorReporter))
 {
 }
 
-qReal::robots::generators::GeneratorFactoryBase *RussianCGeneratorCustomizer::factory()
+generatorBase::GeneratorFactoryBase *RussianCGeneratorCustomizer::factory()
 {
 	return mFactory;
 }

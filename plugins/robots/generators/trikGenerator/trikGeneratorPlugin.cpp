@@ -8,9 +8,8 @@
 #include "robotCommunication/tcpRobotCommunicator.h"
 #include "trikMasterGenerator.h"
 
-using namespace qReal;
-using namespace qReal::robots::generators;
 using namespace trik;
+using namespace qReal;
 
 TrikGeneratorPlugin::TrikGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
@@ -51,7 +50,7 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }
 
-MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
+generatorBase::MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
 {
 	return new TrikMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()

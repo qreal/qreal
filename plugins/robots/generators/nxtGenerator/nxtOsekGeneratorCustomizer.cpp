@@ -1,14 +1,14 @@
 #include "nxtOsekGeneratorCustomizer.h"
 
-using namespace qReal::robots::generators::nxtOsek;
+using namespace nxtOsek;
 
 NxtOsekGeneratorCustomizer::NxtOsekGeneratorCustomizer(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter)
+		, qReal::ErrorReporterInterface &errorReporter)
 	: mFactory(repo, errorReporter)
 {
 }
 
-qReal::robots::generators::GeneratorFactoryBase *NxtOsekGeneratorCustomizer::factory()
+generatorBase::GeneratorFactoryBase *NxtOsekGeneratorCustomizer::factory()
 {
 	return &mFactory;
 }

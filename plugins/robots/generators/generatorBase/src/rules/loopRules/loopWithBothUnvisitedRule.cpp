@@ -1,6 +1,7 @@
 #include "loopWithBothUnvisitedRule.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 LoopWithBothUnvisitedRule::LoopWithBothUnvisitedRule(SemanticTree *tree, Id const &id
 		, LinkInfo const &iterationLink, LinkInfo const &nextLink)

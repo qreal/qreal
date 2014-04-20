@@ -1,6 +1,7 @@
 #include "functionBlockConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 FunctionBlockConverter::FunctionBlockConverter(QString const &pathToTemplates
 		, simple::Binding::ConverterInterface const *inputPortConverter

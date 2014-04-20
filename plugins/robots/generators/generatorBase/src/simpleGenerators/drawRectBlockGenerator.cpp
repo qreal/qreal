@@ -1,6 +1,7 @@
 #include "drawRectBlockGenerator.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 DrawRectBlockGenerator::DrawRectBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

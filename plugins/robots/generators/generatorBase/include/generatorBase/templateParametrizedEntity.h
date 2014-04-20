@@ -4,9 +4,7 @@
 
 #include "robotsGeneratorDeclSpec.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 /// This class can be inherited by those entities who need to use generator templates
 class ROBOTS_GENERATOR_EXPORT TemplateParametrizedEntity
@@ -31,6 +29,4 @@ private:
 	QString mPathToRoot;
 };
 
-}
-}
 }

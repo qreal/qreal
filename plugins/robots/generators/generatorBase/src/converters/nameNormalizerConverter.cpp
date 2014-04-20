@@ -2,7 +2,8 @@
 
 #include <qrutils/nameNormalizer.h>
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 QString NameNormalizerConverter::convert(QString const &data) const
 {

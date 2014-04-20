@@ -1,6 +1,7 @@
 #include "generatorBase/converters/stringPropertyConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 QString StringPropertyConverter::convert(QString const &data) const
 {

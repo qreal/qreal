@@ -1,6 +1,7 @@
 #include "continueGenerator.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 ContinueGenerator::ContinueGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

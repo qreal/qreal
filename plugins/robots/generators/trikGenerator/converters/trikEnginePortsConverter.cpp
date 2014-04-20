@@ -1,6 +1,6 @@
 #include "trikEnginePortsConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace trik::converters;
 
 TrikEnginePortsConverter::TrikEnginePortsConverter(QString const &pathToTemplates)
 	: TemplateParametrizedMultiConverter(pathToTemplates)

@@ -1,6 +1,6 @@
 #include "generatorBase/parts/initTerminateCodeGenerator.h"
 
-using namespace qReal::robots::generators::parts;
+using namespace generatorBase::parts;
 
 InitTerminateCodeGenerator::InitTerminateCodeGenerator(QString const &pathToTemplates)
 	: TemplateParametrizedEntity(pathToTemplates)

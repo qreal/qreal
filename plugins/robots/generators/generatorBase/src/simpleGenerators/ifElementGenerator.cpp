@@ -1,8 +1,8 @@
 #include "ifElementGenerator.h"
 #include "generatorBase/generatorCustomizer.h"
 
+using namespace generatorBase::simple;
 using namespace qReal;
-using namespace robots::generators::simple;
 
 IfElementGenerator::IfElementGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

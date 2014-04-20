@@ -3,11 +3,11 @@
 #include <generatorBase/parts/images.h>
 #include "nxtOsekGeneratorCustomizer.h"
 
-using namespace qReal::robots::generators::nxtOsek;
+using namespace nxtOsek;
 
 NxtOsekMasterGenerator::NxtOsekMasterGenerator(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter
-		, Id const &diagramId)
+		, qReal::ErrorReporterInterface &errorReporter
+		, qReal::Id const &diagramId)
 	: MasterGeneratorBase(repo, errorReporter, diagramId)
 {
 }
@@ -17,7 +17,7 @@ void NxtOsekMasterGenerator::generateOilAndMakeFiles()
 	afterGeneration();
 }
 
-qReal::robots::generators::GeneratorCustomizer *NxtOsekMasterGenerator::createCustomizer()
+generatorBase::GeneratorCustomizer *NxtOsekMasterGenerator::createCustomizer()
 {
 	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter);
 }

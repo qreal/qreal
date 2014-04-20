@@ -1,6 +1,7 @@
 #include "infiniteLoopGenerator.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 InfiniteLoopGenerator::InfiniteLoopGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

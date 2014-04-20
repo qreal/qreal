@@ -2,9 +2,7 @@
 
 #include "nonZoneNode.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for the block with final semantics
@@ -15,7 +13,7 @@ public:
 	/// It is important to differentiate theese cases because generated code for
 	/// the main diagram final block may differ from subprograms one
 	/// (for example, terminating task vs 'return')
-	FinalNode(Id const &idBinded, bool inMainDigram, QObject *parent = 0);
+	FinalNode(qReal::Id const &idBinded, bool inMainDigram, QObject *parent = 0);
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
@@ -25,7 +23,5 @@ private:
 	bool const mInMainDiagram;
 };
 
-}
-}
 }
 }

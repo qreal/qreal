@@ -1,6 +1,7 @@
 #include "generatorBase/parts/engines.h"
 
-using namespace qReal::robots::generators::parts;
+using namespace generatorBase::parts;
+using namespace qReal;
 
 Engines::Engines(QString const &pathToTemplates
 		, simple::Binding::ConverterInterface const *outputPortConverter

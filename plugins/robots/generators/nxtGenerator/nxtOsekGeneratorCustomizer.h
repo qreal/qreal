@@ -3,24 +3,18 @@
 #include <generatorBase/generatorCustomizer.h>
 #include "nxtOsekGeneratorFactory.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace nxtOsek {
 
-class NxtOsekGeneratorCustomizer : public GeneratorCustomizer
+class NxtOsekGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
 	NxtOsekGeneratorCustomizer(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter);
 
-	virtual GeneratorFactoryBase *factory();
+	virtual generatorBase::GeneratorFactoryBase *factory();
 
 private:
 	NxtOsekGeneratorFactory mFactory;
 };
 
-}
-}
-}
 }

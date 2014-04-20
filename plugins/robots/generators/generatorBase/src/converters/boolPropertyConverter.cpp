@@ -1,6 +1,7 @@
 #include "boolPropertyConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 BoolPropertyConverter::BoolPropertyConverter(QString const &pathToTemplates
 		, simple::Binding::ConverterInterface const *inputPortConverter

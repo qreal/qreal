@@ -7,9 +7,7 @@
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 namespace enums {
 namespace variableType {
@@ -87,7 +85,5 @@ private:
 	QStringList mManualDeclarations;
 };
 
-}
-}
 }
 }

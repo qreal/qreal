@@ -2,9 +2,7 @@
 
 #include "simpleBlockRuleBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A base for all rules applied to blocks with simple semantics who lead to a
@@ -12,7 +10,7 @@ namespace semantics {
 class SimpleVisitedRuleBase : public SimpleBlockRuleBase
 {
 public:
-	SimpleVisitedRuleBase(SemanticTree *tree, Id const &id, LinkInfo const &next);
+	SimpleVisitedRuleBase(SemanticTree *tree, qReal::Id const &id, LinkInfo const &next);
 
 	virtual bool apply();
 
@@ -21,7 +19,5 @@ protected:
 	NonZoneNode *mNextNode;  // Doesn`t take ownership
 };
 
-}
-}
 }
 }

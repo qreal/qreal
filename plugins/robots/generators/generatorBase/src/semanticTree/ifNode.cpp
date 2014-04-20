@@ -2,7 +2,8 @@
 
 #include <qrutils/stringUtils.h>
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 IfNode::IfNode(Id const &idBinded, QObject *parent)
 	: ConditionalNode(idBinded, parent)

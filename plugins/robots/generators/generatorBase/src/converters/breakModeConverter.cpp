@@ -1,6 +1,7 @@
 #include "breakModeConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 BreakModeConverter::BreakModeConverter(QString const &pathToTemplates)
 	: EnumConverterBase(pathToTemplates)

@@ -2,26 +2,20 @@
 
 #include <generatorBase/masterGeneratorBase.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace trik {
 
 /// Master generator implementation for TRIK platform
-class TrikMasterGenerator : public MasterGeneratorBase
+class TrikMasterGenerator : public generatorBase::MasterGeneratorBase
 {
 public:
 	TrikMasterGenerator(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter
-			, Id const &diagramId);
+			, qReal::ErrorReporterInterface &errorReporter
+			, qReal::Id const &diagramId);
 
 protected:
-	GeneratorCustomizer *createCustomizer() override;
+	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
 };
 
-}
-}
-}
 }

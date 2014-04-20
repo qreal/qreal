@@ -1,7 +1,8 @@
 #include "waitForSoundBlockGenerator.h"
 #include "generatorBase/generatorCustomizer.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 WaitForSoundBlockGenerator::WaitForSoundBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

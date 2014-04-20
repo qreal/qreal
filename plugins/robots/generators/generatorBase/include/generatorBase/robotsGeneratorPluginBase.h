@@ -9,9 +9,7 @@
 #include "robotsGeneratorDeclSpec.h"
 #include "masterGeneratorBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public qReal::ToolPluginInterface
 {
@@ -72,6 +70,4 @@ protected:
 	QMultiHash<qReal::Id, QFileInfo> mCodePath;
 };
 
-}
-}
 }

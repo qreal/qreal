@@ -2,9 +2,7 @@
 
 #include "generatorBase/simpleGenerators/bindingGenerator.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace simple {
 
 /// Generator for 'ClearScreen' block
@@ -13,11 +11,9 @@ class ClearScreenBlockGenerator : public BindingGenerator
 public:
 	ClearScreenBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
-			, Id const &id
+			, qReal::Id const &id
 			, QObject *parent = 0);
 };
 
-}
-}
 }
 }

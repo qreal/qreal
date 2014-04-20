@@ -1,6 +1,7 @@
 #include "finalNodeGenerator.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 FinalNodeGenerator::FinalNodeGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

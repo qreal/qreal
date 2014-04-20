@@ -1,6 +1,7 @@
 #include "initialNodeGenerator.h"
 
-using namespace qReal::robots::generators::simple;
+using namespace generatorBase::simple;
+using namespace qReal;
 
 InitialNodeGenerator::InitialNodeGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer

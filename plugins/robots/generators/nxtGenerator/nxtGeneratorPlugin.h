@@ -11,15 +11,13 @@
 #include <generatorBase/robotsGeneratorPluginBase.h>
 #include "nxtFlashTool.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace nxtOsek {
 
 /// Main plugin class for NXT code generator. Provides generator that generates
 /// C code for nxtOSEK from robot diagrams, and interface for standalone nxt-tools
 /// toolset, used to compile generated sources and flash them to robot, or
 /// install nxtOSEK on a robot.
-class NxtGeneratorPlugin : public RobotsGeneratorPluginBase
+class NxtGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID "qReal.robots.generator.NxtGeneratorPlugin")
@@ -33,7 +31,7 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 protected:
-	MasterGeneratorBase *masterGenerator() override;
+	generatorBase::MasterGeneratorBase *masterGenerator() override;
 	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
 	QString defaultFilePath(QString const &projectName) const override;
 	QString extension() const override;
@@ -82,6 +80,4 @@ private:
 	QTranslator mAppTranslator;
 };
 
-}
-}
 }

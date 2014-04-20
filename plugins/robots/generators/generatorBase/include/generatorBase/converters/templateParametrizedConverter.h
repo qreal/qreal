@@ -3,9 +3,7 @@
 #include "generatorBase/simpleGenerators/binding.h"
 #include "generatorBase/templateParametrizedEntity.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// A base class for all converters that use external templates
@@ -17,7 +15,5 @@ public:
 	virtual ~TemplateParametrizedConverter();
 };
 
-}
-}
 }
 }

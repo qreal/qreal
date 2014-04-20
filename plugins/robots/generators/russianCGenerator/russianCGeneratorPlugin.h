@@ -2,12 +2,10 @@
 
 #include <generatorBase/robotsGeneratorPluginBase.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace russianC {
 
 /// Main plugin class for russian C code generator
-class RussianCGeneratorPlugin : public RobotsGeneratorPluginBase
+class RussianCGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID "qReal.robots.generator.RussianCGeneratorPlugin")
@@ -20,7 +18,7 @@ public:
 	virtual QList<qReal::ActionInfo> actions();
 
 protected:
-	virtual MasterGeneratorBase *masterGenerator();
+	virtual generatorBase::MasterGeneratorBase *masterGenerator();
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
 	virtual QString defaultFilePath(QString const &projectName) const;
 	virtual QString extension() const;
@@ -37,6 +35,4 @@ private:
 	QTranslator mAppTranslator;
 };
 
-}
-}
 }

@@ -2,16 +2,14 @@
 
 #include "../semanticTransformationRule.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A base class for all if-block semantic transformation rules
 class IfBlockRuleBase : public SemanticTransformationRule
 {
 public:
-	IfBlockRuleBase(SemanticTree *tree, Id const &id
+	IfBlockRuleBase(SemanticTree *tree, qReal::Id const &id
 			, LinkInfo const &thenLink, LinkInfo const &elseLink);
 
 protected:
@@ -19,7 +17,5 @@ protected:
 	LinkInfo const &mElseLink;
 };
 
-}
-}
 }
 }

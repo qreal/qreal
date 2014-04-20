@@ -5,30 +5,26 @@
 #include <generatorBase/parts/subprograms.h>
 #include <qrutils/expressionsParser/textExpressionProcessorBase.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace nxtOsek {
 namespace converters {
 
 /// Splits given string selecting just numbers and returns converted output port values
-class NxtStringPropertyConverter : public StringPropertyConverter
+class NxtStringPropertyConverter : public generatorBase::converters::StringPropertyConverter
 		, public utils::TextExpressionProcessorBase
 {
 public:
-	NxtStringPropertyConverter(parts::Variables const &variables
-			, parts::Subprograms &subprograms);
+	NxtStringPropertyConverter(generatorBase::parts::Variables const &variables
+			, generatorBase::parts::Subprograms &subprograms);
 
-	virtual QString convert(QString const &data) const;
+	QString convert(QString const &data) const override;
 
 protected:
-	virtual bool variableExists(QString const &variable) const;
-	virtual QString value(QString const &variable) const;
+	bool variableExists(QString const &variable) const override;
+	QString value(QString const &variable) const override;
 
 private:
-	parts::Variables const &mVariables;
+	generatorBase::parts::Variables const &mVariables;
 };
 
-}
-}
 }
 }

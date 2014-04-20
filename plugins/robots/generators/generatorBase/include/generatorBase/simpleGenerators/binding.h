@@ -5,9 +5,7 @@
 #include <qrrepo/repoApi.h>
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace simple {
 
 /// Binds property from repo or a static string to a given substring of a given data
@@ -65,7 +63,7 @@ public:
 	/// specified property value from repo with pre-converting it using
 	/// specified converter.
 	void apply(qrRepo::RepoApi const &repoApi
-			, Id const &id, QString &data);
+			, qReal::Id const &id, QString &data);
 
 private:
 	Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo);
@@ -85,7 +83,5 @@ private:
 	MultiConverterInterface const *mMultiConverter; // Takes ownership
 };
 
-}
-}
 }
 }

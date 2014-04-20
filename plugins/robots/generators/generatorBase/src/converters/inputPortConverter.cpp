@@ -1,6 +1,7 @@
 #include "inputPortConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 InputPortConverter::InputPortConverter(QString const &pathToTemplates)
 	: EnumConverterBase(pathToTemplates)

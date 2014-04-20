@@ -2,7 +2,7 @@
 
 #include <QtCore/QStringList>
 
-using namespace qReal::robots::generators::parts;
+using namespace generatorBase::parts;
 
 Images::Images(QString const &pathToTemplates)
 	: TemplateParametrizedEntity(pathToTemplates)

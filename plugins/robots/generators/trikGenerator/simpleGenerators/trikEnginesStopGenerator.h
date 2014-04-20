@@ -2,22 +2,18 @@
 
 #include <generatorBase/simpleGenerators/bindingGenerator.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace trik {
 namespace simple {
 
 /// Generator for 'EnginesStop' block
-class TrikEnginesStopGenerator : public BindingGenerator
+class TrikEnginesStopGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
 	TrikEnginesStopGenerator(qrRepo::RepoApi const &repo
-			, GeneratorCustomizer &customizer
-			, Id const &id
+			, generatorBase::GeneratorCustomizer &customizer
+			, qReal::Id const &id
 			, QObject *parent = 0);
 };
 
-}
-}
 }
 }

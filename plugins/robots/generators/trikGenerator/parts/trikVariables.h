@@ -2,23 +2,19 @@
 
 #include <generatorBase/parts/variables.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace trik {
 namespace parts {
 
 /// Adds corrections to default variables management
-class TrikVariables : public Variables
+class TrikVariables : public generatorBase::parts::Variables
 {
 public:
 	explicit TrikVariables(QString const &pathToTemplates);
 
 protected:
-	virtual QMap<QString, int> intConstants() const;
-	virtual QMap<QString, float> floatConstants() const;
+	QMap<QString, int> intConstants() const override;
+	QMap<QString, float> floatConstants() const override;
 };
 
-}
-}
 }
 }

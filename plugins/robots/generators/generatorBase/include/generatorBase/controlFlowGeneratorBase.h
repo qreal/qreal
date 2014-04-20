@@ -5,9 +5,7 @@
 #include "robotsDiagramVisitor.h"
 #include "semanticTree/semanticTree.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 
 /// A base class for generators that build sementic tree from model in repo
 class ROBOTS_GENERATOR_EXPORT ControlFlowGeneratorBase : public QObject, public RobotsDiagramVisitor
@@ -19,9 +17,9 @@ public:
 	/// (main diagram is the one which was active when user requested generation)
 	ControlFlowGeneratorBase(
 			qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter
+			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, Id const &diagramId
+			, qReal::Id const &diagramId
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
 	virtual ~ControlFlowGeneratorBase();
@@ -33,7 +31,7 @@ public:
 	/// Copies this generator and returns new instance which is owned by the same
 	/// parent. Implementation must pay attention to isThisDiagramMain parameter
 	/// (it should be always false in copied objects)
-	virtual ControlFlowGeneratorBase *cloneFor(Id const &diagramId) = 0;
+	virtual ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId) = 0;
 
 	/// Generates control flow object representation (SemanticTree) and returns
 	/// a pointer to it if generation process was successfull or NULL otherwise.
@@ -45,27 +43,25 @@ public:
 	bool errorsOccured() const;
 
 protected:
-	void error(QString const &message, Id const &id = Id(), bool critical = true);
+	void error(QString const &message, qReal::Id const &id = qReal::Id(), bool critical = true);
 
-	enums::semantics::Semantics semanticsOf(Id const &id) const;
-	Id initialNode() const;
-	QPair<LinkInfo, LinkInfo> ifBranchesFor(Id const &id) const;
-	QPair<LinkInfo, LinkInfo> loopBranchesFor(Id const &id) const;
+	enums::semantics::Semantics semanticsOf(qReal::Id const &id) const;
+	qReal::Id initialNode() const;
+	QPair<LinkInfo, LinkInfo> ifBranchesFor(qReal::Id const &id) const;
+	QPair<LinkInfo, LinkInfo> loopBranchesFor(qReal::Id const &id) const;
 
 	GeneratorCustomizer &customizer() const;
 
 	semantics::SemanticTree *mSemanticTree;  // Takes ownership
 	qrRepo::RepoApi const &mRepo;
-	ErrorReporterInterface &mErrorReporter;
+	qReal::ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
 	bool mErrorsOccured;
 	bool const mIsMainGenerator;
 
 private:
-	Id const mDiagram;
+	qReal::Id const mDiagram;
 	PrimaryControlFlowValidator mValidator;
 };
 
-}
-}
 }

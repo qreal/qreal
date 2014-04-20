@@ -2,7 +2,8 @@
 
 #include "generatorBase/semanticTree/loopNode.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 SimpleVisitedOneZoneRule::SimpleVisitedOneZoneRule(SemanticTree *tree, Id const &id
 		, LinkInfo const &next)

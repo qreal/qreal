@@ -3,7 +3,8 @@
 #include <qrutils/inFile.h>
 #include <qrgui/mainwindow/qscintillaTextEdit.h>
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 using namespace gui;
 
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()

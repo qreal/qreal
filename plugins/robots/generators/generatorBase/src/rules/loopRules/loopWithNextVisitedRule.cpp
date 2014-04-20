@@ -1,6 +1,7 @@
 #include "loopWithNextVisitedRule.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 LoopWithNextVisitedRule::LoopWithNextVisitedRule(SemanticTree *tree
 		, Id const &id, LinkInfo const &iterationLink, LinkInfo const &nextLink)

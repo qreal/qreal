@@ -2,14 +2,11 @@
 
 #include <generatorBase/robotsGeneratorPluginBase.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace trik {
 
 /// Generation of QtScript program for TRIK, uploading and execution of a program.
 /// Uses settings "tcpServer" and "tcpPort" from RobotsInterpreter.
-class TrikGeneratorPlugin : public RobotsGeneratorPluginBase
+class TrikGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
 	Q_PLUGIN_METADATA(IID "qReal.robots.trikGenerator.TrikGeneratorPlugin")
@@ -19,15 +16,15 @@ public:
 
 	virtual ~TrikGeneratorPlugin();
 
-	virtual QList<qReal::ActionInfo> actions();
+	QList<qReal::ActionInfo> actions() override;
 
 protected:
-	virtual MasterGeneratorBase *masterGenerator();
-	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
-	virtual QString defaultFilePath(QString const &projectName) const;
-	virtual QString extension() const;
-	virtual QString extDescrition() const;
-	virtual QString generatorName() const;
+	generatorBase::MasterGeneratorBase *masterGenerator() override;
+	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
+	QString defaultFilePath(QString const &projectName) const override;
+	QString extension() const override;
+	QString extDescrition() const override;
+	QString generatorName() const override;
 
 private slots:
 
@@ -59,7 +56,4 @@ private:
 	QTranslator mAppTranslator;
 };
 
-}
-}
-}
 }

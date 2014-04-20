@@ -1,6 +1,7 @@
 #include "simpleMergedIfBranchesRule.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 SimpleMergedIfBranchesRule::SimpleMergedIfBranchesRule(SemanticTree *tree
 		, Id const &id, LinkInfo const &next)

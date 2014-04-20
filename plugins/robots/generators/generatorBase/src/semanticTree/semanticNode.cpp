@@ -2,7 +2,8 @@
 
 #include <qrutils/stringUtils.h>
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 SemanticNode::SemanticNode(Id const &idBinded, QObject *parent)
 	: QObject(parent)
@@ -12,12 +13,12 @@ SemanticNode::SemanticNode(Id const &idBinded, QObject *parent)
 {
 }
 
-qReal::Id SemanticNode::id() const
+Id SemanticNode::id() const
 {
 	return mId;
 }
 
-void SemanticNode::bindTo(qReal::Id const &id)
+void SemanticNode::bindTo(Id const &id)
 {
 	mId = id;
 }
@@ -32,7 +33,7 @@ void SemanticNode::addLabel()
 	mLabeled = true;
 }
 
-QString SemanticNode::toString(qReal::robots::generators::GeneratorCustomizer &customizer, int indent) const
+QString SemanticNode::toString(GeneratorCustomizer &customizer, int indent) const
 {
 	return (mLabeled
 			? utils::StringUtils::addIndent(customizer.factory()->labelGenerator(mId
@@ -40,7 +41,7 @@ QString SemanticNode::toString(qReal::robots::generators::GeneratorCustomizer &c
 			: QString()) + toStringImpl(customizer, indent);
 }
 
-SemanticNode *SemanticNode::findNodeFor(qReal::Id const &id)
+SemanticNode *SemanticNode::findNodeFor(Id const &id)
 {
 	if (id == mId) {
 		return this;

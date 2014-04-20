@@ -4,9 +4,7 @@
 
 #include "generatorBase/converters/templateParametrizedConverter.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// A base class for converters that have finite input cases number and
@@ -26,7 +24,5 @@ private:
 	QMap<QString, QString> mValuesToTemplates;
 };
 
-}
-}
 }
 }

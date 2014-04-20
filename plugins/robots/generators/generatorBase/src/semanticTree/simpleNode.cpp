@@ -3,7 +3,8 @@
 #include <qrutils/stringUtils.h>
 #include "generatorBase/semanticTree/zoneNode.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)

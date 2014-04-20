@@ -2,16 +2,14 @@
 
 #include "zoneNode.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A base for all semantic nodes except zones
 class NonZoneNode : public SemanticNode
 {
 public:
-	explicit NonZoneNode(Id const &idBinded, QObject *parent = 0);
+	explicit NonZoneNode(qReal::Id const &idBinded, QObject *parent = 0);
 
 	ZoneNode *parentZone();
 
@@ -20,7 +18,5 @@ public:
 	void insertSiblingAfterThis(SemanticNode *node);
 };
 
-}
-}
 }
 }

@@ -2,9 +2,7 @@
 
 #include "enumConverterBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Converts given function invocation into useful generator-dependent code.
@@ -17,6 +15,3 @@ public:
 
 }
 }
-}
-}
-

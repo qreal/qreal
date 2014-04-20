@@ -1,16 +1,16 @@
 #include "trikMasterGenerator.h"
 #include "trikGeneratorCustomizer.h"
 
-using namespace qReal::robots::generators::trik;
+using namespace trik;
 
 TrikMasterGenerator::TrikMasterGenerator(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter
-		, Id const &diagramId)
+		, qReal::ErrorReporterInterface &errorReporter
+		, qReal::Id const &diagramId)
 	: MasterGeneratorBase(repo, errorReporter, diagramId)
 {
 }
 
-qReal::robots::generators::GeneratorCustomizer *TrikMasterGenerator::createCustomizer()
+generatorBase::GeneratorCustomizer *TrikMasterGenerator::createCustomizer()
 {
 	return new TrikGeneratorCustomizer(mRepo, mErrorReporter);
 }

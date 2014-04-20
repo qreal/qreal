@@ -1,6 +1,7 @@
 #include "generatorBase/generatorCustomizer.h"
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 
 GeneratorCustomizer::GeneratorCustomizer()
 	: mDefaultInitialBlockType("RobotsMetamodel", "RobotsDiagram", "InitialNode")

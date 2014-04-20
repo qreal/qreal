@@ -12,7 +12,8 @@
 #include "rules/loopRules/loopWithIterationVisitedRule.h"
 #include "rules/loopRules/loopWithNextVisitedRule.h"
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 using namespace semantics;
 
 ReadableControlFlowGenerator::ReadableControlFlowGenerator(

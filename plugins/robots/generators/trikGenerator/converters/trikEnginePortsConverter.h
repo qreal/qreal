@@ -2,21 +2,17 @@
 
 #include <generatorBase/converters/templateParametrizedMultiConverter.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace trik {
 namespace converters {
 
 /// Splits given string selecting just numbers and returns converted output port values
-class TrikEnginePortsConverter : public TemplateParametrizedMultiConverter
+class TrikEnginePortsConverter : public generatorBase::converters::TemplateParametrizedMultiConverter
 {
 public:
 	explicit TrikEnginePortsConverter(QString const &pathToTemplates);
 
-	virtual QStringList convert(QString const &data) const;
+	QStringList convert(QString const &data) const override;
 };
 
-}
-}
 }
 }

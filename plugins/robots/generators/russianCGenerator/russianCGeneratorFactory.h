@@ -2,24 +2,18 @@
 
 #include <generatorBase/generatorFactoryBase.h>
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace russianC {
 
-class RussianCGeneratorFactory : public GeneratorFactoryBase
+class RussianCGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
 	RussianCGeneratorFactory(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter);
 	virtual ~RussianCGeneratorFactory();
 
-	virtual QString pathToTemplates() const;
+	QString pathToTemplates() const override;
 
-	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
+	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
 };
 
-}
-}
-}
 }

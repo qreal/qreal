@@ -2,9 +2,7 @@
 
 #include "enumConverterBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Converts input string into generate-dependent type identifier. Possible inputs:
@@ -15,7 +13,5 @@ public:
 	explicit TypeConverter(QString const &pathToTemplates);
 };
 
-}
-}
 }
 }

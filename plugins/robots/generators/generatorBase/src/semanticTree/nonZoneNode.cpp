@@ -1,6 +1,7 @@
 #include "generatorBase/semanticTree/nonZoneNode.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 NonZoneNode::NonZoneNode(Id const &idBinded, QObject *parent)
 	: SemanticNode(idBinded, parent)

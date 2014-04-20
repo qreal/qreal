@@ -5,9 +5,7 @@
 
 #include "generatorBase/simpleGenerators/bindingGenerator.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace simple {
 
 /// A base for all generators for drawing blocks
@@ -16,7 +14,7 @@ class DrawBlockGenerator : public BindingGenerator
 public:
 	DrawBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
-			, Id const &id
+			, qReal::Id const &id
 			, QObject *parent = 0);
 
 	virtual QString generate();
@@ -29,7 +27,5 @@ private:
 	QString imageName(GeneratorCustomizer &customizer) const;
 };
 
-}
-}
 }
 }

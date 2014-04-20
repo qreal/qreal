@@ -1,6 +1,7 @@
 #include "outputPortConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 OutputPortConverter::OutputPortConverter(QString const &pathToTemplates)
 	: EnumConverterBase(pathToTemplates)

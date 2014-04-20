@@ -2,9 +2,7 @@
 
 #include "simpleVisitedRuleBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// This rule is applied to blocks with simple semantics when it creates infinite cycle
@@ -13,13 +11,10 @@ namespace semantics {
 class SimpleIfInsideCycleRule : public SimpleVisitedRuleBase
 {
 public:
-	SimpleIfInsideCycleRule(SemanticTree *tree, Id const &id, LinkInfo const &next);
+	SimpleIfInsideCycleRule(SemanticTree *tree, qReal::Id const &id, LinkInfo const &next);
 
 	virtual bool apply();
 };
 
 }
 }
-}
-}
-

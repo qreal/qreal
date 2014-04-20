@@ -2,8 +2,8 @@
 
 #include "generatorBase/controlFlowGeneratorBase.h"
 
+using namespace generatorBase::parts;
 using namespace qReal;
-using namespace robots::generators::parts;
 
 Subprograms::Subprograms(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter

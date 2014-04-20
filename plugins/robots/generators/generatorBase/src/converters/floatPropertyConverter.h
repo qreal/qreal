@@ -2,9 +2,7 @@
 
 #include "codeConverterBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Processes input string treating it as an expression of the float type.
@@ -17,7 +15,5 @@ public:
 			, simple::Binding::ConverterInterface const *functionInvocationsConverter);
 };
 
-}
-}
 }
 }

@@ -2,9 +2,7 @@
 
 #include "generatorBase/simpleGenerators/bindingGenerator.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace simple {
 
 /// Generator for 'break' construction
@@ -13,11 +11,9 @@ class BreakGenerator : public BindingGenerator
 public:
 	BreakGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
-			, Id const &id
+			, qReal::Id const &id
 			, QObject *parent = 0);
 };
 
-}
-}
 }
 }

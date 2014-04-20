@@ -2,9 +2,7 @@
 
 #include "enumConverterBase.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace converters {
 
 /// Converts 'Color' enum in WaitForColor blocks into generator-specific code.
@@ -15,7 +13,5 @@ public:
 	explicit ColorConverter(QString const &pathToTemplates);
 };
 
-}
-}
 }
 }

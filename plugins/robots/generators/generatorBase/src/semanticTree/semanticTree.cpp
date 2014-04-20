@@ -4,7 +4,8 @@
 #include "generatorBase/semanticTree/ifNode.h"
 #include "generatorBase/semanticTree/loopNode.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 SemanticTree::SemanticTree(GeneratorCustomizer &customizer, Id const &initialBlock
 		, bool isMainTree, QObject *parent)

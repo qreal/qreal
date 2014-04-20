@@ -1,6 +1,7 @@
 #include "ifWithOneVisitedRule.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 IfWithOneVisitedRule::IfWithOneVisitedRule(SemanticTree *tree, Id const &id
 		, LinkInfo const &thenLink, LinkInfo const &elseLink)

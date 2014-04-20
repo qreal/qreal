@@ -11,9 +11,8 @@
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/simpleGenerators/binding.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
+
 class ControlFlowGeneratorBase;
 
 namespace parts {
@@ -25,7 +24,7 @@ class ROBOTS_GENERATOR_EXPORT Subprograms : public TemplateParametrizedEntity
 {
 public:
 	Subprograms(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter
+			, qReal::ErrorReporterInterface &errorReporter
 			, QString const &pathToTemplates
 			, simple::Binding::ConverterInterface const *nameNormalizer);
 
@@ -33,7 +32,7 @@ public:
 
 	/// Must be called each time when visitor has found subprogram call
 	/// @param logicalId Logical id of the block which calls subprogram
-	void usageFound(Id const &logicalId);
+	void usageFound(qReal::Id const &logicalId);
 
 	/// Starts subprograms code generation process
 	bool generate(ControlFlowGeneratorBase *mainGenerator);
@@ -46,26 +45,26 @@ public:
 private:
 	bool checkIdentifier(QString const &identifier, QString const &rawName);
 
-	void mergeCode(QMap<Id, QString> const &declarations
-			, QMap<Id, QString> const &implementations);
+	void mergeCode(QMap<qReal::Id, QString> const &declarations
+			, QMap<qReal::Id, QString> const &implementations);
 
 	QString generateManualDeclarations() const;
 
 	// TODO: this must be obtained via models or smth
-	Id graphicalId(Id const &logicalId) const;
+	qReal::Id graphicalId(qReal::Id const &logicalId) const;
 
-	Id firstToGenerate() const;
+	qReal::Id firstToGenerate() const;
 
-	QString readSubprogramTemplate(Id const &id, QString const &pathToTemplate);
+	QString readSubprogramTemplate(qReal::Id const &id, QString const &pathToTemplate);
 
 	qrRepo::RepoApi const &mRepo;
-	ErrorReporterInterface &mErrorReporter;
+	qReal::ErrorReporterInterface &mErrorReporter;
 	simple::Binding::ConverterInterface const *mNameNormalizer;  // Takes ownership
 
 	/// Stores all found by generator diagrams with subprograms implementation.
 	/// Bool value means if key diagram was already processed and generated into
 	/// the code.
-	QMap<Id, bool> mDiscoveredSubprograms;
+	QMap<qReal::Id, bool> mDiscoveredSubprograms;
 
 	QStringList mGeneratedCode;
 
@@ -74,7 +73,5 @@ private:
 	QMap<QString, QString> mManualDeclarations;
 };
 
-}
-}
 }
 }

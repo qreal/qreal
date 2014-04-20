@@ -3,12 +3,13 @@
 #include <generatorBase/parts/engines.h>
 #include <generatorBase/generatorCustomizer.h>
 
-using namespace qReal::robots::generators::simple;
+using namespace trik::simple;
+using namespace generatorBase::simple;
 
 // TODO: implement servos generation
 TrikEnginesGenerator::TrikEnginesGenerator(qrRepo::RepoApi const &repo
-		, GeneratorCustomizer &customizer
-		, Id const &id
+		, generatorBase::GeneratorCustomizer &customizer
+		, qReal::Id const &id
 		, QString const &engineType
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id

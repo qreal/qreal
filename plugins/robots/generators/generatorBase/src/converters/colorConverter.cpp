@@ -1,6 +1,7 @@
 #include "colorConverter.h"
 
-using namespace qReal::robots::generators::converters;
+using namespace generatorBase::converters;
+using namespace qReal;
 
 ColorConverter::ColorConverter(QString const &pathToTemplates)
 	: EnumConverterBase(pathToTemplates)

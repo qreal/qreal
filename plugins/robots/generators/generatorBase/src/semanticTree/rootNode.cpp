@@ -2,7 +2,8 @@
 
 #include "generatorBase/semanticTree/simpleNode.h"
 
-using namespace qReal::robots::generators::semantics;
+using namespace generatorBase::semantics;
+using namespace qReal;
 
 RootNode::RootNode(Id const &initialBlock, QObject *parent)
 	: SemanticNode(Id(), parent)

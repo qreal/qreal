@@ -3,24 +3,18 @@
 #include <generatorBase/generatorCustomizer.h>
 #include "trikGeneratorFactory.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
 namespace trik {
 
-class TrikGeneratorCustomizer : public GeneratorCustomizer
+class TrikGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
 	TrikGeneratorCustomizer(qrRepo::RepoApi const &repo
-			, ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter);
 
-	virtual GeneratorFactoryBase *factory();
+	generatorBase::GeneratorFactoryBase *factory() override;
 
 private:
 	TrikGeneratorFactory mFactory;
 };
 
-}
-}
-}
 }

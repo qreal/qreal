@@ -1,7 +1,8 @@
 
 #include "generatorBase/primaryControlFlowValidator.h"
 
-using namespace qReal::robots::generators;
+using namespace generatorBase;
+using namespace qReal;
 
 PrimaryControlFlowValidator::PrimaryControlFlowValidator(
 		qrRepo::RepoApi const &repo

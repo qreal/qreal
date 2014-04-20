@@ -2,16 +2,14 @@
 
 #include "../semanticTransformationRule.h"
 
-namespace qReal {
-namespace robots {
-namespace generators {
+namespace generatorBase {
 namespace semantics {
 
 /// A base class for all transformation rules for loops
 class LoopBlockRuleBase : public SemanticTransformationRule
 {
 public:
-	LoopBlockRuleBase(SemanticTree *tree, Id const &id
+	LoopBlockRuleBase(SemanticTree *tree, qReal::Id const &id
 			, LinkInfo const &iterationLink, LinkInfo const &nextLink);
 
 protected:
@@ -19,7 +17,5 @@ protected:
 	LinkInfo const &mNextLink;
 };
 
-}
-}
 }
 }
