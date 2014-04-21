@@ -8,7 +8,15 @@
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
-#include <interpreterBase/robotModel/robotParts/colorSensor.h>
+
+/// @todo They kind of the same sensors as in real NXT model, but they are not part of interpreterBase model, so
+///       they can't be used directly.
+#include <commonTwoDModel/robotModel/parts/colorSensorBlue.h>
+#include <commonTwoDModel/robotModel/parts/colorSensorFull.h>
+#include <commonTwoDModel/robotModel/parts/colorSensorGreen.h>
+#include <commonTwoDModel/robotModel/parts/colorSensorPassive.h>
+#include <commonTwoDModel/robotModel/parts/colorSensorRed.h>
+
 #include <interpreterBase/robotModel/robotParts/soundSensor.h>
 #include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
 #include <interpreterBase/robotModel/robotParts/accelerometerSensor.h>
@@ -25,11 +33,11 @@ TwoDRobotModel::TwoDRobotModel()
 			DeviceInfo::create<robotParts::TouchSensor>()
 			, DeviceInfo::create<robotParts::RangeSensor>()
 			, DeviceInfo::create<robotParts::LightSensor>()
-			, DeviceInfo::create<robotParts::ColorSensor>()
-// These are not supported in 2d model.
-//			, DeviceInfo::create<robotParts::SoundSensor>()
-//			, DeviceInfo::create<robotParts::GyroscopeSensor>()
-//			, DeviceInfo::create<robotParts::AccelerometerSensor>()
+			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorBlue>()
+			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorFull>()
+			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorGreen>()
+			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorPassive>()
+			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorRed>()
 	};
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { DeviceInfo::create<robotParts::Display>() });

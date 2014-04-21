@@ -7,7 +7,7 @@ using namespace interpreterBase::robotModel;
 GyroscopeSensor::GyroscopeSensor(DeviceInfo const &info, PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::GyroscopeSensor(info, port)
-	, mImplementation(*this, robotCommunicator, port, enums::lowLevelSensorType::ANGLE, enums::sensorMode::RAWMODE)
+	, mImplementation(robotCommunicator, port, enums::lowLevelSensorType::ANGLE, enums::sensorMode::RAWMODE)
 {
 	connect(&mImplementation, &NxtInputDevice::sensorSpecificProcessResponse
 			, this, &GyroscopeSensor::sensorSpecificProcessResponse);

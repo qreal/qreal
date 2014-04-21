@@ -64,7 +64,7 @@ public:
 
 	int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 	int readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const override;
-//	int readColorSensor(interpreterBase::robotModel::PortInfo const &port) const override;
+	int readColorSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 	int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 
 	void showModelWidget();

@@ -9,7 +9,7 @@ int const maxLightValue = 1023;
 LightSensor::LightSensor(DeviceInfo const &info, PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::LightSensor(info, port)
-	, mImplementation(*this, robotCommunicator, port
+	, mImplementation(robotCommunicator, port
 			, enums::lowLevelSensorType::LIGHT_ACTIVE, enums::sensorMode::RAWMODE)
 {
 	connect(&mImplementation, &NxtInputDevice::sensorSpecificProcessResponse

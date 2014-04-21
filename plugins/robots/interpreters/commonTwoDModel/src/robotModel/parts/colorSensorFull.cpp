@@ -1,10 +1,25 @@
-#include "colorSensorFull.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorFull.h"
 
-using namespace nxtKitInterpreter::robotModel::real::parts;
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
+using namespace twoDModel::robotModel::parts;
+using namespace interpreterBase::robotModel;
 
 ColorSensorFull::ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &info
 		, interpreterBase::robotModel::PortInfo const &port
-		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: ColorSensor(info, port, robotCommunicator, enums::lowLevelSensorType::COLORFULL)
+		, engine::TwoDModelEngineInterface &engine)
+	: interpreterBase::robotModel::robotParts::ColorSensorFull(info, port)
+	, mEngine(engine)
 {
+}
+
+void ColorSensorFull::read()
+{
+	int reading = mEngine.readColorSensor(port());
+	emit newData(reading);
+}
+
+void ColorSensorFull::doConfiguration()
+{
+	configurationCompleted(true);
 }

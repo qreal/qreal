@@ -8,6 +8,17 @@ using namespace interpreterBase::robotModel;
 ColorSensorGreen::ColorSensorGreen(interpreterBase::robotModel::DeviceInfo const &info
 		, interpreterBase::robotModel::PortInfo const &port
 		, engine::TwoDModelEngineInterface &engine)
-	: ColorSensor(info, port, engine)
+	: interpreterBase::robotModel::robotParts::ColorSensorGreen(info, port)
+	, mEngine(engine)
 {
+}
+
+void ColorSensorGreen::read()
+{
+	emit newData(mEngine.readColorSensor(port()));
+}
+
+void ColorSensorGreen::doConfiguration()
+{
+	configurationCompleted(true);
 }

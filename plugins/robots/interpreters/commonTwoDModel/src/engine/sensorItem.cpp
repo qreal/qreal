@@ -3,10 +3,15 @@
 #include <QtGui/QCursor>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-#include <interpreterBase/robotModel/robotParts/colorSensor.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
+
+#include "commonTwoDModel/robotModel/parts/colorSensorFull.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorPassive.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorRed.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorGreen.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorBlue.h"
 
 using namespace twoDModel;
 using namespace graphicsUtils;
@@ -119,11 +124,17 @@ QString SensorItem::name() const
 	DeviceInfo const sensor = mConfiguration.type(mPort);
 	if (sensor.isA<robotParts::TouchSensor>()) {
 		return "touch";
-	} else if (sensor.isA<robotParts::ColorSensor>()) {
-		/// @todo Support various color sensor modes.
+	} else if (sensor.isA<twoDModel::robotModel::parts::ColorSensorFull>()
+			|| sensor.isA<twoDModel::robotModel::parts::ColorSensorPassive>())
+	{
 		return "color_empty";
-	}
-	if (sensor.isA<robotParts::RangeSensor>()) {
+	} else if (sensor.isA<twoDModel::robotModel::parts::ColorSensorRed>()) {
+		return "color_red";
+	} else if (sensor.isA<twoDModel::robotModel::parts::ColorSensorGreen>()) {
+		return "color_green";
+	} else if (sensor.isA<twoDModel::robotModel::parts::ColorSensorBlue>()) {
+		return "color_blue";
+	} else if (sensor.isA<robotParts::RangeSensor>()) {
 		return "sonar";
 	} else if (sensor.isA<robotParts::LightSensor>()) {
 		return "light";

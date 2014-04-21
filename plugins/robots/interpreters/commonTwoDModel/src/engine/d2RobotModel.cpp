@@ -15,6 +15,13 @@
 #include <interpreterBase/robotModel/robotParts/motor.h>
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorBlue.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorGreen.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
+
+#include <QtCore/QDebug>
 
 using namespace twoDModel;
 using namespace twoDModel::physics;
@@ -226,33 +233,33 @@ int D2RobotModel::spoilSonarReading(int const distance) const
 	return truncateToInterval(0, 255, round(distance + ran));
 }
 
-//int D2RobotModel::readColorSensor(robots::enums::inputPort::InputPortEnum const port) const
-//{
-//	QImage const image = printColorSensor(port);
-//	QHash<uint, int> countsColor;
+int D2RobotModel::readColorSensor(interpreterBase::robotModel::PortInfo const &port) const
+{
+	QImage const image = printColorSensor(port);
+	QHash<uint, int> countsColor;
 
-//	uint const *data = reinterpret_cast<uint const *>(image.bits());
-//	int const n = image.byteCount() / 4;
-//	for (int i = 0; i < n; ++i) {
-//		uint const color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
-//		++countsColor[color];
-//	}
+	uint const *data = reinterpret_cast<uint const *>(image.bits());
+	int const n = image.byteCount() / 4;
+	for (int i = 0; i < n; ++i) {
+		uint const color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
+		++countsColor[color];
+	}
 
-//	switch (mSensorsConfiguration.type(port)) {
-//	case robots::enums::sensorType::colorFull:
-//		return readColorFullSensor(countsColor);
-//	case robots::enums::sensorType::colorNone:
-//		return readColorNoneSensor(countsColor, n);
-//	case robots::enums::sensorType::colorRed:
-//		return readSingleColorSensor(red, countsColor, n);
-//	case robots::enums::sensorType::colorGreen:
-//		return readSingleColorSensor(green, countsColor, n);
-//	case robots::enums::sensorType::colorBlue:
-//		return readSingleColorSensor(blue, countsColor, n);
-//	default:
-//		return 0;
-//	}
-//}
+	if (mSensorsConfiguration.type(port).isA<interpreterBase::robotModel::robotParts::ColorSensorFull>()) {
+		return readColorFullSensor(countsColor);
+	} else if (mSensorsConfiguration.type(port).isA<interpreterBase::robotModel::robotParts::ColorSensorPassive>()) {
+		return readColorNoneSensor(countsColor, n);
+	} else if (mSensorsConfiguration.type(port).isA<interpreterBase::robotModel::robotParts::ColorSensorRed>()) {
+		return readSingleColorSensor(red, countsColor, n);
+	} else if (mSensorsConfiguration.type(port).isA<interpreterBase::robotModel::robotParts::ColorSensorGreen>()) {
+		return readSingleColorSensor(green, countsColor, n);
+	} else if (mSensorsConfiguration.type(port).isA<interpreterBase::robotModel::robotParts::ColorSensorBlue>()) {
+		return readSingleColorSensor(blue, countsColor, n);
+	}
+
+	qDebug() << "Incorrect 2d model sensor configuration";
+	return 0;
+}
 
 uint D2RobotModel::spoilColor(uint const color) const
 {
@@ -311,7 +318,7 @@ int D2RobotModel::readColorFullSensor(QHash<uint, int> const &countsColor) const
 
 	QList<int> const values = countsColor.values();
 	int maxValue = INT_MIN;
-	foreach (int value, values) {
+	for (int value : values) {
 		if (value > maxValue) {
 			maxValue = value;
 		}

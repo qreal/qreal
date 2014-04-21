@@ -36,7 +36,6 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/buttons.h \
 	$$PWD/robotModel/real/parts/motor.h \
 	$$PWD/robotModel/real/parts/touchSensor.h \
-	$$PWD/robotModel/real/parts/colorSensor.h \
 	$$PWD/robotModel/real/parts/colorSensorFull.h \
 	$$PWD/robotModel/real/parts/colorSensorRed.h \
 	$$PWD/robotModel/real/parts/colorSensorGreen.h \
@@ -47,6 +46,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/lightSensor.h \
 	$$PWD/robotModel/real/parts/sonarSensor.h \
 	$$PWD/robotModel/real/parts/soundSensor.h \
+	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 
 SOURCES += \
@@ -75,7 +75,6 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/buttons.cpp \
 	$$PWD/robotModel/real/parts/motor.cpp \
 	$$PWD/robotModel/real/parts/touchSensor.cpp \
-	$$PWD/robotModel/real/parts/colorSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensorFull.cpp \
 	$$PWD/robotModel/real/parts/colorSensorRed.cpp \
 	$$PWD/robotModel/real/parts/colorSensorGreen.cpp \
@@ -86,6 +85,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/lightSensor.cpp \
 	$$PWD/robotModel/real/parts/sonarSensor.cpp \
 	$$PWD/robotModel/real/parts/soundSensor.cpp \
+	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 
 FORMS += \

@@ -34,7 +34,7 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, QString const &
 			for (PortInfo const &port : usedSensors.keys()) {
 				DeviceInfo const device = usedSensors[port];
 				DeviceInfo const existingDevice = currentConfiguration(robotModelName, port);
-				if (!existingDevice.isNull() && existingDevice != device) {
+				if (!existingDevice.isNull() && !existingDevice.isA(device)) {
 					mErrorReporter.addError(QObject::tr("Sensor configuration conflict, please check that sensor"\
 							" ports are used consistently in a program"), child);
 					return false;

@@ -8,7 +8,7 @@ SonarSensor::SonarSensor(DeviceInfo const &info, PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 
 	: interpreterBase::robotModel::robotParts::RangeSensor(info, port)
-	, mImplementation(*this, robotCommunicator, port
+	, mImplementation(robotCommunicator, port
 			, enums::lowLevelSensorType::LOWSPEED_9V, enums::sensorMode::RAWMODE)
 	, mI2C(robotCommunicator)
 {

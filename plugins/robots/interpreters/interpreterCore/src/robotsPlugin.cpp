@@ -12,7 +12,7 @@ static int const gridWidth = 25; // Half of element size
 RobotsPlugin::RobotsPlugin()
 	: mMainWindowInterpretersInterface(nullptr)
 {
-	mAppTranslator.load(":/robotsInterpreter_" + QLocale::system().name());
+	mAppTranslator.load(":/interpreterCore_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
 }
 

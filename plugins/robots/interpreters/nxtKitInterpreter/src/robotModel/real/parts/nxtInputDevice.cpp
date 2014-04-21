@@ -5,8 +5,8 @@
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace utils;
 
-NxtInputDevice::NxtInputDevice(interpreterBase::robotModel::robotParts::AbstractSensor const &sensor
-		, utils::robotCommunication::RobotCommunicator &robotCommunicator
+NxtInputDevice::NxtInputDevice(
+		utils::robotCommunication::RobotCommunicator &robotCommunicator
 		, interpreterBase::robotModel::PortInfo const &port
 		, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, enums::sensorMode::SensorModeEnum const &sensorMode)
