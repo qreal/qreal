@@ -72,6 +72,8 @@ private:
 	/// List of actions from kit plugins.
 	QList<qReal::ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
 
+	QMap<QString, qReal::ActionInfo> mGeneratorActionsInfo;  // Does not have ownership over underlying QActions.
+
 	/// List of hotkey customizations from kit plugins.
 	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
 

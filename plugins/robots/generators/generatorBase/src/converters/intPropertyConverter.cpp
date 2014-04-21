@@ -4,6 +4,7 @@ using namespace generatorBase::converters;
 using namespace qReal;
 
 IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
+		, interpreterBase::robotModel::RobotModelInterface const &robotModel
 		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 		, simple::Binding::ConverterInterface const *inputPortConverter
 		, simple::Binding::ConverterInterface const *outputPortConverter
@@ -11,6 +12,7 @@ IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
 		, simple::Binding::ConverterInterface const *typeConverter
 		, parts::Variables const *variables)
 	: CodeConverterBase(pathToTemplates
+			, robotModel
 			, devices
 			, inputPortConverter
 			, outputPortConverter
