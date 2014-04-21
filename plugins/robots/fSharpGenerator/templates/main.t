@@ -1,4 +1,4 @@
-#r "Trik.Observable.dll"
+#r "../Trik.Observable.dll"
 
 open Trik
 open Trik.Helpers

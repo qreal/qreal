@@ -78,4 +78,3 @@ SOURCES += \
         $$PWD/simpleGenerators/fSharpEnginesGenerator.cpp \
         $$PWD/simpleGenerators/fSharpEnginesStopGenerator.cpp \
         $$PWD/simpleGenerators/waitForButtonGenerator.cpp \
-

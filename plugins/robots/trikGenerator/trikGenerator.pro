@@ -77,5 +77,3 @@ SOURCES += \
 	$$PWD/simpleGenerators/trikEnginesGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesStopGenerator.cpp \
 	$$PWD/simpleGenerators/waitForButtonGenerator.cpp \
-
-include(robotCommunication/robotCommunication.pri)

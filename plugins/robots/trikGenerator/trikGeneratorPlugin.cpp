@@ -5,7 +5,7 @@
 
 #include <QtCore/QDebug>
 
-#include "robotCommunication/tcpRobotCommunicator.h"
+#include <trikRobotCommunication/tcpRobotCommunicator.h>
 #include "trikMasterGenerator.h"
 
 using namespace qReal;

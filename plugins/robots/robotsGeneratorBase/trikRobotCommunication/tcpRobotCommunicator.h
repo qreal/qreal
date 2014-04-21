@@ -1,14 +1,14 @@
 #pragma once
 
 #include <QtNetwork/QTcpSocket>
+#include "robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {
 namespace generators {
-namespace trik {
 
 /// Class that handles connection to robot and sends commands to it.
-class TcpRobotCommunicator
+class ROBOTS_GENERATOR_EXPORT TcpRobotCommunicator
 {
 public:
 	TcpRobotCommunicator();
@@ -41,4 +41,4 @@ private:
 }
 }
 }
-}
+

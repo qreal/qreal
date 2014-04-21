@@ -9,7 +9,7 @@
 #include <qrkernel/exception/exception.h>
 #include <qrutils/inFile.h>
 
-using namespace qReal::robots::generators::trik;
+using namespace qReal::robots::generators;
 
 static uint const port = 8888;
 

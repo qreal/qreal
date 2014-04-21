@@ -1,5 +1,5 @@
-QT += widgets
-
+QT += widgets \
+    network
 CONFIG += c++11
 
 TEMPLATE = lib
@@ -231,3 +231,5 @@ SOURCES += \
 	$$PWD/simpleGenerators/continueGenerator.cpp \
 	$$PWD/simpleGenerators/labelGenerator.cpp \
 	$$PWD/simpleGenerators/gotoSimpleGenerator.cpp \
+
+include(trikRobotCommunication/trikRobotCommunication.pri)
