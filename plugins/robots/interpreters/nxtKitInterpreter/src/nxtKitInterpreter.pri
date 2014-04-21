@@ -8,7 +8,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport
 
 HEADERS += \
 	$$PWD/nxtKitInterpreterPlugin.h \
@@ -48,6 +48,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/soundSensor.h \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
+	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 
 SOURCES += \
 	$$PWD/nxtKitInterpreterPlugin.cpp \
@@ -87,6 +88,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/soundSensor.cpp \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
+	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 
 FORMS += \
 	$$PWD/nxtAdditionalPreferences.ui \

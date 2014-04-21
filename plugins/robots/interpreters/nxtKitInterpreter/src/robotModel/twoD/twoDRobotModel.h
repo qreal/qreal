@@ -14,6 +14,12 @@ public:
 	TwoDRobotModel();
 	QString name() const override;
 	QString friendlyName() const override;
+
+protected:
+	interpreterBase::robotModel::robotParts::Device *createDevice(
+			interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::DeviceInfo const &deviceInfo
+			) override;
 };
 
 }

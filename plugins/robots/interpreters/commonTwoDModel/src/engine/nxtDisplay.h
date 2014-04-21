@@ -5,6 +5,8 @@
 #include <qrutils/graphicsUtils/painterInterface.h>
 #include <qrutils/graphicsUtils/paintWidget.h>
 
+#include "commonTwoDModel/engine/twoDModelDisplayInterface.h"
+
 namespace Ui
 {
 	class NxtDisplay;
@@ -12,7 +14,7 @@ namespace Ui
 
 namespace twoDModel {
 
-class NxtDisplay : public QWidget
+class NxtDisplay : public QWidget, public engine::TwoDModelDisplayInterface
 {
 	Q_OBJECT
 

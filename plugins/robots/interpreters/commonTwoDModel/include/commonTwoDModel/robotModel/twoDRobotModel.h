@@ -29,27 +29,16 @@ public:
 
 	utils::AbstractTimer *produceTimer() override;
 
-//protected:
-//	virtual interpreterBase::robotModel::DeviceInfo displayInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo speakerInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo buttonsInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo motorInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo encoderInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo touchSensorInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo sonarSensorInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo lightSensorInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo colorSensorInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo soundSensorInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo gyroscopeSensorInfo() const;
-//	virtual interpreterBase::robotModel::DeviceInfo accelerometerSensorInfo() const;
+protected:
+	engine::TwoDModelEngineInterface *engine();
 
-private:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
 			interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo
 			) override;
 
-	engine::TwoDModelEngineInterface *mEngine;  // Does not have ownership.
+private:
+	engine::TwoDModelEngineInterface *mEngine = nullptr;  // Does not have ownership.
 };
 
 }

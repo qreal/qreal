@@ -60,7 +60,7 @@ public:
 	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const override;
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port) override;
 
-	NxtDisplay *display();
+	engine::TwoDModelDisplayInterface *display() override;
 
 	int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 	int readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const override;

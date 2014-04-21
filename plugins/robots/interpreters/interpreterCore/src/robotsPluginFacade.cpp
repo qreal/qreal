@@ -201,6 +201,10 @@ void RobotsPluginFacade::initFactoriesFor(QString const &kitId
 					, *configurer.mainWindowInterpretersInterface().errorReporter()
 					);
 			mBlocksFactoryManager.addFactory(factory, model);
+
+			/// @todo Non-obvious dependency on mParser, which may or may not be constructed here.
+			///       More functional style will be helpful here.
+			factory->setParser(mParser);
 		}
 	}
 }

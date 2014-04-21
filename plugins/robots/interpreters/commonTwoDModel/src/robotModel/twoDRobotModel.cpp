@@ -55,12 +55,13 @@ utils::AbstractTimer *TwoDRobotModel::produceTimer()
 	return mEngine->modelTimer();
 }
 
+twoDModel::engine::TwoDModelEngineInterface *TwoDRobotModel::engine()
+{
+	return mEngine;
+}
+
 robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
-	if (deviceInfo.isA<robotParts::Display>()) {
-		return new parts::Display(deviceInfo, port, *mEngine);
-	}
-
 	if (deviceInfo.isA<robotParts::Buttons>()) {
 		return new parts::Buttons(deviceInfo, port, *mEngine);
 	}

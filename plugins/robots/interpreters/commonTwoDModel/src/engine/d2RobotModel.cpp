@@ -588,7 +588,7 @@ Timeline *D2RobotModel::timeline() const
 	return mTimeline;
 }
 
-NxtDisplay *D2RobotModel::display()
+engine::TwoDModelDisplayInterface *D2RobotModel::display()
 {
 	return mDisplay;
 }

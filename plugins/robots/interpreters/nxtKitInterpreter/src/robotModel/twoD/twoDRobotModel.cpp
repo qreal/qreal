@@ -1,25 +1,18 @@
 #include "twoDRobotModel.h"
 
-#include <interpreterBase/robotModel/robotParts/display.h>
-#include <interpreterBase/robotModel/robotParts/speaker.h>
+#include "src/robotModel/twoD/parts/twoDDisplay.h"
 #include <interpreterBase/robotModel/robotParts/buttons.h>
+#include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/motor.h>
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
-
-/// @todo They kind of the same sensors as in real NXT model, but they are not part of interpreterBase model, so
-///       they can't be used directly.
-#include <commonTwoDModel/robotModel/parts/colorSensorBlue.h>
-#include <commonTwoDModel/robotModel/parts/colorSensorFull.h>
-#include <commonTwoDModel/robotModel/parts/colorSensorGreen.h>
-#include <commonTwoDModel/robotModel/parts/colorSensorPassive.h>
-#include <commonTwoDModel/robotModel/parts/colorSensorRed.h>
-
-#include <interpreterBase/robotModel/robotParts/soundSensor.h>
-#include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
-#include <interpreterBase/robotModel/robotParts/accelerometerSensor.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorBlue.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorGreen.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
 
 using namespace nxtKitInterpreter::robotModel;
 using namespace nxtKitInterpreter::robotModel::twoD;
@@ -33,14 +26,14 @@ TwoDRobotModel::TwoDRobotModel()
 			DeviceInfo::create<robotParts::TouchSensor>()
 			, DeviceInfo::create<robotParts::RangeSensor>()
 			, DeviceInfo::create<robotParts::LightSensor>()
-			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorBlue>()
-			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorFull>()
-			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorGreen>()
-			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorPassive>()
-			, DeviceInfo::create<twoDModel::robotModel::parts::ColorSensorRed>()
+			, DeviceInfo::create<robotParts::ColorSensorBlue>()
+			, DeviceInfo::create<robotParts::ColorSensorFull>()
+			, DeviceInfo::create<robotParts::ColorSensorGreen>()
+			, DeviceInfo::create<robotParts::ColorSensorPassive>()
+			, DeviceInfo::create<robotParts::ColorSensorRed>()
 	};
 
-	addAllowedConnection(PortInfo("DisplayPort", output), { DeviceInfo::create<robotParts::Display>() });
+	addAllowedConnection(PortInfo("DisplayPort", output), { DeviceInfo::create<parts::Display>() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { DeviceInfo::create<robotParts::Speaker>() });
 	addAllowedConnection(PortInfo("ButtonsPort", input), { DeviceInfo::create<robotParts::Buttons>() });
 	addAllowedConnection(PortInfo("A", output), { DeviceInfo::create<robotParts::Motor>() });
@@ -63,4 +56,18 @@ QString TwoDRobotModel::name() const
 QString TwoDRobotModel::friendlyName() const
 {
 	return tr("2D Model");
+}
+
+robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+{
+	if (deviceInfo.isA<robotParts::Display>()) {
+		auto display = new parts::Display(deviceInfo, port, *engine());
+
+		/// @todo Why not do this in display constructor?!
+		display->attachToPaintWidget();
+
+		return display;
+	}
+
+	return twoDModel::robotModel::TwoDRobotModel::createDevice(port, deviceInfo);
 }

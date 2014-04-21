@@ -16,6 +16,7 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelControlInterface.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineInterface.h \
+	$$PWD/include/commonTwoDModel/engine/twoDModelDisplayInterface.h \
 	$$PWD/include/commonTwoDModel/robotModel/twoDRobotModel.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/buttons.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorBlue.h \

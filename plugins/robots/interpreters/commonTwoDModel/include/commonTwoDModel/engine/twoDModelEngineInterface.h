@@ -2,9 +2,10 @@
 
 #include <QtCore/QString>
 
+#include <utils/abstractTimer.h>
 #include <interpreterBase/robotModel/portInfo.h>
 
-#include <utils/abstractTimer.h>
+#include "commonTwoDModel/engine/twoDModelDisplayInterface.h"
 
 namespace twoDModel {
 namespace engine {
@@ -26,6 +27,9 @@ public:
 	virtual int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const = 0;
 
 	virtual utils::AbstractTimer *modelTimer() const = 0;
+
+	virtual TwoDModelDisplayInterface *display() = 0;
+
 };
 
 }
