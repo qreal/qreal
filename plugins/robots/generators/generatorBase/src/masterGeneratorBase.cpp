@@ -8,6 +8,7 @@
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/images.h"
 #include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/initTerminateCodeGenerator.h"
 
 using namespace generatorBase;
@@ -58,7 +59,7 @@ QString MasterGeneratorBase::generate()
 	mCustomizer->factory()->variables()->reinit(mRepo);
 	mCustomizer->factory()->images()->reinit();
 
-	foreach (parts::InitTerminateCodeGenerator *generator, mCustomizer->factory()->initTerminateGenerators()) {
+	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {
 		generator->reinit();
 	}
 

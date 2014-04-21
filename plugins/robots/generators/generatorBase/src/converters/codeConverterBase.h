@@ -18,7 +18,6 @@ public:
 			, interpreterBase::robotModel::RobotModelInterface const &robotModel
 			, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 			, simple::Binding::ConverterInterface const *inputPortConverter
-			, simple::Binding::ConverterInterface const *outputPortConverter
 			, simple::Binding::ConverterInterface const *functionInvocationsConverter);
 
 	virtual ~CodeConverterBase();
@@ -37,13 +36,11 @@ protected:
 
 	virtual QString deviceTemplatePath(interpreterBase::robotModel::DeviceInfo const &device) const;
 	virtual QString deviceExpression(interpreterBase::robotModel::PortInfo const &port) const;
-	virtual QString encoderExpression(QString const &port) const;
 	virtual QString timelineExpression() const;
 
 	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;
 	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const mDevices;
 	simple::Binding::ConverterInterface const *mInputConverter;  // Takes ownership
-	simple::Binding::ConverterInterface const *mOutputConverter;  // Takes ownership
 	simple::Binding::ConverterInterface const *mFunctionInvocationsConverter;  // Takes ownership
 };
 

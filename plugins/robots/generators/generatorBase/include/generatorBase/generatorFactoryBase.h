@@ -38,6 +38,7 @@ public:
 
 	void initialize();
 
+	/// Sets an id of the root diagram for obtaining sensors configuration.
 	void setMainDiagramId(qReal::Id const &diagramId);
 
 	// ------------------------------- Parts -----------------------------------
@@ -203,6 +204,7 @@ protected:
 	/// Implementation must prepare images controller
 	virtual void initImages();
 
+	/// Returns sensors configuration for the given robot model.
 	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> currentConfiguration() const;
 
 	qrRepo::RepoApi const &mRepo;

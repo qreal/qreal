@@ -94,6 +94,7 @@ void GeneratorFactoryBase::initialize()
 void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
 {
 	mDiagram = diagramId;
+	mSensors->reinit(currentConfiguration());
 }
 
 void GeneratorFactoryBase::initVariables()
@@ -296,7 +297,6 @@ Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
-			, outputPortConverter()
 			, functionInvocationConverter()
 			, typeConverter()
 			, variablesInfo());
@@ -308,7 +308,6 @@ Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() cons
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
-			, outputPortConverter()
 			, functionInvocationConverter());
 }
 
@@ -318,7 +317,6 @@ Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool ne
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
-			, outputPortConverter()
 			, functionInvocationConverter()
 			, needInverting);
 }
@@ -344,7 +342,6 @@ Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() cons
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
-			, outputPortConverter()
 			, functionInvocationConverter());
 }
 
@@ -420,5 +417,15 @@ QMap<PortInfo, DeviceInfo> GeneratorFactoryBase::currentConfiguration() const
 {
 	Id const logicalId = mRepo.logicalId(mDiagram);
 	QString const configuration = mRepo.property(logicalId, "devicesConfiguration").toString();
-	return RobotModelUtils::deserialize(configuration)[mRobotModelManager.model().name()];
+	QMap<PortInfo, DeviceInfo> result = RobotModelUtils::deserialize(configuration)[mRobotModelManager.model().name()];
+	// At the moment we have sensors configuration from widget-configurer. We must also add here non-configurable
+	// by user devices (like encoders, displays and so on).
+	for (PortInfo const &port : mRobotModelManager.model().availablePorts()) {
+		if (!mRobotModelManager.model().configurablePorts().contains(port)
+				&& mRobotModelManager.model().allowedDevices(port).count() == 1) {
+			result[port] = mRobotModelManager.model().allowedDevices(port)[0];
+		}
+	}
+
+	return result;
 }

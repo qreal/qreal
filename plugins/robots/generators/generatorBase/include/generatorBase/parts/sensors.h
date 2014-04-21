@@ -1,8 +1,10 @@
 #pragma once
 
+#include <interpreterBase/robotModel/portInfo.h>
+#include <interpreterBase/robotModel/deviceInfo.h>
+
 #include "initTerminateCodeGenerator.h"
 #include "generatorBase/simpleGenerators/binding.h"
-//#include "plugins/robots/robotsInterpreter/sensorConstants.h"
 
 namespace generatorBase {
 namespace parts {
@@ -14,22 +16,24 @@ public:
 	Sensors(QString const &pathToTemplates, simple::Binding::ConverterInterface const *inputPortConverter);
 	virtual ~Sensors();
 
-	virtual void reinit();
+	virtual void reinit(QMap<interpreterBase::robotModel::PortInfo
+			, interpreterBase::robotModel::DeviceInfo> const &devices);
 	virtual QString initCode();
 	virtual QString terminateCode();
 	virtual QString isrHooksCode();
 
 protected:
-	void reinitPort(int port);
+	void reinitPort(interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::DeviceInfo const &device);
 
-//	virtual QString initCode(QString const &port
-//			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
+	virtual QString initCode(interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::DeviceInfo const &device);
 
-//	virtual QString terminateCode(QString const &port
-//			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
+	virtual QString terminateCode(interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::DeviceInfo const &device);
 
-//	virtual QString isrHooks(QString const &port
-//			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
+	virtual QString isrHooks(interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::DeviceInfo const &device);
 
 private:
 	simple::Binding::ConverterInterface const *mInputPortConverter;  // Takes ownership

@@ -2,6 +2,18 @@
 
 #include <qrkernel/settingsManager.h>
 
+#include <interpreterBase/robotModel/robotParts/touchSensor.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorGreen.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorBlue.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+#include <interpreterBase/robotModel/robotParts/lightSensor.h>
+#include <interpreterBase/robotModel/robotParts/soundSensor.h>
+#include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
+#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
+
 using namespace generatorBase::parts;
 using namespace qReal;
 
@@ -17,115 +29,99 @@ Sensors::~Sensors()
 	delete mInputPortConverter;
 }
 
-// TODO: make implementation more modular
+QString Sensors::initCode(interpreterBase::robotModel::PortInfo const &port
+		, interpreterBase::robotModel::DeviceInfo const &device)
+{
+	QString const portString = mInputPortConverter->convert(port.name());
 
-//QString Sensors::initCode(QString const &port
-//		, interpreters::robots::enums::sensorType::SensorTypeEnum type)
-//{
-//	switch (type) {
-//	case qReal::interpreters::robots::enums::sensorType::sonar:
-//		return readTemplate("initialization/sonar.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::light:
-//		return readTemplate("initialization/light.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorFull:
-//		return readTemplate("initialization/colorFull.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorRed:
-//		return readTemplate("initialization/colorRed.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorGreen:
-//		return readTemplate("initialization/colorGreen.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorBlue:
-//		return readTemplate("initialization/colorBlue.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorNone:
-//		return readTemplate("initialization/colorNone.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	default:
-//		return QString();
-//	}
-//}
+	if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorFull>()) {
+		return readTemplate("initialization/colorFull.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorRed>()) {
+		return readTemplate("initialization/colorRed.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorGreen>()) {
+		return readTemplate("initialization/colorGreen.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorBlue>()) {
+		return readTemplate("initialization/colorBlue.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorPassive>()) {
+		return readTemplate("initialization/colorNone.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::RangeSensor>()) {
+		return readTemplate("initialization/sonar.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
+		return readTemplate("initialization/light.t").replace("@@PORT@@", portString);
+	}
 
-//QString Sensors::terminateCode(QString const &port
-//		, interpreters::robots::enums::sensorType::SensorTypeEnum type)
-//{
-//	switch (type) {
-//	case qReal::interpreters::robots::enums::sensorType::sonar:
-//		return readTemplate("termination/sonar.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::light:
-//		return readTemplate("termination/light.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorFull:
-//		return readTemplate("termination/colorFull.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorRed:
-//		return readTemplate("termination/colorRed.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorGreen:
-//		return readTemplate("termination/colorGreen.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorBlue:
-//		return readTemplate("termination/colorBlue.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorNone:
-//		return readTemplate("termination/colorNone.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	default:
-//		return QString();
-//	}
-//}
+	return QString();
+}
 
-//QString Sensors::isrHooks(QString const &port
-//		, interpreters::robots::enums::sensorType::SensorTypeEnum type)
-//{
-//	switch (type) {
-//	case qReal::interpreters::robots::enums::sensorType::colorFull:
-//		return readTemplate("isrHooks/colorFull.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorRed:
-//		return readTemplate("isrHooks/colorRed.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorGreen:
-//		return readTemplate("isrHooks/colorGreen.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorBlue:
-//		return readTemplate("isrHooks/colorBlue.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	case qReal::interpreters::robots::enums::sensorType::colorNone:
-//		return readTemplate("isrHooks/colorNone.t").replace("@@PORT@@", mInputPortConverter->convert(port));
-//		break;
-//	default:
-//		return QString();
-//	}
-//}
+QString Sensors::terminateCode(interpreterBase::robotModel::PortInfo const &port
+		, interpreterBase::robotModel::DeviceInfo const &device)
+{
+	QString const portString = mInputPortConverter->convert(port.name());
 
-void Sensors::reinit()
+	if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorFull>()) {
+		return readTemplate("termination/colorFull.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorRed>()) {
+		return readTemplate("termination/colorRed.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorGreen>()) {
+		return readTemplate("termination/colorGreen.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorBlue>()) {
+		return readTemplate("termination/colorBlue.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorPassive>()) {
+		return readTemplate("termination/colorNone.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::RangeSensor>()) {
+		return readTemplate("termination/sonar.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
+		return readTemplate("termination/light.t").replace("@@PORT@@", portString);
+	}
+
+	return QString();
+}
+
+QString Sensors::isrHooks(interpreterBase::robotModel::PortInfo const &port
+		, interpreterBase::robotModel::DeviceInfo const &device)
+{
+	QString const portString = mInputPortConverter->convert(port.name());
+
+	if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorFull>()) {
+		return readTemplate("isrHooks/colorFull.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorRed>()) {
+		return readTemplate("isrHooks/colorRed.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorGreen>()) {
+		return readTemplate("isrHooks/colorGreen.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorBlue>()) {
+		return readTemplate("isrHooks/colorBlue.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorPassive>()) {
+		return readTemplate("isrHooks/colorNone.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::RangeSensor>()) {
+		return readTemplate("isrHooks/sonar.t").replace("@@PORT@@", portString);
+	} else if (device.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
+		return readTemplate("isrHooks/light.t").replace("@@PORT@@", portString);
+	}
+
+	return QString();
+}
+
+void Sensors::reinit(QMap<interpreterBase::robotModel::PortInfo
+		, interpreterBase::robotModel::DeviceInfo> const &devices)
 {
 	mInitCode.clear();
 	mTerminateCode.clear();
 	mIsrHooksCode.clear();
 
-	for (int i = 0; i < 4; ++i) {
-		reinitPort(i);
+	for (interpreterBase::robotModel::PortInfo const &port : devices.keys()) {
+		reinitPort(port, devices[port]);
 	}
 }
 
-void Sensors::reinitPort(int port)
+void Sensors::reinitPort(interpreterBase::robotModel::PortInfo const &port
+		, interpreterBase::robotModel::DeviceInfo const &device)
 {
-//	QString const portString = QString::number(port);
-//	int const portValue = SettingsManager::value("port" + portString + "SensorType").toInt();
-//	interpreters::robots::enums::sensorType::SensorTypeEnum portType =
-//			static_cast<interpreters::robots::enums::sensorType::SensorTypeEnum>(portValue);
-//	mInitCode << initCode(portString, portType);
-//	mTerminateCode << terminateCode(portString, portType);
-//	QString const isrHooksCode = isrHooks(portString, portType);
-//	if (!mIsrHooksCode.contains(isrHooksCode)) {
-//		mIsrHooksCode << isrHooksCode;
-//	}
+	mInitCode << initCode(port, device);
+	mTerminateCode << terminateCode(port, device);
+	QString const isrHooksCode = isrHooks(port, device);
+	if (!mIsrHooksCode.contains(isrHooksCode)) {
+		mIsrHooksCode << isrHooksCode;
+	}
 }
 
 QString Sensors::initCode()
