@@ -49,6 +49,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
+	$$PWD/robotModel/twoD/parts/twoDButtons.h \
 
 SOURCES += \
 	$$PWD/nxtKitInterpreterPlugin.cpp \
@@ -89,6 +90,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
+	$$PWD/robotModel/twoD/parts/twoDButtons.cpp \
 
 FORMS += \
 	$$PWD/nxtAdditionalPreferences.ui \
