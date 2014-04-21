@@ -1,6 +1,7 @@
 #include "twoDRobotModel.h"
 
 #include "src/robotModel/twoD/parts/twoDDisplay.h"
+#include "src/robotModel/twoD/parts/twoDButtons.h"
 #include <interpreterBase/robotModel/robotParts/buttons.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/motor.h>
@@ -67,6 +68,10 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 		display->attachToPaintWidget();
 
 		return display;
+	}
+
+	if (deviceInfo.isA<robotParts::Buttons>()) {
+		return new parts::TwoDButtons(deviceInfo, port, *engine());
 	}
 
 	return twoDModel::robotModel::TwoDRobotModel::createDevice(port, deviceInfo);
