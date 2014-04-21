@@ -1,4 +1,4 @@
-QT += widgets
+QT += widgets xml
 
 INCLUDEPATH += \
 	$$PWD/include/ \

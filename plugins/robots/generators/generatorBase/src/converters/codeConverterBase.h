@@ -40,8 +40,8 @@ protected:
 	virtual QString encoderExpression(QString const &port) const;
 	virtual QString timelineExpression() const;
 
-	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const mDevices;
 	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;
+	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const mDevices;
 	simple::Binding::ConverterInterface const *mInputConverter;  // Takes ownership
 	simple::Binding::ConverterInterface const *mOutputConverter;  // Takes ownership
 	simple::Binding::ConverterInterface const *mFunctionInvocationsConverter;  // Takes ownership
