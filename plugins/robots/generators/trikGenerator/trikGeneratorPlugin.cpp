@@ -12,10 +12,10 @@ using namespace trik;
 using namespace qReal;
 
 TrikGeneratorPlugin::TrikGeneratorPlugin()
-		: mGenerateCodeAction(NULL)
-		, mUploadProgramAction(NULL)
-		, mRunProgramAction(NULL)
-		, mStopRobotAction(NULL)
+		: mGenerateCodeAction(nullptr)
+		, mUploadProgramAction(nullptr)
+		, mRunProgramAction(nullptr)
+		, mStopRobotAction(nullptr)
 {
 	mAppTranslator.load(":/trikGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -23,6 +23,11 @@ TrikGeneratorPlugin::TrikGeneratorPlugin()
 
 TrikGeneratorPlugin::~TrikGeneratorPlugin()
 {
+}
+
+QString TrikGeneratorPlugin::kitId() const
+{
+	return "trikKit";
 }
 
 QList<ActionInfo> TrikGeneratorPlugin::actions()
@@ -54,6 +59,7 @@ generatorBase::MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
 {
 	return new TrikMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mRobotModelManager
 			, mMainWindowInterface->activeDiagram());
 }
 

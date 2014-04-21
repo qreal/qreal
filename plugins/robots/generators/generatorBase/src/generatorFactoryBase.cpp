@@ -1,6 +1,8 @@
 #include "generatorBase/generatorFactoryBase.h"
 #include "generatorBase/generatorCustomizer.h"
 
+#include <interpreterBase/robotModel/robotModelUtils.h>
+
 #include "simpleGenerators/nullGenerator.h"
 #include "simpleGenerators/commentElementGenerator.h"
 #include "simpleGenerators/ifElementGenerator.h"
@@ -64,11 +66,14 @@
 using namespace generatorBase;
 using namespace qReal;
 using namespace simple;
+using namespace interpreterBase::robotModel;
 
 GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter)
+		, ErrorReporterInterface &errorReporter
+		, RobotModelManagerInterface const &robotModelManager)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
+	, mRobotModelManager(robotModelManager)
 {
 }
 
@@ -84,6 +89,11 @@ void GeneratorFactoryBase::initialize()
 	initSensors();
 	initFunctions();
 	initImages();
+}
+
+void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
+{
+	mDiagram = diagramId;
 }
 
 void GeneratorFactoryBase::initVariables()
@@ -115,6 +125,12 @@ void GeneratorFactoryBase::initFunctions()
 void GeneratorFactoryBase::initImages()
 {
 	mImages = new parts::Images(pathToTemplates());
+}
+
+QMap<PortInfo, DeviceInfo> GeneratorFactoryBase::currentConfiguration() const
+{
+	QString const configuration = mRepo.property(mDiagram, "devicesConfiguration").toString();
+	return RobotModelUtils::deserialize(configuration)[mRobotModelManager.model().name()];
 }
 
 QList<parts::InitTerminateCodeGenerator *> GeneratorFactoryBase::initTerminateGenerators()
@@ -283,6 +299,7 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id cons
 Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 {
 	return new converters::IntPropertyConverter(pathToTemplates()
+			, currentConfiguration()
 			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter()
@@ -293,6 +310,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
 {
 	return new converters::FloatPropertyConverter(pathToTemplates()
+			, currentConfiguration()
 			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter());
@@ -301,6 +319,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() cons
 Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
 {
 	return new converters::BoolPropertyConverter(pathToTemplates()
+			, currentConfiguration()
 			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter()
@@ -325,6 +344,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::functionInvocationConverter()
 Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() const
 {
 	return new converters::FunctionBlockConverter(pathToTemplates()
+			, currentConfiguration()
 			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter());

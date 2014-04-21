@@ -3,8 +3,9 @@
 using namespace russianC;
 
 RussianCGeneratorCustomizer::RussianCGeneratorCustomizer(qrRepo::RepoApi const &repo
-		, qReal::ErrorReporterInterface &errorReporter)
-	: mFactory(new RussianCGeneratorFactory(repo, errorReporter))
+		, qReal::ErrorReporterInterface &errorReporter
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+	: mFactory(new RussianCGeneratorFactory(repo, errorReporter, robotModelManager))
 {
 }
 

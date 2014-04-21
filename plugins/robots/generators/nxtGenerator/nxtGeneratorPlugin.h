@@ -20,13 +20,16 @@ namespace nxtOsek {
 class NxtGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "qReal.robots.generator.NxtGeneratorPlugin")
+	Q_PLUGIN_METADATA(IID "nxtOsek.NxtGeneratorPlugin")
 
 public:
 	NxtGeneratorPlugin();
 	virtual ~NxtGeneratorPlugin();
 
-	void init(qReal::PluginConfigurator const &configurator) override;
+	QString kitId() const override;
+
+	void init(qReal::PluginConfigurator const &configurator
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager) override;
 	QList<qReal::ActionInfo> actions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 

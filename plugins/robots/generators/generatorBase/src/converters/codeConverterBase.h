@@ -16,6 +16,7 @@ class CodeConverterBase : public TemplateParametrizedConverter
 {
 public:
 	CodeConverterBase(QString const &pathToTemplates
+			, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 			, simple::Binding::ConverterInterface const *inputPortConverter
 			, simple::Binding::ConverterInterface const *outputPortConverter
 			, simple::Binding::ConverterInterface const *functionInvocationsConverter);
@@ -39,6 +40,7 @@ protected:
 	virtual QString encoderExpression(QString const &port) const;
 	virtual QString timelineExpression() const;
 
+	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const mDevices;
 	simple::Binding::ConverterInterface const *mInputConverter;  // Takes ownership
 	simple::Binding::ConverterInterface const *mOutputConverter;  // Takes ownership
 	simple::Binding::ConverterInterface const *mFunctionInvocationsConverter;  // Takes ownership

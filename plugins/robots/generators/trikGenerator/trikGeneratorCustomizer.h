@@ -9,7 +9,8 @@ class TrikGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
 	TrikGeneratorCustomizer(qrRepo::RepoApi const &repo
-			, qReal::ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 

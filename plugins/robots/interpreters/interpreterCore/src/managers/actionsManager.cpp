@@ -66,6 +66,9 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 	mTitlesAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_T));
 
 	QList<qReal::HotKeyActionInfo> result;
+
+	result += mPluginHotKeyActionInfos;
+
 //	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModel", tr("Show 2d model"), m2dModelAction);
 	result
 			<< qReal::HotKeyActionInfo("Interpreter.Run", QObject::tr("Run interpreter"), &mRunAction)
@@ -113,6 +116,34 @@ QAction &ActionsManager::robotSettingsAction()
 void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model)
 {
 	mConnectToRobotAction.setVisible(model.needsConnection());
+	QString const currentKitId = kitIdOf(model);
+
+	/// @todo: this stupid visibility management may show actions with custom avalability logic.
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
+			for (ActionInfo const &actionInfo : generator->actions()) {
+				if (actionInfo.isAction()) {
+					actionInfo.action()->setVisible(currentKitId == kitId);
+				} else {
+					actionInfo.menu()->setVisible(currentKitId == kitId);
+				}
+			}
+		}
+	}
+}
+
+QString ActionsManager::kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const
+{
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
+			if (kit->robotModels().contains(&model)) {
+				return kitId;
+			}
+		}
+	}
+
+	/// @todo: Impossible scenario, something wrong if we get here.
+	return QString();
 }
 
 void ActionsManager::updateEnabledActions()
@@ -130,6 +161,11 @@ void ActionsManager::initKitPluginActions()
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		for (interpreterBase::KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
 			mPluginActionInfos << kitPlugin->customActions();
+		}
+
+		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
+			mPluginActionInfos << generator->actions();
+			mPluginHotKeyActionInfos << generator->hotKeyActions();
 		}
 	}
 }

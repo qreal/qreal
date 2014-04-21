@@ -7,8 +7,9 @@ using namespace nxtOsek;
 
 NxtOsekMasterGenerator::NxtOsekMasterGenerator(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, qReal::Id const &diagramId)
-	: MasterGeneratorBase(repo, errorReporter, diagramId)
+	: MasterGeneratorBase(repo, errorReporter, robotModelManager, diagramId)
 {
 }
 
@@ -19,7 +20,7 @@ void NxtOsekMasterGenerator::generateOilAndMakeFiles()
 
 generatorBase::GeneratorCustomizer *NxtOsekMasterGenerator::createCustomizer()
 {
-	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter);
+	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager);
 }
 
 QString NxtOsekMasterGenerator::targetPath()

@@ -38,7 +38,8 @@ public:
 		Q_UNUSED(interpreterControl)
 	}
 
-	/// Unique identifier of constructor kit.
+	/// An identifier of constructor kit. Kit plugins with same kitId are automaticly groupped
+	/// together extending each other.
 	virtual QString kitId() const = 0;
 
 	/// String that will be displayed to users as the name of the kit.

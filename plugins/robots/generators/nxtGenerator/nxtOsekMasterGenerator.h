@@ -9,6 +9,7 @@ class NxtOsekMasterGenerator : public generatorBase::MasterGeneratorBase
 public:
 	NxtOsekMasterGenerator(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qReal::Id const &diagramId);
 
 	void generateOilAndMakeFiles();

@@ -3,6 +3,7 @@
 #include <qrkernel/ids.h>
 #include <qrrepo/repoApi.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 #include "robotsGeneratorDeclSpec.h"
 
@@ -30,11 +31,14 @@ class ROBOTS_GENERATOR_EXPORT GeneratorFactoryBase : public QObject
 {
 public:
 	GeneratorFactoryBase(qrRepo::RepoApi const &repo
-			, qReal::ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
 
 	virtual ~GeneratorFactoryBase();
 
 	void initialize();
+
+	void setMainDiagramId(qReal::Id const &diagramId);
 
 	// ------------------------------- Parts -----------------------------------
 
@@ -199,8 +203,12 @@ protected:
 	/// Implementation must prepare images controller
 	virtual void initImages();
 
+	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> currentConfiguration() const;
+
 	qrRepo::RepoApi const &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
+	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	qReal::Id mDiagram;
 	parts::Variables *mVariables;
 	parts::Subprograms *mSubprograms;
 	parts::Engines *mEngines;

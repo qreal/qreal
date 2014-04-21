@@ -15,9 +15,11 @@ using namespace qReal;
 
 MasterGeneratorBase::MasterGeneratorBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, Id const &diagramId)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
+	, mRobotModelManager(robotModelManager)
 	, mDiagram(diagramId)
 {
 }
@@ -52,6 +54,7 @@ QString MasterGeneratorBase::generate()
 		QDir().mkpath(mProjectDir);
 	}
 
+	mCustomizer->factory()->setMainDiagramId(mDiagram);
 	mCustomizer->factory()->variables()->reinit(mRepo);
 	mCustomizer->factory()->images()->reinit();
 

@@ -3,23 +3,25 @@
 #include <QtCore/QTranslator>
 #include <QtWidgets/QApplication>
 
-#include <qrgui/toolPluginInterface/toolPluginInterface.h>
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
 #include <qrrepo/repoApi.h>
+
+#include "generatorKitPluginInterface.h"
 #include "robotsGeneratorDeclSpec.h"
 #include "masterGeneratorBase.h"
 
 namespace generatorBase {
 
-class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public qReal::ToolPluginInterface
+class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public GeneratorKitPluginInterface
 {
 	Q_OBJECT
-	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_INTERFACES(generatorBase::GeneratorKitPluginInterface)
 
 public:
 	RobotsGeneratorPluginBase();
 
-	virtual void init(qReal::PluginConfigurator const &configurator);
+	void init(qReal::PluginConfigurator const &configurator
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager) override;
 
 protected slots:
 	/// Calls code generator. Returns true if operation was successful.
@@ -60,6 +62,8 @@ protected:
 
 	/// Control interface of the repository
 	qrRepo::RepoApi const *mRepo;  // Does not have ownership
+
+	interpreterBase::robotModel::RobotModelManagerInterface const *mRobotModelManager;
 
 	/// Translator object for this plugin
 	QTranslator mAppTranslator;

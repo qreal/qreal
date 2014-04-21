@@ -9,12 +9,13 @@ namespace trik {
 class TrikGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "qReal.robots.trikGenerator.TrikGeneratorPlugin")
+	Q_PLUGIN_METADATA(IID "trik.TrikGeneratorPlugin")
 
 public:
 	TrikGeneratorPlugin();
-
 	virtual ~TrikGeneratorPlugin();
+
+	QString kitId() const override;
 
 	QList<qReal::ActionInfo> actions() override;
 

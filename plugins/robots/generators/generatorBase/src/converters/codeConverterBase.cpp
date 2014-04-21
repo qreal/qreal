@@ -6,10 +6,12 @@ using namespace generatorBase::converters;
 using namespace qReal;
 
 CodeConverterBase::CodeConverterBase(QString const &pathToTemplates
+		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 		, simple::Binding::ConverterInterface const *inputPortConverter
 		, simple::Binding::ConverterInterface const *outputPortConverter
 		, simple::Binding::ConverterInterface const *functionInvocationsConverter)
 	: TemplateParametrizedConverter(pathToTemplates)
+	, mDevices(devices)
 	, mInputConverter(inputPortConverter)
 	, mOutputConverter(outputPortConverter)
 	, mFunctionInvocationsConverter(functionInvocationsConverter)
@@ -90,22 +92,16 @@ QString CodeConverterBase::readSensorTemplatePath(interpreterBase::robotModel::D
 
 QString CodeConverterBase::sensorExpression(interpreterBase::robotModel::PortInfo const &port) const
 {
-	/// @todo: Parse it!
-//	QString const templatePath = readSensorTemplatePath();
-//	QString result = readTemplate(templatePath);
-
-//	// Converter must take a string like "1" or "2" (and etc) and return correct value
-//	result.replace("@@PORT@@", mInputConverter->convert(portString));
-//	return result;
+	QString const templatePath = readSensorTemplatePath(mDevices[port]);
+	// Converter must take a string like "1" or "2" (and etc) and return correct value
+	return readTemplate(templatePath).replace("@@PORT@@", mInputConverter->convert(port.name()));
 }
 
 QString CodeConverterBase::encoderExpression(QString const &port) const
 {
-	QString result = readTemplate("sensors/readEncoder.t");
 	// Converter must take a string like "A" or "B" (and etc) and return correct value
 	// TODO: rewrite for arbitary case
-	result.replace("@@PORT@@", mOutputConverter->convert(port));
-	return result;
+	return readTemplate("sensors/readEncoder.t").replace("@@PORT@@", mOutputConverter->convert(port));
 }
 
 QString CodeConverterBase::timelineExpression() const

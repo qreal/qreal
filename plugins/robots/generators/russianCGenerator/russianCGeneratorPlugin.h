@@ -8,13 +8,14 @@ namespace russianC {
 class RussianCGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "qReal.robots.generator.RussianCGeneratorPlugin")
+	Q_PLUGIN_METADATA(IID "russianC.RussianCGeneratorPlugin")
 
 public:
 	RussianCGeneratorPlugin();
 	virtual ~RussianCGeneratorPlugin();
 
-	virtual void init(qReal::PluginConfigurator const &configurator);
+	QString kitId() const override;
+
 	virtual QList<qReal::ActionInfo> actions();
 
 protected:

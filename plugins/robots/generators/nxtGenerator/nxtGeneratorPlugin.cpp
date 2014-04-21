@@ -28,6 +28,11 @@ NxtGeneratorPlugin::~NxtGeneratorPlugin()
 	delete mFlashTool;
 }
 
+QString NxtGeneratorPlugin::kitId() const
+{
+	return "nxtKit";
+}
+
 QString NxtGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
 	return QString("nxt-tools/%1/%1.c").arg(projectName);
@@ -63,9 +68,10 @@ bool NxtGeneratorPlugin::canGenerateTo(QString const &project)
 			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference;
 }
 
-void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
+void NxtGeneratorPlugin::init(PluginConfigurator const &configurator
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
 {
-	RobotsGeneratorPluginBase::init(configurator);
+	RobotsGeneratorPluginBase::init(configurator, robotModelManager);
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 	connect(mFlashTool, &NxtFlashTool::uploadingComplete, this, &NxtGeneratorPlugin::onUploadingComplete);
@@ -73,6 +79,8 @@ void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
 
 QList<ActionInfo> NxtGeneratorPlugin::actions()
 {
+	checkNxtTools();
+
 	mGenerateCodeAction.setText(tr("Generate code"));
 	mGenerateCodeAction.setIcon(QIcon(":/images/generateCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
@@ -86,11 +94,9 @@ QList<ActionInfo> NxtGeneratorPlugin::actions()
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
 	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
-	checkNxtTools();
-
-	return QList<ActionInfo>() << generateCodeActionInfo
-			<< flashRobotActionInfo
-			<< uploadProgramActionInfo;
+	return mNxtToolsPresent
+			? QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo << uploadProgramActionInfo
+			: QList<ActionInfo>() << generateCodeActionInfo;
 }
 
 void NxtGeneratorPlugin::initHotKeyActions()
@@ -136,6 +142,7 @@ generatorBase::MasterGeneratorBase *NxtGeneratorPlugin::masterGenerator()
 {
 	return new nxtOsek::NxtOsekMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mRobotModelManager
 			, mMainWindowInterface->activeDiagram());
 }
 
@@ -143,6 +150,7 @@ void NxtGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 {
 	nxtOsek::NxtOsekMasterGenerator * const generator = new nxtOsek::NxtOsekMasterGenerator(*mRepo
 		, *mMainWindowInterface->errorReporter()
+		, *mRobotModelManager
 		, mMainWindowInterface->activeDiagram());
 	generator->initialize();
 	generator->setProjectDir(newFileInfo);
