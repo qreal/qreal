@@ -13,7 +13,7 @@
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
 #include "twoDRobotModelInterface.h"
-//#include "details/nxtDisplay.h"
+#include "nxtDisplay.h"
 
 namespace twoDModel {
 
@@ -60,7 +60,7 @@ public:
 	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const override;
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port) override;
 
-//	details::NxtDisplay *display()
+	NxtDisplay *display();
 
 	int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 	int readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const override;
@@ -149,7 +149,7 @@ private:
 
 	D2ModelWidget *mD2ModelWidget;
 	Beep mBeep;
-//	details::NxtDisplay *mDisplay;
+	NxtDisplay *mDisplay;
 	QPointF mRotatePoint;
 
 	/// Simulated robot engines.

@@ -22,7 +22,7 @@
 #include "robotItem.h"
 #include "rotater.h"
 #include "timeline.h"
-//#include "../nxtDisplay.h"
+#include "nxtDisplay.h"
 
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
@@ -70,7 +70,7 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Devices
 public:
 	D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
 			, interpreterBase::robotModel::RobotModelInterface &robotModel
-			/*, NxtDisplay *nxtDisplay*/, QWidget *parent = 0);
+			, NxtDisplay *nxtDisplay, QWidget *parent = 0);
 	~D2ModelWidget();
 	void init(bool isActive = true);
 	void close();
@@ -193,11 +193,6 @@ private:
 		double rotation;
 	};
 
-//	void onSensorConfigurationChanged(
-//			robots::enums::inputPort::InputPortEnum port
-//			, robots::enums::sensorType::SensorTypeEnum type
-//			) override;
-
 	void connectUiButtons();
 	void initButtonGroups();
 	void initPorts();
@@ -214,19 +209,11 @@ private:
 	/// Set active panel toggle button and deactivate all others
 	void setActiveButton(int active);
 
-	/// Get QComboBox that sets current sensor's type
-	QComboBox *currentComboBox();
-
 	/// Get QPushButton for current sensor
 	QPushButton *currentPortButton();
 
 	/// Deletes sensor for given port and removes it from scene and the robot
 	void removeSensor(interpreterBase::robotModel::PortInfo const &port);
-
-	/// Adds sensor to a scene and a robot
-//	void addSensor(robots::enums::inputPort::InputPortEnum port
-//			, robots::enums::sensorType::SensorTypeEnum type
-//			);
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(interpreterBase::robotModel::PortInfo const &port);
@@ -272,7 +259,7 @@ private:
 
 	TwoDRobotRobotModelInterface *mTwoDRobotModel;
 	WorldModel *mWorldModel;
-//	NxtDisplay *mNxtDisplay;
+	NxtDisplay *mNxtDisplay;
 
 	/// Current action (toggled button on left panel)
 	enums::drawingAction::DrawingAction mDrawingAction;

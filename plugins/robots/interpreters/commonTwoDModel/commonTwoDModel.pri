@@ -47,6 +47,7 @@ HEADERS += \
 	$$PWD/src/engine/timeline.h \
 	$$PWD/src/engine/d2ModelTimer.h \
 	$$PWD/src/engine/gridParameters.h \
+	$$PWD/src/engine/nxtDisplay.h \
 	$$PWD/src/engine/constants.h \
 	$$PWD/src/engine/d2RobotModel.h \
 	$$PWD/src/engine/twoDRobotModelInterface.h \
@@ -72,6 +73,7 @@ SOURCES += \
 	$$PWD/src/engine/timeline.cpp \
 	$$PWD/src/engine/d2ModelTimer.cpp \
 	$$PWD/src/engine/gridParameters.cpp \
+	$$PWD/src/engine/nxtDisplay.cpp \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
 	$$PWD/src/engine/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/physics/simplePhysicsEngine.cpp \
@@ -92,3 +94,4 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/src/engine/d2Form.ui \
+	$$PWD/src/engine/nxtDisplay.ui \

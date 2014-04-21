@@ -32,7 +32,7 @@ D2RobotModel::D2RobotModel(interpreterBase::robotModel::RobotModelInterface &rob
 		, QObject *parent)
 	: QObject(parent)
 	, mD2ModelWidget(nullptr)
-//	, mDisplay(new NxtDisplay)
+	, mDisplay(new NxtDisplay)
 	, mWorldModel(new WorldModel())
 	, mPhysicsEngine(nullptr)
 	, mTimeline(new Timeline(this))
@@ -70,9 +70,6 @@ void D2RobotModel::initPosition()
 		}
 	}
 
-//	mEngineA = initEngine(robotWheelDiameterInPx / 2, 0, 0, 0, false);
-//	mEngineB = initEngine(robotWheelDiameterInPx / 2, 0, 0, 1, false);
-//	mEngineC = initEngine(robotWheelDiameterInPx / 2, 0, 0, 2, false);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 }
@@ -177,7 +174,7 @@ SensorsConfiguration &D2RobotModel::configuration()
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
-	mD2ModelWidget = new D2ModelWidget(this, mWorldModel, mRobotModel/*, mDisplay*/);
+	mD2ModelWidget = new D2ModelWidget(this, mWorldModel, mRobotModel, mDisplay);
 	connectDevicesConfigurationProvider(mD2ModelWidget);
 	connect(mD2ModelWidget, &D2ModelWidget::runButtonPressed, this, &D2RobotModel::runButtonPressed);
 	connect(mD2ModelWidget, &D2ModelWidget::stopButtonPressed, this, &D2RobotModel::stopButtonPressed);
@@ -591,10 +588,10 @@ Timeline *D2RobotModel::timeline() const
 	return mTimeline;
 }
 
-//details::NxtDisplay *D2RobotModel::display()
-//{
-//	return mDisplay;
-//}
+NxtDisplay *D2RobotModel::display()
+{
+	return mDisplay;
+}
 
 void D2RobotModel::setNoiseSettings()
 {
