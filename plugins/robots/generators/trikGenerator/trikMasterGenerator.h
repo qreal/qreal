@@ -10,6 +10,7 @@ class TrikMasterGenerator : public generatorBase::MasterGeneratorBase
 public:
 	TrikMasterGenerator(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qReal::Id const &diagramId);
 
 protected:

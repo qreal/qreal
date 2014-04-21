@@ -9,6 +9,7 @@ class RussianCMasterGenerator : public generatorBase::MasterGeneratorBase
 public:
 	RussianCMasterGenerator(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qReal::Id const &diagramId);
 
 protected:

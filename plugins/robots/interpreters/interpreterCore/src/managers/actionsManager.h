@@ -39,6 +39,8 @@ public slots:
 	void onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model);
 
 private:
+	QString kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const;
+
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.
 	void updateEnabledActions();
 
@@ -69,6 +71,11 @@ private:
 
 	/// List of actions from kit plugins.
 	QList<qReal::ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
+
+	QMap<QString, qReal::ActionInfo> mGeneratorActionsInfo;  // Does not have ownership over underlying QActions.
+
+	/// List of hotkey customizations from kit plugins.
+	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
 
 	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
 	KitPluginManager &mKitPluginManager;

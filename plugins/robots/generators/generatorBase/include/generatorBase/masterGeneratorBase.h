@@ -24,6 +24,7 @@ class ROBOTS_GENERATOR_EXPORT MasterGeneratorBase : public QObject, public Templ
 public:
 	MasterGeneratorBase(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qReal::Id const &diagramId);
 
 	void setProjectDir(QFileInfo const &fileInfo);
@@ -54,7 +55,8 @@ protected:
 
 	qrRepo::RepoApi const &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
-	qReal::Id const mDiagram;
+	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	qReal::Id mDiagram;
 	GeneratorCustomizer *mCustomizer;
 	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership
 	GotoControlFlowGenerator *mGotoControlFlowGenerator;  // Takes ownership

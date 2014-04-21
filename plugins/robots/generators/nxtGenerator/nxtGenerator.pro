@@ -4,7 +4,7 @@ CONFIG += c++11
 
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../../bin/plugins/
+DESTDIR = ../../../../bin/plugins/kitPlugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
@@ -13,6 +13,7 @@ LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \
+	$$PWD/../../interpreters/interpreterBase/include \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui \
 

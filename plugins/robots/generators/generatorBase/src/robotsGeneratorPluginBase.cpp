@@ -93,7 +93,8 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 	return fileInfo;
 }
 
-void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator)
+void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
 {
 	mProjectManager = &configurator.projectManager();
 	mSystemEvents = &configurator.systemEvents();
@@ -102,6 +103,7 @@ void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator)
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
 	mProjectManager = &configurator.projectManager();
+	mRobotModelManager = &robotModelManager;
 
 	mTextManager->addExtension(generatorName(), QString("%1 (*.%2)").arg(extDescrition(), extension()));
 

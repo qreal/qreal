@@ -9,7 +9,7 @@ using namespace russianC;
 using namespace generatorBase;
 
 RussianCGeneratorPlugin::RussianCGeneratorPlugin()
-	: mGenerateCodeAction(NULL)
+	: mGenerateCodeAction(nullptr)
 {
 	mAppTranslator.load(":/russianCGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -39,9 +39,9 @@ RussianCGeneratorPlugin::~RussianCGeneratorPlugin()
 {
 }
 
-void RussianCGeneratorPlugin::init(PluginConfigurator const &configurator)
+QString RussianCGeneratorPlugin::kitId() const
 {
-	RobotsGeneratorPluginBase::init(configurator);
+	return "nxtKit";
 }
 
 QList<ActionInfo> RussianCGeneratorPlugin::actions()
@@ -58,6 +58,7 @@ MasterGeneratorBase *RussianCGeneratorPlugin::masterGenerator()
 {
 	return new RussianCMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mRobotModelManager
 			, mMainWindowInterface->activeDiagram());
 }
 

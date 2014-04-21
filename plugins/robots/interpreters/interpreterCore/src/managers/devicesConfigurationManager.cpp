@@ -3,6 +3,7 @@
 #include <QtXml/QDomDocument>
 
 #include <qrkernel/settingsManager.h>
+#include <interpreterBase/robotModel/robotModelUtils.h>
 
 using namespace interpreterCore;
 using namespace interpreterBase;
@@ -49,21 +50,10 @@ void DevicesConfigurationManager::load(QString const &configuration)
 {
 	clearConfiguration();
 
-	QDomDocument parsedConfiguration;
-	parsedConfiguration.setContent(configuration);
-	QDomElement const rootElement = parsedConfiguration.documentElement();
-	for (QDomElement robotModelElement = rootElement.firstChildElement(); !robotModelElement.isNull()
-			; robotModelElement = robotModelElement.nextSiblingElement())
-	{
-		QString const robotModel = robotModelElement.attribute("name");
-		for (QDomElement configurationElement = robotModelElement.firstChildElement(); !configurationElement.isNull()
-				; configurationElement = configurationElement.nextSiblingElement())
-		{
-			PortInfo const port = PortInfo::fromString(configurationElement.attribute("port"));
-			DeviceInfo const device = DeviceInfo::fromString(configurationElement.attribute("device"));
-			if (port.isValid()) {
-				deviceConfigurationChanged(robotModel, port, device);
-			}
+	QMap<QString, QMap<PortInfo, DeviceInfo>> const parsed = RobotModelUtils::deserialize(configuration);
+	for (QString const &robotModel : parsed.keys()) {
+		for (PortInfo const &port : parsed[robotModel].keys()) {
+			deviceConfigurationChanged(robotModel, port, parsed[robotModel][port]);
 		}
 	}
 }

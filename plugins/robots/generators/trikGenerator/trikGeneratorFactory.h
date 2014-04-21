@@ -9,7 +9,8 @@ class TrikGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
 	TrikGeneratorFactory(qrRepo::RepoApi const &repo
-			, qReal::ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
 
 	virtual ~TrikGeneratorFactory();
 

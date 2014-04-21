@@ -1,6 +1,8 @@
 #include "generatorBase/generatorFactoryBase.h"
 #include "generatorBase/generatorCustomizer.h"
 
+#include <interpreterBase/robotModel/robotModelUtils.h>
+
 #include "simpleGenerators/nullGenerator.h"
 #include "simpleGenerators/commentElementGenerator.h"
 #include "simpleGenerators/ifElementGenerator.h"
@@ -64,11 +66,14 @@
 using namespace generatorBase;
 using namespace qReal;
 using namespace simple;
+using namespace interpreterBase::robotModel;
 
 GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter)
+		, ErrorReporterInterface &errorReporter
+		, RobotModelManagerInterface const &robotModelManager)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
+	, mRobotModelManager(robotModelManager)
 {
 }
 
@@ -84,6 +89,11 @@ void GeneratorFactoryBase::initialize()
 	initSensors();
 	initFunctions();
 	initImages();
+}
+
+void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
+{
+	mDiagram = diagramId;
 }
 
 void GeneratorFactoryBase::initVariables()
@@ -283,6 +293,8 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id cons
 Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 {
 	return new converters::IntPropertyConverter(pathToTemplates()
+			, mRobotModelManager.model()
+			, currentConfiguration()
 			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter()
@@ -293,6 +305,8 @@ Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
 {
 	return new converters::FloatPropertyConverter(pathToTemplates()
+			, mRobotModelManager.model()
+			, currentConfiguration()
 			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter());
@@ -301,6 +315,8 @@ Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() cons
 Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
 {
 	return new converters::BoolPropertyConverter(pathToTemplates()
+			, mRobotModelManager.model()
+			, currentConfiguration()
 			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter()
@@ -325,6 +341,8 @@ Binding::ConverterInterface *GeneratorFactoryBase::functionInvocationConverter()
 Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() const
 {
 	return new converters::FunctionBlockConverter(pathToTemplates()
+			, mRobotModelManager.model()
+			, currentConfiguration()
 			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter());
@@ -396,4 +414,11 @@ QString GeneratorFactoryBase::isrHooksCode()
 	}
 
 	return result.join('\n');
+}
+
+QMap<PortInfo, DeviceInfo> GeneratorFactoryBase::currentConfiguration() const
+{
+	Id const logicalId = mRepo.logicalId(mDiagram);
+	QString const configuration = mRepo.property(logicalId, "devicesConfiguration").toString();
+	return RobotModelUtils::deserialize(configuration)[mRobotModelManager.model().name()];
 }

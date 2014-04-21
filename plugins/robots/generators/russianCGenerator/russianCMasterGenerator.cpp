@@ -9,14 +9,15 @@ using namespace qReal;
 
 RussianCMasterGenerator::RussianCMasterGenerator(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, Id const &diagramId)
-	: MasterGeneratorBase(repo, errorReporter, diagramId)
+	: MasterGeneratorBase(repo, errorReporter, robotModelManager, diagramId)
 {
 }
 
 generatorBase::GeneratorCustomizer *RussianCMasterGenerator::createCustomizer()
 {
-	return new RussianCGeneratorCustomizer(mRepo, mErrorReporter);
+	return new RussianCGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager);
 }
 
 QString RussianCMasterGenerator::targetPath()

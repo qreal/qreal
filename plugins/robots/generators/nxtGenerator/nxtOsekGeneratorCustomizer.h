@@ -9,7 +9,8 @@ class NxtOsekGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
 	NxtOsekGeneratorCustomizer(qrRepo::RepoApi const &repo
-			, qReal::ErrorReporterInterface &errorReporter);
+			, qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
 
 	virtual generatorBase::GeneratorFactoryBase *factory();
 

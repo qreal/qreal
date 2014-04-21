@@ -28,6 +28,10 @@ public:
 	/// Performs search over all robot ports and returns the first found one with the given string representation.
 	/// If no suitable ports found invalid instance is returned.
 	static PortInfo findPort(RobotModelInterface const &robotModel, QString const &name, Direction direction);
+
+	/// Converts string representation of devices configuration into a number of maps:
+	/// robot model is mapped into map of its ports to devices configured on them.
+	static QMap<QString, QMap<PortInfo, DeviceInfo>> deserialize(QString const &configuration);
 };
 
 }

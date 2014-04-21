@@ -5,8 +5,9 @@
 using namespace russianC;
 
 RussianCGeneratorFactory::RussianCGeneratorFactory(qrRepo::RepoApi const &repo
-		, qReal::ErrorReporterInterface &errorReporter)
-	: generatorBase::GeneratorFactoryBase(repo, errorReporter)
+		, qReal::ErrorReporterInterface &errorReporter
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+	: generatorBase::GeneratorFactoryBase(repo, errorReporter, robotModelManager)
 {
 }
 

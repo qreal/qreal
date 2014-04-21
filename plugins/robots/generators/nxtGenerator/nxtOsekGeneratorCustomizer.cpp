@@ -3,8 +3,9 @@
 using namespace nxtOsek;
 
 NxtOsekGeneratorCustomizer::NxtOsekGeneratorCustomizer(qrRepo::RepoApi const &repo
-		, qReal::ErrorReporterInterface &errorReporter)
-	: mFactory(repo, errorReporter)
+		, qReal::ErrorReporterInterface &errorReporter
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+	: mFactory(repo, errorReporter, robotModelManager)
 {
 }
 
