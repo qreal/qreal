@@ -3,7 +3,11 @@
 #include <qrkernel/exception/exception.h>
 
 #include "commonTwoDModel/robotModel/parts/buttons.h"
-#include "commonTwoDModel/robotModel/parts/colorSensor.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorFull.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorPassive.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorRed.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorGreen.h"
+#include "commonTwoDModel/robotModel/parts/colorSensorBlue.h"
 #include "commonTwoDModel/robotModel/parts/display.h"
 #include "commonTwoDModel/robotModel/parts/encoderSensor.h"
 #include "commonTwoDModel/robotModel/parts/lightSensor.h"
@@ -12,6 +16,8 @@
 #include "commonTwoDModel/robotModel/parts/touchSensor.h"
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
+#include <QtCore/QDebug>
 
 using namespace twoDModel::robotModel;
 using namespace interpreterBase::robotModel;
@@ -79,11 +85,27 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::LightSensor(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<robotParts::ColorSensor>()) {
-		/// @todo: support different colors
-		return new parts::ColorSensor(deviceInfo, port, *mEngine);
+	if (deviceInfo.isA<robotModel::parts::ColorSensorPassive>()) {
+		return new parts::ColorSensorPassive(deviceInfo, port, *mEngine);
 	}
 
-//	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
+	if (deviceInfo.isA<robotModel::parts::ColorSensorFull>()) {
+		return new parts::ColorSensorFull(deviceInfo, port, *mEngine);
+	}
+
+	if (deviceInfo.isA<robotModel::parts::ColorSensorRed>()) {
+		return new parts::ColorSensorRed(deviceInfo, port, *mEngine);
+	}
+
+	if (deviceInfo.isA<robotModel::parts::ColorSensorGreen>()) {
+		return new parts::ColorSensorGreen(deviceInfo, port, *mEngine);
+	}
+
+	if (deviceInfo.isA<robotModel::parts::ColorSensorBlue>()) {
+		return new parts::ColorSensorBlue(deviceInfo, port, *mEngine);
+	}
+
+	qDebug() << "Unknown device " + deviceInfo.toString() + " requested on port " + port.name();
+	//	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 	return nullptr;
 }

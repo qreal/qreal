@@ -9,7 +9,7 @@ int const soundMaxValue = 1023;
 SoundSensor::SoundSensor(DeviceInfo const &info, PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::SoundSensor(info, port)
-	, mImplementation(*this, robotCommunicator, port, enums::lowLevelSensorType::SOUND_DBA, enums::sensorMode::RAWMODE)
+	, mImplementation(robotCommunicator, port, enums::lowLevelSensorType::SOUND_DBA, enums::sensorMode::RAWMODE)
 {
 	connect(&mImplementation, &NxtInputDevice::sensorSpecificProcessResponse
 			, this, &SoundSensor::sensorSpecificProcessResponse);

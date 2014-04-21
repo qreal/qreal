@@ -27,6 +27,11 @@ SOURCES += \
 	$$PWD/src/robotModel/robotParts/abstractSensor.cpp \
 	$$PWD/src/robotModel/robotParts/accelerometerSensor.cpp \
 	$$PWD/src/robotModel/robotParts/colorSensor.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorPassive.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorFull.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorRed.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorGreen.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorBlue.cpp \
 	$$PWD/src/robotModel/robotParts/encoderSensor.cpp \
 	$$PWD/src/robotModel/robotParts/gyroscopeSensor.cpp \
 	$$PWD/src/robotModel/robotParts/lightSensor.cpp \
@@ -67,6 +72,11 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/robotParts/abstractSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/accelerometerSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensor.h \
+	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensorPassive.h \
+	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensorFull.h \
+	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensorRed.h \
+	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensorGreen.h \
+	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensorBlue.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/encoderSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/gyroscopeSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/lightSensor.h \

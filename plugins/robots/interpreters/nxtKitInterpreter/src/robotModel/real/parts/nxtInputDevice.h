@@ -23,9 +23,8 @@ public:
 		, pending
 	};
 
-	/// @param implementation - concrete sensor instance for binding with it sent buffers and responses to them
-	NxtInputDevice(interpreterBase::robotModel::robotParts::AbstractSensor const &sensor
-			,utils::robotCommunication::RobotCommunicator &robotCommunicator
+	NxtInputDevice(
+			utils::robotCommunication::RobotCommunicator &robotCommunicator
 			, interpreterBase::robotModel::PortInfo const &port
 			, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 			, enums::sensorMode::SensorModeEnum const &sensorMode);

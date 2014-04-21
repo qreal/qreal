@@ -18,8 +18,8 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineInterface.h \
 	$$PWD/include/commonTwoDModel/robotModel/twoDRobotModel.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/buttons.h \
-	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorBlue.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorFull.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorGreen.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorPassive.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorRed.h \
@@ -47,6 +47,7 @@ HEADERS += \
 	$$PWD/src/engine/timeline.h \
 	$$PWD/src/engine/d2ModelTimer.h \
 	$$PWD/src/engine/gridParameters.h \
+	$$PWD/src/engine/nxtDisplay.h \
 	$$PWD/src/engine/constants.h \
 	$$PWD/src/engine/d2RobotModel.h \
 	$$PWD/src/engine/twoDRobotModelInterface.h \
@@ -72,14 +73,15 @@ SOURCES += \
 	$$PWD/src/engine/timeline.cpp \
 	$$PWD/src/engine/d2ModelTimer.cpp \
 	$$PWD/src/engine/gridParameters.cpp \
+	$$PWD/src/engine/nxtDisplay.cpp \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
 	$$PWD/src/engine/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/physics/realisticPhysicsEngine.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/buttons.cpp \
-	$$PWD/src/robotModel/parts/colorSensor.cpp \
 	$$PWD/src/robotModel/parts/colorSensorBlue.cpp \
+	$$PWD/src/robotModel/parts/colorSensorFull.cpp \
 	$$PWD/src/robotModel/parts/colorSensorGreen.cpp \
 	$$PWD/src/robotModel/parts/colorSensorPassive.cpp \
 	$$PWD/src/robotModel/parts/colorSensorRed.cpp \
@@ -92,3 +94,4 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/src/engine/d2Form.ui \
+	$$PWD/src/engine/nxtDisplay.ui \

@@ -28,16 +28,15 @@ using namespace interpreterBase::robotModel::robotParts;
 
 D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
 		, RobotModelInterface &robotModel
-		/* , NxtDisplay *nxtDisplay*/, QWidget *parent)
+		, NxtDisplay *nxtDisplay, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
-//	, details::SensorsConfigurationProvider("D2ModelWidget")
 	, mUi(new Ui::D2Form)
 	, mScene(nullptr)
 	, mRobot(nullptr)
 	, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 	, mTwoDRobotModel(twoDRobotModel)
 	, mWorldModel(worldModel)
-//	, mNxtDisplay(nxtDisplay)
+	, mNxtDisplay(nxtDisplay)
 	, mDrawingAction(enums::drawingAction::none)
 	, mMouseClicksCount(0)
 	, mCurrentWall(nullptr)
@@ -135,9 +134,9 @@ void D2ModelWidget::initWidget()
 
 	initButtonGroups();
 
-//	mNxtDisplay->setMinimumSize(displaySize);
-//	mNxtDisplay->setMaximumSize(displaySize);
-//	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mNxtDisplay);
+	mNxtDisplay->setMinimumSize(displaySize);
+	mNxtDisplay->setMaximumSize(displaySize);
+	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mNxtDisplay);
 	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
 
 	initPorts();
@@ -161,18 +160,6 @@ void D2ModelWidget::connectUiButtons()
 
 	connect(mUi->saveWorldModelPushButton, SIGNAL(clicked()), this, SLOT(saveWorldModel()));
 	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
-
-//	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
-//	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(saveToRepo()));
-
-//	connect(mUi->port1Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
-//	mPortsMapper.setMapping(mUi->port1Box, robots::enums::inputPort::port1);
-//	connect(mUi->port2Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
-//	mPortsMapper.setMapping(mUi->port2Box, robots::enums::inputPort::port2);
-//	connect(mUi->port3Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
-//	mPortsMapper.setMapping(mUi->port3Box, robots::enums::inputPort::port3);
-//	connect(mUi->port4Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
-//	mPortsMapper.setMapping(mUi->port4Box, robots::enums::inputPort::port4);
 
 	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
 
@@ -380,7 +367,6 @@ void D2ModelWidget::showEvent(QShowEvent *e)
 void D2ModelWidget::onFirstShow()
 {
 	mUi->speedComboBox->setCurrentIndex(1); // Normal speed
-//	refreshSensorsConfiguration();
 }
 
 bool D2ModelWidget::isRobotOnTheGround()
@@ -560,23 +546,6 @@ void D2ModelWidget::resetButtons()
 	mDrawingAction = enums::drawingAction::none;
 }
 
-QComboBox *D2ModelWidget::currentComboBox()
-{
-//	switch (mCurrentPort) {
-//	case robots::enums::inputPort::port1:
-//		return mUi->port1Box;
-//	case robots::enums::inputPort::port2:
-//		return mUi->port2Box;
-//	case robots::enums::inputPort::port3:
-//		return mUi->port3Box;
-//	case robots::enums::inputPort::port4:
-//		return mUi->port4Box;
-//	case robots::enums::inputPort::none:
-//		break;
-//	}
-	return nullptr;
-}
-
 void D2ModelWidget::addPort(int const index)
 {
 	if (!isVisible() && mFirstShow) {
@@ -609,7 +578,6 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 				mCurrentWall->reshapeRectWithShift();
 			}
 		}
-
 	}
 }
 
@@ -1036,11 +1004,6 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit d2WasClosed();
 }
 
-//QVector<SensorItem *> D2ModelWidget::sensorItems() const
-//{
-//	return mSensors;
-//}
-
 SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
 {
 	return mSensors.value(port);
@@ -1073,10 +1036,6 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 
 	mWorldModel->deserialize(worldList.at(0).toElement());
 	mTwoDRobotModel->deserialize(robotList.at(0).toElement());
-
-	for (int i = 0; i < 4; ++i) {
-//		reinitSensor(static_cast<robots::enums::inputPort::InputPortEnum>(i));
-	}
 
 	mRobot->processPositionAndAngleChange();
 	mDrawingAction = enums::drawingAction::noneWordLoad;
@@ -1141,12 +1100,12 @@ void D2ModelWidget::onTimelineTick()
 
 void D2ModelWidget::toggleDisplayVisibility()
 {
-//	setDisplayVisibility(!mNxtDisplay->isVisible());
+	setDisplayVisibility(!mNxtDisplay->isVisible());
 }
 
 void D2ModelWidget::setDisplayVisibility(bool visible)
 {
-//	mNxtDisplay->setVisible(visible);
+	mNxtDisplay->setVisible(visible);
 	QString const direction = visible ? "right" : "left";
 	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
 	SettingsManager::setValue("2d_displayVisible", visible);

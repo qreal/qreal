@@ -1,4 +1,4 @@
-#include "colorSensor.h"
+#include "colorSensorImpl.h"
 
 #include <utils/tracer.h>
 
@@ -7,19 +7,18 @@ using namespace interpreterBase::robotModel;
 
 int const maxColorValue = 1023;
 
-ColorSensor::ColorSensor(DeviceInfo const &info, PortInfo const &port
+ColorSensorImpl::ColorSensorImpl(DeviceInfo const &info, PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator
 		, enums::lowLevelSensorType::SensorTypeEnum lowLevelType)
-	: interpreterBase::robotModel::robotParts::ColorSensor(info, port)
-	, mImplementation(*this, robotCommunicator, port, lowLevelType, enums::sensorMode::RAWMODE)
+	: mImplementation(robotCommunicator, port, lowLevelType, enums::sensorMode::RAWMODE)
 	, mLowLevelType(lowLevelType)
 {
 	connect(&mImplementation, &NxtInputDevice::sensorSpecificProcessResponse
-			, this, &ColorSensor::sensorSpecificProcessResponse);
-	connect(&mImplementation, &NxtInputDevice::configured, this, &ColorSensor::configurationCompleted);
+			, this, &ColorSensorImpl::sensorSpecificProcessResponse);
+	connect(&mImplementation, &NxtInputDevice::configured, this, &ColorSensorImpl::configurationCompleted);
 }
 
-void ColorSensor::read()
+void ColorSensorImpl::read()
 {
 	if (!mImplementation.isConfigured()) {
 		// If sensor is not configured, report failure and return immediately.
@@ -44,12 +43,12 @@ void ColorSensor::read()
 	mImplementation.send(command, 18);
 }
 
-void ColorSensor::doConfiguration()
+void ColorSensorImpl::doConfiguration()
 {
 	mImplementation.configure();
 }
 
-void ColorSensor::sensorSpecificProcessResponse(QByteArray const &reading)
+void ColorSensorImpl::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	if (reading.isEmpty()) {
 		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothColorSensorImplementation::sensorSpecificProcessResponse"

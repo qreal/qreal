@@ -1,25 +1,31 @@
 #pragma once
 
 #include <interpreterBase/robotModel/robotParts/colorSensor.h>
-#include "nxtInputDevice.h"
+
+#include "src/robotModel/real/parts/nxtInputDevice.h"
 
 namespace nxtKitInterpreter {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class ColorSensor : public interpreterBase::robotModel::robotParts::ColorSensor
+class ColorSensorImpl : public QObject
 {
 	Q_OBJECT
 
 public:
-	ColorSensor(interpreterBase::robotModel::DeviceInfo const &info
+	ColorSensorImpl(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator
 			, enums::lowLevelSensorType::SensorTypeEnum lowLevelType);
 
-	void read() override;
-	void doConfiguration() override;
+	void read();
+	void doConfiguration();
+
+signals:
+	void newData(int reading);
+	void configurationCompleted(bool success);
+	void failure();
 
 private slots:
 	void sensorSpecificProcessResponse(QByteArray const &reading);

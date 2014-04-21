@@ -12,7 +12,7 @@ TouchSensor::TouchSensor(interpreterBase::robotModel::DeviceInfo const &info
 		, interpreterBase::robotModel::PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::TouchSensor(info, port)
-	, mImplementation(*this, robotCommunicator, port, enums::lowLevelSensorType::SWITCH, enums::sensorMode::RAWMODE)
+	, mImplementation(robotCommunicator, port, enums::lowLevelSensorType::SWITCH, enums::sensorMode::RAWMODE)
 {
 	connect(&mImplementation, &NxtInputDevice::sensorSpecificProcessResponse
 			, this, &TouchSensor::sensorSpecificProcessResponse);
