@@ -6,7 +6,7 @@ ColorSensorGreen::ColorSensorGreen(interpreterBase::robotModel::DeviceInfo const
 		, interpreterBase::robotModel::PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::ColorSensorGreen(info, port)
-	, mImpl(info, port, robotCommunicator, enums::lowLevelSensorType::COLORGREEN)
+	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORGREEN)
 {
 	connect(&mImpl, &ColorSensorImpl::newData, this, &ColorSensorGreen::newData);
 	connect(&mImpl, &ColorSensorImpl::configurationCompleted, this, &ColorSensorGreen::configurationCompleted);

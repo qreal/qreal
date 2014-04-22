@@ -2,18 +2,6 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include <interpreterBase/robotModel/robotParts/touchSensor.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorGreen.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorBlue.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
-#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
-#include <interpreterBase/robotModel/robotParts/lightSensor.h>
-#include <interpreterBase/robotModel/robotParts/soundSensor.h>
-#include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
-#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
-
 using namespace generatorBase::converters;
 using namespace qReal;
 
@@ -76,36 +64,14 @@ QString CodeConverterBase::replaceFunctionInvocations(QString const &expression)
 	return result;
 }
 
-QString CodeConverterBase::deviceTemplatePath(interpreterBase::robotModel::DeviceInfo const &device) const
-{
-	if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorFull>()) {
-		return "sensors/readColorRecognition.t";
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorRed>()) {
-		return "sensors/readColor.t";
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorGreen>()) {
-		return "sensors/readColor.t";
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorBlue>()) {
-		return "sensors/readColor.t";
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorPassive>()) {
-		return "sensors/readColor.t";
-	} else if (device.isA<interpreterBase::robotModel::robotParts::RangeSensor>()) {
-		return "sensors/readSonar.t";
-	} else if (device.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
-		return "sensors/readLight.t";
-	} else if (device.isA<interpreterBase::robotModel::robotParts::SoundSensor>()) {
-		return "sensors/readSound.t";
-	} else if (device.isA<interpreterBase::robotModel::robotParts::GyroscopeSensor>()) {
-		return "sensors/readGyroscope.t";
-	} else if (device.isA<interpreterBase::robotModel::robotParts::EncoderSensor>()) {
-		return "sensors/readEncoder.t";
-	}
-
-	return "sensors/readTouch.t";
-}
-
 QString CodeConverterBase::deviceExpression(interpreterBase::robotModel::PortInfo const &port) const
 {
-	QString const templatePath = deviceTemplatePath(mDevices[port]);
+	if (mDevices[port].isNull()) {
+		return QString();
+	}
+
+	QString const templatePath = QString("sensors/%1.t").arg(mDevices[port].name());
+
 	// Converter must take a string like "1" or "2" (and etc) and return correct value
 	return readTemplate(templatePath).replace("@@PORT@@", mInputConverter->convert(port.name()));
 }

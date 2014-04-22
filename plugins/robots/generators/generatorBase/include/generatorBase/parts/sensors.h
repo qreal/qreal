@@ -26,13 +26,8 @@ protected:
 	void reinitPort(interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &device);
 
-	virtual QString initCode(interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &device);
-
-	virtual QString terminateCode(interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &device);
-
-	virtual QString isrHooks(interpreterBase::robotModel::PortInfo const &port
+	virtual QString code(QString const &directory
+			, interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &device);
 
 private:

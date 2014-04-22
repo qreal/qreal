@@ -9,8 +9,9 @@ namespace parts {
 class TrikLed : public interpreterBase::robotModel::robotParts::Device
 {
 	Q_OBJECT
-	Q_CLASSINFO("direction", "output")
+	Q_CLASSINFO("name", "led")
 	Q_CLASSINFO("friendlyName", tr("Led"))
+	Q_CLASSINFO("direction", "output")
 
 public:
 	TrikLed(interpreterBase::robotModel::DeviceInfo const &info

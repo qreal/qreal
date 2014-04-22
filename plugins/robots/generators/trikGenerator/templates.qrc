@@ -30,13 +30,9 @@
         <file>templates/conditional/whileDo.t</file>
         <file>templates/types/float.t</file>
         <file>templates/types/int.t</file>
-        <file>templates/sensors/readColor.t</file>
         <file>templates/sensors/readEncoder.t</file>
-        <file>templates/sensors/readGyroscore.t</file>
         <file>templates/sensors/readLight.t</file>
         <file>templates/sensors/readSonar.t</file>
-        <file>templates/sensors/readSound.t</file>
-        <file>templates/sensors/readTouch.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>

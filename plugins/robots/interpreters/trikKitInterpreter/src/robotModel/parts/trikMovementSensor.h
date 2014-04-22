@@ -9,6 +9,7 @@ namespace parts {
 class TrikMovementSensor : public interpreterBase::robotModel::robotParts::ScalarSensor
 {
 	Q_OBJECT
+	Q_CLASSINFO("name", "movement")
 	Q_CLASSINFO("friendlyName", tr("Movement Sensor"))
 
 public:

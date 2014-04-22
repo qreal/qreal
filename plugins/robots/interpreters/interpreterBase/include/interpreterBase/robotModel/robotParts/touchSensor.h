@@ -11,6 +11,7 @@ namespace robotParts {
 class ROBOTS_INTERPRETER_BASE_EXPORT TouchSensor : public ScalarSensor
 {
 	Q_OBJECT
+	Q_CLASSINFO("name", "touch")
 	Q_CLASSINFO("friendlyName", tr("Touch sensor"))
 
 public:

@@ -34,7 +34,6 @@ protected:
 	/// Replaces function invocations to calls of corresponding functions in C.
 	virtual QString replaceFunctionInvocations(QString const &expression) const;
 
-	virtual QString deviceTemplatePath(interpreterBase::robotModel::DeviceInfo const &device) const;
 	virtual QString deviceExpression(interpreterBase::robotModel::PortInfo const &port) const;
 	virtual QString timelineExpression() const;
 

@@ -6,7 +6,7 @@ ColorSensorPassive::ColorSensorPassive(interpreterBase::robotModel::DeviceInfo c
 		, interpreterBase::robotModel::PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::ColorSensorPassive(info, port)
-	, mImpl(info, port, robotCommunicator, enums::lowLevelSensorType::COLORNONE)
+	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORNONE)
 {
 	connect(&mImpl, &ColorSensorImpl::newData, this, &ColorSensorPassive::newData);
 	connect(&mImpl, &ColorSensorImpl::configurationCompleted, this, &ColorSensorPassive::configurationCompleted);

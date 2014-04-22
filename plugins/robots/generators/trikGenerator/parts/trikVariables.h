@@ -9,7 +9,8 @@ namespace parts {
 class TrikVariables : public generatorBase::parts::Variables
 {
 public:
-	explicit TrikVariables(QString const &pathToTemplates);
+	TrikVariables(QString const &pathToTemplates
+			, interpreterBase::robotModel::RobotModelInterface const &robotModel);
 
 protected:
 	QMap<QString, int> intConstants() const override;

@@ -99,7 +99,7 @@ void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
 
 void GeneratorFactoryBase::initVariables()
 {
-	mVariables = new parts::Variables(pathToTemplates());
+	mVariables = new parts::Variables(pathToTemplates(), mRobotModelManager.model());
 }
 
 void GeneratorFactoryBase::initSubprograms()
@@ -352,7 +352,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() con
 
 Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter() const
 {
-	return new converters::EnginePortsConverter(pathToTemplates(), outputPortConverter());
+	return new converters::EnginePortsConverter(outputPortConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::inputPortConverter() const
@@ -422,7 +422,8 @@ QMap<PortInfo, DeviceInfo> GeneratorFactoryBase::currentConfiguration() const
 	// by user devices (like encoders, displays and so on).
 	for (PortInfo const &port : mRobotModelManager.model().availablePorts()) {
 		if (!mRobotModelManager.model().configurablePorts().contains(port)
-				&& mRobotModelManager.model().allowedDevices(port).count() == 1) {
+				&& mRobotModelManager.model().allowedDevices(port).count() == 1
+				&& port.direction() == input) {
 			result[port] = mRobotModelManager.model().allowedDevices(port)[0];
 		}
 	}

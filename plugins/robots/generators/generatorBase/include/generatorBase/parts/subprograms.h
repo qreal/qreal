@@ -28,7 +28,7 @@ public:
 			, QString const &pathToTemplates
 			, simple::Binding::ConverterInterface const *nameNormalizer);
 
-	virtual ~Subprograms();
+	~Subprograms() override;
 
 	/// Must be called each time when visitor has found subprogram call
 	/// @param logicalId Logical id of the block which calls subprogram

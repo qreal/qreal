@@ -1,23 +1,15 @@
 #pragma once
 
-#include "generatorBase/converters/templateParametrizedMultiConverter.h"
+#include "generatorBase/converters/regexpMultiConverter.h"
 
 namespace generatorBase {
 namespace converters {
 
-/// Splits given string selecting just 'A', 'B' and 'C' symbols and returns
-/// converted output port values.
-class EnginePortsConverter : public TemplateParametrizedMultiConverter
+/// Splits given string selecting just 'A', 'B' and 'C' symbols and returns converted output port values.
+class EnginePortsConverter : public RegexpMultiConverter
 {
 public:
-	EnginePortsConverter(QString const &pathToTemplates
-			, simple::Binding::ConverterInterface const *oneEngineConverter);
-	virtual ~EnginePortsConverter();
-
-	virtual QStringList convert(QString const &data) const;
-
-private:
-	simple::Binding::ConverterInterface const *mOneEngineConverter;  // Takes ownership
+	EnginePortsConverter(simple::Binding::ConverterInterface const *oneEngineConverter);
 };
 
 }

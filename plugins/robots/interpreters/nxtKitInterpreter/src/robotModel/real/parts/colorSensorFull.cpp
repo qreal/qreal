@@ -6,7 +6,7 @@ ColorSensorFull::ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &
 		, interpreterBase::robotModel::PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
 	: interpreterBase::robotModel::robotParts::ColorSensorFull(info, port)
-	, mImpl(info, port, robotCommunicator, enums::lowLevelSensorType::COLORFULL)
+	, mImpl(port, robotCommunicator, enums::lowLevelSensorType::COLORFULL)
 {
 	connect(&mImpl, &ColorSensorImpl::newData, this, &ColorSensorFull::newData);
 	connect(&mImpl, &ColorSensorImpl::configurationCompleted, this, &ColorSensorFull::configurationCompleted);

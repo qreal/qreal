@@ -25,12 +25,12 @@ void Engines::reinit()
 
 QString Engines::initCode()
 {
-	return readEngineTemplate("initialization/engines.t");
+	return readEngineTemplate("initialization/motor.t");
 }
 
 QString Engines::terminateCode()
 {
-	return readEngineTemplate("termination/engines.t");
+	return readEngineTemplate("termination/motor.t");
 }
 
 QString Engines::readEngineTemplate(QString const &pathToTemplate)

@@ -10,6 +10,7 @@ namespace robotParts {
 class ROBOTS_INTERPRETER_BASE_EXPORT GyroscopeSensor : public ScalarSensor
 {
 	Q_OBJECT
+	Q_CLASSINFO("name", "gyroscope")
 	Q_CLASSINFO("friendlyName", tr("Gyroscope"))
 
 public:

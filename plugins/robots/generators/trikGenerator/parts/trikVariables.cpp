@@ -2,8 +2,9 @@
 
 using namespace trik::parts;
 
-TrikVariables::TrikVariables(QString const &pathToTemplates)
-	: Variables(pathToTemplates)
+TrikVariables::TrikVariables(QString const &pathToTemplates
+		, interpreterBase::robotModel::RobotModelInterface const &robotModel)
+	: Variables(pathToTemplates, robotModel)
 {
 }
 

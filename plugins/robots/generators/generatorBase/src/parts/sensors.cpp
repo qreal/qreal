@@ -29,76 +29,13 @@ Sensors::~Sensors()
 	delete mInputPortConverter;
 }
 
-QString Sensors::initCode(interpreterBase::robotModel::PortInfo const &port
+QString Sensors::code(QString const &directory
+		, interpreterBase::robotModel::PortInfo const &port
 		, interpreterBase::robotModel::DeviceInfo const &device)
 {
 	QString const portString = mInputPortConverter->convert(port.name());
-
-	if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorFull>()) {
-		return readTemplate("initialization/colorFull.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorRed>()) {
-		return readTemplate("initialization/colorRed.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorGreen>()) {
-		return readTemplate("initialization/colorGreen.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorBlue>()) {
-		return readTemplate("initialization/colorBlue.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorPassive>()) {
-		return readTemplate("initialization/colorNone.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::RangeSensor>()) {
-		return readTemplate("initialization/sonar.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
-		return readTemplate("initialization/light.t").replace("@@PORT@@", portString);
-	}
-
-	return QString();
-}
-
-QString Sensors::terminateCode(interpreterBase::robotModel::PortInfo const &port
-		, interpreterBase::robotModel::DeviceInfo const &device)
-{
-	QString const portString = mInputPortConverter->convert(port.name());
-
-	if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorFull>()) {
-		return readTemplate("termination/colorFull.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorRed>()) {
-		return readTemplate("termination/colorRed.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorGreen>()) {
-		return readTemplate("termination/colorGreen.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorBlue>()) {
-		return readTemplate("termination/colorBlue.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorPassive>()) {
-		return readTemplate("termination/colorNone.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::RangeSensor>()) {
-		return readTemplate("termination/sonar.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
-		return readTemplate("termination/light.t").replace("@@PORT@@", portString);
-	}
-
-	return QString();
-}
-
-QString Sensors::isrHooks(interpreterBase::robotModel::PortInfo const &port
-		, interpreterBase::robotModel::DeviceInfo const &device)
-{
-	QString const portString = mInputPortConverter->convert(port.name());
-
-	if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorFull>()) {
-		return readTemplate("isrHooks/colorFull.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorRed>()) {
-		return readTemplate("isrHooks/colorRed.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorGreen>()) {
-		return readTemplate("isrHooks/colorGreen.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorBlue>()) {
-		return readTemplate("isrHooks/colorBlue.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::ColorSensorPassive>()) {
-		return readTemplate("isrHooks/colorNone.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::RangeSensor>()) {
-		return readTemplate("isrHooks/sonar.t").replace("@@PORT@@", portString);
-	} else if (device.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
-		return readTemplate("isrHooks/light.t").replace("@@PORT@@", portString);
-	}
-
-	return QString();
+	QString const templatePath = QString("%1/%2.t").arg(directory, device.name());
+	return readTemplate(templatePath).replace("@@PORT@@", portString);
 }
 
 void Sensors::reinit(QMap<interpreterBase::robotModel::PortInfo
@@ -116,9 +53,9 @@ void Sensors::reinit(QMap<interpreterBase::robotModel::PortInfo
 void Sensors::reinitPort(interpreterBase::robotModel::PortInfo const &port
 		, interpreterBase::robotModel::DeviceInfo const &device)
 {
-	mInitCode << initCode(port, device);
-	mTerminateCode << terminateCode(port, device);
-	QString const isrHooksCode = isrHooks(port, device);
+	mInitCode << code("initialization", port, device);
+	mTerminateCode << code("termination", port, device);
+	QString const isrHooksCode = code("isrHooks", port, device);
 	if (!mIsrHooksCode.contains(isrHooksCode)) {
 		mIsrHooksCode << isrHooksCode;
 	}

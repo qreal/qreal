@@ -4,6 +4,7 @@
 #include <QtCore/QStringList>
 
 #include <qrrepo/repoApi.h>
+#include <interpreterBase/robotModel/robotModelInterface.h>
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 
@@ -27,7 +28,7 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Variables : public TemplateParametrizedEntity
 {
 public:
-	explicit Variables(QString const &pathToTemplates);
+	Variables(QString const &pathToTemplates, interpreterBase::robotModel::RobotModelInterface const &robotModel);
 
 	/// Tries to infer types for all variables declared in all function blocks
 	/// on the specified diagram
@@ -81,6 +82,7 @@ private:
 
 	bool isIdentifier(QString const &token) const;
 
+	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;
 	QMap<QString, enums::variableType::VariableType> mVariables;
 	QStringList mManualDeclarations;
 };

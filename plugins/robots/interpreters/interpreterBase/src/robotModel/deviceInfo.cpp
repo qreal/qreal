@@ -14,8 +14,10 @@ DeviceInfo::DeviceInfo()
 {
 }
 
-DeviceInfo::DeviceInfo(QMetaObject const *deviceType, QString const &friendlyName, Direction direction)
+DeviceInfo::DeviceInfo(QMetaObject const *deviceType, QString const &name
+		, QString const &friendlyName, Direction direction)
 	: mDeviceType(deviceType)
+	, mName(name)
 	, mFriendlyName(friendlyName)
 	, mDirection(direction)
 {
@@ -29,6 +31,11 @@ bool DeviceInfo::isA(DeviceInfo const &parent) const
 	}
 
 	return currentParent != nullptr;
+}
+
+QString DeviceInfo::name() const
+{
+	return mName;
 }
 
 QString DeviceInfo::friendlyName() const

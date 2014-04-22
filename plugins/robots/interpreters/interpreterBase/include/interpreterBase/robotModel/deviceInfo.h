@@ -28,9 +28,10 @@ public:
 		// to invalid isA() method work.
 		static_assert(HasQObjectMacro<T>::Value, "No Q_OBJECT macro in the class that is passed into a template");
 		QMetaObject const *metaObject = &T::staticMetaObject;
+		QString const name = property(metaObject, "name");
 		QString const friendlyName = property(metaObject, "friendlyName");
 		Direction const direction = property(metaObject, "direction").toLower() == "input" ? input : output;
-		DeviceInfo result(metaObject, friendlyName, direction);
+		DeviceInfo result(metaObject, name, friendlyName, direction);
 		mCreatedInfos[QString(metaObject->className())] = result;
 		return result;
 	}
@@ -53,6 +54,10 @@ public:
 	{
 		return isA(create<T>());
 	}
+
+	/// Returns a string that is unique for each class of devices and that can be used,
+	/// for example, by generators for searching corresponding templates.
+	QString name() const;
 
 	/// Returns a string that can be displayed to a user as the name of the device.
 	QString friendlyName() const;
@@ -81,13 +86,14 @@ private:
 	friend bool operator ==(DeviceInfo const &device1, DeviceInfo const &device2);
 	friend bool operator !=(DeviceInfo const &device1, DeviceInfo const &device2);
 
-	DeviceInfo(QMetaObject const *deviceType, QString const &friendlyName, Direction direction);
+	DeviceInfo(QMetaObject const *deviceType, QString const &name, QString const &friendlyName, Direction direction);
 
 	static QString property(QMetaObject const * const metaObject, QString const &name);
 
 	static QMap<QString, DeviceInfo> mCreatedInfos;
 
 	QMetaObject const *mDeviceType;
+	QString mName;
 	QString mFriendlyName;
 	Direction mDirection;
 };

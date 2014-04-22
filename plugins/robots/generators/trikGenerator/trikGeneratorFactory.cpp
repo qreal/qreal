@@ -54,5 +54,5 @@ Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
 
 void TrikGeneratorFactory::initVariables()
 {
-	mVariables = new parts::TrikVariables(pathToTemplates());
+	mVariables = new parts::TrikVariables(pathToTemplates(), mRobotModelManager.model());
 }

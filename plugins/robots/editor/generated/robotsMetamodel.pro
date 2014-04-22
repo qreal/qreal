@@ -9,6 +9,7 @@ win32 {
 	QMAKE_POST_LINK = "cmd /C "xcopy ..\\images ..\\..\\..\\..\\bin\\images /s /e /q /y /i &&"\
 						" xcopy ..\\\doc\\html ..\\..\\..\\..\\bin\\help\\ /s /e /q /y /i &&"\
 						" copy ..\\doc\\changelog.txt ..\\..\\..\\..\\bin /y &&"\
+						" copy ..\\..\\robotsInterpreter\\icons\\trik\\splashscreen.png ..\\..\\..\\..\\bin /y &&"\
 						" xcopy ..\\..\\examples ..\\..\\..\\..\\bin\\examples /s /e /q /y /i""
 }
 else {
@@ -17,6 +18,7 @@ else {
 						" mkdir ../../../../bin/help/;"\
 						" cp -r ../doc/html/* ../../../../bin/help/ &&"\
 						" cp ../doc/changelog.txt ../../../../bin &&"\
+						" cp ../../robotsInterpreter/icons/trik/splashscreen.png ../../../../bin &&"\
 						" mkdir ../../../../bin/examples/;"\
 						" cp -r ../../examples/* ../../../../bin/examples/"
 }

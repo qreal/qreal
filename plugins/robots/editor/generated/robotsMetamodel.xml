@@ -43,6 +43,30 @@
 				<value>тормозить</value>
 				<value>скользить</value>
 			</enum>
+			<enum name="LedColor">
+				<value>Зелёный</value>
+				<value>Красный</value>
+				<value>Выключен</value>
+			</enum>
+			<enum name="BackgroundColor">
+				<value>Белый</value>
+				<value>Чёрный</value>
+				<value>Красный</value>
+				<value>Тёмно-красный</value>
+				<value>Зелёный</value>
+				<value>Тёмно-зелёный</value>
+				<value>Синий</value>
+				<value>Тёмно-синий</value>
+				<value>Сине-зелёный</value>
+				<value>Тёмносине-зелёный</value>
+				<value>Пурпурный</value>
+				<value>Тёмно-пурпурный</value>
+				<value>Жёлтый</value>
+				<value>Тёмно-жёлтый</value>
+				<value>Серый</value>
+				<value>Тёмно-серый</value>
+				<value>Светло-серый</value>
+			</enum>
 			<groups>
 				<group name="RobotsDiagramGroup" rootNode="diagram">
 					<groupNode type="RobotsDiagramNode" name="diagram" xPosition="0" yPosition="0"/>
