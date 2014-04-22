@@ -5,12 +5,12 @@
 namespace trikKitInterpreter {
 namespace robotModel {
 
-class TrikV4RobotModelBase : public interpreterBase::robotModel::CommonRobotModel
+class TrikRobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT
 
 public:
-	TrikV4RobotModelBase();
+	TrikRobotModelBase();
 
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 

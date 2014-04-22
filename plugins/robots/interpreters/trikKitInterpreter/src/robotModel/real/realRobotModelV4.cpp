@@ -20,7 +20,6 @@
 #include "parts/cameraLineDetector.h"
 
 using namespace trikKitInterpreter::robotModel::real;
-using namespace utils::robotCommunication;
 using namespace interpreterBase::robotModel;
 
 RealRobotModelV4::RealRobotModelV4()
@@ -29,7 +28,7 @@ RealRobotModelV4::RealRobotModelV4()
 
 QString RealRobotModelV4::name() const
 {
-	return "TrikRealRobotModel";
+	return "TrikRealRobotModelV4";
 }
 
 QString RealRobotModelV4::friendlyName() const

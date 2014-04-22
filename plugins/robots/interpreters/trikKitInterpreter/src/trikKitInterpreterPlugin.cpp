@@ -12,7 +12,7 @@ Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "Subprog
 
 TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	: mBlocksFactory(new blocks::TrikBlocksFactory)
-	, mAdditionalPreferences(new TrikAdditionalPreferences(mRealRobotModel.name()))
+	, mAdditionalPreferences(new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV5.name() }))
 {
 //	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel, new TrikTwoDModelConfigurer());
 
@@ -20,7 +20,9 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 //	mTwoDModel.reset(modelEngine);
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, &mRealRobotModel, &robotModel::real::RealRobotModelV4::rereadSettings);
+			, &mRealRobotModelV4, &robotModel::real::RealRobotModelV4::rereadSettings);
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+			, &mRealRobotModelV5, &robotModel::real::RealRobotModelV5::rereadSettings);
 //	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 //			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
@@ -74,7 +76,7 @@ QString TrikKitInterpreterPlugin::friendlyKitName() const
 QList<interpreterBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
 {
 //	return {&mRealRobotModel, &mTwoDRobotModel};
-	return {&mRealRobotModel};
+	return {&mRealRobotModelV4, &mRealRobotModelV5};
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(

@@ -7,10 +7,10 @@
 using namespace trikKitInterpreter;
 using namespace qReal;
 
-TrikAdditionalPreferences::TrikAdditionalPreferences(QString const &realRobotName, QWidget *parent)
+TrikAdditionalPreferences::TrikAdditionalPreferences(QStringList const &realRobotNames, QWidget *parent)
 	: AdditionalPreferences(parent)
 	, mUi(new Ui::TrikAdditionalPreferences)
-	, mRealRobotName(realRobotName)
+	, mRealRobotNames(realRobotNames)
 {
 	mUi->setupUi(this);
 }
@@ -33,6 +33,6 @@ void TrikAdditionalPreferences::restoreSettings()
 
 void TrikAdditionalPreferences::onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface * const robotModel)
 {
-	bool const isReal = robotModel->name() == mRealRobotName;
+	bool const isReal = mRealRobotNames.contains(robotModel->name());
 	mUi->tcpSettingsGroupBox->setVisible(isReal);
 }

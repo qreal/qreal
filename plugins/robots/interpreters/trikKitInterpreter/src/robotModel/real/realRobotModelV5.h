@@ -1,29 +1,24 @@
 #pragma once
 
-#include <robotModel/trikRobotModelBase.h>
+#include "realRobotModelV4.h"
 
 namespace trikKitInterpreter {
 namespace robotModel {
 namespace real {
 
-class RealRobotModelV4 : public TrikRobotModelBase
+class RealRobotModelV5 : public RealRobotModelV4
 {
 	Q_OBJECT
 
 public:
-	RealRobotModelV4();
+	RealRobotModelV5();
 
 	QString name() const override;
 	QString friendlyName() const override;
-	bool needsConnection() const override;
 
-	void connectToRobot() override;
-	void disconnectFromRobot() override;
+private:
+	interpreterBase::robotModel::DeviceInfo movementSensorInfo() const;
 
-public slots:
-	void rereadSettings() override;
-
-protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
 			interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;

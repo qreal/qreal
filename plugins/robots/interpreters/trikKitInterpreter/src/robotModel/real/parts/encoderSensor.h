@@ -1,7 +1,6 @@
 #pragma once
 
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
-#include <utils/robotCommunication/robotCommunicator.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {

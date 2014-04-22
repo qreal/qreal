@@ -1,4 +1,4 @@
-#include "trikV4RobotModelBase.h"
+#include "trikRobotModelBase.h"
 
 #include <interpreterBase/robotModel/robotParts/display.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
@@ -19,7 +19,7 @@
 using namespace trikKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-TrikV4RobotModelBase::TrikV4RobotModelBase()
+TrikRobotModelBase::TrikRobotModelBase()
 {
 	QList<DeviceInfo> const analogPortConnections = {
 		lightSensorInfo()
@@ -62,64 +62,64 @@ TrikV4RobotModelBase::TrikV4RobotModelBase()
 	addAllowedConnection(PortInfo("LineDetectorPort", output), { cameraLineDetectorSensorInfo() });
 }
 
-QList<DeviceInfo> TrikV4RobotModelBase::convertibleBases() const
+QList<DeviceInfo> TrikRobotModelBase::convertibleBases() const
 {
 	return { DeviceInfo::create<robotParts::LightSensor>()
 		, DeviceInfo::create<parts::TrikInfraredSensor>()
 		, DeviceInfo::create<parts::TrikSonarSensor>() };
 }
 
-DeviceInfo TrikV4RobotModelBase::displayInfo() const
+DeviceInfo TrikRobotModelBase::displayInfo() const
 {
 	return DeviceInfo::create<robotParts::Display>();
 }
 
-DeviceInfo TrikV4RobotModelBase::speakerInfo() const
+DeviceInfo TrikRobotModelBase::speakerInfo() const
 {
 	return DeviceInfo::create<robotParts::Speaker>();
 }
 
-DeviceInfo TrikV4RobotModelBase::buttonsInfo() const
+DeviceInfo TrikRobotModelBase::buttonsInfo() const
 {
 	return DeviceInfo::create<robotParts::Buttons>();
 }
 
-DeviceInfo TrikV4RobotModelBase::powerMotorInfo() const
+DeviceInfo TrikRobotModelBase::powerMotorInfo() const
 {
 	return DeviceInfo::create<robotParts::Motor>();
 }
 
-DeviceInfo TrikV4RobotModelBase::servoMotorInfo() const
+DeviceInfo TrikRobotModelBase::servoMotorInfo() const
 {
 	return DeviceInfo::create<robotParts::Motor>();
 }
 
-DeviceInfo TrikV4RobotModelBase::encoderInfo() const
+DeviceInfo TrikRobotModelBase::encoderInfo() const
 {
 	return DeviceInfo::create<robotParts::EncoderSensor>();
 }
 
-DeviceInfo TrikV4RobotModelBase::lightSensorInfo() const
+DeviceInfo TrikRobotModelBase::lightSensorInfo() const
 {
 	return DeviceInfo::create<robotParts::LightSensor>();
 }
 
-DeviceInfo TrikV4RobotModelBase::infraredSensorInfo() const
+DeviceInfo TrikRobotModelBase::infraredSensorInfo() const
 {
 	return DeviceInfo::create<parts::TrikInfraredSensor>();
 }
 
-DeviceInfo TrikV4RobotModelBase::sonarSensorInfo() const
+DeviceInfo TrikRobotModelBase::sonarSensorInfo() const
 {
 	return DeviceInfo::create<parts::TrikSonarSensor>();
 }
 
-DeviceInfo TrikV4RobotModelBase::ledInfo() const
+DeviceInfo TrikRobotModelBase::ledInfo() const
 {
 	return DeviceInfo::create<parts::TrikLed>();
 }
 
-DeviceInfo TrikV4RobotModelBase::cameraLineDetectorSensorInfo() const
+DeviceInfo TrikRobotModelBase::cameraLineDetectorSensorInfo() const
 {
 	return DeviceInfo::create<parts::TrikCameraLineDetector>();
 }
