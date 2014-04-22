@@ -13,6 +13,7 @@ LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBas
 HEADERS += \
 	$$PWD/nxtKitInterpreterPlugin.h \
 	$$PWD/nxtAdditionalPreferences.h \
+	$$PWD/nxtTwoDModelConfigurer.h \
 	$$PWD/blocks/nxtBlocksFactory.h \
 	$$PWD/blocks/details/speakerBlock.h \
 	$$PWD/blocks/details/beepBlock.h \
@@ -54,6 +55,7 @@ HEADERS += \
 SOURCES += \
 	$$PWD/nxtKitInterpreterPlugin.cpp \
 	$$PWD/nxtAdditionalPreferences.cpp \
+	$$PWD/nxtTwoDModelConfigurer.cpp \
 	$$PWD/blocks/nxtBlocksFactory.cpp \
 	$$PWD/blocks/details/speakerBlock.cpp \
 	$$PWD/blocks/details/beepBlock.cpp \

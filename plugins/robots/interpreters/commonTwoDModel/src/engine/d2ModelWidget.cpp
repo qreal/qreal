@@ -19,6 +19,8 @@
 #include "rotater.h"
 #include "timeline.h"
 
+#include <QtCore/QDebug>
+
 using namespace twoDModel;
 using namespace qReal;
 using namespace utils;
@@ -28,7 +30,9 @@ using namespace interpreterBase::robotModel::robotParts;
 
 D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
 		, RobotModelInterface &robotModel
-		, NxtDisplay *nxtDisplay, QWidget *parent)
+		, NxtDisplay *nxtDisplay
+		, Configurer const &configurer
+		, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
 	, mScene(nullptr)
@@ -48,6 +52,7 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	, mFirstShow(true)
 	, mTimeline(dynamic_cast<D2RobotModel *>(twoDRobotModel)->timeline())
 	, mRobotModel(robotModel)
+	, mConfigurer(configurer)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -77,7 +82,7 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	mUi->noneButton->setChecked(true);
 
 	auto connectWheelComboBox = [this](QComboBox * const comboBox, TwoDRobotRobotModelInterface::WheelEnum wheel) {
-			connect(comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated)
+			connect(comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged)
 					, [this, wheel, comboBox](int index) {
 							mTwoDRobotModel->setMotorPortOnWheel(
 									wheel
@@ -1236,13 +1241,13 @@ void D2ModelWidget::initRunStopButtons()
 
 void D2ModelWidget::updateWheelComboBoxes()
 {
-	/// @todo Automatically configure wheel ports if there is only two motors are used in a program.
 	PortInfo const leftWheelOldPort = mUi->leftWheelComboBox->currentData().value<PortInfo>();
 	PortInfo const rightWheelOldPort = mUi->rightWheelComboBox->currentData().value<PortInfo>();
 
 	mUi->leftWheelComboBox->clear();
 	mUi->rightWheelComboBox->clear();
 
+	/// @todo More general way of specifying uninitialized values, or someone actually will name some port as "None".
 	mUi->leftWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None", output)));
 	mUi->rightWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None", output)));
 
@@ -1256,9 +1261,9 @@ void D2ModelWidget::updateWheelComboBoxes()
 		}
 	}
 
-	auto restoreOldPort = [](QComboBox * const comboBox, PortInfo const &oldPort) {
+	auto setSelectedPort = [](QComboBox * const comboBox, PortInfo const &port) {
 		for (int i = 0; i < comboBox->count(); ++i) {
-			if (comboBox->itemData(i).value<PortInfo>() == oldPort) {
+			if (comboBox->itemData(i).value<PortInfo>() == port) {
 				comboBox->setCurrentIndex(i);
 				return true;
 			}
@@ -1267,17 +1272,29 @@ void D2ModelWidget::updateWheelComboBoxes()
 		return false;
 	};
 
-	if (!restoreOldPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
-		if (mUi->leftWheelComboBox->count() > 1) {
-			mUi->leftWheelComboBox->setCurrentIndex(1);
+	if (!setSelectedPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
+		if (!setSelectedPort(mUi->leftWheelComboBox, mConfigurer.defaultLeftWheelPort())) {
+
+			qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
+					<< mConfigurer.defaultLeftWheelPort().toString();
+
+			if (mUi->leftWheelComboBox->count() > 1) {
+				mUi->leftWheelComboBox->setCurrentIndex(1);
+			}
 		}
 	}
 
-	if (!restoreOldPort(mUi->rightWheelComboBox, rightWheelOldPort)) {
-		if (mUi->rightWheelComboBox->count() > 2) {
-			mUi->rightWheelComboBox->setCurrentIndex(2);
-		} else if (mUi->rightWheelComboBox->count() > 1) {
-			mUi->rightWheelComboBox->setCurrentIndex(1);
+	if (!setSelectedPort(mUi->rightWheelComboBox, rightWheelOldPort)) {
+		if (!setSelectedPort(mUi->rightWheelComboBox, mConfigurer.defaultRightWheelPort())) {
+
+			qDebug() << "Incorrect defaultRightWheelPort set in configurer:"
+					<< mConfigurer.defaultRightWheelPort().toString();
+
+			if (mUi->rightWheelComboBox->count() > 2) {
+				mUi->rightWheelComboBox->setCurrentIndex(2);
+			} else if (mUi->rightWheelComboBox->count() > 1) {
+				mUi->rightWheelComboBox->setCurrentIndex(1);
+			}
 		}
 	}
 }

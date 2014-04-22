@@ -24,6 +24,8 @@
 #include "timeline.h"
 #include "nxtDisplay.h"
 
+#include "commonTwoDModel/engine/configurer.h"
+
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
@@ -70,7 +72,10 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Devices
 public:
 	D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
 			, interpreterBase::robotModel::RobotModelInterface &robotModel
-			, NxtDisplay *nxtDisplay, QWidget *parent = 0);
+			, NxtDisplay *nxtDisplay
+			, Configurer const &configurer
+			, QWidget *parent = 0);
+
 	~D2ModelWidget();
 	void init(bool isActive = true);
 	void close();
@@ -310,6 +315,8 @@ private:
 
 	/// Does not have ownership, combo boxes are owned by form layout.
 	QHash<QComboBox *, interpreterBase::robotModel::PortInfo> mComboBoxesToPortsMap;
+
+	Configurer const &mConfigurer;
 };
 
 }
