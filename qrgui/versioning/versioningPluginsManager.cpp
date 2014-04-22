@@ -59,8 +59,6 @@ void VersioningPluginsManager::initFromToolPlugins(
 			mDiffPlugin = diffPlugin;
 			mDiffPlugin->setHandler(new versioning::DiffPluginWrapper(mDiffPlugin, mRepoApi
 					, this, mainWindow, &mainWindow->editorManager()));
-//			connect(mDiffPlugin, SIGNAL(viewForTransparentModeIsReady(QGraphicsView*))
-//					,this , SIGNAL(viewForTransparentModeIsReady(QGraphicsView*)));
 		}
 	}
 	if (versionPluginsLoaded)

@@ -1,5 +1,6 @@
 #include "ChangeVersion.h"
 #include "ui_ChangeVersion.h"
+#include "../visualDiff/view/diffWindow.h"
 #include <QtCore/QString>
 
 using namespace qReal;
@@ -12,8 +13,7 @@ ChangeVersion::ChangeVersion(QWidget *parent) :
 	mUi->pushButton->hide();
 	mUi->label->hide();
 	connect(mUi->pushButton, SIGNAL(clicked()), SLOT(obtainHash()));
-//	mlist = new QListWidget;
-//	mUi->gridLayout->addWidget(mlist);
+	this->setMaximumSize(this->size());
 }
 
 ChangeVersion::~ChangeVersion()
@@ -40,6 +40,13 @@ void ChangeVersion::showDiff(QListWidgetItem *item)
 	QString firstHash = item->data(Qt::UserRole).toString();
 	int row = mUi->listWidgetForLog->row(item);
 	QListWidgetItem *item2 = mUi->listWidgetForLog->item(row + 1);
+	foreach(QObject *object, this->children()){
+		versioning::DiffWindow *dWindow = dynamic_cast<versioning::DiffWindow *>(object);
+		if (dWindow){
+			delete dWindow;
+		}
+	}
+
 	if (item2 != NULL){
 		emit showDiff(firstHash, item2->data(Qt::UserRole).toString(), this);
 	} else {

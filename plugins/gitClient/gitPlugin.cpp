@@ -361,7 +361,7 @@ QString &GitPlugin::getFilePath(QString &adress)
 bool GitPlugin::doRemove(QString const &what, bool force)
 {
 	QStringList arguments;
-	arguments << "rm" << what;
+	arguments << "rm" << what << "-r";
 
 	if (force) {
 		arguments.append("-f");

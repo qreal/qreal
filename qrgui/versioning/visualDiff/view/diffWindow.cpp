@@ -8,7 +8,9 @@ DiffWindow::DiffWindow(qReal::MainWindow *mainWindow
 {
 	initWindow();
 	initLayout();
-	initButton();
+	if (!SettingsManager::value("transparentVersioningMode").toBool()){
+		initButton();
+	}
 	initViews();
 	initDiffDetailsWidget();
 	QList<int> sizes;
@@ -30,7 +32,9 @@ versioning::details::DiffView *DiffWindow::getNewModel()
 void DiffWindow::initWindow()
 {
 	setWindowTitle(tr("Diff"));
-	//setWindowState(Qt::WindowMaximized | Qt::WindowActive);
+	if (!SettingsManager::value("transparentVersioningMode").toBool()){
+		setWindowState(Qt::WindowMaximized | Qt::WindowActive);
+	}
 	setWindowFlags(Qt::Window | Qt::WindowMinMaxButtonsHint);
 	setWindowOpacity(1.00);
 }
@@ -62,18 +66,22 @@ void DiffWindow::initButton()
 void DiffWindow::initViews()
 {
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
+	QList<int> sizes;
+	sizes << 1;
 
-	mOldView = new details::DiffView(mMainWindow, mDiffModel, true, this);
+
+	if (!SettingsManager::value("transparentVersioningMode").toBool()){
+		mOldView = new details::DiffView(mMainWindow, mDiffModel, true, this);
+		QFrame *oldFrame = new QFrame;
+		oldFrame->setLayout(initView(mOldView));
+		sizes << 1;
+		splitter->addWidget(oldFrame);
+	}
+
 	mNewView = new details::DiffView(mMainWindow, mDiffModel, false, this);
-	QFrame *oldFrame = new QFrame;
 	QFrame *newFrame = new QFrame;
-	oldFrame->setLayout(initView(mOldView));
 	newFrame->setLayout(initView(mNewView));
 
-	QList<int> sizes;
-	sizes << 1 << 1;
-
-	splitter->addWidget(oldFrame);
 	splitter->addWidget(newFrame);
 	splitter->setSizes(sizes);
 	mSplitter->addWidget(splitter);
@@ -99,6 +107,8 @@ void DiffWindow::initDiffDetailsWidget()
 {
 	mDiffDetailsWidget = new details::DiffDetailsWidget(mDiffModel, this);
 	mSplitter->addWidget(mDiffDetailsWidget);
-	mOldView->setDetailsWidget(mDiffDetailsWidget);
+	if (!SettingsManager::value("transparentVersioningMode").toBool()){
+		mOldView->setDetailsWidget(mDiffDetailsWidget);
+	}
 	mNewView->setDetailsWidget(mDiffDetailsWidget);
 }
