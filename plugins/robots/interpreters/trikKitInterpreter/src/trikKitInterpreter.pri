@@ -40,9 +40,9 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/led.h \
 	$$PWD/robotModel/real/parts/cameraLineDetector.h \
 	$$PWD/robotModel/real/parts/movementSensor.h \
-#	$$PWD/robotModel/twoD/twoDRobotModel.h \
-#	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
-#	$$PWD/robotModel/twoD/parts/twoDButtons.h \
+	$$PWD/robotModel/twoD/twoDRobotModel.h \
+	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
+	$$PWD/robotModel/twoD/parts/twoDButtons.h \
 
 SOURCES += \
 	$$PWD/trikKitInterpreterPlugin.cpp \
@@ -74,11 +74,16 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/led.cpp \
 	$$PWD/robotModel/real/parts/cameraLineDetector.cpp \
 	$$PWD/robotModel/real/parts/movementSensor.cpp \
-#	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
-#	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
-#	$$PWD/robotModel/twoD/parts/twoDButtons.cpp \
+	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
+	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
+	$$PWD/robotModel/twoD/parts/twoDButtons.cpp \
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
+
+RESOURCES += \
+	$$PWD/../trikKitInterpreter.qrc \
+
+TRANSLATIONS += $$PWD/../trikKitInterpreter_ru.ts
 
 include($$PWD/../qrguiIncludes.pri)

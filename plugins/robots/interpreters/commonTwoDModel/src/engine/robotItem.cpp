@@ -6,9 +6,9 @@ using namespace graphicsUtils;
 
 int const border = 0;
 
-RobotItem::RobotItem()
+RobotItem::RobotItem(const QString &robotImageFileName)
 	: RotateItem()
-	, mImage(QImage(":/icons/robot.png"))
+	, mImage(QImage(robotImageFileName))
 	, mBeepItem(new BeepItem)
 	, mIsOnTheGround(true)
 	, mRotater(NULL)
