@@ -1,4 +1,4 @@
-#include "realRobotModel.h"
+#include "realRobotModelV4.h"
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
@@ -6,9 +6,18 @@
 #include "parts/display.h"
 #include "parts/speaker.h"
 #include "parts/buttons.h"
-#include "parts/motor.h"
+
+#include "parts/powerMotor.h"
+#include "parts/servoMotor.h"
 #include "parts/encoderSensor.h"
+
 #include "parts/lightSensor.h"
+#include "parts/infraredSensor.h"
+
+#include "parts/sonarSensor.h"
+
+#include "parts/led.h"
+#include "parts/cameraLineDetector.h"
 
 using namespace trikKitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
@@ -25,7 +34,7 @@ QString RealRobotModel::name() const
 
 QString RealRobotModel::friendlyName() const
 {
-	return tr("Real Robot");
+	return tr("Real Robot (v4)");
 }
 
 bool RealRobotModel::needsConnection() const
@@ -49,26 +58,26 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 {
 	if (deviceInfo.isA(displayInfo())) {
 		return new parts::Display(displayInfo(), port);
-	}
-
-	if (deviceInfo.isA(speakerInfo())) {
+	} else if (deviceInfo.isA(speakerInfo())) {
 		return new parts::Speaker(speakerInfo(), port);
-	}
-
-	if (deviceInfo.isA(buttonsInfo())) {
+	} else if (deviceInfo.isA(buttonsInfo())) {
 		return new parts::Buttons(buttonsInfo(), port);
-	}
-
-	if (deviceInfo.isA(motorInfo())) {
-		return new parts::Motor(motorInfo(), port);
-	}
-
-	if (deviceInfo.isA(encoderInfo())) {
+	} else if (deviceInfo.isA(powerMotorInfo())) {
+		return new parts::PowerMotor(powerMotorInfo(), port);
+	} else if (deviceInfo.isA(servoMotorInfo())) {
+		return new parts::ServoMotor(servoMotorInfo(), port);
+	} else if (deviceInfo.isA(encoderInfo())) {
 		return new parts::EncoderSensor(encoderInfo(), port);
-	}
-
-	if (deviceInfo.isA(lightSensorInfo())) {
+	} else if (deviceInfo.isA(lightSensorInfo())) {
 		return new parts::LightSensor(lightSensorInfo(), port);
+	} else if (deviceInfo.isA(infraredSensorInfo())) {
+		return new parts::InfraredSensor(infraredSensorInfo(), port);
+	} else if (deviceInfo.isA(sonarSensorInfo())) {
+		return new parts::SonarSensor(sonarSensorInfo(), port);
+	} else if (deviceInfo.isA(ledInfo())) {
+		return new parts::Led(ledInfo(), port);
+	} else if (deviceInfo.isA(cameraLineDetectorSensorInfo())) {
+		return new parts::CameraLineDetector(cameraLineDetectorSensorInfo(), port);
 	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());

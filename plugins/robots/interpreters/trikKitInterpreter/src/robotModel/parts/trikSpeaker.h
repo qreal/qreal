@@ -15,6 +15,8 @@ public:
 	TrikSpeaker(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);
 
+	virtual void play(QString const &filePath) = 0;
+
 private:
 	void doConfiguration() override;
 };

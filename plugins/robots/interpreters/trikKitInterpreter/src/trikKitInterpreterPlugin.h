@@ -8,7 +8,7 @@
 #include "trikAdditionalPreferences.h"
 #include "blocks/trikBlocksFactory.h"
 #include "robotModel/real/realRobotModel.h"
-#include "robotModel/twoD/twoDRobotModel.h"
+//#include "robotModel/twoD/twoDRobotModel.h"
 
 namespace trikKitInterpreter {
 
@@ -49,10 +49,10 @@ private slots:
 
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
-	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
+//	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
 	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
-	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
+//	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 };
 

@@ -10,5 +10,5 @@ Buttons::Buttons(DeviceInfo const &info, PortInfo const &port)
 
 void Buttons::read()
 {
-	emit response(true, true, true, true);
+	emit response(true, true, true, true, true, true);
 }

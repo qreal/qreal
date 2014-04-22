@@ -1,12 +1,12 @@
 #pragma once
 
-#include <robotModel/trikRobotModelBase.h>
+#include <robotModel/trikV4RobotModelBase.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
 namespace real {
 
-class RealRobotModel : public TrikRobotModelBase
+class RealRobotModel : public TrikV4RobotModelBase
 {
 	Q_OBJECT
 

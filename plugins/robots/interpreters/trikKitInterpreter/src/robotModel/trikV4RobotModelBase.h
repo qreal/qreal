@@ -5,12 +5,12 @@
 namespace trikKitInterpreter {
 namespace robotModel {
 
-class TrikRobotModelBase : public interpreterBase::robotModel::CommonRobotModel
+class TrikV4RobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT
 
 public:
-	TrikRobotModelBase();
+	TrikV4RobotModelBase();
 
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 
@@ -18,9 +18,18 @@ protected:
 	virtual interpreterBase::robotModel::DeviceInfo displayInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo speakerInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo buttonsInfo() const;
-	virtual interpreterBase::robotModel::DeviceInfo motorInfo() const;
+
+	virtual interpreterBase::robotModel::DeviceInfo powerMotorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo servoMotorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo encoderInfo() const;
+
 	virtual interpreterBase::robotModel::DeviceInfo lightSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo infraredSensorInfo() const;
+
+	virtual interpreterBase::robotModel::DeviceInfo sonarSensorInfo() const;
+
+	virtual interpreterBase::robotModel::DeviceInfo ledInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo cameraLineDetectorSensorInfo() const;
 };
 
 }

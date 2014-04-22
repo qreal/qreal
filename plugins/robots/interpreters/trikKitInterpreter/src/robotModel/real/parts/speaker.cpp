@@ -7,3 +7,8 @@ Speaker::Speaker(DeviceInfo const &info, PortInfo const &port)
 	: robotModel::parts::TrikSpeaker(info, port)
 {
 }
+
+void Speaker::play(QString const &filePath)
+{
+	Q_UNUSED(filePath)
+}

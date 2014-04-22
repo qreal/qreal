@@ -11,10 +11,16 @@ class TrikButtons : public interpreterBase::robotModel::robotParts::Buttons
 	Q_OBJECT
 
 public:
-	TrikButtons(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
+	TrikButtons(interpreterBase::robotModel::DeviceInfo const &info
+			, interpreterBase::robotModel::PortInfo const &port);
 
 signals:
-	void response(bool leftIsPressed, bool rightIsPressed, bool centralIsPressed, bool bottomIsPressed);
+	void response(bool leftIsPressed
+			, bool rightIsPressed
+			, bool centralIsPressed
+			, bool bottomIsPressed
+			, bool enterIsPresed
+			, bool powerIsPressed);
 
 private:
 	void doConfiguration() override;
