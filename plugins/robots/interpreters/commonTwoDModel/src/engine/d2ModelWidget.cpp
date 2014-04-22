@@ -292,7 +292,7 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 
 void D2ModelWidget::drawInitialRobot()
 {
-	mRobot = new RobotItem();
+	mRobot = new RobotItem(mConfigurer.robotImage());
 	connect(mRobot, SIGNAL(changedPosition()), this, SLOT(handleNewRobotPosition()));
 	connect(mRobot, SIGNAL(mousePressed()), this, SLOT(setNoneButton()));
 	mScene->addItem(mRobot);

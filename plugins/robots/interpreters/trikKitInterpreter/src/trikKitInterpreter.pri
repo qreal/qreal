@@ -53,4 +53,7 @@ SOURCES += \
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
 
+RESOURCES += \
+	$$PWD/../trikKitInterpreter.qrc \
+
 include($$PWD/../qrguiIncludes.pri)

@@ -29,7 +29,7 @@ class RobotItem : public QObject, public graphicsUtils::RotateItem
 {
 	Q_OBJECT
 public:
-	RobotItem();
+	RobotItem(QString const &robotImageFileName);
 
 	virtual void rotate(qreal angle);
 	virtual QRectF rect() const;

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>trikKitInterpreter.qm</file>
+        <file>icons/trikTwoDRobot.svg</file>
+    </qresource>
+</RCC>

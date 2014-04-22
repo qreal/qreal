@@ -5,7 +5,7 @@ using namespace interpreterBase::robotModel;
 
 QString TrikTwoDModelConfigurer::robotImage() const
 {
-	return "";
+	return ":icons/trikTwoDRobot.svg";
 }
 
 PortInfo TrikTwoDModelConfigurer::defaultLeftWheelPort() const
