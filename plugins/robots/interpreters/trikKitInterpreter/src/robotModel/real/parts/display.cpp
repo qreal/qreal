@@ -8,40 +8,14 @@ Display::Display(DeviceInfo const &info, PortInfo const &port)
 {
 }
 
-void Display::drawPixel(int x, int y)
+void Display::drawSmile(bool sad)
 {
-	Q_UNUSED(x)
-	Q_UNUSED(y)
+	Q_UNUSED(sad)
 }
 
-void Display::drawLine(int x1, int y1, int x2, int y2)
+void Display::setBackground(QColor const &color)
 {
-	Q_UNUSED(x1)
-	Q_UNUSED(y1)
-	Q_UNUSED(x2)
-	Q_UNUSED(y2)
-}
-
-void Display::drawRect(int x, int y, int width, int height)
-{
-	Q_UNUSED(x)
-	Q_UNUSED(y)
-	Q_UNUSED(width)
-	Q_UNUSED(height)
-}
-
-void Display::drawCircle(int x, int y, int radius)
-{
-	Q_UNUSED(x)
-	Q_UNUSED(y)
-	Q_UNUSED(radius)
-}
-
-void Display::printText(int x, int y, QString const &text)
-{
-	Q_UNUSED(x)
-	Q_UNUSED(y)
-	Q_UNUSED(text)
+	Q_UNUSED(color)
 }
 
 void Display::clearScreen()

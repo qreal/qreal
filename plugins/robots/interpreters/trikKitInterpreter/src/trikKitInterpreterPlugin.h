@@ -7,8 +7,9 @@
 
 #include "trikAdditionalPreferences.h"
 #include "blocks/trikBlocksFactory.h"
-#include "robotModel/real/realRobotModel.h"
-#include "robotModel/twoD/twoDRobotModel.h"
+#include "robotModel/real/realRobotModelV4.h"
+#include "robotModel/real/realRobotModelV5.h"
+//#include "robotModel/twoD/twoDRobotModel.h"
 
 namespace trikKitInterpreter {
 
@@ -48,11 +49,12 @@ private slots:
 	void onActiveTabChanged(qReal::Id const &rootElementId);
 
 private:
-	robotModel::real::RealRobotModel mRealRobotModel;
-	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
+	robotModel::real::RealRobotModelV4 mRealRobotModelV4;
+	robotModel::real::RealRobotModelV5 mRealRobotModelV5;
+//	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
 	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
 	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
-	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
+//	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 };
 

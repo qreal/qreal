@@ -6,12 +6,12 @@ namespace trikKitInterpreter {
 namespace robotModel {
 namespace real {
 
-class RealRobotModel : public TrikRobotModelBase
+class RealRobotModelV4 : public TrikRobotModelBase
 {
 	Q_OBJECT
 
 public:
-	RealRobotModel();
+	RealRobotModelV4();
 
 	QString name() const override;
 	QString friendlyName() const override;
@@ -23,7 +23,7 @@ public:
 public slots:
 	void rereadSettings() override;
 
-private:
+protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
 			interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
