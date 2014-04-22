@@ -2,6 +2,10 @@
 
 #include "src/robotModel/twoD/parts/twoDDisplay.h"
 #include "src/robotModel/twoD/parts/twoDButtons.h"
+#include "src/robotModel/parts/trikInfraredSensor.h"
+#include "src/robotModel/parts/trikSonarSensor.h"
+#include "src/robotModel/parts/trikLed.h"
+
 #include <interpreterBase/robotModel/robotParts/buttons.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/motor.h>
@@ -23,30 +27,51 @@ TwoDRobotModel::TwoDRobotModel()
 {
 	/// @todo: This is copy-paste from base model. It is unneeded!
 
-//	QList<DeviceInfo> const inputPortConnections = {
-//			DeviceInfo::create<robotParts::TouchSensor>()
-//			, DeviceInfo::create<robotParts::RangeSensor>()
-//			, DeviceInfo::create<robotParts::LightSensor>()
-//			, DeviceInfo::create<robotParts::ColorSensorBlue>()
-//			, DeviceInfo::create<robotParts::ColorSensorFull>()
-//			, DeviceInfo::create<robotParts::ColorSensorGreen>()
-//			, DeviceInfo::create<robotParts::ColorSensorPassive>()
-//			, DeviceInfo::create<robotParts::ColorSensorRed>()
-//	};
+	QList<DeviceInfo> const analogPortConnections = {
+		DeviceInfo::create<robotParts::LightSensor>()
+		, DeviceInfo::create<trikKitInterpreter::robotModel::parts::TrikInfraredSensor>()
+	};
 
-//	addAllowedConnection(PortInfo("DisplayPort", output), { DeviceInfo::create<parts::Display>() });
-//	addAllowedConnection(PortInfo("SpeakerPort", output), { DeviceInfo::create<robotParts::Speaker>() });
-//	addAllowedConnection(PortInfo("ButtonsPort", input), { DeviceInfo::create<robotParts::Buttons>() });
-//	addAllowedConnection(PortInfo("A", output), { DeviceInfo::create<robotParts::Motor>() });
-//	addAllowedConnection(PortInfo("B", output), { DeviceInfo::create<robotParts::Motor>() });
-//	addAllowedConnection(PortInfo("C", output), { DeviceInfo::create<robotParts::Motor>() });
-//	addAllowedConnection(PortInfo("A", input, {}, "encoderA"), { DeviceInfo::create<robotParts::EncoderSensor>() });
-//	addAllowedConnection(PortInfo("B", input, {}, "encoderB"), { DeviceInfo::create<robotParts::EncoderSensor>() });
-//	addAllowedConnection(PortInfo("C", input, {}, "encoderC"), { DeviceInfo::create<robotParts::EncoderSensor>() });
-//	addAllowedConnection(PortInfo("1", input, {}, "sensor1"), inputPortConnections);
-//	addAllowedConnection(PortInfo("2", input, {}, "sensor2"), inputPortConnections);
-//	addAllowedConnection(PortInfo("3", input, {}, "sensor3"), inputPortConnections);
-//	addAllowedConnection(PortInfo("4", input, {}, "sensor4"), inputPortConnections);
+	addAllowedConnection(PortInfo("DisplayPort", output), { DeviceInfo::create<parts::Display>() });
+	addAllowedConnection(PortInfo("SpeakerPort", output), { DeviceInfo::create<robotParts::Speaker>() });
+	addAllowedConnection(PortInfo("ButtonsPort", input), { DeviceInfo::create<parts::TwoDButtons>() });
+
+	addAllowedConnection(PortInfo("JC1", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("JC2", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("JC3", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("JE1", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("JE2", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("JE3", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("JE4", output), { DeviceInfo::create<robotParts::Motor>() });
+
+	addAllowedConnection(PortInfo("JM1", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("JM2", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("JM3", output), { DeviceInfo::create<robotParts::Motor>() });
+	addAllowedConnection(PortInfo("JM4", output), { DeviceInfo::create<robotParts::Motor>() });
+
+	addAllowedConnection(PortInfo("JB1", input), { DeviceInfo::create<robotParts::EncoderSensor>() });
+	addAllowedConnection(PortInfo("JB2", input), { DeviceInfo::create<robotParts::EncoderSensor>() });
+	addAllowedConnection(PortInfo("JB3", input), { DeviceInfo::create<robotParts::EncoderSensor>() });
+	addAllowedConnection(PortInfo("JB4", input), { DeviceInfo::create<robotParts::EncoderSensor>() });
+
+	addAllowedConnection(PortInfo("JA1", input), analogPortConnections);
+	addAllowedConnection(PortInfo("JA2", input), analogPortConnections);
+	addAllowedConnection(PortInfo("JA3", input), analogPortConnections);
+	addAllowedConnection(PortInfo("JA4", input), analogPortConnections);
+	addAllowedConnection(PortInfo("JA5", input), analogPortConnections);
+	addAllowedConnection(PortInfo("JA6", input), analogPortConnections);
+
+	addAllowedConnection(PortInfo("JD1", input), {
+			DeviceInfo::create<trikKitInterpreter::robotModel::parts::TrikSonarSensor>()
+	});
+
+	addAllowedConnection(PortInfo("JD2", input), {
+			DeviceInfo::create<trikKitInterpreter::robotModel::parts::TrikSonarSensor>()
+	});
+
+	addAllowedConnection(PortInfo("LedPort", output), {
+			DeviceInfo::create<trikKitInterpreter::robotModel::parts::TrikLed>()
+	});
 }
 
 QString TwoDRobotModel::name() const

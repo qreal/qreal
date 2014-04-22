@@ -26,23 +26,14 @@ public:
 
 	void attachToPaintWidget();
 
-	void drawPixel(int x, int y) override;
-	void drawLine(int x1, int y1, int x2, int y2) override;
-	void drawRect(int x, int y, int width, int height) override;
-	void drawCircle(int x, int y, int radius) override;
-	void printText(int x, int y, QString const &text) override;
+	void drawSmile(bool sad) override;
+	void setBackground(QColor const &color) override;
 	void clearScreen() override;
 
 	void paint(QPainter *painter) override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
-	QList<QLine> mLines;
-	QList<QPoint> mPoints;
-	QList<QRect> mCircles;
-	QList<QRect> mRects;
-	QList<QString> mStrings;
-	QList<QPoint> mStringPlaces;
 };
 
 }
