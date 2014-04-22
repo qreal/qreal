@@ -20,7 +20,7 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 //	mTwoDModel.reset(modelEngine);
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+			, &mRealRobotModel, &robotModel::real::RealRobotModelV4::rereadSettings);
 //	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 //			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }

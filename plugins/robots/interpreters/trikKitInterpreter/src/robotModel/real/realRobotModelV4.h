@@ -6,12 +6,12 @@ namespace trikKitInterpreter {
 namespace robotModel {
 namespace real {
 
-class RealRobotModel : public TrikV4RobotModelBase
+class RealRobotModelV4 : public TrikV4RobotModelBase
 {
 	Q_OBJECT
 
 public:
-	RealRobotModel();
+	RealRobotModelV4();
 
 	QString name() const override;
 	QString friendlyName() const override;

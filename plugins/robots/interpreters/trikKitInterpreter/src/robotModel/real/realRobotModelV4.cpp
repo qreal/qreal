@@ -23,38 +23,38 @@ using namespace trikKitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
 using namespace interpreterBase::robotModel;
 
-RealRobotModel::RealRobotModel()
+RealRobotModelV4::RealRobotModelV4()
 {
 }
 
-QString RealRobotModel::name() const
+QString RealRobotModelV4::name() const
 {
 	return "TrikRealRobotModel";
 }
 
-QString RealRobotModel::friendlyName() const
+QString RealRobotModelV4::friendlyName() const
 {
 	return tr("Real Robot (v4)");
 }
 
-bool RealRobotModel::needsConnection() const
+bool RealRobotModelV4::needsConnection() const
 {
 	return true;
 }
 
-void RealRobotModel::rereadSettings()
+void RealRobotModelV4::rereadSettings()
 {
 }
 
-void RealRobotModel::connectToRobot()
+void RealRobotModelV4::connectToRobot()
 {
 }
 
-void RealRobotModel::disconnectFromRobot()
+void RealRobotModelV4::disconnectFromRobot()
 {
 }
 
-robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+robotParts::Device *RealRobotModelV4::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
 	if (deviceInfo.isA(displayInfo())) {
 		return new parts::Display(displayInfo(), port);
