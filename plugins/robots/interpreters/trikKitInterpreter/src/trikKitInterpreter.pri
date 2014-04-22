@@ -13,6 +13,7 @@ LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBas
 HEADERS += \
 	$$PWD/trikKitInterpreterPlugin.h \
 	$$PWD/trikAdditionalPreferences.h \
+	$$PWD/trikTwoDModelConfigurer.h \
 	$$PWD/blocks/trikBlocksFactory.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
 	$$PWD/robotModel/parts/trikDisplay.h \
@@ -32,6 +33,7 @@ HEADERS += \
 SOURCES += \
 	$$PWD/trikKitInterpreterPlugin.cpp \
 	$$PWD/trikAdditionalPreferences.cpp \
+	$$PWD/trikTwoDModelConfigurer.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
 	$$PWD/robotModel/parts/trikDisplay.cpp \

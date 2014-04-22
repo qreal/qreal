@@ -2,6 +2,8 @@
 
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
 
+#include "src/trikTwoDModelConfigurer.h"
+
 using namespace trikKitInterpreter;
 using namespace qReal;
 
@@ -12,7 +14,7 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	: mBlocksFactory(new blocks::TrikBlocksFactory)
 	, mAdditionalPreferences(new TrikAdditionalPreferences(mRealRobotModel.name()))
 {
-	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel, new TrikTwoDModelConfigurer());
 
 	mTwoDRobotModel.setEngine(modelEngine->engine());
 	mTwoDModel.reset(modelEngine);
