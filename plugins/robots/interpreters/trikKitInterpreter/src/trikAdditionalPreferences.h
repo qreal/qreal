@@ -23,13 +23,7 @@ public:
 signals:
 	void settingsChanged();
 
-private slots:
-	void manualComPortCheckboxChecked(bool state);
-
 private:
-	QString selectedCommunication() const;
-	QString selectedPortName() const;
-
 	Ui::TrikAdditionalPreferences *mUi;
 	QString const mRealRobotName;
 };
