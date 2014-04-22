@@ -2,6 +2,8 @@
 
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
 
+#include "src/nxtTwoDModelConfigurer.h"
+
 using namespace nxtKitInterpreter;
 using namespace qReal;
 
@@ -12,7 +14,7 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mBlocksFactory(new blocks::NxtBlocksFactory)
 	, mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
 {
-	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel, new NxtTwoDModelConfigurer());
 
 	mTwoDRobotModel.setEngine(modelEngine->engine());
 	mTwoDModel.reset(modelEngine);

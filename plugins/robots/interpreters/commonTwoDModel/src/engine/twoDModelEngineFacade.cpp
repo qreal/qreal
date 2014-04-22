@@ -4,12 +4,13 @@
 
 using namespace twoDModel::engine;
 
-TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel)
+TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel
+	, Configurer const * const configurer)
 	: mTwoDModelActionInfo(
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 			, "interpreters"
 			, "tools")
-	, mTwoDModel(new D2RobotModel(robotModel))
+	, mTwoDModel(new D2RobotModel(robotModel, configurer))
 {
 	connect(mTwoDModelActionInfo.action(), &QAction::triggered
 			, mTwoDModel.data(), &twoDModel::D2RobotModel::showModelWidget);

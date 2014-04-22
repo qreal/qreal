@@ -2,6 +2,8 @@
 
 #include <QtCore/QString>
 
+#include <interpreterBase/robotModel/portInfo.h>
+
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
 namespace twoDModel {
@@ -15,6 +17,10 @@ public:
 	/// @todo move physical constants here
 
 	virtual QString robotImage() const = 0;
+
+	virtual interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const = 0;
+
+	virtual interpreterBase::robotModel::PortInfo defaultRightWheelPort() const = 0;
 
 	/// @todo sensor images here
 

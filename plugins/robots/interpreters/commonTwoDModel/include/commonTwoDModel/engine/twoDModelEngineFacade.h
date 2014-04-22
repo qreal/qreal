@@ -7,6 +7,7 @@
 
 #include "commonTwoDModel/engine/twoDModelControlInterface.h"
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+#include "commonTwoDModel/engine/configurer.h"
 
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
@@ -21,7 +22,10 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlI
 	Q_OBJECT
 
 public:
-	TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
+	TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel
+			, Configurer const * const configurer);
+
 	~TwoDModelEngineFacade();
 
 	void init() override;

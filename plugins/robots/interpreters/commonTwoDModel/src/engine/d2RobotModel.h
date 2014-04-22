@@ -11,6 +11,7 @@
 #include <qrutils/mathUtils/gaussNoise.h>
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+#include "commonTwoDModel/engine/configurer.h"
 
 #include "twoDRobotModelInterface.h"
 #include "nxtDisplay.h"
@@ -40,7 +41,9 @@ public:
 		End
 	};
 
+	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
 	explicit D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
+			, Configurer const * const configurer
 			, QObject *parent = 0);
 
 	~D2RobotModel();
@@ -179,6 +182,8 @@ private:
 	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 
 	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::PortInfo> mMotorToEncoderPortMap;
+
+	QScopedPointer<Configurer const> mConfigurer;
 };
 
 }

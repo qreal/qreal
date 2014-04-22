@@ -29,6 +29,7 @@ using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
 D2RobotModel::D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
+		, Configurer const * const configurer
 		, QObject *parent)
 	: QObject(parent)
 	, mD2ModelWidget(nullptr)
@@ -41,6 +42,7 @@ D2RobotModel::D2RobotModel(interpreterBase::robotModel::RobotModelInterface &rob
 	, mPos(QPointF(0,0))
 	, mAngle(0)
 	, mRobotModel(robotModel)
+	, mConfigurer(configurer)
 {
 	mNoiseGen.setApproximationLevel(qReal::SettingsManager::value("approximationLevel").toUInt());
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
@@ -174,7 +176,7 @@ SensorsConfiguration &D2RobotModel::configuration()
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
-	mD2ModelWidget = new D2ModelWidget(this, mWorldModel, mRobotModel, mDisplay);
+	mD2ModelWidget = new D2ModelWidget(this, mWorldModel, mRobotModel, mDisplay, *mConfigurer);
 	connectDevicesConfigurationProvider(mD2ModelWidget);
 	connect(mD2ModelWidget, &D2ModelWidget::runButtonPressed, this, &D2RobotModel::runButtonPressed);
 	connect(mD2ModelWidget, &D2ModelWidget::stopButtonPressed, this, &D2RobotModel::stopButtonPressed);
