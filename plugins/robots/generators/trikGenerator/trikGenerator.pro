@@ -36,9 +36,25 @@ HEADERS += \
 	$$PWD/trikGeneratorCustomizer.h \
 	$$PWD/trikGeneratorFactory.h \
 	$$PWD/parts/trikVariables.h \
-	$$PWD/converters/trikEnginePortsConverter.h \
+	$$PWD/converters/backgroundColorConverter.h \
+	$$PWD/converters/ledColorConverter.h \
+	$$PWD/converters/powerMotorPortConverter.h \
+	$$PWD/converters/servoMotorPortConverter.h \
+	$$PWD/converters/encoderPortConverter.h \
+	$$PWD/simpleGenerators/detectLineGenerator.h \
+	$$PWD/simpleGenerators/initCameraGenerator.h \
+	$$PWD/simpleGenerators/ledGenerator.h \
+	$$PWD/simpleGenerators/lineDetectorToVariableGenerator.h \
+	$$PWD/simpleGenerators/playToneGenerator.h \
+	$$PWD/simpleGenerators/sadSmileGenerator.h \
+	$$PWD/simpleGenerators/sayGenerator.h \
+	$$PWD/simpleGenerators/systemGenerator.h \
+	$$PWD/simpleGenerators/setBackgroundGenerator.h \
+	$$PWD/simpleGenerators/smileGenerator.h \
 	$$PWD/simpleGenerators/trikEnginesGenerator.h \
-	$$PWD/simpleGenerators/trikEnginesStopGenerator.h
+	$$PWD/simpleGenerators/trikEnginesStopGenerator.h \
+	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.h \
+	$$PWD/simpleGenerators/waitForButtonGenerator.h \
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \
@@ -46,8 +62,24 @@ SOURCES += \
 	$$PWD/trikGeneratorCustomizer.cpp \
 	$$PWD/trikGeneratorFactory.cpp \
 	$$PWD/parts/trikVariables.cpp \
-	$$PWD/converters/trikEnginePortsConverter.cpp \
+	$$PWD/converters/backgroundColorConverter.cpp \
+	$$PWD/converters/ledColorConverter.cpp \
+	$$PWD/converters/powerMotorPortConverter.cpp \
+	$$PWD/converters/servoMotorPortConverter.cpp \
+	$$PWD/converters/encoderPortConverter.cpp \
+	$$PWD/simpleGenerators/detectLineGenerator.cpp \
+	$$PWD/simpleGenerators/initCameraGenerator.cpp \
+	$$PWD/simpleGenerators/ledGenerator.cpp \
+	$$PWD/simpleGenerators/lineDetectorToVariableGenerator.cpp \
+	$$PWD/simpleGenerators/playToneGenerator.cpp \
+	$$PWD/simpleGenerators/sadSmileGenerator.cpp \
+	$$PWD/simpleGenerators/sayGenerator.cpp \
+	$$PWD/simpleGenerators/systemGenerator.cpp \
+	$$PWD/simpleGenerators/setBackgroundGenerator.cpp \
+	$$PWD/simpleGenerators/smileGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesStopGenerator.cpp \
+	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.cpp \
+	$$PWD/simpleGenerators/waitForButtonGenerator.cpp \
 
 include(robotCommunication/robotCommunication.pri)

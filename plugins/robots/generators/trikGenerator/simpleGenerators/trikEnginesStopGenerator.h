@@ -11,7 +11,7 @@ class TrikEnginesStopGenerator : public generatorBase::simple::BindingGenerator
 public:
 	TrikEnginesStopGenerator(qrRepo::RepoApi const &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, qReal:: Id const &id
 			, QObject *parent = 0);
 };
 

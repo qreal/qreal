@@ -111,12 +111,12 @@ HEADERS += \
 	$$PWD/include/generatorBase/converters/templateParametrizedMultiConverter.h \
 	$$PWD/include/generatorBase/converters/regexpMultiConverter.h \
 	$$PWD/include/generatorBase/converters/stringPropertyConverter.h \
+	$$PWD/include/generatorBase/converters/enumConverterBase.h \
 	$$PWD/include/generatorBase/simpleGenerators/abstractSimpleGenerator.h \
 	$$PWD/include/generatorBase/simpleGenerators/binding.h \
 	$$PWD/include/generatorBase/simpleGenerators/bindingGenerator.h \
 
 HEADERS += \
-	$$PWD/src/converters/enumConverterBase.h \
 	$$PWD/src/converters/codeConverterBase.h \
 	$$PWD/src/converters/intPropertyConverter.h \
 	$$PWD/src/converters/floatPropertyConverter.h \

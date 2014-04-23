@@ -1,12 +1,12 @@
 #include "trikEnginesGenerator.h"
 
-#include <generatorBase/parts/engines.h>
 #include <generatorBase/generatorCustomizer.h>
+#include <generatorBase/parts/engines.h>
+#include "trikGeneratorFactory.h"
 
 using namespace trik::simple;
 using namespace generatorBase::simple;
 
-// TODO: implement servos generation
 TrikEnginesGenerator::TrikEnginesGenerator(qrRepo::RepoApi const &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, qReal::Id const &id
@@ -14,10 +14,12 @@ TrikEnginesGenerator::TrikEnginesGenerator(qrRepo::RepoApi const &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, engineType == "EnginesBackward"
-					? "engines/power/backward.t"
-					: "engines/power/forward.t"
+					? "engines/backward.t"
+					: "engines/forward.t"
 			, QList<Binding *>()
-					<< Binding::createMultiTarget("@@PORT@@", "Ports", customizer.factory()->enginesConverter())
+					<< Binding::createMultiTarget("@@PORT@@", "Ports"
+							, dynamic_cast<trik::TrikGeneratorFactory *>(customizer.factory())->
+									enginesConverter(repo.property(id, "powerMotors").toBool()))
 					<< Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter())
 			, parent)
 {

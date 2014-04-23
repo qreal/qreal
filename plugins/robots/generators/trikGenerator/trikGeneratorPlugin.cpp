@@ -92,7 +92,7 @@ bool TrikGeneratorPlugin::uploadProgram()
 {
 	QFileInfo const fileInfo = generateCodeForProcessing();
 
-	if (fileInfo != QFileInfo()) {
+	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
 		TcpRobotCommunicator communicator;
 		bool const result = communicator.uploadProgram(fileInfo.absoluteFilePath());
 		if (!result) {
@@ -123,4 +123,10 @@ void TrikGeneratorPlugin::stopRobot()
 	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
+
+	communicator.runDirectCommand(
+			"brick.system(\"killall aplay\"); \n"
+			"brick.system(\"killall vlc\"); \n"
+			"brick.system(\"killall rover-cv\");"
+			);
 }

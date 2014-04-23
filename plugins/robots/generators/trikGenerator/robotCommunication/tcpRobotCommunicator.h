@@ -17,6 +17,9 @@ public:
 	/// Sends a command to run previously uploaded file in a robot.
 	bool runProgram(QString const &programName);
 
+	/// Sends a script to be executed directly, without a need for a file.
+	bool runDirectCommand(QString const &directCommand);
+
 	/// Sends a command to remotely abort script execution and stop robot.
 	bool stopRobot();
 

@@ -1,13 +1,17 @@
 #include "tcpRobotCommunicator.h"
 
 #include <QtNetwork/QHostAddress>
+#include <QtCore/QFileInfo>
 
 #include <QtCore/QDebug>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/exception/exception.h>
 #include <qrutils/inFile.h>
 
 using namespace trik;
+
+static uint const port = 8888;
 
 TcpRobotCommunicator::TcpRobotCommunicator()
 {
@@ -20,15 +24,29 @@ TcpRobotCommunicator::~TcpRobotCommunicator()
 
 bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 {
-	QString const fileContents = utils::InFile::readAll(programName);
-	connect();
-	if (!mSocket.isValid()) {
+	if (programName.isEmpty()) {
 		return false;
 	}
 
-	QString const command = "file:" + programName + ":" + fileContents;
-	mSocket.write(command.toLatin1());
-	mSocket.waitForBytesWritten();
+	QString fileContents;
+	try {
+		fileContents = utils::InFile::readAll(programName);
+	} catch (qReal::Exception const &) {
+		return false;
+	}
+
+	connect();
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
+		return false;
+	}
+
+	QString const &fileNameOnARobot = QFileInfo(programName).fileName();
+
+	QString const command = "file:" + fileNameOnARobot + ":" + fileContents;
+	mSocket.write(command.toUtf8());
+	mSocket.waitForBytesWritten(3000);
+
+	disconnect();
 
 	return true;
 }
@@ -36,13 +54,31 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 bool TcpRobotCommunicator::runProgram(QString const &programName)
 {
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
 	QString const command = "run:" + programName;
-	mSocket.write(command.toLatin1());
-	mSocket.waitForBytesWritten();
+	mSocket.write(command.toUtf8());
+	mSocket.waitForBytesWritten(3000);
+
+	disconnect();
+
+	return true;
+}
+
+bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
+{
+	connect();
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
+		return false;
+	}
+
+	QString const command = "direct:" + directCommand;
+	mSocket.write(command.toUtf8());
+	mSocket.waitForBytesWritten(3000);
+
+	disconnect();
 
 	return true;
 }
@@ -50,13 +86,15 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 bool TcpRobotCommunicator::stopRobot()
 {
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
 	QString const command = "stop";
-	mSocket.write(command.toLatin1());
-	mSocket.waitForBytesWritten();
+	mSocket.write(command.toUtf8());
+	mSocket.waitForBytesWritten(3000);
+
+	disconnect();
 
 	return true;
 }
@@ -64,7 +102,6 @@ bool TcpRobotCommunicator::stopRobot()
 void TcpRobotCommunicator::connect()
 {
 	QString const server = qReal::SettingsManager::value("tcpServer").toString();
-	uint const port = qReal::SettingsManager::value("tcpPort").toUInt();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
 		qDebug() << "Unable to resolve host. Check server address and try again";
@@ -80,6 +117,8 @@ void TcpRobotCommunicator::connect()
 
 void TcpRobotCommunicator::disconnect()
 {
-	mSocket.disconnectFromHost();
-	mSocket.waitForDisconnected();
+	if (mSocket.state() == QTcpSocket::ConnectedState) {
+		mSocket.disconnectFromHost();
+		mSocket.waitForDisconnected(3000);
+	}
 }
