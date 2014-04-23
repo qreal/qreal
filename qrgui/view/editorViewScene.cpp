@@ -128,10 +128,10 @@ void EditorViewScene::initMouseMoveManager()
 		// to do anything with mouse manager.
 		return;
 	}
-	QList<qReal::Id> elements = mWindow->editorManager().elements(diagram);
+
 	delete mMouseMovementManager;
-	mMouseMovementManager = new gestures::MouseMovementManager(elements
-			, &mWindow->editorManager(), mWindow->gesturesPainter());
+	mMouseMovementManager = new gestures::MouseMovementManager(diagram
+			, mWindow->editorManager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }

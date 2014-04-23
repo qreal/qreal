@@ -53,12 +53,13 @@ public:
 		Id mId;
 	};
 
-	MouseMovementManager(QList<Id> elements, EditorManagerInterface *editorManagerInterface
+	MouseMovementManager(Id const &diagram
+			, EditorManagerInterface const &editorManagerInterface
 			, GesturesPainterInterface *gesturesPaintManager);
 
 	~MouseMovementManager();
 
-	void setElements(IdList const &elements);
+	void initializeGestures();
 	void mousePress(QPointF const &point);
 	void mouseMove(QPointF const &point);
 	void clear();
@@ -78,14 +79,16 @@ public:
 private:
 	static QPoint parsePoint(QString const &str);
 	void recountCentre();
+
+	Id const mDiagram;
+	EditorManagerInterface const &mEditorManagerInterface;
+	GesturesPainterInterface *mGesturesPaintMan;  // Does not take ownership
 	PathVector mPath;
 	IKeyManager *mKeyManager;
 	KeyManager mKeyStringManager;
-	EditorManagerInterface * mEditorManagerInterface;
-	QList<Id> mElements;
 	QPointF mCentre;
-	GesturesPainterInterface *mGesturesPaintMan;
 	GesturesManager *mGesturesManager;
+	QSet<Id> mInitializedGestures;
 };
 
 }

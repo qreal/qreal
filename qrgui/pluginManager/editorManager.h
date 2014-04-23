@@ -28,7 +28,7 @@ class EditorManager : public QObject, public EditorManagerInterface
 public:
 	explicit EditorManager(QObject *parent = nullptr);
 
-	~EditorManager();
+	~EditorManager() override;
 
 	IdList editors() const override;
 	IdList diagrams(Id const &editor) const override;
@@ -120,7 +120,15 @@ public:
 	void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const override;
 	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
 
+	void setElementEnabled(Id const &type, bool enabled) override;
+
 private:
+	EditorInterface* editorInterface(QString const &editor) const;
+	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
+
+	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child
+			, QString const &parentDiagram, QString const &parent) const;
+
 	QStringList mPluginsLoaded;
 	QMap<QString, QString> mPluginFileName;
 	QList<Pattern> mDiagramGroups;
@@ -131,11 +139,7 @@ private:
 	QDir mPluginsDir;
 	QStringList mPluginFileNames;
 
-	EditorInterface* editorInterface(QString const &editor) const;
-	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
-
-	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child
-			, QString const &parentDiagram, QString const &parent) const;
+	QSet<Id> mDisabledElements;
 };
 
 }

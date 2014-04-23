@@ -372,3 +372,8 @@ void ProxyEditorManager::restoreRenamedProperty(Id const &propertyId, QString co
 {
 	mProxiedEditorManager->restoreRenamedProperty(propertyId, previousName);
 }
+
+void ProxyEditorManager::setElementEnabled(Id const &type, bool enabled)
+{
+	mProxiedEditorManager->setElementEnabled(type, enabled);
+}
