@@ -43,23 +43,23 @@ TrikRobotModelBase::TrikRobotModelBase()
 	addAllowedConnection(PortInfo("JM3", output), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("JM4", output), { powerMotorInfo() });
 
-	addAllowedConnection(PortInfo("JB1", input), { encoderInfo() });
-	addAllowedConnection(PortInfo("JB2", input), { encoderInfo() });
-	addAllowedConnection(PortInfo("JB3", input), { encoderInfo() });
-	addAllowedConnection(PortInfo("JB4", input), { encoderInfo() });
+	addAllowedConnection(PortInfo("JB1", input, {}, "encoder1"), { encoderInfo() });
+	addAllowedConnection(PortInfo("JB2", input, {}, "encoder1"), { encoderInfo() });
+	addAllowedConnection(PortInfo("JB3", input, {}, "encoder1"), { encoderInfo() });
+	addAllowedConnection(PortInfo("JB4", input, {}, "encoder1"), { encoderInfo() });
 
-	addAllowedConnection(PortInfo("JA1", input), analogPortConnections);
-	addAllowedConnection(PortInfo("JA2", input), analogPortConnections);
-	addAllowedConnection(PortInfo("JA3", input), analogPortConnections);
-	addAllowedConnection(PortInfo("JA4", input), analogPortConnections);
-	addAllowedConnection(PortInfo("JA5", input), analogPortConnections);
-	addAllowedConnection(PortInfo("JA6", input), analogPortConnections);
+	addAllowedConnection(PortInfo("JA1", input, {}, "sensor1"), analogPortConnections);
+	addAllowedConnection(PortInfo("JA2", input, {}, "sensor1"), analogPortConnections);
+	addAllowedConnection(PortInfo("JA3", input, {}, "sensor1"), analogPortConnections);
+	addAllowedConnection(PortInfo("JA4", input, {}, "sensor1"), analogPortConnections);
+	addAllowedConnection(PortInfo("JA5", input, {}, "sensor1"), analogPortConnections);
+	addAllowedConnection(PortInfo("JA6", input, {}, "sensor1"), analogPortConnections);
 
-	addAllowedConnection(PortInfo("JD1", input), { sonarSensorInfo() });
-	addAllowedConnection(PortInfo("JD2", input), { sonarSensorInfo() });
+	addAllowedConnection(PortInfo("JD1", input, {}, "digitSensor1"), { sonarSensorInfo() });
+	addAllowedConnection(PortInfo("JD2", input, {}, "digitSensor1"), { sonarSensorInfo() });
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
-	addAllowedConnection(PortInfo("LineDetectorPort", output), { cameraLineDetectorSensorInfo() });
+	addAllowedConnection(PortInfo("LineDetectorPort", input), { cameraLineDetectorSensorInfo() });
 }
 
 QList<DeviceInfo> TrikRobotModelBase::convertibleBases() const
