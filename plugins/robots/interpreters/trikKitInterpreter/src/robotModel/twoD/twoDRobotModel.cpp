@@ -76,7 +76,7 @@ TwoDRobotModel::TwoDRobotModel()
 
 QString TwoDRobotModel::name() const
 {
-	return "NxtTwoDRobotModel";
+	return "TrikTwoDRobotModel";
 }
 
 QString TwoDRobotModel::friendlyName() const

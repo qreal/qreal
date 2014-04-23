@@ -17,6 +17,7 @@ public:
 signals:
 	void interpretationStarted();
 	void interpretationStopped();
+	void robotModelChanged(QString const &newModelName);
 };
 
 }

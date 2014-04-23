@@ -31,6 +31,8 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 		, SystemEventsInterface const &systemEvents
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
+	/// @todo remove this stupid copypaste.
+
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
 			, mTwoDModel.data()
@@ -41,6 +43,14 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 			, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
 			, mTwoDModel.data()
 			, &twoDModel::TwoDModelControlInterface::onStopInterpretation
+			);
+
+	connect(&eventsForKitPlugin
+			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
+			, [this](QString const &modelName) {
+				mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(modelName == mTwoDRobotModel.name());
+				mCurrentlySelectedModelName = modelName;
+			}
 			);
 
 	connect(mTwoDModel.data()
@@ -107,6 +117,7 @@ interpreterBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devices
 
 void TrikKitInterpreterPlugin::onActiveTabChanged(Id const &rootElementId)
 {
-	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
+	bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
+	enabled &= mCurrentlySelectedModelName == mTwoDRobotModel.name();
 	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(enabled);
 }

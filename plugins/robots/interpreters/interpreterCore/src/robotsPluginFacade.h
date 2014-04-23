@@ -56,6 +56,11 @@ private:
 
 	void connectEventsForKitPlugin();
 
+	/// After all parts of a plugin are connected to each other, sends notifications about changes which were missed
+	/// during initialization process. For example, model change notification is sent in constructor of settings page,
+	/// before kit plugins were even created, so we need to resend it.
+	void sync();
+
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
 
