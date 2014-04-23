@@ -852,6 +852,12 @@ void InterpreterEditorManager::restoreRenamedProperty(Id const &propertyId, QStr
 	}
 }
 
+void InterpreterEditorManager::setElementEnabled(Id const &type, bool enabled)
+{
+	Q_UNUSED(type)
+	Q_UNUSED(enabled)
+}
+
 void InterpreterEditorManager::setProperty(qrRepo::RepoApi *repo, Id const &id
 		, QString const &property, QVariant const &propertyValue) const
 {

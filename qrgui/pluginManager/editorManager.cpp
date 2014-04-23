@@ -154,7 +154,10 @@ IdList EditorManager::elements(Id const &diagram) const
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
 	for (QString const &e : mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
-		elements.append(Id(diagram.editor(), diagram.diagram(), e));
+		Id const candidate = Id(diagram.editor(), diagram.diagram(), e);
+		if (!mDisabledElements.contains(candidate)) {
+			elements.append(candidate);
+		}
 	}
 
 	return elements;
@@ -695,4 +698,13 @@ void EditorManager::restoreRenamedProperty(Id const &propertyId, QString const &
 {
 	Q_UNUSED(propertyId);
 	Q_UNUSED(previousName);
+}
+
+void EditorManager::setElementEnabled(Id const &type, bool enabled)
+{
+	if (enabled) {
+		mDisabledElements.remove(type);
+	} else {
+		mDisabledElements.insert(type);
+	}
 }

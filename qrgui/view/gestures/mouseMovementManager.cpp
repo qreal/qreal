@@ -15,15 +15,16 @@ QString const deletionGesture = "0, 200 : 200, 0 : ";
 
 using namespace qReal::gestures;
 
-MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements
-		, qReal::EditorManagerInterface * editorManagerInterface
+MouseMovementManager::MouseMovementManager(Id const &diagram
+		, qReal::EditorManagerInterface const &editorManagerInterface
 		, GesturesPainterInterface *gesturesPaintManager)
+	: mDiagram(diagram)
+	, mEditorManagerInterface(editorManagerInterface)
+	, mGesturesPaintMan(gesturesPaintManager)
 {
 	mGesturesManager = new MixedGesturesManager();
 	mKeyManager = &mKeyStringManager;
-	mEditorManagerInterface = editorManagerInterface;
-	mGesturesPaintMan = gesturesPaintManager;
-	setElements(elements);
+	initializeGestures();
 }
 
 MouseMovementManager::~MouseMovementManager()
@@ -39,8 +40,8 @@ void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gestures
 void MouseMovementManager::drawIdealPath()
 {
 	Id const currentElement = mGesturesPaintMan->currentElement();
-	if (mElements.contains(currentElement)) {
-		QString const paths = mEditorManagerInterface->mouseGesture(currentElement);
+	if (mEditorManagerInterface.elements(mDiagram).contains(currentElement)) {
+		QString const paths = mEditorManagerInterface.mouseGesture(currentElement);
 		mGesturesPaintMan->draw(stringToPath(paths));
 	}
 }
@@ -48,9 +49,10 @@ void MouseMovementManager::drawIdealPath()
 void MouseMovementManager::printElements()
 {
 	QList<QPair<QString, Id> > elements;
-	foreach (Id const &element, mElements) {
-		elements << qMakePair(mEditorManagerInterface->friendlyName(element), element);
+	for (Id const &element : mEditorManagerInterface.elements(mDiagram)) {
+		elements << qMakePair(mEditorManagerInterface.friendlyName(element), element);
 	}
+
 	mGesturesPaintMan->setElements(elements);
 }
 
@@ -69,15 +71,15 @@ QLineF MouseMovementManager::newLine()
 	return line;
 }
 
-void MouseMovementManager::setElements(IdList const &elements)
+void MouseMovementManager::initializeGestures()
 {
 	QMap<QString, PathVector> gestures;
 	gestures.insert(deletionGestureKey, stringToPath(deletionGesture));
-	for (Id const &element : elements) {
-		QString const pathStr = mEditorManagerInterface->mouseGesture(element);
-		if (!pathStr.isEmpty()) {
+	for (Id const &element : mEditorManagerInterface.elements(mDiagram)) {
+		QString const pathStr = mEditorManagerInterface.mouseGesture(element);
+		if (!pathStr.isEmpty() && !mInitializedGestures.contains(element)) {
 			gestures.insert(element.toString(), stringToPath(pathStr));
-			mElements << element;
+			mInitializedGestures << element;
 		}
 	}
 
@@ -121,16 +123,17 @@ QPointF MouseMovementManager::pos()
 PathVector MouseMovementManager::stringToPath(QString const &valueStr)
 {
 	PathVector result;
-	QStringList paths = valueStr.split(pathDelimeter, QString::SkipEmptyParts);
-	foreach(QString pathStr, paths) {
+	QStringList const paths = valueStr.split(pathDelimeter, QString::SkipEmptyParts);
+	for (QString const &pathStr : paths) {
 		QStringList points = pathStr.split(pointDelimeter, QString::SkipEmptyParts);
 		PointVector path;
-		foreach (QString str, points) {
-			QPointF point = parsePoint(str);
-			path.push_back(point);
+		for (QString const &str : points) {
+			path << parsePoint(str);
 		}
-		result.push_back(path);
+
+		result << path;
 	}
+
 	return result;
 }
 
@@ -144,6 +147,7 @@ QPoint MouseMovementManager::parsePoint(QString const &str)
 
 MouseMovementManager::GestureResult MouseMovementManager::result()
 {
+	initializeGestures();
 	GestureResult result;
 	mGesturesManager->setKey(mPath);
 	mPath.clear();
@@ -151,10 +155,11 @@ MouseMovementManager::GestureResult MouseMovementManager::result()
 
 	QMap<QString, Id> gestures;
 	gestures[deletionGestureKey] = Id();
-	for (Id const &element : mElements) {
-		gestures[element.toString()] = element;
+	for (Id const &element : mEditorManagerInterface.elements(mDiagram)) {
+		if (mInitializedGestures.contains(element)) {
+			gestures[element.toString()] = element;
+		}
 	}
-
 
 	for (QString const &key: gestures.keys()) {
 		minDist = qMin(minDist, mGesturesManager->getMaxDistance(key));

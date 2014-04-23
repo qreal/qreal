@@ -2261,19 +2261,35 @@ void MainWindow::openStartTab()
 void MainWindow::setElementInPaletteVisible(Id const &metatype, bool visible)
 {
 	mUi->paletteTree->setElementVisible(metatype, visible);
+	mEditorManagerProxy.setElementEnabled(metatype, visible);
 }
 
 void MainWindow::setVisibleForAllElementsInPalette(bool visible)
 {
 	mUi->paletteTree->setVisibleForAllElements(visible);
+	for (Id const &editor : mEditorManagerProxy.editors()) {
+		for (Id const &diagram: mEditorManagerProxy.diagrams(editor)) {
+			for (Id const &element : mEditorManagerProxy.elements(diagram)) {
+				mEditorManagerProxy.setElementEnabled(element, visible);
+			}
+		}
+	}
 }
 
 void MainWindow::setElementInPaletteEnabled(Id const &metatype, bool enabled)
 {
 	mUi->paletteTree->setElementEnabled(metatype, enabled);
+	mEditorManagerProxy.setElementEnabled(metatype, enabled);
 }
 
 void MainWindow::setEnabledForAllElementsInPalette(bool enabled)
 {
 	mUi->paletteTree->setEnabledForAllElements(enabled);
+	for (Id const &editor : mEditorManagerProxy.editors()) {
+		for (Id const &diagram: mEditorManagerProxy.diagrams(editor)) {
+			for (Id const &element : mEditorManagerProxy.elements(diagram)) {
+				mEditorManagerProxy.setElementEnabled(element, enabled);
+			}
+		}
+	}
 }
