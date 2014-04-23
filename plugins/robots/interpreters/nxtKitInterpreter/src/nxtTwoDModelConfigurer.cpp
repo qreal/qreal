@@ -5,7 +5,7 @@ using namespace interpreterBase::robotModel;
 
 QString NxtTwoDModelConfigurer::robotImage() const
 {
-	return "";
+	return ":/icons/robot.png";
 }
 
 PortInfo NxtTwoDModelConfigurer::defaultLeftWheelPort() const
