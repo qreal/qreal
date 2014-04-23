@@ -1,4 +1,4 @@
-#include "enumConverterBase.h"
+#include "generatorBase/converters/enumConverterBase.h"
 
 using namespace generatorBase::converters;
 using namespace qReal;

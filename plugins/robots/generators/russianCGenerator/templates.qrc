@@ -38,13 +38,17 @@
         <file>templates/conditional/whileDo.t</file>
         <file>templates/types/float.t</file>
         <file>templates/types/int.t</file>
-        <file>templates/sensors/readColor.t</file>
-        <file>templates/sensors/readEncoder.t</file>
-        <file>templates/sensors/readGyroscore.t</file>
-        <file>templates/sensors/readLight.t</file>
-        <file>templates/sensors/readSonar.t</file>
-        <file>templates/sensors/readSound.t</file>
-        <file>templates/sensors/readTouch.t</file>
+        <file>templates/sensors/colorRecognition.t</file>
+        <file>templates/sensors/colorRed.t</file>
+        <file>templates/sensors/colorGreen.t</file>
+        <file>templates/sensors/colorBlue.t</file>
+        <file>templates/sensors/colorNone.t</file>
+        <file>templates/sensors/encoder.t</file>
+        <file>templates/sensors/gyroscore.t</file>
+        <file>templates/sensors/light.t</file>
+        <file>templates/sensors/sonar.t</file>
+        <file>templates/sensors/sound.t</file>
+        <file>templates/sensors/touch.t</file>
         <file>templates/sensors/port1.t</file>
         <file>templates/sensors/port2.t</file>
         <file>templates/sensors/port3.t</file>
@@ -69,26 +73,32 @@
         <file>templates/main.t</file>
         <file>templates/comment.t</file>
         <file>templates/initialization/colorBlue.t</file>
-        <file>templates/initialization/colorFull.t</file>
+        <file>templates/initialization/colorRecognition.t</file>
         <file>templates/initialization/colorGreen.t</file>
         <file>templates/initialization/colorNone.t</file>
         <file>templates/initialization/colorRed.t</file>
-        <file>templates/initialization/engines.t</file>
+        <file>templates/initialization/motor.t</file>
         <file>templates/initialization/light.t</file>
         <file>templates/initialization/sonar.t</file>
+        <file>templates/initialization/encoder.t</file>
+        <file>templates/initialization/buttons.t</file>
         <file>templates/termination/colorBlue.t</file>
-        <file>templates/termination/colorFull.t</file>
+        <file>templates/termination/colorRecognition.t</file>
         <file>templates/termination/colorGreen.t</file>
         <file>templates/termination/colorNone.t</file>
         <file>templates/termination/colorRed.t</file>
-        <file>templates/termination/engines.t</file>
+        <file>templates/termination/motor.t</file>
         <file>templates/termination/light.t</file>
         <file>templates/termination/sonar.t</file>
+        <file>templates/termination/encoder.t</file>
+        <file>templates/termination/buttons.t</file>
         <file>templates/isrHooks/colorBlue.t</file>
-        <file>templates/isrHooks/colorFull.t</file>
+        <file>templates/isrHooks/colorRecognition.t</file>
         <file>templates/isrHooks/colorGreen.t</file>
         <file>templates/isrHooks/colorNone.t</file>
         <file>templates/isrHooks/colorRed.t</file>
+        <file>templates/isrHooks/encoder.t</file>
+        <file>templates/isrHooks/buttons.t</file>
         <file>templates/drawing/bmpDeclaration.t</file>
         <file>templates/drawing/clearUnusedScreen.t</file>
         <file>templates/drawing/clearUsedScreen.t</file>
@@ -105,6 +115,5 @@
         <file>templates/variables/intConstantDeclaration.t</file>
         <file>templates/variables/intVariableDeclaration.t</file>
         <file>templates/whatTime.t</file>
-        <file>templates/sensors/readColorRecognition.t</file>
     </qresource>
 </RCC>
