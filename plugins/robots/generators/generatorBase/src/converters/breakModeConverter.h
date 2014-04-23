@@ -1,6 +1,6 @@
 #pragma once
 
-#include "enumConverterBase.h"
+#include "generatorBase/converters/enumConverterBase.h"
 
 namespace generatorBase {
 namespace converters {
