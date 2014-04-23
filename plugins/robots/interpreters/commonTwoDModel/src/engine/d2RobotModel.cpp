@@ -489,6 +489,10 @@ void D2RobotModel::recalculateParams()
 		}
 
 		Engine * const engine = mEngines.value(port, nullptr);
+		if (!engine) {
+			return EngineOutput{0, true};
+		}
+
 		engine->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine->speed) : engine->speed;
 		return EngineOutput{
 				engine->spoiledSpeed * 2 * M_PI * engine->radius * onePercentAngularVelocity / 360
