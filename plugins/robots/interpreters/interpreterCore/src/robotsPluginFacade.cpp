@@ -45,6 +45,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	/// @todo Give parser a real time computation function.
 	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter()
+			, mRobotModelManager
 			, []() { return 0; });
 
 

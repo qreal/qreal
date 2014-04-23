@@ -9,11 +9,15 @@ QString const encoderVariablePerfix = QObject::tr("encoder");
 QString const timeVariableName = QObject::tr("time");
 
 RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface * const errorReporter
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, ComputableNumber::IntComputer const &timeComputer)
 	: ExpressionsParser(errorReporter)
+	, mRobotModelManager(robotModelManager)
 	, mTimeComputer(timeComputer)
 {
 	setReservedVariables();
+	connect(&mRobotModelManager, &interpreterBase::robotModel::RobotModelManagerInterface::robotModelChanged
+			, this, &RobotsBlockParser::setReservedVariables);
 }
 
 Number *RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &pos, const Id &curId)
@@ -97,6 +101,10 @@ bool RobotsBlockParser::isLetter(const QChar &symbol)
 
 void RobotsBlockParser::setReservedVariables()
 {
+	qDeleteAll(mVariables);
+	mVariables.clear();
+	mReservedVariables.clear();
+
 	/// @todo: Reinitialize it each time before interpretation from robot model
 	QString const pi = "pi";
 	Number * const piValue = new Number(3.14159265, Number::doubleType);
@@ -104,16 +112,12 @@ void RobotsBlockParser::setReservedVariables()
 	mVariables.insert(timeVariableName, new ComputableNumber(mTimeComputer));
 	mReservedVariables.append(timeVariableName);
 
-	for (int i = 1; i <= 4; ++i) {
-		QString const variable = sensorVariablePerfix + QString::number(i);
-		mVariables.insert(variable, new Number(0, Number::intType));
-		mReservedVariables.append(variable);
-	}
-
-	for (int i = 0; i < 3; ++i) {
-		QString const variable = encoderVariablePerfix + ('A' + i);
-		mVariables.insert(variable, new Number(0, Number::intType));
-		mReservedVariables.append(variable);
+	for (interpreterBase::robotModel::PortInfo const &port : mRobotModelManager.model().availablePorts()) {
+		QString const variable = port.reservedVariable();
+		if (!variable.isEmpty()) {
+			mVariables.insert(variable, new Number(0, Number::intType));
+			mReservedVariables.append(variable);
+		}
 	}
 }
 

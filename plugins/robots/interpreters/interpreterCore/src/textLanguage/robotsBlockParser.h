@@ -3,14 +3,20 @@
 #include <qrutils/expressionsParser/expressionsParser.h>
 #include <qrutils/expressionsParser/computableNumber.h>
 #include <interpreterBase/blocksBase/blockParserInterface.h>
+#include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 namespace interpreterCore {
 namespace textLanguage {
 
-class RobotsBlockParser : public utils::ExpressionsParser, public interpreterBase::blocksBase::BlockParserInterface
+class RobotsBlockParser : public QObject
+		, public utils::ExpressionsParser
+		, public interpreterBase::blocksBase::BlockParserInterface
 {
+	Q_OBJECT
+
 public:
-	explicit RobotsBlockParser(qReal::ErrorReporterInterface * const errorReporter
+	RobotsBlockParser(qReal::ErrorReporterInterface * const errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, utils::ComputableNumber::IntComputer const &timeComputer);
 
 	utils::Number *standartBlockParseProcess(QString const &stream, int &pos, qReal::Id const &curId);
@@ -27,8 +33,9 @@ private:
 
 	virtual bool checkForUsingReservedVariables(QString const &nameOfVariable);
 
-	QStringList mReservedVariables;
+	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	utils::ComputableNumber::IntComputer const mTimeComputer;
+	QStringList mReservedVariables;
 };
 
 }
