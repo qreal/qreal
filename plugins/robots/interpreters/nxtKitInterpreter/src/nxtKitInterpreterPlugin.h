@@ -54,6 +54,7 @@ private:
 	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
+	QString mCurrentlySelectedModelName;
 };
 
 }

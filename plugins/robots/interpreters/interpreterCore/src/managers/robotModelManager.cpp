@@ -35,3 +35,8 @@ void RobotModelManager::setModel(RobotModelInterface * const robotModel)
 		emit robotModelChanged(*mRobotModel);
 	}
 }
+
+void RobotModelManager::sync()
+{
+	emit robotModelChanged(*mRobotModel);
+}

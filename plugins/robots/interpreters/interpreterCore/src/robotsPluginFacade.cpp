@@ -82,7 +82,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, mBlocksFactoryManager, this);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, paletteUpdateManager, &PaletteUpdateManager::updatePalette);
-	paletteUpdateManager->updatePalette(mRobotModelManager.model());
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
 
 	connectInterpreterToActions();
@@ -93,6 +92,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
 
 	coreFactory->setParser(mParser);
+
+	sync();
 }
 
 PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
@@ -157,7 +158,6 @@ void RobotsPluginFacade::initSensorWidgets()
 	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mDockDevicesConfigurer, &ui::DevicesConfigurationWidget::selectRobotModel);
-	mDockDevicesConfigurer->selectRobotModel(mRobotModelManager.model());
 
 	mWatchListWindow = new utils::WatchListWindow(mParser);
 	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
@@ -228,4 +228,18 @@ void RobotsPluginFacade::connectEventsForKitPlugin()
 			, &mEventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
 			);
+
+	QObject::connect(
+			&mRobotModelManager
+			, &RobotModelManager::robotModelChanged
+			, [this](interpreterBase::robotModel::RobotModelInterface &model) {
+				emit mEventsForKitPlugin.robotModelChanged(model.name());
+			}
+			);
+
+}
+
+void RobotsPluginFacade::sync()
+{
+	mRobotModelManager.sync();
 }

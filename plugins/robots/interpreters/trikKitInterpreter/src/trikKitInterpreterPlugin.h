@@ -56,6 +56,7 @@ private:
 	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
+	QString mCurrentlySelectedModelName;
 };
 
 }

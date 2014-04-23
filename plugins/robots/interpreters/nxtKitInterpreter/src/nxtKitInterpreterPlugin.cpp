@@ -41,6 +41,14 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 			, &twoDModel::TwoDModelControlInterface::onStopInterpretation
 			);
 
+	connect(&eventsForKitPlugin
+			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
+			, [this](QString const &modelName) {
+				mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(modelName == mTwoDRobotModel.name());
+				mCurrentlySelectedModelName = modelName;
+			}
+			);
+
 	connect(mTwoDModel.data()
 			, &twoDModel::TwoDModelControlInterface::runButtonPressed
 			, &interpreterControl
@@ -95,7 +103,7 @@ interpreterBase::AdditionalPreferences *NxtKitInterpreterPlugin::settingsWidget(
 
 QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 {
-	return {mTwoDModel->showTwoDModelWidgetActionInfo()};
+	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
 }
 
 interpreterBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()
@@ -105,6 +113,7 @@ interpreterBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devices
 
 void NxtKitInterpreterPlugin::onActiveTabChanged(Id const &rootElementId)
 {
-	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
+	bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
+	enabled &= mCurrentlySelectedModelName == mTwoDRobotModel.name();
 	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(enabled);
 }
