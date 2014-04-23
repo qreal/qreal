@@ -1,8 +1,8 @@
 #pragma once
 
 #include <interpreterBase/robotModel/portInfo.h>
-#include <interpreterBase/robotModel/robotParts/motor.h>
 #include <utils/robotCommunication/robotCommunicator.h>
+#include "src/robotModel/parts/nxtMotor.h"
 
 #include "commandConstants.h"
 
@@ -11,7 +11,7 @@ namespace robotModel {
 namespace real {
 namespace parts {
 
-class Motor : public interpreterBase::robotModel::robotParts::Motor
+class Motor : public nxtKitInterpreter::robotModel::parts::NxtMotor
 {
 	Q_OBJECT
 

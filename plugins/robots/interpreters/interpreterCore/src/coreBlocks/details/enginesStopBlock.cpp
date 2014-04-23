@@ -3,6 +3,8 @@
 #include <interpreterBase/robotModel/robotParts/motor.h>
 
 using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::blocksBase::common;
+using namespace interpreterBase::robotModel::robotParts;
 
 EnginesStopBlock::EnginesStopBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: EngineCommandBlock(robotModel)
@@ -11,7 +13,7 @@ EnginesStopBlock::EnginesStopBlock(interpreterBase::robotModel::RobotModelInterf
 
 void EnginesStopBlock::run()
 {
-	for (interpreterBase::robotModel::robotParts::Motor * const motor : parsePorts()) {
+	for (Motor * const motor : parsePorts<Motor>()) {
 		motor->off();
 	}
 

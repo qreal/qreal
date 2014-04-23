@@ -250,7 +250,51 @@
 					<container/>
 				</logic>
 			</node>
-			<node displayedName="Моторы назад" name="EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
+
+			<node name="EngineCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порты" type="string" name="Ports" />
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node name="EngineMovementCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Мощность (%)" type="string" name="Power">
+							<default>100</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			
+			<node name="NxtEngineMovementCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Режим" type="BreakEngineMode" name="Mode">
+							<default>тормозить</default>
+						</property>
+						<property displayedName="Порты" type="string" name="Ports" >
+							<default>B, C</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Моторы назад" name="NxtEnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
@@ -290,11 +334,11 @@
 				<logic>
 					<container/>
 					<generalizations>
-						<parent parentName="EngineMovementCommand"/>
+						<parent parentName="NxtEngineMovementCommand"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Моторы вперёд" name="EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Включить моторы по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.">
+			<node displayedName="Моторы вперёд" name="NxtEnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Включить моторы по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
@@ -334,39 +378,196 @@
 				<logic>
 					<container/>
 					<generalizations>
+						<parent parentName="NxtEngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			
+			
+			<node name="TrikV4EngineMovementCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порты" type="string" name="Ports" >
+							<default>M1, JM3</default>
+						</property>
+					</properties>
+					<generalizations>
 						<parent parentName="EngineMovementCommand"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node name="EngineMovementCommand">
+			
+			<node displayedName="Моторы назад" name="TrikV4EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, JM1, JE2), и раделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-8" y="-25" text="Порты:" hard="true"/>
+						<label x="40" y="60" textBinded="Power"/>
+						<label x="-50" y="60" text="Мощность (%):"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
 				<logic>
 					<container/>
-					<properties>
-						<property displayedName="Мощность (%)" type="string" name="Power">
-							<default>100</default>
-						</property>
-						<property displayedName="Режим" type="BreakEngineMode" name="Mode">
-							<default>тормозить</default>
-						</property>
-					</properties>
 					<generalizations>
-						<parent parentName="EngineCommand"/>
+						<parent parentName="TrikV4EngineMovementCommand"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node name="EngineCommand">
+			<node displayedName="Моторы вперёд" name="TrikV4EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Включить моторы по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, JM1, JE2), и раделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-8" y="-25" text="Порты:" hard="true"/>
+						<label x="40" y="60" textBinded="Power"/>
+						<label x="-50" y="60" text="Мощность (%):"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
 				<logic>
 					<container/>
-					<properties>
-						<property displayedName="Порты" type="string" name="Ports">
-							<default>B, C</default>
-						</property>
-					</properties>
 					<generalizations>
-						<parent parentName="AbstractNode"/>
+						<parent parentName="TrikV4EngineMovementCommand"/>
 					</generalizations>
 				</logic>
 			</node>
+			
+
+			<node name="TrikV6EngineMovementCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порты" type="string" name="Ports" >
+							<default>JM3, JM4</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Моторы назад" name="TrikV6EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, JM1, JE2), и раделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-8" y="-25" text="Порты:" hard="true"/>
+						<label x="40" y="60" textBinded="Power"/>
+						<label x="-50" y="60" text="Мощность (%):"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="TrikV6EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Моторы вперёд" name="TrikV6EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Включить моторы по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, JM1, JE2), и раделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-8" y="-25" text="Порты:" hard="true"/>
+						<label x="40" y="60" textBinded="Power"/>
+						<label x="-50" y="60" text="Мощность (%):"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="TrikV6EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			
 			<node displayedName="Начало" name="InitialNode" path="210, 111 : 209, 120 : 208, 130 : 205, 139 : 202, 148 : 198, 157 : 193, 166 : 187, 173 : 181, 181 : 173, 187 : 166, 193 : 157, 198 : 148, 202 : 139, 205 : 130, 208 : 120, 209 : 111, 209 : 102, 209 : 92, 208 : 83, 205 : 74, 202 : 65, 198 : 56, 193 : 49, 187 : 41, 181 : 35, 173 : 29, 166 : 24, 157 : 20, 148 : 17, 139 : 14, 130 : 13, 120 : 13, 111 : 13, 102 : 14, 92 : 17, 83 : 20, 74 : 24, 65 : 29, 56 : 35, 49 : 41, 41 : 49, 35 : 56, 29 : 65, 24 : 74, 20 : 83, 17 : 92, 14 : 102, 13 : 111, 13 : 120, 13 : 130, 14 : 139, 17 : 148, 20 : 157, 24 : 166, 29 : 173, 35 : 181, 41 : 187, 49 : 193, 56 : 198, 65 : 202, 74 : 205, 83 : 208, 92 : 209, 102 : 210, 111 : " description="Начальная точка выполнения программы. На каждой диаграмме такой блок должен быть только один, в него не должно быть входящих связей, исходящая связь из этого элемента должна быть только одна. Процесс интерпретации диаграммы начинается именно с этого блока.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1750,8 +1951,8 @@
 			<group name="Действия">
 				<element name="Beep"/>
 				<element name="PlayTone"/>
-				<element name="EnginesForward"/>
-				<element name="EnginesBackward"/>
+				<element name="NxtEnginesForward"/>
+				<element name="NxtEnginesBackward"/>
 				<element name="EnginesStop"/>
 				<element name="NullificationEncoder"/>
 			</group>

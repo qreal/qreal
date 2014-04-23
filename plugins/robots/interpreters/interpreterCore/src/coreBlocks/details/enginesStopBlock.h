@@ -1,12 +1,12 @@
 #pragma once
 
-#include "engineCommandBlock.h"
+#include <interpreterBase/blocksBase/common/engineCommandBlock.h>
 
 namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
 
-class EnginesStopBlock : public EngineCommandBlock
+class EnginesStopBlock : public interpreterBase::blocksBase::common::EngineCommandBlock
 {
 	Q_OBJECT
 

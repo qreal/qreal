@@ -8,22 +8,13 @@ Motor::Motor(DeviceInfo const &info, interpreterBase::robotModel::PortInfo const
 {
 }
 
-void Motor::on(int speed, bool breakMode)
+void Motor::on(int speed)
 {
 	Q_UNUSED(speed);
-	Q_UNUSED(breakMode);
 }
 
-void Motor::on(int speed, long unsigned int degrees, bool breakMode)
+void Motor::stop()
 {
-	Q_UNUSED(speed);
-	Q_UNUSED(degrees);
-	Q_UNUSED(breakMode);
-}
-
-void Motor::stop(bool breakMode)
-{
-	Q_UNUSED(breakMode);
 }
 
 void Motor::off()

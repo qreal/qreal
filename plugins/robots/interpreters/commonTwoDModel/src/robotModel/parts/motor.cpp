@@ -12,6 +12,16 @@ Motor::Motor(DeviceInfo const &info, PortInfo const &port, engine::TwoDModelEngi
 {
 }
 
+void Motor::on(int speed)
+{
+	on(speed, true);
+}
+
+void Motor::stop()
+{
+	stop(true);
+}
+
 void Motor::on(int speed, bool breakMode)
 {
 	on(speed, 0, breakMode);

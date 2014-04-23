@@ -4,8 +4,6 @@
 #include "details/finalBlock.h"
 #include "details/nullificationEncoderBlock.h"
 
-#include "details/enginesForwardBlock.h"
-#include "details/enginesBackwardBlock.h"
 #include "details/enginesStopBlock.h"
 
 #include "details/timerBlock.h"
@@ -37,10 +35,6 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::FinalBlock();
 	} else if (elementMetatypeIs(element, "Timer")) {
 		return new details::TimerBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "EnginesForward")) {
-		return new details::EnginesForwardBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "EnginesBackward")) {
-		return new details::EnginesBackwardBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "EnginesStop")) {
 		return new details::EnginesStopBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "CommentBlock")) {
@@ -87,8 +81,6 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("InitialNode")
 		, id("FinalNode")
 		, id("Timer")
-		, id("EnginesForward")
-		, id("EnginesBackward")
 		, id("EnginesStop")
 		, id("CommentBlock")
 		, id("IfBlock")

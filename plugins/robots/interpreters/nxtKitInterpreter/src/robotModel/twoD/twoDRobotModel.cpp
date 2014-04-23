@@ -1,7 +1,5 @@
 #include "twoDRobotModel.h"
 
-#include "src/robotModel/twoD/parts/twoDDisplay.h"
-#include "src/robotModel/twoD/parts/twoDButtons.h"
 #include <interpreterBase/robotModel/robotParts/buttons.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/motor.h>
@@ -14,6 +12,9 @@
 #include <interpreterBase/robotModel/robotParts/colorSensorGreen.h>
 #include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
 #include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
+
+#include "src/robotModel/twoD/parts/twoDDisplay.h"
+#include "src/robotModel/twoD/parts/twoDButtons.h"
 
 using namespace nxtKitInterpreter::robotModel;
 using namespace nxtKitInterpreter::robotModel::twoD;

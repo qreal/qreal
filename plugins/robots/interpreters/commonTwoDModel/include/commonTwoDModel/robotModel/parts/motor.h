@@ -14,6 +14,7 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
+/// @todo Do something with copypaste with real NXT motor.
 class COMMON_TWO_D_MODEL_EXPORT Motor : public interpreterBase::robotModel::robotParts::Motor
 {
 	Q_OBJECT
@@ -24,10 +25,13 @@ public:
 			, engine::TwoDModelEngineInterface &engine
 			);
 
-	void on(int speed, bool breakMode = true) override;
-	void on(int speed, long unsigned int degrees, bool breakMode = true) override;
-	void stop(bool breakMode = true) override;
+	void on(int speed) override;
+	void stop() override;
 	void off() override;
+
+	void on(int speed, bool breakMode);
+	void on(int speed, long unsigned int degrees, bool breakMode);
+	void stop(bool breakMode);
 
 protected:
 	void doConfiguration() override;

@@ -18,9 +18,8 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Motor : public Device
 public:
 	Motor(DeviceInfo const &info, PortInfo const &port);
 
-	virtual void on(int speed, bool breakMode = true);
-	virtual void on(int speed, long unsigned int degrees, bool breakMode = true);
-	virtual void stop(bool breakMode = true);
+	virtual void on(int speed);
+	virtual void stop();
 	virtual void off();
 };
 

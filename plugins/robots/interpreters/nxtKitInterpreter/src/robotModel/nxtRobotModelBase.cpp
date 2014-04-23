@@ -3,11 +3,13 @@
 #include <interpreterBase/robotModel/robotParts/display.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/buttons.h>
-#include <interpreterBase/robotModel/robotParts/motor.h>
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
+
+#include "parts/nxtMotor.h"
+
 /// @todo: use common sensors
 #include "real/parts/colorSensorFull.h"
 #include "real/parts/colorSensorRed.h"
@@ -85,7 +87,7 @@ DeviceInfo NxtRobotModelBase::buttonsInfo() const
 
 DeviceInfo NxtRobotModelBase::motorInfo() const
 {
-	return DeviceInfo::create<robotParts::Motor>();
+	return DeviceInfo::create<nxtKitInterpreter::robotModel::parts::NxtMotor>();
 }
 
 DeviceInfo NxtRobotModelBase::encoderInfo() const
