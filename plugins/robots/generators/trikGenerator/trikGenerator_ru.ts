@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>QObject</name>
     <message>
@@ -47,30 +47,24 @@
 <context>
     <name>qReal::robots::generators::trik::TrikGeneratorPlugin</name>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="33"/>
         <source>Generate TRIK code</source>
-        <translation>Генерировать код для ТРИК</translation>
+        <translation type="vanished">Генерировать код для ТРИК</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="37"/>
         <source>Upload program</source>
-        <translation>Загрузить программу</translation>
+        <translation type="vanished">Загрузить программу</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="41"/>
         <source>Run program</source>
-        <translation>Загрузить и выполнить программу</translation>
+        <translation type="vanished">Загрузить и выполнить программу</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="45"/>
         <source>Stop robot</source>
-        <translation>Остановить робот</translation>
+        <translation type="vanished">Остановить робот</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="66"/>
-        <location filename="trikGeneratorPlugin.cpp" line="90"/>
         <source>No connection to robot</source>
-        <translation>Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
+        <translation type="vanished">Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
     </message>
 </context>
 <context>
@@ -172,6 +166,40 @@
     <message>
         <source>No connection to robot</source>
         <translation type="obsolete">Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
+    </message>
+</context>
+<context>
+    <name>trik::TrikGeneratorPlugin</name>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="35"/>
+        <source>Generate TRIK code</source>
+        <translation>Генерировать код для ТРИК</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="40"/>
+        <source>Upload program</source>
+        <translation>Загрузить программу</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="45"/>
+        <source>Run program</source>
+        <translation>Загрузить и выполнить программу</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="50"/>
+        <source>Stop robot</source>
+        <translation>Остановить робот</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="83"/>
+        <source>TRIK Source File</source>
+        <translation>Файл с исходным кодом для TRIK</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="99"/>
+        <location filename="trikGeneratorPlugin.cpp" line="124"/>
+        <source>No connection to robot</source>
+        <translation>Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
     </message>
 </context>
 </TS>

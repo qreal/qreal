@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>QObject</name>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="29"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="31"/>
         <source>There is nothing to generate, diagram doesn&apos;t have Initial Node</source>
         <translation>Генерация невозможна, на диаграмме нет начальных блоков</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="58"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="60"/>
         <source>This element must have exactly ONE outgoing link</source>
         <translation>От этого элемента должна отходить в точности одна связь</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="68"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="70"/>
         <source>Final node must not have outgoing links</source>
         <oldsource>Final node must not have outgioing links</oldsource>
         <translation>От блока &quot;Конец&quot; не должно отходить связей</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="76"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="78"/>
         <source>If block must have exactly TWO outgoing links</source>
         <translation>От условного блока должно отходить в точности две связи</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="91"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="93"/>
         <source>Two outgoing links marked with &apos;true&apos; found</source>
         <translation>Обе связи помечены меткой &quot;истина&quot;</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="100"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="102"/>
         <source>Two outgoing links marked with &apos;false&apos; found</source>
         <translation>Обе связи помечены меткой &quot;ложь&quot;</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="139"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="141"/>
         <source>Loop block must have exactly TWO outgoing links</source>
         <translation>От блока &quot;Цикл&quot; должно отходить в точности две связи</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="153"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="155"/>
         <source>Two outgoing links marked with &quot;iteration&quot; found</source>
         <translation>Обе связи помечены меткой &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="161"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="163"/>
         <source>There must be a link with property &quot;Guard&quot; set to &quot;iteration&quot;</source>
         <translation>Должна быть связь с меткой &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="172"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="174"/>
         <source>Outgoing links from loop block must be connected to different blocks</source>
         <translation>Исходящие связи должны быть присоединены к разным блокам</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="190"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="192"/>
         <source>Fork block must have at least TWO outgoing links</source>
         <translation>Из блок &quot;Параллельные задачи&quot; должно выходить как минимум две связи</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="203"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="205"/>
         <source>Unknown block type</source>
         <translation>Неизвестный блок</translation>
     </message>
@@ -73,7 +73,7 @@
         <translation type="obsolete">Обнаружено более 1 исходящей связи!</translation>
     </message>
     <message>
-        <location filename="masterGeneratorBase.cpp" line="40"/>
+        <location filename="src/masterGeneratorBase.cpp" line="49"/>
         <source>There is no opened diagram</source>
         <translation>Сначала откройте диаграмму </translation>
     </message>
@@ -94,7 +94,7 @@
         <translation type="obsolete">От условного блока должно отходить ровно ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="216"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="218"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
@@ -107,7 +107,7 @@
         <translation type="obsolete">Обе связи помечены условием &apos;Ложь&apos;</translation>
     </message>
     <message>
-        <location filename="primaryControlFlowValidator.cpp" line="109"/>
+        <location filename="src/primaryControlFlowValidator.cpp" line="111"/>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
         <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
@@ -120,37 +120,52 @@
         <translation type="obsolete">Данная диаграмма слишком сложна для генерации.</translation>
     </message>
     <message>
-        <location filename="parts/subprograms.cpp" line="53"/>
+        <location filename="src/parts/subprograms.cpp" line="53"/>
         <source>Graphical diagram instance not found</source>
         <translation>Графическая модель диаграммы с подпрограммой не найдена</translation>
     </message>
     <message>
-        <location filename="parts/subprograms.cpp" line="135"/>
+        <location filename="src/parts/subprograms.cpp" line="135"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Введите корректный идентификатор подпрограммы &quot;</translation>
     </message>
     <message>
-        <location filename="parts/subprograms.cpp" line="141"/>
+        <location filename="src/parts/subprograms.cpp" line="141"/>
         <source>Duplicate identifier: </source>
         <translation>Такой идентификатор уже используется: </translation>
     </message>
 </context>
 <context>
-    <name>qReal::robots::generators::MasterGeneratorBase</name>
+    <name>generatorBase::MasterGeneratorBase</name>
     <message>
-        <location filename="masterGeneratorBase.cpp" line="68"/>
+        <location filename="src/masterGeneratorBase.cpp" line="81"/>
         <source>This diagram cannot be generated into the structured code. Generating it into the code with &apos;goto&apos; statements.</source>
         <translation>Данная диаграмма не может быть сгенерирована в структурированный код. Генерирую код с &apos;goto&apos;.</translation>
     </message>
     <message>
-        <location filename="masterGeneratorBase.cpp" line="83"/>
+        <location filename="src/masterGeneratorBase.cpp" line="96"/>
         <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers (WTF did you do?)</source>
         <translation>Данная диаграмма не может быть сгенерирована даже в код с &apos;goto&apos;. Обратитесь к разработчикам (что вы там понаписали :)?)</translation>
     </message>
     <message>
-        <location filename="masterGeneratorBase.cpp" line="85"/>
+        <location filename="src/masterGeneratorBase.cpp" line="98"/>
         <source>This diagram cannot be generated into the structured code.</source>
         <translation>Данная диаграмма не может быть сгенерирована в структурированный код.</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::robots::generators::MasterGeneratorBase</name>
+    <message>
+        <source>This diagram cannot be generated into the structured code. Generating it into the code with &apos;goto&apos; statements.</source>
+        <translation type="vanished">Данная диаграмма не может быть сгенерирована в структурированный код. Генерирую код с &apos;goto&apos;.</translation>
+    </message>
+    <message>
+        <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers (WTF did you do?)</source>
+        <translation type="vanished">Данная диаграмма не может быть сгенерирована даже в код с &apos;goto&apos;. Обратитесь к разработчикам (что вы там понаписали :)?)</translation>
+    </message>
+    <message>
+        <source>This diagram cannot be generated into the structured code.</source>
+        <translation type="vanished">Данная диаграмма не может быть сгенерирована в структурированный код.</translation>
     </message>
 </context>
 <context>

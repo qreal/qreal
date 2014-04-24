@@ -344,28 +344,28 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="205"/>
         <source>Noise</source>
-        <translation type="unfinished">Шум</translation>
+        <translation>Шум</translation>
     </message>
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="228"/>
         <source>Realistic sensors</source>
         <oldsource>Enable sensor noise</oldsource>
-        <translation type="unfinished">Реалистичные сенсоры</translation>
+        <translation>Реалистичные сенсоры</translation>
     </message>
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="218"/>
         <source>For higher value the behaviour is closer to realistic but performance is lower.</source>
-        <translation type="unfinished">Для больших значений поведение сенсоров и моторов ближе к реальному, но при этом производительность падает больше.</translation>
+        <translation>Для больших значений поведение сенсоров и моторов ближе к реальному, но при этом производительность падает больше.</translation>
     </message>
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="221"/>
         <source>Approximation level</source>
-        <translation type="unfinished">Уровень приближения</translation>
+        <translation>Уровень приближения</translation>
     </message>
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="211"/>
         <source>Realistic engines</source>
-        <translation type="unfinished">Реалистичные моторы</translation>
+        <translation>Реалистичные моторы</translation>
     </message>
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="146"/>
@@ -395,12 +395,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="291"/>
         <source>Type of constructor kit</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="305"/>
         <source>Type of robot model</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Enable motor noise</source>
@@ -448,7 +448,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/customizer.cpp" line="45"/>
         <source>Blocks</source>
-        <translation type="unfinished">Блоки</translation>
+        <translation>Блоки</translation>
     </message>
     <message>
         <location filename="src/customizer.cpp" line="50"/>
@@ -538,22 +538,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/managers/actionsManager.cpp" line="15"/>
         <source>Text under pictogram</source>
-        <translation type="unfinished">Текст под пиктограммами</translation>
-    </message>
-    <message>
-        <location filename="src/managers/actionsManager.cpp" line="71"/>
-        <source>Run interpreter</source>
-        <translation type="unfinished">Запуск интерпретации</translation>
-    </message>
-    <message>
-        <location filename="src/managers/actionsManager.cpp" line="72"/>
-        <source>Stop interpreter</source>
-        <translation type="unfinished">Остановить интерпретацию</translation>
+        <translation>Текст под пиктограммами</translation>
     </message>
     <message>
         <location filename="src/managers/actionsManager.cpp" line="75"/>
+        <source>Run interpreter</source>
+        <translation>Запуск интерпретации</translation>
+    </message>
+    <message>
+        <location filename="src/managers/actionsManager.cpp" line="76"/>
+        <source>Stop interpreter</source>
+        <translation>Остановить интерпретацию</translation>
+    </message>
+    <message>
+        <location filename="src/managers/actionsManager.cpp" line="79"/>
         <source>Toggle titles visibility</source>
-        <translation type="unfinished">Показать/скрыть встроенные редакторы свойств</translation>
+        <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
     <message>
         <source>Switch to 2d model</source>
@@ -706,7 +706,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/robotsPlugin.cpp" line="50"/>
         <source>Robots</source>
-        <translation type="unfinished">Роботы</translation>
+        <translation>Роботы</translation>
     </message>
 </context>
 <context>
@@ -714,7 +714,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/robotsPluginFacade.cpp" line="93"/>
         <source>Robots</source>
-        <translation type="unfinished">Роботы</translation>
+        <translation>Роботы</translation>
     </message>
 </context>
 <context>
@@ -730,17 +730,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/coreBlocks/details/forkBlock.cpp" line="26"/>
         <source>Outgoing link is not connected</source>
-        <translation type="unfinished">Исходящая связь ни к чему не подключена</translation>
+        <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
         <location filename="src/coreBlocks/details/forkBlock.cpp" line="38"/>
         <source>There must be an outgoing link, use &quot;End&quot; block to finish a program</source>
-        <translation type="unfinished">Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
+        <translation>Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
     </message>
     <message>
         <location filename="src/coreBlocks/details/forkBlock.cpp" line="43"/>
         <source>There must be at least two outgoing links</source>
-        <translation type="unfinished">Должно быть как минимум две исходящие связи</translation>
+        <translation>Должно быть как минимум две исходящие связи</translation>
     </message>
 </context>
 <context>
@@ -748,27 +748,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/coreBlocks/details/ifBlock.cpp" line="25"/>
         <source>There must be exactly TWO links outgoing from if block</source>
-        <translation type="unfinished">От условного блока должно отходить ровно ДВЕ связи</translation>
+        <translation>От условного блока должно отходить ровно ДВЕ связи</translation>
     </message>
     <message>
         <location filename="src/coreBlocks/details/ifBlock.cpp" line="32"/>
         <source>Outgoing link is not connected</source>
-        <translation type="unfinished">Исходящая связь ни к чему не подключена</translation>
+        <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
         <location filename="src/coreBlocks/details/ifBlock.cpp" line="41"/>
         <source>Two links marked with &apos;true&apos; found</source>
-        <translation type="unfinished">Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
+        <translation>Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
     </message>
     <message>
         <location filename="src/coreBlocks/details/ifBlock.cpp" line="48"/>
         <source>Two links marked with &apos;false&apos; found</source>
-        <translation type="unfinished">Обе связи помечены условием &apos;Ложь&apos;</translation>
+        <translation>Обе связи помечены условием &apos;Ложь&apos;</translation>
     </message>
     <message>
         <location filename="src/coreBlocks/details/ifBlock.cpp" line="55"/>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
-        <translation type="unfinished">Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
+        <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
 </context>
 <context>
@@ -776,22 +776,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/coreBlocks/details/loopBlock.cpp" line="30"/>
         <source>There must be an outgoing link with property &lt;b&gt;Guard&lt;/b&gt; set as &lt;b&gt;iteration&lt;/b&gt;. See help, chapter &lt;i&gt;Programming&lt;/i&gt;</source>
-        <translation type="unfinished">Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
+        <translation>Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="src/coreBlocks/details/loopBlock.cpp" line="35"/>
         <source>Outgoing link is not connected</source>
-        <translation type="unfinished">Исходящая связь ни к чему не подключена</translation>
+        <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
         <location filename="src/coreBlocks/details/loopBlock.cpp" line="44"/>
         <source>Two links marked as &quot;iteration&quot; found</source>
-        <translation type="unfinished">Найдено две связи, помеченные как &quot;итерация&quot;</translation>
+        <translation>Найдено две связи, помеченные как &quot;итерация&quot;</translation>
     </message>
     <message>
         <location filename="src/coreBlocks/details/loopBlock.cpp" line="64"/>
         <source>There must be a non-marked outgoing link</source>
-        <translation type="unfinished">Должна быть непомеченная исходящая связь</translation>
+        <translation>Должна быть непомеченная исходящая связь</translation>
     </message>
 </context>
 <context>
@@ -799,7 +799,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/coreBlocks/details/subprogramBlock.cpp" line="22"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
-        <translation type="unfinished">Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
+        <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
     </message>
 </context>
 <context>
@@ -848,7 +848,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/coreBlocks/details/waitForSensorBlock.cpp" line="35"/>
         <source>%1 is not configured on port %2</source>
-        <translation type="unfinished">%1 не сконфигурирован на порту %2</translation>
+        <translation>%1 не сконфигурирован на порту %2</translation>
     </message>
 </context>
 <context>
@@ -857,22 +857,22 @@ p, li { white-space: pre-wrap; }
         <location filename="src/interpreter/interpreter.cpp" line="79"/>
         <location filename="src/interpreter/interpreter.cpp" line="163"/>
         <source>No connection to robot</source>
-        <translation type="unfinished">Нет соединения с роботом</translation>
+        <translation>Нет соединения с роботом</translation>
     </message>
     <message>
         <location filename="src/interpreter/interpreter.cpp" line="84"/>
         <source>Interpreter is already running</source>
-        <translation type="unfinished">Программа уже запущена</translation>
+        <translation>Программа уже запущена</translation>
     </message>
     <message>
         <location filename="src/interpreter/interpreter.cpp" line="144"/>
         <source>Connected successfully</source>
-        <translation type="unfinished">Подключение к роботу выполнено</translation>
+        <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
         <location filename="src/interpreter/interpreter.cpp" line="148"/>
         <source>Can&apos;t connect to a robot.</source>
-        <translation type="unfinished">Не удалось подключиться к роботу.</translation>
+        <translation>Не удалось подключиться к роботу.</translation>
     </message>
 </context>
 <context>
@@ -880,12 +880,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/interpreter/details/thread.cpp" line="85"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
-        <translation type="unfinished">Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
+        <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
         <location filename="src/interpreter/details/thread.cpp" line="90"/>
         <source>Stack overflow</source>
-        <translation type="unfinished">Переполнение стека</translation>
+        <translation>Переполнение стека</translation>
     </message>
 </context>
 <context>
@@ -898,7 +898,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/ui/devicesConfigurationWidget.cpp" line="71"/>
         <source>Unused</source>
-        <translation type="unfinished">Не используется</translation>
+        <translation>Не используется</translation>
     </message>
 </context>
 <context>
