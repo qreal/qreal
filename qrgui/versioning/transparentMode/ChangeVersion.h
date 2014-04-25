@@ -31,5 +31,8 @@ private slots:
 	void showDiff(QListWidgetItem* item);
 
 private:
+	void initDiffWidget();
+
 	Ui::ChangeVersion *mUi;
+	QWidget *mDiffWidget;
 };

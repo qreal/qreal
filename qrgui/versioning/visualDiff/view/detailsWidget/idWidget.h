@@ -31,15 +31,18 @@ signals:
 	void mouseLeaved(qReal::Id const& id);
 
 private:
-	QString labelText() const;
+	QString labelLogicalText() const;
+	QString labelGraphicalText() const;
 
 	QString mDefaultText;
 	bool mIdSetted;
 	qReal::Id mGraphicalId;
 	qReal::Id mLogicalId;
 	QGridLayout *mLayout;
-	QLabel *mLabel;
-
+	QLabel *mLabelLogical;
+	QLabel *mLabelGraphical;
+	QFontMetrics *mMetrics;
+	int mLabelWidth;
 };
 
 }

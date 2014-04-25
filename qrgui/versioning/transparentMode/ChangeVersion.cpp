@@ -13,7 +13,7 @@ ChangeVersion::ChangeVersion(QWidget *parent) :
 	mUi->pushButton->hide();
 	mUi->label->hide();
 	connect(mUi->pushButton, SIGNAL(clicked()), SLOT(obtainHash()));
-	this->setMaximumSize(this->size());
+	initDiffWidget();
 }
 
 ChangeVersion::~ChangeVersion()
@@ -40,7 +40,7 @@ void ChangeVersion::showDiff(QListWidgetItem *item)
 	QString firstHash = item->data(Qt::UserRole).toString();
 	int row = mUi->listWidgetForLog->row(item);
 	QListWidgetItem *item2 = mUi->listWidgetForLog->item(row + 1);
-	foreach(QObject *object, this->children()){
+	foreach(QObject *object, mDiffWidget->children()){
 		versioning::DiffWindow *dWindow = dynamic_cast<versioning::DiffWindow *>(object);
 		if (dWindow){
 			delete dWindow;
@@ -48,10 +48,19 @@ void ChangeVersion::showDiff(QListWidgetItem *item)
 	}
 
 	if (item2 != NULL){
-		emit showDiff(firstHash, item2->data(Qt::UserRole).toString(), this);
+		emit showDiff(firstHash, item2->data(Qt::UserRole).toString(), mDiffWidget);
 	} else {
-		emit showDiff(firstHash, firstHash, this);
+		emit showDiff(firstHash, firstHash, mDiffWidget);
 	}
+}
+
+void ChangeVersion::initDiffWidget()
+{
+	mDiffWidget = new QWidget();
+	QGridLayout *mLayout = new QGridLayout();
+	mLayout->setMargin(0);
+	mDiffWidget->setLayout(mLayout);
+	mUi->horizontalLayout->addWidget(mDiffWidget, 0, Qt::AlignLeft);
 }
 
 void ChangeVersion::updateLog(QList<QPair<QString , QString> > listLog) // hash & mainPart
