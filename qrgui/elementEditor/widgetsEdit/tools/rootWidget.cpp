@@ -10,9 +10,9 @@ RootWidget::RootWidget()
 {
 }
 
-void RootWidget::setShape(const QDomDocument &shape)
+void RootWidget::setShape(const QDomDocument &shapeDom, const QString &shape)
 {
-	mShape = shape;
+	mShape = shapeDom;
 	mRenderer = new SdfRenderer(shape);
 }
 

@@ -16,7 +16,7 @@ class RootWidget : public QWidget
 
 public:
 	RootWidget();
-	void setShape(QDomDocument const &shape);
+	void setShape(const QDomDocument &shapeDom, const QString &shape);
 	void setElementRepo(ElementRepoInterface *repo);
 	QDomDocument shapeDocument() const;
 
