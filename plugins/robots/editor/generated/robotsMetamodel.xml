@@ -1953,6 +1953,10 @@
 				<element name="PlayTone"/>
 				<element name="NxtEnginesForward"/>
 				<element name="NxtEnginesBackward"/>
+				<element name="TrikV4EnginesForward"/>
+				<element name="TrikV4EnginesBackward"/>
+				<element name="TrikV6EnginesForward"/>
+				<element name="TrikV6EnginesBackward"/>
 				<element name="EnginesStop"/>
 				<element name="NullificationEncoder"/>
 			</group>

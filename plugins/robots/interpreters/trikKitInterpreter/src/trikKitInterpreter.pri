@@ -15,6 +15,8 @@ HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \
 	$$PWD/trikTwoDModelConfigurer.h \
 	$$PWD/blocks/trikBlocksFactory.h \
+	$$PWD/blocks/details/trikEnginesForwardBlock.h \
+	$$PWD/blocks/details/trikEnginesBackwardBlock.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
 	$$PWD/robotModel/parts/trikDisplay.h \
 	$$PWD/robotModel/parts/trikSpeaker.h \
@@ -49,6 +51,8 @@ SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
 	$$PWD/trikTwoDModelConfigurer.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
+	$$PWD/blocks/details/trikEnginesForwardBlock.cpp \
+	$$PWD/blocks/details/trikEnginesBackwardBlock.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
 	$$PWD/robotModel/parts/trikDisplay.cpp \
 	$$PWD/robotModel/parts/trikSpeaker.cpp \
