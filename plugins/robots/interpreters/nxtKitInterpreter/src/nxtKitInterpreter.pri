@@ -105,3 +105,7 @@ FORMS += \
 
 include($$PWD/../qrguiIncludes.pri)
 include($$PWD/communication/communication.pri)
+
+TRANSLATIONS = $$PWD/../nxtKitInterpreter_ru.ts
+
+RESOURCES += $$PWD/../nxtKitInterpreter.qrc

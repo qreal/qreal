@@ -1,5 +1,7 @@
 #include "nxtKitInterpreterPlugin.h"
 
+#include <QtWidgets/QApplication>
+
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
 
 #include "src/nxtTwoDModelConfigurer.h"
@@ -14,6 +16,9 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mBlocksFactory(new blocks::NxtBlocksFactory)
 	, mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
 {
+	mAppTranslator.load(":/nxtKitInterpreter_" + QLocale::system().name());
+	QApplication::installTranslator(&mAppTranslator);
+
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel, new NxtTwoDModelConfigurer());
 
 	mTwoDRobotModel.setEngine(modelEngine->engine());

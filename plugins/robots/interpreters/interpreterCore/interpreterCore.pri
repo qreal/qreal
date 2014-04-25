@@ -8,7 +8,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils -lcommonTwoDModel
 
 HEADERS += \
 	$$PWD/src/customizer.h \

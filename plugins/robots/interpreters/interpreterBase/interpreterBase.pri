@@ -10,6 +10,8 @@ LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils
 
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
+TRANSLATIONS = interpreterBase_ru.ts
+
 SOURCES += \
 	$$PWD/src/devicesConfigurationProvider.cpp \
 	$$PWD/src/blocksBase/block.cpp \
@@ -92,3 +94,6 @@ HEADERS += \
 # qrgui code
 HEADERS += \
 	$$PWD/../../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
+
+RESOURCES += \
+	interpreterBase.qrc \

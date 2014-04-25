@@ -1,6 +1,7 @@
 #include <interpreterBase/robotModel/deviceInfo.h>
 
 #include <QtCore/QStringList>
+#include <QtCore/QCoreApplication>
 
 #include <qrkernel/exception/exception.h>
 
@@ -40,7 +41,9 @@ QString DeviceInfo::name() const
 
 QString DeviceInfo::friendlyName() const
 {
-	return mFriendlyName;
+	return mDeviceType
+			? QCoreApplication::translate(mDeviceType->className(), mFriendlyName.toLatin1())
+			: QString();
 }
 
 Direction DeviceInfo::direction() const

@@ -12,10 +12,10 @@ using namespace trik;
 using namespace qReal;
 
 TrikGeneratorPlugin::TrikGeneratorPlugin()
-		: mGenerateCodeAction(nullptr)
-		, mUploadProgramAction(nullptr)
-		, mRunProgramAction(nullptr)
-		, mStopRobotAction(nullptr)
+	: mGenerateCodeAction(nullptr)
+	, mUploadProgramAction(nullptr)
+	, mRunProgramAction(nullptr)
+	, mStopRobotAction(nullptr)
 {
 	mAppTranslator.load(":/trikGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);

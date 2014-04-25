@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QScopedPointer>
+#include <QtCore/QTranslator>
 
 #include <interpreterBase/kitPluginInterface.h>
 #include <commonTwoDModel/engine/twoDModelControlInterface.h>
@@ -55,6 +56,7 @@ private:
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
+	QTranslator mAppTranslator;
 };
 
 }

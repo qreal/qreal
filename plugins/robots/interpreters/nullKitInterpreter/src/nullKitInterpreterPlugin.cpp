@@ -1,6 +1,14 @@
 #include "nullKitInterpreterPlugin.h"
 
+#include <QtWidgets/QApplication>
+
 using namespace nullKitInterpreter;
+
+NullKitInterpreterPlugin::NullKitInterpreterPlugin()
+{
+	mAppTranslator.load(":/nullKitInterpreter_" + QLocale::system().name());
+	QApplication::installTranslator(&mAppTranslator);
+}
 
 QString NullKitInterpreterPlugin::kitId() const
 {

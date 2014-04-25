@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtCore/QObject>
+#include <QtCore/QTranslator>
 
 #include <interpreterBase/kitPluginInterface.h>
 #include "nullRobotModel.h"
@@ -14,6 +14,8 @@ class NullKitInterpreterPlugin : public QObject, public interpreterBase::KitPlug
 	Q_PLUGIN_METADATA(IID "nullKitInterpreter.NullKitInterpreterPlugin")
 
 public:
+	NullKitInterpreterPlugin();
+
 	QString kitId() const override;
 
 	QString friendlyKitName() const override;
@@ -34,6 +36,7 @@ public:
 
 private:
 	NullRobotModel mRobotModel;
+	QTranslator mAppTranslator;
 };
 
 }

@@ -1,5 +1,7 @@
 #include "trikKitInterpreterPlugin.h"
 
+#include <QtWidgets/QApplication>
+
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
 
 #include "src/trikTwoDModelConfigurer.h"
@@ -14,6 +16,9 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	: mBlocksFactory(new blocks::TrikBlocksFactory)
 	, mAdditionalPreferences(new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV5.name() }))
 {
+	mAppTranslator.load(":/trikKitInterpreter_" + QLocale::system().name());
+	QApplication::installTranslator(&mAppTranslator);
+
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel, new TrikTwoDModelConfigurer());
 
 	mTwoDRobotModel.setEngine(modelEngine->engine());

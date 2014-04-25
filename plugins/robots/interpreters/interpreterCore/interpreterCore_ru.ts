@@ -453,7 +453,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/customizer.cpp" line="50"/>
         <source>Configure devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки сенсоров</translation>
     </message>
     <message>
         <location filename="src/customizer.cpp" line="58"/>
@@ -577,7 +577,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="src/robotsPlugin.cpp" line="45"/>
+        <location filename="src/robotsPlugin.cpp" line="49"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -698,13 +698,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/defaultRobotModel.cpp" line="12"/>
         <source>Empty model</source>
-        <translation type="unfinished"></translation>
+        <translation>Пустая модель</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::RobotsPlugin</name>
     <message>
-        <location filename="src/robotsPlugin.cpp" line="50"/>
+        <location filename="src/robotsPlugin.cpp" line="54"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -840,7 +840,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/coreBlocks/details/waitForEncoderBlock.cpp" line="26"/>
         <source>Encoder sensor is not configured on port %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Энкодер не сконфигурирован на порту %1</translation>
     </message>
 </context>
 <context>
@@ -893,7 +893,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/ui/devicesConfigurationWidget.cpp" line="66"/>
         <source>Port %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Порт %1:</translation>
     </message>
     <message>
         <location filename="src/ui/devicesConfigurationWidget.cpp" line="71"/>
@@ -906,12 +906,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/ui/robotsSettingsPage.cpp" line="61"/>
         <source>No constructor kit plugins loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
         <location filename="src/ui/robotsSettingsPage.cpp" line="179"/>
         <source>No robot models available for </source>
-        <translation type="unfinished"></translation>
+        <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>
 </context>
 <context>
@@ -920,17 +920,17 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../../qrgui/pluginManager/editorManager.cpp" line="84"/>
         <location filename="../../../../qrgui/pluginManager/editorManager.cpp" line="99"/>
         <source>error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../../../../qrgui/pluginManager/editorManager.cpp" line="84"/>
         <source>Plugin loading failed: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось загрузить плагин: </translation>
     </message>
     <message>
         <location filename="../../../../qrgui/pluginManager/editorManager.cpp" line="99"/>
         <source>Plugin unloading failed: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось выгрузить плагин: </translation>
     </message>
 </context>
 <context>

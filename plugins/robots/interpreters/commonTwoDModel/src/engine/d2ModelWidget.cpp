@@ -1254,7 +1254,7 @@ void D2ModelWidget::updateWheelComboBoxes()
 	for (PortInfo const &port : mRobotModel.availablePorts()) {
 		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
 			if (device.isA<Motor>()) {
-				QString const item = device.friendlyName() + " (port " + port.name() + ")";
+				QString const item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
 				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
 				mUi->rightWheelComboBox->addItem(item, QVariant::fromValue(port));
 			}

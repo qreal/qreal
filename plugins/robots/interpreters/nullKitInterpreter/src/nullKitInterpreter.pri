@@ -7,7 +7,6 @@ INCLUDEPATH += \
 
 LIBS += -L$$PWD/../../../../../bin -linterpreterBase
 
-
 HEADERS += \
 	$$PWD/nullKitInterpreterPlugin.h \
 	$$PWD/nullRobotModel.h \
@@ -15,3 +14,7 @@ HEADERS += \
 SOURCES += \
 	$$PWD/nullKitInterpreterPlugin.cpp \
 	$$PWD/nullRobotModel.cpp \
+
+TRANSLATIONS = $$PWD/../nullKitInterpreter_ru.ts
+
+RESOURCES += $$PWD/../nullKitInterpreter.qrc

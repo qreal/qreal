@@ -49,10 +49,11 @@ private:
 	/// Main window interface object, used to call GUI functionality
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
 
-	/// Plugin translator object
-	QTranslator mAppTranslator;
+	QTranslator mInterpreterCoreTranslator;
+	QTranslator mInterpreterBaseTranslator;
+	QTranslator mCommonTwoDModelTranslator;
 
-	RobotsPluginFacade mRobotsPluginFacade;
+	QScopedPointer<RobotsPluginFacade> mRobotsPluginFacade;
 };
 
 }

@@ -10,6 +10,8 @@ INCLUDEPATH += \
 
 LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -linterpreterBase
 
+TRANSLATIONS = commonTwoDModel_ru.ts
+
 HEADERS += \
 	$$PWD/include/commonTwoDModel/commonTwoDModelDeclSpec.h \
 	$$PWD/include/commonTwoDModel/engine/configurer.h \
@@ -96,3 +98,6 @@ SOURCES += \
 FORMS += \
 	$$PWD/src/engine/d2Form.ui \
 	$$PWD/src/engine/nxtDisplay.ui \
+
+RESOURCES += \
+    commonTwoDModel.qrc \
