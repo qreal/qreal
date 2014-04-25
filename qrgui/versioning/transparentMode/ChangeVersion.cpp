@@ -13,6 +13,8 @@ ChangeVersion::ChangeVersion(QWidget *parent) :
 	mUi->pushButton->hide();
 	mUi->label->hide();
 	connect(mUi->pushButton, SIGNAL(clicked()), SLOT(obtainHash()));
+	mUi->listWidgetForLog->setMinimumWidth(this->width() / 4);
+	mUi->listWidgetForLog->setMinimumWidth(this->width() / 5);
 	initDiffWidget();
 }
 
@@ -50,17 +52,18 @@ void ChangeVersion::showDiff(QListWidgetItem *item)
 	if (item2 != NULL){
 		emit showDiff(firstHash, item2->data(Qt::UserRole).toString(), mDiffWidget);
 	} else {
-		emit showDiff(firstHash, firstHash, mDiffWidget);
+		emit showDiff(firstHash, QString(), mDiffWidget);
 	}
 }
 
 void ChangeVersion::initDiffWidget()
 {
 	mDiffWidget = new QWidget();
-	QGridLayout *mLayout = new QGridLayout();
+	QGridLayout *mLayout = new QGridLayout(mDiffWidget);
 	mLayout->setMargin(0);
 	mDiffWidget->setLayout(mLayout);
-	mUi->horizontalLayout->addWidget(mDiffWidget, 0, Qt::AlignLeft);
+	mDiffWidget->setFixedWidth(0.9 * this->width());
+	mUi->horizontalLayout->addWidget(mDiffWidget, 8, Qt::AlignLeft);
 }
 
 void ChangeVersion::updateLog(QList<QPair<QString , QString> > listLog) // hash & mainPart

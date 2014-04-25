@@ -10,6 +10,7 @@ DiffView::DiffView(qReal::MainWindow *mainWindow, DiffModel *diffModel, bool isO
 	, mModel(mIsOldModel ? mDiffModel->oldModel() : mDiffModel->newModel())
 	, mDetailsWidget(NULL)
 {
+	this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
 	setMainWindow(mainWindow);
 
 	mvIface()->setAssistApi(mModel->graphicalModelAssistApi(), mModel->logicalModelAssistApi());

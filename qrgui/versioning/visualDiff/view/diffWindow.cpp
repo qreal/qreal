@@ -6,6 +6,7 @@ DiffWindow::DiffWindow(qReal::MainWindow *mainWindow
 		, DiffModel *diffModel, QWidget *parent)
 	: QWidget(parent), mDiffModel(diffModel), mMainWindow(mainWindow)
 {
+	this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	initWindow();
 	initLayout();
 	if (!SettingsManager::value("transparentVersioningMode").toBool()){
@@ -68,7 +69,6 @@ void DiffWindow::initViews()
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
 	QList<int> sizes;
 	sizes << 1;
-
 
 	if (!SettingsManager::value("transparentVersioningMode").toBool()){
 		mOldView = new details::DiffView(mMainWindow, mDiffModel, true, this);

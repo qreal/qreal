@@ -15,6 +15,7 @@ int const defaultTimeout = 30000;
 GitPlugin::GitPlugin()
 	: mViewInteraction(new details::ViewInteraction(this))
 	, mTempDir(tempFolderName)
+	, addAndChanged(0)
 {
 	qReal::SettingsManager::instance()->setValue("gitTempDir", mTempDir);
 	setPathToClient(pathToGit());
@@ -61,12 +62,14 @@ QPair<QString, PreferencesPage *> GitPlugin::preferencesPage()
 bool GitPlugin::onFileAdded(QString const &filePath, QString const &workingDir)
 {
 	Q_UNUSED(workingDir)
+	addAndChanged++;
 	return doAdd(filePath, workingDir);
 }
 
 bool GitPlugin::onFileRemoved(QString const &filePath, QString const &workingDir)
 {
 	Q_UNUSED(workingDir)
+	addAndChanged++;
 	return doRemove(filePath);
 }
 
@@ -75,6 +78,7 @@ bool GitPlugin::onFileChanged(QString const &filePath, QString const &workingDir
 	// Subversion detects modifications itself
 	Q_UNUSED(filePath)
 	Q_UNUSED(workingDir)
+	addAndChanged++;
 	return true;
 }
 
@@ -101,7 +105,10 @@ void GitPlugin::beginWorkingCopyUpdating(QString const &targetProject)
 
 void GitPlugin::beginChangesSubmitting(QString const &description, QString const &targetProject, const bool &quiet)
 {
-	startCommit(description, tempFolder(), targetProject, quiet);
+	if (addAndChanged > 0){
+		startCommit(description, tempFolder(), targetProject, quiet);
+		addAndChanged = 0;
+	}
 }
 
 bool GitPlugin::reinitWorkingCopy(QString const &targetProject)
@@ -217,6 +224,7 @@ void GitPlugin::doInit(QString const &targetFolder, bool const &quiet)
 	arguments.clear();
 	arguments << "add" << "-A";
 	invokeOperation(arguments, true, QString(), true, true, QString(), QString(), !quiet);
+	addAndChanged = 1;
 	doUserEmailConfig();
 	doUserNameConfig();
 }

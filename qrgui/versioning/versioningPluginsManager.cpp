@@ -268,7 +268,11 @@ void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTransp
 
 void VersioningPluginsManager::showDiff(QString fstHash, QString sndHash, QWidget *widget)
 {
-	mDiffPlugin->showDiff(sndHash, fstHash, widget);
+	if (sndHash != ""){
+		mDiffPlugin->showDiff(sndHash, fstHash, QString(), widget);
+	} else {
+		mDiffPlugin->showDiff(fstHash, QString(), widget);
+	}
 }
 
 TransparentMode *VersioningPluginsManager::getLinkOnTransparentMode()

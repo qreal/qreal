@@ -19,7 +19,7 @@ IdWidget::IdWidget(QString const &defaultText, QWidget *parent)
 
 	mMetrics = new QFontMetrics(mLabelLogical->font());
 
-	mLabelWidth = 4 * parentWidget()->width();
+	mLabelWidth = 4 * parentWidget()->contentsRect().width();
 
 	QString elidedText = mMetrics->elidedText(mDefaultText, Qt::ElideRight, mLabelWidth);
 	mLabelLogical->setText(elidedText);
