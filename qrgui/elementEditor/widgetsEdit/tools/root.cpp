@@ -45,7 +45,7 @@ void RootProxy::setShapeXml(QString const &shape)
 		return;
 	}
 	if (shapeDoc.isNull()) {
-		mWidget->setShape(shapeDoc);
+		mWidget->setShape(shapeDoc, shape);
 		return;
 	}
 	QDomElement const docElem = shapeDoc.documentElement();
@@ -54,5 +54,5 @@ void RootProxy::setShapeXml(QString const &shape)
 	if (width > 0 && height > 0) {
 		mWidget->resize(width, height);
 	}
-	mWidget->setShape(shapeDoc);
+	mWidget->setShape(shapeDoc, shape);
 }
