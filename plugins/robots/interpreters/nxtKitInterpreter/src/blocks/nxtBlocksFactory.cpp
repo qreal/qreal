@@ -1,6 +1,7 @@
 #include "nxtBlocksFactory.h"
 
 #include <interpreterBase/blocksBase/common/enginesStopBlock.h>
+#include <interpreterBase/blocksBase/common/clearEncoderBlock.h>
 
 #include "details/beepBlock.h"
 #include "details/playToneBlock.h"
@@ -32,6 +33,8 @@ interpreterBase::blocksBase::Block *NxtBlocksFactory::produceBlock(qReal::Id con
 		return new details::NxtEnginesBackwardBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtEnginesStop")) {
 		return new interpreterBase::blocksBase::common::EnginesStopBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "NxtClearEncoder")) {
+		return new interpreterBase::blocksBase::common::ClearEncoderBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "WaitForButtons")) {
 		return new WaitForButtonsBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "DrawPixel")) {
@@ -59,6 +62,7 @@ qReal::IdList NxtBlocksFactory::providedBlocks() const
 		, id("NxtEnginesForward")
 		, id("NxtEnginesBackward")
 		, id("NxtEnginesStop")
+		, id("NxtClearEncoder")
 		, id("WaitForButtons")
 		, id("DrawPixel")
 		, id("DrawLine")
@@ -67,4 +71,17 @@ qReal::IdList NxtBlocksFactory::providedBlocks() const
 		, id("DrawRect")
 		, id("ClearScreen")
 	};
+}
+
+qReal::IdList NxtBlocksFactory::blocksToDisable() const
+{
+	qReal::IdList result;
+
+	if (mRobotModelManager->model().name().contains("TwoD")) {
+		result << id("WaitForGyroscope")
+				<< id("WaitForSound")
+				;
+	}
+
+	return result;
 }

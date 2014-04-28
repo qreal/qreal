@@ -3,23 +3,23 @@
 #include <interpreterBase/blocksBase/block.h>
 
 namespace interpreterBase {
+
 namespace robotModel {
 namespace robotParts {
 class EncoderSensor;
 }
 }
-}
 
-namespace interpreterCore {
-namespace coreBlocks {
-namespace details {
+namespace blocksBase {
+namespace common {
 
-class NullificationEncoderBlock : public interpreterBase::blocksBase::Block
+
+class ROBOTS_INTERPRETER_BASE_EXPORT ClearEncoderBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
 
 public:
-	explicit NullificationEncoderBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	explicit ClearEncoderBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
 	void run() override;
 
