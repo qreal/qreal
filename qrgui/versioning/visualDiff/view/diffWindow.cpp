@@ -4,15 +4,13 @@ using namespace versioning;
 
 DiffWindow::DiffWindow(qReal::MainWindow *mainWindow
 		, DiffModel *diffModel, QWidget *parent)
-	: QWidget(parent), mDiffModel(diffModel), mMainWindow(mainWindow)
+	: QWidget(parent), mDiffModel(diffModel), mMainWindow(mainWindow), mShowDetails(false)
 {
 	this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	initWindow();
 	initLayout();
-	if (!SettingsManager::value("transparentVersioningMode").toBool()){
-		initButton();
-	}
 	initViews();
+	initButton();
 	initDiffDetailsWidget();
 	QList<int> sizes;
 	sizes << 3 << 2;
@@ -28,6 +26,17 @@ DiffWindow::~DiffWindow()
 versioning::details::DiffView *DiffWindow::getNewModel()
 {
 	return mNewView;
+}
+
+void DiffWindow::showDetails()
+{
+	mShowDetails = !mShowDetails;
+	mDiffDetailsWidget->setVisible(mShowDetails);
+	if (mShowDetails){
+		mDetailsLabel->setText(tr("click on details to HIDE it"));
+	} else {
+		mDetailsLabel->setText(tr("click on details to OPEN it"));
+	}
 }
 
 void DiffWindow::initWindow()
@@ -57,11 +66,20 @@ void DiffWindow::initLayout()
 
 void DiffWindow::initButton()
 {
-	mOkButton = new QPushButton;
-	mOkButton->setText(tr("OK"));
-	mOkButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-	connect(mOkButton, SIGNAL(clicked()), this, SLOT(accept()));
-	mLayout->addWidget(mOkButton, 1, 0, Qt::AlignRight);
+	if (!SettingsManager::value("transparentVersioningMode").toBool()){
+		mOkButton = new QPushButton;
+		mOkButton->setText(tr("OK"));
+		mOkButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+		connect(mOkButton, SIGNAL(clicked()), this, SLOT(accept()));
+		mLayout->addWidget(mOkButton, 1, 0, Qt::AlignRight);
+	} else {
+		mDetailsButton = new QPushButton;
+		mDetailsButton->setText(tr("Details..."));
+		mDetailsLabel = new QLabel(tr("click on details to OPEN it"));
+		connect(mDetailsButton, SIGNAL(clicked()), this, SLOT(showDetails()));
+		mLayout->addWidget(mDetailsButton, 1, 0, Qt::AlignRight);
+		mLayout->addWidget(mDetailsLabel, 1, 0, Qt::AlignLeft);
+	}
 }
 
 void DiffWindow::initViews()
@@ -112,4 +130,7 @@ void DiffWindow::initDiffDetailsWidget()
 	mSplitter->addWidget(mDiffDetailsWidget);
 	mOldView->setDetailsWidget(mDiffDetailsWidget);
 	mNewView->setDetailsWidget(mDiffDetailsWidget);
+	if (SettingsManager::value("transparentVersioningMode").toBool()){
+		mDiffDetailsWidget->setVisible(mShowDetails);
+	}
 }

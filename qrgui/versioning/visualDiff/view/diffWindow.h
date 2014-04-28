@@ -21,6 +21,9 @@ public:
 	~DiffWindow();
 	details::DiffView *getNewModel();
 
+private slots:
+	void showDetails();
+
 private:
 	void initWindow();
 	void initLayout();
@@ -33,10 +36,13 @@ private:
 	QGridLayout *mLayout;
 	QSplitter *mSplitter;
 	QPushButton *mOkButton;
+	QPushButton *mDetailsButton;
 	details::DiffView *mOldView;
 	details::DiffView *mNewView;
 	details::DiffDetailsWidget *mDiffDetailsWidget;
 	MainWindow *mMainWindow;
+	QLabel *mDetailsLabel;
+	bool mShowDetails;
 };
 
 }
