@@ -39,8 +39,12 @@ void TransparentMode::listLog()
 {
 	if (mPlugin->isMyWorkingCopy(QString(), false, true))
 	{
-		mProjectManager->save();
-		saveVersion();
+		if (mProjectManager->getUnsavedIndicator()){
+			mProjectManager->save();
+			saveVersion();
+		} else {
+			getAndUpdateLog();
+		}
 	} else {
 		emit listLogIsReady(QList<QPair<QString, QString> >());
 	}

@@ -306,6 +306,11 @@ void ProjectManager::reload()
 	this->open(currentAdress);
 }
 
+bool ProjectManager::getUnsavedIndicator()
+{
+	return mUnsavedIndicator;
+}
+
 bool ProjectManager::restoreIncorrectlyTerminated()
 {
 	return mAutosaver->checkTempFile();

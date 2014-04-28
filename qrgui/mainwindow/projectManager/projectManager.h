@@ -46,6 +46,7 @@ public:
 	void setSaveFilePath(QString const &filePath = "");
 	void saveGenCode(QString const &text);
 	void reload();
+	bool getUnsavedIndicator();
 	/// Prompts user to restore last session if it was incorrectly terminated
 	/// and returns yes if he agrees. Otherwise returns false
 	bool restoreIncorrectlyTerminated();

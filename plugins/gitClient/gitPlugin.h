@@ -107,7 +107,5 @@ private:
 	details::ViewInteraction *mViewInteraction;
 	QString mTempDir;
 
-	int addAndChanged;
-
 };
 }

@@ -208,12 +208,6 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 
-//	connect(mUi->actionCutElementsOnDiagram, SIGNAL(triggered()), this, SLOT(cutElementsOnDiagram()));
-//	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
-//	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
-//	connect(mUi->actionPasteReference, SIGNAL(triggered()), this, SLOT(pasteCopyOfLogical()));
-
-
 	connect(mUi->actionUndo, SIGNAL(triggered()), mController, SLOT(undo()));
 	connect(mUi->actionRedo, SIGNAL(triggered()), mController, SLOT(redo()));
 

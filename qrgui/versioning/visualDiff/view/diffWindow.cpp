@@ -70,12 +70,15 @@ void DiffWindow::initViews()
 	QList<int> sizes;
 	sizes << 1;
 
+
+	mOldView = new details::DiffView(mMainWindow, mDiffModel, true, this);
 	if (!SettingsManager::value("transparentVersioningMode").toBool()){
-		mOldView = new details::DiffView(mMainWindow, mDiffModel, true, this);
 		QFrame *oldFrame = new QFrame;
 		oldFrame->setLayout(initView(mOldView));
 		sizes << 1;
 		splitter->addWidget(oldFrame);
+	} else {
+		mOldView->setVisible(false);
 	}
 
 	mNewView = new details::DiffView(mMainWindow, mDiffModel, false, this);
@@ -107,8 +110,6 @@ void DiffWindow::initDiffDetailsWidget()
 {
 	mDiffDetailsWidget = new details::DiffDetailsWidget(mDiffModel, this);
 	mSplitter->addWidget(mDiffDetailsWidget);
-	if (!SettingsManager::value("transparentVersioningMode").toBool()){
-		mOldView->setDetailsWidget(mDiffDetailsWidget);
-	}
+	mOldView->setDetailsWidget(mDiffDetailsWidget);
 	mNewView->setDetailsWidget(mDiffDetailsWidget);
 }
