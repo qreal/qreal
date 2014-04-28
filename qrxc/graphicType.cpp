@@ -323,11 +323,11 @@ bool GraphicType::addProperty(Property *property)
 {
 	QString const propertyName = property->name();
 	if (mProperties.contains(propertyName)) {
-		/// @todo Good for overriding parent properties, but bad in multiple inheritance case --- we can allow invalid rhomb inheritance
+		/// @todo Good for overriding parent properties, but bad in multiple inheritance case
+		/// --- we can allow invalid rhomb inheritance.
 		if (mProperties[propertyName] != property && *mProperties[propertyName] != *property) {
 			qDebug() << "WARNING: property" << propertyName << "duplicated with different attributes";
-			delete mProperties[propertyName];
-			mProperties[propertyName] = property;
+			delete property;
 		}
 	} else {
 		mProperties[propertyName] = property;

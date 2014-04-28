@@ -1,4 +1,4 @@
-#include "realRobotModelV5.h"
+#include "realRobotModelV6.h"
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
@@ -8,27 +8,28 @@
 using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
 
-RealRobotModelV5::RealRobotModelV5()
+RealRobotModelV6::RealRobotModelV6()
 {
+	addAllowedConnection(PortInfo("JM4", output), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("JF1", input), { movementSensorInfo() });
 }
 
-QString RealRobotModelV5::name() const
+QString RealRobotModelV6::name() const
 {
-	return "TrikRealRobotModelV5";
+	return "TrikRealRobotModelV6";
 }
 
-QString RealRobotModelV5::friendlyName() const
+QString RealRobotModelV6::friendlyName() const
 {
-	return tr("Real Robot (v5)");
+	return tr("Real Robot (v6)");
 }
 
-DeviceInfo RealRobotModelV5::movementSensorInfo() const
+DeviceInfo RealRobotModelV6::movementSensorInfo() const
 {
 	return DeviceInfo::create<robotModel::parts::TrikMovementSensor>();
 }
 
-robotParts::Device *RealRobotModelV5::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
+robotParts::Device *RealRobotModelV6::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
 	if (deviceInfo.isA(movementSensorInfo())) {
 		return new parts::MovementSensor(movementSensorInfo(), port);

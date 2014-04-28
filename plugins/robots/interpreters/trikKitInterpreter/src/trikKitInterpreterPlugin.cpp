@@ -13,23 +13,37 @@ Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
-	: mBlocksFactory(new blocks::TrikBlocksFactory)
-	, mAdditionalPreferences(new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV5.name() }))
+	: mTwoDRobotModelV4(mRealRobotModelV4)
+	, mTwoDRobotModelV6(mRealRobotModelV6)
+	, mBlocksFactory(new blocks::TrikBlocksFactory)
+	, mAdditionalPreferences(new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV6.name() }))
 {
 	mAppTranslator.load(":/trikKitInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
 
-	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel, new TrikTwoDModelConfigurer());
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV4
+			, new TrikTwoDModelConfigurer("M1", "JM3"));
 
-	mTwoDRobotModel.setEngine(modelEngine->engine());
-	mTwoDModel.reset(modelEngine);
+	mTwoDRobotModelV4.setEngine(modelEngine->engine());
+	mTwoDModelV4.reset(modelEngine);
+
+	modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6
+			, new TrikTwoDModelConfigurer("JM3", "JM4"));
+
+	mTwoDRobotModelV6.setEngine(modelEngine->engine());
+	mTwoDModelV6.reset(modelEngine);
+
+	mTwoDModelV4->devicesConfigurationProvider().connectDevicesConfigurationProvider(
+			&mTwoDModelV6->devicesConfigurationProvider());
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mRealRobotModelV4, &robotModel::real::RealRobotModelV4::rereadSettings);
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, &mRealRobotModelV5, &robotModel::real::RealRobotModelV5::rereadSettings);
+			, &mRealRobotModelV6, &robotModel::real::RealRobotModelV6::rereadSettings);
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
+			, &mTwoDRobotModelV4, &robotModel::twoD::TwoDRobotModel::rereadSettings);
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+			, &mTwoDRobotModelV6, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
 void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
@@ -38,44 +52,53 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 {
 	/// @todo remove this stupid copypaste.
 
-	connect(&eventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
-			, mTwoDModel.data()
-			, &twoDModel::TwoDModelControlInterface::onStartInterpretation
-			);
+	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]
+			(QScopedPointer<twoDModel::TwoDModelControlInterface> const &model
+			, robotModel::twoD::TwoDRobotModel const &robotModelImpl)
+	{
+		connect(&eventsForKitPlugin
+				, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
+				, model.data()
+				, &twoDModel::TwoDModelControlInterface::onStartInterpretation
+				);
 
-	connect(&eventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
-			, mTwoDModel.data()
-			, &twoDModel::TwoDModelControlInterface::onStopInterpretation
-			);
+		connect(&eventsForKitPlugin
+				, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
+				, model.data()
+				, &twoDModel::TwoDModelControlInterface::onStopInterpretation
+				);
 
-	connect(&eventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](QString const &modelName) {
-				mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(modelName == mTwoDRobotModel.name());
-				mCurrentlySelectedModelName = modelName;
-			}
-			);
+		connect(&eventsForKitPlugin
+				, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
+				, [this, &model, &robotModelImpl](QString const &modelName) {
+					model->showTwoDModelWidgetActionInfo().action()->setVisible(modelName == robotModelImpl.name());
+					mCurrentlySelectedModelName = modelName;
+				}
+				);
 
-	connect(mTwoDModel.data()
-			, &twoDModel::TwoDModelControlInterface::runButtonPressed
-			, &interpreterControl
-			, &interpreterBase::InterpreterControlInterface::interpret
-			);
+		connect(model.data()
+				, &twoDModel::TwoDModelControlInterface::runButtonPressed
+				, &interpreterControl
+				, &interpreterBase::InterpreterControlInterface::interpret
+				);
 
-	connect(mTwoDModel.data()
-			, &twoDModel::TwoDModelControlInterface::stopButtonPressed
-			, &interpreterControl
-			, &interpreterBase::InterpreterControlInterface::stopRobot
-			);
+		connect(model.data()
+				, &twoDModel::TwoDModelControlInterface::stopButtonPressed
+				, &interpreterControl
+				, &interpreterBase::InterpreterControlInterface::stopRobot
+				);
+	};
+
+	connectTwoDModel(mTwoDModelV4, mTwoDRobotModelV4);
+	connectTwoDModel(mTwoDModelV6, mTwoDRobotModelV6);
 
 	connect(&systemEvents
 			, &qReal::SystemEventsInterface::activeTabChanged
 			, this
 			, &TrikKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModel->init();
+	mTwoDModelV4->init();
+	mTwoDModelV6->init();
 }
 
 QString TrikKitInterpreterPlugin::kitId() const
@@ -90,7 +113,7 @@ QString TrikKitInterpreterPlugin::friendlyKitName() const
 
 QList<interpreterBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
 {
-	return {&mRealRobotModelV4, &mRealRobotModelV5, &mTwoDRobotModel};
+	return {&mRealRobotModelV4, &mRealRobotModelV6, &mTwoDRobotModelV4, &mTwoDRobotModelV6};
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
@@ -102,7 +125,7 @@ interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::b
 
 interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defaultRobotModel()
 {
-	return &mTwoDRobotModel;
+	return &mTwoDRobotModelV6;
 }
 
 interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget()
@@ -112,28 +135,30 @@ interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 {
-	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
+	return { mTwoDModelV4->showTwoDModelWidgetActionInfo(), mTwoDModelV6->showTwoDModelWidgetActionInfo() };
 }
 
 QIcon TrikKitInterpreterPlugin::iconForFastSelector(
 		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
 {
 	/// @todo: draw icons for v4 and v6
-	return &robotModel == &mRealRobotModelV5
+	return &robotModel == &mRealRobotModelV4 || &robotModel == &mRealRobotModelV6
 			? QIcon(":/icons/switch-real-trik.svg")
-			: &robotModel == &mTwoDRobotModel
+			: &robotModel == &mTwoDRobotModelV4 || &robotModel == &mTwoDRobotModelV6
 					? QIcon(":/icons/switch-2d.svg")
 					: QIcon();
 }
 
 interpreterBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
 {
-	return &mTwoDModel->devicesConfigurationProvider();
+	return &mTwoDModelV4->devicesConfigurationProvider();
 }
 
 void TrikKitInterpreterPlugin::onActiveTabChanged(Id const &rootElementId)
 {
 	bool enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
-	enabled &= mCurrentlySelectedModelName == mTwoDRobotModel.name();
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(enabled);
+	bool v4Enabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModelV4.name();
+	bool v6Enabled = enabled && mCurrentlySelectedModelName == mTwoDRobotModelV6.name();
+	mTwoDModelV4->showTwoDModelWidgetActionInfo().action()->setVisible(v4Enabled);
+	mTwoDModelV6->showTwoDModelWidgetActionInfo().action()->setVisible(v6Enabled);
 }
