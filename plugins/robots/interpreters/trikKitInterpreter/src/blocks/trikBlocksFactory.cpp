@@ -1,5 +1,7 @@
 #include "trikBlocksFactory.h"
 
+#include <interpreterBase/blocksBase/common/enginesStopBlock.h>
+
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
 
@@ -15,6 +17,10 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 			|| elementMetatypeIs(element, "TrikV6EnginesForward"))
 	{
 		return new details::TrikEnginesForwardBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikV4EnginesStop")
+			|| elementMetatypeIs(element, "TrikV6EnginesStop"))
+	{
+		return new interpreterBase::blocksBase::common::EnginesStopBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -23,8 +29,8 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 qReal::IdList TrikBlocksFactory::providedBlocks() const
 {
 	if (mRobotModelManager->model().name().contains("V4")) {
-		return { id("TrikV4EnginesBackward"), id("TrikV4EnginesForward") };
+		return { id("TrikV4EnginesBackward"), id("TrikV4EnginesForward"), id("TrikV4EnginesStop") };
 	} else {
-		return { id("TrikV6EnginesBackward"), id("TrikV6EnginesForward") };
+		return { id("TrikV6EnginesBackward"), id("TrikV6EnginesForward"), id("TrikV6EnginesStop") };
 	}
 }

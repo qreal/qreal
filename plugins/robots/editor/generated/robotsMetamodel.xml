@@ -276,7 +276,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			
+
 			<node name="NxtEngineMovementCommand">
 				<logic>
 					<container/>
@@ -382,8 +382,8 @@
 					</generalizations>
 				</logic>
 			</node>
-			
-			
+
+
 			<node name="TrikV4EngineMovementCommand">
 				<logic>
 					<container/>
@@ -397,7 +397,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			
+
 			<node displayedName="Моторы назад" name="TrikV4EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, JM1, JE2), и раделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -474,7 +474,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			
+
 
 			<node name="TrikV6EngineMovementCommand">
 				<logic>
@@ -567,7 +567,7 @@
 				</logic>
 			</node>
 
-			
+
 			<node displayedName="Начало" name="InitialNode" path="210, 111 : 209, 120 : 208, 130 : 205, 139 : 202, 148 : 198, 157 : 193, 166 : 187, 173 : 181, 181 : 173, 187 : 166, 193 : 157, 198 : 148, 202 : 139, 205 : 130, 208 : 120, 209 : 111, 209 : 102, 209 : 92, 208 : 83, 205 : 74, 202 : 65, 198 : 56, 193 : 49, 187 : 41, 181 : 35, 173 : 29, 166 : 24, 157 : 20, 148 : 17, 139 : 14, 130 : 13, 120 : 13, 111 : 13, 102 : 14, 92 : 17, 83 : 20, 74 : 24, 65 : 29, 56 : 35, 49 : 41, 41 : 49, 35 : 56, 29 : 65, 24 : 74, 20 : 83, 17 : 92, 14 : 102, 13 : 111, 13 : 120, 13 : 130, 14 : 139, 17 : 148, 20 : 157, 24 : 166, 29 : 173, 35 : 181, 41 : 187, 49 : 193, 56 : 198, 65 : 202, 74 : 205, 83 : 208, 92 : 209, 102 : 210, 111 : " description="Начальная точка выполнения программы. На каждой диаграмме такой блок должен быть только один, в него не должно быть входящих связей, исходящая связь из этого элемента должна быть только одна. Процесс интерпретации диаграммы начинается именно с этого блока.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -730,6 +730,129 @@
 					<generalizations>
 						<parent parentName="EngineCommand"/>
 					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Моторы стоп" name="NxtEnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Выключить моторы по заданным портам">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-10" y="-25" text="Порты:" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Порты" type="string" name="Ports">
+							<default>A, B, C</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node displayedName="Моторы стоп" name="TrikV4EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Выключить моторы по заданным портам">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-10" y="-25" text="Порты:" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Порты" type="string" name="Ports">
+							<default>JM1, JM2, M1, JM3</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node displayedName="Моторы стоп" name="TrikV6EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Выключить моторы по заданным портам">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-10" y="-25" text="Порты:" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Порты" type="string" name="Ports">
+							<default>JM1, JM2, JM3, JM4</default>
+						</property>
+					</properties>
 				</logic>
 			</node>
 			<node displayedName="Таймер" name="Timer" path="12, 117 : 117, 118 :  | 117, 12 : 117, 118 :  | 222, 117 : 221, 127 : 219, 137 : 217, 147 : 214, 157 : 209, 166 : 204, 175 : 198, 183 : 191, 191 : 183, 198 : 175, 204 : 166, 209 : 157, 214 : 147, 217 : 137, 219 : 127, 221 : 117, 221 : 107, 221 : 97, 219 : 87, 217 : 77, 214 : 68, 209 : 59, 204 : 51, 198 : 43, 191 : 36, 183 : 30, 175 : 25, 166 : 20, 157 : 17, 147 : 15, 137 : 13, 127 : 13, 117 : 13, 107 : 15, 97 : 17, 87 : 20, 77 : 25, 68 : 30, 59 : 36, 51 : 43, 43 : 51, 36 : 59, 30 : 68, 25 : 77, 20 : 87, 17 : 97, 15 : 107, 13 : 117, 13 : 127, 13 : 137, 15 : 147, 17 : 157, 20 : 166, 25 : 175, 30 : 183, 36 : 191, 43 : 198, 51 : 204, 59 : 209, 68 : 214, 77 : 217, 87 : 219, 97 : 221, 107 : 222, 117 : " description="Ждать заданное количество времени, в миллисекундах">
@@ -1953,10 +2076,13 @@
 				<element name="PlayTone"/>
 				<element name="NxtEnginesForward"/>
 				<element name="NxtEnginesBackward"/>
+				<element name="NxtEnginesStop"/>
 				<element name="TrikV4EnginesForward"/>
 				<element name="TrikV4EnginesBackward"/>
+				<element name="TrikV4EnginesStop"/>
 				<element name="TrikV6EnginesForward"/>
 				<element name="TrikV6EnginesBackward"/>
+				<element name="TrikV6EnginesStop"/>
 				<element name="EnginesStop"/>
 				<element name="NullificationEncoder"/>
 			</group>

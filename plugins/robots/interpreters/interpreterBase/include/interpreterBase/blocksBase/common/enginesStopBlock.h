@@ -2,11 +2,11 @@
 
 #include <interpreterBase/blocksBase/common/engineCommandBlock.h>
 
-namespace interpreterCore {
-namespace coreBlocks {
-namespace details {
+namespace interpreterBase {
+namespace blocksBase {
+namespace common {
 
-class EnginesStopBlock : public interpreterBase::blocksBase::common::EngineCommandBlock
+class ROBOTS_INTERPRETER_BASE_EXPORT EnginesStopBlock : public interpreterBase::blocksBase::common::EngineCommandBlock
 {
 	Q_OBJECT
 
