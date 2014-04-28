@@ -16,6 +16,7 @@
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDButtons.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
+#include "robotModel/twoD/parts/twoDMotor.h"
 
 using namespace nxtKitInterpreter::robotModel;
 using namespace nxtKitInterpreter::robotModel::twoD;
@@ -78,6 +79,10 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 	if (deviceInfo.isA<robotParts::Speaker>()) {
 		return new parts::TwoDSpeaker(deviceInfo, port, *engine());
+	}
+
+	if (deviceInfo.isA<robotParts::Motor>()) {
+		return new parts::TwoDMotor(deviceInfo, port, *engine());
 	}
 
 	return twoDModel::robotModel::TwoDRobotModel::createDevice(port, deviceInfo);

@@ -39,6 +39,7 @@ void Motor::stop(bool breakMode)
 
 void Motor::off()
 {
+	stop(false);
 }
 
 void Motor::doConfiguration()

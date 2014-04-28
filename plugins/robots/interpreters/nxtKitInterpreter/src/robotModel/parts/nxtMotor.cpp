@@ -20,12 +20,12 @@ void NxtMotor::stop()
 
 void NxtMotor::off()
 {
+	stop(false);
 }
 
 void NxtMotor::on(int speed, bool breakMode)
 {
-	Q_UNUSED(speed);
-	Q_UNUSED(breakMode);
+	on(speed, 0, breakMode);
 }
 
 void NxtMotor::on(int speed, long unsigned int degrees, bool breakMode)

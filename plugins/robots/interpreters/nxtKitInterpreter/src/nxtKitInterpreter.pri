@@ -55,6 +55,7 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDButtons.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
+	$$PWD/robotModel/twoD/parts/twoDMotor.h \
 
 SOURCES += \
 	$$PWD/nxtKitInterpreterPlugin.cpp \
@@ -101,6 +102,7 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDButtons.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
+	$$PWD/robotModel/twoD/parts/twoDMotor.cpp \
 
 FORMS += \
 	$$PWD/nxtAdditionalPreferences.ui \
