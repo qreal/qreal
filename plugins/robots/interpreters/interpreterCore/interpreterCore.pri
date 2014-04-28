@@ -24,7 +24,6 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/forkBlock.h \
 	$$PWD/src/coreBlocks/details/subprogramBlock.h \
 	$$PWD/src/coreBlocks/details/functionBlock.h \
-	$$PWD/src/coreBlocks/details/nullificationEncoderBlock.h \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
 	$$PWD/src/coreBlocks/details/waitForSensorBlock.h \
 	$$PWD/src/coreBlocks/details/waitForTouchSensorBlock.h \
@@ -70,7 +69,6 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/forkBlock.cpp \
 	$$PWD/src/coreBlocks/details/subprogramBlock.cpp \
 	$$PWD/src/coreBlocks/details/functionBlock.cpp \
-	$$PWD/src/coreBlocks/details/nullificationEncoderBlock.cpp \
 	$$PWD/src/coreBlocks/details/timerBlock.cpp \
 	$$PWD/src/coreBlocks/details/waitForSensorBlock.cpp \
 	$$PWD/src/coreBlocks/details/waitForTouchSensorBlock.cpp \

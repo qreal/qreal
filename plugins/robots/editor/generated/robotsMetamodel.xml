@@ -1511,7 +1511,12 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Сбросить показания энкодера" name="NullificationEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Сбросить показания количества оборотов моторов">
+
+
+
+
+
+			<node displayedName="Сбросить показания энкодера" name="NxtClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Сбросить показания количества оборотов моторов">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
@@ -1552,6 +1557,95 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Сбросить показания энкодера" name="TrikV4ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Сбросить показания количества оборотов моторов">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-10" y="-25" text="Порты:" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порты" type="string" name="Ports">
+							<default>JM1, JM2, M1, JM3</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Сбросить показания энкодера" name="TrikV6ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Сбросить показания количества оборотов моторов">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-10" y="-25" text="Порты:" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порты" type="string" name="Ports">
+							<default>JM1, JM2, JM3, JM4</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+
+
+
+
+
+
 			<node displayedName="Функция" name="Function" path="58, 12 : 58, 172 :  | 58, 12 : 148, 12 :  | 12, 96 : 108, 96 : " description="Посчитать значение заданного выражения. Также в данном блоке допускается определение переменных. Подробнее про синтаксис допустимых выражений параметра 'Функция' см. в документации в разделе 'Синтаксис выражений'.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2077,14 +2171,15 @@
 				<element name="NxtEnginesForward"/>
 				<element name="NxtEnginesBackward"/>
 				<element name="NxtEnginesStop"/>
+				<element name="NxtClearEncoder"/>
 				<element name="TrikV4EnginesForward"/>
 				<element name="TrikV4EnginesBackward"/>
 				<element name="TrikV4EnginesStop"/>
+				<element name="TrikV4ClearEncoder"/>
 				<element name="TrikV6EnginesForward"/>
 				<element name="TrikV6EnginesBackward"/>
 				<element name="TrikV6EnginesStop"/>
-				<element name="EnginesStop"/>
-				<element name="NullificationEncoder"/>
+				<element name="TrikV6ClearEncoder"/>
 			</group>
 			<group name="Рисование на дисплее">
 				<element name="ClearScreen"/>

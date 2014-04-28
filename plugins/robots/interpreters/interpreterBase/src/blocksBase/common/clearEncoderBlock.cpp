@@ -1,18 +1,17 @@
-#include "nullificationEncoderBlock.h"
+#include "interpreterBase/blocksBase/common/clearEncoderBlock.h"
 
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
 
-using namespace qReal;
-using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase::blocksBase::common;
 using namespace interpreterBase::robotModel;
 
-NullificationEncoderBlock::NullificationEncoderBlock(RobotModelInterface &robotModel)
+ClearEncoderBlock::ClearEncoderBlock(RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)
 {
 }
 
-void NullificationEncoderBlock::run()
+void ClearEncoderBlock::run()
 {
 	for (robotParts::EncoderSensor * const encoder : parsePorts()) {
 		encoder->nullificate();
@@ -21,7 +20,7 @@ void NullificationEncoderBlock::run()
 	emit done(mNextBlockId);
 }
 
-QMap<PortInfo, DeviceInfo> NullificationEncoderBlock::usedSensors() const
+QMap<PortInfo, DeviceInfo> ClearEncoderBlock::usedSensors() const
 {
 	QMap<PortInfo, DeviceInfo> result;
 	for (robotParts::EncoderSensor * const encoder : parsePorts()) {
@@ -31,7 +30,7 @@ QMap<PortInfo, DeviceInfo> NullificationEncoderBlock::usedSensors() const
 	return result;
 }
 
-QList<robotParts::EncoderSensor *> NullificationEncoderBlock::parsePorts() const
+QList<robotParts::EncoderSensor *> ClearEncoderBlock::parsePorts() const
 {
 	QList<robotParts::EncoderSensor *> result;
 	for (QString const &port : stringProperty("Ports").split(',', QString::SkipEmptyParts)) {
