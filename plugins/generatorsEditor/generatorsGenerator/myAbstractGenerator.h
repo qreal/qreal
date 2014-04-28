@@ -20,6 +20,9 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
 			, QString const &metamodelLanguageName
+			, QString const &languageName
+			, QString const &toGeneratePropertyName
+			, QString const &programNamePropertyName
 			, QString const &generatorMetamodelName
 			);
 
@@ -28,19 +31,28 @@ public:
 	/// Starts generation.
 	void generate() = 0;
 
-	QString generatorModelFullName();
-	QString generatorModelName();
-	QString generatorGeneratorModelName();//i.e. pluginName
-	QString generatorNormalizerModelName(); //i.e. fileBase
-	QString generatorNormalizerGeneratorModelName();//i.e. normalizerPluginName
-	QString generatorModelId();//i.e. pluginId
+	QString modelFullName();
+	QString metamodelName();
+	QString languageName();
+	QString generatorModelName();//i.e. pluginName
+	QString normalizerMetamodelName();
+	QString normalizerLanguageName();
+	QString normalizerGeneratorModelName();//i.e. normalizerPluginName
 
-private :
+protected :
+
+	void generateTemplate(qReal::Id const &element);
+	void saveTemplateUtils();
 
 	QString mPathToQReal;
 	QString const &mMetamodelName;//имя метамодели языков, для которых напсана эта модель генератора, по которой генерируется код
+	QString const &mLanguageName; //имя конкретного языка метамодели, для которого напсана эта модель генератора
+	QString const &mToGeneratePropertyName;//имя свойства главного узла языка, в котором указывается путь до папки генерации программы
+	QString const &mProgramNamePropertyName; //имя свойства главного узла языка, в котором указывается имя генерируемой программы
 	QString const &mGeneratorName;//настоящее имя модели генератора, по которой генерируется код
 
+	QMap<QString, QString> mMarksCode;
+	QString const mTemplateDirName;
 };
 
 }

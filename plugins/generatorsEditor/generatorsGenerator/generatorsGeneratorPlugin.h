@@ -28,8 +28,7 @@ private:
 	/// Compiles and loads to QReal new editor plugin
 	void loadNewEditor(
 			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that constraint)
-			, QPair<QString, QString> const &pluginsNames /// ConstraintsPluginNames
-			, QString const &pluginId /// ConstraintsPluginId
+			, QPair<QString, QString> const &pluginsNames /// GeneratorPluginNames
 			, QString const &commandFirst  ///< qmake command
 			, QString const &commandSecond  ///< make command
 			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)

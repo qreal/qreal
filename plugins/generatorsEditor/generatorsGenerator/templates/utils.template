@@ -1,0 +1,6 @@
+@@templateConstStringName@@
+QString const @@templateVariableName@@ = "@@templateFileName@@";
+==========
+@@oneGenerateBody@@
+	@@oneMethodName@@;
+==========

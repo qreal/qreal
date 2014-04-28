@@ -14,6 +14,9 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
 			, QString const &metamodelLanguageName
+			, QString const &languageName
+			, QString const &toGeneratePropertyName
+			, QString const &programNamePropertyName
 			, QString const &generatorMetamodelName
 			);
 	virtual ~StructuralGenerator();

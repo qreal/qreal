@@ -13,9 +13,16 @@ BehavioralGenerator::BehavioralGenerator(QString const &templateDirPath
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
 		, QString const &metamodelLanguageName
+		, QString const &languageName
+		, QString const &toGeneratePropertyName
+		, QString const &programNamePropertyName
 		, QString const &generatorMetamodelName
 	)
-	: MyAbstractGenerator(templateDirPath, outputDirPath, pathToQReal, logicalModel, errorReporter, metamodelLanguageName, generatorMetamodelName)
+	: MyAbstractGenerator(templateDirPath, outputDirPath, pathToQReal
+						  , logicalModel, errorReporter
+						  , metamodelLanguageName, languageName
+						  , toGeneratePropertyName, programNamePropertyName
+						  , generatorMetamodelName)
 {
 }
 
@@ -25,6 +32,5 @@ BehavioralGenerator::~BehavioralGenerator()
 
 void BehavioralGenerator::generate()
 {
-
 }
 

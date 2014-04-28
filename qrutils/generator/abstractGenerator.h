@@ -43,7 +43,7 @@ protected:
 	bool loadUtilsTemplates();
 
 	/// Saves the result of generation into output directory.
-	void saveOutputFile(QString const &fileName, QString const &content);
+	void saveOutputFile(QString const &fileName, QString const &content, QString const &dirName = "");
 
 	/// Generates code for C# property.
 	QString generatePropertiesCode(qReal::Id const &element);

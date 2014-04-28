@@ -27,7 +27,6 @@ public:
 	QString generatorModelFullName();
 	QString generatorGeneratorModelName();
 	QString generatorNormalizerGeneratorModelName();
-	QString generatorModelId();
 
 private:
 	bool isCorrectedName(QString const &name);
@@ -41,7 +40,6 @@ private:
 	QString mGeneratorModelFullName;
 	QString mGeneratorModelName;
 	QString mGeneratorNormalizerGeneratorModelName;
-	QString mGeneratorModelId;
 };
 
 }

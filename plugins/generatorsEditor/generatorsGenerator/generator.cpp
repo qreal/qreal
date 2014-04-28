@@ -37,7 +37,7 @@ void Generator::generate(qReal::Id const &metamodel)
 {
 	mErrorReporter->clear();
 	mErrorReporter->clearErrors();
-	QString outputDirPath = mLogicalModel->propertyByRoleName(metamodel, "outputDirPath").toString();
+	QString outputDirPath = mLogicalModel->propertyByRoleName(metamodel, "toGeneratePath").toString();
 	if (outputDirPath.isEmpty()) {
 		mErrorReporter->addCritical(tr("OutputDirPath of generator model not found"), metamodel);
 		return;
@@ -46,7 +46,7 @@ void Generator::generate(qReal::Id const &metamodel)
 
 	QString generatorMetamodelName = mLogicalModel->logicalRepoApi().name(metamodel);
 	if (generatorMetamodelName.isEmpty() || (generatorMetamodelName.compare("(Generator Root)") == 0) ) {
-		mErrorReporter->addCritical(tr("Name of generators model not found.\n"), metamodel);
+		mErrorReporter->addCritical(tr("Name of generator model not found.\n"), metamodel);
 		return;
 	} else if (!isCorrectedName(generatorMetamodelName)) {
 		mErrorReporter->addCritical(tr("Name of generator model is not correct.\n"), metamodel);
@@ -59,7 +59,25 @@ void Generator::generate(qReal::Id const &metamodel)
 		return;
 	}
 
-	QString pathToQReal = mLogicalModel->propertyByRoleName(metamodel, "pathToQReal").toString();
+	QString languageName = mLogicalModel->propertyByRoleName(metamodel, "languageName").toString();
+	if (languageName.isEmpty()) {
+		mErrorReporter->addCritical(tr("LanguageName of generator model not found"), metamodel);
+		return;
+	}
+
+	QString toGeneratePropertyName = mLogicalModel->propertyByRoleName(metamodel, "toGeneratePropertyName").toString();
+	if (toGeneratePropertyName.isEmpty()) {
+		mErrorReporter->addCritical(tr("ToGeneratePropertyName of generator model not found"), metamodel);
+		return;
+	}
+
+	QString programNamePropertyName = mLogicalModel->propertyByRoleName(metamodel, "programNamePropertyName").toString();
+	if (programNamePropertyName.isEmpty()) {
+		mErrorReporter->addCritical(tr("ProgramNamePropertyName of generator model not found"), metamodel);
+		return;
+	}
+
+	QString pathToQReal = mLogicalModel->propertyByRoleName(metamodel, "toQrealPath").toString();
 	if (pathToQReal.isEmpty()) {
 		mErrorReporter->addCritical(tr("PathToQReal of generator model not found"), metamodel);
 		return;
@@ -73,22 +91,25 @@ void Generator::generate(qReal::Id const &metamodel)
 
 	if (languageType.compare("behavioral") == 0) {
 		generator = new BehavioralGenerator(templateDir, outputDirPath
-										   , pathToQReal, *mLogicalModel, *mErrorReporter
-										   , metamodelName, generatorMetamodelName);
+											, pathToQReal, *mLogicalModel, *mErrorReporter
+											, metamodelName, languageName
+											, toGeneratePropertyName, programNamePropertyName
+											, generatorMetamodelName);
 	} else if (languageType.compare("structural") == 0) {
 		generator = new StructuralGenerator(templateDir, outputDirPath
-										   , pathToQReal, *mLogicalModel, *mErrorReporter
-										   , metamodelName, generatorMetamodelName);
+											, pathToQReal, *mLogicalModel, *mErrorReporter
+											, metamodelName, languageName
+											, toGeneratePropertyName, programNamePropertyName
+											, generatorMetamodelName);
 	} else {
 		mErrorReporter->addCritical(tr("I don't know this type of languages yet\n"), metamodel);
 		return;
 	}
 
 	generator->generate();
-	mGeneratorModelFullName = generator->generatorModelFullName();
-	mGeneratorModelName = generator->generatorGeneratorModelName();
-	mGeneratorNormalizerGeneratorModelName = generator->generatorNormalizerGeneratorModelName();
-	mGeneratorModelId = generator->generatorModelId();
+	mGeneratorModelFullName = generator->modelFullName();
+	mGeneratorModelName = generator->generatorModelName();
+	mGeneratorNormalizerGeneratorModelName = generator->normalizerGeneratorModelName();
 }
 
 QString Generator::generatorModelFullName()
@@ -104,9 +125,4 @@ QString Generator::generatorGeneratorModelName()
 QString Generator::generatorNormalizerGeneratorModelName()
 {
 	return mGeneratorNormalizerGeneratorModelName;
-}
-
-QString Generator::generatorModelId()
-{
-	return mGeneratorModelId;
 }

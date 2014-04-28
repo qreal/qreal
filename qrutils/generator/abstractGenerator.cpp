@@ -136,18 +136,25 @@ bool AbstractGenerator::loadUtilsFromDir()
 bool AbstractGenerator::loadUtilsTemplates()
 {
 	mTemplateUtils.clear();
-
 	return loadUtilsFromFile() && loadUtilsFromDir();
 }
 
-void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &content)
+void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &content, QString const &dirName)
 {
 	QDir dir;
+	QString newOutputDirPath = mOutputDirPath + dirName;
 
 	if (!dir.exists(mOutputDirPath)) {
 		dir.mkdir(mOutputDirPath);
 	}
 	dir.cd(mOutputDirPath);
+
+	if (!dirName.isEmpty()) {
+		if (!dir.exists(newOutputDirPath)) {
+			dir.mkdir(newOutputDirPath);
+		}
+		dir.cd(newOutputDirPath);
+	}
 
 	QString const outputFileName = dir.absoluteFilePath(fileName);
 	QFile file(outputFileName);

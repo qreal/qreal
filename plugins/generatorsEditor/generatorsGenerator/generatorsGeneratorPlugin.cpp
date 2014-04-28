@@ -26,7 +26,6 @@ void GeneratorsGeneratorPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mLogicalModel = &configurator.logicalModelApi();
 	mGenerator.init(configurator.logicalModelApi(), *configurator.mainWindowInterpretersInterface().errorReporter());
-
 }
 
 QList<ActionInfo> GeneratorsGeneratorPlugin::actions()
@@ -37,7 +36,6 @@ QList<ActionInfo> GeneratorsGeneratorPlugin::actions()
 
 	return QList<ActionInfo>() << generateActionInfo;
 }
-
 
 void GeneratorsGeneratorPlugin::generate()
 {
@@ -50,7 +48,6 @@ void GeneratorsGeneratorPlugin::generate()
 		QString const generatorModelFullName =  mGenerator.generatorModelFullName();
 		QString const generatorModelName = mGenerator.generatorGeneratorModelName();
 		QString const generatorNormalizerModelName = mGenerator.generatorNormalizerGeneratorModelName();
-		QString const generatorModelId = mGenerator.generatorModelId();
 
 		QPair<QString, QString> const generatorModelNames = QPair<QString, QString>(generatorModelName, generatorNormalizerModelName);
 
@@ -61,7 +58,7 @@ void GeneratorsGeneratorPlugin::generate()
 			{
 				return;
 			}
-			loadNewEditor(generatorModelFullName, generatorModelNames, generatorModelId
+			loadNewEditor(generatorModelFullName, generatorModelNames
 						  , SettingsManager::value("pathToQmake", "").toString()
 						  , SettingsManager::value("pathToMake", "").toString()
 						  , SettingsManager::value("pluginExtension", "").toString()
@@ -72,7 +69,6 @@ void GeneratorsGeneratorPlugin::generate()
 
 void GeneratorsGeneratorPlugin::loadNewEditor(QString const &directoryName
 		, QPair<QString, QString> const &pluginsNames
-		, QString const &pluginId
 		, QString const &commandFirst
 		, QString const &commandSecond
 		, QString const &extension

@@ -25,11 +25,15 @@
                         <contains type="GeneratorDiagram"/>
                     </container>
                     <properties>
-                        <property name="toGeneratePath" displayedName="directory to generate" type="directorypath"/>
-                        <property name="toQrealPath" displayedName="path to QReal Source" type="directorypath"/>
-                        <property name="languageType" displayedName="language type" type="languageType">
+                        <property name="toGeneratePath" displayedName="Directory to generate" type="directorypath"/>
+                        <property name="toQrealPath" displayedName="Path to QReal Source" type="directorypath"/>
+                        <property name="languageType" displayedName="Language type" type="languageType">
                             <default>other</default>
                         </property>
+						<property displayedName="Metamodel Name" type="string" name="metamodelName"/>
+                        <property displayedName="Language Name" type="string" name="languageName"/>
+						<property displayedName="toGeneratePath Property name" type="string" name="toGeneratePropertyName"/>
+                        <property displayedName="programmeName Property name" type="string" name="programNamePropertyName"/>
                     </properties>
                     <explodesTo/>
                 </logic>
@@ -142,7 +146,6 @@
                         <parent parentName="AbstractElement"/>
                     </generalizations>
                     <properties>
-                        <property name="fileName" displayedName="File name" type="string"/>
                         <property name="textCode" displayedName="text code" type="code"/>
                     </properties>
                     <explodesTo/>
@@ -195,6 +198,7 @@
                     <container/>
                     <properties>
                         <property name="markName" displayedName="mark name" type="string"/>
+                        <property name="fileName" displayedName="File name" type="string"/>
                     </properties>
                     <explodesTo/>
                 </logic>

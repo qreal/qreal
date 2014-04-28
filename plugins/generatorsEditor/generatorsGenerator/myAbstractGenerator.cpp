@@ -8,17 +8,27 @@ using namespace qReal;
 using namespace utils;
 
 /// Generation target file
+QString const generatedUtilsFileName = "utils.template";
 
 MyAbstractGenerator::MyAbstractGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
 		, QString const &pathToQReal
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
-		, QString const &metamodelLanguageName
+		, QString const &metamodelName
+		, QString const &languageName
+		, QString const &toGeneratePropertyName
+		, QString const &programNamePropertyName
 		, QString const &generatorMetamodelName
 		)
-	: AbstractGenerator(templateDirPath, outputDirPath + QString("/generator" + generatorMetamodelName + "/"), logicalModel, errorReporter)
-	, mPathToQReal("../" + pathToQReal), mMetamodelName(metamodelLanguageName), mGeneratorName(generatorMetamodelName)
+	: AbstractGenerator(templateDirPath, outputDirPath + QString("/" + NameNormalizer::normalize(generatorMetamodelName, false) + "/"), logicalModel, errorReporter)
+	, mPathToQReal(pathToQReal)
+	, mMetamodelName(metamodelName)
+	, mLanguageName(languageName)
+	, mToGeneratePropertyName(toGeneratePropertyName)
+	, mProgramNamePropertyName(programNamePropertyName)
+	, mGeneratorName(generatorMetamodelName)
+	, mTemplateDirName("/templates")
 {
 	mPathToQReal.replace("\\", "/");
 }
@@ -27,32 +37,61 @@ MyAbstractGenerator::~MyAbstractGenerator()
 {
 }
 
-QString MyAbstractGenerator::generatorModelFullName()
+QString MyAbstractGenerator::modelFullName()
 {
-	return mOutputDirPath;// + "generator" + mMetamodelName + ".pro";
+	return mOutputDirPath;
 }
 
-QString MyAbstractGenerator::generatorModelName()
+QString MyAbstractGenerator::metamodelName()
 {
-	return "generator" + mMetamodelName;
+	return mMetamodelName;
 }
 
-QString MyAbstractGenerator::generatorGeneratorModelName() //i.e. pliginName
+QString MyAbstractGenerator::languageName()
 {
-	return "generator" + mGeneratorName;
+	return mLanguageName;
 }
 
-QString MyAbstractGenerator::generatorNormalizerModelName()
+QString MyAbstractGenerator::generatorModelName() //i.e. pliginName
+{
+	return mGeneratorName;
+}
+
+QString MyAbstractGenerator::normalizerMetamodelName()
+{
+	return NameNormalizer::normalize(metamodelName(), false);
+}
+
+QString MyAbstractGenerator::normalizerLanguageName()
+{
+	return NameNormalizer::normalize(languageName(), false);
+}
+
+QString MyAbstractGenerator::normalizerGeneratorModelName() //i.e. normalizerPluginName
 {
 	return NameNormalizer::normalize(generatorModelName(), false);
 }
 
-QString MyAbstractGenerator::generatorNormalizerGeneratorModelName() //i.e. normalizerPluginName
+void MyAbstractGenerator::generateTemplate(Id const &element)
 {
-	return NameNormalizer::normalize(generatorGeneratorModelName(), false);
+	QString markName = mApi.property(element, "markName").toString();
+	QString fileName = mApi.property(element, "fileName").toString();
+	QString textCode = mApi.property(element, "textCode").toString();
+
+	if (!fileName.isEmpty()) {
+		saveOutputFile(QString(fileName), textCode, mTemplateDirName);
+	} else if (!markName.isEmpty()) {
+		mMarksCode[markName] = textCode;
+	} else {
+		mErrorReporter.addCritical(QObject::tr("FileName or MarkName of 'TemplateNode' not found"), element);
+	}
 }
 
-QString MyAbstractGenerator::generatorModelId() //i.e. pliginId
+void MyAbstractGenerator::saveTemplateUtils()
 {
-	return mGeneratorName;
+	QString result = "";
+	foreach (QString mark, mMarksCode.keys()) {
+		result += "@@" + mark + "@@\n" + mMarksCode[mark] + "\n==========\n";
+	}
+	saveOutputFile(QString(generatedUtilsFileName), result, mTemplateDirName);
 }
