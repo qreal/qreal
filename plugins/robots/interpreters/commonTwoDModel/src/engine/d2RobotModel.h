@@ -54,7 +54,7 @@ public:
 	void startInit();
 	void startInterpretation();
 	void stopRobot();
-	void setBeep(unsigned freq, unsigned time);
+	void playSound(int timeInMs);
 
 	void setNewMotor(int speed, uint degrees
 			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) override;
@@ -112,12 +112,6 @@ private:
 		bool breakMode;
 	};
 
-	struct Beep
-	{
-		unsigned freq;
-		int time;
-	};
-
 	QPointF rotationCenter() const;
 	QVector2D robotDirectionVector() const;
 
@@ -151,7 +145,7 @@ private:
 	D2ModelWidget *createModelWidget();
 
 	D2ModelWidget *mD2ModelWidget;
-	Beep mBeep;
+	int mBeepTime;
 	NxtDisplay *mDisplay;
 	QPointF mRotatePoint;
 

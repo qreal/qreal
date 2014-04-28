@@ -72,7 +72,7 @@ void D2RobotModel::initPosition()
 		}
 	}
 
-	setBeep(0, 0);
+	mBeepTime = 0;
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 }
 
@@ -113,10 +113,9 @@ D2RobotModel::Engine *D2RobotModel::initEngine(int radius, int speed, long unsig
 	return engine;
 }
 
-void D2RobotModel::setBeep(unsigned freq, unsigned time)
+void D2RobotModel::playSound(int timeInMs)
 {
-	mBeep.freq = freq;
-	mBeep.time = time;
+	mBeepTime = qMax(mBeepTime, timeInMs);
 }
 
 void D2RobotModel::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
@@ -448,9 +447,9 @@ void D2RobotModel::stopRobot()
 
 void D2RobotModel::countBeep()
 {
-	if (mBeep.time > 0) {
+	if (mBeepTime > 0) {
 		mD2ModelWidget->drawBeep(true);
-		mBeep.time -= Timeline::frameLength;
+		mBeepTime -= Timeline::frameLength;
 	} else {
 		mD2ModelWidget->drawBeep(false);
 	}

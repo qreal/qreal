@@ -45,6 +45,7 @@ HEADERS += \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDButtons.h \
+	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 
 SOURCES += \
 	$$PWD/trikKitInterpreterPlugin.cpp \
@@ -81,6 +82,7 @@ SOURCES += \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDButtons.cpp \
+	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \

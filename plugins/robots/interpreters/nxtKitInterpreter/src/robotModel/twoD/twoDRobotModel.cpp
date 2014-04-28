@@ -13,8 +13,9 @@
 #include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
 #include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
 
-#include "src/robotModel/twoD/parts/twoDDisplay.h"
-#include "src/robotModel/twoD/parts/twoDButtons.h"
+#include "robotModel/twoD/parts/twoDDisplay.h"
+#include "robotModel/twoD/parts/twoDButtons.h"
+#include "robotModel/twoD/parts/twoDSpeaker.h"
 
 using namespace nxtKitInterpreter::robotModel;
 using namespace nxtKitInterpreter::robotModel::twoD;
@@ -73,6 +74,10 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 	if (deviceInfo.isA<robotParts::Buttons>()) {
 		return new parts::TwoDButtons(deviceInfo, port, *engine());
+	}
+
+	if (deviceInfo.isA<robotParts::Speaker>()) {
+		return new parts::TwoDSpeaker(deviceInfo, port, *engine());
 	}
 
 	return twoDModel::robotModel::TwoDRobotModel::createDevice(port, deviceInfo);
