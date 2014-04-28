@@ -9,6 +9,7 @@
 #include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
 #include "kitPluginManager.h"
+#include "managers/robotModelManager.h"
 
 namespace interpreterCore {
 
@@ -18,7 +19,7 @@ class ActionsManager : public QObject
 	Q_OBJECT
 
 public:
-	explicit ActionsManager(KitPluginManager &kitPluginManager);
+	ActionsManager(KitPluginManager &kitPluginManager, RobotModelManager &robotModelManager);
 
 	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
 
@@ -38,6 +39,9 @@ public:
 public slots:
 	void onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model);
 
+private slots:
+	void onRobotModelActionChecked(QObject *robotModel);
+
 private:
 	QString kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const;
 
@@ -46,6 +50,12 @@ private:
 
 	/// Loads actions from kit plugins.
 	void initKitPluginActions();
+
+	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
+	KitPluginManager &mKitPluginManager;
+
+	/// Actions may switch robot models so we need robot model manager.
+	RobotModelManager &mRobotModelManager;
 
 	/// Action that runs program
 	QAction mRunAction;
@@ -70,15 +80,15 @@ private:
 	QList<QAction *> mActions;  // Does not have ownership (actions already present as fields).
 
 	/// List of actions from kit plugins.
-	QList<qReal::ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
+	QList<ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
 
-	QMap<QString, qReal::ActionInfo> mGeneratorActionsInfo;  // Does not have ownership over underlying QActions.
+	/// Actions that are placed on the panel for quick switching between robot models.
+	QMap<QString, ActionInfo> mRobotModelActions;
+
+	QMap<QString, ActionInfo> mGeneratorActionsInfo;  // Does not have ownership over underlying QActions.
 
 	/// List of hotkey customizations from kit plugins.
-	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
-
-	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
-	KitPluginManager &mKitPluginManager;
+	QList<HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
 
 	/// Main window interface object, to ask about currently open tab and so on.
 	// Does not have ownership

@@ -8,7 +8,7 @@ using namespace interpreterCore;
 
 QString Customizer::windowTitle() const
 {
-	return QObject::tr("QReal:Robots") + " " + productVersion();
+	return QObject::tr("Trik Studio") + " " + productVersion();
 }
 
 QIcon Customizer::applicationIcon() const
@@ -19,7 +19,7 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "2.5.3 (TRIK)";
+	return "3.0.0";
 }
 
 QString Customizer::aboutText() const

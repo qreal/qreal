@@ -21,6 +21,7 @@ public:
 
 	interpreterBase::robotModel::RobotModelInterface &model() const override;
 
+public slots:
 	/// Changes currently selected robot model and notifies all about change by robotModelChanged signal.
 	void setModel(interpreterBase::robotModel::RobotModelInterface * const robotModel);
 

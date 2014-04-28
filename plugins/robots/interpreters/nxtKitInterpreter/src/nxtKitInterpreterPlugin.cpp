@@ -111,6 +111,14 @@ QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
 }
 
+QIcon NxtKitInterpreterPlugin::iconForFastSelector(
+		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+{
+	return &robotModel == &mRealRobotModel
+			? QIcon(":/icons/switch-real-nxt.svg")
+			: QIcon(":/icons/switch-2d.svg");
+}
+
 interpreterBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();

@@ -74,6 +74,9 @@ public:
 	/// goes here.
 	virtual QList<qReal::ActionInfo> customActions() = 0;
 
+	/// Returns an icon for toolbar action of fast robot model switching
+	virtual QIcon iconForFastSelector(robotModel::RobotModelInterface const &robotModel) const = 0;
+
 	/// Sensor configuration provider object for this plugin that needs to be registered in providers network.
 	/// Can be a root of plugin-specific providers network. Null, if there is no need for sensors configuration.
 	/// Does not transfer ownership.

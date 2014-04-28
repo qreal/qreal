@@ -46,3 +46,10 @@ QList<qReal::ActionInfo> NullKitInterpreterPlugin::customActions()
 {
 	return {};
 }
+
+QIcon NullKitInterpreterPlugin::iconForFastSelector(
+		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+{
+	Q_UNUSED(robotModel)
+	return QIcon();
+}

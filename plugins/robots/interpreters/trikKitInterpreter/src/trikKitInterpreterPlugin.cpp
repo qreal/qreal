@@ -115,6 +115,17 @@ QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
 }
 
+QIcon TrikKitInterpreterPlugin::iconForFastSelector(
+		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+{
+	/// @todo: draw icons for v4 and v6
+	return &robotModel == &mRealRobotModelV5
+			? QIcon(":/icons/switch-real-trik.svg")
+			: &robotModel == &mTwoDRobotModel
+					? QIcon(":/icons/switch-2d.svg")
+					: QIcon();
+}
+
 interpreterBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();

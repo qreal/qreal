@@ -34,6 +34,8 @@ public:
 
 	QList<qReal::ActionInfo> customActions() override;
 
+	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
+
 private:
 	NullRobotModel mRobotModel;
 	QTranslator mAppTranslator;
