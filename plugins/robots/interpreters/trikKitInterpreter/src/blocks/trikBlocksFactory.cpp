@@ -22,9 +22,9 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 
 qReal::IdList TrikBlocksFactory::providedBlocks() const
 {
-	return { id("TrikV4EnginesBackward")
-			, id("TrikV6EnginesBackward")
-			, id("TrikV4EnginesForward")
-			, id("TrikV6EnginesForward")
-			};
+	if (mRobotModelManager->model().name().contains("V4")) {
+		return { id("TrikV4EnginesBackward"), id("TrikV4EnginesForward") };
+	} else {
+		return { id("TrikV6EnginesBackward"), id("TrikV6EnginesForward") };
+	}
 }
