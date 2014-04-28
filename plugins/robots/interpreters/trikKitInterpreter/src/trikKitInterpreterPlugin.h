@@ -54,10 +54,12 @@ private slots:
 private:
 	robotModel::real::RealRobotModelV4 mRealRobotModelV4;
 	robotModel::real::RealRobotModelV6 mRealRobotModelV6;
-	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
+	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV4;
+	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV6;
 	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
 	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
-	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV4;
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV6;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 	QTranslator mAppTranslator;
