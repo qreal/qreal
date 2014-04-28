@@ -14,7 +14,7 @@ Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "Subprog
 
 TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	: mBlocksFactory(new blocks::TrikBlocksFactory)
-	, mAdditionalPreferences(new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV5.name() }))
+	, mAdditionalPreferences(new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV6.name() }))
 {
 	mAppTranslator.load(":/trikKitInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -27,7 +27,7 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mRealRobotModelV4, &robotModel::real::RealRobotModelV4::rereadSettings);
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, &mRealRobotModelV5, &robotModel::real::RealRobotModelV5::rereadSettings);
+			, &mRealRobotModelV6, &robotModel::real::RealRobotModelV6::rereadSettings);
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
@@ -90,7 +90,7 @@ QString TrikKitInterpreterPlugin::friendlyKitName() const
 
 QList<interpreterBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
 {
-	return {&mRealRobotModelV4, &mRealRobotModelV5, &mTwoDRobotModel};
+	return {&mRealRobotModelV4, &mRealRobotModelV6, &mTwoDRobotModel};
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(

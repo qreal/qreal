@@ -10,7 +10,7 @@ QString TrikTwoDModelConfigurer::robotImage() const
 
 PortInfo TrikTwoDModelConfigurer::defaultLeftWheelPort() const
 {
-	/// @todo make it smarter and take into account selected model (v4 or v5)
+	/// @todo make it smarter and take into account selected model (v4 or v6)
 	return PortInfo("M1", output);
 }
 
