@@ -10,6 +10,7 @@ using namespace interpreterBase::robotModel;
 
 RealRobotModelV6::RealRobotModelV6()
 {
+	addAllowedConnection(PortInfo("JM4", output), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("JF1", input), { movementSensorInfo() });
 }
 

@@ -24,6 +24,7 @@ using namespace interpreterBase::robotModel;
 
 RealRobotModelV4::RealRobotModelV4()
 {
+	addAllowedConnection(PortInfo("M1", output), { powerMotorInfo() });
 }
 
 QString RealRobotModelV4::name() const
