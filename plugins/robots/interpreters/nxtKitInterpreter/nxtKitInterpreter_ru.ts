@@ -48,7 +48,7 @@
 <context>
     <name>nxtKitInterpreter::NxtKitInterpreterPlugin</name>
     <message>
-        <location filename="src/nxtKitInterpreterPlugin.cpp" line="82"/>
+        <location filename="src/nxtKitInterpreterPlugin.cpp" line="84"/>
         <source>Lego NXT</source>
         <translation>Лего NXT</translation>
     </message>
@@ -157,7 +157,7 @@
 <context>
     <name>nxtKitInterpreter::robotModel::twoD::TwoDRobotModel</name>
     <message>
-        <location filename="src/robotModel/twoD/twoDRobotModel.cpp" line="60"/>
+        <location filename="src/robotModel/twoD/twoDRobotModel.cpp" line="62"/>
         <source>2D Model</source>
         <translation>2D модель</translation>
     </message>

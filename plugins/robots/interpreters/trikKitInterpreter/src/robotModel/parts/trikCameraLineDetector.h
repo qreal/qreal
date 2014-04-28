@@ -9,7 +9,7 @@ namespace parts {
 class TrikCameraLineDetector : public interpreterBase::robotModel::robotParts::ScalarSensor
 {
 	Q_OBJECT
-	Q_CLASSINFO("name", tr("cameraLineDetector"))
+	Q_CLASSINFO("name", "cameraLineDetector")
 	Q_CLASSINFO("friendlyName", tr("Camera Line Detector"))
 
 public:

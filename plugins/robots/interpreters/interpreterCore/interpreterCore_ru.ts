@@ -437,13 +437,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="src/customizer.cpp" line="11"/>
         <source>QReal:Robots</source>
-        <translation>QReal:Robots</translation>
+        <translation type="vanished">QReal:Robots</translation>
     </message>
     <message>
         <source>Configure sensors</source>
         <translation type="vanished">Настройки сенсоров</translation>
+    </message>
+    <message>
+        <location filename="src/customizer.cpp" line="11"/>
+        <source>Trik Studio</source>
+        <translation>Trik Studio</translation>
     </message>
     <message>
         <location filename="src/customizer.cpp" line="45"/>
@@ -517,7 +521,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">2D модель</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="11"/>
+        <location filename="src/managers/actionsManager.cpp" line="13"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -526,32 +530,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="12"/>
+        <location filename="src/managers/actionsManager.cpp" line="14"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="13"/>
+        <location filename="src/managers/actionsManager.cpp" line="15"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="15"/>
+        <location filename="src/managers/actionsManager.cpp" line="17"/>
         <source>Text under pictogram</source>
         <translation>Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="75"/>
+        <location filename="src/managers/actionsManager.cpp" line="78"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="76"/>
+        <location filename="src/managers/actionsManager.cpp" line="79"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="79"/>
+        <location filename="src/managers/actionsManager.cpp" line="82"/>
         <source>Toggle titles visibility</source>
         <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
@@ -568,7 +572,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Переключиться в режим TRIK</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="14"/>
+        <location filename="src/managers/actionsManager.cpp" line="16"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -577,7 +581,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="src/robotsPlugin.cpp" line="49"/>
+        <location filename="src/robotsPlugin.cpp" line="52"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -694,6 +698,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>interpreterCore::ActionsManager</name>
+    <message>
+        <location filename="src/managers/actionsManager.cpp" line="182"/>
+        <source>Switch to </source>
+        <translation>Переключиться в режим </translation>
+    </message>
+</context>
+<context>
     <name>interpreterCore::DefaultRobotModel</name>
     <message>
         <location filename="src/defaultRobotModel.cpp" line="12"/>
@@ -704,7 +716,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPlugin</name>
     <message>
-        <location filename="src/robotsPlugin.cpp" line="54"/>
+        <location filename="src/robotsPlugin.cpp" line="57"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>

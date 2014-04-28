@@ -22,7 +22,7 @@
 <context>
     <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="src/trikKitInterpreterPlugin.cpp" line="88"/>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="111"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
@@ -86,7 +86,7 @@
 <context>
     <name>trikKitInterpreter::robotModel::real::RealRobotModelV4</name>
     <message>
-        <location filename="src/robotModel/real/realRobotModelV4.cpp" line="36"/>
+        <location filename="src/robotModel/real/realRobotModelV4.cpp" line="37"/>
         <source>Real Robot (v4)</source>
         <translation>Реальный робот (v4)</translation>
     </message>
@@ -94,15 +94,23 @@
 <context>
     <name>trikKitInterpreter::robotModel::real::RealRobotModelV5</name>
     <message>
-        <location filename="src/robotModel/real/realRobotModelV5.cpp" line="23"/>
         <source>Real Robot (v5)</source>
-        <translation>Реальный робот (v5)</translation>
+        <translation type="vanished">Реальный робот (v5)</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::robotModel::real::RealRobotModelV6</name>
+    <message>
+        <location filename="src/robotModel/real/realRobotModelV6.cpp" line="24"/>
+        <source>Real Robot (v6)</source>
+        <translation>Реальный робот (v6)</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::twoD::TwoDRobotModel</name>
     <message>
-        <location filename="src/robotModel/twoD/twoDRobotModel.cpp" line="84"/>
+        <location filename="src/robotModel/twoD/twoDRobotModel.cpp" line="45"/>
+        <location filename="src/robotModel/twoD/twoDRobotModel.cpp" line="48"/>
         <source>2D Model</source>
         <translation>2D модель</translation>
     </message>
