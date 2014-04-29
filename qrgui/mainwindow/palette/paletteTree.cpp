@@ -255,7 +255,7 @@ int PaletteTree::maxItemsCountInARow() const
 void PaletteTree::changeRepresentation()
 {
 	//QString const changeView = (mIconsView) ? "regular" : "icon";
-	QString const userAction = QString::fromUtf8("Íàæàòü íà êíîïêó â ïàëèòðå — íàçâàíèå: èêîíêè/îáû÷íûé âèä|");
+	QString const userAction = QString::fromUtf8("ÐÐ°Ð¶Ð°Ñ‚ÑŒ Ð½Ð° ÐºÐ½Ð¾Ð¿ÐºÑƒ Ð² Ð¿Ð°Ð»Ð¸Ñ‚Ñ€Ðµ â€” Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ: Ð¸ÐºÐ¾Ð½ÐºÐ¸/Ð¾Ð±Ñ‹Ñ‡Ð½Ñ‹Ð¹ Ð²Ð¸Ð´|");
 	mUXInfoInterface->reportPaletteUserAction(userAction);
 	loadPalette(!mIconsView, mItemsCountInARow, mEditorManager);
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
@@ -298,7 +298,7 @@ void PaletteTree::changeExpansionState()
 		//mUXInfoInterface->reportPaletteUserAction(userAction);
 		collapse();
 	}
-	QString const userAction = QString::fromUtf8("Íàæàòü íà êíîïêó â ïàëèòðå — íàçâàíèå: ñâåðíóòü/ðàçâåðíóòü|");
+	QString const userAction = QString::fromUtf8("ÐÐ°Ð¶Ð°Ñ‚ÑŒ Ð½Ð° ÐºÐ½Ð¾Ð¿ÐºÑƒ Ð² Ð¿Ð°Ð»Ð¸Ñ‚Ñ€Ðµ â€” Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ: ÑÐ²ÐµÑ€Ð½ÑƒÑ‚ÑŒ/Ñ€Ð°Ð·Ð²ÐµÑ€Ð½ÑƒÑ‚ÑŒ|");
 	mUXInfoInterface->reportPaletteUserAction(userAction);
 	setExpansionButtonAppearance();
 }

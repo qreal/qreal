@@ -4,16 +4,17 @@
 
 #include "mainwindow/mainWindow.h"
 #include "controller/commands/changePropertyCommand.h"
+#include "qrutils/uxInfo/uxInfo.h"
 
 PropertyEditorView::PropertyEditorView(QWidget *parent)
-		: QWidget(parent), mChangingPropertyValue(false)
-		, mModel(NULL), mPropertyEditor(new QtTreePropertyBrowser(this))
-		, mLogicalModelAssistApi(NULL)
-		, mVariantManager(NULL)
-		, mVariantFactory(NULL)
-		, mButtonManager(NULL)
-		, mButtonFactory(NULL)
-		, mController(NULL)
+	: QWidget(parent), mChangingPropertyValue(false)
+	, mModel(NULL), mPropertyEditor(new QtTreePropertyBrowser(this))
+	, mLogicalModelAssistApi(NULL)
+	, mVariantManager(NULL)
+	, mVariantFactory(NULL)
+	, mButtonManager(NULL)
+	, mButtonFactory(NULL)
+	, mController(NULL)
 {
 	mPropertyEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
@@ -28,7 +29,7 @@ PropertyEditorView::~PropertyEditorView()
 }
 
 void PropertyEditorView::init(qReal::MainWindow *mainWindow
-		, qReal::models::LogicalModelAssistApi *const logicalModelAssistApi)
+							  , qReal::models::LogicalModelAssistApi *const logicalModelAssistApi)
 {
 	mMainWindow = mainWindow;
 	mLogicalModelAssistApi = logicalModelAssistApi; // unused
@@ -127,6 +128,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			, this, SLOT(buttonClicked(QtProperty*)));
 	connect(mVariantManager, SIGNAL(valueChanged(QtProperty*, QVariant))
 			, this, SLOT(editorValueChanged(QtProperty *, QVariant)));
+
 	mPropertyEditor->setPropertiesWithoutValueMarked(true);
 	mPropertyEditor->setRootIsDecorated(false);
 }
@@ -173,7 +175,7 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 				startPath = propertyValue;
 			}
 			QString const location = utils::QRealFileDialog::getExistingDirectory("OpenDirectoryForPropertyEditor"
-					, this, tr("Specify directory:"), startPath);
+																				  , this, tr("Specify directory:"), startPath);
 			mModel->setData(index, location);
 		} else {
 			mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
@@ -186,7 +188,6 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	if (mChangingPropertyValue) {
 		return;
 	}
-
 	QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(prop);
 	int propertyType = property->propertyType();
 	int row = mPropertyEditor->properties().indexOf(property);
@@ -201,6 +202,15 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	}
 	value = QVariant(value.toString());
 	QVariant const oldValue = mModel->data(index);
+
+	QModelIndex const &nameIndex = mModel->index(row, 0);
+	QString propertyName = mModel->data(nameIndex).toString();
+	QString userAction = QString::fromUtf8("Изменить значение свойства элемента в редакторе свойств — название свойства: ")
+			+ propertyName + QString::fromUtf8("|старое значение: ")
+			+ oldValue.toString() + QString::fromUtf8("|новое значение: ")
+			+ value.toString() + QString::fromUtf8("|название элемента: ")
+			+ mLogicalModelAssistApi->idByIndex(mModel->modelIndex(row)).element() + QString::fromUtf8("|");
+	utils::UXInfo::instance()->reportPaletteUserAction(userAction);
 
 	// TODO: edit included Qt Property Browser framework or inherit new browser
 	// from it and create propertyCommited() and propertyCancelled() signal

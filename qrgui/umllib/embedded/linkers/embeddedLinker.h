@@ -18,8 +18,8 @@ class EmbeddedLinker : public QObject, public QGraphicsItem
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-	EmbeddedLinker();
-	EmbeddedLinker(QGraphicsItem *parent);
+	EmbeddedLinker(UXInfoInterface *uxInfoInterface);
+	EmbeddedLinker(QGraphicsItem *parent);	
 	virtual ~EmbeddedLinker();
 
 	void initTitle();
@@ -58,6 +58,7 @@ private:
 	qReal::Id mEdgeType;
 
 	commands::CreateElementCommand *mCreateEdgeCommand;
+	UXInfoInterface *mUXInfoInterface;
 };
 
 }

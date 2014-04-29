@@ -587,11 +587,13 @@ void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	QPoint pos = event->scenePos().toPoint();
-	QString const userAction = "NodeElement: enter element " + this->name() + " on scene at pos ("
+	Q_UNUSED(pos);
+	QString const userAction = QString::fromUtf8("Навести на элемент на сцене — название элемента: ") + this->name() + "|";
+			/*+ " on scene at pos ("
 			+ QString::number(pos.x())
 			+ ", "
 			+ QString::number(pos.y())
-			+ ")";
+			+ ")";*/
 	mUXInfoInterface->reportPaletteUserAction(userAction);
 }
 
@@ -603,11 +605,13 @@ void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	QPoint pos = event->scenePos().toPoint();
-	QString const userAction = "NodeElement: leave element " + this->name() + " on scene at pos ("
+	Q_UNUSED(pos);
+	QString const userAction = QString::fromUtf8("Убрать наведение с элемента на сцене — название элемента: ") + this->name() + "|";
+			/*+ " on scene at pos ("
 			+ QString::number(pos.x())
 			+ ", "
 			+ QString::number(pos.y())
-			+ ")";
+			+ ")";*/
 	mUXInfoInterface->reportPaletteUserAction(userAction);
 }
 
@@ -688,7 +692,7 @@ void NodeElement::initEmbeddedLinkers()
 		if (usedEdges.contains(type.second)) {
 			continue;
 		}
-		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
+		EmbeddedLinker* embeddedLinker = new EmbeddedLinker(mUXInfoInterface);
 		scene()->addItem(embeddedLinker);
 		embeddedLinker->setEdgeType(type.second);
 		embeddedLinker->setDirected(type.first);
