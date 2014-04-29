@@ -48,6 +48,7 @@ public:
 	virtual QString friendlyName();
 	virtual QString getLog(QString const &format = QString(), bool const &quiet = false);
 	virtual void setVersion(QString hash, bool const &quiet = false);
+	bool clientExist();
 
 public slots:
 	void doInit(QString const &targetFolder = QString(), bool const &quiet = false);
@@ -68,10 +69,13 @@ public slots:
 	QString doLog(QString const &format = QString(), bool const &quiet = false, bool const &showDialog = false);
 	QString doRemoteList();
 	void doAfterOperationIsFinished(QVariant const &tag);
+	void checkClientInstalling();
+
 signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);
 	void workingCopyUpdated(const bool success);
 	void changesSubmitted(const bool success);
+	void clientInstalled(bool exist);
 
 	void initComplete(bool const success);
 	void cloneComplete(bool const success);
@@ -87,10 +91,12 @@ signals:
 	void logComplete(QString const &answer, bool const success);
 	void remoteListComplete(QString const &answer, bool const success);
 	void operationComplete(QString const &name, bool const success);
+
 protected:
 	// External client overloads
 	virtual int timeout() const;
 	virtual QString tempFolder() const;
+
 private:
 	void onCloneComplete(bool const result, const bool quiet);
 	void onRemoteComplete(bool const result);

@@ -21,6 +21,7 @@ ViewInteraction::ViewInteraction(GitPlugin *pluginInstance)
 	connect(mPlugin, SIGNAL(statusComplete(QString,bool)), this, SLOT(onStatusComplete(QString,bool)));
 	connect(mPlugin, SIGNAL(logComplete(QString,bool)), this, SLOT(onLogComplete(QString,bool)));
 	connect(mPlugin, SIGNAL(remoteListComplete(QString,bool)), this, SLOT(onRemoteListComplete(QString,bool)));
+	connect(mPreferencesPage, SIGNAL(checkClienExisting()), mPlugin, SLOT(checkClientInstalling()));
 }
 
 void ViewInteraction::initActions()

@@ -73,6 +73,9 @@ public slots:
 	///Just for git ex: git reset
 	virtual void setVersion(QString hash, bool const &quiet = false) = 0;
 
+	///This method return true if vcs plugin have installed client
+	virtual bool clientExist() = 0;
+
 signals:
 	/// Emitted when working copy downloading started by
 	/// @see beginWorkingCopyDownloading() complete
@@ -89,6 +92,9 @@ signals:
 	/// @see beginChangesSubmitting() complete
 	/// @ param success Was operation successfull or not
 	void changesSubmitted(const bool success);
+
+	/// Emitted when in preferences plugins page changed pass to client.
+	void clientInstalled(bool exist);
 };
 
 }

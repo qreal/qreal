@@ -1,4 +1,5 @@
 #include <QtWidgets/QFileDialog>
+#include <QProcess>
 
 #include "versioningPage.h"
 #include "ui_versioningPage.h"
@@ -41,6 +42,7 @@ void PreferencesVersioningPage::save()
 	qReal::SettingsManager::setValue("pathToSvnClient", mUi->pathToSvnClientLineEdit->text());
 	qReal::SettingsManager::setValue("svnClientTimeout", mUi->svnTimeoutSpinBox->value());
 	mAuthenticationSettings->save();
+	emit checkClienExisting();
 }
 
 void PreferencesVersioningPage::restoreSettings()

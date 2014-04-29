@@ -1,4 +1,5 @@
 #include <QtWidgets/QFileDialog>
+#include <QProcess>
 
 #include "versioningPage.h"
 #include "ui_versioningPage.h"
@@ -40,6 +41,7 @@ void PreferencesVersioningPage::save()
 	qReal::SettingsManager::setValue("pathToGitClient", mUi->pathToGitClientLineEdit->text());
 	qReal::SettingsManager::setValue("gitClientTimeout", mUi->gitTimeoutSpinBox->value());
 	mAuthenticationSettings->save();
+	emit checkClienExisting();
 }
 
 void PreferencesVersioningPage::restoreSettings()
@@ -56,6 +58,7 @@ void PreferencesVersioningPage::on_browseGitClientButton_clicked()
 		mUi->pathToGitClientLineEdit->setText(path);
 	}
 }
+
 
 QComboBox *PreferencesVersioningPage::createComboBox(const QString &text)
 {

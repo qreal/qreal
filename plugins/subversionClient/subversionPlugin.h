@@ -49,6 +49,7 @@ public:
 	virtual QString friendlyName();
 	virtual QString getLog(QString const &format = QString(), bool const &quiet = false);
 	virtual void setVersion(QString hash, bool const &quiet = false){}
+	bool clientExist();
 
 	void editProxyConfiguration();
 
@@ -74,11 +75,13 @@ public slots:
 	int currentRevision(QString const &target = QString(), bool const reportErrors = false
 			, QString const &sourceProject = QString());
 	void doAfterOperationIsFinished(QVariant const &tag);
+	void checkClientInstalling();
 
 signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);
 	void workingCopyUpdated(const bool success);
 	void changesSubmitted(const bool success);
+	void clientInstalled(bool exist);
 
 	void checkoutComplete(bool const success, QString const &targetProject, bool quiet);
 	void updateComplete(bool const success);

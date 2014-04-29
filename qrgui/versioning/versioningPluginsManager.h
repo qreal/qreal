@@ -56,8 +56,10 @@ public slots:
 	QString friendlyName();
 	QString getLog(QString const &format = QString(), bool const &quiet = false);
 	void setVersion(QString hash, bool const &quiet = false);
+	bool clientExist();
 	void switchOffOrOnAllPluginsAction(bool switchOnTranspMode);
 	void showDiff(QString fstHash, QString sndHash, QWidget *widget);
+	void setVisibleVersioningTools(QString versioningPlugin, bool visible);
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);
@@ -77,6 +79,7 @@ private:
 
 	qrRepo::RepoControlInterface *mRepoApi;
 	QList<VersioningPluginInterface *> mPlugins;
+	QList<VersioningPluginInterface *> mPluginsWithExistClient;
 	ErrorReporterInterface *mErrorReporter;
 	DiffPluginBase *mDiffPlugin;
 	QString mTempDir;

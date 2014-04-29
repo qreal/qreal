@@ -1992,8 +1992,7 @@ void MainWindow::initToolPlugins()
 
 	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter, mProjectManager);
 
-	//to do: show/hide checkBox in preferences
-	//connect(mVersioningManager, SIGNAL(OnButton(bool)), mUi->actionTransparent_mode, SLOT(setVisible(bool)));
+	mUi->actionList_of_version_3->setVisible(qReal::SettingsManager::value("gitClientExist", false).toBool());
 
 	connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
 								, mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));

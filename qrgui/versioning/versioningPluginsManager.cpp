@@ -45,6 +45,13 @@ void VersioningPluginsManager::initFromToolPlugins(
 		if (versioningPlugin) {
 			versionPluginsLoaded = true;
 			mPlugins.append(versioningPlugin);
+			if (versioningPlugin->clientExist()){
+				mPluginsWithExistClient.append(versioningPlugin);
+			} else {
+				foreach(ActionInfo const &actionInfo, versioningPlugin->actions()) {
+					actionInfo.menu()->menuAction()->setVisible(false);
+				}
+			}
 			versioningPlugin->setWorkingCopyManager(mRepoApi);
 			connect(versioningPlugin, SIGNAL(workingCopyDownloaded(bool const, QString const &))
 					, this, SLOT(onWorkingCopyDownloaded(bool const, QString const &)));
@@ -247,14 +254,16 @@ void VersioningPluginsManager::onChangesSubmitted(const bool success)
 
 void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTranspMode)
 {
-	foreach (VersioningPluginInterface *plugin, mPlugins){
+	foreach (VersioningPluginInterface *plugin, mPluginsWithExistClient){
 		foreach(ActionInfo const &actionInfo, plugin->actions()) {
 			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
 		}
 	}
 
-	foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-		actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
+	if (!mPluginsWithExistClient.isEmpty()){
+		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
+			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
+		}
 	}
 
 	if (switchOnTranspMode){
@@ -275,6 +284,28 @@ void VersioningPluginsManager::showDiff(QString fstHash, QString sndHash, QWidge
 	}
 }
 
+void VersioningPluginsManager::setVisibleVersioningTools(QString versioningPlugin, bool visible)
+{
+	foreach (VersioningPluginInterface *plugin, mPlugins){
+		if (plugin->friendlyName() == versioningPlugin){
+			if (visible) {
+				mPluginsWithExistClient.append(plugin);
+			} else {
+				mPluginsWithExistClient.removeOne(plugin);
+			}
+			foreach(ActionInfo const &actionInfo, plugin->actions()) {
+				actionInfo.menu()->menuAction()->setVisible(visible);
+			}
+		}
+	}
+
+	if (mPluginsWithExistClient.isEmpty()){
+		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
+			actionInfo.menu()->menuAction()->setVisible(visible);
+		}
+	}
+}
+
 TransparentMode *VersioningPluginsManager::getLinkOnTransparentMode()
 {
 	return mTranspaentMode;
@@ -287,6 +318,11 @@ void VersioningPluginsManager::setVersion(QString hash, const bool &quiet)
 		return;
 	}
 	activeVcs->setVersion(hash,quiet);
+}
+
+bool VersioningPluginsManager::clientExist()
+{
+	activePlugin()->clientExist();
 }
 
 QString VersioningPluginsManager::getLog(const QString &format, const bool &quiet)

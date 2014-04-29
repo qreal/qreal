@@ -142,6 +142,11 @@ QString GitPlugin::tempFolder() const
 	return qReal::SettingsManager::value("gitTempDir", mTempDir).toString();
 }
 
+void GitPlugin::checkClientInstalling()
+{
+	emit clientInstalled(clientExist());
+}
+
 QString GitPlugin::friendlyName()
 {
 	return "Git Plugin";
@@ -199,6 +204,18 @@ void GitPlugin::setVersion(QString hash, bool const &quiet)
 	args.clear();
 	args << "branch" << "-D" << "tmp";
 	invokeOperation(args, false, QString(), false, true, QString(), QString(), !quiet);
+}
+
+bool GitPlugin::clientExist()
+{
+	QProcess *process = new QProcess;
+	process->start(pathToGit(), QStringList() << "--version");
+	process->waitForFinished();
+	bool res = process->readAllStandardOutput().startsWith(QString("git").toLocal8Bit());
+	qReal::SettingsManager::setValue("gitClientExist", res);
+	delete process;
+	emit clientInstalled(res);
+	return res;
 }
 
 QString GitPlugin::getLog(QString const &format, bool const &quiet)

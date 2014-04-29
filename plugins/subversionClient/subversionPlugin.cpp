@@ -135,6 +135,18 @@ QString SubversionPlugin::getLog(const QString &format, const bool &quiet)
 	Q_UNUSED(quiet)
 }
 
+bool SubversionPlugin::clientExist()
+{
+	QProcess *process = new QProcess;
+	process->start(pathToSvn(), QStringList() << "--version");
+	process->waitForFinished();
+	bool res = process->readAllStandardOutput().startsWith(QString("svn").toLocal8Bit());
+	qReal::SettingsManager::setValue("svnClientExist", res);
+	delete process;
+	emit clientInstalled(res);
+	return res;
+}
+
 int SubversionPlugin::timeout() const
 {
 	return qReal::SettingsManager::value("svnClientTimeout", defaultTimeout).toInt();
