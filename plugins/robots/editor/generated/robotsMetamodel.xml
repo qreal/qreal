@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
@@ -6,11 +6,32 @@
 	<namespace>UML 2.0</namespace>
 	<diagram displayedName="Диаграмма поведения робота" nodeName="RobotsDiagramGroup" name="RobotsDiagram">
 		<nonGraphicTypes>
-			<enum name="SensorPort">
+			<enum name="NxtSensorPort">
 				<value>1</value>
 				<value>2</value>
 				<value>3</value>
 				<value>4</value>
+			</enum>
+			<enum name="TrikV4SensorPort">
+				<value>JA1</value>
+				<value>JA2</value>
+				<value>JA3</value>
+				<value>JA4</value>
+				<value>JA5</value>
+				<value>JA6</value>
+				<value>JD1</value>
+				<value>JD2</value>
+			</enum>
+			<enum name="TrikV6SensorPort">
+				<value>JA1</value>
+				<value>JA2</value>
+				<value>JA3</value>
+				<value>JA4</value>
+				<value>JA5</value>
+				<value>JA6</value>
+				<value>JD1</value>
+				<value>JD2</value>
+				<value>JF1</value>
 			</enum>
 			<enum name="GuardType">
 				<value></value>
@@ -1370,12 +1391,12 @@
 				</logic>
 			</node>
 
-			<!-- Waiting for sensors blocks --- NXT -->
+			<!-- Waiting for sensors blocks, NXT -->
 			<node name="NxtSensorBlock">
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Порт" type="SensorPort" name="Port">
+						<property displayedName="Порт" type="NxtSensorPort" name="Port">
 							<default>1</default>
 						</property>
 					</properties>
@@ -1761,12 +1782,12 @@
 				</logic>
 			</node>
 
-			<!-- Waiting for sensors blocks --- TRIK -->
+			<!-- Waiting for sensors blocks, TRIK -->
 			<node name="TrikSensorBlock">
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Порт" type="SensorPort" name="Port">
+						<property displayedName="Порт" type="TrikV4SensorPort" name="Port">
 							<default>JA1</default>
 						</property>
 					</properties>
@@ -1819,7 +1840,103 @@
 						</property>
 					</properties>
 					<generalizations>
-						<parent parentName="NxtSensorBlock"/>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать УЗ датчик расстояния" name="TrikWaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Ждать, пока расстояние, возвращаемое ультразвуковым сенсором расстояния, не будет сравнимо с указанным в значении параметра 'Расстояние'. Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="50" y="60" textBinded="Distance"/>
+						<label x="-60" y="60" text="Расстояние:"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Дистанция" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать ИК датчик расстояния" name="TrikWaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Ждать, пока расстояние, возвращаемое инфракрасным сенсором расстояния, не будет сравнимо с указанным в значении параметра 'Расстояние'. Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="50" y="60" textBinded="Distance"/>
+						<label x="-60" y="60" text="Расстояние:"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Дистанция" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -1973,7 +2090,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопки &quot;Ввод&quot;" name="TrikWaitForEnter" description="Ждать нажатия на кнопку &quot;Ввод&quot;.">
+			<node displayedName="Ждать нажатия кнопки \&quot;Ввод\&quot;" name="TrikWaitForEnter" description="Ждать нажатия на кнопку \&quot;Ввод\&quot;.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
@@ -2008,7 +2125,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопки &quot;Влево&quot;" name="TrikWaitForLeft" description="Ждать нажатия на кнопку &quot;Влево&quot;.">
+			<node displayedName="Ждать нажатия кнопки \&quot;Влево\&quot;" name="TrikWaitForLeft" description="Ждать нажатия на кнопку \&quot;Влево\&quot;.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
@@ -2043,7 +2160,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопки &quot;Вправо&quot;" name="TrikWaitForRight" description="Ждать нажатия на кнопку &quot;Вправо&quot;.">
+			<node displayedName="Ждать нажатия кнопки \&quot;Вправо\&quot;" name="TrikWaitForRight" description="Ждать нажатия на кнопку \&quot;Вправо\&quot;.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
@@ -2078,7 +2195,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопки &quot;Вниз&quot;" name="TrikWaitForDown" description="Ждать нажатия на кнопку &quot;Вниз&quot;.">
+			<node displayedName="Ждать нажатия кнопки \&quot;Вниз\&quot;" name="TrikWaitForDown" description="Ждать нажатия на кнопку \&quot;Вниз\&quot;.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
@@ -2113,7 +2230,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопки &quot;Вверх&quot;" name="TrikWaitForUp" description="Ждать нажатия на кнопку &quot;Вверх&quot;.">
+			<node displayedName="Ждать нажатия кнопки \&quot;Вверх\&quot;" name="TrikWaitForUp" description="Ждать нажатия на кнопку \&quot;Вверх\&quot;.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
@@ -2148,7 +2265,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопки &quot;Питание&quot;" name="TrikWaitForPower" description="Ждать нажатия на кнопку &quot;Питание&quot;.">
+			<node displayedName="Ждать нажатия кнопки \&quot;Питание\&quot;" name="TrikWaitForPower" description="Ждать нажатия на кнопку \&quot;Питание\&quot;.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
@@ -2777,7 +2894,7 @@
 			</node>
 
 		</graphicTypes>
-		<palette sorted="true">
+		<palette sorted="false">
 			<group name="Алгоритмы">
 				<element name="InitialNode"/>
 				<element name="FinalNode"/>
@@ -2807,6 +2924,7 @@
 				<element name="TrikV6EnginesBackward"/>
 				<element name="TrikV6EnginesStop"/>
 				<element name="TrikV6ClearEncoder"/>
+				<element name="TrikSay"/>
 				<element name="TrikLed" />
 				<element name="TrikSystem" />
 				<element name="TrikInitCamera" />
@@ -2824,6 +2942,8 @@
 				<element name="NxtWaitForSound"/>
 				<element name="NxtWaitForButtons"/>
 				<element name="TrikWaitForLight"/>
+				<element name="TrikWaitForSonarDistance"/>
+				<element name="TrikWaitForIRDistance"/>
 				<element name="TrikWaitForGyroscope"/>
 				<element name="TrikWaitForAccelerometer"/>
 				<element name="TrikWaitForEncoder"/>
@@ -2844,7 +2964,6 @@
 				<element name="TrikSmile"/>
 				<element name="TrikSadSmile"/>
 				<element name="TrikSetBackground"/>
-				<element name="TrikSay"/>
 			</group>
 <!--			<group name="Сегвей">
 				<element name="NxtBalance"/>
