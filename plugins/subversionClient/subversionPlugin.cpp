@@ -143,7 +143,6 @@ bool SubversionPlugin::clientExist()
 	bool res = process->readAllStandardOutput().startsWith(QString("svn").toLocal8Bit());
 	qReal::SettingsManager::setValue("svnClientExist", res);
 	delete process;
-	emit clientInstalled(res);
 	return res;
 }
 
@@ -409,4 +408,9 @@ void SubversionPlugin::doAfterOperationIsFinished(QVariant const &tag)
 	} else if (tagStruct.operation == "revert"){
 		onRevertComplete(true);
 	}
+}
+
+void SubversionPlugin::checkClientInstalling()
+{
+	emit clientInstalled(friendlyName(), clientExist());
 }

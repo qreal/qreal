@@ -39,6 +39,7 @@ signals:
 	void OnButton(bool);
 	void transparentClassIsReady();
 	void viewForTransparentModeIsReady(QGraphicsView*);
+	void setVisibleTransparentMode(bool visible);
 
 public slots:
 	void beginWorkingCopyDownloading(QString const &repoAddress

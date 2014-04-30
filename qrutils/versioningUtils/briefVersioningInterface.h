@@ -94,7 +94,7 @@ signals:
 	void changesSubmitted(const bool success);
 
 	/// Emitted when in preferences plugins page changed pass to client.
-	void clientInstalled(bool exist);
+	void clientInstalled(QString client, bool exist);
 };
 
 }

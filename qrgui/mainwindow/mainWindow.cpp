@@ -2000,10 +2000,11 @@ void MainWindow::initToolPlugins()
 								, this, SLOT(switchOffOrOnEasyVers(bool)));
 	connect(mVersioningManager, SIGNAL(transparentClassIsReady()), this, SLOT(initMEasyVersioningLink()));
 	connect(mUi->actionList_of_version_3, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
+	connect(mVersioningManager, SIGNAL(setVisibleTransparentMode(bool)), mUi->actionList_of_version_3, SLOT(setVisible(bool)));
 
-	SettingsManager::setValue("transparentVersioningMode", true); // default
+	qReal::SettingsManager::setValue("transparentVersioningMode", true); // default
 	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins()), this);
-	mVersioningManager->switchOffOrOnAllPluginsAction(SettingsManager::value("transparentVersioningMode").toBool());
+	mVersioningManager->switchOffOrOnAllPluginsAction(qReal::SettingsManager::value("transparentVersioningMode").toBool());
 	mUi->actionList_of_version_3->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
 }
 
@@ -2306,7 +2307,7 @@ void MainWindow::showChangeVersion()
 void MainWindow::initMEasyVersioningLink()
 {
 	mEasyVersioning = mVersioningManager->getLinkOnTransparentMode();
-	switchOffOrOnEasyVers(SettingsManager::value("transparentVersioningMode").toBool());
+	switchOffOrOnEasyVers(qReal::SettingsManager::value("transparentVersioningMode").toBool());
 }
 
 void MainWindow::openStartTab()

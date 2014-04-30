@@ -59,6 +59,8 @@ void VersioningPluginsManager::initFromToolPlugins(
 					, this, SLOT(onWorkingCopyUpdated(bool const)));
 			connect(versioningPlugin, SIGNAL(changesSubmitted(bool const))
 					, this, SLOT(onChangesSubmitted(bool const)));
+			connect(versioningPlugin, SIGNAL(clientInstalled(QString,bool))
+					, this, SLOT(setVisibleVersioningTools(QString,bool)));
 		}
 		DiffPluginBase *diffPlugin =
 				dynamic_cast<DiffPluginBase *>(toolPlugin);
@@ -286,6 +288,8 @@ void VersioningPluginsManager::showDiff(QString fstHash, QString sndHash, QWidge
 
 void VersioningPluginsManager::setVisibleVersioningTools(QString versioningPlugin, bool visible)
 {
+	bool transparentModeIsActive = qReal::SettingsManager::value("transparentVersioningMode").toBool();
+
 	foreach (VersioningPluginInterface *plugin, mPlugins){
 		if (plugin->friendlyName() == versioningPlugin){
 			if (visible) {
@@ -293,16 +297,29 @@ void VersioningPluginsManager::setVisibleVersioningTools(QString versioningPlugi
 			} else {
 				mPluginsWithExistClient.removeOne(plugin);
 			}
-			foreach(ActionInfo const &actionInfo, plugin->actions()) {
-				actionInfo.menu()->menuAction()->setVisible(visible);
+			if (!transparentModeIsActive){
+				foreach(ActionInfo const &actionInfo, plugin->actions()) {
+					actionInfo.menu()->menuAction()->setVisible(visible);
+				}
 			}
 		}
 	}
 
-	if (mPluginsWithExistClient.isEmpty()){
+	if (!mPluginsWithExistClient.isEmpty() && !transparentModeIsActive){
 		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-			actionInfo.menu()->menuAction()->setVisible(visible);
+			actionInfo.menu()->menuAction()->setVisible(true);
 		}
+	} else if (mPluginsWithExistClient.isEmpty()){
+		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
+			actionInfo.menu()->menuAction()->setVisible(false);
+		}
+	}
+
+	if ((mPluginsWithExistClient.isEmpty() && transparentModeIsActive)
+		|| (!qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive)){
+		emit setVisibleTransparentMode(false);
+	} else if (qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive){
+		emit setVisibleTransparentMode(true);
 	}
 }
 

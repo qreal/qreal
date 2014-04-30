@@ -45,7 +45,7 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("collectErgonomicValues", mUi->collectErgonomicValuesCheckBox->isChecked()
 			|| usabilityTestingMode);
 	SettingsManager::setValue("touchMode", mUi->touchModeChackBox->isChecked());
-	SettingsManager::setValue("transparentVersioningMode", mUi->TransparentModeCheckBox->isChecked());
+	qReal::SettingsManager::setValue("transparentVersioningMode", mUi->TransparentModeCheckBox->isChecked());
 
 	if (mUsabilityTestingMode != usabilityTestingMode) {
 		if (usabilityTestingMode) {
@@ -72,10 +72,10 @@ void PreferencesBehaviourPage::restoreSettings()
 
 	mUi->usabilityModeCheckBox->setChecked(mUsabilityTestingMode);
 	mUi->touchModeChackBox->setChecked(SettingsManager::value("touchMode").toBool());
-	mUi->touchModeChackBox->setChecked(SettingsManager::value("transparentVersioningMode").toBool());
+	mUi->touchModeChackBox->setChecked(qReal::SettingsManager::value("transparentVersioningMode").toBool());
 
 	mUsabilityTestingMode = SettingsManager::value("usabilityTestingMode").toBool();
-	mTransparentVersioningMode = SettingsManager::value("transparentVersioningMode").toBool();
+	mTransparentVersioningMode = qReal::SettingsManager::value("transparentVersioningMode").toBool();
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();

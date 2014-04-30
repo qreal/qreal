@@ -144,7 +144,7 @@ QString GitPlugin::tempFolder() const
 
 void GitPlugin::checkClientInstalling()
 {
-	emit clientInstalled(clientExist());
+	emit clientInstalled(friendlyName(), clientExist());
 }
 
 QString GitPlugin::friendlyName()
@@ -214,7 +214,6 @@ bool GitPlugin::clientExist()
 	bool res = process->readAllStandardOutput().startsWith(QString("git").toLocal8Bit());
 	qReal::SettingsManager::setValue("gitClientExist", res);
 	delete process;
-	emit clientInstalled(res);
 	return res;
 }
 

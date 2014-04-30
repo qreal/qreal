@@ -81,7 +81,7 @@ signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);
 	void workingCopyUpdated(const bool success);
 	void changesSubmitted(const bool success);
-	void clientInstalled(bool exist);
+	void clientInstalled(QString client, bool exist);
 
 	void checkoutComplete(bool const success, QString const &targetProject, bool quiet);
 	void updateComplete(bool const success);

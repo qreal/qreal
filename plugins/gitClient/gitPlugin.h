@@ -75,7 +75,7 @@ signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);
 	void workingCopyUpdated(const bool success);
 	void changesSubmitted(const bool success);
-	void clientInstalled(bool exist);
+	void clientInstalled(QString client, bool exist);
 
 	void initComplete(bool const success);
 	void cloneComplete(bool const success);
