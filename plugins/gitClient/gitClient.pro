@@ -14,7 +14,7 @@ RCC_DIR = .rcc
 UI_DIR = .ui
 OBJECTS_DIR = .obj
 
-TRANSLATIONS += subversionClient_ru.ts
+TRANSLATIONS += gitClient_ru.ts
 
 HEADERS += \
     gitPlugin.h \

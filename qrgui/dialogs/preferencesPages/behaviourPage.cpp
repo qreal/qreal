@@ -16,6 +16,10 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 	connect(mUi->collectErgonomicValuesCheckBox, SIGNAL(clicked(bool))
 			, &mFilterObject, SLOT(setStatusCollectUsabilityStatistics(bool)));
 	restoreSettings();
+
+	// Only for versioning. For pro users. Pro version does not working now.
+	mUi->label_2->setVisible(false);
+	mUi->frame_2->setVisible(false);
 }
 
 PreferencesBehaviourPage::~PreferencesBehaviourPage()

@@ -15,7 +15,7 @@ SUBDIRS += \
 	exterminatus/exterminatus.pro \
 	visualInterpreter/visualInterpreter.pro \
 	refactoring/refactoring.pro \
-	subversionClient/subversionClient.pro \
+#	subversionClient/subversionClient.pro \
 	gitClient/gitClient.pro \
 	visualDiff/visualDiff.pro \
 
