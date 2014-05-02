@@ -33,8 +33,8 @@ EdgeElement::EdgeElement(ElementImpl *impl
 		, Id const &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
-		, UXInfoInterface *uxInfoInterface)
-		: Element(impl, id, graphicalAssistApi, logicalAssistApi, uxInfoInterface)
+		)
+		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 		, mPenStyle(Qt::SolidLine)
 		, mPenWidth(1)
 		, mPenColor(Qt::black)

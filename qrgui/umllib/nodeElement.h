@@ -39,7 +39,7 @@ public:
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			, UXInfoInterface *uxInfoInterface);
+			);
 
 	virtual ~NodeElement();
 

@@ -90,6 +90,8 @@ private:
 	int const mIndex;
 	Id const mId;
 	models::GraphicalModelAssistApi &mGraphicalModelAssistApi;
+
+	QString mLastPaintText;
 };
 
 }

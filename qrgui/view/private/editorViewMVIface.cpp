@@ -10,13 +10,12 @@
 
 using namespace qReal;
 
-EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene, UXInfoInterface *uxInfoInterface)
+EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)
 	, mScene(scene)
 	, mView(view)
 	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
-	, mUXInfoInterface(uxInfoInterface)
 {
 	mScene->setMVIface(this);
 	mScene->mView = mView;
@@ -147,10 +146,10 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		ElementImpl * const elementImpl = mScene->mainWindow()->editorManager().elementImpl(currentId);
 		Element *elem = elementImpl->isNode()
 				? dynamic_cast<Element *>(
-						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, mUXInfoInterface)
+						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi)
 						)
 				: dynamic_cast<Element *>(
-						new EdgeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, mUXInfoInterface)
+						new EdgeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi)
 						);
 
 		elem->setController(mScene->mainWindow()->controller());

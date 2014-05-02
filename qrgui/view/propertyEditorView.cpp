@@ -209,8 +209,10 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 			+ propertyName + QString::fromUtf8("|старое значение: ")
 			+ oldValue.toString() + QString::fromUtf8("|новое значение: ")
 			+ value.toString() + QString::fromUtf8("|название элемента: ")
-			+ mLogicalModelAssistApi->idByIndex(mModel->modelIndex(row)).element() + QString::fromUtf8("|");
-	utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+			+ /*mMainWindow->editorManager().friendlyName
+			(*/mLogicalModelAssistApi->idByIndex(mModel->modelIndex(row)).element()//)
+			+ QString::fromUtf8("|");
+	utils::UXInfo::instance()->reportUserAction(userAction);
 
 	// TODO: edit included Qt Property Browser framework or inherit new browser
 	// from it and create propertyCommited() and propertyCancelled() signal

@@ -50,7 +50,7 @@ public:
 	/// @param newValue new value of the settings.
 	void reportSettingsChanges(QString const &name, QVariant const &oldValue, QVariant const &newValue);
 
-	void reportPaletteUserAction(const QString &userAction);
+	void reportUserAction(const QString &userAction);
 
 	/// Set status about collect or not collect ux information.
 	static void setStatus(bool status);
@@ -75,7 +75,7 @@ private:
 	void reportMenuElementsUsing(QString const &elementName, QString const &status = "none");
 	void reportMouseClickPosition(QPoint const &pos);
 	void reportSettingsChangesInfo(const QString &name, const QString &oldValue, const QString &newValue);
-	void reportPaletteUserActionInfo(const QString &userAction);
+	void reportUserActionInfo(const QString &userAction);
 	void setActualStatus(bool status);
 	void reportTestStartedInfo();
 	void reportTestFinishedInfo();

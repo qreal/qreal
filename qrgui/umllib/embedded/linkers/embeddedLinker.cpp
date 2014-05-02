@@ -11,15 +11,15 @@
 #include "view/editorViewScene.h"
 #include "mainwindow/mainWindow.h"
 #include "umllib/private/reshapeEdgeCommand.h"
+#include "qrutils/uxInfo/uxInfo.h"
 
 using namespace qReal;
 
-EmbeddedLinker::EmbeddedLinker(UXInfoInterface *uxInfoInterface)
+EmbeddedLinker::EmbeddedLinker()
 		: mEdge(NULL)
 		, mMaster(NULL)
 		, mColor(Qt::blue)
 		, mPressed(false)
-		, mUXInfoInterface(uxInfoInterface)
 {
 	mSize = SettingsManager::value("EmbeddedLinkerSize").toFloat();
 	if (mSize > 10) {
@@ -214,7 +214,7 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	mPressed = true;
 	if (mMaster) {
 		QString userAction = QString::fromUtf8("Нажатие на линкер у элемента на сцене — название: ") + mMaster->name() + "|";
-		mUXInfoInterface->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 	}
 
 	if (event->button() == Qt::LeftButton) {
@@ -244,7 +244,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (mEdge) {
 			if (mMaster) {
 				QString userAction = QString::fromUtf8("Вытягивание линка из линкера у элемента на сцене — название: ") + mMaster->name() + "|";
-				mUXInfoInterface->reportPaletteUserAction(userAction);
+				utils::UXInfo::instance()->reportUserAction(userAction);
 			}
 			mMaster->setZValue(1);
 			mEdge->setSrc(mMaster);
@@ -306,7 +306,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			mEdge = NULL;
 		} else if ((result == 1) && target) {
 			QString userAction = QString::fromUtf8("Выбрать из контекстного меню линкера — название элемента: ") + target->name() + "|";
-			mUXInfoInterface->reportPaletteUserAction(userAction);
+			utils::UXInfo::instance()->reportUserAction(userAction);
 			mEdge->setDst(target);
 			target->storeGeometry();
 		}

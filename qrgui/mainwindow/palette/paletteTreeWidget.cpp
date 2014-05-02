@@ -126,7 +126,7 @@ void PaletteTreeWidget::groupExpanded(QTreeWidgetItem *item)
 {
 	int const topLevelIndex = 0;
 	QString const name = item->text(topLevelIndex);
-	QString const userAction = "Palette: group expand: " + name;
+	QString const userAction = QString::fromUtf8("Развернуть группу элементов в палитре — название группы: ") + name + QString::fromUtf8("|");
 	mPaletteTree.reportPaletteUserAction(userAction);
 }
 
@@ -134,7 +134,7 @@ void PaletteTreeWidget::groupCollapsed(QTreeWidgetItem *item)
 {
 	int const topLevelIndex = 0;
 	QString const name = item->text(topLevelIndex);
-	QString const userAction = "Palette: group collapse: " + name;
+	QString const userAction = QString::fromUtf8("Свернуть группу элементов в палитре — название группы: ") + name + QString::fromUtf8("|");
 	mPaletteTree.reportPaletteUserAction(userAction);
 }
 

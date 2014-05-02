@@ -16,8 +16,6 @@
 #include "pluginManager/proxyEditorManager.h"
 #include "mainwindow/palette/paletteTreeWidgets.h"
 
-#include "qrkernel/uxInfoInterface.h"
-
 namespace  qReal {
 namespace gui {
 
@@ -72,7 +70,6 @@ public:
 	void loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy);
 	void initMainWindow(MainWindow *mainWindow);
 	void installEventFilter(QObject *obj);
-	void setUXInfo(UXInfoInterface *uxInfo);
 	void reportPaletteUserAction(QString const &userAction);
 
 signals:
@@ -161,8 +158,6 @@ private:
 
 	/// Count of items in a row in icon's representation
 	int mItemsCountInARow;
-
-	UXInfoInterface *mUXInfoInterface; // Has ownership.
 };
 
 }

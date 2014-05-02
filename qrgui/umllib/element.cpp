@@ -8,14 +8,13 @@ Element::Element(ElementImpl *elementImpl
 		, Id const &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
-		, UXInfoInterface *uxInfoInterface)
+		)
 	: mMoving(false)
 	, mId(id)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(logicalAssistApi)
 	, mGraphicalAssistApi(graphicalAssistApi)
 	, mController(NULL)
-	, mUXInfoInterface(uxInfoInterface)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 			ItemClipsToShape | ItemSendsGeometryChanges);

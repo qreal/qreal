@@ -49,7 +49,6 @@ EditorViewScene::EditorViewScene(QObject *parent)
 
 	setItemIndexMethod(NoIndex);
 	setEnabled(false);
-	mClipboardHandler.setUXInfoInterface(utils::UXInfo::instance());
 
 	initCorners();
 
@@ -210,7 +209,7 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 				+ ", "
 				+ QString::number(pos.y())
 				+ ")";*/
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 
 		QGraphicsScene::dragEnterEvent(event);
 	} else {
@@ -238,7 +237,7 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 			+ ", "
 			+ QString::number(pos.y())
 			+ ")";*/
-	utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+	utils::UXInfo::instance()->reportUserAction(userAction);
 
 
 	QList<QGraphicsItem*> elements = items(event->scenePos());
@@ -340,7 +339,7 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 			+ ", "
 			+ QString::number(pos.y())
 			+ ")";*/
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 	}
 
 	if (mHighlightNode) {
@@ -377,7 +376,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 			+ ", "
 			+ QString::number(pos.y())
 			+ ")";*/
-	utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+	utils::UXInfo::instance()->reportUserAction(userAction);
 
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode) {
@@ -548,9 +547,9 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	inStream >> explosionTargetUuid;
 
 	Id const id = Id::loadFromString(uuid);
-	
+
 	utils::UXInfo::reportCreation(id.editor(), id.element());
-	
+
 	Id const explosionTarget = explosionTargetUuid.isEmpty()
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);
@@ -799,20 +798,20 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
 		QString userAction = QString::fromUtf8("Нажатие горячей клавиши на сцене — клавиша: Delete|");
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 		// Delete selected elements from scene
 		mainWindow()->deleteFromScene();
 	} else if (event->matches(QKeySequence::Paste)) {
 		QString userAction = QString::fromUtf8("Нажатие горячей клавиши на сцене — клавиша: Paste|");
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 		paste(event->modifiers() == Qt::ShiftModifier);
 	} else if (event->matches(QKeySequence::Copy)) {
 		QString userAction = QString::fromUtf8("Нажатие горячей клавиши на сцене — клавиша: Copy|");
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 		copy();
 	} else if (isArrow(event->key())) {
 		QString userAction = QString::fromUtf8("Нажатие горячей клавиши на сцене — клавиша: Arrow|");
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 		moveSelectedItems(event->key());
 	} else if (event->key() == Qt::Key_Menu) {
 		initContextMenu(nullptr, QPointF()); // see #593
@@ -926,7 +925,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			EdgeElement *edge = dynamic_cast <EdgeElement *> (item);
 			if (edge) {
 				QString userAction = QString::fromUtf8("Зажатие линка правой кнопкой мыши — название элемента: ") + edge->name() + "|";
-				utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+				utils::UXInfo::instance()->reportUserAction(userAction);
 				sendEvent(edge, event);
 			}
 		}
@@ -940,8 +939,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			QGraphicsScene::mousePressEvent(event);
 		}
 	} else {
-		QString userAction = QString::fromUtf8("Нажатие левой кнопкой мыши по сцене — свойство: нет|");
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
 		QGraphicsScene::mousePressEvent(event);
 	}
 
@@ -969,27 +966,26 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	} else if (event->button() == Qt::LeftButton) {
 		mLeftButtonPressed = true;
 
+		bool actionIsLabelPress = false;
+		QString userAction;
 		Label * const label = dynamic_cast<Label *>(item);
 		if (label) {
-			QPoint pos = mCurrentMousePos.toPoint();
-			Q_UNUSED(pos);
-			QString userAction = QString::fromUtf8("Нажать на надпись на сцене левой кнопкой мыши — текст: ") + label->toPlainText();
-					/*"Scene: mouse press event on scene (label) at pos ("
-					+ QString::number(pos.x())
-					+ ", "
-					+ QString::number(pos.y())
-					+ ") "
-					+ label->toPlainText();*/
-			utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+			userAction = QString::fromUtf8("Нажать на надпись на сцене левой кнопкой мыши — текст: ") + label->toPlainText() + "|";
+			actionIsLabelPress = true;
 			item = item->parentItem();
 		}
 
 		if (item) {
 			Element *element = dynamic_cast<Element *>(item);
-            if (element && !element->name().isEmpty()) {
-				QString userAction = QString::fromUtf8("Кликнуть левой кнопкой мыши на элемент на сцене — название элемента: ");
-                userAction = userAction + element->name() + "|";
-                utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+			if (element && !element->name().isEmpty()) {
+				if (actionIsLabelPress) {
+					userAction += QString::fromUtf8("название элемента: ");
+				}
+				else {
+					userAction = QString::fromUtf8("Кликнуть левой кнопкой мыши на элемент на сцене — название элемента: ");
+				}
+				userAction = userAction + element->name() + "|";
+				utils::UXInfo::instance()->reportUserAction(userAction);
 			}
 			item->setSelected(true);
 			mSelectList.clear();
@@ -999,7 +995,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
 		mTimer->stop();
 		QString userActionGesture = QString::fromUtf8("Начало рисования мышиного жеста правой кнопкой мыши — свойство: нет|");
-		utils::UXInfo::instance()->reportPaletteUserAction(userActionGesture);
+		utils::UXInfo::instance()->reportUserAction(userActionGesture);
 		mMouseMovementManager->mousePress(event->scenePos());
 		mRightButtonPressed = true;
 	}
@@ -1218,7 +1214,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			Element *element = dynamic_cast<Element *>(item);
 			if (element != nullptr) {
 				QString userAction = QString::fromUtf8("Отпускание элемента на сцене — название элемента: ") + element->name() + "|";
-				utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+				utils::UXInfo::instance()->reportUserAction(userAction);
 			}
 			item->setAcceptedMouseButtons(Qt::MouseButtons(Qt::RightButton | Qt::LeftButton));
 		}
@@ -1266,7 +1262,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (event->button() == Qt::RightButton && !(mMouseMovementManager->pathIsEmpty())) {
 		QString userActionGesture = QString::fromUtf8("Конец рисования мышиного жеста правой кнопкой мыши — свойство: нет|");
-		utils::UXInfo::instance()->reportPaletteUserAction(userActionGesture);
+		utils::UXInfo::instance()->reportUserAction(userActionGesture);
 		mMouseMovementManager->mouseMove(event->scenePos());
 		mRightButtonPressed = false;
 		drawGesture();
@@ -1281,13 +1277,13 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			deleteGesture();
 			if (element && !element->isSelected()) {
 				element->setSelected(true);
-                QString userAction = QString::fromUtf8("Кликнуть правой кнопкой мыши по элементу (открыть контекстное меню) — название элемента: ") + element->name() + QString::fromUtf8("|");
-                utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+				QString userAction = QString::fromUtf8("Кликнуть правой кнопкой мыши по элементу (открыть контекстное меню) — название элемента: ") + element->name() + QString::fromUtf8("|");
+				utils::UXInfo::instance()->reportUserAction(userAction);
 			}
-            else {
-                QString userAction = QString::fromUtf8("Кликнуть правой кнопкой мыши по сцене (открыть контекстное меню) — свойство: нет");
-                utils::UXInfo::instance()->reportPaletteUserAction(userAction);
-            }
+			else {
+				QString userAction = QString::fromUtf8("Кликнуть правой кнопкой мыши по сцене (открыть контекстное меню) — свойство: нет");
+				utils::UXInfo::instance()->reportUserAction(userAction);
+			}
 			initContextMenu(element, event->scenePos());
 			clearSelection();
 			return;
@@ -1320,7 +1316,7 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			Element *element = dynamic_cast<Element *>(item);
 			if (element != nullptr) {
 				QString userAction = QString::fromUtf8("Перемещение элемента по сцене с зажатой левой кнопкой мыши — название элемента: ") + element->name() + "|";
-				utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+				utils::UXInfo::instance()->reportUserAction(userAction);
 			}
 		}
 		QGraphicsScene::mouseMoveEvent(event);
@@ -1329,7 +1325,7 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (mRightButtonPressed) {
 			mMouseMovementManager->mouseMove(event->scenePos());
 			QString userActionGesture = QString::fromUtf8("Продолжение рисования мышиного жеста правой кнопкой мыши — свойство: нет|");
-			utils::UXInfo::instance()->reportPaletteUserAction(userActionGesture);
+			utils::UXInfo::instance()->reportUserAction(userActionGesture);
 			drawGesture();
 		} else {
 			QGraphicsScene::mouseMoveEvent(event);

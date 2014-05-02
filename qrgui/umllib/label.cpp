@@ -6,6 +6,8 @@
 #include "umllib/edgeElement.h"
 #include "brandManager/brandManager.h"
 
+#include "qrutils/uxInfo/uxInfo.h"
+
 using namespace qReal;
 
 Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elementId
@@ -275,6 +277,8 @@ void Label::keyPressEvent(QKeyEvent *event)
 {
 	int const keyEvent = event->key();
 	if (keyEvent == Qt::Key_Escape) {
+		QString userAction = QString::fromUtf8("Нажать на выбранной на сцене надписи клавишу — название: Escape|");
+		utils::UXInfo::instance()->reportUserAction(userAction);
 		// Restore previous text and loose focus
 		setText(mOldText);
 		clearFocus();
@@ -282,6 +286,8 @@ void Label::keyPressEvent(QKeyEvent *event)
 	}
 
 	if ((event->modifiers() & Qt::ShiftModifier) && (event->key() == Qt::Key_Return)) {
+		QString userAction = QString::fromUtf8("Нажать на выбранной на сцене надписи клавишу — название: Shift+Enter|");
+		utils::UXInfo::instance()->reportUserAction(userAction);
 		// Line feed
 		QTextCursor const cursor = textCursor();
 		QString const currentText = toPlainText();
@@ -291,9 +297,21 @@ void Label::keyPressEvent(QKeyEvent *event)
 	}
 
 	if (keyEvent == Qt::Key_Enter || keyEvent == Qt::Key_Return) {
+		QString userAction = QString::fromUtf8("Нажать на выбранной на сцене надписи клавишу — название: Enter|");
+		utils::UXInfo::instance()->reportUserAction(userAction);
 		// Loose focus: new name will be applied in focusOutEvent
 		clearFocus();
 		return;
+	}
+
+	if (keyEvent == Qt::Key_Delete) {
+		QString userAction = QString::fromUtf8("Нажать на выбранной на сцене надписи клавишу — название: Delete|");
+		utils::UXInfo::instance()->reportUserAction(userAction);
+	}
+
+	if (keyEvent == Qt::Key_Backspace) {
+		QString userAction = QString::fromUtf8("Нажать на выбранной на сцене надписи клавишу — название: Backspace|");
+		utils::UXInfo::instance()->reportUserAction(userAction);
 	}
 
 	QGraphicsTextItem::keyPressEvent(event);
@@ -306,7 +324,8 @@ void Label::startTextInteraction()
 		return;
 	}
 
-	mOldText = toPlainText();
+	mLastPaintText = mOldText = toPlainText();
+	utils::UXInfo::instance()->reportUserAction(QString::fromUtf8("Поставить фокус на выбранную надпись на сцене — текст: ") + mOldText + QString::fromUtf8("|"));
 
 	setTextInteractionFlags(mReadOnly ? Qt::TextBrowserInteraction : Qt::TextEditorInteraction);
 	setFocus(Qt::OtherFocusReason);
@@ -324,6 +343,14 @@ void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
 	if (text.isEmpty() && !mParentIsSelected && !isSelected()) {
 		return;
+	}
+
+	if (!mLastPaintText.isEmpty() && text.compare(mLastPaintText) != 0) {
+		utils::UXInfo::instance()->reportUserAction(QString::fromUtf8("Изменить значение надписи на сцене — предыдущий текст: ")
+													+ mLastPaintText + QString::fromUtf8("|новый текст: ")
+													+ text
+													+ QString::fromUtf8("|"));
+		mLastPaintText = text;
 	}
 
 	painter->save();

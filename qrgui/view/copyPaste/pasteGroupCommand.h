@@ -14,7 +14,7 @@ public:
 	PasteGroupCommand(EditorViewScene *scene
 			, EditorViewMViface const *mvIface
 			, bool isGraphicalCopy
-			, UXInfoInterface *uxInfoInterface);
+			);
 	virtual ~PasteGroupCommand();
 
 	bool isEmpty() const;
@@ -35,7 +35,6 @@ private:
 	bool const mIsGraphicalCopy;
 	QHash<Id, Id> *mCopiedIds;
 	bool mIsEmpty;
-	UXInfoInterface *mUXInfoInterface;
 };
 
 }

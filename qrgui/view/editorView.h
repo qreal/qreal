@@ -6,8 +6,6 @@
 #include "view/private/editorViewMVIface.h"
 #include "view/private/touchSupportManager.h"
 
-#include "qrkernel/uxInfoInterface.h"
-
 namespace qReal {
 
 class EditorViewMViface;
@@ -18,7 +16,7 @@ class EditorView : public QGraphicsView
 	Q_OBJECT
 
 public:
-	explicit EditorView(QWidget *parent, UXInfoInterface *uxInfoInterface);
+	explicit EditorView(QWidget *parent);
 	~EditorView();
 
 	EditorViewMViface *mvIface() const;
@@ -63,7 +61,6 @@ private:
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
 	view::details::TouchSupportManager mTouchManager;
-	UXInfoInterface *mUXInfoInterface;
 
 };
 

@@ -23,11 +23,6 @@ void ClipboardHandler::setController(Controller * const controller)
 	mController = controller;
 }
 
-void ClipboardHandler::setUXInfoInterface(UXInfoInterface *uxInfoInterface)
-{
-	mUXInfoInterface = uxInfoInterface;
-}
-
 void ClipboardHandler::cut()
 {
 	copy();
@@ -111,7 +106,7 @@ void ClipboardHandler::pushDataToClipboard(QList<NodeData> const &nodesData, QLi
 
 void ClipboardHandler::paste(bool isGraphicalCopy)
 {
-	commands::PasteGroupCommand *pasteCommand = new commands::PasteGroupCommand(mScene, mMVIface, isGraphicalCopy, mUXInfoInterface);
+	commands::PasteGroupCommand *pasteCommand = new commands::PasteGroupCommand(mScene, mMVIface, isGraphicalCopy);
 	if (!pasteCommand->isEmpty()) {
 		mController->execute(pasteCommand);
 	}

@@ -17,7 +17,7 @@ public:
 			, QPointF const &offset
 			, bool isGraphicalCopy
 			, QHash<Id, Id> *copiedIds
-			, UXInfoInterface *uxInfoInterface);
+			);
 	virtual ~PasteNodeCommand() {}
 
 protected:

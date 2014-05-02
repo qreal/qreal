@@ -25,6 +25,7 @@
 #include "controller/commands/changeParentCommand.h"
 #include "controller/commands/renameCommand.h"
 #include "controller/commands/insertIntoEdgeCommand.h"
+#include "qrutils/uxInfo/uxInfo.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -32,9 +33,8 @@ using namespace qReal::commands;
 NodeElement::NodeElement(ElementImpl *impl
 		, Id const &id
 		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi
-		, UXInfoInterface *uxInfoInterface)
-		: Element(impl, id, graphicalAssistApi, logicalAssistApi, uxInfoInterface)
+		, models::LogicalModelAssistApi &logicalAssistApi)
+		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 		, mSwitchGridAction(tr("Switch on grid"), this)
 		, mDragState(None)
 		, mResizeCommand(NULL)
@@ -594,7 +594,7 @@ void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 			+ ", "
 			+ QString::number(pos.y())
 			+ ")";*/
-	mUXInfoInterface->reportPaletteUserAction(userAction);
+	utils::UXInfo::instance()->reportUserAction(userAction);
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
@@ -612,7 +612,7 @@ void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 			+ ", "
 			+ QString::number(pos.y())
 			+ ")";*/
-	mUXInfoInterface->reportPaletteUserAction(userAction);
+	utils::UXInfo::instance()->reportUserAction(userAction);
 }
 
 void NodeElement::startResize()
@@ -692,7 +692,7 @@ void NodeElement::initEmbeddedLinkers()
 		if (usedEdges.contains(type.second)) {
 			continue;
 		}
-		EmbeddedLinker* embeddedLinker = new EmbeddedLinker(mUXInfoInterface);
+		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
 		scene()->addItem(embeddedLinker);
 		embeddedLinker->setEdgeType(type.second);
 		embeddedLinker->setDirected(type.first);
@@ -1346,7 +1346,7 @@ void NodeElement::initRenderedDiagram()
 	Id const diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	Id const graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(window, mUXInfoInterface);
+	EditorView view(window);
 	EditorViewScene *openedScene = dynamic_cast<EditorViewScene *>(view.scene());
 	openedScene->setMainWindow(window);
 	openedScene->setNeedDrawGrid(false);
@@ -1382,8 +1382,7 @@ QRectF NodeElement::diagramRenderingRect() const
 			evScene->mainWindow()->editorManager().elementImpl(id())
 			, id().sameTypeId()
 			, mGraphicalAssistApi
-			, mLogicalAssistApi
-			, mUXInfoInterface);
+			, mLogicalAssistApi);
 
 	qreal const xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);
 	qreal const yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);

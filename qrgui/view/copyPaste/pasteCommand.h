@@ -20,8 +20,7 @@ protected:
 			, EditorViewMViface const *mvIface
 			, QPointF const &offset
 			, bool isGraphicalCopy
-			, QHash<Id, Id> *copiedIds
-			, UXInfoInterface *uxInfoInterface);
+			, QHash<Id, Id> *copiedIds);
 
 	virtual bool execute();
 	virtual bool restoreState();
@@ -35,7 +34,6 @@ protected:
 	QPointF const mOffset;
 	QHash<Id, Id> *mCopiedIds;
 	Id mResult;
-	UXInfoInterface *mUXInfoInterface;
 
 private:
 	bool const mIsGraphicalCopy;

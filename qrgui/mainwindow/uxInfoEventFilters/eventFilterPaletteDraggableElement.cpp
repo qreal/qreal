@@ -23,19 +23,19 @@ bool EventFilterPaletteDraggableElement::eventFilter(QObject *object, QEvent *ev
 	QString userAction;
 	if (event->type() == QEvent::Enter) {
 		userAction = QString::fromUtf8("Навести на элемент в палитре — название элемента: ") + name + "|";
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 	}
 	else if (event->type() == QEvent::Leave) {
 		userAction = QString::fromUtf8("Убрать наведение с элемента в палитре — название элемента: ") + name + "|";
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 	}
 	else if (event->type() == QEvent::MouseButtonPress) {
 		userAction = QString::fromUtf8("Нажать на элемент в палитре — название элемента: ") + name + "|";//кнопка мыши: " + mouseButton(event);
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 	}
 	else if (event->type() == QEvent::MouseButtonRelease) {
 		userAction = QString::fromUtf8("Отпустить элемент в палитре — название элемента: ") + name + "|";
-		utils::UXInfo::instance()->reportPaletteUserAction(userAction);
+		utils::UXInfo::instance()->reportUserAction(userAction);
 	}
 	return false;
 }

@@ -5,8 +5,6 @@
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
 
-#include "qrkernel/uxInfoInterface.h"
-
 class QGraphicsItem;
 
 namespace qReal {
@@ -26,7 +24,7 @@ class EditorViewMViface : public QAbstractItemView
 	Q_OBJECT
 
 public:
-	EditorViewMViface(qReal::EditorView *view, EditorViewScene *scene, UXInfoInterface *uxInfoInterface);
+	EditorViewMViface(qReal::EditorView *view, EditorViewScene *scene);
 	~EditorViewMViface();
 
 	QModelIndex indexAt(const QPoint &point) const;
@@ -63,7 +61,6 @@ private:
 	qReal::EditorView *mView;
 	models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	models::LogicalModelAssistApi *mLogicalAssistApi;
-	UXInfoInterface *mUXInfoInterface;
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;

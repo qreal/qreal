@@ -13,6 +13,7 @@
 
 #include "mainwindow/palette/draggableElement.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
+#include "qrutils/uxInfo/uxInfo.h"
 
 using namespace qReal;
 using namespace gui;
@@ -20,7 +21,6 @@ using namespace gui;
 PaletteTree::PaletteTree(QWidget *parent)
 	: QWidget(parent)
 	, mCurrentEditor(0)
-	, mUXInfoInterface(NULL)
 {
 	initUi();
 	createPaletteTree();
@@ -256,7 +256,7 @@ void PaletteTree::changeRepresentation()
 {
 	//QString const changeView = (mIconsView) ? "regular" : "icon";
 	QString const userAction = QString::fromUtf8("Нажать на кнопку в палитре — название: иконки/обычный вид|");
-	mUXInfoInterface->reportPaletteUserAction(userAction);
+	utils::UXInfo::instance()->reportUserAction(userAction);
 	loadPalette(!mIconsView, mItemsCountInARow, mEditorManager);
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
@@ -290,16 +290,12 @@ void PaletteTree::changeExpansionState()
 {
 	mNodesStateButtonExpands = !mNodesStateButtonExpands;
 	if (mNodesStateButtonExpands) {
-		//QString const userAction = "Palette: expand button clicked";
-		//mUXInfoInterface->reportPaletteUserAction(userAction);
 		expand();
 	} else {
-		//QString const userAction = "Palette: collapse button clicked";
-		//mUXInfoInterface->reportPaletteUserAction(userAction);
 		collapse();
 	}
 	QString const userAction = QString::fromUtf8("Нажать на кнопку в палитре — название: свернуть/развернуть|");
-	mUXInfoInterface->reportPaletteUserAction(userAction);
+	utils::UXInfo::instance()->reportUserAction(userAction);
 	setExpansionButtonAppearance();
 }
 
@@ -320,13 +316,7 @@ void PaletteTree::installEventFilter(QObject *obj)
 	comboBox()->installEventFilter(obj);
 }
 
-void PaletteTree::setUXInfo(UXInfoInterface *uxInfo)
-{
-	mUXInfoInterface = uxInfo;
-}
-
 void PaletteTree::reportPaletteUserAction(const QString &userAction)
 {
-	mUXInfoInterface->reportPaletteUserAction(userAction);
+	utils::UXInfo::instance()->reportUserAction(userAction);
 }
-

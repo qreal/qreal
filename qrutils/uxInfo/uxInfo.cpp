@@ -191,7 +191,7 @@ void UXInfo::reportSettingsChangesInfo(const QString &name, const QString &oldVa
 	mSettingChangesNumber++;
 }
 
-void UXInfo::reportPaletteUserActionInfo(const QString &userAction)
+void UXInfo::reportUserActionInfo(const QString &userAction)
 {
 	if (!writeData(mUserActionStream)) {
 		return;
@@ -360,9 +360,9 @@ void UXInfo::reportSettingsChanges(const QString &name, const QVariant &oldValue
 	instance()->reportSettingsChangesInfo(name, oldValue.toString(), newValue.toString());
 }
 
-void UXInfo::reportPaletteUserAction(const QString &userAction)
+void UXInfo::reportUserAction(const QString &userAction)
 {
-	instance()->reportPaletteUserActionInfo(userAction);
+	instance()->reportUserActionInfo(userAction);
 }
 
 void UXInfo::setStatus(bool status)

@@ -17,8 +17,6 @@
 
 #include "controller/controller.h"
 
-#include "qrkernel/uxInfoInterface.h"
-
 namespace qReal {
 
 /// size of a point port
@@ -36,8 +34,7 @@ public:
 	Element(ElementImpl *elementImpl
 			, Id const &id
 			, models::GraphicalModelAssistApi &graphicalAssistApi
-			, models::LogicalModelAssistApi &logicalAssistApi
-			, UXInfoInterface *uxInfoInterface);
+			, models::LogicalModelAssistApi &logicalAssistApi);
 
 	virtual ~Element() {}
 
@@ -92,7 +89,6 @@ protected:
 	models::LogicalModelAssistApi &mLogicalAssistApi;
 	models::GraphicalModelAssistApi &mGraphicalAssistApi;
 	Controller *mController;
-	UXInfoInterface *mUXInfoInterface; // Has ownership.
 };
 
 }
