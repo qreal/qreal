@@ -142,6 +142,9 @@ bool SubversionPlugin::clientExist()
 	process->waitForFinished();
 	bool res = process->readAllStandardOutput().startsWith(QString("svn").toLocal8Bit());
 	qReal::SettingsManager::setValue("svnClientExist", res);
+	if (res) {
+		setPathToClient(pathToSvn());
+	}
 	delete process;
 	return res;
 }

@@ -213,6 +213,9 @@ bool GitPlugin::clientExist()
 	process->waitForFinished();
 	bool res = process->readAllStandardOutput().startsWith(QString("git").toLocal8Bit());
 	qReal::SettingsManager::setValue("gitClientExist", res);
+	if (res) {
+		setPathToClient(pathToGit());
+	}
 	delete process;
 	return res;
 }

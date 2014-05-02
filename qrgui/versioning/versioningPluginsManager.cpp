@@ -58,8 +58,8 @@ void VersioningPluginsManager::initFromToolPlugins(
 					, this, SLOT(onWorkingCopyUpdated(bool const)));
 			connect(versioningPlugin, SIGNAL(changesSubmitted(bool const))
 					, this, SLOT(onChangesSubmitted(bool const)));
-			connect(versioningPlugin, SIGNAL(clientInstalled(QString,bool))
-					, this, SLOT(setVisibleVersioningTools(QString,bool)));
+			connect(versioningPlugin, SIGNAL(clientInstalled(QString, bool))
+					, this, SLOT(setVisibleVersioningTools(QString, bool)));
 		}
 		DiffPluginBase *diffPlugin =
 				dynamic_cast<DiffPluginBase *>(toolPlugin);
@@ -261,9 +261,13 @@ void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTransp
 		}
 	}
 
-	if (!mPluginsWithExistClient.isEmpty()){
+	if (!mPluginsWithExistClient.isEmpty() && !switchOnTranspMode){
 		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
 			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
+		}
+	} else if (mPluginsWithExistClient.isEmpty() || switchOnTranspMode){
+		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
+			actionInfo.menu()->menuAction()->setVisible(false);
 		}
 	}
 
@@ -318,7 +322,7 @@ void VersioningPluginsManager::setVisibleVersioningTools(QString versioningPlugi
 		|| (!qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive)){
 		emit setVisibleTransparentMode(false);
 	} else if (qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive){
-		emit setVisibleTransparentMode(true);
+		emit transparentClassIsReady();
 	}
 }
 

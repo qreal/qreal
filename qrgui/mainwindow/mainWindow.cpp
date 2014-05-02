@@ -1992,7 +1992,9 @@ void MainWindow::initToolPlugins()
 
 	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter, mProjectManager);
 
-	mUi->actionList_of_version_3->setVisible(qReal::SettingsManager::value("gitClientExist", false).toBool());
+	//deafult setting for transparent mode
+	qReal::SettingsManager::setValue("transparentVersioningMode"
+									 ,qReal::SettingsManager::value("transparentVersioningMode",true).toBool());
 
 	connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
 								, mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
@@ -2002,7 +2004,6 @@ void MainWindow::initToolPlugins()
 	connect(mUi->actionList_of_version_3, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
 	connect(mVersioningManager, SIGNAL(setVisibleTransparentMode(bool)), mUi->actionList_of_version_3, SLOT(setVisible(bool)));
 
-	qReal::SettingsManager::setValue("transparentVersioningMode", true); // default
 	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins()), this);
 	mVersioningManager->switchOffOrOnAllPluginsAction(qReal::SettingsManager::value("transparentVersioningMode").toBool());
 	mUi->actionList_of_version_3->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
@@ -2307,7 +2308,8 @@ void MainWindow::showChangeVersion()
 void MainWindow::initMEasyVersioningLink()
 {
 	mEasyVersioning = mVersioningManager->getLinkOnTransparentMode();
-	switchOffOrOnEasyVers(qReal::SettingsManager::value("transparentVersioningMode").toBool());
+	switchOffOrOnEasyVers(qReal::SettingsManager::value("transparentVersioningMode").toBool()
+							&& qReal::SettingsManager::value("gitClientExist", false).toBool());
 }
 
 void MainWindow::openStartTab()
