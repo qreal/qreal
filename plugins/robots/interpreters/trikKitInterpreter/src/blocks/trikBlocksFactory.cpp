@@ -52,14 +52,10 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 {
 	qReal::IdList result;
 
-	result << id("WaitForTouchSensor")
-			<< id("WaitForColor")
-			<< id("WaitForColorIntensity")
-			<< id("WaitForSound")
-			;
-
 	if (mRobotModelManager->model().name().contains("TwoD")) {
-		result << id("WaitForGyroscope")
+		result
+				<< id("TrikWaitForGyroscope")
+				<< id("TrikWaitForAccelerometer")
 				;
 	}
 

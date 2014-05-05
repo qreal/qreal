@@ -23,9 +23,9 @@ using namespace details;
 
 interpreterBase::blocksBase::Block *NxtBlocksFactory::produceBlock(qReal::Id const &element)
 {
-	if (elementMetatypeIs(element, "Beep")) {
+	if (elementMetatypeIs(element, "NxtBeep")) {
 		return new BeepBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "PlayTone")) {
+	} else if (elementMetatypeIs(element, "NxtPlayTone")) {
 		return new PlayToneBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtEnginesForward")) {
 		return new details::NxtEnginesForwardBlock(mRobotModelManager->model());
@@ -35,19 +35,19 @@ interpreterBase::blocksBase::Block *NxtBlocksFactory::produceBlock(qReal::Id con
 		return new interpreterBase::blocksBase::common::EnginesStopBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtClearEncoder")) {
 		return new interpreterBase::blocksBase::common::ClearEncoderBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForButtons")) {
+	} else if (elementMetatypeIs(element, "NxtWaitForButtons")) {
 		return new WaitForButtonsBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "DrawPixel")) {
+	} else if (elementMetatypeIs(element, "NxtDrawPixel")) {
 		return new DrawPixelBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "DrawLine")) {
 		return new DrawLineBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "DrawCircle")) {
+	} else if (elementMetatypeIs(element, "NxtDrawLine")) {
 		return new DrawCircleBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "PrintText")) {
+	} else if (elementMetatypeIs(element, "NxtPrintText")) {
 		return new PrintTextBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "DrawRect")) {
+	} else if (elementMetatypeIs(element, "NxtDrawRect")) {
 		return new DrawRectBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "ClearScreen")) {
+	} else if (elementMetatypeIs(element, "NxtClearScreen")) {
 		return new ClearScreenBlock(mRobotModelManager->model());
 	}
 
@@ -57,19 +57,19 @@ interpreterBase::blocksBase::Block *NxtBlocksFactory::produceBlock(qReal::Id con
 qReal::IdList NxtBlocksFactory::providedBlocks() const
 {
 	return {
-		id("Beep")
-		, id("PlayTone")
+		id("NxtBeep")
+		, id("NxtPlayTone")
 		, id("NxtEnginesForward")
 		, id("NxtEnginesBackward")
 		, id("NxtEnginesStop")
 		, id("NxtClearEncoder")
-		, id("WaitForButtons")
-		, id("DrawPixel")
-		, id("DrawLine")
-		, id("DrawCircle")
-		, id("PrintText")
-		, id("DrawRect")
-		, id("ClearScreen")
+		, id("NxtWaitForButtons")
+		, id("NxtDrawPixel")
+		, id("NxtDrawLine")
+		, id("NxtDrawCircle")
+		, id("NxtPrintText")
+		, id("NxtDrawRect")
+		, id("NxtClearScreen")
 	};
 }
 
@@ -78,8 +78,8 @@ qReal::IdList NxtBlocksFactory::blocksToDisable() const
 	qReal::IdList result;
 
 	if (mRobotModelManager->model().name().contains("TwoD")) {
-		result << id("WaitForGyroscope")
-				<< id("WaitForSound")
+		result
+				<< id("NxtWaitForSound")
 				;
 	}
 
