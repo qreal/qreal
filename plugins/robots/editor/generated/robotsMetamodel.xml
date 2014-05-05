@@ -1946,10 +1946,8 @@
 						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
 						<label x="35" y="60" textBinded="Degrees"/>
-						<label x="-26" y="60" text="Градусы:"/>
+						<label x="-56" y="60" text="Градусы/сек:"/>
 						<label x="55" y="80" textBinded="Sign"/>
 						<label x="-90" y="80" text="Считанное значение:"/>
 					</labels>
@@ -1994,13 +1992,11 @@
 						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Acceleration"/>
+						<label x="50" y="60" textBinded="Acceleration"/>
 						<label x="-26" y="60" text="Ускорение:"/>
-						<label x="33" y="80" textBinded="Sign"/>
-						<label x="-80" y="80" text="Считанное значение:"/>
-						<label x="33" y="100" textBinded="AccelerationAxis"/>
+						<label x="50" y="80" textBinded="Sign"/>
+						<label x="-100" y="80" text="Считанное значение:"/>
+						<label x="50" y="100" textBinded="AccelerationAxis"/>
 						<label x="-80" y="100" text="Ускорение по оси:"/>
 					</labels>
 					<ports>
@@ -2032,7 +2028,7 @@
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
 							<default>больше</default>
 						</property>
-						<property displayedName="Ускорение по оси" type="Accelerations" name="AccelerationAxe">
+						<property displayedName="Ускорение по оси" type="Accelerations" name="AccelerationAxis">
 							<default>X</default>
 						</property>
 					</properties>
