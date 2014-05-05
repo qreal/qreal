@@ -6,7 +6,7 @@ void VariableInitBlock::run()
 {
 	int position = 0;
 	QString const code = stringProperty("variable") + " = " + stringProperty("value");
-	mParser->standartBlockParseProcess(code, position, mGraphicalId);
+	mParser->functionBlockParseProcess(code, position, mGraphicalId);
 	if (mParser->hasErrors()) {
 		mParser->deselect();
 		emit failure();

@@ -162,11 +162,11 @@ QVariant Block::evaluate(QString const &propertyName)
 {
 	int position = 0;
 	utils::Number *result = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
-//	if (mParser->hasErrors()) {
-//		mParser->deselect();
-//		emit failure();
-//		return QVariant();
-//	}
+	if (mParser->hasErrors()) {
+		mParser->deselect();
+		emit failure();
+		return QVariant();
+	}
 
 
 	return result->value();
@@ -174,14 +174,14 @@ QVariant Block::evaluate(QString const &propertyName)
 
 bool Block::evaluateBool(QString const &propertyName)
 {
-//	int position = 0;
-//	bool const value = mParser->parseCondition(stringProperty(propertyName), position, mGraphicalId);
-//	if (mParser->hasErrors()) {
-//		mParser->deselect();
-//		emit failure();
-//	}
-//	return value;
-	return "";
+	int position = 0;
+	bool const value = mParser->parseCondition(stringProperty(propertyName), position, mGraphicalId);
+	if (mParser->hasErrors()) {
+		mParser->deselect();
+		emit failure();
+	}
+
+	return value;
 }
 
 interpreterBase::robotModel::RobotModelInterface &Block::model()

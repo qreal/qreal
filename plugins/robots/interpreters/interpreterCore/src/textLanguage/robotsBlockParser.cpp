@@ -61,7 +61,7 @@ void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &po
 	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
 	for (int i = 0; i < exprs.length(); ++i) {
 		if (mHasParseErrors) {
-			mHasParseErrors = false; /*С‡С‚РѕР±С‹ РЅРµ РїРѕР»СѓС‡РёС‚СЊ Р»РёС€РЅРёС… РѕС€РёР±РѕРє, Р±СѓРґРµРј РЅРµР·Р°РІРёСЃРёРјРѕ РѕР±СЂР°Р±Р°С‚С‹РІР°С‚СЊ РїРµСЂРµРјРµРЅРЅС‹Рµ*/
+			mHasParseErrors = false;
 			hasParseErrorsFlag = true;
 		}
 		int position = 0;
@@ -70,6 +70,11 @@ void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &po
 		parseCommand(expr + ";", position);
 	}
 	mHasParseErrors = hasParseErrorsFlag;
+}
+
+bool RobotsBlockParser::parseCondition(QString const &stream, int& pos, qReal::Id const &curId)
+{
+	return utils::ExpressionsParser::parseCondition(stream, pos, curId);
 }
 
 void RobotsBlockParser::deselect()
