@@ -2,10 +2,10 @@
 
 #include "details/initialBlock.h"
 #include "details/finalBlock.h"
-#include "details/nullificationEncoderBlock.h"
 
 #include "details/timerBlock.h"
 #include "details/functionBlock.h"
+#include "details/variableInitBlock.h"
 
 #include "details/loopBlock.h"
 #include "details/forkBlock.h"
@@ -45,8 +45,8 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::SubprogramBlock();
 	} else if (elementMetatypeIs(element, "Function")) {
 		return new details::FunctionBlock();
-	} else if (elementMetatypeIs(element, "NullificationEncoder")) {
-		return new details::NullificationEncoderBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "VariableInit")) {
+		return new details::VariableInitBlock();
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
 		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
@@ -83,7 +83,7 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Fork")
 		, id("Subprogram")
 		, id("Function")
-		, id("NullificationEncoder")
+		, id("VariableInit")
 		, id("WaitForTouchSensor")
 		, id("WaitForSonarDistance")
 		, id("WaitForColor")

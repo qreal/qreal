@@ -25,6 +25,7 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/subprogramBlock.h \
 	$$PWD/src/coreBlocks/details/functionBlock.h \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
+	$$PWD/src/coreBlocks/details/variableInitBlock.h \
 	$$PWD/src/coreBlocks/details/waitForSensorBlock.h \
 	$$PWD/src/coreBlocks/details/waitForTouchSensorBlock.h \
 	$$PWD/src/coreBlocks/details/waitForSonarDistanceBlock.h \
@@ -70,6 +71,7 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/subprogramBlock.cpp \
 	$$PWD/src/coreBlocks/details/functionBlock.cpp \
 	$$PWD/src/coreBlocks/details/timerBlock.cpp \
+	$$PWD/src/coreBlocks/details/variableInitBlock.cpp \
 	$$PWD/src/coreBlocks/details/waitForSensorBlock.cpp \
 	$$PWD/src/coreBlocks/details/waitForTouchSensorBlock.cpp \
 	$$PWD/src/coreBlocks/details/waitForSonarDistanceBlock.cpp \
