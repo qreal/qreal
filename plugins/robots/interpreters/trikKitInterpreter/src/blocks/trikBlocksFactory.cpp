@@ -13,10 +13,15 @@
 #include <interpreterBase/blocksBase/common/waitForSoundSensorBlock.h>
 #include <interpreterBase/blocksBase/common/waitForTouchSensorBlock.h>
 
+#include "details/sadSmileBlock.h"
+#include "details/smileBlock.h"
+#include "details/setBackgroundBlock.h"
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
+#include "details/waitForButtonsBlock.h"
 
 using namespace trikKitInterpreter::blocks;
+using namespace trikKitInterpreter::blocks::details;
 
 interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
 {
@@ -63,6 +68,14 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 //		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
 //	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
 //		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
+
+	/// @todo: these blocks shall get model and find display themselves.
+//	} else if (elementMetatypeIs(element, "TrikSmile")) {
+//		return new SmileBlock();
+//	} else if (elementMetatypeIs(element, "TrikSadSmile")) {
+//		return new SadSmileBlock();
+//	} else if (elementMetatypeIs(element, "TrikSetBackground")) {
+//		return new SetBackgroundBlock();
 
 	}
 

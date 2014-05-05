@@ -15,6 +15,7 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port);
 
 	virtual void drawSmile(bool sad) = 0;
+
 	/// @todo: color enum here?
 	virtual void setBackground(QColor const &color) = 0;
 	virtual void clearScreen() = 0;

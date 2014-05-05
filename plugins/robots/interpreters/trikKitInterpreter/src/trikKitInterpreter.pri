@@ -15,8 +15,13 @@ HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \
 	$$PWD/trikTwoDModelConfigurer.h \
 	$$PWD/blocks/trikBlocksFactory.h \
+	$$PWD/blocks/details/sadSmileBlock.h \
+	$$PWD/blocks/details/setBackgroundBlock.h \
+	$$PWD/blocks/details/smileBlock.h \
+	$$PWD/blocks/details/smileBlockBase.h \
 	$$PWD/blocks/details/trikEnginesForwardBlock.h \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.h \
+	$$PWD/blocks/details/waitForButtonsBlock.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
 	$$PWD/robotModel/parts/trikDisplay.h \
 	$$PWD/robotModel/parts/trikSpeaker.h \
@@ -52,8 +57,13 @@ SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
 	$$PWD/trikTwoDModelConfigurer.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
+	$$PWD/blocks/details/sadSmileBlock.cpp \
+	$$PWD/blocks/details/setBackgroundBlock.cpp \
+	$$PWD/blocks/details/smileBlock.cpp \
+	$$PWD/blocks/details/smileBlockBase.cpp \
 	$$PWD/blocks/details/trikEnginesForwardBlock.cpp \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.cpp \
+	$$PWD/blocks/details/waitForButtonsBlock.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
 	$$PWD/robotModel/parts/trikDisplay.cpp \
 	$$PWD/robotModel/parts/trikSpeaker.cpp \
