@@ -1,8 +1,9 @@
-#include "waitForColorSensorBlockBase.h"
+#include "interpreterBase/blocksBase/common/waitForColorSensorBlockBase.h"
 
-#include <interpreterBase/robotModel/robotParts/colorSensor.h>
+#include "interpreterBase/robotModel/robotParts/colorSensor.h"
 
-using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase;
+using namespace blocksBase::common;
 using namespace interpreterBase::robotModel;
 
 WaitForColorSensorBlockBase::WaitForColorSensorBlockBase(interpreterBase::robotModel::RobotModelInterface &robotModel)

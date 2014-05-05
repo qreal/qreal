@@ -8,13 +8,11 @@ namespace robotParts {
 class EncoderSensor;
 }
 }
-}
 
-namespace interpreterCore {
-namespace coreBlocks {
-namespace details {
+namespace blocksBase {
+namespace common {
 
-class WaitForEncoderBlock : public interpreterBase::blocksBase::common::WaitBlock
+class ROBOTS_INTERPRETER_BASE_EXPORT WaitForEncoderBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT
 

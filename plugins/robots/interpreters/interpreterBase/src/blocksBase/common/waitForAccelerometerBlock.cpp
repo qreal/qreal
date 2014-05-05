@@ -1,9 +1,10 @@
-#include "waitForAccelerometerBlock.h"
+#include "interpreterBase/blocksBase/common/waitForAccelerometerBlock.h"
 
-#include <interpreterBase/robotModel/robotParts/accelerometerSensor.h>
+#include "interpreterBase/robotModel/robotParts/accelerometerSensor.h"
 
-using namespace interpreterCore::coreBlocks::details;
-using namespace interpreterBase::robotModel;
+using namespace interpreterBase;
+using namespace blocksBase::common;
+using namespace robotModel;
 
 WaitForAccelerometerSensorBlock::WaitForAccelerometerSensorBlock(RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)

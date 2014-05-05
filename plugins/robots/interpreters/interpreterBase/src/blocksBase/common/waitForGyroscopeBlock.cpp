@@ -1,9 +1,10 @@
-#include "waitForGyroscopeBlock.h"
+#include "interpreterBase/blocksBase/common/waitForGyroscopeBlock.h"
 
-#include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
+#include "interpreterBase/robotModel/robotParts/gyroscopeSensor.h"
 
-using namespace interpreterCore::coreBlocks::details;
-using namespace interpreterBase::robotModel;
+using namespace interpreterBase;
+using namespace blocksBase::common;
+using namespace robotModel;
 
 WaitForGyroscopeSensorBlock::WaitForGyroscopeSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)

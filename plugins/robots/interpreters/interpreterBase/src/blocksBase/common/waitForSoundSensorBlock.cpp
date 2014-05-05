@@ -1,9 +1,10 @@
-#include "waitForSoundSensorBlock.h"
+#include "interpreterBase/blocksBase/common/waitForSoundSensorBlock.h"
 
-#include <interpreterBase/robotModel/robotParts/soundSensor.h>
+#include "interpreterBase/robotModel/robotParts/soundSensor.h"
 
-using namespace interpreterCore::coreBlocks::details;
-using namespace interpreterBase::robotModel;
+using namespace interpreterBase;
+using namespace blocksBase::common;
+using namespace robotModel;
 
 WaitForSoundSensorBlock::WaitForSoundSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
