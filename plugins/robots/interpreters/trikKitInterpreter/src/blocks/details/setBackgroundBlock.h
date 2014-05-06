@@ -2,8 +2,6 @@
 
 #include <interpreterBase/blocksBase/block.h>
 
-#include "src/robotModel/parts/trikDisplay.h"
-
 namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
@@ -11,14 +9,14 @@ namespace details {
 class SetBackgroundBlock : public interpreterBase::blocksBase::Block
 {
 public:
-	explicit SetBackgroundBlock(robotModel::parts::TrikDisplay &display);
+	explicit SetBackgroundBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
-	virtual void run();
 
 private:
+	void run() override;
 	QColor propertyToColor(QString const &property) const;
 
-	robotModel::parts::TrikDisplay &mDisplay;
+	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 };
 
 }

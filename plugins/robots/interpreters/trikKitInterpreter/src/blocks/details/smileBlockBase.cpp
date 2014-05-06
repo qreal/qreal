@@ -1,17 +1,24 @@
 #include "smileBlockBase.h"
 
-using namespace trikKitInterpreter::blocks::details;
-using namespace interpreterBase::robotModel::robotParts;
+#include <interpreterBase/robotModel/robotModelUtils.h>
 
-SmileBlockBase::SmileBlockBase(QString const &pathToImage, robotModel::parts::TrikDisplay &display)
-	: mSmile(pathToImage)
-	, mDisplay(display)
+#include "src/robotModel/parts/trikDisplay.h"
+
+using namespace trikKitInterpreter::blocks::details;
+
+SmileBlockBase::SmileBlockBase(interpreterBase::robotModel::RobotModelInterface &robotModel, bool isSmileHappy)
+	: mRobotModel(robotModel)
+	, mIsSmileHappy(isSmileHappy)
 {
 }
 
 void SmileBlockBase::run()
 {
-	/// @todo: restore this.
-	//	mDisplay.drawImage(mSmile);
+	robotModel::parts::TrikDisplay * const display =
+			interpreterBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(
+					mRobotModel, "DisplayPort"
+			);
+
+	display->drawSmile(mIsSmileHappy);
 	emit done(mNextBlockId);
 }

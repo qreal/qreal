@@ -9,7 +9,7 @@ namespace details {
 class SmileBlock : public SmileBlockBase
 {
 public:
-	explicit SmileBlock(robotModel::parts::TrikDisplay &display);
+	explicit SmileBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 };
 
 }

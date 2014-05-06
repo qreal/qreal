@@ -1,5 +1,6 @@
 #include "trikBlocksFactory.h"
 
+#include <interpreterBase/blocksBase/common/emptyBlock.h>
 #include <interpreterBase/blocksBase/common/enginesStopBlock.h>
 #include <interpreterBase/blocksBase/common/clearEncoderBlock.h>
 
@@ -42,13 +43,25 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	{
 		return new interpreterBase::blocksBase::common::ClearEncoderBlock(mRobotModelManager->model());
 
+	} else if (elementMetatypeIs(element, "TrikSay")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikLed")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikSystem")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikDetectLine")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikLineDetectorToVariable")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+
 	} else if (elementMetatypeIs(element, "TrikWaitForLight")) {
 		return new interpreterBase::blocksBase::common::WaitForTouchSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForSonarDistance")) {
 		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model());
-	/// @todo: support TrikWaitForIRDistance.
-//	} else if (elementMetatypeIs(element, "TrikWaitForIRDistance")) {
-//		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitForIRDistance")) {
+		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForGyroscope")) {
 		return new interpreterBase::blocksBase::common::WaitForGyroscopeSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForAccelerometer")) {
@@ -69,14 +82,12 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 //	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
 //		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
 
-	/// @todo: these blocks shall get model and find display themselves.
-//	} else if (elementMetatypeIs(element, "TrikSmile")) {
-//		return new SmileBlock();
-//	} else if (elementMetatypeIs(element, "TrikSadSmile")) {
-//		return new SadSmileBlock();
-//	} else if (elementMetatypeIs(element, "TrikSetBackground")) {
-//		return new SetBackgroundBlock();
-
+	} else if (elementMetatypeIs(element, "TrikSmile")) {
+		return new SmileBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikSadSmile")) {
+		return new SadSmileBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikSetBackground")) {
+		return new SetBackgroundBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -102,19 +113,19 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 				;
 	}
 
-//	result
-//			<< id("TrikSay")
-//			<< id("TrikLed")
-//			<< id("TrikSystem")
-//			<< id("TrikInitCamera")
-//			<< id("TrikDetectLine")
-//			<< id("TrikLineDetectorToVariable")
-//			;
+	result
+			<< id("TrikSay")
+			<< id("TrikLed")
+			<< id("TrikSystem")
+			<< id("TrikInitCamera")
+			<< id("TrikDetectLine")
+			<< id("TrikLineDetectorToVariable")
+			;
 
 	result
 			<< id("TrikWaitForLight")
 			<< id("TrikWaitForSonarDistance")
-//			<< id("TrikWaitForIRDistance")
+			<< id("TrikWaitForIRDistance")
 			<< id("TrikWaitForGyroscope")
 			<< id("TrikWaitForAccelerometer")
 			<< id("TrikWaitForEncoder")
@@ -126,11 +137,11 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 //			<< id("TrikWaitForPower")
 			;
 
-//	result
-//			<< id("TrikSmile")
-//			<< id("TrikSadSmile")
-//			<< id("TrikSetBackground")
-//			;
+	result
+			<< id("TrikSmile")
+			<< id("TrikSadSmile")
+			<< id("TrikSetBackground")
+			;
 
 	return result;
 }
