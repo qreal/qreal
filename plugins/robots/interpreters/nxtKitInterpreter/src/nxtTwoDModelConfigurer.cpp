@@ -22,5 +22,5 @@ PortInfo NxtTwoDModelConfigurer::defaultRightWheelPort() const
 
 twoDModel::engine::TwoDModelDisplayWidget *NxtTwoDModelConfigurer::displayWidget(QWidget * parent) const
 {
-	return new NxtDisplay(parent);
+	return new NxtDisplayWidget(parent);
 }

@@ -1,5 +1,7 @@
 #include "trikTwoDModelConfigurer.h"
 
+#include "trikDisplayWidget.h"
+
 using namespace trikKitInterpreter;
 using namespace interpreterBase::robotModel;
 
@@ -26,7 +28,5 @@ PortInfo TrikTwoDModelConfigurer::defaultRightWheelPort() const
 
 twoDModel::engine::TwoDModelDisplayWidget *TrikTwoDModelConfigurer::displayWidget(QWidget * parent) const
 {
-	Q_UNUSED(parent)
-
-	return nullptr;
+	return new TrikDisplayWidget(parent);
 }

@@ -69,18 +69,18 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikWaitForEncoder")) {
 		return new interpreterBase::blocksBase::common::WaitForEncoderBlock(mRobotModelManager->model());
 
-//	} else if (elementMetatypeIs(element, "TrikWaitForEnter")) {
-//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "TrikWaitForLeft")) {
-//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "TrikWaitForRight")) {
-//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "TrikWaitForDown")) {
-//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "TrikWaitForUp")) {
-//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
-//	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
-//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitForEnter")) {
+		return new WaitForButtonsBlock(mRobotModelManager->model(), WaitForButtonsBlock::enter);
+	} else if (elementMetatypeIs(element, "TrikWaitForLeft")) {
+		return new WaitForButtonsBlock(mRobotModelManager->model(), WaitForButtonsBlock::left);
+	} else if (elementMetatypeIs(element, "TrikWaitForRight")) {
+		return new WaitForButtonsBlock(mRobotModelManager->model(), WaitForButtonsBlock::right);
+	} else if (elementMetatypeIs(element, "TrikWaitForDown")) {
+		return new WaitForButtonsBlock(mRobotModelManager->model(), WaitForButtonsBlock::down);
+	} else if (elementMetatypeIs(element, "TrikWaitForUp")) {
+		return new WaitForButtonsBlock(mRobotModelManager->model(), WaitForButtonsBlock::up);
+	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
+		return new WaitForButtonsBlock(mRobotModelManager->model(), WaitForButtonsBlock::power);
 
 	} else if (elementMetatypeIs(element, "TrikSmile")) {
 		return new SmileBlock(mRobotModelManager->model());
@@ -129,12 +129,12 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikWaitForGyroscope")
 			<< id("TrikWaitForAccelerometer")
 			<< id("TrikWaitForEncoder")
-//			<< id("TrikWaitForEnter")
-//			<< id("TrikWaitForLeft")
-//			<< id("TrikWaitForRight")
-//			<< id("TrikWaitForDown")
-//			<< id("TrikWaitForUp")
-//			<< id("TrikWaitForPower")
+			<< id("TrikWaitForEnter")
+			<< id("TrikWaitForLeft")
+			<< id("TrikWaitForRight")
+			<< id("TrikWaitForDown")
+			<< id("TrikWaitForUp")
+			<< id("TrikWaitForPower")
 			;
 
 	result

@@ -52,14 +52,14 @@ private slots:
 	void onActiveTabChanged(qReal::Id const &rootElementId);
 
 private:
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV4;
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV6;
 	robotModel::real::RealRobotModelV4 mRealRobotModelV4;
 	robotModel::real::RealRobotModelV6 mRealRobotModelV6;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV4;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV6;
 	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
 	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
-	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV4;
-	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV6;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 	QTranslator mAppTranslator;

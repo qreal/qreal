@@ -16,6 +16,7 @@ namespace details {
 class WaitForButtonsBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT
+
 public:
 	explicit WaitForButtonsBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 	~WaitForButtonsBlock() override;

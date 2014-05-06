@@ -1,54 +1,55 @@
-//#pragma once
+#pragma once
 
-//#include <interpreterBase/blocksBase/common/waitBlock.h>
+#include <interpreterBase/blocksBase/common/waitBlock.h>
 
-//#include "src/robotModel/trikRobotModelBase.h"
+#include "src/robotModel/trikRobotModelBase.h"
+#include "src/robotModel/parts/trikButtons.h"
 
-//namespace trikKitInterpreter {
-//namespace blocks {
-//namespace details {
+namespace trikKitInterpreter {
+namespace blocks {
+namespace details {
 
-//class WaitForButtonsBlock : public WaitBlock
-//{
-//	Q_OBJECT
-//public:
-//	WaitForButtonsBlock(RobotModel * const robotModel, robotParts::Display &display);
-//	virtual ~WaitForButtonsBlock() {}
-//	virtual void run();
+class WaitForButtonsBlock : public interpreterBase::blocksBase::common::WaitBlock
+{
+	Q_OBJECT
 
-//protected:
-//	virtual QString name() const;
+public:
+	enum TrikButtonsEnum {
+		left
+		, right
+		, up
+		, down
+		, enter
+		, escape
+		, power
+	};
 
-//protected slots:
-//	virtual void responseSlot(bool leftIsDown, bool rightIsDown
-//			, bool upIsDown, bool downIsDown, bool downLeftIsDown
-//			, bool attachIsDown, bool onIsDown);
+	WaitForButtonsBlock(interpreterBase::robotModel::RobotModelInterface &robotModel, TrikButtonsEnum button);
+	virtual ~WaitForButtonsBlock() {}
 
-//	virtual void timerTimeout();
+protected:
+	virtual QString name() const;
 
-//private:
-//	void clicksCounter(bool &buttonWasDown, bool buttonIsDown, int &clicks);
+protected slots:
+	void responseSlot(bool leftIsPressed
+			, bool rightIsPressed
+			, bool upIsPressed
+			, bool downIsPressed
+			, bool enterIsPresed
+			, bool escapeIsPresed
+			, bool powerIsPressed);
 
-//	int mLeftButtonClicks;
-//	int mRightButtonClicks;
-//	int mUpButtonClicks;
-//	int mDownButtonClicks;
-//	int mDownLeftButtonClicks;
-//	int mAttachButtonClicks;
-//	int mOnButtonClicks;
+	virtual void timerTimeout();
 
+private:
+	void run() override;
+	interpreterBase::robotModel::DeviceInfo device() const override;
 
-//	bool mLeftWasDown;
-//	bool mRightWasDown;
-//	bool mUpWasDown;
-//	bool mDownWasDown;
-//	bool mDownLeftWasDown;
-//	bool mAttachWasDown;
-//	bool mOnWasDown;
+	TrikButtonsEnum mButton;
 
-//	robotParts::Display &mDisplay;
-//};
+	robotModel::parts::TrikButtons *mButtons;
+};
 
-//}
-//}
-//}
+}
+}
+}

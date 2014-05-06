@@ -17,9 +17,10 @@ public:
 signals:
 	void response(bool leftIsPressed
 			, bool rightIsPressed
-			, bool centralIsPressed
-			, bool bottomIsPressed
+			, bool upIsPressed
+			, bool downIsPressed
 			, bool enterIsPresed
+			, bool escapeIsPresed
 			, bool powerIsPressed);
 
 private:
