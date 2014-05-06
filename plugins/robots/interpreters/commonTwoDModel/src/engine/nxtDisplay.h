@@ -24,10 +24,8 @@ public:
 
 	virtual void setPainter(graphicsUtils::PainterInterface *p);
 
-	bool leftButtonIsDown() const;
-	bool rightButtonIsDown() const;
-	bool centralButtonIsDown() const;
-	bool bottomButtonIsDown() const;
+	/// @todo Supposes polling, which is not very good for buttons.
+	bool buttonIsDown(QString const &buttonId) const override;
 
 	void repaintDisplay();
 	int displayWidth() const;

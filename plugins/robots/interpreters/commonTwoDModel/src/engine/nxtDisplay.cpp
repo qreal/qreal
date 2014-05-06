@@ -3,6 +3,7 @@
 #include "ui_nxtDisplay.h"
 
 #include <qrutils/graphicsUtils/painterInterface.h>
+#include <qrkernel/exception/exception.h>
 
 using namespace twoDModel;
 using namespace graphicsUtils;
@@ -20,24 +21,19 @@ NxtDisplay::~NxtDisplay()
 	delete mUi;
 }
 
-bool NxtDisplay::leftButtonIsDown() const
+bool NxtDisplay::buttonIsDown(QString const &buttonId) const
 {
-	return mUi->leftButton->isDown();
-}
+	if (buttonId == "left") {
+		return mUi->leftButton->isDown();
+	} else if (buttonId == "right") {
+		return mUi->rightButton->isDown();
+	} else if (buttonId == "central") {
+		return mUi->centralButton->isDown();
+	} else if (buttonId == "bottom") {
+		return mUi->bottomButton->isDown();
+	}
 
-bool NxtDisplay::rightButtonIsDown() const
-{
-	return mUi->rightButton->isDown();
-}
-
-bool NxtDisplay::centralButtonIsDown() const
-{
-	return mUi->centralButton->isDown();
-}
-
-bool NxtDisplay::bottomButtonIsDown() const
-{
-	return mUi->bottomButton->isDown();
+	throw qReal::Exception("Incorrect button id in NxtDisplay::buttonIsDown");
 }
 
 void NxtDisplay::setPainter(graphicsUtils::PainterInterface *p)
