@@ -12,8 +12,7 @@ TrikEnginesStopGenerator::TrikEnginesStopGenerator(qrRepo::RepoApi const &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "engines/stop.t", QList<Binding *>()
 			<< Binding::createMultiTarget("@@PORT@@", "Ports"
-					, dynamic_cast<trik::TrikGeneratorFactory *>(customizer.factory())->
-							enginesConverter(repo.property(id, "powerMotors").toBool()))
+					, dynamic_cast<trik::TrikGeneratorFactory *>(customizer.factory())->enginesConverter())
 			, parent)
 {
 }

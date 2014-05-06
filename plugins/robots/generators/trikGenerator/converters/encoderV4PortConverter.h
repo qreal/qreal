@@ -5,7 +5,7 @@
 namespace trik {
 namespace converters {
 
-class EncoderPortConverter : public generatorBase::simple::Binding::ConverterInterface
+class EncoderV4PortConverter : public generatorBase::simple::Binding::ConverterInterface
 {
 public:
 	QString convert(QString const &data) const override;

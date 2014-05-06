@@ -38,9 +38,10 @@ HEADERS += \
 	$$PWD/parts/trikVariables.h \
 	$$PWD/converters/backgroundColorConverter.h \
 	$$PWD/converters/ledColorConverter.h \
-	$$PWD/converters/powerMotorPortConverter.h \
-	$$PWD/converters/servoMotorPortConverter.h \
-	$$PWD/converters/encoderPortConverter.h \
+	$$PWD/converters/engineV4PortConverter.h \
+	$$PWD/converters/engineV6PortConverter.h \
+	$$PWD/converters/encoderV4PortConverter.h \
+	$$PWD/converters/encoderV6PortConverter.h \
 	$$PWD/simpleGenerators/detectLineGenerator.h \
 	$$PWD/simpleGenerators/initCameraGenerator.h \
 	$$PWD/simpleGenerators/ledGenerator.h \
@@ -64,9 +65,10 @@ SOURCES += \
 	$$PWD/parts/trikVariables.cpp \
 	$$PWD/converters/backgroundColorConverter.cpp \
 	$$PWD/converters/ledColorConverter.cpp \
-	$$PWD/converters/powerMotorPortConverter.cpp \
-	$$PWD/converters/servoMotorPortConverter.cpp \
-	$$PWD/converters/encoderPortConverter.cpp \
+	$$PWD/converters/engineV4PortConverter.cpp \
+	$$PWD/converters/engineV6PortConverter.cpp \
+	$$PWD/converters/encoderV4PortConverter.cpp \
+	$$PWD/converters/encoderV6PortConverter.cpp \
 	$$PWD/simpleGenerators/detectLineGenerator.cpp \
 	$$PWD/simpleGenerators/initCameraGenerator.cpp \
 	$$PWD/simpleGenerators/ledGenerator.cpp \

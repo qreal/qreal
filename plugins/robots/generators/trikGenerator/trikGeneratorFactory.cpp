@@ -1,8 +1,9 @@
 #include "trikGeneratorFactory.h"
 #include <generatorBase/converters/regexpMultiConverter.h>
-#include "converters/servoMotorPortConverter.h"
-#include "converters/powerMotorPortConverter.h"
-#include "converters/encoderPortConverter.h"
+#include "converters/engineV4PortConverter.h"
+#include "converters/engineV6PortConverter.h"
+#include "converters/encoderV4PortConverter.h"
+#include "converters/encoderV6PortConverter.h"
 #include "simpleGenerators/detectLineGenerator.h"
 #include "simpleGenerators/initCameraGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
@@ -39,13 +40,13 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		, GeneratorCustomizer &customizer)
 {
 	QString const elementType = id.element();
-	if (elementType == "EnginesForward" || elementType == "EnginesBackward") {
+	if (elementType.contains("EnginesForward") || elementType.contains("EnginesBackward")) {
 		return new TrikEnginesGenerator(mRepo, customizer, id, elementType, this);
-	} else if (elementType == "EnginesStop") {
+	} else if (elementType.contains("EnginesStop")) {
 		return new TrikEnginesStopGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "NullificationEncoder") {
+	} else if (elementType.contains("NullificationEncoder")) {
 		return new TrikNullificationEncoderGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "PlayTone") {
+	} else if (elementType.contains("PlayTone")) {
 		return new PlayToneGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Smile") {
 		return new SmileGenerator(mRepo, customizer, id, this);
@@ -87,26 +88,14 @@ QString TrikGeneratorFactory::pathToTemplates() const
 	return ":/trik/templates";
 }
 
-Binding::MultiConverterInterface *TrikGeneratorFactory::enginesConverter(bool powerMotors) const
-{
-	if (powerMotors) {
-		return new generatorBase::converters::RegexpMultiConverter(converters::PowerMotorPortConverter::splitRegexp()
-				, new converters::PowerMotorPortConverter);
-	}
-
-	return new generatorBase::converters::RegexpMultiConverter(converters::ServoMotorPortConverter::splitRegexp()
-			, new converters::ServoMotorPortConverter);
-}
-
 Binding::MultiConverterInterface *TrikGeneratorFactory::enginesConverter() const
 {
-	return enginesConverter(true);
+	return new generatorBase::converters::RegexpMultiConverter(motorPortSplitRegexp(), motorPortConverter());
 }
 
 Binding::MultiConverterInterface *TrikGeneratorFactory::encodersConverter() const
 {
-	return new generatorBase::converters::RegexpMultiConverter(converters::PowerMotorPortConverter::splitRegexp()
-			, new converters::EncoderPortConverter);
+	return new generatorBase::converters::RegexpMultiConverter(motorPortSplitRegexp(), encoderPortConverter());
 }
 
 Binding::ConverterInterface *TrikGeneratorFactory::inputPortConverter() const
@@ -116,10 +105,43 @@ Binding::ConverterInterface *TrikGeneratorFactory::inputPortConverter() const
 
 Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
 {
-	return new converters::EncoderPortConverter;
+	return encoderPortConverter();
 }
 
 void TrikGeneratorFactory::initVariables()
 {
 	mVariables = new parts::TrikVariables(pathToTemplates(), mRobotModelManager.model());
+}
+
+Binding::ConverterInterface *TrikGeneratorFactory::motorPortConverter() const
+{
+	if (mRobotModelManager.model().name().contains("V4")) {
+		return new converters::PowerV4MotorPortConverter;
+	} else if (mRobotModelManager.model().name().contains("V6")) {
+		return new converters::PowerV6MotorPortConverter;
+	}
+
+	/// @todo: Inconsistent scenario
+	return new converters::PowerV4MotorPortConverter;
+}
+
+Binding::ConverterInterface *TrikGeneratorFactory::encoderPortConverter() const
+{
+	if (mRobotModelManager.model().name().contains("V4")) {
+		return new converters::EncoderV4PortConverter;
+	} else if (mRobotModelManager.model().name().contains("V6")) {
+		return new converters::EncoderV6PortConverter;
+	}
+}
+
+QString TrikGeneratorFactory::motorPortSplitRegexp() const
+{
+	if (mRobotModelManager.model().name().contains("V4")) {
+		return converters::PowerV4MotorPortConverter::splitRegexp();
+	} else if (mRobotModelManager.model().name().contains("V6")) {
+		return converters::PowerV6MotorPortConverter::splitRegexp();
+	}
+
+	/// @todo: Inconsistent scenario
+	return converters::PowerV4MotorPortConverter::splitRegexp();
 }
