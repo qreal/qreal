@@ -163,17 +163,22 @@ MainWindow::MainWindow(QString const &fileToOpen)
 void MainWindow::connectActionsForUXInfo()
 {
 	QList<QAction*> triggeredActions;
-	triggeredActions << mUi->actionQuit << mUi->actionOpen << mUi->actionSave
+	triggeredActions << mUi->actionNewProject << mUi->actionNew_Diagram
+			<< mUi->actionQuit << mUi->actionOpen << mUi->actionSave
 			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
 			<< mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
 			<< mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
 			<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
 			<< mUi->actionPreferences << mUi->actionHelp
 			<< mUi->actionAbout << mUi->actionAboutQt
-			<< mUi->actionFullscreen << mUi->actionFind;
+			<< mUi->actionFullscreen << mUi->actionFind
+			<< mUi->actionGesturesShow << mUi->actionFullscreen
+			<< mUi->actionZoom_In << mUi->actionZoom_Out
+			<< mUi->actionRedo << mUi->actionUndo;
 
 	foreach (QAction* const action, triggeredActions) {
-		connect(action, SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
+		connect(action, SIGNAL(triggered()), mFilterObject, SLOT(actionTriggered()));
+		connect(action, SIGNAL(hovered()), mFilterObject, SLOT(actionHovered()));
 	}
 
 	QList<QAction*> toggledActions;
@@ -182,7 +187,8 @@ void MainWindow::connectActionsForUXInfo()
 			<< mUi->actionSwitch_on_alignment;
 
 	foreach (QAction* const action, toggledActions) {
-		connect(action, SIGNAL(toggled(bool)), mFilterObject, SLOT(toggledActionActivated(bool)));
+		connect(action, SIGNAL(toggled(bool)), mFilterObject, SLOT(actionToggled(bool)));
+		connect(action, SIGNAL(hovered()), mFilterObject, SLOT(actionHovered()));
 	}
 }
 
@@ -316,6 +322,8 @@ EditorManagerInterface& MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	QString const userAction = QString::fromUtf8("Закрыть приложение — свойство: нет|");
+	utils::UXInfo::instance()->reportUserAction(userAction);
 	mSystemEvents->emitCloseMainWindow();
 
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
@@ -1957,7 +1965,9 @@ void MainWindow::initToolPlugins()
 			} else if (action.toolbarName() == "generators") {
 				mUi->generatorsToolbar->addAction(action.action());
 			}
-			connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
+			connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(actionTriggered()));
+			connect(action.action(), SIGNAL(toggled(bool)), mFilterObject, SLOT(actionToggled(bool)));
+			connect(action.action(), SIGNAL(hovered()), mFilterObject, SLOT(actionHovered()));
 		}
 	}
 
@@ -2241,6 +2251,11 @@ void MainWindow::setTabText(QWidget *tab, QString const &text)
 	if (index != -1) {
 		mUi->tabs->setTabText(index, text);
 	}
+}
+
+FilterObject* MainWindow::filterObject()
+{
+	return mFilterObject;
 }
 
 void MainWindow::setVersion(QString const &version)

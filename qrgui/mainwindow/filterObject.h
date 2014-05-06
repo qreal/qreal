@@ -22,6 +22,16 @@ public slots:
 	/// Record information about toggled action.
 	void toggledActionActivated(bool status);
 
+	void actionHovered();
+
+	void actionTriggered();
+
+	void actionToggled(bool toStatus);
+
+	void edgeContextMenuActionHovered();
+
+	void edgeContextMenuActionTriggered();
+
 	/// Change collection ux information mode.
 	void setStatusCollectUsabilityStatistics(bool status);
 

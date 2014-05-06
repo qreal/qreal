@@ -92,6 +92,7 @@ private:
 	models::GraphicalModelAssistApi &mGraphicalModelAssistApi;
 
 	QString mLastPaintText;
+	bool mInitializationPaint;
 };
 
 }

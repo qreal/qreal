@@ -168,6 +168,8 @@ public:
 
 	void setTabText(QWidget *tab, QString const &text);
 
+	FilterObject *filterObject();
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -196,6 +198,7 @@ public slots:
 	void openFirstDiagram();
 	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle(int index);
+	void deleteFromDiagram();
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -241,7 +244,6 @@ private slots:
 	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
 	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
-	void deleteFromDiagram();
 	void cutElementsOnDiagram();
 	void copyElementsOnDiagram();
 	void pasteOnDiagram();

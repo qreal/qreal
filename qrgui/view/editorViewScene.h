@@ -252,6 +252,9 @@ private:
 
 	view::details::ExploserView *mExploser; // Takes ownership
 
+	QAction *mDiscardAction;
+	QAction *mDeleteAction;
+
 	friend class qReal::EditorViewMViface;
 };
 

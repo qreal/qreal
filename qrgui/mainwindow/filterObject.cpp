@@ -35,9 +35,73 @@ void FilterObject::toggledActionActivated(bool status)
 	}
 }
 
+void FilterObject::actionHovered()
+{
+	QAction* const action = static_cast<QAction* const>(sender());
+	if (action) {
+		QString const actionText = action->text();
+		QString const userAction = QString::fromUtf8("Навести на пункт меню — название: ")
+				+ actionText
+				+ QString::fromUtf8("|");
+		utils::UXInfo::instance()->reportUserAction(userAction);
+	}
+}
+
+void FilterObject::actionTriggered()
+{
+	QAction* const action = static_cast<QAction* const>(sender());
+	if (action) {
+		QString const actionText = action->text();
+
+		QString const userAction = QString::fromUtf8("Нажать на пункт меню — название: ")
+				+ actionText
+				+ QString::fromUtf8("|");
+		utils::UXInfo::instance()->reportUserAction(userAction);
+	}
+}
+
+void FilterObject::actionToggled(bool toStatus)
+{
+	QAction* const action = static_cast<QAction* const>(sender());
+	if (action) {
+		QString const actionText = action->text();
+
+		QString const userAction = QString::fromUtf8("Нажать на пункт меню — название: ")
+				+ actionText
+				+ QString::fromUtf8("|состояние: ")
+				+ ((toStatus) ? QString::fromUtf8("включить|") : QString::fromUtf8("выключить|"));
+		utils::UXInfo::instance()->reportUserAction(userAction);
+	}
+}
+
+void FilterObject::edgeContextMenuActionHovered()
+{
+	QAction* const action = static_cast<QAction* const>(sender());
+	if (action) {
+		QString const actionText = action->text();
+		QString const userAction = QString::fromUtf8("Навести на пункт контекстного меню линка — название: ")
+				+ actionText
+				+ QString::fromUtf8("|");
+		utils::UXInfo::instance()->reportUserAction(userAction);
+	}
+}
+
+void FilterObject::edgeContextMenuActionTriggered()
+{
+	QAction* const action = static_cast<QAction* const>(sender());
+	if (action) {
+		QString const actionText = action->text();
+
+		QString const userAction = QString::fromUtf8("Нажать на пункт контекстного меню линка — название: ")
+				+ actionText
+				+ QString::fromUtf8("|");
+		utils::UXInfo::instance()->reportUserAction(userAction);
+	}
+}
+
 void FilterObject::setStatusCollectUsabilityStatistics(bool status)
 {
-	 utils::UXInfo::setStatus(status);
+	utils::UXInfo::setStatus(status);
 }
 
 void FilterObject::reportTestStarted()

@@ -19,6 +19,7 @@ Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elem
 	, mId(elementId)
 	, mGraphicalModelAssistApi(graphicalAssistApi)
 {
+	mInitializationPaint = true;
 	setText(text);
 	init();
 }
@@ -41,6 +42,8 @@ Label::~Label()
 
 void Label::init()
 {
+	mInitializationPaint = true;
+
 	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
 	setRotation(mRotation);
@@ -79,16 +82,21 @@ Qt::Orientation Label::orientation()
 
 void Label::setText(const QString &text)
 {
+	mInitializationPaint = true;
 	setPlainText(text);
+	mInitializationPaint = false;
 }
 
 void Label::setTextFromRepo(QString const& text)
 {
+	mInitializationPaint = true;
+
 	if (text != toPlainText()) {
 		QGraphicsTextItem::setHtml(text); // need this to load old saves with html markup
 		setText(toPlainText());
 		updateData();
 	}
+	mInitializationPaint = false;
 }
 
 void Label::setParentSelected(bool isSelected)
@@ -345,11 +353,11 @@ void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 		return;
 	}
 
-	if (!mLastPaintText.isEmpty() && text.compare(mLastPaintText) != 0) {
+	if (!mInitializationPaint && text.compare(mLastPaintText) != 0) {
 		utils::UXInfo::instance()->reportUserAction(QString::fromUtf8("Изменить значение надписи на сцене — предыдущий текст: ")
-													+ mLastPaintText + QString::fromUtf8("|новый текст: ")
-													+ text
-													+ QString::fromUtf8("|"));
+				+ mLastPaintText + QString::fromUtf8("|новый текст: ")
+				+ text
+				+ QString::fromUtf8("|"));
 		mLastPaintText = text;
 	}
 

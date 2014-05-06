@@ -42,6 +42,8 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mIsSelectEvent(false)
 		, mTitlesVisible(true)
 		, mExploser(nullptr)
+		, mDiscardAction(nullptr)
+		, mDeleteAction(nullptr)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
@@ -55,6 +57,8 @@ EditorViewScene::EditorViewScene(QObject *parent)
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
+
+	mDiscardAction = new QAction(tr("Discard"), nullptr);
 }
 
 void EditorViewScene::addItem(QGraphicsItem *item)
@@ -89,6 +93,7 @@ void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
 
 EditorViewScene::~EditorViewScene()
 {
+	delete mDiscardAction;
 	delete mActionSignalMapper;
 	delete mMouseMovementManager;
 }
@@ -204,11 +209,6 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 		Q_UNUSED(id);
 
 		QString userAction = QString::fromUtf8("Ввести элемент из палитры на сцену — название элемента: ") + name + "|";
-				/*"Scene: drag enter on scene at pos ("
-				+ QString::number(pos.x())
-				+ ", "
-				+ QString::number(pos.y())
-				+ ")";*/
 		utils::UXInfo::instance()->reportUserAction(userAction);
 
 		QGraphicsScene::dragEnterEvent(event);
@@ -232,13 +232,7 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 	QPoint pos = event->scenePos().toPoint();
 	Q_UNUSED(pos);
 	QString userAction = QString::fromUtf8("Передвигать элемент по сцене — название элемента: ") + name + "|";
-			/*"Scene: drag move on scene at pos ("
-			+ QString::number(pos.x())
-			+ ", "
-			+ QString::number(pos.y())
-			+ ")";*/
 	utils::UXInfo::instance()->reportUserAction(userAction);
-
 
 	QList<QGraphicsItem*> elements = items(event->scenePos());
 
@@ -334,11 +328,6 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 		QPoint pos = event->scenePos().toPoint();
 		Q_UNUSED(pos);
 		QString userAction = QString::fromUtf8("Оставить элемент из палитры на сцене — название элемента:") + name + "|";
-		/*"Scene: drag enter on scene at pos ("
-			+ QString::number(pos.x())
-			+ ", "
-			+ QString::number(pos.y())
-			+ ")";*/
 		utils::UXInfo::instance()->reportUserAction(userAction);
 	}
 
@@ -404,8 +393,13 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
-	edgeMenu->addAction(mWindow->actionDeleteFromDiagram());
-	edgeMenu->addAction(tr("Discard"));
+	//edgeMenu->addAction(mWindow->actionDeleteFromDiagram());
+	//edgeMenu->addAction(tr("Discard"));
+	mDeleteAction = mWindow->actionDeleteFromDiagram();
+	edgeMenu->addAction(mDeleteAction);
+	edgeMenu->addAction(mDiscardAction);
+	connect (mDiscardAction, &QAction::hovered, mWindow->filterObject(), &FilterObject::edgeContextMenuActionHovered);
+	connect (mDiscardAction, &QAction::triggered, mWindow->filterObject(), &FilterObject::edgeContextMenuActionTriggered);
 	edgeMenu->addSeparator();
 
 	QMenu *createElemMenu = new QMenu(tr("Create new element"), edgeMenu); // deleted as child of edgeMenu

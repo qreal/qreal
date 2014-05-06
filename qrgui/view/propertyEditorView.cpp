@@ -209,8 +209,8 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 			+ propertyName + QString::fromUtf8("|старое значение: ")
 			+ oldValue.toString() + QString::fromUtf8("|новое значение: ")
 			+ value.toString() + QString::fromUtf8("|название элемента: ")
-			+ /*mMainWindow->editorManager().friendlyName
-			(*/mLogicalModelAssistApi->idByIndex(mModel->modelIndex(row)).element()//)
+			+ mMainWindow->editorManager().friendlyName
+			(mLogicalModelAssistApi->idByIndex(mModel->modelIndex(row)).type())
 			+ QString::fromUtf8("|");
 	utils::UXInfo::instance()->reportUserAction(userAction);
 
