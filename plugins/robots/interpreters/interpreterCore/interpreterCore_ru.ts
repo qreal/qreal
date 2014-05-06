@@ -817,72 +817,64 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::coreBlocks::details::WaitForColorBlock</name>
     <message>
-        <location filename="src/coreBlocks/details/waitForColorBlock.cpp" line="19"/>
         <source>Black</source>
-        <translation>Чёрный</translation>
+        <translation type="vanished">Чёрный</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/waitForColorBlock.cpp" line="21"/>
         <source>Blue</source>
-        <translation>Синий</translation>
+        <translation type="vanished">Синий</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/waitForColorBlock.cpp" line="23"/>
         <source>Green</source>
-        <translation>Зелёный</translation>
+        <translation type="vanished">Зелёный</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/waitForColorBlock.cpp" line="25"/>
         <source>Yellow</source>
-        <translation>Жёлтый</translation>
+        <translation type="vanished">Жёлтый</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/waitForColorBlock.cpp" line="27"/>
         <source>Red</source>
-        <translation>Красный</translation>
+        <translation type="vanished">Красный</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/waitForColorBlock.cpp" line="29"/>
         <source>White</source>
-        <translation>Белый</translation>
+        <translation type="vanished">Белый</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::WaitForEncoderBlock</name>
     <message>
-        <location filename="src/coreBlocks/details/waitForEncoderBlock.cpp" line="26"/>
         <source>Encoder sensor is not configured on port %1</source>
-        <translation>Энкодер не сконфигурирован на порту %1</translation>
+        <translation type="vanished">Энкодер не сконфигурирован на порту %1</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::WaitForSensorBlock</name>
     <message>
-        <location filename="src/coreBlocks/details/waitForSensorBlock.cpp" line="35"/>
         <source>%1 is not configured on port %2</source>
-        <translation>%1 не сконфигурирован на порту %2</translation>
+        <translation type="vanished">%1 не сконфигурирован на порту %2</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="79"/>
-        <location filename="src/interpreter/interpreter.cpp" line="163"/>
+        <location filename="src/interpreter/interpreter.cpp" line="80"/>
+        <location filename="src/interpreter/interpreter.cpp" line="164"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="84"/>
+        <location filename="src/interpreter/interpreter.cpp" line="85"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="144"/>
+        <location filename="src/interpreter/interpreter.cpp" line="145"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="148"/>
+        <location filename="src/interpreter/interpreter.cpp" line="149"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>

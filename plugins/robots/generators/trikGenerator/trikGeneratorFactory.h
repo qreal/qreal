@@ -19,7 +19,6 @@ public:
 
 	QString pathToTemplates() const override;
 
-	generatorBase::simple::Binding::MultiConverterInterface *enginesConverter(bool powerMotors) const;
 	generatorBase::simple::Binding::MultiConverterInterface *enginesConverter() const override;
 	generatorBase::simple::Binding::MultiConverterInterface *encodersConverter() const;
 
@@ -28,6 +27,10 @@ public:
 
 protected:
 	void initVariables() override;
+
+	QString motorPortSplitRegexp() const;
+	generatorBase::simple::Binding::ConverterInterface *motorPortConverter() const;
+	generatorBase::simple::Binding::ConverterInterface *encoderPortConverter() const;
 };
 
 }

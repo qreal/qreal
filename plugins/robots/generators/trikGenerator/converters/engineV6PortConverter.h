@@ -5,8 +5,7 @@
 namespace trik {
 namespace converters {
 
-/// Splits given string selecting just numbers and returns converted output port values
-class ServoMotorPortConverter : public generatorBase::simple::Binding::ConverterInterface
+class PowerV6MotorPortConverter : public generatorBase::simple::Binding::ConverterInterface
 {
 public:
 	static QString splitRegexp();

@@ -75,7 +75,8 @@ void Interpreter::interpret()
 
 //	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
 
-	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
+	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState
+				&& mRobotModelManager.model().needsConnection()) {
 		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
 		return;
 	}

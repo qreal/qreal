@@ -46,6 +46,14 @@
     </message>
 </context>
 <context>
+    <name>NxtDisplay</name>
+    <message>
+        <location filename="src/nxtDisplayWidget.ui" line="435"/>
+        <source>tr(NxtDisplay)</source>
+        <translation>Дисплей NXT</translation>
+    </message>
+</context>
+<context>
     <name>nxtKitInterpreter::NxtKitInterpreterPlugin</name>
     <message>
         <location filename="src/nxtKitInterpreterPlugin.cpp" line="84"/>

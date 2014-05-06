@@ -25,6 +25,55 @@
     </message>
 </context>
 <context>
+    <name>interpreterBase::blocksBase::common::WaitForColorBlock</name>
+    <message>
+        <location filename="src/blocksBase/common/waitForColorBlock.cpp" line="20"/>
+        <source>Black</source>
+        <translation>Черный</translation>
+    </message>
+    <message>
+        <location filename="src/blocksBase/common/waitForColorBlock.cpp" line="22"/>
+        <source>Blue</source>
+        <translation>Синий</translation>
+    </message>
+    <message>
+        <location filename="src/blocksBase/common/waitForColorBlock.cpp" line="24"/>
+        <source>Green</source>
+        <translation>Зеленый</translation>
+    </message>
+    <message>
+        <location filename="src/blocksBase/common/waitForColorBlock.cpp" line="26"/>
+        <source>Yellow</source>
+        <translation>Желтый</translation>
+    </message>
+    <message>
+        <location filename="src/blocksBase/common/waitForColorBlock.cpp" line="28"/>
+        <source>Red</source>
+        <translation>Красный</translation>
+    </message>
+    <message>
+        <location filename="src/blocksBase/common/waitForColorBlock.cpp" line="30"/>
+        <source>White</source>
+        <translation>Белый</translation>
+    </message>
+</context>
+<context>
+    <name>interpreterBase::blocksBase::common::WaitForEncoderBlock</name>
+    <message>
+        <location filename="src/blocksBase/common/waitForEncoderBlock.cpp" line="27"/>
+        <source>Encoder sensor is not configured on port %1</source>
+        <translation>Энкодер не сконфигурирован на порту %1</translation>
+    </message>
+</context>
+<context>
+    <name>interpreterBase::blocksBase::common::WaitForSensorBlock</name>
+    <message>
+        <location filename="src/blocksBase/common/waitForSensorBlock.cpp" line="36"/>
+        <source>%1 is not configured on port %2</source>
+        <translation>%1 не сконфигурирован на порту %2</translation>
+    </message>
+</context>
+<context>
     <name>interpreterBase::robotModel::robotParts::AccelerometerSensor</name>
     <message>
         <location filename="include/interpreterBase/robotModel/robotParts/accelerometerSensor.h" line="14"/>

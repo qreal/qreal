@@ -40,6 +40,7 @@
 #include "simpleGenerators/continueGenerator.h"
 #include "simpleGenerators/labelGenerator.h"
 #include "simpleGenerators/gotoSimpleGenerator.h"
+#include "simpleGenerators/variableInitGenerator.h"
 
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
@@ -206,54 +207,56 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 		return new CommentElementGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Function") {
 		return new FunctionElementGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "EnginesForward" || elementType == "EnginesBackward") {
+	} else if (elementType.contains("EnginesForward") || elementType.contains("EnginesBackward")) {
 		return new EnginesGenerator(mRepo, customizer, id, elementType, this);
-	} else if (elementType == "EnginesStop") {
+	} else if (elementType.contains("EnginesStop")) {
 		return new EnginesStopGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Timer") {
 		return new TimerGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Beep") {
+	} else if (elementType.contains("Beep")) {
 		return new BeepGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "PlayTone") {
+	} else if (elementType.contains("PlayTone")) {
 		return new PlayToneGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "InitialNode") {
 		return new InitialNodeGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "NullificationEncoder") {
+	} else if (elementType.contains("ClearEncoder")) {
 		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForColor") {
+	} else if (elementType.contains("WaitForColor")) {
 		return new WaitForColorBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForColorIntensity") {
+	} else if (elementType.contains("WaitForColorIntensity")) {
 		return new WaitForColorIntensityBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForLight") {
+	} else if (elementType.contains("WaitForLight")) {
 		return new WaitForLightBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForTouchSensor") {
+	} else if (elementType.contains("WaitForTouchSensor")) {
 		return new WaitForTouchSensorBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForSonarDistance") {
+	} else if (elementType.contains("WaitForSonarDistance")) {
 		return new WaitForSonarBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForEncoder") {
+	} else if (elementType.contains("WaitForEncoder")) {
 		return new WaitForEncoderBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForSound") {
+	} else if (elementType.contains("WaitForSound")) {
 		return new WaitForSoundBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForGyroscope") {
+	} else if (elementType.contains("WaitForGyroscope")) {
 		return new WaitForGyroscopeBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForAccelerometer") {
+	} else if (elementType.contains("WaitForAccelerometer")) {
 		return new WaitForAccelerometerBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForButtons") {
+	} else if (elementType.contains("WaitForButtons")) {
 		return new WaitForButtonsBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "DrawPixel") {
+	} else if (elementType.contains("DrawPixel")) {
 		return new DrawPixelBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "DrawLine") {
+	} else if (elementType.contains("DrawLine")) {
 		return new DrawLineBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "DrawCircle") {
+	} else if (elementType.contains("DrawCircle")) {
 		return new DrawCircleBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "PrintText") {
+	} else if (elementType.contains("PrintText")) {
 		return new PrintTextBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "DrawRect") {
+	} else if (elementType.contains("DrawRect")) {
 		return new DrawRectBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "ClearScreen") {
+	} else if (elementType.contains("ClearScreen")) {
 		return new ClearScreenBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Subprogram") {
 		return new SubprogramsSimpleGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "VariableInit") {
+		return new VariableInitGenerator(mRepo, customizer, id, this);
 	}
 
 	return new NullGenerator(mRepo, customizer, id, this);
