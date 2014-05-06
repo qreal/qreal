@@ -1,6 +1,6 @@
 #include "nxtTwoDModelConfigurer.h"
 
-#include "nxtDisplay.h"
+#include "nxtDisplayWidget.h"
 
 using namespace nxtKitInterpreter;
 using namespace interpreterBase::robotModel;

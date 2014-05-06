@@ -17,6 +17,8 @@
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/trikEnginesStopGenerator.h"
 #include "simpleGenerators/waitForButtonGenerator.h"
+#include "simpleGenerators/waitForInfraredSensorGenerator.h"
+#include "simpleGenerators/waitForMovementSensorGenerator.h"
 #include "simpleGenerators/trikNullificationEncoderGenerator.h"
 #include "parts/trikVariables.h"
 
@@ -44,40 +46,44 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new TrikEnginesGenerator(mRepo, customizer, id, elementType, this);
 	} else if (elementType.contains("EnginesStop")) {
 		return new TrikEnginesStopGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("NullificationEncoder")) {
+	} else if (elementType.contains("ClearEncoder")) {
 		return new TrikNullificationEncoderGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("PlayTone")) {
 		return new PlayToneGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Smile") {
+	} else if (elementType == "TrikSmile") {
 		return new SmileGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "SadSmile") {
+	} else if (elementType == "TrikSadSmile") {
 		return new SadSmileGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Say") {
+	} else if (elementType == "TrikSay") {
 		return new SayGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "SetBackground") {
+	} else if (elementType == "TrikSetBackground") {
 		return new SetBackgroundGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "System") {
+	} else if (elementType == "TrikSystem") {
 		return new SystemGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Led") {
+	} else if (elementType == "TrikLed") {
 		return new LedGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "DetectLine") {
+	} else if (elementType == "TrikDetectLine") {
 		return new DetectLineGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "InitCamera") {
+	} else if (elementType == "TrikInitCamera") {
 		return new InitCameraGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "LineDetectorToVariable") {
+	} else if (elementType == "TrikLineDetectorToVariable") {
 		return new LineDetectorToVariableGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "WaitForEnter") {
+	} else if (elementType == "TrikWaitForEnter") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
-	} else if (elementType == "WaitForLeft") {
+	} else if (elementType == "TrikWaitForLeft") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
-	} else if (elementType == "WaitForRight") {
+	} else if (elementType == "TrikWaitForRight") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
-	} else if (elementType == "WaitForUp") {
+	} else if (elementType == "TrikWaitForUp") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForUp.t", this);
-	} else if (elementType == "WaitForDown") {
+	} else if (elementType == "TrikWaitForDown") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
-	} else if (elementType == "WaitForPower") {
+	} else if (elementType == "TrikWaitForPower") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForPower.t", this);
+	} else if (elementType == "TrikWaitForMovement") {
+		return new WaitForMovementSensorGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitForIRDistance") {
+		return new WaitForInfraredSensorGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
@@ -122,7 +128,7 @@ Binding::ConverterInterface *TrikGeneratorFactory::motorPortConverter() const
 	}
 
 	/// @todo: Inconsistent scenario
-	return new converters::PowerV4MotorPortConverter;
+	return new converters::PowerV6MotorPortConverter;
 }
 
 Binding::ConverterInterface *TrikGeneratorFactory::encoderPortConverter() const
@@ -132,6 +138,9 @@ Binding::ConverterInterface *TrikGeneratorFactory::encoderPortConverter() const
 	} else if (mRobotModelManager.model().name().contains("V6")) {
 		return new converters::EncoderV6PortConverter;
 	}
+
+	/// @todo: Inconsistent scenario
+	return new converters::EncoderV6PortConverter;
 }
 
 QString TrikGeneratorFactory::motorPortSplitRegexp() const
@@ -143,5 +152,5 @@ QString TrikGeneratorFactory::motorPortSplitRegexp() const
 	}
 
 	/// @todo: Inconsistent scenario
-	return converters::PowerV4MotorPortConverter::splitRegexp();
+	return converters::PowerV6MotorPortConverter::splitRegexp();
 }

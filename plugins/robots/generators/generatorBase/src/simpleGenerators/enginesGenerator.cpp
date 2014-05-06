@@ -12,7 +12,7 @@ EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
 		, QString const &engineType
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
-			, engineType == "EnginesBackward"
+			, engineType.contains("EnginesBackward")
 					? "engines/enginesBackward.t"
 					: "engines/enginesForward.t"
 			, QList<Binding *>()

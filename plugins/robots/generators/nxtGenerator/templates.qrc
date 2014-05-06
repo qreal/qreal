@@ -120,5 +120,6 @@
         <file>templates/whatTime.t</file>
         <file>templates/goto.t</file>
         <file>templates/label.t</file>
+        <file>templates/variableInit.t</file>
     </qresource>
 </RCC>
