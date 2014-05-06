@@ -23,3 +23,10 @@ PortInfo TrikTwoDModelConfigurer::defaultRightWheelPort() const
 {
 	return PortInfo(mRightWheelPort, output);
 }
+
+twoDModel::engine::TwoDModelDisplayWidget *TrikTwoDModelConfigurer::displayWidget(QWidget * parent) const
+{
+	Q_UNUSED(parent)
+
+	return nullptr;
+}

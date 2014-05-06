@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>NxtDisplay</class>
- <widget class="QWidget" name="NxtDisplay">
+ <widget class="QWidget" name="NxtDisplayWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -1038,7 +1038,7 @@ QPushButton#rightButton:pressed{
   <customwidget>
    <class>graphicsUtils::PaintWidget</class>
    <extends>QWidget</extends>
-   <header>../../../../qrutils/graphicsUtils/paintWidget.h</header>
+   <header>qrutils/graphicsUtils/paintWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

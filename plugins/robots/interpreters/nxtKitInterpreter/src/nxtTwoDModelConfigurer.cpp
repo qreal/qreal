@@ -1,5 +1,7 @@
 #include "nxtTwoDModelConfigurer.h"
 
+#include "nxtDisplay.h"
+
 using namespace nxtKitInterpreter;
 using namespace interpreterBase::robotModel;
 
@@ -16,4 +18,9 @@ PortInfo NxtTwoDModelConfigurer::defaultLeftWheelPort() const
 PortInfo NxtTwoDModelConfigurer::defaultRightWheelPort() const
 {
 	return PortInfo("C", output);
+}
+
+twoDModel::engine::TwoDModelDisplayWidget *NxtTwoDModelConfigurer::displayWidget(QWidget * parent) const
+{
+	return new NxtDisplay(parent);
 }

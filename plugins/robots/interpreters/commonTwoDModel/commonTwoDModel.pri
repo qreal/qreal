@@ -15,10 +15,11 @@ TRANSLATIONS = commonTwoDModel_ru.ts
 HEADERS += \
 	$$PWD/include/commonTwoDModel/commonTwoDModelDeclSpec.h \
 	$$PWD/include/commonTwoDModel/engine/configurer.h \
-	$$PWD/include/commonTwoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelControlInterface.h \
-	$$PWD/include/commonTwoDModel/engine/twoDModelEngineInterface.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelDisplayInterface.h \
+	$$PWD/include/commonTwoDModel/engine/twoDModelDisplayWidget.h \
+	$$PWD/include/commonTwoDModel/engine/twoDModelEngineFacade.h \
+	$$PWD/include/commonTwoDModel/engine/twoDModelEngineInterface.h \
 	$$PWD/include/commonTwoDModel/robotModel/twoDRobotModel.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/buttons.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorBlue.h \
@@ -50,7 +51,6 @@ HEADERS += \
 	$$PWD/src/engine/timeline.h \
 	$$PWD/src/engine/d2ModelTimer.h \
 	$$PWD/src/engine/gridParameters.h \
-	$$PWD/src/engine/nxtDisplay.h \
 	$$PWD/src/engine/constants.h \
 	$$PWD/src/engine/d2RobotModel.h \
 	$$PWD/src/engine/twoDRobotModelInterface.h \
@@ -76,7 +76,6 @@ SOURCES += \
 	$$PWD/src/engine/timeline.cpp \
 	$$PWD/src/engine/d2ModelTimer.cpp \
 	$$PWD/src/engine/gridParameters.cpp \
-	$$PWD/src/engine/nxtDisplay.cpp \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
 	$$PWD/src/engine/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/physics/simplePhysicsEngine.cpp \
@@ -97,7 +96,6 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/src/engine/d2Form.ui \
-	$$PWD/src/engine/nxtDisplay.ui \
 
 RESOURCES += \
-    commonTwoDModel.qrc \
+	commonTwoDModel.qrc \

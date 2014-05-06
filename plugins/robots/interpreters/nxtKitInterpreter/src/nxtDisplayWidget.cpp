@@ -1,15 +1,15 @@
-#include "nxtDisplay.h"
+#include "nxtDisplayWidget.h"
 
-#include "ui_nxtDisplay.h"
+#include "ui_nxtDisplayWidget.h"
 
 #include <qrutils/graphicsUtils/painterInterface.h>
 #include <qrkernel/exception/exception.h>
 
-using namespace twoDModel;
+using namespace nxtKitInterpreter;
 using namespace graphicsUtils;
 
 NxtDisplay::NxtDisplay(QWidget *parent)
-	: QWidget(parent)
+	: twoDModel::engine::TwoDModelDisplayWidget(parent)
 	, mUi(new Ui::NxtDisplay)
 	, mBackground(":/icons/background.png", "PNG")
 {
