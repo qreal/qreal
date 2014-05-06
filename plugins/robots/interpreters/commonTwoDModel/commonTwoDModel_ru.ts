@@ -218,9 +218,8 @@
 <context>
     <name>NxtDisplay</name>
     <message>
-        <location filename="src/engine/nxtDisplay.ui" line="435"/>
         <source>tr(NxtDisplay)</source>
-        <translation>Дисплей NXT</translation>
+        <translation type="vanished">Дисплей NXT</translation>
     </message>
 </context>
 <context>
@@ -259,33 +258,33 @@
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="205"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="211"/>
         <source>Port </source>
         <translation>Порт</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="210"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="216"/>
         <source>none</source>
         <translation>Нет сенсора</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="777"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="783"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="777"/>
-        <location filename="src/engine/d2ModelWidget.cpp" line="797"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="783"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="803"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="797"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="803"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="1257"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="1271"/>
         <source>%1 (port %2)</source>
         <translation>%1 (порт %2)</translation>
     </message>
