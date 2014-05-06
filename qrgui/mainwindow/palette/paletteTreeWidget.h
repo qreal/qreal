@@ -81,12 +81,13 @@ private:
 	static bool paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2);
 
 	/// Made static to be used inside idLessThan()
-	static EditorManagerInterface *mEditorManager; // Does not take ownership
+	static EditorManagerInterface *mEditorManager;  // Does not take ownership
 	MainWindow &mMainWindow;
 	PaletteTree &mPaletteTree;
 	bool mEditable;
 
-	QHash<Id, DraggableElement *> mPaletteElements; // Does not take ownership.
+	QHash<Id, DraggableElement *> mPaletteElements;  // Takes ownership.
+	QHash<Id, QTreeWidgetItem *> mPaletteItems;  // Takes ownership.
 
 };
 

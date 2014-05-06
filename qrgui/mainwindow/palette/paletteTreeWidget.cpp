@@ -76,6 +76,7 @@ void PaletteTreeWidget::addItemType(PaletteElement const &data, QTreeWidgetItem 
 			, mPaletteTree.iconsView(), *mEditorManager);
 
 	mPaletteElements.insert(data.id(), element);
+	mPaletteItems.insert(data.id(), leaf);
 
 	parent->addChild(leaf);
 	setItemWidget(leaf, 0, element);
@@ -202,15 +203,15 @@ bool PaletteTreeWidget::paletteElementLessThan(PaletteElement const &s1, Palette
 
 void PaletteTreeWidget::setElementVisible(Id const &metatype, bool visible)
 {
-	if (mPaletteElements.contains(metatype)) {
-		mPaletteElements[metatype]->setVisible(visible);
+	if (mPaletteItems.contains(metatype)) {
+		mPaletteItems[metatype]->setHidden(!visible);
 	}
 }
 
 void PaletteTreeWidget::setVisibleForAllElements(bool visible)
 {
-	foreach (QWidget * const element, mPaletteElements.values()) {
-		element->setVisible(visible);
+	for (Id const &element : mPaletteElements.keys()) {
+		setElementVisible(element, visible);
 	}
 }
 
