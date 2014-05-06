@@ -79,7 +79,6 @@ void Configuration::onDeviceConfigured(bool success)
 		throw "Incorrect device configuration";
 	}
 
-	Direction const direction = device->deviceInfo().direction();
 	if (mPendingDevices.value(device->port()) == device) {
 		mPendingDevices.remove(device->port());
 		mConfigurationInProgress.remove(device->port());

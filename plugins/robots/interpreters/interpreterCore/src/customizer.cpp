@@ -19,7 +19,7 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.0.0";
+	return "3.0.0 ALPHA";
 }
 
 QString Customizer::aboutText() const
