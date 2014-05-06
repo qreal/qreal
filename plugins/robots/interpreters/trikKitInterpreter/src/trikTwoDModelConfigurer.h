@@ -12,6 +12,7 @@ public:
 	QString robotImage() const override;
 	interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const override;
 	interpreterBase::robotModel::PortInfo defaultRightWheelPort() const override;
+	twoDModel::engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const override;
 
 private:
 	QString const mLeftWheelPort;

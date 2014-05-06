@@ -2,12 +2,11 @@
 
 #include <interpreterBase/blocksBase/common/waitBlock.h>
 
-namespace interpreterCore {
-namespace coreBlocks {
-namespace details {
+namespace interpreterBase {
+namespace blocksBase {
+namespace common {
 
-/// @todo Move abstract blocks to interpreterBase::blocksBase
-class WaitForSensorBlock : public interpreterBase::blocksBase::common::WaitBlock
+class ROBOTS_INTERPRETER_BASE_EXPORT WaitForSensorBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT
 

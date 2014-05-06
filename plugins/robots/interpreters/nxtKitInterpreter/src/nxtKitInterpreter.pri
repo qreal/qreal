@@ -11,8 +11,10 @@ INCLUDEPATH += \
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport
 
 HEADERS += \
-	$$PWD/nxtKitInterpreterPlugin.h \
+	$$PWD/commandConstants.h \
 	$$PWD/nxtAdditionalPreferences.h \
+	$$PWD/nxtDisplayWidget.h \
+	$$PWD/nxtKitInterpreterPlugin.h \
 	$$PWD/nxtTwoDModelConfigurer.h \
 	$$PWD/blocks/nxtBlocksFactory.h \
 	$$PWD/blocks/details/speakerBlock.h \
@@ -58,8 +60,9 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDMotor.h \
 
 SOURCES += \
-	$$PWD/nxtKitInterpreterPlugin.cpp \
 	$$PWD/nxtAdditionalPreferences.cpp \
+	$$PWD/nxtDisplayWidget.cpp \
+	$$PWD/nxtKitInterpreterPlugin.cpp \
 	$$PWD/nxtTwoDModelConfigurer.cpp \
 	$$PWD/blocks/nxtBlocksFactory.cpp \
 	$$PWD/blocks/details/speakerBlock.cpp \
@@ -106,6 +109,7 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/nxtAdditionalPreferences.ui \
+	$$PWD/nxtDisplayWidget.ui \
 
 include($$PWD/../qrguiIncludes.pri)
 include($$PWD/communication/communication.pri)

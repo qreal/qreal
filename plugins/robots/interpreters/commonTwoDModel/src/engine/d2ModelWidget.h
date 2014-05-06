@@ -22,9 +22,9 @@
 #include "robotItem.h"
 #include "rotater.h"
 #include "timeline.h"
-#include "nxtDisplay.h"
 
 #include "commonTwoDModel/engine/configurer.h"
+#include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
@@ -72,7 +72,7 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Devices
 public:
 	D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
 			, interpreterBase::robotModel::RobotModelInterface &robotModel
-			, NxtDisplay *nxtDisplay
+			, engine::TwoDModelDisplayWidget *display
 			, Configurer const &configurer
 			, QWidget *parent = 0);
 
@@ -264,7 +264,7 @@ private:
 
 	TwoDRobotRobotModelInterface *mTwoDRobotModel;
 	WorldModel *mWorldModel;
-	NxtDisplay *mNxtDisplay;
+	engine::TwoDModelDisplayWidget *mDisplay;
 
 	/// Current action (toggled button on left panel)
 	enums::drawingAction::DrawingAction mDrawingAction;

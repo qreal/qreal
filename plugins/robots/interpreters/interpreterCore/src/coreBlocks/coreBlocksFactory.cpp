@@ -2,26 +2,16 @@
 
 #include "details/initialBlock.h"
 #include "details/finalBlock.h"
-#include "details/nullificationEncoderBlock.h"
 
 #include "details/timerBlock.h"
 #include "details/functionBlock.h"
+#include "details/variableInitBlock.h"
 
 #include "details/loopBlock.h"
 #include "details/forkBlock.h"
 #include "details/ifBlock.h"
 #include "details/commentBlock.h"
 #include "details/subprogramBlock.h"
-
-#include "details/waitForTouchSensorBlock.h"
-#include "details/waitForSonarDistanceBlock.h"
-#include "details/waitForColorBlock.h"
-#include "details/waitForColorIntensityBlock.h"
-#include "details/waitForLightSensorBlock.h"
-#include "details/waitForSoundSensorBlock.h"
-#include "details/waitForGyroscopeBlock.h"
-#include "details/waitForAccelerometerBlock.h"
-#include "details/waitForEncoderBlock.h"
 
 using namespace interpreterCore::coreBlocks;
 
@@ -45,26 +35,8 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::SubprogramBlock();
 	} else if (elementMetatypeIs(element, "Function")) {
 		return new details::FunctionBlock();
-	} else if (elementMetatypeIs(element, "NullificationEncoder")) {
-		return new details::NullificationEncoderBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
-		return new details::WaitForTouchSensorBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
-		return new details::WaitForSonarDistanceBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForColor")) {
-		return new details::WaitForColorBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForColorIntensity")) {
-		return new details::WaitForColorIntensityBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForEncoder")) {
-		return new details::WaitForEncoderBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForLight")) {
-		return new details::WaitForLightSensorBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForSound")) {
-		return new details::WaitForSoundSensorBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForGyroscope")) {
-		return new details::WaitForGyroscopeSensorBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "WaitForAccelerometer")) {
-		return new details::WaitForAccelerometerSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "VariableInit")) {
+		return new details::VariableInitBlock();
 	}
 
 	return nullptr;
@@ -83,15 +55,6 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Fork")
 		, id("Subprogram")
 		, id("Function")
-		, id("NullificationEncoder")
-		, id("WaitForTouchSensor")
-		, id("WaitForSonarDistance")
-		, id("WaitForColor")
-		, id("WaitForColorIntensity")
-		, id("WaitForEncoder")
-		, id("WaitForLight")
-		, id("WaitForSound")
-		, id("WaitForGyroscope")
-		, id("WaitForAccelerometer")
+		, id("VariableInit")
 	};
 }

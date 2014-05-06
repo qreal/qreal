@@ -19,9 +19,11 @@ public:
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, utils::ComputableNumber::IntComputer const &timeComputer);
 
-	utils::Number *standartBlockParseProcess(QString const &stream, int &pos, qReal::Id const &curId);
-	void functionBlockParseProcess(QString const &stream, int &pos, qReal::Id const &curId);
-	void deselect();
+	utils::Number *standartBlockParseProcess(QString const &stream, int &pos, qReal::Id const &curId) override;
+	void functionBlockParseProcess(QString const &stream, int &pos, qReal::Id const &curId) override;
+	bool parseCondition(QString const &stream, int& pos, qReal::Id const &curId) override;
+
+	void deselect() override;
 	void robotsClearVariables();
 	void setReservedVariables();
 

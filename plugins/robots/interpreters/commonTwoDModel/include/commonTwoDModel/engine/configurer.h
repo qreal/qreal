@@ -4,6 +4,7 @@
 
 #include <interpreterBase/robotModel/portInfo.h>
 
+#include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
 namespace twoDModel {
@@ -24,7 +25,7 @@ public:
 
 	/// @todo sensor images here
 
-	/// @todo display emulator here
+	virtual engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const = 0;
 };
 
 }

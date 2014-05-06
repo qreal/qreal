@@ -17,9 +17,21 @@ SOURCES += \
 	$$PWD/src/blocksBase/block.cpp \
 	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
 	$$PWD/src/blocksBase/common/clearEncoderBlock.cpp \
+	$$PWD/src/blocksBase/common/emptyBlock.cpp \
 	$$PWD/src/blocksBase/common/engineCommandBlock.cpp \
 	$$PWD/src/blocksBase/common/enginesStopBlock.cpp \
 	$$PWD/src/blocksBase/common/waitBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForAccelerometerBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForColorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForColorIntensityBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForColorSensorBlockBase.cpp \
+	$$PWD/src/blocksBase/common/waitForEncoderBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForGyroscopeBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForLightSensorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForSensorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForSonarDistanceBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForSoundSensorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForTouchSensorBlock.cpp \
 	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/robotModelUtils.cpp \
@@ -61,9 +73,21 @@ HEADERS += \
 	$$PWD/include/interpreterBase/blocksBase/blocksFactoryInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/commonBlocksFactory.h \
 	$$PWD/include/interpreterBase/blocksBase/common/clearEncoderBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/emptyBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/engineCommandBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/enginesStopBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForAccelerometerBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForColorBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForColorIntensityBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForColorSensorBlockBase.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForEncoderBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForGyroscopeBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForLightSensorBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForSensorBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForSoundSensorBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForTouchSensorBlock.h \
 	$$PWD/include/interpreterBase/robotModel/configuration.h \
 	$$PWD/include/interpreterBase/robotModel/commonRobotModel.h \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \

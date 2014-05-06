@@ -6,15 +6,16 @@
 #include <qrutils/graphicsUtils/paintWidget.h>
 
 #include "commonTwoDModel/engine/twoDModelDisplayInterface.h"
+#include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
 namespace Ui
 {
 	class NxtDisplay;
 }
 
-namespace twoDModel {
+namespace nxtKitInterpreter {
 
-class NxtDisplay : public QWidget, public engine::TwoDModelDisplayInterface
+class NxtDisplay : public twoDModel::engine::TwoDModelDisplayWidget
 {
 	Q_OBJECT
 
@@ -24,10 +25,8 @@ public:
 
 	virtual void setPainter(graphicsUtils::PainterInterface *p);
 
-	bool leftButtonIsDown() const;
-	bool rightButtonIsDown() const;
-	bool centralButtonIsDown() const;
-	bool bottomButtonIsDown() const;
+	/// @todo Supposes polling, which is not very good for buttons.
+	bool buttonIsDown(QString const &buttonId) const override;
 
 	void repaintDisplay();
 	int displayWidth() const;

@@ -1,12 +1,28 @@
 #include "trikBlocksFactory.h"
 
+#include <interpreterBase/blocksBase/common/emptyBlock.h>
 #include <interpreterBase/blocksBase/common/enginesStopBlock.h>
 #include <interpreterBase/blocksBase/common/clearEncoderBlock.h>
 
+#include <interpreterBase/blocksBase/common/waitForAccelerometerBlock.h>
+#include <interpreterBase/blocksBase/common/waitForColorBlock.h>
+#include <interpreterBase/blocksBase/common/waitForColorIntensityBlock.h>
+#include <interpreterBase/blocksBase/common/waitForEncoderBlock.h>
+#include <interpreterBase/blocksBase/common/waitForGyroscopeBlock.h>
+#include <interpreterBase/blocksBase/common/waitForLightSensorBlock.h>
+#include <interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h>
+#include <interpreterBase/blocksBase/common/waitForSoundSensorBlock.h>
+#include <interpreterBase/blocksBase/common/waitForTouchSensorBlock.h>
+
+#include "details/sadSmileBlock.h"
+#include "details/smileBlock.h"
+#include "details/setBackgroundBlock.h"
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
+#include "details/waitForButtonsBlock.h"
 
 using namespace trikKitInterpreter::blocks;
+using namespace trikKitInterpreter::blocks::details;
 
 interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
 {
@@ -26,6 +42,52 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 			|| elementMetatypeIs(element, "TrikV6ClearEncoder"))
 	{
 		return new interpreterBase::blocksBase::common::ClearEncoderBlock(mRobotModelManager->model());
+
+	} else if (elementMetatypeIs(element, "TrikSay")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikLed")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikSystem")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikDetectLine")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikLineDetectorToVariable")) {
+		return new interpreterBase::blocksBase::common::EmptyBlock();
+
+	} else if (elementMetatypeIs(element, "TrikWaitForLight")) {
+		return new interpreterBase::blocksBase::common::WaitForTouchSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitForSonarDistance")) {
+		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitForIRDistance")) {
+		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitForGyroscope")) {
+		return new interpreterBase::blocksBase::common::WaitForGyroscopeSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitForAccelerometer")) {
+		return new interpreterBase::blocksBase::common::WaitForAccelerometerSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitForEncoder")) {
+		return new interpreterBase::blocksBase::common::WaitForEncoderBlock(mRobotModelManager->model());
+
+//	} else if (elementMetatypeIs(element, "TrikWaitForEnter")) {
+//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
+//	} else if (elementMetatypeIs(element, "TrikWaitForLeft")) {
+//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
+//	} else if (elementMetatypeIs(element, "TrikWaitForRight")) {
+//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
+//	} else if (elementMetatypeIs(element, "TrikWaitForDown")) {
+//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
+//	} else if (elementMetatypeIs(element, "TrikWaitForUp")) {
+//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
+//	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
+//		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
+
+	} else if (elementMetatypeIs(element, "TrikSmile")) {
+		return new SmileBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikSadSmile")) {
+		return new SadSmileBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikSetBackground")) {
+		return new SetBackgroundBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -33,33 +95,71 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 
 qReal::IdList TrikBlocksFactory::providedBlocks() const
 {
+	qReal::IdList result;
+
 	if (mRobotModelManager->model().name().contains("V4")) {
-		return { id("TrikV4EnginesBackward")
-				, id("TrikV4EnginesForward")
-				, id("TrikV4EnginesStop")
-				, id("TrikV4ClearEncoder")
-				};
+		result
+				<< id("TrikV4EnginesBackward")
+				<< id("TrikV4EnginesForward")
+				<< id("TrikV4EnginesStop")
+				<< id("TrikV4ClearEncoder")
+				;
 	} else {
-		return { id("TrikV6EnginesBackward")
-				, id("TrikV6EnginesForward")
-				, id("TrikV6EnginesStop")
-				, id("TrikV6ClearEncoder")
-				};
+		result
+				<< id("TrikV6EnginesBackward")
+				<< id("TrikV6EnginesForward")
+				<< id("TrikV6EnginesStop")
+				<< id("TrikV6ClearEncoder")
+				;
 	}
+
+	result
+			<< id("TrikSay")
+			<< id("TrikLed")
+			<< id("TrikSystem")
+			<< id("TrikInitCamera")
+			<< id("TrikDetectLine")
+			<< id("TrikLineDetectorToVariable")
+			;
+
+	result
+			<< id("TrikWaitForLight")
+			<< id("TrikWaitForSonarDistance")
+			<< id("TrikWaitForIRDistance")
+			<< id("TrikWaitForGyroscope")
+			<< id("TrikWaitForAccelerometer")
+			<< id("TrikWaitForEncoder")
+//			<< id("TrikWaitForEnter")
+//			<< id("TrikWaitForLeft")
+//			<< id("TrikWaitForRight")
+//			<< id("TrikWaitForDown")
+//			<< id("TrikWaitForUp")
+//			<< id("TrikWaitForPower")
+			;
+
+	result
+			<< id("TrikSmile")
+			<< id("TrikSadSmile")
+			<< id("TrikSetBackground")
+			;
+
+	return result;
 }
 
 qReal::IdList TrikBlocksFactory::blocksToDisable() const
 {
 	qReal::IdList result;
 
-	result << id("WaitForTouchSensor")
-			<< id("WaitForColor")
-			<< id("WaitForColorIntensity")
-			<< id("WaitForSound")
-			;
-
 	if (mRobotModelManager->model().name().contains("TwoD")) {
-		result << id("WaitForGyroscope")
+		result
+				<< id("TrikWaitForGyroscope")
+				<< id("TrikWaitForAccelerometer")
+				<< id("TrikSay")
+				<< id("TrikLed")
+				<< id("TrikSystem")
+				<< id("TrikInitCamera")
+				<< id("TrikDetectLine")
+				<< id("TrikLineDetectorToVariable")
 				;
 	}
 

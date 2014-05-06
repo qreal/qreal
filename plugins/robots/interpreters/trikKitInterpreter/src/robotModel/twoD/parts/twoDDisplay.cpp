@@ -13,7 +13,9 @@ Display::Display(DeviceInfo const &info
 
 void Display::attachToPaintWidget()
 {
-	mEngine.display()->setPainter(this);
+	if (mEngine.display()) {
+		mEngine.display()->setPainter(this);
+	}
 }
 
 void Display::drawSmile(bool sad)
@@ -26,7 +28,9 @@ void Display::setBackground(QColor const &color)
 
 void Display::clearScreen()
 {
-	mEngine.display()->repaintDisplay();
+	if (mEngine.display()) {
+		mEngine.display()->repaintDisplay();
+	}
 }
 
 void Display::paint(QPainter *painter)

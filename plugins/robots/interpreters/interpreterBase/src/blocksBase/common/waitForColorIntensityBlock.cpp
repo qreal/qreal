@@ -1,6 +1,7 @@
-#include "waitForColorIntensityBlock.h"
+#include "interpreterBase/blocksBase/common/waitForColorIntensityBlock.h"
 
-using namespace interpreterCore::coreBlocks::details;
+using namespace interpreterBase;
+using namespace blocksBase::common;
 
 WaitForColorIntensityBlock::WaitForColorIntensityBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForColorSensorBlockBase(robotModel)

@@ -33,7 +33,7 @@ D2RobotModel::D2RobotModel(interpreterBase::robotModel::RobotModelInterface &rob
 		, QObject *parent)
 	: QObject(parent)
 	, mD2ModelWidget(nullptr)
-	, mDisplay(new NxtDisplay)
+	, mDisplay(configurer->displayWidget(nullptr))
 	, mWorldModel(new WorldModel())
 	, mPhysicsEngine(nullptr)
 	, mTimeline(new Timeline(this))

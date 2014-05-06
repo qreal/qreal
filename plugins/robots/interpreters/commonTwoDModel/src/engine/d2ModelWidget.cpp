@@ -30,7 +30,7 @@ using namespace interpreterBase::robotModel::robotParts;
 
 D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
 		, RobotModelInterface &robotModel
-		, NxtDisplay *nxtDisplay
+		, engine::TwoDModelDisplayWidget *display
 		, Configurer const &configurer
 		, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
@@ -40,7 +40,7 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 	, mTwoDRobotModel(twoDRobotModel)
 	, mWorldModel(worldModel)
-	, mNxtDisplay(nxtDisplay)
+	, mDisplay(display)
 	, mDrawingAction(enums::drawingAction::none)
 	, mMouseClicksCount(0)
 	, mCurrentWall(nullptr)
@@ -139,9 +139,15 @@ void D2ModelWidget::initWidget()
 
 	initButtonGroups();
 
-	mNxtDisplay->setMinimumSize(displaySize);
-	mNxtDisplay->setMaximumSize(displaySize);
-	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mNxtDisplay);
+	if (mDisplay) {
+		mDisplay->setMinimumSize(displaySize);
+		mDisplay->setMaximumSize(displaySize);
+		dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
+		mUi->displayFrame->setVisible(true);
+	} else {
+		mUi->displayFrame->setVisible(false);
+	}
+
 	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
 
 	initPorts();
@@ -1105,12 +1111,20 @@ void D2ModelWidget::onTimelineTick()
 
 void D2ModelWidget::toggleDisplayVisibility()
 {
-	setDisplayVisibility(!mNxtDisplay->isVisible());
+	if (!mDisplay) {
+		return;
+	}
+
+	setDisplayVisibility(!mDisplay->isVisible());
 }
 
 void D2ModelWidget::setDisplayVisibility(bool visible)
 {
-	mNxtDisplay->setVisible(visible);
+	if (!mDisplay) {
+		return;
+	}
+
+	mDisplay->setVisible(visible);
 	QString const direction = visible ? "right" : "left";
 	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
 	SettingsManager::setValue("2d_displayVisible", visible);

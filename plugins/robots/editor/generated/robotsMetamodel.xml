@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
@@ -6,11 +6,32 @@
 	<namespace>UML 2.0</namespace>
 	<diagram displayedName="Диаграмма поведения робота" nodeName="RobotsDiagramGroup" name="RobotsDiagram">
 		<nonGraphicTypes>
-			<enum name="SensorPort">
+			<enum name="NxtSensorPort">
 				<value>1</value>
 				<value>2</value>
 				<value>3</value>
 				<value>4</value>
+			</enum>
+			<enum name="TrikV4SensorPort">
+				<value>JA1</value>
+				<value>JA2</value>
+				<value>JA3</value>
+				<value>JA4</value>
+				<value>JA5</value>
+				<value>JA6</value>
+				<value>JD1</value>
+				<value>JD2</value>
+			</enum>
+			<enum name="TrikV6SensorPort">
+				<value>JA1</value>
+				<value>JA2</value>
+				<value>JA3</value>
+				<value>JA4</value>
+				<value>JA5</value>
+				<value>JA6</value>
+				<value>JD1</value>
+				<value>JD2</value>
+				<value>JF1</value>
 			</enum>
 			<enum name="GuardType">
 				<value></value>
@@ -79,6 +100,7 @@
 			</groups>
 		</nonGraphicTypes>
 		<graphicTypes>
+			<!-- Algorithms -->
 			<node displayedName="Диаграмма поведения робота"  name="RobotsDiagramNode">
 				<graphics>
 					<picture sizex="204" sizey="204">
@@ -109,6 +131,11 @@
 						<property displayedName="Модель мира" type="string" name="worldModel" />
 						<property displayedName="Конфигурация устройств" type="string" name="devicesConfiguration" />
 					</properties>
+				</logic>
+			</node>
+			<node name="AbstractNode">
+				<logic>
+					<container/>
 				</logic>
 			</node>
 			<node displayedName="Подпрограмма" name="SubprogramDiagram">
@@ -172,15 +199,67 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Инициализация балансировки" name="BalanceInit">
+			<node displayedName="Комментарий" name="CommentBlock" description="Блок с текстовыми заметками, которые игнорируются при генерации и интерпретации. Используйте его для повышения наглядности диаграммы.">
 				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/balanceInitBlock.png" x1="0" y2="50" x2="50"/>
+					<picture sizex="200" sizey="100">
+						<line y1="0" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="0" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="100" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="20" y2="100" fill="#ffffff" stroke="#000000" x1="200" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="0" fill="#ffffff" stroke="#000000" x1="0" x2="178" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="180" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="20" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
 					</picture>
+					<labels>
+						<label x="20" y="20" textBinded="Comment" hard="true"/>
+					</labels>
 					<ports>
 						<linePort>
 							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
+							<end endx="0" endy="95"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="175" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="200" starty="25"/>
+							<end endx="200" endy="95"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="100"/>
+							<end endx="195" endy="100"/>
+						</linePort>
+						<linePort>
+							<start startx="180" starty="0"/>
+							<end endx="200" endy="20"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Комментарий" type="string" name="Comment">
+							<default>Введите текст...</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Подпрограмма" name="Subprogram" description="Вызов подпрограммы. Подпрограммы используются для того, чтобы вынести повторяющиеся фрагменты программы на отдельную диаграмму, а потом вызывать фрагмент программы с этой диаграммы в нескольких местах основной программы или других подпрограмм. При добавлении этого блока на диаграмму будет предложено ввести имя подпрограммы, после чего двойным кликом на блоке можно будет перейти на диаграмму, соответствующую данной подпрограмме. Кроме того, появится дополнительная палитра со всеми подпрограммами, подпрограммы из неё можно перетаскивать на сцену и использовать как обычные блоки.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/subprogramRobotsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-25" textBinded="name" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
 							<start startx="5" starty="0"/>
@@ -202,9 +281,12 @@
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
+					<explodesTo>
+						<target type="SubprogramDiagramGroup" makeReusable="true" requireImmediateLinkage="true"/>
+					</explodesTo>
 				</logic>
 			</node>
-			<node displayedName="Инициализация переменной" name="VariableInit">
+			<node displayedName="Инициализация переменной" name="VariableInit" description="Записывает указанное значение в указанную переменную">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/variableInitBlock.png" x1="0" y2="50" x2="50"/>
@@ -238,7 +320,7 @@
 				<logic>
 					<properties>
 						<property displayedName="Переменная" type="string" name="variable">
-							<default>0</default>
+							<default>x</default>
 						</property>
 						<property displayedName="Значение" type="string" name="value">
 							<default>0</default>
@@ -250,7 +332,221 @@
 					<container/>
 				</logic>
 			</node>
+			<node displayedName="Начало" name="InitialNode" path="210, 111 : 209, 120 : 208, 130 : 205, 139 : 202, 148 : 198, 157 : 193, 166 : 187, 173 : 181, 181 : 173, 187 : 166, 193 : 157, 198 : 148, 202 : 139, 205 : 130, 208 : 120, 209 : 111, 209 : 102, 209 : 92, 208 : 83, 205 : 74, 202 : 65, 198 : 56, 193 : 49, 187 : 41, 181 : 35, 173 : 29, 166 : 24, 157 : 20, 148 : 17, 139 : 14, 130 : 13, 120 : 13, 111 : 13, 102 : 14, 92 : 17, 83 : 20, 74 : 24, 65 : 29, 56 : 35, 49 : 41, 41 : 49, 35 : 56, 29 : 65, 24 : 74, 20 : 83, 17 : 92, 14 : 102, 13 : 111, 13 : 120, 13 : 130, 14 : 139, 17 : 148, 20 : 157, 24 : 166, 29 : 173, 35 : 181, 41 : 187, 49 : 193, 56 : 198, 65 : 202, 74 : 205, 83 : 208, 92 : 209, 102 : 210, 111 : " description="Начальная точка выполнения программы. На каждой диаграмме такой блок должен быть только один, в него не должно быть входящих связей, исходящая связь из этого элемента должна быть только одна. Процесс интерпретации диаграммы начинается именно с этого блока.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/initialBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<edge displayedName="Линия соединения" name="ControlFlow" description="Для того, чтобы создать связь между двумя элементами A и B, можно навести курсор на элемент A, нажать правую кнопку мыши и, не отпуская ее, провести линию до элемента B, либо 'вытащить' связь из кружочка справа от элемента">
+				<graphics>
+					<lineType type="solidLine"/>
+					<shape type="broken"/>
+					<labels>
+						<label textBinded="Guard" hard="true"/>
+					</labels>
+				</graphics>
+				<logic>
+					<associations endType="open_arrow" beginType="no_arrow">
+						<association beginName="begin" endName="end"/>
+					</associations>
+					<possibleEdges>
+						<possibleEdge beginName="NonTyped" directed="false" endName="NonTyped"/>
+					</possibleEdges>
+					<properties>
+						<property displayedName="Условие" type="GuardType" name="Guard"/>
+					</properties>
+					<dividability isDividable="true"/>
+				</logic>
+			</edge>
 
+			<!-- Loop block in its current state only confuses users, so it is commented out. It needs to be separated to BeginLoop and EndLoop blocks.
+			<node displayedName="Цикл" name="Loop" path="154, 251 : 205, 302 :  | 154, 251 : 209, 196 :  | 100, 12 : 154, 66 :  | 154, 66 : 103, 117 :  | 12, 66 : 297, 66 : 297, 251 : 12, 251 : 12, 66 : " description="Блок, организующий выполнение последовательности блоков несколько раз. Число повторений задается значением параметра 'Итераций'. Блок должен иметь две исходящие связи, одна из которых должна быть помечена значением 'итерация' (то есть значение параметра 'Условие' должно быть 'итерация'). Другая связь, исходящая из блока 'Цикл', должна оставаться непомеченной: по ней будет осуществляться переход, когда программа пройдет через блок 'Цикл' указанное число раз.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/loopBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Iterations" hard="true"/>
+						<label x="-30" y="-25" text="Итераций:" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Итерации" type="string" name="Iterations">
+							<default>10</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			-->
+
+			<node displayedName="Параллельные задачи" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Разделить выполнение программы на несколько потоков, которые с точки зрения программиста будут выполняться параллельно. Так, например, можно одновременно ждать срабатывания сенсора и истечения временного интервала. Блок должен иметь хотя бы две исходящие связи.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/forkBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Функция" name="Function" path="58, 12 : 58, 172 :  | 58, 12 : 148, 12 :  | 12, 96 : 108, 96 : " description="Посчитать значение заданного выражения. Также в данном блоке допускается определение переменных. Подробнее про синтаксис допустимых выражений параметра 'Функция' см. в документации в разделе 'Синтаксис выражений'.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/functionBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-37" y="60" text="Функция:"/>
+						<label x="30" y="60" textBinded="Body"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Тело функции" type="string" name="Body"/>
+						<property displayedName="Инициализация" type="bool" name="Init"/>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Условие" name="IfBlock" path="96, 182 : 180, 94 :  | 98, 12 : 180, 94 :  | 12, 98 : 96, 182 :  | 98, 12 : 12, 98 : " description="Разделить выполнение программы в соответствии с заданным условием. Значением параметра 'Условие' является некое логическое выражение, на основе значения которого будет осуществлен выбор дальнейшего пути выполнения диаграммы. У данного блока должны быть две исходящие связи, у одной из которых должно быть задано значение параметра 'Условие' (возможные варианты — 'истина' и 'ложь'). При невыполнении данного условия выполнение передается по другой связи.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="60" textBinded="Condition" isPlainText="true" />
+						<label x="-25" y="60" text="Условие:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Условие" type="string" name="Condition">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!--- Engine movement commands -->
 			<node name="EngineCommand">
 				<logic>
 					<container/>
@@ -262,7 +558,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
 			<node name="EngineMovementCommand">
 				<logic>
 					<container/>
@@ -276,7 +571,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
 			<node name="NxtEngineMovementCommand">
 				<logic>
 					<container/>
@@ -293,7 +587,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
 			<node displayedName="Моторы назад" name="NxtEnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -382,8 +675,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
-
 			<node name="TrikV4EngineMovementCommand">
 				<logic>
 					<container/>
@@ -397,7 +688,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
 			<node displayedName="Моторы назад" name="TrikV4EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, JM1, JE2), и раделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -474,8 +764,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
-
 			<node name="TrikV6EngineMovementCommand">
 				<logic>
 					<container/>
@@ -489,7 +777,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
 			<node displayedName="Моторы назад" name="TrikV6EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, JM1, JE2), и раделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -563,172 +850,6 @@
 					<container/>
 					<generalizations>
 						<parent parentName="TrikV6EngineMovementCommand"/>
-					</generalizations>
-				</logic>
-			</node>
-
-
-			<node displayedName="Начало" name="InitialNode" path="210, 111 : 209, 120 : 208, 130 : 205, 139 : 202, 148 : 198, 157 : 193, 166 : 187, 173 : 181, 181 : 173, 187 : 166, 193 : 157, 198 : 148, 202 : 139, 205 : 130, 208 : 120, 209 : 111, 209 : 102, 209 : 92, 208 : 83, 205 : 74, 202 : 65, 198 : 56, 193 : 49, 187 : 41, 181 : 35, 173 : 29, 166 : 24, 157 : 20, 148 : 17, 139 : 14, 130 : 13, 120 : 13, 111 : 13, 102 : 14, 92 : 17, 83 : 20, 74 : 24, 65 : 29, 56 : 35, 49 : 41, 41 : 49, 35 : 56, 29 : 65, 24 : 74, 20 : 83, 17 : 92, 14 : 102, 13 : 111, 13 : 120, 13 : 130, 14 : 139, 17 : 148, 20 : 157, 24 : 166, 29 : 173, 35 : 181, 41 : 187, 49 : 193, 56 : 198, 65 : 202, 74 : 205, 83 : 208, 92 : 209, 102 : 210, 111 : " description="Начальная точка выполнения программы. На каждой диаграмме такой блок должен быть только один, в него не должно быть входящих связей, исходящая связь из этого элемента должна быть только одна. Процесс интерпретации диаграммы начинается именно с этого блока.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/initialBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels/>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<edge displayedName="Линия соединения" name="ControlFlow" description="Для того, чтобы создать связь между двумя элементами A и B, можно навести курсор на элемент A, нажать правую кнопку мыши и, не отпуская ее, провести линию до элемента B, либо 'вытащить' связь из кружочка справа от элемента">
-				<graphics>
-					<lineType type="solidLine"/>
-					<shape type="broken"/>
-					<labels>
-						<label textBinded="Guard" hard="true"/>
-					</labels>
-				</graphics>
-				<logic>
-					<associations endType="open_arrow" beginType="no_arrow">
-						<association beginName="begin" endName="end"/>
-					</associations>
-					<possibleEdges>
-						<possibleEdge beginName="NonTyped" directed="false" endName="NonTyped"/>
-					</possibleEdges>
-					<properties>
-						<property displayedName="Условие" type="GuardType" name="Guard"/>
-					</properties>
-					<dividability isDividable="true"/>
-				</logic>
-			</edge>
-			<node displayedName="Балансировка" name="Balance">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/balanceBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="33" y="60" textBinded="port"/>
-						<label x="-57" y="60" text="Порт гироскопа:"/>
-						<label x="33" y="80" textBinded="forward"/>
-						<label x="-65" y="80" text="Значение forward:"/>
-						<label x="33" y="100" textBinded="turn"/>
-						<label x="-47" y="100" text="Значение turn:"/>
-						<label x="33" y="120" textBinded="gyroOffset"/>
-						<label x="-108" y="120" text="Значение для калибровки:"/>
-						<label x="33" y="140" textBinded="port1"/>
-						<label x="-84" y="140" text="Порт первого мотора:"/>
-						<label x="33" y="160" textBinded="port2"/>
-						<label x="-84" y="160" text="Порт второго мотора:"/>
-						<label x="33" y="180" textBinded="pwm1"/>
-						<label x="-213" y="180" text="Выходное значение мощности первого мотора:"/>
-						<label x="33" y="200" textBinded="pwm2"/>
-						<label x="-213" y="200" text="Выходное значение мощности второго мотора:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<properties>
-						<property displayedName="Значение forward" type="string" name="forward">
-							<default>0</default>
-						</property>
-						<property displayedName="Значение turn" type="string" name="turn">
-							<default>0</default>
-						</property>
-						<property displayedName="Порт гироскопа" type="string" name="port">
-							<default>4</default>
-						</property>
-						<property displayedName="Значение для калибровки (что бы это ни значило)" type="string" name="gyroOffset">
-							<default>0</default>
-						</property>
-						<property displayedName="Порт первого мотора" type="string" name="port1">
-							<default>B</default>
-						</property>
-						<property displayedName="Порт второго мотора" type="string" name="port2">
-							<default>C</default>
-						</property>
-						<property displayedName="Выходное значение мощности первого мотора" type="string" name="pwm1">
-						</property>
-						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-					<container/>
-				</logic>
-			</node>
-			<node displayedName="Моторы стоп" name="EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Выключить моторы по заданным портам">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-10" y="-25" text="Порты:" hard="true"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="EngineCommand"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -855,233 +976,9 @@
 					</properties>
 				</logic>
 			</node>
-			<node displayedName="Таймер" name="Timer" path="12, 117 : 117, 118 :  | 117, 12 : 117, 118 :  | 222, 117 : 221, 127 : 219, 137 : 217, 147 : 214, 157 : 209, 166 : 204, 175 : 198, 183 : 191, 191 : 183, 198 : 175, 204 : 166, 209 : 157, 214 : 147, 217 : 137, 219 : 127, 221 : 117, 221 : 107, 221 : 97, 219 : 87, 217 : 77, 214 : 68, 209 : 59, 204 : 51, 198 : 43, 191 : 36, 183 : 30, 175 : 25, 166 : 20, 157 : 17, 147 : 15, 137 : 13, 127 : 13, 117 : 13, 107 : 15, 97 : 17, 87 : 20, 77 : 25, 68 : 30, 59 : 36, 51 : 43, 43 : 51, 36 : 59, 30 : 68, 25 : 77, 20 : 87, 17 : 97, 15 : 107, 13 : 117, 13 : 127, 13 : 137, 15 : 147, 17 : 157, 20 : 166, 25 : 175, 30 : 183, 36 : 191, 43 : 198, 51 : 204, 59 : 209, 68 : 214, 77 : 217, 87 : 219, 97 : 221, 107 : 222, 117 : " description="Ждать заданное количество времени, в миллисекундах">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/timerBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="65" y="-25" textBinded="Delay" hard="true"/>
-						<label x="-30" y="-25" text="Задержка (мс):" hard="true"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Задержка (мс)" type="string" name="Delay">
-							<default>1000</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Ждать сенсор касания" name="WaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Ждать, пока не сработает сенсор касания. Параметром указывается номер порта, к которому подключен сенсор касания. Допустимые значения: 1, 2, 3, 4.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="SensorBlock"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Ждать сенсор звука" name="WaitForSound" path="12, 178 : 117, 178 :  | 117, 96 : 117, 178 :  | 13, 96 : 117, 96 :  | 13, 12 : 13, 96 :  | 13, 12 : 118, 12 : " description="Ждать, пока громкость, считанная микрофоном на заданном порту, не будет выше или ниже заданного значения.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="45" y="60" textBinded="Volume"/>
-						<label x="-30" y="60" text="Громкость:"/>
-						<label x="50" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Громкость" type="string" name="Volume">
-							<default>0</default>
-						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="SensorBlock"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Ждать гироскоп" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="WaitForGyroscope" description="Ждать, пока значение, возвращаемое гироскопом на указанном порту, не будет сравнимо с указанным в значении параметра 'Градусы'.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="35" y="60" textBinded="Degrees"/>
-						<label x="-26" y="60" text="Градусы:"/>
-						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Градусы/сек" type="string" name="Degrees">
-							<default>0</default>
-						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="SensorBlock"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Ждать акселерометр" name="WaitForAccelerometer">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Acceleration"/>
-						<label x="-26" y="60" text="Ускорение:"/>
-						<label x="33" y="80" textBinded="Sign"/>
-						<label x="-80" y="80" text="Считанное значение:"/>
-						<label x="33" y="100" textBinded="AccelerationAxis"/>
-						<label x="-80" y="100" text="Ускорение по оси:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Ускорение" type="string" name="Acceleration">
-							<default>0</default>
-						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
-						</property>
-						<property displayedName="Ускорение по оси" type="Accelerations" name="AccelerationAxe">
-							<default>X</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="SensorBlock"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Гудок" name="Beep" path="152, 12 : 281, 12 :  | 152, 183 : 152, 12 :  | 155, 170 : 154, 176 : 153, 183 : 151, 190 : 149, 196 : 146, 202 : 143, 208 : 139, 214 : 134, 219 : 129, 224 : 123, 228 : 117, 231 : 111, 234 : 105, 236 : 98, 238 : 91, 239 : 85, 239 : 79, 239 : 72, 238 : 65, 236 : 59, 234 : 53, 231 : 47, 228 : 41, 224 : 36, 219 : 31, 214 : 27, 208 : 24, 202 : 21, 196 : 19, 190 : 17, 183 : 16, 176 : 16, 170 : 16, 164 : 17, 157 : 19, 150 : 21, 144 : 24, 138 : 27, 132 : 31, 126 : 36, 121 : 41, 116 : 47, 112 : 53, 109 : 59, 106 : 65, 104 : 72, 102 : 79, 101 : 85, 101 : 91, 101 : 98, 102 : 105, 104 : 111, 106 : 117, 109 : 123, 112 : 129, 116 : 134, 121 : 139, 126 : 143, 132 : 146, 138 : 149, 144 : 151, 150 : 153, 157 : 154, 164 : 155, 170 : " description="Проиграть на роботе звук с фиксированной частотой. Имеется один параметр — ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку. Допустимые значения — true и false.">
+
+			<!-- Other action blocks -->
+			<node displayedName="Гудок" name="NxtBeep" path="152, 12 : 281, 12 :  | 152, 183 : 152, 12 :  | 155, 170 : 154, 176 : 153, 183 : 151, 190 : 149, 196 : 146, 202 : 143, 208 : 139, 214 : 134, 219 : 129, 224 : 123, 228 : 117, 231 : 111, 234 : 105, 236 : 98, 238 : 91, 239 : 85, 239 : 79, 239 : 72, 238 : 65, 236 : 59, 234 : 53, 231 : 47, 228 : 41, 224 : 36, 219 : 31, 214 : 27, 208 : 24, 202 : 21, 196 : 19, 190 : 17, 183 : 16, 176 : 16, 170 : 16, 164 : 17, 157 : 19, 150 : 21, 144 : 24, 138 : 27, 132 : 31, 126 : 36, 121 : 41, 116 : 47, 112 : 53, 109 : 59, 106 : 65, 104 : 72, 102 : 79, 101 : 85, 101 : 91, 101 : 98, 102 : 105, 104 : 111, 106 : 117, 109 : 123, 112 : 129, 116 : 134, 121 : 139, 126 : 143, 132 : 146, 138 : 149, 144 : 151, 150 : 153, 157 : 154, 164 : 155, 170 : " description="Проиграть на роботе звук с фиксированной частотой. Имеется один параметр — ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку. Допустимые значения — true и false.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
@@ -1127,81 +1024,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Цикл" name="Loop" path="154, 251 : 205, 302 :  | 154, 251 : 209, 196 :  | 100, 12 : 154, 66 :  | 154, 66 : 103, 117 :  | 12, 66 : 297, 66 : 297, 251 : 12, 251 : 12, 66 : " description="Блок, организующий выполнение последовательности блоков несколько раз. Число повторений задается значением параметра 'Итераций'. Блок должен иметь две исходящие связи, одна из которых должна быть помечена значением 'итерация' (то есть значение параметра 'Условие' должно быть 'итерация'). Другая связь, исходящая из блока 'Цикл', должна оставаться непомеченной: по ней будет осуществляться переход, когда программа пройдет через блок 'Цикл' указанное число раз.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/loopBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-25" textBinded="Iterations" hard="true"/>
-						<label x="-30" y="-25" text="Итераций:" hard="true"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Итерации" type="string" name="Iterations">
-							<default>10</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Параллельные задачи" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Разделить выполнение программы на несколько потоков, которые с точки зрения программиста будут выполняться параллельно. Так, например, можно одновременно ждать срабатывания сенсора и истечения временного интервала. Блок должен иметь хотя бы две исходящие связи.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/forkBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels/>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Играть звук" name="PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Проиграть на роботе звук с заданной частотой и длительностью. Аналогичен блоку 'Гудок', но позволяет задавать параметры звука. Имеется параметр, определяющий, ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку.">
+			<node displayedName="Играть звук" name="NxtPlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Проиграть на роботе звук с заданной частотой и длительностью. Аналогичен блоку 'Гудок', но позволяет задавать параметры звука. Имеется параметр, определяющий, ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
@@ -1257,265 +1080,6 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать сонар" name="WaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Ждать, пока расстояние, возвращаемое ультразвуковым сенсором расстояния, не будет сравнимо с указанным в значении параметра 'Расстояние' (расстояние задается в сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="50" y="60" textBinded="Distance"/>
-						<label x="-60" y="60" text="Расстояние (см):"/>
-						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Дистанция" type="string" name="Distance">
-							<default>0</default>
-						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="SensorBlock"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="SensorBlock">
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Порт" type="SensorPort" name="Port">
-							<default>1</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node name="AbstractNode">
-				<logic>
-					<container/>
-				</logic>
-			</node>
-			<node displayedName="Ждать интенсивность цвета" name="WaitForColorIntensity" path="201, 137 : 200, 143 : 199, 149 : 198, 154 : 196, 160 : 193, 166 : 190, 171 : 186, 176 : 182, 180 : 178, 184 : 173, 188 : 168, 191 : 162, 194 : 156, 196 : 151, 197 : 145, 198 : 139, 198 : 133, 198 : 127, 197 : 122, 196 : 116, 194 : 110, 191 : 105, 188 : 100, 184 : 96, 180 : 92, 176 : 88, 171 : 85, 166 : 82, 160 : 80, 154 : 79, 149 : 78, 143 : 78, 137 : 78, 131 : 79, 125 : 80, 120 : 82, 114 : 85, 108 : 88, 103 : 92, 98 : 96, 94 : 100, 90 : 105, 86 : 110, 83 : 116, 80 : 122, 78 : 127, 77 : 133, 76 : 139, 76 : 145, 76 : 151, 77 : 156, 78 : 162, 80 : 168, 83 : 173, 86 : 178, 90 : 182, 94 : 186, 98 : 190, 103 : 193, 108 : 196, 114 : 198, 120 : 199, 125 : 200, 131 : 201, 137 :  | 260, 136 : 259, 148 : 257, 160 : 254, 171 : 250, 183 : 245, 194 : 239, 204 : 231, 214 : 223, 223 : 214, 231 : 204, 239 : 194, 245 : 183, 250 : 171, 254 : 160, 257 : 148, 259 : 136, 259 : 124, 259 : 112, 257 : 101, 254 : 89, 250 : 78, 245 : 68, 239 : 58, 231 : 49, 223 : 41, 214 : 33, 204 : 27, 194 : 22, 183 : 18, 171 : 15, 160 : 13, 148 : 13, 136 : 13, 124 : 15, 112 : 18, 101 : 22, 89 : 27, 78 : 33, 68 : 41, 58 : 49, 49 : 58, 41 : 68, 33 : 78, 27 : 89, 22 : 101, 18 : 112, 15 : 124, 13 : 136, 13 : 148, 13 : 160, 15 : 171, 18 : 183, 22 : 194, 27 : 204, 33 : 214, 41 : 223, 49 : 231, 58 : 239, 68 : 245, 78 : 250, 89 : 254, 101 : 257, 112 : 259, 124 : 260, 136 : " description="Ждать, пока значение, возвращаемое сенсором цвета на указанном порту, не будет сравнимо с указанным в значении параметра 'Интенсивность' (задается в процентах). Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения с введенной интенсивностью.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForColorIntensityBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="55" y="60" textBinded="Intensity"/>
-						<label x="-55" y="60" text="Интенсивность:"/>
-						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-85" y="80" text="Считанное значение:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Интенсивность" type="string" name="Intensity">
-							<default>0</default>
-						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="SensorBlock"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Ждать цвет" name="WaitForColor" path="196, 12 : 196, 154 :  | 12, 12 : 380, 12 : 380, 154 : 12, 154 : 12, 12 : " description="Ждать, пока сенсор цвета в режиме распознавания цветов не вернет указанный цвет">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="37" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="37" y="60" textBinded="Color"/>
-						<label x="0" y="60" text="Цвет:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Цвет" type="Color" name="Color">
-							<default>Красный</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="SensorBlock"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Ждать свет" name="WaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Ждать, пока значение, возвращаемое сенсором света на указанном порту, не будет сравнимо с указанным в значении параметра 'Проценты'. Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения со значением параметра 'Проценты'.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="45" y="60" textBinded="Percents"/>
-						<label x="-26" y="60" text="Проценты:"/>
-						<label x="50" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Проценты" type="string" name="Percents">
-							<default>0</default>
-						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="SensorBlock"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Ждать энкодер" name="WaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Ждать, пока показания счетчика количества оборотов на заданном моторе не достинут указанного в значении параметра 'Предел оборотов'.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="40" y="60" textBinded="TachoLimit"/>
-						<label x="-90" y="60" text="Предел оборотов:"/>
-						<label x="60" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Порт" type="string" name="Port">
-							<default>B</default>
-						</property>
-						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-
-
-
-
-
 			<node displayedName="Сбросить показания энкодера" name="NxtClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Сбросить показания количества оборотов моторов">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1639,26 +1203,19 @@
 					</generalizations>
 				</logic>
 			</node>
-
-
-
-
-
-
-
-			<node displayedName="Функция" name="Function" path="58, 12 : 58, 172 :  | 58, 12 : 148, 12 :  | 12, 96 : 108, 96 : " description="Посчитать значение заданного выражения. Также в данном блоке допускается определение переменных. Подробнее про синтаксис допустимых выражений параметра 'Функция' см. в документации в разделе 'Синтаксис выражений'.">
+			<node displayedName="Системный вызов" name="TrikSystem">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/functionBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/system.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-37" y="60" text="Функция:"/>
-						<label x="30" y="60" textBinded="Body"/>
+						<label x="-15" y="-25" text="Команда:" hard="true"/>
+						<label x="55" y="-25" textBinded="Command" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
 							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
+							 <end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
 							<start startx="5" starty="0"/>
@@ -1676,29 +1233,135 @@
 					<nonResizeable/>
 				</graphics>
 				<logic>
-					<container/>
 					<properties>
-						<property displayedName="Тело функции" type="string" name="Body"/>
-						<property displayedName="Инициализация" type="bool" name="Init"/>
+						<property displayedName="Команда" type="string" name="Command" />
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Включить видеокамеру" name="TrikInitCamera" description="Включить датчик линии по видеокамере, вывести на экран картинку">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/InitCamera.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<labels>
+						<label x="-15" y="60" text="Включить видеокамеру"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Детектировать линию по видео" name="TrikDetectLine" description="Инициализировать датчик линии по видеокамере цветом объекта в центре поля зрения камеры">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/detect.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<labels>
+						<label x="-15" y="60" text="Детектировать линию"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Датчик линии в переменную" name="TrikLineDetectorToVariable" description="Сохранить текущее значение датчика линии по видеокамере в заданную переменную">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/lineDetectorToVariable.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<labels>
+						<label x="-15" y="60" text="Датчик линии в переменную"/>
+						<label x="-15" y="80" text="Переменная:"/>
+						<label x="85" y="80" textBinded="Variable"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Имя переменной" type="string" name="Variable" />
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Условие" name="IfBlock" path="96, 182 : 180, 94 :  | 98, 12 : 180, 94 :  | 12, 98 : 96, 182 :  | 98, 12 : 12, 98 : " description="Разделить выполнение программы в соответствии с заданным условием. Значением параметра 'Условие' является некое логическое выражение, на основе значения которого будет осуществлен выбор дальнейшего пути выполнения диаграммы. У данного блока должны быть две исходящие связи, у одной из которых должно быть задано значение параметра 'Условие' (возможные варианты — 'истина' и 'ложь'). При невыполнении данного условия выполнение передается по другой связи.">
+			<node displayedName="Светодиод" name="TrikLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : ">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="35" y="60" textBinded="Condition" isPlainText="true" />
-						<label x="-25" y="60" text="Условие:"/>
+						<label x="-15" y="-25" text="Цвет:" hard="true"/>
+						<label x="35" y="-25" textBinded="Color" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
 							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
+							 <end endx="0" endy="45"/>
 						</linePort>
 						<linePort>
 							<start startx="5" starty="0"/>
@@ -1716,10 +1379,25 @@
 					<nonResizeable/>
 				</graphics>
 				<logic>
+					<properties>
+						<property displayedName="Цвет" type="LedColor" name="Color">
+							<default>Красный</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- Waiting for sensors blocks, NXT -->
+			<node name="NxtSensorBlock">
+				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Условие" type="string" name="Condition">
-							<default>0</default>
+						<property displayedName="Порт" type="NxtSensorPort" name="Port">
+							<default>1</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1727,7 +1405,327 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопок" name="WaitForButtons" path="55, 58 : 179, 58 : 179, 182 : 55, 182 : 55, 58 :  | 12, 12 : 221, 12 : 221, 221 : 12, 221 : 12, 12 : " description="Ждать, пока заданные кнопки на роботе не будут нажаты заданное количество раз. Счётчики нажатия можно задать для каждой кнопки отдельно, блок продолжит выполнение, только когда все счётчики сработают.">
+			<node displayedName="Ждать сенсор касания" name="NxtWaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Ждать, пока не сработает сенсор касания. Параметром указывается номер порта, к которому подключен сенсор касания. Допустимые значения: 1, 2, 3, 4.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="NxtSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать сенсор звука" name="NxtWaitForSound" path="12, 178 : 117, 178 :  | 117, 96 : 117, 178 :  | 13, 96 : 117, 96 :  | 13, 12 : 13, 96 :  | 13, 12 : 118, 12 : " description="Ждать, пока громкость, считанная микрофоном на заданном порту, не будет выше или ниже заданного значения.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="45" y="60" textBinded="Volume"/>
+						<label x="-30" y="60" text="Громкость:"/>
+						<label x="50" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Громкость" type="string" name="Volume">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="NxtSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать сонар" name="NxtWaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Ждать, пока расстояние, возвращаемое ультразвуковым сенсором расстояния, не будет сравнимо с указанным в значении параметра 'Расстояние' (расстояние задается в сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="50" y="60" textBinded="Distance"/>
+						<label x="-60" y="60" text="Расстояние (см):"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Дистанция" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="NxtSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать интенсивность цвета" name="NxtWaitForColorIntensity" path="201, 137 : 200, 143 : 199, 149 : 198, 154 : 196, 160 : 193, 166 : 190, 171 : 186, 176 : 182, 180 : 178, 184 : 173, 188 : 168, 191 : 162, 194 : 156, 196 : 151, 197 : 145, 198 : 139, 198 : 133, 198 : 127, 197 : 122, 196 : 116, 194 : 110, 191 : 105, 188 : 100, 184 : 96, 180 : 92, 176 : 88, 171 : 85, 166 : 82, 160 : 80, 154 : 79, 149 : 78, 143 : 78, 137 : 78, 131 : 79, 125 : 80, 120 : 82, 114 : 85, 108 : 88, 103 : 92, 98 : 96, 94 : 100, 90 : 105, 86 : 110, 83 : 116, 80 : 122, 78 : 127, 77 : 133, 76 : 139, 76 : 145, 76 : 151, 77 : 156, 78 : 162, 80 : 168, 83 : 173, 86 : 178, 90 : 182, 94 : 186, 98 : 190, 103 : 193, 108 : 196, 114 : 198, 120 : 199, 125 : 200, 131 : 201, 137 :  | 260, 136 : 259, 148 : 257, 160 : 254, 171 : 250, 183 : 245, 194 : 239, 204 : 231, 214 : 223, 223 : 214, 231 : 204, 239 : 194, 245 : 183, 250 : 171, 254 : 160, 257 : 148, 259 : 136, 259 : 124, 259 : 112, 257 : 101, 254 : 89, 250 : 78, 245 : 68, 239 : 58, 231 : 49, 223 : 41, 214 : 33, 204 : 27, 194 : 22, 183 : 18, 171 : 15, 160 : 13, 148 : 13, 136 : 13, 124 : 15, 112 : 18, 101 : 22, 89 : 27, 78 : 33, 68 : 41, 58 : 49, 49 : 58, 41 : 68, 33 : 78, 27 : 89, 22 : 101, 18 : 112, 15 : 124, 13 : 136, 13 : 148, 13 : 160, 15 : 171, 18 : 183, 22 : 194, 27 : 204, 33 : 214, 41 : 223, 49 : 231, 58 : 239, 68 : 245, 78 : 250, 89 : 254, 101 : 257, 112 : 259, 124 : 260, 136 : " description="Ждать, пока значение, возвращаемое сенсором цвета на указанном порту, не будет сравнимо с указанным в значении параметра 'Интенсивность' (задается в процентах). Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения с введенной интенсивностью.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForColorIntensityBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="55" y="60" textBinded="Intensity"/>
+						<label x="-55" y="60" text="Интенсивность:"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-85" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Интенсивность" type="string" name="Intensity">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="NxtSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать цвет" name="NxtWaitForColor" path="196, 12 : 196, 154 :  | 12, 12 : 380, 12 : 380, 154 : 12, 154 : 12, 12 : " description="Ждать, пока сенсор цвета в режиме распознавания цветов не вернет указанный цвет">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="37" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="37" y="60" textBinded="Color"/>
+						<label x="0" y="60" text="Цвет:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Цвет" type="Color" name="Color">
+							<default>Красный</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="NxtSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать свет" name="NxtWaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Ждать, пока значение, возвращаемое сенсором света на указанном порту, не будет сравнимо с указанным в значении параметра 'Проценты'. Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения со значением параметра 'Проценты'.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="45" y="60" textBinded="Percents"/>
+						<label x="-26" y="60" text="Проценты:"/>
+						<label x="50" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Проценты" type="string" name="Percents">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="NxtSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать энкодер" name="NxtWaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Ждать, пока показания счетчика количества оборотов на заданном моторе не достинут указанного в значении параметра 'Предел оборотов'.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="40" y="60" textBinded="TachoLimit"/>
+						<label x="-90" y="60" text="Предел оборотов:"/>
+						<label x="60" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порт" type="string" name="Port">
+							<default>B</default>
+						</property>
+						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопок" name="NxtWaitForButtons" path="55, 58 : 179, 58 : 179, 182 : 55, 182 : 55, 58 :  | 12, 12 : 221, 12 : 221, 221 : 12, 221 : 12, 12 : " description="Ждать, пока заданные кнопки на роботе не будут нажаты заданное количество раз. Счётчики нажатия можно задать для каждой кнопки отдельно, блок продолжит выполнение, только когда все счётчики сработают.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
@@ -1783,7 +1781,567 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Очистить экран" name="ClearScreen" description="Стереть всё, что нарисовано на экране.">
+
+			<!-- Waiting for sensors blocks, TRIK -->
+			<node name="TrikSensorBlock">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порт" type="TrikV4SensorPort" name="Port">
+							<default>JA1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать свет" name="TrikWaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Ждать, пока значение, возвращаемое сенсором света на указанном порту, не будет сравнимо с указанным в значении параметра 'Проценты'. Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения со значением параметра 'Проценты'.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="45" y="60" textBinded="Percents"/>
+						<label x="-26" y="60" text="Проценты:"/>
+						<label x="50" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Проценты" type="string" name="Percents">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать УЗ датчик расстояния" name="TrikWaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Ждать, пока расстояние, возвращаемое ультразвуковым сенсором расстояния, не будет сравнимо с указанным в значении параметра 'Расстояние'. Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="50" y="60" textBinded="Distance"/>
+						<label x="-60" y="60" text="Расстояние:"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Дистанция" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать ИК датчик расстояния" name="TrikWaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Ждать, пока расстояние, возвращаемое инфракрасным сенсором расстояния, не будет сравнимо с указанным в значении параметра 'Расстояние'. Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="50" y="60" textBinded="Distance"/>
+						<label x="-60" y="60" text="Расстояние:"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Дистанция" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать гироскоп" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="TrikWaitForGyroscope" description="Ждать, пока значение, возвращаемое гироскопом на указанном порту, не будет сравнимо с указанным в значении параметра 'Градусы'.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="60" textBinded="Degrees"/>
+						<label x="-56" y="60" text="Градусы/сек:"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Градусы/сек" type="string" name="Degrees">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать акселерометр" name="TrikWaitForAccelerometer">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="Acceleration"/>
+						<label x="-26" y="60" text="Ускорение:"/>
+						<label x="50" y="80" textBinded="Sign"/>
+						<label x="-100" y="80" text="Считанное значение:"/>
+						<label x="50" y="100" textBinded="AccelerationAxis"/>
+						<label x="-80" y="100" text="Ускорение по оси:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ускорение" type="string" name="Acceleration">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+						<property displayedName="Ускорение по оси" type="Accelerations" name="AccelerationAxis">
+							<default>X</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать энкодер" name="TrikWaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Ждать, пока показания счетчика количества оборотов на заданном моторе не достинут указанного в значении параметра 'Предел оборотов'.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="40" y="60" textBinded="TachoLimit"/>
+						<label x="-90" y="60" text="Предел оборотов:"/>
+						<label x="60" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Порт" type="string" name="Port">
+							<default>JB1</default>
+						</property>
+						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки \&quot;Ввод\&quot;" name="TrikWaitForEnter" description="Ждать нажатия на кнопку \&quot;Ввод\&quot;.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Ввод"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки \&quot;Влево\&quot;" name="TrikWaitForLeft" description="Ждать нажатия на кнопку \&quot;Влево\&quot;.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Влево"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки \&quot;Вправо\&quot;" name="TrikWaitForRight" description="Ждать нажатия на кнопку \&quot;Вправо\&quot;.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Вправо"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки \&quot;Вниз\&quot;" name="TrikWaitForDown" description="Ждать нажатия на кнопку \&quot;Вниз\&quot;.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Вниз"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки \&quot;Вверх\&quot;" name="TrikWaitForUp" description="Ждать нажатия на кнопку \&quot;Вверх\&quot;.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Вверх"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать нажатия кнопки \&quot;Питание\&quot;" name="TrikWaitForPower" description="Ждать нажатия на кнопку \&quot;Питание\&quot;.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Ждать Питание"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- Other waiting blocks -->
+			<node displayedName="Таймер" name="Timer" path="12, 117 : 117, 118 :  | 117, 12 : 117, 118 :  | 222, 117 : 221, 127 : 219, 137 : 217, 147 : 214, 157 : 209, 166 : 204, 175 : 198, 183 : 191, 191 : 183, 198 : 175, 204 : 166, 209 : 157, 214 : 147, 217 : 137, 219 : 127, 221 : 117, 221 : 107, 221 : 97, 219 : 87, 217 : 77, 214 : 68, 209 : 59, 204 : 51, 198 : 43, 191 : 36, 183 : 30, 175 : 25, 166 : 20, 157 : 17, 147 : 15, 137 : 13, 127 : 13, 117 : 13, 107 : 15, 97 : 17, 87 : 20, 77 : 25, 68 : 30, 59 : 36, 51 : 43, 43 : 51, 36 : 59, 30 : 68, 25 : 77, 20 : 87, 17 : 97, 15 : 107, 13 : 117, 13 : 127, 13 : 137, 15 : 147, 17 : 157, 20 : 166, 25 : 175, 30 : 183, 36 : 191, 43 : 198, 51 : 204, 59 : 209, 68 : 214, 77 : 217, 87 : 219, 97 : 221, 107 : 222, 117 : " description="Ждать заданное количество времени, в миллисекундах">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/timerBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="65" y="-25" textBinded="Delay" hard="true"/>
+						<label x="-30" y="-25" text="Задержка (мс):" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Задержка (мс)" type="string" name="Delay">
+							<default>1000</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- NXT display drawing blocks -->
+			<node displayedName="Очистить экран" name="NxtClearScreen" description="Стереть всё, что нарисовано на экране.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/clearScreenBlock.png" x1="0" y2="50" x2="50"/>
@@ -1816,7 +2374,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать точку" name="DrawPixel" description="Нарисовать на экране точку в указанных координатах.">
+			<node displayedName="Нарисовать точку" name="NxtDrawPixel" description="Нарисовать на экране точку в указанных координатах.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
@@ -1862,7 +2420,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать линию" name="DrawLine" description="Нарисовать на экране отрезок. В качестве параметров блоку указываются концы отрезка.">
+			<node displayedName="Нарисовать линию" name="NxtDrawLine" description="Нарисовать на экране отрезок. В качестве параметров блоку указываются концы отрезка.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
@@ -1918,7 +2476,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать прямоугольник" name="DrawRect" description="Нарисовать на экране прямоугольник. В качестве параметров указываются координаты левого верхнего угла, ширина и высота прямоугольника.">
+			<node displayedName="Нарисовать прямоугольник" name="NxtDrawRect" description="Нарисовать на экране прямоугольник. В качестве параметров указываются координаты левого верхнего угла, ширина и высота прямоугольника.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
@@ -1974,7 +2532,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать круг" name="DrawCircle" description="Нарисовать на экране круг с заданным центром и заданным радиусом.">
+			<node displayedName="Нарисовать круг" name="NxtDrawCircle" description="Нарисовать на экране круг с заданным центром и заданным радиусом.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
@@ -2025,7 +2583,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Напечатать текст" name="PrintText" description="Напечатать заданную строку в заданных координатах на экране. Можно использовать символ доллара ('$') перед идентификатором переменной для вывода ее значения. Данный сценарий игнорируется, если перед символом доллара стоит обратный слеш ('\\'). Пример: строка '\\$a = $a' напечатает '$a = 5', если значение переменной a равно 5.">
+			<node displayedName="Напечатать текст" name="NxtPrintText" description="Напечатать заданную строку в заданных координатах на экране. Можно использовать символ доллара ('$') перед идентификатором переменной для вывода ее значения. Данный сценарий игнорируется, если перед символом доллара стоит обратный слеш ('\\'). Пример: строка '\\$a = $a' напечатает '$a = 5', если значение переменной a равно 5.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
@@ -2076,63 +2634,13 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Комментарий" name="CommentBlock" description="Блок с текстовыми заметками, которые игнорируются при генерации и интерпретации. Используйте его для повышения наглядности диаграммы.">
-				<graphics>
-					<picture sizex="200" sizey="100">
-						<line y1="0" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="0" fill-style="none" stroke-style="solid" stroke-width="0"/>
-						<line y1="100" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
-						<line y1="20" y2="100" fill="#ffffff" stroke="#000000" x1="200" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
-						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
-						<line y1="0" y2="0" fill="#ffffff" stroke="#000000" x1="0" x2="178" fill-style="none" stroke-style="solid" stroke-width="0"/>
-						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="180" fill-style="none" stroke-style="solid" stroke-width="0"/>
-						<line y1="20" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
-					</picture>
-					<labels>
-						<label x="20" y="20" textBinded="Comment" hard="true"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="95"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="175" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="200" starty="25"/>
-							<end endx="200" endy="95"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="100"/>
-							<end endx="195" endy="100"/>
-						</linePort>
-						<linePort>
-							<start startx="180" starty="0"/>
-							<end endx="200" endy="20"/>
-						</linePort>
-					</ports>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Комментарий" type="string" name="Comment">
-							<default>Введите текст...</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Подпрограмма" name="Subprogram" description="Вызов подпрограммы. Подпрограммы используются для того, чтобы вынести повторяющиеся фрагменты программы на отдельную диаграмму, а потом вызывать фрагмент программы с этой диаграммы в нескольких местах основной программы или других подпрограмм. При добавлении этого блока на диаграмму будет предложено ввести имя подпрограммы, после чего двойным кликом на блоке можно будет перейти на диаграмму, соответствующую данной подпрограмме. Кроме того, появится дополнительная палитра со всеми подпрограммами, подпрограммы из неё можно перетаскивать на сцену и использовать как обычные блоки.">
+
+			<!-- TRIK display drawing blocks -->
+			<node displayedName="Смайлик" name="TrikSmile" path="161, 71 : 166, 57 :  | 149, 82 : 161, 70 :  | 113, 91 : 149, 83 :  | 67, 91 : 113, 91 :  | 29, 84 : 65, 91 :  | 17, 74 : 28, 83 :  | 12, 59 : 17, 73 :  | 130, 13 : 130, 51 :  | 62, 12 : 62, 51 : ">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/subprogramRobotsBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/smileBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
-					<labels>
-						<label x="-20" y="-25" textBinded="name" hard="true"/>
-					</labels>
 					<ports>
 						<linePort>
 							<start startx="0" starty="5"/>
@@ -2158,16 +2666,248 @@
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
-					<explodesTo>
-						<target type="SubprogramDiagramGroup" makeReusable="true" requireImmediateLinkage="true"/>
-					</explodesTo>
 				</logic>
 			</node>
+			<node displayedName="Грустный смайлик" name="TrikSadSmile" path="156, 91 : 173, 110 :  | 115, 73 : 156, 91 :  | 78, 73 : 114, 73 :  | 33, 85 : 78, 73 :  | 12, 106 : 33, 85 :  | 126, 12 : 126, 48 :  | 63, 12 : 63, 49 : ">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sadSmileBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Цвет фона" name="TrikSetBackground">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/setBackgroundBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-15" y="-25" text="Цвет:" hard="true"/>
+						<label x="35" y="-25" textBinded="Color" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Цвет" type="BackgroundColor" name="Color">
+							<default>Белый</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Сказать" name="TrikSay">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sayBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-15" y="-25" text="Текст:" hard="true"/>
+						<label x="35" y="-25" textBinded="Text" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Текст" type="string" name="Text" />
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- NXTosek segway-related blocks -->
+			<node displayedName="Инициализация балансировки" name="NxtBalanceInit">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/balanceInitBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Балансировка" name="NxtBalance">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/balanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="port"/>
+						<label x="-57" y="60" text="Порт гироскопа:"/>
+						<label x="33" y="80" textBinded="forward"/>
+						<label x="-65" y="80" text="Значение forward:"/>
+						<label x="33" y="100" textBinded="turn"/>
+						<label x="-47" y="100" text="Значение turn:"/>
+						<label x="33" y="120" textBinded="gyroOffset"/>
+						<label x="-108" y="120" text="Значение для калибровки:"/>
+						<label x="33" y="140" textBinded="port1"/>
+						<label x="-84" y="140" text="Порт первого мотора:"/>
+						<label x="33" y="160" textBinded="port2"/>
+						<label x="-84" y="160" text="Порт второго мотора:"/>
+						<label x="33" y="180" textBinded="pwm1"/>
+						<label x="-213" y="180" text="Выходное значение мощности первого мотора:"/>
+						<label x="33" y="200" textBinded="pwm2"/>
+						<label x="-213" y="200" text="Выходное значение мощности второго мотора:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Значение forward" type="string" name="forward">
+							<default>0</default>
+						</property>
+						<property displayedName="Значение turn" type="string" name="turn">
+							<default>0</default>
+						</property>
+						<property displayedName="Порт гироскопа" type="string" name="port">
+							<default>4</default>
+						</property>
+						<property displayedName="Значение для калибровки (что бы это ни значило)" type="string" name="gyroOffset">
+							<default>0</default>
+						</property>
+						<property displayedName="Порт первого мотора" type="string" name="port1">
+							<default>B</default>
+						</property>
+						<property displayedName="Порт второго мотора" type="string" name="port2">
+							<default>C</default>
+						</property>
+						<property displayedName="Выходное значение мощности первого мотора" type="string" name="pwm1">
+						</property>
+						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+					<container/>
+				</logic>
+			</node>
+
 		</graphicTypes>
-		<palette sorted="true">
+		<palette sorted="false">
+			<group name="Алгоритмы">
+				<element name="InitialNode"/>
+				<element name="FinalNode"/>
+				<element name="Function"/>
+				<element name="IfBlock"/>
+
+				<!-- Lop block in its current state only confuses -->
+				<!-- <element name="Loop"/> -->
+
+				<element name="Subprogram"/>
+				<element name="Fork"/>
+				<element name="VariableInit"/>
+				<element name="CommentBlock"/>
+			</group>
 			<group name="Действия">
-				<element name="Beep"/>
-				<element name="PlayTone"/>
+				<element name="NxtBeep"/>
+				<element name="NxtPlayTone"/>
 				<element name="NxtEnginesForward"/>
 				<element name="NxtEnginesBackward"/>
 				<element name="NxtEnginesStop"/>
@@ -2180,41 +2920,50 @@
 				<element name="TrikV6EnginesBackward"/>
 				<element name="TrikV6EnginesStop"/>
 				<element name="TrikV6ClearEncoder"/>
-			</group>
-			<group name="Рисование на дисплее">
-				<element name="ClearScreen"/>
-				<element name="DrawRect"/>
-				<element name="DrawPixel"/>
-				<element name="DrawLine"/>
-				<element name="DrawCircle"/>
-				<element name="PrintText"/>
+				<element name="TrikSay"/>
+				<element name="TrikLed" />
+				<element name="TrikSystem" />
+				<element name="TrikInitCamera" />
+				<element name="TrikDetectLine" />
+				<element name="TrikLineDetectorToVariable" />
 			</group>
 			<group name="Ожидания">
 				<element name="Timer"/>
-				<element name="WaitForTouchSensor"/>
-				<element name="WaitForSonarDistance"/>
-				<element name="WaitForColor"/>
-				<element name="WaitForEncoder"/>
-				<element name="WaitForColorIntensity"/>
-				<element name="WaitForLight"/>
-				<element name="WaitForSound"/>
-				<element name="WaitForGyroscope"/>
-				<element name="WaitForButtons"/>
+				<element name="NxtWaitForTouchSensor"/>
+				<element name="NxtWaitForSonarDistance"/>
+				<element name="NxtWaitForColor"/>
+				<element name="NxtWaitForEncoder"/>
+				<element name="NxtWaitForColorIntensity"/>
+				<element name="NxtWaitForLight"/>
+				<element name="NxtWaitForSound"/>
+				<element name="NxtWaitForButtons"/>
+				<element name="TrikWaitForLight"/>
+				<element name="TrikWaitForSonarDistance"/>
+				<element name="TrikWaitForIRDistance"/>
+				<element name="TrikWaitForGyroscope"/>
+				<element name="TrikWaitForAccelerometer"/>
+				<element name="TrikWaitForEncoder"/>
+				<element name="TrikWaitForEnter"/>
+				<element name="TrikWaitForLeft"/>
+				<element name="TrikWaitForRight"/>
+				<element name="TrikWaitForDown"/>
+				<element name="TrikWaitForUp"/>
+				<element name="TrikWaitForPower"/>
 			</group>
-			<group name="Алгоритмы">
-				<element name="InitialNode"/>
-				<element name="FinalNode"/>
-				<element name="Function"/>
-				<element name="IfBlock"/>
-				<element name="ControlFlow"/>
-				<element name="Loop"/>
-				<element name="CommentBlock"/>
-				<element name="Subprogram"/>
-				<element name="Fork"/>
+			<group name="Рисование на дисплее">
+				<element name="NxtClearScreen"/>
+				<element name="NxtDrawRect"/>
+				<element name="NxtDrawPixel"/>
+				<element name="NxtDrawLine"/>
+				<element name="NxtDrawCircle"/>
+				<element name="NxtPrintText"/>
+				<element name="TrikSmile"/>
+				<element name="TrikSadSmile"/>
+				<element name="TrikSetBackground"/>
 			</group>
 <!--			<group name="Сегвей">
-				<element name="Balance"/>
-				<element name="BalanceInit"/>
+				<element name="NxtBalance"/>
+				<element name="NxtBalanceInit"/>
 			</group> -->
 		</palette>
 	</diagram>

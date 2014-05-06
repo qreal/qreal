@@ -12,8 +12,8 @@ TwoDButtons::TwoDButtons(DeviceInfo const &info, PortInfo const &port
 
 void TwoDButtons::read()
 {
-	emit response(mEngine.display()->leftButtonIsDown()
-			, mEngine.display()->rightButtonIsDown()
-			, mEngine.display()->centralButtonIsDown()
-			, mEngine.display()->bottomButtonIsDown());
+	emit response(mEngine.display()->buttonIsDown("left")
+			, mEngine.display()->buttonIsDown("right")
+			, mEngine.display()->buttonIsDown("central")
+			, mEngine.display()->buttonIsDown("bottom"));
 }

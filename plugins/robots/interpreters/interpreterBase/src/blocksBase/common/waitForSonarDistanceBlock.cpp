@@ -1,9 +1,10 @@
-#include "waitForSonarDistanceBlock.h"
+#include "interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h"
 
-#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+#include "interpreterBase/robotModel/robotParts/rangeSensor.h"
 
-using namespace interpreterCore::coreBlocks::details;
-using namespace interpreterBase::robotModel;
+using namespace interpreterBase;
+using namespace blocksBase::common;
+using namespace robotModel;
 
 WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)

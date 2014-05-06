@@ -1,9 +1,10 @@
-#include "waitForTouchSensorBlock.h"
+#include "interpreterBase/blocksBase/common/waitForTouchSensorBlock.h"
 
-#include <interpreterBase/robotModel/robotParts/touchSensor.h>
+#include "interpreterBase/robotModel/robotParts/touchSensor.h"
 
-using namespace interpreterCore::coreBlocks::details;
-using namespace interpreterBase::robotModel;
+using namespace interpreterBase;
+using namespace blocksBase::common;
+using namespace robotModel;
 
 WaitForTouchSensorBlock::WaitForTouchSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)

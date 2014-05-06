@@ -1,10 +1,11 @@
-#include "waitForSensorBlock.h"
+#include "interpreterBase/blocksBase/common/waitForSensorBlock.h"
 
-#include <interpreterBase/robotModel/robotParts/scalarSensor.h>
-#include <interpreterBase/robotModel/robotModelUtils.h>
+#include "interpreterBase/robotModel/robotParts/scalarSensor.h"
+#include "interpreterBase/robotModel/robotModelUtils.h"
 
-using namespace interpreterCore::coreBlocks::details;
-using namespace interpreterBase::robotModel;
+using namespace interpreterBase;
+using namespace blocksBase::common;
+using namespace robotModel;
 
 WaitForSensorBlock::WaitForSensorBlock(RobotModelInterface &robotModel
 //		, robots::enums::sensorType::SensorTypeEnum type

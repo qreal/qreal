@@ -11,10 +11,10 @@
 #include <qrutils/mathUtils/gaussNoise.h>
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+#include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 #include "commonTwoDModel/engine/configurer.h"
 
 #include "twoDRobotModelInterface.h"
-#include "nxtDisplay.h"
 
 namespace twoDModel {
 
@@ -146,7 +146,7 @@ private:
 
 	D2ModelWidget *mD2ModelWidget;
 	int mBeepTime;
-	NxtDisplay *mDisplay;
+	engine::TwoDModelDisplayWidget *mDisplay;
 	QPointF mRotatePoint;
 
 	/// Simulated robot engines.

@@ -1,10 +1,11 @@
-#include "waitForEncoderBlock.h"
+#include "interpreterBase/blocksBase/common/waitForEncoderBlock.h"
 
-#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
-#include <interpreterBase/robotModel/robotModelUtils.h>
+#include "interpreterBase/robotModel/robotParts/encoderSensor.h"
+#include "interpreterBase/robotModel/robotModelUtils.h"
 
-using namespace interpreterCore::coreBlocks::details;
-using namespace interpreterBase::robotModel;
+using namespace interpreterBase;
+using namespace blocksBase::common;
+using namespace robotModel;
 
 WaitForEncoderBlock::WaitForEncoderBlock(RobotModelInterface &robotModel)
 	: WaitBlock(robotModel)

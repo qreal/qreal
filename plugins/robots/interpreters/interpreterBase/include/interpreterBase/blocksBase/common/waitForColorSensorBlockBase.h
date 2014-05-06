@@ -2,11 +2,11 @@
 
 #include "waitForSensorBlock.h"
 
-namespace interpreterCore {
-namespace coreBlocks {
-namespace details {
+namespace interpreterBase {
+namespace blocksBase {
+namespace common {
 
-class WaitForColorSensorBlockBase : public WaitForSensorBlock
+class ROBOTS_INTERPRETER_BASE_EXPORT WaitForColorSensorBlockBase : public WaitForSensorBlock
 {
 	Q_OBJECT
 

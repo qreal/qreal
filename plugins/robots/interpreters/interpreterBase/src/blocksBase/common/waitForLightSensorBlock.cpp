@@ -1,9 +1,10 @@
-#include "waitForLightSensorBlock.h"
+#include "interpreterBase/blocksBase/common/waitForLightSensorBlock.h"
 
-#include <interpreterBase/robotModel/robotParts/lightSensor.h>
+#include "interpreterBase/robotModel/robotParts/lightSensor.h"
 
-using namespace interpreterCore::coreBlocks::details;
-using namespace interpreterBase::robotModel;
+using namespace interpreterBase;
+using namespace blocksBase::common;
+using namespace robotModel;
 
 WaitForLightSensorBlock::WaitForLightSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
