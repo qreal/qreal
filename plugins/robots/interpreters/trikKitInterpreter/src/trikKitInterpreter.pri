@@ -11,8 +11,9 @@ INCLUDEPATH += \
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport
 
 HEADERS += \
-	$$PWD/trikKitInterpreterPlugin.h \
 	$$PWD/trikAdditionalPreferences.h \
+	$$PWD/trikDisplayWidget.h \
+	$$PWD/trikKitInterpreterPlugin.h \
 	$$PWD/trikTwoDModelConfigurer.h \
 	$$PWD/blocks/trikBlocksFactory.h \
 	$$PWD/blocks/details/sadSmileBlock.h \
@@ -53,8 +54,9 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 
 SOURCES += \
-	$$PWD/trikKitInterpreterPlugin.cpp \
 	$$PWD/trikAdditionalPreferences.cpp \
+	$$PWD/trikKitInterpreterPlugin.cpp \
+	$$PWD/trikDisplayWidget.cpp \
 	$$PWD/trikTwoDModelConfigurer.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
 	$$PWD/blocks/details/sadSmileBlock.cpp \
@@ -96,6 +98,7 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
+	$$PWD/trikDisplayWidget.ui \
 
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \

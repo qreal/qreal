@@ -1,93 +1,88 @@
-//#include "waitForButtonsBlock.h"
-//#include "../robotParts/robotModel.h"
+#include "waitForButtonsBlock.h"
 
-//using namespace trikKitInterpreter::blocks::details;
-//using namespace interpreterBase::robotModel::robotParts;
+#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <interpreterBase/robotModel/robotModelUtils.h>
 
-//WaitForButtonsBlock::WaitForButtonsBlock(RobotModel * const robotModel, robotParts::Display &display)
-//	: WaitBlock(robotModel)
-//	, mDisplay(display)
-//{
-//}
+using namespace trikKitInterpreter::blocks::details;
+using namespace interpreterBase::robotModel::robotParts;
 
-//void WaitForButtonsBlock::run()
-//{
-//	mLeftButtonClicks = 0;
-//	mRightButtonClicks = 0;
-//	mUpButtonClicks = 0;
-//	mDownButtonClicks = 0;
-//	mDownLeftButtonClicks = 0;
-//	mAttachButtonClicks = 0;
-//	mOnButtonClicks = 0;
+WaitForButtonsBlock::WaitForButtonsBlock(
+		interpreterBase::robotModel::RobotModelInterface &robotModel
+		, TrikButtonsEnum button)
+	: WaitBlock(robotModel)
+	, mButton(button)
+{
+}
 
-//	mLeftWasDown = false;
-//	mRightWasDown = false;
-//	mUpWasDown = false;
-//	mDownWasDown = false;
-//	mDownLeftWasDown = false;
-//	mAttachWasDown = false;
-//	mOnWasDown = false;
+void WaitForButtonsBlock::run()
+{
+	mButtons = interpreterBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikButtons>(
+					mRobotModel, "ButtonsPort"
+			);
 
-//	connect(mDisplay.displayImpl(), SIGNAL(response(bool,bool,bool,bool,bool,bool,bool))
-//			, this, SLOT(responseSlot(bool,bool,bool,bool,bool,bool,bool)));
+	if (!mButtons) {
+		mActiveWaitingTimer.stop();
+		error(tr("Buttons are not configured (WTF?)"));
+		return;
+	}
 
-//	mDisplay.read();
-//	mActiveWaitingTimer.start();
-//}
+	connect(mButtons, &robotModel::parts::TrikButtons::response, this, &WaitForButtonsBlock::responseSlot);
 
-//void WaitForButtonsBlock::timerTimeout()
-//{
-//	mDisplay.read();
-//}
+	mButtons->read();
+	mActiveWaitingTimer.start();
+}
 
-//QString WaitForButtonsBlock::name() const
-//{
-//	return tr("Buttons");
-//}
+void WaitForButtonsBlock::timerTimeout()
+{
+	mButtons->read();
+}
 
-//void WaitForButtonsBlock::responseSlot(bool leftIsDown, bool rightIsDown
-//		, bool upIsDown, bool downIsDown, bool downLeftIsDown
-//		, bool attachIsDown, bool onIsDown)
-//{
-//	clicksCounter(mLeftWasDown, leftIsDown, mLeftButtonClicks);
-//	clicksCounter(mRightWasDown, rightIsDown, mRightButtonClicks);
-//	clicksCounter(mUpWasDown, upIsDown, mUpButtonClicks);
-//	clicksCounter(mDownWasDown, downIsDown, mDownButtonClicks);
-//	clicksCounter(mDownLeftWasDown, downLeftIsDown, mDownLeftButtonClicks);
-//	clicksCounter(mAttachWasDown, attachIsDown, mAttachButtonClicks);
-//	clicksCounter(mOnWasDown, onIsDown, mOnButtonClicks);
+QString WaitForButtonsBlock::name() const
+{
+	return tr("Buttons");
+}
 
-//	int const targetLeftButtonClicks = evaluate("LeftButtonClicks").toInt();
-//	int const targetRightButtonClicks = evaluate("RightButtonClicks").toInt();
-//	int const targetUpButtonClicks = evaluate("UpButtonClicks").toInt();
-//	int const targetDownButtonClicks = evaluate("DownButtonClicks").toInt();
-//	int const targetDownLeftButtonClicks = evaluate("DownLeftButtonClicks").toInt();
-//	int const targetAttachButtonClicks = evaluate("AttachButtonClicks").toInt();
-//	int const targetOnButtonClicks = evaluate("OnButtonClicks").toInt();
+void WaitForButtonsBlock::responseSlot(bool leftIsPressed
+		, bool rightIsPressed
+		, bool upIsPressed
+		, bool downIsPressed
+		, bool enterIsPresed
+		, bool escapeIsPresed
+		, bool powerIsPressed)
+{
+	switch (mButton) {
+	case left:
+		if (leftIsPressed) {
+			stop();
+		}
+	case right:
+		if (rightIsPressed) {
+			stop();
+		}
+	case up:
+		if (upIsPressed) {
+			stop();
+		}
+	case down:
+		if (downIsPressed) {
+			stop();
+		}
+	case enter:
+		if (enterIsPresed) {
+			stop();
+		}
+	case escape:
+		if (escapeIsPresed) {
+			stop();
+		}
+	case power:
+		if (powerIsPressed) {
+			stop();
+		}
+	}
+}
 
-//	if(mLeftButtonClicks >= targetLeftButtonClicks
-//		&& mRightButtonClicks >= targetRightButtonClicks
-//		&& mUpButtonClicks >= targetUpButtonClicks
-//		&& mDownButtonClicks >= targetDownButtonClicks
-//		&& mDownLeftButtonClicks >= targetDownLeftButtonClicks
-//		&& mAttachButtonClicks >= targetAttachButtonClicks
-//		&& mOnButtonClicks >= targetOnButtonClicks)
-//	{
-//		stop();
-//	}
-//}
-
-//void WaitForButtonsBlock::clicksCounter(bool &buttonWasDown, bool buttonIsDown, int &clicks)
-//{
-//	if (buttonIsDown) {
-//		buttonWasDown = true;
-//	}
-
-//	if (buttonWasDown && !buttonIsDown) {
-//		clicks++;
-//		buttonWasDown = false;
-//	}
-//}
-
-
-
+interpreterBase::robotModel::DeviceInfo WaitForButtonsBlock::device() const
+{
+	return interpreterBase::robotModel::DeviceInfo::create<robotModel::parts::TrikButtons>();
+}

@@ -8,20 +8,20 @@
 using namespace nxtKitInterpreter;
 using namespace graphicsUtils;
 
-NxtDisplay::NxtDisplay(QWidget *parent)
+NxtDisplayWidget::NxtDisplayWidget(QWidget *parent)
 	: twoDModel::engine::TwoDModelDisplayWidget(parent)
-	, mUi(new Ui::NxtDisplay)
+	, mUi(new Ui::NxtDisplayWidget)
 	, mBackground(":/icons/background.png", "PNG")
 {
 	mUi->setupUi(this);
 }
 
-NxtDisplay::~NxtDisplay()
+NxtDisplayWidget::~NxtDisplayWidget()
 {
 	delete mUi;
 }
 
-bool NxtDisplay::buttonIsDown(QString const &buttonId) const
+bool NxtDisplayWidget::buttonIsDown(QString const &buttonId) const
 {
 	if (buttonId == "left") {
 		return mUi->leftButton->isDown();
@@ -33,30 +33,30 @@ bool NxtDisplay::buttonIsDown(QString const &buttonId) const
 		return mUi->bottomButton->isDown();
 	}
 
-	throw qReal::Exception("Incorrect button id in NxtDisplay::buttonIsDown");
+	throw qReal::Exception("Incorrect button id in NxtDisplayWidget::buttonIsDown");
 }
 
-void NxtDisplay::setPainter(graphicsUtils::PainterInterface *p)
+void NxtDisplayWidget::setPainter(graphicsUtils::PainterInterface *p)
 {
 	mUi->display->setPainter(p);
 }
 
-void NxtDisplay::repaintDisplay()
+void NxtDisplayWidget::repaintDisplay()
 {
 	mUi->display->repaint();
 }
 
-int NxtDisplay::displayWidth() const
+int NxtDisplayWidget::displayWidth() const
 {
 	return mUi->display->width();
 }
 
-int NxtDisplay::displayHeight() const
+int NxtDisplayWidget::displayHeight() const
 {
 	return mUi->display->height();
 }
 
-void NxtDisplay::paintEvent(QPaintEvent *event)
+void NxtDisplayWidget::paintEvent(QPaintEvent *event)
 {
 	QWidget::paintEvent(event);
 	QPainter painter(this);

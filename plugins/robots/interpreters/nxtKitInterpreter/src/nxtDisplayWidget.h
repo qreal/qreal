@@ -5,27 +5,25 @@
 #include <qrutils/graphicsUtils/painterInterface.h>
 #include <qrutils/graphicsUtils/paintWidget.h>
 
-#include "commonTwoDModel/engine/twoDModelDisplayInterface.h"
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
 namespace Ui
 {
-	class NxtDisplay;
+class NxtDisplayWidget;
 }
 
 namespace nxtKitInterpreter {
 
-class NxtDisplay : public twoDModel::engine::TwoDModelDisplayWidget
+class NxtDisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
 {
 	Q_OBJECT
 
 public:
-	explicit NxtDisplay(QWidget *parent = 0);
-	~NxtDisplay();
+	explicit NxtDisplayWidget(QWidget *parent = 0);
+	~NxtDisplayWidget();
 
 	virtual void setPainter(graphicsUtils::PainterInterface *p);
 
-	/// @todo Supposes polling, which is not very good for buttons.
 	bool buttonIsDown(QString const &buttonId) const override;
 
 	void repaintDisplay();
@@ -36,7 +34,7 @@ protected:
 	void paintEvent(QPaintEvent *);
 
 private:
-	Ui::NxtDisplay *mUi;
+	Ui::NxtDisplayWidget *mUi;
 	QImage mBackground;
 };
 

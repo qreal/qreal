@@ -4,5 +4,11 @@
         <file>icons/trikTwoDRobot.svg</file>
         <file>icons/switch-2d.svg</file>
         <file>icons/switch-real-trik.svg</file>
+        <file>icons/controller.png</file>
+        <file>icons/icon.png</file>
+        <file>icons/button_off.png</file>
+        <file>icons/button_on.png</file>
+        <file>icons/sadSmile.png</file>
+        <file>icons/smile.png</file>
     </qresource>
 </RCC>
