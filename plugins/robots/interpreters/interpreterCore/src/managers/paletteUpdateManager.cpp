@@ -25,7 +25,9 @@ void PaletteUpdateManager::updatePalette(robotModel::RobotModelInterface &curren
 	}
 
 	mPaletteProvider.setEnabledForAllElementsInPalette(false);
+	mPaletteProvider.setVisibleForAllElementsInPalette(false);
 	for (qReal::Id const &id : enabledBlocks) {
 		mPaletteProvider.setElementInPaletteEnabled(id, true);
+		mPaletteProvider.setElementInPaletteVisible(id, true);
 	}
 }
