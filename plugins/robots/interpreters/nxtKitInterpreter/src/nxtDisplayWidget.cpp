@@ -36,9 +36,10 @@ bool NxtDisplayWidget::buttonIsDown(QString const &buttonId) const
 	throw qReal::Exception("Incorrect button id in NxtDisplayWidget::buttonIsDown");
 }
 
-void NxtDisplayWidget::setPainter(graphicsUtils::PainterInterface *p)
+void NxtDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
 {
-	mUi->display->setPainter(p);
+	TwoDModelDisplayWidget::setPainter(painter);
+	mUi->display->appendPainter(painter);
 }
 
 void NxtDisplayWidget::repaintDisplay()

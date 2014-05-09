@@ -9,10 +9,6 @@ Display::Display(DeviceInfo const &info
 	: robotModel::parts::NxtDisplay(info, port)
 	, mEngine(engine)
 {
-}
-
-void Display::attachToPaintWidget()
-{
 	mEngine.display()->setPainter(this);
 }
 
@@ -98,4 +94,9 @@ void Display::paint(QPainter *painter)
 		painter->drawText(place.x() * pixWidth * nxtDisplayWidth / textPixelWidth
 				, place.y() * pixHeight * nxtDisplayHeight / textPixelHeight, str);
 	}
+}
+
+void Display::clear()
+{
+	clearScreen();
 }

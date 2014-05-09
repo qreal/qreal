@@ -51,12 +51,7 @@ QString TwoDRobotModel::friendlyName() const
 robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
 	if (deviceInfo.isA<robotParts::Display>()) {
-		auto display = new parts::Display(deviceInfo, port, *engine());
-
-		/// @todo Why not do this in display constructor?!
-		display->attachToPaintWidget();
-
-		return display;
+		return new parts::Display(deviceInfo, port, *engine());
 	}
 
 	if (deviceInfo.isA<robotParts::Buttons>()) {

@@ -77,6 +77,7 @@ SOURCES += \
 	$$PWD/src/engine/d2ModelTimer.cpp \
 	$$PWD/src/engine/gridParameters.cpp \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
+	$$PWD/src/engine/twoDModelDisplayWidget.cpp \
 	$$PWD/src/engine/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/physics/realisticPhysicsEngine.cpp \

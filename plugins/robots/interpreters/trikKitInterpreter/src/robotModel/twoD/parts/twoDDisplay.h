@@ -24,13 +24,12 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
-	void attachToPaintWidget();
-
 	void drawSmile(bool sad) override;
 	void setBackground(QColor const &color) override;
 	void clearScreen() override;
 
 	void paint(QPainter *painter) override;
+	void clear() override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

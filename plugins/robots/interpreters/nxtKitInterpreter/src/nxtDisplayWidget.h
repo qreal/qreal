@@ -22,7 +22,7 @@ public:
 	explicit NxtDisplayWidget(QWidget *parent = 0);
 	~NxtDisplayWidget();
 
-	virtual void setPainter(graphicsUtils::PainterInterface *p);
+	void setPainter(graphicsUtils::PainterInterface *painter) override;
 
 	bool buttonIsDown(QString const &buttonId) const override;
 

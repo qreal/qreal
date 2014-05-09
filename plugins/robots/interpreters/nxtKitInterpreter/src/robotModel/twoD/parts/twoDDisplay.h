@@ -24,8 +24,6 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
-	void attachToPaintWidget();
-
 	void drawPixel(int x, int y) override;
 	void drawLine(int x1, int y1, int x2, int y2) override;
 	void drawRect(int x, int y, int width, int height) override;
@@ -34,6 +32,7 @@ public:
 	void clearScreen() override;
 
 	void paint(QPainter *painter) override;
+	void clear() override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

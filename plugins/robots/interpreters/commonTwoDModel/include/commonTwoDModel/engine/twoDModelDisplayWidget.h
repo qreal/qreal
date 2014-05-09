@@ -13,10 +13,13 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDModelDisplayWidget : public QWidget, public 
 	Q_OBJECT
 
 public:
-	TwoDModelDisplayWidget(QWidget *parent = nullptr)
-		: QWidget(parent)
-	{
-	}
+	explicit TwoDModelDisplayWidget(QWidget *parent = nullptr);
+
+	void setPainter(graphicsUtils::PainterInterface *painter) override;
+	void clear() const override;
+
+private:
+	graphicsUtils::PainterInterface *mPainter;
 };
 
 }

@@ -20,7 +20,8 @@ TrikDisplayWidget::~TrikDisplayWidget()
 
 void TrikDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
 {
-	mUi->display->setPainter(painter);
+	TwoDModelDisplayWidget::setPainter(painter);
+	mUi->display->appendPainter(painter);
 }
 
 void TrikDisplayWidget::repaintDisplay()

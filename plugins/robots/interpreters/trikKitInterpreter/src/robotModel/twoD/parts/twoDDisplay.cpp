@@ -9,13 +9,7 @@ Display::Display(DeviceInfo const &info
 	: robotModel::parts::TrikDisplay(info, port)
 	, mEngine(engine)
 {
-}
-
-void Display::attachToPaintWidget()
-{
-	if (mEngine.display()) {
-		mEngine.display()->setPainter(this);
-	}
+	mEngine.display()->setPainter(this);
 }
 
 void Display::drawSmile(bool sad)
@@ -72,5 +66,10 @@ void Display::paint(QPainter *painter)
 //		QPoint const place = strPlaces.next();
 //		painter->drawText(place.x() * pixWidth * nxtDisplayWidth / textPixelWidth
 //				, place.y() * pixHeight * nxtDisplayHeight / textPixelHeight, str);
-//	}
+	//	}
+}
+
+void Display::clear()
+{
+	clearScreen();
 }
