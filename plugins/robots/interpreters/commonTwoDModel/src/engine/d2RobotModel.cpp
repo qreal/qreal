@@ -148,7 +148,6 @@ void D2RobotModel::countMotorTurnover()
 		{
 			motor->speed = 0;
 			motor->activeTimeType = End;
-			emit d2MotorTimeout();
 		}
 	}
 }
@@ -174,6 +173,7 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 	connectDevicesConfigurationProvider(mD2ModelWidget);
 	connect(mD2ModelWidget, &D2ModelWidget::runButtonPressed, this, &D2RobotModel::runButtonPressed);
 	connect(mD2ModelWidget, &D2ModelWidget::stopButtonPressed, this, &D2RobotModel::stopButtonPressed);
+	connect(mD2ModelWidget, &D2ModelWidget::d2WasClosed, this, &D2RobotModel::widgetClosed);
 	return mD2ModelWidget;
 }
 
@@ -521,6 +521,11 @@ void D2RobotModel::synchronizePositions()
 void D2RobotModel::showModelWidget()
 {
 	mD2ModelWidget->init(true);
+}
+
+void D2RobotModel::closeModelWidget()
+{
+	mD2ModelWidget->close();
 }
 
 void D2RobotModel::setRotation(qreal angle)

@@ -2,6 +2,7 @@
 
 #include <QtCore/QString>
 #include <qrgui/toolPluginInterface/actionInfo.h>
+#include <qrgui/toolPluginInterface/systemEventsInterface.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/interpreterControlInterface.h>
@@ -20,6 +21,7 @@ public:
 	virtual interpreterBase::DevicesConfigurationProvider &devicesConfigurationProvider() = 0;
 	/// @todo: Separate twoD model engine from the enviroment (get rid of parameters)
 	virtual void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+			, qReal::SystemEventsInterface const &systemEvents
 			, interpreterBase::InterpreterControlInterface &interpreterControl) = 0;
 
 public slots:

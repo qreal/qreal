@@ -77,6 +77,9 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	mInterpreter = interpreter;
 
+	connect(&configurer.systemEvents(), &SystemEventsInterface::closedMainWindow
+			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
+
 	initKitPlugins(configurer);
 
 	auto paletteUpdateManager = new PaletteUpdateManager(configurer.mainWindowInterpretersInterface()

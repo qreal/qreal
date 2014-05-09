@@ -43,7 +43,7 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 			, this
 			, &NxtKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModel->init(eventsForKitPlugin, interpreterControl);
+	mTwoDModel->init(eventsForKitPlugin, systemEvents, interpreterControl);
 }
 
 QString NxtKitInterpreterPlugin::kitId() const

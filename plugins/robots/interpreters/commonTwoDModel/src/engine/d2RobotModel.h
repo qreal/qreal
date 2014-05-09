@@ -50,11 +50,11 @@ public:
 
 	void init();
 
-	virtual void clear();
+	void clear() override;
 	void startInit();
 	void startInterpretation();
 	void stopRobot();
-	void playSound(int timeInMs);
+	void playSound(int timeInMs) override;
 
 	void setNewMotor(int speed, uint degrees
 			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) override;
@@ -71,6 +71,7 @@ public:
 	int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 
 	void showModelWidget();
+	void closeModelWidget();
 
 	virtual void setRotation(qreal angle);
 	virtual qreal rotateAngle() const;
@@ -90,11 +91,9 @@ public:
 	void setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port) override;
 
 signals:
-	void d2MotorTimeout();
-
 	void runButtonPressed();
-
 	void stopButtonPressed();
+	void widgetClosed();
 
 private slots:
 	void recalculateParams();

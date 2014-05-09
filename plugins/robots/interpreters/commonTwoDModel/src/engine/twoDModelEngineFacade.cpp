@@ -18,6 +18,7 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotM
 
 	connect(mTwoDModel.data(), &D2RobotModel::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
 	connect(mTwoDModel.data(), &D2RobotModel::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mTwoDModel.data(), &D2RobotModel::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
 }
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()
@@ -26,6 +27,7 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 }
 
 void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+		, qReal::SystemEventsInterface const &systemEvents
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
@@ -62,6 +64,9 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 				, &interpreterControl, &interpreterBase::InterpreterControlInterface::stopRobot);
 	};
 
+	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
+			, mTwoDModel.data(), &twoDModel::D2RobotModel::closeModelWidget);
+
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
 			, [this, connectTwoDModel, disconnectTwoDModel](QString const &modelName) {
@@ -71,7 +76,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 					connectTwoDModel();
 				} else {
 					disconnectTwoDModel();
-					/// @todo: close 2d model window here
+					mTwoDModel->closeModelWidget();
 				}
 			}
 			);

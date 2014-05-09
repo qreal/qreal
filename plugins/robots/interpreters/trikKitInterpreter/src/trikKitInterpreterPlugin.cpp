@@ -57,8 +57,8 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
 			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModelV4->init(eventsForKitPlugin, interpreterControl);
-	mTwoDModelV6->init(eventsForKitPlugin, interpreterControl);
+	mTwoDModelV4->init(eventsForKitPlugin, systemEvents, interpreterControl);
+	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, interpreterControl);
 }
 
 QString TrikKitInterpreterPlugin::kitId() const

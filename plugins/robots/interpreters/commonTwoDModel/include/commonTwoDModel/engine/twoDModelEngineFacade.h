@@ -29,6 +29,7 @@ public:
 	~TwoDModelEngineFacade();
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+			, qReal::SystemEventsInterface const &systemEvents
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
