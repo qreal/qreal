@@ -79,6 +79,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	connect(&configurer.systemEvents(), &SystemEventsInterface::closedMainWindow
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
 
 	initKitPlugins(configurer);
 
