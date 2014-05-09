@@ -3,6 +3,8 @@
 #include <QtCore/QString>
 #include <qrgui/toolPluginInterface/actionInfo.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
+#include <interpreterBase/eventsForKitPluginInterface.h>
+#include <interpreterBase/interpreterControlInterface.h>
 
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
@@ -16,7 +18,9 @@ public:
 	virtual ~TwoDModelControlInterface() {}
 	virtual qReal::ActionInfo &showTwoDModelWidgetActionInfo() = 0;
 	virtual interpreterBase::DevicesConfigurationProvider &devicesConfigurationProvider() = 0;
-	virtual void init() = 0;
+	/// @todo: Separate twoD model engine from the enviroment (get rid of parameters)
+	virtual void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+			, interpreterBase::InterpreterControlInterface &interpreterControl) = 0;
 
 public slots:
 	virtual void onStartInterpretation() = 0;

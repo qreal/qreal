@@ -35,43 +35,15 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
-			, mTwoDModel.data()
-			, &twoDModel::TwoDModelControlInterface::onStartInterpretation
-			);
-
-	connect(&eventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
-			, mTwoDModel.data()
-			, &twoDModel::TwoDModelControlInterface::onStopInterpretation
-			);
-
-	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](QString const &modelName) {
-				mTwoDModel->showTwoDModelWidgetActionInfo().action()->setVisible(modelName == mTwoDRobotModel.name());
-				mCurrentlySelectedModelName = modelName;
-			}
-			);
-
-	connect(mTwoDModel.data()
-			, &twoDModel::TwoDModelControlInterface::runButtonPressed
-			, &interpreterControl
-			, &interpreterBase::InterpreterControlInterface::interpret
-			);
-
-	connect(mTwoDModel.data()
-			, &twoDModel::TwoDModelControlInterface::stopButtonPressed
-			, &interpreterControl
-			, &interpreterBase::InterpreterControlInterface::stopRobot
-			);
+			, [this](QString const &modelName) { mCurrentlySelectedModelName = modelName; });
 
 	connect(&systemEvents
 			, &qReal::SystemEventsInterface::activeTabChanged
 			, this
 			, &NxtKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModel->init();
+	mTwoDModel->init(eventsForKitPlugin, interpreterControl);
 }
 
 QString NxtKitInterpreterPlugin::kitId() const

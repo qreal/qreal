@@ -50,55 +50,15 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 		, SystemEventsInterface const &systemEvents
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
-	/// @todo remove this stupid copypaste.
+	connect(&eventsForKitPlugin
+			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
+			, [this](QString const &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]
-			(QScopedPointer<twoDModel::TwoDModelControlInterface> const &model
-			, robotModel::twoD::TwoDRobotModel const &robotModelImpl)
-	{
-		connect(&eventsForKitPlugin
-				, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
-				, model.data()
-				, &twoDModel::TwoDModelControlInterface::onStartInterpretation
-				);
+	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
+			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
 
-		connect(&eventsForKitPlugin
-				, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
-				, model.data()
-				, &twoDModel::TwoDModelControlInterface::onStopInterpretation
-				);
-
-		connect(&eventsForKitPlugin
-				, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
-				, [this, &model, &robotModelImpl](QString const &modelName) {
-					model->showTwoDModelWidgetActionInfo().action()->setVisible(modelName == robotModelImpl.name());
-					mCurrentlySelectedModelName = modelName;
-				}
-				);
-
-		connect(model.data()
-				, &twoDModel::TwoDModelControlInterface::runButtonPressed
-				, &interpreterControl
-				, &interpreterBase::InterpreterControlInterface::interpret
-				);
-
-		connect(model.data()
-				, &twoDModel::TwoDModelControlInterface::stopButtonPressed
-				, &interpreterControl
-				, &interpreterBase::InterpreterControlInterface::stopRobot
-				);
-	};
-
-	connectTwoDModel(mTwoDModelV4, mTwoDRobotModelV4);
-	connectTwoDModel(mTwoDModelV6, mTwoDRobotModelV6);
-
-	connect(&systemEvents
-			, &qReal::SystemEventsInterface::activeTabChanged
-			, this
-			, &TrikKitInterpreterPlugin::onActiveTabChanged);
-
-	mTwoDModelV4->init();
-	mTwoDModelV6->init();
+	mTwoDModelV4->init(eventsForKitPlugin, interpreterControl);
+	mTwoDModelV6->init(eventsForKitPlugin, interpreterControl);
 }
 
 QString TrikKitInterpreterPlugin::kitId() const

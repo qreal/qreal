@@ -120,11 +120,6 @@ void D2RobotModel::playSound(int timeInMs)
 
 void D2RobotModel::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
 {
-	/// @todo Hack for TRIK 2D model.
-//	if (port == 2) {
-//		speed = -speed;
-//	}
-
 	mEngines[port]->speed = speed;
 	mEngines[port]->degrees = degrees;
 	mEngines[port]->isUsed = true;
@@ -287,8 +282,7 @@ QImage D2RobotModel::printColorSensor(interpreterBase::robotModel::PortInfo cons
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
 	qreal const width = SensorItem::sensorWidth / 2.0;
-	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width
-			, 2 * width, 2 * width);
+	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
@@ -325,31 +319,22 @@ int D2RobotModel::readColorFullSensor(QHash<uint, int> const &countsColor) const
 	uint const maxColor = countsColor.key(maxValue);
 	switch (maxColor) {
 	case (black):
-//		Tracer::debug(Tracer::d2Model, "D2RobotModel::readColorFullSensor", "BLACK");
 		return 1;
 	case (red):
-//		Tracer::debug(Tracer::d2Model, "D2RobotModel::readColorFullSensor", "RED");
 		return 5;
 	case (green):
-//		Tracer::debug(Tracer::d2Model, "D2RobotModel::readColorFullSensor", "GREEN");
 		return 3;
 	case (blue) :
-//		Tracer::debug(Tracer::d2Model, "D2RobotModel::readColorFullSensor", "BLUE");
 		return 2;
 	case (yellow):
-//		Tracer::debug(Tracer::d2Model, "D2RobotModel::readColorFullSensor", "YELLOW");
 		return 4;
 	case (white):
-//		Tracer::debug(Tracer::d2Model, "D2RobotModel::readColorFullSensor", "WHITE");
 		return 6;
 	case (cyan):
-//		Tracer::debug(Tracer::d2Model, "D2RobotModel::readColorFullSensor", "CYAN");
 		return 7;
 	case (magenta):
-//		Tracer::debug(Tracer::d2Model, "D2RobotModel::readColorFullSensor", "MAGENTA");
 		return 8;
 	default:
-//		Tracer::debug(Tracer::d2Model, "D2RobotModel::readColorFullSensor", "Other Color");
 		return 0;
 	}
 }
@@ -431,6 +416,7 @@ void D2RobotModel::startInit()
 
 void D2RobotModel::startInterpretation()
 {
+	showModelWidget();
 	startInit();
 	mD2ModelWidget->startTimelineListening();
 }

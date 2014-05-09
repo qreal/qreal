@@ -16,6 +16,8 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Display : public Device
 
 public:
 	Display(DeviceInfo const &info, PortInfo const &port);
+
+	virtual void clearScreen() = 0;
 };
 
 }

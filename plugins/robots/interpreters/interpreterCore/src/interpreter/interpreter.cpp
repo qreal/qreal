@@ -56,9 +56,6 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	connectDevicesConfigurationProvider(&mAutoconfigurer);
 
 	qDebug() << "mRobotModelManager.model().init()";
-
-	mRobotModelManager.model().init();
-	mRobotModelManager.model().connectToRobot();
 }
 
 Interpreter::~Interpreter()
@@ -75,8 +72,7 @@ void Interpreter::interpret()
 
 //	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
 
-	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState
-				&& mRobotModelManager.model().needsConnection()) {
+	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
 		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
 		return;
 	}

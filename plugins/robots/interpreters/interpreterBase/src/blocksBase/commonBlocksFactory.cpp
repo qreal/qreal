@@ -31,7 +31,8 @@ BlockInterface *CommonBlocksFactory::block(qReal::Id const &element)
 	if (newBlock) {
 		newBlock->init(element, *mGraphicalModelApi, *mLogicalModelApi, mErrorReporter, mParser, *mRobotModelManager);
 	} else {
-		qDebug() << "Failed to create block for" << element;
+		/// @todo: do we need this reporting?
+		//qDebug() << "Failed to create block for" << element;
 	}
 
 	return newBlock;

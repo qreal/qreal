@@ -6,7 +6,8 @@ using namespace twoDModel::engine;
 
 TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel
 	, Configurer const * const configurer)
-	: mTwoDModelActionInfo(
+	: mRobotModelName(robotModel.name())
+	, mTwoDModelActionInfo(
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 			, "interpreters"
 			, "tools")
@@ -24,8 +25,56 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 	delete mTwoDModelActionInfo.action();
 }
 
-void TwoDModelEngineFacade::init()
+void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
+	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
+	{
+		connect(&eventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
+				, this, &twoDModel::TwoDModelControlInterface::onStartInterpretation
+				, Qt::UniqueConnection);
+
+		connect(&eventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
+				, this, &twoDModel::TwoDModelControlInterface::onStopInterpretation
+				, Qt::UniqueConnection);
+
+		connect(this, &twoDModel::TwoDModelControlInterface::runButtonPressed
+				, &interpreterControl, &interpreterBase::InterpreterControlInterface::interpret
+				, Qt::UniqueConnection);
+
+		connect(this, &twoDModel::TwoDModelControlInterface::stopButtonPressed
+				, &interpreterControl, &interpreterBase::InterpreterControlInterface::stopRobot
+				, Qt::UniqueConnection);
+	};
+
+	auto disconnectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
+	{
+		disconnect(&eventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
+				, this, &twoDModel::TwoDModelControlInterface::onStartInterpretation);
+
+		disconnect(&eventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::interpretationStopped
+				, this, &twoDModel::TwoDModelControlInterface::onStopInterpretation);
+
+		disconnect(this, &twoDModel::TwoDModelControlInterface::runButtonPressed
+				, &interpreterControl, &interpreterBase::InterpreterControlInterface::interpret);
+
+		disconnect(this, &twoDModel::TwoDModelControlInterface::stopButtonPressed
+				, &interpreterControl, &interpreterBase::InterpreterControlInterface::stopRobot);
+	};
+
+	connect(&eventsForKitPlugin
+			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
+			, [this, connectTwoDModel, disconnectTwoDModel](QString const &modelName) {
+				bool const isCurrentModel = modelName == mRobotModelName;
+				showTwoDModelWidgetActionInfo().action()->setVisible(isCurrentModel);
+				if (isCurrentModel) {
+					connectTwoDModel();
+				} else {
+					disconnectTwoDModel();
+				}
+			}
+			);
+
 	mTwoDModel->init();
 }
 

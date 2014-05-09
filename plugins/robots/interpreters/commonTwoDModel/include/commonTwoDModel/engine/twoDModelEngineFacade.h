@@ -28,7 +28,8 @@ public:
 
 	~TwoDModelEngineFacade();
 
-	void init() override;
+	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
+			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
 	interpreterBase::DevicesConfigurationProvider &devicesConfigurationProvider() override;
@@ -40,6 +41,7 @@ public slots:
 	void onStopInterpretation() override;
 
 private:
+	QString const mRobotModelName;
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 	QScopedPointer<D2RobotModel> mTwoDModel;
 };

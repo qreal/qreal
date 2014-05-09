@@ -32,6 +32,8 @@ void RobotModelManager::setModel(RobotModelInterface * const robotModel)
 		connect(mRobotModel, &RobotModelInterface::allDevicesConfigured
 				, this, &RobotModelManager::allDevicesConfigured);
 
+		mRobotModel->init();
+
 		emit robotModelChanged(*mRobotModel);
 	}
 }

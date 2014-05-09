@@ -54,7 +54,7 @@ void CommonRobotModel::disconnectFromRobot()
 
 CommonRobotModel::ConnectionState CommonRobotModel::connectionState() const
 {
-	return mState;
+	return needsConnection() ? mState : connectedState;
 }
 
 ConfigurationInterface &CommonRobotModel::mutableConfiguration()
@@ -151,7 +151,7 @@ void CommonRobotModel::configureDevice(PortInfo const &port, DeviceInfo const &d
 
 void CommonRobotModel::applyConfiguration()
 {
-	if (mState == connectedState) {
+	if (connectionState() == connectedState) {
 		mConfiguration.applyConfiguration();
 	} else {
 		mConfigurationPostponed = true;
