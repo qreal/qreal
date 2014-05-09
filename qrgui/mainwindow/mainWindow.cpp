@@ -2300,4 +2300,15 @@ void MainWindow::setEnabledForAllElementsInPalette(bool enabled)
 
 void MainWindow::endPaletteModification()
 {
+	// Disabling elements on scene...
+	EditorViewScene * const scene = getCurrentTab() ? getCurrentTab()->editorViewScene() : nullptr;
+	if (scene) {
+		for (QGraphicsItem * const item : scene->items()) {
+			if (Element * const element = dynamic_cast<Element *>(item)) {
+				element->updateEnabledState();
+			}
+		}
+
+		scene->update();
+	}
 }

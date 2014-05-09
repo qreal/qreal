@@ -69,6 +69,9 @@ public:
 	ElementImpl* elementImpl() const;
 	bool createChildrenFromMenu() const;
 
+	/// Checks if this element is disabled from palette and if it is grayscales it.
+	void updateEnabledState();
+
 public slots:
 	virtual void select(bool const singleSelected);
 	virtual void setSelectionState(bool const selected);
@@ -83,6 +86,7 @@ protected:
 	void setTitlesVisiblePrivate(bool visible);
 
 	bool mMoving;
+	bool mEnabled;
 	Id const mId;
 	ElementImpl * const mElementImpl;  // Has ownership.
 	QList<Label *> mLabels;

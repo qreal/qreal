@@ -1,5 +1,7 @@
 #include "element.h"
 
+#include <QtWidgets/QGraphicsColorizeEffect>
+
 #include "controller/commands/changePropertyCommand.h"
 
 using namespace qReal;
@@ -10,17 +12,20 @@ Element::Element(ElementImpl *elementImpl
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
 	: mMoving(false)
+	, mEnabled(true)
 	, mId(id)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(logicalAssistApi)
 	, mGraphicalAssistApi(graphicalAssistApi)
-	, mController(NULL)
+	, mController(nullptr)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 			ItemClipsToShape | ItemSendsGeometryChanges);
 
 	setAcceptDrops(true);
 	setCursor(Qt::PointingHandCursor);
+
+	updateEnabledState();
 }
 
 Id Element::id() const
@@ -110,6 +115,28 @@ ElementImpl* Element::elementImpl() const
 bool Element::createChildrenFromMenu() const
 {
 	return mElementImpl->createChildrenFromMenu();
+}
+
+void Element::updateEnabledState()
+{
+	bool const enabled = mLogicalAssistApi.editorManagerInterface().elements(
+			Id(mId.editor(), mId.diagram())).contains(mId.type());
+
+	if (enabled == mEnabled) {
+		return;
+	}
+
+	mEnabled = enabled;
+	if (mEnabled) {
+		setGraphicsEffect(nullptr);
+		setOpacity(1);
+	} else {
+		QGraphicsColorizeEffect * const grayScale = new QGraphicsColorizeEffect(this);
+		grayScale->setColor(Qt::gray);
+		grayScale->setStrength(0.9);
+		setGraphicsEffect(grayScale);
+		setOpacity(0.9);
+	}
 }
 
 void Element::setTitlesVisible(bool visible)
