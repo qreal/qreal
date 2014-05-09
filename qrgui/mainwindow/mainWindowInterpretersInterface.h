@@ -83,6 +83,10 @@ public:
 	virtual void openTab(QWidget *tab, QString const &title) = 0;
 	virtual void closeTab(QWidget *tab) = 0;
 
+	/// Signals that engine must prepare for modifying blocks set.
+	/// After each beginPaletteModification() call there must be endPaletteModification() call.
+	virtual void beginPaletteModification() = 0;
+
 	/// Shows or hides given element on a palette.
 	/// @param metatype - id of an element type to be shown/hidden.
 	/// @param visible - true, if element shall be visible, false if hidden.
@@ -100,6 +104,10 @@ public:
 	/// Enables or disables all elements in palette.
 	/// @param enabled - true, if all elements shall be enabled, false if all elements shall be disabled.
 	virtual void setEnabledForAllElementsInPalette(bool enabled) = 0;
+
+	/// Commits palette modification in the system: shows or hides elements in palette, linker menus,
+	/// gestures tab and enables or disables elements on diagram.
+	virtual void endPaletteModification() = 0;
 };
 
 }

@@ -166,17 +166,12 @@ public:
 
 	void setTabText(QWidget *tab, QString const &text);
 
-	// Override.
-	virtual void setElementInPaletteVisible(Id const &metatype, bool visible);
-
-	// Override.
-	virtual void setVisibleForAllElementsInPalette(bool visible);
-
-	// Override.
-	virtual void setElementInPaletteEnabled(Id const &metatype, bool enabled);
-
-	// Override.
-	virtual void setEnabledForAllElementsInPalette(bool enabled);
+	void beginPaletteModification() override;
+	void setElementInPaletteVisible(Id const &metatype, bool visible) override;
+	void setVisibleForAllElementsInPalette(bool visible) override;
+	void setElementInPaletteEnabled(Id const &metatype, bool enabled) override;
+	void setEnabledForAllElementsInPalette(bool enabled) override;
+	void endPaletteModification() override;
 
 signals:
 	void gesturesShowed();

@@ -7,6 +7,7 @@
 
 #include <interpreterBase/blocksBase/blocksTableInterface.h>
 #include <interpreterBase/blocksBase/blockInterface.h>
+#include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 #include "src/managers/blocksFactoryManagerInterface.h"
 
@@ -24,7 +25,8 @@ class BlocksTable : public interpreterBase::blocksBase::BlocksTableInterface
 public:
 	/// Constructor.
 	/// @param blocksFactoryManager - a factory manager that is used to create new blocks when needed.
-	BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager);
+	BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
 
 	~BlocksTable() override;
 
@@ -45,6 +47,7 @@ public:
 private:
 	QHash<qReal::Id, interpreterBase::blocksBase::BlockInterface *> mBlocks;  // Has ownership
 	BlocksFactoryManagerInterface &mBlocksFactoryManager;
+	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 };
 
 }

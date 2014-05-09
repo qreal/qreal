@@ -71,6 +71,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 					connectTwoDModel();
 				} else {
 					disconnectTwoDModel();
+					/// @todo: close 2d model window here
 				}
 			}
 			);

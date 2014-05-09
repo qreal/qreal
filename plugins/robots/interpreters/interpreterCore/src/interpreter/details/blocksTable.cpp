@@ -6,8 +6,10 @@ using namespace qReal;
 using namespace interpreterBase::blocksBase;
 using namespace interpreterCore::interpreter::details;
 
-BlocksTable::BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager)
+BlocksTable::BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
 	: mBlocksFactoryManager(blocksFactoryManager)
+	, mRobotModelManager(robotModelManager)
 {
 }
 
@@ -22,7 +24,7 @@ BlockInterface *BlocksTable::block(Id const &element)
 		return mBlocks[element];
 	}
 
-	BlockInterface * const newBlock = mBlocksFactoryManager.block(element);
+	BlockInterface * const newBlock = mBlocksFactoryManager.block(element, mRobotModelManager.model());
 	if (newBlock) {
 		mBlocks.insert(element, newBlock);
 	}

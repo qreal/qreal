@@ -13,21 +13,13 @@ PaletteUpdateManager::PaletteUpdateManager(qReal::gui::MainWindowInterpretersInt
 
 void PaletteUpdateManager::updatePalette(robotModel::RobotModelInterface &currentModel)
 {
-	QSet<qReal::Id> enabledBlocks;
-
-	for (blocksBase::BlocksFactoryInterface const *factory : mFactoryManager.factoriesFor(currentModel)) {
-		enabledBlocks += factory->providedBlocks().toSet();
-	}
-
-	// The order is very important for avoiding collisions cases
-	for (blocksBase::BlocksFactoryInterface const *factory : mFactoryManager.factoriesFor(currentModel)) {
-		enabledBlocks -= factory->blocksToDisable().toSet();
-	}
-
+	mPaletteProvider.beginPaletteModification();
 	mPaletteProvider.setEnabledForAllElementsInPalette(false);
 	mPaletteProvider.setVisibleForAllElementsInPalette(false);
-	for (qReal::Id const &id : enabledBlocks) {
+	for (qReal::Id const &id : mFactoryManager.enabledBlocks(currentModel)) {
 		mPaletteProvider.setElementInPaletteEnabled(id, true);
 		mPaletteProvider.setElementInPaletteVisible(id, true);
 	}
+
+	mPaletteProvider.endPaletteModification();
 }

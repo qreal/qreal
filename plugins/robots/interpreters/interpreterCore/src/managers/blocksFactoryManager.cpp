@@ -22,9 +22,13 @@ QList<BlocksFactoryInterface *> BlocksFactoryManager::factoriesFor(RobotModelInt
 	return mFactories.values(nullptr) + mFactories.values(&robotModel);
 }
 
-BlockInterface *BlocksFactoryManager::block(qReal::Id const &element)
+BlockInterface *BlocksFactoryManager::block(qReal::Id const &element, RobotModelInterface const &robotModel)
 {
-	for (BlocksFactoryInterface * const factory : mFactories.values()) {
+	if (!enabledBlocks(robotModel).contains(element.type())) {
+		return nullptr;
+	}
+
+	for (BlocksFactoryInterface * const factory : factoriesFor(robotModel)) {
 		BlockInterface * const block = factory->block(element);
 		if (block) {
 			return block;
@@ -32,4 +36,21 @@ BlockInterface *BlocksFactoryManager::block(qReal::Id const &element)
 	}
 
 	return nullptr;
+}
+
+QSet<qReal::Id> BlocksFactoryManager::enabledBlocks(RobotModelInterface const &robotModel) const
+{
+	QSet<qReal::Id> result;
+
+	for (blocksBase::BlocksFactoryInterface const *factory : factoriesFor(robotModel)) {
+		result += factory->providedBlocks().toSet();
+	}
+
+	// The order is important for avoiding collisions cases
+	// (we cannot just move this loop body into the previous one)
+	for (blocksBase::BlocksFactoryInterface const *factory : factoriesFor(robotModel)) {
+		result -= factory->blocksToDisable().toSet();
+	}
+
+	return result;
 }

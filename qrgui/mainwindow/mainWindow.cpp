@@ -2258,6 +2258,10 @@ void MainWindow::openStartTab()
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 }
 
+void MainWindow::beginPaletteModification()
+{
+}
+
 void MainWindow::setElementInPaletteVisible(Id const &metatype, bool visible)
 {
 	mUi->paletteTree->setElementVisible(metatype, visible);
@@ -2292,4 +2296,8 @@ void MainWindow::setEnabledForAllElementsInPalette(bool enabled)
 			}
 		}
 	}
+}
+
+void MainWindow::endPaletteModification()
+{
 }

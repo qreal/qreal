@@ -134,6 +134,7 @@ void Thread::turnOn(interpreterBase::blocksBase::BlockInterface * const block)
 {
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {
+		/// @todo: report error if we met unknown block type?
 		finishedSteppingInto();
 		return;
 	}

@@ -32,7 +32,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	, mInterpretersInterface(interpretersInterface)
 	, mState(idle)
 	, mRobotModelManager(robotModelManager)
-	, mBlocksTable(new details::BlocksTable(blocksFactoryManager))
+	, mBlocksTable(new details::BlocksTable(blocksFactoryManager, robotModelManager))
 	, mActionConnectToRobot(connectToRobotAction)
 	, mSensorVariablesUpdater(robotModelManager, parser)
 	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
