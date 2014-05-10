@@ -4,7 +4,7 @@
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
 	<namespace>UML 2.0</namespace>
-	<diagram displayedName="Диаграмма поведения робота" nodeName="RobotsDiagramGroup" name="RobotsDiagram">
+	<diagram displayedName="Robot`s Behaviour Diagram" nodeName="RobotsDiagramGroup" name="RobotsDiagram">
 		<nonGraphicTypes>
 			<enum name="SensorPort">
 				<value name="1" displayedName="1"/>
@@ -14,33 +14,33 @@
 			</enum>
 			<enum name="GuardType">
 				<value/>
-				<value name="iteration" displayedName="Итерация"/>
-				<value name="true" displayedName="Истина"/>
-				<value name="false" displayedName="Ложь"/>
+				<value name="iteration" displayedName="iteration"/>
+				<value name="true" displayedName="true"/>
+				<value name="false" displayedName="false"/>
 			</enum>
 			<enum name="Color">
-				<value name="black" displayedName="Чёрный"/>
-				<value name="blue" displayedName="Синий"/>
-				<value name="green" displayedName="Зелёный"/>
-				<value name="yellow" displayedName="Жёлтый"/>
-				<value name="red" displayedName="Красный"/>
-				<value name="white" displayedName="Белый"/>
+				<value name="black" displayedName="black"/>
+				<value name="blue" displayedName="blue"/>
+				<value name="green" displayedName="green"/>
+				<value name="yellow" displayedName="yellow"/>
+				<value name="red" displayedName="red"/>
+				<value name="white" displayedName="white"/>
 			</enum>
 			<enum name="DistanceSign">
-				<value name="greater" displayedName="Больше"/>
-				<value name="less" displayedName="Меньше"/>
-				<value name="notLess" displayedName="Не меньше"/>
-				<value name="notGreater" displayedName="Не больше"/>
+				<value name="greater" displayedName="greater"/>
+				<value name="less" displayedName="less"/>
+				<value name="notLess" displayedName="not less"/>
+				<value name="notGreater" displayedName="not greater"/>
 			</enum>
 			<enum name="Accelerations">
-				<value name="xAxis" displayedName="Ось z"/>
-				<value name="yAxis" displayedName="Ось y"/>
-				<value name="zAxis" displayedName="Ось z"/>
-				<value name="normal" displayedName="Норма"/>
+				<value name="xAxis" displayedName="x-axis"/>
+				<value name="yAxis" displayedName="y-axis"/>
+				<value name="zAxis" displayedName="z-axis"/>
+				<value name="normal" displayedName="norm"/>
 			</enum>
 			<enum name="BreakEngineMode">
-				<value name="break" displayedName="Тормозить"/>
-				<value name="float" displayedName="Скользить"/>
+				<value name="break" displayedName="break"/>
+				<value name="float" displayedName="float"/>
 			</enum>
 			<groups>
 				<group name="RobotsDiagramGroup" rootNode="diagram">
@@ -54,7 +54,7 @@
 			</groups>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<node displayedName="Диаграмма поведения робота"  name="RobotsDiagramNode">
+			<node displayedName="Robot`s Behaviour Diagram"  name="RobotsDiagramNode">
 				<graphics>
 					<picture sizex="204" sizey="204">
 						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="22" y2="2" fill-style="none" x2="182"/>
@@ -81,25 +81,25 @@
 						<contains type="AbstractNode"/>
 					</container>
 					<properties>
-						<property displayedName="Модель мира" type="string" name="worldModel">
+						<property displayedName="World model" type="string" name="worldModel">
 							<default></default>
 						</property>
-						<property displayedName="Сенсор1" type="string" name="sensor1Value">
+						<property displayedName="Sensor1" type="string" name="sensor1Value">
 							<default>0</default>
 						</property>
-						<property displayedName="Сенсор2" type="string" name="sensor2Value">
+						<property displayedName="Sensor2" type="string" name="sensor2Value">
 							<default>0</default>
 						</property>
-						<property displayedName="Сенсор3" type="string" name="sensor3Value">
+						<property displayedName="Sensor3" type="string" name="sensor3Value">
 							<default>0</default>
 						</property>
-						<property displayedName="Сенсор4" type="string" name="sensor4Value">
+						<property displayedName="Sensor4" type="string" name="sensor4Value">
 							<default>0</default>
 						</property>
 					</properties>
 				</logic>
 			</node>
-			<node displayedName="Подпрограмма" name="SubprogramDiagram">
+			<node displayedName="SubprogramDiagram" name="SubprogramDiagram">
 				<graphics>
 					<picture sizex="204" sizey="204">
 						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="22" y2="2" fill-style="none" x2="182"/>
@@ -127,7 +127,7 @@
 					</container>
 				</logic>
 			</node>
-			<node displayedName="Конец" name="FinalNode" path="13, 200 : 198, 15 :  | 12, 12 : 198, 198 : " description="Конец программы. Если программа состоит из нескольких параллельных участков выполнения, достижение этого блока завершает соответствующий участок выполнения. У данного блока не может быть исходящих связей.">
+			<node displayedName="Final Node" name="FinalNode" path="13, 200 : 198, 15 :  | 12, 12 : 198, 198 : " description="The final node of the program. If the program consists of some parallel execution lines the reachment of this block terminates the corresponding execution line. This block can`t have outgoing links.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/finalBlock.png" x1="0" y2="50" x2="50"/>
@@ -160,48 +160,16 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Инициализация балансировки" name="BalanceInit">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/balanceInitBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Инициализация переменной" name="VariableInit">
+			<node displayedName="Variable Initialization" name="VariableInit" description="Assignes a given value to a given variable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/variableInitBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="60" textBinded="variable"/>
-						<label x="-60" y="60" text="Переменная:"/>
+						<label x="-60" y="60" text="Variable:"/>
 						<label x="33" y="80" textBinded="value"/>
-						<label x="-65" y="80" text="Значение:"/>
+						<label x="-65" y="80" text="Value:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -225,10 +193,10 @@
 				</graphics>
 				<logic>
 					<properties>
-						<property displayedName="Переменная" type="string" name="variable">
+						<property displayedName="Variable" type="string" name="variable">
 							<default>0</default>
 						</property>
-						<property displayedName="Значение" type="string" name="value">
+						<property displayedName="Value" type="string" name="value">
 							<default>0</default>
 						</property>
 					</properties>
@@ -238,22 +206,22 @@
 					<container/>
 				</logic>
 			</node>
-			<node displayedName="Моторы назад" name="EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.">
+			<node displayedName="Motors Backward" name="EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enable motors on the given ports in reverse mode with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
 						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
-							<showIf value="скользить" property="Mode" sign="="/>
+							<showIf value="float" property="Mode" sign="="/>
 						</rectangle>
 						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
-							<showIf value="тормозить" property="Mode" sign="="/>
+							<showIf value="break" property="Mode" sign="="/>
 						</rectangle>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-8" y="-25" text="Порты:" hard="true"/>
+						<label x="-8" y="-25" text="Ports:" hard="true"/>
 						<label x="40" y="60" textBinded="Power"/>
-						<label x="-50" y="60" text="Мощность (%):"/>
+						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -282,22 +250,22 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Моторы вперёд" name="EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Включить моторы по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.">
+			<node displayedName="Motors Forward" name="EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Enable motors on the given ports with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
 						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
-							<showIf value="скользить" property="Mode" sign="="/>
+							<showIf value="float" property="Mode" sign="="/>
 						</rectangle>
 						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
-							<showIf value="тормозить" property="Mode" sign="="/>
+							<showIf value="break" property="Mode" sign="="/>
 						</rectangle>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-8" y="-25" text="Порты:" hard="true"/>
+						<label x="-8" y="-25" text="Ports:" hard="true"/>
 						<label x="40" y="60" textBinded="Power"/>
-						<label x="-50" y="60" text="Мощность (%):"/>
+						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -330,10 +298,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Мощность (%)" type="string" name="Power">
+						<property displayedName="Power (%)" type="string" name="Power">
 							<default>100</default>
 						</property>
-						<property displayedName="Режим" type="BreakEngineMode" name="Mode">
+						<property displayedName="Mode" type="BreakEngineMode" name="Mode">
 							<default>break</default>
 						</property>
 					</properties>
@@ -346,7 +314,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Порты" type="string" name="Ports">
+						<property displayedName="Ports" type="string" name="Ports">
 							<default>B, C</default>
 						</property>
 					</properties>
@@ -355,7 +323,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Начало" name="InitialNode" path="210, 111 : 209, 120 : 208, 130 : 205, 139 : 202, 148 : 198, 157 : 193, 166 : 187, 173 : 181, 181 : 173, 187 : 166, 193 : 157, 198 : 148, 202 : 139, 205 : 130, 208 : 120, 209 : 111, 209 : 102, 209 : 92, 208 : 83, 205 : 74, 202 : 65, 198 : 56, 193 : 49, 187 : 41, 181 : 35, 173 : 29, 166 : 24, 157 : 20, 148 : 17, 139 : 14, 130 : 13, 120 : 13, 111 : 13, 102 : 14, 92 : 17, 83 : 20, 74 : 24, 65 : 29, 56 : 35, 49 : 41, 41 : 49, 35 : 56, 29 : 65, 24 : 74, 20 : 83, 17 : 92, 14 : 102, 13 : 111, 13 : 120, 13 : 130, 14 : 139, 17 : 148, 20 : 157, 24 : 166, 29 : 173, 35 : 181, 41 : 187, 49 : 193, 56 : 198, 65 : 202, 74 : 205, 83 : 208, 92 : 209, 102 : 210, 111 : " description="Начальная точка выполнения программы. На каждой диаграмме такой блок должен быть только один, в него не должно быть входящих связей, исходящая связь из этого элемента должна быть только одна. Процесс интерпретации диаграммы начинается именно с этого блока.">
+			<node displayedName="Initial Node" name="InitialNode" path="210, 111 : 209, 120 : 208, 130 : 205, 139 : 202, 148 : 198, 157 : 193, 166 : 187, 173 : 181, 181 : 173, 187 : 166, 193 : 157, 198 : 148, 202 : 139, 205 : 130, 208 : 120, 209 : 111, 209 : 102, 209 : 92, 208 : 83, 205 : 74, 202 : 65, 198 : 56, 193 : 49, 187 : 41, 181 : 35, 173 : 29, 166 : 24, 157 : 20, 148 : 17, 139 : 14, 130 : 13, 120 : 13, 111 : 13, 102 : 14, 92 : 17, 83 : 20, 74 : 24, 65 : 29, 56 : 35, 49 : 41, 41 : 49, 35 : 56, 29 : 65, 24 : 74, 20 : 83, 17 : 92, 14 : 102, 13 : 111, 13 : 120, 13 : 130, 14 : 139, 17 : 148, 20 : 157, 24 : 166, 29 : 173, 35 : 181, 41 : 187, 49 : 193, 56 : 198, 65 : 202, 74 : 205, 83 : 208, 92 : 209, 102 : 210, 111 : " description="The initial point of the program execution. Each diagram should have only one such block, it must not have incomming links and it must have only one outgoing link. The interpretation process starts from exactly this block.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/initialBlock.png" x1="0" y2="50" x2="50"/>
@@ -388,7 +356,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<edge displayedName="Линия соединения" name="ControlFlow" description="Для того, чтобы создать связь между двумя элементами A и B, можно навести курсор на элемент A, нажать правую кнопку мыши и, не отпуская ее, провести линию до элемента B, либо 'вытащить' связь из кружочка справа от элемента">
+			<edge displayedName="Link" name="ControlFlow" description="For creating a link between two elements A and B you can just hover a mouse above A, press the right mouse button and (without releasing it) draw a line to the element B. Alternatively you can just 'pull' a link from a small blue circle next to the element.">
 				<graphics>
 					<lineType type="solidLine"/>
 					<shape type="broken"/>
@@ -404,93 +372,19 @@
 						<possibleEdge beginName="NonTyped" directed="false" endName="NonTyped"/>
 					</possibleEdges>
 					<properties>
-						<property displayedName="Условие" type="GuardType" name="Guard"/>
+						<property displayedName="Guard" type="GuardType" name="Guard"/>
 					</properties>
 					<dividability isDividable="true"/>
 				</logic>
 			</edge>
-			<node displayedName="Балансировка" name="Balance">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/balanceBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="33" y="60" textBinded="port"/>
-						<label x="-57" y="60" text="Порт гироскопа:"/>
-						<label x="33" y="80" textBinded="forward"/>
-						<label x="-65" y="80" text="Значение forward:"/>
-						<label x="33" y="100" textBinded="turn"/>
-						<label x="-47" y="100" text="Значение turn:"/>
-						<label x="33" y="120" textBinded="gyroOffset"/>
-						<label x="-108" y="120" text="Значение для калибровки:"/>
-						<label x="33" y="140" textBinded="port1"/>
-						<label x="-84" y="140" text="Порт первого мотора:"/>
-						<label x="33" y="160" textBinded="port2"/>
-						<label x="-84" y="160" text="Порт второго мотора:"/>
-						<label x="33" y="180" textBinded="pwm1"/>
-						<label x="-213" y="180" text="Выходное значение мощности первого мотора:"/>
-						<label x="33" y="200" textBinded="pwm2"/>
-						<label x="-213" y="200" text="Выходное значение мощности второго мотора:"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<properties>
-						<property displayedName="Значение forward" type="string" name="forward">
-							<default>0</default>
-						</property>
-						<property displayedName="Значение turn" type="string" name="turn">
-							<default>0</default>
-						</property>
-						<property displayedName="Порт гироскопа" type="string" name="port">
-							<default>4</default>
-						</property>
-						<property displayedName="Значение для калибровки (что бы это ни значило)" type="string" name="gyroOffset">
-							<default>0</default>
-						</property>
-						<property displayedName="Порт первого мотора" type="string" name="port1">
-							<default>B</default>
-						</property>
-						<property displayedName="Порт второго мотора" type="string" name="port2">
-							<default>C</default>
-						</property>
-						<property displayedName="Выходное значение мощности первого мотора" type="string" name="pwm1">
-						</property>
-						<property displayedName="Выходное значение мощности второго мотора" type="string" name="pwm2">
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-					<container/>
-				</logic>
-			</node>
-			<node displayedName="Моторы стоп" name="EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Выключить моторы по заданным портам">
+			<node displayedName="Stop Motors" name="EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Disable motors on the given ports.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-10" y="-25" text="Порты:" hard="true"/>
+						<label x="-10" y="-25" text="Ports:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -519,14 +413,14 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Таймер" name="Timer" path="12, 117 : 117, 118 :  | 117, 12 : 117, 118 :  | 222, 117 : 221, 127 : 219, 137 : 217, 147 : 214, 157 : 209, 166 : 204, 175 : 198, 183 : 191, 191 : 183, 198 : 175, 204 : 166, 209 : 157, 214 : 147, 217 : 137, 219 : 127, 221 : 117, 221 : 107, 221 : 97, 219 : 87, 217 : 77, 214 : 68, 209 : 59, 204 : 51, 198 : 43, 191 : 36, 183 : 30, 175 : 25, 166 : 20, 157 : 17, 147 : 15, 137 : 13, 127 : 13, 117 : 13, 107 : 15, 97 : 17, 87 : 20, 77 : 25, 68 : 30, 59 : 36, 51 : 43, 43 : 51, 36 : 59, 30 : 68, 25 : 77, 20 : 87, 17 : 97, 15 : 107, 13 : 117, 13 : 127, 13 : 137, 15 : 147, 17 : 157, 20 : 166, 25 : 175, 30 : 183, 36 : 191, 43 : 198, 51 : 204, 59 : 209, 68 : 214, 77 : 217, 87 : 219, 97 : 221, 107 : 222, 117 : " description="Ждать заданное количество времени, в миллисекундах">
+			<node displayedName="Timer" name="Timer" path="12, 117 : 117, 118 :  | 117, 12 : 117, 118 :  | 222, 117 : 221, 127 : 219, 137 : 217, 147 : 214, 157 : 209, 166 : 204, 175 : 198, 183 : 191, 191 : 183, 198 : 175, 204 : 166, 209 : 157, 214 : 147, 217 : 137, 219 : 127, 221 : 117, 221 : 107, 221 : 97, 219 : 87, 217 : 77, 214 : 68, 209 : 59, 204 : 51, 198 : 43, 191 : 36, 183 : 30, 175 : 25, 166 : 20, 157 : 17, 147 : 15, 137 : 13, 127 : 13, 117 : 13, 107 : 15, 97 : 17, 87 : 20, 77 : 25, 68 : 30, 59 : 36, 51 : 43, 43 : 51, 36 : 59, 30 : 68, 25 : 77, 20 : 87, 17 : 97, 15 : 107, 13 : 117, 13 : 127, 13 : 137, 15 : 147, 17 : 157, 20 : 166, 25 : 175, 30 : 183, 36 : 191, 43 : 198, 51 : 204, 59 : 209, 68 : 214, 77 : 217, 87 : 219, 97 : 221, 107 : 222, 117 : " description="Wait for a given time in milliseconds.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/timerBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="65" y="-25" textBinded="Delay" hard="true"/>
-						<label x="-30" y="-25" text="Задержка (мс):" hard="true"/>
+						<label x="-30" y="-25" text="Delay (ms):" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -551,7 +445,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Задержка (мс)" type="string" name="Delay">
+						<property displayedName="Delay (ms)" type="string" name="Delay">
 							<default>1000</default>
 						</property>
 					</properties>
@@ -560,14 +454,14 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать сенсор касания" name="WaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Ждать, пока не сработает сенсор касания. Параметром указывается номер порта, к которому подключен сенсор касания. Допустимые значения: 1, 2, 3, 4.">
+			<node displayedName="Wait for Touch Sensor" name="WaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Wait till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="0" y="-25" text="Port:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -596,18 +490,18 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать сенсор звука" name="WaitForSound" path="12, 178 : 117, 178 :  | 117, 96 : 117, 178 :  | 13, 96 : 117, 96 :  | 13, 12 : 13, 96 :  | 13, 12 : 118, 12 : " description="Ждать, пока громкость, считанная микрофоном на заданном порту, не будет выше или ниже заданного значения.">
+			<node displayedName="Wait for Sound Sensor" name="WaitForSound" path="12, 178 : 117, 178 :  | 117, 96 : 117, 178 :  | 13, 96 : 117, 96 :  | 13, 12 : 13, 96 :  | 13, 12 : 118, 12 : " description="Wait till the loudness obtained by the sound sensor on the given port will be greater or lower then the given value.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="0" y="-25" text="Port:" hard="true"/>
 						<label x="45" y="60" textBinded="Volume"/>
-						<label x="-30" y="60" text="Громкость:"/>
+						<label x="-30" y="60" text="Volume:"/>
 						<label x="50" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
+						<label x="-90" y="80" text="Sign:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -632,10 +526,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Громкость" type="string" name="Volume">
+						<property displayedName="Volume" type="string" name="Volume">
 							<default>0</default>
 						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
 							<default>greater</default>
 						</property>
 					</properties>
@@ -644,18 +538,18 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать гироскоп" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="WaitForGyroscope" description="Ждать, пока значение, возвращаемое гироскопом на указанном порту, не будет сравнимо с указанным в значении параметра 'Градусы'.">
+			<node displayedName="Wait for Gyroscope" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="WaitForGyroscope" description="Wait till the value returned by the gyroscope on the given port will be greater or lower then the given in the 'Degrees' parameter value.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="0" y="-25" text="Port:" hard="true"/>
 						<label x="35" y="60" textBinded="Degrees"/>
-						<label x="-26" y="60" text="Градусы:"/>
+						<label x="-26" y="60" text="Degrees:"/>
 						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
+						<label x="-90" y="80" text="Sign:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -680,10 +574,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Градусы/сек" type="string" name="Degrees">
+						<property displayedName="Degrees/sec" type="string" name="Degrees">
 							<default>0</default>
 						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
 							<default>greater</default>
 						</property>
 					</properties>
@@ -692,20 +586,20 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать акселерометр" name="WaitForAccelerometer">
+			<node displayedName="Wait for Accelerometer" name="WaitForAccelerometer">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="0" y="-25" text="Port:" hard="true"/>
 						<label x="33" y="60" textBinded="Acceleration"/>
-						<label x="-26" y="60" text="Ускорение:"/>
+						<label x="-26" y="60" text="Acceleration:"/>
 						<label x="33" y="80" textBinded="Sign"/>
-						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="-80" y="80" text="Sign:"/>
 						<label x="33" y="100" textBinded="AccelerationAxis"/>
-						<label x="-80" y="100" text="Ускорение по оси:"/>
+						<label x="-80" y="100" text="Acceleration Axis:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -730,13 +624,13 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Ускорение" type="string" name="Acceleration">
+						<property displayedName="Acceleration" type="string" name="Acceleration">
 							<default>0</default>
 						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
 							<default>greater</default>
 						</property>
-						<property displayedName="Ускорение по оси" type="Accelerations" name="AccelerationAxe">
+						<property displayedName="Acceleration Axis" type="Accelerations" name="AccelerationAxis">
 							<default>xAxis</default>
 						</property>
 					</properties>
@@ -745,14 +639,14 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Гудок" name="Beep" path="152, 12 : 281, 12 :  | 152, 183 : 152, 12 :  | 155, 170 : 154, 176 : 153, 183 : 151, 190 : 149, 196 : 146, 202 : 143, 208 : 139, 214 : 134, 219 : 129, 224 : 123, 228 : 117, 231 : 111, 234 : 105, 236 : 98, 238 : 91, 239 : 85, 239 : 79, 239 : 72, 238 : 65, 236 : 59, 234 : 53, 231 : 47, 228 : 41, 224 : 36, 219 : 31, 214 : 27, 208 : 24, 202 : 21, 196 : 19, 190 : 17, 183 : 16, 176 : 16, 170 : 16, 164 : 17, 157 : 19, 150 : 21, 144 : 24, 138 : 27, 132 : 31, 126 : 36, 121 : 41, 116 : 47, 112 : 53, 109 : 59, 106 : 65, 104 : 72, 102 : 79, 101 : 85, 101 : 91, 101 : 98, 102 : 105, 104 : 111, 106 : 117, 109 : 123, 112 : 129, 116 : 134, 121 : 139, 126 : 143, 132 : 146, 138 : 149, 144 : 151, 150 : 153, 157 : 154, 164 : 155, 170 : " description="Проиграть на роботе звук с фиксированной частотой. Имеется один параметр — ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку. Допустимые значения — true и false.">
+			<node displayedName="Beep" name="Beep" path="152, 12 : 281, 12 :  | 152, 183 : 152, 12 :  | 155, 170 : 154, 176 : 153, 183 : 151, 190 : 149, 196 : 146, 202 : 143, 208 : 139, 214 : 134, 219 : 129, 224 : 123, 228 : 117, 231 : 111, 234 : 105, 236 : 98, 238 : 91, 239 : 85, 239 : 79, 239 : 72, 238 : 65, 236 : 59, 234 : 53, 231 : 47, 228 : 41, 224 : 36, 219 : 31, 214 : 27, 208 : 24, 202 : 21, 196 : 19, 190 : 17, 183 : 16, 176 : 16, 170 : 16, 164 : 17, 157 : 19, 150 : 21, 144 : 24, 138 : 27, 132 : 31, 126 : 36, 121 : 41, 116 : 47, 112 : 53, 109 : 59, 106 : 65, 104 : 72, 102 : 79, 101 : 85, 101 : 91, 101 : 98, 102 : 105, 104 : 111, 106 : 117, 109 : 123, 112 : 129, 116 : 134, 121 : 139, 126 : 143, 132 : 146, 138 : 149, 144 : 151, 150 : 153, 157 : 154, 164 : 155, 170 : " description="Play on the robot a sound with the fixed frequency. There are two parameters. The first one is a loudness of the sound, the second means if program should wait for sound completion or go to next block right away.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-25" text="Громкость (%):" hard="true"/>
-						<label x="-60" y="60" text="Ждать завершения:"/>
+						<label x="-35" y="-25" text="Volume (%):" hard="true"/>
+						<label x="-60" y="60" text="Wait for Completion:"/>
 						<label x="60" y="-25" textBinded="Volume" hard="true"/>
 						<label x="70" y="60" textBinded="WaitForCompletion"/>
 					</labels>
@@ -779,10 +673,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
+						<property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
 							<default>true</default>
 						</property>
-						<property displayedName="Громкость" type="string" name="Volume">
+						<property displayedName="Volume" type="string" name="Volume">
 							<default>50</default>
 						</property>
 					</properties>
@@ -791,14 +685,14 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Цикл" name="Loop" path="154, 251 : 205, 302 :  | 154, 251 : 209, 196 :  | 100, 12 : 154, 66 :  | 154, 66 : 103, 117 :  | 12, 66 : 297, 66 : 297, 251 : 12, 251 : 12, 66 : " description="Блок, организующий выполнение последовательности блоков несколько раз. Число повторений задается значением параметра 'Итераций'. Блок должен иметь две исходящие связи, одна из которых должна быть помечена значением 'итерация' (то есть значение параметра 'Условие' должно быть 'итерация'). Другая связь, исходящая из блока 'Цикл', должна оставаться непомеченной: по ней будет осуществляться переход, когда программа пройдет через блок 'Цикл' указанное число раз.">
+			<node displayedName="Loop" name="Loop" path="154, 251 : 205, 302 :  | 154, 251 : 209, 196 :  | 100, 12 : 154, 66 :  | 154, 66 : 103, 117 :  | 12, 66 : 297, 66 : 297, 251 : 12, 251 : 12, 66 : " description="This block executes a sequence of blocks for a given number of times. The number of repetitions is specified by the 'Iterations' parameter. This block must have two outgoing links. One of them must be marked with the 'iteration' guard (that means that the property 'Guard' of the link must be set to 'iteration' value). Another outgoing link must be unmarked: the program execution will be proceeded through this link when it will go through our 'Loop' block for the given number of times.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/loopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Iterations" hard="true"/>
-						<label x="-30" y="-25" text="Итераций:" hard="true"/>
+						<label x="-30" y="-25" text="Iterations:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -823,7 +717,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Итерации" type="string" name="Iterations">
+						<property displayedName="Iterations" type="string" name="Iterations">
 							<default>10</default>
 						</property>
 					</properties>
@@ -832,7 +726,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Параллельные задачи" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Разделить выполнение программы на несколько потоков, которые с точки зрения программиста будут выполняться параллельно. Так, например, можно одновременно ждать срабатывания сенсора и истечения временного интервала. Блок должен иметь хотя бы две исходящие связи.">
+			<node displayedName="Fork" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Separate program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/forkBlock.png" x1="0" y2="50" x2="50"/>
@@ -865,16 +759,16 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Играть звук" name="PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Проиграть на роботе звук с заданной частотой и длительностью. Аналогичен блоку 'Гудок', но позволяет задавать параметры звука. Имеется параметр, определяющий, ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку.">
+			<node displayedName="Play Tone" name="PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Play on the robot a sound with the given frequency and duration. This block is similar to the 'Beep' block wuth the only difference that here you can specify sound parameters.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-25" text="Частота (Гц):" hard="true"/>
-						<label x="-35" y="60" text="Громкость (%):"/>
-						<label x="-68" y="80" text="Длительность (мс):"/>
-						<label x="-68" y="100" text="Ждать завершения:"/>
+						<label x="-35" y="-25" text="Frequency (Hz):" hard="true"/>
+						<label x="-35" y="60" text="Volume (%):"/>
+						<label x="-68" y="80" text="Duration (ms):"/>
+						<label x="-68" y="100" text="Wait for Completion:"/>
 						<label x="50" y="-25" textBinded="Frequency" hard="true"/>
 						<label x="60" y="60" textBinded="Volume"/>
 						<label x="60" y="80" textBinded="Duration"/>
@@ -903,16 +797,16 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Частота" type="string" name="Frequency">
+						<property displayedName="Frequency" type="string" name="Frequency">
 							<default>1000</default>
 						</property>
-						<property displayedName="Громкость" type="string" name="Volume">
+						<property displayedName="Volume" type="string" name="Volume">
 							<default>50</default>
 						</property>
-						<property displayedName="Длительность" type="string" name="Duration">
+						<property displayedName="Duration" type="string" name="Duration">
 							<default>1000</default>
 						</property>
-						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
+						<property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
 							<default>true</default>
 						</property>
 					</properties>
@@ -921,18 +815,18 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать сонар" name="WaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Ждать, пока расстояние, возвращаемое ультразвуковым сенсором расстояния, не будет сравнимо с указанным в значении параметра 'Расстояние' (расстояние задается в сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.">
+			<node displayedName="Wait for Sonar Distance" name="WaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Wait till the value returned by the ultrasonic sensor on the given port will be greater or lower then the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="0" y="-25" text="Port:" hard="true"/>
 						<label x="50" y="60" textBinded="Distance"/>
-						<label x="-60" y="60" text="Расстояние (см):"/>
+						<label x="-60" y="60" text="Distance (cm):"/>
 						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
+						<label x="-90" y="80" text="Sign:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -957,10 +851,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Дистанция" type="string" name="Distance">
+						<property displayedName="Distance" type="string" name="Distance">
 							<default>0</default>
 						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
 							<default>greater</default>
 						</property>
 					</properties>
@@ -973,7 +867,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Порт" type="SensorPort" name="Port">
+						<property displayedName="Port" type="SensorPort" name="Port">
 							<default>1</default>
 						</property>
 					</properties>
@@ -987,18 +881,18 @@
 					<container/>
 				</logic>
 			</node>
-			<node displayedName="Ждать интенсивность цвета" name="WaitForColorIntensity" path="201, 137 : 200, 143 : 199, 149 : 198, 154 : 196, 160 : 193, 166 : 190, 171 : 186, 176 : 182, 180 : 178, 184 : 173, 188 : 168, 191 : 162, 194 : 156, 196 : 151, 197 : 145, 198 : 139, 198 : 133, 198 : 127, 197 : 122, 196 : 116, 194 : 110, 191 : 105, 188 : 100, 184 : 96, 180 : 92, 176 : 88, 171 : 85, 166 : 82, 160 : 80, 154 : 79, 149 : 78, 143 : 78, 137 : 78, 131 : 79, 125 : 80, 120 : 82, 114 : 85, 108 : 88, 103 : 92, 98 : 96, 94 : 100, 90 : 105, 86 : 110, 83 : 116, 80 : 122, 78 : 127, 77 : 133, 76 : 139, 76 : 145, 76 : 151, 77 : 156, 78 : 162, 80 : 168, 83 : 173, 86 : 178, 90 : 182, 94 : 186, 98 : 190, 103 : 193, 108 : 196, 114 : 198, 120 : 199, 125 : 200, 131 : 201, 137 :  | 260, 136 : 259, 148 : 257, 160 : 254, 171 : 250, 183 : 245, 194 : 239, 204 : 231, 214 : 223, 223 : 214, 231 : 204, 239 : 194, 245 : 183, 250 : 171, 254 : 160, 257 : 148, 259 : 136, 259 : 124, 259 : 112, 257 : 101, 254 : 89, 250 : 78, 245 : 68, 239 : 58, 231 : 49, 223 : 41, 214 : 33, 204 : 27, 194 : 22, 183 : 18, 171 : 15, 160 : 13, 148 : 13, 136 : 13, 124 : 15, 112 : 18, 101 : 22, 89 : 27, 78 : 33, 68 : 41, 58 : 49, 49 : 58, 41 : 68, 33 : 78, 27 : 89, 22 : 101, 18 : 112, 15 : 124, 13 : 136, 13 : 148, 13 : 160, 15 : 171, 18 : 183, 22 : 194, 27 : 204, 33 : 214, 41 : 223, 49 : 231, 58 : 239, 68 : 245, 78 : 250, 89 : 254, 101 : 257, 112 : 259, 124 : 260, 136 : " description="Ждать, пока значение, возвращаемое сенсором цвета на указанном порту, не будет сравнимо с указанным в значении параметра 'Интенсивность' (задается в процентах). Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения с введенной интенсивностью.">
+			<node displayedName="Wait for Color Intensity" name="WaitForColorIntensity" path="201, 137 : 200, 143 : 199, 149 : 198, 154 : 196, 160 : 193, 166 : 190, 171 : 186, 176 : 182, 180 : 178, 184 : 173, 188 : 168, 191 : 162, 194 : 156, 196 : 151, 197 : 145, 198 : 139, 198 : 133, 198 : 127, 197 : 122, 196 : 116, 194 : 110, 191 : 105, 188 : 100, 184 : 96, 180 : 92, 176 : 88, 171 : 85, 166 : 82, 160 : 80, 154 : 79, 149 : 78, 143 : 78, 137 : 78, 131 : 79, 125 : 80, 120 : 82, 114 : 85, 108 : 88, 103 : 92, 98 : 96, 94 : 100, 90 : 105, 86 : 110, 83 : 116, 80 : 122, 78 : 127, 77 : 133, 76 : 139, 76 : 145, 76 : 151, 77 : 156, 78 : 162, 80 : 168, 83 : 173, 86 : 178, 90 : 182, 94 : 186, 98 : 190, 103 : 193, 108 : 196, 114 : 198, 120 : 199, 125 : 200, 131 : 201, 137 :  | 260, 136 : 259, 148 : 257, 160 : 254, 171 : 250, 183 : 245, 194 : 239, 204 : 231, 214 : 223, 223 : 214, 231 : 204, 239 : 194, 245 : 183, 250 : 171, 254 : 160, 257 : 148, 259 : 136, 259 : 124, 259 : 112, 257 : 101, 254 : 89, 250 : 78, 245 : 68, 239 : 58, 231 : 49, 223 : 41, 214 : 33, 204 : 27, 194 : 22, 183 : 18, 171 : 15, 160 : 13, 148 : 13, 136 : 13, 124 : 15, 112 : 18, 101 : 22, 89 : 27, 78 : 33, 68 : 41, 58 : 49, 49 : 58, 41 : 68, 33 : 78, 27 : 89, 22 : 101, 18 : 112, 15 : 124, 13 : 136, 13 : 148, 13 : 160, 15 : 171, 18 : 183, 22 : 194, 27 : 204, 33 : 214, 41 : 223, 49 : 231, 58 : 239, 68 : 245, 78 : 250, 89 : 254, 101 : 257, 112 : 259, 124 : 260, 136 : " description="Wait till the value returned by the color sensor on the given port will be greater or lower then the given in the 'Intensity' parameter value (the intensity is specified in percents, 0 to 100).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForColorIntensityBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="0" y="-25" text="Port:" hard="true"/>
 						<label x="55" y="60" textBinded="Intensity"/>
-						<label x="-55" y="60" text="Интенсивность:"/>
+						<label x="-55" y="60" text="Intensity:"/>
 						<label x="55" y="80" textBinded="Sign"/>
-						<label x="-85" y="80" text="Считанное значение:"/>
+						<label x="-85" y="80" text="Sign:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1023,10 +917,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Интенсивность" type="string" name="Intensity">
+						<property displayedName="Intensity" type="string" name="Intensity">
 							<default>0</default>
 						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
 							<default>greater</default>
 						</property>
 					</properties>
@@ -1035,16 +929,16 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать цвет" name="WaitForColor" path="196, 12 : 196, 154 :  | 12, 12 : 380, 12 : 380, 154 : 12, 154 : 12, 12 : " description="Ждать, пока сенсор цвета в режиме распознавания цветов не вернет указанный цвет">
+			<node displayedName="Wait for Color" name="WaitForColor" path="196, 12 : 196, 154 :  | 12, 12 : 380, 12 : 380, 154 : 12, 154 : 12, 12 : " description="Wait till color sensor on the given port will recognize the given color.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="37" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="0" y="-25" text="Port:" hard="true"/>
 						<label x="37" y="60" textBinded="Color"/>
-						<label x="0" y="60" text="Цвет:"/>
+						<label x="0" y="60" text="Color:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1069,7 +963,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Цвет" type="Color" name="Color">
+						<property displayedName="Color" type="Color" name="Color">
 							<default>red</default>
 						</property>
 					</properties>
@@ -1078,18 +972,18 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать свет" name="WaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Ждать, пока значение, возвращаемое сенсором света на указанном порту, не будет сравнимо с указанным в значении параметра 'Проценты'. Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения со значением параметра 'Проценты'.">
+			<node displayedName="Wait for Light" name="WaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Wait till the value returned by the light sensor on the given port will be greater or lower then the given in the 'Percents' parameter value (0 to 100).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="0" y="-25" text="Port:" hard="true"/>
 						<label x="45" y="60" textBinded="Percents"/>
-						<label x="-26" y="60" text="Проценты:"/>
+						<label x="-26" y="60" text="Percents:"/>
 						<label x="50" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
+						<label x="-90" y="80" text="Sign:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1114,10 +1008,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Проценты" type="string" name="Percents">
+						<property displayedName="Percents" type="string" name="Percents">
 							<default>0</default>
 						</property>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
 							<default>greater</default>
 						</property>
 					</properties>
@@ -1126,18 +1020,18 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать энкодер" name="WaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Ждать, пока показания счетчика количества оборотов на заданном моторе не достинут указанного в значении параметра 'Предел оборотов'.">
+			<node displayedName="Wair for Encoder" name="WaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Wait till the tacho limit of the motor on the given port will reach the value of the 'Tacho Limit' parameter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="0" y="-25" text="Port:" hard="true"/>
 						<label x="40" y="60" textBinded="TachoLimit"/>
-						<label x="-90" y="60" text="Предел оборотов:"/>
+						<label x="-90" y="60" text="Tacho Limit:"/>
 						<label x="60" y="80" textBinded="Sign"/>
-						<label x="-90" y="80" text="Считанное значение:"/>
+						<label x="-90" y="80" text="Sign:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1162,11 +1056,11 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Порт" type="string" name="Port">
+						<property displayedName="Port" type="string" name="Port">
 							<default>B</default>
 						</property>
-						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
-						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
 							<default>greater</default>
 						</property>
 					</properties>
@@ -1175,14 +1069,14 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Сбросить показания энкодера" name="NullificationEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Сбросить показания количества оборотов моторов">
+			<node displayedName="Clear Encoder" name="NullificationEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullify tacho limit of the motors on the given ports.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-10" y="-25" text="Порты:" hard="true"/>
+						<label x="-10" y="-25" text="Ports:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1207,7 +1101,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Порты" type="string" name="Ports">
+						<property displayedName="Ports" type="string" name="Ports">
 							<default>A, B, C</default>
 						</property>
 					</properties>
@@ -1216,13 +1110,13 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Функция" name="Function" path="58, 12 : 58, 172 :  | 58, 12 : 148, 12 :  | 12, 96 : 108, 96 : " description="Посчитать значение заданного выражения. Также в данном блоке допускается определение переменных. Подробнее про синтаксис допустимых выражений параметра 'Функция' см. в документации в разделе 'Синтаксис выражений'.">
+			<node displayedName="Function" name="Function" path="58, 12 : 58, 172 :  | 58, 12 : 148, 12 :  | 12, 96 : 108, 96 : " description="Evaluates a value of the given expression. Also new variables can be defined in this block. See the 'Expressions Syntax' chapter in help for more information about 'Function' block syntax.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/functionBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-37" y="60" text="Функция:"/>
+						<label x="-37" y="60" text="Body:"/>
 						<label x="30" y="60" textBinded="Body"/>
 					</labels>
 					<ports>
@@ -1248,22 +1142,22 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Тело функции" type="string" name="Body"/>
-						<property displayedName="Инициализация" type="bool" name="Init"/>
+						<property displayedName="Body" type="string" name="Body"/>
+						<property displayedName="Initialization" type="bool" name="Init"/>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Условие" name="IfBlock" path="96, 182 : 180, 94 :  | 98, 12 : 180, 94 :  | 12, 98 : 96, 182 :  | 98, 12 : 12, 98 : " description="Разделить выполнение программы в соответствии с заданным условием. Значением параметра 'Условие' является некое логическое выражение, на основе значения которого будет осуществлен выбор дальнейшего пути выполнения диаграммы. У данного блока должны быть две исходящие связи, у одной из которых должно быть задано значение параметра 'Условие' (возможные варианты — 'истина' и 'ложь'). При невыполнении данного условия выполнение передается по другой связи.">
+			<node displayedName="Condition" name="IfBlock" path="96, 182 : 180, 94 :  | 98, 12 : 180, 94 :  | 12, 98 : 96, 182 :  | 98, 12 : 12, 98 : " description="Separates program execution in correspondece with the given condition. The 'Condition' parameter value must be some boolean expression that will determine subsequent program execution line. This block must have two outgoing links, at least one of them must have 'Guard' parameter set to 'true' or 'false'. The execution will be proceed trough the link marked with the guard corresponding to 'Condition' parameter of the block.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="35" y="60" textBinded="Condition" isPlainText="true" />
-						<label x="-25" y="60" text="Условие:"/>
+						<label x="-25" y="60" text="Condition:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1288,7 +1182,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Условие" type="string" name="Condition">
+						<property displayedName="Condition" type="string" name="Condition">
 							<default>0</default>
 						</property>
 					</properties>
@@ -1297,20 +1191,20 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать нажатия кнопок" name="WaitForButtons" path="55, 58 : 179, 58 : 179, 182 : 55, 182 : 55, 58 :  | 12, 12 : 221, 12 : 221, 221 : 12, 221 : 12, 12 : " description="Ждать, пока заданные кнопки на роботе не будут нажаты заданное количество раз. Счётчики нажатия можно задать для каждой кнопки отдельно, блок продолжит выполнение, только когда все счётчики сработают.">
+			<node displayedName="Wait for Buttons" name="WaitForButtons" path="55, 58 : 179, 58 : 179, 182 : 55, 182 : 55, 58 :  | 12, 12 : 221, 12 : 221, 221 : 12, 221 : 12, 12 : " description="Wait till the given robot`s buttons will be pushed the given number of times. The push counters may be specified separately for each button, the block will continue the execution only when each of counter will be reached.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="70" y="60" textBinded="RightButtonClicks"/>
-						<label x="-20" y="60" text="Правая: "/>
+						<label x="-20" y="60" text="Right: "/>
 						<label x="70" y="80" textBinded="LeftButtonClicks"/>
-						<label x="-20" y="80" text="Левая: "/>
+						<label x="-20" y="80" text="Left: "/>
 						<label x="70" y="100" textBinded="CentralButtonClicks"/>
-						<label x="-20" y="100" text="Центральная: "/>
+						<label x="-20" y="100" text="Enter: "/>
 						<label x="70" y="120" textBinded="BottomButtonClicks"/>
-						<label x="-20" y="120" text="Нижняя: "/>
+						<label x="-20" y="120" text="Cancel: "/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1335,16 +1229,16 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Количество нажатий правой кнопки" type="string" name="RightButtonClicks">
+						<property displayedName="Right button clicks" type="string" name="RightButtonClicks">
 							<default>0</default>
 						</property>
-						<property displayedName="Количество нажатий левой кнопки" type="string" name="LeftButtonClicks">
+						<property displayedName="Left button clicks" type="string" name="LeftButtonClicks">
 							<default>0</default>
 						</property>
-						<property displayedName="Количество нажатий центральной кнопки" type="string" name="CentralButtonClicks">
+						<property displayedName="Enter button clicks" type="string" name="CentralButtonClicks">
 							<default>1</default>
 						</property>
-						<property displayedName="Количество нажатий нижней кнопки" type="string" name="BottomButtonClicks">
+						<property displayedName="Cancel button clicks" type="string" name="BottomButtonClicks">
 							<default>0</default>
 						</property>
 					</properties>
@@ -1353,7 +1247,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Очистить экран" name="ClearScreen" description="Стереть всё, что нарисовано на экране.">
+			<node displayedName="Clear Screen" name="ClearScreen" description="Clears everything drawn on the robot`s screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/clearScreenBlock.png" x1="0" y2="50" x2="50"/>
@@ -1386,7 +1280,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать точку" name="DrawPixel" description="Нарисовать на экране точку в указанных координатах.">
+			<node displayedName="Draw Pixel" name="DrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
@@ -1420,10 +1314,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X координата" type="int" name="XCoordinatePix">
+						<property displayedName="X" type="int" name="XCoordinatePix">
 							<default>0</default>
 						</property>
-						<property displayedName="Y координата" type="int" name="YCoordinatePix">
+						<property displayedName="Y" type="int" name="YCoordinatePix">
 							<default>0</default>
 						</property>
 					</properties>
@@ -1432,7 +1326,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать линию" name="DrawLine" description="Нарисовать на экране отрезок. В качестве параметров блоку указываются концы отрезка.">
+			<node displayedName="Draw Line" name="DrawLine" description="Draws a segment on the robot screen. The parameters specify the ends of the segment.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
@@ -1470,16 +1364,16 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X1 координата" type="int" name="X1CoordinateLine">
+						<property displayedName="X1" type="int" name="X1CoordinateLine">
 							<default>0</default>
 						</property>
-						<property displayedName="Y1 координата" type="int" name="Y1CoordinateLine">
+						<property displayedName="Y1" type="int" name="Y1CoordinateLine">
 							<default>0</default>
 						</property>
-						<property displayedName="X2 координата" type="int" name="X2CoordinateLine">
+						<property displayedName="X2" type="int" name="X2CoordinateLine">
 							<default>10</default>
 						</property>
-						<property displayedName="Y2 координата" type="int" name="Y2CoordinateLine">
+						<property displayedName="Y2" type="int" name="Y2CoordinateLine">
 							<default>10</default>
 						</property>
 					</properties>
@@ -1488,7 +1382,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать прямоугольник" name="DrawRect" description="Нарисовать на экране прямоугольник. В качестве параметров указываются координаты левого верхнего угла, ширина и высота прямоугольника.">
+			<node displayedName="Draw Rectangle" name="DrawRect" description="Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
@@ -1499,9 +1393,9 @@
 						<label x="50" y="80" textBinded="YCoordinateRect"/>
 						<label x="-10" y="80" text="Y: "/>
 						<label x="50" y="100" textBinded="WidthRect"/>
-						<label x="-10" y="100" text="Ширина: "/>
+						<label x="-10" y="100" text="Width: "/>
 						<label x="50" y="120" textBinded="HeightRect"/>
-						<label x="-10" y="120" text="Высота: "/>
+						<label x="-10" y="120" text="Height: "/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1526,16 +1420,16 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X координата" type="int" name="XCoordinateRect">
+						<property displayedName="X" type="int" name="XCoordinateRect">
 							<default>0</default>
 						</property>
-						<property displayedName="Y координата" type="int" name="YCoordinateRect">
+						<property displayedName="Y" type="int" name="YCoordinateRect">
 							<default>0</default>
 						</property>
-						<property displayedName="Ширина" type="int" name="WidthRect">
+						<property displayedName="Width" type="int" name="WidthRect">
 							<default>5</default>
 						</property>
-						<property displayedName="Высота" type="int" name="HeightRect">
+						<property displayedName="Height" type="int" name="HeightRect">
 							<default>5</default>
 						</property>
 					</properties>
@@ -1544,7 +1438,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Нарисовать круг" name="DrawCircle" description="Нарисовать на экране круг с заданным центром и заданным радиусом.">
+			<node displayedName="Draw Circle" name="DrawCircle" description="Draws on the robot screen a circle with the given center and radius.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
@@ -1555,7 +1449,7 @@
 						<label x="50" y="80" textBinded="YCoordinateCircle"/>
 						<label x="0" y="80" text="Y: "/>
 						<label x="50" y="100" textBinded="CircleRadius"/>
-						<label x="0" y="100" text="Радиус: "/>
+						<label x="0" y="100" text="Radius: "/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1580,13 +1474,13 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X координата" type="int" name="XCoordinateCircle">
+						<property displayedName="X" type="int" name="XCoordinateCircle">
 							<default>0</default>
 						</property>
-						<property displayedName="Y координата" type="int" name="YCoordinateCircle">
+						<property displayedName="Y" type="int" name="YCoordinateCircle">
 							<default>0</default>
 						</property>
-						<property displayedName="Радиус" type="int" name="CircleRadius">
+						<property displayedName="Radius" type="int" name="CircleRadius">
 							<default>5</default>
 						</property>
 					</properties>
@@ -1595,7 +1489,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Напечатать текст" name="PrintText" description="Напечатать заданную строку в заданных координатах на экране. Можно использовать символ доллара ('$') перед идентификатором переменной для вывода ее значения. Данный сценарий игнорируется, если перед символом доллара стоит обратный слеш ('\\'). Пример: строка '\\$a = $a' напечатает '$a = 5', если значение переменной a равно 5.">
+			<node displayedName="Print Text" name="PrintText" description="Prints a given line in the specified coordinates on the robot`s screen. '$' token can be used in front of the identifier for printing its value. This feature is ignored in case when backslash ('\\') is written before the '$' token. Example: '\\$a = $a' expression will print '$a = 5' if the value of the variable 'a' is 5.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
@@ -1606,7 +1500,7 @@
 						<label x="50" y="80" textBinded="YCoordinateText"/>
 						<label x="0" y="80" text="Y: "/>
 						<label x="50" y="100" textBinded="PrintText"/>
-						<label x="0" y="100" text="Текст: "/>
+						<label x="0" y="100" text="Text: "/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1631,14 +1525,14 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X координата" type="string" name="XCoordinateText">
+						<property displayedName="X" type="string" name="XCoordinateText">
 							<default>1</default>
 						</property>
-						<property displayedName="Y координата" type="string" name="YCoordinateText">
+						<property displayedName="Y" type="string" name="YCoordinateText">
 							<default>1</default>
 						</property>
-						<property displayedName="Текст" type="string" name="PrintText">
-							<default>Введите текст...</default>
+						<property displayedName="Text" type="string" name="PrintText">
+							<default>Enter some text here...</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1646,7 +1540,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Комментарий" name="CommentBlock" description="Блок с текстовыми заметками, которые игнорируются при генерации и интерпретации. Используйте его для повышения наглядности диаграммы.">
+			<node displayedName="Comment" name="CommentBlock" description="This block can hold text notes that are ignored by generators and interpreters. Use it for improving the diagram readability.">
 				<graphics>
 					<picture sizex="200" sizey="100">
 						<line y1="0" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="0" fill-style="none" stroke-style="solid" stroke-width="0"/>
@@ -1686,8 +1580,8 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Комментарий" type="string" name="Comment">
-							<default>Введите текст...</default>
+						<property displayedName="Comment" type="string" name="Comment">
+							<default>Enter some text here...</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1695,7 +1589,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Подпрограмма" name="Subprogram" description="Вызов подпрограммы. Подпрограммы используются для того, чтобы вынести повторяющиеся фрагменты программы на отдельную диаграмму, а потом вызывать фрагмент программы с этой диаграммы в нескольких местах основной программы или других подпрограмм. При добавлении этого блока на диаграмму будет предложено ввести имя подпрограммы, после чего двойным кликом на блоке можно будет перейти на диаграмму, соответствующую данной подпрограмме. Кроме того, появится дополнительная палитра со всеми подпрограммами, подпрограммы из неё можно перетаскивать на сцену и использовать как обычные блоки.">
+			<node displayedName="Subprogram" name="Subprogram" description="Subprogram call. Subprograms are used for splitting repetitive program parts into a separate diagram and then calling it from main diagram or other subprograms. When this block is added into a diagram it will be suggested to enter subprogram name. The double click on subprogram call block may open the corresponding subprogram diagram. Moreover user palette will appear containing existing subrpograms, they can be dragged into a diagram like the usial blocks.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/subprogramRobotsBlock.png" x1="0" y2="50" x2="50"/>
@@ -1735,7 +1629,7 @@
 			</node>
 		</graphicTypes>
 		<palette sorted="true">
-			<group name="Действия">
+			<group name="Actions">
 				<element name="Beep"/>
 				<element name="PlayTone"/>
 				<element name="EnginesForward"/>
@@ -1743,7 +1637,7 @@
 				<element name="EnginesStop"/>
 				<element name="NullificationEncoder"/>
 			</group>
-			<group name="Рисование на дисплее">
+			<group name="Drawing">
 				<element name="ClearScreen"/>
 				<element name="DrawRect"/>
 				<element name="DrawPixel"/>
@@ -1751,7 +1645,7 @@
 				<element name="DrawCircle"/>
 				<element name="PrintText"/>
 			</group>
-			<group name="Ожидания">
+			<group name="Wait">
 				<element name="Timer"/>
 				<element name="WaitForTouchSensor"/>
 				<element name="WaitForSonarDistance"/>
@@ -1763,7 +1657,7 @@
 				<element name="WaitForGyroscope"/>
 				<element name="WaitForButtons"/>
 			</group>
-			<group name="Алгоритмы">
+			<group name="Algorithms">
 				<element name="InitialNode"/>
 				<element name="FinalNode"/>
 				<element name="Function"/>
@@ -1774,10 +1668,6 @@
 				<element name="Subprogram"/>
 				<element name="Fork"/>
 			</group>
-<!--			<group name="Сегвей">
-				<element name="Balance"/>
-				<element name="BalanceInit"/>
-			</group> -->
 		</palette>
 	</diagram>
 </metamodel>
