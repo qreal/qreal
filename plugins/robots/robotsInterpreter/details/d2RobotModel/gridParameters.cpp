@@ -13,7 +13,7 @@ GridParameters::GridParameters(QWidget *parent)
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
 	mShowGridCheckBox = new QCheckBox;
-	// TODO: for some reason qt translits doesn`t work in this case
+	/// @todo: for some reason qt translits don`t work in this case
 	mShowGridCheckBox->setText("Сетка");
 	mShowGridCheckBox->setTristate(false);
 

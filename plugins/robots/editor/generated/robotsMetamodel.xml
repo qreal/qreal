@@ -7,13 +7,13 @@
 	<diagram displayedName="Диаграмма поведения робота" nodeName="RobotsDiagramGroup" name="RobotsDiagram">
 		<nonGraphicTypes>
 			<enum name="SensorPort">
-				<value>1</value>
-				<value>2</value>
-				<value>3</value>
-				<value>4</value>
+				<value name="1" displayedName="1"/>
+				<value name="2" displayedName="2"/>
+				<value name="3" displayedName="3"/>
+				<value name="4" displayedName="4"/>
 			</enum>
 			<enum name="GuardType">
-				<value></value>
+				<value/>
 				<value name="iteration" displayedName="Итерация"/>
 				<value name="true" displayedName="Истина"/>
 				<value name="false" displayedName="Ложь"/>
@@ -334,7 +334,7 @@
 							<default>100</default>
 						</property>
 						<property displayedName="Режим" type="BreakEngineMode" name="Mode">
-							<default>тормозить</default>
+							<default>break</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -636,7 +636,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
+							<default>greater</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -684,7 +684,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
+							<default>greater</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -734,10 +734,10 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
+							<default>greater</default>
 						</property>
 						<property displayedName="Ускорение по оси" type="Accelerations" name="AccelerationAxe">
-							<default>X</default>
+							<default>xAxis</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -961,7 +961,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
+							<default>greater</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1027,7 +1027,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
+							<default>greater</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1070,7 +1070,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Цвет" type="Color" name="Color">
-							<default>Красный</default>
+							<default>red</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1118,7 +1118,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
+							<default>greater</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1167,7 +1167,7 @@
 						</property>
 						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>больше</default>
+							<default>greater</default>
 						</property>
 					</properties>
 					<generalizations>
