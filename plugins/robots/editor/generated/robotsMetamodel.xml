@@ -14,34 +14,33 @@
 			</enum>
 			<enum name="GuardType">
 				<value></value>
-				<value>итерация</value>
-				<value>истина</value>
-				<value>ложь</value>
+				<value name="iteration" displayedName="Итерация"/>
+				<value name="true" displayedName="Истина"/>
+				<value name="false" displayedName="Ложь"/>
 			</enum>
 			<enum name="Color">
-				<value></value>
-				<value>Чёрный</value>
-				<value>Синий</value>
-				<value>Зелёный</value>
-				<value>Жёлтый</value>
-				<value>Красный</value>
-				<value>Белый</value>
+				<value name="black" displayedName="Чёрный"/>
+				<value name="blue" displayedName="Синий"/>
+				<value name="green" displayedName="Зелёный"/>
+				<value name="yellow" displayedName="Жёлтый"/>
+				<value name="red" displayedName="Красный"/>
+				<value name="white" displayedName="Белый"/>
 			</enum>
 			<enum name="DistanceSign">
-				<value>больше</value>
-				<value>меньше</value>
-				<value>не меньше</value>
-				<value>не больше</value>
+				<value name="greater" displayedName="Больше"/>
+				<value name="less" displayedName="Меньше"/>
+				<value name="notLess" displayedName="Не меньше"/>
+				<value name="notGreater" displayedName="Не больше"/>
 			</enum>
 			<enum name="Accelerations">
-				<value>ось x</value>
-				<value>ось y</value>
-				<value>ось z</value>
-				<value>норма</value>
+				<value name="xAxis" displayedName="Ось z"/>
+				<value name="yAxis" displayedName="Ось y"/>
+				<value name="zAxis" displayedName="Ось z"/>
+				<value name="normal" displayedName="Норма"/>
 			</enum>
 			<enum name="BreakEngineMode">
-				<value>тормозить</value>
-				<value>скользить</value>
+				<value name="break" displayedName="Тормозить"/>
+				<value name="float" displayedName="Скользить"/>
 			</enum>
 			<groups>
 				<group name="RobotsDiagramGroup" rootNode="diagram">

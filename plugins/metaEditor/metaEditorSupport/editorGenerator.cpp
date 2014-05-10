@@ -312,9 +312,9 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 			labels.appendChild(label);
 
 			QString const labelType = mApi.stringProperty(id, "labelType");
-			if (labelType == "Static text") {
+			if (labelType == "staticText") {
 				label.setAttribute("text", labelText);
-			} else if (labelType == "Dynamic text") {
+			} else if (labelType == "dynamicText") {
 				label.setAttribute("textBinded", labelText);
 			} else {
 				mErrorReporter.addWarning(QObject::tr("Incorrect label type"), id);
@@ -437,15 +437,13 @@ void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &id)
 		parent.appendChild(fields);
 }
 
-void EditorGenerator::setValues(QDomElement &parent, const Id &id)
+void EditorGenerator::setValues(QDomElement &parent, Id const &id)
 {
-	IdList childElems = mApi.children(id);
-
-	foreach (Id const idChild, childElems) {
+	for(Id const idChild : mApi.children(id)) {
 		if (idChild != Id::rootId()) {
 			QDomElement valueTag = mDocument.createElement("value");
-			QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "valueName"));
-			valueTag.appendChild(value);
+			ensureCorrectness(idChild, valueTag, "name", mApi.stringProperty(idChild, "valueName"));
+			ensureCorrectness(idChild, valueTag, "displayedName", mApi.stringProperty(idChild, "displayedName"));
 			parent.appendChild(valueTag);
 		}
 	}
