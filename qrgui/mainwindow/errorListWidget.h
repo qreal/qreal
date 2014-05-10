@@ -17,13 +17,12 @@ class ErrorListWidget : public QListWidget
 public:
 	explicit ErrorListWidget(QWidget *parent = NULL);
 	void init(qReal::MainWindow* mainWindow);
-	void highlightElement(QListWidgetItem* const item);
 
 signals:
 	void clearRequested();
 
 private slots:
-	void clickList();
+	void highlightElement(QListWidgetItem* const item);
 	void copyCurrentItem();
 	void showContextMenu(QPoint const &pos);
 

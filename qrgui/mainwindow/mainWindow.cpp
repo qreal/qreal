@@ -21,6 +21,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
+#include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrutils/uxInfo/uxInfo.h>
 
@@ -362,8 +363,17 @@ void MainWindow::selectItemWithError(Id const &id)
 		return;
 	}
 
-	setIndexesOfPropertyEditor(id);
-	centerOn(id);
+	Id graphicalId = id;
+	if (!mModels->graphicalModelAssistApi().isGraphicalId(id)) {
+		IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
+	}
+
+	setIndexesOfPropertyEditor(graphicalId);
+	centerOn(graphicalId);
+
+	Element * const element = getCurrentTab() ? getCurrentTab()->editorViewScene()->getElem(graphicalId) : nullptr;
+	graphicsUtils::AnimatedHighlighter::highlight(element);
 }
 
 void MainWindow::selectItem(Id const &id)

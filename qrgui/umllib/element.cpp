@@ -6,6 +6,8 @@
 
 using namespace qReal;
 
+qreal const disabledEffectStrength = 0.9;
+
 Element::Element(ElementImpl *elementImpl
 		, Id const &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
@@ -133,9 +135,9 @@ void Element::updateEnabledState()
 	} else {
 		QGraphicsColorizeEffect * const grayScale = new QGraphicsColorizeEffect(this);
 		grayScale->setColor(Qt::gray);
-		grayScale->setStrength(0.9);
+		grayScale->setStrength(disabledEffectStrength);
 		setGraphicsEffect(grayScale);
-		setOpacity(0.9);
+		setOpacity(disabledEffectStrength);
 	}
 }
 

@@ -11,6 +11,7 @@ HEADERS += \
 	$$PWD/gridDrawer.h \
 	$$PWD/paintWidget.h \
 	$$PWD/painterInterface.h \
+	$$PWD/animatedHighlighter.h \
 
 SOURCES += \
 	$$PWD/abstractItem.cpp \
@@ -24,3 +25,4 @@ SOURCES += \
 	$$PWD/rotateItem.cpp \
 	$$PWD/gridDrawer.cpp \
 	$$PWD/paintWidget.cpp \
+	$$PWD/animatedHighlighter.cpp \
