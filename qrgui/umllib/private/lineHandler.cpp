@@ -118,6 +118,7 @@ void LineHandler::dehighlightPorts()
 
 void LineHandler::adjust()
 {
+	// qwerty_ToDo
 	QPolygonF line = mEdge->line();
 	NodeElement *src = mEdge->src();
 	NodeElement *dst = mEdge->dst();

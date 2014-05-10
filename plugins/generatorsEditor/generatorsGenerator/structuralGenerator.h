@@ -15,6 +15,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, QString const &metamodelLanguageName
 			, QString const &languageName
+			, QString const &nodeName
 			, QString const &toGeneratePropertyName
 			, QString const &programNamePropertyName
 			, QString const &generatorMetamodelName
@@ -23,6 +24,12 @@ public:
 
 	/// Starts generation.
 	void generate();
+	QString generateSemanticNodes();
+	QString generateSemanticNode(qReal::Id const &element, QString const& templateName, int count, int parentCount = -1);
+	QString generateForeachNode(qReal::Id const &element, int count, int parentCount);
+	QString generateConverterNode(qReal::Id const &element, int count);
+
+	QStringList marksList(QString const& text);
 };
 
 }

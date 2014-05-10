@@ -1,6 +1,48 @@
 @@templateConstStringName@@
 QString const @@templateVariableName@@ = "@@templateFileName@@";
 ==========
-@@oneGenerateBody@@
-	@@oneMethodName@@;
+@@replacePropertyName@@
+	mApi.property(element, "@@propertyName@@").toString();
 ==========
+@@oneSemanticGenerateBody@@
+	QString res_@@count@@ = "";
+	foreach (Id const &element_@@count@@, mApi.elementsByType("@@elementName@@")) {
+		if (!mApi.isLogicalElement(element_@@count@@)) {
+			continue;
+		}
+@@foreachGenerateBody@@
+@@converterGenerateBody@@
+@@replaceTemplateGenerateBody@@
+	}
+==========
+@@oneTemplateFile@@
+	QString result@@templateFileName@@;
+	loadTemplateFromFile(@@templateVariableName@@, result@@templateFileName@@);
+==========
+@@oneTemplateUtil@@
+	QString @@templateMarkName@@ = mTemplateUtils["@@realMarkName@@"];
+==========
+@@oneForeachGenerateBody@@
+	QString res_@@count@@ = "";
+	foreach (Id const &element_@@count@@, mApi.children(element_@@parentCount@@)) {
+		if (!mApi.isLogicalElement(element_@@count@@) || child.type() != "@@elementName@@") {
+			continue;
+		}
+@@foreachGenerateBody@@
+@@converterGenerateBody@@
+@@replaceTemplateGenerateBody@@
+	}
+==========
+@@oneReplaceTemplateGenerateBody@@
+QString res_one_@@count@@ = "";
+@@replaceTemplates@@
+res_@@count@@ += res_one_@@count@@ + "\n";
+==========
+@@oneSimpleReplaceTemplate@@
+res_one_@@count@@ += QString("@@templateTextCode@@").replace("@@templateMarkName@@", mTemplateUtils["@@templateMarkName@@"]);
+==========
+@@oneWithPropertyReplaceTemplate@@
+res_one_@@count@@ += QString("@@templateTextCode@@").replace("@@templateMarkName@@", mApi.property(element_@@count@@, "@@templatePropertyName@@").toString());
+==========
+
+

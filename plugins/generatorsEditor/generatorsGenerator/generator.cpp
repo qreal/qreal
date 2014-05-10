@@ -65,6 +65,12 @@ void Generator::generate(qReal::Id const &metamodel)
 		return;
 	}
 
+	QString nodeName = mLogicalModel->propertyByRoleName(metamodel, "nodeName").toString();
+	if (nodeName.isEmpty()) {
+		mErrorReporter->addCritical(tr("NodeName of generator model not found"), metamodel);
+		return;
+	}
+
 	QString toGeneratePropertyName = mLogicalModel->propertyByRoleName(metamodel, "toGeneratePropertyName").toString();
 	if (toGeneratePropertyName.isEmpty()) {
 		mErrorReporter->addCritical(tr("ToGeneratePropertyName of generator model not found"), metamodel);
@@ -92,13 +98,13 @@ void Generator::generate(qReal::Id const &metamodel)
 	if (languageType.compare("behavioral") == 0) {
 		generator = new BehavioralGenerator(templateDir, outputDirPath
 											, pathToQReal, *mLogicalModel, *mErrorReporter
-											, metamodelName, languageName
+											, metamodelName, languageName, nodeName
 											, toGeneratePropertyName, programNamePropertyName
 											, generatorMetamodelName);
 	} else if (languageType.compare("structural") == 0) {
 		generator = new StructuralGenerator(templateDir, outputDirPath
 											, pathToQReal, *mLogicalModel, *mErrorReporter
-											, metamodelName, languageName
+											, metamodelName, languageName, nodeName
 											, toGeneratePropertyName, programNamePropertyName
 											, generatorMetamodelName);
 	} else {

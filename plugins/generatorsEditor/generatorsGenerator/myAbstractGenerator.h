@@ -21,6 +21,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, QString const &metamodelLanguageName
 			, QString const &languageName
+			, QString const &nodeName
 			, QString const &toGeneratePropertyName
 			, QString const &programNamePropertyName
 			, QString const &generatorMetamodelName
@@ -38,20 +39,27 @@ public:
 	QString normalizerMetamodelName();
 	QString normalizerLanguageName();
 	QString normalizerGeneratorModelName();//i.e. normalizerPluginName
+	QString normalizerGeneratorClassModelName();
 
 protected :
 
 	void generateTemplate(qReal::Id const &element);
+	void generateTemplateUsingTextCode(qReal::Id const &element, QString const& textCode);
 	void saveTemplateUtils();
+	QString generateTemplateConstStringNames();
 
 	QString mPathToQReal;
 	QString const &mMetamodelName;//имя метамодели языков, для которых напсана эта модель генератора, по которой генерируется код
 	QString const &mLanguageName; //имя конкретного языка метамодели, для которого напсана эта модель генератора
+	QString const &mNodeName; //имя главного узла языка (который является "корнем" программы)
 	QString const &mToGeneratePropertyName;//имя свойства главного узла языка, в котором указывается путь до папки генерации программы
 	QString const &mProgramNamePropertyName; //имя свойства главного узла языка, в котором указывается имя генерируемой программы
 	QString const &mGeneratorName;//настоящее имя модели генератора, по которой генерируется код
 
 	QMap<QString, QString> mMarksCode;
+	QMap<QString, QString> mTemplateVariableFilename;
+	QMap<QString, QList<QString> > mElementPropertyList;
+	QMap<QString, QString> mElementSemanticGenerateBody;
 	QString const mTemplateDirName;
 };
 

@@ -17,6 +17,7 @@ MyAbstractGenerator::MyAbstractGenerator(QString const &templateDirPath
 		, qReal::ErrorReporterInterface &errorReporter
 		, QString const &metamodelName
 		, QString const &languageName
+		, QString const &nodeName
 		, QString const &toGeneratePropertyName
 		, QString const &programNamePropertyName
 		, QString const &generatorMetamodelName
@@ -25,6 +26,7 @@ MyAbstractGenerator::MyAbstractGenerator(QString const &templateDirPath
 	, mPathToQReal(pathToQReal)
 	, mMetamodelName(metamodelName)
 	, mLanguageName(languageName)
+	, mNodeName(nodeName)
 	, mToGeneratePropertyName(toGeneratePropertyName)
 	, mProgramNamePropertyName(programNamePropertyName)
 	, mGeneratorName(generatorMetamodelName)
@@ -72,18 +74,31 @@ QString MyAbstractGenerator::normalizerGeneratorModelName() //i.e. normalizerPlu
 	return NameNormalizer::normalize(generatorModelName(), false);
 }
 
+QString MyAbstractGenerator::normalizerGeneratorClassModelName()
+{
+	return NameNormalizer::normalize(generatorModelName(), true);
+}
+
 void MyAbstractGenerator::generateTemplate(Id const &element)
+{
+	QString textCode = mApi.property(element, "textCode").toString();
+	generateTemplateUsingTextCode(element, textCode);
+}
+
+void MyAbstractGenerator::generateTemplateUsingTextCode(Id const &element, QString const& textCode)
 {
 	QString markName = mApi.property(element, "markName").toString();
 	QString fileName = mApi.property(element, "fileName").toString();
-	QString textCode = mApi.property(element, "textCode").toString();
 
 	if (!fileName.isEmpty()) {
 		saveOutputFile(QString(fileName), textCode, mTemplateDirName);
+		QString variableName = QString(fileName).replace(".", "_");
+		mTemplateVariableFilename[variableName] = fileName;
 	} else if (!markName.isEmpty()) {
 		mMarksCode[markName] = textCode;
 	} else {
-		mErrorReporter.addCritical(QObject::tr("FileName or MarkName of 'TemplateNode' not found"), element);
+		mErrorReporter.addCritical(QObject::tr("FileName or MarkName of \'%1\' not found").arg(element.element())
+								   , element);
 	}
 }
 
@@ -94,4 +109,17 @@ void MyAbstractGenerator::saveTemplateUtils()
 		result += "@@" + mark + "@@\n" + mMarksCode[mark] + "\n==========\n";
 	}
 	saveOutputFile(QString(generatedUtilsFileName), result, mTemplateDirName);
+}
+
+QString MyAbstractGenerator::generateTemplateConstStringNames()
+{
+	QString result;
+	foreach (QString var, mTemplateVariableFilename.keys()) {
+		QString templateConstStringName  = mTemplateUtils["@@templateConstStringName@@"];
+		templateConstStringName.replace("@@templateVariableName@@", var);
+		templateConstStringName.replace("@@templateFileName@@", mTemplateVariableFilename[var]);
+
+		result += templateConstStringName;
+	}
+	return result;
 }

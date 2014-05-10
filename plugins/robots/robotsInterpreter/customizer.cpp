@@ -40,22 +40,26 @@ bool Customizer::showInterpeterButton() const
 void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 {
 	mDockInterface = dockInterface;
-	dockInterface->logicalModelDock()->hide();
-	dockInterface->tabifyDockWidget(dockInterface->graphicalModelDock(), dockInterface->propertyEditorDock());
+//	dockInterface->logicalModelDock()->hide(); // qwerty_TEMP
+//	dockInterface->tabifyDockWidget(dockInterface->graphicalModelDock(), dockInterface->propertyEditorDock()); // qwerty_TEMP
 	dockInterface->graphicalModelDock()->setWindowTitle(tr("Blocks"));
 }
 
 void Customizer::placeSensorsConfig(QWidget *sensorsWidget)
 {
 	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
+	sensorsDock->hide(); // qwerty_TEMP
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
 }
 
 void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch)
 {
+	watchWindow->hide();// qwerty_TEMP
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
 	watchWindow->setFloating(false);
+
 	QDockWidget *graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
+	graphWatchDock->hide(); // qwerty_TEMP
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
 
 	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);

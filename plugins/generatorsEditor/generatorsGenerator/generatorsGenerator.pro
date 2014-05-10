@@ -13,7 +13,6 @@ LIBS += -L../../../bin -lqrkernel -lqrutils
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 
-
 HEADERS = \
 	generatorsGeneratorPlugin.h \
 	generator.h \

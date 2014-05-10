@@ -125,7 +125,7 @@ void GeneratorsGeneratorPlugin::loadNewEditor(QString const &directoryName
 
 	if (progress->value() != 100) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new generator plugin"));
-//		deleteGeneratedFiles(directoryName, normalizerPluginName); //qwerty_temp
+//		deleteGeneratedFiles(directoryName, normalizerPluginName); //qwerty_TEMP
 	}
 	progress->setValue(100);
 	progress->close();

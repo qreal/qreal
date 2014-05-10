@@ -48,6 +48,9 @@ public:
 	/// Get a list of all links connected to given element.
 	virtual qReal::IdList links(qReal::Id const &id) const = 0;
 
+	virtual qReal::IdList outgoingNodes(qReal::Id const &id) const = 0;
+	virtual qReal::IdList incomingNodes(qReal::Id const &id) const = 0;
+
 	/// Get an element connected to other side of link.
 	/// @param linkId Id of a link.
 	/// @param firstNode Id of first element connected to a link.

@@ -14,13 +14,14 @@ BehavioralGenerator::BehavioralGenerator(QString const &templateDirPath
 		, qReal::ErrorReporterInterface &errorReporter
 		, QString const &metamodelLanguageName
 		, QString const &languageName
+		, QString const &nodeName
 		, QString const &toGeneratePropertyName
 		, QString const &programNamePropertyName
 		, QString const &generatorMetamodelName
 	)
 	: MyAbstractGenerator(templateDirPath, outputDirPath, pathToQReal
 						  , logicalModel, errorReporter
-						  , metamodelLanguageName, languageName
+						  , metamodelLanguageName, languageName, nodeName
 						  , toGeneratePropertyName, programNamePropertyName
 						  , generatorMetamodelName)
 {

@@ -21,9 +21,9 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex const current = model()->index(row, 0, parent);
 		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
-		if (parentLogicalId.isNull() || parentLogicalId.editor() != "MetaEditor"
-				|| logicalId.editor() != "MetaEditor")
-		{
+		if (parentLogicalId.isNull() // qwerty_toSyncLogicAndGraphic
+			|| (parentLogicalId.editor() != "MetaEditor" && parentLogicalId.editor() != "GeneratorsMetamodel")
+			|| (logicalId.editor() != "MetaEditor" && logicalId.editor() != "GeneratorsMetamodel")) {
 			parentLogicalId = Id::rootId();
 		}
 
@@ -57,9 +57,9 @@ void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex con
 
 	Id const parentLogicalId = topLeft.sibling(topLeft.row(), 0).data(roles::logicalIdRole).value<Id>();
 	Id const childLogicalId = bottomRight.sibling(bottomRight.row(), 0).data(roles::logicalIdRole).value<Id>();
-	if (parentLogicalId.editor() == "MetaEditor" && childLogicalId.editor() == "MetaEditor"
-			&& parentLogicalId != childLogicalId)
-	{
+	if (((parentLogicalId.editor() == "MetaEditor" && childLogicalId.editor() == "MetaEditor")
+			|| (parentLogicalId.editor() == "GeneratorsMetamodel" && childLogicalId.editor() == "GeneratorsMetamodel"))
+			&& parentLogicalId != childLogicalId) { // qwerty_toSyncLogicAndGraphic
 		static_cast<LogicalModel *>(mModel)->changeParent(parentLogicalId, childLogicalId);
 	}
 }

@@ -15,6 +15,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, QString const &metamodelLanguageName
 			, QString const &languageName
+			, QString const &nodeName
 			, QString const &toGeneratePropertyName
 			, QString const &programNamePropertyName
 			, QString const &generatorMetamodelName
