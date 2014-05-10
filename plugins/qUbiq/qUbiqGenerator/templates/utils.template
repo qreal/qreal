@@ -1,0 +1,77 @@
+@@oneCreateFormDescription@@
+		private VisualElement Create@@formName@@()
+		{
+			var mainGrid = new Grid(@@width@@, @@height@@)
+			{
+				Margin = new Thickness(5, 5, 5, 5),
+				VerticalAlignment = VerticalAlignment.Stretch,
+				HorizontalAlignment = HorizontalAlignment.Stretch
+			};
+@@mainGridFilling@@			return mainGrid;
+		}
+==========
+@@elementDeclaration@@
+@@elemetCreation@@			mainGrid[@@x@@, @@y@@] = @@elementName@@_@@tail@@;
+
+==========
+@@buttonDeclaration@@
+			var button_@@tail@@ = new Button();
+			button_@@tail@@.Pressed += On@@buttonName@@Clicked;
+==========
+@@buttonDeclarationWithHandler@@
+			var button_@@tail@@ = new Button();
+					button_@@tail@@.Pressed += By@@handlerName@@Handler;
+==========
+@@textDeclaration@@
+			var text_@@tail@@ = new TextBlock() { Text = "@@text@@" };
+==========
+@@imageDeclaration@@
+			var image_@@tail@@ = new Image(new System.Drawing.Bitmap(@"@@pathToImage@@"));
+			var imageBlock_@@tail@@ = new ImageBlock(image);
+==========
+@@listDeclaration@@
+			var list_@@tail@@ = new ListBox();
+@@listFillings@@
+==========
+@@listFilling@@
+@@listItemCreation@@			list_@@tail@@.Append(@@listItemName@@_@@tail@@_@@itemTail@@);
+==========
+@@gridDeclaration@@
+			var grid_@@tail@@ = new Grid(@@w@@, @@h@@)
+			{
+				Margin = new Thickness(5, 5, 5, 5),
+				VerticalAlignment = VerticalAlignment.Stretch,
+				HorizontalAlignment = HorizontalAlignment.Stretch
+			};
+			for (int i = 0; i < @@w@@; ++i)
+			{
+				for (int j = 0; j < @@h@@; ++j)
+				{
+		@@gridItemCreation@@					grid_@@tail@@[i, j] = @@gridItemName@@_@@tail@@_@@itemTail@@;
+				}
+			}
+==========
+@@oneOnButtonClickedDescription@@
+		void On@@buttonName@@Clicked(object sender, EventArgs args)
+		{
+			Screen.Content = Create@@toFormName@@();
+		}
+==========
+@@oneOnExitButtonClickedDescription@@
+		void On@@buttonName@@Clicked(object sender, EventArgs args)
+		{
+			Screen.Content = CreateExitForm();
+		}
+==========
+@@oneHandlerDescription@@
+		void By@@handlerName@@Handler(object sender, EventArgs args)
+		{
+			// TODO
+		}
+==========
+@@oneVariableDeclaration@@
+		public static @@variableType@@ @@variableName@@ {get; set;}
+==========
+@@oneCompileInclude@@
+    <Compile Include="@@fileName@@" />
+==========
