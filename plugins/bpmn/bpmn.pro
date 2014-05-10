@@ -1,5 +1,3 @@
-CONFIG += c++11
-
 QREAL_XML = bPMNMetamodel.xml
 QREAL_EDITOR_PATH = bpmn
 ROOT = ../..
