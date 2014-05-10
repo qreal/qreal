@@ -337,7 +337,7 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
-		out() << "\tmDiagramNameMap[\"" << diagramName << "\"] = QString::fromUtf8(\""
+		out() << "\tmDiagramNameMap[\"" << diagramName << "\"] = tr(\""
 				<< diagram->displayedName() << "\");\n";
 		out() << "\tmDiagramNodeNameMap[\"" << diagramName << "\"] = \"" << diagram->nodeName() << "\"" << ";\n";
 		out() << "\n";
@@ -379,7 +379,7 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 			}
 
 			out() << "\t\tmPaletteGroupsMap[QString::fromUtf8(\""
-				<< diagramName << "\")].append(qMakePair(QString::fromUtf8(\""
+				<< diagramName << "\")].append(qMakePair(tr(\""
 				<< groupName << "\"), groupElements));\n";
 
 			out() << "\t}\n";
@@ -399,8 +399,8 @@ void XmlCompiler::generatePaletteGroupsDescriptions(utils::OutFile &out)
 			QString const descriptionName = paletteGroupsDescriptions[groupName];
 			if (!descriptionName.isEmpty()) {
 				out() << "\tmPaletteGroupsDescriptionMap[QString::fromUtf8(\""
-					<< diagramName << "\")][QString::fromUtf8(\""
-					<< groupName << "\")] = QString::fromUtf8(\""
+					<< diagramName << "\")][tr(\""
+					<< groupName << "\")] = tr(\""
 					<< descriptionName << "\");\n";
 			}
 		}

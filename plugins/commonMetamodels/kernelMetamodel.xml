@@ -13,7 +13,7 @@
           <value name="composite" displayedName="Composite"/>
         </enum>
         <enum name="VisibilityKind" displayedName="Visibility Kind">
-          <value name="private" displayedName="None"/>
+          <value name="private" displayedName="Private"/>
           <value name="protected" displayedName="Protected"/>
           <value name="public" displayedName="Public"/>
           <value name="package" displayedName="Package"/>
