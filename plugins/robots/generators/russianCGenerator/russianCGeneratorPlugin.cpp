@@ -15,6 +15,15 @@ RussianCGeneratorPlugin::RussianCGeneratorPlugin()
 	QApplication::installTranslator(&mAppTranslator);
 }
 
+RussianCGeneratorPlugin::~RussianCGeneratorPlugin()
+{
+}
+
+QString RussianCGeneratorPlugin::kitId() const
+{
+	return "nxtKit";
+}
+
 QString RussianCGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
 	return QString("russianC/%1/%1.c").arg(projectName);
@@ -35,15 +44,6 @@ QString RussianCGeneratorPlugin::generatorName() const
 	return "RussianC";
 }
 
-RussianCGeneratorPlugin::~RussianCGeneratorPlugin()
-{
-}
-
-QString RussianCGeneratorPlugin::kitId() const
-{
-	return "nxtKit";
-}
-
 QList<ActionInfo> RussianCGeneratorPlugin::actions()
 {
 	mGenerateCodeAction.setText(tr("Generate to Russian C"));
@@ -52,6 +52,16 @@ QList<ActionInfo> RussianCGeneratorPlugin::actions()
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
 	return { generateCodeActionInfo };
+}
+
+QList<HotKeyActionInfo> RussianCGeneratorPlugin::hotKeyActions()
+{
+	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G));
+
+	HotKeyActionInfo generateActionInfo("Generator.GenerateNxtRussianC"
+			, tr("Generate Russian C Code"), &mGenerateCodeAction);
+
+	return { generateActionInfo };
 }
 
 MasterGeneratorBase *RussianCGeneratorPlugin::masterGenerator()

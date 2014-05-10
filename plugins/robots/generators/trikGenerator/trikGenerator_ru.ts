@@ -191,13 +191,33 @@
         <translation>Остановить робот</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="83"/>
+        <location filename="trikGeneratorPlugin.cpp" line="65"/>
+        <source>Generate TRIK Code</source>
+        <translation>Сгенерированть код для TRIK</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="66"/>
+        <source>Upload TRIK Program</source>
+        <translation>Загрузить программу на TRIK</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="67"/>
+        <source>Run TRIK Program</source>
+        <translation>Исполнить программу для TRIK</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="68"/>
+        <source>Stop TRIK Robot</source>
+        <translation>Остановить выполнение программы для TRIK</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="98"/>
         <source>TRIK Source File</source>
         <translation>Файл с исходным кодом для TRIK</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="99"/>
-        <location filename="trikGeneratorPlugin.cpp" line="124"/>
+        <location filename="trikGeneratorPlugin.cpp" line="114"/>
+        <location filename="trikGeneratorPlugin.cpp" line="139"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
     </message>

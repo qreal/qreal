@@ -188,6 +188,8 @@ void ActionsManager::initKitPluginActions()
 				ActionInfo const actionInfo(fastSelectionAction, "interpreters", "tools");
 				mRobotModelActions.insertMulti(kitId, actionInfo);
 			}
+
+			mPluginHotKeyActionInfos << kitPlugin->hotKeyActions();
 		}
 
 		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {

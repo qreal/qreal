@@ -55,6 +55,21 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }
 
+QList<HotKeyActionInfo> TrikGeneratorPlugin::hotKeyActions()
+{
+	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+	mRunProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
+	mStopRobotAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F5));
+
+	HotKeyActionInfo generateCodeInfo("Generator.GenerateTrik", tr("Generate TRIK Code"), &mGenerateCodeAction);
+	HotKeyActionInfo uploadProgramInfo("Generator.UploadTrik", tr("Upload TRIK Program"), &mUploadProgramAction);
+	HotKeyActionInfo runProgramInfo("Generator.RunTrik", tr("Run TRIK Program"), &mRunProgramAction);
+	HotKeyActionInfo stopRobotInfo("Generator.StopTrik", tr("Stop TRIK Robot"), &mStopRobotAction);
+
+	return { generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo };
+}
+
 generatorBase::MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
 {
 	return new TrikMasterGenerator(*mRepo

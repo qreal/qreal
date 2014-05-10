@@ -48,6 +48,13 @@
 <context>
     <name>NxtDisplay</name>
     <message>
+        <source>tr(NxtDisplay)</source>
+        <translation type="vanished">Дисплей NXT</translation>
+    </message>
+</context>
+<context>
+    <name>NxtDisplayWidget</name>
+    <message>
         <location filename="src/nxtDisplayWidget.ui" line="435"/>
         <source>tr(NxtDisplay)</source>
         <translation>Дисплей NXT</translation>
@@ -56,9 +63,14 @@
 <context>
     <name>nxtKitInterpreter::NxtKitInterpreterPlugin</name>
     <message>
-        <location filename="src/nxtKitInterpreterPlugin.cpp" line="84"/>
+        <location filename="src/nxtKitInterpreterPlugin.cpp" line="56"/>
         <source>Lego NXT</source>
         <translation>Лего NXT</translation>
+    </message>
+    <message>
+        <location filename="src/nxtKitInterpreterPlugin.cpp" line="90"/>
+        <source>Show 2d model</source>
+        <translation>Открыть 2D модель</translation>
     </message>
 </context>
 <context>

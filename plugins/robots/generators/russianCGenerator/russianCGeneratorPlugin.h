@@ -12,19 +12,20 @@ class RussianCGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 
 public:
 	RussianCGeneratorPlugin();
-	virtual ~RussianCGeneratorPlugin();
+	~RussianCGeneratorPlugin() override;
 
 	QString kitId() const override;
 
-	virtual QList<qReal::ActionInfo> actions();
+	QList<qReal::ActionInfo> actions() override;
+	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 protected:
-	virtual generatorBase::MasterGeneratorBase *masterGenerator();
-	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
-	virtual QString defaultFilePath(QString const &projectName) const;
-	virtual QString extension() const;
-	virtual QString extDescrition() const;
-	virtual QString generatorName() const;
+	generatorBase::MasterGeneratorBase *masterGenerator() override;
+	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
+	QString defaultFilePath(QString const &projectName) const override;
+	QString extension() const override;
+	QString extDescrition() const override;
+	QString generatorName() const override;
 
 private:
 	/// Disable/enable tab in QList<ActionInfo> info

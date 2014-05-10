@@ -104,7 +104,6 @@
     </message>
     <message>
         <location filename="nxtGeneratorPlugin.cpp" line="84"/>
-        <location filename="nxtGeneratorPlugin.cpp" line="107"/>
         <source>Generate code</source>
         <translation>Генерировать код</translation>
     </message>
@@ -120,8 +119,9 @@
     </message>
     <message>
         <location filename="nxtGeneratorPlugin.cpp" line="108"/>
-        <source>Upload program to robot</source>
-        <translation>Загрузить программу на робота</translation>
+        <source>Upload program to NXT device</source>
+        <oldsource>Upload program to robot</oldsource>
+        <translation>Загрузить программу на устройство NXT</translation>
     </message>
     <message>
         <location filename="nxtGeneratorPlugin.cpp" line="170"/>

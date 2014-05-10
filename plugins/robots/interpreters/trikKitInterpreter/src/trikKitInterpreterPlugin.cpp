@@ -98,6 +98,19 @@ QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 	return { mTwoDModelV4->showTwoDModelWidgetActionInfo(), mTwoDModelV6->showTwoDModelWidgetActionInfo() };
 }
 
+QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
+{
+	mTwoDModelV4->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mTwoDModelV6->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+
+	HotKeyActionInfo d2V4ModelActionInfo("Interpreter.Show2dModelForTrikV4", tr("Show 2d model for TRIK v4")
+			, mTwoDModelV4->showTwoDModelWidgetActionInfo().action());
+	HotKeyActionInfo d2V6ModelActionInfo("Interpreter.Show2dModelForTrikV6", tr("Show 2d model for TRIK v6")
+			, mTwoDModelV6->showTwoDModelWidgetActionInfo().action());
+
+	return { d2V4ModelActionInfo, d2V6ModelActionInfo };
+}
+
 QIcon TrikKitInterpreterPlugin::iconForFastSelector(
 		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
 {

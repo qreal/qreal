@@ -20,11 +20,42 @@
     </message>
 </context>
 <context>
+    <name>TrikDisplayWidget</name>
+    <message>
+        <location filename="src/trikDisplayWidget.ui" line="14"/>
+        <source>Trik Display</source>
+        <translation>Дисплей TRIK</translation>
+    </message>
+</context>
+<context>
     <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="src/trikKitInterpreterPlugin.cpp" line="111"/>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="71"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
+    </message>
+    <message>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="106"/>
+        <source>Show 2d model for TRIK v4</source>
+        <translation>Открыть 2D модель для TRIK v4</translation>
+    </message>
+    <message>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="108"/>
+        <source>Show 2d model for TRIK v6</source>
+        <translation>Открыть 2D модель для TRIK v6</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::blocks::details::WaitForButtonsBlock</name>
+    <message>
+        <location filename="src/blocks/details/waitForButtonsBlock.cpp" line="25"/>
+        <source>Buttons are not configured (WTF?)</source>
+        <translation>Кнопки не сконфигурированы (што?)</translation>
+    </message>
+    <message>
+        <location filename="src/blocks/details/waitForButtonsBlock.cpp" line="42"/>
+        <source>Buttons</source>
+        <translation>Кнопки</translation>
     </message>
 </context>
 <context>

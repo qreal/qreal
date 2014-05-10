@@ -83,6 +83,16 @@ QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 	return { mTwoDModel->showTwoDModelWidgetActionInfo() };
 }
 
+QList<HotKeyActionInfo> NxtKitInterpreterPlugin::hotKeyActions()
+{
+	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+
+	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForNxt", tr("Show 2d model")
+			, mTwoDModel->showTwoDModelWidgetActionInfo().action());
+
+	return { d2ModelActionInfo };
+}
+
 QIcon NxtKitInterpreterPlugin::iconForFastSelector(
 		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
 {

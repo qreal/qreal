@@ -11,7 +11,7 @@
 <context>
     <name>russianC::RussianCGeneratorPlugin</name>
     <message>
-        <location filename="russianCGeneratorPlugin.cpp" line="30"/>
+        <location filename="russianCGeneratorPlugin.cpp" line="39"/>
         <source>RussianC Source File</source>
         <translation>Файл с исходным кодом на &quot;Русском Си&quot;</translation>
     </message>
@@ -19,6 +19,11 @@
         <location filename="russianCGeneratorPlugin.cpp" line="49"/>
         <source>Generate to Russian C</source>
         <translation>Генерировать в русский С</translation>
+    </message>
+    <message>
+        <location filename="russianCGeneratorPlugin.cpp" line="62"/>
+        <source>Generate Russian C Code</source>
+        <translation>Сгенерировать код на русском Си</translation>
     </message>
 </context>
 </TS>

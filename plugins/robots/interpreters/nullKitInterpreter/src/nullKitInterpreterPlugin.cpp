@@ -47,6 +47,11 @@ QList<qReal::ActionInfo> NullKitInterpreterPlugin::customActions()
 	return {};
 }
 
+QList<qReal::HotKeyActionInfo> NullKitInterpreterPlugin::hotKeyActions()
+{
+	return {};
+}
+
 QIcon NullKitInterpreterPlugin::iconForFastSelector(
 		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
 {

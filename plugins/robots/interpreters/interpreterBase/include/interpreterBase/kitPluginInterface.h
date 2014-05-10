@@ -6,6 +6,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrgui/toolPluginInterface/actionInfo.h>
+#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/toolPluginInterface/systemEventsInterface.h>
 
 #include <interpreterBase/additionalPreferences.h>
@@ -73,6 +74,10 @@ public:
 	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
 	/// goes here.
 	virtual QList<qReal::ActionInfo> customActions() = 0;
+
+	/// Shall be overridden to return QAction instances for their customization in
+	/// hot key manager.
+	virtual QList<qReal::HotKeyActionInfo> hotKeyActions() = 0;
 
 	/// Returns an icon for toolbar action of fast robot model switching
 	virtual QIcon iconForFastSelector(robotModel::RobotModelInterface const &robotModel) const = 0;
