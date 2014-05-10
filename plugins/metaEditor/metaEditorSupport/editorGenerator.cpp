@@ -89,6 +89,7 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 
 	try {
 		OutFile outpro(pathToFile + "/" + fileBaseName + ".pro");
+		outpro() << "CONFIG += c++11\n\n";
 		outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
 		if (includeProList != "") {
 			outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);

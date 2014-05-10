@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QtXml/QDomElement>
-#include <QtCore/QStringList>
-
 #include "nonGraphicType.h"
 
 namespace utils {
@@ -23,5 +20,5 @@ public:
 private:
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 
-	QStringList mValues;
+	QMap<QString, QString> mValues;
 };

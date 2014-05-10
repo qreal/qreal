@@ -187,7 +187,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQStringList getPropertyNames(QString const &diagram, QString const &element) const override;\n"
 		<< "\tQStringList getPortTypes(QString const &diagram, QString const &element) const override;\n"
 		<< "\tQStringList getReferenceProperties(QString const &diagram, QString const &element) const override;\n"
-		<< "\tQStringList getEnumValues(QString name) const override;\n"
+		<< "\tQList<QPair<QString, QString>> getEnumValues(QString const &name) const override;\n"
 		<< "\tQString getGroupsXML() const override;\n"
 		<< "\tQList<QPair<QString, QString>> getParentsOf(QString const &diagram, QString const &element) "
 				"const override;\n"
@@ -815,8 +815,7 @@ void XmlCompiler::generateGroupsXML(OutFile &out)
 
 void XmlCompiler::generateEnumValues(OutFile &out)
 {
-	out() << "QStringList " << mPluginName << "Plugin::getEnumValues(QString name) const \n{\n"
-		<< "\tQStringList result;\n";
+	out() << "QList<QPair<QString, QString>> " << mPluginName << "Plugin::getEnumValues(QString const &name) const \n{\n";
 
 	EnumValuesGenerator generator;
 	bool isNotFirst = false;
@@ -824,8 +823,10 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 	foreach (EnumType *type, mEditors[mCurrentEditor]->getAllEnumTypes())
 		isNotFirst |= generator.generate(type, out, isNotFirst);
 
-	if (!isNotFirst)
+	if (!isNotFirst) {
 		out() << "\tQ_UNUSED(name);\n";
-	out() << "\treturn result;\n"
+	}
+
+	out() << "\treturn {};\n"
 		<< "}\n\n";
 }
