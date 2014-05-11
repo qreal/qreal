@@ -42,10 +42,12 @@ void @@generatorClassName@@Plugin::generate()
 			continue;
 		}
 
+		QMap<QString, QString> marksProperty;
 		QString programName = mLogicalModel->logicalRepoApi().property(diagram, "@@programNameProperty@@").toString();
 		QString pathToGenerate = mLogicalModel->logicalRepoApi().property(diagram, "@@pathToGenerateProperty@@").toString();
+@@fillMarksProperty@@
 
-		mGenerator = new Generator(pathToGenerate, programName, *mLogicalModel, *mErrorReporter);
+		mGenerator = new Generator(pathToGenerate, programName, *mLogicalModel, *mErrorReporter, marksProperty);
 		mGenerator->generate();
 	}
 }

@@ -1017,24 +1017,24 @@ QString QUbiqMetamodelPlugin::getGroupsXML() const
 QStringList QUbiqMetamodelPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "HandlerType")
+	if (name == "BoolValue")
+		result << QString::fromUtf8("none") << QString::fromUtf8("false") << QString::fromUtf8("true");
+	else if (name == "HandlerType")
 		result << QString::fromUtf8("slide handler") << QString::fromUtf8("list handler") << QString::fromUtf8("button handler") << QString::fromUtf8("grid handler");
-	else if (name == "ElementTypes")
-		result << QString::fromUtf8("text") << QString::fromUtf8("list") << QString::fromUtf8("image") << QString::fromUtf8("grid") << QString::fromUtf8("number");
 	else if (name == "SentToType")
 		result << QString::fromUtf8("server") << QString::fromUtf8("other player") << QString::fromUtf8("keyboard");
 	else if (name == "CyclicValue")
 		result << QString::fromUtf8("next") << QString::fromUtf8("after");
-	else if (name == "BoolValue")
-		result << QString::fromUtf8("none") << QString::fromUtf8("false") << QString::fromUtf8("true");
 	else if (name == "WaitMessageType")
 		result << QString::fromUtf8("response about playing field status") << QString::fromUtf8("response to game request") << QString::fromUtf8("pressing on a keyboard");
-	else if (name == "TakeType")
-		result << QString::fromUtf8("only unselected data") << QString::fromUtf8("all data") << QString::fromUtf8("only selected data");
 	else if (name == "SentMessageType")
 		result << QString::fromUtf8("request game") << QString::fromUtf8("request of playing field status") << QString::fromUtf8("sent a playing field status") << QString::fromUtf8("request a players list");
+	else if (name == "ElementTypes")
+		result << QString::fromUtf8("text") << QString::fromUtf8("list") << QString::fromUtf8("image") << QString::fromUtf8("grid") << QString::fromUtf8("number");
 	else if (name == "CyclicValueInLogicEditor")
 		result << QString::fromUtf8("next") << QString::fromUtf8("after");
+	else if (name == "TakeType")
+		result << QString::fromUtf8("only unselected data") << QString::fromUtf8("all data") << QString::fromUtf8("only selected data");
 	return result;
 }
 

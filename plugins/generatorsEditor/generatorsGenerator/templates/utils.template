@@ -14,6 +14,8 @@ QString const @@templateVariableName@@ = "@@templateFileName@@";
 @@converterGenerateBody@@
 @@replaceTemplateGenerateBody@@
 	}
+	mTemplateUtils["@@elements_@@elementName@@@@"] = res_@@count@@;
+	result += res_@@count@@;
 ==========
 @@oneForeachGenerateBody@@
 	QString res_@@count@@ = "";
@@ -37,6 +39,9 @@ res_one_@@count@@.replace("@@templateMarkName@@", mTemplateUtils["@@templateMark
 @@oneWithPropertyReplaceTemplate@@
 res_one_@@count@@.replace("@@templateMarkName@@", mApi.property(element_@@count@@, "@@templatePropertyName@@").toString());
 ==========
+@@oneWithPropertyReplaceTemplateForDiagram@@
+res_@@realTemplateMarkName@@.replace("@@templateMarkName@@", mLogicalModel->logicalRepoApi().property(diagram, "@@templatePropertyName@@").toString());
+==========
 @@realElementMarkName@@
 elements_@@elementName@@_@@count@@
 ==========
@@ -51,4 +56,9 @@ result_@@templateVariableName@@.replace("@@templateMarkName@@", mTemplateUtils["
 ==========
 @@oneWithPropertyReplaceTemplateForFile@@
 result_@@templateVariableName@@.replace("@@templateMarkName@@", mApi.property(element_@@count@@, "@@templatePropertyName@@").toString());
+==========
+@@onefillMarkProperty@@
+QString res_@@realTemplateMarkName@@ = "@@textCode@@";
+@@replaceTemplates@@
+marksProperty["@@realTemplateMarkName@@"] = res_@@realTemplateMarkName@@;
 ==========

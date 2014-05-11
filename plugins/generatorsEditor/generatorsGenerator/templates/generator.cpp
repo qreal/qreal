@@ -15,10 +15,14 @@ Generator::Generator(QString const &outputDirPath
 		, QString const &programName
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
+		, QMap<QString, QString> marksProperty
 		)
 	: AbstractGenerator(templateDir, QString(outputDirPath + "/" + programName).replace("\\", "/"), logicalModel, errorReporter)
 	, mProgramName(programName)
 {
+	foreach (QString key, marksProperty.keys()) {
+		mTemplateUtils[key] = marksProperty[key];
+	}
 }
 
 Generator::~Generator()
@@ -41,5 +45,9 @@ void Generator::generate()
 		mErrorReporter.addError("Program name is not correct");
 		return;
 	}
+	mTemplateUtils["@@@@programNameProperty@@@@"] = mProgramName;
+	QString result = "";
 @@generateBody@@
+	mTemplateUtils["@@elements_ALL@@"] = result;
+@@generateBody_replaceTemplates@@
 }

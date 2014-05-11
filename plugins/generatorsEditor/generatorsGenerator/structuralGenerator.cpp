@@ -72,7 +72,10 @@ QStringList StructuralGenerator::marksList(QString const& text, QString const& m
 
 	int pos = 0;
 	while ((pos = pattern.indexIn(text, pos)) != -1) {
-		res << pattern.cap(0);
+		QString curRes = pattern.cap(0);
+		if (!res.contains(curRes)) {
+			res << curRes;
+		}
 		pos += pattern.matchedLength();
 	 }
 
@@ -81,12 +84,7 @@ QStringList StructuralGenerator::marksList(QString const& text, QString const& m
 
 QString StructuralGenerator::generateReplaceTemplateBodyForMark(QString const& textCode, QString const& elementMarkName, QString const& count)
 {
-	QString more = "";
-	if (count.isEmpty()) {
-		more = "QString res_ = \"\";";
-	}
-
-	QString result = more + mTemplateUtils["@@oneReplaceTemplateGenerateBody@@"];
+	QString result = mTemplateUtils["@@oneReplaceTemplateGenerateBody@@"];
 	QString replaceTemplates = "";
 
 	QStringList list = marksList(textCode, "@@");
@@ -105,6 +103,30 @@ QString StructuralGenerator::generateReplaceTemplateBodyForMark(QString const& t
 	result.replace("@@replaceTemplates@@", replaceTemplates);
 	result.replace("@@elementMarkName@@", elementMarkName);
 	result.replace("@@count@@", count);
+
+	return result;
+}
+
+QString StructuralGenerator::generateReplaceTemplateBodyForDiagramMark(QString const& textCode, QString const& elementMarkName)
+{
+	QString result = mTemplateUtils["@@onefillMarkProperty@@"];
+	QString replaceTemplates = "";
+
+	QStringList list = marksList(textCode, "@@"); // таких меток для данного "особого" шаблона быть не должно => ошибка
+	if (!list.isEmpty()) {
+		mErrorReporter.addError(QObject::tr("Root Template is not correct ('@@' is forbidden for textCode)"));
+	}
+
+	QStringList propertyList = marksList(textCode, "##");
+	foreach (QString var, propertyList) {
+		replaceTemplates += QString(mTemplateUtils["@@oneWithPropertyReplaceTemplateForDiagram@@"])
+				.replace("@@templateMarkName@@", var)
+				.replace("@@templatePropertyName@@", var.split("##").at(1));
+	}
+
+	result.replace("@@replaceTemplates@@", replaceTemplates);
+	result.replace("@@realTemplateMarkName@@", elementMarkName);
+	result.replace("@@textCode@@", QString(textCode).replace("\\n", " "));
 
 	return result;
 }
@@ -134,32 +156,50 @@ QString StructuralGenerator::generateReplaceTemplateBodyForFile(QString const& t
 	return result;
 }
 
-QString StructuralGenerator::generateReplaceTemplateBodyForTemplateNode(Id const &templateElement, QString const& count)
+QPair<QString, StructuralGenerator::TemplateType> StructuralGenerator::generateReplaceTemplateBodyForTemplateNode(Id const &templateElement, QString const& count)
 {
 	QString markName = mApi.property(templateElement, "markName").toString();
 	QString fileName = mApi.property(templateElement, "fileName").toString();
 	QString textCode = mApi.property(templateElement, "textCode").toString();
-	QString result = "";
+	QPair<QString, StructuralGenerator::TemplateType> result;
 
 	if (!fileName.isEmpty()) {
 		saveOutputFile(QString(fileName), textCode, mTemplateDirName);
 		QString variableName = QString(fileName).replace(".", "_");
 		mTemplateVariableFilename[variableName] = fileName;
-		result = generateReplaceTemplateBodyForFile(textCode, variableName, fileName);
+		result.first = generateReplaceTemplateBodyForFile(textCode, variableName, fileName);
+		result.second = TemplateType::file;
 	} else if (!markName.isEmpty()) {
 		mMarksCode[markName] = textCode;
-		result = generateReplaceTemplateBodyForMark(textCode, markName, count);
+
+		if (!count.isEmpty()) {
+			result.first = generateReplaceTemplateBodyForMark(textCode, markName, count);
+			result.second = TemplateType::mark;
+		} else { // особый случай
+			result.first = generateReplaceTemplateBodyForDiagramMark(textCode, markName);
+			result.second = TemplateType::diagramMark;
+		}
 	}
 
 	return result;
 }
 
-QString StructuralGenerator::generateReplaceTemplateBody(Id const &element, QString const& count)
+QPair<QString, QString> StructuralGenerator::addTemplateString(QPair<QString, QString> sum, QPair<QString, StructuralGenerator::TemplateType> str)
+{
+	if (str.second == TemplateType::diagramMark) {
+		sum.second += str.first + "\n";
+	} else {
+		sum.first += str.first + "\n";
+	}
+	return sum;
+}
+
+QPair<QString, QString> StructuralGenerator::generateReplaceTemplateBody(Id const &element, QString const& count)
 {
 	QString elementName = mApi.property(element, "elementName").toString();
 	QString textCode = mApi.property(element, "textCode").toString();
 
-	QString result = "";
+	QPair<QString, QString>  result;
 
 	if (!textCode.isEmpty()) {
 		QString elementMarkName = QString(mTemplateUtils["@@realElementMarkName@@"])
@@ -168,7 +208,11 @@ QString StructuralGenerator::generateReplaceTemplateBody(Id const &element, QStr
 		elementMarkName.chop(1);
 		mMarksCode[elementMarkName] = textCode;
 
-		result += generateReplaceTemplateBodyForMark(textCode, elementMarkName, count) + "\n";
+		if (!count.isEmpty()) {
+			result.first += generateReplaceTemplateBodyForMark(textCode, elementMarkName, count) + "\n";
+		} else { // особый случай (но тут на самом-то деле этого быть не может)
+			result.second += generateReplaceTemplateBodyForDiagramMark(textCode, elementMarkName) + "\n";
+		}
 	}
 
 	IdList list = mApi.children(element);
@@ -176,7 +220,8 @@ QString StructuralGenerator::generateReplaceTemplateBody(Id const &element, QStr
 		if (!mApi.isLogicalElement(child) || child.element() != "TemplateNode") {
 			continue;
 		}
-		result += generateReplaceTemplateBodyForTemplateNode(child, count) + "\n";
+
+		result = addTemplateString(result, generateReplaceTemplateBodyForTemplateNode(child, count));
 	}
 
 	return result;
@@ -212,7 +257,7 @@ QString StructuralGenerator::generateSemanticNode(Id const &element, QString con
 
 	genBody.replace("@@foreachGenerateBody@@", foreachBody);
 	genBody.replace("@@converterGenerateBody@@", converterBody);
-	genBody.replace("@@replaceTemplateGenerateBody@@", generateReplaceTemplateBody(element, count));
+	genBody.replace("@@replaceTemplateGenerateBody@@", generateReplaceTemplateBody(element, count).first);
 
 	genBody.replace("@@count@@", count);
 	genBody.replace("@@elementName@@", elementName);
@@ -226,7 +271,6 @@ QString StructuralGenerator::generateSemanticNode(Id const &element, QString con
 QString StructuralGenerator::generateSemanticNodes()
 {
 	QString result = "";
-	QString resultMarks = "";
 	IdList list = mApi.elementsByType("SemanticNode");
 
 	int curCount = 1;
@@ -234,31 +278,31 @@ QString StructuralGenerator::generateSemanticNodes()
 		if (!mApi.isLogicalElement(element) || mApi.parent(element).element() != "GeneratorDiagram") {
 			continue;
 		}
-		QString textCode = mApi.property(element, "textCode").toString();
-		QString elementName = mApi.property(element, "elementName").toString();
-		mMarksCode[QString("elements_" + elementName)] = textCode;
-		resultMarks += textCode + "\n";
-
 		result += generateSemanticNode(element, "oneSemanticGenerateBody", QString("%1").arg(curCount)) + "\n";
 		curCount ++;
 	}
-	mMarksCode["elements_ALL"] = resultMarks;
 	return result;
 }
 
 void StructuralGenerator::generate()
 {
-	QString res = "";
+	QString generateBodyReplaceTemplates = "";
+	QString fillMarksProperty = "";
 	foreach (Id const &element, mApi.elementsByType("TemplateNode")) {
 		if (!mApi.isLogicalElement(element)
 				|| (mApi.parent(element).element() != "GeneratorDiagram"
 					&& mApi.parent(element).element() != "ApplicationNode")) {
 			continue;
 		}
-		res += generateReplaceTemplateBodyForTemplateNode(element, "");
+		QPair<QString, TemplateType> res = generateReplaceTemplateBodyForTemplateNode(element, "");
+		if (res.second == TemplateType::diagramMark) {
+			fillMarksProperty += res.first;
+		} else {
+			generateBodyReplaceTemplates += res.first;
+		}
 	}
 
-	QString generateBody = generateSemanticNodes() + "\n" + res;
+	QString generateBody = generateSemanticNodes();
 
 	saveTemplateUtils();
 
@@ -297,10 +341,13 @@ void StructuralGenerator::generate()
 
 	resultGeneratorCPP.replace("@@templateConstStringNames@@", generateTemplateConstStringNames());
 	resultGeneratorCPP.replace("@@generateBody@@", generateBody);
+	resultGeneratorCPP.replace("@@generateBody_replaceTemplates@@", generateBodyReplaceTemplates);
+	resultGeneratorCPP.replace("@@programNameProperty@@", mProgramNamePropertyName);
 
 	resultPluginCPP.replace("@@languageNodeDiagram@@", mNodeName);
 	resultPluginCPP.replace("@@programNameProperty@@", mProgramNamePropertyName);
 	resultPluginCPP.replace("@@pathToGenerateProperty@@", mToGeneratePropertyName);
+	resultPluginCPP.replace("@@fillMarksProperty@@", fillMarksProperty);
 
 	saveOutputFile(QString(fileBaseName + ".pro"), resultPRO);
 	saveOutputFile(QString(fileBaseName + "Plugin.h"), resultPluginH);

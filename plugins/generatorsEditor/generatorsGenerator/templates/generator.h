@@ -18,6 +18,7 @@ public:
 			, QString const &programName
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
+			, QMap<QString, QString> marksProperty
 			);
 
 	virtual ~Generator();
@@ -25,7 +26,7 @@ public:
 	/// Starts generation
 	void generate();
 private:
-	QString const &mProgramName;
+	QString const &mProgramName; // טלÿ הטאדנאללû (ע.ו. ןנמדנאללû)
 	
 	bool isCorrectedName(QString const &name);
 };

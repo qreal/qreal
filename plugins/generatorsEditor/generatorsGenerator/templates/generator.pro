@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG +=  plugin c++11
+CONFIG +=  plugin c++11 debug
 DESTDIR = @@pathToQReal@@/bin/plugins/
 OBJECTS_DIR = .obj
 MOC_DIR = .moc

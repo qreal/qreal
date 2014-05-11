@@ -8,6 +8,7 @@ SUBDIRS	= \
 	metaEditor/metaEditor.pro \
 	requirements/requirements.pro \
 	generatorsEditor/generatorsEditor.pro \
+#	simpleDiagramMetamodel/simpleDiagramMetamodel.pro \
 
 
 # tool plugins
