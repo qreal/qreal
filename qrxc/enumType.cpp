@@ -1,5 +1,7 @@
 #include "enumType.h"
 
+#include <QtCore/QStringList>
+
 #include <qrutils/outFile.h>
 
 #include "nameNormalizer.h"
