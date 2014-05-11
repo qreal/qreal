@@ -56,11 +56,9 @@ protected :
 	QString const &mProgramNamePropertyName; //имя свойства главного узла языка, в котором указывается имя генерируемой программы
 	QString const &mGeneratorName;//настоящее имя модели генератора, по которой генерируется код
 
-	QMap<QString, QString> mMarksCode;
-	QMap<QString, QString> mTemplateVariableFilename;
-	QMap<QString, QList<QString> > mElementPropertyList;
-	QMap<QString, QString> mElementSemanticGenerateBody;
-	QString const mTemplateDirName;
+	QMap<QString, QString> mMarksCode; // соответсвие меток и кода, которое будет использовать сгенерённый генератор
+	QMap<QString, QString> mTemplateVariableFilename; // соответствие имен переменных и имен файлов-шаблонов, которые будет использовать сгенерённый генератор
+	QString const mTemplateDirName; // имя папки шаблонов для этого генератора
 };
 
 }

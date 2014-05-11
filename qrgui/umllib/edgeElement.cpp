@@ -864,7 +864,7 @@ NodeElement * EdgeElement::otherSide(NodeElement const *node) const
 
 void EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 {
-	mHandler->reconnect(reconnectSrc, reconnectDst);
+	mHandler->reconnect(reconnectSrc, reconnectDst); // qwerty
 }
 
 void EdgeElement::updateData()

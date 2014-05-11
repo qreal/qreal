@@ -25,11 +25,15 @@ public:
 	/// Starts generation.
 	void generate();
 	QString generateSemanticNodes();
-	QString generateSemanticNode(qReal::Id const &element, QString const& templateName, int count, int parentCount = -1);
-	QString generateForeachNode(qReal::Id const &element, int count, int parentCount);
-	QString generateConverterNode(qReal::Id const &element, int count);
+	QString generateSemanticNode(qReal::Id const &element, QString const& templateName, QString const& count, QString const& parentCount = "");
+	QString generateForeachNode(qReal::Id const &element, QString const& count, QString const& parentCount);
+	QString generateConverterNode(qReal::Id const &element, QString const& count);
 
-	QStringList marksList(QString const& text);
+	QString generateReplaceTemplateBodyForMark(QString const& textCode, QString const& elementMarkName, QString const& count);
+	QString generateReplaceTemplateBodyForFile(QString const& textCode, QString const& templateVariableName, QString const& templateFileName);
+	QString generateReplaceTemplateBodyForTemplateNode(qReal::Id const &element, QString const& count);
+	QString generateReplaceTemplateBody(qReal::Id const &element, QString const& count);
+	QStringList marksList(QString const& text, QString const& mark);
 };
 
 }

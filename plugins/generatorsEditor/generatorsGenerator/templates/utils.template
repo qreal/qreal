@@ -15,17 +15,10 @@ QString const @@templateVariableName@@ = "@@templateFileName@@";
 @@replaceTemplateGenerateBody@@
 	}
 ==========
-@@oneTemplateFile@@
-	QString result@@templateFileName@@;
-	loadTemplateFromFile(@@templateVariableName@@, result@@templateFileName@@);
-==========
-@@oneTemplateUtil@@
-	QString @@templateMarkName@@ = mTemplateUtils["@@realMarkName@@"];
-==========
 @@oneForeachGenerateBody@@
 	QString res_@@count@@ = "";
 	foreach (Id const &element_@@count@@, mApi.children(element_@@parentCount@@)) {
-		if (!mApi.isLogicalElement(element_@@count@@) || child.type() != "@@elementName@@") {
+		if (!mApi.isLogicalElement(element_@@count@@) || element_@@count@@.element() != "@@elementName@@") {
 			continue;
 		}
 @@foreachGenerateBody@@
@@ -34,15 +27,28 @@ QString const @@templateVariableName@@ = "@@templateFileName@@";
 	}
 ==========
 @@oneReplaceTemplateGenerateBody@@
-QString res_one_@@count@@ = "";
+QString res_one_@@count@@ = mTemplateUtils["@@elementMarkName@@"];
 @@replaceTemplates@@
 res_@@count@@ += res_one_@@count@@ + "\n";
 ==========
 @@oneSimpleReplaceTemplate@@
-res_one_@@count@@ += QString("@@templateTextCode@@").replace("@@templateMarkName@@", mTemplateUtils["@@templateMarkName@@"]);
+res_one_@@count@@.replace("@@templateMarkName@@", mTemplateUtils["@@templateMarkName@@"]);
 ==========
 @@oneWithPropertyReplaceTemplate@@
-res_one_@@count@@ += QString("@@templateTextCode@@").replace("@@templateMarkName@@", mApi.property(element_@@count@@, "@@templatePropertyName@@").toString());
+res_one_@@count@@.replace("@@templateMarkName@@", mApi.property(element_@@count@@, "@@templatePropertyName@@").toString());
 ==========
-
-
+@@realElementMarkName@@
+elements_@@elementName@@_@@count@@
+==========
+@@oneReplaceTemplateGenerateBodyForFile@@
+QString result_@@templateVariableName@@ = "";
+loadTemplateFromFile(@@templateVariableName@@, result_@@templateVariableName@@);
+@@replaceTemplates@@
+saveOutputFile("@@templateFileName@@", result_@@templateVariableName@@);
+==========
+@@oneSimpleReplaceTemplateForFile@@
+result_@@templateVariableName@@.replace("@@templateMarkName@@", mTemplateUtils["@@templateMarkName@@"]);
+==========
+@@oneWithPropertyReplaceTemplateForFile@@
+result_@@templateVariableName@@.replace("@@templateMarkName@@", mApi.property(element_@@count@@, "@@templatePropertyName@@").toString());
+==========

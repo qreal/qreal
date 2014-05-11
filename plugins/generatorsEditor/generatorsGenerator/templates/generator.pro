@@ -6,10 +6,11 @@ MOC_DIR = .moc
 
 LIBS += -L@@pathToQReal@@/bin -lqrkernel -lqrutils -lqrrepo
 
+QT += widgets
 
 INCLUDEPATH += \
-	$$PWD/@@pathToQReal@@ \
-	$$PWD/@@pathToQReal@@/qrgui/ \
+	@@pathToQReal@@ \
+	@@pathToQReal@@/qrgui/ \
 
 HEADERS += \
 	generator.h \
@@ -20,8 +21,8 @@ SOURCES += \
 	@@generatorName@@Plugin.cpp \
 
 win32 {
-	QMAKE_POST_LINK = "xcopy templates @@strangePathToQReal@@\\bin\\templates /s /e /q /y /i "
+	QMAKE_POST_LINK = "xcopy templates @@strangePathToQReal@@\\bin\\templates\\@@generatorName@@ /s /e /q /y /i "
 }
 else {
-	QMAKE_POST_LINK = "mkdir @@pathToQReal@@/bin/templates/ && cp -r templates @@pathToQReal@@/bin/templates/ "
+	QMAKE_POST_LINK = "mkdir @@pathToQReal@@/bin/templates/@@generatorName@@ && cp -r templates @@pathToQReal@@/bin/templates/@@generatorName@@ "
 }

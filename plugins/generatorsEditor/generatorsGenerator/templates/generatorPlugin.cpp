@@ -1,10 +1,10 @@
 #include "@@generatorName@@Plugin.h"
-#include <QtGui/QMessageBox>
-#include <QtGui/QProgressBar>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QProgressBar>
 #include <QtCore/QProcess>
-#include <QtGui/QFileDialog>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
 
 #include "@@pathToQReal@@/qrkernel/settingsManager.h"
 

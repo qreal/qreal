@@ -8,7 +8,7 @@ using namespace qReal;
 using namespace utils;
 
 /// Generation target file
-QString const templateDir = "./templates";
+QString const templateDir = "./templates/@@generatorName@@";
 @@templateConstStringNames@@
 
 Generator::Generator(QString const &outputDirPath
