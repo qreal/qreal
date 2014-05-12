@@ -17,7 +17,7 @@ void SensorsConfigurationManagerTest::SetUp()
 	mQrguiFacade->setActiveTab(qReal::Id::loadFromString(
 		"qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f08fa823-e187-4755-87ba-e4269ae4e798}"));
 
-	mManager.reset(new SensorsConfigurationManager(mQrguiFacade->graphicalModelAssistInterface()
+	mManager.reset(new DevicesConfigurationManager(mQrguiFacade->graphicalModelAssistInterface()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mQrguiFacade->mainWindowInterpretersInterface()
 			, mQrguiFacade->systemEvents()
@@ -26,8 +26,8 @@ void SensorsConfigurationManagerTest::SetUp()
 	mConfigurer1.reset(new DummySensorsConfigurer("testConfigurer1"));
 	mConfigurer2.reset(new DummySensorsConfigurer("testConfigurer2"));
 
-	mManager->connectSensorsConfigurationProvider(mConfigurer1.data());
-	mManager->connectSensorsConfigurationProvider(mConfigurer2.data());
+	mManager->connectDevicesConfigurationProvider(mConfigurer1.data());
+	mManager->connectDevicesConfigurationProvider(mConfigurer2.data());
 }
 
 TEST_F(SensorsConfigurationManagerTest, serializationTest)
@@ -36,16 +36,16 @@ TEST_F(SensorsConfigurationManagerTest, serializationTest)
 	DeviceInfo const device2 = DeviceInfo::create<robotParts::ColorSensor>();
 
 	// Setting up initial configuration...
-	mConfigurer1->configureBroadly("model1", PortInfo("1"), device1);
-	mConfigurer1->configureBroadly("model1", PortInfo("2"), DeviceInfo());
-	mConfigurer1->configureBroadly("model2", PortInfo("A"), device1);
-	mConfigurer1->configureBroadly("model2", PortInfo("B"), device2);
+	mConfigurer1->configureBroadly("model1", PortInfo("1", input), device1);
+	mConfigurer1->configureBroadly("model1", PortInfo("2", input), DeviceInfo());
+	mConfigurer1->configureBroadly("model2", PortInfo("A", output), device1);
+	mConfigurer1->configureBroadly("model2", PortInfo("B", output), device2);
 
 	// Checking up that second configurator was affected...
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1")), device1);
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2")), DeviceInfo());
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A")), device1);
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B")), device2);
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1", input)), device1);
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2", input)), DeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A", output)), device1);
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B", output)), device2);
 
 	// Now initial configuration must be saved into the repository.
 	// Disabling auto-serialization into repo for a moment to set another configuration.
@@ -53,23 +53,23 @@ TEST_F(SensorsConfigurationManagerTest, serializationTest)
 	mQrguiFacade->setActiveTab(qReal::Id());
 
 	// Setting another configuration...
-	mConfigurer1->configureBroadly("model1", PortInfo("1"), DeviceInfo());
-	mConfigurer1->configureBroadly("model1", PortInfo("2"), device2);
-	mConfigurer1->configureBroadly("model2", PortInfo("A"), DeviceInfo());
-	mConfigurer1->configureBroadly("model2", PortInfo("B"), DeviceInfo());
+	mConfigurer1->configureBroadly("model1", PortInfo("1", input), DeviceInfo());
+	mConfigurer1->configureBroadly("model1", PortInfo("2", input), device2);
+	mConfigurer1->configureBroadly("model2", PortInfo("A", output), DeviceInfo());
+	mConfigurer1->configureBroadly("model2", PortInfo("B", output), DeviceInfo());
 
 	// Checking up that second configurator was affected...
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1")), DeviceInfo());
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2")), device2);
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A")), DeviceInfo());
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B")), DeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1", input)), DeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2", input)), device2);
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A", output)), DeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B", output)), DeviceInfo());
 
 	// This must restore configuration from repo
 	mQrguiFacade->setActiveTab(oldDiagram);
 
 	// Checking that old configuration was restored...
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1")), device1);
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2")), DeviceInfo());
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A")), device1);
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B")), device2);
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1", input)), device1);
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2", input)), DeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A", output)), device1);
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B", output)), device2);
 }

@@ -124,4 +124,4 @@ HEADERS += \
 	$$PWD/../../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 
 RESOURCES += \
-	interpreterBase.qrc \
+	$$PWD/interpreterBase.qrc \

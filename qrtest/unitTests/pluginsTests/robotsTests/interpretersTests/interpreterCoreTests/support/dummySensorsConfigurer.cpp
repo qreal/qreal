@@ -6,28 +6,29 @@ using namespace qrTest::robotsTests::interpreterCoreTests;
 using namespace interpreterBase::robotModel;
 
 DummySensorsConfigurer::DummySensorsConfigurer(QString const &name)
-	: SensorsConfigurationProvider(name)
+	: DevicesConfigurationProvider(name)
 {
 }
 
 void DummySensorsConfigurer::configureSilently(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &device)
 {
-	mCurrentConfiguration[robotModel][port] = device;
+	/// @todo
+//	mCurrentConfiguration[robotModel][port] = device;
 }
 
 void DummySensorsConfigurer::configureBroadly(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &device)
 {
-	sensorConfigurationChanged(robotModel, port, device);
+	deviceConfigurationChanged(robotModel, port, device);
 }
 
 DeviceInfo DummySensorsConfigurer::device(QString const &robotModel, PortInfo const &port) const
 {
-	return mCurrentConfiguration[robotModel][port];
+	return currentConfiguration(robotModel, port);
 }
 
-void DummySensorsConfigurer::onSensorConfigurationChanged(QString const &robotModel
+void DummySensorsConfigurer::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &sensor)
 {
 	Q_UNUSED(robotModel)

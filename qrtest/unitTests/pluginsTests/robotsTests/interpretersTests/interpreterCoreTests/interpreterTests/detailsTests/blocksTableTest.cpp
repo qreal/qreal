@@ -15,25 +15,29 @@ void BlocksTableTest::SetUp()
 {
 	QSharedPointer<DummyBlockFactory> blocksFactory(new DummyBlockFactory());
 
-	ON_CALL(mBlocksFactoryManager, addFactory(_)).WillByDefault(Return());
-	EXPECT_CALL(mBlocksFactoryManager, addFactory(_)).Times(0);
+	ON_CALL(mBlocksFactoryManager, addFactory(_, _)).WillByDefault(Return());
+	EXPECT_CALL(mBlocksFactoryManager, addFactory(_, _)).Times(0);
 
-	ON_CALL(mBlocksFactoryManager, block(_)).WillByDefault(
-			Invoke([=] (qReal::Id const &id) {
+	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
+			Invoke([=] (qReal::Id const &id, interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+					Q_UNUSED(robotModel)
 					return blocksFactory->block(id);
 			} )
 			);
-	EXPECT_CALL(mBlocksFactoryManager, block(_)).Times(AtLeast(0));
+	EXPECT_CALL(mBlocksFactoryManager, block(_, _)).Times(AtLeast(0));
 
-	ON_CALL(mBlocksFactoryManager, providedBlocks()).WillByDefault(
-			Invoke([=] { return blocksFactory->providedBlocks(); } )
+	ON_CALL(mBlocksFactoryManager, enabledBlocks(_)).WillByDefault(
+			Invoke([=] (interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+					Q_UNUSED(robotModel)
+					return blocksFactory->providedBlocks().toSet();
+			} )
 			);
-	EXPECT_CALL(mBlocksFactoryManager, providedBlocks()).Times(0);
+	EXPECT_CALL(mBlocksFactoryManager, enabledBlocks(_)).Times(0);
 }
 
 TEST_F(BlocksTableTest, blocksCreation)
 {
-	BlocksTable table(mBlocksFactoryManager);
+	BlocksTable table(mBlocksFactoryManager, mRobotModelManager);
 	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
@@ -45,7 +49,7 @@ TEST_F(BlocksTableTest, blocksCreation)
 
 TEST_F(BlocksTableTest, clear)
 {
-	BlocksTable table(mBlocksFactoryManager);
+	BlocksTable table(mBlocksFactoryManager, mRobotModelManager);
 	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));

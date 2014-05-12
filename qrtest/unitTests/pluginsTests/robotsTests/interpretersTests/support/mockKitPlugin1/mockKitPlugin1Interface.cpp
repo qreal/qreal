@@ -22,7 +22,26 @@ interpreterBase::AdditionalPreferences *MockKitPlugin1Interface::settingsWidget(
 	return nullptr;
 }
 
-qReal::IdList MockKitPlugin1Interface::unsupportedBlocks() const
+interpreterBase::blocksBase::BlocksFactoryInterface *MockKitPlugin1Interface::blocksFactoryFor(
+		interpreterBase::robotModel::RobotModelInterface const *model)
+{
+	Q_UNUSED(model)
+	return nullptr;
+}
+
+QList<qReal::ActionInfo> MockKitPlugin1Interface::customActions()
 {
 	return {};
+}
+
+QList<qReal::HotKeyActionInfo> MockKitPlugin1Interface::hotKeyActions()
+{
+	return {};
+}
+
+QIcon MockKitPlugin1Interface::iconForFastSelector(
+		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+{
+	Q_UNUSED(robotModel)
+	return QIcon();
 }

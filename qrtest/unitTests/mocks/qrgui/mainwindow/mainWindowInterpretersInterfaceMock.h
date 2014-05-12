@@ -34,10 +34,12 @@ public:
 	MOCK_METHOD0(currentTab, QWidget *());
 	MOCK_METHOD2(openTab, void(QWidget *tab, QString const &title));
 	MOCK_METHOD1(closeTab, void(QWidget *tab));
+	MOCK_METHOD0(beginPaletteModification, void());
 	MOCK_METHOD2(setElementInPaletteVisible, void(qReal::Id const &metatype, bool visible));
 	MOCK_METHOD1(setVisibleForAllElementsInPalette, void(bool visible));
 	MOCK_METHOD2(setElementInPaletteEnabled, void(qReal::Id const &metatype, bool enabled));
 	MOCK_METHOD1(setEnabledForAllElementsInPalette, void(bool enabled));
+	MOCK_METHOD0(endPaletteModification, void());
 };
 
 }

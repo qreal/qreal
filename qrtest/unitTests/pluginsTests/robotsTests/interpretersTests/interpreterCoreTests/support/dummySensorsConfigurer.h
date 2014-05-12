@@ -1,12 +1,12 @@
 #pragma once
 
-#include <interpreterBase/sensorsConfigurationProvider.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 
 namespace qrTest {
 namespace robotsTests {
 namespace interpreterCoreTests {
 
-class DummySensorsConfigurer : public interpreterBase::SensorsConfigurationProvider
+class DummySensorsConfigurer : public interpreterBase::DevicesConfigurationProvider
 {
 public:
 	explicit DummySensorsConfigurer(QString const &name = QString());
@@ -25,7 +25,7 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port) const;
 
 protected:
-	void onSensorConfigurationChanged(QString const &robotModel
+	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
 };

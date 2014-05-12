@@ -40,6 +40,8 @@ public:
 	MOCK_METHOD0(applyConfiguration, void());
 
 	MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::DeviceInfo>());
+
+	MOCK_METHOD0(produceTimer, utils::AbstractTimer *());
 };
 
 }

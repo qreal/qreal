@@ -25,10 +25,14 @@ public:
 	// Transfers ownership.
 	interpreterBase::AdditionalPreferences *settingsWidget() override;
 
-	qReal::IdList unsupportedBlocks() const override;
+	interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
+			interpreterBase::robotModel::RobotModelInterface const *model) override;
 
-	// Transfers ownership.
-	// QList<QWidget *> toolWidgets() const override;
+	QList<qReal::ActionInfo> customActions() override;
+
+	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+
+	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
 };
 
 }

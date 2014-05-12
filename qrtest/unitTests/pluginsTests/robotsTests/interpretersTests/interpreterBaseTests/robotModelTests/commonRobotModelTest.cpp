@@ -37,7 +37,8 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 
 	model.init();
 
-	model.configureDevice(PortInfo("1"), DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+	model.configureDevice(PortInfo("1", input)
+			, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
 	model.applyConfiguration();
 
 	model.connectToRobot();
@@ -61,7 +62,8 @@ TEST_F(CommonRobotModelTest, twoDLifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
-	model.configureDevice(PortInfo("1"), DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+	model.configureDevice(PortInfo("1", input)
+			, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
 	model.applyConfiguration();
 
 	model.connectToRobot();

@@ -9,9 +9,12 @@ namespace qrTest {
 class BlocksFactoryManagerInterfaceMock : public interpreterCore::BlocksFactoryManagerInterface
 {
 public:
-	MOCK_METHOD1(addFactory, void(interpreterBase::blocksBase::BlocksFactoryInterface * const factory));
-	MOCK_METHOD1(block, interpreterBase::blocksBase::BlockInterface *(qReal::Id const &element));
-	MOCK_CONST_METHOD0(providedBlocks, qReal::IdList());
+	MOCK_METHOD2(addFactory, void(interpreterBase::blocksBase::BlocksFactoryInterface * const factory
+			, interpreterBase::robotModel::RobotModelInterface const *robotModel));
+	MOCK_METHOD2(block, interpreterBase::blocksBase::BlockInterface *(qReal::Id const &element
+			, interpreterBase::robotModel::RobotModelInterface const &robotModel));
+	MOCK_CONST_METHOD1(enabledBlocks, QSet<qReal::Id>(
+			interpreterBase::robotModel::RobotModelInterface const &robotModel));
 };
 
 }

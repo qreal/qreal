@@ -16,7 +16,8 @@ void InterpreterTest::SetUp()
 	mQrguiFacade->setActiveTab(qReal::Id::loadFromString(
 			"qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f08fa823-e187-4755-87ba-e4269ae4e798}"));
 
-	DummyBlockFactory *blocksFactory = new DummyBlockFactory(
+	DummyBlockFactory *blocksFactory = new DummyBlockFactory;
+	blocksFactory->configure(
 			mQrguiFacade->graphicalModelAssistInterface()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mModelManager
@@ -25,10 +26,10 @@ void InterpreterTest::SetUp()
 
 	mFakeConnectToRobotAction.reset(new QAction(nullptr));
 
-	ON_CALL(mConfigurationInterfaceMock, devices(_)).WillByDefault(
+	ON_CALL(mConfigurationInterfaceMock, devices()).WillByDefault(
 			Return(QList<interpreterBase::robotModel::robotParts::Device *>())
 			);
-	EXPECT_CALL(mConfigurationInterfaceMock, devices(_)).Times(AtLeast(1));
+	EXPECT_CALL(mConfigurationInterfaceMock, devices()).Times(AtLeast(1));
 
 
 	ON_CALL(mModel, needsConnection()).WillByDefault(Return(false));
@@ -68,22 +69,30 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
 	EXPECT_CALL(mModelManager, model()).Times(AtLeast(1));
 
-	ON_CALL(mBlocksFactoryManager, addFactory(_)).WillByDefault(Return());
-	EXPECT_CALL(mBlocksFactoryManager, addFactory(_)).Times(0);
+	ON_CALL(mBlocksFactoryManager, addFactory(_, _)).WillByDefault(Return());
+	EXPECT_CALL(mBlocksFactoryManager, addFactory(_, _)).Times(0);
 
-	ON_CALL(mBlocksFactoryManager, block(_)).WillByDefault(
-			Invoke([=] (qReal::Id const &id) { return blocksFactory->block(id); } )
+	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
+			Invoke([=] (qReal::Id const &id, interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+					Q_UNUSED(robotModel)
+					return blocksFactory->block(id);
+			} )
 			);
-	EXPECT_CALL(mBlocksFactoryManager, block(_)).Times(AtLeast(0));
+	EXPECT_CALL(mBlocksFactoryManager, block(_, _)).Times(AtLeast(0));
 
-	ON_CALL(mBlocksFactoryManager, providedBlocks()).WillByDefault(
-			Invoke([=] { return blocksFactory->providedBlocks(); } )
+	ON_CALL(mBlocksFactoryManager, enabledBlocks(_)).WillByDefault(
+			Invoke([=] (interpreterBase::robotModel::RobotModelInterface const &robotModel) {
+					Q_UNUSED(robotModel)
+					return blocksFactory->providedBlocks().toSet();
+			} )
 			);
-	EXPECT_CALL(mBlocksFactoryManager, providedBlocks()).Times(0);
+	EXPECT_CALL(mBlocksFactoryManager, enabledBlocks(_)).Times(0);
 
 	/// @todo Don't like it.
 	interpreterCore::textLanguage::RobotsBlockParser parser(
 			mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
+			, mModelManager
+			, []() { return 0; }
 			);
 
 	mInterpreter.reset(new Interpreter(

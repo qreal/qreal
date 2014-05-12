@@ -12,13 +12,13 @@ TEST_F(ConfigurationTest, configureTest)
 	Configuration configuration;
 	ConfigurationInterface &configurationInterface = configuration;
 
-	PortInfo portA("A");
-	PortInfo port1("1");
+	PortInfo const portA("A", output);
+	PortInfo const port1("1", input);
 
 	configurationInterface.configureDevice(new DummyDevice(portA));
 	configurationInterface.configureDevice(new DummyDevice(port1));
 
-	PortInfo unknownPort("unknown");
+	PortInfo unknownPort("unknown", input);
 
 	// Devices are pending for configuration, so they are not configured yet.
 	ASSERT_EQ(nullptr, configurationInterface.device(portA));

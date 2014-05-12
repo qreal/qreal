@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 
-#include <interpreterCore/src/managers/sensorsConfigurationManager.h>
+#include <interpreterCore/src/managers/devicesConfigurationManager.h>
 
 #include "support/qrguiFacade.h"
 #include "support/dummySensorsConfigurer.h"
@@ -19,7 +19,7 @@ protected:
 	void SetUp() override;
 
 	QScopedPointer<QrguiFacade> mQrguiFacade;
-	QScopedPointer<interpreterCore::SensorsConfigurationManager> mManager;
+	QScopedPointer<interpreterCore::DevicesConfigurationManager> mManager;
 	QScopedPointer<DummySensorsConfigurer> mConfigurer1;
 	QScopedPointer<DummySensorsConfigurer> mConfigurer2;
 };
