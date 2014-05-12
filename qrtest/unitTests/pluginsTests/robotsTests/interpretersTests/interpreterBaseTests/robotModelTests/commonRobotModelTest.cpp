@@ -16,6 +16,7 @@ using namespace ::testing;
 TEST_F(CommonRobotModelTest, initializationTest)
 {
 	CommonRobotModelDescendantMock model;
+	Q_UNUSED(model)
 }
 
 /// Test for general model lifecycle --- creation, initialization, connecting, configuration and disconnecting, if all

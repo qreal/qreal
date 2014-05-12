@@ -8,7 +8,7 @@ SUBDIRS = \
 	trikKitInterpreter \
 	commonTwoDModel \
 
-interpreterCore.depends = interpreterBase
+interpreterCore.depends = commonTwoDModel
 nullKitInterpreter.depends = interpreterBase
 nxtKitInterpreter.depends = interpreterBase
 nxtKitInterpreter.depends = commonTwoDModel
@@ -17,4 +17,4 @@ trikKitInterpreter.depends = commonTwoDModel
 commonTwoDModel.depends = interpreterBase
 
 RESOURCES += \
-    trikKitInterpreter/robotsInterpreter.qrc
+	trikKitInterpreter/robotsInterpreter.qrc \
