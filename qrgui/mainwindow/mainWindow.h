@@ -198,7 +198,7 @@ public slots:
 	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle(int index);
 
-	void virtualClick();
+	void initScriptAPI();
 
 private slots:
 	/// Suggests user to select a root diagram for the new project

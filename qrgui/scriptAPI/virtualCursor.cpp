@@ -12,27 +12,28 @@ VirtualCursor::VirtualCursor(MainWindow *mainWindow)
 	show();
 	setWindowFlags(Qt::WindowStaysOnTopHint);
 	raise();
-
-	update();
-	//attachPaletteElement();
-}
-
-void VirtualCursor::attachPaletteElement(QString name)
-{
-	mPaletteElement = name;
 	update();
 }
 
-void VirtualCursor::dropPaletteElement(QString name)
+void VirtualCursor::attachPaletteElement(QIcon icon)
 {
-	//TO DO: detach icon, made block
+	mIsPaletteElementAttached = true;
+	mPaletteElementIcon = icon;
+	update();
 }
 
 void VirtualCursor::paintEvent(QPaintEvent *event)
 {
 	QPainter mPainter(this);
 	QPixmap const virtCursorIcon(":/icons/virtcursor.png");
-	QPixmap const pix(":/icons/run.png");
 	mPainter.drawPixmap(0,0, virtCursorIcon	);
-	mPainter.drawPixmap(32,32,pix);
+	if (mIsPaletteElementAttached) {
+		mPainter.drawPixmap(QPoint(32,32), mPaletteElementIcon.pixmap(32, 32));
+	}
+}
+
+void VirtualCursor::detachPaletteElementIcon()
+{
+	 mIsPaletteElementAttached = false;
+	 update();
 }

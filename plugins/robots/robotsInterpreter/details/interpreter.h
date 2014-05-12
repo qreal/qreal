@@ -66,6 +66,7 @@ public:
 
 	utils::WatchListWindow *watchWindow() const;
 	utils::sensorsGraph::SensorsGraph *graphicsWatchWindow() const;
+	details::d2Model::D2ModelWidget *d2RobotWidget() const;
 
 public slots:
 	void connectToRobot();

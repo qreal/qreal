@@ -11,13 +11,22 @@ class HintReporter : public QLabel{
 	Q_OBJECT
 
 public:
-	HintReporter(MainWindow *mainWindow);
+	HintReporter(MainWindow *mainWindow, QString const &message, int const lifeTime);
 
-public slots:
-	void addHint(QString const &hint);
+signals:
+	void mousePressEvent();
+
+protected:
+	virtual void mousePressEvent(QMouseEvent * event);
+
+private slots:
+	void disappear();
 
 private:
-	MainWindow *mMainWindow;
+	void addHint(QString const &hint);
+
+	QTimer mFadeTimer;
+	int mDuration;
 };
 
 }

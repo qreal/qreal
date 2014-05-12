@@ -22,6 +22,7 @@ HEADERS += \
 	robotSettingsPage.h \
 	robotsPlugin.h \
 	sensorConstants.h \
+	robotsGuiFacade.h \
 	details/interpreter.h \
 	details/thread.h \
 	details/blocksFactory.h \
@@ -47,6 +48,7 @@ SOURCES += \
 	robotSettingsPage.cpp \
 	robotsPlugin.cpp \
 	sensorConstants.cpp \
+	robotsGuiFacade.cpp \
 	details/abstractTimer.cpp \
 	details/autoconfigurer.cpp \
 	details/blocksTable.cpp \

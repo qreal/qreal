@@ -641,3 +641,8 @@ utils::sensorsGraph::SensorsGraph *Interpreter::graphicsWatchWindow() const
 {
 	return mGraphicsWatch;
 }
+
+d2Model::D2ModelWidget *Interpreter::d2RobotWidget() const
+{
+	return mD2ModelWidget;
+}

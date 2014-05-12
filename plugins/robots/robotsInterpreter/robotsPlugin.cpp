@@ -21,6 +21,7 @@ RobotsPlugin::RobotsPlugin()
 		, mRobotSettingsAction(nullptr)
 		, mTitlesAction(nullptr)
 		, mAppTranslator(new QTranslator())
+		, mRobotsGuiFacade(nullptr)
 {
 	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
@@ -28,6 +29,7 @@ RobotsPlugin::RobotsPlugin()
 
 	mInterpreter = new details::Interpreter();
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
+	mRobotsGuiFacade = new RobotsGuiFacade(mInterpreter->d2RobotWidget());
 
 	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 
@@ -46,21 +48,21 @@ void RobotsPlugin::initActions()
 	bool const enableTrik = SettingsManager::value("enableTrik", false).toBool();
 
 	m2dModelAction = new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr);
-	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
+	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools", "open");
 	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
 	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), nullptr);
-	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
+	ActionInfo runActionInfo(mRunAction, "interpreters", "tools", "run");
 	QObject::connect(mRunAction, SIGNAL(triggered()), mInterpreter, SLOT(interpret()));
 
 	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr);
-	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
+	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools", "stop");
 	QObject::connect(mStopRobotAction, SIGNAL(triggered()), mInterpreter, SLOT(stopRobot()));
 
 	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png")
 			, QObject::tr("Connect to robot"), nullptr);
 	mConnectToRobotAction->setCheckable(true);
-	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools");
+	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools", "connect");
 	mInterpreter->setConnectRobotAction(mConnectToRobotAction);
 	QObject::connect(mConnectToRobotAction, SIGNAL(triggered()), mInterpreter, SLOT(connectToRobot()));
 
@@ -71,18 +73,18 @@ void RobotsPlugin::initActions()
 	mSwitchTo2DModelAction = new QAction(QIcon(":/icons/switch-2d.svg")
 			, QObject::tr("Switch to 2d model"), nullptr);
 	mSwitchTo2DModelAction->setCheckable(true);
-	ActionInfo switchTo2DModelActionInfo(mSwitchTo2DModelAction, "interpreters", "tools");
+	ActionInfo switchTo2DModelActionInfo(mSwitchTo2DModelAction, "interpreters", "tools", "switchTo2d");
 
 	mSwitchToNxtModelAction = new QAction(QIcon(":/icons/switch-real-nxt.svg")
 			, QObject::tr("Switch to Lego NXT mode"), nullptr);
 	mSwitchToNxtModelAction->setCheckable(true);
-	ActionInfo switchToNxtModelActionInfo(mSwitchToNxtModelAction, "interpreters", "tools");
+	ActionInfo switchToNxtModelActionInfo(mSwitchToNxtModelAction, "interpreters", "tools", "switchToNxt");
 
 	mSwitchToTrikModelAction = new QAction(QIcon(":/icons/switch-real-trik.svg")
 			, QObject::tr("Switch to TRIK mode"), nullptr);
 	mSwitchToTrikModelAction->setCheckable(true);
 	mSwitchToTrikModelAction->setVisible(enableTrik);
-	ActionInfo switchToTrikModelActionInfo(mSwitchToTrikModelAction, "interpreters", "tools");
+	ActionInfo switchToTrikModelActionInfo(mSwitchToTrikModelAction, "interpreters", "tools", "switchToTrik");
 
 	QSignalMapper * const modelTypeMapper = new QSignalMapper(this);
 	modelTypeMapper->setMapping(mSwitchTo2DModelAction, enums::robotModelType::twoD);
@@ -99,7 +101,7 @@ void RobotsPlugin::initActions()
 
 	mRobotSettingsAction = new QAction(QIcon(":/icons/robots_settings.png")
 			, QObject::tr("Robot settings"), nullptr);
-	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
+	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools", "robotsSettings");
 	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
 	mTitlesAction = new QAction(tr("Text under pictogram"), nullptr);
@@ -178,6 +180,16 @@ QList<HotKeyActionInfo> RobotsPlugin::hotKeyActions()
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
 {
 	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(mRobotSettingsPage));
+}
+
+QObject* RobotsPlugin::guiScriptFacade()
+{
+	return mRobotsGuiFacade;
+}
+
+QString RobotsPlugin::pluginName()
+{
+	return "robots";
 }
 
 void RobotsPlugin::showRobotSettings()

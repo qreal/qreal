@@ -15,8 +15,8 @@ class VirtualCursor : public QLabel
 public:
 	explicit VirtualCursor(MainWindow *mainWindow);
 
-	void attachPaletteElement(QString name);
-	void dropPaletteElement(QString name);
+	void attachPaletteElement(QIcon iconName);
+	void detachPaletteElementIcon();
 
 protected:
 	void paintEvent(QPaintEvent *event);
@@ -24,7 +24,7 @@ protected:
 private:
 	MainWindow *mMainWindow;
 	bool mIsPaletteElementAttached;
-	QString mPaletteElement;
+	QIcon mPaletteElementIcon;
 };
 
 }

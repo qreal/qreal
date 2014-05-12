@@ -8,6 +8,7 @@
 
 #include "robotSettingsPage.h"
 #include "customizer.h"
+#include "robotsGuiFacade.h"
 #include "details/interpreter.h"
 #include "details/sensorsConfigurationWidget.h"
 #include "details/sensorsConfigurationManager.h"
@@ -32,6 +33,8 @@ public:
 	virtual QList<HotKeyActionInfo> hotKeyActions();
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual qReal::Customizer* customizationInterface();
+	virtual QObject* guiScriptFacade();
+	virtual QString pluginName();
 
 private slots:
 	void showRobotSettings();
@@ -117,6 +120,8 @@ private:
 	SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
 
 	details::SensorsConfigurationManager mSensorsConfigurationManager;
+
+	details::RobotsGuiFacade *mRobotsGuiFacade;
 };
 
 }

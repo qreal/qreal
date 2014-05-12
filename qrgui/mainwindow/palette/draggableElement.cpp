@@ -52,6 +52,8 @@ DraggableElement::DraggableElement(
 	setCursor(Qt::OpenHandCursor);
 
 	setAttribute(Qt::WA_AcceptTouchEvents);
+
+	setObjectName(mData.name());
 }
 
 QIcon DraggableElement::icon() const
@@ -82,6 +84,25 @@ QSize DraggableElement::iconsPreferredSize() const
 void DraggableElement::setIconSize(int size)
 {
 	mLabel->setPixmap(mData.icon().pixmap(size , size));
+}
+
+QMimeData* DraggableElement::mimeData(Id elementId) const
+{
+	QByteArray itemData;
+	bool isFromLogicalModel = false;
+
+	QDataStream stream(&itemData, QIODevice::WriteOnly);
+	stream << elementId.toString();  // uuid
+	stream << Id::rootId().toString();  // pathToItem
+	stream << QString(text());
+	stream << QPointF(0, 0);
+	stream << isFromLogicalModel;
+	stream << mData.explosionTarget().toString();
+
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setData("application/x-real-uml-data", itemData);
+
+	return mimeData;
 }
 
 void DraggableElement::changePropertiesPaletteActionTriggered()
@@ -266,22 +287,8 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			menu->exec(QCursor::pos());
 		}
 	} else {
-		QByteArray itemData;
-		bool isFromLogicalModel = false;
-
-		QDataStream stream(&itemData, QIODevice::WriteOnly);
-		stream << elementId.toString();  // uuid
-		stream << Id::rootId().toString();  // pathToItem
-		stream << QString(text());
-		stream << QPointF(0, 0);
-		stream << isFromLogicalModel;
-		stream << mData.explosionTarget().toString();
-
-		QMimeData *mimeData = new QMimeData;
-		mimeData->setData("application/x-real-uml-data", itemData);
-
 		QDrag *drag = new QDrag(this);
-		drag->setMimeData(mimeData);
+		drag->setMimeData(mimeData(elementId));
 
 		QPixmap const pixmap = icon().pixmap(mData.preferredSize());
 
