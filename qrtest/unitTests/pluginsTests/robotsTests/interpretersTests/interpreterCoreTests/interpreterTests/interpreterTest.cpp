@@ -31,23 +31,22 @@ void InterpreterTest::SetUp()
 			);
 	EXPECT_CALL(mConfigurationInterfaceMock, devices()).Times(AtLeast(1));
 
+	ON_CALL(mModel, name()).WillByDefault(Return("mockRobot"));
+	EXPECT_CALL(mModel, name()).Times(AtLeast(1));
 
 	ON_CALL(mModel, needsConnection()).WillByDefault(Return(false));
-	EXPECT_CALL(mModel, needsConnection()).Times(AtLeast(1));
+	EXPECT_CALL(mModel, needsConnection()).Times(AtLeast(0));
 
 	ON_CALL(mModel, init()).WillByDefault(Return());
-	EXPECT_CALL(mModel, init()).Times(AtLeast(1));
+	EXPECT_CALL(mModel, init()).Times(AtLeast(0));
 
 	ON_CALL(mModel, configuration()).WillByDefault(ReturnRef(mConfigurationInterfaceMock));
 	EXPECT_CALL(mModel, configuration()).Times(AtLeast(0));
 
-	ON_CALL(mModel, mutableConfiguration()).WillByDefault(ReturnRef(mConfigurationInterfaceMock));
-	EXPECT_CALL(mModel, mutableConfiguration()).Times(AtLeast(0));
-
 	ON_CALL(mModel, connectToRobot()).WillByDefault(
 			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitConnected)
 			);
-	EXPECT_CALL(mModel, connectToRobot()).Times(1);
+	EXPECT_CALL(mModel, connectToRobot()).Times(AtLeast(0));
 
 	ON_CALL(mModel, disconnectFromRobot()).WillByDefault(
 			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitDisconnected)
@@ -56,6 +55,9 @@ void InterpreterTest::SetUp()
 
 	ON_CALL(mModel, configurablePorts()).WillByDefault(Return(QList<interpreterBase::robotModel::PortInfo>()));
 	EXPECT_CALL(mModel, configurablePorts()).Times(AtLeast(0));
+
+	ON_CALL(mModel, availablePorts()).WillByDefault(Return(QList<interpreterBase::robotModel::PortInfo>()));
+	EXPECT_CALL(mModel, availablePorts()).Times(AtLeast(0));
 
 	ON_CALL(mModel, applyConfiguration()).WillByDefault(
 			Invoke(&mModelManager, &RobotModelManagerInterfaceMock::emitAllDevicesConfigured)

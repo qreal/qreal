@@ -33,11 +33,14 @@ void BlocksTableTest::SetUp()
 			} )
 			);
 	EXPECT_CALL(mBlocksFactoryManager, enabledBlocks(_)).Times(0);
+
+	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
+	EXPECT_CALL(mModelManager, model()).Times(AtLeast(1));
 }
 
 TEST_F(BlocksTableTest, blocksCreation)
 {
-	BlocksTable table(mBlocksFactoryManager, mRobotModelManager);
+	BlocksTable table(mBlocksFactoryManager, mModelManager);
 	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
@@ -49,7 +52,7 @@ TEST_F(BlocksTableTest, blocksCreation)
 
 TEST_F(BlocksTableTest, clear)
 {
-	BlocksTable table(mBlocksFactoryManager, mRobotModelManager);
+	BlocksTable table(mBlocksFactoryManager, mModelManager);
 	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
 	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));

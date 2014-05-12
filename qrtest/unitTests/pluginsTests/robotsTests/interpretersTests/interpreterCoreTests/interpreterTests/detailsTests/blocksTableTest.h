@@ -4,6 +4,7 @@
 
 /// @todo /src/managers
 #include <interpreterCore/managers/blocksFactoryManagerInterfaceMock.h>
+#include <interpreterBase/robotModel/robotModelInterfaceMock.h>
 #include <interpreterBase/robotModel/robotModelManagerInterfaceMock.h>
 
 namespace qrTest {
@@ -16,8 +17,9 @@ class BlocksTableTest : public testing::Test
 protected:
 	void SetUp() override;
 
-	qrTest::BlocksFactoryManagerInterfaceMock mBlocksFactoryManager;
-	RobotModelManagerInterfaceMock mRobotModelManager;
+	BlocksFactoryManagerInterfaceMock mBlocksFactoryManager;
+	RobotModelInterfaceMock mModel;
+	RobotModelManagerInterfaceMock mModelManager;
 };
 
 }
