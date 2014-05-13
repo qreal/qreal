@@ -853,6 +853,44 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Угловая серва" name="TrikAngularServo" description="Управление угловым сервомотором. Выставляет угол поворота по заданному порту в процентах от максимального угла поворота, определённого в конфигурационном файле на роботе. Значения от 0 до 100 соответствуют повороту по часовой стрелке, от -100 до 0 --- против часовой стрелки.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/angularServoBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-8" y="-25" text="Порты:" hard="true"/>
+						<label x="40" y="60" textBinded="Power"/>
+						<label x="-50" y="60" text="Угол (%):"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Моторы стоп" name="NxtEnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Выключить моторы по заданным портам">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2920,6 +2958,7 @@
 				<element name="TrikV6EnginesBackward"/>
 				<element name="TrikV6EnginesStop"/>
 				<element name="TrikV6ClearEncoder"/>
+				<element name="TrikAngularServo"/>
 				<element name="TrikSay"/>
 				<element name="TrikLed" />
 				<element name="TrikSystem" />
