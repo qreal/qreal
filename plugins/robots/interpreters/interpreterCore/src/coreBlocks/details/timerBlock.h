@@ -3,6 +3,10 @@
 #include <interpreterBase/blocksBase/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
+namespace utils {
+class AbstractTimer;
+}
+
 namespace interpreterCore {
 namespace coreBlocks {
 namespace details {

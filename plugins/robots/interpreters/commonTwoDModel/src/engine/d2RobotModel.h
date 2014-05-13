@@ -79,8 +79,7 @@ public:
 	virtual void deserialize(const QDomElement &robotElement);
 
 	Timeline *timeline() const;
-
-	utils::AbstractTimer *modelTimer() const override;
+	utils::TimelineInterface &modelTimeline() override;
 
 	void setNoiseSettings();
 

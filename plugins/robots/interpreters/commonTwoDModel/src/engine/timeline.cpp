@@ -64,13 +64,12 @@ quint64 Timeline::timestamp() const
 	return mTimestamp;
 }
 
-//AbstractTimer *Timeline::produceTimer()
-//{
-//	return new D2ModelTimer(this);
-//}
+utils::AbstractTimer *Timeline::produceTimer()
+{
+	return new D2ModelTimer(this);
+}
 
 void Timeline::setSpeedFactor(int factor)
 {
-//	gotoNextFrame();
 	mSpeedFactor = factor;
 }

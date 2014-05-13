@@ -5,6 +5,10 @@
 
 #include "robotModel/parts/nxtSpeaker.h"
 
+namespace utils {
+class AbstractTimer;
+}
+
 namespace nxtKitInterpreter {
 namespace blocks {
 namespace details {

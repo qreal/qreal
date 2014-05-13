@@ -1,7 +1,7 @@
 #include "interpreterBase/robotModel/commonRobotModel.h"
 
 #include <qrkernel/exception/exception.h>
-#include <utils/realTimer.h>
+#include <utils/realTimeline.h>
 
 #include "interpreterBase/robotModel/robotParts/motor.h"
 
@@ -163,9 +163,9 @@ QList<DeviceInfo> CommonRobotModel::convertibleBases() const
 	return {};
 }
 
-utils::AbstractTimer *CommonRobotModel::produceTimer()
+utils::TimelineInterface &CommonRobotModel::timeline()
 {
-	return new utils::RealTimer;
+	return mTimeline;
 }
 
 void CommonRobotModel::rereadSettings()

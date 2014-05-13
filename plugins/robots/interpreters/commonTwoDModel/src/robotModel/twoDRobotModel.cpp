@@ -50,9 +50,9 @@ void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 	mEngine = &engine;
 }
 
-utils::AbstractTimer *TwoDRobotModel::produceTimer()
+utils::TimelineInterface &TwoDRobotModel::timeline()
 {
-	return mEngine->modelTimer();
+	return mEngine->modelTimeline();
 }
 
 twoDModel::engine::TwoDModelEngineInterface *TwoDRobotModel::engine()

@@ -625,7 +625,7 @@ int D2RobotModel::truncateToInterval(int const a, int const b, int const res) co
 	return (res >= a && res <= b) ? res : (res < a ? a : b);
 }
 
-utils::AbstractTimer *D2RobotModel::modelTimer() const
+utils::TimelineInterface &D2RobotModel::modelTimeline()
 {
-	return new D2ModelTimer(mTimeline);
+	return *mTimeline;
 }

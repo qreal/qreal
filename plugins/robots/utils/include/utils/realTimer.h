@@ -7,12 +7,13 @@
 
 namespace utils {
 
+/// Timer implementation for real-life time
 class ROBOTS_UTILS_EXPORT RealTimer : public AbstractTimer
 {
 public:
 	RealTimer();
 
-	virtual void start(int ms);
+	void start(int ms) override;
 
 private:
 	QTimer mTimer;

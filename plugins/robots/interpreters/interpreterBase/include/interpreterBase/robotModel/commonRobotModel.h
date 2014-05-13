@@ -2,6 +2,8 @@
 
 #include <QtCore/QScopedPointer>
 
+#include <utils/realTimeline.h>
+
 #include "interpreterBase/robotModel/robotModelInterface.h"
 #include "interpreterBase/robotModel/configuration.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
@@ -53,8 +55,8 @@ public:
 	/// no devices are convertable.
 	QList<DeviceInfo> convertibleBases() const override;
 
-	/// Returns real-time timer implementation. Must be redefined for 2D model-based robot models.
-	utils::AbstractTimer *produceTimer() override;
+	/// Returns real-time timeline implementation. Must be redefined for 2D model-based robot models.
+	utils::TimelineInterface &timeline() override;
 
 public slots:
 	/// Shall be reimplemented to update settings when user changes something on settings page. Default implementation
@@ -97,6 +99,8 @@ private:
 	/// True, if someone called applyConfiguration() but model was disconnected, so configuration will be applied
 	/// when model becomes connected.
 	bool mConfigurationPostponed;
+
+	utils::RealTimeline mTimeline;
 };
 
 }

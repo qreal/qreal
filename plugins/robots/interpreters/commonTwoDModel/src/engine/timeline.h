@@ -2,11 +2,12 @@
 
 #include <QtCore/QTimer>
 
-//#include "details/timelineInterface.h"
+#include "utils/timelineInterface.h"
+
 namespace twoDModel {
 
 /// A timeline returning 2D-model time in ms
-class Timeline : public QObject/*, public TimelineInterface*/
+class Timeline : public QObject, public utils::TimelineInterface
 {
 	Q_OBJECT
 
@@ -25,7 +26,7 @@ public:
 
 	quint64 timestamp() const /*override*/;
 
-//	AbstractTimer *produceTimer() override;
+	utils::AbstractTimer *produceTimer() override;
 
 public slots:
 	void start();
