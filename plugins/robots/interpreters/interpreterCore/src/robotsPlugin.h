@@ -36,6 +36,9 @@ private:
 	/// Main window interface object, used to call GUI functionality
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
 
+	/// Forces common 2D model to be loaded right away for using its resources
+	void forceLoadCommonTwoDModelLib();
+
 	QTranslator mInterpreterCoreTranslator;
 	QTranslator mInterpreterBaseTranslator;
 	QTranslator mCommonTwoDModelTranslator;

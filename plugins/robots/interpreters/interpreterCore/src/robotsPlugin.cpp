@@ -3,6 +3,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
+#include <commonTwoDModel/engine/twoDModelControlInterface.h>
 
 using namespace qReal;
 using namespace interpreterCore;
@@ -12,6 +13,8 @@ static int const gridWidth = 25; // Half of element size
 RobotsPlugin::RobotsPlugin()
 	: mMainWindowInterpretersInterface(nullptr)
 {
+	// WARNING: hack!
+	forceLoadCommonTwoDModelLib();
 	mInterpreterBaseTranslator.load(":/interpreterBase_" + QLocale::system().name());
 	mCommonTwoDModelTranslator.load(":/commonTwoDModel_" + QLocale::system().name());
 	mInterpreterCoreTranslator.load(":/interpreterCore_" + QLocale::system().name());
@@ -32,6 +35,14 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 qReal::Customizer *RobotsPlugin::customizationInterface()
 {
 	return &mRobotsPluginFacade->customizer();
+}
+
+void RobotsPlugin::forceLoadCommonTwoDModelLib()
+{
+	// This will request some symbols from commonTwoDModel lib immediate loading.
+	// This hack workarrounds Window`s lazy dependencies loading (else we cannot obtain 2D model translitions).
+	QString const name = twoDModel::TwoDModelControlInterface::staticMetaObject.className();
+	Q_UNUSED(name)
 }
 
 QList<ActionInfo> RobotsPlugin::actions()
