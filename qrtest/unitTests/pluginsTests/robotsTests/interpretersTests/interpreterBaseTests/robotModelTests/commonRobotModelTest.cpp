@@ -1,6 +1,7 @@
 #include "commonRobotModelTest.h"
 
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 
 #include "utils/signalsTester.h"
 
@@ -31,16 +32,14 @@ TEST_F(CommonRobotModelTest, lifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::disconnected, "disconnected");
 
-	QObject::connect(&model, &CommonRobotModel::allDevicesConfigured
-			, [&] () {
-				model.disconnectFromRobot();
-			});
+	QObject::connect(&model, &CommonRobotModel::connected, [&] () {
+		model.configureDevice(PortInfo("1", input)
+				, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
+		model.applyConfiguration();
+	});
+	QObject::connect(&model, &CommonRobotModel::allDevicesConfigured, [&] () { model.disconnectFromRobot(); });
 
 	model.init();
-
-	model.configureDevice(PortInfo("1", input)
-			, DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
-	model.applyConfiguration();
 
 	model.connectToRobot();
 
@@ -90,7 +89,7 @@ TEST_F(CommonRobotModelTest, realNoSensorsLifecycleTest)
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::connected, "connected");
 	protocolTester.expectSignal(&model, &CommonRobotModelDescendantMock::allDevicesConfigured, "allDevicesConfigured");
 
-	model.applyConfiguration();
+	QObject::connect(&model, &CommonRobotModel::connected, [&] () { model.applyConfiguration(); });
 
 	model.connectToRobot();
 
@@ -118,4 +117,37 @@ TEST_F(CommonRobotModelTest, twoDNoSensorsLifecycleTest)
 
 	ASSERT_TRUE(protocolTester.isSignalEmitted("connected"));
 	ASSERT_TRUE(protocolTester.isSignalEmitted("allDevicesConfigured"));
+}
+
+CommonRobotModelTest::CommonRobotModelDescendantMock::CommonRobotModelDescendantMock(bool immediateConnection)
+	: mImmediateConnection(immediateConnection)
+{
+	addAllowedConnection(PortInfo("1", input)
+			, { DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>()
+					, DeviceInfo::create<interpreterBase::robotModel::robotParts::RangeSensor>()});
+
+	if (!immediateConnection) {
+		mConnectionTimer.setInterval(100);
+		mConnectionTimer.setSingleShot(true);
+		QObject::connect(&mConnectionTimer, &QTimer::timeout, [&] () {
+			emit connected(true);
+		});
+	}
+}
+
+void CommonRobotModelTest::CommonRobotModelDescendantMock::connectToRobot()
+{
+	if (!mImmediateConnection) {
+		mConnectionTimer.start();
+	} else {
+		emit connected(true);
+	}
+}
+
+robotParts::Device *CommonRobotModelTest::CommonRobotModelDescendantMock::createDevice(PortInfo const &port
+		, DeviceInfo const &deviceInfo)
+{
+	Q_UNUSED(deviceInfo)
+
+	return new DummyDevice(port);
 }

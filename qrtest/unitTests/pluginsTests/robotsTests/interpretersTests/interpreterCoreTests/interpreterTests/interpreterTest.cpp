@@ -31,6 +31,9 @@ void InterpreterTest::SetUp()
 			);
 	EXPECT_CALL(mConfigurationInterfaceMock, devices()).Times(AtLeast(1));
 
+	/// @todo: Do we need this code in some common place? Why do we need to write
+	/// it every time when we are going to use RobotModelManager mock?
+
 	ON_CALL(mModel, name()).WillByDefault(Return("mockRobot"));
 	EXPECT_CALL(mModel, name()).Times(AtLeast(1));
 
