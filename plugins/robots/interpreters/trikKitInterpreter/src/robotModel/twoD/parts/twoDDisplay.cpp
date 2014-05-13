@@ -8,20 +8,27 @@ Display::Display(DeviceInfo const &info
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
 	: robotModel::parts::TrikDisplay(info, port)
 	, mEngine(engine)
+	, mBackground(Qt::transparent)
 {
 	mEngine.display()->setPainter(this);
 }
 
 void Display::drawSmile(bool sad)
 {
+	mCurrentImage = QImage(sad ? ":/icons/sadSmile.png" : ":/icons/smile.png");
+	mEngine.display()->repaintDisplay();
 }
 
 void Display::setBackground(QColor const &color)
 {
+	mBackground = color;
+	mEngine.display()->repaintDisplay();
 }
 
 void Display::clearScreen()
 {
+	mCurrentImage = QImage();
+	mBackground = Qt::transparent;
 	if (mEngine.display()) {
 		mEngine.display()->repaintDisplay();
 	}
@@ -29,44 +36,13 @@ void Display::clearScreen()
 
 void Display::paint(QPainter *painter)
 {
-	/// @todo ZOMG.
-//	qreal const pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
-//	qreal const pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
-
-//	QPen pen;
-//	QFont font;
-//	font.setPixelSize(pixHeight * textPixelHeight);
-
-//	painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
-//	foreach (QPoint const &point, mPoints) {
-//		painter->drawRect(point.x() * pixWidth, point.y() * pixHeight, pixWidth, pixHeight);
-//	}
-
-//	pen.setWidth((pixWidth + pixHeight) / 2);
-//	painter->setPen(pen);
-//	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
-//	painter->setFont(font);
-
-//	foreach (QLine const &line, mLines) {
-//		painter->drawLine(line.x1() * pixWidth, line.y1() * pixHeight, line.x2() * pixWidth, line.y2() * pixHeight);
-//	}
-
-//	foreach (QRect const &circle, mCircles) {
-//		painter->drawEllipse(circle.x() * pixWidth, circle.y() * pixHeight, circle.width() * pixWidth, circle.height() * pixHeight);
-//	}
-
-//	foreach (QRect const &rect, mRects) {
-//		painter->drawRect(rect.x() * pixWidth, rect.y() * pixHeight, rect.width() * pixWidth, rect.height() * pixHeight);
-//	}
-
-//	QListIterator<QString> strings(mStrings);
-//	QListIterator<QPoint> strPlaces(mStringPlaces);
-//	while (strings.hasNext() && strPlaces.hasNext()) {
-//		QString const str = strings.next();
-//		QPoint const place = strPlaces.next();
-//		painter->drawText(place.x() * pixWidth * nxtDisplayWidth / textPixelWidth
-//				, place.y() * pixHeight * nxtDisplayHeight / textPixelHeight, str);
-	//	}
+	QRect const displayRect(0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight());
+	painter->save();
+	painter->setPen(mBackground);
+	painter->setBrush(mBackground);
+	painter->drawRect(displayRect);
+	painter->drawImage(displayRect, mCurrentImage);
+	painter->restore();
 }
 
 void Display::clear()

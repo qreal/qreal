@@ -33,6 +33,8 @@ public:
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
+	QColor mBackground;
+	QImage mCurrentImage;
 };
 
 }
