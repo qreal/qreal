@@ -13,7 +13,7 @@ QString Customizer::windowTitle() const
 
 QIcon Customizer::applicationIcon() const
 {
-	return QIcon(":/icons/kroki.png");
+	return QIcon(":/icons/icon.png");
 }
 
 QString Customizer::productVersion() const
