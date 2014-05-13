@@ -225,7 +225,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="src/engine/twoDModelEngineFacade.cpp" line="10"/>
+        <location filename="src/engine/twoDModelEngineFacade.cpp" line="11"/>
         <source>2d model</source>
         <translation>2D модель</translation>
     </message>
