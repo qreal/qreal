@@ -40,7 +40,7 @@ QString CodeConverterBase::replaceSystemVariables(QString const &expression) con
 		}
 	}
 
-	result.replace("Time", timelineExpression());
+	result.replace("time", timelineExpression());
 	return result;
 }
 
