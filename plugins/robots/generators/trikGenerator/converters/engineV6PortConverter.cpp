@@ -16,9 +16,11 @@ QString PowerV6MotorPortConverter::convert(QString const &data) const
 		return "JM2";
 	case 'C':
 		return "JM3";
-	case 'J':
-		// Got JM- or JE-form port
-		return data.length() == 3 ? convert(data[2]) : data;
+
+/// @todo: JE1 suddenly gets converted to JM1, commented out.
+//	case 'J':
+//		// Got JM- or JE-form port
+//		return data.length() == 3 ? convert(data[2]) : data;
 	case '1':
 		return "JM1";
 	case '2':

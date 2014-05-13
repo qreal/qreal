@@ -31,8 +31,10 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	{
 		return new details::TrikEnginesBackwardBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikV4EnginesForward")
-			|| elementMetatypeIs(element, "TrikV6EnginesForward"))
+			|| elementMetatypeIs(element, "TrikV6EnginesForward")
+			|| elementMetatypeIs(element, "TrikAngularServo"))
 	{
+		// AngularServo and EnginesForward are synonyms since angular and radial servos are controlled the same way.
 		return new details::TrikEnginesForwardBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikV4EnginesStop")
 			|| elementMetatypeIs(element, "TrikV6EnginesStop"))
@@ -114,6 +116,7 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 	}
 
 	result
+			<< id("TrikAngularServo")
 			<< id("TrikSay")
 			<< id("TrikLed")
 			<< id("TrikSystem")
