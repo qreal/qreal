@@ -1054,6 +1054,12 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	mDrawingAction = enums::drawingAction::none;
 }
 
+void D2ModelWidget::setRunStopButtonsEnabled(bool enabled)
+{
+	mUi->runButton->setEnabled(enabled);
+	mUi->stopButton->setEnabled(enabled);
+}
+
 void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 		, QPointF const &oldPos)
 {

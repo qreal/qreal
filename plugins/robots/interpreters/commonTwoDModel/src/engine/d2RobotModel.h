@@ -89,6 +89,7 @@ public:
 public slots:
 	void showModelWidget();
 	void closeModelWidget();
+	void setRunStopButtonsEnabled(bool enabled);
 
 signals:
 	void runButtonPressed();

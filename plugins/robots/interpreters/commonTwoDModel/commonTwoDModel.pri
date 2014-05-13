@@ -100,3 +100,7 @@ FORMS += \
 
 RESOURCES += \
 	commonTwoDModel.qrc \
+
+# qrgui includes
+HEADERS += \
+	$$PWD/../../../../qrgui/toolPluginInterface/systemEventsInterface.h \

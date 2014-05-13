@@ -528,6 +528,11 @@ void D2RobotModel::closeModelWidget()
 	mD2ModelWidget->close();
 }
 
+void D2RobotModel::setRunStopButtonsEnabled(bool enabled)
+{
+	mD2ModelWidget->setRunStopButtonsEnabled(enabled);
+}
+
 void D2RobotModel::setRotation(qreal angle)
 {
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);

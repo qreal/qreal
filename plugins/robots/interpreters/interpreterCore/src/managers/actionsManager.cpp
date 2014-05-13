@@ -136,6 +136,13 @@ void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModel
 	}
 }
 
+void ActionsManager::onActiveTabChanged(Id const &activeTabId)
+{
+	bool const isDiagramTab = !activeTabId.isNull();
+	mRunAction.setEnabled(isDiagramTab);
+	mStopRobotAction.setEnabled(isDiagramTab);
+}
+
 void ActionsManager::onRobotModelActionChecked(QObject *robotModel)
 {
 	mRobotModelManager.setModel(dynamic_cast<interpreterBase::robotModel::RobotModelInterface *>(robotModel));

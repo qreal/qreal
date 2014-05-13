@@ -96,6 +96,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
+	connect(&configurer.systemEvents(), &SystemEventsInterface::activeTabChanged
+			, &mActionsManager, &ActionsManager::onActiveTabChanged);
 
 	coreFactory->setParser(mParser);
 
