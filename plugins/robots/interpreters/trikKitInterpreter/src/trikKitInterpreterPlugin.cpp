@@ -73,7 +73,7 @@ QString TrikKitInterpreterPlugin::friendlyKitName() const
 
 QList<interpreterBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
 {
-	return {&mRealRobotModelV4, &mRealRobotModelV6, &mTwoDRobotModelV4, &mTwoDRobotModelV6};
+	return {/*&mRealRobotModelV4, */&mRealRobotModelV6/*, &mTwoDRobotModelV4*/, &mTwoDRobotModelV6};
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
@@ -95,7 +95,7 @@ interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 {
-	return { mTwoDModelV4->showTwoDModelWidgetActionInfo(), mTwoDModelV6->showTwoDModelWidgetActionInfo() };
+	return { /* mTwoDModelV4->showTwoDModelWidgetActionInfo(), */mTwoDModelV6->showTwoDModelWidgetActionInfo() };
 }
 
 QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
