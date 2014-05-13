@@ -64,8 +64,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 				, &interpreterControl, &interpreterBase::InterpreterControlInterface::stopRobot);
 	};
 
-	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
-			, mTwoDModel.data(), &twoDModel::D2RobotModel::closeModelWidget);
+	connect(&systemEvents, SIGNAL(closedMainWindow()), mTwoDModel.data(), SLOT(closeModelWidget()));
 
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
