@@ -409,7 +409,7 @@ void RepoApi::importFromDisk(QString const &importedFile)
 	mRepository.importFromDisk(importedFile);
 }
 
-void RepoApi::save(qReal::IdList list) const
+void RepoApi::save(qReal::IdList const &list) const
 {
 	mRepository.save(list);
 }
@@ -581,4 +581,14 @@ void RepoApi::setGraphicalPartProperty(
 		)
 {
 	mRepository.setGraphicalPartProperty(id, partIndex, propertyName, value);
+}
+
+QString RepoApi::metaInformation(QString const &key) const
+{
+	return mRepository.metaInformation(key);
+}
+
+void RepoApi::setMetaInformation(QString const &key, QString const &info)
+{
+	mRepository.setMetaInformation(key, info);
 }

@@ -43,7 +43,7 @@ void Serializer::setWorkingFile(QString const &workingFile)
 	mWorkingFile = workingFile;
 }
 
-void Serializer::saveToDisk(QList<Object*> const &objects) const
+void Serializer::saveToDisk(QList<Object*> const &objects, QHash<QString, QString> const &metaInfo) const
 {
 	Q_ASSERT_X(!mWorkingFile.isEmpty()
 		, "Serializer::saveToDisk(...)"
@@ -59,6 +59,8 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		OutFile out(filePath);
 		doc.save(out(), 2);
 	}
+
+	saveMetaInfo(metaInfo);
 
 	QFileInfo fileInfo(mWorkingFile);
 	QString fileName = fileInfo.baseName();
@@ -82,7 +84,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 	clearDir(mWorkingDir);
 }
 
-void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
+void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QString> &metaInfo)
 {
 	clearWorkingDir();
 	if (!mWorkingFile.isEmpty()) {
@@ -90,6 +92,7 @@ void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 	}
 
 	loadFromDisk(SettingsManager::value("temp").toString(), objectsHash);
+	loadMetaInfo(metaInfo);
 }
 
 void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash)
@@ -122,6 +125,35 @@ void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHa
 
 			objectsHash.insert(object->id(), object);
 		}
+	}
+}
+
+void Serializer::saveMetaInfo(QHash<QString, QString> const &metaInfo) const
+{
+	QDomDocument document;
+	for (QString const &key : metaInfo.keys()) {
+		QDomElement element = document.createElement("info");
+		element.setAttribute("key", key);
+		element.setAttribute("value", metaInfo[key]);
+		document.appendChild(element);
+	}
+
+	QString const filePath = mWorkingDir + "/metaInfo.xml";
+	OutFile out(filePath);
+	out() << document.toString(4);
+}
+
+void Serializer::loadMetaInfo(QHash<QString, QString> &metaInfo) const
+{
+	metaInfo.clear();
+
+	QString const filePath = mWorkingDir + "/metaInfo.xml";
+	QDomDocument const document = xmlUtils::loadDocument(filePath);
+	for (QDomElement child = document.firstChildElement("info")
+			; !child.isNull()
+			; child = child.nextSiblingElement("info"))
+	{
+		metaInfo[child.attribute("key")] = child.attribute("value");
 	}
 }
 

@@ -25,5 +25,11 @@ public:
 	virtual qReal::IdList elementsByType(QString const &type, bool sensitivity = false
 			, bool regExpression = false) const = 0;
 	virtual int elementsCount() const = 0;
+
+	/// Returns the meta-information about current model stored by the given key.
+	virtual QString metaInformation(QString const &key) const = 0;
+
+	/// Stores the meta-information for current stored binded to the given key.
+	virtual void setMetaInformation(QString const &key, QString const &info) = 0;
 };
 }
