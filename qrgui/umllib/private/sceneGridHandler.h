@@ -51,7 +51,7 @@ private:
 	void buildLineY(qreal deltaY, qreal pointY, qreal correctionY
 			, qreal &myY1, qreal &myY2, QRectF const &sceneRect);
 
-	/// move element vertically according to the grid; сoef - index of cell in the grid
+	/// move element vertically according to the grid; coef - index of cell in the grid
 	void makeGridMovingX(qreal myX, int coef, int indexGrid);
 
 	/// move element horizontally according to the grid

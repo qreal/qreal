@@ -38,7 +38,7 @@ bool LoopBlock::initNextBlocks()
 		}
 
 		Block *targetBlock = mBlocksTable->block(targetBlockId);
-		if (stringProperty(linkId, "Guard").toLower() == QString::fromUtf8("итерация")) {
+		if (stringProperty(linkId, "Guard").toLower() == "iteration") {
 			if (!iterationFound) {
 				mIterationStartBlock = targetBlock;
 				iterationFound = true;

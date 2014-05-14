@@ -436,7 +436,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 	IdList list = mRepository.property(target, listName).value<IdList>();
 
-	// Значения в списке должны быть уникальны.
+	// Values in the list must be unique.
 	if (list.contains(data))
 		return;
 

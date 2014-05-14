@@ -55,9 +55,12 @@ protected:
 	Diagram *mDiagram;
 
 private:
-	QString mName;  // Неквалифицированное имя метатипа
-	QString mContext;  // Контекст квалификации. Например, для Kernel::Node: Node - имя, Kernel - контекст.
-	QString mNativeContext;  // "Pодной" контекст квалификации, не меняется при импорте типа и используется для ресолва.
+	/// Unqualified metatype name
+	QString mName;
+	/// Qualification context. For example for 'Kernel::Node' 'Node' is the name and 'Kernel' is the context.
+	QString mContext;
+	/// "Native" qualification context, type import does not modify it and is used for resolve.
+	QString mNativeContext;
 	QString mDisplayedName;
 	QString mPath;
 };

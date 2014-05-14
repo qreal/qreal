@@ -45,7 +45,7 @@ public:
 
 	virtual IdList containedTypes(const Id &id) const = 0;
 	virtual QList<Explosion> explosions(Id const &source) const = 0;
-	virtual QStringList enumValues(Id const &id, const QString &name) const = 0;
+	virtual QList<QPair<QString, QString>> enumValues(Id const &id, const QString &name) const = 0;
 	virtual QString typeName(Id const &id, const QString &name) const = 0;
 	virtual QStringList allChildrenTypesOf(Id const &parent) const = 0;
 
