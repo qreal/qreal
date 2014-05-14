@@ -16,10 +16,11 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	: mTwoDRobotModelV4(mRealRobotModelV4)
 	, mTwoDRobotModelV6(mRealRobotModelV6)
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
-	, mAdditionalPreferences(new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV6.name() }))
 {
 	mAppTranslator.load(":/trikKitInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
+
+	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV6.name() });
 
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV4
 			, new TrikTwoDModelConfigurer("M1", "JM3"));
