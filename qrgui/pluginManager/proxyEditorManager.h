@@ -42,7 +42,7 @@ public:
 	ElementImpl* elementImpl(Id const &id) const override;
 
 	IdList containedTypes(const Id &id) const override;
-	QStringList enumValues(Id const &id, const QString &name) const override;
+	QList<QPair<QString, QString>> enumValues(Id const &id, const QString &name) const override;
 	QString typeName(Id const &id, const QString &name) const override;
 	QStringList allChildrenTypesOf(Id const &parent) const override;
 
