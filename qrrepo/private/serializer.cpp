@@ -131,11 +131,13 @@ void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHa
 void Serializer::saveMetaInfo(QHash<QString, QString> const &metaInfo) const
 {
 	QDomDocument document;
+	QDomElement root = document.createElement("metaInformation");
+	document.appendChild(root);
 	for (QString const &key : metaInfo.keys()) {
 		QDomElement element = document.createElement("info");
 		element.setAttribute("key", key);
 		element.setAttribute("value", metaInfo[key]);
-		document.appendChild(element);
+		root.appendChild(element);
 	}
 
 	QString const filePath = mWorkingDir + "/metaInfo.xml";
@@ -149,7 +151,7 @@ void Serializer::loadMetaInfo(QHash<QString, QString> &metaInfo) const
 
 	QString const filePath = mWorkingDir + "/metaInfo.xml";
 	QDomDocument const document = xmlUtils::loadDocument(filePath);
-	for (QDomElement child = document.firstChildElement("info")
+	for (QDomElement child = document.documentElement().firstChildElement("info")
 			; !child.isNull()
 			; child = child.nextSiblingElement("info"))
 	{

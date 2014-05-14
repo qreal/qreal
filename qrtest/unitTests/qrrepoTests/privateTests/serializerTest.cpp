@@ -51,6 +51,10 @@ void SerializerTest::TearDown()
 
 TEST_F(SerializerTest, saveAndLoadFromDiskTest)
 {
+	QHash<QString, QString> metaInfo;
+	metaInfo["key1"] = "info1";
+	metaInfo["key2"] = "info2";
+
 	Id const id1("editor1", "diagram1", "element1", "id1");
 	LogicalObject obj1(id1);
 	obj1.setProperty("property1", "value1");
@@ -63,11 +67,11 @@ TEST_F(SerializerTest, saveAndLoadFromDiskTest)
 	list.push_back(&obj1);
 	list.push_back(&obj2);
 
-	mSerializer->saveToDisk(list);
+	mSerializer->saveToDisk(list, metaInfo);
 
 	QHash<Id, Object *> map;
 	mSerializer->setWorkingFile("saveFile.qrs");
-	mSerializer->loadFromDisk(map);
+	mSerializer->loadFromDisk(map, metaInfo);
 
 	ASSERT_TRUE(map.contains(id1));
 	ASSERT_TRUE(map.contains(id2));
@@ -77,6 +81,10 @@ TEST_F(SerializerTest, saveAndLoadFromDiskTest)
 
 	EXPECT_EQ(map.value(id1)->property("property1").toString(), "value1");
 	EXPECT_EQ(map.value(id2)->property("property2").toString(), "value2");
+
+	ASSERT_TRUE(metaInfo.keys().count() == 2);
+	ASSERT_EQ(metaInfo["key1"], "info1");
+	ASSERT_EQ(metaInfo["key2"], "info2");
 }
 
 // Decomment EXPECT_FALSE and delete EXPECT_TRUE(true) when removeFromDisk will be fixed. pathToElement(id) returns
@@ -95,7 +103,7 @@ TEST_F(SerializerTest, removeFromDiskTest)
 	list.push_back(&obj1);
 	list.push_back(&obj2);
 
-	mSerializer->saveToDisk(list);
+	mSerializer->saveToDisk(list, QHash<QString, QString>());
 	mSerializer->decompressFile("saveFile.qrs");
 	mSerializer->removeFromDisk(id2);
 
@@ -120,11 +128,12 @@ TEST_F(SerializerTest, saveAndLoadGraphicalPartsTest)
 	list.push_back(&graphicalObj);
 	list.push_back(&logicalObj);
 
-	mSerializer->saveToDisk(list);
+	mSerializer->saveToDisk(list, QHash<QString, QString>());
 
 	QHash<Id, Object *> map;
+	QHash<QString, QString> metaInfo;
 	mSerializer->setWorkingFile("saveFile.qrs");
-	mSerializer->loadFromDisk(map);
+	mSerializer->loadFromDisk(map, metaInfo);
 
 	ASSERT_TRUE(map.contains(graphicalElement));
 
