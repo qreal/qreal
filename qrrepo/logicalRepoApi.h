@@ -27,9 +27,9 @@ public:
 	virtual int elementsCount() const = 0;
 
 	/// Returns the meta-information about current model stored by the given key.
-	virtual QString metaInformation(QString const &key) const = 0;
+	virtual QVariant metaInformation(QString const &key) const = 0;
 
 	/// Stores the meta-information for current stored binded to the given key.
-	virtual void setMetaInformation(QString const &key, QString const &info) = 0;
+	virtual void setMetaInformation(QString const &key, QVariant const &info) = 0;
 };
 }

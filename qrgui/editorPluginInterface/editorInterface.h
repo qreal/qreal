@@ -36,6 +36,7 @@ public:
 
 	virtual void initPlugin() = 0;
 	virtual QString id() const = 0;
+	virtual QString version() const = 0;
 
 	virtual QStringList diagrams() const = 0;
 	virtual QStringList elements(QString const &diagram) const = 0;

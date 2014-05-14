@@ -126,10 +126,10 @@ public:
 			);
 
 	/// Returns the meta-information about current model stored by the given key.
-	QString metaInformation(QString const &key) const;
+	QVariant metaInformation(QString const &key) const;
 
 	/// Stores the meta-information for current stored binded to the given key.
-	void setMetaInformation(QString const &key, QString const &info);
+	void setMetaInformation(QString const &key, QVariant const &info);
 
 private:
 	void init();
@@ -142,7 +142,7 @@ private:
 	QList<Object*> allChildrenOfWithLogicalId(qReal::Id id) const;
 
 	QHash<qReal::Id, Object*> mObjects;
-	QHash<QString, QString> mMetaInfo;
+	QHash<QString, QVariant> mMetaInfo;
 
 	/// Name of the current save file for project.
 	QString mWorkingFile;

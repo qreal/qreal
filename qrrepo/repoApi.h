@@ -152,8 +152,8 @@ public:
 			, QVariant const &value
 			) override;
 
-	QString metaInformation(QString const &key) const override;
-	void setMetaInformation(QString const &key, QString const &info) override;
+	QVariant metaInformation(QString const &key) const override;
+	void setMetaInformation(QString const &key, QVariant const &info) override;
 
 private:
 	RepoApi(RepoApi const &other);  // Copying is not allowed.

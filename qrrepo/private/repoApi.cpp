@@ -583,12 +583,12 @@ void RepoApi::setGraphicalPartProperty(
 	mRepository.setGraphicalPartProperty(id, partIndex, propertyName, value);
 }
 
-QString RepoApi::metaInformation(QString const &key) const
+QVariant RepoApi::metaInformation(QString const &key) const
 {
 	return mRepository.metaInformation(key);
 }
 
-void RepoApi::setMetaInformation(QString const &key, QString const &info)
+void RepoApi::setMetaInformation(QString const &key, QVariant const &info)
 {
 	mRepository.setMetaInformation(key, info);
 }

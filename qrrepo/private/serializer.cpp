@@ -43,7 +43,7 @@ void Serializer::setWorkingFile(QString const &workingFile)
 	mWorkingFile = workingFile;
 }
 
-void Serializer::saveToDisk(QList<Object*> const &objects, QHash<QString, QString> const &metaInfo) const
+void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const
 {
 	Q_ASSERT_X(!mWorkingFile.isEmpty()
 		, "Serializer::saveToDisk(...)"
@@ -84,7 +84,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects, QHash<QString, QStrin
 	clearDir(mWorkingDir);
 }
 
-void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QString> &metaInfo)
+void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QVariant> &metaInfo)
 {
 	clearWorkingDir();
 	if (!mWorkingFile.isEmpty()) {
@@ -128,7 +128,7 @@ void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHa
 	}
 }
 
-void Serializer::saveMetaInfo(QHash<QString, QString> const &metaInfo) const
+void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const
 {
 	QDomDocument document;
 	QDomElement root = document.createElement("metaInformation");
@@ -136,7 +136,8 @@ void Serializer::saveMetaInfo(QHash<QString, QString> const &metaInfo) const
 	for (QString const &key : metaInfo.keys()) {
 		QDomElement element = document.createElement("info");
 		element.setAttribute("key", key);
-		element.setAttribute("value", metaInfo[key]);
+		element.setAttribute("type", metaInfo[key].typeName());
+		element.setAttribute("value", ValuesSerializer::serializeQVariant(metaInfo[key]));
 		root.appendChild(element);
 	}
 
@@ -145,7 +146,7 @@ void Serializer::saveMetaInfo(QHash<QString, QString> const &metaInfo) const
 	out() << document.toString(4);
 }
 
-void Serializer::loadMetaInfo(QHash<QString, QString> &metaInfo) const
+void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const
 {
 	metaInfo.clear();
 
@@ -155,7 +156,8 @@ void Serializer::loadMetaInfo(QHash<QString, QString> &metaInfo) const
 			; !child.isNull()
 			; child = child.nextSiblingElement("info"))
 	{
-		metaInfo[child.attribute("key")] = child.attribute("value");
+		metaInfo[child.attribute("key")] = ValuesSerializer::deserializeQVariant(
+				child.attribute("type"), child.attribute("value"));
 	}
 }
 
