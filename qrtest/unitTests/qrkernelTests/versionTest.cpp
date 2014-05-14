@@ -55,3 +55,21 @@ TEST(VersionTest, compareTest)
 	ASSERT_TRUE(Version::fromString("3.0.0-rc1") < Version::fromString("3.0.0-rc2"));
 	ASSERT_TRUE(Version::fromString("3.0.0-rc2") < Version::fromString("3.0.0"));
 }
+
+TEST(VersionTest, toStringTest)
+{
+	Version version = Version::fromString("3");
+	ASSERT_EQ(version, Version::fromString(version.toString()));
+
+	version = Version::fromString("3.0.0");
+	ASSERT_EQ(version, Version::fromString(version.toString()));
+
+	version = Version::fromString("3.0.0-a");
+	ASSERT_EQ(version, Version::fromString(version.toString()));
+
+	version = Version::fromString("3.0.0-b1");
+	ASSERT_EQ(version, Version::fromString(version.toString()));
+
+	version = Version::fromString("3.0.0-rc1");
+	ASSERT_EQ(version, Version::fromString(version.toString()));
+}
