@@ -11,6 +11,8 @@ namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
 
+/// Interpreter`s implementation for timer block.
+/// Waits for the given amount of time using robot model`s timeline.
 class TimerBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT

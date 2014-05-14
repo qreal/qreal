@@ -6,23 +6,29 @@
 
 namespace interpreterCore {
 
+/// Configures QReal's main GUI module disabling some unneeded stuff and customizing such
+/// aspects as window title, window icon and so on.
 class Customizer : public qReal::Customizer
 {
 public:
-	virtual QString windowTitle() const;
-	virtual QIcon applicationIcon() const;
-	virtual QString productVersion() const;
-	virtual QString aboutText() const;
-	virtual QString examplesDirectory() const;
+	QString windowTitle() const override;
+	QIcon applicationIcon() const override;
+	QString productVersion() const override;
+	QString aboutText() const override;
+	QString examplesDirectory() const override;
 
-	virtual void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface);
+	void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface) override;
+
+	/// Embeds the given widget into main window`s left dock panel
 	void placeDevicesConfig(QWidget *devicesWidget);
+
+	/// Embeds the given widgets into main window`s left dock panel tabifying them together.
 	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
 
-	virtual bool showInterpeterButton() const;
+	bool showInterpeterButton() const override;
 
-	virtual QString userPaletteTitle() const;
-	virtual QString userPaletteDescription() const;
+	QString userPaletteTitle() const override;
+	QString userPaletteDescription() const override;
 
 private:
 	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);

@@ -10,7 +10,10 @@ namespace interpreterCore {
 namespace interpreter {
 namespace details {
 
-/// Extended devices configuration validator.
+/// Extended devices configuration validator. Travels through the diagram and compares
+/// required by bolcks devices with the user configuration. If conflict is detected
+/// report is reported. If some block requires a device that is forgotten to be selected by
+/// user then it is automaticly selected by this autoconfigurer.
 class Autoconfigurer : public interpreterBase::DevicesConfigurationProvider
 {
 public:

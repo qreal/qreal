@@ -16,7 +16,7 @@ namespace interpreterCore {
 namespace interpreter {
 namespace details {
 
-/// An invocation thread simulation. Has its own stack
+/// An invocation thread simulation. Has its own stack.
 class Thread : public QObject
 {
 	Q_OBJECT
@@ -36,10 +36,14 @@ public:
 
 	~Thread();
 
+	/// Starts interpretation process starting from the block specified in one of the constructors.
 	void interpret();
 
 signals:
+	/// Emitted when interpretation process was terminated (correctly or due to errors)
 	void stopped();
+
+	/// Emitted when  one of the blocks interpreted by this thread requested new invocation thread.
 	void newThread(qReal::Id const &startBlockId);
 
 private slots:

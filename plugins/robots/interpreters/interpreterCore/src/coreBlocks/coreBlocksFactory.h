@@ -5,6 +5,8 @@
 namespace interpreterCore {
 namespace coreBlocks {
 
+/// Blocks factory implmentaion for common kit plugin blocks.
+/// Provides blocks from 'Algorithms' palette group.
 class CoreBlocksFactory : public interpreterBase::blocksBase::CommonBlocksFactory
 {
 public:

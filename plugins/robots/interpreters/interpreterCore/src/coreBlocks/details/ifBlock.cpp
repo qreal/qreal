@@ -3,10 +3,6 @@
 using namespace qReal;
 using namespace interpreterCore::coreBlocks::details;
 
-IfBlock::IfBlock()
-{
-}
-
 void IfBlock::run()
 {
 	bool const expressionValue = evaluateBool("Condition");

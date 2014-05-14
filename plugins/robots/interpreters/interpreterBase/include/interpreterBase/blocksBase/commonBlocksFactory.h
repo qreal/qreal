@@ -15,15 +15,13 @@ class ROBOTS_INTERPRETER_BASE_EXPORT CommonBlocksFactory : public BlocksFactoryI
 public:
 	CommonBlocksFactory();
 
-	void setParser(BlockParserInterface * const parser) override;
 	BlockInterface *block(qReal::Id const &element) override;
-
-	////	RobotsBlockParser * getParser();
 
 	void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
-			, qReal::ErrorReporterInterface &errorReporter) override;
+			, qReal::ErrorReporterInterface &errorReporter
+			, BlockParserInterface * const parser) override;
 
 	/// May be overrided to disable some blocks from palette when binded to this factory
 	/// robot model is active. Default implementation disables nothing.

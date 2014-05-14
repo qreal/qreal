@@ -60,6 +60,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, configurer.logicalModelApi()
 			, mRobotModelManager
 			, *configurer.mainWindowInterpretersInterface().errorReporter()
+			, mParser
 			);
 	mBlocksFactoryManager.addFactory(coreFactory);
 
@@ -97,8 +98,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
 	connect(&configurer.systemEvents(), &SystemEventsInterface::activeTabChanged
 			, &mActionsManager, &ActionsManager::onActiveTabChanged);
-
-	coreFactory->setParser(mParser);
 
 	sync();
 }
@@ -206,16 +205,15 @@ void RobotsPluginFacade::initFactoriesFor(QString const &kitId
 	for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
 		interpreterBase::blocksBase::BlocksFactoryInterface * const factory = kit->blocksFactoryFor(model);
 		if (factory) {
+			/// @todo Non-obvious dependency on mParser, which may or may not be constructed here.
+			///       More functional style will be helpful here.
 			factory->configure(configurer.graphicalModelApi()
 					, configurer.logicalModelApi()
 					, mRobotModelManager
 					, *configurer.mainWindowInterpretersInterface().errorReporter()
+					, mParser
 					);
 			mBlocksFactoryManager.addFactory(factory, model);
-
-			/// @todo Non-obvious dependency on mParser, which may or may not be constructed here.
-			///       More functional style will be helpful here.
-			factory->setParser(mParser);
 		}
 	}
 }

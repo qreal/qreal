@@ -3,10 +3,6 @@
 using namespace qReal;
 using namespace interpreterCore::coreBlocks::details;
 
-ForkBlock::ForkBlock()
-{
-}
-
 void ForkBlock::run()
 {
 	foreach (Id const &blockId, mThreadStartBlocks) {

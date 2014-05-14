@@ -2,10 +2,6 @@
 
 using namespace interpreterCore::coreBlocks::details;
 
-FunctionBlock::FunctionBlock()
-{
-}
-
 void FunctionBlock::run()
 {
 	evaluate("Body");
