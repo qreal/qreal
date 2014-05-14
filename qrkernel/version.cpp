@@ -20,7 +20,7 @@ Version Version::fromString(QString const &version)
 	bool currentIsOk;
 
 	QStringList const numbers = prefix.split(".", QString::SkipEmptyParts);
-	if (parts.isEmpty() || parts.count() > 3) {
+	if (numbers.isEmpty() || numbers.count() > 3) {
 		return Version();
 	}
 
@@ -43,7 +43,7 @@ Version Version::fromString(QString const &version)
 	QString letterSuffix;
 	QString numberSuffix;
 	bool iteratingFirstPart = true;
-	for (QChar const ch : letterSuffix) {
+	for (QChar const ch : suffix) {
 		if (!ch.isLetter() && iteratingFirstPart) {
 			iteratingFirstPart = false;
 		}
@@ -74,6 +74,7 @@ Version Version::fromString(QString const &version)
 Version::Stage Version::parseStage(QString const &stage, bool &ok)
 {
 	Stage result = stable;
+	ok = false;
 	if (stage.toLower() == "a" || stage.toLower() == "alpha") {
 		ok = true;
 		result = alpha;
@@ -90,6 +91,10 @@ Version::Stage Version::parseStage(QString const &stage, bool &ok)
 
 Version::Version()
 	: mMajor(-1)
+	, mMinor(-1)
+	, mBuild(-1)
+	, mStage(stable)
+	, mStageNumber(-1)
 {
 }
 
