@@ -70,6 +70,9 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, connectionState()).WillByDefault(Return(RobotModelInterfaceMock::connectedState));
 	EXPECT_CALL(mModel, connectionState()).Times(2);
 
+	ON_CALL(mModel, timeline()).WillByDefault(ReturnRef(mTimeline));
+	EXPECT_CALL(mModel, timeline()).Times(AtLeast(1));
+
 
 	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
 	EXPECT_CALL(mModelManager, model()).Times(AtLeast(1));

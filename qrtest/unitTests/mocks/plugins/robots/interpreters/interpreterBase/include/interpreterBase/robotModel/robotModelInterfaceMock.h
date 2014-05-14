@@ -2,6 +2,7 @@
 
 #include <interpreterBase/robotModel/robotModelInterface.h>
 #include <interpreterBase/robotModel/configuration.h>
+#include <utils/timelineInterface.h>
 
 #include <gmock/gmock.h>
 
@@ -41,7 +42,7 @@ public:
 
 	MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::DeviceInfo>());
 
-	MOCK_METHOD0(produceTimer, utils::AbstractTimer *());
+	MOCK_METHOD0(timeline, utils::TimelineInterface &());
 };
 
 }
