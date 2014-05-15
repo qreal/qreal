@@ -308,7 +308,7 @@ MainWindow::~MainWindow()
 	utils::UXInfo::instance()->closeUXInfo();
 }
 
-EditorManagerInterface& MainWindow::editorManager()
+EditorManagerInterface &MainWindow::editorManager()
 {
 	return mEditorManagerProxy;
 }

@@ -580,12 +580,12 @@
 <context>
     <name>ErrorListWidget</name>
     <message>
-        <location filename="mainwindow/errorListWidget.cpp" line="37"/>
+        <location filename="mainwindow/errorListWidget.cpp" line="32"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="mainwindow/errorListWidget.cpp" line="38"/>
+        <location filename="mainwindow/errorListWidget.cpp" line="33"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
@@ -2322,7 +2322,7 @@
 <context>
     <name>PropertyEditorView</name>
     <message>
-        <location filename="view/propertyEditorView.cpp" line="176"/>
+        <location filename="view/propertyEditorView.cpp" line="181"/>
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
     </message>
@@ -2508,6 +2508,26 @@
     <message>
         <source>Collapse connection</source>
         <translation type="obsolete">Свернуть провязку</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="43"/>
+        <source>This project was created by version %1 of the editor.</source>
+        <translation>Данный проект был создан редактором версии %1.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="44"/>
+        <source>This project was created by too old version of the editor.</source>
+        <translation>Данный проект был создан редактором слишком старой версии.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="46"/>
+        <source> To our great regret this project can`t be automaticly converted up to the current enviroment version and thus can`t be opened.</source>
+        <translation> К сожалению, он не может быть автоматически сконвертирован в настоящую версию и потому не может быть открыт.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="49"/>
+        <source>Can`t open project file</source>
+        <translation>Не могу открыть проект</translation>
     </message>
 </context>
 <context>
@@ -3819,7 +3839,7 @@
         <translation>Соединить с данным элементом</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="935"/>
+        <location filename="view/editorViewScene.cpp" line="939"/>
         <source>Add child</source>
         <translation>Добавить элемент</translation>
     </message>
@@ -3827,17 +3847,17 @@
 <context>
     <name>qReal::InterpreterEditorManager</name>
     <message>
-        <location filename="pluginManager/interpreterEditorManager.cpp" line="808"/>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="816"/>
         <source>Deleted</source>
         <translation>Удалено</translation>
     </message>
     <message>
-        <location filename="pluginManager/interpreterEditorManager.cpp" line="814"/>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="822"/>
         <source>Existed</source>
         <translation>Используется</translation>
     </message>
     <message>
-        <location filename="pluginManager/interpreterEditorManager.cpp" line="816"/>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="824"/>
         <source>Renamed to </source>
         <translation>Переименовано в </translation>
     </message>
@@ -3888,7 +3908,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="934"/>
+        <location filename="mainwindow/mainWindow.cpp" line="944"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -4029,87 +4049,87 @@
         <translation type="obsolete">Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="152"/>
+        <location filename="mainwindow/mainWindow.cpp" line="153"/>
         <source>Start test</source>
         <translation>Начать тест</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="155"/>
+        <location filename="mainwindow/mainWindow.cpp" line="156"/>
         <source>Finish test</source>
         <translation>Завершить тест</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1123"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1133"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1400"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1410"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1401"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1411"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1402"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1412"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1403"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1413"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1404"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1414"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1405"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1415"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1406"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1416"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1407"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1417"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1408"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1418"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1409"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1419"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1410"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1420"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1411"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1421"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1412"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1422"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2256"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2266"/>
         <source>Getting Started</source>
         <translation>Добро пожаловать!</translation>
     </message>
@@ -4118,9 +4138,9 @@
         <translation type="obsolete">Добро пожаловать!</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1088"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1103"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1131"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1098"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1113"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1141"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -4129,17 +4149,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2102"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2112"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2133"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2143"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2133"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2143"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -4160,7 +4180,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1636"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1646"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -4237,90 +4257,100 @@
 <context>
     <name>qReal::ProjectManager</name>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="58"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="59"/>
         <source>Open existing project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="83"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="84"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="84"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="85"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="85"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="86"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="86"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="87"/>
         <source>&amp;Discard</source>
         <translation>&amp;Не сохранять</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="87"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="88"/>
         <source>Do you want to save current project?</source>
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="146"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="153"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="217"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="218"/>
+        <source>This project contains unknown element %1 and thus can`t be opened. Probably it was created by old or incorrectly working version of QReal.</source>
+        <translation>Данный проект содержит неизвестный элемент %1 и потому не может быть открыт. Возможно он был создан старой или некорректной версией QReal.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="220"/>
+        <source>Can`t open project file</source>
+        <translation>Не могу открыть проект</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="249"/>
         <source>Unsaved project</source>
         <translation>Несохраненный проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="379"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="411"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="380"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="412"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="380"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="412"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="177"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="187"/>
         <source>There are missing plugins</source>
         <translation>Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="178"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="188"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="322"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="354"/>
         <source>Select file to save current metamodel to</source>
         <translation>Выберите файл для сохранения метамодели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="328"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="360"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения модели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="351"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="363"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="383"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="395"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="224"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="256"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>
@@ -4819,7 +4849,7 @@
 <context>
     <name>qReal::gui::PaletteTreeWidget</name>
     <message>
-        <location filename="mainwindow/palette/paletteTreeWidget.cpp" line="129"/>
+        <location filename="mainwindow/palette/paletteTreeWidget.cpp" line="130"/>
         <source>Add Element</source>
         <translation>Добавить элемент</translation>
     </message>
@@ -5143,7 +5173,7 @@
     <name>qReal::view::details::ExploserView</name>
     <message>
         <location filename="view/private/exploserView.cpp" line="59"/>
-        <location filename="view/private/exploserView.cpp" line="184"/>
+        <location filename="view/private/exploserView.cpp" line="186"/>
         <source>New </source>
         <translation>Новый </translation>
     </message>

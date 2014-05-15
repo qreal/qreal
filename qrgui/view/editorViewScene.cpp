@@ -471,7 +471,11 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	inStream >> explosionTargetUuid;
 
 	Id const id = Id::loadFromString(uuid);
-	
+
+	if (!mMVIface->graphicalAssistApi()->editorManagerInterface().hasElement(id.type())) {
+		return;
+	}
+
 	utils::UXInfo::reportCreation(id.editor(), id.element());
 	
 	Id const explosionTarget = explosionTargetUuid.isEmpty()

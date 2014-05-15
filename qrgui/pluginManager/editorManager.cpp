@@ -163,6 +163,12 @@ IdList EditorManager::elements(Id const &diagram) const
 	return elements;
 }
 
+Version EditorManager::version(Id const &editor) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
+	return Version::fromString(mPluginIface[editor.editor()]->version());
+}
+
 bool EditorManager::isEditor(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));

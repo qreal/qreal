@@ -36,11 +36,7 @@ XmlCompiler::XmlCompiler()
 
 XmlCompiler::~XmlCompiler()
 {
-	foreach(Editor *editor, mEditors.values()) {
-		if (editor) {
-			delete editor;
-		}
-	}
+	qDeleteAll(mEditors);
 }
 
 bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &sourcesRootFolder)
@@ -54,6 +50,7 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 		return false;
 	}
 
+	mPluginVersion = mEditors[mCurrentEditor]->version();
 	/// @todo: other languages?
 	addResource(QString("\t<file>translations/%1_ru.qm</file>\n").arg(inputXmlFileInfo.baseName()));
 
@@ -174,6 +171,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\t" << mPluginName << "Plugin();\n"
 		<< "\n"
 		<< "\tQString id() const { return \"" << mPluginName << "\"; }\n"
+		<< "\tQString version() const { return \"" << mPluginVersion << "\"; }\n"
 		<< "\n"
 		<< "\tQStringList diagrams() const override;\n"
 		<< "\tQStringList elements(QString const &diagram) const override;\n"

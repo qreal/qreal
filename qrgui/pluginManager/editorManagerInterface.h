@@ -8,6 +8,7 @@
 #include <QtGui/QIcon>
 
 #include <qrkernel/ids.h>
+#include <qrkernel/version.h>
 #include <qrkernel/settingsManager.h>
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
@@ -32,6 +33,8 @@ public:
 	virtual IdList editors() const = 0;
 	virtual IdList diagrams(Id const &editor) const = 0;
 	virtual IdList elements(Id const &diagram) const = 0;
+	virtual Version version(Id const &editor) const = 0;
+
 	virtual bool loadPlugin(QString const &pluginName) = 0;
 	virtual bool unloadPlugin(QString const &pluginName) = 0;
 

@@ -28,6 +28,10 @@ CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 
 Id CreateRemoveCommandImplementation::create()
 {
+	if (!mGraphicalApi.editorManagerInterface().hasElement(mId.type())) {
+		return Id();
+	}
+
 	mId = mGraphicalApi.createElement(mGraphicalParent, mId
 			, mIsFromLogicalModel, mName, mPosition, mOldLogicalId);
 
