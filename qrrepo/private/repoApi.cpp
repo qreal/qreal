@@ -583,6 +583,11 @@ void RepoApi::setGraphicalPartProperty(
 	mRepository.setGraphicalPartProperty(id, partIndex, propertyName, value);
 }
 
+QStringList RepoApi::metaInformationKeys() const
+{
+	return mRepository.metaInformationKeys();
+}
+
 QVariant RepoApi::metaInformation(QString const &key) const
 {
 	return mRepository.metaInformation(key);

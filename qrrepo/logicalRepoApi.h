@@ -26,6 +26,9 @@ public:
 			, bool regExpression = false) const = 0;
 	virtual int elementsCount() const = 0;
 
+	/// Returns a list of keys by that stored some meta-information.
+	virtual QStringList metaInformationKeys() const = 0;
+
 	/// Returns the meta-information about current model stored by the given key.
 	virtual QVariant metaInformation(QString const &key) const = 0;
 

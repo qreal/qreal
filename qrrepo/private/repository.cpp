@@ -581,6 +581,11 @@ void Repository::setGraphicalPartProperty(
 	graphicalObject->setGraphicalPartProperty(partIndex, propertyName, value);
 }
 
+QStringList Repository::metaInformationKeys() const
+{
+	return mMetaInfo.keys();
+}
+
 QVariant Repository::metaInformation(QString const &key) const
 {
 	return mMetaInfo[key];

@@ -68,6 +68,9 @@ public:
 
 	virtual void removeElement(Id const &logicalId);
 
+	/// Returns a mapping of known editors used for current save creation to their versions.
+	QMap<Id, Version> editorVersions() const;
+
 private:
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
 	LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also

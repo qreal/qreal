@@ -152,6 +152,7 @@ public:
 			, QVariant const &value
 			) override;
 
+	QStringList metaInformationKeys() const override;
 	QVariant metaInformation(QString const &key) const override;
 	void setMetaInformation(QString const &key, QVariant const &info) override;
 

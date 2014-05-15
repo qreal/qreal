@@ -125,6 +125,9 @@ public:
 			, QVariant const &value
 			);
 
+	/// Returns a list of keys by that stored some meta-information.
+	QStringList metaInformationKeys() const;
+
 	/// Returns the meta-information about current model stored by the given key.
 	QVariant metaInformation(QString const &key) const;
 
