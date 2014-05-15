@@ -117,7 +117,6 @@ bool ProjectManager::open(QString const &fileName)
 		return true;
 	}
 
-
 	mMainWindow->models()->repoControlApi().open(fileName);
 	mMainWindow->models()->reinit();
 
@@ -159,10 +158,12 @@ bool ProjectManager::import(QString const &fileName)
 	if (fileName.isEmpty()) {
 		return false;
 	}
+
 	QString const currentSaveFilePath = saveFilePath();
 	if (!open(fileName)) {
 		return open(currentSaveFilePath);
 	}
+
 	// In the hope that while the user selects a file nobody substitute for the current project with project, which
 	// has diagrams for which there are no plugins
 	mMainWindow->models()->repoControlApi().importFromDisk(currentSaveFilePath);
@@ -176,6 +177,7 @@ bool ProjectManager::saveFileExists(QString const &fileName)
 		fileNotFoundMessage(fileName);
 		return false;
 	}
+
 	return true;
 }
 
@@ -186,6 +188,7 @@ bool ProjectManager::pluginsEnough() const
 				, tr("These plugins are not present, but needed to load the save:\n") + missingPluginNames());
 		return false;
 	}
+
 	return true;
 }
 
