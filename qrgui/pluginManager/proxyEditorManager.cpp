@@ -27,6 +27,11 @@ IdList ProxyEditorManager::elements(Id const &diagram) const
 	return mProxiedEditorManager->elements(diagram);
 }
 
+Version ProxyEditorManager::version(Id const &editor) const
+{
+	return mProxiedEditorManager->version(editor);
+}
+
 bool ProxyEditorManager::loadPlugin(QString const &pluginName)
 {
 	return mProxiedEditorManager->loadPlugin(pluginName);

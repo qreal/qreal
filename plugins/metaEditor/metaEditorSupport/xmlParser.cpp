@@ -165,6 +165,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 		includeListString += include.text() + ", ";
 	}
 	setStandartConfigurations(metamodelId, id, "Empty_" + fileBaseName, "");
+	mApi.setProperty(metamodelId, "version", document.documentElement().attribute("version"));
 	mApi.setProperty(metamodelId, "include", includeListString);
 	mApi.setProperty(metamodelId, "name of the directory", directoryName);
 	mApi.setProperty(metamodelId, "relative path to QReal Source Files", pathToRoot);

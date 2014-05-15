@@ -33,6 +33,8 @@ public:
 	IdList editors() const override;
 	IdList diagrams(Id const &editor) const override;
 	IdList elements(Id const &diagram) const override;
+	Version version(Id const &editor) const override;
+
 	bool loadPlugin(QString const &pluginName) override;
 	bool unloadPlugin(QString const &pluginName) override;
 

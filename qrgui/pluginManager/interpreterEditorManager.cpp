@@ -93,7 +93,7 @@ IdList InterpreterEditorManager::editors() const
 	return result;
 }
 
-IdList InterpreterEditorManager::diagrams(const Id &editor) const
+IdList InterpreterEditorManager::diagrams(Id const &editor) const
 {
 	IdList result;
 	foreach (qrRepo::RepoApi const * const repo, mEditorRepoApi.values()) {
@@ -113,7 +113,7 @@ IdList InterpreterEditorManager::diagrams(const Id &editor) const
 	return result;
 }
 
-IdList InterpreterEditorManager::elements(const Id &diagram) const
+IdList InterpreterEditorManager::elements(Id const &diagram) const
 {
 	IdList result;
 	foreach (qrRepo::RepoApi * const repo, mEditorRepoApi.values()) {
@@ -143,7 +143,14 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 	return result;
 }
 
-QString InterpreterEditorManager::friendlyName(const Id &id) const
+Version InterpreterEditorManager::version(Id const &editor) const
+{
+	/// @todo: Support metamodel versions
+	Q_UNUSED(editor)
+	return Version();
+}
+
+QString InterpreterEditorManager::friendlyName(Id const &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "displayedName")
@@ -160,7 +167,7 @@ bool InterpreterEditorManager::hasElement(Id const &elementId) const
 	return repoAndMetaId(elementId).first != NULL;
 }
 
-QString InterpreterEditorManager::propertyDescription(const Id &id, const QString &propertyName) const
+QString InterpreterEditorManager::propertyDescription(Id const &id, QString const &propertyName) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, propertyName);

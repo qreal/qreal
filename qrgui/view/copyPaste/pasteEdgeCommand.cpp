@@ -23,9 +23,11 @@ Id PasteEdgeCommand::pasteNewInstance()
 	if (!mCreateCommand) {
 		Id const typeId = mEdgeData.id.type();
 		resultId = mScene->createElement(typeId.toString(), mEdgeData.pos + mOffset, true, &mCreateCommand, false);
-		mCreateCommand->redo();
-		mCopiedIds->insert(mEdgeData.id, resultId);
-		addPreAction(mCreateCommand);
+		if (mCreateCommand) {
+			mCreateCommand->redo();
+			mCopiedIds->insert(mEdgeData.id, resultId);
+			addPreAction(mCreateCommand);
+		}
 	}
 	return resultId;
 }
@@ -46,8 +48,10 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 
 		mCreateCommand->redo();
 		resultId = mCreateCommand->result();
-		mCopiedIds->insert(mEdgeData.id, resultId);
-		addPreAction(mCreateCommand);
+		if (!resultId.isNull()) {
+			mCopiedIds->insert(mEdgeData.id, resultId);
+			addPreAction(mCreateCommand);
+		}
 	}
 
 	EdgeElement * const newEdge = new EdgeElement(
@@ -64,6 +68,10 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 
 void PasteEdgeCommand::restoreElement()
 {
+	if (mResult.isNull()) {
+		return;
+	}
+
 	Id const edgeId = mResult;
 
 	Id const newSrcId = mCopiedIds->value(mEdgeData.srcId);
