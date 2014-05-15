@@ -122,6 +122,7 @@ void Interpreter::interpret()
 
 void Interpreter::stopRobot()
 {
+	mSensorVariablesUpdater.suspend();
 	mRobotModelManager.model().stopRobot();
 	mState = idle;
 	qDeleteAll(mThreads);
