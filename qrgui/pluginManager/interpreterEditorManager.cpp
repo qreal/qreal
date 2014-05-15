@@ -472,16 +472,17 @@ IdList InterpreterEditorManager::containedTypes(Id const &id) const
 	return containedTypes;
 }
 
-QStringList InterpreterEditorManager::enumValues(Id const &id, const QString &name) const
+QList<QPair<QString, QString>> InterpreterEditorManager::enumValues(Id const &id, const QString &name) const
 {
-	QStringList result;
+	QList<QPair<QString, QString>> result;
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
 	Id const metaId = repoAndMetaIdPair.second;
 	foreach (Id const &property, repo->children(metaId)) {
 		if (repo->name(property) == name) {
-			foreach (Id const propertyChild, repo->children(property)) {
-				result.append(repo->name(propertyChild));
+			foreach (Id const &propertyChild, repo->children(property)) {
+				/// @todo: support friendly enum names
+				result.append(qMakePair(repo->name(propertyChild), repo->name(propertyChild)));
 			}
 		}
 	}

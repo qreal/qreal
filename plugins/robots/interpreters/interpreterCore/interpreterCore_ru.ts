@@ -1529,8 +1529,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
     <message>
+        <location filename="details/d2RobotModel/gridParameters.cpp" line="17"/>
         <source>Grid</source>
-        <translation type="obsolete">Сетка</translation>
+        <translation>Сетка</translation>
     </message>
 </context>
 <context>

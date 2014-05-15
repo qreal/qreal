@@ -47,7 +47,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 		// It is a static label, text for it is fixed.
 		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
-				+ ", QString::fromUtf8(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
+				+ ", QObject::tr(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 
@@ -94,7 +94,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 					field = "repo->logicalProperty(\"" + listElement + "\")";
 				}
 			} else {
-				field = "QString::fromUtf8(\"" + listElement + "\")";
+				field = "QObject::tr(\"" + listElement + "\")";
 			}
 
 			resultStr += " + " +  field;

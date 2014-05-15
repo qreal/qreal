@@ -306,20 +306,20 @@ void XmlParser::initImport(const QDomElement &import, const Id &diagramId)
 	}
 }
 
-void XmlParser::setEnumAttributes(const QDomElement &enumElement, const Id &enumId)
+void XmlParser::setEnumAttributes(QDomElement const &enumElement, Id const &enumId)
 {
-	QDomNodeList values = enumElement.childNodes();
+	QDomNodeList const values = enumElement.childNodes();
 
 	for (int i = 0; i < values.length(); ++i) {
 		QDomElement value = values.at(i).toElement();
 		if (value.tagName() == "value"){
-			Id valueId("MetaEditor", "MetaEditor", "MetaEntityValue",
-					QUuid::createUuid().toString());
+			Id const valueId("MetaEditor", "MetaEditor", "MetaEntityValue"
+					, QUuid::createUuid().toString());
 
 			setStandartConfigurations(valueId, enumId, value.text(),
 					value.attribute("displayedName", ""));
 
-			mApi.setProperty(valueId, "valueName", value.text());
+			mApi.setProperty(valueId, "valueName", value.attribute("name", ""));
 		}
 	}
 }

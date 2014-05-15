@@ -308,7 +308,7 @@ IdList EditorManager::containedTypes(const Id &id) const
 	return result;
 }
 
-QStringList EditorManager::enumValues(Id const &id, const QString &name) const
+QList<QPair<QString, QString>> EditorManager::enumValues(Id const &id, const QString &name) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	QString typeName = mPluginIface[id.editor()]->getPropertyType(id.element(), name);

@@ -167,7 +167,7 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 		if (!labelText.isEmpty()) {
 			QString const labelType = mEditorRepoApi->stringProperty(mId, "labelType");
 			LabelInterface* title = NULL;
-			if (labelType == "Static text") {
+			if (labelType == "staticText") {
 				// This is a statical label, it does not need repository.
 				title = labelFactory.createLabel(0, 0, 0, labelText, 0);
 			} else {
@@ -241,7 +241,7 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 {
 	if (mId.element() == "MetaEntityEdge") {
 		foreach (EdgeLabel edgeLabel, mEdgeLabels) {
-			if (edgeLabel.labelType == "Static text") {
+			if (edgeLabel.labelType == "staticText") {
 				// Static label
 				return;
 			}

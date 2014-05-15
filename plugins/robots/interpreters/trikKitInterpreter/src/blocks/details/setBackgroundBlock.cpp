@@ -27,39 +27,39 @@ void SetBackgroundBlock::run()
 
 QColor SetBackgroundBlock::propertyToColor(QString const &property) const
 {
-	if (property == QString::fromUtf8("Белый")) {
+	if (property == "white") {
 		return QColor(Qt::white);
-	} else if (property == QString::fromUtf8("Чёрный")) {
+	} else if (property == "black") {
 		return QColor(Qt::black);
-	} else if (property == QString::fromUtf8("Красный")) {
+	} else if (property == "red") {
 		return QColor(Qt::red);
-	} else if (property == QString::fromUtf8("Тёмно-красный")) {
+	} else if (property == "darkRed") {
 		return QColor(Qt::darkRed);
-	} else if (property == QString::fromUtf8("Зелёный")) {
+	} else if (property == "green") {
 		return QColor(Qt::green);
-	} else if (property == QString::fromUtf8("Тёмно-зелёный")) {
+	} else if (property == "darkGreen") {
 		return QColor(Qt::darkGreen);
-	} else if (property == QString::fromUtf8("Синий")) {
+	} else if (property == "blue") {
 		return QColor(Qt::blue);
-	} else if (property == QString::fromUtf8("Тёмно-синий")) {
+	} else if (property == "darkBlue") {
 		return QColor(Qt::darkBlue);
-	} else if (property == QString::fromUtf8("Сине-зелёный")) {
+	} else if (property == "cyan") {
 		return QColor(Qt::cyan);
-	} else if (property == QString::fromUtf8("Тёмносине-зелёный")) {
+	} else if (property == "darkCyan") {
 		return QColor(Qt::darkCyan);
-	} else if (property == QString::fromUtf8("Пурпурный")) {
+	} else if (property == "magenta") {
 		return QColor(Qt::magenta);
-	} else if (property == QString::fromUtf8("Тёмно-пурпурный")) {
+	} else if (property == "darkMagenta") {
 		return QColor(Qt::darkMagenta);
-	} else if (property == QString::fromUtf8("Жёлтый")) {
+	} else if (property == "yellow") {
 		return QColor(Qt::yellow);
-	} else if (property == QString::fromUtf8("Тёмно-жёлтый")) {
+	} else if (property == "darkYellow") {
 		return QColor(Qt::darkYellow);
-	} else if (property == QString::fromUtf8("Серый")) {
+	} else if (property == "gray") {
 		return QColor(Qt::gray);
-	} else if (property == QString::fromUtf8("Тёмно-серый")) {
+	} else if (property == "darkGray") {
 		return QColor(Qt::darkGray);
-	} else if (property == QString::fromUtf8("Светло-серый")) {
+	} else if (property == "lightGray") {
 		return QColor(Qt::lightGray);
 	}
 

@@ -14,8 +14,7 @@ void NxtEnginesForwardBlock::run()
 {
 	int const power = evaluate("Power").toInt();
 
-	/// @todo Makes sense only for NXT.
-	bool const breakMode = stringProperty("Mode") != QString::fromUtf8("скользить");
+	bool const breakMode = stringProperty("Mode") != "float";
 
 	for (NxtMotor * const motor : parsePorts<NxtMotor>()) {
 		motor->on(power, breakMode);
