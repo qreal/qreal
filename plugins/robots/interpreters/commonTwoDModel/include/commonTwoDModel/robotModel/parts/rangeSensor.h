@@ -27,7 +27,6 @@ public:
 protected:
 	void doConfiguration() override;
 
-private:
 	engine::TwoDModelEngineInterface &mEngine;
 };
 
