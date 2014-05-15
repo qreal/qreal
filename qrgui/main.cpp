@@ -15,22 +15,35 @@ void clearConfig()
 	SettingsManager::instance()->saveData();
 }
 
+void setDefaultLocale(bool localizationDisabled)
+{
+	// If some day it will be requested the language customization from application settings
+	// this method can be useful. We can just set default locale to the selected in settings one
+	// (not the system locale like now).
+	if (localizationDisabled) {
+		QLocale::setDefault(QLocale::English);
+	}
+
+	// System locale is used when no default locale was set.
+	// Here prefered locale can be set some day.
+}
+
 int main(int argc, char *argv[])
 {
 	QDateTime const startedTime = QDateTime::currentDateTime();
 	QRealApplication app(argc, argv);
 
+	setDefaultLocale(app.arguments().contains("--no-locale"));
+
 	QTranslator guiTranslator;
 	QTranslator utilsTranslator;
 	QTranslator qtTranslator;
-	if (!app.arguments().contains("--no-locale")) {
-		guiTranslator.load(":/qrgui_" + QLocale::system().name());
-		utilsTranslator.load(":/qrutils_" + QLocale::system().name());
-		qtTranslator.load(":/qt_" + QLocale::system().name());
-		app.installTranslator(&guiTranslator);
-		app.installTranslator(&utilsTranslator);
-		app.installTranslator(&qtTranslator);
-	}
+	guiTranslator.load(":/qrgui_" + QLocale().name());
+	utilsTranslator.load(":/qrutils_" + QLocale().name());
+	qtTranslator.load(":/qt_" + QLocale().name());
+	app.installTranslator(&guiTranslator);
+	app.installTranslator(&utilsTranslator);
+	app.installTranslator(&qtTranslator);
 
 	QString fileToOpen;
 	if (app.arguments().count() > 1) {

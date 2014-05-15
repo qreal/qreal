@@ -296,7 +296,7 @@ void XmlCompiler::generateIncludes(OutFile &out)
 	out()
 		//<< "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
 		<< mPluginName << "Plugin::" << mPluginName << "Plugin()\n{\n"
-		<< "\tmAppTranslator.load(\":/translations/" + translationName + "_\" + QLocale::system().name());\n"
+		<< "\tmAppTranslator.load(\":/translations/" + translationName + "_\" + QLocale().name());\n"
 		<< "\tQApplication::installTranslator(&mAppTranslator);\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n";

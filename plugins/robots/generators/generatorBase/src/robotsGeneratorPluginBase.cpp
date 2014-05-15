@@ -9,7 +9,7 @@ using namespace gui;
 
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 {
-	mAppTranslator.load(":/generatorBase_" + QLocale::system().name());
+	mAppTranslator.load(":/generatorBase_" + QLocale().name());
 	QApplication::installTranslator(&mAppTranslator);
 }
 

@@ -18,7 +18,7 @@ RefactoringPlugin::RefactoringPlugin()
 	: mPreferencesPage(new RefactoringPreferencesPage())
 	, mRefactoringWindow(NULL)
 {
-	mAppTranslator.load(":/refactoringSupport_" + QLocale::system().name());
+	mAppTranslator.load(":/refactoringSupport_" + QLocale().name());
 	QApplication::installTranslator(&mAppTranslator);
 }
 

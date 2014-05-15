@@ -17,7 +17,7 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	, mTwoDRobotModelV6(mRealRobotModelV6)
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
 {
-	mAppTranslator.load(":/trikKitInterpreter_" + QLocale::system().name());
+	mAppTranslator.load(":/trikKitInterpreter_" + QLocale().name());
 	QApplication::installTranslator(&mAppTranslator);
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV6.name() });

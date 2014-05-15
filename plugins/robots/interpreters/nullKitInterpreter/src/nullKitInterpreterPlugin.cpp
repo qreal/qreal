@@ -6,7 +6,7 @@ using namespace nullKitInterpreter;
 
 NullKitInterpreterPlugin::NullKitInterpreterPlugin()
 {
-	mAppTranslator.load(":/nullKitInterpreter_" + QLocale::system().name());
+	mAppTranslator.load(":/nullKitInterpreter_" + QLocale().name());
 	QApplication::installTranslator(&mAppTranslator);
 }
 

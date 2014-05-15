@@ -15,9 +15,9 @@ RobotsPlugin::RobotsPlugin()
 {
 	// WARNING: hack!
 	forceLoadCommonTwoDModelLib();
-	mInterpreterBaseTranslator.load(":/interpreterBase_" + QLocale::system().name());
-	mCommonTwoDModelTranslator.load(":/commonTwoDModel_" + QLocale::system().name());
-	mInterpreterCoreTranslator.load(":/interpreterCore_" + QLocale::system().name());
+	mInterpreterBaseTranslator.load(":/interpreterBase_" + QLocale().name());
+	mCommonTwoDModelTranslator.load(":/commonTwoDModel_" + QLocale().name());
+	mInterpreterCoreTranslator.load(":/interpreterCore_" + QLocale().name());
 	QApplication::installTranslator(&mInterpreterBaseTranslator);
 	QApplication::installTranslator(&mCommonTwoDModelTranslator);
 	QApplication::installTranslator(&mInterpreterCoreTranslator);

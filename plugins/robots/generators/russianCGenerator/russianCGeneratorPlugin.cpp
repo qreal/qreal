@@ -11,7 +11,7 @@ using namespace generatorBase;
 RussianCGeneratorPlugin::RussianCGeneratorPlugin()
 	: mGenerateCodeAction(nullptr)
 {
-	mAppTranslator.load(":/russianCGenerator_" + QLocale::system().name());
+	mAppTranslator.load(":/russianCGenerator_" + QLocale().name());
 	QApplication::installTranslator(&mAppTranslator);
 }
 
