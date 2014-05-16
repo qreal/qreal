@@ -33,6 +33,7 @@ install:
 
 script:
   - gcc --version
+  - qmake --version
   - if [ "$VERA" = "true" ]; then tclsh buildScripts/vera++/generatePaths.tcl; fi
   - if [ "$VERA" = "true" ]; then vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params; fi
   - qmake $PROJECT.pro CONFIG+=$CONFIG
