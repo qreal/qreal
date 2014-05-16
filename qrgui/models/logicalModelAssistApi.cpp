@@ -215,3 +215,18 @@ void LogicalModelAssistApi::removeElement(Id const &logicalId)
 		mLogicalModel.removeRow(index.row(), index.parent());
 	}
 }
+
+QMap<Id, Version> LogicalModelAssistApi::editorVersions() const
+{
+	QMap<Id, Version> result;
+
+	QStringList const metaInformationKeys = logicalRepoApi().metaInformationKeys();
+	for (Id const &editor : editorManagerInterface().editors()) {
+		QString const key = editor.editor() + "Version";
+		if (metaInformationKeys.contains(key)) {
+			result[editor] = Version::fromString(logicalRepoApi().metaInformation(key).toString());
+		}
+	}
+
+	return result;
+}

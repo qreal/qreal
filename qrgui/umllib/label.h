@@ -75,6 +75,7 @@ private:
 	bool mReadOnly;
 	bool mScalingX;
 	bool mScalingY;
+	QMap<QString, QString> mEnumValues;
 	QRectF mContents;
 	QRectF mParentContents;
 	qreal mRotation;

@@ -27,12 +27,14 @@ class EditorManager : public QObject, public EditorManagerInterface
 	Q_OBJECT
 
 public:
-	explicit EditorManager(QObject *parent = NULL);
-
-	~EditorManager();
+	explicit EditorManager(QObject *parent = nullptr);
+	~EditorManager() override;
 
 	IdList editors() const override;
 	IdList diagrams(Id const &editor) const override;
+	IdList elements(Id const &diagram) const override;
+	Version version(Id const &editor) const override;
+
 	IdList groups(Id const &diagram) override;
 	Pattern getPatternByName (QString const &str) const override;
 	QList<QString> getPatternNames() const override;
@@ -40,7 +42,7 @@ public:
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const override;
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const override;
 	bool shallPaletteBeSorted(Id const &editor, Id const &diagram) const override;
-	IdList elements(Id const &diagram) const override;
+
 	bool loadPlugin(QString const &pluginName) override;
 	bool unloadPlugin(QString const &pluginName) override;
 
@@ -55,7 +57,7 @@ public:
 
 	IdList containedTypes(const Id &id) const override;
 	QList<Explosion> explosions(Id const &source) const override;
-	QStringList enumValues(Id const &id, const QString &name) const override;
+	QList<QPair<QString, QString>> enumValues(Id const &id, const QString &name) const override;
 	QString typeName(Id const &id, const QString &name) const override;
 	QStringList allChildrenTypesOf(Id const &parent) const override;
 

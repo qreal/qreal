@@ -426,7 +426,7 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
 		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName
-				<< "\"] = QString::fromUtf8(\"" << actualDisplayedName << "\");\n";
+				<< "\"] = tr(\"" << actualDisplayedName << "\");\n";
 	}
 }
 
@@ -437,7 +437,7 @@ void GraphicType::generateDescriptionMapping(OutFile &out)
 			QString const diagramName = NameNormalizer::normalize(mDiagram->name());
 			QString const normalizedName = NameNormalizer::normalize(qualifiedName());
 			out() << "\tmElementsDescriptionMap[\"" << diagramName << "\"][\""
-					<< normalizedName << "\"] = QString::fromUtf8(\"" << mDescription << "\");\n";
+					<< normalizedName << "\"] = tr(\"" << mDescription << "\");\n";
 		}
 	}
 }
@@ -452,7 +452,7 @@ void GraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
 				QString const propertyName = p->name();
 				QString const propertyDescription = p->description();
 				out() << "\tmPropertiesDescriptionMap[\"" << diagramName << "\"][\""
-						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\""
+						<< normalizedName << "\"][\"" << propertyName << "\"] = tr(\""
 						<< propertyDescription << "\");\n";
 			}
 		}
@@ -469,7 +469,7 @@ void GraphicType::generatePropertyDisplayedNamesMapping(utils::OutFile &out)
 				QString const propertyName = p->name();
 				QString const propertyDisplayedName = p->displayedName();
 				out() << "\tmPropertiesDisplayedNamesMap[\"" << diagramName << "\"][\""
-						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\""
+						<< normalizedName << "\"][\"" << propertyName << "\"] = tr(\""
 						<< propertyDisplayedName << "\");\n";
 			}
 		}
@@ -596,11 +596,12 @@ void GraphicType::generatePropertyDefaults(OutFile &out)
 		return;
 	}
 
-	QString name = NameNormalizer::normalize(qualifiedName());
-	foreach (Property *property, mProperties) {
+	QString const name = NameNormalizer::normalize(qualifiedName());
+	for (Property const *property : mProperties) {
 		if (!property->defaultValue().isEmpty()) {
-			out() << "\tmPropertyDefault[\"" << name << "\"][\"" << property->name()
-					<< "\"] = QString::fromUtf8(\"" << property->defaultValue() << "\");\n";
+			QString const stringConstructor = property->type() == "string" ? "tr" : "QString::fromUtf8";
+			out() << QString("\tmPropertyDefault[\"%1\"][\"%2\"] = %3(\"%4\");\n").arg(name
+					, property->name(), stringConstructor, property->defaultValue());
 		}
 	}
 }

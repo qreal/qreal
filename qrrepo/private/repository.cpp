@@ -27,10 +27,7 @@ void Repository::init()
 Repository::~Repository()
 {
 	mSerializer.clearWorkingDir();
-
-	foreach (Id id, mObjects.keys()) {
-		delete mObjects[id];
-	}
+	qDeleteAll(mObjects);
 }
 
 IdList Repository::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
@@ -343,7 +340,7 @@ void Repository::removeTemporaryRemovedLinks(Id const &id)
 
 void Repository::loadFromDisk()
 {
-	mSerializer.loadFromDisk(mObjects);
+	mSerializer.loadFromDisk(mObjects, mMetaInfo);
 	addChildrenToRootObject();
 }
 
@@ -404,47 +401,51 @@ bool Repository::exist(const Id &id) const
 
 void Repository::saveAll() const
 {
-	mSerializer.saveToDisk(mObjects.values());
+	mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
 }
 
 void Repository::save(IdList const &list) const
 {
 	QList<Object*> toSave;
-	foreach(Id const &id, list)
+	for (Id const &id : list) {
 		toSave.append(allChildrenOf(id));
+	}
 
-	mSerializer.saveToDisk(toSave);
+	mSerializer.saveToDisk(toSave, mMetaInfo);
 }
 
 void Repository::saveWithLogicalId(qReal::IdList const &list) const
 {
 	QList<Object*> toSave;
-	foreach(Id const &id, list)
-		toSave.append(allChildrenOfWithLogicalId(id));
+	for (Id const &id : list) {
+		toSave << allChildrenOfWithLogicalId(id);
+	}
 
-	mSerializer.saveToDisk(toSave);
+	mSerializer.saveToDisk(toSave, mMetaInfo);
 }
 
 void Repository::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
 {
 	QString const currentWorkingFile = mWorkingFile;
-	foreach (QString const &savePath, diagramIds.keys()) {
-		qReal::IdList diagrams = diagramIds[savePath];
+	for (QString const &savePath : diagramIds.keys()) {
+		qReal::IdList const diagrams = diagramIds[savePath];
 		setWorkingFile(savePath);
 		qReal::IdList elementsToSave;
-		foreach (qReal::Id const &id, diagrams) {
+		for (qReal::Id const &id : diagrams) {
 			elementsToSave += idsOfAllChildrenOf(id);
 			// id is a graphical ID for this diagram
 			// we have to add logical diagram ID
 			// to this list manually
 			elementsToSave += logicalId(id);
 		}
+
 		saveWithLogicalId(elementsToSave);
 	}
+
 	setWorkingFile(currentWorkingFile);
 }
 
-void Repository::remove(IdList list) const
+void Repository::remove(IdList const &list) const
 {
 	foreach(Id const &id, list) {
 		qDebug() << id.toString();
@@ -497,7 +498,7 @@ void Repository::exterminate()
 	printDebug();
 	mObjects.clear();
 	//serializer.clearWorkingDir();
-	mSerializer.saveToDisk(mObjects.values());
+	mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
 	init();
 	printDebug();
 }
@@ -578,4 +579,19 @@ void Repository::setGraphicalPartProperty(
 	}
 
 	graphicalObject->setGraphicalPartProperty(partIndex, propertyName, value);
+}
+
+QStringList Repository::metaInformationKeys() const
+{
+	return mMetaInfo.keys();
+}
+
+QVariant Repository::metaInformation(QString const &key) const
+{
+	return mMetaInfo[key];
+}
+
+void Repository::setMetaInformation(QString const &key, QVariant const &info)
+{
+	mMetaInfo[key] = info;
 }

@@ -58,6 +58,7 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
 	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
+	metamodel.setAttribute("version", mApi.stringProperty(metamodelId, "version"));
 	mDocument.appendChild(metamodel);
 
 	QString const includeFile = mApi.stringProperty(metamodelId, "include");
@@ -98,8 +99,11 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 		outpro() << QString ("ROOT = %1\n").arg(relativeQRealSourcesPath);
 		outpro() << "\n";
 		outpro() << QString("include (%1)").arg(relativeQRealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
+		outpro() << "\n\n";
+
+		generateTranslations(pathToFile, fileBaseName);
 	}
-	catch (char* e) {
+	catch (char *) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file name"));
 	}
 
@@ -149,6 +153,25 @@ QString EditorGenerator::calculateRelativePath(QString const &pathOne, QString c
 	}
 
 	return result;
+}
+
+void EditorGenerator::generateTranslations(QString const &path, QString const &name)
+{
+	// Creating translation subdir
+	QDir translationsDir(path + "/translations");
+	QString const absolutePath = translationsDir.absolutePath();
+	if (!translationsDir.exists()) {
+		translationsDir.mkpath(absolutePath);
+	}
+
+	/// @todo: implement languages selection, not only _ru.ts
+	OutFile translationPro(absolutePath + "/translations.pro");
+	translationPro() << "HEADERS = $$PWD/../generated/pluginInterface.h $$PWD/../generated/elements.h\n\n";
+	translationPro() << "SOURCES = $$PWD/../generated/pluginInterface.cpp\n\n";
+	translationPro() << QString("TRANSLATIONS = $$PWD/%1_ru.ts\n").arg(name);
+	// Writing empty qm-file because resources will require it
+	OutFile qmFile(QString("%1/%2_ru.qm").arg(absolutePath, name));
+	qmFile() << "";
 }
 
 void EditorGenerator::copyImages(QString const &pathToFile)
@@ -312,9 +335,9 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 			labels.appendChild(label);
 
 			QString const labelType = mApi.stringProperty(id, "labelType");
-			if (labelType == "Static text") {
+			if (labelType == "staticText") {
 				label.setAttribute("text", labelText);
-			} else if (labelType == "Dynamic text") {
+			} else if (labelType == "dynamicText") {
 				label.setAttribute("textBinded", labelText);
 			} else {
 				mErrorReporter.addWarning(QObject::tr("Incorrect label type"), id);
@@ -437,15 +460,13 @@ void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &id)
 		parent.appendChild(fields);
 }
 
-void EditorGenerator::setValues(QDomElement &parent, const Id &id)
+void EditorGenerator::setValues(QDomElement &parent, Id const &id)
 {
-	IdList childElems = mApi.children(id);
-
-	foreach (Id const idChild, childElems) {
+	for(Id const idChild : mApi.children(id)) {
 		if (idChild != Id::rootId()) {
 			QDomElement valueTag = mDocument.createElement("value");
-			QDomText value = mDocument.createTextNode(mApi.stringProperty(idChild, "valueName"));
-			valueTag.appendChild(value);
+			ensureCorrectness(idChild, valueTag, "name", mApi.stringProperty(idChild, "valueName"));
+			ensureCorrectness(idChild, valueTag, "displayedName", mApi.stringProperty(idChild, "displayedName"));
 			parent.appendChild(valueTag);
 		}
 	}

@@ -5,9 +5,9 @@
 	<diagram name="BasicBehaviorsDiagram" displayedName="Basic Behaviors Diagram">
 		<nonGraphicTypes>
 			<enum name="CallConcurrencyKind" displayedName="Call Concurrency Kind">
-				<value>sequential</value>
-				<value>guarded</value>
-				<value>concurrent</value>
+				<value name="sequential" displayedName="Sequential"/>
+				<value name="guarded" displayedName="Guarded"/>
+				<value name="concurrent" displayedName="Concurrent"/>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>

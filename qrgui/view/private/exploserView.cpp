@@ -168,7 +168,9 @@ void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *create
 
 void ExploserView::goTo(Id const &id)
 {
-	mMainWindow->activateItemOrDiagram(id);
+	if (!id.isNull()) {
+		mMainWindow->activateItemOrDiagram(id);
+	}
 }
 
 void ExploserView::addExplosionActionTriggered()

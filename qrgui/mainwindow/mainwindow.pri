@@ -20,6 +20,7 @@ HEADERS += \
 	$$PWD/projectManager/autosaver.h \
 	$$PWD/projectManager/projectManagementInterface.h \
 	$$PWD/projectManager/projectManager.h \
+	$$PWD/projectManager/versionsConverterManager.h \
 	$$PWD/palette/paletteTree.h \
 	$$PWD/palette/paletteTreeWidget.h \
 	$$PWD/palette/draggableElement.h \
@@ -49,6 +50,7 @@ SOURCES += \
 	$$PWD/filterObject.cpp \
 	$$PWD/projectManager/autosaver.cpp \
 	$$PWD/projectManager/projectManager.cpp \
+	$$PWD/projectManager/versionsConverterManager.cpp \
 	$$PWD/palette/paletteTree.cpp \
 	$$PWD/palette/paletteTreeWidget.cpp \
 	$$PWD/palette/draggableElement.cpp \
