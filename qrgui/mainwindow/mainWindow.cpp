@@ -506,7 +506,6 @@ void MainWindow::openRecentProjectsMenu()
 
 	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(QString const &))
 			, mProjectManager, SLOT(openExisting(QString const &)));
-
 }
 
 void MainWindow::closeAllTabs()
@@ -529,8 +528,7 @@ void MainWindow::setReference(QStringList const &data, QPersistentModelIndex con
 	}
 }
 
-void MainWindow::setData(QString const &data, QPersistentModelIndex const &index
-		, int const &role)
+void MainWindow::setData(QString const &data, QPersistentModelIndex const &index, int const &role)
 {
 	// const_cast here is ok, since we need to set data in a correct model, and
 	// not going to use this index anymore.
@@ -1521,7 +1519,8 @@ PropertyEditorView *MainWindow::propertyEditor() const
 }
 
 QTreeView *MainWindow::graphicalModelExplorer() const
-{	return mUi->graphicalModelExplorer;
+{
+	return mUi->graphicalModelExplorer;
 }
 
 QTreeView *MainWindow::logicalModelExplorer() const
@@ -1884,12 +1883,16 @@ void MainWindow::fullscreen()
 		hideDockWidget(mUi->logicalModelDock, "logicalModel");
 		hideDockWidget(mUi->propertyDock, "propertyEditor");
 		hideDockWidget(mUi->errorDock, "errorReporter");
+
+		mUi->actionFullscreen->setIcon(QIcon(":/icons/unFullScreen.svg"));
 	} else {
 		showDockWidget(mUi->minimapDock, "minimap");
 		showDockWidget(mUi->graphicalModelDock, "graphicalModel");
 		showDockWidget(mUi->logicalModelDock, "logicalModel");
 		showDockWidget(mUi->propertyDock, "propertyEditor");
 		showDockWidget(mUi->errorDock, "errorReporter");
+
+		mUi->actionFullscreen->setIcon(QIcon(":/icons/fullScreen.svg"));
 	}
 	foreach (QDockWidget *dock, mAdditionalDocks) {
 		if (mIsFullscreen) {

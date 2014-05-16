@@ -84,7 +84,7 @@ void WidgetsHelper::setEditorManager(EditorManager const *editorManager)
 	initEnumEditors();
 }
 
-void WidgetsHelper::onIdChanged() {
+void WidgetsHelper::init() {
 	mElement->updateData();
 	initEnumEditors();
 }

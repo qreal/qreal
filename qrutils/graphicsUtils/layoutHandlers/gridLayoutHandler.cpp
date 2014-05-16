@@ -1,6 +1,7 @@
 #include "gridLayoutHandler.h"
+
+#include "mathUtils/geometry.h"
 #include "gridApproximizer.h"
-#include "../../mathUtils/mathUtils.h"
 
 using namespace qReal::layouts;
 
@@ -99,7 +100,7 @@ void GridLayoutHandler::minimizeDistance(QRectF const &cell
 		, int &closestRow, int &closestColumn
 		, int currentRow, int currentColumn)
 {
-	qreal const distance = mathUtils::MathUtils::distance(cell, position);
+	qreal const distance = mathUtils::Geometry::distance(cell, position);
 	if (distance < currentMinimum) {
 		currentMinimum = distance;
 		closestRow = currentRow;

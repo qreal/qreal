@@ -89,7 +89,7 @@ NodeElement::NodeElement(ElementImpl *impl
 
 	mGrid = new SceneGridHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
-	mWidgetsHelper->onIdChanged();
+	mWidgetsHelper->init();
 
 	connect(this, SIGNAL(geometryChanged()), this, SLOT(synchronizeGeometries()));
 	mLayoutFactory->configure(impl);

@@ -24,8 +24,8 @@ ShapeEdit::ShapeEdit(bool isIconEditor, QWidget *parent)
 	, navigation::NavigationPageWithMenu()
 	, mIsIconEditor(isIconEditor)
 	, mUi(new Ui::ShapeEdit)
-	, mDocumentBuilder(NULL)
 	, mRole(0)
+	, mDocumentBuilder(NULL)
 {
 	init();
 }

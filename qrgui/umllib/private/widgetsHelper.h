@@ -21,7 +21,7 @@ public:
 	QMap<QString, PropertyEditorInterface *> propertyEditors() const;
 
 	void setEditorManager(EditorManager const *editorManager);
-	void onIdChanged();
+	void init();
 
 	void onElementGeometryChanged();
 

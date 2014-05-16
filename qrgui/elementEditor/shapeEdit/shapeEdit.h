@@ -16,10 +16,6 @@
 #include "elementEditor/common/templateDocumentBuilder.h"
 #include "pluginManager/editorManagerInterface.h"
 
-// TODO: lolwut?
-//#include "ui_mainWindow.h"
-
-// TODO: lolwut?
 #include "models/details/logicalModel.h"
 
 #include "elementEditor/shapeEdit/visibilityConditionsDialog.h"
