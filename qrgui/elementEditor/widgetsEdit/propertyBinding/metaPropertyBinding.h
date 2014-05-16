@@ -19,9 +19,9 @@ public:
 	MetaPropertyBinding(QObject *proxy, QString const &source, QString const &target);
 
 	QString source() const;
-	virtual QString binding() const;
-	virtual void setPropertyValue(QVariant const &value);
-	virtual void setEnumValues(QStringList const &values);
+	QString binding() const override;
+	void setPropertyValue(QVariant const &value) override;
+	void setEnumValues(QList<QPair<QString, QString>> const &values) override;
 
 private:
 	QObject *mProxy;

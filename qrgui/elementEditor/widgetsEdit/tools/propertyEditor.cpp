@@ -44,12 +44,12 @@ void PropertyEditor::setValueInRepo(QVariant const &value)
 	}
 }
 
-void PropertyEditor::setEnumValues(const QStringList &values)
+void PropertyEditor::setEnumValues(QList<QPair<QString, QString>> const &values)
 {
 	mEnumValues = values;
 }
 
-QStringList PropertyEditor::enumValues() const
+QList<QPair<QString, QString>> PropertyEditor::enumValues() const
 {
 	return mEnumValues;
 }

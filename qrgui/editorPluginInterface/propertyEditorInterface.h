@@ -9,6 +9,6 @@ public:
 
 	virtual QString binding() const = 0;
 	virtual void setPropertyValue(QVariant const &value) = 0;
-	virtual void setEnumValues(QStringList const &values) = 0;
+	virtual void setEnumValues(QList<QPair<QString, QString>> const &values) = 0;
 
 };

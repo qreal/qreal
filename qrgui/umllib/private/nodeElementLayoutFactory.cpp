@@ -24,7 +24,7 @@ void NodeElementLayoutFactory::setPropertyValue(QVariant const &value)
 	setType(stringToType(value.toString()));
 }
 
-void NodeElementLayoutFactory::setEnumValues(QStringList const &values)
+void NodeElementLayoutFactory::setEnumValues(QList<QPair<QString, QString>> const &values)
 {
 	Q_UNUSED(values)
 }

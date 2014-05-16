@@ -96,7 +96,7 @@ void WidgetsHelper::initEnumEditors()
 		return;
 	}
 	foreach (QString const &propertyName, mPropertyEditors.keys()) {
-		QStringList const values = mEditorManager->enumValues(mElement->id(), propertyName);
+		QList<QPair<QString, QString>> const values = mEditorManager->enumValues(mElement->id(), propertyName);
 		foreach (PropertyEditorInterface *editor, mPropertyEditors.values(propertyName)) {
 			// If property is not enum empty list would be given and
 			// will be ignored by property editor

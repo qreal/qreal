@@ -17,10 +17,10 @@ class ComboBoxWidget : public QComboBox, public PropertyEditor
 
 public:
 	explicit ComboBoxWidget();
-	virtual ~ComboBoxWidget() {}
+	~ComboBoxWidget() override;
 
-	virtual void setPropertyValue(QVariant const &value);
-	virtual void setEnumValues(QStringList const &values);
+	void setPropertyValue(QVariant const &value) override;
+	void setEnumValues(QList<QPair<QString, QString>> const &values) override;
 
 private slots:
 	void onSelectionChanged(int index);

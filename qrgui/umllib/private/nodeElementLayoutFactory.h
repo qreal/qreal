@@ -21,9 +21,9 @@ public:
 			, QGraphicsWidget *layoutHost);
 	virtual ~NodeElementLayoutFactory();
 
-	virtual QString binding() const;
-	virtual void setPropertyValue(QVariant const &value);
-	virtual void setEnumValues(QStringList const &values);
+	QString binding() const override;
+	void setPropertyValue(QVariant const &value) override;
+	void setEnumValues(QList<QPair<QString, QString>> const &values) override;
 
 	void configure(ElementImpl * const impl);
 

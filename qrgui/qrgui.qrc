@@ -32,6 +32,24 @@
         <file>icons/collapseAll.png</file>
         <file>icons/expandAll.png</file>
         <file>icons/changeRepresentation.png</file>
+        <file>qt_ru.qm</file>
+        <file>icons/open.svg</file>
+        <file>icons/fullScreen.svg</file>
+        <file>icons/unFullScreen.svg</file>
+        <file>icons/save.svg</file>
+        <file>icons/save_as.png</file>
+        <file>icons/undo.png</file>
+        <file>icons/redo.png</file>
+        <file>icons/hotkeys.png</file>
+        <file>icons/kroki6.png</file>
+        <file>icons/preview.png</file>
+        <file>icons/default.svg</file>
+        <file>icons/newDiagram.svg</file>
+        <file>icons/newProject.svg</file>
+        <file>icons/startTab/new.svg</file>
+        <file>icons/startTab/open.svg</file>
+        <file>icons/startTab/createInterpreted.svg</file>
+        <file>icons/startTab/openInterpreted.svg</file>
         <file>icons/widgetsEditor/breakLayout.png</file>
         <file>icons/widgetsEditor/checkBox.png</file>
         <file>icons/widgetsEditor/comboBox.png</file>
@@ -53,10 +71,8 @@
         <file>icons/widgetsEditor/horizontalSpacer.png</file>
         <file>icons/widgetsEditor/verticalSpacer.png</file>
         <file>icons/widgetsEditor/trigger.png</file>
-        <file>icons/preview.png</file>
         <file>icons/widgetsEditor/save.png</file>
         <file>icons/widgetsEditor/saveToDisk.png</file>
-        <file>qt_ru.qm</file>
         <file>icons/widgetsEditor/shapeEditor.png</file>
         <file>icons/widgetsEditor/widgetEditor.png</file>
         <file>icons/widgetsEditor/loadFromDisk.png</file>
@@ -67,19 +83,6 @@
         <file>icons/widgetsEditor/cancel.png</file>
         <file>icons/widgetsEditor/ok.png</file>
         <file>icons/widgetsEditor/outerBindings.png</file>
-        <file>icons/open.png</file>
-        <file>icons/save.png</file>
-        <file>icons/full_screen.png</file>
-        <file>icons/save_as.png</file>
-        <file>icons/undo.png</file>
-        <file>icons/redo.png</file>
-        <file>icons/hotkeys.png</file>
-        <file>icons/kroki6.png</file>
-        <file>icons/default.svg</file>
-        <file>icons/startTab/new.svg</file>
-        <file>icons/startTab/open.svg</file>
-        <file>icons/startTab/createInterpreted.svg</file>
-        <file>icons/startTab/openInterpreted.svg</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

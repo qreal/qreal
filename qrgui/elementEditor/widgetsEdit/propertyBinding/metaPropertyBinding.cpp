@@ -39,7 +39,7 @@ void MetaPropertyBinding::setPropertyValue(QVariant const &value)
 	}
 }
 
-void MetaPropertyBinding::setEnumValues(QStringList const &values)
+void MetaPropertyBinding::setEnumValues(QList<QPair<QString, QString>> const &values)
 {
 	// Here binding gets enum names from QReal engine side.
 	// The principle of consistency works here: if we get enum
@@ -54,6 +54,6 @@ void MetaPropertyBinding::setEnumValues(QStringList const &values)
 	int const wtfEnumValuesCount = wtfMetaEnum.keyCount();
 	for (int i = 0; i < values.count(); ++i) {
 		int const wtfEnumIndex = qMin(i, wtfEnumValuesCount - 1);
-		mQRealWtfEnumValuesMap.insert(values[i], wtfMetaEnum.value(wtfEnumIndex));
+		mQRealWtfEnumValuesMap.insert(values[i].first, wtfMetaEnum.value(wtfEnumIndex));
 	}
 }

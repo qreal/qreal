@@ -12,6 +12,10 @@ ComboBox::ComboBox(ToolController *controller)
 	mProxy = new ComboBoxProxy(mComboBox);
 }
 
+ComboBoxWidget::~ComboBoxWidget()
+{
+}
+
 ComboBoxProxy::ComboBoxProxy(ComboBoxWidget *comboBox)
 	: ToolProxy(comboBox), mComboBox(comboBox)
 {
@@ -96,20 +100,27 @@ ComboBoxWidget::ComboBoxWidget()
 void ComboBoxWidget::onSelectionChanged(int index)
 {
 	if (index < enumValues().length()) {
-		setValueInRepo(enumValues()[index]);
+		setValueInRepo(enumValues()[index].first);
 	}
 }
 
-void ComboBoxWidget::setPropertyValue(const QVariant &value)
+void ComboBoxWidget::setPropertyValue(QVariant const &value)
 {
-	if (enumValues().contains(value.toString())) {
-		setCurrentIndex(enumValues().indexOf(value.toString()));
+	for (QPair<QString, QString> const &pair : enumValues()) {
+		if (pair.first == value) {
+			setCurrentText(pair.second);
+		}
 	}
 }
 
-void ComboBoxWidget::setEnumValues(QStringList const &values)
+void ComboBoxWidget::setEnumValues(QList<QPair<QString, QString>> const &values)
 {
+	QStringList displayedNames;
+	for (auto const &pair : values) {
+		displayedNames << pair.second;
+	}
+
 	PropertyEditor::setEnumValues(values);
 	clear();
-	addItems(values);
+	addItems(displayedNames);
 }

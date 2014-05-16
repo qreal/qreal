@@ -31,7 +31,7 @@ public:
 
 	virtual void setPropertyValue(QVariant const &value);
 	virtual QString binding() const;
-	virtual void setEnumValues(QStringList const &values);
+	virtual void setEnumValues(QList<QPair<QString, QString>>  const &values);
 	QString propertyName() const;
 	void setPropertyName(QString const &propertyName);
 	void setValueInRepo(QVariant const &value);
@@ -39,14 +39,14 @@ public:
 protected:
 	explicit PropertyEditor(QWidget *editor);
 	NodeElement *getNode() const;
-	QStringList enumValues() const;
+	QList<QPair<QString, QString>> enumValues() const;
 	bool isEnumEditor() const;
 
 private:
 	QWidget *mEditor;
 	QString mValue;
 	QString mPropertyName;
-	QStringList mEnumValues;
+	QList<QPair<QString, QString>> mEnumValues;
 };
 
 }

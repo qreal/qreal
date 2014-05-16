@@ -244,7 +244,6 @@ void NodeType::generateCode(OutFile &out)
 	QString const className = NameNormalizer::normalize(qualifiedName());
 	bool hasSdf = false;
 	bool hasWtf = false;
-	bool hasPorts = false;
 
 	out() << "\tclass " << className << " : public qReal::ElementImpl\n\t{\n"
 			<< "\tpublic:\n";
@@ -470,7 +469,6 @@ void NodeType::generateCode(OutFile &out)
 
 bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 {
-	qDebug() << "dfboj;flbd";
 	GraphicType::generateOneCase(out, isNotFirst);
 
 	QSet<QString> portTypes;
