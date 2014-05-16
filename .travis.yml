@@ -18,7 +18,7 @@ install:
   - if [ "$CXX" = "g++" ]; then sudo apt-get install g++-4.8; fi
   - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50; fi
   - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50; fi
-  - sudo add-apt-repository ppa:canonical-qt5-edgers/qt5-proper -y
+  - sudo add-apt-repository ppa:canonical-qt5-edgers/qt5-beta2 -y
   - sudo add-apt-repository ppa:ubuntu-sdk-team/ppa -y
   - sudo add-apt-repository ppa:smspillaz/verapp-latest -y
   - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu raring universe"
