@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include <utils/abstractTimer.h>
+#include <utils/timelineInterface.h>
 #include <interpreterBase/robotModel/portInfo.h>
 
 #include "commonTwoDModel/engine/twoDModelDisplayInterface.h"
@@ -28,7 +28,7 @@ public:
 
 	virtual void playSound(int timeInMs) = 0;
 
-	virtual utils::AbstractTimer *modelTimer() const = 0;
+	virtual utils::TimelineInterface &modelTimeline() = 0;
 
 	virtual TwoDModelDisplayInterface *display() = 0;
 

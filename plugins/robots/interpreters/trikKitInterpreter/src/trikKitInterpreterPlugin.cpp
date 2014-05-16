@@ -16,10 +16,11 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	: mTwoDRobotModelV4(mRealRobotModelV4)
 	, mTwoDRobotModelV6(mRealRobotModelV6)
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
-	, mAdditionalPreferences(new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV6.name() }))
 {
-	mAppTranslator.load(":/trikKitInterpreter_" + QLocale::system().name());
+	mAppTranslator.load(":/trikKitInterpreter_" + QLocale().name());
 	QApplication::installTranslator(&mAppTranslator);
+
+	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV4.name(), mRealRobotModelV6.name() });
 
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV4
 			, new TrikTwoDModelConfigurer("M1", "JM3"));
@@ -73,7 +74,7 @@ QString TrikKitInterpreterPlugin::friendlyKitName() const
 
 QList<interpreterBase::robotModel::RobotModelInterface *> TrikKitInterpreterPlugin::robotModels()
 {
-	return {&mRealRobotModelV4, &mRealRobotModelV6, &mTwoDRobotModelV4, &mTwoDRobotModelV6};
+	return {/*&mRealRobotModelV4, */&mRealRobotModelV6/*, &mTwoDRobotModelV4*/, &mTwoDRobotModelV6};
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::blocksFactoryFor(
@@ -95,7 +96,7 @@ interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 {
-	return { mTwoDModelV4->showTwoDModelWidgetActionInfo(), mTwoDModelV6->showTwoDModelWidgetActionInfo() };
+	return { /* mTwoDModelV4->showTwoDModelWidgetActionInfo(), */mTwoDModelV6->showTwoDModelWidgetActionInfo() };
 }
 
 QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()

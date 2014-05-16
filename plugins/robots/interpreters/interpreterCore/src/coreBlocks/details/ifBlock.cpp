@@ -3,10 +3,6 @@
 using namespace qReal;
 using namespace interpreterCore::coreBlocks::details;
 
-IfBlock::IfBlock()
-{
-}
-
 void IfBlock::run()
 {
 	bool const expressionValue = evaluateBool("Condition");
@@ -34,14 +30,14 @@ bool IfBlock::initNextBlocks()
 		}
 
 		QString const condition = stringProperty(linkId, "Guard").toLower();
-		if (condition == QString::fromUtf8("истина")) {
+		if (condition == "true") {
 			if (trueBlockId.isNull()) {
 				trueBlockId = targetBlockId;
 			} else {
 				error(tr("Two links marked with 'true' found"));
 				return false;
 			}
-		} else if (condition == QString::fromUtf8("ложь")) {
+		} else if (condition == "false") {
 			if (falseBlockId.isNull()) {
 				falseBlockId = targetBlockId;
 			} else {

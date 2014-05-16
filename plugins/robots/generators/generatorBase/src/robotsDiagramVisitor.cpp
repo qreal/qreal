@@ -28,11 +28,11 @@ void RobotsDiagramVisitor::terminateSearch()
 RobotsDiagramVisitor::LinkGuard RobotsDiagramVisitor::guardOf(qReal::Id const &linkId) const
 {
 	QString const guardProperty = mRepo.property(linkId, "Guard").toString().toLower();
-	if (guardProperty == QString::fromUtf8("истина")) {
+	if (guardProperty == "true") {
 		return trueGuard;
-	} else if (guardProperty == QString::fromUtf8("ложь")) {
+	} else if (guardProperty == "false") {
 		return falseGuard;
-	} else if (guardProperty == QString::fromUtf8("итерация")) {
+	} else if (guardProperty == "iteration") {
 		return iterationGuard;
 	}
 

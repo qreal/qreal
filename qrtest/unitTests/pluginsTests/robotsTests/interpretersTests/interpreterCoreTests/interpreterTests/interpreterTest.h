@@ -9,6 +9,7 @@
 #include <interpreterBase/robotModel/robotModelInterfaceMock.h>
 #include <interpreterBase/robotModel/robotModelManagerInterfaceMock.h>
 #include <interpreterBase/robotModel/configurationInterfaceMock.h>
+#include <utils/realTimeline.h>
 
 /// @todo /src/managers
 #include <interpreterCore/managers/blocksFactoryManagerInterfaceMock.h>
@@ -27,6 +28,7 @@ protected:
 
 	QScopedPointer<interpreterCore::interpreter::InterpreterInterface> mInterpreter;
 	QScopedPointer<QrguiFacade> mQrguiFacade;
+	utils::RealTimeline mTimeline;
 	RobotModelInterfaceMock mModel;
 	RobotModelManagerInterfaceMock mModelManager;
 	QScopedPointer<QAction> mFakeConnectToRobotAction;

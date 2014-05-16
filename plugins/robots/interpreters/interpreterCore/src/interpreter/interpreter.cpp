@@ -4,13 +4,11 @@
 #include <QtWidgets/QAction>
 #include <QtCore/QDebug>
 
+#include <utils/timelineInterface.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 //#include "details/tracer.h"
 //#include "details/debugHelper.h"
-
-/// @todo Temporary
-#include <interpreterBase/robotModel/robotParts/touchSensor.h>
 
 using namespace qReal;
 using namespace interpreterCore::interpreter;
@@ -124,12 +122,20 @@ void Interpreter::interpret()
 
 void Interpreter::stopRobot()
 {
+	mSensorVariablesUpdater.suspend();
 	mRobotModelManager.model().stopRobot();
 	mState = idle;
 	qDeleteAll(mThreads);
 	mThreads.clear();
 	mBlocksTable->setFailure();
 	emit stopped();
+}
+
+int Interpreter::timeElapsed() const
+{
+	return mState == interpreting
+			? mRobotModelManager.model().timeline().timestamp() - mInterpretationStartedTimestamp
+			: 0;
 }
 
 void Interpreter::connectedSlot(bool success)
@@ -164,6 +170,7 @@ void Interpreter::devicesConfiguredSlot()
 
 	if (mState == waitingForDevicesConfiguredToLaunch) {
 		mState = interpreting;
+		mInterpretationStartedTimestamp = mRobotModelManager.model().timeline().timestamp();
 
 		mSensorVariablesUpdater.run();
 

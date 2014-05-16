@@ -225,7 +225,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="src/engine/twoDModelEngineFacade.cpp" line="10"/>
+        <location filename="src/engine/twoDModelEngineFacade.cpp" line="11"/>
         <source>2d model</source>
         <translation>2D модель</translation>
     </message>
@@ -284,9 +284,17 @@
         <translation>Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="1271"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="1277"/>
         <source>%1 (port %2)</source>
         <translation>%1 (порт %2)</translation>
+    </message>
+</context>
+<context>
+    <name>twoDModel::GridParameters</name>
+    <message>
+        <location filename="src/engine/gridParameters.cpp" line="16"/>
+        <source>Grid</source>
+        <translation>Сетка</translation>
     </message>
 </context>
 <context>

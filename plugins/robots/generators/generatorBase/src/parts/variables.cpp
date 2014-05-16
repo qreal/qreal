@@ -20,10 +20,17 @@ void Variables::reinit(qrRepo::RepoApi const &api)
 	}
 
 	QStringList expressions;
-	IdList const blocks = api.elementsByType("Function");
-	foreach (Id const &block, blocks) {
+	IdList const funtionBlocks = api.elementsByType("Function");
+	for (Id const &block : funtionBlocks) {
 		if (api.hasProperty(block, "Body")) {
 			expressions << api.stringProperty(block, "Body");
+		}
+	}
+
+	IdList const initializationBlocks = api.elementsByType("VariableInit");
+	for (Id const &block : initializationBlocks) {
+		if (api.hasProperty(block, "variable") && api.hasProperty(block, "value")) {
+			expressions << api.stringProperty(block, "variable") + " = " + api.stringProperty(block, "value");
 		}
 	}
 

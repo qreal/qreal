@@ -6,13 +6,12 @@ namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
 
+/// Interpreter`s implementation for conditional block.
 class IfBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
 
 public:
-	IfBlock();
-
 	void run() override;
 
 private:

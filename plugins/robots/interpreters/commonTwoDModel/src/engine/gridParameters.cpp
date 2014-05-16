@@ -13,8 +13,7 @@ GridParameters::GridParameters(QWidget *parent)
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
 	mShowGridCheckBox = new QCheckBox;
-	/// @todo for some reason qt translits doesn`t work in this case
-	mShowGridCheckBox->setText("Сетка");
+	mShowGridCheckBox->setText(tr("Grid"));
 	mShowGridCheckBox->setTristate(false);
 
 	mCellSize = new QSlider;

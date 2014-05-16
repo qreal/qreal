@@ -15,6 +15,10 @@ class InterpreterInterface : public interpreterBase::InterpreterControlInterface
 public:
 	virtual ~InterpreterInterface() {}
 
+	/// Returns time in ms that passed from the moment of last intepretation start.
+	/// @warning: may return unreal time (for example when 2D model is beeng interpreted).
+	virtual int timeElapsed() const = 0;
+
 signals:
 	void started();
 	void stopped();

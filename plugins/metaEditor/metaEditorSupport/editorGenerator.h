@@ -54,6 +54,7 @@ private:
 	static QString calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource);
 	static QString calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource);
 	static QString calculateRelativePath(QString const &pathOne, QString const &pathTwo);
+	static void generateTranslations(QString const &path, QString const &name);
 
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;

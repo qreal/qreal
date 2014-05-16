@@ -3,6 +3,7 @@ QT += svg xml widgets
 INCLUDEPATH += \
 	$$PWD/src/ \
 	$$PWD/../interpreterBase/include/ \
+	$$PWD/../commonTwoDModel/include/ \
 	$$PWD/../../generators/generatorBase/include/ \
 	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \

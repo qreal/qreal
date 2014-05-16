@@ -19,6 +19,7 @@ class ActionsManager : public QObject
 	Q_OBJECT
 
 public:
+	/// @todo: Get rid of RobotModelManaged dependence
 	ActionsManager(KitPluginManager &kitPluginManager, RobotModelManager &robotModelManager);
 
 	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
@@ -38,6 +39,7 @@ public:
 
 public slots:
 	void onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model);
+	void onActiveTabChanged(Id const &activeTabId);
 
 private slots:
 	void onRobotModelActionChecked(QObject *robotModel);

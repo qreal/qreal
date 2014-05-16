@@ -34,7 +34,6 @@ class D2RobotModel : public QObject
 	Q_OBJECT
 
 public:
-
 	enum ATime {
 		DoInf,
 		DoByLimit,
@@ -42,7 +41,7 @@ public:
 	};
 
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	explicit D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
+	D2RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
 			, Configurer const * const configurer
 			, QObject *parent = 0);
 
@@ -70,9 +69,6 @@ public:
 	int readColorSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 	int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 
-	void showModelWidget();
-	void closeModelWidget();
-
 	virtual void setRotation(qreal angle);
 	virtual qreal rotateAngle() const;
 
@@ -83,12 +79,16 @@ public:
 	virtual void deserialize(const QDomElement &robotElement);
 
 	Timeline *timeline() const;
-
-	utils::AbstractTimer *modelTimer() const override;
+	utils::TimelineInterface &modelTimeline() override;
 
 	void setNoiseSettings();
 
 	void setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port) override;
+
+public slots:
+	void showModelWidget();
+	void closeModelWidget();
+	void setRunStopButtonsEnabled(bool enabled);
 
 signals:
 	void runButtonPressed();

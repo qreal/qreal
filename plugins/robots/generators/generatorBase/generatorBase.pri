@@ -112,6 +112,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/converters/regexpMultiConverter.h \
 	$$PWD/include/generatorBase/converters/stringPropertyConverter.h \
 	$$PWD/include/generatorBase/converters/enumConverterBase.h \
+	$$PWD/include/generatorBase/converters/dynamicPathConverter.h \
 	$$PWD/include/generatorBase/simpleGenerators/abstractSimpleGenerator.h \
 	$$PWD/include/generatorBase/simpleGenerators/binding.h \
 	$$PWD/include/generatorBase/simpleGenerators/bindingGenerator.h \
@@ -175,6 +176,7 @@ SOURCES += \
 	$$PWD/src/converters/templateParametrizedMultiConverter.cpp \
 	$$PWD/src/converters/regexpMultiConverter.cpp \
 	$$PWD/src/converters/enumConverterBase.cpp \
+	$$PWD/src/converters/dynamicPathConverter.cpp \
 	$$PWD/src/converters/codeConverterBase.cpp \
 	$$PWD/src/converters/intPropertyConverter.cpp \
 	$$PWD/src/converters/floatPropertyConverter.cpp \

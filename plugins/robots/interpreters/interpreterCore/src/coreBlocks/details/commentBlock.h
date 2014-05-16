@@ -6,6 +6,7 @@ namespace interpreterCore {
 namespace coreBlocks {
 namespace details {
 
+/// Interpreter`s implementation for comment block. Does nothing except verifiyng block`s links.
 class CommentBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT

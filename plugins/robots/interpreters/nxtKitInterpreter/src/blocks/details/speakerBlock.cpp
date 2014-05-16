@@ -1,6 +1,7 @@
 #include "speakerBlock.h"
 
 #include <utils/tracer.h>
+#include <utils/timelineInterface.h>
 #include <utils/abstractTimer.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
 
@@ -9,7 +10,7 @@ using namespace interpreterBase::robotModel;
 
 SpeakerBlock::SpeakerBlock(RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)
-	, mTimer(robotModel.produceTimer())
+	, mTimer(robotModel.timeline().produceTimer())
 {
 	mTimer->setParent(this);
 	connect(mTimer, &utils::AbstractTimer::timeout, this, &SpeakerBlock::timeout);

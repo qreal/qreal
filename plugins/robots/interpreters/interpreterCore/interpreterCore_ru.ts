@@ -395,12 +395,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="291"/>
         <source>Type of constructor kit</source>
-        <translation></translation>
+        <translation>Конструктор</translation>
     </message>
     <message>
         <location filename="src/ui/robotsSettingsPage.ui" line="305"/>
         <source>Type of robot model</source>
-        <translation></translation>
+        <translation>Тип модели робота</translation>
     </message>
     <message>
         <source>Enable motor noise</source>
@@ -581,7 +581,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="src/robotsPlugin.cpp" line="52"/>
+        <location filename="src/robotsPlugin.cpp" line="49"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -716,15 +716,14 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPlugin</name>
     <message>
-        <location filename="src/robotsPlugin.cpp" line="57"/>
         <source>Robots</source>
-        <translation>Роботы</translation>
+        <translation type="vanished">Роботы</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="src/robotsPluginFacade.cpp" line="93"/>
+        <location filename="src/robotsPluginFacade.cpp" line="98"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -858,23 +857,23 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="80"/>
-        <location filename="src/interpreter/interpreter.cpp" line="164"/>
+        <location filename="src/interpreter/interpreter.cpp" line="76"/>
+        <location filename="src/interpreter/interpreter.cpp" line="160"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="85"/>
+        <location filename="src/interpreter/interpreter.cpp" line="81"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="145"/>
+        <location filename="src/interpreter/interpreter.cpp" line="141"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="149"/>
+        <location filename="src/interpreter/interpreter.cpp" line="145"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
@@ -1530,8 +1529,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
     <message>
+        <location filename="details/d2RobotModel/gridParameters.cpp" line="17"/>
         <source>Grid</source>
-        <translation type="obsolete">Сетка</translation>
+        <translation>Сетка</translation>
     </message>
 </context>
 <context>

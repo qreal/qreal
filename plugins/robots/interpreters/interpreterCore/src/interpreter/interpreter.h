@@ -3,7 +3,6 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QAction>
 
-#include <qrkernel/ids.h>
 #include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
@@ -43,6 +42,8 @@ public slots:
 	void connectToRobot() override;
 	void interpret() override;
 	void stopRobot() override;
+	int timeElapsed() const override;
+
 //	void showD2ModelWidget(bool isVisible);
 //	void showWatchList();
 //	void onTabChanged(Id const &diagramId, bool enabled);
@@ -78,6 +79,7 @@ private:
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 
 	InterpreterState mState;
+	quint64 mInterpretationStartedTimestamp;
 	QList<details::Thread *> mThreads;  // Has ownership
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership

@@ -1,12 +1,13 @@
 #include "timerBlock.h"
 
 #include <utils/tracer.h>
+#include <utils/timelineInterface.h>
 #include <utils/abstractTimer.h>
 
 using namespace interpreterCore::coreBlocks::details;
 
 TimerBlock::TimerBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
-	: mTimer(robotModel.produceTimer())
+	: mTimer(robotModel.timeline().produceTimer())
 {
 	mTimer->setParent(this);
 	connect(mTimer, &utils::AbstractTimer::timeout, this, &TimerBlock::timeout);

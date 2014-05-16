@@ -13,13 +13,13 @@ QString Customizer::windowTitle() const
 
 QIcon Customizer::applicationIcon() const
 {
-	return QIcon(":/icons/kroki.png");
+	return QIcon(":/icons/icon.png");
 }
 
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.0.0 ALPHA";
+	return "3.0.0 α2";
 }
 
 QString Customizer::aboutText() const

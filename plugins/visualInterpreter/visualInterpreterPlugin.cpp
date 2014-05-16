@@ -16,7 +16,7 @@ VisualInterpreterPlugin::VisualInterpreterPlugin()
 	: mPreferencesPage(new VisualInterpreterPreferencesPage())
 	, mWatchListWindow(NULL)
 {
-	mAppTranslator.load(":/visualInterpreter_" + QLocale::system().name());
+	mAppTranslator.load(":/visualInterpreter_" + QLocale().name());
 	QApplication::installTranslator(&mAppTranslator);
 }
 

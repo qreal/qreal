@@ -4,8 +4,6 @@ using namespace generatorBase::converters;
 using namespace qReal;
 
 FunctionInvocationConverter::FunctionInvocationConverter(QString const &pathToTemplates)
-	: EnumConverterBase(pathToTemplates)
+	: DynamicPathConverter(pathToTemplates, "functions/@@DATA@@.t")
 {
-	addMapping("random", "functions/random.t");
-	addMapping("randomize", "functions/randomize.t");
 }

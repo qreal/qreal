@@ -19,5 +19,7 @@ TrikEnginesGenerator::TrikEnginesGenerator(qrRepo::RepoApi const &repo
 				, Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter()) }
 			, parent)
 {
+	// AngularServo is just another block for EnginesForward, since it is controlled the same way as radial servo
+	// or power motor.
 	mCustomizer.factory()->engines()->registerUsageOnPorts(repo.property(id, "Ports").toString());
 }

@@ -43,10 +43,9 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 		return;
 	}
 
-	/// @todo Give parser a real time computation function.
 	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter()
 			, mRobotModelManager
-			, []() { return 0; });
+			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; });
 
 
 	initSensorWidgets();
@@ -61,6 +60,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, configurer.logicalModelApi()
 			, mRobotModelManager
 			, *configurer.mainWindowInterpretersInterface().errorReporter()
+			, mParser
 			);
 	mBlocksFactoryManager.addFactory(coreFactory);
 
@@ -96,8 +96,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
-
-	coreFactory->setParser(mParser);
+	connect(&configurer.systemEvents(), &SystemEventsInterface::activeTabChanged
+			, &mActionsManager, &ActionsManager::onActiveTabChanged);
 
 	sync();
 }
@@ -205,16 +205,15 @@ void RobotsPluginFacade::initFactoriesFor(QString const &kitId
 	for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
 		interpreterBase::blocksBase::BlocksFactoryInterface * const factory = kit->blocksFactoryFor(model);
 		if (factory) {
+			/// @todo Non-obvious dependency on mParser, which may or may not be constructed here.
+			///       More functional style will be helpful here.
 			factory->configure(configurer.graphicalModelApi()
 					, configurer.logicalModelApi()
 					, mRobotModelManager
 					, *configurer.mainWindowInterpretersInterface().errorReporter()
+					, mParser
 					);
 			mBlocksFactoryManager.addFactory(factory, model);
-
-			/// @todo Non-obvious dependency on mParser, which may or may not be constructed here.
-			///       More functional style will be helpful here.
-			factory->setParser(mParser);
 		}
 	}
 }

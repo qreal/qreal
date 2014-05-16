@@ -14,7 +14,7 @@ public:
 	EnumConverterBase(QString const &pathToTemplatesDir
 			, QMap<QString, QString> const &valuesToTemplatePaths = QMap<QString, QString>());
 
-	virtual QString convert(QString const &data) const;
+	QString convert(QString const &data) const override;
 
 protected:
 	void addMapping(QString const &enumValue, QString const &templatePath);

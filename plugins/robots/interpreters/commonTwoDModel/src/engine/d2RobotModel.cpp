@@ -528,6 +528,11 @@ void D2RobotModel::closeModelWidget()
 	mD2ModelWidget->close();
 }
 
+void D2RobotModel::setRunStopButtonsEnabled(bool enabled)
+{
+	mD2ModelWidget->setRunStopButtonsEnabled(enabled);
+}
+
 void D2RobotModel::setRotation(qreal angle)
 {
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
@@ -620,7 +625,7 @@ int D2RobotModel::truncateToInterval(int const a, int const b, int const res) co
 	return (res >= a && res <= b) ? res : (res < a ? a : b);
 }
 
-utils::AbstractTimer *D2RobotModel::modelTimer() const
+utils::TimelineInterface &D2RobotModel::modelTimeline()
 {
-	return new D2ModelTimer(mTimeline);
+	return *mTimeline;
 }

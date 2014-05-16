@@ -27,7 +27,7 @@ public:
 
 	void setEngine(engine::TwoDModelEngineInterface &engine);
 
-	utils::AbstractTimer *produceTimer() override;
+	utils::TimelineInterface &timeline() override;
 
 protected:
 	engine::TwoDModelEngineInterface *engine();

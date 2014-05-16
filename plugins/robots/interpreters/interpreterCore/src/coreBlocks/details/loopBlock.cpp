@@ -36,7 +36,7 @@ bool LoopBlock::initNextBlocks()
 			return false;
 		}
 
-		if (stringProperty(linkId, "Guard").toLower() == QString::fromUtf8("итерация")) {
+		if (stringProperty(linkId, "Guard").toLower() == "iteration") {
 			if (!iterationFound) {
 				mIterationStartBlockId = targetBlockId;
 				iterationFound = true;

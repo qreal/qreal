@@ -4,6 +4,7 @@
 
 namespace interpreterCore {
 
+/// @todo: Replace it with nullKitInterpreter.
 class DefaultRobotModel : public interpreterBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT

@@ -13,17 +13,6 @@ CommonBlocksFactory::CommonBlocksFactory()
 {
 }
 
-void CommonBlocksFactory::setParser(interpreterBase::blocksBase::BlockParserInterface * const parser)
-{
-	/// @todo ??? is this ****?
-	mParser = parser;
-}
-
-//RobotsBlockParser * CommonBlocksFactory::getParser()
-//{
-//	return mParser;
-//}
-
 BlockInterface *CommonBlocksFactory::block(qReal::Id const &element)
 {
 	interpreterBase::blocksBase::Block * const newBlock = produceBlock(element);
@@ -41,12 +30,14 @@ BlockInterface *CommonBlocksFactory::block(qReal::Id const &element)
 void CommonBlocksFactory::configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::LogicalModelAssistInterface const &logicalModelApi
 		, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
-		, qReal::ErrorReporterInterface &errorReporter)
+		, qReal::ErrorReporterInterface &errorReporter
+		, BlockParserInterface * const parser)
 {
 	mRobotModelManager = &robotModelManager;
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
 	mErrorReporter = &errorReporter;
+	mParser = parser;
 }
 
 qReal::IdList CommonBlocksFactory::blocksToDisable() const

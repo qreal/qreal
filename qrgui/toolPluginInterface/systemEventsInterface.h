@@ -35,7 +35,7 @@ public:
 
 signals:
 	void closedMainWindow();
-	void activeTabChanged(Id const & rootElementId);
+	void activeTabChanged(Id const &rootElementId);
 	void settingsUpdated();
 	void codePathChanged(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
 	void newCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo);

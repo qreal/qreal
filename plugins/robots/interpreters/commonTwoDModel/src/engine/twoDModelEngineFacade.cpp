@@ -5,7 +5,7 @@
 using namespace twoDModel::engine;
 
 TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel
-	, Configurer const * const configurer)
+		, Configurer const * const configurer)
 	: mRobotModelName(robotModel.name())
 	, mTwoDModelActionInfo(
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
@@ -64,8 +64,10 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 				, &interpreterControl, &interpreterBase::InterpreterControlInterface::stopRobot);
 	};
 
+	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
+			, [this] (qReal::Id const &id) { mTwoDModel->setRunStopButtonsEnabled(!id.isNull()); } );
 	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
-			, mTwoDModel.data(), &twoDModel::D2RobotModel::closeModelWidget);
+			, mTwoDModel.data(), &D2RobotModel::closeModelWidget);
 
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged

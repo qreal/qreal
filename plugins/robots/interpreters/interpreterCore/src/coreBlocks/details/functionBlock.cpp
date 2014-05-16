@@ -2,10 +2,6 @@
 
 using namespace interpreterCore::coreBlocks::details;
 
-FunctionBlock::FunctionBlock()
-{
-}
-
 void FunctionBlock::run()
 {
 	evaluate("Body");
@@ -18,7 +14,7 @@ QVariant FunctionBlock::evaluate(QString const &propertyName)
 	mParser->functionBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
 	if (mParser->hasErrors()) {
 		mParser->deselect();
-		emit failure(); /*разобраться с этой хренотой*/
+		emit failure();
 	}
 
 	return 0;

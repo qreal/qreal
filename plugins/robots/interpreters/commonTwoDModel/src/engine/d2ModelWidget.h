@@ -105,6 +105,8 @@ public:
 
 	void loadXml(QDomDocument const &worldModel);
 
+	void setRunStopButtonsEnabled(bool enabled);
+
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);

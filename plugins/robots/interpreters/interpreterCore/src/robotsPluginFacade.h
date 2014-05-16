@@ -32,12 +32,16 @@ public:
 
 	~RobotsPluginFacade() override;
 
+	/// Inits all sybsytems of robots plugin infrastructure that somehow depend from engine`s parts.
 	void init(qReal::PluginConfigurator const &configurer);
 
+	/// Returns a pointer to settings page for robots plugin.
 	PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
 
+	/// Returns the customization class object for configuring QReal's main GUI module
 	Customizer &customizer();
 
+	/// Returns an object of the class responsible for managing plugin`s toolbar actions.
 	ActionsManager &actionsManager();
 
 private:

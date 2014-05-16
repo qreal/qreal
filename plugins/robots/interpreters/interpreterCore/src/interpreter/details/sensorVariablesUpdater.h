@@ -22,7 +22,10 @@ public:
 			, utils::ExpressionsParser &parser  /// @todo direct dependency from ExpressionsParser shall be removed.
 			);
 
+	/// Starts background polling process.
 	void run();
+
+	/// Stops background polling process.
 	void suspend();
 
 private slots:

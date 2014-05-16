@@ -32,22 +32,12 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage() override;  // Transfers ownership.
 	virtual qReal::Customizer *customizationInterface() override;  // Does not transfer ownership.
 
-private slots:
-	void showRobotSettings();
-//	void show2dModel();
-	void rereadSettings();
-//	void setModelType(int type);
-//	void setGraphWatcherSettings();
-	void updateSettings();
-	void closeNeededWidget();
-
-	/// Overriden to enable/disable related actions. For example, we can't run
-	/// a diagram which is not related to a plugin.
-	void activeTabChanged(Id const &rootElementId);
-
 private:
 	/// Main window interface object, used to call GUI functionality
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
+
+	/// Forces common 2D model to be loaded right away for using its resources
+	void forceLoadCommonTwoDModelLib();
 
 	QTranslator mInterpreterCoreTranslator;
 	QTranslator mInterpreterBaseTranslator;

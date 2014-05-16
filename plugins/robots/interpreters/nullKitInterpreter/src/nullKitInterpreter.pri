@@ -2,6 +2,7 @@ QT += widgets
 
 INCLUDEPATH += \
 	$$PWD/../../interpreterBase/include \
+	$$PWD/../../../utils/include \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
 

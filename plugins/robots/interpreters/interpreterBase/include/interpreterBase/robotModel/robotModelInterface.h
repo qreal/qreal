@@ -10,7 +10,7 @@
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace utils {
-class AbstractTimer;
+class TimelineInterface;
 }
 
 namespace interpreterBase {
@@ -130,8 +130,8 @@ public:
 	/// returned as convertible base we can simply convert Nxt`s light sensor to Trik`s one.
 	virtual QList<DeviceInfo> convertibleBases() const = 0;
 
-	/// Produces and transfers ownership the timer object that will be used for some blocks invocation.
-	virtual utils::AbstractTimer *produceTimer() = 0;
+	/// Returns a timeline object that can return current timestamps (for this robot model time) and produce timers.
+	virtual utils::TimelineInterface &timeline() = 0;
 
 signals:
 	/// Emitted when model is connected to a robot. If there is no need to connect (for example, 2d model), emitted

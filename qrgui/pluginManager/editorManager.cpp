@@ -163,6 +163,12 @@ IdList EditorManager::elements(Id const &diagram) const
 	return elements;
 }
 
+Version EditorManager::version(Id const &editor) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
+	return Version::fromString(mPluginIface[editor.editor()]->version());
+}
+
 bool EditorManager::isEditor(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
@@ -308,7 +314,7 @@ IdList EditorManager::containedTypes(const Id &id) const
 	return result;
 }
 
-QStringList EditorManager::enumValues(Id const &id, const QString &name) const
+QList<QPair<QString, QString>> EditorManager::enumValues(Id const &id, const QString &name) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	QString typeName = mPluginIface[id.editor()]->getPropertyType(id.element(), name);

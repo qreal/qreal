@@ -22,8 +22,8 @@ public:
 	void setWorkingFile(QString const &workingFile);
 
 	void removeFromDisk(qReal::Id const &id) const;
-	void saveToDisk(QList<Object *> const &objects) const;
-	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash);
+	void saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const;
+	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash, QHash<QString, QVariant> &metaInfo);
 
 	void decompressFile(QString const &fileName);
 
@@ -32,6 +32,9 @@ private:
 
 	void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object *> &objectsHash);
 	void loadModel(QDir const &dir, QHash<qReal::Id, Object *> &objectsHash);
+
+	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const;
+	void loadMetaInfo(QHash<QString, QVariant> &metaInfo) const;
 
 	QString pathToElement(qReal::Id const &id) const;
 	QString createDirectory(qReal::Id const &id, bool logical) const;

@@ -409,7 +409,7 @@ void RepoApi::importFromDisk(QString const &importedFile)
 	mRepository.importFromDisk(importedFile);
 }
 
-void RepoApi::save(qReal::IdList list) const
+void RepoApi::save(qReal::IdList const &list) const
 {
 	mRepository.save(list);
 }
@@ -436,7 +436,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 	IdList list = mRepository.property(target, listName).value<IdList>();
 
-	// Значения в списке должны быть уникальны.
+	// Values in the list must be unique.
 	if (list.contains(data))
 		return;
 
@@ -581,4 +581,19 @@ void RepoApi::setGraphicalPartProperty(
 		)
 {
 	mRepository.setGraphicalPartProperty(id, partIndex, propertyName, value);
+}
+
+QStringList RepoApi::metaInformationKeys() const
+{
+	return mRepository.metaInformationKeys();
+}
+
+QVariant RepoApi::metaInformation(QString const &key) const
+{
+	return mRepository.metaInformation(key);
+}
+
+void RepoApi::setMetaInformation(QString const &key, QVariant const &info)
+{
+	mRepository.setMetaInformation(key, info);
 }

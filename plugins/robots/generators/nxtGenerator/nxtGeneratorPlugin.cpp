@@ -17,7 +17,7 @@ NxtGeneratorPlugin::NxtGeneratorPlugin()
 	, mUploadProgramAction(nullptr)
 	, mNxtToolsPresent(false)
 {
-	mAppTranslator.load(":/nxtGenerator_" + QLocale::system().name());
+	mAppTranslator.load(":/nxtGenerator_" + QLocale().name());
 	QApplication::installTranslator(&mAppTranslator);
 	checkNxtTools();
 	initHotKeyActions();

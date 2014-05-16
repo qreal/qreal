@@ -1,12 +1,12 @@
 #pragma once
 
-#include <generatorBase/converters/enumConverterBase.h>
+#include <generatorBase/converters/dynamicPathConverter.h>
 
 namespace trik {
 namespace converters {
 
 /// Converts display background color enum values to Qt color names.
-class BackgroundColorConverter : public generatorBase::converters::EnumConverterBase
+class BackgroundColorConverter : public generatorBase::converters::DynamicPathConverter
 {
 public:
 	explicit BackgroundColorConverter(QString const &pathToTemplates);

@@ -13,6 +13,7 @@ LIBS += -L../../../../../../../bin -linterpreterBase
 
 INCLUDEPATH += \
 	../../../../../../../plugins/robots/interpreters/interpreterBase/include/ \
+	../../../../../../../plugins/robots/utils/include/ \
 	../../../../../../../qrgui/ \
 	../../../../../../../ \
 
