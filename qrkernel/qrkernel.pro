@@ -7,5 +7,3 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 
 include(qrkernel.pri)
-
-

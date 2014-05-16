@@ -29,23 +29,26 @@ TrikGeneratorPlugin::~TrikGeneratorPlugin()
 QList<ActionInfo> TrikGeneratorPlugin::actions()
 {
 	mGenerateCodeAction.setText(tr("Generate TRIK code"));
+	mGenerateCodeAction.setIcon(QIcon(":/images/generateQtsCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
 	mUploadProgramAction.setText(tr("Upload program"));
+	mUploadProgramAction.setIcon(QIcon(":/images/uploadProgram.svg"));
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
 	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	mRunProgramAction.setText(tr("Run program"));
+	mRunProgramAction.setIcon(QIcon(":/images/uploadAndExecuteProgram.svg"));
 	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
 	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()));
 
 	mStopRobotAction.setText(tr("Stop robot"));
+	mStopRobotAction.setIcon(QIcon(":/images/stopRobot.svg"));
 	ActionInfo stopRobotActionInfo(&mStopRobotAction, "generators", "tools");
 	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()));
 
-	return QList<ActionInfo>() << generateCodeActionInfo << uploadProgramActionInfo
-			<< runProgramActionInfo << stopRobotActionInfo;
+	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }
 
 MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()

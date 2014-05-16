@@ -73,4 +73,4 @@ include($$PWD/uxInfo/uxInfo.pri)
 include($$PWD/graphicsWatcher/sensorsGraph.pri)
 
 # Small framework for creating widgets with navigation
-include(navigationUtils/navigationUtils.pri)
+include($$PWD/navigationUtils/navigationUtils.pri)

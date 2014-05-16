@@ -1,0 +1,45 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>generated/shapes/AbstractNodeClass.sdf</file>
+	<file>generated/shapes/BalanceClass.sdf</file>
+	<file>generated/shapes/BalanceInitClass.sdf</file>
+	<file>generated/shapes/BeepClass.sdf</file>
+	<file>generated/shapes/ClearScreenClass.sdf</file>
+	<file>generated/shapes/CommentBlockClass.sdf</file>
+	<file>generated/shapes/ControlFlowClass.sdf</file>
+	<file>generated/shapes/DrawCircleClass.sdf</file>
+	<file>generated/shapes/DrawLineClass.sdf</file>
+	<file>generated/shapes/DrawPixelClass.sdf</file>
+	<file>generated/shapes/DrawRectClass.sdf</file>
+	<file>generated/shapes/EngineCommandClass.sdf</file>
+	<file>generated/shapes/EngineMovementCommandClass.sdf</file>
+	<file>generated/shapes/EnginesBackwardClass.sdf</file>
+	<file>generated/shapes/EnginesForwardClass.sdf</file>
+	<file>generated/shapes/EnginesStopClass.sdf</file>
+	<file>generated/shapes/FinalNodeClass.sdf</file>
+	<file>generated/shapes/ForkClass.sdf</file>
+	<file>generated/shapes/FunctionClass.sdf</file>
+	<file>generated/shapes/IfBlockClass.sdf</file>
+	<file>generated/shapes/InitialNodeClass.sdf</file>
+	<file>generated/shapes/LoopClass.sdf</file>
+	<file>generated/shapes/NullificationEncoderClass.sdf</file>
+	<file>generated/shapes/PlayToneClass.sdf</file>
+	<file>generated/shapes/PrintTextClass.sdf</file>
+	<file>generated/shapes/RobotsDiagramNodeClass.sdf</file>
+	<file>generated/shapes/SensorBlockClass.sdf</file>
+	<file>generated/shapes/SubprogramClass.sdf</file>
+	<file>generated/shapes/SubprogramDiagramClass.sdf</file>
+	<file>generated/shapes/TimerClass.sdf</file>
+	<file>generated/shapes/VariableInitClass.sdf</file>
+	<file>generated/shapes/WaitForAccelerometerClass.sdf</file>
+	<file>generated/shapes/WaitForButtonsClass.sdf</file>
+	<file>generated/shapes/WaitForColorClass.sdf</file>
+	<file>generated/shapes/WaitForColorIntensityClass.sdf</file>
+	<file>generated/shapes/WaitForEncoderClass.sdf</file>
+	<file>generated/shapes/WaitForGyroscopeClass.sdf</file>
+	<file>generated/shapes/WaitForLightClass.sdf</file>
+	<file>generated/shapes/WaitForSonarDistanceClass.sdf</file>
+	<file>generated/shapes/WaitForSoundClass.sdf</file>
+	<file>generated/shapes/WaitForTouchSensorClass.sdf</file>
+</qresource>
+</RCC>
