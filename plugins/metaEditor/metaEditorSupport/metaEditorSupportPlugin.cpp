@@ -1,11 +1,11 @@
+#include "metaEditorSupportPlugin.h"
+
 #include <QtCore/QProcess>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QDesktopWidget>
-
-#include "metaEditorSupportPlugin.h"
 
 #include "../../../qrkernel/settingsManager.h"
 #include "../../../qrmc/metaCompiler.h"
