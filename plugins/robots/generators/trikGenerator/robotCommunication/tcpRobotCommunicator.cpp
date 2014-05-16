@@ -101,7 +101,7 @@ bool TcpRobotCommunicator::stopRobot()
 
 void TcpRobotCommunicator::connect()
 {
-	QString const server = qReal::SettingsManager::value("tcpServer").toString();
+	QString const server = qReal::SettingsManager::value("TrikTcpServer").toString();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
 		qDebug() << "Unable to resolve host. Check server address and try again";
