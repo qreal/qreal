@@ -27,6 +27,7 @@ QString const @@templateVariableName@@ = "@@templateFileName@@";
 @@converterGenerateBody@@
 @@replaceTemplateGenerateBody@@
 	}
+	mTemplateUtils["@@foreachMarkName@@"] = res_@@count@@;
 ==========
 @@oneReplaceTemplateGenerateBody@@
 QString res_one_@@count@@ = mTemplateUtils["@@elementMarkName@@"];

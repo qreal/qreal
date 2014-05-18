@@ -54,7 +54,9 @@ QString StructuralGenerator::generateForeachNode(Id const &element, QString cons
 		curCount ++;
 	}
 
+	result.replace("@@foreachMarkName@@", mApi.property(element, "markName").toString());
 	generateTemplateUsingTextCode(element, resultMarks);
+
 	return result;
 }
 

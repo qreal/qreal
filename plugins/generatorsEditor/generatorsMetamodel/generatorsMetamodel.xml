@@ -34,7 +34,7 @@
                         <property displayedName="Language Name" type="string" name="languageName"/>
                         <property displayedName="Node Name" type="string" name="nodeName"/>
 						<property displayedName="toGeneratePath Property name" type="string" name="toGeneratePropertyName"/>
-                        <property displayedName="programmeName Property name" type="string" name="programNamePropertyName"/>
+                        <property displayedName="programName Property name" type="string" name="programNamePropertyName"/>
                     </properties>
                     <explodesTo/>
                 </logic>
