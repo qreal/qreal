@@ -66,8 +66,11 @@
                 <logic>
                     <container>
                         <contains type="SemanticNode"/>
+                        <contains type="SemanticNodeForEdge"/>
                         <contains type="ForeachNode"/>
                         <contains type="ConverterNode"/>
+						<contains type="TemplateNode"/>
+						<contains type="ApplicationNode"/>
                     </container>
                     <explodesTo/>
                 </logic>
@@ -189,6 +192,50 @@
                     </container>
                     <properties>
                         <property name="elementName" displayedName="Name of Element" type="string"/>
+                        <property name="textCode" displayedName="text code" type="code"/>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+			<node name="SemanticNodeForEdge" displayedName="Semantic For Edge" description="Элемент для задания генерируемого кода для связи">
+                <graphics>
+                    <picture sizex="150" sizey="100">
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="100" x1="150" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="0" y2="0" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="100" y2="100" x1="0" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                        <line stroke="#2f4f4f" y1="25a" y2="25a" x1="0a" stroke-style="solid" x2="150" stroke-width="2" fill-style="solid" fill="#000000"/>
+                    </picture>
+                    <labels>
+                        <label x="5" y="3" textBinded="Semantic Edge / ##elementName##" hard="true"/>
+                    </labels>
+                    <ports>
+                        <linePort type="NonTyped">
+                            <start startx="0" starty="10"/>
+                            <end endx="0" endy="90"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="150" starty="10"/>
+                            <end endx="150" endy="90"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="0"/>
+                            <end endx="140" endy="0"/>
+                        </linePort>
+                        <linePort type="NonTyped">
+                            <start startx="10" starty="100"/>
+                            <end endx="140" endy="100"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="TemplateNode"/>
+                    </container>
+                    <properties>
+                        <property name="elementName" displayedName="Name of Element" type="string"/>
+                        <property name="dstTypes" displayedName="Types of Dst element" type="string"/>
+                        <property name="srcTypes" displayedName="Types of Src element" type="string"/>
                         <property name="textCode" displayedName="text code" type="code"/>
                     </properties>
                     <explodesTo/>
@@ -490,6 +537,7 @@
 				<element name="TemplateNode"/>
 				<element name="SemanticNode"/>
 				<element name="ForeachNode"/>
+				<element name="SemanticNodeForEdge"/>
 			</group>
 			<group name="Elements for Converter" description="Сущности для задания новых конвертеров данных">
 				<element name="ConverterNode"/>
