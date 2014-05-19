@@ -39,7 +39,7 @@ StructuralGenerator::~StructuralGenerator()
 
 QString StructuralGenerator::generateForeachNode(Id const &element, QString const& count, QString const& parentCount)
 {
-	QString result;
+	QString result = mTemplateUtils["@@beforeAllForeachGenerateBody@@"];
 	QString resultMarks;
 
 	int curCount = 1;
@@ -70,7 +70,7 @@ QString StructuralGenerator::generateConverterNode(Id const &element, QString co
 QStringList StructuralGenerator::marksList(QString const& text, QString const& mark)
 {
 	QStringList res;
-	QRegExp pattern(QString(mark + "[A-Za-z]+([A-Za-z0-9_]*)" + mark));
+	QRegExp pattern(QString(mark + "[A-Za-z]+([A-Za-z0-9_.]*)" + mark));
 
 	int pos = 0;
 	while ((pos = pattern.indexIn(text, pos)) != -1) {
@@ -97,15 +97,42 @@ QString StructuralGenerator::generateReplaceTemplateBodyForMark(QString const& t
 
 	QStringList propertyList = marksList(textCode, "##");
 	foreach (QString var, propertyList) {
-		replaceTemplates += QString(mTemplateUtils["@@oneWithPropertyReplaceTemplate@@"])
-				.replace("@@templateMarkName@@", var)
-				.replace("@@templatePropertyName@@", var.split("##").at(1));
+		QString curReplaceTemplates = mTemplateUtils["@@oneWithPropertyReplaceTemplate@@"];
+		replaceTemplates += doReplaceForPropertyMarks(curReplaceTemplates, var);
 	}
 
 	result.replace("@@replaceTemplates@@", replaceTemplates);
 	result.replace("@@elementMarkName@@", elementMarkName);
 	result.replace("@@count@@", count);
 
+	return result;
+}
+
+QString StructuralGenerator::doReplaceForPropertyMarks(QString const& text, QString const& propertyMark)
+{
+	QString result = text;
+	QString templatePropertyName = "";
+	QString realElementForProperty = "";
+	QString realPropertyName = propertyMark.split("##").at(1);
+
+	QStringList list = realPropertyName.split(".");
+	if (list.count() > 1) {// т.е. на самом деле метка вида "some1.some2"
+		QString node = list.at(0);
+		templatePropertyName = list.at(1);
+
+		if (node == "dst") {
+			realElementForProperty = "outElement";
+		} else if (node == "src") {
+			realElementForProperty = "element_@@count@@";
+		}
+	} else { // т.е. это обычная метка
+		templatePropertyName = realPropertyName;
+		realElementForProperty = "element_@@count@@";
+	}
+
+	result.replace("@@templateMarkName@@", propertyMark)
+		.replace("@@templatePropertyName@@", templatePropertyName)
+		.replace("@@realElementForProperty@@", realElementForProperty);
 	return result;
 }
 
@@ -121,9 +148,8 @@ QString StructuralGenerator::generateReplaceTemplateBodyForDiagramMark(QString c
 
 	QStringList propertyList = marksList(textCode, "##");
 	foreach (QString var, propertyList) {
-		replaceTemplates += QString(mTemplateUtils["@@oneWithPropertyReplaceTemplateForDiagram@@"])
-				.replace("@@templateMarkName@@", var)
-				.replace("@@templatePropertyName@@", var.split("##").at(1));
+		QString curReplaceTemplates = mTemplateUtils["@@oneWithPropertyReplaceTemplateForDiagram@@"];
+		replaceTemplates += doReplaceForPropertyMarks(curReplaceTemplates, var);
 	}
 
 	result.replace("@@replaceTemplates@@", replaceTemplates);
@@ -146,9 +172,8 @@ QString StructuralGenerator::generateReplaceTemplateBodyForFile(QString const& t
 
 	QStringList propertyList = marksList(textCode, "##");
 	foreach (QString var, propertyList) {
-		replaceTemplates += QString(mTemplateUtils["@@oneWithPropertyReplaceTemplateForFile@@"])
-				.replace("@@templateMarkName@@", var)
-				.replace("@@templatePropertyName@@", var.split("##").at(1));
+		QString curReplaceTemplates = mTemplateUtils["@@oneWithPropertyReplaceTemplateForFile@@"];
+		replaceTemplates += doReplaceForPropertyMarks(curReplaceTemplates, var);
 	}
 
 	result.replace("@@replaceTemplates@@", replaceTemplates);
@@ -286,6 +311,81 @@ QString StructuralGenerator::generateSemanticNodes()
 	return result;
 }
 
+QString StructuralGenerator::makeStringFromList(QStringList const& list)
+{
+	QString result = "";
+	foreach (QString str, list) {
+		result += str;
+	}
+	return result;
+}
+
+QString StructuralGenerator::generateOneDstBody(Id const &element, QString const& count, QString const& dst)
+{
+	QString result = mTemplateUtils["@@oneDstGenerateBody@@"];
+	if (dst == "ANY") {
+		result = mTemplateUtils["@@oneDstGenerateBodyForANY@@"];
+	}
+
+	result.replace("@@replaceTemplateGenerateBodyForEdge@@", generateReplaceTemplateBody(element, count).first);
+	result.replace("@@dstElementName@@", dst);
+	return result;
+}
+
+QString StructuralGenerator::generateSemanticNodeForEdge(Id const &element, QString const& count)
+{
+	QString elementName = mApi.property(element, "elementName").toString();
+	QString dstTypes = mApi.property(element, "dstTypes").toString();
+	QString srcTypes = mApi.property(element, "srcTypes").toString();
+
+	QStringList dstTypeList = dstTypes.split(",");
+	QStringList srcTypeList = srcTypes.split(",");
+
+	QString dstElementName = makeStringFromList(dstTypeList);
+	QString srcElementName = makeStringFromList(srcTypeList);
+
+	QString srcList = QString(mTemplateUtils["@@oneSrcList@@"]).replace("@@oneSrcElementName@@", srcTypeList.at(0));
+	if (srcTypeList.count() > 1) {
+		for (int i = 1; i < srcTypeList.count(); i++) {
+			QString oneSrcList = QString(mTemplateUtils["@@oneSrcList@@"]).replace("@@oneSrcElementName@@", srcTypeList.at(i));
+			oneSrcList.chop(1);
+			srcList += " << " + oneSrcList;
+		}
+	}
+
+	QString dstGenerateBody = "";
+	foreach (QString dst, dstTypeList) {
+		dstGenerateBody += generateOneDstBody(element, count, dst);
+	}
+
+	QString genBody = mTemplateUtils["@@oneSemanticEdgeGenerateBody@@"];
+	genBody.replace("@@dstGenerateBody@@", dstGenerateBody);
+	genBody.replace("@@count@@", count);
+	genBody.replace("@@fullDstElementName@@", dstElementName);
+	genBody.replace("@@fullSrcElementName@@", srcElementName);
+	genBody.replace("@@srcList@@", srcList);
+	genBody.replace("@@elementName@@", elementName);
+
+	return genBody;
+}
+
+QString StructuralGenerator::generateSemanticNodesForEdge()
+{
+	QString result = "";
+	IdList list = mApi.elementsByType("SemanticForEdge");
+
+	int curCount = 1;
+	foreach (Id const &element, list) {
+		if (!mApi.isLogicalElement(element) || mApi.parent(element).element() != "GeneratorDiagram") {
+			continue;
+		}
+		result += generateSemanticNodeForEdge(element, QString("%1").arg(curCount)) + "\n";
+		curCount ++;
+	}
+	result.replace("@@tailName@@", "_Links");
+	return result;
+}
+
 void StructuralGenerator::generate()
 {
 	QString generateBodyReplaceTemplates = "";
@@ -304,6 +404,7 @@ void StructuralGenerator::generate()
 		}
 	}
 
+	QString generateBodyForLinks = generateSemanticNodesForEdge();
 	QString generateBody = generateSemanticNodes();
 
 	saveTemplateUtils();
@@ -342,14 +443,17 @@ void StructuralGenerator::generate()
 	resultPluginCPP.replace("@@generatorClassName@@", generatorClassName);
 
 	resultGeneratorCPP.replace("@@templateConstStringNames@@", generateTemplateConstStringNames());
+	resultGeneratorCPP.replace("@@generateBodyForLinks@@", generateBodyForLinks);
 	resultGeneratorCPP.replace("@@generateBody@@", generateBody);
 	resultGeneratorCPP.replace("@@generateBody_replaceTemplates@@", generateBodyReplaceTemplates);
 	resultGeneratorCPP.replace("@@programNameProperty@@", mProgramNamePropertyName);
+	resultGeneratorCPP.replace("@@tailName@@", "");
 
 	resultPluginCPP.replace("@@languageNodeDiagram@@", mNodeName);
 	resultPluginCPP.replace("@@programNameProperty@@", mProgramNamePropertyName);
 	resultPluginCPP.replace("@@pathToGenerateProperty@@", mToGeneratePropertyName);
 	resultPluginCPP.replace("@@fillMarksProperty@@", fillMarksProperty);
+	resultPluginCPP.replace("@@tailName@@", "");
 
 	saveOutputFile(QString(fileBaseName + ".pro"), resultPRO);
 	saveOutputFile(QString(fileBaseName + "Plugin.h"), resultPluginH);

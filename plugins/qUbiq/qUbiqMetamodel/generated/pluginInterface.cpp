@@ -124,31 +124,39 @@ void QUbiqMetamodelPlugin::initNameMap()
 	mPropertiesDisplayedNamesMap["QUbiqLogicEditor"]["WhileInLogicEditor"]["counterId"] = QString::fromUtf8("Counter ID");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Button"]["buttonText"] = QString::fromUtf8("Text on button");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Button"]["handler"] = QString::fromUtf8("Handler");
-	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Button"]["position"] = QString::fromUtf8("Position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Button"]["x"] = QString::fromUtf8("X position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Button"]["y"] = QString::fromUtf8("Y position on slide");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["ExitButton"]["buttonText"] = QString::fromUtf8("Text on button");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["ExitButton"]["handler"] = QString::fromUtf8("Handler");
-	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["ExitButton"]["position"] = QString::fromUtf8("Position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["ExitButton"]["x"] = QString::fromUtf8("X position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["ExitButton"]["y"] = QString::fromUtf8("Y position on slide");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Grid"]["elementId"] = QString::fromUtf8("Id of element");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Grid"]["h"] = QString::fromUtf8("Height dimension");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Grid"]["handler"] = QString::fromUtf8("Handler");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Grid"]["isNull"] = QString::fromUtf8("Is Null in begin");
-	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Grid"]["position"] = QString::fromUtf8("Position on slide");
-	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Grid"]["size"] = QString::fromUtf8("Dimension");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Grid"]["w"] = QString::fromUtf8("Widht dimension");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Grid"]["x"] = QString::fromUtf8("X position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Grid"]["y"] = QString::fromUtf8("Y position on slide");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Image"]["isNull"] = QString::fromUtf8("Is Null in begin");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Image"]["pathToImage"] = QString::fromUtf8("Path to image");
-	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Image"]["position"] = QString::fromUtf8("Position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Image"]["x"] = QString::fromUtf8("X position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Image"]["y"] = QString::fromUtf8("Y position on slide");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["List"]["elementId"] = QString::fromUtf8("Id of element");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["List"]["elementsCount"] = QString::fromUtf8("Count of elements");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["List"]["handler"] = QString::fromUtf8("Handler");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["List"]["isNull"] = QString::fromUtf8("Is Null in begin");
-	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["List"]["position"] = QString::fromUtf8("Position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["List"]["x"] = QString::fromUtf8("X position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["List"]["y"] = QString::fromUtf8("Y position on slide");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["QUbiqPresentationDiagram"]["pathToGenerate"] = QString::fromUtf8("Path to generate");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["QUbiqPresentationDiagram"]["programName"] = QString::fromUtf8("Program name");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Slide"]["description"] = QString::fromUtf8("Description");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Slide"]["handler"] = QString::fromUtf8("Handler");
-	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Slide"]["slideSize"] = QString::fromUtf8("Size of slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Slide"]["height"] = QString::fromUtf8("Height of slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Slide"]["width"] = QString::fromUtf8("Width of slide");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Text"]["isNull"] = QString::fromUtf8("Is Null in begin");
-	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Text"]["position"] = QString::fromUtf8("Position on slide");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Text"]["text"] = QString::fromUtf8("Text");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Text"]["x"] = QString::fromUtf8("X position on slide");
+	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["Text"]["y"] = QString::fromUtf8("Y position on slide");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["VariableInPresentationEditor"]["currentValue"] = QString::fromUtf8("Current value");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["VariableInPresentationEditor"]["description"] = QString::fromUtf8("Description");
 	mPropertiesDisplayedNamesMap["QUbiqPresentationEditor"]["VariableInPresentationEditor"]["type"] = QString::fromUtf8("Type of variable");
@@ -182,11 +190,27 @@ void QUbiqMetamodelPlugin::initPropertyMap()
 	mPropertyTypes["VariableInLogicEditor"]["type"] = "ElementTypes";
 	mPropertyTypes["WaitMessage"]["waitFrom"] = "SentToType";
 	mPropertyTypes["WaitMessage"]["waitMessageType"] = "WaitMessageType";
+	mPropertyTypes["Button"]["x"] = "Int";
+	mPropertyTypes["Button"]["y"] = "Int";
+	mPropertyTypes["ExitButton"]["x"] = "Int";
+	mPropertyTypes["ExitButton"]["y"] = "Int";
+	mPropertyTypes["Grid"]["h"] = "Int";
 	mPropertyTypes["Grid"]["isNull"] = "Bool";
+	mPropertyTypes["Grid"]["w"] = "Int";
+	mPropertyTypes["Grid"]["x"] = "Int";
+	mPropertyTypes["Grid"]["y"] = "Int";
 	mPropertyTypes["Image"]["isNull"] = "Bool";
+	mPropertyTypes["Image"]["x"] = "Int";
+	mPropertyTypes["Image"]["y"] = "Int";
 	mPropertyTypes["List"]["elementsCount"] = "Int";
 	mPropertyTypes["List"]["isNull"] = "Bool";
+	mPropertyTypes["List"]["x"] = "Int";
+	mPropertyTypes["List"]["y"] = "Int";
+	mPropertyTypes["Slide"]["height"] = "Int";
+	mPropertyTypes["Slide"]["width"] = "Int";
 	mPropertyTypes["Text"]["isNull"] = "Bool";
+	mPropertyTypes["Text"]["x"] = "Int";
+	mPropertyTypes["Text"]["y"] = "Int";
 	mPropertyTypes["VariableInPresentationEditor"]["type"] = "ElementTypes";
 }
 
@@ -201,18 +225,26 @@ void QUbiqMetamodelPlugin::initPropertyDefaultsMap()
 	mPropertyDefault["ReturnInLogicEditor"]["value"] = QString::fromUtf8("none");
 	mPropertyDefault["Take"]["takeType"] = QString::fromUtf8("all");
 	mPropertyDefault["VariableInLogicEditor"]["type"] = QString::fromUtf8("text");
-	mPropertyDefault["Button"]["position"] = QString::fromUtf8("1:1");
-	mPropertyDefault["ExitButton"]["position"] = QString::fromUtf8("1:1");
+	mPropertyDefault["Button"]["x"] = QString::fromUtf8("1");
+	mPropertyDefault["Button"]["y"] = QString::fromUtf8("1");
+	mPropertyDefault["ExitButton"]["x"] = QString::fromUtf8("1");
+	mPropertyDefault["ExitButton"]["y"] = QString::fromUtf8("1");
+	mPropertyDefault["Grid"]["h"] = QString::fromUtf8("1");
 	mPropertyDefault["Grid"]["isNull"] = QString::fromUtf8("false");
-	mPropertyDefault["Grid"]["position"] = QString::fromUtf8("1:1");
-	mPropertyDefault["Grid"]["size"] = QString::fromUtf8("1x1");
+	mPropertyDefault["Grid"]["w"] = QString::fromUtf8("1");
+	mPropertyDefault["Grid"]["x"] = QString::fromUtf8("1");
+	mPropertyDefault["Grid"]["y"] = QString::fromUtf8("1");
 	mPropertyDefault["Image"]["isNull"] = QString::fromUtf8("false");
-	mPropertyDefault["Image"]["position"] = QString::fromUtf8("1:1");
+	mPropertyDefault["Image"]["x"] = QString::fromUtf8("1");
+	mPropertyDefault["Image"]["y"] = QString::fromUtf8("1");
 	mPropertyDefault["List"]["isNull"] = QString::fromUtf8("false");
-	mPropertyDefault["List"]["position"] = QString::fromUtf8("1:1");
-	mPropertyDefault["Slide"]["slideSize"] = QString::fromUtf8("1x1");
+	mPropertyDefault["List"]["x"] = QString::fromUtf8("1");
+	mPropertyDefault["List"]["y"] = QString::fromUtf8("1");
+	mPropertyDefault["Slide"]["height"] = QString::fromUtf8("1");
+	mPropertyDefault["Slide"]["width"] = QString::fromUtf8("1");
 	mPropertyDefault["Text"]["isNull"] = QString::fromUtf8("false");
-	mPropertyDefault["Text"]["position"] = QString::fromUtf8("1:1");
+	mPropertyDefault["Text"]["x"] = QString::fromUtf8("1");
+	mPropertyDefault["Text"]["y"] = QString::fromUtf8("1");
 	mPropertyDefault["VariableInPresentationEditor"]["type"] = QString::fromUtf8("text");
 }
 
@@ -622,28 +654,28 @@ QStringList QUbiqMetamodelPlugin::getPropertyNames(QString const &/*diagram*/, Q
 	else if (element == "BeginNodeInPresentationEditor") {
 	}
 	else if (element == "Button") {
-		result  << "buttonText" << "handler" << "position";
+		result  << "buttonText" << "handler" << "x" << "y";
 	}
 	else if (element == "ExitButton") {
-		result  << "buttonText" << "handler" << "position";
+		result  << "buttonText" << "handler" << "x" << "y";
 	}
 	else if (element == "Grid") {
-		result  << "elementId" << "handler" << "isNull" << "position" << "size";
+		result  << "elementId" << "h" << "handler" << "isNull" << "w" << "x" << "y";
 	}
 	else if (element == "Image") {
-		result  << "isNull" << "pathToImage" << "position";
+		result  << "isNull" << "pathToImage" << "x" << "y";
 	}
 	else if (element == "List") {
-		result  << "elementId" << "elementsCount" << "handler" << "isNull" << "position";
+		result  << "elementId" << "elementsCount" << "handler" << "isNull" << "x" << "y";
 	}
 	else if (element == "QUbiqPresentationDiagram") {
 		result  << "pathToGenerate" << "programName";
 	}
 	else if (element == "Slide") {
-		result  << "description" << "handler" << "slideSize";
+		result  << "description" << "handler" << "height" << "width";
 	}
 	else if (element == "Text") {
-		result  << "isNull" << "position" << "text";
+		result  << "isNull" << "text" << "x" << "y";
 	}
 	else if (element == "TransitionLink") {
 	}
@@ -1017,24 +1049,24 @@ QString QUbiqMetamodelPlugin::getGroupsXML() const
 QStringList QUbiqMetamodelPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "BoolValue")
+	if (name == "SentMessageType")
+		result << QString::fromUtf8("request game") << QString::fromUtf8("request of playing field status") << QString::fromUtf8("sent a playing field status") << QString::fromUtf8("request a players list");
+	else if (name == "CyclicValue")
+		result << QString::fromUtf8("next") << QString::fromUtf8("after");
+	else if (name == "ElementTypes")
+		result << QString::fromUtf8("text") << QString::fromUtf8("list") << QString::fromUtf8("image") << QString::fromUtf8("grid") << QString::fromUtf8("number");
+	else if (name == "TakeType")
+		result << QString::fromUtf8("only unselected data") << QString::fromUtf8("all data") << QString::fromUtf8("only selected data");
+	else if (name == "BoolValue")
 		result << QString::fromUtf8("none") << QString::fromUtf8("false") << QString::fromUtf8("true");
 	else if (name == "HandlerType")
 		result << QString::fromUtf8("slide handler") << QString::fromUtf8("list handler") << QString::fromUtf8("button handler") << QString::fromUtf8("grid handler");
-	else if (name == "SentToType")
-		result << QString::fromUtf8("server") << QString::fromUtf8("other player") << QString::fromUtf8("keyboard");
-	else if (name == "CyclicValue")
-		result << QString::fromUtf8("next") << QString::fromUtf8("after");
-	else if (name == "WaitMessageType")
-		result << QString::fromUtf8("response about playing field status") << QString::fromUtf8("response to game request") << QString::fromUtf8("pressing on a keyboard");
-	else if (name == "SentMessageType")
-		result << QString::fromUtf8("request game") << QString::fromUtf8("request of playing field status") << QString::fromUtf8("sent a playing field status") << QString::fromUtf8("request a players list");
-	else if (name == "ElementTypes")
-		result << QString::fromUtf8("text") << QString::fromUtf8("list") << QString::fromUtf8("image") << QString::fromUtf8("grid") << QString::fromUtf8("number");
 	else if (name == "CyclicValueInLogicEditor")
 		result << QString::fromUtf8("next") << QString::fromUtf8("after");
-	else if (name == "TakeType")
-		result << QString::fromUtf8("only unselected data") << QString::fromUtf8("all data") << QString::fromUtf8("only selected data");
+	else if (name == "SentToType")
+		result << QString::fromUtf8("server") << QString::fromUtf8("other player") << QString::fromUtf8("keyboard");
+	else if (name == "WaitMessageType")
+		result << QString::fromUtf8("response about playing field status") << QString::fromUtf8("response to game request") << QString::fromUtf8("pressing on a keyboard");
 	return result;
 }
 

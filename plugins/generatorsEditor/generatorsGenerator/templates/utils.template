@@ -17,6 +17,9 @@ QString const @@templateVariableName@@ = "@@templateFileName@@";
 	mTemplateUtils["@@elements_@@elementName@@@@"] = res_@@count@@;
 	result += res_@@count@@;
 ==========
+@@beforeAllForeachGenerateBody@@
+	mTemplateUtils["@@@@foreachMarkName@@@@"] = "";
+==========
 @@oneForeachGenerateBody@@
 	QString res_@@count@@ = "";
 	foreach (Id const &element_@@count@@, mApi.children(element_@@parentCount@@)) {
@@ -27,39 +30,70 @@ QString const @@templateVariableName@@ = "@@templateFileName@@";
 @@converterGenerateBody@@
 @@replaceTemplateGenerateBody@@
 	}
-	mTemplateUtils["@@foreachMarkName@@"] = res_@@count@@;
+	mTemplateUtils["@@@@foreachMarkName@@@@"] += res_@@count@@;
 ==========
 @@oneReplaceTemplateGenerateBody@@
-QString res_one_@@count@@ = mTemplateUtils["@@elementMarkName@@"];
+QString res@@tailName@@_one_@@count@@ = mTemplateUtils["@@@@elementMarkName@@@@"];
 @@replaceTemplates@@
-res_@@count@@ += res_one_@@count@@ + "\n";
+res@@tailName@@_@@count@@ += res@@tailName@@_one_@@count@@ + "\n";
 ==========
 @@oneSimpleReplaceTemplate@@
-res_one_@@count@@.replace("@@templateMarkName@@", mTemplateUtils["@@templateMarkName@@"]);
+res@@tailName@@_one_@@count@@.replace("@@templateMarkName@@", mTemplateUtils["@@templateMarkName@@"]);
 ==========
 @@oneWithPropertyReplaceTemplate@@
-res_one_@@count@@.replace("@@templateMarkName@@", mApi.property(element_@@count@@, "@@templatePropertyName@@").toString());
+res@@tailName@@_one_@@count@@.replace("@@templateMarkName@@", mApi.property(@@realElementForProperty@@, "@@templatePropertyName@@").toString());
 ==========
 @@oneWithPropertyReplaceTemplateForDiagram@@
-res_@@realTemplateMarkName@@.replace("@@templateMarkName@@", mLogicalModel->logicalRepoApi().property(diagram, "@@templatePropertyName@@").toString());
+res@@tailName@@_@@realTemplateMarkName@@.replace("@@templateMarkName@@", mLogicalModel->logicalRepoApi().property(diagram, "@@templatePropertyName@@").toString());
 ==========
 @@realElementMarkName@@
 elements_@@elementName@@_@@count@@
 ==========
 @@oneReplaceTemplateGenerateBodyForFile@@
-QString result_@@templateVariableName@@ = "";
-loadTemplateFromFile(@@templateVariableName@@, result_@@templateVariableName@@);
+QString result@@tailName@@_@@templateVariableName@@ = "";
+loadTemplateFromFile(@@templateVariableName@@, result@@tailName@@_@@templateVariableName@@);
 @@replaceTemplates@@
-saveOutputFile("@@templateFileName@@", result_@@templateVariableName@@);
+saveOutputFile("@@templateFileName@@", result@@tailName@@_@@templateVariableName@@);
 ==========
 @@oneSimpleReplaceTemplateForFile@@
-result_@@templateVariableName@@.replace("@@templateMarkName@@", mTemplateUtils["@@templateMarkName@@"]);
+result@@tailName@@_@@templateVariableName@@.replace("@@templateMarkName@@", mTemplateUtils["@@templateMarkName@@"]);
 ==========
 @@oneWithPropertyReplaceTemplateForFile@@
-result_@@templateVariableName@@.replace("@@templateMarkName@@", mApi.property(element_@@count@@, "@@templatePropertyName@@").toString());
+result@@tailName@@_@@templateVariableName@@.replace("@@templateMarkName@@", mApi.property(element_@@count@@, "@@templatePropertyName@@").toString());
 ==========
 @@onefillMarkProperty@@
-QString res_@@realTemplateMarkName@@ = "@@textCode@@";
+QString res@@tailName@@_@@realTemplateMarkName@@ = "@@textCode@@";
 @@replaceTemplates@@
-marksProperty["@@realTemplateMarkName@@"] = res_@@realTemplateMarkName@@;
+marksProperty["@@realTemplateMarkName@@"] = res@@tailName@@_@@realTemplateMarkName@@;
+==========
+@@oneSemanticEdgeGenerateBody@@
+	QString res_Links_@@count@@ = "";
+	foreach (Id const &element_@@count@@, @@srcList@@) {
+		if (!mApi.isLogicalElement(element_@@count@@)) {
+			continue;
+		}
+		IdList list = mApi.outgoingNodes(element_@@count@@); // TODO_need only "@@elementName@@"
+@@dstGenerateBody@@
+	}
+	mTemplateUtils["@@elements_@@elementName@@_@@fullSrcElementName@@_@@fullDstElementName@@@@"] = res_Links_@@count@@;
+	result_Links += res_Links_@@count@@;
+==========
+@@oneSrcList@@
+mApi.elementsByType("@@oneSrcElementName@@")
+==========
+@@oneDstGenerateBody@@
+	foreach (Id const &outElement, list) {
+		if (!mApi.isLogicalElement(outElement)|| outElement.element() != "@@dstElementName@@") {
+			continue;
+		}
+@@replaceTemplateGenerateBodyForEdge@@
+	}
+==========
+@@oneDstGenerateBodyForANY@@
+	foreach (Id const &outElement, list) {
+		if (!mApi.isLogicalElement(outElement)) {
+			continue;
+		}
+@@replaceTemplateGenerateBodyForEdge@@
+	}
 ==========

@@ -5969,7 +5969,7 @@
 			title_1->setHard(false);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createLabel(2, 0.692308, 0.25, "size", false, 0);
+			title_2 = factory.createLabel(2, 0.692308, 0.25, "##w## x ##h##", true, 0);
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, true);
 			title_2->setHard(false);
@@ -6004,7 +6004,7 @@
 		{
 			mRenderer->setElementRepo(repo);
 			title_1->setTextFromRepo(repo->name());
-			title_2->setTextFromRepo(repo->logicalProperty("size"));
+			title_2->setTextFromRepo(QString::fromUtf8("") + repo->logicalProperty("w") + QString::fromUtf8(" x ") + repo->logicalProperty("h") + QString::fromUtf8(""));
 			Q_UNUSED(repo);
 		}
 
@@ -6605,7 +6605,7 @@
 			title_2->setHard(false);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.666667, 0.0833333, "slideSize", false, 0);
+			title_3 = factory.createLabel(3, 0.666667, 0.0833333, "##width## x ##height##", true, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, true);
 			title_3->setHard(false);
@@ -6635,7 +6635,7 @@
 			mRenderer->setElementRepo(repo);
 			Q_UNUSED(repo);
 			title_2->setTextFromRepo(repo->name());
-			title_3->setTextFromRepo(repo->logicalProperty("slideSize"));
+			title_3->setTextFromRepo(QString::fromUtf8("") + repo->logicalProperty("width") + QString::fromUtf8(" x ") + repo->logicalProperty("height") + QString::fromUtf8(""));
 		}
 
 		bool isNode() const

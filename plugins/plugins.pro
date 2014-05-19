@@ -34,4 +34,4 @@ SUBDIRS += \
 # QReal:Ubiq
 SUBDIRS += \
 #	ubiq/ubiq.pro \
-#	qUbiq/qUbiqEditor.pro \
+	qUbiq/qUbiqEditor.pro \

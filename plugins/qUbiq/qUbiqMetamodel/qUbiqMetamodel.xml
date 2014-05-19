@@ -309,7 +309,7 @@
                     <labels>
                         <label x="10a" y="10a" text="SLIDE"/>
                         <label x="50a" y="10a" textBinded="name"/>
-                        <label x="100" y="10a" textBinded="slideSize"/>
+                        <label x="100" y="10a" textBinded="##width## x ##height##"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -340,8 +340,11 @@
                     </container>
                     <properties>
                         <property displayedName="Description" type="string" name="description"/>
-                        <property displayedName="Size of slide" type="string" name="slideSize">
-                            <default>1x1</default>
+                        <property displayedName="Width of slide" type="int" name="width">
+                            <default>1</default>
+                        </property>
+						<property displayedName="Height of slide" type="int" name="height">
+                            <default>1</default>
                         </property>
                     </properties>
                     <generalizations>
@@ -524,7 +527,7 @@
                     </picture>
                     <labels>
                         <label x="50a" y="10a" textBinded="name"/>
-                        <label x="90" y="10a" textBinded="size"/>
+                        <label x="90" y="10a" textBinded="##w## x ##h##"/>
                         <label x="10a" y="10a" text="GRID"/>
                     </labels>
                     <ports/>
@@ -536,8 +539,11 @@
                         <contains type="image"/>
                     </container>
                     <properties>
-                        <property displayedName="Dimension" type="string" name="size">
-                            <default>1x1</default>
+                        <property displayedName="Widht dimension" type="int" name="w">
+                            <default>1</default>
+                        </property>
+						<property displayedName="Height dimension" type="int" name="h">
+                            <default>1</default>
                         </property>
                     </properties>
                     <generalizations>
@@ -573,8 +579,11 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Position on slide" type="string" name="position">
-                            <default>1:1</default>
+                        <property displayedName="X position on slide" type="int" name="x">
+                            <default>1</default>
+                        </property>
+						<property displayedName="Y position on slide" type="int" name="y">
+                            <default>1</default>
                         </property>
                     </properties>
                 </logic>

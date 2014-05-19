@@ -32,11 +32,20 @@ private:
 		, diagramMark // особая метка, использующая свойства элементы основной диаграммы (нужна генерация в plugin.cpp)
 	};
 
+	QMap<QString, QString> mSrcNodeToEdgeSemantic;
+	QMap<QString, QString> mDstNodeToEdgeSemantic;
+
 	QString generateSemanticNodes();
 	QString generateSemanticNode(qReal::Id const &element, QString const& templateName, QString const& count, QString const& parentCount = "");
 	QString generateForeachNode(qReal::Id const &element, QString const& count, QString const& parentCount);
 	QString generateConverterNode(qReal::Id const &element, QString const& count);
 
+	QString generateSemanticNodesForEdge();
+	QString generateSemanticNodeForEdge(qReal::Id const &element, QString const& count);
+	QString generateOneDstBody(qReal::Id const &element, QString const& count, QString const& dst);
+	QString makeStringFromList(QStringList const& list);
+
+	QString doReplaceForPropertyMarks(QString const& text, QString const& propertyMark);
 	QString generateReplaceTemplateBodyForMark(QString const& textCode, QString const& elementMarkName, QString const& count);
 	QString generateReplaceTemplateBodyForDiagramMark(QString const& textCode, QString const& elementMarkName);
 	QString generateReplaceTemplateBodyForFile(QString const& textCode, QString const& templateVariableName, QString const& templateFileName);

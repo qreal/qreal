@@ -7,7 +7,7 @@ using namespace qUbiq::qUbiqGenerator;
 using namespace qReal;
 using namespace utils;
 
-QString const templateDir = "./templates";
+QString const templateDir = "./templates/qUbiq";
 QString const templateFileNameForms = "qUbiqForms.cs";
 QString const templateFileNameVariables = "qUbiqVariables.cs";
 QString const templateFileNameCSProj = "qUbiqCSProject.csproj";
@@ -192,11 +192,10 @@ Generator::NeededStringsForOneSlideDescription Generator::countFormWithButtonDes
 		result.onButtonDescription += countOnButtonDescription(button);
 	}
 
-	QStringList slideSize = mApi.property(form, "slideSize").toString().split('x');
 	QString oneFormDescription = mTemplateUtils["@@oneCreateFormDescription@@"];
 	oneFormDescription.replace("@@formName@@", mApi.name(form));
-	oneFormDescription.replace("@@width@@", slideSize.at(1));
-	oneFormDescription.replace("@@height@@", slideSize.at(0));
+	oneFormDescription.replace("@@width@@", mApi.property(form, "width").toString());
+	oneFormDescription.replace("@@height@@", mApi.property(form, "height").toString());
 	oneFormDescription.replace("@@mainGridFilling@@", countMainGridFilling(form));
 
 	result.oneFormDescription = oneFormDescription;
@@ -240,9 +239,8 @@ QString Generator::countMainGridFilling(Id const &form)
 		currentElement.replace("@@elemetCreation@@", elementCreation);
 		currentElement.replace("@@elementName@@", elementName);
 		currentElement.replace("@@tail@@", QString::number(i));
-		QStringList position = mApi.property(element, "position").toString().split(':');
-		currentElement.replace("@@x@@", position.at(1));
-		currentElement.replace("@@y@@", position.at(0));
+		currentElement.replace("@@x@@", mApi.property(element, "x").toString());
+		currentElement.replace("@@y@@", mApi.property(element, "y").toString());
 
 		mainGridFilling += currentElement;
 		i++;
@@ -359,9 +357,8 @@ QString Generator::countGridDeclaration(Id const &element)
 		result.replace("@@itemTail@@", QString::number(0));
 	}
 
-	QStringList gridSize = mApi.property(element, "size").toString().split('x');
-	result.replace("@@w@@", gridSize.at(1));
-	result.replace("@@h@@", gridSize.at(0));
+	result.replace("@@w@@", mApi.property(element, "w").toString());
+	result.replace("@@h@@", mApi.property(element, "h").toString());
 	return result;
 }
 

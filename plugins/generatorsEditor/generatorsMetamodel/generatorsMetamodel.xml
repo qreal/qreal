@@ -66,7 +66,7 @@
                 <logic>
                     <container>
                         <contains type="SemanticNode"/>
-                        <contains type="SemanticNodeForEdge"/>
+                        <contains type="SemanticForEdge"/>
                         <contains type="ForeachNode"/>
                         <contains type="ConverterNode"/>
 						<contains type="TemplateNode"/>
@@ -197,7 +197,7 @@
                     <explodesTo/>
                 </logic>
             </node>
-			<node name="SemanticNodeForEdge" displayedName="Semantic For Edge" description="Элемент для задания генерируемого кода для связи">
+			<node name="SemanticForEdge" displayedName="Semantic For Edge" description="Элемент для задания генерируемого кода для связи">
                 <graphics>
                     <picture sizex="150" sizey="100">
                         <line stroke="#2f4f4f" y1="0" y2="100" x1="0" stroke-style="solid" x2="0" stroke-width="2" fill-style="solid" fill="#000000"/>
@@ -537,7 +537,7 @@
 				<element name="TemplateNode"/>
 				<element name="SemanticNode"/>
 				<element name="ForeachNode"/>
-				<element name="SemanticNodeForEdge"/>
+				<element name="SemanticForEdge"/>
 			</group>
 			<group name="Elements for Converter" description="Сущности для задания новых конвертеров данных">
 				<element name="ConverterNode"/>

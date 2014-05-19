@@ -28,7 +28,7 @@ void @@generatorClassName@@Plugin::init(PluginConfigurator const &configurator)
 
 QList<ActionInfo> @@generatorClassName@@Plugin::actions()
 {
-	QAction * const generateAction = new QAction(QObject::tr("Generate @@generatorName@@"), NULL);
+	QAction * const generateAction = new QAction(QObject::tr("Generate @@languageNodeDiagram@@"), NULL);
 	ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
 	QObject::connect(generateAction, SIGNAL(triggered()), this, SLOT(generate()));
 

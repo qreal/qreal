@@ -5,7 +5,7 @@
 
 using namespace generators::generator;
 
-QString templateDir = "./templates";
+QString templateDir = "./templates/generatorsEditor";
 
 Generator::Generator()
 {

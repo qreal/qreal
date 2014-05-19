@@ -46,8 +46,10 @@ void Generator::generate()
 		return;
 	}
 	mTemplateUtils["@@@@programNameProperty@@@@"] = mProgramName;
+	QString result_Links = "";
+@@generateBodyForLinks@@
 	QString result = "";
 @@generateBody@@
-	mTemplateUtils["@@elements_ALL@@"] = result;
+	mTemplateUtils["@@elements_ALL@@"] = result + "\n" + result_Links;
 @@generateBody_replaceTemplates@@
 }
