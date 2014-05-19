@@ -13,7 +13,8 @@ Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
-	: mBlocksFactory(new blocks::NxtBlocksFactory)
+	: mTwoDRobotModel(mRealRobotModel)
+	, mBlocksFactory(new blocks::NxtBlocksFactory)
 	, mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
 {
 	mAppTranslator.load(":/nxtKitInterpreter_" + QLocale().name());

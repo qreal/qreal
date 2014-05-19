@@ -12,6 +12,9 @@
 #include <interpreterBase/robotModel/robotParts/motor.h>
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+#include <interpreterBase/robotModel/robotParts/touchSensor.h>
+#include <interpreterBase/robotModel/robotParts/colorSensor.h>
+#include <interpreterBase/robotModel/robotParts/lightSensor.h>
 
 #include "d2RobotModel.h"
 #include "constants.h"
@@ -863,7 +866,14 @@ void D2ModelWidget::reinitSensor(PortInfo const &port)
 
 	DeviceInfo const &device = currentConfiguration(mRobotModel.name(), port);
 
-	if (device.isNull()) {
+	if (device.isNull() || (
+			/// @todo: Add supported by 2D model sensors here
+			!device.isA<robotParts::TouchSensor>()
+			&& !device.isA<robotParts::ColorSensor>()
+			&& !device.isA<robotParts::LightSensor>()
+			&& !device.isA<robotParts::RangeSensor>()
+			))
+	{
 		return;
 	}
 

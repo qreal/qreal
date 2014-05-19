@@ -19,15 +19,15 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDRobotModel : public interpreterBase::robotMo
 	Q_OBJECT
 
 public:
-	TwoDRobotModel();
+	explicit TwoDRobotModel(interpreterBase::robotModel::RobotModelInterface const &realModel);
 
+	QString name() const override;
+	QString friendlyName() const override;
 	bool needsConnection() const override;
-
+	utils::TimelineInterface &timeline() override;
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 
 	void setEngine(engine::TwoDModelEngineInterface &engine);
-
-	utils::TimelineInterface &timeline() override;
 
 protected:
 	engine::TwoDModelEngineInterface *engine();
@@ -38,6 +38,7 @@ protected:
 			) override;
 
 private:
+	interpreterBase::robotModel::RobotModelInterface const &mRealModel;
 	engine::TwoDModelEngineInterface *mEngine = nullptr;  // Does not have ownership.
 };
 

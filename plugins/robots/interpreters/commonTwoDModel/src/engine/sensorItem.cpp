@@ -124,15 +124,15 @@ QString SensorItem::name() const
 	DeviceInfo const sensor = mConfiguration.type(mPort);
 	if (sensor.isA<robotParts::TouchSensor>()) {
 		return "touch";
-	} else if (sensor.isA<twoDModel::robotModel::parts::ColorSensorFull>()
-			|| sensor.isA<twoDModel::robotModel::parts::ColorSensorPassive>())
+	} else if (sensor.isA<robotParts::ColorSensorFull>()
+			|| sensor.isA<robotParts::ColorSensorPassive>())
 	{
 		return "color_empty";
-	} else if (sensor.isA<twoDModel::robotModel::parts::ColorSensorRed>()) {
+	} else if (sensor.isA<robotParts::ColorSensorRed>()) {
 		return "color_red";
-	} else if (sensor.isA<twoDModel::robotModel::parts::ColorSensorGreen>()) {
+	} else if (sensor.isA<robotParts::ColorSensorGreen>()) {
 		return "color_green";
-	} else if (sensor.isA<twoDModel::robotModel::parts::ColorSensorBlue>()) {
+	} else if (sensor.isA<robotParts::ColorSensorBlue>()) {
 		return "color_blue";
 	} else if (sensor.isA<robotParts::RangeSensor>()) {
 		return "sonar";

@@ -11,9 +11,7 @@ class TwoDRobotModel : public twoDModel::robotModel::TwoDRobotModel
 	Q_OBJECT
 
 public:
-	TwoDRobotModel();
-	QString name() const override;
-	QString friendlyName() const override;
+	explicit TwoDRobotModel(interpreterBase::robotModel::RobotModelInterface const &realModel);
 
 protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(

@@ -25,28 +25,9 @@ using namespace trikKitInterpreter::robotModel;
 using namespace trikKitInterpreter::robotModel::twoD;
 using namespace interpreterBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel(interpreterBase::robotModel::RobotModelInterface const &realModel)
-	: mRealModel(realModel)
+TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
+	: twoDModel::robotModel::TwoDRobotModel(realModel)
 {
-	for (auto port : realModel.availablePorts()) {
-		addAllowedConnection(port, realModel.allowedDevices(port));
-	}
-}
-
-QString TwoDRobotModel::name() const
-{
-	return "TrikTwoDRobotModel" + mRealModel.name();
-}
-
-QString TwoDRobotModel::friendlyName() const
-{
-	QRegExp versionRegExp("\\(.*\\)");
-	int const pos = versionRegExp.indexIn(mRealModel.friendlyName());
-	if (pos == -1) {
-		return tr("2D Model");
-	}
-
-	return tr("2D Model") + " " + versionRegExp.capturedTexts().at(0);
 }
 
 robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)

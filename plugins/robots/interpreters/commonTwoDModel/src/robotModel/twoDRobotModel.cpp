@@ -22,9 +22,29 @@
 using namespace twoDModel::robotModel;
 using namespace interpreterBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel()
-	: mEngine(nullptr)
+TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
+	: mRealModel(realModel)
+	, mEngine(nullptr)
 {
+	for (PortInfo const &port : realModel.availablePorts()) {
+		addAllowedConnection(port, realModel.allowedDevices(port));
+	}
+}
+
+QString TwoDRobotModel::name() const
+{
+	return "TwoDRobotModelFor" + mRealModel.name();
+}
+
+QString TwoDRobotModel::friendlyName() const
+{
+	QRegExp versionRegExp("\\(.*\\)");
+	int const pos = versionRegExp.indexIn(mRealModel.friendlyName());
+	if (pos == -1) {
+		return tr("2D Model");
+	}
+
+	return tr("2D Model") + " " + versionRegExp.capturedTexts().at(0);
 }
 
 bool TwoDRobotModel::needsConnection() const
@@ -32,32 +52,24 @@ bool TwoDRobotModel::needsConnection() const
 	return false;
 }
 
-QList<DeviceInfo> TwoDRobotModel::convertibleBases() const
-{
-//	return { DeviceInfo::create<robotParts::TouchSensor>()
-//			, DeviceInfo::create<robotParts::RangeSensor>()
-//			, DeviceInfo::create<robotParts::LightSensor>()
-//			, DeviceInfo::create<robotParts::ColorSensor>()
-//			, DeviceInfo::create<robotParts::SoundSensor>()
-//			, DeviceInfo::create<robotParts::GyroscopeSensor>()
-//			, DeviceInfo::create<robotParts::AccelerometerSensor>()
-//	};
-	return {};
-}
-
-void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
-{
-	mEngine = &engine;
-}
-
 utils::TimelineInterface &TwoDRobotModel::timeline()
 {
 	return mEngine->modelTimeline();
 }
 
+QList<DeviceInfo> TwoDRobotModel::convertibleBases() const
+{
+	return mRealModel.convertibleBases();
+}
+
 twoDModel::engine::TwoDModelEngineInterface *TwoDRobotModel::engine()
 {
 	return mEngine;
+}
+
+void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
+{
+	mEngine = &engine;
 }
 
 robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
