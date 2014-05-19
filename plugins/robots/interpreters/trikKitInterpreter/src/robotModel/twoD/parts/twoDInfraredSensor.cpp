@@ -13,7 +13,8 @@ TwoDInfraredSensor::TwoDInfraredSensor(interpreterBase::robotModel::DeviceInfo c
 
 void TwoDInfraredSensor::read()
 {
-	int const distanceValue = mEngine.readSonarSensor(port());
+	int const sonarDistanceValue = mEngine.readSonarSensor(port());
+	int const linearDistance = 100 - sonarDistanceValue * 100 / 255;
 	/// @todo: Know how real IR sensor works and model something similar to it.
-	emit newData(255 - distanceValue);
+	emit newData(linearDistance);
 }
