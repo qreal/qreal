@@ -203,6 +203,7 @@ private:
 	void connectUiButtons();
 	void initButtonGroups();
 	void initPorts();
+	bool isPortConfigurable(interpreterBase::robotModel::PortInfo const &port);
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void drawWalls();

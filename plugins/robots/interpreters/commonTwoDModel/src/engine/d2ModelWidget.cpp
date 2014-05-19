@@ -10,6 +10,7 @@
 #include <qrutils/qRealFileDialog.h>
 
 #include <interpreterBase/robotModel/robotParts/motor.h>
+#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 
 #include "d2RobotModel.h"
@@ -200,20 +201,23 @@ void D2ModelWidget::initButtonGroups()
 
 void D2ModelWidget::initPorts()
 {
-	QList<PortInfo> ports = mRobotModel.configurablePorts();
+	QList<PortInfo> ports = mRobotModel.availablePorts();
 	qSort(ports.begin(), ports.end()
 			, [](PortInfo const &port1, PortInfo const &port2) { return port1.name() < port2.name(); }
 	);
 
 	for (PortInfo const &port : ports) {
+		if (!isPortConfigurable(port)) {
+			continue;
+		}
+
 		DeviceInfo const currentlyConfiguredDevice = currentConfiguration(mRobotModel.name(), port);
 
-		mUi->portsGroupBox->layout()->addWidget(new QLabel(tr("Port ") + port.name()));
+		QComboBox * const portsSelectionComboBox = new QComboBox;
+		QFormLayout * const layout = dynamic_cast<QFormLayout *>(mUi->portsGroupBox->layout());
+		layout->addRow(new QLabel(port.name() + ":"), portsSelectionComboBox);
 
-		QComboBox *portsSelectionComboBox = new QComboBox();
-		mUi->portsGroupBox->layout()->addWidget(portsSelectionComboBox);
-
-		portsSelectionComboBox->addItem(tr("none"));
+		portsSelectionComboBox->addItem(tr("None"));
 		for (DeviceInfo device : mRobotModel.allowedDevices(port)) {
 			portsSelectionComboBox->addItem(device.friendlyName(), QVariant::fromValue(device));
 
@@ -227,6 +231,23 @@ void D2ModelWidget::initPorts()
 
 		mComboBoxesToPortsMap.insert(portsSelectionComboBox, port);
 	}
+}
+
+bool D2ModelWidget::isPortConfigurable(PortInfo const &port)
+{
+	if (mRobotModel.configurablePorts().contains(port)) {
+		return true;
+	}
+
+	// Skipping ports with display, buttons, speaker, encoders and so on .
+	Q_ASSERT(!mRobotModel.allowedDevices(port).isEmpty());
+	bool const isSensor = mRobotModel.allowedDevices(port)[0].isA
+			<interpreterBase::robotModel::robotParts::AbstractSensor>();
+	bool const isEncoder = mRobotModel.allowedDevices(port)[0].isA
+			<interpreterBase::robotModel::robotParts::EncoderSensor>();
+	// This will skip all camera ports
+	bool const isNameTooLong = port.name().count() > 5;
+	return isSensor && !isEncoder && !isNameTooLong;
 }
 
 void D2ModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)

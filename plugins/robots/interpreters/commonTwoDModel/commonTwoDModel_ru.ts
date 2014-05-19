@@ -233,58 +233,61 @@
 <context>
     <name>twoDModel::D2ModelWidget</name>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="131"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="132"/>
         <source>Black</source>
         <translation>Черный</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="132"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="133"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="133"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="134"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="134"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="135"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="135"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="136"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="211"/>
-        <source>Port </source>
-        <translation>Порт</translation>
-    </message>
-    <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="216"/>
-        <source>none</source>
+        <location filename="src/engine/d2ModelWidget.cpp" line="220"/>
+        <source>None</source>
         <translation>Нет сенсора</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="783"/>
+        <source>Port </source>
+        <translation type="vanished">Порт</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation type="vanished">Нет сенсора</translation>
+    </message>
+    <message>
+        <location filename="src/engine/d2ModelWidget.cpp" line="804"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="783"/>
-        <location filename="src/engine/d2ModelWidget.cpp" line="803"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="804"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="824"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="803"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="824"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="1277"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="1298"/>
         <source>%1 (port %2)</source>
         <translation>%1 (порт %2)</translation>
     </message>
