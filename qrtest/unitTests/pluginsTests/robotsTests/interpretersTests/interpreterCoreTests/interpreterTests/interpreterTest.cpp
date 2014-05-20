@@ -16,14 +16,6 @@ void InterpreterTest::SetUp()
 	mQrguiFacade->setActiveTab(qReal::Id::loadFromString(
 			"qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f08fa823-e187-4755-87ba-e4269ae4e798}"));
 
-	DummyBlockFactory *blocksFactory = new DummyBlockFactory;
-	blocksFactory->configure(
-			mQrguiFacade->graphicalModelAssistInterface()
-			, mQrguiFacade->logicalModelAssistInterface()
-			, mModelManager
-			, *mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
-			);
-
 	mFakeConnectToRobotAction.reset(new QAction(nullptr));
 
 	ON_CALL(mConfigurationInterfaceMock, devices()).WillByDefault(
@@ -80,6 +72,22 @@ void InterpreterTest::SetUp()
 	ON_CALL(mBlocksFactoryManager, addFactory(_, _)).WillByDefault(Return());
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_, _)).Times(0);
 
+	/// @todo Don't like it.
+	interpreterCore::textLanguage::RobotsBlockParser parser(
+			mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
+			, mModelManager
+			, []() { return 0; }
+			);
+
+	DummyBlockFactory *blocksFactory = new DummyBlockFactory;
+	blocksFactory->configure(
+			mQrguiFacade->graphicalModelAssistInterface()
+			, mQrguiFacade->logicalModelAssistInterface()
+			, mModelManager
+			, *mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
+			, &parser
+			);
+
 	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
 			Invoke([=] (qReal::Id const &id, interpreterBase::robotModel::RobotModelInterface const &robotModel) {
 					Q_UNUSED(robotModel)
@@ -95,13 +103,6 @@ void InterpreterTest::SetUp()
 			} )
 			);
 	EXPECT_CALL(mBlocksFactoryManager, enabledBlocks(_)).Times(0);
-
-	/// @todo Don't like it.
-	interpreterCore::textLanguage::RobotsBlockParser parser(
-			mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
-			, mModelManager
-			, []() { return 0; }
-			);
 
 	mInterpreter.reset(new Interpreter(
 			mQrguiFacade->graphicalModelAssistInterface()
