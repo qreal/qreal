@@ -73,7 +73,7 @@
 				<value name="white" displayedName="white"/>
 				<value name="black" displayedName="black"/>
 				<value name="red" displayedName="red"/>
-				<value name="darkred" displayedName="dark red"/>
+				<value name="darkRed" displayedName="dark red"/>
 				<value name="green" displayedName="green"/>
 				<value name="darkGreen" displayedName="dark green"/>
 				<value name="blue" displayedName="blue"/>
@@ -81,7 +81,7 @@
 				<value name="cyan" displayedName="cyan"/>
 				<value name="darkCyan" displayedName="dark cyan"/>
 				<value name="magenta" displayedName="magenta"/>
-				<value name="darkMagenta" displayedName="dark magenta"/>				
+				<value name="darkMagenta" displayedName="dark magenta"/>
 				<value name="yellow" displayedName="yellow"/>
 				<value name="darkYellow" displayedName="dark yellow"/>
 				<value name="gray" displayedName="gray"/>

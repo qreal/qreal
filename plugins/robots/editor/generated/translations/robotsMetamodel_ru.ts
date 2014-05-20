@@ -1321,7 +1321,7 @@
         <location filename="../generated/pluginInterface.cpp" line="1912"/>
         <location filename="../generated/pluginInterface.cpp" line="1922"/>
         <source>blue</source>
-        <translation>белый</translation>
+        <translation>синий</translation>
     </message>
     <message>
         <location filename="../generated/pluginInterface.cpp" line="1922"/>

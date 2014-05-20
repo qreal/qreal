@@ -19,6 +19,6 @@ void SmileBlockBase::run()
 					mRobotModel, "DisplayPort"
 			);
 
-	display->drawSmile(mIsSmileHappy);
+	display->drawSmile(!mIsSmileHappy);
 	emit done(mNextBlockId);
 }
