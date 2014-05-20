@@ -387,11 +387,10 @@
 				</logic>
 			</edge>
 
-			<!-- Loop block in its current state only confuses users, so it is commented out. It needs to be separated to BeginLoop and EndLoop blocks.
 			<node displayedName="Loop" name="Loop" path="154, 251 : 205, 302 :  | 154, 251 : 209, 196 :  | 100, 12 : 154, 66 :  | 154, 66 : 103, 117 :  | 12, 66 : 297, 66 : 297, 251 : 12, 251 : 12, 66 : " description="This block executes a sequence of blocks for a given number of times. The number of repetitions is specified by the 'Iterations' parameter. This block must have two outgoing links. One of them must be marked with the 'iteration' guard (that means that the property 'Guard' of the link must be set to 'iteration' value). Another outgoing link must be unmarked: the program execution will be proceeded through this link when it will go through our 'Loop' block for the given number of times.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/loopBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/loopBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-25" textBinded="Iterations" hard="true"/>
@@ -429,7 +428,6 @@
 					</generalizations>
 				</logic>
 			</node>
-			-->
 
 			<node displayedName="Fork" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links.">
 				<graphics>
@@ -2834,10 +2832,7 @@
 				<element name="FinalNode"/>
 				<element name="Function"/>
 				<element name="IfBlock"/>
-
-				<!-- Loop block in its current state only confuses -->
-				<!-- <element name="Loop"/> -->
-
+				<element name="Loop"/>
 				<element name="Subprogram"/>
 				<element name="Fork"/>
 				<element name="VariableInit"/>
