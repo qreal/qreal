@@ -12,7 +12,7 @@
             <platforms>windows</platforms>
             <distributionFileList>
                 <distributionFile>
-                    <origin>%1/bin/qrgui.exe</origin>
+                    <origin>%1/bin/%3.exe</origin>
                 </distributionFile>
                 <distributionFile>
                     <origin>%1/bin/qrkernel.dll</origin>
