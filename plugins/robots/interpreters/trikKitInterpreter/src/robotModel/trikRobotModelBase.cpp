@@ -61,6 +61,15 @@ TrikRobotModelBase::TrikRobotModelBase()
 	addAllowedConnection(PortInfo("LineDetectorPort", input), { cameraLineDetectorSensorInfo() });
 }
 
+QList<PortInfo> TrikRobotModelBase::configurablePorts() const
+{
+	QList<PortInfo> const digitalPorts = {
+			  PortInfo("JD1", input, {}, "digitSensor1")
+			, PortInfo("JD2", input, {}, "digitSensor2")
+			, PortInfo("JF1", input, {}, "sensorF1") };
+	return CommonRobotModel::configurablePorts() + digitalPorts;
+}
+
 QList<DeviceInfo> TrikRobotModelBase::convertibleBases() const
 {
 	return { DeviceInfo::create<robotParts::LightSensor>()

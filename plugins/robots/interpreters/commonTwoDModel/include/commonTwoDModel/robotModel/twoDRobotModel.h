@@ -25,6 +25,7 @@ public:
 	QString friendlyName() const override;
 	bool needsConnection() const override;
 	utils::TimelineInterface &timeline() override;
+	QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 
 	void setEngine(engine::TwoDModelEngineInterface &engine);

@@ -57,6 +57,11 @@ utils::TimelineInterface &TwoDRobotModel::timeline()
 	return mEngine->modelTimeline();
 }
 
+QList<PortInfo> TwoDRobotModel::configurablePorts() const
+{
+	return mRealModel.configurablePorts();
+}
+
 QList<DeviceInfo> TwoDRobotModel::convertibleBases() const
 {
 	return mRealModel.convertibleBases();

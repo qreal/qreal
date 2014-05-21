@@ -12,6 +12,7 @@ class TrikRobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 public:
 	TrikRobotModelBase();
 
+	QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 
 protected:

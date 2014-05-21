@@ -41,7 +41,6 @@ public:
 
 	QList<PortInfo> availablePorts() const final;
 
-	/// @todo Make default implementation use allowedDevices() to determine if there is actually a choise.
 	QList<PortInfo> configurablePorts() const override;
 
 	QList<DeviceInfo> allowedDevices(PortInfo const &port) const final;

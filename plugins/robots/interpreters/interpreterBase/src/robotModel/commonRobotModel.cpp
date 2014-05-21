@@ -116,7 +116,7 @@ QList<PortInfo> CommonRobotModel::configurablePorts() const
 		// Device can be automaticly configured if it is the only one that can be plugged into this port
 		// (for example display) or if two devices with different directions can be plugged into this port
 		// (fer example motor and encoder). Otherwise this device must be configured manually by user.
-		if (devices.count() > 2 || (devices.count() == 2 && devices[0].direction() == devices[1].direction())) {
+		if (devices.count() > 1) {
 			result << port;
 		}
 	}
