@@ -34,6 +34,18 @@
 				<value name="JD2"/>
 				<value name="JF1"/>
 			</enum>
+			<enum name="TrikV6DigitalSensorPort">
+				<value name="JD1"/>
+				<value name="JD2"/>
+			</enum>
+			<enum name="TrikV6AnalogSensorPort">
+				<value name="JA1"/>
+				<value name="JA2"/>
+				<value name="JA3"/>
+				<value name="JA4"/>
+				<value name="JA5"/>
+				<value name="JA6"/>
+			</enum>
 			<enum name="GuardType">
 				<value/>
 				<value name="iteration" displayedName="iteration"/>
@@ -1830,13 +1842,35 @@
 			<node name="TrikSensorBlock">
 				<logic>
 					<container/>
+					<properties/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="TrikAnalogSensorBlock">
+				<logic>
+					<container/>
 					<properties>
-						<property displayedName="Port" type="TrikV4SensorPort" name="Port">
+						<property displayedName="Port" type="TrikV6AnalogSensorPort" name="Port">
 							<default>JA1</default>
 						</property>
 					</properties>
 					<generalizations>
-						<parent parentName="AbstractNode"/>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="TrikDigitalSensorBlock">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="TrikV6DigitalSensorPort" name="Port">
+							<default>JD1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -1884,7 +1918,7 @@
 						</property>
 					</properties>
 					<generalizations>
-						<parent parentName="TrikSensorBlock"/>
+						<parent parentName="TrikAnalogSensorBlock"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -1932,7 +1966,7 @@
 						</property>
 					</properties>
 					<generalizations>
-						<parent parentName="TrikSensorBlock"/>
+						<parent parentName="TrikDigitalSensorBlock"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -1980,7 +2014,7 @@
 						</property>
 					</properties>
 					<generalizations>
-						<parent parentName="TrikSensorBlock"/>
+						<parent parentName="TrikAnalogSensorBlock"/>
 					</generalizations>
 				</logic>
 			</node>
