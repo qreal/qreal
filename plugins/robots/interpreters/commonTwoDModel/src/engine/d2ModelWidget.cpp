@@ -334,6 +334,8 @@ void D2ModelWidget::drawInitialRobot()
 	mRobot->setRotater(rotater);
 	mRobot->setRobotModel(mTwoDRobotModel);
 
+	rereadDevicesConfiguration();
+
 	mUi->graphicsView->centerOn(mRobot);
 }
 
@@ -366,6 +368,7 @@ void D2ModelWidget::close()
 		mRobot = NULL;
 	}
 
+	mSensors.clear();
 	mUi->graphicsView->setVisible(false);
 	setVisible(false);
 }
@@ -1155,6 +1158,13 @@ void D2ModelWidget::toggleDisplayVisibility()
 	setDisplayVisibility(!mDisplay->isVisible());
 }
 
+void D2ModelWidget::rereadDevicesConfiguration()
+{
+	for (PortInfo const &port : mRobotModel.availablePorts()) {
+		onDeviceConfigurationChanged(mRobotModel.name(), port, currentConfiguration(mRobotModel.name(), port));
+	}
+}
+
 void D2ModelWidget::setDisplayVisibility(bool visible)
 {
 	if (!mDisplay) {
@@ -1252,10 +1262,10 @@ void D2ModelWidget::alignWalls()
 	}
 }
 
-void D2ModelWidget::onDeviceConfigurationChanged(const QString &robotModel
-		, const PortInfo &port, const DeviceInfo &device)
+void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
+		, PortInfo const &port, DeviceInfo const &device)
 {
-	if (robotModel != mRobotModel.name()) {
+	if (!mRobot || robotModel != mRobotModel.name()) {
 		/// @todo Convert configuration between models or something?
 		return;
 	}

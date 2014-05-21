@@ -186,6 +186,8 @@ private slots:
 
 	void toggleDisplayVisibility();
 
+	void rereadDevicesConfiguration();
+
 private:
 	static const int defaultPenWidth = 15;
 
