@@ -60,7 +60,7 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new interpreterBase::blocksBase::common::EmptyBlock();
 
 	} else if (elementMetatypeIs(element, "TrikWaitForLight")) {
-		return new interpreterBase::blocksBase::common::WaitForTouchSensorBlock(mRobotModelManager->model());
+		return new interpreterBase::blocksBase::common::WaitForLightSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForSonarDistance")) {
 		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model()
 				, interpreterBase::robotModel::DeviceInfo::create<
