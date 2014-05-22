@@ -1086,6 +1086,8 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	mDrawingAction = enums::drawingAction::noneWordLoad;
 	update();
 	mDrawingAction = enums::drawingAction::none;
+
+	saveInitialRobotBeforeRun();
 }
 
 void D2ModelWidget::setRunStopButtonsEnabled(bool enabled)
@@ -1358,4 +1360,10 @@ void D2ModelWidget::updateWheelComboBoxes()
 			}
 		}
 	}
+}
+
+D2ModelWidget::RobotState::RobotState()
+	: pos()
+	, rotation(0)
+{
 }

@@ -198,6 +198,9 @@ private:
 	static const int indexOfLightSensor = 4;
 
 	struct RobotState {
+	public:
+		RobotState();
+
 		QPointF pos;
 		double rotation;
 	};
