@@ -20,6 +20,7 @@
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
 #include "details/waitForButtonsBlock.h"
+#include "robotModel/parts/trikInfraredSensor.h"
 
 using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
@@ -61,9 +62,12 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikWaitForLight")) {
 		return new interpreterBase::blocksBase::common::WaitForTouchSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForSonarDistance")) {
-		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model());
+		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model()
+				, interpreterBase::robotModel::DeviceInfo::create<
+						interpreterBase::robotModel::robotParts::RangeSensor>());
 	} else if (elementMetatypeIs(element, "TrikWaitForIRDistance")) {
-		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model());
+		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model()
+				, interpreterBase::robotModel::DeviceInfo::create<robotModel::parts::TrikInfraredSensor>());
 	} else if (elementMetatypeIs(element, "TrikWaitForGyroscope")) {
 		return new interpreterBase::blocksBase::common::WaitForGyroscopeSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForAccelerometer")) {

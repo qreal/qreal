@@ -11,7 +11,8 @@ class ROBOTS_INTERPRETER_BASE_EXPORT WaitForSonarDistanceBlock : public WaitForS
 	Q_OBJECT
 
 public:
-	explicit WaitForSonarDistanceBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	WaitForSonarDistanceBlock(interpreterBase::robotModel::RobotModelInterface &robotModel
+			, interpreterBase::robotModel::DeviceInfo const &device);
 	~WaitForSonarDistanceBlock() override;
 
 protected slots:
@@ -19,6 +20,9 @@ protected slots:
 
 protected:
 	interpreterBase::robotModel::DeviceInfo device() const override;
+
+private:
+	interpreterBase::robotModel::DeviceInfo const mDevice;
 };
 
 }

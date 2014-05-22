@@ -11,6 +11,8 @@
 #include <interpreterBase/blocksBase/common/waitForSoundSensorBlock.h>
 #include <interpreterBase/blocksBase/common/waitForTouchSensorBlock.h>
 
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+
 #include "details/beepBlock.h"
 #include "details/playToneBlock.h"
 
@@ -47,7 +49,9 @@ interpreterBase::blocksBase::Block *NxtBlocksFactory::produceBlock(qReal::Id con
 	} else if (elementMetatypeIs(element, "NxtWaitForTouchSensor")) {
 		return new interpreterBase::blocksBase::common::WaitForTouchSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtWaitForSonarDistance")) {
-		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model());
+		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model()
+				, interpreterBase::robotModel::DeviceInfo::create<
+						interpreterBase::robotModel::robotParts::RangeSensor>());
 	} else if (elementMetatypeIs(element, "NxtWaitForColor")) {
 		return new interpreterBase::blocksBase::common::WaitForColorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtWaitForEncoder")) {

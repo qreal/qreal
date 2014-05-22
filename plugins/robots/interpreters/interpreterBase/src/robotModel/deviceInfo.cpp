@@ -26,6 +26,10 @@ DeviceInfo::DeviceInfo(QMetaObject const *deviceType, QString const &name
 
 bool DeviceInfo::isA(DeviceInfo const &parent) const
 {
+	if (parent.isNull()) {
+		return false;
+	}
+
 	QMetaObject const *currentParent = mDeviceType;
 	while (currentParent && QString(parent.mDeviceType->className()) != QString(currentParent->className())) {
 		currentParent = currentParent->superClass();

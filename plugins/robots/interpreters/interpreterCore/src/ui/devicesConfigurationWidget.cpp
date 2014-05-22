@@ -117,7 +117,12 @@ void DevicesConfigurationWidget::refresh()
 		if (device.isNull()) {
 			box->setCurrentIndex(0);
 		} else {
-			box->setCurrentText(device.friendlyName());
+			for (int index = 0; index < box->count(); ++index) {
+				if (box->itemData(index).value<DeviceInfo>().isA(device)) {
+					box->setCurrentIndex(index);
+					break;
+				}
+			}
 		}
 	}
 

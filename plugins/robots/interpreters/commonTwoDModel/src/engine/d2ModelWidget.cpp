@@ -221,7 +221,7 @@ void D2ModelWidget::initPorts()
 		layout->addRow(new QLabel(port.name() + ":"), portsSelectionComboBox);
 
 		portsSelectionComboBox->addItem(tr("None"));
-		for (DeviceInfo device : mRobotModel.allowedDevices(port)) {
+		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
 			portsSelectionComboBox->addItem(device.friendlyName(), QVariant::fromValue(device));
 
 			if (currentlyConfiguredDevice == device) {
@@ -1282,7 +1282,7 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 	}
 
 	for (int index = 0; index < comboBox->count(); ++index) {
-		if (comboBox->itemData(index).value<DeviceInfo>() == device) {
+		if (comboBox->itemData(index).value<DeviceInfo>().isA(device)) {
 			comboBox->setCurrentIndex(index);
 			break;
 		}
