@@ -266,7 +266,7 @@
     <message>
         <location filename="../generated/elements.h" line="9942"/>
         <source>Wait for  Enter</source>
-        <translation>Ждать Вверх</translation>
+        <translation>Ждать Ввод</translation>
     </message>
     <message>
         <location filename="../generated/elements.h" line="10097"/>
