@@ -10,7 +10,10 @@ public:
 	RussianCGeneratorFactory(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
-	virtual ~RussianCGeneratorFactory();
+	~RussianCGeneratorFactory() override;
+
+	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
+			, generatorBase::GeneratorCustomizer &customizer) override;
 
 	QString pathToTemplates() const override;
 
