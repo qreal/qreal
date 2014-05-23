@@ -10,7 +10,10 @@ public:
 	NxtOsekGeneratorFactory(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
-	virtual ~NxtOsekGeneratorFactory();
+	~NxtOsekGeneratorFactory() override;
+
+	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
+			, generatorBase::GeneratorCustomizer &customizer) override;
 
 	QString pathToTemplates() const override;
 

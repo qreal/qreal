@@ -13,7 +13,6 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
-/// @todo Subject to generalization. Every kit has its own buttons.
 class Button : public interpreterBase::robotModel::robotParts::Button
 {
 	Q_OBJECT

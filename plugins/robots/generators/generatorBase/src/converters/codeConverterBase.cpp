@@ -1,6 +1,7 @@
 #include "codeConverterBase.h"
 
 #include <qrkernel/settingsManager.h>
+#include <interpreterBase/robotModel/robotParts/button.h>
 
 using namespace generatorBase::converters;
 using namespace qReal;
@@ -70,7 +71,11 @@ QString CodeConverterBase::deviceExpression(interpreterBase::robotModel::PortInf
 		return QString();
 	}
 
-	QString const templatePath = QString("sensors/%1.t").arg(mDevices[port].name());
+	interpreterBase::robotModel::DeviceInfo const device = mDevices[port];
+	QString const templatePath = QString("sensors/%1.t").arg(
+			device.isA<interpreterBase::robotModel::robotParts::Button>()
+					? port.name().split("ButtonPort", QString::SkipEmptyParts)[0]
+					: device.name());
 
 	// Converter must take a string like "1" or "2" (and etc) and return correct value
 	return readTemplate(templatePath).replace("@@PORT@@", mInputConverter->convert(port.name()));

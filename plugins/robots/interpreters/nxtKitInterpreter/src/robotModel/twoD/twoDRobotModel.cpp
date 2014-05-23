@@ -1,6 +1,5 @@
 #include "twoDRobotModel.h"
 
-#include <interpreterBase/robotModel/robotParts/buttons.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/motor.h>
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
@@ -14,7 +13,6 @@
 #include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
 
 #include "robotModel/twoD/parts/twoDDisplay.h"
-#include "robotModel/twoD/parts/twoDButtons.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
 #include "robotModel/twoD/parts/twoDMotor.h"
 
@@ -31,10 +29,6 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 {
 	if (deviceInfo.isA<robotParts::Display>()) {
 		return new parts::Display(deviceInfo, port, *engine());
-	}
-
-	if (deviceInfo.isA<robotParts::Buttons>()) {
-		return new parts::TwoDButtons(deviceInfo, port, *engine());
 	}
 
 	if (deviceInfo.isA<robotParts::Speaker>()) {

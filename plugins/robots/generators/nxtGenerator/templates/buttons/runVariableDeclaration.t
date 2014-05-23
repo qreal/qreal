@@ -1,2 +1,0 @@
-int runCounter;
-int runWasDown;

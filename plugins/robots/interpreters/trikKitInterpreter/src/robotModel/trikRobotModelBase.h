@@ -18,7 +18,7 @@ public:
 protected:
 	virtual interpreterBase::robotModel::DeviceInfo displayInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo speakerInfo() const;
-	virtual interpreterBase::robotModel::DeviceInfo buttonsInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo buttonInfo() const;
 
 	virtual interpreterBase::robotModel::DeviceInfo powerMotorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo servoMotorInfo() const;

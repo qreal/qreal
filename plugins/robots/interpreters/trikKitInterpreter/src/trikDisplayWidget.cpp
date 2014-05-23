@@ -39,21 +39,21 @@ int TrikDisplayWidget::displayHeight() const
 	return mUi->display->height();
 }
 
-bool TrikDisplayWidget::buttonIsDown(QString const &buttonId) const
+bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
 {
-	if (buttonId == "left") {
+	if (buttonPort == "LeftButtonPort") {
 		return mUi->buttonLeft->isDown();
-	} else if (buttonId == "right") {
+	} else if (buttonPort == "RightButtonPort") {
 		return mUi->buttonRight->isDown();
-	} else if (buttonId == "up") {
+	} else if (buttonPort == "UpButtonPort") {
 		return mUi->buttonUp->isDown();
-	} else if (buttonId == "down") {
+	} else if (buttonPort == "DownButtonPort") {
 		return mUi->buttonDown->isDown();
-	} else if (buttonId == "enter") {
+	} else if (buttonPort == "EnterButtonPort") {
 		return mUi->buttonDownLeft->isDown();
-	} else if (buttonId == "escape") {
+	} else if (buttonPort == "EscapeButtonPort") {
 		return mUi->buttonAttach->isDown();
-	} else if (buttonId == "power") {
+	} else if (buttonPort == "PowerButtonPort") {
 		return mUi->buttonOn->isDown();
 	}
 

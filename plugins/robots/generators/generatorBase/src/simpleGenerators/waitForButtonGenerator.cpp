@@ -1,8 +1,8 @@
-#include "waitForButtonGenerator.h"
+#include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 
 #include <generatorBase/generatorCustomizer.h>
 
-using namespace trik::simple;
+using namespace generatorBase::simple;
 
 WaitForButtonGenerator::WaitForButtonGenerator(qrRepo::RepoApi const &repo
 		, generatorBase::GeneratorCustomizer &customizer

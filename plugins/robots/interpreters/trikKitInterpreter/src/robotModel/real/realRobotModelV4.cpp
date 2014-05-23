@@ -60,8 +60,8 @@ robotParts::Device *RealRobotModelV4::createDevice(PortInfo const &port, DeviceI
 		return new parts::Display(displayInfo(), port);
 	} else if (deviceInfo.isA(speakerInfo())) {
 		return new parts::Speaker(speakerInfo(), port);
-	} else if (deviceInfo.isA(buttonsInfo())) {
-		return new parts::Button(buttonsInfo(), port);
+	} else if (deviceInfo.isA(buttonInfo())) {
+		return new parts::Button(buttonInfo(), port);
 	} else if (deviceInfo.isA(powerMotorInfo())) {
 		return new parts::PowerMotor(powerMotorInfo(), port);
 	} else if (deviceInfo.isA(servoMotorInfo())) {

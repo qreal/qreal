@@ -116,6 +116,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/simpleGenerators/abstractSimpleGenerator.h \
 	$$PWD/include/generatorBase/simpleGenerators/binding.h \
 	$$PWD/include/generatorBase/simpleGenerators/bindingGenerator.h \
+	$$PWD/include/generatorBase/simpleGenerators/waitForButtonGenerator.h \
 
 HEADERS += \
 	$$PWD/src/converters/codeConverterBase.h \
@@ -157,7 +158,6 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/waitForGyroscopeBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForAccelerometerBlockGenerator.h \
 	$$PWD/src/simpleGenerators/drawPixelBlockGenerator.h \
-	$$PWD/src/simpleGenerators/waitForButtonsBlockGenerator.h \
 	$$PWD/src/simpleGenerators/drawLineBlockGenerator.h \
 	$$PWD/src/simpleGenerators/drawCircleBlockGenerator.h \
 	$$PWD/src/simpleGenerators/printTextBlockGenerator.h \
@@ -220,7 +220,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/waitForGyroscopeBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForAccelerometerBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/drawPixelBlockGenerator.cpp \
-	$$PWD/src/simpleGenerators/waitForButtonsBlockGenerator.cpp \
+	$$PWD/src/simpleGenerators/waitForButtonGenerator.cpp \
 	$$PWD/src/simpleGenerators/drawLineBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/drawCircleBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/printTextBlockGenerator.cpp \

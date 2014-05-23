@@ -6,3 +6,8 @@ Button::Button(DeviceInfo const &info, PortInfo const &port)
 	: ScalarSensor(info, port)
 {
 }
+
+void Button::doConfiguration()
+{
+	emit configured(true);
+}

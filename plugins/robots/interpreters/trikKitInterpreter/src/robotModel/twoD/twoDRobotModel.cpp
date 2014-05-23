@@ -1,7 +1,6 @@
 #include "twoDRobotModel.h"
 
 #include "robotModel/twoD/parts/twoDDisplay.h"
-#include "robotModel/twoD/parts/twoDButton.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
 #include "robotModel/twoD/parts/twoDInfraredSensor.h"
 #include "robotModel/parts/trikInfraredSensor.h"
@@ -34,10 +33,6 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 {
 	if (deviceInfo.isA<robotParts::Display>()) {
 		return new parts::Display(deviceInfo, port, *engine());
-	}
-
-	if (deviceInfo.isA<robotParts::Button>()) {
-		return new parts::TwoDButtons(deviceInfo, port, *engine());
 	}
 
 	if (deviceInfo.isA<robotParts::Speaker>()) {

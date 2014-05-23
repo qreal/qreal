@@ -1781,20 +1781,14 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Buttons" name="NxtWaitForButtons" path="55, 58 : 179, 58 : 179, 182 : 55, 182 : 55, 58 :  | 12, 12 : 221, 12 : 221, 221 : 12, 221 : 12, 12 : " description="Waits till the given robot`s buttons will be pushed the given number of times. The push counters may be specified separately for each button, the block will continue the execution only when each of counter will be reached.">
+
+			<node displayedName="Wait for \&quot;Enter\&quot; button" name="NxtWaitForEnter" description="Waits for \&quot;Enter\&quot;. button press.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="70" y="60" textBinded="RightButtonClicks"/>
-						<label x="-20" y="60" text="Right: "/>
-						<label x="70" y="80" textBinded="LeftButtonClicks"/>
-						<label x="-20" y="80" text="Left: "/>
-						<label x="70" y="100" textBinded="CentralButtonClicks"/>
-						<label x="-20" y="100" text="Enter: "/>
-						<label x="70" y="120" textBinded="BottomButtonClicks"/>
-						<label x="-20" y="120" text="Cancel: "/>
+						<label x="-20" y="60" text="Wait for  Enter"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1818,20 +1812,111 @@
 				</graphics>
 				<logic>
 					<container/>
-					<properties>
-						<property displayedName="Right button clicks" type="string" name="RightButtonClicks">
-							<default>0</default>
-						</property>
-						<property displayedName="Left button clicks" type="string" name="LeftButtonClicks">
-							<default>0</default>
-						</property>
-						<property displayedName="Enter button clicks" type="string" name="CentralButtonClicks">
-							<default>1</default>
-						</property>
-						<property displayedName="Cancel button clicks" type="string" name="BottomButtonClicks">
-							<default>0</default>
-						</property>
-					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Escape\&quot; button" name="NxtWaitForEscape" description="Waits for \&quot;Escape\&quot; button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Escape"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Left\&quot; button" name="NxtWaitForLeft" description="Waits for \&quot;Left\&quot; button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Left"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Right\&quot; button" name="NxtWaitForRight" description="Waits for \&quot;Right\&quot; button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Right"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
@@ -2904,7 +2989,10 @@
 				<element name="NxtWaitForColorIntensity"/>
 				<element name="NxtWaitForLight"/>
 				<element name="NxtWaitForSound"/>
-				<element name="NxtWaitForButtons"/>
+				<element name="NxtWaitForEnter"/>
+				<element name="NxtWaitForEscape"/>
+				<element name="NxtWaitForLeft"/>
+				<element name="NxtWaitForRight"/>
 				<element name="TrikWaitForLight"/>
 				<element name="TrikWaitForSonarDistance"/>
 				<element name="TrikWaitForIRDistance"/>

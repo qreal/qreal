@@ -1,5 +1,6 @@
 #include "trikGeneratorFactory.h"
 #include <generatorBase/converters/regexpMultiConverter.h>
+#include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 #include "converters/engineV4PortConverter.h"
 #include "converters/engineV6PortConverter.h"
 #include "converters/encoderV4PortConverter.h"
@@ -16,7 +17,6 @@
 #include "simpleGenerators/systemGenerator.h"
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/trikEnginesStopGenerator.h"
-#include "simpleGenerators/waitForButtonGenerator.h"
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMovementSensorGenerator.h"
 #include "simpleGenerators/trikNullificationEncoderGenerator.h"

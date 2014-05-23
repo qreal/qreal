@@ -1,13 +1,13 @@
 #pragma once
 
-#include "robotModel/parts/nxtButton.h"
+#include <interpreterBase/robotModel/robotParts/button.h>
 
 namespace nxtKitInterpreter {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class Button : public robotModel::parts::NxtButton
+class Button : public interpreterBase::robotModel::robotParts::Button
 {
 	Q_OBJECT
 

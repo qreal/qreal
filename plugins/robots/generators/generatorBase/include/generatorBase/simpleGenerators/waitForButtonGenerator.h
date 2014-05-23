@@ -1,12 +1,13 @@
 #pragma once
 
-#include <generatorBase/simpleGenerators/bindingGenerator.h>
+#include "generatorBase/simpleGenerators/bindingGenerator.h"
+#include "generatorBase/robotsGeneratorDeclSpec.h"
 
-namespace trik {
+namespace generatorBase {
 namespace simple {
 
 /// Generator for various waitings for button press.
-class WaitForButtonGenerator : public generatorBase::simple::BindingGenerator
+class ROBOTS_GENERATOR_EXPORT WaitForButtonGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
 	WaitForButtonGenerator(qrRepo::RepoApi const &repo

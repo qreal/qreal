@@ -27,7 +27,6 @@
 #include "simpleGenerators/drawCircleBlockGenerator.h"
 #include "simpleGenerators/printTextBlockGenerator.h"
 #include "simpleGenerators/waitForLightBlockGenerator.h"
-#include "simpleGenerators/waitForButtonsBlockGenerator.h"
 #include "simpleGenerators/waitForSonarBlockGenerator.h"
 #include "simpleGenerators/waitForEncoderBlockGenerator.h"
 #include "simpleGenerators/waitForTouchSensorBlockGenerator.h"
@@ -239,8 +238,6 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 		return new WaitForGyroscopeBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("WaitForAccelerometer")) {
 		return new WaitForAccelerometerBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("WaitForButtons")) {
-		return new WaitForButtonsBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("DrawPixel")) {
 		return new DrawPixelBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("DrawLine")) {

@@ -10,6 +10,7 @@
 #include <interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <interpreterBase/blocksBase/common/waitForSoundSensorBlock.h>
 #include <interpreterBase/blocksBase/common/waitForTouchSensorBlock.h>
+#include <interpreterBase/blocksBase/common/waitForButtonBlock.h>
 
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 
@@ -26,10 +27,9 @@
 #include "details/drawCircleBlock.h"
 #include "details/printTextBlock.h"
 
-#include "details/waitForButtonsBlock.h"
-
 using namespace nxtKitInterpreter::blocks;
 using namespace details;
+using namespace interpreterBase::blocksBase::common;
 
 interpreterBase::blocksBase::Block *NxtBlocksFactory::produceBlock(qReal::Id const &element)
 {
@@ -42,29 +42,35 @@ interpreterBase::blocksBase::Block *NxtBlocksFactory::produceBlock(qReal::Id con
 	} else if (elementMetatypeIs(element, "NxtEnginesBackward")) {
 		return new details::NxtEnginesBackwardBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtEnginesStop")) {
-		return new interpreterBase::blocksBase::common::EnginesStopBlock(mRobotModelManager->model());
+		return new EnginesStopBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtClearEncoder")) {
-		return new interpreterBase::blocksBase::common::ClearEncoderBlock(mRobotModelManager->model());
+		return new ClearEncoderBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "NxtWaitForTouchSensor")) {
-		return new interpreterBase::blocksBase::common::WaitForTouchSensorBlock(mRobotModelManager->model());
+		return new WaitForTouchSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtWaitForSonarDistance")) {
-		return new interpreterBase::blocksBase::common::WaitForSonarDistanceBlock(mRobotModelManager->model()
+		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
 				, interpreterBase::robotModel::DeviceInfo::create<
 						interpreterBase::robotModel::robotParts::RangeSensor>());
 	} else if (elementMetatypeIs(element, "NxtWaitForColor")) {
-		return new interpreterBase::blocksBase::common::WaitForColorBlock(mRobotModelManager->model());
+		return new WaitForColorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtWaitForEncoder")) {
-		return new interpreterBase::blocksBase::common::WaitForEncoderBlock(mRobotModelManager->model());
+		return new WaitForEncoderBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtWaitForColorIntensity")) {
-		return new interpreterBase::blocksBase::common::WaitForColorIntensityBlock(mRobotModelManager->model());
+		return new WaitForColorIntensityBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtWaitForLight")) {
-		return new interpreterBase::blocksBase::common::WaitForLightSensorBlock(mRobotModelManager->model());
+		return new WaitForLightSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtWaitForSound")) {
-		return new interpreterBase::blocksBase::common::WaitForSoundSensorBlock(mRobotModelManager->model());
+		return new WaitForSoundSensorBlock(mRobotModelManager->model());
 
-	} else if (elementMetatypeIs(element, "NxtWaitForButtons")) {
-		return new WaitForButtonsBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "NxtWaitForEnter")) {
+		return new WaitForButtonBlock(mRobotModelManager->model(), "EnterButtonPort");
+	} else if (elementMetatypeIs(element, "NxtWaitForEscape")) {
+		return new WaitForButtonBlock(mRobotModelManager->model(), "EscapeButtonPort");
+	} else if (elementMetatypeIs(element, "NxtWaitForLeft")) {
+		return new WaitForButtonBlock(mRobotModelManager->model(), "LeftButtonPort");
+	} else if (elementMetatypeIs(element, "NxtWaitForRight")) {
+		return new WaitForButtonBlock(mRobotModelManager->model(), "RightButtonPort");
 	} else if (elementMetatypeIs(element, "NxtDrawPixel")) {
 		return new DrawPixelBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "DrawLine")) {
@@ -99,7 +105,10 @@ qReal::IdList NxtBlocksFactory::providedBlocks() const
 		, id("NxtWaitForEncoder")
 		, id("NxtWaitForLight")
 		, id("NxtWaitForSound")
-		, id("NxtWaitForButtons")
+		, id("NxtWaitForEnter")
+		, id("NxtWaitForEscape")
+		, id("NxtWaitForLeft")
+		, id("NxtWaitForRight")
 
 		, id("NxtDrawPixel")
 		, id("NxtDrawLine")

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "robotModel/parts/trikButton.h"
+#include <interpreterBase/robotModel/robotParts/button.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class Button : public robotModel::parts::TrikButton
+class Button : public interpreterBase::robotModel::robotParts::Button
 {
 	Q_OBJECT
 

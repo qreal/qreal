@@ -32,6 +32,7 @@ SOURCES += \
 	$$PWD/src/blocksBase/common/waitForSonarDistanceBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForSoundSensorBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForTouchSensorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForButtonBlock.cpp \
 	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/robotModelUtils.cpp \
@@ -88,6 +89,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForSoundSensorBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForTouchSensorBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForButtonBlock.h \
 	$$PWD/include/interpreterBase/robotModel/configuration.h \
 	$$PWD/include/interpreterBase/robotModel/commonRobotModel.h \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \

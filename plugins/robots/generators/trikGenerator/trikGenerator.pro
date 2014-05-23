@@ -55,7 +55,6 @@ HEADERS += \
 	$$PWD/simpleGenerators/trikEnginesGenerator.h \
 	$$PWD/simpleGenerators/trikEnginesStopGenerator.h \
 	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.h \
-	$$PWD/simpleGenerators/waitForButtonGenerator.h \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.h \
 	$$PWD/simpleGenerators/waitForMovementSensorGenerator.h \
 
@@ -84,7 +83,6 @@ SOURCES += \
 	$$PWD/simpleGenerators/trikEnginesGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesStopGenerator.cpp \
 	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.cpp \
-	$$PWD/simpleGenerators/waitForButtonGenerator.cpp \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.cpp \
 	$$PWD/simpleGenerators/waitForMovementSensorGenerator.cpp \
 

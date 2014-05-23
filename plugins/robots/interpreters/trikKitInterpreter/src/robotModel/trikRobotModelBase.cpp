@@ -28,7 +28,14 @@ TrikRobotModelBase::TrikRobotModelBase()
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
-	addAllowedConnection(PortInfo("ButtonsPort", input), { buttonsInfo() });
+
+	addAllowedConnection(PortInfo("LeftButtonPort", input, {}, "leftButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("RightButtonPort", input, {}, "rightButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("UpButtonPort", input, {}, "upButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("DownButtonPort", input, {}, "downButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("EnterButtonPort", input, {}, "enterButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("EscapeButtonPort", input, {}, "escapeButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("PowerButtonPort", input, {}, "powerButton"), { buttonInfo() });
 
 	addAllowedConnection(PortInfo("JC1", output), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("JC2", output), { servoMotorInfo() });
@@ -87,7 +94,7 @@ DeviceInfo TrikRobotModelBase::speakerInfo() const
 	return DeviceInfo::create<robotParts::Speaker>();
 }
 
-DeviceInfo TrikRobotModelBase::buttonsInfo() const
+DeviceInfo TrikRobotModelBase::buttonInfo() const
 {
 	return DeviceInfo::create<robotParts::Button>();
 }

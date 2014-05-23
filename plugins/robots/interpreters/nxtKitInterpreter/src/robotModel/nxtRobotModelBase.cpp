@@ -41,13 +41,20 @@ NxtRobotModelBase::NxtRobotModelBase()
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
-	addAllowedConnection(PortInfo("ButtonsPort", input), { buttonInfo() });
+
+	addAllowedConnection(PortInfo("LeftButtonPort", input, {}, "leftButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("RightButtonPort", input, {}, "rightButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("EnterButtonPort", input, {}, "enterButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("EscapeButtonPort", input, {}, "escapeButton"), { buttonInfo() });
+
 	addAllowedConnection(PortInfo("A", output), { motorInfo() });
 	addAllowedConnection(PortInfo("B", output), { motorInfo() });
 	addAllowedConnection(PortInfo("C", output), { motorInfo() });
+
 	addAllowedConnection(PortInfo("A", input, {}, "encoderA"), { encoderInfo() });
 	addAllowedConnection(PortInfo("B", input, {}, "encoderB"), { encoderInfo() });
 	addAllowedConnection(PortInfo("C", input, {}, "encoderC"), { encoderInfo() });
+
 	addAllowedConnection(PortInfo("1", input, {}, "sensor1"), inputPortConnections);
 	addAllowedConnection(PortInfo("2", input, {}, "sensor2"), inputPortConnections);
 	addAllowedConnection(PortInfo("3", input, {}, "sensor3"), inputPortConnections);

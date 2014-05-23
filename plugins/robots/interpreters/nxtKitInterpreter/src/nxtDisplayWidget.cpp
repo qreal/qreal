@@ -21,15 +21,15 @@ NxtDisplayWidget::~NxtDisplayWidget()
 	delete mUi;
 }
 
-bool NxtDisplayWidget::buttonIsDown(QString const &buttonId) const
+bool NxtDisplayWidget::buttonIsDown(QString const &buttonPort) const
 {
-	if (buttonId == "left") {
+	if (buttonPort == "LeftButtonPort") {
 		return mUi->leftButton->isDown();
-	} else if (buttonId == "right") {
+	} else if (buttonPort == "RightButtonPort") {
 		return mUi->rightButton->isDown();
-	} else if (buttonId == "central") {
+	} else if (buttonPort == "EnterButtonPort") {
 		return mUi->centralButton->isDown();
-	} else if (buttonId == "bottom") {
+	} else if (buttonPort == "EscapeButtonPort") {
 		return mUi->bottomButton->isDown();
 	}
 

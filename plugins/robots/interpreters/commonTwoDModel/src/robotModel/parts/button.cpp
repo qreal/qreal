@@ -15,7 +15,7 @@ Button::Button(interpreterBase::robotModel::DeviceInfo const &info
 
 void Button::read()
 {
-	/// @todo Implement.
+	emit newData(mEngine.display()->buttonIsDown(port().name()) ? 1 : 0);
 }
 
 void Button::doConfiguration()
