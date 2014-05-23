@@ -1,11 +1,11 @@
-#include "twoDButtons.h"
+#include "twoDButton.h"
 
 using namespace trikKitInterpreter::robotModel::twoD::parts;
 using namespace interpreterBase::robotModel;
 
 TwoDButtons::TwoDButtons(DeviceInfo const &info, PortInfo const &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
-	: TrikButtons(info, port)
+	: TrikButton(info, port)
 	, mEngine(engine)
 {
 }

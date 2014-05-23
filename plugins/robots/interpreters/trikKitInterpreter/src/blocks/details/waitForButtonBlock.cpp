@@ -1,4 +1,4 @@
-#include "waitForButtonsBlock.h"
+#include "waitForButtonBlock.h"
 
 #include <interpreterBase/robotModel/robotModelInterface.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
@@ -16,7 +16,7 @@ WaitForButtonsBlock::WaitForButtonsBlock(
 
 void WaitForButtonsBlock::run()
 {
-	mButtons = interpreterBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikButtons>(
+	mButtons = interpreterBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikButton>(
 					mRobotModel, "ButtonsPort"
 			);
 
@@ -26,7 +26,7 @@ void WaitForButtonsBlock::run()
 		return;
 	}
 
-	connect(mButtons, &robotModel::parts::TrikButtons::response, this, &WaitForButtonsBlock::responseSlot);
+	connect(mButtons, &robotModel::parts::TrikButton::response, this, &WaitForButtonsBlock::responseSlot);
 
 	mButtons->read();
 	mActiveWaitingTimer.start();
@@ -84,5 +84,5 @@ void WaitForButtonsBlock::responseSlot(bool leftIsPressed
 
 interpreterBase::robotModel::DeviceInfo WaitForButtonsBlock::device() const
 {
-	return interpreterBase::robotModel::DeviceInfo::create<robotModel::parts::TrikButtons>();
+	return interpreterBase::robotModel::DeviceInfo::create<robotModel::parts::TrikButton>();
 }

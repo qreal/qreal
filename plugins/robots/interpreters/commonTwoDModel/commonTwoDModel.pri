@@ -21,7 +21,7 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineInterface.h \
 	$$PWD/include/commonTwoDModel/robotModel/twoDRobotModel.h \
-	$$PWD/include/commonTwoDModel/robotModel/parts/buttons.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/button.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorBlue.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorFull.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorGreen.h \
@@ -82,7 +82,7 @@ SOURCES += \
 	$$PWD/src/engine/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/physics/realisticPhysicsEngine.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
-	$$PWD/src/robotModel/parts/buttons.cpp \
+	$$PWD/src/robotModel/parts/button.cpp \
 	$$PWD/src/robotModel/parts/colorSensorBlue.cpp \
 	$$PWD/src/robotModel/parts/colorSensorFull.cpp \
 	$$PWD/src/robotModel/parts/colorSensorGreen.cpp \

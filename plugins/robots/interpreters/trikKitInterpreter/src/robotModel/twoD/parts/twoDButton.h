@@ -1,6 +1,6 @@
 #pragma once
 
-#include "robotModel/parts/trikButtons.h"
+#include "robotModel/parts/trikButton.h"
 
 #include <commonTwoDModel/engine/twoDModelEngineInterface.h>
 
@@ -9,7 +9,7 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class TwoDButtons : public robotModel::parts::TrikButtons
+class TwoDButtons : public robotModel::parts::TrikButton
 {
 	Q_OBJECT
 

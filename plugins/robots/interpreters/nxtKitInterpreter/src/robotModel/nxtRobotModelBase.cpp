@@ -2,7 +2,7 @@
 
 #include <interpreterBase/robotModel/robotParts/display.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
-#include <interpreterBase/robotModel/robotParts/buttons.h>
+#include <interpreterBase/robotModel/robotParts/button.h>
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
@@ -41,7 +41,7 @@ NxtRobotModelBase::NxtRobotModelBase()
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
-	addAllowedConnection(PortInfo("ButtonsPort", input), { buttonsInfo() });
+	addAllowedConnection(PortInfo("ButtonsPort", input), { buttonInfo() });
 	addAllowedConnection(PortInfo("A", output), { motorInfo() });
 	addAllowedConnection(PortInfo("B", output), { motorInfo() });
 	addAllowedConnection(PortInfo("C", output), { motorInfo() });
@@ -80,9 +80,9 @@ DeviceInfo NxtRobotModelBase::speakerInfo() const
 	return DeviceInfo::create<robotParts::Speaker>();
 }
 
-DeviceInfo NxtRobotModelBase::buttonsInfo() const
+DeviceInfo NxtRobotModelBase::buttonInfo() const
 {
-	return DeviceInfo::create<robotParts::Buttons>();
+	return DeviceInfo::create<robotParts::Button>();
 }
 
 DeviceInfo NxtRobotModelBase::motorInfo() const

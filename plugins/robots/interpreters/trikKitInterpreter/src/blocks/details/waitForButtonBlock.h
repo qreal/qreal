@@ -3,7 +3,7 @@
 #include <interpreterBase/blocksBase/common/waitBlock.h>
 
 #include "src/robotModel/trikRobotModelBase.h"
-#include "src/robotModel/parts/trikButtons.h"
+#include "src/robotModel/parts/trikButton.h"
 
 namespace trikKitInterpreter {
 namespace blocks {
@@ -47,7 +47,7 @@ private:
 
 	TrikButtonsEnum mButton;
 
-	robotModel::parts::TrikButtons *mButtons;
+	robotModel::parts::TrikButton *mButtons;
 };
 
 }

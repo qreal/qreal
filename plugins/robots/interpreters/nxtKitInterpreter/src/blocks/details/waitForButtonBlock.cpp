@@ -1,8 +1,8 @@
-#include "waitForButtonsBlock.h"
+#include "waitForButtonBlock.h"
 
 #include <interpreterBase/robotModel/robotModelUtils.h>
 
-#include "robotModel/parts/nxtButtons.h"
+#include "robotModel/parts/nxtButton.h"
 
 using namespace nxtKitInterpreter::blocks::details;
 using namespace interpreterBase::robotModel;
@@ -30,7 +30,7 @@ void WaitForButtonsBlock::run()
 	mBottomWasDown = false;
 
 	QString const port = "ButtonsPort";
-	mButtons = RobotModelUtils::findDevice<robotModel::parts::NxtButtons>(mRobotModel, port);
+	mButtons = RobotModelUtils::findDevice<robotModel::parts::NxtButton>(mRobotModel, port);
 
 	if (!mButtons) {
 		mActiveWaitingTimer.stop();
@@ -39,7 +39,7 @@ void WaitForButtonsBlock::run()
 	}
 
 
-	connect(mButtons, &robotModel::parts::NxtButtons::response, this, &WaitForButtonsBlock::responseSlot);
+	connect(mButtons, &robotModel::parts::NxtButton::response, this, &WaitForButtonsBlock::responseSlot);
 
 	mButtons->read();
 	mActiveWaitingTimer.start();
@@ -84,5 +84,5 @@ void WaitForButtonsBlock::clicksCounter(bool &buttonWasDown, bool buttonIsDown, 
 
 DeviceInfo WaitForButtonsBlock::device() const
 {
-	return DeviceInfo::create<robotModel::parts::NxtButtons>();
+	return DeviceInfo::create<robotModel::parts::NxtButton>();
 }

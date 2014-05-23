@@ -2,7 +2,7 @@
 
 #include <qrkernel/exception/exception.h>
 
-#include "commonTwoDModel/robotModel/parts/buttons.h"
+#include "commonTwoDModel/robotModel/parts/button.h"
 #include "commonTwoDModel/robotModel/parts/colorSensorFull.h"
 #include "commonTwoDModel/robotModel/parts/colorSensorPassive.h"
 #include "commonTwoDModel/robotModel/parts/colorSensorRed.h"
@@ -79,8 +79,8 @@ void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 
 robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
-	if (deviceInfo.isA<robotParts::Buttons>()) {
-		return new parts::Buttons(deviceInfo, port, *mEngine);
+	if (deviceInfo.isA<robotParts::Button>()) {
+		return new parts::Button(deviceInfo, port, *mEngine);
 	}
 
 	if (deviceInfo.isA<robotParts::Motor>()) {

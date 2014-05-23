@@ -6,7 +6,7 @@ namespace nxtKitInterpreter {
 
 namespace robotModel {
 namespace parts {
-class NxtButtons;
+class NxtButton;
 }
 }
 
@@ -41,7 +41,7 @@ private:
 	bool mCentralWasDown;
 	bool mBottomWasDown;
 
-	robotModel::parts::NxtButtons *mButtons;  // Does not take ownership
+	robotModel::parts::NxtButton *mButtons;  // Does not take ownership
 };
 
 }

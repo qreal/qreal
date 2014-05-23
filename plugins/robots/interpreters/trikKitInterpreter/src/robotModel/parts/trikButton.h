@@ -1,17 +1,17 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/buttons.h>
+#include <interpreterBase/robotModel/robotParts/button.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
 namespace parts {
 
-class TrikButtons : public interpreterBase::robotModel::robotParts::Buttons
+class TrikButton : public interpreterBase::robotModel::robotParts::Button
 {
 	Q_OBJECT
 
 public:
-	TrikButtons(interpreterBase::robotModel::DeviceInfo const &info
+	TrikButton(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);
 
 signals:

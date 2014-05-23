@@ -1,14 +1,14 @@
-#include "buttons.h"
+#include "button.h"
 
 using namespace nxtKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Buttons::Buttons(DeviceInfo const &info, PortInfo const &port)
-	: NxtButtons(info, port)
+Button::Button(DeviceInfo const &info, PortInfo const &port)
+	: NxtButton(info, port)
 {
 }
 
-void Buttons::read()
+void Button::read()
 {
 	emit response(true, true, true, true);
 }

@@ -1,11 +1,11 @@
-#include "twoDButtons.h"
+#include "twoDButton.h"
 
 using namespace nxtKitInterpreter::robotModel::twoD::parts;
 using namespace interpreterBase::robotModel;
 
 TwoDButtons::TwoDButtons(DeviceInfo const &info, PortInfo const &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
-	: NxtButtons(info, port)
+	: NxtButton(info, port)
 	, mEngine(engine)
 {
 }

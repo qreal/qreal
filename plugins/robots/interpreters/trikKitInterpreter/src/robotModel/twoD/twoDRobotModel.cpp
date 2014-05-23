@@ -1,14 +1,14 @@
 #include "twoDRobotModel.h"
 
 #include "robotModel/twoD/parts/twoDDisplay.h"
-#include "robotModel/twoD/parts/twoDButtons.h"
+#include "robotModel/twoD/parts/twoDButton.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
 #include "robotModel/twoD/parts/twoDInfraredSensor.h"
 #include "robotModel/parts/trikInfraredSensor.h"
 #include "robotModel/parts/trikSonarSensor.h"
 #include "robotModel/parts/trikLed.h"
 
-#include <interpreterBase/robotModel/robotParts/buttons.h>
+#include <interpreterBase/robotModel/robotParts/button.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/motor.h>
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
@@ -36,7 +36,7 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::Display(deviceInfo, port, *engine());
 	}
 
-	if (deviceInfo.isA<robotParts::Buttons>()) {
+	if (deviceInfo.isA<robotParts::Button>()) {
 		return new parts::TwoDButtons(deviceInfo, port, *engine());
 	}
 

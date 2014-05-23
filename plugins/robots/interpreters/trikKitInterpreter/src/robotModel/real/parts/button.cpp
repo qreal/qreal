@@ -1,14 +1,14 @@
-#include "buttons.h"
+#include "button.h"
 
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Buttons::Buttons(DeviceInfo const &info, PortInfo const &port)
-	: TrikButtons(info, port)
+Button::Button(DeviceInfo const &info, PortInfo const &port)
+	: TrikButton(info, port)
 {
 }
 
-void Buttons::read()
+void Button::read()
 {
 	emit response(true, true, true, true, true, true, true);
 }

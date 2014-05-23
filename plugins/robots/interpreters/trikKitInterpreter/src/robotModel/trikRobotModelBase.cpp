@@ -2,7 +2,7 @@
 
 #include <interpreterBase/robotModel/robotParts/display.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
-#include <interpreterBase/robotModel/robotParts/buttons.h>
+#include <interpreterBase/robotModel/robotParts/button.h>
 
 #include "parts/trikServoMotor.h"
 #include "parts/trikPowerMotor.h"
@@ -89,7 +89,7 @@ DeviceInfo TrikRobotModelBase::speakerInfo() const
 
 DeviceInfo TrikRobotModelBase::buttonsInfo() const
 {
-	return DeviceInfo::create<robotParts::Buttons>();
+	return DeviceInfo::create<robotParts::Button>();
 }
 
 DeviceInfo TrikRobotModelBase::powerMotorInfo() const

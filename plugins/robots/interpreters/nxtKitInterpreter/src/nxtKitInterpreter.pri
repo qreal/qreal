@@ -27,19 +27,19 @@ HEADERS += \
 	$$PWD/blocks/details/drawPixelBlock.h \
 	$$PWD/blocks/details/drawRectBlock.h \
 	$$PWD/blocks/details/printTextBlock.h \
-	$$PWD/blocks/details/waitForButtonsBlock.h \
+	$$PWD/blocks/details/waitForButtonBlock.h \
 	$$PWD/blocks/details/nxtEnginesBackwardBlock.h \
 	$$PWD/blocks/details/nxtEnginesForwardBlock.h \
 	$$PWD/robotModel/nxtRobotModelBase.h \
 	$$PWD/robotModel/parts/nxtDisplay.h \
 	$$PWD/robotModel/parts/nxtSpeaker.h \
-	$$PWD/robotModel/parts/nxtButtons.h \
+	$$PWD/robotModel/parts/nxtButton.h \
 	$$PWD/robotModel/parts/nxtMotor.h \
 	$$PWD/robotModel/real/realRobotModel.h \
 	$$PWD/robotModel/real/parts/nxtInputDevice.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
-	$$PWD/robotModel/real/parts/buttons.h \
+	$$PWD/robotModel/real/parts/button.h \
 	$$PWD/robotModel/real/parts/motor.h \
 	$$PWD/robotModel/real/parts/touchSensor.h \
 	$$PWD/robotModel/real/parts/colorSensorFull.h \
@@ -55,7 +55,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
-	$$PWD/robotModel/twoD/parts/twoDButtons.h \
+	$$PWD/robotModel/twoD/parts/twoDButton.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDMotor.h \
 
@@ -75,19 +75,19 @@ SOURCES += \
 	$$PWD/blocks/details/drawPixelBlock.cpp \
 	$$PWD/blocks/details/drawRectBlock.cpp \
 	$$PWD/blocks/details/printTextBlock.cpp \
-	$$PWD/blocks/details/waitForButtonsBlock.cpp \
+	$$PWD/blocks/details/waitForButtonBlock.cpp \
 	$$PWD/blocks/details/nxtEnginesBackwardBlock.cpp \
 	$$PWD/blocks/details/nxtEnginesForwardBlock.cpp \
 	$$PWD/robotModel/nxtRobotModelBase.cpp \
 	$$PWD/robotModel/parts/nxtDisplay.cpp \
 	$$PWD/robotModel/parts/nxtSpeaker.cpp \
-	$$PWD/robotModel/parts/nxtButtons.cpp \
+	$$PWD/robotModel/parts/nxtButton.cpp \
 	$$PWD/robotModel/parts/nxtMotor.cpp \
 	$$PWD/robotModel/real/realRobotModel.cpp \
 	$$PWD/robotModel/real/parts/nxtInputDevice.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \
-	$$PWD/robotModel/real/parts/buttons.cpp \
+	$$PWD/robotModel/real/parts/button.cpp \
 	$$PWD/robotModel/real/parts/motor.cpp \
 	$$PWD/robotModel/real/parts/touchSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensorFull.cpp \
@@ -103,7 +103,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
-	$$PWD/robotModel/twoD/parts/twoDButtons.cpp \
+	$$PWD/robotModel/twoD/parts/twoDButton.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDMotor.cpp \
 

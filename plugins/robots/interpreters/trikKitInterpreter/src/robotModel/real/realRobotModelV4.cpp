@@ -5,7 +5,7 @@
 
 #include "parts/display.h"
 #include "parts/speaker.h"
-#include "parts/buttons.h"
+#include "parts/button.h"
 
 #include "parts/powerMotor.h"
 #include "parts/servoMotor.h"
@@ -61,7 +61,7 @@ robotParts::Device *RealRobotModelV4::createDevice(PortInfo const &port, DeviceI
 	} else if (deviceInfo.isA(speakerInfo())) {
 		return new parts::Speaker(speakerInfo(), port);
 	} else if (deviceInfo.isA(buttonsInfo())) {
-		return new parts::Buttons(buttonsInfo(), port);
+		return new parts::Button(buttonsInfo(), port);
 	} else if (deviceInfo.isA(powerMotorInfo())) {
 		return new parts::PowerMotor(powerMotorInfo(), port);
 	} else if (deviceInfo.isA(servoMotorInfo())) {

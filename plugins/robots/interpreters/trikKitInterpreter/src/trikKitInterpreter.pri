@@ -22,11 +22,11 @@ HEADERS += \
 	$$PWD/blocks/details/smileBlockBase.h \
 	$$PWD/blocks/details/trikEnginesForwardBlock.h \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.h \
-	$$PWD/blocks/details/waitForButtonsBlock.h \
+	$$PWD/blocks/details/waitForButtonBlock.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
 	$$PWD/robotModel/parts/trikDisplay.h \
 	$$PWD/robotModel/parts/trikSpeaker.h \
-	$$PWD/robotModel/parts/trikButtons.h \
+	$$PWD/robotModel/parts/trikButton.h \
 	$$PWD/robotModel/parts/trikPowerMotor.h \
 	$$PWD/robotModel/parts/trikServoMotor.h \
 	$$PWD/robotModel/parts/trikInfraredSensor.h \
@@ -38,7 +38,7 @@ HEADERS += \
 	$$PWD/robotModel/real/realRobotModelV6.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
-	$$PWD/robotModel/real/parts/buttons.h \
+	$$PWD/robotModel/real/parts/button.h \
 	$$PWD/robotModel/real/parts/powerMotor.h \
 	$$PWD/robotModel/real/parts/servoMotor.h \
 	$$PWD/robotModel/real/parts/encoderSensor.h \
@@ -50,7 +50,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/movementSensor.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
-	$$PWD/robotModel/twoD/parts/twoDButtons.h \
+	$$PWD/robotModel/twoD/parts/twoDButton.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
 
@@ -66,11 +66,11 @@ SOURCES += \
 	$$PWD/blocks/details/smileBlockBase.cpp \
 	$$PWD/blocks/details/trikEnginesForwardBlock.cpp \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.cpp \
-	$$PWD/blocks/details/waitForButtonsBlock.cpp \
+	$$PWD/blocks/details/waitForButtonBlock.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
 	$$PWD/robotModel/parts/trikDisplay.cpp \
 	$$PWD/robotModel/parts/trikSpeaker.cpp \
-	$$PWD/robotModel/parts/trikButtons.cpp \
+	$$PWD/robotModel/parts/trikButton.cpp \
 	$$PWD/robotModel/parts/trikPowerMotor.cpp \
 	$$PWD/robotModel/parts/trikServoMotor.cpp \
 	$$PWD/robotModel/parts/trikInfraredSensor.cpp \
@@ -82,7 +82,7 @@ SOURCES += \
 	$$PWD/robotModel/real/realRobotModelV6.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \
-	$$PWD/robotModel/real/parts/buttons.cpp \
+	$$PWD/robotModel/real/parts/button.cpp \
 	$$PWD/robotModel/real/parts/powerMotor.cpp \
 	$$PWD/robotModel/real/parts/servoMotor.cpp \
 	$$PWD/robotModel/real/parts/encoderSensor.cpp \
@@ -94,7 +94,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/movementSensor.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
-	$$PWD/robotModel/twoD/parts/twoDButtons.cpp \
+	$$PWD/robotModel/twoD/parts/twoDButton.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
 

@@ -1,17 +1,17 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotParts/buttons.h>
+#include <interpreterBase/robotModel/robotParts/button.h>
 
 namespace nxtKitInterpreter {
 namespace robotModel {
 namespace parts {
 
-class NxtButtons : public interpreterBase::robotModel::robotParts::Buttons
+class NxtButton : public interpreterBase::robotModel::robotParts::Button
 {
 	Q_OBJECT
 
 public:
-	NxtButtons(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
+	NxtButton(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
 
 signals:
 	void response(bool leftIsPressed, bool rightIsPressed, bool centralIsPressed, bool bottomIsPressed);
