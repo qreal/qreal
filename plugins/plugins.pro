@@ -6,7 +6,9 @@ SUBDIRS	= \
 	blockDiagram/blockDiagram.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
-	requirements/requirements.pro \
+        requirements/requirements.pro \
+        domainAnalysis/domainAnalysis.pro \
+
 
 
 # tool plugins
@@ -32,3 +34,10 @@ SUBDIRS += \
 # QReal:Ubiq
 SUBDIRS += \
 #	ubiq/ubiq.pro \
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qrutils/release/ -lqrutils
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../qrutils/debug/ -lqrutils
+else:unix: LIBS += -L$$OUT_PWD/../qrutils/ -lqrutils
+
+INCLUDEPATH += $$PWD/../qrutils
+DEPENDPATH += $$PWD/../qrutils
