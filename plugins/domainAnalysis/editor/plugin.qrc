@@ -1,0 +1,14 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>generated/shapes/ConnectionClass.sdf</file>
+	<file>generated/shapes/DiagramNodeClass.sdf</file>
+	<file>generated/shapes/FinalNodeClass.sdf</file>
+	<file>generated/shapes/GameChoiceClass.sdf</file>
+	<file>generated/shapes/GoalKeeperOrPlayerClass.sdf</file>
+	<file>generated/shapes/InitialNodeClass.sdf</file>
+	<file>generated/shapes/PlaceClass.sdf</file>
+	<file>generated/shapes/TeamChoiceClass.sdf</file>
+	<file>generated/shapes/TeamNameClass.sdf</file>
+	<file>generated/shapes/TimeClass.sdf</file>
+</qresource>
+</RCC>
