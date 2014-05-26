@@ -21,7 +21,7 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 		mReadOnly = "true";
 	}
 	mIndex = index;
-	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
+	mBackground = element.attribute("background", nodeLabel && mTextBinded.isEmpty() ? "transparent" : "white");
 	mIsHard = element.attribute("hard", "false").toLower().trimmed() == "true";
 	mIsPlainText = element.attribute("isPlainText", "false").toLower().trimmed() == "true";
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {

@@ -223,7 +223,7 @@
 						<line y1="20" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
 					</picture>
 					<labels>
-						<label x="20" y="20" textBinded="Comment" hard="true"/>
+						<label x="20" y="20" textBinded="Comment" hard="true" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -266,7 +266,7 @@
 						<image y1="0" name="images/subprogramRobotsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="-25" textBinded="name" hard="true"/>
+						<label x="-20" y="-30" textBinded="name" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -304,9 +304,9 @@
 						<image y1="0" name="images/variableInitBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="60" textBinded="variable"/>
+						<label x="33" y="60" textBinded="variable" background="white"/>
 						<label x="-60" y="60" text="Variable:"/>
-						<label x="33" y="80" textBinded="value"/>
+						<label x="33" y="80" textBinded="value" background="white"/>
 						<label x="-65" y="80" text="Value:"/>
 					</labels>
 					<ports>
@@ -405,8 +405,8 @@
 						<image y1="0" name="images/loopBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Iterations" hard="true"/>
-						<label x="-30" y="-25" text="Iterations:" hard="true"/>
+						<label x="40" y="-30" textBinded="Iterations" hard="true" background="white"/>
+						<label x="-30" y="-30" text="Iterations:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -481,7 +481,7 @@
 					</picture>
 					<labels>
 						<label x="-37" y="60" text="Body:"/>
-						<label x="30" y="60" textBinded="Body"/>
+						<label x="30" y="60" textBinded="Body" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -520,7 +520,7 @@
 						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="35" y="60" textBinded="Condition" isPlainText="true" />
+						<label x="40" y="60" textBinded="Condition" isPlainText="true" background="white"/>
 						<label x="-25" y="60" text="Condition:"/>
 					</labels>
 					<ports>
@@ -609,9 +609,9 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-8" y="-25" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-8" y="-30" text="Ports:" hard="true"/>
+						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
 					<ports>
@@ -653,9 +653,9 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-8" y="-25" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-8" y="-30" text="Ports:" hard="true"/>
+						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
 					<ports>
@@ -704,9 +704,9 @@
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-8" y="-25" text="Port:" hard="true"/>
-						<label x="40" y="60" textBinded="Power"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-8" y="-30" text="Port:" hard="true"/>
+						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
 					<ports>
@@ -742,9 +742,9 @@
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-8" y="-25" text="Port:" hard="true"/>
-						<label x="40" y="60" textBinded="Power"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-8" y="-30" text="Port:" hard="true"/>
+						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
 					<ports>
@@ -793,9 +793,9 @@
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-8" y="-25" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-8" y="-30" text="Ports:" hard="true"/>
+						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
 					<ports>
@@ -831,9 +831,9 @@
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-8" y="-25" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-8" y="-30" text="Ports:" hard="true"/>
+						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
 					<ports>
@@ -869,9 +869,9 @@
 						<image y1="0" name="images/angularServoBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-8" y="-25" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-8" y="-30" text="Ports:" hard="true"/>
+						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Angle (%):"/>
 					</labels>
 					<ports>
@@ -915,8 +915,8 @@
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-10" y="-25" text="Ports:" hard="true"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -956,8 +956,8 @@
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-10" y="-25" text="Ports:" hard="true"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -997,8 +997,8 @@
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-10" y="-25" text="Ports:" hard="true"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1040,10 +1040,10 @@
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-25" text="Volume (%):" hard="true"/>
+						<label x="-35" y="-30" text="Volume (%):" hard="true"/>
 						<label x="-60" y="60" text="Wait for Completion:"/>
-						<label x="60" y="-25" textBinded="Volume" hard="true"/>
-						<label x="70" y="60" textBinded="WaitForCompletion"/>
+						<label x="60" y="-30" textBinded="Volume" hard="true" background="white"/>
+						<label x="70" y="60" textBinded="WaitForCompletion" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1086,14 +1086,14 @@
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-25" text="Frequency (Hz):" hard="true"/>
+						<label x="-35" y="-30" text="Frequency (Hz):" hard="true"/>
 						<label x="-35" y="60" text="Volume (%):"/>
 						<label x="-68" y="80" text="Duration (ms):"/>
 						<label x="-68" y="100" text="Wait for Completion:"/>
-						<label x="50" y="-25" textBinded="Frequency" hard="true"/>
-						<label x="60" y="60" textBinded="Volume"/>
-						<label x="60" y="80" textBinded="Duration"/>
-						<label x="60" y="100" textBinded="WaitForCompletion"/>
+						<label x="50" y="-30" textBinded="Frequency" hard="true" background="white"/>
+						<label x="60" y="60" textBinded="Volume" background="white"/>
+						<label x="60" y="80" textBinded="Duration" background="white"/>
+						<label x="60" y="100" textBinded="WaitForCompletion" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1142,8 +1142,8 @@
 						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-10" y="-25" text="Ports:" hard="true"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1183,8 +1183,8 @@
 						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-10" y="-25" text="Ports:" hard="true"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1224,8 +1224,8 @@
 						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-10" y="-25" text="Ports:" hard="true"/>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1265,8 +1265,8 @@
 						<image y1="0" name="images/system.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-25" text="Command:" hard="true"/>
-						<label x="55" y="-25" textBinded="Command" hard="true"/>
+						<label x="-15" y="-30" text="Command:" hard="true"/>
+						<label x="55" y="-30" textBinded="Command" hard="true" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1322,7 +1322,7 @@
 						</linePort>
 					</ports>
 					<labels>
-						<label x="-15" y="60" text="Initialize Videocamera"/>
+						<label x="-15" y="60" text="Initialize Videocamera" background="white"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1356,7 +1356,7 @@
 						</linePort>
 					</ports>
 					<labels>
-						<label x="-15" y="60" text="Detect Line by Videocamera"/>
+						<label x="-15" y="60" text="Detect Line by Videocamera" background="white"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1390,9 +1390,9 @@
 						</linePort>
 					</ports>
 					<labels>
-						<label x="-15" y="60" text="Line Detector into Variable"/>
+						<label x="-15" y="60" text="Line Detector into Variable" background="white"/>
 						<label x="-15" y="80" text="Variable:"/>
-						<label x="85" y="80" textBinded="Variable"/>
+						<label x="85" y="80" textBinded="Variable" background="white"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1411,8 +1411,8 @@
 						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-25" text="Color:" hard="true"/>
-						<label x="35" y="-25" textBinded="Color" hard="true"/>
+						<label x="-15" y="-30" text="Color:" hard="true"/>
+						<label x="35" y="-30" textBinded="Color" hard="true" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1467,8 +1467,8 @@
 						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
+						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1503,11 +1503,11 @@
 						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
-						<label x="45" y="60" textBinded="Volume"/>
+						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="45" y="60" textBinded="Volume" background="white"/>
 						<label x="-30" y="60" text="Volume:"/>
-						<label x="50" y="80" textBinded="Sign"/>
+						<label x="50" y="80" textBinded="Sign" background="white"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
 					<ports>
@@ -1551,11 +1551,11 @@
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
-						<label x="50" y="60" textBinded="Distance"/>
+						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="50" y="60" textBinded="Distance" background="white"/>
 						<label x="-60" y="60" text="Distance (cm):"/>
-						<label x="55" y="80" textBinded="Sign"/>
+						<label x="55" y="80" textBinded="Sign" background="white"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
 					<ports>
@@ -1599,11 +1599,11 @@
 						<image y1="0" name="images/waitForColorIntensityBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
-						<label x="55" y="60" textBinded="Intensity"/>
+						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="55" y="60" textBinded="Intensity" background="white"/>
 						<label x="-55" y="60" text="Intensity:"/>
-						<label x="55" y="80" textBinded="Sign"/>
+						<label x="55" y="80" textBinded="Sign" background="white"/>
 						<label x="-85" y="80" text="Sign:"/>
 					</labels>
 					<ports>
@@ -1647,8 +1647,8 @@
 						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="37" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
+						<label x="37" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
 						<label x="37" y="60" textBinded="Color"/>
 						<label x="0" y="60" text="Color:"/>
 					</labels>
@@ -1690,8 +1690,8 @@
 						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
+						<label x="40" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
 						<label x="45" y="60" textBinded="Percents"/>
 						<label x="-26" y="60" text="Percents:"/>
 						<label x="50" y="80" textBinded="Sign"/>
@@ -1738,8 +1738,8 @@
 						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
+						<label x="40" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
 						<label x="40" y="60" textBinded="TachoLimit"/>
 						<label x="-90" y="60" text="Tacho Limit:"/>
 						<label x="60" y="80" textBinded="Sign"/>
@@ -1788,7 +1788,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for  Enter"/>
+						<label x="-20" y="60" text="Wait for  Enter" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1823,7 +1823,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Escape"/>
+						<label x="-20" y="60" text="Wait for Escape" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1858,7 +1858,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Left"/>
+						<label x="-20" y="60" text="Wait for Left" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1893,7 +1893,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Right"/>
+						<label x="-20" y="60" text="Wait for Right" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1965,8 +1965,8 @@
 						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
+						<label x="40" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
 						<label x="45" y="60" textBinded="Percents"/>
 						<label x="-26" y="60" text="Percents:"/>
 						<label x="50" y="80" textBinded="Sign"/>
@@ -2013,8 +2013,8 @@
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
+						<label x="40" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
 						<label x="50" y="60" textBinded="Distance"/>
 						<label x="-60" y="60" text="Distance:"/>
 						<label x="55" y="80" textBinded="Sign"/>
@@ -2061,8 +2061,8 @@
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
+						<label x="40" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
 						<label x="50" y="60" textBinded="Distance"/>
 						<label x="-60" y="60" text="Distance:"/>
 						<label x="55" y="80" textBinded="Sign"/>
@@ -2206,8 +2206,8 @@
 						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Port:" hard="true"/>
+						<label x="40" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
 						<label x="40" y="60" textBinded="TachoLimit"/>
 						<label x="-90" y="60" text="Tacho Limit:"/>
 						<label x="60" y="80" textBinded="Sign"/>
@@ -2255,7 +2255,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for  Enter"/>
+						<label x="-20" y="60" text="Wait for  Enter" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -2290,7 +2290,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Left"/>
+						<label x="-20" y="60" text="Wait for Left" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -2325,7 +2325,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Right"/>
+						<label x="-20" y="60" text="Wait for Right" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -2360,7 +2360,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Down"/>
+						<label x="-20" y="60" text="Wait for Down" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -2395,7 +2395,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Up"/>
+						<label x="-20" y="60" text="Wait for Up" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -2430,7 +2430,7 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-20" y="60" text="Wait for Power"/>
+						<label x="-20" y="60" text="Wait for Power" background="white"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -2467,8 +2467,8 @@
 						<image y1="0" name="images/timerBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="65" y="-25" textBinded="Delay" hard="true"/>
-						<label x="-30" y="-25" text="Delay (ms):" hard="true"/>
+						<label x="65" y="-30" textBinded="Delay" hard="true"/>
+						<label x="-30" y="-30" text="Delay (ms):" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -2869,8 +2869,8 @@
 						<image y1="0" name="images/setBackgroundBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-25" text="Color:" hard="true"/>
-						<label x="35" y="-25" textBinded="Color" hard="true"/>
+						<label x="-15" y="-30" text="Color:" hard="true"/>
+						<label x="35" y="-30" textBinded="Color" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -2910,8 +2910,8 @@
 						<image y1="0" name="images/sayBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-25" text="Text:" hard="true"/>
-						<label x="35" y="-25" textBinded="Text" hard="true"/>
+						<label x="-15" y="-30" text="Text:" hard="true"/>
+						<label x="35" y="-30" textBinded="Text" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
