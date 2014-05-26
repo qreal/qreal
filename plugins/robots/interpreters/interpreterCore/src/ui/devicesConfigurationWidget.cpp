@@ -10,16 +10,15 @@ using namespace interpreterCore::ui;
 using namespace interpreterBase::robotModel;
 
 DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool autosaveMode)
-	: QWidget(parent)
+	: QScrollArea(parent)
 	, mAutosaveMode(autosaveMode)
-	, mLayout(new QVBoxLayout)
 	, mSaving(false)
 	, mRefreshing(false)
 {
-	mLayout->setContentsMargins(0, 0, 0, 0);
-	mLayout->setMargin(0);
-	mLayout->setSpacing(0);
-	setLayout(mLayout);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setFrameShadow(QFrame::Sunken);
+	setMinimumHeight(140);
 }
 
 void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> const &models)
@@ -29,19 +28,16 @@ void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 		mRobotModels[name] = model;
 		QWidget * const configurer = configurerForRobotModel(*model);
 		mRobotModelConfigurers[name] = configurer;
-		mLayout->addWidget(configurer);
 	}
-
-	hideAllConfigurers();
 }
 
 void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
 	QString const robotModelId = robotModel.name();
 	mCurrentModel = robotModelId;
-	hideAllConfigurers();
+	takeWidget();
 	if (mRobotModels.contains(robotModelId)) {
-		mRobotModelConfigurers[robotModelId]->show();
+		setWidget(mRobotModelConfigurers[robotModelId]);
 		refresh();
 	}
 }
@@ -86,12 +82,6 @@ QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
 	return layout;
 }
 
-void DevicesConfigurationWidget::hideAllConfigurers()
-{
-	for (QWidget * const configurer : mRobotModelConfigurers.values()) {
-		configurer->hide();
-	}
-}
 
 void DevicesConfigurationWidget::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &sensor)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QMap>
-#include <QtWidgets/QWidget>
+#include <QtWidgets/QScrollArea>
 
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/robotModel/portInfo.h>
@@ -20,7 +20,7 @@ namespace interpreterCore {
 namespace ui {
 
 /// A number of combo boxes for devices selection
-class DevicesConfigurationWidget : public QWidget, public interpreterBase::DevicesConfigurationProvider
+class DevicesConfigurationWidget : public QScrollArea, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -62,7 +62,6 @@ private:
 			, interpreterBase::robotModel::DeviceInfo const &device) const;
 
 	bool mAutosaveMode;
-	QVBoxLayout *mLayout;
 	QString mCurrentModel;
 	QMap<QString, interpreterBase::robotModel::RobotModelInterface *> mRobotModels;  // Does not take ownership
 	QMap<QString, QWidget *> mRobotModelConfigurers;  // Does not take ownership
