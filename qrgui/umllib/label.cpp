@@ -293,9 +293,13 @@ void Label::keyPressEvent(QKeyEvent *event)
 
 	if ((event->modifiers() & Qt::ShiftModifier) && (event->key() == Qt::Key_Return)) {
 		// Line feed
-		QTextCursor const cursor = textCursor();
-		QString const currentText = toPlainText();
-		setText(currentText + "\n");
+		QTextCursor cursor = textCursor();
+		QString currentText = toPlainText();
+		int const oldPos = cursor.position();
+		currentText.insert(oldPos, "\n");
+		setText(currentText);
+		cursor.movePosition(QTextCursor::Start);
+		cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, oldPos + 1);
 		setTextCursor(cursor);
 		return;
 	}
