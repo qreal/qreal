@@ -28,12 +28,15 @@ public:
 	public:
 		explicit PortItem(interpreterBase::robotModel::PortInfo const &port);
 
+		QRectF boundingRect() const override;
+
 	protected:
 		void paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget) override;
-		QRectF boundingRect() const override;
 
 	private:
 		interpreterBase::robotModel::PortInfo const mPort;
+		QFont const mFont;
+		QRect const mBoundingRect;
 	};
 
 	SensorItem(SensorsConfiguration &configuration, interpreterBase::robotModel::PortInfo const &port);

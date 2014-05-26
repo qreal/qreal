@@ -18,7 +18,6 @@ using namespace graphicsUtils;
 using namespace interpreterBase::robotModel;
 
 int const selectionDrift = 7;
-QSizeF const portHintSize(10, 15);
 
 SensorItem::SensorItem(SensorsConfiguration &configuration
 		, PortInfo const &port)
@@ -42,7 +41,7 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	setZValue(1);
 
 	mPortItem->setParentItem(this);
-	mPortItem->moveBy(-portHintSize.width() - 5, -portHintSize.height() - 5);
+	mPortItem->moveBy(-mPortItem->boundingRect().width() - 5, -mPortItem->boundingRect().height() - 5);
 	mPortItem->setFlag(ItemIgnoresTransformations);
 	mPortItem->hide();
 }
@@ -245,6 +244,8 @@ void SensorItem::onDirectionChanged()
 
 SensorItem::PortItem::PortItem(PortInfo const &port)
 	: mPort(port)
+	, mFont("Times", 10, QFont::Normal, true)
+	, mBoundingRect(QFontMetrics(mFont).boundingRect(port.name()))
 {
 }
 
@@ -270,6 +271,7 @@ void SensorItem::PortItem::paint(QPainter *painter, QStyleOptionGraphicsItem con
 
 	pen.setColor(Qt::black);
 	painter->setPen(pen);
+	painter->setFont(mFont);
 	painter->drawText(boundingRect(), mPort.name(), QTextOption(Qt::AlignCenter));
 
 	painter->restore();
@@ -277,5 +279,5 @@ void SensorItem::PortItem::paint(QPainter *painter, QStyleOptionGraphicsItem con
 
 QRectF SensorItem::PortItem::boundingRect() const
 {
-	return QRectF(QPointF(), portHintSize);
+	return mBoundingRect;
 }
