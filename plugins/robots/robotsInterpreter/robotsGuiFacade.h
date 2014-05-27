@@ -17,8 +17,9 @@ public:
 	RobotsGuiFacade(d2Model::D2ModelWidget *d2RobotWidget);
 
 public slots:
-	QWidget* widget(QString const &type, QString const &name);
-	QWidget* d2ModelWidget();
+	QWidget *widget(QString const &type, QString const &name);
+	QWidget *d2ModelWidget();
+	QWidget *d2ModelScene();
 
 private:
 	d2Model::D2ModelWidget *mD2ModelWidget;

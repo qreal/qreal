@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-<file>icons/print.png</file>
+        <file>icons/print.png</file>
         <file>icons/zoomin.png</file>
         <file>icons/zoomout.png</file>
         <file>icons/qreal.png</file>
@@ -49,8 +49,8 @@
         <file>icons/startTab/open.svg</file>
         <file>icons/startTab/createInterpreted.svg</file>
         <file>icons/startTab/openInterpreted.svg</file>
-        <file>hintScripts/test.js</file>
         <file>icons/virtcursor.png</file>
+        <file>hintScripts/obstacle.js</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

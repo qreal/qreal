@@ -2,6 +2,8 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
 
+#include <QDebug>
+
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include "d2ModelScene.h"

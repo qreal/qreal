@@ -18,9 +18,9 @@ protected:
 	void paintEvent(QPaintEvent *);
 
 private:
+	qreal mArrowSize;
 	QPoint mSourcePoint;
 	QPoint mDestPoint;
-	qreal mArrowSize;
 };
 
 }

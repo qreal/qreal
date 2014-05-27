@@ -59,9 +59,10 @@ private:
 
 	QString mToolbarName;
 	QString mMenuName;
-	QString mName;
 
 	bool mIsAction;
+
+	QString mName;
 };
 
 }

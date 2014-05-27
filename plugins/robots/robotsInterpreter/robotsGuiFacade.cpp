@@ -12,21 +12,21 @@ RobotsGuiFacade::RobotsGuiFacade(d2Model::D2ModelWidget *d2ModelWidget)
 
 QWidget* RobotsGuiFacade::widget(QString const &type, QString const &name)
 {
-//	if (!type.compare("Action")) {
-//		QList<QActionInfo *> actionList = mMainWindow->findChildren<QAction *>();
-//		for(QAction *action : actionList) {
-//			if (!action->objectName().compare(name)) {
-//				QList<QWidget *> widgetList =action->associatedWidgets();
-//				for(QWidget *widget : widgetList) {
-//					QString buttonClassName = "QToolButton";
-//					if (!buttonClassName.compare(widget->metaObject()->className())) {
-//						return widget;
-//					}
-//				}
-//			}
-//		}
-//		return nullptr;
-//	}
+	if (!type.compare("PushButton")) {
+		QList<QPushButton *> buttonList = mD2ModelWidget->findChildren<QPushButton *>();
+		for(QPushButton *button : buttonList) {
+			if (!name.compare(button->objectName())) {
+				return button;
+			}
+		}
+	} else {
+		return nullptr;
+	}
+}
+
+QWidget *RobotsGuiFacade::d2ModelScene()
+{
+	return mD2ModelWidget->scene()->views()[0]->viewport();
 }
 
 QWidget* RobotsGuiFacade::d2ModelWidget()

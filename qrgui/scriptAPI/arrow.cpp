@@ -23,6 +23,7 @@ Arrow::Arrow(QPoint const &sourcePoint, QPoint const &destPoint, MainWindow *mai
 
 	update();
 }
+
 void Arrow::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);

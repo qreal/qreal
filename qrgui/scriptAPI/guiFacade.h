@@ -1,22 +1,24 @@
 #pragma once
 
-#include "mainwindow/mainWindow.h"
 #include "mainwindow/palette/draggableElement.h"
 
 namespace qReal {
 namespace gui {
 
-class GuiFacade
+class GuiFacade : public QObject
 {
+	Q_OBJECT
+
 public:
 	GuiFacade(MainWindow *mainWindow);
 
-	QWidget* widget2dModel(QString const &type, QString const &name);
-	QWidget* widget(QString const &type, QString const &name);
-	DraggableElement* draggableElement(QString const &widgetId) const;
+	Q_INVOKABLE QWidget* widget(QString const &type, QString const &name = "");
+	Q_INVOKABLE QRect property(QString const &name);
+	DraggableElement* draggableElement(QString const &widgetId);
 	ToolPluginInterface* plugin();
 
 private:
+	QWidget *comboBoxProperty(QString const &name);
 	MainWindow *mMainWindow;
 	ToolPluginInterface *mRobotsPlugin;
 };
