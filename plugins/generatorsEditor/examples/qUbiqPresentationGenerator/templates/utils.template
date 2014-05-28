@@ -1,0 +1,171 @@
+@@elements_Button_2_1_1@@
+var button_##name## = new Button();
+button_##name##.Pressed += On##name##Clicked;
+button_##name##.Pressed += By##handler##Handler;
+mainGrid[##x##, ##y##] =  button_##name##;
+==========
+@@elements_Button_2_1_5_1_1@@
+var button_##name## = new Button();
+button_##name##.Pressed += By##handler##Handler;
+grid[i, j] = button_##name##;
+==========
+@@elements_Button_2_2_2@@
+void By##handler##Handler(object sender, EventArgs args)
+{
+	// TODO
+}
+==========
+@@elements_Button_2_2_3_1_1@@
+void By##handler##Handler(object sender, EventArgs args)
+{
+	// TODO
+}
+==========
+@@elements_ExitButton_2_1_6@@
+var exitButton_##name## = new Button();
+exitButton_##name##.Pressed += On##name##Clicked;
+mainGrid[##x##, ##y##] =  exitButton_##name##;
+==========
+@@elements_ExitButton_2_2_1@@
+void On##name##Clicked(object sender, EventArgs args)
+{
+	Screen.Content = CreateExitForm();
+}
+==========
+@@elements_Grid_2_1_5@@
+var grid = new Grid(##w##, ##h##)
+{
+	Margin = new Thickness(5, 5, 5, 5),
+	VerticalAlignment = VerticalAlignment.Stretch,
+	HorizontalAlignment = HorizontalAlignment.Stretch
+};
+for (int i = 0; i < ##w##; ++i)
+{
+	for (int j = 0; j < ##h##; ++j)
+	{
+	@@gridItemCreation@@
+	}
+}
+mainGrid[##x##, ##y##] = grid;
+==========
+@@elements_Grid_2_2_3@@
+@@gridButtonsHandler@@
+==========
+@@elements_Image_2_1_3@@
+var image_##name## = new Image(new System.Drawing.Bitmap(@"##pathToImage##"));
+var imageBlock_##name## = new ImageBlock(image);
+mainGrid[##x##, ##y##] =  imageBlock_##name##;
+==========
+@@elements_Image_2_1_4_1_2@@
+var image_##name## = new Image(new System.Drawing.Bitmap(@"##pathToImage##"));
+var imageBlock_##name## = new ImageBlock(image);
+list.Append(imageBlock_##name##)
+==========
+@@elements_List_2_1_4@@
+var list = new ListBox();
+@@listFillings@@
+mainGrid[##x##, ##y##] = list;
+==========
+@@elements_Slide_2@@
+private VisualElement Create##name##()
+{
+	var mainGrid = new Grid(##width##, ##height##)
+	{
+		Margin = new Thickness(5, 5, 5, 5),
+		VerticalAlignment = VerticalAlignment.Stretch,
+		HorizontalAlignment = HorizontalAlignment.Stretch
+	};
+@@mainGridFilling@@
+return mainGrid;
+}
+
+@@handlerDescriptions@@
+==========
+@@elements_Text_2_1_2@@
+var text_##name## = new TextBlock() { Text = "##text##" };
+mainGrid[##x##, ##y##] =  text_##name##;
+==========
+@@elements_Text_2_1_4_1_1@@
+var text_##name## = new TextBlock() { Text = "##text##" };
+list.Append(text_##name##)
+==========
+@@elements_TransitionLink_1@@
+protected override void MainOverride()
+{
+	Screen.Init();
+	var startForm = Create##dst.name##();
+	Screen.Content = startForm;
+	Screen.ControlMode = true;
+
+	WaitForInput("7890\r");            
+}
+==========
+@@elements_TransitionLink_2@@
+void On##src.name##Clicked(object sender, EventArgs args)
+{
+	Screen.Content = Create##dst.name##();
+}
+==========
+@@gridButtonsHandler@@
+void By##handler##Handler(object sender, EventArgs args)
+{
+	// TODO
+}
+==========
+@@gridItemCreation@@
+var button_##name## = new Button();
+button_##name##.Pressed += By##handler##Handler;
+grid[i, j] = button_##name##;
+==========
+@@handlerDescriptions@@
+void On##name##Clicked(object sender, EventArgs args)
+{
+	Screen.Content = CreateExitForm();
+}
+void By##handler##Handler(object sender, EventArgs args)
+{
+	// TODO
+}
+@@gridButtonsHandler@@
+==========
+@@listFillings@@
+var text_##name## = new TextBlock() { Text = "##text##" };
+list.Append(text_##name##)
+var image_##name## = new Image(new System.Drawing.Bitmap(@"##pathToImage##"));
+var imageBlock_##name## = new ImageBlock(image);
+list.Append(imageBlock_##name##)
+==========
+@@mainGridFilling@@
+var button_##name## = new Button();
+button_##name##.Pressed += On##name##Clicked;
+button_##name##.Pressed += By##handler##Handler;
+mainGrid[##x##, ##y##] =  button_##name##;
+var text_##name## = new TextBlock() { Text = "##text##" };
+mainGrid[##x##, ##y##] =  text_##name##;
+var image_##name## = new Image(new System.Drawing.Bitmap(@"##pathToImage##"));
+var imageBlock_##name## = new ImageBlock(image);
+mainGrid[##x##, ##y##] =  imageBlock_##name##;
+var list = new ListBox();
+@@listFillings@@
+mainGrid[##x##, ##y##] = list;
+var grid = new Grid(##w##, ##h##)
+{
+	Margin = new Thickness(5, 5, 5, 5),
+	VerticalAlignment = VerticalAlignment.Stretch,
+	HorizontalAlignment = HorizontalAlignment.Stretch
+};
+for (int i = 0; i < ##w##; ++i)
+{
+	for (int j = 0; j < ##h##; ++j)
+	{
+	@@gridItemCreation@@
+	}
+}
+mainGrid[##x##, ##y##] = grid;
+var exitButton_##name## = new Button();
+exitButton_##name##.Pressed += On##name##Clicked;
+mainGrid[##x##, ##y##] =  exitButton_##name##;
+==========
+@@oneVariableDeclaration@@
+public static ##type## ##name## {get; set;}
+==========
