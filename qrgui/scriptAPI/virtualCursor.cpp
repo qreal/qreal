@@ -68,15 +68,6 @@ void VirtualCursor::moveToRect(QRect target, int duration, bool clickNeeded)
 	mCursorMoveAnimation->start();
 
 	mScriptAPI->wait(-1);
-
-	if (clickNeeded) {
-		QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress, propertyEditor->mapFromGlobal(pos()), Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
-		QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease, propertyEditor->mapFromGlobal(pos()), Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
-		QApplication::postEvent(treeWidget->viewport(), pressEvent);
-		QApplication::postEvent(treeWidget->viewport(), releaseEvent);
-	}
-
-	mScriptAPI->wait(600);
 }
 
 void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, int ySceneCoord)
@@ -110,49 +101,54 @@ void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, 
 	mScriptAPI->wait(-1);
 }
 
-void VirtualCursor::leftButtonPress(QWidget *target)
+void VirtualCursor::leftButtonPress(QWidget *target, int delay)
 {
 	QPoint cursorPos = target->mapFrom(parentWidget(), pos());
 	QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress, cursorPos, Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
 	QApplication::postEvent(target, pressEvent);
-	mScriptAPI->wait(700);
+
+	if (delay != -1) {
+		mScriptAPI->wait(delay);
+	}
 }
 
-void VirtualCursor::leftButtonRelease(QWidget *target, QWidget *parent)
+void VirtualCursor::leftButtonRelease(QWidget *target, int delay)
 {
 	QPoint cursorPos = target->mapFrom(parentWidget(), pos());
 	QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease, cursorPos, Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
 	QApplication::postEvent(target, releaseEvent);
-	mScriptAPI->wait(1000);
 
-	if (!target->objectName().compare("open"))
-	{
-		setParent(parent);
-		show();
-		leftButtonPress(parent);
-		leftButtonRelease(parent);
+	if (delay != -1) {
+		mScriptAPI->wait(delay);
 	}
 }
 
-void VirtualCursor::rightButtonPress(QWidget *target)
+void VirtualCursor::rightButtonPress(QWidget *target, int delay)
 {
 	mRightButtonPressed = true;
 	QPoint cursorPos = target->mapFrom(parentWidget(), pos());
 	QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress, cursorPos, Qt::RightButton , Qt::RightButton, Qt::NoModifier);
 	QApplication::postEvent(target, pressEvent);
+
+	if (delay != -1) {
+		mScriptAPI->wait(delay);
+	}
 }
 
-void VirtualCursor::rightButtonRelease(QWidget  *target)
+void VirtualCursor::rightButtonRelease(QWidget  *target, int delay)
 {
 	mRightButtonPressed = false;
 	QPoint cursorPos = target->mapFrom(parentWidget(), pos());
 	QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease, cursorPos, Qt::RightButton , Qt::RightButton, Qt::NoModifier);
 	QApplication::postEvent(target, releaseEvent);
+
+	if (delay != -1) {
+		mScriptAPI->wait(delay);
+	}
 }
 
 void VirtualCursor::drawLink(QString const &fromElementId, QString const &toElementId, int const duration)
 {
-	//mMainWindow->getCurrentTab()->editorViewScene()->get
 	NodeElement *fromNode = mMainWindow->getCurrentTab()->editorViewScene()->getNodeById(Id::loadFromString(fromElementId));
 	NodeElement *toNode = mMainWindow->getCurrentTab()->editorViewScene()->getNodeById(Id::loadFromString(toElementId));
 	sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport(), duration/2, fromNode->pos().x()+ 100, fromNode->pos().y() + 20);

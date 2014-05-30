@@ -60,6 +60,11 @@ QWidget* GuiFacade::widget(QString const &type, QString const &name)
 		}
 	} else if (!type.compare("Scene")) {
 		return mMainWindow->getCurrentTab()->viewport();
+	} else if (!type.compare("PropertyEditor")) {
+		PropertyEditorView const *propertyEditor = mMainWindow->findChild<PropertyEditorView *>("propertyEditor");
+		return propertyEditor->
+				findChild<QtTreePropertyBrowser *>()->
+				findChild<QTreeWidget *>()->viewport();
 	}
 	return nullptr;
 }

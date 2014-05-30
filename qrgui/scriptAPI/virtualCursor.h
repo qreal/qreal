@@ -29,16 +29,16 @@ public:
 	Q_INVOKABLE QString dragPaletteElement(QString const &paletteElementId, int const duration, int const xSceneCoord, int const ySceneCoord);
 
 	///post left mouse button press to widget.
-	Q_INVOKABLE void leftButtonPress(QWidget *target);
+	Q_INVOKABLE void leftButtonPress(QWidget *target, int delay = -1);
 
 	///post left mouse button release to widget.
-	Q_INVOKABLE void leftButtonRelease(QWidget *target, QWidget *parent = nullptr);
+	Q_INVOKABLE void leftButtonRelease(QWidget *target, int delay = -1);
 
 	///post left mouse button release to widget.
-	Q_INVOKABLE void rightButtonPress(QWidget *target);
+	Q_INVOKABLE void rightButtonPress(QWidget *target, int delay = -1);
 
 	///post right mouse button release to widget.
-	Q_INVOKABLE void rightButtonRelease(QWidget *target);
+	Q_INVOKABLE void rightButtonRelease(QWidget *target, int delay = -1);
 
 	///draw link on scene.
 	Q_INVOKABLE void drawLink(QString const &fromElementId, QString const &toElementId, int const duration);

@@ -28,6 +28,9 @@ public:
 	///Start node
 	Q_INVOKABLE QString initialNode();
 
+	///Change virtual cursor parent
+	Q_INVOKABLE void changeWindow(QWidget *parent);
+
 	///Gui facade
 	GuiFacade *guiFacade();
 

@@ -1,7 +1,7 @@
 var newDiagram = guiFacade.widget("Action", "actionNew_Diagram");
 virtualCursor.moveTo(newDiagram, 1000);
 virtualCursor.leftButtonPress(newDiagram);
-virtualCursor.leftButtonRelease(newDiagram);
+virtualCursor.leftButtonRelease(newDiagram, 400);
 var init = scriptAPI.initialNode();
 var mainScene = guiFacade.widget("Scene")
 var engF = virtualCursor.dragPaletteElement("qrm:/RobotsMetamodel/RobotsDiagram/EnginesForward", 1000, 150, 275);
@@ -9,9 +9,12 @@ var sonar = virtualCursor.dragPaletteElement("qrm:/RobotsMetamodel/RobotsDiagram
 var prop = guiFacade.property("Дистанция");
 var prop1 = guiFacade.property("Считанное значение");
 virtualCursor.moveToRect(prop1, 1000);
+var propertyEditor = guiFacade.widget("PropertyEditor");
+virtualCursor.leftButtonPress(propertyEditor);
+virtualCursor.leftButtonRelease(propertyEditor, 400); 	
 var val = guiFacade.widget("ComboBox", "Считанное значение");
 virtualCursor.leftButtonPress(val);
-virtualCursor.leftButtonRelease(val);
+virtualCursor.leftButtonRelease(val, 5);
 virtualCursor.pickComboBoxItem(val, "меньше", 1000);
 virtualCursor.moveToRect(prop, 1000);
 virtualCursor.type("50", 1000);
@@ -33,7 +36,8 @@ var open2DModel = guiFacade.widget("2dModel", "open");
 virtualCursor.moveTo(open2DModel, 1000);
 virtualCursor.leftButtonPress(open2DModel);
 var widget = robotsGuiFacade.d2ModelWidget();
-virtualCursor.leftButtonRelease(open2DModel, widget);
+virtualCursor.leftButtonRelease(open2DModel);
+scriptAPI.changeWindow(widget);
 var wall = robotsGuiFacade.widget("PushButton", "wallButton");
 virtualCursor.moveTo(wall, 1000);
 virtualCursor.leftButtonPress(wall);

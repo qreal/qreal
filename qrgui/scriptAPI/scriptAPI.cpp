@@ -86,9 +86,12 @@ void ScriptAPI::wait(int duration)
 		timer->setInterval(duration);
 		connect (timer, SIGNAL(timeout()), &mEventLoop, SLOT(quit()));
 		timer->start();
+		mEventLoop.processEvents(QEventLoop::WaitForMoreEvents);
+		mEventLoop.exec();
+	} else {
+		mEventLoop.processEvents(QEventLoop::WaitForMoreEvents);
+		mEventLoop.exec();
 	}
-	mEventLoop.processEvents(QEventLoop::WaitForMoreEvents);
-	mEventLoop.exec();
 }
 
 GuiFacade *ScriptAPI::guiFacade()
@@ -100,6 +103,15 @@ void ScriptAPI::breakWaiting()
 {
 	mEventLoop.quit();
 }
+
+void ScriptAPI::changeWindow(QWidget *parent)
+{
+	mVirtualCursor->setParent(parent);
+	mVirtualCursor->show();
+	mVirtualCursor->leftButtonPress(parent);
+	mVirtualCursor->leftButtonRelease(parent);
+}
+
 
 QString ScriptAPI::initialNode()
 {
