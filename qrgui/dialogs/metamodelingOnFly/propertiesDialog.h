@@ -48,7 +48,7 @@ private:
 	MainWindow &mMainWindow;
 	EditPropertiesDialog *mEditPropertiesDialog; // Does not have ownership.
 	QStringList mPropertiesNames;
-	qReal::IdList mElementsOnDiagram;
+	qReal::IdList *mElementsOnDiagram;
 };
 
 }

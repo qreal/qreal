@@ -19,7 +19,7 @@ PropertiesDialog::PropertiesDialog(MainWindow &mainWindow, EditorManagerInterfac
 		, mId(id)
 		, mMainWindow(mainWindow)
 		, mEditPropertiesDialog(NULL)
-		, mElementsOnDiagram(IdList())
+		, mElementsOnDiagram(new IdList())
 {
 	mUi->setupUi(this);
 
@@ -94,7 +94,7 @@ void PropertiesDialog::change(QString const &text)
 				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
 				, mPropertiesNames[mUi->propertiesNamesList->currentRow()]
 				, text
-				, IdList());
+				, new IdList());
 	} else {
 		mEditPropertiesDialog->changeProperty(
 				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
@@ -103,7 +103,7 @@ void PropertiesDialog::change(QString const &text)
 				, mElementsOnDiagram);
 	}
 
-	mElementsOnDiagram.clear();
+	mElementsOnDiagram->clear();
 	mEditPropertiesDialog->setModal(true);
 	mEditPropertiesDialog->show();
 	connect(mEditPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
@@ -132,9 +132,9 @@ void PropertiesDialog::findElementsOnDiagram(qrRepo::LogicalRepoApi const &api, 
 	}
 
 	IdList logicalElements = api.logicalElements(id);
-	for (const auto &logicalElement: logicalElements) {
-		if (!mElementsOnDiagram.contains(logicalElement)) {
-			mElementsOnDiagram << logicalElement;
+	for (auto const &logicalElement: logicalElements) {
+		if (!mElementsOnDiagram->contains(logicalElement)) {
+			mElementsOnDiagram->append(logicalElement);
 		}
 	}
 

@@ -15,7 +15,7 @@ RestoreElementDialog::RestoreElementDialog(QWidget *parent, MainWindow &mainWind
 	, mElementsWithTheSameNameList(elementsWithTheSameNameList)
 {
 	mUi->setupUi(this);
-	fillSameNameElementsTV();
+	fillSameNameElementsTreeView();
 	connect(mUi->restoreButton, &QPushButton::clicked, this, &RestoreElementDialog::restoreButtonClicked);
 	connect(mUi->createNewButton, &QPushButton::clicked, this, &RestoreElementDialog::createButtonClicked);
 }
@@ -25,21 +25,23 @@ RestoreElementDialog::~RestoreElementDialog()
 	delete mUi;
 }
 
-void RestoreElementDialog::fillSameNameElementsTV()
+void RestoreElementDialog::fillSameNameElementsTreeView()
 {
 	QStandardItemModel *standardModel = new QStandardItemModel();
 
 	QStandardItem *item = standardModel->invisibleRootItem();
-	for (const auto &element: mElementsWithTheSameNameList) {
+	for (auto const &element: mElementsWithTheSameNameList) {
 		QString state = tr("Existed");
 		if (mInterpreterEditorManager.getIsHidden(element) == "true") {
 			state = tr("Deleted");
 		}
+
 		QList<QStandardItem *> elementRow = prepareRow(mInterpreterEditorManager.friendlyName(element)
 				+ " (" + state + ")", "", "");
 		for (QStandardItem *item: elementRow) {
 			item->setEditable(false);
 		}
+
 		item->appendRow(elementRow);
 
 		QStringList propertiesInformationList = mInterpreterEditorManager.getPropertiesInformation(element);
@@ -50,13 +52,14 @@ void RestoreElementDialog::fillSameNameElementsTV()
 				item->setSelectable(false);
 				item->setEditable(false);
 			}
+
 			elementRow.first()->appendRow(preparedRow);
 		}
 	}
 
 	standardModel->setHorizontalHeaderLabels(QStringList() << tr("Name") << tr("Type") << tr("Value"));
-	mUi->sameNameElementsTV->setModel(standardModel);
-	mUi->sameNameElementsTV->expandAll();
+	mUi->sameNameElementsTreeView->setModel(standardModel);
+	mUi->sameNameElementsTreeView->expandAll();
 }
 
 QList<QStandardItem *> RestoreElementDialog::prepareRow(QString const &first, QString const &second
@@ -71,16 +74,17 @@ QList<QStandardItem *> RestoreElementDialog::prepareRow(QString const &first, QS
 
 void RestoreElementDialog::restoreButtonClicked()
 {
-	if (mUi->sameNameElementsTV->selectionModel()->selectedIndexes().isEmpty()) {
+	if (mUi->sameNameElementsTreeView->selectionModel()->selectedIndexes().isEmpty()) {
 		return;
 	}
 
-	int selectedRow = mUi->sameNameElementsTV->selectionModel()->selectedIndexes().first().row();
+	int const selectedRow = mUi->sameNameElementsTreeView->selectionModel()->selectedIndexes().first().row();
 	Id const node = mElementsWithTheSameNameList[selectedRow];
 	if (mInterpreterEditorManager.getIsHidden(node) == "true") {
 		mInterpreterEditorManager.resetIsHidden(node);
 		mMainWindow.loadPlugins();
 	}
+
 	emit restoreChosen(1);
 	done(QDialog::Accepted);
 }

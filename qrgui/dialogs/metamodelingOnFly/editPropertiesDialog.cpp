@@ -69,9 +69,10 @@ void EditPropertiesDialog::acceptPropertyModifications()
 
 		mInterpreterEditorManager.addProperty(mId, mPropertyName);
 		// set property default value for elements on diagram
-		foreach (Id elementOnDiagram, mElementsOnDiagram) {
+		for (auto const &elementOnDiagram: mElementsOnDiagram) {
 			mApi.setProperty(elementOnDiagram, mPropertyName, mUi->defaultValueEdit->text());
 		}
+
 		mElementsOnDiagram.clear();
 	}
 
@@ -125,13 +126,13 @@ void EditPropertiesDialog::changeProperty(
 		QListWidgetItem *propertyItem
 		, QString const &propertyName
 		, QString const &propertyDisplayedName
-		, qReal::IdList elementsOnDiagram
+		, qReal::IdList *elementsOnDiagram
 		)
 {
 	//mPropertyName = mInterpreterEditorManager.propertyNameByDisplayedName(mId, propertyDisplayedName);
 	mPropertyName = propertyName;
 	mPropertyItem = propertyItem;
-	mElementsOnDiagram = elementsOnDiagram;
+	mElementsOnDiagram = *elementsOnDiagram;
 
 	if (propertyName.isEmpty()) {
 		setWindowTitle(tr("Add new property"));

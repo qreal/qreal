@@ -37,12 +37,13 @@ private slots:
 	void createButtonClicked();
 
 private:
-	Ui::RestoreElementDialog *mUi;
+	Ui::RestoreElementDialog *mUi; // Has ownership
 	MainWindow &mMainWindow;
 	EditorManagerInterface const &mInterpreterEditorManager;
 	IdList mElementsWithTheSameNameList;
 
-	void fillSameNameElementsTV();
+	void fillSameNameElementsTreeView();
+	// Object has ownership over list elements.
 	QList<QStandardItem *> prepareRow(QString const &first, QString const &second, QString const &third);
 };
 }

@@ -663,7 +663,7 @@ QStringList InterpreterEditorManager::elements(QString const &editor, QString co
 	QPair<qrRepo::RepoApi*, Id> const repoAndDiagramPair = repoAndDiagram(editor, diagram);
 	qrRepo::RepoApi const * const repo = repoAndDiagramPair.first;
 	Id const diag = repoAndDiagramPair.second;
-	foreach (Id const &element, repo->children(diag)) {
+	for (auto const &element: repo->children(diag)) {
 		result.append(repo->name(element));
 	}
 
@@ -768,7 +768,7 @@ IdList InterpreterEditorManager::elementsWithTheSameName(
 	qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
 	Id const diag = repoAndDiagramPair.second;
 
-	foreach (Id const &element, repo->children(diag)) {
+	for (auto const &element: repo->children(diag)) {
 		if (repo->stringProperty(element, "displayedName") == name && element.element() == type
 				&& repo->isLogicalElement(element)) {
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, element);

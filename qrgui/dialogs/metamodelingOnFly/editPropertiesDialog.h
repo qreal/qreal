@@ -34,7 +34,7 @@ public:
 	/// @param propertyDisplayedName Displayed name of this property.
 	/// @param elementsOnDiagram logical elements on the diagram.
 	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName
-				, QString const &propertyDisplayedName, qReal::IdList elementsOnDiagram);
+				, QString const &propertyDisplayedName, qReal::IdList *elementsOnDiagram);
 private slots:
 	void okButtonClicked();
 	void messageBoxCancel();
