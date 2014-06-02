@@ -4,6 +4,7 @@
 
 #include "mainwindow/projectManager/projectManagementInterface.h"
 #include "textEditor/textManagerInterface.h"
+#include "versionsConverterManager.h"
 
 namespace qReal {
 
@@ -55,6 +56,9 @@ private:
 	bool pluginsEnough() const;
 	QString missingPluginNames() const;
 
+	bool checkVersions();
+	bool checkForUnknownElements();
+
 	void refreshWindowTitleAccordingToSaveFile();
 	void refreshTitleModifiedSuffix();
 	void refreshApplicationStateAfterSave();
@@ -73,6 +77,7 @@ private:
 	bool mUnsavedIndicator;
 	QString mSaveFilePath;
 	bool mSomeProjectOpened;
+	VersionsConverterManager mVersionsConverter;
 };
 
 }

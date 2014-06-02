@@ -36,6 +36,7 @@ public:
 
 	virtual void initPlugin() = 0;
 	virtual QString id() const = 0;
+	virtual QString version() const = 0;
 
 	virtual QStringList diagrams() const = 0;
 	virtual QStringList elements(QString const &diagram) const = 0;
@@ -54,7 +55,7 @@ public:
 	virtual QStringList getReferenceProperties(QString const &diagram, QString const &element) const = 0;
 	virtual QString getPropertyType(QString const &element, QString const &name) const = 0;
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const = 0;
-	virtual QStringList getEnumValues(QString name) const = 0;
+	virtual QList<QPair<QString, QString>> getEnumValues(QString const &name) const = 0;
 	virtual QString getGroupsXML() const = 0;
 	virtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const = 0;
 

@@ -108,7 +108,7 @@ void RepositoryTest::SetUp() {
 	list.push_back(&child2_childObj);
 	list.push_back(&child3_childObj);
 
-	mSerializer->saveToDisk(list);
+	mSerializer->saveToDisk(list, QHash<QString, QVariant>());
 
 	mRepository = new Repository("saveFile.qrs");
 
@@ -126,7 +126,7 @@ void RepositoryTest::SetUp() {
 	newList.push_back(&newObj2);
 
 	mSerializer = new Serializer("newSaveFile");
-	mSerializer->saveToDisk(newList);
+	mSerializer->saveToDisk(newList, QHash<QString, QVariant>());
 }
 
 void RepositoryTest::TearDown() {

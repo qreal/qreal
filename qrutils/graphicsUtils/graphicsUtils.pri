@@ -24,4 +24,4 @@ SOURCES += \
 	$$PWD/rotateItem.cpp \
 	$$PWD/gridDrawer.cpp \
 	$$PWD/paintWidget.cpp \
-	$$PWD/painterInterface.cpp \
+	$$PWD/painterInterface.cpp

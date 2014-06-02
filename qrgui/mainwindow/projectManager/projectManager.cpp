@@ -19,6 +19,7 @@ ProjectManager::ProjectManager(MainWindow *mainWindow, TextManagerInterface *tex
 	, mAutosaver(new Autosaver(this))
 	, mUnsavedIndicator(false)
 	, mSomeProjectOpened(false)
+	, mVersionsConverter(*mMainWindow)
 {
 	setSaveFilePath();
 }
@@ -105,20 +106,26 @@ bool ProjectManager::open(QString const &fileName)
 	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
+	bool const someProjectWasOpened = mSomeProjectOpened;
 	if (mSomeProjectOpened) {
 		close();
 	}
+
 	if (mAutosaver->checkAutoSavedVersion(fileName)) {
 		setUnsavedIndicator(true);
 		mSomeProjectOpened = true;
 		return true;
 	}
+
 	mMainWindow->models()->repoControlApi().open(fileName);
 	mMainWindow->models()->reinit();
 
-	if (!pluginsEnough()) {
+	if (!pluginsEnough() || !checkVersions() || !checkForUnknownElements()) {
 		// restoring the session
-		mSomeProjectOpened = open(mSaveFilePath);
+		if (someProjectWasOpened) {
+			mSomeProjectOpened = open(mSaveFilePath);
+		}
+
 		return false;
 	}
 
@@ -151,10 +158,12 @@ bool ProjectManager::import(QString const &fileName)
 	if (fileName.isEmpty()) {
 		return false;
 	}
+
 	QString const currentSaveFilePath = saveFilePath();
 	if (!open(fileName)) {
 		return open(currentSaveFilePath);
 	}
+
 	// In the hope that while the user selects a file nobody substitute for the current project with project, which
 	// has diagrams for which there are no plugins
 	mMainWindow->models()->repoControlApi().importFromDisk(currentSaveFilePath);
@@ -168,6 +177,7 @@ bool ProjectManager::saveFileExists(QString const &fileName)
 		fileNotFoundMessage(fileName);
 		return false;
 	}
+
 	return true;
 }
 
@@ -178,6 +188,7 @@ bool ProjectManager::pluginsEnough() const
 				, tr("These plugins are not present, but needed to load the save:\n") + missingPluginNames());
 		return false;
 	}
+
 	return true;
 }
 
@@ -191,6 +202,27 @@ QString ProjectManager::missingPluginNames() const
 		result += id.editor() + "\n";
 	}
 	return result;
+}
+
+bool ProjectManager::checkVersions()
+{
+	return mVersionsConverter.validateCurrentProject();
+}
+
+bool ProjectManager::checkForUnknownElements()
+{
+	IdList const allElements = mMainWindow->models()->logicalModelAssistApi().children(Id::rootId());
+	for (Id const &element : allElements) {
+		bool const isElementKnown = mMainWindow->editorManager().hasElement(element.type());
+		if (!isElementKnown) {
+			QString const errorMessage = tr("This project contains unknown element %1 and thus can`t be opened. "\
+					"Probably it was created by old or incorrectly working version of QReal.").arg(element.toString());
+			QMessageBox::information(mMainWindow, tr("Can`t open project file"), errorMessage);
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void ProjectManager::refreshApplicationStateAfterSave()

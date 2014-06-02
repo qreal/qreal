@@ -178,6 +178,7 @@ void LogicalModel::initializeElement(Id const &id, modelsImplementation::Abstrac
 	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
 	mApi.addChild(parentItem->id(), id);
+	mApi.setMetaInformation(id.editor() + "Version", mEditorManagerInterface.version(Id(id.editor())).toString());
 
 	addInsufficientProperties(id, name);
 

@@ -25,9 +25,11 @@ Id PasteNodeCommand::pasteNewInstance()
 		Id const typeId = mNodeData.id.type();
 		resultId = mScene->createElement(typeId.toString(), newPos(), true, &mCreateCommand, false
 				, vectorFromContainer());
-		mCreateCommand->redo();
-		mCopiedIds->insert(mNodeData.id, resultId);
-		addPreAction(mCreateCommand);
+		if (mCreateCommand) {
+			mCreateCommand->redo();
+			mCopiedIds->insert(mNodeData.id, resultId);
+			addPreAction(mCreateCommand);
+		}
 	}
 	return resultId;
 }
@@ -49,8 +51,10 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 
 		mCreateCommand->redo();
 		resultId = mCreateCommand->result();
-		mCopiedIds->insert(mNodeData.id, resultId);
-		addPreAction(mCreateCommand);
+		if (!resultId.isNull()) {
+			mCopiedIds->insert(mNodeData.id, resultId);
+			addPreAction(mCreateCommand);
+		}
 	}
 
 	return resultId;
@@ -58,6 +62,10 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 
 void PasteNodeCommand::restoreElement()
 {
+	if (!mCreateCommand) {
+		return;
+	}
+
 	Id const logicalId = mMVIface->graphicalAssistApi()->logicalId(mCreateCommand->result());
 	mMVIface->graphicalAssistApi()->setProperties(logicalId, mNodeData.logicalProperties);
 	mMVIface->graphicalAssistApi()->setProperties(mResult, mNodeData.graphicalProperties);

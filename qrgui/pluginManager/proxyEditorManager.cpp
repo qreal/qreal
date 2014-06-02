@@ -27,6 +27,11 @@ IdList ProxyEditorManager::elements(Id const &diagram) const
 	return mProxiedEditorManager->elements(diagram);
 }
 
+Version ProxyEditorManager::version(Id const &editor) const
+{
+	return mProxiedEditorManager->version(editor);
+}
+
 bool ProxyEditorManager::loadPlugin(QString const &pluginName)
 {
 	return mProxiedEditorManager->loadPlugin(pluginName);
@@ -77,7 +82,7 @@ IdList ProxyEditorManager::containedTypes(const Id &id) const
 	return mProxiedEditorManager->containedTypes(id);
 }
 
-QStringList ProxyEditorManager::enumValues(Id const &id, const QString &name) const
+QList<QPair<QString, QString>> ProxyEditorManager::enumValues(Id const &id, const QString &name) const
 {
 	return mProxiedEditorManager->enumValues(id, name);
 }

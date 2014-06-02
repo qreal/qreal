@@ -33,6 +33,8 @@ public:
 	IdList editors() const override;
 	IdList diagrams(Id const &editor) const override;
 	IdList elements(Id const &diagram) const override;
+	Version version(Id const &editor) const override;
+
 	bool loadPlugin(QString const &pluginName) override;
 	bool unloadPlugin(QString const &pluginName) override;
 
@@ -45,7 +47,7 @@ public:
 	ElementImpl* elementImpl(Id const &id) const override;
 
 	IdList containedTypes(const Id &id) const override;
-	QStringList enumValues(Id const &id, const QString &name) const override;
+	QList<QPair<QString, QString>> enumValues(Id const &id, const QString &name) const override;
 	QString typeName(Id const &id, const QString &name) const override;
 	QStringList allChildrenTypesOf(Id const &parent) const override;
 

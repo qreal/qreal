@@ -15,7 +15,7 @@ void EnginesForwardBlock::run()
 {
 	Tracer::debug(tracer::enums::blocks, "EnginesForwardBlock::run", "");
 	int const power = evaluate("Power").toInt();
-	bool const breakMode = stringProperty("Mode") != QString::fromUtf8("скользить");
+	bool const breakMode = stringProperty("Mode") != "float";
 	QVector<bool> ports(parseEnginePorts());
 	for (int i = 0; i < 3; ++i) {
 		if (ports[i]) {

@@ -36,14 +36,14 @@ bool IfBlock::initNextBlocks()
 
 		Block * const targetBlock = mBlocksTable->block(targetBlockId);
 		QString const condition = stringProperty(linkId, "Guard").toLower();
-		if (condition == QString::fromUtf8("истина")) {
+		if (condition == "true") {
 			if (trueBlock) {
 				error(tr("Two links marked with 'true' found"));
 				return false;
 			} else {
 				trueBlock = targetBlock;
 			}
-		} else if (condition == QString::fromUtf8("ложь")) {
+		} else if (condition == "false") {
 			if (falseBlock) {
 				error(tr("Two links marked with 'false' found"));
 				return false;

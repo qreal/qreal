@@ -8,7 +8,11 @@
 #include <QtGui/QFont>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+#include <QtCore/QFileInfo>
+#include <QtCore/QHash>
+#include <QtCore/QSharedPointer>
 #include <QtGui/QIconEngine>
+#include <QtSvg/QSvgRenderer>
 
 #include <qrkernel/settingsManager.h>
 
@@ -37,9 +41,41 @@ public:
 	void setElementRepo(ElementRepoInterface *elementRepo);
 
 private:
+
+	/// Cache for images that contains them pre-loaded and parsed and is able to quickly draw it on a painter.
+	/// Pixmaps and svg images are contained separately as they are rendered differently.
+	class ImagesCache {
+	public:
+		/// Draws image with given file name on given painter in given rectangle. Note that actual file, from which
+		/// an image will be loaded may be different from fileName, as described in selectBestImageFile.
+		/// @see selectBestImageFile
+		void drawImage(QString const &fileName, QPainter &painter, QRect const &rect);
+
+	private:
+		/// Selects "best available" image file, using following rules:
+		/// - if there is .svg file with given name in a directory from filePath, it is used as actual image file.
+		/// - else if there is a file with other extension but with correct name, it is used.
+		/// - else, if there is no such file, it tries to select a file with name "default" in given directory, using the
+		///   rules above.
+		/// - if everything above fails, system default image file, from qrgui/icons (or, when compiled,
+		///   from ":/icons/default.svg"), is used.
+		static QFileInfo selectBestImageFile(QString const &filePath);
+
+		/// Loads pixmap from given file, returns empty QByteArray if file does not exist.
+		static QByteArray loadPixmap(QFileInfo const &fileInfo);
+
+		/// Maps file name to pre-loaded pixmap with image.
+		QHash<QString, QPixmap> mFileNamePixmapMap;
+
+		/// Maps file name to a svg renderer object.
+		QHash<QString, QSharedPointer<QSvgRenderer>> mFileNameSvgRendererMap;
+	};
+
 	QString mWorkingDirName;
-	QMap<QString, QString> mReallyUsedFiles;
-	QMap<QString, QByteArray> mMapFileImage;
+
+	/// Smart cache for images, to avoid loading image from disc on every paint() call.
+	ImagesCache mImagesCache;
+
 	int first_size_x;
 	int first_size_y;
 	int current_size_x;
@@ -90,12 +126,8 @@ private:
 	float coord_def(QDomElement &element, QString coordName, int current_size, int first_size);
 	void logger(QString path, QString string);
 
-	/// Reads byte array from the file that is obtained by inner rules from the given one.
-	/// Specified file path may be modified with storing into it really read file path.
-	QByteArray loadPixmap(QString &filePath);
-	QByteArray loadPixmapFromExistingFile(QString &filePath);
-
-	/** @brief checks that str[i] is not L, C, M or Z*/
+	/// checks that str[i] is not L, C, M or Z
+	/// @todo Not so helpful comment
 	bool isNotLCMZ(QString str, int i);
 };
 

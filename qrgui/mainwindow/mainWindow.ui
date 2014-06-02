@@ -14,7 +14,7 @@
    <string>QReal</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="qrgui.qrc">
+   <iconset resource="../qrgui.qrc">
     <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -145,7 +145,7 @@
    <property name="minimumSize">
     <size>
      <width>80</width>
-     <height>211</height>
+     <height>214</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -274,24 +274,18 @@
    <widget class="QWidget" name="logicalModelDockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-	  <widget class="qReal::gui::ModelExplorer" name="logicalModelExplorer">
+      <widget class="qReal::gui::ModelExplorer" name="logicalModelExplorer" native="true">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
        <property name="acceptDrops">
         <bool>true</bool>
        </property>
-       <property name="dragEnabled">
+       <property name="dragEnabled" stdset="0">
         <bool>false</bool>
        </property>
-       <property name="dragDropOverwriteMode">
+       <property name="dragDropOverwriteMode" stdset="0">
         <bool>false</bool>
-       </property>
-       <property name="dragDropMode">
-        <enum>QAbstractItemView::DragDrop</enum>
-       </property>
-       <property name="defaultDropAction">
-        <enum>Qt::IgnoreAction</enum>
        </property>
       </widget>
      </item>
@@ -347,7 +341,7 @@
    <widget class="QWidget" name="graphicalModelDockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-	  <widget class="qReal::gui::ModelExplorer" name="graphicalModelExplorer">
+      <widget class="qReal::gui::ModelExplorer" name="graphicalModelExplorer" native="true">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
@@ -440,7 +434,7 @@
   </action>
   <action name="actionZoom_In">
    <property name="icon">
-    <iconset resource="qrgui.qrc">
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/zoomin.png</normaloff>:/icons/zoomin.png</iconset>
    </property>
    <property name="text">
@@ -452,7 +446,7 @@
   </action>
   <action name="actionZoom_Out">
    <property name="icon">
-    <iconset resource="qrgui.qrc">
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/zoomout.png</normaloff>:/icons/zoomout.png</iconset>
    </property>
    <property name="text">
@@ -483,7 +477,7 @@
   </action>
   <action name="actionPrint">
    <property name="icon">
-    <iconset resource="qrgui.qrc">
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
    </property>
    <property name="text">
@@ -538,6 +532,10 @@
    </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../qrgui.qrc">
+     <normaloff>:/icons/save.svg</normaloff>:/icons/save.svg</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
    </property>
@@ -554,6 +552,10 @@
    </property>
   </action>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../qrgui.qrc">
+     <normaloff>:/icons/open.svg</normaloff>:/icons/open.svg</iconset>
+   </property>
    <property name="text">
     <string>Open...</string>
    </property>
@@ -625,7 +627,7 @@
   </action>
   <action name="actionGenerate_and_build">
    <property name="icon">
-    <iconset resource="qrgui.qrc">
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/build.png</normaloff>:/icons/build.png</iconset>
    </property>
    <property name="text">
@@ -663,6 +665,10 @@
    </property>
   </action>
   <action name="actionNew_Diagram">
+   <property name="icon">
+    <iconset resource="../qrgui.qrc">
+     <normaloff>:/icons/newDiagram.svg</normaloff>:/icons/newDiagram.svg</iconset>
+   </property>
    <property name="text">
     <string>New Diagram</string>
    </property>
@@ -671,6 +677,10 @@
    </property>
   </action>
   <action name="actionFullscreen">
+   <property name="icon">
+    <iconset resource="../qrgui.qrc">
+     <normaloff>:/icons/fullScreen.svg</normaloff>:/icons/fullScreen.svg</iconset>
+   </property>
    <property name="text">
     <string>Fullscreen Mode</string>
    </property>
@@ -682,6 +692,10 @@
    </property>
   </action>
   <action name="actionNewProject">
+   <property name="icon">
+    <iconset resource="../qrgui.qrc">
+     <normaloff>:/icons/newProject.svg</normaloff>:/icons/newProject.svg</iconset>
+   </property>
    <property name="text">
     <string>New Project</string>
    </property>
@@ -763,7 +777,7 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset resource="qrgui.qrc">
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
    </property>
    <property name="text">
@@ -775,7 +789,7 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset resource="qrgui.qrc">
+    <iconset resource="../qrgui.qrc">
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
    </property>
    <property name="text">
@@ -827,8 +841,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="qrgui.qrc"/>
-  <include location="qrgui.qrc"/>
+  <include location="../qrgui.qrc"/>
  </resources>
  <connections/>
 </ui>

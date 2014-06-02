@@ -18,15 +18,15 @@ void WaitBlock::setFailedStatus()
 void WaitBlock::processResponce(int reading, int targetValue)
 {
 	QString const sign = stringProperty("Sign");
-	if (sign == QString::fromUtf8("равно") && reading == targetValue) {
+	if (sign == "equals" && reading == targetValue) {
 		stop();
-	} else if (sign == QString::fromUtf8("больше") && reading > targetValue) {
+	} else if (sign == "greater" && reading > targetValue) {
 		stop();
-	} else if (sign == QString::fromUtf8("меньше") && reading < targetValue) {
+	} else if (sign == "less" && reading < targetValue) {
 		stop();
-	} else if (sign == QString::fromUtf8("не меньше") && reading >= targetValue) {
+	} else if (sign == "notLess" && reading >= targetValue) {
 		stop();
-	} else if (sign == QString::fromUtf8("не больше") && reading <= targetValue) {
+	} else if (sign == "notGreater" && reading <= targetValue) {
 		stop();
 	}
 }

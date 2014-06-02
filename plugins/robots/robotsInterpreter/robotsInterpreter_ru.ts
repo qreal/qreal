@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>D2Form</name>
     <message>
@@ -1317,9 +1317,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
     <message>
-        <location filename="details/blocks/waitForGyroscopeSensorBlock.cpp" line="31"/>
         <source>Gyroscope</source>
-        <translation>Гироскоп</translation>
+        <translation type="vanished">Гироскоп</translation>
     </message>
 </context>
 <context>
@@ -1421,8 +1420,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
     <message>
+        <location filename="details/d2RobotModel/gridParameters.cpp" line="17"/>
         <source>Grid</source>
-        <translation type="obsolete">Сетка</translation>
+        <translation>Сетка</translation>
     </message>
 </context>
 <context>

@@ -22,10 +22,16 @@ class Editor
 public:
 	Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler);
 	~Editor();
+
 	XmlCompiler *xmlCompiler();
+
+	QString version() const;
+
 	bool isLoaded();
 	bool load(QDir const &currentDir);
+
 	Type *findType(QString const &name);
+
 	QSet<EnumType *> getAllEnumTypes();
 	QStringList getAllPortNames() const;
 	Diagram *findDiagram(QString const &name);
@@ -38,6 +44,7 @@ private:
 	XmlCompiler *mXmlCompiler;
 	QDomDocument mXmlDomDocument;
 	bool mLoadingComplete;
+	QString mVersion;
 	QList<Editor*> mIncludes;
 	QMap<QString, Diagram*> mDiagrams;
 	QList<QPair<QString, QString> > mListeners;
