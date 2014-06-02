@@ -45,13 +45,11 @@ QList<ActionInfo> generator::actions()
 	mGenerateMetamodelAction.setText(tr("Generate metamodel"));
 	ActionInfo generateMetaModelActionInfo(&mGenerateMetamodelAction, "generators", "tools");
 	connect(&mGenerateMetamodelAction, SIGNAL(triggered()), this, SLOT(onGenerateMetamodel()));
-
 	return QList<ActionInfo>() << generateMetaModelActionInfo;
 }
 
 void generator::onGenerateMetamodel()
 {
-
 	QFile testFile("D:\\test.txt");
 	mRepo = new qrRepo::RepoApi("testRepo.qrs");
 	//testId - editorNode
