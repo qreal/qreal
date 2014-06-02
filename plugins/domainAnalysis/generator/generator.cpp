@@ -86,7 +86,7 @@ void generator::onGenerateMetamodel()
 		mRepo->saveTo("D:/testEditor.qrs");
 		testFile.close();
 		if (stream.status() != QTextStream::Ok)	{
-			qDebug() << "Ошибка записи файла";
+			qDebug() << "File writing erorr";
 		}
 	}
 }
