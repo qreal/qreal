@@ -6,24 +6,19 @@
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 #include "../../../qrrepo/logicalRepoApi.h"
 
-//#include "compilerPage.h"
-
 namespace domainAnalysis {
 
-/// Main plugin class for metaeditor support code. Provides generation of editor
-/// by metamodel specified in .xml file or in QReal save file, compilation of
-/// generated editor and loading it to QReal, and parsing of existing .xml metamodel.
-class generator: public QObject, public qReal::ToolPluginInterface
+/// Main plugin class for domainAnalysis generator code. Provides language
+/// metamodel generator by domain model
+class Generator: public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
-	Q_PLUGIN_METADATA(IID "metaEditor.MetaEditorSupportPlugin")
+	Q_PLUGIN_METADATA(IID "domainAnalysis.Generator")
 
 public:
-	generator();
-	virtual ~generator();
-	//explicit generator(qrRepo::LogicalRepoApi &api);
-	QHash<qReal::Id, QPair<QString, QString> > getMetamodelList();
+	Generator();
+	virtual ~Generator();
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
 
@@ -45,6 +40,5 @@ private:
 	qrRepo::RepoControlInterface *mRepoControlApi;  // Does not have ownership
 
 	qrRepo::RepoApi *mRepo;
-
 };
 }
