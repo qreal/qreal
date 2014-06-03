@@ -11,11 +11,6 @@ class DummySensorsConfigurer : public interpreterBase::DevicesConfigurationProvi
 public:
 	explicit DummySensorsConfigurer(QString const &name = QString());
 
-	/// Configures given device bypassing broadcasting changes to the whole graph
-	void configureSilently(QString const &robotModel
-			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &device);
-
 	/// Configures given device with broadcasting changes to the whole graph
 	void configureBroadly(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port

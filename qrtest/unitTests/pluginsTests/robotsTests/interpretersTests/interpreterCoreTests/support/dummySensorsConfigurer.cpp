@@ -10,13 +10,6 @@ DummySensorsConfigurer::DummySensorsConfigurer(QString const &name)
 {
 }
 
-void DummySensorsConfigurer::configureSilently(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &device)
-{
-	/// @todo
-//	mCurrentConfiguration[robotModel][port] = device;
-}
-
 void DummySensorsConfigurer::configureBroadly(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &device)
 {
