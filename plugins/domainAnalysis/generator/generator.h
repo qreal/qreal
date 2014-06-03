@@ -2,9 +2,9 @@
 
 #include <QtCore/QTranslator>
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "../../../qrrepo/logicalRepoApi.h"
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrrepo/logicalRepoApi.h>
 
 namespace domainAnalysis {
 
@@ -35,11 +35,5 @@ private:
 
 	/// API of logical part of a repository
 	qrRepo::LogicalRepoApi *mLogicalRepoApi;  // Does not have ownership
-
-	/// Control API of a repository
-	qrRepo::RepoControlInterface *mRepoControlApi;  // Does not have ownership
-
-	///Repository, it includes essences for metamodel
-	qrRepo::RepoApi *mRepo;
 };
 }

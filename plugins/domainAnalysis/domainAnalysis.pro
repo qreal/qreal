@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-        editor/editor.pro \
-        generator/generator.pro
+        domainAnalysisEditor/domainAnalysisEditor.pro \
+        exampleGeneratedEditor/exampleGeneratedEditor.pro \
+        generator/generator.pro \
