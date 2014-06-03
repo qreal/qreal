@@ -39,9 +39,6 @@ script:
   - make -j2
   - cd ./bin
   - ls -A
-  - cd ./unittests
-  - ls -A
-  - cd ..
   - sh -c "$TESTS"
 
 notifications:
