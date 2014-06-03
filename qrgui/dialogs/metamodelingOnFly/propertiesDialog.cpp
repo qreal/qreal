@@ -38,15 +38,17 @@ PropertiesDialog::PropertiesDialog(MainWindow &mainWindow, EditorManagerInterfac
 PropertiesDialog::~PropertiesDialog()
 {
 	delete mEditPropertiesDialog;
+	delete mElementsOnDiagram;
 	delete mUi;
 }
 
 QStringList PropertiesDialog::getPropertiesDisplayedNamesList(QStringList const &propertiesNames)
 {
 	QStringList propertiesDisplayedNames;
-	foreach (QString const &propertyName, propertiesNames) {
+	for (QString const &propertyName : propertiesNames) {
 		propertiesDisplayedNames << mInterpreterEditorManager.propertyDisplayedName(mId, propertyName);
 	}
+
 	return propertiesDisplayedNames;
 }
 

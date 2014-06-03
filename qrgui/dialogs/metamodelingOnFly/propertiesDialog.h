@@ -42,11 +42,11 @@ private:
 	void findElementsOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
 	void disableParentProperties(QStringList const propertiesDisplayedNames);
 
-	Ui::PropertiesDialog *mUi;
+	Ui::PropertiesDialog *mUi;  // Has ownership.
 	EditorManagerInterface &mInterpreterEditorManager;
 	Id mId;
 	MainWindow &mMainWindow;
-	EditPropertiesDialog *mEditPropertiesDialog; // Does not have ownership.
+	EditPropertiesDialog *mEditPropertiesDialog;  // Has ownership.
 	QStringList mPropertiesNames;
 	qReal::IdList *mElementsOnDiagram;
 };
