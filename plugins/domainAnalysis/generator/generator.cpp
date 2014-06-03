@@ -8,31 +8,30 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QFile>
 
-#include "qrkernel/settingsManager.h"
-#include "qrmc/metaCompiler.h"
-#include "qrkernel/roles.h"
-#include "qrutils/outFile.h"
-#include "qrutils/nameNormalizer.h"
-#include "qrkernel/settingsManager.h"
-#include "qrgui/pluginManager/editorManager.h"
+#include <qrkernel/settingsManager.h>
+#include <qrmc/metaCompiler.h>
+#include <qrkernel/roles.h>
+#include <qrutils/outFile.h>
+#include <qrutils/nameNormalizer.h>
+#include <qrkernel/settingsManager.h>
+#include <qrgui/pluginManager/editorManager.h>
 
 using namespace qReal;
 using namespace domainAnalysis;
 using namespace utils;
 using namespace qrRepo;
 
-
-generator::generator()
+Generator::Generator()
 		: mGenerateMetamodelAction(nullptr)
 		, mRepoControlApi(nullptr)
 {
 }
 
-generator::~generator()
+Generator::~Generator()
 {
 }
 
-void generator::init(PluginConfigurator const &configurator)
+void Generator::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mLogicalRepoApi = &configurator.logicalModelApi().mutableLogicalRepoApi();
@@ -40,17 +39,17 @@ void generator::init(PluginConfigurator const &configurator)
 }
 
 //The control's connection with method "onGenerateMethod"
-QList<ActionInfo> generator::actions()
+QList<ActionInfo> Generator::actions()
 {
 	mGenerateMetamodelAction.setText(tr("Generate metamodel"));
 	ActionInfo generateMetaModelActionInfo(&mGenerateMetamodelAction, "generators", "tools");
-	connect(&mGenerateMetamodelAction, SIGNAL(triggered()), this, SLOT(onGenerateMetamodel()));
+	QObject::connect(&mGenerateMetamodelAction, &QAction::triggered, this, &Generator::onGenerateMetamodel);
 	return QList<ActionInfo>() << generateMetaModelActionInfo;
 }
 
-void generator::onGenerateMetamodel()
+void Generator::onGenerateMetamodel()
 {
-	QFile testFile("D:\\test.txt");
+	QFile testFile("test.txt");
 	mRepo = new qrRepo::RepoApi("testRepo.qrs");
 	//testId - editorNode
 	Id const editorTestId("MetaEditor", "MetaEditor", "MetamodelDiagram", QUuid::createUuid().toString());
@@ -63,12 +62,12 @@ void generator::onGenerateMetamodel()
 	mRepo->setProperty(diagramNode,"name", "Diagram");
 	mRepo->setProperty(diagramNode,"displayedName", "Diagram");
 	mRepo->setProperty(diagramNode,"nodeName", "Diagram");
-	if (testFile.open(QIODevice::WriteOnly)){
+	if (testFile.open(QIODevice::WriteOnly)) {
 		QTextStream stream(&testFile);
 		IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
-		for (Id const key: metamodels){
+		for (Id const key: metamodels) {
 			QString const objectType = key.element();
-			if (objectType == "DetailedFeature" && mLogicalRepoApi->isLogicalElement(key)){
+			if (objectType == "DetailedFeature" && mLogicalRepoApi->isLogicalElement(key)) {
 				stream << mLogicalRepoApi->name(key)<<"\r\n";
 				Id const nodeId("MetaEditor", "MetaEditor", "MetaEntityNode", QUuid::createUuid().toString());
 				mRepo->addChild(diagramNode,nodeId);
@@ -83,9 +82,9 @@ void generator::onGenerateMetamodel()
 		mRepo->setProperty(edgeId, "displayedName", "Стрелка следования");
 		mRepo->setProperty(edgeId,"shape", "broken");
 		mRepo->setProperty(edgeId,"lineType", "solidLine");
-		mRepo->saveTo("D:/testEditor.qrs");
+		mRepo->saveTo("testEditor.qrs");
 		testFile.close();
-		if (stream.status() != QTextStream::Ok)	{
+		if (stream.status() != QTextStream::Ok) {
 			qDebug() << "File writing erorr";
 		}
 	}
