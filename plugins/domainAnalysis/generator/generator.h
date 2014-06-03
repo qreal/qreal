@@ -27,18 +27,19 @@ private slots:
 
 private:
 
-	/// Action that starts generation of .xml file with metamodel for qrxc
+	/// Action that starts generation the metamodel by domain model
 	QAction mGenerateMetamodelAction;
 
-	/// Interface of MainWindow, used, for example, to reinit models when finished parsing
+	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
 
-	/// API of logical part of a repository, mutable to allow parser build model
+	/// API of logical part of a repository
 	qrRepo::LogicalRepoApi *mLogicalRepoApi;  // Does not have ownership
 
-	/// Control API of a repository, used for requests such as current save file name
+	/// Control API of a repository
 	qrRepo::RepoControlInterface *mRepoControlApi;  // Does not have ownership
 
+	///Repository, it includes essences for metamodel
 	qrRepo::RepoApi *mRepo;
 };
 }
