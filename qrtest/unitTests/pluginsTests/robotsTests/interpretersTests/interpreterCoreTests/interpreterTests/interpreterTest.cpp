@@ -11,7 +11,8 @@ using namespace ::testing;
 
 void InterpreterTest::SetUp()
 {
-	mQrguiFacade.reset(new QrguiFacade("unittests/basicTest.qrs"));
+	mQrguiFacade.reset(new QrguiFacade("./unittests/basicTest.qrs"));
+	qDebug() << "loading" << QFileInfo("unittests/basicTest.qrs").absoluteFilePath();
 
 	mQrguiFacade->setActiveTab(qReal::Id::loadFromString(
 			"qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f08fa823-e187-4755-87ba-e4269ae4e798}"));
