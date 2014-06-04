@@ -86,8 +86,6 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QVariant> &metaInfo)
 {
-	qDebug() << "loading from" << mWorkingFile;
-
 	clearWorkingDir();
 	if (!mWorkingFile.isEmpty()) {
 		decompressFile(mWorkingFile);
@@ -105,15 +103,12 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Objec
 		dir.cdUp();
 		dir.cd("graphical");
 		loadModel(dir, objectsHash);
-	} else {
-		qDebug() << "cannot cd logical";
 	}
 }
 
 void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash)
 {
 	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-		qDebug() << "considering" << fileInfo.absoluteFilePath();
 		QString const path = fileInfo.filePath();
 		if (fileInfo.isDir()) {
 			loadModel(path, objectsHash);

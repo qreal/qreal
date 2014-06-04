@@ -1,7 +1,8 @@
 #include "interpreterTest.h"
 
-#include <src/interpreter/interpreter.h>
+#include <QtCore/QCoreApplication>
 
+#include <src/interpreter/interpreter.h>
 #include <src/textLanguage/robotsBlockParser.h>
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
@@ -11,6 +12,10 @@ using namespace ::testing;
 
 void InterpreterTest::SetUp()
 {
+	/// @todo: Need to rewrite this shit with 'temp' setting manager value.
+	/// It is used in serializer and innitialized in main window.
+	/// So when we run tests outside of enviroment they fail!
+	qReal::SettingsManager::setValue("temp", QCoreApplication::applicationDirPath() + "/unsaved");
 	mQrguiFacade.reset(new QrguiFacade("unittests/basicTest.qrs"));
 	mQrguiFacade->setActiveTab(qReal::Id::loadFromString(
 			"qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f08fa823-e187-4755-87ba-e4269ae4e798}"));
