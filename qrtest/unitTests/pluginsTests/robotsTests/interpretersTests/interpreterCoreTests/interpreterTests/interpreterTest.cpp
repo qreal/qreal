@@ -9,10 +9,12 @@ using namespace qrTest::robotsTests::interpreterCoreTests;
 using namespace interpreterCore::interpreter;
 using namespace ::testing;
 
+#include<QApplication>
 void InterpreterTest::SetUp()
 {
-	mQrguiFacade.reset(new QrguiFacade("./unittests/basicTest.qrs"));
+	qDebug() << "app" << QApplication::applicationFilePath();
 	qDebug() << "loading" << QFileInfo("unittests/basicTest.qrs").absoluteFilePath();
+	mQrguiFacade.reset(new QrguiFacade("/home/travis/qreal/qreal/bin/unittests/basicTest.qrs"));
 
 	mQrguiFacade->setActiveTab(qReal::Id::loadFromString(
 			"qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f08fa823-e187-4755-87ba-e4269ae4e798}"));
