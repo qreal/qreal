@@ -138,20 +138,6 @@ void ReadableControlFlowGenerator::visitLoop(Id const &id
 			<< &nextVisitedRule, false);
 }
 
-void ReadableControlFlowGenerator::visitSwitch(Id const &id
-		, QList<LinkInfo> const &links)
-{
-	Q_UNUSED(id)
-	Q_UNUSED(links)
-}
-
-void ReadableControlFlowGenerator::visitFork(Id const &id
-		, QList<LinkInfo> const &links)
-{
-	Q_UNUSED(id)
-	Q_UNUSED(links)
-}
-
 void ReadableControlFlowGenerator::afterSearch()
 {
 }

@@ -136,6 +136,19 @@
     </message>
 </context>
 <context>
+    <name>generatorBase::ControlFlowGeneratorBase</name>
+    <message>
+        <location filename="src/controlFlowGeneratorBase.cpp" line="101"/>
+        <source>Switches are not supported in generator yet</source>
+        <translation>Блок &quot;Выбор&quot; пока что не поддерживается в режиме генерации</translation>
+    </message>
+    <message>
+        <location filename="src/controlFlowGeneratorBase.cpp" line="108"/>
+        <source>Forks are not supported in generator yet</source>
+        <translation>Блок &quot;Параллельные задачи&quot; пока что не поддерживается в режиме генерации</translation>
+    </message>
+</context>
+<context>
     <name>generatorBase::MasterGeneratorBase</name>
     <message>
         <location filename="src/masterGeneratorBase.cpp" line="81"/>

@@ -77,18 +77,6 @@ void GotoControlFlowGenerator::visitLoop(Id const &id, QList<LinkInfo> const &li
 	produceNextNodeIfNeeded(nextLink, thisNode);
 }
 
-void GotoControlFlowGenerator::visitSwitch(Id const &id, QList<LinkInfo> const &links)
-{
-	Q_UNUSED(id)
-	Q_UNUSED(links)
-}
-
-void GotoControlFlowGenerator::visitFork(Id const &id, QList<LinkInfo> const &links)
-{
-	Q_UNUSED(id)
-	Q_UNUSED(links)
-}
-
 void GotoControlFlowGenerator::afterSearch()
 {
 }

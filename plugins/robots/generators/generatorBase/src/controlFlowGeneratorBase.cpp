@@ -93,3 +93,17 @@ GeneratorCustomizer &ControlFlowGeneratorBase::customizer() const
 {
 	return mCustomizer;
 }
+
+void ControlFlowGeneratorBase::visitSwitch(Id const &id, QList<LinkInfo> const &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
+	error(tr("Switches are not supported in generator yet"), id, true);
+}
+
+void ControlFlowGeneratorBase::visitFork(Id const &id, QList<LinkInfo> const &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
+	error(tr("Forks are not supported in generator yet"), id, true);
+}

@@ -42,6 +42,11 @@ public:
 	/// control flow generators (fatal errors occured).
 	bool errorsOccured() const;
 
+	/// @todo: Not supported yet
+	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	/// @todo: Not supported yet
+	void visitFork(qReal::Id const &id, QList<LinkInfo> const &links) override;
+
 protected:
 	void error(QString const &message, qReal::Id const &id = qReal::Id(), bool critical = true);
 
