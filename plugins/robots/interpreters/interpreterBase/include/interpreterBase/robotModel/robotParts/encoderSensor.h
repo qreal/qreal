@@ -17,7 +17,7 @@ public:
 	EncoderSensor(DeviceInfo const &info, PortInfo const &port);
 	virtual ~EncoderSensor();
 
-	virtual void nullificate() = 0;
+	virtual void nullify() = 0;
 };
 
 }

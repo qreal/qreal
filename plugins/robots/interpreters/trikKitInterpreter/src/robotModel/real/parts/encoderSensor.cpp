@@ -15,7 +15,7 @@ void EncoderSensor::read()
 	emit newData(0);
 }
 
-void EncoderSensor::nullificate()
+void EncoderSensor::nullify()
 {
 }
 

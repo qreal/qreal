@@ -32,7 +32,7 @@ void EncoderSensor::read()
 	mRobotCommunicator.send(this, command, 27);
 }
 
-void EncoderSensor::nullificate()
+void EncoderSensor::nullify()
 {
 	QByteArray command(6, 0);
 	command[0] = 0x04;  //command length

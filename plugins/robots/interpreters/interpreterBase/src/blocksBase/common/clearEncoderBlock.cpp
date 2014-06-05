@@ -14,7 +14,7 @@ ClearEncoderBlock::ClearEncoderBlock(RobotModelInterface &robotModel)
 void ClearEncoderBlock::run()
 {
 	for (robotParts::EncoderSensor * const encoder : parsePorts()) {
-		encoder->nullificate();
+		encoder->nullify();
 	}
 
 	emit done(mNextBlockId);

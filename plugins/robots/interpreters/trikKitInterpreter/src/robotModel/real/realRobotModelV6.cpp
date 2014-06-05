@@ -12,6 +12,9 @@ RealRobotModelV6::RealRobotModelV6()
 {
 	addAllowedConnection(PortInfo("JM4", output), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("JF1", input), { movementSensorInfo() });
+
+	addAllowedConnection(PortInfo("JB3", input, { "JM3" }, "encoder3"), { encoderInfo() });
+	addAllowedConnection(PortInfo("JB4", input, { "JM4" }, "encoder4"), { encoderInfo() });
 }
 
 QString RealRobotModelV6::name() const

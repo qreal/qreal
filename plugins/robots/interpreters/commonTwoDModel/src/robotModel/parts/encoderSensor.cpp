@@ -18,7 +18,7 @@ void EncoderSensor::read()
 	emit newData(mEngine.readEncoder(port()));
 }
 
-void EncoderSensor::nullificate()
+void EncoderSensor::nullify()
 {
 	mEngine.resetEncoder(port());
 }

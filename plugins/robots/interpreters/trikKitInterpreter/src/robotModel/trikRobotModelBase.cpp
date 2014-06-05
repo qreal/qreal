@@ -49,10 +49,8 @@ TrikRobotModelBase::TrikRobotModelBase()
 	addAllowedConnection(PortInfo("JM2", output), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("JM3", output), { powerMotorInfo() });
 
-	addAllowedConnection(PortInfo("JB1", input, {}, "encoder1"), { encoderInfo() });
-	addAllowedConnection(PortInfo("JB2", input, {}, "encoder2"), { encoderInfo() });
-	addAllowedConnection(PortInfo("JB3", input, {}, "encoder3"), { encoderInfo() });
-	addAllowedConnection(PortInfo("JB4", input, {}, "encoder4"), { encoderInfo() });
+	addAllowedConnection(PortInfo("JB1", input, { "JM1" }, "encoder1"), { encoderInfo() });
+	addAllowedConnection(PortInfo("JB2", input, { "JM2" }, "encoder2"), { encoderInfo() });
 
 	addAllowedConnection(PortInfo("JA1", input, {}, "sensor1"), analogPortConnections);
 	addAllowedConnection(PortInfo("JA2", input, {}, "sensor2"), analogPortConnections);

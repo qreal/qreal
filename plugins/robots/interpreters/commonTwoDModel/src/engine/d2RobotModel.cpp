@@ -104,7 +104,9 @@ D2RobotModel::Engine *D2RobotModel::initEngine(int radius, int speed, long unsig
 	///       physically plugged into one port, so we can find corresponding port by name. But in TRIK encoders can be
 	///       connected differently.
 	for (Device const * const device : mRobotModel.configuration().devices()) {
-		if (device->deviceInfo().isA<EncoderSensor>() && device->port().name() == port.name()) {
+		if (device->deviceInfo().isA<EncoderSensor>() &&
+				(device->port().name() == port.name() || device->port().nameAliases().contains(port.name())))
+		{
 			mMotorToEncoderPortMap[port] = device->port();
 			mTurnoverEngines[mMotorToEncoderPortMap[port]] = 0;
 		}

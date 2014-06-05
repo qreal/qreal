@@ -95,10 +95,6 @@ void SensorVariablesUpdater::onFailure()
 void SensorVariablesUpdater::updateScalarSensorVariables(PortInfo const &sensorPortInfo, int reading)
 {
 	updateScalarSensorVariable(sensorPortInfo.reservedVariable(), reading);
-	/// @todo: Do we need it?
-//	for (QString const &alias : sensorPortInfo.nameAliases()) {
-//		updateScalarSensorVariable("sensor" + alias, reading);
-//	}
 }
 
 void SensorVariablesUpdater::updateScalarSensorVariable(QString const &variable, int reading)

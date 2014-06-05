@@ -18,7 +18,7 @@ public:
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void read() override;
-	void nullificate() override;
+	void nullify() override;
 
 private slots:
 	void readingDone(QObject *addressee, QByteArray const &reading);
