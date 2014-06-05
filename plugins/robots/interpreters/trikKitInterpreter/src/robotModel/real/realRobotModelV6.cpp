@@ -37,6 +37,6 @@ robotParts::Device *RealRobotModelV6::createDevice(PortInfo const &port, DeviceI
 	if (deviceInfo.isA(movementSensorInfo())) {
 		return new parts::MovementSensor(movementSensorInfo(), port);
 	} else {
-		return RealRobotModelV4::createDevice(port, deviceInfo);
+		return RealRobotModelBase::createDevice(port, deviceInfo);
 	}
 }
