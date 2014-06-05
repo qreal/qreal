@@ -6,6 +6,7 @@ namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
+/// An interpreter`s implementation for the light sensor`s wait block.
 class ROBOTS_INTERPRETER_BASE_EXPORT WaitForLightSensorBlock : public WaitForSensorBlock
 {
 	Q_OBJECT

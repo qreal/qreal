@@ -1,19 +1,15 @@
 #include <interpreterBase/blocksBase/block.h>
 
-//#include <QtCore/QDebug>
-//#include "../robotsBlockParser.h"
-
 using namespace interpreterBase;
 using namespace blocksBase;
 using namespace qReal;
 
 Block::Block()
 	: mNextBlockId(Id())
-//	, mGraphicalModelApi(NULL)
-//	, mLogicalModelApi(NULL)
-//	, mBlocksTable(NULL)
+	, mGraphicalModelApi(nullptr)
+	, mLogicalModelApi(nullptr)
 	, mGraphicalId(Id())
-//	, mParser(NULL)
+	, mParser(nullptr)
 	, mState(idle)
 	, mErrorReporter(nullptr)
 	, mRobotModelManager(nullptr)
@@ -39,7 +35,6 @@ void Block::init(Id const &graphicalId
 	mErrorReporter = errorReporter;
 	mParser = parser;
 	mRobotModelManager = &robotModelManager;
-//	additionalInit();
 }
 
 bool Block::initNextBlocks()
@@ -96,11 +91,6 @@ void Block::setFailedStatus()
 	mState = failed;
 }
 
-void Block::setIdleStatus()
-{
-	mState = idle;
-}
-
 void Block::finishedRunning()
 {
 	mState = idle;
@@ -153,7 +143,7 @@ void Block::error(QString const &message)
 	emit failure();
 }
 
-QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedSensors() const
+QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedDevices() const
 {
 	return QMap<robotModel::PortInfo, robotModel::DeviceInfo>();
 }
@@ -188,23 +178,6 @@ interpreterBase::robotModel::RobotModelInterface &Block::model()
 {
 	return mRobotModelManager->model();
 }
-
-//QVector<bool> Block::parseEnginePorts() const
-//{
-//	QString const ports = stringProperty("Ports");
-//	QVector<bool> result(3, false);
-//	QStringList splitted = ports.split(',', QString::SkipEmptyParts);
-//	foreach (QString const &port, splitted) {
-//		if (port.trimmed().toUpper() == "A") {
-//			result[0] = true;
-//		} else if (port.trimmed().toUpper() == "B") {
-//			result[1] = true;
-//		} else if (port.trimmed().toUpper() == "C") {
-//			result[2] = true;
-//		}
-//	}
-//	return result;
-//}
 
 void Block::finishedSteppingInto()
 {

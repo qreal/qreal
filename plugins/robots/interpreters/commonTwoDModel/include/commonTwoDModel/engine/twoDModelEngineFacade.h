@@ -17,6 +17,7 @@ class D2RobotModel;
 
 namespace engine {
 
+/// Manages all 2D model engine combining components together and provides API for controling it.
 class COMMON_TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlInterface
 {
 	Q_OBJECT

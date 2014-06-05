@@ -13,6 +13,9 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
+/// An implementation of the ncoder sensor for the 2D model window.
+/// Returns an encoder value in degrees.
+/// Configuration is perfomed immediately, the answer is ready immediately too.
 class COMMON_TWO_D_MODEL_EXPORT EncoderSensor : public interpreterBase::robotModel::robotParts::EncoderSensor
 {
 	Q_OBJECT

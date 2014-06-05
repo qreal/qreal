@@ -44,10 +44,3 @@ void BlocksTable::setFailure()
 		block->setFailedStatus();
 	}
 }
-
-void BlocksTable::setIdleForBlocks()
-{
-	for (BlockInterface * const block : mBlocks.values()) {
-		block->setIdleStatus();
-	}
-}

@@ -9,6 +9,7 @@ namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
+/// A base for all blocks that work with motors.
 class ROBOTS_INTERPRETER_BASE_EXPORT EngineCommandBlock : public Block
 {
 	Q_OBJECT
@@ -16,7 +17,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT EngineCommandBlock : public Block
 public:
 	explicit EngineCommandBlock(robotModel::RobotModelInterface &robotModel);
 
-	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedSensors() const override;
+	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const override;
 
 protected slots:
 	void timeout();

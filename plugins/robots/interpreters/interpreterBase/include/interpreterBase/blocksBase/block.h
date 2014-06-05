@@ -27,13 +27,13 @@ public:
 	void interpret() override;
 
 	void setFailedStatus() override;
-	void setIdleStatus() override;
 	qReal::Id const id() const override;
 
-	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedSensors() const override;
+	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const override;
 
 	void finishedSteppingInto() override;
 
+	/// Initializes this block with external components that may be used during the intepretetation process.
 	/// @todo Not good.
 	void init(qReal::Id const &graphicalId
 			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
@@ -62,8 +62,6 @@ protected:
 	bool evaluateBool(QString const &propertyName);
 
 	robotModel::RobotModelInterface &model();
-
-//	QVector<bool> parseEnginePorts() const;
 
 	qReal::Id mNextBlockId;
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership

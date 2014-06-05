@@ -20,7 +20,7 @@ void ClearEncoderBlock::run()
 	emit done(mNextBlockId);
 }
 
-QMap<PortInfo, DeviceInfo> ClearEncoderBlock::usedSensors() const
+QMap<PortInfo, DeviceInfo> ClearEncoderBlock::usedDevices() const
 {
 	QMap<PortInfo, DeviceInfo> result;
 	for (robotParts::EncoderSensor * const encoder : parsePorts()) {

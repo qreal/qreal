@@ -30,7 +30,7 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, QString const &
 				continue;
 			}
 
-			QMap<PortInfo, DeviceInfo> const usedSensors = block->usedSensors();
+			QMap<PortInfo, DeviceInfo> const usedSensors = block->usedDevices();
 			for (PortInfo const &port : usedSensors.keys()) {
 				DeviceInfo const device = usedSensors[port];
 				DeviceInfo const existingDevice = currentConfiguration(robotModelName, port);

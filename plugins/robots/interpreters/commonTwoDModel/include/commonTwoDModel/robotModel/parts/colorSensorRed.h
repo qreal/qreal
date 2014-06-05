@@ -13,6 +13,9 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
+/// An implementation of the color sensor in the red color mode for the 2D model window.
+/// Returns a red color percent in the picture under the sensor: a value from 0 to 100.
+/// Configuration is perfomed immediately, the answer is ready immediately too.
 class COMMON_TWO_D_MODEL_EXPORT ColorSensorRed : public interpreterBase::robotModel::robotParts::ColorSensorRed
 {
 	Q_OBJECT

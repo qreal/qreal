@@ -13,6 +13,10 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
+/// An implementation of the color sensor in the passive mode
+/// (when the sensor doesn`t light, only accepts it) for the 2D model window.
+/// Returns a brightness in the picture under the sensor: a value from 0 to 100.
+/// Configuration is perfomed immediately, the answer is ready immediately too.
 class COMMON_TWO_D_MODEL_EXPORT ColorSensorPassive : public interpreterBase::robotModel::robotParts::ColorSensorPassive
 {
 	Q_OBJECT

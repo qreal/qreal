@@ -12,6 +12,7 @@ class EncoderSensor;
 namespace blocksBase {
 namespace common {
 
+/// An interpreter`s implementation for the encoder`s wait block.
 class ROBOTS_INTERPRETER_BASE_EXPORT WaitForEncoderBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT

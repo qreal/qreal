@@ -7,6 +7,7 @@ namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
+/// An interpreter`s implementation for the buttons wait block.
 class ROBOTS_INTERPRETER_BASE_EXPORT WaitForButtonBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT

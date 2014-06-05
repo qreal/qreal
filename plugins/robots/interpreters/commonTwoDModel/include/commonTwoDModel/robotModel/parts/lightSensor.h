@@ -13,6 +13,9 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
+/// An implementation of the light sensor for the 2D model window.
+/// Returns a brightness value from 0 to 100.
+/// Configuration is perfomed immediately, the answer is ready immediately too.
 class COMMON_TWO_D_MODEL_EXPORT LightSensor : public interpreterBase::robotModel::robotParts::LightSensor
 {
 	Q_OBJECT

@@ -6,6 +6,7 @@ namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
+/// An interpreter`s implementation for the motors stop block.
 class ROBOTS_INTERPRETER_BASE_EXPORT EnginesStopBlock : public interpreterBase::blocksBase::common::EngineCommandBlock
 {
 	Q_OBJECT

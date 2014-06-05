@@ -14,6 +14,8 @@ class TwoDModelEngineInterface;
 
 namespace robotModel {
 
+/// A robot model implementaiton common for all 2D model wrappers.
+/// Accepts the given real robot model implementation proxying its devices, ports and convertible bases.
 class COMMON_TWO_D_MODEL_EXPORT TwoDRobotModel : public interpreterBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT
@@ -28,6 +30,7 @@ public:
 	QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 
+	/// Configures 2D model window`s engine for using it in 2D model devices emulators.
 	void setEngine(engine::TwoDModelEngineInterface &engine);
 
 protected:

@@ -14,6 +14,8 @@ class TwoDModelEngineInterface;
 namespace robotModel {
 namespace parts {
 
+/// An implementation of the motor for the 2D model window. Supports break modes.
+/// Configuration is perfomed immediately, the answer is ready immediately too.
 /// @todo Do something with copypaste with real NXT motor.
 class COMMON_TWO_D_MODEL_EXPORT Motor : public interpreterBase::robotModel::robotParts::Motor
 {
@@ -35,6 +37,7 @@ public:
 
 protected:
 	void doConfiguration() override;
+
 	engine::TwoDModelEngineInterface &mEngine;
 };
 

@@ -56,7 +56,7 @@ void WaitBlock::stopActiveTimerInBlock()
 	mActiveWaitingTimer.stop();
 }
 
-QMap<PortInfo, DeviceInfo> WaitBlock::usedSensors() const
+QMap<PortInfo, DeviceInfo> WaitBlock::usedDevices() const
 {
 	DeviceInfo const deviceInfo = device();
 	QString const port = stringProperty("Port");

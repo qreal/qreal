@@ -6,6 +6,7 @@ namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
+/// A base for all blocks that wait for sensor.
 class ROBOTS_INTERPRETER_BASE_EXPORT WaitForSensorBlock : public interpreterBase::blocksBase::common::WaitBlock
 {
 	Q_OBJECT

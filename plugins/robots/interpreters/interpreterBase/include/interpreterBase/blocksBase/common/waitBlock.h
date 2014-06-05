@@ -6,6 +6,7 @@ namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
+/// A base for all blocks that wait for sensor or button or something other.
 class ROBOTS_INTERPRETER_BASE_EXPORT WaitBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
@@ -17,7 +18,7 @@ public:
 	void setFailedStatus() override;
 	virtual void stopActiveTimerInBlock();
 
-	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedSensors() const override;
+	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const override;
 
 protected slots:
 	virtual void failureSlot();

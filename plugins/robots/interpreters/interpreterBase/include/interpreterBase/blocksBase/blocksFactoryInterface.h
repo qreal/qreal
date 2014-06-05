@@ -13,6 +13,7 @@
 namespace interpreterBase {
 namespace blocksBase {
 
+/// An inteface of the factory that produces blocks for interpreter.
 class BlocksFactoryInterface
 {
 public:

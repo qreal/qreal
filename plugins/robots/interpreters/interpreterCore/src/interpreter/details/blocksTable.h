@@ -39,11 +39,6 @@ public:
 	/// invoke next block.
 	void setFailure();
 
-	/// Sets "idle" state for all blocks, thus preparing them for another execution.
-	/// @todo possibly unneeded. It will not clean existing connections and pending signals, so it is safer to delete
-	/// and re-create all blocks before another run of a program.
-	void setIdleForBlocks();
-
 private:
 	QHash<qReal::Id, interpreterBase::blocksBase::BlockInterface *> mBlocks;  // Has ownership
 	BlocksFactoryManagerInterface &mBlocksFactoryManager;
