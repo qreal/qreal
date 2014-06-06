@@ -85,6 +85,9 @@ public:
 
 	void setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port) override;
 
+	/// Loads the given xml obtaied by the previous serialization.
+	void loadModel(QDomDocument const &model);
+
 public slots:
 	void showModelWidget();
 	void closeModelWidget();
@@ -94,6 +97,10 @@ signals:
 	void runButtonPressed();
 	void stopButtonPressed();
 	void widgetClosed();
+
+	/// Emitted each time when some user actions lead to world model modifications
+	/// @param xml World model description in xml format
+	void modelChanged(QDomDocument const &xml);
 
 private slots:
 	void recalculateParams();

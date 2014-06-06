@@ -49,6 +49,8 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 
 void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 		, SystemEventsInterface const &systemEvents
+		, qReal::GraphicalModelAssistInterface &graphicalModel
+		, qReal::LogicalModelAssistInterface &logicalModel
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
@@ -58,8 +60,8 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
 			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModelV4->init(eventsForKitPlugin, systemEvents, interpreterControl);
-	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, interpreterControl);
+	mTwoDModelV4->init(eventsForKitPlugin, systemEvents, graphicalModel, logicalModel, interpreterControl);
+	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel, logicalModel, interpreterControl);
 }
 
 QString TrikKitInterpreterPlugin::kitId() const

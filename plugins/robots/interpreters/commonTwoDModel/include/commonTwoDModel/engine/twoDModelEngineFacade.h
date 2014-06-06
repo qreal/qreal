@@ -31,6 +31,8 @@ public:
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::GraphicalModelAssistInterface &graphicalModel
+			, qReal::LogicalModelAssistInterface &logicalModel
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
@@ -43,6 +45,8 @@ public slots:
 	void onStopInterpretation() override;
 
 private:
+	/// @todo: Ask interpreters interface for it?
+	qReal::Id mActiveDiagramLogicalId;
 	QString const mRobotModelName;
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 	QScopedPointer<D2RobotModel> mTwoDModel;

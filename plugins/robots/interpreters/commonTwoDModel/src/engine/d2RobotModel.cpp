@@ -176,6 +176,7 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 	connect(mD2ModelWidget, &D2ModelWidget::runButtonPressed, this, &D2RobotModel::runButtonPressed);
 	connect(mD2ModelWidget, &D2ModelWidget::stopButtonPressed, this, &D2RobotModel::stopButtonPressed);
 	connect(mD2ModelWidget, &D2ModelWidget::d2WasClosed, this, &D2RobotModel::widgetClosed);
+	connect(mD2ModelWidget, &D2ModelWidget::modelChanged, this, &D2RobotModel::modelChanged);
 	return mD2ModelWidget;
 }
 
@@ -620,6 +621,11 @@ void D2RobotModel::setNoiseSettings()
 void D2RobotModel::setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port)
 {
 	mWheelsToMotorPortsMap[wheel] = port;
+}
+
+void D2RobotModel::loadModel(QDomDocument const &model)
+{
+	mD2ModelWidget->loadXml(model);
 }
 
 int D2RobotModel::truncateToInterval(int const a, int const b, int const res) const

@@ -1,8 +1,12 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtXml/QDomDocument>
+
 #include <qrgui/toolPluginInterface/actionInfo.h>
 #include <qrgui/toolPluginInterface/systemEventsInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/interpreterControlInterface.h>
@@ -30,6 +34,8 @@ public:
 	/// @todo: Separate twoD model engine from the enviroment (get rid of parameters)
 	virtual void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::GraphicalModelAssistInterface &graphicalModel
+			, qReal::LogicalModelAssistInterface &logicalModel
 			, interpreterBase::InterpreterControlInterface &interpreterControl) = 0;
 
 public slots:
@@ -44,7 +50,7 @@ signals:
 	void runButtonPressed();
 
 	/// Emitted each time when user requests interpretation stop from 2D model window.
-	void stopButtonPressed();
+	void stopButtonPressed();	
 };
 
 }

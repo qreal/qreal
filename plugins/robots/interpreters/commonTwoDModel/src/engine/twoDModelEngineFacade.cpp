@@ -28,6 +28,8 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 
 void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 		, qReal::SystemEventsInterface const &systemEvents
+		, qReal::GraphicalModelAssistInterface &graphicalModel
+		, qReal::LogicalModelAssistInterface &logicalModel
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	auto connectTwoDModel = [this, &eventsForKitPlugin, &interpreterControl]()
@@ -65,7 +67,26 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 	};
 
 	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
-			, [this] (qReal::Id const &id) { mTwoDModel->setRunStopButtonsEnabled(!id.isNull()); } );
+			, [this, &graphicalModel, &logicalModel] (qReal::Id const &id) {
+				mTwoDModel->setRunStopButtonsEnabled(!id.isNull());
+				qReal::Id const logicalId = graphicalModel.logicalId(id);
+				mActiveDiagramLogicalId = logicalId;
+				QString const xml = logicalId.isNull()
+						? QString()
+						: logicalModel.propertyByRoleName(logicalId, "worldModel").toString();
+				QDomDocument worldModel;
+				worldModel.setContent(xml);
+				mTwoDModel->loadModel(worldModel);
+	});
+
+	connect(mTwoDModel.data(), &D2RobotModel::modelChanged,
+			[this, &logicalModel, &interpreterControl] (QDomDocument const &xml) {
+				qReal::Id const logicalId = mActiveDiagramLogicalId;
+				if (!logicalId.isNull() && logicalId != qReal::Id::rootId()) {
+					logicalModel.setPropertyByRoleName(logicalId, xml.toString(4), "worldModel");
+				}
+	});
+
 	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
 			, mTwoDModel.data(), &D2RobotModel::closeModelWidget);
 

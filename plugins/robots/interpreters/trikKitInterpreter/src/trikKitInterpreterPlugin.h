@@ -25,6 +25,8 @@ public:
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::GraphicalModelAssistInterface &graphicalModel
+			, qReal::LogicalModelAssistInterface &logicalModel
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	QString kitId() const override;

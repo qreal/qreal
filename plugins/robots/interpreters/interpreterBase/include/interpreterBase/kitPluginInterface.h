@@ -32,10 +32,14 @@ public:
 	///        and stopping it.
 	virtual void init(EventsForKitPluginInterface const &eventsForKitPlugin
 			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::GraphicalModelAssistInterface &graphicalModel
+			, qReal::LogicalModelAssistInterface &logicalModel
 			, InterpreterControlInterface &interpreterControl)
 	{
 		Q_UNUSED(eventsForKitPlugin)
 		Q_UNUSED(systemEvents)
+		Q_UNUSED(graphicalModel)
+		Q_UNUSED(logicalModel)
 		Q_UNUSED(interpreterControl)
 	}
 
