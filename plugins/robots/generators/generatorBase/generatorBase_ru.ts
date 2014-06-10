@@ -134,6 +134,16 @@
         <source>Duplicate identifier: </source>
         <translation>Такой идентификатор уже используется: </translation>
     </message>
+    <message>
+        <location filename="src/converters/codeConverterBase.cpp" line="74"/>
+        <source>Device on port %1 is not configured. Please select it on the left-side panel.</source>
+        <translation>Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели слева.</translation>
+    </message>
+    <message>
+        <location filename="src/converters/codeConverterBase.cpp" line="76"/>
+        <source>/* ERROR: SELECT DEVICE TYPE */</source>
+        <translation>/* ОШИБКА: ВЫБЕРИТЕ ТИП СЕНСОРА */</translation>
+    </message>
 </context>
 <context>
     <name>generatorBase::ControlFlowGeneratorBase</name>

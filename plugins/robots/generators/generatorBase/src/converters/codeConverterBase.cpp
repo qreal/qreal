@@ -7,11 +7,13 @@ using namespace generatorBase::converters;
 using namespace qReal;
 
 CodeConverterBase::CodeConverterBase(QString const &pathToTemplates
+		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelInterface const &robotModel
 		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 		, simple::Binding::ConverterInterface const *inputPortConverter
 		, simple::Binding::ConverterInterface const *functionInvocationsConverter)
 	: TemplateParametrizedConverter(pathToTemplates)
+	, mErrorReporter(errorReporter)
 	, mRobotModel(robotModel)
 	, mDevices(devices)
 	, mInputConverter(inputPortConverter)
@@ -36,7 +38,7 @@ QString CodeConverterBase::replaceSystemVariables(QString const &expression) con
 
 	for (interpreterBase::robotModel::PortInfo const &port : mRobotModel.availablePorts()) {
 		QString const variable = port.reservedVariable();
-		if (!variable.isEmpty()) {
+		if (!variable.isEmpty() && result.contains(variable)) {
 			result.replace(variable, deviceExpression(port));
 		}
 	}
@@ -67,11 +69,13 @@ QString CodeConverterBase::replaceFunctionInvocations(QString const &expression)
 
 QString CodeConverterBase::deviceExpression(interpreterBase::robotModel::PortInfo const &port) const
 {
-	if (mDevices[port].isNull()) {
-		return QString();
+	interpreterBase::robotModel::DeviceInfo const device = mDevices[port];
+	if (device.isNull()) {
+		mErrorReporter.addError(QObject::tr("Device on port %1 is not configured."\
+				" Please select it on the left-side panel.").arg(port.name()));
+		return QObject::tr("/* ERROR: SELECT DEVICE TYPE */");
 	}
 
-	interpreterBase::robotModel::DeviceInfo const device = mDevices[port];
 	QString const templatePath = QString("sensors/%1.t").arg(
 			device.isA<interpreterBase::robotModel::robotParts::Button>()
 					? port.name().split("ButtonPort", QString::SkipEmptyParts)[0]

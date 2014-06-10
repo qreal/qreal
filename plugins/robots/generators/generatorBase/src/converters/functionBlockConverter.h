@@ -11,6 +11,7 @@ class FunctionBlockConverter : public CodeConverterBase
 {
 public:
 	FunctionBlockConverter(QString const &pathToTemplates
+			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelInterface const &robotModel
 			, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 			, simple::Binding::ConverterInterface const *inputPortConverter

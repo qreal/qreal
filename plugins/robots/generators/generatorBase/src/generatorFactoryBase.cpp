@@ -294,6 +294,7 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id cons
 Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 {
 	return new converters::IntPropertyConverter(pathToTemplates()
+			, mErrorReporter
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
@@ -305,6 +306,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
 {
 	return new converters::FloatPropertyConverter(pathToTemplates()
+			, mErrorReporter
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
@@ -314,6 +316,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() cons
 Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
 {
 	return new converters::BoolPropertyConverter(pathToTemplates()
+			, mErrorReporter
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
@@ -339,6 +342,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::functionInvocationConverter()
 Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() const
 {
 	return new converters::FunctionBlockConverter(pathToTemplates()
+			, mErrorReporter
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
