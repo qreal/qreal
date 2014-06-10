@@ -555,7 +555,6 @@ void D2ModelWidget::clearScene(bool removeRobot)
 			removeSensor(port);
 		}
 
-		clearConfiguration();  // Well...
 		mScene->clear();
 		drawInitialRobot();
 	} else {
@@ -1082,6 +1081,8 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	mWorldModel->deserialize(worldList.at(0).toElement());
 	mTwoDRobotModel->deserialize(robotList.at(0).toElement());
 
+	rereadDevicesConfiguration();
+
 	mRobot->processPositionAndAngleChange();
 	mDrawingAction = enums::drawingAction::noneWordLoad;
 	update();
@@ -1289,10 +1290,14 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 	}
 
 	QPointF const sensorPos = mSensors.contains(port) && mSensors.value(port)
-			? mSensors.value(port)->scenePos()
+			? mTwoDRobotModel->configuration().position(port)
 			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
 
-	mTwoDRobotModel->configuration().setSensor(port, device, sensorPos.toPoint(), 0);
+	qreal const sensorDirection = mSensors.contains(port) && mSensors.value(port)
+			? mTwoDRobotModel->configuration().direction(port)
+			: 0;
+
+	mTwoDRobotModel->configuration().setSensor(port, device, sensorPos.toPoint(), sensorDirection);
 	reinitSensor(port);
 }
 

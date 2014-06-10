@@ -584,7 +584,7 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 	mPos = QPointF(x, y);
 	mAngle = robotElement.attribute("direction", "0").toDouble();
 	configuration().deserialize(robotElement);
-	mNeedSync = false;
+	mNeedSync = true;
 	nextFragment();
 }
 
