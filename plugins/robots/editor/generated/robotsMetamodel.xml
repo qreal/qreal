@@ -1136,6 +1136,47 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Play Tone" name="TrikPlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Plays on the robot a sound file (.wav or .mp3) previously uploaded to it.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-35" y="-30" text="File name:" />
+						<label x="50" y="-30" textBinded="FileName" background="white"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="File Name" type="string" name="FileName">
+							<default>media/beep.wav</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>         
 			<node displayedName="Clear Encoder" name="NxtClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2964,6 +3005,7 @@
 				<element name="NxtEnginesBackward"/>
 				<element name="NxtEnginesStop"/>
 				<element name="NxtClearEncoder"/>
+				<element name="TrikPlayTone"/>
 				<element name="TrikV4EnginesForward"/>
 				<element name="TrikV4EnginesBackward"/>
 				<element name="TrikV4EnginesStop"/>
