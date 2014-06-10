@@ -1262,7 +1262,7 @@
 			<node displayedName="System Call" name="TrikSystem" description="Invokes bash script-style command on the robot.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/system.svg" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/systemBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-15" y="-30" text="Command:" hard="true"/>
