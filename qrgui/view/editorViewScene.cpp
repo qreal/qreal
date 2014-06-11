@@ -477,7 +477,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	}
 
 	utils::UXInfo::reportCreation(id.editor(), id.element());
-	
+
 	Id const explosionTarget = explosionTargetUuid.isEmpty()
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);

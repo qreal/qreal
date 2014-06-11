@@ -2275,7 +2275,8 @@ void MainWindow::beginPaletteModification()
 void MainWindow::setElementInPaletteVisible(Id const &metatype, bool visible)
 {
 	mUi->paletteTree->setElementVisible(metatype, visible);
-	mEditorManagerProxy.setElementEnabled(metatype, visible);
+	// Note that if element is visible in palette, it is not necessary that it will be enabled it editor manager. It
+	// may be greyed-out and still can't be used on diagrams.
 }
 
 void MainWindow::setVisibleForAllElementsInPalette(bool visible)
