@@ -16,6 +16,11 @@ QIcon Customizer::applicationIcon() const
 	return QIcon(":/icons/icon.png");
 }
 
+QImage Customizer::applicationLogo() const
+{
+	return QImage(":/icons/splashscreen.png");
+}
+
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?

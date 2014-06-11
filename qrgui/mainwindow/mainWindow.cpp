@@ -1946,6 +1946,8 @@ void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
 	BrandManager::configure(&mToolManager);
+	mPreferencesDialog.updatePluginDependendSettings();
+
 	if (!mProjectManager->restoreIncorrectlyTerminated() &&
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
 	{

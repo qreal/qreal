@@ -9,6 +9,7 @@
 #include "dialogs/preferencesPages/miscellaniousPage.h"
 #include "dialogs/preferencesPages/featuresPage.h"
 #include "hotKeyManager/hotKeyManagerPage.h"
+#include "brandManager/brandManager.h"
 
 using namespace qReal;
 using namespace utils;
@@ -64,6 +65,11 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	mUi->listWidget->setCurrentRow(currentTab);
 	chooseTab(mUi->listWidget->currentIndex());
+}
+
+void PreferencesDialog::updatePluginDependendSettings()
+{
+	setWindowIcon(BrandManager::applicationIcon());
 }
 
 void PreferencesDialog::applyChanges()

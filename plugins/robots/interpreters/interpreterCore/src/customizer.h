@@ -13,6 +13,7 @@ class Customizer : public qReal::Customizer
 public:
 	QString windowTitle() const override;
 	QIcon applicationIcon() const override;
+	QImage applicationLogo() const override;
 	QString productVersion() const override;
 	QString aboutText() const override;
 	QString examplesDirectory() const override;
