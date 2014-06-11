@@ -72,5 +72,7 @@ recentProjectsLimit=5
 dragArea = 12
 robotsInterpreterStackSize=4000
 usabilityTestingMode=false
-collectErgonomicValues=truenxtFlashToolRunPolicy=0
-touchMode=falseSelectedRobotKit=nxtKit
+collectErgonomicValues=true
+nxtFlashToolRunPolicy=0
+touchMode=false
+SelectedRobotKit=trikKit
