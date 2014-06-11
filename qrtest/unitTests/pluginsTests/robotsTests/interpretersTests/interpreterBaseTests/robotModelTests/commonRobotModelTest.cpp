@@ -120,7 +120,8 @@ TEST_F(CommonRobotModelTest, twoDNoSensorsLifecycleTest)
 }
 
 CommonRobotModelTest::CommonRobotModelDescendantMock::CommonRobotModelDescendantMock(bool immediateConnection)
-	: mImmediateConnection(immediateConnection)
+	: CommonRobotModel("test")
+	, mImmediateConnection(immediateConnection)
 {
 	addAllowedConnection(PortInfo("1", input)
 			, { DeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>()
