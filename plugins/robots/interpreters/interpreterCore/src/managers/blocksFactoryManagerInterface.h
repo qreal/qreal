@@ -24,6 +24,12 @@ public:
 	/// Returns a list of blocks that factories can produce for the given robot model
 	virtual QSet<qReal::Id> enabledBlocks(
 			interpreterBase::robotModel::RobotModelInterface const &robotModel) const = 0;
+
+	/// Returns a list of blocks that can be produced by any factory of the same kit as given robot model.
+	/// Needed to grey-out such blocks in palette.
+	virtual QSet<qReal::Id> visibleBlocks(
+			interpreterBase::robotModel::RobotModelInterface const &robotModel) const = 0;
+
 };
 
 }

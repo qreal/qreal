@@ -54,3 +54,21 @@ QSet<qReal::Id> BlocksFactoryManager::enabledBlocks(RobotModelInterface const &r
 
 	return result;
 }
+
+QSet<qReal::Id> BlocksFactoryManager::visibleBlocks(RobotModelInterface const &robotModel) const
+{
+	QSet<qReal::Id> result;
+
+	QString const kitId = robotModel.kitId();
+
+	for (RobotModelInterface const *robotModel : mFactories.keys()) {
+		if (robotModel && robotModel->kitId() == kitId) {
+			for (BlocksFactoryInterface const * factory : factoriesFor(*robotModel)) {
+				result += factory->providedBlocks().toSet();
+			}
+		}
+	}
+
+	return result;
+}
+

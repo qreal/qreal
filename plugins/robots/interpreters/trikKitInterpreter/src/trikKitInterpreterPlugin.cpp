@@ -13,7 +13,9 @@ Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
-	: mTwoDRobotModelV4(mRealRobotModelV4)
+	: mRealRobotModelV4(kitId())
+	, mRealRobotModelV6(kitId())
+	, mTwoDRobotModelV4(mRealRobotModelV4)
 	, mTwoDRobotModelV6(mRealRobotModelV6)
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
 {

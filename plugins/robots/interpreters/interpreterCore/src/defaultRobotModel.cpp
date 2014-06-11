@@ -2,12 +2,17 @@
 
 using namespace interpreterCore;
 
+DefaultRobotModel::DefaultRobotModel()
+	: CommonRobotModel("default")
+{
+}
+
 QString interpreterCore::DefaultRobotModel::name() const
 {
 	return "DefaultModel";
 }
 
-QString interpreterCore::DefaultRobotModel::friendlyName() const
+QString DefaultRobotModel::friendlyName() const
 {
 	return tr("Empty model");
 }

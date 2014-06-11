@@ -18,8 +18,10 @@ class ROBOTS_INTERPRETER_BASE_EXPORT CommonRobotModel : public RobotModelInterfa
 	Q_OBJECT
 
 public:
-	CommonRobotModel();
+	CommonRobotModel(QString const &kitId);
 	~CommonRobotModel() override;
+
+	QString kitId() const final;
 
 	/// Defines model initialization sequence.
 	void init() final;
@@ -100,6 +102,9 @@ private:
 	bool mConfigurationPostponed;
 
 	utils::RealTimeline mTimeline;
+
+	/// Id of a kit in which model is defined.
+	QString const mKitId;
 };
 
 }

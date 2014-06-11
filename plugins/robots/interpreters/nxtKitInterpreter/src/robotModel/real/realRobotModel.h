@@ -12,7 +12,7 @@ class RealRobotModel : public NxtRobotModelBase
 	Q_OBJECT
 
 public:
-	RealRobotModel();
+	RealRobotModel(QString const &kitId);
 
 	QString name() const override;
 	QString friendlyName() const override;

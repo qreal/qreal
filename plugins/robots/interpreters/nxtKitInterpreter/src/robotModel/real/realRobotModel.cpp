@@ -26,7 +26,8 @@ using namespace nxtKitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
 using namespace interpreterBase::robotModel;
 
-RealRobotModel::RealRobotModel()
+RealRobotModel::RealRobotModel(QString const &kitId)
+	: NxtRobotModelBase(kitId)
 {
 	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(&mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);

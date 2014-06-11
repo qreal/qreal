@@ -8,7 +8,8 @@
 using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
 
-RealRobotModelV6::RealRobotModelV6()
+RealRobotModelV6::RealRobotModelV6(QString const &kitId)
+	: RealRobotModelBase(kitId)
 {
 	addAllowedConnection(PortInfo("JM4", output), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("JF1", input), { movementSensorInfo() });

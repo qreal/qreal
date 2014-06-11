@@ -22,7 +22,8 @@
 using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
 
-RealRobotModelBase::RealRobotModelBase()
+RealRobotModelBase::RealRobotModelBase(QString const &kitId)
+	: TrikRobotModelBase(kitId)
 {
 }
 

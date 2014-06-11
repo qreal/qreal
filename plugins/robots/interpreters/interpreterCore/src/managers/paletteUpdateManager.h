@@ -11,7 +11,7 @@ class PaletteUpdateManager : public QObject
 
 public:
 	PaletteUpdateManager(qReal::gui::MainWindowInterpretersInterface &paletteProvider
-			, BlocksFactoryManager const &factoryManager
+			, BlocksFactoryManagerInterface const &factoryManager
 			, QObject *parent = 0);
 
 public slots:
@@ -19,7 +19,7 @@ public slots:
 
 private:
 	qReal::gui::MainWindowInterpretersInterface &mPaletteProvider;
-	BlocksFactoryManager const &mFactoryManager;
+	BlocksFactoryManagerInterface const &mFactoryManager;
 };
 
 }

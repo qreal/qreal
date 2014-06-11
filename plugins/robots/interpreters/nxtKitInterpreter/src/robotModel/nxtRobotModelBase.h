@@ -10,7 +10,7 @@ class NxtRobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 	Q_OBJECT
 
 public:
-	NxtRobotModelBase();
+	NxtRobotModelBase(QString const &kitId);
 
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
 

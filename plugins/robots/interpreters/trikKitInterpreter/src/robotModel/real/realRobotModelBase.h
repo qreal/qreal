@@ -11,7 +11,7 @@ class RealRobotModelBase : public TrikRobotModelBase
 	Q_OBJECT
 
 public:
-	RealRobotModelBase();
+	RealRobotModelBase(QString const &kitId);
 
 	bool needsConnection() const override;
 	void connectToRobot() override;

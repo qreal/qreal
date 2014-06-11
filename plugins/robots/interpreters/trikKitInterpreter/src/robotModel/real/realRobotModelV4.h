@@ -11,7 +11,7 @@ class RealRobotModelV4 : public RealRobotModelBase
 	Q_OBJECT
 
 public:
-	RealRobotModelV4();
+	RealRobotModelV4(QString const &kitId);
 
 	QString name() const override;
 	QString friendlyName() const override;

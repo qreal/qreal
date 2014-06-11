@@ -9,9 +9,10 @@
 
 using namespace interpreterBase::robotModel;
 
-CommonRobotModel::CommonRobotModel()
+CommonRobotModel::CommonRobotModel(QString const &kitId)
 	: mState(disconnectedState)
 	, mConfigurationPostponed(false)
+	, mKitId(kitId)
 {
 	connect(&mConfiguration, &Configuration::allDevicesConfigured
 			, this, &CommonRobotModel::allDevicesConfigured, Qt::QueuedConnection);
@@ -23,6 +24,11 @@ CommonRobotModel::CommonRobotModel()
 CommonRobotModel::~CommonRobotModel()
 {
 	stopRobot();
+}
+
+QString CommonRobotModel::kitId() const
+{
+	return mKitId;
 }
 
 void CommonRobotModel::init()

@@ -68,6 +68,9 @@ public:
 	/// Returns user name of a model, which is shown on settings page.
 	virtual QString friendlyName() const = 0;
 
+	/// Returns Id of a kit where this model is defined.
+	virtual QString kitId() const = 0;
+
 	/// Additional model initialization that shall be done after constructor, used to call virtual methods of descendant
 	/// models.
 	virtual void init() = 0;
