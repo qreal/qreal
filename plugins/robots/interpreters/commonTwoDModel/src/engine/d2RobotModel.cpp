@@ -567,6 +567,7 @@ QPointF D2RobotModel::robotPos()
 
 void D2RobotModel::serialize(QDomDocument &target)
 {
+	mNeedSync = true;
 	synchronizePositions();
 	QDomElement robot = target.createElement("robot");
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
@@ -584,7 +585,7 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 	mPos = QPointF(x, y);
 	mAngle = robotElement.attribute("direction", "0").toDouble();
 	configuration().deserialize(robotElement);
-	mNeedSync = true;
+	mNeedSync = false;
 	nextFragment();
 }
 

@@ -1081,6 +1081,7 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	mWorldModel->deserialize(worldList.at(0).toElement());
 	mTwoDRobotModel->deserialize(robotList.at(0).toElement());
 
+	mTwoDRobotModel->configuration().deserialize(robotList.at(0).toElement());
 	rereadDevicesConfiguration();
 
 	mRobot->processPositionAndAngleChange();

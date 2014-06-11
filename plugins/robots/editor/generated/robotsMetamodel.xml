@@ -12,39 +12,28 @@
 				<value name="3" displayedName="3"/>
 				<value name="4" displayedName="4"/>
 			</enum>
-			<!-- TODO: split ports into digital and analog -->
-			<enum name="TrikV4SensorPort">
-				<value name="JA1"/>
-				<value name="JA2"/>
-				<value name="JA3"/>
-				<value name="JA4"/>
-				<value name="JA5"/>
-				<value name="JA6"/>
-				<value name="JD1"/>
-				<value name="JD2"/>
-			</enum>
 			<enum name="TrikV6SensorPort">
-				<value name="JA1"/>
-				<value name="JA2"/>
-				<value name="JA3"/>
-				<value name="JA4"/>
-				<value name="JA5"/>
-				<value name="JA6"/>
-				<value name="JD1"/>
-				<value name="JD2"/>
-				<value name="JF1"/>
+				<value name="A1"/>
+				<value name="A2"/>
+				<value name="A3"/>
+				<value name="A4"/>
+				<value name="A5"/>
+				<value name="A6"/>
+				<value name="D1"/>
+				<value name="D2"/>
+				<value name="F1"/>
 			</enum>
 			<enum name="TrikV6DigitalSensorPort">
-				<value name="JD1"/>
-				<value name="JD2"/>
+				<value name="D1"/>
+				<value name="D2"/>
 			</enum>
 			<enum name="TrikV6AnalogSensorPort">
-				<value name="JA1"/>
-				<value name="JA2"/>
-				<value name="JA3"/>
-				<value name="JA4"/>
-				<value name="JA5"/>
-				<value name="JA6"/>
+				<value name="A1"/>
+				<value name="A2"/>
+				<value name="A3"/>
+				<value name="A4"/>
+				<value name="A5"/>
+				<value name="A6"/>
 			</enum>
 			<enum name="GuardType">
 				<value/>
@@ -685,101 +674,12 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node name="TrikV4EngineMovementCommand">
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Ports" type="string" name="Ports" >
-							<default>M1, JM3</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="EngineMovementCommand"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Motors Backward" name="TrikV4EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example JM1, JE2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-8" y="-30" text="Port:" hard="true"/>
-						<label x="40" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Power (%):"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="TrikV4EngineMovementCommand"/>
-					</generalizations>
-				</logic>
-			</node>
-			<node displayedName="Motors Forward" name="TrikV4EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Enables motors on the given ports with the given power. Ports are specified in accordance with TRIK controller notations (for example JM1, JE2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-8" y="-30" text="Port:" hard="true"/>
-						<label x="40" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Power (%):"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="TrikV4EngineMovementCommand"/>
-					</generalizations>
-				</logic>
-			</node>
 			<node name="TrikV6EngineMovementCommand">
 				<logic>
 					<container/>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports" >
-							<default>JM3, JM4</default>
+							<default>M3, M4</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -787,7 +687,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Motors Backward" name="TrikV6EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example JM1, JE2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.">
+			<node displayedName="Motors Backward" name="TrikV6EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
@@ -825,7 +725,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Motors Forward" name="TrikV6EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Enables motors on the given ports with the given power. Ports are specified in accordance with TRIK controller notations (for example JM1, JE2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.">
+			<node displayedName="Motors Forward" name="TrikV6EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Enables motors on the given ports with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
@@ -901,7 +801,7 @@
 					</generalizations>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
-							<default>JE1</default>
+							<default>E1</default>
 						</property>
 						<property displayedName="Angle (%)" type="string" name="Power">
 							<default>0</default>
@@ -950,47 +850,6 @@
 					</properties>
 				</logic>
 			</node>
-			<node displayedName="Stop Motors" name="TrikV4EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Disables motors on the given ports.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-10" y="-30" text="Ports:" hard="true"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="EngineCommand"/>
-					</generalizations>
-					<properties>
-						<property displayedName="Ports" type="string" name="Ports">
-							<default>JM1, JM2, M1, JM3</default>
-						</property>
-					</properties>
-				</logic>
-			</node>
 			<node displayedName="Stop Motors" name="TrikV6EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Disables motors on the given ports.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1027,7 +886,7 @@
 					</generalizations>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
-							<default>JM1, JM2, JM3, JM4</default>
+							<default>M1, M2, M3, M4</default>
 						</property>
 					</properties>
 				</logic>
@@ -1218,47 +1077,6 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Clear Encoder" name="TrikV4ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
-						<label x="-10" y="-30" text="Ports:" hard="true"/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="Ports" type="string" name="Ports">
-							<default>JM1, JM2, M1, JM3</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
 			<node displayedName="Clear Encoder" name="TrikV6ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1292,7 +1110,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
-							<default>JM1, JM2, JM3, JM4</default>
+							<default>M1, M2, M3, M4</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1979,7 +1797,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Port" type="TrikV6AnalogSensorPort" name="Port">
-							<default>JA1</default>
+							<default>A1</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1992,7 +1810,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Port" type="TrikV6DigitalSensorPort" name="Port">
-							<default>JD1</default>
+							<default>D1</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2278,7 +2096,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Port" type="string" name="Port">
-							<default>JB1</default>
+							<default>B1</default>
 						</property>
 						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
 						<property displayedName="Sign" type="DistanceSign" name="Sign">
@@ -3006,10 +2824,6 @@
 				<element name="NxtEnginesStop"/>
 				<element name="NxtClearEncoder"/>
 				<element name="TrikPlayTone"/>
-				<element name="TrikV4EnginesForward"/>
-				<element name="TrikV4EnginesBackward"/>
-				<element name="TrikV4EnginesStop"/>
-				<element name="TrikV4ClearEncoder"/>
 				<element name="TrikV6EnginesForward"/>
 				<element name="TrikV6EnginesBackward"/>
 				<element name="TrikV6EnginesStop"/>

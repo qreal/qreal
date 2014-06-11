@@ -33,7 +33,6 @@ HEADERS += \
 	$$PWD/robotModel/parts/trikCameraLineDetector.h \
 	$$PWD/robotModel/parts/trikMovementSensor.h \
 	$$PWD/robotModel/real/realRobotModelBase.h \
-	$$PWD/robotModel/real/realRobotModelV4.h \
 	$$PWD/robotModel/real/realRobotModelV6.h \
 	$$PWD/robotModel/real/parts/display.h \
 	$$PWD/robotModel/real/parts/speaker.h \
@@ -75,7 +74,6 @@ SOURCES += \
 	$$PWD/robotModel/parts/trikCameraLineDetector.cpp \
 	$$PWD/robotModel/parts/trikMovementSensor.cpp \
 	$$PWD/robotModel/real/realRobotModelBase.cpp \
-	$$PWD/robotModel/real/realRobotModelV4.cpp \
 	$$PWD/robotModel/real/realRobotModelV6.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
 	$$PWD/robotModel/real/parts/speaker.cpp \

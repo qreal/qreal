@@ -8,7 +8,6 @@
 
 #include "trikAdditionalPreferences.h"
 #include "blocks/trikBlocksFactory.h"
-#include "robotModel/real/realRobotModelV4.h"
 #include "robotModel/real/realRobotModelV6.h"
 #include "robotModel/twoD/twoDRobotModel.h"
 
@@ -56,11 +55,8 @@ private slots:
 	void onActiveTabChanged(qReal::Id const &rootElementId);
 
 private:
-	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV4;
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV6;
-	robotModel::real::RealRobotModelV4 mRealRobotModelV4;
 	robotModel::real::RealRobotModelV6 mRealRobotModelV6;
-	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV4;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV6;
 	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
 	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
