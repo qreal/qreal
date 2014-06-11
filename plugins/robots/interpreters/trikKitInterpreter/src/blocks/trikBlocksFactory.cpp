@@ -24,7 +24,9 @@ using namespace interpreterBase::blocksBase::common;
 
 interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
 {
-	if (elementMetatypeIs(element, "TrikV4EnginesBackward")
+	if (elementMetatypeIs(element, "TrikPlayTone")) {
+		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikV4EnginesBackward")
 			|| elementMetatypeIs(element, "TrikV6EnginesBackward"))
 	{
 		return new details::TrikEnginesBackwardBlock(mRobotModelManager->model());
@@ -100,6 +102,8 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 {
 	qReal::IdList result;
 
+	result << id("TrikPlayTone");
+
 	if (mRobotModelManager->model().name().contains("V4")) {
 		result
 				<< id("TrikV4EnginesBackward")
@@ -156,6 +160,7 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 
 	if (mRobotModelManager->model().name().contains("TwoD")) {
 		result
+				<< id("TrikPlayTone")
 				<< id("TrikWaitForGyroscope")
 				<< id("TrikWaitForAccelerometer")
 				<< id("TrikSay")

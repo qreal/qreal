@@ -51,7 +51,7 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new TrikEnginesStopGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("ClearEncoder")) {
 		return new TrikNullificationEncoderGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("PlayTone")) {
+	} else if (elementType.contains("TrikPlayTone")) {
 		return new PlayToneGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSmile") {
 		return new SmileGenerator(mRepo, customizer, id, this);
