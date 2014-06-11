@@ -13,6 +13,8 @@
 
 #include "parts/trikSonarSensor.h"
 
+#include "parts/trikMovementSensor.h"
+
 #include "parts/trikLed.h"
 #include "parts/trikCameraLineDetector.h"
 
@@ -37,30 +39,35 @@ TrikRobotModelBase::TrikRobotModelBase()
 	addAllowedConnection(PortInfo("EscapeButtonPort", input, {}, "escapeButton"), { buttonInfo() });
 	addAllowedConnection(PortInfo("PowerButtonPort", input, {}, "powerButton"), { buttonInfo() });
 
-	addAllowedConnection(PortInfo("JC1", output), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("JC2", output), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("JC3", output), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("JE1", output), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("JE2", output), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("JE3", output), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("JE4", output), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("C1", output, { "JC1" }), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("C2", output, { "JC2" }), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("C3", output, { "JC3" }), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("E1", output, { "JE1" }), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("E2", output, { "JE2" }), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("E3", output, { "JE3" }), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("E4", output, { "JE4" }), { servoMotorInfo() });
 
-	addAllowedConnection(PortInfo("JM1", output), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("JM2", output), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("JM3", output), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M1", output, { "JM1" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M2", output, { "JM2" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M3", output, { "JM3" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M4", output, { "JM4" }), { powerMotorInfo() });
 
-	addAllowedConnection(PortInfo("JB1", input, { "JM1" }, "encoder1"), { encoderInfo() });
-	addAllowedConnection(PortInfo("JB2", input, { "JM2" }, "encoder2"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B1", input, { "JB1", "M1", "JM1" }, "encoder1"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B2", input, { "JB2", "M2", "JM2" }, "encoder2"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B3", input, { "JB3", "M3", "JM3" }, "encoder3"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B4", input, { "JB4", "M$", "JM4" }, "encoder4"), { encoderInfo() });
 
-	addAllowedConnection(PortInfo("JA1", input, {}, "sensor1"), analogPortConnections);
-	addAllowedConnection(PortInfo("JA2", input, {}, "sensor2"), analogPortConnections);
-	addAllowedConnection(PortInfo("JA3", input, {}, "sensor3"), analogPortConnections);
-	addAllowedConnection(PortInfo("JA4", input, {}, "sensor4"), analogPortConnections);
-	addAllowedConnection(PortInfo("JA5", input, {}, "sensor5"), analogPortConnections);
-	addAllowedConnection(PortInfo("JA6", input, {}, "sensor6"), analogPortConnections);
+	addAllowedConnection(PortInfo("A1", input, { "JA1" }, "sensorA1"), analogPortConnections);
+	addAllowedConnection(PortInfo("A2", input, { "JA2" }, "sensorA2"), analogPortConnections);
+	addAllowedConnection(PortInfo("A3", input, { "JA3" }, "sensorA3"), analogPortConnections);
+	addAllowedConnection(PortInfo("A4", input, { "JA4" }, "sensorA4"), analogPortConnections);
+	addAllowedConnection(PortInfo("A5", input, { "JA5" }, "sensorA5"), analogPortConnections);
+	addAllowedConnection(PortInfo("A6", input, { "JA6" }, "sensorA6"), analogPortConnections);
 
-	addAllowedConnection(PortInfo("JD1", input, {}, "digitSensor1"), { sonarSensorInfo() });
-	addAllowedConnection(PortInfo("JD2", input, {}, "digitSensor2"), { sonarSensorInfo() });
+	addAllowedConnection(PortInfo("D1", input, { "JD1" }, "sensorD1"), { sonarSensorInfo() });
+	addAllowedConnection(PortInfo("D2", input, { "JD2" }, "sensorD2"), { sonarSensorInfo() });
+
+	addAllowedConnection(PortInfo("F1", input, { "JF1" }, "sensorF1"), { movementSensorInfo() });
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
 	addAllowedConnection(PortInfo("LineDetectorPort", input), { cameraLineDetectorSensorInfo() });
@@ -69,9 +76,9 @@ TrikRobotModelBase::TrikRobotModelBase()
 QList<PortInfo> TrikRobotModelBase::configurablePorts() const
 {
 	QList<PortInfo> const digitalPorts = {
-			  PortInfo("JD1", input, {}, "digitSensor1")
-			, PortInfo("JD2", input, {}, "digitSensor2")
-			, PortInfo("JF1", input, {}, "sensorF1") };
+			  PortInfo("D1", input, { "JD1" }, "sensorD1")
+			, PortInfo("D2", input, { "JD2" }, "sensorD2")
+			, PortInfo("F1", input, { "JF1" }, "sensorF1") };
 	return CommonRobotModel::configurablePorts() + digitalPorts;
 }
 
@@ -125,6 +132,11 @@ DeviceInfo TrikRobotModelBase::infraredSensorInfo() const
 DeviceInfo TrikRobotModelBase::sonarSensorInfo() const
 {
 	return DeviceInfo::create<parts::TrikSonarSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::movementSensorInfo() const
+{
+	return DeviceInfo::create<parts::TrikMovementSensor>();
 }
 
 DeviceInfo TrikRobotModelBase::ledInfo() const

@@ -15,13 +15,6 @@ public:
 
 	QString name() const override;
 	QString friendlyName() const override;
-
-private:
-	interpreterBase::robotModel::DeviceInfo movementSensorInfo() const;
-
-	interpreterBase::robotModel::robotParts::Device *createDevice(
-			interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
 };
 
 }
