@@ -57,8 +57,7 @@ private:
 inline bool operator ==(PortInfo const &left, PortInfo const &right)
 {
 	return left.name() == right.name()
-			&& left.direction() == right.direction()
-			&& left.nameAliases() == right.nameAliases();
+			&& left.direction() == right.direction();
 }
 
 inline bool operator !=(PortInfo const &left, PortInfo const &right)

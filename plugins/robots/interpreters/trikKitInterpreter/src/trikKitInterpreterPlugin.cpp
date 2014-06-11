@@ -23,7 +23,7 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
 
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6
-			, new TrikTwoDModelConfigurer("JM3", "JM4"));
+			, new TrikTwoDModelConfigurer("M3", "M4"));
 
 	mTwoDRobotModelV6.setEngine(modelEngine->engine());
 	mTwoDModelV6.reset(modelEngine);
