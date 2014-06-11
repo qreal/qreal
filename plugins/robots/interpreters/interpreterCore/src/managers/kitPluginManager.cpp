@@ -1,13 +1,14 @@
 #include "kitPluginManager.h"
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QCoreApplication>
 
 #include <qrkernel/exception/exception.h>
 
 using namespace interpreterCore;
 
 KitPluginManager::KitPluginManager(QString const &pluginDirectory)
-	: mPluginsDir(pluginDirectory)
+	: mPluginsDir(QCoreApplication::applicationDirPath() + "/" + pluginDirectory)
 {
 	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
 		QFileInfo const fileInfo(fileName);
