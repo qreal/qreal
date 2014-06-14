@@ -11,14 +11,14 @@ using namespace enums::linkShape;
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
 		: PreferencesPage(parent)
-		, mUi(new Ui::PreferencesEditorPage)
-		, mWidthGrid(SettingsManager::value("GridWidth").toInt())
-		, mIndexGrid(SettingsManager::value("IndexGrid").toInt())
-		, mFontButtonWasPressed(false)
-		, mShowGridAction(showGridAction)
-		, mShowAlignmentAction(showAlignmentAction)
-		, mActivateGridAction(activateGridAction)
-		, mActivateAlignmentAction(activateAlignmentAction)
+	, mUi(new Ui::PreferencesEditorPage)
+	, mWidthGrid(SettingsManager::value("GridWidth").toInt())
+	, mIndexGrid(SettingsManager::value("IndexGrid").toInt())
+	, mFontButtonWasPressed(false)
+	, mShowGridAction(showGridAction)
+	, mShowAlignmentAction(showAlignmentAction)
+	, mActivateGridAction(activateGridAction)
+	, mActivateAlignmentAction(activateAlignmentAction)
 {
 	mIcon = QIcon(":/icons/preferences/editor.png");
 	mUi->setupUi(this);
