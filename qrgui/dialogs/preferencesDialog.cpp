@@ -1,6 +1,8 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
 
+#include <QtWidgets/QMessageBox>
+
 #include <qrutils/qRealFileDialog.h>
 
 #include "dialogs/preferencesPages/behaviourPage.h"
@@ -74,11 +76,19 @@ void PreferencesDialog::updatePluginDependendSettings()
 
 void PreferencesDialog::applyChanges()
 {
+	bool shouldRestart = false;
 	foreach (PreferencesPage *page, mCustomPages.values()) {
 		page->save();
+		shouldRestart |= page->mShouldRestartSystemToApply;
+		page->mShouldRestartSystemToApply = false;
 	}
 
 	SettingsManager::instance()->saveData();
+
+	if (shouldRestart) {
+		QMessageBox::information(this, tr("Information"), tr("You should restart QReal:Robots to apply changes"));
+	}
+
 	emit settingsApplied();
 }
 
