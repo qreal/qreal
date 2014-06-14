@@ -124,10 +124,6 @@ void Element::updateEnabledState()
 	bool const enabled = mLogicalAssistApi.editorManagerInterface().elements(
 			Id(mId.editor(), mId.diagram())).contains(mId.type());
 
-	if (enabled == mEnabled) {
-		return;
-	}
-
 	mEnabled = enabled;
 	if (mEnabled) {
 		setGraphicsEffect(nullptr);
