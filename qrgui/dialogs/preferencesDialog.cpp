@@ -86,7 +86,7 @@ void PreferencesDialog::applyChanges()
 	SettingsManager::instance()->saveData();
 
 	if (shouldRestart) {
-		QMessageBox::information(this, tr("Information"), tr("You should restart QReal:Robots to apply changes"));
+		QMessageBox::information(this, tr("Information"), tr("You should restart the system to apply changes"));
 	}
 
 	emit settingsApplied();

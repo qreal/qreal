@@ -1395,12 +1395,12 @@
         <translation type="obsolete">Показывать окно предупреждений</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="23"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="52"/>
         <source>Automatics</source>
         <translation>Автоматизация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="76"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="105"/>
         <source>Palette tab switching</source>
         <translation>Переключение табов в палитре</translation>
     </message>
@@ -1409,43 +1409,53 @@
         <translation type="obsolete">Упорядочивать связи</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="99"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="128"/>
         <source>Autosave</source>
         <translation>Автосохранение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="55"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="84"/>
         <source>sec</source>
         <translation>сек</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="62"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="23"/>
+        <source>User Interface</source>
+        <translation>Пользовательский интерфейс</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="39"/>
+        <source>Language</source>
+        <translation>Язык</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="91"/>
         <source>msec</source>
         <translation>мсек</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="69"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="98"/>
         <source>Delay after gesture</source>
         <translation>Задержка после жеста</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="109"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="138"/>
         <source>Collect ergonomic values</source>
         <oldsource>Collect argonomical values</oldsource>
         <translation>Собирать эргономические показатели системы</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="119"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="148"/>
         <source>Usability testing mode</source>
         <translation>Режӥм юзабилити-тестирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="129"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="158"/>
         <source>Touch</source>
         <translation>Тач</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="145"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="174"/>
         <source>Touch Mode</source>
         <translation>Режим работы на тач-экране</translation>
     </message>
@@ -1468,6 +1478,11 @@
     <message>
         <source>Suggestions</source>
         <translation type="obsolete">Предложения</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/behaviourPage.cpp" line="99"/>
+        <source>&lt;System Language&gt;</source>
+        <translation>&lt;Системный язык&gt;</translation>
     </message>
 </context>
 <context>
@@ -1584,31 +1599,41 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="61"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="141"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="142"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="64"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="157"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="158"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="62"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="65"/>
         <source>Shortcuts</source>
         <translation>Горячие клавиши</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="149"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="89"/>
+        <source>Information</source>
+        <translation>Информация</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.cpp" line="89"/>
+        <source>You should restart the system to apply changes</source>
+        <translation>Перезапустите программу, чтобы применить изменения</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.cpp" line="165"/>
         <source>Save File</source>
         <translation>Сохранить файл
 </translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="149"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="159"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="165"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="175"/>
         <source>*.ini</source>
         <translation>*.ini</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="159"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="175"/>
         <source>Open File</source>
         <translation>Открыть файл
 </translation>
@@ -1670,7 +1695,7 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="60"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="63"/>
         <source>Miscellanious</source>
         <translation>Разное</translation>
     </message>
@@ -1700,7 +1725,7 @@
         <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="59"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="62"/>
         <source>Behaviour</source>
         <translation>Поведение</translation>
     </message>
@@ -1820,67 +1845,67 @@
 <context>
     <name>PreferencesEditorPage</name>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="521"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="527"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="528"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="534"/>
         <source>Indent</source>
         <translation>Отступ</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="203"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="209"/>
         <source>Show grid</source>
         <translation>Показать сетку</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="186"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="192"/>
         <source>Activate grid</source>
         <translation>Выравнивание по сетке</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="196"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="202"/>
         <source>Width</source>
         <translation>Толщина сетки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="173"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="179"/>
         <source>Cell size</source>
         <translation>Размер ячейки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="286"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="292"/>
         <source>Node Elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="318"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="324"/>
         <source>Drag area</source>
         <translation>Размер области масштабирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="351"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="357"/>
         <source>Edge</source>
         <translation>Связи</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="428"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="434"/>
         <source>Line mode</source>
         <translation>Тип связей</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="410"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="416"/>
         <source>broken</source>
         <translation>Ломаные линии</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="415"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="421"/>
         <source>square</source>
         <translation>Прямоугольные линии</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="420"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="426"/>
         <source>curve</source>
         <translation>Кривые Безье</translation>
     </message>
@@ -1889,77 +1914,77 @@
         <translation type="obsolete">Связи-петли</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="594"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="600"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="610"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="616"/>
         <source>   Representation   </source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="637"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="643"/>
         <source>Icons  and names</source>
         <translation>Иконки и названия</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="642"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="648"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="617"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="623"/>
         <source>   Count of items in a row </source>
         <translation>Количество иконок в строке</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="163"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="169"/>
         <source>Activate alignment</source>
         <translation>Выравнивание по направляющим</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="219"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="225"/>
         <source>Show alignment</source>
         <translation>Показать направляющие</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="110"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="116"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="405"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="411"/>
         <source>unset</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="441"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="447"/>
         <source>Loop edges indent</source>
         <translation>Отступ связей-петель</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="479"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="485"/>
         <source>Embedded Linkers</source>
         <translation>Встроенные линкеры</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="538"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="544"/>
         <source>Labels</source>
         <translation>Надписи на элементах</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="554"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="560"/>
         <source>Enable move</source>
         <translation>Разрешить перемещать</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="564"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="570"/>
         <source>Enable resize</source>
         <translation>Разрешить изменять размер</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="574"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="580"/>
         <source>Label distance</source>
         <translation>Расстояние от надписей до элемента</translation>
     </message>
@@ -1972,34 +1997,31 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="50"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="56"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="87"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="93"/>
         <source>Use some of system fonts</source>
         <translation>Использовать системный шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="100"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="106"/>
         <source>Choose Font</source>
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="148"/>
         <source>Information</source>
-        <translation>Информация</translation>
+        <translation type="vanished">Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="148"/>
         <source>You should restart QReal:Robots to apply changes</source>
-        <translation>Перезапустите программу, чтобы применить изменения</translation>
+        <translation type="vanished">Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="148"/>
         <source>Ok</source>
-        <translation>ОК</translation>
+        <translation type="vanished">ОК</translation>
     </message>
 </context>
 <context>
@@ -4129,7 +4151,7 @@
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2266"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2268"/>
         <source>Getting Started</source>
         <translation>Добро пожаловать!</translation>
     </message>
@@ -4149,17 +4171,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2112"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2114"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2143"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2145"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2143"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2145"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>

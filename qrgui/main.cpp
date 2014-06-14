@@ -17,15 +17,15 @@ void clearConfig()
 
 void setDefaultLocale(bool localizationDisabled)
 {
-	// If some day it will be requested the language customization from application settings
-	// this method can be useful. We can just set default locale to the selected in settings one
-	// (not the system locale like now).
 	if (localizationDisabled) {
 		QLocale::setDefault(QLocale::English);
+		return;
 	}
 
-	// System locale is used when no default locale was set.
-	// Here prefered locale can be set some day.
+	QString const locale = SettingsManager::value("systemLocale").toString();
+	if (!locale.isEmpty()) {
+		QLocale::setDefault(QLocale(locale));
+	}
 }
 
 int main(int argc, char *argv[])
