@@ -1374,6 +1374,7 @@ void EditorViewScene::dehighlight(Id const &graphicalId)
 
 	elem->setGraphicsEffect(nullptr);
 	mHighlightedElements.remove(elem);
+	elem->updateEnabledState();
 }
 
 void EditorViewScene::dehighlight()

@@ -1,5 +1,6 @@
 #include "interpreterBase/blocksBase/commonBlocksFactory.h"
 #include "interpreterBase/blocksBase/block.h"
+#include "interpreterBase/blocksBase/common/emptyBlock.h"
 
 using namespace interpreterBase::blocksBase;
 
@@ -15,15 +16,13 @@ CommonBlocksFactory::CommonBlocksFactory()
 
 BlockInterface *CommonBlocksFactory::block(qReal::Id const &element)
 {
-	interpreterBase::blocksBase::Block * const newBlock = produceBlock(element);
+	interpreterBase::blocksBase::Block *newBlock = produceBlock(element);
 
-	if (newBlock) {
-		newBlock->init(element, *mGraphicalModelApi, *mLogicalModelApi, mErrorReporter, mParser, *mRobotModelManager);
-	} else {
-		/// @todo: do we need this reporting?
-		//qDebug() << "Failed to create block for" << element;
+	if (!newBlock) {
+		newBlock = new common::EmptyBlock;
 	}
 
+	newBlock->init(element, *mGraphicalModelApi, *mLogicalModelApi, mErrorReporter, mParser, *mRobotModelManager);
 	return newBlock;
 }
 

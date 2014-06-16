@@ -1,5 +1,7 @@
 #include "blocksFactoryManager.h"
 
+#include <interpreterBase/blocksBase/common/emptyBlock.h>
+
 using namespace interpreterCore;
 using namespace interpreterBase;
 using namespace blocksBase;
@@ -24,18 +26,19 @@ QList<BlocksFactoryInterface *> BlocksFactoryManager::factoriesFor(RobotModelInt
 
 BlockInterface *BlocksFactoryManager::block(qReal::Id const &element, RobotModelInterface const &robotModel)
 {
-	if (!enabledBlocks(robotModel).contains(element.type())) {
-		return nullptr;
-	}
+	BlockInterface *emptyBlock = nullptr;
 
 	for (BlocksFactoryInterface * const factory : factoriesFor(robotModel)) {
 		BlockInterface * const block = factory->block(element);
-		if (block) {
+		if (block && !dynamic_cast<common::EmptyBlock *>(block)) {
 			return block;
+		} else {
+			/// @todo: Ask for empty block somewhere else, not memorizing it here.
+			emptyBlock = block;
 		}
 	}
 
-	return nullptr;
+	return emptyBlock;
 }
 
 QSet<qReal::Id> BlocksFactoryManager::enabledBlocks(RobotModelInterface const &robotModel) const

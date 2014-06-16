@@ -25,8 +25,6 @@ RobotsSettingsPage::RobotsSettingsPage(
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
 
-	/// @todo remove it
-//	mKitPluginManager.selectKit(mKitPluginManager.kitIds()[0]);
 	initializeAdditionalWidgets();
 	initializeKitRadioButtons();
 
@@ -132,6 +130,9 @@ void RobotsSettingsPage::restoreSettings()
 	if (selectedKitButton) {
 		selectedKitButton->setChecked(true);
 	}
+
+	checkSelectedRobotModelButtonFor(selectedKitButton);
+
 	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
 	mUi->enableEnginesNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfEngines").toBool());
 	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());

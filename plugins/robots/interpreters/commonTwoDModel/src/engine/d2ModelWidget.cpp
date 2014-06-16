@@ -220,7 +220,7 @@ void D2ModelWidget::initPorts()
 		QFormLayout * const layout = dynamic_cast<QFormLayout *>(mUi->portsGroupBox->layout());
 		layout->addRow(new QLabel(port.name() + ":"), portsSelectionComboBox);
 
-		portsSelectionComboBox->addItem(tr("None"));
+		portsSelectionComboBox->addItem(tr("None"), QVariant::fromValue(DeviceInfo()));
 		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
 			portsSelectionComboBox->addItem(device.friendlyName(), QVariant::fromValue(device));
 

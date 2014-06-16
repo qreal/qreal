@@ -1,8 +1,6 @@
 #include "editorPage.h"
 #include "ui_editorPage.h"
 
-#include <QtWidgets/QMessageBox>
-
 #include <qrkernel/settingsManager.h>
 
 #include "mainwindow/mainWindow.h"
@@ -13,15 +11,14 @@ using namespace enums::linkShape;
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
 		: PreferencesPage(parent)
-		, mUi(new Ui::PreferencesEditorPage)
-		, mFontWasChanged(false)
-		, mFontButtonWasPressed(false)
-		, mWidthGrid(SettingsManager::value("GridWidth").toInt())
-		, mIndexGrid(SettingsManager::value("IndexGrid").toInt())
-		, mShowGridAction(showGridAction)
-		, mShowAlignmentAction(showAlignmentAction)
-		, mActivateGridAction(activateGridAction)
-		, mActivateAlignmentAction(activateAlignmentAction)
+	, mUi(new Ui::PreferencesEditorPage)
+	, mWidthGrid(SettingsManager::value("GridWidth").toInt())
+	, mIndexGrid(SettingsManager::value("IndexGrid").toInt())
+	, mFontButtonWasPressed(false)
+	, mShowGridAction(showGridAction)
+	, mShowAlignmentAction(showAlignmentAction)
+	, mActivateGridAction(activateGridAction)
+	, mActivateAlignmentAction(activateAlignmentAction)
 {
 	mIcon = QIcon(":/icons/preferences/editor.png");
 	mUi->setupUi(this);
@@ -59,24 +56,20 @@ PreferencesEditorPage::~PreferencesEditorPage()
 	delete mUi;
 }
 
-void PreferencesEditorPage::manualFontCheckBoxChecked(bool state) {
-	SettingsManager::setValue("manualFontCheckBoxChecked", state);
-
-	mFontWasChanged = !mFontWasChanged;
+void PreferencesEditorPage::manualFontCheckBoxChecked(bool state)
+{
 	mUi->fontSelectionButton->setVisible(state);
 }
 
-void PreferencesEditorPage::fontSelectionButtonClicked() {
-	if (!mFontWasChanged) {
-		mFontWasChanged = !mFontWasChanged;
-	}
+void PreferencesEditorPage::fontSelectionButtonClicked()
+{
 	mFontButtonWasPressed = true;
 
 	QFontDialog fontDialog(this);
 	fontDialog.setModal(true);
-	QFont f;
-	f.fromString(mFont);
-	fontDialog.setCurrentFont(f);
+	QFont font;
+	font.fromString(mFont);
+	fontDialog.setCurrentFont(font);
 	fontDialog.exec();
 	mFont = fontDialog.currentFont().toString();
 }
@@ -126,6 +119,7 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("MoveLabels", mUi->enableMoveLabelsCheckBox->isChecked());
 	SettingsManager::setValue("ResizeLabels", mUi->enableResizeLabelsCheckBox->isChecked());
 	SettingsManager::setValue("LabelsDistance", mUi->labelDistanceSlider->value());
+	SettingsManager::setValue("manualFontCheckBoxChecked", mUi->fontCheckBox->isChecked());
 
 	emit paletteRepresentationChanged();
 
@@ -141,12 +135,12 @@ void PreferencesEditorPage::save()
 	mActivateGridAction->setChecked(mUi->activateGridCheckBox->isChecked());
 	mActivateAlignmentAction->setChecked(mUi->activateAlignmentCheckBox->isChecked());
 
-	if (mFontWasChanged) {
+	if (mWasChecked != mUi->fontCheckBox->isChecked() || mOldFont != mFont) {
 		if (mFontButtonWasPressed) {
 			SettingsManager::setValue("CurrentFont", mFont);
 		}
-		QMessageBox::information(NULL, tr("Information"), tr("You should restart QReal:Robots to apply changes"), tr("Ok"));
-		mFontWasChanged = false;
+
+		setRestartFlag();
 		mFontButtonWasPressed = false;
 	}
 }
@@ -169,12 +163,14 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->lineMode->setCurrentIndex(type + 1);
 
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
-	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont").toBool());
+	mUi->fontSelectionButton->setVisible(mUi->fontCheckBox->isChecked());
+	mWasChecked = mUi->fontCheckBox->isChecked();
 
 	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation").toInt());
 	paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
 	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount").toInt());
 	mFont = SettingsManager::value("CurrentFont").toString();
+	mOldFont = mFont;
 }
 
 void PreferencesEditorPage::paletteComboBoxClicked(int index)

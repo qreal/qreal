@@ -170,6 +170,10 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikDetectLine")
 				<< id("TrikLineDetectorToVariable")
 				;
+	} else {
+		result
+			<< id("Fork")
+		;
 	}
 
 	return result;
