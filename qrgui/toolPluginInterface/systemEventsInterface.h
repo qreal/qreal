@@ -6,10 +6,9 @@
 
 #include <qrkernel/ids.h>
 
-namespace qReal
-{
+namespace qReal {
 
-/// Provides global singnals
+/// Provides global system-wide signals
 class SystemEventsInterface : public QObject
 {
 	Q_OBJECT

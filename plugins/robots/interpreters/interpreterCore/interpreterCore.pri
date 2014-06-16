@@ -42,6 +42,7 @@ HEADERS += \
 	$$PWD/src/managers/devicesConfigurationManager.h \
 	$$PWD/src/managers/titlesVisibilityManager.h \
 	$$PWD/src/managers/paletteUpdateManager.h \
+	$$PWD/src/managers/saveConvertionManager.h \
 	$$PWD/src/textLanguage/robotsBlockParser.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
 	$$PWD/src/ui/devicesConfigurationWidget.h \
@@ -75,6 +76,7 @@ SOURCES += \
 	$$PWD/src/managers/devicesConfigurationManager.cpp \
 	$$PWD/src/managers/titlesVisibilityManager.cpp \
 	$$PWD/src/managers/paletteUpdateManager.cpp \
+	$$PWD/src/managers/saveConvertionManager.cpp \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
 	$$PWD/src/ui/devicesConfigurationWidget.cpp \

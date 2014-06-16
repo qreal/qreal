@@ -5,6 +5,8 @@
 #include <qrkernel/settingsManager.h>
 #include <commonTwoDModel/engine/twoDModelControlInterface.h>
 
+#include "managers/saveConvertionManager.h"
+
 using namespace qReal;
 using namespace interpreterCore;
 
@@ -53,6 +55,11 @@ QList<ActionInfo> RobotsPlugin::actions()
 QList<HotKeyActionInfo> RobotsPlugin::hotKeyActions()
 {
 	return mRobotsPluginFacade->actionsManager().hotKeyActionInfos();
+}
+
+QList<ProjectConverter> RobotsPlugin::projectConverters()
+{
+	return SaveConvertionManager::converters();
 }
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()

@@ -7,6 +7,7 @@ HEADERS += \
 	$$PWD/usedInterfaces/details/modelsAssistInterface.h \
 	$$PWD/usedInterfaces/graphicalModelAssistInterface.h \
 	$$PWD/usedInterfaces/logicalModelAssistInterface.h \
+	$$PWD/projectConverter.h \
 	$$PWD/hotKeyActionInfo.h \
 	$$PWD/systemEvents.h \
 	$$PWD/systemEventsInterface.h \

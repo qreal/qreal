@@ -86,29 +86,47 @@ private:
 };
 
 /// Versions equality operator. Versions are equal when all their parts are equal.
-inline bool operator==(Version const &i1, Version const &i2)
+inline bool operator==(Version const &v1, Version const &v2)
 {
-	return i1.major() == i2.major()
-			&& i1.minor() == i2.minor()
-			&& i1.build() == i2.build()
-			&& i1.stage() == i2.stage()
-			&& i1.stageNumber() == i2.stageNumber();
+	return v1.major() == v2.major()
+			&& v1.minor() == v2.minor()
+			&& v1.build() == v2.build()
+			&& v1.stage() == v2.stage()
+			&& v1.stageNumber() == v2.stageNumber();
 }
 
 /// Version inequality operator.
-inline bool operator!=(Version const &i1, Version const &i2)
+inline bool operator!=(Version const &v1, Version const &v2)
 {
-	return !(i1 == i2);
+	return !(v1 == v2);
 }
 
-/// Comparison operator for using Version in maps
-inline bool operator<(Version const &i1, Version const &i2)
+/// Less comparison operator for Version class
+inline bool operator<(Version const &v1, Version const &v2)
 {
-	return i1.major() != i2.major() ? i1.major() < i2.major()
-			: i1.minor() != i2.minor() ? i1.minor() < i2.minor()
-			: i1.build() != i2.build() ? i1.build() < i2.build()
-			: i1.stage() != i2.stage() ? i1.stage() < i2.stage()
-			: i1.stageNumber() < i2.stageNumber();
+	return v1.major() != v2.major() ? v1.major() < v2.major()
+			: v1.minor() != v2.minor() ? v1.minor() < v2.minor()
+			: v1.build() != v2.build() ? v1.build() < v2.build()
+			: v1.stage() != v2.stage() ? v1.stage() < v2.stage()
+			: v1.stageNumber() < v2.stageNumber();
+}
+
+/// Greater comparison operator for Version class
+inline bool operator>(Version const &v1, Version const &v2)
+{
+	return !(v1 == v2) && !(v1 < v2);
+}
+
+/// Less or equal comparison operator for Version class
+inline bool operator<=(Version const &v1, Version const &v2)
+{
+	return v1 == v2 || v1 < v2;
+}
+
+/// Greater or equal comparison operator for Version class
+inline bool operator>=(Version const &v1, Version const &v2)
+{
+	return !(v1 < v2);
 }
 
 /// Version hash function for using it in QHash.
