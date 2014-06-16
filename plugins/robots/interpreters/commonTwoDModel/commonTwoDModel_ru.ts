@@ -233,32 +233,32 @@
 <context>
     <name>twoDModel::D2ModelWidget</name>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="132"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="135"/>
         <source>Black</source>
         <translation>Черный</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="133"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="136"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="134"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="137"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="135"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="138"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="136"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="139"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="220"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="223"/>
         <source>None</source>
         <translation>Нет сенсора</translation>
     </message>
@@ -271,23 +271,23 @@
         <translation type="vanished">Нет сенсора</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="804"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="809"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="804"/>
-        <location filename="src/engine/d2ModelWidget.cpp" line="824"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="809"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="829"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="824"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="829"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="1298"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="1326"/>
         <source>%1 (port %2)</source>
         <translation>%1 (порт %2)</translation>
     </message>
@@ -301,9 +301,18 @@
     </message>
 </context>
 <context>
+    <name>twoDModel::robotModel::TwoDRobotModel</name>
+    <message>
+        <location filename="src/robotModel/twoDRobotModel.cpp" line="45"/>
+        <location filename="src/robotModel/twoDRobotModel.cpp" line="48"/>
+        <source>2D Model</source>
+        <translation>2D модель</translation>
+    </message>
+</context>
+<context>
     <name>twoDModel::robotModel::parts::ColorSensorBlue</name>
     <message>
-        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorBlue.h" line="19"/>
+        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorBlue.h" line="22"/>
         <source>Color sensor (blue)</source>
         <translation>Сенсор цвета (синий)</translation>
     </message>
@@ -311,7 +320,7 @@
 <context>
     <name>twoDModel::robotModel::parts::ColorSensorFull</name>
     <message>
-        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorFull.h" line="19"/>
+        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorFull.h" line="23"/>
         <source>Color sensor (full)</source>
         <translation>Сенсор цвета (распознавание цветов)</translation>
     </message>
@@ -319,7 +328,7 @@
 <context>
     <name>twoDModel::robotModel::parts::ColorSensorGreen</name>
     <message>
-        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorGreen.h" line="19"/>
+        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorGreen.h" line="22"/>
         <source>Color sensor (green)</source>
         <translation>Сенсор цвета (зеленый)</translation>
     </message>
@@ -327,7 +336,7 @@
 <context>
     <name>twoDModel::robotModel::parts::ColorSensorPassive</name>
     <message>
-        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorPassive.h" line="19"/>
+        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorPassive.h" line="23"/>
         <source>Color sensor (passive)</source>
         <translation>Сенсор цвета (пассивный)</translation>
     </message>
@@ -335,7 +344,7 @@
 <context>
     <name>twoDModel::robotModel::parts::ColorSensorRed</name>
     <message>
-        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorRed.h" line="19"/>
+        <location filename="include/commonTwoDModel/robotModel/parts/colorSensorRed.h" line="22"/>
         <source>Color sensor (red)</source>
         <translation>Сенсор цвета (красный)</translation>
     </message>

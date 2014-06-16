@@ -2532,22 +2532,42 @@
         <translation type="obsolete">Свернуть провязку</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="43"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="90"/>
+        <source>Project was automaticly converted to version %1. Please check its contents.</source>
+        <oldsource>Project was automaticly converted to version %1</oldsource>
+        <translation>Проект был автоматически преобразован до версии %1. Пожалуйста, проверьте его содержимое.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="99"/>
+        <source>The attempt to automaticly convert this project to the current enviroment version failed and thus save file can`t be opened. </source>
+        <translation>Попытка автоматического преобразования проекта до версии среды закончилась неудачно, файл сохранения не может быть открыт.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="109"/>
         <source>This project was created by version %1 of the editor.</source>
         <translation>Данный проект был создан редактором версии %1.</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="44"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="110"/>
         <source>This project was created by too old version of the editor.</source>
         <translation>Данный проект был создан редактором слишком старой версии.</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="46"/>
-        <source> To our great regret this project can`t be automaticly converted up to the current enviroment version and thus can`t be opened.</source>
-        <translation> К сожалению, он не может быть автоматически сконвертирован в настоящую версию и потому не может быть открыт.</translation>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="112"/>
+        <source> It is now considered outdated and cannot be opened.</source>
+        <translation> Он устарел и не может быть открыт.</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="49"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="119"/>
+        <source>The save you are trying to open is made by version %1 of editor, whitch is newer than currently installed enviroment. Update your version before opening this save.</source>
+        <translation>Проект был создан версией %1 редактора, которая новее, чем версия данной среды, обновитесь.</translation>
+    </message>
+    <message>
+        <source> To our great regret this project can`t be automaticly converted up to the current enviroment version and thus can`t be opened.</source>
+        <translation type="vanished"> К сожалению, он не может быть автоматически сконвертирован в настоящую версию и потому не может быть открыт.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="128"/>
         <source>Can`t open project file</source>
         <translation>Не могу открыть проект</translation>
     </message>

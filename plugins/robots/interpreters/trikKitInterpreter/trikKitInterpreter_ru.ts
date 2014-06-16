@@ -30,17 +30,16 @@
 <context>
     <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="src/trikKitInterpreterPlugin.cpp" line="71"/>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="60"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
     <message>
-        <location filename="src/trikKitInterpreterPlugin.cpp" line="106"/>
         <source>Show 2d model for TRIK v4</source>
-        <translation>Открыть 2D модель для TRIK v4</translation>
+        <translation type="vanished">Открыть 2D модель для TRIK v4</translation>
     </message>
     <message>
-        <location filename="src/trikKitInterpreterPlugin.cpp" line="108"/>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="94"/>
         <source>Show 2d model for TRIK v6</source>
         <translation>Открыть 2D модель для TRIK v6</translation>
     </message>
@@ -48,14 +47,12 @@
 <context>
     <name>trikKitInterpreter::blocks::details::WaitForButtonsBlock</name>
     <message>
-        <location filename="src/blocks/details/waitForButtonsBlock.cpp" line="25"/>
         <source>Buttons are not configured (WTF?)</source>
-        <translation>Кнопки не сконфигурированы (што?)</translation>
+        <translation type="vanished">Кнопки не сконфигурированы (што?)</translation>
     </message>
     <message>
-        <location filename="src/blocks/details/waitForButtonsBlock.cpp" line="42"/>
         <source>Buttons</source>
-        <translation>Кнопки</translation>
+        <translation type="vanished">Кнопки</translation>
     </message>
 </context>
 <context>
@@ -117,9 +114,8 @@
 <context>
     <name>trikKitInterpreter::robotModel::real::RealRobotModelV4</name>
     <message>
-        <location filename="src/robotModel/real/realRobotModelV4.cpp" line="37"/>
         <source>Real Robot (v4)</source>
-        <translation>Реальный робот (v4)</translation>
+        <translation type="vanished">Реальный робот (v4)</translation>
     </message>
 </context>
 <context>
@@ -132,7 +128,7 @@
 <context>
     <name>trikKitInterpreter::robotModel::real::RealRobotModelV6</name>
     <message>
-        <location filename="src/robotModel/real/realRobotModelV6.cpp" line="24"/>
+        <location filename="src/robotModel/real/realRobotModelV6.cpp" line="21"/>
         <source>Real Robot (v6)</source>
         <translation>Реальный робот (v6)</translation>
     </message>
@@ -140,10 +136,8 @@
 <context>
     <name>trikKitInterpreter::robotModel::twoD::TwoDRobotModel</name>
     <message>
-        <location filename="src/robotModel/twoD/twoDRobotModel.cpp" line="45"/>
-        <location filename="src/robotModel/twoD/twoDRobotModel.cpp" line="48"/>
         <source>2D Model</source>
-        <translation>2D модель</translation>
+        <translation type="vanished">2D модель</translation>
     </message>
 </context>
 </TS>
