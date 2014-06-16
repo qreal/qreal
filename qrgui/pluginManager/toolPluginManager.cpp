@@ -96,10 +96,10 @@ QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() 
 
 QMultiMap<QString, ProjectConverter> ToolPluginManager::projectConverters() const
 {
-	QMap<QString, ProjectConverter> result;
+	QMultiMap<QString, ProjectConverter> result;
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
 		for (ProjectConverter const &converter : toolPlugin->projectConverters()) {
-			result.insert(converter.editor(), converter);
+			result.insertMulti(converter.editor(), converter);
 		}
 	}
 
