@@ -76,6 +76,10 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 		Q_UNUSED(graphicalApi)
 		for (Id const &graphicalBlock : elementsOfRobotsDiagrams(logicalApi)) {
 			Id const block = graphicalApi.logicalId(graphicalBlock);
+			if (!block.element().startsWith("Trik")) {
+				continue;
+			}
+
 			QMapIterator<QString, QVariant> iterator = logicalApi.logicalRepoApi().propertiesIterator(block);
 			for (iterator.next(); iterator.hasNext(); iterator.next()) {
 				QString const name = iterator.key();
