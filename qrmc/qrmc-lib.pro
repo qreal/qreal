@@ -20,11 +20,6 @@ RCC_DIR = .moc
 
 DESTDIR = ../bin
 
-!macx {
-	CONFIG += rpath_libdirs
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD),-rpath,$(PWD)/../qrgui"
-}
-
 # Input
 HEADERS += \
 	$$PWD/metaCompiler.h \
