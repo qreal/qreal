@@ -4,7 +4,7 @@
 
 namespace interpreterCore {
 
-/// Provides a number of converters that transform some incompatible features in olf save versions.
+/// Provides a number of converters that transform some incompatible features in old save versions.
 class SaveConvertionManager
 {
 public:
@@ -12,7 +12,7 @@ public:
 	static QList<qReal::ProjectConverter> converters();
 
 private:
-	/// Returns a converter that restricts all saves made by editors till 3.0.0 alpha1
+	/// Returns a converter that restricts all saves made by editors till 3.0.0 alpha1.
 	static qReal::ProjectConverter before300Alpha1Converter();
 
 	/// Returns a converter that transforms JA1-form ports to the A1-form ones and
