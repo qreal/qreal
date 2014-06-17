@@ -24,7 +24,7 @@ RobotsPlugin::RobotsPlugin()
 	QApplication::installTranslator(&mCommonTwoDModelTranslator);
 	QApplication::installTranslator(&mInterpreterCoreTranslator);
 
-	// This will start kit plugins loading and so on so we must to load translators first.
+	// This will start kit plugins loading and so on so we must load translators first.
 	mRobotsPluginFacade.reset(new RobotsPluginFacade);
 }
 
