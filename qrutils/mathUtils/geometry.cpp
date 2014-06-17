@@ -91,7 +91,8 @@ qreal Geometry::percentageAt(QPainterPath const &path, QPointF const &point)
 	qreal delta = 0.01;
 
 	for (int approximationIteration = 0; approximationIteration < approximationLevel; ++approximationIteration) {
-		qreal minimalPercentage, minimalDistance = 10e10;
+		qreal minimalPercentage = 100;
+		qreal minimalDistance = 10e10;
 		for (int i = -50; i <= 50; ++i) {
 			qreal const percentage = result + delta * i;
 			QPointF const pointAtPercentage = percentage >= 0 && percentage <= 1
