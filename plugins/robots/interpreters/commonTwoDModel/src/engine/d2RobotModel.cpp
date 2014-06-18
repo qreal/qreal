@@ -122,7 +122,7 @@ void D2RobotModel::playSound(int timeInMs)
 
 void D2RobotModel::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
 {
-	mEngines[port]->speed = speed;
+	mEngines[port]->speed = truncateToInterval(-100, 100, speed);
 	mEngines[port]->degrees = degrees;
 	mEngines[port]->isUsed = true;
 	mEngines[port]->breakMode = breakMode;
