@@ -360,16 +360,6 @@ QPointF D2ModelWidget::robotPos() const
 
 void D2ModelWidget::close()
 {
-	mClearing = true;
-	if (mRobot) {
-		disconnect(this, SLOT(changePalette()));
-		mRobot->resetTransform();
-		mScene->clear();
-		mRobot = NULL;
-	}
-
-	mSensors.clear();
-	mUi->graphicsView->setVisible(false);
 	setVisible(false);
 }
 
