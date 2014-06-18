@@ -70,10 +70,13 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 	replacementRules.insert("digitSensor1", "sensorD1");
 	replacementRules.insert("digitSensor2", "sensorD2");
 
+
 	return ProjectConverter(editor(), Version::fromString("3.0.0-a4"), Version::fromString("3.0.0-a5")
 			, [=](GraphicalModelAssistInterface const &graphicalApi, LogicalModelAssistInterface &logicalApi)
 	{
 		Q_UNUSED(graphicalApi)
+		bool modificationsMade = false;
+
 		for (Id const &graphicalBlock : elementsOfRobotsDiagrams(logicalApi)) {
 			Id const block = graphicalApi.logicalId(graphicalBlock);
 			if (!block.element().startsWith("Trik")) {
@@ -88,6 +91,7 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 				for (QString const &toReplace : replacementRules.keys()) {
 					if (value.contains(toReplace)) {
 						replacementOccured = true;
+						modificationsMade = true;
 						value.replace(toReplace, replacementRules[toReplace]);
 					}
 				}
@@ -98,7 +102,7 @@ ProjectConverter SaveConvertionManager::from300Alpha4to300Alpha5Converter()
 			}
 		}
 
-		return ProjectConverter::Success;
+		return modificationsMade ? ProjectConverter::Success : ProjectConverter::NoModificationsMade;
 	});
 }
 

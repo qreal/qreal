@@ -75,6 +75,8 @@ bool VersionsConverterManager::convertProject(Version const &enviromentVersion
 			case ProjectConverter::Success:
 				converterApplied = true;
 				break;
+			case ProjectConverter::NoModificationsMade:
+				break;
 			case ProjectConverter::SaveInvalid:
 				displayCannotConvertError();
 				return false;

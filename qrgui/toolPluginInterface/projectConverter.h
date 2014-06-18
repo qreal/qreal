@@ -15,8 +15,10 @@ public:
 	/// Represent a result of project convertion process.
 	enum ConvertionResult
 	{
-		/// Convertion finished successfully, the save file is now has valid contents.
+		/// Convertion process made some modifications, finished successfully, the save file is now has valid contents.
 		Success = 0
+		/// Convertion process finished successfully, no modifications were made.
+		, NoModificationsMade
 		/// Convertion can`t be performed because of too old save version, convertion rules are unknown.
 		, VersionTooOld
 		/// Convertion can`t be completed because save file has unexpected contents.
