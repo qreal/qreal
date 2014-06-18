@@ -908,6 +908,7 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 		PortInfo const port = mSensors.key(sensor, PortInfo());
 		if (port.isValid()) {
 			removeSensor(port);
+			deviceConfigurationChanged(mRobotModel.name(), port, DeviceInfo());
 		}
 		return;
 	}
