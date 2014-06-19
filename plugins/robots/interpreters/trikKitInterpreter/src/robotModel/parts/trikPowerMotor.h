@@ -15,9 +15,6 @@ class TrikPowerMotor : public interpreterBase::robotModel::robotParts::Motor
 public:
 	TrikPowerMotor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);
-
-private:
-	void doConfiguration() override;
 };
 
 }

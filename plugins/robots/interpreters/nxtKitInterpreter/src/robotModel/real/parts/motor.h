@@ -26,9 +26,6 @@ public:
 	void off() override;
 	void resetMotorPosition(bool relative);
 
-protected:
-	void doConfiguration() override;
-
 private:
 	void setOutputState(int speed
 			, int mode

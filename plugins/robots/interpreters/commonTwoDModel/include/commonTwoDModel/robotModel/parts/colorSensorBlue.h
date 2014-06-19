@@ -28,9 +28,6 @@ public:
 
 	void read();
 
-protected:
-	void doConfiguration();
-
 private:
 	engine::TwoDModelEngineInterface &mEngine;
 };

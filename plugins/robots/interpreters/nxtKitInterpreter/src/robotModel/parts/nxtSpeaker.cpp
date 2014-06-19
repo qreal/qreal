@@ -13,8 +13,3 @@ void NxtSpeaker::beep(unsigned time)
 {
 	playTone(1000, time);
 }
-
-void NxtSpeaker::doConfiguration()
-{
-	configurationCompleted(true);
-}

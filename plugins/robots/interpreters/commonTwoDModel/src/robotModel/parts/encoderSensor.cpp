@@ -22,8 +22,3 @@ void EncoderSensor::nullify()
 {
 	mEngine.resetEncoder(port());
 }
-
-void EncoderSensor::doConfiguration()
-{
-	configurationCompleted(true);
-}

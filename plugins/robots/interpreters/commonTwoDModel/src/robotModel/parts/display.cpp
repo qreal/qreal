@@ -12,8 +12,3 @@ Display::Display(DeviceInfo const &info
 	, mEngine(engine)
 {
 }
-
-void Display::doConfiguration()
-{
-	configurationCompleted(true);
-}

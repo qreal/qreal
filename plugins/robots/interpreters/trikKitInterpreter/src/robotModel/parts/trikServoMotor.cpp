@@ -7,8 +7,3 @@ TrikServoMotor::TrikServoMotor(DeviceInfo const &info, PortInfo const &port)
 	: interpreterBase::robotModel::robotParts::Motor(info, port)
 {
 }
-
-void TrikServoMotor::doConfiguration()
-{
-	configurationCompleted(true);
-}

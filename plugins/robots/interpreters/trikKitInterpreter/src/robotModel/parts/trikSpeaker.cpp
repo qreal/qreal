@@ -7,8 +7,3 @@ TrikSpeaker::TrikSpeaker(DeviceInfo const &info, PortInfo const &port)
 	: interpreterBase::robotModel::robotParts::Speaker(info, port)
 {
 }
-
-void TrikSpeaker::doConfiguration()
-{
-	configurationCompleted(true);
-}

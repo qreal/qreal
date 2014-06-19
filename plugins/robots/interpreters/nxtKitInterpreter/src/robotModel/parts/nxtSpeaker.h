@@ -17,9 +17,6 @@ public:
 
 	void beep(unsigned time);
 	virtual void playTone(unsigned freq, unsigned time) = 0;
-
-private:
-	void doConfiguration() override;
 };
 
 }

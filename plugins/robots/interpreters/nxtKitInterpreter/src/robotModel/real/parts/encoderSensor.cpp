@@ -53,11 +53,6 @@ void EncoderSensor::readingDone(QObject *addressee, QByteArray const &reading)
 	sensorSpecificProcessResponse(reading);
 }
 
-void EncoderSensor::doConfiguration()
-{
-	configurationCompleted(true);
-}
-
 void EncoderSensor::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	mState = idle;

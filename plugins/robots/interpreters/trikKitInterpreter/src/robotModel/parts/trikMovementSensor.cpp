@@ -7,8 +7,3 @@ TrikMovementSensor::TrikMovementSensor(DeviceInfo const &info, PortInfo const &p
 	: interpreterBase::robotModel::robotParts::ScalarSensor(info, port)
 {
 }
-
-void TrikMovementSensor::doConfiguration()
-{
-	configurationCompleted(true);
-}

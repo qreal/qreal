@@ -18,8 +18,3 @@ void ColorSensorFull::read()
 	int reading = mEngine.readColorSensor(port());
 	emit newData(reading);
 }
-
-void ColorSensorFull::doConfiguration()
-{
-	configurationCompleted(true);
-}

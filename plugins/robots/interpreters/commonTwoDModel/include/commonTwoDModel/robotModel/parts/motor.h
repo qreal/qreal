@@ -35,9 +35,7 @@ public:
 	void on(int speed, long unsigned int degrees, bool breakMode);
 	void stop(bool breakMode);
 
-protected:
-	void doConfiguration() override;
-
+private:
 	engine::TwoDModelEngineInterface &mEngine;
 };
 

@@ -41,6 +41,11 @@ void Device::configure()
 	doConfiguration();
 }
 
+void Device::doConfiguration()
+{
+	configurationCompleted(true);
+}
+
 void Device::configurationCompleted(bool success)
 {
 	mConfigurationTimeoutTimer.stop();

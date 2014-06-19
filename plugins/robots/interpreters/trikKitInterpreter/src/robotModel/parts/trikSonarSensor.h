@@ -14,9 +14,6 @@ class TrikSonarSensor : public interpreterBase::robotModel::robotParts::RangeSen
 public:
 	TrikSonarSensor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);
-
-private:
-	void doConfiguration() override;
 };
 
 }

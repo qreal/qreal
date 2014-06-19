@@ -17,8 +17,3 @@ void LightSensor::read()
 {
 	emit newData(mEngine.readLightSensor(port()));
 }
-
-void LightSensor::doConfiguration()
-{
-	configurationCompleted(true);
-}

@@ -16,7 +16,6 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port);
 
 	void read() override;
-	void doConfiguration() override;
 };
 
 }

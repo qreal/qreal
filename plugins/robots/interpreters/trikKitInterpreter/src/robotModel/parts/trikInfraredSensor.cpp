@@ -7,8 +7,3 @@ TrikInfraredSensor::TrikInfraredSensor(DeviceInfo const &info, PortInfo const &p
 	: interpreterBase::robotModel::robotParts::RangeSensor(info, port)
 {
 }
-
-void TrikInfraredSensor::doConfiguration()
-{
-	configurationCompleted(true);
-}
