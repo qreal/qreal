@@ -25,8 +25,9 @@ UsbRobotCommunicationThread::UsbRobotCommunicationThread()
 
 UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 {
-	int status = 0;
-	mFantom.nFANTOM100_destroyNXT(mNXTHandle, status);
+	/// @todo: Some long time ago deinitialization code was here (see git history).
+	///        But one day it stopped working, hanging out the system on close in background so it was removed.
+	///        It would be nice to fix it.
 }
 
 bool UsbRobotCommunicationThread::isOpen()

@@ -28,9 +28,10 @@ using namespace interpreterBase::robotModel;
 
 RealRobotModel::RealRobotModel(QString const &kitId)
 	: NxtRobotModelBase(kitId)
+	, mRobotCommunicator(new RobotCommunicator(this))
 {
-	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
-	connect(&mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
+	connect(mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
+	connect(mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
 }
 
 QString RealRobotModel::name() const
@@ -63,17 +64,17 @@ void RealRobotModel::rereadSettings()
 		communicator = new communication::UsbRobotCommunicationThread;
 	}
 
-	mRobotCommunicator.setRobotCommunicationThreadObject(communicator);
+	mRobotCommunicator->setRobotCommunicationThreadObject(communicator);
 }
 
 void RealRobotModel::connectToRobot()
 {
-	mRobotCommunicator.connect();
+	mRobotCommunicator->connect();
 }
 
 void RealRobotModel::disconnectFromRobot()
 {
-	mRobotCommunicator.disconnect();
+	mRobotCommunicator->disconnect();
 }
 
 robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
@@ -83,7 +84,7 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 	}
 
 	if (deviceInfo.isA(speakerInfo())) {
-		return new parts::Speaker(speakerInfo(), port, mRobotCommunicator);
+		return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(buttonInfo())) {
@@ -91,55 +92,55 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 	}
 
 	if (deviceInfo.isA(motorInfo())) {
-		return new parts::Motor(motorInfo(), port, mRobotCommunicator);
+		return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(encoderInfo())) {
-		return new parts::EncoderSensor(encoderInfo(), port, mRobotCommunicator);
+		return new parts::EncoderSensor(encoderInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(touchSensorInfo())) {
-		return new parts::TouchSensor(touchSensorInfo(), port, mRobotCommunicator);
+		return new parts::TouchSensor(touchSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(sonarSensorInfo())) {
-		return new parts::SonarSensor(sonarSensorInfo(), port, mRobotCommunicator);
+		return new parts::SonarSensor(sonarSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(lightSensorInfo())) {
-		return new parts::LightSensor(lightSensorInfo(), port, mRobotCommunicator);
+		return new parts::LightSensor(lightSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(colorFullSensorInfo())) {
-		return new parts::ColorSensorFull(colorFullSensorInfo(), port, mRobotCommunicator);
+		return new parts::ColorSensorFull(colorFullSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(colorRedSensorInfo())) {
-		return new parts::ColorSensorRed(colorRedSensorInfo(), port, mRobotCommunicator);
+		return new parts::ColorSensorRed(colorRedSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(colorGreenSensorInfo())) {
-		return new parts::ColorSensorGreen(colorGreenSensorInfo(), port, mRobotCommunicator);
+		return new parts::ColorSensorGreen(colorGreenSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(colorBlueSensorInfo())) {
-		return new parts::ColorSensorBlue(colorBlueSensorInfo(), port, mRobotCommunicator);
+		return new parts::ColorSensorBlue(colorBlueSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(colorPassiveSensorInfo())) {
-		return new parts::ColorSensorPassive(colorPassiveSensorInfo(), port, mRobotCommunicator);
+		return new parts::ColorSensorPassive(colorPassiveSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(soundSensorInfo())) {
-		return new parts::SoundSensor(soundSensorInfo(), port, mRobotCommunicator);
+		return new parts::SoundSensor(soundSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(gyroscopeSensorInfo())) {
-		return new parts::GyroscopeSensor(gyroscopeSensorInfo(), port, mRobotCommunicator);
+		return new parts::GyroscopeSensor(gyroscopeSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	//if (deviceInfo.isA(accelerometerSensorInfo())) {
-	//	return new parts::TouchSensor(accelerometerSensorInfo(), port, mRobotCommunicator);
+	//	return new parts::TouchSensor(accelerometerSensorInfo(), port, *mRobotCommunicator);
 	//}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
