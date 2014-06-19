@@ -247,7 +247,7 @@ void MainWindow::connectActions()
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
 
-	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeWindowTitle(int)));
+	connect(mUi->tabs, &QTabWidget::currentChanged, this, &MainWindow::changeWindowTitle);
 	connect(mTextManager, SIGNAL(textChanged(bool)), this, SLOT(setTextChanged(bool)));
 
 	connect(mProjectManager, SIGNAL(afterOpen(QString)), mExploser.data(), SLOT(refreshAllPalettes()));
@@ -722,16 +722,16 @@ void MainWindow::addEdgesToBeDeleted(IdList &itemsToDelete)
 	}
 }
 
-void MainWindow::changeWindowTitle(int index)
+void MainWindow::changeWindowTitle()
 {
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
 
-	if (index != -1) {
-		QScintillaTextEdit *area = dynamic_cast<QScintillaTextEdit *>(currentTab());
-		if (area) {
-			QString const filePath = mTextManager->path(area);
-			setWindowTitle(windowTitle + " " + filePath);
-		}
+	QScintillaTextEdit *area = dynamic_cast<QScintillaTextEdit *>(currentTab());
+	if (area) {
+		QString const filePath = mTextManager->path(area);
+		setWindowTitle(windowTitle + " " + filePath);
+	} else if (getCurrentTab()) {
+		mProjectManager->refreshWindowTitleAccordingToSaveFile();
 	} else {
 		setWindowTitle(windowTitle);
 	}
