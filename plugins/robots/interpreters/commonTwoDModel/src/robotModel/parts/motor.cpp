@@ -41,9 +41,3 @@ void Motor::off()
 {
 	stop(false);
 }
-
-void Motor::doConfiguration()
-{
-	/// @todo Remove this to base class.
-	configurationCompleted(true);
-}

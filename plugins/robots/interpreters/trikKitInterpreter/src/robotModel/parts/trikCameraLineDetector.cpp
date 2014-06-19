@@ -7,8 +7,3 @@ TrikCameraLineDetector::TrikCameraLineDetector(DeviceInfo const &info, PortInfo 
 	: interpreterBase::robotModel::robotParts::ScalarSensor(info, port)
 {
 }
-
-void TrikCameraLineDetector::doConfiguration()
-{
-	configurationCompleted(true);
-}

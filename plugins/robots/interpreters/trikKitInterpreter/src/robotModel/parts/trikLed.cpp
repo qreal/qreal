@@ -7,8 +7,3 @@ TrikLed::TrikLed(DeviceInfo const &info, PortInfo const &port)
 	: interpreterBase::robotModel::robotParts::Device(info, port)
 {
 }
-
-void TrikLed::doConfiguration()
-{
-	configurationCompleted(true);
-}

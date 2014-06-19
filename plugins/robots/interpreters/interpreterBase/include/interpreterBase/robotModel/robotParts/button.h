@@ -15,9 +15,6 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Button : public ScalarSensor
 
 public:
 	Button(DeviceInfo const &info, PortInfo const &port);
-
-private:
-	void doConfiguration() override;
 };
 
 }

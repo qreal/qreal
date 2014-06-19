@@ -16,9 +16,6 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port);
 
 	virtual void play(QString const &filePath) = 0;
-
-private:
-	void doConfiguration() override;
 };
 
 }

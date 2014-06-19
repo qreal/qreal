@@ -17,8 +17,3 @@ void ColorSensorPassive::read()
 {
 	emit newData(mEngine.readColorSensor(port()));
 }
-
-void ColorSensorPassive::doConfiguration()
-{
-	configurationCompleted(true);
-}

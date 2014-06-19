@@ -18,8 +18,3 @@ void EncoderSensor::read()
 void EncoderSensor::nullify()
 {
 }
-
-void EncoderSensor::doConfiguration()
-{
-	configurationCompleted(true);
-}

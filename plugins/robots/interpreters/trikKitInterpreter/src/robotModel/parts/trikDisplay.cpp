@@ -7,8 +7,3 @@ TrikDisplay::TrikDisplay(DeviceInfo const &info, PortInfo const &port)
 	: interpreterBase::robotModel::robotParts::Display(info, port)
 {
 }
-
-void TrikDisplay::doConfiguration()
-{
-	configurationCompleted(true);
-}

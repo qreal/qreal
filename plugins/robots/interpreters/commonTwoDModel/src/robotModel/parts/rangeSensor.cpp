@@ -15,8 +15,3 @@ void RangeSensor::read()
 {
 	emit newData(mEngine.readSonarSensor(port()));
 }
-
-void RangeSensor::doConfiguration()
-{
-	configurationCompleted(true);
-}

@@ -27,9 +27,6 @@ public:
 
 	void read() override;
 
-protected:
-	void doConfiguration() override;
-
 private:
 	engine::TwoDModelEngineInterface &mEngine;
 };
