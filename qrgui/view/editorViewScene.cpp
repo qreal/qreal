@@ -1036,7 +1036,7 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 {
 	QList<PossibleEdge> edges = parent->getPossibleEdges();
 	QList<QString> allLinks;
-	foreach (PossibleEdge const &possibleEdge, edges) {
+	for (PossibleEdge const &possibleEdge : edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
 				&& possibleEdge.first.second.diagram() == child.id().diagram()
 				&& mWindow->editorManager().isParentOf(child.id().editor(), child.id().diagram()
@@ -1047,6 +1047,7 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 			allLinks.push_back(possibleEdge.second.second.toString());
 		}
 	}
+
 	if (!allLinks.empty()) {
 		if (allLinks.count() == 1) {
 			createEdge(allLinks.at(0));

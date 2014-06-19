@@ -723,10 +723,11 @@ void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, Lis
 
 	bool isNotFirst = false;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+		foreach (Type *type, diagram->types().values()) {
 			isNotFirst |= generator.generate(type, out, isNotFirst);
-
+		}
+	}
 	if (!isNotFirst)
 		out() << "\tQ_UNUSED(element);\n";
 	out() << "\treturn result;\n"

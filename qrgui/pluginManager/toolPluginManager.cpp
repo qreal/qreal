@@ -7,7 +7,7 @@
 using namespace qReal;
 
 ToolPluginManager::ToolPluginManager(QObject *parent)
-		: mCustomizer()
+	: mCustomizer()
 {
 	Q_UNUSED(parent)
 	mPluginsDir = QDir(qApp->applicationDirPath());

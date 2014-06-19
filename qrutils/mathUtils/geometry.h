@@ -35,6 +35,9 @@ public:
 	/// Returns a distance from a given point to a given line
 	static qreal distance(QLineF const &line, QPointF const &point);
 
+	/// Returns a distance from a given point to a given rectangle
+	static qreal distance(QRectF const &rectangle, QPointF const &point);
+
 	/// Returns a distance between two points
 	static qreal distance(QPointF const &point1, QPointF const &point2);
 

@@ -159,7 +159,7 @@ bool SdfRenderer::checkShowConditions(QDomElement const &element, bool isIcon) c
 bool SdfRenderer::checkCondition(QDomElement const &condition) const
 {
 	QString sign = condition.attribute("sign");
-	QString realValue = mElementRepo->logicalProperty(condition.attribute("property"));
+	QString realValue = mElementRepo->logicalProperty(condition.attribute("property")).toString();
 	QString conditionValue = condition.attribute("value");
 
 	if (sign == "=~") {

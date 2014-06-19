@@ -1,3 +1,5 @@
+#include <QtCore/QDebug>
+
 #include "edgeType.h"
 
 #include <QtCore/QDebug>
@@ -57,8 +59,8 @@ bool EdgeType::initAssociations()
 
 	for (QDomElement element = associationsElement.firstChildElement("association");
 		!element.isNull();
-		element = element.nextSiblingElement("association"))
-	{
+		element = element.nextSiblingElement("association")) {
+
 		Association *association = new Association();
 		if (!association->init(element)) {
 			delete association;
@@ -93,7 +95,7 @@ bool EdgeType::initGraphics()
 	if (lineWidthElement.isNull()) {
 		mLineWidth = 1;
 	} else {
-		QString lineWidth = lineWidthElement.attribute("width");
+		QString const lineWidth = lineWidthElement.attribute("width");
 		if (lineWidth.isEmpty()) {
 			qDebug() << "ERROR: no width of line";
 			return false;
@@ -113,17 +115,16 @@ bool EdgeType::initGraphics()
 	}
 
 	/* code for setting the color of the edges */
-	QDomElement lineColorElement = mGraphics.firstChildElement("lineColor");
+	QDomElement const lineColorElement = mGraphics.firstChildElement("lineColor");
 	if (lineColorElement.isNull()) {
 		mLineColor = Qt::black;
-	}
-	else {
-		QString lineColor = lineColorElement.attribute("color");
+	} else {
+		QString const lineColor = lineColorElement.attribute("color");
 		if (lineColor.isEmpty()) {
 			qDebug() << "ERROR: no color of line";
 			return false;
 		} else {
-			QColor color = QColor(lineColor);
+			QColor const color = QColor(lineColor);
 			if (!color.isValid()) {
 				qDebug() << "ERROR: invalid color name of line";
 				return false;
@@ -148,14 +149,14 @@ bool EdgeType::initGraphics()
 
 bool EdgeType::initDividability()
 {
-	QDomElement dividabilityElement = mLogic.firstChildElement("dividability");
+	QDomElement const dividabilityElement = mLogic.firstChildElement("dividability");
 
 	mIsDividable = "false";
 	if (dividabilityElement.isNull()) {
 		return true;
 	}
+	QString const isDividable = dividabilityElement.attribute("isDividable");
 
-	QString isDividable = dividabilityElement.attribute("isDividable");
 	if (isDividable != "true" && isDividable != "false") {
 		qDebug() << "ERROR: can't parse dividability";
 		return false;
@@ -220,7 +221,7 @@ void EdgeType::generateCode(OutFile &out)
 	if (!mBonusContextMenuFields.empty()) {
 		out() << "\t\t" << className << "() {\n";
 		out() << "\t\t\tmBonusContextMenuFields";
-		foreach (QString elem, mBonusContextMenuFields) {
+		foreach (QString const &elem, mBonusContextMenuFields) {
 			out() << " << " << "\"" << elem << "\"";
 		}
 		out() << ";\n";
@@ -229,7 +230,8 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tvoid init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}\n\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, WidgetsHelperInterface *"
+	<< ", qReal::ElementRepoInterface *) {}\n\n"
 	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty()) {
@@ -264,6 +266,8 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tbool isPort() const { return false; }\n"
 	<< "\t\tbool hasPin() const { return false; }\n"
+	<< "\t\tQString layout() const { return QString(); }\n"
+	<< "\t\tQString layoutBinding() const { return QString(); }\n"
 	<< "\t\tbool createChildrenFromMenu() const { return false; }\n"
 	<< "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n"
@@ -295,7 +299,7 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\n\t\t}\n\n";
 
 	out() << "\tprotected:\n"
-	<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
+		<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
 
 	generateEdgeStyle(mBeginType, out);
 
@@ -513,4 +517,11 @@ void EdgeType::generatePorts(OutFile &out, QStringList const &portTypes)
 	}
 
 	out() << ";\n\t\t\treturn result;\n\t\t}\n";
+}
+
+bool EdgeType::isWidgetBased(const QDomElement &graphics) const
+{
+	Q_UNUSED(graphics)
+	// TODO: Add logic if widget-based edges appear
+	return false;
 }

@@ -13,27 +13,21 @@ namespace utils {
 class NodeType : public GraphicType
 {
 public:
-	NodeType(Diagram *diagram);
+	explicit NodeType(Diagram *diagram);
 	virtual Type* clone() const;
 	virtual ~NodeType();
 	virtual void generateCode(utils::OutFile &out);
 	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
-	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
+	bool generatePorts(utils::OutFile &out, bool isNotFirst) override;
 
 private:
-	QList<Port*> mPorts;
-	QDomElement mSdfDomElement;
-	QDomElement mPortsDomElement;
-	bool mIsPin;
-	bool mIsHavePin;
-	bool mIsResizeable;
-
 	virtual bool initAssociations();
 	virtual bool initGraphics();
 	virtual bool initDividability();
 	virtual bool initPortTypes();
 
 	bool initSdf();
+	void initSizeFromRoot(QDomElement const &root);
 	void generateSdf() const;
 
 	bool initPorts();
@@ -41,4 +35,21 @@ private:
 	bool initLinePorts(QDomElement const &portsElement);
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
 	bool initBooleanProperties();
+
+	void generatePorts() const;
+	void generateLinePorts(QDomElement const &portsElement, utils::OutFile &out) const;
+	void generatePointPorts(QDomElement const &portsElement, utils::OutFile &out) const;
+
+	bool initIcon();
+	void generateIcon();
+
+	virtual bool isWidgetBased(QDomElement const &graphics) const;
+
+	QList<Port*> mPorts;
+	QDomElement mSdfDomElement;
+	QDomElement mPortsDomElement;
+	QDomElement mIconDomElement;
+	bool mIsPin;
+	bool mIsHavePin;
+	bool mIsResizeable;
 };

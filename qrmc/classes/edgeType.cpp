@@ -1,10 +1,10 @@
-#include "edgeType.h"
-#include "../metaCompiler.h"
-#include "../diagram.h"
-#include "../editor.h"
-#include "../utils/nameNormalizer.h"
-
 #include <QDebug>
+#include <qrmc/metaCompiler.h>
+#include <qrmc/diagram.h>
+#include <qrmc/editor.h>
+#include <qrmc/utils/nameNormalizer.h>
+
+#include "edgeType.h"
 
 using namespace qrmc;
 using namespace qReal;
