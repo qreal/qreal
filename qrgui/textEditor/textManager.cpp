@@ -224,8 +224,6 @@ bool TextManager::saveText(bool saveAs)
 			if (defaultPath) {
 				changeFilePath(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath());
 			}
-
-			mMainWindow->changeWindowTitle(0);
 		}
 
 		return true;

@@ -200,7 +200,7 @@ public slots:
 
 	void openFirstDiagram();
 	void closeTabsWithRemovedRootElements();
-	void changeWindowTitle(int index);
+	void changeWindowTitle();
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
