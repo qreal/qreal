@@ -63,12 +63,12 @@
 <context>
     <name>nxtKitInterpreter::NxtKitInterpreterPlugin</name>
     <message>
-        <location filename="src/nxtKitInterpreterPlugin.cpp" line="56"/>
+        <location filename="src/nxtKitInterpreterPlugin.cpp" line="60"/>
         <source>Lego NXT</source>
         <translation>Лего NXT</translation>
     </message>
     <message>
-        <location filename="src/nxtKitInterpreterPlugin.cpp" line="90"/>
+        <location filename="src/nxtKitInterpreterPlugin.cpp" line="94"/>
         <source>Show 2d model</source>
         <translation>Открыть 2D модель</translation>
     </message>
@@ -84,7 +84,7 @@
 <context>
     <name>nxtKitInterpreter::blocks::details::SpeakerBlock</name>
     <message>
-        <location filename="src/blocks/details/speakerBlock.cpp" line="30"/>
+        <location filename="src/blocks/details/speakerBlock.cpp" line="31"/>
         <source>Speaker is not configured (WTF?)</source>
         <translation>Динамик не сконфигурирован (што?)</translation>
     </message>
@@ -92,9 +92,8 @@
 <context>
     <name>nxtKitInterpreter::blocks::details::WaitForButtonsBlock</name>
     <message>
-        <location filename="src/blocks/details/waitForButtonsBlock.cpp" line="37"/>
         <source>Buttons are not configured (WTF?)</source>
-        <translation>Кнопки не сконфигурированы (што?)</translation>
+        <translation type="vanished">Кнопки не сконфигурированы (што?)</translation>
     </message>
 </context>
 <context>
@@ -121,7 +120,7 @@
 <context>
     <name>nxtKitInterpreter::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="src/robotModel/real/realRobotModel.cpp" line="42"/>
+        <location filename="src/robotModel/real/realRobotModel.cpp" line="43"/>
         <source>Real Robot</source>
         <translation>Реальный робот</translation>
     </message>
@@ -177,9 +176,8 @@
 <context>
     <name>nxtKitInterpreter::robotModel::twoD::TwoDRobotModel</name>
     <message>
-        <location filename="src/robotModel/twoD/twoDRobotModel.cpp" line="62"/>
         <source>2D Model</source>
-        <translation>2D модель</translation>
+        <translation type="vanished">2D модель</translation>
     </message>
 </context>
 </TS>
