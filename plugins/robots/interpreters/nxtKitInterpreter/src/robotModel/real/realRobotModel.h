@@ -29,7 +29,8 @@ private:
 			interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
 
-	utils::robotCommunication::RobotCommunicator mRobotCommunicator;
+	// WARNING: This class must be disposed in the last turn so do not make it storing by value.
+	utils::robotCommunication::RobotCommunicator *mRobotCommunicator;  // Takes ownership
 	QString mLastCommunicationValue;
 };
 
