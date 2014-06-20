@@ -44,12 +44,6 @@ public slots:
 	void stopRobot() override;
 	int timeElapsed() const override;
 
-//	void showD2ModelWidget(bool isVisible);
-//	void showWatchList();
-//	void onTabChanged(Id const &diagramId, bool enabled);
-//	void saveSensorConfiguration();
-//	void updateGraphicWatchSensorsList();
-
 private slots:
 	void threadStopped();
 	void newThread(qReal::Id const &startBlockId);
@@ -60,11 +54,6 @@ private slots:
 	/// Actions when robot disconnect
 	void disconnectSlot();
 
-//	void reportError(QString const &message);
-
-//	void on2dModelChanged(QDomDocument const &xml);
-//	void loadSensorConfiguration(Id const &diagramId);
-
 private:
 	enum InterpreterState {
 		interpreting
@@ -73,6 +62,8 @@ private:
 	};
 
 	void addThread(details::Thread * const thread);
+
+	void reportError(QString const &message);
 
 	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;

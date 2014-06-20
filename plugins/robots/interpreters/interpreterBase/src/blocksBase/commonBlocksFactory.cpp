@@ -9,7 +9,6 @@ CommonBlocksFactory::CommonBlocksFactory()
 	, mGraphicalModelApi(nullptr)
 	, mLogicalModelApi(nullptr)
 	, mErrorReporter(nullptr)
-//	, mBlocksTable(blocksTable)
 	, mParser(nullptr)
 {
 }

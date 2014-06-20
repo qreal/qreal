@@ -13,7 +13,6 @@ namespace parts {
 class ColorSensorPassive : public interpreterBase::robotModel::robotParts::ColorSensorPassive
 {
 	Q_OBJECT
-	Q_CLASSINFO("friendlyName", tr("Color sensor (passive)"))
 
 public:
 	ColorSensorPassive(interpreterBase::robotModel::DeviceInfo const &info

@@ -71,10 +71,6 @@ public:
 	/// returned no widget is added on settings tab
 	virtual AdditionalPreferences *settingsWidget() = 0;
 
-	// Transfers ownership.
-	/// List of tool widgets specific to this plugin which will be added as dock windows to an interface.
-//	virtual QList<QWidget *> toolWidgets() const = 0;
-
 	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
 	/// goes here.
 	virtual QList<qReal::ActionInfo> customActions() = 0;

@@ -10,7 +10,7 @@ using namespace enums::linkShape;
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
-		: PreferencesPage(parent)
+	: PreferencesPage(parent)
 	, mUi(new Ui::PreferencesEditorPage)
 	, mWidthGrid(SettingsManager::value("GridWidth").toInt())
 	, mIndexGrid(SettingsManager::value("IndexGrid").toInt())

@@ -5,10 +5,8 @@
 #include <QtCore/QDebug>
 
 #include <utils/timelineInterface.h>
+#include <utils/tracer.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
-
-//#include "details/tracer.h"
-//#include "details/debugHelper.h"
 
 using namespace qReal;
 using namespace interpreterCore::interpreter;
@@ -52,8 +50,6 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
 
 	connectDevicesConfigurationProvider(&mAutoconfigurer);
-
-	qDebug() << "mRobotModelManager.model().init()";
 }
 
 Interpreter::~Interpreter()
@@ -64,11 +60,7 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
-	qDebug() << "Interpreter::interpret()";
-
 	mInterpretersInterface.errorReporter()->clear();
-
-//	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
 
 	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
 		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
@@ -96,28 +88,6 @@ void Interpreter::interpret()
 	}
 
 	mRobotModelManager.model().applyConfiguration();
-
-//	details::Autoconfigurer configurer(
-//				*mGraphicalModelApi
-//				, mBlocksTable
-//				, mInterpretersInterface->errorReporter()
-//				, &mRobotModelManager.model()
-//				);
-
-//	bool configurationSucceeded = false;
-//	QVector<interpreterBase::robotModel::SensorId> const sensorConfiguration
-//			= configurer.configure(currentDiagramId, &configurationSucceeded);
-
-//	if (!configurationSucceeded) {
-//		return;
-//	}
-
-//	mRobotModel->configureSensors(
-//			sensorConfiguration[0]
-//			, sensorConfiguration[1]
-//			, sensorConfiguration[2]
-//			, sensorConfiguration[3]
-//			);
 }
 
 void Interpreter::stopRobot()
@@ -147,7 +117,8 @@ void Interpreter::connectedSlot(bool success)
 			mInterpretersInterface.errorReporter()->addInformation(tr("Connected successfully"));
 		}
 	} else {
-//		Tracer::debug(tracer::enums::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
+		utils::Tracer::debug(utils::Tracer::initialization, "Interpreter::connectedSlot"
+				, "Robot connection status: " + QString::number(success));
 		mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
 	}
 
@@ -156,11 +127,8 @@ void Interpreter::connectedSlot(bool success)
 
 void Interpreter::devicesConfiguredSlot()
 {
-//	Tracer::debug(tracer::enums::initialization, "Interpreter::devicesConfiguredSlot", "Sensors are configured");
-
-	qDebug() << "Interpreter::devicesConfiguredSlot";
-
-//	mRobotModel->nextBlockAfterInitial(mConnected);
+	utils::Tracer::debug(utils::Tracer::initialization
+			, "Interpreter::devicesConfiguredSlot", "Sensors are configured");
 
 	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
 		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
@@ -174,8 +142,8 @@ void Interpreter::devicesConfiguredSlot()
 
 		mSensorVariablesUpdater.run();
 
-//		Tracer::debug(tracer::enums::initialization, "Interpreter::devicesConfiguredSlot", "Starting interpretation");
-//		mRobotModel->startInterpretation();
+		utils::Tracer::debug(utils::Tracer::initialization
+				, "Interpreter::devicesConfiguredSlot", "Starting interpretation");
 
 		Id const &currentDiagramId = mInterpretersInterface.activeDiagram();
 
@@ -208,18 +176,10 @@ void Interpreter::newThread(Id const &startBlockId)
 	addThread(thread);
 }
 
-//void Interpreter::configureSensors(
-//		robots::enums::sensorType::SensorTypeEnum const &port1
-//		, robots::enums::sensorType::SensorTypeEnum const &port2
-//		, robots::enums::sensorType::SensorTypeEnum const &port3
-//		, robots::enums::sensorType::SensorTypeEnum const &port4)
-//{
-//}
-
 void Interpreter::addThread(details::Thread * const thread)
 {
 	if (mThreads.count() >= maxThreadsCount) {
-//		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
+		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
 		stopRobot();
 	}
 
@@ -245,11 +205,6 @@ void Interpreter::connectToRobot()
 		mRobotModelManager.model().disconnectFromRobot();
 	} else {
 		mRobotModelManager.model().connectToRobot();
-//		configureSensors(
-//				  static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
-//				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
-//				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
-//				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
 	}
 
 	mActionConnectToRobot.setChecked(
@@ -262,55 +217,7 @@ void Interpreter::disconnectSlot()
 	stopRobot();
 }
 
-//void Interpreter::setRobotModelType(robots::enums::robotModelType::robotModelTypeEnum robotModelType)
-//{
-//	setRobotImplementation(robotModelType);
-//}
-
-//void Interpreter::reportError(QString const &message)
-//{
-//	mInterpretersInterface->errorReporter()->addError(message);
-//}
-
-//void Interpreter::saveSensorConfiguration()
-//{
-//	Id const currentDiagramId = mInterpretersInterface->activeDiagram();
-//	Id const logicalId = mGraphicalModelApi->logicalId(currentDiagramId);
-//	if (logicalId != Id() && logicalId != Id::rootId()) {
-//		int const sensor1Value = SettingsManager::value("port1SensorType").toInt();
-//		int const sensor2Value = SettingsManager::value("port2SensorType").toInt();
-//		int const sensor3Value = SettingsManager::value("port3SensorType").toInt();
-//		int const sensor4Value = SettingsManager::value("port4SensorType").toInt();
-//		mLogicalModelApi->setPropertyByRoleName(logicalId, QString::number(sensor1Value), "sensor1Value");
-//		mLogicalModelApi->setPropertyByRoleName(logicalId, QString::number(sensor2Value), "sensor2Value");
-//		mLogicalModelApi->setPropertyByRoleName(logicalId, QString::number(sensor3Value), "sensor3Value");
-//		mLogicalModelApi->setPropertyByRoleName(logicalId, QString::number(sensor4Value), "sensor4Value");
-//	}
-//}
-
-//void Interpreter::loadSensorConfiguration(Id const &diagramId)
-//{
-//	int const oldSensor1Value = SettingsManager::value("port1SensorType").toInt();
-//	int const oldSensor2Value = SettingsManager::value("port2SensorType").toInt();
-//	int const oldSensor3Value = SettingsManager::value("port3SensorType").toInt();
-//	int const oldSensor4Value = SettingsManager::value("port4SensorType").toInt();
-
-//	int const sensor1Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor1Value").toInt();
-//	int const sensor2Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor2Value").toInt();
-//	int const sensor3Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor3Value").toInt();
-//	int const sensor4Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor4Value").toInt();
-
-//	bool const somethingChanged = oldSensor1Value != sensor1Value
-//			|| oldSensor2Value != sensor2Value
-//			|| oldSensor3Value != sensor3Value
-//			|| oldSensor4Value != sensor4Value;
-
-//	SettingsManager::setValue("port1SensorType", sensor1Value);
-//	SettingsManager::setValue("port2SensorType", sensor2Value);
-//	SettingsManager::setValue("port3SensorType", sensor3Value);
-//	SettingsManager::setValue("port4SensorType", sensor4Value);
-
-//	if (somethingChanged) {
-//		emit devicesConfigurationChanged();
-//	}
-//}
+void Interpreter::reportError(QString const &message)
+{
+	mInterpretersInterface.errorReporter()->addError(message);
+}

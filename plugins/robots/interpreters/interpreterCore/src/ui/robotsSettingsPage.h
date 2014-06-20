@@ -6,8 +6,6 @@
 #include <qrgui/dialogs/preferencesPages/preferencesPage.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 
-//#include "sensorConstants.h"
-//#include "details/devicesConfigurationWidget.h"
 #include "managers/kitPluginManager.h"
 #include "managers/robotModelManager.h"
 

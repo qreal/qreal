@@ -21,7 +21,7 @@ SignalsTester::~SignalsTester()
 	qDeleteAll(mSenders);
 }
 
-bool SignalsTester::isSignalEmitted(QString const &signalName)
+bool SignalsTester::isSignalEmitted(QString const &signalName) const
 {
 	return mSignals.contains(signalName) && mSignals.value(signalName) > 0;
 }

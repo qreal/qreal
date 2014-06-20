@@ -49,11 +49,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 
 	initSensorWidgets();
-	/// @todo connect configuration serialization/deserialization into repository
-
-	/// @todo Load currently selected model from registry.
-	/// @todo Pass nullptr here in case when there is no kit.
-//	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
 
 	interpreterBase::blocksBase::BlocksFactoryInterface * const coreFactory = new coreBlocks::CoreBlocksFactory();
 	coreFactory->configure(configurer.graphicalModelApi()

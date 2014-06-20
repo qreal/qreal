@@ -12,18 +12,6 @@ const int widthLineX = 15000;
 const int widthLineY = 11000;
 }
 
-/// radius of guides appearing
-qreal const radius = 20.0;
-
-/// minimum distance to approach to jump to the guide
-qreal const radiusJump = 10;
-
-/// spacing between element and guide
-qreal const spacing = 0;
-
-/// guides that have distance equal or less will be represented by only one of them */
-qreal const indistinguishabilitySpace = 10;
-
 SceneGridHandler::SceneGridHandler(NodeElement *node)
 		: mNode(node), mGuidesPixmap(NULL)
 {

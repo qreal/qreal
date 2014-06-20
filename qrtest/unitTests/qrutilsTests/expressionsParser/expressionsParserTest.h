@@ -1,13 +1,14 @@
 #pragma once
 
-#include <../qrutils/expressionsParser/expressionsParser.h>
+#include <qrutils/expressionsParser/expressionsParser.h>
 #include <mocks/qrgui/toolPluginInterface/usedInterface/errorReporterMock.h>
 
 #include <gtest/gtest.h>
 
 namespace qrTest {
 
-class ExpressionsParserTest : public testing::Test {
+class ExpressionsParserTest : public testing::Test 
+{
 
 protected:
 	virtual void SetUp();

@@ -50,7 +50,7 @@ void CommonRobotModel::stopRobot()
 			motor->off();
 		}
 	}
-	/// @todo: add known deinotialization methods here (for example sensors termination after extending their inteface)
+	/// @todo: add known deinitialization methods here (for example sensors termination after extending their inteface)
 }
 
 void CommonRobotModel::disconnectFromRobot()

@@ -94,6 +94,7 @@ void BluetoothRobotCommunicationThread::disconnect()
 		mPort = nullptr;
 		mKeepAliveTimer->stop();
 	}
+
 	emit disconnected();
 }
 
@@ -116,6 +117,7 @@ void BluetoothRobotCommunicationThread::send(QByteArray const &buffer) const
 		utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::send"
 				, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(buffer[i])));
 	}
+
 	mPort->write(buffer);
 }
 

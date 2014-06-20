@@ -1,5 +1,6 @@
 #include "sensorVariablesUpdater.h"
 
+#include <utils/tracer.h>
 #include <interpreterBase/robotModel/robotParts/scalarSensor.h>
 
 static int const variableUpdateIntervalMs = 200;
@@ -89,7 +90,7 @@ void SensorVariablesUpdater::onTimerTimeout()
 
 void SensorVariablesUpdater::onFailure()
 {
-//	Tracer::debug(tracer::enums::autoupdatedSensorValues, "Interpreter::slotFailure", "");
+	utils::Tracer::debug(utils::Tracer::autoupdatedSensorValues, "Interpreter::slotFailure", "");
 }
 
 void SensorVariablesUpdater::updateScalarSensorVariables(PortInfo const &sensorPortInfo, int reading)
@@ -100,11 +101,11 @@ void SensorVariablesUpdater::updateScalarSensorVariables(PortInfo const &sensorP
 void SensorVariablesUpdater::updateScalarSensorVariable(QString const &variable, int reading)
 {
 	mParser.mutableVariables()[variable] = new utils::Number(reading, utils::Number::intType);
-//	Tracer::debug(
-//			tracer::enums::autoupdatedSensorValues
-//			, "SensorVariablesUpdater::updateScalarSensorVariable"
-//			, variable + QString::number(reading)
-//			);
+	utils::Tracer::debug(
+			utils::Tracer::autoupdatedSensorValues
+			, "SensorVariablesUpdater::updateScalarSensorVariable"
+			, variable + QString::number(reading)
+			);
 }
 
 void SensorVariablesUpdater::resetVariables()

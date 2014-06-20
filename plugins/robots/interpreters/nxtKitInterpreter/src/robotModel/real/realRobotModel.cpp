@@ -139,6 +139,7 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::GyroscopeSensor(gyroscopeSensorInfo(), port, *mRobotCommunicator);
 	}
 
+	/// @todo: Support accelerometer
 	//if (deviceInfo.isA(accelerometerSensorInfo())) {
 	//	return new parts::TouchSensor(accelerometerSensorInfo(), port, *mRobotCommunicator);
 	//}

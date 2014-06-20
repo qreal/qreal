@@ -13,7 +13,6 @@ namespace parts {
 class ColorSensorFull : public interpreterBase::robotModel::robotParts::ColorSensorFull
 {
 	Q_OBJECT
-	Q_CLASSINFO("friendlyName", tr("Color sensor (full)"))
 
 public:
 	ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &info

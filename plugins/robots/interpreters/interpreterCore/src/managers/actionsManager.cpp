@@ -66,14 +66,12 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 {
 	mStopRobotAction.setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 	mRunAction.setShortcut(QKeySequence(Qt::Key_F5));
-//	m2dModelAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
 	mTitlesAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_T));
 
 	QList<qReal::HotKeyActionInfo> result;
 
 	result += mPluginHotKeyActionInfos;
 
-//	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModel", tr("Show 2d model"), m2dModelAction);
 	result
 			<< qReal::HotKeyActionInfo("Interpreter.Run", QObject::tr("Run interpreter"), &mRunAction)
 			<< qReal::HotKeyActionInfo("Interpreter.Stop", QObject::tr("Stop interpreter"), &mStopRobotAction)

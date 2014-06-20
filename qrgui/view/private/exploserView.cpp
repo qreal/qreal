@@ -34,8 +34,8 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 			: mMainWindow.toolManager().customizer()->changeExplosionMenuName();
 	QMenu *addExplosionMenu = new QMenu(menuName);
 
-	foreach (Explosion const &explosion, explosions) {
-		foreach (Id const &elementId, mLogicalApi.logicalRepoApi().logicalElements(explosion.target())) {
+	for (Explosion const &explosion : explosions) {
+		for (Id const &elementId : mLogicalApi.logicalRepoApi().logicalElements(explosion.target())) {
 			if (alreadyConnectedElement == elementId) {
 				continue;
 			}
@@ -52,7 +52,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 		addExplosionMenu->addSeparator();
 	}
 
-	foreach (Explosion const &explosion, explosions) {
+	for (Explosion const &explosion : explosions) {
 		Id const diagramType = mMainWindow.editorManager().findElementByType(explosion.target().element());
 		QString const name = mMainWindow.editorManager().friendlyName(diagramType);
 		QString const editorName = mMainWindow.editorManager().friendlyName(Id(diagramType.editor()));
@@ -161,7 +161,7 @@ void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *create
 		createCommand->addPostAction(mExploser.addExplosionCommand(source, target, &mGraphicalApi));
 	} else {
 		QList<Explosion> const explosions = mLogicalApi.editorManagerInterface().explosions(source);
-		foreach (Explosion const &explosion, explosions) {
+		for (Explosion const &explosion : explosions) {
 			if (explosion.source().type() == source.type() && explosion.requiresImmediateLinkage()) {
 				createCommand->addPostAction(mExploser.createElementWithIncomingExplosionCommand(
 						source, explosion.target(), mGraphicalApi));

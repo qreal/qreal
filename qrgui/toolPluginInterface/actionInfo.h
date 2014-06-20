@@ -9,12 +9,12 @@ namespace qReal {
 class ActionInfo {
 public:
 	ActionInfo(QAction * const action, QString const &toolbarName, QString const &menuName)
-			: mAction(action), mMenu(NULL), mToolbarName(toolbarName), mMenuName(menuName), mIsAction(true)
+			: mAction(action), mMenu(nullptr), mToolbarName(toolbarName), mMenuName(menuName), mIsAction(true)
 	{
 	}
 
 	ActionInfo(QMenu * const menu, QString const &menuName)
-			: mAction(NULL), mMenu(menu), mToolbarName(""), mMenuName(menuName), mIsAction(false)
+			: mAction(nullptr), mMenu(menu), mToolbarName(""), mMenuName(menuName), mIsAction(false)
 	{
 	}
 

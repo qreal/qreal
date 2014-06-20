@@ -7,7 +7,6 @@ namespace interpreterBase {
 namespace robotModel {
 namespace robotParts {
 
-/// @todo Generalize it.
 class ROBOTS_INTERPRETER_BASE_EXPORT Motor : public Device
 {
 	Q_OBJECT

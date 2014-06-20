@@ -25,6 +25,10 @@ public slots:
 	void allowLongJobs(bool allow = true);
 	void checkConsistency();
 
+private slots:
+	/// Checks if robot is connected
+	void checkForConnection();
+
 private:
 	void send(QByteArray const &buffer, unsigned const responseSize
 			, QByteArray &outputBuffer);
@@ -35,10 +39,6 @@ private:
 
 	/// Timer that sends messages to robot to check that connection is still alive
 	QTimer *mKeepAliveTimer;
-
-private slots:
-	/// Checks if robot is connected
-	void checkForConnection();
 };
 
 }

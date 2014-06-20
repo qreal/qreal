@@ -1,6 +1,5 @@
 #include "usbRobotCommunicationThread.h"
 
-#include <QtCore/QDebug>
 #include <time.h>
 
 #include <qrkernel/settingsManager.h>

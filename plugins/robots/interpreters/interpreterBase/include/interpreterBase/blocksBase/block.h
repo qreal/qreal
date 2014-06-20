@@ -76,8 +76,8 @@ private slots:
 private:
 	enum State {
 		idle
-		,running
-		,failed
+		, running
+		, failed
 	};
 
 	virtual bool initNextBlocks();

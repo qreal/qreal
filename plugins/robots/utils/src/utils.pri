@@ -14,7 +14,6 @@ HEADERS += \
 	$$PWD/../include/utils/realTimeline.h \
 	$$PWD/../include/utils/realTimer.h \
 	$$PWD/../include/utils/textExpressionProcessor.h \
-	$$PWD/../include/utils/debugHelper.h \
 	$$PWD/../include/utils/tracer.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationThreadInterface.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicator.h \
@@ -22,7 +21,6 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/abstractTimer.cpp \
-	$$PWD/debugHelper.cpp \
 	$$PWD/realTimeline.cpp \
 	$$PWD/realTimer.cpp \
 	$$PWD/textExpressionProcessor.cpp \

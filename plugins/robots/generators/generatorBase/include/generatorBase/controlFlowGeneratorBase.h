@@ -7,7 +7,7 @@
 
 namespace generatorBase {
 
-/// A base class for generators that build sementic tree from model in repo
+/// A base class for generators that builds sementic tree from model in repo
 class ROBOTS_GENERATOR_EXPORT ControlFlowGeneratorBase : public QObject, public RobotsDiagramVisitor
 {
 	Q_OBJECT

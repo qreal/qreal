@@ -38,13 +38,14 @@ void NxtAdditionalPreferences::restoreSettings()
 	QString const defaultPortName = SettingsManager::value("NxtBluetoothPortName").toString();
 	mUi->comPortComboBox->clear();
 
-	foreach (QextPortInfo const &info, ports) {
+	for (QextPortInfo const &info : ports) {
 		QRegExp const portNameRegexp("COM\\d+", Qt::CaseInsensitive);
 		if (portNameRegexp.indexIn(info.portName) != -1) {
 			QString const portName = portNameRegexp.cap();
 			mUi->comPortComboBox->addItem(portName);
 		}
 	}
+
 	int const defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
 	if (defaultIndex != -1) {
 		mUi->comPortComboBox->setCurrentIndex(defaultIndex);

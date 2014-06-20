@@ -18,7 +18,7 @@ class SignalsTester : public QObject
 
 public:
 	enum OrderEnum {
-		inOrder
+		inOrder = 0
 		, random
 	};
 
@@ -26,7 +26,7 @@ public:
 	/// @param inOrder - if true, tester fails when signals were emitted in wrong order. Order in which expectSignal()
 	///        were called is assumed to be correct. If it fails, it no longer awaits other signals and ignores all
 	/// other signals that get delivered.
-	SignalsTester(OrderEnum order = random);
+	explicit SignalsTester(OrderEnum order = random);
 
 	/// Destructor.
 	~SignalsTester() override;
@@ -45,13 +45,14 @@ public:
 		mSenders.append(fakeSender);
 
 		mMapper.setMapping(fakeSender, signalName);
-		connect(fakeSender, &details::FakeSender::send, &mMapper, static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
+		connect(fakeSender, &details::FakeSender::send, &mMapper
+				, static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
 		mSignals.insert(signalName, 0);
 		mSignalsOrder.push_back(signalName);
 	}
 
 	/// Returns true if given signal was expected and already emitted.
-	bool isSignalEmitted(QString const &signalName);
+	bool isSignalEmitted(QString const &signalName) const;
 
 	/// Returns true, if all expected signals were emitted.
 	bool allIsGood() const;

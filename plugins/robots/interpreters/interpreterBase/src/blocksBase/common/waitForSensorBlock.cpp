@@ -7,11 +7,8 @@ using namespace interpreterBase;
 using namespace blocksBase::common;
 using namespace robotModel;
 
-WaitForSensorBlock::WaitForSensorBlock(RobotModelInterface &robotModel
-//		, robots::enums::sensorType::SensorTypeEnum type
-		)
+WaitForSensorBlock::WaitForSensorBlock(RobotModelInterface &robotModel)
 	: WaitBlock(robotModel)
-//	, mType(type)
 {
 }
 

@@ -38,11 +38,6 @@ interpreterBase::AdditionalPreferences *NullKitInterpreterPlugin::settingsWidget
 	return nullptr;
 }
 
-//QList<QWidget *> NullKitInterpreterInterface::toolWidgets() const
-//{
-//	return QList<QWidget *>();
-//}
-
 QList<qReal::ActionInfo> NullKitInterpreterPlugin::customActions()
 {
 	return {};

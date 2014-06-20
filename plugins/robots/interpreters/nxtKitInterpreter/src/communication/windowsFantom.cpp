@@ -1,5 +1,3 @@
-#include <QtCore/QDebug>
-
 #include <utils/robotCommunication/robotCommunicationException.h>
 #include "windowsFantom.h"
 #include "fantomMethods.h"

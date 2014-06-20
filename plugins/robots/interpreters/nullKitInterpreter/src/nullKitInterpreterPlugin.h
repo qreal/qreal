@@ -28,10 +28,6 @@ public:
 	// Transfers ownership.
 	interpreterBase::AdditionalPreferences *settingsWidget() override;
 
-	// Transfers ownership.
-//	virtual QList<QWidget *> toolWidgets() const;
-
-
 	QList<qReal::ActionInfo> customActions() override;
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
