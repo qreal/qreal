@@ -39,7 +39,8 @@ public:
 		QRect const mBoundingRect;
 	};
 
-	SensorItem(SensorsConfiguration &configuration, interpreterBase::robotModel::PortInfo const &port);
+	SensorItem(SensorsConfiguration &configuration
+			, interpreterBase::robotModel::PortInfo const &port, QString const &pathToImage, QRect const &imageSize);
 
 	void rotate(double angle) override;
 	QRectF rect() const override;

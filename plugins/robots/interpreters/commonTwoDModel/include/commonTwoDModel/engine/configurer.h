@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 
 #include <interpreterBase/robotModel/portInfo.h>
+#include <interpreterBase/robotModel/deviceInfo.h>
 
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
@@ -26,10 +27,24 @@ public:
 	/// Returns a port that is used for right robot wheel by default.
 	virtual interpreterBase::robotModel::PortInfo defaultRightWheelPort() const = 0;
 
-	/// @todo sensor images here
-
 	/// Returns a pointer to a widget with display emulator for current robot model.
 	virtual engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const = 0;
+
+	/// Provides path to sensor image by given device type or empty string if default sensor image shall be used.
+	virtual QString sensorImagePath(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+	{
+		Q_UNUSED(deviceType)
+
+		return "";
+	}
+
+	/// Provides sensor image bounding rectangle by given device type or empty rectangle if default image size be used.
+	virtual QRect sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+	{
+		Q_UNUSED(deviceType)
+
+		return QRect();
+	}
 };
 
 }

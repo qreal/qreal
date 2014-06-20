@@ -5,8 +5,11 @@ using namespace interpreterBase::robotModel;
 
 SonarSensorItem::SonarSensorItem(WorldModel const &worldModel
 		, SensorsConfiguration &configuration
-		, PortInfo const &port)
-	: SensorItem(configuration, port)
+		, PortInfo const &port
+		, QString const &pathToImage
+		, QRect const &imageSize
+		)
+	: SensorItem(configuration, port, pathToImage, imageSize)
 	, mWorldModel(worldModel)
 	, mIcon(":/icons/sensors/2d_sonar.png")
 {
