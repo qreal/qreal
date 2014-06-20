@@ -8,12 +8,14 @@
 using namespace qReal;
 
 EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager
-		, Id const &id, QWidget *parent)
+		, Id const &id, QWidget *parent, qrRepo::LogicalRepoApi &api)
 		: QDialog(parent)
 		, mUi(new Ui::EditPropertiesDialog)
-		, mInterperterEditorManager(interpreterEditorManager)
+		, mInterpreterEditorManager(interpreterEditorManager)
 		, mId(id)
 		, mMode(addNew)
+		, mApi(api)
+		, mElementsOnDiagram(IdList())
 {
 	mUi->setupUi(this);
 	connect(mUi->okPushButton, &QPushButton::clicked, this, &EditPropertiesDialog::okButtonClicked);
@@ -26,20 +28,20 @@ EditPropertiesDialog::~EditPropertiesDialog()
 
 void EditPropertiesDialog::initDefaultValues()
 {
-	mUi->attributeTypeEdit->setText(mInterperterEditorManager.typeName(mId, mPropertyName));
-	mUi->defaultValueEdit->setText(mInterperterEditorManager.defaultPropertyValue(mId, mPropertyName));
-	mUi->displayedNameEdit->setText(mInterperterEditorManager.propertyDisplayedName(mId, mPropertyName));
+	mUi->attributeTypeEdit->setText(mInterpreterEditorManager.typeName(mId, mPropertyName));
+	mUi->defaultValueEdit->setText(mInterpreterEditorManager.defaultPropertyValue(mId, mPropertyName));
+	mUi->displayedNameEdit->setText(mInterpreterEditorManager.propertyDisplayedName(mId, mPropertyName));
 }
 
 void EditPropertiesDialog::messageBoxCancel()
 {
-	mUi->attributeTypeEdit->setText(mInterperterEditorManager.typeName(mId, mPropertyName));
-	mUi->defaultValueEdit->setText(mInterperterEditorManager.defaultPropertyValue(mId, mPropertyName));
+	mUi->attributeTypeEdit->setText(mInterpreterEditorManager.typeName(mId, mPropertyName));
+	mUi->defaultValueEdit->setText(mInterpreterEditorManager.defaultPropertyValue(mId, mPropertyName));
 }
 
 void EditPropertiesDialog::updateProperties()
 {
-	mInterperterEditorManager.updateProperties(
+	mInterpreterEditorManager.updateProperties(
 			mId
 			, mPropertyName
 			, mUi->attributeTypeEdit->text()
@@ -48,7 +50,7 @@ void EditPropertiesDialog::updateProperties()
 			);
 
 	if (mPropertyItem != NULL) {
-		mPropertyItem->setText(mInterperterEditorManager.propertyDisplayedName(mId, mPropertyName));
+		mPropertyItem->setText(mInterpreterEditorManager.propertyDisplayedName(mId, mPropertyName));
 	}
 
 	done(QDialog::Accepted);
@@ -57,7 +59,7 @@ void EditPropertiesDialog::updateProperties()
 void EditPropertiesDialog::acceptPropertyModifications()
 {
 	if (mPropertyName.isEmpty()) {
-		IdList const sameNameProperties = mInterperterEditorManager.propertiesWithTheSameName(mId, ""
+		IdList const sameNameProperties = mInterpreterEditorManager.propertiesWithTheSameName(mId, ""
 				, mUi->displayedNameEdit->text());
 		if (sameNameProperties.isEmpty()) {
 			mPropertyName = mUi->displayedNameEdit->text();
@@ -65,11 +67,17 @@ void EditPropertiesDialog::acceptPropertyModifications()
 			mPropertyName = mUi->displayedNameEdit->text() + "_" + sameNameProperties.count();
 		}
 
-		mInterperterEditorManager.addProperty(mId, mPropertyName);
+		mInterpreterEditorManager.addProperty(mId, mPropertyName);
+		// set property default value for elements on diagram
+		for (auto const &elementOnDiagram: mElementsOnDiagram) {
+			mApi.setProperty(elementOnDiagram, mPropertyName, mUi->defaultValueEdit->text());
+		}
+
+		mElementsOnDiagram.clear();
 	}
 
 	if (mMode == editExisting
-			&& mInterperterEditorManager.typeName(mId, mPropertyName) != mUi->attributeTypeEdit->text()
+			&& mInterpreterEditorManager.typeName(mId, mPropertyName) != mUi->attributeTypeEdit->text()
 			)
 	{
 		// TODO: Remove connects.
@@ -94,11 +102,11 @@ void EditPropertiesDialog::okButtonClicked()
 	if (mUi->attributeTypeEdit->text().isEmpty() || mUi->displayedNameEdit->text().isEmpty()) {
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
 	} else {
-		IdList const propertiesWithTheSameNameList = mInterperterEditorManager.propertiesWithTheSameName(mId
+		IdList const propertiesWithTheSameNameList = mInterpreterEditorManager.propertiesWithTheSameName(mId
 				, mPropertyName, mUi->displayedNameEdit->text());
 		if (!propertiesWithTheSameNameList.isEmpty()) {
 			hide();
-			mRestorePropertiesDialog = new RestorePropertiesDialog(this, mInterperterEditorManager);
+			mRestorePropertiesDialog = new RestorePropertiesDialog(this, mInterpreterEditorManager);
 			mRestorePropertiesDialog->fillSameNamePropertiesTW(propertiesWithTheSameNameList
 					, mUi->displayedNameEdit->text());
 			mRestorePropertiesDialog->setWindowTitle(tr("Restore properties"));
@@ -118,11 +126,13 @@ void EditPropertiesDialog::changeProperty(
 		QListWidgetItem *propertyItem
 		, QString const &propertyName
 		, QString const &propertyDisplayedName
+		, qReal::IdList *elementsOnDiagram
 		)
 {
-	//mPropertyName = mInterperterEditorManager.propertyNameByDisplayedName(mId, propertyDisplayedName);
+	//mPropertyName = mInterpreterEditorManager.propertyNameByDisplayedName(mId, propertyDisplayedName);
 	mPropertyName = propertyName;
 	mPropertyItem = propertyItem;
+	mElementsOnDiagram = *elementsOnDiagram;
 
 	if (propertyName.isEmpty()) {
 		setWindowTitle(tr("Add new property"));

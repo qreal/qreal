@@ -2532,33 +2532,33 @@
         <translation type="obsolete">Свернуть провязку</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="90"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="92"/>
         <source>Project was automaticly converted to version %1. Please check its contents.</source>
         <oldsource>Project was automaticly converted to version %1</oldsource>
         <translation>Проект был автоматически преобразован до версии %1. Пожалуйста, проверьте его содержимое.</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="99"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="101"/>
         <source>The attempt to automaticly convert this project to the current enviroment version failed and thus save file can`t be opened. </source>
         <translation>Попытка автоматического преобразования проекта до версии среды закончилась неудачно, файл сохранения не может быть открыт.</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="109"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="111"/>
         <source>This project was created by version %1 of the editor.</source>
         <translation>Данный проект был создан редактором версии %1.</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="110"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="112"/>
         <source>This project was created by too old version of the editor.</source>
         <translation>Данный проект был создан редактором слишком старой версии.</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="112"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="114"/>
         <source> It is now considered outdated and cannot be opened.</source>
         <translation> Он устарел и не может быть открыт.</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="119"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="121"/>
         <source>The save you are trying to open is made by version %1 of editor, whitch is newer than currently installed enviroment. Update your version before opening this save.</source>
         <translation>Проект был создан версией %1 редактора, которая новее, чем версия данной среды, обновитесь.</translation>
     </message>
@@ -2567,7 +2567,7 @@
         <translation type="vanished"> К сожалению, он не может быть автоматически сконвертирован в настоящую версию и потому не может быть открыт.</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="128"/>
+        <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="130"/>
         <source>Can`t open project file</source>
         <translation>Не могу открыть проект</translation>
     </message>
@@ -3027,6 +3027,29 @@
     </message>
 </context>
 <context>
+    <name>RestoreElementDialog</name>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restoreElementDialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation>Восстановление элемента</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restoreElementDialog.ui" line="20"/>
+        <source>In earlier language versions already used the elements with the same name:</source>
+        <translation>В ранних версиях языка уже использовались элементы данного типа с таким именем:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restoreElementDialog.ui" line="30"/>
+        <source>Restore</source>
+        <translation>Восстановить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restoreElementDialog.ui" line="37"/>
+        <source>Create New</source>
+        <translation>Создать новый</translation>
+    </message>
+</context>
+<context>
     <name>RestorePropertiesDialog</name>
     <message>
         <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.ui" line="14"/>
@@ -3039,12 +3062,12 @@
         <translation>В ранних версиях языка уже использовались свойства с таким именем:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.ui" line="30"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.ui" line="34"/>
         <source>Restore</source>
         <translation>Восстановить</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.ui" line="37"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.ui" line="41"/>
         <source>Create New</source>
         <translation>Создать новое</translation>
     </message>
@@ -3779,27 +3802,27 @@
 <context>
     <name>qReal::EditPropertiesDialog</name>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="95"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="103"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="95"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="103"/>
         <source>All required properties should be filled!</source>
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="104"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="112"/>
         <source>Restore properties</source>
         <translation>Восстановление свойств</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="128"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="138"/>
         <source>Add new property</source>
         <translation>Добавление нового свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="131"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="141"/>
         <source>Properties editor: </source>
         <translation>Редактор свойств: </translation>
     </message>
@@ -3808,13 +3831,13 @@
         <translation type="obsolete">Добавление нового свойства:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="76"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="84"/>
         <source>Warning:</source>
         <oldsource>Warning</oldsource>
         <translation>Внимание:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="77"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="85"/>
         <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.</source>
         <translation>Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства.</translation>
     </message>
@@ -3823,12 +3846,12 @@
         <translation type="obsolete">Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="80"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="88"/>
         <source>Proceed anyway</source>
         <translation>Продолжить все равно</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="81"/>
+        <location filename="dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="89"/>
         <source>Cancel the type conversion</source>
         <oldsource>Cancel the type cinversion</oldsource>
         <translation>Отменить преобразование типа</translation>
@@ -3889,17 +3912,17 @@
 <context>
     <name>qReal::InterpreterEditorManager</name>
     <message>
-        <location filename="pluginManager/interpreterEditorManager.cpp" line="816"/>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="852"/>
         <source>Deleted</source>
         <translation>Удалено</translation>
     </message>
     <message>
-        <location filename="pluginManager/interpreterEditorManager.cpp" line="822"/>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="858"/>
         <source>Existed</source>
         <translation>Используется</translation>
     </message>
     <message>
-        <location filename="pluginManager/interpreterEditorManager.cpp" line="824"/>
+        <location filename="pluginManager/interpreterEditorManager.cpp" line="860"/>
         <source>Renamed to </source>
         <translation>Переименовано в </translation>
     </message>
@@ -4438,6 +4461,34 @@
     </message>
 </context>
 <context>
+    <name>qReal::RestoreElementDialog</name>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="34"/>
+        <source>Existed</source>
+        <translation>Используется</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="36"/>
+        <source>Deleted</source>
+        <translation>Удален</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="60"/>
+        <source>Name</source>
+        <translation>Имя</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="60"/>
+        <source>Type</source>
+        <translation>Тип</translation>
+    </message>
+    <message>
+        <location filename="dialogs/metamodelingOnFly/restoreElementDialog.cpp" line="60"/>
+        <source>Value</source>
+        <translation>Значение</translation>
+    </message>
+</context>
+<context>
     <name>qReal::RestorePropertiesDialog</name>
     <message>
         <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="14"/>
@@ -4460,12 +4511,12 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="56"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="53"/>
         <source>Deleted</source>
         <translation>Удалено</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="59"/>
+        <location filename="dialogs/metamodelingOnFly/restorePropertiesDialog.cpp" line="56"/>
         <source>Existed</source>
         <translation>Используется</translation>
     </message>
@@ -4833,12 +4884,12 @@
 <context>
     <name>qReal::gui::EdgePropertiesDialog</name>
     <message>
-        <location filename="dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="32"/>
+        <location filename="dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="33"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="32"/>
+        <location filename="dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="33"/>
         <source>All required properties should be filled!</source>
         <translation>Все обязательные свойства должны быть заполнены!</translation>
     </message>
@@ -4899,19 +4950,17 @@
 <context>
     <name>qReal::gui::PropertiesDialog</name>
     <message>
-        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="26"/>
+        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="28"/>
         <source>Properties: </source>
         <translation>Свойства:</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="125"/>
         <source>Warning</source>
-        <translation>Внимание</translation>
+        <translation type="vanished">Внимание</translation>
     </message>
     <message>
-        <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="126"/>
         <source>For adding a new property from the scene and from the explorer of logical modelshould be removed all the elements of the object and its inheritors!</source>
-        <translation>Для добавления нового свойства со сцены и обозревателя логической модели должны быть удалены все элементы данного объекта и его наследников!</translation>
+        <translation type="vanished">Для добавления нового свойства со сцены и обозревателя логической модели должны быть удалены все элементы данного объекта и его наследников!</translation>
     </message>
     <message>
         <source>For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!</source>

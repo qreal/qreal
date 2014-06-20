@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QDialog>
 
+#include "restoreElementDialog.h"
 #include "pluginManager/editorManagerInterface.h"
 
 namespace Ui {
@@ -29,12 +30,15 @@ public:
 
 private slots:
 	void okButtonClicked();
+	void addEdgeElement();
 
 private:
 	Ui::EdgePropertiesDialog *mUi;
 	MainWindow &mMainWindow;
 	Id const mDiagram;
+	QString mEdgeName;
 	EditorManagerInterface const &mEditorManagerProxy;
+	RestoreElementDialog *mRestoreElementDialog;  // Doesn`t take ownership
 };
 
 }
