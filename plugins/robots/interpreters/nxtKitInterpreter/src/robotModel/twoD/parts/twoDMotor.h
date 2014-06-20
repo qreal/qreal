@@ -20,8 +20,6 @@ public:
 	void stop(bool breakMode) override;
 
 private:
-	void doConfiguration() override;
-
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
 };
 

@@ -13,11 +13,13 @@ class TwoDRobotModel : public twoDModel::robotModel::TwoDRobotModel
 public:
 	explicit TwoDRobotModel(interpreterBase::robotModel::RobotModelInterface const &realModel);
 
-protected:
+private:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
 			interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo
 			) override;
+
+	void onInterpretationStarted() override;
 };
 
 }

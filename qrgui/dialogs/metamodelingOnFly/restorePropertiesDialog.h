@@ -38,7 +38,7 @@ private slots:
 
 private:
 	Ui::RestorePropertiesDialog *mUi;
-	EditorManagerInterface const &mInterperterEditorManager;
+	EditorManagerInterface const &mInterpreterEditorManager;
 	IdList mPropertiesWithTheSameNameList;
 };
 }

@@ -50,6 +50,8 @@ public:
 	/// and returns yes if he agrees. Otherwise returns false
 	bool restoreIncorrectlyTerminated();
 
+	void refreshWindowTitleAccordingToSaveFile();
+
 private:
 	bool import(QString const &fileName);
 	bool saveFileExists(QString const &fileName);
@@ -59,7 +61,6 @@ private:
 	bool checkVersions();
 	bool checkForUnknownElements();
 
-	void refreshWindowTitleAccordingToSaveFile();
 	void refreshTitleModifiedSuffix();
 	void refreshApplicationStateAfterSave();
 	void refreshApplicationStateAfterOpen();

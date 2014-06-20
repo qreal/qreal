@@ -15,8 +15,3 @@ void LightSensor::read()
 {
 	emit newData(0);
 }
-
-void LightSensor::doConfiguration()
-{
-	emit configurationCompleted(true);
-}

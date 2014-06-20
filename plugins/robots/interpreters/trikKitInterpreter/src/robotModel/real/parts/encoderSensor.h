@@ -17,9 +17,6 @@ public:
 
 	void read() override;
 	void nullify() override;
-
-private:
-	void doConfiguration() override;
 };
 
 }

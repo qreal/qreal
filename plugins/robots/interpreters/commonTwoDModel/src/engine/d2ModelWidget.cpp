@@ -527,6 +527,7 @@ void D2ModelWidget::setNoneStatus()
 	mDrawingAction = enums::drawingAction::none;
 	mMouseClicksCount = 0;
 	setCursorTypeForDrawing(mNoneCursorType);
+	mUi->noneButton->setChecked(true);
 }
 
 void D2ModelWidget::setCursorTypeForDrawing(enums::cursorType::CursorType type)

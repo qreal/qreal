@@ -19,9 +19,6 @@ public:
 	virtual void init() = 0;
 	virtual void detectLine() = 0;
 	// read() is obtained from AbstractSensor
-
-private:
-	void doConfiguration() override;
 };
 
 }

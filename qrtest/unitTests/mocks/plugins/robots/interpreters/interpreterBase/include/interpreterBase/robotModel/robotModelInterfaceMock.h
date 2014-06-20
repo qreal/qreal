@@ -44,6 +44,8 @@ public:
 	MOCK_CONST_METHOD0(convertibleBases, QList<interpreterBase::robotModel::DeviceInfo>());
 
 	MOCK_METHOD0(timeline, utils::TimelineInterface &());
+
+	MOCK_METHOD0(onInterpretationStarted, void());
 };
 
 }

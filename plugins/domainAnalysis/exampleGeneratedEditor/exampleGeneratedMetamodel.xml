@@ -1,0 +1,215 @@
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>../../commonMetamodels/kernelMetamodel.xml</include>
+	<include>../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
+	<include>../../commonMetamodels/basicActionsMetamodel.xml</include>
+	<namespace>UML 2.0</namespace>
+	<diagram displayedName="Diagram" name="Diagram" nodeName="DiagramNode">
+		<graphicTypes>
+			<node displayedName="Diagram" name="DiagramNode">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line y1="0" x1="20" y2="0" x2="180"/>
+						<line y1="200" x1="20" y2="200" x2="180"/>
+						<line y1="20" x1="0" y2="180" x2="0"/>
+						<line y1="20" x1="200" y2="180" x2="200"/>
+						<arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
+						<arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
+						<arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
+						<arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="0" y="100"/>
+						<pointPort x="100" y="0"/>
+						<pointPort x="200" y="100"/>
+						<pointPort x="100" y="200"/>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="KernelDiagram::Diagram"/>
+					</generalizations>
+					<container>
+						<contains type="Diagram::Time"/>
+						<contains type="Diagram::Place"/>
+						<contains type="Diagram::TeamName"/>
+						<contains type="Diagram::TeamChoice"/>
+						<contains type="Diagram::GameChoice"/>
+						<contains type="Diagram::GoalKeeperOrPlayer"/>
+						<contains type="Diagram::Connection"/>
+					</container>
+				</logic>
+			</node>
+			<node displayedName="Задать время" name="Time">
+				<graphics>
+					<picture sizex="133" sizey="64">
+						<rectangle fill="#ffffff" fill-style="none" y1="0" y2="62" stroke-style="solid" stroke="#000000" x1="1" x2="129a" stroke-width="0"/>
+					</picture>
+					<labels>
+						<label textBinded="name" x="15" y="13"/>
+					</labels>
+					<ports>
+						<pointPort type="NonTyped" x="2" y="35"/>
+						<pointPort type="NonTyped" x="130" y="32"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<explodesTo/>
+				</logic>
+			</node>
+			<node displayedName="Задать место" name="Place">
+				<graphics>
+					<picture sizex="152" sizey="71">
+						<rectangle fill="#ffffff" fill-style="none" y1="0" y2="69" stroke-style="solid" stroke="#000000" x1="1" x2="147" stroke-width="0"/>
+					</picture>
+					<labels>
+						<label textBinded="name" x="17" y="12"/>
+					</labels>
+					<ports>
+						<pointPort type="NonTyped" x="2" y="36"/>
+						<pointPort type="NonTyped" x="149" y="33"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<explodesTo/>
+				</logic>
+			</node>
+			<node displayedName="Ввести имя команды" name="TeamName">
+				<graphics>
+					<picture sizex="124" sizey="97">
+						<ellipse fill="#ffffff" fill-style="none" y1="0" y2="95" stroke-style="solid" stroke="#000000" x1="2" x2="118a" stroke-width="0"/>
+					</picture>
+					<labels>
+						<label textBinded="name" x="23" y="30"/>
+					</labels>
+					<ports>
+						<pointPort type="NonTyped" x="2" y="60"/>
+						<pointPort type="NonTyped" x="121" y="48"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<explodesTo/>
+				</logic>
+			</node>
+			<node displayedName="Выбор игры" name="GameChoice">
+				<graphics>
+					<picture sizex="148" sizey="80">
+						<rectangle fill="#ffffff" fill-style="none" y1="0" y2="78" stroke-style="solid" stroke="#000000" x1="1" x2="143" stroke-width="0"/>
+					</picture>
+					<labels>
+						<label textBinded="name" x="20" y="21"/>
+					</labels>
+					<ports>
+						<pointPort type="NonTyped" x="2" y="39"/>
+						<pointPort type="NonTyped" x="145" y="38"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<explodesTo/>
+				</logic>
+			</node>
+			<node displayedName="Выбор команды" name="TeamChoice">
+				<graphics>
+					<picture sizex="137" sizey="75">
+						<rectangle fill="#ffffff" fill-style="none" y1="0" y2="73" stroke-style="solid" stroke="#000000" x1="3" x2="132" stroke-width="0"/>
+					</picture>
+					<labels>
+						<label textBinded="name" x="21" y="18"/>
+					</labels>
+					<ports>
+						<pointPort type="NonTyped" x="2" y="40"/>
+						<pointPort type="NonTyped" x="134" y="39"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<explodesTo/>
+				</logic>
+			</node>
+			<node displayedName="Выбор позиции вратаря или полевого игрока" name="GoalKeeperOrPlayer">
+				<graphics>
+					<picture sizex="155" sizey="75">
+						<rectangle fill="#ffffff" fill-style="none" y1="0" y2="73" stroke-style="solid" stroke="#000000" x1="2" x2="152" stroke-width="0"/>
+					</picture>
+					<labels>
+						<label textBinded="name" x="27" y="16"/>
+					</labels>
+					<ports>
+						<pointPort type="NonTyped" x="2" y="42"/>
+						<pointPort type="NonTyped" x="152" y="37"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<explodesTo/>
+				</logic>
+			</node>
+			<node displayedName="Final Node" name="FinalNode">
+				<graphics>
+					<picture sizex="30" sizey="30">
+						<ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+						<ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="5" x1="5" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
+					</picture>
+					<ports>
+						<pointPort x="0" y="15"/>
+						<pointPort x="15" y="0"/>
+						<pointPort x="15" y="30"/>
+						<pointPort x="30" y="15"/>
+						<pointPort x="15" y="15"/>
+					</ports>
+				</graphics>
+				<logic>
+				</logic>
+			</node>
+			<node displayedName="Initial Node" name="InitialNode">
+				<graphics>
+					<picture sizex="30" sizey="30">
+						<ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="30" stroke-width="1" x2="30" fill-style="solid"/>
+					</picture>
+					<ports>
+						<pointPort x="0" y="15"/>
+						<pointPort x="30" y="15"/>
+						<pointPort x="15" y="0"/>
+						<pointPort x="15" y="30"/>
+						<pointPort x="15" y="15"/>
+					</ports>
+				</graphics>
+				<logic>
+				</logic>
+			</node>
+			<edge displayedName="Стрелка следования" name="Connection">
+				<graphics>
+					<lineType type="solidLine"/>
+					<shape type="broken"/>
+				</graphics>
+				<logic>
+					<associations endType="filled_arrow" beginType="no_arrow">
+						<association endName="EndOfArrow" beginName="BeginOfArrow"/>
+					</associations>
+					<fromPorts/>
+					<toPorts/>
+					<explodesTo/>
+				</logic>
+			</edge>
+		</graphicTypes>
+		<palette>
+			<group name="Элементы">
+				<element name="Time"/>
+				<element name="Place"/>
+				<element name="TeamName"/>
+				<element name="TeamChoice"/>
+				<element name="GameChoice"/>
+				<element name="GoalKeeperOrPlayer"/>
+				<element name="Connection"/>
+				<element name="InitialNode"/>
+				<element name="FinalNode"/>
+			</group>
+		</palette>
+	</diagram>
+</metamodel>

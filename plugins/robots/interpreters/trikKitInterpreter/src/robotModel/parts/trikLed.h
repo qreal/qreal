@@ -19,9 +19,6 @@ public:
 
 	/// @todo: led color enum here
 	virtual void setColor(QColor const &color) = 0;
-
-private:
-	void doConfiguration() override;
 };
 
 }

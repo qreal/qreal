@@ -17,8 +17,3 @@ void TouchSensor::read()
 {
 	emit newData(mEngine.readTouchSensor(port()));
 }
-
-void TouchSensor::doConfiguration()
-{
-	configurationCompleted(true);
-}

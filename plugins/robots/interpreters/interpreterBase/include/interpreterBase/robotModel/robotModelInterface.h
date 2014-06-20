@@ -136,6 +136,11 @@ public:
 	/// Returns a timeline object that can return current timestamps (for this robot model time) and produce timers.
 	virtual utils::TimelineInterface &timeline() = 0;
 
+public slots:
+	/// Called each time when interpretation starts its work. Implementation must reset robot
+	/// to its default state.
+	virtual void onInterpretationStarted() = 0;
+
 signals:
 	/// Emitted when model is connected to a robot. If there is no need to connect (for example, 2d model), emitted
 	/// immediately after connectToRobot() call.

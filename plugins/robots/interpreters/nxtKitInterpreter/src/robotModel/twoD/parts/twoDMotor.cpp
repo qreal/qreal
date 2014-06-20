@@ -19,8 +19,3 @@ void TwoDMotor::stop(bool breakMode)
 {
 	on(0, 0, breakMode);
 }
-
-void TwoDMotor::doConfiguration()
-{
-	emit configurationCompleted(true);
-}

@@ -186,6 +186,8 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 
 			for (interpreterBase::robotModel::RobotModelInterface const *model : kit->robotModels()) {
 				initFactoriesFor(kitId, model, configurer);
+				connect(&mEventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::interpretationStarted
+						, model, &interpreterBase::robotModel::RobotModelInterface::onInterpretationStarted);
 			}
 
 			mDevicesConfigurationManager->connectDevicesConfigurationProvider(kit->devicesConfigurationProvider());

@@ -42,7 +42,7 @@ public slots:
 	void onActiveTabChanged(Id const &activeTabId);
 
 private slots:
-	void onRobotModelActionChecked(QObject *robotModel);
+	void onRobotModelActionChecked(QObject *robotModelObject);
 
 private:
 	QString kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const;

@@ -17,8 +17,3 @@ void ColorSensorGreen::read()
 {
 	emit newData(mEngine.readColorSensor(port()));
 }
-
-void ColorSensorGreen::doConfiguration()
-{
-	configurationCompleted(true);
-}

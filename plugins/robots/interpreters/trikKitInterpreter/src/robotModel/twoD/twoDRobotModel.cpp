@@ -1,11 +1,6 @@
 #include "twoDRobotModel.h"
 
-#include "robotModel/twoD/parts/twoDDisplay.h"
-#include "robotModel/twoD/parts/twoDSpeaker.h"
-#include "robotModel/twoD/parts/twoDInfraredSensor.h"
-#include "robotModel/parts/trikInfraredSensor.h"
-#include "robotModel/parts/trikSonarSensor.h"
-#include "robotModel/parts/trikLed.h"
+#include <QtGui/QColor>
 
 #include <interpreterBase/robotModel/robotParts/button.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
@@ -19,6 +14,15 @@
 #include <interpreterBase/robotModel/robotParts/colorSensorGreen.h>
 #include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
 #include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
+
+#include <interpreterBase/robotModel/robotModelUtils.h>
+
+#include "robotModel/twoD/parts/twoDDisplay.h"
+#include "robotModel/twoD/parts/twoDSpeaker.h"
+#include "robotModel/twoD/parts/twoDInfraredSensor.h"
+#include "robotModel/parts/trikInfraredSensor.h"
+#include "robotModel/parts/trikSonarSensor.h"
+#include "robotModel/parts/trikLed.h"
 
 using namespace trikKitInterpreter::robotModel;
 using namespace trikKitInterpreter::robotModel::twoD;
@@ -44,4 +48,16 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 	}
 
 	return twoDModel::robotModel::TwoDRobotModel::createDevice(port, deviceInfo);
+}
+
+void TwoDRobotModel::onInterpretationStarted()
+{
+	robotModel::parts::TrikDisplay * const display =
+			RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(*this, "DisplayPort");
+	if (display) {
+		display->clearScreen();
+		display->setBackground(QColor(Qt::gray));
+	} else {
+		/// @todo: if we get here it is wrong because display is not configured before the interpretation!
+	}
 }

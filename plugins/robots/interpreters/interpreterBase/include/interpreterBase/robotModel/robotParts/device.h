@@ -46,8 +46,9 @@ signals:
 	void configured(bool success);
 
 protected:
-	/// Perform actual configuration of a device. Shall be implemented for concrete devices.
-	virtual void doConfiguration() = 0;
+	/// Perform actual configuration of a device. Shall be implemented for concrete devices with non-trivial
+	/// configuration logic default implementation tells that device is already configured.
+	virtual void doConfiguration();
 
 	/// Concrete devices shall call this method when they finish their configuration.
 	void configurationCompleted(bool success);

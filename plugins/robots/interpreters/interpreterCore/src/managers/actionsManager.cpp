@@ -143,9 +143,11 @@ void ActionsManager::onActiveTabChanged(Id const &activeTabId)
 	mStopRobotAction.setEnabled(isDiagramTab);
 }
 
-void ActionsManager::onRobotModelActionChecked(QObject *robotModel)
+void ActionsManager::onRobotModelActionChecked(QObject *robotModelObject)
 {
-	mRobotModelManager.setModel(dynamic_cast<interpreterBase::robotModel::RobotModelInterface *>(robotModel));
+	auto const robotModel = dynamic_cast<interpreterBase::robotModel::RobotModelInterface *>(robotModelObject);
+	mRobotModelManager.setModel(robotModel);
+	onRobotModelChanged(*robotModel);
 }
 
 QString ActionsManager::kitIdOf(interpreterBase::robotModel::RobotModelInterface &model) const

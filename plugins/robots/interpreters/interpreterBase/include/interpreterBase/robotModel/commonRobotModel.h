@@ -64,6 +64,8 @@ public slots:
 	/// does nothing.
 	virtual void rereadSettings();
 
+	void onInterpretationStarted() override;
+
 protected:
 	/// Adds to a model list of devices that can be connected to given port.
 	void addAllowedConnection(PortInfo const &port, QList<DeviceInfo> const &devices);

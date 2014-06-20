@@ -32,9 +32,6 @@ public:
 //	void printText(int x, int y, QString const &text) override;
 //	void clearScreen() override;
 
-protected:
-	void doConfiguration() override;
-
 private:
 	engine::TwoDModelEngineInterface &mEngine;
 };

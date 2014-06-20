@@ -7,8 +7,9 @@
 
 using namespace utils::robotCommunication;
 
-RobotCommunicator::RobotCommunicator()
-	: mRobotCommunicationThreadObject(nullptr)
+RobotCommunicator::RobotCommunicator(QObject *parent)
+	: QObject(parent)
+	, mRobotCommunicationThreadObject(nullptr)
 {
 }
 

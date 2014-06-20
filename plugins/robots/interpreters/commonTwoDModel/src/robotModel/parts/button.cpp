@@ -17,8 +17,3 @@ void Button::read()
 {
 	emit newData(mEngine.display()->buttonIsDown(port().name()) ? 1 : 0);
 }
-
-void Button::doConfiguration()
-{
-	configurationCompleted(true);
-}

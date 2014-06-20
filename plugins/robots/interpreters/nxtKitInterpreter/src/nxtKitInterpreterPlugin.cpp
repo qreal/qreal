@@ -16,10 +16,11 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	: mRealRobotModel(kitId())
 	, mTwoDRobotModel(mRealRobotModel)
 	, mBlocksFactory(new blocks::NxtBlocksFactory)
-	, mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
 {
 	mAppTranslator.load(":/nxtKitInterpreter_" + QLocale().name());
 	QApplication::installTranslator(&mAppTranslator);
+
+	mAdditionalPreferences = new NxtAdditionalPreferences(mRealRobotModel.name());
 
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel, new NxtTwoDModelConfigurer());
 

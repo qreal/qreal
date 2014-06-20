@@ -178,6 +178,10 @@ void CommonRobotModel::rereadSettings()
 {
 }
 
+void CommonRobotModel::onInterpretationStarted()
+{
+}
+
 void CommonRobotModel::addAllowedConnection(PortInfo const &port, QList<DeviceInfo> const &devices)
 {
 	mAllowedConnections[port].append(devices);

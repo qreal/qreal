@@ -4,19 +4,17 @@
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/button.h>
 
-#include "parts/trikServoMotor.h"
-#include "parts/trikPowerMotor.h"
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
+
+#include "parts/trikServoMotor.h"
+#include "parts/trikPowerMotor.h"
 #include "parts/trikInfraredSensor.h"
-
 #include "parts/trikSonarSensor.h"
-
 #include "parts/trikMovementSensor.h"
-
-#include "parts/trikLed.h"
 #include "parts/trikCameraLineDetector.h"
+#include "parts/trikLed.h"
 
 using namespace trikKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;

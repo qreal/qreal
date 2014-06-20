@@ -419,7 +419,6 @@ void D2RobotModel::startInit()
 
 void D2RobotModel::startInterpretation()
 {
-	mDisplay->clear();
 	showModelWidget();
 	startInit();
 	mD2ModelWidget->startTimelineListening();
@@ -432,6 +431,7 @@ void D2RobotModel::stopRobot()
 		engine->breakMode = true;
 	}
 
+	mDisplay->clear();
 	mD2ModelWidget->stopTimelineListening();
 }
 

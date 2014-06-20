@@ -7,8 +7,3 @@ TrikSonarSensor::TrikSonarSensor(DeviceInfo const &info, PortInfo const &port)
 	: interpreterBase::robotModel::robotParts::RangeSensor(info, port)
 {
 }
-
-void TrikSonarSensor::doConfiguration()
-{
-	configurationCompleted(true);
-}
