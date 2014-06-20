@@ -871,8 +871,16 @@ void D2ModelWidget::reinitSensor(PortInfo const &port)
 	}
 
 	SensorItem *sensor = device.isA<RangeSensor>()
-			? new SonarSensorItem(*mWorldModel, mTwoDRobotModel->configuration(), port)
-			: new SensorItem(mTwoDRobotModel->configuration(), port);
+			? new SonarSensorItem(*mWorldModel, mTwoDRobotModel->configuration()
+					, port
+					, mConfigurer.sensorImagePath(device)
+					, mConfigurer.sensorImageRect(device)
+					)
+			: new SensorItem(mTwoDRobotModel->configuration()
+					, port
+					, mConfigurer.sensorImagePath(device)
+					, mConfigurer.sensorImageRect(device)
+					);
 
 	mRobot->addSensor(sensor);
 	mScene->addItem(sensor);

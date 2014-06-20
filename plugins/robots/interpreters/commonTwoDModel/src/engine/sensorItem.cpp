@@ -20,17 +20,17 @@ using namespace interpreterBase::robotModel;
 int const selectionDrift = 7;
 
 SensorItem::SensorItem(SensorsConfiguration &configuration
-		, PortInfo const &port)
+		, PortInfo const &port, QString const &pathToImage, QRect const &imageRect)
 	: RotateItem()
 	, mConfiguration(configuration)
 	, mPort(port)
 	, mDragged(false)
 	, mPointImpl()
 	, mRotater(nullptr)
-	, mImageRect(imageRect())
+	, mImageRect(imageRect.isEmpty() ? this->imageRect() : imageRect)
 	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
 			, selectionDrift, selectionDrift))
-	, mImage(pathToImage())
+	, mImage(QImage(pathToImage.isEmpty() ? this->pathToImage() : pathToImage))
 	, mPortItem(new PortItem(port))
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);

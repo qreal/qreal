@@ -1,5 +1,7 @@
 #include "trikTwoDModelConfigurer.h"
 
+#include <interpreterBase/robotModel/robotParts/lightSensor.h>
+
 #include "trikDisplayWidget.h"
 
 using namespace trikKitInterpreter;
@@ -29,4 +31,13 @@ PortInfo TrikTwoDModelConfigurer::defaultRightWheelPort() const
 twoDModel::engine::TwoDModelDisplayWidget *TrikTwoDModelConfigurer::displayWidget(QWidget * parent) const
 {
 	return new TrikDisplayWidget(parent);
+}
+
+QString trikKitInterpreter::TrikTwoDModelConfigurer::sensorImagePath(const DeviceInfo &deviceType) const
+{
+	if (deviceType.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
+		return ":icons/twoDColorEmpty.svg";
+	}
+
+	return "";
 }
