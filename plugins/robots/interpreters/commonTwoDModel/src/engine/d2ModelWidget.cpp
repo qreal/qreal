@@ -1317,8 +1317,8 @@ void D2ModelWidget::updateWheelComboBoxes()
 	mUi->rightWheelComboBox->clear();
 
 	/// @todo More general way of specifying uninitialized values, or someone actually will name some port as "None".
-	mUi->leftWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None", output)));
-	mUi->rightWheelComboBox->addItem("None", QVariant::fromValue(PortInfo("None", output)));
+	mUi->leftWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
+	mUi->rightWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 
 	for (PortInfo const &port : mRobotModel.availablePorts()) {
 		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {

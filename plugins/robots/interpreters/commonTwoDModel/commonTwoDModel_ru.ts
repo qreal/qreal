@@ -271,20 +271,26 @@
         <translation type="vanished">Нет сенсора</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="809"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="800"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="809"/>
-        <location filename="src/engine/d2ModelWidget.cpp" line="829"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="800"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="820"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="src/engine/d2ModelWidget.cpp" line="829"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="820"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели мира</translation>
+    </message>
+    <message>
+        <location filename="src/engine/d2ModelWidget.cpp" line="1320"/>
+        <location filename="src/engine/d2ModelWidget.cpp" line="1321"/>
+        <source>No wheel</source>
+        <translation>Отсутствует</translation>
     </message>
     <message>
         <location filename="src/engine/d2ModelWidget.cpp" line="1326"/>
