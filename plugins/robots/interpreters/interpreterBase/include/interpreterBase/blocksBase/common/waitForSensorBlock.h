@@ -7,26 +7,29 @@ namespace blocksBase {
 namespace common {
 
 /// A base for all blocks that wait for sensor.
-class ROBOTS_INTERPRETER_BASE_EXPORT WaitForSensorBlock : public interpreterBase::blocksBase::common::WaitBlock
+class ROBOTS_INTERPRETER_BASE_EXPORT WaitForSensorBlock : public WaitBlock
 {
 	Q_OBJECT
 
 public:
-	explicit WaitForSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-
-	~WaitForSensorBlock() override;
+	/// Constructor, takes current robot model as parameter.
+	explicit WaitForSensorBlock(robotModel::RobotModelInterface &robotModel);
 
 	void run() override;
+
 	void stopActiveTimerInBlock() override;
 
 protected slots:
-	virtual void responseSlot(int reading) = 0;
 	void timerTimeout() override;
 
 protected:
 	void stop() override;
 
-	interpreterBase::robotModel::PortInfo mPort;
+	robotModel::PortInfo mPort;
+
+private:
+	/// Shall be reimplemented to do value check when new data from sensor is ready.
+	virtual void responseSlot(int reading) = 0;
 };
 
 }

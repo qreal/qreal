@@ -12,25 +12,28 @@ class EncoderSensor;
 namespace blocksBase {
 namespace common {
 
-/// An interpreter`s implementation for the encoder`s wait block.
-class ROBOTS_INTERPRETER_BASE_EXPORT WaitForEncoderBlock : public interpreterBase::blocksBase::common::WaitBlock
+/// An interpreter`s implementation for "wait for the encoder" block.
+/// @todo Inherit it from WaitForSensorBlock?
+class ROBOTS_INTERPRETER_BASE_EXPORT WaitForEncoderBlock : public WaitBlock
 {
 	Q_OBJECT
 
 public:
-	explicit WaitForEncoderBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~WaitForEncoderBlock() override;
+	/// Constructor, takes current robot model as parameter.
+	explicit WaitForEncoderBlock(robotModel::RobotModelInterface &robotModel);
 
 	void run() override;
 
 private slots:
+	/// Called when new data from encoder ready, checks it against "TachoLimit" property.
 	void responseSlot(int reading);
+
 	void timerTimeout() override;
 
 private:
-	interpreterBase::robotModel::DeviceInfo device() const override;
+	robotModel::DeviceInfo device() const override;
 
-	interpreterBase::robotModel::robotParts::EncoderSensor *mEncoderSensor;  // Does not take ownership
+	robotModel::robotParts::EncoderSensor *mEncoderSensor;  // Does not have ownership
 };
 
 }

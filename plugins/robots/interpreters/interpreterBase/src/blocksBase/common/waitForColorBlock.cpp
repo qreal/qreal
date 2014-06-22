@@ -8,10 +8,6 @@ WaitForColorBlock::WaitForColorBlock(interpreterBase::robotModel::RobotModelInte
 {
 }
 
-WaitForColorBlock::~WaitForColorBlock()
-{
-}
-
 void WaitForColorBlock::responseSlot(int reading)
 {
 	QString const targetColor = stringProperty("Color");

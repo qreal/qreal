@@ -11,10 +11,6 @@ WaitForTouchSensorBlock::WaitForTouchSensorBlock(interpreterBase::robotModel::Ro
 {
 }
 
-WaitForTouchSensorBlock::~WaitForTouchSensorBlock()
-{
-}
-
 void WaitForTouchSensorBlock::responseSlot(int reading)
 {
 	if (reading == 1) {

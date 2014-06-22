@@ -13,10 +13,6 @@ WaitForEncoderBlock::WaitForEncoderBlock(RobotModelInterface &robotModel)
 {
 }
 
-WaitForEncoderBlock::~WaitForEncoderBlock()
-{
-}
-
 void WaitForEncoderBlock::run()
 {
 	QString const port = stringProperty("Port");

@@ -6,7 +6,7 @@
 
 #include <interpreterBase/blocksBase/common/waitForAccelerometerBlock.h>
 #include <interpreterBase/blocksBase/common/waitForEncoderBlock.h>
-#include <interpreterBase/blocksBase/common/waitForGyroscopeBlock.h>
+#include <interpreterBase/blocksBase/common/waitForGyroscopeSensorBlock.h>
 #include <interpreterBase/blocksBase/common/waitForLightSensorBlock.h>
 #include <interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <interpreterBase/blocksBase/common/waitForButtonBlock.h>

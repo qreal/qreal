@@ -11,10 +11,6 @@ WaitForColorSensorBlockBase::WaitForColorSensorBlockBase(interpreterBase::robotM
 {
 }
 
-WaitForColorSensorBlockBase::~WaitForColorSensorBlockBase()
-{
-}
-
 DeviceInfo WaitForColorSensorBlockBase::device() const
 {
 	return DeviceInfo::create<robotParts::ColorSensor>();

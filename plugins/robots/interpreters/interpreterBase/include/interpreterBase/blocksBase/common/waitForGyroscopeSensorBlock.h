@@ -6,20 +6,20 @@ namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
-/// An interpreter`s implementation for the gyroscope`s wait block.
+/// An interpreter`s implementation for "wait for gyroscope" block.
 class ROBOTS_INTERPRETER_BASE_EXPORT WaitForGyroscopeSensorBlock : public WaitForSensorBlock
 {
 	Q_OBJECT
 
 public:
-	explicit WaitForGyroscopeSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~WaitForGyroscopeSensorBlock() override;
+	/// Constructor, takes current robot model as parameter.
+	explicit WaitForGyroscopeSensorBlock(robotModel::RobotModelInterface &robotModel);
 
 protected slots:
 	void responseSlot(int reading) override;
 
 protected:
-	interpreterBase::robotModel::DeviceInfo device() const override;
+	robotModel::DeviceInfo device() const override;
 };
 }
 }

@@ -20,10 +20,6 @@ public:
 	{
 	}
 
-	~AdditionalPreferences() override
-	{
-	}
-
 	/// Called each time when user selects another robot model.
 	/// @param robotModel - newly selected robot model.
 	virtual void onRobotModelChanged(robotModel::RobotModelInterface * const robotModel)

@@ -26,7 +26,7 @@ SOURCES += \
 	$$PWD/src/blocksBase/common/waitForColorIntensityBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForColorSensorBlockBase.cpp \
 	$$PWD/src/blocksBase/common/waitForEncoderBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForGyroscopeBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForGyroscopeSensorBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForLightSensorBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForSensorBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForSonarDistanceBlock.cpp \
@@ -83,7 +83,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForColorIntensityBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForColorSensorBlockBase.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForEncoderBlock.h \
-	$$PWD/include/interpreterBase/blocksBase/common/waitForGyroscopeBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/waitForGyroscopeSensorBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForLightSensorBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForSensorBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h \

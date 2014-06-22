@@ -11,10 +11,6 @@ WaitForSoundSensorBlock::WaitForSoundSensorBlock(interpreterBase::robotModel::Ro
 {
 }
 
-WaitForSoundSensorBlock::~WaitForSoundSensorBlock()
-{
-}
-
 void WaitForSoundSensorBlock::responseSlot(int reading)
 {
 	int const targetPercents = evaluate("Volume").toInt();

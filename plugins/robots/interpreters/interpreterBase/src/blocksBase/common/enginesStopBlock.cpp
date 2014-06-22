@@ -5,7 +5,7 @@
 using namespace interpreterBase::blocksBase::common;
 using namespace interpreterBase::robotModel;
 
-EnginesStopBlock::EnginesStopBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+EnginesStopBlock::EnginesStopBlock(RobotModelInterface &robotModel)
 	: EngineCommandBlock(robotModel)
 {
 }

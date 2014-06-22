@@ -6,15 +6,14 @@ namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
-/// An interpreter`s implementation for the sonar sensor`s wait block.
+/// An interpreter`s implementation for "wait for sonar sensor" block.
 class ROBOTS_INTERPRETER_BASE_EXPORT WaitForSonarDistanceBlock : public WaitForSensorBlock
 {
 	Q_OBJECT
 
 public:
-	WaitForSonarDistanceBlock(interpreterBase::robotModel::RobotModelInterface &robotModel
-			, interpreterBase::robotModel::DeviceInfo const &device);
-	~WaitForSonarDistanceBlock() override;
+	/// Constructor, takes current robot model as parameter.
+	WaitForSonarDistanceBlock(robotModel::RobotModelInterface &robotModel, robotModel::DeviceInfo const &device);
 
 protected slots:
 	void responseSlot(int reading) override;

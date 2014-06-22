@@ -15,11 +15,13 @@ class ROBOTS_INTERPRETER_BASE_EXPORT EngineCommandBlock : public Block
 	Q_OBJECT
 
 public:
+	/// Constructor, takes current robot model as parameter.
 	explicit EngineCommandBlock(robotModel::RobotModelInterface &robotModel);
 
 	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const override;
 
 protected slots:
+	/// @todo Why it is needed and where it is used?
 	void timeout();
 
 protected:

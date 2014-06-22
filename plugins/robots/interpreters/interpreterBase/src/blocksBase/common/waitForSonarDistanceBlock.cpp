@@ -13,10 +13,6 @@ WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(interpreterBase::robotModel
 {
 }
 
-WaitForSonarDistanceBlock::~WaitForSonarDistanceBlock()
-{
-}
-
 void WaitForSonarDistanceBlock::responseSlot(int reading)
 {
 	int const targetDistance = evaluate("Distance").toInt();

@@ -11,10 +11,6 @@ WaitForLightSensorBlock::WaitForLightSensorBlock(interpreterBase::robotModel::Ro
 {
 }
 
-WaitForLightSensorBlock::~WaitForLightSensorBlock()
-{
-}
-
 void WaitForLightSensorBlock::responseSlot(int reading)
 {
 	int const targetPercents = evaluate("Percents").toInt();

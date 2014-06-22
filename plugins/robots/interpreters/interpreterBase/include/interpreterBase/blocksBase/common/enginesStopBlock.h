@@ -7,12 +7,13 @@ namespace blocksBase {
 namespace common {
 
 /// An interpreter`s implementation for the motors stop block.
-class ROBOTS_INTERPRETER_BASE_EXPORT EnginesStopBlock : public interpreterBase::blocksBase::common::EngineCommandBlock
+class ROBOTS_INTERPRETER_BASE_EXPORT EnginesStopBlock : public EngineCommandBlock
 {
 	Q_OBJECT
 
 public:
-	explicit EnginesStopBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	/// Constructor, takes current robot model as parameter.
+	explicit EnginesStopBlock(robotModel::RobotModelInterface &robotModel);
 
 	void run() override;
 };

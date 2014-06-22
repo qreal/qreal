@@ -8,24 +8,28 @@ namespace blocksBase {
 namespace common {
 
 /// An interpreter`s implementation for the buttons wait block.
-class ROBOTS_INTERPRETER_BASE_EXPORT WaitForButtonBlock : public interpreterBase::blocksBase::common::WaitBlock
+/// @todo Inherit it from WaitForSensorBlock?
+class ROBOTS_INTERPRETER_BASE_EXPORT WaitForButtonBlock : public WaitBlock
 {
 	Q_OBJECT
 
 public:
-	WaitForButtonBlock(interpreterBase::robotModel::RobotModelInterface &robotModel, QString const &portName);
-	~WaitForButtonBlock() override;
+	/// Constructor, takes current robot model as parameter.
+	WaitForButtonBlock(robotModel::RobotModelInterface &robotModel, QString const &portName);
 
-protected slots:
+private slots:
+	/// Called when new data about button state is received.
 	void responseSlot(int isPressed);
+
 	void timerTimeout() override;
 
 private:
 	void run() override;
-	interpreterBase::robotModel::DeviceInfo device() const override;
+
+	robotModel::DeviceInfo device() const override;
 
 	QString const mPort;
-	robotModel::robotParts::Button *mButton;
+	robotModel::robotParts::Button *mButton;  // Does not have ownership.
 };
 
 }

@@ -12,14 +12,14 @@ class ROBOTS_INTERPRETER_BASE_EXPORT WaitForLightSensorBlock : public WaitForSen
 	Q_OBJECT
 
 public:
-	explicit WaitForLightSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~WaitForLightSensorBlock() override;
+	/// Constructor, takes current robot model as parameter.
+	explicit WaitForLightSensorBlock(robotModel::RobotModelInterface &robotModel);
 
 protected slots:
 	void responseSlot(int reading) override;
 
 protected:
-	interpreterBase::robotModel::DeviceInfo device() const override;
+	robotModel::DeviceInfo device() const override;
 };
 }
 }

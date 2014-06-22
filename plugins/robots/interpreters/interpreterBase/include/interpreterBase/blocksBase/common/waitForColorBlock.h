@@ -6,14 +6,14 @@ namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
-/// An interpreter`s implementation for the color sensor recognition wait block.
+/// An interpreter`s implementation for "wait for color sensor" block.
 class ROBOTS_INTERPRETER_BASE_EXPORT WaitForColorBlock : public WaitForColorSensorBlockBase
 {
 	Q_OBJECT
 
 public:
-	explicit WaitForColorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~WaitForColorBlock() override;
+	/// Constructor, takes current robot model as parameter.
+	explicit WaitForColorBlock(robotModel::RobotModelInterface &robotModel);
 
 protected slots:
 	void responseSlot(int reading) override;

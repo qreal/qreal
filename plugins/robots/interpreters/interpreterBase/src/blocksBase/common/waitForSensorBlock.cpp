@@ -12,10 +12,6 @@ WaitForSensorBlock::WaitForSensorBlock(RobotModelInterface &robotModel)
 {
 }
 
-WaitForSensorBlock::~WaitForSensorBlock()
-{
-}
-
 void WaitForSensorBlock::run()
 {
 	QString const port = stringProperty("Port");

@@ -12,11 +12,11 @@ class ROBOTS_INTERPRETER_BASE_EXPORT WaitForColorSensorBlockBase : public WaitFo
 	Q_OBJECT
 
 public:
-	explicit WaitForColorSensorBlockBase(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~WaitForColorSensorBlockBase() override;
+	/// Constructor, takes current robot model as parameter.
+	explicit WaitForColorSensorBlockBase(robotModel::RobotModelInterface &robotModel);
 
 protected:
-	interpreterBase::robotModel::DeviceInfo device() const override;
+	robotModel::DeviceInfo device() const override;
 };
 
 }

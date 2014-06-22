@@ -13,22 +13,24 @@ class EncoderSensor;
 namespace blocksBase {
 namespace common {
 
-/// An interpreter`s implementation for the nullification encoder block.
-class ROBOTS_INTERPRETER_BASE_EXPORT ClearEncoderBlock : public interpreterBase::blocksBase::Block
+/// An interpreter's implementation for "clear encoder" block.
+class ROBOTS_INTERPRETER_BASE_EXPORT ClearEncoderBlock : public Block
 {
 	Q_OBJECT
 
 public:
-	explicit ClearEncoderBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	/// Constructor, takes current robot model as parameter.
+	explicit ClearEncoderBlock(robotModel::RobotModelInterface &robotModel);
 
 	void run() override;
 
-	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> usedDevices() const override;
+	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const override;
 
 private:
-	QList<interpreterBase::robotModel::robotParts::EncoderSensor *> parsePorts() const;
+	/// Splits value of "Ports" property by "," and finds corresponding encoders in a model.
+	QList<robotModel::robotParts::EncoderSensor *> parsePorts() const;
 
-	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
+	robotModel::RobotModelInterface &mRobotModel;
 };
 
 }

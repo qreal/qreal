@@ -1,4 +1,4 @@
-#include "interpreterBase/blocksBase/common/waitForGyroscopeBlock.h"
+#include "interpreterBase/blocksBase/common/waitForGyroscopeSensorBlock.h"
 
 #include "interpreterBase/robotModel/robotParts/gyroscopeSensor.h"
 
@@ -8,10 +8,6 @@ using namespace robotModel;
 
 WaitForGyroscopeSensorBlock::WaitForGyroscopeSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
-{
-}
-
-WaitForGyroscopeSensorBlock::~WaitForGyroscopeSensorBlock()
 {
 }
 
