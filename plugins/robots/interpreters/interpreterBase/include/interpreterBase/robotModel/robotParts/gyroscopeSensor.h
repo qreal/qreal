@@ -7,6 +7,7 @@ namespace interpreterBase {
 namespace robotModel {
 namespace robotParts {
 
+/// Base class for gyroscope sensors.
 class ROBOTS_INTERPRETER_BASE_EXPORT GyroscopeSensor : public ScalarSensor
 {
 	Q_OBJECT
@@ -14,6 +15,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT GyroscopeSensor : public ScalarSensor
 	Q_CLASSINFO("friendlyName", tr("Gyroscope"))
 
 public:
+	/// Constructor, takes device type info and port on which this sensor is configured.
 	GyroscopeSensor(DeviceInfo const &info, PortInfo const &port);
 };
 

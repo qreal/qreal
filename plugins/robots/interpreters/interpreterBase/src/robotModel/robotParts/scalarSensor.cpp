@@ -6,7 +6,3 @@ ScalarSensor::ScalarSensor(DeviceInfo const &info, PortInfo const &port)
 	: AbstractSensor(info, port)
 {
 }
-
-ScalarSensor::~ScalarSensor()
-{
-}

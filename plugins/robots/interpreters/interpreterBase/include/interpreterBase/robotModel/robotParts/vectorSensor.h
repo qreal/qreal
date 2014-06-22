@@ -10,7 +10,7 @@ namespace interpreterBase {
 namespace robotModel {
 namespace robotParts {
 
-/// Sensor that returns a vector of integer values with cardinality depending on concrete sensor (3 for accelerometer,
+/// Sensor that returns a vector of integer values with cardinality depending on specific sensor (3 for accelerometer,
 /// for example).
 class ROBOTS_INTERPRETER_BASE_EXPORT VectorSensor : public AbstractSensor
 {

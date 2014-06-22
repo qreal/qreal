@@ -15,6 +15,10 @@ namespace robotParts {
 /// Anything that can be plugged into a port on a robot. Bound to a port at creation time and shall be configured
 /// before it becomes ready to work. Base class for all engines/sensors/displays and so on.
 /// Each concrete device should have Q_CLASSINFO macroses for friendlyName and device direction.
+///
+/// @todo Most subclasses are actually just tags for inheritance hierarchy, but due to C++ syntax it takes about 35
+///       lines of code to define each. We shall consider usage of internal DSL (macros? templates?) or even
+///       visual DSL on QReal for device declarations. Or rewrite everything on F#.
 class ROBOTS_INTERPRETER_BASE_EXPORT Device : public QObject
 {
 	Q_OBJECT

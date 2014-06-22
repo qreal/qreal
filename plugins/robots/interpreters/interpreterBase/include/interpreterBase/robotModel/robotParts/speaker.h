@@ -7,6 +7,7 @@ namespace interpreterBase {
 namespace robotModel {
 namespace robotParts {
 
+/// Base class for speaker or line-out device.
 class ROBOTS_INTERPRETER_BASE_EXPORT Speaker : public Device
 {
 	Q_OBJECT
@@ -15,6 +16,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Speaker : public Device
 	Q_CLASSINFO("direction", "output")
 
 public:
+	/// Constructor, takes device type info and port on which this device is configured.
 	Speaker(DeviceInfo const &info, PortInfo const &port);
 };
 

@@ -6,7 +6,3 @@ AbstractSensor::AbstractSensor(DeviceInfo const &info, PortInfo const &port)
 	: Device(info, port)
 {
 }
-
-AbstractSensor::~AbstractSensor()
-{
-}
