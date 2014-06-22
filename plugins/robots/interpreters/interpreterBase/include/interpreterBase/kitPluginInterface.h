@@ -65,21 +65,21 @@ public:
 		return nullptr;
 	}
 
-	// Transfers ownership.
 	/// Widget with specific settings for a plugin. save() method is called when user saves all settings,
 	/// restoreSettings() - each time when used selects other robot model for this kit. If nullptr is
 	/// returned no widget is added on settings tab
+	/// Transfers ownership.
 	virtual AdditionalPreferences *settingsWidget() = 0;
 
 	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
 	/// goes here.
+	/// @todo: what about ownership of underlying QAction objects?
 	virtual QList<qReal::ActionInfo> customActions() = 0;
 
-	/// Shall be overridden to return QAction instances for their customization in
-	/// hot key manager.
+	/// Shall be overridden to return QAction instances for their customization in hot key manager.
 	virtual QList<qReal::HotKeyActionInfo> hotKeyActions() = 0;
 
-	/// Returns an icon for toolbar action of fast robot model switching
+	/// Returns an icon for toolbar action of fast robot model switching.
 	virtual QIcon iconForFastSelector(robotModel::RobotModelInterface const &robotModel) const = 0;
 
 	/// Sensor configuration provider object for this plugin that needs to be registered in providers network.

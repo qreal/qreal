@@ -7,6 +7,7 @@ namespace interpreterBase {
 namespace robotModel {
 namespace robotParts {
 
+/// Abstract accelerometer sensor.
 class ROBOTS_INTERPRETER_BASE_EXPORT AccelerometerSensor : public VectorSensor
 {
 	Q_OBJECT
@@ -14,6 +15,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT AccelerometerSensor : public VectorSensor
 	Q_CLASSINFO("friendlyName", tr("Accelerometer"))
 
 public:
+	/// Constructor, takes device type info and port on which this sensor is configured.
 	AccelerometerSensor(DeviceInfo const &info, PortInfo const &port);
 };
 

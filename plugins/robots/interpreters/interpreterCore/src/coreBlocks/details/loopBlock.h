@@ -21,7 +21,7 @@ private:
 	bool initNextBlocks() override;
 
 	/// Iterations count computation occures here.
-	void additionalInit() override;
+	void additionalInit();
 
 	qReal::Id mIterationStartBlockId;
 	int mIterations;

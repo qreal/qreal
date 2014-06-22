@@ -21,7 +21,7 @@ public:
 	PortInfo();
 
 	/// Constructs new PortInfo instance. If name is empty then the port is considered to be invalid.
-	/// Ports with similar names but different directions are considered to be different.
+	/// Ports with same names but different directions are considered to be different.
 	explicit PortInfo(QString const &name, Direction direction
 			, QStringList const &nameAliases = QStringList()
 			, QString const &reservedVariableName = QString());
@@ -37,7 +37,7 @@ public:
 	Direction direction() const;
 
 	/// Returns a list of names that will be treated as corresponding to the same port as name() does.
-	/// Useful for compability of diagrams for the different robot models (e.g. '1' for TRIK and 'A' for NXT).
+	/// Useful for compability of diagrams for the different robot models (e.g. 'M1' for TRIK and 'A' for NXT).
 	QStringList nameAliases() const;
 
 	/// Returns a name of the reserved variable for this port (that varible can be used to access

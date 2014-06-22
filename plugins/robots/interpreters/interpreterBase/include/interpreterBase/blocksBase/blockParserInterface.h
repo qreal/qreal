@@ -7,12 +7,14 @@ namespace interpreterBase {
 namespace blocksBase {
 
 /// An interface of any text language evaluator.
+/// @todo Some method names and overall "look and feel" of this class are ugly.
 class BlockParserInterface
 {
 public:
 	virtual ~BlockParserInterface() {}
 
 	/// Executes the expression that returns some numeric value. Returns the evaluated value.
+	/// Transfers ownership.
 	virtual utils::Number *standartBlockParseProcess(QString const &stream, int &pos, qReal::Id const &curId) = 0;
 
 	/// Executes the expression that just performs some variables assignment and returns nothing.
@@ -27,7 +29,8 @@ public:
 	/// Resets true if some errors occured from the last deselect() method call.
 	virtual bool hasErrors() const = 0;
 
-	/// Returns a list of all variables and heir values met during the parsing process.
+	/// Returns a list of all variables and their values met during the parsing process.
+	/// Does not transfer ownership.
 	virtual QMap<QString, utils::Number *> const &variables() const = 0;
 };
 

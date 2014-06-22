@@ -6,6 +6,7 @@ namespace interpreterBase {
 namespace blocksBase {
 
 /// Centralized blocks storage. Provides mapping from block ids to objects that implement logic of block.
+/// @todo Seems to be unneeded here.
 class BlocksTableInterface
 {
 public:

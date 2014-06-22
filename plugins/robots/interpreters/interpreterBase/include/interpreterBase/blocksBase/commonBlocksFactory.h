@@ -17,11 +17,12 @@ public:
 
 	BlockInterface *block(qReal::Id const &element) override;
 
+	/// Does not take ownership.
 	void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter
-			, BlockParserInterface * const parser) override;
+			, BlockParserInterface * const parser) final;
 
 	/// May be overrided to disable some blocks from palette when binded to this factory
 	/// robot model is active. Default implementation disables nothing.
@@ -35,11 +36,12 @@ protected:
 	/// is performed in parent code.
 	virtual Block *produceBlock(qReal::Id const &element) = 0;
 
-	interpreterBase::robotModel::RobotModelManagerInterface *mRobotModelManager;
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;
-	qReal::LogicalModelAssistInterface const *mLogicalModelApi;
-	qReal::ErrorReporterInterface *mErrorReporter;
-	interpreterBase::blocksBase::BlockParserInterface *mParser;
+	/// @todo: there is no such thing as protected fields. One can not trust its descendants.
+	interpreterBase::robotModel::RobotModelManagerInterface *mRobotModelManager;  // Does not have ownership.
+	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership.
+	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership.
+	qReal::ErrorReporterInterface *mErrorReporter;  // Does not have ownership.
+	interpreterBase::blocksBase::BlockParserInterface *mParser;  // Does not have ownership.
 };
 
 }

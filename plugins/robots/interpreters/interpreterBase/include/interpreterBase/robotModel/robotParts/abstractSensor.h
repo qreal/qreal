@@ -18,9 +18,8 @@ class ROBOTS_INTERPRETER_BASE_EXPORT AbstractSensor : public Device
 	Q_CLASSINFO("direction", "input")
 
 public:
+	/// Constructor, takes device type info and port on which this sensor is configured.
 	AbstractSensor(DeviceInfo const &info, PortInfo const &port);
-
-	virtual ~AbstractSensor();
 
 	/// Ask sensor to provide new readings. Returns immediately. When reading is done, sensor emits "newData" signal
 	/// with reading as a parameter.

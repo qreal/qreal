@@ -3,9 +3,10 @@
 #include <QtCore/QObject>
 
 #include <qrkernel/ids.h>
-#include <interpreterBase/robotModel/portInfo.h>
-#include <interpreterBase/robotModel/deviceInfo.h>
-#include <interpreterBase/interpreterBaseDeclSpec.h>
+
+#include "interpreterBase/robotModel/portInfo.h"
+#include "interpreterBase/robotModel/deviceInfo.h"
+#include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {
 namespace blocksBase {
@@ -16,7 +17,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT BlockInterface : public QObject
 	Q_OBJECT
 
 public:
-	virtual ~BlockInterface() {}
+	~BlockInterface() override {}
 
 	/// Starts block execution.
 	virtual void interpret() = 0;
@@ -36,18 +37,17 @@ public:
 
 signals:
 	/// Emitted each time when the block has finished its work.
-	/// @param nextBlock An id of the block that was decided to follow next.
+	/// @param nextBlock - an id of the block that was decided to follow next.
 	void done(qReal::Id const &nextBlock);
 
 	/// Emitted each time when the block has requested new thread. Useful for fork blocks.
-	/// @param startBlock An id of the block that was decided to start the thread execution.
+	/// @param startBlock - an id of the block that was decided to start the thread execution.
 	void newThread(qReal::Id const &startBlock);
 
 	/// Emitted each time when the block stops its execution due to some error.
 	void failure();
 
-	/// Emitted each time when execution must be continued from the initial block
-	/// of the specified diagram
+	/// Emitted each time when execution must be continued from the initial block of the specified diagram.
 	void stepInto(qReal::Id const &diagram);
 };
 

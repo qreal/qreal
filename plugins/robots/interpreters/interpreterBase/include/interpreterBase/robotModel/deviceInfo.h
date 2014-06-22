@@ -11,14 +11,14 @@
 namespace interpreterBase {
 namespace robotModel {
 
-/// Describes a type of a device, not a concrete instance of it. Given a set of DeviceInfo corresponding to
-/// some devices hierarchy original inheritance relations can be recovered with isA() method.
+/// Describes a type of a device. Provides information about inheritance relation between devices by isA method
+/// (for example, rangeSensor.isA<Sensor>()).
 class ROBOTS_INTERPRETER_BASE_EXPORT DeviceInfo
 {
 public:
 	/// Creates a new instance of a Device descriptor. The resulting object will
 	/// correspond to a given type only if Q_OBJECT macro is used inside its declaration.
-	/// @warning The given device type must contain friendlyName() and direction() static functions
+	/// @warning Given device type must contain friendlyName() and direction() static functions
 	/// and Q_OBJECT macro.
 	template <typename T>
 	static DeviceInfo create()
@@ -36,13 +36,13 @@ public:
 		return result;
 	}
 
-	/// Deserializes inner string representation obtained by toString()
+	/// Deserializes inner string representation obtained by toString().
 	static DeviceInfo fromString(QString const &string);
 
-	/// Constructs invalid DeviceInfo instance
+	/// Constructs invalid DeviceInfo instance.
 	DeviceInfo();
 
-	/// Serializes given device info into inner string representation
+	/// Serializes given device info into inner string representation.
 	QString toString() const;
 
 	/// Returns if the device corresponding to 'this' inherits a 'parent' one or they are the devices of the same type.
@@ -62,7 +62,7 @@ public:
 	/// Returns a string that can be displayed to a user as the name of the device.
 	QString friendlyName() const;
 
-	/// Returns the direction of communication with devices of this type
+	/// Returns the direction of communication with devices of this type.
 	Direction direction() const;
 
 	/// Returns true if device is empty (instantiated with DeviceInfo() constructor).

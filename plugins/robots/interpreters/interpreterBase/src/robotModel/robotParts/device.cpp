@@ -15,10 +15,6 @@ Device::Device(DeviceInfo const &info, PortInfo const &port)
 	connect(&mConfigurationTimeoutTimer, &QTimer::timeout, this, &Device::configurationTimerTimeoutSlot);
 }
 
-Device::~Device()
-{
-}
-
 PortInfo const &Device::port() const
 {
 	return mPort;

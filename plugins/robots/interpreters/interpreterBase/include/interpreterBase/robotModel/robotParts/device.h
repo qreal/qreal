@@ -24,8 +24,6 @@ public:
 	/// @param port - port on which this device shall be configured.
 	Device(DeviceInfo const &info, PortInfo const &port);
 
-	virtual ~Device();
-
 	/// Returns port on which this device is or shall be configured.
 	PortInfo const &port() const;
 

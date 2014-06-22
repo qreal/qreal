@@ -8,7 +8,8 @@
 namespace interpreterBase {
 
 /// Mixin abstract class that shall be inherited by anyone who wants to change device configuration
-/// or keep in sync with various places where device configuration can be changed.
+/// or keep in sync with various places where device configuration can be changed. Configuration is stored
+/// separately for each robot model, so, for example, changes made in NXT mode do not affect TRIK.
 class ROBOTS_INTERPRETER_BASE_EXPORT DevicesConfigurationProvider
 {
 public:
@@ -21,12 +22,13 @@ public:
 	/// Links other device configuration provider to this one, so when our calls deviceConfigurationChanged,
 	/// onDeviceConfigurationChanged will be called in other.
 	/// Does nothing if otherProvider is null.
-	/// Does not transfer ownership.
+	/// Does not take ownership.
 	void connectDevicesConfigurationProvider(DevicesConfigurationProvider * const otherProvider);
 
 protected:
 	/// Shall be called by descendants when device configuration is changed. Change is propagated automatically
 	/// through entire graph of connected providers.
+	/// @param robotModel - robot model name to which configuration change is applied.
 	/// @param port - input port on which device has changed.
 	/// @param device - new type of a device on a given port.
 	void deviceConfigurationChanged(QString const &robotModel
@@ -39,7 +41,7 @@ protected:
 			, robotModel::PortInfo const &port
 			, robotModel::DeviceInfo const &device);
 
-	/// Sets null devices to each known port of each known robot model
+	/// Sets null devices to each known port of each known robot model.
 	void clearConfiguration();
 
 	/// Returns all models present in current configuration.

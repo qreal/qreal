@@ -17,10 +17,6 @@ Block::Block()
 	connect(this, &BlockInterface::done, this, &Block::finishedRunning);
 }
 
-Block::~Block()
-{
-}
-
 void Block::init(Id const &graphicalId
 		, GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
@@ -62,6 +58,7 @@ bool Block::initNextBlocks()
 			error(tr("Outgoing link is not connected"));
 			return false;
 		}
+
 		mNextBlockId = nextBlockId;
 	}
 
@@ -155,11 +152,13 @@ QVariant Block::evaluate(QString const &propertyName)
 	if (mParser->hasErrors()) {
 		mParser->deselect();
 		emit failure();
+		delete result;
 		return QVariant();
 	}
 
-
-	return result->value();
+	QVariant const value = result->value();
+	delete result;
+	return value;
 }
 
 bool Block::evaluateBool(QString const &propertyName)
@@ -180,9 +179,5 @@ interpreterBase::robotModel::RobotModelInterface &Block::model()
 }
 
 void Block::finishedSteppingInto()
-{
-}
-
-void Block::additionalInit()
 {
 }

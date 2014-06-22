@@ -25,7 +25,7 @@ namespace robotModel {
 /// always connected.
 ///
 /// Life cycle of a model is as follows:
-/// - Model is created in Disconnected state
+/// - Model is created in Disconnected state.
 /// - Model is initialized (by calling init() method), which loads plugin-specific info that can not be loaded in
 ///   constructor.
 /// - Model connects to a real robot by calling connectToRobot(). When connection is established
@@ -134,11 +134,17 @@ public:
 	virtual QList<DeviceInfo> convertibleBases() const = 0;
 
 	/// Returns a timeline object that can return current timestamps (for this robot model time) and produce timers.
+	/// In real model timeline is a simple timer, for simulation models timeline may be faster or slower than real time,
+	/// it shall be possible to pause time and so on. No clients of a robot model shall make any assumptions about time,
+	/// they shall use only timeline provided by model to calculate time intervals.
+	///
+	/// @todo The same applies to device configuration timeouts and other technical stuff where time is required.
+	///       Simulation model can simulate delay in device initialization, using its own time scale, which may lead to
+	///       failures in common code.
 	virtual utils::TimelineInterface &timeline() = 0;
 
 public slots:
-	/// Called each time when interpretation starts its work. Implementation must reset robot
-	/// to its default state.
+	/// Called each time when interpretation starts its work. Implementation must reset robot to its default state.
 	virtual void onInterpretationStarted() = 0;
 
 signals:
@@ -147,7 +153,7 @@ signals:
 	/// @param success - true, if connected successfully.
 	void connected(bool success);
 
-	/// Emitted when robot is disconnected.
+	/// Emitted when robot is disconnected. Not emitted when connection attempt fails.
 	void disconnected();
 
 	/// Emitted when all devices are configured (or failed to configure) and model is ready to work.

@@ -2,10 +2,6 @@
 
 using namespace interpreterBase::robotModel;
 
-Configuration::Configuration()
-{
-}
-
 Configuration::~Configuration()
 {
 	qDeleteAll(mPendingDevices);

@@ -19,17 +19,18 @@ class BlocksFactoryInterface
 public:
 	virtual ~BlocksFactoryInterface() {}
 
+	/// Creates a new block by given id.
 	/// Transfers block ownership to caller.
 	virtual BlockInterface *block(qReal::Id const &element) = 0;
 
 	/// Returns a list of blocks that can be instantiated by this factory.
 	virtual qReal::IdList providedBlocks() const = 0;
 
-	/// Returns a list of blocks that will be disabled from palette when corresponding to this factory
-	/// robot model is selected.
+	/// Returns a list of blocks that will be disabled in palette when corresponding to this factory robot model
+	/// is selected.
 	virtual qReal::IdList blocksToDisable() const = 0;
 
-	/// Initializes this factory with external compoments. Those components are use for correct blocks initialization.
+	/// Initializes this factory with external compoments. Those components are used for correct blocks initialization.
 	virtual void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager

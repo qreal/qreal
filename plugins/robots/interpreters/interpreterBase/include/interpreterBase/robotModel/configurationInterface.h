@@ -17,8 +17,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT ConfigurationInterface : public QObject
 	Q_OBJECT
 
 public:
-	/// Destructor.
-	virtual ~ConfigurationInterface() {}
+	~ConfigurationInterface() override {}
 
 	/// Adds device to pending configuration. Actual configuring of a device on a robot is done in applyConfiguration().
 	/// @param device - device to be added to configuration. Transfers ownership.

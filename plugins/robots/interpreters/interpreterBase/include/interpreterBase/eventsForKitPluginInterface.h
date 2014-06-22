@@ -11,12 +11,14 @@ class ROBOTS_INTERPRETER_BASE_EXPORT EventsForKitPluginInterface : public QObjec
 {
 	Q_OBJECT
 
-public:
-	virtual ~EventsForKitPluginInterface() {}
-
 signals:
+	/// Program interpretation started.
 	void interpretationStarted();
+
+	/// Program interpretation finished or stopped by user.
 	void interpretationStopped();
+
+	/// Robot model is changed in settings (or selected in a toolbar).
 	void robotModelChanged(QString const &newModelName);
 };
 

@@ -16,7 +16,6 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Configuration : public ConfigurationInterfa
 	Q_OBJECT
 
 public:
-	Configuration();
 	~Configuration() override;
 
 	void configureDevice(robotParts::Device * const device) override;

@@ -10,14 +10,14 @@ namespace robotModel {
 class ROBOTS_INTERPRETER_BASE_EXPORT RobotModelUtils
 {
 public:
-	/// Returns a pointer to a device if it is configured on the given port and ready to work
+	/// Returns a pointer to a device if it is configured on the given port and ready to work.
 	template<typename T>
 	static T *findDevice(RobotModelInterface const &robotModel, PortInfo const &port)
 	{
 		return dynamic_cast<T *>(robotModel.configuration().device(port));
 	}
 
-	/// Returns a pointer to a device if it is configured on the given port string representation and ready to work
+	/// Returns a pointer to a device if it is configured on the given port string representation and ready to work.
 	template<typename T>
 	static T *findDevice(RobotModelInterface const &robotModel, QString const &port)
 	{
