@@ -8,6 +8,8 @@
 namespace interpreterCore {
 namespace textLanguage {
 
+/// Parser of textual language that is used within blocks.
+/// @todo Rewrite it completely.
 class RobotsBlockParser : public QObject
 		, public utils::ExpressionsParser
 		, public interpreterBase::blocksBase::BlockParserInterface
@@ -15,6 +17,10 @@ class RobotsBlockParser : public QObject
 	Q_OBJECT
 
 public:
+	/// Constructor
+	/// @param errorReporter - where to report parser errors.
+	/// @param robotModelManager - provides information about robot model.
+	/// @param timeComputer - method to get time elapsed since start of interpretation, used in predefined variable.
 	RobotsBlockParser(qReal::ErrorReporterInterface * const errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, utils::ComputableNumber::IntComputer const &timeComputer);
@@ -24,7 +30,9 @@ public:
 	bool parseCondition(QString const &stream, int& pos, qReal::Id const &curId) override;
 
 	void deselect() override;
-	void robotsClearVariables();
+
+	/// Clear and reinitialize all variables.
+	/// @todo Strange name. Rewrite this completely.
 	void setReservedVariables();
 
 	QMap<QString, utils::Number *> const &variables() const override;

@@ -82,18 +82,13 @@ void RobotsBlockParser::deselect()
 	mHasParseErrors = false;
 }
 
-void RobotsBlockParser::robotsClearVariables()
-{
-	mVariables.clear();
-	setReservedVariables();
-}
-
 bool RobotsBlockParser::checkForUsingReservedVariables(const QString &nameOfVariable)
 {
-	if ((mReservedVariables.contains(nameOfVariable)) || (isFunction(nameOfVariable))) {
+	if (mReservedVariables.contains(nameOfVariable) || isFunction(nameOfVariable)) {
 		mHasParseErrors = true;
 		error(usingReservedVariable, "", "", nameOfVariable);
 	}
+
 	return mHasParseErrors;
 }
 

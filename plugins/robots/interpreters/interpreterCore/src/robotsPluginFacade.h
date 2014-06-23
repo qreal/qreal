@@ -22,7 +22,6 @@
 namespace interpreterCore {
 
 /// Responsible for initialization, interconnecting and keeping in sync core plugin subsystems.
-/// @todo Document this.
 class RobotsPluginFacade : public QObject
 {
 	Q_OBJECT
@@ -74,8 +73,7 @@ private:
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
 	interpreter::InterpreterInterface *mInterpreter;  // Has ownership
 
-	/// Page with plugin settings. Created here, but then ownership is passed to
-	/// a caller of preferencesPage().
+	/// Page with plugin settings. Created here, but then ownership is passed to a caller of preferencesPage().
 	ui::RobotsSettingsPage *mRobotSettingsPage;  // Does not have ownership
 
 	KitPluginManager mKitPluginManager;
