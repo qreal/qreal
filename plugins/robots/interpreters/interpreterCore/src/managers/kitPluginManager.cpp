@@ -74,6 +74,7 @@ bool KitPluginManager::tryToLoadInterpreterPlugin(QObject * const plugin)
 {
 	interpreterBase::KitPluginInterface * const kitPlugin
 			= qobject_cast<interpreterBase::KitPluginInterface *>(plugin);
+
 	if (kitPlugin) {
 		mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
 	}

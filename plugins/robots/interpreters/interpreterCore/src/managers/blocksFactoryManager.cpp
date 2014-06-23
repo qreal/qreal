@@ -19,11 +19,6 @@ void BlocksFactoryManager::addFactory(BlocksFactoryInterface * const factory, Ro
 	}
 }
 
-QList<BlocksFactoryInterface *> BlocksFactoryManager::factoriesFor(RobotModelInterface const &robotModel) const
-{
-	return mFactories.values(nullptr) + mFactories.values(&robotModel);
-}
-
 BlockInterface *BlocksFactoryManager::block(qReal::Id const &element, RobotModelInterface const &robotModel)
 {
 	BlockInterface *emptyBlock = nullptr;
@@ -75,3 +70,7 @@ QSet<qReal::Id> BlocksFactoryManager::visibleBlocks(RobotModelInterface const &r
 	return result;
 }
 
+QList<BlocksFactoryInterface *> BlocksFactoryManager::factoriesFor(RobotModelInterface const &robotModel) const
+{
+	return mFactories.values(nullptr) + mFactories.values(&robotModel);
+}

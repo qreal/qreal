@@ -20,10 +20,14 @@ public:
 
 	~KitPluginManager();
 
+	/// Returns a list if ids of loaded kits.
 	QList<QString> kitIds() const;
 
+	/// Returns a list of kits that have given id. Note that multiple kits can have one id, in that case their
+	/// functionality is merged (needed to support language extensions like support for segway).
 	QList<interpreterBase::KitPluginInterface *> kitsById(QString const &kitId) const;
 
+	/// Returns a list of generators associated with given kit id.
 	QList<generatorBase::GeneratorKitPluginInterface *> generatorsById(QString const &kitId) const;
 
 	/// A convenience method that travels around all loaded kit plugins, collects all robot models and returns them.

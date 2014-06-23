@@ -21,11 +21,25 @@
 namespace interpreterCore {
 namespace interpreter {
 
+/// Interprets robot diagram by executing blocks and sending commands to robot model. Manages models, connection,
+/// threads, parser, can automatically configure robot by used blocks on diagram. It is the main class for
+/// all interpretation subsystem.
 class Interpreter : public InterpreterInterface, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
 public:
+	/// Constructor,
+	/// @param graphicalModelApi - reference to graphical model, main source of information about interpreted diagram.
+	/// @param logicalModelApi - reference to logical model, which contains properties of blocks.
+	/// @param interpretersInterface - reference to QReal main window. Used to highlight executing blocks and so on.
+	/// @param projectManager - class that manages opening/saving diagrams, needed here to receive notifications
+	///        about opening a new save file.
+	/// @param blocksFactoryManager - blocks factory, needed to create "code behind" objects for blocks on diagram.
+	/// @param robotModelManager - reference to currently selected robot model.
+	/// @param parser - parser that is used to analyze and evaluate textual expressions inside properties of blocks.
+	/// @param connectToRobotAction - reference to action that connects to robot, interpreter manages its state
+	///        depending on success or failure of its own connection attempts.
 	Interpreter(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface

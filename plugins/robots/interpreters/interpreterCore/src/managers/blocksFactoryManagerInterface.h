@@ -5,9 +5,12 @@
 
 namespace interpreterCore {
 
+/// Interface for registering block factories and providing blocks to interpreter using registered factories.
 class BlocksFactoryManagerInterface
 {
 public:
+	virtual ~BlocksFactoryManagerInterface() {}
+
 	/// Binds the given factory to the given robot model. If robotModel is null then the
 	/// factory is considered to be binded to all robot models.
 	/// Takes ownership.

@@ -15,6 +15,7 @@ class FunctionBlock : public interpreterBase::blocksBase::Block
 public:
 	void run() override;
 
+private:
 	/// Parses the given string property and returns the value of that expression.
 	QVariant evaluate(QString const &propertyName);
 };

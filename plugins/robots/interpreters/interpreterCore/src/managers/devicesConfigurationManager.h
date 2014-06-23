@@ -23,6 +23,11 @@ namespace interpreterCore {
 class DevicesConfigurationManager : public interpreterBase::DevicesConfigurationProvider
 {
 public:
+	/// Constructor.
+	/// @param graphicalModelAssistInterface - graphical model, needed to save settings as property of current diagram.
+	/// @param logicalModelAssistInterface - logical model, also needed to save settings as property of current diagram.
+	/// @param mainWindowInterpretersInterface - needed to get current active diagram
+	/// @param systemEvents - provides notification about changing of active editor tab.
 	DevicesConfigurationManager(qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 			, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
@@ -34,6 +39,8 @@ private:
 			, interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
 
+	/// Reacts to changing of editor tab.
+	/// @param graphicalRootId - id of a root diagram of newly selected tab.
 	void onActiveTabChanged(qReal::Id const &graphicalRootId);
 
 	/// Serializes current sensors configuration into inner string representation.

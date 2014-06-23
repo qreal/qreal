@@ -11,12 +11,16 @@ namespace interpreter {
 namespace details {
 
 /// Extended devices configuration validator. Travels through the diagram and compares
-/// required by bolcks devices with the user configuration. If conflict is detected
-/// report is reported. If some block requires a device that is forgotten to be selected by
+/// required by blocks devices with the user configuration. If conflict is detected
+/// error is reported. If some block requires a device that is forgotten to be selected by
 /// user then it is automaticly selected by this autoconfigurer.
 class Autoconfigurer : public interpreterBase::DevicesConfigurationProvider
 {
 public:
+	/// Constructor.
+	/// @param graphicalModelApi - contains information about diagram.
+	/// @param blocksTable - contains "code-behind" objects for blocks.
+	/// @param errorReporter - error reporter to report errors to.
 	Autoconfigurer(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, BlocksTable &blocksTable
 			, qReal::ErrorReporterInterface &errorReporter);

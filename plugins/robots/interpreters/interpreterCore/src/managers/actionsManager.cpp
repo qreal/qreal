@@ -200,7 +200,7 @@ void ActionsManager::initKitPluginActions()
 		}
 
 		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
-			// generator->actions() must be called one so storing it into the field.
+			// generator->actions() must be called once so storing it into the field.
 			for (ActionInfo const &action : generator->actions()) {
 				mGeneratorActionsInfo.insertMulti(kitId, action);
 			}

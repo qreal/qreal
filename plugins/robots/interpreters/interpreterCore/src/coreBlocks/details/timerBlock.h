@@ -13,6 +13,7 @@ namespace details {
 
 /// Interpreter`s implementation for timer block.
 /// Waits for the given amount of time using robot model`s timeline.
+/// @todo Why it does not inherit WaitBlock?
 class TimerBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
@@ -27,7 +28,7 @@ private slots:
 	void timeout();
 
 private:
-	utils::AbstractTimer * const mTimer;  // Takes ownership
+	utils::AbstractTimer * const mTimer;  // Has ownership (via Qt parent-child system).
 };
 
 }

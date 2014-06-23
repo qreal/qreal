@@ -25,6 +25,7 @@ class BlocksTable : public interpreterBase::blocksBase::BlocksTableInterface
 public:
 	/// Constructor.
 	/// @param blocksFactoryManager - a factory manager that is used to create new blocks when needed.
+	/// @param robotModelManager - has a reference to current robot model.
 	BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
 

@@ -19,26 +19,47 @@ class ActionsManager : public QObject
 	Q_OBJECT
 
 public:
-	/// @todo: Get rid of RobotModelManaged dependence
+	/// Constructor.
+	/// @param kitPluginManager - information about currently loaded kit plugins.
+	/// @param robotModelManager - needed to be able to switch models directly from ActionsManager.
+	/// @todo: Get rid of RobotModelManager dependence
 	ActionsManager(KitPluginManager &kitPluginManager, RobotModelManager &robotModelManager);
 
+	/// Initializes this manager and sets "enabled" status for its actions.
 	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
 
+	/// Returns list of currently available actions (including kit- and model-specific).
 	QList<qReal::ActionInfo> actions();
+
+	/// Returns hotkeys for available actions.
+	/// @todo Why we can't store hotkey information inside ActionInfo?
 	QList<qReal::HotKeyActionInfo> hotKeyActionInfos();
 
+	/// Start interpretation action.
+	/// @todo Does nothing on real TRIK model, need to connect it to corresponding generator action somehow.
 	QAction &runAction();
 
+	/// Stop interpretation.
+	/// @todo Also confusingly has nothing to do with "stop robot" generator action on TRIK.
 	QAction &stopRobotAction();
 
+	/// Action for establishing connection to a robot.
 	QAction &connectToRobotAction();
 
+	/// Action for showing or hiding labels of blocks on scene.
+	/// @todo Move this action to QReal core.
 	QAction &titlesVisibilityAction();
 
+	/// Action that shows settings page with "robots" tab selected.
 	QAction &robotSettingsAction();
 
 public slots:
+	/// Reacts to selection of another robot model.
+	/// @param model - newly selected robot model.
 	void onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface &model);
+
+	/// Reacts to selection of a new tab on scene.
+	/// @param activeTabId - id of a root element of new active tab.
 	void onActiveTabChanged(Id const &activeTabId);
 
 private slots:
