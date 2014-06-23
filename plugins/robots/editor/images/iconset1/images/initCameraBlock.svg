@@ -7,10 +7,12 @@ viewBox="0 0 15000 15000"
  <defs>
   <style type="text/css">
    <![CDATA[
-    .str1 {stroke:black;stroke-width:6.615}
-    .str0 {stroke:#2B2A29;stroke-width:6.615}
+    .str0 {stroke:#1A1A1A;stroke-width:127}
+    .str2 {stroke:#333333;stroke-width:127}
+    .str1 {stroke:gray;stroke-width:127}
+    .str3 {stroke:#99CC33;stroke-width:635}
+    .str4 {stroke:#99CC33;stroke-width:749.3}
     .fil48 {fill:none}
-    .fil50 {fill:none;fill-rule:nonzero}
     .fil0 {fill:#5E4377}
     .fil2 {fill:#5E4378}
     .fil3 {fill:#5F4378}
@@ -58,8 +60,14 @@ viewBox="0 0 15000 15000"
     .fil45 {fill:#775397}
     .fil46 {fill:#775398}
     .fil47 {fill:#785499}
-    .fil49 {fill:#FEFEFE;fill-rule:nonzero}
     .fil1 {fill:black;fill-opacity:0.000000}
+    .fil49 {fill:url(#id2)}
+    .fil51 {fill:url(#id3)}
+    .fil53 {fill:url(#id4)}
+    .fil54 {fill:url(#id5)}
+    .fil52 {fill:url(#id6)}
+    .fil50 {fill:url(#id7)}
+    .fil55 {fill:url(#id8)}
    ]]>
   </style>
       <clipPath id="id0">
@@ -68,10 +76,45 @@ viewBox="0 0 15000 15000"
       <clipPath id="id1">
        <path d="M2377 14068l10257 0c790,0 1437,-647 1437,-1437l0 -10257c0,-790 -647,-1437 -1437,-1437l-10257 0c-790,0 -1437,647 -1437,1437l0 10257c0,790 647,1437 1437,1437z"/>
       </clipPath>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="7602.31" y1="6209.79" x2="12904.5" y2="6209.79">
+   <stop offset="0" style="stop-color:#333333"/>
+   <stop offset="0.490196" style="stop-color:#666666"/>
+   <stop offset="1" style="stop-color:#333333"/>
+  </linearGradient>
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="2265.02" y1="6217.31" x2="7749.82" y2="6217.31">
+   <stop offset="0" style="stop-color:#333333"/>
+   <stop offset="0.501961" style="stop-color:#666666"/>
+   <stop offset="1" style="stop-color:#333333"/>
+  </linearGradient>
+  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="3327.1" y1="4831.82" x2="6656.2" y2="4831.82">
+   <stop offset="0" style="stop-color:#333333"/>
+   <stop offset="0.2" style="stop-color:#333333"/>
+   <stop offset="0.501961" style="stop-color:#666666"/>
+   <stop offset="0.8" style="stop-color:#333333"/>
+   <stop offset="1" style="stop-color:#333333"/>
+  </linearGradient>
+  <linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="4991.65" y1="6147.84" x2="4991.65" y2="3515.8">
+   <stop offset="0" style="stop-color:#1A1A1A"/>
+   <stop offset="1" style="stop-color:#333333"/>
+  </linearGradient>
+  <linearGradient id="id6" gradientUnits="userSpaceOnUse" x1="4991.65" y1="6916.78" x2="4991.65" y2="2746.85">
+   <stop offset="0" style="stop-color:#999999"/>
+   <stop offset="0.501961" style="stop-color:#CCCCCC"/>
+   <stop offset="1" style="stop-color:#999999"/>
+  </linearGradient>
+  <linearGradient id="id7" gradientUnits="userSpaceOnUse" x1="11529.8" y1="7884.76" x2="9132.24" y2="4534.82">
+   <stop offset="0" style="stop-color:#9999FF"/>
+   <stop offset="1" style="stop-color:#E6E6E6"/>
+  </linearGradient>
+  <radialGradient id="id8" gradientUnits="objectBoundingBox" cx="71%" cy="31%" r="50%" fx="71%" fy="31%">
+   <stop offset="0" style="stop-color:#95A7BA"/>
+   <stop offset="0.2" style="stop-color:#606987"/>
+   <stop offset="1" style="stop-color:#2C2C54"/>
+  </radialGradient>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_338265016">
+  <g id="_335835672">
    <g id="_348901048">
     <path class="fil0" d="M2168 45l10675 0c1170,0 2119,949 2119,2119l0 10675c0,1170 -949,2119 -2119,2119l-10675 0c-1170,0 -2119,-949 -2119,-2119l0 -10675c0,-1170 949,-2119 2119,-2119z"/>
     <g>
@@ -386,9 +429,14 @@ viewBox="0 0 15000 15000"
     </g>
    </g>
   </g>
-  <polygon class="fil49" points="2911,7545 2911,6202 5488,4892 2911,3596 2911,2262 6604,4326 6604,5465 "/>
-  <polygon id="_1_0" class="fil50 str0" points="2911,7545 2911,6202 5488,4892 2911,3596 2911,2262 6604,4326 6604,5465 "/>
-  <polygon class="fil49" points="7858,7626 7858,6473 12441,6473 12441,7626 "/>
-  <polygon id="_1_1" class="fil50 str1" points="7858,7626 7858,6473 12441,6473 12441,7626 "/>
+  <rect class="fil49 str0" x="7602" y="4115" width="5302" height="4189" rx="161" ry="176"/>
+  <rect class="fil50 str0" x="8329" y="4628" width="4004" height="3164" rx="122" ry="133"/>
+  <rect class="fil51 str0" x="2265" y="2114" width="5485" height="8206" rx="951" ry="685"/>
+  <circle class="fil52 str1" cx="4992" cy="4832" r="2085"/>
+  <circle class="fil53 str1" cx="4992" cy="4832" r="1665"/>
+  <circle class="fil54 str2" cx="4992" cy="4832" r="1316"/>
+  <circle class="fil55 str2" cx="4992" cy="4832" r="979"/>
+  <path class="fil48 str3" d="M9694 10748c-615,627 -605,1634 21,2248 627,615 1634,605 2248,-21 615,-627 605,-1634 -21,-2248"/>
+  <line class="fil48 str4" x1="10844" y1="11926" x2="10844" y2= "9918" />
  </g>
 </svg>
