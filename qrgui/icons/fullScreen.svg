@@ -10,8 +10,8 @@ viewBox="0 0 15000 15000"
     .fil0 {fill:#333333}
     .fil2 {fill:url(#id0)}
     .fil3 {fill:url(#id1)}
-    .fil4 {fill:url(#id2)}
-    .fil5 {fill:url(#id3)}
+    .fil5 {fill:url(#id2)}
+    .fil4 {fill:url(#id3)}
     .fil1 {fill:url(#id4)}
    ]]>
   </style>
@@ -23,11 +23,13 @@ viewBox="0 0 15000 15000"
    <stop offset="0" style="stop-color:#B8DDE6"/>
    <stop offset="1" style="stop-color:#E4F5F5"/>
   </linearGradient>
-  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="4429.3" y1="10014" x2="4429.3" y2="5217.38">
-   <stop offset="0" style="stop-color:#83BA45"/>
-   <stop offset="1" style="stop-color:#CCFF66"/>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="10562.5" y1="10014" x2="10562.5" y2="5217.38">
+   <stop offset="0" style="stop-color:#006633"/>
+   <stop offset="1" style="stop-color:#33CC33"/>
   </linearGradient>
-  <linearGradient id="id3" gradientUnits="userSpaceOnUse" xlink:href="#id2" x1="10562.5" y1="10014" x2="10562.5" y2="5217.38">
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="4429.3" y1="10014" x2="4429.3" y2="5217.38">
+   <stop offset="0" style="stop-color:#006633"/>
+   <stop offset="1" style="stop-color:#33CC33"/>
   </linearGradient>
   <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="7471.66" y1="13287.7" x2="7471.66" y2="11606.8">
    <stop offset="0" style="stop-color:#4D4D4D"/>

@@ -323,14 +323,11 @@ bool GraphicType::addProperty(Property *property)
 {
 	QString const propertyName = property->name();
 	if (mProperties.contains(propertyName)) {
-		// Множественное наследование может приводить к тому, что одно свойство
-		// может быть добавлено классу дважды (ромбовидное наследование, например).
-		// Pугаемся мы только тогда, когда тип, значение по умолчанию или что-то ещё
-		// у одноимённых свойств различны - тогда непонятно, что делать.
+		/// @todo Good for overriding parent properties, but bad in multiple inheritance case
+		/// --- we can allow invalid rhomb inheritance.
 		if (mProperties[propertyName] != property && *mProperties[propertyName] != *property) {
-			qDebug() << "ERROR: property" << propertyName << "duplicated with different attributes";
+			qDebug() << "WARNING: property" << propertyName << "duplicated with different attributes";
 			delete property;
-			return false;
 		}
 	} else {
 		mProperties[propertyName] = property;

@@ -10,7 +10,6 @@ LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
 		, EditorManagerInterface const &editorManagerInterface)
 		: mModelsAssistApi(logicalModel, editorManagerInterface)
 		, mLogicalModel(logicalModel)
-		, mExploser(*this)
 		, mEditorManager(editorManagerInterface)
 {
 }
@@ -22,11 +21,6 @@ LogicalModelAssistApi::~LogicalModelAssistApi()
 EditorManagerInterface const &LogicalModelAssistApi::editorManagerInterface() const
 {
 	return mModelsAssistApi.editorManagerInterface();
-}
-
-Exploser &LogicalModelAssistApi::exploser()
-{
-	return mExploser;
 }
 
 qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const
@@ -56,11 +50,6 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id
 {
 	Q_UNUSED(preferedLogicalId)
 	return mModelsAssistApi.createElement(parent, id, id, isFromLogicalModel, name, position);
-}
-
-void LogicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
-{
-	mModelsAssistApi.stackBefore(element, sibling);
 }
 
 IdList LogicalModelAssistApi::children(Id const &element) const

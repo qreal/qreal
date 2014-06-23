@@ -4,6 +4,7 @@ namespace qReal
 {
 
 /// Provides some methods for QReal scene customization
+/// \todo Move it to ToolPluginInterface
 class SceneCustomizationInterface
 {
 public:

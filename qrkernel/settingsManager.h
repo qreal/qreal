@@ -42,7 +42,7 @@ public:
 	static void clearSettings();
 
 	/// Returns an instance of a singleton.
-	static SettingsManager* instance();
+	static SettingsManager *instance();
 
 	/// Saves settings into persistent external storage (for example, Windows
 	/// registry), making them available to new instances of an application.
@@ -60,6 +60,8 @@ public:
 private:
 	/// Private constructor.
 	SettingsManager();
+	~SettingsManager();
+
 	void set(QString const &name, QVariant const &value);
 	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
 	/// Initialization of UXInfoInterface.
@@ -67,8 +69,6 @@ private:
 	void reportValueSetting(QString const &name, QVariant const &oldValue, QVariant const &newValue);
 
 	void initDefaultValues();
-
-	//QMap<QString, QVariant> mDefaultValues;
 
 	/// Singleton sole instance.
 	static SettingsManager* mInstance;

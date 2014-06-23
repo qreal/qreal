@@ -4,6 +4,7 @@
 
 #include "mainwindow/palette/paletteElement.h"
 #include "pluginManager/editorManagerInterface.h"
+#include "mainwindow/palette/draggableElement.h"
 
 namespace qReal {
 namespace gui {
@@ -36,6 +37,14 @@ public:
 	static void sortByFriendlyName(QList<PaletteElement> &elements);
 
 	void editItem(QTreeWidgetItem * const item);
+
+	void setElementVisible(Id const &metatype, bool visible);
+
+	void setVisibleForAllElements(bool visible);
+
+	void setElementEnabled(Id const &metatype, bool enabled);
+
+	void setEnabledForAllElements(bool enabled);
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
@@ -72,10 +81,14 @@ private:
 	static bool paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2);
 
 	/// Made static to be used inside idLessThan()
-	static EditorManagerInterface *mEditorManager; // Does not take ownership
+	static EditorManagerInterface *mEditorManager;  // Does not take ownership
 	MainWindow &mMainWindow;
 	PaletteTree &mPaletteTree;
 	bool mEditable;
+
+	QHash<Id, DraggableElement *> mPaletteElements;  // Takes ownership.
+	QHash<Id, QTreeWidgetItem *> mPaletteItems;  // Takes ownership.
+
 };
 
 }

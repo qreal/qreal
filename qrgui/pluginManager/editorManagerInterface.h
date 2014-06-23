@@ -16,8 +16,8 @@
 #include "pluginManager/listenerManager.h"
 #include "editorPluginInterface/editorInterface.h"
 #include "pluginManager/pattern.h"
-#include "pluginManager/patternParser.h"
 #include "pluginManager/explosion.h"
+#include "pluginManager/details/patternParser.h"
 
 namespace qReal {
 
@@ -124,6 +124,10 @@ public:
 	virtual QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const = 0;
 	virtual void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const = 0;
 	virtual void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const = 0;
+
+	/// Includes or excludes element from metamodel.
+	virtual void setElementEnabled(Id const &type, bool enabled) = 0;
 };
+
 
 }

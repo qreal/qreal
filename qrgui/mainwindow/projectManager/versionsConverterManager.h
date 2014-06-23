@@ -1,6 +1,7 @@
 #pragma once
 
 #include "models/logicalModelAssistApi.h"
+#include "toolPluginInterface/projectConverter.h"
 
 namespace qReal {
 
@@ -18,7 +19,15 @@ public:
 	bool validateCurrentProject();
 
 private:
-	void displayCannotConvertError(Version const &oldVersion);
+	bool convertProject(Version const &enviromentVersion
+			, Version const &saveVersion
+			, QList<ProjectConverter> const &converters);
+
+	void displayTooOldEnviromentError(Version const &saveVersion);
+	void displayCannotConvertError();
+	void displayTooOldSaveError(Version const &saveVersion);
+
+	void showError(QString const &errorMessage);
 
 	MainWindow &mMainWindow;
 };

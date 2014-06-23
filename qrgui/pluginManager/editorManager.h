@@ -4,7 +4,6 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 #include <QtCore/QPluginLoader>
-#include <QtCore/QStringList>
 #include <QtGui/QIcon>
 
 #include <qrkernel/ids.h>
@@ -15,8 +14,8 @@
 #include "pluginManager/listenerManager.h"
 #include "pluginManager/editorManagerInterface.h"
 #include "pluginManager/pattern.h"
-#include "pluginManager/patternParser.h"
 #include "editorPluginInterface/editorInterface.h"
+#include "pluginManager/details/patternParser.h"
 
 namespace qReal {
 
@@ -126,7 +125,15 @@ public:
 	void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const override;
 	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
 
+	void setElementEnabled(Id const &type, bool enabled) override;
+
 private:
+	EditorInterface* editorInterface(QString const &editor) const;
+	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
+
+	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child
+			, QString const &parentDiagram, QString const &parent) const;
+
 	QStringList mPluginsLoaded;
 	QMap<QString, QString> mPluginFileName;
 	QList<Pattern> mDiagramGroups;
@@ -137,11 +144,7 @@ private:
 	QDir mPluginsDir;
 	QStringList mPluginFileNames;
 
-	EditorInterface* editorInterface(QString const &editor) const;
-	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
-
-	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child
-			, QString const &parentDiagram, QString const &parent) const;
+	QSet<Id> mDisabledElements;
 };
 
 }

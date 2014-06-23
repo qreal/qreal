@@ -15,22 +15,35 @@ void clearConfig()
 	SettingsManager::instance()->saveData();
 }
 
+void setDefaultLocale(bool localizationDisabled)
+{
+	if (localizationDisabled) {
+		QLocale::setDefault(QLocale::English);
+		return;
+	}
+
+	QString const locale = SettingsManager::value("systemLocale").toString();
+	if (!locale.isEmpty()) {
+		QLocale::setDefault(QLocale(locale));
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	QDateTime const startedTime = QDateTime::currentDateTime();
 	QRealApplication app(argc, argv);
 
+	setDefaultLocale(app.arguments().contains("--no-locale"));
+
 	QTranslator guiTranslator;
 	QTranslator utilsTranslator;
 	QTranslator qtTranslator;
-	if (!app.arguments().contains("--no-locale")) {
-		guiTranslator.load(":/qrgui_" + QLocale::system().name());
-		utilsTranslator.load(":/qrutils_" + QLocale::system().name());
-		qtTranslator.load(":/qt_" + QLocale::system().name());
-		app.installTranslator(&guiTranslator);
-		app.installTranslator(&utilsTranslator);
-		app.installTranslator(&qtTranslator);
-	}
+	guiTranslator.load(":/qrgui_" + QLocale().name());
+	utilsTranslator.load(":/qrutils_" + QLocale().name());
+	qtTranslator.load(":/qt_" + QLocale().name());
+	app.installTranslator(&guiTranslator);
+	app.installTranslator(&utilsTranslator);
+	app.installTranslator(&qtTranslator);
 
 	QString fileToOpen;
 	if (app.arguments().count() > 1) {

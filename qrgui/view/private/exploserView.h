@@ -4,6 +4,7 @@
 
 #include "models/logicalModelAssistApi.h"
 #include "models/graphicalModelAssistApi.h"
+#include "pluginManager/exploser.h"
 
 namespace qReal {
 
@@ -19,9 +20,10 @@ class ExploserView : public QObject
 	Q_OBJECT
 
 public:
-	ExploserView(MainWindow * const mainWindow
-			, models::LogicalModelAssistApi * const logicalApi
-			, models::GraphicalModelAssistApi * const graphicalApi
+	ExploserView(MainWindow &mainWindow
+			, models::LogicalModelAssistApi &logicalApi
+			, models::GraphicalModelAssistApi &graphicalApi
+			, Exploser &exploser
 			, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
@@ -58,9 +60,10 @@ private:
 	/// with given @see id
 	void goTo(Id const &id);
 
-	MainWindow *mMainWindow; // Doesn`t take ownership
-	models::LogicalModelAssistApi *mLogicalApi; // Doesn`t take ownership
-	models::GraphicalModelAssistApi *mGraphicalApi; // Doesn`t take ownership
+	MainWindow &mMainWindow;
+	models::LogicalModelAssistApi &mLogicalApi;
+	models::GraphicalModelAssistApi &mGraphicalApi;
+	Exploser &mExploser;
 };
 
 }

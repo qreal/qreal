@@ -85,7 +85,7 @@ void PaletteTreeWidgets::initEditorTree()
 
 void PaletteTreeWidgets::initUserTree()
 {
-	mMainWindow->models()->logicalModelAssistApi().exploser().addUserPalette(mUserTree, mDiagram);
+	mMainWindow->exploser().addUserPalette(mUserTree, mDiagram);
 }
 
 void PaletteTreeWidgets::addTopItemType(PaletteElement const &data, QTreeWidget *tree)
@@ -93,6 +93,8 @@ void PaletteTreeWidgets::addTopItemType(PaletteElement const &data, QTreeWidget 
 	QTreeWidgetItem *item = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(*mMainWindow, data
 			, mParentPalette->iconsView(), *mEditorManager);
+
+	mPaletteElements.insert(data.id(), element);
 
 	tree->addTopLevelItem(item);
 	tree->setItemWidget(item, 0, element);
@@ -169,4 +171,40 @@ void PaletteTreeWidgets::saveConfiguration(PaletteTreeWidget const *tree, QStrin
 			SettingsManager::setValue(title, topItem->isExpanded());
 		}
 	}
+}
+
+void PaletteTreeWidgets::setElementVisible(Id const &metatype, bool visible)
+{
+	if (mPaletteElements.contains(metatype)) {
+		mPaletteElements[metatype]->setVisible(visible);
+	} else {
+		mEditorTree->setElementVisible(metatype, visible);
+	}
+}
+
+void PaletteTreeWidgets::setVisibleForAllElements(bool visible)
+{
+	foreach (QWidget * const element, mPaletteElements.values()) {
+		element->setVisible(visible);
+	}
+
+	mEditorTree->setVisibleForAllElements(visible);
+}
+
+void PaletteTreeWidgets::setElementEnabled(Id const &metatype, bool enabled)
+{
+	if (mPaletteElements.contains(metatype)) {
+		mPaletteElements[metatype]->setEnabled(enabled);
+	} else {
+		mEditorTree->setElementEnabled(metatype, enabled);
+	}
+}
+
+void PaletteTreeWidgets::setEnabledForAllElements(bool enabled)
+{
+	foreach (QWidget * const element, mPaletteElements.values()) {
+		element->setEnabled(enabled);
+	}
+
+	mEditorTree->setEnabledForAllElements(enabled);
 }

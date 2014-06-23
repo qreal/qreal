@@ -12,7 +12,7 @@
 #include "pluginManager/interpreterEditorManager.h"
 #include "umllib/nodeElement.h"
 #include "umllib/edgeElement.h"
-#include "pluginManager/interpreterElementImpl.h"
+#include "pluginManager/details/interpreterElementImpl.h"
 #include "mainwindow/mainWindow.h"
 
 using namespace qReal;
@@ -894,6 +894,12 @@ void InterpreterEditorManager::restoreRenamedProperty(Id const &propertyId, QStr
 	if (repo) {
 		repo->setProperty(propertyId, "displayedName", previousName);
 	}
+}
+
+void InterpreterEditorManager::setElementEnabled(Id const &type, bool enabled)
+{
+	Q_UNUSED(type)
+	Q_UNUSED(enabled)
 }
 
 void InterpreterEditorManager::setProperty(qrRepo::RepoApi *repo, Id const &id

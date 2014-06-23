@@ -1,5 +1,5 @@
 HEADERS += \
-	$$PWD/../../mocks/grgui/models/details/modelsImplementation/modelIndexesInterfaceMock.h \
+	$$PWD/../../mocks/qrgui/models/details/modelsImplementation/modelIndexesInterfaceMock.h \
 
 HEADERS += \
 	$$PWD/detailsTests/graphicalPartModelTest.h \

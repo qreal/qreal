@@ -39,6 +39,7 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 		mCreateCommand = new CreateElementCommand(
 				*mMVIface->logicalAssistApi()
 				, *mMVIface->graphicalAssistApi()
+				, mScene->mainWindow()->exploser()
 				, mMVIface->rootId()
 				, mMVIface->rootId()
 				, mEdgeData.logicalId

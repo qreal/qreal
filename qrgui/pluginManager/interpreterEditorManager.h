@@ -137,6 +137,8 @@ public:
 	void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const override;
 	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
 
+	void setElementEnabled(Id const &type, bool enabled) override;
+
 private:
 	class CheckPropertyForParent;
 	class CompareProperty;

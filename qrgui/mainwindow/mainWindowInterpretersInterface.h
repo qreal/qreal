@@ -26,6 +26,7 @@ public:
 
 	/// Gets graphical Id of diagram currently opened in editor.
 	/// @returns Id of opened diagram, empty Id if there is none.
+	/// @todo Make it const if possible.
 	virtual Id activeDiagram() = 0;
 
 	virtual void openSettingsDialog(QString const &tab) = 0;
@@ -81,6 +82,32 @@ public:
 	virtual QWidget *currentTab() = 0;
 	virtual void openTab(QWidget *tab, QString const &title) = 0;
 	virtual void closeTab(QWidget *tab) = 0;
+
+	/// Signals that engine must prepare for modifying blocks set.
+	/// After each beginPaletteModification() call there must be endPaletteModification() call.
+	virtual void beginPaletteModification() = 0;
+
+	/// Shows or hides given element on a palette.
+	/// @param metatype - id of an element type to be shown/hidden.
+	/// @param visible - true, if element shall be visible, false if hidden.
+	virtual void setElementInPaletteVisible(Id const &metatype, bool visible) = 0;
+
+	/// Shows or hides all elements in palette.
+	/// @param visible - true, if all elements shall be visible, false if hidden.
+	virtual void setVisibleForAllElementsInPalette(bool visible) = 0;
+
+	/// Disables/enables given element on a palette.
+	/// @param metatype - id of an element type to be disabled/enabled.
+	/// @param enabled - true, if element shall be enabled, false if disabled (greyed out).
+	virtual void setElementInPaletteEnabled(Id const &metatype, bool enabled) = 0;
+
+	/// Enables or disables all elements in palette.
+	/// @param enabled - true, if all elements shall be enabled, false if all elements shall be disabled.
+	virtual void setEnabledForAllElementsInPalette(bool enabled) = 0;
+
+	/// Commits palette modification in the system: shows or hides elements in palette, linker menus,
+	/// gestures tab and enables or disables elements on diagram.
+	virtual void endPaletteModification() = 0;
 };
 
 }
