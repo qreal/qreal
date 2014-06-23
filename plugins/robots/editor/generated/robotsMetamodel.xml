@@ -1160,7 +1160,7 @@
 			<node displayedName="Initialize Videocamera" name="TrikInitCamera" description="Enables line detector by videocamera and draws videostream on the robot`s screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/InitCamera.svg" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/initCameraBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<ports>
 						<linePort>
@@ -1194,7 +1194,7 @@
 			<node displayedName="Detect Line by Videocamera" name="TrikDetectLine" description="Initializes videocamera line detector with the color of the object in the middle of the camera`s sight.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/detect.svg" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/detectLineBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<ports>
 						<linePort>
