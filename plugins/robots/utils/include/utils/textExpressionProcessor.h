@@ -17,8 +17,8 @@ public:
 	QString processExpression(QString const &expression) const;
 
 protected:
-	virtual bool variableExists(QString const &variable) const;
-	virtual QString value(QString const &variable) const;
+	bool variableExists(QString const &variable) const override;
+	QString value(QString const &variable, int index) const override;
 
 private:
 	QMap<QString, utils::Number *> const &mVariables;

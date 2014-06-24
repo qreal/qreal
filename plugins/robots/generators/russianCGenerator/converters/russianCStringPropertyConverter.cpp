@@ -37,7 +37,8 @@ bool RussianCStringPropertyConverter::variableExists(QString const &variable) co
 	return mVariables.expressionType(variable) != generatorBase::enums::variableType::unknown;
 }
 
-QString RussianCStringPropertyConverter::value(QString const &variable) const
+QString RussianCStringPropertyConverter::value(QString const &variable, int index) const
 {
+	Q_UNUSED(index)
 	return mVariables.expressionType(variable) == generatorBase::enums::variableType::intType ? "%ц" : "%ц.%ц";
 }

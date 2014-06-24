@@ -15,9 +15,6 @@
         <file>templates/led.t</file>
         <file>templates/say.t</file>
         <file>templates/system.t</file>
-        <file>templates/display/setBackground.t</file>
-        <file>templates/display/smile.t</file>
-        <file>templates/display/sadSmile.t</file>
         <file>templates/backgroundColors/white.t</file>
         <file>templates/backgroundColors/black.t</file>
         <file>templates/backgroundColors/red.t</file>
@@ -85,6 +82,9 @@
         <file>templates/subprograms/forwardDeclaration.t</file>
         <file>templates/subprograms/implementation.t</file>
         <file>templates/subprograms/implementationsSectionHeader.t</file>
+        <file>templates/drawing/setBackground.t</file>
+        <file>templates/drawing/smile.t</file>
+        <file>templates/drawing/sadSmile.t</file>
         <file>templates/drawing/bmpDeclaration.t</file>
         <file>templates/drawing/clearUnusedScreen.t</file>
         <file>templates/drawing/clearUsedScreen.t</file>

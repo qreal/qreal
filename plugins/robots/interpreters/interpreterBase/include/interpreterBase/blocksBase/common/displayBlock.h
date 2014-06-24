@@ -1,14 +1,20 @@
 #pragma once
 
-#include <interpreterBase/blocksBase/block.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include "interpreterBase/blocksBase/block.h"
+#include "interpreterBase/robotModel/robotModelInterface.h"
 
-#include "robotModel/parts/nxtDisplay.h"
+namespace interpreterBase {
 
-namespace nxtKitInterpreter {
-namespace blocks {
-namespace details {
+namespace robotModel {
+namespace robotParts {
+class Display;
+}
+}
 
+namespace blocksBase {
+namespace common {
+
+/// A base for all blocks that work with robot`s display.
 class DisplayBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
@@ -21,7 +27,7 @@ public:
 
 protected:
 	/// Implementation may consider that display is configured and ready to work
-	virtual void doJob(robotModel::parts::NxtDisplay &display) = 0;
+	virtual void doJob(robotModel::robotParts::Display &display) = 0;
 
 private:
 	interpreterBase::robotModel::RobotModelInterface &mRobotModel;

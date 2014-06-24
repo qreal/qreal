@@ -18,6 +18,7 @@ QString TextExpressionProcessorBase::processExpression(QString const &expression
 
 	QString result = expression;
 	int pos = 0;
+	int index = -1;
 	while ((pos = variableRegexp.indexIn(result, pos)) != -1) {
 		int toSkip = variableRegexp.matchedLength();
 		QString const matchedDeclaration = variableRegexp.cap().remove(0, 1);
@@ -27,8 +28,9 @@ QString TextExpressionProcessorBase::processExpression(QString const &expression
 			--toSkip;
 		} else {
 			if (variableExists(matchedDeclaration)) {
+				++index;
 				metVariables << matchedDeclaration;
-				QString const variableValue = value(matchedDeclaration);
+				QString const variableValue = value(matchedDeclaration, index);
 				result.replace(pos, variableRegexp.matchedLength(), variableValue);
 				toSkip = variableValue.count();
 			}

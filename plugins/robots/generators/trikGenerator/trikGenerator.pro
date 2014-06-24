@@ -42,6 +42,7 @@ HEADERS += \
 	$$PWD/converters/engineV6PortConverter.h \
 	$$PWD/converters/encoderV4PortConverter.h \
 	$$PWD/converters/encoderV6PortConverter.h \
+	$$PWD/converters/trikStringPropertyConverter.h \
 	$$PWD/simpleGenerators/detectLineGenerator.h \
 	$$PWD/simpleGenerators/initCameraGenerator.h \
 	$$PWD/simpleGenerators/ledGenerator.h \
@@ -70,6 +71,7 @@ SOURCES += \
 	$$PWD/converters/engineV6PortConverter.cpp \
 	$$PWD/converters/encoderV4PortConverter.cpp \
 	$$PWD/converters/encoderV6PortConverter.cpp \
+	$$PWD/converters/trikStringPropertyConverter.cpp \
 	$$PWD/simpleGenerators/detectLineGenerator.cpp \
 	$$PWD/simpleGenerators/initCameraGenerator.cpp \
 	$$PWD/simpleGenerators/ledGenerator.cpp \

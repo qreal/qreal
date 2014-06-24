@@ -2362,8 +2362,8 @@
 				</logic>
 			</node>
 
-			<!-- NXT display drawing blocks -->
-			<node displayedName="Clear Screen" name="NxtClearScreen" description="Clears everything drawn on the robot`s screen.">
+			<!-- Common display drawing blocks -->
+			<node displayedName="Clear Screen" name="ClearScreen" description="Clears everything drawn on the robot`s screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/clearScreenBlock.png" x1="0" y2="50" x2="50"/>
@@ -2396,6 +2396,59 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Print Text" name="PrintText" description="Prints a given line in the specified coordinates on the robot`s screen. '$' token can be used in front of the identifier for printing its value. This feature is ignored in case when backslash ('\\') is written before the '$' token. Example: '\\$a = $a' expression will print '$a = 5' if the value of the variable 'a' is 5.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="XCoordinateText"/>
+						<label x="0" y="60" text="X: "/>
+						<label x="50" y="80" textBinded="YCoordinateText"/>
+						<label x="0" y="80" text="Y: "/>
+						<label x="50" y="100" textBinded="PrintText"/>
+						<label x="0" y="100" text="Text: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="string" name="XCoordinateText">
+							<default>1</default>
+						</property>
+						<property displayedName="Y" type="string" name="YCoordinateText">
+							<default>1</default>
+						</property>
+						<property displayedName="Text" type="string" name="PrintText">
+							<default>Enter some text here...</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- NXT display drawing blocks -->
 			<node displayedName="Draw Pixel" name="NxtDrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2605,57 +2658,6 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Print Text" name="NxtPrintText" description="Prints a given line in the specified coordinates on the robot`s screen. '$' token can be used in front of the identifier for printing its value. This feature is ignored in case when backslash ('\\') is written before the '$' token. Example: '\\$a = $a' expression will print '$a = 5' if the value of the variable 'a' is 5.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels>
-						<label x="50" y="60" textBinded="XCoordinateText"/>
-						<label x="0" y="60" text="X: "/>
-						<label x="50" y="80" textBinded="YCoordinateText"/>
-						<label x="0" y="80" text="Y: "/>
-						<label x="50" y="100" textBinded="PrintText"/>
-						<label x="0" y="100" text="Text: "/>
-					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<properties>
-						<property displayedName="X" type="string" name="XCoordinateText">
-							<default>1</default>
-						</property>
-						<property displayedName="Y" type="string" name="YCoordinateText">
-							<default>1</default>
-						</property>
-						<property displayedName="Text" type="string" name="PrintText">
-							<default>Enter some text here...</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
 
 			<!-- TRIK display drawing blocks -->
 			<node displayedName="Smile" name="TrikSmile" path="161, 71 : 166, 57 :  | 149, 82 : 161, 70 :  | 113, 91 : 149, 83 :  | 67, 91 : 113, 91 :  | 29, 84 : 65, 91 :  | 17, 74 : 28, 83 :  | 12, 59 : 17, 73 :  | 130, 13 : 130, 51 :  | 62, 12 : 62, 51 : " description="Draws a smile on the robot`s screen :)">
@@ -2763,6 +2765,7 @@
 					</generalizations>
 				</logic>
 			</node>
+
 			<node displayedName="Say" name="TrikSay" description="Synthesizes the given phrase and plays it on the robot.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2863,15 +2866,15 @@
 				<element name="TrikWaitForPower"/>
 			</group>
 			<group name="Drawing">
-				<element name="NxtClearScreen"/>
 				<element name="NxtDrawRect"/>
 				<element name="NxtDrawPixel"/>
 				<element name="NxtDrawLine"/>
 				<element name="NxtDrawCircle"/>
-				<element name="NxtPrintText"/>
 				<element name="TrikSmile"/>
 				<element name="TrikSadSmile"/>
 				<element name="TrikSetBackground"/>
+				<element name="PrintText"/>
+				<element name="ClearScreen"/>
 			</group>
 		</palette>
 	</diagram>

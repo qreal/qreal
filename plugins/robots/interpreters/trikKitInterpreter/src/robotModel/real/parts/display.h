@@ -18,6 +18,8 @@ public:
 	/// @todo: color enum here?
 	void setBackground(QColor const &color) override;
 	void clearScreen() override;
+
+	void printText(int x, int y, QString const &text) override;
 };
 
 }
