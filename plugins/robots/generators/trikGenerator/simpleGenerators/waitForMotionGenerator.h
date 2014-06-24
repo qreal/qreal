@@ -5,11 +5,11 @@
 namespace generatorBase {
 namespace simple {
 
-/// Generator for 'WaitForMovement' block
-class WaitForMovementSensorGenerator : public BindingGenerator
+/// Generator for 'WaitForMotion' block
+class WaitForMotionGenerator : public BindingGenerator
 {
 public:
-	WaitForMovementSensorGenerator(qrRepo::RepoApi const &repo
+	WaitForMotionGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent = 0);

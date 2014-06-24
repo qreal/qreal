@@ -2059,6 +2059,42 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Wait for Motion" name="TrikWaitForMotion" description="Waits till the motion sensor on the given port is triggered.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForMotionBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-30" text="F1" hard="true" background="white"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Wait for Encoder" name="TrikWaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Waits till the tacho limit of the motor on the given port will reach the value of the 'Tacho Limit' parameter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2854,6 +2890,7 @@
 				<element name="TrikWaitForIRDistance"/>
 				<element name="TrikWaitForGyroscope"/>
 				<element name="TrikWaitForAccelerometer"/>
+				<element name="TrikWaitForMotion"/>
 				<element name="TrikWaitForEncoder"/>
 				<element name="TrikWaitForEnter"/>
 				<element name="TrikWaitForLeft"/>

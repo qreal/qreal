@@ -16,7 +16,7 @@
 
 #include "parts/sonarSensor.h"
 
-#include "parts/movementSensor.h"
+#include "parts/motionSensor.h"
 
 #include "parts/led.h"
 #include "parts/cameraLineDetector.h"
@@ -62,8 +62,8 @@ robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, Devic
 		return new parts::InfraredSensor(infraredSensorInfo(), port);
 	} else if (deviceInfo.isA(sonarSensorInfo())) {
 		return new parts::SonarSensor(sonarSensorInfo(), port);
-	} else if (deviceInfo.isA(movementSensorInfo())) {
-		return new parts::MovementSensor(movementSensorInfo(), port);
+	} else if (deviceInfo.isA(motionSensorInfo())) {
+		return new parts::MotionSensor(motionSensorInfo(), port);
 	} else if (deviceInfo.isA(ledInfo())) {
 		return new parts::Led(ledInfo(), port);
 	} else if (deviceInfo.isA(cameraLineDetectorSensorInfo())) {
