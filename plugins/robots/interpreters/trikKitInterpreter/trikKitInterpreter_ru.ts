@@ -80,11 +80,18 @@
     </message>
 </context>
 <context>
+    <name>trikKitInterpreter::robotModel::parts::TrikMotionSensor</name>
+    <message>
+        <location filename="src/robotModel/parts/trikMotionSensor.h" line="13"/>
+        <source>Motion Sensor</source>
+        <translation>Сенсор движения</translation>
+    </message>
+</context>
+<context>
     <name>trikKitInterpreter::robotModel::parts::TrikMovementSensor</name>
     <message>
-        <location filename="src/robotModel/parts/trikMovementSensor.h" line="13"/>
         <source>Movement Sensor</source>
-        <translation>Сенсор движения</translation>
+        <translation type="vanished">Сенсор движения</translation>
     </message>
 </context>
 <context>

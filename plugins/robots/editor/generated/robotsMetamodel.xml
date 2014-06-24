@@ -2062,7 +2062,7 @@
 			<node displayedName="Wait for Motion" name="TrikWaitForMotion" description="Waits till the motion sensor on the given port is triggered.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForMotionBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/waitForMotionBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="40" y="-30" text="F1" hard="true" background="white"/>

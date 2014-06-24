@@ -63,12 +63,12 @@
 <context>
     <name>nxtKitInterpreter::NxtKitInterpreterPlugin</name>
     <message>
-        <location filename="src/nxtKitInterpreterPlugin.cpp" line="60"/>
+        <location filename="src/nxtKitInterpreterPlugin.cpp" line="61"/>
         <source>Lego NXT</source>
         <translation>Лего NXT</translation>
     </message>
     <message>
-        <location filename="src/nxtKitInterpreterPlugin.cpp" line="94"/>
+        <location filename="src/nxtKitInterpreterPlugin.cpp" line="95"/>
         <source>Show 2d model</source>
         <translation>Открыть 2D модель</translation>
     </message>
@@ -120,7 +120,7 @@
 <context>
     <name>nxtKitInterpreter::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="src/robotModel/real/realRobotModel.cpp" line="43"/>
+        <location filename="src/robotModel/real/realRobotModel.cpp" line="44"/>
         <source>Real Robot</source>
         <translation>Реальный робот</translation>
     </message>
@@ -128,41 +128,36 @@
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorBlue</name>
     <message>
-        <location filename="src/robotModel/real/parts/colorSensorBlue.h" line="16"/>
         <source>Color sensor (blue)</source>
-        <translation>Сенсор цвета (синий)</translation>
+        <translation type="vanished">Сенсор цвета (синий)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorFull</name>
     <message>
-        <location filename="src/robotModel/real/parts/colorSensorFull.h" line="16"/>
         <source>Color sensor (full)</source>
-        <translation>Сенсор цвета (распознавание цветов)</translation>
+        <translation type="vanished">Сенсор цвета (распознавание цветов)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorGreen</name>
     <message>
-        <location filename="src/robotModel/real/parts/colorSensorGreen.h" line="16"/>
         <source>Color sensor (green)</source>
-        <translation>Сенсор цвета (зеленый)</translation>
+        <translation type="vanished">Сенсор цвета (зеленый)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorPassive</name>
     <message>
-        <location filename="src/robotModel/real/parts/colorSensorPassive.h" line="16"/>
         <source>Color sensor (passive)</source>
-        <translation>Сенсор цвета (пассивный)</translation>
+        <translation type="vanished">Сенсор цвета (пассивный)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorRed</name>
     <message>
-        <location filename="src/robotModel/real/parts/colorSensorRed.h" line="16"/>
         <source>Color sensor (red)</source>
-        <translation>Сенсор цвета (красный)</translation>
+        <translation type="vanished">Сенсор цвета (красный)</translation>
     </message>
 </context>
 <context>
