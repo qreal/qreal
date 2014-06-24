@@ -11,7 +11,6 @@
 #include <interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <interpreterBase/blocksBase/common/waitForButtonBlock.h>
 
-#include "details/sadSmileBlock.h"
 #include "details/smileBlock.h"
 #include "details/setBackgroundBlock.h"
 #include "details/trikEnginesBackwardBlock.h"
@@ -88,9 +87,9 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new WaitForButtonBlock(mRobotModelManager->model(), "PowerButtonPort");
 
 	} else if (elementMetatypeIs(element, "TrikSmile")) {
-		return new SmileBlock(mRobotModelManager->model());
+		return new SmileBlock(mRobotModelManager->model(), false);
 	} else if (elementMetatypeIs(element, "TrikSadSmile")) {
-		return new SadSmileBlock(mRobotModelManager->model());
+		return new SmileBlock(mRobotModelManager->model(), true);
 	} else if (elementMetatypeIs(element, "TrikSetBackground")) {
 		return new SetBackgroundBlock(mRobotModelManager->model());
 	}

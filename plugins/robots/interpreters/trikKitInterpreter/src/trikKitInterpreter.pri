@@ -16,10 +16,8 @@ HEADERS += \
 	$$PWD/trikKitInterpreterPlugin.h \
 	$$PWD/trikTwoDModelConfigurer.h \
 	$$PWD/blocks/trikBlocksFactory.h \
-	$$PWD/blocks/details/sadSmileBlock.h \
 	$$PWD/blocks/details/setBackgroundBlock.h \
 	$$PWD/blocks/details/smileBlock.h \
-	$$PWD/blocks/details/smileBlockBase.h \
 	$$PWD/blocks/details/trikEnginesForwardBlock.h \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
@@ -57,10 +55,8 @@ SOURCES += \
 	$$PWD/trikDisplayWidget.cpp \
 	$$PWD/trikTwoDModelConfigurer.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
-	$$PWD/blocks/details/sadSmileBlock.cpp \
 	$$PWD/blocks/details/setBackgroundBlock.cpp \
 	$$PWD/blocks/details/smileBlock.cpp \
-	$$PWD/blocks/details/smileBlockBase.cpp \
 	$$PWD/blocks/details/trikEnginesForwardBlock.cpp \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
