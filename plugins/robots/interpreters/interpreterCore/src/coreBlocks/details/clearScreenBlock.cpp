@@ -1,13 +1,15 @@
 #include "clearScreenBlock.h"
 
-using namespace nxtKitInterpreter::blocks::details;
+#include <interpreterBase/robotModel/robotParts/display.h>
+
+using namespace interpreterCore::coreBlocks::details;
 
 ClearScreenBlock::ClearScreenBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: DisplayBlock(robotModel)
 {
 }
 
-void ClearScreenBlock::doJob(robotModel::parts::NxtDisplay &display)
+void ClearScreenBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
 	display.clearScreen();
 	emit done(mNextBlockId);

@@ -18,7 +18,6 @@ public:
 
 	/// @todo: color enum here?
 	virtual void setBackground(QColor const &color) = 0;
-	virtual void clearScreen() = 0;
 };
 
 }

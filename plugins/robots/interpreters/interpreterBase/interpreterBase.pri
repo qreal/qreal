@@ -20,6 +20,7 @@ SOURCES += \
 	$$PWD/src/blocksBase/common/emptyBlock.cpp \
 	$$PWD/src/blocksBase/common/engineCommandBlock.cpp \
 	$$PWD/src/blocksBase/common/enginesStopBlock.cpp \
+	$$PWD/src/blocksBase/common/displayBlock.cpp \
 	$$PWD/src/blocksBase/common/waitBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForAccelerometerBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForColorBlock.cpp \
@@ -77,6 +78,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/blocksBase/common/emptyBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/engineCommandBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/enginesStopBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/displayBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForAccelerometerBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForColorBlock.h \

@@ -5,6 +5,7 @@
 #include "converters/engineV6PortConverter.h"
 #include "converters/encoderV4PortConverter.h"
 #include "converters/encoderV6PortConverter.h"
+#include "converters/trikStringPropertyConverter.h"
 #include "simpleGenerators/detectLineGenerator.h"
 #include "simpleGenerators/initCameraGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
@@ -115,6 +116,11 @@ Binding::ConverterInterface *TrikGeneratorFactory::inputPortConverter() const
 Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
 {
 	return encoderPortConverter();
+}
+
+generatorBase::simple::Binding::ConverterInterface *TrikGeneratorFactory::stringPropertyConverter() const
+{
+	return new converters::TrikStringPropertyConverter(*mVariables);
 }
 
 void TrikGeneratorFactory::initVariables()

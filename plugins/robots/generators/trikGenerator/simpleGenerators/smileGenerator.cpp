@@ -10,7 +10,7 @@ SmileGenerator::SmileGenerator(qrRepo::RepoApi const &repo
 		, qReal::Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
-			, "display/smile.t"
+			, "drawing/smile.t"
 			, QList<Binding *>()
 			, parent)
 {
