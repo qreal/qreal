@@ -25,6 +25,8 @@ public:
 
 	QSet<qReal::Id> visibleBlocks(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
 
+	QSet<qReal::Id> commonBlocks() const override;
+
 private:
 	/// Provides a list of factories that can create blocks for given robot model (common factory that creates blocks
 	/// for all models, and model-specific factories).

@@ -21,7 +21,8 @@ void RobotModelManager::setModel(RobotModelInterface * const robotModel)
 		disconnect(mRobotModel, nullptr, this, nullptr);
 		auto const actualModel = robotModel ? robotModel : &mDefaultRobotModel;
 		/// @todo implement hierarchical structure in settings manager
-		QString const selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
+		QString const selectedKit = actualModel->kitId();
+		qReal::SettingsManager::setValue("SelectedRobotKit", selectedKit);
 		/// @todo select kit here if needed
 		QString const key = "SelectedModelFor" + selectedKit;
 		qReal::SettingsManager::setValue(key, actualModel->name());
