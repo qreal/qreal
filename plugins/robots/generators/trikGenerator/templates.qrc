@@ -68,7 +68,7 @@
         <file>templates/sensors/light.t</file>
         <file>templates/sensors/infrared.t</file>
         <file>templates/sensors/sonar.t</file>
-        <file>templates/sensors/movement.t</file>
+        <file>templates/sensors/motion.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>
@@ -76,7 +76,7 @@
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>
         <file>templates/wait/infrared.t</file>
-        <file>templates/wait/movement.t</file>
+        <file>templates/wait/motion.t</file>
         <file>templates/subprograms/subprogramCall.t</file>
         <file>templates/subprograms/declarationsSectionHeader.t</file>
         <file>templates/subprograms/forwardDeclaration.t</file>

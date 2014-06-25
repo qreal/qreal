@@ -118,6 +118,11 @@
         <translation>Загрузить программу</translation>
     </message>
     <message>
+        <location filename="nxtGeneratorPlugin.cpp" line="107"/>
+        <source>Generate NXT OSEK code</source>
+        <translation>Сгенерировать код NXT OSEK</translation>
+    </message>
+    <message>
         <location filename="nxtGeneratorPlugin.cpp" line="108"/>
         <source>Upload program to NXT device</source>
         <oldsource>Upload program to robot</oldsource>

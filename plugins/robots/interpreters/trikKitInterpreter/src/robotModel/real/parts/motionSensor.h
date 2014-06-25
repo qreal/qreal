@@ -1,18 +1,18 @@
 #pragma once
 
-#include "robotModel/parts/trikMovementSensor.h"
+#include "robotModel/parts/trikMotionSensor.h"
 
 namespace trikKitInterpreter {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class MovementSensor : public robotModel::parts::TrikMovementSensor
+class MotionSensor : public robotModel::parts::TrikMotionSensor
 {
 	Q_OBJECT
 
 public:
-	MovementSensor(interpreterBase::robotModel::DeviceInfo const &info
+	MotionSensor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);
 
 	void read() override;

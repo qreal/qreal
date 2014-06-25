@@ -20,6 +20,7 @@ HEADERS += \
 	$$PWD/blocks/details/smileBlock.h \
 	$$PWD/blocks/details/trikEnginesForwardBlock.h \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.h \
+	$$PWD/blocks/details/waitForMotionBlock.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
 	$$PWD/robotModel/parts/trikDisplay.h \
 	$$PWD/robotModel/parts/trikSpeaker.h \
@@ -29,7 +30,7 @@ HEADERS += \
 	$$PWD/robotModel/parts/trikSonarSensor.h \
 	$$PWD/robotModel/parts/trikLed.h \
 	$$PWD/robotModel/parts/trikCameraLineDetector.h \
-	$$PWD/robotModel/parts/trikMovementSensor.h \
+	$$PWD/robotModel/parts/trikMotionSensor.h \
 	$$PWD/robotModel/real/realRobotModelBase.h \
 	$$PWD/robotModel/real/realRobotModelV6.h \
 	$$PWD/robotModel/real/parts/display.h \
@@ -43,7 +44,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/sonarSensor.h \
 	$$PWD/robotModel/real/parts/led.h \
 	$$PWD/robotModel/real/parts/cameraLineDetector.h \
-	$$PWD/robotModel/real/parts/movementSensor.h \
+	$$PWD/robotModel/real/parts/motionSensor.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
@@ -59,6 +60,7 @@ SOURCES += \
 	$$PWD/blocks/details/smileBlock.cpp \
 	$$PWD/blocks/details/trikEnginesForwardBlock.cpp \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.cpp \
+	$$PWD/blocks/details/waitForMotionBlock.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
 	$$PWD/robotModel/parts/trikDisplay.cpp \
 	$$PWD/robotModel/parts/trikSpeaker.cpp \
@@ -68,7 +70,7 @@ SOURCES += \
 	$$PWD/robotModel/parts/trikSonarSensor.cpp \
 	$$PWD/robotModel/parts/trikLed.cpp \
 	$$PWD/robotModel/parts/trikCameraLineDetector.cpp \
-	$$PWD/robotModel/parts/trikMovementSensor.cpp \
+	$$PWD/robotModel/parts/trikMotionSensor.cpp \
 	$$PWD/robotModel/real/realRobotModelBase.cpp \
 	$$PWD/robotModel/real/realRobotModelV6.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
@@ -82,7 +84,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/sonarSensor.cpp \
 	$$PWD/robotModel/real/parts/led.cpp \
 	$$PWD/robotModel/real/parts/cameraLineDetector.cpp \
-	$$PWD/robotModel/real/parts/movementSensor.cpp \
+	$$PWD/robotModel/real/parts/motionSensor.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \

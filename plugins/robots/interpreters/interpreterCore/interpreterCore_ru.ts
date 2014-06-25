@@ -450,27 +450,27 @@ p, li { white-space: pre-wrap; }
         <translation>Trik Studio</translation>
     </message>
     <message>
-        <location filename="src/customizer.cpp" line="45"/>
+        <location filename="src/customizer.cpp" line="50"/>
         <source>Blocks</source>
         <translation>Блоки</translation>
     </message>
     <message>
-        <location filename="src/customizer.cpp" line="50"/>
+        <location filename="src/customizer.cpp" line="55"/>
         <source>Configure devices</source>
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="src/customizer.cpp" line="58"/>
+        <location filename="src/customizer.cpp" line="63"/>
         <source>Sensors state</source>
         <translation>Графики</translation>
     </message>
     <message>
-        <location filename="src/customizer.cpp" line="73"/>
+        <location filename="src/customizer.cpp" line="78"/>
         <source>Subprograms</source>
         <translation>Подпрограммы</translation>
     </message>
     <message>
-        <location filename="src/customizer.cpp" line="78"/>
+        <location filename="src/customizer.cpp" line="83"/>
         <source>The list of all declared subprograms in the project</source>
         <translation>Список всех объявленных в проекте подпрограмм</translation>
     </message>
@@ -545,17 +545,17 @@ p, li { white-space: pre-wrap; }
         <translation>Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="78"/>
+        <location filename="src/managers/actionsManager.cpp" line="76"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="79"/>
+        <location filename="src/managers/actionsManager.cpp" line="77"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="82"/>
+        <location filename="src/managers/actionsManager.cpp" line="80"/>
         <source>Toggle titles visibility</source>
         <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
@@ -581,7 +581,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="src/robotsPlugin.cpp" line="49"/>
+        <location filename="src/robotsPlugin.cpp" line="67"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -700,7 +700,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ActionsManager</name>
     <message>
-        <location filename="src/managers/actionsManager.cpp" line="182"/>
+        <location filename="src/managers/actionsManager.cpp" line="189"/>
         <source>Switch to </source>
         <translation>Переключиться в режим </translation>
     </message>
@@ -708,7 +708,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::DefaultRobotModel</name>
     <message>
-        <location filename="src/defaultRobotModel.cpp" line="12"/>
+        <location filename="src/defaultRobotModel.cpp" line="17"/>
         <source>Empty model</source>
         <translation>Пустая модель</translation>
     </message>
@@ -723,7 +723,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="src/robotsPluginFacade.cpp" line="98"/>
+        <location filename="src/robotsPluginFacade.cpp" line="93"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -739,17 +739,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::coreBlocks::details::ForkBlock</name>
     <message>
-        <location filename="src/coreBlocks/details/forkBlock.cpp" line="26"/>
+        <location filename="src/coreBlocks/details/forkBlock.cpp" line="22"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/forkBlock.cpp" line="38"/>
+        <location filename="src/coreBlocks/details/forkBlock.cpp" line="34"/>
         <source>There must be an outgoing link, use &quot;End&quot; block to finish a program</source>
         <translation>Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/forkBlock.cpp" line="43"/>
+        <location filename="src/coreBlocks/details/forkBlock.cpp" line="39"/>
         <source>There must be at least two outgoing links</source>
         <translation>Должно быть как минимум две исходящие связи</translation>
     </message>
@@ -757,27 +757,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::coreBlocks::details::IfBlock</name>
     <message>
-        <location filename="src/coreBlocks/details/ifBlock.cpp" line="25"/>
+        <location filename="src/coreBlocks/details/ifBlock.cpp" line="21"/>
         <source>There must be exactly TWO links outgoing from if block</source>
         <translation>От условного блока должно отходить ровно ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/ifBlock.cpp" line="32"/>
+        <location filename="src/coreBlocks/details/ifBlock.cpp" line="28"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/ifBlock.cpp" line="41"/>
+        <location filename="src/coreBlocks/details/ifBlock.cpp" line="37"/>
         <source>Two links marked with &apos;true&apos; found</source>
         <translation>Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/ifBlock.cpp" line="48"/>
+        <location filename="src/coreBlocks/details/ifBlock.cpp" line="44"/>
         <source>Two links marked with &apos;false&apos; found</source>
         <translation>Обе связи помечены условием &apos;Ложь&apos;</translation>
     </message>
     <message>
-        <location filename="src/coreBlocks/details/ifBlock.cpp" line="55"/>
+        <location filename="src/coreBlocks/details/ifBlock.cpp" line="51"/>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
         <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
@@ -857,25 +857,30 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="76"/>
-        <location filename="src/interpreter/interpreter.cpp" line="160"/>
+        <location filename="src/interpreter/interpreter.cpp" line="66"/>
+        <location filename="src/interpreter/interpreter.cpp" line="134"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="81"/>
+        <location filename="src/interpreter/interpreter.cpp" line="71"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="141"/>
+        <location filename="src/interpreter/interpreter.cpp" line="117"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="src/interpreter/interpreter.cpp" line="145"/>
+        <location filename="src/interpreter/interpreter.cpp" line="122"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
+    </message>
+    <message>
+        <location filename="src/interpreter/interpreter.cpp" line="182"/>
+        <source>Threads limit exceeded. Maximum threads count is %1</source>
+        <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
 </context>
 <context>
@@ -894,12 +899,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ui::DevicesConfigurationWidget</name>
     <message>
-        <location filename="src/ui/devicesConfigurationWidget.cpp" line="66"/>
+        <location filename="src/ui/devicesConfigurationWidget.cpp" line="70"/>
         <source>Port %1:</source>
         <translation>Порт %1:</translation>
     </message>
     <message>
-        <location filename="src/ui/devicesConfigurationWidget.cpp" line="71"/>
+        <location filename="src/ui/devicesConfigurationWidget.cpp" line="75"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
@@ -907,12 +912,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ui::RobotsSettingsPage</name>
     <message>
-        <location filename="src/ui/robotsSettingsPage.cpp" line="61"/>
+        <location filename="src/ui/robotsSettingsPage.cpp" line="59"/>
         <source>No constructor kit plugins loaded</source>
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="src/ui/robotsSettingsPage.cpp" line="179"/>
+        <location filename="src/ui/robotsSettingsPage.cpp" line="180"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>
@@ -1529,9 +1534,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
     <message>
-        <location filename="details/d2RobotModel/gridParameters.cpp" line="17"/>
         <source>Grid</source>
-        <translation>Сетка</translation>
+        <translation type="vanished">Сетка</translation>
     </message>
 </context>
 <context>

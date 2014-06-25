@@ -15,6 +15,7 @@
 #include "details/setBackgroundBlock.h"
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
+#include "details/waitForMotionBlock.h"
 #include "robotModel/parts/trikInfraredSensor.h"
 
 using namespace trikKitInterpreter::blocks;
@@ -70,6 +71,8 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new WaitForGyroscopeSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForAccelerometer")) {
 		return new WaitForAccelerometerSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitForMotion")) {
+		return new WaitForMotionBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForEncoder")) {
 		return new WaitForEncoderBlock(mRobotModelManager->model());
 
@@ -135,6 +138,7 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikWaitForIRDistance")
 			<< id("TrikWaitForGyroscope")
 			<< id("TrikWaitForAccelerometer")
+			<< id("TrikWaitForMotion")
 			<< id("TrikWaitForEncoder")
 			<< id("TrikWaitForEnter")
 			<< id("TrikWaitForLeft")
@@ -168,6 +172,7 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikInitCamera")
 				<< id("TrikDetectLine")
 				<< id("TrikLineDetectorToVariable")
+				<< id("TrikWaitForMotion")
 				;
 	} else {
 		result
