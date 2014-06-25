@@ -46,13 +46,16 @@ public:
 	void saveData();
 
 	/// Saves settings into selected file with name fileNameForExport.
-	void saveSettings(QString fileNameForExport);
+	void saveSettings(QString const &fileNameForExport);
 
 	/// Loads settings from persistent external storage into SettingsManager.
 	void load();
 
-	/// Loads settings from selected file with name fileNameForImport.
+	/// Merges settings from the given file in INI format.
 	void loadSettings(QString const &fileNameForImport);
+
+	/// Merges default settings from the given file in INI format.
+	static void loadDefaultSettings(QString const &filePath);
 
 signals:
 	/// Emitted each time when settings with the given key were modified.
@@ -66,6 +69,9 @@ private:
 
 	void set(QString const &name, QVariant const &value);
 	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
+
+	/// Merges settings from the given file in INI format into the given map.
+	void mergeSettings(QString const &fileNameForImport, QHash<QString, QVariant> &target);
 
 	void initDefaultValues();
 

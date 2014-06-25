@@ -15,8 +15,6 @@ RobotsPluginFacade::RobotsPluginFacade()
 {
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, &mActionsManager, &ActionsManager::onRobotModelChanged);
-
-	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
 }
 
 RobotsPluginFacade::~RobotsPluginFacade()
@@ -27,6 +25,8 @@ RobotsPluginFacade::~RobotsPluginFacade()
 
 void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 {
+	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
+
 	mDevicesConfigurationManager.reset(new DevicesConfigurationManager(
 			configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
@@ -110,6 +110,21 @@ interpreterCore::Customizer &RobotsPluginFacade::customizer()
 ActionsManager &RobotsPluginFacade::actionsManager()
 {
 	return mActionsManager;
+}
+
+QStringList RobotsPluginFacade::defaultSettingsFiles() const
+{
+	QStringList result = { ":/interpreterCoreDefaultSettings.ini" };
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
+			QString const defaultSettings = kit->defaultSettingsFile();
+			if (!defaultSettings.isEmpty()) {
+				result << defaultSettings;
+			}
+		}
+	}
+
+	return result;
 }
 
 void RobotsPluginFacade::connectInterpreterToActions()

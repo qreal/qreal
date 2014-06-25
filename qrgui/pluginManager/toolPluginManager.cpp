@@ -38,6 +38,7 @@ ToolPluginManager::ToolPluginManager()
 		}
 	}
 
+	loadDefaultSettings();
 	setHotKeyActions();
 }
 
@@ -79,6 +80,15 @@ void ToolPluginManager::setHotKeyActions() const
 {
 	for (HotKeyActionInfo const &actionInfo : hotKeyActions()) {
 		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
+	}
+}
+
+void ToolPluginManager::loadDefaultSettings()
+{
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+		for (QString const &defaultSettingsFile : toolPlugin->defaultSettingsFiles()) {
+			SettingsManager::loadDefaultSettings(defaultSettingsFile);
+		}
 	}
 }
 

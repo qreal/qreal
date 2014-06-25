@@ -75,7 +75,7 @@ void SettingsManager::saveData()
 	mSettings.sync();
 }
 
-void SettingsManager::saveSettings(QString fileNameForExport)
+void SettingsManager::saveSettings(QString const &fileNameForExport)
 {
 	QSettings settingsForSave(fileNameForExport, QSettings::IniFormat);
 	for (QString const &name : mData.keys()) {
@@ -92,21 +92,27 @@ void SettingsManager::load()
 	}
 }
 
-void SettingsManager::loadSettings(QString  const &fileNameForImport)
+void SettingsManager::loadSettings(QString const &fileNameForImport)
 {
-	QSettings settings(fileNameForImport, QSettings::IniFormat);
-	for (QString const &name : settings.allKeys()) {
-		mData[name] = settings.value(name);
-	}
+	mergeSettings(fileNameForImport, mData);
 	saveData();
 }
 
 void SettingsManager::initDefaultValues()
 {
-	QSettings values(":/settingsDefaultValues", QSettings::IniFormat);
+	mergeSettings(":/settingsDefaultValues", mDefaultValues);
+}
 
-	for (QString const &key : values.allKeys()) {
-		mDefaultValues.insert(key, values.value(key));
+void SettingsManager::loadDefaultSettings(QString const &filePath)
+{
+	instance()->mergeSettings(filePath, instance()->mDefaultValues);
+}
+
+void SettingsManager::mergeSettings(QString const &fileNameForImport, QHash<QString, QVariant> &target)
+{
+	QSettings settings(fileNameForImport, QSettings::IniFormat);
+	for (QString const &name : settings.allKeys()) {
+		target[name] = settings.value(name);
 	}
 }
 
