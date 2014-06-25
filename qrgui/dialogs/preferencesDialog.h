@@ -57,4 +57,5 @@ private slots:
 private:
 	Ui::PreferencesDialog *mUi;
 	QMap<QString, PreferencesPage *> mCustomPages;
+	QMap<QString, int> mPagesIndexes;
 };
