@@ -29,7 +29,7 @@ protected:
 
 	virtual interpreterBase::robotModel::DeviceInfo sonarSensorInfo() const;
 
-	virtual interpreterBase::robotModel::DeviceInfo movementSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo motionSensorInfo() const;
 
 	virtual interpreterBase::robotModel::DeviceInfo ledInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo cameraLineDetectorSensorInfo() const;

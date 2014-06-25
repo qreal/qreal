@@ -18,7 +18,7 @@
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/trikEnginesStopGenerator.h"
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
-#include "simpleGenerators/waitForMovementSensorGenerator.h"
+#include "simpleGenerators/waitForMotionGenerator.h"
 #include "simpleGenerators/trikNullificationEncoderGenerator.h"
 #include "parts/trikVariables.h"
 
@@ -83,8 +83,8 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
 	} else if (elementType == "TrikWaitForPower") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForPower.t", this);
-	} else if (elementType == "TrikWaitForMovement") {
-		return new WaitForMovementSensorGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitForMotion") {
+		return new WaitForMotionGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForIRDistance") {
 		return new WaitForInfraredSensorGenerator(mRepo, customizer, id, this);
 	}

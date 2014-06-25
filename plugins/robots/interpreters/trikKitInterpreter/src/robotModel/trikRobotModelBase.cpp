@@ -12,7 +12,7 @@
 #include "parts/trikPowerMotor.h"
 #include "parts/trikInfraredSensor.h"
 #include "parts/trikSonarSensor.h"
-#include "parts/trikMovementSensor.h"
+#include "parts/trikMotionSensor.h"
 #include "parts/trikCameraLineDetector.h"
 #include "parts/trikLed.h"
 
@@ -66,7 +66,7 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
 	addAllowedConnection(PortInfo("D1", input, { "JD1" }, "sensorD1"), { sonarSensorInfo() });
 	addAllowedConnection(PortInfo("D2", input, { "JD2" }, "sensorD2"), { sonarSensorInfo() });
 
-	addAllowedConnection(PortInfo("F1", input, { "JF1" }, "sensorF1"), { movementSensorInfo() });
+	addAllowedConnection(PortInfo("F1", input, { "JF1" }, "sensorF1"), { motionSensorInfo() });
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
 	addAllowedConnection(PortInfo("LineDetectorPort", input), { cameraLineDetectorSensorInfo() });
@@ -133,9 +133,9 @@ DeviceInfo TrikRobotModelBase::sonarSensorInfo() const
 	return DeviceInfo::create<parts::TrikSonarSensor>();
 }
 
-DeviceInfo TrikRobotModelBase::movementSensorInfo() const
+DeviceInfo TrikRobotModelBase::motionSensorInfo() const
 {
-	return DeviceInfo::create<parts::TrikMovementSensor>();
+	return DeviceInfo::create<parts::TrikMotionSensor>();
 }
 
 DeviceInfo TrikRobotModelBase::ledInfo() const

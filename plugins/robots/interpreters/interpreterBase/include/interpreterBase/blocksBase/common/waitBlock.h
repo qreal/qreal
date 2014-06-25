@@ -35,6 +35,10 @@ protected:
 	/// Stops waiting and transfers control to a next block.
 	virtual void stop();
 
+	/// Implementation must return the port of the the device used in the block.
+	/// Default implementation works with the port specified in the 'Port' property of the block.
+	virtual QString port() const;
+
 	/// Implementation must return the type of the waited device or DeviceInfo() if no such one.
 	virtual robotModel::DeviceInfo device() const = 0;
 
