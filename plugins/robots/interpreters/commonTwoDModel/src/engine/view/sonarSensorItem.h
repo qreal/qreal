@@ -3,8 +3,8 @@
 #include <interpreterBase/robotModel/portInfo.h>
 
 #include "sensorItem.h"
-#include "worldModel.h"
-#include "sensorsConfiguration.h"
+#include "src/engine/model/worldModel.h"
+#include "src/engine/model/sensorsConfiguration.h"
 
 namespace twoDModel {
 

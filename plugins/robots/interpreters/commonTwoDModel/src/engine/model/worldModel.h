@@ -7,9 +7,9 @@
 #include <QtGui/QPolygon>
 #include <QtXml/QDomDocument>
 
-//#include "../../sensorConstants.h"
-#include "wallItem.h"
-#include "colorFieldItem.h"
+/// @todo: Get rid of view dependencies
+#include "src/engine/view/wallItem.h"
+#include "src/engine/view/colorFieldItem.h"
 
 qreal const robotWheelDiameterInPx = 16;
 qreal const robotWheelDiameterInCm = 5.6;

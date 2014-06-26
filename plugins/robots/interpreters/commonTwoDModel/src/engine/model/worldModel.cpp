@@ -4,8 +4,9 @@
 #include "worldModel.h"
 
 //#include "../tracer.h"
-#include "stylusItem.h"
-#include "ellipseItem.h"
+/// @todo: Get rid of view dependencies
+#include "src/engine/view/stylusItem.h"
+#include "src/engine/view/ellipseItem.h"
 
 using namespace twoDModel;
 

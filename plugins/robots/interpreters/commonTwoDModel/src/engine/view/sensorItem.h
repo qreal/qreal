@@ -10,8 +10,8 @@
 
 #include <interpreterBase/robotModel/portInfo.h>
 
-#include "sensorsConfiguration.h"
 #include "rotater.h"
+#include "src/engine/model/sensorsConfiguration.h"
 
 namespace twoDModel {
 

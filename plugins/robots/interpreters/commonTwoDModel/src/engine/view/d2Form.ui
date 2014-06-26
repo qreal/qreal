@@ -926,7 +926,7 @@
   <customwidget>
    <class>twoDModel::GridParameters</class>
    <extends>QFrame</extends>
-   <header>src/engine/gridParameters.h</header>
+   <header>src/engine/view/gridParameters.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

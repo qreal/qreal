@@ -13,21 +13,21 @@
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
 
+#include <interpreterBase/devicesConfigurationProvider.h>
+#include <interpreterBase/robotModel/robotModelInterface.h>
+
 #include "lineItem.h"
 #include "stylusItem.h"
 #include "ellipseItem.h"
-#include "worldModel.h"
-#include "src/engine/twoDRobotModelInterface.h"
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
-#include "timeline.h"
+#include "src/engine/model/worldModel.h"
+#include "src/engine/model/twoDRobotModelInterface.h"
+#include "src/engine/model/timeline.h"
 
 #include "commonTwoDModel/engine/configurer.h"
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
-
-#include <interpreterBase/devicesConfigurationProvider.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace Ui {
 class D2Form;

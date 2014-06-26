@@ -16,12 +16,13 @@
 #include <interpreterBase/robotModel/robotParts/colorSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
 
-#include "d2RobotModel.h"
-#include "constants.h"
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
 #include "rotater.h"
-#include "timeline.h"
+
+#include "src/engine/model/d2RobotModel.h"
+#include "src/engine/model/constants.h"
+#include "src/engine/model/timeline.h"
 
 #include <QtCore/QDebug>
 
