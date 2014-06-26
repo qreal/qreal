@@ -1,16 +1,18 @@
-#include "src/engine/d2RobotModel.h"
+#include "d2RobotModel.h"
 
 #include <qrkernel/settingsManager.h>
 #include <utils/tracer.h>
 #include "constants.h"
 //#include "details/tracer.h"
-#include "src/engine/physics/realisticPhysicsEngine.h"
-#include "src/engine/physics/simplePhysicsEngine.h"
-#include "src/engine/worldModel.h"
-#include "src/engine/d2ModelWidget.h"
-#include "src/engine/timeline.h"
-#include "src/engine/worldModel.h"
-#include "src/engine/d2ModelTimer.h"
+#include "physics/simplePhysicsEngine.h"
+#include "worldModel.h"
+#include "timeline.h"
+#include "worldModel.h"
+#include "d2ModelTimer.h"
+#include "physics/realisticPhysicsEngine.h"
+
+/// @todo: Get rid of it
+#include "src/engine/view/d2ModelWidget.h"
 
 #include <interpreterBase/robotModel/robotParts/motor.h>
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>

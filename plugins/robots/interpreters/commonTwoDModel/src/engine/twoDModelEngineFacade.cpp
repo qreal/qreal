@@ -1,6 +1,6 @@
 #include "commonTwoDModel/engine/twoDModelEngineFacade.h"
 
-#include "src/engine/d2RobotModel.h"
+#include "model/d2RobotModel.h"
 
 using namespace twoDModel::engine;
 

@@ -3,9 +3,11 @@
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
-#include "src/engine/constants.h"
-#include "src/engine/worldModel.h"
-#include "src/engine/wallItem.h"
+#include "src/engine/model/constants.h"
+#include "src/engine/model/worldModel.h"
+
+/// @todo: Get rid of it
+#include "src/engine/view/wallItem.h"
 
 using namespace twoDModel;
 using namespace twoDModel::physics;
