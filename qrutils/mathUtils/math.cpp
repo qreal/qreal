@@ -37,3 +37,8 @@ bool Math::between(qreal border1, qreal border2, qreal value, qreal eps)
 	return (leq(border1, value, eps) && leq(value, border2, eps))
 			|| (geq(border1, value, eps) && geq(value, border2, eps));
 }
+
+int Math::truncateToInterval(int border1, int border2, int value)
+{
+	return (value>= border1 && value <= border2) ? value : (value < border1 ? border1 : border2);
+}

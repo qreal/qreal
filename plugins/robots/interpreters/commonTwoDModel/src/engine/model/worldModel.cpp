@@ -1,12 +1,8 @@
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
 
+#include "constants.h"
 #include "worldModel.h"
-
-//#include "../tracer.h"
-/// @todo: Get rid of view dependencies
-#include "src/engine/view/stylusItem.h"
-#include "src/engine/view/ellipseItem.h"
 
 using namespace twoDModel;
 
@@ -95,50 +91,50 @@ bool WorldModel::checkCollision(QPainterPath const &robotPath, int stroke) const
 	return wallStrokedPath.intersects(robotPath);
 }
 
-QList<WallItem *> const &WorldModel::walls() const
-{
-	return mWalls;
-}
+//QList<WallItem *> const &WorldModel::walls() const
+//{
+//	return mWalls;
+//}
 
-void WorldModel::addWall(WallItem* wall)
-{
-	mWalls.append(wall);
-}
+//void WorldModel::addWall(WallItem* wall)
+//{
+//	mWalls.append(wall);
+//}
 
-void WorldModel::removeWall(WallItem* wall)
-{
-	mWalls.removeOne(wall);
-}
+//void WorldModel::removeWall(WallItem* wall)
+//{
+//	mWalls.removeOne(wall);
+//}
 
-QList<ColorFieldItem *> const &WorldModel::colorFields() const
-{
-	return mColorFields;
-}
+//QList<ColorFieldItem *> const &WorldModel::colorFields() const
+//{
+//	return mColorFields;
+//}
 
 int WorldModel::wallsCount() const
 {
-	return mWalls.count();
+//	return mWalls.count();
 }
 
-WallItem *WorldModel::wallAt(int index) const
-{
-	return mWalls[index];
-}
+//WallItem *WorldModel::wallAt(int index) const
+//{
+//	return mWalls[index];
+//}
 
-void WorldModel::addColorField(ColorFieldItem *colorField)
-{
-	mColorFields.append(colorField);
-}
+//void WorldModel::addColorField(ColorFieldItem *colorField)
+//{
+//	mColorFields.append(colorField);
+//}
 
-void WorldModel::removeColorField(ColorFieldItem *colorField)
-{
-	mColorFields.removeOne(colorField);
-}
+//void WorldModel::removeColorField(ColorFieldItem *colorField)
+//{
+//	mColorFields.removeOne(colorField);
+//}
 
 void WorldModel::clearScene()
 {
-	mWalls.clear();
-	mColorFields.clear();
+//	mWalls.clear();
+//	mColorFields.clear();
 }
 
 QPainterPath WorldModel::buildWallPath() const
@@ -146,10 +142,10 @@ QPainterPath WorldModel::buildWallPath() const
 	/// @todo Maintain a cache for this.
 	QPainterPath wallPath;
 
-	foreach (WallItem* wall, mWalls) {
-		wallPath.moveTo(wall->begin());
-		wallPath.lineTo(wall->end());
-	}
+//	foreach (WallItem* wall, mWalls) {
+//		wallPath.moveTo(wall->begin());
+//		wallPath.lineTo(wall->end());
+//	}
 
 	return wallPath;
 }
@@ -160,17 +156,17 @@ QDomElement WorldModel::serialize(QDomDocument &document, QPointF const &topLeft
 
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
-	foreach (WallItem *wall, mWalls) {
-		QDomElement wallNode = wall->serialize(document, topLeftPicture.toPoint());
-		walls.appendChild(wallNode);
-	}
+//	foreach (WallItem *wall, mWalls) {
+//		QDomElement wallNode = wall->serialize(document, topLeftPicture.toPoint());
+//		walls.appendChild(wallNode);
+//	}
 
 	QDomElement colorFields = document.createElement("colorFields");
 	result.appendChild(colorFields);
-	foreach (ColorFieldItem *colorField, mColorFields) {
-		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture.toPoint());
-		colorFields.appendChild(colorFiedlNode);
-	}
+//	foreach (ColorFieldItem *colorField, mColorFields) {
+//		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture.toPoint());
+//		colorFields.appendChild(colorFiedlNode);
+//	}
 
 	return result;
 }
@@ -190,9 +186,9 @@ void WorldModel::deserialize(QDomElement const &element)
 		QDomNodeList walls = wallsNode.elementsByTagName("wall");
 		for (int i = 0; i < walls.count(); ++i) {
 			QDomElement const wallNode = walls.at(i).toElement();
-			WallItem *wall = new WallItem(QPointF(0, 0), QPointF(0, 0));
-			wall->deserialize(wallNode);
-			mWalls.append(wall);
+//			WallItem *wall = new WallItem(QPointF(0, 0), QPointF(0, 0));
+//			wall->deserialize(wallNode);
+//			mWalls.append(wall);
 		}
 	}
 
@@ -203,25 +199,25 @@ void WorldModel::deserialize(QDomElement const &element)
 		QDomNodeList ellipses = colorFieldNode.elementsByTagName("ellipse");
 		for (int i = 0; i < ellipses.count(); ++i) {
 			QDomElement const ellipseNode = ellipses.at(i).toElement();
-			EllipseItem* ellipseItem = new EllipseItem(QPointF(0, 0), QPointF(0, 0));
-			ellipseItem->deserialize(ellipseNode);
-			mColorFields.append(ellipseItem);
+//			EllipseItem* ellipseItem = new EllipseItem(QPointF(0, 0), QPointF(0, 0));
+//			ellipseItem->deserialize(ellipseNode);
+//			mColorFields.append(ellipseItem);
 		}
 
 		QDomNodeList lines = colorFieldNode.elementsByTagName("line");
 		for (int i = 0; i < lines.count(); ++i) {
 			QDomElement const lineNode = lines.at(i).toElement();
-			LineItem* lineItem = new LineItem(QPointF(0, 0), QPointF(0, 0));
-			lineItem->deserialize(lineNode);
-			mColorFields.append(lineItem);
+//			LineItem* lineItem = new LineItem(QPointF(0, 0), QPointF(0, 0));
+//			lineItem->deserialize(lineNode);
+//			mColorFields.append(lineItem);
 		}
 
 		QDomNodeList styluses = colorFieldNode.elementsByTagName("stylus");
 		for (int i = 0; i < styluses.count(); ++i) {
 			QDomElement const stylusNode = styluses.at(i).toElement();
-			StylusItem *stylusItem = new StylusItem(0, 0);
-			stylusItem->deserialize(stylusNode);
-			mColorFields.append(stylusItem);
+//			StylusItem *stylusItem = new StylusItem(0, 0);
+//			stylusItem->deserialize(stylusNode);
+//			mColorFields.append(stylusItem);
 		}
 	}
 }

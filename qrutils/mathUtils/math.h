@@ -36,6 +36,9 @@ public:
 
 	/// Returns if border1 >= value >= border2 or border1 <= value <= border2
 	static bool between(qreal border1, qreal border2, qreal value, qreal eps = EPS);
+
+	/// Returns value if border1 <= value <= border2 or the closest border in other case.
+	static int truncateToInterval(int border1, int border2, int value);
 };
 
 }

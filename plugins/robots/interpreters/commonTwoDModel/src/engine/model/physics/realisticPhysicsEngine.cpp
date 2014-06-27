@@ -6,9 +6,6 @@
 #include "src/engine/model/constants.h"
 #include "src/engine/model/worldModel.h"
 
-/// @todo: Get rid of it
-#include "src/engine/view/wallItem.h"
-
 using namespace twoDModel;
 using namespace twoDModel::physics;
 using namespace mathUtils;
@@ -33,7 +30,7 @@ void RealisticPhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1,
 	mGettingOutVector = QVector2D();
 
 	for (int i = 0; i < mWorldModel.wallsCount(); ++i) {
-		findCollision(robotBoundingPath, mWorldModel.wallAt(i)->path(), rotationCenter);
+//		findCollision(robotBoundingPath, mWorldModel.wallAt(i)->path(), rotationCenter);
 	}
 
 	countTractionForceAndItsMoment(speed1, speed2, engine1Break || engine2Break, rotationCenter, direction);

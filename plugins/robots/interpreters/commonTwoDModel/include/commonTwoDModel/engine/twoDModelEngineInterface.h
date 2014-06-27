@@ -5,10 +5,10 @@
 #include <utils/timelineInterface.h>
 #include <interpreterBase/robotModel/portInfo.h>
 
-#include "commonTwoDModel/engine/twoDModelDisplayInterface.h"
-
 namespace twoDModel {
 namespace engine {
+
+class TwoDModelDisplayInterface;
 
 /// An interface for using 2D model in extensibility components.
 /// Provides some basic engine methods like scanning the field or playing the sound or working with display.

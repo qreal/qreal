@@ -1,6 +1,7 @@
 #include "commonTwoDModel/robotModel/parts/button.h"
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+#include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;

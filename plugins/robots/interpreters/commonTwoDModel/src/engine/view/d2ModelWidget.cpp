@@ -20,7 +20,7 @@
 #include "sonarSensorItem.h"
 #include "rotater.h"
 
-#include "src/engine/model/d2RobotModel.h"
+#include "src/engine/model/robotModel.h"
 #include "src/engine/model/constants.h"
 #include "src/engine/model/timeline.h"
 
@@ -33,20 +33,17 @@ using namespace graphicsUtils;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
-D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
-		, RobotModelInterface &robotModel
-		, engine::TwoDModelDisplayWidget *display
-		, Configurer const &configurer
+D2ModelWidget::D2ModelWidget(Model &model
+		, Configurer const * const configurer
 		, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
 	, mScene(nullptr)
 	, mRobot(nullptr)
+	, mModel(model)
 	, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
-	, mTwoDRobotModel(twoDRobotModel)
-	, mWorldModel(worldModel)
-	, mDisplay(display)
-	, mDrawingAction(enums::drawingAction::none)
+	, mDisplay(configurer->displayWidget(this))
+	, mDrawingAction(none)
 	, mMouseClicksCount(0)
 	, mCurrentWall(nullptr)
 	, mCurrentLine(nullptr)
@@ -55,8 +52,6 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	, mWidth(defaultPenWidth)
 	, mClearing(false)
 	, mFirstShow(true)
-	, mTimeline(dynamic_cast<D2RobotModel *>(twoDRobotModel)->timeline())
-	, mRobotModel(robotModel)
 	, mConfigurer(configurer)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
@@ -80,24 +75,25 @@ D2ModelWidget::D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, World
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(updateGrid()));
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), this, SLOT(alignWalls()));
 
-	setCursorType(static_cast<enums::cursorType::CursorType>(SettingsManager::value("2dCursorType").toInt()));
+	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
 	mUi->noneButton->setChecked(true);
 
-	auto connectWheelComboBox = [this](QComboBox * const comboBox, TwoDRobotRobotModelInterface::WheelEnum wheel) {
+	auto connectWheelComboBox = [this](QComboBox * const comboBox, RobotModel::WheelEnum wheel) {
 			connect(comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged)
 					, [this, wheel, comboBox](int index) {
-							mTwoDRobotModel->setMotorPortOnWheel(
-									wheel
-									, comboBox->itemData(index).value<PortInfo>()
-									);
+							/// @todo:
+//							mTwoDRobotModel->setMotorPortOnWheel(
+//									wheel
+//									, comboBox->itemData(index).value<PortInfo>()
+//									);
 					});
 	};
 
-	connectWheelComboBox(mUi->leftWheelComboBox, TwoDRobotRobotModelInterface::left);
-	connectWheelComboBox(mUi->rightWheelComboBox, TwoDRobotRobotModelInterface::right);
+	connectWheelComboBox(mUi->leftWheelComboBox, RobotModel::left);
+	connectWheelComboBox(mUi->rightWheelComboBox, RobotModel::right);
 
 	drawInitialRobot();
 
@@ -205,54 +201,54 @@ void D2ModelWidget::initButtonGroups()
 
 void D2ModelWidget::initPorts()
 {
-	QList<PortInfo> ports = mRobotModel.availablePorts();
-	qSort(ports.begin(), ports.end()
-			, [](PortInfo const &port1, PortInfo const &port2) { return port1.name() < port2.name(); }
-	);
+//	QList<PortInfo> ports = mRobotModel.availablePorts();
+//	qSort(ports.begin(), ports.end()
+//			, [](PortInfo const &port1, PortInfo const &port2) { return port1.name() < port2.name(); }
+//	);
 
-	for (PortInfo const &port : ports) {
-		if (!isPortConfigurable(port)) {
-			continue;
-		}
+//	for (PortInfo const &port : ports) {
+//		if (!isPortConfigurable(port)) {
+//			continue;
+//		}
 
-		DeviceInfo const currentlyConfiguredDevice = currentConfiguration(mRobotModel.name(), port);
+//		DeviceInfo const currentlyConfiguredDevice = currentConfiguration(mRobotModel.name(), port);
 
-		QComboBox * const portsSelectionComboBox = new QComboBox;
-		QFormLayout * const layout = dynamic_cast<QFormLayout *>(mUi->portsGroupBox->layout());
-		layout->addRow(new QLabel(port.name() + ":"), portsSelectionComboBox);
+//		QComboBox * const portsSelectionComboBox = new QComboBox;
+//		QFormLayout * const layout = dynamic_cast<QFormLayout *>(mUi->portsGroupBox->layout());
+//		layout->addRow(new QLabel(port.name() + ":"), portsSelectionComboBox);
 
-		portsSelectionComboBox->addItem(tr("None"), QVariant::fromValue(DeviceInfo()));
-		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
-			portsSelectionComboBox->addItem(device.friendlyName(), QVariant::fromValue(device));
+//		portsSelectionComboBox->addItem(tr("None"), QVariant::fromValue(DeviceInfo()));
+//		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
+//			portsSelectionComboBox->addItem(device.friendlyName(), QVariant::fromValue(device));
 
-			if (currentlyConfiguredDevice == device) {
-				portsSelectionComboBox->setCurrentIndex(portsSelectionComboBox->count() - 1);
-			}
-		}
+//			if (currentlyConfiguredDevice == device) {
+//				portsSelectionComboBox->setCurrentIndex(portsSelectionComboBox->count() - 1);
+//			}
+//		}
 
-		connect(portsSelectionComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated)
-				, this, &D2ModelWidget::addPort);
+//		connect(portsSelectionComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated)
+//				, this, &D2ModelWidget::addPort);
 
-		mComboBoxesToPortsMap.insert(portsSelectionComboBox, port);
-	}
+//		mComboBoxesToPortsMap.insert(portsSelectionComboBox, port);
+//	}
 }
 
-bool D2ModelWidget::isPortConfigurable(PortInfo const &port)
-{
-	if (mRobotModel.configurablePorts().contains(port)) {
-		return true;
-	}
+//bool D2ModelWidget::isPortConfigurable(PortInfo const &port)
+//{
+//	if (mRobotModel.configurablePorts().contains(port)) {
+//		return true;
+//	}
 
-	// Skipping ports with display, buttons, speaker, encoders and so on .
-	Q_ASSERT(!mRobotModel.allowedDevices(port).isEmpty());
-	bool const isSensor = mRobotModel.allowedDevices(port)[0].isA
-			<interpreterBase::robotModel::robotParts::AbstractSensor>();
-	bool const isEncoder = mRobotModel.allowedDevices(port)[0].isA
-			<interpreterBase::robotModel::robotParts::EncoderSensor>();
-	// This will skip all camera ports
-	bool const isNameTooLong = port.name().count() > 5;
-	return isSensor && !isEncoder && !isNameTooLong;
-}
+//	// Skipping ports with display, buttons, speaker, encoders and so on .
+//	Q_ASSERT(!mRobotModel.allowedDevices(port).isEmpty());
+//	bool const isSensor = mRobotModel.allowedDevices(port)[0].isA
+//			<interpreterBase::robotModel::robotParts::AbstractSensor>();
+//	bool const isEncoder = mRobotModel.allowedDevices(port)[0].isA
+//			<interpreterBase::robotModel::robotParts::EncoderSensor>();
+//	// This will skip all camera ports
+//	bool const isNameTooLong = port.name().count() > 5;
+//	return isSensor && !isEncoder && !isNameTooLong;
+//}
 
 void D2ModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)
 {
@@ -271,26 +267,21 @@ void D2ModelWidget::changeSpeed(int curIndex)
 {
 	switch(curIndex){
 	case 0:
-		mTwoDRobotModel->setSpeedFactor(Timeline::slowSpeedFactor);
+		mModel.timeline().setSpeedFactor(Timeline::slowSpeedFactor);
 		break;
 	case 1:
-		mTwoDRobotModel->setSpeedFactor(Timeline::normalSpeedFactor);
+		mModel.timeline().setSpeedFactor(Timeline::normalSpeedFactor);
 		break;
 	case 2:
-		mTwoDRobotModel->setSpeedFactor(Timeline::fastSpeedFactor);
+		mModel.timeline().setSpeedFactor(Timeline::fastSpeedFactor);
 		break;
 	default:
-		mTwoDRobotModel->setSpeedFactor(Timeline::normalSpeedFactor);
+		mModel.timeline().setSpeedFactor(Timeline::normalSpeedFactor);
 	}
 }
 
-void D2ModelWidget::init(bool isActive)
+void D2ModelWidget::init()
 {
-	if (!isActive) {
-		hide();
-		return;
-	}
-
 	if (!mRobot) {
 		drawInitialRobot();
 	}
@@ -323,7 +314,7 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 
 void D2ModelWidget::drawInitialRobot()
 {
-	mRobot = new RobotItem(mConfigurer.robotImage());
+	mRobot = new RobotItem(mConfigurer->robotImage());
 	connect(mRobot, SIGNAL(changedPosition()), this, SLOT(handleNewRobotPosition()));
 	connect(mRobot, SIGNAL(mousePressed()), this, SLOT(setNoneButton()));
 	mScene->addItem(mRobot);
@@ -333,7 +324,7 @@ void D2ModelWidget::drawInitialRobot()
 	rotater->setVisible(false);
 
 	mRobot->setRotater(rotater);
-	mRobot->setRobotModel(mTwoDRobotModel);
+	mRobot->setRobotModel(mModel.robotModel());
 
 	rereadDevicesConfiguration();
 
@@ -425,28 +416,28 @@ void D2ModelWidget::centerOnRobot()
 
 void D2ModelWidget::drawWalls()
 {
-	if (mDrawingAction == enums::drawingAction::wall || mDrawingAction == enums::drawingAction::noneWordLoad) {
-		foreach (WallItem *wall, mWorldModel->walls()) {
-			if (!mScene->items().contains(wall)) {
-				mScene->addItem(wall);
-				connect(wall, SIGNAL(wallDragged(WallItem*,QPainterPath,QPointF))
-						, this, SLOT(worldWallDragged(WallItem*,QPainterPath,QPointF)));
-			}
-		}
+	if (mDrawingAction == wall || mDrawingAction == noneWordLoad) {
+//		foreach (WallItem *wall, mWorldModel->walls()) {
+//			if (!mScene->items().contains(wall)) {
+//				mScene->addItem(wall);
+//				connect(wall, SIGNAL(wallDragged(WallItem*,QPainterPath,QPointF))
+//						, this, SLOT(worldWallDragged(WallItem*,QPainterPath,QPointF)));
+//			}
+//		}
 	}
 }
 
 void D2ModelWidget::drawColorFields()
 {
-	if (mDrawingAction == enums::drawingAction::line
-			|| mDrawingAction == enums::drawingAction::stylus
-			|| mDrawingAction == enums::drawingAction::ellipse
-			|| mDrawingAction == enums::drawingAction::noneWordLoad) {
-		foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
-			if (!mScene->items().contains(colorField)) {
-				mScene->addItem(colorField);
-			}
-		}
+	if (mDrawingAction == line
+			|| mDrawingAction == stylus
+			|| mDrawingAction == ellipse
+			|| mDrawingAction == noneWordLoad) {
+//		foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
+//			if (!mScene->items().contains(colorField)) {
+//				mScene->addItem(colorField);
+//			}
+//		}
 	}
 }
 
@@ -477,8 +468,8 @@ void D2ModelWidget::addWall(bool on)
 	}
 
 	setHighlightOneButton(mUi->wallButton);
-	setCursorTypeForDrawing(enums::cursorType::drawWall);
-	mDrawingAction = enums::drawingAction::wall;
+	setCursorTypeForDrawing(drawWall);
+	mDrawingAction = wall;
 }
 
 void D2ModelWidget::addLine(bool on)
@@ -489,8 +480,8 @@ void D2ModelWidget::addLine(bool on)
 	}
 
 	setHighlightOneButton(mUi->lineButton);
-	setCursorTypeForDrawing(enums::cursorType::drawLine);
-	mDrawingAction = enums::drawingAction::line;
+	setCursorTypeForDrawing(drawLine);
+	mDrawingAction = line;
 }
 
 void D2ModelWidget::addStylus(bool on)
@@ -501,8 +492,8 @@ void D2ModelWidget::addStylus(bool on)
 	}
 
 	setHighlightOneButton(mUi->stylusButton);
-	setCursorTypeForDrawing(enums::cursorType::drawStylus);
-	mDrawingAction = enums::drawingAction::stylus;
+	setCursorTypeForDrawing(drawStylus);
+	mDrawingAction = stylus;
 }
 
 void D2ModelWidget::addEllipse(bool on)
@@ -513,8 +504,8 @@ void D2ModelWidget::addEllipse(bool on)
 	}
 
 	setHighlightOneButton(mUi->ellipseButton);
-	setCursorTypeForDrawing(enums::cursorType::drawEllipse);
-	mDrawingAction = enums::drawingAction::ellipse;
+	setCursorTypeForDrawing(drawEllipse);
+	mDrawingAction = ellipse;
 }
 
 void D2ModelWidget::setNoneButton()
@@ -525,13 +516,13 @@ void D2ModelWidget::setNoneButton()
 
 void D2ModelWidget::setNoneStatus()
 {
-	mDrawingAction = enums::drawingAction::none;
+	mDrawingAction = none;
 	mMouseClicksCount = 0;
 	setCursorTypeForDrawing(mNoneCursorType);
 	mUi->noneButton->setChecked(true);
 }
 
-void D2ModelWidget::setCursorTypeForDrawing(enums::cursorType::CursorType type)
+void D2ModelWidget::setCursorTypeForDrawing(CursorType type)
 {
 	mCursorType = type;
 	mUi->graphicsView->setCursor(cursorTypeToCursor(mCursorType));
@@ -540,8 +531,9 @@ void D2ModelWidget::setCursorTypeForDrawing(enums::cursorType::CursorType type)
 void D2ModelWidget::clearScene(bool removeRobot)
 {
 	mClearing = true;
-	mWorldModel->clearScene();
-	mTwoDRobotModel->clear();
+	/// @todo:
+//	mWorldModel->clearScene();
+//	mTwoDRobotModel->clear();
 	if (removeRobot) {
 		for (PortInfo const &port : mSensors.keys()) {
 			removeSensor(port);
@@ -572,7 +564,7 @@ void D2ModelWidget::resetButtons()
 	mCurrentLine = nullptr;
 	mCurrentStylus = nullptr;
 	mMouseClicksCount = 0;
-	mDrawingAction = enums::drawingAction::none;
+	mDrawingAction = none;
 }
 
 void D2ModelWidget::addPort(int const index)
@@ -587,7 +579,8 @@ void D2ModelWidget::addPort(int const index)
 
 	resetButtons();
 
-	deviceConfigurationChanged(mRobotModel.name(), port, device);
+	/// @todo
+//	deviceConfigurationChanged(mRobotModel.name(), port, device);
 }
 
 void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
@@ -655,42 +648,42 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 	processDragMode();
 
 	switch (mDrawingAction) {
-	case enums::drawingAction::wall: {
+	case wall: {
 		if (!mRobot->realBoundingRect().intersects(QRectF(position, position))) {
 			mCurrentWall = new WallItem(position, position);
 			mScene->removeMoveFlag(mouseEvent, mCurrentWall);
-			mWorldModel->addWall(mCurrentWall);
+//			mWorldModel->addWall(mCurrentWall);
 			mMouseClicksCount++;
 		}
 		break;
 	}
-	case enums::drawingAction::line: {
+	case line: {
 		mCurrentLine = new LineItem(position, position);
 		mCurrentLine->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
 				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentLine);
-		mWorldModel->addColorField(mCurrentLine);
+//		mWorldModel->addColorField(mCurrentLine);
 		mMouseClicksCount++;
 		break;
 	}
-	case enums::drawingAction::stylus: {
+	case stylus: {
 		mCurrentStylus = new StylusItem(position.x(), position.y());
 		mCurrentStylus->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
 				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentStylus);
-		mWorldModel->addColorField(mCurrentStylus);
+//		mWorldModel->addColorField(mCurrentStylus);
 		mMouseClicksCount++;
 		break;
 	}
-	case enums::drawingAction::ellipse: {
+	case ellipse: {
 		mCurrentEllipse = new EllipseItem(position, position);
 		mCurrentEllipse->setPen(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentEllipse);
-		mWorldModel->addColorField(mCurrentEllipse);
+//		mWorldModel->addColorField(mCurrentEllipse);
 		mMouseClicksCount++;
 		break;
 	}
-	case enums::drawingAction::none: {
+	case none: {
 		mMouseClicksCount = 0;
 		mScene->forPressResize(mouseEvent);
 		break;
@@ -716,16 +709,16 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 	bool needUpdate = true;
 	processDragMode();
 	switch (mDrawingAction){
-	case enums::drawingAction::wall:
+	case wall:
 		reshapeWall(mouseEvent);
 		break;
-	case enums::drawingAction::line:
+	case line:
 		reshapeLine(mouseEvent);
 		break;
-	case enums::drawingAction::stylus:
+	case stylus:
 		reshapeStylus(mouseEvent);
 		break;
-	case enums::drawingAction::ellipse:
+	case ellipse:
 		reshapeEllipse(mouseEvent);
 		break;
 	default:
@@ -755,28 +748,28 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	processDragMode();
 
 	switch (mDrawingAction){
-	case enums::drawingAction::wall: {
+	case wall: {
 		reshapeWall(mouseEvent);
 		mCurrentWall->setSelected(true);
 		mCurrentWall = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
-	case enums::drawingAction::line: {
+	case line: {
 		reshapeLine(mouseEvent);
 		mCurrentLine->setSelected(true);
 		mCurrentLine = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
-	case enums::drawingAction::stylus: {
+	case stylus: {
 		reshapeStylus(mouseEvent);
 		mCurrentStylus->setSelected(true);
 		mCurrentStylus = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
-	case enums::drawingAction::ellipse: {
+	case ellipse: {
 		reshapeEllipse(mouseEvent);
 		mCurrentEllipse->setSelected(true);
 		mCurrentEllipse = nullptr;
@@ -831,12 +824,12 @@ void D2ModelWidget::loadWorldModel()
 
 void D2ModelWidget::handleNewRobotPosition()
 {
-	foreach (WallItem const *wall, mWorldModel->walls()) {
-		if (wall->realShape().intersects(mRobot->realBoundingRect())) {
-			mRobot->recoverDragStartPosition();
-			return;
-		}
-	}
+//	foreach (WallItem const *wall, mWorldModel->walls()) {
+//		if (wall->realShape().intersects(mRobot->realBoundingRect())) {
+//			mRobot->recoverDragStartPosition();
+//			return;
+//		}
+//	}
 }
 
 void D2ModelWidget::removeSensor(PortInfo const &port)
@@ -858,46 +851,46 @@ void D2ModelWidget::reinitSensor(PortInfo const &port)
 {
 	removeSensor(port);
 
-	DeviceInfo const &device = currentConfiguration(mRobotModel.name(), port);
+//	DeviceInfo const &device = currentConfiguration(mRobotModel.name(), port);
 
-	if (device.isNull() || (
-			/// @todo: Add supported by 2D model sensors here
-			!device.isA<robotParts::TouchSensor>()
-			&& !device.isA<robotParts::ColorSensor>()
-			&& !device.isA<robotParts::LightSensor>()
-			&& !device.isA<robotParts::RangeSensor>()
-			))
-	{
-		return;
-	}
+//	if (device.isNull() || (
+//			/// @todo: Add supported by 2D model sensors here
+//			!device.isA<robotParts::TouchSensor>()
+//			&& !device.isA<robotParts::ColorSensor>()
+//			&& !device.isA<robotParts::LightSensor>()
+//			&& !device.isA<robotParts::RangeSensor>()
+//			))
+//	{
+//		return;
+//	}
 
-	SensorItem *sensor = device.isA<RangeSensor>()
-			? new SonarSensorItem(*mWorldModel, mTwoDRobotModel->configuration()
-					, port
-					, mConfigurer.sensorImagePath(device)
-					, mConfigurer.sensorImageRect(device)
-					)
-			: new SensorItem(mTwoDRobotModel->configuration()
-					, port
-					, mConfigurer.sensorImagePath(device)
-					, mConfigurer.sensorImageRect(device)
-					);
+//	SensorItem *sensor = device.isA<RangeSensor>()
+//			? new SonarSensorItem(*mWorldModel, mTwoDRobotModel->configuration()
+//					, port
+//					, mConfigurer.sensorImagePath(device)
+//					, mConfigurer.sensorImageRect(device)
+//					)
+//			: new SensorItem(mTwoDRobotModel->configuration()
+//					, port
+//					, mConfigurer.sensorImagePath(device)
+//					, mConfigurer.sensorImageRect(device)
+//					);
 
-	mRobot->addSensor(sensor);
-	mScene->addItem(sensor);
+//	mRobot->addSensor(sensor);
+//	mScene->addItem(sensor);
 
-	sensor->addStickyItem(mRobot);
+//	sensor->addStickyItem(mRobot);
 
-	Rotater * const rotater = new Rotater();
-	rotater->setMasterItem(sensor);
-	rotater->setVisible(false);
-	sensor->setRotater(rotater);
-	sensor->setRotation(mTwoDRobotModel->configuration().direction(port));
+//	Rotater * const rotater = new Rotater();
+//	rotater->setMasterItem(sensor);
+//	rotater->setVisible(false);
+//	sensor->setRotater(rotater);
+//	sensor->setRotation(mTwoDRobotModel->configuration().direction(port));
 
-	sensor->setParentItem(mRobot);
-	sensor->setPos(mRobot->mapFromScene(mTwoDRobotModel->configuration().position(port)));
+//	sensor->setParentItem(mRobot);
+//	sensor->setPos(mRobot->mapFromScene(mTwoDRobotModel->configuration().position(port)));
 
-	mSensors[port] = sensor;
+//	mSensors[port] = sensor;
 }
 
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
@@ -908,7 +901,7 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 		PortInfo const port = mSensors.key(sensor, PortInfo());
 		if (port.isValid()) {
 			removeSensor(port);
-			deviceConfigurationChanged(mRobotModel.name(), port, DeviceInfo());
+//			deviceConfigurationChanged(mRobotModel.name(), port, DeviceInfo());
 		}
 		return;
 	}
@@ -916,13 +909,13 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 	WallItem * const wall = dynamic_cast<WallItem *>(item);
 	if (wall) {
 		mScene->removeItem(wall);
-		mWorldModel->removeWall(wall);
+//		mWorldModel->removeWall(wall);
 	}
 
 	ColorFieldItem *colorField = dynamic_cast<ColorFieldItem *>(item);
 	if (colorField) {
 		mScene->removeItem(colorField);
-		mWorldModel->removeColorField(colorField);
+//		mWorldModel->removeColorField(colorField);
 		delete colorField;
 	}
 }
@@ -980,7 +973,7 @@ void D2ModelWidget::changePalette()
 		return;
 	}
 
-	if(mDrawingAction == enums::drawingAction::none) {
+	if(mDrawingAction == none) {
 		QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
 		if (listSelectedItems.isEmpty()) {
 			setNoPalette();
@@ -1025,6 +1018,11 @@ D2ModelScene* D2ModelWidget::scene()
 	return mScene;
 }
 
+engine::TwoDModelDisplayWidget *D2ModelWidget::display()
+{
+	return mDisplay;
+}
+
 void D2ModelWidget::setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible)
 {
 	if (mSensors[port]) {
@@ -1046,7 +1044,7 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
 	serializeParameters();
-	emit d2WasClosed();
+	emit widgetClosed();
 }
 
 SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
@@ -1061,34 +1059,21 @@ void D2ModelWidget::saveToRepo()
 
 QDomDocument D2ModelWidget::generateXml() const
 {
-	QDomDocument save;
-	QDomElement root = save.createElement("root");
-	save.appendChild(root);
-	root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
-	mTwoDRobotModel->serialize(save);
-	return save;
+	return mModel.serialize();
 }
 
 void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 {
 	clearScene(true);
-	QDomNodeList const worldList = worldModel.elementsByTagName("world");
-	QDomNodeList const robotList = worldModel.elementsByTagName("robot");
-	if (worldList.count() != 1 || robotList.count() != 1) {
-		/// @todo Report error
-		return;
-	}
 
-	mWorldModel->deserialize(worldList.at(0).toElement());
-	mTwoDRobotModel->deserialize(robotList.at(0).toElement());
-
-	mTwoDRobotModel->configuration().deserialize(robotList.at(0).toElement());
+	mModel.deserialize(worldModel);
+	/// @todo: move it into model
 	rereadDevicesConfiguration();
 
 	mRobot->processPositionAndAngleChange();
-	mDrawingAction = enums::drawingAction::noneWordLoad;
+	mDrawingAction = noneWordLoad;
 	update();
-	mDrawingAction = enums::drawingAction::none;
+	mDrawingAction = none;
 
 	saveInitialRobotBeforeRun();
 }
@@ -1104,8 +1089,8 @@ void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
-	if (wall->isDragged() && ((mDrawingAction == enums::drawingAction::none) ||
-			(mDrawingAction == enums::drawingAction::wall && mCurrentWall == wall)))
+	if (wall->isDragged() && ((mDrawingAction == none) ||
+			(mDrawingAction == D2ModelWidget::wall && mCurrentWall == wall)))
 	{
 		wall->setFlag(QGraphicsItem::ItemIsMovable, !isNeedStop);
 		if (isNeedStop) {
@@ -1120,7 +1105,7 @@ void D2ModelWidget::enableRobotFollowing(bool on)
 	qReal::SettingsManager::setValue("2dFollowingRobot", on);
 }
 
-void D2ModelWidget::setCursorType(enums::cursorType::CursorType cursor)
+void D2ModelWidget::setCursorType(CursorType cursor)
 {
 	mNoneCursorType = cursor;
 	mCursorType = mNoneCursorType;
@@ -1135,18 +1120,18 @@ void D2ModelWidget::changePhysicsSettings()
 	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
 	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->isChecked());
 
-	static_cast<D2RobotModel *>(mTwoDRobotModel)->setNoiseSettings();
+//	static_cast<D2RobotModel *>(mTwoDRobotModel)->setNoiseSettings();
 }
 
 void D2ModelWidget::startTimelineListening()
 {
 	mUi->timelineBox->setValue(0);
-	connect(mTimeline, SIGNAL(tick()), this, SLOT(onTimelineTick()), Qt::UniqueConnection);
+	connect(&mModel.timeline(), SIGNAL(tick()), this, SLOT(onTimelineTick()), Qt::UniqueConnection);
 }
 
 void D2ModelWidget::stopTimelineListening()
 {
-	disconnect(mTimeline, SIGNAL(tick()), this, SLOT(onTimelineTick()));
+	disconnect(&mModel.timeline(), SIGNAL(tick()), this, SLOT(onTimelineTick()));
 }
 
 void D2ModelWidget::onTimelineTick()
@@ -1165,9 +1150,9 @@ void D2ModelWidget::toggleDisplayVisibility()
 
 void D2ModelWidget::rereadDevicesConfiguration()
 {
-	for (PortInfo const &port : mRobotModel.availablePorts()) {
-		onDeviceConfigurationChanged(mRobotModel.name(), port, currentConfiguration(mRobotModel.name(), port));
-	}
+//	for (PortInfo const &port : mRobotModel.availablePorts()) {
+//		onDeviceConfigurationChanged(mRobotModel.name(), port, currentConfiguration(mRobotModel.name(), port));
+//	}
 }
 
 void D2ModelWidget::setDisplayVisibility(bool visible)
@@ -1182,40 +1167,40 @@ void D2ModelWidget::setDisplayVisibility(bool visible)
 	SettingsManager::setValue("2d_displayVisible", visible);
 }
 
-QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(enums::cursorType::CursorType type) const
+QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(CursorType type) const
 {
 	switch(type) {
-	case enums::cursorType::NoDrag:
-	case enums::cursorType::drawEllipse:
-	case enums::cursorType::drawLine:
-	case enums::cursorType::drawStylus:
-	case enums::cursorType::drawWall:
+	case noDrag:
+	case drawEllipse:
+	case drawLine:
+	case drawStylus:
+	case drawWall:
 		return QGraphicsView::NoDrag;
-	case enums::cursorType::hand:
+	case hand:
 		return QGraphicsView::ScrollHandDrag;
-	case enums::cursorType::multiselection:
+	case multiselection:
 		return QGraphicsView::RubberBandDrag;
 	default:
 		return QGraphicsView::ScrollHandDrag;
 	}
 }
 
-QCursor D2ModelWidget::cursorTypeToCursor(enums::cursorType::CursorType type) const
+QCursor D2ModelWidget::cursorTypeToCursor(CursorType type) const
 {
 	switch(type) {
-	case enums::cursorType::NoDrag:
+	case noDrag:
 		return QCursor(Qt::ArrowCursor);
-	case enums::cursorType::hand:
+	case hand:
 		return QCursor(Qt::OpenHandCursor);
-	case enums::cursorType::multiselection:
+	case multiselection:
 		return QCursor(Qt::ArrowCursor);
-	case enums::cursorType::drawLine:
+	case drawLine:
 		return QCursor(QPixmap(":/icons/2d_drawLineCursor.png"), 0, 0);
-	case enums::cursorType::drawWall:
+	case drawWall:
 		return QCursor(QPixmap(":/icons/2d_drawWallCursor.png"), 0, 0);
-	case enums::cursorType::drawEllipse:
+	case drawEllipse:
 		return QCursor(QPixmap(":/icons/2d_drawEllipseCursor.png"), 0, 0);
-	case enums::cursorType::drawStylus:
+	case drawStylus:
 		return QCursor(QPixmap(":/icons/2d_drawStylusCursor.png"), 0, 0);
 	default:
 		return Qt::ArrowCursor;
@@ -1231,7 +1216,7 @@ void D2ModelWidget::onHandCursorButtonToggled(bool on)
 {
 	if (on) {
 		setHighlightOneButton(mUi->handCursorButton);
-		setCursorType(enums::cursorType::hand);
+		setCursorType(hand);
 	}
 }
 
@@ -1239,17 +1224,17 @@ void D2ModelWidget::onMultiselectionCursorButtonToggled(bool on)
 {
 	if (on) {
 		setHighlightOneButton(mUi->multiselectionCursorButton);
-		setCursorType(enums::cursorType::multiselection);
+		setCursorType(multiselection);
 	}
 }
 
 void D2ModelWidget::syncCursorButtons()
 {
 	switch(mNoneCursorType) {
-	case enums::cursorType::hand:
+	case hand:
 		mUi->handCursorButton->setChecked(true);
 		break;
-	case enums::cursorType::multiselection:
+	case multiselection:
 		mUi->multiselectionCursorButton->setChecked(true);
 		break;
 	default:
@@ -1259,21 +1244,21 @@ void D2ModelWidget::syncCursorButtons()
 
 void D2ModelWidget::alignWalls()
 {
-	for (WallItem * const wall : mWorldModel->walls()) {
-		if (mScene->items().contains(wall)) {
-			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
-			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
-		}
-	}
+//	for (WallItem * const wall : mWorldModel->walls()) {
+//		if (mScene->items().contains(wall)) {
+//			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+//			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+//		}
+//	}
 }
 
 void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &device)
 {
-	if (!mRobot || robotModel != mRobotModel.name()) {
-		/// @todo Convert configuration between models or something?
-		return;
-	}
+//	if (!mRobot || robotModel != mRobotModel.name()) {
+//		/// @todo Convert configuration between models or something?
+//		return;
+//	}
 
 	updateWheelComboBoxes();
 
@@ -1291,16 +1276,16 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 		}
 	}
 
-	QPointF const sensorPos = mSensors.contains(port) && mSensors.value(port)
-			? mTwoDRobotModel->configuration().position(port)
-			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
+//	QPointF const sensorPos = mSensors.contains(port) && mSensors.value(port)
+//			? mTwoDRobotModel->configuration().position(port)
+//			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
 
-	qreal const sensorDirection = mSensors.contains(port) && mSensors.value(port)
-			? mTwoDRobotModel->configuration().direction(port)
-			: 0;
+//	qreal const sensorDirection = mSensors.contains(port) && mSensors.value(port)
+//			? mTwoDRobotModel->configuration().direction(port)
+//			: 0;
 
-	mTwoDRobotModel->configuration().setSensor(port, device, sensorPos.toPoint(), sensorDirection);
-	reinitSensor(port);
+//	mTwoDRobotModel->configuration().setSensor(port, device, sensorPos.toPoint(), sensorDirection);
+//	reinitSensor(port);
 }
 
 void D2ModelWidget::initRunStopButtons()
@@ -1321,15 +1306,15 @@ void D2ModelWidget::updateWheelComboBoxes()
 	mUi->leftWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 	mUi->rightWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 
-	for (PortInfo const &port : mRobotModel.availablePorts()) {
-		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
-			if (device.isA<Motor>()) {
-				QString const item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
-				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
-				mUi->rightWheelComboBox->addItem(item, QVariant::fromValue(port));
-			}
-		}
-	}
+//	for (PortInfo const &port : mRobotModel.availablePorts()) {
+//		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
+//			if (device.isA<Motor>()) {
+//				QString const item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
+//				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
+//				mUi->rightWheelComboBox->addItem(item, QVariant::fromValue(port));
+//			}
+//		}
+//	}
 
 	auto setSelectedPort = [](QComboBox * const comboBox, PortInfo const &port) {
 		for (int i = 0; i < comboBox->count(); ++i) {
@@ -1343,10 +1328,10 @@ void D2ModelWidget::updateWheelComboBoxes()
 	};
 
 	if (!setSelectedPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
-		if (!setSelectedPort(mUi->leftWheelComboBox, mConfigurer.defaultLeftWheelPort())) {
+		if (!setSelectedPort(mUi->leftWheelComboBox, mConfigurer->defaultLeftWheelPort())) {
 
 			qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
-					<< mConfigurer.defaultLeftWheelPort().toString();
+					<< mConfigurer->defaultLeftWheelPort().toString();
 
 			if (mUi->leftWheelComboBox->count() > 1) {
 				mUi->leftWheelComboBox->setCurrentIndex(1);
@@ -1355,10 +1340,10 @@ void D2ModelWidget::updateWheelComboBoxes()
 	}
 
 	if (!setSelectedPort(mUi->rightWheelComboBox, rightWheelOldPort)) {
-		if (!setSelectedPort(mUi->rightWheelComboBox, mConfigurer.defaultRightWheelPort())) {
+		if (!setSelectedPort(mUi->rightWheelComboBox, mConfigurer->defaultRightWheelPort())) {
 
 			qDebug() << "Incorrect defaultRightWheelPort set in configurer:"
-					<< mConfigurer.defaultRightWheelPort().toString();
+					<< mConfigurer->defaultRightWheelPort().toString();
 
 			if (mUi->rightWheelComboBox->count() > 2) {
 				mUi->rightWheelComboBox->setCurrentIndex(2);

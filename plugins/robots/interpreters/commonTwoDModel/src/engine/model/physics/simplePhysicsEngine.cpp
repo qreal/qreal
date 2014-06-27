@@ -1,5 +1,7 @@
 #include "simplePhysicsEngine.h"
 
+#include <QtGui/QTransform>
+
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 

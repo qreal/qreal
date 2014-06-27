@@ -13,7 +13,8 @@
 
 namespace twoDModel {
 
-class D2RobotModel;
+class D2ModelWidget;
+class Model;
 
 namespace engine {
 
@@ -49,7 +50,10 @@ private:
 	qReal::Id mActiveDiagramLogicalId;
 	QString const mRobotModelName;
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
-	QScopedPointer<D2RobotModel> mTwoDModel;
+
+	QScopedPointer<Model> mModel;
+	QScopedPointer<D2ModelWidget> mView;
+	QScopedPointer<TwoDModelEngineInterface> mApi;
 };
 
 }

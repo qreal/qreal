@@ -35,6 +35,7 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/parts/touchSensor.h \
 
 HEADERS += \
+	$$PWD/src/engine/twoDModelEngineApi.h \
 	$$PWD/src/engine/view/d2ModelWidget.h \
 	$$PWD/src/engine/view/d2ModelScene.h \
 	$$PWD/src/engine/view/robotItem.h \
@@ -47,19 +48,22 @@ HEADERS += \
 	$$PWD/src/engine/view/colorFieldItem.h \
 	$$PWD/src/engine/view/ellipseItem.h \
 	$$PWD/src/engine/view/gridParameters.h \
+	$$PWD/src/engine/model/model.h \
 	$$PWD/src/engine/model/constants.h \
+	$$PWD/src/engine/model/settings.h \
 	$$PWD/src/engine/model/sensorsConfiguration.h \
 	$$PWD/src/engine/model/worldModel.h \
 	$$PWD/src/engine/model/timeline.h \
 	$$PWD/src/engine/model/twoDRobotModelInterface.h \
-	$$PWD/src/engine/model/d2ModelTimer.h \
-	$$PWD/src/engine/model/d2RobotModel.h \
+	$$PWD/src/engine/model/modelTimer.h \
+	$$PWD/src/engine/model/robotModel.h \
 	$$PWD/src/engine/model/physics/physicsEngineBase.h \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.h \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.h \
 
 SOURCES += \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
+	$$PWD/src/engine/twoDModelEngineApi.cpp \
 	$$PWD/src/engine/view/d2ModelWidget.cpp \
 	$$PWD/src/engine/view/d2ModelScene.cpp \
 	$$PWD/src/engine/view/robotItem.cpp \
@@ -73,8 +77,10 @@ SOURCES += \
 	$$PWD/src/engine/view/ellipseItem.cpp \
 	$$PWD/src/engine/view/gridParameters.cpp \
 	$$PWD/src/engine/view/twoDModelDisplayWidget.cpp \
-	$$PWD/src/engine/model/d2RobotModel.cpp \
-	$$PWD/src/engine/model/d2ModelTimer.cpp \
+	$$PWD/src/engine/model/model.cpp \
+	$$PWD/src/engine/model/settings.cpp \
+	$$PWD/src/engine/model/robotModel.cpp \
+	$$PWD/src/engine/model/modelTimer.cpp \
 	$$PWD/src/engine/model/sensorsConfiguration.cpp \
 	$$PWD/src/engine/model/worldModel.cpp \
 	$$PWD/src/engine/model/timeline.cpp \

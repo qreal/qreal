@@ -1,6 +1,8 @@
 #include "commonTwoDModel/engine/twoDModelEngineFacade.h"
 
-#include "model/d2RobotModel.h"
+#include "model/model.h"
+#include "view/d2ModelWidget.h"
+#include "twoDModelEngineApi.h"
 
 using namespace twoDModel::engine;
 
@@ -11,14 +13,16 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotM
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 			, "interpreters"
 			, "tools")
-	, mTwoDModel(new D2RobotModel(robotModel, configurer))
+	, mModel(new Model(robotModel))
+	, mView(new D2ModelWidget(*mModel.data(), configurer))
+	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
 {
-	connect(mTwoDModelActionInfo.action(), &QAction::triggered
-			, mTwoDModel.data(), &twoDModel::D2RobotModel::showModelWidget);
+	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &twoDModel::D2ModelWidget::init);
 
-	connect(mTwoDModel.data(), &D2RobotModel::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
-	connect(mTwoDModel.data(), &D2RobotModel::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
-	connect(mTwoDModel.data(), &D2RobotModel::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	// connectDevicesConfigurationProvider(mView.data());
+	connect(mView.data(), &D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
+	connect(mView.data(), &D2ModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mView.data(), &D2ModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
 }
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()
@@ -68,7 +72,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 
 	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
 			, [this, &graphicalModel, &logicalModel] (qReal::Id const &id) {
-				mTwoDModel->setRunStopButtonsEnabled(!id.isNull());
+				mView->setRunStopButtonsEnabled(!id.isNull());
 				qReal::Id const logicalId = graphicalModel.logicalId(id);
 				mActiveDiagramLogicalId = logicalId;
 				QString const xml = logicalId.isNull()
@@ -76,10 +80,10 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 						: logicalModel.propertyByRoleName(logicalId, "worldModel").toString();
 				QDomDocument worldModel;
 				worldModel.setContent(xml);
-				mTwoDModel->loadModel(worldModel);
+				mView->loadXml(worldModel);
 	});
 
-	connect(mTwoDModel.data(), &D2RobotModel::modelChanged,
+	connect(mModel.data(), &Model::modelChanged,
 			[this, &logicalModel, &interpreterControl] (QDomDocument const &xml) {
 				qReal::Id const logicalId = mActiveDiagramLogicalId;
 				if (!logicalId.isNull() && logicalId != qReal::Id::rootId()) {
@@ -88,7 +92,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 	});
 
 	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
-			, mTwoDModel.data(), &D2RobotModel::closeModelWidget);
+			, mView.data(), &D2ModelWidget::close);
 
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
@@ -99,12 +103,10 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 					connectTwoDModel();
 				} else {
 					disconnectTwoDModel();
-					mTwoDModel->closeModelWidget();
+					mView->close();
 				}
 			}
 			);
-
-	mTwoDModel->init();
 }
 
 qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()
@@ -114,20 +116,21 @@ qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()
 
 interpreterBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurationProvider()
 {
-	return *mTwoDModel;
+	/// @todo: return model configuration provider
+	return *mView.data();
 }
 
 TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 {
-	return *mTwoDModel;
+	return *mApi.data();
 }
 
 void TwoDModelEngineFacade::onStartInterpretation()
 {
-	mTwoDModel->startInterpretation();
+//	mTwoDModel->startInterpretation();
 }
 
 void TwoDModelEngineFacade::onStopInterpretation()
 {
-	mTwoDModel->stopRobot();
+//	mTwoDModel->stopRobot();
 }

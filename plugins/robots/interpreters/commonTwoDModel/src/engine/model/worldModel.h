@@ -7,14 +7,6 @@
 #include <QtGui/QPolygon>
 #include <QtXml/QDomDocument>
 
-/// @todo: Get rid of view dependencies
-#include "src/engine/view/wallItem.h"
-#include "src/engine/view/colorFieldItem.h"
-
-qreal const robotWheelDiameterInPx = 16;
-qreal const robotWheelDiameterInCm = 5.6;
-qreal const pixelsInCm = robotWheelDiameterInPx / robotWheelDiameterInCm;
-
 namespace twoDModel {
 
 class WorldModel
@@ -26,16 +18,16 @@ public:
 	QPainterPath sonarScanningRegion(QPointF const &position, qreal direction, int range = 255) const;
 	QPainterPath sonarScanningRegion(QPointF const &position, int range = 255) const;
 	bool checkCollision(QPainterPath const &robotPath, int stroke = 3) const;
-	QList<WallItem *> const &walls() const;
-	QList<ColorFieldItem *> const &colorFields() const;
+//	QList<WallItem *> const &walls() const;
+//	QList<ColorFieldItem *> const &colorFields() const;
 
 	int wallsCount() const;
-	WallItem *wallAt(int index) const;
-	void addWall(WallItem* wall);
-	void removeWall(WallItem* wall);
+//	WallItem *wallAt(int index) const;
+//	void addWall(WallItem* wall);
+//	void removeWall(WallItem* wall);
 
-	void addColorField(ColorFieldItem* colorField);
-	void removeColorField(ColorFieldItem* colorField);
+//	void addColorField(ColorFieldItem* colorField);
+//	void removeColorField(ColorFieldItem* colorField);
 
 	void clearScene();
 
@@ -46,8 +38,8 @@ private:
 	bool checkSonarDistance(int const distance, QPointF const &position
 			, qreal const direction, QPainterPath const &wallPath) const;
 
-	QList<WallItem *> mWalls;
-	QList<ColorFieldItem *> mColorFields;
+//	QList<WallItem *> mWalls;
+//	QList<ColorFieldItem *> mColorFields;
 //	QMap<robots::enums::inputPort::InputPortEnum, QPointF> mTouchSensorPositionOld;
 //	QMap<robots::enums::inputPort::InputPortEnum, qreal> mTouchSensorDirectionOld;
 

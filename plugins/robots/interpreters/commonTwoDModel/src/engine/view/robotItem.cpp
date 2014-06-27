@@ -114,9 +114,9 @@ void RobotItem::setRotater(Rotater *rotater)
 	mRotater = rotater;
 }
 
-void RobotItem::setRobotModel(TwoDRobotRobotModelInterface *robotModel)
+void RobotItem::setRobotModel(RobotModel &robotModel)
 {
-	mRobotModel = robotModel;
+	mRobotModel = &robotModel;
 }
 
 void RobotItem::rotate(qreal angle)

@@ -9,7 +9,8 @@
 
 #include "sensorItem.h"
 #include "rotater.h"
-#include "src/engine/model/twoDRobotModelInterface.h"
+
+#include "src/engine/model/robotModel.h"
 
 namespace twoDModel {
 
@@ -61,7 +62,7 @@ public:
 	/** @brief Returns false if we're dragging robot item somewhere */
 	bool isOnTheGround() const;
 
-	void setRobotModel(TwoDRobotRobotModelInterface *robotModel);
+	void setRobotModel(RobotModel &robotModel);
 	void setNeededBeep(bool isNeededBeep);
 
 	void addSensorsShapes(QPainterPath &target);
@@ -94,7 +95,7 @@ private:
 	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;
 
-	TwoDRobotRobotModelInterface *mRobotModel;
+	RobotModel *mRobotModel;
 };
 
 }

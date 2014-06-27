@@ -19,12 +19,12 @@
 #include "lineItem.h"
 #include "stylusItem.h"
 #include "ellipseItem.h"
+#include "wallItem.h"
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
-#include "src/engine/model/worldModel.h"
-#include "src/engine/model/twoDRobotModelInterface.h"
-#include "src/engine/model/timeline.h"
+
+#include "src/engine/model/model.h"
 
 #include "commonTwoDModel/engine/configurer.h"
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
@@ -35,49 +35,18 @@ class D2Form;
 
 namespace twoDModel {
 
-namespace enums {
-
-namespace drawingAction {
-enum DrawingAction
-{
-	none = 0
-	, wall
-	, line
-	, stylus
-	, Port
-	, ellipse
-	, noneWordLoad
-};
-}
-
-namespace cursorType {
-enum CursorType
-{
-	NoDrag = 0
-	, hand
-	, multiselection
-	, drawWall
-	, drawLine
-	, drawStylus
-	, drawEllipse
-};
-}
-
-}
-
 class D2ModelWidget : public utils::QRealDialog, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
 public:
-	D2ModelWidget(TwoDRobotRobotModelInterface *twoDRobotModel, WorldModel *worldModel
-			, interpreterBase::robotModel::RobotModelInterface &robotModel
-			, engine::TwoDModelDisplayWidget *display
-			, Configurer const &configurer
+	/// Takes ownership on configurer.
+	D2ModelWidget(Model &model
+			, Configurer const * const configurer
 			, QWidget *parent = 0);
 
 	~D2ModelWidget();
-	void init(bool isActive = true);
+	void init();
 	void close();
 	void draw(QPointF const &newCoord, qreal angle);
 	void drawBeep(bool isNeededBeep);
@@ -97,6 +66,8 @@ public:
 
 	D2ModelScene* scene();
 
+	engine::TwoDModelDisplayWidget *display();
+
 	void setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible);
 
 	void closeEvent(QCloseEvent *event);
@@ -105,6 +76,7 @@ public:
 
 	void loadXml(QDomDocument const &worldModel);
 
+	/// Enables or disables interpreter control buttons.
 	void setRunStopButtonsEnabled(bool enabled);
 
 public slots:
@@ -120,7 +92,8 @@ public slots:
 	void setInitialRobotBeforeRun();
 
 signals:
-	void d2WasClosed();
+	/// Emitted each time when user closes 2D model window.
+	void widgetClosed();
 
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
 
@@ -132,8 +105,10 @@ signals:
 	/// @param xml World model description in xml format
 	void modelChanged(QDomDocument const &xml);
 
+	/// Emitted when user has started intepretation from the 2D model window.
 	void runButtonPressed();
 
+	/// Emitted when user has stopped intepretation from the 2D model window.
 	void stopButtonPressed();
 
 protected:
@@ -177,7 +152,6 @@ private slots:
 	void enableRobotFollowing(bool on);
 	void onHandCursorButtonToggled(bool on);
 	void onMultiselectionCursorButtonToggled(bool on);
-	void setCursorType(enums::cursorType::CursorType cursor);
 
 	void alignWalls();
 	void changePhysicsSettings();
@@ -189,6 +163,28 @@ private slots:
 	void rereadDevicesConfiguration();
 
 private:
+	enum DrawingAction
+	{
+		none = 0
+		, wall
+		, line
+		, stylus
+		, Port
+		, ellipse
+		, noneWordLoad
+	};
+
+	enum CursorType
+	{
+		noDrag = 0
+		, hand
+		, multiselection
+		, drawWall
+		, drawLine
+		, drawStylus
+		, drawEllipse
+	};
+
 	static const int defaultPenWidth = 15;
 
 	static const int indexOfNoneSensor = 0;
@@ -208,7 +204,7 @@ private:
 	void connectUiButtons();
 	void initButtonGroups();
 	void initPorts();
-	bool isPortConfigurable(interpreterBase::robotModel::PortInfo const &port);
+//	bool isPortConfigurable(interpreterBase::robotModel::PortInfo const &port);
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void drawWalls();
@@ -242,15 +238,16 @@ private:
 	void setNoPalette();
 
 	void setNoneStatus();
-	void setCursorTypeForDrawing(enums::cursorType::CursorType type);
+	void setCursorTypeForDrawing(CursorType type);
+	void setCursorType(CursorType cursor);
 
 	void initWidget();
 	QList<graphicsUtils::AbstractItem *> selectedColorItems();
 	bool isColorItem(graphicsUtils::AbstractItem *item);
 
 	void centerOnRobot();
-	QGraphicsView::DragMode cursorTypeToDragType(enums::cursorType::CursorType type) const;
-	QCursor cursorTypeToCursor(enums::cursorType::CursorType type) const;
+	QGraphicsView::DragMode cursorTypeToDragType(CursorType type) const;
+	QCursor cursorTypeToCursor(CursorType type) const;
 	void processDragMode();
 	void syncCursorButtons();
 
@@ -264,18 +261,18 @@ private:
 	D2ModelScene *mScene;
 	RobotItem *mRobot;
 
+	Model &mModel;
+
 	/// Maximum number of calls to draw() when adding robot path element is skipped.
 	/// So, new path element is added every mMaxDrawCyclesBetweenPathElements times
 	/// draw() is called. We can't do that every time due to performance issues ---
 	/// robot position gets recalculated too frequently (about 10 times for single pixel of a movement).
 	int mMaxDrawCyclesBetweenPathElements;
 
-	TwoDRobotRobotModelInterface *mTwoDRobotModel;
-	WorldModel *mWorldModel;
 	engine::TwoDModelDisplayWidget *mDisplay;
 
 	/// Current action (toggled button on left panel)
-	enums::drawingAction::DrawingAction mDrawingAction;
+	DrawingAction mDrawingAction;
 
 	/// Variable to count clicks on scene, used to create walls
 	int mMouseClicksCount;
@@ -309,22 +306,19 @@ private:
 	QButtonGroup mButtonGroup;
 	QButtonGroup mCursorButtonGroup;
 
-	enums::cursorType::CursorType mNoneCursorType; // cursorType for noneStatus
-	enums::cursorType::CursorType mCursorType; // current cursorType
+	CursorType mNoneCursorType; // cursorType for noneStatus
+	CursorType mCursorType; // current cursorType
 
 	bool mFollowRobot;
 
 	bool mFirstShow;
-	Timeline const * mTimeline;
 
 	RobotState mInitialRobotBeforeRun;
-
-	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 
 	/// Does not have ownership, combo boxes are owned by form layout.
 	QHash<QComboBox *, interpreterBase::robotModel::PortInfo> mComboBoxesToPortsMap;
 
-	Configurer const &mConfigurer;
+	QScopedPointer<Configurer const> mConfigurer;
 };
 
 }
