@@ -60,20 +60,21 @@ D2ModelWidget::D2ModelWidget(Model &model
 
 	connectUiButtons();
 
-	mUi->realisticPhysicsCheckBox->setChecked(SettingsManager::value("2DModelRealisticPhysics").toBool());
-	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
-	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
+	mUi->realisticPhysicsCheckBox->setChecked(mModel.settings().realisticPhysics());
+	mUi->enableSensorNoiseCheckBox->setChecked(mModel.settings().realisticSensors());
+	mUi->enableMotorNoiseCheckBox->setChecked(mModel.settings().realisticMotors());
 	changePhysicsSettings();
 
-	connect(mScene, SIGNAL(mousePressed(QGraphicsSceneMouseEvent *)), this, SLOT(mousePressed(QGraphicsSceneMouseEvent*)));
-	connect(mScene, SIGNAL(mouseMoved(QGraphicsSceneMouseEvent*)), this, SLOT(mouseMoved(QGraphicsSceneMouseEvent*)));
-	connect(mScene, SIGNAL(mouseReleased(QGraphicsSceneMouseEvent*)), this, SLOT(mouseReleased(QGraphicsSceneMouseEvent*)));
-	connect(mScene, SIGNAL(itemDeleted(QGraphicsItem*)), this, SLOT(deleteItem(QGraphicsItem*)));
+	connect(mScene, &D2ModelScene::mousePressed, this, &D2ModelWidget::mousePressed);
+	connect(mScene, &D2ModelScene::mouseMoved, this, &D2ModelWidget::mouseMoved);
+	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::mouseReleased);
+	connect(mScene, &D2ModelScene::itemDeleted, this, &D2ModelWidget::deleteItem);
+	connect(mScene, &D2ModelScene::selectionChanged, this, &D2ModelWidget::changePalette);
 
-	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
-
-	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(updateGrid()));
-	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), this, SLOT(alignWalls()));
+	connect(mUi->gridParametersBox, &GridParameters::parametersChanged
+			, mScene, &D2ModelScene::updateGrid);
+	connect(mUi->gridParametersBox, &GridParameters::parametersChanged
+			, this, &D2ModelWidget::alignWalls);
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -84,11 +85,7 @@ D2ModelWidget::D2ModelWidget(Model &model
 	auto connectWheelComboBox = [this](QComboBox * const comboBox, RobotModel::WheelEnum wheel) {
 			connect(comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged)
 					, [this, wheel, comboBox](int index) {
-							/// @todo:
-//							mTwoDRobotModel->setMotorPortOnWheel(
-//									wheel
-//									, comboBox->itemData(index).value<PortInfo>()
-//									);
+							mModel.robotModel().setMotorPortOnWheel(wheel, comboBox->itemData(index).value<PortInfo>());
 					});
 	};
 
@@ -1120,7 +1117,7 @@ void D2ModelWidget::changePhysicsSettings()
 	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
 	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->isChecked());
 
-//	static_cast<D2RobotModel *>(mTwoDRobotModel)->setNoiseSettings();
+	mModel.settings().rereadNoiseSettings();
 }
 
 void D2ModelWidget::startTimelineListening()
