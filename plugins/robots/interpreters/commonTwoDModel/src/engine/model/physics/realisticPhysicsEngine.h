@@ -3,6 +3,7 @@
 #include "physicsEngineBase.h"
 
 namespace twoDModel {
+namespace model {
 namespace physics {
 
 /// An implementation of 2D model physical engine with some realistic effects (like friction emulation)
@@ -40,5 +41,6 @@ private:
 	QVector2D mVelocity;
 };
 
+}
 }
 }

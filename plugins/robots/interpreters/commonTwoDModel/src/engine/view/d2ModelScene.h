@@ -7,6 +7,7 @@
 #include <qrutils/graphicsUtils/gridDrawer.h>
 
 namespace twoDModel {
+namespace view {
 
 /// Implementation of QGraphicsScene for 2D robot model
 class D2ModelScene: public graphicsUtils::AbstractScene
@@ -43,5 +44,5 @@ protected:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
 };
 
-
+}
 }

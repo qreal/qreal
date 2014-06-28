@@ -858,7 +858,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="twoDModel::GridParameters" name="gridParametersBox">
+          <widget class="twoDModel::view::GridParameters" name="gridParametersBox">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -924,7 +924,7 @@
    <header>qrutils/graphicsUtils/colorListEditor.h</header>
   </customwidget>
   <customwidget>
-   <class>twoDModel::GridParameters</class>
+   <class>twoDModel::view::GridParameters</class>
    <extends>QFrame</extends>
    <header>src/engine/view/gridParameters.h</header>
    <container>1</container>

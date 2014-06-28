@@ -1,6 +1,6 @@
 #include "modelTimer.h"
 
-using namespace twoDModel;
+using namespace twoDModel::model;
 
 ModelTimer::ModelTimer(Timeline const *timeline)
 	: mTimeline(timeline), mTimeToWait(0)

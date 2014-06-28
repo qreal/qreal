@@ -5,9 +5,11 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include "d2ModelScene.h"
-#include "wallItem.h"
+
+#include "src/engine/items/wallItem.h"
 
 using namespace twoDModel;
+using namespace view;
 using namespace qReal;
 using namespace graphicsUtils;
 
@@ -89,7 +91,7 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &re
 
 		mGraphicsItem->resizeItem(event);
 
-		if (mGraphicsItem->realShape().intersects(rect) && dynamic_cast<WallItem *>(mGraphicsItem)) {
+		if (mGraphicsItem->realShape().intersects(rect) && dynamic_cast<items::WallItem *>(mGraphicsItem)) {
 			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
 		}
 	}

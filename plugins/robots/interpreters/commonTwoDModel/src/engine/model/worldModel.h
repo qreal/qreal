@@ -8,6 +8,7 @@
 #include <QtXml/QDomDocument>
 
 namespace twoDModel {
+namespace model {
 
 class WorldModel
 {
@@ -46,4 +47,5 @@ private:
 	QPainterPath buildWallPath() const;
 };
 
+}
 }

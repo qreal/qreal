@@ -14,6 +14,7 @@
 #include "src/engine/model/sensorsConfiguration.h"
 
 namespace twoDModel {
+namespace view {
 
 /// Class that represents sensor in 2D model.
 class SensorItem : public QObject, public graphicsUtils::RotateItem
@@ -39,7 +40,7 @@ public:
 		QRect const mBoundingRect;
 	};
 
-	SensorItem(SensorsConfiguration &configuration
+	SensorItem(model::SensorsConfiguration &configuration
 			, interpreterBase::robotModel::PortInfo const &port, QString const &pathToImage, QRect const &imageSize);
 
 	void rotate(double angle) override;
@@ -80,7 +81,7 @@ protected:
 
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
-	SensorsConfiguration &mConfiguration;
+	model::SensorsConfiguration &mConfiguration;
 	interpreterBase::robotModel::PortInfo const mPort;
 	QPointF mRotatePoint;
 	bool mDragged;
@@ -94,4 +95,5 @@ protected:
 	PortItem *mPortItem;  // Has ownership.
 };
 
+}
 }

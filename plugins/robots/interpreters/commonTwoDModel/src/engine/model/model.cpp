@@ -5,7 +5,7 @@
 #include "physics/simplePhysicsEngine.h"
 #include "physics/realisticPhysicsEngine.h"
 
-using namespace twoDModel;
+using namespace twoDModel::model;
 
 Model::Model(interpreterBase::robotModel::RobotModelInterface &robotModel
 		, QObject *parent)

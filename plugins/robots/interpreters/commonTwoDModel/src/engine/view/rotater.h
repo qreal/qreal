@@ -8,6 +8,7 @@
 #include <qrutils/graphicsUtils/rotateItem.h>
 
 namespace twoDModel {
+namespace view {
 
 const int length = 30;
 const int addAngle = 30; // Degrees; for arrow pike drawing
@@ -43,4 +44,5 @@ private:
 	graphicsUtils::LineImpl mLineImpl;
 };
 
+}
 }

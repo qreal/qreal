@@ -3,6 +3,7 @@
 #include <QtCore/QObject>
 
 namespace twoDModel {
+namespace model {
 
 /// Incapsulates settings used by 2D model.
 class Settings : public QObject
@@ -34,4 +35,5 @@ private:
 	bool mRealisticMotors;
 };
 
+}
 }

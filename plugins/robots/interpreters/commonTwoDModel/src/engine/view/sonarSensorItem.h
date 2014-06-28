@@ -7,6 +7,7 @@
 #include "src/engine/model/sensorsConfiguration.h"
 
 namespace twoDModel {
+namespace view {
 
 /// Sonar sensor that can draw its scanning area.
 class SonarSensorItem : public SensorItem
@@ -16,8 +17,8 @@ class SonarSensorItem : public SensorItem
 
 public:
 	SonarSensorItem(
-			WorldModel const &worldModel
-			, SensorsConfiguration &configuration
+			model::WorldModel const &worldModel
+			, model::SensorsConfiguration &configuration
 			, interpreterBase::robotModel::PortInfo const &port
 			, QString const &pathToImage
 			, QRect const &imageSize
@@ -32,8 +33,9 @@ private:
 	/// Returns scanning region of a sensor as painter path, in relative to sensor coordinates.
 	QPainterPath scanningRegion() const;
 
-	WorldModel const &mWorldModel;
+	model::WorldModel const &mWorldModel;
 	QImage const mIcon;
 };
 
+}
 }

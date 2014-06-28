@@ -2,7 +2,7 @@
 
 #include "sensorsConfiguration.h"
 
-using namespace twoDModel;
+using namespace twoDModel::model;
 using namespace interpreterBase::robotModel;
 
 SensorsConfiguration::SensorsConfiguration(QString const &robotModelName)

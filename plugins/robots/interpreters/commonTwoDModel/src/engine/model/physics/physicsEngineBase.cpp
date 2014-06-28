@@ -2,8 +2,7 @@
 
 #include "src/engine/model/worldModel.h"
 
-using namespace twoDModel;
-using namespace twoDModel::physics;
+using namespace twoDModel::model::physics;
 
 PhysicsEngineBase::PhysicsEngineBase(WorldModel const &worldModel)
 	: mWorldModel(worldModel)

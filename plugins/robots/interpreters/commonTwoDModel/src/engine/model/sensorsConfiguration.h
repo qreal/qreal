@@ -7,6 +7,7 @@
 #include <interpreterBase/devicesConfigurationProvider.h>
 
 namespace twoDModel {
+namespace model {
 
 /// Represents position and direction of simulated sensors relative to robot.
 class SensorsConfiguration : public QObject, public interpreterBase::DevicesConfigurationProvider
@@ -56,4 +57,5 @@ private:
 	QHash<interpreterBase::robotModel::PortInfo, SensorInfo> mSensorsInfo;
 };
 
+}
 }

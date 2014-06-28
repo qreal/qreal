@@ -5,6 +5,7 @@
 #include "utils/timelineInterface.h"
 
 namespace twoDModel {
+namespace model {
 
 /// A timeline returning 2D-model time in ms
 class Timeline : public QObject, public utils::TimelineInterface
@@ -53,4 +54,5 @@ private:
 	quint64 mTimestamp;
 };
 
+}
 }

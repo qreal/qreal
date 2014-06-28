@@ -13,16 +13,16 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotM
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 			, "interpreters"
 			, "tools")
-	, mModel(new Model(robotModel))
-	, mView(new D2ModelWidget(*mModel.data(), configurer))
+	, mModel(new model::Model(robotModel))
+	, mView(new view::D2ModelWidget(*mModel.data(), configurer))
 	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
 {
-	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &twoDModel::D2ModelWidget::init);
+	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &view::D2ModelWidget::init);
 
 	// connectDevicesConfigurationProvider(mView.data());
-	connect(mView.data(), &D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
-	connect(mView.data(), &D2ModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
-	connect(mView.data(), &D2ModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mView.data(), &view::D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
+	connect(mView.data(), &view::D2ModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
+	connect(mView.data(), &view::D2ModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
 }
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()
@@ -83,7 +83,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 				mView->loadXml(worldModel);
 	});
 
-	connect(mModel.data(), &Model::modelChanged,
+	connect(mModel.data(), &model::Model::modelChanged,
 			[this, &logicalModel, &interpreterControl] (QDomDocument const &xml) {
 				qReal::Id const logicalId = mActiveDiagramLogicalId;
 				if (!logicalId.isNull() && logicalId != qReal::Id::rootId()) {
@@ -92,7 +92,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 	});
 
 	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
-			, mView.data(), &D2ModelWidget::close);
+			, mView.data(), &view::D2ModelWidget::close);
 
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged

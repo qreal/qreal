@@ -5,12 +5,12 @@
 #include "sensorsConfiguration.h"
 
 namespace twoDModel {
+namespace model {
 
 namespace physics {
 class PhysicsEngineBase;
 }
 
-class D2ModelWidget;
 class WorldModel;
 class Timeline;
 
@@ -116,4 +116,5 @@ private:
 	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::PortInfo> mMotorToEncoderPortMap;
 };
 
+}
 }

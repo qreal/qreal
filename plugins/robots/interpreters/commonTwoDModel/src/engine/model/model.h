@@ -6,6 +6,7 @@
 #include "settings.h"
 
 namespace twoDModel {
+namespace model {
 
 /// A main class managing model part of 2D emulator. Creates and maintains different parts
 /// such as world map, robot model, timelines and physical engines.
@@ -47,4 +48,5 @@ private:
 	physics::PhysicsEngineBase *mPhysicsEngine;
 };
 
+}
 }

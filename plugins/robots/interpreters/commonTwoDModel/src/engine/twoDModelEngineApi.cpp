@@ -5,7 +5,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/mathUtils/math.h>
-/// @todo: Get rid of it!s
+/// @todo: Get rid of it!
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
 #include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
@@ -21,7 +21,7 @@
 using namespace twoDModel;
 using namespace interpreterBase::robotModel;
 
-TwoDModelEngineApi::TwoDModelEngineApi(Model &model, D2ModelWidget &view)
+TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
 	: mModel(model)
 	, mView(view)
 {
@@ -51,7 +51,7 @@ int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
-	qreal const width = SensorItem::sensorWidth / 2.0;
+	qreal const width = view::SensorItem::sensorWidth / 2.0;
 	QRectF const scanningRect = QRectF(
 			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
 			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
@@ -134,7 +134,7 @@ QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
-	qreal const width = SensorItem::sensorWidth / 2.0;
+	qreal const width = view::SensorItem::sensorWidth / 2.0;
 	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -281,7 +281,7 @@ int TwoDModelEngineApi::varySpeed(int const speed) const
 
 QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(PortInfo const &port) const
 {
-	SensorItem const *sensor = mView.sensorItem(port);
+	view::SensorItem const *sensor = mView.sensorItem(port);
 	QPointF const position = sensor ? sensor->scenePos() : QPointF();
 	qreal const direction = sensor ? sensor->rotation() + mModel.robotModel().rotateAngle() : 0;
 	return { position, direction };

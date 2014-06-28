@@ -5,6 +5,7 @@
 #include "timeline.h"
 
 namespace twoDModel {
+namespace model {
 
 /// Timer implementation for 2D model. Used in TimerBlock and BeepBlock
 class ModelTimer : public utils::AbstractTimer
@@ -26,4 +27,5 @@ private:
 	int mTimePast;
 };
 
+}
 }

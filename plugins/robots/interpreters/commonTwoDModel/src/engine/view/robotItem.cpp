@@ -2,17 +2,17 @@
 
 #include "src/engine/model/constants.h"
 
-using namespace twoDModel;
+using namespace twoDModel::view;
 using namespace graphicsUtils;
 
 int const border = 0;
 
-RobotItem::RobotItem(const QString &robotImageFileName)
+RobotItem::RobotItem(QString const &robotImageFileName)
 	: RotateItem()
 	, mImage(QImage(robotImageFileName))
 	, mBeepItem(new BeepItem)
 	, mIsOnTheGround(true)
-	, mRotater(NULL)
+	, mRotater(nullptr)
 	, mRectangleImpl()
 	, mRobotModel()
 {
@@ -114,7 +114,7 @@ void RobotItem::setRotater(Rotater *rotater)
 	mRotater = rotater;
 }
 
-void RobotItem::setRobotModel(RobotModel &robotModel)
+void RobotItem::setRobotModel(model::RobotModel &robotModel)
 {
 	mRobotModel = &robotModel;
 }
@@ -134,7 +134,7 @@ qreal RobotItem::rotateAngle() const
 	return mRobotModel->rotateAngle();
 }
 
-void RobotItem::setRotateAngle(double const &angle)
+void RobotItem::setRotateAngle(qreal angle)
 {
 	mRobotModel->setRotation(angle);
 }

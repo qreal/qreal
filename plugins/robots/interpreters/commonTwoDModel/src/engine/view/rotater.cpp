@@ -6,7 +6,7 @@
 
 #include <qrutils/mathUtils/math.h>
 
-using namespace twoDModel;
+using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace mathUtils;
 

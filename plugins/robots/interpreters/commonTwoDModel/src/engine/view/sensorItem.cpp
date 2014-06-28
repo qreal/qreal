@@ -13,13 +13,13 @@
 #include "commonTwoDModel/robotModel/parts/colorSensorGreen.h"
 #include "commonTwoDModel/robotModel/parts/colorSensorBlue.h"
 
-using namespace twoDModel;
+using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace interpreterBase::robotModel;
 
 int const selectionDrift = 7;
 
-SensorItem::SensorItem(SensorsConfiguration &configuration
+SensorItem::SensorItem(model::SensorsConfiguration &configuration
 		, PortInfo const &port, QString const &pathToImage, QRect const &imageRect)
 	: RotateItem()
 	, mConfiguration(configuration)

@@ -31,15 +31,15 @@
 #include <QtCore/QDebug>
 
 using namespace twoDModel;
+using namespace view;
+using namespace model;
 using namespace qReal;
 using namespace utils;
 using namespace graphicsUtils;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
-D2ModelWidget::D2ModelWidget(Model &model
-		, Configurer const * const configurer
-		, QWidget *parent)
+D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
 	, mScene(nullptr)

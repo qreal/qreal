@@ -38,15 +38,15 @@ class StylusItem;
 class EllipseItem;
 }
 
+namespace view {
+
 class D2ModelWidget : public utils::QRealDialog, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
 public:
 	/// Takes ownership on configurer.
-	D2ModelWidget(Model &model
-			, Configurer const * const configurer
-			, QWidget *parent = 0);
+	D2ModelWidget(model::Model &model, Configurer const * const configurer, QWidget *parent = 0);
 
 	~D2ModelWidget();
 	void init();
@@ -264,7 +264,7 @@ private:
 	D2ModelScene *mScene;
 	RobotItem *mRobot;
 
-	Model &mModel;
+	model::Model &mModel;
 
 	/// Maximum number of calls to draw() when adding robot path element is skipped.
 	/// So, new path element is added every mMaxDrawCyclesBetweenPathElements times
@@ -324,4 +324,5 @@ private:
 	QScopedPointer<Configurer const> mConfigurer;
 };
 
+}
 }

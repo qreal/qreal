@@ -1,9 +1,9 @@
 #include <QtCore/QDateTime>
 
 #include "timeline.h"
-#include "d2ModelTimer.h"
+#include "modelTimer.h"
 
-using namespace twoDModel;
+using namespace twoDModel::model;
 
 Timeline::Timeline(QObject *parent)
 	: QObject(parent)
@@ -66,7 +66,7 @@ quint64 Timeline::timestamp() const
 
 utils::AbstractTimer *Timeline::produceTimer()
 {
-	return new D2ModelTimer(this);
+	return new ModelTimer(this);
 }
 
 void Timeline::setSpeedFactor(int factor)

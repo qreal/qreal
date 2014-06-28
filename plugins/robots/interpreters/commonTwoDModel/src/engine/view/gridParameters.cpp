@@ -5,7 +5,7 @@
 
 #include <qrkernel/settingsManager.h>
 
-using namespace twoDModel;
+using namespace twoDModel::view;
 
 GridParameters::GridParameters(QWidget *parent)
 	: QFrame(parent)

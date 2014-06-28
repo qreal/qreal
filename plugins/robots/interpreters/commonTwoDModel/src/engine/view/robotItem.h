@@ -13,6 +13,7 @@
 #include "src/engine/model/robotModel.h"
 
 namespace twoDModel {
+namespace view {
 
 class BeepItem : public QGraphicsItem
 {
@@ -35,7 +36,7 @@ public:
 	virtual void rotate(qreal angle);
 	virtual QRectF rect() const;
 	virtual qreal rotateAngle() const;
-	void setRotateAngle(double const &angle);
+	void setRotateAngle(qreal angle);
 	virtual void setSelected(bool isSelected);
 	void setRotater(Rotater *rotater);
 	virtual void checkSelection();
@@ -62,7 +63,7 @@ public:
 	/** @brief Returns false if we're dragging robot item somewhere */
 	bool isOnTheGround() const;
 
-	void setRobotModel(RobotModel &robotModel);
+	void setRobotModel(model::RobotModel &robotModel);
 	void setNeededBeep(bool isNeededBeep);
 
 	void addSensorsShapes(QPainterPath &target);
@@ -95,7 +96,8 @@ private:
 	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;
 
-	RobotModel *mRobotModel;
+	model::RobotModel *mRobotModel;
 };
 
+}
 }

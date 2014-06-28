@@ -4,6 +4,7 @@
 #include <QtGui/QPainterPath>
 
 namespace twoDModel {
+namespace model {
 
 class WorldModel;
 
@@ -36,5 +37,6 @@ protected:
 	qreal mRotation;
 };
 
+}
 }
 }

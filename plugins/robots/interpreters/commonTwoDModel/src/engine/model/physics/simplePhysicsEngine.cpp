@@ -8,8 +8,8 @@
 #include "src/engine/model/constants.h"
 #include "src/engine/model/worldModel.h"
 
-using namespace twoDModel;
-using namespace twoDModel::physics;
+using namespace twoDModel::model;
+using namespace physics;
 using namespace mathUtils;
 
 SimplePhysicsEngine::SimplePhysicsEngine(WorldModel const &worldModel)

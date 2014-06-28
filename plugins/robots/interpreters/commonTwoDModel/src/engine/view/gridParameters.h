@@ -6,6 +6,7 @@
 #include <QtWidgets/QLabel>
 
 namespace twoDModel {
+namespace view {
 
 class GridParameters : public QFrame
 {
@@ -27,4 +28,5 @@ private:
 	QCheckBox *mShowGridCheckBox;
 };
 
+}
 }

@@ -4,7 +4,7 @@
 #include "constants.h"
 #include "worldModel.h"
 
-using namespace twoDModel;
+using namespace twoDModel::model;
 
 WorldModel::WorldModel()
 {

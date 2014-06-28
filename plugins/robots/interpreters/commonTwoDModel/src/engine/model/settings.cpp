@@ -2,7 +2,7 @@
 
 #include <qrkernel/settingsManager.h>
 
-using namespace twoDModel;
+using namespace twoDModel::model;
 
 Settings::Settings()
 {

@@ -8,18 +8,18 @@
 #include "constants.h"
 #include "timeline.h"
 
-using namespace twoDModel;
-using namespace twoDModel::physics;
+using namespace twoDModel::model;
+using namespace physics;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
 RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
 		, QObject *parent)
 	: QObject(parent)
+	, mSensorsConfiguration(robotModel.name())
 	, mNeedSync(false)
 	, mPos(QPointF(0,0))
 	, mAngle(0)
-	, mSensorsConfiguration(robotModel.name())
 	, mRobotModel(robotModel)
 {
 	initPosition();

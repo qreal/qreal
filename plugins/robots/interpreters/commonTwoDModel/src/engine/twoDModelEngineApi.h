@@ -6,13 +6,17 @@
 
 namespace twoDModel {
 
+namespace model {
 class Model;
+}
+namespace view {
 class D2ModelWidget;
+}
 
 class TwoDModelEngineApi : public engine::TwoDModelEngineInterface
 {
 public:
-	TwoDModelEngineApi(Model &model, D2ModelWidget &view);
+	TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view);
 
 	void setNewMotor(int speed, uint degrees
 			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) override;
@@ -44,8 +48,8 @@ private:
 	int varySpeed(int const speed) const;
 	int spoilSonarReading(int const distance) const;
 
-	Model &mModel;
-	D2ModelWidget &mView;
+	model::Model &mModel;
+	view::D2ModelWidget &mView;
 
 	mathUtils::GaussNoise mNoiseGenerator;
 };

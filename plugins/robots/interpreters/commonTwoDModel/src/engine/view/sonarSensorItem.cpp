@@ -1,10 +1,10 @@
 #include "sonarSensorItem.h"
 
-using namespace twoDModel;
+using namespace twoDModel::view;
 using namespace interpreterBase::robotModel;
 
-SonarSensorItem::SonarSensorItem(WorldModel const &worldModel
-		, SensorsConfiguration &configuration
+SonarSensorItem::SonarSensorItem(model::WorldModel const &worldModel
+		, model::SensorsConfiguration &configuration
 		, PortInfo const &port
 		, QString const &pathToImage
 		, QRect const &imageSize
