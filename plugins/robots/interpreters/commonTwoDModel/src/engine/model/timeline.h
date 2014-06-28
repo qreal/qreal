@@ -25,18 +25,23 @@ public:
 
 	int speedFactor() const;
 
-	quint64 timestamp() const /*override*/;
+	quint64 timestamp() const override;
 
 	utils::AbstractTimer *produceTimer() override;
 
 public slots:
 	void start();
+	void stop();
+
 	// Speed factor is also cycles per frame count
 	void setSpeedFactor(int factor);
 
 signals:
 	void tick();
 	void nextFrame();
+
+	void started();
+	void stopped();
 
 private slots:
 	void onTimer();

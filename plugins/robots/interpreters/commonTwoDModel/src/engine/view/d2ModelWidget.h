@@ -47,13 +47,10 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Devices
 public:
 	/// Takes ownership on configurer.
 	D2ModelWidget(model::Model &model, Configurer const * const configurer, QWidget *parent = 0);
-
 	~D2ModelWidget();
+
 	void init();
 	void close();
-	void draw(QPointF const &newCoord, qreal angle);
-	void drawBeep(bool isNeededBeep);
-	QPainterPath const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
 	/// Get current scene position of robot
 	QPointF robotPos() const;
@@ -67,7 +64,7 @@ public:
 	/// Disables Run and Stop buttons, used when current tab is not related to robots
 	void disableRunStopButtons();
 
-	D2ModelScene* scene();
+	D2ModelScene *scene();
 
 	engine::TwoDModelDisplayWidget *display();
 
@@ -86,11 +83,6 @@ public slots:
 	void update();
 	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos);
 
-	/// Starts 2D model time counter
-	void startTimelineListening();
-
-	/// Stops 2D model time counter
-	void stopTimelineListening();
 	void saveInitialRobotBeforeRun();
 	void setInitialRobotBeforeRun();
 
@@ -265,12 +257,6 @@ private:
 	RobotItem *mRobot;
 
 	model::Model &mModel;
-
-	/// Maximum number of calls to draw() when adding robot path element is skipped.
-	/// So, new path element is added every mMaxDrawCyclesBetweenPathElements times
-	/// draw() is called. We can't do that every time due to performance issues ---
-	/// robot position gets recalculated too frequently (about 10 times for single pixel of a movement).
-	int mMaxDrawCyclesBetweenPathElements;
 
 	engine::TwoDModelDisplayWidget *mDisplay;
 

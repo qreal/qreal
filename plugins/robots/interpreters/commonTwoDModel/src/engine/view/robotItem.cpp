@@ -7,16 +7,20 @@ using namespace graphicsUtils;
 
 int const border = 0;
 
-RobotItem::RobotItem(QString const &robotImageFileName)
+RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel)
 	: RotateItem()
 	, mImage(QImage(robotImageFileName))
 	, mBeepItem(new BeepItem)
 	, mIsOnTheGround(true)
 	, mRotater(nullptr)
 	, mRectangleImpl()
-	, mRobotModel()
+	, mRobotModel(robotModel)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
+
+	connect(&mRobotModel, &model::RobotModel::positionChanged, this, &RobotItem::setPos);
+	connect(&mRobotModel, &model::RobotModel::rotationChanged, this, &RobotItem::setRotation);
+	connect(&mRobotModel, &model::RobotModel::playingSoundChanged, this, &RobotItem::setNeededBeep);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -84,9 +88,14 @@ void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
-void RobotItem::setPos(QPointF const &newPos)// for moving
+void RobotItem::setPos(QPointF const &newPos)
 {
 	QGraphicsItem::setPos(newPos);
+}
+
+void RobotItem::setRotation(qreal rotation)
+{
+	QGraphicsItem::setRotation(rotation);
 }
 
 void RobotItem::addSensor(SensorItem *sensor)
@@ -114,39 +123,9 @@ void RobotItem::setRotater(Rotater *rotater)
 	mRotater = rotater;
 }
 
-void RobotItem::setRobotModel(model::RobotModel &robotModel)
-{
-	mRobotModel = &robotModel;
-}
-
-void RobotItem::rotate(qreal angle)
-{
-	mRobotModel->setRotation(angle);
-}
-
 QRectF RobotItem::rect() const
 {
 	return boundingRect();
-}
-
-qreal RobotItem::rotateAngle() const
-{
-	return mRobotModel->rotateAngle();
-}
-
-void RobotItem::setRotateAngle(qreal angle)
-{
-	mRobotModel->setRotation(angle);
-}
-
-void RobotItem::setRobotPos(QPointF const &newPos)
-{
-	mRobotModel->setRobotPos(newPos);
-}
-
-QPointF RobotItem::robotPos(void)
-{
-	return mRobotModel->robotPos();
 }
 
 void RobotItem::setSelected(bool isSelected)
@@ -164,31 +143,17 @@ void RobotItem::setNeededBeep(bool isNeededBeep)
 	mBeepItem->setVisible(isNeededBeep);
 }
 
-QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant RobotItem::itemChange(GraphicsItemChange change, QVariant const &value)
 {
 	if (change == ItemPositionChange) {
-		processPositionChange();
+		mRobotModel.setPosition(pos());
 	}
+
 	if (change == ItemTransformChange) {
-		processPositionAndAngleChange();
+		mRobotModel.setRotation(rotation());
 	}
 
 	return AbstractItem::itemChange(change, value);
-}
-
-void RobotItem::processPositionChange()
-{
-	foreach (SensorItem * const sensor, mSensors) {
-		sensor->onPositionChanged();
-	}
-}
-
-void RobotItem::processPositionAndAngleChange()
-{
-	foreach (SensorItem * const sensor, mSensors) {
-		sensor->onPositionChanged();
-		sensor->onDirectionChanged();
-	}
 }
 
 void RobotItem::recoverDragStartPosition()
@@ -199,15 +164,7 @@ void RobotItem::recoverDragStartPosition()
 	}
 }
 
-void RobotItem::addSensorsShapes(QPainterPath &target)
-{
-	for (SensorItem const * const sensor : mSensors) {
-		target.addRect({sensor->pos() - QPointF(SensorItem::sensorWidth / 2, SensorItem::sensorWidth / 2)
-				, QSizeF{SensorItem::sensorWidth, SensorItem::sensorWidth}});
-	}
-}
-
-void BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
+void RobotItem::BeepItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
 		, QWidget *widget)
 {
 	Q_UNUSED(option)
@@ -216,12 +173,12 @@ void BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 	drawBeep(painter);
 }
 
-QRectF BeepItem::boundingRect() const
+QRectF RobotItem::BeepItem::boundingRect() const
 {
 	return QRectF(0, 0, beepWavesSize, beepWavesSize);
 }
 
-void BeepItem::drawBeep(QPainter *painter)
+void RobotItem::BeepItem::drawBeep(QPainter *painter)
 {
 	QPointF const center(beepWavesSize / 2, beepWavesSize / 2);
 
@@ -230,7 +187,7 @@ void BeepItem::drawBeep(QPainter *painter)
 	drawBeepArcs(painter, center, 60);
 }
 
-void BeepItem::drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius)
+void RobotItem::BeepItem::drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius)
 {
 	painter->save();
 	QPen pen;

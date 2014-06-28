@@ -2,8 +2,6 @@
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
-#include <qrutils/mathUtils/gaussNoise.h>
-
 namespace twoDModel {
 
 namespace model {
@@ -45,13 +43,10 @@ private:
 
 	uint spoilColor(uint const color) const;
 	uint spoilLight(uint const color) const;
-	int varySpeed(int const speed) const;
 	int spoilSonarReading(int const distance) const;
 
 	model::Model &mModel;
 	view::D2ModelWidget &mView;
-
-	mathUtils::GaussNoise mNoiseGenerator;
 };
 
 }

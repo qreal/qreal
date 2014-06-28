@@ -17,7 +17,6 @@ class Model : public QObject
 public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
 	explicit Model(interpreterBase::robotModel::RobotModelInterface &robotModel, QObject *parent = 0);
-	~Model();
 
 	/// Returns a reference to a world map.
 	WorldModel &worldModel();
@@ -44,8 +43,6 @@ private:
 	WorldModel mWorldModel;
 	Timeline mTimeline;
 	RobotModel mRobotModel;
-
-	physics::PhysicsEngineBase *mPhysicsEngine;
 };
 
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtGui/QPainterPath>
+
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include "sensorsConfiguration.h"
@@ -7,6 +9,7 @@
 namespace twoDModel {
 namespace model {
 
+class Settings;
 namespace physics {
 class PhysicsEngineBase;
 }
@@ -31,11 +34,13 @@ public:
 	};
 
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel, QObject *parent = 0);
+	RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
+			, Settings const &settings, QObject *parent = 0);
+	~RobotModel();
+
+	void reinit();
 
 	void clear();
-//	void startInit();
-//	void startInterpretation();
 	void stopRobot();
 	void playSound(int timeInMs);
 
@@ -48,20 +53,32 @@ public:
 	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);
 
-	void setRotation(qreal angle);
-	qreal rotateAngle() const;
+	QPointF position() const;
+	void setPosition(QPointF const &newPos);
 
-	void setRobotPos(QPointF const &newPos);
-	QPointF robotPos() const;
+	qreal rotation() const;
+	void setRotation(qreal angle);
 
 	void serialize(QDomDocument &target) const;
 	void deserialize(const QDomElement &robotElement);
 
+	void onRobotLiftedFromGround();
+	void onRobotReturnedOnGround();
+
 	void setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port);
 
-private slots:
+public slots:
+	void resetPhysics(bool isRealistic, WorldModel const &worldModel);
+
 	void recalculateParams();
 	void nextFragment();
+
+signals:
+	void positionChanged(QPointF const &newPosition);
+	void rotationChanged(qreal newRotation);
+
+	/// Emitted with parameter 'true' when robot starts playing sound and 'false' if playing sound complete.
+	void playingSoundChanged(bool playing);
 
 private:
 	struct Motor
@@ -77,10 +94,9 @@ private:
 
 	QPointF rotationCenter() const;
 	QVector2D robotDirectionVector() const;
+	QPainterPath robotBoundingPath() const;
 
-	void initPosition();
-
-	Motor *initEngine(int radius, int speed, long unsigned int degrees
+	Motor *initMotor(int radius, int speed, long unsigned int degrees
 			, interpreterBase::robotModel::PortInfo const &port, bool isUsed);
 
 	void countNewForces();
@@ -92,28 +108,27 @@ private:
 
 	void nextStep();
 
-	int mBeepTime;
-	QPointF mRotatePoint;
+	int varySpeed(int const speed) const;
 
 	/// Simulated robot motors.
 	/// Has ownership.
 	QHash<interpreterBase::robotModel::PortInfo, Motor *> mMotors;
-
 	/// Stores how many degrees the motor rotated on.
 	QHash<interpreterBase::robotModel::PortInfo, qreal> mTurnoverEngines;
-
 	/// Describes which wheel is driven by which motor.
 	QHash<WheelEnum, interpreterBase::robotModel::PortInfo> mWheelsToMotorPortsMap;
+	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::PortInfo> mMotorToEncoderPortMap;
 
+	Settings const &mSettings;
+	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 	SensorsConfiguration mSensorsConfiguration;
-	bool mNeedSync;
 
 	QPointF mPos;
 	qreal mAngle;
+	int mBeepTime;
+	bool mIsOnTheGround;
 
-	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
-
-	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::PortInfo> mMotorToEncoderPortMap;
+	physics::PhysicsEngineBase *mPhysicsEngine;
 };
 
 }

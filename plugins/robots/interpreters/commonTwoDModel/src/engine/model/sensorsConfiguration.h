@@ -17,11 +17,6 @@ class SensorsConfiguration : public QObject, public interpreterBase::DevicesConf
 public:
 	explicit SensorsConfiguration(QString const &robotModelName);
 
-	void setSensor(interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &type
-			, QPointF const &position
-			, qreal const &direction);
-
 	void setPosition(interpreterBase::robotModel::PortInfo const &port, QPointF const &position);
 	QPointF position(interpreterBase::robotModel::PortInfo const &port) const;
 

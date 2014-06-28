@@ -126,9 +126,9 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 		if (qAbs(roundedAngle - angle) > qAbs(roundedAngle + M_PI_4 - angle)) {
 			roundedAngle += M_PI_4;
 		}
-		mMaster->rotate(roundedAngle * 180 / M_PI - masterAngleCompensation);
+		mMaster->setRotation(roundedAngle * 180 / M_PI - masterAngleCompensation);
 	} else {
-		mMaster->rotate(angle * 180 / M_PI - masterAngleCompensation);
+		mMaster->setRotation(angle * 180 / M_PI - masterAngleCompensation);
 	}
 }
 

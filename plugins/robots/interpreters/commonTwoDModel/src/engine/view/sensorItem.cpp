@@ -177,20 +177,14 @@ void SensorItem::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
-void SensorItem::rotate(qreal angle)
+void SensorItem::setRotation(qreal angle)
 {
-	mConfiguration.setDirection(mPort, angle);
-	setRotation(angle);
+	QGraphicsItem::setRotation(angle);
 }
 
 QRectF SensorItem::rect() const
 {
 	return mImageRect;
-}
-
-double SensorItem::rotateAngle() const
-{
-	return mConfiguration.direction(mPort);
 }
 
 void SensorItem::setSelected(bool isSelected)
@@ -225,20 +219,22 @@ QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value
 	if (change == ItemPositionChange) {
 		onPositionChanged();
 	}
+
 	if (change == ItemTransformChange) {
 		onDirectionChanged();
 	}
+
 	return AbstractItem::itemChange(change, value);
 }
 
 void SensorItem::onPositionChanged()
 {
-	mConfiguration.setPosition(mPort, scenePos().toPoint());
+	mConfiguration.setPosition(mPort, pos().toPoint());
 }
 
 void SensorItem::onDirectionChanged()
 {
-	mConfiguration.setPosition(mPort, scenePos().toPoint());
+	mConfiguration.setPosition(mPort, pos().toPoint());
 	mConfiguration.setDirection(mPort, rotation());
 }
 

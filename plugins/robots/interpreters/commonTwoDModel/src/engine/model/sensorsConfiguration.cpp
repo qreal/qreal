@@ -99,7 +99,9 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
 
-		setSensor(port, type, position, direction);
+		deviceConfigurationChanged(mRobotModel, port, type);
+		setPosition(port, position);
+		setDirection(port, direction);
 	}
 }
 

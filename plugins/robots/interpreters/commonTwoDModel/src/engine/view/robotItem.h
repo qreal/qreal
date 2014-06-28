@@ -15,72 +15,65 @@
 namespace twoDModel {
 namespace view {
 
-class BeepItem : public QGraphicsItem
-{
-protected:
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-	QRectF boundingRect() const;
-
-private:
-	void drawBeep(QPainter *painter);
-	void drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius);
-};
-
 /** @brief Class that represents a robot in 2D model */
 class RobotItem : public QObject, public graphicsUtils::RotateItem
 {
 	Q_OBJECT
+
 public:
-	RobotItem(QString const &robotImageFileName);
+	RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel);
 
-	virtual void rotate(qreal angle);
-	virtual QRectF rect() const;
-	virtual qreal rotateAngle() const;
-	void setRotateAngle(qreal angle);
-	virtual void setSelected(bool isSelected);
+	QRectF rect() const override;
+	void setSelected(bool isSelected) override;
+	void checkSelection() override;
+
 	void setRotater(Rotater *rotater);
-	virtual void checkSelection();
-	void setRobotPos(QPointF const &newPos);
-	QPointF robotPos(void);
 
-	virtual QRectF boundingRect() const;
-	virtual QRectF calcNecessaryBoundingRect() const;
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
-	virtual void drawExtractionForItem(QPainter* painter);
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
-	void resizeItem(QGraphicsSceneMouseEvent *event);
+	QRectF boundingRect() const override;
+	QRectF calcNecessaryBoundingRect() const override;
+	void drawItem(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget = 0) override;
+	void drawExtractionForItem(QPainter *painter) override;
+	void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+	void resizeItem(QGraphicsSceneMouseEvent *event) override;
+
+	/// Same as QGraphicsItem::setPos(). Needed as slot for connection.
 	void setPos(QPointF const &newPos);
+	/// Same as QGraphicsItem::setRotation(). Needed as slot for connection.
+	void setRotation(qreal rotation) override;
 
-	/** @brief Add new sensor to mSensors */
 	void addSensor(SensorItem *sensor);
 	void removeSensor(SensorItem *sensor);
 
-	/** @brief Clear mSensors */
 	void clearSensors();
 
-	/** @brief Returns false if we're dragging robot item somewhere */
+	/// Returns false if we're dragging robot item somewhere
 	bool isOnTheGround() const;
 
-	void setRobotModel(model::RobotModel &robotModel);
 	void setNeededBeep(bool isNeededBeep);
-
-	void addSensorsShapes(QPainterPath &target);
 
 	void recoverDragStartPosition();
 
-	void processPositionChange();
-	void processPositionAndAngleChange();
-
 protected:
-	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 signals:
 	void mousePressed();
 	void changedPosition();
 
 private:
+	class BeepItem : public QGraphicsItem
+	{
+	protected:
+		void paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget);
+		QRectF boundingRect() const;
+
+	private:
+		void drawBeep(QPainter *painter);
+		void drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius);
+	};
+
 	void onLanded();
 
 	/** @brief Image of a robot drawn on scene */
@@ -96,7 +89,7 @@ private:
 	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;
 
-	model::RobotModel *mRobotModel;
+	model::RobotModel &mRobotModel;
 };
 
 }

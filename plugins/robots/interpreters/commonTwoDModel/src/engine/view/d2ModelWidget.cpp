@@ -45,7 +45,6 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	, mScene(nullptr)
 	, mRobot(nullptr)
 	, mModel(model)
-	, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 	, mDisplay(configurer->displayWidget(this))
 	, mDrawingAction(none)
 	, mMouseClicksCount(0)
@@ -79,6 +78,12 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 			, mScene, &D2ModelScene::updateGrid);
 	connect(mUi->gridParametersBox, &GridParameters::parametersChanged
 			, this, &D2ModelWidget::alignWalls);
+
+	connect(&mModel.timeline(), &model::Timeline::started, [this]() { mUi->timelineBox->setValue(0); });
+	connect(&mModel.timeline(), &model::Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
+	connect(&mModel.timeline(), &model::Timeline::tick, this, &D2ModelWidget::onTimelineTick);
+
+	connect(&mModel.robotModel(), &model::RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -302,20 +307,20 @@ void D2ModelWidget::init()
 
 void D2ModelWidget::saveInitialRobotBeforeRun()
 {
-	mInitialRobotBeforeRun.pos = mRobot->robotPos();
-	mInitialRobotBeforeRun.rotation = mRobot->rotateAngle();
+	mInitialRobotBeforeRun.pos = mModel.robotModel().position();
+	mInitialRobotBeforeRun.rotation = mModel.robotModel().rotation();
 }
 
 void D2ModelWidget::setInitialRobotBeforeRun()
 {
-	mRobot->setRobotPos(mInitialRobotBeforeRun.pos);
-	mRobot->setRotateAngle(mInitialRobotBeforeRun.rotation);
-	mScene->update();
+	mModel.robotModel().setPosition(mInitialRobotBeforeRun.pos);
+	mModel.robotModel().setRotation(mInitialRobotBeforeRun.rotation);
+//	mScene->update();
 }
 
 void D2ModelWidget::drawInitialRobot()
 {
-	mRobot = new RobotItem(mConfigurer->robotImage());
+	mRobot = new RobotItem(mConfigurer->robotImage(), mModel.robotModel());
 	connect(mRobot, SIGNAL(changedPosition()), this, SLOT(handleNewRobotPosition()));
 	connect(mRobot, SIGNAL(mousePressed()), this, SLOT(setNoneButton()));
 	mScene->addItem(mRobot);
@@ -325,7 +330,6 @@ void D2ModelWidget::drawInitialRobot()
 	rotater->setVisible(false);
 
 	mRobot->setRotater(rotater);
-	mRobot->setRobotModel(mModel.robotModel());
 
 	rereadDevicesConfiguration();
 
@@ -395,14 +399,6 @@ bool D2ModelWidget::isRobotOnTheGround()
 	return mRobot && mRobot->isOnTheGround();
 }
 
-void D2ModelWidget::draw(QPointF const &newCoord, qreal angle)
-{
-	mRobot->setPos(newCoord);
-	mRobot->setRotation(angle);
-
-	centerOnRobot();
-}
-
 void D2ModelWidget::centerOnRobot()
 {
 	if (mFollowRobot) {
@@ -421,8 +417,7 @@ void D2ModelWidget::drawWalls()
 		for (items::WallItem *wall : mModel.worldModel().walls()) {
 			if (!mScene->items().contains(wall)) {
 				mScene->addItem(wall);
-				connect(wall, SIGNAL(wallDragged(WallItem*,QPainterPath,QPointF))
-						, this, SLOT(worldWallDragged(WallItem*,QPainterPath,QPointF)));
+				connect(wall, &items::WallItem::wallDragged, this, &D2ModelWidget::worldWallDragged);
 			}
 		}
 	}
@@ -440,25 +435,6 @@ void D2ModelWidget::drawColorFields()
 			}
 		}
 	}
-}
-
-void D2ModelWidget::drawBeep(bool isNeededBeep)
-{
-	mRobot->setNeededBeep(isNeededBeep);
-}
-
-QPainterPath const D2ModelWidget::robotBoundingPolygon(QPointF const &coord
-		, qreal const &angle) const
-{
-	QPainterPath path;
-	path.addRect(mRobot->boundingRect());
-	mRobot->addSensorsShapes(path);
-	QPointF const realRotatePoint = QPointF(mRobot->boundingRect().width() / 2, mRobot->boundingRect().height() / 2);
-	QPointF const translationToZero = -realRotatePoint - mRobot->boundingRect().topLeft();
-	QPointF const finalTranslation = coord + realRotatePoint + mRobot->boundingRect().topLeft();
-	QTransform const transform = QTransform().translate(finalTranslation.x(), finalTranslation.y())
-			.rotate(angle).translate(translationToZero.x(), translationToZero.y());
-	return transform.map(path);
 }
 
 void D2ModelWidget::addWall(bool on)
@@ -543,12 +519,7 @@ void D2ModelWidget::clearScene(bool removeRobot)
 		drawInitialRobot();
 	} else {
 		for (QGraphicsItem * const item : mScene->items()) {
-			if (!dynamic_cast<RobotItem *>(item)
-					&& !dynamic_cast<SensorItem *>(item)
-					&& !dynamic_cast<SensorItem::PortItem *>(item)
-					&& !dynamic_cast<Rotater *>(item)
-					&& !dynamic_cast<BeepItem *>(item))
-			{
+			if (item != mRobot && !mRobot->isAncestorOf(item)) {
 				mScene->removeItem(item);
 				delete item;
 			}
@@ -908,13 +879,13 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 	items::WallItem * const wall = dynamic_cast<items::WallItem *>(item);
 	if (wall) {
 		mScene->removeItem(wall);
-//		mWorldModel->removeWall(wall);
+		mModel.worldModel().removeWall(wall);
 	}
 
 	items::ColorFieldItem *colorField = dynamic_cast<items::ColorFieldItem *>(item);
 	if (colorField) {
 		mScene->removeItem(colorField);
-//		mWorldModel->removeColorField(colorField);
+		mModel.worldModel().removeColorField(colorField);
 		delete colorField;
 	}
 }
@@ -1012,7 +983,7 @@ void D2ModelWidget::setNoPalette()
 	mUi->penColorComboBox->setColor(QColor("black"));
 }
 
-D2ModelScene* D2ModelWidget::scene()
+D2ModelScene *D2ModelWidget::scene()
 {
 	return mScene;
 }
@@ -1069,7 +1040,6 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	/// @todo: move it into model
 	rereadDevicesConfiguration();
 
-	mRobot->processPositionAndAngleChange();
 	mDrawingAction = noneWordLoad;
 	update();
 	mDrawingAction = none;
@@ -1119,17 +1089,6 @@ void D2ModelWidget::changePhysicsSettings()
 	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->isChecked());
 
 	mModel.settings().rereadNoiseSettings();
-}
-
-void D2ModelWidget::startTimelineListening()
-{
-	mUi->timelineBox->setValue(0);
-	connect(&mModel.timeline(), SIGNAL(tick()), this, SLOT(onTimelineTick()), Qt::UniqueConnection);
-}
-
-void D2ModelWidget::stopTimelineListening()
-{
-	disconnect(&mModel.timeline(), SIGNAL(tick()), this, SLOT(onTimelineTick()));
 }
 
 void D2ModelWidget::onTimelineTick()

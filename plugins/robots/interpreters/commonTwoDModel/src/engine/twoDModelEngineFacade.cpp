@@ -126,10 +126,11 @@ TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 
 void TwoDModelEngineFacade::onStartInterpretation()
 {
+	mModel->timeline().start();
 //	mTwoDModel->startInterpretation();
 }
 
 void TwoDModelEngineFacade::onStopInterpretation()
 {
-//	mTwoDModel->stopRobot();
+	mModel->timeline().stop();
 }

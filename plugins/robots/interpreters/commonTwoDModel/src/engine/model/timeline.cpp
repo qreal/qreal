@@ -19,12 +19,24 @@ void Timeline::start()
 {
 	if (!mIsStarted) {
 		mIsStarted = true;
+		emit started();
 		gotoNextFrame();
 	}
 }
 
+void Timeline::stop()
+{
+	mIsStarted = false;
+	emit stopped();
+}
+
 void Timeline::onTimer()
 {
+	if (!mIsStarted) {
+		mTimer.stop();
+		return;
+	}
+
 	for (int i = 0; i < ticksPerCycle; ++i) {
 		mTimestamp += timeInterval;
 		emit tick();

@@ -39,6 +39,9 @@ public:
 
 	/// Returns value if border1 <= value <= border2 or the closest border in other case.
 	static int truncateToInterval(int border1, int border2, int value);
+
+	/// Generates normal distrubution noise using central limit theorem method.
+	static qreal gaussianNoise(qreal variance);
 };
 
 }

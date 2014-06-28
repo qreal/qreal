@@ -25,7 +25,6 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget 
 	: mModel(model)
 	, mView(view)
 {
-	mNoiseGenerator.setApproximationLevel(qReal::SettingsManager::value("approximationLevel").toUInt());
 }
 
 void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
@@ -51,7 +50,7 @@ int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
-	qreal const width = view::SensorItem::sensorWidth / 2.0;
+	qreal const width = sensorWidth / 2.0;
 	QRectF const scanningRect = QRectF(
 			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
 			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
@@ -75,7 +74,7 @@ int TwoDModelEngineApi::readSonarSensor(PortInfo const &port) const
 
 int TwoDModelEngineApi::spoilSonarReading(int const distance) const
 {
-	qreal const ran = mNoiseGenerator.generate(mNoiseGenerator.approximationLevel(), spoilSonarDispersion);
+	qreal const ran = mathUtils::Math::gaussianNoise(spoilSonarDispersion);
 	return mathUtils::Math::truncateToInterval(0, 255, round(distance + ran));
 }
 
@@ -109,14 +108,11 @@ int TwoDModelEngineApi::readColorSensor(PortInfo const &port) const
 
 uint TwoDModelEngineApi::spoilColor(uint const color) const
 {
-	qreal const ran = mNoiseGenerator.generate(
-			mNoiseGenerator.approximationLevel()
-			, spoilColorDispersion
-			);
+	qreal const noise = mathUtils::Math::gaussianNoise(spoilColorDispersion);
 
-	int r = round(((color >> 16) & 0xFF) + ran);
-	int g = round(((color >> 8) & 0xFF) + ran);
-	int b = round(((color >> 0) & 0xFF) + ran);
+	int r = round(((color >> 16) & 0xFF) + noise);
+	int g = round(((color >> 8) & 0xFF) + noise);
+	int b = round(((color >> 0) & 0xFF) + noise);
 	int const a = (color >> 24) & 0xFF;
 
 	r = mathUtils::Math::truncateToInterval(0, 255, r);
@@ -134,7 +130,7 @@ QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
-	qreal const width = view::SensorItem::sensorWidth / 2.0;
+	qreal const width = sensorWidth / 2.0;
 	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -262,27 +258,21 @@ engine::TwoDModelDisplayInterface *TwoDModelEngineApi::display()
 
 uint TwoDModelEngineApi::spoilLight(uint const color) const
 {
-	qreal const ran = mNoiseGenerator.generate(mNoiseGenerator.approximationLevel(), spoilLightDispersion);
+	qreal const noise = mathUtils::Math::gaussianNoise(spoilLightDispersion);
 
-	if (ran > (1.0 - percentSaltPepperNoise / 100.0)) {
+	if (noise > (1.0 - percentSaltPepperNoise / 100.0)) {
 		return white;
-	} else if (ran < (-1.0 + percentSaltPepperNoise / 100.0)) {
+	} else if (noise < (-1.0 + percentSaltPepperNoise / 100.0)) {
 		return black;
 	}
 
 	return color;
 }
 
-int TwoDModelEngineApi::varySpeed(int const speed) const
-{
-	qreal const ran = mNoiseGenerator.generate(mNoiseGenerator.approximationLevel(), varySpeedDispersion);
-	return mathUtils::Math::truncateToInterval(-100, 100, round(speed * (1 + ran)));
-}
-
 QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(PortInfo const &port) const
 {
 	view::SensorItem const *sensor = mView.sensorItem(port);
 	QPointF const position = sensor ? sensor->scenePos() : QPointF();
-	qreal const direction = sensor ? sensor->rotation() + mModel.robotModel().rotateAngle() : 0;
+	qreal const direction = sensor ? sensor->rotation() + mModel.robotModel().rotation() : 0;
 	return { position, direction };
 }

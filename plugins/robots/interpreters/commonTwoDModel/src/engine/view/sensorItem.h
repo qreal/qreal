@@ -22,8 +22,6 @@ class SensorItem : public QObject, public graphicsUtils::RotateItem
 	Q_OBJECT
 
 public:
-	static int const sensorWidth = 12;
-
 	class PortItem : public QGraphicsItem
 	{
 	public:
@@ -43,9 +41,8 @@ public:
 	SensorItem(model::SensorsConfiguration &configuration
 			, interpreterBase::robotModel::PortInfo const &port, QString const &pathToImage, QRect const &imageSize);
 
-	void rotate(double angle) override;
+	void setRotation(qreal angle) override;
 	QRectF rect() const override;
-	double rotateAngle() const override;
 	void setSelected(bool isSelected) override;
 	void setRotater(Rotater *rotater);
 	void checkSelection() override;

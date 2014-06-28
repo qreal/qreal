@@ -2,24 +2,22 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include "physics/simplePhysicsEngine.h"
-#include "physics/realisticPhysicsEngine.h"
-
 using namespace twoDModel::model;
 
 Model::Model(interpreterBase::robotModel::RobotModelInterface &robotModel
 		, QObject *parent)
 	: QObject(parent)
-	, mRobotModel(robotModel, this)
-	, mPhysicsEngine(nullptr)
+	, mRobotModel(robotModel, mSettings, this)
 {
-//	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
-//	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
-}
+	connect(&mTimeline, &Timeline::started, &mRobotModel, &RobotModel::reinit);
+	connect(&mTimeline, &Timeline::stopped, &mRobotModel, &RobotModel::stopRobot);
 
-Model::~Model()
-{
-	delete mPhysicsEngine;
+	connect(&mTimeline, &Timeline::tick, &mRobotModel, &RobotModel::recalculateParams);
+	connect(&mTimeline, &Timeline::nextFrame, &mRobotModel, &RobotModel::nextFragment);
+
+	connect(&mSettings, &Settings::physicsChanged, [this](bool isRealistic) {
+		mRobotModel.resetPhysics(isRealistic, mWorldModel);
+	});
 }
 
 WorldModel &Model::worldModel()

@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 	QDateTime const startedTime = QDateTime::currentDateTime();
 	QRealApplication app(argc, argv);
 
+	qsrand(time(0));
 	setDefaultLocale(app.arguments().contains("--no-locale"));
 
 	QTranslator guiTranslator;
