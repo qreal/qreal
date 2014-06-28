@@ -174,7 +174,7 @@ QPointF RobotModel::rotationCenter() const
 QPainterPath RobotModel::robotBoundingPath() const
 {
 	QPainterPath path;
-	QRectF const boundingRect(mPos, QSizeF(robotWidth, robotHeight));
+	QRectF const boundingRect(QPointF(), QSizeF(robotWidth, robotHeight));
 	path.addRect(boundingRect);
 
 	for (PortInfo const &port : mRobotModel.configurablePorts()) {
