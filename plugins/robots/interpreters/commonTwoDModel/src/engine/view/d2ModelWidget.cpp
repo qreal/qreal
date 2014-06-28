@@ -418,13 +418,13 @@ void D2ModelWidget::centerOnRobot()
 void D2ModelWidget::drawWalls()
 {
 	if (mDrawingAction == wall || mDrawingAction == noneWordLoad) {
-//		foreach (WallItem *wall, mWorldModel->walls()) {
-//			if (!mScene->items().contains(wall)) {
-//				mScene->addItem(wall);
-//				connect(wall, SIGNAL(wallDragged(WallItem*,QPainterPath,QPointF))
-//						, this, SLOT(worldWallDragged(WallItem*,QPainterPath,QPointF)));
-//			}
-//		}
+		for (items::WallItem *wall : mModel.worldModel().walls()) {
+			if (!mScene->items().contains(wall)) {
+				mScene->addItem(wall);
+				connect(wall, SIGNAL(wallDragged(WallItem*,QPainterPath,QPointF))
+						, this, SLOT(worldWallDragged(WallItem*,QPainterPath,QPointF)));
+			}
+		}
 	}
 }
 
@@ -434,11 +434,11 @@ void D2ModelWidget::drawColorFields()
 			|| mDrawingAction == stylus
 			|| mDrawingAction == ellipse
 			|| mDrawingAction == noneWordLoad) {
-//		foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
-//			if (!mScene->items().contains(colorField)) {
-//				mScene->addItem(colorField);
-//			}
-//		}
+		for (items::ColorFieldItem *colorField : mModel.worldModel().colorFields()) {
+			if (!mScene->items().contains(colorField)) {
+				mScene->addItem(colorField);
+			}
+		}
 	}
 }
 
@@ -652,7 +652,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 		if (!mRobot->realBoundingRect().intersects(QRectF(position, position))) {
 			mCurrentWall = new items::WallItem(position, position);
 			mScene->removeMoveFlag(mouseEvent, mCurrentWall);
-//			mWorldModel->addWall(mCurrentWall);
+			mModel.worldModel().addWall(mCurrentWall);
 			mMouseClicksCount++;
 		}
 		break;
@@ -662,7 +662,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 		mCurrentLine->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
 				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentLine);
-//		mWorldModel->addColorField(mCurrentLine);
+		mModel.worldModel().addColorField(mCurrentLine);
 		mMouseClicksCount++;
 		break;
 	}
@@ -671,7 +671,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 		mCurrentStylus->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
 				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentStylus);
-//		mWorldModel->addColorField(mCurrentStylus);
+		mModel.worldModel().addColorField(mCurrentStylus);
 		mMouseClicksCount++;
 		break;
 	}
@@ -679,7 +679,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 		mCurrentEllipse = new items::EllipseItem(position, position);
 		mCurrentEllipse->setPen(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentEllipse);
-//		mWorldModel->addColorField(mCurrentEllipse);
+		mModel.worldModel().addColorField(mCurrentEllipse);
 		mMouseClicksCount++;
 		break;
 	}
@@ -824,12 +824,12 @@ void D2ModelWidget::loadWorldModel()
 
 void D2ModelWidget::handleNewRobotPosition()
 {
-//	foreach (WallItem const *wall, mWorldModel->walls()) {
-//		if (wall->realShape().intersects(mRobot->realBoundingRect())) {
-//			mRobot->recoverDragStartPosition();
-//			return;
-//		}
-//	}
+	for (items::WallItem const *wall : mModel.worldModel().walls()) {
+		if (wall->realShape().intersects(mRobot->realBoundingRect())) {
+			mRobot->recoverDragStartPosition();
+			return;
+		}
+	}
 }
 
 void D2ModelWidget::removeSensor(PortInfo const &port)
@@ -1242,12 +1242,12 @@ void D2ModelWidget::syncCursorButtons()
 
 void D2ModelWidget::alignWalls()
 {
-//	for (WallItem * const wall : mWorldModel->walls()) {
-//		if (mScene->items().contains(wall)) {
-//			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
-//			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
-//		}
-//	}
+	for (items::WallItem * const wall : mModel.worldModel().walls()) {
+		if (mScene->items().contains(wall)) {
+			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+		}
+	}
 }
 
 void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
@@ -1279,15 +1279,15 @@ void D2ModelWidget::updateWheelComboBoxes()
 	mUi->leftWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 	mUi->rightWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 
-//	for (PortInfo const &port : mRobotModel.availablePorts()) {
-//		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
-//			if (device.isA<Motor>()) {
-//				QString const item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
-//				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
-//				mUi->rightWheelComboBox->addItem(item, QVariant::fromValue(port));
-//			}
-//		}
-//	}
+	for (PortInfo const &port : mModel.robotModel().info().availablePorts()) {
+		for (DeviceInfo const &device : mModel.robotModel().info().allowedDevices(port)) {
+			if (device.isA<Motor>()) {
+				QString const item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
+				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
+				mUi->rightWheelComboBox->addItem(item, QVariant::fromValue(port));
+			}
+		}
+	}
 
 	auto setSelectedPort = [](QComboBox * const comboBox, PortInfo const &port) {
 		for (int i = 0; i < comboBox->count(); ++i) {
