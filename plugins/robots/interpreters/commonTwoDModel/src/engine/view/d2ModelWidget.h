@@ -55,9 +55,6 @@ public:
 	/// Get current scene position of robot
 	QPointF robotPos() const;
 
-	/// Returns false if we clicked on robot and are moving it somewhere
-	bool isRobotOnTheGround();
-
 	/// Enables Run and Stop buttons
 	void enableRunStopButtons();
 

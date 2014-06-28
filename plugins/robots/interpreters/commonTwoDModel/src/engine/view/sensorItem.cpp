@@ -204,38 +204,17 @@ void SensorItem::checkSelection()
 	}
 }
 
-void SensorItem::addStickyItem(QGraphicsItem *item)
-{
-	mStickyItems << item;
-}
-
-void SensorItem::removeStickyItem(QGraphicsItem *item)
-{
-	mStickyItems.remove(item);
-}
-
 QVariant SensorItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-	if (change == ItemPositionChange) {
-		onPositionChanged();
+	if (change == ItemPositionHasChanged) {
+		mConfiguration.setPosition(mPort, pos().toPoint());
 	}
 
-	if (change == ItemTransformChange) {
-		onDirectionChanged();
+	if (change == ItemRotationHasChanged) {
+		mConfiguration.setDirection(mPort, rotation());
 	}
 
 	return AbstractItem::itemChange(change, value);
-}
-
-void SensorItem::onPositionChanged()
-{
-	mConfiguration.setPosition(mPort, pos().toPoint());
-}
-
-void SensorItem::onDirectionChanged()
-{
-	mConfiguration.setPosition(mPort, pos().toPoint());
-	mConfiguration.setDirection(mPort, rotation());
 }
 
 SensorItem::PortItem::PortItem(PortInfo const &port)

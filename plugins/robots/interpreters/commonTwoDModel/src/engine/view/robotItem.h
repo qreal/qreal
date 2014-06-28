@@ -38,18 +38,8 @@ public:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 
-	/// Same as QGraphicsItem::setPos(). Needed as slot for connection.
-	void setPos(QPointF const &newPos);
-	/// Same as QGraphicsItem::setRotation(). Needed as slot for connection.
-	void setRotation(qreal rotation) override;
-
 	void addSensor(SensorItem *sensor);
 	void removeSensor(SensorItem *sensor);
-
-	void clearSensors();
-
-	/// Returns false if we're dragging robot item somewhere
-	bool isOnTheGround() const;
 
 	void setNeededBeep(bool isNeededBeep);
 
@@ -74,6 +64,11 @@ private:
 		void drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius);
 	};
 
+	/// Same as QGraphicsItem::setPos(). Needed as slot for connection.
+	void setPos(QPointF const &newPos);
+	/// Same as QGraphicsItem::setRotation(). Needed as slot for connection.
+	void setRotation(qreal rotation) override;
+
 	void onLanded();
 
 	/** @brief Image of a robot drawn on scene */
@@ -84,7 +79,6 @@ private:
 	/** @brief List of sensors added to robot */
 	QList<SensorItem *> mSensors;  // Does not have ownership
 
-	bool mIsOnTheGround;
 	QPointF mDragStart;
 	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;

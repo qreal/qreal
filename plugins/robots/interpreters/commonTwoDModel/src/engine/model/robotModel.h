@@ -68,7 +68,7 @@ public:
 	void setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port);
 
 public slots:
-	void resetPhysics(bool isRealistic, WorldModel const &worldModel);
+	void resetPhysics(WorldModel const &worldModel);
 
 	void recalculateParams();
 	void nextFragment();

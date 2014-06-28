@@ -28,6 +28,8 @@ RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotMo
 	, mSensorsConfiguration(robotModel.name())
 	, mPos(QPointF(0,0))
 	, mAngle(0)
+	, mBeepTime(0)
+	, mIsOnTheGround(true)
 	, mPhysicsEngine(nullptr)
 {
 	reinit();
@@ -257,7 +259,7 @@ QPointF RobotModel::position() const
 
 void RobotModel::setPosition(QPointF const &newPos)
 {
-	if (mIsOnTheGround && newPos != mPos) {
+	if (newPos != mPos) {
 		mPos = newPos;
 		emit positionChanged(newPos);
 	}
@@ -270,7 +272,7 @@ qreal RobotModel::rotation() const
 
 void RobotModel::setRotation(qreal angle)
 {
-	if (mIsOnTheGround && !mathUtils::Math::eq(mAngle, angle)) {
+	if (!mathUtils::Math::eq(mAngle, angle)) {
 		mAngle = fmod(angle, 360);
 		emit rotationChanged(angle);
 	}
@@ -313,10 +315,10 @@ void RobotModel::setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotMode
 	mWheelsToMotorPortsMap[wheel] = port;
 }
 
-void RobotModel::resetPhysics(bool isRealistic, WorldModel const &worldModel)
+void RobotModel::resetPhysics(WorldModel const &worldModel)
 {
 	physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
-	if (isRealistic) {
+	if (mSettings.realisticPhysics()) {
 		mPhysicsEngine = new physics::RealisticPhysicsEngine(worldModel);
 	} else {
 		mPhysicsEngine = new physics::SimplePhysicsEngine(worldModel);

@@ -65,12 +65,6 @@ public:
 
 	void setRotatePoint(QPointF const &rotatePoint);
 
-	void addStickyItem(QGraphicsItem *item);
-	void removeStickyItem(QGraphicsItem *item);
-
-	void onPositionChanged();
-	void onDirectionChanged();
-
 protected:
 	QRectF imageRect() const;
 	QString name() const;
@@ -84,7 +78,6 @@ protected:
 	bool mDragged;
 	graphicsUtils::PointImpl mPointImpl;
 	Rotater *mRotater;
-	QSet<QGraphicsItem *> mStickyItems;
 
 	QRectF const mImageRect;
 	QRectF const mBoundingRect;

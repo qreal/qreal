@@ -394,11 +394,6 @@ void D2ModelWidget::onFirstShow()
 	mUi->speedComboBox->setCurrentIndex(1); // Normal speed
 }
 
-bool D2ModelWidget::isRobotOnTheGround()
-{
-	return mRobot && mRobot->isOnTheGround();
-}
-
 void D2ModelWidget::centerOnRobot()
 {
 	if (mFollowRobot) {

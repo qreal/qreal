@@ -15,9 +15,9 @@ Model::Model(interpreterBase::robotModel::RobotModelInterface &robotModel
 	connect(&mTimeline, &Timeline::tick, &mRobotModel, &RobotModel::recalculateParams);
 	connect(&mTimeline, &Timeline::nextFrame, &mRobotModel, &RobotModel::nextFragment);
 
-	connect(&mSettings, &Settings::physicsChanged, [this](bool isRealistic) {
-		mRobotModel.resetPhysics(isRealistic, mWorldModel);
-	});
+	auto resetPhysics = [this]() { mRobotModel.resetPhysics(mWorldModel); };
+	connect(&mSettings, &Settings::physicsChanged, resetPhysics);
+	resetPhysics();
 }
 
 WorldModel &Model::worldModel()

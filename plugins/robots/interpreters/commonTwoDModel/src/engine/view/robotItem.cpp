@@ -11,7 +11,6 @@ RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robot
 	: RotateItem()
 	, mImage(QImage(robotImageFileName))
 	, mBeepItem(new BeepItem)
-	, mIsOnTheGround(true)
 	, mRotater(nullptr)
 	, mRectangleImpl()
 	, mRobotModel(robotModel)
@@ -62,8 +61,8 @@ void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	emit mousePressed();
 	AbstractItem::mousePressEvent(event);
-	mIsOnTheGround = false;
-	mDragStart = scenePos();
+	mRobotModel.onRobotLiftedFromGround();
+	mDragStart = mRobotModel.position();
 }
 
 void RobotItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -79,7 +78,7 @@ void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void RobotItem::onLanded()
 {
-	mIsOnTheGround = true;
+	mRobotModel.onRobotReturnedOnGround();
 	emit changedPosition();
 }
 
@@ -106,16 +105,6 @@ void RobotItem::addSensor(SensorItem *sensor)
 void RobotItem::removeSensor(SensorItem *sensor)
 {
 	mSensors.removeOne(sensor);
-}
-
-void RobotItem::clearSensors()
-{
-	mSensors.clear();
-}
-
-bool RobotItem::isOnTheGround() const
-{
-	return mIsOnTheGround;
 }
 
 void RobotItem::setRotater(Rotater *rotater)
@@ -145,11 +134,11 @@ void RobotItem::setNeededBeep(bool isNeededBeep)
 
 QVariant RobotItem::itemChange(GraphicsItemChange change, QVariant const &value)
 {
-	if (change == ItemPositionChange) {
+	if (change == ItemPositionHasChanged) {
 		mRobotModel.setPosition(pos());
 	}
 
-	if (change == ItemTransformChange) {
+	if (change == ItemRotationHasChanged) {
 		mRobotModel.setRotation(rotation());
 	}
 
@@ -158,10 +147,7 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, QVariant const &value)
 
 void RobotItem::recoverDragStartPosition()
 {
-	setPos(mDragStart);
-	if (!mIsOnTheGround) {
-		onLanded();
-	}
+	mRobotModel.setPosition(mDragStart);
 }
 
 void RobotItem::BeepItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
