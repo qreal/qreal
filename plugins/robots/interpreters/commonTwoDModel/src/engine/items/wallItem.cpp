@@ -1,14 +1,13 @@
 #include "wallItem.h"
 
+#include <QtGui/QVector2D>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 
 #include <math.h>
 #include <qrkernel/settingsManager.h>
 
-#include "d2ModelScene.h"
-
-using namespace twoDModel;
+using namespace twoDModel::items;
 using namespace qReal;
 using namespace graphicsUtils;
 

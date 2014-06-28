@@ -116,7 +116,6 @@ qReal::ActionInfo &TwoDModelEngineFacade::showTwoDModelWidgetActionInfo()
 
 interpreterBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurationProvider()
 {
-	/// @todo: return model configuration provider
 	return *mView.data();
 }
 

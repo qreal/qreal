@@ -42,11 +42,6 @@ HEADERS += \
 	$$PWD/src/engine/view/sensorItem.h \
 	$$PWD/src/engine/view/rotater.h \
 	$$PWD/src/engine/view/sonarSensorItem.h \
-	$$PWD/src/engine/view/wallItem.h \
-	$$PWD/src/engine/view/stylusItem.h \
-	$$PWD/src/engine/view/lineItem.h \
-	$$PWD/src/engine/view/colorFieldItem.h \
-	$$PWD/src/engine/view/ellipseItem.h \
 	$$PWD/src/engine/view/gridParameters.h \
 	$$PWD/src/engine/model/model.h \
 	$$PWD/src/engine/model/constants.h \
@@ -54,12 +49,16 @@ HEADERS += \
 	$$PWD/src/engine/model/sensorsConfiguration.h \
 	$$PWD/src/engine/model/worldModel.h \
 	$$PWD/src/engine/model/timeline.h \
-	$$PWD/src/engine/model/twoDRobotModelInterface.h \
 	$$PWD/src/engine/model/modelTimer.h \
 	$$PWD/src/engine/model/robotModel.h \
 	$$PWD/src/engine/model/physics/physicsEngineBase.h \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.h \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.h \
+	$$PWD/src/engine/items/wallItem.h \
+	$$PWD/src/engine/items/stylusItem.h \
+	$$PWD/src/engine/items/lineItem.h \
+	$$PWD/src/engine/items/colorFieldItem.h \
+	$$PWD/src/engine/items/ellipseItem.h \
 
 SOURCES += \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
@@ -70,11 +69,6 @@ SOURCES += \
 	$$PWD/src/engine/view/sensorItem.cpp \
 	$$PWD/src/engine/view/rotater.cpp \
 	$$PWD/src/engine/view/sonarSensorItem.cpp \
-	$$PWD/src/engine/view/wallItem.cpp \
-	$$PWD/src/engine/view/stylusItem.cpp \
-	$$PWD/src/engine/view/lineItem.cpp \
-	$$PWD/src/engine/view/colorFieldItem.cpp \
-	$$PWD/src/engine/view/ellipseItem.cpp \
 	$$PWD/src/engine/view/gridParameters.cpp \
 	$$PWD/src/engine/view/twoDModelDisplayWidget.cpp \
 	$$PWD/src/engine/model/model.cpp \
@@ -87,6 +81,11 @@ SOURCES += \
 	$$PWD/src/engine/model/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.cpp \
+	$$PWD/src/engine/items/wallItem.cpp \
+	$$PWD/src/engine/items/stylusItem.cpp \
+	$$PWD/src/engine/items/lineItem.cpp \
+	$$PWD/src/engine/items/colorFieldItem.cpp \
+	$$PWD/src/engine/items/ellipseItem.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/button.cpp \
 	$$PWD/src/robotModel/parts/colorSensorBlue.cpp \

@@ -5,46 +5,51 @@
 using namespace twoDModel;
 using namespace interpreterBase::robotModel;
 
-SensorsConfiguration::SensorsConfiguration()
+SensorsConfiguration::SensorsConfiguration(QString const &robotModelName)
+	: mRobotModel(robotModelName)
 {
 }
 
-void SensorsConfiguration::setSensor(PortInfo const &port
-		, DeviceInfo const &type
-		, QPointF const &position
-		, qreal const &direction)
+void SensorsConfiguration::onDeviceConfigurationChanged(QString const &robotModel
+		, PortInfo const &port, DeviceInfo const &device)
 {
-	mSensors[port] = SensorInfo(position, direction, type);
+	if (robotModel != mRobotModel) {
+		// Ignoring external events
+		return;
+	}
+
+	if (device.isNull()) {
+		mSensorsInfo[port] = SensorInfo();
+		emit deviceRemoved(port);
+		return;
+	}
+
+	emit deviceAdded(port);
 }
 
 void SensorsConfiguration::setPosition(PortInfo const &port, QPointF const &position)
 {
-	mSensors[port].setPosition(position);
+	mSensorsInfo[port].position = position;
 }
 
 QPointF SensorsConfiguration::position(PortInfo const &port) const
 {
-	return mSensors[port].position();
+	return mSensorsInfo[port].position;
 }
 
 void SensorsConfiguration::setDirection(PortInfo const &port, qreal direction)
 {
-	mSensors[port].setDirection(direction);
+	mSensorsInfo[port].direction = direction;
 }
 
 qreal SensorsConfiguration::direction(PortInfo const &port) const
 {
-	return mSensors[port].direction();
+	return mSensorsInfo[port].direction;
 }
 
 DeviceInfo SensorsConfiguration::type(PortInfo const &port) const
 {
-	return mSensors[port].type();
-}
-
-void SensorsConfiguration::clearSensor(PortInfo const &port)
-{
-	mSensors[port] = SensorInfo();
+	return currentConfiguration(mRobotModel, port);
 }
 
 void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document) const
@@ -52,17 +57,18 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 	QDomElement sensorsElem = document.createElement("sensors");
 	robot.appendChild(sensorsElem);
 
-	for (PortInfo const &port: mSensors.keys()) {
-		SensorInfo const &sensor = mSensors.value(port);
+	for (PortInfo const &port: mSensorsInfo.keys()) {
+		DeviceInfo const device = currentConfiguration(mRobotModel, port);
+		SensorInfo const sensor = mSensorsInfo.value(port);
 		QDomElement sensorElem = document.createElement("sensor");
 		sensorsElem.appendChild(sensorElem);
 		sensorElem.setAttribute("port", port.toString());
-		sensorElem.setAttribute("type", sensor.type().toString());
+		sensorElem.setAttribute("type", device.toString());
 
 		sensorElem.setAttribute("position"
-				, QString::number(sensor.position().x()) + ":" + QString::number(sensor.position().y()));
+				, QString::number(sensor.position.x()) + ":" + QString::number(sensor.position.y()));
 
-		sensorElem.setAttribute("direction", sensor.direction());
+		sensorElem.setAttribute("direction", sensor.direction);
 	}
 
 	robot.appendChild(sensorsElem);
@@ -75,7 +81,7 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 		return;
 	}
 
-	mSensors.clear();
+	mSensorsInfo.clear();
 
 	QDomNodeList sensors = element.elementsByTagName("sensor");
 	for (int i = 0; i < sensors.count(); ++i) {
@@ -97,42 +103,13 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 	}
 }
 
-
 SensorsConfiguration::SensorInfo::SensorInfo()
-	: mDirection(0)
+	: direction(0)
 {
 }
 
-SensorsConfiguration::SensorInfo::SensorInfo(QPointF const &position
-		, qreal direction
-		, DeviceInfo const &sensorType)
-	: mPosition(position)
-	, mDirection(direction)
-	, mSensorType(sensorType)
+SensorsConfiguration::SensorInfo::SensorInfo(QPointF const &position, qreal direction)
+	: position(position)
+	, direction(direction)
 {
-}
-
-QPointF SensorsConfiguration::SensorInfo::position() const
-{
-	return mPosition;
-}
-
-void SensorsConfiguration::SensorInfo::setPosition(QPointF const &position)
-{
-	mPosition = position;
-}
-
-qreal SensorsConfiguration::SensorInfo::direction() const
-{
-	return mDirection;
-}
-
-void SensorsConfiguration::SensorInfo::setDirection(qreal direction)
-{
-	mDirection = direction;
-}
-
-DeviceInfo const &SensorsConfiguration::SensorInfo::type() const
-{
-	return mSensorType;
 }

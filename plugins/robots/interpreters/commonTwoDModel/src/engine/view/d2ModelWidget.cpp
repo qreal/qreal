@@ -20,6 +20,10 @@
 #include "sonarSensorItem.h"
 #include "rotater.h"
 
+#include "src/engine/items/wallItem.h"
+#include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/stylusItem.h"
+
 #include "src/engine/model/robotModel.h"
 #include "src/engine/model/constants.h"
 #include "src/engine/model/timeline.h"
@@ -528,9 +532,8 @@ void D2ModelWidget::setCursorTypeForDrawing(CursorType type)
 void D2ModelWidget::clearScene(bool removeRobot)
 {
 	mClearing = true;
-	/// @todo:
-//	mWorldModel->clearScene();
-//	mTwoDRobotModel->clear();
+	mModel.worldModel().clearScene();
+	mModel.robotModel().clear();
 	if (removeRobot) {
 		for (PortInfo const &port : mSensors.keys()) {
 			removeSensor(port);
@@ -647,7 +650,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 	switch (mDrawingAction) {
 	case wall: {
 		if (!mRobot->realBoundingRect().intersects(QRectF(position, position))) {
-			mCurrentWall = new WallItem(position, position);
+			mCurrentWall = new items::WallItem(position, position);
 			mScene->removeMoveFlag(mouseEvent, mCurrentWall);
 //			mWorldModel->addWall(mCurrentWall);
 			mMouseClicksCount++;
@@ -655,7 +658,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	}
 	case line: {
-		mCurrentLine = new LineItem(position, position);
+		mCurrentLine = new items::LineItem(position, position);
 		mCurrentLine->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
 				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentLine);
@@ -664,7 +667,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	}
 	case stylus: {
-		mCurrentStylus = new StylusItem(position.x(), position.y());
+		mCurrentStylus = new items::StylusItem(position.x(), position.y());
 		mCurrentStylus->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
 				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentStylus);
@@ -673,7 +676,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	}
 	case ellipse: {
-		mCurrentEllipse = new EllipseItem(position, position);
+		mCurrentEllipse = new items::EllipseItem(position, position);
 		mCurrentEllipse->setPen(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentEllipse);
 //		mWorldModel->addColorField(mCurrentEllipse);
@@ -898,18 +901,17 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 		PortInfo const port = mSensors.key(sensor, PortInfo());
 		if (port.isValid()) {
 			removeSensor(port);
-//			deviceConfigurationChanged(mRobotModel.name(), port, DeviceInfo());
 		}
 		return;
 	}
 
-	WallItem * const wall = dynamic_cast<WallItem *>(item);
+	items::WallItem * const wall = dynamic_cast<items::WallItem *>(item);
 	if (wall) {
 		mScene->removeItem(wall);
 //		mWorldModel->removeWall(wall);
 	}
 
-	ColorFieldItem *colorField = dynamic_cast<ColorFieldItem *>(item);
+	items::ColorFieldItem *colorField = dynamic_cast<items::ColorFieldItem *>(item);
 	if (colorField) {
 		mScene->removeItem(colorField);
 //		mWorldModel->removeColorField(colorField);
@@ -919,10 +921,10 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 
 bool D2ModelWidget::isColorItem(AbstractItem *item)
 {
-	RobotItem* robotItem = dynamic_cast<RobotItem*>(item);
-	SensorItem* sensorItem = dynamic_cast<SensorItem*>(item);
-	WallItem* wallItem = dynamic_cast<WallItem*>(item);
-	Rotater* rotaterItem = dynamic_cast<Rotater*>(item);
+	RobotItem *robotItem = dynamic_cast<RobotItem *>(item);
+	SensorItem *sensorItem = dynamic_cast<SensorItem *>(item);
+	items::WallItem *wallItem = dynamic_cast<items::WallItem *>(item);
+	Rotater *rotaterItem = dynamic_cast<Rotater *>(item);
 	return (!robotItem && !sensorItem && !wallItem && !rotaterItem);
 }
 
@@ -1081,8 +1083,7 @@ void D2ModelWidget::setRunStopButtonsEnabled(bool enabled)
 	mUi->stopButton->setEnabled(enabled);
 }
 
-void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
-		, QPointF const &oldPos)
+void D2ModelWidget::worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos)
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
@@ -1252,37 +1253,12 @@ void D2ModelWidget::alignWalls()
 void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &device)
 {
-//	if (!mRobot || robotModel != mRobotModel.name()) {
-//		/// @todo Convert configuration between models or something?
-//		return;
-//	}
-
-	updateWheelComboBoxes();
-
-	/// @todo Isomorphic map with constant lookup both ways?
-	QComboBox *comboBox = mComboBoxesToPortsMap.key(port, nullptr);
-	if (!comboBox) {
-		/// @todo Report internal error.
-		return;
+	Q_UNUSED(port)
+	Q_UNUSED(device)
+	/// @todo Convert configuration between models or something?
+	if (mRobot && robotModel == mModel.robotModel().info().name()) {
+		updateWheelComboBoxes();
 	}
-
-	for (int index = 0; index < comboBox->count(); ++index) {
-		if (comboBox->itemData(index).value<DeviceInfo>().isA(device)) {
-			comboBox->setCurrentIndex(index);
-			break;
-		}
-	}
-
-//	QPointF const sensorPos = mSensors.contains(port) && mSensors.value(port)
-//			? mTwoDRobotModel->configuration().position(port)
-//			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
-
-//	qreal const sensorDirection = mSensors.contains(port) && mSensors.value(port)
-//			? mTwoDRobotModel->configuration().direction(port)
-//			: 0;
-
-//	mTwoDRobotModel->configuration().setSensor(port, device, sensorPos.toPoint(), sensorDirection);
-//	reinitSensor(port);
 }
 
 void D2ModelWidget::initRunStopButtons()

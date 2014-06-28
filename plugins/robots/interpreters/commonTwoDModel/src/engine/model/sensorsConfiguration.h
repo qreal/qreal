@@ -4,16 +4,17 @@
 #include <QtCore/QHash>
 #include <QtXml/QDomDocument>
 
-#include <interpreterBase/robotModel/portInfo.h>
-#include <interpreterBase/robotModel/deviceInfo.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
 
 namespace twoDModel {
 
 /// Represents position and direction of simulated sensors relative to robot.
-class SensorsConfiguration
+class SensorsConfiguration : public QObject, public interpreterBase::DevicesConfigurationProvider
 {
+	Q_OBJECT
+
 public:
-	SensorsConfiguration();
+	explicit SensorsConfiguration(QString const &robotModelName);
 
 	void setSensor(interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &type
@@ -33,29 +34,26 @@ public:
 	void serialize(QDomElement &robot, QDomDocument &document) const;
 	void deserialize(QDomElement const &element);
 
+signals:
+	void deviceAdded(interpreterBase::robotModel::PortInfo const &port);
+	void deviceRemoved(interpreterBase::robotModel::PortInfo const &port);
+
 private:
-	class SensorInfo
+	struct SensorInfo
 	{
-	public:
 		SensorInfo();
-		SensorInfo(QPointF const &position, qreal direction
-				, interpreterBase::robotModel::DeviceInfo const &sensorType);
+		SensorInfo(QPointF const &position, qreal direction);
 
-		QPointF position() const;
-		void setPosition(QPointF const &position);
-
-		qreal direction() const;
-		void setDirection(qreal direction);
-
-		interpreterBase::robotModel::DeviceInfo const &type() const;
-
-	private:
-		QPointF mPosition;
-		qreal mDirection;
-		interpreterBase::robotModel::DeviceInfo mSensorType;
+		QPointF position;
+		qreal direction;
 	};
 
-	QHash<interpreterBase::robotModel::PortInfo, SensorInfo> mSensors;
+	void onDeviceConfigurationChanged(QString const &robotModel
+			, interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::DeviceInfo const &device) override;
+
+	QString const mRobotModel;
+	QHash<interpreterBase::robotModel::PortInfo, SensorInfo> mSensorsInfo;
 };
 
 }

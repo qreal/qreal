@@ -16,10 +16,6 @@
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
-#include "lineItem.h"
-#include "stylusItem.h"
-#include "ellipseItem.h"
-#include "wallItem.h"
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
@@ -34,6 +30,13 @@ class D2Form;
 }
 
 namespace twoDModel {
+
+namespace items {
+class WallItem;
+class LineItem;
+class StylusItem;
+class EllipseItem;
+}
 
 class D2ModelWidget : public utils::QRealDialog, public interpreterBase::DevicesConfigurationProvider
 {
@@ -81,7 +84,7 @@ public:
 
 public slots:
 	void update();
-	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
+	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos);
 
 	/// Starts 2D model time counter
 	void startTimelineListening();
@@ -95,7 +98,7 @@ signals:
 	/// Emitted each time when user closes 2D model window.
 	void widgetClosed();
 
-	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
+	void robotWasIntersectedByWall(bool isNeedStop, QPointF const &oldPos);
 
 	/// Emitted when such features as motor or sensor noise were
 	///enabled or disabled by user
@@ -278,10 +281,10 @@ private:
 	int mMouseClicksCount;
 
 	/// Temporary wall that's being created. When it's complete, it's added to world model
-	WallItem *mCurrentWall;
-	LineItem *mCurrentLine;
-	StylusItem *mCurrentStylus;
-	EllipseItem *mCurrentEllipse;
+	items::WallItem *mCurrentWall;
+	items::LineItem *mCurrentLine;
+	items::StylusItem *mCurrentStylus;
+	items::EllipseItem *mCurrentEllipse;
 
 	/// Signal mapper for handling addPortButtons' clicks.
 	QSignalMapper mPortsMapper;

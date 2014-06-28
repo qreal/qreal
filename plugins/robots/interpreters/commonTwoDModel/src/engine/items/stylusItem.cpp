@@ -1,7 +1,6 @@
 #include "stylusItem.h"
-//#include "../tracer.h"
 
-using namespace twoDModel;
+using namespace twoDModel::items;
 using namespace graphicsUtils;
 
 StylusItem::StylusItem(qreal x1, qreal y1)

@@ -42,6 +42,9 @@ public:
 	void setNewMotor(int speed, uint degrees, interpreterBase::robotModel::PortInfo const &port, bool breakMode);
 
 	SensorsConfiguration &configuration();
+	/// Returns a reference to external robot description.
+	interpreterBase::robotModel::RobotModelInterface &info();
+
 	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);
 

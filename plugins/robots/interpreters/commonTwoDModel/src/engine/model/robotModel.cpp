@@ -19,6 +19,7 @@ RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotMo
 	, mNeedSync(false)
 	, mPos(QPointF(0,0))
 	, mAngle(0)
+	, mSensorsConfiguration(robotModel.name())
 	, mRobotModel(robotModel)
 {
 	initPosition();
@@ -126,6 +127,11 @@ void RobotModel::resetEncoder(PortInfo const &port)
 SensorsConfiguration &RobotModel::configuration()
 {
 	return mSensorsConfiguration;
+}
+
+RobotModelInterface &RobotModel::info()
+{
+	return mRobotModel;
 }
 
 //void RobotModel::startInit()

@@ -6,7 +6,7 @@
 #include "lineItem.h"
 #include "wallItem.h"
 
-using namespace twoDModel;
+using namespace twoDModel::items;
 using namespace qReal;
 using namespace graphicsUtils;
 
@@ -220,7 +220,7 @@ void LineItem::deserializePenBrush(QDomElement const &element)
 	readPenBrush(element);
 }
 
-void LineItem::setSerializeName(QString name)
+void LineItem::setSerializeName(QString const &name)
 {
 	mSerializeName = name;
 }

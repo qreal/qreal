@@ -1,12 +1,12 @@
 #include "ellipseItem.h"
 
-using namespace twoDModel;
+using namespace twoDModel::items;
 using namespace graphicsUtils;
 
 int const currentResizeDrift = resizeDrift;
 int const currentDrift = drift / 2;
 
-EllipseItem::EllipseItem(QPointF begin, QPointF end)
+EllipseItem::EllipseItem(QPointF const &begin, QPointF const &end)
 	: mEllipseImpl()
 {
 	mPen.setColor(Qt::black);
