@@ -774,17 +774,24 @@ void D2ModelWidget::reinitSensor(PortInfo const &port)
 
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
 {
+	if (!scene()->items().contains(item)) {
+		return;
+	}
+
 	/// @todo Handle all cases equally
 	if (SensorItem * const sensor = dynamic_cast<SensorItem *>(item)) {
 		PortInfo const port = mRobot->sensors().key(sensor);
 		if (port.isValid()) {
 			deviceConfigurationChanged(mModel.robotModel().info().name(), port, DeviceInfo());
 		}
+
+		return;
 	}
 
 	if (items::WallItem * const wall = dynamic_cast<items::WallItem *>(item)) {
 		mScene->removeItem(wall);
 		mModel.worldModel().removeWall(wall);
+		return;
 	}
 
 	if (items::ColorFieldItem *colorField = dynamic_cast<items::ColorFieldItem *>(item)) {
