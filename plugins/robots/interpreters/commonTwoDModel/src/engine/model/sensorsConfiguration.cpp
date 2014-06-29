@@ -1,5 +1,9 @@
 #include <QtCore/QStringList>
 
+#include <qrutils/mathUtils/math.h>
+#include <qrutils/mathUtils/geometry.h>
+
+#include "constants.h"
 #include "sensorsConfiguration.h"
 
 using namespace twoDModel::model;
@@ -25,11 +29,15 @@ void SensorsConfiguration::onDeviceConfigurationChanged(QString const &robotMode
 	}
 
 	emit deviceAdded(port);
+	// If there was no sensor before then placing it right in front of the robot;
+	// else putting it instead of old one.
+	mSensorsInfo[port] = mSensorsInfo[port].isNull ? SensorInfo(defaultPosition(), 0) : mSensorsInfo[port];
 }
 
-void SensorsConfiguration::setPosition(PortInfo const &port, QPointF const &position)
+QPointF SensorsConfiguration::defaultPosition() const
 {
-	mSensorsInfo[port].position = position;
+	/// @todo: Move it somewhere?
+	return QPointF(robotWidth * 3 / 2, robotHeight / 2);
 }
 
 QPointF SensorsConfiguration::position(PortInfo const &port) const
@@ -37,14 +45,25 @@ QPointF SensorsConfiguration::position(PortInfo const &port) const
 	return mSensorsInfo[port].position;
 }
 
-void SensorsConfiguration::setDirection(PortInfo const &port, qreal direction)
+void SensorsConfiguration::setPosition(PortInfo const &port, QPointF const &position)
 {
-	mSensorsInfo[port].direction = direction;
+	if (!mathUtils::Geometry::eq(mSensorsInfo[port].position, position)) {
+		mSensorsInfo[port].position = position;
+		emit positionChanged(port);
+	}
 }
 
 qreal SensorsConfiguration::direction(PortInfo const &port) const
 {
 	return mSensorsInfo[port].direction;
+}
+
+void SensorsConfiguration::setDirection(PortInfo const &port, qreal direction)
+{
+	if (!mathUtils::Math::eq(mSensorsInfo[port].direction, direction)) {
+		mSensorsInfo[port].direction = direction;
+		emit rotationChanged(port);
+	}
 }
 
 DeviceInfo SensorsConfiguration::type(PortInfo const &port) const
@@ -99,6 +118,7 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
 
+		deviceConfigurationChanged(mRobotModel, port, DeviceInfo());
 		deviceConfigurationChanged(mRobotModel, port, type);
 		setPosition(port, position);
 		setDirection(port, direction);
@@ -107,11 +127,13 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 SensorsConfiguration::SensorInfo::SensorInfo()
 	: direction(0)
+	, isNull(true)
 {
 }
 
 SensorsConfiguration::SensorInfo::SensorInfo(QPointF const &position, qreal direction)
 	: position(position)
 	, direction(direction)
+	, isNull(false)
 {
 }

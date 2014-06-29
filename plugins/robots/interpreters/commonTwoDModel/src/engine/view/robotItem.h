@@ -43,6 +43,8 @@ public:
 
 	void addSensor(interpreterBase::robotModel::PortInfo const &port, SensorItem *sensor);
 	void removeSensor(interpreterBase::robotModel::PortInfo const &port);
+	void updateSensorPosition(interpreterBase::robotModel::PortInfo const &port);
+	void updateSensorRotation(interpreterBase::robotModel::PortInfo const &port);
 
 	void setNeededBeep(bool isNeededBeep);
 

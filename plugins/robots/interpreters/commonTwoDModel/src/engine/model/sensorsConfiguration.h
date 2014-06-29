@@ -34,6 +34,9 @@ signals:
 	void deviceAdded(interpreterBase::robotModel::PortInfo const &port);
 	void deviceRemoved(interpreterBase::robotModel::PortInfo const &port);
 
+	void positionChanged(interpreterBase::robotModel::PortInfo const &port);
+	void rotationChanged(interpreterBase::robotModel::PortInfo const &port);
+
 private:
 	struct SensorInfo
 	{
@@ -42,11 +45,14 @@ private:
 
 		QPointF position;
 		qreal direction;
+		bool isNull;
 	};
 
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &device) override;
+
+	QPointF defaultPosition() const;
 
 	QString const mRobotModel;
 	QHash<interpreterBase::robotModel::PortInfo, SensorInfo> mSensorsInfo;

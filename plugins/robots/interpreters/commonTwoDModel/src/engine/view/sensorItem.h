@@ -22,22 +22,6 @@ class SensorItem : public QObject, public graphicsUtils::RotateItem
 	Q_OBJECT
 
 public:
-	class PortItem : public QGraphicsItem
-	{
-	public:
-		explicit PortItem(interpreterBase::robotModel::PortInfo const &port);
-
-		QRectF boundingRect() const override;
-
-	protected:
-		void paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget) override;
-
-	private:
-		interpreterBase::robotModel::PortInfo const mPort;
-		QFont const mFont;
-		QRect const mBoundingRect;
-	};
-
 	SensorItem(model::SensorsConfiguration &configuration
 			, interpreterBase::robotModel::PortInfo const &port, QString const &pathToImage, QRect const &imageSize);
 
@@ -66,6 +50,22 @@ public:
 	void setRotatePoint(QPointF const &rotatePoint);
 
 protected:
+	class PortItem : public QGraphicsItem
+	{
+	public:
+		explicit PortItem(interpreterBase::robotModel::PortInfo const &port);
+
+		QRectF boundingRect() const override;
+
+	protected:
+		void paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget *widget) override;
+
+	private:
+		interpreterBase::robotModel::PortInfo const mPort;
+		QFont const mFont;
+		QRect const mBoundingRect;
+	};
+
 	QRectF imageRect() const;
 	QString name() const;
 	QString pathToImage() const;

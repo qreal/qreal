@@ -22,6 +22,10 @@ RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robot
 	connect(&mRobotModel, &model::RobotModel::playingSoundChanged, this, &RobotItem::setNeededBeep);
 
 	connect(&mRobotModel.configuration(), &model::SensorsConfiguration::deviceRemoved, this, &RobotItem::removeSensor);
+	connect(&mRobotModel.configuration(), &model::SensorsConfiguration::positionChanged
+			, this, &RobotItem::updateSensorPosition);
+	connect(&mRobotModel.configuration(), &model::SensorsConfiguration::rotationChanged
+			, this, &RobotItem::updateSensorRotation);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -127,6 +131,20 @@ void RobotItem::removeSensor(interpreterBase::robotModel::PortInfo const &port)
 	scene()->removeItem(mSensors[port]);
 	delete mSensors[port];
 	mSensors[port] = nullptr;
+}
+
+void RobotItem::updateSensorPosition(interpreterBase::robotModel::PortInfo const &port)
+{
+	if (mSensors[port]) {
+		mSensors[port]->setPos(mRobotModel.configuration().position(port));
+	}
+}
+
+void RobotItem::updateSensorRotation(interpreterBase::robotModel::PortInfo const &port)
+{
+	if (mSensors[port]) {
+		mSensors[port]->setRotation(mRobotModel.configuration().direction(port));
+	}
 }
 
 void RobotItem::setRotater(Rotater *rotater)

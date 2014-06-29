@@ -468,6 +468,7 @@ void D2ModelWidget::clearScene(bool removeRobot)
 			deviceConfigurationChanged(mModel.robotModel().info().name(), port, DeviceInfo());
 		}
 
+		delete mRobot;
 		mScene->clear();
 		drawInitialRobot();
 	} else {
@@ -774,23 +775,19 @@ void D2ModelWidget::reinitSensor(PortInfo const &port)
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
 {
 	/// @todo Handle all cases equally
-	SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
-	if (sensor) {
+	if (SensorItem * const sensor = dynamic_cast<SensorItem *>(item)) {
 		PortInfo const port = mRobot->sensors().key(sensor);
 		if (port.isValid()) {
-			removeSensor(port);
+			deviceConfigurationChanged(mModel.robotModel().info().name(), port, DeviceInfo());
 		}
-		return;
 	}
 
-	items::WallItem * const wall = dynamic_cast<items::WallItem *>(item);
-	if (wall) {
+	if (items::WallItem * const wall = dynamic_cast<items::WallItem *>(item)) {
 		mScene->removeItem(wall);
 		mModel.worldModel().removeWall(wall);
 	}
 
-	items::ColorFieldItem *colorField = dynamic_cast<items::ColorFieldItem *>(item);
-	if (colorField) {
+	if (items::ColorFieldItem *colorField = dynamic_cast<items::ColorFieldItem *>(item)) {
 		mScene->removeItem(colorField);
 		mModel.worldModel().removeColorField(colorField);
 		delete colorField;

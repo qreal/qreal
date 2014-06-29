@@ -197,9 +197,6 @@ private:
 	/// Get QPushButton for current sensor
 	QPushButton *currentPortButton();
 
-	/// Deletes sensor for given port and removes it from scene and the robot
-	void removeSensor(interpreterBase::robotModel::PortInfo const &port);
-
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(interpreterBase::robotModel::PortInfo const &port);
 

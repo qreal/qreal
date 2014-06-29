@@ -100,7 +100,7 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &re
 void D2ModelScene::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)) {
-		foreach(QGraphicsItem* item, selectedItems()) {
+		for (QGraphicsItem * const item : selectedItems()) {
 			emit itemDeleted(item);
 		}
 	} else {
