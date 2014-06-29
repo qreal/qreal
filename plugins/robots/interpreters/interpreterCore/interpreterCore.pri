@@ -45,7 +45,6 @@ HEADERS += \
 	$$PWD/src/managers/saveConvertionManager.h \
 	$$PWD/src/textLanguage/robotsBlockParser.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
-	$$PWD/src/ui/devicesConfigurationWidget.h \
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -79,7 +78,6 @@ SOURCES += \
 	$$PWD/src/managers/saveConvertionManager.cpp \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
-	$$PWD/src/ui/devicesConfigurationWidget.cpp \
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \

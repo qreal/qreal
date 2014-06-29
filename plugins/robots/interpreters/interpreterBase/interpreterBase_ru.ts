@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>interpreterBase::DevicesConfigurationWidget</name>
+    <message>
+        <location filename="src/devicesConfigurationWidget.cpp" line="70"/>
+        <source>Port %1:</source>
+        <translation>Порт %1:</translation>
+    </message>
+    <message>
+        <location filename="src/devicesConfigurationWidget.cpp" line="75"/>
+        <source>Unused</source>
+        <translation>Не используется</translation>
+    </message>
+</context>
+<context>
     <name>interpreterBase::blocksBase::Block</name>
     <message>
         <location filename="src/blocksBase/block.cpp" line="39"/>

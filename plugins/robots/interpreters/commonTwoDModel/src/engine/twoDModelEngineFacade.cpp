@@ -19,7 +19,6 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotM
 {
 	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &view::D2ModelWidget::init);
 
-	// connectDevicesConfigurationProvider(mView.data());
 	connect(mView.data(), &view::D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
 	connect(mView.data(), &view::D2ModelWidget::stopButtonPressed, this, &TwoDModelEngineFacade::stopButtonPressed);
 	connect(mView.data(), &view::D2ModelWidget::widgetClosed, this, &TwoDModelEngineFacade::stopButtonPressed);
@@ -127,7 +126,6 @@ TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 void TwoDModelEngineFacade::onStartInterpretation()
 {
 	mModel->timeline().start();
-//	mTwoDModel->startInterpretation();
 }
 
 void TwoDModelEngineFacade::onStopInterpretation()

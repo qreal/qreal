@@ -2,19 +2,19 @@
 #include "ui_d2Form.h"
 
 #include <QtCore/qmath.h>
-#include <QtGui/QRegion>
+#include <QtCore/QDebug>
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
 
+#include <interpreterBase/devicesConfigurationWidget.h>
 #include <interpreterBase/robotModel/robotParts/motor.h>
-#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
-#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/colorSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
@@ -28,16 +28,15 @@
 #include "src/engine/model/constants.h"
 #include "src/engine/model/timeline.h"
 
-#include <QtCore/QDebug>
-
 using namespace twoDModel;
 using namespace view;
 using namespace model;
 using namespace qReal;
 using namespace utils;
 using namespace graphicsUtils;
-using namespace interpreterBase::robotModel;
-using namespace interpreterBase::robotModel::robotParts;
+using namespace interpreterBase;
+using namespace robotModel;
+using namespace robotParts;
 
 D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
@@ -79,11 +78,13 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(mUi->gridParametersBox, &GridParameters::parametersChanged
 			, this, &D2ModelWidget::alignWalls);
 
-	connect(&mModel.timeline(), &model::Timeline::started, [this]() { mUi->timelineBox->setValue(0); });
-	connect(&mModel.timeline(), &model::Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
-	connect(&mModel.timeline(), &model::Timeline::tick, this, &D2ModelWidget::onTimelineTick);
+	connect(&mModel.timeline(), &Timeline::started, [this]() { mUi->timelineBox->setValue(0); });
+	connect(&mModel.timeline(), &Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
+	connect(&mModel.timeline(), &Timeline::tick, [this]() { mUi->timelineBox->stepBy(1); });
 
-	connect(&mModel.robotModel(), &model::RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
+	connect(&mModel.robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
+	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
+			, this, &D2ModelWidget::reinitSensor);
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -207,54 +208,14 @@ void D2ModelWidget::initButtonGroups()
 
 void D2ModelWidget::initPorts()
 {
-//	QList<PortInfo> ports = mRobotModel.availablePorts();
-//	qSort(ports.begin(), ports.end()
-//			, [](PortInfo const &port1, PortInfo const &port2) { return port1.name() < port2.name(); }
-//	);
-
-//	for (PortInfo const &port : ports) {
-//		if (!isPortConfigurable(port)) {
-//			continue;
-//		}
-
-//		DeviceInfo const currentlyConfiguredDevice = currentConfiguration(mRobotModel.name(), port);
-
-//		QComboBox * const portsSelectionComboBox = new QComboBox;
-//		QFormLayout * const layout = dynamic_cast<QFormLayout *>(mUi->portsGroupBox->layout());
-//		layout->addRow(new QLabel(port.name() + ":"), portsSelectionComboBox);
-
-//		portsSelectionComboBox->addItem(tr("None"), QVariant::fromValue(DeviceInfo()));
-//		for (DeviceInfo const &device : mRobotModel.allowedDevices(port)) {
-//			portsSelectionComboBox->addItem(device.friendlyName(), QVariant::fromValue(device));
-
-//			if (currentlyConfiguredDevice == device) {
-//				portsSelectionComboBox->setCurrentIndex(portsSelectionComboBox->count() - 1);
-//			}
-//		}
-
-//		connect(portsSelectionComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated)
-//				, this, &D2ModelWidget::addPort);
-
-//		mComboBoxesToPortsMap.insert(portsSelectionComboBox, port);
-//	}
+	DevicesConfigurationWidget *configurer = new DevicesConfigurationWidget(mUi->portsGroupBox, true, true);
+	configurer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+	configurer->loadRobotModels({ &mModel.robotModel().info() });
+	configurer->selectRobotModel(mModel.robotModel().info());
+	mUi->portsGroupBox->layout()->addWidget(configurer);
+	configurer->connectDevicesConfigurationProvider(&mModel.robotModel().configuration());
+	connectDevicesConfigurationProvider(&mModel.robotModel().configuration());
 }
-
-//bool D2ModelWidget::isPortConfigurable(PortInfo const &port)
-//{
-//	if (mRobotModel.configurablePorts().contains(port)) {
-//		return true;
-//	}
-
-//	// Skipping ports with display, buttons, speaker, encoders and so on .
-//	Q_ASSERT(!mRobotModel.allowedDevices(port).isEmpty());
-//	bool const isSensor = mRobotModel.allowedDevices(port)[0].isA
-//			<interpreterBase::robotModel::robotParts::AbstractSensor>();
-//	bool const isEncoder = mRobotModel.allowedDevices(port)[0].isA
-//			<interpreterBase::robotModel::robotParts::EncoderSensor>();
-//	// This will skip all camera ports
-//	bool const isNameTooLong = port.name().count() > 5;
-//	return isSensor && !isEncoder && !isNameTooLong;
-//}
 
 void D2ModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)
 {
@@ -315,7 +276,6 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 {
 	mModel.robotModel().setPosition(mInitialRobotBeforeRun.pos);
 	mModel.robotModel().setRotation(mInitialRobotBeforeRun.rotation);
-//	mScene->update();
 }
 
 void D2ModelWidget::drawInitialRobot()
@@ -330,8 +290,6 @@ void D2ModelWidget::drawInitialRobot()
 	rotater->setVisible(false);
 
 	mRobot->setRotater(rotater);
-
-	rereadDevicesConfiguration();
 
 	mUi->graphicsView->centerOn(mRobot);
 }
@@ -506,8 +464,8 @@ void D2ModelWidget::clearScene(bool removeRobot)
 	mModel.worldModel().clearScene();
 	mModel.robotModel().clear();
 	if (removeRobot) {
-		for (PortInfo const &port : mSensors.keys()) {
-			removeSensor(port);
+		for (PortInfo const &port : mRobot->sensors().keys()) {
+			deviceConfigurationChanged(mModel.robotModel().info().name(), port, DeviceInfo());
 		}
 
 		mScene->clear();
@@ -531,22 +489,6 @@ void D2ModelWidget::resetButtons()
 	mCurrentStylus = nullptr;
 	mMouseClicksCount = 0;
 	mDrawingAction = none;
-}
-
-void D2ModelWidget::addPort(int const index)
-{
-	if (!isVisible() && mFirstShow) {
-		return;
-	}
-
-	QComboBox * const comboBox = dynamic_cast<QComboBox *>(sender());
-	PortInfo const port = mComboBoxesToPortsMap.value(comboBox);
-	DeviceInfo const device = comboBox->itemData(index).value<DeviceInfo>();
-
-	resetButtons();
-
-	/// @todo
-//	deviceConfigurationChanged(mRobotModel.name(), port, device);
 }
 
 void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
@@ -604,7 +546,7 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 	mUi->graphicsView->setCursor(cursorTypeToCursor(mCursorType));
 
 	mRobot->checkSelection();
-	foreach (SensorItem *sensor, mSensors) {
+	for (SensorItem *sensor : mRobot->sensors().values()) {
 		if (sensor) {
 			sensor->checkSelection();
 		}
@@ -665,7 +607,7 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	if (mouseEvent->buttons() & Qt::LeftButton) {
 		mRobot->checkSelection();
-		foreach (SensorItem *sensor, mSensors) {
+		for (SensorItem *sensor : mRobot->sensors().values()) {
 			if (sensor) {
 				sensor->checkSelection();
 			}
@@ -705,7 +647,7 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	mUi->graphicsView->setCursor(cursorTypeToCursor(mCursorType));
 
 	mRobot->checkSelection();
-	foreach (SensorItem *sensor, mSensors) {
+	for (SensorItem *sensor : mRobot->sensors().values()) {
 		if (sensor) {
 			sensor->checkSelection();
 		}
@@ -798,65 +740,35 @@ void D2ModelWidget::handleNewRobotPosition()
 	}
 }
 
-void D2ModelWidget::removeSensor(PortInfo const &port)
+void D2ModelWidget::reinitSensor(PortInfo const &port)
 {
-	// Here's the point where all interested entities are notified about sensor deletion,
-	// so if this code gets broken or worked around, we'll have some almost undebuggable
-	// dangling pointers in scene and in robot item. But what could possibly go wrong?
-	if (!mSensors.contains(port) || !mSensors.value(port) || !mRobot) {
+	mRobot->removeSensor(port);
+
+	DeviceInfo const &device = mModel.robotModel().configuration().type(port);
+	if (device.isNull() || (
+			/// @todo: Add supported by 2D model sensors here
+			!device.isA<TouchSensor>()
+			&& !device.isA<ColorSensor>()
+			&& !device.isA<LightSensor>()
+			&& !device.isA<RangeSensor>()
+			))
+	{
 		return;
 	}
 
-	mRobot->removeSensor(mSensors[port]);
-	mScene->removeItem(mSensors[port]);
-	delete mSensors[port];
-	mSensors[port] = nullptr;
-}
+	SensorItem *sensor = device.isA<RangeSensor>()
+			? new SonarSensorItem(mModel.worldModel(), mModel.robotModel().configuration()
+					, port
+					, mConfigurer->sensorImagePath(device)
+					, mConfigurer->sensorImageRect(device)
+					)
+			: new SensorItem(mModel.robotModel().configuration()
+					, port
+					, mConfigurer->sensorImagePath(device)
+					, mConfigurer->sensorImageRect(device)
+					);
 
-void D2ModelWidget::reinitSensor(PortInfo const &port)
-{
-	removeSensor(port);
-
-//	DeviceInfo const &device = currentConfiguration(mRobotModel.name(), port);
-
-//	if (device.isNull() || (
-//			/// @todo: Add supported by 2D model sensors here
-//			!device.isA<robotParts::TouchSensor>()
-//			&& !device.isA<robotParts::ColorSensor>()
-//			&& !device.isA<robotParts::LightSensor>()
-//			&& !device.isA<robotParts::RangeSensor>()
-//			))
-//	{
-//		return;
-//	}
-
-//	SensorItem *sensor = device.isA<RangeSensor>()
-//			? new SonarSensorItem(*mWorldModel, mTwoDRobotModel->configuration()
-//					, port
-//					, mConfigurer.sensorImagePath(device)
-//					, mConfigurer.sensorImageRect(device)
-//					)
-//			: new SensorItem(mTwoDRobotModel->configuration()
-//					, port
-//					, mConfigurer.sensorImagePath(device)
-//					, mConfigurer.sensorImageRect(device)
-//					);
-
-//	mRobot->addSensor(sensor);
-//	mScene->addItem(sensor);
-
-//	sensor->addStickyItem(mRobot);
-
-//	Rotater * const rotater = new Rotater();
-//	rotater->setMasterItem(sensor);
-//	rotater->setVisible(false);
-//	sensor->setRotater(rotater);
-//	sensor->setRotation(mTwoDRobotModel->configuration().direction(port));
-
-//	sensor->setParentItem(mRobot);
-//	sensor->setPos(mRobot->mapFromScene(mTwoDRobotModel->configuration().position(port)));
-
-//	mSensors[port] = sensor;
+	mRobot->addSensor(port, sensor);
 }
 
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
@@ -864,7 +776,7 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 	/// @todo Handle all cases equally
 	SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
 	if (sensor) {
-		PortInfo const port = mSensors.key(sensor, PortInfo());
+		PortInfo const port = mRobot->sensors().key(sensor);
 		if (port.isValid()) {
 			removeSensor(port);
 		}
@@ -990,8 +902,8 @@ engine::TwoDModelDisplayWidget *D2ModelWidget::display()
 
 void D2ModelWidget::setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible)
 {
-	if (mSensors[port]) {
-		mSensors[port]->setVisible(isVisible);
+	if (mRobot->sensors()[port]) {
+		mRobot->sensors()[port]->setVisible(isVisible);
 	}
 }
 
@@ -1014,12 +926,12 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 
 SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
 {
-	return mSensors.value(port);
+	return mRobot->sensors().value(port);
 }
 
 void D2ModelWidget::saveToRepo()
 {
-	emit modelChanged(generateXml());
+	emit mModel.modelChanged(generateXml());
 }
 
 QDomDocument D2ModelWidget::generateXml() const
@@ -1032,8 +944,6 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	clearScene(true);
 
 	mModel.deserialize(worldModel);
-	/// @todo: move it into model
-	rereadDevicesConfiguration();
 
 	mDrawingAction = noneWordLoad;
 	update();
@@ -1086,25 +996,9 @@ void D2ModelWidget::changePhysicsSettings()
 	mModel.settings().rereadNoiseSettings();
 }
 
-void D2ModelWidget::onTimelineTick()
-{
-	mUi->timelineBox->stepBy(1);
-}
-
 void D2ModelWidget::toggleDisplayVisibility()
 {
-	if (!mDisplay) {
-		return;
-	}
-
 	setDisplayVisibility(!mDisplay->isVisible());
-}
-
-void D2ModelWidget::rereadDevicesConfiguration()
-{
-//	for (PortInfo const &port : mRobotModel.availablePorts()) {
-//		onDeviceConfigurationChanged(mRobotModel.name(), port, currentConfiguration(mRobotModel.name(), port));
-//	}
 }
 
 void D2ModelWidget::setDisplayVisibility(bool visible)

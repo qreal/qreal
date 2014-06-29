@@ -1,21 +1,23 @@
-#include "devicesConfigurationWidget.h"
+#include "interpreterBase/devicesConfigurationWidget.h"
 
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
 
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include "interpreterBase/robotModel/robotModelInterface.h"
 
-using namespace interpreterCore::ui;
-using namespace interpreterBase::robotModel;
+using namespace interpreterBase;
+using namespace robotModel;
 
-DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool autosaveMode)
+DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool autosaveMode, bool compactMode)
 	: QScrollArea(parent)
 	, mAutosaveMode(autosaveMode)
+	, mCompactMode(compactMode)
 	, mSaving(false)
 	, mRefreshing(false)
 {
-	setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	// In compact mode we minimize horizontal size so turning scroll bar off.
+	setVerticalScrollBarPolicy(mCompactMode ? Qt::ScrollBarAlwaysOff : Qt::ScrollBarAsNeeded);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setMinimumHeight(125);
 	setFrameShape(QFrame::NoFrame);
@@ -67,7 +69,8 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
 		, PortInfo const &port, QList<DeviceInfo> const &sensors)
 {
-	QLabel * const portLabel = new QLabel(tr("Port %1:").arg(port.name()), this);
+	QString const labelText = mCompactMode ? tr("%1:") : tr("Port %1:");
+	QLabel * const portLabel = new QLabel(labelText.arg(port.name()), this);
 	QComboBox * const comboBox = new QComboBox(this);
 	comboBox->setProperty("robotModel", robotModel);
 	comboBox->setProperty("port", QVariant::fromValue(port));

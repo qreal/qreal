@@ -5,6 +5,7 @@
 
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
+#include <interpreterBase/devicesConfigurationWidget.h>
 
 #include "customizer.h"
 #include "managers/kitPluginManager.h"
@@ -17,7 +18,6 @@
 #include "interpreter/interpreter.h"
 #include "textLanguage/robotsBlockParser.h"
 #include "ui/robotsSettingsPage.h"
-#include "ui/devicesConfigurationWidget.h"
 
 namespace interpreterCore {
 
@@ -82,7 +82,7 @@ private:
 	QScopedPointer<TitlesVisibilityManager> mTitlesVisibilityManager;
 	QScopedPointer<DevicesConfigurationManager> mDevicesConfigurationManager;
 
-	ui::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
+	interpreterBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
 	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
 

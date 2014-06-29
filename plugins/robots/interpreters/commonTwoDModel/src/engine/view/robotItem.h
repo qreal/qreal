@@ -38,8 +38,11 @@ public:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 
-	void addSensor(SensorItem *sensor);
-	void removeSensor(SensorItem *sensor);
+	/// Returns a mapping of ports to connected configured sensors.
+	QMap<interpreterBase::robotModel::PortInfo, SensorItem *> const &sensors() const;
+
+	void addSensor(interpreterBase::robotModel::PortInfo const &port, SensorItem *sensor);
+	void removeSensor(interpreterBase::robotModel::PortInfo const &port);
 
 	void setNeededBeep(bool isNeededBeep);
 
@@ -76,8 +79,7 @@ private:
 	// Takes ownership
 	BeepItem *mBeepItem;
 
-	/** @brief List of sensors added to robot */
-	QList<SensorItem *> mSensors;  // Does not have ownership
+	QMap<interpreterBase::robotModel::PortInfo, SensorItem *> mSensors;  // Does not have ownership
 
 	QPointF mDragStart;
 	Rotater *mRotater;

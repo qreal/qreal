@@ -21,6 +21,8 @@ RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robot
 	connect(&mRobotModel, &model::RobotModel::rotationChanged, this, &RobotItem::setRotation);
 	connect(&mRobotModel, &model::RobotModel::playingSoundChanged, this, &RobotItem::setNeededBeep);
 
+	connect(&mRobotModel.configuration(), &model::SensorsConfiguration::deviceRemoved, this, &RobotItem::removeSensor);
+
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
@@ -87,6 +89,11 @@ void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
+QMap<interpreterBase::robotModel::PortInfo, SensorItem *> const &RobotItem::sensors() const
+{
+	return mSensors;
+}
+
 void RobotItem::setPos(QPointF const &newPos)
 {
 	QGraphicsItem::setPos(newPos);
@@ -97,14 +104,29 @@ void RobotItem::setRotation(qreal rotation)
 	QGraphicsItem::setRotation(rotation);
 }
 
-void RobotItem::addSensor(SensorItem *sensor)
+void RobotItem::addSensor(interpreterBase::robotModel::PortInfo const &port, SensorItem *sensor)
 {
-	mSensors.append(sensor);
+	mSensors[port] = sensor;
+	sensor->setParentItem(this);
+
+	Rotater * const rotater = new Rotater();
+	rotater->setMasterItem(sensor);
+	rotater->setVisible(false);
+	sensor->setRotater(rotater);
+
+	sensor->setPos(mRobotModel.configuration().position(port));
+	sensor->setRotation(mRobotModel.configuration().direction(port));
 }
 
-void RobotItem::removeSensor(SensorItem *sensor)
+void RobotItem::removeSensor(interpreterBase::robotModel::PortInfo const &port)
 {
-	mSensors.removeOne(sensor);
+	if (!mSensors.contains(port) || !mSensors.value(port)) {
+		return;
+	}
+
+	scene()->removeItem(mSensors[port]);
+	delete mSensors[port];
+	mSensors[port] = nullptr;
 }
 
 void RobotItem::setRotater(Rotater *rotater)

@@ -1,14 +1,7 @@
 #pragma once
 
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QGraphicsRectItem>
-#include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QButtonGroup>
-#include <QtGui/QPolygonF>
 #include <QtCore/QSignalMapper>
-#include <QtCore/QHash>
+#include <QtWidgets/QButtonGroup>
 
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
@@ -24,6 +17,8 @@
 
 #include "commonTwoDModel/engine/configurer.h"
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
+
+class QComboBox;
 
 namespace Ui {
 class D2Form;
@@ -93,10 +88,6 @@ signals:
 	///enabled or disabled by user
 	void noiseSettingsChanged();
 
-	/// Emitted each time when some user actions lead to world model modifications
-	/// @param xml World model description in xml format
-	void modelChanged(QDomDocument const &xml);
-
 	/// Emitted when user has started intepretation from the 2D model window.
 	void runButtonPressed();
 
@@ -127,8 +118,6 @@ private slots:
 
 	void deleteItem(QGraphicsItem *);
 
-	void addPort(int const index);
-
 	void handleNewRobotPosition();
 
 	void saveToRepo();
@@ -148,11 +137,7 @@ private slots:
 	void alignWalls();
 	void changePhysicsSettings();
 
-	void onTimelineTick();
-
 	void toggleDisplayVisibility();
-
-	void rereadDevicesConfiguration();
 
 private:
 	enum DrawingAction
@@ -196,7 +181,6 @@ private:
 	void connectUiButtons();
 	void initButtonGroups();
 	void initPorts();
-//	bool isPortConfigurable(interpreterBase::robotModel::PortInfo const &port);
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void drawWalls();
@@ -269,25 +253,9 @@ private:
 	items::StylusItem *mCurrentStylus;
 	items::EllipseItem *mCurrentEllipse;
 
-	/// Signal mapper for handling addPortButtons' clicks.
-	QSignalMapper mPortsMapper;
-
-	/// Current port that we're trying to add to 2D model scene.
-	interpreterBase::robotModel::PortInfo mCurrentPort;
-
-	/// Type of current sensor that we add.
-	interpreterBase::robotModel::DeviceInfo mCurrentSensorType;
-
-	/// List of flags showing which panel button is active now.
-	QList<bool> mButtonFlags;
-
-	/// Modeled sensors.
-	QHash<interpreterBase::robotModel::PortInfo, SensorItem *> mSensors;
-
 	int mWidth;
 
 	bool mClearing;
-	bool mRobotWasSelected;
 
 	QButtonGroup mButtonGroup;
 	QButtonGroup mCursorButtonGroup;
@@ -300,9 +268,6 @@ private:
 	bool mFirstShow;
 
 	RobotState mInitialRobotBeforeRun;
-
-	/// Does not have ownership, combo boxes are owned by form layout.
-	QHash<QComboBox *, interpreterBase::robotModel::PortInfo> mComboBoxesToPortsMap;
 
 	QScopedPointer<Configurer const> mConfigurer;
 };
