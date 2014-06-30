@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include <QtCore/QtPlugin>
 #include <QtWidgets/QApplication>
 

@@ -1,5 +1,6 @@
 #include "robotModel.h"
 
+#include <qmath.h>
 #include <QtGui/QTransform>
 
 #include <qrutils/mathUtils/math.h>

@@ -16,8 +16,7 @@ DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool aut
 	, mSaving(false)
 	, mRefreshing(false)
 {
-	// In compact mode we minimize horizontal size so turning scroll bar off.
-	setVerticalScrollBarPolicy(mCompactMode ? Qt::ScrollBarAlwaysOff : Qt::ScrollBarAsNeeded);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setMinimumHeight(125);
 	setFrameShape(QFrame::NoFrame);
