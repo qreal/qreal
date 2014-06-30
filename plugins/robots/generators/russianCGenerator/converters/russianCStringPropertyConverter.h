@@ -19,7 +19,7 @@ public:
 
 protected:
 	bool variableExists(QString const &variable) const override;
-	QString value(QString const &variable) const override;
+	QString value(QString const &variable, int index) const override;
 
 private:
 	generatorBase::parts::Variables const &mVariables;

@@ -13,6 +13,9 @@
 #include "details/commentBlock.h"
 #include "details/subprogramBlock.h"
 
+#include "details/printTextBlock.h"
+#include "details/clearScreenBlock.h"
+
 using namespace interpreterCore::coreBlocks;
 
 interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id const &element)
@@ -37,6 +40,10 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::FunctionBlock();
 	} else if (elementMetatypeIs(element, "VariableInit")) {
 		return new details::VariableInitBlock();
+	} else if (elementMetatypeIs(element, "PrintText")) {
+		return new details::PrintTextBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "ClearScreen")) {
+		return new details::ClearScreenBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -56,5 +63,7 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Subprogram")
 		, id("Function")
 		, id("VariableInit")
+		, id("ClearScreen")
+		, id("PrintText")
 	};
 }

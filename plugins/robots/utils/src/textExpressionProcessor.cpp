@@ -19,7 +19,8 @@ bool TextExpressionProcessor::variableExists(QString const &variable) const
 	return mVariables.contains(variable);
 }
 
-QString TextExpressionProcessor::value(QString const &variable) const
+QString TextExpressionProcessor::value(QString const &variable, int index) const
 {
+	Q_UNUSED(index)
 	return mVariables[variable]->toString();
 }

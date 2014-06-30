@@ -20,12 +20,10 @@
 #include "details/nxtEnginesForwardBlock.h"
 #include "details/nxtEnginesBackwardBlock.h"
 
-#include "details/clearScreenBlock.h"
 #include "details/drawPixelBlock.h"
 #include "details/drawLineBlock.h"
 #include "details/drawRectBlock.h"
 #include "details/drawCircleBlock.h"
-#include "details/printTextBlock.h"
 
 using namespace nxtKitInterpreter::blocks;
 using namespace details;
@@ -77,12 +75,8 @@ interpreterBase::blocksBase::Block *NxtBlocksFactory::produceBlock(qReal::Id con
 		return new DrawLineBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtDrawLine")) {
 		return new DrawCircleBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "NxtPrintText")) {
-		return new PrintTextBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtDrawRect")) {
 		return new DrawRectBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "NxtClearScreen")) {
-		return new ClearScreenBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -113,9 +107,7 @@ qReal::IdList NxtBlocksFactory::providedBlocks() const
 		, id("NxtDrawPixel")
 		, id("NxtDrawLine")
 		, id("NxtDrawCircle")
-		, id("NxtPrintText")
 		, id("NxtDrawRect")
-		, id("NxtClearScreen")
 	};
 }
 

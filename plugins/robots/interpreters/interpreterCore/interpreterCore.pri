@@ -27,6 +27,8 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/functionBlock.h \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
 	$$PWD/src/coreBlocks/details/variableInitBlock.h \
+	$$PWD/src/coreBlocks/details/printTextBlock.h \
+	$$PWD/src/coreBlocks/details/clearScreenBlock.h \
 	$$PWD/src/interpreter/interpreter.h \
 	$$PWD/src/interpreter/interpreterInterface.h \
 	$$PWD/src/interpreter/details/autoconfigurer.h \
@@ -63,6 +65,8 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/functionBlock.cpp \
 	$$PWD/src/coreBlocks/details/timerBlock.cpp \
 	$$PWD/src/coreBlocks/details/variableInitBlock.cpp \
+	$$PWD/src/coreBlocks/details/printTextBlock.cpp \
+	$$PWD/src/coreBlocks/details/clearScreenBlock.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \

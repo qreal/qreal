@@ -12,7 +12,7 @@ SetBackgroundGenerator::SetBackgroundGenerator(qrRepo::RepoApi const &repo
 		, qReal::Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
-			, "display/setBackground.t"
+			, "drawing/setBackground.t"
 			, QList<Binding *>()
 					<< Binding::createConverting(
 							"@@COLOR@@"

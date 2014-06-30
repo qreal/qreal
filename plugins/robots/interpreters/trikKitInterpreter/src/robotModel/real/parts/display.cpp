@@ -21,3 +21,10 @@ void Display::setBackground(QColor const &color)
 void Display::clearScreen()
 {
 }
+
+void Display::printText(int x, int y, QString const &text)
+{
+	Q_UNUSED(x)
+	Q_UNUSED(y)
+	Q_UNUSED(text)
+}

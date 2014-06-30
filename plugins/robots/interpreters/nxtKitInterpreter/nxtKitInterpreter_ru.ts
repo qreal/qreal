@@ -76,9 +76,8 @@
 <context>
     <name>nxtKitInterpreter::blocks::details::DisplayBlock</name>
     <message>
-        <location filename="src/blocks/details/displayBlock.cpp" line="26"/>
         <source>Display is not configured (WTF?)</source>
-        <translation>Дисплей не сконфигурирован (што?)</translation>
+        <translation type="vanished">Дисплей не сконфигурирован (што?)</translation>
     </message>
 </context>
 <context>

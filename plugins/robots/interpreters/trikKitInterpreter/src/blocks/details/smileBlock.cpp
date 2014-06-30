@@ -1,9 +1,19 @@
 #include "smileBlock.h"
 
-using namespace trikKitInterpreter::blocks::details;
-using namespace interpreterBase::robotModel::robotParts;
+#include "src/robotModel/parts/trikDisplay.h"
 
-SmileBlock::SmileBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
-	: SmileBlockBase(robotModel, true)
+using namespace trikKitInterpreter;
+using namespace blocks::details;
+
+SmileBlock::SmileBlock(interpreterBase::robotModel::RobotModelInterface &robotModel, bool isSmileSad)
+	: interpreterBase::blocksBase::common::DisplayBlock(robotModel)
+	, mIsSmileSad(isSmileSad)
 {
+}
+
+void SmileBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
+{
+	auto trikDisplay = static_cast<robotModel::parts::TrikDisplay *>(&display);
+	trikDisplay->drawSmile(mIsSmileSad);
+	emit done(mNextBlockId);
 }
