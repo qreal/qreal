@@ -20,13 +20,10 @@ HEADERS += \
 	$$PWD/blocks/details/speakerBlock.h \
 	$$PWD/blocks/details/beepBlock.h \
 	$$PWD/blocks/details/playToneBlock.h \
-	$$PWD/blocks/details/displayBlock.h \
-	$$PWD/blocks/details/clearScreenBlock.h \
 	$$PWD/blocks/details/drawCircleBlock.h \
 	$$PWD/blocks/details/drawLineBlock.h \
 	$$PWD/blocks/details/drawPixelBlock.h \
 	$$PWD/blocks/details/drawRectBlock.h \
-	$$PWD/blocks/details/printTextBlock.h \
 	$$PWD/blocks/details/nxtEnginesBackwardBlock.h \
 	$$PWD/blocks/details/nxtEnginesForwardBlock.h \
 	$$PWD/robotModel/nxtRobotModelBase.h \
@@ -65,13 +62,10 @@ SOURCES += \
 	$$PWD/blocks/details/speakerBlock.cpp \
 	$$PWD/blocks/details/beepBlock.cpp \
 	$$PWD/blocks/details/playToneBlock.cpp \
-	$$PWD/blocks/details/displayBlock.cpp \
-	$$PWD/blocks/details/clearScreenBlock.cpp \
 	$$PWD/blocks/details/drawCircleBlock.cpp \
 	$$PWD/blocks/details/drawLineBlock.cpp \
 	$$PWD/blocks/details/drawPixelBlock.cpp \
 	$$PWD/blocks/details/drawRectBlock.cpp \
-	$$PWD/blocks/details/printTextBlock.cpp \
 	$$PWD/blocks/details/nxtEnginesBackwardBlock.cpp \
 	$$PWD/blocks/details/nxtEnginesForwardBlock.cpp \
 	$$PWD/robotModel/nxtRobotModelBase.cpp \

@@ -43,6 +43,9 @@ private:
 	QList<HotKeyActionInfo> hotKeyActions() const;
 	void setHotKeyActions() const;
 
+	/// Asks plugins for custom default settings and merges them with engine`s ones.
+	void loadDefaultSettings();
+
 	QDir mPluginsDir;
 
 	QList<ToolPluginInterface *> mPlugins;

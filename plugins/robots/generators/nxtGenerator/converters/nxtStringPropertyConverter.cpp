@@ -51,7 +51,8 @@ bool NxtStringPropertyConverter::variableExists(QString const &variable) const
 	return mVariables.expressionType(variable) != enums::variableType::unknown;
 }
 
-QString NxtStringPropertyConverter::value(QString const &variable) const
+QString NxtStringPropertyConverter::value(QString const &variable, int index) const
 {
+	Q_UNUSED(index)
 	return mVariables.expressionType(variable) == enums::variableType::intType ? "%d" : "%d.%d";
 }

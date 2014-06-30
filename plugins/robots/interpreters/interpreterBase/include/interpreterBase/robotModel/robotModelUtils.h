@@ -1,6 +1,7 @@
 #pragma once
 
 #include "robotModelInterface.h"
+#include "interpreterBase/kitPluginInterface.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {
@@ -32,6 +33,12 @@ public:
 	/// Converts string representation of devices configuration into a number of maps:
 	/// robot model is mapped into map of its ports to devices configured on them.
 	static QMap<QString, QMap<PortInfo, DeviceInfo>> deserialize(QString const &configuration);
+
+	/// Returns lastly selected robot model for the given kits set with the same id.
+	/// If user didn`t select robot model yet then robot model specified in kit as default one is returned.
+	/// If no default robot model specified in kit then the first robot model is returned.
+	/// Finally if kit does not contain robot models at all nullptr is returned.
+	static RobotModelInterface *selectedRobotModelFor(QList<KitPluginInterface *> const &kits);
 };
 
 }

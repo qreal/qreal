@@ -43,6 +43,10 @@ public:
 	/// Returns an object of the class responsible for managing plugin`s toolbar actions.
 	ActionsManager &actionsManager();
 
+	/// A convenience method that travels around all loaded kit plugins,
+	/// collects all non-empty default settings file pathes and returns them.
+	QStringList defaultSettingsFiles() const;
+
 private:
 	void connectInterpreterToActions();
 

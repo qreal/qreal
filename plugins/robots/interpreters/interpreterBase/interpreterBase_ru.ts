@@ -38,6 +38,14 @@
     </message>
 </context>
 <context>
+    <name>interpreterBase::blocksBase::common::DisplayBlock</name>
+    <message>
+        <location filename="src/blocksBase/common/displayBlock.cpp" line="27"/>
+        <source>Display is not configured (WTF?)</source>
+        <translation>Дисплей не сконфигурирован (што?)</translation>
+    </message>
+</context>
+<context>
     <name>interpreterBase::blocksBase::common::WaitForButtonBlock</name>
     <message>
         <location filename="src/blocksBase/common/waitForButtonBlock.cpp" line="21"/>

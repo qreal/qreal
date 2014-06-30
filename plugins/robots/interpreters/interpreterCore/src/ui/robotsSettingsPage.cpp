@@ -7,6 +7,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
 #include <interpreterBase/additionalPreferences.h>
+#include <interpreterBase/robotModel/robotModelUtils.h>
 #include "managers/robotModelManager.h"
 
 using namespace interpreterCore::ui;
@@ -187,32 +188,15 @@ void RobotsSettingsPage::onKitRadioButtonToggled(bool checked)
 void RobotsSettingsPage::checkSelectedRobotModelButtonFor(QAbstractButton * const kitButton)
 {
 	QString const kitId = kitButton->objectName();
-	QString const key = "SelectedModelFor" + kitId;
-	QString selectedRobotModel = SettingsManager::value(key).toString();
-	if (selectedRobotModel.isEmpty()) {
-		robotModel::RobotModelInterface const *defaultRobotModel = nullptr;
-		for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
-			// Robot model for this kit was never selected. Falling back to default one
-			robotModel::RobotModelInterface const *kitDefaultRobotModel = kitPlugin->defaultRobotModel();
-			if (kitDefaultRobotModel) {
-				defaultRobotModel = kitDefaultRobotModel;
-				break;
-			}
-		}
-
-		selectedRobotModel = defaultRobotModel ? defaultRobotModel->name() : QString();
+	robotModel::RobotModelInterface const *robotModel
+			= robotModel::RobotModelUtils::selectedRobotModelFor(mKitPluginManager.kitsById(kitId));
+	if (!robotModel) {
+		return;
 	}
 
 	QAbstractButton * const robotModelButton = mUi->typeOfModelGroupBox
-			->findChild<QAbstractButton *>(kitId + selectedRobotModel);
-	if (selectedRobotModel.isEmpty() || !robotModelButton) {
-		// No robot model was selected previously and no default robot model was specified.
-		// Selecting first button in group
-		QButtonGroup * const kitRobotModelButtons = mKitRobotModels[kitButton];
-		if (!kitRobotModelButtons->buttons().isEmpty()) {
-			kitRobotModelButtons->buttons()[0]->setChecked(true);
-		}
-	} else {
+			->findChild<QAbstractButton *>(kitId + robotModel->name());
+	if (robotModelButton) {
 		robotModelButton->setChecked(true);
 	}
 }

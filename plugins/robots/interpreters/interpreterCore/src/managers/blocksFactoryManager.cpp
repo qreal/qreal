@@ -70,6 +70,16 @@ QSet<qReal::Id> BlocksFactoryManager::visibleBlocks(RobotModelInterface const &r
 	return result;
 }
 
+QSet<qReal::Id> BlocksFactoryManager::commonBlocks() const
+{
+	QSet<qReal::Id> result;
+	for (BlocksFactoryInterface const *factory : mFactories.values(nullptr)) {
+		result += factory->providedBlocks().toSet();
+	}
+
+	return result;
+}
+
 QList<BlocksFactoryInterface *> BlocksFactoryManager::factoriesFor(RobotModelInterface const &robotModel) const
 {
 	return mFactories.values(nullptr) + mFactories.values(&robotModel);

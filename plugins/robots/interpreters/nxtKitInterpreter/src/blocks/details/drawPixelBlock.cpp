@@ -1,16 +1,19 @@
 #include "drawPixelBlock.h"
 
+#include "robotModel/parts/nxtDisplay.h"
+
 using namespace nxtKitInterpreter::blocks::details;
 
 DrawPixelBlock::DrawPixelBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
-	: DisplayBlock(robotModel)
+	: interpreterBase::blocksBase::common::DisplayBlock(robotModel)
 {
 }
 
-void DrawPixelBlock::doJob(robotModel::parts::NxtDisplay &display)
+void DrawPixelBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
+	auto nxtDisplay = static_cast<robotModel::parts::NxtDisplay *>(&display);
 	int const x = evaluate("XCoordinatePix").toInt();
 	int const y = evaluate("YCoordinatePix").toInt();
-	display.drawPixel(x, y);
+	nxtDisplay->drawPixel(x, y);
 	emit done(mNextBlockId);
 }

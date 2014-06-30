@@ -27,6 +27,8 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/functionBlock.h \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
 	$$PWD/src/coreBlocks/details/variableInitBlock.h \
+	$$PWD/src/coreBlocks/details/printTextBlock.h \
+	$$PWD/src/coreBlocks/details/clearScreenBlock.h \
 	$$PWD/src/interpreter/interpreter.h \
 	$$PWD/src/interpreter/interpreterInterface.h \
 	$$PWD/src/interpreter/details/autoconfigurer.h \
@@ -43,6 +45,7 @@ HEADERS += \
 	$$PWD/src/managers/titlesVisibilityManager.h \
 	$$PWD/src/managers/paletteUpdateManager.h \
 	$$PWD/src/managers/saveConvertionManager.h \
+	$$PWD/src/managers/kitAutoSwitcher.h \
 	$$PWD/src/textLanguage/robotsBlockParser.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
 
@@ -62,6 +65,8 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/functionBlock.cpp \
 	$$PWD/src/coreBlocks/details/timerBlock.cpp \
 	$$PWD/src/coreBlocks/details/variableInitBlock.cpp \
+	$$PWD/src/coreBlocks/details/printTextBlock.cpp \
+	$$PWD/src/coreBlocks/details/clearScreenBlock.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
@@ -76,6 +81,7 @@ SOURCES += \
 	$$PWD/src/managers/titlesVisibilityManager.cpp \
 	$$PWD/src/managers/paletteUpdateManager.cpp \
 	$$PWD/src/managers/saveConvertionManager.cpp \
+	$$PWD/src/managers/kitAutoSwitcher.cpp \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
 

@@ -70,6 +70,15 @@ public:
 	{
 		return QList<ProjectConverter>();
 	}
+
+	/// Returns a list of pathes to ini files that contain default settings in key-value format
+	/// for this plugin. If there are collisions between keys in different plugins then selected
+	/// value is undefined. However engine`s default settings can be 'overloaded' by plugin ones.
+	/// Default implementation returns empty list.
+	virtual QStringList defaultSettingsFiles()
+	{
+		return QStringList();
+	}
 };
 
 }

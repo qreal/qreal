@@ -25,6 +25,8 @@ public:
 	generatorBase::simple::Binding::ConverterInterface *inputPortConverter() const override;
 	generatorBase::simple::Binding::ConverterInterface *outputPortConverter() const override;
 
+	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
+
 protected:
 	void initVariables() override;
 

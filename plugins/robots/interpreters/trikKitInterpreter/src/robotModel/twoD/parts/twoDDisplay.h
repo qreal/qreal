@@ -27,6 +27,7 @@ public:
 
 	void drawSmile(bool sad) override;
 	void setBackground(QColor const &color) override;
+	void printText(int x, int y, QString const &text) override;
 	void clearScreen() override;
 
 	void paint(QPainter *painter) override;
@@ -36,6 +37,8 @@ private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
 	QColor mBackground;
 	QImage mCurrentImage;
+	/// @todo: QPoint can`t be used in map without operators declaration.
+	QHash<QPair<int, int>, QString> mLabels;
 };
 
 }

@@ -141,13 +141,14 @@ void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * 
 {
 	mUi->pageContentWigdet->addWidget(page);
 	mCustomPages.insert(pageName, page);
+	mPagesIndexes.insert(pageName, mCustomPages.count() - 1);
 	mUi->listWidget->addItem(new QListWidgetItem(QIcon(page->getIcon()), pageName));
 }
 
 void PreferencesDialog::switchCurrentTab(QString const &tabName)
 {
 	if (mCustomPages.contains(tabName)) {
-		int const currentIndex = mCustomPages.keys().indexOf(tabName);
+		int const currentIndex = mPagesIndexes[tabName];
 		mUi->listWidget->setCurrentRow(currentIndex);
 		mUi->pageContentWigdet->setCurrentIndex(currentIndex + 1);
 	}

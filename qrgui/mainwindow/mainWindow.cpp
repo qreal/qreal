@@ -1047,7 +1047,8 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
-	SettingsManager::setUXInfo(utils::UXInfo::instance());
+	connect(SettingsManager::instance(), &SettingsManager::settingsChanged
+			, utils::UXInfo::instance(), &utils::UXInfo::reportSettingsChanges);
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir)) {

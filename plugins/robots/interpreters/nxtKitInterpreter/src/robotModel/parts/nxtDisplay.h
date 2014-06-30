@@ -17,8 +17,6 @@ public:
 	virtual void drawLine(int x1, int y1, int x2, int y2) = 0;
 	virtual void drawRect(int x, int y, int width, int height) = 0;
 	virtual void drawCircle(int x, int y, int radius) = 0;
-	virtual void printText(int x, int y, QString const &text) = 0;
-	virtual void clearScreen() = 0;
 };
 
 }

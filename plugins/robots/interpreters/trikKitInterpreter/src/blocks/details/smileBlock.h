@@ -1,15 +1,20 @@
 #pragma once
 
-#include "smileBlockBase.h"
+#include <interpreterBase/blocksBase/common/displayBlock.h>
 
 namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
 
-class SmileBlock : public SmileBlockBase
+class SmileBlock : public interpreterBase::blocksBase::common::DisplayBlock
 {
 public:
-	explicit SmileBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	SmileBlock(interpreterBase::robotModel::RobotModelInterface &robotModel, bool isSmileSad);
+
+private:
+	void doJob(interpreterBase::robotModel::robotParts::Display &display) override;
+
+	bool mIsSmileSad;
 };
 
 }
