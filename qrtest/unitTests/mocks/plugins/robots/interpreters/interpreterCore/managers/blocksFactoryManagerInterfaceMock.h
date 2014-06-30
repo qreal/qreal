@@ -17,6 +17,7 @@ public:
 			interpreterBase::robotModel::RobotModelInterface const &robotModel));
 	MOCK_CONST_METHOD1(visibleBlocks, QSet<qReal::Id>(
 			interpreterBase::robotModel::RobotModelInterface const &robotModel));
+	MOCK_CONST_METHOD0(commonBlocks, QSet<qReal::Id>());
 };
 
 }
