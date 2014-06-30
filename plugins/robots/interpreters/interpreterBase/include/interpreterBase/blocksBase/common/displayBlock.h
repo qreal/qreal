@@ -15,7 +15,7 @@ namespace blocksBase {
 namespace common {
 
 /// A base for all blocks that work with robot`s display.
-class DisplayBlock : public interpreterBase::blocksBase::Block
+class ROBOTS_INTERPRETER_BASE_EXPORT DisplayBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
 
