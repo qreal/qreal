@@ -179,6 +179,22 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="updatesGroupBox">
+     <property name="title">
+      <string>Updater</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QCheckBox" name="makeUpdatesCheckBox">
+        <property name="text">
+         <string>Install updates</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

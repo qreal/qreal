@@ -6,6 +6,7 @@
 #include <qrutils/uxInfo/uxInfo.h>
 
 #include "qrealApplication.h"
+#include "qRealUpdater.h"
 
 using namespace qReal;
 
@@ -69,6 +70,11 @@ int main(int argc, char *argv[])
 	app.setStyle(new WindowsModernStyle());
 #endif
 
+	QRealUpdater updater(argv[0]);
+	updater.startUpdater();
+	if (updater.hasUpdates()) {
+		return 0;
+	}
 	MainWindow window(fileToOpen);
 	int exitCode = 0; // The window decided to not show itself, exiting now.
 

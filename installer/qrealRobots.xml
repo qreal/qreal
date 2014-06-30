@@ -80,6 +80,7 @@
         <include file="qrealRobots-main.xml" />
         <include file="qrealRobots-nxtTools.xml" />
         <include file="qRealBase.xml" />
+        <include file="qRealUpdater.xml" />
     </componentList>
     
     <postInstallationActionList>
