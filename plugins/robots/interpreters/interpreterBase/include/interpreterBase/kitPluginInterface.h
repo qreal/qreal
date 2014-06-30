@@ -79,6 +79,13 @@ public:
 	/// Shall be overridden to return QAction instances for their customization in hot key manager.
 	virtual QList<qReal::HotKeyActionInfo> hotKeyActions() = 0;
 
+	/// Can be overridden to return a path to a file in INI format with default settings for kit plugin.
+	/// If empty string is returned (like in default implementation) default settings are ignored for this kit plugin.
+	virtual QString defaultSettingsFile() const
+	{
+		return QString();
+	}
+
 	/// Returns an icon for toolbar action of fast robot model switching.
 	virtual QIcon iconForFastSelector(robotModel::RobotModelInterface const &robotModel) const = 0;
 

@@ -11,7 +11,6 @@ SettingsManager* SettingsManager::mInstance = nullptr;
 
 SettingsManager::SettingsManager()
 	: mSettings("SPbSU", "QReal")
-	, mUXInfoInterface(nullptr)
 {
 	initDefaultValues();
 	load();
@@ -23,15 +22,12 @@ SettingsManager::~SettingsManager()
 
 void SettingsManager::setValue(QString const &name, QVariant const &value)
 {
-	instance()->reportValueSetting(name, instance()->value(name), value);
-	instance()->set(name, value);
+	QVariant const oldValue = instance()->value(name);
+	if (oldValue != value) {
+		instance()->set(name, value);
+		emit instance()->settingsChanged(name, oldValue, value);
+	}
 }
-
-void SettingsManager::setUXInfo(UXInfoInterface *uxInfo)
-{
-	instance()->setUXInfoInterface(uxInfo);
-}
-
 
 QVariant SettingsManager::value(QString const &key)
 {
@@ -48,6 +44,7 @@ SettingsManager* SettingsManager::instance()
 	if (mInstance == nullptr) {
 		mInstance = new SettingsManager();
 	}
+
 	return mInstance;
 }
 
@@ -61,67 +58,61 @@ QVariant SettingsManager::get(QString const &name, QVariant const &defaultValue)
 	if (mData.contains(name)) {
 		return mData[name];
 	}
+
 	if (mDefaultValues.contains(name) && defaultValue == QVariant()) {
 		return mDefaultValues[name];
 	}
+
 	return defaultValue;
-}
-
-void SettingsManager::setUXInfoInterface(UXInfoInterface *uxInfo)
-{
-	mUXInfoInterface = uxInfo;
-}
-
-void SettingsManager::reportValueSetting(QString const &name, QVariant const &oldValue, QVariant const &newValue)
-{
-	if (oldValue == newValue) {
-		return;
-	}
-
-	if (mUXInfoInterface) {
-		mUXInfoInterface->reportSettingsChanges(name, oldValue, newValue);
-	}
 }
 
 void SettingsManager::saveData()
 {
-	foreach (QString const &name, mData.keys()) {
+	for (QString const &name : mData.keys()) {
 		mSettings.setValue(name, mData[name]);
 	}
+
 	mSettings.sync();
 }
 
-void SettingsManager::saveSettings(QString fileNameForExport)
+void SettingsManager::saveSettings(QString const &fileNameForExport)
 {
-	QSettings settingsForSave(fileNameForExport,QSettings::IniFormat);
-	foreach (QString const &name, mData.keys()) {
+	QSettings settingsForSave(fileNameForExport, QSettings::IniFormat);
+	for (QString const &name : mData.keys()) {
 		settingsForSave.setValue(name, mData[name]);
 	}
+
 	settingsForSave.sync();
 }
 
 void SettingsManager::load()
 {
-	foreach (QString const &name, mSettings.allKeys()) {
+	for (QString const &name : mSettings.allKeys()) {
 		mData[name] = mSettings.value(name);
 	}
 }
 
-void SettingsManager::loadSettings(QString  const &fileNameForImport)
+void SettingsManager::loadSettings(QString const &fileNameForImport)
 {
-	QSettings settings(fileNameForImport,QSettings::IniFormat);
-	foreach (QString const &name, settings.allKeys()) {
-		mData[name] = settings.value(name);
-	}
+	mergeSettings(fileNameForImport, mData);
 	saveData();
 }
 
 void SettingsManager::initDefaultValues()
 {
-	QSettings values(":/settingsDefaultValues", QSettings::IniFormat);
+	mergeSettings(":/settingsDefaultValues", mDefaultValues);
+}
 
-	foreach (QString key, values.allKeys()) {
-		mDefaultValues.insert(key, values.value(key));
+void SettingsManager::loadDefaultSettings(QString const &filePath)
+{
+	instance()->mergeSettings(filePath, instance()->mDefaultValues);
+}
+
+void SettingsManager::mergeSettings(QString const &fileNameForImport, QHash<QString, QVariant> &target)
+{
+	QSettings settings(fileNameForImport, QSettings::IniFormat);
+	for (QString const &name : settings.allKeys()) {
+		target[name] = settings.value(name);
 	}
 }
 

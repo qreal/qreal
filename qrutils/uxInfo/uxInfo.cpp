@@ -69,6 +69,10 @@ UXInfo::UXInfo()
 	mNotEnoughDiskSpace = false;
 }
 
+UXInfo::~UXInfo()
+{
+}
+
 bool UXInfo::writeData(QTextStream const &stream)
 {
 	if (!mStatus || mNotEnoughDiskSpace) {
@@ -222,7 +226,7 @@ QString UXInfo::currentDateTime()
 
 UXInfo *UXInfo::instance()
 {
-	if (object == NULL) {
+	if (object == nullptr) {
 		object = new UXInfo();
 	}
 
@@ -303,7 +307,7 @@ void UXInfo::reportMouseClick(const QPoint &pos)
 	instance()->reportMouseClickPosition(pos);
 }
 
-void UXInfo::reportSettingsChanges(const QString &name, const QVariant &oldValue, const QVariant &newValue)
+void UXInfo::reportSettingsChanges(QString const &name, QVariant const &oldValue, QVariant const &newValue)
 {
 	instance()->reportSettingsChangesInfo(name, oldValue.toString(), newValue.toString());
 }
@@ -321,8 +325,4 @@ void UXInfo::reportTestStarted()
 void UXInfo::reportTestFinished()
 {
 	instance()->reportTestFinishedInfo();
-}
-
-UXInfo::~UXInfo()
-{
 }

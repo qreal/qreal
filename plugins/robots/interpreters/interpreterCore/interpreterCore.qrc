@@ -1,6 +1,7 @@
 <RCC>
 	<qresource prefix="/">
 		<file>interpreterCore_ru.qm</file>
+		<file>interpreterCoreDefaultSettings.ini</file>
 		<file>icons/kroki.png</file>
 		<file>icons/preferences/robot.svg</file>
 		<file>icons/robot.png</file>

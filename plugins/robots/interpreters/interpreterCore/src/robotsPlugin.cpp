@@ -39,12 +39,9 @@ qReal::Customizer *RobotsPlugin::customizationInterface()
 	return &mRobotsPluginFacade->customizer();
 }
 
-void RobotsPlugin::forceLoadCommonTwoDModelLib()
+QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
 {
-	// This will request some symbols from commonTwoDModel lib immediate loading.
-	// This hack workarrounds Window`s lazy dependencies loading (else we cannot obtain 2D model translitions).
-	QString const name = twoDModel::TwoDModelControlInterface::staticMetaObject.className();
-	Q_UNUSED(name)
+	return qMakePair(QObject::tr("Robots"), mRobotsPluginFacade->robotsSettingsPage());
 }
 
 QList<ActionInfo> RobotsPlugin::actions()
@@ -62,7 +59,15 @@ QList<ProjectConverter> RobotsPlugin::projectConverters()
 	return SaveConvertionManager::converters();
 }
 
-QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
+QStringList RobotsPlugin::defaultSettingsFiles()
 {
-	return qMakePair(QObject::tr("Robots"), mRobotsPluginFacade->robotsSettingsPage());
+	return mRobotsPluginFacade->defaultSettingsFiles();
+}
+
+void RobotsPlugin::forceLoadCommonTwoDModelLib()
+{
+	// This will request some symbols from commonTwoDModel lib immediate loading.
+	// This hack workarrounds Window`s lazy dependencies loading (else we cannot obtain 2D model translitions).
+	QString const name = twoDModel::TwoDModelControlInterface::staticMetaObject.className();
+	Q_UNUSED(name)
 }

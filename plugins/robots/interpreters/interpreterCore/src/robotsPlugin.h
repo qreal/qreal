@@ -27,11 +27,12 @@ public:
 	RobotsPlugin();
 
 	void init(qReal::PluginConfigurator const &configurator) override;
-	virtual QList<qReal::ActionInfo> actions() override;  // Does not transfer ownership of QAction objects.
-	virtual QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
-	virtual QList<qReal::ProjectConverter> projectConverters() override;
-	virtual QPair<QString, PreferencesPage *> preferencesPage() override;  // Transfers ownership.
-	virtual qReal::Customizer *customizationInterface() override;  // Does not transfer ownership.
+	qReal::Customizer *customizationInterface() override;  // Does not transfer ownership.
+	QPair<QString, PreferencesPage *> preferencesPage() override;  // Transfers ownership.
+	QList<qReal::ActionInfo> actions() override;  // Does not transfer ownership of QAction objects.
+	QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
+	QList<qReal::ProjectConverter> projectConverters() override;
+	QStringList defaultSettingsFiles() override;
 
 private:
 	/// Main window interface object, used to call GUI functionality.

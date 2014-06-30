@@ -46,6 +46,8 @@ public:
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
+	QString defaultSettingsFile() const override;
+
 	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
 
 	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;

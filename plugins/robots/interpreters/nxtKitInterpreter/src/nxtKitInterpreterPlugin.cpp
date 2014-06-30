@@ -98,6 +98,11 @@ QList<HotKeyActionInfo> NxtKitInterpreterPlugin::hotKeyActions()
 	return { d2ModelActionInfo };
 }
 
+QString NxtKitInterpreterPlugin::defaultSettingsFile() const
+{
+	return ":/nxtDefaultSettings.ini";
+}
+
 QIcon NxtKitInterpreterPlugin::iconForFastSelector(
 		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
 {
