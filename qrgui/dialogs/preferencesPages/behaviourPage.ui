@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>340</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -179,15 +179,25 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="updatesGroupBox">
-     <property name="title">
-      <string>Updater</string>
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Updates</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="updatesFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QCheckBox" name="makeUpdatesCheckBox">
         <property name="text">
-         <string>Install updates</string>
+         <string>Check for updates</string>
         </property>
        </widget>
       </item>
