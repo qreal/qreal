@@ -3,6 +3,7 @@
 #include "robotModel/parts/trikDisplay.h"
 
 #include <commonTwoDModel/engine/twoDModelEngineInterface.h>
+#include <commonTwoDModel/engine/twoDModelDisplayInterface.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {

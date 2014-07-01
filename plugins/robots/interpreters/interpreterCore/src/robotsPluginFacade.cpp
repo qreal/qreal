@@ -175,10 +175,10 @@ bool RobotsPluginFacade::selectKit(PluginConfigurator const &configurer)
 
 void RobotsPluginFacade::initSensorWidgets()
 {
-	mDockDevicesConfigurer = new ui::DevicesConfigurationWidget(nullptr, true);
+	mDockDevicesConfigurer = new interpreterBase::DevicesConfigurationWidget(nullptr, true);
 	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mDockDevicesConfigurer, &ui::DevicesConfigurationWidget::selectRobotModel);
+			, mDockDevicesConfigurer, &interpreterBase::DevicesConfigurationWidget::selectRobotModel);
 
 	mWatchListWindow = new utils::WatchListWindow(mParser);
 	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);

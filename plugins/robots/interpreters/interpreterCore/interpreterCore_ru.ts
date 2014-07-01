@@ -899,14 +899,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ui::DevicesConfigurationWidget</name>
     <message>
-        <location filename="src/ui/devicesConfigurationWidget.cpp" line="70"/>
         <source>Port %1:</source>
-        <translation>Порт %1:</translation>
+        <translation type="vanished">Порт %1:</translation>
     </message>
     <message>
-        <location filename="src/ui/devicesConfigurationWidget.cpp" line="75"/>
         <source>Unused</source>
-        <translation>Не используется</translation>
+        <translation type="vanished">Не используется</translation>
     </message>
 </context>
 <context>

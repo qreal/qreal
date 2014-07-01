@@ -32,7 +32,7 @@ RobotsSettingsPage::RobotsSettingsPage(
 	mUi->devicesConfigurer->connectDevicesConfigurationProvider(this);
 	mUi->devicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mUi->devicesConfigurer, &ui::DevicesConfigurationWidget::selectRobotModel);
+			, mUi->devicesConfigurer, &DevicesConfigurationWidget::selectRobotModel);
 
 	restoreSettings();
 	saveSelectedRobotModel();
@@ -190,6 +190,9 @@ void RobotsSettingsPage::checkSelectedRobotModelButtonFor(QAbstractButton * cons
 	QString const kitId = kitButton->objectName();
 	robotModel::RobotModelInterface const *robotModel
 			= robotModel::RobotModelUtils::selectedRobotModelFor(mKitPluginManager.kitsById(kitId));
+	if (!robotModel) {
+		return;
+	}
 
 	QAbstractButton * const robotModelButton = mUi->typeOfModelGroupBox
 			->findChild<QAbstractButton *>(kitId + robotModel->name());
