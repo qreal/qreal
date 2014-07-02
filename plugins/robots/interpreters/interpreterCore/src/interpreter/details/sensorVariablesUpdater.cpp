@@ -3,7 +3,8 @@
 #include <utils/tracer.h>
 #include <interpreterBase/robotModel/robotParts/scalarSensor.h>
 
-static int const variableUpdateIntervalMs = 200;
+static int const unrealUpdateInterval = 20;
+static int const realUpdateInterval = 200;
 
 using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
@@ -15,7 +16,6 @@ SensorVariablesUpdater::SensorVariablesUpdater(
 	: mRobotModelManager(robotModelManager)
 	, mParser(parser)
 {
-	mUpdateTimer.setInterval(variableUpdateIntervalMs);
 	connect(&mUpdateTimer, &QTimer::timeout, this, &SensorVariablesUpdater::onTimerTimeout);
 }
 
@@ -53,6 +53,9 @@ void SensorVariablesUpdater::run()
 		}
 	}
 
+	int const variableUpdateInterval = mRobotModelManager.model().needsConnection()
+			? realUpdateInterval : unrealUpdateInterval;
+	mUpdateTimer.setInterval(variableUpdateInterval);
 	mUpdateTimer.start();
 }
 
