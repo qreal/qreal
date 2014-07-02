@@ -75,6 +75,9 @@ void PaletteTreeWidget::addItemType(PaletteElement const &data, QTreeWidgetItem 
 	DraggableElement *element = new DraggableElement(mMainWindow, data
 			, mPaletteTree.iconsView(), *mEditorManager);
 
+	mPaletteElements.insert(data.id(), element);
+	mPaletteItems.insert(data.id(), leaf);
+
 	parent->addChild(leaf);
 	setItemWidget(leaf, 0, element);
 }
@@ -196,4 +199,32 @@ bool PaletteTreeWidget::idLessThan(Id const &s1, Id const &s2)
 bool PaletteTreeWidget::paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2)
 {
 	return idLessThan(s1.id(), s2.id());
+}
+
+void PaletteTreeWidget::setElementVisible(Id const &metatype, bool visible)
+{
+	if (mPaletteItems.contains(metatype)) {
+		mPaletteItems[metatype]->setHidden(!visible);
+	}
+}
+
+void PaletteTreeWidget::setVisibleForAllElements(bool visible)
+{
+	for (Id const &element : mPaletteElements.keys()) {
+		setElementVisible(element, visible);
+	}
+}
+
+void PaletteTreeWidget::setElementEnabled(Id const &metatype, bool enabled)
+{
+	if (mPaletteElements.contains(metatype)) {
+		mPaletteElements[metatype]->setEnabled(enabled);
+	}
+}
+
+void PaletteTreeWidget::setEnabledForAllElements(bool enabled)
+{
+	foreach (QWidget * const element, mPaletteElements.values()) {
+		element->setEnabled(enabled);
+	}
 }

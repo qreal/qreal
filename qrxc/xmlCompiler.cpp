@@ -22,6 +22,7 @@ using namespace utils;
 XmlCompiler::XmlCompiler()
 {
 	mResources = "<!DOCTYPE RCC><RCC version=\"1.0\">\n<qresource>\n";
+
 	QDir dir;
 	if (!dir.exists("generated")) {
 		dir.mkdir("generated");
@@ -35,11 +36,7 @@ XmlCompiler::XmlCompiler()
 
 XmlCompiler::~XmlCompiler()
 {
-	foreach(Editor *editor, mEditors.values()) {
-		if (editor) {
-			delete editor;
-		}
-	}
+	qDeleteAll(mEditors);
 }
 
 bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &sourcesRootFolder)
@@ -52,6 +49,11 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 	if (!loadXmlFile(startingDir, inputXmlFileInfo.fileName())) {
 		return false;
 	}
+
+	mPluginVersion = mEditors[mCurrentEditor]->version();
+	/// @todo: other languages?
+	addResource(QString("\t<file>translations/%1_ru.qm</file>\n").arg(inputXmlFileInfo.baseName()));
+
 	generateCode();
 	return true;
 }
@@ -155,7 +157,8 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtCore/QStringList>\n"
 		<< "#include <QtCore/QMap>\n"
 		<< "#include <QtGui/QIcon>\n"
-		<< "#include <QtCore/QPair>"
+		<< "#include <QtCore/QPair>\n"
+		<< "#include <QtCore/QTranslator>"
 		<< "\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
@@ -168,6 +171,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\t" << mPluginName << "Plugin();\n"
 		<< "\n"
 		<< "\tQString id() const { return \"" << mPluginName << "\"; }\n"
+		<< "\tQString version() const { return \"" << mPluginVersion << "\"; }\n"
 		<< "\n"
 		<< "\tQStringList diagrams() const override;\n"
 		<< "\tQStringList elements(QString const &diagram) const override;\n"
@@ -187,7 +191,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQStringList getPropertyNames(QString const &diagram, QString const &element) const override;\n"
 		<< "\tQStringList getPortTypes(QString const &diagram, QString const &element) const override;\n"
 		<< "\tQStringList getReferenceProperties(QString const &diagram, QString const &element) const override;\n"
-		<< "\tQStringList getEnumValues(QString name) const override;\n"
+		<< "\tQList<QPair<QString, QString>> getEnumValues(QString const &name) const override;\n"
 		<< "\tQString getGroupsXML() const override;\n"
 		<< "\tQList<QPair<QString, QString>> getParentsOf(QString const &diagram, QString const &element) "
 				"const override;\n"
@@ -243,6 +247,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QString>> mPaletteGroupsDescriptionMap;\n"
 		<< "\tQMap<QString, bool> mShallPaletteBeSortedMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;\n"
+		<< "\tQTranslator mAppTranslator;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -278,15 +283,21 @@ void XmlCompiler::generateIncludes(OutFile &out)
 	out() << "#include \"" << "pluginInterface.h\"\n" //mPluginName
 		<< "\n";
 
+	out() << "#include <QtWidgets/QApplication>\n\n";
+
 	out() << "#include \"" << "elements.h" << "\"\n";
 
 	out() << "\n";
 
 	mEditors[mCurrentEditor]->generateListenerIncludes(out);
 
+	QString const translationName = QFileInfo(mCurrentEditor).baseName();
+
 	out()
 		//<< "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
 		<< mPluginName << "Plugin::" << mPluginName << "Plugin()\n{\n"
+		<< "\tmAppTranslator.load(\":/translations/" + translationName + "_\" + QLocale().name());\n"
+		<< "\tQApplication::installTranslator(&mAppTranslator);\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n";
 }
@@ -324,7 +335,7 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
-		out() << "\tmDiagramNameMap[\"" << diagramName << "\"] = QString::fromUtf8(\""
+		out() << "\tmDiagramNameMap[\"" << diagramName << "\"] = tr(\""
 				<< diagram->displayedName() << "\");\n";
 		out() << "\tmDiagramNodeNameMap[\"" << diagramName << "\"] = \"" << diagram->nodeName() << "\"" << ";\n";
 		out() << "\n";
@@ -366,7 +377,7 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 			}
 
 			out() << "\t\tmPaletteGroupsMap[QString::fromUtf8(\""
-				<< diagramName << "\")].append(qMakePair(QString::fromUtf8(\""
+				<< diagramName << "\")].append(qMakePair(tr(\""
 				<< groupName << "\"), groupElements));\n";
 
 			out() << "\t}\n";
@@ -386,8 +397,8 @@ void XmlCompiler::generatePaletteGroupsDescriptions(utils::OutFile &out)
 			QString const descriptionName = paletteGroupsDescriptions[groupName];
 			if (!descriptionName.isEmpty()) {
 				out() << "\tmPaletteGroupsDescriptionMap[QString::fromUtf8(\""
-					<< diagramName << "\")][QString::fromUtf8(\""
-					<< groupName << "\")] = QString::fromUtf8(\""
+					<< diagramName << "\")][tr(\""
+					<< groupName << "\")] = tr(\""
 					<< descriptionName << "\");\n";
 			}
 		}
@@ -815,8 +826,7 @@ void XmlCompiler::generateGroupsXML(OutFile &out)
 
 void XmlCompiler::generateEnumValues(OutFile &out)
 {
-	out() << "QStringList " << mPluginName << "Plugin::getEnumValues(QString name) const \n{\n"
-		<< "\tQStringList result;\n";
+	out() << "QList<QPair<QString, QString>> " << mPluginName << "Plugin::getEnumValues(QString const &name) const \n{\n";
 
 	EnumValuesGenerator generator;
 	bool isNotFirst = false;
@@ -824,8 +834,10 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 	foreach (EnumType *type, mEditors[mCurrentEditor]->getAllEnumTypes())
 		isNotFirst |= generator.generate(type, out, isNotFirst);
 
-	if (!isNotFirst)
+	if (!isNotFirst) {
 		out() << "\tQ_UNUSED(name);\n";
-	out() << "\treturn result;\n"
+	}
+
+	out() << "\treturn {};\n"
 		<< "}\n\n";
 }

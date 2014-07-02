@@ -17,33 +17,33 @@
 #include "mainwindow/gesturesPainterInterface.h"
 #include "mainwindow/findManager.h"
 #include "mainwindow/referenceList.h"
-
 #include "mainwindow/projectManager/projectManager.h"
+#include "mainwindow/tabWidget.h"
+#include "mainwindow/qscintillaTextEdit.h"
+#include "mainwindow/filterObject.h"
+#include "mainwindow/startWidget/startWidget.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/gesturesPainterInterface.h"
 
 #include "pluginManager/editorManagerInterface.h"
 #include "pluginManager/editorManager.h"
 #include "pluginManager/interpreterEditorManager.h"
 #include "pluginManager/proxyEditorManager.h"
 #include "pluginManager/toolPluginManager.h"
+#include "pluginManager/exploser.h"
+
 #include "models/logicalModelAssistApi.h"
 #include "view/propertyEditorView.h"
 #include "controller/controller.h"
+#include "toolPluginInterface/systemEvents.h"
 
+#include "dialogs/gesturesShow/gesturesWidget.h"
 #include "dialogs/preferencesDialog.h"
 #include "dialogs/findReplaceDialog.h"
-#include "mainwindow/startWidget/startWidget.h"
-#include "mainwindow/propertyEditorProxyModel.h"
-#include "mainwindow/gesturesPainterInterface.h"
-#include "dialogs/gesturesShow/gesturesWidget.h"
+#include "dialogs/suggestToCreateDiagramDialog.h"
 
 #include "textEditor/codeEditor.h"
 #include "textEditor/textManager.h"
-
-#include "dialogs/suggestToCreateDiagramDialog.h"
-#include "mainwindow/tabWidget.h"
-#include "mainwindow/qscintillaTextEdit.h"
-#include "toolPluginInterface/systemEvents.h"
-#include "mainwindow/filterObject.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -80,6 +80,7 @@ public:
 	bool isCurrentTabShapeEdit() const;
 	ListenerManager *listenerManager() const;
 	models::Models *models() const;
+	Exploser &exploser();
 	Controller *controller() const;
 	PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
@@ -115,9 +116,6 @@ public:
 	void showErrors(gui::ErrorReporter *reporter);
 
 	/// Tells if we should display trace connections menu or not
-	bool showConnectionRelatedMenus() const;
-	bool showUsagesRelatedMenus() const;
-
 	//virtual void showInTextEditor(QFileInfo const &fileInfo);
 	virtual void reinitModels();
 
@@ -169,6 +167,13 @@ public:
 
 	void setTabText(QWidget *tab, QString const &text);
 
+	void beginPaletteModification() override;
+	void setElementInPaletteVisible(Id const &metatype, bool visible) override;
+	void setVisibleForAllElementsInPalette(bool visible) override;
+	void setElementInPaletteEnabled(Id const &metatype, bool enabled) override;
+	void setEnabledForAllElementsInPalette(bool enabled) override;
+	void endPaletteModification() override;
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -196,7 +201,7 @@ public slots:
 
 	void openFirstDiagram();
 	void closeTabsWithRemovedRootElements();
-	void changeWindowTitle(int index);
+	void changeWindowTitle();
 
 	void initScriptAPI();
 
@@ -392,6 +397,7 @@ private:
 	gestures::GesturesWidget *mGesturesWidget;
 	SystemEvents *mSystemEvents;
 	TextManager *mTextManager;
+	QScopedPointer<Exploser> mExploser;
 
 	QVector<bool> mSaveListChecked;
 

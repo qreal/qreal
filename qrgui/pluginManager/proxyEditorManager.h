@@ -24,12 +24,14 @@ class Element;
 class ProxyEditorManager : public EditorManagerInterface
 {
 public:
-	ProxyEditorManager(EditorManagerInterface *editorManagerInterface);
-	~ProxyEditorManager();
+	explicit ProxyEditorManager(EditorManagerInterface *editorManagerInterface);
+	~ProxyEditorManager() override;
 
 	IdList editors() const override;
 	IdList diagrams(Id const &editor) const override;
 	IdList elements(Id const &diagram) const override;
+	Version version(Id const &editor) const override;
+
 	bool loadPlugin(QString const &pluginName) override;
 	bool unloadPlugin(QString const &pluginName) override;
 
@@ -42,7 +44,7 @@ public:
 	ElementImpl* elementImpl(Id const &id) const override;
 
 	IdList containedTypes(const Id &id) const override;
-	QStringList enumValues(Id const &id, const QString &name) const override;
+	QList<QPair<QString, QString>> enumValues(Id const &id, const QString &name) const override;
 	QString typeName(Id const &id, const QString &name) const override;
 	QStringList allChildrenTypesOf(Id const &parent) const override;
 
@@ -98,10 +100,12 @@ public:
 	QString getIsHidden(Id const &id) const;
 	void deleteElement(MainWindow *mainWindow, Id const &id) const override;
 	bool isRootDiagramNode(Id const &id) const override;
-	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const override;
+	void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
+			, bool isRootDiagramNode) const override;
 
-	void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
-			, QString const &lineType, QString const &beginType, QString const &endType) const override;
+	void addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName
+			, QString const &labelText, QString const &labelType, QString const &lineType
+			, QString const &beginType, QString const &endType) const override;
 
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const override;
 	void saveMetamodel(QString const &newMetamodelFileName) override;
@@ -117,12 +121,16 @@ public:
 	QList<QString> getPatternNames() const override;
 	QSize iconSize(Id const &id) const override;
 
+	IdList elementsWithTheSameName(Id const &diagram, QString const &name, QString const type) const override;
 	IdList propertiesWithTheSameName(Id const &id
 			, QString const &propCurrentName, QString const &propNewName) const override;
 
+	QStringList getPropertiesInformation(Id const &id) const override;
 	QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const override;
 	void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const override;
 	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
+
+	void setElementEnabled(Id const &type, bool enabled) override;
 
 private:
 	EditorManagerInterface *mProxiedEditorManager;  // Has ownership.

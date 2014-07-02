@@ -10,7 +10,9 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QFileInfo>
 #include <QtCore/QHash>
+#include <QtCore/QSharedPointer>
 #include <QtGui/QIconEngine>
+#include <QtSvg/QSvgRenderer>
 
 #include <qrkernel/settingsManager.h>
 
@@ -40,29 +42,14 @@ public:
 
 private:
 
-	/// Cache for images used in elements. Can automatically select best appropriate image by given file name.
+	/// Cache for images that contains them pre-loaded and parsed and is able to quickly draw it on a painter.
+	/// Pixmaps and svg images are contained separately as they are rendered differently.
 	class ImagesCache {
 	public:
-		/// Describes which renderer shall be used to draw an image - common for .png, .jpg and so on,
-		/// or special for .svg
-		enum Renderer {
-			common
-			, svg
-		};
-
-		/// Describes cached image.
-		struct ImageInfo {
-			/// Contents of an image as a sequence of bytes.
-			QByteArray imageContents;
-
-			/// Renderer that shall be used to draw image contents.
-			Renderer renderer;
-		};
-
-		/// Get image data from cache or load it if it was not used before. Note that it can return file that is not
-		/// actually corresponds to fileName, it uses selectBestImageFile and its logic to determine appropriate
-		/// image file.
-		ImageInfo image(QString const &fileName);
+		/// Draws image with given file name on given painter in given rectangle. Note that actual file, from which
+		/// an image will be loaded may be different from fileName, as described in selectBestImageFile.
+		/// @see selectBestImageFile
+		void drawImage(QString const &fileName, QPainter &painter, QRect const &rect);
 
 	private:
 		/// Selects "best available" image file, using following rules:
@@ -77,11 +64,11 @@ private:
 		/// Loads pixmap from given file, returns empty QByteArray if file does not exist.
 		static QByteArray loadPixmap(QFileInfo const &fileInfo);
 
-		/// Image files cache, maps original image file name to byte array with image data.
-		QHash<QString, QByteArray> mMapFileImage;
+		/// Maps file name to pre-loaded pixmap with image.
+		QHash<QString, QPixmap> mFileNamePixmapMap;
 
-		/// Maps original image file name to appropriate renderer (svg/default).
-		QHash<QString, Renderer> mFileImageRendererMap;
+		/// Maps file name to a svg renderer object.
+		QHash<QString, QSharedPointer<QSvgRenderer>> mFileNameSvgRendererMap;
 	};
 
 	QString mWorkingDirName;

@@ -4,33 +4,33 @@
 	<namespace>UML 2.0</namespace>
 	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
 		<nonGraphicTypes>
-			<enum name="associationTypes" displayedName="associationTypes">
-				<value>no_arrow</value>
-				<value>open_arrow</value>
-				<value>empty_arrow</value>
-				<value>filled_arrow</value>
-				<value>empty_rhomb</value>
-				<value>filled_rhomb</value>
-				<value>crossed_line</value>
-                <value>empty_circle</value>
+			<enum name="associationTypes" displayedName="Association Types">
+				<value name="no_arrow" displayedName="No arrow"/>
+				<value name="open_arrow" displayedName="Opened arrow"/>
+				<value name="empty_arrow" displayedName="Empty arrow"/>
+				<value name="filled_arrow" displayedName="Filled arrow"/>
+				<value name="empty_rhomb" displayedName="Empty rhomb"/>
+				<value name="filled_rhomb" displayedName="Filled rhomb"/>
+				<value name="crossed_line" displayedName="Crossed line"/>
+				<value name="empty_circle" displayedName="Empty circle"/>
 			</enum>
-			<enum name="lineTypes" displayedName="lineTypes">
-				<value>solidLine</value>
-				<value>dashLine</value>
-				<value>dotLine</value>
+			<enum name="lineTypes" displayedName="Line Types">
+				<value name="solidLine" displayedName="Solid line"/>
+				<value name="dashLine" displayedName="Dash line"/>
+				<value name="dotLine" displayedName="Dot line"/>
 			</enum>
-			<enum name="linkShapeType" displayedName="linkShapeType">
-				<value>broken</value>
-				<value>square</value>
-				<value>curve</value>
+			<enum name="linkShapeType" displayedName="Link Shape Type">
+				<value name="broken" displayedName="Broken"/>
+				<value name="square" displayedName="Square"/>
+				<value name="curve" displayedName="Curve"/>
 			</enum>
-			<enum name="labelTypes" displayedName="labelTypes">
-				<value>Static text</value>
-				<value>Dynamic text</value>
+			<enum name="labelTypes" displayedName="Label Types">
+				<value name="staticText" displayedName="Static text"/>
+				<value name="dynamicText" displayedName="Dynamic text"/>
 			</enum>
-			<enum name="buildConfiguration" displayedName="buildConfiguration">
-				<value>debug</value>
-				<value>release</value>
+			<enum name="buildConfiguration" displayedName="Build Configuration">
+				<value name="debug" displayedName="Debug"/>
+				<value name="release" displayedName="Release"/>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
@@ -94,6 +94,10 @@
 						</property>
 						<property type="buildConfiguration" name="buildConfiguration" displayedName="Build Configuration">
 							<default>release</default>
+						</property>
+						<property type="string" name="version" displayedName="Version">
+							<description>An editor`s version. Examples: '2', '2.9.3', '3.0.0-rc1'</description>
+							<default>1.0.0</default>
 						</property>
 					</properties>
 					<containers/>
@@ -265,7 +269,7 @@
 					<properties>
 						<property type="string" name="displayedName"/>
 						<property type="labelTypes" name="labelType">
-							<default>Dynamic text</default>
+							<default>dynamicText</default>
 							<description>тип текста(статический, динамический)</description>
 						</property>
 						<property type="string" name="labelText"/>
@@ -400,6 +404,7 @@
 					<generalizations/>
 					<properties>
 						<property type="string" name="valueName"/>
+						<property type="string" name="displayedName"/>
 					</properties>
 					<containers/>
 				</logic>

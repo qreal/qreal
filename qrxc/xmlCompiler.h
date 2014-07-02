@@ -66,6 +66,7 @@ private:
 
 	QMap<QString, Editor *> mEditors;
 	QString mPluginName;
+	QString mPluginVersion;
 	QString mResources;
 	QString mCurrentEditor;
 	QString mSourcesRootFolder;

@@ -20,7 +20,7 @@ public:
 	Q_INVOKABLE void moveTo(QWidget const *target, int duration);
 
 	///Moves virtual cursor to target coordinated with type for duration ms.
-	Q_INVOKABLE void moveToRect(QRect target, int duration, bool clickNeeded = true);
+	Q_INVOKABLE void moveToRect(QRect target, int duration);
 
 	///Moves virtual cursor to pos on scene with type for duration ms.
 	Q_INVOKABLE void sceneMoveTo(QWidget *target, int duration, int xSceneCoord, int ySceneCoord);

@@ -86,12 +86,9 @@ void ScriptAPI::wait(int duration)
 		timer->setInterval(duration);
 		connect (timer, SIGNAL(timeout()), &mEventLoop, SLOT(quit()));
 		timer->start();
-		mEventLoop.processEvents(QEventLoop::WaitForMoreEvents);
-		mEventLoop.exec();
-	} else {
-		mEventLoop.processEvents(QEventLoop::WaitForMoreEvents);
-		mEventLoop.exec();
 	}
+	//mEventLoop.processEvents(QEventLoop::WaitForMoreEvents);
+	mEventLoop.exec();
 }
 
 GuiFacade *ScriptAPI::guiFacade()

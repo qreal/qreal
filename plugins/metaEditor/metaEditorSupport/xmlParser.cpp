@@ -165,6 +165,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 		includeListString += include.text() + ", ";
 	}
 	setStandartConfigurations(metamodelId, id, "Empty_" + fileBaseName, "");
+	mApi.setProperty(metamodelId, "version", document.documentElement().attribute("version"));
 	mApi.setProperty(metamodelId, "include", includeListString);
 	mApi.setProperty(metamodelId, "name of the directory", directoryName);
 	mApi.setProperty(metamodelId, "relative path to QReal Source Files", pathToRoot);
@@ -306,20 +307,20 @@ void XmlParser::initImport(const QDomElement &import, const Id &diagramId)
 	}
 }
 
-void XmlParser::setEnumAttributes(const QDomElement &enumElement, const Id &enumId)
+void XmlParser::setEnumAttributes(QDomElement const &enumElement, Id const &enumId)
 {
-	QDomNodeList values = enumElement.childNodes();
+	QDomNodeList const values = enumElement.childNodes();
 
 	for (int i = 0; i < values.length(); ++i) {
 		QDomElement value = values.at(i).toElement();
 		if (value.tagName() == "value"){
-			Id valueId("MetaEditor", "MetaEditor", "MetaEntityValue",
-					QUuid::createUuid().toString());
+			Id const valueId("MetaEditor", "MetaEditor", "MetaEntityValue"
+					, QUuid::createUuid().toString());
 
 			setStandartConfigurations(valueId, enumId, value.text(),
 					value.attribute("displayedName", ""));
 
-			mApi.setProperty(valueId, "valueName", value.text());
+			mApi.setProperty(valueId, "valueName", value.attribute("name", ""));
 		}
 	}
 }

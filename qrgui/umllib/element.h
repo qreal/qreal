@@ -7,15 +7,16 @@
 #include <qrkernel/settingsManager.h>
 
 #include "editorPluginInterface/elementRepoInterface.h"
-#include "umllib/label.h"
-
-#include "umllib/contextMenuAction.h"
 #include "editorPluginInterface/elementImpl.h"
+
+#include "umllib/label.h"
+#include "umllib/contextMenuAction.h"
 
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
 
 #include "controller/controller.h"
+#include "pluginManager/exploser.h"
 
 namespace qReal {
 
@@ -68,6 +69,9 @@ public:
 	ElementImpl* elementImpl() const;
 	bool createChildrenFromMenu() const;
 
+	/// Checks if this element is disabled from palette and if it is grayscales it.
+	void updateEnabledState();
+
 public slots:
 	virtual void select(bool const singleSelected);
 	virtual void setSelectionState(bool const selected);
@@ -82,6 +86,7 @@ protected:
 	void setTitlesVisiblePrivate(bool visible);
 
 	bool mMoving;
+	bool mEnabled;
 	Id const mId;
 	ElementImpl * const mElementImpl;  // Has ownership.
 	QList<Label *> mLabels;

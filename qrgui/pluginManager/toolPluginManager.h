@@ -10,20 +10,24 @@
 #include "toolPluginInterface/pluginConfigurator.h"
 #include "dialogs/preferencesPages/preferencesPage.h"
 #include "toolPluginInterface/hotKeyActionInfo.h"
-#include "toolPluginInterface/systemEventsInterface.h"
+#include "toolPluginInterface/systemEvents.h"
 
 namespace qReal {
 
 class ToolPluginManager
 {
 public:
-	explicit ToolPluginManager(QObject *parent = NULL);
-	virtual ~ToolPluginManager();
+	ToolPluginManager();
+	~ToolPluginManager();
 
 	void init(PluginConfigurator const &configurator);
 	void updateSettings();
 	QList<ActionInfo> actions() const;
 	QList<QPair<QString, PreferencesPage *> > preferencesPages() const;
+
+	/// Returns a multimap of project conveters to editors whoose diagrams they convert.
+	/// @warning The result is obtained each time from scratch when you call this method so better to memorize it.
+	QMultiMap<QString, ProjectConverter> projectConverters() const;
 
 	/// Returns GUI customizer object. In each QReal's instance there should be only one plugin with
 	/// valid customizationInterface(): robots plugin for QReal:Robots, ubiq plugin for QReal:Ubiq etc.
@@ -35,11 +39,12 @@ public:
 	/// @param rootElementId Id of the tab which became active after change, if applicable. If not, Id().
 	void activeTabChanged(Id const & rootElementId);
 
-	QList<ToolPluginInterface *> getPlugins();
-
 private:
 	QList<HotKeyActionInfo> hotKeyActions() const;
 	void setHotKeyActions() const;
+
+	/// Asks plugins for custom default settings and merges them with engine`s ones.
+	void loadDefaultSettings();
 
 	QDir mPluginsDir;
 
@@ -49,7 +54,7 @@ private:
 	/// An object and that is used to customize GUI with values from plugins
 	Customizer mCustomizer;
 
-	SystemEventsInterface *mSystemEvents;
+	SystemEvents *mSystemEvents;
 };
 
 }

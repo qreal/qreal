@@ -32,7 +32,7 @@ SensorsGraph::SensorsGraph(utils::ExpressionsParser const *parser, QWidget *pare
 	: QWidget(parent)
 	, mUi(new Ui::SensorsGraph)
 	, mParser(parser)
-	, mUpdateInterval(50)
+	, mUpdateInterval(100)
 	, mCurrentSlot(0)
 {
 	mUi->setupUi(this);
@@ -66,6 +66,13 @@ void SensorsGraph::removeTracking(const int index)
 	TrackObject temp(index);
 	mWatchList.removeOne(temp);
 	watchListChanged();
+}
+
+void SensorsGraph::clearTrackingObjects()
+{
+	for (int i = 0; i < mWatchList.count(); ++i) {
+		removeTracking(i);
+	}
 }
 
 void SensorsGraph::paintEvent(QPaintEvent *event)
@@ -172,7 +179,10 @@ void SensorsGraph::updateValues()
 	TrackObject currentObject(mCurrentSlot);
 	int const index = mWatchList.indexOf(currentObject);
 	if (index != notExists) {
-		sensorsInput(mCurrentSlot, variables[mWatchList.at(index).inParserName]->value().toDouble());
+		Number *const number = variables[mWatchList.at(index).inParserName];
+		if (number) {
+			sensorsInput(mCurrentSlot, number->value().toDouble());
+		}
 	}
 }
 

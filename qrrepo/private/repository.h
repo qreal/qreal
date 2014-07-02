@@ -91,7 +91,7 @@ public:
 	void save(qReal::IdList const &list) const;
 	void saveWithLogicalId(qReal::IdList const &list) const;
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
-	void remove(qReal::IdList list) const;
+	void remove(qReal::IdList const &list) const;
 	void setWorkingFile(QString const &workingDir);
 	void exportToXml(QString const &targetFile) const;
 
@@ -101,16 +101,16 @@ public:
 	/// Creates empty graphical part with given index inside given object.
 	/// @param id - id of an object where we shall create graphical part.
 	/// @param partIndex - index of created part in given object.
-	virtual void createGraphicalPart(qReal::Id const &id, int partIndex);
+	void createGraphicalPart(qReal::Id const &id, int partIndex);
 
 	/// Returns a list of indexes of graphical parts for given element.
-	virtual QList<int> graphicalParts(qReal::Id const &id) const;
+	QList<int> graphicalParts(qReal::Id const &id) const;
 
 	/// Returns the value of graphical part property of a given object.
 	/// @param id - id of an object where graphical part is located.
 	/// @param partIndex - index of a graphical part.
 	/// @param propertyName - name of a property which value we want to get.
-	virtual QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const;
+	QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const;
 
 	/// Sets the value of graphical part property of a given object. If a property already exists, its value
 	/// will be overwritten, otherwise new property will be created with given value.
@@ -118,12 +118,21 @@ public:
 	/// @param partIndex - index of a graphical part.
 	/// @param propertyName - name of a property which value we want to set.
 	/// @param value - new value of a property.
-	virtual void setGraphicalPartProperty(
+	void setGraphicalPartProperty(
 			qReal::Id const &id
 			, int partIndex
 			, QString const &propertyName
 			, QVariant const &value
 			);
+
+	/// Returns a list of keys by that stored some meta-information.
+	QStringList metaInformationKeys() const;
+
+	/// Returns the meta-information about current model stored by the given key.
+	QVariant metaInformation(QString const &key) const;
+
+	/// Stores the meta-information for current stored binded to the given key.
+	void setMetaInformation(QString const &key, QVariant const &info);
 
 private:
 	void init();
@@ -136,6 +145,7 @@ private:
 	QList<Object*> allChildrenOfWithLogicalId(qReal::Id id) const;
 
 	QHash<qReal::Id, Object*> mObjects;
+	QHash<QString, QVariant> mMetaInfo;
 
 	/// Name of the current save file for project.
 	QString mWorkingFile;

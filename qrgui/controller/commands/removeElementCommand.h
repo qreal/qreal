@@ -13,6 +13,7 @@ public:
 	RemoveElementCommand(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
+			, Exploser &exploser
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id
@@ -23,6 +24,7 @@ public:
 	RemoveElementCommand(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
+			, Exploser &exploser
 			, const Id &logicalParent
 			, const Id &graphicalParent
 			, bool isFromLogicalModel

@@ -38,7 +38,9 @@ public:
 	explicit NodeElement(ElementImpl *impl
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			, Exploser &exploser
+			);
 
 	virtual ~NodeElement();
 
@@ -257,6 +259,8 @@ private:
 	QRectF diagramRenderingRect() const;
 
 	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
+
+	Exploser &mExploser;
 
 	ContextMenuAction mSwitchGridAction;
 

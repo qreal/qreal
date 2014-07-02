@@ -21,9 +21,9 @@ class PropertiesDialog : public QDialog
 public:
 	/// Constructor.
 	/// @param mainWindow Reference to QReal main window.
-	/// @param interperterEditorManager Editor manager.
+	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of current metamodel element in which we need to change properties.
-	PropertiesDialog(MainWindow &mainWindow, EditorManagerInterface &interperterEditorManager, Id const &id);
+	PropertiesDialog(MainWindow &mainWindow, EditorManagerInterface &interpreterEditorManager, Id const &id);
 
 	/// Destructor.
 	~PropertiesDialog();
@@ -39,13 +39,16 @@ private:
 	QStringList getPropertiesDisplayedNamesList(QStringList const &propertiesNames);
 	void change(QString const &text);
 	bool checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
+	void findElementsOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
+	void disableParentProperties(QStringList const propertiesDisplayedNames);
 
-	Ui::PropertiesDialog *mUi;
-	EditorManagerInterface &mInterperterEditorManager;
+	Ui::PropertiesDialog *mUi;  // Has ownership.
+	EditorManagerInterface &mInterpreterEditorManager;
 	Id mId;
 	MainWindow &mMainWindow;
-	EditPropertiesDialog *mEditPropertiesDialog; // Does not have ownership.
+	EditPropertiesDialog *mEditPropertiesDialog;  // Has ownership.
 	QStringList mPropertiesNames;
+	qReal::IdList *mElementsOnDiagram;
 };
 
 }

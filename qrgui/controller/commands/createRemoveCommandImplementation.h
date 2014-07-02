@@ -1,6 +1,6 @@
 #pragma once
 
-#include "models/graphicalModelAssistApi.h"
+#include "pluginManager/exploser.h"
 
 namespace qReal {
 namespace commands {
@@ -11,8 +11,9 @@ public:
 	CreateRemoveCommandImplementation(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, const Id &logicalParent
-			, const Id &graphicalParent
+			, Exploser &exploser
+			, Id const &logicalParent
+			, Id const &graphicalParent
 			, Id const &id
 			, bool isFromLogicalModel
 			, QString const &name
@@ -30,6 +31,7 @@ private:
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
+	Exploser &mExploser;
 	Id const mLogicalParent;
 	Id const mGraphicalParent;
 	Id mId;

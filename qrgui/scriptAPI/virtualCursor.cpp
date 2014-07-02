@@ -49,7 +49,7 @@ void VirtualCursor::moveTo(QWidget const *target, int duration)
 	mScriptAPI->wait(-1);
 }
 
-void VirtualCursor::moveToRect(QRect target, int duration, bool clickNeeded)
+void VirtualCursor::moveToRect(QRect target, int duration)
 {
 	PropertyEditorView const *propertyEditor = mMainWindow->findChild<PropertyEditorView *>("propertyEditor");
 	QTreeWidget const *treeWidget = propertyEditor->
@@ -266,14 +266,14 @@ void VirtualCursor::pickComboBoxItem(QComboBox *comboBox, QString const &name, i
 			QApplication::postEvent(comboBox->view()->viewport(), moveEvent);
 		});
 	timer->start();
-	moveToRect(target, duration, false);
+	moveToRect(target, duration);
 	timer->stop();
 
 	QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress, QPoint(0, rowHeight*i), Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
 	QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease, QPoint(0, rowHeight*i), Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
 	QApplication::postEvent(comboBox->view()->viewport(), pressEvent);
-	mScriptAPI->wait(700);
 	QApplication::postEvent(comboBox->view()->viewport(), releaseEvent);
+	mScriptAPI->wait(400);
 	newPos = comboBox->mapTo(mMainWindow, pos());
 	setParent(parent);
 	move(newPos);
@@ -284,6 +284,7 @@ void VirtualCursor::type(QString const &message, int const duration)
 {
 	printValue(message, duration);
 	QTest::keyClick((QWidget *) nullptr, Qt::Key_Enter, Qt::NoModifier, 200);
+	mScriptAPI->wait(300);
 }
 
 void VirtualCursor::printValue(QString const &value, int const duration)
@@ -296,6 +297,6 @@ void VirtualCursor::printValue(QString const &value, int const duration)
 		connect(timer, SIGNAL(timeout()), mScriptAPI, SLOT(breakWaiting()));
 		timer->start();
 		mScriptAPI->wait(-1);
-		QTest::keyClicks(nullptr, ch, Qt::NoModifier, 2000);
+		QTest::keyClicks(nullptr, ch.toLower(), Qt::NoModifier, 0);
 	}
 }

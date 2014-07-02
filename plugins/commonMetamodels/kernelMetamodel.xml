@@ -4,25 +4,25 @@
     <diagram nodeName="Diagram" name="KernelDiagram" displayedName="Kernel Diagram">
       <nonGraphicTypes>
         <enum name="bool" displayedName="bool">
-          <value>false</value>
-          <value>true</value>
+          <value name="false" displayedName="False"/>
+          <value name="true" displayedName="True"/>
         </enum>
         <enum name="AggregationKind" displayedName="Aggregation Kind">
-          <value>none</value>
-          <value>shared</value>
-          <value>composite</value>
+          <value name="none" displayedName="None"/>
+          <value name="shared" displayedName="Shared"/>
+          <value name="composite" displayedName="Composite"/>
         </enum>
         <enum name="VisibilityKind" displayedName="Visibility Kind">
-          <value>private</value>
-          <value>protected</value>
-          <value>public</value>
-          <value>package</value>
+          <value name="private" displayedName="Private"/>
+          <value name="protected" displayedName="Protected"/>
+          <value name="public" displayedName="Public"/>
+          <value name="package" displayedName="Package"/>
         </enum>
         <enum name="ParameterDirectionKind" displayedName="Parameter Direction Kind">
-          <value>in</value>
-          <value>inout</value>
-          <value>out</value>
-          <value>return</value>
+          <value name="in" displayedName="In"/>
+          <value name="inout" displayedName="Inout"/>
+          <value name="out" displayedName="Out"/>
+          <value name="return" displayedName="Return"/>
         </enum>
       </nonGraphicTypes>
       <graphicTypes>

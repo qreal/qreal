@@ -12,7 +12,7 @@
             <platforms>windows</platforms>
             <distributionFileList>
                 <distributionFile>
-                    <origin>%1/bin/qrgui.exe</origin>
+                    <origin>%1/bin/%3.exe</origin>
                 </distributionFile>
                 <distributionFile>
                     <origin>%1/bin/qrkernel.dll</origin>
@@ -93,6 +93,16 @@
             <distributionFileList>
                 <distributionFile>
                     <origin>%2/../plugins/imageformats/qsvg.dll</origin>
+                </distributionFile>
+            </distributionFileList>
+        </folder>
+        <folder>
+            <destination>${installdir}/iconengines</destination>
+            <name>iconengineswindows</name>
+            <platforms>windows</platforms>
+            <distributionFileList>
+                <distributionFile>
+                    <origin>%2/../plugins/iconengines/qsvgicon.dll</origin>
                 </distributionFile>
             </distributionFileList>
         </folder>

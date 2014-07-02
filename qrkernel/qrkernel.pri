@@ -13,13 +13,14 @@ HEADERS += \
 	$$PWD/settingsManager.h \
 	$$PWD/kernelDeclSpec.h \
 	$$PWD/timeMeasurer.h \
-	$$PWD/uxInfoInterface.h \
+	$$PWD/version.h \
 
 SOURCES += \
 	$$PWD/ids.cpp \
 	$$PWD/exception/exception.cpp \
 	$$PWD/settingsManager.cpp \
 	$$PWD/timeMeasurer.cpp \
+	$$PWD/version.cpp \
 
 RESOURCES += \
-	$$PWD/qrkernel.qrc
+	$$PWD/qrkernel.qrc \

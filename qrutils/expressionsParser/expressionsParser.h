@@ -20,7 +20,7 @@ public:
 	bool parseConditionHelper(QString const &stream, int &pos);
 	bool parseCondition(QString const &stream, int& pos, qReal::Id const &curId);
 	qReal::ErrorReporterInterface& getErrors();
-	bool hasErrors();
+	bool hasErrors() const;
 	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
 	void clear();
 

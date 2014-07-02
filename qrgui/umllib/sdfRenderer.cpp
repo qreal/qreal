@@ -9,7 +9,6 @@
 #include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
-#include <QtSvg/QSvgRenderer>
 
 using namespace qReal;
 
@@ -301,18 +300,9 @@ void SdfRenderer::image_draw(QDomElement &element)
 	QString const fileName = SettingsManager::value("pathToImages").toString() + "/"
 			+ element.attribute("name", "default");
 
-	ImagesCache::ImageInfo const imageInfo = mImagesCache.image(fileName);
-
 	QRect const rect(x1, y1, x2 - x1, y2 - y1);
 
-	if (imageInfo.renderer == ImagesCache::svg) {
-		QSvgRenderer renderer(imageInfo.imageContents);
-		renderer.render(painter, rect);
-	} else {
-		QPixmap pixmap;
-		pixmap.loadFromData(imageInfo.imageContents);
-		painter->drawPixmap(rect, pixmap);
-	}
+	mImagesCache.drawImage(fileName, *painter, rect);
 }
 
 void SdfRenderer::point(QDomElement &element)
@@ -768,15 +758,15 @@ void SdfRenderer::noScale()
 	mNeedScale = false;
 }
 
-SdfRenderer::ImagesCache::ImageInfo SdfRenderer::ImagesCache::image(QString const &fileName)
+void SdfRenderer::ImagesCache::drawImage(
+		QString const &fileName
+		, QPainter &painter
+		, QRect const &rect)
 {
-	Renderer renderer = common;
-	QByteArray rawImage;
-
-	if (mMapFileImage.contains(fileName)) {
-		// Cache hit - getting image contents and appropriate renderer from cache.
-		rawImage = mMapFileImage.value(fileName);
-		renderer = mFileImageRendererMap.value(fileName);
+	if (mFileNamePixmapMap.contains(fileName)) {
+		painter.drawPixmap(rect, mFileNamePixmapMap.value(fileName));
+	} else if (mFileNameSvgRendererMap.contains(fileName)) {
+		mFileNameSvgRendererMap.value(fileName)->render(&painter, rect);
 	} else {
 		// Cache miss - finding best file to load and loading it.
 		QString const actualFileName = fileName.startsWith("./")
@@ -785,18 +775,24 @@ SdfRenderer::ImagesCache::ImageInfo SdfRenderer::ImagesCache::image(QString cons
 
 		QFileInfo const actualFile = selectBestImageFile(actualFileName);
 
-		rawImage = loadPixmap(actualFile);
-		renderer = actualFile.suffix() == "svg" ? svg : common;
-		mMapFileImage.insert(fileName, rawImage);
-		mFileImageRendererMap.insert(fileName, renderer);
+		QByteArray const rawImage = loadPixmap(actualFile);
+		if (actualFile.suffix() == "svg") {
+			QSharedPointer<QSvgRenderer> renderer(new QSvgRenderer(rawImage));
+			mFileNameSvgRendererMap.insert(fileName, renderer);
+			renderer->render(&painter, rect);
+		} else {
+			QPixmap pixmap;
+			pixmap.loadFromData(rawImage);
+			mFileNamePixmapMap.insert(fileName, pixmap);
+			painter.drawPixmap(rect, pixmap);
+		}
 	}
-
-	return {rawImage, renderer};
 }
 
 QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(QString const &filePath)
 {
-	QFileInfo svgVersion(QString(filePath).replace(filePath.size() - 3, 3, "svg"));
+	QFileInfo const originalFileInfo(filePath);
+	QFileInfo const svgVersion(originalFileInfo.path() + originalFileInfo.completeBaseName() + "svg");
 
 	if (svgVersion.exists()) {
 		return svgVersion;

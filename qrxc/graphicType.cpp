@@ -323,14 +323,11 @@ bool GraphicType::addProperty(Property *property)
 {
 	QString const propertyName = property->name();
 	if (mProperties.contains(propertyName)) {
-		// Множественное наследование может приводить к тому, что одно свойство
-		// может быть добавлено классу дважды (ромбовидное наследование, например).
-		// Pугаемся мы только тогда, когда тип, значение по умолчанию или что-то ещё
-		// у одноимённых свойств различны - тогда непонятно, что делать.
+		/// @todo Good for overriding parent properties, but bad in multiple inheritance case
+		/// --- we can allow invalid rhomb inheritance.
 		if (mProperties[propertyName] != property && *mProperties[propertyName] != *property) {
-			qDebug() << "ERROR: property" << propertyName << "duplicated with different attributes";
+			qDebug() << "WARNING: property" << propertyName << "duplicated with different attributes";
 			delete property;
-			return false;
 		}
 	} else {
 		mProperties[propertyName] = property;
@@ -407,7 +404,7 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
 		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName
-				<< "\"] = QString::fromUtf8(\"" << actualDisplayedName << "\");\n";
+				<< "\"] = tr(\"" << actualDisplayedName << "\");\n";
 	}
 }
 
@@ -418,7 +415,7 @@ void GraphicType::generateDescriptionMapping(OutFile &out)
 			QString diagramName = NameNormalizer::normalize(mDiagram->name());
 			QString normalizedName = NameNormalizer::normalize(qualifiedName());
 			out() << "\tmElementsDescriptionMap[\"" << diagramName << "\"][\""
-					<< normalizedName << "\"] = QString::fromUtf8(\"" << mDescription << "\");\n";
+					<< normalizedName << "\"] = tr(\"" << mDescription << "\");\n";
 		}
 	}
 }
@@ -433,7 +430,7 @@ void GraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
 				QString const propertyName = p->name();
 				QString const propertyDescription = p->description();
 				out() << "\tmPropertiesDescriptionMap[\"" << diagramName << "\"][\""
-						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\""
+						<< normalizedName << "\"][\"" << propertyName << "\"] = tr(\""
 						<< propertyDescription << "\");\n";
 			}
 		}
@@ -450,7 +447,7 @@ void GraphicType::generatePropertyDisplayedNamesMapping(utils::OutFile &out)
 				QString const propertyName = p->name();
 				QString const propertyDisplayedName = p->displayedName();
 				out() << "\tmPropertiesDisplayedNamesMap[\"" << diagramName << "\"][\""
-						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\""
+						<< normalizedName << "\"][\"" << propertyName << "\"] = tr(\""
 						<< propertyDisplayedName << "\");\n";
 			}
 		}
@@ -577,11 +574,12 @@ void GraphicType::generatePropertyDefaults(OutFile &out)
 		return;
 	}
 
-	QString name = NameNormalizer::normalize(qualifiedName());
-	foreach (Property *property, mProperties) {
+	QString const name = NameNormalizer::normalize(qualifiedName());
+	for (Property const *property : mProperties) {
 		if (!property->defaultValue().isEmpty()) {
-			out() << "\tmPropertyDefault[\"" << name << "\"][\"" << property->name()
-					<< "\"] = QString::fromUtf8(\"" << property->defaultValue() << "\");\n";
+			QString const stringConstructor = property->type() == "string" ? "tr" : "QString::fromUtf8";
+			out() << QString("\tmPropertyDefault[\"%1\"][\"%2\"] = %3(\"%4\");\n").arg(name
+					, property->name(), stringConstructor, property->defaultValue());
 		}
 	}
 }

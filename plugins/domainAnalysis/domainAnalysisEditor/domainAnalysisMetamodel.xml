@@ -1,0 +1,157 @@
+<metamodel xmlns="http://schema.real.com/schema/">
+	<include>../../commonMetamodels/kernelMetamodel.xml</include>
+	<include>../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
+	<include>../../commonMetamodels/basicActionsMetamodel.xml</include>
+	<namespace>UML 2.0</namespace>
+	<diagram displayedName="DomainAnalysisEditor" name="Diagram" nodeName="DiagramNode">
+		<graphicTypes>
+			<node displayedName="Diagram" name="DiagramNode">
+				<graphics>
+					<picture sizex="200" sizey="200">
+						<line y1="0" x1="20" y2="0" x2="180"/>
+						<line y1="200" x1="20" y2="200" x2="180"/>
+						<line y1="20" x1="0" y2="180" x2="0"/>
+						<line y1="20" x1="200" y2="180" x2="200"/>
+						<arc spanAngle="1440" startAngle="1440" y1="0" x1="0" y2="40" x2="40"/>
+						<arc spanAngle="1440" startAngle="0" y1="0" x1="160" y2="40" x2="200"/>
+						<arc spanAngle="1440" startAngle="2880" y1="160" x1="0" y2="200" x2="40"/>
+						<arc spanAngle="-1440" startAngle="0" y1="160" x1="160" y2="200" x2="200"/>
+					</picture>
+					<labels>
+						<label x="40" y="10" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="0" y="100"/>
+						<pointPort x="100" y="0"/>
+						<pointPort x="200" y="100"/>
+						<pointPort x="100" y="200"/>
+					</ports>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="KernelDiagram::Diagram"/>
+					</generalizations>
+					<container>
+						<contains type="Diagram::Time"/>
+						<contains type="Diagram::Place"/>
+						<contains type="Diagram::TeamName"/>
+						<contains type="Diagram::TeamChoice"/>
+						<contains type="Diagram::GameChoice"/>
+						<contains type="Diagram::GoalKeeperOrPlayer"/>
+						<contains type="Diagram::Connection"/>
+					</container>
+				</logic>
+			</node>
+			<node name="CommonFeature" displayedName="Общая фича" description="Обобщающая фича">
+				<graphics>
+					<picture sizex="149" sizey="95">
+						<rectangle stroke-width="0" y1="2" y2="91a" x1="2" x2="144a" fill="#ffffff" stroke="#0000ff" fill-style="none" stroke-style="solid"/>
+					</picture>
+					<labels>
+						<label x="20" y="14" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="69" y="2" type="NonTyped"/>
+						<pointPort x="2" y="51" type="NonTyped"/>
+						<pointPort x="75" y="92" type="NonTyped"/>
+						<pointPort x="146" y="50" type="NonTyped"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<explodesTo/>
+				</logic>
+			</node>
+			<node name="DetailedFeature" displayedName="Детальная фича" description="Детализированная фича">
+				<graphics>
+					<picture sizex="144" sizey="88">
+						<rectangle stroke-width="0" y1="2" y2="82" x1="2" x2="138a" fill="#ffffff" stroke="#008000" fill-style="none" stroke-style="solid"/>
+					</picture>
+					<labels>
+						<label x="25" y="20" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="71" y="2" type="NonTyped"/>
+						<pointPort x="2" y="50" type="NonTyped"/>
+						<pointPort x="71" y="85" type="NonTyped"/>
+						<pointPort x="141" y="47" type="NonTyped"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<explodesTo/>
+				</logic>
+			</node>
+			<edge name="AndConnection" displayedName="ИСвязь">
+				<graphics>
+					<lineType type="solidLine"/>
+					<shape type="square"/>
+					<labels>
+						<label textBinded="Текст"/>
+					</labels>
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="filled_arrow">
+						<association beginName="BeginOfAndConnection" endName="EndOfAndConnection"/>
+					</associations>
+					<fromPorts/>
+					<toPorts/>
+					<explodesTo/>
+				</logic>
+			</edge>
+			<edge name="OrConnection" displayedName="АльтСвязь">
+				<graphics>
+					<lineType type="dashLine"/>
+					<shape type="square"/>
+					<labels>
+						<label textBinded="Текст"/>
+					</labels>
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="empty_arrow">
+						<association beginName="BeginOfOrConnection" endName="EndOfOrConnection"/>
+					</associations>
+					<properties>
+						<property name="OrProperty" displayedName="Свойства использования" type="bool">
+							<default>true</default>
+						</property>
+					</properties>
+					<fromPorts/>
+					<toPorts/>
+					<explodesTo/>
+				</logic>
+			</edge>
+			<edge name="AddConnection" displayedName="ДопСвязь">
+				<graphics>
+					<lineType type="dotLine"/>
+					<shape type="square"/>
+					<labels>
+						<label textBinded="Текст"/>
+					</labels>
+				</graphics>
+				<logic>
+					<associations beginType="no_arrow" endType="empty_circle">
+						<association beginName="BeginOfAddConnection" endName="EndOfAddConnection"/>
+					</associations>
+					<properties>
+						<property name="AddProperty" displayedName="Свойство использования" type="bool">
+							<default>false</default>
+						</property>
+					</properties>
+					<fromPorts/>
+					<toPorts/>
+					<explodesTo/>
+				</logic>
+			</edge>
+		</graphicTypes>
+		<palette>
+			<group name="Элементы">
+				<element name="CommonFeature"/>
+				<element name="DetailedFeature"/>
+				<element name="AndConnection"/>
+				<element name="OrConnection"/>
+				<element name="AddConnection"/>
+			</group>
+		</palette>
+	</diagram>
+</metamodel>

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>nxtKitInterpreter_ru.qm</file>
+        <file>nxtDefaultSettings.ini</file>
+        <file>icons/switch-2d.svg</file>
+        <file>icons/switch-real-nxt.svg</file>
+    </qresource>
+</RCC>

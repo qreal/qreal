@@ -7,6 +7,9 @@
 
 qreal const PortHandler::mMaximumFractionPartValue = 0.9999;
 
+/// Value for determing ID of nonexistent port.
+qreal const nonexistentPortId = -1; // just smth negative
+
 PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, QList<PortInterface *> const &ports)
 		: mNode(node), mGraphicalAssistApi(graphicalAssistApi)
@@ -182,7 +185,7 @@ qreal PortHandler::pointPortId(QPointF const &location, QStringList const &types
 		}
 	}
 
-	return mNonexistentPortId;
+	return nonexistentPortId;
 }
 
 qreal PortHandler::linePortId(QPointF const &location, QStringList const &types) const
@@ -209,7 +212,7 @@ qreal PortHandler::linePortId(QPointF const &location, QStringList const &types)
 		}
 	}
 
-	return mNonexistentPortId;
+	return nonexistentPortId;
 }
 
 QPair<int, qreal> PortHandler::nearestPointPortNumberAndDistance(QPointF const &location
@@ -256,18 +259,18 @@ QPair<int, qreal> PortHandler::nearestLinePortNumberAndDistance(QPointF const &l
 qreal PortHandler::portId(QPointF const &location, QStringList const &types) const
 {
 	if (mPointPorts.empty() && mLinePorts.empty()) {
-		return mNonexistentPortId;
+		return nonexistentPortId;
 	}
 
 	// Finding in point port locality
 	qreal locationPointPortId = pointPortId(location, types);
-	if (locationPointPortId != mNonexistentPortId) {
+	if (locationPointPortId != nonexistentPortId) {
 		return locationPointPortId;
 	}
 
 	// Finding in line port locality
 	qreal locationLinePortId = linePortId(location, types);
-	if (locationLinePortId != mNonexistentPortId) {
+	if (locationLinePortId != nonexistentPortId) {
 		return locationLinePortId;
 	}
 
@@ -283,10 +286,10 @@ qreal PortHandler::portId(QPointF const &location, QStringList const &types) con
 			return pointPortRes.first;
 		}
 
-		return mNonexistentPortId;
+		return nonexistentPortId;
 	} else {
 		if (linePortRes.second < 0) {
-			return mNonexistentPortId;
+			return nonexistentPortId;
 		}
 
 		qreal nearestPoint = nearestPointOfLinePort(linePortRes.first, location);

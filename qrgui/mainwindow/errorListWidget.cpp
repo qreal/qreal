@@ -9,13 +9,8 @@
 ErrorListWidget::ErrorListWidget(QWidget *parent)
 {
 	Q_UNUSED(parent);
-	connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(clickList()));
+	connect(this, &ErrorListWidget::itemDoubleClicked, this, &ErrorListWidget::highlightElement);
 	initContextMenu();
-}
-
-void ErrorListWidget::clickList()
-{
-	highlightElement(currentItem());
 }
 
 void ErrorListWidget::highlightElement(QListWidgetItem* const item)

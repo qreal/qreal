@@ -42,6 +42,13 @@ void Label::init()
 	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
 	setRotation(mRotation);
+	if (!mBinding.isEmpty()) {
+		QList<QPair<QString, QString>> const values = mGraphicalModelAssistApi
+				.editorManagerInterface().enumValues(mId, mBinding);
+		for (QPair<QString, QString> const &pair : values) {
+			mEnumValues[pair.first] = pair.second;
+		}
+	}
 }
 
 void Label::moveToParentCenter()
@@ -75,15 +82,16 @@ Qt::Orientation Label::orientation()
 	return Qt::Horizontal;
 }
 
-void Label::setText(const QString &text)
+void Label::setText(QString const &text)
 {
 	setPlainText(text);
 }
 
-void Label::setTextFromRepo(QString const& text)
+void Label::setTextFromRepo(QString const &text)
 {
-	if (text != toPlainText()) {
-		QGraphicsTextItem::setHtml(text); // need this to load old saves with html markup
+	QString const friendlyText = mEnumValues.isEmpty() ? text : mEnumValues[text];
+	if (friendlyText != toPlainText()) {
+		QGraphicsTextItem::setHtml(friendlyText); // need this to load old saves with html markup
 		setText(toPlainText());
 		updateData();
 	}
@@ -143,8 +151,10 @@ void Label::updateData(bool withUndoRedo)
 	NodeElement * const parent = static_cast<NodeElement*>(parentItem());
 	if (mBinding == "name") {
 		parent->setName(value, withUndoRedo);
-	} else {
+	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mBinding, value, withUndoRedo);
+	} else {
+		parent->setLogicalProperty(mBinding, mEnumValues.key(value), withUndoRedo);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mIndex, pos());
@@ -283,9 +293,13 @@ void Label::keyPressEvent(QKeyEvent *event)
 
 	if ((event->modifiers() & Qt::ShiftModifier) && (event->key() == Qt::Key_Return)) {
 		// Line feed
-		QTextCursor const cursor = textCursor();
-		QString const currentText = toPlainText();
-		setText(currentText + "\n");
+		QTextCursor cursor = textCursor();
+		QString currentText = toPlainText();
+		int const oldPos = cursor.position();
+		currentText.insert(oldPos, "\n");
+		setText(currentText);
+		cursor.movePosition(QTextCursor::Start);
+		cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, oldPos + 1);
 		setTextCursor(cursor);
 		return;
 	}

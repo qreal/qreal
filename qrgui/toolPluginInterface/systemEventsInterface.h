@@ -6,10 +6,9 @@
 
 #include <qrkernel/ids.h>
 
-namespace qReal
-{
+namespace qReal {
 
-/// Provides global singnals
+/// Provides global system-wide signals
 class SystemEventsInterface : public QObject
 {
 	Q_OBJECT
@@ -24,8 +23,8 @@ public:
 	virtual void emitSettingsUpdated() = 0;
 
 	virtual void emitCodePathChanged(qReal::Id const &diagram
-									 , QFileInfo const &oldFileInfo
-									 , QFileInfo const &newFileInfo) = 0;
+			, QFileInfo const &oldFileInfo
+			, QFileInfo const &newFileInfo) = 0;
 
 	virtual void emitNewCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo) = 0;
 
@@ -35,7 +34,7 @@ public:
 
 signals:
 	void closedMainWindow();
-	void activeTabChanged(Id const & rootElementId);
+	void activeTabChanged(Id const &rootElementId);
 	void settingsUpdated();
 	void codePathChanged(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
 	void newCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo);
