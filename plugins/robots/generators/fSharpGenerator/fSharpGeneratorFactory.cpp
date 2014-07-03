@@ -18,9 +18,10 @@
 #include "simpleGenerators/systemGenerator.h"
 #include "simpleGenerators/EnginesGenerator.h"
 #include "simpleGenerators/FSharpEnginesStopGenerator.h"
+#include "simpleGenerators/FSharpNullificationEncoderGenerator.h"
+*/
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
-#include "simpleGenerators/FSharpNullificationEncoderGenerator.h"*/
 #include "simpleGenerators/fSharpEnginesGenerator.h"
 #include "simpleGenerators/fSharpEnginesStopGenerator.h"
 #include "simpleGenerators/fSharpNullificationEncoderGenerator.h"
@@ -92,11 +93,12 @@ AbstractSimpleGenerator *FSharpGeneratorFactory::simpleGenerator(qReal::Id const
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
 	} else if (elementType == "FSharpWaitForPower") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForPower.t", this);
-	} else if (elementType == "FSharpWaitForMotion") {
+	}
+*/	  else if (elementType == "TrikWaitForMotion") {
 		return new WaitForMotionGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpWaitForIRDistance") {
+	} else if (elementType == "TrikWaitForIRDistance") {
 		return new WaitForInfraredSensorGenerator(mRepo, customizer, id, this);
-	}*/
+	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }

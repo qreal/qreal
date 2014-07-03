@@ -23,7 +23,7 @@ generatorBase::GeneratorCustomizer *FSharpMasterGenerator::createCustomizer()
 
 QString FSharpMasterGenerator::targetPath()
 {
-	return QString("%1/%2.fsx").arg(mProjectDir, mProjectName);
+	return QString("%1/%2.fs").arg(mProjectDir, mProjectName);
 }
 
 bool FSharpMasterGenerator::supportsGotoGeneration() const

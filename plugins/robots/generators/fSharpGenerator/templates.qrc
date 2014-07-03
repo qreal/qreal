@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/fSharp">
+    <qresource prefix="/FSharp">
         <file>templates/beep.t</file>
         <file>templates/break.t</file>
         <file>templates/continue.t</file>
@@ -15,9 +15,6 @@
         <file>templates/led.t</file>
         <file>templates/say.t</file>
         <file>templates/system.t</file>
-        <file>templates/display/setBackground.t</file>
-        <file>templates/display/smile.t</file>
-        <file>templates/display/sadSmile.t</file>
         <file>templates/backgroundColors/white.t</file>
         <file>templates/backgroundColors/black.t</file>
         <file>templates/backgroundColors/red.t</file>
@@ -61,40 +58,38 @@
         <file>templates/conditional/whileDo.t</file>
         <file>templates/types/float.t</file>
         <file>templates/types/int.t</file>
-        <file>templates/sensors/readColor.t</file>
-        <file>templates/sensors/readEncoder.t</file>
-        <file>templates/sensors/readGyroscore.t</file>
-        <file>templates/sensors/readLight.t</file>
-        <file>templates/sensors/readSonar.t</file>
-        <file>templates/sensors/readSound.t</file>
-        <file>templates/sensors/readTouch.t</file>
+        <file>templates/sensors/Enter.t</file>
+        <file>templates/sensors/Power.t</file>
+        <file>templates/sensors/Left.t</file>
+        <file>templates/sensors/Right.t</file>
+        <file>templates/sensors/Up.t</file>
+        <file>templates/sensors/Down.t</file>
+        <file>templates/sensors/encoder.t</file>
+        <file>templates/sensors/light.t</file>
+        <file>templates/sensors/infrared.t</file>
+        <file>templates/sensors/sonar.t</file>
+        <file>templates/sensors/motion.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>
-        <file>templates/wait/color.t</file>
-        <file>templates/wait/colorIntensity.t</file>
         <file>templates/wait/encoder.t</file>
-        <file>templates/wait/gyroscope.t</file>
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>
-        <file>templates/wait/sound.t</file>
-        <file>templates/wait/touch.t</file>
+        <file>templates/wait/infrared.t</file>
+        <file>templates/wait/motion.t</file>
         <file>templates/subprograms/subprogramCall.t</file>
         <file>templates/subprograms/declarationsSectionHeader.t</file>
         <file>templates/subprograms/forwardDeclaration.t</file>
         <file>templates/subprograms/implementation.t</file>
         <file>templates/subprograms/implementationsSectionHeader.t</file>
+        <file>templates/drawing/setBackground.t</file>
+        <file>templates/drawing/smile.t</file>
+        <file>templates/drawing/sadSmile.t</file>
         <file>templates/drawing/bmpDeclaration.t</file>
         <file>templates/drawing/clearUnusedScreen.t</file>
         <file>templates/drawing/clearUsedScreen.t</file>
         <file>templates/drawing/drawBitmap.t</file>
         <file>templates/drawing/variablesDeclaration.t</file>
-        <file>templates/buttons/doNotWaitButtons.t</file>
-        <file>templates/buttons/enterVariableDeclaration.t</file>
-        <file>templates/buttons/runVariableDeclaration.t</file>
-        <file>templates/buttons/waitForBothButtons.t</file>
-        <file>templates/buttons/waitForEnterOnly.t</file>
-        <file>templates/buttons/waitForRunOnly.t</file>
         <file>templates/buttons/waitForEnter.t</file>
         <file>templates/buttons/waitForUp.t</file>
         <file>templates/buttons/waitForDown.t</file>
@@ -106,6 +101,7 @@
         <file>templates/variables/intConstantDeclaration.t</file>
         <file>templates/variables/intVariableDeclaration.t</file>
         <file>templates/whatTime.t</file>
+        <file>templates/variableInit.t</file>
         <file>templates/engines/backward.t</file>
         <file>templates/engines/forward.t</file>
         <file>templates/engines/stop.t</file>

@@ -1,0 +1,1 @@
+model.AnalogSensor.["F1"].Read()

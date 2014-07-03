@@ -1,1 +1,1 @@
-Thread.Sleep(@@DELAY@@)
+Thread.Sleep @@DELAY@@

@@ -27,6 +27,7 @@ INCLUDEPATH += \
 TRANSLATIONS = fSharpGenerator_ru.ts
 
 RESOURCES = \
+	$$PWD/fSharpGenerator.qrc \
 	$$PWD/templates.qrc \
 
 HEADERS += \
@@ -45,6 +46,8 @@ HEADERS += \
 	$$PWD/simpleGenerators/fSharpEnginesGenerator.h \
 	$$PWD/simpleGenerators/fSharpEnginesStopGenerator.h \
 	$$PWD/simpleGenerators/fSharpNullificationEncoderGenerator.h \
+	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.h \
+	$$PWD/simpleGenerators/waitForMotionGenerator.h \
 
 SOURCES += \
 	$$PWD/fSharpGeneratorPlugin.cpp \
@@ -62,4 +65,6 @@ SOURCES += \
 	$$PWD/simpleGenerators/fSharpEnginesGenerator.cpp \
 	$$PWD/simpleGenerators/fSharpEnginesStopGenerator.cpp \
 	$$PWD/simpleGenerators/fSharpNullificationEncoderGenerator.cpp \
+	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.cpp \
+	$$PWD/simpleGenerators/waitForMotionGenerator.cpp \
 
