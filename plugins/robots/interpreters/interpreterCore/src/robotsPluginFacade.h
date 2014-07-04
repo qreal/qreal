@@ -47,6 +47,9 @@ public:
 	/// collects all non-empty default settings file pathes and returns them.
 	QStringList defaultSettingsFiles() const;
 
+	///Returns 2d model gui script facade
+	QObject *guiScriptFacade();
+
 private:
 	void connectInterpreterToActions();
 

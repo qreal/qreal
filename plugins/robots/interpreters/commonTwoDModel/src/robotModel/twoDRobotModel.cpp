@@ -14,6 +14,7 @@
 #include "commonTwoDModel/robotModel/parts/motor.h"
 #include "commonTwoDModel/robotModel/parts/rangeSensor.h"
 #include "commonTwoDModel/robotModel/parts/touchSensor.h"
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 

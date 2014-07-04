@@ -51,6 +51,8 @@ public:
 	/// Returns a pointer to 2D model display emulator.
 	virtual TwoDModelDisplayInterface *display() = 0;
 
+	///Returns robot 2D model gui facade.
+	virtual QObject *guiFacade();
 };
 
 }

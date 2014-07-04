@@ -24,6 +24,7 @@ using namespace interpreterBase::robotModel;
 TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
 	: mModel(model)
 	, mView(view)
+	, mGuiFacade(new engine::TwoDModelGuiFacade(view))
 {
 }
 
@@ -275,4 +276,9 @@ QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(PortInfo con
 	QPointF const position = sensor ? sensor->scenePos() : QPointF();
 	qreal const direction = sensor ? sensor->rotation() + mModel.robotModel().rotation() : 0;
 	return { position, direction };
+}
+
+engine::TwoDModelGuiFacade *TwoDModelEngineApi::guiFacade()
+{
+	return mGuiFacade;
 }

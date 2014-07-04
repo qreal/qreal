@@ -3,6 +3,9 @@
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "managers/paletteUpdateManager.h"
 #include "managers/kitAutoSwitcher.h"
+#include "commonTwoDModel/robotModel/twoDRobotModel.h"
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
 
 using namespace interpreterCore;
 
@@ -265,4 +268,12 @@ void RobotsPluginFacade::connectEventsForKitPlugin()
 void RobotsPluginFacade::sync()
 {
 	mRobotModelManager.sync();
+}
+
+twoDModel::engine::TwoDModelGuiFacade *RobotsPluginFacade::guiScriptFacade()
+{
+	twoDModel::robotModel::TwoDRobotModel *robotModel = dynamic_cast<twoDModel::robotModel::TwoDRobotModel *>(mRobotModelManager.model());
+	if (robotModel) {
+		return robotModel->engine().guiFacade();
+	}
 }

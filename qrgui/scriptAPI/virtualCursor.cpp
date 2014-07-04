@@ -51,11 +51,6 @@ void VirtualCursor::moveTo(QWidget const *target, int duration)
 
 void VirtualCursor::moveToRect(QRect target, int duration)
 {
-	PropertyEditorView const *propertyEditor = mMainWindow->findChild<PropertyEditorView *>("propertyEditor");
-	QTreeWidget const *treeWidget = propertyEditor->
-			findChild<QtTreePropertyBrowser *>()->
-			findChild<QTreeWidget *>();
-
 	int const xcoord = target.topLeft().x();
 	int const ycoord = target.topLeft().y();
 
@@ -274,10 +269,11 @@ void VirtualCursor::pickComboBoxItem(QComboBox *comboBox, QString const &name, i
 	QApplication::postEvent(comboBox->view()->viewport(), pressEvent);
 	QApplication::postEvent(comboBox->view()->viewport(), releaseEvent);
 	mScriptAPI->wait(400);
-	newPos = comboBox->mapTo(mMainWindow, pos());
+	newPos = comboBox->mapTo(parent, pos());
 	setParent(parent);
 	move(newPos);
 	show();
+	raise();
 }
 
 void VirtualCursor::type(QString const &message, int const duration)

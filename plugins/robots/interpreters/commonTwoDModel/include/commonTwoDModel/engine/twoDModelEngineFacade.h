@@ -8,6 +8,7 @@
 #include "commonTwoDModel/engine/twoDModelControlInterface.h"
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 #include "commonTwoDModel/engine/configurer.h"
+#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
 
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 

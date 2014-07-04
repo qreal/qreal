@@ -2336,8 +2336,6 @@ void MainWindow::endPaletteModification()
 				element->updateEnabledState();
 			}
 		}
-
 		scene->update();
 	}
->>>>>>> trunc/master
 }

@@ -9,6 +9,7 @@
 #include "ui/robotsSettingsPage.h"
 
 #include "robotsPluginFacade.h"
+#include "robotsPluginGuiFacade.h"
 #include "managers/actionsManager.h"
 
 namespace interpreterCore {
@@ -33,6 +34,8 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::ProjectConverter> projectConverters() override;
 	QStringList defaultSettingsFiles() override;
+	QString pluginName() override;
+	QObject *guiScriptFacade() override;
 
 private:
 	/// Main window interface object, used to call GUI functionality.

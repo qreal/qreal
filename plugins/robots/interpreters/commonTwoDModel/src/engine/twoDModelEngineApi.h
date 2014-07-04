@@ -1,6 +1,7 @@
 #pragma once
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
 
 namespace twoDModel {
 
@@ -32,6 +33,7 @@ public:
 
 	utils::TimelineInterface &modelTimeline() override;
 	engine::TwoDModelDisplayInterface *display() override;
+	engine::TwoDModelGuiFacade *guiFacade() override;
 
 private:
 	QPair<QPointF, qreal> countPositionAndDirection(interpreterBase::robotModel::PortInfo const &port) const;
@@ -47,6 +49,6 @@ private:
 
 	model::Model &mModel;
 	view::D2ModelWidget &mView;
+	engine::TwoDModelGuiFacade *mGuiFacade;
 };
-
 }

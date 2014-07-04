@@ -135,3 +135,8 @@ void ToolPluginManager::activeTabChanged(Id const & rootElementId)
 {
 	emit mSystemEvents->activeTabChanged(rootElementId);
 }
+
+QList<ToolPluginInterface *> ToolPluginManager::getPlugins()
+{
+	return mPlugins;
+}

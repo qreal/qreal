@@ -20,6 +20,7 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/engine/twoDModelDisplayWidget.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineFacade.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelEngineInterface.h \
+	$$PWD/include/commonTwoDModel/engine/twoDModelGuiFacade.h \
 	$$PWD/include/commonTwoDModel/robotModel/twoDRobotModel.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/button.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/colorSensorBlue.h \
@@ -63,6 +64,7 @@ HEADERS += \
 SOURCES += \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
 	$$PWD/src/engine/twoDModelEngineApi.cpp \
+	$$PWD/src/engine/twoDModelGuiFacade.cpp \
 	$$PWD/src/engine/view/d2ModelWidget.cpp \
 	$$PWD/src/engine/view/d2ModelScene.cpp \
 	$$PWD/src/engine/view/robotItem.cpp \
