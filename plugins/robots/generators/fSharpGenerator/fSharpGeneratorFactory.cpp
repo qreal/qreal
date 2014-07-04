@@ -33,8 +33,8 @@ using namespace generatorBase;
 using namespace generatorBase::simple;
 
 FSharpGeneratorFactory::FSharpGeneratorFactory(qrRepo::RepoApi const &repo
-		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+											   , qReal::ErrorReporterInterface &errorReporter
+											   , interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager)
 {
 }
@@ -44,7 +44,7 @@ FSharpGeneratorFactory::~FSharpGeneratorFactory()
 }
 
 AbstractSimpleGenerator *FSharpGeneratorFactory::simpleGenerator(qReal::Id const &id
-		, GeneratorCustomizer &customizer)
+																 , GeneratorCustomizer &customizer)
 {
 
 	QString const elementType = id.element();
@@ -79,22 +79,25 @@ AbstractSimpleGenerator *FSharpGeneratorFactory::simpleGenerator(qReal::Id const
 		return new DetectLineGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "FSharpInitCamera") {
 		return new InitCameraGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpLineDetectorToVariable") {
-		return new LineDetectorToVariableGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpWaitForEnter") {
+	}
+*/
+	//else if (elementType == "FSharpLineDetectorToVariable") {
+	//return new LineDetectorToVariableGenerator(mRepo, customizer, id, this);
+	//	}
+	else if (elementType == "TrikWaitForEnter") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
-	} else if (elementType == "FSharpWaitForLeft") {
+	} else if (elementType == "TrikWaitForLeft") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
-	} else if (elementType == "FSharpWaitForRight") {
+	} else if (elementType == "TrikWaitForRight") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
-	} else if (elementType == "FSharpWaitForUp") {
+	} else if (elementType == "TrikWaitForUp") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForUp.t", this);
-	} else if (elementType == "FSharpWaitForDown") {
+	} else if (elementType == "TrikWaitForDown") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
-	} else if (elementType == "FSharpWaitForPower") {
+	} else if (elementType == "TrikWaitForPower") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForPower.t", this);
 	}
-*/	  else if (elementType == "TrikWaitForMotion") {
+	else if (elementType == "TrikWaitForMotion") {
 		return new WaitForMotionGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForIRDistance") {
 		return new WaitForInfraredSensorGenerator(mRepo, customizer, id, this);

@@ -1,3 +1,6 @@
-while (!brick.keys().wasPressed(KeysEnum.Left)) {
-	brick.wait(100);
-}
+let exit = new EventWaitHandle(false, EventResetMode.AutoReset)
+button.ToObservable()
+    |> Observable.subscribe(function
+        | Button_Event_Code.Left, true ->
+            exit.Set() |> ignore
+        | _ -> ()
