@@ -18,6 +18,8 @@
 
 #include "view/d2ModelWidget.h"
 
+#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
+
 using namespace twoDModel;
 using namespace interpreterBase::robotModel;
 
