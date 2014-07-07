@@ -3,4 +3,4 @@ button.ToObservable()
     |> Observable.subscribe(function
         | Button_Event_Code.Right, true ->
             exit.Set() |> ignore
-        | _ -> ()
+        | _ -> () )
