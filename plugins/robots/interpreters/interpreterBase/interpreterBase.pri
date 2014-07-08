@@ -14,6 +14,7 @@ TRANSLATIONS = interpreterBase_ru.ts
 
 SOURCES += \
 	$$PWD/src/devicesConfigurationProvider.cpp \
+	$$PWD/src/devicesConfigurationWidget.cpp \
 	$$PWD/src/blocksBase/block.cpp \
 	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
 	$$PWD/src/blocksBase/common/clearEncoderBlock.cpp \
@@ -66,6 +67,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/kitPluginInterface.h \
 	$$PWD/include/interpreterBase/additionalPreferences.h \
 	$$PWD/include/interpreterBase/devicesConfigurationProvider.h \
+	$$PWD/include/interpreterBase/devicesConfigurationWidget.h \
 	$$PWD/include/interpreterBase/eventsForKitPluginInterface.h \
 	$$PWD/include/interpreterBase/interpreterControlInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/block.h \

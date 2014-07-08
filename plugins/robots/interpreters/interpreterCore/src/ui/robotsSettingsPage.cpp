@@ -32,7 +32,7 @@ RobotsSettingsPage::RobotsSettingsPage(
 	mUi->devicesConfigurer->connectDevicesConfigurationProvider(this);
 	mUi->devicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mUi->devicesConfigurer, &ui::DevicesConfigurationWidget::selectRobotModel);
+			, mUi->devicesConfigurer, &DevicesConfigurationWidget::selectRobotModel);
 
 	restoreSettings();
 	saveSelectedRobotModel();

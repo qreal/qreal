@@ -3,6 +3,7 @@
 #include "robotModel/parts/nxtDisplay.h"
 
 #include <commonTwoDModel/engine/twoDModelEngineInterface.h>
+#include <commonTwoDModel/engine/twoDModelDisplayInterface.h>
 
 namespace nxtKitInterpreter {
 namespace robotModel {
