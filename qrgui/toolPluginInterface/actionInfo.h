@@ -18,11 +18,6 @@ public:
 	{
 	}
 
-	ActionInfo(QAction * const action, QString const &toolbarName, QString const &menuName, QString const &name)
-			: mAction(action),mMenu(NULL), mToolbarName(toolbarName), mMenuName(menuName), mIsAction(true), mName(name)
-	{
-	}
-
 	QAction *action() const
 	{
 		return mAction;
@@ -41,11 +36,6 @@ public:
 	QString menuName() const
 	{
 		return mMenuName;
-	}
-
-	QString name() const
-	{
-		return mName;
 	}
 
 	bool isAction() const

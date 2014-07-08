@@ -272,8 +272,8 @@ void RobotsPluginFacade::sync()
 
 twoDModel::engine::TwoDModelGuiFacade *RobotsPluginFacade::guiScriptFacade()
 {
-	twoDModel::robotModel::TwoDRobotModel *robotModel = dynamic_cast<twoDModel::robotModel::TwoDRobotModel *>(mRobotModelManager.model());
+	twoDModel::robotModel::TwoDRobotModel *robotModel = dynamic_cast<twoDModel::robotModel::TwoDRobotModel *>(&mRobotModelManager.model());
 	if (robotModel) {
-		return robotModel->engine().guiFacade();
+		return robotModel->engine()->guiFacade();
 	}
 }

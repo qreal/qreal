@@ -14,7 +14,6 @@ static int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
 	: mMainWindowInterpretersInterface(nullptr)
-	, mRobotsGuiFacade(nullptr)
 {
 	// WARNING: hack!
 	forceLoadCommonTwoDModelLib();
@@ -27,7 +26,6 @@ RobotsPlugin::RobotsPlugin()
 
 	// This will start kit plugins loading and so on so we must load translators first.
 	mRobotsPluginFacade.reset(new RobotsPluginFacade);
-	mRobotsPluginGuiFacade.reset(new RobotsPluginGuiFacade);
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
@@ -79,7 +77,7 @@ QString RobotsPlugin::pluginName()
 	return "robots";
 }
 
-QObject *RobotsPlugin::guiScriptFacade()
+twoDModel::engine::TwoDModelGuiFacade *RobotsPlugin::guiScriptFacade()
 {
-	return mRobotsPluginFacade.guiScriptFacade();
+	return mRobotsPluginFacade.data()->guiScriptFacade();
 }

@@ -18,6 +18,7 @@
 #include "interpreter/interpreter.h"
 #include "textLanguage/robotsBlockParser.h"
 #include "ui/robotsSettingsPage.h"
+#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
 
 namespace interpreterCore {
 
@@ -48,7 +49,7 @@ public:
 	QStringList defaultSettingsFiles() const;
 
 	///Returns 2d model gui script facade
-	QObject *guiScriptFacade();
+	twoDModel::engine::TwoDModelGuiFacade *guiScriptFacade();
 
 private:
 	void connectInterpreterToActions();

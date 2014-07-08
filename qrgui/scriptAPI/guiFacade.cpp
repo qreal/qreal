@@ -30,27 +30,14 @@ QWidget* GuiFacade::widget(QString const &type, QString const &name)
 				}
 			}
 		}
-	} else if (!type.compare("2dModel")) {
-		QList<ActionInfo> actionList = mRobotsPlugin->actions();
-		for (ActionInfo &actionInfo : actionList) {
-			if (!actionInfo.name().compare(name)){
-				QAction *action = actionInfo.action();
-				QList<QWidget *> widgetList =action->associatedWidgets();
-				for(QWidget *widget : widgetList) {
-					QString buttonClassName = "QToolButton";
-					if (!buttonClassName.compare(widget->metaObject()->className())) {
-						if (!actionInfo.name().compare(name)){
-							widget->setObjectName(actionInfo.name());
-						}
-						return widget;
-					}
-				}
-			}
+		QWidget *action = robotAction(name);
+		if (action) {
+			return action;
 		}
 	} else if (!type.compare("ComboBox")) {
 		QList<QComboBox *> comboBoxList = mMainWindow->findChildren<QComboBox*>();
 		for(QComboBox *comboBox : comboBoxList) {
-			if (!comboBox->objectName().compare(name)) {
+			if (!comboBox->objectName().compare(name) && comboBox->isVisible()) {
 				return comboBox;
 			}
 		}
@@ -108,6 +95,22 @@ QWidget* GuiFacade::comboBoxProperty(QString const &name)
 		QTreeWidgetItem *item = editorTree->topLevelItem(i);
 		if (item->data(0, Qt::DisplayRole).toString() == data.data()) {
 			return editorTree->itemWidget(item, 1);
+		}
+	}
+}
+
+QWidget* GuiFacade::robotAction(QString const &name)
+{
+	QList<ActionInfo > actionList = mRobotsPlugin->actions();
+	for(ActionInfo &actionInfo : actionList) {
+		if (!actionInfo.action()->objectName().compare(name)) {
+			QList<QWidget *> widgetList = actionInfo.action()->associatedWidgets();
+			for(QWidget *widget : widgetList) {
+				QString buttonClassName = "QToolButton";
+				if (!buttonClassName.compare(widget->metaObject()->className()) && widget->isVisible()) {
+					return widget;
+				}
+			}
 		}
 	}
 }

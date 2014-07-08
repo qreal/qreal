@@ -1,4 +1,5 @@
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QComboBox>
 
 #include "commonTwoDModel/engine/twoDModelGuiFacade.h"
 #include "view/d2ModelWidget.h"
@@ -30,7 +31,7 @@ QWidget *TwoDModelGuiFacade::d2ModelScene()
 	return mD2ModelWidget.scene()->views()[0]->viewport();
 }
 
-QWidget &TwoDModelGuiFacade::d2ModelWidget()
+QWidget *TwoDModelGuiFacade::d2ModelWidget()
 {
-	return mD2ModelWidget;
+	return &mD2ModelWidget;
 }

@@ -8,8 +8,8 @@
 
 #include "ui/robotsSettingsPage.h"
 
+#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
 #include "robotsPluginFacade.h"
-#include "robotsPluginGuiFacade.h"
 #include "managers/actionsManager.h"
 
 namespace interpreterCore {
@@ -35,7 +35,7 @@ public:
 	QList<qReal::ProjectConverter> projectConverters() override;
 	QStringList defaultSettingsFiles() override;
 	QString pluginName() override;
-	QObject *guiScriptFacade() override;
+	twoDModel::engine::TwoDModelGuiFacade *guiScriptFacade() override;
 
 private:
 	/// Main window interface object, used to call GUI functionality.

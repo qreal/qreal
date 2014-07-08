@@ -1951,7 +1951,10 @@ Id MainWindow::activeDiagram()
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
-	initScriptAPI();
+	if (SettingsManager::value("scriptInterpretation").toBool()) {
+		initScriptAPI();
+	}
+
 	BrandManager::configure(&mToolManager);
 	mPreferencesDialog.updatePluginDependendSettings();
 

@@ -49,6 +49,7 @@ QList<ActionInfo> RussianCGeneratorPlugin::actions()
 	mGenerateCodeAction.setText(tr("Generate to Russian C"));
 	mGenerateCodeAction.setIcon(QIcon(":/images/generateRussianCCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
+	mGenerateCodeAction.setObjectName("generateRussianC");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
 	return { generateCodeActionInfo };

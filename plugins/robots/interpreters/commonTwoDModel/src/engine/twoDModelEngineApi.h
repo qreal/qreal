@@ -1,7 +1,6 @@
 #pragma once
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
-#include "commonTwoDModel/engine/twoDModelGuiFacade.h"
 
 namespace twoDModel {
 
@@ -10,6 +9,10 @@ class Model;
 }
 namespace view {
 class D2ModelWidget;
+}
+
+namespace engine {
+class TwoDModelGuiFacade;
 }
 
 class TwoDModelEngineApi : public engine::TwoDModelEngineInterface

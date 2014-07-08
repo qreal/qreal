@@ -91,6 +91,7 @@ QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 QList<HotKeyActionInfo> NxtKitInterpreterPlugin::hotKeyActions()
 {
 	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setObjectName("show2dModel");
 
 	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForNxt", tr("Show 2d model")
 			, mTwoDModel->showTwoDModelWidgetActionInfo().action());

@@ -9,6 +9,7 @@ namespace twoDModel {
 namespace engine {
 
 class TwoDModelDisplayInterface;
+class TwoDModelGuiFacade;
 
 /// An interface for using 2D model in extensibility components.
 /// Provides some basic engine methods like scanning the field or playing the sound or working with display.
@@ -52,7 +53,7 @@ public:
 	virtual TwoDModelDisplayInterface *display() = 0;
 
 	///Returns robot 2D model gui facade.
-	virtual QObject *guiFacade();
+	virtual TwoDModelGuiFacade *guiFacade() = 0;
 };
 
 }

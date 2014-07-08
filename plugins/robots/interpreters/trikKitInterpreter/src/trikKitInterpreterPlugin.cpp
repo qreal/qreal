@@ -90,6 +90,7 @@ QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
 QList<HotKeyActionInfo> TrikKitInterpreterPlugin::hotKeyActions()
 {
 	mTwoDModelV6->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mTwoDModelV6->showTwoDModelWidgetActionInfo().action()->setObjectName("show2dModelTrik");
 
 	HotKeyActionInfo d2V6ModelActionInfo("Interpreter.Show2dModelForTrikV6", tr("Show 2d model for TRIK v6")
 			, mTwoDModelV6->showTwoDModelWidgetActionInfo().action());

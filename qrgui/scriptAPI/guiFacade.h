@@ -19,6 +19,7 @@ public:
 
 private:
 	QWidget *comboBoxProperty(QString const &name);
+	QWidget *robotAction(QString const &name);
 	MainWindow *mMainWindow;
 	ToolPluginInterface *mRobotsPlugin;
 };

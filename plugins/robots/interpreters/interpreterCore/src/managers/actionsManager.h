@@ -74,6 +74,9 @@ private:
 	/// Loads actions from kit plugins.
 	void initKitPluginActions();
 
+	///Give object names to actions
+	void giveObjectNames();
+
 	/// Plugins can have their own custom actions, we need to get them from KitPluginManager.
 	KitPluginManager &mKitPluginManager;
 

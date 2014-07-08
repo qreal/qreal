@@ -35,8 +35,8 @@ void VirtualCursor::paintEvent(QPaintEvent *event)
 
 void VirtualCursor::moveTo(QWidget const *target, int duration)
 {
-	int  xcoord = target->mapTo(parentWidget(), QPoint()).x();
-	int ycoord = target->mapTo(parentWidget(), QPoint()).y();
+	int const xcoord = target->mapTo(parentWidget(), QPoint()).x();
+	int const ycoord = target->mapTo(parentWidget(), QPoint()).y();
 
 	mCursorMoveAnimation->setDuration(duration);
 	mCursorMoveAnimation->setStartValue(QRect(mapToParent(QPoint()).x(), mapToParent(QPoint()).y(), 0, 0));

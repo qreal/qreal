@@ -35,7 +35,8 @@ ScriptAPI::ScriptAPI(MainWindow *mainWindow)
 	QScriptValue virtualCursor = mScriptEngine.newQObject(mVirtualCursor);
 	mScriptEngine.globalObject().setProperty("virtualCursor", virtualCursor);
 
-	QString fileName(":/hintScripts/obstacle.js");
+	qDebug()<<SettingsManager::value("scriptName").toString();
+	QString fileName(SettingsManager::value("scriptName").toString());
 
 	QFile scriptFile(fileName);
 	scriptFile.open(QIODevice::ReadOnly);

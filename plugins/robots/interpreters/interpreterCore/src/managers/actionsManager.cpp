@@ -19,6 +19,7 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mSeparator2(nullptr)
 {
 	initKitPluginActions();
+	giveObjectNames();
 
 	mConnectToRobotAction.setCheckable(true);
 
@@ -208,4 +209,13 @@ void ActionsManager::initKitPluginActions()
 			mPluginHotKeyActionInfos << generator->hotKeyActions();
 		}
 	}
+}
+
+void ActionsManager::giveObjectNames()
+{
+	mRunAction.setObjectName("runRobot");
+	mStopRobotAction.setObjectName("stopRobot");
+	mConnectToRobotAction.setObjectName("connectToRobot");
+	mRobotSettingsAction.setObjectName("robotSettings");
+	mTitlesAction.setObjectName("titles");
 }
