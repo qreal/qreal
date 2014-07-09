@@ -45,6 +45,8 @@
 #include "textEditor/codeEditor.h"
 #include "textEditor/textManager.h"
 
+#include <QtNetwork/QtNetwork>
+
 namespace Ui {
 class MainWindowUi;
 }
@@ -294,6 +296,9 @@ private slots:
 	void startUsabilityTest();
 	void finishUsabilityTest();
 
+    void getSettings();
+    void displayError(QAbstractSocket::SocketError socketError);
+
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
@@ -430,6 +435,9 @@ private:
 	QToolBar *mUsabilityTestingToolbar; // Has ownership
 	QAction *mStartTest; // Has ownership
 	QAction *mFinishTest; // Has ownership
+    void applySettingsFromServer(QString settings);
+    QTcpSocket *serverSocket;
+    quint16 messegeSize;
 };
 
 }

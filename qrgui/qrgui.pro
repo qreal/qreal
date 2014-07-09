@@ -1,6 +1,7 @@
 DESTDIR = ../bin
 
 CONFIG += c++11
+QT += network
 
 CONFIG += rpath_libdirs
 macx {

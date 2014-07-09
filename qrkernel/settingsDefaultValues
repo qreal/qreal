@@ -63,3 +63,5 @@ dragArea = 12
 usabilityTestingMode=false
 collectErgonomicValues=true
 touchMode=false
+ServerPort=55555
+ServerIP=0.0.0.0
