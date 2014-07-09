@@ -5,7 +5,8 @@
 
 namespace qReal {
 
-class HintInterface {
+class HintInterface
+{
 public:
 	Q_INVOKABLE void addHint(QString const &message);
 	Q_INVOKABLE void arrowToWidget(QWidget const &target);

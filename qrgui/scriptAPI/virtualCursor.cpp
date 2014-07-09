@@ -3,6 +3,8 @@
 #include <QtTest/QTest>
 
 #include "scriptAPI.h"
+#include "mainwindow/mainWindow.h"
+#include "mainwindow/palette/draggableElement.h"
 
 using namespace qReal;
 using namespace gui;
@@ -10,10 +12,10 @@ using namespace gui;
 VirtualCursor::VirtualCursor(MainWindow *mainWindow, ScriptAPI *scriptAPI)
 	: QLabel()
 	, mMainWindow(mainWindow)
-	, mIsPaletteElementAttached(false)
+	, mScriptAPI(scriptAPI)
 	, mCursorMoveAnimation (new QPropertyAnimation(this, "geometry"))
 	, mRightButtonPressed(false)
-	, mScriptAPI(scriptAPI)
+	, mIsPaletteElementAttached(false)
 {
 	setParent(mMainWindow);
 	setFixedSize(64, 64);
@@ -25,6 +27,7 @@ VirtualCursor::VirtualCursor(MainWindow *mainWindow, ScriptAPI *scriptAPI)
 
 void VirtualCursor::paintEvent(QPaintEvent *event)
 {
+	(void)event;
 	QPainter mPainter(this);
 	QPixmap const virtCursorIcon(":/icons/virtcursor.png");
 	mPainter.drawPixmap(0,0, virtCursorIcon	);

@@ -2,23 +2,22 @@
 
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QWidget>
-#include "mainwindow/mainWindow.h"
 
 
 namespace qReal {
 namespace gui {
 
-class Arrow : public QWidget{
+class Arrow : public QWidget
+{
 	Q_OBJECT
 
 public:
-	Arrow(QPoint const &sourcePoint, QPoint const &destPoint, MainWindow *mainWindow);
+	Arrow(QPoint const &sourcePoint, QPoint const &destPoint, QWidget *parent);
 
 protected:
 	void paintEvent(QPaintEvent *);
 
 private:
-	qreal mArrowSize;
 	QPoint mSourcePoint;
 	QPoint mDestPoint;
 };

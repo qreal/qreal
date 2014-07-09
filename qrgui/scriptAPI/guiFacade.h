@@ -1,9 +1,17 @@
 #pragma once
 
-#include "mainwindow/palette/draggableElement.h"
+#include <QtWidgets/QWidget>
+
+#include "toolPluginInterface/toolPluginInterface.h"
+//#include "mainwindow/palette/draggableElement.h"
 
 namespace qReal {
+
+class MainWindow;
+
 namespace gui {
+
+class DraggableElement;
 
 class GuiFacade : public QObject
 {

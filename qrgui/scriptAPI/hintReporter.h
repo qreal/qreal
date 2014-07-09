@@ -1,13 +1,17 @@
 #pragma once
 
 #include <QtWidgets/QWidget>
-#include "mainwindow/mainWindow.h"
-#include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include <QtWidgets/QLabel>
+#include <QtCore/QTimer>
 
 namespace qReal {
+
+class MainWindow;
+
 namespace gui {
 
-class HintReporter : public QLabel{
+class HintReporter : public QLabel
+{
 	Q_OBJECT
 
 public:

@@ -85,7 +85,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mStartWidget(nullptr)
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
-		, mScriptAPI(nullptr)
+//		, mScriptAPI()
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
@@ -2283,8 +2283,8 @@ void MainWindow::openStartTab()
 void MainWindow::initScriptAPI()
 {
 	QThread* scriptAPIthread = new QThread;
-	mScriptAPI = new ScriptAPI(this);
-	mScriptAPI->moveToThread(scriptAPIthread);
+	mScriptAPI.init(this);
+	mScriptAPI.moveToThread(scriptAPIthread);
 	scriptAPIthread->start();
 }
 

@@ -8,35 +8,41 @@
 #include "virtualCursor.h"
 #include "arrow.h"
 #include "guiFacade.h"
+#include "view/editorView.h"
 #include "mainwindow/palette/draggableElement.h"
 #include "controller/commands/createElementCommand.h"
-#include "view/editorView.h"
-
 
 using namespace qReal;
 using namespace gui;
 
-ScriptAPI::ScriptAPI(MainWindow *mainWindow)
+ScriptAPI::ScriptAPI()
 	: mScriptEngine(new QScriptEngine)
-	, mMainWindow (mainWindow)
-	, mVirtualCursor (new VirtualCursor(mainWindow, this))
-	, mGuiFacade (new GuiFacade(mainWindow))
+	, mVirtualCursor (nullptr)
+	, mGuiFacade (nullptr)
 	, mHintReporter(nullptr)
+	, mMainWindow(nullptr)
 {
-	QScriptValue scriptAPI = mScriptEngine.newQObject(this);
+}
+
+void ScriptAPI::init(MainWindow *mainWindow)
+{
+	mMainWindow = mainWindow;
+	mVirtualCursor = new VirtualCursor(mainWindow, this);
+	mGuiFacade = new GuiFacade(mainWindow);
+
+	QScriptValue const scriptAPI = mScriptEngine.newQObject(this);
 	mScriptEngine.globalObject().setProperty("scriptAPI", scriptAPI);
 
-	QScriptValue robotsGuiFacade = mScriptEngine.newQObject(mGuiFacade->plugin()->guiScriptFacade());
+	QScriptValue const robotsGuiFacade = mScriptEngine.newQObject(mGuiFacade->plugin()->guiScriptFacade());
 	mScriptEngine.globalObject().setProperty("robotsGuiFacade", robotsGuiFacade);
 
-	QScriptValue guiFacade = mScriptEngine.newQObject(mGuiFacade);
+	QScriptValue const guiFacade = mScriptEngine.newQObject(mGuiFacade);
 	mScriptEngine.globalObject().setProperty("guiFacade", guiFacade);
 
-	QScriptValue virtualCursor = mScriptEngine.newQObject(mVirtualCursor);
+	QScriptValue const virtualCursor = mScriptEngine.newQObject(mVirtualCursor);
 	mScriptEngine.globalObject().setProperty("virtualCursor", virtualCursor);
 
-	qDebug()<<SettingsManager::value("scriptName").toString();
-	QString fileName(SettingsManager::value("scriptName").toString());
+	QString const fileName(SettingsManager::value("scriptName").toString());
 
 	QFile scriptFile(fileName);
 	scriptFile.open(QIODevice::ReadOnly);
@@ -49,8 +55,8 @@ ScriptAPI::ScriptAPI(MainWindow *mainWindow)
 
 void ScriptAPI::addHint(QString const &message, int const duration)
 {
-	QByteArray data = message.toLocal8Bit();
-	QString modifiedMessage = data.data();
+	QByteArray const data = message.toLocal8Bit();
+	QString const modifiedMessage = data.data();
 	mHintReporter = new HintReporter(mMainWindow, modifiedMessage, duration);
 
 	QTimer *hintTimer = new QTimer(this);
@@ -62,14 +68,14 @@ void ScriptAPI::addHint(QString const &message, int const duration)
 
 void ScriptAPI::arrowToWidget(QWidget *target, qreal angle)
 {
-	int x = target->mapToGlobal(QPoint(0,0)).x();
-	int y = target->mapToGlobal(QPoint(0,0)).y();
+	int const xcoord = target->mapToGlobal(QPoint(0,0)).x();
+	int const ycoord = target->mapToGlobal(QPoint(0,0)).y();
 
 	int const sourcePointDeviation = 50;
 
-	QPoint sourcePoint = QPoint(x - sourcePointDeviation * qSin(angle)
-						, y + sourcePointDeviation * qCos(angle));
-	QPoint destPoint = QPoint(x ,y );
+	QPoint const sourcePoint = QPoint(xcoord - sourcePointDeviation * qSin(angle)
+									, ycoord + sourcePointDeviation * qCos(angle));
+	QPoint const destPoint = QPoint(xcoord, ycoord);
 	Arrow *line = new Arrow(sourcePoint, destPoint, mMainWindow);
 	line->show();
 }
@@ -88,7 +94,7 @@ void ScriptAPI::wait(int duration)
 		connect (timer, SIGNAL(timeout()), &mEventLoop, SLOT(quit()));
 		timer->start();
 	}
-	//mEventLoop.processEvents(QEventLoop::WaitForMoreEvents);
+
 	mEventLoop.exec();
 }
 
@@ -116,7 +122,7 @@ QString ScriptAPI::initialNode()
 	QList<QGraphicsItem *> items = mMainWindow->getCurrentTab()->editorViewScene()->items();
 	foreach (QGraphicsItem *item, items) {
 		NodeElement *node = dynamic_cast<NodeElement*>(item);
-		if (node ) {
+		if (node) {
 			if (!node->id().diagram().compare("RobotsDiagram") && !node->id().element().compare("InitialNode")) {
 				return node->id().toString();
 			}

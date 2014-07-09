@@ -45,6 +45,8 @@
 #include "textEditor/codeEditor.h"
 #include "textEditor/textManager.h"
 
+#include "scriptAPI/scriptAPI.h"
+
 namespace Ui {
 class MainWindowUi;
 }
@@ -60,7 +62,7 @@ class Models;
 }
 
 namespace gui {
-class ScriptAPI;
+//class ScriptAPI;
 class ErrorReporter;
 class PaletteTree;
 }
@@ -434,7 +436,7 @@ private:
 	QAction *mStartTest; // Has ownership
 	QAction *mFinishTest; // Has ownership
 
-	gui::ScriptAPI *mScriptAPI;
+	gui::ScriptAPI mScriptAPI;
 };
 
 }

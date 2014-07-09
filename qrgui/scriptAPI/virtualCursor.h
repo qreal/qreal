@@ -2,12 +2,17 @@
 
 #include <QtWidgets/QLabel>
 #include <QtCore/QString>
-
-#include "mainwindow/mainWindow.h"
-#include "mainwindow/palette/draggableElement.h"
+#include <QtWidgets/QComboBox>
+#include <QtCore/QPropertyAnimation>
 
 namespace qReal {
+
+class MainWindow;
+
 namespace gui {
+
+class ScriptAPI;
+class DraggableElement;
 
 class VirtualCursor : public QLabel
 {

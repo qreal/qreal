@@ -1,5 +1,7 @@
 #include "hintReporter.h"
 
+#include "mainwindow/mainWindow.h"
+
 using namespace qReal;
 using namespace gui;
 
@@ -25,15 +27,14 @@ void HintReporter::addHint(QString const &hint)
 {
 	QString const message= "<b>Подсказка :\n</b>"+hint;
 	setText(message);
-
 }
 
 void HintReporter::disappear()
 {
-	QGraphicsOpacityEffect* opacityEffect = new QGraphicsOpacityEffect(this);
+	QGraphicsOpacityEffect* const opacityEffect = new QGraphicsOpacityEffect(this);
 	opacityEffect->setOpacity(1);
 	setGraphicsEffect(opacityEffect);
-	QPropertyAnimation* opacityAnim = new QPropertyAnimation(this);
+	QPropertyAnimation* const opacityAnim = new QPropertyAnimation(this);
 	opacityAnim->setTargetObject(opacityEffect);
 	opacityAnim->setPropertyName("opacity");
 	opacityAnim->setDuration(mDuration);
@@ -43,7 +44,8 @@ void HintReporter::disappear()
 	opacityAnim->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void HintReporter::mousePressEvent(QMouseEvent * event)
+void HintReporter::mousePressEvent(QMouseEvent *event)
 {
+	(void)event;
 	emit mousePressEvent();
 }

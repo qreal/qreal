@@ -2,7 +2,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QList>
-#include <QtScript/QScriptEngine>
 
 #include <qrkernel/ids.h>
 #include <qrkernel/definitions.h>

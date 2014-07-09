@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtScript/QScriptEngine>
+#include <QtCore/QEventLoop>
 
 #include "virtualCursor.h"
 #include "hintReporter.h"
@@ -10,11 +11,14 @@
 namespace qReal {
 namespace gui {
 
-class ScriptAPI : public QObject, public HintInterface{
+class ScriptAPI : public QObject, public HintInterface
+{
 	Q_OBJECT
 
 public:
-	ScriptAPI(MainWindow *mainWindow);
+	ScriptAPI();
+
+	void init(MainWindow *mainWindow);
 
 	///Send message as HintReporter.
 	Q_INVOKABLE void addHint(QString const &message, int const duration);

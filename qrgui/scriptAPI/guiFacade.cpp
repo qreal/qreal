@@ -1,5 +1,9 @@
 #include "guiFacade.h"
 
+#include "mainwindow/mainWindow.h"
+#include "mainwindow/palette/draggableElement.h"
+#include "toolPluginInterface/toolPluginInterface.h"
+
 using namespace qReal;
 using namespace gui;
 
@@ -19,7 +23,7 @@ QWidget* GuiFacade::widget(QString const &type, QString const &name)
 {
 	if (!type.compare("Action")) {
 		QList<QAction *> actionList = mMainWindow->findChildren<QAction *>();
-		for(QAction *action : actionList) {
+		for(QAction const *action : actionList) {
 			if (!action->objectName().compare(name)) {
 				QList<QWidget *> widgetList =action->associatedWidgets();
 				for(QWidget *widget : widgetList) {
@@ -64,17 +68,18 @@ DraggableElement* GuiFacade::draggableElement(QString const &widgetId)
 			return paletteElement;
 		}
 	}
+	return nullptr;
 }
 
 QRect GuiFacade::property(QString const &name)
 {
-	QByteArray data = name.toLocal8Bit();
-	QTreeWidget *editorTree = dynamic_cast<QTreeWidget *>(
+	QByteArray const data = name.toLocal8Bit();
+	QTreeWidget const *editorTree = dynamic_cast<QTreeWidget *>(
 				mMainWindow->propertyEditor()->children()[0]->children()[1]);
 	for (int i = 0; i < editorTree->topLevelItemCount(); ++i) {
-		QTreeWidgetItem *item = editorTree->topLevelItem(i);
+		QTreeWidgetItem const *item = editorTree->topLevelItem(i);
 		if (item->data(0, Qt::DisplayRole).toString() == data.data()) {
-			QRect globalTarget = QRect(mMainWindow->propertyEditor()->mapToGlobal(editorTree->visualItemRect(item).center() + QPoint(10, 0))
+			QRect const globalTarget = QRect(mMainWindow->propertyEditor()->mapToGlobal(editorTree->visualItemRect(item).center() + QPoint(10, 0))
 									, editorTree->visualItemRect(item).size());
 			return globalTarget;
 		}
@@ -88,7 +93,7 @@ ToolPluginInterface* GuiFacade::plugin()
 
 QWidget* GuiFacade::comboBoxProperty(QString const &name)
 {
-	QByteArray data = name.toLocal8Bit();
+	QByteArray const data = name.toLocal8Bit();
 	QTreeWidget *editorTree = dynamic_cast<QTreeWidget *>(
 				mMainWindow->propertyEditor()->children()[0]->children()[1]);
 	for (int i = 0; i < editorTree->topLevelItemCount(); ++i) {
@@ -97,6 +102,7 @@ QWidget* GuiFacade::comboBoxProperty(QString const &name)
 			return editorTree->itemWidget(item, 1);
 		}
 	}
+	return nullptr;
 }
 
 QWidget* GuiFacade::robotAction(QString const &name)
@@ -113,4 +119,5 @@ QWidget* GuiFacade::robotAction(QString const &name)
 			}
 		}
 	}
+	return nullptr;
 }
