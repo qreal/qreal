@@ -58,10 +58,17 @@ viewBox="0 0 15000 15000"
     .fil45 {fill:#775397}
     .fil46 {fill:#775398}
     .fil47 {fill:#785499}
+    .fil58 {fill:#C70A17}
     .fil1 {fill:black;fill-opacity:0.000000}
-    .fil51 {fill:url(#id2)}
-    .fil50 {fill:url(#id3)}
-    .fil49 {fill:url(#id4)}
+    .fil52 {fill:url(#id2)}
+    .fil54 {fill:url(#id3)}
+    .fil55 {fill:url(#id4)}
+    .fil53 {fill:url(#id5)}
+    .fil51 {fill:url(#id6)}
+    .fil50 {fill:url(#id7)}
+    .fil57 {fill:url(#id8)}
+    .fil56 {fill:url(#id9)}
+    .fil49 {fill:url(#id10)}
    ]]>
   </style>
       <clipPath id="id0">
@@ -70,19 +77,41 @@ viewBox="0 0 15000 15000"
       <clipPath id="id1">
        <path d="M2377 14068l10257 0c790,0 1437,-647 1437,-1437l0 -10257c0,-790 -647,-1437 -1437,-1437l-10257 0c-790,0 -1437,647 -1437,1437l0 10257c0,790 647,1437 1437,1437z"/>
       </clipPath>
-  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="4574.22" y1="10050.9" x2="4574.22" y2="4797.69">
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="11024.5" y1="12660.1" x2="11024.5" y2="11931.6">
+   <stop offset="0" style="stop-color:#666666"/>
+   <stop offset="1" style="stop-color:#999999"/>
+  </linearGradient>
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="10644" y1="14306" x2="10644" y2="12656.5">
+   <stop offset="0" style="stop-color:gray"/>
+   <stop offset="1" style="stop-color:#CCCCCC"/>
+  </linearGradient>
+  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="10425.4" y1="13237.5" x2="10425.4" y2="12657.7">
+   <stop offset="0" style="stop-color:#CCCCCC"/>
+   <stop offset="1" style="stop-color:#E6E6E6"/>
+  </linearGradient>
+  <linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="11578.6" y1="11929" x2="11578.6" y2="11325.5">
+   <stop offset="0" style="stop-color:#CCCCCC"/>
+   <stop offset="1" style="stop-color:white"/>
+  </linearGradient>
+  <linearGradient id="id6" gradientUnits="userSpaceOnUse" x1="4574.22" y1="8939.65" x2="4574.22" y2="3686.44">
    <stop offset="0" style="stop-color:#1A1A1A"/>
    <stop offset="0.501961" style="stop-color:#333333"/>
    <stop offset="1" style="stop-color:#1A1A1A"/>
   </linearGradient>
-  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="9739.3" y1="9440.27" x2="9739.3" y2="5463.64">
+  <linearGradient id="id7" gradientUnits="userSpaceOnUse" x1="9739.3" y1="8329.02" x2="9739.3" y2="4352.39">
    <stop offset="0" style="stop-color:#1A1A1A"/>
    <stop offset="0.25098" style="stop-color:#333333"/>
    <stop offset="0.501961" style="stop-color:gray"/>
    <stop offset="0.74902" style="stop-color:#333333"/>
    <stop offset="1" style="stop-color:#1A1A1A"/>
   </linearGradient>
-  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="9015.86" y1="8425.61" x2="9015.86" y2="6512.8">
+  <linearGradient id="id8" gradientUnits="userSpaceOnUse" x1="12980.1" y1="13130.5" x2="11956.1" y2="11910.1">
+   <stop offset="0" style="stop-color:#999999"/>
+   <stop offset="1" style="stop-color:#CCCCCC"/>
+  </linearGradient>
+  <linearGradient id="id9" gradientUnits="userSpaceOnUse" xlink:href="#id2" x1="12935.4" y1="13907.2" x2="11656.2" y2="12382.7">
+  </linearGradient>
+  <linearGradient id="id10" gradientUnits="userSpaceOnUse" x1="9015.86" y1="7314.36" x2="9015.86" y2="5401.55">
    <stop offset="0" style="stop-color:#1A1A1A"/>
    <stop offset="0.501961" style="stop-color:#4D4D4D"/>
    <stop offset="1" style="stop-color:#1A1A1A"/>
@@ -90,7 +119,7 @@ viewBox="0 0 15000 15000"
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_130914504">
+  <g id="_306537072">
    <g id="_348901048">
     <path class="fil0" d="M2168 45l10675 0c1170,0 2119,949 2119,2119l0 10675c0,1170 -949,2119 -2119,2119l-10675 0c-1170,0 -2119,-949 -2119,-2119l0 -10675c0,-1170 949,-2119 2119,-2119z"/>
     <g>
@@ -405,12 +434,21 @@ viewBox="0 0 15000 15000"
     </g>
    </g>
   </g>
-  <line class="fil48 str0" x1="14073" y1="2942" x2="14073" y2= "12335" />
-  <line class="fil48 str1" x1="10912" y1="7572" x2="11393" y2= "7572" />
-  <line class="fil48 str1" x1="11874" y1="7572" x2="12355" y2= "7572" />
-  <line class="fil48 str1" x1="12851" y1="7572" x2="13332" y2= "7572" />
-  <rect class="fil49 str2" x="8283" y="5761" width="1466" height="3416"/>
-  <rect class="fil50 str2" x="9120" y="5464" width="1238" height="3977"/>
-  <rect class="fil51 str2" x="830" y="4798" width="7489" height="5253" rx="824" ry="278"/>
+  <line class="fil48 str0" x1="14073" y1="1830" x2="14073" y2= "11223" />
+  <line class="fil48 str1" x1="10912" y1="6461" x2="11393" y2= "6461" />
+  <line class="fil48 str1" x1="11874" y1="6461" x2="12355" y2= "6461" />
+  <line class="fil48 str1" x1="12851" y1="6461" x2="13332" y2= "6461" />
+  <rect class="fil49 str2" x="8283" y="4650" width="1466" height="3416"/>
+  <rect class="fil50 str2" x="9120" y="4352" width="1238" height="3977"/>
+  <rect class="fil51 str2" x="830" y="3686" width="7489" height="5253" rx="824" ry="278"/>
+  <g id="_306505736">
+   <polygon class="fil52" points="10210,11932 12682,11932 11880,12660 9367,12660 "/>
+   <polygon class="fil53" points="10210,11929 12685,11929 12947,11325 10595,11325 "/>
+   <polygon class="fil54" points="9411,14306 11877,14306 11877,12657 9411,12657 "/>
+   <polygon class="fil55" points="8970,13238 11626,13238 11881,12658 9363,12660 "/>
+   <polygon class="fil56" points="11878,12661 12706,11985 12714,13557 11878,14304 "/>
+   <polygon class="fil57" points="12204,13109 13057,12201 12684,11931 11879,12661 "/>
+  </g>
+  <path class="fil58" d="M11954 11343l-478 147c3,-306 -7,-872 -178,-1067 -643,-736 -2131,139 -1984,133 101,-4 991,282 1382,1174l-466 144 1098 598 624 -1129z"/>
  </g>
 </svg>
