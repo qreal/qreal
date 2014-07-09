@@ -1,5 +1,3 @@
-#r "Trik.Observable.dll"
-
 open Trik
 open Trik.Helpers
 open System.Threading
