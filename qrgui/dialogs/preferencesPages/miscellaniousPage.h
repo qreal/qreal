@@ -3,7 +3,7 @@
 #include "dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
-	class PreferencesMiscellaniousPage;
+class PreferencesMiscellaniousPage;
 }
 
 class PreferencesMiscellaniousPage : public PreferencesPage

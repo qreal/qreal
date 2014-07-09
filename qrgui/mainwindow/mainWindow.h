@@ -104,14 +104,14 @@ public:
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
-		, bool useTypedPorts);
+						 , bool useTypedPorts);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
 	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
-		, bool useTypedPorts);
+						 , bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
-			, int const &role);
+										 , int const &role);
 	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
-			, int role);
+						   , int role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -296,8 +296,10 @@ private slots:
 	void startUsabilityTest();
 	void finishUsabilityTest();
 
-    void getSettings();
-    void displayError(QAbstractSocket::SocketError socketError);
+	///get and apply settings from server
+	void setSettings();
+	///show error if connecttion failed
+	void displayError(QAbstractSocket::SocketError socketError);
 
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
@@ -435,9 +437,12 @@ private:
 	QToolBar *mUsabilityTestingToolbar; // Has ownership
 	QAction *mStartTest; // Has ownership
 	QAction *mFinishTest; // Has ownership
-    void applySettingsFromServer(QString settings);
-    QTcpSocket *serverSocket;
-    quint16 messegeSize;
+	///apply setting from server
+	void applySettingsFromServer(QString settings);
+	///server socket
+	QTcpSocket *mServerSocket;
+	///size of string which send from server
+	quint16 mSettingStringSize;
 };
 
 }
