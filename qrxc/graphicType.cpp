@@ -8,6 +8,7 @@
 #include "label.h"
 #include "diagram.h"
 #include "nameNormalizer.h"
+#include "nodeType.h"
 
 using namespace utils;
 
@@ -383,6 +384,18 @@ bool GraphicType::resolve()
 			}
 		}
 
+
+		//Type *parent = mDiagram->findType(qualifiedParentName);
+
+		NodeType *ourParent = new NodeType(mDiagram);
+		//ourParent->
+		foreach (Port *port, ourParent->mPorts) {
+			if(addPort(port->clone())) {
+				return false;
+			}
+		}
+
+
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
 		if (gParent) {
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
@@ -399,6 +412,27 @@ bool GraphicType::resolve()
 	mResolvingFinished = true;
 	return true;
 }
+
+
+bool GraphicType::addPort(Port *port)
+{
+	QString const portName = port->name();
+	if (mPort.contains(portName)) {
+		// Множественное наследование может приводить к тому, что одно свойство
+		// может быть добавлено классу дважды (ромбовидное наследование, например).
+		// Pугаемся мы только тогда, когда тип, значение по умолчанию или что-то ещё
+		// у одноимённых свойств различны - тогда непонятно, что делать.
+		if (mPort[portName] != portName && *mPort[portName] != *portName) {
+			qDebug() << "ERROR: property" << portName << "duplicated with different attributes";
+			delete port;
+			return false;
+		}
+	} else {
+		mPorts[portName] = portName;
+	}
+	return true;
+}
+
 
 void GraphicType::generateNameMapping(OutFile &out)
 {

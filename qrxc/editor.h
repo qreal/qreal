@@ -7,9 +7,12 @@
 #include <QtCore/QPair>
 #include <QtCore/QSet>
 
+//#include "nodeType.h"
+
 class XmlCompiler;
 class Diagram;
 class Type;
+class NodeType;
 class EnumType;
 class PortType;
 
@@ -26,6 +29,7 @@ public:
 	bool isLoaded();
 	bool load(QDir const &currentDir);
 	Type *findType(QString const &name);
+
 	QSet<EnumType *> getAllEnumTypes();
 	QStringList getAllPortNames() const;
 	Diagram *findDiagram(QString const &name);

@@ -46,6 +46,7 @@ Type* NodeType::clone() const
 	return result;
 }
 
+
 bool NodeType::initAssociations()
 {
 	return true;

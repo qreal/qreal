@@ -7,6 +7,7 @@
 #include <QtCore/QPair>
 
 #include "type.h"
+#include "port.h"
 
 class Label;
 class Diagram;
@@ -64,7 +65,7 @@ protected:
 	ContainerProperties mContainerProperties;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
-	QMap<QString, QPair<bool, bool> > mExplosions;
+	QMap<QString, QPair<bool, bool> > t ;
 	bool mCreateChildrenFromMenu;
 
 	void copyFields(GraphicType *type) const;
@@ -107,9 +108,11 @@ private:
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count) = 0;
 
 	bool addProperty(Property *property);
+	bool addPort(Port *port);
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
 
 	QVector<int> toIntVector(QString const &s, bool * isOk) const;
 
 	QString mDescription;
+	QMap<QString, Property*> mPort;
 };
