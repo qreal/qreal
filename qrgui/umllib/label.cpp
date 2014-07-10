@@ -260,11 +260,6 @@ void Label::setHard(bool hard)
 	mIsHard = hard;
 }
 
-bool Label::isReadOnly() const
-{
-	return mReadOnly;
-}
-
 void Label::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);
