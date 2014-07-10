@@ -28,9 +28,14 @@ public:
 	virtual bool isDefaultPath(QString const &path) = 0;
 	virtual bool isModified(QString const &path) = 0;
 	virtual bool isModifiedEver(QString const &path) = 0;
-	virtual void addExtension(QString const &name, QString const &description) = 0;
-	virtual QString extDescription(QString const &name) = 0;
+	virtual void addExtDescrByGenerator(QString const &genName, QString const &description) = 0;
+	virtual void addExtDescrByExtension(QString const &ext, QString const &description) = 0;
+	virtual void removeExtensions() = 0;
+	virtual QString extDescrByGenerator(QString const &genName) = 0;
+	virtual QString extDescrByExtension(QString const &ext) = 0;
+	virtual QList<QString> extDescriptions() = 0;
 	virtual void showInTextEditor(QFileInfo const &fileInfo, QString const &genName) = 0;
+	virtual void showInTextEditor(const QFileInfo &fileInfo) = 0;
 	virtual bool saveText(bool saveAs) = 0;
 	virtual QString generatorName(QString const &filepath) = 0;
 

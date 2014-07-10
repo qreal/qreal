@@ -47,10 +47,11 @@ protected:
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo) = 0;
 	QFileInfo srcPath();
 	virtual QString defaultFilePath(QString const &projectName) const;
-	virtual QString extension() const;
-	virtual QString extDescrition() const;
+	QString extension() const;
+	QString extDescrition() const;
 	QFileInfo generateCodeForProcessing();
-	virtual QString generatorName() const;
+	QString generatorName() const;
+	virtual QString defaultProjectName() const;
 
 	virtual bool canGenerateTo(QString const &project);
 

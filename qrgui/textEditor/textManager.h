@@ -39,12 +39,21 @@ public:
 	bool isDefaultPath(QString const &path);
 	bool isModified(QString const &path);
 	bool isModifiedEver(QString const &path);
-	void addExtension(QString const &name, QString const &description);
-	QString extDescription(QString const &name);
+	void addExtDescrByGenerator(QString const &genName, QString const &description);
+	void addExtDescrByExtension(QString const &ext, QString const &description);
+	void removeExtensions();
+	QString extDescrByGenerator(QString const &genName);
+	QString extDescrByExtension(QString const &ext);
+	QList<QString> extDescriptions();
 
-	/// Opens new tab with text editor and shows a text in it
+	/// Opens new tab with file created by some generator in text editor and shows a text in it
 	/// @param fileInfo A filepath to file with text
+	/// @param genName A name of generator which created this file
 	void showInTextEditor(QFileInfo const &fileInfo, QString const &genName);
+
+	/// Opens new tab with file
+	/// @param fileInfo A filepath to file with text
+	void showInTextEditor(QFileInfo const &fileInfo);
 
 	/// Saves text from tab to another or same file
 	/// @param saveAs Defines what to do: save to the same file or in another
@@ -72,7 +81,9 @@ private:
 	QMultiHash<EditorView*, QString> mDiagramCodeManager;
 
 	/// Contains info about file extensions (extension, description of extension). Need for save dialog.
-	QMap<QString, QString> mExtensions;
+	QMap<QString, QString> mExtDescrByGenerator;
+	QMap<QString, QString> mExtDescrByExtension;
+
 	MainWindow *mMainWindow;
 	SystemEventsInterface *mSystemEvents;
 };

@@ -43,7 +43,7 @@ public:
 	bool suggestToSaveChangesOrCancel();
 	void reinitAutosaver();
 	QString openFileName(QString const &dialogWindowTitle) const;
-	QString saveFilePath() const;
+	QString saveFilePath();
 	void setSaveFilePath(QString const &filePath = "");
 
 	/// Prompts user to restore last session if it was incorrectly terminated
@@ -53,6 +53,7 @@ public:
 	void refreshWindowTitleAccordingToSaveFile();
 
 private:
+	bool openProject(QString const &fileName);
 	bool import(QString const &fileName);
 	bool saveFileExists(QString const &fileName);
 	bool pluginsEnough() const;

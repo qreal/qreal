@@ -13,6 +13,10 @@ class GeneratorKitPluginInterface
 public:
 	virtual ~GeneratorKitPluginInterface() {}
 
+	virtual QString extension() const = 0;
+	virtual QString extDescrition() const = 0;
+	virtual QString generatorName() const = 0;
+
 	/// An identifier of constructor kit. The generator is binded to the kit plugins with the same id.
 	virtual QString kitId() const = 0;
 

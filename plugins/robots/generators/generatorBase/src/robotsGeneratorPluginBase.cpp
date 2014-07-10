@@ -2,10 +2,12 @@
 
 #include <qrutils/inFile.h>
 #include <qrgui/mainwindow/qscintillaTextEdit.h>
+#include <nameNormalizer.h>
 
 using namespace generatorBase;
 using namespace qReal;
 using namespace gui;
+using namespace utils;
 
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 {
@@ -33,6 +35,11 @@ QString RobotsGeneratorPluginBase::generatorName() const
 	return QString();
 }
 
+QString RobotsGeneratorPluginBase::defaultProjectName() const
+{
+	return QFileInfo(mProjectManager->saveFilePath()).baseName();
+}
+
 bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
 {
 	/// @todo: In some scenarios user hand-coded programs will be rewritten with auto-generated
@@ -45,11 +52,11 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	int exampleNumber = 0;
-	while (!canGenerateTo("example" + QString::number(exampleNumber))) {
+	while (!canGenerateTo(NameNormalizer::normalizeStrongly(defaultProjectName(), false) + QString::number(exampleNumber))) {
 		++exampleNumber;
 	}
 
-	QString const projectName = "example" + QString::number(exampleNumber);
+	QString const projectName = NameNormalizer::normalizeStrongly(defaultProjectName(), false) + QString::number(exampleNumber);
 	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 
@@ -105,8 +112,6 @@ void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator
 	mProjectManager = &configurator.projectManager();
 	mRobotModelManager = &robotModelManager;
 
-	mTextManager->addExtension(generatorName(), QString("%1 (*.%2)").arg(extDescrition(), extension()));
-
 	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
 			, this, SLOT(regenerateCode(qReal::Id, QFileInfo, QFileInfo)));
 	connect(mSystemEvents, SIGNAL(newCodeAppeared(qReal::Id, QFileInfo)), this, SLOT(addNewCode(qReal::Id, QFileInfo)));
@@ -152,7 +157,6 @@ void RobotsGeneratorPluginBase::regenerateCode(qReal::Id const &diagram
 	, QFileInfo const &newFileInfo)
 {
 	if (!oldFileInfo.completeSuffix().compare(extension())) {
-		mTextManager->changeFilePath(oldFileInfo.absoluteFilePath(), newFileInfo.absoluteFilePath());
 		mCodePath.remove(diagram, oldFileInfo);
 		mCodePath.insert(diagram, newFileInfo);
 		regenerateExtraFiles(newFileInfo);

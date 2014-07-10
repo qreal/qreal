@@ -1,6 +1,7 @@
 #include "qRealFileDialog.h"
 
 #include <qrkernel/settingsManager.h>
+#include <QDebug>
 
 using namespace utils;
 
@@ -54,6 +55,7 @@ QStringList QRealFileDialog::getOpenFileNames(QString const &id
 {
 	QString const lastDir = lastSelectedDirectory(id, dir);
 	QStringList const result = QFileDialog::getOpenFileNames(parent, caption, lastDir, filter, selectedFilter, options);
+
 	if (!result.isEmpty()) {
 		saveState(id, directoryOf(result[0]));
 	}
