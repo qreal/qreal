@@ -92,7 +92,6 @@ void Element::select(const bool singleSelected)
 {
 	if (singleSelected) {
 		setSelectionState(true);
-		setFocus();
 	}
 
 	emit switchFolding(!singleSelected);
