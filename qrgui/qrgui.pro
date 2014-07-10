@@ -2,6 +2,7 @@ DESTDIR = ../bin
 
 CONFIG += c++11
 QT += network
+QT += widgets
 
 CONFIG += rpath_libdirs
 macx {
@@ -29,5 +30,3 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 }
 
 include(qrgui.pri)
-
-HEADERS +=

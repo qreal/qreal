@@ -122,3 +122,13 @@ void SettingsManager::clearSettings()
 	instance()->mData.clear();
 	instance()->mDefaultValues.clear();
 }
+
+QString SettingsManager::convertToString()
+{
+	QString allSettings;
+	QStringList keyList = mSettings.allKeys();
+	for (int i = 0; i < keyList.size(); i++)
+		allSettings += keyList[i] + "###" + value(keyList[i]).toString() + "#*#";
+
+	return allSettings;
+}

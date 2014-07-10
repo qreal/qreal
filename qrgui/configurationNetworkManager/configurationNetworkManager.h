@@ -1,6 +1,9 @@
 #pragma once
 
-class ConfigurationNetworkManager
+#include <QtCore/QObject>
+
+class ConfigurationNetworkManager : public QObject
 {
+public:
 	ConfigurationNetworkManager();
 };

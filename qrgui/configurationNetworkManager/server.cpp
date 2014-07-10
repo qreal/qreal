@@ -49,11 +49,12 @@ void Server::sessionOpened()
 
 	mTcpServer = new QTcpServer(this);
 	if (!mTcpServer->listen(QHostAddress::AnyIPv4, 55555)) {
-		QMessageBox::critical(this, tr("qReal Server"),
-							  tr("Unable to start the server: %1.")
-							  .arg(mTcpServer->errorString()));
+/*		QMessageBox::critical(this, tr("qReal Server"),
+							tr("Unable to start the server: %1.")
+							.arg(mTcpServer->errorString()));
 		close();
-		return;
+		return;*/
+		emit serverError();
 	}
 }
 
