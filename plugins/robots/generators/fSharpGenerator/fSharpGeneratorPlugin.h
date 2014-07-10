@@ -43,6 +43,7 @@ private slots:
 	void stopRobot();
 
 private:
+    void longUploadProgram();
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
 

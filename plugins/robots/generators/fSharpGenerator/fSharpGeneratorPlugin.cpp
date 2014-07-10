@@ -4,6 +4,7 @@
 #include <QtCore/QFileInfo>
 #include <QProcess>
 #include <qrkernel/settingsManager.h>
+#include <qrutils/invocationUtils/functorOperation.h>
 
 #include <QtCore/QDebug>
 
@@ -99,29 +100,14 @@ QString FSharpGeneratorPlugin::generatorName() const
 bool FSharpGeneratorPlugin::uploadProgram()
 {
 
-    QProcess myProcess;
+    longUploadProgram();
+    //invocation::FunctorOperation<void> *operation = new invocation::FunctorOperation<void>(30000);
+    //operation->setInvocationTargetWithProgress(this, &FSharpGeneratorPlugin::longUploadProgram);
 
-    QFileInfo const fileInfo = generateCodeForProcessing();
-    QString pathToTheFSharp = "G:/Fsc.exe ";
-    QString pathToTheTrikObservable = " -r \"G:/Trik.Observable.dll\"";
-    QString command = pathToTheFSharp + fileInfo.absoluteFilePath() + pathToTheTrikObservable;
-
-    myProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
-    myProcess.start(command);
-    myProcess.waitForFinished();
-    qDebug() << qReal::SettingsManager::value("TrikTcpServer").toString();
-
-    myProcess.start();
-    myProcess.waitForFinished();
-    QString pathToWinScp = "C:/\"Program Files (x86)\"/WinSCP/WinSCP.com";
-    QString moveCommand = pathToWinScp + " /command  \"open scp://root@" + qReal::SettingsManager::value("TrikTcpServer").toString().replace("\"", "")+ " \""
-            + " \"put "+ fileInfo.absoluteFilePath().replace("fs","exe").replace("/","\\")+ " /home/root/trik/\"";
-
-    qDebug() << moveCommand;
-    myProcess.execute(moveCommand + "\" exit\"");
-
-
-
+    //connect(operation, SIGNAL(finished(invocation::InvocationResult)),
+     //     this, SLOT(onOperationComplete(invocation::InvocationResult)));
+    //operation->invoceAsync();
+    //mMainWindowInterface->reportOperation(operation);
     //}
     /*QFileInfo const fileInfo = generateCodeForProcessing();
 
@@ -164,4 +150,29 @@ void FSharpGeneratorPlugin::stopRobot()
             "brick.system(\"killall rover-cv\");"
             );
 */
+}
+
+void FSharpGeneratorPlugin::longUploadProgram()
+{
+    QProcess myProcess;
+    QFileInfo const fileInfo = generateCodeForProcessing();
+
+    QString pathToTheTrikObservable = " -r \"G:/Trik.Observable.dll\"";
+    QString command = "\"" + qReal::SettingsManager::value("FSharpPath").toString() + "\" "
+            + "\"" + fileInfo.absoluteFilePath() + "\""
+            + pathToTheTrikObservable;
+
+    myProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
+    myProcess.start(command);
+    myProcess.waitForFinished();
+    qDebug() << qReal::SettingsManager::value("TrikTcpServer").toString();
+
+    QString moveCommand = "\"" + qReal::SettingsManager::value("WinScpPath").toString().replace("?","") + "\""
+            + " /command  \"open scp://root@" + qReal::SettingsManager::value("TrikTcpServer").toString() + "\""
+            + " \"put "+ fileInfo.absoluteFilePath().replace("fs","exe").replace("/","\\")
+            + " /home/root/trik/\"";
+
+    qDebug() << moveCommand;
+    myProcess.startDetached(moveCommand + "\" exit\"");
+    myProcess.waitForFinished(10000);
 }
