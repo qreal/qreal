@@ -262,7 +262,7 @@ void Label::setHard(bool hard)
 
 bool Label::isReadOnly() const
 {
-    return mReadOnly;
+	return mReadOnly;
 }
 
 void Label::focusOutEvent(QFocusEvent *event)
