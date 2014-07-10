@@ -14,7 +14,6 @@ HEADERS += \
 	$$PWD/models.h \
 	$$PWD/graphicalModelAssistApi.h \
 	$$PWD/logicalModelAssistApi.h \
-	$$PWD/details/exploser.h \
 	$$PWD/details/modelsImplementation/modelIndexesInterface.h \
 
 SOURCES += \
@@ -33,4 +32,3 @@ SOURCES += \
 	$$PWD/models.cpp \
 	$$PWD/graphicalModelAssistApi.cpp \
 	$$PWD/logicalModelAssistApi.cpp \
-	$$PWD/details/exploser.cpp \

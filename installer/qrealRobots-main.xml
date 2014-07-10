@@ -1,6 +1,6 @@
 <component>
     <name>default</name>
-    <description>QReal:Robots</description>
+    <description>Trik Studio</description>
     <canBeEdited>1</canBeEdited>
     <selected>1</selected>
     <show>1</show>
@@ -15,7 +15,7 @@
                     <comment>Uninstall</comment>
                     <exec>${installdir}/${uninstallerName}</exec>
                     <icon></icon>
-                    <name>Uninstall QReal-Robots</name>
+                    <name>Uninstall Trik Studio</name>
                     <path>${installdir}</path>
                     <platforms>windows</platforms>
                     <runAsAdmin>0</runAsAdmin>
@@ -23,6 +23,20 @@
                     <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
                     <windowsExecArgs></windowsExecArgs>
                     <windowsIcon></windowsIcon>
+                    <windowsPath>${installdir}</windowsPath>
+                </shortcut>
+                <shortcut>
+                    <comment></comment>
+                    <exec></exec>
+                    <icon>${installdir}/icon.ico</icon>
+                    <name>Trik Studio</name>
+                    <path></path>
+                    <platforms>windows</platforms>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/trikStudio.exe</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon>${installdir}/icon.ico</windowsIcon>
                     <windowsPath>${installdir}</windowsPath>
                 </shortcut>
             </shortcutList>
@@ -37,7 +51,13 @@
                     <origin>%1/bin/qextserialport.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/bin/robotsGeneratorBase.dll</origin>
+                    <origin>%1/bin/commonTwoDModel.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/generatorBase.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/interpreterBase.dll</origin>
                 </distributionFile>
                 <distributionDirectory>
                     <origin>%1/bin/help</origin>
@@ -48,23 +68,10 @@
                 <distributionDirectory>
                     <origin>%1/plugins/robots/editor/images</origin>
                 </distributionDirectory>
+                <distributionFile>
+                    <origin>%1/bin/utils.dll</origin>
+                </distributionFile>
             </distributionFileList>
-            <shortcutList>
-                <shortcut>
-                    <comment></comment>
-                    <exec></exec>
-                    <icon>${installdir}/icon.ico</icon>
-                    <name>QReal-Robots</name>
-                    <path></path>
-                    <platforms>windows</platforms>
-                    <runAsAdmin>0</runAsAdmin>
-                    <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/qrgui.exe</windowsExec>
-                    <windowsExecArgs></windowsExecArgs>
-                    <windowsIcon>${installdir}/icon.ico</windowsIcon>
-                    <windowsPath>${installdir}</windowsPath>
-                </shortcut>
-            </shortcutList>
         </folder>
         <folder>
             <destination>${installdir}</destination>
@@ -82,24 +89,40 @@
             <platforms>windows</platforms>
             <distributionFileList>
                 <distributionFile>
-                    <origin>%1/bin/plugins/nxtGenerator.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%1/bin/plugins/russianCGenerator.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%1/bin/plugins/robotsInterpreter.dll</origin>
+                    <origin>%1/bin/plugins/interpreterCore.dll</origin>
                 </distributionFile>
                 <distributionFile>
                     <origin>%1/bin/plugins/robotsMetamodel.dll</origin>
                 </distributionFile>
             </distributionFileList>
         </folder>
+        <folder>
+            <destination>${installdir}/plugins/kitPlugins</destination>
+            <name>kitPlugins</name>
+            <platforms>windows</platforms>
+            <distributionFileList>
+                <distributionFile>
+                    <origin>%1/bin/plugins/kitPlugins/nxtKitInterpreter.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/plugins/kitPlugins/trikKitInterpreter.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/plugins/kitPlugins/nxtGenerator.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/plugins/kitPlugins/russianCGenerator.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/plugins/kitPlugins/trikGenerator.dll</origin>
+                </distributionFile>
+            </distributionFileList>
+        </folder>
     </folderList>
     <startMenuShortcutList>
         <startMenuShortcut>
-            <comment>Uninstall QReal:Robots</comment>
-            <name>Uninstall QReal-Robots</name>
+            <comment>Uninstall Trik Studio</comment>
+            <name>Uninstall Trik Stidio</name>
             <runAsAdmin>1</runAsAdmin>
             <runInTerminal>0</runInTerminal>
             <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
@@ -108,11 +131,11 @@
             <windowsPath>${installdir}/</windowsPath>
         </startMenuShortcut>
         <startMenuShortcut>
-            <comment>QReal:Robots</comment>
-            <name>QReal-Robots</name>
+            <comment>Trik Studio</comment>
+            <name>TrikStudio</name>
             <runAsAdmin>0</runAsAdmin>
             <runInTerminal>0</runInTerminal>
-            <windowsExec>${installdir}/qrgui.exe</windowsExec>
+            <windowsExec>${installdir}/trikStudio.exe</windowsExec>
             <windowsExecArgs></windowsExecArgs>
             <windowsIcon>${installdir}/icon.ico</windowsIcon>
             <windowsPath></windowsPath>

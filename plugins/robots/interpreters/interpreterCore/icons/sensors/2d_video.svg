@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#1A1A1A;stroke-width:127}
+    .fil2 {fill:url(#id0)}
+    .fil1 {fill:url(#id1)}
+    .fil0 {fill:url(#id2)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="2496.78" y1="7571.15" x2="8182.23" y2="7571.15">
+   <stop offset="0" style="stop-color:#333333"/>
+   <stop offset="0.501961" style="stop-color:#4D4D4D"/>
+   <stop offset="1" style="stop-color:#333333"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="10696.3" y1="12713.5" x2="10696.3" y2="2324.49">
+   <stop offset="0" style="stop-color:#1A1A1A"/>
+   <stop offset="0.25098" style="stop-color:#333333"/>
+   <stop offset="0.501961" style="stop-color:#999999"/>
+   <stop offset="0.74902" style="stop-color:#333333"/>
+   <stop offset="1" style="stop-color:#1A1A1A"/>
+  </linearGradient>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="9111.81" y1="10131.1" x2="9111.81" y2="4856.35">
+   <stop offset="0" style="stop-color:#1A1A1A"/>
+   <stop offset="0.25098" style="stop-color:#4D4D4D"/>
+   <stop offset="0.501961" style="stop-color:#666666"/>
+   <stop offset="0.74902" style="stop-color:#4D4D4D"/>
+   <stop offset="1" style="stop-color:#1A1A1A"/>
+  </linearGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <rect class="fil0 str0" x="8002" y="2784" width="2220" height="9419"/>
+  <rect class="fil1 str0" x="9490" y="2324" width="2413" height="10389"/>
+  <rect class="fil2 str0" x="2497" y="687" width="5685" height="13769" rx="110" ry="128"/>
+ </g>
+</svg>

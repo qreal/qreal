@@ -4,7 +4,6 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 #include <QtCore/QPluginLoader>
-#include <QtCore/QStringList>
 #include <QtGui/QIcon>
 
 #include <qrkernel/ids.h>
@@ -15,8 +14,8 @@
 #include "pluginManager/listenerManager.h"
 #include "pluginManager/editorManagerInterface.h"
 #include "pluginManager/pattern.h"
-#include "pluginManager/patternParser.h"
 #include "editorPluginInterface/editorInterface.h"
+#include "pluginManager/details/patternParser.h"
 
 namespace qReal {
 
@@ -27,12 +26,14 @@ class EditorManager : public QObject, public EditorManagerInterface
 	Q_OBJECT
 
 public:
-	explicit EditorManager(QObject *parent = NULL);
-
-	~EditorManager();
+	explicit EditorManager(QObject *parent = nullptr);
+	~EditorManager() override;
 
 	IdList editors() const override;
 	IdList diagrams(Id const &editor) const override;
+	IdList elements(Id const &diagram) const override;
+	Version version(Id const &editor) const override;
+
 	IdList groups(Id const &diagram) override;
 	Pattern getPatternByName (QString const &str) const override;
 	QList<QString> getPatternNames() const override;
@@ -40,7 +41,7 @@ public:
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const override;
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const override;
 	bool shallPaletteBeSorted(Id const &editor, Id const &diagram) const override;
-	IdList elements(Id const &diagram) const override;
+
 	bool loadPlugin(QString const &pluginName) override;
 	bool unloadPlugin(QString const &pluginName) override;
 
@@ -106,22 +107,33 @@ public:
 	virtual QString getIsHidden(Id const &id) const;
 	void deleteElement(MainWindow *mainWindow, Id const &id) const override;
 	bool isRootDiagramNode(Id const &id) const override;
-	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const override;
-	void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+	void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
+			, bool isRootDiagramNode) const override;
+	void addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName, QString const &labelText
 			, QString const &labelType, QString const &lineType, QString const &beginType
 			, QString const &endType) const override;
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const override;
 	void saveMetamodel(QString const &newMetamodelFileName) override;
 	QString saveMetamodelFilePath() const override;
 
+	IdList elementsWithTheSameName(Id const &diagram, QString const &name, QString const type) const override;
 	IdList propertiesWithTheSameName(Id const &id
 			, QString const &propertyCurrentName, QString const &propertyNewName) const override;
 
+	QStringList getPropertiesInformation(Id const &id) const override;
 	QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const override;
 	void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const override;
 	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
 
+	void setElementEnabled(Id const &type, bool enabled) override;
+
 private:
+	EditorInterface* editorInterface(QString const &editor) const;
+	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
+
+	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child
+			, QString const &parentDiagram, QString const &parent) const;
+
 	QStringList mPluginsLoaded;
 	QMap<QString, QString> mPluginFileName;
 	QList<Pattern> mDiagramGroups;
@@ -132,11 +144,7 @@ private:
 	QDir mPluginsDir;
 	QStringList mPluginFileNames;
 
-	EditorInterface* editorInterface(QString const &editor) const;
-	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
-
-	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child
-			, QString const &parentDiagram, QString const &parent) const;
+	QSet<Id> mDisabledElements;
 };
 
 }

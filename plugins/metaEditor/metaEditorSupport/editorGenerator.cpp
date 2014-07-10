@@ -58,6 +58,7 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
 	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
+	metamodel.setAttribute("version", mApi.stringProperty(metamodelId, "version"));
 	mDocument.appendChild(metamodel);
 
 	QString const includeFile = mApi.stringProperty(metamodelId, "include");

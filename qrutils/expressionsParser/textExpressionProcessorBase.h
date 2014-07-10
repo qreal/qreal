@@ -15,7 +15,7 @@ protected:
 	QString processExpression(QString const &expression, QStringList &metVariables) const;
 
 	virtual bool variableExists(QString const &variable) const = 0;
-	virtual QString value(QString const &variable) const = 0;
+	virtual QString value(QString const &variable, int index) const = 0;
 };
 
 }

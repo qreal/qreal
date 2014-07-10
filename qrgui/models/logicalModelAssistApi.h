@@ -4,7 +4,6 @@
 
 #include "models/details/logicalModel.h"
 #include "models/details/modelsAssistApi.h"
-#include "models/details/exploser.h"
 #include "toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "pluginManager/proxyEditorManager.h"
 
@@ -22,51 +21,50 @@ public:
 	virtual ~LogicalModelAssistApi();
 
 	EditorManagerInterface const &editorManagerInterface() const;
-	Exploser &exploser();
 
-	virtual qrRepo::LogicalRepoApi const &logicalRepoApi() const;
-	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
-	virtual Id createElement(Id const &parent, Id const &type);
-	virtual Id createElement(Id const &parent, Id const &id
-			, bool isFromLogicalModel, QString const &name
-			, QPointF const &position, Id const &preferedLogicalId = Id());
+	qrRepo::LogicalRepoApi const &logicalRepoApi() const override;
+	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() override;
+	Id createElement(Id const &parent, Id const &type) override;
+	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name
+			, QPointF const &position, Id const &preferedLogicalId = Id()) override;
 
-	virtual IdList children(Id const &element) const;
-	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF());
+	IdList children(Id const &element) const override;
+	void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) override;
 
-	virtual void addExplosion(Id const &source, Id const &destination);
-	virtual void removeExplosion(Id const &source, Id const &destination);
+	void addExplosion(Id const &source, Id const &destination) override;
+	void removeExplosion(Id const &source, Id const &destination) override;
 
-	virtual void stackBefore(Id const &element, Id const &sibling);
+	void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName) override;
+	QVariant propertyByRoleName(Id const &elem, QString const &roleName) const override;
 
-	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
-	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
+	bool isLogicalId(Id const &id) const override;
 
-	virtual bool isLogicalId(Id const &id) const;
+	void removeReferencesTo(Id const &id) override;
+	void removeReferencesFrom(Id const &id) override;
+	void removeReference(Id const &id, Id const &reference) override;
 
-	virtual void removeReferencesTo(Id const &id);
-	virtual void removeReferencesFrom(Id const &id);
-	virtual void removeReference(Id const &id, Id const &reference);
+	void setName(Id const &elem, QString const &newValue) override;
+	QString name(Id const &elem) const override;
 
-	virtual void setName(Id const &elem, QString const &newValue);
-	virtual QString name(Id const &elem) const;
+	void setTo(Id const &elem, Id const &newValue) override;
+	Id to(Id const &elem) const override;
 
-	virtual void setTo(Id const &elem, Id const &newValue);
-	virtual Id to(Id const &elem) const;
+	void setFrom(Id const &elem, Id const &newValue) override;
+	Id from(Id const &elem) const override;
 
-	virtual void setFrom(Id const &elem, Id const &newValue);
-	virtual Id from(Id const &elem) const;
+	QModelIndex indexById(Id const &id) const override;
+	Id idByIndex(QModelIndex const &index) const override;
+	QPersistentModelIndex rootIndex() const override;
+	Id rootId() const override;
 
-	virtual QModelIndex indexById(Id const &id) const;
-	virtual Id idByIndex(QModelIndex const &index) const;
-	virtual QPersistentModelIndex rootIndex() const;
-	virtual Id rootId() const;
+	bool hasRootDiagrams() const override;
+	int childrenOfRootDiagram() const override;
+	int childrenOfDiagram(const Id &parent) const override;
 
-	virtual bool hasRootDiagrams() const;
-	virtual int childrenOfRootDiagram() const;
-	virtual int childrenOfDiagram(const Id &parent) const;
+	void removeElement(Id const &logicalId) override;
 
-	virtual void removeElement(Id const &logicalId);
+	/// Returns a mapping of known editors used for current save creation to their versions.
+	QMap<Id, Version> editorVersions() const;
 
 private:
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
@@ -74,7 +72,6 @@ private:
 
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;
-	Exploser mExploser;
 	EditorManagerInterface const &mEditorManager;
 };
 

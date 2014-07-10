@@ -154,10 +154,19 @@ IdList EditorManager::elements(Id const &diagram) const
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
 	for (QString const &e : mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
-		elements.append(Id(diagram.editor(), diagram.diagram(), e));
+		Id const candidate = Id(diagram.editor(), diagram.diagram(), e);
+		if (!mDisabledElements.contains(candidate)) {
+			elements.append(candidate);
+		}
 	}
 
 	return elements;
+}
+
+Version EditorManager::version(Id const &editor) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
+	return Version::fromString(mPluginIface[editor.editor()]->version());
 }
 
 bool EditorManager::isEditor(const Id &id) const
@@ -635,18 +644,22 @@ bool EditorManager::isRootDiagramNode(Id const &id) const
 	return false;
 }
 
-void EditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
+void EditorManager::addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
+		, bool isRootDiagramNode) const
 {
 	Q_UNUSED(diagram);
 	Q_UNUSED(name);
+	Q_UNUSED(displayedName);
 	Q_UNUSED(isRootDiagramNode);
 }
 
-void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
-		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
+void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName
+		, QString const &labelText, QString const &labelType, QString const &lineType
+		, QString const &beginType, QString const &endType) const
 {
 	Q_UNUSED(diagram);
 	Q_UNUSED(name);
+	Q_UNUSED(displayedName);
 	Q_UNUSED(labelText);
 	Q_UNUSED(labelType);
 	Q_UNUSED(lineType);
@@ -670,6 +683,14 @@ QString EditorManager::saveMetamodelFilePath() const
 	return "";
 }
 
+IdList EditorManager::elementsWithTheSameName(Id const &diagram, QString const &name, QString const type) const
+{
+	Q_UNUSED(diagram);
+	Q_UNUSED(name);
+	Q_UNUSED(type);
+	return IdList();
+}
+
 IdList EditorManager::propertiesWithTheSameName(Id const &id, QString const &propertyCurrentName
 		, QString const &propertyNewName) const
 {
@@ -677,6 +698,12 @@ IdList EditorManager::propertiesWithTheSameName(Id const &id, QString const &pro
 	Q_UNUSED(propertyCurrentName);
 	Q_UNUSED(propertyNewName);
 	return IdList();
+}
+
+QStringList EditorManager::getPropertiesInformation(Id const &id) const
+{
+	Q_UNUSED(id);
+	return QStringList();
 }
 
 QStringList EditorManager::getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const
@@ -695,4 +722,13 @@ void EditorManager::restoreRenamedProperty(Id const &propertyId, QString const &
 {
 	Q_UNUSED(propertyId);
 	Q_UNUSED(previousName);
+}
+
+void EditorManager::setElementEnabled(Id const &type, bool enabled)
+{
+	if (enabled) {
+		mDisabledElements.remove(type);
+	} else {
+		mDisabledElements.insert(type);
+	}
 }

@@ -12,9 +12,9 @@
 // C:\Libs\QtSDK\Desktop\Qt\4.7.3\mingw\bin
 
 if fsi.CommandLineArgs.Length < 3 || not <| fsi.CommandLineArgs.[2].Contains "." then
-    printfn "%s\n%s\n%s\n" "it seems you did not specify version."
-            "Usage: fsi build.fsx <XML installer script name> <QReal version number>"
-            "Example: fsi build.fsx qrealRobots.xml 2.3.1"
+    printfn "%s\n%s\n%s\n" "it seems you did not specify version or executable name."
+            "Usage: fsi build.fsx <XML installer script name> <QReal version number> <executableName>"
+            "Example: fsi build.fsx qrealRobots.xml 2.3.1 trikStudio"
     exit 1
 
 let scriptName = fsi.CommandLineArgs.[1]
@@ -25,7 +25,9 @@ let scriptsToPatch =
     
 let version = fsi.CommandLineArgs.[2]
 
-let installBuilderArgs = fsi.CommandLineArgs |> Seq.skip 3 |> Seq.fold (fun acc x -> acc + " " + x) ""
+let executableName = if fsi.CommandLineArgs.Length >= 4 then fsi.CommandLineArgs.[3] else "qrgui"
+
+let installBuilderArgs = fsi.CommandLineArgs |> Seq.skip 4 |> Seq.fold (fun acc x -> acc + " " + x) ""
 
 let autodetectQt = 
     let pathVariable = System.Environment.GetEnvironmentVariable("PATH")
@@ -45,7 +47,7 @@ let patch scriptName =
     let modifiedScriptName = modifyScriptName scriptName
     let installerScript = System.IO.File.ReadAllText scriptName
 
-    let modifiedInstallerScript = ref <| installerScript.Replace("%1", "..").Replace("%2", autodetectQt).Replace("<version>%version%</version>", "<version>" + version + "</version>")
+    let modifiedInstallerScript = ref <| installerScript.Replace("%1", "..").Replace("%2", autodetectQt).Replace("%3", executableName).Replace("<version>%version%</version>", "<version>" + version + "</version>")
     
     scriptsToPatch |> Seq.iter (
         fun includedScriptName -> 
@@ -54,7 +56,18 @@ let patch scriptName =
     
     System.IO.File.WriteAllText (modifiedScriptName, !modifiedInstallerScript)
 
+let copyExecutable executableName =
+    match executableName with
+    | "qrgui" -> ()
+    | _ -> System.IO.File.Copy("../bin/qrgui.exe", "../bin/" + executableName + ".exe", true)
+
+let deleteExecutable executableName =
+    match executableName with
+    | "qrgui" -> ()
+    | _ -> System.IO.File.Delete("../bin/" + executableName + ".exe")
+
 scriptsToPatch |> Seq.iter patch
+copyExecutable executableName
     
 let modifiedScriptName = (scriptName.Split '.').[0] + "-modified.xml"
 let installerScript = System.IO.File.ReadAllText scriptName
@@ -70,3 +83,4 @@ let exec processName args =
 exec "builder-cli.exe" ("build " + modifiedScriptName + " --verbose " + installBuilderArgs)
 
 scriptsToPatch |> Seq.iter (fun scriptName -> System.IO.File.Delete (modifyScriptName scriptName))
+deleteExecutable executableName

@@ -218,14 +218,12 @@ bool TextManager::saveText(bool saveAs)
 			out() << area->text();
 
 			if (saveAs) {
-				mSystemEvents->emitCodePathChanged(diagram(area)->mvIface()->rootId(), path(area), fileInfo);
+				emit mSystemEvents->codePathChanged(diagram(area)->mvIface()->rootId(), path(area), fileInfo);
 			}
 
 			if (defaultPath) {
 				changeFilePath(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath());
 			}
-
-			mMainWindow->changeWindowTitle(0);
 		}
 
 		return true;

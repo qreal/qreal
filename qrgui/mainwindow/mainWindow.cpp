@@ -21,6 +21,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
+#include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrutils/uxInfo/uxInfo.h>
 
@@ -103,6 +104,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	initDocks();
 	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
+	mExploser.reset(new Exploser(mModels->logicalModelAssistApi()));
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -245,17 +247,14 @@ void MainWindow::connectActions()
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
 
-
-	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeWindowTitle(int)));
+	connect(mUi->tabs, &QTabWidget::currentChanged, this, &MainWindow::changeWindowTitle);
 	connect(mTextManager, SIGNAL(textChanged(bool)), this, SLOT(setTextChanged(bool)));
 
-	connect(mProjectManager, SIGNAL(afterOpen(QString))
-			, &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
-	connect(mProjectManager, SIGNAL(closed()), &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
+	connect(mProjectManager, SIGNAL(afterOpen(QString)), mExploser.data(), SLOT(refreshAllPalettes()));
+	connect(mProjectManager, SIGNAL(closed()), mExploser.data(), SLOT(refreshAllPalettes()));
 	connect(mProjectManager, SIGNAL(closed()), mController, SLOT(projectClosed()));
 
-	connect(&mModels->logicalModelAssistApi().exploser(), SIGNAL(explosionTargetRemoved())
-			, this, SLOT(closeTabsWithRemovedRootElements()));
+	connect(mExploser.data(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
 
 	setDefaultShortcuts();
 }
@@ -309,14 +308,14 @@ MainWindow::~MainWindow()
 	utils::UXInfo::instance()->closeUXInfo();
 }
 
-EditorManagerInterface& MainWindow::editorManager()
+EditorManagerInterface &MainWindow::editorManager()
 {
 	return mEditorManagerProxy;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	mSystemEvents->emitCloseMainWindow();
+	emit mSystemEvents->closedMainWindow();
 
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
@@ -364,8 +363,17 @@ void MainWindow::selectItemWithError(Id const &id)
 		return;
 	}
 
-	setIndexesOfPropertyEditor(id);
-	centerOn(id);
+	Id graphicalId = id;
+	if (!mModels->graphicalModelAssistApi().isGraphicalId(id)) {
+		IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
+	}
+
+	setIndexesOfPropertyEditor(graphicalId);
+	centerOn(graphicalId);
+
+	Element * const element = getCurrentTab() ? getCurrentTab()->editorViewScene()->getElem(graphicalId) : nullptr;
+	graphicsUtils::AnimatedHighlighter::highlight(element);
 }
 
 void MainWindow::selectItem(Id const &id)
@@ -714,16 +722,16 @@ void MainWindow::addEdgesToBeDeleted(IdList &itemsToDelete)
 	}
 }
 
-void MainWindow::changeWindowTitle(int index)
+void MainWindow::changeWindowTitle()
 {
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
 
-	if (index != -1) {
-		QScintillaTextEdit *area = dynamic_cast<QScintillaTextEdit *>(currentTab());
-		if (area) {
-			QString const filePath = mTextManager->path(area);
-			setWindowTitle(windowTitle + " " + filePath);
-		}
+	QScintillaTextEdit *area = dynamic_cast<QScintillaTextEdit *>(currentTab());
+	if (area) {
+		QString const filePath = mTextManager->path(area);
+		setWindowTitle(windowTitle + " " + filePath);
+	} else if (getCurrentTab()) {
+		mProjectManager->refreshWindowTitleAccordingToSaveFile();
 	} else {
 		setWindowTitle(windowTitle);
 	}
@@ -799,6 +807,7 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 		return new RemoveElementCommand(
 				mModels->logicalModelAssistApi()
 				, mModels->graphicalModelAssistApi()
+				, exploser()
 				, mModels->logicalRepoApi().parent(id)
 				, Id()
 				, id
@@ -825,6 +834,7 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 	AbstractCommand *result = new RemoveElementCommand(
 				mModels->logicalModelAssistApi()
 				, mModels->graphicalModelAssistApi()
+				, exploser()
 				, mModels->logicalRepoApi().parent(logicalId)
 				, mModels->graphicalRepoApi().parent(id)
 				, id
@@ -869,12 +879,12 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 
 void MainWindow::appendExplosionsCommands(AbstractCommand *parentCommand, Id const &logicalId)
 {
-	IdList const toDelete = mModels->logicalModelAssistApi().exploser().elementsWithHardDependencyFrom(logicalId);
+	IdList const toDelete = mExploser->elementsWithHardDependencyFrom(logicalId);
 	foreach (Id const &logicalChild, toDelete) {
 		parentCommand->addPreAction(logicalDeleteCommand(logicalChild));
 	}
 
-	mModels->logicalModelAssistApi().exploser().handleRemoveCommand(logicalId, parentCommand);
+	mExploser->handleRemoveCommand(logicalId, parentCommand);
 }
 
 void MainWindow::deleteFromDiagram()
@@ -1007,9 +1017,9 @@ void MainWindow::closeTab(int index)
 	if (isDiagram) {
 		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(mRootIndex);
 		mController->diagramClosed(diagramId);
-		mSystemEvents->emitDiagramClosed(diagramId);
+		emit mSystemEvents->diagramClosed(diagramId);
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {
-		mSystemEvents->emitCodeTabClosed(QFileInfo(path));
+		emit mSystemEvents->codeTabClosed(QFileInfo(path));
 	} else {
 		// TODO: process other tabs (for example, start tab)
 	}
@@ -1028,14 +1038,17 @@ void MainWindow::showPreferencesDialog()
 		connect(&mPreferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
 	connect(&mPreferencesDialog, SIGNAL(usabilityTestingModeChanged(bool)), this, SLOT(setUsabilityMode(bool)));
-	mPreferencesDialog.exec();
-	mToolManager.updateSettings();
+	if (mPreferencesDialog.exec() == QDialog::Accepted) {
+		mToolManager.updateSettings();
+	}
+
 	mProjectManager->reinitAutosaver();
 }
 
 void MainWindow::initSettingsManager()
 {
-	SettingsManager::setUXInfo(utils::UXInfo::instance());
+	connect(SettingsManager::instance(), &SettingsManager::settingsChanged
+			, utils::UXInfo::instance(), &utils::UXInfo::reportSettingsChanges);
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir)) {
@@ -1325,7 +1338,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	tab->setMainWindow(this);
 	QModelIndex const index = rootIndex;
 
-	tab->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
+	tab->mvIface()->configure(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(), exploser());
 
 	tab->mvIface()->setModel(mModels->graphicalModel());
 	if (tab->sceneRect() == QRectF(0, 0, 0, 0)) {
@@ -1511,6 +1524,11 @@ models::Models *MainWindow::models() const
 	return mModels;
 }
 
+Exploser &MainWindow::exploser()
+{
+	return *mExploser.data();
+}
+
 Controller *MainWindow::controller() const
 {
 	return mController;
@@ -1652,7 +1670,7 @@ void MainWindow::createDiagram(QString const &idString)
 	} else {
 		// It is a group
 		CreateGroupCommand createGroupCommand(nullptr, mModels->logicalModelAssistApi()
-				, mModels->graphicalModelAssistApi(), Id::rootId(), Id::rootId()
+				, mModels->graphicalModelAssistApi(), exploser(), Id::rootId(), Id::rootId()
 				, id, false, QPointF());
 		createGroupCommand.redo();
 		created = createGroupCommand.rootId();
@@ -1929,6 +1947,8 @@ void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
 	BrandManager::configure(&mToolManager);
+	mPreferencesDialog.updatePluginDependendSettings();
+
 	if (!mProjectManager->restoreIncorrectlyTerminated() &&
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
 	{
@@ -1987,7 +2007,7 @@ void MainWindow::initToolPlugins()
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
-	mModels->logicalModelAssistApi().exploser().customizeExplosionTitles(
+	mExploser->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
 }
@@ -1995,16 +2015,6 @@ void MainWindow::initToolPlugins()
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 {
 	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
-}
-
-bool MainWindow::showConnectionRelatedMenus() const
-{
-	return mToolManager.customizer()->showConnectionRelatedMenus();
-}
-
-bool MainWindow::showUsagesRelatedMenus() const
-{
-	return mToolManager.customizer()->showUsagesRelatedMenus();
 }
 
 void MainWindow::reinitModels()
@@ -2078,7 +2088,7 @@ void MainWindow::initExplorers()
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setController(mController);
 	mUi->graphicalModelExplorer->setAssistApi(&mModels->graphicalModelAssistApi());
-	mUi->graphicalModelExplorer->setExploser(&mModels->logicalModelAssistApi().exploser());
+	mUi->graphicalModelExplorer->setExploser(exploser());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionCutElementsOnDiagram);
@@ -2088,7 +2098,7 @@ void MainWindow::initExplorers()
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 	mUi->logicalModelExplorer->setController(mController);
 	mUi->logicalModelExplorer->setAssistApi(&mModels->logicalModelAssistApi());
-	mUi->logicalModelExplorer->setExploser(&mModels->logicalModelAssistApi().exploser());
+	mUi->logicalModelExplorer->setExploser(exploser());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 
@@ -2259,4 +2269,60 @@ void MainWindow::openStartTab()
 	int const index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
 	mUi->tabs->setTabUnclosable(index);
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
+}
+
+void MainWindow::beginPaletteModification()
+{
+}
+
+void MainWindow::setElementInPaletteVisible(Id const &metatype, bool visible)
+{
+	mUi->paletteTree->setElementVisible(metatype, visible);
+	// Note that if element is visible in palette, it is not necessary that it will be enabled it editor manager. It
+	// may be greyed-out and still can't be used on diagrams.
+}
+
+void MainWindow::setVisibleForAllElementsInPalette(bool visible)
+{
+	mUi->paletteTree->setVisibleForAllElements(visible);
+	for (Id const &editor : mEditorManagerProxy.editors()) {
+		for (Id const &diagram: mEditorManagerProxy.diagrams(editor)) {
+			for (Id const &element : mEditorManagerProxy.elements(diagram)) {
+				mEditorManagerProxy.setElementEnabled(element, visible);
+			}
+		}
+	}
+}
+
+void MainWindow::setElementInPaletteEnabled(Id const &metatype, bool enabled)
+{
+	mUi->paletteTree->setElementEnabled(metatype, enabled);
+	mEditorManagerProxy.setElementEnabled(metatype, enabled);
+}
+
+void MainWindow::setEnabledForAllElementsInPalette(bool enabled)
+{
+	mUi->paletteTree->setEnabledForAllElements(enabled);
+	for (Id const &editor : mEditorManagerProxy.editors()) {
+		for (Id const &diagram: mEditorManagerProxy.diagrams(editor)) {
+			for (Id const &element : mEditorManagerProxy.elements(diagram)) {
+				mEditorManagerProxy.setElementEnabled(element, enabled);
+			}
+		}
+	}
+}
+
+void MainWindow::endPaletteModification()
+{
+	// Disabling elements on scene...
+	EditorViewScene * const scene = getCurrentTab() ? getCurrentTab()->editorViewScene() : nullptr;
+	if (scene) {
+		for (QGraphicsItem * const item : scene->items()) {
+			if (Element * const element = dynamic_cast<Element *>(item)) {
+				element->updateEnabledState();
+			}
+		}
+
+		scene->update();
+	}
 }

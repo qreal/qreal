@@ -303,7 +303,6 @@ void SdfRenderer::image_draw(QDomElement &element)
 	QRect const rect(x1, y1, x2 - x1, y2 - y1);
 
 	mImagesCache.drawImage(fileName, *painter, rect);
-
 }
 
 void SdfRenderer::point(QDomElement &element)

@@ -5,18 +5,18 @@
 #include <QtCore/QDateTime>
 
 #include <qrutils/utilsDeclSpec.h>
-#include <qrkernel/uxInfoInterface.h>
 
 namespace utils {
 
-/// Singleton class (realization of UXInfoInterface) for collecting
-/// user experience information about setting changes,
-///click coordinates, diagram element creation and others.
-class QRUTILS_EXPORT UXInfo : public qReal::UXInfoInterface {
+/// Singleton class for collecting user experience information about setting changes,
+/// click coordinates, diagram element creation and others.
+class QRUTILS_EXPORT UXInfo : public QObject
+{
+	Q_OBJECT
 
 public:
-	static UXInfo* instance();
-	~UXInfo();
+	/// Returns the single instance of usability info collector.
+	static UXInfo *instance();
 
 	/// Add to ux files record about creation of new element on diagram.
 	/// @param editorName name of the editor of the element.
@@ -44,12 +44,6 @@ public:
 	/// Add to ux files record about mouse click coordinates.
 	static void reportMouseClick(QPoint const &pos);
 
-	/// Recording change of settings.
-	/// @param name Settings name.
-	/// @param oldValue old value of the settings.
-	/// @param newValue new value of the settings.
-	void reportSettingsChanges(QString const &name, QVariant const &oldValue, QVariant const &newValue);
-
 	/// Set status about collect or not collect ux information.
 	static void setStatus(bool status);
 
@@ -62,8 +56,16 @@ public:
 	/// Close all ux files.
 	void closeUXInfo();
 
+public slots:
+	/// Records settings modification.
+	/// @param name Settings name.
+	/// @param oldValue old value of the settings.
+	/// @param newValue new value of the settings.
+	void reportSettingsChanges(QString const &name, QVariant const &oldValue, QVariant const &newValue);
+
 private:
 	UXInfo();
+	~UXInfo();
 
 	bool writeData(QTextStream const &stream);
 	void reportCreationOfElements(QString const &editorName, QString const elementName);

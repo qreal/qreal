@@ -7,13 +7,32 @@ namespace qReal
 namespace commands
 {
 
-InsertIntoEdgeCommand::InsertIntoEdgeCommand(EditorViewScene &scene, models::LogicalModelAssistApi &logicalAssistApi
-		, models::GraphicalModelAssistApi &graphicalAssistApi, Id const &firstElem, Id const &lastElem
-		, Id const &parent, QPointF const &scenePos, QPointF const &shift, bool isFromLogicalModel
+InsertIntoEdgeCommand::InsertIntoEdgeCommand(EditorViewScene &scene
+		, models::LogicalModelAssistApi &logicalAssistApi
+		, models::GraphicalModelAssistApi &graphicalAssistApi
+		, Exploser &exploser
+		, Id const &firstElem
+		, Id const &lastElem
+		, Id const &parent
+		, QPointF const &scenePos
+		, QPointF const &shift
+		, bool isFromLogicalModel
 		, CreateElementCommand *createCommand)
-	: AbstractCommand(), mScene(scene), mLogicalAssistApi(logicalAssistApi), mGraphicalAssistApi(graphicalAssistApi)
-	, mFirstId(firstElem), mLastId(lastElem), mParentId(parent), mOldEdge(Id()), mPos(scenePos), mShift(shift)
-	, mIsLogical(isFromLogicalModel), mCreateFirst(NULL), mCreateSecond(NULL), mRemoveOldEdge(NULL)
+	: AbstractCommand()
+	, mScene(scene)
+	, mLogicalAssistApi(logicalAssistApi)
+	, mGraphicalAssistApi(graphicalAssistApi)
+	, mExploser(exploser)
+	, mFirstId(firstElem)
+	, mLastId(lastElem)
+	, mParentId(parent)
+	, mOldEdge(Id())
+	, mPos(scenePos)
+	, mShift(shift)
+	, mIsLogical(isFromLogicalModel)
+	, mCreateFirst(nullptr)
+	, mCreateSecond(nullptr)
+	, mRemoveOldEdge(nullptr)
 	, mCreateCommand(createCommand)
 {
 	if (mCreateCommand) {
@@ -56,8 +75,8 @@ bool InsertIntoEdgeCommand::execute()
 
 		mConfiguration = mGraphicalAssistApi.configuration(edge->id());
 		if (!mRemoveOldEdge) {
-			mRemoveOldEdge = new RemoveElementCommand(mLogicalAssistApi, mGraphicalAssistApi, mScene.rootItemId()
-					, mParentId, edge->id(), mIsLogical
+			mRemoveOldEdge = new RemoveElementCommand(mLogicalAssistApi, mGraphicalAssistApi, mExploser
+					, mScene.rootItemId(), mParentId, edge->id(), mIsLogical
 					, mGraphicalAssistApi.name(edge->id()), mGraphicalAssistApi.position(edge->id()));
 		}
 		mRemoveOldEdge->redo();
@@ -97,7 +116,7 @@ void InsertIntoEdgeCommand::initCommand(CreateElementCommand *&command, Id const
 {
 	if (!command) {
 		QString const name = mScene.mainWindow()->editorManager().friendlyName(type);
-		command = new CreateElementCommand(mLogicalAssistApi, mGraphicalAssistApi, mScene.rootItemId()
+		command = new CreateElementCommand(mLogicalAssistApi, mGraphicalAssistApi, mExploser, mScene.rootItemId()
 				, mParentId, Id(type, QUuid::createUuid().toString()), mIsLogical, name, mPos);
 	}
 }

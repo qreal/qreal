@@ -6,10 +6,9 @@
 
 using namespace qReal;
 
-ToolPluginManager::ToolPluginManager(QObject *parent)
-		: mCustomizer()
+ToolPluginManager::ToolPluginManager()
+	: mCustomizer()
 {
-	Q_UNUSED(parent)
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
 	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
@@ -18,7 +17,7 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 
 	mPluginsDir.cd("plugins");
 
-	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
+	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
 		// TODO: Free memory
 		QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader->instance();
@@ -39,21 +38,20 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 		}
 	}
 
+	loadDefaultSettings();
 	setHotKeyActions();
 }
 
 ToolPluginManager::~ToolPluginManager()
 {
-	foreach (QPluginLoader *loader, mLoaders) {
-		delete loader;
-	}
+	qDeleteAll(mLoaders);
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
 {
 	mSystemEvents = &configurator.systemEvents();
 
-	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
 		toolPlugin->init(configurator);
 	}
 }
@@ -61,7 +59,7 @@ void ToolPluginManager::init(PluginConfigurator const &configurator)
 QList<ActionInfo> ToolPluginManager::actions() const
 {
 	QList<ActionInfo> result;
-	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
 		result += toolPlugin->actions();
 	}
 
@@ -71,7 +69,7 @@ QList<ActionInfo> ToolPluginManager::actions() const
 QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
 {
 	QList<HotKeyActionInfo> result;
-	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
 		result += toolPlugin->hotKeyActions();
 	}
 
@@ -80,17 +78,38 @@ QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
 
 void ToolPluginManager::setHotKeyActions() const
 {
-	foreach (HotKeyActionInfo const &actionInfo, hotKeyActions()) {
+	for (HotKeyActionInfo const &actionInfo : hotKeyActions()) {
 		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
+	}
+}
+
+void ToolPluginManager::loadDefaultSettings()
+{
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+		for (QString const &defaultSettingsFile : toolPlugin->defaultSettingsFiles()) {
+			SettingsManager::loadDefaultSettings(defaultSettingsFile);
+		}
 	}
 }
 
 QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const
 {
 	QList<QPair<QString, PreferencesPage *> > result;
-	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
-		if (toolPlugin->preferencesPage().second != NULL) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+		if (toolPlugin->preferencesPage().second) {
 			result << toolPlugin->preferencesPage();
+		}
+	}
+
+	return result;
+}
+
+QMultiMap<QString, ProjectConverter> ToolPluginManager::projectConverters() const
+{
+	QMultiMap<QString, ProjectConverter> result;
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+		for (ProjectConverter const &converter : toolPlugin->projectConverters()) {
+			result.insertMulti(converter.editor(), converter);
 		}
 	}
 
@@ -99,7 +118,7 @@ QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() 
 
 Customizer *ToolPluginManager::customizer() const
 {
-	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
 		if (toolPlugin->customizationInterface()) {
 			return toolPlugin->customizationInterface();
 		}
@@ -109,15 +128,10 @@ Customizer *ToolPluginManager::customizer() const
 
 void ToolPluginManager::updateSettings()
 {
-	mSystemEvents->emitSettingsUpdated();
+	emit mSystemEvents->settingsUpdated();
 }
 
 void ToolPluginManager::activeTabChanged(Id const & rootElementId)
 {
-	mSystemEvents->emitActiveTabChanged(rootElementId);
-}
-
-QList<ToolPluginInterface *> ToolPluginManager::getPlugins()
-{
-	return mPlugins;
+	emit mSystemEvents->activeTabChanged(rootElementId);
 }

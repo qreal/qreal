@@ -8,6 +8,7 @@
 #include <QtGui/QIcon>
 
 #include <qrkernel/ids.h>
+#include <qrkernel/version.h>
 #include <qrkernel/settingsManager.h>
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
@@ -15,8 +16,8 @@
 #include "pluginManager/listenerManager.h"
 #include "editorPluginInterface/editorInterface.h"
 #include "pluginManager/pattern.h"
-#include "pluginManager/patternParser.h"
 #include "pluginManager/explosion.h"
+#include "pluginManager/details/patternParser.h"
 
 namespace qReal {
 
@@ -32,6 +33,8 @@ public:
 	virtual IdList editors() const = 0;
 	virtual IdList diagrams(Id const &editor) const = 0;
 	virtual IdList elements(Id const &diagram) const = 0;
+	virtual Version version(Id const &editor) const = 0;
+
 	virtual bool loadPlugin(QString const &pluginName) = 0;
 	virtual bool unloadPlugin(QString const &pluginName) = 0;
 
@@ -95,9 +98,10 @@ public:
 	virtual QString getIsHidden(Id const &id) const = 0;
 	virtual void deleteElement(MainWindow *mainWindow, Id const &id) const = 0;
 	virtual bool isRootDiagramNode(Id const &id) const = 0;
-	virtual void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const = 0;
-	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
-			, QString const &labelType, QString const &lineType
+	virtual void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
+			, bool isRootDiagramNode) const = 0;
+	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &displayedName
+			, QString const &labelText, QString const &labelType, QString const &lineType
 			, QString const &beginType, QString const &endType) const = 0;
 	virtual QPair<Id, Id> createEditorAndDiagram(QString const &name) const = 0;
 	virtual void saveMetamodel(QString const &newMetamodelFileName) = 0;
@@ -112,12 +116,18 @@ public:
 	virtual QList<QString> getPatternNames() const = 0;
 	virtual QSize iconSize(Id const &id) const = 0;
 
+	virtual IdList elementsWithTheSameName(Id const &diagram, QString const &name, QString const type) const = 0;
 	virtual IdList propertiesWithTheSameName(Id const &id, QString const &propCurrentName
 			, QString const &propNewName) const = 0;
 
+	virtual QStringList getPropertiesInformation(Id const &id) const = 0;
 	virtual QStringList getSameNamePropertyParams(Id const &propertyId, QString const &propertyName) const = 0;
 	virtual void restoreRemovedProperty(Id const &propertyId, QString const &previousName) const = 0;
 	virtual void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const = 0;
+
+	/// Includes or excludes element from metamodel.
+	virtual void setElementEnabled(Id const &type, bool enabled) = 0;
 };
+
 
 }

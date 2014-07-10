@@ -11,7 +11,7 @@ using namespace ains;
 AinsPlugin::AinsPlugin()
 {
 	QTranslator *appTranslator = new QTranslator();
-	appTranslator->load(":/ains_" + QLocale::system().name());
+	appTranslator->load(":/ains_" + QLocale().name());
 	QApplication::installTranslator(appTranslator);
 }
 

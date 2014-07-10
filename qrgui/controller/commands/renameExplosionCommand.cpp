@@ -6,9 +6,11 @@ using namespace qReal::commands;
 
 RenameExplosionCommand::RenameExplosionCommand(models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi const * const graphicalApi
+		, Exploser &exploser
 		, Id const &target)
 	: mLogicalApi(logicalApi)
 	, mGraphicalApi(graphicalApi)
+	, mExploser(exploser)
 	, mTarget(target)
 {
 }
@@ -46,5 +48,5 @@ void RenameExplosionCommand::promptUserToEnterNewName()
 	mNewName = gui::RenameDialog::selectNewName(mOldName);
 	// Adding real renaming commands; they will be executed just after this
 	// command so the sequence is ok
-	addPostAction(mLogicalApi.exploser().renameCommands(mTarget, mNewName));
+	addPostAction(mExploser.renameCommands(mTarget, mNewName));
 }

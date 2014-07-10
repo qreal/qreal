@@ -12,6 +12,7 @@ public:
 	CreateElementCommand(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
+			, Exploser &exploser
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id

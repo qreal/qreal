@@ -117,7 +117,7 @@ public:
 	/// @param importedFile - file to be imported
 	void importFromDisk(QString const &importedFile) override;
 	void saveAll() const override;
-	void save(qReal::IdList list) const override;
+	void save(qReal::IdList const &list) const override;
 	void saveTo(QString const &workingFile) override;
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds) override;
 	void open(QString const &saveFile) override;
@@ -151,6 +151,10 @@ public:
 			, QString const &propertyName
 			, QVariant const &value
 			) override;
+
+	QStringList metaInformationKeys() const override;
+	QVariant metaInformation(QString const &key) const override;
+	void setMetaInformation(QString const &key, QVariant const &info) override;
 
 private:
 	RepoApi(RepoApi const &other);  // Copying is not allowed.

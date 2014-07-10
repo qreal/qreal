@@ -60,7 +60,7 @@
                             <platforms>windows</platforms>
                             <runAsAdmin>0</runAsAdmin>
                             <runInTerminal>0</runInTerminal>
-                            <windowsExec>${installdir}/qrgui.exe</windowsExec>
+                            <windowsExec>${installdir}/%3.exe</windowsExec>
                             <windowsExecArgs></windowsExecArgs>
                             <windowsIcon>${installdir}/icon.ico</windowsIcon>
                             <windowsPath>${installdir}</windowsPath>
@@ -84,7 +84,7 @@
                     <name>QReal</name>
                     <runAsAdmin>0</runAsAdmin>
                     <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/qrgui.exe</windowsExec>
+                    <windowsExec>${installdir}/%3.exe</windowsExec>
                     <windowsExecArgs></windowsExecArgs>
                     <windowsIcon>${installdir}/icon.ico</windowsIcon>
                     <windowsPath></windowsPath>
@@ -116,7 +116,7 @@
                 <command>
                     <makeDefault>1</makeDefault>
                     <verb>Open</verb>
-                    <runProgram>${installdir}\qrgui.exe</runProgram>
+                    <runProgram>${installdir}\%3.exe</runProgram>
                     <runProgramArguments>"%L"</runProgramArguments>
                 </command>
             </commandList>
@@ -133,7 +133,7 @@
     </postUninstallationActionList>
     <finalPageActionList>
         <runProgram>
-            <program>${installdir}/qrgui.exe</program>
+            <program>${installdir}/%3.exe</program>
             <programArguments></programArguments>
             <progressText>Launch QReal</progressText>
         </runProgram>

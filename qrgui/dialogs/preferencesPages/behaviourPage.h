@@ -13,10 +13,10 @@ class PreferencesBehaviourPage : public PreferencesPage
 
 public:
 	explicit PreferencesBehaviourPage(QWidget *parent = 0);
-	~PreferencesBehaviourPage();
+	~PreferencesBehaviourPage() override;
 
-	void save();
-	virtual void restoreSettings();
+	void save() override;
+	void restoreSettings() override;
 
 signals:
 	void usabilityTestingModeChanged(bool on);
@@ -28,7 +28,10 @@ private slots:
 	void showAutoSaveBox(bool show);
 
 private:
+	void initLanguages();
+
 	Ui::PreferencesBehaviourPage *mUi;
 	FilterObject mFilterObject;
 	bool mUsabilityTestingMode;
+	QString mOldLanguage;
 };
