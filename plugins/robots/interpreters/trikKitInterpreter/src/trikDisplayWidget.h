@@ -28,6 +28,7 @@ public:
 	int displayHeight() const override;
 
 	bool buttonIsDown(QString const &buttonId) const override;
+	void setLedColor(QColor const &color);
 
 protected:
 	void paintEvent(QPaintEvent *event) override;

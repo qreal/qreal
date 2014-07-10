@@ -141,6 +141,25 @@ QPushButton:pressed{
        <verstretch>5</verstretch>
       </sizepolicy>
      </property>
+     <widget class="QFrame" name="led">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>30</y>
+        <width>21</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
     </widget>
    </item>
    <item row="4" column="1">
@@ -298,8 +317,6 @@ QPushButton:pressed{
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="trikKitInterpreter.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -167,7 +167,6 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikWaitForGyroscope")
 				<< id("TrikWaitForAccelerometer")
 				<< id("TrikSay")
-				<< id("TrikLed")
 				<< id("TrikSystem")
 				<< id("TrikInitCamera")
 				<< id("TrikDetectLine")

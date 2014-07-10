@@ -3,6 +3,8 @@
 
 #include <qrkernel/exception/exception.h>
 
+#include <QDebug>
+
 using namespace trikKitInterpreter;
 
 TrikDisplayWidget::TrikDisplayWidget(QWidget *parent)
@@ -23,6 +25,8 @@ void TrikDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
 	TwoDModelDisplayWidget::setPainter(painter);
 	mUi->display->appendPainter(painter);
 }
+
+
 
 void TrikDisplayWidget::repaintDisplay()
 {
@@ -58,6 +62,20 @@ bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
 	}
 
 	throw qReal::Exception("Incorrect button id in TrikDisplayWidget::buttonIsDown");
+}
+
+void TrikDisplayWidget::setLedColor(QColor const &color)
+{
+	qDebug() << "Color was changed";
+
+	//it dosen't work, becouse LedBlock is empty
+	QPalette Pal(palette()); /// make palette
+	/// set color background
+	Pal.setColor(QPalette::Background, color); /// set this color
+	mUi->led->setAutoFillBackground(true);
+	mUi->led->setPalette(Pal);
+	//mUi->led->setStyleSheet("background-color:red;");
+	mUi->led->show();
 }
 
 void TrikDisplayWidget::paintEvent(QPaintEvent *event)
