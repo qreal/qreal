@@ -57,5 +57,5 @@ include(hotKeyManager/hotKeyManager.pri)
 # Manges styles, colors, fonts and so on
 include(brandManager/brandManager.pri)
 
-#
+# configuration network manager
 include(configurationNetworkManager/configurationNetworkManager.pri)
