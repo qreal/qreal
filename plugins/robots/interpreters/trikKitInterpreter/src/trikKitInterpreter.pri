@@ -49,6 +49,8 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
+        $$PWD/trikFSharpAdditionalPreferences.h \
+    src/trikWinScpAdditionalPreferences.h
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -89,10 +91,14 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
+        $$PWD/trikFSharpAdditionalPreferences.cpp \
+    src/trikWinScpAdditionalPreferences.cpp
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
 	$$PWD/trikDisplayWidget.ui \
+        $$PWD/trikFSharpAdditionalPreferences.ui \
+    src/trikWinScpAdditionalPreferences.ui
 
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \

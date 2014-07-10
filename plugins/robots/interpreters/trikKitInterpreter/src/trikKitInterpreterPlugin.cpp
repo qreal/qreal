@@ -21,8 +21,10 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	QApplication::installTranslator(&mAppTranslator);
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
+    mFSharpAdditionalPreferences = new TrikFSharpAdditionalPreferences();
+    mWinScpAdditionalPreferences = new TrikWinScpAdditionalPreferences();
 
-	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6
+    auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6
 			, new TrikTwoDModelConfigurer("M3", "M4"));
 
 	mTwoDRobotModelV6.setEngine(modelEngine->engine());
@@ -30,7 +32,7 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mRealRobotModelV6, &robotModel::real::RealRobotModelV6::rereadSettings);
-	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+    connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, &mTwoDRobotModelV6, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
@@ -77,9 +79,9 @@ interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defa
 	return &mTwoDRobotModelV6;
 }
 
-interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidget()
 {
-	return mAdditionalPreferences;
+    return {mAdditionalPreferences, mFSharpAdditionalPreferences, mWinScpAdditionalPreferences};
 }
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
