@@ -47,7 +47,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+         <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
           <normaloff>:/icons/2d_multiselection.png</normaloff>:/icons/2d_multiselection.png</iconset>
         </property>
         <property name="iconSize">
@@ -73,7 +73,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+         <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
           <normaloff>:/icons/2d_target.png</normaloff>:/icons/2d_target.png</iconset>
         </property>
         <property name="iconSize">
@@ -222,7 +222,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+                <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
                  <normaloff>:/icons/2d_pencil.png</normaloff>:/icons/2d_pencil.png</iconset>
                </property>
                <property name="iconSize">
@@ -260,7 +260,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+                <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
                  <normaloff>:/icons/2d_ruler.png</normaloff>:/icons/2d_ruler.png</iconset>
                </property>
                <property name="iconSize">
@@ -314,7 +314,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+                <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
                  <normaloff>:/icons/2d_clear.png</normaloff>:/icons/2d_clear.png</iconset>
                </property>
                <property name="iconSize">
@@ -349,7 +349,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+                <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
                  <normaloff>:/icons/2d_none.png</normaloff>:/icons/2d_none.png</iconset>
                </property>
                <property name="iconSize">
@@ -387,7 +387,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+                <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
                  <normaloff>:/icons/2d_ellipse.png</normaloff>:/icons/2d_ellipse.png</iconset>
                </property>
                <property name="iconSize">
@@ -425,7 +425,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+                <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
                  <normaloff>:/icons/2d_wall.png</normaloff>:/icons/2d_wall.png</iconset>
                </property>
                <property name="iconSize">
@@ -627,7 +627,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+         <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
           <normaloff>:/icons/2d_save.png</normaloff>:/icons/2d_save.png</iconset>
         </property>
         <property name="iconSize">
@@ -656,7 +656,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+         <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
           <normaloff>:/icons/2d_open.png</normaloff>:/icons/2d_open.png</iconset>
         </property>
         <property name="iconSize">
@@ -685,7 +685,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+         <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
           <normaloff>:/icons/2d_hand.png</normaloff>:/icons/2d_hand.png</iconset>
         </property>
         <property name="iconSize">
@@ -717,7 +717,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+         <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
           <normaloff>:/icons/2d_stop.png</normaloff>:/icons/2d_stop.png</iconset>
         </property>
         <property name="iconSize">
@@ -749,7 +749,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+         <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
           <normaloff>:/icons/2d_run.png</normaloff>:/icons/2d_run.png</iconset>
         </property>
         <property name="iconSize">
@@ -781,7 +781,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+         <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
           <normaloff>:/icons/2d_robot_back.png</normaloff>:/icons/2d_robot_back.png</iconset>
         </property>
         <property name="flat">
@@ -831,7 +831,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../../interpreterCore/interpreterCore.qrc">
+            <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
              <normaloff>:/icons/2d_left.png</normaloff>:/icons/2d_left.png</iconset>
            </property>
            <property name="flat">
@@ -931,7 +931,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../interpreterCore/interpreterCore.qrc"/>
+  <include location="../../../../interpreterCore/interpreterCore.qrc"/>
  </resources>
  <connections/>
 </ui>
