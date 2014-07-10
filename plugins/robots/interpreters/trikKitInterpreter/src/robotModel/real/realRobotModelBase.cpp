@@ -25,8 +25,10 @@ using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
 
 RealRobotModelBase::RealRobotModelBase(QString const &kitId)
-	: TrikRobotModelBase(kitId)
+	: TrikRobotModelBase(kitId), mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
 {
+	connect(mRobotCommunicator, &utils::TcpRobotCommunicator::connected, this, &RealRobotModelBase::connected);
+	connect(mRobotCommunicator, &utils::TcpRobotCommunicator::disconnected, this, &RealRobotModelBase::disconnected);
 }
 
 bool RealRobotModelBase::needsConnection() const
@@ -36,10 +38,12 @@ bool RealRobotModelBase::needsConnection() const
 
 void RealRobotModelBase::connectToRobot()
 {
+	mRobotCommunicator->connect();
 }
 
 void RealRobotModelBase::disconnectFromRobot()
 {
+	mRobotCommunicator->disconnect();
 }
 
 robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
