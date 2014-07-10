@@ -10,8 +10,8 @@ class KitExtensionsUpdateManager : public QObject
 
 public:                                  
 	KitExtensionsUpdateManager(interpreterCore::KitPluginManager const &kitManager
-						 , TextManagerInterface *textManager
-						 , QObject *parent = 0);
+			 , TextManagerInterface *textManager
+			 , QObject *parent = 0);
 
 public slots:
 	void updateExtensions(interpreterBase::robotModel::RobotModelInterface &currentModel);

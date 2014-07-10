@@ -93,12 +93,12 @@ void TextManager::changeFilePath(QString const &from, QString const &to)
 	}
 }
 
-QScintillaTextEdit *TextManager::code(QString const &filePath)
+QScintillaTextEdit *TextManager::code(QString const &filePath) const
 {
 	return mText.value(filePath);
 }
 
-QList<gui::QScintillaTextEdit *> TextManager::code(EditorView* diagram)
+QList<gui::QScintillaTextEdit *> TextManager::code(EditorView* diagram) const
 {
 	QList<gui::QScintillaTextEdit *> codeList;
 
@@ -109,7 +109,7 @@ QList<gui::QScintillaTextEdit *> TextManager::code(EditorView* diagram)
 	return codeList;
 }
 
-bool TextManager::contains(QString const &filePath)
+bool TextManager::contains(QString const &filePath) const
 {
 	return mText.contains(filePath);
 }
@@ -119,27 +119,27 @@ bool TextManager::removeDiagram(EditorView *diagram)
 	return mDiagramCodeManager.remove(diagram);
 }
 
-EditorView *TextManager::diagram(gui::QScintillaTextEdit *code)
+EditorView *TextManager::diagram(gui::QScintillaTextEdit *code) const
 {
 	return mDiagramCodeManager.key(mPath.value(code), NULL);
 }
 
-QString TextManager::path(gui::QScintillaTextEdit *code)
+QString TextManager::path(gui::QScintillaTextEdit *code) const
 {
 	return mPath.value(code);
 }
 
-bool TextManager::isDefaultPath(QString const &path)
+bool TextManager::isDefaultPath(QString const &path) const
 {
 	return mPathType.value(path);
 }
 
-bool TextManager::isModified(QString const &path)
+bool TextManager::isModified(QString const &path) const
 {
 	return mModified.value(path).second;
 }
 
-bool TextManager::isModifiedEver(QString const &path)
+bool TextManager::isModifiedEver(QString const &path) const
 {
 	return mModified.value(path).first;
 }
@@ -182,17 +182,17 @@ void TextManager::removeExtensions()
 	mExtDescrByExtension.clear();
 }
 
-QString TextManager::extDescrByGenerator(QString const &genName)
+QString TextManager::extDescrByGenerator(QString const &genName) const
 {
 	return mExtDescrByGenerator.value(genName, QString());
 }
 
-QString TextManager::extDescrByExtension(QString const &ext)
+QString TextManager::extDescrByExtension(QString const &ext) const
 {
 	return mExtDescrByExtension.value(ext, QString());
 }
 
-QList<QString> TextManager::extDescriptions()
+QList<QString> TextManager::extDescriptions() const
 {
 	return mExtDescrByGenerator.values();
 }
@@ -282,7 +282,7 @@ bool TextManager::saveText(bool saveAs)
 	return false;
 }
 
-QString TextManager::generatorName(QString const &filepath)
+QString TextManager::generatorName(QString const &filepath) const
 {
 	return mGenName.value(filepath, "");
 }
