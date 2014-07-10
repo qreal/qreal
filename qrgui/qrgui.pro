@@ -29,3 +29,5 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 }
 
 include(qrgui.pri)
+
+HEADERS +=
