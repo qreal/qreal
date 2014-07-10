@@ -1,5 +1,5 @@
 #include "server.h"
 
-server::server()
+Server::Server()
 {
 }

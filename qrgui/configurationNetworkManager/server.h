@@ -1,8 +1,8 @@
-#pragms once
+#pragma once
 
 #include "configurationNetworkManager.h"
 
-class Server : ConfigurationNetworkManager
+class Server : public ConfigurationNetworkManager
 {
 public:
 	Server();

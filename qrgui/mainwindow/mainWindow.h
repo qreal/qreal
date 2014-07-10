@@ -45,8 +45,6 @@
 #include "textEditor/codeEditor.h"
 #include "textEditor/textManager.h"
 
-#include <QtNetwork/QtNetwork>
-
 namespace Ui {
 class MainWindowUi;
 }
@@ -295,11 +293,7 @@ private slots:
 	void setUsabilityMode(bool mode);
 	void startUsabilityTest();
 	void finishUsabilityTest();
-
-	///get and apply settings from server
-	void setSettings();
-	///show error if connecttion failed
-	void displayError(QAbstractSocket::SocketError socketError);
+	//void displayClientError();
 
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
@@ -437,12 +431,7 @@ private:
 	QToolBar *mUsabilityTestingToolbar; // Has ownership
 	QAction *mStartTest; // Has ownership
 	QAction *mFinishTest; // Has ownership
-	///apply setting from server
-	void applySettingsFromServer(QString settings);
-	///server socket
-	QTcpSocket *mServerSocket;
-	///size of string which send from server
-	quint16 mSettingStringSize;
+
 };
 
 }

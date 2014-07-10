@@ -1,9 +1,9 @@
 HEADERS += \
 	$$PWD/configurationNetworkManager.h \
-    configurationNetworkManager/server.h \
-    configurationNetworkManager/client.h
+	$$PWD/server.h \
+		$$PWD/client.h
 
 SOURCES += \
 	$$PWD/configurationNetworkManager.cpp \
-    configurationNetworkManager/server.cpp \
-    configurationNetworkManager/client.cpp
+	$$PWD/server.cpp \
+	$$PWD/client.cpp
