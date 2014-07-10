@@ -11,9 +11,9 @@ GuiFacade::GuiFacade(MainWindow *mainWindow)
 	: mMainWindow(mainWindow)
 	, mRobotsPlugin(nullptr)
 {
-	QList<ToolPluginInterface *> pluginList = mMainWindow->toolManager().getPlugins();
+	QList<ToolPluginInterface *> const pluginList = mMainWindow->toolManager().getPlugins();
 	for (ToolPluginInterface *plugin : pluginList) {
-		if (!plugin->pluginName().compare("robots")) {
+		if (plugin->pluginName() == "robots") {
 			mRobotsPlugin = plugin;
 		}
 	}
@@ -21,27 +21,25 @@ GuiFacade::GuiFacade(MainWindow *mainWindow)
 
 QWidget* GuiFacade::widget(QString const &type, QString const &name)
 {
-	if (!type.compare("Action")) {
-		QList<QAction *> actionList = mMainWindow->findChildren<QAction *>();
-		for(QAction const *action : actionList) {
-			if (!action->objectName().compare(name)) {
-				QList<QWidget *> widgetList =action->associatedWidgets();
-				for(QWidget *widget : widgetList) {
-					QString buttonClassName = "QToolButton";
-					if (!buttonClassName.compare(widget->metaObject()->className())) {
-						return widget;
-					}
+	if (type == "Action") {
+		QAction *action = mMainWindow->findChild<QAction *>(name);
+		if (action) {
+			QList<QWidget *> const widgetList = action->associatedWidgets();
+			for (QWidget *widget : widgetList) {
+				QString buttonClassName = "QToolButton";
+				if (buttonClassName == widget->metaObject()->className()) {
+					return widget;
 				}
 			}
 		}
-		QWidget *action = robotAction(name);
-		if (action) {
-			return action;
+		QWidget *widget = robotAction(name);
+		if (widget) {
+			return widget;
 		}
-	} else if (!type.compare("ComboBox")) {
-		QList<QComboBox *> comboBoxList = mMainWindow->findChildren<QComboBox*>();
+	} else if (type == "ComboBox") {
+		QList<QComboBox *> const comboBoxList = mMainWindow->findChildren<QComboBox*>();
 		for(QComboBox *comboBox : comboBoxList) {
-			if (!comboBox->objectName().compare(name) && comboBox->isVisible()) {
+			if (comboBox->objectName() == name && comboBox->isVisible()) {
 				return comboBox;
 			}
 		}
@@ -49,9 +47,9 @@ QWidget* GuiFacade::widget(QString const &type, QString const &name)
 		if (comboBox) {
 			return comboBox;
 		}
-	} else if (!type.compare("Scene")) {
+	} else if (type == "Scene") {
 		return mMainWindow->getCurrentTab()->viewport();
-	} else if (!type.compare("PropertyEditor")) {
+	} else if (type == "PropertyEditor") {
 		PropertyEditorView const *propertyEditor = mMainWindow->findChild<PropertyEditorView *>("propertyEditor");
 		return propertyEditor->
 				findChild<QtTreePropertyBrowser *>()->
@@ -62,9 +60,9 @@ QWidget* GuiFacade::widget(QString const &type, QString const &name)
 
 DraggableElement* GuiFacade::draggableElement(QString const &widgetId)
 {
-	QList<DraggableElement *> paletteWidgets = mMainWindow->findChildren<DraggableElement *>();
-	for(DraggableElement *paletteElement : paletteWidgets){
-		if(!paletteElement->id().toString().compare(widgetId)) {
+	QList<DraggableElement *> const paletteWidgets = mMainWindow->findChildren<DraggableElement *>();
+	for (DraggableElement *paletteElement : paletteWidgets) {
+		if (paletteElement->id().toString() == widgetId) {
 			return paletteElement;
 		}
 	}
@@ -109,11 +107,11 @@ QWidget* GuiFacade::robotAction(QString const &name)
 {
 	QList<ActionInfo > actionList = mRobotsPlugin->actions();
 	for(ActionInfo &actionInfo : actionList) {
-		if (!actionInfo.action()->objectName().compare(name)) {
-			QList<QWidget *> widgetList = actionInfo.action()->associatedWidgets();
-			for(QWidget *widget : widgetList) {
+		if (actionInfo.action()->objectName() == name) {
+			QList<QWidget *> const widgetList = actionInfo.action()->associatedWidgets();
+			for (QWidget *widget : widgetList) {
 				QString buttonClassName = "QToolButton";
-				if (!buttonClassName.compare(widget->metaObject()->className()) && widget->isVisible()) {
+				if (buttonClassName == widget->metaObject()->className() && widget->isVisible()) {
 					return widget;
 				}
 			}

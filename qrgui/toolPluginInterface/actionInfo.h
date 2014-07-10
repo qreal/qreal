@@ -51,8 +51,6 @@ private:
 	QString mMenuName;
 
 	bool mIsAction;
-
-	QString mName;
 };
 
 }

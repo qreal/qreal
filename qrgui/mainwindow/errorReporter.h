@@ -9,6 +9,7 @@
 #include "mainwindow/mainWindow.h"
 #include "mainwindow/error.h"
 #include "mainwindow/errorListWidget.h"
+#include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 
 namespace qReal {
@@ -25,7 +26,6 @@ public:
 	virtual void addWarning(QString const &message, Id const &position = Id::rootId());
 	virtual void addError(QString const &message, Id const &position = Id::rootId());
 	virtual void addCritical(QString const &message, Id const &position = Id::rootId());
-
 	virtual bool wereErrors();
 
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
@@ -46,7 +46,6 @@ private:
 
 	/// Should error window be shown or not
 	bool mIsVisible;
-
 };
 
 }

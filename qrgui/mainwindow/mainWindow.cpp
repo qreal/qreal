@@ -17,8 +17,6 @@
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
-#include <QtGui/QMouseEvent>
-#include <QCoreApplication>
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
@@ -85,7 +83,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mStartWidget(nullptr)
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
-//		, mScriptAPI()
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
@@ -290,6 +287,7 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
+	qDebug()<<"was in destructor";
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
@@ -2282,7 +2280,7 @@ void MainWindow::openStartTab()
 
 void MainWindow::initScriptAPI()
 {
-	QThread* scriptAPIthread = new QThread;
+	QThread *scriptAPIthread = new QThread;
 	mScriptAPI.init(this);
 	mScriptAPI.moveToThread(scriptAPIthread);
 	scriptAPIthread->start();

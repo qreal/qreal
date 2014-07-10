@@ -196,7 +196,6 @@ QString VirtualCursor::dragPaletteElement(QString const &paletteElementId, int c
 
 	detachPaletteElementIcon();
 
-
 	return createBlockOnScene(paletteElement, xSceneCoord, ySceneCoord);
 }
 

@@ -14,13 +14,9 @@ TwoDModelGuiFacade::TwoDModelGuiFacade(D2ModelWidget &view)
 
 QWidget* TwoDModelGuiFacade::widget(QString const &type, QString const &name)
 {
-	if (!type.compare("PushButton")) {
-		QList<QPushButton *> buttonList = mD2ModelWidget.findChildren<QPushButton *>();
-		for(QPushButton *button : buttonList) {
-			if (!name.compare(button->objectName())) {
-				return button;
-			}
-		}
+	if (type == "PushButton") {
+		QPushButton *button = mD2ModelWidget.findChild<QPushButton *>(name);
+		return button;
 	} else {
 		return nullptr;
 	}

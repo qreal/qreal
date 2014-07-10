@@ -18,6 +18,7 @@ class ScriptAPI : public QObject, public HintInterface
 public:
 	ScriptAPI();
 
+	///Initialize script API.
 	void init(MainWindow *mainWindow);
 
 	///Send message as HintReporter.
@@ -29,16 +30,17 @@ public:
 	///Stop execution for duration.
 	Q_INVOKABLE void wait(int duration);
 
-	///Start node
+	///Returns Id of start node.
 	Q_INVOKABLE QString initialNode();
 
-	///Change virtual cursor parent
+	///Change virtual cursor parent.
 	Q_INVOKABLE void changeWindow(QWidget *parent);
 
-	///Gui facade
+	///Returns gui facade.
 	GuiFacade *guiFacade();
 
 public slots:
+	///Break event loop.
 	void breakWaiting();
 
 private slots:

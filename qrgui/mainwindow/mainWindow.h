@@ -62,7 +62,6 @@ class Models;
 }
 
 namespace gui {
-//class ScriptAPI;
 class ErrorReporter;
 class PaletteTree;
 }

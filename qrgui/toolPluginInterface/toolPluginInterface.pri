@@ -12,5 +12,3 @@ HEADERS += \
 	$$PWD/systemEvents.h \
 	$$PWD/systemEventsInterface.h \
 	$$PWD/usedInterfaces/hintInterface.h
-
-SOURCES +=

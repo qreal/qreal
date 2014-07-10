@@ -54,4 +54,5 @@ private:
 	view::D2ModelWidget &mView;
 	engine::TwoDModelGuiFacade *mGuiFacade;
 };
+
 }

@@ -1,7 +1,5 @@
 #include "interpreterBase/devicesConfigurationWidget.h"
 
-#include <QDebug>
-
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
@@ -74,7 +72,6 @@ QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
 	QLabel * const portLabel = new QLabel(labelText.arg(port.name()), this);
 	QComboBox * const comboBox = new QComboBox(this);
 	comboBox->setObjectName("Port " + port.name());
-
 	comboBox->setProperty("robotModel", robotModel);
 	comboBox->setProperty("port", QVariant::fromValue(port));
 	mConfigurers << comboBox;

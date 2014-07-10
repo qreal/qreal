@@ -17,10 +17,10 @@ using namespace gui;
 
 ScriptAPI::ScriptAPI()
 	: mScriptEngine(new QScriptEngine)
-	, mVirtualCursor (nullptr)
-	, mGuiFacade (nullptr)
 	, mHintReporter(nullptr)
 	, mMainWindow(nullptr)
+	, mVirtualCursor (nullptr)
+	, mGuiFacade (nullptr)
 {
 }
 

@@ -15,12 +15,16 @@ class TwoDModelGuiFacade : public QObject
 	Q_OBJECT
 
 public:
-	TwoDModelGuiFacade(view::D2ModelWidget &d2RobotWidget);
+	explicit TwoDModelGuiFacade(view::D2ModelWidget &d2RobotWidget);
 
-public slots:
-	QWidget *widget(QString const &type, QString const &name);
-	QWidget *d2ModelWidget();
-	QWidget *d2ModelScene();
+	///Returns widget, which defined by type and object name.
+	Q_INVOKABLE QWidget *widget(QString const &type, QString const &name);
+
+	///Returns 2d model widget.
+	Q_INVOKABLE QWidget *d2ModelWidget();
+
+	///Returns scene of d2 model widget.
+	Q_INVOKABLE QWidget *d2ModelScene();
 
 private:
 	view::D2ModelWidget &mD2ModelWidget;
