@@ -16,6 +16,13 @@ void ModelTimer::start(int ms)
 	mListening = true;
 }
 
+void ModelTimer::stop()
+{
+	mTimeToWait = 0;
+	mTimePast = 0;
+	mListening = false;
+}
+
 void ModelTimer::onTick()
 {
 	if (!mListening) {
