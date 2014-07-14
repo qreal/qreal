@@ -8,6 +8,7 @@ class Client : public ConfigurationNetworkManager
 
 public:
 	Client();
+	~Client();
 
 private slots:
 	///get and apply settings from server

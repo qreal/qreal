@@ -15,6 +15,11 @@ Client::Client() : mSettingStringSize(0)
 	mServerSocket->connectToHost(ip, port);
 }
 
+Client::~Client()
+{
+	delete mServerSocket;
+}
+
 void Client::setSettings()
 {
 	QDataStream in(mServerSocket);
