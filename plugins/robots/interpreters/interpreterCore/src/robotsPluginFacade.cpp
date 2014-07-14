@@ -88,7 +88,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
 
 	auto kitExtensionsUpdateManager = new KitExtensionsUpdateManager(mKitPluginManager
-			, &configurer.textManager(), this);
+			, configurer.textManager(), this);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, kitExtensionsUpdateManager, &KitExtensionsUpdateManager::updateExtensions);
 

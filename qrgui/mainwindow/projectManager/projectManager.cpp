@@ -96,6 +96,7 @@ bool ProjectManager::open(QString const &fileName)
 		if (!fileName.isEmpty() && !saveFileExists(fileName)) {
 			return false;
 		}
+
 		return openProject(fileName);
 	} else {
 		mMainWindow->closeStartTab();
@@ -114,6 +115,10 @@ bool ProjectManager::openProject(QString const &fileName)
 	// 2. autosavePauser was first starts a timer of Autosaver
 	Autosaver::Pauser const autosavePauser(*mAutosaver);
 	Q_UNUSED(autosavePauser)
+
+	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
+		return false;
+	}
 
 	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
@@ -361,6 +366,7 @@ bool ProjectManager::suggestToSaveAs()
 	if (mTextManager->saveText(true)) {
 		return true;
 	}
+
 	if (mMainWindow->editorManagerProxy().isInterpretationMode()) {
 		QString const newMetamodelFileName = getSaveFileName(tr("Select file to save current metamodel to"));
 		if (newMetamodelFileName.isEmpty()) {
@@ -368,6 +374,7 @@ bool ProjectManager::suggestToSaveAs()
 		}
 		mMainWindow->editorManagerProxy().saveMetamodel(newMetamodelFileName);
 	}
+
 	return saveAs(getSaveFileName(tr("Select file to save current model to")));
 }
 
@@ -391,7 +398,7 @@ QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 			? QFileInfo(mSaveFilePath).absoluteDir().absolutePath()
 			: pathToExamples;
 	QString filter = tr("QReal Save File (*.qrs)") + ";;";
-	QString const extensions = QStringList(mTextManager->extDescriptions()).join(";;");
+	QString const extensions = QStringList(mTextManager->extensionDescriptions()).join(";;");
 
 	filter += (extensions.isEmpty() ? "" : extensions + ";;") + tr("All files (*.*)");
 

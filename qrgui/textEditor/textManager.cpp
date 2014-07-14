@@ -18,7 +18,7 @@ TextManager::TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWi
 	connect(mSystemEvents, &SystemEventsInterface::codeTabClosed, this, &TextManager::onTabClosed);
 }
 
-bool TextManager::openFile(QString const &filePath, QString const &genName)
+bool TextManager::openFile(QString const &filePath, QString const &generatorName)
 {
 	QFile file(filePath);
 	QTextStream *inStream = nullptr;
@@ -34,7 +34,7 @@ bool TextManager::openFile(QString const &filePath, QString const &genName)
 		mPath.insert(area, filePath);
 		mPathType.insert(filePath, true);
 		mModified.insert(filePath, QPair<bool, bool>(false, false));
-		mGenName.insert(filePath, genName);
+		mGeneratorName.insert(filePath, generatorName);
 
 		connect(area, SIGNAL(textWasModified(gui::QScintillaTextEdit*)), this, SLOT(setModified(gui::QScintillaTextEdit*)));
 
@@ -68,7 +68,7 @@ bool TextManager::closeFile(QString const &filePath)
 	mPath.remove(mText.value(filePath));
 	mPathType.remove(filePath);
 	mModified.remove(filePath);
-	mGenName.remove(filePath);
+	mGeneratorName.remove(filePath);
 	unbindCode(filePath);
 	return mText.remove(filePath);
 }
@@ -86,7 +86,7 @@ void TextManager::changeFilePath(QString const &from, QString const &to)
 	mPath.insert(code, to);
 	mPathType.insert(to, false);
 	mModified.insert(to, mod);
-	mGenName.insert(to, genName);
+	mGeneratorName.insert(to, genName);
 
 	if (diagram != nullptr) {
 		bindCode(diagram, to);
@@ -160,35 +160,35 @@ void TextManager::onTabClosed(QFileInfo const &file)
 	closeFile(file.absoluteFilePath());
 }
 
-void TextManager::addExtDescrByGenerator(QString const &genName, QString const &description)
+void TextManager::addExtensionDescriptionByGenerator(QString const &generatorName, QString const &description)
 {
-	mExtDescrByGenerator.insert(genName, description);
+	mExtensionDescriptionByGenerator.insert(generatorName, description);
 }
 
-void TextManager::addExtDescrByExtension(QString const &ext, QString const &description)
+void TextManager::addExtensionDescriptionByExtension(QString const &extension, QString const &description)
 {
-	mExtDescrByExtension.insert(ext, description);
+	mExtensionDescriptionByExtension.insert(extension, description);
 }
 
 void TextManager::removeExtensions()
 {
-	mExtDescrByGenerator.clear();
-	mExtDescrByExtension.clear();
+	mExtensionDescriptionByGenerator.clear();
+	mExtensionDescriptionByExtension.clear();
 }
 
-QString TextManager::extDescrByGenerator(QString const &genName) const
+QString TextManager::extensionDescriptionByGenerator(QString const &generatorName) const
 {
-	return mExtDescrByGenerator.value(genName, QString());
+	return mExtensionDescriptionByGenerator.value(generatorName, QString());
 }
 
-QString TextManager::extDescrByExtension(QString const &ext) const
+QString TextManager::extensionDescriptionByExtension(QString const &extension) const
 {
-	return mExtDescrByExtension.value(ext, QString());
+	return mExtensionDescriptionByExtension.value(extension, QString());
 }
 
-QList<QString> TextManager::extDescriptions() const
+QList<QString> TextManager::extensionDescriptions() const
 {
-	return mExtDescrByGenerator.values();
+	return mExtensionDescriptionByGenerator.values();
 }
 
 void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &genName)
@@ -237,24 +237,26 @@ bool TextManager::saveText(bool saveAs)
 		QFileInfo fileInfo;
 		QString const filepath = path(area);
 		bool const defaultPath = isDefaultPath(filepath);
-		QString const genName = generatorName(filepath);
-		QString const extensions = QStringList(extDescriptions()).join(";;");
-		QString *curExtDescr = new QString((!genName.isEmpty() ? extDescrByGenerator(genName)
-				: extDescrByExtension(QFileInfo(filepath).suffix())));
-		QString extDescrs = tr("All files (*)") + (extensions.isEmpty() ? "" : ";;" + extensions);
+		QString const generatorName = this->generatorName(filepath);
+		QString const extensions = QStringList(extensionDescriptions()).join(";;");
+		QString *currentExtensionDescription = new QString((!generatorName.isEmpty()
+				? extensionDescriptionByGenerator(generatorName)
+				: extensionDescriptionByExtension(QFileInfo(filepath).suffix())));
 
-		if (curExtDescr->isEmpty()) {
-			curExtDescr = nullptr;
+		QString extensionDescriptions = tr("All files (*)") + (extensions.isEmpty() ? "" : ";;" + extensions);
+
+		if (currentExtensionDescription->isEmpty()) {
+			currentExtensionDescription = nullptr;
 		}
 
 		if (saveAs) {
 			fileInfo = QFileInfo(utils::QRealFileDialog::getSaveFileName("SaveTextFromTextManager"
-					, mMainWindow, tr("Save generated code"), "", extDescrs, curExtDescr));
+					, mMainWindow, tr("Save generated code"), "", extensionDescriptions, currentExtensionDescription));
 		} else {
 			fileInfo = path(area);
 		}
 
-		delete curExtDescr;
+		delete currentExtensionDescription;
 
 		if (fileInfo.fileName() != "") {
 			mMainWindow->setTabText(area, fileInfo.fileName());
@@ -280,7 +282,7 @@ bool TextManager::saveText(bool saveAs)
 	return false;
 }
 
-QString TextManager::generatorName(QString const &filepath) const
+QString TextManager::generatorName(QString const &filePath) const
 {
-	return mGenName.value(filepath, "");
+	return mGeneratorName.value(filePath, "");
 }

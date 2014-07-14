@@ -34,7 +34,7 @@ QString RussianCGeneratorPlugin::extension() const
 	return QString::fromUtf8("си");
 }
 
-QString RussianCGeneratorPlugin::extDescrition() const
+QString RussianCGeneratorPlugin::extensionDescription() const
 {
 	return tr("RussianC Source File");
 }

@@ -50,7 +50,7 @@ public:
 	virtual bool suggestToSaveChangesOrCancel() = 0;
 	virtual void setUnsavedIndicator(bool isUnsaved) = 0;
 
-	/// Returns path to save file. If temp file it will returns empty string.
+	/// Returns path to save file. If temp file it will return empty string.
 	virtual QString saveFilePath() const = 0;
 
 signals:

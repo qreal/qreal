@@ -25,7 +25,7 @@ QString RobotsGeneratorPluginBase::extension() const
 	return QString();
 }
 
-QString RobotsGeneratorPluginBase::extDescrition() const
+QString RobotsGeneratorPluginBase::extensionDescription() const
 {
 	return QString();
 }
@@ -44,7 +44,7 @@ QString RobotsGeneratorPluginBase::defaultProjectName() const
 bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
 {
 	QFileInfo const fileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(project));
-	return !(fileInfo.exists() && fileInfo.created() != fileInfo.lastModified());
+	return !fileInfo.exists() || fileInfo.created() == fileInfo.lastModified();
 }
 
 QFileInfo RobotsGeneratorPluginBase::srcPath()
@@ -64,10 +64,11 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 
 	if (!pathsList.isEmpty()) {
-		foreach (QFileInfo const &path, pathsList) {
+		for (QFileInfo const &path : pathsList) {
 			if (mTextManager->isDefaultPath(path.absoluteFilePath())
-				&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
-				&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName())) {
+				&& !mTextManager->isModifiedEver(path.absoluteFilePath())
+				&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName()))
+			{
 				fileInfo = path;
 				break;
 			}

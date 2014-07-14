@@ -43,7 +43,7 @@ QString NxtGeneratorPlugin::extension() const
 	return "c";
 }
 
-QString NxtGeneratorPlugin::extDescrition() const
+QString NxtGeneratorPlugin::extensionDescription() const
 {
 	return tr("Lego NXT Source File");
 }
