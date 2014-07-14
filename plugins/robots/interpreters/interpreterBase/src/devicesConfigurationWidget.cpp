@@ -48,18 +48,6 @@ void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotMode
 	}
 }
 
-void DevicesConfigurationWidget::prependCustomWidget(RobotModelInterface &robotModel, QWidget * const widget)
-{
-	if (!widget) {
-		return;
-	}
-
-	Q_ASSERT(mRobotModelConfigurers.contains(robotModel.name()));
-	QVBoxLayout *layout = dynamic_cast<QVBoxLayout *>(mRobotModelConfigurers[robotModel.name()]->layout());
-	Q_ASSERT(layout);
-	layout->insertWidget(0, widget);
-}
-
 QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface &robotModel)
 {
 	/// @todo: What if robot model has no configurable sensors?

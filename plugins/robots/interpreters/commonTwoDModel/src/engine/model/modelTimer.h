@@ -15,9 +15,7 @@ class ModelTimer : public utils::AbstractTimer
 public:
 	explicit ModelTimer(Timeline const *timeline /* Doesn`t take ownership */);
 
-	void start(int ms) override;
-	void stop() override;
-
+	virtual void start(int ms);
 
 private slots:
 	void onTick();

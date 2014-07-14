@@ -14,7 +14,6 @@ public:
 	RealTimer();
 
 	void start(int ms) override;
-	void stop() override;
 
 private:
 	QTimer mTimer;

@@ -71,15 +71,6 @@ public:
 	/// Transfers ownership.
 	virtual AdditionalPreferences *settingsWidget() = 0;
 
-	/// Returns a widget that will be placed at devices configuration widget in the left-hand side dock.
-	/// The default implementation returns nullptr.
-	/// Transfers ownership.
-	virtual QWidget *quickPreferencesFor(robotModel::RobotModelInterface const &model)
-	{
-		Q_UNUSED(model)
-		return nullptr;
-	}
-
 	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
 	/// goes here.
 	/// @todo: what about ownership of underlying QAction objects?

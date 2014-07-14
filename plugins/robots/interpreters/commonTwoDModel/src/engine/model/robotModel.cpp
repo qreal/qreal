@@ -279,11 +279,6 @@ void RobotModel::setRotation(qreal angle)
 	}
 }
 
-bool RobotModel::onTheGround() const
-{
-	return mIsOnTheGround;
-}
-
 void RobotModel::serialize(QDomDocument &target) const
 {
 	QDomElement robot = target.createElement("robot");

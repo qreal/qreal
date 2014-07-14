@@ -12,7 +12,6 @@ class ROBOTS_UTILS_EXPORT AbstractTimer : public QObject
 
 public:
 	virtual void start(int ms) = 0;
-	virtual void stop() = 0;
 
 signals:
 	void timeout();

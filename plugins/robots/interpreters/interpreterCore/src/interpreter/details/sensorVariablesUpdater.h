@@ -6,10 +6,6 @@
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 #include <qrutils/expressionsParser/expressionsParser.h>
 
-namespace utils {
-class AbstractTimer;
-}
-
 namespace interpreterCore {
 namespace interpreter {
 namespace details {
@@ -41,12 +37,11 @@ private slots:
 	void onFailure();
 
 private:
-	int updateInterval() const;
 	void updateScalarSensorVariables(interpreterBase::robotModel::PortInfo const &sensorPortInfo, int reading);
 	void updateScalarSensorVariable(QString const &variable, int reading);
 	void resetVariables();
 
-	utils::AbstractTimer *mUpdateTimer;
+	QTimer mUpdateTimer;
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	utils::ExpressionsParser &mParser;
 };

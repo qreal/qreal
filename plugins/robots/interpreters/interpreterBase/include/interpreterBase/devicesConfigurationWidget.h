@@ -36,10 +36,6 @@ public:
 	/// Reinits current widget for the given robot model.
 	void selectRobotModel(robotModel::RobotModelInterface &robotModel);
 
-	/// Adds the given widget above the combo boxes. The widget is visible only if the given robot model is selected.
-	/// loadRobotModels() method must be called before this one.
-	void prependCustomWidget(robotModel::RobotModelInterface &robotModel, QWidget * const widget);
-
 public slots:
 	/// Updates widget from current model configuration.
 	void refresh();
@@ -74,7 +70,7 @@ private:
 	bool mCompactMode;
 	QString mCurrentModel;
 	QMap<QString, robotModel::RobotModelInterface *> mRobotModels;  // Does not have ownership.
-	QMap<QString, QWidget *> mRobotModelConfigurers;  // Has indirect ownership via Qt parent-child memory management.
+	QMap<QString, QWidget *> mRobotModelConfigurers;  // Does not have ownership.
 	QList<QComboBox *> mConfigurers;  // Has indirect ownership of comboboxes via Qt parent-child memory management.
 	bool mSaving;
 	bool mRefreshing;

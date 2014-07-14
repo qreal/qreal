@@ -58,6 +58,13 @@ HEADERS += \
 	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.h \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.h \
 	$$PWD/simpleGenerators/waitForMotionGenerator.h \
+    simpleGenerators/drawLineGenerator.h \
+    simpleGenerators/drawPixelGenerator.h \
+    simpleGenerators/drawRectGenerator.h \
+    simpleGenerators/drawEllipseGenerator.h \
+    simpleGenerators/drawArcGenerator.h \
+    simpleGenerators/setPainterWidthGenerator.h \
+    simpleGenerators/setPainterColorGenerator.h
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \
@@ -87,5 +94,12 @@ SOURCES += \
 	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.cpp \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.cpp \
 	$$PWD/simpleGenerators/waitForMotionGenerator.cpp \
+    simpleGenerators/drawLineGenerator.cpp \
+    simpleGenerators/drawPixelGenerator.cpp \
+    simpleGenerators/drawRectGenerator.cpp \
+    simpleGenerators/drawEllipseGenerator.cpp \
+    simpleGenerators/drawArcGenerator.cpp \
+    simpleGenerators/setPainterWidthGenerator.cpp \
+    simpleGenerators/setPainterColorGenerator.cpp
 
 include(robotCommunication/robotCommunication.pri)
