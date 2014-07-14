@@ -89,17 +89,17 @@ quint16 Server::getPort()
 	return mTcpServer->serverPort();
 }
 
-QString Server::getIP()
+QStringList Server::getIP()
 {
 	QList<QNetworkInterface> addressList = QNetworkInterface::allInterfaces();
-	QString address;
+	QStringList address;
 	for (int j = 0; j < addressList.size(); j++) {
 		QList<QNetworkAddressEntry> addressEntry = addressList[j].addressEntries();
 		for (int i = 0; i < addressEntry.size(); i++) {
 				if (!addressEntry[i].ip().isLoopback()
 						&& addressEntry[i].ip().toString().contains("."))
 				{
-					address += addressEntry[i].ip().toString() + "\n";
+					address.append(addressEntry[i].ip().toString());
 				}
 		}
 	}
