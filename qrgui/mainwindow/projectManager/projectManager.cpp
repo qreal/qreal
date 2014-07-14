@@ -393,7 +393,7 @@ QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 	QString filter = tr("QReal Save File (*.qrs)") + ";;";
 	QString const extensions = QStringList(mTextManager->extDescriptions()).join(";;");
 
-	filter += (extensions.isEmpty() ? "" : extensions + ";;") + tr("All files(*.*)");
+	filter += (extensions.isEmpty() ? "" : extensions + ";;") + tr("All files (*.*)");
 
 	QString fileName = QRealFileDialog::getOpenFileName("OpenQRSProject", mMainWindow, dialogWindowTitle
 			, defaultDirectory, filter);
