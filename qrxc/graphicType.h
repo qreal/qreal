@@ -11,6 +11,7 @@
 
 class Label;
 class Diagram;
+class NodeType;
 
 const int maxLineLength = 80;
 
@@ -35,6 +36,7 @@ public:
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
 	virtual void generateParentsMapping(utils::OutFile &out);
 	virtual void generateExplosionsMap(utils::OutFile &out);
+	virtual bool copyPorts(NodeType *parent) = 0;
 
 	QString description() const;
 	void setDescription(QString const &description);
@@ -65,8 +67,10 @@ protected:
 	ContainerProperties mContainerProperties;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
-	QMap<QString, QPair<bool, bool> > t ;
+	QMap<QString, QPair<bool, bool> > mExplosions ;
 	bool mCreateChildrenFromMenu;
+	QString mAbstract;
+
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -112,7 +116,6 @@ private:
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
 
 	QVector<int> toIntVector(QString const &s, bool * isOk) const;
-
 	QString mDescription;
 	QMap<QString, Property*> mPort;
 };

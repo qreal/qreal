@@ -124,22 +124,6 @@ Type* Editor::findType(QString const &name)
 	return NULL;
 }
 
-NodeType* Editor::findNodeType(QString const &name)
-{
-	foreach (Diagram *diagram, mDiagrams.values()) {
-		foreach (NodeType *type, diagram->types()) {
-			if (type->qualifiedName() == name)
-				return type;
-		}
-	}
-
-	foreach (Editor *editor, mIncludes) {
-		NodeType *type = editor->findNodeType(name);
-		if (type != NULL && type->qualifiedName() == name)
-			return type;
-	}
-	return NULL;
-}
 
 
 QSet<EnumType*> Editor::getAllEnumTypes()

@@ -18,6 +18,7 @@ public:
 	virtual ~EdgeType();
 	virtual void generateCode(utils::OutFile &out);
 	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
+	virtual bool copyPorts(NodeType* parent);
 
 private:
 	QList<Association*> mAssociations;

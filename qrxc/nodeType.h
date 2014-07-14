@@ -21,6 +21,8 @@ public:
 	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
 	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
 	void addPorts(Port *port);
+	bool copyPorts(NodeType *port);
+
 
 private:
 	QList<Port*> mPorts;

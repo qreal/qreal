@@ -65,10 +65,12 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 	mElement = element;
 	if (Type::init(element, context)) {
 		mDescription = element.attribute("description", "");
+		mAbstract = element.attribute("abstract", "");
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull()) {
 			qDebug() << "ERROR: can't find logic tag of graphic type";
 			return false;
+
 		}
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
@@ -382,15 +384,9 @@ bool GraphicType::resolve()
 		}
 
 
-		//Type *parent = mDiagram->findType(qualifiedParentName);
+		NodeType* ourParent = dynamic_cast<NodeType*>(parent);
 
-		NodeType *ourParent = new NodeType(mDiagram);
-		//ourParent->
-		foreach (Port *port, ourParent->mPorts) {
-			if(addPort(port->clone())) {
-				return false;
-			}
-		}
+		copyPorts(ourParent);
 
 
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
@@ -411,32 +407,35 @@ bool GraphicType::resolve()
 }
 
 
-bool GraphicType::addPort(Port *port)
-{
-	QString const portName = port->name();
-	if (mPort.contains(portName)) {
-		// Множественное наследование может приводить к тому, что одно свойство
-		// может быть добавлено классу дважды (ромбовидное наследование, например).
-		// Pугаемся мы только тогда, когда тип, значение по умолчанию или что-то ещё
-		// у одноимённых свойств различны - тогда непонятно, что делать.
-		if (mPort[portName] != portName && *mPort[portName] != *portName) {
-			qDebug() << "ERROR: property" << portName << "duplicated with different attributes";
-			delete port;
-			return false;
-		}
-	} else {
-		mPorts[portName] = portName;
-	}
-	return true;
-}
-
 
 void GraphicType::generateNameMapping(OutFile &out)
 {
+
 	if (mVisible) {
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
+		int size = mDiagram->paletteGroups().size();
+
+		while(size != 0) {
+			int sizeOfPaletteElements = mDiagram->paletteGroups().value(size - 1).second.size();
+			while (sizeOfPaletteElements != 0)
+			{
+				QString qwertyu = mDiagram->paletteGroups().value(size - 1).second.value(sizeOfPaletteElements - 1);
+				QString temp = normalizedName;
+				if (mDiagram->paletteGroups().value(size - 1).second.value(sizeOfPaletteElements - 1)
+						== normalizedName && mAbstract == "true" ) {
+					qDebug() << "Error! This element abstract.";
+					return;
+				}
+				--sizeOfPaletteElements;
+			}
+			--size;
+		}
+
+		if (mAbstract == "true")
+			return;
+
 		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName
 				<< "\"] = tr(\"" << actualDisplayedName << "\");\n";
 	}
