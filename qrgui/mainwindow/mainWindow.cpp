@@ -112,8 +112,8 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 
-	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
+//	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+//							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment,);
 
 
 	splashScreen.setProgress(60);
@@ -166,10 +166,22 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 
 	//connect(mFinishTest, SIGNAL(clientError()), this, SLOT(clientError()));
 
-	if (isServer)
+	if (isServer) {
 		mNetworkManager = new Server();
-	else
+		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+							, isServer, Server::getIP());
+
+//		QMessageBox box = QMessageBox(this);
+
+	}
+	else {
 		mNetworkManager = new Client();
+		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+							, isServer, "");
+//		QMessageBox box = QMessageBox();
+	}
 }
 
 void MainWindow::connectActionsForUXInfo()

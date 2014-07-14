@@ -4,14 +4,28 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/qRealFileDialog.h>
 
+#include <QtWidgets/QComboBox>
+
 using namespace qReal;
 
-PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
+PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(
+		QWidget *parent, bool isServer, QString stringIP)
 	: PreferencesPage(parent)
 	, mUi(new Ui::PreferencesMiscellaniousPage)
 {
 	mIcon = QIcon(":/icons/preferences/miscellaneous.png");
 	mUi->setupUi(this);
+
+	if (isServer) {
+		QComboBox *serverIPComboBox = new QComboBox;
+		for(int i = 0; i < stringIP.count("\n"); i++) {
+			QString temp = stringIP;
+			serverIPComboBox->addItem(temp.remove(temp.indexOf('\n'), temp.length() - temp.indexOf('\n')));
+			stringIP = stringIP.remove(0, stringIP.indexOf('\n') + 1);
+		}
+		serverIPComboBox->addItem(stringIP.remove(stringIP.length() - 1, 1));
+		mUi->serverLayout->addWidget(serverIPComboBox, 2);
+	}
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 	connect(mUi->toolbarSizeSlider, &QSlider::valueChanged, this, &PreferencesMiscellaniousPage::toolbarSizeChanged);

@@ -23,7 +23,8 @@ public:
 	~PreferencesDialog();
 
 	void init(QAction * const showGridAction, QAction * const showAlignmentAction
-		, QAction * const activateGridAction, QAction * const activateAlignmentAction);
+		, QAction * const activateGridAction, QAction * const activateAlignmentAction
+			  , bool isServer = false, QString stringIP = "");
 	void updatePluginDependendSettings();
 
 	void registerPage(QString const &pageName, PreferencesPage * const page);

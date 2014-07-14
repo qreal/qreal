@@ -16,7 +16,7 @@ public:
 	explicit Server();
 
 	/// returns a string, including all IPv4 addresses of this computer
-	QString getIP();
+	static QString getIP();
 
 	/// returns port to coonect this server
 	quint16 getPort();
