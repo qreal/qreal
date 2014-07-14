@@ -21,7 +21,7 @@ TextManager::TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWi
 bool TextManager::openFile(QString const &filePath, QString const &genName)
 {
 	QFile file(filePath);
-	QTextStream *inStream = NULL;
+	QTextStream *inStream = nullptr;
 
 	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		inStream = new QTextStream(&file);
@@ -69,6 +69,7 @@ bool TextManager::closeFile(QString const &filePath)
 	mPathType.remove(filePath);
 	mModified.remove(filePath);
 	mGenName.remove(filePath);
+	unbindCode(filePath);
 	return mText.remove(filePath);
 }
 
@@ -76,26 +77,28 @@ void TextManager::changeFilePath(QString const &from, QString const &to)
 {
 	QScintillaTextEdit *code = mText.value(from);
 	QPair<bool, bool> mod(true, false);
+	QString const genName = generatorName(from);
+	EditorView *diagram = mDiagramCodeManager.key(from, nullptr);
+
 	closeFile(from);
+
 	mText.insert(to, code);
 	mPath.insert(code, to);
 	mPathType.insert(to, false);
 	mModified.insert(to, mod);
+	mGenName.insert(to, genName);
 
-	EditorView* diagram = mDiagramCodeManager.key(from, NULL);
-
-	if (!diagram) {
-		mDiagramCodeManager.remove(diagram, from);
-		mDiagramCodeManager.insert(diagram, to);
+	if (diagram != nullptr) {
+		bindCode(diagram, to);
 	}
 }
 
-QScintillaTextEdit *TextManager::code(QString const &filePath)
+QScintillaTextEdit *TextManager::code(QString const &filePath) const
 {
 	return mText.value(filePath);
 }
 
-QList<gui::QScintillaTextEdit *> TextManager::code(EditorView* diagram)
+QList<gui::QScintillaTextEdit *> TextManager::code(EditorView* diagram) const
 {
 	QList<gui::QScintillaTextEdit *> codeList;
 
@@ -106,7 +109,7 @@ QList<gui::QScintillaTextEdit *> TextManager::code(EditorView* diagram)
 	return codeList;
 }
 
-bool TextManager::contains(QString const &filePath)
+bool TextManager::contains(QString const &filePath) const
 {
 	return mText.contains(filePath);
 }
@@ -116,46 +119,40 @@ bool TextManager::removeDiagram(EditorView *diagram)
 	return mDiagramCodeManager.remove(diagram);
 }
 
-EditorView *TextManager::diagram(gui::QScintillaTextEdit *code)
+EditorView *TextManager::diagram(gui::QScintillaTextEdit *code) const
 {
-	return mDiagramCodeManager.key(mText.key(code), NULL);
+	return mDiagramCodeManager.key(mPath.value(code), nullptr);
 }
 
-QString TextManager::path(gui::QScintillaTextEdit *code)
+QString TextManager::path(gui::QScintillaTextEdit *code) const
 {
 	return mPath.value(code);
 }
 
-bool TextManager::isDefaultPath(QString const &path)
+bool TextManager::isDefaultPath(QString const &path) const
 {
 	return mPathType.value(path);
 }
 
-bool TextManager::isModified(QString const &path)
+bool TextManager::isModified(QString const &path) const
 {
 	return mModified.value(path).second;
 }
 
-bool TextManager::isModifiedEver(QString const &path)
+bool TextManager::isModifiedEver(QString const &path) const
 {
 	return mModified.value(path).first;
 }
 
-void TextManager::setModified(gui::QScintillaTextEdit *code)
+void TextManager::setModified(gui::QScintillaTextEdit *code, bool modified)
 {
 	QPair<bool, bool> mod = mModified.value(mPath.value(code));
-	bool const changed = mod.second;
-
-	mod.second = code->isUndoAvailable();
+	mod.first = !modified || mod.first;
+	mod.second = modified && code->isUndoAvailable();
+	code->setModified(mod.second);
 	mModified.insert(mPath.value(code), mod);
 
-	if (!changed) {
-		emit textChanged(true);
-	} else {
-		if (!code->isUndoAvailable()) {
-			emit textChanged(false);
-		}
-	}
+	emit textChanged(modified && code->isUndoAvailable());
 }
 
 void TextManager::onTabClosed(QFileInfo const &file)
@@ -163,18 +160,41 @@ void TextManager::onTabClosed(QFileInfo const &file)
 	closeFile(file.absoluteFilePath());
 }
 
-void TextManager::addExtension(QString const &name, QString const &description)
+void TextManager::addExtDescrByGenerator(QString const &genName, QString const &description)
 {
-	mExtensions.insert(name, description);
+	mExtDescrByGenerator.insert(genName, description);
 }
 
-QString TextManager::extDescription(QString const &name)
+void TextManager::addExtDescrByExtension(QString const &ext, QString const &description)
 {
-	return mExtensions.value(name);
+	mExtDescrByExtension.insert(ext, description);
+}
+
+void TextManager::removeExtensions()
+{
+	mExtDescrByGenerator.clear();
+	mExtDescrByExtension.clear();
+}
+
+QString TextManager::extDescrByGenerator(QString const &genName) const
+{
+	return mExtDescrByGenerator.value(genName, QString());
+}
+
+QString TextManager::extDescrByExtension(QString const &ext) const
+{
+	return mExtDescrByExtension.value(ext, QString());
+}
+
+QList<QString> TextManager::extDescriptions() const
+{
+	return mExtDescrByGenerator.values();
 }
 
 void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &genName)
 {
+	Q_ASSERT(!fileInfo.baseName().isEmpty());
+
 	if (dynamic_cast<EditorView *>(mMainWindow->getCurrentTab())) {
 		QString const filePath = fileInfo.absoluteFilePath();
 
@@ -192,23 +212,49 @@ void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &gen
 	}
 }
 
+void TextManager::showInTextEditor(QFileInfo const &fileInfo)
+{
+	Q_ASSERT(!fileInfo.baseName().isEmpty());
+
+	QString const filePath = fileInfo.absoluteFilePath();
+
+	if (contains(filePath)) {
+		mMainWindow->closeTab(code(filePath));
+	}
+
+	openFile(filePath, "");
+	QScintillaTextEdit *area = code(filePath);
+	area->show();
+
+	mMainWindow->openTab(area,  fileInfo.fileName());
+}
+
 bool TextManager::saveText(bool saveAs)
 {
 	if (!dynamic_cast<EditorView *>(mMainWindow->getCurrentTab())) {
 		QScintillaTextEdit * const area = dynamic_cast<QScintillaTextEdit *>(mMainWindow->currentTab());
-
+		EditorView * const diagram = TextManager::diagram(area);
 		QFileInfo fileInfo;
 		QString const filepath = path(area);
 		bool const defaultPath = isDefaultPath(filepath);
 		QString const genName = generatorName(filepath);
-		QString const extDescr = genName == "" ? tr("All files (*.*)") : extDescription(genName);
+		QString const extensions = QStringList(extDescriptions()).join(";;");
+		QString *curExtDescr = new QString((!genName.isEmpty() ? extDescrByGenerator(genName)
+				: extDescrByExtension(QFileInfo(filepath).suffix())));
+		QString extDescrs = tr("All files (*)") + (extensions.isEmpty() ? "" : ";;" + extensions);
+
+		if (curExtDescr->isEmpty()) {
+			curExtDescr = nullptr;
+		}
 
 		if (saveAs) {
 			fileInfo = QFileInfo(utils::QRealFileDialog::getSaveFileName("SaveTextFromTextManager"
-					, mMainWindow, tr("Save generated code"), "", extDescr));
+					, mMainWindow, tr("Save generated code"), "", extDescrs, curExtDescr));
 		} else {
 			fileInfo = path(area);
 		}
+
+		delete curExtDescr;
 
 		if (fileInfo.fileName() != "") {
 			mMainWindow->setTabText(area, fileInfo.fileName());
@@ -217,12 +263,14 @@ bool TextManager::saveText(bool saveAs)
 
 			out() << area->text();
 
-			if (saveAs) {
-				emit mSystemEvents->codePathChanged(diagram(area)->mvIface()->rootId(), path(area), fileInfo);
+			if (defaultPath || saveAs) {
+				changeFilePath(path(area), fileInfo.absoluteFilePath());
 			}
 
-			if (defaultPath) {
-				changeFilePath(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath());
+			setModified(area, false);
+
+			if (saveAs && diagram != nullptr) {
+				emit mSystemEvents->codePathChanged(diagram->mvIface()->rootId(), path(area), fileInfo);
 			}
 		}
 
@@ -232,7 +280,7 @@ bool TextManager::saveText(bool saveAs)
 	return false;
 }
 
-QString TextManager::generatorName(QString const &filepath)
+QString TextManager::generatorName(QString const &filepath) const
 {
 	return mGenName.value(filepath, "");
 }

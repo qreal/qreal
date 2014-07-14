@@ -35,7 +35,7 @@ void ProjectManager::setSaveFilePath(QString const &filePath /* = "" */)
 
 QString ProjectManager::saveFilePath() const
 {
-	return mSaveFilePath;
+	return mAutosaver->isTempFile(mSaveFilePath) ? QString() : mSaveFilePath;
 }
 
 void ProjectManager::reinitAutosaver()
@@ -74,7 +74,6 @@ bool ProjectManager::suggestToSaveChangesOrCancel()
 	case QMessageBox::RejectRole:
 		return false;
 	} // QMessageBox::AcceptRole
-
 	return saveOrSuggestToSaveAs();
 }
 
@@ -91,6 +90,23 @@ int ProjectManager::suggestToSaveOrCancelMessage()
 
 bool ProjectManager::open(QString const &fileName)
 {
+	QFileInfo const fileInfo(fileName);
+
+	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+		if (!fileName.isEmpty() && !saveFileExists(fileName)) {
+			return false;
+		}
+		return openProject(fileName);
+	} else {
+		mMainWindow->closeStartTab();
+		mTextManager->showInTextEditor(fileInfo);
+	}
+
+	return true;
+}
+
+bool ProjectManager::openProject(QString const &fileName)
+{
 	// 1. If Autosaver have time to save the state repository at the time of
 	// testing the sufficiency of plugins to open the project, the autosave
 	// file may become incompatible with the application. This will lead to
@@ -98,10 +114,6 @@ bool ProjectManager::open(QString const &fileName)
 	// 2. autosavePauser was first starts a timer of Autosaver
 	Autosaver::Pauser const autosavePauser(*mAutosaver);
 	Q_UNUSED(autosavePauser)
-
-	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
-		return false;
-	}
 
 	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
@@ -349,7 +361,6 @@ bool ProjectManager::suggestToSaveAs()
 	if (mTextManager->saveText(true)) {
 		return true;
 	}
-
 	if (mMainWindow->editorManagerProxy().isInterpretationMode()) {
 		QString const newMetamodelFileName = getSaveFileName(tr("Select file to save current metamodel to"));
 		if (newMetamodelFileName.isEmpty()) {
@@ -379,8 +390,13 @@ QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 	QString const defaultDirectory = pathToExamples.isEmpty()
 			? QFileInfo(mSaveFilePath).absoluteDir().absolutePath()
 			: pathToExamples;
+	QString filter = tr("QReal Save File (*.qrs)") + ";;";
+	QString const extensions = QStringList(mTextManager->extDescriptions()).join(";;");
+
+	filter += (extensions.isEmpty() ? "" : extensions + ";;") + tr("All files (*.*)");
+
 	QString fileName = QRealFileDialog::getOpenFileName("OpenQRSProject", mMainWindow, dialogWindowTitle
-			, defaultDirectory, tr("QReal Save File(*.qrs)"));
+			, defaultDirectory, filter);
 
 	if (!fileName.isEmpty() && !QFile::exists(fileName)) {
 		fileNotFoundMessage(fileName);

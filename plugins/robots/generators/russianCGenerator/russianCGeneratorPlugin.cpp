@@ -26,12 +26,12 @@ QString RussianCGeneratorPlugin::kitId() const
 
 QString RussianCGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QString("russianC/%1/%1.c").arg(projectName);
+	return QString::fromUtf8("russianC/%1/%1.си").arg(projectName);
 }
 
 QString RussianCGeneratorPlugin::extension() const
 {
-	return "c";
+	return QString::fromUtf8("си");
 }
 
 QString RussianCGeneratorPlugin::extDescrition() const

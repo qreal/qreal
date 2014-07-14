@@ -30,30 +30,39 @@ public:
 
 	bool unbindCode(QString const &filePath);
 	bool unbindCode(gui::QScintillaTextEdit *code);
-	gui::QScintillaTextEdit *code(QString const &filePath);
-	QList<gui::QScintillaTextEdit *> code(EditorView *diagram);
-	bool contains(QString const &filePath);
+	gui::QScintillaTextEdit *code(QString const &filePath) const;
+	QList<gui::QScintillaTextEdit *> code(EditorView *diagram) const;
+	bool contains(QString const &filePath) const;
 	bool removeDiagram(EditorView *diagram);
-	EditorView *diagram(gui::QScintillaTextEdit *code);
-	QString path(gui::QScintillaTextEdit *code);
-	bool isDefaultPath(QString const &path);
-	bool isModified(QString const &path);
-	bool isModifiedEver(QString const &path);
-	void addExtension(QString const &name, QString const &description);
-	QString extDescription(QString const &name);
+	EditorView *diagram(gui::QScintillaTextEdit *code) const;
+	QString path(gui::QScintillaTextEdit *code) const;
+	bool isDefaultPath(QString const &path) const;
+	bool isModified(QString const &path) const;
+	bool isModifiedEver(QString const &path) const;
+	void addExtDescrByGenerator(QString const &genName, QString const &description);
+	void addExtDescrByExtension(QString const &ext, QString const &description);
+	void removeExtensions();
+	QString extDescrByGenerator(QString const &genName) const;
+	QString extDescrByExtension(QString const &ext) const;
+	QList<QString> extDescriptions() const;
 
-	/// Opens new tab with text editor and shows a text in it
+	/// Opens new tab with file created by some generator in text editor and shows a text in it
 	/// @param fileInfo A filepath to file with text
+	/// @param genName A name of generator which created this file
 	void showInTextEditor(QFileInfo const &fileInfo, QString const &genName);
+
+	/// Opens new tab with file
+	/// @param fileInfo A filepath to file with text
+	void showInTextEditor(QFileInfo const &fileInfo);
 
 	/// Saves text from tab to another or same file
 	/// @param saveAs Defines what to do: save to the same file or in another
 	bool saveText(bool saveAs);
 
-	QString generatorName(QString const &filepath);
+	QString generatorName(QString const &filepath) const;
 
 private slots:
-	void setModified(gui::QScintillaTextEdit *code);
+	void setModified(gui::QScintillaTextEdit *code, bool modified = true);
 	void onTabClosed(QFileInfo const &file);
 
 private:
@@ -63,6 +72,7 @@ private:
 	/// If default path - true.
 	QMap<QString, bool> mPathType;
 
+	/// Contains names of generator, which generate each сщfile
 	QMap<QString, QString> mGenName;
 
 	/// First - was modified once and more (with save), second - was modified recently and not saved
@@ -71,8 +81,12 @@ private:
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMultiHash<EditorView*, QString> mDiagramCodeManager;
 
-	/// Contains info about file extensions (extension, description of extension). Need for save dialog.
-	QMap<QString, QString> mExtensions;
+	/// Contains descriptions of file extensions (generator name, description of extension). Need for save dialog.
+	QMap<QString, QString> mExtDescrByGenerator;
+
+	/// Contains descriptions of file extensions (extension, description of extension). Need for save dialog.
+	QMap<QString, QString> mExtDescrByExtension;
+
 	MainWindow *mMainWindow;
 	SystemEventsInterface *mSystemEvents;
 };
