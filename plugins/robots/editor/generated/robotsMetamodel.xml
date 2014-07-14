@@ -1228,7 +1228,7 @@
 			<node displayedName="Line Detector into Variable" name="TrikLineDetectorToVariable" description="Stores  current videocamera line detector`s value into a given variable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/lineDetectorToVariable.svg" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/lineDetectorIntoVariableBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<ports>
 						<linePort>
