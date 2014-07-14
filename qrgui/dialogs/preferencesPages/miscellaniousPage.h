@@ -11,7 +11,7 @@ class PreferencesMiscellaniousPage : public PreferencesPage
 	Q_OBJECT
 
 public:
-	explicit PreferencesMiscellaniousPage(QWidget *parent = 0, bool isServer = false, QString stringIP = "");
+	explicit PreferencesMiscellaniousPage(QWidget *parent = 0, bool isServer = false);
 	~PreferencesMiscellaniousPage();
 
 	void save();

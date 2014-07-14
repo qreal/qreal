@@ -30,13 +30,12 @@ PreferencesDialog::~PreferencesDialog()
 }
 
 void PreferencesDialog::init(QAction * const showGridAction, QAction * const showAlignmentAction
-	, QAction * const activateGridAction, QAction * const activateAlignmentAction
-							 ,bool isServer, QString stringIP)
+	, QAction * const activateGridAction, QAction * const activateAlignmentAction, bool isServer)
 {
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(mUi->pageContentWigdet);
 	// Debugger page removed due to #736
 	PreferencesMiscellaniousPage *miscellaniousPage = new PreferencesMiscellaniousPage(
-				mUi->pageContentWigdet, isServer, stringIP);
+				mUi->pageContentWigdet, isServer);
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, mUi->pageContentWigdet);
 	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(mUi->pageContentWigdet);

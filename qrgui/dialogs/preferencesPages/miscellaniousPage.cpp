@@ -5,11 +5,10 @@
 #include <qrutils/qRealFileDialog.h>
 
 #include <QtWidgets/QComboBox>
-
+#include "configurationNetworkManager/server.h"
 using namespace qReal;
 
-PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(
-		QWidget *parent, bool isServer, QString stringIP)
+PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent, bool isServer)
 	: PreferencesPage(parent)
 	, mUi(new Ui::PreferencesMiscellaniousPage)
 {
@@ -18,13 +17,16 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(
 
 	if (isServer) {
 		QComboBox *serverIPComboBox = new QComboBox;
+		QString stringIP = Server::getIP();
 		for(int i = 0; i < stringIP.count("\n"); i++) {
 			QString temp = stringIP;
 			serverIPComboBox->addItem(temp.remove(temp.indexOf('\n'), temp.length() - temp.indexOf('\n')));
 			stringIP = stringIP.remove(0, stringIP.indexOf('\n') + 1);
 		}
 		serverIPComboBox->addItem(stringIP.remove(stringIP.length() - 1, 1));
-		mUi->serverLayout->addWidget(serverIPComboBox, 2);
+		mUi->serverIPEdit->hide();
+		mUi->serverPortEdit->setReadOnly(true);
+		mUi->serverLayout->addWidget(serverIPComboBox, 0, 1);
 	}
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));

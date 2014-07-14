@@ -261,31 +261,31 @@
     </widget>
    </item>
    <item row="8" column="0">
-    <layout class="QHBoxLayout" name="serverLayout">
+    <layout class="QGridLayout" name="serverLayout">
      <property name="bottomMargin">
       <number>0</number>
      </property>
-     <item>
+     <item row="0" column="0">
       <widget class="QLabel" name="serverIPLabel">
        <property name="text">
         <string>Server IP:</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="1">
       <widget class="QLineEdit" name="serverIPEdit"/>
      </item>
-     <item>
+     <item row="0" column="2">
       <widget class="QLabel" name="serverPortLabel">
        <property name="text">
         <string>Server port:</string>
        </property>
       </widget>
      </item>
-     <item>
+     <item row="0" column="3">
       <widget class="QLineEdit" name="serverPortEdit"/>
      </item>
-     <item>
+     <item row="0" column="4">
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
