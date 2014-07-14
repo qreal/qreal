@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 	app.setStyle(new WindowsModernStyle());
 #endif
 
-	MainWindow window(fileToOpen);
+	MainWindow window(fileToOpen, app.arguments().contains("--configuration-server"));
 	int exitCode = 0; // The window decided to not show itself, exiting now.
 
 	if (window.isVisible()) {

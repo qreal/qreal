@@ -2,7 +2,7 @@
 
 using namespace qReal;
 
-Client::Client() :  mSettingStringSize(0)
+Client::Client() : mSettingStringSize(0)
 {
 	mServerSocket = new QTcpSocket(this);
 

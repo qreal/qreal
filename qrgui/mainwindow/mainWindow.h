@@ -45,6 +45,8 @@
 #include "textEditor/codeEditor.h"
 #include "textEditor/textManager.h"
 
+#include "configurationNetworkManager/configurationNetworkManager.h"
+
 namespace Ui {
 class MainWindowUi;
 }
@@ -71,7 +73,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindow(QString const &fileToOpen = QString());
+	MainWindow(QString const &fileToOpen = QString(), bool isServer = false);
 	~MainWindow();
 
 	EditorManagerInterface &editorManager();
@@ -432,6 +434,7 @@ private:
 	QAction *mStartTest; // Has ownership
 	QAction *mFinishTest; // Has ownership
 
+	ConfigurationNetworkManager *mNetworkManager;
 };
 
 }

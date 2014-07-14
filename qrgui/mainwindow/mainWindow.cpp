@@ -53,13 +53,16 @@
 #include "dialogs/progressDialog/progressDialog.h"
 #include "dialogs/gesturesShow/gesturesWidget.h"
 
+#include "configurationNetworkManager/client.h"
+#include "configurationNetworkManager/server.h"
+
 using namespace qReal;
 using namespace qReal::commands;
 using namespace gui;
 
 QString const unsavedDir = "unsaved";
 
-MainWindow::MainWindow(QString const &fileToOpen)
+MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 	: mUi(new Ui::MainWindowUi)
 	, mCodeTabManager(new QMap<EditorView*, QScintillaTextEdit*>())
 	, mModels(nullptr)
@@ -162,6 +165,11 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
 
 	//connect(mFinishTest, SIGNAL(clientError()), this, SLOT(clientError()));
+
+	if (isServer)
+		mNetworkManager = new Server();
+	else
+		mNetworkManager = new Client();
 }
 
 void MainWindow::connectActionsForUXInfo()
@@ -307,6 +315,7 @@ MainWindow::~MainWindow()
 	delete mStartTest;
 	delete mFinishTest;
 	delete mUsabilityTestingToolbar;
+	delete mNetworkManager;
 	utils::UXInfo::instance()->closeUXInfo();
 }
 
