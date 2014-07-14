@@ -144,21 +144,15 @@ bool TextManager::isModifiedEver(QString const &path) const
 	return mModified.value(path).first;
 }
 
-void TextManager::setModified(gui::QScintillaTextEdit *code)
+void TextManager::setModified(gui::QScintillaTextEdit *code, bool modified)
 {
 	QPair<bool, bool> mod = mModified.value(mPath.value(code));
-	bool const changed = mod.second;
 
-	mod.second = code->isUndoAvailable();
+	mod.second = modified;
+	code->setModified(modified);
 	mModified.insert(mPath.value(code), mod);
 
-	if (!changed) {
-		emit textChanged(true);
-	} else {
-		if (!code->isUndoAvailable()) {
-			emit textChanged(false);
-		}
-	}
+	emit textChanged(modified);
 }
 
 void TextManager::onTabClosed(QFileInfo const &file)
@@ -269,12 +263,14 @@ bool TextManager::saveText(bool saveAs)
 
 			out() << area->text();
 
-			if (saveAs && diagram != nullptr) {
-				emit mSystemEvents->codePathChanged(diagram->mvIface()->rootId(), path(area), fileInfo);
-			}
-
 			if (defaultPath || saveAs) {
 				changeFilePath(path(area), fileInfo.absoluteFilePath());
+			}
+
+			setModified(area, false);
+
+			if (saveAs && diagram != nullptr) {
+				emit mSystemEvents->codePathChanged(diagram->mvIface()->rootId(), path(area), fileInfo);
 			}
 		}
 

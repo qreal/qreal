@@ -156,8 +156,8 @@ bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 }
 
 void RobotsGeneratorPluginBase::regenerateCode(qReal::Id const &diagram
-	, QFileInfo const &oldFileInfo
-	, QFileInfo const &newFileInfo)
+		, QFileInfo const &oldFileInfo
+		, QFileInfo const &newFileInfo)
 {
 	if (!oldFileInfo.completeSuffix().compare(extension())) {
 		mCodePath.remove(diagram, oldFileInfo);

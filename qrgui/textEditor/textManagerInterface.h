@@ -43,7 +43,7 @@ signals:
 	void textChanged(bool changed);
 
 private slots:
-	virtual void setModified(gui::QScintillaTextEdit *code) = 0;
+	virtual void setModified(gui::QScintillaTextEdit *code, bool modified = true) = 0;
 };
 
 }

@@ -62,7 +62,7 @@ public:
 	QString generatorName(QString const &filepath) const;
 
 private slots:
-	void setModified(gui::QScintillaTextEdit *code);
+	void setModified(gui::QScintillaTextEdit *code, bool modified = true);
 	void onTabClosed(QFileInfo const &file);
 
 private:
