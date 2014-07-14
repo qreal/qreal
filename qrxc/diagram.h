@@ -26,7 +26,6 @@ public:
 	QMap<QString, QString> paletteGroupsDescriptions() const;
 	bool shallPaletteBeSorted() const;
 
-
 private:
 	struct ImportSpecification {
 		QString name;

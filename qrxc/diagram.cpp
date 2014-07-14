@@ -163,7 +163,6 @@ void Diagram::initPalette(QDomElement const &paletteElement)
 		}
 
 		mPaletteGroups << qMakePair(name, groupElements);
-
 	}
 }
 

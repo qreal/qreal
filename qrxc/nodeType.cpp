@@ -46,7 +46,6 @@ Type* NodeType::clone() const
 	return result;
 }
 
-
 bool NodeType::initAssociations()
 {
 	return true;
@@ -372,20 +371,12 @@ bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 	return true;
 }
 
-
-
-
-
-
 bool NodeType::copyPorts(NodeType* parent)
 {
 	int i = 0;
-
 	for (Port *port: parent->mPorts) {
 		mPorts.insert(i, port->clone());
 		++i;
 	}
 	return i != 0;
 }
-
-

@@ -7,8 +7,6 @@
 #include <QtCore/QPair>
 #include <QtCore/QSet>
 
-//#include "nodeType.h"
-
 class XmlCompiler;
 class Diagram;
 class Type;

@@ -67,10 +67,9 @@ protected:
 	ContainerProperties mContainerProperties;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
-	QMap<QString, QPair<bool, bool> > mExplosions ;
+	QMap<QString, QPair<bool, bool> > mExplosions;
 	bool mCreateChildrenFromMenu;
 	QString mAbstract;
-
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -116,6 +115,6 @@ private:
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
 
 	QVector<int> toIntVector(QString const &s, bool * isOk) const;
+
 	QString mDescription;
-	QMap<QString, Property*> mPort;
 };

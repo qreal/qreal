@@ -30,7 +30,6 @@ bool EdgeType::copyPorts(NodeType* parent)
 	return false;
 }
 
-
 Type* EdgeType::clone() const
 {
 	EdgeType *result = new EdgeType(mDiagram);

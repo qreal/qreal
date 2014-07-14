@@ -383,13 +383,10 @@ bool GraphicType::resolve()
 			}
 		}
 
-
 		NodeType* ourParent = dynamic_cast<NodeType*>(parent);
-
 		copyPorts(ourParent);
-
-
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
+
 		if (gParent) {
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
@@ -406,11 +403,8 @@ bool GraphicType::resolve()
 	return true;
 }
 
-
-
 void GraphicType::generateNameMapping(OutFile &out)
 {
-
 	if (mVisible) {
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
@@ -421,8 +415,6 @@ void GraphicType::generateNameMapping(OutFile &out)
 			int sizeOfPaletteElements = mDiagram->paletteGroups().value(size - 1).second.size();
 			while (sizeOfPaletteElements != 0)
 			{
-				QString qwertyu = mDiagram->paletteGroups().value(size - 1).second.value(sizeOfPaletteElements - 1);
-				QString temp = normalizedName;
 				if (mDiagram->paletteGroups().value(size - 1).second.value(sizeOfPaletteElements - 1)
 						== normalizedName && mAbstract == "true" ) {
 					qDebug() << "Error! This element abstract.";

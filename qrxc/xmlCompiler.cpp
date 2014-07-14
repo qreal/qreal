@@ -317,7 +317,6 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitExplosionsMap();\n"
 		<< "}\n\n";
 
-
 	generateNameMappings(out);
 	generatePaletteGroupsLists(out);
 	generatePaletteGroupsDescriptions(out);

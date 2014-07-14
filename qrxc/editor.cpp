@@ -124,8 +124,6 @@ Type* Editor::findType(QString const &name)
 	return NULL;
 }
 
-
-
 QSet<EnumType*> Editor::getAllEnumTypes()
 {
 	EnumType *current = NULL;
