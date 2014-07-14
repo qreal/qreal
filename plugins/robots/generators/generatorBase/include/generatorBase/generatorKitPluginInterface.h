@@ -13,8 +13,13 @@ class GeneratorKitPluginInterface
 public:
 	virtual ~GeneratorKitPluginInterface() {}
 
+	/// Returns the extension of generated files.
 	virtual QString extension() const = 0;
+
+	/// Returns the extension description (filter for the extension).
+	/// Uses for update filter field in save/open dialog after kit change.
 	virtual QString extDescrition() const = 0;
+
 	virtual QString generatorName() const = 0;
 
 	/// An identifier of constructor kit. The generator is binded to the kit plugins with the same id.

@@ -2,7 +2,7 @@
 
 #include <qrutils/inFile.h>
 #include <qrgui/mainwindow/qscintillaTextEdit.h>
-#include <nameNormalizer.h>
+#include <qrutils/nameNormalizer.h>
 
 using namespace generatorBase;
 using namespace qReal;
@@ -52,11 +52,13 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	int exampleNumber = 0;
-	while (!canGenerateTo(NameNormalizer::normalizeStrongly(defaultProjectName(), false) + QString::number(exampleNumber))) {
+	while (!canGenerateTo(NameNormalizer::normalizeStrongly(defaultProjectName(), false)
+			+ QString::number(exampleNumber))) {
 		++exampleNumber;
 	}
 
-	QString const projectName = NameNormalizer::normalizeStrongly(defaultProjectName(), false) + QString::number(exampleNumber);
+	QString const projectName = NameNormalizer::normalizeStrongly(defaultProjectName(), false)
+			+ QString::number(exampleNumber);
 	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 

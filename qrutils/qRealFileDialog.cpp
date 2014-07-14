@@ -1,7 +1,6 @@
 #include "qRealFileDialog.h"
 
 #include <qrkernel/settingsManager.h>
-#include <QDebug>
 
 using namespace utils;
 

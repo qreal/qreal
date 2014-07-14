@@ -15,7 +15,7 @@ KitExtensionsUpdateManager::KitExtensionsUpdateManager(interpreterCore::KitPlugi
 void KitExtensionsUpdateManager::updateExtensions(interpreterBase::robotModel::RobotModelInterface &currentModel)
 {
 	mTextManager->removeExtensions();
-	for(generatorBase::GeneratorKitPluginInterface *generator : mKitManager.generatorsById(currentModel.kitId())) {
+	for (generatorBase::GeneratorKitPluginInterface *generator : mKitManager.generatorsById(currentModel.kitId())) {
 		QString const extDescr = QString("%1 (*.%2)")
 				.arg(generator->extDescrition(), generator->extension());
 		mTextManager->addExtDescrByExtension(generator->extension(), extDescr);

@@ -43,7 +43,7 @@ public:
 	bool suggestToSaveChangesOrCancel();
 	void reinitAutosaver();
 	QString openFileName(QString const &dialogWindowTitle) const;
-	QString saveFilePath();
+	QString saveFilePath() const;
 	void setSaveFilePath(QString const &filePath = "");
 
 	/// Prompts user to restore last session if it was incorrectly terminated

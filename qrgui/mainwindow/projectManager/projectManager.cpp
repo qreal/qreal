@@ -33,7 +33,7 @@ void ProjectManager::setSaveFilePath(QString const &filePath /* = "" */)
 					: mAutosaver->originalFile(filePath);
 }
 
-QString ProjectManager::saveFilePath()
+QString ProjectManager::saveFilePath() const
 {
 	return mSaveFilePath;
 }
@@ -90,13 +90,12 @@ int ProjectManager::suggestToSaveOrCancelMessage()
 
 bool ProjectManager::open(QString const &fileName)
 {
-	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
-		return false;
-	}
-
 	QFileInfo const fileInfo(fileName);
 
-	if (fileInfo.suffix() == "qrs" || fileInfo.suffix().isEmpty()) {
+	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+		if (!fileName.isEmpty() && !saveFileExists(fileName)) {
+			return false;
+		}
 		return openProject(fileName);
 	} else {
 		mMainWindow->closeStartTab();
@@ -391,7 +390,7 @@ QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 	QString const defaultDirectory = pathToExamples.isEmpty()
 			? QFileInfo(mSaveFilePath).absoluteDir().absolutePath()
 			: pathToExamples;
-	QString filter = tr("QReal Save File(*.qrs)") + ";;";
+	QString filter = tr("QReal Save File (*.qrs)") + ";;";
 	QString const extensions = QStringList(mTextManager->extDescriptions()).join(";;");
 
 	filter += (extensions.isEmpty() ? "" : extensions + ";;") + tr("All files(*.*)");

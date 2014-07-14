@@ -21,7 +21,7 @@ TextManager::TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWi
 bool TextManager::openFile(QString const &filePath, QString const &genName)
 {
 	QFile file(filePath);
-	QTextStream *inStream = NULL;
+	QTextStream *inStream = nullptr;
 
 	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		inStream = new QTextStream(&file);
@@ -78,7 +78,7 @@ void TextManager::changeFilePath(QString const &from, QString const &to)
 	QScintillaTextEdit *code = mText.value(from);
 	QPair<bool, bool> mod(true, false);
 	QString const genName = generatorName(from);
-	EditorView *diagram = mDiagramCodeManager.key(from, NULL);
+	EditorView *diagram = mDiagramCodeManager.key(from, nullptr);
 
 	closeFile(from);
 
@@ -88,7 +88,7 @@ void TextManager::changeFilePath(QString const &from, QString const &to)
 	mModified.insert(to, mod);
 	mGenName.insert(to, genName);
 
-	if (diagram != NULL) {
+	if (diagram != nullptr) {
 		bindCode(diagram, to);
 	}
 }
@@ -121,7 +121,7 @@ bool TextManager::removeDiagram(EditorView *diagram)
 
 EditorView *TextManager::diagram(gui::QScintillaTextEdit *code) const
 {
-	return mDiagramCodeManager.key(mPath.value(code), NULL);
+	return mDiagramCodeManager.key(mPath.value(code), nullptr);
 }
 
 QString TextManager::path(gui::QScintillaTextEdit *code) const
@@ -250,7 +250,7 @@ bool TextManager::saveText(bool saveAs)
 		QString extDescrs = tr("All files (*)") + (extensions.isEmpty() ? "" : ";;" + extensions);
 
 		if (curExtDescr->isEmpty()) {
-			curExtDescr = 0;
+			curExtDescr = nullptr;
 		}
 
 		if (saveAs) {
@@ -260,6 +260,8 @@ bool TextManager::saveText(bool saveAs)
 			fileInfo = path(area);
 		}
 
+		delete curExtDescr;
+
 		if (fileInfo.fileName() != "") {
 			mMainWindow->setTabText(area, fileInfo.fileName());
 
@@ -267,7 +269,7 @@ bool TextManager::saveText(bool saveAs)
 
 			out() << area->text();
 
-			if (saveAs && diagram != NULL) {
+			if (saveAs && diagram != nullptr) {
 				emit mSystemEvents->codePathChanged(diagram->mvIface()->rootId(), path(area), fileInfo);
 			}
 
