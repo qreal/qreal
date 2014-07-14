@@ -35,7 +35,7 @@ void ProjectManager::setSaveFilePath(QString const &filePath /* = "" */)
 
 QString ProjectManager::saveFilePath() const
 {
-	return mSaveFilePath;
+	return mAutosaver->isTempFile(mSaveFilePath) ? QString() : mSaveFilePath;
 }
 
 void ProjectManager::reinitAutosaver()

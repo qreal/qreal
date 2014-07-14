@@ -49,6 +49,8 @@ public:
 	virtual bool open(QString const &fileName = "") = 0;
 	virtual bool suggestToSaveChangesOrCancel() = 0;
 	virtual void setUnsavedIndicator(bool isUnsaved) = 0;
+
+	/// Returns path to save file. If temp file it will returns empty string.
 	virtual QString saveFilePath() const = 0;
 
 signals:

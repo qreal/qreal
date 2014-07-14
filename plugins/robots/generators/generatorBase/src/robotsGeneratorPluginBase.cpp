@@ -37,7 +37,8 @@ QString RobotsGeneratorPluginBase::generatorName() const
 
 QString RobotsGeneratorPluginBase::defaultProjectName() const
 {
-	return QFileInfo(mProjectManager->saveFilePath()).baseName();
+	QString const filePath = mProjectManager->saveFilePath();
+	return filePath.isEmpty() ? "example" : QFileInfo(filePath).baseName();
 }
 
 bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
