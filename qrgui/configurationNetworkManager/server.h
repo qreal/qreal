@@ -2,12 +2,6 @@
 
 #include "configurationNetworkManager.h"
 
-#include <QtNetwork/QtNetwork>
-#include <QtWidgets/QMessageBox>
-#include <QtNetwork/QNetworkSession>
-
-#include "qrkernel/settingsManager.h"
-
 class Server : public ConfigurationNetworkManager
 {
 	Q_OBJECT
