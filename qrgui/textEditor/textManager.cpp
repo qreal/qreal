@@ -147,12 +147,12 @@ bool TextManager::isModifiedEver(QString const &path) const
 void TextManager::setModified(gui::QScintillaTextEdit *code, bool modified)
 {
 	QPair<bool, bool> mod = mModified.value(mPath.value(code));
-
-	mod.second = modified;
-	code->setModified(modified);
+	mod.first = !modified || mod.first;
+	mod.second = modified && code->isUndoAvailable();
+	code->setModified(mod.second);
 	mModified.insert(mPath.value(code), mod);
 
-	emit textChanged(modified);
+	emit textChanged(modified && code->isUndoAvailable());
 }
 
 void TextManager::onTabClosed(QFileInfo const &file)

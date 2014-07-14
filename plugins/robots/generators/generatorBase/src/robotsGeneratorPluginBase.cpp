@@ -43,9 +43,8 @@ QString RobotsGeneratorPluginBase::defaultProjectName() const
 
 bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
 {
-	/// @todo: In some scenarios user hand-coded programs will be rewritten with auto-generated
-	Q_UNUSED(project)
-	return true;
+	QFileInfo const fileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(project));
+	return !(fileInfo.exists() && fileInfo.created() != fileInfo.lastModified());
 }
 
 QFileInfo RobotsGeneratorPluginBase::srcPath()
@@ -53,13 +52,14 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	int exampleNumber = 0;
-	while (!canGenerateTo(NameNormalizer::normalizeStrongly(defaultProjectName(), false)
-			+ QString::number(exampleNumber))) {
-		++exampleNumber;
-	}
+	QString projectName;
 
-	QString const projectName = NameNormalizer::normalizeStrongly(defaultProjectName(), false)
-			+ (exampleNumber > 0 ? QString::number(exampleNumber) : "");
+	do {
+		projectName = NameNormalizer::normalizeStrongly(defaultProjectName(), false)
+				+ (exampleNumber > 0 ? QString::number(exampleNumber) : "");
+		++exampleNumber;
+	} while (!canGenerateTo(projectName));
+
 	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 
