@@ -58,7 +58,7 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	}
 
 	QString const projectName = NameNormalizer::normalizeStrongly(defaultProjectName(), false)
-			+ QString::number(exampleNumber);
+			+ (exampleNumber > 0 ? QString::number(exampleNumber) : "");
 	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 
