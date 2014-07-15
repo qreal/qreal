@@ -15,6 +15,8 @@ public:
 	/// returns port to coonect this server
 	quint16 getPort();
 
+	void init();
+
 protected:
 	/// sends his qReal settings to client
 	void sendSettings();

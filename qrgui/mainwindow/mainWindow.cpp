@@ -112,8 +112,8 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 
-//	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-//							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment,);
+	//	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+	//							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment,);
 
 
 	splashScreen.setProgress(60);
@@ -164,17 +164,17 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
 	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
 
-	//connect(mFinishTest, SIGNAL(clientError()), this, SLOT(clientError()));
-
 	if (isServer) {
 		mNetworkManager = new Server();
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment, isServer);
+								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment, isServer);
 	}
 	else {
 		mNetworkManager = new Client();
+		connect(mNetworkManager, &ConfigurationNetworkManager::clientError, this, &MainWindow::displayClientError);
+		mNetworkManager->init();
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-							, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment, isServer);
+								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment, isServer);
 	}
 }
 
@@ -2341,5 +2341,35 @@ void MainWindow::endPaletteModification()
 		}
 
 		scene->update();
+	}
+}
+
+void MainWindow::displayClientError(QAbstractSocket::SocketError socketError, QString error)
+{
+	switch (socketError)
+	{
+
+	case QAbstractSocket::RemoteHostClosedError:
+	{
+		break;
+	}
+
+	case QAbstractSocket::HostNotFoundError:
+	{
+		QMessageBox::information(this, "Client", "The host was not found. Please check the host name and port settings.");
+		break;
+	}
+
+	case QAbstractSocket::ConnectionRefusedError:
+	{
+		QMessageBox::information(this, "Client", "The connection was refused by the peer.  Make sure the fortune server is running,  and check that the host name and port settings are correct.");
+		break;
+	}
+
+	default:
+	{
+		QMessageBox::information(this, "Client", "The following error occurred: " + error);
+	}
+
 	}
 }

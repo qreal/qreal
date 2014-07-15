@@ -128,3 +128,8 @@ QStringList Server::getIP()
 
 	return address;
 }
+
+void Server::init()
+{
+
+}

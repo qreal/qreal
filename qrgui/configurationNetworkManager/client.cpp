@@ -5,14 +5,8 @@ using namespace qReal;
 Client::Client() : mSettingStringSize(0)
 {
 	mServerSocket = new QTcpSocket(this);
-
 	connect(mServerSocket, SIGNAL(readyRead()), this, SLOT(settings()));
-	connect(mServerSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(displayError(QAbstractSocket::SocketError)));
-
-	QString ip = SettingsManager::value("ServerIP").toString();
-	int port = SettingsManager::value("ServerPort").toInt();
-
-	mServerSocket->connectToHost(ip, port);
+	connect(mServerSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(connectionError(QAbstractSocket)));
 }
 
 Client::~Client()
@@ -20,7 +14,15 @@ Client::~Client()
 	delete mServerSocket;
 }
 
-void Client::setSettings()
+void Client::init()
+{
+	QString ip = SettingsManager::value("ServerIP").toString();
+	int port = SettingsManager::value("ServerPort").toInt();
+
+	mServerSocket->connectToHost(ip, port);
+}
+
+void Client::settings()
 {
 	QDataStream in(mServerSocket);
 	in.setVersion(QDataStream::Qt_5_1);
@@ -39,39 +41,14 @@ void Client::setSettings()
 	mSettingStringSize = 0;
 	QString settings;
 	in >> settings;
+
 	applySettingsFromServer(settings);
 }
 
-void Client::displayError(QAbstractSocket::SocketError socketError)
+void Client::connectionError(QAbstractSocket::SocketError socketError)
 {
 	mServerSocket->close();
-	emit clientError();
-//	switch (socketError)
-//	{
-
-//	case QAbstractSocket::RemoteHostClosedError:
-//	{
-//		break;
-//	}
-
-//	case QAbstractSocket::HostNotFoundError:
-//	{
-//		QMessageBox::information(this, "Client", "The host was not found. Please check the host name and port settings.");
-//		break;
-//	}
-
-//	case QAbstractSocket::ConnectionRefusedError:
-//	{
-//		QMessageBox::information(this, "Client", "The connection was refused by the peer.  Make sure the fortune server is running,  and check that the host name and port settings are correct.");
-//		break;
-//	}
-
-//	default:
-//	{
-//		QMessageBox::information(this, "Client", "The following error occurred: " + (mServerSocket->errorString()));
-//	}
-
-//	}
+	emit ConfigurationNetworkManager::clientError(socketError, mServerSocket->errorString());
 }
 
 void Client::applySettingsFromServer(QString settings)
@@ -105,10 +82,13 @@ void Client::applySettingsFromServer(QString settings)
 				break;
 		}
 
-		SettingsManager::setValue(key, QVariant(value));
+		if (!(value == "ServerPort" || value == "ServerIP"))
+				SettingsManager::setValue(key, QVariant(value));
 
 		i = i + 3;
 		if (i >= settings.length() - 3)
 			break;
 	}
+
+	mServerSocket->close();
 }

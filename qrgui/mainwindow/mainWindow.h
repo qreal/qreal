@@ -295,7 +295,7 @@ private slots:
 	void setUsabilityMode(bool mode);
 	void startUsabilityTest();
 	void finishUsabilityTest();
-	//void displayClientError();
+	void displayClientError(QAbstractSocket::SocketError socketError, QString error);
 
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;

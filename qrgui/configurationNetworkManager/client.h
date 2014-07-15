@@ -1,6 +1,7 @@
 #pragma once
 
 #include "configurationNetworkManager.h"
+#include "mainwindow/mainWindow.h"
 
 class Client : public ConfigurationNetworkManager
 {
@@ -10,14 +11,12 @@ public:
 	Client();
 	~Client();
 
+	void init();
+
 private slots:
 	///get and apply settings from server
-	void setSettings();
-	///show error if connecttion failed
-	void displayError(QAbstractSocket::SocketError socketError);
-
-signals:
-	void clientError();
+	void settings();
+	void connectionError(QAbstractSocket::SocketError socketError);
 
 private:
 	///apply setting from server
