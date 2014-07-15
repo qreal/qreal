@@ -12,7 +12,7 @@ public:
 
 private slots:
 	///get and apply settings from server
-	void setSettings();
+	void settings();
 	///show error if connecttion failed
 	void displayError(QAbstractSocket::SocketError socketError);
 

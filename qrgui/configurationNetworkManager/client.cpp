@@ -20,7 +20,7 @@ Client::~Client()
 	delete mServerSocket;
 }
 
-void Client::setSettings()
+void Client::settings()
 {
 	QDataStream in(mServerSocket);
 	in.setVersion(QDataStream::Qt_5_1);
