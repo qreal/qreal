@@ -22,13 +22,15 @@ protected:
 private slots:
 	void sessionOpened();
 	void acceptClientConnection();
+	void deleteClientSlot(QString str, int i);
+	void clientDisconnected(int i);
 
 signals:
 	/// emits new client's IP, when connected
 	void newClient(QString clientIP);
 
 	/// emits IP of disconnected client
-	void clientDisconnected(QString clientsIP);
+
 
 	/// emits when server is not created
 	void serverError();

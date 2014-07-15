@@ -1,5 +1,7 @@
 #include "server.h"
 
+#include <QtCore/QDebug>
+
 Server::Server() :
 	mTcpServer(0),
 	mNetworkSession(0) {
@@ -27,7 +29,7 @@ Server::Server() :
 
 	mIPAddressMapper = new QSignalMapper;
 	connect(mTcpServer, SIGNAL(newConnection()), this, SLOT(acceptClientConnection()));
-	connect(mIPAddressMapper, SIGNAL(mapped(QString)), this, SIGNAL(clientDisconnected(QString)));
+	connect(mIPAddressMapper, SIGNAL(mapped(int)), this, SLOT(clientDisconnected(int)));
 }
 
 void Server::sessionOpened()
@@ -64,22 +66,42 @@ void Server::acceptClientConnection()
 	emit newClient(clientSocket->peerAddress().toString());
 	int idusersocs = clientSocket->socketDescriptor();
 	mSClients[idusersocs] = clientSocket;
+	mIPAddressMapper->setMapping(mSClients[idusersocs], idusersocs);
 	connect(mSClients[idusersocs], SIGNAL(disconnected()), mIPAddressMapper, SLOT(map()));
-	mIPAddressMapper->setMapping(mSClients[idusersocs], mSClients[idusersocs]->peerAddress().toString());
+//	connect(this, SIGNAL(clientDisconnected(QString)), this, SLOT(deleteClientSlot(QString)));
+//	mIPAddressMapper->setMapping(mSClients[idusersocs], mSClients[idusersocs]->peerAddress().toString());
 	connect(mSClients[idusersocs], SIGNAL(disconnected()), mSClients[idusersocs], SLOT(deleteLater()));
 	sendSettings();
+	qDebug() << clientSocket->IPv4Protocol;
+}
+
+void Server::deleteClientSlot(QString str, int i)
+{
+	qDebug() << str << "delete";
+}
+
+void Server::clientDisconnected(int i)
+{
+	qDebug() << i << "delete";
+	mSClients[i]->close();
+	mSClients.remove(i);
 }
 
 void Server::sendSettings()
 {
+	qDebug() << "SendSettings!!!!!!!!!!!!";
 	if(!mSClients.isEmpty()) {
 		QByteArray block;
 		QDataStream out(&block, QIODevice::WriteOnly);
 
 		out << (quint16)qReal::SettingsManager::instance()->convertToString().length();
 		out << qReal::SettingsManager::instance()->convertToString();
+		qDebug() << "In If - SendSettings!!!!!!!!!!!!" << mSClients.keys();
 		foreach(int i, mSClients.keys()) {
-			mSClients[i]->write(block);
+			if (mSClients[i]->isOpen()) {
+				qDebug() << i;
+				mSClients[i]->write(block);
+			}
 		}
 	}
 }
