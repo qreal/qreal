@@ -10,9 +10,9 @@ class DrawPixelGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
     DrawPixelGenerator(qrRepo::RepoApi const &repo
-                       , generatorBase::GeneratorCustomizer &customizer
-                       , qReal::Id const &id
-                       , QObject *parent);
+			, generatorBase::GeneratorCustomizer &customizer
+			, qReal::Id const &id
+			, QObject *parent);
 };
 
 }

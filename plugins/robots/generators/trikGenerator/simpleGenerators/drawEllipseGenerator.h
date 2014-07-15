@@ -10,9 +10,9 @@ class DrawEllipseGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
     DrawEllipseGenerator(qrRepo::RepoApi const &repo
-                          , generatorBase::GeneratorCustomizer &customizer
-                          , qReal::Id const &id
-                          , QObject *parent);
+			, generatorBase::GeneratorCustomizer &customizer
+			, qReal::Id const &id
+			, QObject *parent);
 };
 
 }
