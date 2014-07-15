@@ -59,7 +59,7 @@ QVariant SettingsManager::get(QString const &name, QVariant const &defaultValue)
 		return mData[name];
 	}
 
-	if (mDefaultValues.contains(name) && defaultValue == QVariant()) {
+	if (mDefaultValues.contains(name)) {
 		return mDefaultValues[name];
 	}
 
