@@ -14,7 +14,7 @@ Client::~Client()
 	delete mServerSocket;
 }
 
-void Client::init()
+void Client::init() override
 {
 	QString ip = SettingsManager::value("ServerIP").toString();
 	int port = SettingsManager::value("ServerPort").toInt();
