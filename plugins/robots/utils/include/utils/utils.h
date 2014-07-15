@@ -6,6 +6,7 @@
 
 namespace utils {
 
+/// Common useful methods for interface
 class ROBOTS_UTILS_EXPORT Utils
 {
 public:
