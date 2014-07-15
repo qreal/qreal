@@ -48,8 +48,6 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 
 	} else if (elementMetatypeIs(element, "TrikSay")) {
 		return new EmptyBlock();
-	} else if (elementMetatypeIs(element, "TrikLed")) {
-		return new LedBlock(mRobotModelManager->model());/*EmptyBlock();*/
 	} else if (elementMetatypeIs(element, "TrikSystem")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
@@ -57,8 +55,10 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikDetectLine")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikLineDetectorToVariable")) {
-		return new EmptyBlock();
+		return new EmptyBlock();		
 
+	} else if (elementMetatypeIs(element, "TrikLed")) {
+		return new LedBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForLight")) {
 		return new WaitForLightSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForSonarDistance")) {
