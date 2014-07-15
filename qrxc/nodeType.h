@@ -20,7 +20,7 @@ public:
 	virtual void generateCode(utils::OutFile &out);
 	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
 	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
-	bool copyPorts(NodeType *port);
+	bool copyPorts(NodeType *port) override;
 
 private:
 	QList<Port*> mPorts;
