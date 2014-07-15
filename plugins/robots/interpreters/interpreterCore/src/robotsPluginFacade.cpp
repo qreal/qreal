@@ -3,6 +3,7 @@
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "managers/paletteUpdateManager.h"
 #include "managers/kitAutoSwitcher.h"
+#include "managers/kitExtensionsUpdateManager.h"
 
 using namespace interpreterCore;
 
@@ -85,6 +86,11 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, paletteUpdateManager, &PaletteUpdateManager::updatePalette);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
+
+	auto kitExtensionsUpdateManager = new KitExtensionsUpdateManager(mKitPluginManager
+			, configurer.textManager(), this);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, kitExtensionsUpdateManager, &KitExtensionsUpdateManager::updateExtensions);
 
 	// It will subscribe to all signals itself and free memory too.
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
