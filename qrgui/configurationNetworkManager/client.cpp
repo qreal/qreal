@@ -82,8 +82,8 @@ void Client::applySettingsFromServer(QString settings)
 				break;
 		}
 
-		if (!(value == "ServerPort" || value == "ServerIP"))
-				SettingsManager::setValue(key, QVariant(value));
+		if (!(key == "ServerPort" || key == "ServerIP"))
+			SettingsManager::setValue(key, QVariant(value));
 
 		i = i + 3;
 		if (i >= settings.length() - 3)
