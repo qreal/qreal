@@ -1,5 +1,6 @@
-#include <utils/utils.h>
 #include <QtGui/QColor>
+
+#include "utils/utils.h"
 
 using namespace utils;
 
