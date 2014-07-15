@@ -1,4 +1,4 @@
-﻿#include "graphicType.h"
+#include "graphicType.h"
 
 #include <QtCore/QDebug>
 
@@ -395,7 +395,7 @@ bool GraphicType::resolve()
 				return false;
 			}
 		}
-
+		
 		QDomElement element = mLogic.firstChildElement();
 		for (QDomElement tempElement = element.firstChildElement()
 				; !tempElement.isNull()
@@ -409,7 +409,8 @@ bool GraphicType::resolve()
 						copyPorts(nodeParent);
 				}
 			}
-		}		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
+		}		
+		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
 		if (gParent) {
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
@@ -432,21 +433,14 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
-		int size = mDiagram->paletteGroups().size();
-
-		for (int i = size; i > 0; --i) {
-			int sizeOfPaletteElements = mDiagram->paletteGroups().value(i - 1).second.size();
-			for (int j = sizeOfPaletteElements; j > 0; --j) {
-				if (mDiagram->paletteGroups().value(i - 1).second.value(j - 1)
-
-						== normalizedName && mAbstract == "true" )
-				{
-					"ERROR! Element" << qualifiedName() << "is abstract.";
+			for (QPair<QString, QStringList> part : mDiagram->paletteGroups()) {
+			 for (auto part2: part.second) {
+				if (part2 == normalizedName && mAbstract == "true" ) {
+					qDebug() << "ERROR! Element" << qualifiedName() << "is abstract.";
 					return;
 				}
 			}
 		}
-
 
 		if (mAbstract == "true") {
 			return;
