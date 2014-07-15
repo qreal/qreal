@@ -6,7 +6,7 @@ Client::Client() : mSettingStringSize(0)
 {
 	mServerSocket = new QTcpSocket(this);
 	connect(mServerSocket, SIGNAL(readyRead()), this, SLOT(settings()));
-	connect(mServerSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(connectionError(QAbstractSocket)));
+	connect(mServerSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(connectionError(QAbstractSocket::SocketError)));
 }
 
 Client::~Client()
@@ -14,7 +14,7 @@ Client::~Client()
 	delete mServerSocket;
 }
 
-void Client::init()
+void Client::init() override
 {
 	QString ip = SettingsManager::value("ServerIP").toString();
 	int port = SettingsManager::value("ServerPort").toInt();
@@ -82,8 +82,8 @@ void Client::applySettingsFromServer(QString settings)
 				break;
 		}
 
-		if (!(value == "ServerPort" || value == "ServerIP"))
-				SettingsManager::setValue(key, QVariant(value));
+		if (!(key == "ServerPort" || key == "ServerIP"))
+			SettingsManager::setValue(key, QVariant(value));
 
 		i = i + 3;
 		if (i >= settings.length() - 3)

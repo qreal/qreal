@@ -295,6 +295,8 @@ private slots:
 	void setUsabilityMode(bool mode);
 	void startUsabilityTest();
 	void finishUsabilityTest();
+
+	///display error of client
 	void displayClientError(QAbstractSocket::SocketError socketError, QString error);
 
 private:
@@ -434,6 +436,7 @@ private:
 	QAction *mStartTest; // Has ownership
 	QAction *mFinishTest; // Has ownership
 
+	///define mode of our exemplar - client of server
 	ConfigurationNetworkManager *mNetworkManager;
 };
 
