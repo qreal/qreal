@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QtGui/QColor>
 
 #include "trikDisplayWidget.h"
@@ -9,7 +10,8 @@ namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
 
-/// An implementation of the LED for the 2D model window.
+/// An interpretator's implementation of the LED different model window.
+/// sets LED widget's color.
 class LedBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
