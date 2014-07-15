@@ -1,6 +1,7 @@
 #pragma once
 
 #include <robotModel/trikRobotModelBase.h>
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -21,6 +22,9 @@ protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
 			interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
+
+private:
+	utils::TcpRobotCommunicator *mRobotCommunicator;
 };
 
 }
