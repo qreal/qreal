@@ -8,14 +8,14 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase -lutils
 
 INCLUDEPATH += \
-	$$PWD/../generatorBase/include/ \
-	$$PWD/../../interpreters/interpreterBase/include \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrgui \
-
+    $$PWD/../generatorBase/include/ \
+    $$PWD/../../interpreters/interpreterBase/include \
+    $$PWD/../../utils/include/ \
+    $$PWD/../../../../ \
+    $$PWD/../../../../qrgui \
 
 # workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # when fixed it would become possible to use QMAKE_LFLAGS_RPATH

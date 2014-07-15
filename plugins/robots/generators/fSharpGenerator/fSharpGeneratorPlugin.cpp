@@ -8,20 +8,21 @@
 
 #include <QtCore/QDebug>
 
-//#include "robotCommunication/tcpRobotCommunicator.h"
+#include <utils/tcpRobotCommunicator.h>
 #include "fSharpMasterGenerator.h"
+
 
 using namespace fSharp;
 using namespace qReal;
 
 FSharpGeneratorPlugin::FSharpGeneratorPlugin()
-    : mGenerateCodeAction(nullptr)
-    , mUploadProgramAction(nullptr)
-    , mRunProgramAction(nullptr)
-    , mStopRobotAction(nullptr)
+		: mGenerateCodeAction(nullptr)
+		, mUploadProgramAction(nullptr)
+		, mRunProgramAction(nullptr)
+		, mStopRobotAction(nullptr)
 {
-    mAppTranslator.load(":/FSharpGenerator_" + QLocale().name());
-    QApplication::installTranslator(&mAppTranslator);
+	mAppTranslator.load(":/FSharpGenerator_" + QLocale().name());
+	QApplication::installTranslator(&mAppTranslator);
 }
 
 FSharpGeneratorPlugin::~FSharpGeneratorPlugin()
@@ -30,149 +31,130 @@ FSharpGeneratorPlugin::~FSharpGeneratorPlugin()
 
 QString FSharpGeneratorPlugin::kitId() const
 {
-    return "trikKit";
+	return "trikKit";
 }
 
 QList<ActionInfo> FSharpGeneratorPlugin::actions()
 {
-    mGenerateCodeAction.setText(tr("Generate FSharp code"));
-    mGenerateCodeAction.setIcon(QIcon(":/images/generateQtsCode.svg"));
-    ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-    connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+	mGenerateCodeAction.setText(tr("Generate FSharp code"));
+	mGenerateCodeAction.setIcon(QIcon(":/images/generateQtsCode.svg"));
+	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
+	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
+	mUploadProgramAction.setText(tr("Upload program"));
+	mUploadProgramAction.setIcon(QIcon(":/images/uploadProgram.svg"));
+	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
+	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
-    mUploadProgramAction.setText(tr("Upload program"));
-    mUploadProgramAction.setIcon(QIcon(":/images/uploadProgram.svg"));
-    ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-    connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	mRunProgramAction.setText(tr("Run program"));
+	mRunProgramAction.setIcon(QIcon(":/images/uploadAndExecuteProgram.svg"));
+	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
+	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()));
 
-    return {generateCodeActionInfo, uploadProgramActionInfo};
+	mStopRobotAction.setText(tr("Stop robot"));
+	mStopRobotAction.setIcon(QIcon(":/images/stopRobot.svg"));
+	ActionInfo stopRobotActionInfo(&mStopRobotAction, "generators", "tools");
+	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()));
+
+	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }
 
 QList<HotKeyActionInfo> FSharpGeneratorPlugin::hotKeyActions()
 {
-    mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
-    mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
-    //	mRunProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
-    //	mStopRobotAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F5));
+	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+	//	mRunProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
+	//	mStopRobotAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F5));
 
-    HotKeyActionInfo generateCodeInfo("Generator.GenerateFSharp", tr("Generate fsharp Code"), &mGenerateCodeAction);
-    //	HotKeyActionInfo uploadProgramInfo("Generator.UploadFSharp", tr("Upload fsharp Program"), &mUploadProgramAction);
-    //HotKeyActionInfo runProgramInfo("Generator.RunFSharp", tr("Run fsharp Program"), &mRunProgramAction);
-    //HotKeyActionInfo stopRobotInfo("Generator.StopFSharp", tr("Stop fsharp Robot"), &mStopRobotAction);
+	HotKeyActionInfo generateCodeInfo("Generator.GenerateFSharp", tr("Generate fsharp Code"), &mGenerateCodeAction);
+	//	HotKeyActionInfo uploadProgramInfo("Generator.UploadFSharp", tr("Upload fsharp Program"), &mUploadProgramAction);
+	//HotKeyActionInfo runProgramInfo("Generator.RunFSharp", tr("Run fsharp Program"), &mRunProgramAction);
+	//HotKeyActionInfo stopRobotInfo("Generator.StopFSharp", tr("Stop fsharp Robot"), &mStopRobotAction);
 
-    return { generateCodeInfo};
+	return { generateCodeInfo};
 }
 
 generatorBase::MasterGeneratorBase *FSharpGeneratorPlugin::masterGenerator()
 {
-    return new FSharpMasterGenerator(*mRepo
-                                     , *mMainWindowInterface->errorReporter()
-                                     , *mRobotModelManager
-                                     , mMainWindowInterface->activeDiagram());
+	return new FSharpMasterGenerator(*mRepo
+	, *mMainWindowInterface->errorReporter()
+	, *mRobotModelManager
+	, mMainWindowInterface->activeDiagram());
 }
 
 void FSharpGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 {
-    Q_UNUSED(newFileInfo);
+	Q_UNUSED(newFileInfo);
 }
 
 QString FSharpGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-    return QString("trik/%1/%1.fs").arg(projectName);
+	return QString("trik/%1/%1.fs").arg(projectName);
 }
 
 QString FSharpGeneratorPlugin::extension() const
 {
-    return "fs";
+	return "fs";
 }
 
 QString FSharpGeneratorPlugin::extDescrition() const
 {
-    return tr("FSharp Source File");
+	return tr("FSharp Source File");
 }
 
 QString FSharpGeneratorPlugin::generatorName() const
 {
-    return "FSharp";
+	return "FSharp";
 }
 
 bool FSharpGeneratorPlugin::uploadProgram()
 {
+	QProcess myProcess;
+	QFileInfo const fileInfo = generateCodeForProcessing();
 
-    longUploadProgram();
-    //invocation::FunctorOperation<void> *operation = new invocation::FunctorOperation<void>(30000);
-    //operation->setInvocationTargetWithProgress(this, &FSharpGeneratorPlugin::longUploadProgram);
+	QString pathToTheTrikObservable = " -r \"G:/Trik.Core.dll\"";
+	QString command = "\"" + qReal::SettingsManager::value("FSharpPath").toString() + "\" "
+			+ "\"" + fileInfo.absoluteFilePath() + "\""
+			+ pathToTheTrikObservable;
 
-    //connect(operation, SIGNAL(finished(invocation::InvocationResult)),
-     //     this, SLOT(onOperationComplete(invocation::InvocationResult)));
-    //operation->invoceAsync();
-    //mMainWindowInterface->reportOperation(operation);
-    //}
-    /*QFileInfo const fileInfo = generateCodeForProcessing();
+	qDebug() << command;
+	myProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
+	myProcess.start(command);
+	myProcess.waitForFinished();
+	qDebug() << qReal::SettingsManager::value("TrikTcpServer").toString();
 
-    if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
-        TcpRobotCommunicator communicator;
-        bool const result = communicator.uploadProgram(fileInfo.absoluteFilePath());
-        if (!result) {
-            mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
-        }
+	QString moveCommand = "\"" + qReal::SettingsManager::value("WinScpPath").toString().replace("?","") + "\""
+			+ " /command  \"open scp://root@" + qReal::SettingsManager::value("TrikTcpServer").toString() + "\""
+			+ " \"put "+ fileInfo.absoluteFilePath().replace("fs","exe").replace("/","\\")
+			+ " /home/root/trik/FSharp/Environment/\"";
 
-        return result;
-    } else {
-        qDebug() << "Code generation failed, aborting";
-        return false;
-    }*/
-    return 1;
+	qDebug() << moveCommand;
+
+	myProcess.startDetached(moveCommand);
+	myProcess.waitForFinished();
 }
 
 void FSharpGeneratorPlugin::runProgram()
 {
-    /*if (uploadProgram()) {
-        TcpRobotCommunicator communicator;
-        QFileInfo const fileInfo = generateCodeForProcessing();
-        communicator.runProgram(fileInfo.fileName());
-    } else {
-        qDebug() << "Program upload failed, aborting";
-    }*/
+	utils::TcpRobotCommunicator communicator("TrikTcpServer");
+	communicator.runDirectCommand(
+			"brick.system(\"mono trik/FSharp/Environment/example0.exe\"); "
+	);
+
+
 }
 
 void FSharpGeneratorPlugin::stopRobot()
-{/*
-    TcpRobotCommunicator communicator;
-    if (!communicator.stopRobot()) {
-        mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
-    }
-
-    communicator.runDirectCommand(
-            "brick.system(\"killall aplay\"); \n"
-            "brick.system(\"killall vlc\"); \n"
-            "brick.system(\"killall rover-cv\");"
-            );
-*/
-}
-
-void FSharpGeneratorPlugin::longUploadProgram()
 {
-    QProcess myProcess;
-    QFileInfo const fileInfo = generateCodeForProcessing();
+	utils::TcpRobotCommunicator communicator("TrikTcpServer");
+	if (!communicator.stopRobot()) {
+		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
+	}
 
-    QString pathToTheTrikObservable = " -r \"G:/Trik.Observable.dll\"";
-    QString command = "\"" + qReal::SettingsManager::value("FSharpPath").toString() + "\" "
-            + "\"" + fileInfo.absoluteFilePath() + "\""
-            + pathToTheTrikObservable;
+	communicator.runDirectCommand(
+			"brick.system(\"killall aplay\"); \n"
+			"brick.system(\"killall vlc\"); \n"
+			"brick.system(\"killall rover-cv\");"
+	);
 
-    myProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
-    myProcess.start(command);
-    myProcess.waitForFinished();
-    qDebug() << qReal::SettingsManager::value("TrikTcpServer").toString();
-
-    QString moveCommand = "\"" + qReal::SettingsManager::value("WinScpPath").toString().replace("?","") + "\""
-            + " /command  \"open scp://root@" + qReal::SettingsManager::value("TrikTcpServer").toString() + "\""
-            + " \"put "+ fileInfo.absoluteFilePath().replace("fs","exe").replace("/","\\")
-            + " /home/root/trik/\"";
-
-    qDebug() << moveCommand;
-    myProcess.startDetached(moveCommand + "\" exit\"");
-    myProcess.waitForFinished(10000);
 }

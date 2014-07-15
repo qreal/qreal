@@ -39,19 +39,21 @@ namespace invocation
 ///		operation->setInvocationTargetWithProgress(this, &SampleClass::doOperation, 5, QString("some string"));
 ///		connect(operation, SIGNAL(finished(invocation::InvocationResult)), this, SLOT(onOperationComplete(invocation::InvocationResult)));
 ///		operation->invoceAsync();
+///
 /// @param TResult Must be function return value type
 template<typename TResult>
-class QRUTILS_EXPORT FunctorOperation : public LongOperation
+class FunctorOperation : public LongOperation
 {
 public:
 	/// @param timeout Operation timeout
-	explicit FunctorOperation(int timeout = INT_MAX)
-		: LongOperation(timeout)
-	{
-	}
-	virtual ~FunctorOperation()
-	{
-	}
+    explicit FunctorOperation(int timeout = INT_MAX)
+        : LongOperation(timeout)
+    {
+    }
+
+    virtual ~FunctorOperation()
+    {
+    }
 
 	// Too much overloads for having doc for each. See class definition doc
 	template <typename T>
