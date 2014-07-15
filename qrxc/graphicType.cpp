@@ -67,7 +67,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 	if (Type::init(element, context)) {
 		mDescription = element.attribute("description", "");
 		mAbstract = element.attribute("abstract", "");
-		mOverride = element.attribute("overrides", "");
+		//mOverride = element.attribute("overrides", "");
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull()) {
 			qDebug() << "ERROR: can't find logic tag of graphic type";
@@ -346,10 +346,11 @@ bool GraphicType::isResolving() const
 
 void GraphicType::checkOverriding()
 {
-	mOverridePorts = mOverride.contains("ports");
-	mOverrideLabels = mOverride.contains("labels");
-	mOverridePictures = mOverride.contains("pictures");
-	if (mOverride.contains("all")) {
+	QString temp = mOverride;
+	mOverridePorts = mOverride.contains("ports", Qt::CaseInsensitive);
+	mOverrideLabels = mOverride.contains("labels", Qt::CaseInsensitive);
+	mOverridePictures = mOverride.contains("pictures", Qt::CaseInsensitive);
+	if (mOverride.contains("all", Qt::CaseInsensitive)) {
 		mOverridePorts = true;
 		mOverrideLabels = true;
 		mOverridePictures = true;
@@ -394,11 +395,20 @@ bool GraphicType::resolve()
 				return false;
 			}
 		}
-		checkOverriding();
-		NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
-		if (nodeParent != nullptr) {
-			if (!mOverridePorts)
-				copyPorts(nodeParent);
+
+		QDomElement element = mLogic.firstChildElement();
+		for (QDomElement tempElement = element.firstChildElement()
+				; !tempElement.isNull()
+				; tempElement = tempElement.nextSiblingElement()) {
+			mOverride = tempElement.attribute("overrides");
+			NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
+			if (nodeParent->mAbstract == "true") {
+				checkOverriding();
+				if (nodeParent != nullptr) {
+					if (!mOverridePorts)
+						copyPorts(nodeParent);
+				}
+			}
 		}
 
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
