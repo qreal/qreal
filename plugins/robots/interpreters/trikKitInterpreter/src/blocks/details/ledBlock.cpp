@@ -1,24 +1,22 @@
 #include "ledBlock.h"
-#include "src/robotModel/twoD/parts/twoDLed.h"
-#include "src/robotModel/parts/trikLed.h"
+
+#include <QtGui/QColor>
 
 #include <interpreterBase/blocksBase/common/displayBlock.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
-#include <utils/propertyToColor.h>
-#include <QColor>
+#include <utils/utils.h>
+
+#include "src/robotModel/twoD/parts/twoDLed.h"
+#include "src/robotModel/parts/trikLed.h"
 
 ///for LedBlock
 using namespace trikKitInterpreter;
 using namespace blocks;
 using namespace details;
-
 ///for RobotModelInterface
 using namespace interpreterBase::robotModel;
-
 ///for color choise
 using namespace utils;
-
-
 
 LedBlock::LedBlock(RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)
@@ -31,7 +29,7 @@ LedBlock::~LedBlock()
 
 void LedBlock::run()
 {
-	QColor color = utils::PropertyToColor::propertyToColor(stringProperty("Color"));
+	QColor const color = utils::Utils::propertyToColor(stringProperty("Color"));
 
 	QString const port = "LedPort";
 	robotModel::parts::TrikLed * const led
@@ -42,7 +40,6 @@ void LedBlock::run()
 	} else {
 		error(tr("Led is not configured (WTF?)"));
 	}
-
 
 	emit done(mNextBlockId);
 }

@@ -150,6 +150,9 @@ QPushButton:pressed{
         <height>20</height>
        </rect>
       </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <property name="styleSheet">
        <string notr="true"/>
       </property>

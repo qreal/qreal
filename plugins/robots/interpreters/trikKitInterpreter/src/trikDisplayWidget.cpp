@@ -3,7 +3,6 @@
 
 #include <qrkernel/exception/exception.h>
 
-
 using namespace trikKitInterpreter;
 
 TrikDisplayWidget::TrikDisplayWidget(QWidget *parent)
@@ -24,8 +23,6 @@ void TrikDisplayWidget::setPainter(graphicsUtils::PainterInterface *painter)
 	TwoDModelDisplayWidget::setPainter(painter);
 	mUi->display->appendPainter(painter);
 }
-
-
 
 void TrikDisplayWidget::repaintDisplay()
 {
@@ -63,15 +60,11 @@ bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
 	throw qReal::Exception("Incorrect button id in TrikDisplayWidget::buttonIsDown");
 }
 
-/// set led color on display
 void TrikDisplayWidget::setLedColor(QColor const &color)
 {
-	/// make palette
-	QPalette Pal(palette());
-	/// set color background
-	Pal.setColor(QPalette::Background, color);
-	mUi->led->setAutoFillBackground(true);
-	mUi->led->setPalette(Pal);
+	QPalette backgroundPalette(palette());
+	backgroundPalette.setColor(QPalette::Background, color);
+	mUi->led->setPalette(backgroundPalette);
 	mUi->led->show();
 }
 

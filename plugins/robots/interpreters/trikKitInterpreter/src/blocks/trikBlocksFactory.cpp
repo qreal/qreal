@@ -55,7 +55,7 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikDetectLine")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikLineDetectorToVariable")) {
-		return new EmptyBlock();		
+		return new EmptyBlock();
 
 	} else if (elementMetatypeIs(element, "TrikLed")) {
 		return new LedBlock(mRobotModelManager->model());
@@ -126,7 +126,7 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 	result
 			<< id("TrikAngularServo")
 			<< id("TrikSay")
-			<< id("TrikLed") //
+			<< id("TrikLed")
 			<< id("TrikSystem")
 			<< id("TrikInitCamera")
 			<< id("TrikDetectLine")
