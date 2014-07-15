@@ -7,7 +7,7 @@ Client::Client() : mSettingStringSize(0)
 	mServerSocket = new QTcpSocket(this);
 
 	connect(mServerSocket, SIGNAL(readyRead()), this, SLOT(settings()));
-	connect(mServerSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(displayError(QAbstractSocket::SocketError)));
+	connect(mServerSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket)));
 
 	QString ip = SettingsManager::value("ServerIP").toString();
 	int port = SettingsManager::value("ServerPort").toInt();
@@ -39,39 +39,14 @@ void Client::settings()
 	mSettingStringSize = 0;
 	QString settings;
 	in >> settings;
+
 	applySettingsFromServer(settings);
 }
 
-void Client::displayError(QAbstractSocket::SocketError socketError)
+void Client::error(QAbstractSocket::SocketError socketError)
 {
 	mServerSocket->close();
-	emit clientError();
-//	switch (socketError)
-//	{
-
-//	case QAbstractSocket::RemoteHostClosedError:
-//	{
-//		break;
-//	}
-
-//	case QAbstractSocket::HostNotFoundError:
-//	{
-//		QMessageBox::information(this, "Client", "The host was not found. Please check the host name and port settings.");
-//		break;
-//	}
-
-//	case QAbstractSocket::ConnectionRefusedError:
-//	{
-//		QMessageBox::information(this, "Client", "The connection was refused by the peer.  Make sure the fortune server is running,  and check that the host name and port settings are correct.");
-//		break;
-//	}
-
-//	default:
-//	{
-//		QMessageBox::information(this, "Client", "The following error occurred: " + (mServerSocket->errorString()));
-//	}
-
-//	}
+	emit clientError(socketError, mServerSocket->errorString());
 }
 
 void Client::applySettingsFromServer(QString settings)
