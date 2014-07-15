@@ -9,6 +9,7 @@
 #include "diagram.h"
 #include "nameNormalizer.h"
 #include "nodeType.h"
+#include "edgeType.h"
 
 using namespace utils;
 
@@ -66,11 +67,11 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 	if (Type::init(element, context)) {
 		mDescription = element.attribute("description", "");
 		mAbstract = element.attribute("abstract", "");
+		mOverride = element.attribute("overrides", "");
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull()) {
 			qDebug() << "ERROR: can't find logic tag of graphic type";
 			return false;
-
 		}
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
@@ -343,6 +344,18 @@ bool GraphicType::isResolving() const
 	return mResolving;
 }
 
+void GraphicType::checkOverriding()
+{
+	mOverridePorts = mOverride.contains("ports");
+	mOverrideLabels = mOverride.contains("labels");
+	mOverridePictures = mOverride.contains("pictures");
+	if (mOverride.contains("all")) {
+		mOverridePorts = true;
+		mOverrideLabels = true;
+		mOverridePictures = true;
+	}
+}
+
 bool GraphicType::resolve()
 {
 	if (mResolvingFinished) {
@@ -367,7 +380,6 @@ bool GraphicType::resolve()
 				return false;
 			}
 		}
-
 		if (parent->isResolving()) {
 			qDebug() << "ERROR: circular inheritance between" << parentName << "and" << qualifiedName();
 			return false;
@@ -382,11 +394,14 @@ bool GraphicType::resolve()
 				return false;
 			}
 		}
+		checkOverriding();
+		NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
+		if (nodeParent != nullptr) {
+			if (!mOverridePorts)
+				copyPorts(nodeParent);
+		}
 
-		NodeType* ourParent = dynamic_cast<NodeType*>(parent);
-		copyPorts(ourParent);
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
-
 		if (gParent) {
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
@@ -411,18 +426,15 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
 		int size = mDiagram->paletteGroups().size();
 
-		while(size != 0) {
-			int sizeOfPaletteElements = mDiagram->paletteGroups().value(size - 1).second.size();
-			while (sizeOfPaletteElements != 0)
-			{
-				if (mDiagram->paletteGroups().value(size - 1).second.value(sizeOfPaletteElements - 1)
+		for (int i = size; i > 0; --i) {
+			int sizeOfPaletteElements = mDiagram->paletteGroups().value(i - 1).second.size();
+			for (int j = sizeOfPaletteElements; j > 0; --j) {
+				if (mDiagram->paletteGroups().value(i - 1).second.value(j - 1)
 						== normalizedName && mAbstract == "true" ) {
 					qDebug() << "Error! This element abstract.";
 					return;
 				}
-				--sizeOfPaletteElements;
 			}
-			--size;
 		}
 
 		if (mAbstract == "true")
