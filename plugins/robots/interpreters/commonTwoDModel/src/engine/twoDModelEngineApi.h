@@ -1,5 +1,7 @@
 #pragma once
 
+#include "commonTwoDModel/engine/configurer.h"
+
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
 namespace twoDModel {
@@ -14,7 +16,7 @@ class D2ModelWidget;
 class TwoDModelEngineApi : public engine::TwoDModelEngineInterface
 {
 public:
-	TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view);
+	TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view, Configurer const * const configurer);
 
 	void setNewMotor(int speed, uint degrees
 			, interpreterBase::robotModel::PortInfo const &port, bool breakMode) override;
@@ -47,6 +49,7 @@ private:
 
 	model::Model &mModel;
 	view::D2ModelWidget &mView;
+	Configurer const * const mConfigurer;
 };
 
 }

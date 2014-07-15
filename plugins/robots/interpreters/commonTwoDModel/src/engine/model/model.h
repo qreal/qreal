@@ -4,6 +4,7 @@
 #include "robotModel.h"
 #include "timeline.h"
 #include "settings.h"
+#include "commonTwoDModel/engine/configurer.h"
 
 namespace twoDModel {
 namespace model {
@@ -16,7 +17,8 @@ class Model : public QObject
 
 public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	explicit Model(interpreterBase::robotModel::RobotModelInterface &robotModel, QObject *parent = 0);
+	explicit Model(interpreterBase::robotModel::RobotModelInterface &robotModel, Configurer const * const configurer
+				   , QObject *parent = 0);
 
 	/// Returns a reference to a world map.
 	WorldModel &worldModel();

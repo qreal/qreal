@@ -22,6 +22,7 @@ using namespace interpreterBase::robotModel::robotParts;
 
 RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
 		, Settings const &settings
+		, Configurer const * const configurer
 		, QObject *parent)
 	: QObject(parent)
 	, mSettings(settings)
@@ -32,6 +33,7 @@ RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotMo
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mPhysicsEngine(nullptr)
+	, mConfigurer(configurer)
 {
 	reinit();
 }
@@ -182,7 +184,10 @@ QPainterPath RobotModel::robotBoundingPath() const
 		if (!mSensorsConfiguration.type(port).isNull()) {
 			QPointF const sensorPos = mSensorsConfiguration.position(port);
 			/// @todo: Consider rotation and differentiate sizes.
-			path.addRect({sensorPos - QPointF(sensorWidth / 2, sensorWidth / 2), QSizeF{sensorWidth, sensorWidth}});
+			path.addRect({sensorPos - QPointF(mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() / 2
+					, mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() / 2)
+					, QSizeF{mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width()
+					, mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() * 1.0}});
 		}
 	}
 

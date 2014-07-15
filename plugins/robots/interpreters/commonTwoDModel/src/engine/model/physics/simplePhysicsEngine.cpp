@@ -35,6 +35,8 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 	qreal const averageSpeed = (speed1 + speed2) / 2;
 
 	if (!Math::eq(speed1, speed2)) {
+
+		/// Radius of robot rotation
 		qreal const radius = speed1 * robotHeight / (speed1 - speed2);
 		qreal const averageRadius = radius - robotHeight / 2;
 		qreal angularSpeed = 0;
@@ -52,7 +54,7 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 		QTransform map;
 		map.rotate(robotAngle);
 		/// @todo robotWidth / 2 shall actually be a distance between robot center and
-		// centers of the wheels by x axis.
+		/// centers of the wheels by x axis.
 		map.translate(robotWidth / 2, actualRadius);
 		map.rotate(gammaDegrees);
 		map.translate(-robotWidth / 2, -actualRadius);

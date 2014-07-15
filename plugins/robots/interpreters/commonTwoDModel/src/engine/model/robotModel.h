@@ -5,6 +5,7 @@
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include "sensorsConfiguration.h"
+#include "commonTwoDModel/engine/configurer.h"
 
 namespace twoDModel {
 namespace model {
@@ -35,7 +36,7 @@ public:
 
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
 	RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
-			, Settings const &settings, QObject *parent = 0);
+			, Settings const &settings, const Configurer * const configurer, QObject *parent = 0);
 	~RobotModel();
 
 	void reinit();
@@ -129,6 +130,8 @@ private:
 	bool mIsOnTheGround;
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
+
+	Configurer const * const mConfigurer;
 };
 
 }

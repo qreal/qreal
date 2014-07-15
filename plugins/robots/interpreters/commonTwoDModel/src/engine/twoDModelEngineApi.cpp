@@ -21,9 +21,10 @@
 using namespace twoDModel;
 using namespace interpreterBase::robotModel;
 
-TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
+TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view, Configurer const * const configurer)
 	: mModel(model)
 	, mView(view)
+	, mConfigurer(configurer)
 {
 }
 

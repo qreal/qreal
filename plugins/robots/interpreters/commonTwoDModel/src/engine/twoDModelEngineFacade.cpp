@@ -13,9 +13,9 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotM
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 			, "interpreters"
 			, "tools")
-	, mModel(new model::Model(robotModel))
+	, mModel(new model::Model(robotModel, configurer))
 	, mView(new view::D2ModelWidget(*mModel.data(), configurer))
-	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
+	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data(), configurer))
 {
 	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &view::D2ModelWidget::init);
 
