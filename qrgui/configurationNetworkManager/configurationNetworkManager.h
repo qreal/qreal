@@ -11,6 +11,7 @@ class ConfigurationNetworkManager : public QObject
 	Q_OBJECT
 public:
 	ConfigurationNetworkManager();
+	virtual void init() = 0;
 
 signals:
 	void clientError(QAbstractSocket::SocketError, QString);

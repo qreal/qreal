@@ -164,8 +164,6 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
 	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
 
-	//connect(mFinishTest, SIGNAL(clientError()), this, SLOT(clientError()));
-
 	if (isServer) {
 		mNetworkManager = new Server();
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
@@ -173,9 +171,10 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 	}
 	else {
 		mNetworkManager = new Client();
+		connect(mNetworkManager, &ConfigurationNetworkManager::clientError, this, &MainWindow::displayClientError);
+		mNetworkManager->init();
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
 								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment, isServer);
-		connect(mNetworkManager, &ConfigurationNetworkManager::clientError, this, &MainWindow::displayClientError);
 	}
 }
 

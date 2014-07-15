@@ -1,6 +1,7 @@
 #pragma once
 
 #include "configurationNetworkManager.h"
+#include "mainwindow/mainWindow.h"
 
 class Client : public ConfigurationNetworkManager
 {
@@ -9,6 +10,8 @@ class Client : public ConfigurationNetworkManager
 public:
 	Client();
 	~Client();
+
+	void init();
 
 private slots:
 	///get and apply settings from server
