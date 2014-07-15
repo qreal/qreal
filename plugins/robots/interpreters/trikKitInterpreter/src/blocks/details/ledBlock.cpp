@@ -9,13 +9,10 @@
 #include "src/robotModel/twoD/parts/twoDLed.h"
 #include "src/robotModel/parts/trikLed.h"
 
-///for LedBlock
 using namespace trikKitInterpreter;
 using namespace blocks;
 using namespace details;
-///for RobotModelInterface
 using namespace interpreterBase::robotModel;
-///for color choise
 using namespace utils;
 
 LedBlock::LedBlock(RobotModelInterface &robotModel)

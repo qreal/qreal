@@ -18,7 +18,7 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
-	///I'ts setting LED widget's color in 2D model.
+	/// sets LED widget's color in 2D model.
 	void setColor(QColor const &color) override;
 
 private:

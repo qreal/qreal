@@ -9,8 +9,7 @@ namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
 
-/// In this block formed LED on different model.
-/// "run" search LedPort and set LED widget's color.
+/// An implementation of the LED for the 2D model window.
 class LedBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
