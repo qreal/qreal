@@ -3,9 +3,6 @@
 #include "robotModel/parts/trikLed.h"
 
 #include <commonTwoDModel/engine/twoDModelEngineInterface.h>
-//#include <commonTwoDModel/engine/twoDModelDisplayInterface.h>
-
-
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -25,7 +22,6 @@ public:
 	void setColor(QColor const &color) override;
 
 private:
-	//чтобы выдернуть setColor из trickDisplayWidget.h
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
 };
 

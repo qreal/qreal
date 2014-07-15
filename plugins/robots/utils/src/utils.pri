@@ -15,6 +15,7 @@ HEADERS += \
 	$$PWD/../include/utils/realTimer.h \
 	$$PWD/../include/utils/textExpressionProcessor.h \
 	$$PWD/../include/utils/tracer.h \
+	$$PWD/../include/utils/propertyToColor.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationThreadInterface.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicator.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationException.h \
@@ -25,5 +26,7 @@ SOURCES += \
 	$$PWD/realTimer.cpp \
 	$$PWD/textExpressionProcessor.cpp \
 	$$PWD/tracer.cpp \
+	$$PWD/propertyToColor.cpp \
 	$$PWD/robotCommunication/robotCommunicator.cpp \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \
+

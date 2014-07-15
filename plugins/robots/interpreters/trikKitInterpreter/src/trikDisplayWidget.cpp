@@ -3,7 +3,6 @@
 
 #include <qrkernel/exception/exception.h>
 
-#include <QDebug>
 
 using namespace trikKitInterpreter;
 
@@ -64,17 +63,15 @@ bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
 	throw qReal::Exception("Incorrect button id in TrikDisplayWidget::buttonIsDown");
 }
 
+/// set led color on display
 void TrikDisplayWidget::setLedColor(QColor const &color)
 {
-	qDebug() << "Color was changed";
-
-	//it dosen't work, becouse LedBlock is empty
-	QPalette Pal(palette()); /// make palette
+	/// make palette
+	QPalette Pal(palette());
 	/// set color background
-	Pal.setColor(QPalette::Background, color); /// set this color
+	Pal.setColor(QPalette::Background, color);
 	mUi->led->setAutoFillBackground(true);
 	mUi->led->setPalette(Pal);
-	//mUi->led->setStyleSheet("background-color:red;");
 	mUi->led->show();
 }
 

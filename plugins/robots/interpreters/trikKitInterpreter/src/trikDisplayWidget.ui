@@ -144,7 +144,7 @@ QPushButton:pressed{
      <widget class="QFrame" name="led">
       <property name="geometry">
        <rect>
-        <x>50</x>
+        <x>40</x>
         <y>30</y>
         <width>21</width>
         <height>20</height>

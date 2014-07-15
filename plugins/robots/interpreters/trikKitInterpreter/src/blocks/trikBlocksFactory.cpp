@@ -17,6 +17,7 @@
 #include "details/trikEnginesForwardBlock.h"
 #include "details/waitForMotionBlock.h"
 #include "robotModel/parts/trikInfraredSensor.h"
+#include "details/ledBlock.h"
 
 using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
@@ -48,7 +49,7 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikSay")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikLed")) {
-		return new EmptyBlock();
+		return new LedBlock(mRobotModelManager->model());/*EmptyBlock();*/
 	} else if (elementMetatypeIs(element, "TrikSystem")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
@@ -125,7 +126,7 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 	result
 			<< id("TrikAngularServo")
 			<< id("TrikSay")
-			<< id("TrikLed")
+			<< id("TrikLed") //
 			<< id("TrikSystem")
 			<< id("TrikInitCamera")
 			<< id("TrikDetectLine")
