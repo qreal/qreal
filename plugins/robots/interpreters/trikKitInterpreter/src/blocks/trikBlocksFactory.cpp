@@ -77,17 +77,17 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new WaitForEncoderBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "TrikWaitForEnter")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "EnterButtonPort");
+		return new WaitForButtonBlock(mRobotModelManager->model(), "Enter");
 	} else if (elementMetatypeIs(element, "TrikWaitForLeft")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "LeftButtonPort");
+		return new WaitForButtonBlock(mRobotModelManager->model(), "Left");
 	} else if (elementMetatypeIs(element, "TrikWaitForRight")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "RightButtonPort");
+		return new WaitForButtonBlock(mRobotModelManager->model(), "Right");
 	} else if (elementMetatypeIs(element, "TrikWaitForDown")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "DownButtonPort");
+		return new WaitForButtonBlock(mRobotModelManager->model(), "Down");
 	} else if (elementMetatypeIs(element, "TrikWaitForUp")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "UpButtonPort");
+		return new WaitForButtonBlock(mRobotModelManager->model(), "Up");
 	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "PowerButtonPort");
+		return new WaitForButtonBlock(mRobotModelManager->model(), "Power");
 
 	} else if (elementMetatypeIs(element, "TrikSmile")) {
 		return new SmileBlock(mRobotModelManager->model(), false);
