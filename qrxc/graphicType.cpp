@@ -366,6 +366,7 @@ bool GraphicType::resolve()
 				return false;
 			}
 		}
+
 		if (parent->isResolving()) {
 			qDebug() << "ERROR: circular inheritance between" << parentName << "and" << qualifiedName();
 			return false;
@@ -383,7 +384,6 @@ bool GraphicType::resolve()
 		NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
 		copyPorts(ourParent);
 
-					if (!mOverridePort
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
 		if (gParent) {
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
@@ -413,15 +413,17 @@ void GraphicType::generateNameMapping(OutFile &out)
 			int sizeOfPaletteElements = mDiagram->paletteGroups().value(i - 1).second.size();
 			for (int j = sizeOfPaletteElements; j > 0; --j) {
 				if (mDiagram->paletteGroups().value(i - 1).second.value(j - 1)
-						== normalizedName && mAbstract == "true" ) {
-					qDebug() << "Error! This element abstract.";
+						== normalizedName && mAbstract == "true" )
+				{
+					"ERROR! Element" << qualifiedName() << "is abstract.";
 					return;
 				}
 			}
 		}
 
-		if (mAbstract == "true")
+		if (mAbstract == "true") {
 			return;
+		}
 
 		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName
 				<< "\"] = tr(\"" << actualDisplayedName << "\");\n";
