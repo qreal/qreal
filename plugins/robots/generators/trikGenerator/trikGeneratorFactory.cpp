@@ -61,20 +61,20 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new TrikNullificationEncoderGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("TrikPlayTone")) {
 		return new PlayToneGenerator(mRepo, customizer, id, this);
-    } else if (elementType == "TrikDrawLine") {
-        return new DrawLineGenerator(mRepo, customizer, id, this);
-    } else if (elementType == "TrikDrawPixel") {
-        return new DrawPixelGenerator(mRepo, customizer, id, this);
-    } else if (elementType == "TrikDrawRect") {
-        return new DrawRectGenerator(mRepo, customizer, id, this);
-    } else if (elementType == "TrikDrawEllipse") {
-        return new DrawEllipseGenerator(mRepo, customizer, id, this);
-    } else if (elementType == "TrikDrawArc") {
-        return new DrawArcGenerator(mRepo, customizer, id, this);
-    } else if (elementType == "TrikSetPainterWidth") {
-        return new SetPainterWidthGenerator(mRepo, customizer, id, this);
-    } else if (elementType == "TrikSetPainterColor") {
-        return new SetPainterColorGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawLine") {
+		return new DrawLineGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawPixel") {
+		return new DrawPixelGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawRect") {
+		return new DrawRectGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawEllipse") {
+		return new DrawEllipseGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawArc") {
+		return new DrawArcGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikSetPainterWidth") {
+		return new SetPainterWidthGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikSetPainterColor") {
+		return new SetPainterColorGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSmile") {
 		return new SmileGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSadSmile") {

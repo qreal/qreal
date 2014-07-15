@@ -89,21 +89,21 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
 		return new WaitForButtonBlock(mRobotModelManager->model(), "PowerButtonPort");
 
-    } else if (elementMetatypeIs(element, "TrikSetPainterColor")) {
-        return new EmptyBlock();
-    } else if (elementMetatypeIs(element, "TrikSetPainterWidth")) {
-        return new EmptyBlock();
-    } else if (elementMetatypeIs(element, "TrikDrawPixel")) {
-        return new EmptyBlock();
-    } else if (elementMetatypeIs(element, "TrikDrawLine")) {
-        return new EmptyBlock();
-    } else if (elementMetatypeIs(element, "TrikDrawRect")) {
-        return new EmptyBlock();
-    } else if (elementMetatypeIs(element, "TrikDrawEllipse")) {
-        return new EmptyBlock();
-    } else if (elementMetatypeIs(element, "TrikDrawArc")) {
-        return new EmptyBlock();
-    }   else if (elementMetatypeIs(element, "TrikSmile")) {
+	} else if (elementMetatypeIs(element, "TrikSetPainterColor")) {
+		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikSetPainterWidth")) {
+		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikDrawPixel")) {
+		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikDrawLine")) {
+		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikDrawRect")) {
+		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikDrawEllipse")) {
+		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikDrawArc")) {
+		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikSmile")) {
 		return new SmileBlock(mRobotModelManager->model(), false);
 	} else if (elementMetatypeIs(element, "TrikSadSmile")) {
 		return new SmileBlock(mRobotModelManager->model(), true);
@@ -163,17 +163,17 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			;
 
 	result
-            << id("TrikSetPainterColor")
-            << id("TrikSetPainterWidth")
-            << id("TrikDrawPixel")
-            << id("TrikDrawLine")
-            << id("TrikDrawRect")
-            << id("TrikDrawEllipse")
-            << id("TrikDrawArc")
+			<< id("TrikSetPainterColor")
+			<< id("TrikSetPainterWidth")
+			<< id("TrikDrawPixel")
+			<< id("TrikDrawLine")
+			<< id("TrikDrawRect")
+			<< id("TrikDrawEllipse")
+			<< id("TrikDrawArc")
 			<< id("TrikSmile")
 			<< id("TrikSadSmile")
 			<< id("TrikSetBackground")
-            ;
+			;
 
 	return result;
 }
