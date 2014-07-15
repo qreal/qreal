@@ -375,7 +375,6 @@ bool NodeType::copyPorts(NodeType* parent)
 {
 	for (Port *port: parent->mPorts) {
 		mPorts.append(port->clone());
-		++i;
 	}
 
 	return !parent->mPorts.isEmpty();
