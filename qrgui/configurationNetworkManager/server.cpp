@@ -1,7 +1,5 @@
 #include "server.h"
 
-#include <QtCore/QDebug>
-
 Server::Server() :
 	mTcpServer(0),
 	mNetworkSession(0) {
@@ -27,9 +25,9 @@ Server::Server() :
 		sessionOpened();
 	}
 
-	mIPAddressMapper = new QSignalMapper;
+	mSClientsIndexMapper = new QSignalMapper;
 	connect(mTcpServer, SIGNAL(newConnection()), this, SLOT(acceptClientConnection()));
-	connect(mIPAddressMapper, SIGNAL(mapped(int)), this, SLOT(clientDisconnected(int)));
+	connect(mSClientsIndexMapper, SIGNAL(mapped(int)), this, SLOT(deleteClient(int)));
 }
 
 void Server::sessionOpened()
@@ -51,11 +49,6 @@ void Server::sessionOpened()
 
 	mTcpServer = new QTcpServer(this);
 	if (!mTcpServer->listen(QHostAddress::AnyIPv4, 55555)) {
-/*		QMessageBox::critical(this, tr("qReal Server"),
-							tr("Unable to start the server: %1.")
-							.arg(mTcpServer->errorString()));
-		close();
-		return;*/
 		emit serverError();
 	}
 }
@@ -66,25 +59,16 @@ void Server::acceptClientConnection()
 	emit newClient(clientSocket->peerAddress().toString());
 	int idusersocs = clientSocket->socketDescriptor();
 	mSClients[idusersocs] = clientSocket;
-	mIPAddressMapper->setMapping(mSClients[idusersocs], idusersocs);
-	connect(mSClients[idusersocs], SIGNAL(disconnected()), mIPAddressMapper, SLOT(map()));
-//	connect(this, SIGNAL(clientDisconnected(QString)), this, SLOT(deleteClientSlot(QString)));
-//	mIPAddressMapper->setMapping(mSClients[idusersocs], mSClients[idusersocs]->peerAddress().toString());
+	mSClientsIndexMapper->setMapping(mSClients[idusersocs], idusersocs);
+	connect(mSClients[idusersocs], SIGNAL(disconnected()), mSClientsIndexMapper, SLOT(map()));
 	connect(mSClients[idusersocs], SIGNAL(disconnected()), mSClients[idusersocs], SLOT(deleteLater()));
 	sendSettings();
-	qDebug() << clientSocket->IPv4Protocol;
 }
 
-void Server::deleteClientSlot(QString str, int i)
+void Server::deleteClient(int index)
 {
-	qDebug() << str << "delete";
-}
-
-void Server::clientDisconnected(int i)
-{
-	qDebug() << i << "delete";
-	mSClients[i]->close();
-	mSClients.remove(i);
+	mSClients[index]->close();
+	mSClients.remove(index);
 }
 
 void Server::sendSettings()
@@ -96,10 +80,8 @@ void Server::sendSettings()
 
 		out << (quint16)qReal::SettingsManager::instance()->convertToString().length();
 		out << qReal::SettingsManager::instance()->convertToString();
-		qDebug() << "In If - SendSettings!!!!!!!!!!!!" << mSClients.keys();
 		foreach(int i, mSClients.keys()) {
 			if (mSClients[i]->isOpen()) {
-				qDebug() << i;
 				mSClients[i]->write(block);
 			}
 		}
@@ -131,5 +113,4 @@ QStringList Server::getIP()
 
 void Server::init()
 {
-
 }

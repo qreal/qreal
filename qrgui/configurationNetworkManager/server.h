@@ -15,7 +15,7 @@ public:
 	/// returns port to coonect this server
 	quint16 getPort();
 
-	void init();
+	void init() override;
 
 protected:
 	/// sends his qReal settings to client
@@ -24,15 +24,11 @@ protected:
 private slots:
 	void sessionOpened();
 	void acceptClientConnection();
-	void deleteClientSlot(QString str, int i);
-	void clientDisconnected(int i);
+	void deleteClient(int index);
 
 signals:
 	/// emits new client's IP, when connected
 	void newClient(QString clientIP);
-
-	/// emits IP of disconnected client
-
 
 	/// emits when server is not created
 	void serverError();
@@ -40,8 +36,11 @@ signals:
 private:
 	/// storage of all clients
 	QMap<int,QTcpSocket *> mSClients;
+	/// TCP server
 	QTcpServer *mTcpServer;
+	/// network session
 	QNetworkSession *mNetworkSession;
-	QSignalMapper *mIPAddressMapper;
+	/// this mapper addicted to each server's client and returns index of current client in QMap
+	QSignalMapper *mSClientsIndexMapper;
 };
 
