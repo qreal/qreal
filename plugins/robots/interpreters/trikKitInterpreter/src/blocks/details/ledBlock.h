@@ -10,7 +10,7 @@ namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
 
-/// An interpretator's implementation of the LED different model window.
+/// An interpreter`s implementation for LED block.
 /// sets LED widget's color.
 class LedBlock : public interpreterBase::blocksBase::Block
 {
