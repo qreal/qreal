@@ -13,10 +13,7 @@ public:
 private slots:
 	///get and apply settings from server
 	void settings();
-	void error(QAbstractSocket::SocketError socketError);
-
-signals:
-	void clientError(QAbstractSocket::SocketError socketError, QString error);
+	void connectionError(QAbstractSocket::SocketError socketError);
 
 private:
 	///apply setting from server

@@ -166,8 +166,6 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 
 	//connect(mFinishTest, SIGNAL(clientError()), this, SLOT(clientError()));
 
-	//connect(mNetworkManager, &clientError(QAbstractSocket::SocketError, QString), this, &displayClientError(QAbstractSocket::SocketError, QString));
-
 	if (isServer) {
 		mNetworkManager = new Server();
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
@@ -177,6 +175,7 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 		mNetworkManager = new Client();
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
 								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment, isServer);
+		connect(mNetworkManager, &ConfigurationNetworkManager::clientError, this, &MainWindow::displayClientError);
 	}
 }
 

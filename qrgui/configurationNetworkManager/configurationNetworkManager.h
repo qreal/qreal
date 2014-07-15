@@ -8,6 +8,10 @@
 
 class ConfigurationNetworkManager : public QObject
 {
+	Q_OBJECT
 public:
 	ConfigurationNetworkManager();
+
+signals:
+	void clientError(QAbstractSocket::SocketError, QString);
 };
