@@ -1,4 +1,4 @@
-#include "graphicType.h"
+﻿#include "graphicType.h"
 
 #include <QtCore/QDebug>
 
@@ -67,7 +67,6 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 	if (Type::init(element, context)) {
 		mDescription = element.attribute("description", "");
 		mAbstract = element.attribute("abstract", "");
-		//mOverride = element.attribute("overrides", "");
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull()) {
 			qDebug() << "ERROR: can't find logic tag of graphic type";
@@ -381,6 +380,7 @@ bool GraphicType::resolve()
 				return false;
 			}
 		}
+
 		if (parent->isResolving()) {
 			qDebug() << "ERROR: circular inheritance between" << parentName << "and" << qualifiedName();
 			return false;
@@ -409,8 +409,7 @@ bool GraphicType::resolve()
 						copyPorts(nodeParent);
 				}
 			}
-		}
-		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
+		}		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
 		if (gParent) {
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
@@ -439,15 +438,19 @@ void GraphicType::generateNameMapping(OutFile &out)
 			int sizeOfPaletteElements = mDiagram->paletteGroups().value(i - 1).second.size();
 			for (int j = sizeOfPaletteElements; j > 0; --j) {
 				if (mDiagram->paletteGroups().value(i - 1).second.value(j - 1)
-						== normalizedName && mAbstract == "true" ) {
-					qDebug() << "Error! This element abstract.";
+
+						== normalizedName && mAbstract == "true" )
+				{
+					"ERROR! Element" << qualifiedName() << "is abstract.";
 					return;
 				}
 			}
 		}
 
-		if (mAbstract == "true")
+
+		if (mAbstract == "true") {
 			return;
+		}
 
 		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName
 				<< "\"] = tr(\"" << actualDisplayedName << "\");\n";
