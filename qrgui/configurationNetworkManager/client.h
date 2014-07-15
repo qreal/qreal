@@ -26,6 +26,4 @@ private:
 	QTcpSocket *mServerSocket;
 	///size of string which send from server
 	quint16 mSettingStringSize;
-	int port;
-	QString ip;
 };

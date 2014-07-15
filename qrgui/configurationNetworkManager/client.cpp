@@ -9,8 +9,8 @@ Client::Client() : mSettingStringSize(0)
 	connect(mServerSocket, SIGNAL(readyRead()), this, SLOT(settings()));
 	connect(mServerSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(displayError(QAbstractSocket::SocketError)));
 
-	ip = SettingsManager::value("ServerIP").toString();
-	port = SettingsManager::value("ServerPort").toInt();
+	QString ip = SettingsManager::value("ServerIP").toString();
+	int port = SettingsManager::value("ServerPort").toInt();
 
 	mServerSocket->connectToHost(ip, port);
 }
@@ -112,5 +112,5 @@ void Client::applySettingsFromServer(QString settings)
 			break;
 	}
 
-	mServerSocket->disconnectFromHost(ip, port);
+	mServerSocket->disconnectFromHost();
 }
