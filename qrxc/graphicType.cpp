@@ -61,6 +61,15 @@ void GraphicType::copyFields(GraphicType *type) const
 	type->mExplosions = mExplosions;
 }
 
+bool GraphicType::copyLabels(GraphicType *parent)
+{
+	for (Label *label: parent->mLabels) {
+		mLabels.append(label->clone());
+	}
+
+	return !parent->mLabels.isEmpty();
+}
+
 bool GraphicType::init(QDomElement const &element, QString const &context)
 {
 	mElement = element;
@@ -395,21 +404,41 @@ bool GraphicType::resolve()
 				return false;
 			}
 		}
-		
+
 		QDomElement element = mLogic.firstChildElement();
 		for (QDomElement tempElement = element.firstChildElement()
 				; !tempElement.isNull()
 				; tempElement = tempElement.nextSiblingElement()) {
 			mOverride = tempElement.attribute("overrides");
-			NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
-			if (nodeParent->mAbstract == "true") {
+			GraphicType* const graphicParent = dynamic_cast<GraphicType*>(parent);
+			if (graphicParent->mAbstract == "true") {
 				checkOverriding();
+				if (graphicParent != nullptr) {
+					mHasParent = true;
+					if (!mOverrideLabels) {
+						copyLabels(graphicParent);
+					}
+					if (!mOverridePictures) {
+						copyPictures(graphicParent);
+					}
+					NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
+					if (nodeParent != nullptr) {
+						if (!mOverridePorts) {
+							copyPorts(nodeParent);
+						}
+					}
+				}
+			} else {
+				copyLabels(graphicParent);
+				copyPictures(graphicParent);
+				NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
 				if (nodeParent != nullptr) {
-					if (!mOverridePorts)
-						copyPorts(nodeParent);
+					copyPorts(nodeParent);
 				}
 			}
-		}		
+
+		}
+
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
 		if (gParent) {
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {

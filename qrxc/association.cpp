@@ -12,3 +12,11 @@ bool Association::init(QDomElement const &element)
 	}
 	return true;
 }
+
+Association* Association::clone()
+{
+	Association* result = new Association();
+	result->mBeginName = mBeginName;
+	result->mEndName = mEndName;
+	return result;
+}

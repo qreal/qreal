@@ -37,6 +37,8 @@ public:
 	virtual void generateParentsMapping(utils::OutFile &out);
 	virtual void generateExplosionsMap(utils::OutFile &out);
 	virtual bool copyPorts(NodeType *parent) = 0;
+	bool copyLabels(GraphicType *parent);
+	virtual bool copyPictures(GraphicType *parent) = 0;
 
 	void checkOverriding();
 
@@ -76,6 +78,7 @@ protected:
 	bool mOverridePorts = false;
 	bool mOverrideLabels = false;
 	bool mOverridePictures = false;
+	bool mHasParent = false;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;

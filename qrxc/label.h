@@ -25,6 +25,7 @@ public:
 	void generateCodeForUpdateData(utils::OutFile &out);
 	void generateCodeForFields(utils::OutFile &out);
 	// Default copy constructor ok.
+	Label* clone();
 
 private:
 	QString titleName() const;
