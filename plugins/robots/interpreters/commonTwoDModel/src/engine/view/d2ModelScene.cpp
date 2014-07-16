@@ -223,6 +223,7 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 	setMoveFlag(mouseEvent);
 
+	setSceneRect(itemsBoundingRect());
 	update();
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
