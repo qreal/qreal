@@ -35,7 +35,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(mUi->pageContentWigdet);
 	// Debugger page removed due to #736
 	PreferencesMiscellaniousPage *miscellaniousPage = new PreferencesMiscellaniousPage(
-				mUi->pageContentWigdet, isServer);
+			mUi->pageContentWigdet, isServer);
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, mUi->pageContentWigdet);
 	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(mUi->pageContentWigdet);

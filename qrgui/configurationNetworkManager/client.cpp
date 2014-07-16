@@ -5,8 +5,8 @@ using namespace qReal;
 Client::Client() : mSettingStringSize(0)
 {
 	mServerSocket = new QTcpSocket(this);
-	connect(mServerSocket, SIGNAL(readyRead()), this, SLOT(settings()));
-	connect(mServerSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(connectionError(QAbstractSocket::SocketError)));
+	connect(mServerSocket, &QAbstractSocket::readyRead, this, &Client::settings);
+	connect(mServerSocket, static_cast<void (QAbstractSocket::*)(QAbstractSocket::SocketError)>(&QAbstractSocket::error), this, &Client::connectionError);
 
 	QString ip = SettingsManager::value("ServerIP").toString();
 	int port = SettingsManager::value("ServerPort").toInt();
@@ -18,14 +18,6 @@ Client::~Client()
 {
 	delete mServerSocket;
 }
-
-//void Client::init()
-//{
-//	QString ip = SettingsManager::value("ServerIP").toString();
-//	int port = SettingsManager::value("ServerPort").toInt();
-
-//	mServerSocket->connectToHost(ip, port);
-//}
 
 void Client::settings()
 {
@@ -51,10 +43,9 @@ void Client::settings()
 	applySettingsFromServer(settings);
 }
 
-void Client::connectionError(QAbstractSocket::SocketError socketError)
+void Client::connectionError()
 {
 	mServerSocket->close();
-	//emit ConfigurationNetworkManager::clientError(socketError, mServerSocket->errorString());
 }
 
 void Client::applySettingsFromServer(QString settings)

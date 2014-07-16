@@ -11,13 +11,11 @@ public:
 	Client();
 	~Client();
 
-	//	void init() override;
-
 private slots:
 	///get and apply settings from server
 	void settings();
 	///close session when connection failed
-	void connectionError(QAbstractSocket::SocketError socketError);
+	void connectionError();
 
 private:
 	///apply setting from server
