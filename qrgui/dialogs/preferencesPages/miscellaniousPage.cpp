@@ -49,8 +49,8 @@ void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 
 void PreferencesMiscellaniousPage::browseImagesPath()
 {
-	QString const path = utils::QRealFileDialog::getExistingDirectory("OpenImagesOnMiscellaniousPage"
-																	  , this, tr("Open Directory")).replace("\\", "/");
+	QString const path = utils::QRealFileDialog::getExistingDirectory("OpenImagesOnMiscellaniousPage",
+			this, tr("Open Directory")).replace("\\", "/");
 	if (!path.isEmpty()) {
 		mUi->imagesPathEdit->setText(path);
 	}
@@ -70,7 +70,6 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("oldLineColor", mUi->colorComboBox->currentText());
 
 	SettingsManager::setValue("toolbarSize", mUi->toolbarSizeSlider->value());
-
 
 	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
 		emit iconsetChanged();

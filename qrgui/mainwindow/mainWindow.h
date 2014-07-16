@@ -104,14 +104,14 @@ public:
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
-						 , bool useTypedPorts);
+			, bool useTypedPorts);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
 	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
-						 , bool useTypedPorts);
+			 , bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
-										 , int const &role);
+			 , int const &role);
 	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
-						   , int role);
+			 , int role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -296,9 +296,6 @@ private slots:
 	void startUsabilityTest();
 	void finishUsabilityTest();
 
-//	///display error of client
-//	void displayClientError(QAbstractSocket::SocketError socketError, QString error);
-
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
@@ -437,7 +434,7 @@ private:
 	QAction *mFinishTest; // Has ownership
 
 	///define mode of our exemplar - client of server
-	ConfigurationNetworkManager *mNetworkManager;
+	ConfigurationNetworkManager *mNetworkManager; // Takes ownership
 };
 
 }
