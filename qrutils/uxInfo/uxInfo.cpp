@@ -257,28 +257,26 @@ void UXInfo::closeUXInfo()
 	QString const newFileMouseClickPositionName = newDirName + mouseClickPositionFileName;
 	QString const newFileSettingChangesName = newDirName + settingChangesFileName;
 
-	if (dir.cdUp()) {
-		if (!dir.exists(uxInfoDirName)) {
-			dir.mkdir(uxInfoDirName);
-		}
-
-		dir.cd(uxInfoDirName);
-		QString const dirAbsolutePathName = dir.absolutePath() + "/";
-		QString const newElementOnSceneCreationName = dirAbsolutePathName + newFileElementOnSceneCreationName;
-		QString const newErrorReporterName = dirAbsolutePathName + newFileErrorReporterName;
-		QString const newTotalTimeName = dirAbsolutePathName + newFileTotalTimeName;
-		QString const newMenuElementUsingName = dirAbsolutePathName + newFileMenuElementUsingName;
-		QString const newMouseClickPositionName = dirAbsolutePathName + newFileMouseClickPositionName;
-		QString const newSettingChangesName = dirAbsolutePathName + newFileSettingChangesName;
-
-		dir.mkdir(newDirName);
-		QFile::copy(oldElementOnSceneCreationName, newElementOnSceneCreationName);
-		QFile::copy(oldErrorReporterName, newErrorReporterName);
-		QFile::copy(oldTotalTimeName, newTotalTimeName);
-		QFile::copy(oldMenuElementUsingName, newMenuElementUsingName);
-		QFile::copy(oldMouseClickPositionName, newMouseClickPositionName);
-		QFile::copy(oldSettingChangesName, newSettingChangesName);
+	if (!dir.exists(uxInfoDirName)) {
+		dir.mkdir(uxInfoDirName);
 	}
+
+	dir.cd(uxInfoDirName);
+	QString const dirAbsolutePathName = dir.absolutePath() + "/";
+	QString const newElementOnSceneCreationName = dirAbsolutePathName + newFileElementOnSceneCreationName;
+	QString const newErrorReporterName = dirAbsolutePathName + newFileErrorReporterName;
+	QString const newTotalTimeName = dirAbsolutePathName + newFileTotalTimeName;
+	QString const newMenuElementUsingName = dirAbsolutePathName + newFileMenuElementUsingName;
+	QString const newMouseClickPositionName = dirAbsolutePathName + newFileMouseClickPositionName;
+	QString const newSettingChangesName = dirAbsolutePathName + newFileSettingChangesName;
+
+	dir.mkdir(newDirName);
+	QFile::copy(oldElementOnSceneCreationName, newElementOnSceneCreationName);
+	QFile::copy(oldErrorReporterName, newErrorReporterName);
+	QFile::copy(oldTotalTimeName, newTotalTimeName);
+	QFile::copy(oldMenuElementUsingName, newMenuElementUsingName);
+	QFile::copy(oldMouseClickPositionName, newMouseClickPositionName);
+	QFile::copy(oldSettingChangesName, newSettingChangesName);
 }
 
 void UXInfo::reportCreation(const QString &editorName, const QString elementName)

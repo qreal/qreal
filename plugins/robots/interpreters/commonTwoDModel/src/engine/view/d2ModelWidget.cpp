@@ -318,7 +318,7 @@ void D2ModelWidget::onFirstShow()
 
 void D2ModelWidget::centerOnRobot()
 {
-	if (mFollowRobot) {
+	if (mFollowRobot && mModel.robotModel().onTheGround()) {
 		QRectF const viewPortRect = mUi->graphicsView->mapToScene(mUi->graphicsView->viewport()->rect()).boundingRect();
 		QGraphicsItem * const robot = mScene->robot();
 		if (!viewPortRect.contains(robot->sceneBoundingRect().toRect())) {

@@ -39,7 +39,9 @@ Label::~Label()
 
 void Label::init()
 {
-	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
+	QGraphicsTextItem::setFlags(ItemIsSelectable);
+	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
+
 	setTitleFont();
 	setRotation(mRotation);
 	if (!mBinding.isEmpty()) {
