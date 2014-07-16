@@ -49,6 +49,7 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
+    src/blocks/details/drawLineBlock.h
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -89,6 +90,7 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
+    src/blocks/details/drawLineBlock.cpp
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \

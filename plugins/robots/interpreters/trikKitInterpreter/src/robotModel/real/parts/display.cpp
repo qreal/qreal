@@ -28,3 +28,21 @@ void Display::printText(int x, int y, QString const &text)
 	Q_UNUSED(y)
 	Q_UNUSED(text)
 }
+
+//void setPainterColor(QColor const &color)
+//{
+//	Q_UNUSED(color)
+//}
+
+//void setPainterWidth(int penWidth)
+//{
+//	Q_UNUSED(penWidth)
+//}
+
+void Display::drawLine(int x1, int y1, int x2, int y2)
+{
+	Q_UNUSED(x1)
+	Q_UNUSED(y1)
+	Q_UNUSED(x2)
+	Q_UNUSED(y2)
+}

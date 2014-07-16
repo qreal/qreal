@@ -29,6 +29,13 @@ public:
 	void setBackground(QColor const &color) override;
 	void printText(int x, int y, QString const &text) override;
 	void clearScreen() override;
+	//void setPainterColor(QColor const &color) override;
+	//void setPainterWidth(int penWidth) override;
+	//void drawPixel(int x, int y) override;
+	void drawLine(int x1, int y1, int x2, int y2) override;
+	//void drawRect(int x, int y, int width, int height)  override;
+	//void drawEllipse(int x, int y, int width, int height) override;
+	//void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle) override;
 
 	void paint(QPainter *painter) override;
 	void clear() override;
@@ -39,6 +46,23 @@ private:
 	QImage mCurrentImage;
 	/// @todo: QPoint can`t be used in map without operators declaration.
 	QHash<QPair<int, int>, QString> mLabels;
+
+	struct LineCoordinates
+	{
+		LineCoordinates(int x1, int y1, int x2, int y2, QColor color, int penWidth)
+			: coord1(QPoint(x1, y1)), coord2(QPoint(x2, y2)), color(color), penWidth(penWidth)
+		{
+		}
+
+		QPoint coord1;
+		QPoint coord2;
+		QColor color;
+		int penWidth;
+	};
+
+	QList<LineCoordinates> mLines;
+	//int mCurrentPenWidth;
+	//QColor mCurrentPenColor;
 };
 
 }

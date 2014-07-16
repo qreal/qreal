@@ -12,6 +12,7 @@
 #include <interpreterBase/blocksBase/common/waitForButtonBlock.h>
 
 #include "details/smileBlock.h"
+#include "details/drawLineBlock.h"
 #include "details/setBackgroundBlock.h"
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
@@ -96,7 +97,7 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikDrawPixel")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikDrawLine")) {
-		return new EmptyBlock();
+		return new DrawLineBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDrawRect")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikDrawEllipse")) {

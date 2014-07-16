@@ -18,6 +18,14 @@ public:
 
 	/// @todo: color enum here?
 	virtual void setBackground(QColor const &color) = 0;
+
+	//virtual void setPainterColor(QColor const &color) = 0;
+	//virtual void setPainterWidth(int penWidth) = 0;
+	//virtual void drawPixel(int x, int y) = 0;
+	virtual void drawLine(int x1, int y1, int x2, int y2) = 0;
+	//virtual void drawRect(int x, int y, int width, int height) = 0;
+	//virtual void drawEllipse(int x, int y, int width, int height) = 0;
+	//virtual void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle) = 0;
 };
 
 }
