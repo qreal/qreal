@@ -104,6 +104,8 @@ protected:
 			, const interpreterBase::robotModel::DeviceInfo &device) override;
 
 private slots:
+	void bringToFront();
+
 	void addWall(bool on);
 	void addLine(bool on);
 	void addStylus(bool on);
