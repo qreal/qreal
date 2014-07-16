@@ -191,34 +191,40 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 	emit mouseReleased();
 
+	// After dragging item may be null. We mustn`t select it in that case.
+	QGraphicsItem *itemToSelect = nullptr;
 	switch (mDrawingAction){
 	case wall: {
 		reshapeWall(mouseEvent);
-		mCurrentWall->setSelected(true);
+		itemToSelect = mCurrentWall;
 		mCurrentWall = nullptr;
 		break;
 	}
 	case line: {
 		reshapeLine(mouseEvent);
-		mCurrentLine->setSelected(true);
+		itemToSelect = mCurrentLine;
 		mCurrentLine = nullptr;
 		break;
 	}
 	case stylus: {
 		reshapeStylus(mouseEvent);
-		mCurrentStylus->setSelected(true);
+		itemToSelect = mCurrentStylus;
 		mCurrentStylus = nullptr;
 		break;
 	}
 	case ellipse: {
 		reshapeEllipse(mouseEvent);
-		mCurrentEllipse->setSelected(true);
+		itemToSelect = mCurrentEllipse;
 		mCurrentEllipse = nullptr;
 		break;
 	}
 	default:
 		forReleaseResize(mouseEvent, mRobot->realBoundingRect());
 		break;
+	}
+
+	if (itemToSelect) {
+		itemToSelect->setSelected(true);
 	}
 
 	setMoveFlag(mouseEvent);
