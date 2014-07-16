@@ -1,1 +1,1 @@
-brick.encoder("@@PORT@@").read()
+model.encoder.["@@PORT@@"].read()
