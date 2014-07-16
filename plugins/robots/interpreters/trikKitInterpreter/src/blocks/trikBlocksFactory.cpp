@@ -12,7 +12,11 @@
 #include <interpreterBase/blocksBase/common/waitForButtonBlock.h>
 
 #include "details/smileBlock.h"
+#include "details/drawPixelBlock.h"
 #include "details/drawLineBlock.h"
+#include "details/drawRectBlock.h"
+#include "details/drawEllipseBlock.h"
+#include "details/drawArcBlock.h"
 #include "details/setBackgroundBlock.h"
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
@@ -95,15 +99,15 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikSetPainterWidth")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikDrawPixel")) {
-		return new EmptyBlock();
+		return new DrawPixelBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDrawLine")) {
 		return new DrawLineBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDrawRect")) {
-		return new EmptyBlock();
+		return new DrawRectBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDrawEllipse")) {
-		return new EmptyBlock();
+		return new DrawEllipseBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDrawArc")) {
-		return new EmptyBlock();
+		return new DrawArcBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikSmile")) {
 		return new SmileBlock(mRobotModelManager->model(), false);
 	} else if (elementMetatypeIs(element, "TrikSadSmile")) {

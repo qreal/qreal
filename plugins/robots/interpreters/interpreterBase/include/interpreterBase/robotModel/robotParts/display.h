@@ -26,6 +26,10 @@ public:
 
 	/// Clears everything on a display.
 	virtual void clearScreen() = 0;
+
+	virtual void drawPixel(int x, int y) = 0;
+	virtual void drawLine(int x1, int y1, int x2, int y2) = 0;
+	virtual void drawRect(int x, int y, int width, int height) = 0;
 };
 
 }
