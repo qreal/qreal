@@ -21,6 +21,7 @@ public:
 signals:
 	void iconsetChanged();
 	void toolbarSizeChanged(int size);
+	void needUdpateSettings();
 
 protected:
 	void changeEvent(QEvent *e);

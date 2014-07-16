@@ -29,6 +29,8 @@ public:
 	void registerPage(QString const &pageName, PreferencesPage * const page);
 	void switchCurrentTab(QString const &tabName);
 
+
+
 protected:
 	void changeEvent(QEvent *e);
 	void showEvent(QShowEvent *e);
@@ -53,6 +55,7 @@ private slots:
 	void chooseTab(const QModelIndex &);
 	void exportSettings();
 	void importSettings();
+	void updateSetting();
 
 private:
 	Ui::PreferencesDialog *mUi;

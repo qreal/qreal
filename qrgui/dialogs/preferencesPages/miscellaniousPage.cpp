@@ -30,11 +30,13 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent, bool
 
 	restoreSettings();
 	connect(mUi->settingsButton, &QAbstractButton::clicked, this, &PreferencesMiscellaniousPage::getSettings);
+
 }
 
 void PreferencesMiscellaniousPage::getSettings()
 {
 	Client *mClient = new Client();
+	emit needUdpateSettings();
 	delete mClient;
 	//mClient->connectToSettingsServer();
 }

@@ -68,6 +68,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	mUi->listWidget->setCurrentRow(currentTab);
 	chooseTab(mUi->listWidget->currentIndex());
+
+	connect(miscellaniousPage, &PreferencesMiscellaniousPage::needUdpateSettings, this, &PreferencesDialog::updateSetting);
 }
 
 void PreferencesDialog::updatePluginDependendSettings()
@@ -176,4 +178,13 @@ void PreferencesDialog::importSettings()
 	QString fileNameForImport = QRealFileDialog::getOpenFileName("OpenEnginePreferences", this
 			, tr("Open File"),"/mySettings",tr("*.ini"));
 	SettingsManager::instance()->loadSettings(fileNameForImport);
+}
+
+
+void PreferencesDialog::updateSetting()
+{
+	foreach (PreferencesPage *page, mCustomPages.values()) {
+		page->restoreSettings();
+	}
+
 }
