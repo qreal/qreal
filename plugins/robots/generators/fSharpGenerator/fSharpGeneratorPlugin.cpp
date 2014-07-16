@@ -128,10 +128,17 @@ bool FSharpGeneratorPlugin::uploadProgram()
 
 	myProcess.startDetached(moveCommand);
 	myProcess.waitForFinished();
+	mMainWindowInterface->errorReporter()->addInformation(
+		tr("After downloading the program, enter 'exit' or close the window")
+	);
 }
 
 void FSharpGeneratorPlugin::runProgram()
 {
+	mMainWindowInterface->errorReporter()->addWarning(
+		tr("Attention, the robot starts about a minute")
+	);
+
 	utils::TcpRobotCommunicator communicator("TrikTcpServer");
 
 	communicator.runDirectCommand(
