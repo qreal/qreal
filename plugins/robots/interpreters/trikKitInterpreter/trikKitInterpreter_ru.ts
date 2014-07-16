@@ -30,7 +30,12 @@
 <context>
     <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="src/trikKitInterpreterPlugin.cpp" line="60"/>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="28"/>
+        <source>Enter robot`s IP-address here...</source>
+        <translation>Введите IP-адрес робота...</translation>
+    </message>
+    <message>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="74"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
@@ -39,7 +44,7 @@
         <translation type="vanished">Открыть 2D модель для TRIK v4</translation>
     </message>
     <message>
-        <location filename="src/trikKitInterpreterPlugin.cpp" line="94"/>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="113"/>
         <source>Show 2d model for TRIK v6</source>
         <translation>Открыть 2D модель для TRIK v6</translation>
     </message>

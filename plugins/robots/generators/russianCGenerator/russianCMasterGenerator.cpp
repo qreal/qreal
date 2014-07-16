@@ -22,7 +22,7 @@ generatorBase::GeneratorCustomizer *RussianCMasterGenerator::createCustomizer()
 
 QString RussianCMasterGenerator::targetPath()
 {
-	return QString("%1/%2.c").arg(mProjectDir, mProjectName);
+	return QString::fromUtf8("%1/%2.си").arg(mProjectDir, mProjectName);
 }
 
 bool RussianCMasterGenerator::supportsGotoGeneration() const

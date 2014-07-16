@@ -8,6 +8,7 @@
 #include "label.h"
 #include "diagram.h"
 #include "nameNormalizer.h"
+#include "nodeType.h"
 
 using namespace utils;
 
@@ -64,6 +65,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 	mElement = element;
 	if (Type::init(element, context)) {
 		mDescription = element.attribute("description", "");
+		mAbstract = element.attribute("abstract", "");
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull()) {
 			qDebug() << "ERROR: can't find logic tag of graphic type";
@@ -379,6 +381,8 @@ bool GraphicType::resolve()
 				return false;
 			}
 		}
+		NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
+		copyPorts(nodeParent);
 
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
 		if (gParent) {
@@ -403,6 +407,20 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
+
+		for (QPair<QString, QStringList> part : mDiagram->paletteGroups()) {
+			 for (auto part2: part.second) {
+				if (part2 == normalizedName && mAbstract == "true" ) {
+					qDebug() << "ERROR! Element" << qualifiedName() << "is abstract.";
+					return;
+				}
+			}
+		}
+
+		if (mAbstract == "true") {
+			return;
+		}
+
 		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName
 				<< "\"] = tr(\"" << actualDisplayedName << "\");\n";
 	}
