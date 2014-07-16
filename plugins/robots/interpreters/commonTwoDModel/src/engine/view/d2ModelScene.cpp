@@ -223,7 +223,7 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 	setMoveFlag(mouseEvent);
 
-	setSceneRect(itemsBoundingRect());
+	setSceneRect(sceneRect().united(mRobot->sceneBoundingRect()));
 	update();
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
