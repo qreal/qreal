@@ -47,7 +47,7 @@ void RobotsSettingsPage::initializeAdditionalWidgets()
 {
     for (QString const &kitId : mKitPluginManager.kitIds()) {
         for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
-            QList<AdditionalPreferences *> const kitPreferences = kitPlugin->settingsWidget();
+			QList<AdditionalPreferences *> const kitPreferences = kitPlugin->settingsWidgets();
             for (AdditionalPreferences * const kitPreference: kitPreferences)
                 if (kitPreference) {
                     qDebug() << "1";
@@ -111,7 +111,7 @@ void RobotsSettingsPage::save()
 
     for (QString const &kitId : mKitPluginManager.kitIds()) {
         for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
-            QList<AdditionalPreferences *> const kitPreferences = kitPlugin->settingsWidget();
+			QList<AdditionalPreferences *> const kitPreferences = kitPlugin->settingsWidgets();
             for(AdditionalPreferences * const kitPreference: kitPreferences)
                 if (kitPreference) {
                     kitPreference->save();
@@ -154,7 +154,7 @@ void RobotsSettingsPage::restoreSettings()
 
     for (QString const &kitId : mKitPluginManager.kitIds()) {
         for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
-            QList<AdditionalPreferences *> const kitPreferences = kitPlugin->settingsWidget();
+			QList<AdditionalPreferences *> const kitPreferences = kitPlugin->settingsWidgets();
             for(AdditionalPreferences * const kitPreference: kitPreferences)
                 if (kitPreference) {
                     kitPreference->restoreSettings();
@@ -216,7 +216,7 @@ void RobotsSettingsPage::onRobotModelRadioButtonToggled(bool checked)
     robotModel::RobotModelInterface * const selectedRobotModel = mButtonsToRobotModelsMapping[robotModelButton];
     mUi->devicesConfigurer->selectRobotModel(*selectedRobotModel);
     for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(selectedKit)) {
-        QList<AdditionalPreferences *> const selectedKitPreferences = kitPlugin->settingsWidget();
+		QList<AdditionalPreferences *> const selectedKitPreferences = kitPlugin->settingsWidgets();
         for(AdditionalPreferences * const selectedKitPreference: selectedKitPreferences)
             if (selectedKitPreference) {
                 selectedKitPreference->onRobotModelChanged(selectedRobotModel);
@@ -228,7 +228,7 @@ void RobotsSettingsPage::showAdditionalPreferences(QString const &kitId)
 {
     for (QString const &kitId : mKitPluginManager.kitIds()) {
         for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
-            QList<AdditionalPreferences *> const kitPreferences = kitPlugin->settingsWidget();
+			QList<AdditionalPreferences *> const kitPreferences = kitPlugin->settingsWidgets();
             for(AdditionalPreferences * const kitPreference: kitPreferences)
                 if (kitPreference) {
                     kitPreference->hide();
@@ -237,7 +237,7 @@ void RobotsSettingsPage::showAdditionalPreferences(QString const &kitId)
     }
 
     for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(kitId)) {
-        QList <AdditionalPreferences *> const selectedKitPreferences = kitPlugin->settingsWidget();
+		QList <AdditionalPreferences *> const selectedKitPreferences = kitPlugin->settingsWidgets();
         for(AdditionalPreferences * const selectedKitPreference: selectedKitPreferences)
             if (selectedKitPreference) {
                 selectedKitPreference->show();

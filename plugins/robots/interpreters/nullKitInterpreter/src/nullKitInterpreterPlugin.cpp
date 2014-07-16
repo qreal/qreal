@@ -33,7 +33,7 @@ interpreterBase::blocksBase::BlocksFactoryInterface *NullKitInterpreterPlugin::b
 	return nullptr;
 }
 
-QList<interpreterBase::AdditionalPreferences *> NullKitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> NullKitInterpreterPlugin::settingsWidgets()
 {
     return {nullptr};
 }

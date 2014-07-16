@@ -35,15 +35,15 @@ public:
 
 	QString friendlyKitName() const override;
 
-    QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
+	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
 
 	interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
-			interpreterBase::robotModel::RobotModelInterface const *model) override;
+	interpreterBase::robotModel::RobotModelInterface const *model) override;
 
 	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
 	// Transfers ownership.
-    QList <interpreterBase::AdditionalPreferences *> settingsWidget() override;
+	QList<interpreterBase::AdditionalPreferences *> settingsWidgets() override;
 
 	QList<qReal::ActionInfo> customActions() override;
 
@@ -63,10 +63,10 @@ private:
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV6;
 	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
 	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
-    TrikFSharpAdditionalPreferences *mFSharpAdditionalPreferences; //Transfers ownership
-    TrikWinScpAdditionalPreferences *mWinScpAdditionalPreferences; //Transfers ownership
+	TrikFSharpAdditionalPreferences *mFSharpAdditionalPreferences; //Transfers ownership
+	TrikWinScpAdditionalPreferences *mWinScpAdditionalPreferences; //Transfers ownership
 
-    interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
+	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 	QTranslator mAppTranslator;
 };

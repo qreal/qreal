@@ -26,7 +26,7 @@ public:
 			interpreterBase::robotModel::RobotModelInterface const *model) override;
 
 	// Transfers ownership.
-    QList<interpreterBase::AdditionalPreferences *> settingsWidget() override;
+	QList<interpreterBase::AdditionalPreferences *> settingsWidgets() override;
 
 	QList<qReal::ActionInfo> customActions() override;
 

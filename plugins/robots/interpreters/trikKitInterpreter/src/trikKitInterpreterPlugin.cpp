@@ -79,9 +79,9 @@ interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defa
 	return &mTwoDRobotModelV6;
 }
 
-QList<interpreterBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
 {
-    return {mAdditionalPreferences, mFSharpAdditionalPreferences, mWinScpAdditionalPreferences};
+	return {mAdditionalPreferences, mFSharpAdditionalPreferences, mWinScpAdditionalPreferences};
 }
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
