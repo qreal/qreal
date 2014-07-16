@@ -14,7 +14,7 @@ Client::~Client()
 	delete mServerSocket;
 }
 
-void Client::init() override
+void Client::init()
 {
 	QString ip = SettingsManager::value("ServerIP").toString();
 	int port = SettingsManager::value("ServerPort").toInt();
@@ -27,16 +27,17 @@ void Client::settings()
 	QDataStream in(mServerSocket);
 	in.setVersion(QDataStream::Qt_5_1);
 
-	if (mSettingStringSize == 0)
-	{
-		if (mServerSocket->bytesAvailable() < (int)sizeof(quint16))
+	if (mSettingStringSize == 0) {
+		if (mServerSocket->bytesAvailable() < (int)sizeof(quint16)) {
 			return;
+		}
 
 		in >> mSettingStringSize;
 	}
 
-	if (mServerSocket->bytesAvailable() < mSettingStringSize)
+	if (mServerSocket->bytesAvailable() < mSettingStringSize) {
 		return;
+	}
 
 	mSettingStringSize = 0;
 	QString settings;
@@ -54,12 +55,10 @@ void Client::connectionError(QAbstractSocket::SocketError socketError)
 void Client::applySettingsFromServer(QString settings)
 {
 	int i = 0;
-	while (i < settings.length())
-	{
+	while (i < settings.length()) {
 		int j = 0;
 		QString key;
-		while (settings[i] != '#' || settings[i + 1] != '#' || settings[i + 2] != '#')
-		{
+		while (settings[i] != '#' || settings[i + 1] != '#' || settings[i + 2] != '#') {
 			key[j] = settings[i];
 			++i;
 			if (i >= settings.length() - 3)
@@ -68,13 +67,13 @@ void Client::applySettingsFromServer(QString settings)
 		}
 
 		i = i + 3;
-		if (i >= settings.length() - 3)
+		if (i >= settings.length() - 3) {
 			break;
+		}
 
 		j = 0;
 		QString value;
-		while (settings[i] != '#' || settings[i + 1] != '*' || settings[i + 2] != '#')
-		{
+		while (settings[i] != '#' || settings[i + 1] != '*' || settings[i + 2] != '#') {
 			value[j] = settings[i];
 			++i;
 			++j;
@@ -82,12 +81,14 @@ void Client::applySettingsFromServer(QString settings)
 				break;
 		}
 
-		if (!(key == "ServerPort" || key == "ServerIP"))
+		if (!(key == "ServerPort" || key == "ServerIP")) {
 			SettingsManager::setValue(key, QVariant(value));
+		}
 
 		i = i + 3;
-		if (i >= settings.length() - 3)
+		if (i >= settings.length() - 3) {
 			break;
+		}
 	}
 
 	mServerSocket->close();

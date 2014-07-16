@@ -73,7 +73,6 @@ void Server::deleteClient(int index)
 
 void Server::sendSettings()
 {
-	qDebug() << "SendSettings!!!!!!!!!!!!";
 	if(!mSClients.isEmpty()) {
 		QByteArray block;
 		QDataStream out(&block, QIODevice::WriteOnly);
