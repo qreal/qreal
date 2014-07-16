@@ -38,7 +38,7 @@ protected:
 	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
 	QString defaultFilePath(QString const &projectName) const override;
 	QString extension() const override;
-	QString extDescrition() const override;
+	QString extensionDescription() const override;
 	QString generatorName() const override;
 	bool canGenerateTo(QString const &project) override;
 

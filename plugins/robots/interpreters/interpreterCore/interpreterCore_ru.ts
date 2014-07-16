@@ -581,7 +581,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="src/robotsPlugin.cpp" line="67"/>
+        <location filename="src/robotsPlugin.cpp" line="44"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -723,7 +723,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="src/robotsPluginFacade.cpp" line="93"/>
+        <location filename="src/robotsPluginFacade.cpp" line="104"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -910,12 +910,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ui::RobotsSettingsPage</name>
     <message>
-        <location filename="src/ui/robotsSettingsPage.cpp" line="59"/>
+        <location filename="src/ui/robotsSettingsPage.cpp" line="60"/>
         <source>No constructor kit plugins loaded</source>
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="src/ui/robotsSettingsPage.cpp" line="180"/>
+        <location filename="src/ui/robotsSettingsPage.cpp" line="181"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>

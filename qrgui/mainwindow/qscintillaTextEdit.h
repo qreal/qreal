@@ -37,7 +37,7 @@ signals:
 	void textWasModified(gui::QScintillaTextEdit *code);
 
 private slots:
-	void emitTexWasModified();
+	void emitTextWasModified();
 
 private:
 	QPersistentModelIndex const mIndex;

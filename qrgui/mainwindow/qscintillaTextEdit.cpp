@@ -10,7 +10,7 @@ using namespace gui;
 QScintillaTextEdit::QScintillaTextEdit()
 	:mRole(0)
 {
-	connect(this, SIGNAL(textChanged()), this, SLOT(emitTexWasModified()));
+	connect(this, SIGNAL(textChanged()), this, SLOT(emitTextWasModified()));
 	setCppLexer();
 	setPythonEditorProperties();
 }
@@ -38,7 +38,7 @@ void QScintillaTextEdit::setCppLexer()
 	setLexer(lexCpp);
 }
 
-void QScintillaTextEdit::emitTexWasModified()
+void QScintillaTextEdit::emitTextWasModified()
 {
 	emit textWasModified(this);
 }
