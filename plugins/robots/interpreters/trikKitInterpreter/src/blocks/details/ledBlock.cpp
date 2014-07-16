@@ -4,7 +4,6 @@
 
 #include <interpreterBase/blocksBase/common/displayBlock.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
-#include <utils/utils.h>
 
 #include "src/robotModel/twoD/parts/twoDLed.h"
 #include "src/robotModel/parts/trikLed.h"
@@ -26,7 +25,8 @@ LedBlock::~LedBlock()
 
 void LedBlock::run()
 {
-	QColor const color = utils::Utils::propertyToColor(stringProperty("Color"));
+	QString const stringColor = stringProperty("Color");
+	QColor const color = stringColor == "off" ? QColor(Qt::gray) : QColor(stringColor);
 
 	QString const port = "LedPort";
 	robotModel::parts::TrikLed * const led
