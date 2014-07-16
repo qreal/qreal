@@ -6,16 +6,10 @@
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
 
-#include <interpreterBase/devicesConfigurationProvider.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
-
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
 
-#include "src/engine/model/model.h"
-
-#include "commonTwoDModel/engine/configurer.h"
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
 class QComboBox;
@@ -62,9 +56,6 @@ public:
 	void setRunStopButtonsEnabled(bool enabled);
 
 public slots:
-	void update();
-	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos);
-
 	void saveInitialRobotBeforeRun();
 	void setInitialRobotBeforeRun();
 
@@ -94,8 +85,6 @@ protected:
 			, const interpreterBase::robotModel::DeviceInfo &device) override;
 
 private slots:
-	void handleNewRobotPosition();
-
 	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
@@ -147,10 +136,6 @@ private:
 	void initPorts();
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
-	void drawWalls();
-	void drawColorFields();
-	void drawInitialRobot();
-
 	void setDisplayVisibility(bool visible);
 
 	QDomDocument generateXml() const;
@@ -169,18 +154,17 @@ private:
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoPalette();
 
-	void setNoneStatus();
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(CursorType cursor);
 
 	void initWidget();
-	QList<graphicsUtils::AbstractItem *> selectedColorItems();
-	bool isColorItem(graphicsUtils::AbstractItem *item);
+	QList<graphicsUtils::AbstractItem *> selectedColorItems() const;
+	bool isColorItem(graphicsUtils::AbstractItem * const item) const;
 
 	void centerOnRobot();
 	QGraphicsView::DragMode cursorTypeToDragType(CursorType type) const;
 	QCursor cursorTypeToCursor(CursorType type) const;
-	void processDragMode();
+	void refreshCursor();
 	void syncCursorButtons();
 
 	void onFirstShow();

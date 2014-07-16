@@ -83,14 +83,16 @@ QList<items::WallItem *> const &WorldModel::walls() const
 	return mWalls;
 }
 
-void WorldModel::addWall(items::WallItem* wall)
+void WorldModel::addWall(items::WallItem *wall)
 {
 	mWalls.append(wall);
+	emit wallAdded(wall);
 }
 
-void WorldModel::removeWall(items::WallItem* wall)
+void WorldModel::removeWall(items::WallItem *wall)
 {
 	mWalls.removeOne(wall);
+	emit itemRemoved(wall);
 }
 
 QList<items::ColorFieldItem *> const &WorldModel::colorFields() const
@@ -111,17 +113,24 @@ items::WallItem *WorldModel::wallAt(int index) const
 void WorldModel::addColorField(items::ColorFieldItem *colorField)
 {
 	mColorFields.append(colorField);
+	emit colorItemAdded(colorField);
 }
 
 void WorldModel::removeColorField(items::ColorFieldItem *colorField)
 {
 	mColorFields.removeOne(colorField);
+	emit itemRemoved(colorField);
 }
 
-void WorldModel::clearScene()
+void WorldModel::clear()
 {
-	mWalls.clear();
-	mColorFields.clear();
+	while (!mWalls.isEmpty()) {
+		removeWall(mWalls.last());
+	}
+
+	while (!mColorFields.isEmpty()) {
+		removeColorField(mColorFields.last());
+	}
 }
 
 QPainterPath WorldModel::buildWallPath() const
@@ -164,7 +173,7 @@ void WorldModel::deserialize(QDomElement const &element)
 		/// @todo Report error
 		return;
 	}
-	clearScene();
+	clear();
 
 	QDomNodeList allWalls = element.elementsByTagName("walls");
 	for (int i = 0; i < allWalls.count(); ++i) {
