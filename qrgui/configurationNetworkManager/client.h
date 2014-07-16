@@ -17,6 +17,9 @@ private slots:
 	///close session when connection failed
 	void connectionError();
 
+public:
+	void connectToSettingsServer();
+
 private:
 	///apply setting from server
 	void applySettingsFromServer(QString settings);

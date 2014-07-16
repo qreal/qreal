@@ -7,16 +7,20 @@ Client::Client() : mSettingStringSize(0)
 	mServerSocket = new QTcpSocket(this);
 	connect(mServerSocket, &QAbstractSocket::readyRead, this, &Client::settings);
 	connect(mServerSocket, static_cast<void (QAbstractSocket::*)(QAbstractSocket::SocketError)>(&QAbstractSocket::error), this, &Client::connectionError);
-
-	QString ip = SettingsManager::value("ServerIP").toString();
-	int port = SettingsManager::value("ServerPort").toInt();
-
-	mServerSocket->connectToHost(ip, port);
+	connectToSettingsServer();
 }
 
 Client::~Client()
 {
 	delete mServerSocket;
+}
+
+void Client::connectToSettingsServer()
+{
+	QString ip = SettingsManager::value("ServerIP").toString();
+	int port = SettingsManager::value("ServerPort").toInt();
+
+	mServerSocket->connectToHost(ip, port);
 }
 
 void Client::settings()

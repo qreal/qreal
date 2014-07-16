@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dialogs/preferencesPages/preferencesPage.h"
+#include "configurationNetworkManager/client.h"
 
 namespace Ui {
 class PreferencesMiscellaniousPage;
@@ -26,9 +27,11 @@ protected:
 
 private slots:
 	void browseImagesPath();
+	void getSettings();
 
 private:
 	Ui::PreferencesMiscellaniousPage *mUi;
 
+	Client *mClient;
 	QString mLastIconsetPath;
 };

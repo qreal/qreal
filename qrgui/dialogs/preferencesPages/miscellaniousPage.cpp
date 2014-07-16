@@ -29,11 +29,20 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent, bool
 	mUi->colorComboBox->addItems(QColor::colorNames());
 
 	restoreSettings();
+	connect(mUi->settingsButton, &QAbstractButton::clicked, this, &PreferencesMiscellaniousPage::getSettings);
+}
+
+void PreferencesMiscellaniousPage::getSettings()
+{
+	Client *mClient = new Client();
+	delete mClient;
+	//mClient->connectToSettingsServer();
 }
 
 PreferencesMiscellaniousPage::~PreferencesMiscellaniousPage()
 {
 	delete mUi;
+	//delete mClient;
 }
 
 void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
