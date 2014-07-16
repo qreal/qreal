@@ -7,6 +7,11 @@ Client::Client() : mSettingStringSize(0)
 	mServerSocket = new QTcpSocket(this);
 	connect(mServerSocket, SIGNAL(readyRead()), this, SLOT(settings()));
 	connect(mServerSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(connectionError(QAbstractSocket::SocketError)));
+
+	QString ip = SettingsManager::value("ServerIP").toString();
+	int port = SettingsManager::value("ServerPort").toInt();
+
+	mServerSocket->connectToHost(ip, port);
 }
 
 Client::~Client()
@@ -14,13 +19,13 @@ Client::~Client()
 	delete mServerSocket;
 }
 
-void Client::init()
-{
-	QString ip = SettingsManager::value("ServerIP").toString();
-	int port = SettingsManager::value("ServerPort").toInt();
+//void Client::init()
+//{
+//	QString ip = SettingsManager::value("ServerIP").toString();
+//	int port = SettingsManager::value("ServerPort").toInt();
 
-	mServerSocket->connectToHost(ip, port);
-}
+//	mServerSocket->connectToHost(ip, port);
+//}
 
 void Client::settings()
 {
@@ -49,7 +54,7 @@ void Client::settings()
 void Client::connectionError(QAbstractSocket::SocketError socketError)
 {
 	mServerSocket->close();
-	emit ConfigurationNetworkManager::clientError(socketError, mServerSocket->errorString());
+	//emit ConfigurationNetworkManager::clientError(socketError, mServerSocket->errorString());
 }
 
 void Client::applySettingsFromServer(QString settings)
