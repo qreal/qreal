@@ -6,20 +6,6 @@
 #include "converters/encoderV4PortConverter.h"
 #include "converters/encoderV6PortConverter.h"
 #include "converters/FSharpStringPropertyConverter.h"
-/*#include "simpleGenerators/detectLineGenerator.h"
-#include "simpleGenerators/initCameraGenerator.h"
-#include "simpleGenerators/ledGenerator.h"
-#include "simpleGenerators/lineDetectorToVariableGenerator.h"
-#include "simpleGenerators/playToneGenerator.h"
-#include "simpleGenerators/sadSmileGenerator.h"
-#include "simpleGenerators/sayGenerator.h"
-#include "simpleGenerators/setBackgroundGenerator.h"
-#include "simpleGenerators/smileGenerator.h"
-#include "simpleGenerators/systemGenerator.h"
-#include "simpleGenerators/EnginesGenerator.h"
-#include "simpleGenerators/FSharpEnginesStopGenerator.h"
-#include "simpleGenerators/FSharpNullificationEncoderGenerator.h"
-*/
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
 #include "simpleGenerators/fSharpEnginesGenerator.h"
@@ -33,8 +19,8 @@ using namespace generatorBase;
 using namespace generatorBase::simple;
 
 FSharpGeneratorFactory::FSharpGeneratorFactory(qrRepo::RepoApi const &repo
-											   , qReal::ErrorReporterInterface &errorReporter
-											   , interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+		, qReal::ErrorReporterInterface &errorReporter
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager)
 {
 }
@@ -44,13 +30,13 @@ FSharpGeneratorFactory::~FSharpGeneratorFactory()
 }
 
 AbstractSimpleGenerator *FSharpGeneratorFactory::simpleGenerator(qReal::Id const &id
-																 , GeneratorCustomizer &customizer)
+		, GeneratorCustomizer &customizer)
 {
-
 	QString const elementType = id.element();
 	if (elementType.contains("EnginesForward")
-			|| elementType.contains("EnginesBackward")
-			|| elementType.contains("AngularServo"))
+		|| elementType.contains("EnginesBackward")
+		|| elementType.contains("AngularServo")
+	)
 	{
 		return new FSharpEnginesGenerator(mRepo, customizer, id, elementType, this);
 	} else if (elementType.contains("EnginesStop")) {
@@ -58,32 +44,6 @@ AbstractSimpleGenerator *FSharpGeneratorFactory::simpleGenerator(qReal::Id const
 	} else if (elementType.contains("ClearEncoder")) {
 		return new FSharpNullificationEncoderGenerator(mRepo, customizer, id, this);
 	}
-
-
-
-	/*else if (elementType.contains("FSharpPlayTone")) {
-		return new PlayToneGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpSmile") {
-		return new SmileGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpSadSmile") {
-		return new SadSmileGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpSay") {
-		return new SayGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpSetBackground") {
-		return new SetBackgroundGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpSystem") {
-		return new SystemGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpLed") {
-		return new LedGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpDetectLine") {
-		return new DetectLineGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FSharpInitCamera") {
-		return new InitCameraGenerator(mRepo, customizer, id, this);
-	}
-*/
-	//else if (elementType == "FSharpLineDetectorToVariable") {
-	//return new LineDetectorToVariableGenerator(mRepo, customizer, id, this);
-	//	}
 	else if (elementType == "TrikWaitForEnter") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
 	} else if (elementType == "TrikWaitForLeft") {

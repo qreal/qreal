@@ -4,7 +4,7 @@
 
 namespace fSharp {
 
-/// Generator factory implemtation for TRIK platform
+/// Generator factory implementation for TRIK platform
 class FSharpGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:

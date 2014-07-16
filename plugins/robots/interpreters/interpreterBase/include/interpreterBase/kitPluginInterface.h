@@ -69,7 +69,7 @@ public:
     /// Widget with specific settings for a plugin. save() method is called when user saves all settings,
     /// restoreSettings() - each time when used selects other robot model for this kit. If nullptr is
 	/// Transfers ownership.
-    virtual QList<AdditionalPreferences *> settingsWidget() = 0;
+	virtual QList<AdditionalPreferences *> settingsWidget() = 0;
 
 	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
 	/// goes here.

@@ -14,10 +14,6 @@ class PowerMotor : public robotModel::parts::TrikPowerMotor
 public:
 	PowerMotor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);
-
-	void on(int speed) override;
-	void stop() override;
-	void off() override;
 };
 
 }

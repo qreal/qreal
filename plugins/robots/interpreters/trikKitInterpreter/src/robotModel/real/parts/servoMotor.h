@@ -13,11 +13,7 @@ class ServoMotor : public robotModel::parts::TrikServoMotor
 
 public:
 	ServoMotor(interpreterBase::robotModel::DeviceInfo const &info
-				, interpreterBase::robotModel::PortInfo const &port);
-
-	void on(int speed) override;
-	void stop() override;
-	void off() override;
+			, interpreterBase::robotModel::PortInfo const &port);
 };
 
 }
