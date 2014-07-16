@@ -69,9 +69,7 @@ void D2ModelScene::drawInitialRobot()
 
 	mRobot->setRotater(rotater);
 
-	for (QGraphicsView * const view : views()) {
-		view->centerOn(mRobot);
-	}
+	centerOnRobot();
 }
 
 void D2ModelScene::handleNewRobotPosition()
@@ -433,4 +431,16 @@ void D2ModelScene::alignWalls()
 RobotItem *D2ModelScene::robot()
 {
 	return mRobot;
+}
+
+void D2ModelScene::centerOnRobot()
+{
+	for (QGraphicsView * const view : views()) {
+		QRectF const viewPortRect = view->mapToScene(view->viewport()->rect()).boundingRect();
+		if (!viewPortRect.contains(mRobot->sceneBoundingRect().toRect())) {
+			QRectF const requiredViewPort = viewPortRect.translated(mRobot->scenePos() - viewPortRect.center());
+			setSceneRect(itemsBoundingRect().united(requiredViewPort));
+			view->centerOn(mRobot);
+		}
+	}
 }

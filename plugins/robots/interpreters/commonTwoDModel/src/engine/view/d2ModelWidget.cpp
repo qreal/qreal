@@ -319,13 +319,7 @@ void D2ModelWidget::onFirstShow()
 void D2ModelWidget::centerOnRobot()
 {
 	if (mFollowRobot && mModel.robotModel().onTheGround()) {
-		QRectF const viewPortRect = mUi->graphicsView->mapToScene(mUi->graphicsView->viewport()->rect()).boundingRect();
-		QGraphicsItem * const robot = mScene->robot();
-		if (!viewPortRect.contains(robot->sceneBoundingRect().toRect())) {
-			QRectF const requiredViewPort = viewPortRect.translated(robot->scenePos() - viewPortRect.center());
-			mScene->setSceneRect(mScene->itemsBoundingRect().united(requiredViewPort));
-			mUi->graphicsView->centerOn(robot);
-		}
+		mScene->centerOnRobot();
 	}
 }
 

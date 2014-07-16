@@ -57,10 +57,16 @@ public slots:
 	/// Clears everything on the scene besides a robot and its sensors.
 	/// @param removeRobot If true robot graphics item will be fully recreated, its position will be nullified.
 	void clearScene(bool removeRobot = false);
+
+	/// Aligns existing walls on the grid.
+	/// @todo: Walls that do not fit on the grid must not be removed.
 	void alignWalls();
 
 	/// Returns a pointer to a robot graphics item.
 	RobotItem *robot();
+
+	/// Focuses all graphics views on the robot if it is not visible.
+	void centerOnRobot();
 
 signals:
 	/// Emitted each time when user presses mouse button somewhere on the scene.
