@@ -2,26 +2,26 @@
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QLabel>
-#include <QtCore/QTimer>
 
 namespace qReal {
 
-class MainWindow;
-
 namespace gui {
+
+/// Represents hint reporter messages. Allows draw hint widgets with opacity animation (for a lifeTime).
+/// Class HintAPI provides interface to send those messages in any window of the system.
 
 class HintReporter : public QLabel
 {
 	Q_OBJECT
 
 public:
-	HintReporter(MainWindow *mainWindow, QString const &message, int const lifeTime);
+	HintReporter(QWidget *parent, QString const &message, int const lifeTime);
 
 signals:
 	void mousePressEvent();
 
 protected:
-	virtual void mousePressEvent(QMouseEvent * event);
+	virtual void mousePressEvent(QMouseEvent *);
 
 private slots:
 	void disappear();
@@ -29,7 +29,6 @@ private slots:
 private:
 	void addHint(QString const &hint);
 
-	QTimer mFadeTimer;
 	int mDuration;
 };
 

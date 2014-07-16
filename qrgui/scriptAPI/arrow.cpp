@@ -1,6 +1,10 @@
 #include "arrow.h"
 
+#include <QtCore/QDebug>
+#include <QtCore/QPropertyAnimation>
+#include <QtCore/QTimer>
 #include <QtGui/QPainter>
+#include <QtWidgets/QGraphicsOpacityEffect>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 
@@ -12,7 +16,7 @@ using namespace qReal;
 using namespace gui;
 using namespace mathUtils;
 
-Arrow::Arrow(QPoint const &sourcePoint, QPoint const &destPoint, QWidget *parent)
+Arrow::Arrow(QPoint const &sourcePoint, QPoint const &destPoint, int const lifeTime, QWidget *parent)
 	: QWidget(parent)
 	, mSourcePoint(sourcePoint)
 	, mDestPoint(destPoint)
@@ -20,6 +24,8 @@ Arrow::Arrow(QPoint const &sourcePoint, QPoint const &destPoint, QWidget *parent
 	setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	setWindowFlags(Qt::WindowStaysOnTopHint);
 	activateWindow();
+	mDuration = lifeTime/2;
+	QTimer::singleShot(mDuration, this, SLOT(disappear()));
 }
 
 void Arrow::paintEvent(QPaintEvent *)
@@ -44,4 +50,19 @@ void Arrow::paintEvent(QPaintEvent *)
 
 	painter.setBrush(Qt::black);
 	painter.drawPolygon(QPolygonF() << line.p2() << destArrowFirst << destArrowSecond);
+}
+
+void Arrow::disappear()
+{
+	QGraphicsOpacityEffect* const opacityEffect = new QGraphicsOpacityEffect(this);
+	opacityEffect->setOpacity(1);
+	setGraphicsEffect(opacityEffect);
+	QPropertyAnimation* const opacityAnim = new QPropertyAnimation(this);
+	opacityAnim->setTargetObject(opacityEffect);
+	opacityAnim->setPropertyName("opacity");
+	opacityAnim->setDuration(mDuration);
+	opacityAnim->setStartValue(opacityEffect->opacity());
+	opacityAnim->setEndValue(0);
+	opacityAnim->setEasingCurve(QEasingCurve::OutQuad);
+	opacityAnim->start(QAbstractAnimation::DeleteWhenStopped);
 }

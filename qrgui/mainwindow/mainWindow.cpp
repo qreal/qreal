@@ -287,7 +287,6 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
-	qDebug()<<"was in destructor";
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
@@ -319,6 +318,7 @@ EditorManagerInterface &MainWindow::editorManager()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	emit mSystemEvents->closedMainWindow();
+	mScriptAPI.abortEvaluate();
 
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
@@ -2283,6 +2283,7 @@ void MainWindow::initScriptAPI()
 	QThread *scriptAPIthread = new QThread;
 	mScriptAPI.init(this);
 	mScriptAPI.moveToThread(scriptAPIthread);
+	connect(mSystemEvents, SIGNAL(closedMainWindow()), scriptAPIthread, SLOT(quit()));
 	scriptAPIthread->start();
 }
 

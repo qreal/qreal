@@ -9,14 +9,8 @@ using namespace gui;
 
 GuiFacade::GuiFacade(MainWindow *mainWindow)
 	: mMainWindow(mainWindow)
-	, mRobotsPlugin(nullptr)
+	, mPlugin(nullptr)
 {
-	QList<ToolPluginInterface *> const pluginList = mMainWindow->toolManager().getPlugins();
-	for (ToolPluginInterface *plugin : pluginList) {
-		if (plugin->pluginName() == "robots") {
-			mRobotsPlugin = plugin;
-		}
-	}
 }
 
 QWidget* GuiFacade::widget(QString const &type, QString const &name)
@@ -54,6 +48,10 @@ QWidget* GuiFacade::widget(QString const &type, QString const &name)
 		return propertyEditor->
 				findChild<QtTreePropertyBrowser *>()->
 				findChild<QTreeWidget *>()->viewport();
+	} else if (type == "MainWindow") {
+		return mMainWindow;
+	} else if (type == "Palette") {
+		return mMainWindow->paletteDock();
 	}
 	return nullptr;
 }
@@ -84,9 +82,16 @@ QRect GuiFacade::property(QString const &name)
 	}
 }
 
-ToolPluginInterface* GuiFacade::plugin()
+ToolPluginInterface* GuiFacade::plugin(QString const &pluginName)
 {
-	return mRobotsPlugin;
+	QList<ToolPluginInterface *> const pluginList = mMainWindow->toolManager().getPlugins();
+	for (ToolPluginInterface *plugin : pluginList) {
+		if (plugin->pluginName() == pluginName) {
+			mPlugin = plugin;
+		}
+	}
+
+	return mPlugin;
 }
 
 QWidget* GuiFacade::comboBoxProperty(QString const &name)
@@ -105,7 +110,7 @@ QWidget* GuiFacade::comboBoxProperty(QString const &name)
 
 QWidget* GuiFacade::robotAction(QString const &name)
 {
-	QList<ActionInfo > actionList = mRobotsPlugin->actions();
+	QList<ActionInfo > actionList = mPlugin->actions();
 	for(ActionInfo &actionInfo : actionList) {
 		if (actionInfo.action()->objectName() == name) {
 			QList<QWidget *> const widgetList = actionInfo.action()->associatedWidgets();

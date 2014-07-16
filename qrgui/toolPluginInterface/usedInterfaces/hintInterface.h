@@ -8,8 +8,11 @@ namespace qReal {
 class HintInterface
 {
 public:
-	Q_INVOKABLE void addHint(QString const &message);
-	Q_INVOKABLE void arrowToWidget(QWidget const &target);
+	///Send message as HintReporter.
+	Q_INVOKABLE void addHint(QWidget *parent, QString const &message, int const duration);
+
+	///Draw arrow near target.
+	Q_INVOKABLE void arrowToWidget(QWidget *target, qreal angle);
 };
 
 }

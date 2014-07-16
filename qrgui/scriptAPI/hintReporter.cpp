@@ -1,12 +1,14 @@
 #include "hintReporter.h"
 
-#include "mainwindow/mainWindow.h"
+#include <QtCore/QTimer>
+#include <QtCore/QPropertyAnimation>
+#include <QtWidgets/QGraphicsOpacityEffect>
 
 using namespace qReal;
 using namespace gui;
 
-HintReporter::HintReporter(MainWindow *mainWindow, QString const &message, int const lifeTime)
-	: QLabel(mainWindow)
+HintReporter::HintReporter(QWidget *parent, QString const &message, int const lifeTime)
+	: QLabel(parent)
 {
 	setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 	setWindowFlags(Qt::WindowStaysOnTopHint);
@@ -14,7 +16,8 @@ HintReporter::HintReporter(MainWindow *mainWindow, QString const &message, int c
 	setAutoFillBackground(false);
 	setStyleSheet("background-color: #ffffff; border: 1px solid; border-radius: 7px; border-color: #303030;"); // по вкусу
 	setFixedSize(300, 50);
-	move(mainWindow->width() - this->width(), 0);
+	move(parent->width() - this->width(), 0);
+	setWordWrap(true);
 	show();
 	raise();
 
@@ -44,8 +47,7 @@ void HintReporter::disappear()
 	opacityAnim->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void HintReporter::mousePressEvent(QMouseEvent *event)
+void HintReporter::mousePressEvent(QMouseEvent *)
 {
-	(void)event;
 	emit mousePressEvent();
 }

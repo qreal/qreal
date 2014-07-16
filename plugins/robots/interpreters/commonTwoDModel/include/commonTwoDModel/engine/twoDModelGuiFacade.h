@@ -10,6 +10,9 @@ class D2ModelWidget;
 
 namespace engine {
 
+/// Implemented facade pattern. This class allows to search and get ojects of graphical user interface of
+/// robots plugin by theirs object names, parents and types.
+
 class TwoDModelGuiFacade : public QObject
 {
 	Q_OBJECT
@@ -17,13 +20,13 @@ class TwoDModelGuiFacade : public QObject
 public:
 	explicit TwoDModelGuiFacade(view::D2ModelWidget &d2RobotWidget);
 
-	///Returns widget, which defined by type and object name.
+	/// Returns widget, which defined by type and object name.
 	Q_INVOKABLE QWidget *widget(QString const &type, QString const &name);
 
-	///Returns 2d model widget.
+	/// Returns 2d model widget.
 	Q_INVOKABLE QWidget *d2ModelWidget();
 
-	///Returns scene of d2 model widget.
+	/// Returns scene of d2 model widget.
 	Q_INVOKABLE QWidget *d2ModelScene();
 
 private:
