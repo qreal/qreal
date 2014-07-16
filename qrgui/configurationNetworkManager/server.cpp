@@ -1,14 +1,15 @@
 #include "server.h"
 
 Server::Server() :
-	mTcpServer(0),
-	mNetworkSession(0) {
+	mTcpServer(0)
+	, mNetworkSession(0)
+{
 	QNetworkConfigurationManager manager;
 	if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
 		// Get saved network configuration
 		QSettings settings(QSettings::UserScope, QLatin1String("Trolltech"));
 		settings.beginGroup(QLatin1String("QtNetwork"));
-		const QString id = settings.value(QLatin1String("DefaultNetworkConfiguration")).toString();
+		QString const id = settings.value(QLatin1String("DefaultNetworkConfiguration")).toString();
 		settings.endGroup();
 
 		// If the saved network configuration is not currently discovered use the system default
@@ -18,7 +19,7 @@ Server::Server() :
 		}
 
 		mNetworkSession = new QNetworkSession(config, this);
-		connect(mNetworkSession, SIGNAL(opened()), this, SLOT(sessionOpened()));
+		connect(mNetworkSession, &QNetworkSession::opened, this, &Server::sessionOpened);
 
 		mNetworkSession->open();
 	} else {
@@ -26,8 +27,9 @@ Server::Server() :
 	}
 
 	mSClientsIndexMapper = new QSignalMapper;
-	connect(mTcpServer, SIGNAL(newConnection()), this, SLOT(acceptClientConnection()));
-	connect(mSClientsIndexMapper, SIGNAL(mapped(int)), this, SLOT(deleteClient(int)));
+	connect(mTcpServer, &QTcpServer::newConnection, this, &Server::acceptClientConnection);
+	connect(mSClientsIndexMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped)
+			, this, &Server::deleteClient);
 }
 
 void Server::sessionOpened()
@@ -36,10 +38,11 @@ void Server::sessionOpened()
 	if (mNetworkSession) {
 		QNetworkConfiguration config = mNetworkSession->configuration();
 		QString id;
-		if (config.type() == QNetworkConfiguration::UserChoice)
+		if (config.type() == QNetworkConfiguration::UserChoice) {
 			id = mNetworkSession->sessionProperty(QLatin1String("UserChoiceConfiguration")).toString();
-		else
+		} else {
 			id = config.identifier();
+		}
 
 		QSettings settings(QSettings::UserScope, QLatin1String("Trolltech"));
 		settings.beginGroup(QLatin1String("QtNetwork"));
@@ -60,8 +63,9 @@ void Server::acceptClientConnection()
 	int idusersocs = clientSocket->socketDescriptor();
 	mSClients[idusersocs] = clientSocket;
 	mSClientsIndexMapper->setMapping(mSClients[idusersocs], idusersocs);
-	connect(mSClients[idusersocs], SIGNAL(disconnected()), mSClientsIndexMapper, SLOT(map()));
-	connect(mSClients[idusersocs], SIGNAL(disconnected()), mSClients[idusersocs], SLOT(deleteLater()));
+	connect(mSClients[idusersocs], &QTcpSocket::disconnected
+			, mSClientsIndexMapper, static_cast<void (QSignalMapper::*)(void)>(&QSignalMapper::map));
+	connect(mSClients[idusersocs], &QTcpSocket::disconnected, mSClients[idusersocs], &QTcpSocket::deleteLater);
 	sendSettings();
 }
 
@@ -79,7 +83,7 @@ void Server::sendSettings()
 
 		out << (quint16)qReal::SettingsManager::instance()->convertToString().length();
 		out << qReal::SettingsManager::instance()->convertToString();
-		foreach(int i, mSClients.keys()) {
+		foreach (int i, mSClients.keys()) {
 			if (mSClients[i]->isOpen()) {
 				mSClients[i]->write(block);
 			}
@@ -96,20 +100,18 @@ QStringList Server::getIP()
 {
 	QList<QNetworkInterface> addressList = QNetworkInterface::allInterfaces();
 	QStringList address;
-	for (int j = 0; j < addressList.size(); j++) {
-		QList<QNetworkAddressEntry> addressEntry = addressList[j].addressEntries();
-		for (int i = 0; i < addressEntry.size(); i++) {
-				if (!addressEntry[i].ip().isLoopback()
-						&& addressEntry[i].ip().toString().contains("."))
+	//for (int j = 0; j < addressList.size(); j++) {
+	foreach (QNetworkInterface j, addressList) {
+		QList<QNetworkAddressEntry> addressEntry = j.addressEntries();
+		//for (int i = 0; i < addressEntry.size(); i++) {
+		foreach (QNetworkAddressEntry i, addressEntry) {
+			if (!i.ip().isLoopback()
+						&& i.ip().toString().contains("."))
 				{
-					address.append(addressEntry[i].ip().toString());
+					address.append(i.ip().toString());
 				}
 		}
 	}
 
 	return address;
 }
-
-//void Server::init()
-//{
-//}
