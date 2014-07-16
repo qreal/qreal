@@ -152,14 +152,14 @@ QDomElement WorldModel::serialize(QDomDocument &document, QPointF const &topLeft
 
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
-	foreach (items::WallItem *wall, mWalls) {
+	for (items::WallItem *wall : mWalls) {
 		QDomElement wallNode = wall->serialize(document, topLeftPicture.toPoint());
 		walls.appendChild(wallNode);
 	}
 
 	QDomElement colorFields = document.createElement("colorFields");
 	result.appendChild(colorFields);
-	foreach (items::ColorFieldItem *colorField, mColorFields) {
+	for (items::ColorFieldItem *colorField : mColorFields) {
 		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture.toPoint());
 		colorFields.appendChild(colorFiedlNode);
 	}
@@ -173,6 +173,7 @@ void WorldModel::deserialize(QDomElement const &element)
 		/// @todo Report error
 		return;
 	}
+
 	clear();
 
 	QDomNodeList allWalls = element.elementsByTagName("walls");
@@ -184,7 +185,7 @@ void WorldModel::deserialize(QDomElement const &element)
 			QDomElement const wallNode = walls.at(i).toElement();
 			items::WallItem *wall = new items::WallItem(QPointF(0, 0), QPointF(0, 0));
 			wall->deserialize(wallNode);
-			mWalls.append(wall);
+			addWall(wall);
 		}
 	}
 
@@ -197,7 +198,7 @@ void WorldModel::deserialize(QDomElement const &element)
 			QDomElement const ellipseNode = ellipses.at(i).toElement();
 			items::EllipseItem *ellipseItem = new items::EllipseItem(QPointF(0, 0), QPointF(0, 0));
 			ellipseItem->deserialize(ellipseNode);
-			mColorFields.append(ellipseItem);
+			addColorField(ellipseItem);
 		}
 
 		QDomNodeList lines = colorFieldNode.elementsByTagName("line");
@@ -205,7 +206,7 @@ void WorldModel::deserialize(QDomElement const &element)
 			QDomElement const lineNode = lines.at(i).toElement();
 			items::LineItem* lineItem = new items::LineItem(QPointF(0, 0), QPointF(0, 0));
 			lineItem->deserialize(lineNode);
-			mColorFields.append(lineItem);
+			addColorField(lineItem);
 		}
 
 		QDomNodeList styluses = colorFieldNode.elementsByTagName("stylus");
@@ -213,7 +214,7 @@ void WorldModel::deserialize(QDomElement const &element)
 			QDomElement const stylusNode = styluses.at(i).toElement();
 			items::StylusItem *stylusItem = new items::StylusItem(0, 0);
 			stylusItem->deserialize(stylusNode);
-			mColorFields.append(stylusItem);
+			addColorField(stylusItem);
 		}
 	}
 }
