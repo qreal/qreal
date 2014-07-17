@@ -14,12 +14,15 @@ TwoDModelGuiFacade::TwoDModelGuiFacade(D2ModelWidget &view)
 
 QWidget* TwoDModelGuiFacade::widget(QString const &type, QString const &name)
 {
-	if (type == "PushButton") {
-		QPushButton *button = mD2ModelWidget.findChild<QPushButton *>(name);
-		return button;
-	} else {
-		return nullptr;
+	QList<QWidget *> const widgetList = mD2ModelWidget->findChildren<QWidget *>(name);
+
+	for (QWidget *widget : widgetList) {
+		if (type == widget->metaObject()->className() && widget->isVisible()) {
+			return widget;
+		}
 	}
+
+	return nullptr;
 }
 
 QWidget *TwoDModelGuiFacade::d2ModelScene()
