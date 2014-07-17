@@ -36,7 +36,7 @@ DraggableElement *GuiFacade::draggableElement(QString const &widgetId)
 	return nullptr;
 }
 
-QRect GuiFacade::property(QString const &name)
+QRect GuiFacade::propertyRect(QString const &name)
 {
 	QByteArray const data = name.toLocal8Bit();
 	QTreeWidget const *editorTree = dynamic_cast<QTreeWidget *>(
@@ -56,17 +56,20 @@ QObject *GuiFacade::pluginGuiFacade(QString const &pluginName)
 	return mMainWindow->toolManager().pluginGuiFacade(pluginName);
 }
 
-QWidget *GuiFacade::comboBoxProperty(QString const &name)
+QWidget *GuiFacade::property(QString const &type, QString const &name)
 {
-	QByteArray const data = name.toLocal8Bit();
-	QTreeWidget *editorTree = dynamic_cast<QTreeWidget *>(
-				mMainWindow->propertyEditor()->children()[0]->children()[1]);
-	for (int i = 0; i < editorTree->topLevelItemCount(); ++i) {
-		QTreeWidgetItem *item = editorTree->topLevelItem(i);
-		if (item->data(0, Qt::DisplayRole).toString() == data.data()) {
-			return editorTree->itemWidget(item, 1);
+	if (type == "QComboBox") {
+		QByteArray const data = name.toLocal8Bit();
+		QTreeWidget *editorTree = dynamic_cast<QTreeWidget *>(
+					mMainWindow->propertyEditor()->children()[0]->children()[1]);
+		for (int i = 0; i < editorTree->topLevelItemCount(); ++i) {
+			QTreeWidgetItem *item = editorTree->topLevelItem(i);
+			if (item->data(0, Qt::DisplayRole).toString() == data.data()) {
+				return editorTree->itemWidget(item, 1);
+			}
 		}
 	}
+
 	return nullptr;
 }
 

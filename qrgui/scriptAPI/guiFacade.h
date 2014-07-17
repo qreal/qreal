@@ -29,10 +29,10 @@ public:
 
 	/// Return QRect of property widget by her name. Need to click on property editor, on property position
 	/// before use property widget.
-	Q_INVOKABLE QRect property(QString const &name);
+	Q_INVOKABLE QRect propertyRect(QString const &name);
 
 	/// Return combo box widget from property editor.
-	Q_INVOKABLE QWidget *comboBoxProperty(QString const &name);
+	Q_INVOKABLE QWidget *property(QString const &type, QString const &name);
 
 	/// Return viewport(because scene viewport, not scene, recieve mouse event) of EditorViewScene of
 	/// current tab.
