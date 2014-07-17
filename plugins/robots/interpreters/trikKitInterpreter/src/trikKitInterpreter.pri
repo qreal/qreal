@@ -53,7 +53,9 @@ HEADERS += \
     src/blocks/details/drawPixelBlock.h \
     src/blocks/details/drawRectBlock.h \
     src/blocks/details/drawEllipseBlock.h \
-    src/blocks/details/drawArcBlock.h
+    src/blocks/details/drawArcBlock.h \
+    src/blocks/details/setPainterWidthBlock.h \
+    src/blocks/details/setPainterColorBlock.h
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -98,7 +100,9 @@ SOURCES += \
     src/blocks/details/drawPixelBlock.cpp \
     src/blocks/details/drawRectBlock.cpp \
     src/blocks/details/drawEllipseBlock.cpp \
-    src/blocks/details/drawArcBlock.cpp
+    src/blocks/details/drawArcBlock.cpp \
+    src/blocks/details/setPainterWidthBlock.cpp \
+    src/blocks/details/setPainterColorBlock.cpp
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \

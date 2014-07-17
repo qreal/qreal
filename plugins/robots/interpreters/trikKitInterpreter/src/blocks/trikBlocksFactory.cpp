@@ -17,6 +17,8 @@
 #include "details/drawRectBlock.h"
 #include "details/drawEllipseBlock.h"
 #include "details/drawArcBlock.h"
+#include "details/setPainterWidthBlock.h"
+#include "details/setPainterColorBlock.h"
 #include "details/setBackgroundBlock.h"
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
@@ -93,11 +95,10 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new WaitForButtonBlock(mRobotModelManager->model(), "UpButtonPort");
 	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
 		return new WaitForButtonBlock(mRobotModelManager->model(), "PowerButtonPort");
-
 	} else if (elementMetatypeIs(element, "TrikSetPainterColor")) {
-		return new EmptyBlock();
+		return new SetPainterColorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikSetPainterWidth")) {
-		return new EmptyBlock();
+		return new SetPainterWidthBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDrawPixel")) {
 		return new DrawPixelBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikDrawLine")) {

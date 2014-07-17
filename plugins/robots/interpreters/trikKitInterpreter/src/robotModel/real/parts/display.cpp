@@ -29,15 +29,15 @@ void Display::printText(int x, int y, QString const &text)
 	Q_UNUSED(text)
 }
 
-//void setPainterColor(QColor const &color)
-//{
-//	Q_UNUSED(color)
-//}
+void Display::setPainterColor(QColor const &color)
+{
+	Q_UNUSED(color)
+}
 
-//void setPainterWidth(int penWidth)
-//{
-//	Q_UNUSED(penWidth)
-//}
+void Display::setPainterWidth(int penWidth)
+{
+	Q_UNUSED(penWidth)
+}
 
 void Display::drawPixel(int x, int y)
 {
