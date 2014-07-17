@@ -86,6 +86,8 @@ void Display::clearScreen()
 	mRects.clear();
 	mEllipses.clear();
 	mArcs.clear();
+	mCurrentPenWidth = 0;
+	mCurrentPenColor = Qt::black;
 	if (mEngine.display()) {
 		mEngine.display()->repaintDisplay();
 	}
@@ -93,10 +95,6 @@ void Display::clearScreen()
 
 void Display::paint(QPainter *painter)
 {
-	/// @todo ZOMG.
-	qreal const pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
-	qreal const pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
-
 	QRect const displayRect(0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight());
 	painter->save();
 	painter->setPen(mBackground);
@@ -117,35 +115,35 @@ void Display::paint(QPainter *painter)
 	for (int i = 0; i < mPixels.length(); ++i)
 	{
 		painter->setPen(QPen(mPixels.at(i).color, mPixels.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawPoint(mPixels.at(i).coord.x() * pixWidth, mPixels.at(i).coord.y() * pixHeight);
+		painter->drawPoint(mPixels.at(i).coord.x(), mPixels.at(i).coord.y());
 	}
 
 	for (int i = 0; i < mLines.length(); ++i)
 	{
 		painter->setPen(QPen(mLines.at(i).color, mLines.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawLine(mLines.at(i).line.x1() * pixWidth, mLines.at(i).line.y1() * pixHeight
-				, mLines.at(i).line.x2() * pixWidth, mLines.at(i).line.y2() * pixHeight);
+		painter->drawLine(mLines.at(i).line.x1(), mLines.at(i).line.y1()
+				, mLines.at(i).line.x2(), mLines.at(i).line.y2());
 	}
 
 	for (int i = 0; i < mRects.length(); ++i)
 	{
 		painter->setPen(QPen(mRects.at(i).color, mRects.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawRect(mRects.at(i).rect.x() * pixWidth, mRects.at(i).rect.y() * pixHeight
-				, mRects.at(i).rect.width() * pixWidth, mRects.at(i).rect.height() * pixHeight);
+		painter->drawRect(mRects.at(i).rect.x(), mRects.at(i).rect.y()
+				, mRects.at(i).rect.width(), mRects.at(i).rect.height());
 	}
 
 	for (int i = 0; i < mEllipses.length(); ++i)
 	{
 		painter->setPen(QPen(mEllipses.at(i).color, mEllipses.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawEllipse(mEllipses.at(i).ellipse.x() * pixWidth, mEllipses.at(i).ellipse.y() * pixHeight
-				, mEllipses.at(i).ellipse.width() * pixWidth, mEllipses.at(i).ellipse.height() * pixHeight);
+		painter->drawEllipse(mEllipses.at(i).ellipse.x(), mEllipses.at(i).ellipse.y()
+				, mEllipses.at(i).ellipse.width(), mEllipses.at(i).ellipse.height());
 	}
 
 	for (int i = 0; i < mArcs.length(); ++i)
 	{
 		painter->setPen(QPen(mArcs.at(i).color, mArcs.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-		painter->drawArc(mArcs.at(i).arc.x() * pixWidth, mArcs.at(i).arc.y() * pixHeight
-				, mArcs.at(i).arc.width() * pixWidth, mArcs.at(i).arc.height() * pixHeight
+		painter->drawArc(mArcs.at(i).arc.x(), mArcs.at(i).arc.y()
+				, mArcs.at(i).arc.width(), mArcs.at(i).arc.height()
 				, mArcs.at(i).startAngle, mArcs.at(i).spanAngle);
 	}
 

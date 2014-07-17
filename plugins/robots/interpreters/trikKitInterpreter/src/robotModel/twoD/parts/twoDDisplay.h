@@ -10,12 +10,6 @@ namespace robotModel {
 namespace twoD {
 namespace parts {
 
-/// @todo Move this somewhere.
-int const textPixelHeight = 8;
-int const textPixelWidth = 16;
-int const nxtDisplayHeight = 64;
-int const nxtDisplayWidth = 100;
-
 class Display : public robotModel::parts::TrikDisplay, public graphicsUtils::PainterInterface
 {
 	Q_OBJECT
