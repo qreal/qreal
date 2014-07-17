@@ -13,7 +13,6 @@ class ScriptAPI;
 
 /// This class provides script API for some actions which use palette. Uses virtual mouse primitives to
 /// complete them.
-
 class PaletteAPI  : public QObject
 {
 	Q_OBJECT

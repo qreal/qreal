@@ -49,5 +49,5 @@ void HintReporter::disappear()
 
 void HintReporter::mousePressEvent(QMouseEvent *)
 {
-	emit mousePressEvent();
+	emit clicked();
 }

@@ -27,7 +27,7 @@ void VirtualKeyboard::printValue(QString const &value, int const duration)
 		QTimer *timer = new QTimer(this);
 		timer->setInterval(charDuration);
 		timer->setSingleShot(true);
-		connect(timer, SIGNAL(timeout()), mScriptAPI, SLOT(breakWaiting()));
+		connect (timer, &QTimer::timeout, mScriptAPI, &ScriptAPI::breakWaiting);
 		timer->start();
 		mScriptAPI->wait(-1);
 		QTest::keyClicks(nullptr, ch.toLower(), Qt::NoModifier, 0);

@@ -1,10 +1,10 @@
 var mainWindow = guiFacade.widget("MainWindow");
-hintAPI.addHint("Добро пожаловать в среду визуального программирования QReal:Robots!", 1300, mainWindow);
+/*hintAPI.addHint("Добро пожаловать в среду визуального программирования QReal:Robots!", 1300, mainWindow);
 API.wait(1500);
-hintAPI.addHint("Сейчас мы нарисуем одну диаграмму за вас, чтобы показать как все работает.", 1300, mainWindow);
+hintAPI.addHint("Сейчас мы нарисуем одну диаграмму за вас, чтобы показать, как все работает.", 1300, mainWindow);
 API.wait(1500);
 var newDiagram = guiFacade.widget("Action", "actionNew_Diagram");
-hintAPI.addHint("Сперва создайте новую диаграмму...", 2000, mainWindow);
+hintAPI.addHint("Сперва создадим новую диаграмму...", 2000, mainWindow);
 cursor.moveTo(newDiagram, 3000);
 cursor.leftButtonPress(newDiagram);
 cursor.leftButtonRelease(newDiagram, 400);
@@ -67,4 +67,4 @@ hintAPI.addHint("А теперь, запуск!", 5000, widget);
 var run = pluginGuiFacade.widget("PushButton", "runButton");
 cursor.moveTo(run, 1000);
 cursor.leftButtonPress(run);
-cursor.leftButtonRelease(run);
+cursor.leftButtonRelease(run);*/

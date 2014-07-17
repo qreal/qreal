@@ -204,8 +204,6 @@ public slots:
 	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle();
 
-	void initScriptAPI();
-
 private slots:
 	/// Suggests user to select a root diagram for the new project
 	/// if more than one diagram loaded or creates project with the only diagram
@@ -375,6 +373,8 @@ private:
 	void initExplorers();
 	void initRecentProjectsMenu();
 	void openStartTab();
+	void initScriptAPI();
+	void initActionWidgetsNames();
 
 	void setVersion(QString const &version);
 

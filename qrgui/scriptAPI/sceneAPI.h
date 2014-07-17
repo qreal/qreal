@@ -13,7 +13,6 @@ class DraggableElement;
 class ScriptAPI;
 
 /// This class provides script API for some actions on scene. Use virtual mouse primitives to complete them.
-
 class SceneAPI  : public QObject
 {
 	Q_OBJECT

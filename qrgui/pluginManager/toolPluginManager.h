@@ -39,8 +39,9 @@ public:
 	/// @param rootElementId Id of the tab which became active after change, if applicable. If not, Id().
 	void activeTabChanged(Id const & rootElementId);
 
-	///Returns list of all plugins
-	QList<ToolPluginInterface *> getPlugins();
+	/// Returns plugin gui script facade.
+	QObject *pluginGuiFacade(QString const &pluginName);
+
 private:
 	QList<HotKeyActionInfo> hotKeyActions() const;
 	void setHotKeyActions() const;
@@ -50,7 +51,7 @@ private:
 
 	QDir mPluginsDir;
 
-	QList<ToolPluginInterface *> mPlugins;
+	QMap<QString, ToolPluginInterface *> mPlugins;
 	QList<QPluginLoader *> mLoaders;
 
 	/// An object and that is used to customize GUI with values from plugins

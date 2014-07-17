@@ -22,7 +22,6 @@ namespace gui {
 /// graphical object. In total, this API interpretate commands on QtScript with access to graphic user
 /// interface, which can reproduce some user actions in some order, which would be made with assistance of
 /// VirtualCursor and VirtualMouse, like user would made them himself.
-
 class ScriptAPI : public QObject
 {
 	Q_OBJECT
@@ -31,35 +30,35 @@ public:
 	ScriptAPI();
 	~ScriptAPI();
 
-	///Initialize script API.
+	/// Initialize script API.
 	void init(MainWindow *mainWindow);
 
-	///Stop execution for duration. Starting event loop, which breaking when duration time ellapsed.
+	/// Stop execution for duration. Starting event loop, which breaking when duration time ellapsed.
 	Q_INVOKABLE void wait(int duration);
 
-	///Change virtual cursor parent. Virtual cursor is QWidget child, so his icon must have parent.
+	/// Change virtual cursor parent. Virtual cursor is QWidget child, so his icon must have parent.
 	Q_INVOKABLE void changeWindow(QWidget *parent);
 
-	///Pick combo box item. Virtual cursor can pick any item in sight of view. Cant scroll bars.
+	/// Pick combo box item. Virtual cursor can pick any item in sight of view. Cant scroll bars.
 	Q_INVOKABLE void pickComboBoxItem(QComboBox *comboBox, QString const &name, int const duration);
 
-	///Returns gui facade.
-	Q_INVOKABLE GuiFacade *guiFacade();
+	/// Returns gui facade.
+	GuiFacade *guiFacade();
 
-	///Returns virtual cursor.
-	Q_INVOKABLE VirtualCursor *virtualCursor();
+	/// Returns virtual cursor.
+	VirtualCursor *virtualCursor();
 
-	///Returns virtual keyboard.
-	Q_INVOKABLE VirtualKeyboard *virtualKeyboard();
+	/// Returns virtual keyboard.
+	VirtualKeyboard *virtualKeyboard();
 
-	///Returns scene API.
-	Q_INVOKABLE SceneAPI *sceneAPI();
+	/// Returns scene API.
+	SceneAPI *sceneAPI();
 
-	///Returns hint API.
-	Q_INVOKABLE HintAPI *hintAPI();
+	/// Returns hint API.
+	HintAPI *hintAPI();
 
-	///Returns palette API.
-	Q_INVOKABLE PaletteAPI *paletteAPI();
+	/// Returns palette API.
+	PaletteAPI *paletteAPI();
 
 public slots:
 	///Break event loop.

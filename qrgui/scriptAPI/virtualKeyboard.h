@@ -8,8 +8,7 @@ namespace gui {
 
 class ScriptAPI;
 
-///This class provides tool for emulate keyboard typing.
-
+/// This class provides tool for emulate keyboard typing.
 class VirtualKeyboard : public QObject
 {
 	Q_OBJECT
@@ -17,7 +16,7 @@ class VirtualKeyboard : public QObject
 public:
 	VirtualKeyboard(ScriptAPI *mScriptAPI);
 
-	///Emulate keyboard to type message for over duration time.
+	/// Emulate keyboard to type message for over duration time.
 	Q_INVOKABLE void type(QString const &message, int const duration);
 
 private:

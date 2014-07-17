@@ -4,6 +4,7 @@
 
 #include "scriptAPI.h"
 #include "arrow.h"
+#include "hintReporter.h"
 
 #include <qrutils/mathUtils/math.h>
 
@@ -24,11 +25,8 @@ void HintAPI::addHint(QString const &message, int const lifeTime, QWidget *paren
 	QString const modifiedMessage = data.data();
 	mHintReporter = new HintReporter(parent, modifiedMessage, lifeTime);
 
-	QTimer *hintTimer = new QTimer(this);
-	connect(hintTimer, SIGNAL(timeout()), this, SLOT(destroyHint()));
-	connect(mHintReporter, SIGNAL(mousePressEvent()), this, SLOT(destroyHint()));
-	hintTimer->setSingleShot(true);
-	hintTimer->start(lifeTime);
+	connect(mHintReporter, &HintReporter::clicked, this, &HintAPI::destroyHint);
+	QTimer::singleShot(lifeTime, this, SLOT(destroyHint()));
 }
 
 void HintAPI::arrowToWidget(QWidget *target, qreal angle, int lifeTime, QWidget *parent)
@@ -46,10 +44,7 @@ void HintAPI::arrowToWidget(QWidget *target, qreal angle, int lifeTime, QWidget 
 
 	mArrow = new Arrow (sourcePoint, destPoint, lifeTime, parent);
 
-	QTimer *hintTimer = new QTimer(this);
-	connect(hintTimer, SIGNAL(timeout()), this, SLOT(destroyArrow()));
-	hintTimer->setSingleShot(true);
-	hintTimer->start(lifeTime);
+	QTimer::singleShot(lifeTime, this, SLOT(destroyArrow()));
 }
 
 void HintAPI::destroyHint()

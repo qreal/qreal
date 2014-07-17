@@ -1950,6 +1950,7 @@ void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
 	if (SettingsManager::value("scriptInterpretation").toBool()) {
+		initActionWidgetsNames();
 		initScriptAPI();
 	}
 
@@ -2280,7 +2281,7 @@ void MainWindow::openStartTab()
 
 void MainWindow::initScriptAPI()
 {
-	QThread *scriptAPIthread = new QThread;
+	QThread *scriptAPIthread = new QThread(this);
 	mScriptAPI.init(this);
 	mScriptAPI.moveToThread(scriptAPIthread);
 	connect(mSystemEvents, SIGNAL(closedMainWindow()), scriptAPIthread, SLOT(quit()));
@@ -2338,6 +2339,21 @@ void MainWindow::endPaletteModification()
 				element->updateEnabledState();
 			}
 		}
+
 		scene->update();
+	}
+}
+
+void MainWindow::initActionWidgetsNames()
+{
+	QList<QAction *> const actionList = findChildren<QAction *>();
+
+	for (QAction *action : actionList) {
+		QList<QWidget *> const widgetList = action->associatedWidgets();
+		for (QWidget *widget : widgetList) {
+			if (widget->objectName() == "") {
+				widget->setObjectName(action->objectName());
+			}
+		}
 	}
 }

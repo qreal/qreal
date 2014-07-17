@@ -50,7 +50,7 @@ void ScriptAPI::init(MainWindow *mainWindow)
 	QScriptValue const guiFacade = mScriptEngine.newQObject(mGuiFacade);
 	mScriptEngine.globalObject().setProperty("guiFacade", guiFacade);
 
-	QScriptValue const robotsGuiFacade = mScriptEngine.newQObject(mGuiFacade->plugin("robots")->guiScriptFacade());
+	QScriptValue const robotsGuiFacade = mScriptEngine.newQObject(mGuiFacade->pluginGuiFacade("qRealRobots.RobotsPlugin"));
 	mScriptEngine.globalObject().setProperty("pluginGuiFacade", robotsGuiFacade);
 
 	QScriptValue const virtualCursor = mScriptEngine.newQObject(mVirtualCursor);
@@ -113,8 +113,16 @@ void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, QString const &name, int c
 	mVirtualCursor->moveToRect(target, duration);
 	timer->stop();
 
-	QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress, QPoint(0, rowHeight*i), Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
-	QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease, QPoint(0, rowHeight*i), Qt::LeftButton , Qt::LeftButton, Qt::NoModifier);
+	QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress
+										 , QPoint(0, rowHeight*i)
+										 , Qt::LeftButton
+										 , Qt::LeftButton
+										 , Qt::NoModifier);
+	QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease
+										   , QPoint(0, rowHeight*i)
+										   , Qt::LeftButton
+										   , Qt::LeftButton
+										   , Qt::NoModifier);
 	QApplication::postEvent(comboBox->view()->viewport(), pressEvent);
 	QApplication::postEvent(comboBox->view()->viewport(), releaseEvent);
 	wait(200);
@@ -129,11 +137,7 @@ void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, QString const &name, int c
 void ScriptAPI::wait(int duration)
 {
 	if (duration != -1) {
-		QTimer *timer = new QTimer(this);
-		timer->setSingleShot(true);
-		timer->setInterval(duration);
-		connect (timer, SIGNAL(timeout()), &mEventLoop, SLOT(quit()));
-		timer->start();
+		QTimer::singleShot(duration, &mEventLoop, SLOT(quit()));
 	}
 
 	mEventLoop.exec();

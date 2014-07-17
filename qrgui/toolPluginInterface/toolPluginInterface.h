@@ -64,13 +64,13 @@ public:
 	/// Shall be overriden to return facade for access to plugin gui.
 	virtual QObject* guiScriptFacade()
 	{
-		return NULL;
+		return nullptr;
 	}
 
-	///Shall be overriden to return plugin name.
+	/// Shall be overriden to return plugin name.
 	virtual QString pluginName()
 	{
-		return "";
+		return QString();
 	}
 	
 	/// Returns a list of project converters provided by this plugin.

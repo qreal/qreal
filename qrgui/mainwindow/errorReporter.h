@@ -11,7 +11,6 @@
 #include "mainwindow/errorListWidget.h"
 #include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
-
 namespace qReal {
 namespace gui {
 

@@ -13,7 +13,6 @@ class ScriptAPI;
 
 /// This class provides API to class HintReporter. HintAPI allows to make hint widgets, defined by message,
 /// parent widget, which will show hint, and duration of opacity effect.
-
 class HintAPI  : public QObject, public HintInterface
 {
 	Q_OBJECT

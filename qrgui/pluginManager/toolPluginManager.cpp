@@ -21,11 +21,10 @@ ToolPluginManager::ToolPluginManager()
 		// TODO: Free memory
 		QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader->instance();
-
 		if (plugin) {
 			ToolPluginInterface *toolPlugin = qobject_cast<ToolPluginInterface *>(plugin);
 			if (toolPlugin) {
-				mPlugins << toolPlugin;
+				mPlugins[loader->metaData()["IID"].toString()] = toolPlugin;
 				mLoaders << loader;
 			} else {
 				// TODO: Does not work on linux. See editorManager.cpp for more details.
@@ -51,7 +50,7 @@ void ToolPluginManager::init(PluginConfigurator const &configurator)
 {
 	mSystemEvents = &configurator.systemEvents();
 
-	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins.values()) {
 		toolPlugin->init(configurator);
 	}
 }
@@ -59,7 +58,7 @@ void ToolPluginManager::init(PluginConfigurator const &configurator)
 QList<ActionInfo> ToolPluginManager::actions() const
 {
 	QList<ActionInfo> result;
-	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins.values()) {
 		result += toolPlugin->actions();
 	}
 
@@ -69,7 +68,7 @@ QList<ActionInfo> ToolPluginManager::actions() const
 QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
 {
 	QList<HotKeyActionInfo> result;
-	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins.values()) {
 		result += toolPlugin->hotKeyActions();
 	}
 
@@ -85,7 +84,7 @@ void ToolPluginManager::setHotKeyActions() const
 
 void ToolPluginManager::loadDefaultSettings()
 {
-	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins.values()) {
 		for (QString const &defaultSettingsFile : toolPlugin->defaultSettingsFiles()) {
 			SettingsManager::loadDefaultSettings(defaultSettingsFile);
 		}
@@ -95,7 +94,7 @@ void ToolPluginManager::loadDefaultSettings()
 QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const
 {
 	QList<QPair<QString, PreferencesPage *> > result;
-	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins.values()) {
 		if (toolPlugin->preferencesPage().second) {
 			result << toolPlugin->preferencesPage();
 		}
@@ -107,7 +106,7 @@ QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() 
 QMultiMap<QString, ProjectConverter> ToolPluginManager::projectConverters() const
 {
 	QMultiMap<QString, ProjectConverter> result;
-	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins.values()) {
 		for (ProjectConverter const &converter : toolPlugin->projectConverters()) {
 			result.insertMulti(converter.editor(), converter);
 		}
@@ -118,7 +117,7 @@ QMultiMap<QString, ProjectConverter> ToolPluginManager::projectConverters() cons
 
 Customizer *ToolPluginManager::customizer() const
 {
-	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+	for (ToolPluginInterface * const toolPlugin : mPlugins.values()) {
 		if (toolPlugin->customizationInterface()) {
 			return toolPlugin->customizationInterface();
 		}
@@ -136,7 +135,7 @@ void ToolPluginManager::activeTabChanged(Id const & rootElementId)
 	emit mSystemEvents->activeTabChanged(rootElementId);
 }
 
-QList<ToolPluginInterface *> ToolPluginManager::getPlugins()
+QObject *ToolPluginManager::pluginGuiFacade(QString const &pluginName)
 {
-	return mPlugins;
+	return mPlugins[pluginName]->guiScriptFacade();
 }

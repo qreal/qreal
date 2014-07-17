@@ -9,7 +9,6 @@ namespace gui {
 
 /// Represents graphical arrow. Allows draw navigated arrows with opacity animation (for a lifeTime).
 /// Class HintAPI provides interface to draw those arrows, directed on any object in GUI of a system.
-
 class Arrow : public QWidget
 {
 	Q_OBJECT

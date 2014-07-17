@@ -31,12 +31,18 @@ QString SceneAPI::initialNode()
 void SceneAPI::drawLink(QString const &fromElementId, QString const &toElementId, int const duration)
 {
 	NodeElement *fromNode = mMainWindow->getCurrentTab()->editorViewScene()->getNodeById(Id::loadFromString(fromElementId));
-	mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport(), duration/2, fromNode->pos().x() + 100, fromNode->pos().y() + 10);
+	mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport()
+			, duration/2
+			, fromNode->pos().x() + 100
+			, fromNode->pos().y() + 10);
 
 	mScriptAPI->virtualCursor()->rightButtonPress(mMainWindow->getCurrentTab()->viewport());
 
 	NodeElement *toNode = mMainWindow->getCurrentTab()->editorViewScene()->getNodeById(Id::loadFromString(toElementId));
-	mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport(), duration/2, toNode->pos().x() + 100, toNode->pos().y() + 10);
+	mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport()
+			, duration/2
+			, toNode->pos().x() + 100
+			, toNode->pos().y() + 10);
 
 	mScriptAPI->virtualCursor()->rightButtonRelease(mMainWindow->getCurrentTab()->viewport());
 }

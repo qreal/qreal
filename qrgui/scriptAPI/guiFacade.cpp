@@ -9,54 +9,23 @@ using namespace gui;
 
 GuiFacade::GuiFacade(MainWindow *mainWindow)
 	: mMainWindow(mainWindow)
-	, mPlugin(nullptr)
 {
 }
 
-QWidget* GuiFacade::widget(QString const &type, QString const &name)
+QWidget *GuiFacade::widget(QString const &type, QString const &name)
 {
-	if (type == "Action") {
-		QAction *action = mMainWindow->findChild<QAction *>(name);
-		if (action) {
-			QList<QWidget *> const widgetList = action->associatedWidgets();
-			for (QWidget *widget : widgetList) {
-				QString buttonClassName = "QToolButton";
-				if (buttonClassName == widget->metaObject()->className()) {
-					return widget;
-				}
-			}
-		}
-		QWidget *widget = robotAction(name);
-		if (widget) {
+	QList<QWidget *> const widgetList = mMainWindow->findChildren<QWidget *>(name);
+
+	for (QWidget *widget : widgetList) {
+		if (type == widget->metaObject()->className() && widget->isVisible()) {
 			return widget;
 		}
-	} else if (type == "ComboBox") {
-		QList<QComboBox *> const comboBoxList = mMainWindow->findChildren<QComboBox*>();
-		for(QComboBox *comboBox : comboBoxList) {
-			if (comboBox->objectName() == name && comboBox->isVisible()) {
-				return comboBox;
-			}
-		}
-		QWidget *comboBox = comboBoxProperty(name);
-		if (comboBox) {
-			return comboBox;
-		}
-	} else if (type == "Scene") {
-		return mMainWindow->getCurrentTab()->viewport();
-	} else if (type == "PropertyEditor") {
-		PropertyEditorView const *propertyEditor = mMainWindow->findChild<PropertyEditorView *>("propertyEditor");
-		return propertyEditor->
-				findChild<QtTreePropertyBrowser *>()->
-				findChild<QTreeWidget *>()->viewport();
-	} else if (type == "MainWindow") {
-		return mMainWindow;
-	} else if (type == "Palette") {
-		return mMainWindow->paletteDock();
 	}
+
 	return nullptr;
 }
 
-DraggableElement* GuiFacade::draggableElement(QString const &widgetId)
+DraggableElement *GuiFacade::draggableElement(QString const &widgetId)
 {
 	QList<DraggableElement *> const paletteWidgets = mMainWindow->findChildren<DraggableElement *>();
 	for (DraggableElement *paletteElement : paletteWidgets) {
@@ -82,19 +51,12 @@ QRect GuiFacade::property(QString const &name)
 	}
 }
 
-ToolPluginInterface* GuiFacade::plugin(QString const &pluginName)
+QObject *GuiFacade::pluginGuiFacade(QString const &pluginName)
 {
-	QList<ToolPluginInterface *> const pluginList = mMainWindow->toolManager().getPlugins();
-	for (ToolPluginInterface *plugin : pluginList) {
-		if (plugin->pluginName() == pluginName) {
-			mPlugin = plugin;
-		}
-	}
-
-	return mPlugin;
+	return mMainWindow->toolManager().pluginGuiFacade(pluginName);
 }
 
-QWidget* GuiFacade::comboBoxProperty(QString const &name)
+QWidget *GuiFacade::comboBoxProperty(QString const &name)
 {
 	QByteArray const data = name.toLocal8Bit();
 	QTreeWidget *editorTree = dynamic_cast<QTreeWidget *>(
@@ -108,9 +70,9 @@ QWidget* GuiFacade::comboBoxProperty(QString const &name)
 	return nullptr;
 }
 
-QWidget* GuiFacade::robotAction(QString const &name)
+QWidget *GuiFacade::pluginAction(QString const &name)
 {
-	QList<ActionInfo > actionList = mPlugin->actions();
+	QList<ActionInfo > actionList = mMainWindow->toolManager().actions();
 	for(ActionInfo &actionInfo : actionList) {
 		if (actionInfo.action()->objectName() == name) {
 			QList<QWidget *> const widgetList = actionInfo.action()->associatedWidgets();
@@ -123,4 +85,23 @@ QWidget* GuiFacade::robotAction(QString const &name)
 		}
 	}
 	return nullptr;
+}
+
+QWidget *GuiFacade::scene()
+{
+	return mMainWindow->getCurrentTab()->viewport();
+}
+
+QWidget *GuiFacade::mainWindow()
+{
+	return mMainWindow;
+}
+
+QWidget *GuiFacade::propertyEditor()
+{
+	PropertyEditorView const *propertyEditor = mMainWindow->propertyEditor();
+	return propertyEditor->
+			findChild<QtTreePropertyBrowser *>()->
+			findChild<QTreeWidget *>()->viewport();
+
 }

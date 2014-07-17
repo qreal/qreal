@@ -1,6 +1,5 @@
 #include "arrow.h"
 
-#include <QtCore/QDebug>
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QTimer>
 #include <QtGui/QPainter>
