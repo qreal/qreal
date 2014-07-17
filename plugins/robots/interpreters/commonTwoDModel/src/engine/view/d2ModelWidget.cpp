@@ -263,6 +263,7 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 {
 	mModel.robotModel().setPosition(mInitialRobotBeforeRun.pos);
 	mModel.robotModel().setRotation(mInitialRobotBeforeRun.rotation);
+	centerOnRobot();
 }
 
 void D2ModelWidget::keyPressEvent(QKeyEvent *event)
