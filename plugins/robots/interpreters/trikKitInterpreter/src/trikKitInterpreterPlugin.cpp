@@ -115,6 +115,11 @@ interpreterBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devices
 	return &mTwoDModelV6->devicesConfigurationProvider();
 }
 
+QString TrikKitInterpreterPlugin::defaultSettingsFile() const
+{
+	return ":/trikDefaultSettings.ini";
+}
+
 void TrikKitInterpreterPlugin::onActiveTabChanged(Id const &rootElementId)
 {
 	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;

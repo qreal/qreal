@@ -10,20 +10,21 @@ namespace trikKitInterpreter {
 
 class TrikFSharpAdditionalPreferences : public interpreterBase::AdditionalPreferences
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit TrikFSharpAdditionalPreferences(QWidget *parent = 0);
-    ~TrikFSharpAdditionalPreferences();
+	explicit TrikFSharpAdditionalPreferences(QWidget *parent = 0);
+	~TrikFSharpAdditionalPreferences();
 
-    void save() override;
-    void restoreSettings() override;
+	void save() override;
+	void restoreSettings() override;
+	QString defaultSettingsFile() const;
 
 signals:
-    void settingsChanged();
+	void settingsChanged();
 
 private:
-    Ui::TrikFSharpAdditionalPreferences *mUi;
+	Ui::TrikFSharpAdditionalPreferences *mUi;
 };
 
 }

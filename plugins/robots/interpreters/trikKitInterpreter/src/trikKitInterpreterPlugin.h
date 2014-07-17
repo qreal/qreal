@@ -52,7 +52,7 @@ public:
 	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
 
 	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
-
+	QString defaultSettingsFile() const;
 private slots:
 	/// Shows or hides 2d model action depending on whether current tab is robots diagram.
 	void onActiveTabChanged(qReal::Id const &rootElementId);
