@@ -9,6 +9,7 @@ LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils
 DEFINES += ROBOTS_UTILS_LIBRARY
 
 HEADERS += \
+	$$PWD/../include/utils/utils.h \
 	$$PWD/../include/utils/timelineInterface.h \
 	$$PWD/../include/utils/abstractTimer.h \
 	$$PWD/../include/utils/realTimeline.h \
@@ -20,6 +21,7 @@ HEADERS += \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationException.h \
 
 SOURCES += \
+	$$PWD/utils.cpp \
 	$$PWD/abstractTimer.cpp \
 	$$PWD/realTimeline.cpp \
 	$$PWD/realTimer.cpp \

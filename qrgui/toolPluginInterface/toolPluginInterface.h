@@ -66,12 +66,6 @@ public:
 	{
 		return nullptr;
 	}
-
-	/// Shall be overriden to return plugin name.
-	virtual QString pluginName()
-	{
-		return QString();
-	}
 	
 	/// Returns a list of project converters provided by this plugin.
 	/// Convereters are applied to save containing corresponding diagrams

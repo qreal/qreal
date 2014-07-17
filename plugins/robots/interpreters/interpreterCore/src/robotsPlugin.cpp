@@ -72,11 +72,6 @@ void RobotsPlugin::forceLoadCommonTwoDModelLib()
 	Q_UNUSED(name)
 }
 
-QString RobotsPlugin::pluginName()
-{
-	return "robots";
-}
-
 twoDModel::engine::TwoDModelGuiFacade *RobotsPlugin::guiScriptFacade()
 {
 	return mRobotsPluginFacade.data()->guiScriptFacade();

@@ -6,16 +6,10 @@
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
 
-#include <interpreterBase/devicesConfigurationProvider.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
-
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
 
-#include "src/engine/model/model.h"
-
-#include "commonTwoDModel/engine/configurer.h"
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
 class QComboBox;
@@ -25,14 +19,6 @@ class D2Form;
 }
 
 namespace twoDModel {
-
-namespace items {
-class WallItem;
-class LineItem;
-class StylusItem;
-class EllipseItem;
-}
-
 namespace view {
 
 class D2ModelWidget : public utils::QRealDialog, public interpreterBase::DevicesConfigurationProvider
@@ -48,8 +34,6 @@ public:
 	void close();
 
 	/// Get current scene position of robot
-	QPointF robotPos() const;
-
 	/// Enables Run and Stop buttons
 	void enableRunStopButtons();
 
@@ -72,9 +56,6 @@ public:
 	void setRunStopButtonsEnabled(bool enabled);
 
 public slots:
-	void update();
-	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos);
-
 	void saveInitialRobotBeforeRun();
 	void setInitialRobotBeforeRun();
 
@@ -104,22 +85,6 @@ protected:
 			, const interpreterBase::robotModel::DeviceInfo &device) override;
 
 private slots:
-	void addWall(bool on);
-	void addLine(bool on);
-	void addStylus(bool on);
-	void addEllipse(bool on);
-	void clearScene(bool removeRobot = false);
-	void setNoneButton();
-	void resetButtons();
-
-	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
-	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
-	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
-
-	void deleteItem(QGraphicsItem *);
-
-	void handleNewRobotPosition();
-
 	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
@@ -134,23 +99,11 @@ private slots:
 	void onHandCursorButtonToggled(bool on);
 	void onMultiselectionCursorButtonToggled(bool on);
 
-	void alignWalls();
 	void changePhysicsSettings();
 
 	void toggleDisplayVisibility();
 
 private:
-	enum DrawingAction
-	{
-		none = 0
-		, wall
-		, line
-		, stylus
-		, Port
-		, ellipse
-		, noneWordLoad
-	};
-
 	enum CursorType
 	{
 		noDrag = 0
@@ -183,10 +136,6 @@ private:
 	void initPorts();
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
-	void drawWalls();
-	void drawColorFields();
-	void drawInitialRobot();
-
 	void setDisplayVisibility(bool visible);
 
 	QDomDocument generateXml() const;
@@ -200,28 +149,22 @@ private:
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(interpreterBase::robotModel::PortInfo const &port);
 
-	void reshapeWall(QGraphicsSceneMouseEvent *event);
-	void reshapeLine(QGraphicsSceneMouseEvent *event);
-	void reshapeStylus(QGraphicsSceneMouseEvent *event);
-	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
-
 	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoPalette();
 
-	void setNoneStatus();
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(CursorType cursor);
 
 	void initWidget();
-	QList<graphicsUtils::AbstractItem *> selectedColorItems();
-	bool isColorItem(graphicsUtils::AbstractItem *item);
+	QList<graphicsUtils::AbstractItem *> selectedColorItems() const;
+	bool isColorItem(graphicsUtils::AbstractItem * const item) const;
 
 	void centerOnRobot();
 	QGraphicsView::DragMode cursorTypeToDragType(CursorType type) const;
 	QCursor cursorTypeToCursor(CursorType type) const;
-	void processDragMode();
+	void refreshCursor();
 	void syncCursorButtons();
 
 	void onFirstShow();
@@ -232,27 +175,12 @@ private:
 
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
-	RobotItem *mRobot;
 
 	model::Model &mModel;
 
 	engine::TwoDModelDisplayWidget *mDisplay;
 
-	/// Current action (toggled button on left panel)
-	DrawingAction mDrawingAction;
-
-	/// Variable to count clicks on scene, used to create walls
-	int mMouseClicksCount;
-
-	/// Temporary wall that's being created. When it's complete, it's added to world model
-	items::WallItem *mCurrentWall;
-	items::LineItem *mCurrentLine;
-	items::StylusItem *mCurrentStylus;
-	items::EllipseItem *mCurrentEllipse;
-
 	int mWidth;
-
-	bool mClearing;
 
 	QButtonGroup mButtonGroup;
 	QButtonGroup mCursorButtonGroup;

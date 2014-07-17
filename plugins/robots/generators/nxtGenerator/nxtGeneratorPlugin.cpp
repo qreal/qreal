@@ -43,7 +43,7 @@ QString NxtGeneratorPlugin::extension() const
 	return "c";
 }
 
-QString NxtGeneratorPlugin::extDescrition() const
+QString NxtGeneratorPlugin::extensionDescription() const
 {
 	return tr("Lego NXT Source File");
 }
@@ -64,8 +64,8 @@ bool NxtGeneratorPlugin::canGenerateTo(QString const &project)
 
 	// If c file has much later timestamp then it was edited by user - restrincting generation to this file.
 	int const timestampMaxDifference = 100;
-	return cFile.lastModified().toMSecsSinceEpoch()
-			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference;
+	return (cFile.lastModified().toMSecsSinceEpoch()
+			- makeFile.lastModified().toMSecsSinceEpoch() < timestampMaxDifference);
 }
 
 void NxtGeneratorPlugin::init(PluginConfigurator const &configurator

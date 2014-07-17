@@ -34,7 +34,6 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::ProjectConverter> projectConverters() override;
 	QStringList defaultSettingsFiles() override;
-	QString pluginName() override;
 	twoDModel::engine::TwoDModelGuiFacade *guiScriptFacade() override;
 
 private:

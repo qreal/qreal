@@ -6,6 +6,7 @@
 #include "commonTwoDModel/robotModel/twoDRobotModel.h"
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 #include "commonTwoDModel/engine/twoDModelGuiFacade.h"
+#include "managers/kitExtensionsUpdateManager.h"
 
 using namespace interpreterCore;
 
@@ -88,6 +89,11 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, paletteUpdateManager, &PaletteUpdateManager::updatePalette);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
+
+	auto kitExtensionsUpdateManager = new KitExtensionsUpdateManager(mKitPluginManager
+			, configurer.textManager(), this);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, kitExtensionsUpdateManager, &KitExtensionsUpdateManager::updateExtensions);
 
 	// It will subscribe to all signals itself and free memory too.
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
@@ -182,6 +188,11 @@ void RobotsPluginFacade::initSensorWidgets()
 	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mDockDevicesConfigurer, &interpreterBase::DevicesConfigurationWidget::selectRobotModel);
+	for (interpreterBase::robotModel::RobotModelInterface * const model : mKitPluginManager.allRobotModels()) {
+		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(model->kitId())) {
+			mDockDevicesConfigurer->prependCustomWidget(*model, kit->quickPreferencesFor(*model));
+		}
+	}
 
 	mWatchListWindow = new utils::WatchListWindow(mParser);
 	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);

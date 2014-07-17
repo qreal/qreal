@@ -53,6 +53,7 @@ public:
 	void refreshWindowTitleAccordingToSaveFile();
 
 private:
+	bool openProject(QString const &fileName);
 	bool import(QString const &fileName);
 	bool saveFileExists(QString const &fileName);
 	bool pluginsEnough() const;
