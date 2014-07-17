@@ -8,19 +8,26 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
+win32 {
+	QMAKE_POST_LINK = "cmd /C "copy lib\\Trik.Core.dll ..\\..\\..\\..\\bin /y""
+}
+else {
+	QMAKE_POST_LINK = "cp lib/Trik.Core.dll ../../../../bin"
+}
+
 LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase -lutils
 
 INCLUDEPATH += \
-    $$PWD/../generatorBase/include/ \
-    $$PWD/../../interpreters/interpreterBase/include \
-    $$PWD/../../utils/include/ \
-    $$PWD/../../../../ \
-    $$PWD/../../../../qrgui \
+	$$PWD/../generatorBase/include/ \
+	$$PWD/../../interpreters/interpreterBase/include \
+	$$PWD/../../utils/include/ \
+	$$PWD/../../../../ \
+	$$PWD/../../../../qrgui \
 
 # workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # when fixed it would become possible to use QMAKE_LFLAGS_RPATH
 !macx {
-	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../bin/
+QMAKE_POST_LINKQMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../bin/
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin/plugins/
 }
 

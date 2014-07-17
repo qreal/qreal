@@ -77,9 +77,9 @@ QList<HotKeyActionInfo> FSharpGeneratorPlugin::hotKeyActions()
 generatorBase::MasterGeneratorBase *FSharpGeneratorPlugin::masterGenerator()
 {
 	return new FSharpMasterGenerator(*mRepo
-	, *mMainWindowInterface->errorReporter()
-	, *mRobotModelManager
-	, mMainWindowInterface->activeDiagram());
+			, *mMainWindowInterface->errorReporter()
+			, *mRobotModelManager
+			, mMainWindowInterface->activeDiagram());
 }
 
 void FSharpGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
@@ -112,10 +112,10 @@ bool FSharpGeneratorPlugin::uploadProgram()
 	QProcess myProcess;
 	QFileInfo const fileInfo = generateCodeForProcessing();
 
-	QString pathToTheTrikObservable = " -r \"G:/Trik.Core.dll\"";
+	QString pathToTheTrikCore = " -r \"..\\..\\Trik.Core.dll\"";
 	QString command = "\"" + qReal::SettingsManager::value("FSharpPath").toString() + "\" "
 			+ "\"" + fileInfo.absoluteFilePath() + "\""
-			+ pathToTheTrikObservable;
+			+ pathToTheTrikCore;
 
 	myProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
 	myProcess.start(command);
