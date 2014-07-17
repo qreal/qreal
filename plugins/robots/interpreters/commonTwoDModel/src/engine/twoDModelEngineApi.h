@@ -25,10 +25,13 @@ public:
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port) override;
 
 	/// @todo: move this logic into sensors adding here some more low-level logic instead.
-	int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const override;
+	int readTouchSensor(interpreterBase::robotModel::DeviceInfo const &device
+			, interpreterBase::robotModel::PortInfo const &port) const override;
 	int readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const override;
-	int readColorSensor(interpreterBase::robotModel::PortInfo const &port) const override;
-	int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const override;
+	int readColorSensor(interpreterBase::robotModel::DeviceInfo const &device
+			, interpreterBase::robotModel::PortInfo const &port) const override;
+	int readLightSensor(interpreterBase::robotModel::DeviceInfo const &device
+			, interpreterBase::robotModel::PortInfo const &port) const override;
 
 	void playSound(int timeInMs) override;
 
@@ -38,7 +41,8 @@ public:
 private:
 	QPair<QPointF, qreal> countPositionAndDirection(interpreterBase::robotModel::PortInfo const &port) const;
 
-	QImage printColorSensor(interpreterBase::robotModel::PortInfo const &port) const;
+	QImage printColorSensor(interpreterBase::robotModel::DeviceInfo const &device
+			, interpreterBase::robotModel::PortInfo const &port) const;
 	int readColorFullSensor(QHash<uint, int> const &countsColor) const;
 	int readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const;
 	int readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const;

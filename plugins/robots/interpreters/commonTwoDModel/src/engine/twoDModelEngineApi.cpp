@@ -43,7 +43,7 @@ void TwoDModelEngineApi::resetEncoder(PortInfo const &port)
 	mModel.robotModel().resetEncoder(port);
 }
 
-int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
+int TwoDModelEngineApi::readTouchSensor(DeviceInfo const &device, PortInfo const &port) const
 {
 	if (!mModel.robotModel().configuration().type(port).isA<robotParts::TouchSensor>()) {
 		return touchSensorNotPressedSignal;
@@ -51,7 +51,7 @@ int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
-	qreal const width = sensorWidth / 2.0;
+	qreal const width = mConfigurer->sensorImageRect(device).width() / 2.0;
 	QRectF const scanningRect = QRectF(
 			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
 			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
@@ -79,9 +79,9 @@ int TwoDModelEngineApi::spoilSonarReading(int const distance) const
 	return mathUtils::Math::truncateToInterval(0, 255, round(distance + ran));
 }
 
-int TwoDModelEngineApi::readColorSensor(PortInfo const &port) const
+int TwoDModelEngineApi::readColorSensor(DeviceInfo const &device, PortInfo const &port) const
 {
-	QImage const image = printColorSensor(port);
+	QImage const image = printColorSensor(device, port);
 	QHash<uint, int> countsColor;
 
 	uint const *data = reinterpret_cast<uint const *>(image.bits());
@@ -123,7 +123,7 @@ uint TwoDModelEngineApi::spoilColor(uint const color) const
 	return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
 }
 
-QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
+QImage TwoDModelEngineApi::printColorSensor(DeviceInfo const &device, PortInfo const &port) const
 {
 	if (mModel.robotModel().configuration().type(port).isNull()) {
 		return QImage();
@@ -131,7 +131,7 @@ QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
-	qreal const width = sensorWidth / 2.0;
+	qreal const width =  mConfigurer->sensorImageRect(device).width() / 2.0;
 	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -214,12 +214,12 @@ int TwoDModelEngineApi::readColorNoneSensor(QHash<uint, int> const &countsColor,
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
-int TwoDModelEngineApi::readLightSensor(PortInfo const &port) const
+int TwoDModelEngineApi::readLightSensor(DeviceInfo const &device, PortInfo const &port) const
 {
 	// Must return 1023 on white and 0 on black normalized to percents
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
-	QImage const image = printColorSensor(port);
+	QImage const image = printColorSensor(device, port);
 	if (image.isNull()) {
 		return 0;
 	}

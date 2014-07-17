@@ -186,7 +186,7 @@ QPainterPath RobotModel::robotBoundingPath() const
 			/// @todo: Consider rotation and differentiate sizes.
 			path.addRect({sensorPos - QPointF(mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() / 2
 					, mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() / 2)
-					, QSizeF{mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width()
+					, QSizeF{mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width()  * 1.0
 					, mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() * 1.0}});
 		}
 	}

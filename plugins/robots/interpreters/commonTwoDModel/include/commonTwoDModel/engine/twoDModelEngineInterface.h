@@ -4,6 +4,7 @@
 
 #include <utils/timelineInterface.h>
 #include <interpreterBase/robotModel/portInfo.h>
+#include <interpreterBase/robotModel/deviceInfo.h>
 
 namespace twoDModel {
 namespace engine {
@@ -29,7 +30,8 @@ public:
 
 	/// Returns the collision sensor`s value on the given port.
 	/// @returns 1 if collision is detected and 0 otherwise.
-	virtual int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const = 0;
+	virtual int readTouchSensor(interpreterBase::robotModel::DeviceInfo const &device
+			, interpreterBase::robotModel::PortInfo const &port) const = 0;
 
 	/// Returns the distance value scanned by the range sensor.
 	/// @returns The distance in cm till the closest object in the scan field of 255 if no such.
@@ -37,10 +39,12 @@ public:
 
 	/// Returns the configured color sensor`s value on the given port.
 	/// It  may be the percent of some color under the sensor or the dominating color enum value.
-	virtual int readColorSensor(interpreterBase::robotModel::PortInfo const &port) const = 0;
+	virtual int readColorSensor(interpreterBase::robotModel::DeviceInfo const &device
+			, interpreterBase::robotModel::PortInfo const &port) const = 0;
 
 	/// Returns the average brightness of the picture under the light sensor on the given port.
-	virtual int readLightSensor(interpreterBase::robotModel::PortInfo const &port) const = 0;
+	virtual int readLightSensor(interpreterBase::robotModel::DeviceInfo const &device
+			, interpreterBase::robotModel::PortInfo const &port) const = 0;
 
 	/// Draws sound waves during the given amount of time thus showing that the robot plays some sound.
 	virtual void playSound(int timeInMs) = 0;
