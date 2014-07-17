@@ -6,6 +6,7 @@
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
 
+#include <interpreterBase/devicesConfigurationWidget.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
@@ -15,7 +16,6 @@
 
 #include "src/engine/model/model.h"
 
-#include "commonTwoDModel/engine/configurer.h"
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
 class QComboBox;
@@ -41,7 +41,7 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Devices
 
 public:
 	/// Takes ownership on configurer.
-	D2ModelWidget(model::Model &model, Configurer const * const configurer, QWidget *parent = 0);
+	D2ModelWidget(model::Model &model, QWidget *parent = 0);
 	~D2ModelWidget();
 
 	void init();
@@ -126,7 +126,7 @@ private slots:
 
 	void changePenWidth(int width);
 	void changePenColor(int textIndex);
-	void changePalette();
+	void onSelectionChange();
 
 	void changeSpeed(int curIndex);
 
@@ -178,9 +178,12 @@ private:
 		double rotation;
 	};
 
+	void changePalette();
 	void connectUiButtons();
 	void initButtonGroups();
-	void initPorts();
+	void setPortsGroupBoxAndWheelComboBoxes();
+	void unsetPortsGroupBoxAndWheelComboBoxes();
+
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void drawWalls();
@@ -233,6 +236,8 @@ private:
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
 	RobotItem *mRobot;
+	RobotItem *mSelectedRobotItem;
+	interpreterBase::DevicesConfigurationWidget *mCurrentConfigurer;
 
 	model::Model &mModel;
 
@@ -265,8 +270,6 @@ private:
 	bool mFirstShow;
 
 	RobotState mInitialRobotBeforeRun;
-
-	QScopedPointer<Configurer const> mConfigurer;
 };
 
 }

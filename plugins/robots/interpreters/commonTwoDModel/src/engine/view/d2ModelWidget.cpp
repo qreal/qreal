@@ -35,16 +35,16 @@ using namespace qReal;
 using namespace utils;
 using namespace graphicsUtils;
 using namespace interpreterBase;
-using namespace robotModel;
+using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, QWidget *parent)
+D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
 	, mScene(nullptr)
 	, mRobot(nullptr)
 	, mModel(model)
-	, mDisplay(configurer->displayWidget(this))
+	//, mDisplay(configurer->displayWidget(this))
 	, mDrawingAction(none)
 	, mMouseClicksCount(0)
 	, mCurrentWall(nullptr)
@@ -54,7 +54,6 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	, mWidth(defaultPenWidth)
 	, mClearing(false)
 	, mFirstShow(true)
-	, mConfigurer(configurer)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -71,7 +70,7 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(mScene, &D2ModelScene::mouseMoved, this, &D2ModelWidget::mouseMoved);
 	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::mouseReleased);
 	connect(mScene, &D2ModelScene::itemDeleted, this, &D2ModelWidget::deleteItem);
-	connect(mScene, &D2ModelScene::selectionChanged, this, &D2ModelWidget::changePalette);
+	connect(mScene, &D2ModelScene::selectionChanged, this, &D2ModelWidget::onSelectionChange);
 
 	connect(mUi->gridParametersBox, &GridParameters::parametersChanged
 			, mScene, &D2ModelScene::updateGrid);
@@ -82,9 +81,11 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(&mModel.timeline(), &Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
 	connect(&mModel.timeline(), &Timeline::tick, [this]() { mUi->timelineBox->stepBy(1); });
 
-	connect(&mModel.robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
+	connect(&mModel, twoDModel::model::Model::robotModelsListChanged(), this, onRobotModelListChange());
+
+	/*connect(&mModel.robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
 	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
-			, this, &D2ModelWidget::reinitSensor);
+			, this, &D2ModelWidget::reinitSensor);*/
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -92,15 +93,15 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
 	mUi->noneButton->setChecked(true);
 
-	auto connectWheelComboBox = [this](QComboBox * const comboBox, RobotModel::WheelEnum wheel) {
+	/*auto connectWheelComboBox = [this](QComboBox * const comboBox, RobotModel::WheelEnum wheel) {
 			connect(comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged)
 					, [this, wheel, comboBox](int index) {
 							mModel.robotModel().setMotorPortOnWheel(wheel, comboBox->itemData(index).value<PortInfo>());
 					});
-	};
+	};*/
 
-	connectWheelComboBox(mUi->leftWheelComboBox, RobotModel::left);
-	connectWheelComboBox(mUi->rightWheelComboBox, RobotModel::right);
+	//connectWheelComboBox(mUi->leftWheelComboBox, RobotModel::left);
+	//connectWheelComboBox(mUi->rightWheelComboBox, RobotModel::right);
 
 	drawInitialRobot();
 
@@ -158,7 +159,9 @@ void D2ModelWidget::initWidget()
 
 	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
 
-	initPorts();
+	/*if (mModel.robotModels().size() == 1) {
+		mSelectedRobotItem=
+	}*/
 }
 
 void D2ModelWidget::connectUiButtons()
@@ -206,15 +209,39 @@ void D2ModelWidget::initButtonGroups()
 	mCursorButtonGroup.addButton(mUi->multiselectionCursorButton);
 }
 
-void D2ModelWidget::initPorts()
+void D2ModelWidget::setPortsGroupBoxAndWheelComboBoxes()
 {
-	DevicesConfigurationWidget *configurer = new DevicesConfigurationWidget(mUi->portsGroupBox, true, true);
-	configurer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-	configurer->loadRobotModels({ &mModel.robotModel().info() });
-	configurer->selectRobotModel(mModel.robotModel().info());
-	mUi->portsGroupBox->layout()->addWidget(configurer);
-	configurer->connectDevicesConfigurationProvider(&mModel.robotModel().configuration());
-	connectDevicesConfigurationProvider(&mModel.robotModel().configuration());
+	mCurrentConfigurer = new DevicesConfigurationWidget(mUi->portsGroupBox, true, true);
+	mCurrentConfigurer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+	mCurrentConfigurer->loadRobotModels({ &mSelectedRobotItem->robotModel().info() });
+	mCurrentConfigurer->selectRobotModel(mSelectedRobotItem->robotModel().info());
+	mUi->portsGroupBox->layout()->addWidget(mCurrentConfigurer);
+	mCurrentConfigurer->connectDevicesConfigurationProvider(&mSelectedRobotItem.robotModel().configuration());
+	connectDevicesConfigurationProvider(&mSelectedRobotItem.robotModel().configuration());
+
+	auto connectWheelComboBox = [this](QComboBox * const comboBox, RobotModel::WheelEnum wheel) {
+				connect(comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged)
+						, [this, wheel, comboBox](int index) {
+								mSelectedRobotItem.robotModel().setMotorPortOnWheel(wheel
+										, comboBox->itemData(index).value<PortInfo>());
+						});
+		};
+
+	connectWheelComboBox(mUi->leftWheelComboBox, RobotModel::left);
+	connectWheelComboBox(mUi->rightWheelComboBox, RobotModel::right);
+}
+
+void D2ModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
+{
+	if (mCurrentConfigurer) {
+		mUi->portsGroupBox->layout()->removeWidget(mCurrentConfigurer);
+
+		if (mSelectedRobotItem) {
+			mSelectedRobotItem->robotModel().configuration().disconnectDevicesConfigurationProvider();
+		}
+
+		delete mCurrentConfigurer;
+	}
 }
 
 void D2ModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)
@@ -249,9 +276,9 @@ void D2ModelWidget::changeSpeed(int curIndex)
 
 void D2ModelWidget::init()
 {
-	if (!mRobot) {
+	/*if (!mRobot) {
 		drawInitialRobot();
-	}
+	}*/
 
 	mUi->graphicsView->show();
 	if (isHidden()) {
@@ -268,19 +295,19 @@ void D2ModelWidget::init()
 
 void D2ModelWidget::saveInitialRobotBeforeRun()
 {
-	mInitialRobotBeforeRun.pos = mModel.robotModel().position();
-	mInitialRobotBeforeRun.rotation = mModel.robotModel().rotation();
+	//mInitialRobotBeforeRun.pos = mModel.robotModel().position();
+	//mInitialRobotBeforeRun.rotation = mModel.robotModel().rotation();
 }
 
 void D2ModelWidget::setInitialRobotBeforeRun()
 {
-	mModel.robotModel().setPosition(mInitialRobotBeforeRun.pos);
-	mModel.robotModel().setRotation(mInitialRobotBeforeRun.rotation);
+	//mModel.robotModel().setPosition(mInitialRobotBeforeRun.pos);
+	//mModel.robotModel().setRotation(mInitialRobotBeforeRun.rotation);
 }
 
 void D2ModelWidget::drawInitialRobot()
 {
-	mRobot = new RobotItem(mConfigurer->robotImage(), mModel.robotModel());
+	/*mRobot = new RobotItem(mConfigurer->robotImage(), mModel.robotModel());
 	connect(mRobot, SIGNAL(changedPosition()), this, SLOT(handleNewRobotPosition()));
 	connect(mRobot, SIGNAL(mousePressed()), this, SLOT(setNoneButton()));
 	mScene->addItem(mRobot);
@@ -291,7 +318,7 @@ void D2ModelWidget::drawInitialRobot()
 
 	mRobot->setRotater(rotater);
 
-	mUi->graphicsView->centerOn(mRobot);
+	mUi->graphicsView->centerOn(mRobot);*/
 }
 
 void D2ModelWidget::keyPressEvent(QKeyEvent *event)
@@ -354,14 +381,14 @@ void D2ModelWidget::onFirstShow()
 
 void D2ModelWidget::centerOnRobot()
 {
-	if (mFollowRobot && mModel.robotModel().onTheGround()) {
+	/*if (mFollowRobot && mModel.robotModel().onTheGround()) {
 		QRectF const viewPortRect = mUi->graphicsView->mapToScene(mUi->graphicsView->viewport()->rect()).boundingRect();
 		if (!viewPortRect.contains(mRobot->sceneBoundingRect().toRect())) {
 			QRectF const requiredViewPort = viewPortRect.translated(mRobot->scenePos() - viewPortRect.center());
 			mScene->setSceneRect(mScene->itemsBoundingRect().united(requiredViewPort));
 			mUi->graphicsView->centerOn(mRobot);
 		}
-	}
+	}*/
 }
 
 void D2ModelWidget::drawWalls()
@@ -462,22 +489,22 @@ void D2ModelWidget::clearScene(bool removeRobot)
 {
 	mClearing = true;
 	mModel.worldModel().clearScene();
-	mModel.robotModel().clear();
+	//mModel.robotModel().clear();
 	if (removeRobot) {
-		for (PortInfo const &port : mRobot->sensors().keys()) {
+		/*for (PortInfo const &port : mRobot->sensors().keys()) {
 			deviceConfigurationChanged(mModel.robotModel().info().name(), port, DeviceInfo());
-		}
+		}*/
 
 		delete mRobot;
 		mScene->clear();
 		drawInitialRobot();
 	} else {
-		for (QGraphicsItem * const item : mScene->items()) {
+		/*for (QGraphicsItem * const item : mScene->items()) {
 			if (item != mRobot && !mRobot->isAncestorOf(item)) {
 				mScene->removeItem(item);
 				delete item;
 			}
-		}
+		}*/
 	}
 
 	mClearing = false;
@@ -502,9 +529,9 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 			mCurrentWall->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 			mCurrentWall->reshapeEndWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 		} else {
-			if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
+			/*if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
 				mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
-			}
+			}*/
 			if (event->modifiers() & Qt::ShiftModifier) {
 				mCurrentWall->reshapeRectWithShift();
 			}
@@ -546,24 +573,24 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mUi->graphicsView->setCursor(cursorTypeToCursor(mCursorType));
 
-	mRobot->checkSelection();
+	/*mRobot->checkSelection();
 	for (SensorItem *sensor : mRobot->sensors().values()) {
 		if (sensor) {
 			sensor->checkSelection();
 		}
-	}
+	}*/
 
 	QPointF const position = mouseEvent->scenePos();
 	processDragMode();
 
 	switch (mDrawingAction) {
 	case wall: {
-		if (!mRobot->realBoundingRect().intersects(QRectF(position, position))) {
+		/*if (!mRobot->realBoundingRect().intersects(QRectF(position, position))) {
 			mCurrentWall = new items::WallItem(position, position);
 			mScene->removeMoveFlag(mouseEvent, mCurrentWall);
 			mModel.worldModel().addWall(mCurrentWall);
 			mMouseClicksCount++;
-		}
+		}*/
 		break;
 	}
 	case line: {
@@ -607,12 +634,12 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	if (mouseEvent->buttons() & Qt::LeftButton) {
-		mRobot->checkSelection();
+		/*mRobot->checkSelection();
 		for (SensorItem *sensor : mRobot->sensors().values()) {
 			if (sensor) {
 				sensor->checkSelection();
 			}
-		}
+		}*/
 	}
 
 	bool needUpdate = true;
@@ -633,7 +660,7 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 	default:
 		needUpdate = false;
 		if (mouseEvent->buttons() & Qt::LeftButton) {
-			mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
+			//mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
 		}
 		break;
 	}
@@ -647,12 +674,12 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	mUi->graphicsView->setCursor(cursorTypeToCursor(mCursorType));
 
-	mRobot->checkSelection();
+	/*mRobot->checkSelection();
 	for (SensorItem *sensor : mRobot->sensors().values()) {
 		if (sensor) {
 			sensor->checkSelection();
 		}
-	}
+	}*/
 
 	processDragMode();
 
@@ -686,7 +713,7 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	}
 	default:
-		mScene->forReleaseResize(mouseEvent, mRobot->realBoundingRect());
+		//mScene->forReleaseResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
 
@@ -733,17 +760,17 @@ void D2ModelWidget::loadWorldModel()
 
 void D2ModelWidget::handleNewRobotPosition()
 {
-	for (items::WallItem const *wall : mModel.worldModel().walls()) {
+	/*for (items::WallItem const *wall : mModel.worldModel().walls()) {
 		if (wall->realShape().intersects(mRobot->realBoundingRect())) {
 			mRobot->recoverDragStartPosition();
 			return;
 		}
-	}
+	}*/
 }
 
 void D2ModelWidget::reinitSensor(PortInfo const &port)
 {
-	mRobot->removeSensor(port);
+	/*mRobot->removeSensor(port);
 
 	DeviceInfo const &device = mModel.robotModel().configuration().type(port);
 	if (device.isNull() || (
@@ -769,7 +796,7 @@ void D2ModelWidget::reinitSensor(PortInfo const &port)
 					, mConfigurer->sensorImageRect(device)
 					);
 
-	mRobot->addSensor(port, sensor);
+	mRobot->addSensor(port, sensor);*/
 }
 
 void D2ModelWidget::deleteItem(QGraphicsItem *item)
@@ -780,10 +807,10 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 
 	/// @todo Handle all cases equally
 	if (SensorItem * const sensor = dynamic_cast<SensorItem *>(item)) {
-		PortInfo const port = mRobot->sensors().key(sensor);
+		/*PortInfo const port = mRobot->sensors().key(sensor);
 		if (port.isValid()) {
 			deviceConfigurationChanged(mModel.robotModel().info().name(), port, DeviceInfo());
-		}
+		}*/
 
 		return;
 	}
@@ -871,6 +898,51 @@ void D2ModelWidget::changePalette()
 	}
 }
 
+void D2ModelWidget::onSelectionChange()
+{
+	changePalette();
+
+	QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
+	RobotItem *robotItem;
+	bool oneRobotItem = false;
+
+	for (QGraphicsItem const *item : listSelectedItems) {
+		if (static_cast<RobotItem *>(item) != nullptr) {
+			if (!oneRobotItem) {
+				robotItem = static_cast<RobotItem *>(item);
+				oneRobotItem = true;
+			} else {
+				if (mSelectedRobotItem) {
+					unsetPortsGroupBoxAndWheelComboBoxes();
+					mSelectedRobotItem = nullptr;
+					mUi->leftWheelComboBox->hide();
+					mUi->rightWheelComboBox->hide();
+				}
+				return;
+			}
+		}
+	}
+
+	if (oneRobotItem) {
+		if (mSelectedRobotItem
+				&& robotItem->robotModel().info().name() == mSelectedRobotItem->robotModel().info().name()) {
+			return;
+		}
+
+		if (mSelectedRobotItem) {
+			unsetPortsGroupBoxAndWheelComboBoxes();
+			mSelectedRobotItem = nullptr;
+		}
+
+		mSelectedRobotItem = robotItem;
+
+		setPortsGroupBoxAndWheelComboBoxes();
+		updateWheelComboBoxes();
+		mUi->leftWheelComboBox->show();
+		mUi->rightWheelComboBox->show();
+	}
+}
+
 void D2ModelWidget::setValuePenColorComboBox(QColor const &penColor)
 {
 	mUi->penColorComboBox->setColor(penColor);
@@ -906,9 +978,9 @@ engine::TwoDModelDisplayWidget *D2ModelWidget::display()
 
 void D2ModelWidget::setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible)
 {
-	if (mRobot->sensors()[port]) {
+	/*if (mRobot->sensors()[port]) {
 		mRobot->sensors()[port]->setVisible(isVisible);
-	}
+	}*/
 }
 
 void D2ModelWidget::enableRunStopButtons()
@@ -930,7 +1002,7 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 
 SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
 {
-	return mRobot->sensors().value(port);
+	//return mRobot->sensors().value(port);
 }
 
 void D2ModelWidget::saveToRepo()
@@ -964,7 +1036,7 @@ void D2ModelWidget::setRunStopButtonsEnabled(bool enabled)
 
 void D2ModelWidget::worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos)
 {
-	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
+	/*bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
 	if (wall->isDragged() && ((mDrawingAction == none) ||
 			(mDrawingAction == D2ModelWidget::wall && mCurrentWall == wall)))
@@ -973,7 +1045,7 @@ void D2ModelWidget::worldWallDragged(items::WallItem *wall, QPainterPath const &
 		if (isNeedStop) {
 			wall->setPos(oldPos);
 		}
-	}
+	}*/
 }
 
 void D2ModelWidget::enableRobotFollowing(bool on)
@@ -1108,9 +1180,9 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 	Q_UNUSED(port)
 	Q_UNUSED(device)
 	/// @todo Convert configuration between models or something?
-	if (mRobot && robotModel == mModel.robotModel().info().name()) {
+	/*if (mRobot && robotModel == mModel.robotModel().info().name()) {
 		updateWheelComboBoxes();
-	}
+	}*/
 }
 
 void D2ModelWidget::initRunStopButtons()
@@ -1121,6 +1193,11 @@ void D2ModelWidget::initRunStopButtons()
 
 void D2ModelWidget::updateWheelComboBoxes()
 {
+	if (!mSelectedRobotItem) {
+		mUi->leftWheelComboBox->hide();
+		mUi->rightWheelComboBox->hide();
+	}
+
 	PortInfo const leftWheelOldPort = mUi->leftWheelComboBox->currentData().value<PortInfo>();
 	PortInfo const rightWheelOldPort = mUi->rightWheelComboBox->currentData().value<PortInfo>();
 
@@ -1131,8 +1208,8 @@ void D2ModelWidget::updateWheelComboBoxes()
 	mUi->leftWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 	mUi->rightWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 
-	for (PortInfo const &port : mModel.robotModel().info().availablePorts()) {
-		for (DeviceInfo const &device : mModel.robotModel().info().allowedDevices(port)) {
+	for (PortInfo const &port : mSelectedRobotItem->robotModel().info().availablePorts()) {
+		for (DeviceInfo const &device : mSelectedRobotItem->robotModel().info().allowedDevices(port)) {
 			if (device.isA<Motor>()) {
 				QString const item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
 				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
@@ -1153,10 +1230,11 @@ void D2ModelWidget::updateWheelComboBoxes()
 	};
 
 	if (!setSelectedPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
-		if (!setSelectedPort(mUi->leftWheelComboBox, mConfigurer->defaultLeftWheelPort())) {
+		if (!setSelectedPort(mUi->leftWheelComboBox
+				, mSelectedRobotItem->robotModel().info().defaultLeftWheelPort())) {
 
 			qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
-					<< mConfigurer->defaultLeftWheelPort().toString();
+					<<  mSelectedRobotItem->robotModel().info().toString();
 
 			if (mUi->leftWheelComboBox->count() > 1) {
 				mUi->leftWheelComboBox->setCurrentIndex(1);
@@ -1165,10 +1243,11 @@ void D2ModelWidget::updateWheelComboBoxes()
 	}
 
 	if (!setSelectedPort(mUi->rightWheelComboBox, rightWheelOldPort)) {
-		if (!setSelectedPort(mUi->rightWheelComboBox, mConfigurer->defaultRightWheelPort())) {
+		if (!setSelectedPort(mUi->rightWheelComboBox
+				, mSelectedRobotItem->robotModel().info().defaultRightWheelPort())) {
 
 			qDebug() << "Incorrect defaultRightWheelPort set in configurer:"
-					<< mConfigurer->defaultRightWheelPort().toString();
+					<< mSelectedRobotItem->robotModel().info().defaultRightWheelPort().toString();
 
 			if (mUi->rightWheelComboBox->count() > 2) {
 				mUi->rightWheelComboBox->setCurrentIndex(2);

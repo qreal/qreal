@@ -13,6 +13,11 @@ class TwoDRobotModel : public twoDModel::robotModel::TwoDRobotModel
 public:
 	explicit TwoDRobotModel(interpreterBase::robotModel::RobotModelInterface const &realModel);
 
+	QString robotImage() const override;
+	interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const override;
+	interpreterBase::robotModel::PortInfo defaultRightWheelPort() const override;
+	twoDModel::engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const override;
+
 protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
 			interpreterBase::robotModel::PortInfo const &port

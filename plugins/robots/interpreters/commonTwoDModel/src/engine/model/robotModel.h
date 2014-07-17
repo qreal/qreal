@@ -2,7 +2,7 @@
 
 #include <QtGui/QPainterPath>
 
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <commonTwoDModel/robotModel/twoDRobotModel.h>
 
 #include "sensorsConfiguration.h"
 
@@ -34,7 +34,7 @@ public:
 	};
 
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
+	RobotModel(twoDModel::robotModel::TwoDRobotModel &robotModel
 			, Settings const &settings, QObject *parent = 0);
 	~RobotModel();
 
@@ -48,7 +48,7 @@ public:
 
 	SensorsConfiguration &configuration();
 	/// Returns a reference to external robot description.
-	interpreterBase::robotModel::RobotModelInterface &info();
+	twoDModel::robotModel::TwoDRobotModel &info();
 
 	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);
@@ -123,7 +123,7 @@ private:
 	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::PortInfo> mMotorToEncoderPortMap;
 
 	Settings const &mSettings;
-	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
+	twoDModel::robotModel::TwoDRobotModel &mRobotModel;
 	SensorsConfiguration mSensorsConfiguration;
 
 	QPointF mPos;

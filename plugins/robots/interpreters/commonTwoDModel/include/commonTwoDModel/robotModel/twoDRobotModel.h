@@ -5,6 +5,7 @@
 #include <interpreterBase/robotModel/commonRobotModel.h>
 
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
+#include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
 namespace twoDModel {
 
@@ -32,6 +33,34 @@ public:
 
 	/// Configures 2D model window`s engine for using it in 2D model devices emulators.
 	void setEngine(engine::TwoDModelEngineInterface &engine);
+
+	/// Returns a path to an image that is used for robot item.
+	virtual QString robotImage() const = 0;
+
+	/// Returns a port that is used for left robot wheel by default.
+	virtual interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const = 0;
+
+	/// Returns a port that is used for right robot wheel by default.
+	virtual interpreterBase::robotModel::PortInfo defaultRightWheelPort() const = 0;
+
+	/// Returns a pointer to a widget with display emulator for current robot model.
+	virtual engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const = 0;
+
+	/// Provides path to sensor image by given device type or empty string if default sensor image shall be used.
+	virtual QString sensorImagePath(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+	{
+		Q_UNUSED(deviceType)
+
+		return "";
+	}
+
+	/// Provides sensor image bounding rectangle by given device type or empty rectangle if default image size be used.
+	virtual QRect sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+	{
+		Q_UNUSED(deviceType)
+
+		return QRect();
+	}
 
 protected:
 	engine::TwoDModelEngineInterface *engine();

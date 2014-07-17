@@ -29,22 +29,22 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget 
 
 void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
 {
-	mModel.robotModel().setNewMotor(speed, degrees, port, breakMode);
+	//mModel.robotModel().setNewMotor(speed, degrees, port, breakMode);
 }
 
 int TwoDModelEngineApi::readEncoder(PortInfo const &port) const
 {
-	return mModel.robotModel().readEncoder(port);
+	//return mModel.robotModel().readEncoder(port);
 }
 
 void TwoDModelEngineApi::resetEncoder(PortInfo const &port)
 {
-	mModel.robotModel().resetEncoder(port);
+	//mModel.robotModel().resetEncoder(port);
 }
 
 int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 {
-	if (!mModel.robotModel().configuration().type(port).isA<robotParts::TouchSensor>()) {
+	/*if (!mModel.robotModel().configuration().type(port).isA<robotParts::TouchSensor>()) {
 		return touchSensorNotPressedSignal;
 	}
 
@@ -61,26 +61,26 @@ int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 	sensorPath.addRect(scanningRect);
 	bool const res = mModel.worldModel().checkCollision(sensorPath, touchSensorWallStrokeIncrement);
 
-	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
+	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;*/
 }
 
 int TwoDModelEngineApi::readSonarSensor(PortInfo const &port) const
 {
-	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
+	/*QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	int const res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
 
-	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
+	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;*/
 }
 
 int TwoDModelEngineApi::spoilSonarReading(int const distance) const
 {
-	qreal const ran = mathUtils::Math::gaussianNoise(spoilSonarDispersion);
-	return mathUtils::Math::truncateToInterval(0, 255, round(distance + ran));
+	/*qreal const ran = mathUtils::Math::gaussianNoise(spoilSonarDispersion);
+	return mathUtils::Math::truncateToInterval(0, 255, round(distance + ran));*/
 }
 
 int TwoDModelEngineApi::readColorSensor(PortInfo const &port) const
 {
-	QImage const image = printColorSensor(port);
+	/*QImage const image = printColorSensor(port);
 	QHash<uint, int> countsColor;
 
 	uint const *data = reinterpret_cast<uint const *>(image.bits());
@@ -103,7 +103,7 @@ int TwoDModelEngineApi::readColorSensor(PortInfo const &port) const
 	}
 
 	qDebug() << "Incorrect 2d model sensor configuration";
-	return 0;
+	return 0;*/
 }
 
 uint TwoDModelEngineApi::spoilColor(uint const color) const
@@ -124,7 +124,7 @@ uint TwoDModelEngineApi::spoilColor(uint const color) const
 
 QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 {
-	if (mModel.robotModel().configuration().type(port).isNull()) {
+	/*if (mModel.robotModel().configuration().type(port).isNull()) {
 		return QImage();
 	}
 
@@ -148,7 +148,7 @@ QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 	mView.setSensorVisible(port, true);
 	mView.sensorItem(port)->setSelected(wasSelected);
 
-	return image;
+	return image;*/
 }
 
 int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor) const
@@ -243,12 +243,12 @@ int TwoDModelEngineApi::readLightSensor(PortInfo const &port) const
 
 void TwoDModelEngineApi::playSound(int timeInMs)
 {
-	mModel.robotModel().playSound(timeInMs);
+	//mModel.robotModel().playSound(timeInMs);
 }
 
 utils::TimelineInterface &TwoDModelEngineApi::modelTimeline()
 {
-	return mModel.timeline();
+	//return mModel.timeline();
 }
 
 engine::TwoDModelDisplayInterface *TwoDModelEngineApi::display()
@@ -271,8 +271,8 @@ uint TwoDModelEngineApi::spoilLight(uint const color) const
 
 QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(PortInfo const &port) const
 {
-	view::SensorItem const *sensor = mView.sensorItem(port);
+	/*view::SensorItem const *sensor = mView.sensorItem(port);
 	QPointF const position = sensor ? sensor->scenePos() : QPointF();
 	qreal const direction = sensor ? sensor->rotation() + mModel.robotModel().rotation() : 0;
-	return { position, direction };
+	return { position, direction };*/
 }

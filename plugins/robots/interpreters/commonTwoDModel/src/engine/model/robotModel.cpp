@@ -20,7 +20,7 @@ using namespace physics;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
-RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
+RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 		, Settings const &settings
 		, QObject *parent)
 	: QObject(parent)

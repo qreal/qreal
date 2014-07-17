@@ -24,6 +24,7 @@ public:
 	/// Does nothing if otherProvider is null.
 	/// Does not take ownership.
 	void connectDevicesConfigurationProvider(DevicesConfigurationProvider * const otherProvider);
+	void disconnectDevicesConfigurationProvider();
 
 protected:
 	/// Shall be called by descendants when device configuration is changed. Change is propagated automatically
@@ -57,6 +58,8 @@ protected:
 	robotModel::DeviceInfo currentConfiguration(QString const &modelName, robotModel::PortInfo const &port) const;
 
 private:
+	void disconnectDevicesConfigurationProvider(DevicesConfigurationProvider * const provider);
+
 	/// Redundant current devices configuration.
 	/// If configuration is not changed by incoming message, it is not broadcasted.
 	/// Hash structure is robotModel -> port -> device.

@@ -4,6 +4,7 @@
 #include "robotModel.h"
 #include "timeline.h"
 #include "settings.h"
+#include <commonTwoDModel/robotModel/twoDRobotModel.h>
 
 namespace twoDModel {
 namespace model {
@@ -15,8 +16,7 @@ class Model : public QObject
 	Q_OBJECT
 
 public:
-	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	explicit Model(interpreterBase::robotModel::RobotModelInterface &robotModel, QObject *parent = 0);
+	explicit Model(QObject *parent = 0);
 
 	/// Returns a reference to a world map.
 	WorldModel &worldModel();
@@ -24,8 +24,8 @@ public:
 	/// Returns a reference to a 2D model timeline.
 	Timeline &timeline();
 
-	/// Returns a reference to a 2D robot model component.
-	RobotModel &robotModel();
+	/// Returns a reference to a 2D robot models components.
+	QList<RobotModel> robotModels();
 
 	/// Returns a reference to a 2D model`s settings storage.
 	Settings &settings();
@@ -33,16 +33,26 @@ public:
 	QDomDocument serialize() const;
 	void deserialize(QDomDocument const &xml);
 
+	void addRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel, QPointF const &pos = QPointF());
+	void removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel);
+	void replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
+			, twoDModel::robotModel::TwoDRobotModel const &newModel);
+
 signals:
 	/// Emitted each time when some user actions lead to world model modifications
 	/// @param xml World model description in xml format
 	void modelChanged(QDomDocument const &xml);
 
+	void robotAdded();
+	void robotDeleted();
+
 private:
+	int findModel(twoDModel::robotModel::TwoDRobotModel const &robotModel);
+
 	Settings mSettings;
 	WorldModel mWorldModel;
 	Timeline mTimeline;
-	RobotModel mRobotModel;
+	QList<RobotModel> mRobotModels;
 };
 
 }

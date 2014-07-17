@@ -49,6 +49,7 @@ public:
 	void setNeededBeep(bool isNeededBeep);
 
 	void recoverDragStartPosition();
+	model::RobotModel robotModel();
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, QVariant const &value);

@@ -14,7 +14,6 @@ HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \
 	$$PWD/trikDisplayWidget.h \
 	$$PWD/trikKitInterpreterPlugin.h \
-	$$PWD/trikTwoDModelConfigurer.h \
 	$$PWD/blocks/trikBlocksFactory.h \
 	$$PWD/blocks/details/setBackgroundBlock.h \
 	$$PWD/blocks/details/smileBlock.h \
@@ -54,7 +53,6 @@ SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
 	$$PWD/trikKitInterpreterPlugin.cpp \
 	$$PWD/trikDisplayWidget.cpp \
-	$$PWD/trikTwoDModelConfigurer.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
 	$$PWD/blocks/details/setBackgroundBlock.cpp \
 	$$PWD/blocks/details/smileBlock.cpp \

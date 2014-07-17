@@ -15,6 +15,7 @@
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
 #include "robotModel/twoD/parts/twoDMotor.h"
+#include "nxtDisplayWidget.h"
 
 using namespace nxtKitInterpreter::robotModel;
 using namespace nxtKitInterpreter::robotModel::twoD;
@@ -41,3 +42,24 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 	return twoDModel::robotModel::TwoDRobotModel::createDevice(port, deviceInfo);
 }
+
+QString TwoDRobotModel::robotImage() const
+{
+	return ":/icons/robot.png";
+}
+
+PortInfo TwoDRobotModel::defaultLeftWheelPort() const
+{
+	return PortInfo("B", output);
+}
+
+PortInfo TwoDRobotModel::defaultRightWheelPort() const
+{
+	return PortInfo("C", output);
+}
+
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget * parent) const
+{
+	return new NxtDisplayWidget(parent);
+}
+

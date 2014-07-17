@@ -24,6 +24,8 @@
 #include "robotModel/parts/trikSonarSensor.h"
 #include "robotModel/parts/trikLed.h"
 
+#include "trikDisplayWidget.h"
+
 using namespace trikKitInterpreter::robotModel;
 using namespace trikKitInterpreter::robotModel::twoD;
 using namespace interpreterBase::robotModel;
@@ -60,4 +62,39 @@ void TwoDRobotModel::onInterpretationStarted()
 	} else {
 		/// @todo: if we get here it is wrong because display is not configured before the interpretation!
 	}
+}
+
+QString TwoDRobotModel::robotImage() const
+{
+	return ":icons/trikTwoDRobot.svg";
+}
+
+PortInfo TwoDRobotModel::defaultLeftWheelPort() const
+{
+	return PortInfo(mLeftWheelPort, output);
+}
+
+PortInfo TwoDRobotModel::defaultRightWheelPort() const
+{
+	return PortInfo(mRightWheelPort, output);
+}
+
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget * parent) const
+{
+	return new TrikDisplayWidget(parent);
+}
+
+QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
+{
+	if (deviceType.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
+		return ":icons/twoDColorEmpty.svg";
+	}
+
+	return "";
+}
+
+void TwoDRobotModel::setWheelPorts(QString const &leftWheelPort, QString const &rightWheelPort)
+{
+	mLeftWheelPort = leftWheelPort;
+	mRightWheelPort = rightWheelPort;
 }

@@ -4,6 +4,7 @@
 
 using namespace twoDModel::view;
 using namespace graphicsUtils;
+using namespace twoDModel::model;
 
 int const border = 0;
 
@@ -188,6 +189,11 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, QVariant const &value)
 void RobotItem::recoverDragStartPosition()
 {
 	mRobotModel.setPosition(mDragStart);
+}
+
+RobotModel RobotItem::robotModel()
+{
+	return mRobotModel;
 }
 
 void RobotItem::BeepItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
