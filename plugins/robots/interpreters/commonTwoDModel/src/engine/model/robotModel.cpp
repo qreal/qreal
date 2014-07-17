@@ -15,6 +15,8 @@
 #include "physics/simplePhysicsEngine.h"
 #include "physics/realisticPhysicsEngine.h"
 
+#include <QtCore/QDebug>
+
 using namespace twoDModel::model;
 using namespace physics;
 using namespace interpreterBase::robotModel;
@@ -186,7 +188,7 @@ QPainterPath RobotModel::robotBoundingPath() const
 			/// @todo: Consider rotation and differentiate sizes.
 			path.addRect({sensorPos - QPointF(mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() / 2
 					, mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() / 2)
-					, QSizeF{mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width()  * 1.0
+					, QSizeF{mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() * 1.0
 					, mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() * 1.0}});
 		}
 	}

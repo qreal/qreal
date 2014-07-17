@@ -11,6 +11,7 @@ public:
 	interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const override;
 	interpreterBase::robotModel::PortInfo defaultRightWheelPort() const override;
 	twoDModel::engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const override;
+	QRect sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const;
 };
 
 }
