@@ -110,6 +110,7 @@ void D2ModelWidget::initWidget()
 	mScene = new D2ModelScene(mModel, *mConfigurer.data(), mUi->graphicsView);
 	connectDevicesConfigurationProvider(mScene);
 	mUi->graphicsView->setScene(mScene);
+	mUi->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 	move(0, 0);
 
 	mUi->penWidthSpinBox->setRange(1, 30);
@@ -529,10 +530,6 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 {
 	mScene->clearScene(true);
 	mModel.deserialize(worldModel);
-
-//	mDrawingAction = noneWordLoad;
-//	update();
-//	mDrawingAction = none;
 
 	saveInitialRobotBeforeRun();
 }

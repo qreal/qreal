@@ -97,7 +97,7 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 	auto initItem = [this, mouseEvent](QGraphicsItem *item) {
 		removeMoveFlag(mouseEvent, item);
-		// This will deselect alll items
+		// This will deselect all items
 		setSelectionArea(QPainterPath());
 	};
 
@@ -374,6 +374,7 @@ void D2ModelScene::reshapeWall(QGraphicsSceneMouseEvent *event)
 			if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
 				mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
 			}
+
 			if (event->modifiers() & Qt::ShiftModifier) {
 				mCurrentWall->reshapeRectWithShift();
 			}
