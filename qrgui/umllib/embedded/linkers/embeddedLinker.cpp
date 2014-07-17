@@ -290,7 +290,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				}
 			}
 		}
-		NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
+		NodeElement *target = dynamic_cast<NodeElement*>(scene->lastCreatedFromLinker());
 
 		if (result == -1) {
 			mEdge = NULL;
