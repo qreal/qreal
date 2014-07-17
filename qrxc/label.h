@@ -36,6 +36,7 @@ private:
 	utils::ScalableCoordinate mX;
 	utils::ScalableCoordinate mY;
 	int mIndex;
+	bool mGeneralizations = false;
 	QString mText;
 	QString mTextBinded;
 	QString mReadOnly;

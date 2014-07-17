@@ -44,6 +44,7 @@ Label* Label::clone()
 	returnLabel->mRotation = mRotation;
 
 	returnLabel->mIndex = mIndex;
+	returnLabel->mGeneralizations = true;
 	returnLabel->mBackground = mBackground;
 	returnLabel->mIsHard = mIsHard;
 	returnLabel->mIsPlainText = mIsPlainText;
@@ -53,6 +54,9 @@ Label* Label::clone()
 
 QString Label::titleName() const
 {
+	if (mGeneralizations) {
+		return "titleGeneralized_" + QString("%1").arg(mIndex);
+	}
 	return "title_" + QString("%1").arg(mIndex);
 }
 
