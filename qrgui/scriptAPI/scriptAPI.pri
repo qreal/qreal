@@ -6,10 +6,10 @@ HEADERS += \
 	$$PWD/virtualCursor.h \
 	$$PWD/guiFacade.h \
 	$$PWD/hintReporter.h \
-    scriptAPI/paletteAPI.h \
-    scriptAPI/hintAPI.h \
-    scriptAPI/virtualKeyboard.h \
-    scriptAPI/sceneAPI.h
+	$$PWD/paletteAPI.h \
+	$$PWD/hintAPI.h \
+	$$PWD/virtualKeyboard.h \
+	$$PWD/sceneAPI.h
 
 SOURCES += \
 	$$PWD/scriptAPI.cpp \
@@ -17,7 +17,7 @@ SOURCES += \
 	$$PWD/virtualCursor.cpp \
 	$$PWD/guiFacade.cpp \
 	$$PWD/hintReporter.cpp \
-    scriptAPI/paletteAPI.cpp \
-    scriptAPI/hintAPI.cpp \
-    scriptAPI/virtualKeyboard.cpp \
-    scriptAPI/sceneAPI.cpp
+	$$PWD/paletteAPI.cpp \
+	$$PWD/hintAPI.cpp \
+	$$PWD/virtualKeyboard.cpp \
+	$$PWD/sceneAPI.cpp

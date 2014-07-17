@@ -3,10 +3,10 @@
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "managers/paletteUpdateManager.h"
 #include "managers/kitAutoSwitcher.h"
+#include "managers/kitExtensionsUpdateManager.h"
 #include "commonTwoDModel/robotModel/twoDRobotModel.h"
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 #include "commonTwoDModel/engine/twoDModelGuiFacade.h"
-#include "managers/kitExtensionsUpdateManager.h"
 
 using namespace interpreterCore;
 
