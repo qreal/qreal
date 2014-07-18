@@ -46,6 +46,7 @@ HEADERS += \
 	$$PWD/src/managers/paletteUpdateManager.h \
 	$$PWD/src/managers/saveConvertionManager.h \
 	$$PWD/src/managers/kitAutoSwitcher.h \
+	$$PWD/src/managers/kitExtensionsUpdateManager.h \
 	$$PWD/src/textLanguage/robotsBlockParser.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
 
@@ -84,6 +85,7 @@ SOURCES += \
 	$$PWD/src/managers/kitAutoSwitcher.cpp \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
+	$$PWD/src/managers/kitExtensionsUpdateManager.cpp \
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \

@@ -62,8 +62,8 @@ void RobotModel::reinit()
 void RobotModel::clear()
 {
 	reinit();
-	mPos = QPointF();
-	mAngle = 0;
+	setPosition(QPointF());
+	setRotation(0);
 }
 
 RobotModel::Motor *RobotModel::initMotor(int radius, int speed, long unsigned int degrees
@@ -284,6 +284,11 @@ void RobotModel::setRotation(qreal angle)
 		mAngle = fmod(angle, 360);
 		emit rotationChanged(angle);
 	}
+}
+
+bool RobotModel::onTheGround() const
+{
+	return mIsOnTheGround;
 }
 
 void RobotModel::serialize(QDomDocument &target) const

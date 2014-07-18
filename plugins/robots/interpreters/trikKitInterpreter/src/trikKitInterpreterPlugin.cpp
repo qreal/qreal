@@ -1,7 +1,9 @@
 #include "trikKitInterpreterPlugin.h"
 
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QLineEdit>
 
+#include <qrkernel/settingsManager.h>
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
 
 #include "src/trikTwoDModelConfigurer.h"
@@ -21,6 +23,18 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	QApplication::installTranslator(&mAppTranslator);
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
+
+	QLineEdit * const quickPreferences = new QLineEdit;
+	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
+	auto updateQuickPreferences = [quickPreferences]() {
+		quickPreferences->setText(qReal::SettingsManager::value("TrikTcpServer").toString());
+	};
+	updateQuickPreferences();
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	connect(quickPreferences, &QLineEdit::textChanged, [](QString const &text) {
+		qReal::SettingsManager::setValue("TrikTcpServer", text);
+	});
+	mIpAdressQuicksConfigurer = quickPreferences;
 
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6
 			, new TrikTwoDModelConfigurer("M3", "M4"));
@@ -80,6 +94,11 @@ interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defa
 interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget()
 {
 	return mAdditionalPreferences;
+}
+
+QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model)
+{
+	return model.name().toLower().contains("twod") ? nullptr : mIpAdressQuicksConfigurer;
 }
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()
