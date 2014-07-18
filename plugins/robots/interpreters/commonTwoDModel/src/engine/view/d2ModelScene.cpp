@@ -53,7 +53,6 @@ D2ModelScene::D2ModelScene(model::Model &model
 
 D2ModelScene::~D2ModelScene()
 {
-	delete mRobot;
 }
 
 void D2ModelScene::drawInitialRobot()
@@ -355,7 +354,6 @@ void D2ModelScene::clearScene(bool removeRobot)
 					, port, interpreterBase::robotModel::DeviceInfo());
 		}
 
-		delete mRobot;
 		clear();
 		drawInitialRobot();
 	}
