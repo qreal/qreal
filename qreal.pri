@@ -16,6 +16,7 @@ SUBDIRS = \
 	thirdparty \
 
 qrutils.depends = qrkernel
+qrutils.depends = thirdparty
 qrrepo.depends = qrkernel qrutils
 qrxc.depends = qrutils
 qrmc.depends = qrrepo
