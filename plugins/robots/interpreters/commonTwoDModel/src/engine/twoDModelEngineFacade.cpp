@@ -91,7 +91,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 	});
 
 	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
-			, mView.data(), &view::D2ModelWidget::close);
+			, [=](){ mView.reset(); });
 
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged

@@ -5,8 +5,8 @@
 #include <utils/abstractTimer.h>
 #include <interpreterBase/robotModel/robotParts/scalarSensor.h>
 
-static int const unrealUpdateInterval = 500;
-static int const realUpdateInterval = 20;
+static int const unrealUpdateInterval = 20;
+static int const realUpdateInterval = 200;
 
 using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
