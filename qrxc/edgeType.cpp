@@ -20,15 +20,13 @@ EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
 
 EdgeType::~EdgeType()
 {
-	foreach (Association *association, mAssociations) {
-		delete association;
-	}
+	qDeleteAll(mAssociations);
 }
 
-bool EdgeType::copyPorts(NodeType* parent)
+
+bool EdgeType::copyPorts(NodeType *parent)
 {
-	Q_UNUSED(parent);
-	return false;
+	Q_UNUSED(parent)	return false;
 }
 
 Type* EdgeType::clone() const

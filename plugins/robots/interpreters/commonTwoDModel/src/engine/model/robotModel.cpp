@@ -58,8 +58,8 @@ void RobotModel::reinit()
 void RobotModel::clear()
 {
 	reinit();
-	mPos = QPointF();
-	mAngle = 0;
+	setPosition(QPointF());
+	setRotation(0);
 }
 
 RobotModel::Motor *RobotModel::initMotor(int radius, int speed, long unsigned int degrees
