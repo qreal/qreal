@@ -1,4 +1,4 @@
-#include "speakerblock.h"
+#include "speakerBlock.h"
 
 #include <QtGui/QColor>
 

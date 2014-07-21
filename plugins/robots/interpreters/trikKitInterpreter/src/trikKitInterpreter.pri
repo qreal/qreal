@@ -21,7 +21,7 @@ HEADERS += \
 	$$PWD/blocks/details/trikEnginesForwardBlock.h \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.h \
 	$$PWD/blocks/details/waitForMotionBlock.h \
-	$$PWD/blocks/details/speakerblock.h \
+	$$PWD/blocks/details/speakerBlock.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
 	$$PWD/robotModel/parts/trikDisplay.h \
 	$$PWD/robotModel/parts/trikSpeaker.h \
@@ -62,7 +62,7 @@ SOURCES += \
 	$$PWD/blocks/details/trikEnginesForwardBlock.cpp \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.cpp \
 	$$PWD/blocks/details/waitForMotionBlock.cpp \
-	$$PWD/blocks/details/speakerblock.cpp \
+	$$PWD/blocks/details/speakerBlock.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
 	$$PWD/robotModel/parts/trikDisplay.cpp \
 	$$PWD/robotModel/parts/trikSpeaker.cpp \
