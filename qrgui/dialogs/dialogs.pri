@@ -21,6 +21,7 @@ HEADERS += \
 	$$PWD/renameDialog.h \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.h \
 	$$PWD/metamodelingOnFly/restoreElementDialog.h \
+    dialogs/gesturesShow/gesturePainter.h
 
 SOURCES += \
 	$$PWD/gesturesShow/gesturesWidget.cpp \
@@ -44,6 +45,7 @@ SOURCES += \
 	$$PWD/renameDialog.cpp \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.cpp \
 	$$PWD/metamodelingOnFly/restoreElementDialog.cpp \
+    dialogs/gesturesShow/gesturePainter.cpp
 
 FORMS += \
 	$$PWD/gesturesShow/gesturesWidget.ui \

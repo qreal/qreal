@@ -1,5 +1,10 @@
 #include "gesturesWidget.h"
+
 #include "ui_gesturesWidget.h"
+#include "gesturePainter.h"
+
+#include <QtCore/QString>
+#include <QColor>
 
 using namespace qReal::gestures;
 
@@ -8,9 +13,6 @@ GesturesWidget::GesturesWidget(QWidget *parent)
 	, mUi(new Ui::GesturesWidget)
 {
 	mUi->setupUi(this);
-	mGestureScene = new QGraphicsScene(mUi->graphicsView);
-	gestColor = Qt::blue;
-	mUi->graphicsView->setScene(mGestureScene);
 	connect(mUi->listWidget, SIGNAL(currentItemChanged(QListWidgetItem *,QListWidgetItem *))
 			, this, SIGNAL(currentElementChanged()));
 }
@@ -20,28 +22,36 @@ GesturesWidget::~GesturesWidget()
 	delete mUi;
 }
 
-void GesturesWidget::draw(PathVector const &paths)
+void GesturesWidget::draw(QString const &paths)
 {
-	mGestureScene->clear();
+	GesturePainter *paint = new GesturePainter(paths, Qt::white, Qt::blue, 550);
+	const QSize size = QSize(550, 550);
+	QPixmap gestureIcon = paint->pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
+	mUi->gesturePixmap->setPixmap(gestureIcon);
+	delete paint;
 
-	foreach (PointVector const &path, paths) {
-		QPointF previousPoint(minBoarder, minBoarder);
 
-		QPen pen(gestColor);
-		pen.setWidth(gestWidth);
 
-		if (path.isEmpty()) {
-			return;
-		}
-		foreach (QPointF const &currentPoint, path) {
-			if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder) {
-				mGestureScene->addLine(QLineF(previousPoint, currentPoint), pen);
-			} else {
-				mGestureScene->addLine(QLineF(currentPoint, currentPoint), pen);
-			}
-			previousPoint = currentPoint;
-		}
-	}
+
+
+//	foreach (PointVector const &path, paths) {
+//		QPointF previousPoint(minBoarder, minBoarder);
+
+//		QPen pen(gestColor);
+//		pen.setWidth(gestWidth);
+
+//		if (path.isEmpty()) {
+//			return;
+//		}
+//		foreach (QPointF const &currentPoint, path) {
+//			if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder) {
+//				mGestureScene->addLine(QLineF(previousPoint, currentPoint), pen);
+//			} else {
+//				mGestureScene->addLine(QLineF(currentPoint, currentPoint), pen);
+//			}
+//			previousPoint = currentPoint;
+//		}
+//	}
 }
 
 int GesturesWidget::coord(int previous, int next, int part)
