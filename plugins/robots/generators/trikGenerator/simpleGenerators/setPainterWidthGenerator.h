@@ -9,7 +9,7 @@ namespace simple {
 class SetPainterWidthGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-    SetPainterWidthGenerator(qrRepo::RepoApi const &repo
+	SetPainterWidthGenerator(qrRepo::RepoApi const &repo
 			, generatorBase::GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent);

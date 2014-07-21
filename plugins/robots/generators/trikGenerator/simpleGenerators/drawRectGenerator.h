@@ -9,7 +9,7 @@ namespace simple {
 class DrawRectGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-    DrawRectGenerator(qrRepo::RepoApi const &repo
+	DrawRectGenerator(qrRepo::RepoApi const &repo
 			, generatorBase::GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent);

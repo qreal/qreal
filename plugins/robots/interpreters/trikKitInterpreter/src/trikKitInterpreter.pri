@@ -49,13 +49,13 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
-    src/blocks/details/drawLineBlock.h \
-    src/blocks/details/drawPixelBlock.h \
-    src/blocks/details/drawRectBlock.h \
-    src/blocks/details/drawEllipseBlock.h \
-    src/blocks/details/drawArcBlock.h \
-    src/blocks/details/setPainterWidthBlock.h \
-    src/blocks/details/setPainterColorBlock.h
+	$$PWD/blocks/details/drawLineBlock.h \
+	$$PWD/blocks/details/drawPixelBlock.h \
+	$$PWD/blocks/details/drawRectBlock.h \
+	$$PWD/blocks/details/drawEllipseBlock.h \
+	$$PWD/blocks/details/drawArcBlock.h \
+	$$PWD/blocks/details/setPainterWidthBlock.h \
+	$$PWD/blocks/details/setPainterColorBlock.h
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -96,13 +96,13 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
-    src/blocks/details/drawLineBlock.cpp \
-    src/blocks/details/drawPixelBlock.cpp \
-    src/blocks/details/drawRectBlock.cpp \
-    src/blocks/details/drawEllipseBlock.cpp \
-    src/blocks/details/drawArcBlock.cpp \
-    src/blocks/details/setPainterWidthBlock.cpp \
-    src/blocks/details/setPainterColorBlock.cpp
+	$$PWD/blocks/details/drawLineBlock.cpp \
+	$$PWD/blocks/details/drawPixelBlock.cpp \
+	$$PWD/blocks/details/drawRectBlock.cpp \
+	$$PWD/blocks/details/drawEllipseBlock.cpp \
+	$$PWD/blocks/details/drawArcBlock.cpp \
+	$$PWD/blocks/details/setPainterWidthBlock.cpp \
+	$$PWD/blocks/details/setPainterColorBlock.cpp
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
