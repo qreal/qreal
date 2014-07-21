@@ -1,6 +1,9 @@
 #pragma once
 
 #include "dialogs/preferencesPages/preferencesPage.h"
+#include "qrgui/mainwindow/palette/paletteTree.h"
+
+#include <QtCore/QMap>
 
 namespace Ui {
 class PreferencesPaletteEditorPage;
@@ -19,4 +22,7 @@ public:
 
 private:
 	Ui::PreferencesPaletteEditorPage *mUi;
+	QList<Id> mIdList;
+	QList<QCheckBox *> *mCheckBoxList;
+	EditorManagerInterface *mEditorManager;
 };

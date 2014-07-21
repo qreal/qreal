@@ -127,6 +127,8 @@ public:
 
 	/// Includes or excludes element from metamodel.
 	virtual void setElementEnabled(Id const &type, bool enabled) = 0;
+
+	virtual IdList getAllIP() const = 0;
 };
 
 

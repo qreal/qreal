@@ -127,6 +127,8 @@ public:
 
 	void setElementEnabled(Id const &type, bool enabled) override;
 
+	IdList getAllIP() const override;
+
 private:
 	EditorInterface* editorInterface(QString const &editor) const;
 	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
