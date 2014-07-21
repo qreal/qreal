@@ -8,6 +8,7 @@
 #include <qrutils/qRealDialog.h>
 
 #include "dialogs/preferencesPages/preferencesPage.h"
+#include "qrgui/pluginManager/editorManager.h"
 
 namespace Ui {
 class PreferencesDialog;
@@ -23,7 +24,9 @@ public:
 	~PreferencesDialog();
 
 	void init(QAction * const showGridAction, QAction * const showAlignmentAction
-			  , QAction * const activateGridAction, QAction * const activateAlignmentAction, bool isServer = false);
+			  , QAction * const activateGridAction, QAction * const activateAlignmentAction
+			  , qReal::EditorManagerInterface *editorManager, bool isServer = false);
+
 	void updatePluginDependendSettings();
 
 	void registerPage(QString const &pageName, PreferencesPage * const page);

@@ -10,6 +10,7 @@
 #include "dialogs/preferencesPages/editorPage.h"
 #include "dialogs/preferencesPages/miscellaniousPage.h"
 #include "dialogs/preferencesPages/featuresPage.h"
+#include "dialogs/preferencesPages/paletteEditorPage.h"
 #include "hotKeyManager/hotKeyManagerPage.h"
 #include "brandManager/brandManager.h"
 
@@ -30,7 +31,8 @@ PreferencesDialog::~PreferencesDialog()
 }
 
 void PreferencesDialog::init(QAction * const showGridAction, QAction * const showAlignmentAction
-	, QAction * const activateGridAction, QAction * const activateAlignmentAction, bool isServer)
+	, QAction * const activateGridAction, QAction * const activateAlignmentAction
+	, EditorManagerInterface * editorManager, bool isServer)
 {
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(mUi->pageContentWigdet);
 	// Debugger page removed due to #736
@@ -39,6 +41,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, mUi->pageContentWigdet);
 	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(mUi->pageContentWigdet);
+
+	PreferencesPage *paletteEditorPage = new PreferencesPaletteEditorPage(mUi->pageContentWigdet, editorManager);
 
 	connect(mUi->listWidget, SIGNAL(clicked(QModelIndex))
 			, this, SLOT(chooseTab(const QModelIndex &)));
@@ -64,6 +68,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
 	registerPage(tr("Shortcuts"), hotKeyManagerPage);
+	registerPage(tr("Palette"), paletteEditorPage);
 
 	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	mUi->listWidget->setCurrentRow(currentTab);

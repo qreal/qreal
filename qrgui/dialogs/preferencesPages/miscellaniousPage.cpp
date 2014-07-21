@@ -38,13 +38,11 @@ void PreferencesMiscellaniousPage::getSettings()
 	Client *mClient = new Client();
 	emit needUdpateSettings();
 	delete mClient;
-	//mClient->connectToSettingsServer();
 }
 
 PreferencesMiscellaniousPage::~PreferencesMiscellaniousPage()
 {
 	delete mUi;
-	//delete mClient;
 }
 
 void PreferencesMiscellaniousPage::changeEvent(QEvent *e)

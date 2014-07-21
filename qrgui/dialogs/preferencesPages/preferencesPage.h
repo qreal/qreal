@@ -3,6 +3,8 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QWidget>
 
+#include "pluginManager/editorManager.h"
+
 /// Abstract class for preferences page
 class PreferencesPage : public QWidget
 {
