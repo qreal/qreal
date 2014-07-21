@@ -24,7 +24,7 @@ protected:
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
 
 private:
-	utils::TcpRobotCommunicator *mRobotCommunicator;
+	utils::TcpRobotCommunicator *mRobotCommunicator; // Has ownership
 };
 
 }
