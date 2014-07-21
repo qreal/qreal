@@ -46,14 +46,14 @@ class FunctorOperation : public LongOperation
 {
 public:
 	/// @param timeout Operation timeout
-    explicit FunctorOperation(int timeout = INT_MAX)
-        : LongOperation(timeout)
-    {
-    }
+	explicit FunctorOperation(int timeout = INT_MAX)
+		: LongOperation(timeout)
+	{
+	}
 
-    virtual ~FunctorOperation()
-    {
-    }
+	virtual ~FunctorOperation()
+	{
+	}
 
 	// Too much overloads for having doc for each. See class definition doc
 	template <typename T>

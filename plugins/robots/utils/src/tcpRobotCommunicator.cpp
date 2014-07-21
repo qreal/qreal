@@ -120,6 +120,7 @@ void TcpRobotCommunicator::connect()
 	if (!result) {
 		qDebug() << mSocket.errorString();
 	}
+
 	mIsConnected = true;
 	emit connected(result);
 }
@@ -130,6 +131,7 @@ void TcpRobotCommunicator::disconnect()
 		mSocket.disconnectFromHost();
 		mSocket.waitForDisconnected(3000);
 	}
+
 	mIsConnected = false;
 	emit disconnected();
 }
