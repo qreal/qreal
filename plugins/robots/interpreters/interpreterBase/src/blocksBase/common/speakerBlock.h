@@ -1,4 +1,0 @@
-#ifndef SPEAKERBLOCK_H
-#define SPEAKERBLOCK_H
-
-#endif // SPEAKERBLOCK_H
