@@ -1,6 +1,8 @@
 #include "sensorVariablesUpdater.h"
 
 #include <utils/tracer.h>
+#include <utils/timelineInterface.h>
+#include <utils/abstractTimer.h>
 #include <interpreterBase/robotModel/robotParts/scalarSensor.h>
 
 static int const unrealUpdateInterval = 20;
@@ -10,9 +12,9 @@ using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
 
 SensorVariablesUpdater::SensorVariablesUpdater(
-			RobotModelManagerInterface const &robotModelManager
-			, utils::ExpressionsParser &parser
-			)
+		RobotModelManagerInterface const &robotModelManager
+		, utils::ExpressionsParser &parser
+		)
 	: mUpdateTimer(nullptr)
 	, mRobotModelManager(robotModelManager)
 	, mParser(parser)
@@ -37,31 +39,33 @@ void SensorVariablesUpdater::run()
 			}
 
 			connect(
-					scalarSensor
-					, &robotParts::ScalarSensor::newData
-					, this
-					, &SensorVariablesUpdater::onScalarSensorResponse
-					, Qt::UniqueConnection
-					);
+						scalarSensor
+						, &robotParts::ScalarSensor::newData
+						, this
+						, &SensorVariablesUpdater::onScalarSensorResponse
+						, Qt::UniqueConnection
+						);
 
 			connect(
-					scalarSensor
-					, &robotParts::AbstractSensor::failure
-					, this
-					, &SensorVariablesUpdater::onFailure
-					, Qt::UniqueConnection
-					);
+						scalarSensor
+						, &robotParts::AbstractSensor::failure
+						, this
+						, &SensorVariablesUpdater::onFailure
+						, Qt::UniqueConnection
+						);
 
 			scalarSensor->read();
 		}
 	}
 
-	mUpdateTimer.start();
+	mUpdateTimer->start(updateInterval());
 }
 
 void SensorVariablesUpdater::suspend()
 {
-	mUpdateTimer.stop();
+	if (mUpdateTimer) {
+		mUpdateTimer->stop();
+	}
 }
 
 void SensorVariablesUpdater::onScalarSensorResponse(int reading)
@@ -89,6 +93,13 @@ void SensorVariablesUpdater::onTimerTimeout()
 			scalarSensor->read();
 		}
 	}
+
+	mUpdateTimer->start(updateInterval());
+}
+
+int SensorVariablesUpdater::updateInterval() const
+{
+	return mRobotModelManager.model().needsConnection() ? realUpdateInterval : unrealUpdateInterval;
 }
 
 void SensorVariablesUpdater::onFailure()

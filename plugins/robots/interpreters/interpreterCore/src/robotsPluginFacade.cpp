@@ -185,6 +185,11 @@ void RobotsPluginFacade::initSensorWidgets()
 	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mDockDevicesConfigurer, &interpreterBase::DevicesConfigurationWidget::selectRobotModel);
+	for (interpreterBase::robotModel::RobotModelInterface * const model : mKitPluginManager.allRobotModels()) {
+		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(model->kitId())) {
+			mDockDevicesConfigurer->prependCustomWidget(*model, kit->quickPreferencesFor(*model));
+		}
+	}
 
 	mWatchListWindow = new utils::WatchListWindow(mParser);
 	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
