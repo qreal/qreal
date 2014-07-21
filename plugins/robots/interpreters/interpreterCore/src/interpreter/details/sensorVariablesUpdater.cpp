@@ -3,24 +3,27 @@
 #include <utils/tracer.h>
 #include <interpreterBase/robotModel/robotParts/scalarSensor.h>
 
-static int const variableUpdateIntervalMs = 200;
+static int const unrealUpdateInterval = 20;
+static int const realUpdateInterval = 200;
 
 using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
 
 SensorVariablesUpdater::SensorVariablesUpdater(
-		RobotModelManagerInterface const &robotModelManager
-		, utils::ExpressionsParser &parser
-		)
-	: mRobotModelManager(robotModelManager)
+			RobotModelManagerInterface const &robotModelManager
+			, utils::ExpressionsParser &parser
+			)
+	: mUpdateTimer(nullptr)
+	, mRobotModelManager(robotModelManager)
 	, mParser(parser)
 {
-	mUpdateTimer.setInterval(variableUpdateIntervalMs);
-	connect(&mUpdateTimer, &QTimer::timeout, this, &SensorVariablesUpdater::onTimerTimeout);
 }
 
 void SensorVariablesUpdater::run()
 {
+	delete mUpdateTimer;
+	mUpdateTimer = mRobotModelManager.model().timeline().produceTimer();
+	connect(mUpdateTimer, &utils::AbstractTimer::timeout, this, &SensorVariablesUpdater::onTimerTimeout);
 	resetVariables();
 
 	for (robotParts::Device * const device : mRobotModelManager.model().configuration().devices()) {

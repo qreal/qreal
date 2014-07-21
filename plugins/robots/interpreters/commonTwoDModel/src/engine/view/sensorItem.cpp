@@ -95,7 +95,7 @@ void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseMoveEvent(event);
 	if (mDragged) {
-		QPointF const offset = event->lastPos() - event->pos();
+		QPointF const offset = event->pos() - event->lastPos();
 		moveBy(offset.x(), offset.y());
 	}
 }

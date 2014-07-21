@@ -60,6 +60,14 @@ bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
 	throw qReal::Exception("Incorrect button id in TrikDisplayWidget::buttonIsDown");
 }
 
+void TrikDisplayWidget::setLedColor(QColor const &color)
+{
+	QPalette backgroundPalette(palette());
+	backgroundPalette.setColor(QPalette::Background, color);
+	mUi->led->setPalette(backgroundPalette);
+	mUi->led->show();
+}
+
 void TrikDisplayWidget::paintEvent(QPaintEvent *event)
 {
 	QWidget::paintEvent(event);
