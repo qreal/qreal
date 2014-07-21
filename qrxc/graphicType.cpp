@@ -425,23 +425,23 @@ bool GraphicType::resolve()
 				; !tempElement.isNull()
 				; tempElement = tempElement.nextSiblingElement())
 		{
-			Override newOverride = Override(tempElement.attribute("overrides"));
+			Override override(tempElement.attribute("overrides"));
 			if (tempElement.attribute("parentName") != parent->name()) {
 				GraphicType* const graphicParent = dynamic_cast<GraphicType*>(parent);
 				if (graphicParent->mAbstract == "true") {
 					if (graphicParent != nullptr) {
-						if (!newOverride.valueOverrideLabels()) {
+						if (!override.valueOverrideLabels()) {
 								copyLabels(graphicParent);
 							}
 						}
 
-						if (!newOverride.valueOverridePictures()) {
+						if (!override.valueOverridePictures()) {
 							copyPictures(graphicParent);
 						}
 
 						NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
 						if (nodeParent != nullptr) {
-							if (!newOverride.valueOverridePorts()) {
+							if (!override.valueOverridePorts()) {
 								copyPorts(nodeParent);
 							}
 						}
