@@ -16,7 +16,7 @@
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
 #include "details/waitForMotionBlock.h"
-#include "details/speakerblock.h"
+#include "details/speakerBlock.h"
 #include "robotModel/parts/trikInfraredSensor.h"
 #include "details/ledBlock.h"
 
