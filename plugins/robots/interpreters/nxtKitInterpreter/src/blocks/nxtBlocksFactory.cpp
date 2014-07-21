@@ -71,9 +71,9 @@ interpreterBase::blocksBase::Block *NxtBlocksFactory::produceBlock(qReal::Id con
 		return new WaitForButtonBlock(mRobotModelManager->model(), "RightButtonPort");
 	} else if (elementMetatypeIs(element, "NxtDrawPixel")) {
 		return new DrawPixelBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "DrawLine")) {
-		return new DrawLineBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtDrawLine")) {
+		return new DrawLineBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "NxtDrawCircle")) {
 		return new DrawCircleBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "NxtDrawRect")) {
 		return new DrawRectBlock(mRobotModelManager->model());

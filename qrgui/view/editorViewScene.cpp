@@ -25,7 +25,7 @@ using namespace qReal::gui;
 
 EditorViewScene::EditorViewScene(QObject *parent)
 		: QGraphicsScene(parent)
-		, mLastCreatedWithEdge(nullptr)
+		, mLastCreatedFromLinker(nullptr)
 		, mClipboardHandler(this)
 		, mRightButtonPressed(false)
 		, mLeftButtonPressed(false)
@@ -386,7 +386,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	}
 
 	mCreatePoint = scenePos;
-	mLastCreatedWithEdge = nullptr;
+	mLastCreatedFromLinker = Id();
 	QObject::connect(menuSignalMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
 
 	if (canBeConnected) {
@@ -403,8 +403,8 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 		} else if (!(executed->text() == tr("Discard"))
 					&& !(executed->text() == tr("Connect with the current item"))) {
 			result = 1;
-			if (createCommand && mLastCreatedWithEdgeCommand) {
-				*createCommand = mLastCreatedWithEdgeCommand;
+			if (createCommand && mLastCreatedFromLinkerCommand) {
+				*createCommand = mLastCreatedFromLinkerCommand;
 			}
 		}
 	}
@@ -418,10 +418,9 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 
 qReal::Id EditorViewScene::createElement(QString const &str)
 {
-	qReal::Id result = createElement(str, mCreatePoint, true, &mLastCreatedWithEdgeCommand);
-	mLastCreatedWithEdge = getElem(result);
+	mLastCreatedFromLinker = createElement(str, mCreatePoint, true, &mLastCreatedFromLinkerCommand);
 	mShouldReparentItems = false;
-	return result;
+	return mLastCreatedFromLinker;
 }
 
 qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scenePos, bool searchForParents
@@ -716,9 +715,9 @@ void EditorViewScene::paste(bool isGraphicalCopy)
 	mClipboardHandler.paste(isGraphicalCopy);
 }
 
-Element *EditorViewScene::getLastCreated()
+Element *EditorViewScene::lastCreatedFromLinker() const
 {
-	return mLastCreatedWithEdge;
+	return getElem(mLastCreatedFromLinker);
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)

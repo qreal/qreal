@@ -10,6 +10,7 @@
 class XmlCompiler;
 class Diagram;
 class Type;
+class NodeType;
 class EnumType;
 class PortType;
 

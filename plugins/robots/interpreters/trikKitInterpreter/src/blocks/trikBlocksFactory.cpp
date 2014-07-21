@@ -18,6 +18,7 @@
 #include "details/waitForMotionBlock.h"
 #include "details/speakerblock.h"
 #include "robotModel/parts/trikInfraredSensor.h"
+#include "details/ledBlock.h"
 
 using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
@@ -48,8 +49,6 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 
 	} else if (elementMetatypeIs(element, "TrikSay")) {
 		return new EmptyBlock();
-	} else if (elementMetatypeIs(element, "TrikLed")) {
-		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikSystem")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
@@ -59,6 +58,8 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikLineDetectorToVariable")) {
 		return new EmptyBlock();
 
+	} else if (elementMetatypeIs(element, "TrikLed")) {
+		return new LedBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForLight")) {
 		return new WaitForLightSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForSonarDistance")) {
@@ -168,7 +169,6 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikWaitForGyroscope")
 				<< id("TrikWaitForAccelerometer")
 				<< id("TrikSay")
-				<< id("TrikLed")
 				<< id("TrikSystem")
 				<< id("TrikInitCamera")
 				<< id("TrikDetectLine")

@@ -94,7 +94,7 @@ QString TrikGeneratorPlugin::extension() const
 	return "qts";
 }
 
-QString TrikGeneratorPlugin::extDescrition() const
+QString TrikGeneratorPlugin::extensionDescription() const
 {
 	return tr("TRIK Source File");
 }

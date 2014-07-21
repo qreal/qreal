@@ -13,3 +13,8 @@ void RealTimer::start(int ms)
 	mTimer.setSingleShot(true);
 	mTimer.start();
 }
+
+void RealTimer::stop()
+{
+	mTimer.stop();
+}

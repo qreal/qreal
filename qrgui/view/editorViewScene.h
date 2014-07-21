@@ -70,7 +70,7 @@ public:
 	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
 	bool getNeedDrawGrid();
 
-	Element *getLastCreated();
+	Element *lastCreatedFromLinker() const;
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
@@ -194,8 +194,8 @@ private:
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
-	Element *mLastCreatedWithEdge;
-	commands::CreateElementCommand *mLastCreatedWithEdgeCommand;
+	Id mLastCreatedFromLinker;
+	commands::CreateElementCommand *mLastCreatedFromLinkerCommand;
 
 	ClipboardHandler mClipboardHandler;
 
