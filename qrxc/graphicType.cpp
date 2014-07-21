@@ -63,7 +63,7 @@ void GraphicType::copyFields(GraphicType *type) const
 
 bool GraphicType::copyLabels(GraphicType *parent)
 {
-	for (Label *label: parent->mLabels) {
+	for (Label *label : parent->mLabels) {
 		mLabels.append(label->clone());
 	}
 
@@ -410,24 +410,28 @@ bool GraphicType::resolve()
 				; !tempElement.isNull()
 				; tempElement = tempElement.nextSiblingElement()) {
 			mOverride = tempElement.attribute("overrides");
+			if (tempElement.attribute("parentName") != parent->name()) {
+				break;
+			}
 			GraphicType* const graphicParent = dynamic_cast<GraphicType*>(parent);
 			if (graphicParent->mAbstract == "true") {
 				checkOverriding();
 				if (graphicParent != nullptr) {
-					mHasParent = true;
 					if (!mOverrideLabels) {
-						copyLabels(graphicParent);
+							copyLabels(graphicParent);
+						}
 					}
+
 					if (!mOverridePictures) {
 						copyPictures(graphicParent);
 					}
+
 					NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
 					if (nodeParent != nullptr) {
 						if (!mOverridePorts) {
 							copyPorts(nodeParent);
 						}
 					}
-				}
 			} else {
 				copyLabels(graphicParent);
 				copyPictures(graphicParent);
@@ -436,7 +440,6 @@ bool GraphicType::resolve()
 					copyPorts(nodeParent);
 				}
 			}
-
 		}
 
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
@@ -452,6 +455,12 @@ bool GraphicType::resolve()
 		}
 	}
 
+	int i = 0;
+	while(mLabels.size() != i) {
+		mLabels.value(i)->changeIndex(i);
+		++i;
+	}
+
 	mResolvingFinished = true;
 	return true;
 }
@@ -462,8 +471,8 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
-			for (QPair<QString, QStringList> part : mDiagram->paletteGroups()) {
-			 for (auto part2: part.second) {
+		for (QPair<QString, QStringList> part : mDiagram->paletteGroups()) {
+			for (auto part2: part.second) {
 				if (part2 == normalizedName && mAbstract == "true" ) {
 					qDebug() << "ERROR! Element" << qualifiedName() << "is abstract.";
 					return;

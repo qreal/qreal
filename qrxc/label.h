@@ -4,6 +4,7 @@
 #include <QtCore/QStringList>
 
 #include <qrutils/scalableItem.h>
+#include "graphicType.h"
 
 namespace utils {
 class OutFile;
@@ -26,6 +27,7 @@ public:
 	void generateCodeForFields(utils::OutFile &out);
 	// Default copy constructor ok.
 	Label* clone();
+	void changeIndex(int i);
 
 private:
 	QString titleName() const;
@@ -35,8 +37,8 @@ private:
 
 	utils::ScalableCoordinate mX;
 	utils::ScalableCoordinate mY;
+
 	int mIndex;
-	bool mGeneralizations = false;
 	QString mText;
 	QString mTextBinded;
 	QString mReadOnly;

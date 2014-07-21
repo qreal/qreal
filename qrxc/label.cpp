@@ -44,20 +44,20 @@ Label* Label::clone()
 	returnLabel->mRotation = mRotation;
 
 	returnLabel->mIndex = mIndex;
-	returnLabel->mGeneralizations = true;
 	returnLabel->mBackground = mBackground;
 	returnLabel->mIsHard = mIsHard;
 	returnLabel->mIsPlainText = mIsPlainText;
 	return returnLabel;
 }
 
-
 QString Label::titleName() const
 {
-	if (mGeneralizations) {
-		return "titleGeneralized_" + QString("%1").arg(mIndex);
-	}
 	return "title_" + QString("%1").arg(mIndex);
+}
+
+void Label::changeIndex(int i)
+{
+	mIndex = i;
 }
 
 void Label::generateCodeForConstructor(OutFile &out)
@@ -83,6 +83,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 	out()
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		<< "			titles.append(" + titleName() + ");\n";
+
 }
 
 QStringList Label::getListOfStr(QString const &strToParse) const
@@ -139,5 +140,3 @@ void Label::generateCodeForFields(OutFile &out)
 {
 	out() << "		qReal::LabelInterface *" + titleName() + ";\n";
 }
-
-

@@ -27,6 +27,7 @@ EdgeType::~EdgeType()
 
 bool EdgeType::copyPorts(NodeType* parent)
 {
+	Q_UNUSED(parent);
 	return false;
 }
 
@@ -50,10 +51,10 @@ bool EdgeType::copyPictures(GraphicType *parent)
 {
 	EdgeType *pictureParent = dynamic_cast<EdgeType*>(parent);
 	if (pictureParent != nullptr) {
-
-		foreach (Association *association, pictureParent->mAssociations) {
+		for (auto association : pictureParent->mAssociations) {
 			mAssociations.append(association->clone());
 		}
+
 		mLineType = pictureParent->mLineType;
 		mShapeType = pictureParent->mShapeType;
 		mLineColor = pictureParent->mLineColor;
@@ -64,7 +65,9 @@ bool EdgeType::copyPictures(GraphicType *parent)
 		mFromPorts = pictureParent->mFromPorts;
 		mToPorts = pictureParent->mToPorts;
 		mVisible = true;
+		return true;
 	}
+	return false;
 }
 
 bool EdgeType::initAssociations()

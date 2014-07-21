@@ -54,7 +54,9 @@ bool NodeType::copyPictures(GraphicType *parent)
 		mHeight = nodeParent->mHeight;
 		mSdfDomElement = nodeParent->mSdfDomElement;
 		mVisible = nodeParent->mVisible;
+		return true;
 	}
+	return false;
 }
 
 bool NodeType::initAssociations()

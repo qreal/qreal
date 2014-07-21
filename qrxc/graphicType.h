@@ -40,6 +40,7 @@ public:
 	bool copyLabels(GraphicType *parent);
 	virtual bool copyPictures(GraphicType *parent) = 0;
 
+
 	void checkOverriding();
 
 	QString description() const;
@@ -78,7 +79,6 @@ protected:
 	bool mOverridePorts = false;
 	bool mOverrideLabels = false;
 	bool mOverridePictures = false;
-	bool mHasParent = false;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
