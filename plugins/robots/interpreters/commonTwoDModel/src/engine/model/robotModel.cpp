@@ -49,8 +49,8 @@ void RobotModel::reinit()
 	for (Device const * const device : mRobotModel.configuration().devices()) {
 		if (device->deviceInfo().isA<robotParts::Motor>()) {
 			initMotor(robotWheelDiameterInPx / 2, 0, 0, device->port(), false);
-		}
 	}
+}
 
 	mBeepTime = 0;
 }
@@ -63,7 +63,7 @@ void RobotModel::clear()
 }
 
 RobotModel::Motor *RobotModel::initMotor(int radius, int speed, long unsigned int degrees
-		, PortInfo const &port, bool isUsed)
+				, PortInfo const &port, bool isUsed)
 {
 	Motor *motor = new Motor();
 	motor->radius = radius;
@@ -75,16 +75,16 @@ RobotModel::Motor *RobotModel::initMotor(int radius, int speed, long unsigned in
 		motor->activeTimeType = DoInf;
 	} else {
 		motor->activeTimeType = DoByLimit;
-	}
+}
 
-	mMotors[port] = motor;
+mMotors[port] = motor;
 
-	/// @todo We need some mechanism to set correspondence between motors and encoders. In NXT motors and encoders are
-	///       physically plugged into one port, so we can find corresponding port by name. But in TRIK encoders can be
-	///       connected differently.
+/// @todo We need some mechanism to set correspondence between motors and encoders. In NXT motors and encoders are
+/// physically plugged into one port, so we can find corresponding port by name. But in TRIK encoders can be
+/// connected differently.
 	for (Device const * const device : mRobotModel.configuration().devices()) {
 		if (device->deviceInfo().isA<EncoderSensor>() &&
-				(device->port().name() == port.name() || device->port().nameAliases().contains(port.name())))
+						(device->port().name() == port.name() || device->port().nameAliases().contains(port.name())))
 		{
 			mMotorToEncoderPortMap[port] = device->port();
 			mTurnoverEngines[mMotorToEncoderPortMap[port]] = 0;
@@ -119,7 +119,7 @@ void RobotModel::countMotorTurnover()
 		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
 		mTurnoverEngines[mMotorToEncoderPortMap[port]] += degrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit)
-				&& (mTurnoverEngines[mMotorToEncoderPortMap[port]] >= motor->degrees))
+						&& (mTurnoverEngines[mMotorToEncoderPortMap[port]] >= motor->degrees))
 		{
 			motor->speed = 0;
 			motor->activeTimeType = End;
@@ -183,8 +183,8 @@ QPainterPath RobotModel::robotBoundingPath() const
 			QPointF const sensorPos = mSensorsConfiguration.position(port);
 			/// @todo: Consider rotation and differentiate sizes.
 			path.addRect({sensorPos - QPointF(sensorWidth / 2, sensorWidth / 2), QSizeF{sensorWidth, sensorWidth}});
-		}
 	}
+}
 
 	QPointF const realRotatePoint = QPointF(boundingRect.width() / 2, boundingRect.height() / 2);
 	QPointF const translationToZero = -realRotatePoint - boundingRect.topLeft();
@@ -206,7 +206,7 @@ void RobotModel::recalculateParams()
 	// Do nothing until robot gets back on the ground
 	if (!mIsOnTheGround || !mPhysicsEngine) {
 		return;
-	}
+}
 
 	struct EngineOutput {
 		qreal speed;
@@ -226,9 +226,9 @@ void RobotModel::recalculateParams()
 
 		engine->spoiledSpeed = mSettings.realisticMotors() ? varySpeed(engine->speed) : engine->speed;
 		return EngineOutput{
-				engine->spoiledSpeed * 2 * M_PI * engine->radius * onePercentAngularVelocity / 360
-				, engine->breakMode
-				};
+						engine->spoiledSpeed * 2 * M_PI * engine->radius * onePercentAngularVelocity / 360
+						, engine->breakMode
+		};
 	};
 
 	EngineOutput const outputLeft = calculateMotorOutput(left);
