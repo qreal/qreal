@@ -413,6 +413,7 @@ bool GraphicType::resolve()
 			if (tempElement.attribute("parentName") != parent->name()) {
 				break;
 			}
+
 			GraphicType* const graphicParent = dynamic_cast<GraphicType*>(parent);
 			if (graphicParent->mAbstract == "true") {
 				checkOverriding();
@@ -432,6 +433,7 @@ bool GraphicType::resolve()
 							copyPorts(nodeParent);
 						}
 					}
+
 			} else {
 				copyLabels(graphicParent);
 				copyPictures(graphicParent);
@@ -447,6 +449,7 @@ bool GraphicType::resolve()
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
 			}
+
 			foreach (QString const &element, gParent->mExplosions.keys()) {
 				if (!mExplosions.contains(element)) {
 					mExplosions[element] = gParent->mExplosions[element];
