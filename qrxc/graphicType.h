@@ -44,9 +44,9 @@ public:
 	{
 	public:
 		Override(QString parentString);
-		bool valueOverridePorts();
-		bool valueOverrideLabels();
-		bool valueOverridePictures();
+		bool valueOverridePorts() const;
+		bool valueOverrideLabels() const;
+		bool valueOverridePictures() const;
 
 	private:
 		QString mOverrideString;

@@ -33,17 +33,17 @@ GraphicType::Override::Override(QString parentString)
 	}
 }
 
-bool GraphicType::Override::valueOverrideLabels()
+bool GraphicType::Override::valueOverrideLabels() const
 {
 	return mOverrideLabels;
 }
 
-bool GraphicType::Override::valueOverridePorts()
+bool GraphicType::Override::valueOverridePorts() const
 {
 	return mOverridePorts;
 }
 
-bool GraphicType::Override::valueOverridePictures()
+bool GraphicType::Override::valueOverridePictures() const
 {
 	return mOverridePictures;
 }
