@@ -20,6 +20,34 @@ GraphicType::ContainerProperties::ContainerProperties()
 {
 }
 
+GraphicType::Override::Override(QString parentString)
+		: mOverrideString(parentString)
+{
+	mOverridePorts = mOverrideString.contains("ports", Qt::CaseInsensitive);
+	mOverrideLabels = mOverrideString.contains("labels", Qt::CaseInsensitive);
+	mOverridePictures = mOverrideString.contains("pictures", Qt::CaseInsensitive);
+	if (mOverrideString.contains("all", Qt::CaseInsensitive)) {
+		mOverridePorts = true;
+		mOverrideLabels = true;
+		mOverridePictures = true;
+	}
+}
+
+bool GraphicType::Override::valueOverrideLabels()
+{
+	return mOverrideLabels;
+}
+
+bool GraphicType::Override::valueOverridePorts()
+{
+	return mOverridePorts;
+}
+
+bool GraphicType::Override::valueOverridePictures()
+{
+	return mOverridePictures;
+}
+
 GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 		: mResolvingFlag(resolvingFlag)
 {
@@ -352,19 +380,6 @@ bool GraphicType::isResolving() const
 	return mResolving;
 }
 
-void GraphicType::checkOverriding()
-{
-	QString temp = mOverride;
-	mOverridePorts = mOverride.contains("ports", Qt::CaseInsensitive);
-	mOverrideLabels = mOverride.contains("labels", Qt::CaseInsensitive);
-	mOverridePictures = mOverride.contains("pictures", Qt::CaseInsensitive);
-	if (mOverride.contains("all", Qt::CaseInsensitive)) {
-		mOverridePorts = true;
-		mOverrideLabels = true;
-		mOverridePictures = true;
-	}
-}
-
 bool GraphicType::resolve()
 {
 	if (mResolvingFinished) {
@@ -408,38 +423,36 @@ bool GraphicType::resolve()
 		QDomElement element = mLogic.firstChildElement();
 		for (QDomElement tempElement = element.firstChildElement()
 				; !tempElement.isNull()
-				; tempElement = tempElement.nextSiblingElement()) {
-			mOverride = tempElement.attribute("overrides");
+				; tempElement = tempElement.nextSiblingElement())
+		{
+			Override *newOverride = new Override(tempElement.attribute("overrides"));
 			if (tempElement.attribute("parentName") != parent->name()) {
-				break;
-			}
-
-			GraphicType* const graphicParent = dynamic_cast<GraphicType*>(parent);
-			if (graphicParent->mAbstract == "true") {
-				checkOverriding();
-				if (graphicParent != nullptr) {
-					if (!mOverrideLabels) {
-							copyLabels(graphicParent);
+				GraphicType* const graphicParent = dynamic_cast<GraphicType*>(parent);
+				if (graphicParent->mAbstract == "true") {
+					if (graphicParent != nullptr) {
+						if (!newOverride->valueOverrideLabels()) {
+								copyLabels(graphicParent);
+							}
 						}
-					}
 
-					if (!mOverridePictures) {
-						copyPictures(graphicParent);
-					}
+						if (!newOverride->valueOverridePictures()) {
+							copyPictures(graphicParent);
+						}
 
+						NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
+						if (nodeParent != nullptr) {
+							if (!newOverride->valueOverridePorts()) {
+								copyPorts(nodeParent);
+							}
+						}
+
+				} else {
+					copyLabels(graphicParent);
+					copyPictures(graphicParent);
 					NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
 					if (nodeParent != nullptr) {
-						if (!mOverridePorts) {
-							copyPorts(nodeParent);
-						}
+						copyPorts(nodeParent);
 					}
-
-			} else {
-				copyLabels(graphicParent);
-				copyPictures(graphicParent);
-				NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
-				if (nodeParent != nullptr) {
-					copyPorts(nodeParent);
 				}
 			}
 		}
@@ -459,7 +472,7 @@ bool GraphicType::resolve()
 	}
 
 	int i = 0;
-	while(mLabels.size() != i) {
+	while (mLabels.size() != i) {
 		mLabels.value(i)->changeIndex(i);
 		++i;
 	}
@@ -475,7 +488,7 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
 		for (QPair<QString, QStringList> part : mDiagram->paletteGroups()) {
-			for (auto part2: part.second) {
+			for (auto part2 : part.second) {
 				if (part2 == normalizedName && mAbstract == "true" ) {
 					qDebug() << "ERROR! Element" << qualifiedName() << "is abstract.";
 					return;

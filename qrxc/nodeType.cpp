@@ -56,6 +56,7 @@ bool NodeType::copyPictures(GraphicType *parent)
 		mVisible = nodeParent->mVisible;
 		return true;
 	}
+
 	return false;
 }
 

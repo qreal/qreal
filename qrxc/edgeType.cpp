@@ -67,6 +67,7 @@ bool EdgeType::copyPictures(GraphicType *parent)
 		mVisible = true;
 		return true;
 	}
+
 	return false;
 }
 

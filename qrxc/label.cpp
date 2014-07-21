@@ -83,7 +83,6 @@ void Label::generateCodeForConstructor(OutFile &out)
 	out()
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		<< "			titles.append(" + titleName() + ");\n";
-
 }
 
 QStringList Label::getListOfStr(QString const &strToParse) const

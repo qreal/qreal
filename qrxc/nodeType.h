@@ -23,7 +23,6 @@ public:
 	bool copyPorts(NodeType *port) override;
 	bool copyPictures(GraphicType *parent) override;
 
-
 private:
 	QList<Port*> mPorts;
 	QDomElement mSdfDomElement;

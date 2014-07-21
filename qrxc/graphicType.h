@@ -40,8 +40,20 @@ public:
 	bool copyLabels(GraphicType *parent);
 	virtual bool copyPictures(GraphicType *parent) = 0;
 
+	class Override
+	{
+	public:
+		Override(QString parentString);
+		bool valueOverridePorts();
+		bool valueOverrideLabels();
+		bool valueOverridePictures();
 
-	void checkOverriding();
+	private:
+		QString mOverrideString;
+		bool mOverridePorts = false;
+		bool mOverrideLabels = false;
+		bool mOverridePictures = false;
+	};
 
 	QString description() const;
 	void setDescription(QString const &description);
@@ -75,11 +87,6 @@ protected:
 	QMap<QString, QPair<bool, bool> > mExplosions;
 	bool mCreateChildrenFromMenu;
 	QString mAbstract;
-	QString mOverride;
-	bool mOverridePorts = false;
-	bool mOverrideLabels = false;
-	bool mOverridePictures = false;
-
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
 	virtual bool isResolving() const;
