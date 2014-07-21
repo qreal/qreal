@@ -14,7 +14,6 @@ WaitForButtonBlock::WaitForButtonBlock(RobotModelInterface &robotModel, QString 
 
 void WaitForButtonBlock::run()
 {
-	qDebug() << "WaitForButtons";
 	mButton = RobotModelUtils::findDevice<robotParts::Button>(mRobotModel, mPort);
 
 	if (!mButton) {

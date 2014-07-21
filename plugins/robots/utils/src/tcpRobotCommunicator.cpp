@@ -96,6 +96,7 @@ bool TcpRobotCommunicator::stopRobot()
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
 
+
 	disconnect();
 
 	return true;

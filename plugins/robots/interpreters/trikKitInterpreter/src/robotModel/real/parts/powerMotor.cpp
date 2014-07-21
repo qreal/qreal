@@ -12,7 +12,6 @@ PowerMotor::PowerMotor(DeviceInfo const &info, PortInfo const &port)
 
 void PowerMotor::on(int speed)
 {
-	qDebug() << "PowerMotor " << speed << "\n";
 	QString const pathToCommand = ":/trik/templates/engines/forward.t";
 	QString directCommand = utils::InFile::readAll(pathToCommand) + "brick.run()";
 	directCommand = directCommand.replace("@@PORT@@", port().name());

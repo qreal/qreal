@@ -12,9 +12,8 @@ Speaker::Speaker(DeviceInfo const &info, PortInfo const &port)
 
 void Speaker::play(QString const &filePath)
 {
-	qDebug() << "Speaker dfgfg" << filePath << "\n";
 	QString const pathToCommand = ":/trik/templates/playTone.t";
-	QString directCommand = utils::InFile::readAll(pathToCommand);
+	QString directCommand = utils::InFile::readAll(pathToCommand) +"brick.run();";
 	directCommand = directCommand.replace("@@FILENAME@@", filePath);
 	utils::TcpRobotCommunicator tcpRobotCommunicator("TrikTcpServer");
 	tcpRobotCommunicator.runDirectCommand(directCommand);
