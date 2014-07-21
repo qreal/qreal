@@ -26,14 +26,14 @@ LedBlock::~LedBlock()
 void LedBlock::run()
 {
 	QString const stringColor = stringProperty("Color");
-	QColor const color = stringColor == "off" ? QColor(Qt::gray) : QColor(stringColor);
+//	QColor const color = stringColor == "off" ? QColor(Qt::gray) : QColor(stringColor);
 
 	QString const port = "LedPort";
 	robotModel::parts::TrikLed * const led
 			= RobotModelUtils::findDevice<robotModel::parts::TrikLed>(mRobotModel, port);
 
 	if (led) {
-		led->setColor(color);
+		led->setColor(stringColor);
 	} else {
 		error(tr("Led is not configured (WTF?)"));
 	}

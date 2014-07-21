@@ -12,9 +12,10 @@ TwoDLed::TwoDLed(DeviceInfo const &info
 {
 }
 
-void TwoDLed::setColor(QColor const &color)
+void TwoDLed::setColor(const QString &color)
 {
+	QColor const newColor = color == "off" ? QColor(Qt::gray) : QColor(color);
 	auto display = dynamic_cast<TrikDisplayWidget *>(mEngine.display());
 	Q_ASSERT(display);
-	display->setLedColor(color);
+	display->setLedColor(newColor);
 }

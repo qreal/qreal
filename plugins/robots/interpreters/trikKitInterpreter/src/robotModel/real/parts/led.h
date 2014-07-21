@@ -15,7 +15,7 @@ public:
 	Led(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);
 
-	void setColor(QColor const &color) override;
+	void setColor(QString const &color) override;
 };
 
 }
