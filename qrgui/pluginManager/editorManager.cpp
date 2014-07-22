@@ -37,7 +37,7 @@ EditorManager::EditorManager(QObject *parent) : QObject(parent)
 			} else {
 				// TODO: Just does not work under Linux. Seems to be memory corruption when
 				// loading, unloading, and then loading .so file again.
-				// To reproduce, uncomment this, build VisualInterpreter, and try to launch QReal.
+				// To reproduce, uncomment this, build VisualInterpre+ter, and try to launch QReal.
 				// With some tool plugins, like MetaEditorSupport or Exterminatus, works fine,
 				// also works fine on Windows. Investigation required.
 				// loader->unload();
