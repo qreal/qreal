@@ -25,6 +25,7 @@ QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
 
 void TrikRuntimeUploaderPlugin::init(qReal::PluginConfigurator const &configurator)
 {
+	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 }
 
 void TrikRuntimeUploaderPlugin::uploadRuntime()
@@ -41,7 +42,12 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 
 	QString command = "\"" + qReal::SettingsManager::value("WinScpPath").toString() + "\" " // path to WinScp
 	"/command " + openConnection + "  "+ killTrikGui + " " + moveCommand + " " + restoreLaw + " " + restartTrikGui;
-	qDebug() << command;
+
+	mMainWindowInterpretersInterface->errorReporter()->addWarning(
+		tr("Attention! Start downloading the runtime. Please do not turn off the robot")
+	);
+
+
 	myProcess.startDetached(command + " \"exit\" ");
 
 }

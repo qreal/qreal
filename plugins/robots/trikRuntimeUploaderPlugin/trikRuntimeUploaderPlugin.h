@@ -22,6 +22,7 @@ private slots:
 	void uploadRuntime();
 
 private:
+	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;;  // Does not have ownership
 
 	QAction mAction;
 

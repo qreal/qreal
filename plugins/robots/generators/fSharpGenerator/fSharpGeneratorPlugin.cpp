@@ -120,6 +120,9 @@ bool FSharpGeneratorPlugin::uploadProgram()
 	myProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
 	myProcess.start(command);
 	myProcess.waitForFinished();
+	qDebug() << command;
+	qDebug() << myProcess.workingDirectory();
+
 
 	QString moveCommand = "\"" + qReal::SettingsManager::value("WinScpPath").toString().replace("?","") + "\""
 			+ " /command  \"open scp://root@" + qReal::SettingsManager::value("TrikTcpServer").toString() + "\""
@@ -127,7 +130,7 @@ bool FSharpGeneratorPlugin::uploadProgram()
 			+ " /home/root/trik/FSharp/Environment/\"";
 
 	myProcess.startDetached(moveCommand);
-	myProcess.waitForFinished();
+	//myProcess.waitForFinished();
 	mMainWindowInterface->errorReporter()->addInformation(
 		tr("After downloading the program, enter 'exit' or close the window")
 	);
@@ -136,7 +139,7 @@ bool FSharpGeneratorPlugin::uploadProgram()
 void FSharpGeneratorPlugin::runProgram()
 {
 	mMainWindowInterface->errorReporter()->addWarning(
-		tr("Attention, the robot starts about a minute")
+		tr("Attention, the robot starts about a half-minute")
 	);
 
 	utils::TcpRobotCommunicator communicator("TrikTcpServer");

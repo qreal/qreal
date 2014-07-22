@@ -1,1 +1,1 @@
-model.Motor.["@@PORT@@"].SetPower @@POWER@@
+model.Motor.["@@PORT@@"].Power <- @@POWER@@
