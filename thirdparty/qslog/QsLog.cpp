@@ -25,10 +25,8 @@
 
 #include "QsLog.h"
 #include "QsLogDest.h"
-#ifdef QS_LOG_SEPARATE_THREAD
 #include <QThreadPool>
 #include <QRunnable>
-#endif
 #include <QMutex>
 #include <QVector>
 #include <QDateTime>
@@ -77,7 +75,6 @@ static const char* LevelToText(Level theLevel)
     }
 }
 
-#ifdef QS_LOG_SEPARATE_THREAD
 class LogWriterRunnable : public QRunnable
 {
 public:
@@ -88,22 +85,18 @@ private:
     QString mMessage;
     Level mLevel;
 };
-#endif
 
 class LoggerImpl
 {
 public:
     LoggerImpl();
 
-#ifdef QS_LOG_SEPARATE_THREAD
     QThreadPool threadPool;
-#endif
     QMutex logMutex;
     Level level;
     DestinationList destList;
 };
 
-#ifdef QS_LOG_SEPARATE_THREAD
 LogWriterRunnable::LogWriterRunnable(QString message, Level level)
     : QRunnable()
     , mMessage(message)
@@ -115,7 +108,6 @@ void LogWriterRunnable::run()
 {
     Logger::instance().write(mMessage, mLevel);
 }
-#endif
 
 
 LoggerImpl::LoggerImpl()
@@ -123,10 +115,8 @@ LoggerImpl::LoggerImpl()
 {
     // assume at least file + console
     destList.reserve(2);
-#ifdef QS_LOG_SEPARATE_THREAD
     threadPool.setMaxThreadCount(1);
     threadPool.setExpiryTimeout(-1);
-#endif
 }
 
 
@@ -176,9 +166,7 @@ Level Logger::levelFromLogMessage(const QString& logMessage, bool* conversionSuc
 
 Logger::~Logger()
 {
-#ifdef QS_LOG_SEPARATE_THREAD
     d->threadPool.waitForDone();
-#endif
     delete d;
     d = 0;
 }
@@ -227,12 +215,8 @@ Logger::Helper::~Helper()
 //! directs the message to the task queue or writes it directly
 void Logger::enqueueWrite(const QString& message, Level level)
 {
-#ifdef QS_LOG_SEPARATE_THREAD
     LogWriterRunnable *r = new LogWriterRunnable(message, level);
     d->threadPool.start(r);
-#else
-    write(message, level);
-#endif
 }
 
 //! Sends the message to all the destinations. The level for this message is passed in case

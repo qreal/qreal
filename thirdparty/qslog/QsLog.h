@@ -41,94 +41,73 @@ class LoggerImpl; // d pointer
 class QSLOG_SHARED_OBJECT Logger
 {
 public:
-    static Logger& instance();
-    static void destroyInstance();
-    static Level levelFromLogMessage(const QString& logMessage, bool* conversionSucceeded = 0);
+	static Logger& instance();
+	static void destroyInstance();
+	static Level levelFromLogMessage(const QString& logMessage, bool* conversionSucceeded = 0);
 
-    ~Logger();
+	~Logger();
 
-    //! Adds a log message destination. Don't add null destinations.
-    void addDestination(DestinationPtr destination);
-    //! Logging at a level < 'newLevel' will be ignored
-    void setLoggingLevel(Level newLevel);
-    //! The default level is INFO
-    Level loggingLevel() const;
+	//! Adds a log message destination. Don't add null destinations.
+	void addDestination(DestinationPtr destination);
+	//! Logging at a level < 'newLevel' will be ignored
+	void setLoggingLevel(Level newLevel);
+	//! The default level is INFO
+	Level loggingLevel() const;
 
-    //! The helper forwards the streaming to QDebug and builds the final
-    //! log message.
-    class QSLOG_SHARED_OBJECT Helper
-    {
-    public:
-        explicit Helper(Level logLevel) :
-            level(logLevel),
-            qtDebug(&buffer) {}
-        ~Helper();
-        QDebug& stream(){ return qtDebug; }
+	//! The helper forwards the streaming to QDebug and builds the final
+	//! log message.
+	class QSLOG_SHARED_OBJECT Helper
+	{
+	public:
+		explicit Helper(Level logLevel) :
+			level(logLevel),
+			qtDebug(&buffer) {}
+		~Helper();
+		QDebug& stream(){ return qtDebug; }
 
-    private:
-        void writeToLog();
+	private:
+		void writeToLog();
 
-        Level level;
-        QString buffer;
-        QDebug qtDebug;
-    };
+		Level level;
+		QString buffer;
+		QDebug qtDebug;
+	};
 
 private:
-    Logger();
-    Logger(const Logger&);            // not available
-    Logger& operator=(const Logger&); // not available
+	Logger();
+	Logger(const Logger&);            // not available
+	Logger& operator=(const Logger&); // not available
 
-    void enqueueWrite(const QString& message, Level level);
-    void write(const QString& message, Level level);
+	void enqueueWrite(const QString& message, Level level);
+	void write(const QString& message, Level level);
 
-    LoggerImpl* d;
+	LoggerImpl* d;
 
-    friend class LogWriterRunnable;
+	friend class LogWriterRunnable;
 };
 
 } // end namespace
 
-//! Logging macros: define QS_LOG_LINE_NUMBERS to get the file and line number
-//! in the log output.
-#ifndef QS_LOG_LINE_NUMBERS
+//! WARNING: Here was some piece of code that enabled or disabled file and line info logging.
+//! It was removed, so the version from the repo differs from out one.
 #define QLOG_TRACE() \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::TraceLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::TraceLevel).stream()
+	if (QsLogging::Logger::instance().loggingLevel() > QsLogging::TraceLevel) {} \
+	else  QsLogging::Logger::Helper(QsLogging::TraceLevel).stream() << __FILE__ << '@' << __LINE__
 #define QLOG_DEBUG() \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::DebugLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::DebugLevel).stream()
+	if (QsLogging::Logger::instance().loggingLevel() > QsLogging::DebugLevel) {} \
+	else QsLogging::Logger::Helper(QsLogging::DebugLevel).stream() << __FILE__ << '@' << __LINE__
 #define QLOG_INFO()  \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::InfoLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::InfoLevel).stream()
+	if (QsLogging::Logger::instance().loggingLevel() > QsLogging::InfoLevel) {} \
+	else QsLogging::Logger::Helper(QsLogging::InfoLevel).stream() << __FILE__ << '@' << __LINE__
 #define QLOG_WARN()  \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::WarnLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::WarnLevel).stream()
+	if (QsLogging::Logger::instance().loggingLevel() > QsLogging::WarnLevel) {} \
+	else QsLogging::Logger::Helper(QsLogging::WarnLevel).stream() << __FILE__ << '@' << __LINE__
 #define QLOG_ERROR() \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::ErrorLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::ErrorLevel).stream()
+	if (QsLogging::Logger::instance().loggingLevel() > QsLogging::ErrorLevel) {} \
+	else QsLogging::Logger::Helper(QsLogging::ErrorLevel).stream() << __FILE__ << '@' << __LINE__
 #define QLOG_FATAL() \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::FatalLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::FatalLevel).stream()
-#else
-#define QLOG_TRACE() \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::TraceLevel) {} \
-    else  QsLogging::Logger::Helper(QsLogging::TraceLevel).stream() << __FILE__ << '@' << __LINE__
-#define QLOG_DEBUG() \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::DebugLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::DebugLevel).stream() << __FILE__ << '@' << __LINE__
-#define QLOG_INFO()  \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::InfoLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::InfoLevel).stream() << __FILE__ << '@' << __LINE__
-#define QLOG_WARN()  \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::WarnLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::WarnLevel).stream() << __FILE__ << '@' << __LINE__
-#define QLOG_ERROR() \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::ErrorLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::ErrorLevel).stream() << __FILE__ << '@' << __LINE__
-#define QLOG_FATAL() \
-    if (QsLogging::Logger::instance().loggingLevel() > QsLogging::FatalLevel) {} \
-    else QsLogging::Logger::Helper(QsLogging::FatalLevel).stream() << __FILE__ << '@' << __LINE__
-#endif
+	if (QsLogging::Logger::instance().loggingLevel() > QsLogging::FatalLevel) {} \
+	else QsLogging::Logger::Helper(QsLogging::FatalLevel).stream() << __FILE__ << '@' << __LINE__
 
 #ifdef QS_LOG_DISABLE
 #include "QsLogDisableForThisFile.h"
