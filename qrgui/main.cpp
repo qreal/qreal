@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
 
 	initLogging();
 	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
+	QLOG_INFO() << "Setting default locale to" << QLocale().name();
 
 	QString fileToOpen;
 	if (app.arguments().count() > 1) {
