@@ -113,6 +113,14 @@ bool FSharpGeneratorPlugin::uploadProgram()
 	QFileInfo const fileInfo = generateCodeForProcessing();
 
 	QString pathToTheTrikCore = " -r \"..\\..\\Trik.Core.dll\"";
+
+	if (qReal::SettingsManager::value("FSharpPath").toString() == "") {
+		mMainWindowInterface->errorReporter()->addError(
+			tr("Input path to the FSharp Compiler!!!")
+		);
+		return 0;
+	}
+
 	QString command = "\"" + qReal::SettingsManager::value("FSharpPath").toString() + "\" "
 			+ "\"" + fileInfo.absoluteFilePath() + "\""
 			+ pathToTheTrikCore;
@@ -120,11 +128,15 @@ bool FSharpGeneratorPlugin::uploadProgram()
 	myProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
 	myProcess.start(command);
 	myProcess.waitForFinished();
-	qDebug() << command;
-	qDebug() << myProcess.workingDirectory();
 
+	if (qReal::SettingsManager::value("WinScpPath").toString() == "") {
+		mMainWindowInterface->errorReporter()->addError(
+			tr("Input path to the WinSCP!!!")
+		);
+		return 0;
+	}
 
-	QString moveCommand = "\"" + qReal::SettingsManager::value("WinScpPath").toString().replace("?","") + "\""
+	QString moveCommand = "\"" + qReal::SettingsManager::value("WinScpPath").toString() + "\""
 			+ " /command  \"open scp://root@" + qReal::SettingsManager::value("TrikTcpServer").toString() + "\""
 			+ " \"put "+ fileInfo.absoluteFilePath().replace("fs","exe").replace("/","\\")
 			+ " /home/root/trik/FSharp/Environment/\"";
@@ -134,6 +146,8 @@ bool FSharpGeneratorPlugin::uploadProgram()
 	mMainWindowInterface->errorReporter()->addInformation(
 		tr("After downloading the program, enter 'exit' or close the window")
 	);
+
+	return 1;
 }
 
 void FSharpGeneratorPlugin::runProgram()
