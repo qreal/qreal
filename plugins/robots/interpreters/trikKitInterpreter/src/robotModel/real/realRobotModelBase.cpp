@@ -19,6 +19,8 @@
 #include "parts/motionSensor.h"
 
 #include "parts/led.h"
+#include "parts/shell.h"
+
 #include "parts/cameraLineDetector.h"
 
 using namespace trikKitInterpreter::robotModel::real;
@@ -70,6 +72,8 @@ robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, Devic
 		return new parts::MotionSensor(motionSensorInfo(), port);
 	} else if (deviceInfo.isA(ledInfo())) {
 		return new parts::Led(ledInfo(), port);
+	} else if (deviceInfo.isA(shellInfo())) {
+		return new parts::Shell(shellInfo(), port);
 	} else if (deviceInfo.isA(cameraLineDetectorSensorInfo())) {
 		return new parts::CameraLineDetector(cameraLineDetectorSensorInfo(), port);
 	}

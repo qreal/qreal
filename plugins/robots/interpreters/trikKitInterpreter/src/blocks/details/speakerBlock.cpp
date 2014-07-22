@@ -1,7 +1,5 @@
 #include "speakerBlock.h"
 
-#include <QtGui/QColor>
-
 #include <interpreterBase/blocksBase/common/displayBlock.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
 

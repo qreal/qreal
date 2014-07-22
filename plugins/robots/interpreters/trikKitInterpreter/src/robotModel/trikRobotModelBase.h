@@ -32,6 +32,8 @@ protected:
 	virtual interpreterBase::robotModel::DeviceInfo motionSensorInfo() const;
 
 	virtual interpreterBase::robotModel::DeviceInfo ledInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo shellInfo() const;
+
 	virtual interpreterBase::robotModel::DeviceInfo cameraLineDetectorSensorInfo() const;
 };
 

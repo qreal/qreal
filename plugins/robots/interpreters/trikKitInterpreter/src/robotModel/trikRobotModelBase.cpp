@@ -15,6 +15,7 @@
 #include "parts/trikMotionSensor.h"
 #include "parts/trikCameraLineDetector.h"
 #include "parts/trikLed.h"
+#include "parts/trikShell.h"
 
 using namespace trikKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
@@ -69,6 +70,7 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
 	addAllowedConnection(PortInfo("F1", input, { "JF1" }, "sensorF1"), { motionSensorInfo() });
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
+	addAllowedConnection(PortInfo("ShellPort", output), { shellInfo() });
 	addAllowedConnection(PortInfo("LineDetectorPort", input), { cameraLineDetectorSensorInfo() });
 }
 
@@ -141,6 +143,11 @@ DeviceInfo TrikRobotModelBase::motionSensorInfo() const
 DeviceInfo TrikRobotModelBase::ledInfo() const
 {
 	return DeviceInfo::create<parts::TrikLed>();
+}
+
+DeviceInfo TrikRobotModelBase::shellInfo() const
+{
+	return DeviceInfo::create<parts::TrikShell>();
 }
 
 DeviceInfo TrikRobotModelBase::cameraLineDetectorSensorInfo() const
