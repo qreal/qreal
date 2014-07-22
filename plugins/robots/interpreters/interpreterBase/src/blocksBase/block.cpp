@@ -134,6 +134,12 @@ bool Block::boolProperty(Id const &id, QString const &propertyName) const
 	return property(id, propertyName).toBool();
 }
 
+QColor Block::propertyToColor(QString const &property) const
+{
+	// Qt does not support dark-yellow string color (see QColor::colorNames())
+	return property == "darkYellow" ? QColor(Qt::darkYellow) : QColor(property);
+}
+
 void Block::error(QString const &message)
 {
 	mErrorReporter->addError(message, id());

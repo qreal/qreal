@@ -1,1 +1,1 @@
-brick.sensor(D@@PORT@@).read()
+brick.sensor(JD@@PORT@@).read()

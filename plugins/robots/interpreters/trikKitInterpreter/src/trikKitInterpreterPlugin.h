@@ -62,7 +62,7 @@ private:
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV6;
 	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
 	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
-	QWidget *mIpAdressQuicksConfigurer;  // Transfers ownership
+	QWidget *mIpAdressQuicksConfigurer; // Transfers ownership
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 	QTranslator mAppTranslator;
