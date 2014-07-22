@@ -42,6 +42,17 @@ void initLogging()
 	}
 }
 
+QString platformInfo()
+{
+#if defined Q_OS_WIN32
+	return QString("Windows ") + QSysInfo().windowsVersion()
+#elif defined Q_OS_LINUX
+	return "Linux";
+#elif defined Q_OS_MAC
+	return QString("Mac ") + QSysInfo().macVersion()
+#endif
+}
+
 int main(int argc, char *argv[])
 {
 	QDateTime const startedTime = QDateTime::currentDateTime();
@@ -62,6 +73,7 @@ int main(int argc, char *argv[])
 
 	initLogging();
 	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
+	QLOG_INFO() << "Running on" << platformInfo();
 	QLOG_INFO() << "Setting default locale to" << QLocale().name();
 
 	QString fileToOpen;
