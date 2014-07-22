@@ -11,7 +11,7 @@
 #include "umllib/nodeElement.h"
 #include "umllib/edgeElement.h"
 
-#include <../../qrutils/pluginManagers/interfaceWrapper.h>
+#include <qrutils/pluginManagers/interfaceWrapper.h>
 
 using namespace qReal;
 

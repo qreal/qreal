@@ -3,7 +3,7 @@
 #include <QtWidgets/QApplication>
 
 #include "hotKeyManager/hotKeyManager.h"
-#include <../../qrutils/pluginManagers/interfaceWrapper.h>
+#include <qrutils/pluginManagers/interfaceWrapper.h>
 
 using namespace qReal;
 
