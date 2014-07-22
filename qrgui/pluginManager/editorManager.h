@@ -17,6 +17,8 @@
 #include "editorPluginInterface/editorInterface.h"
 #include "pluginManager/details/patternParser.h"
 
+#include <qrutils/pluginManagers/commonPluginManager.h>
+
 namespace qReal {
 
 class Element;
@@ -139,10 +141,11 @@ private:
 	QList<Pattern> mDiagramGroups;
 	QMap<QString, Pattern> mGroups;
 	QMap<QString, EditorInterface *> mPluginIface;
-	QMap<QString, QPluginLoader *> mLoaders;
 
 	QDir mPluginsDir;
 	QStringList mPluginFileNames;
+
+	CommonPluginManager *mCommonPluginManager;
 
 	QSet<Id> mDisabledElements;
 };

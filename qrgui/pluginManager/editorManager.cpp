@@ -11,11 +11,29 @@
 #include "umllib/nodeElement.h"
 #include "umllib/edgeElement.h"
 
+#include <../../qrutils/pluginManagers/interfaceWrapper.h>
+
 using namespace qReal;
 
 EditorManager::EditorManager(QObject *parent) : QObject(parent)
 {
-	mPluginsDir = QDir(qApp->applicationDirPath());
+	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath());
+	QList<QObject *> loadedUncastedInterfaces = mCommonPluginManager->allLoadedPlugins();
+
+	foreach (QObject * const currentInterface, loadedUncastedInterfaces) {
+		QString const fileName = mCommonPluginManager->fileName(currentInterface);
+		EditorInterface * castedEditorInterface = InterfaceWrapper<EditorInterface>::wrappedInterface(currentInterface);
+
+		if (castedEditorInterface) {
+			QString const interfaceId = castedEditorInterface->id();
+
+			mPluginsLoaded += interfaceId;
+			mPluginFileName.insert(interfaceId, fileName);
+			mPluginIface[interfaceId] = castedEditorInterface;
+		}
+	}
+
+	/*mPluginsDir = QDir(qApp->applicationDirPath());
 
 	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
 		mPluginsDir.cdUp();
@@ -48,7 +66,7 @@ EditorManager::EditorManager(QObject *parent) : QObject(parent)
 			loader->unload();
 			delete loader;
 		}
-	}
+	}*/
 }
 
 EditorManager::~EditorManager()
@@ -58,52 +76,62 @@ EditorManager::~EditorManager()
 		mPluginIface.remove(id);
 	}
 
-	foreach (QString const &name, mLoaders.keys()) {
-		delete mLoaders[name];
-		mLoaders.remove(name);
-	}
+	mCommonPluginManager->deleteAllLoaders();
+
+//	foreach (QString const &name, mLoaders.keys()) {
+//		delete mLoaders[name];
+//		mLoaders.remove(name);
+//	}
 }
 
 bool EditorManager::loadPlugin(QString const &pluginName)
 {
-	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
-	loader->load();
-	QObject *plugin = loader->instance();
+//	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
+//	loader->load();
+//	QObject *plugin = loader->instance();
 
-	if (plugin) {
-		EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
-		if (iEditor) {
-			mPluginsLoaded += iEditor->id();
-			mPluginFileName.insert(iEditor->id(), pluginName);
-			mPluginIface[iEditor->id()] = iEditor;
-			mLoaders.insert(pluginName, loader);
-			return true;
-		}
+	EditorInterface *iEditor = InterfaceWrapper<EditorInterface>::wrappedInterface(
+				mCommonPluginManager->pluginLoadedByName(pluginName));
+	if (iEditor) {
+		QString const interfaceId = iEditor->id();
+
+		mPluginsLoaded += interfaceId;
+		mPluginFileName.insert(interfaceId, pluginName);
+		mPluginIface[interfaceId] = iEditor;
+		return true;
 	}
 
-	QMessageBox::warning(NULL, tr("error"), tr("Plugin loading failed: ") + loader->errorString());
-	loader->unload();
-	delete loader;
 	return false;
 }
 
 bool EditorManager::unloadPlugin(QString const &pluginName)
 {
-	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
-	if (loader != NULL) {
-		mLoaders.remove(mPluginFileName[pluginName]);
+	QPair<bool, bool> const resultOfUnloading = mCommonPluginManager->unloadPlugin(mPluginFileName[pluginName]);
+	bool const result = resultOfUnloading.first;
+	bool const deletionFlag = resultOfUnloading.second;
+
+	if (deletionFlag) {
 		mPluginIface.remove(pluginName);
 		mPluginFileName.remove(pluginName);
 		mPluginsLoaded.removeAll(pluginName);
-		if (!loader->unload()) {
-			QMessageBox::warning(NULL, tr("error"), tr("Plugin unloading failed: ") + loader->errorString());
-			delete loader;
-			return false;
-		}
-		delete loader;
-		return true;
 	}
-	return false;
+
+	return result;
+//	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
+//	if (loader != NULL) {
+//		mLoaders.remove(mPluginFileName[pluginName]);
+//		mPluginIface.remove(pluginName);
+//		mPluginFileName.remove(pluginName);
+//		mPluginsLoaded.removeAll(pluginName);
+//		if (!loader->unload()) {
+//			QMessageBox::warning(NULL, tr("error"), tr("Plugin unloading failed: ") + loader->errorString());
+//			delete loader;
+//			return false;
+//		}
+//		delete loader;
+//		return true;
+//	}
+//	return false;
 }
 
 IdList EditorManager::editors() const

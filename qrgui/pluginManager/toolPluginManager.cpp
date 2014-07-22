@@ -3,13 +3,17 @@
 #include <QtWidgets/QApplication>
 
 #include "hotKeyManager/hotKeyManager.h"
+#include <../../qrutils/pluginManagers/interfaceWrapper.h>
 
 using namespace qReal;
 
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
 {
-	mPluginsDir = QDir(qApp->applicationDirPath());
+	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath());
+	mPlugins = InterfaceWrapper<ToolPluginInterface>::listOfInterfaces(
+				mCommonPluginManager->allLoadedPlugins());
+	/*mPluginsDir = QDir(qApp->applicationDirPath());
 
 	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
 		mPluginsDir.cdUp();
@@ -37,14 +41,14 @@ ToolPluginManager::ToolPluginManager()
 			delete loader;
 		}
 	}
-
+*/
 	loadDefaultSettings();
 	setHotKeyActions();
 }
 
 ToolPluginManager::~ToolPluginManager()
 {
-	qDeleteAll(mLoaders);
+	mCommonPluginManager->deleteAllLoaders();
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
