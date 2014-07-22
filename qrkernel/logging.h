@@ -19,7 +19,8 @@ public:
 	/// @param maxSize Maximal log file size in bytes. Logs are rotated: when the given size is exceeded and
 	///        log files count is already equal to the next parameter then the old contents will be overwritten.
 	/// @param maxOldLogsCount The maximal number of log files related to this target.
-	static void addLogTarget(QString const &path, int maxSize, int maxOldLogsCount);
+	/// @param level The minimal log entries level that will be accepter by this target.
+	static void addLogTarget(QString const &path, int maxSize, int maxOldLogsCount, QsLogging::Level = QsLogging::InfoLevel);
 };
 
 }

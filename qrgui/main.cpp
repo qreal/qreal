@@ -33,6 +33,15 @@ void setDefaultLocale(bool localizationDisabled)
 	}
 }
 
+void initLogging()
+{
+	QDir const logsDir(QApplication::applicationDirPath() + "/logs");
+	if (logsDir.mkpath(logsDir.absolutePath())) {
+		Logger::addLogTarget(logsDir.filePath("qreal.log"), maxLogSize, 2);
+		Logger::addLogTarget(logsDir.filePath("actions.log"), maxLogSize, 2, QsLogging::TraceLevel);
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	QDateTime const startedTime = QDateTime::currentDateTime();
@@ -51,7 +60,7 @@ int main(int argc, char *argv[])
 	app.installTranslator(&utilsTranslator);
 	app.installTranslator(&qtTranslator);
 
-	Logger::addLogTarget(QDir(app.applicationDirPath()).filePath("QReal.log"), maxLogSize, 2);
+	initLogging();
 	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
 
 	QString fileToOpen;

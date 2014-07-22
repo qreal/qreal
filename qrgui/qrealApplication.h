@@ -2,6 +2,9 @@
 
 #include <QtWidgets/QApplication>
 
+class QMouseEvent;
+class QKeyEvent;
+
 namespace qReal {
 
 /// Class for QReal Application 
@@ -16,6 +19,9 @@ protected:
 	bool notify(QObject *receiver, QEvent *event);
 
 private slots:
+	void logMouse(QWidget * const target, QMouseEvent * const event);
+	void logKey(QKeyEvent * const event);
+
 	void onFocusChanged(QWidget *old, QWidget *now);
 };
 
