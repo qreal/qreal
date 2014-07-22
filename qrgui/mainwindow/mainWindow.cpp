@@ -118,6 +118,7 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 
 	splashScreen.setProgress(60);
 
+	getPaletteSettings();
 	loadPlugins();
 
 
@@ -166,15 +167,15 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 
 	if (isServer) {
 		mNetworkManager = new Server();
-		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
-								, &editorManager(), isServer);
+//		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+//								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+//								, &editorManager(), isServer);
 	} else {
 		mNetworkManager = new Client();
-		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
-								, &editorManager(), isServer);
 	}
+	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+							 , mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+							 , &editorManager(), isServer);
 }
 
 void MainWindow::connectActionsForUXInfo()
@@ -271,6 +272,8 @@ void MainWindow::connectActions()
 
 	connect(mExploser.data(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
 
+	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &MainWindow::loadPlugins);
+
 	setDefaultShortcuts();
 }
 
@@ -346,6 +349,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::loadPlugins()
 {
+	qDebug() << "loadPlugins";
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 								  , SettingsManager::value("PaletteIconsInARowCount").toInt()
 								  , &mEditorManagerProxy);
@@ -2340,5 +2344,16 @@ void MainWindow::endPaletteModification()
 		}
 
 		scene->update();
+	}
+}
+
+void MainWindow::getPaletteSettings()
+{
+	for (Id const &editor : mEditorManagerProxy.editors()) {
+		for (Id const &diagram : mEditorManagerProxy.diagrams(editor)) {
+			for (Id const &element : mEditorManagerProxy.elements(diagram)) {
+				mEditorManagerProxy.setElementEnabled(element, SettingsManager::value(element.toString()).toBool());
+			}
+		}
 	}
 }

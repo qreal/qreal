@@ -395,3 +395,8 @@ void ProxyEditorManager::setElementEnabled(Id const &type, bool enabled)
 {
 	mProxiedEditorManager->setElementEnabled(type, enabled);
 }
+
+IdList ProxyEditorManager::getAllIP() const
+{
+	return mProxiedEditorManager->getAllIP();
+}

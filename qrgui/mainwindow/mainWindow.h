@@ -376,6 +376,8 @@ private:
 
 	void setVersion(QString const &version);
 
+	void getPaletteSettings();
+
 	Ui::MainWindowUi *mUi;
 
 	/// elements & theirs ids

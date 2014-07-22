@@ -1232,3 +1232,8 @@ QSize InterpreterEditorManager::iconSize(Id const &id) const
 	Q_UNUSED(id);
 	return QSize();
 }
+
+IdList InterpreterEditorManager::getAllIP() const
+{
+	return IdList();
+}
