@@ -35,8 +35,10 @@ public:
 	virtual IdList elements(Id const &diagram) const = 0;
 	virtual Version version(Id const &editor) const = 0;
 
-	virtual bool loadPlugin(QString const &pluginName) = 0;
-	virtual bool unloadPlugin(QString const &pluginName) = 0;
+	/// @returns Error message if something went wrong or empty string if everything was ok.
+	virtual QString loadPlugin(QString const &pluginName) = 0;
+	/// @returns Error message if something went wrong or empty string if everything was ok.
+	virtual QString unloadPlugin(QString const &pluginName) = 0;
 
 	virtual QString mouseGesture(Id const &id) const = 0;
 	virtual QString friendlyName(Id const &id) const = 0;

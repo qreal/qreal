@@ -5,11 +5,14 @@
 
 #include "mainwindow/mainWindow.h"
 #include "thirdparty/windowsmodernstyle.h"
+#include <qrkernel/logging.h>
 #include <qrutils/uxInfo/uxInfo.h>
 
 #include "qrealApplication.h"
 
 using namespace qReal;
+
+int const maxLogSize = 10 * 1024 * 1024;  // 10 MB
 
 void clearConfig()
 {
@@ -48,6 +51,9 @@ int main(int argc, char *argv[])
 	app.installTranslator(&utilsTranslator);
 	app.installTranslator(&qtTranslator);
 
+	Logger::addLogTarget(QDir(app.applicationDirPath()).filePath("QReal.log"), maxLogSize, 2);
+	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
+
 	QString fileToOpen;
 	if (app.arguments().count() > 1) {
 		if (app.arguments().contains("--clear-conf")) {
@@ -82,5 +88,6 @@ int main(int argc, char *argv[])
 	QDateTime const currentTime = QDateTime::currentDateTime();
 	QString const totalTime = QString::number(static_cast<qlonglong>(startedTime.secsTo(currentTime)));
 	utils::UXInfo::reportTotalTime(totalTime, exitCode);
+	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";
 	return exitCode;
 }
