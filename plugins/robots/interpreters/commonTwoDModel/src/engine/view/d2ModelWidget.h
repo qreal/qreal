@@ -85,6 +85,8 @@ protected:
 			, const interpreterBase::robotModel::DeviceInfo &device) override;
 
 private slots:
+	void bringToFront();
+
 	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
