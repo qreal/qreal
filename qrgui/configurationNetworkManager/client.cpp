@@ -12,6 +12,7 @@ Client::Client() : mSettingStringSize(0)
 
 Client::~Client()
 {
+	mServerSocket->close();
 	delete mServerSocket;
 }
 
@@ -44,6 +45,7 @@ void Client::settings()
 	QString settings;
 	in >> settings;
 
+	mServerSocket->close();
 	applySettingsFromServer(settings);
 }
 
@@ -90,6 +92,4 @@ void Client::applySettingsFromServer(QString settings)
 			break;
 		}
 	}
-
-	mServerSocket->close();
 }

@@ -8,8 +8,8 @@ using namespace gui;
 
 PreferencesPaletteEditorPage::PreferencesPaletteEditorPage(
 		QWidget *parent, EditorManagerInterface *editorManager)
-		: PreferencesPage(parent)
-		, mUi(new Ui::PreferencesPaletteEditorPage)
+	: PreferencesPage(parent)
+	, mUi(new Ui::PreferencesPaletteEditorPage)
 {
 	mUi->setupUi(this);
 
@@ -43,13 +43,16 @@ void PreferencesPaletteEditorPage::save()
 {
 	for (int i = 0; i < mCheckBoxList->length(); i++) {
 		mEditorManager->setElementEnabled(mIdList.at(i), mCheckBoxList->at(i)->isChecked());
-		SettingsManager::setValue(mIdList.at(i).toString(), mCheckBoxList->at(i)->isChecked());
+		if (mCheckBoxList->at(i)->isChecked())
+			SettingsManager::setValue(mIdList.at(i).toString(), "true");
+		else
+			SettingsManager::setValue(mIdList.at(i).toString(), "false");
 	}
 }
 
 void PreferencesPaletteEditorPage::restoreSettings()
 {
-	qDebug() << "I do";
+	qDebug() << "\nRESTORE SETTINGS\n";
 	for (int i = 0; i < mCheckBoxList->length(); i++) {
 		mEditorManager->setElementEnabled(mIdList.at(i)
 										  , SettingsManager::value(mIdList.at(i).toString()).toBool());
