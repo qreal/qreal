@@ -12,6 +12,9 @@ Client::Client() : mSettingStringSize(0)
 
 Client::~Client()
 {
+	if (mServerSocket->isOpen()) {
+		mServerSocket->close();
+	}
 	delete mServerSocket;
 }
 
@@ -41,10 +44,14 @@ void Client::settings()
 	}
 
 	mSettingStringSize = 0;
-	QString settings;
+	char *settings = nullptr;
 	in >> settings;
+	mServerSocket->close();
 
-	applySettingsFromServer(settings);
+	QString str = QString::fromUtf8(settings);
+	applySettingsFromServer(str);
+	delete settings;
+	emit mustDeleteClient();
 }
 
 void Client::connectionError()
@@ -90,6 +97,4 @@ void Client::applySettingsFromServer(QString settings)
 			break;
 		}
 	}
-
-	mServerSocket->close();
 }

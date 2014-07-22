@@ -82,7 +82,7 @@ void Server::sendSettings()
 		QDataStream out(&block, QIODevice::WriteOnly);
 
 		out << (quint16)qReal::SettingsManager::instance()->convertToString().length();
-		out << qReal::SettingsManager::instance()->convertToString();
+		out << qReal::SettingsManager::instance()->convertToString().toUtf8();
 		foreach (int i, mSClients.keys()) {
 			if (mSClients[i]->isOpen()) {
 				mSClients[i]->write(block);

@@ -29,6 +29,7 @@ protected:
 private slots:
 	void browseImagesPath();
 	void getSettings();
+	void deleteClient();
 
 private:
 	Ui::PreferencesMiscellaniousPage *mUi;

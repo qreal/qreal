@@ -32,8 +32,9 @@ PreferencesDialog::~PreferencesDialog()
 
 void PreferencesDialog::init(QAction * const showGridAction, QAction * const showAlignmentAction
 	, QAction * const activateGridAction, QAction * const activateAlignmentAction
-	, EditorManagerInterface * editorManager, bool isServer)
+	, EditorManagerInterface * editorManager, bool isItServer)
 {
+	isServer = isItServer;
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(mUi->pageContentWigdet);
 	// Debugger page removed due to #736
 	PreferencesMiscellaniousPage *miscellaniousPage = new PreferencesMiscellaniousPage(
@@ -68,8 +69,9 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
 	registerPage(tr("Shortcuts"), hotKeyManagerPage);
-	if (isServer)
-		registerPage(tr("Palette"), paletteEditorPage);
+	registerPage(tr("Palette"), paletteEditorPage);
+	if(!isServer)
+		paletteEditorPage->setVisible(false);
 
 	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	mUi->listWidget->setCurrentRow(currentTab);
@@ -151,7 +153,9 @@ void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * 
 	mUi->pageContentWigdet->addWidget(page);
 	mCustomPages.insert(pageName, page);
 	mPagesIndexes.insert(pageName, mCustomPages.count() - 1);
-	mUi->listWidget->addItem(new QListWidgetItem(QIcon(page->getIcon()), pageName));
+	if (dynamic_cast<PreferencesPaletteEditorPage *>(page) == nullptr || isServer) {
+		mUi->listWidget->addItem(new QListWidgetItem(QIcon(page->getIcon()), pageName));
+	}
 }
 
 void PreferencesDialog::switchCurrentTab(QString const &tabName)
@@ -192,5 +196,4 @@ void PreferencesDialog::updateSetting()
 	foreach (PreferencesPage *page, mCustomPages.values()) {
 		page->restoreSettings();
 	}
-
 }

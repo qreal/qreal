@@ -35,9 +35,8 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent, bool
 
 void PreferencesMiscellaniousPage::getSettings()
 {
-	Client *mClient = new Client();
-	emit needUdpateSettings();
-	delete mClient;
+	mClient = new Client();
+	connect(mClient, &Client::mustDeleteClient, this, &PreferencesMiscellaniousPage::deleteClient);
 }
 
 PreferencesMiscellaniousPage::~PreferencesMiscellaniousPage()
@@ -103,4 +102,10 @@ void PreferencesMiscellaniousPage::restoreSettings()
 
 	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
 	mUi->imagesPathEdit->setText(mLastIconsetPath);
+}
+
+void PreferencesMiscellaniousPage::deleteClient()
+{
+	emit needUdpateSettings();
+	delete mClient;
 }
