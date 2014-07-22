@@ -5,7 +5,6 @@
 
 #include "generatorBase/converters/templateParametrizedConverter.h"
 
-
 namespace generatorBase {
 namespace converters {
 

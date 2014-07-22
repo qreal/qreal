@@ -43,8 +43,7 @@ AbstractSimpleGenerator *FSharpGeneratorFactory::simpleGenerator(qReal::Id const
 		return new FSharpEnginesStopGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("ClearEncoder")) {
 		return new FSharpNullificationEncoderGenerator(mRepo, customizer, id, this);
-	}
-	else if (elementType == "TrikWaitForEnter") {
+	} else if (elementType == "TrikWaitForEnter") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
 	} else if (elementType == "TrikWaitForLeft") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
@@ -56,8 +55,7 @@ AbstractSimpleGenerator *FSharpGeneratorFactory::simpleGenerator(qReal::Id const
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForDown.t", this);
 	} else if (elementType == "TrikWaitForPower") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForPower.t", this);
-	}
-	else if (elementType == "TrikWaitForMotion") {
+	} else if (elementType == "TrikWaitForMotion") {
 		return new WaitForMotionGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForIRDistance") {
 		return new WaitForInfraredSensorGenerator(mRepo, customizer, id, this);

@@ -11,7 +11,6 @@
 #include <utils/tcpRobotCommunicator.h>
 #include "fSharpMasterGenerator.h"
 
-
 using namespace fSharp;
 using namespace qReal;
 
