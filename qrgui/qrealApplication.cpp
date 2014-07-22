@@ -43,10 +43,12 @@ void QRealApplication::logMouse(QWidget * const target, QMouseEvent * const even
 		return;
 	}
 
-	QPoint const pos = target->mapTo(target->window(), event->pos());
+	QWidget * const window = target->window();
+	QPoint const pos = target->mapTo(window, event->pos());
 	QLOG_DEBUG() << "Mouse"
 			<< (event->type() == QEvent::MouseButtonPress ? "press" : "release")
-			<< "in" << pos << "with" << event->button();
+			<< "in" << pos << "with" << event->button() << "target"
+			<< window->metaObject()->className() << window->size();
 }
 
 void QRealApplication::logKey(QKeyEvent * const event)
