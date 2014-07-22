@@ -1,5 +1,9 @@
 ﻿#include "sensorViewer.h"
 
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
+
 using namespace utils::sensorsGraph;
 
 SensorViewer::SensorViewer(QWidget *parent)
@@ -94,6 +98,20 @@ void SensorViewer::clear()
 	QMatrix defaultMatrix;
 	setMatrix(defaultMatrix);
 	mScaleCoefficient = 0;
+}
+
+void SensorViewer::saveGraph()
+{
+	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", tr("Files (*.csv*)"));
+	QFile file(fileName);
+	file.open(QIODevice::WriteOnly | QIODevice::Text);
+	QTextStream out(&file);
+	out << "\"time\"" << ";" << "\"value\"" << "\n";
+	for (int i = 0; i < mPointsDataProcessor->pointsBase()->size(); i++) {
+		out << "\"" << mPointsDataProcessor->pointsBase()->at(i).x() << "\"" << ";"
+			<< "\"" << mPointsDataProcessor->pointsBase()->at(i).y() << "\"" << "\n";
+	}
+	file.close();
 }
 
 void SensorViewer::setNextValue(qreal const newValue)

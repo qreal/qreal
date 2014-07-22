@@ -34,6 +34,7 @@ public slots:
 	void zoomIn();
 	void zoomOut();
 	void onSensorChange();
+	void saveGraph();
 
 protected:
 	void drawNextFrame();
@@ -42,7 +43,6 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 	void leaveEvent(QEvent *);
 	void mouseDoubleClickEvent(QMouseEvent *event);
-
 	void initGraphicsOutput();
 
 private slots:
