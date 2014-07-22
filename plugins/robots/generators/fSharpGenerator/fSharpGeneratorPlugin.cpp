@@ -142,7 +142,7 @@ bool FSharpGeneratorPlugin::uploadProgram()
 			+ " /home/root/trik/FSharp/Environment/\"";
 
 	myProcess.startDetached(moveCommand);
-	//myProcess.waitForFinished();
+
 	mMainWindowInterface->errorReporter()->addInformation(
 		tr("After downloading the program, enter 'exit' or close the window")
 	);
