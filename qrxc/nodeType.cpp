@@ -46,6 +46,20 @@ Type* NodeType::clone() const
 	return result;
 }
 
+bool NodeType::copyPictures(GraphicType *parent)
+{
+	NodeType *nodeParent = dynamic_cast<NodeType*>(parent);
+	if (nodeParent != nullptr) {
+		mWidth = nodeParent->mWidth;
+		mHeight = nodeParent->mHeight;
+		mSdfDomElement = nodeParent->mSdfDomElement;
+		mVisible = nodeParent->mVisible;
+		return true;
+	}
+
+	return false;
+}
+
 bool NodeType::initAssociations()
 {
 	return true;
@@ -369,4 +383,13 @@ bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 
 	out() << "\t}\n";
 	return true;
+}
+
+bool NodeType::copyPorts(NodeType* parent)
+{
+	for (Port *port: parent->mPorts) {
+		mPorts.append(port->clone());
+	}
+
+	return !parent->mPorts.isEmpty();
 }

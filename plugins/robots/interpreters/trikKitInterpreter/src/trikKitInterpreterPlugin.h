@@ -45,6 +45,8 @@ public:
 	// Transfers ownership.
 	QList<interpreterBase::AdditionalPreferences *> settingsWidgets() override;
 
+	QWidget *quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model) override;
+
 	QList<qReal::ActionInfo> customActions() override;
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
@@ -66,6 +68,7 @@ private:
 	TrikFSharpAdditionalPreferences *mFSharpAdditionalPreferences; //Transfers ownership
 	TrikWinScpAdditionalPreferences *mWinScpAdditionalPreferences; //Transfers ownership
 
+	QWidget *mIpAdressQuicksConfigurer;  // Transfers ownership
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 	QTranslator mAppTranslator;

@@ -8,6 +8,8 @@
 #include "label.h"
 #include "diagram.h"
 #include "nameNormalizer.h"
+#include "nodeType.h"
+#include "edgeType.h"
 
 using namespace utils;
 
@@ -16,6 +18,34 @@ GraphicType::ContainerProperties::ContainerProperties()
 		, sizeOfChildrenForestalling(0), hasMovableChildren(true)
 		, minimizesToChildren(false), maximizesChildren(false)
 {
+}
+
+GraphicType::Override::Override(QString parentString)
+		: mOverrideString(parentString)
+{
+	mOverridePorts = mOverrideString.contains("ports", Qt::CaseInsensitive);
+	mOverrideLabels = mOverrideString.contains("labels", Qt::CaseInsensitive);
+	mOverridePictures = mOverrideString.contains("pictures", Qt::CaseInsensitive);
+	if (mOverrideString.contains("all", Qt::CaseInsensitive)) {
+		mOverridePorts = true;
+		mOverrideLabels = true;
+		mOverridePictures = true;
+	}
+}
+
+bool GraphicType::Override::valueOverrideLabels() const
+{
+	return mOverrideLabels;
+}
+
+bool GraphicType::Override::valueOverridePorts() const
+{
+	return mOverridePorts;
+}
+
+bool GraphicType::Override::valueOverridePictures() const
+{
+	return mOverridePictures;
 }
 
 GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
@@ -59,11 +89,21 @@ void GraphicType::copyFields(GraphicType *type) const
 	type->mExplosions = mExplosions;
 }
 
+bool GraphicType::copyLabels(GraphicType *parent)
+{
+	for (Label *label : parent->mLabels) {
+		mLabels.append(label->clone());
+	}
+
+	return !parent->mLabels.isEmpty();
+}
+
 bool GraphicType::init(QDomElement const &element, QString const &context)
 {
 	mElement = element;
 	if (Type::init(element, context)) {
 		mDescription = element.attribute("description", "");
+		mAbstract = element.attribute("abstract", "");
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull()) {
 			qDebug() << "ERROR: can't find logic tag of graphic type";
@@ -380,17 +420,61 @@ bool GraphicType::resolve()
 			}
 		}
 
+		QDomElement element = mLogic.firstChildElement();
+		for (QDomElement tempElement = element.firstChildElement()
+				; !tempElement.isNull()
+				; tempElement = tempElement.nextSiblingElement())
+		{
+			Override override(tempElement.attribute("overrides"));
+			if (tempElement.attribute("parentName") != parent->name()) {
+				GraphicType* const graphicParent = dynamic_cast<GraphicType*>(parent);
+				if (graphicParent->mAbstract == "true") {
+					if (graphicParent != nullptr) {
+						if (!override.valueOverrideLabels()) {
+								copyLabels(graphicParent);
+							}
+						}
+
+						if (!override.valueOverridePictures()) {
+							copyPictures(graphicParent);
+						}
+
+						NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
+						if (nodeParent != nullptr) {
+							if (!override.valueOverridePorts()) {
+								copyPorts(nodeParent);
+							}
+						}
+
+				} else {
+					copyLabels(graphicParent);
+					copyPictures(graphicParent);
+					NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
+					if (nodeParent != nullptr) {
+						copyPorts(nodeParent);
+					}
+				}
+			}
+		}
+
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
 		if (gParent) {
 			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
 			}
+
 			foreach (QString const &element, gParent->mExplosions.keys()) {
 				if (!mExplosions.contains(element)) {
 					mExplosions[element] = gParent->mExplosions[element];
 				}
 			}
 		}
+	}
+
+	int i = 0;
+	while (mLabels.size() != i) {
+		mLabels.value(i)->changeIndex(i);
+		++i;
 	}
 
 	mResolvingFinished = true;
@@ -403,6 +487,19 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
+		for (QPair<QString, QStringList> part : mDiagram->paletteGroups()) {
+			for (auto part2 : part.second) {
+				if (part2 == normalizedName && mAbstract == "true" ) {
+					qDebug() << "ERROR! Element" << qualifiedName() << "is abstract.";
+					return;
+				}
+			}
+		}
+
+		if (mAbstract == "true") {
+			return;
+		}
+
 		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName
 				<< "\"] = tr(\"" << actualDisplayedName << "\");\n";
 	}

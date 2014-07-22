@@ -49,8 +49,10 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
+	$$PWD/robotModel/twoD/parts/twoDLed.h \
+	$$PWD/blocks/details/ledBlock.h \
 	$$PWD/trikFSharpAdditionalPreferences.h \
-	$$PWD/src/trikWinScpAdditionalPreferences.h
+	$$PWD/trikWinScpAdditionalPreferences.h \
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -92,13 +94,15 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
 	$$PWD/trikFSharpAdditionalPreferences.cpp \
-	$$PWD/src/trikWinScpAdditionalPreferences.cpp
+	$$PWD/trikWinScpAdditionalPreferences.cpp \
+	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
+	$$PWD/blocks/details/ledBlock.cpp \
 
-FORMS += \s
+FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
 	$$PWD/trikDisplayWidget.ui \
 	$$PWD/trikFSharpAdditionalPreferences.ui \
-	$$PWD/src/trikWinScpAdditionalPreferences.ui
+	$$PWD/trikWinScpAdditionalPreferences.ui \
 
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \

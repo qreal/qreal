@@ -315,8 +315,6 @@ EditorManagerInterface &MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	emit mSystemEvents->closedMainWindow();
-
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
 		return;
@@ -326,6 +324,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	SettingsManager::setValue("maximized", isMaximized());
 	SettingsManager::setValue("size", size());
 	SettingsManager::setValue("pos", pos());
+
+	emit mSystemEvents->closedMainWindow();
 }
 
 void MainWindow::loadPlugins()

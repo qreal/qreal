@@ -96,7 +96,7 @@ QString FSharpGeneratorPlugin::extension() const
 	return "fs";
 }
 
-QString FSharpGeneratorPlugin::extDescrition() const
+QString FSharpGeneratorPlugin::extensionDescription() const
 {
 	return tr("FSharp Source File");
 }

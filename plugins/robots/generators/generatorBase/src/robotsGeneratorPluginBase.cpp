@@ -2,10 +2,12 @@
 
 #include <qrutils/inFile.h>
 #include <qrgui/mainwindow/qscintillaTextEdit.h>
+#include <qrutils/nameNormalizer.h>
 
 using namespace generatorBase;
 using namespace qReal;
 using namespace gui;
+using namespace utils;
 
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 {
@@ -23,7 +25,7 @@ QString RobotsGeneratorPluginBase::extension() const
 	return QString();
 }
 
-QString RobotsGeneratorPluginBase::extDescrition() const
+QString RobotsGeneratorPluginBase::extensionDescription() const
 {
 	return QString();
 }
@@ -33,11 +35,16 @@ QString RobotsGeneratorPluginBase::generatorName() const
 	return QString();
 }
 
+QString RobotsGeneratorPluginBase::defaultProjectName() const
+{
+	QString const filePath = mProjectManager->saveFilePath();
+	return filePath.isEmpty() ? "example" : QFileInfo(filePath).baseName();
+}
+
 bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
 {
-	/// @todo: In some scenarios user hand-coded programs will be rewritten with auto-generated
-	Q_UNUSED(project)
-	return true;
+	QFileInfo const fileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(project));
+	return !fileInfo.exists() || fileInfo.created() == fileInfo.lastModified();
 }
 
 QFileInfo RobotsGeneratorPluginBase::srcPath()
@@ -45,19 +52,23 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	int exampleNumber = 0;
-	while (!canGenerateTo("example" + QString::number(exampleNumber))) {
-		++exampleNumber;
-	}
+	QString projectName;
 
-	QString const projectName = "example" + QString::number(exampleNumber);
+	do {
+		projectName = NameNormalizer::normalizeStrongly(defaultProjectName(), false)
+				+ (exampleNumber > 0 ? QString::number(exampleNumber) : "");
+		++exampleNumber;
+	} while (!canGenerateTo(projectName));
+
 	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 
 	if (!pathsList.isEmpty()) {
-		foreach (QFileInfo const &path, pathsList) {
+		for (QFileInfo const &path : pathsList) {
 			if (mTextManager->isDefaultPath(path.absoluteFilePath())
-				&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
-				&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName())) {
+				&& !mTextManager->isModifiedEver(path.absoluteFilePath())
+				&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName()))
+			{
 				fileInfo = path;
 				break;
 			}
@@ -105,8 +116,6 @@ void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator
 	mProjectManager = &configurator.projectManager();
 	mRobotModelManager = &robotModelManager;
 
-	mTextManager->addExtension(generatorName(), QString("%1 (*.%2)").arg(extDescrition(), extension()));
-
 	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
 			, this, SLOT(regenerateCode(qReal::Id, QFileInfo, QFileInfo)));
 	connect(mSystemEvents, SIGNAL(newCodeAppeared(qReal::Id, QFileInfo)), this, SLOT(addNewCode(qReal::Id, QFileInfo)));
@@ -149,11 +158,10 @@ bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 }
 
 void RobotsGeneratorPluginBase::regenerateCode(qReal::Id const &diagram
-	, QFileInfo const &oldFileInfo
-	, QFileInfo const &newFileInfo)
+		, QFileInfo const &oldFileInfo
+		, QFileInfo const &newFileInfo)
 {
 	if (!oldFileInfo.completeSuffix().compare(extension())) {
-		mTextManager->changeFilePath(oldFileInfo.absoluteFilePath(), newFileInfo.absoluteFilePath());
 		mCodePath.remove(diagram, oldFileInfo);
 		mCodePath.insert(diagram, newFileInfo);
 		regenerateExtraFiles(newFileInfo);
