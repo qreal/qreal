@@ -17,6 +17,9 @@ private slots:
 	///close session when connection failed
 	void connectionError();
 
+signals:
+	void mustDeleteClient();
+
 public:
 	void connectToSettingsServer();
 

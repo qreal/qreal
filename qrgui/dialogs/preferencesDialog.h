@@ -25,7 +25,7 @@ public:
 
 	void init(QAction * const showGridAction, QAction * const showAlignmentAction
 			  , QAction * const activateGridAction, QAction * const activateAlignmentAction
-			  , qReal::EditorManagerInterface *editorManager, bool isServer = false);
+			  , qReal::EditorManagerInterface *editorManager, bool isItServer = false);
 
 	void updatePluginDependendSettings();
 
@@ -64,4 +64,6 @@ private:
 	Ui::PreferencesDialog *mUi;
 	QMap<QString, PreferencesPage *> mCustomPages;
 	QMap<QString, int> mPagesIndexes;
+
+	bool isServer;
 };

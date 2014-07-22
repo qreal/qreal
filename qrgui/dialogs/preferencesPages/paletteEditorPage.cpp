@@ -52,7 +52,6 @@ void PreferencesPaletteEditorPage::save()
 
 void PreferencesPaletteEditorPage::restoreSettings()
 {
-	qDebug() << "\nRESTORE SETTINGS\n";
 	for (int i = 0; i < mCheckBoxList->length(); i++) {
 		mEditorManager->setElementEnabled(mIdList.at(i)
 										  , SettingsManager::value(mIdList.at(i).toString()).toBool());
