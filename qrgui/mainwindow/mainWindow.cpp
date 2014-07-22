@@ -167,15 +167,15 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 
 	if (isServer) {
 		mNetworkManager = new Server();
-		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
-								, &editorManager(), isServer);
+//		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+//								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+//								, &editorManager(), isServer);
 	} else {
 		mNetworkManager = new Client();
-		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
-								, &editorManager(), isServer);
 	}
+	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+							 , mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+							 , &editorManager(), isServer);
 }
 
 void MainWindow::connectActionsForUXInfo()
