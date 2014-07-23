@@ -52,7 +52,7 @@ QString EditorManager::loadPlugin(QString const &pluginName)
 	}
 
 	QString const error = loader->errorString();
-	QLOG_ERROR() << "Editor plugin" << pluginName << "loading failed: " + error;
+	QLOG_WARN() << "Editor plugin" << pluginName << "loading failed: " + error;
 	loader->unload();
 	delete loader;
 	return error;
@@ -68,12 +68,12 @@ QString EditorManager::unloadPlugin(QString const &pluginName)
 		mPluginsLoaded.removeAll(pluginName);
 		if (!loader->unload()) {
 			QString const error = loader->errorString();
-			QLOG_ERROR() << "Editor plugin" << pluginName << "unloading failed: " + error;
+			QLOG_WARN() << "Editor plugin" << pluginName << "unloading failed: " + error;
 			delete loader;
 			return error;
 		}
 
-		QLOG_ERROR() << "Plugin" << pluginName << "unloaded";
+		QLOG_INFO() << "Plugin" << pluginName << "unloaded";
 		delete loader;
 		return QString();
 	}
