@@ -48,7 +48,6 @@ void Client::settings()
 	char *settings = nullptr;
 	in >> settings;
 	mServerSocket->close();
-
 	
 	QString str = QString::fromUtf8(settings);
 	applySettingsFromServer(str);

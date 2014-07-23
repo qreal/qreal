@@ -190,7 +190,6 @@ void PreferencesDialog::importSettings()
 	SettingsManager::instance()->loadSettings(fileNameForImport);
 }
 
-
 void PreferencesDialog::updateSetting()
 {
 	foreach (PreferencesPage *page, mCustomPages.values()) {

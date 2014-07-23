@@ -32,8 +32,6 @@ public:
 	void registerPage(QString const &pageName, PreferencesPage * const page);
 	void switchCurrentTab(QString const &tabName);
 
-
-
 protected:
 	void changeEvent(QEvent *e);
 	void showEvent(QShowEvent *e);
