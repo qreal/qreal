@@ -16,7 +16,7 @@ win32 {
 }
 else {
 	QMAKE_POST_LINK = "mkdir ../../../bin/trikRuntime;"\
-						"cp -r trikRuntime/* ../../../bin/trikRuntime/" \
+						"cp -r trikRuntime/* ../../../bin/trikRuntime" \
 }
 
 HEADERS += \
