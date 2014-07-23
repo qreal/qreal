@@ -817,7 +817,7 @@
             </generalizations>
           </logic>
         </node>
-        <node path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="Diagram">
+        <node path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="Diagram" abstract="true">
           <graphics>
             <picture sizex="200" sizey="200">
               <line y1="0" x1="20" y2="0" x2="180"/>
