@@ -191,8 +191,8 @@ void MainWindow::connectActionsForUXInfo()
 
 	QList<QAction*> toggledActions;
 	toggledActions << mUi->actionShowSplash << mUi->actionShow_grid
-		<< mUi->actionShow_alignment << mUi->actionSwitch_on_grid
-		<< mUi->actionSwitch_on_alignment;
+			<< mUi->actionShow_alignment << mUi->actionSwitch_on_grid
+			<< mUi->actionSwitch_on_alignment;
 
 	foreach (QAction* const action, toggledActions) {
 		connect(action, SIGNAL(toggled(bool)), mFilterObject, SLOT(toggledActionActivated(bool)));
@@ -344,8 +344,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
-			 , SettingsManager::value("PaletteIconsInARowCount").toInt()
-			 , &mEditorManagerProxy);
+			, SettingsManager::value("PaletteIconsInARowCount").toInt()
+			, &mEditorManagerProxy);
 	SettingsManager::setValue("EditorsLoadedCount", mEditorManagerProxy.editors().count());
 }
 
@@ -520,7 +520,7 @@ void MainWindow::openRecentProjectsMenu()
 	foreach (QString projectPath, recentProjects) {
 		mRecentProjectsMenu->addAction(projectPath);
 		QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered())
-				 , mRecentProjectsMapper, SLOT(map()));
+				, mRecentProjectsMapper, SLOT(map()));
 		mRecentProjectsMapper->setMapping(mRecentProjectsMenu->actions().last(), projectPath);
 	}
 
@@ -845,16 +845,16 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 {
 	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
 	AbstractCommand *result = new RemoveElementCommand(
-		mModels->logicalModelAssistApi()
-		, mModels->graphicalModelAssistApi()
-		, exploser()
-		, mModels->logicalRepoApi().parent(logicalId)
-		, mModels->graphicalRepoApi().parent(id)
-		, id
-		, false
-		, mModels->graphicalModelAssistApi().name(id)
-		, mModels->graphicalModelAssistApi().position(id)
-		);
+			mModels->logicalModelAssistApi()
+			, mModels->graphicalModelAssistApi()
+			, exploser()
+			, mModels->logicalRepoApi().parent(logicalId)
+			, mModels->graphicalRepoApi().parent(id)
+			, id
+			, false
+			, mModels->graphicalModelAssistApi().name(id)
+			, mModels->graphicalModelAssistApi().position(id)
+			);
 
 	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
@@ -1981,8 +1981,8 @@ void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMen
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
-										 , mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-										 , *mSystemEvents, *mTextManager));
+		, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
+		, *mSystemEvents, *mTextManager));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {

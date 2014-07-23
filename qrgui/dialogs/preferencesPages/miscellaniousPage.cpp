@@ -9,8 +9,8 @@
 using namespace qReal;
 
 PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent, bool isServer)
-	: PreferencesPage(parent)
-	, mUi(new Ui::PreferencesMiscellaniousPage)
+		: PreferencesPage(parent)
+		, mUi(new Ui::PreferencesMiscellaniousPage)
 {
 	mIcon = QIcon(":/icons/preferences/miscellaneous.png");
 	mUi->setupUi(this);
@@ -56,8 +56,8 @@ void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 
 void PreferencesMiscellaniousPage::browseImagesPath()
 {
-	QString const path = utils::QRealFileDialog::getExistingDirectory("OpenImagesOnMiscellaniousPage",
-			this, tr("Open Directory")).replace("\\", "/");
+	QString const path = utils::QRealFileDialog::getExistingDirectory("OpenImagesOnMiscellaniousPage"
+			, this, tr("Open Directory")).replace("\\", "/");
 	if (!path.isEmpty()) {
 		mUi->imagesPathEdit->setText(path);
 	}

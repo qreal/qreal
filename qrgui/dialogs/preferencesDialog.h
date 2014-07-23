@@ -24,8 +24,8 @@ public:
 	~PreferencesDialog();
 
 	void init(QAction * const showGridAction, QAction * const showAlignmentAction
-			  , QAction * const activateGridAction, QAction * const activateAlignmentAction
-			  , qReal::EditorManagerInterface *editorManager, bool isItServer = false);
+		, QAction * const activateGridAction, QAction * const activateAlignmentAction
+		, qReal::EditorManagerInterface *editorManager, bool isItServer = false);
 
 	void updatePluginDependendSettings();
 
