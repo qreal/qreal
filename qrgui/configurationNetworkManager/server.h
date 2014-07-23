@@ -33,7 +33,7 @@ signals:
 
 private:
 	/// storage of all clients
-	QMap<int,QTcpSocket *> mSClients;
+	QMap <int,QTcpSocket *> mSClients;
 	/// TCP server
 	QTcpServer *mTcpServer;
 	/// network session

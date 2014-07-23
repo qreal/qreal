@@ -50,7 +50,7 @@ PreferencesPaletteEditorPage::~PreferencesPaletteEditorPage()
 void PreferencesPaletteEditorPage::initCheckBoxes(QList<QList<QString>> listOfIdString)
 {
 	int i = 0;
-	for (Id element : mEditorManager->getAllIP()) {
+	for (Id const element : mEditorManager->getAllIP()) {
 		i = 0;
 		for (QList<QString> temp : listOfIdString){
 			if (temp.contains(element.element()))

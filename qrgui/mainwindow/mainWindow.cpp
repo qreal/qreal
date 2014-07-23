@@ -63,27 +63,27 @@ using namespace gui;
 QString const unsavedDir = "unsaved";
 
 MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
-	: mUi(new Ui::MainWindowUi)
-	, mCodeTabManager(new QMap<EditorView*, QScintillaTextEdit*>())
-	, mModels(nullptr)
-	, mController(new Controller)
-	, mEditorManagerProxy(new EditorManager())
-	, mListenerManager(nullptr)
-	, mPropertyModel(mEditorManagerProxy)
-	, mGesturesWidget(nullptr)
-	, mSystemEvents(new SystemEvents())
-	, mTextManager(new TextManager(mSystemEvents, this))
-	, mRootIndex(QModelIndex())
-	, mErrorReporter(nullptr)
-	, mIsFullscreen(false)
-	, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
-	, mPreferencesDialog(this)
-	, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
-	, mRecentProjectsMapper(new QSignalMapper())
-	, mProjectManager(new ProjectManager(this, mTextManager))
-	, mStartWidget(nullptr)
-	, mSceneCustomizer(new SceneCustomizer(this))
-	, mInitialFileToOpen(fileToOpen)
+		: mUi(new Ui::MainWindowUi)
+		, mCodeTabManager(new QMap<EditorView*, QScintillaTextEdit*>())
+		, mModels(nullptr)
+		, mController(new Controller)
+		, mEditorManagerProxy(new EditorManager())
+		, mListenerManager(nullptr)
+		, mPropertyModel(mEditorManagerProxy)
+		, mGesturesWidget(nullptr)
+		, mSystemEvents(new SystemEvents())
+		, mTextManager(new TextManager(mSystemEvents, this))
+		, mRootIndex(QModelIndex())
+		, mErrorReporter(nullptr)
+		, mIsFullscreen(false)
+		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
+		, mPreferencesDialog(this)
+		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
+		, mRecentProjectsMapper(new QSignalMapper())
+		, mProjectManager(new ProjectManager(this, mTextManager))
+		, mStartWidget(nullptr)
+		, mSceneCustomizer(new SceneCustomizer(this))
+		, mInitialFileToOpen(fileToOpen)
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
@@ -178,11 +178,11 @@ void MainWindow::connectActionsForUXInfo()
 	QList<QAction*> triggeredActions;
 	triggeredActions << mUi->actionQuit << mUi->actionOpen << mUi->actionSave
 			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
-			 << mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
-			 << mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
+			<< mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
+			<< mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
 			<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
-			 << mUi->actionPreferences << mUi->actionHelp
-			 << mUi->actionAbout << mUi->actionAboutQt
+			<< mUi->actionPreferences << mUi->actionHelp
+			<< mUi->actionAbout << mUi->actionAboutQt
 			<< mUi->actionFullscreen << mUi->actionFind;
 
 	foreach (QAction* const action, triggeredActions) {
@@ -520,12 +520,12 @@ void MainWindow::openRecentProjectsMenu()
 	foreach (QString projectPath, recentProjects) {
 		mRecentProjectsMenu->addAction(projectPath);
 		QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered())
-						 , mRecentProjectsMapper, SLOT(map()));
+				 , mRecentProjectsMapper, SLOT(map()));
 		mRecentProjectsMapper->setMapping(mRecentProjectsMenu->actions().last(), projectPath);
 	}
 
 	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(QString const &))
-			 , mProjectManager, SLOT(openExisting(QString const &)));
+			, mProjectManager, SLOT(openExisting(QString const &)));
 }
 
 void MainWindow::closeAllTabs()
@@ -665,7 +665,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	}
 
 	Id const id = mModels->graphicalModelAssistApi().idByIndex(
-				mUi->graphicalModelExplorer->currentIndex());
+			mUi->graphicalModelExplorer->currentIndex());
 	if (id != Id()) {
 		deleteItems(IdList() << id, true);
 	}
@@ -845,16 +845,16 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 {
 	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
 	AbstractCommand *result = new RemoveElementCommand(
-			mModels->logicalModelAssistApi()
-			, mModels->graphicalModelAssistApi()
-			, exploser()
-			, mModels->logicalRepoApi().parent(logicalId)
-			, mModels->graphicalRepoApi().parent(id)
-			, id
-			, false
-			, mModels->graphicalModelAssistApi().name(id)
-			, mModels->graphicalModelAssistApi().position(id)
-			);
+		mModels->logicalModelAssistApi()
+		, mModels->graphicalModelAssistApi()
+		, exploser()
+		, mModels->logicalRepoApi().parent(logicalId)
+		, mModels->graphicalRepoApi().parent(id)
+		, id
+		, false
+		, mModels->graphicalModelAssistApi().name(id)
+		, mModels->graphicalModelAssistApi().position(id)
+		);
 
 	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
@@ -1084,7 +1084,7 @@ void MainWindow::setSceneFont()
 		getCurrentTab()->scene()->update();
 	} else {
 		getCurrentTab()->scene()->setFont(QFont(QFontDatabase::applicationFontFamilies(
-													QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
+				QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
 		getCurrentTab()->scene()->update();
 	}
 }
@@ -1098,7 +1098,7 @@ void MainWindow::openShapeEditor(
 		)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
-										 , index, role, useTypedPorts);
+			, index, role, useTypedPorts);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}
@@ -1116,10 +1116,10 @@ void MainWindow::openShapeEditor(
 
 // This method is for Interpreter.
 void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
-								 , bool useTypedPorts)
+	, bool useTypedPorts)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab()
-										 , useTypedPorts);
+		, useTypedPorts);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}
@@ -1130,7 +1130,7 @@ void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, Edi
 }
 
 void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role
-										  , QString const &propertyValue)
+		, QString const &propertyValue)
 {
 	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
 
@@ -1158,7 +1158,7 @@ void MainWindow::openShapeEditor()
 }
 
 void MainWindow::openReferenceList(QPersistentModelIndex const &index
-								   , QString const &referenceType,	QString const &propertyValue, int role)
+		, QString const &referenceType,	QString const &propertyValue, int role)
 {
 	ReferenceList referenceList(this, index, referenceType, propertyValue.split(',', QString::SkipEmptyParts), role);
 	connect(&referenceList, SIGNAL(referenceSet(QStringList, QPersistentModelIndex, int))
@@ -1411,8 +1411,8 @@ void MainWindow::setDefaultShortcuts()
 			<< QKeySequence(Qt::CTRL + Qt::Key_Y));
 
 	mUi->actionZoom_In->setShortcuts(QList<QKeySequence>()
-			 << QKeySequence(Qt::CTRL + Qt::Key_Equal)
-			 << QKeySequence(Qt::CTRL + Qt::Key_Plus));
+			<< QKeySequence(Qt::CTRL + Qt::Key_Equal)
+			<< QKeySequence(Qt::CTRL + Qt::Key_Plus));
 	mUi->actionZoom_Out->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
 
 	mUi->actionNewProject->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
@@ -2021,8 +2021,8 @@ void MainWindow::initToolPlugins()
 	}
 
 	mExploser->customizeExplosionTitles(
-				toolManager().customizer()->userPaletteTitle()
-				, toolManager().customizer()->userPaletteDescription());
+			toolManager().customizer()->userPaletteTitle()
+			, toolManager().customizer()->userPaletteDescription());
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
@@ -2156,7 +2156,7 @@ void MainWindow::saveDiagramAsAPicture()
 {
 	if (getCurrentTab()) {
 		QString const fileName = utils::QRealFileDialog::getSaveFileName("SaveDiagramAsPicture", this
-																		 , tr("Save File"), "", tr("Images (*.png *.jpg)"));
+				, tr("Save File"), "", tr("Images (*.png *.jpg)"));
 		saveDiagramAsAPictureToFile(fileName);
 	}
 }
