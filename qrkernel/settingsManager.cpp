@@ -127,8 +127,9 @@ QString SettingsManager::convertToString()
 {
 	QString allSettings;
 	QStringList keyList = mSettings.allKeys();
-	for (int i = 0; i < keyList.size(); i++)
-		allSettings += keyList[i] + "###" + value(keyList[i]).toString() + "#*#";
+	for (QString temp : keyList) {
+		allSettings += temp + "###" + value(temp).toString() + "#*#";
+	}
 
 	return allSettings;
 }
