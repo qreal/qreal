@@ -39,13 +39,12 @@ bool QRealApplication::notify(QObject *obj, QEvent *e)
 void QRealApplication::logMouse(QWidget * const target, QMouseEvent * const event)
 {
 	if (!target) {
-		QLOG_DEBUG() << "Mouse event with unknown target!";
 		return;
 	}
 
 	QWidget * const window = target->window();
 	QPoint const pos = target->mapTo(window, event->pos());
-	QLOG_DEBUG() << "Mouse"
+	QLOG_TRACE() << "Mouse"
 			<< (event->type() == QEvent::MouseButtonPress ? "press" : "release")
 			<< "in" << pos << "with" << event->button() << "target"
 			<< window->windowTitle() << window->size();
@@ -53,7 +52,7 @@ void QRealApplication::logMouse(QWidget * const target, QMouseEvent * const even
 
 void QRealApplication::logKey(QKeyEvent * const event)
 {
-	QLOG_DEBUG() << "Key"
+	QLOG_TRACE() << "Key"
 			<< (event->type() == QEvent::KeyPress ? "press" : "release")
 			<< "with" << event->key() << "modifiers" << event->modifiers();
 }
