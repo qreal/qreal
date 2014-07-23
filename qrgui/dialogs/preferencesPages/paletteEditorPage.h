@@ -22,7 +22,7 @@ public:
 
 private:
 	Ui::PreferencesPaletteEditorPage *mUi;
-	QList<Id> mIdList;
+	QList<QList<Id>> mIdList;
 	QList<QCheckBox *> *mCheckBoxList;
 	EditorManagerInterface *mEditorManager;
 };

@@ -15,20 +15,43 @@ PreferencesPaletteEditorPage::PreferencesPaletteEditorPage(
 
 	mEditorManager = editorManager;
 	mCheckBoxList = new QList<QCheckBox *>;
-	mIdList = mEditorManager->getAllIP();
-	int i = 0;
-	for (Id const &element : mIdList) {
-		QLabel *label = new QLabel;
-		QCheckBox *box = new QCheckBox;
-		QIcon icon = editorManager->icon(element);
+//	mIdList = new QList<QList<Id>>;
 
-		box->setChecked(true);
-		mCheckBoxList->append(box);
-		label->setPixmap(icon.pixmap(QSize(30, 30)));
-		mUi->gridLayout->addWidget(box, i, 0);
-		mUi->gridLayout->addWidget(label, i, 1);
-		mUi->gridLayout->addWidget(new QLabel(editorManager->friendlyName(element)), i, 2, 1, 10);
-		i++;
+	QList<QList<QString>> listOfIdString;
+	for (Id const &editor : editorManager->editors()) {
+		for (Id const &diagram : editorManager->diagrams(editor)) {
+			for (QString group : editorManager->paletteGroups(editor, diagram)) {
+				listOfIdString.append(editorManager->paletteGroupList(editor, diagram, group));
+				mIdList.append(QList<Id>());
+			}
+		}
+	}
+
+	int i = 0;
+	int j = 0;
+
+	for (Id element : editorManager->getAllIP()) {
+		j = 0;
+		for (QList<QString> temp : listOfIdString){
+			if (temp.contains(element.element()))
+				mIdList[j].append(element);
+			j++;
+		}
+	}
+
+	for (QList<Id> const &group : mIdList) {
+		for (Id const &element : group) {
+			QLabel *label = new QLabel;
+			QCheckBox *box = new QCheckBox;
+			QIcon icon = editorManager->icon(element);
+			box->setChecked(true);
+			mCheckBoxList->append(box);
+			label->setPixmap(icon.pixmap(QSize(30, 30)));
+			mUi->gridLayout->addWidget(box, i, 0);
+			mUi->gridLayout->addWidget(label, i, 1);
+			mUi->gridLayout->addWidget(new QLabel(editorManager->friendlyName(element)), i, 2, 1, 10);
+			++i;
+		}
 	}
 }
 
@@ -41,21 +64,25 @@ PreferencesPaletteEditorPage::~PreferencesPaletteEditorPage()
 
 void PreferencesPaletteEditorPage::save()
 {
-	for (int i = 0; i < mCheckBoxList->length(); i++) {
-		mEditorManager->setElementEnabled(mIdList.at(i), mCheckBoxList->at(i)->isChecked());
-		if (mCheckBoxList->at(i)->isChecked())
-			SettingsManager::setValue(mIdList.at(i).toString(), "true");
-		else
-			SettingsManager::setValue(mIdList.at(i).toString(), "false");
+	int i = 0;
+	for (QList<Id> diagram : mIdList) {
+		for (Id element : diagram) {
+			mEditorManager->setElementEnabled(element, mCheckBoxList->at(i)->isChecked());
+			SettingsManager::setValue(element.toString(), mCheckBoxList->at(i)->isChecked());
+			i++;
+		}
 	}
 }
 
 void PreferencesPaletteEditorPage::restoreSettings()
 {
-	for (int i = 0; i < mCheckBoxList->length(); i++) {
-		mEditorManager->setElementEnabled(mIdList.at(i)
-										  , SettingsManager::value(mIdList.at(i).toString()).toBool());
-		mCheckBoxList->at(i)->setChecked(SettingsManager::value(mIdList.at(i).toString()).toBool());
+	int i = 0;
+	for (QList<Id> diagram : mIdList) {
+		for (Id element : diagram) {
+			mEditorManager->setElementEnabled(element, SettingsManager::value(element.toString()).toBool());
+			mCheckBoxList->at(i)->setChecked(SettingsManager::value(element.toString()).toBool());
+			i++;
+		}
 	}
-
 }
+
