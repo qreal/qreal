@@ -45,11 +45,11 @@ void initLogging()
 QString platformInfo()
 {
 #if defined Q_OS_WIN32
-	return QString("Windows ") + QSysInfo().windowsVersion()
+	return QString("Windows ") + QSysInfo().windowsVersion();
 #elif defined Q_OS_LINUX
 	return "Linux";
 #elif defined Q_OS_MAC
-	return QString("Mac ") + QSysInfo().macVersion()
+	return QString("Mac ") + QSysInfo().macVersion();
 #endif
 }
 
