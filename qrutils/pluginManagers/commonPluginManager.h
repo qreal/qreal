@@ -11,6 +11,9 @@ namespace qReal {
 class CommonPluginManager
 {
 public:
+	/// constructor of class CommonPluginManager
+	/// @param applicationDirPath - path to qrgui.exe
+	/// @param additionalPart - path to folder with plugins, usually "bin/plugins", for robots can be folder inside plugins folder
 	CommonPluginManager(
 			QString const &applicationDirPath
 			, QString const &additionalPart = "plugins"
@@ -24,7 +27,7 @@ public:
 	/// returns plugin found by name if succeed and nothing otherwise
 	QObject *pluginLoadedByName(QString const &pluginName);
 
-	/// unloads plugins, given FILENAME
+	/// unloads plugins, given filename
 	/// first member in pair is result of unloading
 	/// second result is true if we found needed loader and false otherwise
 	QPair<bool, bool> unloadPlugin(QString const &pluginName);
@@ -42,6 +45,7 @@ private:
 	/// path to application directory, used to count path to loaded plugins
 	QString mApplicationDirectoryPath;
 	/// "plugins" if we're trying to load plugins from "bin/plugins"
+	/// for robots it can be "plugins/kitPlugins", for example
 	QString mAdditionalPart;
 };
 }

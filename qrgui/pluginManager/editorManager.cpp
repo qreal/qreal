@@ -32,41 +32,6 @@ EditorManager::EditorManager(QObject *parent) : QObject(parent)
 			mPluginIface[interfaceId] = castedEditorInterface;
 		}
 	}
-
-	/*mPluginsDir = QDir(qApp->applicationDirPath());
-
-	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
-		mPluginsDir.cdUp();
-	}
-
-	mPluginsDir.cd("plugins");
-
-	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
-		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader->instance();
-
-		if (plugin) {
-			EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
-			if (iEditor) {
-				mPluginsLoaded += iEditor->id();
-				mPluginFileName.insert(iEditor->id(), fileName);
-				mPluginIface[iEditor->id()] = iEditor;
-				mLoaders.insert(fileName, loader);
-			} else {
-				// TODO: Just does not work under Linux. Seems to be memory corruption when
-				// loading, unloading, and then loading .so file again.
-				// To reproduce, uncomment this, build VisualInterpreter, and try to launch QReal.
-				// With some tool plugins, like MetaEditorSupport or Exterminatus, works fine,
-				// also works fine on Windows. Investigation required.
-				// loader->unload();
-				delete loader;
-			}
-		} else {
-			qDebug() << "Plugin loading failed: " << loader->errorString();
-			loader->unload();
-			delete loader;
-		}
-	}*/
 }
 
 EditorManager::~EditorManager()
@@ -77,19 +42,10 @@ EditorManager::~EditorManager()
 	}
 
 	mCommonPluginManager->deleteAllLoaders();
-
-//	foreach (QString const &name, mLoaders.keys()) {
-//		delete mLoaders[name];
-//		mLoaders.remove(name);
-//	}
 }
 
 bool EditorManager::loadPlugin(QString const &pluginName)
 {
-//	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
-//	loader->load();
-//	QObject *plugin = loader->instance();
-
 	EditorInterface *iEditor = InterfaceWrapper<EditorInterface>::wrappedInterface(
 				mCommonPluginManager->pluginLoadedByName(pluginName));
 	if (iEditor) {
@@ -117,21 +73,6 @@ bool EditorManager::unloadPlugin(QString const &pluginName)
 	}
 
 	return result;
-//	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
-//	if (loader != NULL) {
-//		mLoaders.remove(mPluginFileName[pluginName]);
-//		mPluginIface.remove(pluginName);
-//		mPluginFileName.remove(pluginName);
-//		mPluginsLoaded.removeAll(pluginName);
-//		if (!loader->unload()) {
-//			QMessageBox::warning(NULL, tr("error"), tr("Plugin unloading failed: ") + loader->errorString());
-//			delete loader;
-//			return false;
-//		}
-//		delete loader;
-//		return true;
-//	}
-//	return false;
 }
 
 IdList EditorManager::editors() const

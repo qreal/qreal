@@ -16,37 +16,11 @@ KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 	mCommonPluginManager = new CommonPluginManager(QCoreApplication::applicationDirPath(), pluginDirectory);
 	tryToLoadGeneratorPlugin();
 	tryToLoadInterpreterPlugin();
-//	QList<interpreterBase::KitPluginInterface *> loadedPlugins =
-//			InterfaceWrapper<interpreterBase::KitPluginInterface>::listOfInterfaces(mCommonPluginManager->allLoadedPlugins());
-//	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
-//		QFileInfo const fileInfo(fileName);
-
-//		if (fileInfo.suffix() != "dll" && fileInfo.suffix() != "so") {
-//			continue;
-//		}
-
-//		QPluginLoader * const loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-//		QObject * const plugin = loader->instance();
-
-//		if (plugin) {
-//			if (tryToLoadInterpreterPlugin(plugin) || tryToLoadGeneratorPlugin(plugin)) {
-//				mLoaders.insert(fileName, loader);
-//			} else {
-//				// loader->unload();
-//				delete loader;
-//			}
-//		} else {
-//			qDebug() << "Plugin loading failed: " << loader->errorString();
-//			loader->unload();
-//			delete loader;
-//		}
-//	}
 }
 
 KitPluginManager::~KitPluginManager()
 {
 	mCommonPluginManager->deleteAllLoaders();
-//	qDeleteAll(mLoaders);
 }
 
 QList<QString> KitPluginManager::kitIds() const
@@ -87,15 +61,6 @@ void KitPluginManager::tryToLoadInterpreterPlugin()
 	foreach (interpreterBase::KitPluginInterface * const kitPlugin, loadedInterpreterPlugins) {
 		mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
 	}
-
-//	interpreterBase::KitPluginInterface * const kitPlugin
-//			= qobject_cast<interpreterBase::KitPluginInterface *>(plugin);
-
-//	if (kitPlugin) {
-//		mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
-//	}
-
-//	return kitPlugin != nullptr;
 }
 
 void KitPluginManager::tryToLoadGeneratorPlugin()
@@ -106,11 +71,4 @@ void KitPluginManager::tryToLoadGeneratorPlugin()
 	foreach (generatorBase::GeneratorKitPluginInterface * const generatorPlugin, loadedGeneratorPlugins) {
 		mGenerators.insertMulti(generatorPlugin->kitId(), generatorPlugin);
 	}
-//	generatorBase::GeneratorKitPluginInterface * const generatorPlugin
-//			= qobject_cast<generatorBase::GeneratorKitPluginInterface *>(plugin);
-//	if (generatorPlugin) {
-//		mGenerators.insertMulti(generatorPlugin->kitId(), generatorPlugin);
-//	}
-
-//	return generatorPlugin != nullptr;
 }

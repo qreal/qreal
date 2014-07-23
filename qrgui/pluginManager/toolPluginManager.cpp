@@ -12,36 +12,8 @@ ToolPluginManager::ToolPluginManager()
 {
 	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath());
 	mPlugins = InterfaceWrapper<ToolPluginInterface>::listOfInterfaces(
-				mCommonPluginManager->allLoadedPlugins());
-	/*mPluginsDir = QDir(qApp->applicationDirPath());
+			mCommonPluginManager->allLoadedPlugins());
 
-	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
-		mPluginsDir.cdUp();
-	}
-
-	mPluginsDir.cd("plugins");
-
-	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
-		// TODO: Free memory
-		QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader->instance();
-
-		if (plugin) {
-			ToolPluginInterface *toolPlugin = qobject_cast<ToolPluginInterface *>(plugin);
-			if (toolPlugin) {
-				mPlugins << toolPlugin;
-				mLoaders << loader;
-			} else {
-				// TODO: Does not work on linux. See editorManager.cpp for more details.
-				// loader->unload();
-				delete loader;
-			}
-		} else {
-			loader->unload();
-			delete loader;
-		}
-	}
-*/
 	loadDefaultSettings();
 	setHotKeyActions();
 }

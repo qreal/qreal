@@ -12,8 +12,8 @@ HEADERS += \
 	$$PWD/details/patternParser.h \
 	$$PWD/details/interpreterElementImpl.h \
 	$$PWD/details/interpreterPortImpl.h \
-	../qrutils/pluginManagers/commonPluginManager.h \
-	../qrutils/pluginManagers/interfaceWrapper.h \
+	$$PWD/../../qrutils/pluginManagers/commonPluginManager.h \
+	$$PWD/../../qrutils/pluginManagers/interfaceWrapper.h \
 
 SOURCES += \
 	$$PWD/editorManager.cpp \
@@ -27,4 +27,4 @@ SOURCES += \
 	$$PWD/details/patternParser.cpp \
 	$$PWD/details/interpreterElementImpl.cpp \
 	$$PWD/details/interpreterPortImpl.cpp \
-	../qrutils/pluginManagers/commonPluginManager.cpp \
+	$$PWD/../../qrutils/pluginManagers/commonPluginManager.cpp \
