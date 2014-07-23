@@ -32,6 +32,13 @@ Server::Server() :
 			, this, &Server::deleteClient);
 }
 
+Server::~Server()
+{
+	delete mTcpServer;
+	delete mNetworkSession;
+	delete mSClientsIndexMapper;
+}
+
 void Server::sessionOpened()
 {
 	// Save the used configuration
@@ -100,10 +107,8 @@ QStringList Server::getIP()
 {
 	QList<QNetworkInterface> addressList = QNetworkInterface::allInterfaces();
 	QStringList address;
-	//for (int j = 0; j < addressList.size(); j++) {
 	foreach (QNetworkInterface j, addressList) {
 		QList<QNetworkAddressEntry> addressEntry = j.addressEntries();
-		//for (int i = 0; i < addressEntry.size(); i++) {
 		foreach (QNetworkAddressEntry i, addressEntry) {
 			if (!i.ip().isLoopback()
 						&& i.ip().toString().contains("."))

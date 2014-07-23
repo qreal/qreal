@@ -3,8 +3,6 @@
 #include "dialogs/preferencesPages/preferencesPage.h"
 #include "qrgui/mainwindow/palette/paletteTree.h"
 
-#include <QtCore/QMap>
-
 namespace Ui {
 class PreferencesPaletteEditorPage;
 }
@@ -32,14 +30,14 @@ private:
 	/// init check boxes, icons and labels.
 	void initCheckBoxes(QList<QList<QString> > listOfIdString);
 
-	Ui::PreferencesPaletteEditorPage *mUi;
+	Ui::PreferencesPaletteEditorPage *mUi;  // Takes ownership
 
 	/// all groups with all Id
 	QList<QList<Id>> mIdList;
 
 	/// checkBoxes for check use or not elements.
-	QList<QCheckBox *> *mCheckBoxList;
+	QList<QCheckBox *> *mCheckBoxList;  // Takes ownership
 
 	/// editor manager.
-	EditorManagerInterface *mEditorManager;
+	EditorManagerInterface *mEditorManager;  // Takes ownership
 };

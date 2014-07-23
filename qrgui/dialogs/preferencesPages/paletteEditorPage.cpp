@@ -31,8 +31,8 @@ PreferencesPaletteEditorPage::PreferencesPaletteEditorPage(
 	initCheckBoxes(listOfIdString);
 
 	QScrollArea *scrollArea = new QScrollArea(this);
-	scrollArea->setWidget(mUi->widget);
-	mUi->widget->show();
+	scrollArea->setWidget(mUi->widgetPalette);
+	mUi->widgetPalette->show();
 	scrollArea->show();
 	mUi->gridLayout->addWidget(scrollArea);
 
@@ -68,9 +68,9 @@ void PreferencesPaletteEditorPage::initCheckBoxes(QList<QList<QString>> listOfId
 			box->setChecked(true);
 			mCheckBoxList->append(box);
 			label->setPixmap(icon.pixmap(QSize(30, 30)));
-			mUi->gridLayout_2->addWidget(box, i, 0);
-			mUi->gridLayout_2->addWidget(label, i, 1);
-			mUi->gridLayout_2->addWidget(new QLabel(mEditorManager->friendlyName(element)), i, 2);
+			mUi->gridLayoutWidget->addWidget(box, i, 0);
+			mUi->gridLayoutWidget->addWidget(label, i, 1);
+			mUi->gridLayoutWidget->addWidget(new QLabel(mEditorManager->friendlyName(element)), i, 2);
 			++i;
 		}
 	}

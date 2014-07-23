@@ -27,7 +27,7 @@ private:
 	///apply setting from server
 	void applySettingsFromServer(QString const settings);
 	///server socket
-	QTcpSocket *mServerSocket;
+	QTcpSocket *mServerSocket;  // Takes ownership
 	///size of string which send from server
 	quint16 mSettingStringSize;
 };
