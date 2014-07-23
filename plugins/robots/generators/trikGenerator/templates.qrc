@@ -69,7 +69,9 @@
         <file>templates/sensors/infrared.t</file>
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/motion.t</file>
-        <file>templates/sensors/cameraLineDetector.t</file>
+        <file>templates/videosensors/LineDetectorX.t</file>
+        <file>templates/videosensors/LineDetectorMass.t</file>
+        <file>templates/videosensors/LineDetectorCrossroads.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>

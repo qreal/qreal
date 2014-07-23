@@ -10,6 +10,7 @@ IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
 		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 		, simple::Binding::ConverterInterface const *inputPortConverter
 		, simple::Binding::ConverterInterface const *functionInvocationsConverter
+		, parts::DeviceVariables const &deviceVariables
 		, simple::Binding::ConverterInterface const *typeConverter
 		, parts::Variables const *variables)
 	: CodeConverterBase(pathToTemplates
@@ -17,7 +18,8 @@ IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
 			, robotModel
 			, devices
 			, inputPortConverter
-			, functionInvocationsConverter)
+			, functionInvocationsConverter
+			, deviceVariables)
 	, mTypeConverter(typeConverter)
 	, mVariables(variables)
 {

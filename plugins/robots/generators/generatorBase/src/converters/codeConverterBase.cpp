@@ -11,13 +11,14 @@ CodeConverterBase::CodeConverterBase(QString const &pathToTemplates
 		, interpreterBase::robotModel::RobotModelInterface const &robotModel
 		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 		, simple::Binding::ConverterInterface const *inputPortConverter
-		, simple::Binding::ConverterInterface const *functionInvocationsConverter)
+		, simple::Binding::ConverterInterface const *functionInvocationsConverter, const parts::DeviceVariables &deviceVariables)
 	: TemplateParametrizedConverter(pathToTemplates)
 	, mErrorReporter(errorReporter)
 	, mRobotModel(robotModel)
 	, mDevices(devices)
 	, mInputConverter(inputPortConverter)
 	, mFunctionInvocationsConverter(functionInvocationsConverter)
+	, mDeviceVariables(deviceVariables)
 {
 }
 
@@ -76,10 +77,9 @@ QString CodeConverterBase::deviceExpression(interpreterBase::robotModel::PortInf
 		return QObject::tr("/* ERROR: SELECT DEVICE TYPE */");
 	}
 
-	QString const templatePath = QString("sensors/%1.t").arg(
-			device.isA<interpreterBase::robotModel::robotParts::Button>()
-					? port.name().split("ButtonPort", QString::SkipEmptyParts)[0]
-					: device.name());
+	QString const templatePath = mDeviceVariables.variableTemplatePath(device, port);
+
+	qDebug() << templatePath;
 
 	// Converter must take a string like "1" or "2" (and etc) and return correct value
 	return readTemplate(templatePath).replace("@@PORT@@", mInputConverter->convert(port.name()));
