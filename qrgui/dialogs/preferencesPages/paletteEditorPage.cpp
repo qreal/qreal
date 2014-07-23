@@ -1,6 +1,9 @@
 #include "paletteEditorPage.h"
 #include "ui_paletteEditorPage.h"
 
+#include <QtWidgets/QScrollBar>
+#include <QtWidgets/QScrollArea>
+
 #include <qrkernel/settingsManager.h>
 
 using namespace qReal;
@@ -15,7 +18,6 @@ PreferencesPaletteEditorPage::PreferencesPaletteEditorPage(
 
 	mEditorManager = editorManager;
 	mCheckBoxList = new QList<QCheckBox *>;
-//	mIdList = new QList<QList<Id>>;
 
 	QList<QList<QString>> listOfIdString;
 	for (Id const &editor : editorManager->editors()) {
@@ -47,12 +49,20 @@ PreferencesPaletteEditorPage::PreferencesPaletteEditorPage(
 			box->setChecked(true);
 			mCheckBoxList->append(box);
 			label->setPixmap(icon.pixmap(QSize(30, 30)));
-			mUi->gridLayout->addWidget(box, i, 0);
-			mUi->gridLayout->addWidget(label, i, 1);
-			mUi->gridLayout->addWidget(new QLabel(editorManager->friendlyName(element)), i, 2, 1, 10);
+			mUi->gridLayout_2->addWidget(box, i, 0);
+			mUi->gridLayout_2->addWidget(label, i, 1);
+			mUi->gridLayout_2->addWidget(new QLabel(editorManager->friendlyName(element)), i, 2, 1, 10);
 			++i;
 		}
 	}
+
+	QScrollArea *scrollArea = new QScrollArea(this);
+	scrollArea->setWidget(mUi->widget);
+	mUi->widget->show();
+	scrollArea->show();
+	mUi->gridLayout->addWidget(scrollArea);
+
+//	QScrollBar scrollBar = QScrollBar(Qt::Vertical, this);
 }
 
 PreferencesPaletteEditorPage::~PreferencesPaletteEditorPage()

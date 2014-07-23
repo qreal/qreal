@@ -150,10 +150,10 @@ void PreferencesDialog::chooseTab(QModelIndex const &index)
 
 void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * const page)
 {
-	mUi->pageContentWigdet->addWidget(page);
 	mCustomPages.insert(pageName, page);
 	mPagesIndexes.insert(pageName, mCustomPages.count() - 1);
 	if (dynamic_cast<PreferencesPaletteEditorPage *>(page) == nullptr || isServer) {
+		mUi->pageContentWigdet->addWidget(page);
 		mUi->listWidget->addItem(new QListWidgetItem(QIcon(page->getIcon()), pageName));
 	}
 }
