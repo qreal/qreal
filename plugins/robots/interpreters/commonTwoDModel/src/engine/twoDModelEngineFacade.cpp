@@ -17,6 +17,7 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotM
 	, mView(new view::D2ModelWidget(*mModel.data()))
 	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
 {
+	mModel.data()->addRobotModel(robotModel);
 	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &view::D2ModelWidget::init);
 
 	connect(mView.data(), &view::D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);

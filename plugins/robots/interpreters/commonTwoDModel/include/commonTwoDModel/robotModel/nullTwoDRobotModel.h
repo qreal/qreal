@@ -22,7 +22,7 @@ public:
 
 	QString name() const override
 	{
-		return "";
+		return "NullTwoDRobotModel";
 	}
 	QString friendlyName() const override
 	{

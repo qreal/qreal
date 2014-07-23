@@ -508,6 +508,14 @@ void D2ModelWidget::onSelectionChange()
 			mSelectedRobotItem = nullptr;
 		}
 
+		if (mDisplay) {
+			delete mDisplay;
+		}
+
+		if (robotItem->robotModel().info()->name() == "NullTwoDRobotModel") {
+			return;
+		}
+
 		mSelectedRobotItem = robotItem;
 
 		connect(robotItem->robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
@@ -515,9 +523,6 @@ void D2ModelWidget::onSelectionChange()
 		setPortsGroupBoxAndWheelComboBoxes();
 		updateWheelComboBoxes();
 
-		if (mDisplay) {
-			delete mDisplay;
-		}
 
 		mDisplay = mSelectedRobotItem->robotModel().info().displayWidget();
 		connect(&mModel.timeline(), &Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
