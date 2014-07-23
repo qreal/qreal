@@ -55,7 +55,7 @@ HEADERS += \
 	$$PWD/blocks/details/drawEllipseBlock.h \
 	$$PWD/blocks/details/drawArcBlock.h \
 	$$PWD/blocks/details/setPainterWidthBlock.h \
-	$$PWD/blocks/details/setPainterColorBlock.h
+	$$PWD/blocks/details/setPainterColorBlock.h \
 	$$PWD/robotModel/twoD/parts/twoDLed.h \
 	$$PWD/blocks/details/ledBlock.h
 
@@ -104,7 +104,7 @@ SOURCES += \
 	$$PWD/blocks/details/drawEllipseBlock.cpp \
 	$$PWD/blocks/details/drawArcBlock.cpp \
 	$$PWD/blocks/details/setPainterWidthBlock.cpp \
-	$$PWD/blocks/details/setPainterColorBlock.cpp
+	$$PWD/blocks/details/setPainterColorBlock.cpp \
 	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
 	$$PWD/blocks/details/ledBlock.cpp
 
