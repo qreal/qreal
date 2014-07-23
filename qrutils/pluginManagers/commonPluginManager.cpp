@@ -6,9 +6,11 @@
 
 using namespace qReal;
 
-CommonPluginManager::CommonPluginManager(QString const &applicationDirPath) :
+CommonPluginManager::CommonPluginManager(QString const &applicationDirPath
+		, QString const &additionalPart) :
 	mPluginsDir(QDir(applicationDirPath))
 	, mApplicationDirectoryPath(applicationDirPath)
+	, mAdditionalPart(additionalPart)
 {
 }
 
@@ -23,7 +25,10 @@ QList<QObject *> CommonPluginManager::allLoadedPlugins()
 		mPluginsDir.cdUp();
 	}
 
-	mPluginsDir.cd("plugins");
+	QList<QString> splittedDir = mAdditionalPart.split('/');
+	foreach (QString const &partOfDirectory, splittedDir) {
+		mPluginsDir.cd(partOfDirectory);
+	}
 
 	QList<QObject *> listOfPlugins;
 
@@ -37,9 +42,7 @@ QList<QObject *> CommonPluginManager::allLoadedPlugins()
 
 			listOfPlugins.append(plugin);
 		} else {
-			// they say it doesn't work
-			// i believe...
-			loader->unload();
+//			loader->unload();
 			delete loader;
 		}
 	}

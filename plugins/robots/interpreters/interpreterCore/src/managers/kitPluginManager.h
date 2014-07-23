@@ -8,6 +8,8 @@
 #include <interpreterBase/kitPluginInterface.h>
 #include <generatorBase/generatorKitPluginInterface.h>
 
+#include <qrutils/pluginManagers/commonPluginManager.h>
+
 namespace interpreterCore {
 
 /// Loads kit plugins and provides interface to access them for the rest of interpreterCore.
@@ -34,8 +36,8 @@ public:
 	QList<interpreterBase::robotModel::RobotModelInterface *> allRobotModels() const;
 
 private:
-	bool tryToLoadInterpreterPlugin(QObject * const plugin);
-	bool tryToLoadGeneratorPlugin(QObject * const plugin);
+	void tryToLoadInterpreterPlugin();
+	void tryToLoadGeneratorPlugin();
 
 	/// Maps kit plugin name to corresponding plugin interface.
 	/// Doesn't have ownership, objects are owned by mLoaders.
@@ -49,6 +51,8 @@ private:
 
 	/// Directory from which plugins shall be loaded.
 	QDir mPluginsDir;
+
+	qReal::CommonPluginManager *mCommonPluginManager;
 };
 
 }

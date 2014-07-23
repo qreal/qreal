@@ -11,7 +11,10 @@ namespace qReal {
 class CommonPluginManager
 {
 public:
-	CommonPluginManager(QString const &applicationDirPath);
+	CommonPluginManager(
+			QString const &applicationDirPath
+			, QString const &additionalPart = "plugins"
+			);
 	~CommonPluginManager();
 
 	/// deletes all loaders
@@ -38,5 +41,7 @@ private:
 	QMap<QString, QObject *> mNameAndObject;
 	/// path to application directory, used to count path to loaded plugins
 	QString mApplicationDirectoryPath;
+	/// "plugins" if we're trying to load plugins from "bin/plugins"
+	QString mAdditionalPart;
 };
 }

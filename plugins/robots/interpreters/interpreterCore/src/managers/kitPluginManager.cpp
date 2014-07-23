@@ -5,39 +5,48 @@
 
 #include <qrkernel/exception/exception.h>
 
+#include <qrutils/pluginManagers/interfaceWrapper.h>
+
 using namespace interpreterCore;
+using namespace qReal;
 
 KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 	: mPluginsDir(QCoreApplication::applicationDirPath() + "/" + pluginDirectory)
 {
-	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
-		QFileInfo const fileInfo(fileName);
+	mCommonPluginManager = new CommonPluginManager(QCoreApplication::applicationDirPath(), pluginDirectory);
+	tryToLoadGeneratorPlugin();
+	tryToLoadInterpreterPlugin();
+//	QList<interpreterBase::KitPluginInterface *> loadedPlugins =
+//			InterfaceWrapper<interpreterBase::KitPluginInterface>::listOfInterfaces(mCommonPluginManager->allLoadedPlugins());
+//	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
+//		QFileInfo const fileInfo(fileName);
 
-		if (fileInfo.suffix() != "dll" && fileInfo.suffix() != "so") {
-			continue;
-		}
+//		if (fileInfo.suffix() != "dll" && fileInfo.suffix() != "so") {
+//			continue;
+//		}
 
-		QPluginLoader * const loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		QObject * const plugin = loader->instance();
+//		QPluginLoader * const loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
+//		QObject * const plugin = loader->instance();
 
-		if (plugin) {
-			if (tryToLoadInterpreterPlugin(plugin) || tryToLoadGeneratorPlugin(plugin)) {
-				mLoaders.insert(fileName, loader);
-			} else {
-				// loader->unload();
-				delete loader;
-			}
-		} else {
-			qDebug() << "Plugin loading failed: " << loader->errorString();
-			loader->unload();
-			delete loader;
-		}
-	}
+//		if (plugin) {
+//			if (tryToLoadInterpreterPlugin(plugin) || tryToLoadGeneratorPlugin(plugin)) {
+//				mLoaders.insert(fileName, loader);
+//			} else {
+//				// loader->unload();
+//				delete loader;
+//			}
+//		} else {
+//			qDebug() << "Plugin loading failed: " << loader->errorString();
+//			loader->unload();
+//			delete loader;
+//		}
+//	}
 }
 
 KitPluginManager::~KitPluginManager()
 {
-	qDeleteAll(mLoaders);
+	mCommonPluginManager->deleteAllLoaders();
+//	qDeleteAll(mLoaders);
 }
 
 QList<QString> KitPluginManager::kitIds() const
@@ -70,25 +79,38 @@ QList<interpreterBase::robotModel::RobotModelInterface *> KitPluginManager::allR
 	return result;
 }
 
-bool KitPluginManager::tryToLoadInterpreterPlugin(QObject * const plugin)
+void KitPluginManager::tryToLoadInterpreterPlugin()
 {
-	interpreterBase::KitPluginInterface * const kitPlugin
-			= qobject_cast<interpreterBase::KitPluginInterface *>(plugin);
+	QList<interpreterBase::KitPluginInterface *> loadedInterpreterPlugins =
+			InterfaceWrapper<interpreterBase::KitPluginInterface>::listOfInterfaces(mCommonPluginManager->allLoadedPlugins());
 
-	if (kitPlugin) {
+	foreach (interpreterBase::KitPluginInterface * const kitPlugin, loadedInterpreterPlugins) {
 		mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
 	}
 
-	return kitPlugin != nullptr;
+//	interpreterBase::KitPluginInterface * const kitPlugin
+//			= qobject_cast<interpreterBase::KitPluginInterface *>(plugin);
+
+//	if (kitPlugin) {
+//		mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
+//	}
+
+//	return kitPlugin != nullptr;
 }
 
-bool KitPluginManager::tryToLoadGeneratorPlugin(QObject * const plugin)
+void KitPluginManager::tryToLoadGeneratorPlugin()
 {
-	generatorBase::GeneratorKitPluginInterface * const generatorPlugin
-			= qobject_cast<generatorBase::GeneratorKitPluginInterface *>(plugin);
-	if (generatorPlugin) {
+	QList<generatorBase::GeneratorKitPluginInterface *> loadedGeneratorPlugins =
+			InterfaceWrapper<generatorBase::GeneratorKitPluginInterface>::listOfInterfaces(mCommonPluginManager->allLoadedPlugins());
+
+	foreach (generatorBase::GeneratorKitPluginInterface * const generatorPlugin, loadedGeneratorPlugins) {
 		mGenerators.insertMulti(generatorPlugin->kitId(), generatorPlugin);
 	}
+//	generatorBase::GeneratorKitPluginInterface * const generatorPlugin
+//			= qobject_cast<generatorBase::GeneratorKitPluginInterface *>(plugin);
+//	if (generatorPlugin) {
+//		mGenerators.insertMulti(generatorPlugin->kitId(), generatorPlugin);
+//	}
 
-	return generatorPlugin != nullptr;
+//	return generatorPlugin != nullptr;
 }
