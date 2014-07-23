@@ -15,7 +15,8 @@ win32 {
 	QMAKE_POST_LINK = "cmd /C "xcopy trikRuntime ..\\..\\..\\bin\\trikRuntime /s /e /q /y /i""
 }
 else {
-	QMAKE_POST_LINK = "cp lib/Trik.Core.dll ../../../../bin"
+	QMAKE_POST_LINK = "mkdir ../../../bin/trikRuntime;"\
+						"cp -r trikRuntime/* ../../../bin/trikRuntime/" \
 }
 
 HEADERS += \
