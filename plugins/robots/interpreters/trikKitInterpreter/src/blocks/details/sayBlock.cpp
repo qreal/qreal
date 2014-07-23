@@ -3,7 +3,6 @@
 #include <interpreterBase/blocksBase/common/displayBlock.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
 
-#include "src/robotModel/twoD/parts/twoDLed.h"
 #include "src/robotModel/parts/trikShell.h"
 
 using namespace trikKitInterpreter;

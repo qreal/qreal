@@ -1,21 +1,21 @@
 #include "led.h"
-#include <utils/tcpRobotCommunicator.h>
 #include <qrutils/inFile.h>
-#include <QColor>
+#include <QtGui/QColor>
 
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Led::Led(DeviceInfo const &info, PortInfo const &port)
+Led::Led(DeviceInfo const &info, PortInfo const &port
+	, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikLed(info, port)
+		, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 
 void Led::setColor(const QString &color)
 {
 	QString const pathToCommand = ":/trik/templates/led.t";
-	QString directCommand = utils::InFile::readAll(pathToCommand).replace("@@COLOR@@", color) + "brick.run()";
-	utils::TcpRobotCommunicator tcpRobotCommunicator("TrikTcpServer");
-	tcpRobotCommunicator.runDirectCommand(directCommand);
+	QString const directCommand = utils::InFile::readAll(pathToCommand).replace("@@COLOR@@", color) + "brick.run();";
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
 

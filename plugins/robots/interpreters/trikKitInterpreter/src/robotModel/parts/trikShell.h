@@ -1,7 +1,6 @@
 #pragma once
 
 #include <interpreterBase/robotModel/robotParts/device.h>
-#include <interpreterBase/interpreterBaseDeclSpec.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {

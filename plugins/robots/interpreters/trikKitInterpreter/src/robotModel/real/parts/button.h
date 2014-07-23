@@ -1,6 +1,7 @@
 #pragma once
 
 #include <interpreterBase/robotModel/robotParts/button.h>
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -12,9 +13,14 @@ class Button : public interpreterBase::robotModel::robotParts::Button
 	Q_OBJECT
 
 public:
-	Button(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
+	Button(interpreterBase::robotModel::DeviceInfo const &info
+		, interpreterBase::robotModel::PortInfo const &port
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

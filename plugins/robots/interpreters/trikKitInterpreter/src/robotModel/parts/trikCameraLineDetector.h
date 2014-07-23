@@ -14,7 +14,7 @@ class TrikCameraLineDetector : public interpreterBase::robotModel::robotParts::S
 
 public:
 	TrikCameraLineDetector(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+		, interpreterBase::robotModel::PortInfo const &port);
 
 	virtual void init() = 0;
 	virtual void detectLine() = 0;

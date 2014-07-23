@@ -1,6 +1,7 @@
 #pragma once
 
 #include "robotModel/parts/trikSonarSensor.h"
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -13,9 +14,13 @@ class SonarSensor : public robotModel::parts::TrikSonarSensor
 
 public:
 	SonarSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+		, interpreterBase::robotModel::PortInfo const &port
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

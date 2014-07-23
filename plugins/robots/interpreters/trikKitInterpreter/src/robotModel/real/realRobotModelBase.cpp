@@ -51,31 +51,31 @@ void RealRobotModelBase::disconnectFromRobot()
 robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
 	if (deviceInfo.isA(displayInfo())) {
-		return new parts::Display(displayInfo(), port);
-	} else if (deviceInfo.isA(speakerInfo())) {
-		return new parts::Speaker(speakerInfo(), port);
+		return new parts::Display(displayInfo(), port, *mRobotCommunicator);
+	}  else if (deviceInfo.isA(speakerInfo())) {
+		return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(buttonInfo())) {
-		return new parts::Button(buttonInfo(), port);
+		return new parts::Button(buttonInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(powerMotorInfo())) {
-		return new parts::PowerMotor(powerMotorInfo(), port);
+		return new parts::PowerMotor(powerMotorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(servoMotorInfo())) {
-		return new parts::ServoMotor(servoMotorInfo(), port);
+		return new parts::ServoMotor(servoMotorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(encoderInfo())) {
-		return new parts::EncoderSensor(encoderInfo(), port);
+		return new parts::EncoderSensor(encoderInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(lightSensorInfo())) {
-		return new parts::LightSensor(lightSensorInfo(), port);
+		return new parts::LightSensor(lightSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(infraredSensorInfo())) {
-		return new parts::InfraredSensor(infraredSensorInfo(), port);
+		return new parts::InfraredSensor(infraredSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(sonarSensorInfo())) {
-		return new parts::SonarSensor(sonarSensorInfo(), port);
+		return new parts::SonarSensor(sonarSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(motionSensorInfo())) {
-		return new parts::MotionSensor(motionSensorInfo(), port);
+		return new parts::MotionSensor(motionSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(ledInfo())) {
-		return new parts::Led(ledInfo(), port);
+		return new parts::Led(ledInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(shellInfo())) {
-		return new parts::Shell(shellInfo(), port);
+		return new parts::Shell(shellInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(cameraLineDetectorSensorInfo())) {
-		return new parts::CameraLineDetector(cameraLineDetectorSensorInfo(), port);
+		return new parts::CameraLineDetector(cameraLineDetectorSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
