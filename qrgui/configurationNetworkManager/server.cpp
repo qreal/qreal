@@ -60,12 +60,12 @@ void Server::acceptClientConnection()
 {
 	QTcpSocket* clientSocket = mTcpServer->nextPendingConnection();
 	emit newClient(clientSocket->peerAddress().toString());
-	int idusersocs = clientSocket->socketDescriptor();
-	mSClients[idusersocs] = clientSocket;
-	mSClientsIndexMapper->setMapping(mSClients[idusersocs], idusersocs);
-	connect(mSClients[idusersocs], &QTcpSocket::disconnected
+	const int idUserSockets = clientSocket->socketDescriptor();
+	mSClients[idUserSockets] = clientSocket;
+	mSClientsIndexMapper->setMapping(mSClients[idUserSockets], idUserSockets);
+	connect(mSClients[idUserSockets], &QTcpSocket::disconnected
 			, mSClientsIndexMapper, static_cast<void (QSignalMapper::*)(void)>(&QSignalMapper::map));
-	connect(mSClients[idusersocs], &QTcpSocket::disconnected, mSClients[idusersocs], &QTcpSocket::deleteLater);
+	connect(mSClients[idUserSockets], &QTcpSocket::disconnected, mSClients[idUserSockets], &QTcpSocket::deleteLater);
 	sendSettings();
 }
 

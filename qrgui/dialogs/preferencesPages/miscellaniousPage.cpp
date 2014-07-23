@@ -30,7 +30,6 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent, bool
 
 	restoreSettings();
 	connect(mUi->settingsButton, &QAbstractButton::clicked, this, &PreferencesMiscellaniousPage::getSettings);
-
 }
 
 void PreferencesMiscellaniousPage::getSettings()

@@ -20,8 +20,8 @@ Client::~Client()
 
 void Client::connectToSettingsServer()
 {
-	QString ip = SettingsManager::value("ServerIP").toString();
-	int port = SettingsManager::value("ServerPort").toInt();
+	const QString ip = SettingsManager::value("ServerIP").toString();
+	const int port = SettingsManager::value("ServerPort").toInt();
 
 	mServerSocket->connectToHost(ip, port);
 }
@@ -60,7 +60,7 @@ void Client::connectionError()
 	mServerSocket->close();
 }
 
-void Client::applySettingsFromServer(QString settings)
+void Client::applySettingsFromServer(const QString settings)
 {
 	int i = 0;
 	while (i < settings.length()) {

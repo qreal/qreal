@@ -117,7 +117,6 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 	getPaletteSettings();
 	loadPlugins();
 
-
 	splashScreen.setProgress(70);
 
 	mDocksVisibility.clear();
@@ -164,13 +163,13 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 	if (isServer) {
 		mNetworkManager = new Server();
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
-								, &editorManager(), isServer);
+				, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+				, &editorManager(), isServer);
 	} else {
 		mNetworkManager = new Client();
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-								, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
-								, &editorManager(), isServer);
+				, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+				, &editorManager(), isServer);
 	}
 }
 
@@ -178,13 +177,13 @@ void MainWindow::connectActionsForUXInfo()
 {
 	QList<QAction*> triggeredActions;
 	triggeredActions << mUi->actionQuit << mUi->actionOpen << mUi->actionSave
-					 << mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
-					 << mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
-					 << mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
-					 << mUi->actionPasteOnDiagram << mUi->actionPasteReference
-					 << mUi->actionPreferences << mUi->actionHelp
-					 << mUi->actionAbout << mUi->actionAboutQt
-					 << mUi->actionFullscreen << mUi->actionFind;
+			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
+			 << mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
+			 << mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
+			<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
+			 << mUi->actionPreferences << mUi->actionHelp
+			 << mUi->actionAbout << mUi->actionAboutQt
+			<< mUi->actionFullscreen << mUi->actionFind;
 
 	foreach (QAction* const action, triggeredActions) {
 		connect(action, SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
@@ -192,8 +191,8 @@ void MainWindow::connectActionsForUXInfo()
 
 	QList<QAction*> toggledActions;
 	toggledActions << mUi->actionShowSplash << mUi->actionShow_grid
-				   << mUi->actionShow_alignment << mUi->actionSwitch_on_grid
-				   << mUi->actionSwitch_on_alignment;
+		<< mUi->actionShow_alignment << mUi->actionSwitch_on_grid
+		<< mUi->actionSwitch_on_alignment;
 
 	foreach (QAction* const action, toggledActions) {
 		connect(action, SIGNAL(toggled(bool)), mFilterObject, SLOT(toggledActionActivated(bool)));
@@ -345,8 +344,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
-								  , SettingsManager::value("PaletteIconsInARowCount").toInt()
-								  , &mEditorManagerProxy);
+			 , SettingsManager::value("PaletteIconsInARowCount").toInt()
+			 , &mEditorManagerProxy);
 	SettingsManager::setValue("EditorsLoadedCount", mEditorManagerProxy.editors().count());
 }
 
@@ -526,7 +525,7 @@ void MainWindow::openRecentProjectsMenu()
 	}
 
 	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(QString const &))
-					 , mProjectManager, SLOT(openExisting(QString const &)));
+			 , mProjectManager, SLOT(openExisting(QString const &)));
 }
 
 void MainWindow::closeAllTabs()
@@ -819,16 +818,16 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 
 	if (graphicalIds.isEmpty()) {
 		return new RemoveElementCommand(
-					mModels->logicalModelAssistApi()
-					, mModels->graphicalModelAssistApi()
-					, exploser()
-					, mModels->logicalRepoApi().parent(id)
-					, Id()
-					, id
-					, true
-					, mModels->graphicalModelAssistApi().name(id)
-					, mModels->graphicalModelAssistApi().position(id)
-					);
+				mModels->logicalModelAssistApi()
+				, mModels->graphicalModelAssistApi()
+				, exploser()
+				, mModels->logicalRepoApi().parent(id)
+				, Id()
+				, id
+				, true
+				, mModels->graphicalModelAssistApi().name(id)
+				, mModels->graphicalModelAssistApi().position(id)
+				);
 	}
 
 	DoNothingCommand *result = new DoNothingCommand;
@@ -846,16 +845,16 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 {
 	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
 	AbstractCommand *result = new RemoveElementCommand(
-				mModels->logicalModelAssistApi()
-				, mModels->graphicalModelAssistApi()
-				, exploser()
-				, mModels->logicalRepoApi().parent(logicalId)
-				, mModels->graphicalRepoApi().parent(id)
-				, id
-				, false
-				, mModels->graphicalModelAssistApi().name(id)
-				, mModels->graphicalModelAssistApi().position(id)
-				);
+			mModels->logicalModelAssistApi()
+			, mModels->graphicalModelAssistApi()
+			, exploser()
+			, mModels->logicalRepoApi().parent(logicalId)
+			, mModels->graphicalRepoApi().parent(id)
+			, id
+			, false
+			, mModels->graphicalModelAssistApi().name(id)
+			, mModels->graphicalModelAssistApi().position(id)
+			);
 
 	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
@@ -1402,18 +1401,18 @@ void MainWindow::setDefaultShortcuts()
 	addAction(closeAllTabsAction);
 
 	closeCurrentTabAction->setShortcuts(QList<QKeySequence>()
-										<< QKeySequence(Qt::CTRL + Qt::Key_W)
-										<< QKeySequence(Qt::CTRL + Qt::Key_F4));
+			<< QKeySequence(Qt::CTRL + Qt::Key_W)
+			<< QKeySequence(Qt::CTRL + Qt::Key_F4));
 	closeAllTabsAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_W));
 
 	mUi->actionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
 	mUi->actionRedo->setShortcuts(QList<QKeySequence>()
-								  << QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z)
-								  << QKeySequence(Qt::CTRL + Qt::Key_Y));
+			<< QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z)
+			<< QKeySequence(Qt::CTRL + Qt::Key_Y));
 
 	mUi->actionZoom_In->setShortcuts(QList<QKeySequence>()
-									 << QKeySequence(Qt::CTRL + Qt::Key_Equal)
-									 << QKeySequence(Qt::CTRL + Qt::Key_Plus));
+			 << QKeySequence(Qt::CTRL + Qt::Key_Equal)
+			 << QKeySequence(Qt::CTRL + Qt::Key_Plus));
 	mUi->actionZoom_Out->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
 
 	mUi->actionNewProject->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
@@ -1684,8 +1683,8 @@ void MainWindow::createDiagram(QString const &idString)
 	} else {
 		// It is a group
 		CreateGroupCommand createGroupCommand(nullptr, mModels->logicalModelAssistApi()
-											  , mModels->graphicalModelAssistApi(), exploser(), Id::rootId(), Id::rootId()
-											  , id, false, QPointF());
+				, mModels->graphicalModelAssistApi(), exploser(), Id::rootId(), Id::rootId()
+				, id, false, QPointF());
 		createGroupCommand.redo();
 		created = createGroupCommand.rootId();
 	}
@@ -2175,12 +2174,12 @@ void MainWindow::arrangeElementsByDotRunner(QString const &algorithm, QString co
 {
 	Id const diagramId = activeDiagram();
 	DotRunner *runner = new DotRunner(
-				diagramId
-				, mModels->graphicalModelAssistApi()
-				, mModels->logicalModelAssistApi()
-				, mEditorManagerProxy
-				, absolutePathToDotFiles
-				);
+			diagramId
+			, mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi()
+			, mEditorManagerProxy
+			, absolutePathToDotFiles
+			);
 
 	if (runner->run(algorithm)) {
 		updateActiveDiagram();

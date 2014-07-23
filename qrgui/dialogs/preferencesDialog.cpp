@@ -70,8 +70,9 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	registerPage(tr("Editor"), editorPage);
 	registerPage(tr("Shortcuts"), hotKeyManagerPage);
 	registerPage(tr("Palette"), paletteEditorPage);
-	if(!isServer)
+	if (!isServer) {
 		paletteEditorPage->setVisible(false);
+	}
 
 	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	mUi->listWidget->setCurrentRow(currentTab);
