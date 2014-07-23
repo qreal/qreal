@@ -845,16 +845,16 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 {
 	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
 	AbstractCommand *result = new RemoveElementCommand(
-		mModels->logicalModelAssistApi()
-		, mModels->graphicalModelAssistApi()
-		, exploser()
-		, mModels->logicalRepoApi().parent(logicalId)
-		, mModels->graphicalRepoApi().parent(id)
-		, id
-		, false
-		, mModels->graphicalModelAssistApi().name(id)
-		, mModels->graphicalModelAssistApi().position(id)
-		);
+				mModels->logicalModelAssistApi()
+				, mModels->graphicalModelAssistApi()
+				, exploser()
+				, mModels->logicalRepoApi().parent(logicalId)
+				, mModels->graphicalRepoApi().parent(id)
+				, id
+				, false
+				, mModels->graphicalModelAssistApi().name(id)
+				, mModels->graphicalModelAssistApi().position(id)
+				);
 
 	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
