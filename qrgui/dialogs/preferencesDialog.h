@@ -63,5 +63,5 @@ private:
 	QMap<QString, PreferencesPage *> mCustomPages;
 	QMap<QString, int> mPagesIndexes;
 
-	bool isServer;
+	bool mIsServer;
 };

@@ -49,8 +49,7 @@ void Client::settings()
 	in >> settings;
 	mServerSocket->close();
 	
-	QString str = QString::fromUtf8(settings);
-	applySettingsFromServer(str);
+	applySettingsFromServer(QString::fromUtf8(settings));
 	delete settings;
 	emit mustDeleteClient();
 }
