@@ -48,12 +48,28 @@ Type* NodeType::clone() const
 
 bool NodeType::copyPictures(GraphicType *parent)
 {
-	NodeType *nodeParent = dynamic_cast<NodeType*>(parent);
+	NodeType const * const nodeParent = dynamic_cast<NodeType*>(parent);
 	if (nodeParent != nullptr) {
-		mWidth = nodeParent->mWidth;
-		mHeight = nodeParent->mHeight;
-		mSdfDomElement = nodeParent->mSdfDomElement;
-		mVisible = nodeParent->mVisible;
+		if (mSdfDomElement.isNull()) {
+			/// @todo Support this.
+			if (!nodeParent->mSdfDomElement.isNull()) {
+				qDebug() << name()
+						<< ": Inheriting pictures for an element without <picture> tag is not currently supported";
+			}
+		} else {
+			mWidth = qMax(mWidth, nodeParent->mWidth);
+			mHeight = qMax(mHeight, nodeParent->mHeight);
+
+			for (QDomNode sdfPrimitive = nodeParent->mSdfDomElement.firstChild();
+					!sdfPrimitive.isNull();
+					sdfPrimitive = sdfPrimitive.nextSibling())
+			{
+				mSdfDomElement.appendChild(sdfPrimitive.cloneNode());
+			}
+
+			mVisible = mVisible || nodeParent->mVisible;
+		}
+
 		return true;
 	}
 
