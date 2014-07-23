@@ -46,7 +46,8 @@ QDomDocument Model::serialize() const
 void Model::deserialize(QDomDocument const &xml)
 {
 	QDomNodeList const worldList = xml.elementsByTagName("world");
-	QDomNodeList const robotList = xml.elementsByTagName("robot");
+	QDomNodeList const robotList = xml.elementsByTagName("robots");
+
 	if (worldList.count() != 1 || robotList.count() != 1) {
 		/// @todo Report error
 		return;
@@ -54,15 +55,44 @@ void Model::deserialize(QDomDocument const &xml)
 
 	mWorldModel.deserialize(worldList.at(0).toElement());
 
-	for (RobotModel const &robot : mRobotModels) {
-		robot.deserialize(robotList.at(0).toElement());
-		robot.configuration().deserialize(robotList.at(0).toElement());
+	QMutableListIterator<RobotModel *> iterator(mRobotModels);
+	QList<int> presentRobots;
+
+	while(iterator.hasNext()) {
+		bool exist = false;
+		RobotModel *robot = iterator.next();
+
+		for (int i = 0; i < robotList.size(); i++) {
+			if (robot->robotId() == robotList.at(i).toElement().attribute("id")) {
+				robot->deserialize(robotList.at(i).toElement());
+				robot->configuration().deserialize(robotList.at(i).toElement());
+				exist = true;
+				presentRobots.append(i);
+				break;
+			}
+
+			if (!exist) {
+				iterator.remove();
+				emit robotRemoved();
+				delete robot;
+			}
+		}
+	}
+
+	for (int i = 0; i < robotList.size(); i++) {
+		if (presentRobots.indexOf(i) == -1) {
+			addRobotModel(nullptr, robotList.at(i).toElement().attribute("id"));
+			mRobotModels.last()->deserialize(robotList.at(i).toElement());
+			mRobotModels.last()->configuration().deserialize(robotList.at(i).toElement());
+		}
 	}
 }
 
-void Model::addRobotModel(robotModel::TwoDRobotModel const &robotModel, QPointF const &pos)
+void Model::addRobotModel(robotModel::TwoDRobotModel *robotModel, QPointF const &pos
+		, QString const &robotId)
 {
-	RobotModel *robot = new RobotModel(robotModel, mSettings, this);
+	RobotModel *robot = robotModel ?  new RobotModel(robotModel, mSettings, this)
+			: new RobotModel(robotId, mSettings, this);
 
 	robot->setPosition(pos);
 
@@ -76,9 +106,9 @@ void Model::addRobotModel(robotModel::TwoDRobotModel const &robotModel, QPointF 
 	connect(&mSettings, &Settings::physicsChanged, resetPhysics);
 	resetPhysics();
 
-	mRobotModels.append(*robot);
+	mRobotModels.append(robot);
 
-	emit robotAdded();
+	emit robotAdded(robot);
 }
 
 void Model::removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel)
@@ -89,13 +119,13 @@ void Model::removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotM
 		return;
 	}
 
-	RobotModel *robot = *mRobotModels.at(i);
+	RobotModel *robot = mRobotModels.at(i);
 
 	mRobotModels.removeOne(i);
 
-	delete robot;
+	emit robotRemoved(robot);
 
-	emit robotDeleted();
+	delete robot;
 }
 
 void Model::replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
@@ -107,7 +137,7 @@ void Model::replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldMo
 		return;
 	}
 
-	QPointF const pos = mRobotModels.at(i).position();
+	QPointF const pos = mRobotModels.at(i)->position();
 
 	removeRobotModel(oldModel);
 	addRobotModel(newModel, pos);
@@ -115,8 +145,8 @@ void Model::replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldMo
 
 int Model::findModel(twoDModel::robotModel::TwoDRobotModel const &robotModel)
 {
-	for (RobotModel const &model : mRobotModels) {
-		if (model.info().name() == robotModel.name()) {
+	for (RobotModel *model : mRobotModels) {
+		if (model->robotId() == robotModel.robotId()) {
 			return mRobotModels.indexOf(model);
 		}
 	}

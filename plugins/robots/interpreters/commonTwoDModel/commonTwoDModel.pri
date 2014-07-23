@@ -32,6 +32,7 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/parts/motor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/rangeSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/touchSensor.h \
+    include/commonTwoDModel/robotModel/nullTwoDRobotModel.h
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \

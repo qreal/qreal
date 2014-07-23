@@ -23,6 +23,7 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDRobotModel : public interpreterBase::robotMo
 
 public:
 	explicit TwoDRobotModel(interpreterBase::robotModel::RobotModelInterface const &realModel);
+	TwoDRobotModel(QString const &robotId);
 
 	QString name() const override;
 	QString friendlyName() const override;
@@ -71,7 +72,7 @@ protected:
 			) override;
 
 private:
-	interpreterBase::robotModel::RobotModelInterface const &mRealModel;
+	interpreterBase::robotModel::RobotModelInterface *mRealModel;
 	engine::TwoDModelEngineInterface *mEngine = nullptr;  // Does not have ownership.
 };
 

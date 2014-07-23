@@ -34,8 +34,9 @@ public:
 	};
 
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	RobotModel(twoDModel::robotModel::TwoDRobotModel &robotModel
+	RobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel
 			, Settings const &settings, QObject *parent = 0);
+	RobotModel(QString const &robotId, Settings const &settings, QObject *parent);
 	~RobotModel();
 
 	void reinit();
@@ -48,7 +49,9 @@ public:
 
 	SensorsConfiguration &configuration();
 	/// Returns a reference to external robot description.
-	twoDModel::robotModel::TwoDRobotModel &info();
+	twoDModel::robotModel::TwoDRobotModel *info();
+
+	QString robotId() const;
 
 	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);
@@ -132,6 +135,9 @@ private:
 	bool mIsOnTheGround;
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
+
+	/// Stores robotId if mRobotModel == nullptr
+	QString mRobotId;
 };
 
 }

@@ -25,7 +25,7 @@ public:
 	Timeline &timeline();
 
 	/// Returns a reference to a 2D robot models components.
-	QList<RobotModel> robotModels();
+	QList<RobotModel *> robotModels();
 
 	/// Returns a reference to a 2D model`s settings storage.
 	Settings &settings();
@@ -33,7 +33,8 @@ public:
 	QDomDocument serialize() const;
 	void deserialize(QDomDocument const &xml);
 
-	void addRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel, QPointF const &pos = QPointF());
+	void addRobotModel(robotModel::TwoDRobotModel *robotModel, QPointF const &pos = QPointF()
+			, QString const &robotId = "");
 	void removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel);
 	void replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
 			, twoDModel::robotModel::TwoDRobotModel const &newModel);
@@ -43,8 +44,8 @@ signals:
 	/// @param xml World model description in xml format
 	void modelChanged(QDomDocument const &xml);
 
-	void robotAdded();
-	void robotDeleted();
+	void robotAdded(RobotModel *robotModel);
+	void robotRemoved(RobotModel *robotModel);
 
 private:
 	int findModel(twoDModel::robotModel::TwoDRobotModel const &robotModel);
@@ -52,7 +53,7 @@ private:
 	Settings mSettings;
 	WorldModel mWorldModel;
 	Timeline mTimeline;
-	QList<RobotModel> mRobotModels;
+	QList<RobotModel *> mRobotModels;
 };
 
 }

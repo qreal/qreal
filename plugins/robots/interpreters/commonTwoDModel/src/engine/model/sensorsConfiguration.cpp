@@ -9,15 +9,16 @@
 using namespace twoDModel::model;
 using namespace interpreterBase::robotModel;
 
-SensorsConfiguration::SensorsConfiguration(QString const &robotModelName)
-	: mRobotModel(robotModelName)
+SensorsConfiguration::SensorsConfiguration(RobotModel const &robotModel, QString const &robotModelName)
+	: mRobotModel(robotModel)
+	, mRobotModelName(robotModelName.isEmpty() ? robotModel.robotId() : robotModelName)
 {
 }
 
 void SensorsConfiguration::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &device)
 {
-	if (robotModel != mRobotModel) {
+	if (robotModel != mRobotModelName) {
 		// Ignoring external events
 		return;
 	}
@@ -28,7 +29,7 @@ void SensorsConfiguration::onDeviceConfigurationChanged(QString const &robotMode
 		return;
 	}
 
-	emit deviceAdded(port);
+	emit deviceAdded(port, mRobotModel);
 	// If there was no sensor before then placing it right in front of the robot;
 	// else putting it instead of old one.
 	mSensorsInfo[port] = mSensorsInfo[port].isNull ? SensorInfo(defaultPosition(), 0) : mSensorsInfo[port];
@@ -68,7 +69,7 @@ void SensorsConfiguration::setDirection(PortInfo const &port, qreal direction)
 
 DeviceInfo SensorsConfiguration::type(PortInfo const &port) const
 {
-	return currentConfiguration(mRobotModel, port);
+	return currentConfiguration(mRobotModelName, port);
 }
 
 void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document) const
@@ -77,7 +78,7 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 	robot.appendChild(sensorsElem);
 
 	for (PortInfo const &port: mSensorsInfo.keys()) {
-		DeviceInfo const device = currentConfiguration(mRobotModel, port);
+		DeviceInfo const device = currentConfiguration(mRobotModelName, port);
 		SensorInfo const sensor = mSensorsInfo.value(port);
 		QDomElement sensorElem = document.createElement("sensor");
 		sensorsElem.appendChild(sensorElem);
@@ -118,8 +119,9 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
 
-		deviceConfigurationChanged(mRobotModel, port, DeviceInfo());
-		deviceConfigurationChanged(mRobotModel, port, type);
+		deviceConfigurationChanged(mRobotModelName, port, DeviceInfo());
+		deviceConfigurationChanged(mRobotModelName, port, type);
+
 		setPosition(port, position);
 		setDirection(port, direction);
 	}

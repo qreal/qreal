@@ -56,7 +56,7 @@ protected:
 
 signals:
 	void mousePressed();
-	void changedPosition();
+	void changedPosition(RobotItem *robotItem);
 
 private:
 	class BeepItem : public QGraphicsItem

@@ -15,25 +15,44 @@
 #include "physics/simplePhysicsEngine.h"
 #include "physics/realisticPhysicsEngine.h"
 
+#include "include/commonTwoDModel/robotModel/nullTwoDRobotModel.h"
+
 using namespace twoDModel::model;
 using namespace physics;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
-RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
+RobotModel::RobotModel(robotModel::TwoDRobotModel const &robotModel
 		, Settings const &settings
 		, QObject *parent)
 	: QObject(parent)
 	, mSettings(settings)
 	, mRobotModel(robotModel)
-	, mSensorsConfiguration(robotModel.name())
+	, mSensorsConfiguration(this)
 	, mPos(QPointF(0,0))
 	, mAngle(0)
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mPhysicsEngine(nullptr)
+	, mRobotId(robotModel.robotId())
 {
 	reinit();
+}
+
+RobotModel::RobotModel(QString const &robotId
+		, Settings const &settings
+		, QObject *parent)
+	: QObject(parent)
+	, mSettings(settings)
+	, mRobotModel(new robotModel::NullTwoDRobotModel())
+	, mSensorsConfiguration(this, robotId)
+	, mPos(QPointF(0,0))
+	, mAngle(0)
+	, mBeepTime(0)
+	, mIsOnTheGround(true)
+	, mPhysicsEngine(nullptr)
+	, mRobotId(robotId)
+{
 }
 
 RobotModel::~RobotModel()
@@ -58,8 +77,8 @@ void RobotModel::reinit()
 void RobotModel::clear()
 {
 	reinit();
-	mPos = QPointF();
-	mAngle = 0;
+	setPosition(QPointF());
+	setRotation(0);
 }
 
 RobotModel::Motor *RobotModel::initMotor(int radius, int speed, long unsigned int degrees
@@ -142,9 +161,14 @@ SensorsConfiguration &RobotModel::configuration()
 	return mSensorsConfiguration;
 }
 
-RobotModelInterface &RobotModel::info()
+RobotModelInterface *RobotModel::info()
 {
 	return mRobotModel;
+}
+
+QString RobotModel::robotId() const
+{
+	return mRobotId;
 }
 
 void RobotModel::stopRobot()
@@ -286,7 +310,8 @@ bool RobotModel::onTheGround() const
 
 void RobotModel::serialize(QDomDocument &target) const
 {
-	QDomElement robot = target.createElement("robot");
+	QDomElement robot = target.createElement("robots");
+	robot.setAttribute("id", mRobotId);
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", mAngle);
 	mSensorsConfiguration.serialize(robot, target);

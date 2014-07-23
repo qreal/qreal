@@ -86,7 +86,7 @@ void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void RobotItem::onLanded()
 {
 	mRobotModel.onRobotReturnedOnGround();
-	emit changedPosition();
+	emit changedPosition(this);
 }
 
 void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)

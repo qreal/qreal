@@ -370,3 +370,12 @@ bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 	out() << "\t}\n";
 	return true;
 }
+
+bool NodeType::copyPorts(NodeType* parent)
+{
+	for (Port *port: parent->mPorts) {
+		mPorts.append(port->clone());
+	}
+
+	return !parent->mPorts.isEmpty();
+}
