@@ -4,7 +4,7 @@
 #include "configurationNetworkManager/client.h"
 
 namespace Ui {
-class PreferencesMiscellaniousPage;
+	class PreferencesMiscellaniousPage;
 }
 
 class PreferencesMiscellaniousPage : public PreferencesPage

@@ -109,9 +109,9 @@ public:
 	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
-		, int const &role);
+			, int const &role);
 	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
-		, int role);
+			, int role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);

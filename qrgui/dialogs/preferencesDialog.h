@@ -11,7 +11,7 @@
 #include "qrgui/pluginManager/editorManager.h"
 
 namespace Ui {
-class PreferencesDialog;
+	class PreferencesDialog;
 }
 
 class PreferencesDialog : public utils::QRealDialog
