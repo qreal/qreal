@@ -52,6 +52,8 @@ private:
 	/// Directory from which plugins shall be loaded.
 	QDir mPluginsDir;
 
+	/// Common part of plugins loading
+	/// Takes ownership
 	qReal::CommonPluginManager *mCommonPluginManager;
 };
 

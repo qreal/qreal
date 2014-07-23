@@ -145,6 +145,8 @@ private:
 	QDir mPluginsDir;
 	QStringList mPluginFileNames;
 
+	/// Common part of plugin loaders
+	/// Takes ownership
 	CommonPluginManager *mCommonPluginManager;
 
 	QSet<Id> mDisabledElements;

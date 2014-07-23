@@ -61,6 +61,7 @@ private:
 	Customizer mCustomizer;
 
 	/// Common part of all plugin managers
+	/// Takes ownership
 	CommonPluginManager *mCommonPluginManager;
 
 	SystemEvents *mSystemEvents;
