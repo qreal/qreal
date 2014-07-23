@@ -3,7 +3,6 @@
 
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QScrollArea>
-
 #include <qrkernel/settingsManager.h>
 
 using namespace qReal;
@@ -29,32 +28,7 @@ PreferencesPaletteEditorPage::PreferencesPaletteEditorPage(
 		}
 	}
 
-	int i = 0;
-	int j = 0;
-
-	for (Id element : editorManager->getAllIP()) {
-		j = 0;
-		for (QList<QString> temp : listOfIdString){
-			if (temp.contains(element.element()))
-				mIdList[j].append(element);
-			j++;
-		}
-	}
-
-	for (QList<Id> const &group : mIdList) {
-		for (Id const &element : group) {
-			QLabel *label = new QLabel;
-			QCheckBox *box = new QCheckBox;
-			QIcon icon = editorManager->icon(element);
-			box->setChecked(true);
-			mCheckBoxList->append(box);
-			label->setPixmap(icon.pixmap(QSize(30, 30)));
-			mUi->gridLayout_2->addWidget(box, i, 0);
-			mUi->gridLayout_2->addWidget(label, i, 1);
-			mUi->gridLayout_2->addWidget(new QLabel(editorManager->friendlyName(element)), i, 2, 1, 10);
-			++i;
-		}
-	}
+	initCheckBoxes(listOfIdString);
 
 	QScrollArea *scrollArea = new QScrollArea(this);
 	scrollArea->setWidget(mUi->widget);
@@ -62,7 +36,8 @@ PreferencesPaletteEditorPage::PreferencesPaletteEditorPage(
 	scrollArea->show();
 	mUi->gridLayout->addWidget(scrollArea);
 
-//	QScrollBar scrollBar = QScrollBar(Qt::Vertical, this);
+	connect(mUi->buttonSelectAll, &QPushButton::clicked, this, &PreferencesPaletteEditorPage::selectAll);
+	connect(mUi->buttonUnselectAll, &QPushButton::clicked, this, &PreferencesPaletteEditorPage::unselectAll);
 }
 
 PreferencesPaletteEditorPage::~PreferencesPaletteEditorPage()
@@ -70,6 +45,35 @@ PreferencesPaletteEditorPage::~PreferencesPaletteEditorPage()
 	delete mUi;
 	delete mCheckBoxList;
 	delete mEditorManager;
+}
+
+void PreferencesPaletteEditorPage::initCheckBoxes(QList<QList<QString>> listOfIdString)
+{
+	int i = 0;
+	for (Id element : mEditorManager->getAllIP()) {
+		i = 0;
+		for (QList<QString> temp : listOfIdString){
+			if (temp.contains(element.element()))
+				mIdList[i].append(element);
+			++i;
+		}
+	}
+
+	i = 0;
+	for (QList<Id> const &group : mIdList) {
+		for (Id const &element : group) {
+			QLabel *label = new QLabel;
+			QCheckBox *box = new QCheckBox;
+			QIcon icon = mEditorManager->icon(element);
+			box->setChecked(true);
+			mCheckBoxList->append(box);
+			label->setPixmap(icon.pixmap(QSize(30, 30)));
+			mUi->gridLayout_2->addWidget(box, i, 0);
+			mUi->gridLayout_2->addWidget(label, i, 1);
+			mUi->gridLayout_2->addWidget(new QLabel(mEditorManager->friendlyName(element)), i, 2);
+			++i;
+		}
+	}
 }
 
 void PreferencesPaletteEditorPage::save()
@@ -96,3 +100,16 @@ void PreferencesPaletteEditorPage::restoreSettings()
 	}
 }
 
+void PreferencesPaletteEditorPage::selectAll()
+{
+	for (QCheckBox *box : *mCheckBoxList) {
+		box->setChecked(true);
+	}
+}
+
+void PreferencesPaletteEditorPage::unselectAll()
+{
+	for (QCheckBox *box : *mCheckBoxList) {
+		box->setChecked(false);
+	}
+}
