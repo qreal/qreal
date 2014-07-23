@@ -3,6 +3,7 @@
 #include <QtWidgets/QApplication>
 
 class QMouseEvent;
+class QWheelEvent;
 class QKeyEvent;
 
 namespace qReal {
@@ -20,6 +21,7 @@ protected:
 
 private slots:
 	void logMouse(QWidget * const target, QMouseEvent * const event);
+	void logWheel(QWidget * const target, QWheelEvent * const event);
 	void logKey(QKeyEvent * const event);
 
 	void onFocusChanged(QWidget *old, QWidget *now);
