@@ -2,7 +2,6 @@
 include(QsLog.pri)
 
 TARGET = qslog
-VERSION = "2.0.0"
 QT -= gui
 CONFIG -= console
 CONFIG -= app_bundle
