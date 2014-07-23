@@ -72,7 +72,7 @@ void Display::setBackground(QColor const &color)
 
 void Display::printText(int x, int y, QString const &text)
 {
-	mLabels[qMakePair(x, y + yDisplayShift)] = text;
+	mLabels[qMakePair(x, y + yDisplayShift)] = QPair<QString, QColor>(text, mCurrentPenColor);
 	mEngine.display()->repaintDisplay();
 }
 
@@ -109,7 +109,8 @@ void Display::paint(QPainter *painter)
 
 	for (QPair<int, int> const &point : mLabels.keys()) {
 		/// @todo: Honest labels must be here, without text overlapping.
-		painter->drawText(QPoint(point.first, point.second), mLabels[point]);
+		painter->setPen(QPen(mLabels[point].second, 0, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
+		painter->drawText(QPoint(point.first, point.second), mLabels[point].first);
 	}
 
 	for (int i = 0; i < mPixels.length(); ++i)
