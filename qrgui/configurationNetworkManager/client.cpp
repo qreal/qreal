@@ -6,7 +6,8 @@ Client::Client() : mSettingStringSize(0)
 {
 	mServerSocket = new QTcpSocket(this);
 	connect(mServerSocket, &QAbstractSocket::readyRead, this, &Client::settings);
-	connect(mServerSocket, static_cast<void (QAbstractSocket::*)(QAbstractSocket::SocketError)>(&QAbstractSocket::error), this, &Client::connectionError);
+	connect(mServerSocket, static_cast<void (QAbstractSocket::*)(QAbstractSocket::SocketError)>(&QAbstractSocket::error)
+		, this, &Client::connectionError);
 	connectToSettingsServer();
 }
 
