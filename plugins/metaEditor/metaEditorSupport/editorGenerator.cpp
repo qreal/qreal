@@ -392,9 +392,7 @@ void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
 			{
 				QDomElement generalization = mDocument.createElement("parent");
 				ensureCorrectness(parentId, generalization, "parentName", mApi.stringProperty(parentId, "name"));
-				if (!mApi.stringProperty(id, "overrides").isEmpty()) {
-					generalization.setAttribute("overrides", mApi.stringProperty(id, "overrides"));
-				}
+				generalization.setAttribute("overrides", generalizations.attribute("overrides", mApi.stringProperty(inLink, "overrides")));
 				generalizations.appendChild(generalization);
 			}
 		}
