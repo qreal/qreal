@@ -71,6 +71,8 @@ private:
 	int mAutoScaleTimer;
 	int mUpdateCurrValueTimer;
 	qreal mOutputValue;
+	/// The time segment's length on graph.
+	int const mTimeSegmentOnGraph = 224;
 };
 
 }

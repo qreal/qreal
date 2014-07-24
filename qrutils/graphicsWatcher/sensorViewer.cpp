@@ -108,8 +108,8 @@ void SensorViewer::saveGraph()
 	QTextStream out(&file);
 	out << "\"time\"" << ";" << "\"value\"" << "\n";
 	for (int i = 0; i < mPointsDataProcessor->pointsBase()->size(); i++) {
-		out << "\"" << mPointsDataProcessor->pointsBase()->at(i).x() << "\"" << ";"
-			<< "\"" << mPointsDataProcessor->pointsBase()->at(i).y() << "\"" << "\n";
+		out << "\"" << mPointsDataProcessor->pointsBase()->at(i).x() + mTimeSegmentOnGraph << "\"" << ";"
+			<< "\"" << mPointsDataProcessor->pointsBase()->at(i).y() * (-1) << "\"" << "\n";
 	}
 	file.close();
 }
