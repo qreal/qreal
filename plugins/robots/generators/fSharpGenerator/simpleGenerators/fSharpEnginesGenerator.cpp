@@ -2,7 +2,7 @@
 
 #include <generatorBase/generatorCustomizer.h>
 #include <generatorBase/parts/engines.h>
-#include "FSharpGeneratorFactory.h"
+#include "fSharpGeneratorFactory.h"
 
 using namespace fSharp::simple;
 using namespace generatorBase::simple;

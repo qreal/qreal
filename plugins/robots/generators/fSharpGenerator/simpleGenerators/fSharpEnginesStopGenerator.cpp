@@ -1,7 +1,7 @@
-#include "FSharpEnginesStopGenerator.h"
+#include "fSharpEnginesStopGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
-#include "FSharpGeneratorFactory.h"
+#include "fSharpGeneratorFactory.h"
 
 using namespace fSharp::simple;
 using namespace generatorBase::simple;
