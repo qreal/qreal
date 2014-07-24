@@ -29,7 +29,6 @@ void Client::connectToSettingsServer()
 
 void Client::settings()
 {
-	qDebug() << "conneect";
 	QDataStream in(mServerSocket);
 	in.setVersion(QDataStream::Qt_5_1);
 
@@ -58,7 +57,6 @@ void Client::settings()
 
 void Client::connectionError()
 {
-	qDebug() << "error";
 	mServerSocket->close();
 }
 
