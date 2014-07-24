@@ -13,7 +13,6 @@ QPointF const rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 QSize const displaySize(200, 300);
 qreal const beepWavesSize = 120;
 
-
 qreal const robotWheelDiameterInPx = 16;
 qreal const robotWheelDiameterInCm = 5.6;
 qreal const pixelsInCm = robotWheelDiameterInPx / robotWheelDiameterInCm;

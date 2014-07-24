@@ -18,7 +18,6 @@
 
 #include "view/d2ModelWidget.h"
 
-
 using namespace twoDModel;
 using namespace interpreterBase::robotModel;
 using namespace twoDModel::model;

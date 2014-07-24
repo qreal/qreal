@@ -17,8 +17,6 @@ SimplePhysicsEngine::SimplePhysicsEngine(WorldModel const &worldModel)
 {
 }
 
-#include <QDebug>
-
 void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 		, bool engine1Break, bool engine2Break
 		, QPointF const &rotationCenter, qreal robotAngle

@@ -212,7 +212,6 @@ QRectF RobotModel::sensorPath(PortInfo const &port, QPointF const sensorPos) con
 
 }
 
-
 void RobotModel::nextStep()
 {
 	// Changing position quietly, they must not be caught by UI here.

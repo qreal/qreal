@@ -1,5 +1,6 @@
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
+#include <QtWidgets/QGraphicsPathItem>
 
 #include "constants.h"
 #include "worldModel.h"
@@ -15,9 +16,6 @@ using namespace model;
 WorldModel::WorldModel()
 {
 }
-
-
-#include <QtWidgets/QGraphicsPathItem>
 
 QGraphicsPathItem *mWallPath = nullptr;
 QGraphicsPathItem *mRobotPath = nullptr;
