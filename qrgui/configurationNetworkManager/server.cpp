@@ -1,10 +1,12 @@
 #include "server.h"
 
-Server::Server() :
+Server::Server():
 	mTcpServer(0)
 	, mNetworkSession(0)
 {
 	QNetworkConfigurationManager manager;
+	mPort = qReal::SettingsManager::value("ServerPort").toInt();
+
 	if (manager.capabilities() & QNetworkConfigurationManager::NetworkSessionRequired) {
 		// Get saved network configuration
 		QSettings settings(QSettings::UserScope, QLatin1String("Trolltech"));
@@ -58,7 +60,7 @@ void Server::sessionOpened()
 	}
 
 	mTcpServer = new QTcpServer(this);
-	if (!mTcpServer->listen(QHostAddress::AnyIPv4, 55555)) {
+	if (!mTcpServer->listen(QHostAddress::AnyIPv4, mPort)) {
 		emit serverError();
 	}
 }
@@ -119,4 +121,13 @@ QStringList Server::getIP()
 	}
 
 	return address;
+}
+
+void Server::changePort()
+{
+	mTcpServer->close();
+	mPort = qReal::SettingsManager::value("ServerPort").toInt();
+	if (!mTcpServer->listen(QHostAddress::AnyIPv4, mPort)) {
+		emit serverError();
+	}
 }
