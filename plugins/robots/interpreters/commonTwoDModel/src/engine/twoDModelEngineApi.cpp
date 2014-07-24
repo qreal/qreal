@@ -57,10 +57,15 @@ int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPos(neededPosDir.first);
+	qreal sensorRotated(neededPosDir.second);
 
 	QPainterPath sensorPath;
+
 	QSizeF const size =  mModel.robotModel().sensorPath(port, sensorPos).size();
-	sensorPath.addEllipse(sensorPos + QPointF(size.width()/2, 0), size.height()/2, size.height()/2);
+
+	QPointF ellipse = QPointF(size.width() / 2 * cos(sensorRotated / 180 * 3.14), size.width() / 2 * sin(sensorRotated / 180 * 3.14));
+	sensorPath.addEllipse(sensorPos + ellipse, size.height() / 2, size.height() / 2);
+
 	bool const res = mModel.worldModel().checkCollision(sensorPath);
 
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
