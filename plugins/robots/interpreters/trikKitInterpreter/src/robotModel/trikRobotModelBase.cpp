@@ -69,7 +69,12 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
 	addAllowedConnection(PortInfo("F1", input, { "JF1" }, "sensorF1"), { motionSensorInfo() });
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
-	addAllowedConnection(PortInfo("LineDetectorPort", input), { cameraLineDetectorSensorInfo() });
+
+	addAllowedConnection(PortInfo("LineDetectorXPort", input, {}, "lineSensorX"), { cameraLineDetectorSensorInfo() });
+	addAllowedConnection(PortInfo("LineDetectorMassPort", input, {}, "lineSensorMass")
+			, { cameraLineDetectorSensorInfo() });
+	addAllowedConnection(PortInfo("LineDetectorCrossroadsPort", input, {}, "lineSensorCross")
+			, { cameraLineDetectorSensorInfo() });
 }
 
 QList<PortInfo> TrikRobotModelBase::configurablePorts() const

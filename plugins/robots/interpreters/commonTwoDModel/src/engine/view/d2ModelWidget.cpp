@@ -66,7 +66,7 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::saveToRepo);
 	connect(mScene, &D2ModelScene::robotPressed, [this]() { mUi->noneButton->setChecked(true); });
 
-	connect(&mModel.timeline(), &Timeline::started, [this]() { mUi->timelineBox->setValue(0); });
+	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
 	connect(&mModel.timeline(), &Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
 	connect(&mModel.timeline(), &Timeline::tick, [this]() { mUi->timelineBox->stepBy(1); });
 
@@ -247,13 +247,7 @@ void D2ModelWidget::changeSpeed(int curIndex)
 void D2ModelWidget::init()
 {
 	mUi->graphicsView->show();
-	if (isHidden()) {
-		show();
-	}
-
-	if (!isActiveWindow()) {
-		activateWindow();
-	}
+	bringToFront();
 
 	update();
 	updateWheelComboBoxes();
@@ -269,6 +263,7 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 {
 	mModel.robotModel().setPosition(mInitialRobotBeforeRun.pos);
 	mModel.robotModel().setRotation(mInitialRobotBeforeRun.rotation);
+	centerOnRobot();
 }
 
 void D2ModelWidget::keyPressEvent(QKeyEvent *event)
@@ -665,6 +660,17 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 	/// @todo Convert configuration between models or something?
 	if (mScene->robot() && robotModel == mModel.robotModel().info().name()) {
 		updateWheelComboBoxes();
+	}
+}
+
+void D2ModelWidget::bringToFront()
+{
+	if (isHidden()) {
+		show();
+	}
+
+	if (!isActiveWindow()) {
+		activateWindow();
 	}
 }
 
