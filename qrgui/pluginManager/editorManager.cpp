@@ -42,7 +42,7 @@ EditorManager::~EditorManager()
 	}
 
 	mCommonPluginManager->deleteAllLoaders();
-	delete(mCommonPluginManager);
+//	delete(mCommonPluginManager);
 }
 
 bool EditorManager::loadPlugin(QString const &pluginName)

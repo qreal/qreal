@@ -21,7 +21,7 @@ ToolPluginManager::ToolPluginManager()
 ToolPluginManager::~ToolPluginManager()
 {
 	mCommonPluginManager->deleteAllLoaders();
-	delete(mCommonPluginManager);
+//	delete(mCommonPluginManager);
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
