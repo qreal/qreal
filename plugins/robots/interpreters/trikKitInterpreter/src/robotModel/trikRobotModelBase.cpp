@@ -150,5 +150,5 @@ DeviceInfo TrikRobotModelBase::ledInfo() const
 
 DeviceInfo TrikRobotModelBase::cameraLineDetectorSensorInfo() const
 {
-	return DeviceInfo::create<parts::TrikCameraLineDetector>();
+	return DeviceInfo::create<parts::TrikLineSensor>();
 }

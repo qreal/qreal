@@ -7,7 +7,7 @@ namespace robotModel {
 namespace real {
 namespace parts {
 
-class CameraLineDetector : public robotModel::parts::TrikCameraLineDetector
+class CameraLineDetector : public robotModel::parts::TrikLineSensor
 {
 	Q_OBJECT
 

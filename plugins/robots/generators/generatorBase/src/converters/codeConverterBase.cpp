@@ -79,8 +79,6 @@ QString CodeConverterBase::deviceExpression(interpreterBase::robotModel::PortInf
 
 	QString const templatePath = mDeviceVariables.variableTemplatePath(device, port);
 
-	qDebug() << templatePath;
-
 	// Converter must take a string like "1" or "2" (and etc) and return correct value
 	return readTemplate(templatePath).replace("@@PORT@@", mInputConverter->convert(port.name()));
 }

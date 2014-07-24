@@ -16,6 +16,7 @@ HEADERS += \
 	$$PWD/trikKitInterpreterPlugin.h \
 	$$PWD/trikTwoDModelConfigurer.h \
 	$$PWD/blocks/trikBlocksFactory.h \
+	$$PWD/blocks/details/ledBlock.h \
 	$$PWD/blocks/details/setBackgroundBlock.h \
 	$$PWD/blocks/details/smileBlock.h \
 	$$PWD/blocks/details/trikEnginesForwardBlock.h \
@@ -29,7 +30,7 @@ HEADERS += \
 	$$PWD/robotModel/parts/trikInfraredSensor.h \
 	$$PWD/robotModel/parts/trikSonarSensor.h \
 	$$PWD/robotModel/parts/trikLed.h \
-	$$PWD/robotModel/parts/trikCameraLineDetector.h \
+	$$PWD/robotModel/parts/trikLineSensor.h \
 	$$PWD/robotModel/parts/trikMotionSensor.h \
 	$$PWD/robotModel/real/realRobotModelBase.h \
 	$$PWD/robotModel/real/realRobotModelV6.h \
@@ -50,7 +51,6 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
 	$$PWD/robotModel/twoD/parts/twoDLed.h \
-	$$PWD/blocks/details/ledBlock.h
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -58,21 +58,24 @@ SOURCES += \
 	$$PWD/trikDisplayWidget.cpp \
 	$$PWD/trikTwoDModelConfigurer.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
+	$$PWD/blocks/details/ledBlock.cpp \
 	$$PWD/blocks/details/setBackgroundBlock.cpp \
 	$$PWD/blocks/details/smileBlock.cpp \
 	$$PWD/blocks/details/trikEnginesForwardBlock.cpp \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.cpp \
 	$$PWD/blocks/details/waitForMotionBlock.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
+	$$PWD/robotModel/parts/trikColorSensor.cpp \
 	$$PWD/robotModel/parts/trikDisplay.cpp \
-	$$PWD/robotModel/parts/trikSpeaker.cpp \
+	$$PWD/robotModel/parts/trikInfraredSensor.cpp \
+	$$PWD/robotModel/parts/trikLed.cpp \
+	$$PWD/robotModel/parts/trikLineSensor.cpp \
+	$$PWD/robotModel/parts/trikMotionSensor.cpp \
+	$$PWD/robotModel/parts/trikObjectSensor.cpp \
 	$$PWD/robotModel/parts/trikPowerMotor.cpp \
 	$$PWD/robotModel/parts/trikServoMotor.cpp \
-	$$PWD/robotModel/parts/trikInfraredSensor.cpp \
 	$$PWD/robotModel/parts/trikSonarSensor.cpp \
-	$$PWD/robotModel/parts/trikLed.cpp \
-	$$PWD/robotModel/parts/trikCameraLineDetector.cpp \
-	$$PWD/robotModel/parts/trikMotionSensor.cpp \
+	$$PWD/robotModel/parts/trikSpeaker.cpp \
 	$$PWD/robotModel/real/realRobotModelBase.cpp \
 	$$PWD/robotModel/real/realRobotModelV6.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
@@ -92,7 +95,6 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
 	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
-	$$PWD/blocks/details/ledBlock.cpp
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \

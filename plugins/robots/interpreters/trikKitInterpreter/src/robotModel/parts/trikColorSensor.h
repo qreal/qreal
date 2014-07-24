@@ -6,14 +6,14 @@ namespace trikKitInterpreter {
 namespace robotModel {
 namespace parts {
 
-class TrikCameraLineDetector : public interpreterBase::robotModel::robotParts::ScalarSensor
+class TrikLineSensor : public interpreterBase::robotModel::robotParts::ScalarSensor
 {
 	Q_OBJECT
 	Q_CLASSINFO("name", "cameraLineDetector")
 	Q_CLASSINFO("friendlyName", tr("Camera Line Detector"))
 
 public:
-	TrikCameraLineDetector(interpreterBase::robotModel::DeviceInfo const &info
+	TrikLineSensor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);
 
 	virtual void init() = 0;

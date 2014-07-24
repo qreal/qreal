@@ -4,7 +4,7 @@ using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
 CameraLineDetector::CameraLineDetector(DeviceInfo const &info, PortInfo const &port)
-	: robotModel::parts::TrikCameraLineDetector(info, port)
+	: robotModel::parts::TrikLineSensor(info, port)
 {
 }
 
