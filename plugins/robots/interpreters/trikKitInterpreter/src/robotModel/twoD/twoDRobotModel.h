@@ -11,7 +11,7 @@ class TwoDRobotModel : public twoDModel::robotModel::TwoDRobotModel
 	Q_OBJECT
 
 public:
-	explicit TwoDRobotModel(interpreterBase::robotModel::RobotModelInterface const &realModel);
+	explicit TwoDRobotModel(interpreterBase::robotModel::RobotModelInterface &realModel);
 
 	QString robotImage() const override;
 	interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const override;
@@ -29,8 +29,8 @@ private:
 
 	void onInterpretationStarted() override;
 
-	QString const mLeftWheelPort;
-	QString const mRightWheelPort;
+	QString mLeftWheelPort;
+	QString mRightWheelPort;
 };
 
 }

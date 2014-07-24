@@ -47,12 +47,12 @@ bool WorldModel::checkSonarDistance(int const distance, QPointF const &position
 	return rayPath.intersects(wallPath);
 }
 
-QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, int range) const
+QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, int range)
 {
 	return sonarScanningRegion(position, 0, range);
 }
 
-QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal direction, int range) const
+QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal direction, int range)
 {
 	qreal const rayWidthDegrees = 10.0;
 	qreal const rangeInPixels = range * pixelsInCm;

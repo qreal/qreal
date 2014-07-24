@@ -33,11 +33,10 @@ public:
 	QDomDocument serialize() const;
 	void deserialize(QDomDocument const &xml);
 
-	void addRobotModel(robotModel::TwoDRobotModel *robotModel, QPointF const &pos = QPointF()
-			, QString const &robotId = "");
+	void addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const &pos = QPointF());
 	void removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel);
 	void replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
-			, twoDModel::robotModel::TwoDRobotModel const &newModel);
+			, robotModel::TwoDRobotModel &newModel);
 
 signals:
 	/// Emitted each time when some user actions lead to world model modifications

@@ -22,37 +22,20 @@ using namespace physics;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
-RobotModel::RobotModel(robotModel::TwoDRobotModel const &robotModel
+RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 		, Settings const &settings
 		, QObject *parent)
 	: QObject(parent)
 	, mSettings(settings)
 	, mRobotModel(robotModel)
-	, mSensorsConfiguration(this)
+	, mSensorsConfiguration(robotModel.robotId())
 	, mPos(QPointF(0,0))
 	, mAngle(0)
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mPhysicsEngine(nullptr)
-	, mRobotId(robotModel.robotId())
 {
 	reinit();
-}
-
-RobotModel::RobotModel(QString const &robotId
-		, Settings const &settings
-		, QObject *parent)
-	: QObject(parent)
-	, mSettings(settings)
-	, mRobotModel(new robotModel::NullTwoDRobotModel())
-	, mSensorsConfiguration(this, robotId)
-	, mPos(QPointF(0,0))
-	, mAngle(0)
-	, mBeepTime(0)
-	, mIsOnTheGround(true)
-	, mPhysicsEngine(nullptr)
-	, mRobotId(robotId)
-{
 }
 
 RobotModel::~RobotModel()
@@ -161,14 +144,9 @@ SensorsConfiguration &RobotModel::configuration()
 	return mSensorsConfiguration;
 }
 
-RobotModelInterface *RobotModel::info()
+twoDModel::robotModel::TwoDRobotModel *RobotModel::info()
 {
-	return mRobotModel;
-}
-
-QString RobotModel::robotId() const
-{
-	return mRobotId;
+	return &mRobotModel;
 }
 
 void RobotModel::stopRobot()
@@ -311,7 +289,7 @@ bool RobotModel::onTheGround() const
 void RobotModel::serialize(QDomDocument &target) const
 {
 	QDomElement robot = target.createElement("robots");
-	robot.setAttribute("id", mRobotId);
+	robot.setAttribute("id", mRobotModel.robotId());
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", mAngle);
 	mSensorsConfiguration.serialize(robot, target);

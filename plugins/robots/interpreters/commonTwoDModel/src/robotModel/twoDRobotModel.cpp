@@ -22,9 +22,9 @@
 using namespace twoDModel::robotModel;
 using namespace interpreterBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
+TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: CommonRobotModel(realModel.kitId(), realModel.robotId())
-	, mRealModel(realModel)
+	, mRealModel(&realModel)
 	, mEngine(nullptr)
 {
 	for (PortInfo const &port : realModel.availablePorts()) {

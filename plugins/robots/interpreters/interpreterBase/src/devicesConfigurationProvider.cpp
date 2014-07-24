@@ -37,7 +37,7 @@ void DevicesConfigurationProvider::disconnectDevicesConfigurationProvider(
 
 void DevicesConfigurationProvider::disconnectDevicesConfigurationProvider()
 {
-	for (DevicesConfigurationProvider const *provider : mConnectedProviders) {
+	for (DevicesConfigurationProvider *provider : mConnectedProviders) {
 		provider->disconnectDevicesConfigurationProvider(this);
 	}
 }

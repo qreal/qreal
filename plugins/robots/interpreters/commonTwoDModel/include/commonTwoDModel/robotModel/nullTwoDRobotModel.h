@@ -15,8 +15,8 @@ class NullTwoDRobotModel : public twoDModel::robotModel::TwoDRobotModel
 	Q_OBJECT
 
 public:
-	NullTwoDRobotModel()
-		: TwoDRobotModel()
+	NullTwoDRobotModel(QString const &robotId)
+		: TwoDRobotModel(robotId)
 	{
 	}
 

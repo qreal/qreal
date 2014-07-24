@@ -9,9 +9,8 @@
 using namespace twoDModel::model;
 using namespace interpreterBase::robotModel;
 
-SensorsConfiguration::SensorsConfiguration(RobotModel const &robotModel, QString const &robotModelName)
-	: mRobotModel(robotModel)
-	, mRobotModelName(robotModelName.isEmpty() ? robotModel.robotId() : robotModelName)
+SensorsConfiguration::SensorsConfiguration(QString const &robotModelName)
+	: mRobotModelName(robotModelName)
 {
 }
 
@@ -29,7 +28,7 @@ void SensorsConfiguration::onDeviceConfigurationChanged(QString const &robotMode
 		return;
 	}
 
-	emit deviceAdded(port, mRobotModel);
+	emit deviceAdded(port);
 	// If there was no sensor before then placing it right in front of the robot;
 	// else putting it instead of old one.
 	mSensorsInfo[port] = mSensorsInfo[port].isNull ? SensorInfo(defaultPosition(), 0) : mSensorsInfo[port];

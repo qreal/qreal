@@ -21,7 +21,7 @@ using namespace nxtKitInterpreter::robotModel;
 using namespace nxtKitInterpreter::robotModel::twoD;
 using namespace interpreterBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
+TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 {
 }

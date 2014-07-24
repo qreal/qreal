@@ -29,21 +29,25 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget 
 
 void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
 {
+	qDebug() << "setNewMotor()";
 	//mModel.robotModel().setNewMotor(speed, degrees, port, breakMode);
 }
 
 int TwoDModelEngineApi::readEncoder(PortInfo const &port) const
 {
+	qDebug() << "readEncoder()";
 	//return mModel.robotModel().readEncoder(port);
 }
 
 void TwoDModelEngineApi::resetEncoder(PortInfo const &port)
 {
+	qDebug() << "resetEncoder()";
 	//mModel.robotModel().resetEncoder(port);
 }
 
 int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 {
+	qDebug() << "readTouchSensor()";
 	/*if (!mModel.robotModel().configuration().type(port).isA<robotParts::TouchSensor>()) {
 		return touchSensorNotPressedSignal;
 	}
@@ -66,6 +70,7 @@ int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 
 int TwoDModelEngineApi::readSonarSensor(PortInfo const &port) const
 {
+	qDebug() << "readSonarSensor()";
 	/*QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	int const res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
 
@@ -74,12 +79,14 @@ int TwoDModelEngineApi::readSonarSensor(PortInfo const &port) const
 
 int TwoDModelEngineApi::spoilSonarReading(int const distance) const
 {
+	qDebug() << "spoilSonarReading()";
 	/*qreal const ran = mathUtils::Math::gaussianNoise(spoilSonarDispersion);
 	return mathUtils::Math::truncateToInterval(0, 255, round(distance + ran));*/
 }
 
 int TwoDModelEngineApi::readColorSensor(PortInfo const &port) const
 {
+	qDebug() << "readColorSensor()";
 	/*QImage const image = printColorSensor(port);
 	QHash<uint, int> countsColor;
 
@@ -124,6 +131,7 @@ uint TwoDModelEngineApi::spoilColor(uint const color) const
 
 QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 {
+	qDebug() << "printColorSensor()";
 	/*if (mModel.robotModel().configuration().type(port).isNull()) {
 		return QImage();
 	}
@@ -243,11 +251,13 @@ int TwoDModelEngineApi::readLightSensor(PortInfo const &port) const
 
 void TwoDModelEngineApi::playSound(int timeInMs)
 {
+	qDebug() << "playSound()";
 	//mModel.robotModel().playSound(timeInMs);
 }
 
 utils::TimelineInterface &TwoDModelEngineApi::modelTimeline()
 {
+	qDebug() << "modelTimeline()";
 	//return mModel.timeline();
 }
 
@@ -271,6 +281,7 @@ uint TwoDModelEngineApi::spoilLight(uint const color) const
 
 QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(PortInfo const &port) const
 {
+	qDebug() << "countPositionAndDirection()";
 	/*view::SensorItem const *sensor = mView.sensorItem(port);
 	QPointF const position = sensor ? sensor->scenePos() : QPointF();
 	qreal const direction = sensor ? sensor->rotation() + mModel.robotModel().rotation() : 0;

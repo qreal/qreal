@@ -49,7 +49,7 @@ public:
 	void setNeededBeep(bool isNeededBeep);
 
 	void recoverDragStartPosition();
-	model::RobotModel robotModel();
+	model::RobotModel &robotModel();
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, QVariant const &value);
@@ -76,6 +76,9 @@ private:
 	void setRotation(qreal rotation) override;
 
 	void onLanded();
+
+	/// Reread sensor configuration on given port, delete old sensor item and create new.
+	void reinitSensor(interpreterBase::robotModel::PortInfo const &port);
 
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;

@@ -2,9 +2,17 @@
 
 #include "src/engine/model/constants.h"
 
+#include <interpreterBase/robotModel/robotParts/touchSensor.h>
+#include <interpreterBase/robotModel/robotParts/colorSensor.h>
+#include <interpreterBase/robotModel/robotParts/lightSensor.h>
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+
+#include "sonarSensorItem.h"
+
 using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace twoDModel::model;
+using namespace interpreterBase::robotModel::robotParts;
 
 int const border = 0;
 
@@ -27,6 +35,9 @@ RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robot
 			, this, &RobotItem::updateSensorPosition);
 	connect(&mRobotModel.configuration(), &model::SensorsConfiguration::rotationChanged
 			, this, &RobotItem::updateSensorRotation);
+
+	connect(&mRobotModel.configuration(), &SensorsConfiguration::deviceAdded, this
+			, &RobotItem::reinitSensor);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -87,6 +98,36 @@ void RobotItem::onLanded()
 {
 	mRobotModel.onRobotReturnedOnGround();
 	emit changedPosition(this);
+}
+
+void RobotItem::reinitSensor(interpreterBase::robotModel::PortInfo const &port)
+{
+	removeSensor(port);
+	interpreterBase::robotModel::DeviceInfo const device = mRobotModel.configuration().type(port);
+	if (device.isNull() || (
+			/// @todo: Add supported by 2D model sensors here
+			!device.isA<TouchSensor>()
+			&& !device.isA<ColorSensor>()
+			&& !device.isA<LightSensor>()
+			&& !device.isA<RangeSensor>()
+			))
+	{
+		return;
+	}
+
+	SensorItem *sensor = device.isA<RangeSensor>()
+			? new SonarSensorItem(mRobotModel.configuration()
+					, port
+					, mRobotModel.info()->sensorImagePath(device)
+					, mRobotModel.info()->sensorImageRect(device)
+					)
+			: new SensorItem(mRobotModel.configuration()
+					, port
+					, mRobotModel.info()->sensorImagePath(device)
+					, mRobotModel.info()->sensorImageRect(device)
+					);
+
+	addSensor(port, sensor);
 }
 
 void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
@@ -191,7 +232,7 @@ void RobotItem::recoverDragStartPosition()
 	mRobotModel.setPosition(mDragStart);
 }
 
-RobotModel RobotItem::robotModel()
+RobotModel &RobotItem::robotModel()
 {
 	return mRobotModel;
 }

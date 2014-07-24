@@ -26,8 +26,8 @@ public:
 	WorldModel();
 
 	int sonarReading(QPointF const &position, qreal direction) const;
-	QPainterPath sonarScanningRegion(QPointF const &position, qreal direction, int range = 255) const;
-	QPainterPath sonarScanningRegion(QPointF const &position, int range = 255) const;
+	static QPainterPath sonarScanningRegion(QPointF const &position, qreal direction, int range = 255);
+	static QPainterPath sonarScanningRegion(QPointF const &position, int range = 255);
 	bool checkCollision(QPainterPath const &robotPath, int stroke = 3) const;
 	QList<items::WallItem *> const &walls() const;
 	QList<items::ColorFieldItem *> const &colorFields() const;

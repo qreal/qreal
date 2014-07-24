@@ -1,5 +1,7 @@
 #include "d2ModelScene.h"
 
+#include "QDebug"
+
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
@@ -44,8 +46,8 @@ D2ModelScene::D2ModelScene(model::Model &model
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &QGraphicsScene::addItem);
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [](QGraphicsItem *item) { delete item; });
 
-	connect(mModel, &model::Model::robotAdded, this, &D2ModelScene::onRobotAdd);
-	connect(mModel, &model::Model::robotRemoved, this, &D2ModelScene::onRobotRemove);
+	connect(&mModel, &model::Model::robotAdded, this, &D2ModelScene::onRobotAdd);
+	connect(&mModel, &model::Model::robotRemoved, this, &D2ModelScene::onRobotRemove);
 }
 
 D2ModelScene::~D2ModelScene()
@@ -55,17 +57,19 @@ D2ModelScene::~D2ModelScene()
 
 void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 {
+	qDebug() << "handleNewRobotPosition() in";
 	for (items::WallItem const *wall : mModel.worldModel().walls()) {
 		if (wall->realShape().intersects(robotItem->realBoundingRect())) {
 			robotItem->recoverDragStartPosition();
 			return;
 		}
 	}
+	qDebug() << "handleNewRobotPosition() out";
 }
 
 void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 {
-	RobotItem *robotItem = new RobotItem(robotModel->info().robotImage(), *robotModel);
+	RobotItem *robotItem = new RobotItem(robotModel->info()->robotImage(), *robotModel);
 
 	connect(robotItem, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
 	connect(robotItem, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
@@ -200,7 +204,7 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	for (RobotItem *robotItem : mRobots.value()) {
+	for (RobotItem *robotItem : mRobots.values()) {
 		robotItem->checkSelection();
 		for (SensorItem *sensor : robotItem->sensors().values()) {
 			if (sensor) {
@@ -281,7 +285,7 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 		for (RobotItem *robotItem : mRobots.values()) {
 			interpreterBase::robotModel::PortInfo const port = robotItem->sensors().key(sensor);
 			if (port.isValid()) {
-				deviceConfigurationChanged(robotItem->robotModel().robotId()
+				deviceConfigurationChanged(robotItem->robotModel().info()->robotId()
 						, port, interpreterBase::robotModel::DeviceInfo());
 			}
 		}
@@ -477,9 +481,10 @@ void D2ModelScene::alignWalls()
 	}
 }
 
-RobotItem *D2ModelScene::robot(model::RobotModel const &robotModel)
+RobotItem *D2ModelScene::robot(model::RobotModel &robotModel)
 {
-	return mRobots[robotModel];
+	qDebug() << "robot() in";
+	return mRobots[&robotModel];
 }
 
 void D2ModelScene::centerOnRobot(RobotItem *selectedItem)

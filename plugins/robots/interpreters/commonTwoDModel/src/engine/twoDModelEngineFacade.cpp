@@ -1,13 +1,14 @@
 #include "commonTwoDModel/engine/twoDModelEngineFacade.h"
 
+#include <QDebug>
+
 #include "model/model.h"
 #include "view/d2ModelWidget.h"
 #include "twoDModelEngineApi.h"
 
 using namespace twoDModel::engine;
 
-TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel
-		)
+TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
 	: mRobotModelName(robotModel.name())
 	, mTwoDModelActionInfo(
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)

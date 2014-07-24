@@ -5,7 +5,6 @@
 #include <QtXml/QDomDocument>
 
 #include <interpreterBase/devicesConfigurationProvider.h>
-#include "robotModel.h"
 
 namespace twoDModel {
 namespace model {
@@ -16,7 +15,7 @@ class SensorsConfiguration : public QObject, public interpreterBase::DevicesConf
 	Q_OBJECT
 
 public:
-	explicit SensorsConfiguration(RobotModel const &robotModel, QString const &robotModelName = "");
+	SensorsConfiguration(QString const &robotModelName);
 
 	void setPosition(interpreterBase::robotModel::PortInfo const &port, QPointF const &position);
 	QPointF position(interpreterBase::robotModel::PortInfo const &port) const;
@@ -32,7 +31,7 @@ public:
 	void deserialize(QDomElement const &element);
 
 signals:
-	void deviceAdded(interpreterBase::robotModel::PortInfo const &port, RobotModel const &robotModel);
+	void deviceAdded(interpreterBase::robotModel::PortInfo const &port);
 	void deviceRemoved(interpreterBase::robotModel::PortInfo const &port);
 
 	void positionChanged(interpreterBase::robotModel::PortInfo const &port);
@@ -55,7 +54,6 @@ private:
 
 	QPointF defaultPosition() const;
 
-	RobotModel &mRobotModel;
 	QString mRobotModelName;
 	QHash<interpreterBase::robotModel::PortInfo, SensorInfo> mSensorsInfo;
 };

@@ -154,9 +154,6 @@ private:
 	/// Get QPushButton for current sensor
 	QPushButton *currentPortButton();
 
-	/// Reread sensor configuration on given port, delete old sensor item and create new.
-	void reinitSensor(interpreterBase::robotModel::PortInfo const &port, model::RobotModel const &robotModel);
-
 	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
