@@ -1,9 +1,9 @@
-#include "trikCameraLineDetector.h"
+#include "trikObjectSensor.h"
 
 using namespace trikKitInterpreter::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-TrikLineSensor::TrikLineSensor(DeviceInfo const &info, PortInfo const &port)
-	: interpreterBase::robotModel::robotParts::ScalarSensor(info, port)
+TrikObjectSensor::TrikObjectSensor(DeviceInfo const &info, PortInfo const &port)
+	: interpreterBase::robotModel::robotParts::VectorSensor(info, port)
 {
 }

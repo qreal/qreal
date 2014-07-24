@@ -1,18 +1,19 @@
 #pragma once
 
-#include "robotModel/parts/trikCameraLineDetector.h"
+#include "robotModel/parts/trikLineSensor.h"
 
 namespace trikKitInterpreter {
 namespace robotModel {
 namespace real {
 namespace parts {
 
-class CameraLineDetector : public robotModel::parts::TrikLineSensor
+/// Stub for TRIK color sensor for interpreter.
+class LineSensor : public robotModel::parts::TrikLineSensor
 {
 	Q_OBJECT
 
 public:
-	CameraLineDetector(interpreterBase::robotModel::DeviceInfo const &info
+	LineSensor(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port);
 
 	void init() override;

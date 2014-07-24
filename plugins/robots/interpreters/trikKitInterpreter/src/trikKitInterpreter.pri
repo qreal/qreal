@@ -23,15 +23,17 @@ HEADERS += \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.h \
 	$$PWD/blocks/details/waitForMotionBlock.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
+	$$PWD/robotModel/parts/trikColorSensor.h \
 	$$PWD/robotModel/parts/trikDisplay.h \
 	$$PWD/robotModel/parts/trikSpeaker.h \
 	$$PWD/robotModel/parts/trikPowerMotor.h \
 	$$PWD/robotModel/parts/trikServoMotor.h \
 	$$PWD/robotModel/parts/trikInfraredSensor.h \
-	$$PWD/robotModel/parts/trikSonarSensor.h \
 	$$PWD/robotModel/parts/trikLed.h \
 	$$PWD/robotModel/parts/trikLineSensor.h \
 	$$PWD/robotModel/parts/trikMotionSensor.h \
+	$$PWD/robotModel/parts/trikSonarSensor.h \
+	$$PWD/robotModel/parts/trikObjectSensor.h \
 	$$PWD/robotModel/real/realRobotModelBase.h \
 	$$PWD/robotModel/real/realRobotModelV6.h \
 	$$PWD/robotModel/real/parts/display.h \
@@ -44,8 +46,10 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/infraredSensor.h \
 	$$PWD/robotModel/real/parts/sonarSensor.h \
 	$$PWD/robotModel/real/parts/led.h \
-	$$PWD/robotModel/real/parts/cameraLineDetector.h \
+	$$PWD/robotModel/real/parts/lineSensor.h \
 	$$PWD/robotModel/real/parts/motionSensor.h \
+	$$PWD/robotModel/real/parts/objectSensor.h \
+	$$PWD/robotModel/real/parts/colorSensor.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
@@ -88,7 +92,9 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/infraredSensor.cpp \
 	$$PWD/robotModel/real/parts/sonarSensor.cpp \
 	$$PWD/robotModel/real/parts/led.cpp \
-	$$PWD/robotModel/real/parts/cameraLineDetector.cpp \
+	$$PWD/robotModel/real/parts/lineSensor.cpp \
+	$$PWD/robotModel/real/parts/objectSensor.cpp \
+	$$PWD/robotModel/real/parts/colorSensor.cpp \
 	$$PWD/robotModel/real/parts/motionSensor.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
