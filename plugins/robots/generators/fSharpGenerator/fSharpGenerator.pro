@@ -50,6 +50,7 @@ HEADERS += \
 	$$PWD/converters/encoderV4PortConverter.h \
 	$$PWD/converters/encoderV6PortConverter.h \
 	$$PWD/converters/fSharpStringPropertyConverter.h \
+	$$PWD/converters/fSharpFunctionBlockConverter.h \
 	$$PWD/simpleGenerators/fSharpEnginesGenerator.h \
 	$$PWD/simpleGenerators/fSharpEnginesStopGenerator.h \
 	$$PWD/simpleGenerators/fSharpNullificationEncoderGenerator.h \
@@ -69,6 +70,7 @@ SOURCES += \
 	$$PWD/converters/encoderV4PortConverter.cpp \
 	$$PWD/converters/encoderV6PortConverter.cpp \
 	$$PWD/converters/fSharpStringPropertyConverter.cpp \
+	$$PWD/converters/fSharpFunctionBlockConverter.cpp \
 	$$PWD/simpleGenerators/fSharpEnginesGenerator.cpp \
 	$$PWD/simpleGenerators/fSharpEnginesStopGenerator.cpp \
 	$$PWD/simpleGenerators/fSharpNullificationEncoderGenerator.cpp \

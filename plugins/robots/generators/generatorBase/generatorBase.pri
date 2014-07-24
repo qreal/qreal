@@ -114,13 +114,13 @@ HEADERS += \
 	$$PWD/include/generatorBase/converters/stringPropertyConverter.h \
 	$$PWD/include/generatorBase/converters/enumConverterBase.h \
 	$$PWD/include/generatorBase/converters/dynamicPathConverter.h \
+	$$PWD/include/generatorBase/converters/codeConverterBase.h \
 	$$PWD/include/generatorBase/simpleGenerators/abstractSimpleGenerator.h \
 	$$PWD/include/generatorBase/simpleGenerators/binding.h \
 	$$PWD/include/generatorBase/simpleGenerators/bindingGenerator.h \
 	$$PWD/include/generatorBase/simpleGenerators/waitForButtonGenerator.h \
 
 HEADERS += \
-	$$PWD/src/converters/codeConverterBase.h \
 	$$PWD/src/converters/intPropertyConverter.h \
 	$$PWD/src/converters/floatPropertyConverter.h \
 	$$PWD/src/converters/boolPropertyConverter.h \

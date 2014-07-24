@@ -1,4 +1,4 @@
-#include "codeConverterBase.h"
+#include "generatorBase/converters/codeConverterBase.h"
 
 #include <qrkernel/settingsManager.h>
 #include <interpreterBase/robotModel/robotParts/button.h>

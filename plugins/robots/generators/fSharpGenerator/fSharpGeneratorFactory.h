@@ -21,6 +21,7 @@ public:
 
 	generatorBase::simple::Binding::MultiConverterInterface *enginesConverter() const override;
 	generatorBase::simple::Binding::MultiConverterInterface *encodersConverter() const;
+	generatorBase::simple::Binding::ConverterInterface *functionBlockConverter() const;
 
 	generatorBase::simple::Binding::ConverterInterface *inputPortConverter() const override;
 	generatorBase::simple::Binding::ConverterInterface *outputPortConverter() const override;

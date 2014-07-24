@@ -6,6 +6,7 @@
 #include "converters/encoderV4PortConverter.h"
 #include "converters/encoderV6PortConverter.h"
 #include "converters/fSharpStringPropertyConverter.h"
+#include "converters/fSharpFunctionBlockConverter.h"
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
 #include "simpleGenerators/fSharpEnginesGenerator.h"
@@ -15,8 +16,10 @@
 
 using namespace fSharp;
 using namespace fSharp::simple;
+
 using namespace generatorBase;
 using namespace generatorBase::simple;
+
 
 FSharpGeneratorFactory::FSharpGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
@@ -77,6 +80,16 @@ Binding::MultiConverterInterface *FSharpGeneratorFactory::enginesConverter() con
 Binding::MultiConverterInterface *FSharpGeneratorFactory::encodersConverter() const
 {
 	return new generatorBase::converters::RegexpMultiConverter(motorPortSplitRegexp(), encoderPortConverter());
+}
+
+Binding::ConverterInterface *FSharpGeneratorFactory::functionBlockConverter() const
+{
+	return new converters::FSharpFunctionBlockConverter(pathToTemplates()
+			, mErrorReporter
+			, mRobotModelManager.model()
+			, currentConfiguration()
+			, inputPortConverter()
+			, functionInvocationConverter());
 }
 
 Binding::ConverterInterface *FSharpGeneratorFactory::inputPortConverter() const
