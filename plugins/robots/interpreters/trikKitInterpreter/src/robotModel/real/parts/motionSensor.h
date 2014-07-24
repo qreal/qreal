@@ -14,8 +14,8 @@ class MotionSensor : public robotModel::parts::TrikMotionSensor
 
 public:
 	MotionSensor(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
 

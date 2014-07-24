@@ -6,9 +6,9 @@ using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
 Led::Led(DeviceInfo const &info, PortInfo const &port
-	, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikLed(info, port)
-		, mRobotCommunicator(tcpRobotCommunicator)
+	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 

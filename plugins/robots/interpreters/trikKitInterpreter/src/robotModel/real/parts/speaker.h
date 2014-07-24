@@ -14,8 +14,8 @@ class Speaker : public robotModel::parts::TrikSpeaker
 
 public:
 	Speaker(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void play(QString const &filePath) override;
 

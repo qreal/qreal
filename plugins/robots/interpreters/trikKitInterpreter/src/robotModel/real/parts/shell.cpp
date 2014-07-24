@@ -5,9 +5,9 @@ using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
 Shell::Shell(DeviceInfo const &info, PortInfo const &port
-	, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikShell(info, port)
-		, mRobotCommunicator(tcpRobotCommunicator)
+	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 

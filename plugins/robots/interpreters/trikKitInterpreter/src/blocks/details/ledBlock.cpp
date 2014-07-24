@@ -26,7 +26,6 @@ LedBlock::~LedBlock()
 void LedBlock::run()
 {
 	QString const stringColor = stringProperty("Color");
-//	QColor const color = stringColor == "off" ? QColor(Qt::gray) : QColor(stringColor);
 
 	QString const port = "LedPort";
 	robotModel::parts::TrikLed * const led

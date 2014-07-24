@@ -14,8 +14,8 @@ class Shell : public robotModel::parts::TrikShell
 
 public:
 	Shell(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void runCommand(QString const &command) override;
 

@@ -14,8 +14,8 @@ using namespace utils;
 static uint const port = 8888;
 
 TcpRobotCommunicator::TcpRobotCommunicator(const QString &settings)
-	: mIsConnected(false),
-	  mSettings(settings)
+	: mIsConnected(false)
+	, mSettings(settings)
 {
 }
 
@@ -105,7 +105,6 @@ void TcpRobotCommunicator::connect()
 		return;
 	}
 
-	///"TrikTcpServer"
 	QString const server = qReal::SettingsManager::value(mSettings).toString();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {

@@ -16,6 +16,7 @@ public:
 	virtual ~TrikGeneratorPlugin();
 
 	QString kitId() const override;
+
 	QList<qReal::ActionInfo> actions() override;
 	QList<HotKeyActionInfo> hotKeyActions() override;
 

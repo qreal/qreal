@@ -1,5 +1,7 @@
 #include "element.h"
 
+#include <QtGui/QKeyEvent>
+
 #include <QtWidgets/QGraphicsColorizeEffect>
 
 #include "controller/commands/changePropertyCommand.h"
@@ -21,7 +23,7 @@ Element::Element(ElementImpl *elementImpl
 	, mGraphicalAssistApi(graphicalAssistApi)
 	, mController(nullptr)
 {
-	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemClipsChildrenToShape |
 			ItemClipsToShape | ItemSendsGeometryChanges);
 
 	setAcceptDrops(true);
@@ -92,6 +94,7 @@ void Element::select(const bool singleSelected)
 	if (singleSelected) {
 		setSelectionState(true);
 	}
+
 	emit switchFolding(!singleSelected);
 }
 
@@ -153,5 +156,17 @@ void Element::setTitlesVisiblePrivate(bool visible)
 
 	foreach (Label * const label, mLabels) {
 		label->setVisible(label->isHard() || visible);
+	}
+}
+
+void Element::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_F2) {
+		for (Label * const label : mLabels) {
+			if (!label->isReadOnly()) {
+				label->startTextInteraction();
+				return;
+			}
+		}
 	}
 }

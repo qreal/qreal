@@ -5,11 +5,9 @@
 using namespace twoDModel::robotModel::parts;
 using namespace interpreterBase::robotModel;
 
-LightSensor::LightSensor(DeviceInfo const &info
-		, PortInfo const &port
+LightSensor::LightSensor(DeviceInfo const &info, PortInfo const &port
 		, engine::TwoDModelEngineInterface &engine)
-	: robotParts::LightSensor(info, port)
-	, mEngine(engine)
+	: robotParts::LightSensor(info, port), mEngine(engine)
 {
 }
 

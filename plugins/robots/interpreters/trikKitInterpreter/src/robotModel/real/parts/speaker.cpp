@@ -5,9 +5,9 @@ using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
 Speaker::Speaker(DeviceInfo const &info, PortInfo const &port
-	, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikSpeaker(info, port)
-		, mRobotCommunicator(tcpRobotCommunicator)
+	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 

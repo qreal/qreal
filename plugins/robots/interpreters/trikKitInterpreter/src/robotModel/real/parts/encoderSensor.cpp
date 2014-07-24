@@ -6,9 +6,9 @@ using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
 EncoderSensor::EncoderSensor(DeviceInfo const &info, PortInfo const &port
-	, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
 	: interpreterBase::robotModel::robotParts::EncoderSensor(info, port)
-		, mRobotCommunicator(tcpRobotCommunicator)
+	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 

@@ -14,8 +14,8 @@ class Button : public interpreterBase::robotModel::robotParts::Button
 
 public:
 	Button(interpreterBase::robotModel::DeviceInfo const &info
-		, interpreterBase::robotModel::PortInfo const &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
 

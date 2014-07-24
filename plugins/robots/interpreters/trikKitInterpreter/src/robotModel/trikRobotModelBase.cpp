@@ -79,7 +79,6 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
 			, { cameraLineDetectorSensorInfo() });
 	addAllowedConnection(PortInfo("LineDetectorCrossroadsPort", input, {}, "lineSensorCross")
 			, { cameraLineDetectorSensorInfo() });
-////
 }
 
 QList<PortInfo> TrikRobotModelBase::configurablePorts() const
