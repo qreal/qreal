@@ -79,6 +79,7 @@ GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
 
 GeneratorFactoryBase::~GeneratorFactoryBase()
 {
+	delete mDeviceVariables;
 }
 
 void GeneratorFactoryBase::initialize()

@@ -227,7 +227,7 @@ protected:
 	parts::Sensors *mSensors;
 	parts::Functions *mFunctions;
 	parts::Images *mImages;
-	parts::DeviceVariables *mDeviceVariables;
+	parts::DeviceVariables *mDeviceVariables;  // Has ownership.
 };
 
 }
