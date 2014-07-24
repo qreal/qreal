@@ -31,9 +31,33 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	return true;
 }
 
+Label* Label::clone()
+{
+	Label* returnLabel = new Label();
+	returnLabel->mX = mX;
+	returnLabel->mY = mY;
+
+	returnLabel->mCenter = mCenter;
+	returnLabel->mText = mText;
+	returnLabel->mTextBinded = mTextBinded;
+	returnLabel->mReadOnly = mReadOnly;
+	returnLabel->mRotation = mRotation;
+
+	returnLabel->mIndex = mIndex;
+	returnLabel->mBackground = mBackground;
+	returnLabel->mIsHard = mIsHard;
+	returnLabel->mIsPlainText = mIsPlainText;
+	return returnLabel;
+}
+
 QString Label::titleName() const
 {
 	return "title_" + QString("%1").arg(mIndex);
+}
+
+void Label::changeIndex(int i)
+{
+	mIndex = i;
 }
 
 void Label::generateCodeForConstructor(OutFile &out)
@@ -115,5 +139,3 @@ void Label::generateCodeForFields(OutFile &out)
 {
 	out() << "		qReal::LabelInterface *" + titleName() + ";\n";
 }
-
-
