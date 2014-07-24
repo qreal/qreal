@@ -10,7 +10,8 @@ using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace mathUtils;
 
-Rotater::Rotater() : AbstractItem()
+Rotater::Rotater()
+	: AbstractItem()
 {
 	setFlag(ItemIsSelectable);
 	setFlag(ItemIsMovable, false);
@@ -141,6 +142,10 @@ void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void Rotater::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+	if (mDragState != BottomRight) {
+		event->ignore();
+	}
+
 	AbstractItem::mousePressEvent(event);
 	mMaster->setSelected(true);
 }
