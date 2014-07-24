@@ -1,17 +1,17 @@
-#include "FSharpGeneratorFactory.h"
+#include "fSharpGeneratorFactory.h"
 #include <generatorBase/converters/regexpMultiConverter.h>
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 #include "converters/engineV4PortConverter.h"
 #include "converters/engineV6PortConverter.h"
 #include "converters/encoderV4PortConverter.h"
 #include "converters/encoderV6PortConverter.h"
-#include "converters/FSharpStringPropertyConverter.h"
+#include "converters/fSharpStringPropertyConverter.h"
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
 #include "simpleGenerators/fSharpEnginesGenerator.h"
 #include "simpleGenerators/fSharpEnginesStopGenerator.h"
 #include "simpleGenerators/fSharpNullificationEncoderGenerator.h"
-#include "parts/FSharpVariables.h"
+#include "parts/fSharpVariables.h"
 
 using namespace fSharp;
 using namespace fSharp::simple;
