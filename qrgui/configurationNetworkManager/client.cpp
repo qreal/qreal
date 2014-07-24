@@ -29,6 +29,7 @@ void Client::connectToSettingsServer()
 
 void Client::settings()
 {
+	qDebug() << "conneect";
 	QDataStream in(mServerSocket);
 	in.setVersion(QDataStream::Qt_5_1);
 
@@ -49,14 +50,15 @@ void Client::settings()
 	char *settings = nullptr;
 	in >> settings;
 	mServerSocket->close();
-	
 	const QString str = QString::fromUtf8(settings);
 	delete settings;
+	applySettingsFromServer(str);
 	emit mustDeleteClient();
 }
 
 void Client::connectionError()
 {
+	qDebug() << "error";
 	mServerSocket->close();
 }
 
