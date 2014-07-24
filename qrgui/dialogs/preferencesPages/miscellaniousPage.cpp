@@ -19,8 +19,9 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent, bool
 		QComboBox *serverIPComboBox = new QComboBox;
 		serverIPComboBox->addItems(Server::getIP());
 		mUi->serverIPEdit->hide();
-		mUi->serverPortEdit->setReadOnly(true);
+		//mUi->serverPortEdit->setReadOnly(true);
 		mUi->serverLayout->addWidget(serverIPComboBox, 0, 1);
+		mUi->settingsButton->hide();
 	}
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));

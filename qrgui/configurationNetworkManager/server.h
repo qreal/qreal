@@ -16,6 +16,9 @@ public:
 	/// returns port to coonect this server
 	quint16 getPort();
 
+	/// chage port of server
+	void changePort();
+
 protected:
 	/// sends his qReal settings to client
 	void sendSettings();
@@ -35,8 +38,8 @@ signals:
 private:
 	/// storage of all clients
 	QMap<int, QTcpSocket *> mSClients;  // Doesn't take ownership
-	/// TCP server
 
+	/// TCP server
 	QTcpServer *mTcpServer;  // Takes ownership
 	/// network session
 	
@@ -44,5 +47,7 @@ private:
 	/// this mapper addicted to each server's client and returns index of current client in QMap
 	
 	QSignalMapper *mSClientsIndexMapper;  // Takes ownership
+
+	int mPort;
 };
 

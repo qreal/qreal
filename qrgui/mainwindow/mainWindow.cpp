@@ -165,6 +165,8 @@ MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
 				, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
 				, &editorManager(), isServer);
+		connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied
+				, (Server *)mNetworkManager, &Server::changePort);
 	} else {
 		mNetworkManager = new Client();
 		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
