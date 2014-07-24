@@ -15,8 +15,6 @@
 #include "physics/simplePhysicsEngine.h"
 #include "physics/realisticPhysicsEngine.h"
 
-#include <QtCore/QDebug>
-
 using namespace twoDModel::model;
 using namespace physics;
 using namespace interpreterBase::robotModel;
@@ -179,18 +177,13 @@ QPointF RobotModel::rotationCenter() const
 QPainterPath RobotModel::robotBoundingPath() const
 {
 	QPainterPath path;
+
 	QRectF const boundingRect(QPointF(), QSizeF(robotWidth, robotHeight));
 	path.addRect(boundingRect);
 
-	for (PortInfo const &port : mRobotModel.configurablePorts()) {
-		if (!mSensorsConfiguration.type(port).isNull()) {
-			QPointF const sensorPos = mSensorsConfiguration.position(port);
-			/// @todo: Consider rotation and differentiate sizes.
-			path.addRect({sensorPos - QPointF(mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() / 2
-					, mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() / 2)
-					, QSizeF{mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() * 1.0
-					, mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).width() * 1.0}});
-		}
+	for (PortInfo const &port : mRobotModel.configurablePorts()){
+		QPointF const sensorPos = mSensorsConfiguration.position(port);
+		path.addRect(sensorPath(port, sensorPos));
 	}
 
 	QPointF const realRotatePoint = QPointF(boundingRect.width() / 2, boundingRect.height() / 2);
@@ -200,6 +193,17 @@ QPainterPath RobotModel::robotBoundingPath() const
 			.rotate(mAngle).translate(translationToZero.x(), translationToZero.y());
 	return transform.map(path);
 }
+
+QRectF RobotModel::sensorPath(PortInfo const &port, QPointF const sensorPos) const
+{
+	if (!mSensorsConfiguration.type(port).isNull()) {
+		QSizeF const size = mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).size();
+		return QRectF(sensorPos - QPointF(size.width() / 2, size.height() / 2), size);
+	}
+	return QRectF();
+
+}
+
 
 void RobotModel::nextStep()
 {

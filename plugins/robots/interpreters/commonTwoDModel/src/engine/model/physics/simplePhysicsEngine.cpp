@@ -17,6 +17,8 @@ SimplePhysicsEngine::SimplePhysicsEngine(WorldModel const &worldModel)
 {
 }
 
+#include <QDebug>
+
 void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 		, bool engine1Break, bool engine2Break
 		, QPointF const &rotationCenter, qreal robotAngle
@@ -26,11 +28,14 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 	Q_UNUSED(engine2Break)
 	Q_UNUSED(rotationCenter)
 
-	mPositionShift = QVector2D();
-	mRotation = 0.0;
 	if (mWorldModel.checkCollision(robotBoundingPath)) {
+		mPositionShift = -mPositionShift;
+		mRotation = -mRotation;
 		return;
 	}
+
+	mPositionShift = QVector2D();
+	mRotation = 0.0;
 
 	qreal const averageSpeed = (speed1 + speed2) / 2;
 

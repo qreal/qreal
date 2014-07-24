@@ -16,6 +16,12 @@ WorldModel::WorldModel()
 {
 }
 
+
+#include <QtWidgets/QGraphicsPathItem>
+
+QGraphicsPathItem *mWallPath = nullptr;
+QGraphicsPathItem *mRobotPath = nullptr;
+
 /// Measure the distance between robot and wall
 int WorldModel::sonarReading(QPointF const &position, qreal direction) const
 {
@@ -71,16 +77,30 @@ QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal dire
 }
 
 /// Check intersection robot with wall
-bool WorldModel::checkCollision(QPainterPath const &robotPath, int stroke) const
+bool WorldModel::checkCollision(QPainterPath const &path) const
 {
-	QPainterPathStroker wallPathStroker;
-	wallPathStroker.setWidth(stroke);
-	QPainterPath const wallPath = buildWallPath();
-	QPainterPath const wallStrokedPath = stroke
-			? wallPathStroker.createStroke(wallPath)
-			: wallPath;
+	delete mWallPath;
+	mWallPath = new QGraphicsPathItem (buildWallPath());
+	mWallPath->setBrush(Qt::red);
+	mWallPath->setPen(QPen(QColor(Qt::blue)));
+	mWallPath->setZValue(100);
 
-	return wallStrokedPath.intersects(robotPath);
+	delete mRobotPath;
+	mRobotPath = new QGraphicsPathItem (path);
+	mRobotPath->setBrush(Qt::red);
+	mRobotPath->setPen(QPen(QColor(Qt::blue)));
+	mRobotPath->setZValue(100);
+
+	if (!mWalls.isEmpty()) {
+		mWalls[0]->scene()->addItem(mWallPath);
+		mWalls[0]->scene()->addItem(mRobotPath);
+		mWalls[0]->scene()->update();
+	}
+
+	for (items::WallItem * wall : mWalls)
+		if (wall->path().intersects(path))
+			return true;
+	return false;
 }
 
 /// Returns all walls
@@ -144,9 +164,8 @@ QPainterPath WorldModel::buildWallPath() const
 	/// @todo Maintain a cache for this.
 	QPainterPath wallPath;
 
-	foreach (items::WallItem *wall, mWalls) {
-		wallPath.moveTo(wall->begin());
-		wallPath.lineTo(wall->end());
+	for (items::WallItem *wall : mWalls) {
+		wallPath.addPath(wall->path());
 	}
 
 	return wallPath;

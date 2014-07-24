@@ -25,8 +25,7 @@ public:
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port) override;
 
 	/// @todo: move this logic into sensors adding here some more low-level logic instead.
-	int readTouchSensor(interpreterBase::robotModel::DeviceInfo const &device
-			, interpreterBase::robotModel::PortInfo const &port) const override;
+	int readTouchSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 	int readSonarSensor(interpreterBase::robotModel::PortInfo const &port) const override;
 	int readColorSensor(interpreterBase::robotModel::DeviceInfo const &device
 			, interpreterBase::robotModel::PortInfo const &port) const override;

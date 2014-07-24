@@ -42,8 +42,6 @@ qreal const rotationalFrictionFactor = 1500;
 qreal const angularVelocityFrictionFactor = 200;
 
 qreal const onePercentAngularVelocity = 0.0055;
-int const touchSensorWallStrokeIncrement = 10;
-int const touchSensorStrokeIncrement = 5;
 int const maxLightSensorValur = 1023;
 int const touchSensorPressedSignal = 1;
 int const touchSensorNotPressedSignal = 0;

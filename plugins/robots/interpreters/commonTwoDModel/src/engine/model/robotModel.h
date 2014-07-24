@@ -71,6 +71,8 @@ public:
 
 	void setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port);
 
+	QRectF sensorPath(interpreterBase::robotModel::PortInfo const &port, QPointF const sensorPos) const;
+
 public slots:
 	void resetPhysics(WorldModel const &worldModel);
 

@@ -18,8 +18,10 @@
 
 #include "view/d2ModelWidget.h"
 
+
 using namespace twoDModel;
 using namespace interpreterBase::robotModel;
+using namespace twoDModel::model;
 
 TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view, Configurer const * const configurer)
 	: mModel(model)
@@ -27,6 +29,10 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget 
 	, mConfigurer(configurer)
 {
 }
+
+#include <QtWidgets/QGraphicsPathItem>
+
+QGraphicsPathItem *mSensorPath = nullptr;
 
 void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
 {
@@ -43,24 +49,19 @@ void TwoDModelEngineApi::resetEncoder(PortInfo const &port)
 	mModel.robotModel().resetEncoder(port);
 }
 
-int TwoDModelEngineApi::readTouchSensor(DeviceInfo const &device, PortInfo const &port) const
+int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 {
 	if (!mModel.robotModel().configuration().type(port).isA<robotParts::TouchSensor>()) {
 		return touchSensorNotPressedSignal;
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
-	QPointF sensorPosition(neededPosDir.first);
-	qreal const width = mConfigurer->sensorImageRect(device).width() / 2.0;
-	QRectF const scanningRect = QRectF(
-			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
-			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
-			, 2 * width + touchSensorStrokeIncrement
-			, 2 * width + touchSensorStrokeIncrement);
+	QPointF sensorPos(neededPosDir.first);
 
 	QPainterPath sensorPath;
-	sensorPath.addRect(scanningRect);
-	bool const res = mModel.worldModel().checkCollision(sensorPath, touchSensorWallStrokeIncrement);
+	QSizeF const size =  mModel.robotModel().sensorPath(port, sensorPos).size();
+	sensorPath.addEllipse(sensorPos + QPointF(size.width()/2, 0), size.height()/2, size.height()/2);
+	bool const res = mModel.worldModel().checkCollision(sensorPath);
 
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }

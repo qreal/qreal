@@ -274,7 +274,9 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
-	if (event->matches(QKeySequence::ZoomIn)) {
+	if (event->matches(QKeySequence::ZoomIn)
+			|| ((event->key() == Qt::Key_Plus || event->key() == Qt::Key_Equal)
+			&& event->modifiers() == Qt::ControlModifier)) {
 		mScene->mainView()->zoomIn();
 	} else if (event->matches(QKeySequence::ZoomOut)) {
 		mScene->mainView()->zoomOut();
