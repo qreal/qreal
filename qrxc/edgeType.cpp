@@ -23,10 +23,10 @@ EdgeType::~EdgeType()
 	qDeleteAll(mAssociations);
 }
 
+
 bool EdgeType::copyPorts(NodeType *parent)
 {
-	Q_UNUSED(parent)
-	return false;
+	Q_UNUSED(parent)	return false;
 }
 
 Type* EdgeType::clone() const
@@ -43,6 +43,30 @@ Type* EdgeType::clone() const
 	result->mFromPorts = mFromPorts;
 	result->mToPorts = mToPorts;
 	return result;
+}
+
+bool EdgeType::copyPictures(GraphicType *parent)
+{
+	EdgeType *pictureParent = dynamic_cast<EdgeType*>(parent);
+	if (pictureParent != nullptr) {
+		for (auto association : pictureParent->mAssociations) {
+			mAssociations.append(association->clone());
+		}
+
+		mLineType = pictureParent->mLineType;
+		mShapeType = pictureParent->mShapeType;
+		mLineColor = pictureParent->mLineColor;
+		mLineWidth = pictureParent->mLineWidth;
+		mBeginType = pictureParent->mBeginType;
+		mEndType = pictureParent->mEndType;
+		mIsDividable = pictureParent->mIsDividable;
+		mFromPorts = pictureParent->mFromPorts;
+		mToPorts = pictureParent->mToPorts;
+		mVisible = true;
+		return true;
+	}
+
+	return false;
 }
 
 bool EdgeType::initAssociations()
