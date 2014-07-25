@@ -79,6 +79,7 @@ GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
 
 GeneratorFactoryBase::~GeneratorFactoryBase()
 {
+	delete mDeviceVariables;
 }
 
 void GeneratorFactoryBase::initialize()
@@ -128,6 +129,11 @@ void GeneratorFactoryBase::initImages()
 	mImages = new parts::Images(pathToTemplates());
 }
 
+void GeneratorFactoryBase::initDeviceVariables()
+{
+	mDeviceVariables = new parts::DeviceVariables();
+}
+
 QList<parts::InitTerminateCodeGenerator *> GeneratorFactoryBase::initTerminateGenerators()
 {
 	return QList<parts::InitTerminateCodeGenerator *>()
@@ -167,6 +173,11 @@ parts::Functions *GeneratorFactoryBase::functions()
 parts::Images *GeneratorFactoryBase::images()
 {
 	return mImages;
+}
+
+parts::DeviceVariables *GeneratorFactoryBase::deviceVariables() const
+{
+	return mDeviceVariables;
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
@@ -299,8 +310,10 @@ Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 			, currentConfiguration()
 			, inputPortConverter()
 			, functionInvocationConverter()
+			, *deviceVariables()
 			, typeConverter()
-			, variablesInfo());
+			, variablesInfo()
+	);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
@@ -310,7 +323,9 @@ Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() cons
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
-			, functionInvocationConverter());
+			, functionInvocationConverter()
+			, *deviceVariables()
+	);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
@@ -321,7 +336,9 @@ Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool ne
 			, currentConfiguration()
 			, inputPortConverter()
 			, functionInvocationConverter()
-			, needInverting);
+			, *deviceVariables()
+			, needInverting
+	);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
@@ -346,7 +363,9 @@ Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() cons
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
-			, functionInvocationConverter());
+			, functionInvocationConverter()
+			, *deviceVariables()
+	);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() const
