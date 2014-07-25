@@ -93,7 +93,7 @@ void Label::setTextFromRepo(QString const &text)
 {
 	QString const friendlyText = mEnumValues.isEmpty() ? text : mEnumValues[text];
 	if (friendlyText != toPlainText()) {
-		QGraphicsTextItem::setHtml(friendlyText); // need this to load old saves with html markup
+		QGraphicsTextItem::setPlainText(friendlyText); // need this to load old saves with html markup
 		setText(toPlainText());
 		updateData();
 	}
