@@ -36,7 +36,7 @@ public:
 			, Configurer const &configurer
 			, graphicsUtils::AbstractView *view
 			, QObject *parent = 0);
-	~D2ModelScene();
+	~D2ModelScene() override;
 
 public slots:
 	/// Sets a flag that next user mouse actions should draw a wall on the scene.
