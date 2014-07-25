@@ -21,7 +21,7 @@
 namespace qReal {
 
 class CommonPluginManager;
-class ToolPluginManager// : public CommonPluginManager
+class ToolPluginManager
 {
 public:
 	ToolPluginManager();

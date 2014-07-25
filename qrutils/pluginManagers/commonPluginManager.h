@@ -6,9 +6,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QMap>
 
+#include "qrutils/utilsDeclSpec.h"
+
 namespace qReal {
 
-class CommonPluginManager
+class QRUTILS_EXPORT CommonPluginManager
 {
 public:
 	/// constructor of class CommonPluginManager

@@ -2,13 +2,15 @@
 
 #include <QtCore/QObject>
 
+#include <qrutils/utilsDeclSpec.h>
+
 namespace qReal {
 
 template <class InterfaceType>
-class InterfaceWrapper
+class QRUTILS_EXPORT InterfaceWrapper
 {
 public:
-	/// wraps one qobject to interface
+	/// wraps one object to interface
 	static InterfaceType *wrappedInterface(QObject *interfaceToWrap)
 	{
 		InterfaceType *castedInterface = qobject_cast<InterfaceType *>(interfaceToWrap);
