@@ -9,7 +9,7 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \
@@ -35,6 +35,7 @@ HEADERS += \
 	$$PWD/trikMasterGenerator.h \
 	$$PWD/trikGeneratorCustomizer.h \
 	$$PWD/trikGeneratorFactory.h \
+	$$PWD/parts/trikDeviceVariables.h \
 	$$PWD/parts/trikVariables.h \
 	$$PWD/converters/backgroundColorConverter.h \
 	$$PWD/converters/ledColorConverter.h \
@@ -71,6 +72,7 @@ SOURCES += \
 	$$PWD/trikMasterGenerator.cpp \
 	$$PWD/trikGeneratorCustomizer.cpp \
 	$$PWD/trikGeneratorFactory.cpp \
+	$$PWD/parts/trikDeviceVariables.cpp \
 	$$PWD/parts/trikVariables.cpp \
 	$$PWD/converters/backgroundColorConverter.cpp \
 	$$PWD/converters/ledColorConverter.cpp \

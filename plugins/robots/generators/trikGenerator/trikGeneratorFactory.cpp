@@ -29,6 +29,7 @@
 #include "simpleGenerators/waitForMotionGenerator.h"
 #include "simpleGenerators/trikNullificationEncoderGenerator.h"
 #include "parts/trikVariables.h"
+#include "parts/trikDeviceVariables.h"
 
 using namespace trik;
 using namespace trik::simple;
@@ -183,4 +184,9 @@ QString TrikGeneratorFactory::motorPortSplitRegexp() const
 
 	/// @todo: Inconsistent scenario
 	return converters::PowerV6MotorPortConverter::splitRegexp();
+}
+
+generatorBase::parts::DeviceVariables *TrikGeneratorFactory::deviceVariables() const
+{
+	return new trik::parts::TrikDeviceVariables();
 }

@@ -43,6 +43,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/parts/sensors.h \
 	$$PWD/include/generatorBase/parts/functions.h \
 	$$PWD/include/generatorBase/parts/images.h \
+	$$PWD/include/generatorBase/parts/deviceVariables.h \
 
 HEADERS += \
 	$$PWD/src/readableControlFlowGenerator.h \
@@ -73,6 +74,7 @@ SOURCES += \
 	$$PWD/src/primaryControlFlowValidator.cpp \
 	$$PWD/src/generatorFactoryBase.cpp \
 	$$PWD/src/templateParametrizedEntity.cpp \
+	$$PWD/src/parts/deviceVariables.cpp \
 	$$PWD/src/parts/variables.cpp \
 	$$PWD/src/parts/subprograms.cpp \
 	$$PWD/src/parts/engines.cpp \

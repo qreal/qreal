@@ -9,6 +9,7 @@
 
 #include "generatorBase/simpleGenerators/abstractSimpleGenerator.h"
 #include "generatorBase/simpleGenerators/binding.h"
+#include "generatorBase/parts/deviceVariables.h"
 
 namespace generatorBase {
 
@@ -64,6 +65,9 @@ public:
 
 	/// Returns a pointer to an entity processing everything about images
 	virtual parts::Images *images();
+
+	/// Returns a pointer to an entity processing everything about sensor/device variables.
+	virtual parts::DeviceVariables *deviceVariables() const;
 
 	// ----------------------------- Generators --------------------------------
 
@@ -204,6 +208,12 @@ protected:
 	/// Implementation must prepare images controller
 	virtual void initImages();
 
+	/// Implementation must prepare device variables controller
+	virtual void initDeviceVariables();
+
+	/// @todo Why "init*" methods and corresponding "*" methods are both virtual? It is not clear what we supposed
+	/// to override in concrete generators?
+
 	/// Returns sensors configuration for the given robot model.
 	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> currentConfiguration() const;
 
@@ -217,6 +227,7 @@ protected:
 	parts::Sensors *mSensors;
 	parts::Functions *mFunctions;
 	parts::Images *mImages;
+	parts::DeviceVariables *mDeviceVariables;  // Has ownership.
 };
 
 }
