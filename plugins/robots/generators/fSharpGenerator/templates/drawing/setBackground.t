@@ -1,1 +1,1 @@
-brick.display().setBackground("@@COLOR@@");
+//brick.display().setBackground("@@COLOR@@");

@@ -1,1 +1,1 @@
-brick.cameraLineDetector().detect();
+//brick.cameraLineDetector().detect();

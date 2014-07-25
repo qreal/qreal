@@ -1,1 +1,1 @@
-brick.system("@@COMMAND@@");
+//brick.system("@@COMMAND@@");

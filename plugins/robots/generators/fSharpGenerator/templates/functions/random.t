@@ -1,1 +1,1 @@
-Math.random() * @@UPPER_BOUND@@
+randomNumber.Next @@UPPER_BOUND@@

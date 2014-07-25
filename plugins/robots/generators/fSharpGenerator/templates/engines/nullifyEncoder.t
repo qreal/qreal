@@ -1,1 +1,1 @@
-brick.encoder("@@PORT@@").reset();
+model.Encoder.["@PORT@"].Reset

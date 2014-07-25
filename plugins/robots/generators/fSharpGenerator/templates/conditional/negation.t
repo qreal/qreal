@@ -1,1 +1,1 @@
-!@@CONDITION@@
+not @@CONDITION@@
