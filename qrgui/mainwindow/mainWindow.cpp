@@ -53,13 +53,16 @@
 #include "dialogs/progressDialog/progressDialog.h"
 #include "dialogs/gesturesShow/gesturesWidget.h"
 
+#include "configurationNetworkManager/client.h"
+#include "configurationNetworkManager/server.h"
+
 using namespace qReal;
 using namespace qReal::commands;
 using namespace gui;
 
 QString const unsavedDir = "unsaved";
 
-MainWindow::MainWindow(QString const &fileToOpen)
+MainWindow::MainWindow(QString const &fileToOpen, bool isServer)
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, QScintillaTextEdit*>())
 		, mModels(nullptr)
@@ -109,14 +112,10 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
 
-	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
-			, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
-
-
 	splashScreen.setProgress(60);
 
+	getPaletteSettings();
 	loadPlugins();
-
 
 	splashScreen.setProgress(70);
 
@@ -160,6 +159,20 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mUsabilityTestingToolbar->addAction(mFinishTest);
 	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
 	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
+
+	if (isServer) {
+		mNetworkManager = new Server();
+		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+				, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+				, &editorManager(), isServer);
+		connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied
+				, (Server *)mNetworkManager, &Server::changePort);
+	} else {
+		mNetworkManager = new Client();
+		mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
+				, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment
+				, &editorManager(), isServer);
+	}
 }
 
 void MainWindow::connectActionsForUXInfo()
@@ -255,6 +268,8 @@ void MainWindow::connectActions()
 	connect(mProjectManager, SIGNAL(closed()), mController, SLOT(projectClosed()));
 
 	connect(mExploser.data(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
+
+	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &MainWindow::loadPlugins);
 
 	setDefaultShortcuts();
 }
@@ -2324,5 +2339,16 @@ void MainWindow::endPaletteModification()
 		}
 
 		scene->update();
+	}
+}
+
+void MainWindow::getPaletteSettings()
+{
+	for (Id const &editor : mEditorManagerProxy.editors()) {
+		for (Id const &diagram : mEditorManagerProxy.diagrams(editor)) {
+			for (Id const &element : mEditorManagerProxy.elements(diagram)) {
+				mEditorManagerProxy.setElementEnabled(element, SettingsManager::value(element.toString()).toBool());
+			}
+		}
 	}
 }

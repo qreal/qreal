@@ -57,6 +57,9 @@ public:
 	/// Merges default settings from the given file in INI format.
 	static void loadDefaultSettings(QString const &filePath);
 
+	/// Convertes settings into QString.
+	QString convertToString();
+
 signals:
 	/// Emitted each time when settings with the given key were modified.
 	/// For connection instance() method can be useful.

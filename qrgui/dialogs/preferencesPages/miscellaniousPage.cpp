@@ -4,14 +4,25 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/qRealFileDialog.h>
 
+#include <QtWidgets/QComboBox>
+#include "configurationNetworkManager/server.h"
 using namespace qReal;
 
-PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
+PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent, bool isServer)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesMiscellaniousPage)
 {
 	mIcon = QIcon(":/icons/preferences/miscellaneous.png");
 	mUi->setupUi(this);
+
+	if (isServer) {
+		QComboBox *serverIPComboBox = new QComboBox;
+		serverIPComboBox->addItems(Server::getIP());
+		mUi->serverIPEdit->hide();
+		//mUi->serverPortEdit->setReadOnly(true);
+		mUi->serverLayout->addWidget(serverIPComboBox, 0, 1);
+		mUi->settingsButton->hide();
+	}
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 	connect(mUi->toolbarSizeSlider, &QSlider::valueChanged, this, &PreferencesMiscellaniousPage::toolbarSizeChanged);
@@ -19,6 +30,13 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 	mUi->colorComboBox->addItems(QColor::colorNames());
 
 	restoreSettings();
+	connect(mUi->settingsButton, &QAbstractButton::clicked, this, &PreferencesMiscellaniousPage::getSettings);
+}
+
+void PreferencesMiscellaniousPage::getSettings()
+{
+	mClient = new Client();
+	connect(mClient, &Client::mustDeleteClient, this, &PreferencesMiscellaniousPage::deleteClient);
 }
 
 PreferencesMiscellaniousPage::~PreferencesMiscellaniousPage()
@@ -48,6 +66,9 @@ void PreferencesMiscellaniousPage::browseImagesPath()
 
 void PreferencesMiscellaniousPage::save()
 {
+	SettingsManager::setValue("ServerIP", mUi->serverIPEdit->text());
+	SettingsManager::setValue("ServerPort", mUi->serverPortEdit->text());
+
 	SettingsManager::setValue("Splashscreen", mUi->splashScreenCheckBox->isChecked());
 	SettingsManager::setValue("Antialiasing", mUi->antialiasingCheckBox->isChecked());
 
@@ -65,6 +86,9 @@ void PreferencesMiscellaniousPage::save()
 
 void PreferencesMiscellaniousPage::restoreSettings()
 {
+	mUi->serverIPEdit->setText(SettingsManager::value("ServerIP").toString());
+	mUi->serverPortEdit->setText(SettingsManager::value("ServerPort").toString());
+
 	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
 	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
 
@@ -78,4 +102,10 @@ void PreferencesMiscellaniousPage::restoreSettings()
 
 	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
 	mUi->imagesPathEdit->setText(mLastIconsetPath);
+}
+
+void PreferencesMiscellaniousPage::deleteClient()
+{
+	emit needUdpateSettings();
+	delete mClient;
 }

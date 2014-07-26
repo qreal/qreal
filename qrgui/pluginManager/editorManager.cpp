@@ -732,3 +732,16 @@ void EditorManager::setElementEnabled(Id const &type, bool enabled)
 		mDisabledElements.insert(type);
 	}
 }
+
+IdList EditorManager::getAllIP() const
+{
+	IdList listOfId = mDisabledElements.toList();
+	for (Id const &editor : editors()) {
+		for (Id const &diagram : diagrams(editor)) {
+			for (Id const &element : elements(diagram)) {
+				listOfId.append(element);
+			}
+		}
+	}
+	return listOfId;
+}

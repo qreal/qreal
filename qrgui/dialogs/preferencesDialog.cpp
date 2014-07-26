@@ -10,6 +10,7 @@
 #include "dialogs/preferencesPages/editorPage.h"
 #include "dialogs/preferencesPages/miscellaniousPage.h"
 #include "dialogs/preferencesPages/featuresPage.h"
+#include "dialogs/preferencesPages/paletteEditorPage.h"
 #include "hotKeyManager/hotKeyManagerPage.h"
 #include "brandManager/brandManager.h"
 
@@ -30,14 +31,19 @@ PreferencesDialog::~PreferencesDialog()
 }
 
 void PreferencesDialog::init(QAction * const showGridAction, QAction * const showAlignmentAction
-	, QAction * const activateGridAction, QAction * const activateAlignmentAction)
+	, QAction * const activateGridAction, QAction * const activateAlignmentAction
+	, EditorManagerInterface * editorManager, bool isItServer)
 {
+	mIsServer = isItServer;
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(mUi->pageContentWigdet);
 	// Debugger page removed due to #736
-	PreferencesMiscellaniousPage *miscellaniousPage = new PreferencesMiscellaniousPage(mUi->pageContentWigdet);
+	PreferencesMiscellaniousPage *miscellaniousPage = new PreferencesMiscellaniousPage(
+			mUi->pageContentWigdet, mIsServer);
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, mUi->pageContentWigdet);
 	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(mUi->pageContentWigdet);
+
+	PreferencesPage *paletteEditorPage = new PreferencesPaletteEditorPage(mUi->pageContentWigdet, editorManager);
 
 	connect(mUi->listWidget, SIGNAL(clicked(QModelIndex))
 			, this, SLOT(chooseTab(const QModelIndex &)));
@@ -63,10 +69,16 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
 	registerPage(tr("Shortcuts"), hotKeyManagerPage);
+	registerPage(tr("Palette"), paletteEditorPage);
+	if (!mIsServer) {
+		paletteEditorPage->setVisible(false);
+	}
 
 	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	mUi->listWidget->setCurrentRow(currentTab);
 	chooseTab(mUi->listWidget->currentIndex());
+
+	connect(miscellaniousPage, &PreferencesMiscellaniousPage::needUdpateSettings, this, &PreferencesDialog::updateSetting);
 }
 
 void PreferencesDialog::updatePluginDependendSettings()
@@ -139,10 +151,12 @@ void PreferencesDialog::chooseTab(QModelIndex const &index)
 
 void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * const page)
 {
-	mUi->pageContentWigdet->addWidget(page);
 	mCustomPages.insert(pageName, page);
 	mPagesIndexes.insert(pageName, mCustomPages.count() - 1);
-	mUi->listWidget->addItem(new QListWidgetItem(QIcon(page->getIcon()), pageName));
+	if (dynamic_cast<PreferencesPaletteEditorPage *>(page) == nullptr || mIsServer) {
+		mUi->pageContentWigdet->addWidget(page);
+		mUi->listWidget->addItem(new QListWidgetItem(QIcon(page->getIcon()), pageName));
+	}
 }
 
 void PreferencesDialog::switchCurrentTab(QString const &tabName)
@@ -175,4 +189,11 @@ void PreferencesDialog::importSettings()
 	QString fileNameForImport = QRealFileDialog::getOpenFileName("OpenEnginePreferences", this
 			, tr("Open File"),"/mySettings",tr("*.ini"));
 	SettingsManager::instance()->loadSettings(fileNameForImport);
+}
+
+void PreferencesDialog::updateSetting()
+{
+	foreach (PreferencesPage *page, mCustomPages.values()) {
+		page->restoreSettings();
+	}
 }
