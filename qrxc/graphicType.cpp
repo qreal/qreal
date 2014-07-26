@@ -20,7 +20,7 @@ GraphicType::ContainerProperties::ContainerProperties()
 {
 }
 
-GraphicType::GeneralizationProperties::GeneralizationProperties(const QString &name, QString const &overrides)
+GraphicType::GeneralizationProperties::GeneralizationProperties(QString const &name, QString const &overrides)
 		: name(name)
 {
 	overridePorts = overrides.contains("ports", Qt::CaseInsensitive);

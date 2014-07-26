@@ -69,7 +69,15 @@
         <file>templates/sensors/infrared.t</file>
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/motion.t</file>
-        <file>templates/sensors/cameraLineDetector.t</file>
+        <file>templates/videosensors/LineSensorX.t</file>
+        <file>templates/videosensors/LineSensorSize.t</file>
+        <file>templates/videosensors/LineSensorCrossroads.t</file>
+        <file>templates/videosensors/ObjectSensorX.t</file>
+        <file>templates/videosensors/ObjectSensorY.t</file>
+        <file>templates/videosensors/ObjectSensorSize.t</file>
+        <file>templates/videosensors/ColorSensorR.t</file>
+        <file>templates/videosensors/ColorSensorG.t</file>
+        <file>templates/videosensors/ColorSensorB.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>
