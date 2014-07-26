@@ -423,11 +423,16 @@ qReal::Id EditorViewScene::createElement(QString const &str)
 	return mLastCreatedFromLinker;
 }
 
-qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scenePos, bool searchForParents
-		, CreateElementCommand **createCommand, bool executeImmediately, QPointF const shiftToParent)
+qReal::Id EditorViewScene::createElement(QString const &str
+		, QPointF const &scenePos
+		, bool searchForParents
+		, CreateElementCommand **createCommand
+		, bool executeImmediately
+		, QPointF const &shiftToParent
+		, QString const &explosionTargetUuid)
 {
 	Id typeId = Id::loadFromString(str);
-	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
+	Id objectId(typeId.editor(), typeId.diagram(), typeId.element(), QUuid::createUuid().toString());
 
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData();
@@ -442,6 +447,7 @@ qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scen
 	stream << name;
 	stream << shiftToParent;
 	stream << isFromLogicalModel;
+	stream << explosionTargetUuid;
 
 	mimeData->setData(mimeType, data);
 	createElement(mimeData, scenePos, searchForParents, createCommand, executeImmediately);

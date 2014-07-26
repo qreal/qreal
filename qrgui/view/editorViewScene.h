@@ -46,7 +46,8 @@ public:
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommand = 0
 			, bool executeImmediately = true
-			, QPointF const shiftToParent = QPointF());
+			, QPointF const &shiftToParent = QPointF()
+			, QString const &explosionTargetUuid = QString());
 
 	virtual void createElement(QMimeData const *mimeData, QPointF const &scenePos
 			, bool searchForParents = true

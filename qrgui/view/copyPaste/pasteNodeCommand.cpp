@@ -24,7 +24,7 @@ Id PasteNodeCommand::pasteNewInstance()
 	if (!mCreateCommand) {
 		Id const typeId = mNodeData.id.type();
 		resultId = mScene->createElement(typeId.toString(), newPos(), true, &mCreateCommand, false
-				, vectorFromContainer());
+				, vectorFromContainer(), mNodeData.explosion.toString());
 		if (mCreateCommand) {
 			mCreateCommand->redo();
 			mCopiedIds->insert(mNodeData.id, resultId);

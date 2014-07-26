@@ -62,7 +62,7 @@ public:
 
 	QPointF pos;
 	QRectF contents;
-
+	Id explosion;
 };
 
 QDataStream &operator<< (QDataStream &out, NodeData const &data);

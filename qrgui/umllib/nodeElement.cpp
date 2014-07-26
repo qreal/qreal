@@ -1172,6 +1172,8 @@ NodeData& NodeElement::data()
 	mData.graphicalProperties["links"] = IdListHelper::toVariant(IdList());
 	mData.pos = mPos;
 	mData.contents = mContents;
+	qDebug() << mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()).toString();
+	mData.explosion = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 
 	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
 	if (parent) {
