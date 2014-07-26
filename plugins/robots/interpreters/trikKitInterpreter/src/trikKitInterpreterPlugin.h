@@ -42,6 +42,8 @@ public:
 	// Transfers ownership.
 	interpreterBase::AdditionalPreferences *settingsWidget() override;
 
+	QWidget *quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model) override;
+
 	QList<qReal::ActionInfo> customActions() override;
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
@@ -60,6 +62,7 @@ private:
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV6;
 	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
 	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
+	QWidget *mIpAdressQuicksConfigurer; // Transfers ownership
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 	QTranslator mAppTranslator;

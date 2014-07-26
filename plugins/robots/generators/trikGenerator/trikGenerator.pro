@@ -9,7 +9,7 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \
@@ -35,6 +35,7 @@ HEADERS += \
 	$$PWD/trikMasterGenerator.h \
 	$$PWD/trikGeneratorCustomizer.h \
 	$$PWD/trikGeneratorFactory.h \
+	$$PWD/parts/trikDeviceVariables.h \
 	$$PWD/parts/trikVariables.h \
 	$$PWD/converters/backgroundColorConverter.h \
 	$$PWD/converters/ledColorConverter.h \
@@ -58,12 +59,20 @@ HEADERS += \
 	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.h \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.h \
 	$$PWD/simpleGenerators/waitForMotionGenerator.h \
+	$$PWD/simpleGenerators/drawLineGenerator.h \
+	$$PWD/simpleGenerators/drawPixelGenerator.h \
+	$$PWD/simpleGenerators/drawRectGenerator.h \
+	$$PWD/simpleGenerators/drawEllipseGenerator.h \
+	$$PWD/simpleGenerators/drawArcGenerator.h \
+	$$PWD/simpleGenerators/setPainterWidthGenerator.h \
+	$$PWD/simpleGenerators/setPainterColorGenerator.h
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \
 	$$PWD/trikMasterGenerator.cpp \
 	$$PWD/trikGeneratorCustomizer.cpp \
 	$$PWD/trikGeneratorFactory.cpp \
+	$$PWD/parts/trikDeviceVariables.cpp \
 	$$PWD/parts/trikVariables.cpp \
 	$$PWD/converters/backgroundColorConverter.cpp \
 	$$PWD/converters/ledColorConverter.cpp \
@@ -87,5 +96,12 @@ SOURCES += \
 	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.cpp \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.cpp \
 	$$PWD/simpleGenerators/waitForMotionGenerator.cpp \
+	$$PWD/simpleGenerators/drawLineGenerator.cpp \
+	$$PWD/simpleGenerators/drawPixelGenerator.cpp \
+	$$PWD/simpleGenerators/drawRectGenerator.cpp \
+	$$PWD/simpleGenerators/drawEllipseGenerator.cpp \
+	$$PWD/simpleGenerators/drawArcGenerator.cpp \
+	$$PWD/simpleGenerators/setPainterWidthGenerator.cpp \
+	$$PWD/simpleGenerators/setPainterColorGenerator.cpp
 
 include(robotCommunication/robotCommunication.pri)

@@ -18,7 +18,7 @@ public:
 	Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elementId
 			, int index, qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
 
-	virtual ~Label();
+	~Label() override;
 
 	void init(QRectF const &contents);
 	void setBackground(QColor const &background);
@@ -26,6 +26,8 @@ public:
 
 	bool isHard() const;
 	virtual void setHard(bool hard);
+
+	bool isReadOnly() const;
 
 	void startTextInteraction();
 	void setTitleFont();

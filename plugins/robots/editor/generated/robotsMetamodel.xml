@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-alpha7">
+<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-alpha9">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
@@ -1228,7 +1228,7 @@
 			<node displayedName="Line Detector into Variable" name="TrikLineDetectorToVariable" description="Stores  current videocamera line detector`s value into a given variable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/lineDetectorToVariable.svg" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/lineDetectorIntoVariableBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<ports>
 						<linePort>
@@ -2696,6 +2696,368 @@
 			</node>
 
 			<!-- TRIK display drawing blocks -->
+			<node displayedName="Painter Color" name="TrikSetPainterColor" description="Sets the painter color.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-15" y="-30" text="Color:" hard="true"/>
+						<label x="35" y="-30" textBinded="Color" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Color" type="BackgroundColor" name="Color">
+							<default>black</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Painter Width" name="TrikSetPainterWidth" description="Sets the painter width.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-15" y="-30" text="Width:" hard="true"/>
+						<label x="50" y="-30" textBinded="Width" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Width" type="int" name="Width">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Pixel" name="TrikDrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="36" y="60" textBinded="XCoordinatePix"/>
+						<label x="0" y="60" text="X: "/>
+						<label x="36" y="80" textBinded="YCoordinatePix"/>
+						<label x="0" y="80" text="Y: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="int" name="XCoordinatePix">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="int" name="YCoordinatePix">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Line" name="TrikDrawLine" description="Draws a segment on the robot screen. The parameters specify the ends of the segment.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="36" y="60" textBinded="X1CoordinateLine"/>
+						<label x="0" y="60" text="X1: "/>
+						<label x="36" y="80" textBinded="Y1CoordinateLine"/>
+						<label x="0" y="80" text="Y1: "/>
+						<label x="36" y="100" textBinded="X2CoordinateLine"/>
+						<label x="0" y="100" text="X2: "/>
+						<label x="36" y="120" textBinded="Y2CoordinateLine"/>
+						<label x="0" y="120" text="Y2: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X1" type="int" name="X1CoordinateLine">
+							<default>0</default>
+						</property>
+						<property displayedName="Y1" type="int" name="Y1CoordinateLine">
+							<default>0</default>
+						</property>
+						<property displayedName="X2" type="int" name="X2CoordinateLine">
+							<default>10</default>
+						</property>
+						<property displayedName="Y2" type="int" name="Y2CoordinateLine">
+							<default>10</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Rectangle" name="TrikDrawRect" description="Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="XCoordinateRect"/>
+						<label x="-10" y="60" text="X: "/>
+						<label x="50" y="80" textBinded="YCoordinateRect"/>
+						<label x="-10" y="80" text="Y: "/>
+						<label x="50" y="100" textBinded="WidthRect"/>
+						<label x="-10" y="100" text="Width: "/>
+						<label x="50" y="120" textBinded="HeightRect"/>
+						<label x="-10" y="120" text="Height: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="int" name="XCoordinateRect">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="int" name="YCoordinateRect">
+							<default>0</default>
+						</property>
+						<property displayedName="Width" type="int" name="WidthRect">
+							<default>5</default>
+						</property>
+						<property displayedName="Height" type="int" name="HeightRect">
+							<default>5</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Ellipse" name="TrikDrawEllipse" description="Draws the ellipse defined by the rectangle beginning at (x, y) with the given width and height.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="XCoordinateEllipse"/>
+						<label x="-10" y="60" text="X: "/>
+						<label x="50" y="80" textBinded="YCoordinateEllipse"/>
+						<label x="-10" y="80" text="Y: "/>
+						<label x="50" y="100" textBinded="WidthEllipse"/>
+						<label x="-10" y="100" text="Width: "/>
+						<label x="50" y="120" textBinded="HeightEllipse"/>
+						<label x="-10" y="120" text="Height: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="int" name="XCoordinateEllipse">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="int" name="YCoordinateEllipse">
+							<default>0</default>
+						</property>
+						<property displayedName="Width" type="int" name="WidthEllipse">
+							<default>5</default>
+						</property>
+						<property displayedName="Height" type="int" name="HeightEllipse">
+							<default>5</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Arc" name="TrikDrawArc" description="Draws the arc defined by the rectangle beginning at (x, y) with the specified width and height, and the given startAngle and spanAngle.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="XCoordinateArc"/>
+						<label x="-10" y="60" text="X: "/>
+						<label x="50" y="80" textBinded="YCoordinateArc"/>
+						<label x="-10" y="80" text="Y: "/>
+						<label x="50" y="100" textBinded="WidthArc"/>
+						<label x="-10" y="100" text="Width: "/>
+						<label x="50" y="120" textBinded="HeightArc"/>
+						<label x="-10" y="120" text="Height: "/>
+						<label x="100" y="140" textBinded="StartAngle"/>
+						<label x="-10" y="140" text="StartAngle: "/>
+						<label x="90" y="160" textBinded="SpanAngle"/>
+						<label x="-10" y="160" text="SpanAngle: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="int" name="XCoordinateArc">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="int" name="YCoordinateArc">
+							<default>0</default>
+						</property>
+						<property displayedName="Width" type="int" name="WidthArc">
+							<default>5</default>
+						</property>
+						<property displayedName="Height" type="int" name="HeightArc">
+							<default>5</default>
+						</property>
+						<property displayedName="StartAngle" type="int" name="StartAngle">
+							<default>20</default>
+						</property>
+						<property displayedName="SpanAngle" type="int" name="SpanAngle">
+							<default>20</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Smile" name="TrikSmile" path="161, 71 : 166, 57 :  | 149, 82 : 161, 70 :  | 113, 91 : 149, 83 :  | 67, 91 : 113, 91 :  | 29, 84 : 65, 91 :  | 17, 74 : 28, 83 :  | 12, 59 : 17, 73 :  | 130, 13 : 130, 51 :  | 62, 12 : 62, 51 : " description="Draws a smile on the robot`s screen :)">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2907,6 +3269,13 @@
 				<element name="NxtDrawPixel"/>
 				<element name="NxtDrawLine"/>
 				<element name="NxtDrawCircle"/>
+				<element name="TrikSetPainterColor"/>
+				<element name="TrikSetPainterWidth"/>
+				<element name="TrikDrawPixel"/>
+				<element name="TrikDrawLine"/>
+				<element name="TrikDrawRect"/>
+				<element name="TrikDrawEllipse"/>
+				<element name="TrikDrawArc"/>
 				<element name="TrikSmile"/>
 				<element name="TrikSadSmile"/>
 				<element name="TrikSetBackground"/>

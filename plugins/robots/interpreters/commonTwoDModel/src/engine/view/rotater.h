@@ -21,22 +21,22 @@ class Rotater : public QObject, public graphicsUtils::AbstractItem
 public:
 	Rotater();
 
-	virtual QRectF boundingRect() const;
+	QRectF boundingRect() const;
 
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
-	virtual void drawExtractionForItem(QPainter* painter);
-	virtual void drawFieldForResizeItem(QPainter* painter);
-	virtual void setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGraphicsItem* option);
-	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
-	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event);
-
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+	void drawItem(QPainter* painter, QStyleOptionGraphicsItem const *option, QWidget* widget = 0) override;
+	void drawExtractionForItem(QPainter* painter) override;
+	void drawFieldForResizeItem(QPainter* painter) override;
+	void setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGraphicsItem* option) override;
+	void resizeItem(QGraphicsSceneMouseEvent *event) override;
+	void calcResizeItem(QGraphicsSceneMouseEvent *event) override;
 
 	void setMasterItem(graphicsUtils::RotateItem *masterItem);
 
 private:
+	void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+
 	int mLength;
 	int mDrift;
 	int mResizeDrift;

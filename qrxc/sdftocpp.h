@@ -28,7 +28,6 @@ private:
 	QString toGenerator;
 	QTextStream toGen;
 
-
 	QRectF bounds;
 	int first_size_x;
 	int first_size_y;

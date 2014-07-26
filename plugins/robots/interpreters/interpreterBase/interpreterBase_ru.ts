@@ -4,12 +4,17 @@
 <context>
     <name>interpreterBase::DevicesConfigurationWidget</name>
     <message>
-        <location filename="src/devicesConfigurationWidget.cpp" line="70"/>
+        <location filename="src/devicesConfigurationWidget.cpp" line="71"/>
         <source>Port %1:</source>
         <translation>Порт %1:</translation>
     </message>
     <message>
-        <location filename="src/devicesConfigurationWidget.cpp" line="75"/>
+        <location filename="src/devicesConfigurationWidget.cpp" line="71"/>
+        <source>%1:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/devicesConfigurationWidget.cpp" line="77"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
@@ -176,9 +181,8 @@
 <context>
     <name>interpreterBase::robotModel::robotParts::Display</name>
     <message>
-        <location filename="include/interpreterBase/robotModel/robotParts/display.h" line="15"/>
         <source>Display</source>
-        <translation>Дисплей</translation>
+        <translation type="vanished">Дисплей</translation>
     </message>
 </context>
 <context>

@@ -39,7 +39,9 @@ Label::~Label()
 
 void Label::init()
 {
-	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
+	QGraphicsTextItem::setFlags(ItemIsSelectable);
+	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
+
 	setTitleFont();
 	setRotation(mRotation);
 	if (!mBinding.isEmpty()) {
@@ -258,6 +260,11 @@ bool Label::isHard() const
 void Label::setHard(bool hard)
 {
 	mIsHard = hard;
+}
+
+bool Label::isReadOnly() const
+{
+	return mReadOnly;
 }
 
 void Label::focusOutEvent(QFocusEvent *event)
