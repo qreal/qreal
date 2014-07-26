@@ -6,14 +6,16 @@ include(../common.pri)
 
 include(../../../qrutils/qrutils.pri)
 
-SOURCES += \
-	expressionsParser/expressionsParserTest.cpp \
-	expressionsParser/numberTest.cpp \
-	metamodelGeneratorSupportTest.cpp \
-	inFileTest.cpp \
-	outFileTest.cpp \
-	xmlUtilsTest.cpp \
-
 HEADERS += \
-	expressionsParser/expressionsParserTest.h \
-	metamodelGeneratorSupportTest.h \
+#	expressionsParser/expressionsParserTest.h \
+	textLanguageParser/details/lexerTest.h \
+#	metamodelGeneratorSupportTest.h \
+
+SOURCES += \
+#	expressionsParser/expressionsParserTest.cpp \
+#	expressionsParser/numberTest.cpp \
+	textLanguageParser/details/lexerTest.cpp \
+#	metamodelGeneratorSupportTest.cpp \
+#	inFileTest.cpp \
+#	outFileTest.cpp \
+#	xmlUtilsTest.cpp \

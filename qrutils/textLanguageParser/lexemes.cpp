@@ -1,0 +1,21 @@
+#include "textLanguageParser/lexemes.h"
+
+using namespace textLanguageParser;
+
+Lexemes::Lexemes()
+{
+	mLexemes.insert(whitespace, QRegularExpression("[ \t]+"));
+	mLexemes.insert(integer, QRegularExpression("\\d+"));
+	mLexemes.insert(identifier, QRegularExpression("[a-zA-Z][a-zA-Z0-9_]+"));
+}
+
+void Lexemes::redefine(Type lexemeType, QRegularExpression const &regExp)
+{
+	Q_UNUSED(lexemeType);
+	Q_UNUSED(regExp);
+}
+
+QHash<Lexemes::Type, QRegularExpression> const &Lexemes::lexemes() const
+{
+	return mLexemes;
+}
