@@ -17,3 +17,8 @@ ast::Range const &Token::range() const
 {
 	return mRange;
 }
+
+QString const &Token::token() const
+{
+	return mToken;
+}

@@ -71,8 +71,15 @@ Lexemes::Lexemes()
 
 	mLexemes.insert(integerLiteral, QRegularExpression("(0[xX][0-9a-fA-F]+)|([0-9]+)"));
 	mLexemes.insert(floatLiteral, QRegularExpression(
-			"(0[xX][0-9a-fA-F]+(\\.[0-9a-fA-F]+)?([pP](([+-][0-9a-fA-F]+)|([0-9a-fA-F]*)))?)"
-			"|([0-9]+(\\.[0-9]+)?([eE](([+-][0-9]+)|([0-9]*)))?)"));
+			"(0[xX][0-9a-fA-F]+("
+					"(\\.[0-9a-fA-F]+[pP](([+-][0-9a-fA-F]+)|([0-9a-fA-F]*)))"
+					"|(\\.[0-9a-fA-F]+)"
+					"|([pP](([+-][0-9a-fA-F]+)|([0-9a-fA-F]*)))))"
+			"|([0-9]+("
+					"(\\.[0-9]+)[eE](([+-][0-9]+)|([0-9]*))"
+					"|(\\.[0-9]+)"
+					"|([eE](([+-][0-9]+)|([0-9]*)))))"
+			));
 }
 
 void Lexemes::redefine(Type lexemeType, QRegularExpression const &regExp)
@@ -85,12 +92,22 @@ void Lexemes::redefineKeyword(Type keywordType, QString const &keyword)
 	mKeywords.insert(keywordType, keyword);
 }
 
-QHash<Lexemes::Type, QRegularExpression> const &Lexemes::lexemes() const
+QList<Lexemes::Type> Lexemes::allLexemes() const
 {
-	return mLexemes;
+	return mLexemes.keys();
 }
 
-QHash<Lexemes::Type, QString> const &Lexemes::keywords() const
+QRegularExpression Lexemes::lexemeDefinition(Lexemes::Type type) const
 {
-	return mKeywords;
+	return mLexemes.value(type);
+}
+
+QList<Lexemes::Type> Lexemes::allKeywords() const
+{
+	return mKeywords.keys();
+}
+
+QString Lexemes::keywordDefinition(Lexemes::Type type) const
+{
+	return mKeywords.value(type);
 }

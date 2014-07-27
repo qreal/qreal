@@ -20,8 +20,8 @@ Lexer::Result Lexer::tokenize(QString const &input)
 	QRegularExpression whitespaceRegexp;
 	QRegularExpression newLineRegexp;
 
-	for (Lexemes::Type const lexeme : mLexemes.lexemes().keys()) {
-		QRegularExpression const &regExp = mLexemes.lexemes().value(lexeme);
+	for (Lexemes::Type const lexeme : mLexemes.allLexemes()) {
+		QRegularExpression const &regExp = mLexemes.lexemeDefinition(lexeme);
 		if (!regExp.isValid()) {
 			qDebug() << "Invalid regexp: " + regExp.pattern();
 			result.errors << ParserError(ast::Connection(), "Invalid regexp: " + regExp.pattern()
@@ -45,8 +45,8 @@ Lexer::Result Lexer::tokenize(QString const &input)
 		Lexemes::Type candidate = Lexemes::whitespace;
 		QRegularExpressionMatch bestMatch;
 
-		for (Lexemes::Type const lexeme : mLexemes.lexemes().keys()) {
-			QRegularExpression const &regExp = mLexemes.lexemes().value(lexeme);
+		for (Lexemes::Type const lexeme : mLexemes.allLexemes()) {
+			QRegularExpression const &regExp = mLexemes.lexemeDefinition(lexeme);
 
 			QRegularExpressionMatch const &match = regExp.match(
 					input
@@ -111,8 +111,8 @@ Lexer::Result Lexer::tokenize(QString const &input)
 
 Lexemes::Type Lexer::checkForKeyword(QString const &identifier) const
 {
-	for (Lexemes::Type const keyword : mLexemes.keywords().keys()) {
-		if (mLexemes.keywords()[keyword] == identifier) {
+	for (Lexemes::Type const keyword : mLexemes.allKeywords()) {
+		if (mLexemes.keywordDefinition(keyword) == identifier) {
 			return keyword;
 		}
 	}
