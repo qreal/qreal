@@ -158,7 +158,7 @@ void ScriptAPI::changeWindow(QWidget *parent)
 
 void ScriptAPI::abortEvaluate()
 {
-	mScriptEngine.abortEvaluation("Aborted");
+	mScriptEngine.abortEvaluation();
 }
 
 GuiFacade *ScriptAPI::guiFacade()

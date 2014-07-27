@@ -12,9 +12,9 @@ TwoDModelGuiFacade::TwoDModelGuiFacade(D2ModelWidget &view)
 {
 }
 
-QWidget* TwoDModelGuiFacade::widget(QString const &type, QString const &name)
+QWidget *TwoDModelGuiFacade::widget(QString const &type, QString const &name)
 {
-	QList<QWidget *> const widgetList = mD2ModelWidget->findChildren<QWidget *>(name);
+	QList<QWidget *> const widgetList = mD2ModelWidget.findChildren<QWidget *>(name);
 
 	for (QWidget *widget : widgetList) {
 		if (type == widget->metaObject()->className() && widget->isVisible()) {
