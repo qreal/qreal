@@ -20,5 +20,10 @@ private:
 	int mColumn = -1;
 };
 
+inline bool operator ==(Connection const &a, Connection const &b)
+{
+	return a.absolutePosition() == b.absolutePosition() && a.line() == b.line() && a.column() == b.column();
+}
+
 }
 }
