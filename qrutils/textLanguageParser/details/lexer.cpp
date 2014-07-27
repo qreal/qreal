@@ -17,8 +17,8 @@ Lexer::Result Lexer::tokenize(QString const &input)
 	int absolutePosition = 0;
 	int line = 0;
 	int column = 0;
-	Lexemes::Type candidate = Lexemes::whitespace;
 	while (absolutePosition < input.length()) {
+		Lexemes::Type candidate = Lexemes::whitespace;
 		QRegularExpressionMatch bestMatch;
 
 		for (Lexemes::Type const lexeme : mLexemes.lexemes().keys()) {

@@ -12,8 +12,7 @@ Lexemes::Lexemes()
 
 void Lexemes::redefine(Type lexemeType, QRegularExpression const &regExp)
 {
-	Q_UNUSED(lexemeType);
-	Q_UNUSED(regExp);
+	mLexemes.insert(lexemeType, regExp);
 }
 
 QHash<Lexemes::Type, QRegularExpression> const &Lexemes::lexemes() const
