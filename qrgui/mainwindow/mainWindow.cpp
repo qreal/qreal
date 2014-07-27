@@ -359,7 +359,7 @@ void MainWindow::adjustMinimapZoom(int zoom)
 
 void MainWindow::selectItemWithError(Id const &id)
 {
-	if (id == Id::rootId()) {
+	if (id == Id::rootId() || id.isNull()) {
 		return;
 	}
 
@@ -369,6 +369,7 @@ void MainWindow::selectItemWithError(Id const &id)
 		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
 	}
 
+	selectItemOrDiagram(graphicalId);
 	setIndexesOfPropertyEditor(graphicalId);
 	centerOn(graphicalId);
 
