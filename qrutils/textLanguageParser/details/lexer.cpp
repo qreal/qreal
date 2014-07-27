@@ -23,6 +23,7 @@ Lexer::Result Lexer::tokenize(QString const &input)
 	for (Lexemes::Type const lexeme : mLexemes.lexemes().keys()) {
 		QRegularExpression const &regExp = mLexemes.lexemes().value(lexeme);
 		if (!regExp.isValid()) {
+			qDebug() << "Invalid regexp: " + regExp.pattern();
 			result.errors << ParserError(ast::Connection(), "Invalid regexp: " + regExp.pattern()
 					, ParserError::lexicalError, ParserError::internalError);
 		} else {

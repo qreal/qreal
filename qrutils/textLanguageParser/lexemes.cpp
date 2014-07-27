@@ -38,6 +38,14 @@ Lexemes::Lexemes()
 	mLexemes.insert(percent, QRegularExpression("%"));
 	mLexemes.insert(hat, QRegularExpression("\\^"));
 	mLexemes.insert(sharp, QRegularExpression("#"));
+
+	mLexemes.insert(ampersand, QRegularExpression("&"));
+	mLexemes.insert(tilda, QRegularExpression("~"));
+	mLexemes.insert(verticalLine, QRegularExpression("\\|"));
+	mLexemes.insert(doubleLess, QRegularExpression("<<"));
+	mLexemes.insert(doubleGreater, QRegularExpression(">>"));
+	mLexemes.insert(doubleSlash, QRegularExpression("//"));
+
 	mLexemes.insert(doubleEquals, QRegularExpression("=="));
 	mLexemes.insert(tildaEquals, QRegularExpression("~="));
 	mLexemes.insert(lessEquals, QRegularExpression("<="));
@@ -45,6 +53,7 @@ Lexemes::Lexemes()
 	mLexemes.insert(less, QRegularExpression("<"));
 	mLexemes.insert(greater, QRegularExpression(">"));
 	mLexemes.insert(equals, QRegularExpression("="));
+
 	mLexemes.insert(openingBracket, QRegularExpression("\\("));
 	mLexemes.insert(closingBracket, QRegularExpression("\\)"));
 	mLexemes.insert(openingCurlyBracket, QRegularExpression("{"));
@@ -52,6 +61,7 @@ Lexemes::Lexemes()
 	mLexemes.insert(openingSquareBracket, QRegularExpression("\\["));
 	mLexemes.insert(closingSquareBracket, QRegularExpression("\\]"));
 	mLexemes.insert(doubleColon, QRegularExpression("::"));
+
 	mLexemes.insert(semicolon, QRegularExpression(";"));
 	mLexemes.insert(colon, QRegularExpression(":"));
 	mLexemes.insert(comma, QRegularExpression(","));
@@ -59,7 +69,10 @@ Lexemes::Lexemes()
 	mLexemes.insert(doubleDot, QRegularExpression("\\.\\."));
 	mLexemes.insert(tripleDot, QRegularExpression("\\.\\.\\."));
 
-	mLexemes.insert(number, QRegularExpression("\\d+"));
+	mLexemes.insert(integerLiteral, QRegularExpression("(0[xX][0-9a-fA-F]+)|([0-9]+)"));
+	mLexemes.insert(floatLiteral, QRegularExpression(
+			"(0[xX][0-9a-fA-F]+(\\.[0-9a-fA-F]+)?([pP](([+-][0-9a-fA-F]+)|([0-9a-fA-F]*)))?)"
+			"|([0-9]+(\\.[0-9]+)?([eE](([+-][0-9]+)|([0-9]*)))?)"));
 }
 
 void Lexemes::redefine(Type lexemeType, QRegularExpression const &regExp)

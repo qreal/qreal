@@ -47,6 +47,14 @@ public:
 		, percent
 		, hat
 		, sharp
+
+		, ampersand
+		, tilda
+		, verticalLine
+		, doubleLess
+		, doubleGreater
+		, doubleSlash
+
 		, doubleEquals
 		, tildaEquals
 		, lessEquals
@@ -54,6 +62,7 @@ public:
 		, less
 		, greater
 		, equals
+
 		, openingBracket
 		, closingBracket
 		, openingCurlyBracket
@@ -61,6 +70,7 @@ public:
 		, openingSquareBracket
 		, closingSquareBracket
 		, doubleColon
+
 		, semicolon
 		, colon
 		, comma
@@ -69,7 +79,8 @@ public:
 		, tripleDot
 
 		, string
-		, number
+		, integerLiteral
+		, floatLiteral
 		, comment
 	};
 
