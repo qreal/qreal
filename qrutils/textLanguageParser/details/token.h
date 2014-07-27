@@ -1,20 +1,22 @@
 #pragma once
 
 #include "textLanguageParser/lexemes.h"
-#include "textLanguageParser/ast/connection.h"
+#include "textLanguageParser/ast/range.h"
 
 namespace textLanguageParser {
 namespace details {
 
 class Token {
 public:
-	Token(Lexemes::Type lexeme, ast::Connection const &connection, QString const &token);
+	Token(Lexemes::Type lexeme, ast::Range const &range, QString const &token);
 
 	Lexemes::Type lexeme() const;
 
+	ast::Range const &range() const;
+
 private:
 	Lexemes::Type mLexeme;
-	ast::Connection mConnection;
+	ast::Range mRange;
 	QString mToken;
 };
 

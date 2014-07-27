@@ -5,6 +5,7 @@ using namespace textLanguageParser;
 Lexemes::Lexemes()
 {
 	mLexemes.insert(whitespace, QRegularExpression("[ \t]+"));
+	mLexemes.insert(newline, QRegularExpression("[\n]"));
 	mLexemes.insert(integer, QRegularExpression("\\d+"));
 	mLexemes.insert(identifier, QRegularExpression("[a-zA-Z][a-zA-Z0-9_]+"));
 }

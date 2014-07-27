@@ -5,6 +5,7 @@ HEADERS += \
 	$$PWD/textLanguageParserInterface.h \
 	$$PWD/ast/connection.h \
 	$$PWD/ast/node.h \
+	$$PWD/ast/range.h \
 	$$PWD/details/lexer.h \
 	$$PWD/details/token.h  \
 
@@ -14,6 +15,7 @@ SOURCES += \
 	$$PWD/textLanguageParser.cpp \
 	$$PWD/ast/connection.cpp \
 	$$PWD/ast/node.cpp \
+	$$PWD/ast/range.cpp \
 	$$PWD/details/lexer.cpp \
 	$$PWD/details/token.cpp \
 

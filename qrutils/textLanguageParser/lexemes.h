@@ -13,6 +13,7 @@ public:
 
 	enum Type {
 		whitespace
+		, newline
 		, integer
 		, identifier
 	};

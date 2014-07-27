@@ -14,9 +14,11 @@ Lexer::Result Lexer::tokenize(QString const &input)
 {
 	Result result;
 
-	int position = 0;
+	int absolutePosition = 0;
+	int line = 0;
+	int column = 0;
 	Lexemes::Type candidate = Lexemes::whitespace;
-	while (position < input.length()) {
+	while (absolutePosition < input.length()) {
 		QRegularExpressionMatch bestMatch;
 
 		for (Lexemes::Type const lexeme : mLexemes.lexemes().keys()) {
@@ -24,7 +26,7 @@ Lexer::Result Lexer::tokenize(QString const &input)
 
 			QRegularExpressionMatch const &match = regExp.match(
 					input
-					, position
+					, absolutePosition
 					, QRegularExpression::NormalMatch
 					, QRegularExpression::AnchoredMatchOption);
 
@@ -41,15 +43,24 @@ Lexer::Result Lexer::tokenize(QString const &input)
 		qDebug() << "Best match:" << bestMatch;
 
 		if (bestMatch.hasMatch()) {
-			ast::Connection connection;
-			if (candidate != Lexemes::whitespace) {
-				result.tokens.append(Token(candidate, connection, bestMatch.capturedTexts()[0]));
+			if (candidate != Lexemes::whitespace && candidate != Lexemes::newline) {
+				ast::Range range(bestMatch.capturedStart(), line, column
+						, bestMatch.capturedEnd() - 1, line, column + bestMatch.capturedLength() - 1);
+
+				result.tokens.append(Token(candidate, range, bestMatch.capturedTexts()[0]));
 			}
 
-			position += bestMatch.capturedLength();
+			if (candidate == Lexemes::newline) {
+				++line;
+				column = 0;
+			} else {
+				column += bestMatch.capturedLength();
+			}
+
+			absolutePosition += bestMatch.capturedLength();
 		} else {
 			/// @todo Report error.
-			++position;
+			++absolutePosition;
 		}
 	}
 

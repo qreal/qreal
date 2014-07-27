@@ -16,9 +16,37 @@ TEST_F(LexerTest, tokenizeSanityCheck)
 
 	auto result = mLexer->tokenize(stream);
 
-	ASSERT_TRUE(result.comments.isEmpty());
-	ASSERT_TRUE(result.errors.isEmpty());
+	EXPECT_TRUE(result.comments.isEmpty());
+	EXPECT_TRUE(result.errors.isEmpty());
 	ASSERT_EQ(2, result.tokens.size());
-	ASSERT_EQ(Lexemes::integer, result.tokens[0].lexeme());
-	ASSERT_EQ(Lexemes::identifier, result.tokens[1].lexeme());
+	EXPECT_EQ(Lexemes::integer, result.tokens[0].lexeme());
+	EXPECT_EQ(Lexemes::identifier, result.tokens[1].lexeme());
+}
+
+TEST_F(LexerTest, connections)
+{
+	QString const stream = "  123 abc\n  456";
+
+	auto result = mLexer->tokenize(stream);
+
+	ASSERT_EQ(3, result.tokens.size());
+
+	EXPECT_EQ(2, result.tokens[0].range().start().absolutePosition());
+	EXPECT_EQ(4, result.tokens[0].range().end().absolutePosition());
+
+	EXPECT_EQ(0, result.tokens[0].range().start().line());
+	EXPECT_EQ(2, result.tokens[0].range().start().column());
+	EXPECT_EQ(0, result.tokens[0].range().end().line());
+	EXPECT_EQ(4, result.tokens[0].range().end().column());
+
+	EXPECT_EQ(6, result.tokens[1].range().start().absolutePosition());
+	EXPECT_EQ(8, result.tokens[1].range().end().absolutePosition());
+
+	EXPECT_EQ(12, result.tokens[2].range().start().absolutePosition());
+	EXPECT_EQ(14, result.tokens[2].range().end().absolutePosition());
+
+	EXPECT_EQ(1, result.tokens[2].range().start().line());
+	EXPECT_EQ(2, result.tokens[2].range().start().column());
+	EXPECT_EQ(1, result.tokens[2].range().end().line());
+	EXPECT_EQ(4, result.tokens[2].range().end().column());
 }
