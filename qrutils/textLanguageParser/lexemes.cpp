@@ -6,8 +6,60 @@ Lexemes::Lexemes()
 {
 	mLexemes.insert(whitespace, QRegularExpression("[ \t]+"));
 	mLexemes.insert(newline, QRegularExpression("[\n]"));
-	mLexemes.insert(integer, QRegularExpression("\\d+"));
-	mLexemes.insert(identifier, QRegularExpression("[a-zA-Z][a-zA-Z0-9_]+"));
+	mLexemes.insert(identifier, QRegularExpression("[a-zA-Z_][a-zA-Z0-9_]+"));
+
+	mKeywords.insert(andKeyword, "and");
+	mKeywords.insert(breakKeyword, "break");
+	mKeywords.insert(doKeyword, "do");
+	mKeywords.insert(elseKeyword, "else");
+	mKeywords.insert(elseifKeyword, "elseif");
+	mKeywords.insert(endKeyword, "end");
+	mKeywords.insert(falseKeyword, "false");
+	mKeywords.insert(forKeyword, "for");
+	mKeywords.insert(functionKeyword, "function");
+	mKeywords.insert(gotoKeyword, "goto");
+	mKeywords.insert(ifKeyword, "if");
+	mKeywords.insert(inKeyword, "in");
+	mKeywords.insert(localKeyword, "local");
+	mKeywords.insert(nilKeyword, "nil");
+	mKeywords.insert(notKeyword, "not");
+	mKeywords.insert(orKeyword, "or");
+	mKeywords.insert(repeatKeyword, "repeat");
+	mKeywords.insert(returnKeyword, "return");
+	mKeywords.insert(thenKeyword, "then");
+	mKeywords.insert(trueKeyword, "true");
+	mKeywords.insert(untilKeyword, "until");
+	mKeywords.insert(whileKeyword, "while");
+
+	mLexemes.insert(plus, QRegularExpression("[+]"));
+	mLexemes.insert(minus, QRegularExpression("-"));
+	mLexemes.insert(asterick, QRegularExpression("[*]"));
+	mLexemes.insert(slash, QRegularExpression("/"));
+	mLexemes.insert(percent, QRegularExpression("%"));
+	mLexemes.insert(hat, QRegularExpression("\\^"));
+	mLexemes.insert(sharp, QRegularExpression("[#]"));
+	mLexemes.insert(doubleEquals, QRegularExpression("=="));
+	mLexemes.insert(tildaEquals, QRegularExpression("~="));
+	mLexemes.insert(lessEquals, QRegularExpression("<="));
+	mLexemes.insert(greaterEquals, QRegularExpression(">="));
+	mLexemes.insert(less, QRegularExpression("<"));
+	mLexemes.insert(greater, QRegularExpression(">"));
+	mLexemes.insert(equals, QRegularExpression("="));
+	mLexemes.insert(openingBracket, QRegularExpression("[(]"));
+	mLexemes.insert(closingBracket, QRegularExpression("[)]"));
+	mLexemes.insert(openingCurlyBracket, QRegularExpression("[{]"));
+	mLexemes.insert(closingCurlyBracket, QRegularExpression("[}]"));
+	mLexemes.insert(openingSquareBracket, QRegularExpression("\\["));
+	mLexemes.insert(closingSquareBracket, QRegularExpression("\\]"));
+	mLexemes.insert(doubleColon, QRegularExpression("::"));
+	mLexemes.insert(semicolon, QRegularExpression(";"));
+	mLexemes.insert(colon, QRegularExpression(":"));
+	mLexemes.insert(comma, QRegularExpression(","));
+	mLexemes.insert(dot, QRegularExpression("\\."));
+	mLexemes.insert(doubleDot, QRegularExpression("\\.\\."));
+	mLexemes.insert(tripleDot, QRegularExpression("\\.\\.\\."));
+
+	mLexemes.insert(number, QRegularExpression("\\d+"));
 }
 
 void Lexemes::redefine(Type lexemeType, QRegularExpression const &regExp)
@@ -15,7 +67,17 @@ void Lexemes::redefine(Type lexemeType, QRegularExpression const &regExp)
 	mLexemes.insert(lexemeType, regExp);
 }
 
+void Lexemes::redefineKeyword(Type keywordType, QString const &keyword)
+{
+	mKeywords.insert(keywordType, keyword);
+}
+
 QHash<Lexemes::Type, QRegularExpression> const &Lexemes::lexemes() const
 {
 	return mLexemes;
+}
+
+QHash<Lexemes::Type, QString> const &Lexemes::keywords() const
+{
+	return mKeywords;
 }

@@ -2,6 +2,7 @@
 
 #include <QtCore/QList>
 #include <QtCore/QString>
+#include <QtCore/QSet>
 
 #include "textLanguageParser/details/token.h"
 #include "textLanguageParser/parserError.h"
@@ -23,6 +24,8 @@ public:
 	Result tokenize(QString const &input);
 
 private:
+	Lexemes::Type checkForKeyword(QString const &identifier) const;
+
 	Lexemes const &mLexemes;
 };
 

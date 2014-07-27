@@ -14,6 +14,13 @@ Lexer::Result Lexer::tokenize(QString const &input)
 {
 	Result result;
 
+	for (Lexemes::Type const lexeme : mLexemes.lexemes().keys()) {
+		QRegularExpression const &regExp = mLexemes.lexemes().value(lexeme);
+		if (!regExp.isValid()) {
+			qDebug() << "Invalid regexp" << regExp.pattern();
+		}
+	}
+
 	int absolutePosition = 0;
 	int line = 0;
 	int column = 0;
@@ -30,8 +37,6 @@ Lexer::Result Lexer::tokenize(QString const &input)
 					, QRegularExpression::NormalMatch
 					, QRegularExpression::AnchoredMatchOption);
 
-			qDebug() << regExp.pattern() << match;
-
 			if (match.hasMatch()) {
 				if (match.capturedLength() > bestMatch.capturedLength()) {
 					bestMatch = match;
@@ -40,12 +45,18 @@ Lexer::Result Lexer::tokenize(QString const &input)
 			}
 		}
 
-		qDebug() << "Best match:" << bestMatch;
+		if (candidate != Lexemes::whitespace) {
+			qDebug() << "Best match:" << bestMatch;
+		}
 
 		if (bestMatch.hasMatch()) {
 			if (candidate != Lexemes::whitespace && candidate != Lexemes::newline) {
 				ast::Range range(bestMatch.capturedStart(), line, column
 						, bestMatch.capturedEnd() - 1, line, column + bestMatch.capturedLength() - 1);
+
+				if (candidate == Lexemes::identifier) {
+					candidate = checkForKeyword(bestMatch.capturedTexts()[0]);
+				}
 
 				result.tokens.append(Token(candidate, range, bestMatch.capturedTexts()[0]));
 			}
@@ -65,4 +76,15 @@ Lexer::Result Lexer::tokenize(QString const &input)
 	}
 
 	return result;
+}
+
+Lexemes::Type Lexer::checkForKeyword(QString const &identifier) const
+{
+	for (Lexemes::Type const keyword : mLexemes.keywords().keys()) {
+		if (mLexemes.keywords()[keyword] == identifier) {
+			return keyword;
+		}
+	}
+
+	return Lexemes::identifier;
 }
