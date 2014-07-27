@@ -148,3 +148,61 @@ TEST_F(LexerTest, lexemeTypes)
 	EXPECT_EQ(Lexemes::doubleDot, result.tokens[48].lexeme());
 	EXPECT_EQ(Lexemes::tripleDot, result.tokens[49].lexeme());
 }
+
+TEST_F(LexerTest, errorReporting)
+{
+	QString const stream = "ololo ~~= !!! nil";
+
+	auto result = mLexer->tokenize(stream);
+
+	ASSERT_EQ(2, result.tokens.size());
+	ASSERT_EQ(2, result.errors.size());
+
+	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
+	EXPECT_EQ(Lexemes::nilKeyword, result.tokens[1].lexeme());
+
+	EXPECT_EQ(QString("Lexer error"), result.errors[0].errorMessage());
+	EXPECT_EQ(6, result.errors[0].connection().absolutePosition());
+	EXPECT_EQ(6, result.errors[0].connection().column());
+	EXPECT_EQ(0, result.errors[0].connection().line());
+	EXPECT_EQ(ParserError::ErrorType::lexicalError, result.errors[0].errorType());
+	EXPECT_EQ(ParserError::Severity::error, result.errors[0].severity());
+
+	EXPECT_EQ(QString("Lexer error"), result.errors[1].errorMessage());
+	EXPECT_EQ(10, result.errors[1].connection().absolutePosition());
+	EXPECT_EQ(10, result.errors[1].connection().column());
+	EXPECT_EQ(0, result.errors[1].connection().line());
+	EXPECT_EQ(ParserError::ErrorType::lexicalError, result.errors[1].errorType());
+	EXPECT_EQ(ParserError::Severity::error, result.errors[1].severity());
+
+	EXPECT_EQ(14, result.tokens[1].range().start().absolutePosition());
+}
+
+TEST_F(LexerTest, multilineErrorReporting)
+{
+	QString const stream = "ololo ~~=\n !!! nil";
+
+	auto result = mLexer->tokenize(stream);
+
+	ASSERT_EQ(2, result.tokens.size());
+	ASSERT_EQ(2, result.errors.size());
+
+	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
+	EXPECT_EQ(Lexemes::nilKeyword, result.tokens[1].lexeme());
+
+	EXPECT_EQ(QString("Lexer error"), result.errors[0].errorMessage());
+	EXPECT_EQ(6, result.errors[0].connection().absolutePosition());
+	EXPECT_EQ(6, result.errors[0].connection().column());
+	EXPECT_EQ(0, result.errors[0].connection().line());
+	EXPECT_EQ(ParserError::ErrorType::lexicalError, result.errors[0].errorType());
+	EXPECT_EQ(ParserError::Severity::error, result.errors[0].severity());
+
+	EXPECT_EQ(QString("Lexer error"), result.errors[1].errorMessage());
+	EXPECT_EQ(11, result.errors[1].connection().absolutePosition());
+	EXPECT_EQ(1, result.errors[1].connection().column());
+	EXPECT_EQ(1, result.errors[1].connection().line());
+	EXPECT_EQ(ParserError::ErrorType::lexicalError, result.errors[1].errorType());
+	EXPECT_EQ(ParserError::Severity::error, result.errors[1].severity());
+
+	EXPECT_EQ(15, result.tokens[1].range().start().absolutePosition());
+}

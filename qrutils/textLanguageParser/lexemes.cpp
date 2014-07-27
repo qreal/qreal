@@ -31,13 +31,13 @@ Lexemes::Lexemes()
 	mKeywords.insert(untilKeyword, "until");
 	mKeywords.insert(whileKeyword, "while");
 
-	mLexemes.insert(plus, QRegularExpression("[+]"));
+	mLexemes.insert(plus, QRegularExpression("\\+"));
 	mLexemes.insert(minus, QRegularExpression("-"));
-	mLexemes.insert(asterick, QRegularExpression("[*]"));
+	mLexemes.insert(asterick, QRegularExpression("\\*"));
 	mLexemes.insert(slash, QRegularExpression("/"));
 	mLexemes.insert(percent, QRegularExpression("%"));
 	mLexemes.insert(hat, QRegularExpression("\\^"));
-	mLexemes.insert(sharp, QRegularExpression("[#]"));
+	mLexemes.insert(sharp, QRegularExpression("#"));
 	mLexemes.insert(doubleEquals, QRegularExpression("=="));
 	mLexemes.insert(tildaEquals, QRegularExpression("~="));
 	mLexemes.insert(lessEquals, QRegularExpression("<="));
@@ -45,10 +45,10 @@ Lexemes::Lexemes()
 	mLexemes.insert(less, QRegularExpression("<"));
 	mLexemes.insert(greater, QRegularExpression(">"));
 	mLexemes.insert(equals, QRegularExpression("="));
-	mLexemes.insert(openingBracket, QRegularExpression("[(]"));
-	mLexemes.insert(closingBracket, QRegularExpression("[)]"));
-	mLexemes.insert(openingCurlyBracket, QRegularExpression("[{]"));
-	mLexemes.insert(closingCurlyBracket, QRegularExpression("[}]"));
+	mLexemes.insert(openingBracket, QRegularExpression("\\("));
+	mLexemes.insert(closingBracket, QRegularExpression("\\)"));
+	mLexemes.insert(openingCurlyBracket, QRegularExpression("{"));
+	mLexemes.insert(closingCurlyBracket, QRegularExpression("}"));
 	mLexemes.insert(openingSquareBracket, QRegularExpression("\\["));
 	mLexemes.insert(closingSquareBracket, QRegularExpression("\\]"));
 	mLexemes.insert(doubleColon, QRegularExpression("::"));
