@@ -1,1 +1,1 @@
-model.Motor.["@@PORT@@"].Power <- @@POWER@@
+robot.Motor@@PORT@@ <- -@@POWER@@

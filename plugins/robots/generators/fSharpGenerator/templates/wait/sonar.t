@@ -1,3 +1,3 @@
-while not(model.AnalogSensor.["@@PORT@@"].Read() @@SIGN@@ @@DISTANCE@@) do
+while not(robot.Sensor@@PORT@@" @@SIGN@@ @@DISTANCE@@) do
 	Thread.Sleep 10
 

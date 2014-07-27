@@ -35,5 +35,6 @@ void FSharpMasterGenerator::outputCode(const QString &path, const QString &code)
 {
 	utils::OutFile out(path);
 	QString copy = code;
-	out() << copy.replace('\t', "    ");
+    out() << copy.replace('\t', "    ").replace("robot.MotorE1", "robot.ServoE1")
+                                        .replace("robot.MotorE2", "robot.ServoE2");
 }

@@ -1,1 +1,1 @@
-brick.led().@@COLOR@@();
+robot.Led <- @@COLOR@@

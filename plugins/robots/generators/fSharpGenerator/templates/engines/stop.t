@@ -1,1 +1,1 @@
-model.Motor.["@@PORT@@"].Power <- 0
+robot.Stop()

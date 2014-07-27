@@ -1,1 +1,1 @@
-Thread.Sleep @@DELAY@@
+robot.Sleep @@DELAY@@
