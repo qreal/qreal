@@ -24,9 +24,8 @@ namespace details {
 /// Can be quite slow due to use of regexp matching with every regexp in lexemes description, so do not use this lexer
 /// on really large files.
 ///
-/// Now lexer (with default lexemes definition) follows Lua 5.3 specification with some exceptions:
-/// - comments are not supported
-/// - literal strings are not supported
+/// Now lexer (with default lexemes definition) follows Lua 5.3 specification with following exceptions:
+/// - long brackets are not supported, either for string literals or for comments.
 class Lexer {
 public:
 	/// Result of tokenization.
