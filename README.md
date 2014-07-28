@@ -1,5 +1,8 @@
 ![logo](http://qreal.ru/template/icon.png)
+ 
 #[QReal] (http://qreal.ru)
+
+[![Build Status](https://travis-ci.org/qreal/qreal.svg?branch=master)](https://travis-ci.org/qreal/qreal)
 
 QReal представляет собой metaCASE-инструментарий, т.е. среду для создания новых визуальных языков и интегрированных сред программирования для них.
 Руководители: [Юрий Литвинов](https://github.com/yurii-litvinov) и [Тимофей Брыксин](https://github.com/jzuken)
