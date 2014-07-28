@@ -42,6 +42,7 @@ void initLogging()
 	}
 }
 
+#if defined Q_OS_WIN32
 QString prettyWindowsVersion(QSysInfo::WinVersion version)
 {
 	// Adapted from https://qt.gitorious.org/qt/thiago-intels-qtbase/commit/5757c458157bcb11da40c43e98eeb7a539d20912
@@ -81,6 +82,7 @@ QString prettyWindowsVersion(QSysInfo::WinVersion version)
 		return "";
 	}
 }
+#endif
 
 QString platformInfo()
 {
