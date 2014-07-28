@@ -51,7 +51,7 @@ public:
 private:
 	Lexemes::Type checkForKeyword(QString const &identifier) const;
 
-	Lexemes const &mLexemes;
+	Lexemes const mLexemes;
 };
 
 }

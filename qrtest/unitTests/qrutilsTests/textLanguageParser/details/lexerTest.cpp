@@ -45,6 +45,7 @@ TEST_F(LexerTest, connections)
 TEST_F(LexerTest, customization)
 {
 	mLexemes->redefine(Lexemes::integerLiteral, QRegularExpression("[+-]?\\d+x"));
+	mLexer.reset(new textLanguageParser::details::Lexer(*mLexemes));
 
 	QString const stream = "+12x 45x";
 
@@ -220,6 +221,7 @@ TEST_F(LexerTest, multilineErrorReporting)
 TEST_F(LexerTest, unicode)
 {
 	mLexemes->redefine(Lexemes::identifier, QRegularExpression("[а-яА-Я_][а-яА-Я_1-9]+"));
+	mLexer.reset(new textLanguageParser::details::Lexer(*mLexemes));
 
 	QString const stream = "ололо русский\n язык";
 
@@ -329,4 +331,35 @@ TEST_F(LexerTest, strings)
 
 	EXPECT_EQ(ast::Connection(17, 2, 4), result.tokens[3].range().start());
 	EXPECT_EQ(ast::Connection(19, 2, 6), result.tokens[3].range().end());
+}
+
+TEST_F(LexerTest, comments)
+{
+	QString stream = "a = 1 --ololo\n"
+			"---- x\n"
+			"a = 'no -- comment in a string' end\n"
+			"--"
+			;
+
+	auto result = mLexer->tokenize(stream);
+
+	ASSERT_EQ(7, result.tokens.size());
+	ASSERT_EQ(3, result.comments.size());
+
+	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
+	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
+	EXPECT_EQ(Lexemes::integerLiteral, result.tokens[2].lexeme());
+	EXPECT_EQ(Lexemes::identifier, result.tokens[3].lexeme());
+	EXPECT_EQ(Lexemes::equals, result.tokens[4].lexeme());
+	EXPECT_EQ(Lexemes::string, result.tokens[5].lexeme());
+	EXPECT_EQ(Lexemes::endKeyword, result.tokens[6].lexeme());
+
+	EXPECT_EQ(ast::Connection(6, 0, 6), result.comments[0].range().start());
+	EXPECT_EQ(ast::Connection(12, 0, 12), result.comments[0].range().end());
+
+	EXPECT_EQ(ast::Connection(14, 1, 0), result.comments[1].range().start());
+	EXPECT_EQ(ast::Connection(19, 1, 5), result.comments[1].range().end());
+
+	EXPECT_EQ(ast::Connection(57, 3, 0), result.comments[2].range().start());
+	EXPECT_EQ(ast::Connection(58, 3, 1), result.comments[2].range().end());
 }

@@ -76,8 +76,7 @@ Lexer::Result Lexer::tokenize(QString const &input)
 				// special care is needed to maintain connection.
 				if (candidate == Lexemes::string) {
 					QRegularExpressionMatchIterator matchIterator = newLineRegexp.globalMatch(
-							input
-							, absolutePosition);
+							bestMatch.captured());
 
 					QRegularExpressionMatch match;
 
@@ -87,9 +86,10 @@ Lexer::Result Lexer::tokenize(QString const &input)
 					}
 
 					if (match.hasMatch()) {
-						int lastNewLineOffset = match.capturedEnd() - 1;
+						int relativeLastNewLineOffset = match.capturedEnd() - 1;
+						int absoluteLastNewLineOffset = absolutePosition + relativeLastNewLineOffset;
 						int absoluteTokenEnd = bestMatch.capturedEnd() - 1;
-						tokenEndColumn = absoluteTokenEnd - lastNewLineOffset - 1;
+						tokenEndColumn = absoluteTokenEnd - absoluteLastNewLineOffset - 1;
 					} else {
 						tokenEndColumn += bestMatch.capturedLength() - 1;
 					}
@@ -106,6 +106,12 @@ Lexer::Result Lexer::tokenize(QString const &input)
 				}
 
 				result.tokens << Token(candidate, range, bestMatch.captured());
+			} else if (candidate == Lexemes::comment) {
+				tokenEndColumn += bestMatch.capturedLength() - 1;
+				ast::Range range(bestMatch.capturedStart(), line, column
+						, bestMatch.capturedEnd() - 1, tokenEndLine, tokenEndColumn);
+
+				result.comments << Token(candidate, range, bestMatch.captured());
 			}
 
 			// Keeping connection updated.
@@ -128,7 +134,8 @@ Lexer::Result Lexer::tokenize(QString const &input)
 			while (!whitespaceRegexp.match(input, absolutePosition
 					, QRegularExpression::NormalMatch, QRegularExpression::AnchoredMatchOption).hasMatch()
 					&& !newLineRegexp.match(input, absolutePosition
-							, QRegularExpression::NormalMatch, QRegularExpression::AnchoredMatchOption).hasMatch())
+							, QRegularExpression::NormalMatch, QRegularExpression::AnchoredMatchOption).hasMatch()
+					&& absolutePosition < input.length())
 			{
 				++absolutePosition;
 				++column;
