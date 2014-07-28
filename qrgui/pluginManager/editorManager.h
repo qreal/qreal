@@ -42,8 +42,8 @@ public:
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const override;
 	bool shallPaletteBeSorted(Id const &editor, Id const &diagram) const override;
 
-	bool loadPlugin(QString const &pluginName) override;
-	bool unloadPlugin(QString const &pluginName) override;
+	QString loadPlugin(QString const &pluginName) override;
+	QString unloadPlugin(QString const &pluginName) override;
 
 	QString mouseGesture(Id const &id) const override;
 	QString friendlyName(Id const &id) const override;

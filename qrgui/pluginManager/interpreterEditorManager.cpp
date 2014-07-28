@@ -390,16 +390,16 @@ Id InterpreterEditorManager::findElementByType(QString const &type) const
 	throw Exception("No type " + type);
 }
 
-bool InterpreterEditorManager::loadPlugin(QString const &pluginName)
+QString InterpreterEditorManager::loadPlugin(QString const &pluginName)
 {
 	Q_UNUSED(pluginName);
-	return true;
+	return QString();
 }
 
-bool InterpreterEditorManager::unloadPlugin(QString const &pluginName)
+QString InterpreterEditorManager::unloadPlugin(QString const &pluginName)
 {
 	Q_UNUSED(pluginName);
-	return true;
+	return QString();
 }
 
 QString InterpreterEditorManager::description(Id const &id) const

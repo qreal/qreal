@@ -19,6 +19,7 @@
 #include <QtGui/QKeySequence>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
@@ -325,6 +326,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	SettingsManager::setValue("size", size());
 	SettingsManager::setValue("pos", pos());
 
+	QLOG_INFO() << "Closing main window...";
 	emit mSystemEvents->closedMainWindow();
 }
 
@@ -960,9 +962,12 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 	if (mEditorManagerProxy.editors().contains(Id(pluginName))) {
 		IdList const diagrams = mEditorManagerProxy.diagrams(Id(pluginName));
 
-		if (!mEditorManagerProxy.unloadPlugin(pluginName)) {
+		QString const error = mEditorManagerProxy.unloadPlugin(pluginName);
+		if (!error.isEmpty()) {
+			QMessageBox::warning(this, tr("Error"), tr("Plugin unloading failed: ") + error);
 			return false;
 		}
+
 		foreach (Id const &diagram, diagrams) {
 			mUi->paletteTree->deleteEditor(diagram);
 		}
@@ -972,7 +977,9 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
-	if (!mEditorManagerProxy.loadPlugin(fileName)) {
+	QString const error = mEditorManagerProxy.loadPlugin(fileName);
+	if (!error.isEmpty()) {
+		QMessageBox::warning(this, tr("Error"), tr("Plugin loading failed: ") + error);
 		return false;
 	}
 
