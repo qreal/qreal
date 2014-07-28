@@ -67,26 +67,56 @@ Lexer::Result Lexer::tokenize(QString const &input)
 		}
 
 		if (bestMatch.hasMatch()) {
-			if (candidate != Lexemes::whitespace && candidate != Lexemes::newline) {
-				// Determining connection of the lexeme. Multiline tokens like strings and long comments are not
-				// supported yet, so we can safely assume that a token starts and ends on one line.
+			int tokenEndLine = line;
+			int tokenEndColumn = column;
+
+			if (candidate != Lexemes::whitespace && candidate != Lexemes::newline && candidate != Lexemes::comment)
+			{
+				// Determining connection of the lexeme. String is the only token that can span multiple lines so
+				// special care is needed to maintain connection.
+				if (candidate == Lexemes::string) {
+					QRegularExpressionMatchIterator matchIterator = newLineRegexp.globalMatch(
+							input
+							, absolutePosition);
+
+					QRegularExpressionMatch match;
+
+					while (matchIterator.hasNext()) {
+						match = matchIterator.next();
+						++tokenEndLine;
+					}
+
+					if (match.hasMatch()) {
+						int lastNewLineOffset = match.capturedEnd() - 1;
+						int absoluteTokenEnd = bestMatch.capturedEnd() - 1;
+						tokenEndColumn = absoluteTokenEnd - lastNewLineOffset - 1;
+					} else {
+						tokenEndColumn += bestMatch.capturedLength() - 1;
+					}
+				} else {
+					tokenEndColumn += bestMatch.capturedLength() - 1;
+				}
+
 				ast::Range range(bestMatch.capturedStart(), line, column
-						, bestMatch.capturedEnd() - 1, line, column + bestMatch.capturedLength() - 1);
+						, bestMatch.capturedEnd() - 1, tokenEndLine, tokenEndColumn);
 
 				if (candidate == Lexemes::identifier) {
 					// Keyword is an identifier which is separate lexeme.
-					candidate = checkForKeyword(bestMatch.capturedTexts()[0]);
+					candidate = checkForKeyword(bestMatch.captured());
 				}
 
-				result.tokens << Token(candidate, range, bestMatch.capturedTexts()[0]);
+				result.tokens << Token(candidate, range, bestMatch.captured());
 			}
 
 			// Keeping connection updated.
 			if (candidate == Lexemes::newline) {
 				++line;
 				column = 0;
-			} else {
+			} else if (candidate == Lexemes::whitespace || candidate == Lexemes::comment) {
 				column += bestMatch.capturedLength();
+			} else {
+				line = tokenEndLine;
+				column = tokenEndColumn + 1;
 			}
 
 			absolutePosition += bestMatch.capturedLength();

@@ -6,7 +6,7 @@ Lexemes::Lexemes()
 {
 	mLexemes.insert(whitespace, QRegularExpression("[ \t]+"));
 	mLexemes.insert(newline, QRegularExpression("[\n]"));
-	mLexemes.insert(identifier, QRegularExpression("[a-zA-Z_][a-zA-Z0-9_]+"));
+	mLexemes.insert(identifier, QRegularExpression("[a-zA-Z_][a-zA-Z0-9_]*"));
 
 	mKeywords.insert(andKeyword, "and");
 	mKeywords.insert(breakKeyword, "break");
@@ -69,6 +69,9 @@ Lexemes::Lexemes()
 	mLexemes.insert(doubleDot, QRegularExpression("\\.\\."));
 	mLexemes.insert(tripleDot, QRegularExpression("\\.\\.\\."));
 
+	mLexemes.insert(string, QRegularExpression("(\"[^\"\\\\]*(\\\\(.|\\n)[^\"\\\\]*)*\")"
+			"|('[^'\\\\]*(\\\\(.|\\n)[^'\\\\]*)*')"));
+
 	mLexemes.insert(integerLiteral, QRegularExpression("(0[xX][0-9a-fA-F]+)|([0-9]+)"));
 	mLexemes.insert(floatLiteral, QRegularExpression(
 			"(0[xX][0-9a-fA-F]+("
@@ -80,6 +83,8 @@ Lexemes::Lexemes()
 					"|(\\.[0-9]+)"
 					"|([eE](([+-][0-9]+)|([0-9]*)))))"
 			));
+
+	mLexemes.insert(comment, QRegularExpression("--.*"));
 }
 
 void Lexemes::redefine(Type lexemeType, QRegularExpression const &regExp)

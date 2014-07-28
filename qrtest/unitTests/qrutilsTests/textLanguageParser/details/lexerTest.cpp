@@ -260,3 +260,73 @@ TEST_F(LexerTest, numericLiterals)
 		EXPECT_EQ(Lexemes::floatLiteral, token.lexeme());
 	}
 }
+
+TEST_F(LexerTest, strings)
+{
+	QString stream = "a = 'alo\\n123\"'\n"
+			"   a = \"alo\\n123\\\"\"\n"
+			"   a = '\\97lo\\10\\04923\"'"
+			;
+
+	auto result = mLexer->tokenize(stream);
+
+	ASSERT_EQ(9, result.tokens.size());
+
+	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
+	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
+	EXPECT_EQ(Lexemes::string, result.tokens[2].lexeme());
+
+	EXPECT_EQ(Lexemes::identifier, result.tokens[3].lexeme());
+	EXPECT_EQ(Lexemes::equals, result.tokens[4].lexeme());
+	EXPECT_EQ(Lexemes::string, result.tokens[5].lexeme());
+
+	EXPECT_EQ(Lexemes::identifier, result.tokens[6].lexeme());
+	EXPECT_EQ(Lexemes::equals, result.tokens[7].lexeme());
+	EXPECT_EQ(Lexemes::string, result.tokens[8].lexeme());
+
+	stream = " x = \"asd\\\" sd\" y = 'asd'";
+	result = mLexer->tokenize(stream);
+
+	ASSERT_EQ(6, result.tokens.size());
+
+	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
+	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
+	EXPECT_EQ(Lexemes::string, result.tokens[2].lexeme());
+
+	EXPECT_EQ(Lexemes::identifier, result.tokens[3].lexeme());
+	EXPECT_EQ(Lexemes::equals, result.tokens[4].lexeme());
+	EXPECT_EQ(Lexemes::string, result.tokens[5].lexeme());
+
+	EXPECT_EQ(ast::Connection(5, 0, 5), result.tokens[2].range().start());
+	EXPECT_EQ(ast::Connection(14, 0, 14), result.tokens[2].range().end());
+
+	stream = " a = 'asd\nef' end ";
+	result = mLexer->tokenize(stream);
+
+	ASSERT_EQ(4, result.tokens.size());
+	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
+	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
+	EXPECT_EQ(Lexemes::string, result.tokens[2].lexeme());
+	EXPECT_EQ(Lexemes::endKeyword, result.tokens[3].lexeme());
+
+	EXPECT_EQ(ast::Connection(5, 0, 5), result.tokens[2].range().start());
+	EXPECT_EQ(ast::Connection(12, 1, 2), result.tokens[2].range().end());
+
+	EXPECT_EQ(ast::Connection(14, 1, 4), result.tokens[3].range().start());
+	EXPECT_EQ(ast::Connection(16, 1, 6), result.tokens[3].range().end());
+
+	stream = " a = 'asd\nef\ngh' end ";
+	result = mLexer->tokenize(stream);
+
+	ASSERT_EQ(4, result.tokens.size());
+	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
+	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
+	EXPECT_EQ(Lexemes::string, result.tokens[2].lexeme());
+	EXPECT_EQ(Lexemes::endKeyword, result.tokens[3].lexeme());
+
+	EXPECT_EQ(ast::Connection(5, 0, 5), result.tokens[2].range().start());
+	EXPECT_EQ(ast::Connection(15, 2, 2), result.tokens[2].range().end());
+
+	EXPECT_EQ(ast::Connection(17, 2, 4), result.tokens[3].range().start());
+	EXPECT_EQ(ast::Connection(19, 2, 6), result.tokens[3].range().end());
+}

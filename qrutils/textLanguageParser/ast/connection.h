@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+
 #include "qrutils/utilsDeclSpec.h"
 
 namespace textLanguageParser {
@@ -39,4 +41,10 @@ inline bool operator ==(Connection const &a, Connection const &b)
 }
 
 }
+}
+
+/// Output operator for gtest.
+inline ::std::ostream& operator<<(::std::ostream& os, const textLanguageParser::ast::Connection& connection)
+{
+	return os << "(" << connection.absolutePosition() <<", " << connection.line() << ", " << connection.column() << ")";
 }
