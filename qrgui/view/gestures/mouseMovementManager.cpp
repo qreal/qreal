@@ -1,5 +1,7 @@
 #include "mouseMovementManager.h"
 
+#include <qrkernel/logging.h>
+
 #include "view/gestures/pathCorrector.h"
 #include "view/gestures/levenshteinDistance.h"
 #include "view/gestures/geometricForms.h"
@@ -98,16 +100,20 @@ void MouseMovementManager::recountCentre()
 	mCentre = ((count - 1) * mCentre + mPath.back().back()) / count;
 }
 
-void MouseMovementManager::mousePress(QPointF const & pnt)
+void MouseMovementManager::mousePress(QPointF const &pnt)
 {
+	QLOG_TRACE() << "Started mouse gesture at " << pnt;
+
 	QList<QPointF> path;
 	path.push_back(pnt);
 	mPath.push_back(path);
 	recountCentre();
 }
 
-void MouseMovementManager::mouseMove(QPointF const & pnt)
+void MouseMovementManager::mouseMove(QPointF const &pnt)
 {
+	QLOG_TRACE() << "Mouse gesture movement to " << pnt;
+
 	PointVector path = mPath.back();
 	mPath.pop_back();
 	path.push_back(pnt);
