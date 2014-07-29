@@ -22,6 +22,10 @@ public:
 
 	Id result() const;
 
+	/// @todo: Bad method, required only for linkers. Get rid of it.
+	/// Modifies command setting new creation position.
+	void setNewPosition(QPointF const &position);
+
 protected:
 	virtual bool execute();
 	virtual bool restoreState();

@@ -57,6 +57,7 @@ private:
 	bool mPressed;
 	qReal::Id mEdgeType;
 
+	QPointF mInitialClickPoint;
 	commands::CreateElementCommand *mCreateEdgeCommand;
 };
 
