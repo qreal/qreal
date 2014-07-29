@@ -33,6 +33,17 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
+NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
+{
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
+
+	if (mOwnsBlocksFactory) {
+		delete mBlocksFactory;
+	}
+}
+
 void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 		, SystemEventsInterface const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
@@ -70,6 +81,7 @@ interpreterBase::blocksBase::BlocksFactoryInterface *NxtKitInterpreterPlugin::bl
 		interpreterBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model);
+	mOwnsBlocksFactory = false;
 	return mBlocksFactory;
 }
 
@@ -80,6 +92,7 @@ interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defau
 
 interpreterBase::AdditionalPreferences *NxtKitInterpreterPlugin::settingsWidget()
 {
+	mOwnsAdditionalPreferences = false;
 	return mAdditionalPreferences;
 }
 

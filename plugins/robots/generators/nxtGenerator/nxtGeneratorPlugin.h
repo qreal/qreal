@@ -76,7 +76,7 @@ private:
 	bool mNxtToolsPresent;
 
 	/// Flasher object
-	NxtFlashTool *mFlashTool;  // Has ownership
+	NxtFlashTool *mFlashTool = nullptr;  // Has ownership
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 
