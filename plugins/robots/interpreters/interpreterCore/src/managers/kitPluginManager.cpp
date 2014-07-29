@@ -24,7 +24,7 @@ KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 			if (tryToLoadInterpreterPlugin(plugin) || tryToLoadGeneratorPlugin(plugin)) {
 				mLoaders.insert(fileName, loader);
 			} else {
-				// loader->unload();
+				loader->unload();
 				delete loader;
 			}
 		} else {
@@ -37,6 +37,10 @@ KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 
 KitPluginManager::~KitPluginManager()
 {
+	for (QPluginLoader * const loader : mLoaders.values()) {
+		loader->unload();
+	}
+
 	qDeleteAll(mLoaders);
 }
 
