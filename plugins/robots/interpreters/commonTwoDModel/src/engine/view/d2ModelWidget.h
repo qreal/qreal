@@ -117,7 +117,7 @@ private:
 		, drawEllipse
 	};
 
-	static const int defaultPenWidth = 15;
+	static const int defaultPenWidth = 6;
 
 	static const int indexOfNoneSensor = 0;
 	static const int indexOfTouchSensor = 1;
@@ -154,7 +154,6 @@ private:
 	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
-	void setNoPalette();
 
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(CursorType cursor);

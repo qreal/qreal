@@ -118,6 +118,8 @@ void D2ModelWidget::initWidget()
 	move(0, 0);
 
 	mUi->penWidthSpinBox->setRange(1, 30);
+	mUi->penWidthSpinBox->setValue(mWidth);
+	mUi->penColorComboBox->setColor(QColor("black"));
 
 	QStringList const colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
 	QStringList const translatedColorList = { tr("Black"), tr("Blue"), tr("Green"), tr("Yellow"), tr("Red") };
@@ -439,10 +441,7 @@ void D2ModelWidget::changePenColor(int textIndex)
 void D2ModelWidget::changePalette()
 {
 	QList<QGraphicsItem *> const listSelectedItems = mScene->selectedItems();
-	if (listSelectedItems.isEmpty()) {
-		setNoPalette();
-		mScene->setEmptyPenBrushItems();
-	} else {
+	if (!listSelectedItems.isEmpty()) {
 		AbstractItem *item = dynamic_cast<AbstractItem *>(listSelectedItems.back());
 		if (isColorItem(item)) {
 			QPen const penItem = item->pen();
@@ -466,14 +465,12 @@ void D2ModelWidget::setValuePenWidthSpinBox(int width)
 void D2ModelWidget::setItemPalette(QPen const &penItem, QBrush const &brushItem)
 {
 	Q_UNUSED(brushItem)
+	mUi->penColorComboBox->blockSignals(true);
+	mUi->penWidthSpinBox->blockSignals(true);
 	setValuePenWidthSpinBox(penItem.width());
 	setValuePenColorComboBox(penItem.color());
-}
-
-void D2ModelWidget::setNoPalette()
-{
-	mUi->penWidthSpinBox->setValue(mWidth);
-	mUi->penColorComboBox->setColor(QColor("black"));
+	mUi->penColorComboBox->blockSignals(false);
+	mUi->penWidthSpinBox->blockSignals(false);
 }
 
 D2ModelScene *D2ModelWidget::scene()
