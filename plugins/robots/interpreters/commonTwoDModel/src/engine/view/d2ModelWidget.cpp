@@ -273,11 +273,11 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
-	if (event->matches(QKeySequence::ZoomIn)) {
+	if ((event->key() == Qt::Key_Equal || event->key() == Qt::Key_Plus) && event->modifiers() == Qt::ControlModifier) {
 		mScene->mainView()->zoomIn();
 	} else if (event->matches(QKeySequence::ZoomOut)) {
 		mScene->mainView()->zoomOut();
-	} else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Space) {
+	} else if (event->key() == Qt::Key_F5) {
 		mUi->runButton->animateClick();
 	} else if (event->key() == Qt::Key_Escape) {
 		mUi->stopButton->animateClick();
