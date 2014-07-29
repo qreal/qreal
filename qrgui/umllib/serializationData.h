@@ -36,6 +36,8 @@ public:
 	QPointF pos;
 
 	int shapeType;
+
+	QMap<QString, QVariant> logicalProperties;
 };
 
 /**

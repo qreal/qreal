@@ -1022,6 +1022,8 @@ EdgeData& EdgeElement::data()
 
 	mData.shapeType = mShapeType;
 
+	mData.logicalProperties = mGraphicalAssistApi.properties(logicalId());
+
 	return mData;
 }
 
