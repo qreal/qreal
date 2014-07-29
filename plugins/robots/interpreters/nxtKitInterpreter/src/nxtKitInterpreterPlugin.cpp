@@ -37,6 +37,7 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 		, SystemEventsInterface const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
+		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
@@ -48,7 +49,8 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 			, this
 			, &NxtKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModel->init(eventsForKitPlugin, systemEvents, graphicalModel, logicalModel, interpreterControl);
+	mTwoDModel->init(eventsForKitPlugin, systemEvents, graphicalModel
+			, logicalModel, interpretersInterface, interpreterControl);
 }
 
 QString NxtKitInterpreterPlugin::kitId() const

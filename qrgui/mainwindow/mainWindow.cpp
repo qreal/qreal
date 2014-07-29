@@ -1939,7 +1939,7 @@ QString MainWindow::getNextDirName(QString const &name)
 	return parts.join("_");
 }
 
-Id MainWindow::activeDiagram()
+Id MainWindow::activeDiagram() const
 {
 	return getCurrentTab() && getCurrentTab()->mvIface() ? getCurrentTab()->mvIface()->rootId() : Id();
 }

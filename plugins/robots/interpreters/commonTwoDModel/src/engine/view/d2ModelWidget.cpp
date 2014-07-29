@@ -73,6 +73,10 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(&mModel.robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
 	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
 			, this, &D2ModelWidget::reinitSensor);
+	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
+			, this, &D2ModelWidget::saveToRepo);
+	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceRemoved
+			, this, &D2ModelWidget::saveToRepo);
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();

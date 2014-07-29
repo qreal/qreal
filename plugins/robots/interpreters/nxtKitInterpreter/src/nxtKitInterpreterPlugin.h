@@ -26,6 +26,7 @@ public:
 			, qReal::SystemEventsInterface const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
+			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	QString kitId() const override;

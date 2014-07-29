@@ -8,6 +8,7 @@
 #include <qrgui/toolPluginInterface/actionInfo.h>
 #include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/toolPluginInterface/systemEventsInterface.h>
+#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
@@ -34,12 +35,14 @@ public:
 			, qReal::SystemEventsInterface const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
+			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 			, InterpreterControlInterface &interpreterControl)
 	{
 		Q_UNUSED(eventsForKitPlugin)
 		Q_UNUSED(systemEvents)
 		Q_UNUSED(graphicalModel)
 		Q_UNUSED(logicalModel)
+		Q_UNUSED(interpretersInterface)
 		Q_UNUSED(interpreterControl)
 	}
 
