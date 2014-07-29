@@ -1,79 +1,84 @@
 #include "editorManager.h"
 
 #include <QtCore/QCoreApplication>
-#include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
 #include <qrkernel/ids.h>
+#include <qrkernel/logging.h>
 #include <qrkernel/exception/exception.h>
 #include <qrrepo/repoApi.h>
 
 #include "umllib/nodeElement.h"
 #include "umllib/edgeElement.h"
 
-#include <qrutils/pluginManagers/interfaceWrapper.h>
-
 using namespace qReal;
 
 EditorManager::EditorManager(QObject *parent) : QObject(parent)
 {
-	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath());
-	QList<QObject *> loadedUncastedInterfaces = mCommonPluginManager->allLoadedPlugins();
+	mPluginsDir = QDir(qApp->applicationDirPath());
 
-	foreach (QObject * const currentInterface, loadedUncastedInterfaces) {
-		QString const fileName = mCommonPluginManager->fileName(currentInterface);
-		EditorInterface * castedEditorInterface = InterfaceWrapper<EditorInterface>::wrappedInterface(currentInterface);
+	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
+		mPluginsDir.cdUp();
+	}
 
-		if (castedEditorInterface) {
-			QString const interfaceId = castedEditorInterface->id();
+	mPluginsDir.cd("plugins");
 
-			mPluginsLoaded += interfaceId;
-			mPluginFileName.insert(interfaceId, fileName);
-			mPluginIface[interfaceId] = castedEditorInterface;
-		}
+	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
+		loadPlugin(fileName);
 	}
 }
 
 EditorManager::~EditorManager()
 {
-	foreach (QString const &id, mPluginIface.keys()) {
-		delete mPluginIface[id];
-		mPluginIface.remove(id);
-	}
-
-	mCommonPluginManager->deleteAllLoaders();
-//	delete(mCommonPluginManager);
+	qDeleteAll(mPluginIface);
+	qDeleteAll(mLoaders);
 }
 
-bool EditorManager::loadPlugin(QString const &pluginName)
+QString EditorManager::loadPlugin(QString const &pluginName)
 {
-	EditorInterface *iEditor = InterfaceWrapper<EditorInterface>::wrappedInterface(
-				mCommonPluginManager->pluginLoadedByName(pluginName));
-	if (iEditor) {
-		QString const interfaceId = iEditor->id();
+	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
+	QObject *plugin = loader->instance();
 
-		mPluginsLoaded += interfaceId;
-		mPluginFileName.insert(interfaceId, pluginName);
-		mPluginIface[interfaceId] = iEditor;
-		return true;
+	if (plugin) {
+		EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
+		if (iEditor) {
+			mPluginsLoaded += iEditor->id();
+			mPluginFileName.insert(iEditor->id(), pluginName);
+			mPluginIface[iEditor->id()] = iEditor;
+			mLoaders.insert(pluginName, loader);
+			QLOG_INFO() << "Plugin" << pluginName << "loaded. Version: " << iEditor->version();
+			return QString();
+		}
 	}
 
-	return false;
+	QString const error = loader->errorString();
+	QLOG_WARN() << "Editor plugin" << pluginName << "loading failed: " + error;
+	loader->unload();
+	delete loader;
+	return error;
 }
 
-bool EditorManager::unloadPlugin(QString const &pluginName)
+QString EditorManager::unloadPlugin(QString const &pluginName)
 {
-	QPair<bool, bool> const resultOfUnloading = mCommonPluginManager->unloadPlugin(mPluginFileName[pluginName]);
-	bool const result = resultOfUnloading.first;
-	bool const deletionFlag = resultOfUnloading.second;
-
-	if (deletionFlag) {
+	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
+	if (loader) {
+		mLoaders.remove(mPluginFileName[pluginName]);
 		mPluginIface.remove(pluginName);
 		mPluginFileName.remove(pluginName);
 		mPluginsLoaded.removeAll(pluginName);
+		if (!loader->unload()) {
+			QString const error = loader->errorString();
+			QLOG_WARN() << "Editor plugin" << pluginName << "unloading failed: " + error;
+			delete loader;
+			return error;
+		}
+
+		QLOG_INFO() << "Plugin" << pluginName << "unloaded";
+		delete loader;
+		return QString();
 	}
 
-	return result;
+	return "Could not find loader";
 }
 
 IdList EditorManager::editors() const

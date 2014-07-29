@@ -8,6 +8,8 @@
 #include "label.h"
 #include "diagram.h"
 #include "nameNormalizer.h"
+#include "nodeType.h"
+#include "edgeType.h"
 
 using namespace utils;
 
@@ -16,6 +18,19 @@ GraphicType::ContainerProperties::ContainerProperties()
 		, sizeOfChildrenForestalling(0), hasMovableChildren(true)
 		, minimizesToChildren(false), maximizesChildren(false)
 {
+}
+
+GraphicType::GeneralizationProperties::GeneralizationProperties(QString const &name, QString const &overrides)
+		: name(name)
+{
+	overridePorts = overrides.contains("ports", Qt::CaseInsensitive);
+	overrideLabels = overrides.contains("labels", Qt::CaseInsensitive);
+	overridePictures = overrides.contains("pictures", Qt::CaseInsensitive);
+	if (overrides.contains("all", Qt::CaseInsensitive)) {
+		overridePorts = true;
+		overrideLabels = true;
+		overridePictures = true;
+	}
 }
 
 GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
@@ -47,9 +62,10 @@ void GraphicType::copyFields(GraphicType *type) const
 	type->mElement = mElement;
 	type->mGraphics = mGraphics;
 	type->mHeight = mHeight;
-	foreach (Label *label, mLabels) {
+	for (Label *label : mLabels) {
 		type->mLabels.append(new Label(*label));
 	}
+
 	type->mLogic = mLogic;
 	type->mParents = mParents;
 	type->mVisible = mVisible;
@@ -59,22 +75,32 @@ void GraphicType::copyFields(GraphicType *type) const
 	type->mExplosions = mExplosions;
 }
 
+void GraphicType::copyLabels(GraphicType *parent)
+{
+	for (Label *label : parent->mLabels) {
+		mLabels.append(label->clone());
+	}
+}
+
 bool GraphicType::init(QDomElement const &element, QString const &context)
 {
 	mElement = element;
 	if (Type::init(element, context)) {
 		mDescription = element.attribute("description", "");
+		mAbstract = element.attribute("abstract", "");
 		mLogic = element.firstChildElement("logic");
 		if (mLogic.isNull()) {
 			qDebug() << "ERROR: can't find logic tag of graphic type";
 			return false;
 		}
+
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
 				&& initGraphics() && initLabels() && initPossibleEdges() && initPortTypes()
 				&& initCreateChildrenFromMenu() && initContainerProperties() && initBonusContextMenuFields()
 				&& initExplosions();
 	}
+
 	return false;
 }
 
@@ -84,6 +110,7 @@ bool GraphicType::initParents()
 	if (parentsElement.isNull()) {
 		return true;
 	}
+
 	for (QDomElement parentElement = parentsElement.firstChildElement("parent")
 			; !parentElement.isNull()
 			; parentElement = parentElement.nextSiblingElement("parent"))
@@ -94,13 +121,18 @@ bool GraphicType::initParents()
 			return false;
 		}
 
-		if (!mParents.contains(parentName)) {
-			mParents.append(parentName);
-		} else {
-			qDebug() << "ERROR: parent of node" << qualifiedName() << "duplicated";
-			return false;
+		QString const overrides = parentElement.attribute("overrides");
+
+		for (auto const &parent : mParents) {
+			if (parent.name == parentName) {
+				qDebug() << "ERROR: parent of node" << qualifiedName() << "duplicated";
+				return false;
+			}
 		}
+
+		mParents.append({parentName, overrides});
 	}
+
 	return true;
 }
 
@@ -158,6 +190,7 @@ bool GraphicType::initFieldList(QString const &listName, QString const &listElem
 			return false;
 		}
 	}
+
 	return true;
 }
 
@@ -349,48 +382,72 @@ bool GraphicType::resolve()
 	ResolvingHelper helper(mResolving);
 	Q_UNUSED(helper)
 
-	mParents.removeDuplicates();
+	/// @todo Ensure that parents are not duplicated.
 
-	foreach (QString const &parentName, mParents) {
+	for (GeneralizationProperties const &generalization : mParents) {
 		// Предки ищутся в "родном" контексте типа, так что если он был импортирован, ссылки не должны поломаться.
-		QString qualifiedParentName = parentName.contains("::") ? parentName : nativeContext() + "::" + parentName;
+		QString const qualifiedParentName = generalization.name.contains("::")
+				? generalization.name
+				: nativeContext() + "::" + generalization.name;
 
 		Type *parent = mDiagram->findType(qualifiedParentName);
-		if (parent == NULL) {
+		if (parent == nullptr) {
 			// В локальном контексте не нашлось, попробуем в глобальном
-			parent = mDiagram->findType(parentName);
-			if (parent == NULL) {
-				qDebug() << "ERROR: can't find parent" << parentName << "for" << qualifiedName();
+			parent = mDiagram->findType(generalization.name);
+			if (parent == nullptr) {
+				qDebug() << "ERROR: can't find parent" << generalization.name << "for" << qualifiedName();
 				return false;
 			}
 		}
 
 		if (parent->isResolving()) {
-			qDebug() << "ERROR: circular inheritance between" << parentName << "and" << qualifiedName();
+			qDebug() << "ERROR: circular inheritance between" << generalization.name << "and" << qualifiedName();
 			return false;
 		}
+
 		if (!parent->isResolved()) {
 			if (!parent->resolve()) {
 				return false;
 			}
 		}
-		foreach (Property *property, parent->properties().values()) {
+
+		for (Property *property : parent->properties().values()) {
 			if (!addProperty(property->clone())) {
 				return false;
 			}
 		}
 
-		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
-		if (gParent) {
-			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
+		GraphicType* const graphicParent = dynamic_cast<GraphicType*>(parent);
+		if (graphicParent != nullptr) {
+			if (!generalization.overrideLabels) {
+				copyLabels(graphicParent);
+			}
+
+			if (!generalization.overridePictures) {
+				copyPictures(graphicParent);
+			}
+
+			NodeType* const nodeParent = dynamic_cast<NodeType*>(parent);
+			if (nodeParent != nullptr) {
+				if (!generalization.overridePorts) {
+					copyPorts(nodeParent);
+				}
+			}
+
+			for (PossibleEdge pEdge : graphicParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
 			}
-			foreach (QString const &element, gParent->mExplosions.keys()) {
+
+			for (QString const &element : graphicParent->mExplosions.keys()) {
 				if (!mExplosions.contains(element)) {
-					mExplosions[element] = gParent->mExplosions[element];
+					mExplosions[element] = graphicParent->mExplosions[element];
 				}
 			}
 		}
+	}
+
+	for (int i = 0; i < mLabels.size(); ++i) {
+		mLabels.value(i)->changeIndex(i + 1);
 	}
 
 	mResolvingFinished = true;
@@ -403,6 +460,19 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
+		for (QPair<QString, QStringList> part : mDiagram->paletteGroups()) {
+			for (auto part2 : part.second) {
+				if (part2 == normalizedName && mAbstract == "true" ) {
+					qDebug() << "ERROR! Element" << qualifiedName() << "is abstract.";
+					return;
+				}
+			}
+		}
+
+		if (mAbstract == "true") {
+			return;
+		}
+
 		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName
 				<< "\"] = tr(\"" << actualDisplayedName << "\");\n";
 	}
@@ -655,10 +725,11 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 	QString const diagramName = NameNormalizer::normalize(mDiagram->name());
 	QString const normalizedName = NameNormalizer::normalize(qualifiedName());
 	out() << "\tmParentsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]\n";
-	foreach (QString const &parent, mParents) {
+	for (GeneralizationProperties const &parent : mParents) {
 		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\""
-				<< NameNormalizer::normalize(parent) << "\"))\n";
+				<< NameNormalizer::normalize(parent.name) << "\"))\n";
 	}
+
 	out() << "\t;\n";
 }
 

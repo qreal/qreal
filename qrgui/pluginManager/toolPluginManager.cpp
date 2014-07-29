@@ -2,6 +2,8 @@
 
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/logging.h>
+
 #include "hotKeyManager/hotKeyManager.h"
 #include <qrutils/pluginManagers/interfaceWrapper.h>
 
@@ -26,6 +28,7 @@ ToolPluginManager::~ToolPluginManager()
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
 {
+	QLOG_INFO() << "Initializing tool plugins...";
 	mSystemEvents = &configurator.systemEvents();
 
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {

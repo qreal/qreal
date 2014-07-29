@@ -24,20 +24,11 @@ public:
 	virtual void forMoveResize(QGraphicsSceneMouseEvent *event);
 	virtual void forReleaseResize(QGraphicsSceneMouseEvent *event);
 
-	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
-	void setMoveFlag(QGraphicsSceneMouseEvent *event);
-
 	static bool compareItems(graphicsUtils::AbstractItem* first, graphicsUtils::AbstractItem* second);
 	QString convertPenToString(QPen const &pen);
 	QString convertBrushToString(QBrush const &brush);
 	void setPenBrushItems(QPen const &pen, QBrush const &brush);
 	void setEmptyPenBrushItems();
-
-	QString penStyleItems();
-	int penWidthItems();
-	QString penColorItems();
-	QString brushStyleItems();
-	QString brushColorItems();
 
 	void setPenStyleItems(QString const &text);
 	void setPenWidthItems(int width);
@@ -46,6 +37,22 @@ public:
 	void setBrushColorItems(QString const &text);
 
 protected:
+	void setEmptyRect(int x, int y, int w, int h);
+
+	void setX1andY1(QGraphicsSceneMouseEvent *event);
+	void setX2andY2(QGraphicsSceneMouseEvent *event);
+	void reshapeItem(QGraphicsSceneMouseEvent *event);
+	void reshapeItem(QGraphicsSceneMouseEvent *event, graphicsUtils::AbstractItem *item);
+
+	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
+	void setMoveFlag(QGraphicsSceneMouseEvent *event);
+
+	QString penStyleItems();
+	int penWidthItems();
+	QString penColorItems();
+	QString brushStyleItems();
+	QString brushColorItems();
+
 	AbstractView *mView;
 	graphicsUtils::AbstractItem *mGraphicsItem;
 	qreal mX1;
@@ -64,13 +71,6 @@ protected:
 	int mFirstPenWidth;
 
 	QGraphicsRectItem *mEmptyRect;
-
-	void setEmptyRect(int x, int y, int w, int h);
-
-	void setX1andY1(QGraphicsSceneMouseEvent *event);
-	void setX2andY2(QGraphicsSceneMouseEvent *event);
-	void reshapeItem(QGraphicsSceneMouseEvent *event);
-	void reshapeItem(QGraphicsSceneMouseEvent *event, graphicsUtils::AbstractItem *item);
 };
 
 }
