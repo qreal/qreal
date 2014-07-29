@@ -763,7 +763,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Angular Servo" name="TrikAngularServo" description="Manages angular servomotor. Sets up rotation angle on the given port in percents from the maximal rotation angle that is defined in roobt`s configuration file. Values from 0 to 100 are correspond to a clockwise rotation and values from -100 to 0 correspond to counterclockwise rotation.">
+			<node displayedName="Angular Servo" name="TrikAngularServo" description="Manages angular servomotor. Sets up rotation angle on the given port in degrees. Values from 0 to 90 are correspond to a clockwise rotation and values from -90 to 0 correspond to counterclockwise rotation.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/angularServoBlock.png" x1="0" y2="50" x2="50"/>
@@ -771,8 +771,8 @@
 					<labels>
 						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
 						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="40" y="60" textBinded="Power" background="white"/>
-						<label x="-50" y="60" text="Angle (%):"/>
+						<label x="50" y="60" textBinded="Power" background="white"/>
+						<label x="-50" y="60" text="Angle (degrees):"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -803,7 +803,7 @@
 						<property displayedName="Ports" type="string" name="Ports">
 							<default>E1</default>
 						</property>
-						<property displayedName="Angle (%)" type="string" name="Power">
+						<property displayedName="Angle (degrees)" type="string" name="Power">
 							<default>0</default>
 						</property>
 					</properties>
