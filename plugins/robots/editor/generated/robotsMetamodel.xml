@@ -1110,7 +1110,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
-							<default>M1, M2, M3, M4</default>
+							<default>B1, B2, B3, B4</default>
 						</property>
 					</properties>
 					<generalizations>
