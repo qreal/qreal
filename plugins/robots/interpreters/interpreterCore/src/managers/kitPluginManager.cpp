@@ -57,7 +57,7 @@ QList<interpreterBase::robotModel::RobotModelInterface *> KitPluginManager::allR
 void KitPluginManager::tryToLoadInterpreterPlugins()
 {
 	QList<interpreterBase::KitPluginInterface *> loadedInterpreterPlugins =
-			InterfaceWrapper<interpreterBase::KitPluginInterface>::listOfInterfaces(mCommonPluginManager->allLoadedPlugins());
+			InterfaceWrapper<interpreterBase::KitPluginInterface>::listOfInterfaces(mCommonPluginManager->loadAllPlugins());
 
 	for (interpreterBase::KitPluginInterface * const kitPlugin: loadedInterpreterPlugins) {
 		mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
@@ -67,7 +67,7 @@ void KitPluginManager::tryToLoadInterpreterPlugins()
 void KitPluginManager::tryToLoadGeneratorPlugins()
 {
 	QList<generatorBase::GeneratorKitPluginInterface *> loadedGeneratorPlugins =
-			InterfaceWrapper<generatorBase::GeneratorKitPluginInterface>::listOfInterfaces(mCommonPluginManager->allLoadedPlugins());
+			InterfaceWrapper<generatorBase::GeneratorKitPluginInterface>::listOfInterfaces(mCommonPluginManager->loadAllPlugins());
 
 	for (generatorBase::GeneratorKitPluginInterface * const generatorPlugin: loadedGeneratorPlugins) {
 		mGenerators.insertMulti(generatorPlugin->kitId(), generatorPlugin);

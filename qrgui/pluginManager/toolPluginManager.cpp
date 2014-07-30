@@ -14,7 +14,7 @@ ToolPluginManager::ToolPluginManager()
 {
 	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath(), "plugins/tools");
 	mPlugins = InterfaceWrapper<ToolPluginInterface>::listOfInterfaces(
-			mCommonPluginManager->allLoadedPlugins());
+			mCommonPluginManager->loadAllPlugins());
 
 	loadDefaultSettings();
 	setHotKeyActions();

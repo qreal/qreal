@@ -19,7 +19,7 @@ EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
 {
 	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath(), "plugins/editors");
-	QList<QObject *> pluginsList = mCommonPluginManager->allLoadedPlugins();
+	QList<QObject *> pluginsList = mCommonPluginManager->loadAllPlugins();
 
 	for (QObject * const plugin : pluginsList) {
 		EditorInterface *iEditor = InterfaceWrapper<EditorInterface>::wrappedInterface(plugin);
@@ -60,21 +60,21 @@ QString EditorManager::loadPlugin(QString const &pluginName)
 
 QString EditorManager::unloadPlugin(QString const &pluginName)
 {
-	QPair<QString, QPair<bool, bool> > resultOfUnloading = mCommonPluginManager->unloadPlugin(mPluginFileName[pluginName]);
+	QString const resultOfUnloading = mCommonPluginManager->unloadPlugin(mPluginFileName[pluginName]);
 
-	if (resultOfUnloading.second.second) {
+	if (mPluginIface.keys().contains(pluginName)) {
 		mPluginIface.remove(pluginName);
 		mPluginFileName.remove(pluginName);
 		mPluginsLoaded.removeAll(pluginName);
 
-		if (!resultOfUnloading.second.first) {
-			QLOG_WARN() << "Editor plugin" << pluginName << "unloading failed: " + resultOfUnloading.first;
+		if (!resultOfUnloading.isEmpty()) {
+			QLOG_WARN() << "Editor plugin" << pluginName << "unloading failed: " + resultOfUnloading;
 		}
 
 		QLOG_INFO() << "Plugin" << pluginName << "unloaded";
 	}
 
-	return resultOfUnloading.first;
+	return resultOfUnloading;
 }
 
 IdList EditorManager::editors() const

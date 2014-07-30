@@ -19,7 +19,7 @@ CommonPluginManager::~CommonPluginManager()
 	qDeleteAll(mLoaders);
 }
 
-QList<QObject *> CommonPluginManager::allLoadedPlugins()
+QList<QObject *> CommonPluginManager::loadAllPlugins()
 {
 	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
 		mPluginsDir.cdUp();
@@ -83,7 +83,7 @@ QPair<QObject *, QString> CommonPluginManager::pluginLoadedByName(QString const 
 	return qMakePair(nullptr, loaderError);
 }
 
-QPair<QString, QPair<bool, bool> > CommonPluginManager::unloadPlugin(QString const &pluginName)
+QString CommonPluginManager::unloadPlugin(QString const &pluginName)
 {
 	QPluginLoader *loader = mLoaders[pluginName];
 
@@ -93,14 +93,14 @@ QPair<QString, QPair<bool, bool> > CommonPluginManager::unloadPlugin(QString con
 		if (!loader->unload()) {
 			QString const error = loader->errorString();
 			delete loader;
-			return qMakePair(error, qMakePair(false, true));
+			return error;
 		}
 
 		delete loader;
-		return qMakePair(QString(), qMakePair(true, true));
+		return QString();
 	}
 
-	return qMakePair(QString("Plugin was not found"), qMakePair(false, false));
+	return QString("Plugin was not found");
 }
 
 QString CommonPluginManager::fileName(QObject *plugin) const

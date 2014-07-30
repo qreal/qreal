@@ -26,18 +26,16 @@ public:
 	void deleteAllLoaders();
 
 	/// Returns list of all found plugins if succeed and empty list otherwise.
-	QList<QObject *> allLoadedPlugins();
+	QList<QObject *> loadAllPlugins();
 
 	/// Returns plugin found by name if succeed and nothing otherwise
 	/// and error message, if failed.
 	QPair<QObject *, QString> pluginLoadedByName(QString const &pluginName);
 
 	/// Unloads plugins, given filename
-	/// first member in pair is error message
-	/// second member is true if plugin was unloaded
-	/// third member is true if loader was found
 	/// @param pluginName - name of plugin
-	QPair<QString, QPair<bool, bool> > unloadPlugin(QString const &pluginName);
+	/// @returns error message if there was error and empty string otherwise
+	QString unloadPlugin(QString const &pluginName);
 
 	/// Returns fileName by given object.
 	QString fileName(QObject *plugin) const;
