@@ -27,12 +27,14 @@ public:
 	/// returns list of all found plugins if succeed and empty list otherwise
 	QList<QObject *> allLoadedPlugins();
 	/// returns plugin found by name if succeed and nothing otherwise
-	QObject *pluginLoadedByName(QString const &pluginName);
+	/// and error message, if failed
+	QPair<QObject *, QString> pluginLoadedByName(QString const &pluginName);
 
 	/// unloads plugins, given filename
-	/// first member in pair is result of unloading
-	/// second result is true if we found needed loader and false otherwise
-	QPair<bool, bool> unloadPlugin(QString const &pluginName);
+	/// first member in pair is error message
+	/// second member is true if plugin was unloaded
+	/// trird member is true if loader was found
+	QPair<QString, QPair<bool, bool> > unloadPlugin(QString const &pluginName);
 
 	/// returns fileName by given object
 	QString fileName(QObject *plugin) const;

@@ -33,17 +33,9 @@ QList<QObject *> CommonPluginManager::allLoadedPlugins()
 	QList<QObject *> listOfPlugins;
 
 	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
-		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader->instance();
-
-		if (plugin) {
-			mLoaders.insert(fileName, loader);
-			mNameAndObject.insert(fileName, plugin);
-
-			listOfPlugins.append(plugin);
-		} else {
-//			loader->unload();
-			delete loader;
+		QObject * pluginByName = pluginLoadedByName(fileName).first;
+		if (pluginByName) {
+			listOfPlugins.append(pluginByName);
 		}
 	}
 
@@ -55,43 +47,41 @@ void CommonPluginManager::deleteAllLoaders()
 	qDeleteAll(mLoaders);
 }
 
-QObject* CommonPluginManager::pluginLoadedByName(QString const &pluginName)
+QPair<QObject *, QString> CommonPluginManager::pluginLoadedByName(QString const &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
 	loader->load();
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
-		return plugin;
+		return qMakePair(plugin, QString());
 	}
 
-	QMessageBox::warning(NULL, "error", "Plugin loading failed: " + loader->errorString());
-	loader->unload();
+	QString const loaderError = loader->errorString();
 	delete loader;
-
-	return NULL;
+	return qMakePair(nullptr, loaderError);
 }
 
-QPair<bool, bool> CommonPluginManager::unloadPlugin(QString const &pluginName)
+QPair<QString, QPair<bool, bool> > CommonPluginManager::unloadPlugin(QString const &pluginName)
 {
 	QPluginLoader *loader = mLoaders[pluginName];
 
-	if (loader != NULL) {
+	if (loader) {
 		mLoaders.remove(pluginName);
 		if (!loader->unload()) {
-			QMessageBox::warning(NULL, "error", "Plugin unloading failed: " + loader->errorString());
+			QString const error = loader->errorString();
 			delete loader;
-			return qMakePair(false, true);
+			return qMakePair(error, qMakePair(false, true));
 		}
+
 		delete loader;
-		return qMakePair(true, true);
+		return qMakePair(QString(), qMakePair(true, true));
 	}
 
-	return qMakePair(false, false);
+	return qMakePair(QString("Plugin was not found"), qMakePair(false, false));
 }
 
 QString CommonPluginManager::fileName(QObject *plugin) const
 {
 	return mNameAndObject.key(plugin);
 }
-
