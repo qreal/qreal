@@ -6,7 +6,7 @@
 #include <qrkernel/ids.h>
 #include <qrutils/invocationUtils/longOperation.h>
 
-#include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
 namespace gui {
@@ -27,7 +27,7 @@ public:
 	/// Gets graphical Id of diagram currently opened in editor.
 	/// @returns Id of opened diagram, empty Id if there is none.
 	/// @todo Make it const if possible.
-	virtual Id activeDiagram() = 0;
+	virtual Id activeDiagram() const = 0;
 
 	virtual void openSettingsDialog(QString const &tab) = 0;
 

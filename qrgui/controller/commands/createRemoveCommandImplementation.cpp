@@ -97,6 +97,11 @@ bool CreateRemoveCommandImplementation::equals(CreateRemoveCommandImplementation
 			;
 }
 
+void CreateRemoveCommandImplementation::setNewPosition(QPointF const &position)
+{
+	mPosition = position;
+}
+
 void CreateRemoveCommandImplementation::refreshAllPalettes()
 {
 	// Calling refreshing immideately may cause segfault because of deletting drag source

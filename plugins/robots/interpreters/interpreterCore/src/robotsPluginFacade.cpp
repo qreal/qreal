@@ -5,12 +5,14 @@
 #include "managers/kitAutoSwitcher.h"
 #include "managers/kitExtensionsUpdateManager.h"
 
+#include <interpreterBase/robotModel/portInfo.h>
+
 using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
 	: mParser(nullptr)
 	, mInterpreter(nullptr)
-	, mKitPluginManager("plugins/kitPlugins")
+	, mKitPluginManager("plugins/tools/kitPlugins")
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
@@ -207,8 +209,8 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 	/// @todo: Check that this code works when different kit is selected
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
-			kit->init(mEventsForKitPlugin, configurer.systemEvents()
-					, configurer.graphicalModelApi(), configurer.logicalModelApi(), *mInterpreter);
+			kit->init(mEventsForKitPlugin, configurer.systemEvents(), configurer.graphicalModelApi()
+					, configurer.logicalModelApi(), configurer.mainWindowInterpretersInterface(), *mInterpreter);
 
 			for (interpreterBase::robotModel::RobotModelInterface const *model : kit->robotModels()) {
 				initFactoriesFor(kitId, model, configurer);

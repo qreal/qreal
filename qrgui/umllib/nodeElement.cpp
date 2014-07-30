@@ -9,7 +9,6 @@
 #include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include <math.h>
-#include <qrutils/mathUtils/geometry.h>
 
 #include "umllib/labelFactory.h"
 #include "view/editorViewScene.h"
@@ -809,10 +808,9 @@ qreal NodeElement::portId(QPointF const &location, QStringList const &types) con
 	return mPortHandler->portId(location, types);
 }
 
-qreal NodeElement::shortestDistanceToPort(QPointF const &location, QStringList const &types) const
+QPointF NodeElement::closestPortPoint(QPointF const &location, QStringList const &types) const
 {
-	QPointF const nearestPortPoint = mPortHandler->nearestPort(location, types);
-	return mathUtils::Geometry::distance(location, mapToScene(nearestPortPoint));
+	return mapToScene(mPortHandler->nearestPort(location, types));
 }
 
 void NodeElement::setPortsVisible(QStringList const &types)
@@ -1172,6 +1170,7 @@ NodeData& NodeElement::data()
 	mData.graphicalProperties["links"] = IdListHelper::toVariant(IdList());
 	mData.pos = mPos;
 	mData.contents = mContents;
+	mData.explosion = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 
 	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
 	if (parent) {
