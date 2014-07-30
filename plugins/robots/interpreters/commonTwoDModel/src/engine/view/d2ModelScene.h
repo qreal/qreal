@@ -124,13 +124,13 @@ private:
 	/// Current action (toggled button on left panel)
 	DrawingAction mDrawingAction;
 
-	RobotItem *mRobot;
+	RobotItem *mRobot = nullptr;
 
 	/// Temporary wall that's being created. When it's complete, it's added to world model
-	items::WallItem *mCurrentWall;
-	items::LineItem *mCurrentLine;
-	items::StylusItem *mCurrentStylus;
-	items::EllipseItem *mCurrentEllipse;
+	items::WallItem *mCurrentWall = nullptr;
+	items::LineItem *mCurrentLine = nullptr;
+	items::StylusItem *mCurrentStylus = nullptr;
+	items::EllipseItem *mCurrentEllipse = nullptr;
 };
 
 }

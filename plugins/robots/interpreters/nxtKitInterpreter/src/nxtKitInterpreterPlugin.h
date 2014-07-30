@@ -21,6 +21,7 @@ class NxtKitInterpreterPlugin : public QObject, public interpreterBase::KitPlugi
 
 public:
 	NxtKitInterpreterPlugin();
+	~NxtKitInterpreterPlugin() override;
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 			, qReal::SystemEventsInterface const &systemEvents
@@ -59,8 +60,14 @@ private slots:
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModel;
-	blocks::NxtBlocksFactory *mBlocksFactory;  // Transfers ownership
-	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
+
+	/// @todo Use shared pointers instead of this sh~.
+	blocks::NxtBlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
+	bool mOwnsBlocksFactory = true;
+
+	NxtAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+	bool mOwnsAdditionalPreferences = true;
+
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;

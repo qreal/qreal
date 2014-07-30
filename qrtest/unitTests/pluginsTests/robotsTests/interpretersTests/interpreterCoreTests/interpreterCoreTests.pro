@@ -5,6 +5,8 @@ include(../../../../common.pri)
 include(../../../../../../plugins/robots/interpreters/interpreterCore/interpreterCore.pri)
 include(../../../../../../qrgui/models/models.pri)
 
+LIBS += -L../../../../../../bin -lqslog
+
 INCLUDEPATH += \
 	../../../../../../plugins/robots/interpreters \
 	../../../../../../plugins/robots/interpreters/interpreterCore \

@@ -21,7 +21,6 @@ KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 KitPluginManager::~KitPluginManager()
 {
 	mCommonPluginManager->deleteAllLoaders();
-//	delete(mCommonPluginManager);
 }
 
 QList<QString> KitPluginManager::kitIds() const
