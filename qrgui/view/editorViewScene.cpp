@@ -425,11 +425,16 @@ qReal::Id EditorViewScene::createElement(QString const &str)
 	return mLastCreatedFromLinker;
 }
 
-qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scenePos, bool searchForParents
-		, CreateElementCommand **createCommand, bool executeImmediately, QPointF const shiftToParent)
+qReal::Id EditorViewScene::createElement(QString const &str
+		, QPointF const &scenePos
+		, bool searchForParents
+		, CreateElementCommand **createCommand
+		, bool executeImmediately
+		, QPointF const &shiftToParent
+		, QString const &explosionTargetUuid)
 {
 	Id typeId = Id::loadFromString(str);
-	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
+	Id objectId(typeId.editor(), typeId.diagram(), typeId.element(), QUuid::createUuid().toString());
 
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData();
@@ -444,6 +449,7 @@ qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scen
 	stream << name;
 	stream << shiftToParent;
 	stream << isFromLogicalModel;
+	stream << explosionTargetUuid;
 
 	mimeData->setData(mimeType, data);
 	createElement(mimeData, scenePos, searchForParents, createCommand, executeImmediately);
@@ -1140,7 +1146,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 
-	Element *element = getElemAt(event->scenePos());
+	Element *element = findElemAt(event->scenePos());
 
 	if (mShouldReparentItems) {
 		QList<QGraphicsItem *> const list = selectedItems();
@@ -1187,11 +1193,11 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 		QPointF const start = mMouseMovementManager->firstPoint();
 		QPointF const end = mMouseMovementManager->lastPoint();
-		NodeElement *parent = dynamic_cast<NodeElement *>(getElemAt(start));
-		NodeElement *child = dynamic_cast<NodeElement *>(getElemAt(end));
-		if (parent && child && mMouseMovementManager->isEdgeCandidate()
-				&& parent->id() != child->id()) {
-			getLinkByGesture(parent, *child);
+		NodeElement * const startNode = findNodeAt(start);
+		NodeElement * const endNode = findNodeAt(end);
+		if (startNode && endNode && mMouseMovementManager->isEdgeCandidate()
+				&& startNode->id() != endNode->id()) {
+			getLinkByGesture(startNode, *endNode);
 			deleteGesture();
 		} else {
 			mTimer->start(SettingsManager::value("gestureDelay").toInt());
@@ -1249,14 +1255,25 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-Element *EditorViewScene::getElemAt(QPointF const &position) const
+Element *EditorViewScene::findElemAt(QPointF const &position) const
 {
-	foreach (QGraphicsItem *item, items(position)) {
-		Element *e = dynamic_cast<Element *>(item);
-		if (e) {
-			return e;
+	for (QGraphicsItem * const item : items(position)) {
+		if (Element * const element = dynamic_cast<Element *>(item)) {
+			return element;
 		}
 	}
+
+	return nullptr;
+}
+
+NodeElement *EditorViewScene::findNodeAt(QPointF const &position) const
+{
+	for (QGraphicsItem * const item : items(position)) {
+		if (NodeElement * const node = dynamic_cast<NodeElement *>(item)) {
+			return node;
+		}
+	}
+
 	return nullptr;
 }
 

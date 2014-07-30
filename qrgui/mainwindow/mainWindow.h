@@ -100,7 +100,7 @@ public:
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
-	virtual Id activeDiagram();
+	virtual Id activeDiagram() const;
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
 		, bool useTypedPorts);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);

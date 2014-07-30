@@ -142,7 +142,7 @@ int PortHandler::portNumber(qreal id)
 QPointF const PortHandler::nearestPort(QPointF const &location, QStringList const &types) const
 {
 	// location in scene coords, so we map it to mNode.
-	QPointF const locationInLocalCoords = location - mNode->boundingRect().topLeft();
+	QPointF const locationInLocalCoords = mNode->mapFromScene(location);
 
 	QPointF nearestPortPoint;
 	qreal minDistance = -1; // just smth negative
@@ -166,9 +166,9 @@ QPointF const PortHandler::nearestPort(QPointF const &location, QStringList cons
 		nearestPortPoint = sceneLine.pointAt(positionAtLineCoef);
 	}
 
-	if (minDistance > 0) {
+	if (minDistance > -0.5) {
 		// Moving to scene coords.
-		return nearestPortPoint + mNode->boundingRect().topLeft();
+		return nearestPortPoint;
 	}
 
 	return location;

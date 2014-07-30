@@ -22,6 +22,11 @@ qReal::Id CreateElementCommand::result() const
 	return mResult;
 }
 
+void CreateElementCommand::setNewPosition(QPointF const &position)
+{
+	mImpl.setNewPosition(position);
+}
+
 bool CreateElementCommand::execute()
 {
 	mResult = mImpl.create();

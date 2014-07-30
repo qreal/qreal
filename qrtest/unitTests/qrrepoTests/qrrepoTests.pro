@@ -2,6 +2,8 @@ TARGET = qrrepo_unittests
 
 CONFIG += c++11
 
+LIBS += -L../../../bin -lqslog
+
 include(../common.pri)
 
 include(../../../qrrepo/qrrepo.pri)

@@ -21,10 +21,10 @@ Id PasteNodeCommand::pasteNewInstance()
 	// TODO: create it during initialization, not execution
 	// TODO: create node/edge data hierarchy and move it into PasteCommand
 	Id resultId = mResult;
-	if (!mCreateCommand) {
+	if (!mCreateCommand && explosionTargetExists()) {
 		Id const typeId = mNodeData.id.type();
 		resultId = mScene->createElement(typeId.toString(), newPos(), true, &mCreateCommand, false
-				, vectorFromContainer());
+				, vectorFromContainer(), mNodeData.explosion.toString());
 		if (mCreateCommand) {
 			mCreateCommand->redo();
 			mCopiedIds->insert(mNodeData.id, resultId);
@@ -37,7 +37,7 @@ Id PasteNodeCommand::pasteNewInstance()
 Id PasteNodeCommand::pasteGraphicalCopy()
 {
 	Id resultId = mResult;
-	if (!mCreateCommand) {
+	if (!mCreateCommand && explosionTargetExists()) {
 		mCreateCommand = new CreateElementCommand(
 			*mMVIface->logicalAssistApi()
 			, *mMVIface->graphicalAssistApi()
@@ -63,7 +63,7 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 
 void PasteNodeCommand::restoreElement()
 {
-	if (!mCreateCommand) {
+	if (!mCreateCommand || !explosionTargetExists()) {
 		return;
 	}
 
@@ -79,6 +79,11 @@ void PasteNodeCommand::restoreElement()
 	if (element) {
 		element->updateData();
 	}
+}
+
+bool PasteNodeCommand::explosionTargetExists() const
+{
+	return mNodeData.explosion.isNull() || mMVIface->logicalAssistApi()->logicalRepoApi().exist(mNodeData.explosion);
 }
 
 QPointF PasteNodeCommand::newPos() const

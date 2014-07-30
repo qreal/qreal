@@ -48,10 +48,26 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 			, &mTwoDRobotModelV6, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
+TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
+{
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
+
+	if (mOwnsBlocksFactory) {
+		delete mBlocksFactory;
+	}
+
+	if (mOwnsIpAdressQuicksConfigurer) {
+		delete mIpAdressQuicksConfigurer;
+	}
+}
+
 void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 		, SystemEventsInterface const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
+		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
@@ -61,7 +77,8 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
 			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel, logicalModel, interpreterControl);
+	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel
+			, logicalModel, interpretersInterface, interpreterControl);
 }
 
 QString TrikKitInterpreterPlugin::kitId() const
@@ -83,6 +100,7 @@ interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::b
 		interpreterBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model);
+	mOwnsBlocksFactory = false;
 	return mBlocksFactory;
 }
 
@@ -93,12 +111,18 @@ interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defa
 
 interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget()
 {
+	mOwnsAdditionalPreferences = false;
 	return mAdditionalPreferences;
 }
 
 QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model)
 {
-	return model.name().toLower().contains("twod") ? nullptr : mIpAdressQuicksConfigurer;
+	if (model.name().toLower().contains("twod")) {
+		return nullptr;
+	} else {
+		mOwnsIpAdressQuicksConfigurer = false;
+		return mIpAdressQuicksConfigurer;
+	}
 }
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()

@@ -30,6 +30,8 @@ public:
 	QPainterPath shape() const;
 
 private:
+	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+
 	/// Returns scanning region of a sensor as painter path, in relative to sensor coordinates.
 	QPainterPath scanningRegion() const;
 
