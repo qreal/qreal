@@ -18,7 +18,7 @@ using namespace qReal;
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
 {
-	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath());
+	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath(), "plugins/editors");
 	QList<QObject *> pluginsList = mCommonPluginManager->allLoadedPlugins();
 
 	for (QObject * const plugin : pluginsList) {
