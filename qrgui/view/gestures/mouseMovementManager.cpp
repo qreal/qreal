@@ -70,6 +70,7 @@ QLineF MouseMovementManager::newLine()
 		line.setP1(mPath.back().at(mPath.back().size() - 2));
 		line.setP2(mPath.back().back());
 	}
+
 	return line;
 }
 
@@ -93,17 +94,17 @@ void MouseMovementManager::recountCentre()
 	if (mPath.empty() || mPath.back().empty()) {
 		return;
 	}
+
 	int count = 0;
 	foreach (PointVector const &path, mPath) {
 		count += path.size();
 	}
+
 	mCentre = ((count - 1) * mCentre + mPath.back().back()) / count;
 }
 
 void MouseMovementManager::mousePress(QPointF const &pnt)
 {
-	QLOG_TRACE() << "Started mouse gesture at " << pnt;
-
 	QList<QPointF> path;
 	path.push_back(pnt);
 	mPath.push_back(path);
@@ -112,8 +113,6 @@ void MouseMovementManager::mousePress(QPointF const &pnt)
 
 void MouseMovementManager::mouseMove(QPointF const &pnt)
 {
-	QLOG_TRACE() << "Mouse gesture movement to " << pnt;
-
 	PointVector path = mPath.back();
 	mPath.pop_back();
 	path.push_back(pnt);

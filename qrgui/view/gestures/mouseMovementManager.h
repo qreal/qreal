@@ -2,17 +2,19 @@
 
 #include <qrkernel/ids.h>
 
-#include "view/gestures/keyManagerInterface.h"
-#include "view/gestures/keyManager.h"
-#include "pluginManager/editorManagerInterface.h"
-#include "mainwindow/gesturesPainterInterface.h"
-#include "view/gestures/abstractRecognizer.h"
 #include <QtCore/QPointF>
 #include <QtCore/QPoint>
 #include <QtCore/QLineF>
 #include <QtCore/QList>
 #include <QtCore/QString>
 #include <QtCore/QMap>
+#include <QtWidgets/QWidget>
+
+#include "view/gestures/keyManagerInterface.h"
+#include "view/gestures/keyManager.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "mainwindow/gesturesPainterInterface.h"
+#include "view/gestures/abstractRecognizer.h"
 
 namespace qReal {
 namespace gestures {
