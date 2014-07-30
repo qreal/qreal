@@ -1025,7 +1025,12 @@ EdgeData& EdgeElement::data()
 
 	mData.shapeType = mShapeType;
 
-	mData.logicalProperties = mGraphicalAssistApi.properties(logicalId());
+	QMap<QString, QVariant> const properties = mGraphicalAssistApi.properties(logicalId());
+	for (QString const &property : properties.keys()) {
+		if (property != "from" && property != "to") {
+			mData.logicalProperties[property] = properties[property];
+		}
+	}
 
 	return mData;
 }
