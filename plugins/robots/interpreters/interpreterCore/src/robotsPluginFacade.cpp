@@ -5,12 +5,14 @@
 #include "managers/kitAutoSwitcher.h"
 #include "managers/kitExtensionsUpdateManager.h"
 
+#include <interpreterBase/robotModel/portInfo.h>
+
 using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
 	: mParser(nullptr)
 	, mInterpreter(nullptr)
-	, mKitPluginManager("plugins/kitPlugins")
+	, mKitPluginManager("plugins/tools/kitPlugins")
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)

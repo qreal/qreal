@@ -7,6 +7,8 @@
 #include <QtWidgets/QMessageBox>
 #include <math.h>
 
+#include <qrkernel/logging.h>
+
 #include "view/editorView.h"
 #include "mainwindow/mainWindow.h"
 
@@ -482,6 +484,8 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	}
 
 	utils::UXInfo::reportCreation(id.editor(), id.element());
+
+	QLOG_TRACE() << "Created element, id = " << id << ", position = " << scenePos;
 
 	Id const explosionTarget = explosionTargetUuid.isEmpty()
 			? Id()
@@ -1179,10 +1183,13 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			if (element && !element->isSelected()) {
 				element->setSelected(true);
 			}
+
 			initContextMenu(element, event->scenePos());
 			clearSelection();
 			return;
 		}
+
+		QLOG_TRACE() << "Mouse gesture release at " << event->scenePos();
 
 		QPointF const start = mMouseMovementManager->firstPoint();
 		QPointF const end = mMouseMovementManager->lastPoint();
@@ -1195,6 +1202,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		} else {
 			mTimer->start(SettingsManager::value("gestureDelay").toInt());
 		}
+
 		return;
 	}
 

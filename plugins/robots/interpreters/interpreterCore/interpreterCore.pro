@@ -2,7 +2,7 @@ TEMPLATE = lib
 CONFIG += plugin
 CONFIG += c++11
 
-DESTDIR = ../../../../bin/plugins/
+DESTDIR = ../../../../bin/plugins/tools/
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc

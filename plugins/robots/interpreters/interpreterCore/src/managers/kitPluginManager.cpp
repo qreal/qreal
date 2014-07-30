@@ -24,12 +24,13 @@ KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 			if (tryToLoadInterpreterPlugin(plugin) || tryToLoadGeneratorPlugin(plugin)) {
 				mLoaders.insert(fileName, loader);
 			} else {
-				loader->unload();
+				// We can't unload plugins due to Qt bug, see editorManager.cpp for explanation.
+				// loader->unload();
 				delete loader;
 			}
 		} else {
 			qDebug() << "Plugin loading failed: " << loader->errorString();
-			loader->unload();
+//			loader->unload();
 			delete loader;
 		}
 	}
@@ -37,9 +38,10 @@ KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 
 KitPluginManager::~KitPluginManager()
 {
-	for (QPluginLoader * const loader : mLoaders.values()) {
-		loader->unload();
-	}
+	// We can't unload plugins due to Qt bug, see editorManager.cpp for explanation.
+	// for (QPluginLoader * const loader : mLoaders.values()) {
+	//	loader->unload();
+	// }
 
 	qDeleteAll(mLoaders);
 }
