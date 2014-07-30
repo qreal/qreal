@@ -21,6 +21,7 @@ class TrikKitInterpreterPlugin : public QObject, public interpreterBase::KitPlug
 
 public:
 	TrikKitInterpreterPlugin();
+	~TrikKitInterpreterPlugin() override;
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 			, qReal::SystemEventsInterface const &systemEvents
@@ -61,9 +62,17 @@ private:
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModelV6;
 	robotModel::real::RealRobotModelV6 mRealRobotModelV6;
 	robotModel::twoD::TwoDRobotModel mTwoDRobotModelV6;
-	blocks::TrikBlocksFactory *mBlocksFactory;  // Transfers ownership
-	TrikAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
-	QWidget *mIpAdressQuicksConfigurer;  // Transfers ownership
+
+	/// @todo Use shared pointers instead of this sh~.
+	blocks::TrikBlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
+	bool mOwnsBlocksFactory = true;
+
+	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+	bool mOwnsAdditionalPreferences = true;
+
+	QWidget *mIpAdressQuicksConfigurer = nullptr;  // Transfers ownership
+	bool mOwnsIpAdressQuicksConfigurer = true;
+
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 	QTranslator mAppTranslator;

@@ -6,6 +6,8 @@ include(../common.pri)
 
 include(../../../qrutils/qrutils.pri)
 
+LIBS += -L../../../bin -lqslog
+
 SOURCES += \
 	expressionsParser/expressionsParserTest.cpp \
 	expressionsParser/numberTest.cpp \

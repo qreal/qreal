@@ -32,12 +32,12 @@ Version ProxyEditorManager::version(Id const &editor) const
 	return mProxiedEditorManager->version(editor);
 }
 
-bool ProxyEditorManager::loadPlugin(QString const &pluginName)
+QString ProxyEditorManager::loadPlugin(QString const &pluginName)
 {
 	return mProxiedEditorManager->loadPlugin(pluginName);
 }
 
-bool ProxyEditorManager::unloadPlugin(QString const &pluginName)
+QString ProxyEditorManager::unloadPlugin(QString const &pluginName)
 {
 	return mProxiedEditorManager->unloadPlugin(pluginName);
 }

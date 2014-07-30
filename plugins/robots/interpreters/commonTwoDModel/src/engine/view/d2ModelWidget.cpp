@@ -42,11 +42,9 @@ using namespace robotParts;
 D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
-	, mScene(nullptr)
 	, mModel(model)
 	, mDisplay(configurer->displayWidget(this))
 	, mWidth(defaultPenWidth)
-	, mFirstShow(true)
 	, mConfigurer(configurer)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));

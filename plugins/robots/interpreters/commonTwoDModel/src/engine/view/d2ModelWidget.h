@@ -174,14 +174,14 @@ private:
 
 	void updateWheelComboBoxes();
 
-	Ui::D2Form *mUi;
-	D2ModelScene *mScene;
+	Ui::D2Form *mUi = nullptr;
+	D2ModelScene *mScene = nullptr;
 
 	model::Model &mModel;
 
-	engine::TwoDModelDisplayWidget *mDisplay;
+	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 
-	int mWidth;
+	int mWidth = 0;
 
 	QButtonGroup mButtonGroup;
 	QButtonGroup mCursorButtonGroup;
@@ -189,9 +189,9 @@ private:
 	CursorType mNoneCursorType; // cursorType for noneStatus
 	CursorType mCursorType; // current cursorType
 
-	bool mFollowRobot;
+	bool mFollowRobot = false;
 
-	bool mFirstShow;
+	bool mFirstShow = true;
 
 	RobotState mInitialRobotBeforeRun;
 

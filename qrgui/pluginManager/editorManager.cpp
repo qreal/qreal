@@ -1,10 +1,10 @@
 #include "editorManager.h"
 
 #include <QtCore/QCoreApplication>
-#include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
 #include <qrkernel/ids.h>
+#include <qrkernel/logging.h>
 #include <qrkernel/exception/exception.h>
 #include <qrrepo/repoApi.h>
 
@@ -23,51 +23,20 @@ EditorManager::EditorManager(QObject *parent) : QObject(parent)
 
 	mPluginsDir.cd("plugins");
 
-	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
-		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader->instance();
-
-		if (plugin) {
-			EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
-			if (iEditor) {
-				mPluginsLoaded += iEditor->id();
-				mPluginFileName.insert(iEditor->id(), fileName);
-				mPluginIface[iEditor->id()] = iEditor;
-				mLoaders.insert(fileName, loader);
-			} else {
-				// TODO: Just does not work under Linux. Seems to be memory corruption when
-				// loading, unloading, and then loading .so file again.
-				// To reproduce, uncomment this, build VisualInterpreter, and try to launch QReal.
-				// With some tool plugins, like MetaEditorSupport or Exterminatus, works fine,
-				// also works fine on Windows. Investigation required.
-				// loader->unload();
-				delete loader;
-			}
-		} else {
-			qDebug() << "Plugin loading failed: " << loader->errorString();
-			loader->unload();
-			delete loader;
-		}
+	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
+		loadPlugin(fileName);
 	}
 }
 
 EditorManager::~EditorManager()
 {
-	foreach (QString const &id, mPluginIface.keys()) {
-		delete mPluginIface[id];
-		mPluginIface.remove(id);
-	}
-
-	foreach (QString const &name, mLoaders.keys()) {
-		delete mLoaders[name];
-		mLoaders.remove(name);
-	}
+	qDeleteAll(mPluginIface);
+	qDeleteAll(mLoaders);
 }
 
-bool EditorManager::loadPlugin(QString const &pluginName)
+QString EditorManager::loadPlugin(QString const &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
-	loader->load();
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
@@ -77,33 +46,39 @@ bool EditorManager::loadPlugin(QString const &pluginName)
 			mPluginFileName.insert(iEditor->id(), pluginName);
 			mPluginIface[iEditor->id()] = iEditor;
 			mLoaders.insert(pluginName, loader);
-			return true;
+			QLOG_INFO() << "Plugin" << pluginName << "loaded. Version: " << iEditor->version();
+			return QString();
 		}
 	}
 
-	QMessageBox::warning(NULL, tr("error"), tr("Plugin loading failed: ") + loader->errorString());
+	QString const error = loader->errorString();
+	QLOG_WARN() << "Editor plugin" << pluginName << "loading failed: " + error;
 	loader->unload();
 	delete loader;
-	return false;
+	return error;
 }
 
-bool EditorManager::unloadPlugin(QString const &pluginName)
+QString EditorManager::unloadPlugin(QString const &pluginName)
 {
 	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
-	if (loader != NULL) {
+	if (loader) {
 		mLoaders.remove(mPluginFileName[pluginName]);
 		mPluginIface.remove(pluginName);
 		mPluginFileName.remove(pluginName);
 		mPluginsLoaded.removeAll(pluginName);
 		if (!loader->unload()) {
-			QMessageBox::warning(NULL, tr("error"), tr("Plugin unloading failed: ") + loader->errorString());
+			QString const error = loader->errorString();
+			QLOG_WARN() << "Editor plugin" << pluginName << "unloading failed: " + error;
 			delete loader;
-			return false;
+			return error;
 		}
+
+		QLOG_INFO() << "Plugin" << pluginName << "unloaded";
 		delete loader;
-		return true;
+		return QString();
 	}
-	return false;
+
+	return "Could not find loader";
 }
 
 IdList EditorManager::editors() const
