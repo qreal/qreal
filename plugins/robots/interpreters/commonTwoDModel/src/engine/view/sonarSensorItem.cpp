@@ -63,3 +63,10 @@ QPainterPath SonarSensorItem::shape() const
 	result.addRect(mBoundingRect);
 	return result;
 }
+
+void SonarSensorItem::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	if (!imageRect().contains(mouseEvent->pos())) {
+		setFlag(ItemIsMovable, false);
+	}
+}

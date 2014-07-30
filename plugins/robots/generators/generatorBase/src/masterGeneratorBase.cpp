@@ -69,7 +69,11 @@ QString MasterGeneratorBase::generate()
 		mainCode = mainControlFlow->toString(1);
 		bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
 		if (!subprogramsResult) {
-			mainCode = QString();
+			if (supportsGotoGeneration()) {
+				mainCode = QString();
+			} else {
+				return QString();
+			}
 		}
 	} else {
 		if (mReadableControlFlowGenerator->errorsOccured()) {

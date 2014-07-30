@@ -71,9 +71,9 @@ void ToolPluginManager::loadDefaultSettings()
 	}
 }
 
-QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const
+QList<QPair<QString, PreferencesPage *>> ToolPluginManager::preferencesPages() const
 {
-	QList<QPair<QString, PreferencesPage *> > result;
+	QList<QPair<QString, PreferencesPage *>> result;
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
 		if (toolPlugin->preferencesPage().second) {
 			result << toolPlugin->preferencesPage();
