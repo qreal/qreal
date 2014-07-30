@@ -6,11 +6,12 @@
 
 namespace qReal {
 
+/// Casts plugins to interfaces.
 template <class InterfaceType>
 class QRUTILS_EXPORT InterfaceWrapper
 {
 public:
-	/// wraps one object to interface
+	/// Casts one object to interface.
 	static InterfaceType *wrappedInterface(QObject *interfaceToWrap)
 	{
 		InterfaceType *castedInterface = qobject_cast<InterfaceType *>(interfaceToWrap);
@@ -18,16 +19,16 @@ public:
 		if (castedInterface) {
 			return castedInterface;
 		} else {
-			return NULL;
+			return nullptr;
 		}
 	}
 
-	/// wraps list of objects
+	/// Casts list of objects to list of interfaces.
 	static QList<InterfaceType *> listOfInterfaces(QList<QObject *> interfacesToWrap)
 	{
 		QList<InterfaceType *> interfacesList;
 
-		foreach (QObject const *currentInterface, interfacesToWrap) {
+		for (QObject const *currentInterface : interfacesToWrap) {
 			InterfaceType *castedInterface = qobject_cast<InterfaceType *>(currentInterface);
 			if (castedInterface) {
 				interfacesList.append(castedInterface);

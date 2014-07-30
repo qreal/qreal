@@ -36,8 +36,8 @@ public:
 	QList<interpreterBase::robotModel::RobotModelInterface *> allRobotModels() const;
 
 private:
-	void tryToLoadInterpreterPlugin();
-	void tryToLoadGeneratorPlugin();
+	void tryToLoadInterpreterPlugins();
+	void tryToLoadGeneratorPlugins();
 
 	/// Maps kit plugin name to corresponding plugin interface.
 	/// Doesn't have ownership, objects are owned by mLoaders.
@@ -46,14 +46,11 @@ private:
 	/// Maps kit plugin name to corresponding loader.
 	QMap<QString, generatorBase::GeneratorKitPluginInterface *> mGenerators;  // Has ownership
 
-	/// Maps kit plugin name to corresponding loader.
-	QMap<QString, QPluginLoader *> mLoaders;  // Has ownership.
-
 	/// Directory from which plugins shall be loaded.
 	QDir mPluginsDir;
 
 	/// Common part of plugins loading
-	/// Takes ownership
+	/// Has ownership
 	qReal::CommonPluginManager *mCommonPluginManager;
 };
 

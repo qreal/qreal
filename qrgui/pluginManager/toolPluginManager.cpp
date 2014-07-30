@@ -12,7 +12,7 @@ using namespace qReal;
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
 {
-	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath());
+	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath(), "tools");
 	mPlugins = InterfaceWrapper<ToolPluginInterface>::listOfInterfaces(
 			mCommonPluginManager->allLoadedPlugins());
 
@@ -23,6 +23,7 @@ ToolPluginManager::ToolPluginManager()
 ToolPluginManager::~ToolPluginManager()
 {
 	mCommonPluginManager->deleteAllLoaders();
+	delete(mCommonPluginManager);
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
