@@ -50,7 +50,7 @@ public:
 
 	/// Calculates nearest point of NodeElement ports to parameter point.
 	/// @param location To this point nearest port will be calculated. Location is assumed to be in SCENE coordinates!
-	/// @return Nearest point of NodeElement ports to parameter point.
+	/// @return Nearest point of NodeElement ports to parameter point in node`s coordinates.
 	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
 
 	/// Connects all temporary removed from working NodeElement edges.

@@ -91,9 +91,9 @@ public:
 	/// @return Port ID in terms of described in 'Useful information' in PortHandler class.
 	qreal portId(QPointF const &location, QStringList const &types) const;
 
-	/// Returns a distance to a closest from the given point port (line or point) on this element.
-	/// Location is assumed to be in SCENE coordinates!
-	qreal shortestDistanceToPort(QPointF const &location, QStringList const &types) const;
+	/// Returns a closest to the given point point on the port (line or point) on this element.
+	/// Location is assumed to be in SCENE coordinates! The result is in scene coordinates too.
+	QPointF closestPortPoint(QPointF const &location, QStringList const &types) const;
 
 	/// @return List of edges connected to the node
 	QList<EdgeElement *> getEdges() const;
