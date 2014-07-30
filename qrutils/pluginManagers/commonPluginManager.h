@@ -30,6 +30,8 @@ public:
 
 	/// Returns plugin found by name if succeed and nothing otherwise
 	/// and error message, if failed.
+	/// @param pluginName - name of plugin to load
+	/// @returns loaded plugin and error message
 	QPair<QObject *, QString> pluginLoadedByName(QString const &pluginName);
 
 	/// Unloads plugins, given filename
@@ -43,12 +45,18 @@ public:
 private:
 	/// Directory to loaded plugins.
 	QDir mPluginsDir;
-	/// Map from name to loader.
+
+	/// Map from name to loader
+	/// Has ownersip.
 	QMap<QString, QPluginLoader *> mLoaders;
-	/// Map from fileName to plugin.
+
+	/// Map from fileName to plugin
+	/// Has ownership.
 	QMap<QString, QObject *> mNameAndObject;
+
 	/// Path to application directory, used to count path to loaded plugins.
 	QString mApplicationDirectoryPath;
+
 	///Additional part of path.
 	/// "plugins" if we're trying to load plugins from "bin/plugins"
 	/// for robots it can be "plugins/kitPlugins", for example

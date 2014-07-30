@@ -17,6 +17,7 @@ CommonPluginManager::CommonPluginManager(QString const &applicationDirPath
 CommonPluginManager::~CommonPluginManager()
 {
 	qDeleteAll(mLoaders);
+	qDeleteAll(mNameAndObject);
 }
 
 QList<QObject *> CommonPluginManager::loadAllPlugins()
