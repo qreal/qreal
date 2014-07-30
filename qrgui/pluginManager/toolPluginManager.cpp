@@ -18,9 +18,14 @@ ToolPluginManager::ToolPluginManager()
 	}
 
 	mPluginsDir.cd("plugins");
+	mPluginsDir.cd("tools");
 
 	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
-		// TODO: Free memory
+		QFileInfo const fileInfo(fileName);
+		if (fileInfo.suffix() != "dll" && fileInfo.suffix() != "so") {
+			continue;
+		}
+
 		QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader->instance();
 
@@ -30,12 +35,13 @@ ToolPluginManager::ToolPluginManager()
 				mPlugins << toolPlugin;
 				mLoaders << loader;
 			} else {
-				// TODO: Does not work on linux. See editorManager.cpp for more details.
+				// We can't unload plugins due to Qt bug, see editorManager.cpp for explanation.
 				// loader->unload();
 				delete loader;
 			}
 		} else {
-			loader->unload();
+			// We can't unload plugins due to Qt bug, see editorManager.cpp for explanation.
+			// loader->unload();
 			delete loader;
 		}
 	}
@@ -46,6 +52,7 @@ ToolPluginManager::ToolPluginManager()
 
 ToolPluginManager::~ToolPluginManager()
 {
+	// We can't unload plugins due to Qt bug, see editorManager.cpp for explanation.
 	qDeleteAll(mLoaders);
 }
 
@@ -95,9 +102,9 @@ void ToolPluginManager::loadDefaultSettings()
 	}
 }
 
-QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const
+QList<QPair<QString, PreferencesPage *>> ToolPluginManager::preferencesPages() const
 {
-	QList<QPair<QString, PreferencesPage *> > result;
+	QList<QPair<QString, PreferencesPage *>> result;
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
 		if (toolPlugin->preferencesPage().second) {
 			result << toolPlugin->preferencesPage();
