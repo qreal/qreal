@@ -45,9 +45,6 @@ public:
 
 	void loadXml(QDomDocument const &worldModel);
 
-	/// Enables or disables model editing and running/stopping.
-//	void setEnabled(bool enabled);
-
 public slots:
 	void saveInitialRobotBeforeRun();
 	void setInitialRobotBeforeRun();
@@ -143,7 +140,7 @@ private:
 	QPushButton *currentPortButton();
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
-	void reinitSensor(interpreterBase::robotModel::PortInfo const &port, bool isLoading);
+	void reinitSensor(interpreterBase::robotModel::PortInfo const &port);
 
 	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);

@@ -26,9 +26,16 @@ public:
 	void connectDevicesConfigurationProvider(DevicesConfigurationProvider * const otherProvider);
 
 protected:
+	/// Reason for configuration change.
 	enum class Reason {
+		/// User himself changed device by, for example, selecting sensor in settings window.
 		userAction
+
+		/// Configuration change occured during loading of diagram or save with model.
 		, loading
+
+		/// Configuration was changed by autoconfigurer, so everything shall work just as if it is done by user, but
+		/// user shall be notified about it.
 		, automaticConfiguration
 	};
 
@@ -37,6 +44,8 @@ protected:
 	/// @param robotModel - robot model name to which configuration change is applied.
 	/// @param port - input port on which device has changed.
 	/// @param device - new type of a device on a given port.
+	/// @param reason - reason for configuration change. It allows different reactions to, for example, changes during
+	///        save loading and to changes made by user or autoconfigurer.
 	void deviceConfigurationChanged(QString const &robotModel
 			, robotModel::PortInfo const &port
 			, robotModel::DeviceInfo const &device

@@ -70,7 +70,7 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 
 	connect(&mModel.robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
 	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
-			, this, &D2ModelWidget::reinitSensor);
+			, [this](PortInfo const &port) { reinitSensor(port); });
 
 	auto checkAndSaveToRepo = [this](PortInfo const &port, bool isLoaded) {
 		Q_UNUSED(port);
@@ -368,7 +368,7 @@ void D2ModelWidget::loadWorldModel()
 	loadXml(save);
 }
 
-void D2ModelWidget::reinitSensor(PortInfo const &port, bool isLoading)
+void D2ModelWidget::reinitSensor(PortInfo const &port)
 {
 	mScene->robot()->removeSensor(port);
 
@@ -642,6 +642,8 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 {
 	Q_UNUSED(port)
 	Q_UNUSED(device)
+	Q_UNUSED(reason)
+
 	/// @todo Convert configuration between models or something?
 	if (mScene->robot() && robotModel == mModel.robotModel().info().name()) {
 		updateWheelComboBoxes();
