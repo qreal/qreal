@@ -106,11 +106,12 @@ QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
 
 
 void DevicesConfigurationWidget::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
+	Q_UNUSED(reason)
 
 	// This method can be called when we did not accomplish processing all combo boxes during saving.
 	// So ignoring such case.
