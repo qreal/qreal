@@ -8,7 +8,6 @@ INCLUDEPATH += \
 	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
-	$$PWD/../../../../qrutils/pluginManagers/ \
 
 LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils -lcommonTwoDModel
 

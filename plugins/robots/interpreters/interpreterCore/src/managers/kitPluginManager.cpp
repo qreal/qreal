@@ -5,23 +5,19 @@
 
 #include <qrkernel/exception/exception.h>
 
-#include <qrutils/pluginManagers/interfaceWrapper.h>
-
 using namespace interpreterCore;
 using namespace qReal;
 
 KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 	: mPluginsDir(QCoreApplication::applicationDirPath() + "/" + pluginDirectory)
+	, mPluginManager(PluginManager(QCoreApplication::applicationDirPath()))
 {
-	mCommonPluginManager = new CommonPluginManager(QCoreApplication::applicationDirPath(), pluginDirectory);
 	tryToLoadGeneratorPlugins();
 	tryToLoadInterpreterPlugins();
 }
 
 KitPluginManager::~KitPluginManager()
 {
-	mCommonPluginManager->deleteAllLoaders();
-	delete(mCommonPluginManager);
 }
 
 QList<QString> KitPluginManager::kitIds() const
@@ -56,20 +52,20 @@ QList<interpreterBase::robotModel::RobotModelInterface *> KitPluginManager::allR
 
 void KitPluginManager::tryToLoadInterpreterPlugins()
 {
-	QList<interpreterBase::KitPluginInterface *> loadedInterpreterPlugins =
-			InterfaceWrapper<interpreterBase::KitPluginInterface>::listOfInterfaces(mCommonPluginManager->loadAllPlugins());
+	QList<interpreterBase::KitPluginInterface *> const loadedInterpreterPlugins =
+			mPluginManager.loadAllPlugins<interpreterBase::KitPluginInterface>();
 
-	for (interpreterBase::KitPluginInterface * const kitPlugin: loadedInterpreterPlugins) {
+	for (interpreterBase::KitPluginInterface * const kitPlugin : loadedInterpreterPlugins) {
 		mPluginInterfaces.insertMulti(kitPlugin->kitId(), kitPlugin);
 	}
 }
 
 void KitPluginManager::tryToLoadGeneratorPlugins()
 {
-	QList<generatorBase::GeneratorKitPluginInterface *> loadedGeneratorPlugins =
-			InterfaceWrapper<generatorBase::GeneratorKitPluginInterface>::listOfInterfaces(mCommonPluginManager->loadAllPlugins());
+	QList<generatorBase::GeneratorKitPluginInterface *> const loadedGeneratorPlugins =
+			mPluginManager.loadAllPlugins<generatorBase::GeneratorKitPluginInterface>();
 
-	for (generatorBase::GeneratorKitPluginInterface * const generatorPlugin: loadedGeneratorPlugins) {
+	for (generatorBase::GeneratorKitPluginInterface * const generatorPlugin : loadedGeneratorPlugins) {
 		mGenerators.insertMulti(generatorPlugin->kitId(), generatorPlugin);
 	}
 }

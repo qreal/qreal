@@ -8,8 +8,6 @@
 #include <qrkernel/exception/exception.h>
 #include <qrrepo/repoApi.h>
 
-#include <qrutils/pluginManagers/interfaceWrapper.h>
-
 #include "umllib/nodeElement.h"
 #include "umllib/edgeElement.h"
 
@@ -17,13 +15,12 @@ using namespace qReal;
 
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
+	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors"))
 {
-	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath(), "plugins/editors");
-	QList<QObject *> pluginsList = mCommonPluginManager->loadAllPlugins();
+	auto const pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
 
-	for (QObject * const plugin : pluginsList) {
-		EditorInterface *iEditor = InterfaceWrapper<EditorInterface>::wrappedInterface(plugin);
-		QString const pluginName = mCommonPluginManager->fileName(plugin);
+	for (EditorInterface * const iEditor : pluginsList) {
+		QString const pluginName = mPluginManager.fileName(iEditor);
 
 		if (iEditor) {
 			mPluginsLoaded += iEditor->id();
@@ -36,15 +33,12 @@ EditorManager::EditorManager(QObject *parent)
 EditorManager::~EditorManager()
 {
 	qDeleteAll(mPluginIface);
-	mCommonPluginManager->deleteAllLoaders();
-	delete(mCommonPluginManager);
 }
 
 QString EditorManager::loadPlugin(QString const &pluginName)
 {
-	EditorInterface *iEditor = InterfaceWrapper<EditorInterface>::wrappedInterface(
-			mCommonPluginManager->pluginLoadedByName(pluginName).first);
-	QString const error = mCommonPluginManager->pluginLoadedByName(pluginName).second;
+	EditorInterface *iEditor = mPluginManager.pluginLoadedByName<EditorInterface>(pluginName).first;
+	QString const error = mPluginManager.pluginLoadedByName<EditorInterface>(pluginName).second;
 
 	if (iEditor) {
 		mPluginsLoaded += iEditor->id();
@@ -60,7 +54,7 @@ QString EditorManager::loadPlugin(QString const &pluginName)
 
 QString EditorManager::unloadPlugin(QString const &pluginName)
 {
-	QString const resultOfUnloading = mCommonPluginManager->unloadPlugin(mPluginFileName[pluginName]);
+	QString const resultOfUnloading = mPluginManager.unloadPlugin(mPluginFileName[pluginName]);
 
 	if (mPluginIface.keys().contains(pluginName)) {
 		mPluginIface.remove(pluginName);

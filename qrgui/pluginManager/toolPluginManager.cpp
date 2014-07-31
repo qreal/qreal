@@ -5,16 +5,14 @@
 #include <qrkernel/logging.h>
 
 #include "hotKeyManager/hotKeyManager.h"
-#include <qrutils/pluginManagers/interfaceWrapper.h>
 
 using namespace qReal;
 
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
+	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/tools"))
 {
-	mCommonPluginManager = new CommonPluginManager(qApp->applicationDirPath(), "plugins/tools");
-	mPlugins = InterfaceWrapper<ToolPluginInterface>::listOfInterfaces(
-			mCommonPluginManager->loadAllPlugins());
+	mPlugins = mPluginManager.loadAllPlugins<ToolPluginInterface>();
 
 	loadDefaultSettings();
 	setHotKeyActions();
@@ -22,8 +20,6 @@ ToolPluginManager::ToolPluginManager()
 
 ToolPluginManager::~ToolPluginManager()
 {
-	mCommonPluginManager->deleteAllLoaders();
-	delete(mCommonPluginManager);
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)

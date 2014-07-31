@@ -16,11 +16,10 @@
 #include "toolPluginInterface/hotKeyActionInfo.h"
 #include "toolPluginInterface/systemEvents.h"
 
-#include <qrutils/pluginManagers/commonPluginManager.h>
+#include <qrutils/pluginManagers/pluginManager.h>
 
 namespace qReal {
 
-class CommonPluginManager;
 class ToolPluginManager
 {
 public:
@@ -61,8 +60,7 @@ private:
 	Customizer mCustomizer;
 
 	/// Common part of all plugin managers
-	/// Takes ownership
-	CommonPluginManager *mCommonPluginManager;
+	PluginManager mPluginManager;
 
 	SystemEvents *mSystemEvents;
 };

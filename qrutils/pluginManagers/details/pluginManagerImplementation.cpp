@@ -1,4 +1,4 @@
-#include "commonPluginManager.h"
+#include "pluginManagerImplementation.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
@@ -6,7 +6,7 @@
 
 using namespace qReal;
 
-CommonPluginManager::CommonPluginManager(QString const &applicationDirPath
+PluginManagerImplementation::PluginManagerImplementation(QString const &applicationDirPath
 		, QString const &additionalPart)
 	: mPluginsDir(QDir(applicationDirPath))
 	, mApplicationDirectoryPath(applicationDirPath)
@@ -14,13 +14,13 @@ CommonPluginManager::CommonPluginManager(QString const &applicationDirPath
 {
 }
 
-CommonPluginManager::~CommonPluginManager()
+PluginManagerImplementation::~PluginManagerImplementation()
 {
 	qDeleteAll(mLoaders);
-	qDeleteAll(mNameAndObject);
+	qDeleteAll(mFileNameAndPlugin);
 }
 
-QList<QObject *> CommonPluginManager::loadAllPlugins()
+QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 {
 	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
 		mPluginsDir.cdUp();
@@ -37,24 +37,21 @@ QList<QObject *> CommonPluginManager::loadAllPlugins()
 		QObject * pluginByName = pluginLoadedByName(fileName).first;
 		if (pluginByName) {
 			listOfPlugins.append(pluginByName);
+			mFileNameAndPlugin.insert(fileName, pluginByName);
 		}
 	}
 
 	return listOfPlugins;
 }
 
-void CommonPluginManager::deleteAllLoaders()
-{
-	qDeleteAll(mLoaders);
-}
-
-QPair<QObject *, QString> CommonPluginManager::pluginLoadedByName(QString const &pluginName)
+QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QString const &pluginName)
 {
 	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
 	loader->load();
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
+		mFileNameAndPlugin.insert(pluginName, plugin);
 		return qMakePair(plugin, QString());
 	}
 
@@ -84,7 +81,7 @@ QPair<QObject *, QString> CommonPluginManager::pluginLoadedByName(QString const 
 	return qMakePair(nullptr, loaderError);
 }
 
-QString CommonPluginManager::unloadPlugin(QString const &pluginName)
+QString PluginManagerImplementation::unloadPlugin(QString const &pluginName)
 {
 	QPluginLoader *loader = mLoaders[pluginName];
 
@@ -104,7 +101,7 @@ QString CommonPluginManager::unloadPlugin(QString const &pluginName)
 	return QString("Plugin was not found");
 }
 
-QString CommonPluginManager::fileName(QObject *plugin) const
+QString PluginManagerImplementation::fileName(QObject *plugin) const
 {
-	return mNameAndObject.key(plugin);
+	return mFileNameAndPlugin.key(plugin);
 }

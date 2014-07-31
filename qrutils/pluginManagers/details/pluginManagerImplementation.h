@@ -11,19 +11,16 @@
 namespace qReal {
 
 /// Common part of plugin loading.
-class QRUTILS_EXPORT CommonPluginManager
+class QRUTILS_EXPORT PluginManagerImplementation
 {
 public:
 	/// @param applicationDirPath - path to qrgui.exe
 	/// @param additionalPart - path to folder with plugins, usually "bin/plugins", for robots can be folder inside plugins folder
-	CommonPluginManager(
+	PluginManagerImplementation(
 			QString const &applicationDirPath
 			, QString const &additionalPart = "plugins"
 			);
-	~CommonPluginManager();
-
-	/// Deletes all loaders.
-	void deleteAllLoaders();
+	~PluginManagerImplementation();
 
 	/// Returns list of all found plugins if succeed and empty list otherwise.
 	QList<QObject *> loadAllPlugins();
@@ -52,7 +49,7 @@ private:
 
 	/// Map from fileName to plugin
 	/// Has ownership.
-	QMap<QString, QObject *> mNameAndObject;
+	QMap<QString, QObject *> mFileNameAndPlugin;
 
 	/// Path to application directory, used to count path to loaded plugins.
 	QString mApplicationDirectoryPath;

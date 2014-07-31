@@ -17,7 +17,7 @@
 #include "editorPluginInterface/editorInterface.h"
 #include "pluginManager/details/patternParser.h"
 
-#include <qrutils/pluginManagers/commonPluginManager.h>
+#include <qrutils/pluginManagers/pluginManager.h>
 
 namespace qReal {
 
@@ -146,8 +146,7 @@ private:
 	QStringList mPluginFileNames;
 
 	/// Common part of plugin loaders
-	/// Takes ownership
-	CommonPluginManager *mCommonPluginManager;
+	PluginManager mPluginManager;
 
 	QSet<Id> mDisabledElements;
 };

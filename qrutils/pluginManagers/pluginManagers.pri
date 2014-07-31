@@ -1,6 +1,7 @@
 HEADERS += \
-	$$PWD/commonPluginManager.h \
-	$$PWD/interfaceWrapper.h
+	$$PWD/details/pluginManagerImplementation.h \
+	$$PWD/pluginManager.h
 
 SOURCES += \
-	$$PWD/commonPluginManager.cpp \
+	$$PWD/details/pluginManagerImplementation.cpp \
+	$$PWD/pluginManager.cpp

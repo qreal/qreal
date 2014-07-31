@@ -8,7 +8,7 @@
 #include <interpreterBase/kitPluginInterface.h>
 #include <generatorBase/generatorKitPluginInterface.h>
 
-#include <qrutils/pluginManagers/commonPluginManager.h>
+#include <qrutils/pluginManagers/pluginManager.h>
 
 namespace interpreterCore {
 
@@ -50,8 +50,7 @@ private:
 	QDir mPluginsDir;
 
 	/// Common part of plugins loading
-	/// Has ownership
-	qReal::CommonPluginManager *mCommonPluginManager;
+	qReal::PluginManager mPluginManager;
 };
 
 }
