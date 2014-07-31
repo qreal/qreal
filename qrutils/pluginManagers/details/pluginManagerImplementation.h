@@ -44,7 +44,7 @@ private:
 	QDir mPluginsDir;
 
 	/// Map from name to loader
-	/// Has ownersip.
+	/// Has ownership.
 	QMap<QString, QPluginLoader *> mLoaders;
 
 	/// Map from fileName to plugin

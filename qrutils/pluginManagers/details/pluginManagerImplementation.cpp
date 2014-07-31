@@ -17,7 +17,6 @@ PluginManagerImplementation::PluginManagerImplementation(QString const &applicat
 PluginManagerImplementation::~PluginManagerImplementation()
 {
 	qDeleteAll(mLoaders);
-	qDeleteAll(mFileNameAndPlugin);
 }
 
 QList<QObject *> PluginManagerImplementation::loadAllPlugins()
