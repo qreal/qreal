@@ -20,8 +20,10 @@ namespace interpreterCore {
 /// DevicesConfigurationProvider-s so they are kept in sync with each other.
 /// DevicesConfigurationManager is a center of this network and is the one place which saves sensor settings
 /// in a registry.
-class DevicesConfigurationManager : public interpreterBase::DevicesConfigurationProvider
+class DevicesConfigurationManager : public QObject, public interpreterBase::DevicesConfigurationProvider
 {
+	Q_OBJECT
+
 public:
 	/// Constructor.
 	/// @param graphicalModelAssistInterface - graphical model, needed to save settings as property of current diagram.
@@ -33,6 +35,13 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
 			, qReal::SystemEventsInterface &systemEvents
 			);
+
+signals:
+	/// Emitted each time when devices configuration is going to be loaded.
+	void beforeLoading();
+
+	/// Emitted each time when devices configuration has finished loading.
+	void afterLoading();
 
 private:
 	void onDeviceConfigurationChanged(QString const &robotModel

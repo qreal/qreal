@@ -16,6 +16,7 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotM
 	, mModel(new model::Model(robotModel))
 	, mView(new view::D2ModelWidget(*mModel.data(), configurer))
 	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
+	, mSavesLocked(false)
 {
 	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &view::D2ModelWidget::init);
 
@@ -70,6 +71,11 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 				, &interpreterControl, &interpreterBase::InterpreterControlInterface::stopRobot);
 	};
 
+	connect(&eventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::beforeLoadingSensorsConfiguration
+			, [=](){ mSavesLocked = true; });
+	connect(&eventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::afterLoadingSensorsConfiguration
+			, [=](){ mSavesLocked = false; });
+
 	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
 			, [this, &graphicalModel, &logicalModel] (qReal::Id const &id) {
 				mView->setRunStopButtonsEnabled(!id.isNull());
@@ -85,13 +91,12 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 	connect(mModel.data(), &model::Model::modelChanged, [this, &graphicalModel, &logicalModel
 			, &interpreterControl, &interpretersInterface] (QDomDocument const &xml) {
 				qReal::Id const logicalId = graphicalModel.logicalId(interpretersInterface.activeDiagram());
-				if (!logicalId.isNull() && logicalId != qReal::Id::rootId()) {
+				if (!logicalId.isNull() && logicalId != qReal::Id::rootId() && !mSavesLocked) {
 					logicalModel.setPropertyByRoleName(logicalId, xml.toString(4), "worldModel");
 				}
 	});
 
-	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
-			, [=](){ mView.reset(); });
+	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow, [=](){ mView.reset(); });
 
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged

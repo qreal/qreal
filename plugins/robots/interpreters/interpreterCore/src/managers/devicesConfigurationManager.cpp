@@ -48,6 +48,8 @@ QString DevicesConfigurationManager::save() const
 
 void DevicesConfigurationManager::load(QString const &configuration)
 {
+	emit beforeLoading();
+
 	clearConfiguration();
 
 	QMap<QString, QMap<PortInfo, DeviceInfo>> const parsed = RobotModelUtils::deserialize(configuration);
@@ -56,6 +58,8 @@ void DevicesConfigurationManager::load(QString const &configuration)
 			deviceConfigurationChanged(robotModel, port, parsed[robotModel][port]);
 		}
 	}
+
+	emit afterLoading();
 }
 
 void DevicesConfigurationManager::onDeviceConfigurationChanged(QString const &robotModel
