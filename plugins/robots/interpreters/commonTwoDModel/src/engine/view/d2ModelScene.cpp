@@ -252,7 +252,7 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 		interpreterBase::robotModel::PortInfo const port = mRobot->sensors().key(sensor);
 		if (port.isValid()) {
 			deviceConfigurationChanged(mModel.robotModel().info().name()
-					, port, interpreterBase::robotModel::DeviceInfo());
+					, port, interpreterBase::robotModel::DeviceInfo(), Reason::userAction);
 		}
 	} else if (items::WallItem * const wall = dynamic_cast<items::WallItem *>(item)) {
 		mModel.worldModel().removeWall(wall);
@@ -346,7 +346,7 @@ void D2ModelScene::clearScene(bool removeRobot)
 	if (removeRobot) {
 		for (interpreterBase::robotModel::PortInfo const &port : mRobot->sensors().keys()) {
 			deviceConfigurationChanged(mModel.robotModel().info().name()
-					, port, interpreterBase::robotModel::DeviceInfo());
+					, port, interpreterBase::robotModel::DeviceInfo(), Reason::userAction);
 		}
 
 		clear();

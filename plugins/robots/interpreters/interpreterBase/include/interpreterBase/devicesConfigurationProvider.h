@@ -26,6 +26,12 @@ public:
 	void connectDevicesConfigurationProvider(DevicesConfigurationProvider * const otherProvider);
 
 protected:
+	enum class Reason {
+		userAction
+		, loading
+		, automaticConfiguration
+	};
+
 	/// Shall be called by descendants when device configuration is changed. Change is propagated automatically
 	/// through entire graph of connected providers.
 	/// @param robotModel - robot model name to which configuration change is applied.
@@ -33,16 +39,18 @@ protected:
 	/// @param device - new type of a device on a given port.
 	void deviceConfigurationChanged(QString const &robotModel
 			, robotModel::PortInfo const &port
-			, robotModel::DeviceInfo const &device);
+			, robotModel::DeviceInfo const &device
+			, Reason reason);
 
 	/// Must be implemented in descendants to react to device configuration changes and refresh their internal data.
 	/// Symmetric to deviceConfigurationChanged. Default implementation does nothing.
 	virtual void onDeviceConfigurationChanged(QString const &robotModel
 			, robotModel::PortInfo const &port
-			, robotModel::DeviceInfo const &device);
+			, robotModel::DeviceInfo const &device
+			, Reason reason);
 
 	/// Sets null devices to each known port of each known robot model.
-	void clearConfiguration();
+	void clearConfiguration(Reason reason);
 
 	/// Returns all models present in current configuration.
 	QStringList configuredModels() const;

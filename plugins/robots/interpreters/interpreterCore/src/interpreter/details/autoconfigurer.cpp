@@ -40,7 +40,7 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, QString const &
 					return false;
 				} else if (existingDevice.isNull()) {
 					/// @todo: Do it loudly, user must notice it
-					deviceConfigurationChanged(robotModelName, port, device);
+					deviceConfigurationChanged(robotModelName, port, device, Reason::automaticConfiguration);
 				}
 			}
 		}

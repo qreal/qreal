@@ -82,7 +82,8 @@ protected:
 
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, const interpreterBase::robotModel::DeviceInfo &device) override;
+			, const interpreterBase::robotModel::DeviceInfo &device
+			, Reason reason) override;
 
 private slots:
 	void bringToFront();
@@ -149,7 +150,7 @@ private:
 	QPushButton *currentPortButton();
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
-	void reinitSensor(interpreterBase::robotModel::PortInfo const &port);
+	void reinitSensor(interpreterBase::robotModel::PortInfo const &port, bool isLoading);
 
 	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);

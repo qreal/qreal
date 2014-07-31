@@ -172,11 +172,11 @@ void DevicesConfigurationWidget::propagateChanges(PortInfo const &port, DeviceIn
 		for (PortInfo const &otherPort : robotModel->configurablePorts()) {
 			if (areConvertible(port, otherPort)) {
 				if (sensor.isNull()) {
-					deviceConfigurationChanged(robotModelId, otherPort, DeviceInfo());
+					deviceConfigurationChanged(robotModelId, otherPort, DeviceInfo(), Reason::userAction);
 				} else {
 					DeviceInfo const otherDevice = convertibleDevice(robotModel, otherPort, sensor);
 					if (!otherDevice.isNull()) {
-						deviceConfigurationChanged(robotModelId, otherPort, otherDevice);
+						deviceConfigurationChanged(robotModelId, otherPort, otherDevice, Reason::userAction);
 					}
 				}
 			}

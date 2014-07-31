@@ -61,7 +61,7 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(mScene, &D2ModelScene::selectionChanged, this, &D2ModelWidget::changePalette);
 	connect(mScene, &D2ModelScene::mousePressed, this, &D2ModelWidget::refreshCursor);
 	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::refreshCursor);
-	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::saveToRepo);
+	connect(mScene, &D2ModelScene::mouseReleased, this, [this](){ saveToRepo(); });
 	connect(mScene, &D2ModelScene::robotPressed, [this]() { mUi->noneButton->setChecked(true); });
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
@@ -71,10 +71,16 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(&mModel.robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
 	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
 			, this, &D2ModelWidget::reinitSensor);
-	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
-			, this, &D2ModelWidget::saveToRepo);
-	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceRemoved
-			, this, &D2ModelWidget::saveToRepo);
+
+	auto checkAndSaveToRepo = [this](PortInfo const &port, bool isLoaded) {
+		Q_UNUSED(port);
+		if (isLoaded) {
+			saveToRepo();
+		}
+	};
+
+	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded, checkAndSaveToRepo);
+	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceRemoved, checkAndSaveToRepo);
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -364,7 +370,7 @@ void D2ModelWidget::loadWorldModel()
 	loadXml(save);
 }
 
-void D2ModelWidget::reinitSensor(PortInfo const &port)
+void D2ModelWidget::reinitSensor(PortInfo const &port, bool isLoading)
 {
 	mScene->robot()->removeSensor(port);
 
@@ -505,7 +511,7 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit widgetClosed();
 }
 
-SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
+SensorItem *D2ModelWidget::sensorItem(PortInfo const &port)
 {
 	return mScene->robot()->sensors().value(port);
 }
@@ -650,7 +656,7 @@ void D2ModelWidget::syncCursorButtons()
 }
 
 void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &device)
+		, PortInfo const &port, DeviceInfo const &device, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(device)

@@ -31,8 +31,8 @@ public:
 	void deserialize(QDomElement const &element);
 
 signals:
-	void deviceAdded(interpreterBase::robotModel::PortInfo const &port);
-	void deviceRemoved(interpreterBase::robotModel::PortInfo const &port);
+	void deviceAdded(interpreterBase::robotModel::PortInfo const &port, bool isLoading);
+	void deviceRemoved(interpreterBase::robotModel::PortInfo const &port, bool isLoading);
 
 	void positionChanged(interpreterBase::robotModel::PortInfo const &port);
 	void rotationChanged(interpreterBase::robotModel::PortInfo const &port);
@@ -50,7 +50,8 @@ private:
 
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &device) override;
+			, interpreterBase::robotModel::DeviceInfo const &device
+			, Reason reason) override;
 
 	QPointF defaultPosition() const;
 
