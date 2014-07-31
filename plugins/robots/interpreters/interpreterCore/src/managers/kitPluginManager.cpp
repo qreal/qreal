@@ -10,7 +10,7 @@ using namespace qReal;
 
 KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 	: mPluginsDir(QCoreApplication::applicationDirPath() + "/" + pluginDirectory)
-	, mPluginManager(PluginManager(QCoreApplication::applicationDirPath()))
+	, mPluginManager(PluginManager(QCoreApplication::applicationDirPath(), pluginDirectory))
 {
 	tryToLoadGeneratorPlugins();
 	tryToLoadInterpreterPlugins();
