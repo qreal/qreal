@@ -339,14 +339,14 @@ void D2ModelScene::setNoneStatus()
 	mDrawingAction = none;
 }
 
-void D2ModelScene::clearScene(bool removeRobot)
+void D2ModelScene::clearScene(bool removeRobot, Reason reason)
 {
 	mModel.worldModel().clear();
 	mModel.robotModel().clear();
 	if (removeRobot) {
 		for (interpreterBase::robotModel::PortInfo const &port : mRobot->sensors().keys()) {
 			deviceConfigurationChanged(mModel.robotModel().info().name()
-					, port, interpreterBase::robotModel::DeviceInfo(), Reason::userAction);
+					, port, interpreterBase::robotModel::DeviceInfo(), reason);
 		}
 
 		clear();

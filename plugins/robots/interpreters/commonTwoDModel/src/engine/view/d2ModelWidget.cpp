@@ -74,7 +74,7 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 
 	auto checkAndSaveToRepo = [this](PortInfo const &port, bool isLoaded) {
 		Q_UNUSED(port);
-		if (isLoaded) {
+		if (!isLoaded) {
 			saveToRepo();
 		}
 	};
@@ -168,7 +168,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->wallButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawWall); });
 	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 
-	connect(mUi->clearButton, &QAbstractButton::clicked, mScene, &D2ModelScene::clearScene);
+	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){ mScene->clearScene(false, Reason::userAction); });
 	connect(&mButtonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *, bool)>(&QButtonGroup::buttonToggled)
 			, [this](QAbstractButton *button, bool toggled) {
 				if (toggled) {
@@ -364,8 +364,6 @@ void D2ModelWidget::loadWorldModel()
 		return;
 	}
 
-	mScene->clearScene(true);
-
 	QDomDocument const save = utils::xmlUtils::loadDocument(loadFileName);
 	loadXml(save);
 }
@@ -528,7 +526,7 @@ QDomDocument D2ModelWidget::generateXml() const
 
 void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 {
-	mScene->clearScene(true);
+	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
 
 	saveInitialRobotBeforeRun();
