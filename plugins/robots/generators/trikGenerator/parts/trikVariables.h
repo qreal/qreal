@@ -12,9 +12,11 @@ public:
 	TrikVariables(QString const &pathToTemplates
 			, interpreterBase::robotModel::RobotModelInterface const &robotModel);
 
-protected:
+private:
 	QMap<QString, int> intConstants() const override;
 	QMap<QString, float> floatConstants() const override;
+
+	QStringList expressions(qrRepo::RepoApi const &api) const override;
 };
 
 }
