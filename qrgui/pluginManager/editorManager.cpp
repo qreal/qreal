@@ -15,98 +15,60 @@ using namespace qReal;
 
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
+	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/editors"))
 {
-	mPluginsDir = QDir(qApp->applicationDirPath());
+	auto const pluginsList = mPluginManager.loadAllPlugins<EditorInterface>();
 
-	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
-		mPluginsDir.cdUp();
-	}
+	for (EditorInterface * const iEditor : pluginsList) {
+		QString const pluginName = mPluginManager.fileName(iEditor);
 
-	mPluginsDir.cd("plugins");
-	mPluginsDir.cd("editors");
-
-	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
-		QFileInfo const fileInfo(fileName);
-		if (fileInfo.suffix() != "dll" && fileInfo.suffix() != "so") {
-			continue;
+		if (iEditor) {
+			mPluginsLoaded += iEditor->id();
+			mPluginFileName.insert(iEditor->id(), pluginName);
+			mPluginIface[iEditor->id()] = iEditor;
 		}
-
-		loadPlugin(fileName);
 	}
 }
 
 EditorManager::~EditorManager()
 {
 	qDeleteAll(mPluginIface);
-	qDeleteAll(mLoaders);
 }
 
 QString EditorManager::loadPlugin(QString const &pluginName)
 {
-	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
-	QObject *plugin = loader->instance();
+	EditorInterface *iEditor = mPluginManager.pluginLoadedByName<EditorInterface>(pluginName).first;
+	QString const error = mPluginManager.pluginLoadedByName<EditorInterface>(pluginName).second;
 
-	if (plugin) {
-		EditorInterface *iEditor = qobject_cast<EditorInterface *>(plugin);
-		if (iEditor) {
-			mPluginsLoaded += iEditor->id();
-			mPluginFileName.insert(iEditor->id(), pluginName);
-			mPluginIface[iEditor->id()] = iEditor;
-			mLoaders.insert(pluginName, loader);
-			QLOG_INFO() << "Plugin" << pluginName << "loaded. Version: " << iEditor->version();
-			return QString();
-		}
+	if (iEditor) {
+		mPluginsLoaded += iEditor->id();
+		mPluginFileName.insert(iEditor->id(), pluginName);
+		mPluginIface[iEditor->id()] = iEditor;
+		QLOG_INFO() << "Plugin" << pluginName << "loaded. Version: " << iEditor->version();
+		return QString();
 	}
 
-	QString const error = loader->errorString();
-	QLOG_WARN() << "Editor plugin" << pluginName << "loading failed: " + error;
-
-	// Unloading of plugins is currently (Qt 5.3) broken due to a bug in metatype system: calling Q_DECLARE_METATYPE
-	// from plugin registers some data from plugin address space in Qt metatype system, which is not being updated
-	// when plugin is unloaded and loaded again. Any subsequent calls to QVariant or other template classes/methods
-	// which use metainformation will result in a crash. It is likely (but not verified) that qRegisterMetaType leads
-	// to the same issue. Since we can not guarantee that plugin does not use Q_DECLARE_METATYPE or qRegisterMetaType
-	// we shall not unload plugin at all, to be safe rather than sorry.
-	//
-	// But it seems also that metainformation gets deleted BEFORE plugins are unloaded on application exit, so we can
-	// not call any metainformation-using code in destructors that get called on unloading. Since Qt classes themselves
-	// are using such calls (QGraphicsViewScene, for example), random crashes on exit may be a symptom of this problem.
-	//
-	// EditorManager is an exception, because it really needs to unload editor plugins, to be able to load new versions
-	// compiled by metaeditor. Editor plugins are generated, so we can guarantee to some extent that there will be no
-	// metatype registrations.
-	//
-	// See:
-	// http://stackoverflow.com/questions/19234703/using-q-declare-metatype-with-a-dll-that-may-be-loaded-multiple-times
-	// (and http://qt-project.org/forums/viewthread/35587)
-	// https://bugreports.qt-project.org/browse/QTBUG-32442
-
-	// loader->unload();
-	delete loader;
+	QLOG_WARN() << "Editor plugin" << pluginName << "loading failed: " << error;
 	return error;
 }
 
 QString EditorManager::unloadPlugin(QString const &pluginName)
 {
-	QPluginLoader *loader = mLoaders[mPluginFileName[pluginName]];
-	if (loader) {
-		mLoaders.remove(mPluginFileName[pluginName]);
+	QString const resultOfUnloading = mPluginManager.unloadPlugin(mPluginFileName[pluginName]);
+
+	if (mPluginIface.keys().contains(pluginName)) {
 		mPluginIface.remove(pluginName);
 		mPluginFileName.remove(pluginName);
 		mPluginsLoaded.removeAll(pluginName);
-		if (!loader->unload()) {
-			QString const error = loader->errorString();
-			QLOG_WARN() << "Editor plugin" << pluginName << "unloading failed: " + error;
-			delete loader;
-			return error;
+
+		if (!resultOfUnloading.isEmpty()) {
+			QLOG_WARN() << "Editor plugin" << pluginName << "unloading failed: " + resultOfUnloading;
 		}
 
 		QLOG_INFO() << "Plugin" << pluginName << "unloaded";
-		delete loader;
-		return QString();
 	}
 
-	return "Could not find loader";
+	return resultOfUnloading;
 }
 
 IdList EditorManager::editors() const

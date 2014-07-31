@@ -10,41 +10,9 @@ using namespace qReal;
 
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
+	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/tools"))
 {
-	mPluginsDir = QDir(qApp->applicationDirPath());
-
-	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
-		mPluginsDir.cdUp();
-	}
-
-	mPluginsDir.cd("plugins");
-	mPluginsDir.cd("tools");
-
-	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
-		QFileInfo const fileInfo(fileName);
-		if (fileInfo.suffix() != "dll" && fileInfo.suffix() != "so") {
-			continue;
-		}
-
-		QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader->instance();
-
-		if (plugin) {
-			ToolPluginInterface *toolPlugin = qobject_cast<ToolPluginInterface *>(plugin);
-			if (toolPlugin) {
-				mPlugins << toolPlugin;
-				mLoaders << loader;
-			} else {
-				// We can't unload plugins due to Qt bug, see editorManager.cpp for explanation.
-				// loader->unload();
-				delete loader;
-			}
-		} else {
-			// We can't unload plugins due to Qt bug, see editorManager.cpp for explanation.
-			// loader->unload();
-			delete loader;
-		}
-	}
+	mPlugins = mPluginManager.loadAllPlugins<ToolPluginInterface>();
 
 	loadDefaultSettings();
 	setHotKeyActions();
@@ -52,8 +20,6 @@ ToolPluginManager::ToolPluginManager()
 
 ToolPluginManager::~ToolPluginManager()
 {
-	// We can't unload plugins due to Qt bug, see editorManager.cpp for explanation.
-	qDeleteAll(mLoaders);
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
