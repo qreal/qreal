@@ -492,16 +492,6 @@ void D2ModelWidget::setSensorVisible(interpreterBase::robotModel::PortInfo const
 	}
 }
 
-void D2ModelWidget::enableRunStopButtons()
-{
-	mUi->runButton->setEnabled(true);
-}
-
-void D2ModelWidget::disableRunStopButtons()
-{
-	mUi->runButton->setEnabled(false);
-}
-
 void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
@@ -530,12 +520,6 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	mModel.deserialize(worldModel);
 
 	saveInitialRobotBeforeRun();
-}
-
-void D2ModelWidget::setRunStopButtonsEnabled(bool enabled)
-{
-	mUi->runButton->setEnabled(enabled);
-	mUi->stopButton->setEnabled(enabled);
 }
 
 void D2ModelWidget::enableRobotFollowing(bool on)
