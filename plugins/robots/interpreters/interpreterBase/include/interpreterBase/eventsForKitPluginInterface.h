@@ -20,6 +20,12 @@ signals:
 
 	/// Robot model is changed in settings (or selected in a toolbar).
 	void robotModelChanged(QString const &newModelName);
+
+	/// Emitted each time when devices configuration is going to be loaded.
+	void beforeLoadingSensorsConfiguration();
+
+	/// Emitted each time when devices configuration has finished loading.
+	void afterLoadingSensorsConfiguration();
 };
 
 }

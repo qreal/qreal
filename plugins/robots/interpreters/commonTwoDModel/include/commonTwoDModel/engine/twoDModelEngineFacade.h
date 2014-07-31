@@ -57,6 +57,8 @@ private:
 	QScopedPointer<model::Model> mModel;
 	QScopedPointer<view::D2ModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi;
+
+	bool mSavesLocked;
 };
 
 }

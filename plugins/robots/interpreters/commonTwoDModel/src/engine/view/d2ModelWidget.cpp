@@ -358,10 +358,9 @@ void D2ModelWidget::loadWorldModel()
 		return;
 	}
 
-	mScene->clearScene(true);
-
 	QDomDocument const save = utils::xmlUtils::loadDocument(loadFileName);
 	loadXml(save);
+	saveToRepo();
 }
 
 void D2ModelWidget::reinitSensor(PortInfo const &port)

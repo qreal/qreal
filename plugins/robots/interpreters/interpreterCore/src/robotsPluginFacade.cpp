@@ -38,6 +38,11 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, configurer.systemEvents()
 			));
 
+	connect(mDevicesConfigurationManager.data(), &DevicesConfigurationManager::beforeLoading
+			, &mEventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::beforeLoadingSensorsConfiguration);
+	connect(mDevicesConfigurationManager.data(), &DevicesConfigurationManager::afterLoading
+			, &mEventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::afterLoadingSensorsConfiguration);
+
 	mTitlesVisibilityManager.reset(
 			new TitlesVisibilityManager(mActionsManager.titlesVisibilityAction(), configurer.sceneCustomizer())
 			);
