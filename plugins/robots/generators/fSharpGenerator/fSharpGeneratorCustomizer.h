@@ -8,14 +8,14 @@ namespace fSharp {
 class FSharpGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
-    FSharpGeneratorCustomizer(qrRepo::RepoApi const &repo
-            , qReal::ErrorReporterInterface &errorReporter
-            , interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
+	FSharpGeneratorCustomizer(qrRepo::RepoApi const &repo
+			, qReal::ErrorReporterInterface &errorReporter
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
 
-    generatorBase::GeneratorFactoryBase *factory() override;
+	generatorBase::GeneratorFactoryBase *factory() override;
 
 private:
-    FSharpGeneratorFactory mFactory;
+	FSharpGeneratorFactory mFactory;
 };
 
 }

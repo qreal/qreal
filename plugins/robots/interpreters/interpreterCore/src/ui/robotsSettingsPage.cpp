@@ -15,7 +15,7 @@ using namespace interpreterBase;
 using namespace qReal;
 
 RobotsSettingsPage::RobotsSettingsPage(
-KitPluginManager &kitPluginManager
+		KitPluginManager &kitPluginManager
 		, RobotModelManager &robotModelManager
 		, QWidget *parent)
 	: PreferencesPage(parent)
@@ -32,7 +32,7 @@ KitPluginManager &kitPluginManager
 	mUi->devicesConfigurer->connectDevicesConfigurationProvider(this);
 	mUi->devicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-	, mUi->devicesConfigurer, &DevicesConfigurationWidget::selectRobotModel);
+			, mUi->devicesConfigurer, &DevicesConfigurationWidget::selectRobotModel);
 
 	restoreSettings();
 	saveSelectedRobotModel();

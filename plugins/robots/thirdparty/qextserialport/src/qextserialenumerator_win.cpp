@@ -138,7 +138,7 @@ static QString getRegKeyValue(HKEY key, LPCTSTR property)
     QString result;
     if (::RegQueryValueEx(key, property, NULL, &type, buff, &size) == ERROR_SUCCESS)
         result = TCHARToQString(buff);
-	::RegCloseKey(key);
+    ::RegCloseKey(key);
     delete [] buff;
     return result;
 }

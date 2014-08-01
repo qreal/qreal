@@ -27,13 +27,13 @@ QString FSharpFunctionBlockConverter::convert(QString const &data) const
 	QStringList const lines = preparedCode.split(';', QString::SkipEmptyParts);
 	QStringList result;
 
-	foreach (QString const &line, lines) {
-		QRegExp regExp("<=|>=|==");
+	for (QString const &line : lines) {
+		QRegExp const regExp("<=|>=|==");
 
 		if(!line.trimmed().contains(regExp)) {
+			/// @todo "a = 1 == 2" gets screwed up by this.
 			result.append(line.trimmed().replace("=", "<-"));
-		}
-		else {
+		} else {
 			result.append(line.trimmed());
 		}
 	}

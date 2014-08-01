@@ -2,6 +2,9 @@
 
 #include <../qrgui/toolPluginInterface/toolPluginInterface.h>
 
+#include <QtCore/QTranslator>
+#include <QtCore/QScopedPointer>
+
 namespace trikRuntimeUploaderPlugin {
 
 class TrikRuntimeUploaderPlugin : public QObject, public qReal::ToolPluginInterface
@@ -22,10 +25,10 @@ private slots:
 	void uploadRuntime();
 
 private:
-	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;;  // Does not have ownership
+	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
 
-	QAction mAction;
-
+	QScopedPointer<QAction> mAction;
+	QTranslator mAppTranslator;
 };
 
 }

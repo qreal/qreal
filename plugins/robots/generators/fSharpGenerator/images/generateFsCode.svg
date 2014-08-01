@@ -17,8 +17,8 @@
    viewBox="0 0 15000 15000"
    id="svg2"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="uploadProgram.svg"><metadata
-   id="metadata42"><rdf:RDF><cc:Work
+   sodipodi:docname="generateFsCode.svg"><metadata
+   id="metadata45"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
          rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
    pagecolor="#ffffff"
@@ -29,29 +29,32 @@
    guidetolerance="10"
    inkscape:pageopacity="0"
    inkscape:pageshadow="2"
-   inkscape:window-width="960"
-   inkscape:window-height="738"
-   id="namedview40"
+   inkscape:window-width="945"
+   inkscape:window-height="613"
+   id="namedview43"
    showgrid="false"
    inkscape:zoom="1.5733333"
-   inkscape:cx="74.999998"
-   inkscape:cy="74.999998"
-   inkscape:window-x="820"
-   inkscape:window-y="156"
+   inkscape:cx="74.999996"
+   inkscape:cy="74.999996"
+   inkscape:window-x="2100"
+   inkscape:window-y="300"
    inkscape:window-maximized="0"
-   inkscape:current-layer="g3023" />
+   inkscape:current-layer="svg2" />
  <defs
    id="defs4">
   <style
    type="text/css"
    id="style6">
    
-    .str1 {stroke:#8BB832;stroke-width:79.375}
+    .str2 {stroke:#333333;stroke-width:39.69}
+    .str1 {stroke:#333333;stroke-width:79.375}
     .str0 {stroke:#666666;stroke-width:127}
+    .fil3 {fill:gray}
+    .fil4 {fill:#98F10B}
+    .fil5 {fill:white}
     .fil2 {fill:url(#id0)}
     .fil0 {fill:url(#id1)}
-    .fil3 {fill:url(#id2)}
-    .fil1 {fill:url(#id3)}
+    .fil1 {fill:url(#id2)}
    
   </style>
   <linearGradient
@@ -89,22 +92,6 @@
   <linearGradient
    id="id2"
    gradientUnits="userSpaceOnUse"
-   x1="7396.82"
-   y1="12287.2"
-   x2="7396.82"
-   y2="2489.91">
-   <stop
-   offset="0"
-   style="stop-color:#99CC33"
-   id="stop19" />
-   <stop
-   offset="1"
-   style="stop-color:#CCFF66"
-   id="stop21" />
-  </linearGradient>
-  <linearGradient
-   id="id3"
-   gradientUnits="userSpaceOnUse"
    x1="11970.7"
    y1="13958.4"
    x2="10302.5"
@@ -112,15 +99,15 @@
    <stop
    offset="0"
    style="stop-color:#B3B3B3"
-   id="stop24" />
+   id="stop19" />
    <stop
    offset="0.568627"
    style="stop-color:#E6E6E6"
-   id="stop26" />
+   id="stop21" />
    <stop
    offset="1"
    style="stop-color:#E6E6E6"
-   id="stop28" />
+   id="stop23" />
   </linearGradient>
  </defs>
  <g
@@ -130,33 +117,52 @@
   <polygon
    class="fil0 str0"
    points="2462,640 12517,640 12517,11554 11100,12326 9802,13945 9686,13975 2462,13975 "
-   id="polygon32" />
+   id="polygon27" />
   <path
    class="fil1 str0"
    d="M9753 13964c998,-173 2410,-1536 2767,-2393 0,0 -2662,3 -2702,30 -40,26 -64,2363 -64,2363z"
-   id="path34" />
+   id="path29" />
   <rect
    class="fil2"
    x="2738"
    y="784"
    width="9525"
    height="1005"
-   id="rect36" />
+   id="rect31" />
   <path
    class="fil3 str1"
-   d="M8369 11233l-1753 2c-156,0 -283,-127 -283,-282l-6 -4568 -1513 6c-625,3 -577,63 -122,-364 746,-697 1491,-1393 2237,-2090 551,-515 375,-529 921,-25 765,706 1530,1406 2296,2115 451,418 397,340 -213,343l-1287 5 6 4575c0,156 -127,283 -282,283z"
-   id="path38" />
+   d="M7584 9682c1422,-86 2548,-1266 2548,-2709 0,-1499 -1111,-1573 -2662,-1867 -1551,-294 -2766,368 -2766,1867 0,1257 854,2314 2014,2623 108,29 -183,354 -70,369l608 163 302 -80 25 -366z"
+   id="path33" />
+  <polygon
+   class="fil3 str2"
+   points="8084,3831 8520,3866 8438,4760 7829,4782 "
+   id="polygon35" />
+  <path
+   class="fil4 str1"
+   d="M6043 4944c390,-203 540,-315 1106,-398l17 -778 1141 104 -104 761c454,249 748,420 1115,786l709 -259 398 1106 -640 147c-48,79 193,798 -406,1867l579 536 -691 709 -579 -527c-438,197 -956,350 -1417,363l-61 761 -1132 -199 121 -899c-416,-345 -595,-454 -977,-1063l-899 251 -225 -959 907 -225c28,-533 98,-1008 380,-1426l-640 -519 605 -657 691 519z"
+   id="path37" />
+  <circle
+   class="fil3 str1"
+   cx="7332"
+   cy="6994"
+   r="951"
+   id="circle39" />
+  <path
+   class="fil5 str1"
+   d="M7332 7945c525,0 951,-426 951,-951 0,-205 -426,-562 -951,-562 -525,0 -951,305 -951,562 0,525 426,951 951,951z"
+   id="path41" />
  </g>
-<g
-   id="g3023"
-   transform="matrix(100,0,0,100,2900,10737.795)"><g
-     id="g3010"
-     transform="translate(0,4e-6)"><path
-       id="path3012"
-       d="m 0,29.125983 0,-28.62992004 19.629922,0 0,4.85433044 -13.8543313,0 0,6.7677166 11.9763783,0 0,4.85433 -11.9763783,0 0,12.153543 z"
-       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
-       inkscape:connector-curvature="0" /><path
-       id="path3014"
-       d="m 24.519685,22.003936 -2.65748,0 0,-4.287402 3.507874,0 1.169292,-5.77559 -4.677166,0 0,-4.3228342 5.562992,0 L 28.948819,0 l 4.393701,0 -1.559055,7.6181098 4.322835,0 L 37.629922,0 l 4.535433,0 -1.594488,7.6181098 2.692913,0 0,4.3228342 -3.543307,0 -1.169291,5.77559 4.712598,0 0,4.287402 -5.598425,0 -1.559055,7.61811 -4.358268,0 1.523622,-7.61811 -4.358268,0 -1.523622,7.61811 -4.429134,0 z m 6.413386,-10.062992 -1.133858,5.77559 4.322835,0 1.133858,-5.77559 z"
-       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
-       inkscape:connector-curvature="0" /></g></g></svg>
+<text
+   xml:space="preserve"
+   style="font-size:4000px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+   x="2571.875"
+   y="13651.172"
+   id="text3022"
+   sodipodi:linespacing="125%"><tspan
+     sodipodi:role="line"
+     id="tspan3024"
+     x="2571.875"
+     y="13651.172">F#</tspan></text>
+
+
+</svg>

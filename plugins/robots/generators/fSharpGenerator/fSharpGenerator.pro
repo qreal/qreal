@@ -24,13 +24,6 @@ INCLUDEPATH += \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui \
 
-# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
-# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
-!macx {
-QMAKE_POST_LINKQMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../bin/
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin/plugins/
-}
-
 TRANSLATIONS = fSharpGenerator_ru.ts
 
 RESOURCES = \

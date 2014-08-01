@@ -1,6 +1,8 @@
 #include "fSharpGeneratorFactory.h"
+
 #include <generatorBase/converters/regexpMultiConverter.h>
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
+
 #include "converters/engineV4PortConverter.h"
 #include "converters/engineV6PortConverter.h"
 #include "converters/encoderV4PortConverter.h"
@@ -20,7 +22,6 @@ using namespace fSharp::simple;
 using namespace generatorBase;
 using namespace generatorBase::simple;
 
-
 FSharpGeneratorFactory::FSharpGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
@@ -37,9 +38,9 @@ AbstractSimpleGenerator *FSharpGeneratorFactory::simpleGenerator(qReal::Id const
 {
 	QString const elementType = id.element();
 	if (elementType.contains("EnginesForward")
-		|| elementType.contains("EnginesBackward")
-		|| elementType.contains("AngularServo")
-	)
+			|| elementType.contains("EnginesBackward")
+			|| elementType.contains("AngularServo")
+			)
 	{
 		return new FSharpEnginesGenerator(mRepo, customizer, id, elementType, this);
 	} else if (elementType.contains("EnginesStop")) {

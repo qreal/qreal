@@ -35,7 +35,7 @@ interpreterBase::blocksBase::BlocksFactoryInterface *NullKitInterpreterPlugin::b
 
 QList<interpreterBase::AdditionalPreferences *> NullKitInterpreterPlugin::settingsWidgets()
 {
-    return {nullptr};
+	return {nullptr};
 }
 
 QList<qReal::ActionInfo> NullKitInterpreterPlugin::customActions()

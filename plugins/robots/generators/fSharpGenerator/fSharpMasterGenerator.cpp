@@ -1,10 +1,8 @@
 #include "fSharpMasterGenerator.h"
 #include "fSharpGeneratorCustomizer.h"
 
-
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
-
 
 using namespace fSharp;
 
@@ -35,6 +33,6 @@ void FSharpMasterGenerator::outputCode(const QString &path, const QString &code)
 {
 	utils::OutFile out(path);
 	QString copy = code;
-    out() << copy.replace('\t', "    ").replace("robot.MotorE1", "robot.ServoE1")
-                                        .replace("robot.MotorE2", "robot.ServoE2");
+	out() << copy.replace('\t', "    ").replace("robot.MotorE1", "robot.ServoE1")
+			.replace("robot.MotorE2", "robot.ServoE2");
 }

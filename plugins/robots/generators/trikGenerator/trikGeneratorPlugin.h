@@ -16,6 +16,7 @@ public:
 	virtual ~TrikGeneratorPlugin();
 
 	QString kitId() const override;
+
 	QList<qReal::ActionInfo> actions() override;
 	QList<HotKeyActionInfo> hotKeyActions() override;
 
@@ -30,7 +31,7 @@ protected:
 private slots:
 
 	/// Generates and uploads script to a robot. Program then can be launched manually or remotely
-	/// by runCommand. Program is stored on robot as a file next to scriptRunner and named
+	/// by runCommand. Program is stored on robot as a file in /home/root/trik/scripts and named
 	/// as <qReal save name>.qts.
 	/// @returns True, if successful.
 	bool uploadProgram();

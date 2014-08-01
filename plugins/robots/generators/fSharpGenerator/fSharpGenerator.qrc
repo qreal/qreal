@@ -1,9 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>fSharpGenerator_ru.qm</file>
-        <file>images/generateQtsCode.svg</file>
+    </qresource>
+    <qresource prefix="/fSharp">
+        <file>images/generateFsCode.svg</file>
+        <file>images/stopRobot.svg</file>
         <file>images/uploadAndExecuteProgram.svg</file>
         <file>images/uploadProgram.svg</file>
-        <file>images/stopRobot.svg</file>
     </qresource>
 </RCC>

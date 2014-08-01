@@ -16,3 +16,7 @@ HEADERS += \
 
 SOURCES += \
 	trikRuntimeUploaderPlugin.cpp
+
+TRANSLATIONS += $$PWD/trikRuntimeUploaderPlugin_ru.ts
+
+RESOURCES += $$PWD/trikRuntimeUploaderPlugin.qrc \

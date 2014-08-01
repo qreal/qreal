@@ -4,7 +4,7 @@
 
 namespace fSharp {
 
-/// Generation of QtScript program for TRIK, uploading and execution of a program.
+/// Generation of F# program for TRIK, uploading and execution of a program.
 /// Uses setting "tcpServer" from RobotsInterpreter.
 class FSharpGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 {
@@ -31,8 +31,8 @@ protected:
 private slots:
 
 	/// Generates and uploads script to a robot. Program then can be launched manually or remotely
-	/// by runCommand. Program is stored on robot as a file next to scriptRunner and named
-	/// as <qReal save name>.qts.
+	/// by runCommand. Program is stored on robot as a file in /home/root/trik/scripts and named
+	/// as <qReal save name>.fs.
 	/// @returns True, if successful.
 	bool uploadProgram();
 
