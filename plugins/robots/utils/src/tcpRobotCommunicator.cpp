@@ -13,7 +13,7 @@ using namespace utils;
 
 static uint const port = 8888;
 
-TcpRobotCommunicator::TcpRobotCommunicator(const QString &settings)
+TcpRobotCommunicator::TcpRobotCommunicator(QString const &settings)
 	: mIsConnected(false)
 	, mSettings(settings)
 {
@@ -93,7 +93,6 @@ bool TcpRobotCommunicator::stopRobot()
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
 
-
 	disconnect();
 
 	return true;
@@ -118,6 +117,7 @@ void TcpRobotCommunicator::connect()
 		qDebug() << mSocket.errorString();
 	}
 	mIsConnected = true;
+
 	emit connected(result);
 }
 

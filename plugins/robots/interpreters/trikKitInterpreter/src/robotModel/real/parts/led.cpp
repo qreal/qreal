@@ -12,10 +12,11 @@ Led::Led(DeviceInfo const &info, PortInfo const &port
 {
 }
 
-void Led::setColor(const QString &color)
+void Led::setColor(QString const &color)
 {
 	QString const pathToCommand = ":/trik/templates/led.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand).replace("@@COLOR@@", color) + "brick.run();";
+	QString const directCommand = utils::InFile::readAll(pathToCommand)
+			.replace("@@COLOR@@", color) + "brick.run();";
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 

@@ -34,7 +34,9 @@ public:
 	void disconnect();
 
 signals:
+	/// Return correctness of the connection
 	void connected(bool result);
+	/// Signal of disconnection
 	void disconnected();
 
 private:

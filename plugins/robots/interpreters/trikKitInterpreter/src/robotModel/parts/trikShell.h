@@ -6,7 +6,7 @@ namespace trikKitInterpreter {
 namespace robotModel {
 namespace parts {
 
-/// Execute ssh commands in trik
+///Executes shell commands on TRIK controller
 class ROBOTS_INTERPRETER_BASE_EXPORT TrikShell : public interpreterBase::robotModel::robotParts::Device
 {
 	Q_OBJECT
@@ -22,6 +22,7 @@ public:
 	/// Run current command in the trik
 	virtual void runCommand(QString const &command) = 0;
 
+	/// Force trik say the text
 	virtual void say(QString const &text) = 0;
 };
 

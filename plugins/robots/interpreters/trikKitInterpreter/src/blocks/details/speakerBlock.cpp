@@ -27,7 +27,8 @@ void SpeakerBlock::run()
 	QString speach = stringProperty("FileName");
 
 	QString const port = "SpeakerPort";
-	robotModel::parts::TrikSpeaker * const speaker = RobotModelUtils::findDevice<robotModel::parts::TrikSpeaker>(mRobotModel, port);
+	robotModel::parts::TrikSpeaker * const speaker
+			= RobotModelUtils::findDevice<robotModel::parts::TrikSpeaker>(mRobotModel, port);
 	if (speaker) {
 		speaker->play(speach);
 	} else {

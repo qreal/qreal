@@ -9,6 +9,7 @@ namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
 
+/// An interpreter`s implementation for SPEAKERBLOCK block.
 class SpeakerBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT

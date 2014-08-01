@@ -29,8 +29,10 @@ using namespace interpreterBase::robotModel;
 RealRobotModelBase::RealRobotModelBase(QString const &kitId)
 	: TrikRobotModelBase(kitId), mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
 {
-	connect(mRobotCommunicator, &utils::TcpRobotCommunicator::connected, this, &RealRobotModelBase::connected);
-	connect(mRobotCommunicator, &utils::TcpRobotCommunicator::disconnected, this, &RealRobotModelBase::disconnected);
+	connect(mRobotCommunicator, &utils::TcpRobotCommunicator::connected
+			, this, &RealRobotModelBase::connected);
+	connect(mRobotCommunicator, &utils::TcpRobotCommunicator::disconnected
+			, this, &RealRobotModelBase::disconnected);
 }
 
 bool RealRobotModelBase::needsConnection() const
@@ -75,7 +77,8 @@ robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, Devic
 	} else if (deviceInfo.isA(shellInfo())) {
 		return new parts::Shell(shellInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(cameraLineDetectorSensorInfo())) {
-		return new parts::CameraLineDetector(cameraLineDetectorSensorInfo(), port, *mRobotCommunicator);
+		return new parts::CameraLineDetector(cameraLineDetectorSensorInfo()
+											 , port, *mRobotCommunicator);
 	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());

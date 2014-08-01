@@ -19,7 +19,7 @@ public:
 
 	void runCommand(QString const &command) override;
 
-	void say(const QString &text) override;
+	void say(QString const &text) override;
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;

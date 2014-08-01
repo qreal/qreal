@@ -14,7 +14,8 @@ Display::Display(DeviceInfo const &info, PortInfo const &port
 
 void Display::drawSmile(bool sad)
 {
-	QString const pathToCommand = sad ? ":/trik/templates/drawing/sadSmile.t" : ":/trik/templates/drawing/smile.t";
+	QString const pathToCommand = sad ? ":/trik/templates/drawing/sadSmile.t"
+										: ":/trik/templates/drawing/smile.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand);
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
