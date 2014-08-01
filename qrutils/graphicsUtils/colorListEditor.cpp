@@ -9,14 +9,14 @@ ColorListEditor::ColorListEditor(QWidget *widget)
 
 void ColorListEditor::setColorList(QStringList const &colorList, QStringList const &translatedColorList)
 {
-    mColorList = colorList;
-    mTranslatedColorList = (translatedColorList == QStringList()) ? colorList : translatedColorList;
-    populateList();
+	mColorList = colorList;
+	mTranslatedColorList = (translatedColorList == QStringList()) ? colorList : translatedColorList;
+	populateList();
 }
 
 QColor ColorListEditor::color() const
 {
-    return itemData(currentIndex(), Qt::DecorationRole).value<QColor>();
+	return itemData(currentIndex(), Qt::DecorationRole).value<QColor>();
 }
 
 QColor ColorListEditor::colorByIndex(int index) const
