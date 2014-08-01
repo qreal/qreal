@@ -282,6 +282,7 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	if (!mApi.stringProperty(id, "description").isEmpty()) {
 		node.setAttribute("description", mApi.stringProperty(id, "description"));
 	}
+
 	if (!mApi.stringProperty(id, "abstract").isEmpty()) {
 		node.setAttribute("abstract", mApi.stringProperty(id, "abstract"));
 	}
