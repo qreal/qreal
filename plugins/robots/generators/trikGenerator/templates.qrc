@@ -115,5 +115,12 @@
         <file>templates/engines/forward.t</file>
         <file>templates/engines/stop.t</file>
         <file>templates/engines/nullifyEncoder.t</file>
+        <file>templates/drawing/drawLine.t</file>
+        <file>templates/drawing/drawPixel.t</file>
+        <file>templates/drawing/drawRect.t</file>
+        <file>templates/drawing/drawEllipse.t</file>
+        <file>templates/drawing/drawArc.t</file>
+        <file>templates/drawing/setPainterWidth.t</file>
+        <file>templates/drawing/setPainterColor.t</file>
     </qresource>
 </RCC>

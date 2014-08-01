@@ -54,6 +54,13 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
+	$$PWD/blocks/details/drawLineBlock.h \
+	$$PWD/blocks/details/drawPixelBlock.h \
+	$$PWD/blocks/details/drawRectBlock.h \
+	$$PWD/blocks/details/drawEllipseBlock.h \
+	$$PWD/blocks/details/drawArcBlock.h \
+	$$PWD/blocks/details/setPainterWidthBlock.h \
+	$$PWD/blocks/details/setPainterColorBlock.h \
 	$$PWD/robotModel/twoD/parts/twoDLed.h \
 
 SOURCES += \
@@ -100,6 +107,13 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
+	$$PWD/blocks/details/drawLineBlock.cpp \
+	$$PWD/blocks/details/drawPixelBlock.cpp \
+	$$PWD/blocks/details/drawRectBlock.cpp \
+	$$PWD/blocks/details/drawEllipseBlock.cpp \
+	$$PWD/blocks/details/drawArcBlock.cpp \
+	$$PWD/blocks/details/setPainterWidthBlock.cpp \
+	$$PWD/blocks/details/setPainterColorBlock.cpp \
 	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
 
 FORMS += \

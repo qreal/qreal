@@ -3,8 +3,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 
-#include <qrkernel/settingsManager.h>
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
+#include <qrkernel/settingsManager.h>
 
 #include "src/trikTwoDModelConfigurer.h"
 
