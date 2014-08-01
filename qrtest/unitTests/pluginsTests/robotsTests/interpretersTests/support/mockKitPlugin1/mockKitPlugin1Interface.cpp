@@ -17,9 +17,9 @@ QList<interpreterBase::robotModel::RobotModelInterface *> MockKitPlugin1Interfac
 	return QList<interpreterBase::robotModel::RobotModelInterface *>();
 }
 
-interpreterBase::AdditionalPreferences *MockKitPlugin1Interface::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *>  MockKitPlugin1Interface::settingsWidgets()
 {
-	return nullptr;
+	return {nullptr};
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *MockKitPlugin1Interface::blocksFactoryFor(

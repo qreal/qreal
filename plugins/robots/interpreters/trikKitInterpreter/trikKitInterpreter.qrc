@@ -12,5 +12,6 @@
         <file>icons/smile.png</file>
         <file>icons/twoDColorEmpty.svg</file>
         <file>icons/twoDVideoModule.svg</file>
+        <file>trikDefaultSettings.ini</file>
     </qresource>
 </RCC>

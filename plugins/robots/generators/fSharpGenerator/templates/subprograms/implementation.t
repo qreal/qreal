@@ -1,0 +1,3 @@
+IMPLEMENTATION.T let @@NAME@@ () =
+@@BODY@@
+

@@ -1,4 +1,4 @@
-QT += widgets
+QT += widgets network
 
 INCLUDEPATH += \
 	$$PWD \
@@ -55,6 +55,8 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
 	$$PWD/robotModel/twoD/parts/twoDLed.h \
+	$$PWD/trikFSharpAdditionalPreferences.h \
+	$$PWD/trikWinScpAdditionalPreferences.h \
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -100,11 +102,15 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
+	$$PWD/trikFSharpAdditionalPreferences.cpp \
+	$$PWD/trikWinScpAdditionalPreferences.cpp \
 	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
 	$$PWD/trikDisplayWidget.ui \
+	$$PWD/trikFSharpAdditionalPreferences.ui \
+	$$PWD/trikWinScpAdditionalPreferences.ui \
 
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \

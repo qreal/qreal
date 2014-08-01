@@ -23,7 +23,10 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	QApplication::installTranslator(&mAppTranslator);
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
+	mFSharpAdditionalPreferences = new TrikFSharpAdditionalPreferences();
+	mWinScpAdditionalPreferences = new TrikWinScpAdditionalPreferences();
 
+	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
 	QLineEdit * const quickPreferences = new QLineEdit;
 	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
 	auto updateQuickPreferences = [quickPreferences]() {
@@ -52,6 +55,8 @@ TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 {
 	if (mOwnsAdditionalPreferences) {
 		delete mAdditionalPreferences;
+		delete mFSharpAdditionalPreferences;
+		delete mWinScpAdditionalPreferences;
 	}
 
 	if (mOwnsBlocksFactory) {
@@ -109,10 +114,10 @@ interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defa
 	return &mTwoDRobotModelV6;
 }
 
-interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
-	return mAdditionalPreferences;
+	return {mAdditionalPreferences, mFSharpAdditionalPreferences, mWinScpAdditionalPreferences};
 }
 
 QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model)
@@ -154,6 +159,11 @@ QIcon TrikKitInterpreterPlugin::iconForFastSelector(
 interpreterBase::DevicesConfigurationProvider *TrikKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModelV6->devicesConfigurationProvider();
+}
+
+QString TrikKitInterpreterPlugin::defaultSettingsFile() const
+{
+	return ":/trikDefaultSettings.ini";
 }
 
 void TrikKitInterpreterPlugin::onActiveTabChanged(Id const &rootElementId)

@@ -9,11 +9,12 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase -lutils -linterpreterBase
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \
 	$$PWD/../../interpreters/interpreterBase/include \
+	$$PWD/../../utils/include \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui \
 
@@ -89,5 +90,3 @@ SOURCES += \
 	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.cpp \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.cpp \
 	$$PWD/simpleGenerators/waitForMotionGenerator.cpp \
-
-include(robotCommunication/robotCommunication.pri)

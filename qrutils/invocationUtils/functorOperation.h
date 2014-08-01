@@ -39,9 +39,10 @@ namespace invocation
 ///		operation->setInvocationTargetWithProgress(this, &SampleClass::doOperation, 5, QString("some string"));
 ///		connect(operation, SIGNAL(finished(invocation::InvocationResult)), this, SLOT(onOperationComplete(invocation::InvocationResult)));
 ///		operation->invoceAsync();
+///
 /// @param TResult Must be function return value type
 template<typename TResult>
-class QRUTILS_EXPORT FunctorOperation : public LongOperation
+class FunctorOperation : public LongOperation
 {
 public:
 	/// @param timeout Operation timeout
@@ -49,6 +50,7 @@ public:
 		: LongOperation(timeout)
 	{
 	}
+
 	virtual ~FunctorOperation()
 	{
 	}

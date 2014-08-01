@@ -7,6 +7,9 @@
 #include <commonTwoDModel/engine/twoDModelControlInterface.h>
 
 #include "trikAdditionalPreferences.h"
+#include "trikFSharpAdditionalPreferences.h"
+#include "trikWinScpAdditionalPreferences.h"
+
 #include "blocks/trikBlocksFactory.h"
 #include "robotModel/real/realRobotModelV6.h"
 #include "robotModel/twoD/twoDRobotModel.h"
@@ -37,12 +40,12 @@ public:
 	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
 
 	interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
-			interpreterBase::robotModel::RobotModelInterface const *model) override;
+	interpreterBase::robotModel::RobotModelInterface const *model) override;
 
 	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
 	// Transfers ownership.
-	interpreterBase::AdditionalPreferences *settingsWidget() override;
+	QList<interpreterBase::AdditionalPreferences *> settingsWidgets() override;
 
 	QWidget *quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model) override;
 
@@ -53,7 +56,7 @@ public:
 	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
 
 	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
-
+	QString defaultSettingsFile() const;
 private slots:
 	/// Shows or hides 2d model action depending on whether current tab is robots diagram.
 	void onActiveTabChanged(qReal::Id const &rootElementId);
@@ -68,6 +71,8 @@ private:
 	bool mOwnsBlocksFactory = true;
 
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+	TrikFSharpAdditionalPreferences *mFSharpAdditionalPreferences = nullptr;  //Transfers ownership
+	TrikWinScpAdditionalPreferences *mWinScpAdditionalPreferences = nullptr;  //Transfers ownership
 	bool mOwnsAdditionalPreferences = true;
 
 	QWidget *mIpAdressQuicksConfigurer = nullptr;  // Transfers ownership

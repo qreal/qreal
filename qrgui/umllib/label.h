@@ -27,8 +27,6 @@ public:
 	bool isHard() const;
 	virtual void setHard(bool hard);
 
-	bool isReadOnly() const;
-
 	void startTextInteraction();
 	void setTitleFont();
 

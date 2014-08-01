@@ -1,15 +1,18 @@
 #pragma once
 
 #include <QtNetwork/QTcpSocket>
+#include "utilsDeclSpec.h"
 
-namespace trik {
+namespace utils {
 
 /// Class that handles connection to robot and sends commands to it.
-class TcpRobotCommunicator
+class ROBOTS_UTILS_EXPORT TcpRobotCommunicator : public QObject
 {
+	Q_OBJECT
+
 public:
-	TcpRobotCommunicator();
-	virtual ~TcpRobotCommunicator();
+	TcpRobotCommunicator(QString const &settings);
+	~TcpRobotCommunicator();
 
 	/// Reads generated program from a file and uploads it to a robot using "file" command.
 	bool uploadProgram(QString const &programName);
@@ -23,7 +26,6 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	bool stopRobot();
 
-private:
 	/// Establishes connection and initializes socket. If connection fails, leaves socket
 	/// in invalid state.
 	void connect();
@@ -31,8 +33,16 @@ private:
 	/// Disconnects from robot.
 	void disconnect();
 
+signals:
+	void connected(bool result);
+	void disconnected();
+
+private:
 	/// Socket that holds connection.
 	QTcpSocket mSocket;
+
+	bool mIsConnected;
+	QString mSettings;
 };
 
 }
