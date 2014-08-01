@@ -9,6 +9,7 @@
 #include "qrutils/utilsDeclSpec.h"
 
 namespace qReal {
+namespace details {
 
 /// Common part of plugin loading.
 class QRUTILS_EXPORT PluginManagerImplementation
@@ -20,6 +21,7 @@ public:
 			QString const &applicationDirPath
 			, QString const &additionalPart = "plugins"
 			);
+
 	~PluginManagerImplementation();
 
 	/// Returns list of all found plugins if succeed and empty list otherwise.
@@ -59,4 +61,6 @@ private:
 	/// for robots it can be "plugins/kitPlugins", for example
 	QString mAdditionalPart;
 };
+
+}
 }

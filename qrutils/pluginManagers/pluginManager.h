@@ -4,18 +4,15 @@
 
 #include "details/pluginManagerImplementation.h"
 
-#include <qrutils/utilsDeclSpec.h>
+#include "qrutils/utilsDeclSpec.h"
 
 namespace qReal {
 
-/// Casts plugins to interfaces.
+/// Template class that allows to load/unload plugins and return their corresponding interfaces.
 class QRUTILS_EXPORT PluginManager
 {
 public:
-	PluginManager(
-			QString const &applicationDirPath
-			, QString const &additionalPart = "plugins"
-			);
+	PluginManager(QString const &applicationDirPath, QString const &additionalPart);
 
 	/// Returns list of all found plugins if succeed and empty list otherwise.
 	template <class InterfaceType>
@@ -37,7 +34,7 @@ public:
 		QObject const *loadedPlugin = resultOfLoading.first;
 		QString const errorMessage = resultOfLoading.second;
 
-		return qMakePair(wrappedInterface<InterfaceType>(loadedPlugin), errorMessage);
+		return qMakePair(qobject_cast<InterfaceType *>(loadedPlugin), errorMessage);
 	}
 
 	/// Unloads plugins, given filename
@@ -53,15 +50,6 @@ public:
 	}
 
 private:
-
-	/// Casts one object to interface.
-	template <class InterfaceType>
-	InterfaceType *wrappedInterface(QObject const *interfaceToWrap) const
-	{
-		InterfaceType *castedInterface = qobject_cast<InterfaceType *>(interfaceToWrap);
-		return castedInterface;
-	}
-
 	/// Casts list of objects to list of interfaces.
 	template <class InterfaceType>
 	QList<InterfaceType *> listOfInterfaces(QList<QObject *> const interfacesToWrap) const
@@ -79,6 +67,6 @@ private:
 	}
 
 	/// Implementation of plugin loading methods.
-	PluginManagerImplementation mPluginManagerLoader;
+	details::PluginManagerImplementation mPluginManagerLoader;
 };
 }

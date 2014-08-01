@@ -5,7 +5,7 @@ using namespace qReal;
 PluginManager::PluginManager(
 		QString const &applicationDirPath
 		, QString const &additionalPart)
-	: mPluginManagerLoader(PluginManagerImplementation(applicationDirPath, additionalPart))
+	: mPluginManagerLoader(details::PluginManagerImplementation(applicationDirPath, additionalPart))
 {
 }
 

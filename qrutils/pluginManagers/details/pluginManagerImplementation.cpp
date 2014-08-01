@@ -1,10 +1,6 @@
 #include "pluginManagerImplementation.h"
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDebug>
-#include <QtWidgets/QMessageBox>
-
-using namespace qReal;
+using namespace qReal::details;
 
 PluginManagerImplementation::PluginManagerImplementation(QString const &applicationDirPath
 		, QString const &additionalPart)
