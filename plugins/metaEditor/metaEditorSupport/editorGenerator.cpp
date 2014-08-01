@@ -204,7 +204,6 @@ void EditorGenerator::createDiagrams(QDomElement &parent, Id const &id)
 			ensureCorrectness(typeElement, diagram, "displayedName", mApi.stringProperty(typeElement, "displayedName"));
 			ensureCorrectness(typeElement, diagram, "nodeName", mApi.stringProperty(typeElement, "nodeName"));
 			parent.appendChild(diagram);
-
 			serializeObjects(diagram, typeElement);
 			mElements.clear();
 		}
@@ -276,11 +275,15 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	QDomElement node = mDocument.createElement("node");
 	ensureCorrectness(id, node, "name", mApi.name(id));
 	ensureCorrectness(id, node, "displayedName", mApi.stringProperty(id, "displayedName"));
+
 	if (!mApi.stringProperty(id, "path").isEmpty()) {
 		node.setAttribute("path", mApi.stringProperty(id, "path"));
 	}
 	if (!mApi.stringProperty(id, "description").isEmpty()) {
 		node.setAttribute("description", mApi.stringProperty(id, "description"));
+	}
+	if (!mApi.stringProperty(id, "abstract").isEmpty()) {
+		node.setAttribute("abstract", mApi.stringProperty(id, "abstract"));
 	}
 	parent.appendChild(node);
 
@@ -389,6 +392,7 @@ void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
 			{
 				QDomElement generalization = mDocument.createElement("parent");
 				ensureCorrectness(parentId, generalization, "parentName", mApi.stringProperty(parentId, "name"));
+				generalization.setAttribute("overrides", generalizations.attribute("overrides", mApi.stringProperty(inLink, "overrides")));
 				generalizations.appendChild(generalization);
 			}
 		}
