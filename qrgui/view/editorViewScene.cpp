@@ -908,6 +908,10 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
 		mTimer->stop();
+
+		QPoint const pos = mainWindow()->mapFromGlobal(event->screenPos());
+		QLOG_TRACE() << "Started mouse gesture at " << pos;
+
 		mMouseMovementManager->mousePress(event->scenePos());
 		mRightButtonPressed = true;
 	}
@@ -1168,6 +1172,8 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	if (event->button() == Qt::RightButton && !(mMouseMovementManager->pathIsEmpty())) {
+		QPoint const pos = mainWindow()->mapFromGlobal(event->screenPos());
+		QLOG_TRACE() << "Mouse gesture movement to " << pos;
 		mMouseMovementManager->mouseMove(event->scenePos());
 		mRightButtonPressed = false;
 		drawGesture();
@@ -1189,7 +1195,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			return;
 		}
 
-		QLOG_TRACE() << "Mouse gesture release at " << event->scenePos();
+		QLOG_TRACE() << "Mouse gesture release at " << pos;
 
 		QPointF const start = mMouseMovementManager->firstPoint();
 		QPointF const end = mMouseMovementManager->lastPoint();
@@ -1219,6 +1225,9 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	} else {
 		// button isn't recognized while mouse moves
 		if (mRightButtonPressed) {
+			QPoint const pos = mainWindow()->mapFromGlobal(event->screenPos());
+			QLOG_TRACE() << "Mouse gesture movement to " << pos;
+
 			mMouseMovementManager->mouseMove(event->scenePos());
 			drawGesture();
 		} else {
