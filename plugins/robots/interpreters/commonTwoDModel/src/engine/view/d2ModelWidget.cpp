@@ -65,7 +65,6 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(mScene, &D2ModelScene::robotPressed, [this]() { mUi->noneButton->setChecked(true); });
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
-	connect(&mModel.timeline(), &Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
 	connect(&mModel.timeline(), &Timeline::tick, [this]() { mUi->timelineBox->stepBy(1); });
 
 	connect(&mModel.robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
