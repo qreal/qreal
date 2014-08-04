@@ -134,7 +134,29 @@
 					</properties>
 				</logic>
 			</node>
-			<node name="AbstractNode">
+			<node name="AbstractNode" abstract="true">
+				<graphics>
+					<picture sizex="50" sizey="50">
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+				</graphics>
 				<logic>
 					<container/>
 				</logic>
@@ -173,24 +195,6 @@
 						<image y1="0" name="images/finalBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels/>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -257,24 +261,6 @@
 					<labels>
 						<label x="-20" y="-30" textBinded="name" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -298,24 +284,6 @@
 						<label x="33" y="80" textBinded="value" background="white"/>
 						<label x="-65" y="80" text="Value:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -339,24 +307,6 @@
 						<image y1="0" name="images/initialBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels/>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -397,24 +347,6 @@
 						<label x="40" y="-30" textBinded="Iterations" hard="true" background="white"/>
 						<label x="-30" y="-30" text="Iterations:" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -436,24 +368,6 @@
 						<image y1="0" name="images/forkBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels/>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -472,24 +386,6 @@
 						<label x="-37" y="60" text="Body:"/>
 						<label x="30" y="60" textBinded="Body" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -512,24 +408,6 @@
 						<label x="40" y="60" textBinded="Condition" isPlainText="true" background="white"/>
 						<label x="-25" y="60" text="Condition:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -603,24 +481,6 @@
 						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -647,24 +507,6 @@
 						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -698,24 +540,6 @@
 						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -736,24 +560,6 @@
 						<label x="40" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Power (%):"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -774,24 +580,6 @@
 						<label x="50" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Angle (degrees):"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -818,24 +606,6 @@
 						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
 						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -859,24 +629,6 @@
 						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
 						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -904,24 +656,6 @@
 						<label x="60" y="-30" textBinded="Volume" hard="true" background="white"/>
 						<label x="70" y="60" textBinded="WaitForCompletion" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -954,24 +688,6 @@
 						<label x="60" y="80" textBinded="Duration" background="white"/>
 						<label x="60" y="100" textBinded="WaitForCompletion" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1004,24 +720,6 @@
 						<label x="-35" y="-30" text="File name:" />
 						<label x="50" y="-30" textBinded="FileName" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1045,24 +743,6 @@
 						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
 						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1086,24 +766,6 @@
 						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
 						<label x="-10" y="-30" text="Ports:" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1127,24 +789,6 @@
 						<label x="-15" y="-30" text="Command:" hard="true"/>
 						<label x="55" y="-30" textBinded="Command" hard="true" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1162,24 +806,6 @@
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/initCameraBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<labels>
 						<label x="-15" y="60" text="Initialize Videocamera" background="white"/>
 					</labels>
@@ -1196,24 +822,6 @@
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/detectLineBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<labels>
 						<label x="-15" y="60" text="Detect Line by Videocamera" background="white"/>
 					</labels>
@@ -1230,24 +838,6 @@
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/lineDetectorIntoVariableBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<labels>
 						<label x="-15" y="60" text="Line Detector into Variable" background="white"/>
 						<label x="-15" y="80" text="Variable:"/>
@@ -1273,24 +863,6 @@
 						<label x="-15" y="-30" text="Color:" hard="true"/>
 						<label x="35" y="-30" textBinded="Color" hard="true" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1329,24 +901,6 @@
 						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
 						<label x="0" y="-30" text="Port:" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1369,24 +923,6 @@
 						<label x="50" y="80" textBinded="Sign" background="white"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1417,24 +953,6 @@
 						<label x="55" y="80" textBinded="Sign" background="white"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1465,24 +983,6 @@
 						<label x="55" y="80" textBinded="Sign" background="white"/>
 						<label x="-85" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1511,24 +1011,6 @@
 						<label x="37" y="60" textBinded="Color"/>
 						<label x="0" y="60" text="Color:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1556,24 +1038,6 @@
 						<label x="50" y="80" textBinded="Sign"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1604,24 +1068,6 @@
 						<label x="60" y="80" textBinded="Sign"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1649,24 +1095,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for  Enter" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1684,24 +1112,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for Escape" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1719,24 +1129,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for Left" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1754,24 +1146,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for Right" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1831,24 +1205,6 @@
 						<label x="50" y="80" textBinded="Sign"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1879,24 +1235,6 @@
 						<label x="55" y="80" textBinded="Sign"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1927,24 +1265,6 @@
 						<label x="55" y="80" textBinded="Sign"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -1973,24 +1293,6 @@
 						<label x="55" y="80" textBinded="Sign"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2021,24 +1323,6 @@
 						<label x="50" y="100" textBinded="AccelerationAxis"/>
 						<label x="-80" y="100" text="Acceleration Axis:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2068,24 +1352,6 @@
 						<label x="40" y="-30" text="F1" hard="true" background="white"/>
 						<label x="0" y="-30" text="Port:" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2108,24 +1374,6 @@
 						<label x="60" y="80" textBinded="Sign"/>
 						<label x="-90" y="80" text="Sign:"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2152,24 +1400,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for  Enter" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2187,24 +1417,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for Left" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2222,24 +1434,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for Right" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2257,24 +1451,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for Down" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2292,24 +1468,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for Up" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2327,24 +1485,6 @@
 					<labels>
 						<label x="-20" y="60" text="Wait for Power" background="white"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2365,24 +1505,6 @@
 						<label x="65" y="-30" textBinded="Delay" hard="true"/>
 						<label x="-30" y="-30" text="Delay (ms):" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2405,24 +1527,6 @@
 						<image y1="0" name="images/clearScreenBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels/>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2445,24 +1549,6 @@
 						<label x="50" y="100" textBinded="PrintText"/>
 						<label x="0" y="100" text="Text: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2496,24 +1582,6 @@
 						<label x="36" y="80" textBinded="YCoordinatePix"/>
 						<label x="0" y="80" text="Y: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2546,24 +1614,6 @@
 						<label x="36" y="120" textBinded="Y2CoordinateLine"/>
 						<label x="0" y="120" text="Y2: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2602,24 +1652,6 @@
 						<label x="50" y="120" textBinded="HeightRect"/>
 						<label x="-10" y="120" text="Height: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2656,24 +1688,6 @@
 						<label x="50" y="100" textBinded="CircleRadius"/>
 						<label x="0" y="100" text="Radius: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2705,24 +1719,6 @@
 						<label x="-15" y="-30" text="Color:" hard="true"/>
 						<label x="35" y="-30" textBinded="Color" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2746,24 +1742,6 @@
 						<label x="-15" y="-30" text="Width:" hard="true"/>
 						<label x="50" y="-30" textBinded="Width" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2789,24 +1767,6 @@
 						<label x="36" y="80" textBinded="YCoordinatePix"/>
 						<label x="0" y="80" text="Y: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2839,24 +1799,6 @@
 						<label x="36" y="120" textBinded="Y2CoordinateLine"/>
 						<label x="0" y="120" text="Y2: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2895,24 +1837,6 @@
 						<label x="50" y="120" textBinded="HeightRect"/>
 						<label x="-10" y="120" text="Height: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -2951,24 +1875,6 @@
 						<label x="50" y="120" textBinded="HeightEllipse"/>
 						<label x="-10" y="120" text="Height: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -3011,24 +1917,6 @@
 						<label x="90" y="160" textBinded="SpanAngle"/>
 						<label x="-10" y="160" text="SpanAngle: "/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -3063,24 +1951,6 @@
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/smileBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -3095,24 +1965,6 @@
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/sadSmileBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -3131,24 +1983,6 @@
 						<label x="-15" y="-30" text="Color:" hard="true"/>
 						<label x="35" y="-30" textBinded="Color" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							 <end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>
@@ -3173,24 +2007,6 @@
 						<label x="-15" y="-30" text="Text:" hard="true"/>
 						<label x="35" y="-30" textBinded="Text" hard="true"/>
 					</labels>
-					<ports>
-						<linePort>
-							<start startx="0" starty="5"/>
-							<end endx="0" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="0"/>
-							<end endx="45" endy="0"/>
-						</linePort>
-						<linePort>
-							<start startx="50" starty="5"/>
-							<end endx="50" endy="45"/>
-						</linePort>
-						<linePort>
-							<start startx="5" starty="50"/>
-							<end endx="45" endy="50"/>
-						</linePort>
-					</ports>
 					<nonResizeable/>
 				</graphics>
 				<logic>

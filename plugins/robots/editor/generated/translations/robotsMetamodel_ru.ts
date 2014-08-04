@@ -529,7 +529,7 @@
     <message>
         <location filename="../generated/pluginInterface.cpp" line="69"/>
         <source>Angular Servo</source>
-        <translation>Угловая серва</translation>
+        <translation>Угловой сервомотор</translation>
     </message>
     <message>
         <location filename="../generated/pluginInterface.cpp" line="70"/>
