@@ -55,8 +55,10 @@ public slots:
 	void setNoneStatus();
 
 	/// Clears everything on the scene besides a robot and its sensors.
-	/// @param removeRobot If true robot graphics item will be fully recreated, its position will be nullified.
-	void clearScene(bool removeRobot = false);
+	/// @param removeRobot - if true robot graphics item will be fully recreated, its position will be nullified.
+	/// @param reason - reason for scene clearing --- user action or internal needs. Depending on this we can decide
+	///        whether to save changes into model.
+	void clearScene(bool removeRobot, Reason reason);
 
 	/// Aligns existing walls on the grid.
 	/// @todo: Walls that do not fit on the grid must not be removed.
