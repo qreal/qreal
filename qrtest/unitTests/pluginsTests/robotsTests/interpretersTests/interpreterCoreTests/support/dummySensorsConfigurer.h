@@ -22,7 +22,8 @@ public:
 protected:
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
+			, interpreterBase::robotModel::DeviceInfo const &sensor
+			, interpreterBase::DevicesConfigurationProvider::Reason reason) override;
 };
 
 }
