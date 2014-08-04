@@ -41,7 +41,7 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 		qreal actualRadius = 0;
 		if (Math::eq(speed1, -speed2)) {
 			angularSpeed = speed1 / radius;
-			actualRadius = 0; // Radius is relative to the center of the robot.
+			actualRadius = 0;  // Radius is relative to the center of the robot.
 		} else {
 			angularSpeed = averageSpeed / averageRadius;
 			actualRadius = averageRadius;

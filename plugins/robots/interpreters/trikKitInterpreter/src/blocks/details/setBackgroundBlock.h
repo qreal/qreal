@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <interpreterBase/blocksBase/block.h>
 
 namespace trikKitInterpreter {

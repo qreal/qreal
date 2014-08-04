@@ -24,7 +24,6 @@ SensorItem::SensorItem(model::SensorsConfiguration &configuration
 	: RotateItem()
 	, mConfiguration(configuration)
 	, mPort(port)
-	, mDragged(false)
 	, mPointImpl()
 	, mRotater(nullptr)
 	, mImageRect(imageRect.isEmpty() ? this->imageRect() : imageRect)
@@ -88,16 +87,6 @@ void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mPortItem->hide();
-	mDragged = true;
-}
-
-void SensorItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-	AbstractItem::mouseMoveEvent(event);
-	if (mDragged) {
-		QPointF const offset = event->pos() - event->lastPos();
-		moveBy(offset.x(), offset.y());
-	}
 }
 
 void SensorItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -110,12 +99,6 @@ void SensorItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	AbstractItem::hoverLeaveEvent(event);
 	mPortItem->hide();
-}
-
-void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
-{
-	AbstractItem::mouseReleaseEvent(event);
-	mDragged = false;
 }
 
 QString SensorItem::name() const

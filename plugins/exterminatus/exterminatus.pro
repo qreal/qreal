@@ -1,6 +1,6 @@
 TEMPLATE = lib
 CONFIG += plugin c++11
-DESTDIR = ../../bin/plugins/
+DESTDIR = ../../bin/plugins/tools/
 MOC_DIR = .moc
 RCC_DIR = .moc
 

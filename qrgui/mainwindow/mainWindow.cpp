@@ -19,6 +19,7 @@
 #include <QtGui/QKeySequence>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
@@ -325,6 +326,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	SettingsManager::setValue("size", size());
 	SettingsManager::setValue("pos", pos());
 
+	QLOG_INFO() << "Closing main window...";
 	emit mSystemEvents->closedMainWindow();
 }
 
@@ -359,7 +361,7 @@ void MainWindow::adjustMinimapZoom(int zoom)
 
 void MainWindow::selectItemWithError(Id const &id)
 {
-	if (id == Id::rootId()) {
+	if (id == Id::rootId() || id.isNull()) {
 		return;
 	}
 
@@ -369,6 +371,7 @@ void MainWindow::selectItemWithError(Id const &id)
 		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
 	}
 
+	selectItemOrDiagram(graphicalId);
 	setIndexesOfPropertyEditor(graphicalId);
 	centerOn(graphicalId);
 
@@ -960,9 +963,12 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 	if (mEditorManagerProxy.editors().contains(Id(pluginName))) {
 		IdList const diagrams = mEditorManagerProxy.diagrams(Id(pluginName));
 
-		if (!mEditorManagerProxy.unloadPlugin(pluginName)) {
+		QString const error = mEditorManagerProxy.unloadPlugin(pluginName);
+		if (!error.isEmpty()) {
+			QMessageBox::warning(this, tr("Error"), tr("Plugin unloading failed: ") + error);
 			return false;
 		}
+
 		foreach (Id const &diagram, diagrams) {
 			mUi->paletteTree->deleteEditor(diagram);
 		}
@@ -972,7 +978,9 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
-	if (!mEditorManagerProxy.loadPlugin(fileName)) {
+	QString const error = mEditorManagerProxy.loadPlugin(fileName);
+	if (!error.isEmpty()) {
+		QMessageBox::warning(this, tr("Error"), tr("Plugin loading failed: ") + error);
 		return false;
 	}
 
@@ -1938,7 +1946,7 @@ QString MainWindow::getNextDirName(QString const &name)
 	return parts.join("_");
 }
 
-Id MainWindow::activeDiagram()
+Id MainWindow::activeDiagram() const
 {
 	return getCurrentTab() && getCurrentTab()->mvIface() ? getCurrentTab()->mvIface()->rootId() : Id();
 }

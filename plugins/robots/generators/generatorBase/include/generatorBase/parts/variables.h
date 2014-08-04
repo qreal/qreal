@@ -55,6 +55,9 @@ protected:
 	virtual QString intVariableDeclaration() const;
 	virtual QString floatVariableDeclaration() const;
 
+	/// Returns a list of variable initialization expressions in the model.
+	virtual QStringList expressions(qrRepo::RepoApi const &api) const;
+
 private:
 	QMap<QString, enums::variableType::VariableType> reservedVariables() const;
 

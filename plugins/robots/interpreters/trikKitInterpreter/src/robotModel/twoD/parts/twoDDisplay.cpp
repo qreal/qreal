@@ -72,7 +72,7 @@ void Display::setBackground(QColor const &color)
 
 void Display::printText(int x, int y, QString const &text)
 {
-	mLabels[qMakePair(x, y + yDisplayShift)] = text;
+	mLabels[qMakePair(x, y + yDisplayShift)] = {text, mCurrentPenColor};
 	mEngine.display()->repaintDisplay();
 }
 
@@ -109,38 +109,34 @@ void Display::paint(QPainter *painter)
 
 	for (QPair<int, int> const &point : mLabels.keys()) {
 		/// @todo: Honest labels must be here, without text overlapping.
-		painter->drawText(QPoint(point.first, point.second), mLabels[point]);
+		painter->setPen(QPen(mLabels[point].second, 0, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
+		painter->drawText(QPoint(point.first, point.second), mLabels[point].first);
 	}
 
-	for (int i = 0; i < mPixels.length(); ++i)
-	{
+	for (int i = 0; i < mPixels.length(); ++i) {
 		painter->setPen(QPen(mPixels.at(i).color, mPixels.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
 		painter->drawPoint(mPixels.at(i).coord.x(), mPixels.at(i).coord.y());
 	}
 
-	for (int i = 0; i < mLines.length(); ++i)
-	{
+	for (int i = 0; i < mLines.length(); ++i) {
 		painter->setPen(QPen(mLines.at(i).color, mLines.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
 		painter->drawLine(mLines.at(i).line.x1(), mLines.at(i).line.y1()
 				, mLines.at(i).line.x2(), mLines.at(i).line.y2());
 	}
 
-	for (int i = 0; i < mRects.length(); ++i)
-	{
+	for (int i = 0; i < mRects.length(); ++i) {
 		painter->setPen(QPen(mRects.at(i).color, mRects.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
 		painter->drawRect(mRects.at(i).rect.x(), mRects.at(i).rect.y()
 				, mRects.at(i).rect.width(), mRects.at(i).rect.height());
 	}
 
-	for (int i = 0; i < mEllipses.length(); ++i)
-	{
+	for (int i = 0; i < mEllipses.length(); ++i) {
 		painter->setPen(QPen(mEllipses.at(i).color, mEllipses.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
 		painter->drawEllipse(mEllipses.at(i).ellipse.x(), mEllipses.at(i).ellipse.y()
 				, mEllipses.at(i).ellipse.width(), mEllipses.at(i).ellipse.height());
 	}
 
-	for (int i = 0; i < mArcs.length(); ++i)
-	{
+	for (int i = 0; i < mArcs.length(); ++i) {
 		painter->setPen(QPen(mArcs.at(i).color, mArcs.at(i).penWidth, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
 		painter->drawArc(mArcs.at(i).arc.x(), mArcs.at(i).arc.y()
 				, mArcs.at(i).arc.width(), mArcs.at(i).arc.height()

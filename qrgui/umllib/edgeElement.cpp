@@ -6,7 +6,9 @@
 #include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QMenu>
+
 #include <math.h>
+#include <qrutils/mathUtils/geometry.h>
 
 #include "umllib/edgeElement.h"
 #include "umllib/nodeElement.h"
@@ -621,7 +623,8 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 {
 	QPainterPath circlePath;
 	int const searchAreaRadius = SettingsManager::value("IndexGrid", 25).toInt() / 2;
-	circlePath.addEllipse(mapToScene(position), searchAreaRadius, searchAreaRadius);
+	QPointF const positionInSceneCoordinates = mapToScene(position);
+	circlePath.addEllipse(positionInSceneCoordinates, searchAreaRadius, searchAreaRadius);
 	QList<QGraphicsItem*> const items = scene()->items(circlePath);
 
 	qreal minimalDistance = 10e10;  // Very large number
@@ -631,9 +634,9 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 	for (QGraphicsItem * const item : items) {
 		NodeElement * const currentNode = dynamic_cast<NodeElement *>(item);
 		if (currentNode) {
-			QPointF const positionInSceneCoordinates = mapToScene(position);
-			qreal const currentDistance = currentNode->shortestDistanceToPort(positionInSceneCoordinates
+			QPointF const nearestPortPoint = currentNode->closestPortPoint(positionInSceneCoordinates
 					, isStart ? fromPortTypes() : toPortTypes());
+			qreal const currentDistance = mathUtils::Geometry::distance(positionInSceneCoordinates, nearestPortPoint);
 			if (currentDistance < minimalDistance) {
 				minimalDistance = currentDistance;
 				closestNode = currentNode;
@@ -1021,6 +1024,13 @@ EdgeData& EdgeElement::data()
 	mData.pos = mGraphicalAssistApi.position(mId);
 
 	mData.shapeType = mShapeType;
+
+	QMap<QString, QVariant> const properties = mGraphicalAssistApi.properties(logicalId());
+	for (QString const &property : properties.keys()) {
+		if (property != "from" && property != "to") {
+			mData.logicalProperties[property] = properties[property];
+		}
+	}
 
 	return mData;
 }

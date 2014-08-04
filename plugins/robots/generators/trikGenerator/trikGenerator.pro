@@ -4,7 +4,7 @@ CONFIG += c++11
 
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../../bin/plugins/kitPlugins/
+DESTDIR = ../../../../bin/plugins/tools/kitPlugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
@@ -65,7 +65,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/drawEllipseGenerator.h \
 	$$PWD/simpleGenerators/drawArcGenerator.h \
 	$$PWD/simpleGenerators/setPainterWidthGenerator.h \
-	$$PWD/simpleGenerators/setPainterColorGenerator.h
+	$$PWD/simpleGenerators/setPainterColorGenerator.h \
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \
@@ -102,6 +102,6 @@ SOURCES += \
 	$$PWD/simpleGenerators/drawEllipseGenerator.cpp \
 	$$PWD/simpleGenerators/drawArcGenerator.cpp \
 	$$PWD/simpleGenerators/setPainterWidthGenerator.cpp \
-	$$PWD/simpleGenerators/setPainterColorGenerator.cpp
+	$$PWD/simpleGenerators/setPainterColorGenerator.cpp \
 
 include(robotCommunication/robotCommunication.pri)

@@ -80,8 +80,8 @@ RobotModel::Motor *RobotModel::initMotor(int radius, int speed, long unsigned in
 	mMotors[port] = motor;
 
 	/// @todo We need some mechanism to set correspondence between motors and encoders. In NXT motors and encoders are
-	/// physically plugged into one port, so we can find corresponding port by name. But in TRIK encoders can be
-	/// connected differently.
+	///       physically plugged into one port, so we can find corresponding port by name. But in TRIK encoders can be
+	///       connected differently.
 	for (Device const * const device : mRobotModel.configuration().devices()) {
 		if (device->deviceInfo().isA<EncoderSensor>()
 				&& (device->port().name() == port.name() || device->port().nameAliases().contains(port.name())))
@@ -226,8 +226,8 @@ void RobotModel::recalculateParams()
 
 		engine->spoiledSpeed = mSettings.realisticMotors() ? varySpeed(engine->speed) : engine->speed;
 		return EngineOutput{
-						engine->spoiledSpeed * 2 * M_PI * engine->radius * onePercentAngularVelocity / 360
-						, engine->breakMode
+				engine->spoiledSpeed * 2 * M_PI * engine->radius * onePercentAngularVelocity / 360
+				, engine->breakMode
 		};
 	};
 

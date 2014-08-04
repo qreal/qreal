@@ -39,20 +39,20 @@ void SensorVariablesUpdater::run()
 			}
 
 			connect(
-						scalarSensor
-						, &robotParts::ScalarSensor::newData
-						, this
-						, &SensorVariablesUpdater::onScalarSensorResponse
-						, Qt::UniqueConnection
-						);
+					scalarSensor
+					, &robotParts::ScalarSensor::newData
+					, this
+					, &SensorVariablesUpdater::onScalarSensorResponse
+					, Qt::UniqueConnection
+					);
 
 			connect(
-						scalarSensor
-						, &robotParts::AbstractSensor::failure
-						, this
-						, &SensorVariablesUpdater::onFailure
-						, Qt::UniqueConnection
-						);
+					scalarSensor
+					, &robotParts::AbstractSensor::failure
+					, this
+					, &SensorVariablesUpdater::onFailure
+					, Qt::UniqueConnection
+					);
 
 			scalarSensor->read();
 		}

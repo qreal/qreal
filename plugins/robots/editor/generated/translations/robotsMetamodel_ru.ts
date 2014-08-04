@@ -228,9 +228,8 @@
         <translation>Задержка (мс):</translation>
     </message>
     <message>
-        <location filename="../generated/elements.h" line="6668"/>
         <source>Angle (%):</source>
-        <translation>Угол (%):</translation>
+        <translation type="vanished">Угол (%):</translation>
     </message>
     <message>
         <location filename="../generated/elements.h" line="6823"/>
@@ -331,6 +330,11 @@
         <location filename="../generated/elements.h" line="12466"/>
         <source>Wait for Right</source>
         <translation>Ждать Вправо</translation>
+    </message>
+    <message>
+        <location filename="../generated/elements.h" line="6668"/>
+        <source>Angle (degrees):</source>
+        <translation>Угол (в градусах):</translation>
     </message>
     <message>
         <location filename="../generated/elements.h" line="12160"/>
@@ -900,9 +904,8 @@
         <translation>Задержка (мс)</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="163"/>
         <source>Angle (%)</source>
-        <translation>Угол (%)</translation>
+        <translation type="vanished">Угол (%)</translation>
     </message>
     <message>
         <location filename="../generated/pluginInterface.cpp" line="165"/>
@@ -971,74 +974,74 @@
         <translation>Рисование на дисплее</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="538"/>
-        <location filename="../generated/pluginInterface.cpp" line="585"/>
+        <location filename="../generated/pluginInterface.cpp" line="535"/>
+        <location filename="../generated/pluginInterface.cpp" line="582"/>
         <source>Enter some text here...</source>
         <translation>Введите текст...</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="539"/>
-        <location filename="../generated/pluginInterface.cpp" line="570"/>
+        <location filename="../generated/pluginInterface.cpp" line="536"/>
+        <location filename="../generated/pluginInterface.cpp" line="567"/>
+        <location filename="../generated/pluginInterface.cpp" line="572"/>
         <location filename="../generated/pluginInterface.cpp" line="575"/>
-        <location filename="../generated/pluginInterface.cpp" line="578"/>
-        <location filename="../generated/pluginInterface.cpp" line="583"/>
-        <location filename="../generated/pluginInterface.cpp" line="590"/>
-        <location filename="../generated/pluginInterface.cpp" line="622"/>
-        <location filename="../generated/pluginInterface.cpp" line="627"/>
+        <location filename="../generated/pluginInterface.cpp" line="580"/>
+        <location filename="../generated/pluginInterface.cpp" line="587"/>
+        <location filename="../generated/pluginInterface.cpp" line="619"/>
+        <location filename="../generated/pluginInterface.cpp" line="624"/>
+        <location filename="../generated/pluginInterface.cpp" line="626"/>
         <location filename="../generated/pluginInterface.cpp" line="629"/>
         <location filename="../generated/pluginInterface.cpp" line="632"/>
         <location filename="../generated/pluginInterface.cpp" line="635"/>
-        <location filename="../generated/pluginInterface.cpp" line="638"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="540"/>
+        <location filename="../generated/pluginInterface.cpp" line="537"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="541"/>
-        <location filename="../generated/pluginInterface.cpp" line="566"/>
+        <location filename="../generated/pluginInterface.cpp" line="538"/>
+        <location filename="../generated/pluginInterface.cpp" line="563"/>
         <source>50</source>
         <translation>50</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="543"/>
-        <location filename="../generated/pluginInterface.cpp" line="563"/>
+        <location filename="../generated/pluginInterface.cpp" line="540"/>
+        <location filename="../generated/pluginInterface.cpp" line="560"/>
         <source>A, B, C</source>
         <translation>A, B, C</translation>
     </message>
     <message>
+        <location filename="../generated/pluginInterface.cpp" line="555"/>
         <location filename="../generated/pluginInterface.cpp" line="558"/>
-        <location filename="../generated/pluginInterface.cpp" line="561"/>
         <source>B, C</source>
         <translation>B, C</translation>
     </message>
     <message>
+        <location filename="../generated/pluginInterface.cpp" line="556"/>
         <location filename="../generated/pluginInterface.cpp" line="559"/>
-        <location filename="../generated/pluginInterface.cpp" line="562"/>
-        <location filename="../generated/pluginInterface.cpp" line="618"/>
-        <location filename="../generated/pluginInterface.cpp" line="620"/>
+        <location filename="../generated/pluginInterface.cpp" line="615"/>
+        <location filename="../generated/pluginInterface.cpp" line="617"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="564"/>
-        <location filename="../generated/pluginInterface.cpp" line="565"/>
-        <location filename="../generated/pluginInterface.cpp" line="588"/>
+        <location filename="../generated/pluginInterface.cpp" line="561"/>
+        <location filename="../generated/pluginInterface.cpp" line="562"/>
+        <location filename="../generated/pluginInterface.cpp" line="585"/>
         <source>1000</source>
         <translation>1000</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="586"/>
-        <location filename="../generated/pluginInterface.cpp" line="587"/>
-        <location filename="../generated/pluginInterface.cpp" line="2086"/>
+        <location filename="../generated/pluginInterface.cpp" line="583"/>
+        <location filename="../generated/pluginInterface.cpp" line="584"/>
+        <location filename="../generated/pluginInterface.cpp" line="2087"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="573"/>
+        <location filename="../generated/pluginInterface.cpp" line="570"/>
         <source>B</source>
         <translation>B</translation>
     </message>
@@ -1047,7 +1050,7 @@
         <translation type="vanished">JE1</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="612"/>
+        <location filename="../generated/pluginInterface.cpp" line="609"/>
         <source>media/beep.wav</source>
         <translation>media/beep.wav</translation>
     </message>
@@ -1072,112 +1075,112 @@
         <translation type="vanished">JB1</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="639"/>
+        <location filename="../generated/pluginInterface.cpp" line="636"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="645"/>
+        <location filename="../generated/pluginInterface.cpp" line="642"/>
         <source>This block can hold text notes that are ignored by generators and interpreters. Use it for improving the diagram readability.</source>
         <translation>Блок с текстовыми заметками, которые игнорируются при генерации и интерпретации. Используйте его для повышения наглядности диаграммы.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="646"/>
+        <location filename="../generated/pluginInterface.cpp" line="643"/>
         <source>For creating a link between two elements A and B you can just hover a mouse above A, press the right mouse button and (without releasing it) draw a line to the element B. Alternatively you can just &apos;pull&apos; a link from a small blue circle next to the element.</source>
         <translation>Для того, чтобы создать связь между двумя элементами A и B, можно навести курсор на элемент A, нажать правую кнопку мыши и, не отпуская ее, провести линию до элемента B, либо &apos;вытащить&apos; связь из кружочка справа от элемента.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="647"/>
+        <location filename="../generated/pluginInterface.cpp" line="644"/>
         <source>The final node of the program. If the program consists of some parallel execution lines the reachment of this block terminates the corresponding execution line. This block can`t have outgoing links.</source>
         <translation>Конец программы. Если программа состоит из нескольких параллельных участков выполнения, достижение этого блока завершает соответствующий участок выполнения. У данного блока не может быть исходящих связей.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="648"/>
+        <location filename="../generated/pluginInterface.cpp" line="645"/>
         <source>Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links.</source>
         <translation>Разделить выполнение программы на несколько потоков, которые с точки зрения программиста будут выполняться параллельно. Так, например, можно одновременно ждать срабатывания сенсора и истечения временного интервала. Блок должен иметь хотя бы две исходящие связи.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="649"/>
+        <location filename="../generated/pluginInterface.cpp" line="646"/>
         <source>Evaluates a value of the given expression. Also new variables can be defined in this block. See the &apos;Expressions Syntax&apos; chapter in help for more information about &apos;Function&apos; block syntax.</source>
         <translation>Посчитать значение заданного выражения. Также в данном блоке допускается определение переменных. Подробнее про синтаксис допустимых выражений параметра &apos;Функция&apos; см. в документации в разделе &apos;Синтаксис выражений&apos;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="650"/>
+        <location filename="../generated/pluginInterface.cpp" line="647"/>
         <source>Separates program execution in correspondece with the given condition. The &apos;Condition&apos; parameter value must be some boolean expression that will determine subsequent program execution line. This block must have two outgoing links, at least one of them must have &apos;Guard&apos; parameter set to &apos;true&apos; or &apos;false&apos;. The execution will be proceed trough the link marked with the guard corresponding to &apos;Condition&apos; parameter of the block.</source>
         <translation>Разделить выполнение программы в соответствии с заданным условием. Значением параметра &apos;Условие&apos; является некое логическое выражение, на основе значения которого будет осуществлен выбор дальнейшего пути выполнения диаграммы. У данного блока должны быть две исходящие связи, у одной из которых должно быть задано значение параметра &apos;Условие&apos; (возможные варианты — &apos;истина&apos; и &apos;ложь&apos;). При невыполнении данного условия выполнение передается по другой связи.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="651"/>
+        <location filename="../generated/pluginInterface.cpp" line="648"/>
         <source>The entry point of the program execution. Each diagram should have only one such block, it must not have incomming links and it must have only one outgoing link. The interpretation process starts from exactly this block.</source>
         <translation>Начальная точка выполнения программы. На каждой диаграмме такой блок должен быть только один, в него не должно быть входящих связей, исходящая связь из этого элемента должна быть только одна. Процесс интерпретации диаграммы начинается именно с этого блока.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="652"/>
+        <location filename="../generated/pluginInterface.cpp" line="649"/>
         <source>This block executes a sequence of blocks for a given number of times. The number of repetitions is specified by the &apos;Iterations&apos; parameter. This block must have two outgoing links. One of them must be marked with the &apos;iteration&apos; guard (that means that the property &apos;Guard&apos; of the link must be set to &apos;iteration&apos; value). Another outgoing link must be unmarked: the program execution will be proceeded through this link when it will go through our &apos;Loop&apos; block for the given number of times.</source>
         <translation>Блок, организующий выполнение последовательности блоков несколько раз. Число повторений задается значением параметра &apos;Итераций&apos;. Блок должен иметь две исходящие связи, одна из которых должна быть помечена значением &apos;итерация&apos; (то есть значение параметра &apos;Условие&apos; должно быть &apos;итерация&apos;). Другая связь, исходящая из блока &apos;Цикл&apos;, должна оставаться непомеченной: по ней будет осуществляться переход, когда программа пройдет через блок &apos;Цикл&apos; указанное число раз.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="653"/>
+        <location filename="../generated/pluginInterface.cpp" line="650"/>
         <source>Plays on the robot a sound with the fixed frequency. There are two parameters. The first one is a loudness of the sound, the second means if program should wait for sound completion or go to next block right away.</source>
         <translation>Проиграть на роботе звук с фиксированной частотой. Имеется два параметра. Первый - это громкость звука, второй означает ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку. Допустимые значения — истина и ложь.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="654"/>
-        <location filename="../generated/pluginInterface.cpp" line="695"/>
+        <location filename="../generated/pluginInterface.cpp" line="651"/>
+        <location filename="../generated/pluginInterface.cpp" line="692"/>
         <source>Nullifies tacho limit of the motors on the given ports.</source>
         <translation>Сбросить показания количества оборотов моторов по заданным портам.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="644"/>
+        <location filename="../generated/pluginInterface.cpp" line="641"/>
         <source>Clears everything drawn on the robot`s screen.</source>
         <translation>Стереть всё, что нарисовано на экране робота.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="655"/>
+        <location filename="../generated/pluginInterface.cpp" line="652"/>
         <source>Draws on the robot screen a circle with the given center and radius.</source>
         <translation>Нарисовать на экране круг с заданным центром и заданным радиусом.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="656"/>
-        <location filename="../generated/pluginInterface.cpp" line="681"/>
+        <location filename="../generated/pluginInterface.cpp" line="653"/>
+        <location filename="../generated/pluginInterface.cpp" line="678"/>
         <source>Draws a segment on the robot screen. The parameters specify the ends of the segment.</source>
         <translation>Нарисовать на экране отрезок. В качестве параметров блоку указываются концы отрезка.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="657"/>
-        <location filename="../generated/pluginInterface.cpp" line="682"/>
+        <location filename="../generated/pluginInterface.cpp" line="654"/>
+        <location filename="../generated/pluginInterface.cpp" line="679"/>
         <source>Draws one pixel in the specified coordinates on the robot screen.</source>
         <translation>Нарисовать на экране точку в указанных координатах.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="658"/>
-        <location filename="../generated/pluginInterface.cpp" line="683"/>
+        <location filename="../generated/pluginInterface.cpp" line="655"/>
+        <location filename="../generated/pluginInterface.cpp" line="680"/>
         <source>Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.</source>
         <translation>Нарисовать на экране прямоугольник. В качестве параметров указываются координаты левого верхнего угла, ширина и высота прямоугольника.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="659"/>
+        <location filename="../generated/pluginInterface.cpp" line="656"/>
         <source>Enables motors on the given ports in reverse mode with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.</source>
         <translation>Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="660"/>
+        <location filename="../generated/pluginInterface.cpp" line="657"/>
         <source>Enables motors on the given ports with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.</source>
         <translation>Включить моторы по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="661"/>
-        <location filename="../generated/pluginInterface.cpp" line="698"/>
+        <location filename="../generated/pluginInterface.cpp" line="658"/>
+        <location filename="../generated/pluginInterface.cpp" line="695"/>
         <source>Disables motors on the given ports.</source>
         <translation>Выключить моторы по заданным портам.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="662"/>
+        <location filename="../generated/pluginInterface.cpp" line="659"/>
         <source>Plays on the robot a sound with the given frequency and duration. This block is similar to the &apos;Beep&apos; block wuth the only difference that here you can specify sound parameters.</source>
         <translation>Проиграть на роботе звук с заданной частотой и длительностью. Аналогичен блоку &apos;Гудок&apos;, но позволяет задавать параметры звука. Имеется параметр, определяющий, ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="674"/>
+        <location filename="../generated/pluginInterface.cpp" line="671"/>
         <source>Prints a given line in the specified coordinates on the robot`s screen. &apos;$&apos; token can be used in front of the identifier for printing its value. This feature is ignored in case when backslash (&apos;\&apos;) is written before the &apos;$&apos; token. Example: &apos;\$a = $a&apos; expression will print &apos;$a = 5&apos; if the value of the variable &apos;a&apos; is 5.</source>
         <translation>Напечатать заданную строку в заданных координатах на экране. Можно использовать символ доллара (&apos;$&apos;) перед идентификатором переменной для вывода ее значения. Данный сценарий игнорируется, если перед символом доллара стоит обратный слеш (&apos;\&apos;). Пример: строка &apos;\$a = $a&apos; напечатает &apos;$a = 5&apos;, если значение переменной a равно 5.</translation>
     </message>
@@ -1186,130 +1189,129 @@
         <translation type="vanished">Ждать, пока заданные кнопки на роботе не будут нажаты заданное количество раз. Счётчики нажатия можно задать для каждой кнопки отдельно, блок продолжит выполнение, только когда все счётчики сработают.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="663"/>
+        <location filename="../generated/pluginInterface.cpp" line="660"/>
         <source>Waits till the color sensor on the given port will recognize the given color.</source>
         <translation>Ждать, пока сенсор цвета в режиме распознавания цветов не вернет указанный цвет.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="664"/>
+        <location filename="../generated/pluginInterface.cpp" line="661"/>
         <source>Waits till the value returned by the color sensor on the given port will be greater or lower then the given in the &apos;Intensity&apos; parameter value (the intensity is specified in percents, 0 to 100).</source>
         <translation>Ждать, пока значение, возвращаемое сенсором цвета на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Интенсивность&apos; (задается в процентах). Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения с введенной интенсивностью.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="665"/>
-        <location filename="../generated/pluginInterface.cpp" line="700"/>
+        <location filename="../generated/pluginInterface.cpp" line="662"/>
+        <location filename="../generated/pluginInterface.cpp" line="697"/>
         <source>Waits till the tacho limit of the motor on the given port will reach the value of the &apos;Tacho Limit&apos; parameter.</source>
         <translation>Ждать, пока показания счетчика количества оборотов на заданном моторе не достинут указанного в значении параметра &apos;Предел оборотов&apos;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="667"/>
+        <location filename="../generated/pluginInterface.cpp" line="664"/>
         <source>Waits for &quot;Escape&quot; button press.</source>
         <translation>Ждать нажатия на нижнюю кнопку.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="669"/>
-        <location filename="../generated/pluginInterface.cpp" line="705"/>
+        <location filename="../generated/pluginInterface.cpp" line="666"/>
+        <location filename="../generated/pluginInterface.cpp" line="702"/>
         <source>Waits till the value returned by the light sensor on the given port will be greater or lower then the given in the &apos;Percents&apos; parameter value (0 to 100).</source>
         <translation>Ждать, пока значение, возвращаемое сенсором света на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Проценты&apos;. Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения со значением параметра &apos;Проценты&apos;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="671"/>
-        <location filename="../generated/pluginInterface.cpp" line="709"/>
+        <location filename="../generated/pluginInterface.cpp" line="668"/>
+        <location filename="../generated/pluginInterface.cpp" line="706"/>
         <source>Waits till the value returned by the ultrasonic sensor on the given port will be greater or lower then the given in the &apos;Distance&apos; parameter value (the distance is specified in centimeters, 0 to 255).</source>
         <translation>Ждать, пока расстояние, возвращаемое ультразвуковым сенсором расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos; (расстояние задается в сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="672"/>
+        <location filename="../generated/pluginInterface.cpp" line="669"/>
         <source>Waits till the loudness obtained by the sound sensor on the given port will be greater or lower then the given value.</source>
         <translation>Ждать, пока громкость, считанная микрофоном на заданном порту, не будет выше или ниже заданного значения.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="673"/>
+        <location filename="../generated/pluginInterface.cpp" line="670"/>
         <source>Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).</source>
         <translation>Ждать, пока не сработает сенсор касания. Параметром указывается номер порта, к которому подключен сенсор касания. Допустимые значения: 1, 2, 3, 4.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="675"/>
+        <location filename="../generated/pluginInterface.cpp" line="672"/>
         <source>Subprogram call. Subprograms are used for splitting repetitive program parts into a separate diagram and then calling it from main diagram or other subprograms. When this block is added into a diagram it will be suggested to enter subprogram name. The double click on subprogram call block may open the corresponding subprogram diagram. Moreover user palette will appear containing existing subrpograms, they can be dragged into a diagram like the usial blocks.</source>
         <translation>Вызов подпрограммы. Подпрограммы используются для того, чтобы вынести повторяющиеся фрагменты программы на отдельную диаграмму, а потом вызывать фрагмент программы с этой диаграммы в нескольких местах основной программы или других подпрограмм. При добавлении этого блока на диаграмму будет предложено ввести имя подпрограммы, после чего двойным кликом на блоке можно будет перейти на диаграмму, соответствующую данной подпрограмме. Кроме того, появится дополнительная палитра со всеми подпрограммами, подпрограммы из неё можно перетаскивать на сцену и использовать как обычные блоки.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="676"/>
+        <location filename="../generated/pluginInterface.cpp" line="673"/>
         <source>Waits for a given time in milliseconds.</source>
         <translation>Ждать заданное количество времени в миллисекундах.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="677"/>
         <source>Manages angular servomotor. Sets up rotation angle on the given port in percents from the maximal rotation angle that is defined in roobt`s configuration file. Values from 0 to 100 are correspond to a clockwise rotation and values from -100 to 0 correspond to counterclockwise rotation.</source>
-        <translation>Управление угловым сервомотором. Выставляет угол поворота по заданному порту в процентах от максимального угла поворота, определённого в конфигурационном файле на роботе. Значения от 0 до 100 соответствуют повороту по часовой стрелке, от -100 до 0 --- против часовой стрелки.</translation>
+        <translation type="vanished">Управление угловым сервомотором. Выставляет угол поворота по заданному порту в процентах от максимального угла поворота, определённого в конфигурационном файле на роботе. Значения от 0 до 100 соответствуют повороту по часовой стрелке, от -100 до 0 --- против часовой стрелки.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="678"/>
+        <location filename="../generated/pluginInterface.cpp" line="675"/>
         <source>Initializes videocamera line detector with the color of the object in the middle of the camera`s sight.</source>
         <translation>Инициализировать датчик линии по видеокамере цветом объекта в центре поля зрения камеры.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="679"/>
+        <location filename="../generated/pluginInterface.cpp" line="676"/>
         <source>Draws the arc defined by the rectangle beginning at (x, y) with the specified width and height, and the given startAngle and spanAngle.</source>
         <translation>Рисует на экране дугу, ограниченную прямоугольником с началом в (x, y) и заданными шириной и высотой, также задаётся начальный и конечный угол дуги.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="680"/>
+        <location filename="../generated/pluginInterface.cpp" line="677"/>
         <source>Draws the ellipse defined by the rectangle beginning at (x, y) with the given width and height.</source>
         <translation>Рисует на экране эллипс, ограниченный прямоугольником с началом в (x, y) и заданными шириной и высотой.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="684"/>
+        <location filename="../generated/pluginInterface.cpp" line="681"/>
         <source>Enables line detector by videocamera and draws videostream on the robot`s screen.</source>
         <translation>Включить датчик линии по видеокамере, вывести на экран картинку.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="685"/>
+        <location filename="../generated/pluginInterface.cpp" line="682"/>
         <source>Sets the color of the led on the robot`s front panel.</source>
         <translation>Установить цвет светодиода на передней панели роота.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="686"/>
+        <location filename="../generated/pluginInterface.cpp" line="683"/>
         <source>Stores  current videocamera line detector`s value into a given variable.</source>
         <translation>Сохранить текущее значение датчика линии по видеокамере в заданную переменную.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="687"/>
+        <location filename="../generated/pluginInterface.cpp" line="684"/>
         <source>Plays on the robot a sound file (.wav or .mp3) previously uploaded to it.</source>
         <translation>Проигрывает на роботе указанный звуковой файл (в формате .wav или .mp3), который должен быть на него предварительно загружен.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="688"/>
+        <location filename="../generated/pluginInterface.cpp" line="685"/>
         <source>Draws a sad smile on the robot`s screen :(</source>
         <translation>Рисует на экране грустный смайлик :(</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="689"/>
+        <location filename="../generated/pluginInterface.cpp" line="686"/>
         <source>Synthesizes the given phrase and plays it on the robot.</source>
         <translation>Воспроизводит заданную фразу на роботе.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="690"/>
+        <location filename="../generated/pluginInterface.cpp" line="687"/>
         <source>Sets the background color of the current picture on the robot`s screen.</source>
         <translation>Устанавливает цвет фона активной картинки на экране робота.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="691"/>
+        <location filename="../generated/pluginInterface.cpp" line="688"/>
         <source>Sets the painter color.</source>
         <translation>Устанавливает цвет кисти.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="692"/>
+        <location filename="../generated/pluginInterface.cpp" line="689"/>
         <source>Sets the painter width.</source>
         <translation>Устанавливает толщину кисти.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="693"/>
+        <location filename="../generated/pluginInterface.cpp" line="690"/>
         <source>Draws a smile on the robot`s screen :)</source>
         <translation>Рисует на экране смайлик :)</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="694"/>
+        <location filename="../generated/pluginInterface.cpp" line="691"/>
         <source>Invokes bash script-style command on the robot.</source>
         <translation>Выполняет заданную bash-команду на роботе.</translation>
     </message>
@@ -1322,368 +1324,382 @@
         <translation type="vanished">Включить моторы по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, JM1, JE2), и раделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="699"/>
+        <location filename="../generated/pluginInterface.cpp" line="696"/>
         <source>Waits for &quot;Down&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Вниз&quot;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="666"/>
-        <location filename="../generated/pluginInterface.cpp" line="701"/>
+        <location filename="../generated/pluginInterface.cpp" line="663"/>
+        <location filename="../generated/pluginInterface.cpp" line="698"/>
         <source>Waits for &quot;Enter&quot;. button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Ввод&quot;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="702"/>
+        <location filename="../generated/pluginInterface.cpp" line="699"/>
         <source>Waits till the value returned by the gyroscope on the given port will be greater or lower then the given in the &apos;Degrees/sec&apos; parameter value.</source>
         <translation>Ждать, пока значение, возвращаемое гироскопом на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Градусы/сек&apos;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="703"/>
+        <location filename="../generated/pluginInterface.cpp" line="700"/>
         <source>Waits till the value returned by the infrared sensor on the given port will be greater or lower then the given in the &apos;Distance&apos; parameter value (the distance is specified in centimeters, 0 to 255).</source>
         <translation>Ждать, пока расстояние, возвращаемое инфракрасным сенсором расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos;. Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="668"/>
-        <location filename="../generated/pluginInterface.cpp" line="704"/>
+        <location filename="../generated/pluginInterface.cpp" line="665"/>
+        <location filename="../generated/pluginInterface.cpp" line="701"/>
         <source>Waits for &quot;Left&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Влево&quot;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="707"/>
+        <location filename="../generated/pluginInterface.cpp" line="704"/>
         <source>Waits for &quot;Power&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Питание&quot;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="670"/>
-        <location filename="../generated/pluginInterface.cpp" line="708"/>
+        <location filename="../generated/pluginInterface.cpp" line="667"/>
+        <location filename="../generated/pluginInterface.cpp" line="705"/>
         <source>Waits for &quot;Right&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Вправо&quot;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="710"/>
+        <location filename="../generated/pluginInterface.cpp" line="707"/>
         <source>Waits for &quot;Up&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Вверх&quot;.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="711"/>
+        <location filename="../generated/pluginInterface.cpp" line="708"/>
         <source>Assignes a given value to a given variable.</source>
         <translation>Присвоить указанной переменной указанное значение.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2084"/>
+        <location filename="../generated/pluginInterface.cpp" line="2093"/>
         <source>Composite</source>
         <translation>Композиция</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2084"/>
+        <location filename="../generated/pluginInterface.cpp" line="2093"/>
         <source>None</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2084"/>
+        <location filename="../generated/pluginInterface.cpp" line="2093"/>
         <source>Shared</source>
         <translation>Общая</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2110"/>
+        <location filename="../generated/pluginInterface.cpp" line="2085"/>
         <source>False</source>
         <translation>Ложь</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2110"/>
+        <location filename="../generated/pluginInterface.cpp" line="2085"/>
         <source>True</source>
         <translation>Истина</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2112"/>
+        <location filename="../generated/pluginInterface.cpp" line="2099"/>
         <source>greater</source>
         <translation>больше</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2112"/>
+        <location filename="../generated/pluginInterface.cpp" line="2099"/>
         <source>less</source>
         <translation>меньше</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2112"/>
+        <location filename="../generated/pluginInterface.cpp" line="2099"/>
         <source>not greater</source>
         <translation>не больше</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2112"/>
+        <location filename="../generated/pluginInterface.cpp" line="2099"/>
         <source>not less</source>
         <translation>не меньше</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2098"/>
+        <location filename="../generated/pluginInterface.cpp" line="2111"/>
         <source>Concurrent</source>
         <translation>Параллеьный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="589"/>
+        <location filename="../generated/pluginInterface.cpp" line="586"/>
         <source>E1</source>
         <translation>E1</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="616"/>
-        <location filename="../generated/pluginInterface.cpp" line="621"/>
+        <location filename="../generated/pluginInterface.cpp" line="618"/>
         <source>M1, M2, M3, M4</source>
         <translation>M1, M2, M3, M4</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="617"/>
-        <location filename="../generated/pluginInterface.cpp" line="619"/>
+        <location filename="../generated/pluginInterface.cpp" line="614"/>
+        <location filename="../generated/pluginInterface.cpp" line="616"/>
         <source>M3, M4</source>
         <translation>M3, M4</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="625"/>
+        <location filename="../generated/pluginInterface.cpp" line="622"/>
         <source>B1</source>
         <translation>B1</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="696"/>
+        <location filename="../generated/pluginInterface.cpp" line="693"/>
         <source>Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.</source>
         <translation>Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, M1, E2) и разделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="697"/>
+        <location filename="../generated/pluginInterface.cpp" line="694"/>
         <source>Enables motors on the given ports with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.</source>
         <translation>Включить моторы по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, M1, E2) и разделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2098"/>
+        <location filename="../generated/pluginInterface.cpp" line="2111"/>
         <source>Guarded</source>
         <translation>Защищенный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2098"/>
+        <location filename="../generated/pluginInterface.cpp" line="2111"/>
         <source>Sequential</source>
         <translation>Последовательный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2108"/>
-        <location filename="../generated/pluginInterface.cpp" line="2114"/>
+        <location filename="../generated/pluginInterface.cpp" line="2083"/>
+        <location filename="../generated/pluginInterface.cpp" line="2091"/>
         <source>A1</source>
         <translation>A1</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2108"/>
-        <location filename="../generated/pluginInterface.cpp" line="2114"/>
+        <location filename="../generated/pluginInterface.cpp" line="2083"/>
+        <location filename="../generated/pluginInterface.cpp" line="2091"/>
         <source>A2</source>
         <translation>A2</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2108"/>
-        <location filename="../generated/pluginInterface.cpp" line="2114"/>
+        <location filename="../generated/pluginInterface.cpp" line="2083"/>
+        <location filename="../generated/pluginInterface.cpp" line="2091"/>
         <source>A3</source>
         <translation>A3</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2108"/>
-        <location filename="../generated/pluginInterface.cpp" line="2114"/>
+        <location filename="../generated/pluginInterface.cpp" line="2083"/>
+        <location filename="../generated/pluginInterface.cpp" line="2091"/>
         <source>A4</source>
         <translation>A4</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2108"/>
-        <location filename="../generated/pluginInterface.cpp" line="2114"/>
+        <location filename="../generated/pluginInterface.cpp" line="2083"/>
+        <location filename="../generated/pluginInterface.cpp" line="2091"/>
         <source>A5</source>
         <translation>A5</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2108"/>
-        <location filename="../generated/pluginInterface.cpp" line="2114"/>
+        <location filename="../generated/pluginInterface.cpp" line="2083"/>
+        <location filename="../generated/pluginInterface.cpp" line="2091"/>
         <source>A6</source>
         <translation>A6</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2100"/>
-        <location filename="../generated/pluginInterface.cpp" line="2108"/>
+        <location filename="../generated/pluginInterface.cpp" line="2083"/>
+        <location filename="../generated/pluginInterface.cpp" line="2089"/>
         <source>D1</source>
         <translation>D1</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2100"/>
-        <location filename="../generated/pluginInterface.cpp" line="2108"/>
+        <location filename="../generated/pluginInterface.cpp" line="2083"/>
+        <location filename="../generated/pluginInterface.cpp" line="2089"/>
         <source>D2</source>
         <translation>D2</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2108"/>
+        <location filename="../generated/pluginInterface.cpp" line="2083"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2092"/>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
+        <location filename="../generated/pluginInterface.cpp" line="2107"/>
         <source>black</source>
         <translation>черный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="706"/>
+        <location filename="../generated/pluginInterface.cpp" line="703"/>
         <source>Waits till the motion sensor on the given port is triggered.</source>
         <translation>Ждет, пока не сработает сенсор движения.</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2092"/>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
+        <location filename="../generated/pluginInterface.cpp" line="2107"/>
         <source>blue</source>
         <translation>синий</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>cyan</source>
         <translation>сине-зелёный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>dark blue</source>
         <translation>тёмно-синий</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>dark cyan</source>
         <translation>тёмносине-зеленый</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>dark gray</source>
         <translation>тёмно-серый</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>dark green</source>
         <translation>тёмно-зелёный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>dark magenta</source>
         <translation>тёмно-пурпурный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>dark yellow</source>
         <translation>тёмно-жёлтый</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>dark red</source>
         <translation>тёмно-красный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>gray</source>
         <translation>серый</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2092"/>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
-        <location filename="../generated/pluginInterface.cpp" line="2104"/>
+        <location filename="../generated/pluginInterface.cpp" line="2095"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
+        <location filename="../generated/pluginInterface.cpp" line="2107"/>
         <source>green</source>
         <translation>зелёный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>light gray</source>
         <translation>светло-серый</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
         <source>magenta</source>
         <translation>пурпурный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2092"/>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
-        <location filename="../generated/pluginInterface.cpp" line="2104"/>
+        <location filename="../generated/pluginInterface.cpp" line="2095"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
+        <location filename="../generated/pluginInterface.cpp" line="2107"/>
         <source>red</source>
         <translation>красный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2092"/>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
+        <location filename="../generated/pluginInterface.cpp" line="2107"/>
         <source>white</source>
         <translation>белый</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2092"/>
-        <location filename="../generated/pluginInterface.cpp" line="2102"/>
+        <location filename="../generated/pluginInterface.cpp" line="2103"/>
+        <location filename="../generated/pluginInterface.cpp" line="2107"/>
         <source>yellow</source>
         <translation>жёлтый</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2104"/>
+        <location filename="../generated/pluginInterface.cpp" line="2095"/>
         <source>off</source>
         <translation>выключен</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2086"/>
+        <location filename="../generated/pluginInterface.cpp" line="163"/>
+        <source>Angle (degrees)</source>
+        <translation>Угол (в градусах)</translation>
+    </message>
+    <message>
+        <location filename="../generated/pluginInterface.cpp" line="613"/>
+        <source>B1, B2, B3, B4</source>
+        <translation>B1, B2, B3, B4</translation>
+    </message>
+    <message>
+        <location filename="../generated/pluginInterface.cpp" line="674"/>
+        <source>Manages angular servomotor. Sets up rotation angle on the given port in degrees. Values from 0 to 90 are correspond to a clockwise rotation and values from -90 to 0 correspond to counterclockwise rotation.</source>
+        <translation>Управление угловым сервомотором. Устанавливает угол поворота вала мотора на данном порту (в градусах). Значения от 0 до 90 соотвествуют повороту по часовой, значения от -90 до 0 --- повороту против часовой.</translation>
+    </message>
+    <message>
+        <location filename="../generated/pluginInterface.cpp" line="2087"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2086"/>
+        <location filename="../generated/pluginInterface.cpp" line="2087"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2086"/>
+        <location filename="../generated/pluginInterface.cpp" line="2087"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2090"/>
+        <location filename="../generated/pluginInterface.cpp" line="2097"/>
         <source>In</source>
         <translation>Входной</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2090"/>
+        <location filename="../generated/pluginInterface.cpp" line="2097"/>
         <source>Inout</source>
         <translation>Входной-выходной</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2090"/>
+        <location filename="../generated/pluginInterface.cpp" line="2097"/>
         <source>Out</source>
         <translation>Выходной</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2090"/>
+        <location filename="../generated/pluginInterface.cpp" line="2097"/>
         <source>Return</source>
         <translation>Возвращается</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2106"/>
+        <location filename="../generated/pluginInterface.cpp" line="2101"/>
         <source>norm</source>
         <translation>норма</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2106"/>
+        <location filename="../generated/pluginInterface.cpp" line="2101"/>
         <source>x-axis</source>
         <translation>ось x</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2106"/>
+        <location filename="../generated/pluginInterface.cpp" line="2101"/>
         <source>y-axis</source>
         <translation>ось y</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2106"/>
+        <location filename="../generated/pluginInterface.cpp" line="2101"/>
         <source>z-axis</source>
         <translation>ось z</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2094"/>
+        <location filename="../generated/pluginInterface.cpp" line="2109"/>
         <source>false</source>
         <translation>ложь</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2094"/>
+        <location filename="../generated/pluginInterface.cpp" line="2109"/>
         <source>iteration</source>
         <translation>итерация</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2094"/>
+        <location filename="../generated/pluginInterface.cpp" line="2109"/>
         <source>true</source>
         <translation>истина</translation>
     </message>
@@ -1724,32 +1740,32 @@
         <translation type="vanished">JF1</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2088"/>
+        <location filename="../generated/pluginInterface.cpp" line="2105"/>
         <source>Package</source>
         <translation>Пакет</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2088"/>
+        <location filename="../generated/pluginInterface.cpp" line="2105"/>
         <source>Private</source>
         <translation>Приватный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2088"/>
+        <location filename="../generated/pluginInterface.cpp" line="2105"/>
         <source>Protected</source>
         <translation>Защищенный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2088"/>
+        <location filename="../generated/pluginInterface.cpp" line="2105"/>
         <source>Public</source>
         <translation>Публичный</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2096"/>
+        <location filename="../generated/pluginInterface.cpp" line="2081"/>
         <source>break</source>
         <translation>тормозить</translation>
     </message>
     <message>
-        <location filename="../generated/pluginInterface.cpp" line="2096"/>
+        <location filename="../generated/pluginInterface.cpp" line="2081"/>
         <source>float</source>
         <translation>скользить</translation>
     </message>

@@ -36,6 +36,8 @@ public:
 	QPointF pos;
 
 	int shapeType;
+
+	QMap<QString, QVariant> logicalProperties;
 };
 
 /**
@@ -62,7 +64,7 @@ public:
 
 	QPointF pos;
 	QRectF contents;
-
+	Id explosion;
 };
 
 QDataStream &operator<< (QDataStream &out, NodeData const &data);

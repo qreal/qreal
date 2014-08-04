@@ -96,9 +96,9 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 		} else {
 			return QFileInfo();
 		}
-	} else {
-		QScintillaTextEdit *code = static_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab());
+	} else if (QScintillaTextEdit *code = dynamic_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab())) {
 		fileInfo = QFileInfo(mTextManager->path(code));
+		mTextManager->saveText(false);
 	}
 
 	return fileInfo;

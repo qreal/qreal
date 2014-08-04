@@ -42,11 +42,9 @@ using namespace robotParts;
 D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
-	, mScene(nullptr)
 	, mModel(model)
 	, mDisplay(configurer->displayWidget(this))
 	, mWidth(defaultPenWidth)
-	, mFirstShow(true)
 	, mConfigurer(configurer)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
@@ -73,6 +71,10 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(&mModel.robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
 	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
 			, this, &D2ModelWidget::reinitSensor);
+	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
+			, this, &D2ModelWidget::saveToRepo);
+	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceRemoved
+			, this, &D2ModelWidget::saveToRepo);
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -114,6 +116,8 @@ void D2ModelWidget::initWidget()
 	move(0, 0);
 
 	mUi->penWidthSpinBox->setRange(1, 30);
+	mUi->penWidthSpinBox->setValue(mWidth);
+	mUi->penColorComboBox->setColor(QColor("black"));
 
 	QStringList const colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
 	QStringList const translatedColorList = { tr("Black"), tr("Blue"), tr("Green"), tr("Yellow"), tr("Red") };
@@ -269,11 +273,11 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
-	if (event->matches(QKeySequence::ZoomIn)) {
+	if ((event->key() == Qt::Key_Equal || event->key() == Qt::Key_Plus) && event->modifiers() == Qt::ControlModifier) {
 		mScene->mainView()->zoomIn();
 	} else if (event->matches(QKeySequence::ZoomOut)) {
 		mScene->mainView()->zoomOut();
-	} else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Space) {
+	} else if (event->key() == Qt::Key_F5) {
 		mUi->runButton->animateClick();
 	} else if (event->key() == Qt::Key_Escape) {
 		mUi->stopButton->animateClick();
@@ -435,10 +439,7 @@ void D2ModelWidget::changePenColor(int textIndex)
 void D2ModelWidget::changePalette()
 {
 	QList<QGraphicsItem *> const listSelectedItems = mScene->selectedItems();
-	if (listSelectedItems.isEmpty()) {
-		setNoPalette();
-		mScene->setEmptyPenBrushItems();
-	} else {
+	if (!listSelectedItems.isEmpty()) {
 		AbstractItem *item = dynamic_cast<AbstractItem *>(listSelectedItems.back());
 		if (isColorItem(item)) {
 			QPen const penItem = item->pen();
@@ -462,14 +463,12 @@ void D2ModelWidget::setValuePenWidthSpinBox(int width)
 void D2ModelWidget::setItemPalette(QPen const &penItem, QBrush const &brushItem)
 {
 	Q_UNUSED(brushItem)
+	mUi->penColorComboBox->blockSignals(true);
+	mUi->penWidthSpinBox->blockSignals(true);
 	setValuePenWidthSpinBox(penItem.width());
 	setValuePenColorComboBox(penItem.color());
-}
-
-void D2ModelWidget::setNoPalette()
-{
-	mUi->penWidthSpinBox->setValue(mWidth);
-	mUi->penColorComboBox->setColor(QColor("black"));
+	mUi->penColorComboBox->blockSignals(false);
+	mUi->penWidthSpinBox->blockSignals(false);
 }
 
 D2ModelScene *D2ModelWidget::scene()

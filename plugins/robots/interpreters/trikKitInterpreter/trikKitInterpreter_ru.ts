@@ -30,12 +30,12 @@
 <context>
     <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
     <message>
-	<location filename="src/trikKitInterpreterPlugin.cpp" line="28"/>
-	<source>Enter robot`s IP-address here...</source>
-	<translation>Введите IP-адрес робота...</translation>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="28"/>
+        <source>Enter robot`s IP-address here...</source>
+        <translation>Введите IP-адрес робота...</translation>
     </message>
     <message>
-	<location filename="src/trikKitInterpreterPlugin.cpp" line="74"/>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="91"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
@@ -44,9 +44,17 @@
         <translation type="vanished">Открыть 2D модель для TRIK v4</translation>
     </message>
     <message>
-        <location filename="src/trikKitInterpreterPlugin.cpp" line="113"/>
+        <location filename="src/trikKitInterpreterPlugin.cpp" line="137"/>
         <source>Show 2d model for TRIK v6</source>
         <translation>Открыть 2D модель для TRIK v6</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::blocks::details::LedBlock</name>
+    <message>
+        <location filename="src/blocks/details/ledBlock.cpp" line="38"/>
+        <source>Led is not configured (WTF?)</source>
+        <translation>Светодиод не сконфигурирован</translation>
     </message>
 </context>
 <context>
@@ -63,9 +71,16 @@
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikCameraLineDetector</name>
     <message>
-        <location filename="src/robotModel/parts/trikCameraLineDetector.h" line="13"/>
         <source>Camera Line Detector</source>
-        <translation>Детектор линии по камере</translation>
+        <translation type="vanished">Детектор линии по камере</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::robotModel::parts::TrikColorSensor</name>
+    <message>
+        <location filename="src/robotModel/parts/trikColorSensor.h" line="15"/>
+        <source>Color Sensor</source>
+        <translation>Сенсор цвета</translation>
     </message>
 </context>
 <context>
@@ -85,6 +100,14 @@
     </message>
 </context>
 <context>
+    <name>trikKitInterpreter::robotModel::parts::TrikLineSensor</name>
+    <message>
+        <location filename="src/robotModel/parts/trikLineSensor.h" line="14"/>
+        <source>Line Sensor</source>
+        <translation>Сенсор линии</translation>
+    </message>
+</context>
+<context>
     <name>trikKitInterpreter::robotModel::parts::TrikMotionSensor</name>
     <message>
         <location filename="src/robotModel/parts/trikMotionSensor.h" line="13"/>
@@ -97,6 +120,14 @@
     <message>
         <source>Movement Sensor</source>
         <translation type="vanished">Сенсор движения</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::robotModel::parts::TrikObjectSensor</name>
+    <message>
+        <location filename="src/robotModel/parts/trikObjectSensor.h" line="14"/>
+        <source>Object Sensor</source>
+        <translation>Сенсор объекта</translation>
     </message>
 </context>
 <context>

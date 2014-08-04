@@ -6,6 +6,8 @@ include(../common.pri)
 
 include(../../../qrutils/qrutils.pri)
 
+LIBS += -L../../../bin -lqslog
+
 HEADERS += \
 #	expressionsParser/expressionsParserTest.h \
 	textLanguageParser/details/lexerTest.h \

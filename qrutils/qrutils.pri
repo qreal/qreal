@@ -74,3 +74,6 @@ include($$PWD/graphicsWatcher/sensorsGraph.pri)
 
 # Text language parser framework, based on Lua 5.3 specification, with adjustable concrete syntax.
 include($$PWD/textLanguageParser/textLanguageParser.pri)
+
+#Plugin managers
+include($$PWD/pluginManagers/pluginManagers.pri)

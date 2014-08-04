@@ -117,7 +117,7 @@ private:
 		, drawEllipse
 	};
 
-	static const int defaultPenWidth = 15;
+	static const int defaultPenWidth = 6;
 
 	static const int indexOfNoneSensor = 0;
 	static const int indexOfTouchSensor = 1;
@@ -154,7 +154,6 @@ private:
 	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
-	void setNoPalette();
 
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(CursorType cursor);
@@ -175,14 +174,14 @@ private:
 
 	void updateWheelComboBoxes();
 
-	Ui::D2Form *mUi;
-	D2ModelScene *mScene;
+	Ui::D2Form *mUi = nullptr;
+	D2ModelScene *mScene = nullptr;
 
 	model::Model &mModel;
 
-	engine::TwoDModelDisplayWidget *mDisplay;
+	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 
-	int mWidth;
+	int mWidth = 0;
 
 	QButtonGroup mButtonGroup;
 	QButtonGroup mCursorButtonGroup;
@@ -190,9 +189,9 @@ private:
 	CursorType mNoneCursorType; // cursorType for noneStatus
 	CursorType mCursorType; // current cursorType
 
-	bool mFollowRobot;
+	bool mFollowRobot = false;
 
-	bool mFirstShow;
+	bool mFirstShow = true;
 
 	RobotState mInitialRobotBeforeRun;
 

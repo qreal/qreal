@@ -28,11 +28,6 @@ D2ModelScene::D2ModelScene(model::Model &model
 	, mModel(model)
 	, mConfigurer(configurer)
 	, mDrawingAction(none)
-	, mRobot(nullptr)
-	, mCurrentWall(nullptr)
-	, mCurrentLine(nullptr)
-	, mCurrentStylus(nullptr)
-	, mCurrentEllipse(nullptr)
 {
 	mFirstPenWidth = 6;
 	mSizeEmptyRectX = 1000;

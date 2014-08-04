@@ -5,12 +5,18 @@
 #include <QtCore/QPluginLoader>
 #include <QtWidgets/QAction>
 
+#include <QtCore/QString>
+#include <QtCore/QObject>
+#include <QtCore/QMap>
+
 #include "toolPluginInterface/toolPluginInterface.h"
 #include "toolPluginInterface/customizer.h"
 #include "toolPluginInterface/pluginConfigurator.h"
 #include "dialogs/preferencesPages/preferencesPage.h"
 #include "toolPluginInterface/hotKeyActionInfo.h"
 #include "toolPluginInterface/systemEvents.h"
+
+#include <qrutils/pluginManagers/pluginManager.h>
 
 namespace qReal {
 
@@ -49,10 +55,12 @@ private:
 	QDir mPluginsDir;
 
 	QList<ToolPluginInterface *> mPlugins;
-	QList<QPluginLoader *> mLoaders;
 
 	/// An object and that is used to customize GUI with values from plugins
 	Customizer mCustomizer;
+
+	/// Common part of all plugin managers
+	PluginManager mPluginManager;
 
 	SystemEvents *mSystemEvents;
 };

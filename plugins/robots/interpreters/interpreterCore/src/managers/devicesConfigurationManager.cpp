@@ -71,7 +71,6 @@ void DevicesConfigurationManager::onDeviceConfigurationChanged(QString const &ro
 	}
 
 	qReal::Id const logicalRootId = mGraphicalModelAssistInterface.logicalId(activeDiagramGraphicalId);
-
 	mLogicalModelAssistInterface.setPropertyByRoleName(logicalRootId, save(), "devicesConfiguration");
 }
 

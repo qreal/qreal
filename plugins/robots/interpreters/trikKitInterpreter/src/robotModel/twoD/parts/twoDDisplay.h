@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtGui/QColor>
 #include "robotModel/parts/trikDisplay.h"
 
 #include <commonTwoDModel/engine/twoDModelEngineInterface.h>
@@ -38,7 +39,7 @@ private:
 	QColor mBackground;
 	QImage mCurrentImage;
 	/// @todo: QPoint can`t be used in map without operators declaration.
-	QHash<QPair<int, int>, QString> mLabels;
+	QHash<QPair<int, int>, QPair<QString, QColor>> mLabels;
 
 	/// Information about pixel.
 	struct PixelCoordinates
