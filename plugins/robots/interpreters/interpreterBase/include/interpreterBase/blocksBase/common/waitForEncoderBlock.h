@@ -13,7 +13,6 @@ namespace blocksBase {
 namespace common {
 
 /// An interpreter`s implementation for "wait for the encoder" block.
-/// @todo Inherit it from WaitForSensorBlock?
 class ROBOTS_INTERPRETER_BASE_EXPORT WaitForEncoderBlock : public WaitForSensorBlock
 {
 	Q_OBJECT
