@@ -11,6 +11,8 @@ using namespace twoDModel::items;
 using namespace qReal;
 using namespace graphicsUtils;
 
+int const wallWidth = 10;
+
 WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	: LineItem(begin, end)
 	, mDragged(false)
@@ -25,7 +27,7 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 void WallItem::setPrivateData()
 {
 	setZValue(1);
-	mPen.setWidth(10);
+	mPen.setWidth(wallWidth);
 	mPen.setStyle(Qt::NoPen);
 	mBrush.setStyle(Qt::SolidPattern);
 	mBrush.setTextureImage(mImage);
@@ -160,10 +162,10 @@ void WallItem::recalculateBorders()
 	norm.normalize();
 	norm *= mPen.widthF() / 2;
 
-	QPointF const point1(x1 - dx + norm.x(), y1 - dy + norm.y());
-	QPointF const point2(x1 - dx - norm.x(), y1 - dy - norm.y());
-	QPointF const point3(x2 + dx - norm.x(), y2 + dy - norm.y());
-	QPointF const point4(x2 + dx + norm.x(), y2 + dy + norm.y());
+	QPointF const point1(x1 - wallWidth - dx + norm.x(), y1 - dy + norm.y());
+	QPointF const point2(x1 + wallWidth - dx - norm.x(), y1 - dy - norm.y());
+	QPointF const point3(x2 + wallWidth + dx - norm.x(), y2 + dy - norm.y());
+	QPointF const point4(x2 - wallWidth + dx + norm.x(), y2 + dy + norm.y());
 
 	QPainterPath wallPath;
 	wallPath.moveTo(point1);

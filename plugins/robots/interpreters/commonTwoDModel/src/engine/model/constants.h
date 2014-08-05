@@ -12,8 +12,6 @@ qreal const robotHeight = 50;
 QPointF const rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 QSize const displaySize(200, 300);
 qreal const beepWavesSize = 120;
-/// @todo: Remove it (declare sensor sizes in sensors themselves)
-int const sensorWidth = 12;
 
 qreal const robotWheelDiameterInPx = 16;
 qreal const robotWheelDiameterInCm = 5.6;
@@ -43,8 +41,6 @@ qreal const rotationalFrictionFactor = 1500;
 qreal const angularVelocityFrictionFactor = 200;
 
 qreal const onePercentAngularVelocity = 0.0055;
-int const touchSensorWallStrokeIncrement = 10;
-int const touchSensorStrokeIncrement = 5;
 int const maxLightSensorValur = 1023;
 int const touchSensorPressedSignal = 1;
 int const touchSensorNotPressedSignal = 0;

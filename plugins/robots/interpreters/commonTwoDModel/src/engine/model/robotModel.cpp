@@ -22,6 +22,7 @@ using namespace interpreterBase::robotModel::robotParts;
 
 RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
 		, Settings const &settings
+		, Configurer const * const configurer
 		, QObject *parent)
 	: QObject(parent)
 	, mSettings(settings)
@@ -32,6 +33,7 @@ RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotMo
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mPhysicsEngine(nullptr)
+	, mConfigurer(configurer)
 {
 	reinit();
 }
@@ -175,23 +177,39 @@ QPointF RobotModel::rotationCenter() const
 QPainterPath RobotModel::robotBoundingPath() const
 {
 	QPainterPath path;
+
 	QRectF const boundingRect(QPointF(), QSizeF(robotWidth, robotHeight));
 	path.addRect(boundingRect);
-
-	for (PortInfo const &port : mRobotModel.configurablePorts()) {
-		if (!mSensorsConfiguration.type(port).isNull()) {
-			QPointF const sensorPos = mSensorsConfiguration.position(port);
-			/// @todo: Consider rotation and differentiate sizes.
-			path.addRect({sensorPos - QPointF(sensorWidth / 2, sensorWidth / 2), QSizeF{sensorWidth, sensorWidth}});
-		}
-	}
 
 	QPointF const realRotatePoint = QPointF(boundingRect.width() / 2, boundingRect.height() / 2);
 	QPointF const translationToZero = -realRotatePoint - boundingRect.topLeft();
 	QPointF const finalTranslation = mPos + realRotatePoint + boundingRect.topLeft();
 	QTransform const transform = QTransform().translate(finalTranslation.x(), finalTranslation.y())
 			.rotate(mAngle).translate(translationToZero.x(), translationToZero.y());
+
+	for (PortInfo const &port : mRobotModel.configurablePorts()){
+		QPointF const sensorPos = mSensorsConfiguration.position(port);
+		QPainterPath tempSensorPath;
+		tempSensorPath.addRect(sensorPath(port, sensorPos));
+		QTransform const transformSensor = QTransform()
+				.translate(sensorPos.x(), sensorPos.y())
+				.rotate(mSensorsConfiguration.direction(port))
+				.translate(-sensorPos.x(), -sensorPos.y());
+		path.addPath(transformSensor.map(tempSensorPath));
+	}
+
 	return transform.map(path);
+}
+
+QRectF RobotModel::sensorPath(PortInfo const &port, QPointF const sensorPos) const
+{
+	if (!mSensorsConfiguration.type(port).isNull()) {
+		QSizeF const size = mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).size();
+		QRectF sensorRect = QRectF(sensorPos - QPointF(size.width() / 2, size.height() / 2), size);
+		return sensorRect;
+	}
+	return QRectF();
+
 }
 
 void RobotModel::nextStep()

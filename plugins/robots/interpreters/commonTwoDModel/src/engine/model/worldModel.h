@@ -28,7 +28,7 @@ public:
 	int sonarReading(QPointF const &position, qreal direction) const;
 	QPainterPath sonarScanningRegion(QPointF const &position, qreal direction, int range = 255) const;
 	QPainterPath sonarScanningRegion(QPointF const &position, int range = 255) const;
-	bool checkCollision(QPainterPath const &robotPath, int stroke = 3) const;
+	bool checkCollision(QPainterPath const &path) const;
 	QList<items::WallItem *> const &walls() const;
 	QList<items::ColorFieldItem *> const &colorFields() const;
 
