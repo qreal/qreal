@@ -91,13 +91,7 @@ bool WorldModel::checkCollision(QPainterPath const &path) const
 	}
 #endif
 
-	for (items::WallItem * const wall : mWalls) {
-		if (wall->path().intersects(path)) {
-			return true;
-		}
-	}
-
-	return false;
+	return buildWallPath().intersects(path);
 }
 
 QList<items::WallItem *> const &WorldModel::walls() const

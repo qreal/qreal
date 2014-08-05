@@ -131,7 +131,6 @@ private:
 	bool mIsOnTheGround;
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
-
 };
 
 }
