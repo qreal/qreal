@@ -12,7 +12,7 @@ namespace gui {
 
 class DraggableElement;
 
-/// Implemented facade pattern. This class allows to search and get ojects of graphical user interface of
+/// Implemented facade pattern. This class allows to search and get objects of graphical user interface of
 /// system by theirs object names, parents and types.
 class GuiFacade : public QObject
 {

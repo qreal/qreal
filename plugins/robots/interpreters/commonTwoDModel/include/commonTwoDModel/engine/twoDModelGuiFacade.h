@@ -10,7 +10,7 @@ class D2ModelWidget;
 
 namespace engine {
 
-/// Implemented facade pattern. This class allows to search and get ojects of graphical user interface of
+/// Implemented facade pattern. This class allows to search and get objects of graphical user interface of
 /// robots plugin by their object names, parents and types.
 class TwoDModelGuiFacade : public QObject
 {
