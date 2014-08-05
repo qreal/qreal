@@ -28,7 +28,7 @@ public:
 	Id id() const;
 	QString name() const;
 	QString description() const;
-	QIcon icon() const;	
+	QIcon icon() const;
 	QSize preferredSize() const;
 	Id explosionTarget() const;
 

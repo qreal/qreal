@@ -1,7 +1,5 @@
 #include "paletteElement.h"
 
-#include "pluginManager/editorManagerInterface.h"
-
 using namespace qReal;
 using namespace gui;
 

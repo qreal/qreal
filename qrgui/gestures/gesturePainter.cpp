@@ -51,8 +51,8 @@ void GesturePainter::paint(QPainter *painter, QRect const &rect, QIcon::Mode mod
 	}
 
 	qreal const sizeFactor = mSize ? mSize / (qMax(maxSizeX, maxSizeY) + frame) : 1;
-
 	QPoint const indent = QPoint((mSize - maxSizeX * sizeFactor) / 2, (mSize - maxSizeY * sizeFactor) / 2);
+
 	painter->save();
 	painter->setBrush(mBackgroundColor);
 	painter->setPen(Qt::white);

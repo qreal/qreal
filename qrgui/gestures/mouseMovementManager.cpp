@@ -52,7 +52,9 @@ void MouseMovementManager::printElements()
 {
 	QList<QPair<QString, Id> > elements;
 	for (Id const &element : mEditorManagerInterface.elements(mDiagram)) {
-		elements << qMakePair(mEditorManagerInterface.friendlyName(element), element);
+		if (!mEditorManagerInterface.mouseGesture(element).isEmpty()) {
+			elements << qMakePair(mEditorManagerInterface.friendlyName(element), element);
+		}
 	}
 
 	mGesturesPaintMan->setElements(elements);

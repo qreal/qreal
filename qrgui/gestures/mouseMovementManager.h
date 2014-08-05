@@ -55,6 +55,7 @@ public:
 	MouseMovementManager(Id const &diagram
 			, EditorManagerInterface const &editorManagerInterface
 			, GesturesPainterInterface *gesturesPaintManager);
+
 	~MouseMovementManager();
 
 	void initializeGestures();
