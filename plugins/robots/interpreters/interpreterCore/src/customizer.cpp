@@ -60,12 +60,11 @@ void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWa
 {
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
 	watchWindow->setFloating(false);
-	/// @todo: Restore plotter when everything will be fine...
-	Q_UNUSED(graphicsWatch)
-	// QDockWidget *graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
-	// mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
 
-	// mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);
+	QDockWidget *graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
+	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
+
+	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);
 }
 
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const
