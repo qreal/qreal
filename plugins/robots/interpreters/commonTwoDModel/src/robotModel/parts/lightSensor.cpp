@@ -15,5 +15,5 @@ LightSensor::LightSensor(DeviceInfo const &info
 
 void LightSensor::read()
 {
-	emit newData(mEngine.readLightSensor(deviceInfo(), port()));
+	emit newData(mEngine.readLightSensor(port()));
 }

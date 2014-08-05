@@ -15,5 +15,5 @@ ColorSensorPassive::ColorSensorPassive(interpreterBase::robotModel::DeviceInfo c
 
 void ColorSensorPassive::read()
 {
-	emit newData(mEngine.readColorSensor(deviceInfo(), port()));
+	emit newData(mEngine.readColorSensor(port()));
 }

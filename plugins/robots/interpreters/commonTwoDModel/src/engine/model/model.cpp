@@ -4,10 +4,9 @@
 
 using namespace twoDModel::model;
 
-Model::Model(interpreterBase::robotModel::RobotModelInterface &robotModel
-		, Configurer const * const configurer, QObject *parent)
+Model::Model(robotModel::TwoDRobotModel &robotModel, QObject *parent)
 	: QObject(parent)
-	, mRobotModel(robotModel, mSettings, configurer, this)
+	, mRobotModel(robotModel, mSettings, this)
 {
 	connect(&mTimeline, &Timeline::started, &mRobotModel, &RobotModel::reinit);
 	connect(&mTimeline, &Timeline::stopped, &mRobotModel, &RobotModel::stopRobot);

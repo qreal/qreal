@@ -22,16 +22,11 @@ using namespace twoDModel;
 using namespace interpreterBase::robotModel;
 using namespace twoDModel::model;
 
-TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view, Configurer const * const configurer)
+TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
 	: mModel(model)
 	, mView(view)
-	, mConfigurer(configurer)
 {
 }
-
-#include <QtWidgets/QGraphicsPathItem>
-
-QGraphicsPathItem *mSensorPath = nullptr;
 
 void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
 {
@@ -55,19 +50,19 @@ int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
-	QPointF sensorPos(neededPosDir.first);
-	qreal sensorRotated(neededPosDir.second);
+	QPointF const position(neededPosDir.first);
+	qreal const rotation = neededPosDir.second / 180 * mathUtils::pi;
+	QSizeF const size = mModel.robotModel().sensorRect(port, position).size();
 
 	QPainterPath sensorPath;
+	qreal const touchRegionRadius = size.height() / 2;
+	qreal const stickCenter = size.width() / 2 - touchRegionRadius;
+	// (0,0) in sensor coordinates is sensor`s center
+	QPointF const ellipseCenter = QPointF(stickCenter * cos(rotation), stickCenter * sin(rotation));
+	sensorPath.addEllipse(position + ellipseCenter, touchRegionRadius, touchRegionRadius);
 
-	QSizeF const size =  mModel.robotModel().sensorPath(port, sensorPos).size();
-
-	QPointF ellipse = QPointF(size.width() / 2 * cos(sensorRotated / 180 * 3.14), size.width() / 2 * sin(sensorRotated / 180 * 3.14));
-	sensorPath.addEllipse(sensorPos + ellipse, size.height() / 2, size.height() / 2);
-
-	bool const res = mModel.worldModel().checkCollision(sensorPath);
-
-	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
+	bool const pressed = mModel.worldModel().checkCollision(sensorPath);
+	return pressed ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
 
 int TwoDModelEngineApi::readSonarSensor(PortInfo const &port) const
@@ -84,9 +79,9 @@ int TwoDModelEngineApi::spoilSonarReading(int const distance) const
 	return mathUtils::Math::truncateToInterval(0, 255, round(distance + ran));
 }
 
-int TwoDModelEngineApi::readColorSensor(DeviceInfo const &device, PortInfo const &port) const
+int TwoDModelEngineApi::readColorSensor(PortInfo const &port) const
 {
-	QImage const image = printColorSensor(device, port);
+	QImage const image = printColorSensor(port);
 	QHash<uint, int> countsColor;
 
 	uint const *data = reinterpret_cast<uint const *>(image.bits());
@@ -128,15 +123,16 @@ uint TwoDModelEngineApi::spoilColor(uint const color) const
 	return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
 }
 
-QImage TwoDModelEngineApi::printColorSensor(DeviceInfo const &device, PortInfo const &port) const
+QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 {
-	if (mModel.robotModel().configuration().type(port).isNull()) {
+	DeviceInfo const device = mModel.robotModel().configuration().type(port);
+	if (device.isNull()) {
 		return QImage();
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
-	qreal const width =  mConfigurer->sensorImageRect(device).width() / 2.0;
+	qreal const width = mModel.robotModel().info().sensorImageRect(device).width() / 2.0;
 	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -219,12 +215,12 @@ int TwoDModelEngineApi::readColorNoneSensor(QHash<uint, int> const &countsColor,
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
-int TwoDModelEngineApi::readLightSensor(DeviceInfo const &device, PortInfo const &port) const
+int TwoDModelEngineApi::readLightSensor(PortInfo const &port) const
 {
 	// Must return 1023 on white and 0 on black normalized to percents
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
-	QImage const image = printColorSensor(device, port);
+	QImage const image = printColorSensor(port);
 	if (image.isNull()) {
 		return 0;
 	}

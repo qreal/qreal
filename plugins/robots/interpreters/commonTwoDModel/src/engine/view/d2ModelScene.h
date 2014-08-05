@@ -10,8 +10,6 @@
 
 namespace twoDModel {
 
-class Configurer;
-
 namespace items {
 class WallItem;
 class LineItem;
@@ -33,7 +31,6 @@ class D2ModelScene: public graphicsUtils::AbstractScene, public interpreterBase:
 
 public:
 	D2ModelScene(model::Model &model
-			, Configurer const &configurer
 			, graphicsUtils::AbstractView *view
 			, QObject *parent = 0);
 	~D2ModelScene() override;
@@ -118,7 +115,6 @@ private:
 	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos);
 
 	model::Model &mModel;
-	Configurer const &mConfigurer;
 
 	graphicsUtils::GridDrawer mGridDrawer;
 	qreal mWidthOfGrid;

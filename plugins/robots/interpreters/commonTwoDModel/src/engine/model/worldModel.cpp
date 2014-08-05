@@ -1,6 +1,5 @@
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
-#include <QtWidgets/QGraphicsPathItem>
 
 #include "constants.h"
 #include "worldModel.h"
@@ -13,14 +12,15 @@
 using namespace twoDModel;
 using namespace model;
 
+#ifdef D2_MODEL_FRAMES_DEBUG
+#include <QtWidgets/QGraphicsPathItem>
+QGraphicsPathItem *debugPath = nullptr;
+#endif
+
 WorldModel::WorldModel()
 {
 }
 
-QGraphicsPathItem *mWallPath = nullptr;
-QGraphicsPathItem *mRobotPath = nullptr;
-
-/// Measure the distance between robot and wall
 int WorldModel::sonarReading(QPointF const &position, qreal direction) const
 {
 	int maxSonarRangeCms = 255;
@@ -45,7 +45,6 @@ int WorldModel::sonarReading(QPointF const &position, qreal direction) const
 	return currentRangeInCm;
 }
 
-/// Check intersection ray with wall
 bool WorldModel::checkSonarDistance(int const distance, QPointF const &position
 		, qreal const direction, QPainterPath const &wallPath) const
 {
@@ -53,13 +52,11 @@ bool WorldModel::checkSonarDistance(int const distance, QPointF const &position
 	return rayPath.intersects(wallPath);
 }
 
-/// Draw area, which is seen by sensor from 0
 QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, int range) const
 {
 	return sonarScanningRegion(position, 0, range);
 }
 
-/// Draw area, which is seen by sensor
 QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal direction, int range) const
 {
 	qreal const rayWidthDegrees = 10.0;
@@ -74,34 +71,35 @@ QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal dire
 	return sensorPositionTransform.map(rayPath);
 }
 
-/// Check intersection robot with wall
 bool WorldModel::checkCollision(QPainterPath const &path) const
 {
-	delete mWallPath;
-	mWallPath = new QGraphicsPathItem (buildWallPath());
-	mWallPath->setBrush(Qt::red);
-	mWallPath->setPen(QPen(QColor(Qt::blue)));
-	mWallPath->setZValue(100);
+#ifdef D2_MODEL_FRAMES_DEBUG
+	delete debugPath;
+	QPainterPath commonPath = buildWallPath();
+	commonPath.addPath(path);
+	debugPath = new QGraphicsPathItem(commonPath);
+	debugPath->setBrush(Qt::red);
+	debugPath->setPen(QPen(QColor(Qt::blue)));
+	debugPath->setZValue(100);
 
-	delete mRobotPath;
-	mRobotPath = new QGraphicsPathItem (path);
-	mRobotPath->setBrush(Qt::red);
-	mRobotPath->setPen(QPen(QColor(Qt::blue)));
-	mRobotPath->setZValue(100);
+	QGraphicsScene * const scene = mWalls.isEmpty()
+			? (mColorFields.isEmpty() ? nullptr : mColorFields[0]->scene())
+			: mWalls[0]->scene();
+	if (scene) {
+		scene->addItem(debugPath);
+		scene->update();
+	}
+#endif
 
-	if (!mWalls.isEmpty()) {
-		mWalls[0]->scene()->addItem(mWallPath);
-		mWalls[0]->scene()->addItem(mRobotPath);
-		mWalls[0]->scene()->update();
+	for (items::WallItem * const wall : mWalls) {
+		if (wall->path().intersects(path)) {
+			return true;
+		}
 	}
 
-	for (items::WallItem * wall : mWalls)
-		if (wall->path().intersects(path))
-			return true;
 	return false;
 }
 
-/// Returns all walls
 QList<items::WallItem *> const &WorldModel::walls() const
 {
 	return mWalls;
@@ -169,7 +167,6 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
-/// Save world to xml
 QDomElement WorldModel::serialize(QDomDocument &document, QPointF const &topLeftPicture) const
 {
 	QDomElement result = document.createElement("world");

@@ -15,6 +15,6 @@ ColorSensorFull::ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &
 
 void ColorSensorFull::read()
 {
-	int reading = mEngine.readColorSensor(deviceInfo(), port());
+	int reading = mEngine.readColorSensor(port());
 	emit newData(reading);
 }

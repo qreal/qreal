@@ -15,5 +15,5 @@ ColorSensorBlue::ColorSensorBlue(interpreterBase::robotModel::DeviceInfo const &
 
 void ColorSensorBlue::read()
 {
-	emit newData(mEngine.readColorSensor(deviceInfo(), port()));
+	emit newData(mEngine.readColorSensor(port()));
 }

@@ -38,8 +38,6 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 	qreal const averageSpeed = (speed1 + speed2) / 2;
 
 	if (!Math::eq(speed1, speed2)) {
-
-		/// Radius of robot rotation
 		qreal const radius = speed1 * robotHeight / (speed1 - speed2);
 		qreal const averageRadius = radius - robotHeight / 2;
 		qreal angularSpeed = 0;

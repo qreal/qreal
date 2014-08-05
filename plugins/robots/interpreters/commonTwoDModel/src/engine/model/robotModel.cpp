@@ -15,14 +15,14 @@
 #include "physics/simplePhysicsEngine.h"
 #include "physics/realisticPhysicsEngine.h"
 
-using namespace twoDModel::model;
+using namespace twoDModel;
+using namespace model;
 using namespace physics;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
 
-RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel
+RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 		, Settings const &settings
-		, Configurer const * const configurer
 		, QObject *parent)
 	: QObject(parent)
 	, mSettings(settings)
@@ -33,7 +33,6 @@ RobotModel::RobotModel(interpreterBase::robotModel::RobotModelInterface &robotMo
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mPhysicsEngine(nullptr)
-	, mConfigurer(configurer)
 {
 	reinit();
 }
@@ -144,7 +143,7 @@ SensorsConfiguration &RobotModel::configuration()
 	return mSensorsConfiguration;
 }
 
-RobotModelInterface &RobotModel::info()
+robotModel::TwoDRobotModel &RobotModel::info()
 {
 	return mRobotModel;
 }
@@ -177,7 +176,6 @@ QPointF RobotModel::rotationCenter() const
 QPainterPath RobotModel::robotBoundingPath() const
 {
 	QPainterPath path;
-
 	QRectF const boundingRect(QPointF(), QSizeF(robotWidth, robotHeight));
 	path.addRect(boundingRect);
 
@@ -188,28 +186,29 @@ QPainterPath RobotModel::robotBoundingPath() const
 			.rotate(mAngle).translate(translationToZero.x(), translationToZero.y());
 
 	for (PortInfo const &port : mRobotModel.configurablePorts()){
-		QPointF const sensorPos = mSensorsConfiguration.position(port);
-		QPainterPath tempSensorPath;
-		tempSensorPath.addRect(sensorPath(port, sensorPos));
-		QTransform const transformSensor = QTransform()
-				.translate(sensorPos.x(), sensorPos.y())
-				.rotate(mSensorsConfiguration.direction(port))
-				.translate(-sensorPos.x(), -sensorPos.y());
-		path.addPath(transformSensor.map(tempSensorPath));
+		if (!mSensorsConfiguration.type(port).isNull()) {
+			QPointF const sensorPos = mSensorsConfiguration.position(port);
+			QPainterPath tempSensorPath;
+			tempSensorPath.addRect(sensorRect(port, sensorPos));
+			QTransform const transformSensor = QTransform()
+					.translate(sensorPos.x(), sensorPos.y())        // /\  And going back again
+					.rotate(mSensorsConfiguration.direction(port))  // ||  Then rotating
+					.translate(-sensorPos.x(), -sensorPos.y());     // ||  First translating to zero
+			path.addPath(transformSensor.map(tempSensorPath));
+		}
 	}
 
 	return transform.map(path);
 }
 
-QRectF RobotModel::sensorPath(PortInfo const &port, QPointF const sensorPos) const
+QRectF RobotModel::sensorRect(PortInfo const &port, QPointF const sensorPos) const
 {
 	if (!mSensorsConfiguration.type(port).isNull()) {
-		QSizeF const size = mConfigurer->sensorImageRect(mSensorsConfiguration.type(port)).size();
-		QRectF sensorRect = QRectF(sensorPos - QPointF(size.width() / 2, size.height() / 2), size);
-		return sensorRect;
+		QSizeF const size = mRobotModel.sensorImageRect(mSensorsConfiguration.type(port)).size();
+		return QRectF(sensorPos - QPointF(size.width() / 2, size.height() / 2), size);
 	}
-	return QRectF();
 
+	return QRectF();
 }
 
 void RobotModel::nextStep()

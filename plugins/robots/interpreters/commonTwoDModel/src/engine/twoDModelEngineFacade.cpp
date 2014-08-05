@@ -6,16 +6,15 @@
 
 using namespace twoDModel::engine;
 
-TwoDModelEngineFacade::TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel
-		, Configurer const * const configurer)
+TwoDModelEngineFacade::TwoDModelEngineFacade(robotModel::TwoDRobotModel &robotModel)
 	: mRobotModelName(robotModel.name())
 	, mTwoDModelActionInfo(
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 			, "interpreters"
 			, "tools")
-	, mModel(new model::Model(robotModel, configurer))
-	, mView(new view::D2ModelWidget(*mModel.data(), configurer))
-	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data(), configurer))
+	, mModel(new model::Model(robotModel))
+	, mView(new view::D2ModelWidget(*mModel.data()))
+	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
 {
 	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &view::D2ModelWidget::init);
 

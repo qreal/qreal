@@ -145,34 +145,11 @@ QPainterPath WallItem::path() const
 
 void WallItem::recalculateBorders()
 {
-	qreal const x1 = begin().x();
-	qreal const x2 = end().x();
-	qreal const y1 = begin().y();
-	qreal const y2 = end().y();
-
-	qreal dx = x2 - x1;
-	qreal dy = y2 - y1;
-	qreal const len = sqrt(dx * dx + dy * dy);
-	dx /= len;
-	dy /= len;
-	dx *= 5;
-	dy *= 5;
-
-	QVector2D norm(y1 - y2, x2 - x1);
-	norm.normalize();
-	norm *= mPen.widthF() / 2;
-
-	QPointF const point1(x1 - wallWidth - dx + norm.x(), y1 - dy + norm.y());
-	QPointF const point2(x1 + wallWidth - dx - norm.x(), y1 - dy - norm.y());
-	QPointF const point3(x2 + wallWidth + dx - norm.x(), y2 + dy - norm.y());
-	QPointF const point4(x2 - wallWidth + dx + norm.x(), y2 + dy + norm.y());
-
 	QPainterPath wallPath;
-	wallPath.moveTo(point1);
-	wallPath.lineTo(point2);
-	wallPath.lineTo(point3);
-	wallPath.lineTo(point4);
-	wallPath.lineTo(point1);
+	wallPath.moveTo(begin());
+	wallPath.lineTo(end());
 
-	mPath = wallPath;
+	QPainterPathStroker stroker;
+	stroker.setWidth(wallWidth * 3 / 2);
+	mPath = stroker.createStroke(wallPath);
 }

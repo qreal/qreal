@@ -14,7 +14,6 @@ TRANSLATIONS = commonTwoDModel_ru.ts
 
 HEADERS += \
 	$$PWD/include/commonTwoDModel/commonTwoDModelDeclSpec.h \
-	$$PWD/include/commonTwoDModel/engine/configurer.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelControlInterface.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelDisplayInterface.h \
 	$$PWD/include/commonTwoDModel/engine/twoDModelDisplayWidget.h \

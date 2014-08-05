@@ -26,8 +26,7 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Devices
 	Q_OBJECT
 
 public:
-	/// Takes ownership on configurer.
-	D2ModelWidget(model::Model &model, Configurer const * const configurer, QWidget *parent = 0);
+	explicit D2ModelWidget(model::Model &model, QWidget *parent = 0);
 	~D2ModelWidget();
 
 	void init();
@@ -185,8 +184,6 @@ private:
 	bool mFirstShow = true;
 
 	RobotState mInitialRobotBeforeRun;
-
-	QScopedPointer<Configurer const> mConfigurer;
 };
 
 }
