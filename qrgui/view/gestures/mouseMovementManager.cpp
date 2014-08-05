@@ -44,7 +44,7 @@ void MouseMovementManager::drawIdealPath()
 	Id const currentElement = mGesturesPaintMan->currentElement();
 	if (mEditorManagerInterface.elements(mDiagram).contains(currentElement)) {
 		QString const paths = mEditorManagerInterface.mouseGesture(currentElement);
-		mGesturesPaintMan->draw(stringToPath(paths));
+		mGesturesPaintMan->draw(paths);
 	}
 }
 

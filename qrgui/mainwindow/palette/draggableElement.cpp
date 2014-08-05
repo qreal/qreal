@@ -4,7 +4,6 @@
 #include <QtGui/QMouseEvent>
 #include <QtCore/QtAlgorithms>
 #include <QtWidgets/QVBoxLayout>
-
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/definitions.h>
 
@@ -36,6 +35,16 @@ DraggableElement::DraggableElement(
 	mLabel = new QLabel(this);
 	mLabel->setPixmap(mData.icon().pixmap(size - 2, size - 2));
 	layout->addWidget(mLabel);
+
+	if (!iconsOnly) {
+	mLabelGesture = new QLabel(this);
+	mLabelGesture->setPixmap(mData.gesture().pixmap(18, 18));
+	mLabelGesture->setFrameShadow(QFrame::Plain);
+	mLabelGesture->setFrameShape(QFrame::NoFrame);
+	mLabelGesture->setFixedHeight(20);
+	layout->addWidget(mLabelGesture);
+	}
+
 	if (!iconsOnly) {
 		QLabel *text = new QLabel(this);
 		text->setText(mData.name());
@@ -52,6 +61,12 @@ DraggableElement::DraggableElement(
 	setCursor(Qt::OpenHandCursor);
 
 	setAttribute(Qt::WA_AcceptTouchEvents);
+}
+
+
+QIcon DraggableElement::gesture() const
+{
+	return mData.gesture();
 }
 
 QIcon DraggableElement::icon() const

@@ -2,6 +2,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QList>
+#include <QtCore/QString>
 
 #include <qrkernel/ids.h>
 
@@ -17,7 +18,8 @@ public:
 	virtual qReal::Id currentElement() const = 0;
 
 	/// Draws specified gesture
-	virtual void draw(PathVector const &paths) = 0;
+	virtual void draw(QString const &paths) = 0;
+	//virtual void draw(PathVector const &paths) = 0;
 
 	/// Prepares given elements set for gestures drawing
 	/// @param elements A list of elements to prepare. First item is

@@ -1,5 +1,8 @@
 #include "paletteElement.h"
 
+#include <dialogs/gesturesShow/gesturePainter.h>
+#include <pluginManager/editorManagerInterface.h>
+
 using namespace qReal;
 using namespace gui;
 
@@ -26,6 +29,9 @@ PaletteElement::PaletteElement(EditorManagerInterface const &manager, Id const &
 	, mPreferredSize(manager.iconSize(element))
 	, mExplosionTarget()
 {
+	GesturePainter *paint = new GesturePainter(manager.mouseGesture(element), Qt::white, Qt::blue, 18);
+	mGesture = paint->pixmap(QSize(18, 18), QIcon::Mode::Normal, QIcon::State::Off);
+	delete paint;
 }
 
 Id PaletteElement::id() const
@@ -46,6 +52,11 @@ QString PaletteElement::description() const
 QIcon PaletteElement::icon() const
 {
 	return mIcon;
+}
+
+QIcon PaletteElement::gesture() const
+{
+	return mGesture;
 }
 
 QSize PaletteElement::preferredSize() const
