@@ -18,12 +18,12 @@ QString const &ParserError::errorMessage() const
 	return mErrorMessage;
 }
 
-ParserError::ErrorType ParserError::errorType() const
+ErrorType ParserError::errorType() const
 {
 	return mErrorType;
 }
 
-ParserError::Severity ParserError::severity() const
+Severity ParserError::severity() const
 {
 	return mSeverity;
 }

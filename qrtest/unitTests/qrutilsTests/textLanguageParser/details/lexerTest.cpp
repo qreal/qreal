@@ -7,7 +7,7 @@ using namespace qrTest;
 
 void LexerTest::SetUp()
 {
-	mLexemes.reset(new Lexemes());
+	mLexemes.reset(new TokenPatterns());
 	mLexer.reset(new textLanguageParser::details::Lexer(*mLexemes));
 }
 
@@ -20,8 +20,8 @@ TEST_F(LexerTest, tokenizeSanityCheck)
 	EXPECT_TRUE(result.comments.isEmpty());
 	EXPECT_TRUE(result.errors.isEmpty());
 	ASSERT_EQ(2, result.tokens.size());
-	EXPECT_EQ(Lexemes::integerLiteral, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::identifier, result.tokens[1].lexeme());
+	EXPECT_EQ(TokenType::integerLiteral, result.tokens[0].token());
+	EXPECT_EQ(TokenType::identifier, result.tokens[1].token());
 }
 
 TEST_F(LexerTest, connections)
@@ -44,7 +44,7 @@ TEST_F(LexerTest, connections)
 
 TEST_F(LexerTest, customization)
 {
-	mLexemes->redefine(Lexemes::integerLiteral, QRegularExpression("[+-]?\\d+x"));
+	mLexemes->redefine(TokenType::integerLiteral, QRegularExpression("[+-]?\\d+x"));
 	mLexer.reset(new textLanguageParser::details::Lexer(*mLexemes));
 
 	QString const stream = "+12x 45x";
@@ -53,11 +53,11 @@ TEST_F(LexerTest, customization)
 
 	ASSERT_EQ(2, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::integerLiteral, result.tokens[0].lexeme());
+	EXPECT_EQ(TokenType::integerLiteral, result.tokens[0].token());
 	EXPECT_EQ(0, result.tokens[0].range().start().absolutePosition());
 	EXPECT_EQ(3, result.tokens[0].range().end().absolutePosition());
 
-	EXPECT_EQ(Lexemes::integerLiteral, result.tokens[1].lexeme());
+	EXPECT_EQ(TokenType::integerLiteral, result.tokens[1].token());
 	EXPECT_EQ(5, result.tokens[1].range().start().absolutePosition());
 	EXPECT_EQ(7, result.tokens[1].range().end().absolutePosition());
 }
@@ -70,11 +70,11 @@ TEST_F(LexerTest, keywords)
 
 	ASSERT_EQ(5, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::andKeyword, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::identifier, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::identifier, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::plus, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::breakKeyword, result.tokens[4].lexeme());
+	EXPECT_EQ(TokenType::andKeyword, result.tokens[0].token());
+	EXPECT_EQ(TokenType::identifier, result.tokens[1].token());
+	EXPECT_EQ(TokenType::identifier, result.tokens[2].token());
+	EXPECT_EQ(TokenType::plus, result.tokens[3].token());
+	EXPECT_EQ(TokenType::breakKeyword, result.tokens[4].token());
 }
 
 TEST_F(LexerTest, lexemeTypes)
@@ -85,87 +85,87 @@ TEST_F(LexerTest, lexemeTypes)
 	auto result = mLexer->tokenize(stream);
 	ASSERT_EQ(23, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::andKeyword, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::breakKeyword, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::doKeyword, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::elseKeyword, result.tokens[4].lexeme());
-	EXPECT_EQ(Lexemes::elseifKeyword, result.tokens[5].lexeme());
-	EXPECT_EQ(Lexemes::endKeyword, result.tokens[6].lexeme());
-	EXPECT_EQ(Lexemes::falseKeyword, result.tokens[7].lexeme());
-	EXPECT_EQ(Lexemes::forKeyword, result.tokens[8].lexeme());
-	EXPECT_EQ(Lexemes::functionKeyword, result.tokens[9].lexeme());
-	EXPECT_EQ(Lexemes::gotoKeyword, result.tokens[10].lexeme());
-	EXPECT_EQ(Lexemes::ifKeyword, result.tokens[11].lexeme());
-	EXPECT_EQ(Lexemes::inKeyword, result.tokens[12].lexeme());
-	EXPECT_EQ(Lexemes::localKeyword, result.tokens[13].lexeme());
-	EXPECT_EQ(Lexemes::nilKeyword, result.tokens[14].lexeme());
-	EXPECT_EQ(Lexemes::notKeyword, result.tokens[15].lexeme());
-	EXPECT_EQ(Lexemes::orKeyword, result.tokens[16].lexeme());
-	EXPECT_EQ(Lexemes::repeatKeyword, result.tokens[17].lexeme());
-	EXPECT_EQ(Lexemes::returnKeyword, result.tokens[18].lexeme());
-	EXPECT_EQ(Lexemes::thenKeyword, result.tokens[19].lexeme());
-	EXPECT_EQ(Lexemes::trueKeyword, result.tokens[20].lexeme());
-	EXPECT_EQ(Lexemes::untilKeyword, result.tokens[21].lexeme());
-	EXPECT_EQ(Lexemes::whileKeyword, result.tokens[22].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[0].token());
+	EXPECT_EQ(TokenType::andKeyword, result.tokens[1].token());
+	EXPECT_EQ(TokenType::breakKeyword, result.tokens[2].token());
+	EXPECT_EQ(TokenType::doKeyword, result.tokens[3].token());
+	EXPECT_EQ(TokenType::elseKeyword, result.tokens[4].token());
+	EXPECT_EQ(TokenType::elseifKeyword, result.tokens[5].token());
+	EXPECT_EQ(TokenType::endKeyword, result.tokens[6].token());
+	EXPECT_EQ(TokenType::falseKeyword, result.tokens[7].token());
+	EXPECT_EQ(TokenType::forKeyword, result.tokens[8].token());
+	EXPECT_EQ(TokenType::functionKeyword, result.tokens[9].token());
+	EXPECT_EQ(TokenType::gotoKeyword, result.tokens[10].token());
+	EXPECT_EQ(TokenType::ifKeyword, result.tokens[11].token());
+	EXPECT_EQ(TokenType::inKeyword, result.tokens[12].token());
+	EXPECT_EQ(TokenType::localKeyword, result.tokens[13].token());
+	EXPECT_EQ(TokenType::nilKeyword, result.tokens[14].token());
+	EXPECT_EQ(TokenType::notKeyword, result.tokens[15].token());
+	EXPECT_EQ(TokenType::orKeyword, result.tokens[16].token());
+	EXPECT_EQ(TokenType::repeatKeyword, result.tokens[17].token());
+	EXPECT_EQ(TokenType::returnKeyword, result.tokens[18].token());
+	EXPECT_EQ(TokenType::thenKeyword, result.tokens[19].token());
+	EXPECT_EQ(TokenType::trueKeyword, result.tokens[20].token());
+	EXPECT_EQ(TokenType::untilKeyword, result.tokens[21].token());
+	EXPECT_EQ(TokenType::whileKeyword, result.tokens[22].token());
 
 	stream = "+ - * / % ^ #";
 	result = mLexer->tokenize(stream);
 	ASSERT_EQ(7, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::plus, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::minus, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::asterick, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::slash, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::percent, result.tokens[4].lexeme());
-	EXPECT_EQ(Lexemes::hat, result.tokens[5].lexeme());
-	EXPECT_EQ(Lexemes::sharp, result.tokens[6].lexeme());
+	EXPECT_EQ(TokenType::plus, result.tokens[0].token());
+	EXPECT_EQ(TokenType::minus, result.tokens[1].token());
+	EXPECT_EQ(TokenType::asterick, result.tokens[2].token());
+	EXPECT_EQ(TokenType::slash, result.tokens[3].token());
+	EXPECT_EQ(TokenType::percent, result.tokens[4].token());
+	EXPECT_EQ(TokenType::hat, result.tokens[5].token());
+	EXPECT_EQ(TokenType::sharp, result.tokens[6].token());
 
 	stream = "& ~ | << >> //";
 	result = mLexer->tokenize(stream);
 	ASSERT_EQ(6, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::ampersand, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::tilda, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::verticalLine, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::doubleLess, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::doubleGreater, result.tokens[4].lexeme());
-	EXPECT_EQ(Lexemes::doubleSlash, result.tokens[5].lexeme());
+	EXPECT_EQ(TokenType::ampersand, result.tokens[0].token());
+	EXPECT_EQ(TokenType::tilda, result.tokens[1].token());
+	EXPECT_EQ(TokenType::verticalLine, result.tokens[2].token());
+	EXPECT_EQ(TokenType::doubleLess, result.tokens[3].token());
+	EXPECT_EQ(TokenType::doubleGreater, result.tokens[4].token());
+	EXPECT_EQ(TokenType::doubleSlash, result.tokens[5].token());
 
 	stream = "== ~= <= >= < > =";
 	result = mLexer->tokenize(stream);
 	ASSERT_EQ(7, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::doubleEquals, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::tildaEquals, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::lessEquals, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::greaterEquals, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::less, result.tokens[4].lexeme());
-	EXPECT_EQ(Lexemes::greater, result.tokens[5].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[6].lexeme());
+	EXPECT_EQ(TokenType::doubleEquals, result.tokens[0].token());
+	EXPECT_EQ(TokenType::tildaEquals, result.tokens[1].token());
+	EXPECT_EQ(TokenType::lessEquals, result.tokens[2].token());
+	EXPECT_EQ(TokenType::greaterEquals, result.tokens[3].token());
+	EXPECT_EQ(TokenType::less, result.tokens[4].token());
+	EXPECT_EQ(TokenType::greater, result.tokens[5].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[6].token());
 
 	stream = "( ) { } [ ] ::";
 	result = mLexer->tokenize(stream);
 	ASSERT_EQ(7, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::openingBracket, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::closingBracket, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::openingCurlyBracket, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::closingCurlyBracket, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::openingSquareBracket, result.tokens[4].lexeme());
-	EXPECT_EQ(Lexemes::closingSquareBracket, result.tokens[5].lexeme());
-	EXPECT_EQ(Lexemes::doubleColon, result.tokens[6].lexeme());
+	EXPECT_EQ(TokenType::openingBracket, result.tokens[0].token());
+	EXPECT_EQ(TokenType::closingBracket, result.tokens[1].token());
+	EXPECT_EQ(TokenType::openingCurlyBracket, result.tokens[2].token());
+	EXPECT_EQ(TokenType::closingCurlyBracket, result.tokens[3].token());
+	EXPECT_EQ(TokenType::openingSquareBracket, result.tokens[4].token());
+	EXPECT_EQ(TokenType::closingSquareBracket, result.tokens[5].token());
+	EXPECT_EQ(TokenType::doubleColon, result.tokens[6].token());
 
 	stream = "; : , . .. ...";
 	result = mLexer->tokenize(stream);
 	ASSERT_EQ(6, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::semicolon, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::colon, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::comma, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::dot, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::doubleDot, result.tokens[4].lexeme());
-	EXPECT_EQ(Lexemes::tripleDot, result.tokens[5].lexeme());
+	EXPECT_EQ(TokenType::semicolon, result.tokens[0].token());
+	EXPECT_EQ(TokenType::colon, result.tokens[1].token());
+	EXPECT_EQ(TokenType::comma, result.tokens[2].token());
+	EXPECT_EQ(TokenType::dot, result.tokens[3].token());
+	EXPECT_EQ(TokenType::doubleDot, result.tokens[4].token());
+	EXPECT_EQ(TokenType::tripleDot, result.tokens[5].token());
 }
 
 TEST_F(LexerTest, errorReporting)
@@ -177,18 +177,18 @@ TEST_F(LexerTest, errorReporting)
 	ASSERT_EQ(2, result.tokens.size());
 	ASSERT_EQ(2, result.errors.size());
 
-	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::nilKeyword, result.tokens[1].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[0].token());
+	EXPECT_EQ(TokenType::nilKeyword, result.tokens[1].token());
 
 	EXPECT_EQ(QString("Lexer error"), result.errors[0].errorMessage());
 	EXPECT_EQ(ast::Connection(6, 0, 6), result.errors[0].connection());
-	EXPECT_EQ(ParserError::ErrorType::lexicalError, result.errors[0].errorType());
-	EXPECT_EQ(ParserError::Severity::error, result.errors[0].severity());
+	EXPECT_EQ(ErrorType::lexicalError, result.errors[0].errorType());
+	EXPECT_EQ(Severity::error, result.errors[0].severity());
 
 	EXPECT_EQ(QString("Lexer error"), result.errors[1].errorMessage());
 	EXPECT_EQ(ast::Connection(10, 0, 10), result.errors[1].connection());
-	EXPECT_EQ(ParserError::ErrorType::lexicalError, result.errors[1].errorType());
-	EXPECT_EQ(ParserError::Severity::error, result.errors[1].severity());
+	EXPECT_EQ(ErrorType::lexicalError, result.errors[1].errorType());
+	EXPECT_EQ(Severity::error, result.errors[1].severity());
 
 	EXPECT_EQ(14, result.tokens[1].range().start().absolutePosition());
 }
@@ -202,25 +202,25 @@ TEST_F(LexerTest, multilineErrorReporting)
 	ASSERT_EQ(2, result.tokens.size());
 	ASSERT_EQ(2, result.errors.size());
 
-	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::nilKeyword, result.tokens[1].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[0].token());
+	EXPECT_EQ(TokenType::nilKeyword, result.tokens[1].token());
 
 	EXPECT_EQ(QString("Lexer error"), result.errors[0].errorMessage());
 	EXPECT_EQ(ast::Connection(6, 0, 6), result.errors[0].connection());
-	EXPECT_EQ(ParserError::ErrorType::lexicalError, result.errors[0].errorType());
-	EXPECT_EQ(ParserError::Severity::error, result.errors[0].severity());
+	EXPECT_EQ(ErrorType::lexicalError, result.errors[0].errorType());
+	EXPECT_EQ(Severity::error, result.errors[0].severity());
 
 	EXPECT_EQ(QString("Lexer error"), result.errors[1].errorMessage());
 	EXPECT_EQ(ast::Connection(11, 1, 1), result.errors[1].connection());
-	EXPECT_EQ(ParserError::ErrorType::lexicalError, result.errors[1].errorType());
-	EXPECT_EQ(ParserError::Severity::error, result.errors[1].severity());
+	EXPECT_EQ(ErrorType::lexicalError, result.errors[1].errorType());
+	EXPECT_EQ(Severity::error, result.errors[1].severity());
 
 	EXPECT_EQ(15, result.tokens[1].range().start().absolutePosition());
 }
 
 TEST_F(LexerTest, unicode)
 {
-	mLexemes->redefine(Lexemes::identifier, QRegularExpression("[а-яА-Я_][а-яА-Я_1-9]+"));
+	mLexemes->redefine(TokenType::identifier, QRegularExpression("[а-яА-Я_][а-яА-Я_1-9]+"));
 	mLexer.reset(new textLanguageParser::details::Lexer(*mLexemes));
 
 	QString const stream = "ололо русский\n язык";
@@ -248,7 +248,7 @@ TEST_F(LexerTest, numericLiterals)
 	ASSERT_EQ(4, result.tokens.size());
 
 	for (auto token : result.tokens) {
-		EXPECT_EQ(Lexemes::integerLiteral, token.lexeme());
+		EXPECT_EQ(TokenType::integerLiteral, token.token());
 	}
 
 	stream = "3.0     3.1416     314.16e-2     0.31416E1     34e1\n"
@@ -259,7 +259,7 @@ TEST_F(LexerTest, numericLiterals)
 	ASSERT_EQ(8, result.tokens.size());
 
 	for (auto token : result.tokens) {
-		EXPECT_EQ(Lexemes::floatLiteral, token.lexeme());
+		EXPECT_EQ(TokenType::floatLiteral, token.token());
 	}
 }
 
@@ -274,30 +274,30 @@ TEST_F(LexerTest, strings)
 
 	ASSERT_EQ(9, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::string, result.tokens[2].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[0].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[1].token());
+	EXPECT_EQ(TokenType::string, result.tokens[2].token());
 
-	EXPECT_EQ(Lexemes::identifier, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[4].lexeme());
-	EXPECT_EQ(Lexemes::string, result.tokens[5].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[3].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[4].token());
+	EXPECT_EQ(TokenType::string, result.tokens[5].token());
 
-	EXPECT_EQ(Lexemes::identifier, result.tokens[6].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[7].lexeme());
-	EXPECT_EQ(Lexemes::string, result.tokens[8].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[6].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[7].token());
+	EXPECT_EQ(TokenType::string, result.tokens[8].token());
 
 	stream = " x = \"asd\\\" sd\" y = 'asd'";
 	result = mLexer->tokenize(stream);
 
 	ASSERT_EQ(6, result.tokens.size());
 
-	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::string, result.tokens[2].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[0].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[1].token());
+	EXPECT_EQ(TokenType::string, result.tokens[2].token());
 
-	EXPECT_EQ(Lexemes::identifier, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[4].lexeme());
-	EXPECT_EQ(Lexemes::string, result.tokens[5].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[3].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[4].token());
+	EXPECT_EQ(TokenType::string, result.tokens[5].token());
 
 	EXPECT_EQ(ast::Connection(5, 0, 5), result.tokens[2].range().start());
 	EXPECT_EQ(ast::Connection(14, 0, 14), result.tokens[2].range().end());
@@ -306,10 +306,10 @@ TEST_F(LexerTest, strings)
 	result = mLexer->tokenize(stream);
 
 	ASSERT_EQ(4, result.tokens.size());
-	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::string, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::endKeyword, result.tokens[3].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[0].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[1].token());
+	EXPECT_EQ(TokenType::string, result.tokens[2].token());
+	EXPECT_EQ(TokenType::endKeyword, result.tokens[3].token());
 
 	EXPECT_EQ(ast::Connection(5, 0, 5), result.tokens[2].range().start());
 	EXPECT_EQ(ast::Connection(12, 1, 2), result.tokens[2].range().end());
@@ -321,10 +321,10 @@ TEST_F(LexerTest, strings)
 	result = mLexer->tokenize(stream);
 
 	ASSERT_EQ(4, result.tokens.size());
-	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::string, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::endKeyword, result.tokens[3].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[0].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[1].token());
+	EXPECT_EQ(TokenType::string, result.tokens[2].token());
+	EXPECT_EQ(TokenType::endKeyword, result.tokens[3].token());
 
 	EXPECT_EQ(ast::Connection(5, 0, 5), result.tokens[2].range().start());
 	EXPECT_EQ(ast::Connection(15, 2, 2), result.tokens[2].range().end());
@@ -346,13 +346,13 @@ TEST_F(LexerTest, comments)
 	ASSERT_EQ(7, result.tokens.size());
 	ASSERT_EQ(3, result.comments.size());
 
-	EXPECT_EQ(Lexemes::identifier, result.tokens[0].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[1].lexeme());
-	EXPECT_EQ(Lexemes::integerLiteral, result.tokens[2].lexeme());
-	EXPECT_EQ(Lexemes::identifier, result.tokens[3].lexeme());
-	EXPECT_EQ(Lexemes::equals, result.tokens[4].lexeme());
-	EXPECT_EQ(Lexemes::string, result.tokens[5].lexeme());
-	EXPECT_EQ(Lexemes::endKeyword, result.tokens[6].lexeme());
+	EXPECT_EQ(TokenType::identifier, result.tokens[0].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[1].token());
+	EXPECT_EQ(TokenType::integerLiteral, result.tokens[2].token());
+	EXPECT_EQ(TokenType::identifier, result.tokens[3].token());
+	EXPECT_EQ(TokenType::equals, result.tokens[4].token());
+	EXPECT_EQ(TokenType::string, result.tokens[5].token());
+	EXPECT_EQ(TokenType::endKeyword, result.tokens[6].token());
 
 	EXPECT_EQ(ast::Connection(6, 0, 6), result.comments[0].range().start());
 	EXPECT_EQ(ast::Connection(12, 0, 12), result.comments[0].range().end());

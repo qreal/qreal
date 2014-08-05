@@ -6,25 +6,25 @@
 
 #include "textLanguageParser/details/token.h"
 #include "textLanguageParser/parserError.h"
-#include "textLanguageParser/lexemes.h"
+#include "textLanguageParser/tokenPatterns.h"
 
 namespace textLanguageParser {
 namespace details {
 
-/// Configurable lexer of something like Lua 5.3 based on regular expressions. Takes lexemes description, provides
+/// Configurable lexer of something like Lua 5.3 based on regular expressions. Takes token patterns, provides
 /// a list of tokens by given input string, list of lexer errors and a separate list of comments. Allows Unicode input
 /// and lexeme definitions.
-/// Requires that lexeme redefinitions are not insane, for example, keywords shall match the definition of identifiers.
+/// Requires that token redefinitions are sane, for example, keywords shall match the definition of identifiers.
 /// Does syntax check on passed regexps (and reports errors as InternalError error type), but does not check whole set
-/// of lexemes for consistensy. Lexeme match order is arbitrary, so there shall be no ambiquities in lexeme definitions
-/// (except between keywords and identifiers, keywords are processed separately). Does not add whitespaces and newlines
-/// to output token stream, but does use them for connection and error recovery, so it is recommended to not fiddle with
-/// them much.
+/// of patterns for consistensy. Pattern match order is arbitrary, so there shall be no ambiquities in pattern
+///  definitions (except between keywords and identifiers, keywords are processed separately). Does not add whitespaces
+/// and newlines to output token stream, but does use them for connection and error recovery, so it is recommended to
+/// not fiddle with them much.
 /// In case of error skips symbols until next whitespace or newline and reports error.
-/// Can be quite slow due to use of regexp matching with every regexp in lexemes description, so do not use this lexer
+/// Can be quite slow due to use of regexp matching with every regexp in patterns list, so do not use this lexer
 /// on really large files.
 ///
-/// Now lexer (with default lexemes definition) follows Lua 5.3 specification with following exceptions:
+/// Now lexer (with default token patterns) follows Lua 5.3 specification with following exceptions:
 /// - long brackets are not supported, either for string literals or for comments.
 class Lexer {
 public:
@@ -41,16 +41,26 @@ public:
 	};
 
 	/// Constructor.
-	/// @param lexemes - lexemes definition object.
-	explicit Lexer(Lexemes const &lexemes);
+	/// @param patterns - object containing token patterns.
+	explicit Lexer(TokenPatterns const &patterns);
 
 	/// Tokenizes input string, returns list of detected tokens, list of errors and separate list of comments.
 	Result tokenize(QString const &input);
 
 private:
-	Lexemes::Type checkForKeyword(QString const &identifier) const;
+	struct CandidateMatch {
+		TokenType candidate;
+		QRegularExpressionMatch match;
+	};
 
-	Lexemes const mLexemes;
+	TokenType checkForKeyword(QString const &identifier) const;
+	CandidateMatch findBestMatch(const QString &input, int const absolutePosition) const;
+
+	TokenPatterns const mPatterns;
+	QRegularExpression mWhitespaceRegexp;
+	QRegularExpression mNewLineRegexp;
+
+	QList<ParserError> mPatternsErrors;
 };
 
 }

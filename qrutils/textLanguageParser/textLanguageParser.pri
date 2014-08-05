@@ -1,8 +1,9 @@
 HEADERS += \
-	$$PWD/lexemes.h \
+	$$PWD/tokenPatterns.h \
 	$$PWD/parserError.h \
 	$$PWD/textLanguageParser.h \
 	$$PWD/textLanguageParserInterface.h \
+	$$PWD/tokenType.h \
 	$$PWD/ast/connection.h \
 	$$PWD/ast/node.h \
 	$$PWD/ast/range.h \
@@ -10,7 +11,7 @@ HEADERS += \
 	$$PWD/details/token.h  \
 
 SOURCES += \
-	$$PWD/lexemes.cpp \
+	$$PWD/tokenPatterns.cpp \
 	$$PWD/parserError.cpp \
 	$$PWD/textLanguageParser.cpp \
 	$$PWD/ast/connection.cpp \

@@ -8,25 +8,25 @@
 
 namespace textLanguageParser {
 
+/// Component that detected an error.
+enum class ErrorType {
+	lexicalError
+	, syntaxError
+	, semanticError
+};
+
+/// Severity of a error. Internal error means that there is a coding error somewhere in text language implementation
+/// and is not supposed to be shown to user.
+enum class Severity {
+	internalError
+	, warning
+	, error
+	, critical
+};
+
 /// Represents various errors in text language processing module.
 class ParserError {
 public:
-	/// Component that detected an error.
-	enum ErrorType {
-		lexicalError
-		, syntaxError
-		, semanticError
-	};
-
-	/// Severity of a error. Internal error means that there is a coding error somewhere in text language implementation
-	/// and is not supposed to be shown to user.
-	enum Severity {
-		internalError
-		, warning
-		, error
-		, critical
-	};
-
 	/// Constructor.
 	/// @param connection - point in code where an error was detected.
 	/// @param errorMessage - textual description of an error.

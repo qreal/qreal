@@ -14,7 +14,7 @@ protected:
 	void SetUp() override;
 
 	QScopedPointer<textLanguageParser::details::Lexer> mLexer;
-	QScopedPointer<textLanguageParser::Lexemes> mLexemes;
+	QScopedPointer<textLanguageParser::TokenPatterns> mLexemes;
 };
 
 }

@@ -3,14 +3,14 @@
 using namespace textLanguageParser;
 using namespace textLanguageParser::details;
 
-Token::Token(Lexemes::Type lexeme, ast::Range const &range, QString const &token)
-	: mLexeme(lexeme), mRange(range), mToken(token)
+Token::Token(TokenType tokenType, ast::Range const &range, QString const &lexeme)
+	: mToken(tokenType), mRange(range), mLexeme(lexeme)
 {
 }
 
-Lexemes::Type Token::lexeme() const
+TokenType Token::token() const
 {
-	return mLexeme;
+	return mToken;
 }
 
 ast::Range const &Token::range() const
@@ -18,7 +18,7 @@ ast::Range const &Token::range() const
 	return mRange;
 }
 
-QString const &Token::token() const
+QString const &Token::lexeme() const
 {
-	return mToken;
+	return mLexeme;
 }

@@ -5,35 +5,32 @@
 using namespace textLanguageParser;
 using namespace textLanguageParser::details;
 
-Lexer::Lexer(Lexemes const &lexemes)
-	: mLexemes(lexemes)
+Lexer::Lexer(TokenPatterns const &patterns)
+	: mPatterns(patterns)
 {
+	// Doing syntax check of lexeme regexps and searching for whitespace and newline definitions, they will be needed
+	// later for error recovery.
+	for (TokenType const tokenType : mPatterns.allPatterns()) {
+		QRegularExpression const &regExp = mPatterns.tokenPattern(tokenType);
+		if (!regExp.isValid()) {
+			qDebug() << "Invalid regexp: " + regExp.pattern();
+			mPatternsErrors << ParserError(ast::Connection(), "Invalid regexp: " + regExp.pattern()
+					, ErrorType::lexicalError, Severity::internalError);
+		} else {
+			if (tokenType == TokenType::whitespace) {
+				mWhitespaceRegexp = regExp;
+			} else if (tokenType == TokenType::newline) {
+				mNewLineRegexp = regExp;
+			}
+		}
+	}
 }
 
 Lexer::Result Lexer::tokenize(QString const &input)
 {
 	Result result;
 
-	// Doing syntax check of lexeme regexps and searching for whitespace and newline definitions, they will be needed
-	// later for error recovery.
-	/// @todo Remove initialization and sanity check to some other place.
-	QRegularExpression whitespaceRegexp;
-	QRegularExpression newLineRegexp;
-
-	for (Lexemes::Type const lexeme : mLexemes.allLexemes()) {
-		QRegularExpression const &regExp = mLexemes.lexemeDefinition(lexeme);
-		if (!regExp.isValid()) {
-			qDebug() << "Invalid regexp: " + regExp.pattern();
-			result.errors << ParserError(ast::Connection(), "Invalid regexp: " + regExp.pattern()
-					, ParserError::lexicalError, ParserError::internalError);
-		} else {
-			if (lexeme == Lexemes::whitespace) {
-				whitespaceRegexp = regExp;
-			} else if (lexeme == Lexemes::newline) {
-				newLineRegexp = regExp;
-			}
-		}
-	}
+	result.errors << mPatternsErrors;
 
 	// Initializing connection.
 	int absolutePosition = 0;
@@ -42,41 +39,25 @@ Lexer::Result Lexer::tokenize(QString const &input)
 
 	// Scanning input string, trying to find longest match with regexp from a list of lexemes.
 	while (absolutePosition < input.length()) {
-		Lexemes::Type candidate = Lexemes::whitespace;
-		QRegularExpressionMatch bestMatch;
+		CandidateMatch bestMatch = findBestMatch(input, absolutePosition);
 
-		for (Lexemes::Type const lexeme : mLexemes.allLexemes()) {
-			QRegularExpression const &regExp = mLexemes.lexemeDefinition(lexeme);
-
-			QRegularExpressionMatch const &match = regExp.match(
-					input
-					, absolutePosition
-					, QRegularExpression::NormalMatch
-					, QRegularExpression::AnchoredMatchOption);
-
-			if (match.hasMatch()) {
-				if (match.capturedLength() > bestMatch.capturedLength()) {
-					bestMatch = match;
-					candidate = lexeme;
-				}
-			}
+		if (bestMatch.candidate != TokenType::whitespace) {
+			qDebug() << "Best match:" << bestMatch.match;
 		}
 
-		if (candidate != Lexemes::whitespace) {
-			qDebug() << "Best match:" << bestMatch;
-		}
-
-		if (bestMatch.hasMatch()) {
+		if (bestMatch.match.hasMatch()) {
 			int tokenEndLine = line;
 			int tokenEndColumn = column;
 
-			if (candidate != Lexemes::whitespace && candidate != Lexemes::newline && candidate != Lexemes::comment)
+			if (bestMatch.candidate != TokenType::whitespace
+					&& bestMatch.candidate != TokenType::newline
+					&& bestMatch.candidate != TokenType::comment)
 			{
 				// Determining connection of the lexeme. String is the only token that can span multiple lines so
 				// special care is needed to maintain connection.
-				if (candidate == Lexemes::string) {
-					QRegularExpressionMatchIterator matchIterator = newLineRegexp.globalMatch(
-							bestMatch.captured());
+				if (bestMatch.candidate == TokenType::string) {
+					QRegularExpressionMatchIterator matchIterator = mNewLineRegexp.globalMatch(
+							bestMatch.match.captured());
 
 					QRegularExpressionMatch match;
 
@@ -88,52 +69,52 @@ Lexer::Result Lexer::tokenize(QString const &input)
 					if (match.hasMatch()) {
 						int relativeLastNewLineOffset = match.capturedEnd() - 1;
 						int absoluteLastNewLineOffset = absolutePosition + relativeLastNewLineOffset;
-						int absoluteTokenEnd = bestMatch.capturedEnd() - 1;
+						int absoluteTokenEnd = bestMatch.match.capturedEnd() - 1;
 						tokenEndColumn = absoluteTokenEnd - absoluteLastNewLineOffset - 1;
 					} else {
-						tokenEndColumn += bestMatch.capturedLength() - 1;
+						tokenEndColumn += bestMatch.match.capturedLength() - 1;
 					}
 				} else {
-					tokenEndColumn += bestMatch.capturedLength() - 1;
+					tokenEndColumn += bestMatch.match.capturedLength() - 1;
 				}
 
-				ast::Range range(bestMatch.capturedStart(), line, column
-						, bestMatch.capturedEnd() - 1, tokenEndLine, tokenEndColumn);
+				ast::Range range(bestMatch.match.capturedStart(), line, column
+						, bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn);
 
-				if (candidate == Lexemes::identifier) {
+				if (bestMatch.candidate == TokenType::identifier) {
 					// Keyword is an identifier which is separate lexeme.
-					candidate = checkForKeyword(bestMatch.captured());
+					bestMatch.candidate = checkForKeyword(bestMatch.match.captured());
 				}
 
-				result.tokens << Token(candidate, range, bestMatch.captured());
-			} else if (candidate == Lexemes::comment) {
-				tokenEndColumn += bestMatch.capturedLength() - 1;
-				ast::Range range(bestMatch.capturedStart(), line, column
-						, bestMatch.capturedEnd() - 1, tokenEndLine, tokenEndColumn);
+				result.tokens << Token(bestMatch.candidate, range, bestMatch.match.captured());
+			} else if (bestMatch.candidate == TokenType::comment) {
+				tokenEndColumn += bestMatch.match.capturedLength() - 1;
+				ast::Range range(bestMatch.match.capturedStart(), line, column
+						, bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn);
 
-				result.comments << Token(candidate, range, bestMatch.captured());
+				result.comments << Token(bestMatch.candidate, range, bestMatch.match.captured());
 			}
 
 			// Keeping connection updated.
-			if (candidate == Lexemes::newline) {
+			if (bestMatch.candidate == TokenType::newline) {
 				++line;
 				column = 0;
-			} else if (candidate == Lexemes::whitespace || candidate == Lexemes::comment) {
-				column += bestMatch.capturedLength();
+			} else if (bestMatch.candidate == TokenType::whitespace || bestMatch.candidate == TokenType::comment) {
+				column += bestMatch.match.capturedLength();
 			} else {
 				line = tokenEndLine;
 				column = tokenEndColumn + 1;
 			}
 
-			absolutePosition += bestMatch.capturedLength();
+			absolutePosition += bestMatch.match.capturedLength();
 		} else {
 			result.errors << ParserError({absolutePosition, line, column}
-					, "Lexer error", ParserError::lexicalError, ParserError::error);
+					, "Lexer error", ErrorType::lexicalError, Severity::error);
 
 			// Panic mode: syncing on nearest whitespace or newline token.
-			while (!whitespaceRegexp.match(input, absolutePosition
+			while (!mWhitespaceRegexp.match(input, absolutePosition
 					, QRegularExpression::NormalMatch, QRegularExpression::AnchoredMatchOption).hasMatch()
-					&& !newLineRegexp.match(input, absolutePosition
+					&& !mNewLineRegexp.match(input, absolutePosition
 							, QRegularExpression::NormalMatch, QRegularExpression::AnchoredMatchOption).hasMatch()
 					&& absolutePosition < input.length())
 			{
@@ -146,13 +127,38 @@ Lexer::Result Lexer::tokenize(QString const &input)
 	return result;
 }
 
-Lexemes::Type Lexer::checkForKeyword(QString const &identifier) const
+Lexer::CandidateMatch Lexer::findBestMatch(QString const &input, int const absolutePosition) const
 {
-	for (Lexemes::Type const keyword : mLexemes.allKeywords()) {
-		if (mLexemes.keywordDefinition(keyword) == identifier) {
+	TokenType candidate = TokenType::whitespace;
+	QRegularExpressionMatch bestMatch;
+
+	for (TokenType const token : mPatterns.allPatterns()) {
+		QRegularExpression const &regExp = mPatterns.tokenPattern(token);
+
+		QRegularExpressionMatch const &match = regExp.match(
+				input
+				, absolutePosition
+				, QRegularExpression::NormalMatch
+				, QRegularExpression::AnchoredMatchOption);
+
+		if (match.hasMatch()) {
+			if (match.capturedLength() > bestMatch.capturedLength()) {
+				bestMatch = match;
+				candidate = token;
+			}
+		}
+	}
+
+	return CandidateMatch{candidate, bestMatch};
+}
+
+TokenType Lexer::checkForKeyword(QString const &identifier) const
+{
+	for (TokenType const keyword : mPatterns.allKeywords()) {
+		if (mPatterns.keywordPattern(keyword) == identifier) {
 			return keyword;
 		}
 	}
 
-	return Lexemes::identifier;
+	return TokenType::identifier;
 }
