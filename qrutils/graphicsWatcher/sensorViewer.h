@@ -45,6 +45,7 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event);
 	void leaveEvent(QEvent *);
 	void mouseDoubleClickEvent(QMouseEvent *event);
+
 	void initGraphicsOutput();
 
 private slots:
