@@ -104,7 +104,7 @@ void SensorViewer::clear()
 void SensorViewer::exportHistory()
 {
 	QString fileName = QRealFileDialog::getSaveFileName("RobotsCsvSaver"
-			, this, tr("Save values history"),"", tr("Comma-Separated Values Files (*.csv*)"));
+			, this, tr("Save values history"),"", tr("Comma-Separated Values Files (*.csv)"));
 	if (fileName.isEmpty()) {
 		return;
 	}
