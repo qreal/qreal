@@ -6,6 +6,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtCore/QMimeData>
 #include <QtGui/QDrag>
+
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/definitions.h>
 #include <qrkernel/settingsManager.h>

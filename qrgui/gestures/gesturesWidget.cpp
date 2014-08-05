@@ -3,18 +3,17 @@
 #include "ui_gesturesWidget.h"
 #include "gesturePainter.h"
 
-#include <QtCore/QString>
-#include <QColor>
-
 using namespace qReal::gestures;
+
+int const gestureAreaSize = 450;
+int const pointsAtSegment = 5;
 
 GesturesWidget::GesturesWidget(QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::GesturesWidget)
 {
 	mUi->setupUi(this);
-	connect(mUi->listWidget, SIGNAL(currentItemChanged(QListWidgetItem *,QListWidgetItem *))
-			, this, SIGNAL(currentElementChanged()));
+	connect(mUi->listWidget, &QListWidget::currentItemChanged, this, &GesturesWidget::currentElementChanged);
 }
 
 GesturesWidget::~GesturesWidget()
@@ -24,34 +23,10 @@ GesturesWidget::~GesturesWidget()
 
 void GesturesWidget::draw(QString const &paths)
 {
-	GesturePainter *paint = new GesturePainter(paths, Qt::white, Qt::blue, 550);
-	const QSize size = QSize(550, 550);
-	QPixmap gestureIcon = paint->pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
+	QSize const size(gestureAreaSize, gestureAreaSize);
+	GesturePainter painter(paths, Qt::white, Qt::blue, gestureAreaSize);
+	QPixmap const gestureIcon = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
 	mUi->gesturePixmap->setPixmap(gestureIcon);
-	delete paint;
-
-
-
-
-
-//	foreach (PointVector const &path, paths) {
-//		QPointF previousPoint(minBoarder, minBoarder);
-
-//		QPen pen(gestColor);
-//		pen.setWidth(gestWidth);
-
-//		if (path.isEmpty()) {
-//			return;
-//		}
-//		foreach (QPointF const &currentPoint, path) {
-//			if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder) {
-//				mGestureScene->addLine(QLineF(previousPoint, currentPoint), pen);
-//			} else {
-//				mGestureScene->addLine(QLineF(currentPoint, currentPoint), pen);
-//			}
-//			previousPoint = currentPoint;
-//		}
-//	}
 }
 
 int GesturesWidget::coord(int previous, int next, int part)

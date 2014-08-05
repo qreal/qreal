@@ -1,5 +1,4 @@
 HEADERS += \
-	$$PWD/gesturesShow/gesturesWidget.h \
 	$$PWD/metamodelingOnFly/propertiesDialog.h \
 	$$PWD/metamodelingOnFly/editPropertiesDialog.h \
 	$$PWD/metamodelingOnFly/chooseTypeDialog.h \
@@ -21,10 +20,8 @@ HEADERS += \
 	$$PWD/renameDialog.h \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.h \
 	$$PWD/metamodelingOnFly/restoreElementDialog.h \
-    dialogs/gesturesShow/gesturePainter.h
 
 SOURCES += \
-	$$PWD/gesturesShow/gesturesWidget.cpp \
 	$$PWD/metamodelingOnFly/propertiesDialog.cpp \
 	$$PWD/metamodelingOnFly/editPropertiesDialog.cpp \
 	$$PWD/metamodelingOnFly/chooseTypeDialog.cpp \
@@ -45,10 +42,8 @@ SOURCES += \
 	$$PWD/renameDialog.cpp \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.cpp \
 	$$PWD/metamodelingOnFly/restoreElementDialog.cpp \
-    dialogs/gesturesShow/gesturePainter.cpp
 
 FORMS += \
-	$$PWD/gesturesShow/gesturesWidget.ui \
 	$$PWD/metamodelingOnFly/propertiesDialog.ui \
 	$$PWD/metamodelingOnFly/editPropertiesDialog.ui \
 	$$PWD/metamodelingOnFly/chooseTypeDialog.ui \

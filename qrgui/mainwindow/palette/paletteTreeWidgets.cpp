@@ -100,7 +100,7 @@ void PaletteTreeWidgets::addTopItemType(PaletteElement const &data, QTreeWidget 
 	tree->setItemWidget(item, 0, element);
 }
 
-void PaletteTreeWidgets::resizeIcons() //формирование виджета icon?
+void PaletteTreeWidgets::resizeIcons()
 {
 	if (mParentPalette->iconsView() && mParentPalette->itemsCountInARow() > 1) {
 		const int iconSize = 48;

@@ -4,7 +4,8 @@
 #include <QtGui/QIcon>
 
 #include <qrkernel/ids.h>
-#include <pluginManager/editorManagerInterface.h>
+
+#include "pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 namespace gui {
@@ -28,7 +29,6 @@ public:
 	QString name() const;
 	QString description() const;
 	QIcon icon() const;	
-	QIcon gesture() const;
 	QSize preferredSize() const;
 	Id explosionTarget() const;
 
@@ -37,7 +37,6 @@ private:
 	QString mName;
 	QString mDescription;
 	QIcon mIcon;
-	QIcon mGesture;
 	QSize mPreferredSize;
 	Id mExplosionTarget;
 };

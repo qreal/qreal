@@ -32,9 +32,6 @@ public:
 		, QWidget *parent = nullptr
 		);
 
-	/// Gesture of an element on palette.
-	QIcon gesture() const;
-
 	/// Icon of an element on palette.
 	QIcon icon() const;
 
@@ -86,7 +83,6 @@ private:
 
 	PaletteElement const mData;
 	QLabel *mLabel;
-	QLabel *mLabelGesture;
 	EditorManagerInterface &mEditorManagerProxy;  // Does not have ownership.
 	MainWindow &mMainWindow;
 	Id mDeletedElementId;

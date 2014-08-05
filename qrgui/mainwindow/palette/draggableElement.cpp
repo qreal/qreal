@@ -4,17 +4,21 @@
 #include <QtGui/QMouseEvent>
 #include <QtCore/QtAlgorithms>
 #include <QtWidgets/QVBoxLayout>
+
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/definitions.h>
 
 #include "mainwindow/mainWindow.h"
 #include "mainwindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
+#include "gestures/gesturePainter.h"
 #include "view/editorView.h"
 #include "view/editorViewScene.h"
 
 using namespace qReal;
 using namespace gui;
+
+int const gestureTipSize = 30;
 
 DraggableElement::DraggableElement(
 		MainWindow &mainWindow
@@ -37,15 +41,6 @@ DraggableElement::DraggableElement(
 	layout->addWidget(mLabel);
 
 	if (!iconsOnly) {
-	mLabelGesture = new QLabel(this);
-	mLabelGesture->setPixmap(mData.gesture().pixmap(18, 18));
-	mLabelGesture->setFrameShadow(QFrame::Plain);
-	mLabelGesture->setFrameShape(QFrame::NoFrame);
-	mLabelGesture->setFixedHeight(20);
-	layout->addWidget(mLabelGesture);
-	}
-
-	if (!iconsOnly) {
 		QLabel *text = new QLabel(this);
 		text->setText(mData.name());
 		layout->addWidget(text);
@@ -53,21 +48,30 @@ DraggableElement::DraggableElement(
 	}
 
 	setLayout(layout);
-	QString modifiedDescription = mData.description();
-	if (!modifiedDescription.isEmpty()) {
-		modifiedDescription.insert(0, "<body>");  //turns alignment on
-		setToolTip(modifiedDescription);
+
+	QString description = mData.description();
+	if (!description.isEmpty()) {
+		QString const rawGesture = mEditorManagerProxy.mouseGesture(data.id());
+		if (!rawGesture.isEmpty()) {
+			QSize const size(gestureTipSize, gestureTipSize);
+			gestures::GesturePainter painter(rawGesture, Qt::white, Qt::blue, gestureTipSize);
+			QPixmap const gesture = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
+			QByteArray byteArray;
+			QBuffer buffer(&byteArray);
+			gesture.save(&buffer, "PNG");
+			QString const gestureDescription = tr("Mouse gesture");
+			description += QString("<br><br>%1: <img src=\"data:image/png;base64,%2\"/>")
+					.arg(gestureDescription, QString(byteArray.toBase64()));
+		}
+
+		setToolTip(QString("<body>%1</body>").arg(description));
 	}
+
 	setCursor(Qt::OpenHandCursor);
 
 	setAttribute(Qt::WA_AcceptTouchEvents);
 }
 
-
-QIcon DraggableElement::gesture() const
-{
-	return mData.gesture();
-}
 
 QIcon DraggableElement::icon() const
 {
