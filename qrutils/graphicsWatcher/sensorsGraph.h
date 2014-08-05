@@ -49,6 +49,9 @@ public slots:
 	void stopJob();
 	void resetAll();
 
+	/// Save sensor's informatiom in ".csv" file.
+	void saveGraph();
+
 	/// user settings
 	/// @arg fpsDelay is interval in ms for frame update
 	/// @arg autoScaleDelay is interval on ms for autoscaling the plot
@@ -77,6 +80,7 @@ private:
 	QToolButton mZoomInButton;
 	QToolButton mZoomOutButton;
 	QToolButton mResetButton;
+	QToolButton mSaveButton;
 	QComboBox mSlotComboBox;
 	QTimer mUpdateTimer;
 	ExpressionsParser const *mParser;

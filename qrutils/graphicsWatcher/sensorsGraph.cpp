@@ -96,6 +96,7 @@ void SensorsGraph::initGui()
 	mToolLayout.addWidget(&mZoomInButton, 0);
 	mToolLayout.addWidget(&mZoomOutButton, 0);
 	mToolLayout.addWidget(&mResetButton, 0);
+	mToolLayout.addWidget(&mSaveButton, 0);
 
 	mPlotFrame = new SensorViewer(this);
 
@@ -125,12 +126,17 @@ void SensorsGraph::setupToolElements()
 
 	mZoomOutButton.setIcon(QPixmap("://graphicsWatcher/icons/zoomOut_btn.png"));
 	mZoomOutButton.setIconSize(iconSize);
+
+	mSaveButton.setIcon(QPixmap("://icons/save_as.png"));
+	mSaveButton.setIconSize(iconSize);
+
 }
 
 void SensorsGraph::makeConnections()
 {
 	connect(&mStopButton, SIGNAL(clicked()), mPlotFrame, SLOT(stopJob()));
 	connect(&mStartButton, SIGNAL(clicked()), mPlotFrame, SLOT(startJob()));
+	connect(&mSaveButton, SIGNAL(clicked()), mPlotFrame, SLOT(saveGraph()));
 	connect(&mResetButton, SIGNAL(clicked()), mPlotFrame, SLOT(clear()));
 	connect(&mZoomInButton, SIGNAL(clicked()), mPlotFrame, SLOT(zoomIn()));
 	connect(&mZoomOutButton, SIGNAL(clicked()), mPlotFrame, SLOT(zoomOut()));
@@ -169,6 +175,11 @@ void SensorsGraph::startJob()
 	}
 	mUpdateTimer.start(mUpdateInterval);
 	mPlotFrame->startJob();
+}
+
+void SensorsGraph::saveGraph()
+{
+	mPlotFrame->saveGraph();
 }
 
 void SensorsGraph::updateValues()
