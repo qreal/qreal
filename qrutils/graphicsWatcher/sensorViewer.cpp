@@ -1,8 +1,9 @@
 ﻿#include "sensorViewer.h"
 
-#include <QFileDialog>
-#include <QFile>
-#include <QTextStream>
+#include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
+#include <qrutils/qRealFileDialog.h>
+#include <qrutils/outFile.h>
 
 using namespace utils::sensorsGraph;
 
@@ -100,18 +101,28 @@ void SensorViewer::clear()
 	mScaleCoefficient = 0;
 }
 
-void SensorViewer::saveGraph()
+void SensorViewer::exportHistory()
 {
-	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"", tr("Files (*.csv*)"));
-	QFile file(fileName);
-	file.open(QIODevice::WriteOnly | QIODevice::Text);
-	QTextStream out(&file);
-	out << "\"time\"" << ";" << "\"value\"" << "\n";
-	for (int i = 0; i < mPointsDataProcessor->pointsBase()->size(); i++) {
-		out << "\"" << mPointsDataProcessor->pointsBase()->at(i).x() + mTimeSegmentOnGraph << "\"" << ";"
-			<< "\"" << mPointsDataProcessor->pointsBase()->at(i).y() * (-1) << "\"" << "\n";
+	QString fileName = QRealFileDialog::getSaveFileName("RobotsCsvSaver"
+			, this, tr("Save values history"),"", tr("Comma-Separated Values Files (*.csv*)"));
+	if (fileName.isEmpty()) {
+		return;
 	}
-	file.close();
+
+	if (!fileName.endsWith(".csv")) {
+		fileName += ".csv";
+	}
+
+	try {
+		OutFile out(fileName);
+		out() << "time" << ";" << "value" << "\n";
+		for (int i = 0; i < mPointsDataProcessor->pointsBase()->size(); i++) {
+			qreal const plotValue = mPointsDataProcessor->pointsBase()->at(i).y();
+			out() << i << ";" << mPointsDataProcessor->pointToAbsoluteValue(plotValue) << "\n";
+		}
+	} catch (qReal::Exception const &exception) {
+		QLOG_ERROR() << "An error occured during exporting sensor values to" << fileName << ":" << exception.message();
+	}
 }
 
 void SensorViewer::setNextValue(qreal const newValue)

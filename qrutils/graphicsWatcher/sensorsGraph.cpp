@@ -134,12 +134,13 @@ void SensorsGraph::setupToolElements()
 
 void SensorsGraph::makeConnections()
 {
-	connect(&mStopButton, SIGNAL(clicked()), mPlotFrame, SLOT(stopJob()));
-	connect(&mStartButton, SIGNAL(clicked()), mPlotFrame, SLOT(startJob()));
-	connect(&mSaveButton, SIGNAL(clicked()), mPlotFrame, SLOT(saveGraph()));
-	connect(&mResetButton, SIGNAL(clicked()), mPlotFrame, SLOT(clear()));
-	connect(&mZoomInButton, SIGNAL(clicked()), mPlotFrame, SLOT(zoomIn()));
-	connect(&mZoomOutButton, SIGNAL(clicked()), mPlotFrame, SLOT(zoomOut()));
+	connect(&mStartButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::startJob);
+	connect(&mStopButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::stopJob);
+	connect(&mSaveButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::exportHistory);
+	connect(&mResetButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::clear);
+	connect(&mZoomInButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::zoomIn);
+	connect(&mZoomOutButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::zoomOut);
+
 	connect(&mSlotComboBox, SIGNAL(currentIndexChanged(int)), mPlotFrame, SLOT(onSensorChange()));
 	connect(&mSlotComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentSensor(int)));
 }
@@ -175,11 +176,6 @@ void SensorsGraph::startJob()
 	}
 	mUpdateTimer.start(mUpdateInterval);
 	mPlotFrame->startJob();
-}
-
-void SensorsGraph::saveGraph()
-{
-	mPlotFrame->saveGraph();
 }
 
 void SensorsGraph::updateValues()

@@ -34,7 +34,9 @@ public slots:
 	void zoomIn();
 	void zoomOut();
 	void onSensorChange();
-	void saveGraph();
+
+	/// Save sensor's values history into the ".csv" file.
+	void exportHistory();
 
 protected:
 	void drawNextFrame();
@@ -71,8 +73,6 @@ private:
 	int mAutoScaleTimer;
 	int mUpdateCurrValueTimer;
 	qreal mOutputValue;
-	/// The time segment's length on graph.
-	int const mTimeSegmentOnGraph = 224;
 };
 
 }

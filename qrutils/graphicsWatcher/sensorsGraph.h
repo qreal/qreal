@@ -49,9 +49,6 @@ public slots:
 	void stopJob();
 	void resetAll();
 
-	/// Save sensor's informatiom in ".csv" file.
-	void saveGraph();
-
 	/// user settings
 	/// @arg fpsDelay is interval in ms for frame update
 	/// @arg autoScaleDelay is interval on ms for autoscaling the plot
