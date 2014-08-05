@@ -2,38 +2,13 @@
 
 #include "details/lexer.h"
 #include "tokenType.h"
+#include "textLanguageParser/details/simpleParser.h"
+#include "textLanguageParser/details/parserCombinators.h"
+#include "textLanguageParser/ast/number.h"
+#include "textLanguageParser/ast/temporaryToken.h"
 
 using namespace textLanguageParser;
-
-TextLanguageParser::TokenStream::TokenStream(QList<details::Token> const &tokenList, QList<ParserError> &errorList)
-	: mTokenList(tokenList), mErrorList(errorList), mPosition(0)
-{
-}
-
-details::Token TextLanguageParser::TokenStream::next()
-{
-	return mTokenList.at(mPosition);
-}
-
-void TextLanguageParser::TokenStream::consume()
-{
-	++mPosition;
-}
-
-bool TextLanguageParser::TokenStream::expect(TokenType token)
-{
-	if (next().token() == token) {
-		consume();
-		return true;
-	} else {
-		mErrorList << ParserError(next().range().start()
-				, QString("Expected %1, got %2").arg(static_cast<int>(token)).arg(static_cast<int>(next().token()))
-				, ErrorType::syntaxError
-				, Severity::error);
-
-		return false;
-	}
-}
+using namespace textLanguageParser::details;
 
 TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &code)
 {
@@ -41,9 +16,46 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 	details::Lexer lexer(lexemes);
 
 	details::Lexer::Result lexerResult = lexer.tokenize(code);
-	TokenStream tokenStream(lexerResult.tokens, lexerResult.errors);
+	mErrors = lexerResult.errors;
+	mTokenStream.reset(new details::TokenStream(lexerResult.tokens, mErrors));
 
-	Result result(nullptr, lexerResult.errors);
+//	Result result(nullptr, mErrors);
 
-	return result;
+	// unop ::= ‘-’ | not | ‘#’ | ‘~’
+//	AlternativeParser unop = -TokenType::minus | -TokenType::notKeyword | -TokenType::sharp | -TokenType::tilda;
+
+	// primary ::= nil | false | true | Number | String | ‘...’ | prefixexp | tableconstructor | unop exp
+
+	auto number = (-TokenType::integerLiteral | -TokenType::floatLiteral) >> [](ast::TemporaryToken *node) {
+		return new ast::Number(node->token().lexeme());
+	};
+
+//	AlternativeParser primary = -TokenType::nilKeyword | -TokenType::falseKeyword | -TokenType::trueKeyword
+//			| number | -TokenType::string | -TokenType::tripleDot | (unop + number);
+
+	return number.parse(*mTokenStream);
 }
+
+void TextLanguageParser::reportError(QString const &message)
+{
+	auto connection = !mTokenStream->isEnd()
+			? mTokenStream->next().range().start()
+			: mTokenStream->next().range().end();
+
+	mErrors << ParserError(connection, message, ErrorType::syntaxError, Severity::error);
+}
+
+//void TextLanguageParser::primary()
+//{
+//	if (mTokenStream->isEnd()) {
+//		reportError("Unexpected end of file");
+//		return;
+//	}
+
+//	switch (mTokenStream->next().token()) {
+//	case TokenType::integerLiteral:
+//		break;
+//	default:
+//		break;
+//	}
+//}

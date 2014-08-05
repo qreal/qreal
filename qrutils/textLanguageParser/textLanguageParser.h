@@ -1,7 +1,10 @@
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include "textLanguageParserInterface.h"
 #include "textLanguageParser/details/token.h"
+#include "textLanguageParser/details/tokenStream.h"
 
 #include "qrutils/utilsDeclSpec.h"
 
@@ -80,20 +83,11 @@ public:
 	Result parse(QString const &code) override;
 
 private:
-	class TokenStream {
-	public:
-		TokenStream(QList<details::Token> const &tokenList, QList<ParserError> &errorList);
-		details::Token next();
-		void consume();
-		bool expect(TokenType token);
+	QScopedPointer<details::TokenStream> mTokenStream;
 
-	private:
-		QList<details::Token> mTokenList;
-		QList<ParserError> &mErrorList;
-		unsigned mPosition;
-	};
+	QList<ParserError> mErrors;
 
-	TokenStream mTokenStream;
+	void reportError(QString const &message);
 };
 
 }

@@ -41,9 +41,9 @@ Lexer::Result Lexer::tokenize(QString const &input)
 	while (absolutePosition < input.length()) {
 		CandidateMatch bestMatch = findBestMatch(input, absolutePosition);
 
-		if (bestMatch.candidate != TokenType::whitespace) {
-			qDebug() << "Best match:" << bestMatch.match;
-		}
+//		if (bestMatch.candidate != TokenType::whitespace) {
+//			qDebug() << "Best match:" << bestMatch.match;
+//		}
 
 		if (bestMatch.match.hasMatch()) {
 			int tokenEndLine = line;

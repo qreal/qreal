@@ -14,12 +14,12 @@ public:
 	/// Result of parsing.
 	struct Result {
 		/// Root of constructed AST, or nullptr if parsing failed.
-		Node * const astRoot;
+		ast::Node * astRoot;
 
 		/// A list of detected lexer errors.
 		QList<ParserError> errors;
 
-		Result(Node * const astRoot, QList<ParserError> errors)
+		Result(ast::Node * const astRoot, QList<ParserError> errors)
 			: astRoot(astRoot), errors(errors)
 		{
 		}
