@@ -2,14 +2,14 @@
 
 #include "textLanguageParser/details/parserInterface.h"
 #include "textLanguageParser/tokenType.h"
+#include "textLanguageParser/details/parserRef.h"
 
 namespace textLanguageParser {
 namespace details {
 
-template<typename P1, typename P2>
 class AlternativeParser : public ParserInterface {
 public:
-	AlternativeParser(P1 parser1, P2 parser2)
+	AlternativeParser(ParserRef parser1, ParserRef parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
 	}
@@ -21,12 +21,12 @@ public:
 					, "Unexpected end of file", ErrorType::syntaxError, Severity::error)});
 		}
 
-		if (mParser1.first().contains(tokenStream.next().token())) {
-			return mParser1.parse(tokenStream);
+		if (mParser1->first().contains(tokenStream.next().token())) {
+			return mParser1->parse(tokenStream);
 		}
 
-		if (mParser2.first().contains(tokenStream.next().token())) {
-			return mParser2.parse(tokenStream);
+		if (mParser2->first().contains(tokenStream.next().token())) {
+			return mParser2->parse(tokenStream);
 		}
 
 		return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().end()
@@ -35,12 +35,12 @@ public:
 
 	QSet<TokenType> first() const override
 	{
-		return mParser1.first() + mParser2.first();
+		return mParser1->first() + mParser2->first();
 	}
 
 private:
-	P1 mParser1;
-	P2 mParser2;
+	ParserRef mParser1;
+	ParserRef mParser2;
 };
 
 }

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <QtCore/QSharedPointer>
+
+#include "textLanguageParser/details/parserRef.h"
 #include "textLanguageParser/details/parserInterface.h"
 #include "textLanguageParser/details/simpleParser.h"
 #include "textLanguageParser/details/alternativeParser.h"
@@ -10,24 +13,22 @@
 namespace textLanguageParser {
 namespace details {
 
-template<typename P1, typename P2>
-inline ConcatenationParser<P1, P2> operator + (P1 a, P2 b) {
-	return ConcatenationParser<P1, P2>(a, b);
+inline ParserRef operator + (ParserRef a, ParserRef b) {
+	return ParserRef(new ConcatenationParser(a, b));
 }
 
-template<typename P1, typename P2>
-inline AlternativeParser<P1, P2> operator | (P1 a, P2 b) {
-	return AlternativeParser<P1, P2>(a, b);
+inline ParserRef operator | (ParserRef a, ParserRef b) {
+	return ParserRef(new AlternativeParser(a, b));
 }
 
-inline SimpleParser operator -(TokenType tokenType) {
-	return SimpleParser(tokenType);
+inline ParserRef operator -(TokenType tokenType) {
+	return ParserRef(new SimpleParser(tokenType));
 }
 
-template<typename Transformation, typename P>
-inline TransformingParser<Transformation, P> operator >>(P parser, Transformation transformation)
+template<typename Transformation>
+inline ParserRef operator >>(ParserRef parser, Transformation transformation)
 {
-	return TransformingParser<Transformation, P>(parser, transformation);
+	return ParserRef(new TransformingParser<Transformation>(parser, transformation));
 }
 
 }

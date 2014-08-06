@@ -22,6 +22,7 @@ HEADERS += \
 	$$PWD/details/transformingParser.h \
 	$$PWD/details/concatenationParser.h \
 	$$PWD/details/functionTraits.h \
+	$$PWD/details/parserRef.h \
 
 SOURCES += \
 	$$PWD/tokenPatterns.cpp \

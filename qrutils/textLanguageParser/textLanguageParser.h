@@ -33,7 +33,7 @@ namespace textLanguageParser {
 /// // Here we shall check that if "=" part is omitted, explist contains exactly one expression, otherwise left-hand
 /// // expressions are actually variables, matching "prefixexp {‘,’ prefixexp}" grammar rule, and prefix expressions
 /// // inside are not ended with function calls. Lua grammar allows, for example, f(3)[0] = 42,
-/// // but not allows f(3) = 42. Here we want to stay close to standard and check such things in semantic action.
+/// // but not f(3) = 42. Here we want to stay close to standard and check such things in semantic action.
 /// stat ::= ‘;’
 ///     | explist [‘=’ explist]
 ///
@@ -42,7 +42,7 @@ namespace textLanguageParser {
 /// exp(precedence) ::= primary { binop exp(newPrecedence) }
 ///
 /// primary ::= nil | false | true | Number | String | ‘...’
-///     | prefixexp | tableconstructor | unop exp
+///     | prefixexp | tableconstructor | unop exp(newPrecedence)
 ///
 /// prefixexp ::= prefixterm { functioncallpart | varpart }
 ///

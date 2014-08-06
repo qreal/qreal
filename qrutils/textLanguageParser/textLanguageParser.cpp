@@ -4,6 +4,7 @@
 #include "tokenType.h"
 #include "textLanguageParser/details/simpleParser.h"
 #include "textLanguageParser/details/parserCombinators.h"
+#include "textLanguageParser/details/parserRef.h"
 #include "textLanguageParser/ast/number.h"
 #include "textLanguageParser/ast/temporaryToken.h"
 #include "textLanguageParser/ast/temporaryPair.h"
@@ -21,6 +22,12 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 	mErrors = lexerResult.errors;
 	mTokenStream.reset(new details::TokenStream(lexerResult.tokens, mErrors));
 
+	ParserRef primary;
+
+	auto exp = primary
+			| -TokenType::closingSquareBracket
+			;
+
 	// unop ::= ‘-’ | not | ‘#’ | ‘~’
 	auto unop = -TokenType::minus | -TokenType::notKeyword | -TokenType::sharp | -TokenType::tilda;
 
@@ -31,13 +38,14 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 	};
 
 	// primary ::= nil | false | true | Number | String | ‘...’ | prefixexp | tableconstructor | unop exp
-	auto primary = -TokenType::nilKeyword
+	primary =
+			-TokenType::nilKeyword
 			| -TokenType::falseKeyword
 			| -TokenType::trueKeyword
 			| number
 			| -TokenType::string
 			| -TokenType::tripleDot
-			| ((unop + number) >> [](ast::TemporaryPair *node) {
+			| ((unop + exp) >> [](ast::TemporaryPair *node) {
 						QSharedPointer<ast::TemporaryToken> temporaryToken
 								= node->left().dynamicCast<ast::TemporaryToken>();
 						ast::UnaryOperator::Type type = ast::UnaryOperator::Type::minus;
@@ -63,7 +71,7 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 					})
 			;
 
-	return primary.parse(*mTokenStream);
+	return primary->parse(*mTokenStream);
 }
 
 void TextLanguageParser::reportError(QString const &message)

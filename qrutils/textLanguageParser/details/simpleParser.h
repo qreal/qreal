@@ -16,9 +16,11 @@ public:
 
 	TextLanguageParserInterface::Result parse(TokenStream &tokenStream) const override
 	{
-		Token token = tokenStream.next();
+		Token const token = tokenStream.next();
 		tokenStream.expect(mToken);
-		return TextLanguageParserInterface::Result(new ast::TemporaryToken(token), QList<ParserError>());
+		ast::TemporaryToken * const tokenNode = new ast::TemporaryToken(token);
+		tokenNode->connect(token);
+		return TextLanguageParserInterface::Result(tokenNode, {});
 	}
 
 	QSet<TokenType> first() const override
