@@ -18,7 +18,7 @@ public:
 	{
 		Token token = tokenStream.next();
 		tokenStream.expect(mToken);
-		return TextLanguageParserInterface::Result(new ast::TemporaryToken(token), {});
+		return TextLanguageParserInterface::Result(new ast::TemporaryToken(token), QList<ParserError>());
 	}
 
 	QSet<TokenType> first() const override

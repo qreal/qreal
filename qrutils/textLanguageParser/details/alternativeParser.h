@@ -6,9 +6,10 @@
 namespace textLanguageParser {
 namespace details {
 
+template<typename P1, typename P2>
 class AlternativeParser : public ParserInterface {
 public:
-	AlternativeParser(ParserInterface const &parser1, ParserInterface const &parser2)
+	AlternativeParser(P1 parser1, P2 parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
 	}
@@ -38,8 +39,8 @@ public:
 	}
 
 private:
-	ParserInterface const &mParser1;
-	ParserInterface const &mParser2;
+	P1 mParser1;
+	P2 mParser2;
 };
 
 }

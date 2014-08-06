@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QList>
+#include <QtCore/QSharedPointer>
 
 #include "ast/node.h"
 #include "parserError.h"
@@ -14,11 +15,12 @@ public:
 	/// Result of parsing.
 	struct Result {
 		/// Root of constructed AST, or nullptr if parsing failed.
-		ast::Node * astRoot;
+		QSharedPointer<ast::Node> astRoot;
 
 		/// A list of detected lexer errors.
 		QList<ParserError> errors;
 
+		/// Takes ownership over astRoot.
 		Result(ast::Node * const astRoot, QList<ParserError> errors)
 			: astRoot(astRoot), errors(errors)
 		{

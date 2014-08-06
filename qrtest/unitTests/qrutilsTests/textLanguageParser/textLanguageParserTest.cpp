@@ -21,7 +21,7 @@ TEST_F(TextLanguageParserTest, sanityCheck)
 	EXPECT_TRUE(result.errors.isEmpty());
 	EXPECT_NE(nullptr, result.astRoot);
 
-	auto number = dynamic_cast<ast::Number *>(result.astRoot);
+	auto number = dynamic_cast<ast::Number *>(result.astRoot.data());
 
 	ASSERT_NE(nullptr, number);
 

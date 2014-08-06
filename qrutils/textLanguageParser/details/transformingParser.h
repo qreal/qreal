@@ -9,10 +9,10 @@ namespace textLanguageParser {
 namespace details {
 
 
-template<typename Transformation>
+template<typename Transformation, typename P>
 class TransformingParser : public ParserInterface {
 public:
-	explicit TransformingParser(ParserInterface const &parser
+	explicit TransformingParser(P parser
 			, Transformation transformation)
 		: mTransformation(transformation), mParser(parser)
 	{
@@ -23,9 +23,7 @@ public:
 		typedef typename function_traits<Transformation>::template arg<0>::type NodeType;
 
 		TextLanguageParserInterface::Result parserResult = mParser.parse(tokenStream);
-		ast::Node * temp = parserResult.astRoot;
-		parserResult.astRoot = mTransformation(static_cast<NodeType>(temp));
-		delete temp;
+		parserResult.astRoot.reset(mTransformation(static_cast<NodeType>(parserResult.astRoot.data())));
 		return parserResult;
 	}
 
@@ -36,7 +34,7 @@ public:
 
 private:
 	Transformation mTransformation;
-	ParserInterface const &mParser;
+	P mParser;
 };
 
 }
