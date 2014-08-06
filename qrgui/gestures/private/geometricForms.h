@@ -1,8 +1,12 @@
 #pragma once
-#include <QList>
-#include <QString>
-#include <QPoint>
-#include <QPair>
+
+#include <QtCore/QList>
+#include <QtCore/QString>
+#include <QtCore/QPoint>
+#include <QtCore/QPair>
+
+namespace qReal {
+namespace gestures {
 
 static const double e = 10;
 
@@ -61,3 +65,6 @@ public:
 };
 
 typedef QList<Object> Objects;
+
+}
+}

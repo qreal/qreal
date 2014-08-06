@@ -35,6 +35,9 @@ public slots:
 	void zoomOut();
 	void onSensorChange();
 
+	/// Save sensor's values history into the ".csv" file.
+	void exportHistory();
+
 protected:
 	void drawNextFrame();
 	void drawBackground(QPainter *painter, const QRectF &rect);

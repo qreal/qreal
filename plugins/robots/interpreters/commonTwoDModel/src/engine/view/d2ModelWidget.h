@@ -26,19 +26,11 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Devices
 	Q_OBJECT
 
 public:
-	/// Takes ownership on configurer.
-	D2ModelWidget(model::Model &model, Configurer const * const configurer, QWidget *parent = 0);
+	explicit D2ModelWidget(model::Model &model, QWidget *parent = 0);
 	~D2ModelWidget();
 
 	void init();
 	void close();
-
-	/// Get current scene position of robot
-	/// Enables Run and Stop buttons
-	void enableRunStopButtons();
-
-	/// Disables Run and Stop buttons, used when current tab is not related to robots
-	void disableRunStopButtons();
 
 	D2ModelScene *scene();
 
@@ -51,9 +43,6 @@ public:
 	SensorItem *sensorItem(interpreterBase::robotModel::PortInfo const &port);
 
 	void loadXml(QDomDocument const &worldModel);
-
-	/// Enables or disables interpreter control buttons.
-	void setRunStopButtonsEnabled(bool enabled);
 
 public slots:
 	void saveInitialRobotBeforeRun();
@@ -82,7 +71,8 @@ protected:
 
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, const interpreterBase::robotModel::DeviceInfo &device) override;
+			, const interpreterBase::robotModel::DeviceInfo &device
+			, Reason reason) override;
 
 private slots:
 	void bringToFront();
@@ -194,8 +184,6 @@ private:
 	bool mFirstShow = true;
 
 	RobotState mInitialRobotBeforeRun;
-
-	QScopedPointer<Configurer const> mConfigurer;
 };
 
 }

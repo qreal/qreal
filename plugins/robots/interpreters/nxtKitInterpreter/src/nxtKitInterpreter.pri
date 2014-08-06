@@ -15,7 +15,6 @@ HEADERS += \
 	$$PWD/nxtAdditionalPreferences.h \
 	$$PWD/nxtDisplayWidget.h \
 	$$PWD/nxtKitInterpreterPlugin.h \
-	$$PWD/nxtTwoDModelConfigurer.h \
 	$$PWD/blocks/nxtBlocksFactory.h \
 	$$PWD/blocks/details/speakerBlock.h \
 	$$PWD/blocks/details/beepBlock.h \
@@ -57,7 +56,6 @@ SOURCES += \
 	$$PWD/nxtAdditionalPreferences.cpp \
 	$$PWD/nxtDisplayWidget.cpp \
 	$$PWD/nxtKitInterpreterPlugin.cpp \
-	$$PWD/nxtTwoDModelConfigurer.cpp \
 	$$PWD/blocks/nxtBlocksFactory.cpp \
 	$$PWD/blocks/details/speakerBlock.cpp \
 	$$PWD/blocks/details/beepBlock.cpp \

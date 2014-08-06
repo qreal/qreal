@@ -17,6 +17,7 @@
 
 #include <interpreterBase/robotModel/robotModelUtils.h>
 
+#include "trikDisplayWidget.h"
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
 #include "robotModel/twoD/parts/twoDInfraredSensor.h"
@@ -30,6 +31,8 @@ using namespace interpreterBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
+	, mLeftWheelPort("M3")
+	, mRightWheelPort("M4")
 {
 }
 
@@ -63,5 +66,51 @@ void TwoDRobotModel::onInterpretationStarted()
 		display->setBackground(QColor(Qt::gray));
 	} else {
 		/// @todo: if we get here it is wrong because display is not configured before the interpretation!
+	}
+}
+
+QString TwoDRobotModel::robotImage() const
+{
+	return ":icons/trikTwoDRobot.svg";
+}
+
+PortInfo TwoDRobotModel::defaultLeftWheelPort() const
+{
+	return PortInfo(mLeftWheelPort, output);
+}
+
+PortInfo TwoDRobotModel::defaultRightWheelPort() const
+{
+	return PortInfo(mRightWheelPort, output);
+}
+
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget *parent) const
+{
+	return new TrikDisplayWidget(parent);
+}
+
+QString TwoDRobotModel::sensorImagePath(DeviceInfo const &deviceType) const
+{
+	if (deviceType.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
+		return ":icons/twoDColorEmpty.svg";
+	}
+
+	return QString();
+}
+
+QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+{
+	if (deviceType.isA<robotParts::TouchSensor>()) {
+		return QRect(-12, -5, 25, 10);
+	} else if (deviceType.isA<robotParts::ColorSensor>()
+			|| deviceType.isA<robotParts::LightSensor>())
+	{
+		return QRect(-6, -6, 12, 12);
+	}
+	if (deviceType.isA<robotParts::RangeSensor>()) {
+		return QRect(-20, -10, 40, 20);;
+	} else {
+		Q_ASSERT(!"Unknown sensor type");
+		return QRect();
 	}
 }

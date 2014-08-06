@@ -26,10 +26,11 @@ void GraphicsWatcherManager::forceStop()
 }
 
 void GraphicsWatcherManager::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
+	Q_UNUSED(reason)
 
 	updateSensorsList(robotModel);
 }

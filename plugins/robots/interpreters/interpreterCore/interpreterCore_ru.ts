@@ -460,17 +460,17 @@ p, li { white-space: pre-wrap; }
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="src/customizer.cpp" line="63"/>
+        <location filename="src/customizer.cpp" line="64"/>
         <source>Sensors state</source>
         <translation>Графики</translation>
     </message>
     <message>
-        <location filename="src/customizer.cpp" line="78"/>
+        <location filename="src/customizer.cpp" line="79"/>
         <source>Subprograms</source>
         <translation>Подпрограммы</translation>
     </message>
     <message>
-        <location filename="src/customizer.cpp" line="83"/>
+        <location filename="src/customizer.cpp" line="84"/>
         <source>The list of all declared subprograms in the project</source>
         <translation>Список всех объявленных в проекте подпрограмм</translation>
     </message>
@@ -586,44 +586,36 @@ p, li { white-space: pre-wrap; }
         <translation>Роботы</translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/toolPluginInterface/customizer.h" line="76"/>
         <source>Add connection</source>
-        <translation>Соединить с</translation>
+        <translation type="vanished">Соединить с</translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/toolPluginInterface/customizer.h" line="81"/>
         <source>Connect to other</source>
-        <translation>Пересоединить</translation>
+        <translation type="vanished">Пересоединить</translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/toolPluginInterface/customizer.h" line="86"/>
         <source>Disconnect</source>
-        <translation>Отсоединить</translation>
+        <translation type="vanished">Отсоединить</translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/toolPluginInterface/customizer.h" line="91"/>
         <source>Go to connected element</source>
-        <translation>Перейти к элементу по ссылке</translation>
+        <translation type="vanished">Перейти к элементу по ссылке</translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/toolPluginInterface/customizer.h" line="101"/>
         <source>Expand explosion</source>
-        <translation>Раскрыть эксплозию</translation>
+        <translation type="vanished">Раскрыть эксплозию</translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/toolPluginInterface/customizer.h" line="106"/>
         <source>Collapse explosion</source>
-        <translation>Схлопнуть эксплозию</translation>
+        <translation type="vanished">Схлопнуть эксплозию</translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/toolPluginInterface/customizer.h" line="111"/>
         <source>Existing connections</source>
-        <translation>Существующие соединения</translation>
+        <translation type="vanished">Существующие соединения</translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/toolPluginInterface/customizer.h" line="116"/>
         <source>Elements from this group exist for reusing all created connections</source>
-        <translation>Элементы этой группы существуют для переиспользования всех существующих соединений</translation>
+        <translation type="vanished">Элементы этой группы существуют для переиспользования всех существующих соединений</translation>
     </message>
     <message>
         <source>Show grid</source>
@@ -723,7 +715,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="src/robotsPluginFacade.cpp" line="104"/>
+        <location filename="src/robotsPluginFacade.cpp" line="106"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -915,7 +907,7 @@ p, li { white-space: pre-wrap; }
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="src/ui/robotsSettingsPage.cpp" line="181"/>
+        <location filename="src/ui/robotsSettingsPage.cpp" line="180"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>
@@ -923,20 +915,16 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::EditorManager</name>
     <message>
-        <location filename="../../../../qrgui/pluginManager/editorManager.cpp" line="84"/>
-        <location filename="../../../../qrgui/pluginManager/editorManager.cpp" line="99"/>
         <source>error</source>
-        <translation>Ошибка</translation>
+        <translation type="vanished">Ошибка</translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/pluginManager/editorManager.cpp" line="84"/>
         <source>Plugin loading failed: </source>
-        <translation>Не удалось загрузить плагин: </translation>
+        <translation type="vanished">Не удалось загрузить плагин: </translation>
     </message>
     <message>
-        <location filename="../../../../qrgui/pluginManager/editorManager.cpp" line="99"/>
         <source>Plugin unloading failed: </source>
-        <translation>Не удалось выгрузить плагин: </translation>
+        <translation type="vanished">Не удалось выгрузить плагин: </translation>
     </message>
 </context>
 <context>
