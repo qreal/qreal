@@ -60,8 +60,9 @@ DraggableElement::DraggableElement(
 			QBuffer buffer(&byteArray);
 			gesture.save(&buffer, "PNG");
 			QString const gestureDescription = tr("Mouse gesture");
-			description += QString("<br><br>%1: <img src=\"data:image/png;base64,%2\"/>")
-					.arg(gestureDescription, QString(byteArray.toBase64()));
+			description += QString("<br><table><tr><td valign='middle'>%1:&nbsp;&nbsp;&nbsp;</td>"\
+					"<td><img src=\"data:image/png;base64,%2\"/></td></tr></table>")
+							.arg(gestureDescription, QString(byteArray.toBase64()));
 		}
 
 		setToolTip(QString("<body>%1</body>").arg(description));
