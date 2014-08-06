@@ -6,7 +6,7 @@
 #include <QtCore/QPoint>
 #include <QtCore/QString>
 
-#include "mainwindow/gesturesPainterInterface.h"
+#include "gesturesPainterInterface.h"
 
 namespace Ui {
 	class GesturesWidget;
@@ -22,23 +22,18 @@ class GesturesWidget : public QWidget, public GesturesPainterInterface
 public:
 	explicit GesturesWidget(QWidget *parent = 0);
 	~GesturesWidget();
-	virtual void draw(PathVector const &paths);
-	virtual Id currentElement() const;
-	virtual void setElements(QList<QPair<QString, Id> > const &elements);
+
+	void draw(QString const &paths) override;
+	Id currentElement() const override;
+	void setElements(QList<QPair<QString, Id> > const &elements) override;
 
 signals:
 	void currentElementChanged();
 
 private:
 	Ui::GesturesWidget *mUi;
-	QGraphicsScene *mGestureScene;
-	PathVector mPaths;
-	QColor gestColor;
-	static int const pointsAtSegment = 5;
 	int mCurrentPointNumber;
 	static int coord(int previous, int next, int part);
-	static short const minBoarder = -1000;
-	static short const gestWidth = 3;
 };
 
 }

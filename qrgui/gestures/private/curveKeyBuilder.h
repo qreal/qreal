@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-#include "view/gestures/geometricForms.h"
-#include "view/gestures/pathCorrector.h"
+#include "geometricForms.h"
+#include "pathCorrector.h"
 
 static const int minMovement = 20;
 static const double maxRelation = 8;

@@ -3,12 +3,10 @@
 #include <QtCore/QPointF>
 #include <QtCore/QList>
 
-#include "view/gestures/keyManagerInterface.h"
-
 namespace qReal {
 namespace gestures {
 
-class KeyManager : public IKeyManager
+class KeyManager
 {
 public:
 	KeyManager();
