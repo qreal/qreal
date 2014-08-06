@@ -1,5 +1,5 @@
 HEADERS += \
-	$$PWD/gesturePainterInterface.h \
+	$$PWD/gesturesPainterInterface.h \
 	$$PWD/mouseMovementManager.h \
 	$$PWD/gesturesWidget.h \
 	$$PWD/gesturePainter.h \
