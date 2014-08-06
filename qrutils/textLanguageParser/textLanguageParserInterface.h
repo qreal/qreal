@@ -25,6 +25,12 @@ public:
 			: astRoot(astRoot), errors(errors)
 		{
 		}
+
+		Result(QSharedPointer<ast::Node> const astRoot, QList<ParserError> errors)
+			: errors(errors)
+		{
+			this->astRoot = astRoot;
+		}
 	};
 
 	virtual ~TextLanguageParserInterface() {}

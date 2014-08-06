@@ -3,12 +3,24 @@
 #include "details/lexer.h"
 #include "tokenType.h"
 #include "textLanguageParser/details/simpleParser.h"
+#include "textLanguageParser/details/expressionParser.h"
 #include "textLanguageParser/details/parserCombinators.h"
 #include "textLanguageParser/details/parserRef.h"
 #include "textLanguageParser/ast/number.h"
 #include "textLanguageParser/ast/temporaryToken.h"
 #include "textLanguageParser/ast/temporaryPair.h"
 #include "textLanguageParser/ast/unaryOperator.h"
+
+#include "textLanguageParser/ast/addition.h"
+#include "textLanguageParser/ast/subtraction.h"
+#include "textLanguageParser/ast/multiplication.h"
+#include "textLanguageParser/ast/division.h"
+#include "textLanguageParser/ast/exponentiation.h"
+
+#include "textLanguageParser/ast/unaryMinus.h"
+#include "textLanguageParser/ast/not.h"
+#include "textLanguageParser/ast/length.h"
+#include "textLanguageParser/ast/bitwiseNegation.h"
 
 using namespace textLanguageParser;
 using namespace textLanguageParser::details;
@@ -23,55 +35,52 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 	mTokenStream.reset(new details::TokenStream(lexerResult.tokens, mErrors));
 
 	ParserRef primary;
+	ParserRef binOp;
 
-	auto exp = primary
-			| -TokenType::closingSquareBracket
-			;
+	// exp(precedence) ::= primary { binop exp(newPrecedence) }
+	auto exp = ParserRef(new ExpressionParser(false, primary, binOp));
+
+	auto createTemporary = [] (Token token) { return new ast::TemporaryToken(token); };
 
 	// unop ::= ‘-’ | not | ‘#’ | ‘~’
-	auto unop = -TokenType::minus | -TokenType::notKeyword | -TokenType::sharp | -TokenType::tilda;
+	auto unop = TokenType::minus >> [] (Token token) { Q_UNUSED(token); return new ast::UnaryMinus(); }
+			| TokenType::notKeyword >> [] (Token token) { Q_UNUSED(token); return new ast::Not(); }
+			| TokenType::sharp >> [] (Token token) { Q_UNUSED(token); return new ast::Length(); }
+			| TokenType::tilda >> [] (Token token) { Q_UNUSED(token); return new ast::BitwiseNegation(); }
+			;
+
+	// binop ::= ‘+’ | ‘-’ | ‘*’ | ‘/’ | ‘//’ | ‘^’ | ‘%’ | ‘&’ | ‘~’ | ‘|’ | ‘>>’ | ‘<<’ | ‘..’
+	//           | ‘<’ | ‘<=’ | ‘>’ | ‘>=’ | ‘==’ | ‘~=’ | and | or
+	binOp = TokenType::plus >> [] (Token token) { Q_UNUSED(token); return new ast::Addition(); }
+			| TokenType::minus >> [] (Token token) { Q_UNUSED(token); return new ast::Subtraction(); }
+			| TokenType::asterick >> [] (Token token) { Q_UNUSED(token); return new ast::Multiplication(); }
+			| TokenType::slash >> [] (Token token) { Q_UNUSED(token); return new ast::Division(); }
+			| TokenType::hat >> [] (Token token) { Q_UNUSED(token); return new ast::Exponentiation(); }
+			;
 
 	// Number is a helper production to avoid differing between integer and float. It will be removed when type
 	// inference and interpretation will be needed.
-	auto number = (-TokenType::integerLiteral | -TokenType::floatLiteral) >> [](ast::TemporaryToken *node) {
-		return new ast::Number(node->token().lexeme());
-	};
+	auto number = TokenType::integerLiteral >> [] (Token token) { return new ast::Number(token.lexeme()); }
+			| TokenType::floatLiteral >> [] (Token token) { return new ast::Number(token.lexeme()); }
+			;
 
 	// primary ::= nil | false | true | Number | String | ‘...’ | prefixexp | tableconstructor | unop exp
 	primary =
-			-TokenType::nilKeyword
-			| -TokenType::falseKeyword
-			| -TokenType::trueKeyword
+			TokenType::nilKeyword >> createTemporary
+			| TokenType::falseKeyword >> createTemporary
+			| TokenType::trueKeyword >> createTemporary
 			| number
-			| -TokenType::string
-			| -TokenType::tripleDot
-			| ((unop + exp) >> [](ast::TemporaryPair *node) {
-						QSharedPointer<ast::TemporaryToken> temporaryToken
-								= node->left().dynamicCast<ast::TemporaryToken>();
-						ast::UnaryOperator::Type type = ast::UnaryOperator::Type::minus;
-						switch (temporaryToken->token().token()) {
-						case TokenType::minus:
-							type = ast::UnaryOperator::Type::minus;
-							break;
-						case TokenType::notKeyword:
-							type = ast::UnaryOperator::Type::notOperator;
-							break;
-						case TokenType::sharp:
-							type = ast::UnaryOperator::Type::sharp;
-							break;
-						case TokenType::tilda:
-							type = ast::UnaryOperator::Type::tilda;
-							break;
-						default:
-							/// @todo Report internal parser error.
-							break;
-						}
-
-						return new ast::UnaryOperator(type, node->right());
+			| TokenType::string >> createTemporary
+			| TokenType::tripleDot >> createTemporary
+			| ((unop + ParserRef(new ExpressionParser(true, primary, binOp)))
+					>> [](ast::TemporaryPair *node) {
+						QSharedPointer<ast::UnaryOperator> unOp = node->left().dynamicCast<ast::UnaryOperator>();
+						unOp->setOperand(node->right());
+						return unOp;
 					})
 			;
 
-	return primary->parse(*mTokenStream);
+	return exp->parse(*mTokenStream);
 }
 
 void TextLanguageParser::reportError(QString const &message)
@@ -82,18 +91,3 @@ void TextLanguageParser::reportError(QString const &message)
 
 	mErrors << ParserError(connection, message, ErrorType::syntaxError, Severity::error);
 }
-
-//void TextLanguageParser::primary()
-//{
-//	if (mTokenStream->isEnd()) {
-//		reportError("Unexpected end of file");
-//		return;
-//	}
-
-//	switch (mTokenStream->next().token()) {
-//	case TokenType::integerLiteral:
-//		break;
-//	default:
-//		break;
-//	}
-//}

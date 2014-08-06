@@ -21,6 +21,14 @@ public:
 					, "Unexpected end of file", ErrorType::syntaxError, Severity::error)});
 		}
 
+		if (!(mParser1->first().intersect(mParser2->first())).isEmpty()) {
+			return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().start()
+					, "Parser can not decide which alternative to use on " + tokenStream.next().lexeme()
+					, ErrorType::syntaxError
+					, Severity::internalError)}
+					);
+		}
+
 		if (mParser1->first().contains(tokenStream.next().token())) {
 			return mParser1->parse(tokenStream);
 		}
@@ -29,7 +37,7 @@ public:
 			return mParser2->parse(tokenStream);
 		}
 
-		return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().end()
+		return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().start()
 				, "Unexpected token", ErrorType::syntaxError, Severity::error)});
 	}
 

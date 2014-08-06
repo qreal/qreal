@@ -2,8 +2,6 @@
 
 #include "node.h"
 
-#include "qrutils/utilsDeclSpec.h"
-
 namespace textLanguageParser {
 namespace ast {
 

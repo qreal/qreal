@@ -37,7 +37,7 @@ namespace textLanguageParser {
 /// stat ::= ‘;’
 ///     | explist [‘=’ explist]
 ///
-/// explist ::= exp {‘,’ exp}
+/// explist ::= exp(0) {‘,’ exp(0)}
 ///
 /// exp(precedence) ::= primary { binop exp(newPrecedence) }
 ///
@@ -46,14 +46,14 @@ namespace textLanguageParser {
 ///
 /// prefixexp ::= prefixterm { functioncallpart | varpart }
 ///
-/// varpart ::= ‘[’ exp ‘]’
+/// varpart ::= ‘[’ exp(0) ‘]’
 ///             | ‘.’ Name
 ///
 /// functioncallpart :: = args
 ///                       | ‘:’ Name args
 ///
 /// prefixterm ::= Name
-///                | ‘(’ exp ‘)’
+///                | ‘(’ exp(0) ‘)’
 ///
 /// args ::= ‘(’ [explist] ‘)’
 ///          | tableconstructor
@@ -63,9 +63,9 @@ namespace textLanguageParser {
 ///
 /// fieldlist ::= field {fieldsep field} [fieldsep]
 ///
-/// field ::= ‘[’ exp ‘]’ ‘=’ exp
-///           | Name ‘=’ exp
-///           | exp
+/// field ::= ‘[’ exp(0) ‘]’ ‘=’ exp(0)
+///           | Name ‘=’ exp(0)
+///           | exp(0)
 ///
 /// fieldsep ::= ‘,’ | ‘;’
 ///

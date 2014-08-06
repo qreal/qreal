@@ -7,10 +7,11 @@
 namespace textLanguageParser {
 namespace details {
 
+template<typename SemanticAction>
 class SimpleParser : public ParserInterface {
 public:
-	explicit SimpleParser(TokenType token)
-		: mToken(token)
+	explicit SimpleParser(TokenType token, SemanticAction semanticAction)
+		: mToken(token), mSemanticAction(semanticAction)
 	{
 	}
 
@@ -18,9 +19,9 @@ public:
 	{
 		Token const token = tokenStream.next();
 		tokenStream.expect(mToken);
-		ast::TemporaryToken * const tokenNode = new ast::TemporaryToken(token);
-		tokenNode->connect(token);
-		return TextLanguageParserInterface::Result(tokenNode, {});
+		ast::Node * const node = mSemanticAction(token);
+		node->connect(token);
+		return TextLanguageParserInterface::Result(node, {});
 	}
 
 	QSet<TokenType> first() const override
@@ -30,6 +31,7 @@ public:
 
 private:
 	TokenType mToken;
+	SemanticAction mSemanticAction;
 };
 
 }

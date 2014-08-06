@@ -25,7 +25,7 @@ public:
 
 		TextLanguageParserInterface::Result parserResult = mParser->parse(tokenStream);
 		QSharedPointer<NodeType> node = parserResult.astRoot.staticCast<NodeType>();
-		parserResult.astRoot.reset(mTransformation(node.data()));
+		parserResult.astRoot = mTransformation(node.data()).template staticCast<ast::Node>();
 		parserResult.astRoot->connect(*node);
 		return parserResult;
 	}

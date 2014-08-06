@@ -4,22 +4,12 @@
 
 #include "node.h"
 
-#include "qrutils/utilsDeclSpec.h"
-
 namespace textLanguageParser {
 namespace ast {
 
 class QRUTILS_EXPORT UnaryOperator : public Node {
 public:
-	enum class Type {
-		minus
-		, notOperator
-		, sharp
-		, tilda
-	};
-
-	UnaryOperator(Type type, QSharedPointer<Node> operand)
-		: mType(type), mOperand(operand)
+	UnaryOperator()
 	{
 	}
 
@@ -27,12 +17,12 @@ public:
 		return mOperand;
 	}
 
-	Type type() const {
-		return mType;
+	void setOperand(QSharedPointer<Node> operand) {
+		mOperand = operand;
+		connect(*operand);
 	}
 
 private:
-	Type mType;
 	QSharedPointer<Node> mOperand;
 };
 

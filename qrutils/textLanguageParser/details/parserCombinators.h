@@ -21,8 +21,10 @@ inline ParserRef operator | (ParserRef a, ParserRef b) {
 	return ParserRef(new AlternativeParser(a, b));
 }
 
-inline ParserRef operator -(TokenType tokenType) {
-	return ParserRef(new SimpleParser(tokenType));
+template<typename SemanticAction>
+inline ParserRef operator >>(TokenType token, SemanticAction semanticAction)
+{
+	return ParserRef(new SimpleParser<SemanticAction>(token, semanticAction));
 }
 
 template<typename Transformation>
