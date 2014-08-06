@@ -116,8 +116,8 @@ void SensorViewer::exportHistory()
 	try {
 		OutFile out(fileName);
 		out() << "time" << ";" << "value" << "\n";
-		for (int i = 0; i < mPointsDataProcessor->pointsBase()->size(); i++) {
-			qreal const plotValue = mPointsDataProcessor->pointsBase()->at(i).y();
+		for (int i = 0; i < mPointsDataProcessor->pointsBase().size(); ++i) {
+			qreal const plotValue = mPointsDataProcessor->pointsBase()[i].y();
 			out() << i << ";" << mPointsDataProcessor->pointToAbsoluteValue(plotValue) << "\n";
 		}
 	} catch (qReal::Exception const &exception) {
@@ -148,9 +148,9 @@ void SensorViewer::drawNextFrame()
 
 	QPen const regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 	QLineF quantOfGraph;
-	for (int i = 0; i < mPointsDataProcessor->pointsBase()->size() - 1; i++) {
-		quantOfGraph = QLineF(mPointsDataProcessor->pointsBase()->at(i)
-							  , mPointsDataProcessor->pointsBase()->at(i + 1));
+	for (int i = 0; i < mPointsDataProcessor->pointsBase().size() - 1; i++) {
+		quantOfGraph = QLineF(mPointsDataProcessor->pointsBase()[i]
+				, mPointsDataProcessor->pointsBase()[i + 1]);
 		mScene->addLine(quantOfGraph, regularPen);
 	}
 }
