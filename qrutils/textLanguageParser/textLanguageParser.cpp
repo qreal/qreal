@@ -6,6 +6,8 @@
 #include "textLanguageParser/details/parserCombinators.h"
 #include "textLanguageParser/ast/number.h"
 #include "textLanguageParser/ast/temporaryToken.h"
+#include "textLanguageParser/ast/temporaryPair.h"
+#include "textLanguageParser/ast/unaryOperator.h"
 
 using namespace textLanguageParser;
 using namespace textLanguageParser::details;
@@ -19,21 +21,49 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 	mErrors = lexerResult.errors;
 	mTokenStream.reset(new details::TokenStream(lexerResult.tokens, mErrors));
 
-//	Result result(nullptr, mErrors);
-
 	// unop ::= ‘-’ | not | ‘#’ | ‘~’
-//	AlternativeParser unop = -TokenType::minus | -TokenType::notKeyword | -TokenType::sharp | -TokenType::tilda;
+	auto unop = -TokenType::minus | -TokenType::notKeyword | -TokenType::sharp | -TokenType::tilda;
 
-	// primary ::= nil | false | true | Number | String | ‘...’ | prefixexp | tableconstructor | unop exp
-
+	// Number is a helper production to avoid differing between integer and float. It will be removed when type
+	// inference and interpretation will be needed.
 	auto number = (-TokenType::integerLiteral | -TokenType::floatLiteral) >> [](ast::TemporaryToken *node) {
 		return new ast::Number(node->token().lexeme());
 	};
 
-//	AlternativeParser primary = -TokenType::nilKeyword | -TokenType::falseKeyword | -TokenType::trueKeyword
-//			| number | -TokenType::string | -TokenType::tripleDot | (unop + number);
+	// primary ::= nil | false | true | Number | String | ‘...’ | prefixexp | tableconstructor | unop exp
+	auto primary = -TokenType::nilKeyword
+			| -TokenType::falseKeyword
+			| -TokenType::trueKeyword
+			| number
+			| -TokenType::string
+			| -TokenType::tripleDot
+			| ((unop + number) >> [](ast::TemporaryPair *node) {
+						QSharedPointer<ast::TemporaryToken> temporaryToken
+								= node->left().dynamicCast<ast::TemporaryToken>();
+						ast::UnaryOperator::Type type = ast::UnaryOperator::Type::minus;
+						switch (temporaryToken->token().token()) {
+						case TokenType::minus:
+							type = ast::UnaryOperator::Type::minus;
+							break;
+						case TokenType::notKeyword:
+							type = ast::UnaryOperator::Type::notOperator;
+							break;
+						case TokenType::sharp:
+							type = ast::UnaryOperator::Type::sharp;
+							break;
+						case TokenType::tilda:
+							type = ast::UnaryOperator::Type::tilda;
+							break;
+						default:
+							/// @todo Report internal parser error.
+							break;
+						}
 
-	return number.parse(*mTokenStream);
+						return new ast::UnaryOperator(type, node->right());
+					})
+			;
+
+	return primary.parse(*mTokenStream);
 }
 
 void TextLanguageParser::reportError(QString const &message)

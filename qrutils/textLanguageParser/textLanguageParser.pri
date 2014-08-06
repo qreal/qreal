@@ -10,6 +10,7 @@ HEADERS += \
 	$$PWD/ast/unaryOperator.h \
 	$$PWD/ast/binaryOperator.h \
 	$$PWD/ast/temporaryToken.h \
+	$$PWD/ast/temporaryPair.h \
 	$$PWD/ast/number.h \
 	$$PWD/details/lexer.h \
 	$$PWD/details/token.h  \
@@ -19,6 +20,7 @@ HEADERS += \
 	$$PWD/details/parserInterface.h \
 	$$PWD/details/alternativeParser.h \
 	$$PWD/details/transformingParser.h \
+	$$PWD/details/concatenationParser.h \
 	$$PWD/details/functionTraits.h \
 
 SOURCES += \

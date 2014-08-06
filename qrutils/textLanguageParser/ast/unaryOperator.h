@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QSharedPointer>
+
 #include "node.h"
 
 #include "qrutils/utilsDeclSpec.h"
@@ -16,16 +18,12 @@ public:
 		, tilda
 	};
 
-	UnaryOperator(Type type)
-		: mType(type)
+	UnaryOperator(Type type, QSharedPointer<Node> operand)
+		: mType(type), mOperand(operand)
 	{
 	}
 
-	void setOperand(Node *operand) {
-		mOperand = operand;
-	}
-
-	Node *operand() const {
+	QSharedPointer<Node> operand() const {
 		return mOperand;
 	}
 
@@ -35,7 +33,7 @@ public:
 
 private:
 	Type mType;
-	Node *mOperand;
+	QSharedPointer<Node> mOperand;
 };
 
 }

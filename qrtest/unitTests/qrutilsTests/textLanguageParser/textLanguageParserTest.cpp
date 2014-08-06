@@ -1,6 +1,7 @@
 #include "textLanguageParserTest.h"
 
 #include "textLanguageParser/ast/number.h"
+#include "textLanguageParser/ast/unaryOperator.h"
 
 #include "gtest/gtest.h"
 
@@ -26,4 +27,26 @@ TEST_F(TextLanguageParserTest, sanityCheck)
 	ASSERT_NE(nullptr, number);
 
 	EXPECT_EQ("123", number->stringRepresentation());
+}
+
+TEST_F(TextLanguageParserTest, unaryOp)
+{
+	QString const stream = "-123";
+
+	auto result = mParser->parse(stream);
+
+	EXPECT_TRUE(result.errors.isEmpty());
+	EXPECT_NE(nullptr, result.astRoot);
+
+	QSharedPointer<ast::UnaryOperator> unaryOp = result.astRoot.dynamicCast<ast::UnaryOperator>();
+
+	ASSERT_FALSE(unaryOp.isNull());
+
+	EXPECT_EQ(ast::UnaryOperator::Type::minus, unaryOp->type());
+
+	QSharedPointer<ast::Number> operand = unaryOp->operand().dynamicCast<ast::Number>();
+
+	ASSERT_FALSE(operand.isNull());
+
+	EXPECT_EQ("123", operand->stringRepresentation());
 }
