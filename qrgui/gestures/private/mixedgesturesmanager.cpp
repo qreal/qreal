@@ -1,8 +1,8 @@
 #include "mixedgesturesmanager.h"
 
-#include "view/gestures/rectanglegesturesmanager.h"
-#include "view/gestures/nearestposgridgesturesmanager.h"
-#include "view/gestures/curveKeyBuilder.h"
+#include "rectanglegesturesmanager.h"
+#include "nearestposgridgesturesmanager.h"
+#include "curveKeyBuilder.h"
 
 const double weight1 = 0.2; //0.3: 891 0.2: 899
 const double weight2 = 1 - weight1;

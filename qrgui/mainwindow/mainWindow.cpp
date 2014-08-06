@@ -52,7 +52,6 @@
 
 #include "dialogs/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
-#include "dialogs/gesturesShow/gesturesWidget.h"
 
 using namespace qReal;
 using namespace qReal::commands;

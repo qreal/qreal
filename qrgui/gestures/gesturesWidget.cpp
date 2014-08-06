@@ -1,18 +1,19 @@
 #include "gesturesWidget.h"
+
 #include "ui_gesturesWidget.h"
+#include "gesturePainter.h"
 
 using namespace qReal::gestures;
+
+int const gestureAreaSize = 450;
+int const pointsAtSegment = 5;
 
 GesturesWidget::GesturesWidget(QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::GesturesWidget)
 {
 	mUi->setupUi(this);
-	mGestureScene = new QGraphicsScene(mUi->graphicsView);
-	gestColor = Qt::blue;
-	mUi->graphicsView->setScene(mGestureScene);
-	connect(mUi->listWidget, SIGNAL(currentItemChanged(QListWidgetItem *,QListWidgetItem *))
-			, this, SIGNAL(currentElementChanged()));
+	connect(mUi->listWidget, &QListWidget::currentItemChanged, this, &GesturesWidget::currentElementChanged);
 }
 
 GesturesWidget::~GesturesWidget()
@@ -20,28 +21,12 @@ GesturesWidget::~GesturesWidget()
 	delete mUi;
 }
 
-void GesturesWidget::draw(PathVector const &paths)
+void GesturesWidget::draw(QString const &paths)
 {
-	mGestureScene->clear();
-
-	foreach (PointVector const &path, paths) {
-		QPointF previousPoint(minBoarder, minBoarder);
-
-		QPen pen(gestColor);
-		pen.setWidth(gestWidth);
-
-		if (path.isEmpty()) {
-			return;
-		}
-		foreach (QPointF const &currentPoint, path) {
-			if (previousPoint.x() != minBoarder && previousPoint.y() != minBoarder) {
-				mGestureScene->addLine(QLineF(previousPoint, currentPoint), pen);
-			} else {
-				mGestureScene->addLine(QLineF(currentPoint, currentPoint), pen);
-			}
-			previousPoint = currentPoint;
-		}
-	}
+	QSize const size(gestureAreaSize, gestureAreaSize);
+	GesturePainter painter(paths, Qt::white, Qt::blue, gestureAreaSize);
+	QPixmap const gestureIcon = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
+	mUi->gesturePixmap->setPixmap(gestureIcon);
 }
 
 int GesturesWidget::coord(int previous, int next, int part)

@@ -3,11 +3,10 @@
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
 
-#include <interpreterBase/robotModel/robotModelInterface.h>
 
+#include "commonTwoDModel/robotModel/twoDRobotModel.h"
 #include "commonTwoDModel/engine/twoDModelControlInterface.h"
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
-#include "commonTwoDModel/engine/configurer.h"
 
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
@@ -28,9 +27,7 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlI
 	Q_OBJECT
 
 public:
-	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel
-			, Configurer const * const configurer);
+	explicit TwoDModelEngineFacade(robotModel::TwoDRobotModel &robotModel);
 
 	~TwoDModelEngineFacade();
 

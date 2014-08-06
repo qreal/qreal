@@ -2,22 +2,19 @@
 
 #include <qrkernel/ids.h>
 
-#include <QtCore/QPointF>
-#include <QtCore/QPoint>
-#include <QtCore/QLineF>
-#include <QtCore/QList>
-#include <QtCore/QString>
 #include <QtCore/QMap>
 #include <QtWidgets/QWidget>
 
-#include "view/gestures/keyManagerInterface.h"
-#include "view/gestures/keyManager.h"
+#include "gesturesPainterInterface.h"
+#include "private/geometricForms.h"
+
 #include "pluginManager/editorManagerInterface.h"
-#include "mainwindow/gesturesPainterInterface.h"
-#include "view/gestures/abstractRecognizer.h"
 
 namespace qReal {
 namespace gestures {
+
+class KeyManager;
+class GesturesManager;
 
 class MouseMovementManager
 {
@@ -86,11 +83,10 @@ private:
 	EditorManagerInterface const &mEditorManagerInterface;
 	GesturesPainterInterface *mGesturesPaintMan;  // Does not take ownership
 	PathVector mPath;
-	IKeyManager *mKeyManager;
-	KeyManager mKeyStringManager;
-	QPointF mCentre;
-	GesturesManager *mGesturesManager;
+	QPointF mCenter;
 	QSet<Id> mInitializedGestures;
+	QScopedPointer<KeyManager> mKeyStringManager;
+	QScopedPointer<GesturesManager> mGesturesManager;
 };
 
 }

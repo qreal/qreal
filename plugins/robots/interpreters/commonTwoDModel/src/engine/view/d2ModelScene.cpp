@@ -8,7 +8,6 @@
 #include <qrutils/graphicsUtils/gridDrawer.h>
 
 #include "robotItem.h"
-#include "commonTwoDModel/engine/configurer.h"
 
 #include "src/engine/model/model.h"
 #include "src/engine/items/wallItem.h"
@@ -21,12 +20,10 @@ using namespace qReal;
 using namespace graphicsUtils;
 
 D2ModelScene::D2ModelScene(model::Model &model
-		, Configurer const &configurer
 		, AbstractView *view
 		, QObject *parent)
 	: AbstractScene(view, parent)
 	, mModel(model)
-	, mConfigurer(configurer)
 	, mDrawingAction(none)
 {
 	mFirstPenWidth = 6;
@@ -52,7 +49,7 @@ D2ModelScene::~D2ModelScene()
 
 void D2ModelScene::drawInitialRobot()
 {
-	mRobot = new RobotItem(mConfigurer.robotImage(), mModel.robotModel());
+	mRobot = new RobotItem(mModel.robotModel());
 	connect(mRobot, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
 	connect(mRobot, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
 	addItem(mRobot);

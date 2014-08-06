@@ -14,7 +14,6 @@
 #include "mainwindow/mainWindowInterpretersInterface.h"
 #include "mainwindow/mainWindowDockInterface.h"
 #include "mainwindow/propertyEditorProxyModel.h"
-#include "mainwindow/gesturesPainterInterface.h"
 #include "mainwindow/findManager.h"
 #include "mainwindow/referenceList.h"
 #include "mainwindow/projectManager/projectManager.h"
@@ -23,7 +22,6 @@
 #include "mainwindow/filterObject.h"
 #include "mainwindow/startWidget/startWidget.h"
 #include "mainwindow/propertyEditorProxyModel.h"
-#include "mainwindow/gesturesPainterInterface.h"
 
 #include "pluginManager/editorManagerInterface.h"
 #include "pluginManager/editorManager.h"
@@ -37,7 +35,9 @@
 #include "controller/controller.h"
 #include "toolPluginInterface/systemEvents.h"
 
-#include "dialogs/gesturesShow/gesturesWidget.h"
+#include "gestures/gesturesPainterInterface.h"
+#include "gestures/gesturesWidget.h"
+
 #include "dialogs/preferencesDialog.h"
 #include "dialogs/findReplaceDialog.h"
 #include "dialogs/suggestToCreateDiagramDialog.h"

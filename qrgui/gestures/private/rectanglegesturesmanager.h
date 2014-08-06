@@ -1,7 +1,7 @@
 #pragma once
 
-#include "view/gestures/abstractRecognizer.h"
-#include "view/gestures/geometricForms.h"
+#include "abstractRecognizer.h"
+#include "geometricForms.h"
 
 namespace qReal {
 namespace gestures {

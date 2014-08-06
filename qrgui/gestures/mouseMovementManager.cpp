@@ -2,10 +2,11 @@
 
 #include <qrkernel/logging.h>
 
-#include "view/gestures/pathCorrector.h"
-#include "view/gestures/levenshteinDistance.h"
-#include "view/gestures/geometricForms.h"
-#include "view/gestures/mixedgesturesmanager.h"
+#include "private/geometricForms.h"
+#include "private/keyManager.h"
+#include "private/pathCorrector.h"
+#include "private/levenshteinDistance.h"
+#include "private/mixedgesturesmanager.h"
 
 QString const comma = ", ";
 QString const pointDelimeter = " : ";
@@ -24,14 +25,13 @@ MouseMovementManager::MouseMovementManager(Id const &diagram
 	, mEditorManagerInterface(editorManagerInterface)
 	, mGesturesPaintMan(gesturesPaintManager)
 {
-	mGesturesManager = new MixedGesturesManager();
-	mKeyManager = &mKeyStringManager;
+	mKeyStringManager.reset(new KeyManager);
+	mGesturesManager.reset(new MixedGesturesManager);
 	initializeGestures();
 }
 
 MouseMovementManager::~MouseMovementManager()
 {
-	delete mGesturesManager;
 }
 
 void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gesturesPainter)
@@ -44,7 +44,7 @@ void MouseMovementManager::drawIdealPath()
 	Id const currentElement = mGesturesPaintMan->currentElement();
 	if (mEditorManagerInterface.elements(mDiagram).contains(currentElement)) {
 		QString const paths = mEditorManagerInterface.mouseGesture(currentElement);
-		mGesturesPaintMan->draw(stringToPath(paths));
+		mGesturesPaintMan->draw(paths);
 	}
 }
 
@@ -52,7 +52,9 @@ void MouseMovementManager::printElements()
 {
 	QList<QPair<QString, Id> > elements;
 	for (Id const &element : mEditorManagerInterface.elements(mDiagram)) {
-		elements << qMakePair(mEditorManagerInterface.friendlyName(element), element);
+		if (!mEditorManagerInterface.mouseGesture(element).isEmpty()) {
+			elements << qMakePair(mEditorManagerInterface.friendlyName(element), element);
+		}
 	}
 
 	mGesturesPaintMan->setElements(elements);
@@ -96,11 +98,11 @@ void MouseMovementManager::recountCentre()
 	}
 
 	int count = 0;
-	foreach (PointVector const &path, mPath) {
+	for (PointVector const &path : mPath) {
 		count += path.size();
 	}
 
-	mCentre = ((count - 1) * mCentre + mPath.back().back()) / count;
+	mCenter = ((count - 1) * mCenter + mPath.back().back()) / count;
 }
 
 void MouseMovementManager::mousePress(QPointF const &pnt)
@@ -122,7 +124,7 @@ void MouseMovementManager::mouseMove(QPointF const &pnt)
 
 QPointF MouseMovementManager::pos()
 {
-	return mCentre;
+	return mCenter;
 }
 
 PathVector MouseMovementManager::stringToPath(QString const &valueStr)

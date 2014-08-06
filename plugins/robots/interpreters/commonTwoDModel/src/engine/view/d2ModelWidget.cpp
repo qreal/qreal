@@ -20,8 +20,6 @@
 #include "sonarSensorItem.h"
 #include "rotater.h"
 
-#include "commonTwoDModel/engine/configurer.h"
-
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
@@ -36,16 +34,15 @@ using namespace qReal;
 using namespace utils;
 using namespace graphicsUtils;
 using namespace interpreterBase;
-using namespace robotModel;
+using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, QWidget *parent)
+D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
 	, mModel(model)
-	, mDisplay(configurer->displayWidget(this))
+	, mDisplay(model.robotModel().info().displayWidget(this))
 	, mWidth(defaultPenWidth)
-	, mConfigurer(configurer)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -115,7 +112,7 @@ void D2ModelWidget::initWidget()
 
 	mUi->setupUi(this);
 
-	mScene = new D2ModelScene(mModel, *mConfigurer.data(), mUi->graphicsView);
+	mScene = new D2ModelScene(mModel, mUi->graphicsView);
 	connectDevicesConfigurationProvider(mScene);
 	mUi->graphicsView->setScene(mScene);
 	mUi->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -387,13 +384,13 @@ void D2ModelWidget::reinitSensor(PortInfo const &port)
 	SensorItem *sensor = device.isA<RangeSensor>()
 			? new SonarSensorItem(mModel.worldModel(), mModel.robotModel().configuration()
 					, port
-					, mConfigurer->sensorImagePath(device)
-					, mConfigurer->sensorImageRect(device)
+					, mModel.robotModel().info().sensorImagePath(device)
+					, mModel.robotModel().info().sensorImageRect(device)
 					)
 			: new SensorItem(mModel.robotModel().configuration()
 					, port
-					, mConfigurer->sensorImagePath(device)
-					, mConfigurer->sensorImageRect(device)
+					, mModel.robotModel().info().sensorImagePath(device)
+					, mModel.robotModel().info().sensorImageRect(device)
 					);
 
 	mScene->robot()->addSensor(port, sensor);
@@ -701,10 +698,10 @@ void D2ModelWidget::updateWheelComboBoxes()
 	};
 
 	if (!setSelectedPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
-		if (!setSelectedPort(mUi->leftWheelComboBox, mConfigurer->defaultLeftWheelPort())) {
+		if (!setSelectedPort(mUi->leftWheelComboBox, mModel.robotModel().info().defaultLeftWheelPort())) {
 
 			qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
-					<< mConfigurer->defaultLeftWheelPort().toString();
+					<< mModel.robotModel().info().defaultLeftWheelPort().toString();
 
 			if (mUi->leftWheelComboBox->count() > 1) {
 				mUi->leftWheelComboBox->setCurrentIndex(1);
@@ -713,10 +710,10 @@ void D2ModelWidget::updateWheelComboBoxes()
 	}
 
 	if (!setSelectedPort(mUi->rightWheelComboBox, rightWheelOldPort)) {
-		if (!setSelectedPort(mUi->rightWheelComboBox, mConfigurer->defaultRightWheelPort())) {
+		if (!setSelectedPort(mUi->rightWheelComboBox, mModel.robotModel().info().defaultRightWheelPort())) {
 
 			qDebug() << "Incorrect defaultRightWheelPort set in configurer:"
-					<< mConfigurer->defaultRightWheelPort().toString();
+					<< mModel.robotModel().info().defaultRightWheelPort().toString();
 
 			if (mUi->rightWheelComboBox->count() > 2) {
 				mUi->rightWheelComboBox->setCurrentIndex(2);
