@@ -25,10 +25,19 @@ class WorldModel : public QObject
 public:
 	WorldModel();
 
+	/// Measures the distance between robot and wall
 	int sonarReading(QPointF const &position, qreal direction) const;
+
+	/// Returns area which is seen by sonar sensor.
 	QPainterPath sonarScanningRegion(QPointF const &position, qreal direction, int range = 255) const;
+
+	/// Returns area which is seen by sonar sensor with zero rotation.
 	QPainterPath sonarScanningRegion(QPointF const &position, int range = 255) const;
-	bool checkCollision(QPainterPath const &robotPath, int stroke = 3) const;
+
+	/// Checks if the given path intersects some wall.
+	bool checkCollision(QPainterPath const &path) const;
+
+	/// Returns a list of walls in the world model.
 	QList<items::WallItem *> const &walls() const;
 	QList<items::ColorFieldItem *> const &colorFields() const;
 
@@ -42,6 +51,7 @@ public:
 
 	void clear();
 
+	/// Saves world to XML.
 	QDomElement serialize(QDomDocument &document, QPointF const &topLeftPicture) const;
 	void deserialize(QDomElement const &element);
 
@@ -56,13 +66,13 @@ signals:
 	void itemRemoved(QGraphicsItem *item);
 
 private:
+	/// Returns true if ray intersects some wall.
 	bool checkSonarDistance(int const distance, QPointF const &position
 			, qreal const direction, QPainterPath const &wallPath) const;
+	QPainterPath buildWallPath() const;
 
 	QList<items::WallItem *> mWalls;
 	QList<items::ColorFieldItem *> mColorFields;
-
-	QPainterPath buildWallPath() const;
 };
 
 }

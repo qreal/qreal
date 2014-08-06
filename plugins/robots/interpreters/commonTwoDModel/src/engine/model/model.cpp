@@ -4,8 +4,7 @@
 
 using namespace twoDModel::model;
 
-Model::Model(interpreterBase::robotModel::RobotModelInterface &robotModel
-		, QObject *parent)
+Model::Model(robotModel::TwoDRobotModel &robotModel, QObject *parent)
 	: QObject(parent)
 	, mRobotModel(robotModel, mSettings, this)
 {
