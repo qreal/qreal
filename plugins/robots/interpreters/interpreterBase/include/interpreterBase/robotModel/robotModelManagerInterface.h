@@ -29,7 +29,8 @@ signals:
 	/// connection, it is emitted immediately. Signal correctly reconnects to a model when it is changed, so client
 	/// code shall connect to this signal instead of model.
 	/// @param success - true, if connected successfully.
-	void connected(bool success);
+	/// @param errorString - if connection failed, contains string to show to user.
+	void connected(bool success, QString const &errorString);
 
 	/// Signal from underlying model, emitted when robot is disconnected. Signal correctly reconnects to a model
 	/// when it is changed, so client code shall connect to this signal instead of model.

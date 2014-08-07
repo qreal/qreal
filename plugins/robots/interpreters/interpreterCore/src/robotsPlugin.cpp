@@ -4,6 +4,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <commonTwoDModel/engine/twoDModelControlInterface.h>
+#include <utils/abstractTimer.h>
 
 #include "managers/saveConvertionManager.h"
 
@@ -16,13 +17,15 @@ RobotsPlugin::RobotsPlugin()
 	: mMainWindowInterpretersInterface(nullptr)
 {
 	// WARNING: hack!
-	forceLoadCommonTwoDModelLib();
+	forceLoadLibs();
 	mInterpreterBaseTranslator.load(":/interpreterBase_" + QLocale().name());
 	mCommonTwoDModelTranslator.load(":/commonTwoDModel_" + QLocale().name());
 	mInterpreterCoreTranslator.load(":/interpreterCore_" + QLocale().name());
+	mUtilsTranslator.load(":/utils_" + QLocale().name());
 	QApplication::installTranslator(&mInterpreterBaseTranslator);
 	QApplication::installTranslator(&mCommonTwoDModelTranslator);
 	QApplication::installTranslator(&mInterpreterCoreTranslator);
+	QApplication::installTranslator(&mUtilsTranslator);
 
 	// This will start kit plugins loading and so on so we must load translators first.
 	mRobotsPluginFacade.reset(new RobotsPluginFacade);
@@ -64,10 +67,10 @@ QStringList RobotsPlugin::defaultSettingsFiles()
 	return mRobotsPluginFacade->defaultSettingsFiles();
 }
 
-void RobotsPlugin::forceLoadCommonTwoDModelLib()
+void RobotsPlugin::forceLoadLibs()
 {
 	// This will request some symbols from commonTwoDModel lib immediate loading.
 	// This hack workarrounds Window`s lazy dependencies loading (else we cannot obtain 2D model translitions).
-	QString const name = twoDModel::TwoDModelControlInterface::staticMetaObject.className();
-	Q_UNUSED(name)
+	QString name = twoDModel::TwoDModelControlInterface::staticMetaObject.className();
+	name = utils::AbstractTimer::staticMetaObject.className();
 }

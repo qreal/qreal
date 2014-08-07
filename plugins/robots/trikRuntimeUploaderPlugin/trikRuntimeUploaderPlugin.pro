@@ -4,6 +4,7 @@ CONFIG += plugin c++11
 DESTDIR = ../../../bin/plugins/tools
 MOC_DIR = .moc
 RCC_DIR = .moc
+OBJECTS_DIR = .obj
 
 INCLUDEPATH += \
 	$$PWD/../../../ \

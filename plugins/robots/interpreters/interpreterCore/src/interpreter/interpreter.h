@@ -62,7 +62,7 @@ private slots:
 	void threadStopped();
 	void newThread(qReal::Id const &startBlockId);
 
-	void connectedSlot(bool success);
+	void connectedSlot(bool success, const QString &errorString);
 	void devicesConfiguredSlot();
 
 	/// Actions when robot disconnect

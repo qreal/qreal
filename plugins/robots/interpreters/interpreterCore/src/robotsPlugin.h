@@ -39,11 +39,12 @@ private:
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
 
 	/// Forces common 2D model to be loaded right away for using its resources
-	void forceLoadCommonTwoDModelLib();
+	void forceLoadLibs();
 
 	QTranslator mInterpreterCoreTranslator;
 	QTranslator mInterpreterBaseTranslator;
 	QTranslator mCommonTwoDModelTranslator;
+	QTranslator mUtilsTranslator;
 
 	QScopedPointer<RobotsPluginFacade> mRobotsPluginFacade;
 };

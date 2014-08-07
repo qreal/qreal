@@ -1,21 +1,20 @@
-#include <utils/tcpRobotCommunicator.h>
+#include "utils/tcpRobotCommunicator.h"
 
 #include <QtNetwork/QHostAddress>
 #include <QtCore/QFileInfo>
 
-#include <QtCore/QDebug>
-
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 #include <qrutils/inFile.h>
 
 using namespace utils;
 
 static uint const port = 8888;
 
-TcpRobotCommunicator::TcpRobotCommunicator(const QString &settings)
-	: mIsConnected(false),
-	  mSettings(settings)
+TcpRobotCommunicator::TcpRobotCommunicator(QString const &serverIpSettingsKey)
+	: mIsConnected(false)
+	, mServerIpSettingsKey(serverIpSettingsKey)
 {
 }
 
@@ -107,22 +106,23 @@ void TcpRobotCommunicator::connect()
 		return;
 	}
 
-	///"TrikTcpServer"
-	QString const server = qReal::SettingsManager::value(mSettings).toString();
+	QString const server = qReal::SettingsManager::value(mServerIpSettingsKey).toString();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
-		qDebug() << "Unable to resolve host. Check server address and try again";
+		emit connected(false, tr("Unable to resolve host. Check server address and try again"));
 		return;
 	}
 
 	mSocket.connectToHost(hostAddress, static_cast<quint16>(port));
 	bool const result = mSocket.waitForConnected(5000);
 	if (!result) {
-		qDebug() << mSocket.errorString();
+		QLOG_ERROR() << "Socket error" << mSocket.errorString();
+		emit connected(false, tr("Connection failed"));
+		return;
 	}
 
 	mIsConnected = true;
-	emit connected(result);
+	emit connected(true, "");
 }
 
 void TcpRobotCommunicator::disconnect()

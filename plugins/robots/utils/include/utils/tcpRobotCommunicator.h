@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QtNetwork/QTcpSocket>
+
+#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+
 #include "utilsDeclSpec.h"
 
 namespace utils {
@@ -11,7 +14,9 @@ class ROBOTS_UTILS_EXPORT TcpRobotCommunicator : public QObject
 	Q_OBJECT
 
 public:
-	TcpRobotCommunicator(QString const &settings);
+	/// Constructor.
+	/// @param serverIpSettingsKey - where to find server ip setting in a registry.
+	TcpRobotCommunicator(QString const &serverIpSettingsKey);
 	~TcpRobotCommunicator();
 
 	/// Reads generated program from a file and uploads it to a robot using "file" command.
@@ -34,7 +39,7 @@ public:
 	void disconnect();
 
 signals:
-	void connected(bool result);
+	void connected(bool result, QString const &errorString);
 	void disconnected();
 
 private:
@@ -42,7 +47,7 @@ private:
 	QTcpSocket mSocket;
 
 	bool mIsConnected;
-	QString mSettings;
+	QString const mServerIpSettingsKey;
 };
 
 }

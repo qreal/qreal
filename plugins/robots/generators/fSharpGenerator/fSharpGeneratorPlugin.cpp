@@ -36,22 +36,22 @@ QList<ActionInfo> FSharpGeneratorPlugin::actions()
 	mGenerateCodeAction.setText(tr("Generate FSharp code"));
 	mGenerateCodeAction.setIcon(QIcon(":/fSharp/images/generateFsCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+	connect(&mGenerateCodeAction, &QAction::triggered, this, &FSharpGeneratorPlugin::generateCode);
 
 	mUploadProgramAction.setText(tr("Upload program FSharp"));
 	mUploadProgramAction.setIcon(QIcon(":/fSharp/images/uploadProgram.svg"));
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	connect(&mUploadProgramAction, &QAction::triggered, this, &FSharpGeneratorPlugin::uploadProgram);
 
 	mRunProgramAction.setText(tr("Run program FSharp"));
 	mRunProgramAction.setIcon(QIcon(":/fSharp/images/uploadAndExecuteProgram.svg"));
 	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
-	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()));
+	connect(&mRunProgramAction, &QAction::triggered, this, &FSharpGeneratorPlugin::runProgram);
 
 	mStopRobotAction.setText(tr("Stop robot"));
 	mStopRobotAction.setIcon(QIcon(":/fSharp/images/stopRobot.svg"));
 	ActionInfo stopRobotActionInfo(&mStopRobotAction, "generators", "tools");
-	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()));
+	connect(&mStopRobotAction, &QAction::triggered, this, &FSharpGeneratorPlugin::stopRobot);
 
 	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }
@@ -111,22 +111,30 @@ bool FSharpGeneratorPlugin::uploadProgram()
 
 	QString const pathToTheTrikCore = " -r \"..\\..\\Trik.Core.dll\"";
 
-	if (qReal::SettingsManager::value("FSharpPath").toString() == "") {
+	if (qReal::SettingsManager::value("FSharpPath").toString().isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(
 			tr("Please provide path to the FSharp Compiler in Settings dialog.")
 		);
+
 		return false;
 	}
 
-	QString const compileCommand = "\"" + qReal::SettingsManager::value("FSharpPath").toString() + "\" "
-			+ "\"" + fileInfo.absoluteFilePath() + "\""
-			+ pathToTheTrikCore;
+	QString const compileCommand = QString("\"%1\" \"%2\" %3")
+			.arg(qReal::SettingsManager::value("FSharpPath").toString())
+			.arg(fileInfo.absoluteFilePath())
+			.arg(pathToTheTrikCore);
 
 	compileProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
 	compileProcess.start(compileCommand);
+	compileProcess.waitForStarted();
+	if (compileProcess.state() != QProcess::Running) {
+		mMainWindowInterface->errorReporter()->addError(tr("Unable to launch F# compiler"));
+		return false;
+	}
+
 	compileProcess.waitForFinished();
 
-	if (qReal::SettingsManager::value("WinScpPath").toString() == "") {
+	if (qReal::SettingsManager::value("WinScpPath").toString().isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(
 			tr("Please provide path to the WinSCP in Settings dialog.")
 		);
@@ -134,13 +142,17 @@ bool FSharpGeneratorPlugin::uploadProgram()
 		return false;
 	}
 
-	QString const moveCommand = "\"" + qReal::SettingsManager::value("WinScpPath").toString() + "\""
-			+ " /command  \"open scp://root@" + qReal::SettingsManager::value("TrikTcpServer").toString() + "\""
-			+ " \"put "+ fileInfo.absoluteFilePath().replace("fs","exe").replace("/","\\")
-			+ " /home/root/trik/FSharp/Environment/\"";
+	QString const moveCommand = QString(
+			"\"%1\" /command  \"open scp://root@%2\" \"put %3 /home/root/trik/FSharp/Environment/\"")
+			.arg(qReal::SettingsManager::value("WinScpPath").toString())
+			.arg(qReal::SettingsManager::value("TrikTcpServer").toString())
+			.arg(fileInfo.absoluteFilePath().replace("fs","exe").replace("/","\\"));
 
 	QProcess deployProcess;
-	deployProcess.startDetached(moveCommand);
+	if (!deployProcess.startDetached(moveCommand)) {
+		mMainWindowInterface->errorReporter()->addError(tr("Unable to launch WinSCP"));
+		return false;
+	}
 
 	mMainWindowInterface->errorReporter()->addInformation(
 		tr("After downloading the program, enter 'exit' or close the window")
@@ -173,7 +185,6 @@ void FSharpGeneratorPlugin::stopRobot()
 	communicator.runDirectCommand(
 			"brick.system(\"killall mono\"); "
 			"brick.system(\"killall aplay\"); \n"
-			"brick.system(\"killall vlc\"); \n"
-			"brick.system(\"killall rover-cv\");"
+			"brick.system(\"killall vlc\");"
 	);
 }

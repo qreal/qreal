@@ -35,21 +35,31 @@ void TrikRuntimeUploaderPlugin::init(qReal::PluginConfigurator const &configurat
 void TrikRuntimeUploaderPlugin::uploadRuntime()
 {
 	QProcess scpProcess;
-	QString const openConnection = "\"open scp://root@"
-			+ qReal::SettingsManager::value("TrikTcpServer").toString() + "\"" ;
+	QString const openConnection = QString("\"open scp://root@%1\"")
+			.arg(qReal::SettingsManager::value("TrikTcpServer").toString());
+
 	QString const killTrikGui = "\"call killall trikGui\"";
 	QString const restorePermissions = "\"call chmod a+x trik/trik*\"";
 	QString const restartTrikGui = "\"call cd trik\" \"call ./trikGui -qws &\"";
 
 	QString const moveCommand = " \"synchronize remote trikRuntime /home/root/trik\"";
 
-	QString const command = "\"" + qReal::SettingsManager::value("WinScpPath").toString() + "\" " // path to WinScp
-			"/command " + openConnection + "  " + killTrikGui
-			+ " " + moveCommand + " " + restorePermissions + " " + restartTrikGui;
+	QString const command = QString("\"%1\" /command %2 %3 %4 %5 %6")
+			.arg(qReal::SettingsManager::value("WinScpPath").toString())
+			.arg(openConnection)
+			.arg(killTrikGui)
+			.arg(moveCommand)
+			.arg(restorePermissions)
+			.arg(restartTrikGui);
 
-	mMainWindowInterpretersInterface->errorReporter()->addWarning(
-		tr("Attention! Start downloading the runtime. Please do not turn off the robot")
-	);
 
-	scpProcess.startDetached(command + " \"exit\" ");
+	if (!scpProcess.startDetached(command + " \"exit\" ")) {
+		mMainWindowInterpretersInterface->errorReporter()->addError(
+			tr("WinSCP process failed to launch, check path in settings")
+		);
+	} else {
+		mMainWindowInterpretersInterface->errorReporter()->addWarning(
+			tr("Attention! Start downloading the runtime. Please do not turn off the robot")
+		);
+	}
 }

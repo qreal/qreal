@@ -55,21 +55,31 @@
     </message>
     <message>
         <location filename="fSharpGeneratorPlugin.cpp" line="131"/>
+        <source>Unable to launch F# compiler</source>
+        <translation>Не удалось запустить компилятор F#, проверьте настройки</translation>
+    </message>
+    <message>
+        <location filename="fSharpGeneratorPlugin.cpp" line="139"/>
         <source>Please provide path to the WinSCP in Settings dialog.</source>
         <translation>Пожалуйста, заполните путь до WinSCP в диалоге настроек.</translation>
     </message>
     <message>
-        <location filename="fSharpGeneratorPlugin.cpp" line="146"/>
+        <location filename="fSharpGeneratorPlugin.cpp" line="153"/>
+        <source>Unable to launch WinSCP</source>
+        <translation>Не удалось запустить WinSCP, проверьте настройки</translation>
+    </message>
+    <message>
+        <location filename="fSharpGeneratorPlugin.cpp" line="158"/>
         <source>After downloading the program, enter &apos;exit&apos; or close the window</source>
         <translation>После окончания загрузки программы введите &quot;exit&quot; или закройте окно</translation>
     </message>
     <message>
-        <location filename="fSharpGeneratorPlugin.cpp" line="155"/>
+        <location filename="fSharpGeneratorPlugin.cpp" line="167"/>
         <source>Attention, the robot starts about a half-minute</source>
         <translation>Внимание, робот запустится примерно через полминуты</translation>
     </message>
     <message>
-        <location filename="fSharpGeneratorPlugin.cpp" line="170"/>
+        <location filename="fSharpGeneratorPlugin.cpp" line="182"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом, проверьте настройки (меню &quot;Настройки&quot; -&gt; &quot;Настройки...&quot; -&gt; &quot;Роботы&quot;), проверьте, включён ли робот</translation>
     </message>

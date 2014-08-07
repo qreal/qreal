@@ -15,7 +15,7 @@ public:
 	MOCK_CONST_METHOD0(model, interpreterBase::robotModel::RobotModelInterface &());
 
 	void emitConnected() {
-		emit connected(true);
+		emit connected(true, "");
 	}
 
 	void emitAllDevicesConfigured() {

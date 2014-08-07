@@ -64,7 +64,7 @@ void UsbRobotCommunicationThread::connect()
 		}
 		mFantom.nFANTOM100_destroyNXTIterator(nxtIterator, status);
 	}
-	emit connected(mActive);
+	emit connected(mActive, "");
 
 	if (mActive) {
 		mKeepAliveTimer->start(500);

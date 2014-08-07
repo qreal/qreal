@@ -1,0 +1,6 @@
+<RCC>
+        <qresource prefix="/">
+                <file>utils_ru.qm</file>
+        </qresource>
+</RCC>
+

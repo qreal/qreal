@@ -1,9 +1,9 @@
 #pragma once
 
-#include <../qrgui/toolPluginInterface/toolPluginInterface.h>
-
 #include <QtCore/QTranslator>
 #include <QtCore/QScopedPointer>
+
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
 
 namespace trikRuntimeUploaderPlugin {
 
@@ -15,9 +15,9 @@ class TrikRuntimeUploaderPlugin : public QObject, public qReal::ToolPluginInterf
 
 public:
 	TrikRuntimeUploaderPlugin();
-	virtual ~TrikRuntimeUploaderPlugin();
+	~TrikRuntimeUploaderPlugin() override;
 
-	virtual QList<qReal::ActionInfo> actions();
+	virtual QList<qReal::ActionInfo> actions() override;
 
 	virtual void init(qReal::PluginConfigurator const &configurator);
 

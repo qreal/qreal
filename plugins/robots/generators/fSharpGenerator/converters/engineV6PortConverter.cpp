@@ -11,24 +11,19 @@ QString PowerV6MotorPortConverter::convert(QString const &data) const
 {
 	switch (data[0].toLatin1()) {
 	case 'A':
-		return "JM1";
+		return "M1";
 	case 'B':
-		return "JM2";
+		return "M2";
 	case 'C':
-		return "JM3";
-
-/// @todo: JE1 suddenly gets converted to JM1, commented out.
-//	case 'J':
-//		// Got JM- or JE-form port
-//		return data.length() == 3 ? convert(data[2]) : data;
+		return "M3";
 	case '1':
-		return "JM1";
+		return "M1";
 	case '2':
-		return "JM2";
+		return "M2";
 	case '3':
-		return "JM3";
+		return "M3";
 	case '4':
-		return "JM4";
+		return "M4";
 	default:
 		return data;
 	}
