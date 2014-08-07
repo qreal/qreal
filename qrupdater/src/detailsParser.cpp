@@ -6,6 +6,10 @@ DetailsParser::DetailsParser()
 {
 }
 
+DetailsParser::~DetailsParser()
+{
+}
+
 Update *DetailsParser::update(QString const &unit)
 {
 	for (int i = 0; i < mUpdates.size(); i++) {
@@ -57,4 +61,3 @@ void DetailsParser::processDevice(QIODevice *device)
 
 	emit parseFinished();
 }
-

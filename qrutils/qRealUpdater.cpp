@@ -8,7 +8,7 @@ QRealUpdater::QRealUpdater(QString const &applicationPath)
 	, mQRealPath(applicationPath)
 
 {
-	mUpdaterPath = QFileInfo(mQRealPath).absolutePath() + "/qrUpdater";
+	mUpdaterPath = QFileInfo(mQRealPath).absolutePath() + "/qrupdater";
 }
 
 bool QRealUpdater::hasUpdates()
@@ -28,7 +28,7 @@ void QRealUpdater::startUpdater()
 
 void QRealUpdater::executeUpdater()
 {
-	QString const programPath = mUpdaterPath + "/qrUpdater";
+	QString const programPath = mUpdaterPath + "/qrupdater";
 
 	mUpdaterProcess = new QProcess();
 	mUpdaterProcess->setWorkingDirectory(mUpdaterPath);

@@ -1,20 +1,18 @@
-DESTDIR = ../bin/qrUpdater
+TEMPLATE = app
+DESTDIR = $$PWD/../bin
 
 CONFIG += console
 CONFIG += c++11
 
 QT += core network
 
-TARGET = qrUpdater
-TEMPLATE = app
-
-LIBS += -L$$PWD/../bin -lqrkernel
+LIBS += -L$$PWD/../bin -lqrkernel -lqslog
 
 INCLUDEPATH += \
 	$$PWD \
 	$$PWD/.. \
 
-HEADERS  += \
+HEADERS += \
 	$$PWD/src/detailsParser.h \
 	$$PWD/src/xmlDataParser.h \
 	$$PWD/src/downloader.h \
@@ -35,9 +33,9 @@ SOURCES += \
 	$$PWD/src/updateProcessor.cpp \
 	$$PWD/src/updateStorage.cpp \
 	$$PWD/src/argsParser.cpp \
-	$$PWD/src/updatesInstaller.cpp
+	$$PWD/src/updatesInstaller.cpp \
 
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
+OBJECTS_DIR = $$PWD/.obj
+UI_DIR = $$PWD/.ui
+MOC_DIR = $$PWD/.moc
+RCC_DIR = $$PWD/.moc
