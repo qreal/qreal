@@ -18,7 +18,6 @@ public:
 	void start(int ms) override;
 	void stop() override;
 
-
 private slots:
 	void onTick();
 

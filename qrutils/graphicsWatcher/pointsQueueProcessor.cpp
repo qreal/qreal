@@ -103,9 +103,9 @@ qreal PointsQueueProcessor::latestValue() const
 	return pointToAbsoluteValue(mNextToDraw.y(), mMinCurrent, mMaxCurrent, mGraphHeight);
 }
 
-QList<QPointF> *PointsQueueProcessor::pointsBase()
+QList<QPointF> const &PointsQueueProcessor::pointsBase() const
 {
-	return &mPointsQueue;
+	return mPointsQueue;
 }
 
 void PointsQueueProcessor::checkPeaks()

@@ -21,7 +21,7 @@ class RobotItem : public QObject, public graphicsUtils::RotateItem
 	Q_OBJECT
 
 public:
-	RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel);
+	explicit RobotItem(model::RobotModel &robotModel);
 
 	QRectF rect() const override;
 	void setSelected(bool isSelected) override;

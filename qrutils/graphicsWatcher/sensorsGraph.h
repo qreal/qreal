@@ -77,6 +77,7 @@ private:
 	QToolButton mZoomInButton;
 	QToolButton mZoomOutButton;
 	QToolButton mResetButton;
+	QToolButton mSaveButton;
 	QComboBox mSlotComboBox;
 	QTimer mUpdateTimer;
 	ExpressionsParser const *mParser;

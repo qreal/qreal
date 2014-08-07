@@ -2,8 +2,6 @@ HEADERS += \
 	$$PWD/mainWindow.h \
 	$$PWD/propertyEditorProxyModel.h \
 	$$PWD/errorReporter.h \
-	$$PWD/gesturesPainterInterface.h \
-	$$PWD/gesturesPainterInterface.h \
 	$$PWD/error.h \
 	$$PWD/errorListWidget.h \
 	$$PWD/mainWindowInterpretersInterface.h \

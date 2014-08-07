@@ -12,6 +12,13 @@
 #include <interpreterBase/blocksBase/common/waitForButtonBlock.h>
 
 #include "details/smileBlock.h"
+#include "details/drawPixelBlock.h"
+#include "details/drawLineBlock.h"
+#include "details/drawRectBlock.h"
+#include "details/drawEllipseBlock.h"
+#include "details/drawArcBlock.h"
+#include "details/setPainterWidthBlock.h"
+#include "details/setPainterColorBlock.h"
 #include "details/setBackgroundBlock.h"
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
@@ -89,7 +96,20 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new WaitForButtonBlock(mRobotModelManager->model(), "UpButtonPort");
 	} else if (elementMetatypeIs(element, "TrikWaitForPower")) {
 		return new WaitForButtonBlock(mRobotModelManager->model(), "PowerButtonPort");
-
+	} else if (elementMetatypeIs(element, "TrikSetPainterColor")) {
+		return new SetPainterColorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikSetPainterWidth")) {
+		return new SetPainterWidthBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikDrawPixel")) {
+		return new DrawPixelBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikDrawLine")) {
+		return new DrawLineBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikDrawRect")) {
+		return new DrawRectBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikDrawEllipse")) {
+		return new DrawEllipseBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikDrawArc")) {
+		return new DrawArcBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikSmile")) {
 		return new SmileBlock(mRobotModelManager->model(), false);
 	} else if (elementMetatypeIs(element, "TrikSadSmile")) {
@@ -150,6 +170,13 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			;
 
 	result
+			<< id("TrikSetPainterColor")
+			<< id("TrikSetPainterWidth")
+			<< id("TrikDrawPixel")
+			<< id("TrikDrawLine")
+			<< id("TrikDrawRect")
+			<< id("TrikDrawEllipse")
+			<< id("TrikDrawArc")
 			<< id("TrikSmile")
 			<< id("TrikSadSmile")
 			<< id("TrikSetBackground")

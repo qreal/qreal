@@ -3,10 +3,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 
-#include <qrkernel/settingsManager.h>
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
-
-#include "src/trikTwoDModelConfigurer.h"
+#include <qrkernel/settingsManager.h>
 
 using namespace trikKitInterpreter;
 using namespace qReal;
@@ -39,8 +37,7 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	});
 	mIpAdressQuicksConfigurer = quickPreferences;
 
-	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6
-			, new TrikTwoDModelConfigurer("M3", "M4"));
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6);
 
 	mTwoDRobotModelV6.setEngine(modelEngine->engine());
 	mTwoDModelV6.reset(modelEngine);

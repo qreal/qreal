@@ -43,7 +43,7 @@ public:
 	qreal latestValue() const;
 
 	/// get points data to draw a plot
-	QList<QPointF> *pointsBase();
+	QList<QPointF> const &pointsBase() const;
 
 	qreal minLimit() const;
 	qreal maxLimit() const;
