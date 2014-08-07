@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>QObject</name>
     <message>
@@ -127,7 +127,17 @@
 <context>
     <name>utils::sensorsGraph::SensorViewer</name>
     <message>
-        <location filename="graphicsWatcher/sensorViewer.cpp" line="184"/>
+        <location filename="graphicsWatcher/sensorViewer.cpp" line="107"/>
+        <source>Save values history</source>
+        <translation>Сохранить историю показаний</translation>
+    </message>
+    <message>
+        <location filename="graphicsWatcher/sensorViewer.cpp" line="107"/>
+        <source>Comma-Separated Values Files (*.csv)</source>
+        <translation>Значения, разделенные запятой (*csv)</translation>
+    </message>
+    <message>
+        <location filename="graphicsWatcher/sensorViewer.cpp" line="213"/>
         <source>value: </source>
         <translation>значение: </translation>
     </message>

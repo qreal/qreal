@@ -39,7 +39,9 @@ Label::~Label()
 
 void Label::init()
 {
-	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
+	QGraphicsTextItem::setFlags(ItemIsSelectable);
+	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
+
 	setTitleFont();
 	setRotation(mRotation);
 	if (!mBinding.isEmpty()) {
@@ -91,7 +93,7 @@ void Label::setTextFromRepo(QString const &text)
 {
 	QString const friendlyText = mEnumValues.isEmpty() ? text : mEnumValues[text];
 	if (friendlyText != toPlainText()) {
-		QGraphicsTextItem::setHtml(friendlyText); // need this to load old saves with html markup
+		QGraphicsTextItem::setPlainText(friendlyText);
 		setText(toPlainText());
 		updateData();
 	}
@@ -258,6 +260,11 @@ bool Label::isHard() const
 void Label::setHard(bool hard)
 {
 	mIsHard = hard;
+}
+
+bool Label::isReadOnly() const
+{
+	return mReadOnly;
 }
 
 void Label::focusOutEvent(QFocusEvent *event)

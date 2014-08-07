@@ -369,29 +369,29 @@
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="src/engine/view/d2ModelWidget.cpp" line="702"/>
+        <location filename="src/engine/view/d2ModelWidget.cpp" line="703"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/view/d2ModelWidget.cpp" line="702"/>
-        <location filename="src/engine/view/d2ModelWidget.cpp" line="722"/>
+        <location filename="src/engine/view/d2ModelWidget.cpp" line="703"/>
+        <location filename="src/engine/view/d2ModelWidget.cpp" line="723"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="src/engine/view/d2ModelWidget.cpp" line="722"/>
+        <location filename="src/engine/view/d2ModelWidget.cpp" line="723"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="src/engine/view/d2ModelWidget.cpp" line="1127"/>
-        <location filename="src/engine/view/d2ModelWidget.cpp" line="1128"/>
+        <location filename="src/engine/view/d2ModelWidget.cpp" line="1131"/>
+        <location filename="src/engine/view/d2ModelWidget.cpp" line="1132"/>
         <source>No wheel</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="src/engine/view/d2ModelWidget.cpp" line="1133"/>
+        <location filename="src/engine/view/d2ModelWidget.cpp" line="1137"/>
         <source>%1 (port %2)</source>
         <translation>%1 (порт %2)</translation>
     </message>

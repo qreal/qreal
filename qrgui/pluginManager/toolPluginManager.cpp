@@ -2,41 +2,17 @@
 
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/logging.h>
+
 #include "hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
+	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/tools"))
 {
-	mPluginsDir = QDir(qApp->applicationDirPath());
-
-	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("plugins")) {
-		mPluginsDir.cdUp();
-	}
-
-	mPluginsDir.cd("plugins");
-
-	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
-		// TODO: Free memory
-		QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader->instance();
-
-		if (plugin) {
-			ToolPluginInterface *toolPlugin = qobject_cast<ToolPluginInterface *>(plugin);
-			if (toolPlugin) {
-				mPlugins << toolPlugin;
-				mLoaders << loader;
-			} else {
-				// TODO: Does not work on linux. See editorManager.cpp for more details.
-				// loader->unload();
-				delete loader;
-			}
-		} else {
-			loader->unload();
-			delete loader;
-		}
-	}
+	mPlugins = mPluginManager.loadAllPlugins<ToolPluginInterface>();
 
 	loadDefaultSettings();
 	setHotKeyActions();
@@ -44,11 +20,11 @@ ToolPluginManager::ToolPluginManager()
 
 ToolPluginManager::~ToolPluginManager()
 {
-	qDeleteAll(mLoaders);
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
 {
+	QLOG_INFO() << "Initializing tool plugins...";
 	mSystemEvents = &configurator.systemEvents();
 
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
@@ -92,9 +68,9 @@ void ToolPluginManager::loadDefaultSettings()
 	}
 }
 
-QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const
+QList<QPair<QString, PreferencesPage *>> ToolPluginManager::preferencesPages() const
 {
-	QList<QPair<QString, PreferencesPage *> > result;
+	QList<QPair<QString, PreferencesPage *>> result;
 	for (ToolPluginInterface * const toolPlugin : mPlugins) {
 		if (toolPlugin->preferencesPage().second) {
 			result << toolPlugin->preferencesPage();

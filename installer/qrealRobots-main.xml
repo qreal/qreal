@@ -84,37 +84,44 @@
             </distributionFileList>
         </folder>
         <folder>
-            <destination>${installdir}/plugins</destination>
-            <name>plugins</name>
+            <destination>${installdir}/plugins/tools</destination>
+            <name>tools</name>
             <platforms>windows</platforms>
             <distributionFileList>
                 <distributionFile>
-                    <origin>%1/bin/plugins/interpreterCore.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%1/bin/plugins/robotsMetamodel.dll</origin>
+                    <origin>%1/bin/plugins/tools/interpreterCore.dll</origin>
                 </distributionFile>
             </distributionFileList>
         </folder>
         <folder>
-            <destination>${installdir}/plugins/kitPlugins</destination>
+            <destination>${installdir}/plugins/editors</destination>
+            <name>editors</name>
+            <platforms>windows</platforms>
+            <distributionFileList>
+                <distributionFile>
+                    <origin>%1/bin/plugins/editors/robotsMetamodel.dll</origin>
+                </distributionFile>
+            </distributionFileList>
+        </folder>
+        <folder>
+            <destination>${installdir}/plugins/tools/kitPlugins</destination>
             <name>kitPlugins</name>
             <platforms>windows</platforms>
             <distributionFileList>
                 <distributionFile>
-                    <origin>%1/bin/plugins/kitPlugins/nxtKitInterpreter.dll</origin>
+                    <origin>%1/bin/plugins/tools/kitPlugins/nxtKitInterpreter.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/bin/plugins/kitPlugins/trikKitInterpreter.dll</origin>
+                    <origin>%1/bin/plugins/tools/kitPlugins/trikKitInterpreter.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/bin/plugins/kitPlugins/nxtGenerator.dll</origin>
+                    <origin>%1/bin/plugins/tools/kitPlugins/nxtGenerator.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/bin/plugins/kitPlugins/russianCGenerator.dll</origin>
+                    <origin>%1/bin/plugins/tools/kitPlugins/russianCGenerator.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/bin/plugins/kitPlugins/trikGenerator.dll</origin>
+                    <origin>%1/bin/plugins/tools/kitPlugins/trikGenerator.dll</origin>
                 </distributionFile>
             </distributionFileList>
         </folder>

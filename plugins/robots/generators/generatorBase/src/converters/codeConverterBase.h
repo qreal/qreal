@@ -4,6 +4,7 @@
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include "generatorBase/converters/templateParametrizedConverter.h"
+#include "generatorBase/parts/deviceVariables.h"
 
 namespace generatorBase {
 namespace converters {
@@ -20,7 +21,8 @@ public:
 			, interpreterBase::robotModel::RobotModelInterface const &robotModel
 			, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 			, simple::Binding::ConverterInterface const *inputPortConverter
-			, simple::Binding::ConverterInterface const *functionInvocationsConverter);
+			, simple::Binding::ConverterInterface const *functionInvocationsConverter
+			, parts::DeviceVariables const &deviceVariables);
 
 	virtual ~CodeConverterBase();
 
@@ -44,6 +46,7 @@ protected:
 	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const mDevices;
 	simple::Binding::ConverterInterface const *mInputConverter;  // Takes ownership
 	simple::Binding::ConverterInterface const *mFunctionInvocationsConverter;  // Takes ownership
+	parts::DeviceVariables const &mDeviceVariables;
 };
 
 }

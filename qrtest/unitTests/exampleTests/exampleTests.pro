@@ -4,7 +4,7 @@ CONFIG += c++11
 
 include(../common.pri)
 
-LIBS += -L../../../bin -lqrkernel -lqrutils
+LIBS += -L../../../bin -lqrkernel -lqrutils -lqslog
 
 include(../../../plugins/blockDiagram/visualDebugSupport/visualDebugSupport.pri)
 

@@ -48,6 +48,18 @@ void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotMode
 	}
 }
 
+void DevicesConfigurationWidget::prependCustomWidget(RobotModelInterface &robotModel, QWidget * const widget)
+{
+	if (!widget) {
+		return;
+	}
+
+	Q_ASSERT(mRobotModelConfigurers.contains(robotModel.name()));
+	QVBoxLayout *layout = dynamic_cast<QVBoxLayout *>(mRobotModelConfigurers[robotModel.name()]->layout());
+	Q_ASSERT(layout);
+	layout->insertWidget(0, widget);
+}
+
 QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface &robotModel)
 {
 	/// @todo: What if robot model has no configurable sensors?
@@ -94,11 +106,12 @@ QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
 
 
 void DevicesConfigurationWidget::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
+	Q_UNUSED(reason)
 
 	// This method can be called when we did not accomplish processing all combo boxes during saving.
 	// So ignoring such case.
@@ -160,11 +173,11 @@ void DevicesConfigurationWidget::propagateChanges(PortInfo const &port, DeviceIn
 		for (PortInfo const &otherPort : robotModel->configurablePorts()) {
 			if (areConvertible(port, otherPort)) {
 				if (sensor.isNull()) {
-					deviceConfigurationChanged(robotModelId, otherPort, DeviceInfo());
+					deviceConfigurationChanged(robotModelId, otherPort, DeviceInfo(), Reason::userAction);
 				} else {
 					DeviceInfo const otherDevice = convertibleDevice(robotModel, otherPort, sensor);
 					if (!otherDevice.isNull()) {
-						deviceConfigurationChanged(robotModelId, otherPort, otherDevice);
+						deviceConfigurationChanged(robotModelId, otherPort, otherDevice, Reason::userAction);
 					}
 				}
 			}

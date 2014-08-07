@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtGui/QColor>
 
 #include <qrkernel/ids.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
@@ -68,6 +69,9 @@ protected:
 
 	/// Returns a property with given name of block with given id as bool, or "false" if it can't be converted to bool.
 	bool boolProperty(qReal::Id const &id, QString const &propertyName) const;
+
+	/// Returns a property of current block with given name as color.
+	QColor propertyToColor(QString const &property) const;
 
 	/// Reports error and emits "failure" signal.
 	void error(QString const &message);

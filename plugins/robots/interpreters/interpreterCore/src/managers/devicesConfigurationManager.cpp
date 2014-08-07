@@ -48,22 +48,23 @@ QString DevicesConfigurationManager::save() const
 
 void DevicesConfigurationManager::load(QString const &configuration)
 {
-	clearConfiguration();
+	clearConfiguration(Reason::loading);
 
 	QMap<QString, QMap<PortInfo, DeviceInfo>> const parsed = RobotModelUtils::deserialize(configuration);
 	for (QString const &robotModel : parsed.keys()) {
 		for (PortInfo const &port : parsed[robotModel].keys()) {
-			deviceConfigurationChanged(robotModel, port, parsed[robotModel][port]);
+			deviceConfigurationChanged(robotModel, port, parsed[robotModel][port], Reason::loading);
 		}
 	}
 }
 
 void DevicesConfigurationManager::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
+	Q_UNUSED(reason)
 
 	qReal::Id const activeDiagramGraphicalId = mMainWindowInterpretersInterface.activeDiagram();
 	if (activeDiagramGraphicalId.isNull()) {
@@ -71,7 +72,6 @@ void DevicesConfigurationManager::onDeviceConfigurationChanged(QString const &ro
 	}
 
 	qReal::Id const logicalRootId = mGraphicalModelAssistInterface.logicalId(activeDiagramGraphicalId);
-
 	mLogicalModelAssistInterface.setPropertyByRoleName(logicalRootId, save(), "devicesConfiguration");
 }
 

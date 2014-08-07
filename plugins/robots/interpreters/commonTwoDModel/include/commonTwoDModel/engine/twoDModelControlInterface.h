@@ -7,6 +7,7 @@
 #include <qrgui/toolPluginInterface/systemEventsInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/interpreterControlInterface.h>
@@ -36,6 +37,7 @@ public:
 			, qReal::SystemEventsInterface const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
+			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 			, interpreterBase::InterpreterControlInterface &interpreterControl) = 0;
 
 public slots:

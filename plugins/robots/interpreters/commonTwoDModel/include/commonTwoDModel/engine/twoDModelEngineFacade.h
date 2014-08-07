@@ -3,11 +3,10 @@
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
 
-#include <interpreterBase/robotModel/robotModelInterface.h>
 
+#include "commonTwoDModel/robotModel/twoDRobotModel.h"
 #include "commonTwoDModel/engine/twoDModelControlInterface.h"
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
-#include "commonTwoDModel/engine/configurer.h"
 
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
@@ -28,9 +27,7 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlI
 	Q_OBJECT
 
 public:
-	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	TwoDModelEngineFacade(interpreterBase::robotModel::RobotModelInterface &robotModel
-			, Configurer const * const configurer);
+	explicit TwoDModelEngineFacade(robotModel::TwoDRobotModel &robotModel);
 
 	~TwoDModelEngineFacade();
 
@@ -38,6 +35,7 @@ public:
 			, qReal::SystemEventsInterface const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
+			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
@@ -50,8 +48,6 @@ public slots:
 	void onStopInterpretation() override;
 
 private:
-	/// @todo: Ask interpreters interface for it?
-	qReal::Id mActiveDiagramLogicalId;
 	QString const mRobotModelName;
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 

@@ -130,9 +130,8 @@ void RobotsSettingsPage::restoreSettings()
 	QAbstractButton * const selectedKitButton = mUi->constructorKitGroupBox->findChild<QAbstractButton *>(selectedKit);
 	if (selectedKitButton) {
 		selectedKitButton->setChecked(true);
+		checkSelectedRobotModelButtonFor(selectedKitButton);
 	}
-
-	checkSelectedRobotModelButtonFor(selectedKitButton);
 
 	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
 	mUi->enableEnginesNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfEngines").toBool());

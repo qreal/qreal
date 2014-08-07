@@ -3,13 +3,16 @@
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "managers/paletteUpdateManager.h"
 #include "managers/kitAutoSwitcher.h"
+#include "managers/kitExtensionsUpdateManager.h"
+
+#include <interpreterBase/robotModel/portInfo.h>
 
 using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
 	: mParser(nullptr)
 	, mInterpreter(nullptr)
-	, mKitPluginManager("plugins/kitPlugins")
+	, mKitPluginManager("plugins/tools/kitPlugins")
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
@@ -85,6 +88,11 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, paletteUpdateManager, &PaletteUpdateManager::updatePalette);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
+
+	auto kitExtensionsUpdateManager = new KitExtensionsUpdateManager(mKitPluginManager
+			, configurer.textManager(), this);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, kitExtensionsUpdateManager, &KitExtensionsUpdateManager::updateExtensions);
 
 	// It will subscribe to all signals itself and free memory too.
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
@@ -179,6 +187,11 @@ void RobotsPluginFacade::initSensorWidgets()
 	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mDockDevicesConfigurer, &interpreterBase::DevicesConfigurationWidget::selectRobotModel);
+	for (interpreterBase::robotModel::RobotModelInterface * const model : mKitPluginManager.allRobotModels()) {
+		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(model->kitId())) {
+			mDockDevicesConfigurer->prependCustomWidget(*model, kit->quickPreferencesFor(*model));
+		}
+	}
 
 	mWatchListWindow = new utils::WatchListWindow(mParser);
 	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
@@ -196,8 +209,8 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 	/// @todo: Check that this code works when different kit is selected
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		for (interpreterBase::KitPluginInterface * const kit : mKitPluginManager.kitsById(kitId)) {
-			kit->init(mEventsForKitPlugin, configurer.systemEvents()
-					, configurer.graphicalModelApi(), configurer.logicalModelApi(), *mInterpreter);
+			kit->init(mEventsForKitPlugin, configurer.systemEvents(), configurer.graphicalModelApi()
+					, configurer.logicalModelApi(), configurer.mainWindowInterpretersInterface(), *mInterpreter);
 
 			for (interpreterBase::robotModel::RobotModelInterface const *model : kit->robotModels()) {
 				initFactoriesFor(kitId, model, configurer);

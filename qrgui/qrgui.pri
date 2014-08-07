@@ -4,7 +4,7 @@ INCLUDEPATH += \
 	$$PWD \
 	$$PWD/.. \
 
-LIBS += -L$$PWD/../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
+LIBS += -L$$PWD/../bin -lqrrepo -lqrkernel -lqrutils -lqslog #-lqrmc
 LIBS += -L$$PWD/../bin/thirdparty -lqscintilla2
 
 RESOURCES = $$PWD/qrgui.qrc
@@ -56,3 +56,6 @@ include(hotKeyManager/hotKeyManager.pri)
 
 # Manges styles, colors, fonts and so on
 include(brandManager/brandManager.pri)
+
+# Mouse gestures support
+include (gestures/gestures.pri)

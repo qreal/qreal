@@ -1,1 +1,1 @@
-brick.cameraLineDetector().init();
+brick.lineSensor().init(true);

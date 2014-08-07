@@ -12,6 +12,11 @@
 using namespace twoDModel;
 using namespace model;
 
+#ifdef D2_MODEL_FRAMES_DEBUG
+#include <QtWidgets/QGraphicsPathItem>
+QGraphicsPathItem *debugPath = nullptr;
+#endif
+
 WorldModel::WorldModel()
 {
 }
@@ -66,16 +71,27 @@ QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal dire
 	return sensorPositionTransform.map(rayPath);
 }
 
-bool WorldModel::checkCollision(QPainterPath const &robotPath, int stroke) const
+bool WorldModel::checkCollision(QPainterPath const &path) const
 {
-	QPainterPathStroker wallPathStroker;
-	wallPathStroker.setWidth(stroke);
-	QPainterPath const wallPath = buildWallPath();
-	QPainterPath const wallStrokedPath = stroke
-			? wallPathStroker.createStroke(wallPath)
-			: wallPath;
+#ifdef D2_MODEL_FRAMES_DEBUG
+	delete debugPath;
+	QPainterPath commonPath = buildWallPath();
+	commonPath.addPath(path);
+	debugPath = new QGraphicsPathItem(commonPath);
+	debugPath->setBrush(Qt::red);
+	debugPath->setPen(QPen(QColor(Qt::blue)));
+	debugPath->setZValue(100);
 
-	return wallStrokedPath.intersects(robotPath);
+	QGraphicsScene * const scene = mWalls.isEmpty()
+			? (mColorFields.isEmpty() ? nullptr : mColorFields[0]->scene())
+			: mWalls[0]->scene();
+	if (scene) {
+		scene->addItem(debugPath);
+		scene->update();
+	}
+#endif
+
+	return buildWallPath().intersects(path);
 }
 
 QList<items::WallItem *> const &WorldModel::walls() const
@@ -83,14 +99,16 @@ QList<items::WallItem *> const &WorldModel::walls() const
 	return mWalls;
 }
 
-void WorldModel::addWall(items::WallItem* wall)
+void WorldModel::addWall(items::WallItem *wall)
 {
 	mWalls.append(wall);
+	emit wallAdded(wall);
 }
 
-void WorldModel::removeWall(items::WallItem* wall)
+void WorldModel::removeWall(items::WallItem *wall)
 {
 	mWalls.removeOne(wall);
+	emit itemRemoved(wall);
 }
 
 QList<items::ColorFieldItem *> const &WorldModel::colorFields() const
@@ -111,17 +129,24 @@ items::WallItem *WorldModel::wallAt(int index) const
 void WorldModel::addColorField(items::ColorFieldItem *colorField)
 {
 	mColorFields.append(colorField);
+	emit colorItemAdded(colorField);
 }
 
 void WorldModel::removeColorField(items::ColorFieldItem *colorField)
 {
 	mColorFields.removeOne(colorField);
+	emit itemRemoved(colorField);
 }
 
-void WorldModel::clearScene()
+void WorldModel::clear()
 {
-	mWalls.clear();
-	mColorFields.clear();
+	while (!mWalls.isEmpty()) {
+		removeWall(mWalls.last());
+	}
+
+	while (!mColorFields.isEmpty()) {
+		removeColorField(mColorFields.last());
+	}
 }
 
 QPainterPath WorldModel::buildWallPath() const
@@ -129,9 +154,8 @@ QPainterPath WorldModel::buildWallPath() const
 	/// @todo Maintain a cache for this.
 	QPainterPath wallPath;
 
-	foreach (items::WallItem *wall, mWalls) {
-		wallPath.moveTo(wall->begin());
-		wallPath.lineTo(wall->end());
+	for (items::WallItem *wall : mWalls) {
+		wallPath.addPath(wall->path());
 	}
 
 	return wallPath;
@@ -143,14 +167,14 @@ QDomElement WorldModel::serialize(QDomDocument &document, QPointF const &topLeft
 
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
-	foreach (items::WallItem *wall, mWalls) {
+	for (items::WallItem *wall : mWalls) {
 		QDomElement wallNode = wall->serialize(document, topLeftPicture.toPoint());
 		walls.appendChild(wallNode);
 	}
 
 	QDomElement colorFields = document.createElement("colorFields");
 	result.appendChild(colorFields);
-	foreach (items::ColorFieldItem *colorField, mColorFields) {
+	for (items::ColorFieldItem *colorField : mColorFields) {
 		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture.toPoint());
 		colorFields.appendChild(colorFiedlNode);
 	}
@@ -164,7 +188,8 @@ void WorldModel::deserialize(QDomElement const &element)
 		/// @todo Report error
 		return;
 	}
-	clearScene();
+
+	clear();
 
 	QDomNodeList allWalls = element.elementsByTagName("walls");
 	for (int i = 0; i < allWalls.count(); ++i) {
@@ -175,7 +200,7 @@ void WorldModel::deserialize(QDomElement const &element)
 			QDomElement const wallNode = walls.at(i).toElement();
 			items::WallItem *wall = new items::WallItem(QPointF(0, 0), QPointF(0, 0));
 			wall->deserialize(wallNode);
-			mWalls.append(wall);
+			addWall(wall);
 		}
 	}
 
@@ -188,7 +213,7 @@ void WorldModel::deserialize(QDomElement const &element)
 			QDomElement const ellipseNode = ellipses.at(i).toElement();
 			items::EllipseItem *ellipseItem = new items::EllipseItem(QPointF(0, 0), QPointF(0, 0));
 			ellipseItem->deserialize(ellipseNode);
-			mColorFields.append(ellipseItem);
+			addColorField(ellipseItem);
 		}
 
 		QDomNodeList lines = colorFieldNode.elementsByTagName("line");
@@ -196,7 +221,7 @@ void WorldModel::deserialize(QDomElement const &element)
 			QDomElement const lineNode = lines.at(i).toElement();
 			items::LineItem* lineItem = new items::LineItem(QPointF(0, 0), QPointF(0, 0));
 			lineItem->deserialize(lineNode);
-			mColorFields.append(lineItem);
+			addColorField(lineItem);
 		}
 
 		QDomNodeList styluses = colorFieldNode.elementsByTagName("stylus");
@@ -204,7 +229,7 @@ void WorldModel::deserialize(QDomElement const &element)
 			QDomElement const stylusNode = styluses.at(i).toElement();
 			items::StylusItem *stylusItem = new items::StylusItem(0, 0);
 			stylusItem->deserialize(stylusNode);
-			mColorFields.append(stylusItem);
+			addColorField(stylusItem);
 		}
 	}
 }

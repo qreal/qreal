@@ -8,6 +8,7 @@
 #include <qrgui/toolPluginInterface/actionInfo.h>
 #include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/toolPluginInterface/systemEventsInterface.h>
+#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
@@ -34,12 +35,14 @@ public:
 			, qReal::SystemEventsInterface const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
+			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 			, InterpreterControlInterface &interpreterControl)
 	{
 		Q_UNUSED(eventsForKitPlugin)
 		Q_UNUSED(systemEvents)
 		Q_UNUSED(graphicalModel)
 		Q_UNUSED(logicalModel)
+		Q_UNUSED(interpretersInterface)
 		Q_UNUSED(interpreterControl)
 	}
 
@@ -70,6 +73,15 @@ public:
 	/// returned no widget is added on settings tab
 	/// Transfers ownership.
 	virtual AdditionalPreferences *settingsWidget() = 0;
+
+	/// Returns a widget that will be placed at devices configuration widget in the left-hand side dock.
+	/// The default implementation returns nullptr.
+	/// Transfers ownership.
+	virtual QWidget *quickPreferencesFor(robotModel::RobotModelInterface const &model)
+	{
+		Q_UNUSED(model)
+		return nullptr;
+	}
 
 	/// List of additional actions supported by plugin, to be added to toolbar and menus. Showing 2d model widget
 	/// goes here.

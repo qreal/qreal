@@ -4,6 +4,8 @@
 #include <QtCore/QPointF>
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/settingsManager.h>
+
 using namespace utils;
 
 UXInfo* UXInfo::object = nullptr;
@@ -19,53 +21,55 @@ QString const uxInfoDirName = "usabilityFiles";
 
 UXInfo::UXInfo()
 {
-	QString const dir = QApplication::applicationDirPath() + "/" + uxDir;
-	if (!QDir(dir).exists()) {
-		QDir(dir).mkpath(dir);
+	if (qReal::SettingsManager::value("usabilityTestingMode").toBool()) {
+		QString const dir = QApplication::applicationDirPath() + "/" + uxDir;
+		if (!QDir(dir).exists()) {
+			QDir(dir).mkpath(dir);
+		}
+
+		///create and open all files
+		mElementOnSceneCreationFile.setFileName(dir + elementCreationFileName);
+		if (mElementOnSceneCreationFile.open(QFile::WriteOnly | QFile::Truncate)) {
+			mElementOnSceneCreationStream.setDevice(&mElementOnSceneCreationFile);
+		}
+
+		mCreationNumber = 1;
+
+		mErrorReporterFile.setFileName(dir + errorReporterFileName);
+		if (mErrorReporterFile.open(QFile::WriteOnly | QFile::Truncate)) {
+			mErrorReporterStream.setDevice(&mErrorReporterFile);
+		}
+
+		mErrorReporterNumber = 1;
+
+		mTotalTimeFile.setFileName(dir + totalTimeFileName);
+		if (mTotalTimeFile.open(QFile::WriteOnly | QFile::Truncate)) {
+			mTotalTimeStream.setDevice(&mTotalTimeFile);
+		}
+
+		mMenuElementUsingFile.setFileName(dir + menuElementUsingFileName);
+		if (mMenuElementUsingFile.open(QFile::WriteOnly | QFile::Truncate)) {
+			mMenuElementUsingStream.setDevice(&mMenuElementUsingFile);
+		}
+
+		mMenuElementUsingNumber = 1;
+
+		mMouseClickPositionFile.setFileName(dir + mouseClickPositionFileName);
+		if (mMouseClickPositionFile.open(QFile::WriteOnly | QFile::Truncate)) {
+			mMouseClickPositionStream.setDevice(&mMouseClickPositionFile);
+		}
+
+		mMouseClickPositionNumber = 1;
+
+		mSettingChangesFile.setFileName(dir + settingChangesFileName);
+		if (mSettingChangesFile.open(QFile::WriteOnly | QFile::Truncate)) {
+			mSettingChangesStream.setDevice(&mSettingChangesFile);
+		}
+
+		mSettingChangesNumber = 1;
+
+		mTestNumber = 1;
 	}
-
-	///create and open all files
-	mElementOnSceneCreationFile.setFileName(dir + elementCreationFileName);
-	if (mElementOnSceneCreationFile.open(QFile::WriteOnly | QFile::Truncate)) {
-		mElementOnSceneCreationStream.setDevice(&mElementOnSceneCreationFile);
-	}
-
-	mCreationNumber = 1;
-
-	mErrorReporterFile.setFileName(dir + errorReporterFileName);
-	if (mErrorReporterFile.open(QFile::WriteOnly | QFile::Truncate)) {
-		mErrorReporterStream.setDevice(&mErrorReporterFile);
-	}
-
-	mErrorReporterNumber = 1;
-
-	mTotalTimeFile.setFileName(dir + totalTimeFileName);
-	if (mTotalTimeFile.open(QFile::WriteOnly | QFile::Truncate)) {
-		mTotalTimeStream.setDevice(&mTotalTimeFile);
-	}
-
-	mMenuElementUsingFile.setFileName(dir + menuElementUsingFileName);
-	if (mMenuElementUsingFile.open(QFile::WriteOnly | QFile::Truncate)) {
-		mMenuElementUsingStream.setDevice(&mMenuElementUsingFile);
-	}
-
-	mMenuElementUsingNumber = 1;
-
-	mMouseClickPositionFile.setFileName(dir + mouseClickPositionFileName);
-	if (mMouseClickPositionFile.open(QFile::WriteOnly | QFile::Truncate)) {
-		mMouseClickPositionStream.setDevice(&mMouseClickPositionFile);
-	}
-
-	mMouseClickPositionNumber = 1;
-
-	mSettingChangesFile.setFileName(dir + settingChangesFileName);
-	if (mSettingChangesFile.open(QFile::WriteOnly | QFile::Truncate)) {
-		mSettingChangesStream.setDevice(&mSettingChangesFile);
-	}
-
-	mSettingChangesNumber = 1;
-
-	mTestNumber = 1;
 	mNotEnoughDiskSpace = false;
 }
 
@@ -257,28 +261,26 @@ void UXInfo::closeUXInfo()
 	QString const newFileMouseClickPositionName = newDirName + mouseClickPositionFileName;
 	QString const newFileSettingChangesName = newDirName + settingChangesFileName;
 
-	if (dir.cdUp()) {
-		if (!dir.exists(uxInfoDirName)) {
-			dir.mkdir(uxInfoDirName);
-		}
-
-		dir.cd(uxInfoDirName);
-		QString const dirAbsolutePathName = dir.absolutePath() + "/";
-		QString const newElementOnSceneCreationName = dirAbsolutePathName + newFileElementOnSceneCreationName;
-		QString const newErrorReporterName = dirAbsolutePathName + newFileErrorReporterName;
-		QString const newTotalTimeName = dirAbsolutePathName + newFileTotalTimeName;
-		QString const newMenuElementUsingName = dirAbsolutePathName + newFileMenuElementUsingName;
-		QString const newMouseClickPositionName = dirAbsolutePathName + newFileMouseClickPositionName;
-		QString const newSettingChangesName = dirAbsolutePathName + newFileSettingChangesName;
-
-		dir.mkdir(newDirName);
-		QFile::copy(oldElementOnSceneCreationName, newElementOnSceneCreationName);
-		QFile::copy(oldErrorReporterName, newErrorReporterName);
-		QFile::copy(oldTotalTimeName, newTotalTimeName);
-		QFile::copy(oldMenuElementUsingName, newMenuElementUsingName);
-		QFile::copy(oldMouseClickPositionName, newMouseClickPositionName);
-		QFile::copy(oldSettingChangesName, newSettingChangesName);
+	if (!dir.exists(uxInfoDirName)) {
+		dir.mkdir(uxInfoDirName);
 	}
+
+	dir.cd(uxInfoDirName);
+	QString const dirAbsolutePathName = dir.absolutePath() + "/";
+	QString const newElementOnSceneCreationName = dirAbsolutePathName + newFileElementOnSceneCreationName;
+	QString const newErrorReporterName = dirAbsolutePathName + newFileErrorReporterName;
+	QString const newTotalTimeName = dirAbsolutePathName + newFileTotalTimeName;
+	QString const newMenuElementUsingName = dirAbsolutePathName + newFileMenuElementUsingName;
+	QString const newMouseClickPositionName = dirAbsolutePathName + newFileMouseClickPositionName;
+	QString const newSettingChangesName = dirAbsolutePathName + newFileSettingChangesName;
+
+	dir.mkdir(newDirName);
+	QFile::copy(oldElementOnSceneCreationName, newElementOnSceneCreationName);
+	QFile::copy(oldErrorReporterName, newErrorReporterName);
+	QFile::copy(oldTotalTimeName, newTotalTimeName);
+	QFile::copy(oldMenuElementUsingName, newMenuElementUsingName);
+	QFile::copy(oldMouseClickPositionName, newMouseClickPositionName);
+	QFile::copy(oldSettingChangesName, newSettingChangesName);
 }
 
 void UXInfo::reportCreation(const QString &editorName, const QString elementName)
