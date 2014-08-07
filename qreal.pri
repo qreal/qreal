@@ -38,3 +38,5 @@ plugins.depends = \
 	qrutils \
 	qrkernel \
 	qrmc \
+
+qrupdater.depends = qrkernel
