@@ -4,16 +4,14 @@ using namespace qrUpdater;
 
 XmlDataParser::XmlDataParser()
 	: DetailsParser()
-	, mXml(NULL)
+	, mXml(nullptr)
 	, mHasInvalidFile(false)
 {
 }
 
 XmlDataParser::~XmlDataParser()
 {
-	if (mXml != nullptr) {
-		delete mXml;
-	}
+	delete mXml;
 }
 
 void XmlDataParser::parseDevice(QIODevice *device)
@@ -70,8 +68,8 @@ void XmlDataParser::readUnitFile()
 			mXml->skipCurrentElement();
 		}
 	}
+
 	mFileUrls.insert(curModule, fileUrl);
 	mParamStrings.insert(curModule, argument);
 	mVersions.insert(curModule, version);
 }
-

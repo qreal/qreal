@@ -6,19 +6,22 @@
 #include "detailsParser.h"
 
 namespace qrUpdater {
-//! @class XmlDataParser collects info from NetworkResponse
+
+/// Collects info from NetworkResponse
 class XmlDataParser : public DetailsParser
 {
 	Q_OBJECT
+
 public:
 	class ReadError{};
 
 	XmlDataParser();
-	virtual ~XmlDataParser();
-	virtual void parseDevice(QIODevice *device);
-	virtual bool hasErrors() const;
+	~XmlDataParser() override;
 
-protected:
+	void parseDevice(QIODevice *device) override;
+	bool hasErrors() const override;
+
+private:
 	void readXml() throw(ReadError);
 	void readUnitFile();
 

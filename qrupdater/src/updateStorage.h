@@ -8,25 +8,27 @@
 #include "update.h"
 
 namespace qrUpdater {
-//!
-//! @brief The UpdateStorage class
-//! Saving updates for later usage and loading this information back
-//! using QSettings as IniFormat
+
+/// Saves updates for later usage and loading this information back using QSettings in .ini format
 class UpdateStorage : public QObject
 {
 	Q_OBJECT
+
 public:
 	UpdateStorage(QString const &updatesFolder, QObject *parent);
 
-	//! saves all info of current unit in parser, moves setup-file to storage folder
+	/// Saves all info of current unit in parser, moves setup-file to storage folder.
 	void saveFileForLater(Update *concreteUpdate, QString const &filePath);
-	//! after-install cleaning
+
+	/// Performs after-install cleaning.
 	void removeUpdate(Update *update);
 
-	//! @return True is exists file with update descriptions
+	/// @return True if file with update descriptions exists
 	bool hasPreparedUpdatesInfo();
-	//! loads mPreparedUpdates
+
+	/// Loads mPreparedUpdates
 	void loadUpdatesInfo(QStringList const &units);
+
 	void sync();
 
 	QList<Update *> preparedUpdates() const;

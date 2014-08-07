@@ -2,6 +2,9 @@
 
 using namespace qrUpdater;
 
+/// Time for main program could fully unload resources
+int const delayBeforeUpdate = 5000;
+
 UpdatesInstaller::UpdatesInstaller(QList<Update *> updates)
 {
 	mUpdatesQueue.append(updates);
@@ -25,7 +28,7 @@ UpdatesInstaller &UpdatesInstaller::operator<<(QList<Update *> updates)
 
 void UpdatesInstaller::installAll()
 {
-	QTimer::singleShot(delay, this, SLOT(startInstallation()));
+	QTimer::singleShot(delayBeforeUpdate, this, SLOT(startInstallation()));
 	sortQueue();
 }
 
@@ -53,7 +56,7 @@ void UpdatesInstaller::replaceExpressions(Update *update)
 {
 	typedef QString (*Function)(void);
 	QMap<QString, Function> replacement;
-	replacement.insert(QString("%qru:installdir%"), UpdatesInstaller::getInstallDir);
+	replacement.insert(QString("%qru:installdir%"), UpdatesInstaller::installationDirectory);
 
 	QMutableListIterator<QString> iterator(update->arguments());
 	while (iterator.hasNext()) {
@@ -67,25 +70,15 @@ void UpdatesInstaller::replaceExpressions(Update *update)
 
 void UpdatesInstaller::sortQueue()
 {
-	int const listSize = mUpdatesQueue.size();
-	for (int i = listSize - 1; i >= 0; i--) {
-		for (int j = listSize - 2; j >= 0; j--) {
-			if (mUpdatesQueue.at(j)->hasSelfInstallMarker() && !mUpdatesQueue.at(j + 1)->hasSelfInstallMarker()) {
-				Update *temp = mUpdatesQueue.at(j);
-				mUpdatesQueue[j] = mUpdatesQueue.at(j + 1);
-				mUpdatesQueue[j + 1] = temp;
-			}
-		}
-	}
+	qSort(mUpdatesQueue.begin(), mUpdatesQueue.end(), [](Update const *update1, Update const *update2) {
+		// Names comparison for durability.
+		return (!update1->hasSelfInstallMarker() && update2->hasSelfInstallMarker())
+				|| (update1->unit() < update2->unit());
+	});
 }
 
-QString UpdatesInstaller::getInstallDir()
+QString UpdatesInstaller::installationDirectory()
 {
-	QDir current(QCoreApplication::applicationDirPath());
-	if (current.cdUp()) {
-		return current.absolutePath();
-	}
-
 	return QCoreApplication::applicationDirPath();
 }
 

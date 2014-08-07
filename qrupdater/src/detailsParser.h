@@ -34,7 +34,7 @@ signals:
 	void parseFinished();
 
 public slots:
-	//! starts parsing
+	/// starts parsing
 	virtual void processDevice(QIODevice *device);
 
 protected:
@@ -42,7 +42,7 @@ protected:
 
 	QList<Update *> mUpdates;
 
-	//! unit <-> url
+	/// unit <-> url
 	QMap<QString, QUrl> mFileUrls;
 	QMap<QString, QString> mParamStrings;
 	QMap<QString, QString> mVersions;

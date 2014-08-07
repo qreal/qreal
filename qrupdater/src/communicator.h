@@ -5,27 +5,30 @@
 
 namespace qrUpdater {
 
-//!
-//! @brief The Communicator class
-//! provides simple IO methods with saving information
+/// Provides simple IO methods with saving information.
 class Communicator : public QObject
 {
 	Q_OBJECT
+
 public:
 	explicit Communicator(QObject *parent = 0);
 
-	//! Reads and saves path to main app (must be first input)
+	/// Reads and saves path to main app (must be first input).
 	void readProgramPath();
-	//! Sends 'terminate' message. Main app must be terminated immediatly in this case
+
+	/// Sends 'terminate' message. Main app must be terminated immediatly in this case.
 	void writeQuitMessage();
-	//! Sends 'resume' message. No action required
+
+	/// Sends 'resume' message. No action required.
 	void writeResumeMessage();
-	//! Prints to console your @arg message
+
+	/// Prints to console given @arg message
 	void writeCustomMessage(QString const &message);
 
-	//! @return saved path to main application
+	/// @return saved path to main application
 	QString parentAppPath() const;
-protected:
+
+private:
 	QString mParentAppPath;
 };
 

@@ -38,5 +38,3 @@ QString Communicator::parentAppPath() const
 {
 	return mParentAppPath;
 }
-
-

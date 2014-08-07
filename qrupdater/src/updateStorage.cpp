@@ -20,7 +20,7 @@ void UpdateStorage::saveUpdateInfo(Update *update)
 {
 	mUpdateInfo->beginGroup(update->unit());
 	mUpdateInfo->setValue(keys::filePath, update->filePath());
-	mUpdateInfo->setValue(keys::version, update->version());
+	mUpdateInfo->setValue(keys::version, update->version().toString());
 	mUpdateInfo->setValue(keys::arguments, update->arguments());
 	mUpdateInfo->endGroup();
 }
@@ -59,8 +59,8 @@ void UpdateStorage::loadUpdatesInfo(QStringList const &units)
 		return;
 	}
 
-	foreach (QString const &unit, units) {
-		Update *newUpdate = new Update(this);
+	for (QString const &unit : units) {
+		Update * const newUpdate = new Update(this);
 
 		mUpdateInfo->beginGroup(unit);
 		newUpdate->setData(
@@ -81,11 +81,12 @@ void UpdateStorage::loadUpdatesInfo(QStringList const &units)
 
 void UpdateStorage::sync()
 {
-	foreach (Update *update, mPreparedUpdates) {
+	for (Update *update : mPreparedUpdates) {
 		if (update->isEmpty()) {
 			mUpdateInfo->remove(update->unit());
 		}
 	}
+
 	mUpdateInfo->sync();
 	if (QDir(mUpdatesFolder).exists() && QFile::exists(mSettingsFile) && QFile(mSettingsFile).size() == 0) {
 		QFile::remove(mSettingsFile);

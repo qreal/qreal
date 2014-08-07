@@ -10,7 +10,7 @@
 #include "update.h"
 
 namespace qrUpdater {
-//! @class UpdatesInstaller installs queue of updates
+/// Installs the queue of updates.
 class UpdatesInstaller : public QObject
 {
 	Q_OBJECT
@@ -20,7 +20,7 @@ public:
 	UpdatesInstaller &operator<< (Update *update);
 	UpdatesInstaller &operator<< (QList<Update *> updates);
 
-	//! installes all of updates in queue
+	/// Installes all of updates in the queue.
 	void installAll();
 
 	bool hasNoErrors() const;
@@ -34,11 +34,9 @@ protected:
 	void installNext();
 	void replaceExpressions(Update *update);
 	void sortQueue();
-	static QString getInstallDir();
+	static QString installationDirectory();
 
 	bool mHasNoErrors;
-	//! Time for main program could fully unload resources
-	static int const delay = 1000;
 	QQueue<Update *> mUpdatesQueue;
 
 protected slots:

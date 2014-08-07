@@ -40,7 +40,7 @@ void Update::setData(QString const &filePath, QStringList const &args, QString c
 {
 	mFilePath = filePath;
 	mArguments = args;
-	mVersion = version;
+	mVersion = qReal::Version::fromString(version);
 	mDownloadUrl = link;
 	mIsInstalled = false;
 }
@@ -50,11 +50,13 @@ void Update::clear()
 	if (QFile::exists(mFilePath)) {
 		QFile::remove(mFilePath);
 	}
+
 	setData(QString(), QStringList(), QString());
 	setUnitName("");
 	if (isInstalling()) {
 		mProcess->terminate();
 	}
+
 	mProcess->deleteLater();
 	mProcess = nullptr;
 	mIsInstalled = false;
@@ -63,8 +65,7 @@ void Update::clear()
 void Update::installUpdate()
 {
 	mProcess = new QProcess(this);
-	connect(mProcess, SIGNAL(finished(int, QProcess::ExitStatus))
-			, this, SLOT(installationFinished(int, QProcess::ExitStatus)));
+	connect(mProcess, &QProcess::finished, this, &Update::installationFinished);
 	if (!hasSelfInstallMarker()) {
 		mProcess->start(mFilePath, mArguments);
 	} else {
@@ -79,7 +80,7 @@ bool Update::isEmpty() const
 
 bool Update::isInstalling() const
 {
-	return (mProcess != nullptr) && (mProcess->state() != QProcess::NotRunning);
+	return mProcess && (mProcess->state() != QProcess::NotRunning);
 }
 
 bool Update::isInstalled() const
@@ -112,19 +113,19 @@ QString Update::fileName() const
 	return QFileInfo(mFilePath).fileName();
 }
 
-QString Update::version() const
+qReal::Version Update::version() const
 {
 	return mVersion;
 }
 
-QStringList& Update::arguments()
+QStringList &Update::arguments()
 {
 	return mArguments;
 }
 
 void Update::installationFinished(int exitCode, QProcess::ExitStatus status)
 {
+	Q_UNUSED(exitCode);
 	mIsInstalled = true;
 	emit installedSuccessfully(status == QProcess::NormalExit);
-	Q_UNUSED(exitCode);
 }

@@ -13,36 +13,38 @@
 #include "communicator.h"
 
 namespace qrUpdater {
-//!
-//! @brief The UpdateProcessor class
-//! Logic of update process
+
+/// Controls update process on the highest level.
 class UpdateProcessor : public QObject
 {
 	Q_OBJECT
+
 public:
-	//! parsing application params
+	/// Parses application params.
 	UpdateProcessor();
 	~UpdateProcessor();
 
-	//! starts all updating process
+	/// Starts all updating processes.
 	void startUpdateControl();
 
-public slots:
+private slots:
 	void startDownloadingProcess();
 
-protected:
+private:
 	void initConnections();
-	//! @param newVersion
-	//! @return True if new version is newer than current
-	bool hasNewUpdates(QString const &newVersion);
-	//! loads prepared update and installs it
+
+	/// @return True if new version is newer than current
+	bool hasNewUpdates(qReal::Version const &newVersion) const;
+
+	/// Loads prepared update and installs it.
 	void checkoutPreparedUpdates();
-	//! restart main application after install finished
+
+	/// Restarts main application after installation is finished.
 	void restartMainApplication();
 
 	static int const retryTimerout = 5 * 60 * 1000;  // new try in 5 min
 	static int const maxAttemptsCount = 3;  // 3 times before quit
-	int mCurAttempt;
+	int mAttempt;
 	bool mHardUpdate;
 	QString mUpdatesFolder;
 	QTimer mRetryTimer;
@@ -57,7 +59,7 @@ protected slots:
 	void detailsChanged();
 	void fileReady(QUrl const &url, QString const &filePath);
 	void downloadingFinished();
-	void installingFinished(bool const &hasSuccess);
+	void installingFinished(bool hasSuccess);
 	void downloadErrors(QString error = QString());
 	void jobDoneQuit();
 };

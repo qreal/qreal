@@ -12,7 +12,7 @@ Downloader::Downloader(QObject *parent)
 
 void Downloader::getUpdateDetails(QUrl const &url)
 {
-	connect(&mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(detailsFileDownloaded(QNetworkReply*)));
+	connect(&mManager, &QNetworkAccessManager::finished, this, &Downloader::detailsFileDownloaded);
 	sendRequest(url);
 }
 
@@ -44,7 +44,7 @@ void Downloader::getUpdateFiles(QList<QUrl> const &urls)
 
 void Downloader::detailsFileDownloaded(QNetworkReply *reply)
 {
-	disconnect(&mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(detailsFileDownloaded(QNetworkReply*)));
+	disconnect(&mManager, &QNetworkAccessManager::finished, this, &Downloader::detailsFileDownloaded);
 	if (reply->error()) {
 		emit detailsLoadError(qPrintable(reply->errorString()));
 	} else {
@@ -54,7 +54,7 @@ void Downloader::detailsFileDownloaded(QNetworkReply *reply)
 
 void Downloader::updatesFileDownloaded(QNetworkReply *reply)
 {
-	disconnect(&mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(updatesFileDownloaded(QNetworkReply*)));
+	disconnect(&mManager, &QNetworkAccessManager::finished, this, &Downloader::updatesFileDownloaded);
 	if (mReply->error()) {
 		emit updatesLoadError(qPrintable(reply->errorString()));
 		mFile->remove();
@@ -85,9 +85,9 @@ void Downloader::sendRequest(QUrl const &url)
 
 void Downloader::startFileDownloading(QUrl const &url)
 {
-	connect(&mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(updatesFileDownloaded(QNetworkReply*)));
+	connect(&mManager, &QNetworkAccessManager::finished, this, &Downloader::updatesFileDownloaded);
 	sendRequest(url);
-	connect(mReply, SIGNAL(readyRead()), this, SLOT(fileReadyRead()));
+	connect(mReply, &QNetworkReply::readyRead, this, &Downloader::fileReadyRead, Qt::UniqueConnection);
 }
 
 void Downloader::downloadNext()

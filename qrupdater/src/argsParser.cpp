@@ -3,45 +3,44 @@
 using namespace qrUpdater;
 
 ArgsParser::ArgsParser()
-	: mHasHardUpdateParam(false)
-	, mInputMask(
-			"usage:\n"
+	: mInputMask(
+			"Usage:\n"
 			"qrupdater -unit [unit-name] -version [version] -url [url-to-file] | [-hard]\n"
-			"example:\n updater -unit windows -version 0.3.2 -url http://127.0.0.1/updates.xml\n"
+			"Example:\n qrupdater -unit windows -version 0.3.2 -url http://127.0.0.1/updates.xml\n"
 			"or\n"
 			"qrupdater -unit cool-module-name -version 2.8a -url http://example.com/updates.xml -hard\n"
 	)
-
+	, mHasHardUpdateParam(false)
 {
 	mKeywords << "-unit" << "-version" << "-url";
 }
 
-void ArgsParser::parse() throw (BadArguments)
+void ArgsParser::parse() throw (BadArgumentsException)
 {
 	QStringList const arguments = QCoreApplication::arguments();
 
 	if (arguments.size() < mKeywords.size() * 2) {
-		throw BadArguments(mInputMask);
+		throw BadArgumentsException(mInputMask);
 	}
 
 	mHasHardUpdateParam = arguments.contains("-hard", Qt::CaseInsensitive);
 
-	QString curParam = "";
-	for(int i = 0; i < arguments.size(); i++) {
+	QString curParam;
+	for (int i = 0; i < arguments.size(); ++i) {
 		if (mKeywords.contains(arguments.at(i).toLower())) {
+			// If we got on the key then storing it and proceeding iterations.
 			curParam = arguments.at(i).toLower();
 			continue;
 		}
 
-		if (curParam.isEmpty()) {
-			continue;
+		if (!curParam.isEmpty()) {
+			// Else we got value bound to the previous key.
+			mParams.insertMulti(curParam, arguments.at(i));
 		}
-
-		mParams.insertMulti(curParam, arguments.at(i));
 	}
 
 	if (hasEmptyArgs()) {
-		throw BadArguments(mInputMask);
+		throw BadArgumentsException(mInputMask);
 	}
 }
 
@@ -55,9 +54,9 @@ QString ArgsParser::detailsUrl() const
 	return mParams.value("-url");
 }
 
-QString ArgsParser::version() const
+qReal::Version ArgsParser::version() const
 {
-	return mParams.value("-version");
+	return qReal::Version::fromString(mParams.value("-version"));
 }
 
 bool ArgsParser::hardUpdate() const
@@ -74,4 +73,9 @@ bool ArgsParser::hasEmptyArgs() const
 	}
 
 	return false;
+}
+
+ArgsParser::BadArgumentsException::BadArgumentsException(QString const &message)
+	: qReal::Exception(message)
+{
 }

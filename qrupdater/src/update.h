@@ -5,10 +5,11 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
+#include <qrkernel/version.h>
+
 namespace qrUpdater {
-//!
-//! @brief The Update class
-//! Stores one-unit update information and performs its installation
+
+/// Stores one-unit update information and performs its installation.
 class Update : public QObject
 {
 	Q_OBJECT
@@ -20,13 +21,13 @@ public:
 	void setUnitName(QString const &unit);
 	void setFilePath(QString const &path);
 	void setData(QString const &filePath, QStringList const &args, QString const &version, QUrl const &link = QUrl());
-	//! removes update-file and clears all information
+	/// Removes update-file and clears all information.
 	void clear();
 
-	//! starts setup process, emits signal when finished
+	/// Starts setup process, emits signal when finished.
 	void installUpdate();
 
-	//! @return True case there is no file for install
+	/// @return True case there is no file for install.
 	bool isEmpty() const;
 	bool isInstalling() const;
 	bool isInstalled() const;
@@ -35,18 +36,18 @@ public:
 	QString unit() const;
 	QString filePath() const;
 	QString fileName() const;
-	QString version() const;
-	QStringList& arguments();
+	qReal::Version version() const;
+	QStringList &arguments();
 
 signals:
-	//! @arg True if process finished correctly
+	/// @arg True if process finished correctly.
 	void installedSuccessfully(bool);
 
 protected:
 	bool mIsInstalled;
 	QString mFilePath;
 	QStringList mArguments;
-	QString mVersion;
+	qReal::Version mVersion;
 	QString mModule;
 	QUrl mDownloadUrl;
 	QProcess *mProcess;

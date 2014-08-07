@@ -3,7 +3,7 @@
 using namespace qrUpdater;
 
 UpdateProcessor::UpdateProcessor()
-	: mCurAttempt(0)
+	: mAttempt(0)
 	, mHardUpdate(false)
 	, mUpdatesFolder("ForwardUpdates/")
 	, mCommunicator(new Communicator(this))
@@ -13,8 +13,8 @@ UpdateProcessor::UpdateProcessor()
 {
 	try {
 		mArgsParser.parse();
-	} catch(ArgsParser::BadArguments const &exception) {
-		mCommunicator->writeCustomMessage(exception.errorMsg);
+	} catch(ArgsParser::BadArgumentsException const &exception) {
+		mCommunicator->writeCustomMessage(exception.message());
 	}
 
 	initConnections();
@@ -42,24 +42,26 @@ void UpdateProcessor::startDownloadingProcess()
 	if (mRetryTimer.isActive()) {
 		mRetryTimer.stop();
 	}
-	mCurAttempt++;
+
+	mAttempt++;
 	mDownloader->getUpdateDetails(mArgsParser.detailsUrl());
 }
 
 void UpdateProcessor::initConnections()
 {
-	connect(&mRetryTimer, SIGNAL(timeout()), this, SLOT(startDownloadingProcess()));
-	connect(&mUpdatesInstaller, SIGNAL(installsFinished(bool)), this, SLOT(installingFinished(bool)));
-	connect(&mUpdatesInstaller, SIGNAL(selfInstalling()), this, SLOT(jobDoneQuit()));
-	connect(mDownloader, SIGNAL(detailsLoadError(QString)), this, SLOT(downloadErrors(QString)));
-	connect(mDownloader, SIGNAL(updatesLoadError(QString)), this, SLOT(downloadErrors(QString)));
-	connect(mDownloader, SIGNAL(updateDownloaded(QUrl,QString)), this, SLOT(fileReady(QUrl,QString)));
-	connect(mDownloader, SIGNAL(downloadingFinished()), this, SLOT(downloadingFinished()), Qt::QueuedConnection);
-	connect(mDownloader, SIGNAL(detailsDownloaded(QIODevice*)), mParser, SLOT(processDevice(QIODevice*)));
-	connect(mParser, SIGNAL(parseFinished()), this, SLOT(detailsChanged()));
+	connect(&mRetryTimer, &QTimer::timeout, this, &UpdateProcessor::startDownloadingProcess);
+	connect(&mUpdatesInstaller, &UpdatesInstaller::installsFinished, this, &UpdateProcessor::installingFinished);
+	connect(&mUpdatesInstaller, &UpdatesInstaller::selfInstalling, this, &UpdateProcessor::jobDoneQuit);
+	connect(mDownloader, &Downloader::detailsLoadError, this, &UpdateProcessor::downloadErrors);
+	connect(mDownloader, &Downloader::updatesLoadError, this, &UpdateProcessor::downloadErrors);
+	connect(mDownloader, &Downloader::updateDownloaded, this, &UpdateProcessor::fileReady);
+	connect(mDownloader, &Downloader::downloadingFinished
+			, this, &UpdateProcessor::downloadingFinished, Qt::QueuedConnection);
+	connect(mDownloader, &Downloader::detailsDownloaded, mParser, &DetailsParser::processDevice);
+	connect(mParser, &DetailsParser::parseFinished, this, &UpdateProcessor::detailsChanged);
 }
 
-bool UpdateProcessor::hasNewUpdates(QString const &newVersion)
+bool UpdateProcessor::hasNewUpdates(qReal::Version const &newVersion) const
 {
 	return newVersion > mArgsParser.version();
 }
@@ -71,7 +73,7 @@ void UpdateProcessor::checkoutPreparedUpdates()
 	}
 
 	mUpdateInfo->loadUpdatesInfo(mArgsParser.units());
-	foreach (Update *update, mUpdateInfo->preparedUpdates()) {
+	for (Update * const update : mUpdateInfo->preparedUpdates()) {
 		if (hasNewUpdates(update->version())) {
 			mUpdatesInstaller << update;
 		}
@@ -80,6 +82,7 @@ void UpdateProcessor::checkoutPreparedUpdates()
 	if (mUpdatesInstaller.isEmpty()) {
 		return;
 	}
+
 	mCommunicator->writeQuitMessage();
 	mUpdatesInstaller.installAll();
 }
@@ -88,8 +91,8 @@ void UpdateProcessor::restartMainApplication()
 {
 	QString const filePath = mCommunicator->parentAppPath();
 	QString const startPath = QFileInfo(filePath).path();
-	QProcess *mainApplication = new QProcess();
-	connect(mainApplication, SIGNAL(started()), this, SLOT(jobDoneQuit()));
+	QProcess * const mainApplication = new QProcess();
+	connect(mainApplication, &QProcess::started, this, &UpdateProcessor::jobDoneQuit);
 	mainApplication->setWorkingDirectory(startPath);
 	mainApplication->start(filePath);
 }
@@ -102,7 +105,7 @@ void UpdateProcessor::detailsChanged()
 	}
 
 	QList<QUrl> filesUrl;
-	foreach (Update *update, mParser->updatesParsed()) {
+	for (Update * const update : mParser->updatesParsed()) {
 		if (mArgsParser.units().contains(update->unit()) && hasNewUpdates(update->version())) {
 			filesUrl << update->url();
 		}
@@ -130,16 +133,16 @@ void UpdateProcessor::downloadingFinished()
 	}
 }
 
-void UpdateProcessor::installingFinished(bool const &hasSuccess)
+void UpdateProcessor::installingFinished(bool hasSuccess)
 {
 	restartMainApplication();
 	jobDoneQuit();
 	Q_UNUSED(hasSuccess);
 }
 
-void UpdateProcessor::downloadErrors(QString error)
+void UpdateProcessor::downloadErrors(QString const &error)
 {
-	if (mCurAttempt < maxAttemptsCount) {
+	if (mAttempt < maxAttemptsCount) {
 		mRetryTimer.start(retryTimerout);
 	} else {
 		jobDoneQuit();
@@ -153,4 +156,3 @@ void UpdateProcessor::jobDoneQuit()
 	mUpdateInfo->sync();
 	QCoreApplication::quit();
 }
-

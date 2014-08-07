@@ -5,9 +5,8 @@
 #include <QtCore/QFileInfo>
 
 namespace qrUpdater {
-//!
-//! @brief The Downloader class
-//! provides two-ways of downloading: to IODevice and to file
+
+/// Provides two-ways of downloading: to IODevice and to file.
 class Downloader : public QObject
 {
 	Q_OBJECT
@@ -15,9 +14,11 @@ public:
 	class CreateFileException{};
 
 	explicit Downloader(QObject *parent = 0);
-	//! downloads lightweight data and emits signal with IODevice
+
+	/// Downloads lightweight data and emits signal with IODevice.
 	void getUpdateDetails(QUrl const &url);
-	//! downloads to file, emits filepath
+
+	/// Downloads to file, emits filepath.
 	void getUpdateFiles(QList<QUrl> const &urls);
 
 signals:

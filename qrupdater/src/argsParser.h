@@ -4,52 +4,45 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMultiMap>
 
+#include <qrkernel/exception/exception.h>
+#include <qrkernel/version.h>
+
 namespace qrUpdater {
 
-//! @class ArgsParser parses arguments of command line
-//! determine what of modules to update
+/// Parses command line arguments and returns each of them in convenient form.
 class ArgsParser
 {
 public:
-	class Error
+	/// Thrown when updater cannot accept user command line input.
+	class BadArgumentsException : public qReal::Exception
 	{
 	public:
-		Error(QString const &error)
-			: errorMsg(error)
-		{}
-
-		QString errorMsg;
+		explicit BadArgumentsException(QString const &message);
 	};
-
-	class BadArguments: public Error
-	{
-	public:
-		BadArguments(QString const &error)
-			: Error(error)
-		{}
-	};
-
 
 	ArgsParser();
 
-	//! Parses command line args, call it before use other
-	void parse() throw (BadArguments);
+	/// Parses command line args. May throw BadArgumentsException when something is wrong.
+	void parse() throw (BadArgumentsException);
 
-	//! @return list of module names what we'l find and install
+	/// @return List of module names what would be found and installed.
 	QStringList units() const;
-	//! @return url to map file "unit <-> fileURL"
+
+	/// @return Url to the map file "unit <-> fileURL".
 	QString detailsUrl() const;
-	//! @return current host program version
-	QString version() const;
-	//! @return True if we'll start update installing immediatly
+
+	/// @return Version that currently installed on the host.
+	qReal::Version version() const;
+
+	/// @return True if updates installation must be started immediatly.
 	bool hardUpdate() const;
 
-protected:
+private:
 	bool hasEmptyArgs() const;
 
-	bool mHasHardUpdateParam;
-	//! Description of arguments
+	/// Help message that user gets if entered wrong arguments.
 	QString const mInputMask;
+	bool mHasHardUpdateParam;
 	QStringList mKeywords;
 	QMultiMap<QString, QString> mParams;
 };
