@@ -64,8 +64,7 @@ namespace textLanguageParser {
 /// fieldlist ::= field {fieldsep field} [fieldsep]
 ///
 /// field ::= ‘[’ exp(0) ‘]’ ‘=’ exp(0)
-///           | Name ‘=’ exp(0)
-///           | exp(0)
+///           | exp(0) [ ‘=’ exp(0) ]             // Here we check that if "=" part is present, first exp is Name.
 ///
 /// fieldsep ::= ‘,’ | ‘;’
 ///

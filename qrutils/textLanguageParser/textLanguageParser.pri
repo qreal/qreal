@@ -9,8 +9,6 @@ HEADERS += \
 	$$PWD/ast/range.h \
 	$$PWD/ast/unaryOperator.h \
 	$$PWD/ast/binaryOperator.h \
-	$$PWD/ast/temporaryToken.h \
-	$$PWD/ast/temporaryPair.h \
 	$$PWD/ast/number.h \
 	$$PWD/ast/unaryMinus.h \
 	$$PWD/ast/not.h \
@@ -37,6 +35,12 @@ HEADERS += \
 	$$PWD/ast/greaterOrEqual.h \
 	$$PWD/ast/integerNumber.h \
 	$$PWD/ast/floatNumber.h \
+	$$PWD/ast/fieldInitialization.h \
+	$$PWD/ast/expression.h \
+	$$PWD/ast/tableConstructor.h \
+	$$PWD/ast/temporaryToken.h \
+	$$PWD/ast/temporaryPair.h \
+	$$PWD/ast/temporaryList.h \
 	$$PWD/details/lexer.h \
 	$$PWD/details/token.h  \
 	$$PWD/details/tokenStream.h  \
@@ -46,6 +50,8 @@ HEADERS += \
 	$$PWD/details/alternativeParser.h \
 	$$PWD/details/transformingParser.h \
 	$$PWD/details/concatenationParser.h \
+	$$PWD/details/optionalParser.h \
+	$$PWD/details/kleeneStarParser.h \
 	$$PWD/details/functionTraits.h \
 	$$PWD/details/parserRef.h \
 	$$PWD/details/expressionParser.h \

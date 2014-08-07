@@ -1,31 +1,23 @@
 #pragma once
 
-#include <QtCore/QSharedPointer>
-
-#include "node.h"
-
-#include "qrutils/utilsDeclSpec.h"
+#include "expression.h"
 
 namespace textLanguageParser {
 namespace ast {
 
-class QRUTILS_EXPORT BinaryOperator : public Node
+class QRUTILS_EXPORT BinaryOperator : public Expression
 {
 public:
-	BinaryOperator()
-	{
-	}
-
 	void setLeftOperand(QSharedPointer<Node> leftOperand)
 	{
 		mLeftOperand = leftOperand;
-		connect(*leftOperand);
+		connect(leftOperand);
 	}
 
 	void setRightOperand(QSharedPointer<Node> rightOperand)
 	{
 		mRightOperand = rightOperand;
-		connect(*rightOperand);
+		connect(rightOperand);
 	}
 
 	QSharedPointer<Node> leftOperand() const

@@ -33,8 +33,8 @@ void Node::connect(details::Token const &token)
 	qSort(mRanges.begin(), mRanges.end(), [](Range a, Range b) { return a.start() < b.start(); });
 }
 
-void Node::connect(Node const &node)
+void Node::connect(QSharedPointer<Node> const &node)
 {
-	mRanges << node.ranges();
+	mRanges << node->ranges();
 	qSort(mRanges.begin(), mRanges.end(), [](Range a, Range b) { return a.start() < b.start(); });
 }

@@ -8,6 +8,8 @@
 #include "textLanguageParser/ast/multiplication.h"
 #include "textLanguageParser/ast/exponentiation.h"
 
+#include "textLanguageParser/ast/tableConstructor.h"
+
 #include "gtest/gtest.h"
 
 using namespace textLanguageParser;
@@ -162,4 +164,32 @@ TEST_F(TextLanguageParserTest, precedence)
 	auto six = thirdMultiplication->rightOperand().dynamicCast<ast::Number>();
 	ASSERT_FALSE(six.isNull());
 	EXPECT_EQ("6", six->stringRepresentation());
+}
+
+TEST_F(TextLanguageParserTest, tableConstructor)
+{
+	// Empty table constructor
+	QString stream = "{}";
+	auto result = mParser->parse(stream);
+	EXPECT_TRUE(result.errors.isEmpty());
+
+	QSharedPointer<ast::TableConstructor> emptyConstructor = result.astRoot.dynamicCast<ast::TableConstructor>();
+	ASSERT_FALSE(emptyConstructor.isNull());
+	EXPECT_TRUE(emptyConstructor->initializers().isEmpty());
+
+	// Some simple initializers
+	stream = "{ 1, [30] = 23; 45 }";
+	result = mParser->parse(stream);
+	EXPECT_TRUE(result.errors.isEmpty());
+	QSharedPointer<ast::TableConstructor> constructor = result.astRoot.dynamicCast<ast::TableConstructor>();
+	ASSERT_FALSE(constructor.isNull());
+	EXPECT_EQ(3, constructor->initializers().size());
+
+	// Test from Lua reference
+//	stream = "{ [f(1)] = g; \"x\", \"y\"; x = 1, f(x), [30] = 23; 45 }";
+//	result = mParser->parse(stream);
+//	EXPECT_TRUE(result.errors.isEmpty());
+//	QSharedPointer<ast::TableConstructor> constructor = result.astRoot.dynamicCast<ast::TableConstructor>();
+//	ASSERT_FALSE(constructor.isNull());
+//	EXPECT_EQ(7, constructor->initializers().size());
 }

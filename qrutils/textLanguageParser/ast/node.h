@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QList>
+#include <QtCore/QSharedPointer>
 
 #include "textLanguageParser/ast/range.h"
 #include "textLanguageParser/details/token.h"
@@ -20,7 +21,7 @@ public:
 	QList<Range> const &ranges() const;
 
 	void connect(details::Token const &token);
-	void connect(Node const &node);
+	void connect(QSharedPointer<Node> const &node);
 
 private:
 	/// Connection of a node is a list of ranges of all its subnodes.

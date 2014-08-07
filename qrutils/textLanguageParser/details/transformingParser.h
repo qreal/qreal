@@ -21,12 +21,17 @@ public:
 	TextLanguageParserInterface::Result parse(TokenStream &tokenStream) const override
 	{
 		typedef typename function_traits<Transformation>::template arg<0>::type PointerToNodeType;
-		typedef typename std::remove_pointer<PointerToNodeType>::type NodeType;
+		typedef decltype(&PointerToNodeType::operator *) DereferenceOperatorType;
+		typedef typename function_traits<DereferenceOperatorType>::result_type NodeReference;
+		typedef typename std::remove_reference<NodeReference>::type NodeType;
 
 		TextLanguageParserInterface::Result parserResult = mParser->parse(tokenStream);
-		QSharedPointer<NodeType> node = parserResult.astRoot.staticCast<NodeType>();
-		parserResult.astRoot = mTransformation(node.data()).template staticCast<ast::Node>();
-		parserResult.astRoot->connect(*node);
+		if (parserResult.astRoot) {
+			QSharedPointer<NodeType> node = parserResult.astRoot.staticCast<NodeType>();
+			parserResult.astRoot = mTransformation(node).template staticCast<ast::Node>();
+			parserResult.astRoot->connect(node);
+		}
+
 		return parserResult;
 	}
 

@@ -1,11 +1,6 @@
 #pragma once
 
-#include <QtCore/QSharedPointer>
-
 #include "node.h"
-#include "textLanguageParser/details/token.h"
-
-#include "qrutils/utilsDeclSpec.h"
 
 namespace textLanguageParser {
 namespace ast {

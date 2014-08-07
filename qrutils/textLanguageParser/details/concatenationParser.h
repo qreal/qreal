@@ -25,10 +25,18 @@ public:
 		if (mParser1->first().contains(tokenStream.next().token())) {
 			TextLanguageParserInterface::Result parser1Result = mParser1->parse(tokenStream);
 			TextLanguageParserInterface::Result parser2Result = mParser2->parse(tokenStream);
-			ast::TemporaryPair *temporaryPair = new ast::TemporaryPair(parser1Result.astRoot, parser2Result.astRoot);
-			temporaryPair->connect(*parser1Result.astRoot);
-			temporaryPair->connect(*parser2Result.astRoot);
-			return TextLanguageParserInterface::Result(temporaryPair, parser1Result.errors << parser2Result.errors);
+			if (!parser2Result.astRoot) {
+				return parser1Result;
+			} else if (!parser1Result.astRoot) {
+				return parser2Result;
+			} else {
+				ast::TemporaryPair *temporaryPair
+						= new ast::TemporaryPair(parser1Result.astRoot, parser2Result.astRoot);
+
+				temporaryPair->connect(parser1Result.astRoot);
+				temporaryPair->connect(parser2Result.astRoot);
+				return TextLanguageParserInterface::Result(temporaryPair, parser1Result.errors << parser2Result.errors);
+			}
 		}
 
 		return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().end()

@@ -1,25 +1,19 @@
 #pragma once
 
-#include <QtCore/QSharedPointer>
-
-#include "node.h"
+#include "expression.h"
 
 namespace textLanguageParser {
 namespace ast {
 
-class QRUTILS_EXPORT UnaryOperator : public Node {
+class QRUTILS_EXPORT UnaryOperator : public Expression {
 public:
-	UnaryOperator()
-	{
-	}
-
 	QSharedPointer<Node> operand() const {
 		return mOperand;
 	}
 
 	void setOperand(QSharedPointer<Node> operand) {
 		mOperand = operand;
-		connect(*operand);
+		connect(operand);
 	}
 
 private:

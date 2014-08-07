@@ -8,6 +8,8 @@
 #include "textLanguageParser/details/alternativeParser.h"
 #include "textLanguageParser/details/transformingParser.h"
 #include "textLanguageParser/details/concatenationParser.h"
+#include "textLanguageParser/details/optionalParser.h"
+#include "textLanguageParser/details/kleeneStarParser.h"
 #include "textLanguageParser/tokenType.h"
 
 namespace textLanguageParser {
@@ -19,6 +21,14 @@ inline ParserRef operator + (ParserRef a, ParserRef b) {
 
 inline ParserRef operator | (ParserRef a, ParserRef b) {
 	return ParserRef(new AlternativeParser(a, b));
+}
+
+inline ParserRef operator ~ (ParserRef a) {
+	return ParserRef(new OptionalParser(a));
+}
+
+inline ParserRef operator * (ParserRef a) {
+	return ParserRef(new KleeneStarParser(a));
 }
 
 template<typename SemanticAction>

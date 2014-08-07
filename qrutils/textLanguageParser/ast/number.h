@@ -1,11 +1,11 @@
 #pragma once
 
-#include "node.h"
+#include "expression.h"
 
 namespace textLanguageParser {
 namespace ast {
 
-class QRUTILS_EXPORT Number : public Node {
+class QRUTILS_EXPORT Number : public Expression {
 public:
 	Number(QString const &stringRepresentation)
 		: mStringRepresentation(stringRepresentation)
