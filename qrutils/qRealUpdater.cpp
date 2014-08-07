@@ -1,10 +1,9 @@
 #include "qRealUpdater.h"
 
-using namespace qReal;
+using namespace utils;
 
-QRealUpdater::QRealUpdater(char const *applicationPath)
-	: QObject()
-	, mHasNewUpdates(false)
+QRealUpdater::QRealUpdater(QString const &applicationPath)
+	: mHasNewUpdates(false)
 	, mUpdaterProcess(nullptr)
 	, mQRealPath(applicationPath)
 
@@ -49,23 +48,23 @@ QStringList QRealUpdater::collectArguments()
 	QStringList arguments;
 	QStringList followingUnits;
 	followingUnits << "windows" << "windows-qru::self";
-	arguments << "-unit" << SettingsManager::value("updaterFollowUnits", followingUnits).toStringList()
-			<< "-version" << SettingsManager::value("version").toString()
-			<< "-url" << SettingsManager::value("updaterDetailsURL", "http://localhost/updates.xml").toString();
+	arguments << "-unit" << qReal::SettingsManager::value("updaterFollowUnits", followingUnits).toStringList()
+			<< "-version" << qReal::SettingsManager::value("version").toString()
+			<< "-url" << qReal::SettingsManager::value("updaterDetailsURL", "http://localhost/updates.xml").toString();
 	return arguments;
 }
 
 bool QRealUpdater::hasUpdatePermission()
 {
-	SettingsManager::instance()->load();
-	return !SettingsManager::value("version", "").toString().isEmpty()
-			&& SettingsManager::value("updaterActive", true).toBool();
+	qReal::SettingsManager::instance()->load();
+	return !qReal::SettingsManager::value("version", "").toString().isEmpty()
+			&& qReal::SettingsManager::value("updaterActive", true).toBool();
 }
 
 void QRealUpdater::prepareForClose()
 {
-	SettingsManager::setValue("version", "");  // 'couz I cant just get version from inside
-	SettingsManager::instance()->saveData();
+	qReal::SettingsManager::setValue("version", "");  // 'couz I cant just get version from inside
+	qReal::SettingsManager::instance()->saveData();
 }
 
 void QRealUpdater::readAnswer()

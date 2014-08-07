@@ -8,10 +8,6 @@ macx {
 }
 
 SOURCES = main.cpp \
-    qRealUpdater.cpp
-
-HEADERS += \
-    qRealUpdater.h
 
 TRANSLATIONS = qrgui_ru.ts
 

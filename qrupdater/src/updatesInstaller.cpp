@@ -11,13 +11,13 @@ UpdatesInstaller::UpdatesInstaller()
 {
 }
 
-UpdatesInstaller& UpdatesInstaller::operator<<(Update *update)
+UpdatesInstaller &UpdatesInstaller::operator<<(Update *update)
 {
 	mUpdatesQueue.append(update);
 	return *this;
 }
 
-UpdatesInstaller& UpdatesInstaller::operator<<(QList<Update *> updates)
+UpdatesInstaller &UpdatesInstaller::operator<<(QList<Update *> updates)
 {
 	mUpdatesQueue.append(updates);
 	return *this;
@@ -58,7 +58,7 @@ void UpdatesInstaller::replaceExpressions(Update *update)
 	QMutableListIterator<QString> iterator(update->arguments());
 	while (iterator.hasNext()) {
 		iterator.next();
-		foreach (QString const mask, replacement.keys()) {
+		for (QString const &mask : replacement.keys()) {
 			QString curKey = iterator.value();
 			iterator.setValue(curKey.replace(mask, replacement.value(mask)()));
 		}
@@ -102,8 +102,7 @@ void UpdatesInstaller::singleInstallFinished(bool hasNoErrors)
 	mUpdatesQueue.takeFirst();
 	if (!mUpdatesQueue.isEmpty()) {
 		installNext();
-	} else
-	{
+	} else {
 		emit installsFinished(mHasNoErrors);
 	}
 }

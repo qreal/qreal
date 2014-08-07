@@ -20,6 +20,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
+#include <qrutils/qRealUpdater.h>
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
@@ -50,6 +51,7 @@
 #include "controller/commands/createGroupCommand.h"
 
 #include "dialogs/suggestToCreateProjectDialog.h"
+#include "dialogs/updateVersionDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
 #include "dialogs/gesturesShow/gesturesWidget.h"
 
@@ -1953,6 +1955,20 @@ void MainWindow::initPluginsAndStartWidget()
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
 	{
 		openStartTab();
+	}
+
+	checkForUpdates();
+}
+
+void MainWindow::checkForUpdates()
+{
+	/// @todo: specify new version
+	if (SettingsManager::value("updaterActive").toBool() && UpdateVersionDialog::promptUpdate("1.0.0", this)) {
+		utils::QRealUpdater updater(QApplication::arguments()[0]);
+		updater.startUpdater();
+		if (updater.hasUpdates()) {
+			QApplication::quit();
+		}
 	}
 }
 

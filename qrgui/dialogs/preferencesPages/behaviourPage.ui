@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>400</height>
+    <height>405</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -195,9 +195,16 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QCheckBox" name="makeUpdatesCheckBox">
+       <widget class="QCheckBox" name="checkForUpdatesCheckBox">
         <property name="text">
          <string>Check for updates</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="downloadUpdatesCheckBox">
+        <property name="text">
+         <string>Automaticly download updates</string>
         </property>
        </widget>
       </item>

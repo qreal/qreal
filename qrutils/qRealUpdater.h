@@ -5,15 +5,18 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcess>
 
-#include "../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
+
+#include "utilsDeclSpec.h"
+
+namespace utils {
 
 //! @class QRealUpdater starts and interacts with Updater
 //! it tells qreal dont to load GUI and quit immediatly to make update
-class QRealUpdater : public QObject
+class QRUTILS_EXPORT QRealUpdater
 {
-	Q_OBJECT
 public:
-	explicit QRealUpdater(char const *applicationPath);
+	explicit QRealUpdater(QString const &applicationPath);
 
 	//! @return True if there are some updates to intall
 	bool hasUpdates();
@@ -39,3 +42,4 @@ protected slots:
 	void readAnswer();
 };
 
+}

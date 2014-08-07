@@ -13,6 +13,7 @@ Update *DetailsParser::update(QString const &unit)
 			return mUpdates.at(i);
 		}
 	}
+
 	return nullptr;
 }
 
@@ -23,6 +24,7 @@ Update *DetailsParser::update(QUrl const &url)
 			return mUpdates.at(i);
 		}
 	}
+
 	return nullptr;
 }
 
@@ -40,7 +42,7 @@ void DetailsParser::processDevice(QIODevice *device)
 {
 	parseDevice(device);
 
-	foreach (QString const &unit, units()) {
+	for (QString const &unit : units()) {
 		Update *newUpdate = new Update(this);
 		newUpdate->setUnitName(unit);
 		newUpdate->setData(

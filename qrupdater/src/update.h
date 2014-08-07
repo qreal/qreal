@@ -8,7 +8,7 @@
 namespace qrUpdater {
 //!
 //! @brief The Update class
-//! Stores one-unit update informatiom and provides installing
+//! Stores one-unit update information and performs its installation
 class Update : public QObject
 {
 	Q_OBJECT
@@ -52,7 +52,7 @@ protected:
 	QProcess *mProcess;
 
 protected slots:
-	void installingFinished(int exitCode, QProcess::ExitStatus status);
+	void installationFinished(int exitCode, QProcess::ExitStatus status);
 };
 
 }
