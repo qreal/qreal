@@ -18,18 +18,18 @@ public:
 	{
 	}
 
-	TextLanguageParserInterface::Result parse(TokenStream &tokenStream) const override
+	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
 	{
 		typedef typename function_traits<Transformation>::template arg<0>::type PointerToNodeType;
 		typedef decltype(&PointerToNodeType::operator *) DereferenceOperatorType;
 		typedef typename function_traits<DereferenceOperatorType>::result_type NodeReference;
 		typedef typename std::remove_reference<NodeReference>::type NodeType;
 
-		TextLanguageParserInterface::Result parserResult = mParser->parse(tokenStream);
-		QSharedPointer<NodeType> node = parserResult.astRoot.dynamicCast<NodeType>();
-		parserResult.astRoot = mTransformation(node).template dynamicCast<ast::Node>();
-		if (parserResult.astRoot) {
-			parserResult.astRoot->connect(node);
+		auto parserResult = mParser->parse(tokenStream, parserContext);
+		auto node = as<NodeType>(parserResult);
+		parserResult = as<ast::Node>(mTransformation(node));
+		if (parserResult) {
+			parserResult->connect(node);
 		}
 
 		return parserResult;

@@ -18,16 +18,14 @@ public:
 	{
 	}
 
-	TextLanguageParserInterface::Result parse(TokenStream &tokenStream) const override
+	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
 	{
-		return parse(tokenStream, mStartPrecedence);
+		return parse(tokenStream, parserContext, mStartPrecedence);
 	}
 
-	TextLanguageParserInterface::Result parse(TokenStream &tokenStream, int currentPrecedence) const
+	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext, int currentPrecedence) const
 	{
-		TextLanguageParserInterface::Result primaryResult = mPrimary->parse(tokenStream);
-		QSharedPointer<ast::Node> resultAst = primaryResult.astRoot;
-		QList<ParserError> errors = primaryResult.errors;
+		auto resultAst = mPrimary->parse(tokenStream, parserContext);
 
 		while (mPrecedenceTable.binaryOperators().contains(tokenStream.next().token())
 				&& mPrecedenceTable.precedence(tokenStream.next().token()) >= currentPrecedence)
@@ -37,20 +35,17 @@ public:
 					: mPrecedenceTable.precedence(tokenStream.next().token())
 					;
 
-			TextLanguageParserInterface::Result binOpResult = mBinOp->parse(tokenStream);
+			auto binOpResult = mBinOp->parse(tokenStream, parserContext);
 
-			TextLanguageParserInterface::Result rightOperandResult = parse(tokenStream, newPrecedence);
+			auto rightOperandResult = parse(tokenStream, parserContext, newPrecedence);
 
-			QSharedPointer<ast::BinaryOperator> op = binOpResult.astRoot.staticCast<ast::BinaryOperator>();
+			auto op = as<ast::BinaryOperator>(binOpResult);
 			op->setLeftOperand(resultAst);
-			op->setRightOperand(rightOperandResult.astRoot);
+			op->setRightOperand(rightOperandResult);
 			resultAst = op;
-
-			errors << binOpResult.errors;
-			errors << rightOperandResult.errors;
 		}
 
-		return TextLanguageParserInterface::Result(resultAst, errors);
+		return resultAst;
 	}
 
 

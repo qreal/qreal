@@ -15,17 +15,19 @@ public:
 	{
 	}
 
-	TextLanguageParserInterface::Result parse(TokenStream &tokenStream) const override
+	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
 	{
-		QList<ParserError> errors;
 		auto temporaryList = QSharedPointer<TemporaryList>(new TemporaryList());
 		while (mParser->first().contains(tokenStream.next().token())) {
-			auto result = mParser->parse(tokenStream);
-			errors << result.errors;
-			temporaryList->list() << result.astRoot;
+			auto result = mParser->parse(tokenStream, parserContext);
+			if (!result) {
+				break;
+			}
+
+			temporaryList->list() << result;
 		}
 
-		return TextLanguageParserInterface::Result(temporaryList, errors);
+		return temporaryList;
 	}
 
 	QSet<TokenType> first() const override

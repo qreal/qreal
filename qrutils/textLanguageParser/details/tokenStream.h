@@ -11,7 +11,7 @@ namespace details {
 class TokenStream {
 public:
 	TokenStream(QList<details::Token> const &tokenList, QList<ParserError> &errorList);
-	details::Token next();
+	details::Token next() const;
 	void consume();
 	bool expect(TokenType token);
 	bool isEnd();

@@ -15,13 +15,22 @@ public:
 	{
 	}
 
-	TextLanguageParserInterface::Result parse(TokenStream &tokenStream) const override
+	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
 	{
+		Q_UNUSED(parserContext);
+
 		Token const token = tokenStream.next();
-		tokenStream.expect(mToken);
-		ast::Node * const node = mSemanticAction(token);
-		node->connect(token);
-		return TextLanguageParserInterface::Result(node, {});
+		if (!tokenStream.expect(mToken))
+		{
+			return wrap(nullptr);
+		}
+
+		auto node = wrap(mSemanticAction(token));
+		if (node) {
+			node->connect(token);
+		}
+
+		return node;
 	}
 
 	QSet<TokenType> first() const override

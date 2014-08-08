@@ -16,38 +16,38 @@ public:
 	{
 	}
 
-	TextLanguageParserInterface::Result parse(TokenStream &tokenStream) const override
+	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
 	{
 		if (tokenStream.isEnd()) {
-			return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().end()
-					, "Unexpected end of file", ErrorType::syntaxError, Severity::error)});
+			parserContext.reportError("Unexpected end of file");
+			return wrap(nullptr);
 		}
 
 		if (mParser1->first().contains(tokenStream.next().token())) {
-			TextLanguageParserInterface::Result parser1Result = mParser1->parse(tokenStream);
-			TextLanguageParserInterface::Result parser2Result = mParser2->parse(tokenStream);
+			auto parser1Result = mParser1->parse(tokenStream, parserContext);
+			auto parser2Result = mParser2->parse(tokenStream, parserContext);
 
-			if (parser1Result.astRoot && parser1Result.astRoot->is<TemporaryDiscardableNode>()
-					&& parser2Result.astRoot && parser2Result.astRoot->is<TemporaryDiscardableNode>())
+			if (parser1Result && parser1Result->is<TemporaryDiscardableNode>()
+					&& parser2Result && parser2Result->is<TemporaryDiscardableNode>())
 			{
-				auto result = new TemporaryDiscardableNode();
-				result->connect(parser1Result.astRoot);
-				result->connect(parser2Result.astRoot);
-				return TextLanguageParserInterface::Result(result, parser1Result.errors << parser2Result.errors);
-			} else if (parser1Result.astRoot && parser1Result.astRoot->is<TemporaryDiscardableNode>()) {
+				auto result = wrap(new TemporaryDiscardableNode());
+				result->connect(parser1Result);
+				result->connect(parser2Result);
+				return result;
+			} else if (parser1Result && parser1Result->is<TemporaryDiscardableNode>()) {
 				return parser2Result;
-			} else if (parser2Result.astRoot && parser2Result.astRoot->is<TemporaryDiscardableNode>()) {
+			} else if (parser2Result && parser2Result->is<TemporaryDiscardableNode>()) {
 				return parser1Result;
 			} else {
-				TemporaryPair *temporaryPair = new TemporaryPair(parser1Result.astRoot, parser2Result.astRoot);
-				temporaryPair->connect(parser1Result.astRoot);
-				temporaryPair->connect(parser2Result.astRoot);
-				return TextLanguageParserInterface::Result(temporaryPair, parser1Result.errors << parser2Result.errors);
+				auto result = wrap(new TemporaryPair(parser1Result, parser2Result));
+				result->connect(parser1Result);
+				result->connect(parser2Result);
+				return result;
 			}
 		}
 
-		return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().end()
-				, "Unexpected token", ErrorType::syntaxError, Severity::error)});
+		parserContext.reportError("Unexpected token");
+		return wrap(nullptr);
 	}
 
 	QSet<TokenType> first() const override

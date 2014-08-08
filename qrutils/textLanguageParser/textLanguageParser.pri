@@ -64,6 +64,7 @@ HEADERS += \
 	$$PWD/details/parserRef.h \
 	$$PWD/details/expressionParser.h \
 	$$PWD/details/precedenceTable.h \
+	$$PWD/details/parserContext.h \
 
 SOURCES += \
 	$$PWD/tokenPatterns.cpp \

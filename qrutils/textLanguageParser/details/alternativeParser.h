@@ -14,31 +14,28 @@ public:
 	{
 	}
 
-	TextLanguageParserInterface::Result parse(TokenStream &tokenStream) const override
+	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
 	{
 		if (tokenStream.isEnd()) {
-			return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().end()
-					, "Unexpected end of file", ErrorType::syntaxError, Severity::error)});
+			parserContext.reportError("Unexpected end of file");
+			return wrap(nullptr);
 		}
 
 		if (!(mParser1->first().intersect(mParser2->first())).isEmpty()) {
-			return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().start()
-					, "Parser can not decide which alternative to use on " + tokenStream.next().lexeme()
-					, ErrorType::syntaxError
-					, Severity::internalError)}
-					);
+			parserContext.reportInternalError(
+					"Parser can not decide which alternative to use on " + tokenStream.next().lexeme());
 		}
 
 		if (mParser1->first().contains(tokenStream.next().token())) {
-			return mParser1->parse(tokenStream);
+			return mParser1->parse(tokenStream, parserContext);
 		}
 
 		if (mParser2->first().contains(tokenStream.next().token())) {
-			return mParser2->parse(tokenStream);
+			return mParser2->parse(tokenStream, parserContext);
 		}
 
-		return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().start()
-				, "Unexpected token", ErrorType::syntaxError, Severity::error)});
+		parserContext.reportError("Unexpected token");
+		return wrap(nullptr);
 	}
 
 	QSet<TokenType> first() const override

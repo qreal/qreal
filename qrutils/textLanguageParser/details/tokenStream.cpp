@@ -8,7 +8,7 @@ TokenStream::TokenStream(QList<details::Token> const &tokenList, QList<ParserErr
 {
 }
 
-details::Token TokenStream::next()
+details::Token TokenStream::next() const
 {
 	if (mPosition >= mTokenList.size()) {
 		return mTokenList.last();

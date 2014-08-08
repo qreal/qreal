@@ -13,13 +13,13 @@ public:
 	{
 	}
 
-	TextLanguageParserInterface::Result parse(TokenStream &tokenStream) const override
+	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
 	{
 		if (mParser->first().contains(tokenStream.next().token())) {
-			return mParser->parse(tokenStream);
+			return mParser->parse(tokenStream, parserContext);
 		}
 
-		return TextLanguageParserInterface::Result(nullptr, {});
+		return wrap(nullptr);
 	}
 
 	QSet<TokenType> first() const override

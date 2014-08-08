@@ -45,6 +45,8 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 	mErrors = lexerResult.errors;
 	mTokenStream.reset(new details::TokenStream(lexerResult.tokens, mErrors));
 
+	ParserContext context(mErrors, *mTokenStream);
+
 	ParserRef primary;
 
 	ParserRef tableconstructor;
@@ -144,7 +146,7 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 			| TokenType::tilda >> [] { return new ast::BitwiseNegation(); }
 			;
 
-	return exp->parse(*mTokenStream);
+	return Result(exp->parse(*mTokenStream, context), mErrors);
 }
 
 void TextLanguageParser::reportError(QString const &message)
