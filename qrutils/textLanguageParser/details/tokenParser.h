@@ -2,7 +2,7 @@
 
 #include "textLanguageParser/details/parserInterface.h"
 #include "textLanguageParser/tokenType.h"
-#include "textLanguageParser/ast/temporaryToken.h"
+#include "textLanguageParser/details/temporaryToken.h"
 
 namespace textLanguageParser {
 namespace details {

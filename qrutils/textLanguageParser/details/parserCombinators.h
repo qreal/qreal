@@ -14,6 +14,7 @@
 #include "textLanguageParser/details/optionalParser.h"
 #include "textLanguageParser/details/kleeneStarParser.h"
 #include "textLanguageParser/details/functionTraits.h"
+#include "textLanguageParser/details/temporaryDiscardableNode.h"
 #include "textLanguageParser/tokenType.h"
 
 namespace textLanguageParser {
@@ -53,18 +54,31 @@ inline ParserRef operator >>(ParserRef parser, Transformation transformation)
 }
 
 inline ParserRef operator & (TokenType const &token, ParserRef const &b) {
-	return ParserRef(new ConcatenationParser(token >> [] { return new ast::Node(); }, b));
+	return ParserRef(new ConcatenationParser(token >>
+			[] (Token const &token) { return new details::TemporaryToken(token); }, b));
 }
 
 inline ParserRef operator & (ParserRef const &a, TokenType const &token) {
-	return ParserRef(new ConcatenationParser(a, token >> [] { return new ast::Node(); }));
+	return ParserRef(new ConcatenationParser(a, token >>
+			[] (Token const &token) { return new details::TemporaryToken(token); }));
 }
 
 inline ParserRef operator & (TokenType const &token1, TokenType const &token2) {
 	return ParserRef(new ConcatenationParser(
-			token1 >> [] { return new ast::Node(); },
-			token2 >> [] { return new ast::Node(); })
+			token1 >> [] (Token const &token) { return new details::TemporaryToken(token); },
+			token2 >> [] (Token const &token) { return new details::TemporaryToken(token); })
 			);
+}
+
+inline ParserRef operator ! (TokenType const &token) {
+	return token >> [] { return new TemporaryDiscardableNode(); };
+}
+
+inline ParserRef operator ! (ParserRef const &parser) {
+	return parser >> [] (QSharedPointer<ast::Node> node) {
+			Q_UNUSED(node);
+			return wrap(new TemporaryDiscardableNode());
+	};
 }
 
 }

@@ -6,9 +6,9 @@
 #include "textLanguageParser/details/expressionParser.h"
 #include "textLanguageParser/details/parserCombinators.h"
 #include "textLanguageParser/details/parserRef.h"
-#include "textLanguageParser/ast/temporaryToken.h"
-#include "textLanguageParser/ast/temporaryPair.h"
-#include "textLanguageParser/ast/temporaryList.h"
+#include "textLanguageParser/details/temporaryToken.h"
+#include "textLanguageParser/details/temporaryPair.h"
+#include "textLanguageParser/details/temporaryList.h"
 
 #include "textLanguageParser/ast/expression.h"
 #include "textLanguageParser/ast/unaryOperator.h"
@@ -57,7 +57,6 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 	// exp(precedence) ::= primary { binop exp(newPrecedence) }
 	auto exp = ParserRef(new ExpressionParser(false, primary, binop));
 
-	auto discard = [] { return new ast::Node(); };
 	auto reportUnsupported = [this] (Token const &token) {
 		mErrors << ParserError(token.range().start()
 				, "This construction is not supported yet"
@@ -79,7 +78,7 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 			// | prefixexp
 			| tableconstructor
 			| (unop & ParserRef(new ExpressionParser(true, primary, binop)))
-					>> [] (QSharedPointer<ast::TemporaryPair> node) {
+					>> [] (QSharedPointer<TemporaryPair> node) {
 						auto unOp = as<ast::UnaryOperator>(node->left());
 						unOp->setOperand(node->right());
 						return unOp;
@@ -87,49 +86,37 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 			;
 
 	// tableconstructor ::= ‘{’ [fieldlist] ‘}’
-	tableconstructor = (TokenType::openingCurlyBracket & ~fieldlist	& TokenType::closingCurlyBracket)
-			>> [] (QSharedPointer<ast::TemporaryPair> node) {
-				auto innerPair = as<ast::TemporaryPair>(node->left());
-				auto fieldList = as<ast::TemporaryList>(innerPair->right());
+	tableconstructor = (!TokenType::openingCurlyBracket & ~fieldlist & !TokenType::closingCurlyBracket)
+			>> [] (QSharedPointer<TemporaryList> fieldList) {
 				if (!fieldList) {
 					return wrap(new ast::TableConstructor({}));
 				} else {
-					QList<QSharedPointer<ast::FieldInitialization>> initializersList;
-					for (auto initializer : fieldList->list()) {
-						initializersList << as<ast::FieldInitialization>(initializer);
-					}
-
-					return wrap(new ast::TableConstructor(initializersList));
+					return wrap(new ast::TableConstructor(as<ast::FieldInitialization>(fieldList->list())));
 				}
 			};
 
 	// fieldlist ::= field {fieldsep field} [fieldsep]
-	fieldlist = (field & *(fieldsep & field) & ~fieldsep)
-		 >> [] (QSharedPointer<ast::TemporaryPair> node) {
-			auto innerPair = as<ast::TemporaryPair>(node->left());
-			auto firstField = as<ast::FieldInitialization>(innerPair->left());
-			auto temporaryList = as<ast::TemporaryList>(innerPair->right());
+	fieldlist = (field & *(!fieldsep & field) & !~fieldsep)
+		 >> [] (QSharedPointer<TemporaryPair> node) {
+			auto firstField = as<ast::FieldInitialization>(node->left());
+			auto temporaryList = as<TemporaryList>(node->right());
 			temporaryList->list() << firstField;
 			return temporaryList;
 		};
 
-	field = (TokenType::openingSquareBracket & exp & TokenType::closingSquareBracket & TokenType::equals & exp)
-					>> [] (QSharedPointer<ast::TemporaryPair> outerPair) {
-						auto initializer = as<ast::Expression>(outerPair->right());
-						auto indexer = as<ast::Expression>(as<ast::TemporaryPair>(outerPair->left())->left());
-						return QSharedPointer<ast::FieldInitialization>(new ast::FieldInitialization(
-								initializer
-								, indexer
-							));
+	field = (!TokenType::openingSquareBracket & exp & !TokenType::closingSquareBracket & !TokenType::equals & exp)
+					>> [] (QSharedPointer<TemporaryPair> pair) {
+						auto initializer = as<ast::Expression>(pair->right());
+						auto indexer = as<ast::Expression>(pair->left());
+						return wrap(new ast::FieldInitialization(initializer, indexer));
 					}
-			| (exp & ~(TokenType::equals & exp))
-					>> [] (QSharedPointer<ast::TemporaryPair> node) {
+			| (exp & ~(!TokenType::equals & exp))
+					>> [] (QSharedPointer<TemporaryPair> node) {
 							auto const left = as<ast::Expression>(node->left());
 							if (!node->right()) {
 								return wrap(new ast::FieldInitialization(left));
 							} else {
-								auto const initializer
-										= as<ast::Expression>(as<ast::TemporaryPair>(node->right())->right());
+								auto const initializer = as<ast::Expression>(node->right());
 								/// @todo Report error if "left" is something different from Name.
 								return wrap(new ast::FieldInitialization(left, initializer));
 							}
@@ -137,8 +124,8 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 			;
 
 	// fieldsep ::= ‘,’ | ‘;’
-	fieldsep = TokenType::comma >> discard
-			| TokenType::semicolon >> discard
+	fieldsep = !TokenType::comma
+			| !TokenType::semicolon
 			;
 
 	// binop ::= ‘+’ | ‘-’ | ‘*’ | ‘/’ | ‘//’ | ‘^’ | ‘%’ | ‘&’ | ‘~’ | ‘|’ | ‘>>’ | ‘<<’ | ‘..’

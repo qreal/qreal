@@ -1,9 +1,10 @@
 #pragma once
 
+#include "textLanguageParser/tokenType.h"
 #include "textLanguageParser/details/parserInterface.h"
 #include "textLanguageParser/details/parserRef.h"
-#include "textLanguageParser/tokenType.h"
-#include "textLanguageParser/ast/temporaryPair.h"
+#include "textLanguageParser/details/temporaryPair.h"
+#include "textLanguageParser/details/temporaryDiscardableNode.h"
 
 namespace textLanguageParser {
 namespace details {
@@ -25,18 +26,24 @@ public:
 		if (mParser1->first().contains(tokenStream.next().token())) {
 			TextLanguageParserInterface::Result parser1Result = mParser1->parse(tokenStream);
 			TextLanguageParserInterface::Result parser2Result = mParser2->parse(tokenStream);
-			ast::TemporaryPair *temporaryPair
-					= new ast::TemporaryPair(parser1Result.astRoot, parser2Result.astRoot);
 
-			if (parser1Result.astRoot) {
+			if (parser1Result.astRoot && parser1Result.astRoot->is<TemporaryDiscardableNode>()
+					&& parser2Result.astRoot && parser2Result.astRoot->is<TemporaryDiscardableNode>())
+			{
+				auto result = new TemporaryDiscardableNode();
+				result->connect(parser1Result.astRoot);
+				result->connect(parser2Result.astRoot);
+				return TextLanguageParserInterface::Result(result, parser1Result.errors << parser2Result.errors);
+			} else if (parser1Result.astRoot && parser1Result.astRoot->is<TemporaryDiscardableNode>()) {
+				return parser2Result;
+			} else if (parser2Result.astRoot && parser2Result.astRoot->is<TemporaryDiscardableNode>()) {
+				return parser1Result;
+			} else {
+				TemporaryPair *temporaryPair = new TemporaryPair(parser1Result.astRoot, parser2Result.astRoot);
 				temporaryPair->connect(parser1Result.astRoot);
-			}
-
-			if (parser2Result.astRoot) {
 				temporaryPair->connect(parser2Result.astRoot);
+				return TextLanguageParserInterface::Result(temporaryPair, parser1Result.errors << parser2Result.errors);
 			}
-
-			return TextLanguageParserInterface::Result(temporaryPair, parser1Result.errors << parser2Result.errors);
 		}
 
 		return TextLanguageParserInterface::Result(nullptr, {ParserError(tokenStream.next().range().end()

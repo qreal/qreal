@@ -26,9 +26,9 @@ public:
 		typedef typename std::remove_reference<NodeReference>::type NodeType;
 
 		TextLanguageParserInterface::Result parserResult = mParser->parse(tokenStream);
+		QSharedPointer<NodeType> node = parserResult.astRoot.dynamicCast<NodeType>();
+		parserResult.astRoot = mTransformation(node).template dynamicCast<ast::Node>();
 		if (parserResult.astRoot) {
-			QSharedPointer<NodeType> node = parserResult.astRoot.staticCast<NodeType>();
-			parserResult.astRoot = mTransformation(node).template staticCast<ast::Node>();
 			parserResult.astRoot->connect(node);
 		}
 

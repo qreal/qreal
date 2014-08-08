@@ -44,6 +44,17 @@ inline QSharedPointer<NodeType> as(QSharedPointer<ast::Node> const &node)
 	return node.dynamicCast<NodeType>();
 }
 
+template<typename NodeType>
+inline QList<QSharedPointer<NodeType>> as(QList<QSharedPointer<ast::Node>> const &list)
+{
+	QList<QSharedPointer<NodeType>> result;
+	for (auto item : list) {
+		result << as<NodeType>(item);
+	}
+
+	return result;
+}
+
 inline QSharedPointer<ast::Node> wrap(ast::Node *node)
 {
 	return QSharedPointer<ast::Node>(node);

@@ -44,9 +44,10 @@ HEADERS += \
 	$$PWD/ast/true.h \
 	$$PWD/ast/false.h \
 	$$PWD/ast/nil.h \
-	$$PWD/ast/temporaryToken.h \
-	$$PWD/ast/temporaryPair.h \
-	$$PWD/ast/temporaryList.h \
+	$$PWD/details/temporaryToken.h \
+	$$PWD/details/temporaryPair.h \
+	$$PWD/details/temporaryList.h \
+	$$PWD/details/temporaryDiscardableNode.h \
 	$$PWD/details/lexer.h \
 	$$PWD/details/token.h  \
 	$$PWD/details/tokenStream.h  \
