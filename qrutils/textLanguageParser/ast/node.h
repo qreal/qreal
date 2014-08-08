@@ -23,6 +23,12 @@ public:
 	void connect(details::Token const &token);
 	void connect(QSharedPointer<Node> const &node);
 
+	template<typename NodeType>
+	bool is()
+	{
+		return dynamic_cast<NodeType *>(this) != nullptr;
+	}
+
 private:
 	/// Connection of a node is a list of ranges of all its subnodes.
 	QList<Range> mRanges;
@@ -31,4 +37,16 @@ private:
 };
 
 }
+
+template<typename NodeType>
+inline QSharedPointer<NodeType> as(QSharedPointer<ast::Node> const &node)
+{
+	return node.dynamicCast<NodeType>();
+}
+
+inline QSharedPointer<ast::Node> wrap(ast::Node *node)
+{
+	return QSharedPointer<ast::Node>(node);
+}
+
 }

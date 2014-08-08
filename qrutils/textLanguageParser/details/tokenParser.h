@@ -2,14 +2,15 @@
 
 #include "textLanguageParser/details/parserInterface.h"
 #include "textLanguageParser/tokenType.h"
+#include "textLanguageParser/ast/temporaryToken.h"
 
 namespace textLanguageParser {
 namespace details {
 
 template<typename SemanticAction>
-class SimpleParser : public ParserInterface {
+class TokenParser : public ParserInterface {
 public:
-	explicit SimpleParser(TokenType token, SemanticAction semanticAction)
+	explicit TokenParser(TokenType token, SemanticAction semanticAction)
 		: mToken(token), mSemanticAction(semanticAction)
 	{
 	}
@@ -18,7 +19,7 @@ public:
 	{
 		Token const token = tokenStream.next();
 		tokenStream.expect(mToken);
-		ast::Node * const node = mSemanticAction();
+		ast::Node * const node = mSemanticAction(token);
 		node->connect(token);
 		return TextLanguageParserInterface::Result(node, {});
 	}

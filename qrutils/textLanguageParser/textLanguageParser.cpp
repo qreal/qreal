@@ -26,7 +26,12 @@
 #include "textLanguageParser/ast/length.h"
 #include "textLanguageParser/ast/bitwiseNegation.h"
 
-#include "textLanguageParser/ast/number.h"
+#include "textLanguageParser/ast/integerNumber.h"
+#include "textLanguageParser/ast/floatNumber.h"
+#include "textLanguageParser/ast/string.h"
+#include "textLanguageParser/ast/nil.h"
+#include "textLanguageParser/ast/true.h"
+#include "textLanguageParser/ast/false.h"
 
 using namespace textLanguageParser;
 using namespace textLanguageParser::details;
@@ -52,98 +57,83 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 	// exp(precedence) ::= primary { binop exp(newPrecedence) }
 	auto exp = ParserRef(new ExpressionParser(false, primary, binop));
 
-	auto discard = [] (Token token) { return new ast::TemporaryToken(token); };
+	auto discard = [] { return new ast::Node(); };
+	auto reportUnsupported = [this] (Token const &token) {
+		mErrors << ParserError(token.range().start()
+				, "This construction is not supported yet"
+				, ErrorType::syntaxError
+				, Severity::error);
 
-	// Number is a helper production to avoid differing between integer and float. It will be removed when type
-	// inference and interpretation will be needed.
-	auto number = TokenType::integerLiteral >> [] (Token token) { return new ast::Number(token.lexeme()); }
-			| TokenType::floatLiteral >> [] (Token token) { return new ast::Number(token.lexeme()); }
-			;
+		return new ast::Node();
+	};
 
 	// primary ::= nil | false | true | Number | String | ‘...’ | prefixexp | tableconstructor | unop exp
 	primary =
-			TokenType::nilKeyword >> discard
-			| TokenType::falseKeyword >> discard
-			| TokenType::trueKeyword >> discard
-			| number
-			| TokenType::string >> discard
-			| TokenType::tripleDot >> discard
+			TokenType::nilKeyword >> [] { return new ast::Nil(); }
+			| TokenType::falseKeyword >> [] { return new ast::True(); }
+			| TokenType::trueKeyword >> [] { return new ast::False(); }
+			| TokenType::integerLiteral >> [] (Token token) { return new ast::IntegerNumber(token.lexeme()); }
+			| TokenType::floatLiteral >> [] (Token token) { return new ast::FloatNumber(token.lexeme()); }
+			| TokenType::string >> [] (Token token) { return new ast::String(token.lexeme()); }
+			| TokenType::tripleDot >> reportUnsupported
 			// | prefixexp
 			| tableconstructor
-			| ((unop + ParserRef(new ExpressionParser(true, primary, binop)))
+			| (unop & ParserRef(new ExpressionParser(true, primary, binop)))
 					>> [] (QSharedPointer<ast::TemporaryPair> node) {
-						QSharedPointer<ast::UnaryOperator> unOp = node->left().dynamicCast<ast::UnaryOperator>();
+						auto unOp = as<ast::UnaryOperator>(node->left());
 						unOp->setOperand(node->right());
 						return unOp;
-					})
+					}
 			;
 
 	// tableconstructor ::= ‘{’ [fieldlist] ‘}’
-	tableconstructor = ((TokenType::openingCurlyBracket >> discard)
-			+ ~fieldlist
-			+ (TokenType::closingCurlyBracket >> discard))
+	tableconstructor = (TokenType::openingCurlyBracket & ~fieldlist	& TokenType::closingCurlyBracket)
 			>> [] (QSharedPointer<ast::TemporaryPair> node) {
-				auto outerPair = node->left().dynamicCast<ast::TemporaryPair>();
-				if (!outerPair) {
-					return QSharedPointer<ast::TableConstructor>(new ast::TableConstructor({}));
+				auto innerPair = as<ast::TemporaryPair>(node->left());
+				auto fieldList = as<ast::TemporaryList>(innerPair->right());
+				if (!fieldList) {
+					return wrap(new ast::TableConstructor({}));
 				} else {
-					auto fieldList = outerPair->right().dynamicCast<ast::TemporaryList>();
 					QList<QSharedPointer<ast::FieldInitialization>> initializersList;
 					for (auto initializer : fieldList->list()) {
-						initializersList << initializer.staticCast<ast::FieldInitialization>();
+						initializersList << as<ast::FieldInitialization>(initializer);
 					}
 
-					return QSharedPointer<ast::TableConstructor>(new ast::TableConstructor(initializersList));
+					return wrap(new ast::TableConstructor(initializersList));
 				}
 			};
 
-	fieldlist = (field + *(fieldsep + field) + ~fieldsep)
-		 >> [] (QSharedPointer<ast::Node> node) {
-			auto outerPair = node.dynamicCast<ast::TemporaryPair>();
-			if (!outerPair->right().dynamicCast<ast::TemporaryToken>().isNull()) {
-				auto innerPair = outerPair->left().dynamicCast<ast::TemporaryPair>();
-				outerPair = innerPair;
-			}
-
-			auto firstField = outerPair->left().dynamicCast<ast::FieldInitialization>();
-			auto temporaryList = outerPair->right().dynamicCast<ast::TemporaryList>();
+	// fieldlist ::= field {fieldsep field} [fieldsep]
+	fieldlist = (field & *(fieldsep & field) & ~fieldsep)
+		 >> [] (QSharedPointer<ast::TemporaryPair> node) {
+			auto innerPair = as<ast::TemporaryPair>(node->left());
+			auto firstField = as<ast::FieldInitialization>(innerPair->left());
+			auto temporaryList = as<ast::TemporaryList>(innerPair->right());
 			temporaryList->list() << firstField;
 			return temporaryList;
 		};
 
-	// field ::= ‘[’ exp(0) ‘]’ ‘=’ exp(0) | exp(0) [ ‘=’ exp(0) ]
-	field = (
-				(((TokenType::openingSquareBracket >> discard)
-					+ exp
-					+ (TokenType::closingSquareBracket >> discard)
-				 ) >> [] (QSharedPointer<ast::TemporaryPair> node) { return node->left(); } )
-				+ (((TokenType::equals >> discard)
-					+ exp
-				) >> [] (QSharedPointer<ast::TemporaryPair> node) { return node->right(); } )
-			) >> [] (QSharedPointer<ast::TemporaryPair> node) {
-				return QSharedPointer<ast::FieldInitialization>(new ast::FieldInitialization(
-						node->left().staticCast<ast::Expression>()
-						, node->right().staticCast<ast::Expression>()
-					));
-			}
-			| (exp + ~(((TokenType::equals >> discard) + exp)
-						>> [] (QSharedPointer<ast::TemporaryPair> node) { return node->right(); }
-					)
-				) >> [] (QSharedPointer<ast::Node> node) {
-							auto const expression = node.dynamicCast<ast::Expression>();
-							if (expression) {
-								return QSharedPointer<ast::FieldInitialization>(
-										new ast::FieldInitialization(QSharedPointer<ast::Expression>(expression))
-										);
-							} else {
-								/// @todo Report error if node->left() is something different from Name.
-								auto pair = node.dynamicCast<ast::TemporaryPair>();
-								return QSharedPointer<ast::FieldInitialization>(new ast::FieldInitialization(
-											pair->left().staticCast<ast::Expression>()
-											, pair->right().staticCast<ast::Expression>()
-											));
-							}
+	field = (TokenType::openingSquareBracket & exp & TokenType::closingSquareBracket & TokenType::equals & exp)
+					>> [] (QSharedPointer<ast::TemporaryPair> outerPair) {
+						auto initializer = as<ast::Expression>(outerPair->right());
+						auto indexer = as<ast::Expression>(as<ast::TemporaryPair>(outerPair->left())->left());
+						return QSharedPointer<ast::FieldInitialization>(new ast::FieldInitialization(
+								initializer
+								, indexer
+							));
 					}
+			| (exp & ~(TokenType::equals & exp))
+					>> [] (QSharedPointer<ast::TemporaryPair> node) {
+							auto const left = as<ast::Expression>(node->left());
+							if (!node->right()) {
+								return wrap(new ast::FieldInitialization(left));
+							} else {
+								auto const initializer
+										= as<ast::Expression>(as<ast::TemporaryPair>(node->right())->right());
+								/// @todo Report error if "left" is something different from Name.
+								return wrap(new ast::FieldInitialization(left, initializer));
+							}
+						}
 			;
 
 	// fieldsep ::= ‘,’ | ‘;’
@@ -153,18 +143,18 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 
 	// binop ::= ‘+’ | ‘-’ | ‘*’ | ‘/’ | ‘//’ | ‘^’ | ‘%’ | ‘&’ | ‘~’ | ‘|’ | ‘>>’ | ‘<<’ | ‘..’
 	//           | ‘<’ | ‘<=’ | ‘>’ | ‘>=’ | ‘==’ | ‘~=’ | and | or
-	binop = TokenType::plus >> [] (Token token) { Q_UNUSED(token); return new ast::Addition(); }
-			| TokenType::minus >> [] (Token token) { Q_UNUSED(token); return new ast::Subtraction(); }
-			| TokenType::asterick >> [] (Token token) { Q_UNUSED(token); return new ast::Multiplication(); }
-			| TokenType::slash >> [] (Token token) { Q_UNUSED(token); return new ast::Division(); }
-			| TokenType::hat >> [] (Token token) { Q_UNUSED(token); return new ast::Exponentiation(); }
+	binop = TokenType::plus >> [] { return new ast::Addition(); }
+			| TokenType::minus >> [] { return new ast::Subtraction(); }
+			| TokenType::asterick >> [] { return new ast::Multiplication(); }
+			| TokenType::slash >> [] { return new ast::Division(); }
+			| TokenType::hat >> [] { return new ast::Exponentiation(); }
 			;
 
 	// unop ::= ‘-’ | not | ‘#’ | ‘~’
-	unop = TokenType::minus >> [] (Token token) { Q_UNUSED(token); return new ast::UnaryMinus(); }
-			| TokenType::notKeyword >> [] (Token token) { Q_UNUSED(token); return new ast::Not(); }
-			| TokenType::sharp >> [] (Token token) { Q_UNUSED(token); return new ast::Length(); }
-			| TokenType::tilda >> [] (Token token) { Q_UNUSED(token); return new ast::BitwiseNegation(); }
+	unop = TokenType::minus >> [] { return new ast::UnaryMinus(); }
+			| TokenType::notKeyword >> [] { return new ast::Not(); }
+			| TokenType::sharp >> [] { return new ast::Length(); }
+			| TokenType::tilda >> [] { return new ast::BitwiseNegation(); }
 			;
 
 	return exp->parse(*mTokenStream);

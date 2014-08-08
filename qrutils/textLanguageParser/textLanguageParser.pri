@@ -38,6 +38,12 @@ HEADERS += \
 	$$PWD/ast/fieldInitialization.h \
 	$$PWD/ast/expression.h \
 	$$PWD/ast/tableConstructor.h \
+	$$PWD/ast/integerNumber.h \
+	$$PWD/ast/floatNumber.h \
+	$$PWD/ast/string.h \
+	$$PWD/ast/true.h \
+	$$PWD/ast/false.h \
+	$$PWD/ast/nil.h \
 	$$PWD/ast/temporaryToken.h \
 	$$PWD/ast/temporaryPair.h \
 	$$PWD/ast/temporaryList.h \
@@ -45,6 +51,7 @@ HEADERS += \
 	$$PWD/details/token.h  \
 	$$PWD/details/tokenStream.h  \
 	$$PWD/details/parserCombinators.h \
+	$$PWD/details/tokenParser.h \
 	$$PWD/details/simpleParser.h \
 	$$PWD/details/parserInterface.h \
 	$$PWD/details/alternativeParser.h \
