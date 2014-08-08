@@ -2,84 +2,91 @@
 
 #include <type_traits>
 #include <QtCore/QHash>
+#include <QtCore/QDebug>
 
 namespace textLanguageParser {
 
 enum class TokenType {
-	whitespace
+	whitespace  // 0
 	, newline
 	, identifier
 
 	, andKeyword
 	, breakKeyword
-	, doKeyword
+	, doKeyword  // 5
 	, elseKeyword
 	, elseifKeyword
 	, endKeyword
 	, falseKeyword
-	, forKeyword
+	, forKeyword  // 10
 	, functionKeyword
 	, gotoKeyword
 	, ifKeyword
 	, inKeyword
-	, localKeyword
+	, localKeyword  //15
 	, nilKeyword
 	, notKeyword
 	, orKeyword
 	, repeatKeyword
-	, returnKeyword
+	, returnKeyword  // 20
 	, thenKeyword
 	, trueKeyword
 	, untilKeyword
 	, whileKeyword
 
-	, plus
+	, plus  // 25
 	, minus
 	, asterick
 	, slash
 	, percent
-	, hat
+	, hat  // 30
 	, sharp
 
 	, ampersand
 	, tilda
 	, verticalLine
-	, doubleLess
+	, doubleLess  // 35
 	, doubleGreater
 	, doubleSlash
 
 	, doubleEquals
 	, tildaEquals
-	, lessEquals
+	, lessEquals  // 40
 	, greaterEquals
 	, less
 	, greater
 	, equals
 
-	, openingBracket
+	, openingBracket  // 45
 	, closingBracket
 	, openingCurlyBracket
 	, closingCurlyBracket
 	, openingSquareBracket
-	, closingSquareBracket
+	, closingSquareBracket  // 50
 	, doubleColon
 
 	, semicolon
 	, colon
 	, comma
-	, dot
+	, dot  // 55
 	, doubleDot
 	, tripleDot
 
 	, string
 	, integerLiteral
-	, floatLiteral
+	, floatLiteral  // 60
 	, comment
 };
 
 inline uint qHash(TokenType const &key)
 {
 	return ::qHash(static_cast<std::underlying_type<TokenType>::type>(key));
+}
+
+inline QDebug operator <<(QDebug debug, TokenType const &token)
+{
+	debug << static_cast<std::underlying_type<TokenType>::type>(token);
+	return debug;
 }
 
 }

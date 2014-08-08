@@ -1,14 +1,25 @@
 #include "textLanguageParserTest.h"
 
 #include "textLanguageParser/ast/number.h"
+#include "textLanguageParser/ast/integerNumber.h"
+#include "textLanguageParser/ast/floatNumber.h"
 #include "textLanguageParser/ast/unaryOperator.h"
 #include "textLanguageParser/ast/binaryOperator.h"
+
+#include "textLanguageParser/ast/functionCall.h"
+#include "textLanguageParser/ast/methodCall.h"
+#include "textLanguageParser/ast/indexingExpression.h"
+#include "textLanguageParser/ast/block.h"
+#include "textLanguageParser/ast/assignment.h"
 
 #include "textLanguageParser/ast/addition.h"
 #include "textLanguageParser/ast/multiplication.h"
 #include "textLanguageParser/ast/exponentiation.h"
 
 #include "textLanguageParser/ast/tableConstructor.h"
+
+#include "textLanguageParser/ast/identifier.h"
+#include "textLanguageParser/ast/string.h"
 
 #include "gtest/gtest.h"
 
@@ -189,7 +200,118 @@ TEST_F(TextLanguageParserTest, tableConstructor)
 //	stream = "{ [f(1)] = g; \"x\", \"y\"; x = 1, f(x), [30] = 23; 45 }";
 //	result = mParser->parse(stream);
 //	EXPECT_TRUE(result.errors.isEmpty());
-//	QSharedPointer<ast::TableConstructor> constructor = result.astRoot.dynamicCast<ast::TableConstructor>();
+//	constructor = result.astRoot.dynamicCast<ast::TableConstructor>();
 //	ASSERT_FALSE(constructor.isNull());
 //	EXPECT_EQ(7, constructor->initializers().size());
+}
+
+TEST_F(TextLanguageParserTest, identifier)
+{
+	QString const stream = "f";
+	auto result = mParser->parse(stream);
+	EXPECT_TRUE(result.errors.isEmpty());
+	auto identifier = result.astRoot.dynamicCast<ast::Identifier>();
+	ASSERT_FALSE(identifier.isNull());
+	EXPECT_EQ("f", identifier->name());
+}
+
+TEST_F(TextLanguageParserTest, tableIndexing)
+{
+	// Indexers with square brackets
+	QString stream = "t[1]";
+	auto result = mParser->parse(stream);
+	EXPECT_TRUE(result.errors.isEmpty());
+	auto indexingExpression = as<ast::IndexingExpression>(result.astRoot);
+	ASSERT_FALSE(indexingExpression.isNull());
+
+	auto table = indexingExpression->table();
+	ASSERT_TRUE(table->is<ast::Identifier>());
+	EXPECT_EQ("t", as<ast::Identifier>(table)->name());
+
+	auto indexer = indexingExpression->indexer();
+	ASSERT_TRUE(indexer->is<ast::IntegerNumber>());
+	EXPECT_EQ("1", as<ast::IntegerNumber>(indexer)->stringRepresentation());
+
+	// "Field-like" indexers
+	stream = "t.x";
+	result = mParser->parse(stream);
+	EXPECT_TRUE(result.errors.isEmpty());
+	indexingExpression = as<ast::IndexingExpression>(result.astRoot);
+	ASSERT_FALSE(indexingExpression.isNull());
+
+	table = indexingExpression->table();
+	ASSERT_TRUE(table->is<ast::Identifier>());
+	EXPECT_EQ("t", as<ast::Identifier>(table)->name());
+
+	indexer = indexingExpression->indexer();
+	ASSERT_TRUE(indexer->is<ast::String>());
+	EXPECT_EQ("x", as<ast::String>(indexer)->string());
+}
+
+TEST_F(TextLanguageParserTest, functionCalls)
+{
+	// Functions
+	QString stream = "f(x)";
+	auto result = mParser->parse(stream);
+	EXPECT_TRUE(result.errors.isEmpty());
+	auto call = as<ast::FunctionCall>(result.astRoot);
+	ASSERT_FALSE(call.isNull());
+
+	auto function = call->function();
+	ASSERT_TRUE(function->is<ast::Identifier>());
+	EXPECT_EQ("f", as<ast::Identifier>(function)->name());
+
+	ASSERT_EQ(1, call->arguments().size());
+	auto argument = call->arguments().first();
+	ASSERT_TRUE(argument->is<ast::Identifier>());
+	EXPECT_EQ("x", as<ast::Identifier>(argument)->name());
+
+	// Methods
+	stream = "a:m(x)";
+	result = mParser->parse(stream);
+	EXPECT_TRUE(result.errors.isEmpty());
+	auto methodCall = as<ast::MethodCall>(result.astRoot);
+	ASSERT_FALSE(call.isNull());
+
+	auto object = methodCall->object();
+	ASSERT_TRUE(object->is<ast::Identifier>());
+	EXPECT_EQ("a", as<ast::Identifier>(object)->name());
+
+	function = methodCall->methodName();
+	ASSERT_TRUE(function->is<ast::Identifier>());
+	EXPECT_EQ("m", as<ast::Identifier>(function)->name());
+
+	ASSERT_EQ(1, methodCall->arguments().size());
+	argument = methodCall->arguments().first();
+	ASSERT_TRUE(argument->is<ast::Identifier>());
+	EXPECT_EQ("x", as<ast::Identifier>(argument)->name());
+
+	// More complex case, calling method of some unknown object
+	stream = "(a[1].someObject):method(1, 2, 3)";
+	result = mParser->parse(stream);
+	EXPECT_TRUE(result.errors.isEmpty());
+	methodCall = as<ast::MethodCall>(result.astRoot);
+	ASSERT_FALSE(call.isNull());
+
+	object = methodCall->object();
+	ASSERT_TRUE(object->is<ast::IndexingExpression>());
+	ASSERT_TRUE(as<ast::IndexingExpression>(object)->indexer()->is<ast::String>());
+	EXPECT_EQ("someObject", as<ast::String>(as<ast::IndexingExpression>(object)->indexer())->string());
+
+	function = methodCall->methodName();
+	ASSERT_TRUE(function->is<ast::Identifier>());
+	EXPECT_EQ("method", as<ast::Identifier>(function)->name());
+
+	ASSERT_EQ(3, methodCall->arguments().size());
+	argument = methodCall->arguments().first();
+	ASSERT_TRUE(argument->is<ast::IntegerNumber>());
+	EXPECT_EQ("1", as<ast::IntegerNumber>(argument)->stringRepresentation());
+
+	argument = methodCall->arguments()[1];
+	ASSERT_TRUE(argument->is<ast::IntegerNumber>());
+	EXPECT_EQ("2", as<ast::IntegerNumber>(argument)->stringRepresentation());
+
+	argument = methodCall->arguments()[2];
+	ASSERT_TRUE(argument->is<ast::IntegerNumber>());
+	EXPECT_EQ("3", as<ast::IntegerNumber>(argument)->stringRepresentation());
 }

@@ -44,6 +44,12 @@ HEADERS += \
 	$$PWD/ast/true.h \
 	$$PWD/ast/false.h \
 	$$PWD/ast/nil.h \
+	$$PWD/ast/identifier.h \
+	$$PWD/ast/functionCall.h \
+	$$PWD/ast/methodCall.h \
+	$$PWD/ast/assignment.h \
+	$$PWD/ast/block.h \
+	$$PWD/ast/indexingExpression.h \
 	$$PWD/details/temporaryToken.h \
 	$$PWD/details/temporaryPair.h \
 	$$PWD/details/temporaryList.h \

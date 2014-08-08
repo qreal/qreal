@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QDebug>
+
 #include "textLanguageParser/details/parserInterface.h"
 #include "textLanguageParser/tokenType.h"
 #include "textLanguageParser/details/parserRef.h"
@@ -20,6 +22,9 @@ public:
 			parserContext.reportError("Unexpected end of file");
 			return wrap(nullptr);
 		}
+
+//		qDebug() << "Parsing alternative, FIRST(parser1) = " << mParser1->first()
+//				<< "FIRST(parser2) = " << mParser2->first();
 
 		if (!(mParser1->first().intersect(mParser2->first())).isEmpty()) {
 			parserContext.reportInternalError(

@@ -83,10 +83,7 @@ public:
 
 private:
 	QScopedPointer<details::TokenStream> mTokenStream;
-
 	QList<ParserError> mErrors;
-
-	void reportError(QString const &message);
 };
 
 }

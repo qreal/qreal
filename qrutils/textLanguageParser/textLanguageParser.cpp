@@ -14,6 +14,11 @@
 #include "textLanguageParser/ast/unaryOperator.h"
 #include "textLanguageParser/ast/fieldInitialization.h"
 #include "textLanguageParser/ast/tableConstructor.h"
+#include "textLanguageParser/ast/functionCall.h"
+#include "textLanguageParser/ast/methodCall.h"
+#include "textLanguageParser/ast/indexingExpression.h"
+#include "textLanguageParser/ast/assignment.h"
+#include "textLanguageParser/ast/block.h"
 
 #include "textLanguageParser/ast/addition.h"
 #include "textLanguageParser/ast/subtraction.h"
@@ -47,8 +52,15 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 
 	ParserContext context(mErrors, *mTokenStream);
 
+	ParserRef stat;
+	ParserRef explist;
+	ParserRef exp;
 	ParserRef primary;
-
+	ParserRef prefixexp;
+	ParserRef varpart;
+	ParserRef functioncallpart;
+	ParserRef prefixterm;
+	ParserRef args;
 	ParserRef tableconstructor;
 	ParserRef fieldlist;
 	ParserRef field;
@@ -56,17 +68,94 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 	ParserRef binop;
 	ParserRef unop;
 
-	// exp(precedence) ::= primary { binop exp(newPrecedence) }
-	auto exp = ParserRef(new ExpressionParser(false, primary, binop));
-
-	auto reportUnsupported = [this] (Token const &token) {
-		mErrors << ParserError(token.range().start()
-				, "This construction is not supported yet"
-				, ErrorType::syntaxError
-				, Severity::error);
-
+	auto reportUnsupported = [&context] (Token const &token) {
+		context.reportError(token, "This construction is not supported yet");
 		return new ast::Node();
 	};
+
+	// Additional production that parses unqualified identifier.
+	auto identifier = TokenType::identifier >> [] (Token const &token) { return new ast::Identifier(token.lexeme()); };
+
+	// block ::= {stat}
+	auto block = *stat
+			>> [] (QSharedPointer<TemporaryList> statList) {
+				QList<QSharedPointer<ast::Node>> result;
+				for (auto const &stat : statList->list()) {
+					if (stat->is<TemporaryList>()) {
+						// It is a list of assignments.
+						for (auto const &assignment : as<TemporaryList>(stat)->list()) {
+							result << assignment;
+						}
+					} else {
+						// It is expression.
+						result << stat;
+					}
+				}
+
+				if (result.size() == 1) {
+					// Do not create Block node for simple expression.
+					return result.first();
+				} else {
+					return wrap(new ast::Block(result));
+				}
+			};
+
+	// stat ::= ‘;’ | explist [‘=’ explist]
+	stat = (!TokenType::semicolon | (explist & ~(!TokenType::equals & explist)))
+			>> [&context] (QSharedPointer<TemporaryPair> pair) {
+				if (!pair) {
+					// It is semicolon, just discard it.
+					return wrap(nullptr);
+				}
+
+				if (!pair->right()) {
+					auto expList = as<TemporaryList>(pair->left());
+					if (expList->list().size() != 1) {
+						context.reportError(pair
+								, QObject::tr("Using expression as statement requires only one expression"));
+						return wrap(nullptr);
+					} else {
+						return expList->list().first();
+					}
+				}
+
+				auto variables = as<TemporaryList>(pair->left())->list();
+				auto values = as<TemporaryList>(pair->right())->list();
+				if (variables.size() != values.size()) {
+					context.reportError(pair, QObject::tr(
+							"Number of variables in assignment shall be equal to the number of assigned values"));
+
+					return wrap(nullptr);
+				}
+
+				auto result = QSharedPointer<TemporaryList>(new TemporaryList());
+
+				for (int i = 0; i < variables.size(); ++i) {
+					auto variable = as<ast::Expression>(variables[i]);
+
+					if (variable->is<ast::FunctionCall>()) {
+						context.reportError(pair, QObject::tr("Assignment to function call is impossible"));
+						continue;
+					}
+
+					auto value = as<ast::Expression>(values[i]);
+					result->list() << wrap(new ast::Assignment(variable, value));
+				}
+
+				return as<ast::Node>(result);
+			};
+
+	// explist ::= exp(0) {‘,’ exp(0)}
+	explist = (exp & *(!TokenType::comma & exp))
+			>> [] (QSharedPointer<TemporaryPair> node) {
+				auto firstExp = as<ast::Expression>(node->left());
+				auto temporaryList = as<TemporaryList>(node->right());
+				temporaryList->list().prepend(firstExp);
+				return temporaryList;
+			};
+
+	// exp(precedence) ::= primary { binop exp(newPrecedence) }
+	exp = ParserRef(new ExpressionParser(false, primary, binop));
 
 	// primary ::= nil | false | true | Number | String | ‘...’ | prefixexp | tableconstructor | unop exp
 	primary =
@@ -77,7 +166,7 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 			| TokenType::floatLiteral >> [] (Token token) { return new ast::FloatNumber(token.lexeme()); }
 			| TokenType::string >> [] (Token token) { return new ast::String(token.lexeme()); }
 			| TokenType::tripleDot >> reportUnsupported
-			// | prefixexp
+			| prefixexp
 			| tableconstructor
 			| (unop & ParserRef(new ExpressionParser(true, primary, binop)))
 					>> [] (QSharedPointer<TemporaryPair> node) {
@@ -85,6 +174,66 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 						unOp->setOperand(node->right());
 						return unOp;
 					}
+			;
+
+	// prefixexp ::= prefixterm { functioncallpart | varpart }
+	prefixexp = (prefixterm & *(functioncallpart | varpart))
+			>> [] (QSharedPointer<TemporaryPair> node) {
+				auto result = as<ast::Expression>(node->left());
+				for (auto const part : as<TemporaryList>(node->right())->list()) {
+					if (part->is<ast::Expression>()) {
+						// It is varpart (indexing expression)
+						result = QSharedPointer<ast::Expression>(
+								new ast::IndexingExpression(result, as<ast::Expression>(part)));
+					} else if (part->is<TemporaryPair>()) {
+						// It is functioncallpart (method call)
+						auto const methodName = as<ast::Identifier>(as<TemporaryPair>(part)->left());
+						auto const args = as<ast::Expression>(
+								as<TemporaryList>(as<TemporaryPair>(part)->right())->list());
+
+						result = QSharedPointer<ast::Expression>(new ast::MethodCall(result, methodName, args));
+					} else if (part->is<TemporaryList>()) {
+						// It is functioncallpart (function call)
+						result = QSharedPointer<ast::Expression>(
+								new ast::FunctionCall(result, as<ast::Expression>(as<TemporaryList>(part)->list())));
+					}
+				}
+
+				return result;
+			};
+
+	// varpart ::= ‘[’ exp(0) ‘]’ | ‘.’ Name
+	varpart = (!TokenType::openingSquareBracket & exp & !TokenType::closingSquareBracket)
+			| (!TokenType::dot & TokenType::identifier >> [] (Token const &token) {
+						return new ast::String(token.lexeme());
+					}
+			)
+			;
+
+	// functioncallpart :: = args | ‘:’ Name args
+	functioncallpart = args | (!TokenType::colon & identifier & args);
+
+	// prefixterm ::= Name | ‘(’ exp(0) ‘)’
+	prefixterm = identifier
+			| (!TokenType::openingBracket & exp & !TokenType::closingBracket)
+			;
+
+	// args ::= ‘(’ [explist] ‘)’ | tableconstructor | String
+	args = ((!TokenType::openingBracket & ~explist & !TokenType::closingBracket)
+			| tableconstructor
+			| TokenType::string >> [] (Token token) { return new ast::String(token.lexeme()); }
+			) >> [] (QSharedPointer<ast::Node> node) {
+					if (node && node->is<TemporaryList>()) {
+						return node;
+					} else {
+						auto result = QSharedPointer<TemporaryList>(new TemporaryList());
+						if (node) {
+							result->list() << as<ast::Expression>(node);
+						}
+
+						return as<ast::Node>(result);
+					}
+				}
 			;
 
 	// tableconstructor ::= ‘{’ [fieldlist] ‘}’
@@ -99,13 +248,14 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 
 	// fieldlist ::= field {fieldsep field} [fieldsep]
 	fieldlist = (field & *(!fieldsep & field) & !~fieldsep)
-		 >> [] (QSharedPointer<TemporaryPair> node) {
-			auto firstField = as<ast::FieldInitialization>(node->left());
-			auto temporaryList = as<TemporaryList>(node->right());
-			temporaryList->list() << firstField;
-			return temporaryList;
-		};
+			 >> [] (QSharedPointer<TemporaryPair> node) {
+				auto firstField = as<ast::FieldInitialization>(node->left());
+				auto temporaryList = as<TemporaryList>(node->right());
+				temporaryList->list().prepend(firstField);
+				return temporaryList;
+			};
 
+	// field ::= ‘[’ exp(0) ‘]’ ‘=’ exp(0) | exp(0) [ ‘=’ exp(0) ]
 	field = (!TokenType::openingSquareBracket & exp & !TokenType::closingSquareBracket & !TokenType::equals & exp)
 					>> [] (QSharedPointer<TemporaryPair> pair) {
 						auto initializer = as<ast::Expression>(pair->right());
@@ -146,14 +296,5 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 			| TokenType::tilda >> [] { return new ast::BitwiseNegation(); }
 			;
 
-	return Result(exp->parse(*mTokenStream, context), mErrors);
-}
-
-void TextLanguageParser::reportError(QString const &message)
-{
-	auto connection = !mTokenStream->isEnd()
-			? mTokenStream->next().range().start()
-			: mTokenStream->next().range().end();
-
-	mErrors << ParserError(connection, message, ErrorType::syntaxError, Severity::error);
+	return Result(block->parse(*mTokenStream, context), mErrors);
 }

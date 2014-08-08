@@ -24,6 +24,11 @@ public:
 		report(node ? node->start() : ast::Connection(), message, Severity::error);
 	}
 
+	void reportError(Token const &token, QString const &message)
+	{
+		report(token.range().start(), message, Severity::error);
+	}
+
 	void reportError(QString const &message)
 	{
 		report(mTokenStream.next().range().start(), message, Severity::error);

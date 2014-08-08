@@ -5,6 +5,7 @@
 #include "textLanguageParser/details/parserInterface.h"
 #include "textLanguageParser/details/parserRef.h"
 #include "textLanguageParser/details/functionTraits.h"
+#include "textLanguageParser/details/temporaryDiscardableNode.h"
 
 namespace textLanguageParser {
 namespace details {
@@ -25,13 +26,16 @@ public:
 		typedef typename function_traits<DereferenceOperatorType>::result_type NodeReference;
 		typedef typename std::remove_reference<NodeReference>::type NodeType;
 
+//		qDebug() << "Transforming parser, FIRST(parser) = " << mParser->first();
+
 		auto parserResult = mParser->parse(tokenStream, parserContext);
 		auto node = as<NodeType>(parserResult);
 		parserResult = as<ast::Node>(mTransformation(node));
-		if (parserResult) {
-			parserResult->connect(node);
+		if (!parserResult) {
+			parserResult = wrap(new TemporaryDiscardableNode());
 		}
 
+		parserResult->connect(node);
 		return parserResult;
 	}
 

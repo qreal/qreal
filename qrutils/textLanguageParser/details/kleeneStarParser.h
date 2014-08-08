@@ -18,7 +18,7 @@ public:
 	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
 	{
 		auto temporaryList = QSharedPointer<TemporaryList>(new TemporaryList());
-		while (mParser->first().contains(tokenStream.next().token())) {
+		while (!tokenStream.isEnd() && mParser->first().contains(tokenStream.next().token())) {
 			auto result = mParser->parse(tokenStream, parserContext);
 			if (!result) {
 				break;
