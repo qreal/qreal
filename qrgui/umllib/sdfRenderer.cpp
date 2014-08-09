@@ -799,7 +799,7 @@ QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(QString const &filePath)
 	}
 
 	QFileInfo const fileInfo(filePath);
-	if (fileInfo.exists()) {
+	if (fileInfo.exists() && fileInfo.isFile()) {
 		return fileInfo;
 	}
 
