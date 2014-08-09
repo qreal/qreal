@@ -107,5 +107,9 @@ void Downloader::downloadNext()
 		return;
 	}
 
-	getUpdate(mFilesToDownload.takeFirst());
+	try {
+		getUpdate(mFilesToDownload.takeFirst());
+	} catch (CreateFileException const &) {
+		emit updatesLoadError("Could not open file for writing");
+	}
 }
