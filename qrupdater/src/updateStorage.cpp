@@ -1,5 +1,7 @@
 #include "updateStorage.h"
 
+#include <qrkernel/logging.h>
+
 namespace keys {
 static QString const filePath = "fileName";
 static QString const version = "version";
@@ -27,13 +29,16 @@ void UpdateStorage::saveUpdateInfo(Update *update)
 
 void UpdateStorage::saveFileForLater(Update *concreteUpdate, QString const &filePath)
 {
+	QLOG_INFO() << "Saving update" << concreteUpdate->unit() << concreteUpdate->version() << "for later...";
 	QDir().mkdir(mUpdatesFolder);
 	QString const endFilePath = mUpdatesFolder + QFileInfo(filePath).fileName();
 
 	if (QFile::exists(endFilePath)) {
+		QLOG_INFO() << "Removing old update" << endFilePath;
 		QFile::remove(endFilePath);
 	}
 
+	QLOG_INFO() << "Renaming" << filePath << "to" << endFilePath;
 	QFile::rename(filePath, endFilePath);
 
 	concreteUpdate->setFilePath(endFilePath);
@@ -87,8 +92,10 @@ void UpdateStorage::sync()
 		}
 	}
 
+	QLOG_INFO() << "Writing updates information to disk";
 	mUpdateInfo->sync();
 	if (QDir(mUpdatesFolder).exists() && QFile::exists(mSettingsFile) && QFile(mSettingsFile).size() == 0) {
+		QLOG_INFO() << "Removing" << mSettingsFile << "and" << mUpdatesFolder;
 		QFile::remove(mSettingsFile);
 		QDir(mUpdatesFolder).removeRecursively();
 	}
@@ -98,4 +105,3 @@ QList<Update *> UpdateStorage::preparedUpdates() const
 {
 	return mPreparedUpdates;
 }
-

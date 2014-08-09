@@ -65,7 +65,15 @@ void Update::clear()
 void Update::installUpdate()
 {
 	mProcess = new QProcess(this);
-	connect(mProcess, &QProcess::finished, this, &Update::installationFinished);
+	connect(mProcess, SIGNAL(finished(int,QProcess::ExitStatus))
+			, this, SLOT(installationFinished(int,QProcess::ExitStatus)));
+	connect(mProcess, static_cast<void (QProcess::*)(QProcess::ProcessError)>(&QProcess::error)
+			, [this](QProcess::ProcessError error) {
+				if (error == QProcess::FailedToStart) {
+					installationFinished(0, QProcess::CrashExit);
+				}
+	});
+
 	if (!hasSelfInstallMarker()) {
 		mProcess->start(mFilePath, mArguments);
 	} else {
@@ -127,5 +135,5 @@ void Update::installationFinished(int exitCode, QProcess::ExitStatus status)
 {
 	Q_UNUSED(exitCode);
 	mIsInstalled = true;
-	emit installedSuccessfully(status == QProcess::NormalExit);
+	emit installed(status == QProcess::NormalExit);
 }

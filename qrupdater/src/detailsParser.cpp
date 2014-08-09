@@ -1,5 +1,7 @@
 #include "detailsParser.h"
 
+#include <qrkernel/logging.h>
+
 using namespace qrUpdater;
 
 DetailsParser::DetailsParser()
@@ -24,8 +26,8 @@ Update *DetailsParser::update(QString const &unit)
 Update *DetailsParser::update(QUrl const &url)
 {
 	for (int i = 0; i < mUpdates.size(); i++) {
-		if (mUpdates.at(i)->url() == url) {
-			return mUpdates.at(i);
+		if (mUpdates[i]->url() == url) {
+			return mUpdates[i];
 		}
 	}
 
@@ -44,6 +46,7 @@ QList<Update *> DetailsParser::updatesParsed() const
 
 void DetailsParser::processDevice(QIODevice *device)
 {
+	QLOG_INFO() << "Got details file. Parsing it...";
 	parseDevice(device);
 
 	for (QString const &unit : units()) {

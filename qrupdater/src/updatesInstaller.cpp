@@ -1,5 +1,7 @@
 #include "updatesInstaller.h"
 
+#include <qrkernel/logging.h>
+
 using namespace qrUpdater;
 
 /// Time for main program could fully unload resources
@@ -44,8 +46,9 @@ bool UpdatesInstaller::isEmpty() const
 
 void UpdatesInstaller::installNext()
 {
-	connect(mUpdatesQueue.first(), SIGNAL(installedSuccessfully(bool)), this, SLOT(singleInstallFinished(bool)));
+	connect(mUpdatesQueue.first(), &Update::installed, this, &UpdatesInstaller::singleInstallFinished);
 	replaceExpressions(mUpdatesQueue.first());
+	QLOG_INFO() << "Installing" << mUpdatesQueue.first()->unit() << mUpdatesQueue.first()->version() << "...";
 	mUpdatesQueue.first()->installUpdate();
 	if (mUpdatesQueue.first()->hasSelfInstallMarker()) {
 		emit selfInstalling();
@@ -85,11 +88,16 @@ QString UpdatesInstaller::installationDirectory()
 void UpdatesInstaller::singleInstallFinished(bool hasNoErrors)
 {
 	if (hasNoErrors) {
+		QLOG_INFO() << "Installation of" << mUpdatesQueue.first()->unit()
+					<< mUpdatesQueue.first()->version().toString() << "finished successfully!";
 		if (mUpdatesQueue.first()->isInstalled()) {
 			mUpdatesQueue.first()->clear();
 		} else {
 			mHasNoErrors = false;
 		}
+	} else {
+		QLOG_ERROR() << "Could not install" << mUpdatesQueue.first()->unit()
+					<< mUpdatesQueue.first()->version().toString();
 	}
 
 	mUpdatesQueue.takeFirst();

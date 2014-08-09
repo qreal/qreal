@@ -5,28 +5,33 @@ using namespace qrUpdater;
 ArgsParser::ArgsParser()
 	: mInputMask(
 			"Usage:\n"
-			"qrupdater -unit [unit-name] -version [version] -url [url-to-file] | [-hard]\n"
-			"Example:\n qrupdater -unit windows -version 0.3.2 -url http://127.0.0.1/updates.xml\n"
-			"or\n"
-			"qrupdater -unit cool-module-name -version 2.8a -url http://example.com/updates.xml -hard\n"
+			"\tqrupdater (--check | --download | --install | --download-and-install) "
+			"-unit [unit-name] -version [version] -url [url-to-file] -path [path-to-updated-app]\n"
+			"Modes:"
+			"\t--check: Updater will just retrieve from the server light-weight about available versions "
+			"and write into standard output information about the newest versions.\n"
+			"\t--download: Updater will check for the new versions and download their installers if such present.\n"
+			"\t--install: Updater will install already downloaded versions.\n"
+			"\t--download-and-install: Updater will download new updates and install them immediately.\n"
+			"\n"
+			"Example:\n qrupdater --download -unit cool-module-name -version 2.8a "
+			"-url http://example.com/updates.xml -path ./qrgui\n"
 	)
-	, mHasHardUpdateParam(false)
 {
-	mKeywords << "-unit" << "-version" << "-url";
+	mKeywords << "-unit" << "-version" << "-url" << "-path";
 }
 
 void ArgsParser::parse() throw (BadArgumentsException)
 {
 	QStringList const arguments = QCoreApplication::arguments();
 
-	if (arguments.size() < mKeywords.size() * 2) {
+	// First argument is application name, second - mode, then keywords
+	if (arguments.size() < mKeywords.size() * 2 + 2 || !parseMode(arguments[1])) {
 		throw BadArgumentsException(mInputMask);
 	}
 
-	mHasHardUpdateParam = arguments.contains("-hard", Qt::CaseInsensitive);
-
 	QString curParam;
-	for (int i = 0; i < arguments.size(); ++i) {
+	for (int i = 2; i < arguments.size(); ++i) {
 		if (mKeywords.contains(arguments.at(i).toLower())) {
 			// If we got on the key then storing it and proceeding iterations.
 			curParam = arguments.at(i).toLower();
@@ -44,6 +49,11 @@ void ArgsParser::parse() throw (BadArgumentsException)
 	}
 }
 
+Mode ArgsParser::mode() const
+{
+	return mMode;
+}
+
 QStringList ArgsParser::units() const
 {
 	return mParams.values("-unit");
@@ -59,9 +69,34 @@ qReal::Version ArgsParser::version() const
 	return qReal::Version::fromString(mParams.value("-version"));
 }
 
-bool ArgsParser::hardUpdate() const
+QString ArgsParser::pathToApplication() const
 {
-	return mHasHardUpdateParam;
+	return mParams.value("-path");
+}
+
+bool ArgsParser::parseMode(QString const &input)
+{
+	if (input == "--check") {
+		mMode = check;
+		return true;
+	}
+
+	if (input == "--download") {
+		mMode = download;
+		return true;
+	}
+
+	if (input == "--install") {
+		mMode = install;
+		return true;
+	}
+
+	if (input == "--download-and-install") {
+		mMode = downloadAndInstall;
+		return true;
+	}
+
+	return false;
 }
 
 bool ArgsParser::hasEmptyArgs() const

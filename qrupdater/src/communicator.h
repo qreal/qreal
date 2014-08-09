@@ -13,23 +13,8 @@ class Communicator : public QObject
 public:
 	explicit Communicator(QObject *parent = 0);
 
-	/// Reads and saves path to main app (must be first input).
-	void readProgramPath();
-
-	/// Sends 'terminate' message. Main app must be terminated immediatly in this case.
-	void writeQuitMessage();
-
-	/// Sends 'resume' message. No action required.
-	void writeResumeMessage();
-
 	/// Prints to console given @arg message
-	void writeCustomMessage(QString const &message);
-
-	/// @return saved path to main application
-	QString parentAppPath() const;
-
-private:
-	QString mParentAppPath;
+	void writeMessage(QString const &message);
 };
 
 }

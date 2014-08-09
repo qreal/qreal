@@ -41,7 +41,7 @@ public:
 
 signals:
 	/// @arg True if process finished correctly.
-	void installedSuccessfully(bool);
+	void installed(bool);
 
 protected:
 	bool mIsInstalled;

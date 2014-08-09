@@ -1,10 +1,11 @@
 #include "updateProcessor.h"
 
+#include <qrkernel/logging.h>
+
 using namespace qrUpdater;
 
 UpdateProcessor::UpdateProcessor()
 	: mAttempt(0)
-	, mHardUpdate(false)
 	, mUpdatesFolder("ForwardUpdates/")
 	, mCommunicator(new Communicator(this))
 	, mDownloader(new Downloader(this))
@@ -14,7 +15,7 @@ UpdateProcessor::UpdateProcessor()
 	try {
 		mArgsParser.parse();
 	} catch(ArgsParser::BadArgumentsException const &exception) {
-		mCommunicator->writeCustomMessage(exception.message());
+		mCommunicator->writeMessage(exception.message());
 	}
 
 	initConnections();
@@ -27,12 +28,11 @@ UpdateProcessor::~UpdateProcessor()
 
 void UpdateProcessor::startUpdateControl()
 {
-	mCommunicator->readProgramPath();
-
-	checkoutPreparedUpdates();
+	if (mArgsParser.mode() == install || mArgsParser.mode() == downloadAndInstall) {
+		checkoutPreparedUpdates();
+	}
 
 	if (mUpdatesInstaller.isEmpty()) {
-		mCommunicator->writeResumeMessage();
 		startDownloadingProcess();
 	}
 }
@@ -43,14 +43,16 @@ void UpdateProcessor::startDownloadingProcess()
 		mRetryTimer.stop();
 	}
 
-	mAttempt++;
+	++mAttempt;
+	QLOG_INFO() << "An attempt #" << mAttempt << "to get details file from"
+			<< mArgsParser.detailsUrl() << "...";
 	mDownloader->getUpdateDetails(mArgsParser.detailsUrl());
 }
 
 void UpdateProcessor::initConnections()
 {
 	connect(&mRetryTimer, &QTimer::timeout, this, &UpdateProcessor::startDownloadingProcess);
-	connect(&mUpdatesInstaller, &UpdatesInstaller::installsFinished, this, &UpdateProcessor::installingFinished);
+	connect(&mUpdatesInstaller, &UpdatesInstaller::installsFinished, this, &UpdateProcessor::installationFinished);
 	connect(&mUpdatesInstaller, &UpdatesInstaller::selfInstalling, this, &UpdateProcessor::jobDoneQuit);
 	connect(mDownloader, &Downloader::detailsLoadError, this, &UpdateProcessor::downloadErrors);
 	connect(mDownloader, &Downloader::updatesLoadError, this, &UpdateProcessor::downloadErrors);
@@ -75,6 +77,7 @@ void UpdateProcessor::checkoutPreparedUpdates()
 	mUpdateInfo->loadUpdatesInfo(mArgsParser.units());
 	for (Update * const update : mUpdateInfo->preparedUpdates()) {
 		if (hasNewUpdates(update->version())) {
+			QLOG_INFO() << "Found unit" << update->unit() << update->version() << "ready for installation";
 			mUpdatesInstaller << update;
 		}
 	}
@@ -83,23 +86,24 @@ void UpdateProcessor::checkoutPreparedUpdates()
 		return;
 	}
 
-	mCommunicator->writeQuitMessage();
 	mUpdatesInstaller.installAll();
 }
 
 void UpdateProcessor::restartMainApplication()
 {
-	QString const filePath = mCommunicator->parentAppPath();
+	QString const filePath = mArgsParser.pathToApplication();
+	QLOG_INFO() << "Restarting" << filePath;
 	QString const startPath = QFileInfo(filePath).path();
-	QProcess * const mainApplication = new QProcess();
+	QProcess * const mainApplication = new QProcess(this);
 	connect(mainApplication, &QProcess::started, this, &UpdateProcessor::jobDoneQuit);
 	mainApplication->setWorkingDirectory(startPath);
-	mainApplication->start(filePath);
+	mainApplication->startDetached(filePath);
 }
 
 void UpdateProcessor::detailsChanged()
 {
 	if (mParser->hasErrors()) {
+		QLOG_ERROR() << "Details parsing accomplished with error";
 		downloadErrors();
 		return;
 	}
@@ -107,11 +111,16 @@ void UpdateProcessor::detailsChanged()
 	QList<QUrl> filesUrl;
 	for (Update * const update : mParser->updatesParsed()) {
 		if (mArgsParser.units().contains(update->unit()) && hasNewUpdates(update->version())) {
+			QLOG_INFO() << "Found new version!" << update->unit() << update->version().toString();
 			filesUrl << update->url();
+			if (mArgsParser.mode() == check) {
+				mCommunicator->writeMessage(QString("Found %1 of version %2\n")
+						.arg(update->unit(), update->version().toString()));
+			}
 		}
 	}
 
-	if (!filesUrl.isEmpty()) {
+	if (!filesUrl.isEmpty() && (mArgsParser.mode() == download || mArgsParser.mode() == downloadAndInstall)) {
 		mDownloader->getUpdateFiles(filesUrl);
 	} else {
 		jobDoneQuit();
@@ -125,7 +134,7 @@ void UpdateProcessor::fileReady(QUrl const &url, QString const &filePath)
 
 void UpdateProcessor::downloadingFinished()
 {
-	if (mHardUpdate) {
+	if (mArgsParser.mode() == downloadAndInstall) {
 		mUpdatesInstaller << mParser->updatesParsed();
 		mUpdatesInstaller.installAll();
 	} else if (!mRetryTimer.isActive()) { // have no download-errors
@@ -133,7 +142,7 @@ void UpdateProcessor::downloadingFinished()
 	}
 }
 
-void UpdateProcessor::installingFinished(bool hasSuccess)
+void UpdateProcessor::installationFinished(bool hasSuccess)
 {
 	restartMainApplication();
 	jobDoneQuit();
@@ -143,8 +152,10 @@ void UpdateProcessor::installingFinished(bool hasSuccess)
 void UpdateProcessor::downloadErrors(QString const &error)
 {
 	if (mAttempt < maxAttemptsCount) {
-		mRetryTimer.start(retryTimerout);
+		QLOG_INFO() << "Retrying downloading in 5 min...";
+		mRetryTimer.start(retryTimeout);
 	} else {
+		QLOG_INFO() << "Attempts limit exceeded. Aborting...";
 		jobDoneQuit();
 	}
 
@@ -154,5 +165,6 @@ void UpdateProcessor::downloadErrors(QString const &error)
 void UpdateProcessor::jobDoneQuit()
 {
 	mUpdateInfo->sync();
+	QLOG_INFO() << "Job is done, quiting";
 	QCoreApplication::quit();
 }
