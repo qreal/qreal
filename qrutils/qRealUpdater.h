@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QtCore/QProcess>
-
 #include <qrkernel/version.h>
 
 #include "utilsDeclSpec.h"
+
+class QProcess;
 
 namespace utils {
 

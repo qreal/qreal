@@ -27,9 +27,9 @@ void Downloader::getUpdate(QUrl const &url) throw(CreateFileException)
 	}
 
 	QLOG_INFO() << "Saving it to" << fileName;
-	if (QFile::exists(fileName)) {
-		QLOG_INFO() << "Removing old file with such name";
-		QFile::remove(fileName);
+	if (QFile::exists("ForwardUpdates/" + fileName)) {
+		QLOG_INFO() << "File already downloaded, skipping this step";
+		emit updateDownloaded(url, QFileInfo(fileName).filePath());
 	}
 
 	mFile = new QFile(fileName);

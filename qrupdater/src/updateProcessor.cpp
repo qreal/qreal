@@ -139,7 +139,7 @@ void UpdateProcessor::fileReady(QUrl const &url, QString const &filePath)
 {
 	Update * const update = mParser->update(url);
 	if (mArgsParser.mode() == download) {
-		mCommunicator->writeMessage(QString("Downloaded %1 of version %2!")
+		mCommunicator->writeMessage(QString("Downloaded %1 of version %2!\n")
 				.arg(update->unit(), update->version().toString()));
 	}
 

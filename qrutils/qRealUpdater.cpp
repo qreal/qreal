@@ -1,6 +1,7 @@
 #include "qRealUpdater.h"
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QProcess>
 
 #include <qrkernel/platformInfo.h>
 
@@ -62,14 +63,11 @@ QStringList QRealUpdater::arguments(QString const &mode)
 void QRealUpdater::readAnswer()
 {
 	QString const output = mUpdaterProcess->readAllStandardOutput();
-	qDebug() << output;
 	QString const marker = mMustBeDownloadedAfterCheck ? "Downloaded" : "Found";
-	QRegExp const versionsMatcher(QString(".*%1 .* of version (.*)\\!.*").arg(marker));
-	qDebug() << versionsMatcher.pattern();
+	QRegExp const versionsMatcher(QString(".*%1 .* of version ([^D]*)\\!.*").arg(marker));
 	if (versionsMatcher.exactMatch(output)) {
 		// There may be many messages about the new version, but we ignore it and using the first.
 		QString const newVersion = versionsMatcher.cap(1);
-		qDebug() << newVersion;
 		emit newVersionAvailable(qReal::Version::fromString(newVersion));
 	}
 }
