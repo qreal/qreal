@@ -18,7 +18,7 @@ public:
 
 private:
 #if defined Q_OS_WIN32
-	QString prettyWindowsVersion(QSysInfo::WinVersion version);
+	static QString prettyWindowsVersion(QSysInfo::WinVersion version);
 #endif
 };
 

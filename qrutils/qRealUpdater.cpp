@@ -15,7 +15,7 @@ QRealUpdater::QRealUpdater(QString const &applicationPath
 		, QObject *parent)
 	: QObject(parent)
 	, mQRealPath(applicationPath)
-	, mUpdaterPath(QFileInfo(mQRealPath).absolutePath() + "/qrupdater")
+	, mUpdaterPath(QFileInfo(mQRealPath).absolutePath())
 	, mUnit(QString("%1-%2").arg(unit, qReal::PlatformInfo::os()))
 	, mVersion(version)
 	, mUpdaterProcess(nullptr)
@@ -46,7 +46,7 @@ void QRealUpdater::executeUpdater(QString const &mode)
 	mUpdaterProcess->setWorkingDirectory(mUpdaterPath);
 	connect(mUpdaterProcess, SIGNAL(finished(int)), this, SLOT(readAnswer()));
 
-	mUpdaterProcess->start(mUpdaterPath, arguments(mode));
+	mUpdaterProcess->startDetached("qrupdater", arguments(mode));
 }
 
 QStringList QRealUpdater::arguments(QString const &mode)
