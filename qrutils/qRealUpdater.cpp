@@ -1,77 +1,75 @@
 #include "qRealUpdater.h"
 
+#include <QtCore/QFileInfo>
+
+#include <qrkernel/platformInfo.h>
+
 using namespace utils;
 
-QRealUpdater::QRealUpdater(QString const &applicationPath)
-	: mHasNewUpdates(false)
-	, mUpdaterProcess(nullptr)
+QString const updateServerUrl = "http://127.0.0.1/updates.xml";
+
+QRealUpdater::QRealUpdater(QString const &applicationPath
+		, QString const &unit
+		, qReal::Version const &version
+		, QObject *parent)
+	: QObject(parent)
 	, mQRealPath(applicationPath)
-
+	, mUpdaterPath(QFileInfo(mQRealPath).absolutePath() + "/qrupdater")
+	, mUnit(QString("%1-%2").arg(unit, qReal::PlatformInfo::os()))
+	, mVersion(version)
+	, mUpdaterProcess(nullptr)
 {
-	mUpdaterPath = QFileInfo(mQRealPath).absolutePath() + "/qrupdater";
 }
 
-bool QRealUpdater::hasUpdates()
+void QRealUpdater::checkForNewVersion(bool downloadIfFound)
 {
-	return mHasNewUpdates;
+	mMustBeDownloadedAfterCheck = downloadIfFound;
+	executeUpdater(downloadIfFound ? "--download" : "--check");
 }
 
-void QRealUpdater::startUpdater()
+void QRealUpdater::installUpdates()
 {
-	if (!hasUpdatePermission()) {
-		mHasNewUpdates = false;
-		return;
-	}
-	executeUpdater();
-	transferInfo();
+	mMustBeDownloadedAfterCheck = false;
+	executeUpdater("--install");
 }
 
-void QRealUpdater::executeUpdater()
+void QRealUpdater::downloadAndInstall()
 {
-	QString const programPath = mUpdaterPath + "/qrupdater";
+	mMustBeDownloadedAfterCheck = false;
+	executeUpdater("--downloadAndInstall");
+}
 
-	mUpdaterProcess = new QProcess();
+void QRealUpdater::executeUpdater(QString const &mode)
+{
+	mUpdaterProcess = new QProcess(this);
 	mUpdaterProcess->setWorkingDirectory(mUpdaterPath);
+	connect(mUpdaterProcess, SIGNAL(finished(int)), this, SLOT(readAnswer()));
 
-	mUpdaterProcess->start(programPath, collectArguments());
+	mUpdaterProcess->start(mUpdaterPath, arguments(mode));
 }
 
-void QRealUpdater::transferInfo()
+QStringList QRealUpdater::arguments(QString const &mode)
 {
-	mUpdaterProcess->write(QString(mQRealPath + "\n").toUtf8());
-	mUpdaterProcess->waitForReadyRead(updaterTimeout);
-	readAnswer();
-}
-
-QStringList QRealUpdater::collectArguments()
-{
-	QStringList arguments;
-	QStringList followingUnits;
-	followingUnits << "windows" << "windows-qru::self";
-	arguments << "-unit" << qReal::SettingsManager::value("updaterFollowUnits", followingUnits).toStringList()
-			<< "-version" << qReal::SettingsManager::value("version").toString()
-			<< "-url" << qReal::SettingsManager::value("updaterDetailsURL", "http://localhost/updates.xml").toString();
-	return arguments;
-}
-
-bool QRealUpdater::hasUpdatePermission()
-{
-	qReal::SettingsManager::instance()->load();
-	return !qReal::SettingsManager::value("version", "").toString().isEmpty()
-			&& qReal::SettingsManager::value("updaterActive", true).toBool();
-}
-
-void QRealUpdater::prepareForClose()
-{
-	qReal::SettingsManager::setValue("version", "");  // 'couz I cant just get version from inside
-	qReal::SettingsManager::instance()->saveData();
+	return { mode
+			, "-unit", mUnit, mUnit + "-qru::self"
+			, "-version", mVersion.toString()
+			/// @todo: Make it customizable!
+			, "-url", updateServerUrl
+			, "-path", mQRealPath
+	};
 }
 
 void QRealUpdater::readAnswer()
 {
-	QString input(mUpdaterProcess->readAll());
-	mHasNewUpdates = input.contains("Terminate!");
-	if (mHasNewUpdates) {
-		prepareForClose();
+	QString const output = mUpdaterProcess->readAllStandardOutput();
+	qDebug() << output;
+	QString const marker = mMustBeDownloadedAfterCheck ? "Downloaded" : "Found";
+	QRegExp const versionsMatcher(QString(".*%1 .* of version (.*)\\!.*").arg(marker));
+	qDebug() << versionsMatcher.pattern();
+	if (versionsMatcher.exactMatch(output)) {
+		// There may be many messages about the new version, but we ignore it and using the first.
+		QString const newVersion = versionsMatcher.cap(1);
+		qDebug() << newVersion;
+		emit newVersionAvailable(qReal::Version::fromString(newVersion));
 	}
 }

@@ -5,11 +5,22 @@ using namespace qReal;
 QString PlatformInfo::printableInfo()
 {
 #if defined Q_OS_WIN32
-	return QString("Windows ") + prettyWindowsVersion(QSysInfo().windowsVersion());
+	return "Windows " + prettyWindowsVersion(QSysInfo().windowsVersion());
 #elif defined Q_OS_LINUX
 	return "Linux";
 #elif defined Q_OS_MAC
-	return QString("Mac ") + QSysInfo().macVersion();
+	return "Mac " + QSysInfo().macVersion();
+#endif
+}
+
+QString PlatformInfo::os()
+{
+#if defined Q_OS_WIN32
+	return "Windows";
+#elif defined Q_OS_LINUX
+	return "Linux";
+#elif defined Q_OS_MAC
+	return "Mac";
 #endif
 }
 

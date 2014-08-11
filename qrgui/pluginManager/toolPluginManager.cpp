@@ -99,7 +99,19 @@ Customizer *ToolPluginManager::customizer() const
 			return toolPlugin->customizationInterface();
 		}
 	}
+
 	return const_cast<qReal::Customizer *>(&mCustomizer);
+}
+
+QString ToolPluginManager::mainToolPlugin() const
+{
+	for (ToolPluginInterface * const toolPlugin : mPlugins) {
+		if (toolPlugin->customizationInterface()) {
+			return dynamic_cast<QObject *>(toolPlugin)->objectName();
+		}
+	}
+
+	return QString();
 }
 
 void ToolPluginManager::updateSettings()

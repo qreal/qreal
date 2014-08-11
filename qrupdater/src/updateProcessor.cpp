@@ -4,6 +4,9 @@
 
 using namespace qrUpdater;
 
+int const retryTimeout = 5 * 60 * 1000;  // new try in 5 min
+int const maxAttemptsCount = 3;  // 3 times before quit
+
 UpdateProcessor::UpdateProcessor()
 	: mAttempt(0)
 	, mUpdatesFolder("ForwardUpdates/")
@@ -114,7 +117,7 @@ void UpdateProcessor::detailsChanged()
 			QLOG_INFO() << "Found new version!" << update->unit() << update->version().toString();
 			filesUrl << update->url();
 			if (mArgsParser.mode() == check) {
-				mCommunicator->writeMessage(QString("Found %1 of version %2\n")
+				mCommunicator->writeMessage(QString("Found %1 of version %2!\n")
 						.arg(update->unit(), update->version().toString()));
 			}
 		}
@@ -123,13 +126,24 @@ void UpdateProcessor::detailsChanged()
 	if (!filesUrl.isEmpty() && (mArgsParser.mode() == download || mArgsParser.mode() == downloadAndInstall)) {
 		mDownloader->getUpdateFiles(filesUrl);
 	} else {
+		QLOG_INFO() << "No new versions found";
+		if (mArgsParser.mode() == check) {
+			mCommunicator->writeMessage("No new versions found\n");
+		}
+
 		jobDoneQuit();
 	}
 }
 
 void UpdateProcessor::fileReady(QUrl const &url, QString const &filePath)
 {
-	mUpdateInfo->saveFileForLater(mParser->update(url), filePath);
+	Update * const update = mParser->update(url);
+	if (mArgsParser.mode() == download) {
+		mCommunicator->writeMessage(QString("Downloaded %1 of version %2!")
+				.arg(update->unit(), update->version().toString()));
+	}
+
+	mUpdateInfo->saveFileForLater(update, filePath);
 }
 
 void UpdateProcessor::downloadingFinished()

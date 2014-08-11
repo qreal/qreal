@@ -75,7 +75,7 @@ Version::Stage Version::parseStage(QString const &stage, bool &ok)
 {
 	Stage result = stable;
 	ok = false;
-	if (stage.toLower() == "a" || stage.toLower() == "alpha") {
+	if (stage.toLower() == "a" || stage.toLower() == "alpha" || stage == "α") {
 		ok = true;
 		result = alpha;
 	} else if (stage.toLower() == "b" || stage.toLower() == "beta") {

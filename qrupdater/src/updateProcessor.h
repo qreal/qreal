@@ -42,8 +42,6 @@ private:
 	/// Restarts main application after installation is finished.
 	void restartMainApplication();
 
-	static int const retryTimeout = 5 * 60 * 1000;  // new try in 5 min
-	static int const maxAttemptsCount = 3;  // 3 times before quit
 	int mAttempt;
 	QString mUpdatesFolder;
 	QTimer mRetryTimer;
@@ -64,4 +62,3 @@ protected slots:
 };
 
 }
-

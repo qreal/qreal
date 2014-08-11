@@ -296,6 +296,7 @@ private slots:
 
 private:
 	void checkForUpdates();
+	void showUpdatesDialog(Version const &newVersion);
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on

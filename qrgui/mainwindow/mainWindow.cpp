@@ -21,8 +21,8 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
-#include <qrutils/qRealUpdater.h>
 #include <qrutils/qRealFileDialog.h>
+#include <qrutils/qRealUpdater.h>
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrutils/uxInfo/uxInfo.h>
@@ -1969,13 +1969,40 @@ void MainWindow::initPluginsAndStartWidget()
 
 void MainWindow::checkForUpdates()
 {
-	/// @todo: specify new version
-	if (SettingsManager::value("updaterActive").toBool() && UpdateVersionDialog::promptUpdate("1.0.0", this)) {
-		utils::QRealUpdater updater(QApplication::arguments()[0]);
-		updater.startUpdater();
-		if (updater.hasUpdates()) {
-			QApplication::quit();
+	QString const unit = mToolManager.mainToolPlugin();
+	if (unit.isEmpty()) {
+		// Updater is inactive without the concrete CASE solution.
+		return;
+	}
+
+	utils::QRealUpdater * const updater = new utils::QRealUpdater(
+			QCoreApplication::arguments()[0]
+			, unit
+			, Version::fromString(mToolManager.customizer()->productVersion())
+			, this
+	);
+
+	connect(updater, &utils::QRealUpdater::newVersionAvailable, this, &MainWindow::showUpdatesDialog);
+	if (SettingsManager::value("updaterActive").toBool()) {
+		QLOG_INFO() << "Starting updater...";
+		updater->checkForNewVersion(SettingsManager::value("downloadUpdates").toBool());
+	}
+}
+
+void MainWindow::showUpdatesDialog(Version const &newVersion)
+{
+	QLOG_INFO() << "New version" << newVersion.toString() << "found!";
+	utils::QRealUpdater * const updater = dynamic_cast<utils::QRealUpdater *>(sender());
+	if (updater && UpdateVersionDialog::promptUpdate(newVersion.toString(), this)) {
+		bool const updatesDownloaded = SettingsManager::value("downloadUpdates").toBool();
+		if (updatesDownloaded) {
+			updater->installUpdates();
+		} else {
+			updater->downloadAndInstall();
 		}
+
+		QLOG_INFO() << "Shutting down to install it";
+		QApplication::quit();
 	}
 }
 

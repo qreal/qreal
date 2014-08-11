@@ -40,6 +40,9 @@ public:
 	/// If there're more than one plugin of that kind, it is not specified which one will be used.
 	Customizer *customizer() const;
 
+	/// Returns an IID of the tool plugin that contains customizer for this QReal session.
+	QString mainToolPlugin() const;
+
 	/// Notifies plugins about change of currently open tab. If last tab is closed or current
 	/// tab is not diagram at all (text editor, for example), rootElementId is Id()
 	/// @param rootElementId Id of the tab which became active after change, if applicable. If not, Id().
