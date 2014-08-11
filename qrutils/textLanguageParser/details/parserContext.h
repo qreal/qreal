@@ -4,7 +4,7 @@
 #include <QtCore/QSharedPointer>
 
 #include "textLanguageParser/parserError.h"
-#include "textLanguageParser/ast/node.h"
+#include "textLanguageParser/ast/nodes/node.h"
 #include "textLanguageParser/details/token.h"
 #include "textLanguageParser/details/tokenStream.h"
 

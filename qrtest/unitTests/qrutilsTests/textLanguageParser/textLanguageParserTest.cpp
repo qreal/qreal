@@ -1,25 +1,25 @@
 #include "textLanguageParserTest.h"
 
-#include "textLanguageParser/ast/number.h"
-#include "textLanguageParser/ast/integerNumber.h"
-#include "textLanguageParser/ast/floatNumber.h"
-#include "textLanguageParser/ast/unaryOperator.h"
-#include "textLanguageParser/ast/binaryOperator.h"
+#include "textLanguageParser/ast/nodes/number.h"
+#include "textLanguageParser/ast/nodes/integerNumber.h"
+#include "textLanguageParser/ast/nodes/floatNumber.h"
+#include "textLanguageParser/ast/nodes/unaryOperator.h"
+#include "textLanguageParser/ast/nodes/binaryOperator.h"
 
-#include "textLanguageParser/ast/functionCall.h"
-#include "textLanguageParser/ast/methodCall.h"
-#include "textLanguageParser/ast/indexingExpression.h"
-#include "textLanguageParser/ast/block.h"
-#include "textLanguageParser/ast/assignment.h"
+#include "textLanguageParser/ast/nodes/functionCall.h"
+#include "textLanguageParser/ast/nodes/methodCall.h"
+#include "textLanguageParser/ast/nodes/indexingExpression.h"
+#include "textLanguageParser/ast/nodes/block.h"
+#include "textLanguageParser/ast/nodes/assignment.h"
 
-#include "textLanguageParser/ast/addition.h"
-#include "textLanguageParser/ast/multiplication.h"
-#include "textLanguageParser/ast/exponentiation.h"
+#include "textLanguageParser/ast/nodes/addition.h"
+#include "textLanguageParser/ast/nodes/multiplication.h"
+#include "textLanguageParser/ast/nodes/exponentiation.h"
 
-#include "textLanguageParser/ast/tableConstructor.h"
+#include "textLanguageParser/ast/nodes/tableConstructor.h"
 
-#include "textLanguageParser/ast/identifier.h"
-#include "textLanguageParser/ast/string.h"
+#include "textLanguageParser/ast/nodes/identifier.h"
+#include "textLanguageParser/ast/nodes/string.h"
 
 #include "gtest/gtest.h"
 

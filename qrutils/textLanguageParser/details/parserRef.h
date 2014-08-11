@@ -2,7 +2,7 @@
 
 #include <QtCore/QSharedPointer>
 
-#include "textLanguageParser/details/parserInterface.h"
+#include "textLanguageParser/details/parsers/parserInterface.h"
 
 namespace textLanguageParser {
 namespace details {
