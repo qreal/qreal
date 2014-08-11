@@ -6,10 +6,6 @@ namespace textLanguageParser {
 namespace ast {
 
 class QRUTILS_EXPORT Multiplication : public BinaryOperator {
-public:
-	Multiplication()
-	{
-	}
 };
 
 }

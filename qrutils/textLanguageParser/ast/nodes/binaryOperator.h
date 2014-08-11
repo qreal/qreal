@@ -30,6 +30,11 @@ public:
 		return mRightOperand;
 	}
 
+	QList<QSharedPointer<Node>> children() const override
+	{
+		return {mLeftOperand, mRightOperand};
+	}
+
 private:
 	QSharedPointer<Node> mLeftOperand;
 	QSharedPointer<Node> mRightOperand;

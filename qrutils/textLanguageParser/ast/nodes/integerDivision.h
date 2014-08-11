@@ -6,10 +6,6 @@ namespace textLanguageParser {
 namespace ast {
 
 class QRUTILS_EXPORT IntegerDivision : public BinaryOperator {
-public:
-	IntegerDivision()
-	{
-	}
 };
 
 }

@@ -2,6 +2,8 @@
 
 #include <ostream>
 
+#include <qrkernel/ids.h>
+
 #include "qrutils/utilsDeclSpec.h"
 
 namespace textLanguageParser {
@@ -15,7 +17,10 @@ public:
 	/// @param absolutePosition - position in symbols from the beginning of a text fragment being analyzed.
 	/// @param line - line number.
 	/// @param column - column number.
-	Connection(int absolutePosition, int line, int column);
+	/// @param id - id of a block where where the code is located.
+	/// @param propertyName - name of a property in a block which uses this code.
+	Connection(int absolutePosition, int line, int column, qReal::Id const &id = qReal::Id()
+			, QString const &propertyName = "");
 
 	/// Constructor for invalid connection object.
 	Connection();
@@ -29,10 +34,19 @@ public:
 	/// Returns column number.
 	int column() const;
 
+	/// Returns id of a block where where the code is located, or empty id if connection is not related to a block.
+	qReal::Id const &id() const;
+
+	/// Returns name of a property in a block which uses this code, or empty string, if connection is not related to
+	/// some block.
+	QString const &propertyName() const;
+
 private:
 	int mAbsolutePosition = -1;
 	int mLine = -1;
 	int mColumn = -1;
+	qReal::Id mId;
+	QString mPropertyName;
 };
 
 inline bool operator ==(Connection const &a, Connection const &b)

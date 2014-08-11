@@ -12,6 +12,11 @@ public:
 	{
 	}
 
+	QList<QSharedPointer<Node>> children() const override
+	{
+		return mStatements;
+	}
+
 private:
 	QList<QSharedPointer<Node>> mStatements;
 };

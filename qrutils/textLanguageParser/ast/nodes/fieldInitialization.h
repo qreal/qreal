@@ -18,6 +18,11 @@ public:
 	{
 	}
 
+	QList<QSharedPointer<Node>> children() const override
+	{
+		return {mKey, mValue};
+	}
+
 private:
 	QSharedPointer<Expression> mKey;
 	QSharedPointer<Expression> mValue;

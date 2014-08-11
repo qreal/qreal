@@ -29,6 +29,11 @@ public:
 		return dynamic_cast<NodeType *>(this) != nullptr;
 	}
 
+	virtual QList<QSharedPointer<Node>> children() const
+	{
+		return {};
+	}
+
 private:
 	/// Connection of a node is a list of ranges of all its subnodes.
 	QList<Range> mRanges;
@@ -44,12 +49,12 @@ inline QSharedPointer<NodeType> as(QSharedPointer<ast::Node> const &node)
 	return node.dynamicCast<NodeType>();
 }
 
-template<typename NodeType>
-inline QList<QSharedPointer<NodeType>> as(QList<QSharedPointer<ast::Node>> const &list)
+template<typename TargetType, typename SourceType>
+inline QList<QSharedPointer<TargetType>> as(QList<QSharedPointer<SourceType>> const &list)
 {
-	QList<QSharedPointer<NodeType>> result;
+	QList<QSharedPointer<TargetType>> result;
 	for (auto item : list) {
-		result << as<NodeType>(item);
+		result << as<TargetType>(item);
 	}
 
 	return result;

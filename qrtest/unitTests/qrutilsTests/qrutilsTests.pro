@@ -11,14 +11,16 @@ LIBS += -L../../../bin -lqslog
 HEADERS += \
 #	expressionsParser/expressionsParserTest.h \
 	textLanguageParser/textLanguageParserTest.h \
-	textLanguageParser/details/lexerTest.h \
+	textLanguageParser/semanticAnalyzerTest.h \
+#	textLanguageParser/details/lexerTest.h \
 #	metamodelGeneratorSupportTest.h \
 
 SOURCES += \
 #	expressionsParser/expressionsParserTest.cpp \
 #	expressionsParser/numberTest.cpp \
 	textLanguageParser/textLanguageParserTest.cpp \
-	textLanguageParser/details/lexerTest.cpp \
+	textLanguageParser/semanticAnalyzerTest.cpp \
+#	textLanguageParser/details/lexerTest.cpp \
 #	metamodelGeneratorSupportTest.cpp \
 #	inFileTest.cpp \
 #	outFileTest.cpp \

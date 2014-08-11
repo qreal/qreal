@@ -27,6 +27,11 @@ public:
 		return mArguments;
 	}
 
+	QList<QSharedPointer<Node>> children() const override
+	{
+		return QList<QSharedPointer<Node>>({mObject, mMethodName}) << as<ast::Node>(mArguments);
+	}
+
 private:
 	QSharedPointer<Expression> mObject;
 	QSharedPointer<Identifier> mMethodName;

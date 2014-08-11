@@ -20,6 +20,11 @@ public:
 		return mArguments;
 	}
 
+	QList<QSharedPointer<Node>> children() const override
+	{
+		return QList<QSharedPointer<Node>>({mFunction}) << as<ast::Node>(mArguments);
+	}
+
 private:
 	QSharedPointer<Expression> mFunction;
 	QList<QSharedPointer<Expression>> mArguments;

@@ -20,6 +20,11 @@ public:
 		return mIndexer;
 	}
 
+	QList<QSharedPointer<Node>> children() const override
+	{
+		return {mTable, mIndexer};
+	}
+
 private:
 	QSharedPointer<Expression> mTable;
 	QSharedPointer<Expression> mIndexer;

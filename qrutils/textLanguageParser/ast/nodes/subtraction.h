@@ -6,7 +6,6 @@ namespace textLanguageParser {
 namespace ast {
 
 class QRUTILS_EXPORT Subtraction : public BinaryOperator {
-
 };
 
 }

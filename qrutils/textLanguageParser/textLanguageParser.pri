@@ -52,6 +52,14 @@ HEADERS += \
 	$$PWD/ast/nodes/block.h \
 	$$PWD/ast/nodes/indexingExpression.h \
 	$$PWD/types/typeExpression.h \
+	$$PWD/types/nil.h \
+	$$PWD/types/boolean.h \
+	$$PWD/types/integer.h \
+	$$PWD/types/float.h \
+	$$PWD/types/string.h \
+	$$PWD/types/number.h \
+	$$PWD/types/function.h \
+	$$PWD/types/table.h \
 	$$PWD/details/lexer.h \
 	$$PWD/details/token.h  \
 	$$PWD/details/tokenStream.h  \
@@ -78,6 +86,7 @@ SOURCES += \
 	$$PWD/tokenPatterns.cpp \
 	$$PWD/parserError.cpp \
 	$$PWD/textLanguageParser.cpp \
+	$$PWD/semanticAnalyzer.cpp \
 	$$PWD/ast/connection.cpp \
 	$$PWD/ast/range.cpp \
 	$$PWD/ast/nodes/node.cpp \

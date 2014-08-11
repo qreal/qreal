@@ -16,6 +16,11 @@ public:
 		connect(operand);
 	}
 
+	QList<QSharedPointer<Node>> children() const override
+	{
+		return {mOperand};
+	}
+
 private:
 	QSharedPointer<Node> mOperand;
 };

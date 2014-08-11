@@ -18,6 +18,11 @@ public:
 		return mInitializers;
 	}
 
+	QList<QSharedPointer<Node>> children() const override
+	{
+		return as<ast::Node>(mInitializers);
+	}
+
 private:
 	QList<QSharedPointer<FieldInitialization>> mInitializers;
 };
