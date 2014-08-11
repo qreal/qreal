@@ -24,6 +24,7 @@
 #include "textLanguageParser/ast/subtraction.h"
 #include "textLanguageParser/ast/multiplication.h"
 #include "textLanguageParser/ast/division.h"
+#include "textLanguageParser/ast/integerDivision.h"
 #include "textLanguageParser/ast/exponentiation.h"
 
 #include "textLanguageParser/ast/unaryMinus.h"
@@ -286,6 +287,7 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 			| TokenType::minus >> [] { return new ast::Subtraction(); }
 			| TokenType::asterick >> [] { return new ast::Multiplication(); }
 			| TokenType::slash >> [] { return new ast::Division(); }
+			| TokenType::doubleSlash >> [] { return new ast::IntegerDivision(); }
 			| TokenType::hat >> [] { return new ast::Exponentiation(); }
 			;
 
