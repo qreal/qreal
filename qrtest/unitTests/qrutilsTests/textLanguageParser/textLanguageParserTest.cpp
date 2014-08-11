@@ -197,12 +197,12 @@ TEST_F(TextLanguageParserTest, tableConstructor)
 	EXPECT_EQ(3, constructor->initializers().size());
 
 	// Test from Lua reference
-//	stream = "{ [f(1)] = g; \"x\", \"y\"; x = 1, f(x), [30] = 23; 45 }";
-//	result = mParser->parse(stream);
-//	EXPECT_TRUE(result.errors.isEmpty());
-//	constructor = result.astRoot.dynamicCast<ast::TableConstructor>();
-//	ASSERT_FALSE(constructor.isNull());
-//	EXPECT_EQ(7, constructor->initializers().size());
+	stream = "{ [f(1)] = g; \"x\", \"y\"; x = 1, f(x), [30] = 23; 45 }";
+	result = mParser->parse(stream);
+	EXPECT_TRUE(result.errors.isEmpty());
+	constructor = result.astRoot.dynamicCast<ast::TableConstructor>();
+	ASSERT_FALSE(constructor.isNull());
+	EXPECT_EQ(7, constructor->initializers().size());
 }
 
 TEST_F(TextLanguageParserTest, identifier)

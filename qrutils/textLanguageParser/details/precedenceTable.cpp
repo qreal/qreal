@@ -14,7 +14,7 @@ PrecedenceTable::PrecedenceTable()
 	mPrecedences[TokenType::lessEquals] = {2, Associativity::left};
 	mPrecedences[TokenType::greaterEquals] = {2, Associativity::left};
 	mPrecedences[TokenType::tildaEquals] = {2, Associativity::left};
-	mPrecedences[TokenType::equals] = {2, Associativity::left};
+	mPrecedences[TokenType::doubleEquals] = {2, Associativity::left};
 
 	mPrecedences[TokenType::verticalLine] = {3, Associativity::left};
 
