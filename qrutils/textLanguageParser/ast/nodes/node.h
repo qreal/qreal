@@ -24,9 +24,9 @@ public:
 	void connect(QSharedPointer<Node> const &node);
 
 	template<typename NodeType>
-	bool is()
+	bool is() const
 	{
-		return dynamic_cast<NodeType *>(this) != nullptr;
+		return dynamic_cast<NodeType const * const>(this) != nullptr;
 	}
 
 	virtual QList<QSharedPointer<Node>> children() const
@@ -43,10 +43,10 @@ private:
 
 }
 
-template<typename NodeType>
-inline QSharedPointer<NodeType> as(QSharedPointer<ast::Node> const &node)
+template<typename TargetType, typename SourceType>
+inline QSharedPointer<TargetType> as(QSharedPointer<SourceType> const &node)
 {
-	return node.dynamicCast<NodeType>();
+	return node.template dynamicCast<TargetType>();
 }
 
 template<typename TargetType, typename SourceType>

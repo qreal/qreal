@@ -52,7 +52,10 @@ HEADERS += \
 	$$PWD/ast/nodes/block.h \
 	$$PWD/ast/nodes/indexingExpression.h \
 	$$PWD/types/typeExpression.h \
+	$$PWD/types/typeVariable.h \
+	$$PWD/types/typeEquation.h \
 	$$PWD/types/nil.h \
+	$$PWD/types/any.h \
 	$$PWD/types/boolean.h \
 	$$PWD/types/integer.h \
 	$$PWD/types/float.h \
@@ -94,3 +97,4 @@ SOURCES += \
 	$$PWD/details/token.cpp \
 	$$PWD/details/tokenStream.cpp \
 	$$PWD/details/precedenceTable.cpp \
+	$$PWD/types/typeVariable.cpp \

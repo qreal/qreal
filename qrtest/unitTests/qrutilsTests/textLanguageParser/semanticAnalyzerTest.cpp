@@ -1,6 +1,7 @@
 #include "semanticAnalyzerTest.h"
 
 #include "textLanguageParser/textLanguageParser.h"
+#include "textLanguageParser/ast/nodes/assignment.h"
 
 #include "gtest/gtest.h"
 
@@ -9,7 +10,7 @@ using namespace qrTest;
 
 void SemanticAnalyzerTest::SetUp()
 {
-	mAnalyzer.reset(new SemanticAnalyzer());
+	mAnalyzer.reset(new SemanticAnalyzer(mErrors));
 }
 
 QSharedPointer<textLanguageParser::ast::Node> SemanticAnalyzerTest::parse(QString const &code)
@@ -20,7 +21,20 @@ QSharedPointer<textLanguageParser::ast::Node> SemanticAnalyzerTest::parse(QStrin
 
 TEST_F(SemanticAnalyzerTest, sanityCheck)
 {
-	QList<ParserError> errors;
 	auto tree = parse("123");
-	mAnalyzer->analyze(tree, errors);
+	mAnalyzer->analyze(tree);
+	ASSERT_TRUE(mAnalyzer->type(tree)->is<types::Integer>());
+	ASSERT_TRUE(mAnalyzer->type(tree)->is<types::Number>());
+}
+
+TEST_F(SemanticAnalyzerTest, assignment)
+{
+	auto tree = parse("a = 123");
+
+	auto variable = as<ast::Assignment>(tree)->variable();
+	auto value = as<ast::Assignment>(tree)->value();
+
+	mAnalyzer->analyze(tree);
+	ASSERT_TRUE(mAnalyzer->type(variable)->is<types::Integer>());
+	ASSERT_TRUE(mAnalyzer->type(value)->is<types::Integer>());
 }
