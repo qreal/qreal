@@ -16,6 +16,7 @@ HEADERS += \
 	$$PWD/kernelDeclSpec.h \
 	$$PWD/timeMeasurer.h \
 	$$PWD/version.h \
+	$$PWD/platformInfo.h \
 	$$PWD/logging.h \
 
 SOURCES += \
@@ -24,6 +25,7 @@ SOURCES += \
 	$$PWD/settingsManager.cpp \
 	$$PWD/timeMeasurer.cpp \
 	$$PWD/version.cpp \
+	$$PWD/platformInfo.cpp \
 	$$PWD/logging.cpp \
 
 RESOURCES += \

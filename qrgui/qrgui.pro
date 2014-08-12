@@ -7,7 +7,7 @@ macx {
 	CONFIG -= app_bundle
 }
 
-SOURCES = main.cpp
+SOURCES = main.cpp \
 
 TRANSLATIONS = qrgui_ru.ts
 

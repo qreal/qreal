@@ -1460,6 +1460,21 @@
         <translation>Режим работы на тач-экране</translation>
     </message>
     <message>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="184"/>
+        <source>Updates</source>
+        <translation>Обновления</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="200"/>
+        <source>Check for updates</source>
+        <translation>Проверять наличие обновлений</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/behaviourPage.ui" line="207"/>
+        <source>Automaticly download updates</source>
+        <translation>Автоматически скачивать обновления</translation>
+    </message>
+    <message>
         <source>Warning window</source>
         <translation type="obsolete">Окно предупреждений</translation>
     </message>
@@ -1480,7 +1495,7 @@
         <translation type="obsolete">Предложения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/behaviourPage.cpp" line="99"/>
+        <location filename="dialogs/preferencesPages/behaviourPage.cpp" line="103"/>
         <source>&lt;System Language&gt;</source>
         <translation>&lt;Системный язык&gt;</translation>
     </message>
@@ -2570,6 +2585,41 @@
         <location filename="mainwindow/projectManager/versionsConverterManager.cpp" line="130"/>
         <source>Can`t open project file</source>
         <translation>Не могу открыть проект</translation>
+    </message>
+    <message>
+        <location filename="dialogs/updateVersionDialog.cpp" line="11"/>
+        <source>A new version %1 is ready to be installed. Select one of the actions below.</source>
+        <translation>Новая версия %1 готова к установке. Выберите один из пунктов ниже.</translation>
+    </message>
+    <message>
+        <location filename="dialogs/updateVersionDialog.cpp" line="16"/>
+        <source>A new version %1 is available. Select one of the actions below.</source>
+        <translation>Вышла новая версия %1. Выберите один из пунктов ниже.</translation>
+    </message>
+    <message>
+        <location filename="dialogs/updateVersionDialog.cpp" line="30"/>
+        <source>Update</source>
+        <translation>Обновить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/updateVersionDialog.cpp" line="31"/>
+        <source>Download and update</source>
+        <translation>Скачать и обновить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/updateVersionDialog.cpp" line="33"/>
+        <source>Later</source>
+        <translation>Позже</translation>
+    </message>
+    <message>
+        <location filename="dialogs/updateVersionDialog.cpp" line="34"/>
+        <source>Forget</source>
+        <translation>Никогда</translation>
+    </message>
+    <message>
+        <location filename="dialogs/updateVersionDialog.cpp" line="36"/>
+        <source>Yeah!</source>
+        <translation>Ура!</translation>
     </message>
 </context>
 <context>
@@ -3969,7 +4019,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="946"/>
+        <location filename="mainwindow/mainWindow.cpp" line="948"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -4110,103 +4160,103 @@
         <translation type="obsolete">Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="153"/>
+        <location filename="mainwindow/mainWindow.cpp" line="155"/>
         <source>Start test</source>
         <translation>Начать тест</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="156"/>
+        <location filename="mainwindow/mainWindow.cpp" line="158"/>
         <source>Finish test</source>
         <translation>Завершить тест</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="967"/>
-        <location filename="mainwindow/mainWindow.cpp" line="982"/>
+        <location filename="mainwindow/mainWindow.cpp" line="969"/>
+        <location filename="mainwindow/mainWindow.cpp" line="984"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="967"/>
+        <location filename="mainwindow/mainWindow.cpp" line="969"/>
         <source>Plugin unloading failed: </source>
         <translation>Выгрузка плагина завершилась ошибкой: </translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="982"/>
+        <location filename="mainwindow/mainWindow.cpp" line="984"/>
         <source>Plugin loading failed: </source>
         <translation>Загрузка плагина завершилась ошибкой: </translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1141"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1143"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1418"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1420"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1419"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1421"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1420"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1422"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1421"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1423"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1422"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1424"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1423"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1425"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1424"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1426"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1425"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1427"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1426"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1428"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1427"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1429"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1428"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1430"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1429"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1431"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1430"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1432"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2276"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2319"/>
         <source>Getting Started</source>
         <translation>Добро пожаловать!</translation>
     </message>
@@ -4215,9 +4265,9 @@
         <translation type="obsolete">Добро пожаловать!</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1106"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1121"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1149"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1108"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1123"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1151"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -4226,17 +4276,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2122"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2165"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2153"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2196"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2153"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2196"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -4257,7 +4307,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1654"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1656"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -4829,7 +4879,7 @@
 <context>
     <name>qReal::gui::DraggableElement</name>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="128"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="129"/>
         <source>Deleting an element: </source>
         <translation>Удаление элемента: </translation>
     </message>
@@ -4843,38 +4893,38 @@
         <translation>Жест мышью</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="129"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="130"/>
         <source>Do you really want to delete this item and all its graphicalrepresentation from the scene and from the palette?</source>
         <translation>Вы действительно хотите удалить данный элемент  и все его графические представления со сцены и из палитры?</translation>
-    </message>
-    <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="137"/>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="168"/>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="206"/>
-        <source>Yes</source>
-        <translation>Да</translation>
     </message>
     <message>
         <location filename="mainwindow/palette/draggableElement.cpp" line="138"/>
         <location filename="mainwindow/palette/draggableElement.cpp" line="169"/>
         <location filename="mainwindow/palette/draggableElement.cpp" line="207"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="139"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="170"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="208"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="159"/>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="192"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="160"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="193"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="160"/>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="193"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="161"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="194"/>
         <source>The deleted element </source>
         <translation>Удаляемый элемент </translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="195"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="196"/>
         <source> has inheritors:</source>
         <translation> имеет наследников:</translation>
     </message>
@@ -4883,27 +4933,27 @@
         <translation type="obsolete">Если вы удалите его, то все унаследованные свойства будут удалены у его потомков. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="161"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="162"/>
         <source> is the element of root digram. Continue to delete?</source>
         <translation> является элементом корневой диаграммы. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="198"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="199"/>
         <source>If you delete it, its properties will be removed fromthe elements-inheritors. Continue to delete?</source>
         <translation>Если вы удалите его, то все унаследованные свойства будут удалены у его потомков. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="274"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="275"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="277"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="278"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
     <message>
-        <location filename="mainwindow/palette/draggableElement.cpp" line="280"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="281"/>
         <source>Delete Element</source>
         <translation>Удалить элемент</translation>
     </message>

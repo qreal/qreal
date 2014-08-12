@@ -48,6 +48,8 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("Autosave", mUi->autoSaveCheckBox->isChecked());
 	SettingsManager::setValue("AutosaveInterval", mUi->autoSaveSpinBox->value());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
+	SettingsManager::setValue("updaterActive", mUi->checkForUpdatesCheckBox->isChecked());
+	SettingsManager::setValue("downloadUpdates", mUi->downloadUpdatesCheckBox->isChecked());
 	bool const usabilityTestingMode = mUi->usabilityModeCheckBox->isChecked();
 	SettingsManager::setValue("usabilityTestingMode", usabilityTestingMode);
 	SettingsManager::setValue("collectErgonomicValues", mUi->collectErgonomicValuesCheckBox->isChecked()
@@ -77,6 +79,8 @@ void PreferencesBehaviourPage::restoreSettings()
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
 	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
+	mUi->checkForUpdatesCheckBox->setChecked(SettingsManager::value("updaterActive").toBool());
+	mUi->downloadUpdatesCheckBox->setChecked(SettingsManager::value("downloadUpdates").toBool());
 	mUi->collectErgonomicValuesCheckBox->setChecked(SettingsManager::value("collectErgonomicValues").toBool());
 	mUsabilityTestingMode = SettingsManager::value("usabilityTestingMode").toBool();
 	mUi->usabilityModeCheckBox->setChecked(mUsabilityTestingMode);

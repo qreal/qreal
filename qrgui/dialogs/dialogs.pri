@@ -18,6 +18,7 @@ HEADERS += \
 	$$PWD/suggestToCreateDiagramDialog.h \
 	$$PWD/suggestToCreateProjectDialog.h \
 	$$PWD/renameDialog.h \
+	$$PWD/updateVersionDialog.h \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.h \
 	$$PWD/metamodelingOnFly/restoreElementDialog.h \
 
@@ -40,6 +41,7 @@ SOURCES += \
 	$$PWD/suggestToCreateDiagramDialog.cpp \
 	$$PWD/suggestToCreateProjectDialog.cpp \
 	$$PWD/renameDialog.cpp \
+	$$PWD/updateVersionDialog.cpp \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.cpp \
 	$$PWD/metamodelingOnFly/restoreElementDialog.cpp \
 

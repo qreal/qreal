@@ -46,6 +46,8 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QStrin
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
+		/// @todo: store loaded into mLoaders
+		plugin->setObjectName(loader->metaData()["IID"].toString());
 		mFileNameAndPlugin.insert(pluginName, plugin);
 		return qMakePair(plugin, QString());
 	}

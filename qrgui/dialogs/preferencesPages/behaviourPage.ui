@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>340</height>
+    <height>405</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -172,6 +172,39 @@
        <widget class="QCheckBox" name="touchModeCheckBox">
         <property name="text">
          <string>Touch Mode</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Updates</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="updatesFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QCheckBox" name="checkForUpdatesCheckBox">
+        <property name="text">
+         <string>Check for updates</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="downloadUpdatesCheckBox">
+        <property name="text">
+         <string>Automaticly download updates</string>
         </property>
        </widget>
       </item>

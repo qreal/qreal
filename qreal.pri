@@ -13,6 +13,7 @@ SUBDIRS = \
 	plugins \
 	qrkernel \
 	qrutils \
+	qrupdater \
 	thirdparty \
 
 qrkernel.depends = thirdparty
@@ -29,6 +30,7 @@ qrgui.depends = \
 	qrutils \
 	qrkernel \
 	qrmc \
+	qrupdater \
 	thirdparty \
 
 plugins.depends = \
@@ -37,3 +39,5 @@ plugins.depends = \
 	qrutils \
 	qrkernel \
 	qrmc \
+
+qrupdater.depends = qrkernel

@@ -25,6 +25,7 @@ HEADERS += \
 	$$PWD/nameNormalizer.h \
 	$$PWD/fileSystemUtils.h \
 	$$PWD/stringUtils.h \
+	$$PWD/qRealUpdater.h \
 	$$PWD/qRealDialog.h \
 	$$PWD/qRealFileDialog.h \
 	$$PWD/textElider.h\
@@ -42,6 +43,7 @@ SOURCES += \
 	$$PWD/nameNormalizer.cpp \
 	$$PWD/fileSystemUtils.cpp \
 	$$PWD/stringUtils.cpp \
+	$$PWD/qRealUpdater.cpp \
 	$$PWD/qRealDialog.cpp \
 	$$PWD/qRealFileDialog.cpp \
 	$$PWD/textElider.cpp \
