@@ -1,5 +1,7 @@
 #include "update.h"
 
+#include <qrkernel/logging.h>
+
 namespace markers {
 static QString const selfInstalling = "qru::self";
 }
@@ -62,15 +64,40 @@ void Update::clear()
 	mIsInstalled = false;
 }
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <shellapi.h>
+#endif
+
 void Update::installUpdate()
 {
+#ifdef Q_OS_WIN
+	/// @todo: On windows we cannot start installer with QProcess class
+	/// because it cannot call UAC screen. So running it like detached process.
+	mModule += markers::selfInstalling;
+
+	char const *name = qPrintable(QFileInfo(mFilePath).absoluteFilePath());
+	char const *args = qPrintable(mArguments.join(" "));
+	int const result = (int)::ShellExecuteA(0, 0, name, args, 0, SW_SHOWNORMAL);
+//	if (SE_ERR_ACCESSDENIED == result) {
+//		// Requesting elevation
+//		result = (int)::ShellExecuteA(0, "runas", name, args, 0, SW_SHOWNORMAL);
+//	}
+
+	if (result <= 32) {
+		/// @todo: process error here...
+	}
+#else
 	mProcess = new QProcess(this);
 	connect(mProcess, SIGNAL(finished(int,QProcess::ExitStatus))
 			, this, SLOT(installationFinished(int,QProcess::ExitStatus)));
 	connect(mProcess, static_cast<void (QProcess::*)(QProcess::ProcessError)>(&QProcess::error)
 			, [this](QProcess::ProcessError error) {
+				QLOG_ERROR() << mProcess->errorString();
 				if (error == QProcess::FailedToStart) {
-					installationFinished(0, QProcess::CrashExit);
+					/// @todo: Process error correctly
+					// This hack will terminate program
+					mModule += markers::selfInstalling;
 				}
 	});
 
@@ -79,6 +106,7 @@ void Update::installUpdate()
 	} else {
 		mProcess->startDetached(mFilePath, mArguments);
 	}
+#endif
 }
 
 bool Update::isEmpty() const

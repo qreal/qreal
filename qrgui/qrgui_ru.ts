@@ -2609,7 +2609,7 @@
     <message>
         <location filename="dialogs/updateVersionDialog.cpp" line="33"/>
         <source>Later</source>
-        <translation>Пожэе</translation>
+        <translation>Позже</translation>
     </message>
     <message>
         <location filename="dialogs/updateVersionDialog.cpp" line="34"/>
@@ -4256,7 +4256,7 @@
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2292"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2319"/>
         <source>Getting Started</source>
         <translation>Добро пожаловать!</translation>
     </message>
@@ -4276,17 +4276,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2138"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2165"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2169"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2196"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2169"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2196"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>

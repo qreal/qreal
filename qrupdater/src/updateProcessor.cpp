@@ -35,8 +35,11 @@ void UpdateProcessor::startUpdateControl()
 		checkoutPreparedUpdates();
 	}
 
-	if (mUpdatesInstaller.isEmpty()) {
+	if (mUpdatesInstaller.isEmpty() && (mArgsParser.mode() == download
+			 || mArgsParser.mode() == downloadAndInstall)) {
 		startDownloadingProcess();
+	} else {
+		jobDoneQuit();
 	}
 }
 

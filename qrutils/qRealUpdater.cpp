@@ -46,7 +46,11 @@ void QRealUpdater::executeUpdater(QString const &mode)
 	mUpdaterProcess->setWorkingDirectory(mUpdaterPath);
 	connect(mUpdaterProcess, SIGNAL(finished(int)), this, SLOT(readAnswer()));
 
-	mUpdaterProcess->startDetached("qrupdater", arguments(mode));
+	if (mode == "--check" || mode == "--download") {
+		mUpdaterProcess->start("qrmaintenance", arguments(mode));
+	} else {
+		mUpdaterProcess->startDetached("qrmaintenance", arguments(mode));
+	}
 }
 
 QStringList QRealUpdater::arguments(QString const &mode)

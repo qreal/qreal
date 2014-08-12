@@ -5,7 +5,7 @@ using namespace qrUpdater;
 ArgsParser::ArgsParser()
 	: mInputMask(
 			"Usage:\n"
-			"\tqrupdater (--check | --download | --install | --download-and-install) "
+			"\tqrmaintenance (--check | --download | --install | --download-and-install) "
 			"-unit [unit-name] -version [version] -url [url-to-file] -path [path-to-updated-app]\n"
 			"Modes:"
 			"\t--check: Updater will just retrieve from the server light-weight about available versions "
@@ -14,7 +14,7 @@ ArgsParser::ArgsParser()
 			"\t--install: Updater will install already downloaded versions.\n"
 			"\t--download-and-install: Updater will download new updates and install them immediately.\n"
 			"\n"
-			"Example:\n qrupdater --download -unit cool-module-name -version 2.8a "
+			"Example:\n qrmaintenance --download -unit cool-module-name -version 2.8a "
 			"-url http://example.com/updates.xml -path ./qrgui\n"
 	)
 {

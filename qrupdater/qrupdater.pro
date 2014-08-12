@@ -1,7 +1,12 @@
 TEMPLATE = app
 DESTDIR = $$PWD/../bin
 
-CONFIG += console
+# We really wish to call this executable 'qrupdater', but Windows
+# automaticly requires admin rights for the execution of files that
+# contain substring 'update' in its name.
+TARGET = qrmaintenance
+
+#CONFIG += console
 CONFIG += c++11
 
 QT += core network
