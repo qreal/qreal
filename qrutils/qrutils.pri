@@ -7,7 +7,7 @@ INCLUDEPATH += \
 	$$PWD/.. \
 	$$PWD/../qrgui \
 
-LIBS += -L$$PWD/../bin -lqrkernel
+LIBS += -L$$PWD/../bin -lqrkernel -lqslog
 
 DEFINES += QRUTILS_LIBRARY
 
