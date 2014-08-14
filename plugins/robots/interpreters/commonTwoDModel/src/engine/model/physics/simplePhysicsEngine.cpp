@@ -26,11 +26,14 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 	Q_UNUSED(engine2Break)
 	Q_UNUSED(rotationCenter)
 
-	mPositionShift = QVector2D();
-	mRotation = 0.0;
 	if (mWorldModel.checkCollision(robotBoundingPath)) {
+		mPositionShift = -mPositionShift;
+		mRotation = -mRotation;
 		return;
 	}
+
+	mPositionShift = QVector2D();
+	mRotation = 0.0;
 
 	qreal const averageSpeed = (speed1 + speed2) / 2;
 
@@ -52,7 +55,7 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 		QTransform map;
 		map.rotate(robotAngle);
 		/// @todo robotWidth / 2 shall actually be a distance between robot center and
-		// centers of the wheels by x axis.
+		/// centers of the wheels by x axis.
 		map.translate(-robotWidth / 2, actualRadius);
 		map.rotate(gammaDegrees);
 		map.translate(robotWidth / 2, -actualRadius);

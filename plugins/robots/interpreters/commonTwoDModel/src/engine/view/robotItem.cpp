@@ -7,9 +7,9 @@ using namespace graphicsUtils;
 
 int const border = 0;
 
-RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel)
+RobotItem::RobotItem(model::RobotModel &robotModel)
 	: RotateItem()
-	, mImage(QImage(robotImageFileName))
+	, mImage(QImage(robotModel.info().robotImage()))
 	, mBeepItem(new BeepItem)
 	, mRotater(nullptr)
 	, mRectangleImpl()

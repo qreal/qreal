@@ -16,7 +16,7 @@ class Model : public QObject
 
 public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	explicit Model(interpreterBase::robotModel::RobotModelInterface &robotModel, QObject *parent = 0);
+	explicit Model(robotModel::TwoDRobotModel &robotModel, QObject *parent = 0);
 
 	/// Returns a reference to a world map.
 	WorldModel &worldModel();

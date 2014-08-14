@@ -7,8 +7,8 @@
 
 #include <qrkernel/ids.h>
 
-#include "view/gestures/geometricForms.h"
-#include "view/gestures/pathCorrector.h"
+#include "geometricForms.h"
+#include "pathCorrector.h"
 
 namespace qReal {
 namespace gestures {

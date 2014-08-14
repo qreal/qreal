@@ -20,8 +20,6 @@
 #include "sonarSensorItem.h"
 #include "rotater.h"
 
-#include "commonTwoDModel/engine/configurer.h"
-
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
@@ -36,16 +34,15 @@ using namespace qReal;
 using namespace utils;
 using namespace graphicsUtils;
 using namespace interpreterBase;
-using namespace robotModel;
+using namespace interpreterBase::robotModel;
 using namespace robotParts;
 
-D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, QWidget *parent)
+D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
 	, mModel(model)
-	, mDisplay(configurer->displayWidget(this))
+	, mDisplay(model.robotModel().info().displayWidget(this))
 	, mWidth(defaultPenWidth)
-	, mConfigurer(configurer)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -61,7 +58,7 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 	connect(mScene, &D2ModelScene::selectionChanged, this, &D2ModelWidget::changePalette);
 	connect(mScene, &D2ModelScene::mousePressed, this, &D2ModelWidget::refreshCursor);
 	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::refreshCursor);
-	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::saveToRepo);
+	connect(mScene, &D2ModelScene::mouseReleased, this, [this](){ saveToRepo(); });
 	connect(mScene, &D2ModelScene::robotPressed, [this]() { mUi->noneButton->setChecked(true); });
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
@@ -70,11 +67,17 @@ D2ModelWidget::D2ModelWidget(Model &model, Configurer const * const configurer, 
 
 	connect(&mModel.robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
 	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
-			, this, &D2ModelWidget::reinitSensor);
-	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded
-			, this, &D2ModelWidget::saveToRepo);
-	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceRemoved
-			, this, &D2ModelWidget::saveToRepo);
+			, [this](PortInfo const &port) { reinitSensor(port); });
+
+	auto checkAndSaveToRepo = [this](PortInfo const &port, bool isLoaded) {
+		Q_UNUSED(port);
+		if (!isLoaded) {
+			saveToRepo();
+		}
+	};
+
+	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceAdded, checkAndSaveToRepo);
+	connect(&mModel.robotModel().configuration(), &SensorsConfiguration::deviceRemoved, checkAndSaveToRepo);
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -109,7 +112,7 @@ void D2ModelWidget::initWidget()
 
 	mUi->setupUi(this);
 
-	mScene = new D2ModelScene(mModel, *mConfigurer.data(), mUi->graphicsView);
+	mScene = new D2ModelScene(mModel, mUi->graphicsView);
 	connectDevicesConfigurationProvider(mScene);
 	mUi->graphicsView->setScene(mScene);
 	mUi->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -162,7 +165,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->wallButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawWall); });
 	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 
-	connect(mUi->clearButton, &QAbstractButton::clicked, mScene, &D2ModelScene::clearScene);
+	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){ mScene->clearScene(false, Reason::userAction); });
 	connect(&mButtonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *, bool)>(&QButtonGroup::buttonToggled)
 			, [this](QAbstractButton *button, bool toggled) {
 				if (toggled) {
@@ -358,8 +361,6 @@ void D2ModelWidget::loadWorldModel()
 		return;
 	}
 
-	mScene->clearScene(true);
-
 	QDomDocument const save = utils::xmlUtils::loadDocument(loadFileName);
 	loadXml(save);
 }
@@ -383,13 +384,13 @@ void D2ModelWidget::reinitSensor(PortInfo const &port)
 	SensorItem *sensor = device.isA<RangeSensor>()
 			? new SonarSensorItem(mModel.worldModel(), mModel.robotModel().configuration()
 					, port
-					, mConfigurer->sensorImagePath(device)
-					, mConfigurer->sensorImageRect(device)
+					, mModel.robotModel().info().sensorImagePath(device)
+					, mModel.robotModel().info().sensorImageRect(device)
 					)
 			: new SensorItem(mModel.robotModel().configuration()
 					, port
-					, mConfigurer->sensorImagePath(device)
-					, mConfigurer->sensorImageRect(device)
+					, mModel.robotModel().info().sensorImagePath(device)
+					, mModel.robotModel().info().sensorImageRect(device)
 					);
 
 	mScene->robot()->addSensor(port, sensor);
@@ -488,16 +489,6 @@ void D2ModelWidget::setSensorVisible(interpreterBase::robotModel::PortInfo const
 	}
 }
 
-void D2ModelWidget::enableRunStopButtons()
-{
-	mUi->runButton->setEnabled(true);
-}
-
-void D2ModelWidget::disableRunStopButtons()
-{
-	mUi->runButton->setEnabled(false);
-}
-
 void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
@@ -505,7 +496,7 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit widgetClosed();
 }
 
-SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
+SensorItem *D2ModelWidget::sensorItem(PortInfo const &port)
 {
 	return mScene->robot()->sensors().value(port);
 }
@@ -522,16 +513,10 @@ QDomDocument D2ModelWidget::generateXml() const
 
 void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 {
-	mScene->clearScene(true);
+	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
 
 	saveInitialRobotBeforeRun();
-}
-
-void D2ModelWidget::setRunStopButtonsEnabled(bool enabled)
-{
-	mUi->runButton->setEnabled(enabled);
-	mUi->stopButton->setEnabled(enabled);
 }
 
 void D2ModelWidget::enableRobotFollowing(bool on)
@@ -650,10 +635,12 @@ void D2ModelWidget::syncCursorButtons()
 }
 
 void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &device)
+		, PortInfo const &port, DeviceInfo const &device, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(device)
+	Q_UNUSED(reason)
+
 	/// @todo Convert configuration between models or something?
 	if (mScene->robot() && robotModel == mModel.robotModel().info().name()) {
 		updateWheelComboBoxes();
@@ -711,10 +698,10 @@ void D2ModelWidget::updateWheelComboBoxes()
 	};
 
 	if (!setSelectedPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
-		if (!setSelectedPort(mUi->leftWheelComboBox, mConfigurer->defaultLeftWheelPort())) {
+		if (!setSelectedPort(mUi->leftWheelComboBox, mModel.robotModel().info().defaultLeftWheelPort())) {
 
 			qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
-					<< mConfigurer->defaultLeftWheelPort().toString();
+					<< mModel.robotModel().info().defaultLeftWheelPort().toString();
 
 			if (mUi->leftWheelComboBox->count() > 1) {
 				mUi->leftWheelComboBox->setCurrentIndex(1);
@@ -723,10 +710,10 @@ void D2ModelWidget::updateWheelComboBoxes()
 	}
 
 	if (!setSelectedPort(mUi->rightWheelComboBox, rightWheelOldPort)) {
-		if (!setSelectedPort(mUi->rightWheelComboBox, mConfigurer->defaultRightWheelPort())) {
+		if (!setSelectedPort(mUi->rightWheelComboBox, mModel.robotModel().info().defaultRightWheelPort())) {
 
 			qDebug() << "Incorrect defaultRightWheelPort set in configurer:"
-					<< mConfigurer->defaultRightWheelPort().toString();
+					<< mModel.robotModel().info().defaultRightWheelPort().toString();
 
 			if (mUi->rightWheelComboBox->count() > 2) {
 				mUi->rightWheelComboBox->setCurrentIndex(2);

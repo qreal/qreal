@@ -30,7 +30,8 @@ public slots:
 private:
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
+			, interpreterBase::robotModel::DeviceInfo const &sensor
+			, Reason reason) override;
 
 	void updateSensorsList(QString const &currentRobotModel);
 

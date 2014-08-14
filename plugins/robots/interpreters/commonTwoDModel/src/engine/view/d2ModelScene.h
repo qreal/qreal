@@ -10,8 +10,6 @@
 
 namespace twoDModel {
 
-class Configurer;
-
 namespace items {
 class WallItem;
 class LineItem;
@@ -33,7 +31,6 @@ class D2ModelScene: public graphicsUtils::AbstractScene, public interpreterBase:
 
 public:
 	D2ModelScene(model::Model &model
-			, Configurer const &configurer
 			, graphicsUtils::AbstractView *view
 			, QObject *parent = 0);
 	~D2ModelScene() override;
@@ -55,8 +52,10 @@ public slots:
 	void setNoneStatus();
 
 	/// Clears everything on the scene besides a robot and its sensors.
-	/// @param removeRobot If true robot graphics item will be fully recreated, its position will be nullified.
-	void clearScene(bool removeRobot = false);
+	/// @param removeRobot - if true robot graphics item will be fully recreated, its position will be nullified.
+	/// @param reason - reason for scene clearing --- user action or internal needs. Depending on this we can decide
+	///        whether to save changes into model.
+	void clearScene(bool removeRobot, Reason reason);
 
 	/// Aligns existing walls on the grid.
 	/// @todo: Walls that do not fit on the grid must not be removed.
@@ -116,7 +115,6 @@ private:
 	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos);
 
 	model::Model &mModel;
-	Configurer const &mConfigurer;
 
 	graphicsUtils::GridDrawer mGridDrawer;
 	qreal mWidthOfGrid;
