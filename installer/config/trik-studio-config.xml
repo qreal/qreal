@@ -11,7 +11,7 @@
     <Logo>logo.png</Logo>
 
     <StartMenuDir>Trik Studio</StartMenuDir>
-    <UninstallerName>maintanance</UninstallerName>
+    <UninstallerName>maintenance</UninstallerName>
     <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
 
     <TargetDir>@RootDir@InstallationDirectory</TargetDir>

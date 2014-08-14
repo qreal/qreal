@@ -6,7 +6,6 @@
     <Version inheritVersionFrom="com.qreal.root.robots">1</Version>
     <ReleaseDate>2014-08-10</ReleaseDate>
     <Licenses>
-        <License name="GPL 3.0" file="gpl-3.0.txt" />
         <License name="QextSerialPort Component License" file="QextSerialPort-license.txt" />
     </Licenses>
     <!--<Translations>
@@ -14,8 +13,8 @@
         <Translation>de_de.qm</Translation>
     </Translations> -->
     <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
-    <!--<AutoDependOn>com.vendor.root.component3</AutoDependOn>-->
     <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
+    <SortingPriority>9</SortingPriority>
     <Default>true</Default>
     <ForcedInstallation>false</ForcedInstallation>
 </Package>

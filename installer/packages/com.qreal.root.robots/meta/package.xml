@@ -5,9 +5,7 @@
     <Description xml:lang="ru_ru">Ядро системы Trik Studio</Description>
     <Version>3.0.0-1-11</Version>
     <ReleaseDate>2014-08-10</ReleaseDate>
-    <Licenses>
-        <License name="GPL 3.0" file="gpl-3.0.txt" />
-    </Licenses>
+    <Licenses/>
     <!--<Translations>
         <Translation>sv_se.qm</Translation>
         <Translation>de_de.qm</Translation>
