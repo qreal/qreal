@@ -18,7 +18,8 @@
 #include "textLanguageParser/types/nil.h"
 #include "textLanguageParser/types/string.h"
 #include "textLanguageParser/types/any.h"
-#include "textLanguageParser/types/typeEquation.h"
+
+#include "textLanguageParser/types/generalizationsTable.h"
 
 #include "qrutils/utilsDeclSpec.h"
 
@@ -30,23 +31,25 @@ public:
 
 	void analyze(QSharedPointer<ast::Node> const &root);
 
-	QSharedPointer<types::TypeExpression> const &type(QSharedPointer<ast::Node> const &expression) const;
+	QSharedPointer<types::TypeExpression> type(QSharedPointer<ast::Node> const &expression) const;
 
 private:
 	void assign(QSharedPointer<ast::Node> const &expression, QSharedPointer<types::TypeExpression> const &type);
+	void unify(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs);
 
 	void collect(QSharedPointer<ast::Node> const &node);
-	void resolveEquations();
 	void finalizeResolve(QSharedPointer<ast::Node> const &node);
 
-	void constrainAssignment(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs);
-	void constrainCast(QSharedPointer<ast::Node> const &left, QSharedPointer<ast::Node> const &right);
-	void constrainStructuralEquality(QSharedPointer<types::TypeExpression> const &left
-			, QSharedPointer<types::TypeExpression> const &right);
+	void constrainAssignment(QSharedPointer<ast::Node> const &operation
+			, QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs);
+
+	void constrain(QSharedPointer<ast::Node> const &operation
+			, QSharedPointer<ast::Node> const &node, QList<QSharedPointer<types::TypeExpression>> const &types);
+
+	void reportError(const QSharedPointer<ast::Node> &node, QString const &errorMessage);
 
 	QHash<QSharedPointer<ast::Expression>, QSharedPointer<types::TypeExpression>> mTypes;
-	QHash<QString, QSharedPointer<types::TypeExpression>> mIdentifierTypes;
-	QHash<QSharedPointer<ast::Identifier>, QSharedPointer<ast::Node>> mIdentifierDeclarations;
+	QHash<QString, QSharedPointer<ast::Node>> mIdentifierDeclarations;
 
 	QSharedPointer<types::TypeExpression> mBoolean;
 	QSharedPointer<types::TypeExpression> mFloat;
@@ -56,8 +59,9 @@ private:
 
 	QSharedPointer<types::TypeExpression> mAny;
 
-	QList<types::TypeEquation> mEquations;
 	QList<ParserError> &mErrors;
+
+	types::GeneralizationsTable mGeneralizationsTable;
 };
 
 }

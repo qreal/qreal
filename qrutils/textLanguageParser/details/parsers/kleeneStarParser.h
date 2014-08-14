@@ -4,6 +4,7 @@
 #include "textLanguageParser/details/parserRef.h"
 #include "textLanguageParser/details/parsers/parserInterface.h"
 #include "textLanguageParser/details/temporaryNodes/temporaryList.h"
+#include "textLanguageParser/details/temporaryNodes/temporaryDiscardableNode.h"
 
 namespace textLanguageParser {
 namespace details {
@@ -24,7 +25,11 @@ public:
 				break;
 			}
 
-			temporaryList->list() << result;
+			if (!result->is<TemporaryDiscardableNode>()) {
+				temporaryList->list() << result;
+			}
+
+			temporaryList->connect(result);
 		}
 
 		return temporaryList;

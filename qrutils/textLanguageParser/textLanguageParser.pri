@@ -53,7 +53,6 @@ HEADERS += \
 	$$PWD/ast/nodes/indexingExpression.h \
 	$$PWD/types/typeExpression.h \
 	$$PWD/types/typeVariable.h \
-	$$PWD/types/typeEquation.h \
 	$$PWD/types/nil.h \
 	$$PWD/types/any.h \
 	$$PWD/types/boolean.h \
@@ -63,6 +62,7 @@ HEADERS += \
 	$$PWD/types/number.h \
 	$$PWD/types/function.h \
 	$$PWD/types/table.h \
+	$$PWD/types/generalizationsTable.h \
 	$$PWD/details/lexer.h \
 	$$PWD/details/token.h  \
 	$$PWD/details/tokenStream.h  \
@@ -98,3 +98,4 @@ SOURCES += \
 	$$PWD/details/tokenStream.cpp \
 	$$PWD/details/precedenceTable.cpp \
 	$$PWD/types/typeVariable.cpp \
+	$$PWD/types/generalizationsTable.cpp \

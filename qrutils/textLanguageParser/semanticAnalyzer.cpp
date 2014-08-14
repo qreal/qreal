@@ -2,6 +2,9 @@
 
 #include "textLanguageParser/ast/nodes/assignment.h"
 #include "textLanguageParser/ast/nodes/identifier.h"
+#include "textLanguageParser/ast/nodes/indexingExpression.h"
+
+#include "textLanguageParser/ast/nodes/unaryMinus.h"
 
 #include "textLanguageParser/ast/nodes/integerNumber.h"
 #include "textLanguageParser/ast/nodes/floatNumber.h"
@@ -28,19 +31,26 @@ SemanticAnalyzer::SemanticAnalyzer(QList<ParserError> &errors)
 void SemanticAnalyzer::analyze(QSharedPointer<ast::Node> const &root)
 {
 	collect(root);
-	resolveEquations();
 	finalizeResolve(root);
 }
 
 void SemanticAnalyzer::collect(QSharedPointer<ast::Node> const &node)
 {
+	for (auto child : node->children()) {
+		collect(child);
+	}
+
 	if (node->is<ast::Assignment>()) {
 		auto assignment = as<ast::Assignment>(node);
-		collect(assignment->variable());
-		collect(assignment->value());
-		mEquations << types::TypeEquation(assignment->variable(), assignment->value(), types::TypeRelation::assignable);
+		constrainAssignment(assignment, assignment->variable(), assignment->value());
 	} else if (node->is<ast::Identifier>()) {
-		assign(node, mAny);
+		auto identifier = as<ast::Identifier>(node);
+		if (mIdentifierDeclarations.contains(identifier->name())) {
+			unify(identifier, mIdentifierDeclarations.value(identifier->name()));
+		} else {
+			assign(identifier, mAny);
+			mIdentifierDeclarations.insert(identifier->name(), identifier);
+		}
 	} else if (node->is<ast::IntegerNumber>()) {
 		assign(node, mInteger);
 	} else if (node->is<ast::FloatNumber>()) {
@@ -51,29 +61,10 @@ void SemanticAnalyzer::collect(QSharedPointer<ast::Node> const &node)
 		assign(node, mString);
 	} else if (node->is<ast::Nil>()) {
 		assign(node, mNil);
-	} else if (!node->is<ast::Expression>()) {
-		for (auto child : node->children()) {
-			collect(child);
-		}
-	}
-}
-
-void SemanticAnalyzer::resolveEquations()
-{
-	for (types::TypeEquation const &equation : mEquations) {
-		auto left = as<types::TypeVariable>(type(equation.left()));
-		auto right = as<types::TypeVariable>(type(equation.left()));
-		switch (equation.relation()) {
-		case types::TypeRelation::assignable:
-			constrainAssignment(equation.left(), equation.right());
-			break;
-		case types::TypeRelation::convertable:
-			constrainCast(equation.left(), equation.right());
-			break;
-		case types::TypeRelation::equal:
-			constrainStructuralEquality(left, right);
-			break;
-		}
+	} else if (node->is<ast::UnaryMinus>()) {
+		auto operand = as<ast::UnaryOperator>(node)->operand();
+		constrain(node, operand, {mInteger, mFloat});
+		unify(node, operand);
 	}
 }
 
@@ -82,9 +73,14 @@ void SemanticAnalyzer::finalizeResolve(QSharedPointer<ast::Node> const &node)
 	if (node->is<ast::Expression>()) {
 		auto expression = as<ast::Expression>(node);
 		if (mTypes.contains(expression)) {
-			if (as<types::TypeVariable>(type(expression))->isResolved()) {
-				auto expressionType = as<types::TypeVariable>(type(expression))->finalType();
+			auto typeVariable = as<types::TypeVariable>(type(expression));
+			if (typeVariable->isResolved()) {
+				auto expressionType = typeVariable->finalType();
 				mTypes.insert(expression, expressionType);
+			} else if (typeVariable->isEmpty()) {
+				reportError(expression, QObject::tr("Type mismatch"));
+			} else {
+				reportError(expression, QObject::tr("Can not deduce type"));
 			}
 		}
 	}
@@ -94,7 +90,7 @@ void SemanticAnalyzer::finalizeResolve(QSharedPointer<ast::Node> const &node)
 	}
 }
 
-const QSharedPointer<types::TypeExpression> &SemanticAnalyzer::type(QSharedPointer<ast::Node> const &expression) const
+QSharedPointer<types::TypeExpression> SemanticAnalyzer::type(QSharedPointer<ast::Node> const &expression) const
 {
 	auto castedExpression = as<ast::Expression>(expression);
 	if (mTypes.contains(castedExpression)) {
@@ -110,15 +106,38 @@ void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
 	mTypes.insert(as<ast::Expression>(expression), wrap(new types::TypeVariable(type)));
 }
 
-void SemanticAnalyzer::constrainAssignment(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs)
+void SemanticAnalyzer::unify(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs)
 {
+	mTypes.insert(as<ast::Expression>(lhs), type(rhs));
 }
 
-void SemanticAnalyzer::constrainCast(QSharedPointer<ast::Node> const &left, QSharedPointer<ast::Node> const &right)
+void SemanticAnalyzer::constrainAssignment(QSharedPointer<ast::Node> const &operation
+		, QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs)
 {
+	if (!lhs->is<ast::Identifier>() && !lhs->is<ast::IndexingExpression>()) {
+		reportError(operation, QObject::tr("Incorrect assignment, only variables and tables can be assigned to."));
+		return;
+	}
+
+	auto lhsType = as<types::TypeVariable>(type(lhs));
+	auto rhsType = as<types::TypeVariable>(type(rhs));
+	lhsType->constrain(rhsType, mGeneralizationsTable);
+	if (lhsType->isEmpty()) {
+		reportError(operation, QObject::tr("Left and right operand have mismatched types."));
+	}
 }
 
-void SemanticAnalyzer::constrainStructuralEquality(QSharedPointer<types::TypeExpression> const &left
-		, QSharedPointer<types::TypeExpression> const &right)
+void SemanticAnalyzer::constrain(QSharedPointer<ast::Node> const &operation
+		, QSharedPointer<ast::Node> const &node, QList<QSharedPointer<types::TypeExpression>> const &types)
 {
+	auto nodeType = as<types::TypeVariable>(type(node));
+	nodeType->constrain(types, mGeneralizationsTable);
+	if (nodeType->isEmpty()) {
+		reportError(operation, QObject::tr("Type mismatch."));
+	}
+}
+
+void SemanticAnalyzer::reportError(QSharedPointer<ast::Node> const &node, QString const &errorMessage)
+{
+	mErrors << ParserError(node->start(), errorMessage, ErrorType::semanticError, Severity::error);
 }
