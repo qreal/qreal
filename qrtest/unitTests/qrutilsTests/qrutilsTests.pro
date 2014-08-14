@@ -12,6 +12,7 @@ HEADERS += \
 #	expressionsParser/expressionsParserTest.h \
 	textLanguageParser/textLanguageParserTest.h \
 	textLanguageParser/semanticAnalyzerTest.h \
+	textLanguageParser/textLanguageFacadeTest.h \
 #	textLanguageParser/details/lexerTest.h \
 #	metamodelGeneratorSupportTest.h \
 
@@ -20,6 +21,7 @@ SOURCES += \
 #	expressionsParser/numberTest.cpp \
 	textLanguageParser/textLanguageParserTest.cpp \
 	textLanguageParser/semanticAnalyzerTest.cpp \
+	textLanguageParser/textLanguageFacadeTest.cpp \
 #	textLanguageParser/details/lexerTest.cpp \
 #	metamodelGeneratorSupportTest.cpp \
 #	inFileTest.cpp \

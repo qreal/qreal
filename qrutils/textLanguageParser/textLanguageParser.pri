@@ -5,6 +5,8 @@ HEADERS += \
 	$$PWD/textLanguageParserInterface.h \
 	$$PWD/tokenType.h \
 	$$PWD/semanticAnalyzer.h \
+	$$PWD/interpreter.h \
+	$$PWD/textLanguageFacade.h \
 	$$PWD/ast/connection.h \
 	$$PWD/ast/range.h \
 	$$PWD/ast/nodes/node.h \
@@ -90,6 +92,8 @@ SOURCES += \
 	$$PWD/parserError.cpp \
 	$$PWD/textLanguageParser.cpp \
 	$$PWD/semanticAnalyzer.cpp \
+	$$PWD/textLanguageFacade.cpp \
+	$$PWD/interpreter.cpp \
 	$$PWD/ast/connection.cpp \
 	$$PWD/ast/range.cpp \
 	$$PWD/ast/nodes/node.cpp \
