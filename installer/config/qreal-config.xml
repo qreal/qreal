@@ -6,9 +6,9 @@
     <Publisher>SPbSU</Publisher>
     <ProductUrl>http://qreal.ru</ProductUrl>
 
-    <InstallerWindowIcon>installericon</InstallerWindowIcon>
-    <InstallerApplicationIcon>installericon</InstallerApplicationIcon>
-    <Logo>logo.png</Logo>
+    <InstallerWindowIcon>../images/qreal.ico</InstallerWindowIcon>
+    <InstallerApplicationIcon>../images/qreal.ico</InstallerApplicationIcon>
+    <Logo>qreal-logo.png</Logo>
 
     <StartMenuDir>Trik Studio</StartMenuDir>
     <UninstallerName>maintenance</UninstallerName>
