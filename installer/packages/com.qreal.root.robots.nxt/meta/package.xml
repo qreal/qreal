@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <Package>
     <DisplayName>Lego NXT Support</DisplayName>
+    <DisplayName xml:lang="ru_ru">Поддержка Lego NXT</DisplayName>
     <Description>Install it for working with Lego NXT in Trik Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором Lego NXT</Description>
     <Version inheritVersionFrom="com.qreal.root.robots">1</Version>
