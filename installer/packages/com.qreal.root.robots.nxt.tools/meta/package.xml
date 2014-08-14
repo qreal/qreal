@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Lego NXT Support</DisplayName>
+    <Description>Install it for uploading programs to Lego NXT device</Description>
+    <Description xml:lang="ru_ru">Установите это для возможности загрузки программ на робота Lego NXT</Description>
+    <Version>2.0.0</Version>
+    <ReleaseDate>2013-08-10</ReleaseDate> <!--TODO-->
+    <Licenses>
+        <License name="NXT Tools License" file="TODO_NXT_TOOLS_LICENSE.txt" />
+    </Licenses>
+    <!--<Translations>
+        <Translation>sv_se.qm</Translation>
+        <Translation>de_de.qm</Translation>
+    </Translations> -->
+    <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
+    <!--<AutoDependOn>com.vendor.root.component3</AutoDependOn>-->
+    <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
+    <Default>false</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Trik Studio</DisplayName>
+    <Description>Trik Studio engine</Description>
+    <Description xml:lang="ru_ru">Ядро системы Trik Studio</Description>
+    <Version>3.0.0-1-11</Version>
+    <ReleaseDate>2014-08-10</ReleaseDate>
+    <Licenses>
+        <License name="GPL 3.0" file="gpl-3.0.txt" />
+    </Licenses>
+    <!--<Translations>
+        <Translation>sv_se.qm</Translation>
+        <Translation>de_de.qm</Translation>
+    </Translations> -->
+    <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
+    <!--<AutoDependOn>com.vendor.root.component3</AutoDependOn>-->
+    <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
+    <Default>true</Default>
+    <ForcedInstallation>true</ForcedInstallation>
+</Package>

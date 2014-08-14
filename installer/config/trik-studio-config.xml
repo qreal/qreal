@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Trik Studio</Name>
+    <Version>1.0.0</Version>
+    <Title>Trik Studio Installation</Title>
+    <Publisher>SPbSU</Publisher>
+    <ProductUrl>http://robots.qreal.com</ProductUrl>
+
+    <InstallerWindowIcon>installericon</InstallerWindowIcon>
+    <InstallerApplicationIcon>installericon</InstallerApplicationIcon>
+    <Logo>logo.png</Logo>
+
+    <StartMenuDir>Trik Studio</StartMenuDir>
+    <UninstallerName>maintanance</UninstallerName>
+    <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
+
+    <TargetDir>@RootDir@InstallationDirectory</TargetDir>
+    <AdminTargetDir>@rootDir@/testinstall</AdminTargetDir>
+
+<!--    <RemoteRepositories>
+        <Repository>
+            <Url>http://localhost/packages/</Url>
+        </Repository>
+    </RemoteRepositories>-->
+</Installer>
