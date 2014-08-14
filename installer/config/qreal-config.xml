@@ -14,8 +14,8 @@
     <UninstallerName>maintenance</UninstallerName>
     <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
 
-    <TargetDir>@RootDir@InstallationDirectory</TargetDir>
-    <AdminTargetDir>@rootDir@/testinstall</AdminTargetDir>
+    <TargetDir>@homeDir@/QReal</TargetDir>
+    <AdminTargetDir>@rootDir@/QReal</AdminTargetDir>
 
     <!--<RemoteRepositories>
         <Repository>

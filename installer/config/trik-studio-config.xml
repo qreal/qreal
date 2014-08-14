@@ -14,8 +14,8 @@
     <UninstallerName>maintenance</UninstallerName>
     <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
 
-    <TargetDir>@RootDir@InstallationDirectory</TargetDir>
-    <AdminTargetDir>@rootDir@/testinstall</AdminTargetDir>
+    <TargetDir>@homeDir@/TrikStudio</TargetDir>
+    <AdminTargetDir>@rootDir@/TrikStudio</AdminTargetDir>
 
 <!--    <RemoteRepositories>
         <Repository>
