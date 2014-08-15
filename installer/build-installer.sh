@@ -16,8 +16,10 @@ export PRODUCT=$2
 
 # $2 will be passed to all prebuild.sh scripts
 echo "Executing prebuild actions..."
-find $PWD -name prebuild.sh -print0 | xargs -0 chmod +x
-find $PWD -name prebuild.sh | bash
+find $PWD -name prebuild-common.sh -print0 | xargs -0 chmod +x
+find $PWD -name prebuild-$OSTYPE.sh -print0 | xargs -0 chmod +x
+find $PWD -name prebuild-common.sh | bash
+find $PWD -name prebuild-$OSTYPE.sh | bash
 
 echo "Building installer..."
 $QT_DIR/../../QtIFW-*/bin/binarycreator -c config/$PRODUCT-config.xml -p packages/qreal-base -p packages/$PRODUCT $PRODUCT-installer
