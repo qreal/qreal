@@ -20,7 +20,7 @@ cp -pr $BIN_DIR/libqrrepo.so*                                           $PWD/../
 cp -pr $BIN_DIR/libqrutils.so*                                          $PWD/../data
 cp -pr $BIN_DIR/libqscintilla2.so*                                      $PWD/../data
 cp -pr $BIN_DIR/libqslog.so*                                            $PWD/../data
-cp     $BIN_DIR/qrgui                                                   $PWD/../data/$1
+cp     $BIN_DIR/qrgui                                                   $PWD/../data/$PRODUCT
 
 
 cp -pr $QT_DIR/lib/libQt5Core.so*                                       $PWD/../data
