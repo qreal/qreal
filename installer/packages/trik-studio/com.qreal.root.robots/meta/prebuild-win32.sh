@@ -9,3 +9,4 @@ cp    $BIN_DIR/plugins/tools/interpreterCore.dll                     $PWD/../dat
 cp    $BIN_DIR/commonTwoDModel.dll                                   $PWD/../data
 cp    $BIN_DIR/generatorBase.dll                                     $PWD/../data
 cp    $BIN_DIR/interpreterBase.dll                                   $PWD/../data
+cp    $BIN_DIR/utils.dll                                             $PWD/../data

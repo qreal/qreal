@@ -12,8 +12,10 @@
 
     <StartMenuDir>Trik Studio</StartMenuDir>
     <UninstallerName>maintenance</UninstallerName>
-    <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
+    <AllowSpaceInPath>false</AllowSpaceInPath>
+    <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
+    <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
     <TargetDir>@homeDir@/QReal</TargetDir>
     <AdminTargetDir>@rootDir@/QReal</AdminTargetDir>
 

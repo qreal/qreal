@@ -12,9 +12,11 @@
 
     <StartMenuDir>Trik Studio</StartMenuDir>
     <UninstallerName>maintenance</UninstallerName>
-    <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
+    <AllowSpaceInPath>false</AllowSpaceInPath>
+    <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
-    <TargetDir>@homeDir@/TrikStudio</TargetDir>
+    <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
+    <TargetDir>@rootDir@/TrikStudio</TargetDir>
     <AdminTargetDir>@rootDir@/TrikStudio</AdminTargetDir>
 
 <!--    <RemoteRepositories>

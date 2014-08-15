@@ -9,4 +9,4 @@ cp    $BIN_DIR/plugins/tools/kitPlugins/trikKitInterpreter.dll       $PWD/../dat
 cp    $BIN_DIR/plugins/tools/kitPlugins/trikGenerator.dll            $PWD/../data/plugins/tools/kitPlugins/
 
 
-cp    $QT_DIR/lib/Qt5Network.dll                                     $PWD/../data
+cp    $QT_DIR/bin/Qt5Network.dll                                     $PWD/../data
