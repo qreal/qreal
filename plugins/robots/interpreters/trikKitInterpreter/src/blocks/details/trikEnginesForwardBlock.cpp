@@ -13,9 +13,11 @@ TrikEnginesForwardBlock::TrikEnginesForwardBlock(interpreterBase::robotModel::Ro
 void TrikEnginesForwardBlock::run()
 {
 	int const power = mNewParser->interpret<int>(mGraphicalId, "Power", stringProperty("Power"));
+	reportParserErrors();
 
 	QList<Motor *> result;
 	QStringList const ports = mNewParser->interpret<QStringList>(mGraphicalId, "Ports", stringProperty("Ports"));
+	reportParserErrors();
 
 	for (QString const &port : ports) {
 		Motor * const motor =
@@ -31,4 +33,22 @@ void TrikEnginesForwardBlock::run()
 	}
 
 	emit done(mNextBlockId);
+}
+
+void TrikEnginesForwardBlock::reportParserErrors()
+{
+	for (textLanguageParser::ParserError const &error : mNewParser->errors()) {
+		switch (error.severity()) {
+		case textLanguageParser::Severity::critical:
+		case textLanguageParser::Severity::error:
+		case textLanguageParser::Severity::warning:
+			this->error(error.errorMessage());
+			break;
+		case textLanguageParser::Severity::internalError:
+			/// @todo: output to log.
+			break;
+		}
+
+
+	}
 }

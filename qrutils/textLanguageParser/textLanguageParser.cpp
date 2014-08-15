@@ -299,5 +299,14 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 			| TokenType::tilda >> [] { return new ast::BitwiseNegation(); }
 			;
 
-	return Result(block->parse(*mTokenStream, context), mErrors);
+	auto result = Result(block->parse(*mTokenStream, context), mErrors);
+
+	if (!mTokenStream->isEnd())	{
+		mErrors << ParserError(mTokenStream->next().range().end(), QObject::tr("Unexpected symbol")
+				, ErrorType::syntaxError, Severity::error);
+
+		result.errors = mErrors;
+	}
+
+	return result;
 }

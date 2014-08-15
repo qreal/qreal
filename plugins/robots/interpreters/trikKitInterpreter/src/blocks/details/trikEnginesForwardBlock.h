@@ -14,6 +14,9 @@ public:
 	explicit TrikEnginesForwardBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
 	void run() override;
+
+private:
+	void reportParserErrors();
 };
 
 }

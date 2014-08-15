@@ -16,6 +16,8 @@ void TextLanguageFacade::markAsChanged(qReal::Id const &id, QString const &prope
 QSharedPointer<ast::Node> const &TextLanguageFacade::parse(qReal::Id const &id
 		, QString const &propertyName, QString const &code)
 {
+	mErrors.clear();
+
 	auto result = mParser.parse(code);
 	mErrors << result.errors;
 	mAstRoots[id][propertyName] = result.astRoot;
