@@ -13,5 +13,7 @@ cp     $INSTALLER_ROOT/licenses/Scintilla-license*.txt                   $PWD
 cp     $INSTALLER_ROOT/licenses/WindowsModernStyle-license*.txt          $PWD
 
 
-mkdir -p $PWD/../data
+mkdir -p $PWD/../data/platforms
+mkdir -p $PWD/../data/imageformats
+mkdir -p $PWD/../data/iconengines
 cp     $BIN_DIR/changelog.txt                                            $PWD/../data

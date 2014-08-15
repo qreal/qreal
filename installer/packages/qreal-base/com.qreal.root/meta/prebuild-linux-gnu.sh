@@ -24,8 +24,8 @@ cp -pr $QT_DIR/lib/libicudata.so*                                       $PWD/../
 cp -pr $QT_DIR/lib/libicui18n.so*                                       $PWD/../data
 cp -pr $QT_DIR/lib/libicuuc.so*                                         $PWD/../data
 
-cp -r  $QT_DIR/plugins/iconengines                                      $PWD/../data
-cp -r  $QT_DIR/plugins/imageformats                                     $PWD/../data #TODO: not all needed?
-cp -r  $QT_DIR/plugins/platforms                                        $PWD/../data #TODO: not all needed?
+cp     $QT_DIR/plugins/platforms/libqxcb.so                             $PWD/../data/platforms
+cp     $QT_DIR/plugins/imageformats/libqsvg.so                          $PWD/../data/imageformats
+cp     $QT_DIR/plugins/iconengines/libqsvgicon.so                       $PWD/../data/iconengines
 
 cp -pr /usr/lib/libstdc++.so*                                           $PWD/../data
