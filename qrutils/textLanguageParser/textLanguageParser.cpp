@@ -166,7 +166,14 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 			| TokenType::trueKeyword >> [] { return new ast::False(); }
 			| TokenType::integerLiteral >> [] (Token token) { return new ast::IntegerNumber(token.lexeme()); }
 			| TokenType::floatLiteral >> [] (Token token) { return new ast::FloatNumber(token.lexeme()); }
-			| TokenType::string >> [] (Token token) { return new ast::String(token.lexeme()); }
+			| TokenType::string >> [] (Token token) {
+					QString string = token.lexeme();
+					// Cut off quotes.
+					string.remove(0, 1);
+					string.chop(1);
+					return new ast::String(string);
+
+				}
 			| TokenType::tripleDot >> reportUnsupported
 			| prefixexp
 			| tableconstructor

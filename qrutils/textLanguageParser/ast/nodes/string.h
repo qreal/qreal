@@ -10,9 +10,6 @@ public:
 	String(QString const &string)
 		: mString(string)
 	{
-		// Chop away quotes.
-		mString.chop(1);
-		mString.remove(0, 1);
 	}
 
 	QString const &string() const {
