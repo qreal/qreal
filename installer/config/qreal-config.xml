@@ -16,8 +16,10 @@
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
     <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
-    <TargetDir>@homeDir@/QReal</TargetDir>
-    <AdminTargetDir>@rootDir@/QReal</AdminTargetDir>
+    <TargetDir>@HomeDir@/QReal</TargetDir>
+    <AdminTargetDir>@RootDir@/QReal</AdminTargetDir>
+
+    <RunProgram>@TargetDir@/trik-studio</RunProgram>
 
     <!--<RemoteRepositories>
         <Repository>

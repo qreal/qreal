@@ -16,8 +16,10 @@
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
     <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
-    <TargetDir>@rootDir@/TrikStudio</TargetDir>
-    <AdminTargetDir>@rootDir@/TrikStudio</AdminTargetDir>
+    <TargetDir>@RootDir@/TrikStudio</TargetDir>
+    <AdminTargetDir>@RootDir@/TrikStudio</AdminTargetDir>
+
+    <RunProgram>@TargetDir@/trik-studio</RunProgram>
 
 <!--    <RemoteRepositories>
         <Repository>
