@@ -1,6 +1,6 @@
 #pragma once
 
-#include "textLanguageParser/ast/nodes/node.h"
+#include "qrutils/textLanguageParser/ast/nodes/node.h"
 
 namespace textLanguageParser {
 namespace ast {

@@ -2,8 +2,8 @@
 
 #include <QtCore/QString>
 
-#include "textLanguageParser/tokenType.h"
-#include "textLanguageParser/ast/range.h"
+#include "qrutils/textLanguageParser/tokenType.h"
+#include "qrutils/textLanguageParser/ast/range.h"
 
 namespace textLanguageParser {
 namespace details {

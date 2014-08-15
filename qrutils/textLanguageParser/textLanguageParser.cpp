@@ -108,9 +108,14 @@ TextLanguageParserInterface::Result TextLanguageParser::parse(QString const &cod
 				if (!pair->right()) {
 					auto expList = as<TemporaryList>(pair->left());
 					if (expList->list().size() != 1) {
-						context.reportError(pair
-								, QObject::tr("Using expression as statement requires only one expression"));
-						return wrap(nullptr);
+						// It is a list of expressions which we translate as table constructor, to support convenient
+						// lists syntax, for example, for lists of ports in robots.
+						QList<QSharedPointer<ast::Node>> fields;
+						for (auto exp : expList->list()) {
+							fields << wrap(new ast::FieldInitialization(as<ast::Expression>(exp)));
+						}
+
+						return wrap(new ast::TableConstructor(as<ast::FieldInitialization>(fields)));
 					} else {
 						return expList->list().first();
 					}

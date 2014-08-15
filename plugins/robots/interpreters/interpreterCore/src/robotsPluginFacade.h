@@ -4,6 +4,7 @@
 #include <QtCore/QScopedPointer>
 
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrutils/textLanguageParser/textLanguageFacade.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/devicesConfigurationWidget.h>
 
@@ -73,6 +74,8 @@ private:
 
 	/// @todo What it is doing here?
 	textLanguage::RobotsBlockParser *mParser;  // Has ownership
+
+	QScopedPointer<textLanguageParser::TextLanguageFacade> mNewParser;
 
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
 	interpreter::InterpreterInterface *mInterpreter;  // Has ownership

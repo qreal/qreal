@@ -3,8 +3,8 @@
 #include <QtCore/QList>
 #include <QtCore/QSharedPointer>
 
-#include "textLanguageParser/ast/range.h"
-#include "textLanguageParser/details/token.h"
+#include "qrutils/textLanguageParser/ast/range.h"
+#include "qrutils/textLanguageParser/details/token.h"
 
 #include "qrutils/utilsDeclSpec.h"
 

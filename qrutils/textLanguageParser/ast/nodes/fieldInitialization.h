@@ -1,7 +1,7 @@
 #pragma once
 
-#include "textLanguageParser/ast/nodes/node.h"
-#include "textLanguageParser/ast/nodes/expression.h"
+#include "qrutils/textLanguageParser/ast/nodes/node.h"
+#include "qrutils/textLanguageParser/ast/nodes/expression.h"
 
 namespace textLanguageParser {
 namespace ast {
@@ -16,6 +16,16 @@ public:
 	FieldInitialization(QSharedPointer<Expression> const &value)
 		: mValue(value), mImplicitKey(true)
 	{
+	}
+
+	QSharedPointer<Expression> key() const
+	{
+		return mKey;
+	}
+
+	QSharedPointer<Expression> value() const
+	{
+		return mValue;
 	}
 
 	QList<QSharedPointer<Node>> children() const override

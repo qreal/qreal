@@ -1,7 +1,7 @@
 #pragma once
 
-#include "textLanguageParser/ast/nodes/expression.h"
-#include "textLanguageParser/ast/nodes/fieldInitialization.h"
+#include "qrutils/textLanguageParser/ast/nodes/expression.h"
+#include "qrutils/textLanguageParser/ast/nodes/fieldInitialization.h"
 
 namespace textLanguageParser {
 namespace ast {

@@ -2,9 +2,9 @@
 
 #include <QtCore/QScopedPointer>
 
-#include "textLanguageParserInterface.h"
-#include "textLanguageParser/details/token.h"
-#include "textLanguageParser/details/tokenStream.h"
+#include "qrutils/textLanguageParser/textLanguageParserInterface.h"
+#include "qrutils/textLanguageParser/details/token.h"
+#include "qrutils/textLanguageParser/details/tokenStream.h"
 
 #include "qrutils/utilsDeclSpec.h"
 
@@ -30,10 +30,12 @@ namespace textLanguageParser {
 ///
 /// block ::= {stat}
 ///
-/// // Here we shall check that if "=" part is omitted, explist contains exactly one expression, otherwise left-hand
-/// // expressions are actually variables, matching "prefixexp {‘,’ prefixexp}" grammar rule, and prefix expressions
-/// // inside are not ended with function calls. Lua grammar allows, for example, f(3)[0] = 42,
+/// // Here we shall check that if "=" part is present, left-hand expressions are actually variables, matching
+/// // "prefixexp {‘,’ prefixexp}" grammar rule, and prefix expressions inside are not ended with function calls.
+/// // Lua grammar allows, for example, f(3)[0] = 42,
 /// // but not f(3) = 42. Here we want to stay close to standard and check such things in semantic action.
+/// // If "=" part is omitted, then if explist contains only one expression, it is parsed as itself (Expression node),
+/// // if there are more than one, it becomes a table.
 /// stat ::= ‘;’
 ///     | explist [‘=’ explist]
 ///

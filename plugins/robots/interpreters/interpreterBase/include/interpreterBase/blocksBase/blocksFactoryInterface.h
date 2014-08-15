@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qrkernel/ids.h>
+#include <qrutils/textLanguageParser/textLanguageFacade.h>
 
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
@@ -35,7 +36,9 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter
-			, BlockParserInterface * const parser) = 0;
+			, BlockParserInterface * const parser
+			, textLanguageParser::TextLanguageFacade &newParser
+			) = 0;
 };
 
 }

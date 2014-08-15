@@ -51,6 +51,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, mRobotModelManager
 			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; });
 
+	mNewParser.reset(new textLanguageParser::TextLanguageFacade());
 
 	initSensorWidgets();
 
@@ -60,7 +61,9 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, mRobotModelManager
 			, *configurer.mainWindowInterpretersInterface().errorReporter()
 			, mParser
+			, *mNewParser
 			);
+
 	mBlocksFactoryManager.addFactory(coreFactory);
 
 	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
@@ -71,6 +74,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, mBlocksFactoryManager
 			, mRobotModelManager
 			, *mParser
+			, *mNewParser
 			, mActionsManager.connectToRobotAction()
 			);
 
@@ -243,7 +247,9 @@ void RobotsPluginFacade::initFactoriesFor(QString const &kitId
 					, mRobotModelManager
 					, *configurer.mainWindowInterpretersInterface().errorReporter()
 					, mParser
+					, *mNewParser
 					);
+
 			mBlocksFactoryManager.addFactory(factory, model);
 		}
 	}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "textLanguageParser/ast/connection.h"
+#include "qrutils/textLanguageParser/ast/connection.h"
 
 #include "qrutils/utilsDeclSpec.h"
 

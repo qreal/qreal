@@ -2,8 +2,8 @@
 
 #include <QtCore/QString>
 
-#include "textLanguageParser/details/token.h"
-#include "textLanguageParser/parserError.h"
+#include "qrutils/textLanguageParser/details/token.h"
+#include "qrutils/textLanguageParser/parserError.h"
 
 namespace textLanguageParser {
 namespace details {

@@ -6,20 +6,20 @@
 
 #include <qrkernel/ids.h>
 
-#include "textLanguageParser/parserError.h"
-#include "textLanguageParser/ast/nodes/node.h"
-#include "textLanguageParser/ast/nodes/expression.h"
-#include "textLanguageParser/ast/nodes/identifier.h"
+#include "qrutils/textLanguageParser/parserError.h"
+#include "qrutils/textLanguageParser/ast/nodes/node.h"
+#include "qrutils/textLanguageParser/ast/nodes/expression.h"
+#include "qrutils/textLanguageParser/ast/nodes/identifier.h"
 
-#include "textLanguageParser/types/typeExpression.h"
-#include "textLanguageParser/types/boolean.h"
-#include "textLanguageParser/types/float.h"
-#include "textLanguageParser/types/integer.h"
-#include "textLanguageParser/types/nil.h"
-#include "textLanguageParser/types/string.h"
-#include "textLanguageParser/types/any.h"
+#include "qrutils/textLanguageParser/types/typeExpression.h"
+#include "qrutils/textLanguageParser/types/boolean.h"
+#include "qrutils/textLanguageParser/types/float.h"
+#include "qrutils/textLanguageParser/types/integer.h"
+#include "qrutils/textLanguageParser/types/nil.h"
+#include "qrutils/textLanguageParser/types/string.h"
+#include "qrutils/textLanguageParser/types/any.h"
 
-#include "textLanguageParser/types/generalizationsTable.h"
+#include "qrutils/textLanguageParser/types/generalizationsTable.h"
 
 #include "qrutils/utilsDeclSpec.h"
 

@@ -3,8 +3,8 @@
 #include <QtCore/QSet>
 #include <QtCore/QSharedPointer>
 
-#include "textLanguageParser/types/typeExpression.h"
-#include "textLanguageParser/types/generalizationsTable.h"
+#include "qrutils/textLanguageParser/types/typeExpression.h"
+#include "qrutils/textLanguageParser/types/generalizationsTable.h"
 
 namespace textLanguageParser {
 namespace types {

@@ -23,7 +23,7 @@ void Block::init(Id const &graphicalId
 		, ErrorReporterInterface * const errorReporter
 		, BlockParserInterface * const parser
 		, robotModel::RobotModelManagerInterface const &robotModelManager
-		)
+		, textLanguageParser::TextLanguageFacade &newParser)
 {
 	mGraphicalId = graphicalId;
 	mGraphicalModelApi = &graphicalModelApi;
@@ -31,6 +31,7 @@ void Block::init(Id const &graphicalId
 	mErrorReporter = errorReporter;
 	mParser = parser;
 	mRobotModelManager = &robotModelManager;
+	mNewParser = &newParser;
 }
 
 bool Block::initNextBlocks()

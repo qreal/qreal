@@ -3,7 +3,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QRegularExpression>
 
-#include "textLanguageParser/tokenType.h"
+#include "qrutils/textLanguageParser/tokenType.h"
 
 #include "qrutils/utilsDeclSpec.h"
 

@@ -37,7 +37,9 @@ void SemanticAnalyzer::analyze(QSharedPointer<ast::Node> const &root)
 void SemanticAnalyzer::collect(QSharedPointer<ast::Node> const &node)
 {
 	for (auto child : node->children()) {
-		collect(child);
+		if (!child.isNull()) {
+			collect(child);
+		}
 	}
 
 	if (node->is<ast::Assignment>()) {
@@ -86,7 +88,9 @@ void SemanticAnalyzer::finalizeResolve(QSharedPointer<ast::Node> const &node)
 	}
 
 	for (auto child : node->children()) {
-		finalizeResolve(child);
+		if (!child.isNull()) {
+			finalizeResolve(child);
+		}
 	}
 }
 

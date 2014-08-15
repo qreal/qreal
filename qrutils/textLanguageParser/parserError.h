@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include "textLanguageParser/ast/connection.h"
+#include "qrutils/textLanguageParser/ast/connection.h"
 
 #include "qrutils/utilsDeclSpec.h"
 

@@ -2,7 +2,7 @@
 
 #include <QtCore/QSharedPointer>
 
-#include "textLanguageParser/ast/nodes/unaryOperator.h"
+#include "qrutils/textLanguageParser/ast/nodes/unaryOperator.h"
 
 #include "qrutils/utilsDeclSpec.h"
 

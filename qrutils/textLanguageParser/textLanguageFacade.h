@@ -1,12 +1,12 @@
 #pragma once
 
-#include "textLanguageParser/ast/nodes/node.h"
-#include "textLanguageParser/types/typeExpression.h"
-#include "textLanguageParser/parserError.h"
+#include "qrutils/textLanguageParser/ast/nodes/node.h"
+#include "qrutils/textLanguageParser/types/typeExpression.h"
+#include "qrutils/textLanguageParser/parserError.h"
 
-#include "textLanguageParser/textLanguageParser.h"
-#include "textLanguageParser/semanticAnalyzer.h"
-#include "textLanguageParser/interpreter.h"
+#include "qrutils/textLanguageParser/textLanguageParser.h"
+#include "qrutils/textLanguageParser/semanticAnalyzer.h"
+#include "qrutils/textLanguageParser/interpreter.h"
 
 #include "qrutils/utilsDeclSpec.h"
 

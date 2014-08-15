@@ -1,6 +1,6 @@
 #pragma once
 
-#include "textLanguageParser/ast/nodes/binaryOperator.h"
+#include "qrutils/textLanguageParser/ast/nodes/binaryOperator.h"
 
 namespace textLanguageParser {
 namespace ast {

@@ -3,8 +3,8 @@
 #include <QtCore/QList>
 #include <QtCore/QSharedPointer>
 
-#include "ast/nodes/node.h"
-#include "parserError.h"
+#include "qrutils/textLanguageParser/ast/nodes/node.h"
+#include "qrutils/textLanguageParser/parserError.h"
 
 namespace textLanguageParser {
 

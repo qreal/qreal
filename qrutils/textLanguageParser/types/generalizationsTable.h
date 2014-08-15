@@ -1,6 +1,6 @@
 #pragma once
 
-#include "textLanguageParser/types/typeExpression.h"
+#include "qrutils/textLanguageParser/types/typeExpression.h"
 
 namespace textLanguageParser {
 namespace types {
