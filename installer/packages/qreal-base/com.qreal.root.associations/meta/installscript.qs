@@ -9,8 +9,9 @@ Component.prototype.createOperations = function()
     if (installer.value("os") === "win") {
         component.addOperation("RegisterFileType",
                                "qrs",
+                               /// @todo: 'trik-studio' must not be here!
                                "@TargetDir@/trik-studio '%1'",
-                               "Trik Studio Project",
+                               "@ProductName@ Project",
                                "application/octet-stream");
     }
 }
