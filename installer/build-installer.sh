@@ -2,7 +2,7 @@
 set -o nounset
 set -o errexit
 
-# Usage: build-installer.sh <path-to-qt> <path-to-qt-ifw> <product-name>
+# Usage: build-installer.sh <path-to-qt> <path-to-qt-ifw> <product-name> [<additional builder args>]
 # Path to Qt should look like ~/Qt/5.3/gcc_64/ (bin and lib directories must be in the specified folder).
 # Path to Qt Installer Framework should look like ~/Qt/QtIFW-1.5.0/bin/ (must be to bin folder).
 # This script will build the installer using the config in './config/$3-config.xml',
@@ -26,6 +26,6 @@ find $PWD -name prebuild-common.sh | bash
 find $PWD -name prebuild-$OS.sh | bash
 
 echo "Building installer..."
-$QTIFW_DIR/binarycreator -c config/$PRODUCT-config.xml -p packages/qreal-base -p packages/$PRODUCT $PRODUCT-installer
+$QTIFW_DIR/binarycreator -c config/$PRODUCT-config.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-installer
 
 echo "Done"

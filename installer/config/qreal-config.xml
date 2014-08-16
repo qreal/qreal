@@ -12,6 +12,7 @@
 
     <StartMenuDir>Trik Studio</StartMenuDir>
     <UninstallerName>maintenance</UninstallerName>
+    <RemoveTargetDir>true</RemoveTargetDir>
     <AllowSpaceInPath>false</AllowSpaceInPath>
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
