@@ -25,7 +25,7 @@ enum class Severity {
 };
 
 /// Represents various errors in text language processing module.
-class ParserError {
+class QRUTILS_EXPORT ParserError {
 public:
 	/// Constructor.
 	/// @param connection - point in code where an error was detected.

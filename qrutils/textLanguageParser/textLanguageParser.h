@@ -78,7 +78,7 @@ namespace textLanguageParser {
 /// unop ::= ‘-’ | not | ‘#’ | ‘~’
 /// @endverbatim
 
-class TextLanguageParser : public TextLanguageParserInterface {
+class QRUTILS_EXPORT TextLanguageParser : public TextLanguageParserInterface {
 public:
 	/// Parses given code and returns AST with results or nullptr if parsing is impossible.
 	Result parse(QString const &code) override;

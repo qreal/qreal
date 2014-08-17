@@ -2,8 +2,10 @@
 
 #include <QtCore/QCoreApplication>
 
-#include <src/interpreter/interpreter.h>
-#include <src/textLanguage/robotsBlockParser.h>
+#include <qrutils/textLanguageParser/textLanguageFacade.h>
+#include "src/interpreter/interpreter.h"
+#include "src/textLanguage/robotsBlockParser.h"
+
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
@@ -83,6 +85,8 @@ void InterpreterTest::SetUp()
 			, []() { return 0; }
 			);
 
+	textLanguageParser::TextLanguageFacade newParser;
+
 	DummyBlockFactory *blocksFactory = new DummyBlockFactory;
 	blocksFactory->configure(
 			mQrguiFacade->graphicalModelAssistInterface()
@@ -90,6 +94,7 @@ void InterpreterTest::SetUp()
 			, mModelManager
 			, *mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
 			, &parser
+			, newParser
 			);
 
 	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
@@ -116,6 +121,7 @@ void InterpreterTest::SetUp()
 			, mBlocksFactoryManager
 			, mModelManager
 			, parser
+			, newParser
 			, *mFakeConnectToRobotAction
 			));
 }
