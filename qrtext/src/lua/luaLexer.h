@@ -5,8 +5,6 @@
 #include "qrtext/core/lexer/lexer.h"
 #include "qrtext/src/lua/luaTokenTypes.h"
 
-#include "qrtext/declSpec.h"
-
 namespace qrtext {
 namespace lua {
 
@@ -15,7 +13,7 @@ namespace lua {
 ///
 /// Now lexer (with default token patterns) follows Lua 5.3 specification with following exceptions:
 /// - long brackets are not supported, either for string literals or for comments.
-class QRTEXT_EXPORT LuaLexer: public core::lexer::Lexer<LuaTokenTypes> {
+class LuaLexer: public core::lexer::Lexer<LuaTokenTypes> {
 public:
 	LuaLexer(QList<core::Error> &errors);
 

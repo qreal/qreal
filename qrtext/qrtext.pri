@@ -41,6 +41,11 @@ HEADERS += \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryList.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryPair.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryToken.h \
+	$$PWD/include/qrtext/core/semantics/semanticAnalyzer.h \
+	$$PWD/include/qrtext/core/semantics/generalizationsTableInterface.h \
+	$$PWD/include/qrtext/core/types/any.h \
+	$$PWD/include/qrtext/core/types/typeExpression.h \
+	$$PWD/include/qrtext/core/types/typeVariable.h \
 	$$PWD/include/qrtext/lua/luaToolbox.h \
 	$$PWD/include/qrtext/lua/ast/number.h \
 	$$PWD/include/qrtext/lua/ast/unaryMinus.h \
@@ -82,8 +87,19 @@ HEADERS += \
 	$$PWD/include/qrtext/lua/ast/assignment.h \
 	$$PWD/include/qrtext/lua/ast/block.h \
 	$$PWD/include/qrtext/lua/ast/indexingExpression.h \
-	$$PWD/src/lua/luaParser.h \
+	$$PWD/include/qrtext/lua/types/boolean.h \
+	$$PWD/include/qrtext/lua/types/float.h \
+	$$PWD/include/qrtext/lua/types/function.h \
+	$$PWD/include/qrtext/lua/types/integer.h \
+	$$PWD/include/qrtext/lua/types/nil.h \
+	$$PWD/include/qrtext/lua/types/number.h \
+	$$PWD/include/qrtext/lua/types/string.h \
+	$$PWD/include/qrtext/lua/types/table.h \
+	$$PWD/src/lua/luaInterpreter.h \
 	$$PWD/src/lua/luaLexer.h \
+	$$PWD/src/lua/luaParser.h \
+	$$PWD/src/lua/luaSemanticAnalyzer.h \
+	$$PWD/src/lua/luaGeneralizationsTable.h \
 	$$PWD/src/lua/luaTokenTypes.h \
 
 SOURCES += \
@@ -91,6 +107,10 @@ SOURCES += \
 	$$PWD/src/core/error.cpp \
 	$$PWD/src/core/range.cpp \
 	$$PWD/src/core/ast/node.cpp \
-	$$PWD/src/lua/luaToolbox.cpp \
-	$$PWD/src/lua/luaParser.cpp \
+	$$PWD/src/core/semantics/semanticAnalyzer.cpp \
+	$$PWD/src/core/types/typeVariable.cpp \
 	$$PWD/src/lua/luaLexer.cpp \
+	$$PWD/src/lua/luaParser.cpp \
+	$$PWD/src/lua/luaSemanticAnalyzer.cpp \
+	$$PWD/src/lua/luaGeneralizationsTable.cpp \
+	$$PWD/src/lua/luaToolbox.cpp \

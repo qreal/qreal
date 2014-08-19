@@ -3,10 +3,10 @@
 #include "qrtext/core/types/typeExpression.h"
 
 namespace qrtext {
-namespace core {
+namespace lua {
 namespace types {
 
-class QRTEXT_EXPORT Any : public TypeExpression {
+class Boolean : public core::types::TypeExpression {
 };
 
 }

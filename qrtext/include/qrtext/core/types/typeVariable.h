@@ -3,13 +3,14 @@
 #include <QtCore/QSet>
 #include <QtCore/QSharedPointer>
 
-#include "qrutils/textLanguageParser/types/typeExpression.h"
-#include "qrutils/textLanguageParser/types/generalizationsTable.h"
+#include "qrtext/core/types/typeExpression.h"
+#include "qrtext/core/semantics/generalizationsTableInterface.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace core {
 namespace types {
 
-class QRUTILS_EXPORT TypeVariable : public TypeExpression {
+class QRTEXT_EXPORT TypeVariable : public TypeExpression {
 public:
 	TypeVariable();
 	TypeVariable(QSharedPointer<types::TypeExpression> const &singleType);
@@ -20,14 +21,16 @@ public:
 
 	QSharedPointer<types::TypeExpression> finalType() const;
 
-	void constrain(QSharedPointer<TypeVariable> const &other, GeneralizationsTable const &generalizationsTable);
+	void constrain(QSharedPointer<TypeVariable> const &other
+			, GeneralizationsTableInterface const &generalizationsTable);
 
 	void constrain(QList<QSharedPointer<TypeExpression>> const &types
-			, GeneralizationsTable const &generalizationsTable);
+			, GeneralizationsTableInterface const &generalizationsTable);
 
 private:
 	QSet<QSharedPointer<TypeExpression>> mAllowedTypes;
 };
 
+}
 }
 }

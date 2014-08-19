@@ -5,9 +5,9 @@
 namespace textLanguageParser {
 namespace types {
 
-class QRUTILS_EXPORT GeneralizationsTable {
+class QRUTILS_EXPORT GeneralizationsTableInterface {
 public:
-	GeneralizationsTable();
+	GeneralizationsTableInterface();
 
 	bool isGeneralization(QSharedPointer<TypeExpression> const &specific
 			, QSharedPointer<TypeExpression> const &general) const;

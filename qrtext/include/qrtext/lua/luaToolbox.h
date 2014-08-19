@@ -11,6 +11,8 @@
 
 #include "qrtext/src/lua/luaLexer.h"
 #include "qrtext/src/lua/luaParser.h"
+#include "qrtext/src/lua/luaSemanticAnalyzer.h"
+#include "qrtext/src/lua/luaInterpreter.h"
 
 #include "qrtext/declSpec.h"
 
@@ -36,7 +38,7 @@ public:
 	template<typename T>
 	T interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
 	{
-//		auto root = parse(id, propertyName, code);
+		auto root = parse(id, propertyName, code);
 //		return mInterpreter.interpret<T>(root, mAnalyzer);
 	}
 
@@ -46,7 +48,7 @@ public:
 
 	QSharedPointer<core::ast::Node> ast(qReal::Id const &id, QString const &propertyName) const;
 
-//	QSharedPointer<types::TypeExpression> type(QSharedPointer<ast::Node> const &expression) const;
+	QSharedPointer<core::types::TypeExpression> type(QSharedPointer<core::ast::Node> const &expression) const;
 
 	QList<core::Error> const &errors() const;
 
@@ -55,8 +57,8 @@ private:
 
 	LuaLexer mLexer;
 	LuaParser mParser;
-//	SemanticAnalyzer mAnalyzer;
-//	Interpreter mInterpreter;
+	LuaSemanticAnalyzer mAnalyzer;
+	LuaInterpreter mInterpreter;
 
 	QHash<qReal::Id, QHash<QString, QSharedPointer<core::ast::Node>>> mAstRoots;
 };

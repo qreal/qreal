@@ -3,13 +3,14 @@
 #include <QtCore/QList>
 #include <QtCore/QSharedPointer>
 
-#include "qrutils/utilsDeclSpec.h"
+#include "qrtext/declSpec.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace core {
 namespace types {
 
 /// Base class for all type expressions.
-class QRUTILS_EXPORT TypeExpression {
+class QRTEXT_EXPORT TypeExpression {
 public:
 	virtual ~TypeExpression() {}
 
@@ -27,4 +28,5 @@ inline QSharedPointer<types::TypeExpression> wrap(types::TypeExpression *type)
 	return QSharedPointer<types::TypeExpression>(type);
 }
 
+}
 }

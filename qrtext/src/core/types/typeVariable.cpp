@@ -1,8 +1,8 @@
-#include "textLanguageParser/types/typeVariable.h"
+#include "qrtext/core/types/typeVariable.h"
 
-#include "textLanguageParser/types/any.h"
+#include "qrtext/core/types/any.h"
 
-using namespace textLanguageParser::types;
+using namespace qrtext::core::types;
 
 TypeVariable::TypeVariable()
 {
@@ -30,13 +30,13 @@ QSharedPointer<TypeExpression> TypeVariable::finalType() const
 }
 
 void TypeVariable::constrain(QSharedPointer<TypeVariable> const &other
-		, GeneralizationsTable const &generalizationsTable)
+		, GeneralizationsTableInterface const &generalizationsTable)
 {
 	constrain(other->mAllowedTypes.toList(), generalizationsTable);
 }
 
 void TypeVariable::constrain(QList<QSharedPointer<TypeExpression>> const &types
-		, GeneralizationsTable const &generalizationsTable)
+		, GeneralizationsTableInterface const &generalizationsTable)
 {
 	QSet<QSharedPointer<TypeExpression>> result;
 
