@@ -8,7 +8,8 @@
 
     <InstallerWindowIcon>../images/trik-studio.ico</InstallerWindowIcon>
     <InstallerApplicationIcon>../images/trik-studio.ico</InstallerApplicationIcon>
-    <Logo>trik-studio-logo.png</Logo>
+    <Logo>../images/trik-studio-logo.png</Logo>
+    <Watermark>../images/watermark.png</Watermark>
 
     <StartMenuDir>Trik Studio</StartMenuDir>
     <UninstallerName>maintenance</UninstallerName>
