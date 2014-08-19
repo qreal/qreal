@@ -46,6 +46,7 @@
 #include "qrtext/lua/ast/unaryMinus.h"
 
 using namespace qrtext::lua;
+using namespace qrtext::lua::details;
 using namespace qrtext::core;
 using namespace qrtext::core::parser;
 using namespace qrtext::core::lexer;
@@ -57,6 +58,8 @@ LuaParser::LuaParser(QList<Error> &errors)
 
 QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 {
+	QSharedPointer<core::parser::PrecedenceTable<LuaTokenTypes>> precedenceTable(new LuaPrecedenceTable());
+
 	ParserRef<LuaTokenTypes> stat;
 	ParserRef<LuaTokenTypes> explist;
 	ParserRef<LuaTokenTypes> exp;
@@ -166,15 +169,17 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			};
 
 	// exp(precedence) ::= primary { binop exp(newPrecedence) }
-	exp = ParserRef<LuaTokenTypes>(new ExpressionParser<LuaTokenTypes>(primary, binop));
+	exp = ParserRef<LuaTokenTypes>(new ExpressionParser<LuaTokenTypes>(precedenceTable, primary, binop));
 
 	// primary ::= nil | false | true | Number | String | ‘...’ | prefixexp | tableconstructor | unop exp
 	primary =
 			LuaTokenTypes::nilKeyword >> [] { return new ast::Nil(); }
 			| LuaTokenTypes::falseKeyword >> [] { return new ast::True(); }
 			| LuaTokenTypes::trueKeyword >> [] { return new ast::False(); }
-			| LuaTokenTypes::integerLiteral >> [] (Token<LuaTokenTypes> token) { return new ast::IntegerNumber(token.lexeme()); }
-			| LuaTokenTypes::floatLiteral >> [] (Token<LuaTokenTypes> token) { return new ast::FloatNumber(token.lexeme()); }
+			| LuaTokenTypes::integerLiteral
+					>> [] (Token<LuaTokenTypes> token) { return new ast::IntegerNumber(token.lexeme()); }
+			| LuaTokenTypes::floatLiteral
+					>> [] (Token<LuaTokenTypes> token) { return new ast::FloatNumber(token.lexeme()); }
 			| LuaTokenTypes::string >> [] (Token<LuaTokenTypes> token) {
 					QString string = token.lexeme();
 					// Cut off quotes.
@@ -186,7 +191,9 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			| LuaTokenTypes::tripleDot >> reportUnsupported
 			| prefixexp
 			| tableconstructor
-			| (unop & ParserRef<LuaTokenTypes>(new ExpressionParser<LuaTokenTypes>(LuaTokenTypes::minus, primary, binop)))
+			| (unop & ParserRef<LuaTokenTypes>(new ExpressionParser<LuaTokenTypes>(
+					precedenceTable, LuaTokenTypes::minus, primary, binop))
+					)
 					>> [] (QSharedPointer<TemporaryPair> node) {
 						auto unOp = as<core::ast::UnaryOperator>(node->left());
 						unOp->setOperand(node->right());
@@ -274,7 +281,10 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			};
 
 	// field ::= ‘[’ exp(0) ‘]’ ‘=’ exp(0) | exp(0) [ ‘=’ exp(0) ]
-	field = (-LuaTokenTypes::openingSquareBracket & exp & -LuaTokenTypes::closingSquareBracket & -LuaTokenTypes::equals & exp)
+	field = (-LuaTokenTypes::openingSquareBracket
+			& exp
+			& -LuaTokenTypes::closingSquareBracket
+			& -LuaTokenTypes::equals & exp)
 					>> [] (QSharedPointer<TemporaryPair> pair) {
 						auto initializer = as<core::ast::Expression>(pair->right());
 						auto indexer = as<core::ast::Expression>(pair->left());

@@ -23,7 +23,7 @@ void Block::init(Id const &graphicalId
 		, ErrorReporterInterface * const errorReporter
 		, BlockParserInterface * const parser
 		, robotModel::RobotModelManagerInterface const &robotModelManager
-		, textLanguageParser::TextLanguageFacade &newParser)
+		, qrtext::lua::LuaToolbox &newParser)
 {
 	mGraphicalId = graphicalId;
 	mGraphicalModelApi = &graphicalModelApi;

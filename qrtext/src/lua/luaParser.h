@@ -4,11 +4,13 @@
 
 #include "qrtext/core/parser/parser.h"
 #include "qrtext/src/lua/luaTokenTypes.h"
+#include "qrtext/src/lua/luaPrecedenceTable.h"
 
 #include "qrtext/declSpec.h"
 
 namespace qrtext {
 namespace lua {
+namespace details {
 
 /// Parser for a subset of Lua 5.3 language. Syntax definition of a base language can be found here:
 /// http://www.lua.org/work/doc/manual.html#9
@@ -78,7 +80,7 @@ namespace lua {
 /// unop ::= ‘-’ | not | ‘#’ | ‘~’
 /// @endverbatim
 
-class QRTEXT_EXPORT LuaParser : public core::parser::Parser<LuaTokenTypes> {
+class LuaParser : public core::parser::Parser<LuaTokenTypes> {
 public:
 	LuaParser(QList<core::Error> &errors);
 
@@ -86,5 +88,6 @@ protected:
 	QSharedPointer<core::parser::ParserInterface<LuaTokenTypes>> grammar();
 };
 
+}
 }
 }

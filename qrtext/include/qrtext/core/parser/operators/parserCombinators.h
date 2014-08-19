@@ -72,8 +72,8 @@ inline ParserRef<TokenType> operator & (ParserRef<TokenType> const &a, TokenType
 template<typename TokenType>
 inline ParserRef<TokenType> operator & (TokenType const &token1, TokenType const &token2) {
 	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(
-			token1 >> [] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); },
-			token2 >> [] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); })
+			token1 >> [] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }
+			, token2 >> [] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); })
 			);
 }
 

@@ -33,7 +33,7 @@ void CommonBlocksFactory::configure(qReal::GraphicalModelAssistInterface const &
 		, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qReal::ErrorReporterInterface &errorReporter
 		, BlockParserInterface * const parser
-		, textLanguageParser::TextLanguageFacade &newParser)
+		, qrtext::lua::LuaToolbox &newParser)
 {
 	mRobotModelManager = &robotModelManager;
 	mGraphicalModelApi = &graphicalModelApi;

@@ -95,11 +95,12 @@ HEADERS += \
 	$$PWD/include/qrtext/lua/types/number.h \
 	$$PWD/include/qrtext/lua/types/string.h \
 	$$PWD/include/qrtext/lua/types/table.h \
+	$$PWD/src/lua/luaGeneralizationsTable.h \
 	$$PWD/src/lua/luaInterpreter.h \
 	$$PWD/src/lua/luaLexer.h \
 	$$PWD/src/lua/luaParser.h \
+	$$PWD/src/lua/luaPrecedenceTable.h \
 	$$PWD/src/lua/luaSemanticAnalyzer.h \
-	$$PWD/src/lua/luaGeneralizationsTable.h \
 	$$PWD/src/lua/luaTokenTypes.h \
 
 SOURCES += \
@@ -109,8 +110,9 @@ SOURCES += \
 	$$PWD/src/core/ast/node.cpp \
 	$$PWD/src/core/semantics/semanticAnalyzer.cpp \
 	$$PWD/src/core/types/typeVariable.cpp \
+	$$PWD/src/lua/luaGeneralizationsTable.cpp \
 	$$PWD/src/lua/luaLexer.cpp \
 	$$PWD/src/lua/luaParser.cpp \
+	$$PWD/src/lua/luaPrecedenceTable.cpp \
 	$$PWD/src/lua/luaSemanticAnalyzer.cpp \
-	$$PWD/src/lua/luaGeneralizationsTable.cpp \
 	$$PWD/src/lua/luaToolbox.cpp \

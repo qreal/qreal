@@ -29,6 +29,7 @@ namespace core {
 class QRTEXT_EXPORT SemanticAnalyzer {
 public:
 	SemanticAnalyzer(QSharedPointer<GeneralizationsTableInterface> const &generalizationsTable, QList<Error> &errors);
+	virtual ~SemanticAnalyzer();
 
 	void analyze(QSharedPointer<ast::Node> const &root);
 
@@ -45,7 +46,7 @@ protected:
 	void reportError(const QSharedPointer<ast::Node> &node, QString const &errorMessage);
 
 	bool hasDeclaration(QString const &identifierName) const;
-	QSharedPointer<ast::Node> const &declaration(QString const &identifierName) const;
+	QSharedPointer<ast::Node> declaration(QString const &identifierName) const;
 	void addDeclaration(QString const &identifierName, QSharedPointer<ast::Node> const &declaration);
 
 	QSharedPointer<types::TypeExpression> const &any();

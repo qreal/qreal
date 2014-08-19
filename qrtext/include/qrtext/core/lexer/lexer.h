@@ -57,6 +57,8 @@ public:
 	/// Tokenizes input string, returns list of detected tokens, list of errors and separate list of comments.
 	QList<Token<TokenType>> tokenize(QString const &input)
 	{
+		mComments.clear();
+
 		QList<Token<TokenType>> result;
 
 		// Initializing connection.
@@ -115,7 +117,7 @@ public:
 					Range range(Connection(bestMatch.match.capturedStart(), line, column)
 							, Connection(bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn));
 
-//					result.comments << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
+					mComments << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
 				}
 
 				// Keeping connection updated.
@@ -148,6 +150,11 @@ public:
 		}
 
 		return result;
+	}
+
+	QList<Token<TokenType>> comments() const
+	{
+		return mComments;
 	}
 
 private:
@@ -193,10 +200,12 @@ private:
 	}
 
 	TokenPatterns<TokenType> const mPatterns;
+
 	QRegularExpression mWhitespaceRegexp;
 	QRegularExpression mNewLineRegexp;
 
 	QList<Error> &mErrors;
+	QList<Token<TokenType>> mComments;
 };
 
 }

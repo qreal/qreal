@@ -7,6 +7,7 @@
 
 namespace qrtext {
 namespace lua {
+namespace details {
 
 /// Lexer of something like Lua 5.3 based on regular expressions. Provides a list of tokens by given input string.
 /// Allows Unicode input.
@@ -21,5 +22,6 @@ private:
 	static core::lexer::TokenPatterns<LuaTokenTypes> initPatterns();
 };
 
+}
 }
 }

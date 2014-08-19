@@ -6,18 +6,21 @@
 #include <qrkernel/ids.h>
 
 #include "qrtext/core/ast/node.h"
+#include "qrtext/core/types/typeExpression.h"
 #include "qrtext/core/error.h"
 #include "qrtext/core/lexer/tokenPatterns.h"
-
-#include "qrtext/src/lua/luaLexer.h"
-#include "qrtext/src/lua/luaParser.h"
-#include "qrtext/src/lua/luaSemanticAnalyzer.h"
-#include "qrtext/src/lua/luaInterpreter.h"
 
 #include "qrtext/declSpec.h"
 
 namespace qrtext {
 namespace lua {
+
+namespace details {
+class LuaLexer;
+class LuaParser;
+class LuaSemanticAnalyzer;
+class LuaInterpreter;
+}
 
 /// Facade that uses text language parsing/interpreting framework to provide services based on "QReal standard" text
 /// language (Lua 5.3 subset).
@@ -34,13 +37,16 @@ namespace lua {
 class QRTEXT_EXPORT LuaToolbox {
 public:
 	LuaToolbox();
+	~LuaToolbox();
 
 	template<typename T>
 	T interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
 	{
 		auto root = parse(id, propertyName, code);
-//		return mInterpreter.interpret<T>(root, mAnalyzer);
+		return interpret(root).value<T>();
 	}
+
+	QVariant interpret(QSharedPointer<core::ast::Node> const &root);
 
 	void markAsChanged(qReal::Id const &id, QString const &propertyName);
 
@@ -55,10 +61,10 @@ public:
 private:
 	QList<core::Error> mErrors;
 
-	LuaLexer mLexer;
-	LuaParser mParser;
-	LuaSemanticAnalyzer mAnalyzer;
-	LuaInterpreter mInterpreter;
+	QScopedPointer<details::LuaLexer> mLexer;
+	QScopedPointer<details::LuaParser> mParser;
+	QScopedPointer<details::LuaSemanticAnalyzer> mAnalyzer;
+	QScopedPointer<details::LuaInterpreter> mInterpreter;
 
 	QHash<qReal::Id, QHash<QString, QSharedPointer<core::ast::Node>>> mAstRoots;
 };

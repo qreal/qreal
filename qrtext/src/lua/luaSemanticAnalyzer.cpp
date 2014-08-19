@@ -26,7 +26,7 @@
 #include "qrtext/lua/ast/nil.h"
 #include "qrtext/lua/ast/string.h"
 
-using namespace qrtext::lua;
+using namespace qrtext::lua::details;
 using namespace qrtext::core;
 
 LuaSemanticAnalyzer::LuaSemanticAnalyzer(QList<Error> &errors)

@@ -1,6 +1,7 @@
 #include "qrtext/src/lua/luaLexer.h"
 
 using namespace qrtext::lua;
+using namespace qrtext::lua::details;
 using namespace qrtext::core::lexer;
 
 LuaLexer::LuaLexer(QList<core::Error> &errors)
@@ -14,7 +15,7 @@ TokenPatterns<LuaTokenTypes> LuaLexer::initPatterns()
 
 	tokenDefinitions.defineToken(LuaTokenTypes::whitespace, QRegularExpression("[ \t]+"));
 	tokenDefinitions.defineToken(LuaTokenTypes::newline, QRegularExpression("[\n]"));
-	tokenDefinitions.defineToken(LuaTokenTypes::identifier, QRegularExpression("[a-zA-Z_][a-zA-Z0-9_]*"));
+	tokenDefinitions.defineToken(LuaTokenTypes::identifier, QRegularExpression(R"([\p{L}_][\p{L}0-9_]*)"));
 
 	tokenDefinitions.defineKeyword(LuaTokenTypes::andKeyword, "and");
 	tokenDefinitions.defineKeyword(LuaTokenTypes::breakKeyword, "break");
@@ -77,8 +78,8 @@ TokenPatterns<LuaTokenTypes> LuaLexer::initPatterns()
 	tokenDefinitions.defineToken(LuaTokenTypes::doubleDot, QRegularExpression("\\.\\."));
 	tokenDefinitions.defineToken(LuaTokenTypes::tripleDot, QRegularExpression("\\.\\.\\."));
 
-	tokenDefinitions.defineToken(LuaTokenTypes::string, QRegularExpression("(\"[^\"\\\\]*(\\\\(.|\\n)[^\"\\\\]*)*\")"
-			"|('[^'\\\\]*(\\\\(.|\\n)[^'\\\\]*)*')"));
+	tokenDefinitions.defineToken(LuaTokenTypes::string, QRegularExpression(R"(("[^"\\]*(\\(.|\n)[^"\\]*)*"))"
+			R"(|('[^'\\]*(\\(.|\n)[^'\\]*)*'))"));
 
 	tokenDefinitions.defineToken(LuaTokenTypes::integerLiteral, QRegularExpression("(0[xX][0-9a-fA-F]+)|([0-9]+)"));
 	tokenDefinitions.defineToken(LuaTokenTypes::floatLiteral, QRegularExpression(

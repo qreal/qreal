@@ -8,6 +8,7 @@
 
 namespace qrtext {
 namespace lua {
+namespace details {
 
 class QRTEXT_EXPORT LuaSemanticAnalyzer : public core::SemanticAnalyzer {
 public:
@@ -26,5 +27,6 @@ private:
 	QSharedPointer<core::types::TypeExpression> mString;
 };
 
+}
 }
 }

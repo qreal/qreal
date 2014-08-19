@@ -51,7 +51,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, mRobotModelManager
 			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; });
 
-	mNewParser.reset(new textLanguageParser::TextLanguageFacade());
+	mNewParser.reset(new qrtext::lua::LuaToolbox());
 
 	initSensorWidgets();
 

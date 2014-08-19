@@ -7,7 +7,7 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrutils/watchListWindow.h>
-#include <qrutils/textLanguageParser/textLanguageFacade.h>
+#include <qrtext/lua/luaToolbox.h>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
@@ -49,7 +49,7 @@ public:
 			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, utils::ExpressionsParser &parser
-			, textLanguageParser::TextLanguageFacade &newParser
+			, qrtext::lua::LuaToolbox &newParser
 			, QAction &connectToRobotAction
 			);
 

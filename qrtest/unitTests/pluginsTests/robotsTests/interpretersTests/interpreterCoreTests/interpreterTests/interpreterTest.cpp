@@ -2,10 +2,9 @@
 
 #include <QtCore/QCoreApplication>
 
-#include <qrutils/textLanguageParser/textLanguageFacade.h>
+#include <qrtext/lua/luaToolbox.h>
 #include "src/interpreter/interpreter.h"
 #include "src/textLanguage/robotsBlockParser.h"
-
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
@@ -85,7 +84,7 @@ void InterpreterTest::SetUp()
 			, []() { return 0; }
 			);
 
-	textLanguageParser::TextLanguageFacade newParser;
+	qrtext::lua::LuaToolbox newParser;
 
 	DummyBlockFactory *blocksFactory = new DummyBlockFactory;
 	blocksFactory->configure(

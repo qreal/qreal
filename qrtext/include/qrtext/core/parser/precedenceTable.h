@@ -43,13 +43,14 @@ public:
 	}
 
 protected:
-	void addOperator(TokenType token, Arity arity, int precedence, Associativity associativity)
+	void addOperator(TokenType token, int precedence, Associativity associativity)
 	{
-		if (arity == Arity::binary) {
-			return mBinaryOperatorPrecedences.insert(token, {precedence, associativity});
-		} else {
-			return mUnaryOperatorPrecedences.insert(token, precedence);
-		}
+		mBinaryOperatorPrecedences.insert(token, {precedence, associativity});
+	}
+
+	void addOperator(TokenType token, int precedence)
+	{
+		mUnaryOperatorPrecedences.insert(token, precedence);
 	}
 
 private:

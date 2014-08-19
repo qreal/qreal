@@ -6,6 +6,7 @@
 
 namespace qrtext {
 namespace lua {
+namespace details {
 
 enum class LuaTokenTypes {
 	whitespace  // 0
@@ -90,5 +91,6 @@ inline QDebug operator <<(QDebug debug, LuaTokenTypes const &token)
 	return debug;
 }
 
+}
 }
 }

@@ -2,6 +2,8 @@
 
 #include <interpreterBase/robotModel/robotParts/motor.h>
 
+#include <qrtext/core/error.h>
+
 using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::robotModel::robotParts;
 
@@ -37,18 +39,16 @@ void TrikEnginesForwardBlock::run()
 
 void TrikEnginesForwardBlock::reportParserErrors()
 {
-	for (textLanguageParser::ParserError const &error : mNewParser->errors()) {
+	for (qrtext::core::Error const &error : mNewParser->errors()) {
 		switch (error.severity()) {
-		case textLanguageParser::Severity::critical:
-		case textLanguageParser::Severity::error:
-		case textLanguageParser::Severity::warning:
+		case qrtext::core::Severity::critical:
+		case qrtext::core::Severity::error:
+		case qrtext::core::Severity::warning:
 			this->error(error.errorMessage());
 			break;
-		case textLanguageParser::Severity::internalError:
+		case qrtext::core::Severity::internalError:
 			/// @todo: output to log.
 			break;
 		}
-
-
 	}
 }

@@ -6,6 +6,7 @@
 
 namespace qrtext {
 namespace lua {
+namespace details {
 
 class LuaGeneralizationsTable : public core::GeneralizationsTableInterface {
 public:
@@ -17,5 +18,6 @@ private:
 			, QSharedPointer<core::types::TypeExpression> const &type2) const;
 };
 
+}
 }
 }

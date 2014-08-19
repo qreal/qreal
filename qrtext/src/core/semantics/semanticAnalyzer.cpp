@@ -1,32 +1,18 @@
 #include "qrtext/core/semantics/semanticAnalyzer.h"
 
-//#include "textLanguageParser/ast/nodes/assignment.h"
-//#include "textLanguageParser/ast/nodes/identifier.h"
-//#include "textLanguageParser/ast/nodes/indexingExpression.h"
-
-//#include "textLanguageParser/ast/nodes/unaryMinus.h"
-
-//#include "textLanguageParser/ast/nodes/integerNumber.h"
-//#include "textLanguageParser/ast/nodes/floatNumber.h"
-//#include "textLanguageParser/ast/nodes/true.h"
-//#include "textLanguageParser/ast/nodes/false.h"
-//#include "textLanguageParser/ast/nodes/nil.h"
-//#include "textLanguageParser/ast/nodes/string.h"
-
 #include "qrtext/core/types/typeVariable.h"
+#include "qrtext/core/types/any.h"
 
 using namespace qrtext::core;
 
 SemanticAnalyzer::SemanticAnalyzer(QSharedPointer<GeneralizationsTableInterface> const &generalizationsTable
 	, QList<Error> &errors)
-	: mErrors(errors), mGeneralizationsTable(generalizationsTable)
+	: mAny(new types::Any()), mErrors(errors), mGeneralizationsTable(generalizationsTable)
 {
-//	mBoolean = wrap(new types::Boolean());
-//	mFloat = wrap(new types::Float());
-//	mInteger = wrap(new types::Integer());
-//	mNil = wrap(new types::Nil());
-//	mString = wrap(new types::String());
-//	mAny = wrap(new types::Any());
+}
+
+SemanticAnalyzer::~SemanticAnalyzer()
+{
 }
 
 void SemanticAnalyzer::analyze(QSharedPointer<ast::Node> const &root)
@@ -95,7 +81,7 @@ void SemanticAnalyzer::constrain(QSharedPointer<ast::Node> const &operation
 		, QSharedPointer<ast::Node> const &node, QList<QSharedPointer<types::TypeExpression>> const &types)
 {
 	auto nodeType = as<types::TypeVariable>(type(node));
-//	nodeType->constrain(types, mGeneralizationsTable);
+	nodeType->constrain(types, generalizationsTable());
 	if (nodeType->isEmpty()) {
 		reportError(operation, QObject::tr("Type mismatch."));
 	}
@@ -111,7 +97,7 @@ bool SemanticAnalyzer::hasDeclaration(QString const &identifierName) const
 	return mIdentifierDeclarations.contains(identifierName);
 }
 
-QSharedPointer<ast::Node> const &SemanticAnalyzer::declaration(QString const &identifierName) const
+QSharedPointer<ast::Node> SemanticAnalyzer::declaration(QString const &identifierName) const
 {
 	return mIdentifierDeclarations.value(identifierName);
 }

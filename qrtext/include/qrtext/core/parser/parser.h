@@ -24,7 +24,7 @@ public:
 	}
 
 	/// Parses given code and returns AST with results or nullptr if parsing is impossible.
-	QSharedPointer<ast::Node> parse(QList<lexer::Token<TokenType>> &tokens)
+	QSharedPointer<ast::Node> parse(QList<lexer::Token<TokenType>> const &tokens)
 	{
 		TokenStream<TokenType> tokenStream(tokens, mErrors);
 		ParserContext<TokenType> context(mErrors, tokenStream);

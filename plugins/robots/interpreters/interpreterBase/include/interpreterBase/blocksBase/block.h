@@ -41,7 +41,7 @@ public:
 			, qReal::ErrorReporterInterface * const errorReporter
 			, BlockParserInterface * const parser
 			, robotModel::RobotModelManagerInterface const &robotModelManager
-			, textLanguageParser::TextLanguageFacade &newParser
+			, qrtext::lua::LuaToolbox &newParser
 			);
 
 protected:
@@ -94,7 +94,7 @@ protected:
 
 	qReal::Id mGraphicalId;
 	BlockParserInterface * mParser;  // Does not have ownership
-	textLanguageParser::TextLanguageFacade * mNewParser;  // Does not have ownership
+	qrtext::lua::LuaToolbox * mNewParser;  // Does not have ownership
 
 private slots:
 	void finishedRunning();

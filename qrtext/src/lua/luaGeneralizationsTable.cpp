@@ -10,7 +10,7 @@
 #include "qrtext/lua/types/string.h"
 #include "qrtext/lua/types/table.h"
 
-using namespace qrtext::lua;
+using namespace qrtext::lua::details;
 using namespace qrtext::core::types;
 using namespace qrtext::lua::types;
 

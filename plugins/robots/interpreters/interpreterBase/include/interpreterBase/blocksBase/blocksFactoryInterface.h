@@ -1,7 +1,7 @@
 #pragma once
 
 #include <qrkernel/ids.h>
-#include <qrutils/textLanguageParser/textLanguageFacade.h>
+#include <qrtext/lua/luaToolbox.h>
 
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
@@ -37,7 +37,7 @@ public:
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter
 			, BlockParserInterface * const parser
-			, textLanguageParser::TextLanguageFacade &newParser
+			, qrtext::lua::LuaToolbox &newParser
 			) = 0;
 };
 
