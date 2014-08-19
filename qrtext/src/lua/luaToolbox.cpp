@@ -5,7 +5,7 @@ using namespace qrtext::core;
 using namespace qrtext::core::lexer;
 
 LuaToolbox::LuaToolbox()
-	: mLexer(mErrors)
+	: mLexer(mErrors), mParser(mErrors)
 {
 }
 
@@ -14,9 +14,9 @@ QSharedPointer<ast::Node> const &LuaToolbox::parse(qReal::Id const &id, QString 
 {
 	mErrors.clear();
 
-//	auto result = mParser.parse(code);
-//	mErrors << result.errors;
-//	mAstRoots[id][propertyName] = result.astRoot;
+	auto tokenStream = mLexer.tokenize(code);
+	auto ast = mParser.parse(tokenStream);
+	mAstRoots[id][propertyName] = ast;
 
 //	mAnalyzer.analyze(result.astRoot);
 

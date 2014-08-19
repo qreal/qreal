@@ -1,11 +1,12 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/expression.h"
+#include "qrtext/core/ast/expression.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT Identifier : public Expression {
+class QRTEXT_EXPORT Identifier : public core::ast::Expression {
 public:
 	Identifier(QString const &name)
 		: mName(name)
@@ -20,5 +21,6 @@ private:
 	QString mName;
 };
 
+}
 }
 }

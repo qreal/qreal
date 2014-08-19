@@ -1,11 +1,12 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/number.h"
+#include "qrtext/lua/ast/number.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT FloatNumber : public Number {
+class QRTEXT_EXPORT FloatNumber : public Number {
 public:
 	FloatNumber(QString const &stringRepresentation)
 		: Number(stringRepresentation)
@@ -13,5 +14,6 @@ public:
 	}
 };
 
+}
 }
 }

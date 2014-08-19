@@ -2,13 +2,13 @@
 
 #include "qrtext/core/connection.h"
 
-#include "qrutils/utilsDeclSpec.h"
+#include "qrtext/declSpec.h"
 
 namespace qrtext {
 namespace core {
 
 /// A range between two connections in code. Characterizes location of a token in code.
-class QRUTILS_EXPORT Range {
+class QRTEXT_EXPORT Range {
 public:
 	/// Constructor that takes start and end coordinates of a range.
 	Range(Connection const &start, Connection const &end);

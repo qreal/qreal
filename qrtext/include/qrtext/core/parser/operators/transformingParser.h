@@ -2,24 +2,25 @@
 
 #include <type_traits>
 
-#include "textLanguageParser/details/parserRef.h"
-#include "textLanguageParser/details/parsers/parserInterface.h"
-#include "textLanguageParser/details/temporaryNodes/temporaryDiscardableNode.h"
-#include "textLanguageParser/details/utils/functionTraits.h"
+#include "qrtext/core/parser/parserRef.h"
+#include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/utils/functionTraits.h"
 
-namespace textLanguageParser {
-namespace details {
+namespace qrtext {
+namespace core {
+namespace parser {
 
-
-template<typename Transformation>
-class TransformingParser : public ParserInterface {
+template<typename TokenType, typename Transformation>
+class TransformingParser : public ParserInterface<TokenType> {
 public:
-	explicit TransformingParser(ParserRef parser, Transformation transformation)
+	explicit TransformingParser(ParserRef<TokenType> parser, Transformation transformation)
 		: mTransformation(transformation), mParser(parser)
 	{
 	}
 
-	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
+	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream
+			, ParserContext<TokenType> &parserContext) const override
 	{
 		typedef typename function_traits<Transformation>::template arg<0>::type PointerToNodeType;
 		typedef decltype(&PointerToNodeType::operator *) DereferenceOperatorType;
@@ -44,8 +45,9 @@ public:
 
 private:
 	Transformation mTransformation;
-	ParserRef mParser;
+	ParserRef<TokenType> mParser;
 };
 
+}
 }
 }

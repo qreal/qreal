@@ -1,12 +1,14 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/expression.h"
+#include "qrtext/core/ast/expression.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT False : public Expression {
+class QRTEXT_EXPORT False : public core::ast::Expression {
 };
 
+}
 }
 }

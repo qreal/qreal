@@ -1,12 +1,14 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/binaryOperator.h"
+#include "qrtext/core/ast/binaryOperator.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT Division : public BinaryOperator {
+class QRTEXT_EXPORT Division : public core::ast::BinaryOperator {
 };
 
+}
 }
 }

@@ -1,12 +1,13 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/expression.h"
-#include "qrutils/textLanguageParser/ast/nodes/fieldInitialization.h"
+#include "qrtext/core/ast/expression.h"
+#include "qrtext/lua/ast/fieldInitialization.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT TableConstructor : public Expression {
+class QRTEXT_EXPORT TableConstructor : public core::ast::Expression {
 public:
 	TableConstructor(QList<QSharedPointer<FieldInitialization>> const &initializers)
 		: mInitializers(initializers)
@@ -20,12 +21,13 @@ public:
 
 	QList<QSharedPointer<Node>> children() const override
 	{
-		return as<ast::Node>(mInitializers);
+		return as<core::ast::Node>(mInitializers);
 	}
 
 private:
 	QList<QSharedPointer<FieldInitialization>> mInitializers;
 };
 
+}
 }
 }

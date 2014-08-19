@@ -1,11 +1,12 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/expression.h"
+#include "qrtext/core/ast/expression.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT FunctionCall : public Expression {
+class QRTEXT_EXPORT FunctionCall : public core::ast::Expression {
 public:
 	FunctionCall(QSharedPointer<Expression> const &function, QList<QSharedPointer<Expression>> const &arguments)
 		: mFunction(function), mArguments(arguments)
@@ -22,7 +23,7 @@ public:
 
 	QList<QSharedPointer<Node>> children() const override
 	{
-		return QList<QSharedPointer<Node>>({mFunction}) << as<ast::Node>(mArguments);
+		return QList<QSharedPointer<Node>>({mFunction}) << as<core::ast::Node>(mArguments);
 	}
 
 private:
@@ -30,5 +31,6 @@ private:
 	QList<QSharedPointer<Expression>> mArguments;
 };
 
+}
 }
 }

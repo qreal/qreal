@@ -1,26 +1,28 @@
 #pragma once
 
-#include "textLanguageParser/tokenType.h"
-#include "textLanguageParser/details/parserRef.h"
-#include "textLanguageParser/details/parsers/parserInterface.h"
-#include "textLanguageParser/details/temporaryNodes/temporaryList.h"
-#include "textLanguageParser/details/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/parserRef.h"
+#include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryList.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 
-namespace textLanguageParser {
-namespace details {
+namespace qrtext {
+namespace core {
+namespace parser {
 
-class KleeneStarParser : public ParserInterface {
+template<typename TokenType>
+class KleeneStarParser : public ParserInterface<TokenType> {
 public:
-	KleeneStarParser(ParserRef const &parser)
+	KleeneStarParser(ParserRef<TokenType> const &parser)
 		: mParser(parser)
 	{
 	}
 
-	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
+	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream
+			, ParserContext<TokenType> &parserContext) const override
 	{
 		auto temporaryList = QSharedPointer<TemporaryList>(new TemporaryList());
 		while (!tokenStream.isEnd() && mParser->first().contains(tokenStream.next().token())) {
-			auto result = mParser->parse(tokenStream, parserContext);
+			QSharedPointer<ast::Node> result = mParser->parse(tokenStream, parserContext);
 			if (!result) {
 				break;
 			}
@@ -41,8 +43,9 @@ public:
 	}
 
 private:
-	ParserRef mParser;
+	ParserRef<TokenType> mParser;
 };
 
+}
 }
 }

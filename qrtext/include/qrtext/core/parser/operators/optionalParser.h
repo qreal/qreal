@@ -1,19 +1,22 @@
 #pragma once
 
-#include "textLanguageParser/details/parserRef.h"
-#include "textLanguageParser/details/parsers/parserInterface.h"
+#include "qrtext/core/parser/parserRef.h"
+#include "qrtext/core/parser/operators/parserInterface.h"
 
-namespace textLanguageParser {
-namespace details {
+namespace qrtext {
+namespace core {
+namespace parser {
 
-class OptionalParser : public ParserInterface {
+template<typename TokenType>
+class OptionalParser : public ParserInterface<TokenType> {
 public:
-	OptionalParser(ParserRef parser)
+	OptionalParser(ParserRef<TokenType> parser)
 		: mParser(parser)
 	{
 	}
 
-	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
+	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream
+			, ParserContext<TokenType> &parserContext) const override
 	{
 		if (mParser->first().contains(tokenStream.next().token())) {
 			return mParser->parse(tokenStream, parserContext);
@@ -28,8 +31,9 @@ public:
 	}
 
 private:
-	ParserRef mParser;
+	ParserRef<TokenType> mParser;
 };
 
+}
 }
 }

@@ -1,22 +1,24 @@
 #pragma once
 
-#include "textLanguageParser/tokenType.h"
-#include "textLanguageParser/details/parserRef.h"
-#include "textLanguageParser/details/parsers/parserInterface.h"
-#include "textLanguageParser/details/temporaryNodes/temporaryPair.h"
-#include "textLanguageParser/details/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/parserRef.h"
+#include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryPair.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 
-namespace textLanguageParser {
-namespace details {
+namespace qrtext {
+namespace core {
+namespace parser {
 
-class ConcatenationParser : public ParserInterface {
+template<typename TokenType>
+class ConcatenationParser : public ParserInterface<TokenType> {
 public:
-	ConcatenationParser(ParserRef parser1, ParserRef parser2)
+	ConcatenationParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
 	}
 
-	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
+	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream
+			, ParserContext<TokenType> &parserContext) const override
 	{
 		if (tokenStream.isEnd()) {
 			parserContext.reportError("Unexpected end of file");
@@ -24,8 +26,8 @@ public:
 		}
 
 		if (mParser1->first().contains(tokenStream.next().token())) {
-			auto parser1Result = mParser1->parse(tokenStream, parserContext);
-			auto parser2Result = mParser2->parse(tokenStream, parserContext);
+			QSharedPointer<ast::Node> parser1Result = mParser1->parse(tokenStream, parserContext);
+			QSharedPointer<ast::Node> parser2Result = mParser2->parse(tokenStream, parserContext);
 
 			if (parser1Result && parser1Result->is<TemporaryDiscardableNode>()
 					&& parser2Result && parser2Result->is<TemporaryDiscardableNode>())
@@ -56,9 +58,10 @@ public:
 	}
 
 private:
-	ParserRef mParser1;
-	ParserRef mParser2;
+	ParserRef<TokenType> mParser1;
+	ParserRef<TokenType> mParser2;
 };
 
+}
 }
 }

@@ -1,38 +1,46 @@
 #pragma once
 
-#include "textLanguageParser/tokenType.h"
-#include "textLanguageParser/ast/nodes/binaryOperator.h"
-#include "textLanguageParser/details/parsers/parserInterface.h"
-#include "textLanguageParser/details/parserRef.h"
-#include "textLanguageParser/details/precedenceTable.h"
+#include "qrtext/core/ast/binaryOperator.h"
+#include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/parserRef.h"
+#include "qrtext/core/parser/precedenceTable.h"
 
-namespace textLanguageParser {
-namespace details {
+namespace qrtext {
+namespace core {
+namespace parser {
 
-class ExpressionParser : public ParserInterface {
+template<typename TokenType>
+class ExpressionParser : public ParserInterface<TokenType> {
 public:
-	ExpressionParser(bool isUnary, ParserRef primary, ParserRef binOp)
-		: mStartPrecedence(isUnary ? mPrecedenceTable.unaryOperatorsPrecedence() : 0)
+	ExpressionParser(ParserRef<TokenType> const &primary, ParserRef<TokenType> const &binOp)
+		: mStartPrecedence(0)
 		, mPrimary(primary)
 		, mBinOp(binOp)
 	{
 	}
 
-	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
+	ExpressionParser(TokenType startingUnaryOperator, ParserRef<TokenType> primary, ParserRef<TokenType> binOp)
+		: mStartPrecedence(mPrecedenceTable.precedence(startingUnaryOperator, Arity::unary))
+		, mPrimary(primary)
+		, mBinOp(binOp)
+	{
+	}
+
+	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream, ParserContext<TokenType> &parserContext) const override
 	{
 		return parse(tokenStream, parserContext, mStartPrecedence);
 	}
 
-	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext, int currentPrecedence) const
+	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream, ParserContext<TokenType> &parserContext, int currentPrecedence) const
 	{
 		auto resultAst = mPrimary->parse(tokenStream, parserContext);
 
 		while (mPrecedenceTable.binaryOperators().contains(tokenStream.next().token())
-				&& mPrecedenceTable.precedence(tokenStream.next().token()) >= currentPrecedence)
+				&& mPrecedenceTable.precedence(tokenStream.next().token(), Arity::binary) >= currentPrecedence)
 		{
 			int const newPrecedence = mPrecedenceTable.associativity(tokenStream.next().token()) == Associativity::left
-					? 1 + mPrecedenceTable.precedence(tokenStream.next().token())
-					: mPrecedenceTable.precedence(tokenStream.next().token())
+					? 1 + mPrecedenceTable.precedence(tokenStream.next().token(), Arity::binary)
+					: mPrecedenceTable.precedence(tokenStream.next().token(), Arity::binary)
 					;
 
 			auto binOpResult = mBinOp->parse(tokenStream, parserContext);
@@ -55,12 +63,13 @@ public:
 	}
 
 private:
-	PrecedenceTable const mPrecedenceTable;
+	PrecedenceTable<TokenType> const mPrecedenceTable;
 	int const mStartPrecedence;
 
-	ParserRef const mPrimary;
-	ParserRef const mBinOp;
+	ParserRef<TokenType> const mPrimary;
+	ParserRef<TokenType> const mBinOp;
 };
 
+}
 }
 }

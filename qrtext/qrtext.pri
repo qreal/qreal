@@ -16,12 +16,17 @@ HEADERS += \
 	$$PWD/include/qrtext/core/connection.h \
 	$$PWD/include/qrtext/core/range.h \
 	$$PWD/include/qrtext/core/ast/node.h \
+	$$PWD/include/qrtext/core/ast/expression.h \
+	$$PWD/include/qrtext/core/ast/binaryOperator.h \
+	$$PWD/include/qrtext/core/ast/unaryOperator.h \
 	$$PWD/include/qrtext/core/lexer/lexer.h \
 	$$PWD/include/qrtext/core/lexer/token.h \
 	$$PWD/include/qrtext/core/lexer/tokenPatterns.h \
 	$$PWD/include/qrtext/core/parser/parser.h \
 	$$PWD/include/qrtext/core/parser/parserContext.h \
+	$$PWD/include/qrtext/core/parser/parserRef.h \
 	$$PWD/include/qrtext/core/parser/tokenStream.h \
+	$$PWD/include/qrtext/core/parser/precedenceTable.h \
 	$$PWD/include/qrtext/core/parser/operators/parserCombinators.h \
 	$$PWD/include/qrtext/core/parser/operators/tokenParser.h \
 	$$PWD/include/qrtext/core/parser/operators/simpleParser.h \
@@ -32,9 +37,11 @@ HEADERS += \
 	$$PWD/include/qrtext/core/parser/operators/optionalParser.h \
 	$$PWD/include/qrtext/core/parser/operators/kleeneStarParser.h \
 	$$PWD/include/qrtext/core/parser/operators/expressionParser.h \
+	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h \
+	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryList.h \
+	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryPair.h \
+	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryToken.h \
 	$$PWD/include/qrtext/lua/luaToolbox.h \
-	$$PWD/include/qrtext/lua/ast/unaryOperator.h \
-	$$PWD/include/qrtext/lua/ast/binaryOperator.h \
 	$$PWD/include/qrtext/lua/ast/number.h \
 	$$PWD/include/qrtext/lua/ast/unaryMinus.h \
 	$$PWD/include/qrtext/lua/ast/not.h \
@@ -62,7 +69,6 @@ HEADERS += \
 	$$PWD/include/qrtext/lua/ast/integerNumber.h \
 	$$PWD/include/qrtext/lua/ast/floatNumber.h \
 	$$PWD/include/qrtext/lua/ast/fieldInitialization.h \
-	$$PWD/include/qrtext/lua/ast/expression.h \
 	$$PWD/include/qrtext/lua/ast/tableConstructor.h \
 	$$PWD/include/qrtext/lua/ast/integerNumber.h \
 	$$PWD/include/qrtext/lua/ast/floatNumber.h \
@@ -83,6 +89,8 @@ HEADERS += \
 SOURCES += \
 	$$PWD/src/core/connection.cpp \
 	$$PWD/src/core/error.cpp \
+	$$PWD/src/core/range.cpp \
+	$$PWD/src/core/ast/node.cpp \
 	$$PWD/src/lua/luaToolbox.cpp \
 	$$PWD/src/lua/luaParser.cpp \
 	$$PWD/src/lua/luaLexer.cpp \

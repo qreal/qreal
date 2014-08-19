@@ -1,12 +1,14 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/unaryOperator.h"
+#include "qrtext/core/ast/unaryOperator.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT UnaryMinus : public UnaryOperator {
+class QRTEXT_EXPORT UnaryMinus : public core::ast::UnaryOperator {
 };
 
+}
 }
 }

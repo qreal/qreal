@@ -1,22 +1,22 @@
 #pragma once
 
-#include <QtCore/QDebug>
+#include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/parserRef.h"
 
-#include "textLanguageParser/details/parsers/parserInterface.h"
-#include "textLanguageParser/tokenType.h"
-#include "textLanguageParser/details/parserRef.h"
+namespace qrtext {
+namespace core {
+namespace parser {
 
-namespace textLanguageParser {
-namespace details {
-
-class AlternativeParser : public ParserInterface {
+template<typename TokenType>
+class AlternativeParser : public ParserInterface<TokenType> {
 public:
-	AlternativeParser(ParserRef parser1, ParserRef parser2)
+	AlternativeParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
 	}
 
-	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
+	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream
+			, ParserContext<TokenType> &parserContext) const override
 	{
 		if (tokenStream.isEnd()) {
 			parserContext.reportError("Unexpected end of file");
@@ -46,9 +46,10 @@ public:
 	}
 
 private:
-	ParserRef mParser1;
-	ParserRef mParser2;
+	ParserRef<TokenType> mParser1;
+	ParserRef<TokenType> mParser2;
 };
 
+}
 }
 }

@@ -10,6 +10,7 @@
 #include "qrtext/core/lexer/tokenPatterns.h"
 
 #include "qrtext/src/lua/luaLexer.h"
+#include "qrtext/src/lua/luaParser.h"
 
 #include "qrtext/declSpec.h"
 
@@ -53,8 +54,7 @@ private:
 	QList<core::Error> mErrors;
 
 	LuaLexer mLexer;
-
-//	TextLanguageParser mParser;
+	LuaParser mParser;
 //	SemanticAnalyzer mAnalyzer;
 //	Interpreter mInterpreter;
 

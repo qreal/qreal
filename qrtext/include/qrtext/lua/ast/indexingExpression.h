@@ -1,11 +1,12 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/expression.h"
+#include "qrtext/core/ast/expression.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT IndexingExpression : public Expression {
+class QRTEXT_EXPORT IndexingExpression : public core::ast::Expression {
 public:
 	IndexingExpression(QSharedPointer<Expression> const &table, QSharedPointer<Expression> const &indexer)
 		: mTable(table), mIndexer(indexer)
@@ -30,5 +31,6 @@ private:
 	QSharedPointer<Expression> mIndexer;
 };
 
+}
 }
 }

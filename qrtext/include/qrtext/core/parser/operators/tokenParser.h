@@ -1,25 +1,26 @@
 #pragma once
 
-#include "textLanguageParser/details/parsers/parserInterface.h"
-#include "textLanguageParser/tokenType.h"
-#include "textLanguageParser/details/temporaryNodes/temporaryToken.h"
+#include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryToken.h"
 
-namespace textLanguageParser {
-namespace details {
+namespace qrtext {
+namespace core {
+namespace parser {
 
-template<typename SemanticAction>
-class TokenParser : public ParserInterface {
+template<typename TokenType, typename SemanticAction>
+class TokenParser : public ParserInterface<TokenType> {
 public:
 	explicit TokenParser(TokenType token, SemanticAction semanticAction)
 		: mToken(token), mSemanticAction(semanticAction)
 	{
 	}
 
-	QSharedPointer<ast::Node> parse(TokenStream &tokenStream, ParserContext &parserContext) const override
+	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream
+			, ParserContext<TokenType> &parserContext) const override
 	{
 		Q_UNUSED(parserContext);
 
-		Token const token = tokenStream.next();
+		lexer::Token<TokenType> const token = tokenStream.next();
 		if (!tokenStream.expect(mToken))
 		{
 			return wrap(nullptr);
@@ -43,5 +44,6 @@ private:
 	SemanticAction mSemanticAction;
 };
 
+}
 }
 }

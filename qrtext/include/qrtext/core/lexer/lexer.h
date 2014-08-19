@@ -101,21 +101,21 @@ public:
 						tokenEndColumn += bestMatch.match.capturedLength() - 1;
 					}
 
-					Range range(bestMatch.match.capturedStart(), line, column
-							, bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn);
+					Range range(Connection(bestMatch.match.capturedStart(), line, column)
+							, Connection(bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn));
 
 					if (bestMatch.candidate == TokenType::identifier) {
 						// Keyword is an identifier which is separate lexeme.
 						bestMatch.candidate = checkForKeyword(bestMatch.match.captured());
 					}
 
-					result.tokens << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
+					result << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
 				} else if (bestMatch.candidate == TokenType::comment) {
 					tokenEndColumn += bestMatch.match.capturedLength() - 1;
-					Range range(bestMatch.match.capturedStart(), line, column
-							, bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn);
+					Range range(Connection(bestMatch.match.capturedStart(), line, column)
+							, Connection(bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn));
 
-					result.comments << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
+//					result.comments << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
 				}
 
 				// Keeping connection updated.
@@ -131,7 +131,7 @@ public:
 
 				absolutePosition += bestMatch.match.capturedLength();
 			} else {
-				result.errors << Error({absolutePosition, line, column}
+				mErrors << Error({absolutePosition, line, column}
 						, "Lexer error", ErrorType::lexicalError, Severity::error);
 
 				// Panic mode: syncing on nearest whitespace or newline token.

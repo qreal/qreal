@@ -28,15 +28,19 @@ public:
 	{
 		TokenStream<TokenType> tokenStream(tokens, mErrors);
 		ParserContext<TokenType> context(mErrors, tokenStream);
-		return mGrammar.parse(tokenStream, context);
+		return mGrammar->parse(tokenStream, context);
+	}
+
+protected:
+	ParserContext<TokenType> &context()
+	{
+		return *mContext;
 	}
 
 private:
-	virtual QSharedPointer<ast::Node> doParse(TokenStream<TokenType> &tokenStream
-			, ParserContext<TokenType> &context) = 0;
-
 	QList<Error> &mErrors;
 	QSharedPointer<ParserInterface<TokenType>> mGrammar;
+	QScopedPointer<ParserContext<TokenType>> mContext;
 };
 
 }

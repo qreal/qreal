@@ -4,82 +4,92 @@
 
 #include <QtCore/QSharedPointer>
 
-#include "textLanguageParser/tokenType.h"
-#include "textLanguageParser/details/parserRef.h"
-#include "textLanguageParser/details/parsers/parserInterface.h"
-#include "textLanguageParser/details/parsers/simpleParser.h"
-#include "textLanguageParser/details/parsers/tokenParser.h"
-#include "textLanguageParser/details/parsers/alternativeParser.h"
-#include "textLanguageParser/details/parsers/transformingParser.h"
-#include "textLanguageParser/details/parsers/concatenationParser.h"
-#include "textLanguageParser/details/parsers/optionalParser.h"
-#include "textLanguageParser/details/parsers/kleeneStarParser.h"
-#include "textLanguageParser/details/utils/functionTraits.h"
-#include "textLanguageParser/details/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/parserRef.h"
+#include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/operators/simpleParser.h"
+#include "qrtext/core/parser/operators/tokenParser.h"
+#include "qrtext/core/parser/operators/alternativeParser.h"
+#include "qrtext/core/parser/operators/transformingParser.h"
+#include "qrtext/core/parser/operators/concatenationParser.h"
+#include "qrtext/core/parser/operators/optionalParser.h"
+#include "qrtext/core/parser/operators/kleeneStarParser.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/utils/functionTraits.h"
 
-namespace textLanguageParser {
-namespace details {
+namespace qrtext {
+namespace core {
+namespace parser {
 
-inline ParserRef operator & (ParserRef const &a, ParserRef const &b) {
-	return ParserRef(new ConcatenationParser(a, b));
+template<typename TokenType>
+inline ParserRef<TokenType> operator & (ParserRef<TokenType> const &a, ParserRef<TokenType> const &b) {
+	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(a, b));
 }
 
-inline ParserRef operator | (ParserRef const &a, ParserRef const &b) {
-	return ParserRef(new AlternativeParser(a, b));
+template<typename TokenType>
+inline ParserRef<TokenType> operator | (ParserRef<TokenType> const &a, ParserRef<TokenType> const &b) {
+	return ParserRef<TokenType>(new AlternativeParser<TokenType>(a, b));
 }
 
-inline ParserRef operator ~ (ParserRef a) {
-	return ParserRef(new OptionalParser(a));
+template<typename TokenType>
+inline ParserRef<TokenType> operator ~ (ParserRef<TokenType> a) {
+	return ParserRef<TokenType>(new OptionalParser<TokenType>(a));
 }
 
-inline ParserRef operator * (ParserRef a) {
-	return ParserRef(new KleeneStarParser(a));
+template<typename TokenType>
+inline ParserRef<TokenType> operator * (ParserRef<TokenType> a) {
+	return ParserRef<TokenType>(new KleeneStarParser<TokenType>(a));
 }
 
-template<typename SemanticAction>
-inline ParserRef operator >>(TokenType token, SemanticAction semanticAction)
+template<typename TokenType, typename SemanticAction>
+inline ParserRef<TokenType> operator >>(TokenType token, SemanticAction semanticAction)
 {
 	typedef typename std::conditional<function_traits<SemanticAction>::arity == 0
-			, SimpleParser<SemanticAction>
-			, TokenParser<SemanticAction>>
+			, SimpleParser<TokenType, SemanticAction>
+			, TokenParser<TokenType, SemanticAction>>
 			::type Parser;
 
-	return ParserRef(new Parser(token, semanticAction));
+	return ParserRef<TokenType>(new Parser(token, semanticAction));
 }
 
-template<typename Transformation>
-inline ParserRef operator >>(ParserRef parser, Transformation transformation)
+template<typename TokenType, typename Transformation>
+inline ParserRef<TokenType> operator >>(ParserRef<TokenType> parser, Transformation transformation)
 {
-	return ParserRef(new TransformingParser<Transformation>(parser, transformation));
+	return ParserRef<TokenType>(new TransformingParser<TokenType, Transformation>(parser, transformation));
 }
 
-inline ParserRef operator & (TokenType const &token, ParserRef const &b) {
-	return ParserRef(new ConcatenationParser(token >>
-			[] (Token const &token) { return new details::TemporaryToken(token); }, b));
+template<typename TokenType>
+inline ParserRef<TokenType> operator & (TokenType const &token, ParserRef<TokenType> const &b) {
+	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(token >>
+			[] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }, b));
 }
 
-inline ParserRef operator & (ParserRef const &a, TokenType const &token) {
-	return ParserRef(new ConcatenationParser(a, token >>
-			[] (Token const &token) { return new details::TemporaryToken(token); }));
+template<typename TokenType>
+inline ParserRef<TokenType> operator & (ParserRef<TokenType> const &a, TokenType const &token) {
+	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(a, token >>
+			[] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }));
 }
 
-inline ParserRef operator & (TokenType const &token1, TokenType const &token2) {
-	return ParserRef(new ConcatenationParser(
-			token1 >> [] (Token const &token) { return new details::TemporaryToken(token); },
-			token2 >> [] (Token const &token) { return new details::TemporaryToken(token); })
+template<typename TokenType>
+inline ParserRef<TokenType> operator & (TokenType const &token1, TokenType const &token2) {
+	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(
+			token1 >> [] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); },
+			token2 >> [] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); })
 			);
 }
 
-inline ParserRef operator ! (TokenType const &token) {
+template<typename TokenType>
+inline ParserRef<TokenType> operator - (TokenType const &token) {
 	return token >> [] { return new TemporaryDiscardableNode(); };
 }
 
-inline ParserRef operator ! (ParserRef const &parser) {
+template<typename TokenType>
+inline ParserRef<TokenType> operator - (ParserRef<TokenType> const &parser) {
 	return parser >> [] (QSharedPointer<ast::Node> node) {
 			Q_UNUSED(node);
 			return wrap(new TemporaryDiscardableNode());
 	};
 }
 
+}
 }
 }

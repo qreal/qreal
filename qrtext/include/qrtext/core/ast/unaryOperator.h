@@ -1,11 +1,12 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/expression.h"
+#include "qrtext/core/ast/expression.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace core {
 namespace ast {
 
-class QRUTILS_EXPORT UnaryOperator : public Expression {
+class QRTEXT_EXPORT UnaryOperator : public Expression {
 public:
 	QSharedPointer<Node> operand() const {
 		return mOperand;
@@ -25,5 +26,6 @@ private:
 	QSharedPointer<Node> mOperand;
 };
 
+}
 }
 }

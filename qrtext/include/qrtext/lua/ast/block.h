@@ -1,11 +1,12 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/node.h"
+#include "qrtext/core/ast/node.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT Block : public Node {
+class QRTEXT_EXPORT Block : public core::ast::Node {
 public:
 	Block(QList<QSharedPointer<Node>> const &statements)
 		: mStatements(statements)
@@ -21,5 +22,6 @@ private:
 	QList<QSharedPointer<Node>> mStatements;
 };
 
+}
 }
 }

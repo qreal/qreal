@@ -4,9 +4,9 @@
 
 namespace qrtext {
 namespace core {
-namespace ast {
+namespace parser {
 
-class QRTEXT_EXPORT Expression : public Node {
+class TemporaryDiscardableNode : public ast::Node {
 };
 
 }

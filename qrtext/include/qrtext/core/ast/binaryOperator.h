@@ -1,11 +1,12 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/expression.h"
+#include "qrtext/core/ast/expression.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace core {
 namespace ast {
 
-class QRUTILS_EXPORT BinaryOperator : public Expression
+class QRTEXT_EXPORT BinaryOperator : public Expression
 {
 public:
 	void setLeftOperand(QSharedPointer<Node> leftOperand)
@@ -40,5 +41,6 @@ private:
 	QSharedPointer<Node> mRightOperand;
 };
 
+}
 }
 }

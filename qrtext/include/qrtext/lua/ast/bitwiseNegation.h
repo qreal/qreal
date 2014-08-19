@@ -1,16 +1,14 @@
 #pragma once
 
-#include <QtCore/QSharedPointer>
+#include "qrtext/core/ast/unaryOperator.h"
 
-#include "qrutils/textLanguageParser/ast/nodes/unaryOperator.h"
-
-#include "qrutils/utilsDeclSpec.h"
-
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT BitwiseNegation : public UnaryOperator {
+class QRTEXT_EXPORT BitwiseNegation : public core::ast::UnaryOperator {
 };
 
+}
 }
 }

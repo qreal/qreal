@@ -1,29 +1,31 @@
 #pragma once
 
-#include "qrutils/textLanguageParser/ast/nodes/node.h"
-#include "qrutils/textLanguageParser/ast/nodes/expression.h"
+#include "qrtext/core/ast/node.h"
+#include "qrtext/core/ast/expression.h"
 
-namespace textLanguageParser {
+namespace qrtext {
+namespace lua {
 namespace ast {
 
-class QRUTILS_EXPORT FieldInitialization : public Node {
+class QRTEXT_EXPORT FieldInitialization : public core::ast::Node {
 public:
-	FieldInitialization(QSharedPointer<Expression> const &key, QSharedPointer<Expression> const &value)
+	FieldInitialization(QSharedPointer<core::ast::Expression> const &key
+			, QSharedPointer<core::ast::Expression> const &value)
 		: mKey(key), mValue(value), mImplicitKey(false)
 	{
 	}
 
-	FieldInitialization(QSharedPointer<Expression> const &value)
+	FieldInitialization(QSharedPointer<core::ast::Expression> const &value)
 		: mValue(value), mImplicitKey(true)
 	{
 	}
 
-	QSharedPointer<Expression> key() const
+	QSharedPointer<core::ast::Expression> key() const
 	{
 		return mKey;
 	}
 
-	QSharedPointer<Expression> value() const
+	QSharedPointer<core::ast::Expression> value() const
 	{
 		return mValue;
 	}
@@ -34,10 +36,11 @@ public:
 	}
 
 private:
-	QSharedPointer<Expression> mKey;
-	QSharedPointer<Expression> mValue;
+	QSharedPointer<core::ast::Expression> mKey;
+	QSharedPointer<core::ast::Expression> mValue;
 	bool mImplicitKey;
 };
 
+}
 }
 }
