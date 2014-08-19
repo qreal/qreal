@@ -1,6 +1,6 @@
 #include "nearestposgridgesturesmanager.h"
 
-#include "curveKeyBuilder.h"
+#include "keyBuilder.h"
 
 using namespace qReal::gestures;
 
@@ -10,16 +10,14 @@ NearestPosGridGesturesManager::NearestPosGridGesturesManager()
 
 NearestPosGridGesturesManager::~NearestPosGridGesturesManager()
 {
-	foreach (QString const object, mGestures.keys()) {
-		delete mGestures[object];
-		mGestures.remove(object);
-	}
+	qDeleteAll(mGestures);
 }
 
 double NearestPosGridGesturesManager::getMaxDistance(QString const &)
 {
 	return 1000;
 }
+
 bool NearestPosGridGesturesManager::isMultistroke()
 {
 	return true;
@@ -47,9 +45,11 @@ double * NearestPosGridGesturesManager::getKey(PathVector const &path)
 		return finalKey;
 	for (int i = 0; i < gridSize; i++) {
 		for (int j = 0; j < gridSize; j++) {
-			double dist = std::abs(key.at(0).first - i) + std::abs(key.at(0).second - j);
-			foreach (SquarePos pos, key)
-				dist = std::min(dist, std::abs(pos.first - i) + std::abs(pos.second - j));
+			double dist = qAbs(key.at(0).first - i) + qAbs(key.at(0).second - j);
+			for (SquarePos const &pos : key) {
+				dist = qMin(dist, qAbs(pos.first - i) + qAbs(pos.second - j));
+			}
+
 			finalKey[i * gridSize + j] = dist;
 		}
 	}

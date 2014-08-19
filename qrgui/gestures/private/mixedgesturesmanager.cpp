@@ -2,7 +2,7 @@
 
 #include "rectanglegesturesmanager.h"
 #include "nearestposgridgesturesmanager.h"
-#include "curveKeyBuilder.h"
+#include "keyBuilder.h"
 
 const double weight1 = 0.2; //0.3: 891 0.2: 899
 const double weight2 = 1 - weight1;
@@ -15,7 +15,7 @@ MixedGesturesManager::MixedGesturesManager()
 
 MixedGesturesManager::~MixedGesturesManager()
 {
-	foreach (QString const object, mGestures.keys()) {
+	for (QString const &object : mGestures.keys()) {
 		delete mGestures[object].first;
 		delete mGestures[object].second;
 		mGestures.remove(object);
@@ -36,18 +36,18 @@ double MixedGesturesManager::getDistance(QPair<double *,double *> const &key1, Q
 {
 	RectangleGesturesManager rectMan;
 	NearestPosGridGesturesManager gridMan;
-	double dist1 = rectMan.getDistance(key1.first, key2.first);
-	double dist2 = gridMan.getDistance(key1.second, key2.second);
+	qreal dist1 = rectMan.getDistance(key1.first, key2.first);
+	qreal dist2 = gridMan.getDistance(key1.second, key2.second);
 	return dist1 * weight1 + dist2 * weight2;
 }
 
-QPair<double *, double *> MixedGesturesManager::getKey(PathVector const &path)
+QPair<qreal *, qreal *> MixedGesturesManager::getKey(PathVector const &path)
 {
 	RectangleGesturesManager rectMan;
 	NearestPosGridGesturesManager gridMan;
-	double * key1 = rectMan.getKey(path);
-	double * key2 = gridMan.getKey(path);
-	return QPair<double *, double *>(key1, key2);
+	qreal *key1 = rectMan.getKey(path);
+	qreal *key2 = gridMan.getKey(path);
+	return QPair<qreal *, qreal *>(key1, key2);
 }
 
 MixedClassifier::~MixedClassifier()

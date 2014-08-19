@@ -1,6 +1,6 @@
 #include "rectanglegesturesmanager.h"
 
-#include "curveKeyBuilder.h"
+#include "keyBuilder.h"
 #include "sorts.h"
 
 using namespace qReal::gestures;
@@ -11,16 +11,14 @@ RectangleGesturesManager::RectangleGesturesManager()
 
 RectangleGesturesManager::~RectangleGesturesManager()
 {
-	foreach (QString const object, mGestures.keys()) {
-		delete mGestures[object];
-		mGestures.remove(object);
-	}
+	qDeleteAll(mGestures);
 }
 
 double RectangleGesturesManager::getMaxDistance(QString const &)
 {
 	return 1000;
 }
+
 bool RectangleGesturesManager::isMultistroke()
 {
 	return true;

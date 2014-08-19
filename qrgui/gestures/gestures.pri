@@ -7,11 +7,11 @@ HEADERS += \
 	$$PWD/private/pathCorrector.h \
 	$$PWD/private/levenshteinDistance.h \
 	$$PWD/private/keyManager.h \
+	$$PWD/private/keyBuilder.h \
 	$$PWD/private/abstractRecognizer.h \
 	$$PWD/private/mixedgesturesmanager.h \
 	$$PWD/private/rectanglegesturesmanager.h \
 	$$PWD/private/nearestposgridgesturesmanager.h \
-	$$PWD/private/curveKeyBuilder.h \
 	$$PWD/private/sorts.h \
 
 SOURCES += \
@@ -21,6 +21,7 @@ SOURCES += \
 	$$PWD/private/pathCorrector.cpp \
 	$$PWD/private/levenshteinDistance.cpp \
 	$$PWD/private/keyManager.cpp \
+	$$PWD/private/keyBuilder.cpp \
 	$$PWD/private/mixedgesturesmanager.cpp \
 	$$PWD/private/rectanglegesturesmanager.cpp \
 	$$PWD/private/nearestposgridgesturesmanager.cpp \
