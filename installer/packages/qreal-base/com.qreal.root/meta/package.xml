@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Package>
-    <DisplayName>QReal Engine</DisplayName>
-    <DisplayName xml:lang="ru_ru">Ядро QReal</DisplayName>
+    <DisplayName>@ProductName@</DisplayName>
+    <DisplayName xml:lang="ru_ru">@ProductName@</DisplayName>
     <Description>QReal metacase tool engine</Description>
     <Description xml:lang="ru_ru">Ядро системы визуального метамоделирования QReal</Description>
     <Version>1.0.0</Version>
