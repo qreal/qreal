@@ -1,14 +1,18 @@
 function Component()
 {
+	// Executable names must be lower-case product name with hyphens instead of spaces
+ 	installer.executableName = installer.value("ProductName").toLowerCase().replace(/\s/g, "-");
+	installer.linkExtension = installer.value("os") === "win" ? ".lnk" : "";
+    	installer.execExtension = installer.value("os") === "win" ? ".exe" : "";
 }
 
 Component.prototype.createOperations = function()
 {
     component.createOperations();
-    var linkExtension = installer.value("os") === "win" ? ".lnk" : "";
-    var execExtension = installer.value("os") === "win" ? ".exe" : "";
-    var linkName = "@ProductName@" + linkExtension;
-    /// @todo: 'trik-studio' must not be here!
-    component.addOperation("CreateShortcut", "@TargetDir@/trik-studio" + execExtension, "@StartMenuDir@/" + linkName);
-    component.addOperation("CreateShortcut", "@TargetDir@/maintenance" + execExtension, "@StartMenuDir@/Uninstall @ProductName@" + linkExtension);
+    component.addOperation("CreateShortcut"
+            , "@TargetDir@/" + installer.executableName + installer.execExtension
+            , "@StartMenuDir@/@ProductName@" + installer.linkExtension);
+    component.addOperation("CreateShortcut"
+            , "@TargetDir@/maintenance" + installer.execExtension
+            , "@StartMenuDir@/Uninstall @ProductName@" + installer.linkExtension);
 }
