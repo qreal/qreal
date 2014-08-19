@@ -8,7 +8,8 @@
 
     <InstallerWindowIcon>../images/qreal.ico</InstallerWindowIcon>
     <InstallerApplicationIcon>../images/qreal.ico</InstallerApplicationIcon>
-    <Logo>qreal-logo.png</Logo>
+    <Logo>../images/qreal-logo.png</Logo>
+    <Watermark>../images/qreal-watermark.png</Watermark>
 
     <StartMenuDir>Trik Studio</StartMenuDir>
     <UninstallerName>maintenance</UninstallerName>
