@@ -19,7 +19,7 @@ else {
 						" mkdir ../../../../bin/help/;"\
 						" cp -r ../doc/html/* ../../../../bin/help/ &&"\
 						" cp ../doc/changelog.txt ../../../../bin &&"\
-						" cp ../../../../installer/images/trik-studio.ico ../../../../qtgui/icon.ico &&"\
+						" cp ../../../../installer/images/trik-studio.ico ../../../../qrgui/icon.ico &&"\
 						" cp ../../interpreters/interpreterCore/icons/splashscreen.png ../../../../bin &&"\
 						" mkdir ../../../../bin/examples/;"\
 						" cp -r ../../examples/* ../../../../bin/examples/"
