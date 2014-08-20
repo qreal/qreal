@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -82,6 +82,8 @@
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
+    <addaction name="separator"/>
+    <addaction name="actionStart_updater"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -144,8 +146,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>80</width>
-     <height>214</height>
+     <width>84</width>
+     <height>217</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -802,6 +804,11 @@
   <action name="actionExportToXml">
    <property name="text">
     <string>Export to XML</string>
+   </property>
+  </action>
+  <action name="actionStart_updater">
+   <property name="text">
+    <string>Check for updates...</string>
    </property>
   </action>
  </widget>
