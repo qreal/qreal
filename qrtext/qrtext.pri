@@ -50,8 +50,14 @@ HEADERS += \
 	$$PWD/include/qrtext/lua/ast/number.h \
 	$$PWD/include/qrtext/lua/ast/unaryMinus.h \
 	$$PWD/include/qrtext/lua/ast/not.h \
+	$$PWD/include/qrtext/lua/ast/node.h \
+	$$PWD/include/qrtext/lua/ast/expression.h \
+	$$PWD/include/qrtext/lua/ast/binaryOperator.h \
+	$$PWD/include/qrtext/lua/ast/unaryOperator.h \
 	$$PWD/include/qrtext/lua/ast/bitwiseNegation.h \
 	$$PWD/include/qrtext/lua/ast/length.h \
+	$$PWD/include/qrtext/lua/ast/logicalAnd.h \
+	$$PWD/include/qrtext/lua/ast/logicalOr.h \
 	$$PWD/include/qrtext/lua/ast/addition.h \
 	$$PWD/include/qrtext/lua/ast/subtraction.h \
 	$$PWD/include/qrtext/lua/ast/multiplication.h \

@@ -4,7 +4,7 @@
 #include "qrtext/core/parser/operators/parserCombinators.h"
 #include "qrtext/core/parser/operators/expressionParser.h"
 
-#include "qrtext/core/ast/expression.h"
+#include "qrtext/lua/ast/expression.h"
 
 #include "qrtext/lua/ast/addition.h"
 #include "qrtext/lua/ast/assignment.h"
@@ -33,6 +33,8 @@
 #include "qrtext/lua/ast/length.h"
 #include "qrtext/lua/ast/lessOrEqual.h"
 #include "qrtext/lua/ast/lessThan.h"
+#include "qrtext/lua/ast/logicalAnd.h"
+#include "qrtext/lua/ast/logicalOr.h"
 #include "qrtext/lua/ast/methodCall.h"
 #include "qrtext/lua/ast/modulo.h"
 #include "qrtext/lua/ast/multiplication.h"
@@ -78,7 +80,7 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 
 	auto reportUnsupported = [this] (Token<LuaTokenTypes> const &token) {
 		context().reportError(token, "This construction is not supported yet");
-		return new core::ast::Node();
+		return new ast::Node();
 	};
 
 	// Additional production that parses unqualified identifier.
@@ -88,7 +90,7 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 	// block ::= {stat}
 	auto block = *stat
 			>> [] (QSharedPointer<TemporaryList> statList) {
-				QList<QSharedPointer<core::ast::Node>> result;
+				QList<QSharedPointer<ast::Node>> result;
 				for (auto const &stat : statList->list()) {
 					if (stat->is<TemporaryList>()) {
 						// It is a list of assignments.
@@ -122,9 +124,9 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 					if (expList->list().size() != 1) {
 						// It is a list of expressions which we translate as table constructor, to support convenient
 						// lists syntax, for example, for lists of ports in robots.
-						QList<QSharedPointer<core::ast::Node>> fields;
+						QList<QSharedPointer<ast::Node>> fields;
 						for (auto exp : expList->list()) {
-							fields << wrap(new ast::FieldInitialization(as<core::ast::Expression>(exp)));
+							fields << wrap(new ast::FieldInitialization(as<ast::Expression>(exp)));
 						}
 
 						return wrap(new ast::TableConstructor(as<ast::FieldInitialization>(fields)));
@@ -145,24 +147,24 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 				auto result = QSharedPointer<TemporaryList>(new TemporaryList());
 
 				for (int i = 0; i < variables.size(); ++i) {
-					auto variable = as<core::ast::Expression>(variables[i]);
+					auto variable = as<ast::Expression>(variables[i]);
 
 					if (variable->is<ast::FunctionCall>()) {
 						context().reportError(pair, QObject::tr("Assignment to function call is impossible"));
 						continue;
 					}
 
-					auto value = as<core::ast::Expression>(values[i]);
+					auto value = as<ast::Expression>(values[i]);
 					result->list() << wrap(new ast::Assignment(variable, value));
 				}
 
-				return as<core::ast::Node>(result);
+				return as<ast::Node>(result);
 			};
 
 	// explist ::= exp(0) {‘,’ exp(0)}
 	explist = (exp & *(-LuaTokenTypes::comma & exp))
 			>> [] (QSharedPointer<TemporaryPair> node) {
-				auto firstExp = as<core::ast::Expression>(node->left());
+				auto firstExp = as<ast::Expression>(node->left());
 				auto temporaryList = as<TemporaryList>(node->right());
 				temporaryList->list().prepend(firstExp);
 				return temporaryList;
@@ -191,11 +193,14 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			| LuaTokenTypes::tripleDot >> reportUnsupported
 			| prefixexp
 			| tableconstructor
+			// Here we pass LuaTokenTypes::minus as starting precedence of exp production because all unary operators
+			// in Lua have the same precedence, so we do not care what unop will yield. Otherwise we may include
+			// exp in unop production, there we will know what unary operator is actually parsed before calling exp.
 			| (unop & ParserRef<LuaTokenTypes>(new ExpressionParser<LuaTokenTypes>(
 					precedenceTable, LuaTokenTypes::minus, primary, binop))
 					)
 					>> [] (QSharedPointer<TemporaryPair> node) {
-						auto unOp = as<core::ast::UnaryOperator>(node->left());
+						auto unOp = as<ast::UnaryOperator>(node->left());
 						unOp->setOperand(node->right());
 						return unOp;
 					}
@@ -204,23 +209,23 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 	// prefixexp ::= prefixterm { functioncallpart | varpart }
 	prefixexp = (prefixterm & *(functioncallpart | varpart))
 			>> [] (QSharedPointer<TemporaryPair> node) {
-				auto result = as<core::ast::Expression>(node->left());
+				auto result = as<ast::Expression>(node->left());
 				for (auto const part : as<TemporaryList>(node->right())->list()) {
-					if (part->is<core::ast::Expression>()) {
+					if (part->is<ast::Expression>()) {
 						// It is varpart (indexing expression)
-						result = QSharedPointer<core::ast::Expression>(
-								new ast::IndexingExpression(result, as<core::ast::Expression>(part)));
+						result = QSharedPointer<ast::Expression>(
+								new ast::IndexingExpression(result, as<ast::Expression>(part)));
 					} else if (part->is<TemporaryPair>()) {
 						// It is functioncallpart (method call)
 						auto const methodName = as<ast::Identifier>(as<TemporaryPair>(part)->left());
-						auto const args = as<core::ast::Expression>(
+						auto const args = as<ast::Expression>(
 								as<TemporaryList>(as<TemporaryPair>(part)->right())->list());
 
-						result = QSharedPointer<core::ast::Expression>(new ast::MethodCall(result, methodName, args));
+						result = QSharedPointer<ast::Expression>(new ast::MethodCall(result, methodName, args));
 					} else if (part->is<TemporaryList>()) {
 						// It is functioncallpart (function call)
-						result = QSharedPointer<core::ast::Expression>(
-								new ast::FunctionCall(result, as<core::ast::Expression>(as<TemporaryList>(part)->list())));
+						result = QSharedPointer<ast::Expression>(
+								new ast::FunctionCall(result, as<ast::Expression>(as<TemporaryList>(part)->list())));
 					}
 				}
 
@@ -247,16 +252,16 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 	args = ((-LuaTokenTypes::openingBracket & ~explist & -LuaTokenTypes::closingBracket)
 			| tableconstructor
 			| LuaTokenTypes::string >> [] (Token<LuaTokenTypes> token) { return new ast::String(token.lexeme()); }
-			) >> [] (QSharedPointer<core::ast::Node> node) {
+			) >> [] (QSharedPointer<ast::Node> node) {
 					if (node && node->is<TemporaryList>()) {
 						return node;
 					} else {
 						auto result = QSharedPointer<TemporaryList>(new TemporaryList());
 						if (node) {
-							result->list() << as<core::ast::Expression>(node);
+							result->list() << as<ast::Expression>(node);
 						}
 
-						return as<core::ast::Node>(result);
+						return as<ast::Node>(result);
 					}
 				}
 			;
@@ -286,17 +291,17 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			& -LuaTokenTypes::closingSquareBracket
 			& -LuaTokenTypes::equals & exp)
 					>> [] (QSharedPointer<TemporaryPair> pair) {
-						auto initializer = as<core::ast::Expression>(pair->right());
-						auto indexer = as<core::ast::Expression>(pair->left());
+						auto initializer = as<ast::Expression>(pair->right());
+						auto indexer = as<ast::Expression>(pair->left());
 						return wrap(new ast::FieldInitialization(initializer, indexer));
 					}
 			| (exp & ~(-LuaTokenTypes::equals & exp))
 					>> [] (QSharedPointer<TemporaryPair> node) {
-							auto const left = as<core::ast::Expression>(node->left());
+							auto const left = as<ast::Expression>(node->left());
 							if (!node->right()) {
 								return wrap(new ast::FieldInitialization(left));
 							} else {
-								auto const initializer = as<core::ast::Expression>(node->right());
+								auto const initializer = as<ast::Expression>(node->right());
 								/// @todo Report error if "left" is something different from Name.
 								return wrap(new ast::FieldInitialization(left, initializer));
 							}
@@ -316,6 +321,21 @@ QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			| LuaTokenTypes::slash >> [] { return new ast::Division(); }
 			| LuaTokenTypes::doubleSlash >> [] { return new ast::IntegerDivision(); }
 			| LuaTokenTypes::hat >> [] { return new ast::Exponentiation(); }
+			| LuaTokenTypes::percent >> [] { return new ast::Modulo(); }
+			| LuaTokenTypes::ampersand >> [] { return new ast::BitwiseAnd(); }
+			| LuaTokenTypes::tilda >> [] { return new ast::BitwiseXor(); }
+			| LuaTokenTypes::verticalLine >> [] { return new ast::BitwiseOr(); }
+			| LuaTokenTypes::doubleGreater >> [] { return new ast::BitwiseRightShift(); }
+			| LuaTokenTypes::doubleLess >> [] { return new ast::BitwiseLeftShift(); }
+			| LuaTokenTypes::doubleDot >> [] { return new ast::Concatenation(); }
+			| LuaTokenTypes::less >> [] { return new ast::LessThan(); }
+			| LuaTokenTypes::lessEquals >> [] { return new ast::LessOrEqual(); }
+			| LuaTokenTypes::greater >> [] { return new ast::GreaterThan(); }
+			| LuaTokenTypes::greaterEquals >> [] { return new ast::GreaterOrEqual(); }
+			| LuaTokenTypes::doubleEquals >> [] { return new ast::Equality(); }
+			| LuaTokenTypes::tildaEquals >> [] { return new ast::Inequality(); }
+			| LuaTokenTypes::andKeyword >> [] { return new ast::LogicalAnd(); }
+			| LuaTokenTypes::orKeyword >> [] { return new ast::LogicalOr(); }
 			;
 
 	// unop ::= ‘-’ | not | ‘#’ | ‘~’

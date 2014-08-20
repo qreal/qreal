@@ -1,12 +1,12 @@
 #pragma once
 
-#include "qrtext/core/ast/node.h"
+#include "qrtext/lua/ast/node.h"
 
 namespace qrtext {
 namespace lua {
 namespace ast {
 
-class QRTEXT_EXPORT Block : public core::ast::Node {
+class QRTEXT_EXPORT Block : public Node {
 public:
 	Block(QList<QSharedPointer<Node>> const &statements)
 		: mStatements(statements)

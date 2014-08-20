@@ -39,3 +39,5 @@ plugins.depends = \
 	qrkernel \
 	qrmc \
 	qrtext \
+
+qrtext.depends = qrkernel

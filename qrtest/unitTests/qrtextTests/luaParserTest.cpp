@@ -1,7 +1,7 @@
 #include "luaParserTest.h"
 
-#include "qrtext/core/ast/unaryOperator.h"
-#include "qrtext/core/ast/binaryOperator.h"
+#include "qrtext/lua/ast/unaryOperator.h"
+#include "qrtext/lua/ast/binaryOperator.h"
 
 #include "qrtext/lua/ast/number.h"
 #include "qrtext/lua/ast/integerNumber.h"
@@ -48,7 +48,7 @@ TEST_F(LuaParserTest, unaryOp)
 	QString const stream = "-123";
 	auto result = mParser->parse(mLexer->tokenize(stream));
 	EXPECT_TRUE(mErrors.isEmpty());
-	QSharedPointer<core::ast::UnaryOperator> unaryOp = result.dynamicCast<core::ast::UnaryOperator>();
+	QSharedPointer<ast::UnaryOperator> unaryOp = result.dynamicCast<ast::UnaryOperator>();
 	ASSERT_FALSE(unaryOp.isNull());
 	QSharedPointer<ast::Number> operand = unaryOp->operand().dynamicCast<ast::Number>();
 	ASSERT_FALSE(operand.isNull());
@@ -60,7 +60,7 @@ TEST_F(LuaParserTest, connections)
 	QString const stream = "-123";
 	auto result = mParser->parse(mLexer->tokenize(stream));
 	EXPECT_TRUE(mErrors.isEmpty());
-	QSharedPointer<core::ast::UnaryOperator> unaryOp = result.dynamicCast<core::ast::UnaryOperator>();
+	QSharedPointer<ast::UnaryOperator> unaryOp = result.dynamicCast<ast::UnaryOperator>();
 	ASSERT_FALSE(unaryOp.isNull());
 	EXPECT_EQ(core::Connection(0, 0, 0), unaryOp->start());
 	QSharedPointer<ast::Number> operand = unaryOp->operand().dynamicCast<ast::Number>();
@@ -74,7 +74,7 @@ TEST_F(LuaParserTest, binaryOp)
 	QString const stream = "1+2";
 	auto result = mParser->parse(mLexer->tokenize(stream));
 	EXPECT_TRUE(mErrors.isEmpty());
-	QSharedPointer<core::ast::BinaryOperator> binaryOp = result.dynamicCast<core::ast::BinaryOperator>();
+	QSharedPointer<ast::BinaryOperator> binaryOp = result.dynamicCast<ast::BinaryOperator>();
 	ASSERT_FALSE(binaryOp.isNull());
 	QSharedPointer<ast::Number> leftOperand = binaryOp->leftOperand().dynamicCast<ast::Number>();
 	ASSERT_FALSE(leftOperand.isNull());

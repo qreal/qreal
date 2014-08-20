@@ -22,7 +22,7 @@ namespace details {
 ///   value, and this value is a value of a last statement, if it is an expression, or no value otherwise. This is
 ///   much like F#, and needed so we can interpret constants or simple expressions as valid Lua programs.
 /// - Grammar is factorized and left recursion removed to allow recursive descent. Prefix expressions and related
-///   productions required a significant rework which made grammar more "wide" than required, but it will be compensated
+///   productions required a significant rework which made grammar more "wide" than required, but it is be compensated
 ///   by semantic actions in parser. See http://lua-users.org/lists/lua-l/2011-10/msg00442.html.
 /// - Due to many precedence levels expressions are parsed by Precedence Climbing algorithm, so "exp" production is
 ///   parameterized by current precedence level. See http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm.
@@ -84,7 +84,9 @@ class LuaParser : public core::parser::Parser<LuaTokenTypes> {
 public:
 	LuaParser(QList<core::Error> &errors);
 
-protected:
+private:
+	/// Returns parser for Lua grammar to be called by parent. Note that this method will be called during parent construction,
+	/// so using fields of LuaParser here is impossible (they are not created yet).
 	QSharedPointer<core::parser::ParserInterface<LuaTokenTypes>> grammar();
 };
 

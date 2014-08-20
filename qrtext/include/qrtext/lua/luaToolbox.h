@@ -22,6 +22,8 @@ class LuaSemanticAnalyzer;
 class LuaInterpreter;
 }
 
+typedef core::Error Error;
+
 /// Facade that uses text language parsing/interpreting framework to provide services based on "QReal standard" text
 /// language (Lua 5.3 subset).
 ///

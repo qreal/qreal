@@ -1,26 +1,26 @@
 #pragma once
 
-#include "qrtext/core/ast/node.h"
-#include "qrtext/core/ast/expression.h"
+#include "qrtext/lua/ast/node.h"
+#include "qrtext/lua/ast/expression.h"
 
 namespace qrtext {
 namespace lua {
 namespace ast {
 
-class QRTEXT_EXPORT Assignment : public core::ast::Node {
+class QRTEXT_EXPORT Assignment : public Node {
 public:
-	Assignment(QSharedPointer<core::ast::Expression> const &variable
-			, QSharedPointer<core::ast::Expression> const &value)
+	Assignment(QSharedPointer<Expression> const &variable
+			, QSharedPointer<Expression> const &value)
 		: mVariable(variable), mValue(value)
 	{
 	}
 
-	QSharedPointer<core::ast::Expression> const &variable() const
+	QSharedPointer<Expression> const &variable() const
 	{
 		return mVariable;
 	}
 
-	QSharedPointer<core::ast::Expression> const &value() const
+	QSharedPointer<Expression> const &value() const
 	{
 		return mValue;
 	}
@@ -31,8 +31,8 @@ public:
 	}
 
 private:
-	QSharedPointer<core::ast::Expression> mVariable;
-	QSharedPointer<core::ast::Expression> mValue;
+	QSharedPointer<Expression> mVariable;
+	QSharedPointer<Expression> mValue;
 };
 
 }

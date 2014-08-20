@@ -1,13 +1,13 @@
 #pragma once
 
-#include "qrtext/core/ast/expression.h"
+#include "qrtext/lua/ast/expression.h"
 #include "qrtext/lua/ast/identifier.h"
 
 namespace qrtext {
 namespace lua {
 namespace ast {
 
-class QRTEXT_EXPORT MethodCall : public core::ast::Expression {
+class QRTEXT_EXPORT MethodCall : public Expression {
 public:
 	MethodCall(QSharedPointer<Expression> const &object
 			, QSharedPointer<Identifier> const &methodName
@@ -30,7 +30,7 @@ public:
 
 	QList<QSharedPointer<Node>> children() const override
 	{
-		return QList<QSharedPointer<Node>>({mObject, mMethodName}) << as<core::ast::Node>(mArguments);
+		return QList<QSharedPointer<Node>>({mObject, mMethodName}) << as<Node>(mArguments);
 	}
 
 private:

@@ -1,31 +1,31 @@
 #pragma once
 
-#include "qrtext/core/ast/node.h"
-#include "qrtext/core/ast/expression.h"
+#include "qrtext/lua/ast/node.h"
+#include "qrtext/lua/ast/expression.h"
 
 namespace qrtext {
 namespace lua {
 namespace ast {
 
-class QRTEXT_EXPORT FieldInitialization : public core::ast::Node {
+class QRTEXT_EXPORT FieldInitialization : public Node {
 public:
-	FieldInitialization(QSharedPointer<core::ast::Expression> const &key
-			, QSharedPointer<core::ast::Expression> const &value)
+	FieldInitialization(QSharedPointer<Expression> const &key
+			, QSharedPointer<Expression> const &value)
 		: mKey(key), mValue(value), mImplicitKey(false)
 	{
 	}
 
-	FieldInitialization(QSharedPointer<core::ast::Expression> const &value)
+	FieldInitialization(QSharedPointer<Expression> const &value)
 		: mValue(value), mImplicitKey(true)
 	{
 	}
 
-	QSharedPointer<core::ast::Expression> key() const
+	QSharedPointer<Expression> key() const
 	{
 		return mKey;
 	}
 
-	QSharedPointer<core::ast::Expression> value() const
+	QSharedPointer<Expression> value() const
 	{
 		return mValue;
 	}
@@ -36,8 +36,8 @@ public:
 	}
 
 private:
-	QSharedPointer<core::ast::Expression> mKey;
-	QSharedPointer<core::ast::Expression> mValue;
+	QSharedPointer<Expression> mKey;
+	QSharedPointer<Expression> mValue;
 	bool mImplicitKey;
 };
 

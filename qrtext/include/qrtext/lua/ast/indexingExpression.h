@@ -1,12 +1,12 @@
 #pragma once
 
-#include "qrtext/core/ast/expression.h"
+#include "qrtext/lua/ast/expression.h"
 
 namespace qrtext {
 namespace lua {
 namespace ast {
 
-class QRTEXT_EXPORT IndexingExpression : public core::ast::Expression {
+class QRTEXT_EXPORT IndexingExpression : public Expression {
 public:
 	IndexingExpression(QSharedPointer<Expression> const &table, QSharedPointer<Expression> const &indexer)
 		: mTable(table), mIndexer(indexer)

@@ -6,7 +6,7 @@ namespace qrtext {
 namespace lua {
 namespace ast {
 
-class QRTEXT_EXPORT Exponentiation : public BinaryOperator {
+class QRTEXT_EXPORT LogicalAnd : public BinaryOperator {
 };
 
 }

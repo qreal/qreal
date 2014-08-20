@@ -1,12 +1,12 @@
 #pragma once
 
-#include "qrtext/core/ast/expression.h"
+#include "qrtext/lua/ast/expression.h"
 
 namespace qrtext {
 namespace lua {
 namespace ast {
 
-class QRTEXT_EXPORT Identifier : public core::ast::Expression {
+class QRTEXT_EXPORT Identifier : public Expression {
 public:
 	Identifier(QString const &name)
 		: mName(name)

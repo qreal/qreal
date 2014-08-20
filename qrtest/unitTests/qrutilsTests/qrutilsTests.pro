@@ -9,21 +9,13 @@ include(../../../qrutils/qrutils.pri)
 LIBS += -L../../../bin -lqslog
 
 HEADERS += \
-#	expressionsParser/expressionsParserTest.h \
-	textLanguageParser/textLanguageParserTest.h \
-	textLanguageParser/semanticAnalyzerTest.h \
-	textLanguageParser/textLanguageFacadeTest.h \
-#	textLanguageParser/details/lexerTest.h \
-#	metamodelGeneratorSupportTest.h \
+	expressionsParser/expressionsParserTest.h \
+	metamodelGeneratorSupportTest.h \
 
 SOURCES += \
-#	expressionsParser/expressionsParserTest.cpp \
-#	expressionsParser/numberTest.cpp \
-	textLanguageParser/textLanguageParserTest.cpp \
-	textLanguageParser/semanticAnalyzerTest.cpp \
-	textLanguageParser/textLanguageFacadeTest.cpp \
-#	textLanguageParser/details/lexerTest.cpp \
-#	metamodelGeneratorSupportTest.cpp \
-#	inFileTest.cpp \
-#	outFileTest.cpp \
-#	xmlUtilsTest.cpp \
+	expressionsParser/expressionsParserTest.cpp \
+	expressionsParser/numberTest.cpp \
+	metamodelGeneratorSupportTest.cpp \
+	inFileTest.cpp \
+	outFileTest.cpp \
+	xmlUtilsTest.cpp \
