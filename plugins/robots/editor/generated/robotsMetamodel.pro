@@ -8,8 +8,8 @@ include (../../../editorsSdk/editorsCommon.pri)
 win32 {
 	QMAKE_POST_LINK = "cmd /C "xcopy ..\\images ..\\..\\..\\..\\bin\\images /s /e /q /y /i &&"\
 						" xcopy ..\\\doc\\html ..\\..\\..\\..\\bin\\help\\ /s /e /q /y /i &&"\
-						" copy ..\\..\\..\\..\\installer\\images\\trik-studio.ico ..\\..\\..\\..\\bin /y &&"\
-						" copy ..\\doc\\changelog.txt ..\\..\\..\\..\\qrgui\\icon.ico /y &&"\
+						" copy ..\\..\\..\\..\\installer\\images\\trik-studio.ico ..\\..\\..\\..\\qrgui\\icon.ico /y &&"\
+						" copy ..\\doc\\changelog.txt ..\\..\\..\\..\\bin /y &&"\
 						" copy ..\\..\\interpreters\\interpreterCore\\icons\\splashscreen.png ..\\..\\..\\..\\bin /y &&"\
 						" xcopy ..\\..\\examples ..\\..\\..\\..\\bin\\examples /s /e /q /y /i""
 }
