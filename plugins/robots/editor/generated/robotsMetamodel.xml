@@ -2085,13 +2085,13 @@
 				<element name="NxtDrawPixel"/>
 				<element name="NxtDrawLine"/>
 				<element name="NxtDrawCircle"/>
-				<element name="TrikSetPainterColor"/>
-				<element name="TrikSetPainterWidth"/>
+				<!--<element name="TrikSetPainterColor"/>
+				<element name="TrikSetPainterWidth"/>-->
 				<element name="TrikDrawPixel"/>
 				<element name="TrikDrawLine"/>
 				<element name="TrikDrawRect"/>
 				<element name="TrikDrawEllipse"/>
-				<element name="TrikDrawArc"/>
+				<!--<element name="TrikDrawArc"/>-->
 				<element name="TrikSmile"/>
 				<element name="TrikSadSmile"/>
 				<element name="TrikSetBackground"/>
