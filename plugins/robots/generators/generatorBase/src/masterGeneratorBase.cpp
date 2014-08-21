@@ -139,6 +139,8 @@ void MasterGeneratorBase::afterGeneration()
 
 void MasterGeneratorBase::outputCode(QString const &path, QString const &code)
 {
+	// File must be removed to leave created and modified timestamps equal.
+	QFile::remove(path);
 	utils::OutFile out(path);
 	out() << code;
 }
