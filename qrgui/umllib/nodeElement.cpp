@@ -9,6 +9,7 @@
 #include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include <math.h>
+#include <qrkernel/logging.h>
 
 #include "umllib/labelFactory.h"
 #include "view/editorViewScene.h"
@@ -175,7 +176,7 @@ void NodeElement::setPos(QPointF const &pos)
 		setPos(QPointF());
 		mContents.moveTo(QPointF());
 		storeGeometry();
-		qDebug() << "NaN passed to NodeElement::setPos(). That means that something went wrong."\
+		QLOG_WARN() << "NaN passed to NodeElement::setPos(). That means that something went wrong. "\
 				"Learn to reproduce this message. The position has been set to (0,0). Attend element with id" << id();
 	} else {
 		mPos = pos;
