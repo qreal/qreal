@@ -173,8 +173,10 @@ void NodeElement::setPos(QPointF const &pos)
 {
 	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
 		setPos(QPointF());
+		mContents.moveTo(QPointF());
+		storeGeometry();
 		qDebug() << "NaN passed to NodeElement::setPos(). That means that something went wrong."\
-				"Learn to reproduce this message. The position has been set to (0,0)." << id();
+				"Learn to reproduce this message. The position has been set to (0,0). Attend element with id" << id();
 	} else {
 		mPos = pos;
 		QGraphicsItem::setPos(pos);
