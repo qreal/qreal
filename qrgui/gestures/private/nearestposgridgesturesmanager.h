@@ -6,15 +6,15 @@
 namespace qReal {
 namespace gestures {
 
-class NearestPosGridGesturesManager : public GesturesRecognizer<double *>
+class NearestPosGridGesturesManager : public GesturesRecognizer<qreal *>
 {
 public:
 	NearestPosGridGesturesManager();
 	~NearestPosGridGesturesManager();
-	double getMaxDistance(QString const &);
+	qreal getMaxDistance(QString const &);
 	bool isMultistroke();
-	double getDistance(double * const & key1, double * const &key2);
-	double *getKey(PathVector const &path);
+	qreal getDistance(qreal * const & key1, qreal * const &key2);
+	qreal *getKey(PathVector const &path);
 };
 
 }
