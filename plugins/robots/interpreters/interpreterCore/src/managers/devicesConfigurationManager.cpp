@@ -61,10 +61,13 @@ void DevicesConfigurationManager::load(QString const &configuration)
 void DevicesConfigurationManager::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
+	if (reason == loading) {
+		return;
+	}
+
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
-	Q_UNUSED(reason)
 
 	qReal::Id const activeDiagramGraphicalId = mMainWindowInterpretersInterface.activeDiagram();
 	if (activeDiagramGraphicalId.isNull()) {
