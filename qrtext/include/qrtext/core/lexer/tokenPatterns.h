@@ -7,7 +7,6 @@
 
 namespace qrtext {
 namespace core {
-namespace lexer {
 
 /// A list of tokens that can be recognized by lexer and regexps corresponding to them.
 /// Note that keywords must be recognized by identifier pattern (as they are basically identifiers that are treated
@@ -63,6 +62,5 @@ private:
 	QHash<TokenType, QString> mKeywords;
 };
 
-}
 }
 }

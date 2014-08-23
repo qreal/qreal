@@ -80,14 +80,14 @@ namespace details {
 /// unop ::= ‘-’ | not | ‘#’ | ‘~’
 /// @endverbatim
 
-class LuaParser : public core::parser::Parser<LuaTokenTypes> {
+class LuaParser : public core::Parser<LuaTokenTypes> {
 public:
 	LuaParser(QList<core::Error> &errors);
 
 private:
 	/// Returns parser for Lua grammar to be called by parent. Note that this method will be called during parent construction,
 	/// so using fields of LuaParser here is impossible (they are not created yet).
-	QSharedPointer<core::parser::ParserInterface<LuaTokenTypes>> grammar();
+	QSharedPointer<core::ParserInterface<LuaTokenTypes>> grammar();
 };
 
 }

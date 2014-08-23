@@ -5,7 +5,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType>
 class OptionalParser : public ParserInterface<TokenType> {
@@ -34,6 +33,5 @@ private:
 	ParserRef<TokenType> mParser;
 };
 
-}
 }
 }

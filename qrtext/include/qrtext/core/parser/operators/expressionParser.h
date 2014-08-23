@@ -7,7 +7,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType>
 class ExpressionParser : public ParserInterface<TokenType> {
@@ -79,6 +78,5 @@ private:
 	ParserRef<TokenType> const mBinOp;
 };
 
-}
 }
 }

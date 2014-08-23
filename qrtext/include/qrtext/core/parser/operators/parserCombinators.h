@@ -18,7 +18,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType>
 inline ParserRef<TokenType> operator & (ParserRef<TokenType> const &a, ParserRef<TokenType> const &b) {
@@ -60,20 +59,20 @@ inline ParserRef<TokenType> operator >>(ParserRef<TokenType> parser, Transformat
 template<typename TokenType>
 inline ParserRef<TokenType> operator & (TokenType const &token, ParserRef<TokenType> const &b) {
 	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(token >>
-			[] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }, b));
+			[] (Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }, b));
 }
 
 template<typename TokenType>
 inline ParserRef<TokenType> operator & (ParserRef<TokenType> const &a, TokenType const &token) {
 	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(a, token >>
-			[] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }));
+			[] (Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }));
 }
 
 template<typename TokenType>
 inline ParserRef<TokenType> operator & (TokenType const &token1, TokenType const &token2) {
 	return ParserRef<TokenType>(new ConcatenationParser<TokenType>(
-			token1 >> [] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }
-			, token2 >> [] (lexer::Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); })
+			token1 >> [] (Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); }
+			, token2 >> [] (Token<TokenType> const &token) { return new TemporaryToken<TokenType>(token); })
 			);
 }
 
@@ -90,6 +89,5 @@ inline ParserRef<TokenType> operator - (ParserRef<TokenType> const &parser) {
 	};
 }
 
-}
 }
 }

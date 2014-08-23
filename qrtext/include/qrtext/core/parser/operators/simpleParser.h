@@ -4,7 +4,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType, typename SemanticAction>
 class SimpleParser : public ParserInterface<TokenType> {
@@ -19,7 +18,7 @@ public:
 	{
 		Q_UNUSED(parserContext);
 
-		lexer::Token<TokenType> const token = tokenStream.next();
+		Token<TokenType> const token = tokenStream.next();
 		if (!tokenStream.expect(mToken)) {
 			return wrap(nullptr);
 		}
@@ -42,6 +41,5 @@ private:
 	SemanticAction mSemanticAction;
 };
 
-}
 }
 }

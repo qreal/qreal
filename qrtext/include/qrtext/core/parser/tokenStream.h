@@ -7,17 +7,16 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType>
 class TokenStream {
 public:
-	TokenStream(QList<lexer::Token<TokenType>> const &tokenList, QList<Error> &errorList)
+	TokenStream(QList<Token<TokenType>> const &tokenList, QList<Error> &errorList)
 		: mTokenList(tokenList), mErrorList(errorList), mPosition(0)
 	{
 	}
 
-	lexer::Token<TokenType> next() const
+	Token<TokenType> next() const
 	{
 		if (mPosition >= mTokenList.size()) {
 			return mTokenList.last();
@@ -52,11 +51,10 @@ public:
 	}
 
 private:
-	QList<lexer::Token<TokenType>> mTokenList;
+	QList<Token<TokenType>> mTokenList;
 	QList<Error> &mErrorList;
 	int mPosition;
 };
 
-}
 }
 }

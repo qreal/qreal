@@ -13,7 +13,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType>
 class Parser {
@@ -24,7 +23,7 @@ public:
 	}
 
 	/// Parses given code and returns AST with results or nullptr if parsing is impossible.
-	QSharedPointer<ast::Node> parse(QList<lexer::Token<TokenType>> const &tokens)
+	QSharedPointer<ast::Node> parse(QList<Token<TokenType>> const &tokens)
 	{
 		TokenStream<TokenType> tokenStream(tokens, mErrors);
 		ParserContext<TokenType> context(mErrors, tokenStream);
@@ -43,6 +42,5 @@ private:
 	QScopedPointer<ParserContext<TokenType>> mContext;
 };
 
-}
 }
 }

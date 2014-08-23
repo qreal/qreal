@@ -4,11 +4,9 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 class TemporaryDiscardableNode : public ast::Node {
 };
 
-}
 }
 }

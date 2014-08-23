@@ -7,7 +7,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType>
 class ConcatenationParser : public ParserInterface<TokenType> {
@@ -62,6 +61,5 @@ private:
 	ParserRef<TokenType> mParser2;
 };
 
-}
 }
 }

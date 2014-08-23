@@ -23,7 +23,7 @@ public:
 	QList<Range> const &ranges() const;
 
 	template<typename TokenType>
-	void connect(lexer::Token<TokenType> const &token)
+	void connect(Token<TokenType> const &token)
 	{
 		connect({token.range()});
 	}

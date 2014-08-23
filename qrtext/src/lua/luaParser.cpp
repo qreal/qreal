@@ -50,17 +50,15 @@
 using namespace qrtext::lua;
 using namespace qrtext::lua::details;
 using namespace qrtext::core;
-using namespace qrtext::core::parser;
-using namespace qrtext::core::lexer;
 
 LuaParser::LuaParser(QList<Error> &errors)
-	: parser::Parser<LuaTokenTypes>(grammar(), errors)
+	: Parser<LuaTokenTypes>(grammar(), errors)
 {
 }
 
-QSharedPointer<parser::ParserInterface<LuaTokenTypes>> LuaParser::grammar()
+QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 {
-	QSharedPointer<core::parser::PrecedenceTable<LuaTokenTypes>> precedenceTable(new LuaPrecedenceTable());
+	QSharedPointer<core::PrecedenceTable<LuaTokenTypes>> precedenceTable(new LuaPrecedenceTable());
 
 	ParserRef<LuaTokenTypes> stat;
 	ParserRef<LuaTokenTypes> explist;

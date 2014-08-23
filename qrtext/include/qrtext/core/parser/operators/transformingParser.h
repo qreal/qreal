@@ -9,7 +9,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType, typename Transformation>
 class TransformingParser : public ParserInterface<TokenType> {
@@ -48,6 +47,5 @@ private:
 	ParserRef<TokenType> mParser;
 };
 
-}
 }
 }

@@ -6,7 +6,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 class TemporaryList : public ast::Node {
 public:
@@ -19,6 +18,5 @@ private:
 	QList<QSharedPointer<ast::Node>> mList;
 };
 
-}
 }
 }

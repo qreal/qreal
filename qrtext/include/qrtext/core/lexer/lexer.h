@@ -10,7 +10,6 @@
 
 namespace qrtext {
 namespace core {
-namespace lexer {
 
 /// Configurable lexer of something like Lua 5.3 based on regular expressions. Takes token patterns, provides
 /// a list of tokens by given input string, list of lexer errors and a separate list of comments. Allows Unicode input
@@ -208,6 +207,5 @@ private:
 	QList<Token<TokenType>> mComments;
 };
 
-}
 }
 }

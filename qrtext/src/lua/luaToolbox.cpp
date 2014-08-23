@@ -8,7 +8,6 @@
 using namespace qrtext::lua;
 using namespace qrtext::core;
 using namespace qrtext::core::ast;
-using namespace qrtext::core::lexer;
 
 LuaToolbox::LuaToolbox()
 	: mLexer(new details::LuaLexer(mErrors))

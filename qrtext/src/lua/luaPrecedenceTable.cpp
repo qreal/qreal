@@ -1,7 +1,7 @@
 #include "luaPrecedenceTable.h"
 
 using namespace qrtext::lua::details;
-using namespace qrtext::core::parser;
+using namespace qrtext::core;
 
 LuaPrecedenceTable::LuaPrecedenceTable()
 {

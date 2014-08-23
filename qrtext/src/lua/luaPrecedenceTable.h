@@ -10,7 +10,7 @@ namespace qrtext {
 namespace lua {
 namespace details {
 
-class LuaPrecedenceTable : public core::parser::PrecedenceTable<LuaTokenTypes>
+class LuaPrecedenceTable : public core::PrecedenceTable<LuaTokenTypes>
 {
 public:
 	LuaPrecedenceTable();

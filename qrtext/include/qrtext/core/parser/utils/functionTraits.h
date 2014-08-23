@@ -4,7 +4,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 /// Very useful templates to determine lambda function traits like type of return value, types of arguments and so on.
 /// Taken from here:
@@ -34,6 +33,5 @@ struct function_traits<ReturnType(ClassType::*)(Args...) const>
 	};
 };
 
-}
 }
 }

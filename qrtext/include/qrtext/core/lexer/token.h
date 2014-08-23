@@ -6,7 +6,6 @@
 
 namespace qrtext {
 namespace core {
-namespace lexer {
 
 /// Token. Has type, location in source code and string representation.
 template<typename TokenType>
@@ -45,6 +44,5 @@ private:
 	QString mLexeme;
 };
 
-}
 }
 }

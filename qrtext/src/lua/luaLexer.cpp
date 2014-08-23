@@ -2,7 +2,7 @@
 
 using namespace qrtext::lua;
 using namespace qrtext::lua::details;
-using namespace qrtext::core::lexer;
+using namespace qrtext::core;
 
 LuaLexer::LuaLexer(QList<core::Error> &errors)
 	: Lexer<LuaTokenTypes>(initPatterns(), errors)

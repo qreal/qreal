@@ -6,7 +6,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType>
 class ParserRef
@@ -45,6 +44,5 @@ private:
 	QSharedPointer<QSharedPointer<ParserInterface<TokenType>>> mRef;
 };
 
-}
 }
 }

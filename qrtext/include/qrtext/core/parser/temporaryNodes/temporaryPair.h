@@ -4,7 +4,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 class TemporaryPair : public ast::Node {
 public:
@@ -28,6 +27,5 @@ private:
 	QSharedPointer<ast::Node> mRight;
 };
 
-}
 }
 }

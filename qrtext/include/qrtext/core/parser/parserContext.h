@@ -10,7 +10,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 template<typename TokenType>
 class ParserContext
@@ -26,7 +25,7 @@ public:
 		report(node ? node->start() : Connection(), message, Severity::error);
 	}
 
-	void reportError(lexer::Token<TokenType> const &token, QString const &message)
+	void reportError(Token<TokenType> const &token, QString const &message)
 	{
 		report(token.range().start(), message, Severity::error);
 	}
@@ -51,6 +50,5 @@ private:
 	TokenStream<TokenType> const &mTokenStream;
 };
 
-}
 }
 }

@@ -5,7 +5,6 @@
 
 namespace qrtext {
 namespace core {
-namespace parser {
 
 enum class Associativity {
 	left
@@ -58,6 +57,5 @@ private:
 	QHash<TokenType, int> mUnaryOperatorPrecedences;
 };
 
-}
 }
 }
