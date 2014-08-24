@@ -11,21 +11,22 @@
 namespace qrtext {
 namespace core {
 
-/// Configurable lexer of something like Lua 5.3 based on regular expressions. Takes token patterns, provides
-/// a list of tokens by given input string, list of lexer errors and a separate list of comments. Allows Unicode input
-/// and lexeme definitions.
+/// Configurable lexer based on regular expressions. Takes token patterns, provides a list of tokens by given input
+/// string, list of lexer errors and a separate list of comments. Allows Unicode input and lexeme definitions.
 /// Requires that token redefinitions are sane, for example, keywords shall match the definition of identifiers.
 /// Does syntax check on passed regexps (and reports errors as InternalError error type), but does not check whole set
 /// of patterns for consistensy. Pattern match order is arbitrary, so there shall be no ambiquities in pattern
-///  definitions (except between keywords and identifiers, keywords are processed separately). Does not add whitespaces
+/// definitions (except between keywords and identifiers, keywords are processed separately). Does not add whitespaces
 /// and newlines to output token stream, but does use them for connection and error recovery, so it is recommended to
 /// not fiddle with them much.
 /// In case of error skips symbols until next whitespace or newline and reports error.
 /// Can be quite slow due to use of regexp matching with every regexp in patterns list, so do not use this lexer
 /// on really large files.
 ///
-/// Now lexer (with default token patterns) follows Lua 5.3 specification with following exceptions:
-/// - long brackets are not supported, either for string literals or for comments.
+/// It is parameterized by TokenType --- enum class with all token types of a language. Token types may be arbitrary,
+/// but shall always contain TokenType::whitespace, TokenType::newline, TokenType::comment, TokenType::string,
+/// TokenType::identifier, othrewise template instantiation will fail.
+/// TokenType::comment shall be the only token that can span multiple lines, so multiline comments are not supported.
 template<typename TokenType>
 class Lexer {
 public:
@@ -41,7 +42,7 @@ public:
 			QRegularExpression const &regExp = mPatterns.tokenPattern(tokenType);
 			if (!regExp.isValid()) {
 				qDebug() << "Invalid regexp: " + regExp.pattern();
-				mErrors << Error(Connection(), "Invalid regexp: " + regExp.pattern()
+				mErrors << Error(Connection(), QObject::tr("Invalid regexp: ") + regExp.pattern()
 						, ErrorType::lexicalError, Severity::internalError);
 			} else {
 				if (tokenType == TokenType::whitespace) {
@@ -133,7 +134,7 @@ public:
 				absolutePosition += bestMatch.match.capturedLength();
 			} else {
 				mErrors << Error({absolutePosition, line, column}
-						, "Lexer error", ErrorType::lexicalError, Severity::error);
+						, QObject::tr("Lexer error"), ErrorType::lexicalError, Severity::error);
 
 				// Panic mode: syncing on nearest whitespace or newline token.
 				while (!mWhitespaceRegexp.match(input, absolutePosition
@@ -151,6 +152,7 @@ public:
 		return result;
 	}
 
+	/// Returns a list of comments from last tokenize() call.
 	QList<Token<TokenType>> comments() const
 	{
 		return mComments;

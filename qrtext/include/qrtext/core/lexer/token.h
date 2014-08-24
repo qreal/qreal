@@ -7,14 +7,15 @@
 namespace qrtext {
 namespace core {
 
-/// Token. Has type, location in source code and string representation.
+/// Token. Has type, location in source code and string representation. Parameterized by enum class containing types
+/// of tokens.
 template<typename TokenType>
 class Token {
 public:
 	/// Constructor.
 	/// @param tokenType - token type.
 	/// @param range - token location in source code.
-	/// @param token - string representation of a token.
+	/// @param lexeme - string representation of a token.
 	Token(TokenType tokenType, Range const &range, QString const &lexeme)
 		: mToken(tokenType), mRange(range), mLexeme(lexeme)
 	{

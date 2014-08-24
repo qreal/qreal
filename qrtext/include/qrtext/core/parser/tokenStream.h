@@ -8,14 +8,17 @@
 namespace qrtext {
 namespace core {
 
+/// Stream of tokens.
 template<typename TokenType>
 class TokenStream {
 public:
+	/// Constructor. Takes list of tokens from lexer and a reference to error stream where to put errors.
 	TokenStream(QList<Token<TokenType>> const &tokenList, QList<Error> &errorList)
 		: mTokenList(tokenList), mErrorList(errorList), mPosition(0)
 	{
 	}
 
+	/// Returns next token, or last token if there is end of stream.
 	Token<TokenType> next() const
 	{
 		if (mPosition >= mTokenList.size()) {
@@ -25,11 +28,13 @@ public:
 		return mTokenList.at(mPosition);
 	}
 
+	/// Advances stream.
 	void consume()
 	{
 		++mPosition;
 	}
 
+	/// Advances stream if current token is the expected one, raises error otherwise.
 	bool expect(TokenType token)
 	{
 		if (next().token() == token) {
@@ -45,6 +50,7 @@ public:
 		}
 	}
 
+	/// Returns true, if end of token stream is reached.
 	bool isEnd()
 	{
 		return mPosition == mTokenList.size();

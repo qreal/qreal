@@ -14,15 +14,19 @@
 namespace qrtext {
 namespace core {
 
+/// Generic parser. Uses grammar that is passed to constructor to parse a stream of tokens. Typical use case is to
+/// subclass this class for concrete language and provide its grammar in constructor of a subclass.
 template<typename TokenType>
 class Parser {
 public:
+	/// Constructor. Takes grammar of a language to parse in form of a ParserInterface and a list of errors where to put
+	/// parser errors.
 	explicit Parser(QSharedPointer<ParserInterface<TokenType>> const &grammar, QList<Error> &errors)
 		: mErrors(errors), mGrammar(grammar)
 	{
 	}
 
-	/// Parses given code and returns AST with results or nullptr if parsing is impossible.
+	/// Parses given stream of tokens and returns AST with results or nullptr if parsing is impossible.
 	QSharedPointer<ast::Node> parse(QList<Token<TokenType>> const &tokens)
 	{
 		TokenStream<TokenType> tokenStream(tokens, mErrors);
@@ -31,6 +35,7 @@ public:
 	}
 
 protected:
+	/// Provides access to parser context for subclasses.
 	ParserContext<TokenType> &context()
 	{
 		return *mContext;

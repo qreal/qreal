@@ -8,9 +8,12 @@
 namespace qrtext {
 namespace core {
 
+/// Elementary parser for parsing Kleene star, in form of A = B*. Temporary discardable nodes are discarded from
+/// final output, but their connection preserved. Guaranteed to return TemporaryList (maybe empty).
 template<typename TokenType>
 class KleeneStarParser : public ParserInterface<TokenType> {
 public:
+	/// Constructor. Takes parser for which to build Kleene closure.
 	KleeneStarParser(ParserRef<TokenType> const &parser)
 		: mParser(parser)
 	{

@@ -5,16 +5,16 @@
 namespace qrtext {
 namespace core {
 
-/// Very useful templates to determine lambda function traits like type of return value, types of arguments and so on.
+/// Very useful template to determine lambda function traits like type of return value, types of arguments and so on.
 /// Taken from here:
 /// http://stackoverflow.com/questions/7943525/is-it-possible-to-figure-out-the-parameter-type-and-return-type-of-a-lambda
-
 template <typename T>
 struct function_traits
 	: public function_traits<decltype(&T::operator())>
 {};
 // For generic types, directly use the result of the signature of its 'operator()'
 
+/// Specialization of a template for lambda functions.
 template <typename ClassType, typename ReturnType, typename... Args>
 struct function_traits<ReturnType(ClassType::*)(Args...) const>
 // we specialize for pointers to member function

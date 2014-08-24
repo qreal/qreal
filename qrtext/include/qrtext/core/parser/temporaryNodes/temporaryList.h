@@ -7,6 +7,8 @@
 namespace qrtext {
 namespace core {
 
+/// Node that contains multiple other nodes and is used as temporary container (with connection). Shall be discarded
+/// from resulting tree.
 class TemporaryList : public ast::Node {
 public:
 	QList<QSharedPointer<ast::Node>> &list()

@@ -8,9 +8,13 @@
 namespace qrtext {
 namespace core {
 
+/// Elementary parser for parsing concatenations in form of A = B C. If one of parsers returns TemporaryDiscardableNode,
+/// it will return result of the other parser (connection of discardable will be lost), if both are discardable,
+/// it will return discardable with corrected connection, if both are not discardable, it will return TemporaryPair.
 template<typename TokenType>
 class ConcatenationParser : public ParserInterface<TokenType> {
 public:
+	/// Constructor. Takes parsers to concatenate.
 	ConcatenationParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
@@ -20,7 +24,7 @@ public:
 			, ParserContext<TokenType> &parserContext) const override
 	{
 		if (tokenStream.isEnd()) {
-			parserContext.reportError("Unexpected end of file");
+			parserContext.reportError(QObject::tr("Unexpected end of file"));
 			return wrap(nullptr);
 		}
 
@@ -47,7 +51,7 @@ public:
 			}
 		}
 
-		parserContext.reportError("Unexpected token");
+		parserContext.reportError(QObject::tr("Unexpected token"));
 		return wrap(nullptr);
 	}
 

@@ -8,9 +8,12 @@
 namespace qrtext {
 namespace core {
 
+/// Parser for expressions using Precedence Climbing algorithm, see http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm.
 template<typename TokenType>
 class ExpressionParser : public ParserInterface<TokenType> {
 public:
+	/// Constructor for general case, takes precedence table, parser for primary expression and parser for binary
+	/// operator.
 	ExpressionParser(QSharedPointer<PrecedenceTable<TokenType>> const &precedenceTable
 			, ParserRef<TokenType> const &primary
 			, ParserRef<TokenType> const &binOp)
@@ -21,6 +24,8 @@ public:
 	{
 	}
 
+	/// Constructor for using with unary operators, takes precedence table, unary operator, which precedence will be
+	/// used as starting, parser for primary expression and parser for binary operator.
 	ExpressionParser(QSharedPointer<PrecedenceTable<TokenType>> const &precedenceTable
 			, TokenType startingUnaryOperator
 			, ParserRef<TokenType> primary
@@ -38,6 +43,12 @@ public:
 		return parse(tokenStream, parserContext, mStartPrecedence);
 	}
 
+	QSet<TokenType> first() const override
+	{
+		return mPrimary->first();
+	}
+
+private:
 	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream, ParserContext<TokenType> &parserContext
 			, int currentPrecedence) const
 	{
@@ -64,13 +75,6 @@ public:
 		return resultAst;
 	}
 
-
-	QSet<TokenType> first() const override
-	{
-		return mPrimary->first();
-	}
-
-private:
 	QSharedPointer<PrecedenceTable<TokenType>> mPrecedenceTable;
 	int const mStartPrecedence;
 

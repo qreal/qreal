@@ -6,7 +6,8 @@ namespace qrtext {
 namespace core {
 namespace types {
 
-class QRTEXT_EXPORT Any : public TypeExpression {
+/// Special type that denotes "any type" --- a type variable that is not yet constrained.
+class Any : public TypeExpression {
 };
 
 }

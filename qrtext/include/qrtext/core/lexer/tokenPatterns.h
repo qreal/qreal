@@ -15,19 +15,17 @@ namespace core {
 ///
 /// Also note that keywords and other tokens are treated differently by lexer so shall be defined by two separate
 /// methods --- defineToken() and defineKeyword(). Keywords are described as strings, other tokens --- as regexps.
-/// Trying to redefine keyword as token or token as keyword will yield runtime error. Token types and keywords
-/// are still in one enum because we want to process them uniformly by parser, so just be cautious.
+/// Token types and keywords are still in one enum because we want to process them uniformly by parser.
 template <typename TokenType>
 class TokenPatterns {
 public:
-	/// Redefine pattern for given token to given regular expression. New regexp will be used by lexer insead of
-	/// default one.
+	/// Define pattern for given token to given regular expression.
 	void defineToken(TokenType tokenType, QRegularExpression const &regExp)
 	{
 		mPatterns.insert(tokenType, regExp);
 	}
 
-	/// Redefine description for given keyword to given string. New string will be used by lexer insead of default one.
+	/// Description for given keyword to given string.
 	void defineKeyword(TokenType keywordType, QString const &keyword)
 	{
 		mKeywords.insert(keywordType, keyword);

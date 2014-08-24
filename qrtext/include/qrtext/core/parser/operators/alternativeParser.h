@@ -6,9 +6,12 @@
 namespace qrtext {
 namespace core {
 
+/// Elementary parser for parsing alternatives in form of A ::= B | C. Alternatives shall have distinct FIRST sets.
+/// Returns either first or second parser result, or nullptr if both parsers failed.
 template<typename TokenType>
 class AlternativeParser : public ParserInterface<TokenType> {
 public:
+	/// COnstructor. Takes parsers for two alternatives.
 	AlternativeParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{
@@ -18,13 +21,13 @@ public:
 			, ParserContext<TokenType> &parserContext) const override
 	{
 		if (tokenStream.isEnd()) {
-			parserContext.reportError("Unexpected end of file");
+			parserContext.reportError(QObject::tr("Unexpected end of file"));
 			return wrap(nullptr);
 		}
 
 		if (!(mParser1->first().intersect(mParser2->first())).isEmpty()) {
 			parserContext.reportInternalError(
-					"Parser can not decide which alternative to use on " + tokenStream.next().lexeme());
+					QObject::tr("Parser can not decide which alternative to use on ") + tokenStream.next().lexeme());
 		}
 
 		if (mParser1->first().contains(tokenStream.next().token())) {
@@ -35,7 +38,7 @@ public:
 			return mParser2->parse(tokenStream, parserContext);
 		}
 
-		parserContext.reportError("Unexpected token");
+		parserContext.reportError(QObject::tr("Unexpected token"));
 		return wrap(nullptr);
 	}
 

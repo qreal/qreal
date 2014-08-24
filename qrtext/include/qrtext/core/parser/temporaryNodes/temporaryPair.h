@@ -5,19 +5,23 @@
 namespace qrtext {
 namespace core {
 
+/// A temporary pair of nodes, result of concatenation parser. Shall be removed from resulting tree.
 class TemporaryPair : public ast::Node {
 public:
-	TemporaryPair(QSharedPointer<ast::Node> left, QSharedPointer<ast::Node> right)
+	/// Constructor. Takes letf and right subtrees.
+	TemporaryPair(QSharedPointer<ast::Node> const &left, QSharedPointer<ast::Node> const &right)
 		: mLeft(left), mRight(right)
 	{
 	}
 
-	QSharedPointer<ast::Node> left() const
+	/// Returns left subtree.
+	QSharedPointer<ast::Node> const &left() const
 	{
 		return mLeft;
 	}
 
-	QSharedPointer<ast::Node> right() const
+	/// Returns right subtree.
+	QSharedPointer<ast::Node> const &right() const
 	{
 		return mRight;
 	}

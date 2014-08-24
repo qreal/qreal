@@ -6,31 +6,37 @@ namespace qrtext {
 namespace core {
 namespace ast {
 
-class QRTEXT_EXPORT BinaryOperator : public Expression
+/// Represents binary operator, that can have left and right operand.
+class BinaryOperator : public Expression
 {
 public:
-	void setLeftOperand(QSharedPointer<Node> leftOperand)
+	/// Sets left operand, replaces existing.
+	void setLeftOperand(QSharedPointer<Node> const &leftOperand)
 	{
 		mLeftOperand = leftOperand;
 		connect(leftOperand);
 	}
 
-	void setRightOperand(QSharedPointer<Node> rightOperand)
+	/// Sets right operand, replaces existing.
+	void setRightOperand(QSharedPointer<Node> const &rightOperand)
 	{
 		mRightOperand = rightOperand;
 		connect(rightOperand);
 	}
 
-	QSharedPointer<Node> leftOperand() const
+	/// Returns left operand.
+	QSharedPointer<Node> const &leftOperand() const
 	{
 		return mLeftOperand;
 	}
 
-	QSharedPointer<Node> rightOperand() const
+	/// Returns right operand.
+	QSharedPointer<Node> const &rightOperand() const
 	{
 		return mRightOperand;
 	}
 
+	/// Returns left and right operand as a list.
 	QList<QSharedPointer<Node>> children() const override
 	{
 		return {mLeftOperand, mRightOperand};

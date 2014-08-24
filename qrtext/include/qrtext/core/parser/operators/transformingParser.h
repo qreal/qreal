@@ -10,9 +10,13 @@
 namespace qrtext {
 namespace core {
 
+/// Elementary parser that executes given semantic action on a result of parsing from given parser. Used to attach
+/// semantic rules to a grammar. Semantic action may opt to discard a node, in such case it shall return nullptr.
+/// Note that semantic action will be called even if parser failed, in such case nullptr will be passed.
 template<typename TokenType, typename Transformation>
 class TransformingParser : public ParserInterface<TokenType> {
 public:
+	/// Constructor. Takes parser and semantic action to execute on a result of a parser.
 	explicit TransformingParser(ParserRef<TokenType> parser, Transformation transformation)
 		: mTransformation(transformation), mParser(parser)
 	{

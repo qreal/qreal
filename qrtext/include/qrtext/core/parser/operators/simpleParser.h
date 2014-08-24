@@ -5,10 +5,13 @@
 namespace qrtext {
 namespace core {
 
+/// Elementary parser that parses given token and executes given semantic action on a result. Semantic action takes
+/// no parameters.
 template<typename TokenType, typename SemanticAction>
 class SimpleParser : public ParserInterface<TokenType> {
 public:
-	explicit SimpleParser(TokenType token, SemanticAction semanticAction)
+	/// Constructor. Takes token to parse and lambda function to execute if token is parsed successfully.
+	SimpleParser(TokenType token, SemanticAction semanticAction)
 		: mToken(token), mSemanticAction(semanticAction)
 	{
 	}

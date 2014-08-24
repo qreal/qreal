@@ -6,7 +6,8 @@ namespace qrtext {
 namespace core {
 namespace ast {
 
-class QRTEXT_EXPORT Expression : public Node {
+/// Base class for all expressions.
+class Expression : public Node {
 };
 
 }

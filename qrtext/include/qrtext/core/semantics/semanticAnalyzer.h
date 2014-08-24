@@ -9,15 +9,8 @@
 #include "qrtext/core/error.h"
 #include "qrtext/core/ast/node.h"
 #include "qrtext/core/ast/expression.h"
-//#include "qrtext/core/ast/identifier.h"
 
 #include "qrtext/core/types/typeExpression.h"
-//#include "qrutils/textLanguageParser/types/boolean.h"
-//#include "qrutils/textLanguageParser/types/float.h"
-//#include "qrutils/textLanguageParser/types/integer.h"
-//#include "qrutils/textLanguageParser/types/nil.h"
-//#include "qrutils/textLanguageParser/types/string.h"
-//#include "qrutils/textLanguageParser/types/any.h"
 
 #include "qrtext/core/semantics/generalizationsTableInterface.h"
 
@@ -26,31 +19,78 @@
 namespace qrtext {
 namespace core {
 
+/// Generic semantic analyzer and type inferrer for languages with implicit static typing, like Lua or JavaScript.
+/// Ironically, Lua and JavaScript are dynamically typed, but we can not generate code in a language with static typing
+/// (like C) if we don't know the types in compile time, so we use subsets of dynamically typed languages and trying
+/// to provide static type systems for them. Of course, also can be used with statically typed languages.
+/// Designed and tested for monomorphic type systems (maybe with overloads and coercions), maybe it will work for
+/// subtype polymorphism, but correct parametric polymorphism requires full Hindley-Milner implementation which is
+/// yet to be written (if needed).
+/// If it is not needed, one is free to exclude SemanticAnalyzer from toolchain of one's language.
+///
+/// Assigns a type to any subclass of Expression in a tree.
+/// Shall be subclassed for concrete language to provide methods for analysis of all specific nodes of a language.
+///
+/// Types of a concrete language are represented by subclasses of TypeExpression class, and can be simple type constants
+/// like "int" or "void", or complex types like "function".
+///
+/// Current implementation only works for simple types.
+///
+/// Algorithm of type inferrence is at first assigns to every expression type variable which type initialized to Any,
+/// then for each specific node expression types are constrained by semantics of the expression, and in some cases
+/// type variables are unified (two expressions assigned to one type variable). For example, expression "-a" can be
+/// unified with expression "a", so it has one type, and in the same time constrained to type "int" or "float", as they
+/// are the only types that can be operands to unary minus. Note that unification and constraint rules are provided
+/// by concrete language by means of generalization table and analyzeNode() redefinition.
+///
+/// Remembers the results of type analysis and if called multiple times, takes into account previous results. Note that
+/// types in previous expressions can change based on information from next expressions. For example, after analyzing
+/// "a = 1" in some language type for "a" will be inferred as "int", but after "a += 0.5" its type will change to
+/// "float" (even for first assignment).
 class QRTEXT_EXPORT SemanticAnalyzer {
 public:
+	/// Constructor. Takes generalizations table for a language and a list of errors to put semantic errors to. Typical
+	/// usage pattern is to subclass SemanticAnalyzer for concrete language and provide generalizations table in
+	/// constructor there.
 	SemanticAnalyzer(QSharedPointer<GeneralizationsTableInterface> const &generalizationsTable, QList<Error> &errors);
+
 	virtual ~SemanticAnalyzer();
 
+	/// Analyzes given tree and assigns types for each found expression. Then types can be retrieved by calling type().
 	void analyze(QSharedPointer<ast::Node> const &root);
 
+	/// Returns type for a given expression (if that expression was seen by "analyze" method before, or nullptr).
 	QSharedPointer<types::TypeExpression> type(QSharedPointer<ast::Node> const &expression) const;
 
 protected:
+	/// Assigns given type to given expression.
 	void assign(QSharedPointer<ast::Node> const &expression, QSharedPointer<types::TypeExpression> const &type);
 
+	/// Constrains given expression (passed as "node" parameter) to a given set of types, on behalf of given operation.
+	/// Operation is used for error connection purposes only.
 	void constrain(QSharedPointer<ast::Node> const &operation
 			, QSharedPointer<ast::Node> const &node, QList<QSharedPointer<types::TypeExpression>> const &types);
 
+	/// Unifies left-hand side expression with right-hand side expression, so the type of left expressions becomes the
+	/// same type as right expression. These types change together afterwards.
 	void unify(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs);
 
+	/// Reports given semantic error on a given node.
 	void reportError(const QSharedPointer<ast::Node> &node, QString const &errorMessage);
 
+	/// Returns true, if given identifier was declared (or seen before).
 	bool hasDeclaration(QString const &identifierName) const;
+
+	/// Returns expression where given identifier was declared or encountered first.
 	QSharedPointer<ast::Node> declaration(QString const &identifierName) const;
+
+	/// Adds declaration of a given identifier to identifiers table.
 	void addDeclaration(QString const &identifierName, QSharedPointer<ast::Node> const &declaration);
 
+	/// Provides Any type constant to descendants.
 	QSharedPointer<types::TypeExpression> const &any();
 
+	/// Provides generalizations table for descendants.
 	GeneralizationsTableInterface const &generalizationsTable() const;
 
 private:

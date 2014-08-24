@@ -6,12 +6,15 @@ namespace qrtext {
 namespace core {
 namespace ast {
 
-class QRTEXT_EXPORT UnaryOperator : public Expression {
+/// Represents unary operator.
+class UnaryOperator : public Expression {
 public:
+	/// Returns operand.
 	QSharedPointer<Node> operand() const {
 		return mOperand;
 	}
 
+	/// Sets operator.
 	void setOperand(QSharedPointer<Node> operand) {
 		mOperand = operand;
 		connect(operand);
