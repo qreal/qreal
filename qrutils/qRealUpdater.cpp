@@ -42,7 +42,7 @@ void QRealUpdater::readAnswer()
 	// Checking that output is a valid XML
 	QDomDocument parser;
 	parser.setContent(output);
-	if (!parser.isNull()) {
+	if (!output.isEmpty() && !parser.isNull()) {
 		emit newVersionAvailable();
 	}
 }

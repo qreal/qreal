@@ -25,7 +25,10 @@ find $PWD -name prebuild-$OS.sh -print0 | xargs -0 chmod +x
 find $PWD -name prebuild-common.sh | bash
 find $PWD -name prebuild-$OS.sh | bash
 
-echo "Building installer..."
-$QTIFW_DIR/binarycreator -c config/$PRODUCT-config.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-installer
+echo "Building online installer..."
+$QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-online-installer
+
+echo "Building offline installer..."
+$QTIFW_DIR/binarycreator --offline-only -c config/$PRODUCT.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-offline-installer
 
 echo "Done"
