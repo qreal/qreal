@@ -2583,7 +2583,8 @@
     </message>
     <message>
         <location filename="dialogs/updateVersionDialog.cpp" line="9"/>
-        <source>New aupdates are available!</source>
+        <source>New updates are available!</source>
+        <oldsource>New aupdates are available!</oldsource>
         <translation>Доступны новые обновления!</translation>
     </message>
     <message>

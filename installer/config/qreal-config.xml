@@ -21,11 +21,11 @@
     <TargetDir>@HomeDir@/QReal</TargetDir>
     <AdminTargetDir>@RootDir@/QReal</AdminTargetDir>
 
-    <RunProgram>@TargetDir@/trik-studio</RunProgram>
+    <RunProgram>@TargetDir@/qreal</RunProgram>
 
-    <!--<RemoteRepositories>
+    <RemoteRepositories>
         <Repository>
-            <Url>http://localhost/packages/</Url>
+            <Url>http://127.0.0.1/qreal-repo/</Url>
         </Repository>
-    </RemoteRepositories>-->
+    </RemoteRepositories>
 </Installer>

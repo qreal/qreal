@@ -6,7 +6,7 @@ using namespace qReal;
 
 bool UpdateVersionDialog::promptUpdate(QWidget *parent)
 {
-	QString const message = QObject::tr("New aupdates are available!");
+	QString const message = QObject::tr("New updates are available!");
 	QString const updateButtonText = QObject::tr("Update");
 	QString const laterButtonText = QObject::tr("Later");
 

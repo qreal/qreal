@@ -14,9 +14,6 @@ class QRUTILS_EXPORT QRealUpdater : public QObject
 	Q_OBJECT
 
 public:
-	/// @param applicationPath The path to QReal executable file.
-	/// @param unit The name of concrete CASE solution (for example qRealRobots.RobotsPlugin).
-	/// @param version The version of the concrete CASE solution. Versions on the server will be compared to this one.
 	explicit QRealUpdater(QObject *parent = 0);
 
 	/// Updater will just perform light-weight versions comparison network operation.

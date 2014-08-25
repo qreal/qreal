@@ -23,9 +23,9 @@
 
     <RunProgram>@TargetDir@/trik-studio</RunProgram>
 
-<!--    <RemoteRepositories>
+    <RemoteRepositories>
         <Repository>
-            <Url>http://localhost/packages/</Url>
+            <Url>http://127.0.0.1/trik_studio_repo/</Url>
         </Repository>
-    </RemoteRepositories>-->
+    </RemoteRepositories>
 </Installer>
