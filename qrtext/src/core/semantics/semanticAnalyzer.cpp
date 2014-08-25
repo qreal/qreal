@@ -1,6 +1,5 @@
 #include "qrtext/core/semantics/semanticAnalyzer.h"
 
-#include "qrtext/core/types/typeVariable.h"
 #include "qrtext/core/types/any.h"
 
 using namespace qrtext::core;
@@ -15,10 +14,11 @@ SemanticAnalyzer::~SemanticAnalyzer()
 {
 }
 
-void SemanticAnalyzer::analyze(QSharedPointer<ast::Node> const &root)
+QSharedPointer<ast::Node> SemanticAnalyzer::analyze(QSharedPointer<ast::Node> const &root)
 {
 	collect(root);
 	finalizeResolve(root);
+	return root;
 }
 
 void SemanticAnalyzer::collect(QSharedPointer<ast::Node> const &node)
@@ -37,14 +37,11 @@ void SemanticAnalyzer::finalizeResolve(QSharedPointer<ast::Node> const &node)
 	if (node->is<ast::Expression>()) {
 		auto expression = as<ast::Expression>(node);
 		if (mTypes.contains(expression)) {
-			auto typeVariable = as<types::TypeVariable>(type(expression));
-			if (typeVariable->isResolved()) {
-				auto expressionType = typeVariable->finalType();
-				mTypes.insert(expression, expressionType);
+			auto typeVariable = mTypes.value(expression);
+			if (!typeVariable->isResolved()) {
+				reportError(expression, QObject::tr("Can not deduce type"));
 			} else if (typeVariable->isEmpty()) {
 				reportError(expression, QObject::tr("Type mismatch"));
-			} else {
-				reportError(expression, QObject::tr("Can not deduce type"));
 			}
 		}
 	}
@@ -60,7 +57,7 @@ QSharedPointer<types::TypeExpression> SemanticAnalyzer::type(QSharedPointer<ast:
 {
 	auto castedExpression = as<ast::Expression>(expression);
 	if (mTypes.contains(castedExpression)) {
-		return mTypes.value(castedExpression);
+		return mTypes.value(castedExpression)->finalType();
 	} else {
 		return mAny;
 	}
@@ -69,18 +66,18 @@ QSharedPointer<types::TypeExpression> SemanticAnalyzer::type(QSharedPointer<ast:
 void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
 		, QSharedPointer<types::TypeExpression> const &type)
 {
-	mTypes.insert(as<ast::Expression>(expression), wrap(new types::TypeVariable(type)));
+	mTypes.insert(as<ast::Expression>(expression), QSharedPointer<types::TypeVariable>(new types::TypeVariable(type)));
 }
 
 void SemanticAnalyzer::unify(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs)
 {
-	mTypes.insert(as<ast::Expression>(lhs), type(rhs));
+	mTypes.insert(as<ast::Expression>(lhs), mTypes.value(as<ast::Expression>(rhs)));
 }
 
 void SemanticAnalyzer::constrain(QSharedPointer<ast::Node> const &operation
 		, QSharedPointer<ast::Node> const &node, QList<QSharedPointer<types::TypeExpression>> const &types)
 {
-	auto nodeType = as<types::TypeVariable>(type(node));
+	auto nodeType = mTypes.value(as<ast::Expression>(node));
 	nodeType->constrain(types, generalizationsTable());
 	if (nodeType->isEmpty()) {
 		reportError(operation, QObject::tr("Type mismatch."));
@@ -115,4 +112,9 @@ QSharedPointer<types::TypeExpression> const &SemanticAnalyzer::any()
 GeneralizationsTableInterface const &SemanticAnalyzer::generalizationsTable() const
 {
 	return *mGeneralizationsTable;
+}
+
+QSharedPointer<types::TypeVariable> SemanticAnalyzer::typeVariable(QSharedPointer<ast::Node> const &expression) const
+{
+	return mTypes.value(as<ast::Expression>(expression));
 }

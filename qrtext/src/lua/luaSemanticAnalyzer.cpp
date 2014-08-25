@@ -77,8 +77,8 @@ void LuaSemanticAnalyzer::constrainAssignment(QSharedPointer<core::ast::Node> co
 		return;
 	}
 
-	auto lhsType = as<core::types::TypeVariable>(type(lhs));
-	auto rhsType = as<core::types::TypeVariable>(type(rhs));
+	auto lhsType = typeVariable(lhs);
+	auto rhsType = typeVariable(rhs);
 	lhsType->constrain(rhsType, generalizationsTable());
 	if (lhsType->isEmpty()) {
 		reportError(operation, QObject::tr("Left and right operand have mismatched types."));

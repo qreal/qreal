@@ -118,6 +118,7 @@ SOURCES += \
 	$$PWD/src/core/semantics/semanticAnalyzer.cpp \
 	$$PWD/src/core/types/typeVariable.cpp \
 	$$PWD/src/lua/luaGeneralizationsTable.cpp \
+	$$PWD/src/lua/luaInterpreter.cpp \
 	$$PWD/src/lua/luaLexer.cpp \
 	$$PWD/src/lua/luaParser.cpp \
 	$$PWD/src/lua/luaPrecedenceTable.cpp \

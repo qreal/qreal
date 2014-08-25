@@ -11,6 +11,7 @@
 #include "qrtext/core/ast/expression.h"
 
 #include "qrtext/core/types/typeExpression.h"
+#include "qrtext/core/types/typeVariable.h"
 
 #include "qrtext/core/semantics/generalizationsTableInterface.h"
 
@@ -57,7 +58,8 @@ public:
 	virtual ~SemanticAnalyzer();
 
 	/// Analyzes given tree and assigns types for each found expression. Then types can be retrieved by calling type().
-	void analyze(QSharedPointer<ast::Node> const &root);
+	/// Returns analyzed tree (as of now, it is unmodified).
+	QSharedPointer<ast::Node> analyze(QSharedPointer<ast::Node> const &root);
 
 	/// Returns type for a given expression (if that expression was seen by "analyze" method before, or nullptr).
 	QSharedPointer<types::TypeExpression> type(QSharedPointer<ast::Node> const &expression) const;
@@ -93,13 +95,18 @@ protected:
 	/// Provides generalizations table for descendants.
 	GeneralizationsTableInterface const &generalizationsTable() const;
 
+	/// Provides acces to type variable for given expression to descendants. Note that type() will return resolved type.
+	QSharedPointer<types::TypeVariable> typeVariable(QSharedPointer<ast::Node> const &expression) const;
+
 private:
 	void collect(QSharedPointer<ast::Node> const &node);
 	void finalizeResolve(QSharedPointer<ast::Node> const &node);
 
 	virtual void analyzeNode(QSharedPointer<ast::Node> const &node) = 0;
 
-	QHash<QSharedPointer<ast::Expression>, QSharedPointer<types::TypeExpression>> mTypes;
+	/// Contains mapping from expression to its type. Type is always stored as type variable to make further analysis
+	/// more convenient.
+	QHash<QSharedPointer<ast::Expression>, QSharedPointer<types::TypeVariable>> mTypes;
 	QHash<QString, QSharedPointer<ast::Node>> mIdentifierDeclarations;
 
 	QSharedPointer<types::TypeExpression> mAny;

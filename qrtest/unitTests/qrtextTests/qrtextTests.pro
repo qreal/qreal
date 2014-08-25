@@ -9,13 +9,15 @@ include(../../../qrtext/qrtext.pri)
 LIBS += -L../../../bin -lqslog
 
 HEADERS += \
-	luaLexerTest.h \
-	luaParserTest.h \
-	luaSemanticAnalyzerTest.h \
-	luaToolboxTest.h \
+	luaInterpreterTest.h \
+#	luaLexerTest.h \
+#	luaParserTest.h \
+#	luaSemanticAnalyzerTest.h \
+#	luaToolboxTest.h \
 
 SOURCES += \
-	luaParserTest.cpp \
-	luaSemanticAnalyzerTest.cpp \
-	luaToolboxTest.cpp \
-	luaLexerTest.cpp \
+	luaInterpreterTest.cpp \
+#	luaParserTest.cpp \
+#	luaSemanticAnalyzerTest.cpp \
+#	luaToolboxTest.cpp \
+#	luaLexerTest.cpp \

@@ -6,7 +6,8 @@ namespace qrtext {
 namespace lua {
 namespace ast {
 
-class QRTEXT_EXPORT Addition : public BinaryOperator {
+/// Represents addition operator.
+class Addition : public BinaryOperator {
 };
 
 }
