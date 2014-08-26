@@ -98,6 +98,8 @@ protected:
 	/// Provides acces to type variable for given expression to descendants. Note that type() will return resolved type.
 	QSharedPointer<types::TypeVariable> typeVariable(QSharedPointer<ast::Node> const &expression) const;
 
+	void requestRecheck();
+
 private:
 	void collect(QSharedPointer<ast::Node> const &node);
 	void finalizeResolve(QSharedPointer<ast::Node> const &node);
@@ -114,6 +116,8 @@ private:
 	QList<Error> &mErrors;
 
 	QSharedPointer<GeneralizationsTableInterface> mGeneralizationsTable;
+
+	bool mRecheckNeeded = true;
 };
 
 }

@@ -45,7 +45,7 @@ QSharedPointer<Node> LuaToolbox::ast(qReal::Id const &id, QString const &propert
 	return mAstRoots[id][propertyName];
 }
 
-QSharedPointer<types::TypeExpression> LuaToolbox::type(QSharedPointer<Node> const &expression) const
+QSharedPointer<qrtext::core::types::TypeExpression> LuaToolbox::type(QSharedPointer<Node> const &expression) const
 {
 	return mAnalyzer->type(expression);
 }

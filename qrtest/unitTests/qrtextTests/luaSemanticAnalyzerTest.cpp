@@ -2,10 +2,12 @@
 
 #include "qrtext/lua/ast/assignment.h"
 #include "qrtext/lua/ast/block.h"
+#include "qrtext/lua/ast/functionCall.h"
 #include "qrtext/lua/ast/unaryMinus.h"
 
 #include "qrtext/lua/types/integer.h"
 #include "qrtext/lua/types/float.h"
+#include "qrtext/lua/types/string.h"
 
 #include "gtest/gtest.h"
 
@@ -31,6 +33,7 @@ TEST_F(LuaSemanticAnalyzerTest, sanityCheck)
 {
 	auto tree = parse("123");
 	mAnalyzer->analyze(tree);
+	EXPECT_TRUE(mErrors.empty());
 	EXPECT_TRUE(mAnalyzer->type(tree)->is<Integer>());
 	EXPECT_TRUE(mAnalyzer->type(tree)->is<Number>());
 }
@@ -43,6 +46,8 @@ TEST_F(LuaSemanticAnalyzerTest, assignment)
 	auto value = as<ast::Assignment>(tree)->value();
 
 	mAnalyzer->analyze(tree);
+
+	EXPECT_TRUE(mErrors.empty());
 	EXPECT_TRUE(mAnalyzer->type(variable)->is<types::Integer>());
 	EXPECT_TRUE(mAnalyzer->type(value)->is<types::Integer>());
 }
@@ -52,6 +57,8 @@ TEST_F(LuaSemanticAnalyzerTest, unaryOperator)
 	auto tree = parse("-123");
 
 	mAnalyzer->analyze(tree);
+
+	EXPECT_TRUE(mErrors.empty());
 	EXPECT_TRUE(mAnalyzer->type(as<ast::UnaryMinus>(tree))->is<types::Integer>());
 }
 
@@ -60,6 +67,9 @@ TEST_F(LuaSemanticAnalyzerTest, propagation)
 	auto tree = parse("a = -123; b = a");
 
 	mAnalyzer->analyze(tree);
+
+	EXPECT_TRUE(mErrors.empty());
+
 	auto block = as<ast::Block>(tree);
 	auto firstAssignment = as<ast::Assignment>(block->children()[0]);
 	auto secondAssignment = as<ast::Assignment>(block->children()[1]);
@@ -100,4 +110,66 @@ TEST_F(LuaSemanticAnalyzerTest, integerFloatCoercion)
 
 	EXPECT_TRUE(mAnalyzer->type(secondVariable)->is<types::Float>());
 	EXPECT_TRUE(mAnalyzer->type(secondValue)->is<types::Float>());
+}
+
+TEST_F(LuaSemanticAnalyzerTest, functionReturnType)
+{
+	auto tree = parse("a = f(1)");
+
+	mAnalyzer->addIntrinsicFunction("f", QSharedPointer<types::Function>(new types::Function(
+			QSharedPointer<core::types::TypeExpression>(new types::Float()),
+			{QSharedPointer<core::types::TypeExpression>(new types::Integer())}
+			)));
+
+	mAnalyzer->analyze(tree);
+
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	auto assignment = as<ast::Assignment>(tree);
+
+	auto a = assignment->variable();
+	auto f = assignment->value();
+
+	EXPECT_TRUE(mAnalyzer->type(a)->is<types::Float>());
+	EXPECT_TRUE(mAnalyzer->type(f)->is<types::Float>());
+}
+
+TEST_F(LuaSemanticAnalyzerTest, functionParameters)
+{
+	auto tree = parse("a = f(b, c)");
+
+	mAnalyzer->addIntrinsicFunction("f", QSharedPointer<types::Function>(new types::Function(
+			QSharedPointer<core::types::TypeExpression>(new types::Float()),
+			{QSharedPointer<core::types::TypeExpression>(new types::Integer())
+					, QSharedPointer<core::types::TypeExpression>(new types::String())}
+			)));
+
+	mAnalyzer->analyze(tree);
+
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	auto assignment = as<ast::Assignment>(tree);
+
+	auto f = as<ast::FunctionCall>(assignment->value());
+
+	auto b = f->arguments()[0];
+	auto c = f->arguments()[1];
+
+	EXPECT_TRUE(mAnalyzer->type(b)->is<types::Integer>());
+	EXPECT_TRUE(mAnalyzer->type(c)->is<types::String>());
+}
+
+TEST_F(LuaSemanticAnalyzerTest, invalidFunctionParameters)
+{
+	auto tree = parse("a = f(0.5, 'a')");
+
+	mAnalyzer->addIntrinsicFunction("f", QSharedPointer<types::Function>(new types::Function(
+			QSharedPointer<core::types::TypeExpression>(new types::Float()),
+			{QSharedPointer<core::types::TypeExpression>(new types::Integer())
+					, QSharedPointer<core::types::TypeExpression>(new types::String())}
+			)));
+
+	mAnalyzer->analyze(tree);
+
+	ASSERT_FALSE(mErrors.isEmpty());
 }

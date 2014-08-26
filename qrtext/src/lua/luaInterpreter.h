@@ -15,6 +15,8 @@ class LuaInterpreter {
 public:
 //	explicit LuaInterpreter(QList<core::Error> &errors);
 
+	void registerFunction(QString const &name);
+
 	QVariant interpret(QSharedPointer<core::ast::Node> const &root, core::SemanticAnalyzer const &semanticAnalyzer);
 
 private:

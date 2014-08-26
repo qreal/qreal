@@ -16,7 +16,11 @@ SemanticAnalyzer::~SemanticAnalyzer()
 
 QSharedPointer<ast::Node> SemanticAnalyzer::analyze(QSharedPointer<ast::Node> const &root)
 {
-	collect(root);
+	while (mRecheckNeeded) {
+		mRecheckNeeded = false;
+		collect(root);
+	}
+
 	finalizeResolve(root);
 	return root;
 }
@@ -117,4 +121,9 @@ GeneralizationsTableInterface const &SemanticAnalyzer::generalizationsTable() co
 QSharedPointer<types::TypeVariable> SemanticAnalyzer::typeVariable(QSharedPointer<ast::Node> const &expression) const
 {
 	return mTypes.value(as<ast::Expression>(expression));
+}
+
+void SemanticAnalyzer::requestRecheck()
+{
+	mRecheckNeeded = true;
 }

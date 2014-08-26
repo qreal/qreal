@@ -44,6 +44,10 @@ public:
 	void constrain(QList<QSharedPointer<TypeExpression>> const &types
 			, GeneralizationsTableInterface const &generalizationsTable);
 
+	void constrainAssignment(QSharedPointer<TypeVariable> const &other
+			, GeneralizationsTableInterface const &generalizationsTable
+			, bool *wasCoercion);
+
 private:
 	QSet<QSharedPointer<TypeExpression>> mAllowedTypes;
 };

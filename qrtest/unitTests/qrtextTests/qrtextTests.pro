@@ -12,12 +12,12 @@ HEADERS += \
 	luaInterpreterTest.h \
 #	luaLexerTest.h \
 #	luaParserTest.h \
-#	luaSemanticAnalyzerTest.h \
+	luaSemanticAnalyzerTest.h \
 #	luaToolboxTest.h \
 
 SOURCES += \
 	luaInterpreterTest.cpp \
 #	luaParserTest.cpp \
-#	luaSemanticAnalyzerTest.cpp \
+	luaSemanticAnalyzerTest.cpp \
 #	luaToolboxTest.cpp \
 #	luaLexerTest.cpp \

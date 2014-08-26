@@ -26,7 +26,11 @@ bool TypeVariable::isEmpty() const
 
 QSharedPointer<TypeExpression> TypeVariable::finalType() const
 {
-	return mAllowedTypes.toList()[0].dynamicCast<TypeExpression>();
+	if (mAllowedTypes.size() == 0) {
+		return QSharedPointer<TypeExpression>(new Any());
+	} else {
+		return mAllowedTypes.toList()[0].dynamicCast<TypeExpression>();
+	}
 }
 
 void TypeVariable::constrain(QSharedPointer<TypeVariable> const &other
@@ -41,11 +45,35 @@ void TypeVariable::constrain(QList<QSharedPointer<TypeExpression>> const &types
 	QSet<QSharedPointer<TypeExpression>> result;
 
 	for (auto type : mAllowedTypes) {
-		QSet<QSharedPointer<TypeExpression>> allowedForType;
-
 		for (auto otherType : types) {
 			if (type->is<Any>()) {
+				result << otherType;
+			} else if (otherType->is<Any>()) {
+				result << type;
+			} else if (generalizationsTable.isGeneralization(type, otherType)) {
+				result << type;
+			}
+		}
+	}
+
+	mAllowedTypes = result;
+}
+
+void TypeVariable::constrainAssignment(QSharedPointer<TypeVariable> const &other
+		, GeneralizationsTableInterface const &generalizationsTable
+		, bool *wasCoercion)
+{
+	*wasCoercion = false;
+	QSet<QSharedPointer<TypeExpression>> result;
+
+	for (auto type : mAllowedTypes) {
+		QSet<QSharedPointer<TypeExpression>> allowedForType;
+
+		for (auto otherType : other->mAllowedTypes) {
+			if (type->is<Any>()) {
 				allowedForType << otherType;
+			} else if (otherType->is<Any>()) {
+				result << type;
 			} else if (generalizationsTable.isGeneralization(otherType, type)) {
 				allowedForType << type;
 			}
@@ -56,9 +84,10 @@ void TypeVariable::constrain(QList<QSharedPointer<TypeExpression>> const &types
 		// For example, if we assign float value to integer variable and a language
 		// allows implicit casts from integer to float, we'll make our variable float.
 		if (allowedForType.isEmpty()) {
-			for (auto otherType : types) {
+			for (auto otherType : other->mAllowedTypes) {
 				if (generalizationsTable.isGeneralization(type, otherType)) {
 					result << otherType;
+					*wasCoercion = true;
 				}
 			}
 		}

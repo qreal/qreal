@@ -14,6 +14,7 @@
 #include "qrtext/lua/types/table.h"
 
 #include "qrtext/lua/ast/assignment.h"
+#include "qrtext/lua/ast/functionCall.h"
 #include "qrtext/lua/ast/identifier.h"
 #include "qrtext/lua/ast/indexingExpression.h"
 
@@ -37,6 +38,11 @@ LuaSemanticAnalyzer::LuaSemanticAnalyzer(QList<Error> &errors)
 	mInteger = core::wrap(new types::Integer());
 	mNil = core::wrap(new types::Nil());
 	mString = core::wrap(new types::String());
+}
+
+void LuaSemanticAnalyzer::addIntrinsicFunction(QString const &name, QSharedPointer<types::Function> const &type)
+{
+	mIntrinsicFunctions.insert(name, type);
 }
 
 void LuaSemanticAnalyzer::analyzeNode(QSharedPointer<core::ast::Node> const &node)
@@ -66,6 +72,8 @@ void LuaSemanticAnalyzer::analyzeNode(QSharedPointer<core::ast::Node> const &nod
 		auto operand = as<core::ast::UnaryOperator>(node)->operand();
 		constrain(node, operand, {mInteger, mFloat});
 		unify(node, operand);
+	} else if (node->is<ast::FunctionCall>()) {
+		analyzeFunctionCall(node);
 	}
 }
 
@@ -79,8 +87,46 @@ void LuaSemanticAnalyzer::constrainAssignment(QSharedPointer<core::ast::Node> co
 
 	auto lhsType = typeVariable(lhs);
 	auto rhsType = typeVariable(rhs);
-	lhsType->constrain(rhsType, generalizationsTable());
+	bool wasCoercion = false;
+	lhsType->constrainAssignment(rhsType, generalizationsTable(), &wasCoercion);
 	if (lhsType->isEmpty()) {
 		reportError(operation, QObject::tr("Left and right operand have mismatched types."));
+	} else {
+		if (wasCoercion) {
+			requestRecheck();
+		}
+	}
+}
+
+void LuaSemanticAnalyzer::analyzeFunctionCall(QSharedPointer<core::ast::Node> const &node)
+{
+	auto functionCall = as<ast::FunctionCall>(node);
+	auto function = functionCall->function();
+	if (!function->is<ast::Identifier>()) {
+		reportError(node, QObject::tr("Indirect function calls are not supported"));
+		return;
+	}
+
+	auto name = as<ast::Identifier>(function)->name();
+	if (!mIntrinsicFunctions.contains(name)) {
+		reportError(node, QObject::tr("Unknown function"));
+		return;
+	}
+
+	assign(function, mIntrinsicFunctions.value(name));
+	assign(node, mIntrinsicFunctions.value(name)->returnType());
+
+	auto formalParameters = mIntrinsicFunctions.value(name)->formalParameters();
+	auto actualParameters = functionCall->arguments();
+	if (formalParameters.size() < actualParameters.size()) {
+		reportError(node, QObject::tr("Too many parameters, %1 expected").arg(formalParameters.size()));
+		return;
+	} else if (formalParameters.size() > actualParameters.size()) {
+		reportError(node, QObject::tr("Not enough parameters, %1 expected").arg(formalParameters.size()));
+		return;
+	} else {
+		for (int i = 0; i < formalParameters.size(); ++i) {
+			constrain(actualParameters[i], actualParameters[i], {formalParameters[i]});
+		}
 	}
 }
