@@ -1,5 +1,7 @@
 #include "luaSemanticAnalyzerTest.h"
 
+#include "qrtext/core/types/any.h"
+
 #include "qrtext/lua/ast/assignment.h"
 #include "qrtext/lua/ast/block.h"
 #include "qrtext/lua/ast/functionCall.h"
@@ -172,4 +174,33 @@ TEST_F(LuaSemanticAnalyzerTest, invalidFunctionParameters)
 	mAnalyzer->analyze(tree);
 
 	ASSERT_FALSE(mErrors.isEmpty());
+}
+
+TEST_F(LuaSemanticAnalyzerTest, invalidCoercion)
+{
+	auto tree = parse("a = f(b, c); b = 0.5");
+
+	mAnalyzer->addIntrinsicFunction("f", QSharedPointer<types::Function>(new types::Function(
+			QSharedPointer<core::types::TypeExpression>(new types::Float()),
+			{QSharedPointer<core::types::TypeExpression>(new types::Integer())
+					, QSharedPointer<core::types::TypeExpression>(new types::String())}
+			)));
+
+	mAnalyzer->analyze(tree);
+
+	EXPECT_FALSE(mErrors.isEmpty());
+
+	auto block = as<ast::Block>(tree);
+	auto firstAssignment = as<ast::Assignment>(block->children()[0]);
+
+	auto a = firstAssignment->variable();
+	auto f = as<ast::FunctionCall>(firstAssignment->value());
+
+	EXPECT_TRUE(mAnalyzer->type(a)->is<types::Float>());
+
+	auto b = f->arguments()[0];
+	auto c = f->arguments()[1];
+
+	EXPECT_TRUE(mAnalyzer->type(b)->is<qrtext::core::types::Any>());
+	EXPECT_TRUE(mAnalyzer->type(c)->is<types::String>());
 }
