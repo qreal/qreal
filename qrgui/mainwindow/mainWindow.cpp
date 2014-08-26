@@ -22,6 +22,7 @@
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
+#include <qrutils/qRealUpdater.h>
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrutils/uxInfo/uxInfo.h>
@@ -51,6 +52,7 @@
 #include "controller/commands/createGroupCommand.h"
 
 #include "dialogs/suggestToCreateProjectDialog.h"
+#include "dialogs/updateVersionDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
 
 using namespace qReal;
@@ -226,6 +228,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+	connect(mUi->actionStart_updater, &QAction::triggered, this, &MainWindow::checkForUpdates);
 
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
@@ -1960,6 +1963,31 @@ void MainWindow::initPluginsAndStartWidget()
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
 	{
 		openStartTab();
+	}
+
+	checkForUpdates();
+}
+
+void MainWindow::checkForUpdates()
+{
+	if (SettingsManager::value("updaterActive").toBool()) {
+		utils::QRealUpdater * const updater = new utils::QRealUpdater(this);
+		connect(updater, &utils::QRealUpdater::newVersionAvailable, this, &MainWindow::showUpdatesDialog);
+
+		QLOG_INFO() << "Starting updater...";
+		updater->checkForNewVersion();
+	}
+}
+
+void MainWindow::showUpdatesDialog()
+{
+	QLOG_INFO() << "New updates found!";
+	utils::QRealUpdater * const updater = dynamic_cast<utils::QRealUpdater *>(sender());
+	if (updater && UpdateVersionDialog::promptUpdate(this)) {
+		updater->start();
+
+		QLOG_INFO() << "Shutting down to install it";
+		QApplication::quit();
 	}
 }
 

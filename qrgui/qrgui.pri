@@ -8,6 +8,7 @@ LIBS += -L$$PWD/../bin -lqrrepo -lqrkernel -lqrutils -lqslog #-lqrmc
 LIBS += -L$$PWD/../bin/thirdparty -lqscintilla2
 
 RESOURCES = $$PWD/qrgui.qrc
+RC_FILE = $$PWD/qrgui.rc
 
 HEADERS += \
 	$$PWD/qrealApplication.h \
