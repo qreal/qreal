@@ -27,7 +27,7 @@ public:
 
 protected:
 	/// Reason for configuration change.
-	enum Reason {
+	enum class Reason {
 		/// User himself changed device by, for example, selecting sensor in settings window.
 		userAction
 
