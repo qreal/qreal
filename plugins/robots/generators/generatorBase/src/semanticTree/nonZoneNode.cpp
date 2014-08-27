@@ -8,7 +8,7 @@ NonZoneNode::NonZoneNode(Id const &idBinded, QObject *parent)
 {
 }
 
-ZoneNode *NonZoneNode::parentZone()
+ZoneNode *NonZoneNode::parentZone() const
 {
 	return static_cast<ZoneNode *>(mParentNode);
 }

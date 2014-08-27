@@ -2,6 +2,8 @@
 
 #include "generatorBase/semanticTree/semanticTree.h"
 
+#include "src/rules/forkRules/forkRule.h"
+
 using namespace generatorBase;
 using namespace qReal;
 
@@ -35,22 +37,40 @@ bool ControlFlowGeneratorBase::preGenerationCheck()
 semantics::SemanticTree *ControlFlowGeneratorBase::generate()
 {
 	if (!preGenerationCheck()) {
-		mSemanticTree = NULL;
-		return NULL;
+		mSemanticTree = nullptr;
+		return nullptr;
 	}
 
+	generateTo(nullptr);
+	return mSemanticTree;
+}
+
+bool ControlFlowGeneratorBase::generateTo(semantics::SemanticTree * const tree)
+{
+	mSemanticTree = tree ? tree : new semantics::SemanticTree(customizer(), initialNode(), mIsMainGenerator, this);
 	mErrorsOccured = false;
-	mSemanticTree = new semantics::SemanticTree(customizer(), initialNode(), mIsMainGenerator, this);
 
 	// This will start dfs on model graph with processing every block
 	// in subclasses which must construct control flow in handlers
-	startSearch(initialNode());
-
+	startSearch(mSemanticTree->initialBlock());
+	mErrorsOccured &= generateForks();
 	if (mErrorsOccured) {
-		mSemanticTree = NULL;
+		mSemanticTree = nullptr;
 	}
 
-	return mSemanticTree;
+	return !mErrorsOccured;
+}
+
+bool ControlFlowGeneratorBase::generateForks()
+{
+	for (semantics::SemanticTree * const tree : mSemanticTree->threads()) {
+		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(tree->initialBlock());
+		if (!threadGenerator->generateTo(tree)) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void ControlFlowGeneratorBase::error(QString const &message, Id const &id, bool critical)
@@ -94,6 +114,12 @@ GeneratorCustomizer &ControlFlowGeneratorBase::customizer() const
 	return mCustomizer;
 }
 
+void ControlFlowGeneratorBase::visitFinal(Id const &id, QList<LinkInfo> const &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
+}
+
 void ControlFlowGeneratorBase::visitSwitch(Id const &id, QList<LinkInfo> const &links)
 {
 	Q_UNUSED(id)
@@ -101,9 +127,18 @@ void ControlFlowGeneratorBase::visitSwitch(Id const &id, QList<LinkInfo> const &
 	error(tr("Switches are not supported in generator yet"), id, true);
 }
 
-void ControlFlowGeneratorBase::visitFork(Id const &id, QList<LinkInfo> const &links)
+void ControlFlowGeneratorBase::visitFork(Id const &id, QList<LinkInfo> &links)
 {
-	Q_UNUSED(id)
-	Q_UNUSED(links)
-	error(tr("Forks are not supported in generator yet"), id, true);
+	// n-ary fork creates (n-1) new threads and one thread is the old one.
+	LinkInfo const currentThread = links.first();
+	// In case of current thread fork block behaviours like nop-block.
+	visitRegular(id, { currentThread });
+	QList<LinkInfo> const newThreads = links.mid(1);
+	semantics::ForkRule rule(mSemanticTree, id, newThreads);
+	if (!rule.apply()) {
+		/// @todo: Just do it
+	}
+
+	// Restricting visiting other threads, they will be generated to new semantic trees.
+	links = {currentThread};
 }

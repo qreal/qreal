@@ -7,6 +7,7 @@
 #include "ifNode.h"
 #include "loopNode.h"
 #include "finalNode.h"
+#include "forkNode.h"
 #include "generatorBase/generatorCustomizer.h"
 
 namespace generatorBase {
@@ -20,9 +21,20 @@ public:
 	SemanticTree(GeneratorCustomizer &customizer, qReal::Id const &initialBlock
 			, bool isMainTree, QObject *parent = 0);
 
+	/// Returns an id of the initial node in this semantic tree. Semantic trees are
+	/// equal if their root ids are equal.
+	qReal::Id initialBlock() const;
+
+	/// Returns a list of all threads that will be created by this tree
+	QList<SemanticTree *> threads() const;
+
 	/// Generates code by this tree. Target language is defined with customizer
 	/// that was passed into constructor.
 	QString toString(int indent) const;
+
+	/// Produces new instance of the semantic tree for the given id as root. If
+	/// tree with such root already exist in child trees list then that instance will be returned.
+	SemanticTree *produceSubtree(qReal::Id const &initialNode);
 
 	/// Produces new instance of semantic node binded to specified block
 	/// autodetecting block`s semantics
@@ -37,6 +49,9 @@ public:
 	/// Produces new instance of loop node binded to specified block
 	LoopNode *produceLoop(qReal::Id const &id = qReal::Id());
 
+	/// Produces new instance of fork node binded to specified block
+	ForkNode *produceFork(qReal::Id const &id = qReal::Id());
+
 	/// Produces new instance of final node binded to specified block
 	FinalNode *produceFinal(qReal::Id const &id = qReal::Id());
 
@@ -48,6 +63,7 @@ private:
 	GeneratorCustomizer &mCustomizer;
 	bool const mIsMainTree;
 	RootNode *mRoot;  // Takes ownership
+	QMap<qReal::Id, SemanticTree *> mSubtrees;
 };
 
 }

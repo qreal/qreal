@@ -28,14 +28,13 @@ public:
 	ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId) override;
 
 	/// Implementation of generation process for readable generator.
-	/// Important: the graph in the model would be traversed two times
+	/// Important: the graph in the model would be traversed two or more times
 	/// for the emulation of some priority for semantic rules.
-	semantics::SemanticTree *generate() override;
+	bool generateTo(semantics::SemanticTree * const tree) override;
 
 	void beforeSearch() override;
 
 	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitConditional(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links) override;
 

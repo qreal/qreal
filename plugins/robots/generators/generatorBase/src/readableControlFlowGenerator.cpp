@@ -34,35 +34,35 @@ ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(Id const &diagr
 			, diagramId, parent(), false);
 }
 
-semantics::SemanticTree *ReadableControlFlowGenerator::generate()
+bool ReadableControlFlowGenerator::generateTo(semantics::SemanticTree * const tree)
 {
 	mAlreadyApplied.clear();
 	mTravelingForSecondTime = false;
 	mCantBeGeneratedIntoStructuredCode = false;
 
-	if (!preGenerationCheck()) {
-		mSemanticTree = nullptr;
-		return nullptr;
-	}
-
+	mSemanticTree = tree ? tree : new semantics::SemanticTree(customizer(), initialNode(), mIsMainGenerator, this);
 	mErrorsOccured = false;
-	mSemanticTree = new semantics::SemanticTree(customizer(), initialNode(), mIsMainGenerator, this);
 
 	for (int iteration = 0; iteration < 2; ++iteration) {
 		do {
 			mSomethingChangedThisIteration = false;
-			startSearch(initialNode());
+			startSearch(mSemanticTree->initialBlock());
 
 			if (mErrorsOccured) {
 				mSemanticTree = nullptr;
-				return nullptr;
+				return false;
 			}
 		} while (mSomethingChangedThisIteration);
 
 		mTravelingForSecondTime = true;
 	}
 
-	return mSemanticTree;
+	mErrorsOccured &= generateForks();
+	if (mErrorsOccured) {
+		mSemanticTree = nullptr;
+	}
+
+	return !mErrorsOccured;
 }
 
 void ReadableControlFlowGenerator::beforeSearch()
@@ -87,13 +87,6 @@ void ReadableControlFlowGenerator::visitRegular(Id const &id
 	applyFirstPossible(id, rules, !mTravelingForSecondTime);
 }
 
-void ReadableControlFlowGenerator::visitFinal(Id const &id
-		, QList<LinkInfo> const &links)
-{
-	Q_UNUSED(id)
-	Q_UNUSED(links)
-}
-
 void ReadableControlFlowGenerator::visitConditional(Id const &id
 		, QList<LinkInfo> const &links)
 {
@@ -110,8 +103,7 @@ void ReadableControlFlowGenerator::visitConditional(Id const &id
 	IfWithOneVisitedRule oneVisitedRule(mSemanticTree, id
 			, branches.first, branches.second);
 
-	applyFirstPossible(id, QList<SemanticTransformationRule *>()
-			<< &oneVisitedRule << &bothUnvisitedRule, false);
+	applyFirstPossible(id, { &oneVisitedRule, &bothUnvisitedRule }, false);
 }
 
 void ReadableControlFlowGenerator::visitLoop(Id const &id
@@ -132,10 +124,7 @@ void ReadableControlFlowGenerator::visitLoop(Id const &id
 	LoopWithNextVisitedRule nextVisitedRule(mSemanticTree, id
 			, branches.first, branches.second);
 
-	applyFirstPossible(id, QList<SemanticTransformationRule *>()
-			<< &bothUnvisitedRule
-			<< &iterationVisitedRule
-			<< &nextVisitedRule, false);
+	applyFirstPossible(id, { &bothUnvisitedRule, &iterationVisitedRule, &nextVisitedRule }, false);
 }
 
 void ReadableControlFlowGenerator::afterSearch()
@@ -155,7 +144,7 @@ bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
 		return true;
 	}
 
-	foreach (SemanticTransformationRule * const rule, rules) {
+	for (SemanticTransformationRule * const rule : rules) {
 		if (rule->apply()) {
 			mAlreadyApplied[currentId] = true;
 			mSomethingChangedThisIteration = true;

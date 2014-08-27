@@ -21,7 +21,6 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, qReal::Id const &diagramId);
-	virtual ~PrimaryControlFlowValidator();
 
 	/// Validates diagram with id specified in constructor. Returns 'true' if
 	/// diagram is correct, 'false' otherwise
@@ -47,13 +46,13 @@ private:
 	void error(QString const &message, qReal::Id const &id);
 	bool checkForConnected(LinkInfo const &link);
 
-	virtual void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links);
-	virtual void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links);
-	virtual void visitConditional(qReal::Id const &id, QList<LinkInfo> const &links);
-	virtual void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links);
-	virtual void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links);
-	virtual void visitFork(qReal::Id const &id, QList<LinkInfo> const &links);
-	virtual void visitUnknown(qReal::Id const &id, QList<LinkInfo> const &links);
+	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitConditional(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitFork(qReal::Id const &id, QList<LinkInfo> &links) override;
+	void visitUnknown(qReal::Id const &id, QList<LinkInfo> const &links) override;
 
 	qrRepo::RepoApi const &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;

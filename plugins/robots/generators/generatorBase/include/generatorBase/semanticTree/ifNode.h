@@ -11,11 +11,8 @@ class IfNode : public ConditionalNode
 public:
 	explicit IfNode(qReal::Id const &idBinded, QObject *parent = 0);
 
-	ZoneNode *parentZone() const;
-
 	ZoneNode *thenZone();
 	ZoneNode *elseZone();
-
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;

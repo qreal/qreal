@@ -30,24 +30,33 @@ public:
 
 	/// Copies this generator and returns new instance which is owned by the same
 	/// parent. Implementation must pay attention to isThisDiagramMain parameter
-	/// (it should be always false in copied objects)
+	/// (it should be always false in copied objects).
+	/// Ownership on the cloned generators is taken by this generator`s parent.
 	virtual ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId) = 0;
 
 	/// Generates control flow object representation (SemanticTree) and returns
 	/// a pointer to it if generation process was successfull or NULL otherwise.
 	/// Takes ownership on result.
-	virtual semantics::SemanticTree *generate();
+	semantics::SemanticTree *generate();
+
+	/// Makes the same as generate(), but uses the given tree as the result.
+	/// Takes ownership on the tree. If nullptr is passed as argument
+	/// then the tree will be instantiated.
+	/// @returns True if generation process was successfull.
+	virtual bool generateTo(semantics::SemanticTree * const tree);
 
 	/// Returns true if some generation errors occured and the generation process can`t be proceeded with other
 	/// control flow generators (fatal errors occured).
 	bool errorsOccured() const;
 
+	void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitFork(qReal::Id const &id, QList<LinkInfo> &links) override;
 	/// @todo: Not supported yet
 	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	/// @todo: Not supported yet
-	void visitFork(qReal::Id const &id, QList<LinkInfo> const &links) override;
 
 protected:
+	bool generateForks();
+
 	void error(QString const &message, qReal::Id const &id = qReal::Id(), bool critical = true);
 
 	enums::semantics::Semantics semanticsOf(qReal::Id const &id) const;
