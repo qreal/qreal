@@ -39,6 +39,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/semanticTree/rootNode.h \
 	$$PWD/include/generatorBase/parts/variables.h \
 	$$PWD/include/generatorBase/parts/subprograms.h \
+	$$PWD/include/generatorBase/parts/threads.h \
 	$$PWD/include/generatorBase/parts/engines.h \
 	$$PWD/include/generatorBase/parts/initTerminateCodeGenerator.h \
 	$$PWD/include/generatorBase/parts/sensors.h \
@@ -79,6 +80,7 @@ SOURCES += \
 	$$PWD/src/parts/deviceVariables.cpp \
 	$$PWD/src/parts/variables.cpp \
 	$$PWD/src/parts/subprograms.cpp \
+	$$PWD/src/parts/threads.cpp \
 	$$PWD/src/parts/engines.cpp \
 	$$PWD/src/parts/initTerminateCodeGenerator.cpp \
 	$$PWD/src/parts/sensors.cpp \

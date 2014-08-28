@@ -32,6 +32,8 @@ void user_1ms_isr_type2(void)
 
 @@SUBPROGRAMS@@
 
+@@THREADS@@
+
 /* Main task */
 TASK(OSEK_Task_Number_0)
 {

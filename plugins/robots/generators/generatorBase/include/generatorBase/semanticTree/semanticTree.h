@@ -25,16 +25,9 @@ public:
 	/// equal if their root ids are equal.
 	qReal::Id initialBlock() const;
 
-	/// Returns a list of all threads that will be created by this tree
-	QList<SemanticTree *> threads() const;
-
 	/// Generates code by this tree. Target language is defined with customizer
 	/// that was passed into constructor.
 	QString toString(int indent) const;
-
-	/// Produces new instance of the semantic tree for the given id as root. If
-	/// tree with such root already exist in child trees list then that instance will be returned.
-	SemanticTree *produceSubtree(qReal::Id const &initialNode);
 
 	/// Produces new instance of semantic node binded to specified block
 	/// autodetecting block`s semantics
@@ -63,7 +56,6 @@ private:
 	GeneratorCustomizer &mCustomizer;
 	bool const mIsMainTree;
 	RootNode *mRoot;  // Takes ownership
-	QMap<qReal::Id, SemanticTree *> mSubtrees;
 };
 
 }

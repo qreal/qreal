@@ -16,6 +16,7 @@ namespace generatorBase {
 namespace parts {
 class Variables;
 class Subprograms;
+class Threads;
 class Engines;
 class Sensors;
 class Functions;
@@ -52,6 +53,9 @@ public:
 
 	/// Returns a pointer to an entity processing everything about subprograms
 	virtual parts::Subprograms *subprograms();
+
+	/// Returns a pointer to a global threads storage
+	parts::Threads &threads();
 
 	/// Returns a pointer to an entity processing everything about engines usage
 	virtual parts::Engines *engines();
@@ -223,6 +227,7 @@ protected:
 	qReal::Id mDiagram;
 	parts::Variables *mVariables;
 	parts::Subprograms *mSubprograms;
+	parts::Threads *mThreads;
 	parts::Engines *mEngines;
 	parts::Sensors *mSensors;
 	parts::Functions *mFunctions;

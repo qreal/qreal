@@ -34,35 +34,25 @@ ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(Id const &diagr
 			, diagramId, parent(), false);
 }
 
-bool ReadableControlFlowGenerator::generateTo(semantics::SemanticTree * const tree)
+void ReadableControlFlowGenerator::performGeneration()
 {
 	mAlreadyApplied.clear();
 	mTravelingForSecondTime = false;
 	mCantBeGeneratedIntoStructuredCode = false;
 
-	mSemanticTree = tree ? tree : new semantics::SemanticTree(customizer(), initialNode(), mIsMainGenerator, this);
-	mErrorsOccured = false;
-
 	for (int iteration = 0; iteration < 2; ++iteration) {
 		do {
 			mSomethingChangedThisIteration = false;
-			startSearch(mSemanticTree->initialBlock());
+			ControlFlowGeneratorBase::performGeneration();
 
 			if (mErrorsOccured) {
 				mSemanticTree = nullptr;
-				return false;
+				return;
 			}
 		} while (mSomethingChangedThisIteration);
 
 		mTravelingForSecondTime = true;
 	}
-
-	mErrorsOccured &= generateForks();
-	if (mErrorsOccured) {
-		mSemanticTree = nullptr;
-	}
-
-	return !mErrorsOccured;
 }
 
 void ReadableControlFlowGenerator::beforeSearch()

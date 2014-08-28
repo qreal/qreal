@@ -21,26 +21,9 @@ Id SemanticTree::initialBlock() const
 	return mRoot->initialBlock();
 }
 
-QList<SemanticTree *> SemanticTree::threads() const
-{
-	return mSubtrees.values();
-}
-
 QString SemanticTree::toString(int indent) const
 {
 	return mRoot->toString(mCustomizer, indent);
-}
-
-SemanticTree *SemanticTree::produceSubtree(Id const &initialNode)
-{
-	qDebug() << "producing subtree for" << initialNode;
-	if (mSubtrees.contains(initialNode)) {
-		return mSubtrees[initialNode];
-	}
-
-	SemanticTree * const subtree = new SemanticTree(mCustomizer, initialNode, false, this);
-	mSubtrees[initialNode] = subtree;
-	return subtree;
 }
 
 SemanticNode *SemanticTree::produceNodeFor(Id const &id)

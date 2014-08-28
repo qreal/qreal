@@ -27,11 +27,6 @@ public:
 	/// Implementation of clone operation for readable generator
 	ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId) override;
 
-	/// Implementation of generation process for readable generator.
-	/// Important: the graph in the model would be traversed two or more times
-	/// for the emulation of some priority for semantic rules.
-	bool generateTo(semantics::SemanticTree * const tree) override;
-
 	void beforeSearch() override;
 
 	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
@@ -47,6 +42,11 @@ public:
 	bool cantBeGeneratedIntoStructuredCode() const;
 
 private:
+	/// Implementation of generation process for readable generator.
+	/// Important: the graph in the model would be traversed two or more times
+	/// for the emulation of some priority for semantic rules.
+	void performGeneration() override;
+
 	bool applyFirstPossible(qReal::Id const &currentId
 			, QList<semantics::SemanticTransformationRule *> const &rules
 			, bool thereWillBeMoreRules);

@@ -8,6 +8,7 @@
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/images.h"
 #include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/initTerminateCodeGenerator.h"
 
@@ -106,6 +107,7 @@ QString MasterGeneratorBase::generate()
 
 	QString resultCode = readTemplate("main.t");
 	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->generatedCode());
+	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateCode());
 	resultCode.replace("@@MAIN_CODE@@", mainCode);
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->initCode(), 1));

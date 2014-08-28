@@ -1,6 +1,7 @@
 #include "generatorBase/controlFlowGeneratorBase.h"
 
 #include "generatorBase/semanticTree/semanticTree.h"
+#include "generatorBase/parts/threads.h"
 
 #include "src/rules/forkRules/forkRule.h"
 
@@ -34,38 +35,42 @@ bool ControlFlowGeneratorBase::preGenerationCheck()
 	return mValidator.validate();
 }
 
-semantics::SemanticTree *ControlFlowGeneratorBase::generate()
+semantics::SemanticTree *ControlFlowGeneratorBase::generate(qReal::Id const &initialNode)
 {
-	if (!preGenerationCheck()) {
+	// If initial node is non-null then pregeneration check was already performed;
+	if (initialNode.isNull() && !preGenerationCheck()) {
 		mSemanticTree = nullptr;
 		return nullptr;
 	}
 
-	generateTo(nullptr);
-	return mSemanticTree;
-}
-
-bool ControlFlowGeneratorBase::generateTo(semantics::SemanticTree * const tree)
-{
-	mSemanticTree = tree ? tree : new semantics::SemanticTree(customizer(), initialNode(), mIsMainGenerator, this);
+	qReal::Id const realInitialNode = initialNode.isNull() ? this->initialNode() : initialNode;
+	mSemanticTree = new semantics::SemanticTree(customizer(), realInitialNode, mIsMainGenerator, this);
+	mCustomizer.factory()->threads().threadProcessed(realInitialNode, *mSemanticTree);
 	mErrorsOccured = false;
 
-	// This will start dfs on model graph with processing every block
-	// in subclasses which must construct control flow in handlers
-	startSearch(mSemanticTree->initialBlock());
+	performGeneration();
+
 	mErrorsOccured &= generateForks();
 	if (mErrorsOccured) {
 		mSemanticTree = nullptr;
 	}
 
-	return !mErrorsOccured;
+	return mSemanticTree;
+}
+
+void ControlFlowGeneratorBase::performGeneration()
+{
+	// This will start dfs on model graph with processing every block
+	// in subclasses which must construct control flow in handlers
+	startSearch(mSemanticTree->initialBlock());
 }
 
 bool ControlFlowGeneratorBase::generateForks()
 {
-	for (semantics::SemanticTree * const tree : mSemanticTree->threads()) {
-		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(tree->initialBlock());
-		if (!threadGenerator->generateTo(tree)) {
+	while (mCustomizer.factory()->threads().hasUnprocessedThreads()) {
+		Id const thread = mCustomizer.factory()->threads().nextUnprocessedThread();
+		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(thread);
+		if (!threadGenerator->generate(thread)) {
 			return false;
 		}
 	}
@@ -134,10 +139,8 @@ void ControlFlowGeneratorBase::visitFork(Id const &id, QList<LinkInfo> &links)
 	// In case of current thread fork block behaviours like nop-block.
 	visitRegular(id, { currentThread });
 	QList<LinkInfo> const newThreads = links.mid(1);
-	semantics::ForkRule rule(mSemanticTree, id, newThreads);
-	if (!rule.apply()) {
-		/// @todo: Just do it
-	}
+	semantics::ForkRule rule(mSemanticTree, id, newThreads, mCustomizer.factory()->threads());
+	rule.apply();
 
 	// Restricting visiting other threads, they will be generated to new semantic trees.
 	links = {currentThread};

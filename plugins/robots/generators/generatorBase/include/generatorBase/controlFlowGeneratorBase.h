@@ -37,13 +37,9 @@ public:
 	/// Generates control flow object representation (SemanticTree) and returns
 	/// a pointer to it if generation process was successfull or NULL otherwise.
 	/// Takes ownership on result.
-	semantics::SemanticTree *generate();
-
-	/// Makes the same as generate(), but uses the given tree as the result.
-	/// Takes ownership on the tree. If nullptr is passed as argument
-	/// then the tree will be instantiated.
-	/// @returns True if generation process was successfull.
-	virtual bool generateTo(semantics::SemanticTree * const tree);
+	/// @param initialNode The starting block of the traversal. If empty then initial node
+	/// of the diagram given in constructor will be used.
+	semantics::SemanticTree *generate(qReal::Id const &initialNode = qReal::Id());
 
 	/// Returns true if some generation errors occured and the generation process can`t be proceeded with other
 	/// control flow generators (fatal errors occured).
@@ -55,6 +51,9 @@ public:
 	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
 
 protected:
+	/// Can be overloaded by ancestors for custom behaviour.
+	virtual void performGeneration();
+
 	bool generateForks();
 
 	void error(QString const &message, qReal::Id const &id = qReal::Id(), bool critical = true);

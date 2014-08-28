@@ -58,6 +58,7 @@
 
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/engines.h"
 #include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/functions.h"
@@ -86,6 +87,7 @@ void GeneratorFactoryBase::initialize()
 {
 	initVariables();
 	initSubprograms();
+	mThreads = new parts::Threads;
 	initEngines();
 	initSensors();
 	initFunctions();
@@ -153,6 +155,11 @@ parts::Variables *GeneratorFactoryBase::variables()
 parts::Subprograms *GeneratorFactoryBase::subprograms()
 {
 	return mSubprograms;
+}
+
+parts::Threads &GeneratorFactoryBase::threads()
+{
+	return *mThreads;
 }
 
 parts::Engines *GeneratorFactoryBase::engines()

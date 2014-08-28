@@ -20,6 +20,8 @@
 
 @@SUBPROGRAMS@@
 
+@@THREADS@@
+
 Программа
 {
 @@MAIN_CODE@@
