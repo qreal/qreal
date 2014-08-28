@@ -149,6 +149,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/infiniteLoopGenerator.h \
 	$$PWD/src/simpleGenerators/forLoopGenerator.h \
 	$$PWD/src/simpleGenerators/whileLoopGenerator.h \
+	$$PWD/src/simpleGenerators/forkCallGenerator.h \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
 	$$PWD/src/simpleGenerators/timerGenerator.h \
 	$$PWD/src/simpleGenerators/beepGenerator.h \
@@ -209,6 +210,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/infiniteLoopGenerator.cpp \
 	$$PWD/src/simpleGenerators/forLoopGenerator.cpp \
 	$$PWD/src/simpleGenerators/whileLoopGenerator.cpp \
+	$$PWD/src/simpleGenerators/forkCallGenerator.cpp \
 	$$PWD/src/simpleGenerators/bindingGenerator.cpp \
 	$$PWD/src/simpleGenerators/binding.cpp \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.cpp \

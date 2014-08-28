@@ -30,10 +30,15 @@ qReal::Id Threads::nextUnprocessedThread() const
 	return *mUnprocessedThreads.begin();
 }
 
+QList<semantics::SemanticTree *> Threads::threads() const
+{
+	return mProcessedThreads.values();
+}
+
 QString Threads::generateCode() const
 {
 	QString result = "THREADS:\n";
-	for (semantics::SemanticTree const *thread : mProcessedThreads.values()) {
+	for (semantics::SemanticTree const *thread : threads()) {
 		result += "==========================" + thread->initialBlock().toString() + "\n";
 		result += thread->toString(1);
 		result += "\n==========================\n";

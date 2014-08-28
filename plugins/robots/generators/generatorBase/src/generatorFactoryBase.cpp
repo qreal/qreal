@@ -9,7 +9,7 @@
 #include "simpleGenerators/infiniteLoopGenerator.h"
 #include "simpleGenerators/forLoopGenerator.h"
 #include "simpleGenerators/whileLoopGenerator.h"
-#include "generatorBase/simpleGenerators/bindingGenerator.h"
+#include "simpleGenerators/forkCallGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
@@ -213,6 +213,12 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(Id const
 		, GeneratorCustomizer &customizer)
 {
 	return new ForLoopGenerator(mRepo, customizer, id, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(Id const &id
+		, GeneratorCustomizer &customizer, IdList const &threads)
+{
+	return new ForkCallGenerator(mRepo, customizer, id, threads, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &id

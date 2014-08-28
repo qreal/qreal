@@ -95,6 +95,10 @@ public:
 	virtual simple::AbstractSimpleGenerator *forLoopGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
 
+	/// Returns a pointer to a threads instantiation generator
+	virtual simple::AbstractSimpleGenerator *forkCallGenerator(qReal::Id const &id
+			, GeneratorCustomizer &customizer, qReal::IdList const &threads);
+
 	/// Returns a pointer to a code generator for blocks with regular semantics
 	virtual simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);

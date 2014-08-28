@@ -1,6 +1,6 @@
 #include "generatorBase/semanticTree/forkNode.h"
 
-#include "generatorBase/semanticTree/semanticTree.h"
+#include <qrutils/stringUtils.h>
 
 using namespace generatorBase::semantics;
 
@@ -21,8 +21,6 @@ QLinkedList<SemanticNode *> ForkNode::children() const
 
 QString ForkNode::toStringImpl(generatorBase::GeneratorCustomizer &customizer, int indent) const
 {
-	/// @todo:
-	QString result = "FORK HERE!!!\n";
-
-	return result;
+	QString const code = customizer.factory()->forkCallGenerator(mId, customizer, mThreads.toList())->generate();
+	return utils::StringUtils::addIndent(code, indent);
 }
