@@ -1,6 +1,6 @@
-TASK OSEK_Task_Number_@@NUMBER@@
+TASK TASK_@@NAME@@
 {
-	AUTOSTART = TRUE
+	AUTOSTART = @@AUTOSTART@@
 	{
 		APPMODE = appmode1;
 	};

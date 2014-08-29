@@ -42,6 +42,16 @@ QList<semantics::SemanticTree *> Threads::threads() const
 	return mProcessedThreads.values();
 }
 
+QStringList Threads::threadNames() const
+{
+	QStringList result;
+	for (semantics::SemanticTree const *thread : threads()) {
+		result << name(thread);
+	}
+
+	return result;
+}
+
 QString Threads::generateCode() const
 {
 	return generateDeclarations() + generateImplementations();
@@ -49,7 +59,7 @@ QString Threads::generateCode() const
 
 QString Threads::generateDeclarations() const
 {
-	QList<semantics::SemanticTree *> const threads = this->threads();
+	QStringList const threads = threadNames();
 	QString const forwardDeclaration = readTemplate("threads/forwardDeclaration.t");
 	if (forwardDeclaration.isEmpty() || threads.isEmpty()) {
 		return QString();
@@ -57,8 +67,8 @@ QString Threads::generateDeclarations() const
 
 	QString const declarationsHeader = readTemplate("threads/declarationsSectionHeader.t");
 	QStringList declarations;
-	for (semantics::SemanticTree const *thread : threads) {
-		declarations << QString(forwardDeclaration).replace("@@NAME@@", name(thread));
+	for (QString const &thread : threads) {
+		declarations << QString(forwardDeclaration).replace("@@NAME@@", thread);
 	}
 
 	return declarationsHeader + declarations.join("\n");

@@ -1,4 +1,4 @@
-TASK(@@NAME@@)
+TASK(TASK_@@NAME@@)
 {
 @@BODY@@
 }

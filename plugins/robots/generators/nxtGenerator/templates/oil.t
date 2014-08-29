@@ -15,9 +15,9 @@ CPU ATMEL_AT91SAM7S256
 		USERESSCHEDULER = FALSE;
 	};
 
-	/* Definition of application mode */
 	APPMODE appmode1{};
 
-	/* Definition of OSEK_Task*/
-@@TASK@@
+@@TASKS@@
+
+@@MAIN_TASK@@
 };

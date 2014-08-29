@@ -29,6 +29,9 @@ public:
 	/// Returns a list of semantic trees of threads on all diagrams of the model.
 	QList<semantics::SemanticTree *> threads() const;
 
+	/// Returns a list of thread names on all diagrams of the model.
+	QStringList threadNames() const;
+
 	/// Generates and returns the code of the section with threads declarations.
 	QString generateCode() const;
 
