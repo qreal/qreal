@@ -87,7 +87,7 @@ void GeneratorFactoryBase::initialize()
 {
 	initVariables();
 	initSubprograms();
-	mThreads = new parts::Threads;
+	mThreads = new parts::Threads(pathToTemplates());
 	initEngines();
 	initSensors();
 	initFunctions();

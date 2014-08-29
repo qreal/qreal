@@ -1,7 +1,14 @@
 #include "generatorBase/parts/threads.h"
 
+#include <qrutils/nameNormalizer.h>
+
 using namespace generatorBase;
 using namespace parts;
+
+Threads::Threads(QString const &pathToTemplates)
+	: TemplateParametrizedEntity(pathToTemplates)
+{
+}
 
 void Threads::registerThread(qReal::Id const &id)
 {
@@ -37,12 +44,45 @@ QList<semantics::SemanticTree *> Threads::threads() const
 
 QString Threads::generateCode() const
 {
-	QString result = "THREADS:\n";
-	for (semantics::SemanticTree const *thread : threads()) {
-		result += "==========================" + thread->initialBlock().toString() + "\n";
-		result += thread->toString(1);
-		result += "\n==========================\n";
+	return generateDeclarations() + generateImplementations();
+}
+
+QString Threads::generateDeclarations() const
+{
+	QList<semantics::SemanticTree *> const threads = this->threads();
+	QString const forwardDeclaration = readTemplate("threads/forwardDeclaration.t");
+	if (forwardDeclaration.isEmpty() || threads.isEmpty()) {
+		return QString();
 	}
 
-	return result;
+	QString const declarationsHeader = readTemplate("threads/declarationsSectionHeader.t");
+	QStringList declarations;
+	for (semantics::SemanticTree const *thread : threads) {
+		declarations << QString(forwardDeclaration).replace("@@NAME@@", name(thread));
+	}
+
+	return declarationsHeader + declarations.join("\n");
+}
+
+QString Threads::generateImplementations() const
+{
+	QList<semantics::SemanticTree *> const threads = this->threads();
+	QString const implementation = readTemplate("threads/implementation.t");
+	if (implementation.isEmpty() || threads.isEmpty()) {
+		return QString();
+	}
+
+	QString const implementationsHeader = readTemplate("threads/implementationsSectionHeader.t");
+	QStringList implementations;
+	for (semantics::SemanticTree const *thread : threads) {
+		QString const code = thread->toString(1);
+		implementations << QString(implementation).replace("@@NAME@@", name(thread)).replace("@@BODY@@", code);
+	}
+
+	return implementationsHeader + implementations.join("\n");
+}
+
+QString Threads::name(semantics::SemanticTree const *tree) const
+{
+	return utils::NameNormalizer::normalizeStrongly(tree->initialBlock().id(), false);
 }

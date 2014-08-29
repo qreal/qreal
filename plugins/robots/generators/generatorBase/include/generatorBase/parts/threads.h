@@ -1,14 +1,17 @@
 #pragma once
 
 #include <generatorBase/semanticTree/semanticTree.h>
+#include <generatorBase/templateParametrizedEntity.h>
 
 namespace generatorBase {
 namespace parts {
 
 /// A storage for all discovered threads in current save.
-class Threads
+class Threads : public TemplateParametrizedEntity
 {
 public:
+	explicit Threads(QString const &pathToTemplates);
+
 	/// Must be called each time when generator gets into the block with the
 	/// fork semantics for every block that start new thread.
 	/// @param id The initial node of the thread
@@ -30,6 +33,10 @@ public:
 	QString generateCode() const;
 
 private:
+	QString generateDeclarations() const;
+	QString generateImplementations() const;
+	QString name(semantics::SemanticTree const *tree) const;
+
 	QSet<qReal::Id> mUnprocessedThreads;
 	QMap<qReal::Id, semantics::SemanticTree *> mProcessedThreads;
 };
