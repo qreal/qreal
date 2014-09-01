@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Lego NXT Support</DisplayName>
+    <DisplayName xml:lang="ru_ru">Поддержка Lego NXT</DisplayName>
+    <Description>Install it for working with Lego NXT in Trik Studio</Description>
+    <Description xml:lang="ru_ru">Установите это для работы с конструктором Lego NXT</Description>
+    <Version inheritVersionFrom="com.qreal.root.robots">1</Version>
+    <ReleaseDate>2014-08-10</ReleaseDate>
+    <Licenses>
+        <License name="QextSerialPort Component License" file="QextSerialPort-license.txt" />
+    </Licenses>
+    <!--<Translations>
+        <Translation>sv_se.qm</Translation>
+        <Translation>de_de.qm</Translation>
+    </Translations> -->
+    <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
+    <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
+    <SortingPriority>9</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>
