@@ -9,7 +9,7 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase
+LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lgeneratorBase
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \

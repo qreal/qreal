@@ -13,6 +13,10 @@ U32 __interpretation_started_timestamp__ = 0;
 
 @@BMP_FILES@@
 
+@@SUBPROGRAMS_FORWARDING@@
+
+@@THREADS_FORWARDING@@
+
 void ecrobot_device_initialize(void)
 {
 	srand(systick_get_ms());

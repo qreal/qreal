@@ -19,5 +19,16 @@ CPU ATMEL_AT91SAM7S256
 
 @@TASKS@@
 
-@@MAIN_TASK@@
+	TASK TASK_MAIN
+	{
+		AUTOSTART = TRUE
+		{
+			APPMODE = appmode1;
+		};
+		PRIORITY = 1; /* lowest priority */
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+		STACKSIZE = 512;
+	};
+	
 };

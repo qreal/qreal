@@ -106,8 +106,10 @@ QString MasterGeneratorBase::generate()
 	}
 
 	QString resultCode = readTemplate("main.t");
-	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->generatedCode());
-	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateCode());
+	resultCode.replace("@@SUBPROGRAMS_FORWARDING@@", mCustomizer->factory()->subprograms()->forwardDeclarations());
+	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->implementations());
+	resultCode.replace("@@THREADS_FORWARDING@@", mCustomizer->factory()->threads().generateDeclarations());
+	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations());
 	resultCode.replace("@@MAIN_CODE@@", mainCode);
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->initCode(), 1));

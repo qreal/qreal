@@ -1,1 +1,1 @@
-TASK_@@NAME@@();
+ActivateTask(TASK_@@NAME@@);

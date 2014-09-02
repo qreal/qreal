@@ -1,11 +1,8 @@
 TASK TASK_@@NAME@@
 {
-	AUTOSTART = @@AUTOSTART@@
-	{
-		APPMODE = appmode1;
-	};
+	AUTOSTART = FALSE;
 	PRIORITY = 1; /* lowest priority */
-	ACTIVATION = 1;
+	ACTIVATION = 100;
 	SCHEDULE = FULL;
 	STACKSIZE = 512;
 };

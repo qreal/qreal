@@ -47,20 +47,16 @@ void NxtOsekMasterGenerator::generateOilFile(QString const &projectName
 {
 	QStringList tasks;
 	for (QString const &task : mCustomizer->factory()->threads().threadNames()) {
-		tasks << generateOilTask(task, false);
+		tasks << generateOilTask(task);
 	}
 
-	QString const resultOil = readTemplate("oil.t")
-			.replace("@@TASKS@@", tasks.join("\n"))
-			.replace("@@MAIN_TASK@@", generateOilTask("MAIN", true));
+	QString const resultOil = readTemplate("oil.t").replace("@@TASKS@@", tasks.join("\n"));
 	outputCode(projectDir + "/" + projectName + ".oil", resultOil);
 }
 
-QString NxtOsekMasterGenerator::generateOilTask(QString const &taskName, bool isMain)
+QString NxtOsekMasterGenerator::generateOilTask(QString const &taskName)
 {
-	QString const autostart = isMain ? "TRUE" : "FALSE";
-	return utils::StringUtils::addIndent(readTemplate("oilTask.t")
-			.replace("@@NAME@@", taskName).replace("@@AUTOSTART@@", autostart), 1);
+	return utils::StringUtils::addIndent(readTemplate("oilTask.t").replace("@@NAME@@", taskName), 1);
 }
 
 void NxtOsekMasterGenerator::generateMakeFile(QString const &projectName

@@ -74,6 +74,11 @@
         <file>templates/subprograms/forwardDeclaration.t</file>
         <file>templates/subprograms/implementation.t</file>
         <file>templates/subprograms/implementationsSectionHeader.t</file>
+        <file>templates/threads/call.t</file>
+        <file>templates/threads/declarationsSectionHeader.t</file>
+        <file>templates/threads/forwardDeclaration.t</file>
+        <file>templates/threads/implementation.t</file>
+        <file>templates/threads/implementationsSectionHeader.t</file>
         <file>templates/main.t</file>
         <file>templates/comment.t</file>
         <file>templates/initialization/colorBlue.t</file>

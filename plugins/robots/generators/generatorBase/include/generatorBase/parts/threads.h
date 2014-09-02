@@ -3,11 +3,13 @@
 #include <generatorBase/semanticTree/semanticTree.h>
 #include <generatorBase/templateParametrizedEntity.h>
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace parts {
 
 /// A storage for all discovered threads in current save.
-class Threads : public TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT Threads : public TemplateParametrizedEntity
 {
 public:
 	explicit Threads(QString const &pathToTemplates);
@@ -32,12 +34,13 @@ public:
 	/// Returns a list of thread names on all diagrams of the model.
 	QStringList threadNames() const;
 
-	/// Generates and returns the code of the section with threads declarations.
-	QString generateCode() const;
+	/// Generates and returns the code of the section with threads forward declarations.
+	QString generateDeclarations() const;
+
+	/// Generates and returns the code of the section with threads code.
+	QString generateImplementations() const;
 
 private:
-	QString generateDeclarations() const;
-	QString generateImplementations() const;
 	QString name(semantics::SemanticTree const *tree) const;
 
 	QSet<qReal::Id> mUnprocessedThreads;

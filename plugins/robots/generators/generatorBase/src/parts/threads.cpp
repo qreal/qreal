@@ -52,11 +52,6 @@ QStringList Threads::threadNames() const
 	return result;
 }
 
-QString Threads::generateCode() const
-{
-	return generateDeclarations() + generateImplementations();
-}
-
 QString Threads::generateDeclarations() const
 {
 	QStringList const threads = threadNames();
