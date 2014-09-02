@@ -60,12 +60,13 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 	}
 
 	if (root->is<ast::FunctionCall>()) {
-		auto name = as<ast::FunctionCall>(root)->name();
+		auto function = as<ast::FunctionCall>(root)->function();
+		auto name = as<ast::Identifier>(function)->name();
 		auto parameters = as<ast::FunctionCall>(root)->arguments();
 
 		QList<QVariant> actualParameters;
 		for (auto parameter : parameters) {
-			actualParameters << interpret(parameter);
+			actualParameters << interpret(parameter, semanticAnalyzer);
 		}
 
 		result = mIntrinsicFunctions[name](actualParameters);
