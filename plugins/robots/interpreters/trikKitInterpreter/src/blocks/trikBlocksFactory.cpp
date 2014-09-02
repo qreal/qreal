@@ -201,6 +201,8 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikLineDetectorToVariable")
 				<< id("TrikWaitForMotion")
 				;
+	} else {
+		result << id("Fork");
 	}
 
 	return result;
