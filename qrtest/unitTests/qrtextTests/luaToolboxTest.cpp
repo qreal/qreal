@@ -34,3 +34,17 @@ TEST_F(LuaToolboxTest, easyTableInitializationSyntax)
 	EXPECT_EQ("M2", result[1]);
 	EXPECT_EQ("M3", result[2]);
 }
+
+TEST_F(LuaToolboxTest, intrinsicFunction)
+{
+	mToolbox->addIntrinsicFunction("f", new types::Integer(), {new types::Integer()}
+			, [] (QList<QVariant> params) { return params[0].toInt() + 2; }
+			);
+
+	qReal::Id const testId = qReal::Id("1", "2", "3", "test");
+
+	auto result = mToolbox->interpret<int>(testId, "test", "f(1)");
+	EXPECT_TRUE(mToolbox->errors().isEmpty());
+
+	EXPECT_EQ(3, result);
+}

@@ -19,6 +19,8 @@ public:
 
 private:
 	void analyzeNode(QSharedPointer<core::ast::Node> const &node) override;
+	void analyzeUnaryOperator(QSharedPointer<core::ast::Node> const &node);
+	void analyzeBinaryOperator(QSharedPointer<core::ast::Node> const &node);
 
 	void constrainAssignment(QSharedPointer<core::ast::Node> const &operation
 			, QSharedPointer<core::ast::Node> const &lhs, QSharedPointer<core::ast::Node> const &rhs);

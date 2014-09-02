@@ -2,6 +2,9 @@
 
 #include "gtest/gtest.h"
 
+#include "qrtext/lua/types/float.h"
+#include "qrtext/lua/types/integer.h"
+
 using namespace qrTest;
 using namespace qrtext;
 using namespace qrtext::lua;
@@ -31,4 +34,21 @@ TEST_F(LuaInterpreterTest, assignment)
 	interpret<int>("a = 1");
 	int result = interpret<int>("a");
 	ASSERT_EQ(1, result);
+}
+
+TEST_F(LuaInterpreterTest, intrinsicFunction)
+{
+	mAnalyzer->addIntrinsicFunction("f", QSharedPointer<types::Function>(new types::Function(
+			QSharedPointer<core::types::TypeExpression>(new types::Float()),
+			{QSharedPointer<core::types::TypeExpression>(new types::Integer())}
+			)));
+
+	mInterpreter->addIntrinsicFunction("f", [](QList<QVariant> params) {
+			return params[0].toInt() * params[0].toInt();
+			});
+
+	int result = interpret<int>("f(5)");
+
+	ASSERT_TRUE(mErrors.isEmpty());
+	ASSERT_EQ(25, result);
 }

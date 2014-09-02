@@ -19,6 +19,31 @@
 #include "qrtext/lua/ast/indexingExpression.h"
 
 #include "qrtext/lua/ast/unaryMinus.h"
+#include "qrtext/lua/ast/not.h"
+#include "qrtext/lua/ast/length.h"
+#include "qrtext/lua/ast/bitwiseNegation.h"
+
+#include "qrtext/lua/ast/addition.h"
+#include "qrtext/lua/ast/subtraction.h"
+#include "qrtext/lua/ast/multiplication.h"
+#include "qrtext/lua/ast/division.h"
+#include "qrtext/lua/ast/integerDivision.h"
+#include "qrtext/lua/ast/exponentiation.h"
+#include "qrtext/lua/ast/modulo.h"
+#include "qrtext/lua/ast/bitwiseAnd.h"
+#include "qrtext/lua/ast/bitwiseXor.h"
+#include "qrtext/lua/ast/bitwiseOr.h"
+#include "qrtext/lua/ast/bitwiseRightShift.h"
+#include "qrtext/lua/ast/bitwiseLeftShift.h"
+#include "qrtext/lua/ast/concatenation.h"
+#include "qrtext/lua/ast/lessThan.h"
+#include "qrtext/lua/ast/greaterThan.h"
+#include "qrtext/lua/ast/lessOrEqual.h"
+#include "qrtext/lua/ast/greaterOrEqual.h"
+#include "qrtext/lua/ast/equality.h"
+#include "qrtext/lua/ast/inequality.h"
+#include "qrtext/lua/ast/logicalAnd.h"
+#include "qrtext/lua/ast/logicalOr.h"
 
 #include "qrtext/lua/ast/integerNumber.h"
 #include "qrtext/lua/ast/floatNumber.h"
@@ -68,12 +93,77 @@ void LuaSemanticAnalyzer::analyzeNode(QSharedPointer<core::ast::Node> const &nod
 		assign(node, mString);
 	} else if (node->is<ast::Nil>()) {
 		assign(node, mNil);
-	} else if (node->is<ast::UnaryMinus>()) {
-		auto operand = as<core::ast::UnaryOperator>(node)->operand();
-		constrain(node, operand, {mInteger, mFloat});
-		unify(node, operand);
+	} else if (node->is<ast::UnaryOperator>()) {
+		analyzeUnaryOperator(node);
+	} else if (node->is<ast::BinaryOperator>()) {
+		analyzeBinaryOperator(node);
 	} else if (node->is<ast::FunctionCall>()) {
 		analyzeFunctionCall(node);
+	}
+}
+
+void LuaSemanticAnalyzer::analyzeUnaryOperator(QSharedPointer<core::ast::Node> const &node)
+{
+	auto operand = as<core::ast::UnaryOperator>(node)->operand();
+	if (node->is<ast::UnaryMinus>()) {
+		constrain(node, operand, {mInteger, mFloat});
+		unify(node, operand);
+	} else if (node->is<ast::Not>()) {
+		assign(node, mBoolean);
+	} else if (node->is<ast::Length>()) {
+		/// @todo Be able to constrain to generic type "any table".
+		constrain(node, operand, {mString});
+	} else if (node->is<ast::BitwiseNegation>()) {
+		/// @todo Support coercion, as in http://www.lua.org/work/doc/manual.html#3.4.3
+		constrain(node, operand, {mInteger});
+		assign(node, mInteger);
+	}
+}
+
+void LuaSemanticAnalyzer::analyzeBinaryOperator(QSharedPointer<core::ast::Node> const &node)
+{
+	auto left = as<core::ast::BinaryOperator>(node)->leftOperand();
+	auto right = as<core::ast::BinaryOperator>(node)->rightOperand();
+
+	if (node->is<ast::Addition>() || node->is<ast::Subtraction>() || node->is<ast::Multiplication>()) {
+		constrain(node, left, {mInteger, mFloat});
+		constrain(node, right, {mInteger, mFloat});
+
+		/// @todo "If both operands are integers, the operation is performed over integers and the result is an integer.
+		///       Otherwise, if both operands are numbers or strings that can be converted to numbers (see §3.4.3), then
+		///       they are converted to floats, the operation is performed following the usual rules for floating-point
+		///       arithmetic (usually the IEEE 754 standard), and the result is a float."
+		///       (http://www.lua.org/work/doc/manual.html#3.4.1)
+		assign(node, mFloat);
+	} else if (node->is<ast::Division>() || node->is<ast::Exponentiation>()) {
+		constrain(node, left, {mFloat});
+		constrain(node, right, {mFloat});
+		assign(node, mFloat);
+	} else if (node->is<ast::IntegerDivision>() || node->is<ast::Modulo>()) {
+		constrain(node, left, {mInteger});
+		constrain(node, right, {mInteger});
+		assign(node, mInteger);
+	} else if (node->is<ast::BitwiseAnd>() || node->is<ast::BitwiseXor>() || node->is<ast::BitwiseOr>()
+			|| node->is<ast::BitwiseRightShift>() || node->is<ast::BitwiseLeftShift>())
+	{
+		constrain(node, left, {mInteger});
+		constrain(node, right, {mInteger});
+		assign(node, mInteger);
+	} else if (node->is<ast::Equality>() || node->is<ast::Inequality>()) {
+		assign(node, mBoolean);
+	} else if (node->is<ast::LessThan>() || node->is<ast::LessOrEqual>() || node->is<ast::GreaterThan>()
+			|| node->is<ast::GreaterOrEqual>())
+	{
+		constrain(node, left, {mInteger, mFloat, mString});
+		constrain(node, right, {mInteger, mFloat, mString});
+		assign(node, mBoolean);
+	} else if (node->is<ast::LogicalAnd>() || node->is<ast::LogicalOr>()) {
+		/// @todo Actually, Lua type system allows logical operators to return everything:
+		///       "The conjunction operator 'and' returns its first argument if this value is false or nil; otherwise,
+		///       'and' returns its second argument. The disjunction operator 'or' returns its first argument if this
+		///       value is different from nil and false; otherwise, 'or' returns its second argument.
+		///       (http://www.lua.org/work/doc/manual.html#3.4.5)
+		assign(node, mBoolean);
 	}
 }
 

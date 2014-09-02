@@ -24,6 +24,12 @@ public:
 	QVariant interpret(QSharedPointer<core::ast::Node> const &root, core::SemanticAnalyzer const &semanticAnalyzer);
 
 private:
+	QVariant interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root
+			, core::SemanticAnalyzer const &semanticAnalyzer);
+
+	QVariant interpretBinaryOperator(QSharedPointer<core::ast::Node> const &root
+			, core::SemanticAnalyzer const &semanticAnalyzer);
+
 	QHash<QString, QVariant> mIdentifierValues;
 	QHash<QString, std::function<QVariant(QList<QVariant> const &)>> mIntrinsicFunctions;
 };

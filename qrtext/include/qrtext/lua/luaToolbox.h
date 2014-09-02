@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include <QtCore/QSharedPointer>
 #include <QtCore/QScopedPointer>
 
@@ -9,6 +11,8 @@
 #include "qrtext/core/types/typeExpression.h"
 #include "qrtext/core/error.h"
 #include "qrtext/core/lexer/tokenPatterns.h"
+
+#include "qrtext/core/types/typeExpression.h"
 
 #include "qrtext/declSpec.h"
 
@@ -48,8 +52,6 @@ public:
 		return interpret(root).value<T>();
 	}
 
-	QVariant interpret(QSharedPointer<core::ast::Node> const &root);
-
 	void markAsChanged(qReal::Id const &id, QString const &propertyName);
 
 	QSharedPointer<core::ast::Node> const &parse(qReal::Id const &id, QString const &propertyName, QString const &code);
@@ -60,7 +62,19 @@ public:
 
 	QList<core::Error> const &errors() const;
 
+	/// Register intrinsic function.
+	/// @param name - name of a function.
+	/// @param returnType - function return type, as type expression. Takes ownership.
+	/// @param parameterTypes - a list of types of function parameters. Takes ownership.
+	/// @param semantic - a function that will be called by interpreter to actually get a result.
+	void addIntrinsicFunction(QString const &name
+			, core::types::TypeExpression * const returnType
+			, const QList<core::types::TypeExpression *> &parameterTypes
+			, std::function<QVariant(QList<QVariant> const &)> const &semantic);
+
 private:
+	QVariant interpret(QSharedPointer<core::ast::Node> const &root);
+
 	QList<core::Error> mErrors;
 
 	QScopedPointer<details::LuaLexer> mLexer;

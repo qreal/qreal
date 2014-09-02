@@ -1,5 +1,7 @@
 #include "qrtext/src/lua/luaInterpreter.h"
 
+#include "qrtext/lua/types/string.h"
+
 #include "qrtext/lua/ast/assignment.h"
 #include "qrtext/lua/ast/floatNumber.h"
 #include "qrtext/lua/ast/functionCall.h"
@@ -7,6 +9,33 @@
 #include "qrtext/lua/ast/integerNumber.h"
 #include "qrtext/lua/ast/string.h"
 #include "qrtext/lua/ast/tableConstructor.h"
+
+#include "qrtext/lua/ast/unaryMinus.h"
+#include "qrtext/lua/ast/not.h"
+#include "qrtext/lua/ast/length.h"
+#include "qrtext/lua/ast/bitwiseNegation.h"
+
+#include "qrtext/lua/ast/addition.h"
+#include "qrtext/lua/ast/subtraction.h"
+#include "qrtext/lua/ast/multiplication.h"
+#include "qrtext/lua/ast/division.h"
+#include "qrtext/lua/ast/integerDivision.h"
+#include "qrtext/lua/ast/exponentiation.h"
+#include "qrtext/lua/ast/modulo.h"
+#include "qrtext/lua/ast/bitwiseAnd.h"
+#include "qrtext/lua/ast/bitwiseXor.h"
+#include "qrtext/lua/ast/bitwiseOr.h"
+#include "qrtext/lua/ast/bitwiseRightShift.h"
+#include "qrtext/lua/ast/bitwiseLeftShift.h"
+#include "qrtext/lua/ast/concatenation.h"
+#include "qrtext/lua/ast/lessThan.h"
+#include "qrtext/lua/ast/greaterThan.h"
+#include "qrtext/lua/ast/lessOrEqual.h"
+#include "qrtext/lua/ast/greaterOrEqual.h"
+#include "qrtext/lua/ast/equality.h"
+#include "qrtext/lua/ast/inequality.h"
+#include "qrtext/lua/ast/logicalAnd.h"
+#include "qrtext/lua/ast/logicalOr.h"
 
 using namespace qrtext::lua::details;
 using namespace qrtext;
@@ -72,6 +101,14 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		result = mIntrinsicFunctions[name](actualParameters);
 	}
 
+	if (root->is<ast::UnaryOperator>()) {
+		interpretUnaryOperator(root, semanticAnalyzer);
+	}
+
+	if (root->is<ast::BinaryOperator>()) {
+		interpretBinaryOperator(root, semanticAnalyzer);
+	}
+
 	return result;
 }
 
@@ -79,4 +116,37 @@ void LuaInterpreter::addIntrinsicFunction(QString const &name
 		, std::function<QVariant(QList<QVariant> const &)> const &semantic)
 {
 	mIntrinsicFunctions.insert(name, semantic);
+}
+
+QVariant LuaInterpreter::interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root
+		, core::SemanticAnalyzer const &semanticAnalyzer)
+{
+	auto operand = as<ast::UnaryOperator>(root)->operand();
+	if (root->is<ast::UnaryMinus>()) {
+		return -interpret(operand, semanticAnalyzer).toFloat();
+	} else if (root->is<ast::Not>()) {
+		QVariant const operandResult = interpret(operand, semanticAnalyzer);
+		/// @todo Code 'nil' more adequately.
+		if (operandResult.isNull()) {
+			return true;
+		}
+
+		return !operandResult.toBool();
+	} else if (root->is<ast::Length>()) {
+		if (semanticAnalyzer.type(operand)->is<types::String>()) {
+			/// @todo Well, in Lua '#' returns bytes in a string, not symbols.
+			return interpret(operand, semanticAnalyzer).toString().length();
+		}
+		/// @todo Support everything else.
+	} else if (root->is<ast::BitwiseNegation>()) {
+		return ~(interpret(operand, semanticAnalyzer).toInt());
+	}
+
+	return QVariant();
+}
+
+QVariant LuaInterpreter::interpretBinaryOperator(QSharedPointer<core::ast::Node> const &root
+		, core::SemanticAnalyzer const &semanticAnalyzer)
+{
+	return QVariant();
 }

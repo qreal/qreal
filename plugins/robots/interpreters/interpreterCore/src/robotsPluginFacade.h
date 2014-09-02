@@ -4,7 +4,6 @@
 #include <QtCore/QScopedPointer>
 
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
-#include <qrtext/lua/luaToolbox.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/devicesConfigurationWidget.h>
 
@@ -18,6 +17,7 @@
 #include "managers/blocksFactoryManager.h"
 #include "interpreter/interpreter.h"
 #include "textLanguage/robotsBlockParser.h"
+#include "textLanguage/newRobotsBlockParser.h"
 #include "ui/robotsSettingsPage.h"
 
 namespace interpreterCore {
@@ -75,7 +75,7 @@ private:
 	/// @todo What it is doing here?
 	textLanguage::RobotsBlockParser *mParser;  // Has ownership
 
-	QScopedPointer<qrtext::lua::LuaToolbox> mNewParser;
+	QScopedPointer<textLanguage::NewRobotsBlockParser> mNewParser;
 
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
 	interpreter::InterpreterInterface *mInterpreter;  // Has ownership

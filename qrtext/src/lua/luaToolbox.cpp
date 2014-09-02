@@ -54,3 +54,22 @@ QList<Error> const &LuaToolbox::errors() const
 {
 	return mErrors;
 }
+
+void LuaToolbox::addIntrinsicFunction(QString const &name
+		, core::types::TypeExpression * const returnType
+		, QList<core::types::TypeExpression *> const &parameterTypes
+		, std::function<QVariant(QList<QVariant> const &)> const &semantic)
+{
+	QList<QSharedPointer<core::types::TypeExpression>> wrappedParameterTypes;
+	for (core::types::TypeExpression * const type : parameterTypes) {
+		wrappedParameterTypes << QSharedPointer<core::types::TypeExpression>(type);
+	}
+
+	auto functionType = QSharedPointer<types::Function>(new types::Function(
+			QSharedPointer<core::types::TypeExpression>(returnType)
+			, wrappedParameterTypes
+			));
+
+	mAnalyzer->addIntrinsicFunction(name, functionType);
+	mInterpreter->addIntrinsicFunction(name, semantic);
+}
