@@ -1,11 +1,14 @@
 #pragma once
 
+#include <functional>
 #include <QtCore/QHash>
 
 #include "qrtext/core/error.h"
 #include "qrtext/core/ast/node.h"
 
 #include "qrtext/core/semantics/semanticAnalyzer.h"
+
+#include "qrtext/lua/types/function.h"
 
 namespace qrtext {
 namespace lua {
@@ -15,12 +18,14 @@ class LuaInterpreter {
 public:
 //	explicit LuaInterpreter(QList<core::Error> &errors);
 
-	void registerFunction(QString const &name);
+	void addIntrinsicFunction(QString const &name
+			, std::function<QVariant(QList<QVariant> const &)> const &semantic);
 
 	QVariant interpret(QSharedPointer<core::ast::Node> const &root, core::SemanticAnalyzer const &semanticAnalyzer);
 
 private:
 	QHash<QString, QVariant> mIdentifierValues;
+	QHash<QString, std::function<QVariant(QList<QVariant> const &)>> mIntrinsicFunctions;
 };
 
 }

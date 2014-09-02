@@ -2,6 +2,7 @@
 
 #include "qrtext/lua/ast/assignment.h"
 #include "qrtext/lua/ast/floatNumber.h"
+#include "qrtext/lua/ast/functionCall.h"
 #include "qrtext/lua/ast/identifier.h"
 #include "qrtext/lua/ast/integerNumber.h"
 #include "qrtext/lua/ast/string.h"
@@ -58,5 +59,23 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		result = mIdentifierValues.value(as<ast::Identifier>(root)->name());
 	}
 
+	if (root->is<ast::FunctionCall>()) {
+		auto name = as<ast::FunctionCall>(root)->name();
+		auto parameters = as<ast::FunctionCall>(root)->arguments();
+
+		QList<QVariant> actualParameters;
+		for (auto parameter : parameters) {
+			actualParameters << interpret(parameter);
+		}
+
+		result = mIntrinsicFunctions[name](actualParameters);
+	}
+
 	return result;
+}
+
+void LuaInterpreter::addIntrinsicFunction(QString const &name
+		, std::function<QVariant(QList<QVariant> const &)> const &semantic)
+{
+	mIntrinsicFunctions.insert(name, semantic);
 }
