@@ -11,9 +11,7 @@ LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -linterpreterBase
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 
-TRANSLATIONS = generatorBase_ru.ts
-
-RESOURCES = generatorBase.qrc
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/generatorBase_ru.ts
 
 HEADERS += \
 	$$PWD/include/generatorBase/robotsGeneratorDeclSpec.h \

@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>metaEditorSupport_ru.qm</file>
         <file>icons/tools.png</file>
     </qresource>
 </RCC>

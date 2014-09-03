@@ -14,7 +14,7 @@ INCLUDEPATH += \
 
 QT += widgets
 
-TRANSLATIONS = refactoringSupport_ru.ts
+TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/refactoringSupport_ru.ts
 
 HEADERS = \
 	refactoringPlugin.h \

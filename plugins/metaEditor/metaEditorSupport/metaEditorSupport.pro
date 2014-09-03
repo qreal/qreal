@@ -13,7 +13,7 @@ INCLUDEPATH += \
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrmc
 
-TRANSLATIONS = metaEditorSupport_ru.ts
+TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/metaEditorSupport_ru.ts
 
 RESOURCES = metaEditorSupport.qrc
 

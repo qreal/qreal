@@ -121,6 +121,6 @@ FORMS += \
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \
 
-TRANSLATIONS += $$PWD/../trikKitInterpreter_ru.ts
+TRANSLATIONS += $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts
 
 include($$PWD/../qrguiIncludes.pri)
