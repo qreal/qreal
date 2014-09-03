@@ -52,6 +52,17 @@ public:
 		return interpret(root).value<T>();
 	}
 
+
+	void interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
+	{
+		interpret<int>(id, propertyName, code);
+	}
+
+	void interpret(QString const &code)
+	{
+		interpret<int>(qReal::Id(), "", code);
+	}
+
 	void markAsChanged(qReal::Id const &id, QString const &propertyName);
 
 	QSharedPointer<core::ast::Node> const &parse(qReal::Id const &id, QString const &propertyName, QString const &code);

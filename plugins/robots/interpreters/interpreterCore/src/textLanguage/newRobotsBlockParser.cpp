@@ -24,7 +24,7 @@ NewRobotsBlockParser::NewRobotsBlockParser(ErrorReporterInterface * const errorR
 
 void NewRobotsBlockParser::setReservedVariables()
 {
-	interpret<int>(Id(), "", "pi = 3.14159265");
+	interpret(Id(), "", "pi = 3.14159265");
 
 	addIntrinsicFunction("time", new types::Integer(), {}, [this](QList<QVariant> params) { return mTimeComputer(); });
 
@@ -32,6 +32,12 @@ void NewRobotsBlockParser::setReservedVariables()
 		QString const variable = port.reservedVariable();
 		if (!variable.isEmpty()) {
 			addIntrinsicFunction(variable, new types::Integer(), {}, [this](QList<QVariant> params) { return 0; });
+		}
+
+		interpret(QString("%1 = '%1'").arg(port.name()));
+
+		for (QString const &alias : port.nameAliases()) {
+			interpret(QString("%1 = '%2'").arg(alias).arg(port.name()));
 		}
 	}
 }

@@ -45,31 +45,21 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 {
 	Q_UNUSED(semanticAnalyzer);
 
-	QVariant result;
-
 	/// @todo Integer and float literals may differ from those recognized in toInt() and toDouble().
 	if (root->is<ast::IntegerNumber>()) {
-		result = as<ast::IntegerNumber>(root)->stringRepresentation().toInt();
-	}
-
-	if (root->is<ast::FloatNumber>()) {
-		result = as<ast::FloatNumber>(root)->stringRepresentation().toDouble();
-	}
-
-	if (root->is<ast::String>()) {
-		result = as<ast::String>(root)->string();
-	}
-
-	if (root->is<ast::TableConstructor>()) {
+		return as<ast::IntegerNumber>(root)->stringRepresentation().toInt();
+	} else if (root->is<ast::FloatNumber>()) {
+		return as<ast::FloatNumber>(root)->stringRepresentation().toDouble();
+	} else if (root->is<ast::String>()) {
+		return as<ast::String>(root)->string();
+	} else if (root->is<ast::TableConstructor>()) {
 		QStringList temp;
 		for (auto node : as<ast::TableConstructor>(root)->initializers()) {
 			temp << interpret(node->value(), semanticAnalyzer).value<QString>();
 		}
 
-		result = QVariant(temp);
-	}
-
-	if (root->is<ast::Assignment>()) {
+		return QVariant(temp);
+	} else if (root->is<ast::Assignment>()) {
 		auto variable = as<ast::Assignment>(root)->variable();
 		auto value = as<ast::Assignment>(root)->value();
 		auto interpretedValue = interpret(value, semanticAnalyzer);
@@ -79,16 +69,14 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 			mIdentifierValues.insert(name, interpretedValue);
 		}
 
+		return QVariant();
+
 		/// @todo Assignment is also possible to array slice, for example "a[1] = 1", or more complex case,
 		///       "f(x)[1] = 1". Note that field access in form of "a.x = 1" is parsed as "a['x'] = 1", so no special
 		///       handling is needed for that case.
-	}
-
-	if (root->is<ast::Identifier>()) {
-		result = mIdentifierValues.value(as<ast::Identifier>(root)->name());
-	}
-
-	if (root->is<ast::FunctionCall>()) {
+	} else if (root->is<ast::Identifier>()) {
+		return mIdentifierValues.value(as<ast::Identifier>(root)->name());
+	} else if (root->is<ast::FunctionCall>()) {
 		auto function = as<ast::FunctionCall>(root)->function();
 		auto name = as<ast::Identifier>(function)->name();
 		auto parameters = as<ast::FunctionCall>(root)->arguments();
@@ -98,18 +86,14 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 			actualParameters << interpret(parameter, semanticAnalyzer);
 		}
 
-		result = mIntrinsicFunctions[name](actualParameters);
+		return mIntrinsicFunctions[name](actualParameters);
+	} else if (root->is<ast::UnaryOperator>()) {
+		return interpretUnaryOperator(root, semanticAnalyzer);
+	} else if (root->is<ast::BinaryOperator>()) {
+		return interpretBinaryOperator(root, semanticAnalyzer);
 	}
 
-	if (root->is<ast::UnaryOperator>()) {
-		result = interpretUnaryOperator(root, semanticAnalyzer);
-	}
-
-	if (root->is<ast::BinaryOperator>()) {
-		result = interpretBinaryOperator(root, semanticAnalyzer);
-	}
-
-	return result;
+	return QVariant();
 }
 
 void LuaInterpreter::addIntrinsicFunction(QString const &name
