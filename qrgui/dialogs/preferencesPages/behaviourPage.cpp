@@ -1,6 +1,8 @@
 #include "behaviourPage.h"
 #include "ui_behaviourPage.h"
 
+#include <QtCore/QDir>
+
 #include <qrkernel/settingsManager.h>
 
 using namespace qReal;
@@ -100,5 +102,12 @@ void PreferencesBehaviourPage::initLanguages()
 {
 	mUi->languageComboBox->addItem(tr("<System Language>"));
 	mUi->languageComboBox->addItem("English", "en");
-	mUi->languageComboBox->addItem(QString::fromUtf8("Русский"), "ru");
+	QDir translationsDir(QApplication::applicationDirPath() + "/translations");
+	for (QString const &locale: translationsDir.entryList(QDir::Dirs)) {
+		QString const language = QLocale(locale).nativeLanguageName();
+		if (!language.isEmpty()) {
+			QString const capitalizedLanguage = language[0].toUpper() + language.mid(1);
+			mUi->languageComboBox->addItem(capitalizedLanguage, locale);
+		}
+	}
 }
