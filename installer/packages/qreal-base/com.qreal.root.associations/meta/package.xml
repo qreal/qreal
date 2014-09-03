@@ -7,7 +7,7 @@
     <ReleaseDate>2014-08-16</ReleaseDate>
     <Version>1.0.0</Version>
     <Script>installscript.qs</Script>
-    <SortingPriority>9</SortingPriority>
+    <SortingPriority>8</SortingPriority>
     <Default>true</Default>
     <ForcedInstallation>false</ForcedInstallation>
 </Package>
