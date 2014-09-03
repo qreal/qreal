@@ -102,11 +102,11 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 	}
 
 	if (root->is<ast::UnaryOperator>()) {
-		interpretUnaryOperator(root, semanticAnalyzer);
+		result = interpretUnaryOperator(root, semanticAnalyzer);
 	}
 
 	if (root->is<ast::BinaryOperator>()) {
-		interpretBinaryOperator(root, semanticAnalyzer);
+		result = interpretBinaryOperator(root, semanticAnalyzer);
 	}
 
 	return result;
@@ -148,5 +148,78 @@ QVariant LuaInterpreter::interpretUnaryOperator(QSharedPointer<core::ast::Node> 
 QVariant LuaInterpreter::interpretBinaryOperator(QSharedPointer<core::ast::Node> const &root
 		, core::SemanticAnalyzer const &semanticAnalyzer)
 {
+	auto leftOperand = as<ast::BinaryOperator>(root)->leftOperand();
+	auto rightOperand = as<ast::BinaryOperator>(root)->rightOperand();
+
+	if (root->is<ast::Addition>()) {
+		return interpret(leftOperand, semanticAnalyzer).toDouble()
+				+ interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::Subtraction>()) {
+		return interpret(leftOperand, semanticAnalyzer).toDouble()
+				- interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::Multiplication>()) {
+		QVariant leftOperandValue = interpret(leftOperand, semanticAnalyzer);
+		return leftOperandValue.toDouble()
+				* interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::Division>()) {
+		return interpret(leftOperand, semanticAnalyzer).toDouble()
+				/ interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::IntegerDivision>()) {
+		return interpret(leftOperand, semanticAnalyzer).toInt()
+				/ interpret(rightOperand, semanticAnalyzer).toInt();
+	} else if (root->is<ast::Exponentiation>()) {
+		return pow(interpret(leftOperand, semanticAnalyzer).toDouble()
+				, interpret(rightOperand, semanticAnalyzer).toDouble());
+	} else if (root->is<ast::Modulo>()) {
+		return interpret(leftOperand, semanticAnalyzer).toInt()
+				% interpret(rightOperand, semanticAnalyzer).toInt();
+
+	} else if (root->is<ast::BitwiseAnd>()) {
+		return interpret(leftOperand, semanticAnalyzer).toInt()
+				& interpret(rightOperand, semanticAnalyzer).toInt();
+	} else if (root->is<ast::BitwiseOr>()) {
+		return interpret(leftOperand, semanticAnalyzer).toInt()
+				| interpret(rightOperand, semanticAnalyzer).toInt();
+	} else if (root->is<ast::BitwiseXor>()) {
+		return interpret(leftOperand, semanticAnalyzer).toInt()
+				^ interpret(rightOperand, semanticAnalyzer).toInt();
+	} else if (root->is<ast::BitwiseLeftShift>()) {
+		return interpret(leftOperand, semanticAnalyzer).toInt()
+				<< interpret(rightOperand, semanticAnalyzer).toInt();
+	} else if (root->is<ast::BitwiseRightShift>()) {
+		return interpret(leftOperand, semanticAnalyzer).toInt()
+				<< interpret(rightOperand, semanticAnalyzer).toInt();
+
+	} else if (root->is<ast::Concatenation>()) {
+		return interpret(leftOperand, semanticAnalyzer).toString()
+				+ interpret(rightOperand, semanticAnalyzer).toString();
+
+	/// @todo String comparison.
+	} else if (root->is<ast::LessThan>()) {
+		return interpret(leftOperand, semanticAnalyzer).toDouble()
+				< interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::LessOrEqual>()) {
+		return interpret(leftOperand, semanticAnalyzer).toDouble()
+				<= interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::GreaterThan>()) {
+		return interpret(leftOperand, semanticAnalyzer).toDouble()
+				> interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::GreaterOrEqual>()) {
+		return interpret(leftOperand, semanticAnalyzer).toDouble()
+				>= interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::Equality>()) {
+		return interpret(leftOperand, semanticAnalyzer).toDouble()
+				== interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::Inequality>()) {
+		return interpret(leftOperand, semanticAnalyzer).toDouble()
+				!= interpret(rightOperand, semanticAnalyzer).toDouble();
+	} else if (root->is<ast::LogicalAnd>()) {
+		return interpret(leftOperand, semanticAnalyzer).toInt()
+				&& interpret(rightOperand, semanticAnalyzer).toInt();
+	} else if (root->is<ast::LogicalOr>()) {
+		return interpret(leftOperand, semanticAnalyzer).toInt()
+				|| interpret(rightOperand, semanticAnalyzer).toInt();
+	}
+
 	return QVariant();
 }
