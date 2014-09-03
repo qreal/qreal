@@ -9,6 +9,7 @@
 #include "qrtext/lua/ast/integerNumber.h"
 #include "qrtext/lua/ast/string.h"
 #include "qrtext/lua/ast/tableConstructor.h"
+#include "qrtext/lua/ast/block.h"
 
 #include "qrtext/lua/ast/unaryMinus.h"
 #include "qrtext/lua/ast/not.h"
@@ -45,8 +46,18 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 {
 	Q_UNUSED(semanticAnalyzer);
 
-	/// @todo Integer and float literals may differ from those recognized in toInt() and toDouble().
-	if (root->is<ast::IntegerNumber>()) {
+	if (root->is<ast::Block>()) {
+		for (auto statement : as<ast::Block>(root)->children()) {
+			if (statement != as<ast::Block>(root)->children().last()) {
+				interpret(statement, semanticAnalyzer);
+			}
+		}
+
+		if (!as<ast::Block>(root)->children().isEmpty()) {
+			return interpret(as<ast::Block>(root)->children().first(), semanticAnalyzer);
+		}
+	} else if (root->is<ast::IntegerNumber>()) {
+		/// @todo Integer and float literals may differ from those recognized in toInt() and toDouble().
 		return as<ast::IntegerNumber>(root)->stringRepresentation().toInt();
 	} else if (root->is<ast::FloatNumber>()) {
 		return as<ast::FloatNumber>(root)->stringRepresentation().toDouble();
@@ -100,6 +111,16 @@ void LuaInterpreter::addIntrinsicFunction(QString const &name
 		, std::function<QVariant(QList<QVariant> const &)> const &semantic)
 {
 	mIntrinsicFunctions.insert(name, semantic);
+}
+
+QStringList LuaInterpreter::identifiers() const
+{
+	return mIdentifierValues.keys();
+}
+
+QVariant LuaInterpreter::value(QString const &identifier) const
+{
+	return mIdentifierValues.value(identifier);
 }
 
 QVariant LuaInterpreter::interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root

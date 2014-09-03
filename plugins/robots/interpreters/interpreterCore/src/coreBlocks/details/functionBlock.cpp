@@ -10,12 +10,20 @@ void FunctionBlock::run()
 
 QVariant FunctionBlock::evaluate(QString const &propertyName)
 {
-	int position = 0;
-	mParser->functionBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
-	if (mParser->hasErrors()) {
-		mParser->deselect();
+//	int position = 0;
+
+	mNewParser->interpret(stringProperty(propertyName));
+	if (!mNewParser->errors().isEmpty()) {
 		emit failure();
 	}
 
 	return 0;
+
+//	mParser->functionBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
+//	if (mParser->hasErrors()) {
+//		mParser->deselect();
+//		emit failure();
+//	}
+
+//	return 0;
 }

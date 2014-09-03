@@ -23,6 +23,10 @@ public:
 
 	QVariant interpret(QSharedPointer<core::ast::Node> const &root, core::SemanticAnalyzer const &semanticAnalyzer);
 
+	QStringList identifiers() const;
+
+	QVariant value(QString const &identifier) const;
+
 private:
 	QVariant interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root
 			, core::SemanticAnalyzer const &semanticAnalyzer);

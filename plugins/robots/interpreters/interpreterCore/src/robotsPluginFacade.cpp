@@ -199,7 +199,10 @@ void RobotsPluginFacade::initSensorWidgets()
 		}
 	}
 
-	mWatchListWindow = new utils::WatchListWindow(mParser);
+	mWatchListWindow = new utils::WatchListWindow(mParser, *mNewParser);
+
+	mWatchListWindow->hideVariables(mNewParser->specialVariables());
+
 	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
 
 	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);

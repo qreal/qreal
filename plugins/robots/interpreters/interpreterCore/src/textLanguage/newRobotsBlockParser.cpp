@@ -26,18 +26,29 @@ void NewRobotsBlockParser::setReservedVariables()
 {
 	interpret(Id(), "", "pi = 3.14159265");
 
-	addIntrinsicFunction("time", new types::Integer(), {}, [this](QList<QVariant> params) { return mTimeComputer(); });
+	addIntrinsicFunction("time", new types::Integer(), {}
+			, [this](QList<QVariant> const &params) {
+				Q_UNUSED(params);
+				return mTimeComputer();
+			});
 
 	for (interpreterBase::robotModel::PortInfo const &port : mRobotModelManager.model().availablePorts()) {
-		QString const variable = port.reservedVariable();
-		if (!variable.isEmpty()) {
-			addIntrinsicFunction(variable, new types::Integer(), {}, [this](QList<QVariant> params) { return 0; });
-		}
-
 		interpret(QString("%1 = '%1'").arg(port.name()));
+
+		mSpecialVariables << port.name();
 
 		for (QString const &alias : port.nameAliases()) {
 			interpret(QString("%1 = '%2'").arg(alias).arg(port.name()));
+			mSpecialVariables << alias;
+		}
+
+		if (!port.reservedVariable().isEmpty()) {
+			interpret(QString("%1 = 0").arg(port.reservedVariable()));
 		}
 	}
+}
+
+QStringList const &NewRobotsBlockParser::specialVariables() const
+{
+	return mSpecialVariables;
 }

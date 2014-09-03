@@ -52,6 +52,12 @@ public:
 		return interpret(root).value<T>();
 	}
 
+	template<typename T>
+	T interpret(QString const &code)
+	{
+		auto root = parse(qReal::Id(), "", code);
+		return interpret(root).value<T>();
+	}
 
 	void interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
 	{
@@ -83,8 +89,17 @@ public:
 			, const QList<core::types::TypeExpression *> &parameterTypes
 			, std::function<QVariant(QList<QVariant> const &)> const &semantic);
 
+	QStringList identifiers() const;
+
+	template<typename T>
+	T value(QString const &identifier) const
+	{
+		return value(identifier).value<T>();
+	}
+
 private:
 	QVariant interpret(QSharedPointer<core::ast::Node> const &root);
+	QVariant value(QString const &identifier) const;
 
 	QList<core::Error> mErrors;
 

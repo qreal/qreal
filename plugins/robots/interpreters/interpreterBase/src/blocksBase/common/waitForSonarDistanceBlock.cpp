@@ -15,7 +15,8 @@ WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(interpreterBase::robotModel
 
 void WaitForSonarDistanceBlock::responseSlot(int reading)
 {
-	int const targetDistance = evaluate("Distance").toInt();
+	int const targetDistance = mNewParser->interpret<int>(mGraphicalId, "Distance", stringProperty("Distance"));
+
 	processResponce(reading, targetDistance);
 }
 

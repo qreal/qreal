@@ -6,6 +6,8 @@
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 #include <qrutils/expressionsParser/expressionsParser.h>
 
+#include "textLanguage/newRobotsBlockParser.h"
+
 namespace utils {
 class AbstractTimer;
 }
@@ -27,6 +29,7 @@ public:
 	SensorVariablesUpdater(
 			interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, utils::ExpressionsParser &parser  /// @todo direct dependency from ExpressionsParser shall be removed.
+			, qrtext::lua::LuaToolbox &newParser
 			);
 
 	/// Starts background polling process.
@@ -49,6 +52,7 @@ private:
 	utils::AbstractTimer *mUpdateTimer;
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	utils::ExpressionsParser &mParser;
+	qrtext::lua::LuaToolbox &mNewParser;
 };
 
 }

@@ -73,3 +73,13 @@ void LuaToolbox::addIntrinsicFunction(QString const &name
 	mAnalyzer->addIntrinsicFunction(name, functionType);
 	mInterpreter->addIntrinsicFunction(name, semantic);
 }
+
+QStringList LuaToolbox::identifiers() const
+{
+	return mInterpreter->identifiers();
+}
+
+QVariant LuaToolbox::value(QString const &identifier) const
+{
+	return mInterpreter->value(identifier);
+}

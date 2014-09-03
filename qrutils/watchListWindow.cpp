@@ -3,10 +3,12 @@
 
 using namespace utils;
 
-WatchListWindow::WatchListWindow(const utils::ExpressionsParser *parser, QWidget *parent)
+WatchListWindow::WatchListWindow(const utils::ExpressionsParser *parser
+		, qrtext::lua::LuaToolbox &newParser, QWidget *parent)
 	: QDockWidget(parent)
 	, mUi(new Ui::watchListWindow)
 	, mParser(parser)
+	, mNewParser(newParser)
 {
 	mUi->setupUi(this);
 
@@ -30,14 +32,37 @@ void WatchListWindow::updateVariables()
 	}
 
 	int row = 0;
-	QMap<QString, Number *> const &variables = mParser->variables();
+	QStringList sortedIdentifiers = mNewParser.identifiers();
+	qSort(sortedIdentifiers);
+	for (QString const &identifier : sortedIdentifiers) {
+		if (mHiddenVariables.contains(identifier)) {
+			continue;
+		}
 
-	foreach (QString const &variable, variables.keys()) {
 		mUi->watchListTableWidget->insertRow(row);
-		QTableWidgetItem* item = new QTableWidgetItem(variable);
+		QTableWidgetItem* item = new QTableWidgetItem(identifier);
 		mUi->watchListTableWidget->setItem(row, 0, item);
-		item = new QTableWidgetItem(variables.value(variable)->toString());
+		item = new QTableWidgetItem(mNewParser.value<QString>(identifier));
 		mUi->watchListTableWidget->setItem(row, 1, item);
 		++row;
+	}
+
+//	int row = 0;
+//	QMap<QString, Number *> const &variables = mParser->variables();
+
+//	foreach (QString const &variable, variables.keys()) {
+//		mUi->watchListTableWidget->insertRow(row);
+//		QTableWidgetItem* item = new QTableWidgetItem(variable);
+//		mUi->watchListTableWidget->setItem(row, 0, item);
+//		item = new QTableWidgetItem(variables.value(variable)->toString());
+//		mUi->watchListTableWidget->setItem(row, 1, item);
+//		++row;
+//	}
+}
+
+void WatchListWindow::hideVariables(QStringList const &variableNames)
+{
+	for (QString const &variableName : variableNames) {
+		mHiddenVariables.insert(variableName);
 	}
 }

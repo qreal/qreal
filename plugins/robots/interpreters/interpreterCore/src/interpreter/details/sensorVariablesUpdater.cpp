@@ -11,13 +11,14 @@ static int const realUpdateInterval = 200;
 using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
 
-SensorVariablesUpdater::SensorVariablesUpdater(
-		RobotModelManagerInterface const &robotModelManager
+SensorVariablesUpdater::SensorVariablesUpdater(RobotModelManagerInterface const &robotModelManager
 		, utils::ExpressionsParser &parser
+		, qrtext::lua::LuaToolbox &newParser
 		)
 	: mUpdateTimer(nullptr)
 	, mRobotModelManager(robotModelManager)
 	, mParser(parser)
+	, mNewParser(newParser)
 {
 }
 
@@ -120,6 +121,8 @@ void SensorVariablesUpdater::updateScalarSensorVariable(QString const &variable,
 			, "SensorVariablesUpdater::updateScalarSensorVariable"
 			, variable + QString::number(reading)
 			);
+
+	mNewParser.interpret(QString("%1 = %2").arg(variable).arg(reading));
 }
 
 void SensorVariablesUpdater::resetVariables()
