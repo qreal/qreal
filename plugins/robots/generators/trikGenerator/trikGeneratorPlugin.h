@@ -54,8 +54,6 @@ private:
 
 	/// Action that stops script execution and turns off motors.
 	QAction mStopRobotAction;
-
-	QTranslator mAppTranslator;
 };
 
 }

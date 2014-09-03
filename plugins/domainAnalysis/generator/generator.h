@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QtCore/QTranslator>
-
 #include <qrgui/toolPluginInterface/toolPluginInterface.h>
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
 #include <qrrepo/logicalRepoApi.h>

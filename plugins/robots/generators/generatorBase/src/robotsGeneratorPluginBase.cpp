@@ -11,8 +11,6 @@ using namespace utils;
 
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 {
-	mAppTranslator.load(":/generatorBase_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 QString RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) const

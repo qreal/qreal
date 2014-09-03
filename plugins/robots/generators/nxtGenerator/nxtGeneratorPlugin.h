@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QtCore/QTranslator>
 #include <QtCore/QMultiHash>
 
 #include <qrgui/toolPluginInterface/toolPluginInterface.h>
@@ -79,8 +78,6 @@ private:
 	NxtFlashTool *mFlashTool = nullptr;  // Has ownership
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
-
-	QTranslator mAppTranslator;
 };
 
 }
