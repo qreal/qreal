@@ -61,7 +61,7 @@ void DevicesConfigurationManager::load(QString const &configuration)
 void DevicesConfigurationManager::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
-	if (reason == loading) {
+	if (reason == Reason::loading) {
 		return;
 	}
 
