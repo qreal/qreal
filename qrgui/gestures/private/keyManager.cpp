@@ -20,7 +20,7 @@ QString KeyManager::getKey(QList<QPoint> const &path)
 	if ((mLowerBound - mUpperBound) / iSize > unidimensionalLimit
 			|| (mRightBound - mLeftBound) / iSize > unidimensionalLimit
 	) {
-		foreach (QPoint point, path) {
+		for (QPoint const &point : path) {
 			if((mLowerBound - mUpperBound) / iSize < unidimensionalLimit) {
 				pntPath.setX((point.x() - mLeftBound) * iSize / (mRightBound - mLeftBound));
 				pntPath.setY(0);
@@ -50,7 +50,7 @@ void KeyManager::analysePoints(QList<QPoint> const &path)
 		mUpperBound = path[0].y();
 		mLowerBound = path[0].y();
 	}
-	foreach (QPoint pnt, path) {
+	for (QPoint const &pnt : path) {
 		if (pnt.x() < mLeftBound)
 			mLeftBound = pnt.x();
 		if (pnt.x() > mRightBound)
