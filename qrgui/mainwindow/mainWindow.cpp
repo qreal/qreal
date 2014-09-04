@@ -1974,8 +1974,9 @@ void MainWindow::checkForUpdates()
 		utils::QRealUpdater * const updater = new utils::QRealUpdater(this);
 		connect(updater, &utils::QRealUpdater::newVersionAvailable, this, &MainWindow::showUpdatesDialog);
 
-		QLOG_INFO() << "Starting updater...";
-		updater->checkForNewVersion();
+		/// @todo: Commented out till server unavailability error will be fixed
+		// QLOG_INFO() << "Starting updater...";
+		// updater->checkForNewVersion();
 	}
 }
 

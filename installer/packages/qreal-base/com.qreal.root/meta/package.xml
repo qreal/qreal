@@ -4,8 +4,8 @@
     <DisplayName xml:lang="ru_ru">@ProductName@</DisplayName>
     <Description>QReal metacase tool engine</Description>
     <Description xml:lang="ru_ru">Ядро системы визуального метамоделирования QReal</Description>
-    <Version>1.0.0</Version>
-    <ReleaseDate>2014-08-10</ReleaseDate>
+    <Version>3.0.0-1-13</Version>
+    <ReleaseDate>2014-09-04</ReleaseDate>
     <Script>installscript.qs</Script>
     <Licenses>
          <!-- TODO: find all russian license texts -->
