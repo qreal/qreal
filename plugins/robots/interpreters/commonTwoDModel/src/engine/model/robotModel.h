@@ -70,7 +70,7 @@ public:
 	QRectF sensorRect(interpreterBase::robotModel::PortInfo const &port, QPointF const sensorPos) const;
 
 public slots:
-	void resetPhysics(WorldModel const &worldModel);
+	void resetPhysics(WorldModel const &worldModel, Timeline const &timeline);
 
 	void recalculateParams();
 	void nextFragment();

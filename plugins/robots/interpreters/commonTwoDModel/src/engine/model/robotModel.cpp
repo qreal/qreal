@@ -338,11 +338,11 @@ void RobotModel::setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotMode
 	mWheelsToMotorPortsMap[wheel] = port;
 }
 
-void RobotModel::resetPhysics(WorldModel const &worldModel)
+void RobotModel::resetPhysics(WorldModel const &worldModel, Timeline const &timeline)
 {
 	physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
 	if (mSettings.realisticPhysics()) {
-		mPhysicsEngine = new physics::RealisticPhysicsEngine(worldModel);
+		mPhysicsEngine = new physics::RealisticPhysicsEngine(worldModel, timeline);
 	} else {
 		mPhysicsEngine = new physics::SimplePhysicsEngine(worldModel);
 	}
