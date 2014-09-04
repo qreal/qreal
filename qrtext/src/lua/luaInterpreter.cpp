@@ -47,14 +47,15 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 	Q_UNUSED(semanticAnalyzer);
 
 	if (root->is<ast::Block>()) {
-		for (auto statement : as<ast::Block>(root)->children()) {
-			if (statement != as<ast::Block>(root)->children().last()) {
+		auto statements = as<ast::Block>(root)->children();
+		for (auto statement : statements) {
+			if (statement != statements.last()) {
 				interpret(statement, semanticAnalyzer);
 			}
 		}
 
-		if (!as<ast::Block>(root)->children().isEmpty()) {
-			return interpret(as<ast::Block>(root)->children().first(), semanticAnalyzer);
+		if (!statements.isEmpty()) {
+			return interpret(statements.last(), semanticAnalyzer);
 		}
 	} else if (root->is<ast::IntegerNumber>()) {
 		/// @todo Integer and float literals may differ from those recognized in toInt() and toDouble().
