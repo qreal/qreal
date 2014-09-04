@@ -39,12 +39,6 @@ void GotoControlFlowGenerator::visitRegular(Id const &id, QList<LinkInfo> const 
 	thisNode->insertSiblingAfterThis(nextNode);
 }
 
-void GotoControlFlowGenerator::visitFinal(Id const &id, QList<LinkInfo> const &links)
-{
-	Q_UNUSED(id)
-	Q_UNUSED(links)
-}
-
 void GotoControlFlowGenerator::visitConditional(Id const &id, QList<LinkInfo> const &links)
 {
 	Q_UNUSED(links)

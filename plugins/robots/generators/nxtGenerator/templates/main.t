@@ -13,6 +13,10 @@ U32 __interpretation_started_timestamp__ = 0;
 
 @@BMP_FILES@@
 
+@@SUBPROGRAMS_FORWARDING@@
+
+@@THREADS_FORWARDING@@
+
 void ecrobot_device_initialize(void)
 {
 	srand(systick_get_ms());
@@ -32,8 +36,10 @@ void user_1ms_isr_type2(void)
 
 @@SUBPROGRAMS@@
 
+@@THREADS@@
+
 /* Main task */
-TASK(OSEK_Task_Number_0)
+TASK(TASK_MAIN)
 {
 	__interpretation_started_timestamp__ = systick_get_ms();
 @@MAIN_CODE@@

@@ -46,8 +46,7 @@ void RobotsDiagramVisitor::visitUnknown(qReal::Id const &id, QList<utils::DeepFi
 	Q_UNUSED(links)
 }
 
-void RobotsDiagramVisitor::visit(qReal::Id const &nodeId
-		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+void RobotsDiagramVisitor::visit(qReal::Id const &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links)
 {
 	switch (mCustomizer.semanticsOf(nodeId)) {
 	case enums::semantics::regularBlock:
@@ -73,4 +72,3 @@ void RobotsDiagramVisitor::visit(qReal::Id const &nodeId
 		break;
 	}
 }
-

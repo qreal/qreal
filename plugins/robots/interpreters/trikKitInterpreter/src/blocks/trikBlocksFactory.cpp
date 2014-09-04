@@ -202,9 +202,7 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikWaitForMotion")
 				;
 	} else {
-		result
-			<< id("Fork")
-		;
+		result << id("Fork");
 	}
 
 	return result;

@@ -2,6 +2,10 @@
 
 @@BMP_FILES@@
 
+@@SUBPROGRAMS_FORWARDING@@
+
+@@THREADS_FORWARDING@@
+
 Инциализация
 {
 	инициализировать_генератор_случайных_чисел();
@@ -19,6 +23,8 @@
 }
 
 @@SUBPROGRAMS@@
+
+@@THREADS@@
 
 Программа
 {

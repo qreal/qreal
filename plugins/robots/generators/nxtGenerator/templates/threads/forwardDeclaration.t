@@ -1,0 +1,1 @@
+DeclareTask(TASK_@@NAME@@);

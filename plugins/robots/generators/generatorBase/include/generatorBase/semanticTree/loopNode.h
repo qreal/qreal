@@ -11,7 +11,6 @@ class LoopNode : public ConditionalNode
 public:
 	explicit LoopNode(qReal::Id const &idBinded, QObject *parent = 0);
 
-
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
 
 	/// Switches between while-do and do-while forms.

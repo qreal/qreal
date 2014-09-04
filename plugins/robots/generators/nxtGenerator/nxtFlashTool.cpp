@@ -1,5 +1,7 @@
 #include "nxtFlashTool.h"
 
+#include <qrkernel/logging.h>
+
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtWidgets/QMessageBox>
@@ -152,6 +154,11 @@ void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitS
 void NxtFlashTool::readNxtUploadData()
 {
 	QStringList const output = QString(mUploadProcess.readAll()).split("\n", QString::SkipEmptyParts);
+	QString const error = mUploadProcess.readAllStandardError();
+	QLOG_INFO() << "NXT flash tool:" << output;
+	if (!error.isEmpty()) {
+		QLOG_ERROR() << "NXT flash tool: error:" << error;
+	}
 
 	/* each command produces its own output, so thousands of 'em. using UploadState enum
 	   to determine in which state we are (to show appropriate error if something goes wrong)
