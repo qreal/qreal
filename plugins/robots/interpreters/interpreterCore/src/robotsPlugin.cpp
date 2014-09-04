@@ -15,16 +15,6 @@ static int const gridWidth = 25; // Half of element size
 RobotsPlugin::RobotsPlugin()
 	: mMainWindowInterpretersInterface(nullptr)
 {
-	// WARNING: hack!
-	forceLoadCommonTwoDModelLib();
-	mInterpreterBaseTranslator.load(":/interpreterBase_" + QLocale().name());
-	mCommonTwoDModelTranslator.load(":/commonTwoDModel_" + QLocale().name());
-	mInterpreterCoreTranslator.load(":/interpreterCore_" + QLocale().name());
-	QApplication::installTranslator(&mInterpreterBaseTranslator);
-	QApplication::installTranslator(&mCommonTwoDModelTranslator);
-	QApplication::installTranslator(&mInterpreterCoreTranslator);
-
-	// This will start kit plugins loading and so on so we must load translators first.
 	mRobotsPluginFacade.reset(new RobotsPluginFacade);
 }
 
@@ -62,12 +52,4 @@ QList<ProjectConverter> RobotsPlugin::projectConverters()
 QStringList RobotsPlugin::defaultSettingsFiles()
 {
 	return mRobotsPluginFacade->defaultSettingsFiles();
-}
-
-void RobotsPlugin::forceLoadCommonTwoDModelLib()
-{
-	// This will request some symbols from commonTwoDModel lib immediate loading.
-	// This hack workarrounds Window`s lazy dependencies loading (else we cannot obtain 2D model translitions).
-	QString const name = twoDModel::TwoDModelControlInterface::staticMetaObject.className();
-	Q_UNUSED(name)
 }

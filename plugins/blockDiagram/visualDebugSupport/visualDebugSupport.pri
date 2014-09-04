@@ -8,7 +8,7 @@ INCLUDEPATH += \
 
 LIBS += -L$$PWD/../../../bin -lqrkernel -lqrutils
 
-TRANSLATIONS = $$PWD/visualDebugSupport_ru.ts
+TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/visualDebugSupport_ru.ts
 
 HEADERS = \
 	$$PWD/visualDebuggerPlugin.h \

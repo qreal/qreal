@@ -17,9 +17,6 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	, mTwoDRobotModelV6(mRealRobotModelV6)
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
 {
-	mAppTranslator.load(":/trikKitInterpreter_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
-
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
 
 	QLineEdit * const quickPreferences = new QLineEdit;

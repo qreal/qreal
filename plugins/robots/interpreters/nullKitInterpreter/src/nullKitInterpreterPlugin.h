@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QtCore/QTranslator>
-
 #include <interpreterBase/kitPluginInterface.h>
 #include "nullRobotModel.h"
 
@@ -36,7 +34,6 @@ public:
 
 private:
 	NullRobotModel mRobotModel;
-	QTranslator mAppTranslator;
 };
 
 }

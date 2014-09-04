@@ -24,7 +24,7 @@ INCLUDEPATH += \
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin/plugins/
 }
 
-TRANSLATIONS = trikGenerator_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/trikGenerator_ru.ts
 
 RESOURCES = \
 	$$PWD/trikGenerator.qrc \

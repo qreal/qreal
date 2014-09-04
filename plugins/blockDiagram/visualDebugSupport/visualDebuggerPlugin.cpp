@@ -17,8 +17,6 @@ VisualDebuggerPlugin::VisualDebuggerPlugin()
 		, mParser(NULL)
 		, mPreferencesPage(new VisualDebuggerPreferencesPage())
 {
-	mAppTranslator.load(":/visualDebugSupport_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 VisualDebuggerPlugin::~VisualDebuggerPlugin()

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtCore/QSignalMapper>
-#include <QtCore/QTranslator>
 #include <QtCore/QDir>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QSplashScreen>

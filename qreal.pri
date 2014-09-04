@@ -14,6 +14,7 @@ SUBDIRS = \
 	qrkernel \
 	qrutils \
 	thirdparty \
+	qrtranslations \
 
 qrkernel.depends = thirdparty
 qrutils.depends = qrkernel
