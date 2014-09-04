@@ -1018,14 +1018,14 @@ void MainWindow::closeCurrentTab()
 
 void MainWindow::closeTab(int index)
 {
-	QWidget *widget = mUi->tabs->widget(index);
-	QScintillaTextEdit *possibleCodeTab = static_cast<QScintillaTextEdit *>(widget);
-	bool const isDiagram = dynamic_cast<EditorView *>(widget);
+	QWidget * const widget = mUi->tabs->widget(index);
+	EditorView * const diagram = dynamic_cast<EditorView *>(widget);
+	QScintillaTextEdit * const possibleCodeTab = dynamic_cast<QScintillaTextEdit *>(widget);
 
 	QString const path = mTextManager->path(possibleCodeTab);
 
-	if (isDiagram) {
-		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(mRootIndex);
+	if (diagram) {
+		Id const diagramId = diagram->mvIface()->rootId();
 		mController->diagramClosed(diagramId);
 		emit mSystemEvents->diagramClosed(diagramId);
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {

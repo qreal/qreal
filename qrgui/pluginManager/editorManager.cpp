@@ -216,7 +216,10 @@ QString EditorManager::mouseGesture(const Id &id) const
 
 QIcon EditorManager::icon(Id const &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	if (!mPluginsLoaded.contains(id.editor())) {
+		return QIcon();
+	}
+
 	return SdfIconLoader::iconOf(":/generated/shapes/" + id.element() + "Class.sdf");
 }
 

@@ -9,6 +9,10 @@ using namespace qReal;
 using namespace gui;
 using namespace utils;
 
+/// If file info creation and modification timestamps differ less than on this value it is considered
+/// that file was created and filled at the same time.
+int const maxTimestampsDifference = 3000;
+
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 {
 	mAppTranslator.load(":/generatorBase_" + QLocale().name());
@@ -44,7 +48,8 @@ QString RobotsGeneratorPluginBase::defaultProjectName() const
 bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
 {
 	QFileInfo const fileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(project));
-	return !fileInfo.exists() || fileInfo.created() == fileInfo.lastModified();
+	int const difference = fileInfo.lastModified().toMSecsSinceEpoch() - fileInfo.created().toMSecsSinceEpoch();
+	return !fileInfo.exists() || difference < maxTimestampsDifference;
 }
 
 QFileInfo RobotsGeneratorPluginBase::srcPath()
