@@ -59,7 +59,7 @@ LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id con
 
 void LogicalModel::addInsufficientProperties(Id const &id, QString const &name)
 {
-	if (!mEditorManagerInterface.hasElement(id.type()) && !mEditorManagerInterface.isDiagramNode(id.type())) {
+	if (!mEditorManagerInterface.hasElement(id.type())) {
 		return;
 	}
 
