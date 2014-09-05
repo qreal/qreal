@@ -33,8 +33,6 @@ void WatchListWindow::updateVariables()
 			continue;
 		}
 
-		auto rowCount = mUi->watchListTableWidget->rowCount();
-		qDebug() << rowCount;
 		if (row >= mUi->watchListTableWidget->rowCount()) {
 			mUi->watchListTableWidget->insertRow(row);
 			QTableWidgetItem* item = new QTableWidgetItem(identifier);
