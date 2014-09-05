@@ -13,7 +13,7 @@ namespace Ui {
 	class watchListWindow;
 }
 
-int const watchWindowRefreshInterval = 100;
+int const watchWindowRefreshInterval = 500;
 
 namespace utils {
 

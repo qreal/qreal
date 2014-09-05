@@ -195,14 +195,14 @@ void RobotsPluginFacade::initSensorWidgets()
 
 	mWatchListWindow->hideVariables(mParser->specialVariables());
 
-//	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
+	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, this);
 
 	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);
-	mCustomizer.placeWatchPlugins(mWatchListWindow, nullptr /*mGraphicsWatcherManager->widget()*/);
+	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
 
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer);
-//	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mGraphicsWatcherManager);
+	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mGraphicsWatcherManager);
 }
 
 void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configurer)
