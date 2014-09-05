@@ -7,6 +7,7 @@ INCLUDEPATH += \
 	$$PWD/../../utils/include/ \
 	$$PWD/../interpreterBase/include/ \
 	$$PWD/../../../../ \
+	$$PWD/../../../../qrtext/include/ \
 
 LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -linterpreterBase
 
