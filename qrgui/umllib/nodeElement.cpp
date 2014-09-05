@@ -56,13 +56,12 @@ NodeElement::NodeElement(ElementImpl *impl
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
-	mRenderer = new SdfRenderer();
 	LabelFactory labelFactory(graphicalAssistApi, mId);
 	QList<LabelInterface*> titles;
 
 	QList<PortInterface *> ports;
 	PortFactory portFactory;
-	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, this);
+	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, &mRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
 	foreach (LabelInterface * const labelInterface, titles) {
@@ -103,7 +102,6 @@ NodeElement::~NodeElement()
 		delete title;
 	}
 
-	delete mRenderer;
 	delete mElementImpl;
 
 	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
@@ -144,6 +142,11 @@ QMap<QString, QVariant> NodeElement::graphicalProperties() const
 QMap<QString, QVariant> NodeElement::logicalProperties() const
 {
 	return mGraphicalAssistApi.properties(logicalId());
+}
+
+void NodeElement::invalidateImagesZoomCache(double zoomFactor)
+{
+	mRenderer.invalidateSvgCache(zoomFactor);
 }
 
 void NodeElement::setName(QString const &value, bool withUndoRedo)

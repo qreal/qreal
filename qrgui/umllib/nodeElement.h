@@ -55,6 +55,10 @@ public:
 	QMap<QString, QVariant> graphicalProperties() const;
 	QMap<QString, QVariant> logicalProperties() const;
 
+	/// Clears prerendered images.
+	/// @param zoomFactor - current zoom factor to render images.
+	void invalidateImagesZoomCache(double zoomFactor);
+
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
 	QRectF boundingRect() const;
@@ -280,7 +284,7 @@ private:
 
 	QTransform mTransform;
 
-	SdfRenderer *mRenderer;
+	SdfRenderer mRenderer;
 
 	bool mIsExpanded;
 

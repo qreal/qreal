@@ -280,5 +280,7 @@ void EditorView::zoom(qreal const zoomFactor)
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 
+	mMVIface->invalidateImagesZoomCache(transform().m11());
+
 	checkGrid();
 }
