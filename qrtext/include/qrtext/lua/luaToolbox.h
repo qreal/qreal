@@ -1,18 +1,9 @@
 #pragma once
 
-#include <functional>
-
 #include <QtCore/QSharedPointer>
 #include <QtCore/QScopedPointer>
 
-#include <qrkernel/ids.h>
-
-#include "qrtext/core/ast/node.h"
-#include "qrtext/core/types/typeExpression.h"
-#include "qrtext/core/error.h"
-#include "qrtext/core/lexer/tokenPatterns.h"
-
-#include "qrtext/core/types/typeExpression.h"
+#include "qrtext/languageToolboxInterface.h"
 
 #include "qrtext/declSpec.h"
 
@@ -40,44 +31,36 @@ typedef core::Error Error;
 /// Note that types of variables may change during parsing next chunks, so, for example, after parsing "a = 123" type
 /// of "a" will be inferred as Integer, but after parsing "a = 1.0" it will be changed to Float. Generators may reliably
 /// use type information only when all code in a program is parsed.
-class QRTEXT_EXPORT LuaToolbox {
+class QRTEXT_EXPORT LuaToolbox : public LanguageToolboxInterface {
 public:
 	LuaToolbox();
-	~LuaToolbox();
+	~LuaToolbox() override;
+
+	void interpret(qReal::Id const &id, QString const &propertyName, QString const &code) override;
+
+	void interpret(QString const &code) override;
 
 	template<typename T>
 	T interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
 	{
-		auto root = parse(id, propertyName, code);
-		return interpret(root).value<T>();
+		return LanguageToolboxInterface::interpret<T>(id, propertyName, code);
 	}
 
 	template<typename T>
 	T interpret(QString const &code)
 	{
-		auto root = parse(qReal::Id(), "", code);
-		return interpret(root).value<T>();
+		return LanguageToolboxInterface::interpret<T>(code);
 	}
 
-	void interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
-	{
-		interpret<int>(id, propertyName, code);
-	}
+	QSharedPointer<core::ast::Node> const &parse(qReal::Id const &id
+			, QString const &propertyName
+			, QString const &code) override;
 
-	void interpret(QString const &code)
-	{
-		interpret<int>(qReal::Id(), "", code);
-	}
+	QSharedPointer<core::ast::Node> ast(qReal::Id const &id, QString const &propertyName) const override;
 
-	void markAsChanged(qReal::Id const &id, QString const &propertyName);
+	QSharedPointer<core::types::TypeExpression> type(QSharedPointer<core::ast::Node> const &expression) const override;
 
-	QSharedPointer<core::ast::Node> const &parse(qReal::Id const &id, QString const &propertyName, QString const &code);
-
-	QSharedPointer<core::ast::Node> ast(qReal::Id const &id, QString const &propertyName) const;
-
-	QSharedPointer<core::types::TypeExpression> type(QSharedPointer<core::ast::Node> const &expression) const;
-
-	QList<core::Error> const &errors() const;
+	QList<core::Error> const &errors() const override;
 
 	/// Register intrinsic function.
 	/// @param name - name of a function.
@@ -87,27 +70,27 @@ public:
 	void addIntrinsicFunction(QString const &name
 			, core::types::TypeExpression * const returnType
 			, const QList<core::types::TypeExpression *> &parameterTypes
-			, std::function<QVariant(QList<QVariant> const &)> const &semantic);
+			, std::function<QVariant(QList<QVariant> const &)> const &semantic) override;
 
-	QStringList identifiers() const;
+	QStringList identifiers() const override;
 
 	template<typename T>
 	T value(QString const &identifier) const
 	{
-		return value(identifier).value<T>();
+		return DebuggerInterface::value<T>(identifier);
 	}
 
 	template<typename T>
 	void setVariableValue(QString const &name, T value)
 	{
-		setVariableValue(name, QString("%1 = %2").arg(name).arg(value), QVariant(value));
+		DebuggerInterface::setVariableValue<T>(name, value);
 	}
 
 private:
-	QVariant interpret(QSharedPointer<core::ast::Node> const &root);
-	QVariant value(QString const &identifier) const;
+	QVariant interpret(QSharedPointer<core::ast::Node> const &root) override;
+	QVariant value(QString const &identifier) const override;
 
-	void setVariableValue(QString const &name, QString const &initCode, QVariant const &value);
+	void setVariableValue(QString const &name, QString const &initCode, QVariant const &value) override;
 
 	QList<core::Error> mErrors;
 

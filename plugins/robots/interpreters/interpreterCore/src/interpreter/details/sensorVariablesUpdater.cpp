@@ -12,7 +12,7 @@ using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
 
 SensorVariablesUpdater::SensorVariablesUpdater(RobotModelManagerInterface const &robotModelManager
-		, qrtext::lua::LuaToolbox &newParser
+		, qrtext::DebuggerInterface &newParser
 		)
 	: mUpdateTimer(nullptr)
 	, mRobotModelManager(robotModelManager)

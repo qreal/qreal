@@ -22,7 +22,7 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter
-			, qrtext::lua::LuaToolbox &newParser
+			, qrtext::LanguageToolboxInterface &newParser
 			) final;
 
 	/// May be overrided to disable some blocks from palette when binded to this factory
@@ -42,7 +42,7 @@ protected:
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership.
 	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership.
 	qReal::ErrorReporterInterface *mErrorReporter;  // Does not have ownership.
-	qrtext::lua::LuaToolbox *mParser;  // Does not have ownership.
+	qrtext::LanguageToolboxInterface *mParser;  // Does not have ownership.
 };
 
 }

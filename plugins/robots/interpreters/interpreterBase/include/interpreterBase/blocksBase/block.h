@@ -40,7 +40,7 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
 			, robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::lua::LuaToolbox &newParser
+			, qrtext::LanguageToolboxInterface &newParser
 			);
 
 protected:
@@ -75,9 +75,6 @@ protected:
 
 	/// Reports error and emits "failure" signal.
 	void error(QString const &message);
-
-	/// Returns calculated value of an expression in a property with given name as QVariant.
-//	QVariant evaluate(QString const &propertyName);
 
 	template<typename T>
 	T eval(QString const &propertyName)
@@ -139,10 +136,10 @@ private:
 	/// Shall be reimplemented to provide semantics of block execution.
 	virtual void run() = 0;
 
-	qrtext::lua::LuaToolbox * mParser;  // Does not have ownership
+	qrtext::LanguageToolboxInterface *mParser;  // Does not have ownership
 
 	State mState;
-	qReal::ErrorReporterInterface * mErrorReporter;  // Doesn't have ownership.
+	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn't have ownership.
 	robotModel::RobotModelManagerInterface const *mRobotModelManager;  // Doesn't have ownership.
 };
 

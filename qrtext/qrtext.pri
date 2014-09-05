@@ -11,7 +11,9 @@ DEFINES += QRTEXT_LIBRARY
 RESOURCES = $$PWD/qrtext.qrc
 
 HEADERS += \
+	$$PWD/include/qrtext/debuggerInterface.h \
 	$$PWD/include/qrtext/declSpec.h \
+	$$PWD/include/qrtext/languageToolboxInterface.h \
 	$$PWD/include/qrtext/core/error.h \
 	$$PWD/include/qrtext/core/connection.h \
 	$$PWD/include/qrtext/core/range.h \

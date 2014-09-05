@@ -28,7 +28,7 @@ public:
 	/// @param parser - contains sensor variables and is needed here to update them.
 	SensorVariablesUpdater(
 			interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::lua::LuaToolbox &newParser
+			, qrtext::DebuggerInterface &newParser
 			);
 
 	/// Starts background polling process.
@@ -50,7 +50,7 @@ private:
 
 	utils::AbstractTimer *mUpdateTimer;
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
-	qrtext::lua::LuaToolbox &mParser;
+	qrtext::DebuggerInterface &mParser;
 };
 
 }

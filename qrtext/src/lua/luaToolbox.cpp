@@ -26,6 +26,16 @@ QVariant LuaToolbox::interpret(QSharedPointer<Node> const &root)
 	return mInterpreter->interpret(root, *mAnalyzer);
 }
 
+void LuaToolbox::interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
+{
+	interpret<int>(id, propertyName, code);
+}
+
+void LuaToolbox::interpret(QString const &code)
+{
+	interpret<int>(qReal::Id(), "", code);
+}
+
 QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const &propertyName
 		, QString const &code)
 {

@@ -20,7 +20,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::ProjectManagementInterface const &projectManager
 		, BlocksFactoryManagerInterface &blocksFactoryManager
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, qrtext::lua::LuaToolbox &newParser
+		, qrtext::LanguageToolboxInterface &newParser
 		, QAction &connectToRobotAction
 		)
 	: mGraphicalModelApi(graphicalModelApi)

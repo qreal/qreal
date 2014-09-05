@@ -21,7 +21,7 @@ void Block::init(Id const &graphicalId
 		, LogicalModelAssistInterface const &logicalModelApi
 		, ErrorReporterInterface * const errorReporter
 		, robotModel::RobotModelManagerInterface const &robotModelManager
-		, qrtext::lua::LuaToolbox &newParser)
+		, qrtext::LanguageToolboxInterface &newParser)
 {
 	mGraphicalId = graphicalId;
 	mGraphicalModelApi = &graphicalModelApi;

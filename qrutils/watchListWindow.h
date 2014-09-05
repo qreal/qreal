@@ -5,7 +5,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDockWidget>
 
-#include <qrtext/lua/luaToolbox.h>
+#include <qrtext/debuggerInterface.h>
 
 #include "expressionsParser/expressionsParser.h"
 
@@ -22,7 +22,7 @@ class QRUTILS_EXPORT WatchListWindow : public QDockWidget
 	Q_OBJECT
 
 public:
-	WatchListWindow(qrtext::lua::LuaToolbox &newParser, QWidget *parent = 0);
+	WatchListWindow(qrtext::DebuggerInterface &newParser, QWidget *parent = 0);
 
 	void hideVariables(QStringList const &variableNames);
 
@@ -34,7 +34,7 @@ private slots:
 private:
 	Ui::watchListWindow *mUi;
 	QTimer *mTimer;
-	qrtext::lua::LuaToolbox &mNewParser;
+	qrtext::DebuggerInterface &mNewParser;
 
 	QSet<QString> mHiddenVariables;
 };

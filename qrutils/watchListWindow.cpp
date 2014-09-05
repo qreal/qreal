@@ -3,7 +3,7 @@
 
 using namespace utils;
 
-WatchListWindow::WatchListWindow(qrtext::lua::LuaToolbox &newParser, QWidget *parent)
+WatchListWindow::WatchListWindow(qrtext::DebuggerInterface &newParser, QWidget *parent)
 	: QDockWidget(parent)
 	, mUi(new Ui::watchListWindow)
 	, mNewParser(newParser)
