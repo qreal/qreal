@@ -35,7 +35,7 @@ QList<robotParts::EncoderSensor *> ClearEncoderBlock::parsePorts() const
 	QList<robotParts::EncoderSensor *> result;
 	for (QString const &port : stringProperty("Ports").split(',', QString::SkipEmptyParts)) {
 		robotParts::EncoderSensor * const encoder = RobotModelUtils::findDevice<robotParts::EncoderSensor>(
-				mRobotModel, port);
+				mRobotModel, port.trimmed());
 
 		if (encoder) {
 			result << encoder;

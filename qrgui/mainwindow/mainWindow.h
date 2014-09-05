@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtCore/QSignalMapper>
-#include <QtCore/QTranslator>
 #include <QtCore/QDir>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QSplashScreen>
@@ -295,7 +294,8 @@ private slots:
 	void finishUsabilityTest();
 
 private:
-	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
+	void checkForUpdates();
+	void showUpdatesDialog();
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on

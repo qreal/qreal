@@ -51,8 +51,6 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 	}
 
 	mPluginVersion = mEditors[mCurrentEditor]->version();
-	/// @todo: other languages?
-	addResource(QString("\t<file>translations/%1_ru.qm</file>\n").arg(inputXmlFileInfo.baseName()));
 
 	generateCode();
 	return true;
@@ -158,7 +156,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtCore/QMap>\n"
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QtCore/QPair>\n"
-		<< "#include <QtCore/QTranslator>"
 		<< "\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
@@ -247,7 +244,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QString>> mPaletteGroupsDescriptionMap;\n"
 		<< "\tQMap<QString, bool> mShallPaletteBeSortedMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;\n"
-		<< "\tQTranslator mAppTranslator;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -283,21 +279,15 @@ void XmlCompiler::generateIncludes(OutFile &out)
 	out() << "#include \"" << "pluginInterface.h\"\n" //mPluginName
 		<< "\n";
 
-	out() << "#include <QtWidgets/QApplication>\n\n";
-
 	out() << "#include \"" << "elements.h" << "\"\n";
 
 	out() << "\n";
 
 	mEditors[mCurrentEditor]->generateListenerIncludes(out);
 
-	QString const translationName = QFileInfo(mCurrentEditor).baseName();
-
 	out()
 		//<< "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
 		<< mPluginName << "Plugin::" << mPluginName << "Plugin()\n{\n"
-		<< "\tmAppTranslator.load(\":/translations/" + translationName + "_\" + QLocale().name());\n"
-		<< "\tQApplication::installTranslator(&mAppTranslator);\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n";
 }

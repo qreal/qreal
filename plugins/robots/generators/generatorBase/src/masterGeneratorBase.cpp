@@ -8,6 +8,7 @@
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/images.h"
 #include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/initTerminateCodeGenerator.h"
 
@@ -105,7 +106,10 @@ QString MasterGeneratorBase::generate()
 	}
 
 	QString resultCode = readTemplate("main.t");
-	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->generatedCode());
+	resultCode.replace("@@SUBPROGRAMS_FORWARDING@@", mCustomizer->factory()->subprograms()->forwardDeclarations());
+	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->implementations());
+	resultCode.replace("@@THREADS_FORWARDING@@", mCustomizer->factory()->threads().generateDeclarations());
+	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations());
 	resultCode.replace("@@MAIN_CODE@@", mainCode);
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->initCode(), 1));
@@ -139,6 +143,8 @@ void MasterGeneratorBase::afterGeneration()
 
 void MasterGeneratorBase::outputCode(QString const &path, QString const &code)
 {
+	// File must be removed to leave created and modified timestamps equal.
+	QFile::remove(path);
 	utils::OutFile out(path);
 	out() << code;
 }

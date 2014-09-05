@@ -17,8 +17,6 @@ TrikGeneratorPlugin::TrikGeneratorPlugin()
 	, mRunProgramAction(nullptr)
 	, mStopRobotAction(nullptr)
 {
-	mAppTranslator.load(":/trikGenerator_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 TrikGeneratorPlugin::~TrikGeneratorPlugin()

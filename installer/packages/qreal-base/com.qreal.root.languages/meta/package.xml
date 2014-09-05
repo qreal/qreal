@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Languages</DisplayName>
+    <DisplayName xml:lang="ru_ru">Языки</DisplayName>
+    <ReleaseDate>2014-09-04</ReleaseDate>
+    <Version>3.0.0-1-13</Version>
+    <SortingPriority>9</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

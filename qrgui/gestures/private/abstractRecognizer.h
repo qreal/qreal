@@ -25,14 +25,14 @@ public:
 };
 
 template <typename TKey>
-		class GesturesRecognizer : public GesturesManager
+class GesturesRecognizer : public GesturesManager
 {
 public:
 	GesturesRecognizer(){}
 
 	virtual ~GesturesRecognizer() {}
 
-	double getDistance(QString const &item)
+	qreal getDistance(QString const &item)
 	{
 		TKey key = mGestures[item];
 		return getDistance(mKey, key);
@@ -40,7 +40,7 @@ public:
 
 	void initIdealGestures(QMap<QString, PathVector> const &objects)
 	{
-		foreach (QString object, objects.keys()) {
+		for (QString const &object : objects.keys()) {
 			TKey key = getKey(objects[object]);
 			mGestures.insert(object, key);
 		}

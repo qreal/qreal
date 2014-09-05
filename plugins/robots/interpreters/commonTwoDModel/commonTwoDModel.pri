@@ -10,7 +10,7 @@ INCLUDEPATH += \
 
 LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -linterpreterBase
 
-TRANSLATIONS = commonTwoDModel_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/commonTwoDModel_ru.ts
 
 HEADERS += \
 	$$PWD/include/commonTwoDModel/commonTwoDModelDeclSpec.h \
@@ -101,9 +101,6 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/src/engine/view/d2Form.ui \
-
-RESOURCES += \
-	commonTwoDModel.qrc \
 
 # qrgui includes
 HEADERS += \

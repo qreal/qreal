@@ -21,9 +21,14 @@ Subprograms::~Subprograms()
 	delete mNameNormalizer;
 }
 
-QString Subprograms::generatedCode() const
+QString Subprograms::forwardDeclarations() const
 {
-	return mGeneratedCode.join('\n');
+	return mForwardDeclarationsCode.join('\n');
+}
+
+QString Subprograms::implementations() const
+{
+	return mImplementationsCode.join('\n');
 }
 
 void Subprograms::appendManualSubprogram(QString const &name, QString const &body)
@@ -74,36 +79,34 @@ bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator)
 		toGen = firstToGenerate();
 	}
 
-	mergeCode(declarations, implementations);
+	obtainCode(declarations, implementations);
 
 	return true;
 }
 
-void Subprograms::mergeCode(QMap<Id, QString> const &declarations
+void Subprograms::obtainCode(QMap<Id, QString> const &declarations
 		, QMap<Id, QString> const &implementations)
 {
 	if (!declarations.keys().isEmpty()) {
-		mGeneratedCode << readTemplate("subprograms/declarationsSectionHeader.t");
+		mForwardDeclarationsCode << readTemplate("subprograms/declarationsSectionHeader.t");
 	}
 
-	foreach (Id const &id, declarations.keys()) {
-		mGeneratedCode << declarations[id];
+	for (Id const &id : declarations.keys()) {
+		mForwardDeclarationsCode << declarations[id];
 	}
-
-	mGeneratedCode << QString();
 
 	if (!implementations.keys().isEmpty()) {
-		mGeneratedCode << readTemplate("subprograms/implementationsSectionHeader.t");
+		mImplementationsCode << readTemplate("subprograms/implementationsSectionHeader.t");
 	}
 
-	foreach (Id const &id, implementations.keys()) {
+	for (Id const &id : implementations.keys()) {
 		QString const signature = readSubprogramTemplate(id, "subprograms/implementation.t");
 		QString subprogramCode = signature;
 		subprogramCode.replace("@@BODY@@", implementations[id]);
-		mGeneratedCode << subprogramCode;
+		mImplementationsCode << subprogramCode;
 	}
 
-	mGeneratedCode.insert(0, generateManualDeclarations() + "\n\n");
+	mImplementationsCode.insert(0, generateManualDeclarations() + "\n\n");
 }
 
 QString Subprograms::generateManualDeclarations() const

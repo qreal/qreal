@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>trikGenerator_ru.qm</file>
         <file>images/generateQtsCode.svg</file>
         <file>images/uploadAndExecuteProgram.svg</file>
         <file>images/uploadProgram.svg</file>

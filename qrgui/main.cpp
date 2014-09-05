@@ -20,6 +20,19 @@ void clearConfig()
 	SettingsManager::instance()->saveData();
 }
 
+void loadTranslators(QString const &locale)
+{
+	QDir translationsDirectory(QApplication::applicationDirPath() + "/translations/" + locale);
+	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
+	while (directories.hasNext()) {
+		for (QFileInfo const &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
+			QTranslator *translator = new QTranslator(qApp);
+			translator->load(translatorFile.absoluteFilePath());
+			QApplication::installTranslator(translator);
+		}
+	}
+}
+
 void setDefaultLocale(bool localizationDisabled)
 {
 	if (localizationDisabled) {
@@ -30,6 +43,7 @@ void setDefaultLocale(bool localizationDisabled)
 	QString const locale = SettingsManager::value("systemLocale").toString();
 	if (!locale.isEmpty()) {
 		QLocale::setDefault(QLocale(locale));
+		loadTranslators(locale);
 	}
 }
 
@@ -102,16 +116,6 @@ int main(int argc, char *argv[])
 
 	qsrand(time(0));
 	setDefaultLocale(app.arguments().contains("--no-locale"));
-
-	QTranslator guiTranslator;
-	QTranslator utilsTranslator;
-	QTranslator qtTranslator;
-	guiTranslator.load(":/qrgui_" + QLocale().name());
-	utilsTranslator.load(":/qrutils_" + QLocale().name());
-	qtTranslator.load(":/qt_" + QLocale().name());
-	app.installTranslator(&guiTranslator);
-	app.installTranslator(&utilsTranslator);
-	app.installTranslator(&qtTranslator);
 
 	initLogging();
 	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";

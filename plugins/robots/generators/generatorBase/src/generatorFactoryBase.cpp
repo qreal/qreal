@@ -9,7 +9,7 @@
 #include "simpleGenerators/infiniteLoopGenerator.h"
 #include "simpleGenerators/forLoopGenerator.h"
 #include "simpleGenerators/whileLoopGenerator.h"
-#include "generatorBase/simpleGenerators/bindingGenerator.h"
+#include "simpleGenerators/forkCallGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
@@ -58,6 +58,7 @@
 
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/engines.h"
 #include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/functions.h"
@@ -86,6 +87,7 @@ void GeneratorFactoryBase::initialize()
 {
 	initVariables();
 	initSubprograms();
+	mThreads = new parts::Threads(pathToTemplates());
 	initEngines();
 	initSensors();
 	initFunctions();
@@ -155,6 +157,11 @@ parts::Subprograms *GeneratorFactoryBase::subprograms()
 	return mSubprograms;
 }
 
+parts::Threads &GeneratorFactoryBase::threads()
+{
+	return *mThreads;
+}
+
 parts::Engines *GeneratorFactoryBase::engines()
 {
 	return mEngines;
@@ -206,6 +213,12 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(Id const
 		, GeneratorCustomizer &customizer)
 {
 	return new ForLoopGenerator(mRepo, customizer, id, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(Id const &id
+		, GeneratorCustomizer &customizer, IdList const &threads)
+{
+	return new ForkCallGenerator(mRepo, customizer, id, threads, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &id

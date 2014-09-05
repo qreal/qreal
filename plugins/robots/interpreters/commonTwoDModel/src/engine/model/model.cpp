@@ -14,7 +14,7 @@ Model::Model(robotModel::TwoDRobotModel &robotModel, QObject *parent)
 	connect(&mTimeline, &Timeline::tick, &mRobotModel, &RobotModel::recalculateParams);
 	connect(&mTimeline, &Timeline::nextFrame, &mRobotModel, &RobotModel::nextFragment);
 
-	auto resetPhysics = [this]() { mRobotModel.resetPhysics(mWorldModel); };
+	auto resetPhysics = [this]() { mRobotModel.resetPhysics(mWorldModel, mTimeline); };
 	connect(&mSettings, &Settings::physicsChanged, resetPhysics);
 	resetPhysics();
 }

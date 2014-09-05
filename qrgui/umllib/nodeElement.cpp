@@ -9,6 +9,7 @@
 #include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include <math.h>
+#include <qrkernel/logging.h>
 
 #include "umllib/labelFactory.h"
 #include "view/editorViewScene.h"
@@ -171,8 +172,16 @@ void NodeElement::setGeometry(QRectF const &geom)
 
 void NodeElement::setPos(QPointF const &pos)
 {
-	mPos = pos;
-	QGraphicsItem::setPos(pos);
+	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
+		setPos(QPointF());
+		mContents.moveTo(QPointF());
+		storeGeometry();
+		QLOG_WARN() << "NaN passed to NodeElement::setPos(). That means that something went wrong. "\
+				"Learn to reproduce this message. The position has been set to (0,0). Attend element with id" << id();
+	} else {
+		mPos = pos;
+		QGraphicsItem::setPos(pos);
+	}
 }
 
 void NodeElement::setPos(qreal x, qreal y)

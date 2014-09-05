@@ -93,7 +93,7 @@ SOURCES += \
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \
 
-TRANSLATIONS += $$PWD/interpreterCore_ru.ts
+TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterCore_ru.ts
 
 RESOURCES += \
 	$$PWD/interpreterCore.qrc \

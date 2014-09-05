@@ -1,11 +1,8 @@
-TASK OSEK_Task_Number_@@NUMBER@@
+TASK TASK_@@NAME@@
 {
-	AUTOSTART = TRUE
-	{
-		APPMODE = appmode1;
-	};
+	AUTOSTART = FALSE;
 	PRIORITY = 1; /* lowest priority */
-	ACTIVATION = 1;
+	ACTIVATION = 100;
 	SCHEDULE = FULL;
 	STACKSIZE = 512;
 };
