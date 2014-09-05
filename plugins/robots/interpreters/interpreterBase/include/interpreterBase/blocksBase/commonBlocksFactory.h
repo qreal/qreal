@@ -22,7 +22,6 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter
-			, BlockParserInterface * const parser
 			, qrtext::lua::LuaToolbox &newParser
 			) final;
 
@@ -43,8 +42,7 @@ protected:
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership.
 	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership.
 	qReal::ErrorReporterInterface *mErrorReporter;  // Does not have ownership.
-	interpreterBase::blocksBase::BlockParserInterface *mParser;  // Does not have ownership.
-	qrtext::lua::LuaToolbox *mNewParser;  // Does not have ownership.
+	qrtext::lua::LuaToolbox *mParser;  // Does not have ownership.
 };
 
 }

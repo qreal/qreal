@@ -12,7 +12,11 @@ NxtEnginesForwardBlock::NxtEnginesForwardBlock(interpreterBase::robotModel::Robo
 
 void NxtEnginesForwardBlock::run()
 {
-	int const power = evaluate("Power").toInt();
+	int const power = eval<int>("Power");
+
+	if (wereParserErrors()) {
+		return;
+	}
 
 	bool const breakMode = stringProperty("Mode") != "float";
 

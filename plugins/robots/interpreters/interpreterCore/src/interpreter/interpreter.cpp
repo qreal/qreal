@@ -20,7 +20,6 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::ProjectManagementInterface const &projectManager
 		, BlocksFactoryManagerInterface &blocksFactoryManager
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, utils::ExpressionsParser &parser  /// @todo direct dependency from ExpressionsParser shall be removed.
 		, qrtext::lua::LuaToolbox &newParser
 		, QAction &connectToRobotAction
 		)
@@ -31,7 +30,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	, mRobotModelManager(robotModelManager)
 	, mBlocksTable(new details::BlocksTable(blocksFactoryManager, robotModelManager))
 	, mActionConnectToRobot(connectToRobotAction)
-	, mSensorVariablesUpdater(robotModelManager, parser, newParser)
+	, mSensorVariablesUpdater(robotModelManager, newParser)
 	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
 {
 	connect(

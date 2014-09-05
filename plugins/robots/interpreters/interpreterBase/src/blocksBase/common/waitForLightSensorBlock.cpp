@@ -13,8 +13,10 @@ WaitForLightSensorBlock::WaitForLightSensorBlock(interpreterBase::robotModel::Ro
 
 void WaitForLightSensorBlock::responseSlot(int reading)
 {
-	int const targetPercents = evaluate("Percents").toInt();
-	processResponce(reading, targetPercents);
+	int const result = eval<int>("Percents");
+	if (wereParserErrors()) {
+		processResponce(reading, result);
+	}
 }
 
 interpreterBase::robotModel::DeviceInfo WaitForLightSensorBlock::device() const

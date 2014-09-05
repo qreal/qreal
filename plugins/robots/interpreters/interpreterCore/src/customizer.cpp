@@ -61,10 +61,10 @@ void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWa
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
 	watchWindow->setFloating(false);
 
-	QDockWidget * const graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
-	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
+//	QDockWidget * const graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
+//	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
 
-	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);
+//	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);
 }
 
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const

@@ -9,7 +9,6 @@ Block::Block()
 	, mGraphicalModelApi(nullptr)
 	, mLogicalModelApi(nullptr)
 	, mGraphicalId(Id())
-	, mParser(nullptr)
 	, mState(idle)
 	, mErrorReporter(nullptr)
 	, mRobotModelManager(nullptr)
@@ -21,7 +20,6 @@ void Block::init(Id const &graphicalId
 		, GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
 		, ErrorReporterInterface * const errorReporter
-		, BlockParserInterface * const parser
 		, robotModel::RobotModelManagerInterface const &robotModelManager
 		, qrtext::lua::LuaToolbox &newParser)
 {
@@ -29,9 +27,8 @@ void Block::init(Id const &graphicalId
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
 	mErrorReporter = errorReporter;
-	mParser = parser;
 	mRobotModelManager = &robotModelManager;
-	mNewParser = &newParser;
+	mParser = &newParser;
 }
 
 bool Block::initNextBlocks()
@@ -152,32 +149,14 @@ QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedDevices() const
 	return QMap<robotModel::PortInfo, robotModel::DeviceInfo>();
 }
 
-QVariant Block::evaluate(QString const &propertyName)
+void Block::evalCode(QString const &code)
 {
-	int position = 0;
-	utils::Number *result = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
-	if (mParser->hasErrors()) {
-		mParser->deselect();
-		emit failure();
-		delete result;
-		return QVariant();
-	}
-
-	QVariant const value = result->value();
-	delete result;
-	return value;
+	evalCode<int>(code);
 }
 
-bool Block::evaluateBool(QString const &propertyName)
+bool Block::wereParserErrors() const
 {
-	int position = 0;
-	bool const value = mParser->parseCondition(stringProperty(propertyName), position, mGraphicalId);
-	if (mParser->hasErrors()) {
-		mParser->deselect();
-		emit failure();
-	}
-
-	return value;
+	return !mParser->errors().isEmpty();
 }
 
 interpreterBase::robotModel::RobotModelInterface &Block::model()
@@ -187,4 +166,20 @@ interpreterBase::robotModel::RobotModelInterface &Block::model()
 
 void Block::finishedSteppingInto()
 {
+}
+
+void Block::reportParserErrors()
+{
+	for (qrtext::core::Error const &error : mParser->errors()) {
+		switch (error.severity()) {
+		case qrtext::core::Severity::critical:
+		case qrtext::core::Severity::error:
+		case qrtext::core::Severity::warning:
+			this->error(error.errorMessage());
+			break;
+		case qrtext::core::Severity::internalError:
+			/// @todo: output to log.
+			break;
+		}
+	}
 }

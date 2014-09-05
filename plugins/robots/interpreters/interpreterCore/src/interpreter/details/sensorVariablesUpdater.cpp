@@ -12,13 +12,11 @@ using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
 
 SensorVariablesUpdater::SensorVariablesUpdater(RobotModelManagerInterface const &robotModelManager
-		, utils::ExpressionsParser &parser
 		, qrtext::lua::LuaToolbox &newParser
 		)
 	: mUpdateTimer(nullptr)
 	, mRobotModelManager(robotModelManager)
-	, mParser(parser)
-	, mNewParser(newParser)
+	, mParser(newParser)
 {
 }
 
@@ -115,14 +113,13 @@ void SensorVariablesUpdater::updateScalarSensorVariables(PortInfo const &sensorP
 
 void SensorVariablesUpdater::updateScalarSensorVariable(QString const &variable, int reading)
 {
-	mParser.mutableVariables()[variable] = new utils::Number(reading, utils::Number::intType);
 	utils::Tracer::debug(
 			utils::Tracer::autoupdatedSensorValues
 			, "SensorVariablesUpdater::updateScalarSensorVariable"
 			, variable + QString::number(reading)
 			);
 
-	mNewParser.interpret(QString("%1 = %2").arg(variable).arg(reading));
+	mParser.setVariableValue(variable, reading);
 }
 
 void SensorVariablesUpdater::resetVariables()

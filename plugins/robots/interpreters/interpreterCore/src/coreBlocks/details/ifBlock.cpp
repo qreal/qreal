@@ -5,8 +5,10 @@ using namespace interpreterCore::coreBlocks::details;
 
 void IfBlock::run()
 {
-	bool const expressionValue = evaluateBool("Condition");
-	emit done(expressionValue ? mNextBlockId : mElseBlockId);
+	bool const expressionValue = eval<bool>("Condition");
+	if (!wereParserErrors()) {
+		emit done(expressionValue ? mNextBlockId : mElseBlockId);
+	}
 }
 
 bool IfBlock::initNextBlocks()

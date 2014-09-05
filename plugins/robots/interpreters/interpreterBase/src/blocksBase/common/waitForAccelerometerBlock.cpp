@@ -13,8 +13,10 @@ WaitForAccelerometerSensorBlock::WaitForAccelerometerSensorBlock(RobotModelInter
 
 void WaitForAccelerometerSensorBlock::responseSlot(int reading)
 {
-	int const targetAcceleration = evaluate("Acceleration").toInt();
-	processResponce(reading, targetAcceleration);
+	int result = eval<int>("Acceleration");
+	if (!wereParserErrors()) {
+		processResponce(reading, result);
+	}
 }
 
 DeviceInfo WaitForAccelerometerSensorBlock::device() const

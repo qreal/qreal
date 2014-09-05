@@ -24,7 +24,7 @@ NewRobotsBlockParser::NewRobotsBlockParser(ErrorReporterInterface * const errorR
 
 void NewRobotsBlockParser::setReservedVariables()
 {
-	interpret(Id(), "", "pi = 3.14159265");
+	setVariableValue("pi", 3.14159265);
 
 	addIntrinsicFunction("time", new types::Integer(), {}
 			, [this](QList<QVariant> const &params) {
@@ -33,17 +33,17 @@ void NewRobotsBlockParser::setReservedVariables()
 			});
 
 	for (interpreterBase::robotModel::PortInfo const &port : mRobotModelManager.model().availablePorts()) {
-		interpret(QString("%1 = '%1'").arg(port.name()));
+		setVariableValue(port.name(), port.name());
 
 		mSpecialVariables << port.name();
 
 		for (QString const &alias : port.nameAliases()) {
-			interpret(QString("%1 = '%2'").arg(alias).arg(port.name()));
+			setVariableValue(alias, port.name());
 			mSpecialVariables << alias;
 		}
 
 		if (!port.reservedVariable().isEmpty()) {
-			interpret(QString("%1 = 0").arg(port.reservedVariable()));
+			setVariableValue(port.reservedVariable(), 0);
 		}
 	}
 }

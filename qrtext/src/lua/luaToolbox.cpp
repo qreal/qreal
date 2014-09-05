@@ -31,11 +31,17 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const
 {
 	mErrors.clear();
 
-	auto tokenStream = mLexer->tokenize(code);
-	auto ast = mParser->parse(tokenStream);
-	mAstRoots[id][propertyName] = ast;
+	if (mParsedCache[id][propertyName] != code) {
+		auto tokenStream = mLexer->tokenize(code);
+		auto ast = mParser->parse(tokenStream);
+		mAstRoots[id][propertyName] = ast;
 
-	mAnalyzer->analyze(ast);
+		mAnalyzer->analyze(ast);
+
+		if (mErrors.isEmpty()) {
+			mParsedCache[id][propertyName] = code;
+		}
+	}
 
 	return mAstRoots[id][propertyName];
 }
@@ -82,4 +88,13 @@ QStringList LuaToolbox::identifiers() const
 QVariant LuaToolbox::value(QString const &identifier) const
 {
 	return mInterpreter->value(identifier);
+}
+
+void LuaToolbox::setVariableValue(QString const &name, QString const &initCode, QVariant const &value)
+{
+	if (!mInterpreter->identifiers().contains(name)) {
+		parse(qReal::Id(), "", initCode);
+	}
+
+	mInterpreter->setVariableValue(name, value);
 }

@@ -39,7 +39,6 @@ public:
 			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
-			, BlockParserInterface * const parser
 			, robotModel::RobotModelManagerInterface const &robotModelManager
 			, qrtext::lua::LuaToolbox &newParser
 			);
@@ -78,13 +77,40 @@ protected:
 	void error(QString const &message);
 
 	/// Returns calculated value of an expression in a property with given name as QVariant.
-	QVariant evaluate(QString const &propertyName);
+//	QVariant evaluate(QString const &propertyName);
 
-	/// Returns calculated value of an expression in a property with given name as bool.
-	bool evaluateBool(QString const &propertyName);
+	template<typename T>
+	T eval(QString const &propertyName)
+	{
+		return evalCode<T>(stringProperty(propertyName));
+	}
+
+	template<typename T>
+	T evalCode(QString const &code)
+	{
+		return evalCode<T>(code, "");
+	}
+
+	template<typename T>
+	T evalCode(QString const &code, QString const &propertyName)
+	{
+		T result = mParser->interpret<T>(mGraphicalId, propertyName, code);
+		if (!mParser->errors().isEmpty()) {
+			reportParserErrors();
+			emit failure();
+			return result;
+		}
+
+		return result;
+	}
+
+	void evalCode(QString const &code);
+
+	bool wereParserErrors() const;
 
 	/// Reference to a robot model which is used by this block.
 	robotModel::RobotModelInterface &model();
+
 
 	/// @todo: there is no such things as protected fields. State of a class shall not be directly available to
 	/// descendants.
@@ -93,8 +119,6 @@ protected:
 	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
 
 	qReal::Id mGraphicalId;
-	BlockParserInterface * mParser;  // Does not have ownership
-	qrtext::lua::LuaToolbox * mNewParser;  // Does not have ownership
 
 private slots:
 	void finishedRunning();
@@ -106,12 +130,16 @@ private:
 		, failed
 	};
 
+	void reportParserErrors();
+
 	/// Shall be reimplemented to set ids of next blocks. Default implementation covers usual sequential blocks, like
 	/// "motors on", it is reimplemented in "if", "loop" and such kinds of blocks.
 	virtual bool initNextBlocks();
 
 	/// Shall be reimplemented to provide semantics of block execution.
 	virtual void run() = 0;
+
+	qrtext::lua::LuaToolbox * mParser;  // Does not have ownership
 
 	State mState;
 	qReal::ErrorReporterInterface * mErrorReporter;  // Doesn't have ownership.

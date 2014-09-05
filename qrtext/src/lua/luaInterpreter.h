@@ -16,8 +16,6 @@ namespace details {
 
 class LuaInterpreter {
 public:
-//	explicit LuaInterpreter(QList<core::Error> &errors);
-
 	void addIntrinsicFunction(QString const &name
 			, std::function<QVariant(QList<QVariant> const &)> const &semantic);
 
@@ -26,6 +24,8 @@ public:
 	QStringList identifiers() const;
 
 	QVariant value(QString const &identifier) const;
+
+	void setVariableValue(QString const &name, QVariant const &value);
 
 private:
 	QVariant interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root

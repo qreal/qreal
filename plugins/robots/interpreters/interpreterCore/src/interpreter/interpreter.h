@@ -48,7 +48,6 @@ public:
 			, qReal::ProjectManagementInterface const &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, utils::ExpressionsParser &parser
 			, qrtext::lua::LuaToolbox &newParser
 			, QAction &connectToRobotAction
 			);

@@ -33,8 +33,10 @@ void WaitForEncoderBlock::run()
 
 void WaitForEncoderBlock::responseSlot(int reading)
 {
-	int const tachoLimit = evaluate("TachoLimit").toInt();
-	processResponce(reading, tachoLimit);
+	int const result = eval<int>("TachoLimit");
+	if (!wereParserErrors()) {
+		processResponce(reading, result);
+	}
 }
 
 void WaitForEncoderBlock::timerTimeout()

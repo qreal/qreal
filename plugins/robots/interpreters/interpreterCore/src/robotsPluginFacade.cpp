@@ -10,8 +10,7 @@
 using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
-	: mParser(nullptr)
-	, mInterpreter(nullptr)
+	: mInterpreter(nullptr)
 	, mKitPluginManager("plugins/tools/kitPlugins")
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
@@ -24,7 +23,6 @@ RobotsPluginFacade::RobotsPluginFacade()
 RobotsPluginFacade::~RobotsPluginFacade()
 {
 	delete mInterpreter;
-	delete mParser;
 }
 
 void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
@@ -47,11 +45,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 		return;
 	}
 
-	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter()
-			, mRobotModelManager
-			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; });
-
-	mNewParser.reset(new textLanguage::NewRobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter()
+	mParser.reset(new textLanguage::NewRobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter()
 			, mRobotModelManager
 			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }));
 
@@ -62,8 +56,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, configurer.logicalModelApi()
 			, mRobotModelManager
 			, *configurer.mainWindowInterpretersInterface().errorReporter()
-			, mParser
-			, *mNewParser
+			, *mParser
 			);
 
 	mBlocksFactoryManager.addFactory(coreFactory);
@@ -76,7 +69,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, mBlocksFactoryManager
 			, mRobotModelManager
 			, *mParser
-			, *mNewParser
 			, mActionsManager.connectToRobotAction()
 			);
 
@@ -199,18 +191,18 @@ void RobotsPluginFacade::initSensorWidgets()
 		}
 	}
 
-	mWatchListWindow = new utils::WatchListWindow(mParser, *mNewParser);
+	mWatchListWindow = new utils::WatchListWindow(*mParser);
 
-	mWatchListWindow->hideVariables(mNewParser->specialVariables());
+	mWatchListWindow->hideVariables(mParser->specialVariables());
 
-	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
+//	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
 
 	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);
-	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
+	mCustomizer.placeWatchPlugins(mWatchListWindow, nullptr /*mGraphicsWatcherManager->widget()*/);
 
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer);
-	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mGraphicsWatcherManager);
+//	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mGraphicsWatcherManager);
 }
 
 void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configurer)
@@ -251,8 +243,7 @@ void RobotsPluginFacade::initFactoriesFor(QString const &kitId
 					, configurer.logicalModelApi()
 					, mRobotModelManager
 					, *configurer.mainWindowInterpretersInterface().errorReporter()
-					, mParser
-					, *mNewParser
+					, *mParser
 					);
 
 			mBlocksFactoryManager.addFactory(factory, model);

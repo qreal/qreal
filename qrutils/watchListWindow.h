@@ -22,7 +22,7 @@ class QRUTILS_EXPORT WatchListWindow : public QDockWidget
 	Q_OBJECT
 
 public:
-	WatchListWindow(utils::ExpressionsParser const *parser, qrtext::lua::LuaToolbox &newParser, QWidget *parent = 0);
+	WatchListWindow(qrtext::lua::LuaToolbox &newParser, QWidget *parent = 0);
 
 	void hideVariables(QStringList const &variableNames);
 
@@ -33,7 +33,6 @@ private slots:
 
 private:
 	Ui::watchListWindow *mUi;
-	utils::ExpressionsParser const *mParser;
 	QTimer *mTimer;
 	qrtext::lua::LuaToolbox &mNewParser;
 

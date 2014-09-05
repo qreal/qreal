@@ -124,6 +124,11 @@ QVariant LuaInterpreter::value(QString const &identifier) const
 	return mIdentifierValues.value(identifier);
 }
 
+void LuaInterpreter::setVariableValue(QString const &name, QVariant const &value)
+{
+	mIdentifierValues.insert(name, value);
+}
+
 QVariant LuaInterpreter::interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root
 		, core::SemanticAnalyzer const &semanticAnalyzer)
 {
@@ -229,3 +234,4 @@ QVariant LuaInterpreter::interpretBinaryOperator(QSharedPointer<core::ast::Node>
 
 	return QVariant();
 }
+

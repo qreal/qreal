@@ -36,7 +36,6 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter
-			, BlockParserInterface * const parser
 			, qrtext::lua::LuaToolbox &newParser
 			) = 0;
 };

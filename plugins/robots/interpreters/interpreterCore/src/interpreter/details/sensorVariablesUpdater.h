@@ -28,7 +28,6 @@ public:
 	/// @param parser - contains sensor variables and is needed here to update them.
 	SensorVariablesUpdater(
 			interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, utils::ExpressionsParser &parser  /// @todo direct dependency from ExpressionsParser shall be removed.
 			, qrtext::lua::LuaToolbox &newParser
 			);
 
@@ -51,8 +50,7 @@ private:
 
 	utils::AbstractTimer *mUpdateTimer;
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
-	utils::ExpressionsParser &mParser;
-	qrtext::lua::LuaToolbox &mNewParser;
+	qrtext::lua::LuaToolbox &mParser;
 };
 
 }

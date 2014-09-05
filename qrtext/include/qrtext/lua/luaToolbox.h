@@ -97,9 +97,17 @@ public:
 		return value(identifier).value<T>();
 	}
 
+	template<typename T>
+	void setVariableValue(QString const &name, T value)
+	{
+		setVariableValue(name, QString("%1 = %2").arg(name).arg(value), QVariant(value));
+	}
+
 private:
 	QVariant interpret(QSharedPointer<core::ast::Node> const &root);
 	QVariant value(QString const &identifier) const;
+
+	void setVariableValue(QString const &name, QString const &initCode, QVariant const &value);
 
 	QList<core::Error> mErrors;
 
@@ -109,6 +117,7 @@ private:
 	QScopedPointer<details::LuaInterpreter> mInterpreter;
 
 	QHash<qReal::Id, QHash<QString, QSharedPointer<core::ast::Node>>> mAstRoots;
+	QHash<qReal::Id, QHash<QString, QString>> mParsedCache;
 };
 
 }

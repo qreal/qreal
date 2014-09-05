@@ -12,8 +12,10 @@ DrawPixelBlock::DrawPixelBlock(interpreterBase::robotModel::RobotModelInterface 
 void DrawPixelBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
 	auto trikDisplay = static_cast<robotModel::parts::TrikDisplay *>(&display);
-	int const x = evaluate("XCoordinatePix").toInt();
-	int const y = evaluate("YCoordinatePix").toInt();
-	trikDisplay->drawPixel(x, y);
-	emit done(mNextBlockId);
+	int const x = eval<int>("XCoordinatePix");
+	int const y = eval<int>("YCoordinatePix");
+	if (!wereParserErrors()) {
+		trikDisplay->drawPixel(x, y);
+		emit done(mNextBlockId);
+	}
 }
