@@ -42,7 +42,7 @@ public:
 
 	/// Clears prerendered images.
 	/// @param zoomFactor - current zoom factor to render images.
-	void invalidateSvgCache(double zoomFactor);
+	void invalidateSvgCache(qreal zoomFactor);
 
 private:
 

@@ -8,7 +8,7 @@
 namespace qReal {
 namespace gestures {
 
-static const double e = 10;
+static const qreal e = 10;
 
 static const int gridSize = 81;//gridSize = 100 recognition = 833 gestures
 

@@ -57,7 +57,7 @@ public:
 
 	/// Clears prerendered images.
 	/// @param zoomFactor - current zoom factor to render images.
-	void invalidateImagesZoomCache(double zoomFactor);
+	void invalidateImagesZoomCache(qreal zoomFactor);
 
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
@@ -119,7 +119,7 @@ public:
 	bool isPort() const;
 	bool canHavePorts();
 
-	QList<double> borderValues() const;
+	QList<qreal> borderValues() const;
 
 	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 

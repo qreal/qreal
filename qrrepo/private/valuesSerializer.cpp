@@ -79,8 +79,8 @@ QVariant ValuesSerializer::deserializeQVariant(QString const &typeName, QString 
 
 QPointF ValuesSerializer::deserializeQPointF(QString const &str)
 {
-	double x = str.section(", ", 0, 0).toDouble();
-	double y = str.section(", ", 1, 1).toDouble();
+	qreal x = str.section(", ", 0, 0).toDouble();
+	qreal y = str.section(", ", 1, 1).toDouble();
 	return QPointF(x, y);
 }
 

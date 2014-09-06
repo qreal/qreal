@@ -44,7 +44,7 @@ public:
 
 	/// Clears prerendered images.
 	/// @param zoomFactor - current zoom factor to render images.
-	void invalidateImagesZoomCache(double zoomFactor);
+	void invalidateImagesZoomCache(qreal zoomFactor);
 
 public slots:
 	void reset();

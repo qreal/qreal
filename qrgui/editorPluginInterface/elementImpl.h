@@ -76,7 +76,7 @@ public:
 
 	virtual bool createChildrenFromMenu() const = 0;
 
-	virtual QList<double> border() const = 0;
+	virtual QList<qreal> border() const = 0;
 
 	virtual QStringList bonusContextMenuFields() const = 0;
 

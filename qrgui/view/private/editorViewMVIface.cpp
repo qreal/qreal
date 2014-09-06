@@ -416,7 +416,7 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 	}
 }
 
-void EditorViewMViface::invalidateImagesZoomCache(double zoomFactor)
+void EditorViewMViface::invalidateImagesZoomCache(qreal zoomFactor)
 {
 	for (IndexElementPair const & item : mItems) {
 		auto node = dynamic_cast<NodeElement *>(item.second);
