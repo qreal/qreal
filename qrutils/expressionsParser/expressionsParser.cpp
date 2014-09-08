@@ -724,7 +724,7 @@ bool ExpressionsParser::isFunction(QString const &variable)
 Number *ExpressionsParser::applyFunction(QString const &variable, Number *value)
 {
 	Number *result = nullptr;
-	double argument = value->value().toDouble();
+	qreal argument = value->value().toDouble();
 	if (variable == "cos") {
 		result = new Number(cos(argument), Number::doubleType);
 	} else if (variable == "sin") {

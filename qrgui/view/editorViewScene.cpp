@@ -46,7 +46,7 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mExploser(nullptr)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
-	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
+	mWidthOfGrid = static_cast<qreal>(SettingsManager::value("GridWidth").toInt()) / 100;
 	mRealIndexGrid = SettingsManager::value("IndexGrid").toInt();
 
 	setItemIndexMethod(NoIndex);
@@ -138,12 +138,12 @@ void EditorViewScene::initMouseMoveManager()
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
 
-double EditorViewScene::realIndexGrid()
+qreal EditorViewScene::realIndexGrid()
 {
 	return mRealIndexGrid;
 }
 
-void EditorViewScene::setRealIndexGrid(double newIndexGrid)
+void EditorViewScene::setRealIndexGrid(qreal newIndexGrid)
 {
 	mRealIndexGrid = newIndexGrid;
 }
@@ -1339,8 +1339,8 @@ void EditorViewScene::drawGesture()
 {
 	QLineF line = mMouseMovementManager->newLine();
 	QGraphicsLineItem *item = new QGraphicsLineItem(line);
-	double size = mGesture.size() * 0.1;
-	double color_ratio = pow(fabs(sin(size)), 1.5);
+	qreal size = mGesture.size() * 0.1;
+	qreal color_ratio = pow(fabs(sin(size)), 1.5);
 	QColor penColor(255 * color_ratio, 255 * (1 - color_ratio), 255);
 	item->setPen(penColor);
 	addItem(item);

@@ -19,8 +19,8 @@ public:
 	virtual ~GesturesManager() {}
 	virtual void initIdealGestures(QMap<QString, PathVector> const &objects) = 0;
 	virtual void setKey(const PathVector &path) = 0;
-	virtual double getMaxDistance(QString const &object) = 0;
-	virtual double getDistance(QString const &object) = 0;
+	virtual qreal getMaxDistance(QString const &object) = 0;
+	virtual qreal getDistance(QString const &object) = 0;
 	virtual bool isMultistroke() = 0;
 };
 
@@ -51,11 +51,11 @@ public:
 		mKey = getKey(path);
 	}
 
-	virtual double getMaxDistance(QString const &object) = 0;
+	virtual qreal getMaxDistance(QString const &object) = 0;
 
 protected:
 	TKey mKey;
-	virtual double getDistance(TKey const &key1, TKey const &key2) = 0;
+	virtual qreal getDistance(TKey const &key1, TKey const &key2) = 0;
 	virtual TKey getKey(PathVector const &path) = 0;
 	QMap<QString, TKey> mGestures;
 	//maybe to do several lists for multistroke gestures

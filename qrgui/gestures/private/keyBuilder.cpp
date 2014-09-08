@@ -3,7 +3,7 @@
 #include <qrutils/mathUtils/math.h>
 
 static const int minMovement = 20;
-static const double maxRelation = 8;
+static const qreal maxRelation = 8;
 static const int minPoint = -1000;
 
 using namespace qReal::gestures;

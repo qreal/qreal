@@ -83,7 +83,7 @@ public:
 
 	bool createChildrenFromMenu() const;
 
-	QList<double> border() const;
+	QList<qreal> border() const;
 
 	QStringList bonusContextMenuFields() const;
 	void updateRendererContent(QString const &shape);

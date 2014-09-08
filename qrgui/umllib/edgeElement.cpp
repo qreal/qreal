@@ -22,7 +22,7 @@
 using namespace qReal;
 using namespace enums;
 
-const double pi = 3.14159265358979;
+const qreal pi = 3.14159265358979;
 
 const qreal epsilon = 0.00000000001;
 

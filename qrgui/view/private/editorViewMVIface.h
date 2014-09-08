@@ -5,6 +5,7 @@
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
 #include "pluginManager/exploser.h"
+#include "umllib/sdfRenderer.h"
 
 class QGraphicsItem;
 
@@ -41,6 +42,10 @@ public:
 	models::GraphicalModelAssistApi *graphicalAssistApi() const;
 	models::LogicalModelAssistApi *logicalAssistApi() const;
 
+	/// Clears prerendered images.
+	/// @param zoomFactor - current zoom factor to render images.
+	void invalidateImagesZoomCache(qreal zoomFactor);
+
 public slots:
 	void reset();
 	void setRootIndex(QModelIndex const &index);
@@ -66,6 +71,8 @@ private:
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;
+
+	SdfRenderer mRenderer;
 
 	QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers);
 

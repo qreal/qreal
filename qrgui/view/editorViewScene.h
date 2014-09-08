@@ -67,8 +67,8 @@ public:
 	void setEnabled(bool enabled);
 
 	void setNeedDrawGrid(bool show);
-	double realIndexGrid();
-	void setRealIndexGrid(double newIndexGrid);
+	qreal realIndexGrid();
+	void setRealIndexGrid(qreal newIndexGrid);
 
 	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
 	bool getNeedDrawGrid();
@@ -207,7 +207,7 @@ private:
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
 	qreal mWidthOfGrid;
-	double mRealIndexGrid;
+	qreal mRealIndexGrid;
 	graphicsUtils::GridDrawer mGridDrawer;
 
 	NodeElement *mHighlightNode;
