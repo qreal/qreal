@@ -119,6 +119,8 @@ QString MasterGeneratorBase::generate()
 			mCustomizer->factory()->isrHooksCode(), 1));
 	resultCode.replace("@@BMP_FILES@@", mCustomizer->factory()->images()->generate());
 	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
+	// This will remove too many empty lines
+	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
 	QString const pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
