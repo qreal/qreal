@@ -58,6 +58,7 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Timer")
 		, id("CommentBlock")
 		, id("IfBlock")
+		, id("SwitchBlock")
 		, id("Loop")
 		, id("Fork")
 		, id("Subprogram")

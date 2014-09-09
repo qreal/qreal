@@ -423,6 +423,30 @@
 				</logic>
 			</node>
 
+			<node displayedName="Switch" name="SwitchBlock" description="Selects the program execution branch in correspondence with some expression value. Thre value of the expression written in 'Value' property is compared to the values on the outgoing links. If equal value is found then execution will be proceeded by that branch. Else branch without a marker will be selected.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/switchBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="Value" isPlainText="true" background="white"/>
+						<label x="-25" y="60" text="Value:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Value" type="string" name="Value">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
 			<!--- Engine movement commands -->
 			<node name="EngineCommand">
 				<logic>
@@ -2027,6 +2051,7 @@
 				<element name="FinalNode"/>
 				<element name="Function"/>
 				<element name="IfBlock"/>
+				<element name="SwitchBlock"/>
 				<element name="Loop"/>
 				<element name="Subprogram"/>
 				<element name="Fork"/>
