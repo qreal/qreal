@@ -314,24 +314,24 @@ void RepoApi::setTo(Id const &id, Id const &to)
 	addToIdList(to, "links", id, "to");
 }
 
-double RepoApi::fromPort(Id const &id) const
+qreal RepoApi::fromPort(Id const &id) const
 {
-	Q_ASSERT(mRepository.property(id, "fromPort").canConvert<double>());
-	return mRepository.property(id, "fromPort").value<double>();
+	Q_ASSERT(mRepository.property(id, "fromPort").canConvert<qreal>());
+	return mRepository.property(id, "fromPort").value<qreal>();
 }
 
-void RepoApi::setFromPort(Id const &id, double fromPort)
+void RepoApi::setFromPort(Id const &id, qreal fromPort)
 {
 	mRepository.setProperty(id, "fromPort", fromPort);
 }
 
-double RepoApi::toPort(Id const &id) const
+qreal RepoApi::toPort(Id const &id) const
 {
-	Q_ASSERT(mRepository.property(id, "toPort").canConvert<double>());
-	return mRepository.property(id, "toPort").value<double>();
+	Q_ASSERT(mRepository.property(id, "toPort").canConvert<qreal>());
+	return mRepository.property(id, "toPort").value<qreal>();
 }
 
-void RepoApi::setToPort(Id const &id, double toPort)
+void RepoApi::setToPort(Id const &id, qreal toPort)
 {
 	mRepository.setProperty(id, "toPort", toPort);
 }

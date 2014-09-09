@@ -67,6 +67,11 @@ void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo){
 	mElementRepo = elementRepo;
 }
 
+void SdfRenderer::invalidateSvgCache(double zoomFactor)
+{
+	mImagesCache.invalidateSvgCache(zoomFactor);
+}
+
 void SdfRenderer::render(QPainter *painter, const QRectF &bounds, bool isIcon)
 {
 	current_size_x = static_cast<int>(bounds.width());
@@ -763,10 +768,25 @@ void SdfRenderer::ImagesCache::drawImage(
 		, QPainter &painter
 		, QRect const &rect)
 {
+	auto savePrerenderedSvg = [this, &rect, &fileName] (QSvgRenderer &renderer) {
+		QTransform scale;
+		scale.scale(mCurrentZoomFactor, mCurrentZoomFactor);
+		auto scaledRect = scale.mapRect(rect);
+		QPixmap pixmap(scaledRect.size());
+		pixmap.fill(Qt::transparent);
+		QPainter pixmapPainter(&pixmap);
+		renderer.render(&pixmapPainter, scaledRect);
+		mPrerenderedSvgs.insert(fileName, pixmap);
+	};
+
 	if (mFileNamePixmapMap.contains(fileName)) {
 		painter.drawPixmap(rect, mFileNamePixmapMap.value(fileName));
 	} else if (mFileNameSvgRendererMap.contains(fileName)) {
-		mFileNameSvgRendererMap.value(fileName)->render(&painter, rect);
+		if (!mPrerenderedSvgs.contains(fileName)) {
+			savePrerenderedSvg(*mFileNameSvgRendererMap.value(fileName));
+		}
+
+		painter.drawPixmap(rect, mPrerenderedSvgs.value(fileName));
 	} else {
 		// Cache miss - finding best file to load and loading it.
 		QString const actualFileName = fileName.startsWith("./")
@@ -780,6 +800,7 @@ void SdfRenderer::ImagesCache::drawImage(
 			QSharedPointer<QSvgRenderer> renderer(new QSvgRenderer(rawImage));
 			mFileNameSvgRendererMap.insert(fileName, renderer);
 			renderer->render(&painter, rect);
+			savePrerenderedSvg(*renderer);
 		} else {
 			QPixmap pixmap;
 			pixmap.loadFromData(rawImage);
@@ -824,6 +845,12 @@ QByteArray SdfRenderer::ImagesCache::loadPixmap(QFileInfo const &fileInfo)
 	}
 
 	return file.readAll();
+}
+
+void SdfRenderer::ImagesCache::invalidateSvgCache(double zoomFactor)
+{
+	mPrerenderedSvgs.clear();
+	mCurrentZoomFactor = zoomFactor;
 }
 
 

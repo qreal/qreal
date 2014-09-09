@@ -55,6 +55,10 @@ public:
 	QMap<QString, QVariant> graphicalProperties() const;
 	QMap<QString, QVariant> logicalProperties() const;
 
+	/// Clears prerendered images.
+	/// @param zoomFactor - current zoom factor to render images.
+	void invalidateImagesZoomCache(qreal zoomFactor);
+
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
 	QRectF boundingRect() const;
@@ -115,7 +119,7 @@ public:
 	bool isPort() const;
 	bool canHavePorts();
 
-	QList<double> borderValues() const;
+	QList<qreal> borderValues() const;
 
 	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 
@@ -280,7 +284,7 @@ private:
 
 	QTransform mTransform;
 
-	SdfRenderer *mRenderer;
+	SdfRenderer mRenderer;
 
 	bool mIsExpanded;
 

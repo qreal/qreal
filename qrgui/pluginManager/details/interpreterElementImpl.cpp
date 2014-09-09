@@ -75,7 +75,7 @@ void InterpreterElementImpl::initPointPorts(PortFactoryInterface const &factory,
 			y.chop(1);
 		}
 
-		QPointF point = QPointF(x.toDouble() / static_cast<double>(width), y.toDouble() / static_cast<double>(height));
+		QPointF point = QPointF(x.toDouble() / static_cast<qreal>(width), y.toDouble() / static_cast<qreal>(height));
 
 		QString portType = portElement.attribute("type", "NonTyped");
 		ports << factory.createPort(point, propX, propY, width, height, new InterpreterPortImpl(portType));
@@ -118,10 +118,10 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 			y2.chop(1);
 		}
 
-		QLineF line = QLineF(x1.toDouble() / static_cast<double>(width)
-				, y1.toDouble() / static_cast<double>(height)
-				, x2.toDouble() / static_cast<double>(width)
-				, y2.toDouble() / static_cast<double>(height));
+		QLineF line = QLineF(x1.toDouble() / static_cast<qreal>(width)
+				, y1.toDouble() / static_cast<qreal>(height)
+				, x2.toDouble() / static_cast<qreal>(width)
+				, y2.toDouble() / static_cast<qreal>(height));
 
 		QString portType = linePortsList.at(i).toElement().attribute("type", "NonTyped");
 		ports << factory.createPort(line, propX1, propY1, propX2, propY2, width, height
@@ -519,9 +519,9 @@ bool InterpreterElementImpl::createChildrenFromMenu() const
 	return false;
 }
 
-QList<double> InterpreterElementImpl::border() const
+QList<qreal> InterpreterElementImpl::border() const
 {
-	QList<double> list;
+	QList<qreal> list;
 	if (mEditorRepoApi->stringProperty(mId, "isAction") == "true") {
 		list << 30 << 15 << 15 << 25;
 	} else {

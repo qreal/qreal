@@ -6,7 +6,7 @@
 namespace qReal {
 namespace gestures {
 
-class RectangleGesturesManager : public GesturesRecognizer<double *>
+class RectangleGesturesManager : public GesturesRecognizer<qreal *>
 {
 public:
 	RectangleGesturesManager();
