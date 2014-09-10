@@ -1205,7 +1205,11 @@ QtVariantPropertyManager::QtVariantPropertyManager(QObject *parent)
             iconMapTypeId();
     connect(enumPropertyManager, SIGNAL(valueChanged(QtProperty *, int)),
                 this, SLOT(slotValueChanged(QtProperty *, int)));
-    connect(enumPropertyManager, SIGNAL(enumNamesChanged(QtProperty *, const QStringList &)),
+	/// This feature was not included into the original Qt Property Browser Framework.
+	/// It was added specially for QReal needs.
+	connect(enumPropertyManager, SIGNAL(valueChanged(QtProperty *, QString)),
+				this, SLOT(slotValueChanged(QtProperty *, QString)));
+	connect(enumPropertyManager, SIGNAL(enumNamesChanged(QtProperty *, const QStringList &)),
                 this, SLOT(slotEnumNamesChanged(QtProperty *, const QStringList &)));
     connect(enumPropertyManager, SIGNAL(enumIconsChanged(QtProperty *, const QMap<int, QIcon> &)),
                 this, SLOT(slotEnumIconsChanged(QtProperty *, const QMap<int, QIcon> &)));
@@ -1690,7 +1694,13 @@ void QtVariantPropertyManager::setValue(QtProperty *property, const QVariant &va
         colorManager->setValue(internProp, qVariantValue<QColor>(val));
         return;
     } else if (QtEnumPropertyManager *enumManager = qobject_cast<QtEnumPropertyManager *>(manager)) {
-        enumManager->setValue(internProp, qVariantValue<int>(val));
+		/// This feature was not included into the original Qt Property Browser Framework.
+		/// It was added specially for QReal needs.
+		if (enumManager->editable(internProp) && val.type() == QVariant::String) {
+			enumManager->setValue(internProp, qVariantValue<QString>(val));
+		} else {
+			enumManager->setValue(internProp, qVariantValue<int>(val));
+		}
         return;
     } else if (QtSizePolicyPropertyManager *sizePolicyManager =
                qobject_cast<QtSizePolicyPropertyManager *>(manager)) {
