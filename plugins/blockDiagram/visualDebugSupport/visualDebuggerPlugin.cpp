@@ -147,8 +147,9 @@ void VisualDebuggerPlugin::showWatchList()
 	if (mWatchListWindow != NULL) {
 		mWatchListWindow->close();
 	}
-	mWatchListWindow = new WatchListWindow(mParser);
-	mWatchListWindow->show();
+	/// @todo Rewrite visual debugger to new text language infrastructure or creat separate watch list window for it.
+//	mWatchListWindow = new WatchListWindow(mParser);
+//	mWatchListWindow->show();
 }
 
 void VisualDebuggerPlugin::debug()
