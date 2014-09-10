@@ -2045,6 +2045,11 @@ QWidget *QtEnumEditorFactory::createEditor(QtEnumPropertyManager *manager, QtPro
     QComboBox *editor = d_ptr->createEditor(property, parent);
     editor->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
     editor->setMinimumContentsLength(1);
+
+	// This feature was not included into the original Qt Property Browser Framework.
+	// It was added specially for QReal needs.
+	editor->setEditable(manager->editable(property));
+
     editor->view()->setTextElideMode(Qt::ElideRight);
     QStringList enumNames = manager->enumNames(property);
     editor->addItems(enumNames);

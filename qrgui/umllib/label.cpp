@@ -91,7 +91,7 @@ void Label::setText(QString const &text)
 
 void Label::setTextFromRepo(QString const &text)
 {
-	QString const friendlyText = mEnumValues.isEmpty() ? text : mEnumValues[text];
+	QString const friendlyText = mEnumValues.isEmpty() ? text : enumText(text);
 	if (friendlyText != toPlainText()) {
 		QGraphicsTextItem::setPlainText(friendlyText);
 		setText(toPlainText());
@@ -156,7 +156,7 @@ void Label::updateData(bool withUndoRedo)
 	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mBinding, value, withUndoRedo);
 	} else {
-		parent->setLogicalProperty(mBinding, mEnumValues.key(value), withUndoRedo);
+		parent->setLogicalProperty(mBinding, enumText(value), withUndoRedo);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mIndex, pos());
@@ -378,4 +378,13 @@ QRectF Label::labelMovingRect() const
 	int const distance = SettingsManager::value("LabelsDistance").toInt();
 	return mapFromItem(parentItem(), parentItem()->boundingRect()).boundingRect()
 			.adjusted(-distance, -distance, distance, distance);
+}
+
+QString Label::enumText(QString const &enumValue) const
+{
+	return mEnumValues.contains(enumValue)
+					? mEnumValues.key(enumValue)
+					: mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mBinding)
+							? enumValue
+							: QString();
 }

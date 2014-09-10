@@ -367,7 +367,10 @@ public:
     const QString m_constraintAttribute;
     const QString m_singleStepAttribute;
     const QString m_decimalsAttribute;
-    const QString m_enumIconsAttribute;
+	/// This feature was not included into the original Qt Property Browser Framework.
+	/// It was added specially for QReal needs.
+	const QString m_enumEditableAttribute;
+	const QString m_enumIconsAttribute;
     const QString m_enumNamesAttribute;
     const QString m_flagNamesAttribute;
     const QString m_maximumAttribute;
@@ -381,7 +384,10 @@ QtVariantPropertyManagerPrivate::QtVariantPropertyManagerPrivate() :
     m_constraintAttribute(QLatin1String("constraint")),
     m_singleStepAttribute(QLatin1String("singleStep")),
     m_decimalsAttribute(QLatin1String("decimals")),
-    m_enumIconsAttribute(QLatin1String("enumIcons")),
+	/// This feature was not included into the original Qt Property Browser Framework.
+	/// It was added specially for QReal needs.
+	m_enumEditableAttribute(QLatin1String("enumEditable")),
+	m_enumIconsAttribute(QLatin1String("enumIcons")),
     m_enumNamesAttribute(QLatin1String("enumNames")),
     m_flagNamesAttribute(QLatin1String("flagNames")),
     m_maximumAttribute(QLatin1String("maximum")),
@@ -1792,7 +1798,11 @@ void QtVariantPropertyManager::setAttribute(QtProperty *property,
             rectFManager->setDecimals(internProp, qVariantValue<int>(value));
         return;
     } else if (QtEnumPropertyManager *enumManager = qobject_cast<QtEnumPropertyManager *>(manager)) {
-        if (attribute == d_ptr->m_enumNamesAttribute)
+		/// This feature was not included into the original Qt Property Browser Framework.
+		/// It was added specially for QReal needs.
+		if (attribute == d_ptr->m_enumEditableAttribute)
+			enumManager->setEditable(internProp, qVariantValue<bool>(value));
+		if (attribute == d_ptr->m_enumNamesAttribute)
             enumManager->setEnumNames(internProp, qVariantValue<QStringList>(value));
         if (attribute == d_ptr->m_enumIconsAttribute)
             enumManager->setEnumIcons(internProp, qVariantValue<QtIconMap>(value));

@@ -4773,8 +4773,17 @@ public:
 
     struct Data
     {
-        Data() : val(-1) {}
+		Data()
+			: val(-1)
+			/// This line was not included into the original Qt Property Browser Framework.
+			/// It was added specially for QReal needs.
+			, isEditable(false)
+		{}
+
         int val;
+		/// This feature was not included into the original Qt Property Browser Framework.
+		/// It was added specially for QReal needs.
+		bool isEditable;
         QStringList enumNames;
         QMap<int, QIcon> enumIcons;
     };
@@ -4855,6 +4864,13 @@ QtEnumPropertyManager::~QtEnumPropertyManager()
     delete d_ptr;
 }
 
+/// This feature was not included into the original Qt Property Browser Framework.
+/// It was added specially for QReal needs.
+bool QtEnumPropertyManager::editable(const QtProperty *property) const
+{
+	return getData(d_ptr->m_values, &QtEnumPropertyManagerPrivate::Data::isEditable, property, false);
+}
+
 /*!
     Returns the given \a property's value which is an index in the
     list returned by enumNames()
@@ -4919,6 +4935,25 @@ QIcon QtEnumPropertyManager::valueIcon(const QtProperty *property) const
 
     const int v = data.val;
     return data.enumIcons.value(v);
+}
+
+/// This feature was not included into the original Qt Property Browser Framework.
+/// It was added specially for QReal needs.
+void QtEnumPropertyManager::setEditable(QtProperty *property, bool editable)
+{
+	const QtEnumPropertyManagerPrivate::PropertyValueMap::iterator it = d_ptr->m_values.find(property);
+	if (it == d_ptr->m_values.end())
+		return;
+
+	QtEnumPropertyManagerPrivate::Data data = it.value();
+
+	if (data.isEditable == editable)
+		return;
+
+	data.isEditable = editable;
+
+	emit propertyChanged(property);
+	emit valueChanged(property, data.val);
 }
 
 /*!
