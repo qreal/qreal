@@ -15,7 +15,7 @@ void LuaInterpreterTest::SetUp()
 	mAnalyzer.reset(new LuaSemanticAnalyzer(mErrors));
 	mParser.reset(new LuaParser(mErrors));
 	mLexer.reset(new LuaLexer(mErrors));
-	mInterpreter.reset(new LuaInterpreter());
+	mInterpreter.reset(new LuaInterpreter(mErrors));
 }
 
 QSharedPointer<qrtext::core::ast::Node> LuaInterpreterTest::parseAndAnalyze(QString const &code)

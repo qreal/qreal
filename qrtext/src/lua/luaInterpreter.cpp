@@ -41,6 +41,11 @@
 using namespace qrtext::lua::details;
 using namespace qrtext;
 
+LuaInterpreter::LuaInterpreter(QList<core::Error> &errors)
+	: mErrors(errors)
+{
+}
+
 QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		, core::SemanticAnalyzer const &semanticAnalyzer)
 {
@@ -56,6 +61,8 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 
 		if (!statements.isEmpty()) {
 			return interpret(statements.last(), semanticAnalyzer);
+		} else {
+			return QVariant();
 		}
 	} else if (root->is<ast::IntegerNumber>()) {
 		/// @todo Integer and float literals may differ from those recognized in toInt() and toDouble().
@@ -79,6 +86,9 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		if (variable->is<ast::Identifier>()) {
 			auto name = as<ast::Identifier>(variable)->name();
 			mIdentifierValues.insert(name, interpretedValue);
+		} else {
+			mErrors.append(core::Error(root->start(), QObject::tr("This construction is not supported by interpreter")
+					, core::ErrorType::runtimeError, core::Severity::error));
 		}
 
 		return QVariant();
@@ -103,9 +113,11 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		return interpretUnaryOperator(root, semanticAnalyzer);
 	} else if (root->is<ast::BinaryOperator>()) {
 		return interpretBinaryOperator(root, semanticAnalyzer);
+	} else {
+		mErrors.append(core::Error(root->start(), QObject::tr("This construction is not supported by interpreter")
+				, core::ErrorType::runtimeError, core::Severity::error));
+		return QVariant();
 	}
-
-	return QVariant();
 }
 
 void LuaInterpreter::addIntrinsicFunction(QString const &name

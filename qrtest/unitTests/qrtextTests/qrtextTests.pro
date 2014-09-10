@@ -10,14 +10,14 @@ LIBS += -L../../../bin -lqslog
 
 HEADERS += \
 	luaInterpreterTest.h \
-#	luaLexerTest.h \
-#	luaParserTest.h \
+	luaLexerTest.h \
+	luaParserTest.h \
 	luaSemanticAnalyzerTest.h \
 	luaToolboxTest.h \
 
 SOURCES += \
 	luaInterpreterTest.cpp \
-#	luaParserTest.cpp \
+	luaParserTest.cpp \
 	luaSemanticAnalyzerTest.cpp \
 	luaToolboxTest.cpp \
-#	luaLexerTest.cpp \
+	luaLexerTest.cpp \

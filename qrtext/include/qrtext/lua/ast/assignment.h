@@ -17,6 +17,8 @@ public:
 			, QSharedPointer<Expression> const &value)
 		: mVariable(variable), mValue(value)
 	{
+		connect(mVariable);
+		connect(mValue);
 	}
 
 	/// Returns left side of an assignment.

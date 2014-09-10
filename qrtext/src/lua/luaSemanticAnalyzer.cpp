@@ -14,9 +14,12 @@
 #include "qrtext/lua/types/table.h"
 
 #include "qrtext/lua/ast/assignment.h"
+#include "qrtext/lua/ast/block.h"
+#include "qrtext/lua/ast/fieldInitialization.h"
 #include "qrtext/lua/ast/functionCall.h"
 #include "qrtext/lua/ast/identifier.h"
 #include "qrtext/lua/ast/indexingExpression.h"
+#include "qrtext/lua/ast/tableConstructor.h"
 
 #include "qrtext/lua/ast/unaryMinus.h"
 #include "qrtext/lua/ast/not.h"
@@ -99,6 +102,22 @@ void LuaSemanticAnalyzer::analyzeNode(QSharedPointer<core::ast::Node> const &nod
 		analyzeBinaryOperator(node);
 	} else if (node->is<ast::FunctionCall>()) {
 		analyzeFunctionCall(node);
+	} else if (node->is<ast::FieldInitialization>()) {
+		assign(node, type(as<ast::FieldInitialization>(node)->value()));
+	} else if (node->is<ast::TableConstructor>()) {
+		auto tableConstructor = as<ast::TableConstructor>(node);
+		auto elementType = tableConstructor->initializers().isEmpty()
+				? any()
+				: type(tableConstructor->initializers().first());
+
+		auto tableType = QSharedPointer<core::types::TypeExpression>(
+				new types::Table(elementType, tableConstructor->initializers().size()));
+
+		assign(node, tableType);
+	} else if (node->is<ast::Block>()) {
+		// do nothing.
+	} else {
+		reportError(node, QObject::tr("This construction is not supported by semantic analysis"));
 	}
 }
 

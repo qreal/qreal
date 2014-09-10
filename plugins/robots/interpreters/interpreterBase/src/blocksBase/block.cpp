@@ -175,7 +175,10 @@ void Block::reportParserErrors()
 		case qrtext::core::Severity::critical:
 		case qrtext::core::Severity::error:
 		case qrtext::core::Severity::warning:
-			this->error(error.errorMessage());
+			this->error(QString("%1:%2 %3")
+					.arg(error.connection().line())
+					.arg(error.connection().column())
+					.arg(error.errorMessage()));
 			break;
 		case qrtext::core::Severity::internalError:
 			/// @todo: output to log.

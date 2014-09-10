@@ -317,3 +317,43 @@ TEST_F(LuaParserTest, functionCalls)
 	ASSERT_TRUE(argument->is<ast::IntegerNumber>());
 	EXPECT_EQ("3", as<ast::IntegerNumber>(argument)->stringRepresentation());
 }
+
+TEST_F(LuaParserTest, tableIndexingConnection)
+{
+	//                0    5    10   1517
+	QString stream = "a[1] = 1; a[2] = 2";
+	auto result = mParser->parse(mLexer->tokenize(stream));
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	auto block = as<ast::Block>(result);
+
+	auto firstAssignment = as<ast::Assignment>(block->children()[0]);
+	auto secondAssignment = as<ast::Assignment>(block->children()[1]);
+
+	auto firstIndexingExpression = as<ast::IndexingExpression>(firstAssignment->variable());
+	auto secondIndexingExpression = as<ast::IndexingExpression>(secondAssignment->variable());
+
+	auto firstAssignee = as<ast::IntegerNumber>(firstAssignment->value());
+	auto secondAssignee = as<ast::IntegerNumber>(secondAssignment->value());
+
+	auto firstIndexer = as<ast::IntegerNumber>(firstIndexingExpression->indexer());
+	auto secondIndexer = as<ast::IntegerNumber>(secondIndexingExpression->indexer());
+
+	auto firstTable = as<ast::Identifier>(firstIndexingExpression->table());
+	auto secondTable = as<ast::Identifier>(secondIndexingExpression->table());
+
+	EXPECT_EQ(core::Connection(0, 0, 0), firstAssignment->start());
+	EXPECT_EQ(core::Connection(10, 0, 10), secondAssignment->start());
+
+	EXPECT_EQ(core::Connection(0, 0, 0), firstIndexingExpression->start());
+	EXPECT_EQ(core::Connection(10, 0, 10), secondIndexingExpression->start());
+
+	EXPECT_EQ(core::Connection(7, 0, 7), firstAssignee->start());
+	EXPECT_EQ(core::Connection(17, 0, 17), secondAssignee->start());
+
+	EXPECT_EQ(core::Connection(2, 0, 2), firstIndexer->start());
+	EXPECT_EQ(core::Connection(12, 0, 12), secondIndexer->start());
+
+	EXPECT_EQ(core::Connection(0, 0, 0), firstTable->start());
+	EXPECT_EQ(core::Connection(10, 0, 10), secondTable->start());
+}

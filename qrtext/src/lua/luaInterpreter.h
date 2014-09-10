@@ -16,6 +16,8 @@ namespace details {
 
 class LuaInterpreter {
 public:
+	explicit LuaInterpreter(QList<core::Error> &errors);
+
 	void addIntrinsicFunction(QString const &name
 			, std::function<QVariant(QList<QVariant> const &)> const &semantic);
 
@@ -36,6 +38,8 @@ private:
 
 	QHash<QString, QVariant> mIdentifierValues;
 	QHash<QString, std::function<QVariant(QList<QVariant> const &)>> mIntrinsicFunctions;
+
+	QList<core::Error> &mErrors;
 };
 
 }

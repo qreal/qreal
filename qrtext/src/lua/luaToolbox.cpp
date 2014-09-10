@@ -13,7 +13,7 @@ LuaToolbox::LuaToolbox()
 	: mLexer(new details::LuaLexer(mErrors))
 	, mParser(new details::LuaParser(mErrors))
 	, mAnalyzer(new details::LuaSemanticAnalyzer(mErrors))
-	, mInterpreter(new details::LuaInterpreter())
+	, mInterpreter(new details::LuaInterpreter(mErrors))
 {
 }
 

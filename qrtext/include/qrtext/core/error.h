@@ -14,6 +14,7 @@ enum class ErrorType {
 	lexicalError
 	, syntaxError
 	, semanticError
+	, runtimeError
 };
 
 /// Severity of an error. Internal error means that there is a coding error somewhere in text language implementation

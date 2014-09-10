@@ -13,7 +13,7 @@ namespace details {
 
 class QRTEXT_EXPORT LuaSemanticAnalyzer : public core::SemanticAnalyzer {
 public:
-	LuaSemanticAnalyzer(QList<core::Error> &errors);
+	explicit LuaSemanticAnalyzer(QList<core::Error> &errors);
 
 	void addIntrinsicFunction(QString const &name, QSharedPointer<types::Function> const &type);
 
