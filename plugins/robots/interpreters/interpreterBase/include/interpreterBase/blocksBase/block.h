@@ -29,7 +29,7 @@ public:
 
 	qReal::Id const id() const override;
 
-	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const override;
+	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() override;
 
 	void finishedSteppingInto() override;
 

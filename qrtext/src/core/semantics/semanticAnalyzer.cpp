@@ -70,7 +70,12 @@ QSharedPointer<types::TypeExpression> SemanticAnalyzer::type(QSharedPointer<ast:
 void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
 		, QSharedPointer<types::TypeExpression> const &type)
 {
-	mTypes.insert(as<ast::Expression>(expression), QSharedPointer<types::TypeVariable>(new types::TypeVariable(type)));
+	if (!type->is<types::TypeVariable>()) {
+		mTypes.insert(as<ast::Expression>(expression)
+				, QSharedPointer<types::TypeVariable>(new types::TypeVariable(type)));
+	} else {
+		mTypes.insert(as<ast::Expression>(expression), type.dynamicCast<types::TypeVariable>());
+	}
 }
 
 void SemanticAnalyzer::unify(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs)

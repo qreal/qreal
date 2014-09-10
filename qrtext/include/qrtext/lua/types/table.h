@@ -14,6 +14,11 @@ public:
 	{
 	}
 
+	QSharedPointer<core::types::TypeExpression> const &elementType() const
+	{
+		return mElementType;
+	}
+
 private:
 	QSharedPointer<core::types::TypeExpression> mElementType;
 	int mSize;

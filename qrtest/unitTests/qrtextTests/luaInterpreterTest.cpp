@@ -52,3 +52,27 @@ TEST_F(LuaInterpreterTest, intrinsicFunction)
 	ASSERT_TRUE(mErrors.isEmpty());
 	ASSERT_EQ(25, result);
 }
+
+TEST_F(LuaInterpreterTest, tables)
+{
+	int result = interpret<int>("a = {239}; a[0]");
+
+	ASSERT_TRUE(mErrors.isEmpty());
+	ASSERT_EQ(239, result);
+}
+
+TEST_F(LuaInterpreterTest, table)
+{
+	int result = interpret<int>("a[1] = 239; a[2] = 30; a[0]");
+
+	ASSERT_TRUE(mErrors.isEmpty());
+	ASSERT_EQ(0, result);
+
+	result = interpret<int>("a[1]");
+	ASSERT_TRUE(mErrors.isEmpty());
+	ASSERT_EQ(239, result);
+
+	result = interpret<int>("a[2]");
+	ASSERT_TRUE(mErrors.isEmpty());
+	ASSERT_EQ(30, result);
+}

@@ -9,6 +9,7 @@
 #include "qrtext/lua/ast/integerNumber.h"
 #include "qrtext/lua/ast/string.h"
 #include "qrtext/lua/ast/tableConstructor.h"
+#include "qrtext/lua/ast/indexingExpression.h"
 #include "qrtext/lua/ast/block.h"
 
 #include "qrtext/lua/ast/unaryMinus.h"
@@ -86,6 +87,36 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		if (variable->is<ast::Identifier>()) {
 			auto name = as<ast::Identifier>(variable)->name();
 			mIdentifierValues.insert(name, interpretedValue);
+			return QVariant();
+		} if (variable->is<ast::IndexingExpression>()) {
+			if (as<ast::IndexingExpression>(variable)->table()->is<ast::Identifier>()) {
+				auto name = as<ast::Identifier>(as<ast::IndexingExpression>(variable)->table())->name();
+				if (as<ast::IndexingExpression>(variable)->indexer()->is<ast::IntegerNumber>()) {
+					auto index = as<ast::IntegerNumber>(as<ast::IndexingExpression>(variable)->indexer())
+							->stringRepresentation().toInt();
+
+					auto table = mIdentifierValues.value(name).value<QStringList>();
+					if (table.size() <= index) {
+						for (int i = 0; index >= table.size(); ++i) {
+							table.append("");
+						}
+					}
+
+					table[index] = interpret(value, semanticAnalyzer).toString();
+					mIdentifierValues.insert(name, table);
+
+					return QVariant();
+				}
+			}
+
+			mErrors.append(core::Error(root->start()
+					, QObject::tr("Currently interpreter allows assignments only to tables denoted by identifier and "
+							"by integer index, as in 'a[1] = 3'")
+					, core::ErrorType::runtimeError, core::Severity::error));
+
+			/// @todo Support more complex cases of table assignment, like
+			///       "f(x)['a'] = 1". Note that field access in form of "a.x = 1" is parsed as "a['x'] = 1", so
+			///       no special handling is needed for that case.
 		} else {
 			mErrors.append(core::Error(root->start(), QObject::tr("This construction is not supported by interpreter")
 					, core::ErrorType::runtimeError, core::Severity::error));
@@ -93,9 +124,6 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 
 		return QVariant();
 
-		/// @todo Assignment is also possible to array slice, for example "a[1] = 1", or more complex case,
-		///       "f(x)[1] = 1". Note that field access in form of "a.x = 1" is parsed as "a['x'] = 1", so no special
-		///       handling is needed for that case.
 	} else if (root->is<ast::Identifier>()) {
 		return mIdentifierValues.value(as<ast::Identifier>(root)->name());
 	} else if (root->is<ast::FunctionCall>()) {
@@ -109,6 +137,24 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		}
 
 		return mIntrinsicFunctions[name](actualParameters);
+	} else if (root->is<ast::IndexingExpression>()) {
+		if (as<ast::IndexingExpression>(root)->table()->is<ast::Identifier>()) {
+			auto name = as<ast::Identifier>(as<ast::IndexingExpression>(root)->table())->name();
+			if (as<ast::IndexingExpression>(root)->indexer()->is<ast::IntegerNumber>()) {
+				auto index = as<ast::IntegerNumber>(as<ast::IndexingExpression>(root)->indexer())
+						->stringRepresentation().toInt();
+
+				auto table = mIdentifierValues.value(name).value<QStringList>();
+				return table[index];
+			}
+		}
+
+		mErrors.append(core::Error(root->start()
+				, QObject::tr("Currently interpreter allows only tables denoted by identifier and "
+						"that use only integer indexes, as in 'a[1] = 3'")
+				, core::ErrorType::runtimeError, core::Severity::error));
+
+		return QVariant();
 	} else if (root->is<ast::UnaryOperator>()) {
 		return interpretUnaryOperator(root, semanticAnalyzer);
 	} else if (root->is<ast::BinaryOperator>()) {
@@ -116,6 +162,7 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 	} else {
 		mErrors.append(core::Error(root->start(), QObject::tr("This construction is not supported by interpreter")
 				, core::ErrorType::runtimeError, core::Severity::error));
+
 		return QVariant();
 	}
 }

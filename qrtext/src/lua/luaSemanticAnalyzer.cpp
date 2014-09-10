@@ -114,6 +114,18 @@ void LuaSemanticAnalyzer::analyzeNode(QSharedPointer<core::ast::Node> const &nod
 				new types::Table(elementType, tableConstructor->initializers().size()));
 
 		assign(node, tableType);
+	} else if (node->is<ast::IndexingExpression>()) {
+		auto indexingExpression = as<ast::IndexingExpression>(node);
+		auto table = indexingExpression->table();
+		if (type(table)->is<types::Table>()) {
+			auto tableElementType = as<types::Table>(type(table))->elementType();
+			assign(node, tableElementType);
+		} else {
+			/// It's a table, but we see it for the first time so know nothing about it.
+			auto elementType = QSharedPointer<core::types::TypeVariable>(new core::types::TypeVariable());
+			constrain(table, table, { QSharedPointer<core::types::TypeExpression>(new types::Table(elementType, -1)) });
+			assign(node, elementType);
+		}
 	} else if (node->is<ast::Block>()) {
 		// do nothing.
 	} else {
@@ -130,8 +142,8 @@ void LuaSemanticAnalyzer::analyzeUnaryOperator(QSharedPointer<core::ast::Node> c
 	} else if (node->is<ast::Not>()) {
 		assign(node, mBoolean);
 	} else if (node->is<ast::Length>()) {
-		/// @todo Be able to constrain to generic type "any table".
-		constrain(node, operand, {mString});
+		auto genericTableType = QSharedPointer<core::types::TypeExpression>(new types::Table(any(), -1));
+		constrain(node, operand, {mString, genericTableType});
 	} else if (node->is<ast::BitwiseNegation>()) {
 		/// @todo Support coercion, as in http://www.lua.org/work/doc/manual.html#3.4.3
 		constrain(node, operand, {mInteger});

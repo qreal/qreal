@@ -144,7 +144,7 @@ void Block::error(QString const &message)
 	emit failure();
 }
 
-QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedDevices() const
+QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedDevices()
 {
 	return QMap<robotModel::PortInfo, robotModel::DeviceInfo>();
 }

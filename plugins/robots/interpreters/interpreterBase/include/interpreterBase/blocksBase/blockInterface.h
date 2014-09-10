@@ -30,7 +30,7 @@ public:
 	virtual qReal::Id const id() const = 0;
 
 	/// Returns an information about the devices that must be configured for correct work of this block.
-	virtual QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const = 0;
+	virtual QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() = 0;
 
 	/// Called each time when control flow has reached the end block of the requested for stepping into diagram.
 	virtual void finishedSteppingInto() = 0;
