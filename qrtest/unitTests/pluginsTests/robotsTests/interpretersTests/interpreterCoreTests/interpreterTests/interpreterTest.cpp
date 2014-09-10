@@ -92,7 +92,6 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mModelManager
 			, *mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
-			, &parser
 			, newParser
 			);
 
@@ -119,7 +118,6 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->projectManagementInterface()
 			, mBlocksFactoryManager
 			, mModelManager
-			, parser
 			, newParser
 			, *mFakeConnectToRobotAction
 			));
