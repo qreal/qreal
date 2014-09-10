@@ -1195,7 +1195,11 @@ QtVariantPropertyManager::QtVariantPropertyManager(QObject *parent)
     QtEnumPropertyManager *enumPropertyManager = new QtEnumPropertyManager(this);
     d_ptr->m_typeToPropertyManager[enumId] = enumPropertyManager;
     d_ptr->m_typeToValueType[enumId] = QVariant::Int;
-    d_ptr->m_typeToAttributeToAttributeType[enumId][d_ptr->m_enumNamesAttribute] =
+	/// This feature was not included into the original Qt Property Browser Framework.
+	/// It was added specially for QReal needs.
+	d_ptr->m_typeToAttributeToAttributeType[enumId][d_ptr->m_enumEditableAttribute] =
+			QVariant::Bool;
+	d_ptr->m_typeToAttributeToAttributeType[enumId][d_ptr->m_enumNamesAttribute] =
             QVariant::StringList;
     d_ptr->m_typeToAttributeToAttributeType[enumId][d_ptr->m_enumIconsAttribute] =
             iconMapTypeId();
@@ -1467,12 +1471,12 @@ QVariant QtVariantPropertyManager::attributeValue(const QtProperty *property, co
     if (!propType)
         return QVariant();
 
-    QMap<int, QMap<QString, int> >::ConstIterator it =
+	QMap<int, QMap<QString, int> >::ConstIterator it =
             d_ptr->m_typeToAttributeToAttributeType.find(propType);
     if (it == d_ptr->m_typeToAttributeToAttributeType.constEnd())
         return QVariant();
 
-    QMap<QString, int> attributes = it.value();
+	QMap<QString, int> attributes = it.value();
     QMap<QString, int>::ConstIterator itAttr = attributes.find(attribute);
     if (itAttr == attributes.constEnd())
         return QVariant();
@@ -1547,7 +1551,11 @@ QVariant QtVariantPropertyManager::attributeValue(const QtProperty *property, co
             return rectFManager->decimals(internProp);
         return QVariant();
     } else if (QtEnumPropertyManager *enumManager = qobject_cast<QtEnumPropertyManager *>(manager)) {
-        if (attribute == d_ptr->m_enumNamesAttribute)
+		/// This feature was not included into the original Qt Property Browser Framework.
+		/// It was added specially for QReal needs.
+		if (attribute == d_ptr->m_enumEditableAttribute)
+			return enumManager->editable(internProp);
+		if (attribute == d_ptr->m_enumNamesAttribute)
             return enumManager->enumNames(internProp);
         if (attribute == d_ptr->m_enumIconsAttribute) {
             QVariant v;
@@ -1716,11 +1724,11 @@ void QtVariantPropertyManager::setValue(QtProperty *property, const QVariant &va
 void QtVariantPropertyManager::setAttribute(QtProperty *property,
         const QString &attribute, const QVariant &value)
 {
-    QVariant oldAttr = attributeValue(property, attribute);
+	QVariant oldAttr = attributeValue(property, attribute);
     if (!oldAttr.isValid())
         return;
 
-    int attrType = value.userType();
+	int attrType = value.userType();
     if (!attrType)
         return;
 
@@ -1728,11 +1736,11 @@ void QtVariantPropertyManager::setAttribute(QtProperty *property,
                 !value.canConvert((QVariant::Type)attrType))
         return;
 
-    QtProperty *internProp = propertyToWrappedProperty()->value(property, 0);
+	QtProperty *internProp = propertyToWrappedProperty()->value(property, 0);
     if (internProp == 0)
         return;
 
-    QtAbstractPropertyManager *manager = internProp->propertyManager();
+	QtAbstractPropertyManager *manager = internProp->propertyManager();
     if (QtIntPropertyManager *intManager = qobject_cast<QtIntPropertyManager *>(manager)) {
         if (attribute == d_ptr->m_maximumAttribute)
             intManager->setMaximum(internProp, qVariantValue<int>(value));

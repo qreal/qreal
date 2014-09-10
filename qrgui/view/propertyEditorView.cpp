@@ -120,6 +120,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 				}
 
 				vItem->setAttribute("enumNames", friendlyNames);
+				vItem->setAttribute("enumEditable", mModel->enumEditable(valueCell));
 				QVariant idx(enumPropertyIndexOf(valueCell, value.toString()));
 				vItem->setValue(idx);
 			}

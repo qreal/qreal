@@ -196,7 +196,7 @@ static Value getData(const QMap<const QtProperty *, PrivateData> &propertyMap,
     typedef QMap<const QtProperty *, PrivateData> PropertyToData;
     typedef typename PropertyToData::const_iterator PropertyToDataConstIterator;
     const PropertyToDataConstIterator it = propertyMap.constFind(property);
-    if (it == propertyMap.constEnd())
+	if (it == propertyMap.constEnd())
         return defaultValue;
     return it.value().*data;
 }
@@ -4892,7 +4892,7 @@ int QtEnumPropertyManager::value(const QtProperty *property) const
 */
 QStringList QtEnumPropertyManager::enumNames(const QtProperty *property) const
 {
-    return getData<QStringList>(d_ptr->m_values, &QtEnumPropertyManagerPrivate::Data::enumNames, property, QStringList());
+	return getData<QStringList>(d_ptr->m_values, &QtEnumPropertyManagerPrivate::Data::enumNames, property, QStringList());
 }
 
 /*!
@@ -4952,8 +4952,10 @@ void QtEnumPropertyManager::setEditable(QtProperty *property, bool editable)
 
 	data.isEditable = editable;
 
+	it.value() = data;
+
 	emit propertyChanged(property);
-	emit valueChanged(property, data.val);
+	emit valueChanged(property, data.isEditable);
 }
 
 /*!
