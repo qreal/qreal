@@ -35,8 +35,7 @@
 				<value name="A5"/>
 				<value name="A6"/>
 			</enum>
-			<enum name="GuardType">
-				<value/>
+			<enum name="GuardType" editable="true">
 				<value name="iteration" displayedName="iteration"/>
 				<value name="true" displayedName="true"/>
 				<value name="false" displayedName="false"/>

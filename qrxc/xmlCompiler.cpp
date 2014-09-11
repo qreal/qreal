@@ -189,6 +189,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQStringList getPortTypes(QString const &diagram, QString const &element) const override;\n"
 		<< "\tQStringList getReferenceProperties(QString const &diagram, QString const &element) const override;\n"
 		<< "\tQList<QPair<QString, QString>> getEnumValues(QString const &name) const override;\n"
+		<< "\tbool isEnumEditable(QString const &name) const override;\n"
 		<< "\tQString getGroupsXML() const override;\n"
 		<< "\tQList<QPair<QString, QString>> getParentsOf(QString const &diagram, QString const &element) "
 				"const override;\n"
@@ -268,6 +269,7 @@ void XmlCompiler::generatePluginSource()
 	generateNodesAndEdges(out);
 	generateGroupsXML(out);
 	generateEnumValues(out);
+	generateEditableEnums(out);
 	generatePropertyTypesRequests(out);
 	generatePropertyDefaultsRequests(out);
 
@@ -829,5 +831,22 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 	}
 
 	out() << "\treturn {};\n"
+		<< "}\n\n";
+}
+
+void XmlCompiler::generateEditableEnums(OutFile &out)
+{
+	out() << "bool " << mPluginName << "Plugin::isEnumEditable(QString const &name) const\n{\n";
+
+	QStringList editableEnums;
+	for (EnumType const *type : mEditors[mCurrentEditor]->getAllEnumTypes()) {
+		if (type->isEditable()) {
+			editableEnums << "\"" + type->name() + "\"";
+		}
+	}
+
+	out() << QString("\tQStringList const editableEnums = { %1 };\n").arg(editableEnums.join(", "));
+
+	out() << "\treturn editableEnums.contains(name);\n"
 		<< "}\n\n";
 }

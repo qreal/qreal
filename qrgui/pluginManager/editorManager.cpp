@@ -284,8 +284,9 @@ IdList EditorManager::containedTypes(const Id &id) const
 
 bool EditorManager::isEnumEditable(Id const &id, QString const &name) const
 {
-	/// @todo: specify it explicitly in the metamodel?
-	return enumValues(id, name).contains(qMakePair(QString(), QString()));
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	QString const typeName = mPluginIface[id.editor()]->getPropertyType(id.element(), name);
+	return mPluginIface[id.editor()]->isEnumEditable(typeName);
 }
 
 QList<QPair<QString, QString>> EditorManager::enumValues(Id const &id, const QString &name) const
