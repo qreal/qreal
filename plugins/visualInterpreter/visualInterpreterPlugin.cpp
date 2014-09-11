@@ -475,7 +475,7 @@ void VisualInterpreterPlugin::showWatchList()
 	if (mWatchListWindow) {
 		mWatchListWindow->close();
 	}
-	/// @todo Rewrite visual debugger to new text language infrastructure or creat separate watch list window for it.
-//	mWatchListWindow = new WatchListWindow(mVisualInterpreterUnit->ruleParser());
-//	mWatchListWindow->show();
+
+	mWatchListWindow = new WatchListWindow(mVisualInterpreterUnit->ruleParser());
+	mWatchListWindow->show();
 }

@@ -144,12 +144,12 @@ void VisualDebuggerPlugin::activeTabChanged(Id const &rootElementId)
 
 void VisualDebuggerPlugin::showWatchList()
 {
-	if (mWatchListWindow != NULL) {
+	if (mWatchListWindow) {
 		mWatchListWindow->close();
 	}
-	/// @todo Rewrite visual debugger to new text language infrastructure or creat separate watch list window for it.
-//	mWatchListWindow = new WatchListWindow(mParser);
-//	mWatchListWindow->show();
+
+	mWatchListWindow = new WatchListWindow(mParser);
+	mWatchListWindow->show();
 }
 
 void VisualDebuggerPlugin::debug()
