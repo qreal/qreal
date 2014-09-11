@@ -15,13 +15,15 @@ void SwitchBlock::run()
 
 bool SwitchBlock::initNextBlocks()
 {
+	mBranches.clear();
+	mDefaultBranch = Id();
+
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 	if (links.size() < 2) {
 		error(tr("There must be at list TWO links outgoing from switch block"));
 		return false;
 	}
 
-	Id nonMarkedBlockId;
 	for (Id const &linkId : links) {
 		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 		if (targetBlockId.isNull() || targetBlockId == Id::rootId()) {
@@ -31,10 +33,10 @@ bool SwitchBlock::initNextBlocks()
 
 		QString const condition = stringProperty(linkId, "Guard").toLower();
 		if (condition.isEmpty()) {
-			if (nonMarkedBlockId.isNull()) {
-				nonMarkedBlockId = targetBlockId;
+			if (mDefaultBranch.isNull()) {
+				mDefaultBranch = targetBlockId;
 			} else {
-				error(tr("There must be a link with empty 'Guard' property."));
+				error(tr("There must be exactly link with empty 'Guard' property (dafault branch)."));
 				return false;
 			}
 		} else {
@@ -47,7 +49,7 @@ bool SwitchBlock::initNextBlocks()
 		}
 	}
 
-	if (nonMarkedBlockId.isNull()) {
+	if (mDefaultBranch.isNull()) {
 		error(tr("There must be a link with empty 'Guard' property."));
 		return false;
 	}
