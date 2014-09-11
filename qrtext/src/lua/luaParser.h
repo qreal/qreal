@@ -82,6 +82,8 @@ namespace details {
 
 class LuaParser : public core::Parser<LuaTokenTypes> {
 public:
+	/// Constructor.
+	/// @param errors - error stream to report errors to.
 	LuaParser(QList<core::Error> &errors);
 
 private:

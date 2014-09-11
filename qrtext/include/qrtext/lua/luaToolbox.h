@@ -33,19 +33,27 @@ typedef core::Error Error;
 /// use type information only when all code in a program is parsed.
 class QRTEXT_EXPORT LuaToolbox : public LanguageToolboxInterface {
 public:
+	/// Constructor.
 	LuaToolbox();
+
 	~LuaToolbox() override;
 
 	void interpret(qReal::Id const &id, QString const &propertyName, QString const &code) override;
 
 	void interpret(QString const &code) override;
 
+	/// Interprets given code string using given id and property name for connection. Returns result of an expression.
+	/// Reintroduce this method in a namespace of this class, since otherwise C++ lookup will not find it without full
+	/// qualification.
 	template<typename T>
 	T interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
 	{
 		return LanguageToolboxInterface::interpret<T>(id, propertyName, code);
 	}
 
+	/// Interprets given code string without connection. Returns result of an expression.
+	/// Reintroduce this method in a namespace of this class, since otherwise C++ lookup will not find it without full
+	/// qualification.
 	template<typename T>
 	T interpret(QString const &code)
 	{
@@ -62,11 +70,6 @@ public:
 
 	QList<core::Error> const &errors() const override;
 
-	/// Register intrinsic function.
-	/// @param name - name of a function.
-	/// @param returnType - function return type, as type expression. Takes ownership.
-	/// @param parameterTypes - a list of types of function parameters. Takes ownership.
-	/// @param semantic - a function that will be called by interpreter to actually get a result.
 	void addIntrinsicFunction(QString const &name
 			, core::types::TypeExpression * const returnType
 			, const QList<core::types::TypeExpression *> &parameterTypes
@@ -74,12 +77,14 @@ public:
 
 	QStringList identifiers() const override;
 
+	/// Reintroduced method from DebuggerInterface, returns value of identifier with given name.
 	template<typename T>
 	T value(QString const &identifier) const
 	{
 		return DebuggerInterface::value<T>(identifier);
 	}
 
+	/// Reintroduced method from DebuggerInterface, sets a value of given identifier in interpreter to given value.
 	template<typename T>
 	void setVariableValue(QString const &name, T value)
 	{

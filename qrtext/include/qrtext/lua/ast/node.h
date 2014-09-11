@@ -6,6 +6,7 @@ namespace qrtext {
 namespace lua {
 namespace ast {
 
+/// Node imported to this namespace.
 typedef core::ast::Node Node;
 
 }

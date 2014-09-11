@@ -8,6 +8,7 @@ namespace qrtext {
 namespace lua {
 namespace details {
 
+/// Tokens recognizable by Lua lexer.
 enum class LuaTokenTypes {
 	whitespace  // 0
 	, newline
@@ -80,11 +81,13 @@ enum class LuaTokenTypes {
 	, comment
 };
 
+/// Overload that allows to use token types as hash keys.
 inline uint qHash(LuaTokenTypes const &key)
 {
 	return ::qHash(static_cast<std::underlying_type<LuaTokenTypes>::type>(key));
 }
 
+/// Helper operator for debugging.
 inline QDebug operator <<(QDebug debug, LuaTokenTypes const &token)
 {
 	debug << static_cast<std::underlying_type<LuaTokenTypes>::type>(token);

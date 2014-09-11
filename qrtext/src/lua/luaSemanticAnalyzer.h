@@ -11,10 +11,16 @@ namespace qrtext {
 namespace lua {
 namespace details {
 
+/// Semantic analyzer for Lua language.
 class QRTEXT_EXPORT LuaSemanticAnalyzer : public core::SemanticAnalyzer {
 public:
+	/// Constructor.
+	/// @param errors - error stream to report errors to.
 	explicit LuaSemanticAnalyzer(QList<core::Error> &errors);
 
+	/// Registers external (intrinsic for a language) function in interpreter.
+	/// @param name - name of a function.
+	/// @param type - type of a function.
 	void addIntrinsicFunction(QString const &name, QSharedPointer<types::Function> const &type);
 
 private:

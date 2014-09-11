@@ -17,6 +17,9 @@ NewRobotsBlockParser::NewRobotsBlockParser(ErrorReporterInterface * const errorR
 	, mRobotModelManager(robotModelManager)
 	, mTimeComputer(timeComputer)
 {
+	/// @todo Remove errorReporter.
+	Q_UNUSED(errorReporter)
+
 	setReservedVariables();
 	connect(&mRobotModelManager, &interpreterBase::robotModel::RobotModelManagerInterface::robotModelChanged
 			, this, &NewRobotsBlockParser::setReservedVariables);

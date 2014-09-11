@@ -7,8 +7,13 @@ namespace qrtext {
 namespace lua {
 namespace ast {
 
+/// Represents method call expression.
 class QRTEXT_EXPORT MethodCall : public Expression {
 public:
+	/// Constructor.
+	/// @param object - expression which calculates to object of a method.
+	/// @param methodName - name of a method to call.
+	/// @param arguments - a list of actual parameters.
 	MethodCall(QSharedPointer<Expression> const &object
 			, QSharedPointer<Identifier> const &methodName
 			, QList<QSharedPointer<Expression>> const &arguments)
@@ -16,14 +21,17 @@ public:
 	{
 	}
 
+	/// Returns object.
 	QSharedPointer<Expression> const &object() const {
 		return mObject;
 	}
 
+	/// Returns method identifier.
 	QSharedPointer<Identifier> const &methodName() const {
 		return mMethodName;
 	}
 
+	/// Returns a list of actual parameters.
 	QList<QSharedPointer<Expression>> const &arguments() const {
 		return mArguments;
 	}

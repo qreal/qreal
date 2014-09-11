@@ -6,6 +6,7 @@ namespace qrtext {
 namespace lua {
 namespace ast {
 
+/// Represents "true" logical constant.
 class QRTEXT_EXPORT True : public Expression {
 };
 

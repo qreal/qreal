@@ -98,25 +98,38 @@ protected:
 	/// Provides acces to type variable for given expression to descendants. Note that type() will return resolved type.
 	QSharedPointer<types::TypeVariable> typeVariable(QSharedPointer<ast::Node> const &expression) const;
 
+	/// Mark current inferred types as dirty (for example, when type of a variable was changed by generalization)
+	/// and request another pass on AST to recheck type constraints.
 	void requestRecheck();
 
 private:
+	/// Collects type information on a subtree.
 	void collect(QSharedPointer<ast::Node> const &node);
+
+	/// Checks that all nodes in AST have their types.
 	void finalizeResolve(QSharedPointer<ast::Node> const &node);
 
+	/// Analyzes given node assuming that all its descendants were analysed and provides type information for it
+	/// using methods like constrain() and unify(). Shall be defined in concrete analyzers.
 	virtual void analyzeNode(QSharedPointer<ast::Node> const &node) = 0;
 
 	/// Contains mapping from expression to its type. Type is always stored as type variable to make further analysis
 	/// more convenient.
 	QHash<QSharedPointer<ast::Expression>, QSharedPointer<types::TypeVariable>> mTypes;
+
+	/// Contains mapping from identifier names to their declarations (or first appearance of an identifier).
 	QHash<QString, QSharedPointer<ast::Node>> mIdentifierDeclarations;
 
+	/// Special type denoting any type.
 	QSharedPointer<types::TypeExpression> mAny;
 
+	/// A list to report errors to.
 	QList<Error> &mErrors;
 
+	/// Table with information about relations of types.
 	QSharedPointer<GeneralizationsTableInterface> mGeneralizationsTable;
 
+	/// True when we need to traverse AST and check type constraints again.
 	bool mRecheckNeeded = true;
 };
 

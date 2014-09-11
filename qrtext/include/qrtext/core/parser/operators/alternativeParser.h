@@ -11,7 +11,7 @@ namespace core {
 template<typename TokenType>
 class AlternativeParser : public ParserInterface<TokenType> {
 public:
-	/// COnstructor. Takes parsers for two alternatives.
+	/// Constructor. Takes parsers for two alternatives.
 	AlternativeParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)
 		: mParser1(parser1), mParser2(parser2)
 	{

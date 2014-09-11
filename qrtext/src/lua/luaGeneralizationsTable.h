@@ -8,6 +8,7 @@ namespace qrtext {
 namespace lua {
 namespace details {
 
+/// Table of type-subtype relations for Lua language.
 class LuaGeneralizationsTable : public core::GeneralizationsTableInterface {
 public:
 	bool isGeneralization(QSharedPointer<core::types::TypeExpression> const &specific

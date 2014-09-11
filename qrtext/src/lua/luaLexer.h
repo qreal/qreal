@@ -16,6 +16,8 @@ namespace details {
 /// - long brackets are not supported, either for string literals or for comments.
 class LuaLexer: public core::Lexer<LuaTokenTypes> {
 public:
+	/// Constructor.
+	/// @param errors - error stream to report errors to.
 	LuaLexer(QList<core::Error> &errors);
 
 private:

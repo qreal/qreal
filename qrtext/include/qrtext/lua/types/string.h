@@ -6,6 +6,7 @@ namespace qrtext {
 namespace lua {
 namespace types {
 
+/// Represents string type.
 class String : public core::types::TypeExpression {
 };
 

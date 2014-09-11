@@ -6,6 +6,7 @@ namespace qrtext {
 namespace lua {
 namespace ast {
 
+/// Expression imported to this namespace.
 typedef core::ast::Expression Expression;
 
 }

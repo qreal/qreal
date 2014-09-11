@@ -6,6 +6,7 @@ namespace qrtext {
 namespace lua {
 namespace ast {
 
+/// BinaryOperator imported to this namespace.
 typedef core::ast::BinaryOperator BinaryOperator;
 
 }
