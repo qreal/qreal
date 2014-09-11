@@ -61,7 +61,7 @@ TEST_F(LuaInterpreterTest, tables)
 	ASSERT_EQ(239, result);
 }
 
-TEST_F(LuaInterpreterTest, table)
+TEST_F(LuaInterpreterTest, implicitTable)
 {
 	int result = interpret<int>("a[1] = 239; a[2] = 30; a[0]");
 
@@ -75,4 +75,12 @@ TEST_F(LuaInterpreterTest, table)
 	result = interpret<int>("a[2]");
 	ASSERT_TRUE(mErrors.isEmpty());
 	ASSERT_EQ(30, result);
+}
+
+TEST_F(LuaInterpreterTest, tableExpressions)
+{
+	int result = interpret<int>("a[1 - 1] = 239; a[3 * 0]");
+
+	ASSERT_TRUE(mErrors.isEmpty());
+	ASSERT_EQ(239, result);
 }

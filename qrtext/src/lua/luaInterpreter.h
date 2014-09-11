@@ -36,6 +36,10 @@ private:
 	QVariant interpretBinaryOperator(QSharedPointer<core::ast::Node> const &root
 			, core::SemanticAnalyzer const &semanticAnalyzer);
 
+	QVariant operateOnIndexingExpression(QSharedPointer<core::ast::Node> const &indexingExpression
+			, core::SemanticAnalyzer const &semanticAnalyzer
+			, std::function<QVariant(QString const &, QStringList &, int)> const &action);
+
 	QHash<QString, QVariant> mIdentifierValues;
 	QHash<QString, std::function<QVariant(QList<QVariant> const &)>> mIntrinsicFunctions;
 

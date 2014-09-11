@@ -5,11 +5,13 @@
 #include "qrtext/lua/ast/assignment.h"
 #include "qrtext/lua/ast/block.h"
 #include "qrtext/lua/ast/functionCall.h"
+#include "qrtext/lua/ast/indexingExpression.h"
 #include "qrtext/lua/ast/unaryMinus.h"
 
 #include "qrtext/lua/types/integer.h"
 #include "qrtext/lua/types/float.h"
 #include "qrtext/lua/types/string.h"
+#include "qrtext/lua/types/table.h"
 
 #include "gtest/gtest.h"
 
@@ -203,4 +205,39 @@ TEST_F(LuaSemanticAnalyzerTest, invalidCoercion)
 
 	EXPECT_TRUE(mAnalyzer->type(b)->is<qrtext::core::types::Any>());
 	EXPECT_TRUE(mAnalyzer->type(c)->is<types::String>());
+}
+
+TEST_F(LuaSemanticAnalyzerTest, tableIndexingExpression)
+{
+	auto tree = parse("a[1] = 1");
+
+	mAnalyzer->analyze(tree);
+
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	auto assignment = as<ast::Assignment>(tree);
+
+	auto indexingExpression = as<ast::IndexingExpression>(assignment->variable());
+	auto value = assignment->value();
+
+	auto table = indexingExpression->table();
+	auto index = indexingExpression->indexer();
+
+	EXPECT_TRUE(mAnalyzer->type(value)->is<types::Integer>());
+	EXPECT_TRUE(mAnalyzer->type(indexingExpression)->is<types::Integer>());
+	EXPECT_TRUE(mAnalyzer->type(table)->is<types::Table>());
+	EXPECT_TRUE(mAnalyzer->type(index)->is<types::Integer>());
+
+	tree = parse("a[1]");
+
+	mAnalyzer->analyze(tree);
+
+	indexingExpression = as<ast::IndexingExpression>(tree);
+
+	table = indexingExpression->table();
+	index = indexingExpression->indexer();
+
+	EXPECT_TRUE(mAnalyzer->type(indexingExpression)->is<types::Integer>());
+	EXPECT_TRUE(mAnalyzer->type(table)->is<types::Table>());
+	EXPECT_TRUE(mAnalyzer->type(index)->is<types::Integer>());
 }
