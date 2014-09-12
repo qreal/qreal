@@ -112,6 +112,7 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 			qreal const dx = (event->localPos().x() - mMouseOldPosition.x()) / scaleFactor;
 			qreal const dy = (event->localPos().y() - mMouseOldPosition.y()) / scaleFactor;
 			viewport()->scroll(dx, dy);
+			scene()->update();
 		}
 
 		mMouseOldPosition = event->localPos();
