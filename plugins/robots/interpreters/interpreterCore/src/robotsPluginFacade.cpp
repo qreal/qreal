@@ -45,8 +45,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 		return;
 	}
 
-	mParser.reset(new textLanguage::NewRobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter()
-			, mRobotModelManager
+	mParser.reset(new textLanguage::NewRobotsBlockParser(mRobotModelManager
 			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }));
 
 	initSensorWidgets();

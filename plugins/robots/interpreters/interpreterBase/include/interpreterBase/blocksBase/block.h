@@ -40,7 +40,7 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
 			, robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::LanguageToolboxInterface &newParser
+			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			);
 
 protected:
@@ -76,18 +76,23 @@ protected:
 	/// Reports error and emits "failure" signal.
 	void error(QString const &message);
 
+	/// Evaluates contents of a given property using text language interpreter and returns result.
 	template<typename T>
 	T eval(QString const &propertyName)
 	{
 		return evalCode<T>(stringProperty(propertyName));
 	}
 
+	/// Evaluates given code using text language interpreter and returns result.
 	template<typename T>
 	T evalCode(QString const &code)
 	{
 		return evalCode<T>(code, "");
 	}
 
+	/// Evaluates given code using text language interpreter and returns result.
+	/// @param code - code to evaluate.
+	/// @param propertyName - name of corresponding property, used for connection.
 	template<typename T>
 	T evalCode(QString const &code, QString const &propertyName)
 	{
@@ -101,19 +106,20 @@ protected:
 		return result;
 	}
 
+	/// Evaluates given code using text language interpreter.
 	void evalCode(QString const &code);
 
+	/// Returns true, if there were parser/interpreter errors on last eval() call.
 	bool wereParserErrors() const;
 
 	/// Reference to a robot model which is used by this block.
 	robotModel::RobotModelInterface &model();
 
-
 	/// @todo: there is no such things as protected fields. State of a class shall not be directly available to
 	/// descendants.
 	qReal::Id mNextBlockId;
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
-	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
+	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership.
+	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Doesn't have ownership.
 
 	qReal::Id mGraphicalId;
 
@@ -136,7 +142,7 @@ private:
 	/// Shall be reimplemented to provide semantics of block execution.
 	virtual void run() = 0;
 
-	qrtext::LanguageToolboxInterface *mParser;  // Does not have ownership
+	qrtext::LanguageToolboxInterface *mParser;  // Doesn't have ownership.
 
 	State mState;
 	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn't have ownership.

@@ -21,8 +21,7 @@ BlockInterface *CommonBlocksFactory::block(qReal::Id const &element)
 		newBlock = new common::EmptyBlock;
 	}
 
-	newBlock->init(element, *mGraphicalModelApi, *mLogicalModelApi, mErrorReporter
-			, *mRobotModelManager, *mParser);
+	newBlock->init(element, *mGraphicalModelApi, *mLogicalModelApi, mErrorReporter, *mRobotModelManager, *mParser);
 
 	return newBlock;
 }
@@ -31,13 +30,13 @@ void CommonBlocksFactory::configure(qReal::GraphicalModelAssistInterface const &
 		, qReal::LogicalModelAssistInterface const &logicalModelApi
 		, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qReal::ErrorReporterInterface &errorReporter
-		, qrtext::LanguageToolboxInterface &newParser)
+		, qrtext::LanguageToolboxInterface &textLanguageToolbox)
 {
 	mRobotModelManager = &robotModelManager;
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
 	mErrorReporter = &errorReporter;
-	mParser = &newParser;
+	mParser = &textLanguageToolbox;
 }
 
 qReal::IdList CommonBlocksFactory::blocksToDisable() const

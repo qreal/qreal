@@ -12,11 +12,11 @@ using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
 
 SensorVariablesUpdater::SensorVariablesUpdater(RobotModelManagerInterface const &robotModelManager
-		, qrtext::DebuggerInterface &newParser
+		, qrtext::DebuggerInterface &textLanguageToolbox
 		)
 	: mUpdateTimer(nullptr)
 	, mRobotModelManager(robotModelManager)
-	, mParser(newParser)
+	, mParser(textLanguageToolbox)
 {
 }
 

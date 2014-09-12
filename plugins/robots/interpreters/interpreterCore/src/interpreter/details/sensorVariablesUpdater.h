@@ -26,9 +26,8 @@ public:
 	/// Constructor.
 	/// @param robotModelManager - has reference to current robot model.
 	/// @param parser - contains sensor variables and is needed here to update them.
-	SensorVariablesUpdater(
-			interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::DebuggerInterface &newParser
+	SensorVariablesUpdater(interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::DebuggerInterface &textLanguageToolbox
 			);
 
 	/// Starts background polling process.

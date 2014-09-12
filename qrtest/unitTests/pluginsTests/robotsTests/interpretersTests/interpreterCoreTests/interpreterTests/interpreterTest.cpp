@@ -84,7 +84,7 @@ void InterpreterTest::SetUp()
 			, []() { return 0; }
 			);
 
-	qrtext::lua::LuaToolbox newParser;
+	qrtext::lua::LuaToolbox luaToolbox;
 
 	DummyBlockFactory *blocksFactory = new DummyBlockFactory;
 	blocksFactory->configure(
@@ -92,7 +92,7 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mModelManager
 			, *mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
-			, newParser
+			, luaToolbox
 			);
 
 	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
@@ -118,7 +118,7 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->projectManagementInterface()
 			, mBlocksFactoryManager
 			, mModelManager
-			, newParser
+			, luaToolbox
 			, *mFakeConnectToRobotAction
 			));
 }

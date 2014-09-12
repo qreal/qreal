@@ -8,7 +8,7 @@ LIBS += -L$$PWD/../bin -lqrkernel -lqslog
 
 DEFINES += QRTEXT_LIBRARY
 
-RESOURCES = $$PWD/qrtext.qrc
+TRANSLATIONS = $$PWD/../qrtranslations/ru/qrtext_ru.ts
 
 HEADERS += \
 	$$PWD/include/qrtext/debuggerInterface.h \

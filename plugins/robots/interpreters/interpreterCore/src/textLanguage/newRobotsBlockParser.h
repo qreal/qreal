@@ -17,13 +17,12 @@ class NewRobotsBlockParser : public QObject, public qrtext::lua::LuaToolbox
 
 public:
 	/// Constructor
-	/// @param errorReporter - where to report parser errors.
 	/// @param robotModelManager - provides information about robot model.
 	/// @param timeComputer - method to get time elapsed since start of interpretation, used in predefined variable.
-	NewRobotsBlockParser(qReal::ErrorReporterInterface * const errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+	NewRobotsBlockParser(interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, utils::ComputableNumber::IntComputer const &timeComputer);
 
+	/// Returns a list of predefined variables (sensor variables, basically).
 	QStringList const &specialVariables() const;
 
 private slots:

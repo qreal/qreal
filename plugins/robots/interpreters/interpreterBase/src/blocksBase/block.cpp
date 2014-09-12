@@ -1,5 +1,7 @@
 #include <interpreterBase/blocksBase/block.h>
 
+#include <thirdparty/qslog/QsLog.h>
+
 using namespace interpreterBase;
 using namespace blocksBase;
 using namespace qReal;
@@ -21,14 +23,14 @@ void Block::init(Id const &graphicalId
 		, LogicalModelAssistInterface const &logicalModelApi
 		, ErrorReporterInterface * const errorReporter
 		, robotModel::RobotModelManagerInterface const &robotModelManager
-		, qrtext::LanguageToolboxInterface &newParser)
+		, qrtext::LanguageToolboxInterface &textLanguageToolbox)
 {
 	mGraphicalId = graphicalId;
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
 	mErrorReporter = errorReporter;
 	mRobotModelManager = &robotModelManager;
-	mParser = &newParser;
+	mParser = &textLanguageToolbox;
 }
 
 bool Block::initNextBlocks()
@@ -179,9 +181,16 @@ void Block::reportParserErrors()
 					.arg(error.connection().line())
 					.arg(error.connection().column())
 					.arg(error.errorMessage()));
+
 			break;
 		case qrtext::core::Severity::internalError:
-			/// @todo: output to log.
+			QLOG_ERROR() << QString("Parser internal error at %1:%2 when parsing %3:%4: %5")
+					.arg(error.connection().line())
+					.arg(error.connection().column())
+					.arg(error.connection().id().toString())
+					.arg(error.connection().propertyName())
+					.arg(error.errorMessage());
+
 			break;
 		}
 	}

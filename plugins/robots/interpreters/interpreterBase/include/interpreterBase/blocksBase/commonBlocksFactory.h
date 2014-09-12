@@ -22,7 +22,7 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qReal::ErrorReporterInterface &errorReporter
-			, qrtext::LanguageToolboxInterface &newParser
+			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			) final;
 
 	/// May be overrided to disable some blocks from palette when binded to this factory
