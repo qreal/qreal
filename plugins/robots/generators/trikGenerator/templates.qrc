@@ -91,6 +91,11 @@
         <file>templates/subprograms/forwardDeclaration.t</file>
         <file>templates/subprograms/implementation.t</file>
         <file>templates/subprograms/implementationsSectionHeader.t</file>
+        <file>templates/threads/call.t</file>
+        <file>templates/threads/declarationsSectionHeader.t</file>
+        <file>templates/threads/forwardDeclaration.t</file>
+        <file>templates/threads/implementation.t</file>
+        <file>templates/threads/implementationsSectionHeader.t</file>
         <file>templates/drawing/setBackground.t</file>
         <file>templates/drawing/smile.t</file>
         <file>templates/drawing/sadSmile.t</file>
