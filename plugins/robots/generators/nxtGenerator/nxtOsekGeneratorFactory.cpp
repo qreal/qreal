@@ -42,5 +42,5 @@ QString NxtOsekGeneratorFactory::pathToTemplates() const
 
 generatorBase::simple::Binding::ConverterInterface *NxtOsekGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::NxtStringPropertyConverter(*mVariables, *mSubprograms);
+	return new converters::NxtStringPropertyConverter(*mVariables, *mSubprograms, *systemVariableNameConverter());
 }
