@@ -916,7 +916,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mRightButtonPressed = true;
 	}
 
-	redraw();
+	invalidate();
 
 	mShouldReparentItems = (selectedItems().size() > 0);
 }
@@ -1213,7 +1213,8 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	if (element) {
-		redraw();
+		// To remove guides from scene
+		invalidate();
 	}
 }
 
@@ -1330,11 +1331,6 @@ void EditorViewScene::setNeedDrawGrid(bool show)
 	mNeedDrawGrid = show;
 }
 
-bool EditorViewScene::getNeedDrawGrid()
-{
-	return mNeedDrawGrid;
-}
-
 void EditorViewScene::drawGesture()
 {
 	QLineF line = mMouseMovementManager->newLine();
@@ -1368,13 +1364,6 @@ void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 		wheelEvent->accept();
 	}
 	return;
-}
-
-void EditorViewScene::redraw()
-{
-	if (mNeedDrawGrid) {
-		invalidate();
-	}
 }
 
 void EditorViewScene::highlight(Id const &graphicalId, bool exclusive, QColor const &color)

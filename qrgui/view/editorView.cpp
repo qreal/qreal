@@ -135,10 +135,6 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 			}
 		}
 	}
-
-	if (mScene->getNeedDrawGrid()) {
-		mScene->invalidate();
-	}
 }
 
 void EditorView::mouseReleaseEvent(QMouseEvent *event)
@@ -148,9 +144,6 @@ void EditorView::mouseReleaseEvent(QMouseEvent *event)
 		mMouseOldPosition = QPointF();
 	}
 	QGraphicsView::mouseReleaseEvent(event);
-	if (mScene->getNeedDrawGrid()) {
-		mScene->invalidate();
-	}
 }
 
 void EditorView::mousePressEvent(QMouseEvent *event)
@@ -179,9 +172,7 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 void EditorView::scrollContentsBy(int dx, int dy)
 {
 	QGraphicsView::scrollContentsBy(dx, dy);
-	if (mScene->getNeedDrawGrid()) {
-		mScene->invalidate();
-	}
+	mScene->invalidate();
 }
 
 void EditorView::keyPressEvent(QKeyEvent *event)
@@ -215,11 +206,6 @@ bool EditorView::viewportEvent(QEvent *event)
 		break;
 	}
 	return QGraphicsView::viewportEvent(event);
-}
-
-void EditorView::invalidateScene()
-{
-	scene()->invalidate();
 }
 
 void EditorView::ensureElementVisible(Element const * const element)
