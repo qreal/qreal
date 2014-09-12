@@ -106,7 +106,7 @@ bool TrikGeneratorPlugin::uploadProgram()
 	QFileInfo const fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
-		TcpRobotCommunicator communicator;
+		TcpRobotCommunicator communicator(*mMainWindowInterface->errorReporter());
 		bool const result = communicator.uploadProgram(fileInfo.absoluteFilePath());
 		if (!result) {
 			mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
@@ -122,7 +122,7 @@ bool TrikGeneratorPlugin::uploadProgram()
 void TrikGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
-		TcpRobotCommunicator communicator;
+		TcpRobotCommunicator communicator(*mMainWindowInterface->errorReporter());
 		QFileInfo const fileInfo = generateCodeForProcessing();
 		communicator.runProgram(fileInfo.fileName());
 	} else {
@@ -132,7 +132,7 @@ void TrikGeneratorPlugin::runProgram()
 
 void TrikGeneratorPlugin::stopRobot()
 {
-	TcpRobotCommunicator communicator;
+	TcpRobotCommunicator communicator(*mMainWindowInterface->errorReporter());
 	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}

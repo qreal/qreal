@@ -2,14 +2,18 @@
 
 #include <QtNetwork/QTcpSocket>
 
+#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+
 namespace trik {
 
 /// Class that handles connection to robot and sends commands to it.
-class TcpRobotCommunicator
+class TcpRobotCommunicator : public QObject
 {
+	Q_OBJECT
+
 public:
-	TcpRobotCommunicator();
-	virtual ~TcpRobotCommunicator();
+	explicit TcpRobotCommunicator(qReal::ErrorReporterInterface &errorReporter);
+	~TcpRobotCommunicator();
 
 	/// Reads generated program from a file and uploads it to a robot using "file" command.
 	bool uploadProgram(QString const &programName);
@@ -23,6 +27,10 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	bool stopRobot();
 
+private slots:
+	void onIncomeData();
+	void processIncommingMessage(QString const &message);
+
 private:
 	/// Establishes connection and initializes socket. If connection fails, leaves socket
 	/// in invalid state.
@@ -33,6 +41,7 @@ private:
 
 	/// Socket that holds connection.
 	QTcpSocket mSocket;
+	qReal::ErrorReporterInterface &mErrorReporter;
 };
 
 }
