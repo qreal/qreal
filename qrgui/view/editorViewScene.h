@@ -71,7 +71,6 @@ public:
 	void setRealIndexGrid(qreal newIndexGrid);
 
 	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
-	bool getNeedDrawGrid();
 
 	Element *lastCreatedFromLinker() const;
 
@@ -181,8 +180,6 @@ private:
 	/// (to keep ability of scene rect to grow automatically)
 	void initCorners();
 	void setCorners(QPointF const &topLeft, QPointF const &bottomRight);
-
-	void redraw();
 
 	void initContextMenu(Element *e, QPointF const &pos);
 	bool isEmptyClipboard();

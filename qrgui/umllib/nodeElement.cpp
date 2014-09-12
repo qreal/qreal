@@ -600,6 +600,7 @@ void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
+	update();
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
@@ -610,6 +611,7 @@ void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
+	update();
 }
 
 void NodeElement::startResize()

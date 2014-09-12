@@ -42,5 +42,5 @@ QString RussianCGeneratorFactory::pathToTemplates() const
 
 generatorBase::simple::Binding::ConverterInterface *RussianCGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::RussianCStringPropertyConverter(*mVariables);
+	return new converters::RussianCStringPropertyConverter(*mVariables, *systemVariableNameConverter());
 }

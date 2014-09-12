@@ -33,7 +33,6 @@ public slots:
 	void zoomIn();
 	void zoomOut();
 	void zoom(qreal const zoomFactor);
-	void invalidateScene();
 
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);

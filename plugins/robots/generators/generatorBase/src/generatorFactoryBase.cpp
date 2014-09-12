@@ -92,6 +92,7 @@ void GeneratorFactoryBase::initialize()
 	initSensors();
 	initFunctions();
 	initImages();
+	initDeviceVariables();
 }
 
 void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
@@ -357,6 +358,17 @@ Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool ne
 Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
 {
 	return new converters::StringPropertyConverter;
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::systemVariableNameConverter() const
+{
+	return new converters::CodeConverterBase(pathToTemplates()
+			, mErrorReporter
+			, mRobotModelManager.model()
+			, currentConfiguration()
+			, inputPortConverter()
+			, functionInvocationConverter()
+			, *deviceVariables());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() const

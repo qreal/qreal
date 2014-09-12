@@ -142,7 +142,7 @@ Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
 
 generatorBase::simple::Binding::ConverterInterface *TrikGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::TrikStringPropertyConverter(*mVariables);
+	return new converters::TrikStringPropertyConverter(*mVariables, *systemVariableNameConverter());
 }
 
 void TrikGeneratorFactory::initVariables()
