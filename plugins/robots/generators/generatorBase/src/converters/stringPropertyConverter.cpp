@@ -6,5 +6,5 @@ using namespace qReal;
 QString StringPropertyConverter::convert(QString const &data) const
 {
 	QString result = data;
-	return "\"" + result.replace("\"", "\\\"") + "\"";
+	return "\"" + result.replace("\"", "\\\"").replace("\n", "\"\\\n\t\t\"") + "\"";
 }
