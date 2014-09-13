@@ -24,3 +24,6 @@ SOURCES = \
 	$$PWD/updatesCheckerPlugin.cpp \
 	$$PWD/updater.cpp \
 	$$PWD/updateVersionDialog.cpp \
+
+RESOURCES += \
+	$$PWD/updatesChecker.qrc \

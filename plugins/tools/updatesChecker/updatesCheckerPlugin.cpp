@@ -30,6 +30,11 @@ void UpdatesCheckerPlugin::init(qReal::PluginConfigurator const &configurator)
 	checkForUpdates(false);
 }
 
+QStringList UpdatesCheckerPlugin::defaultSettingsFiles()
+{
+	return { ":/updatesCheckerDefaultSettings.ini" };
+}
+
 void UpdatesCheckerPlugin::checkForUpdates(bool reportNoUpdates)
 {
 	if (SettingsManager::value("updaterActive").toBool()) {

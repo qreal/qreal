@@ -18,6 +18,8 @@ public:
 
 	void init(qReal::PluginConfigurator const &configurator) override;
 
+	QStringList defaultSettingsFiles() override;
+
 private slots:
 	void checkForUpdates(bool reportNoUpdates = true);
 	void showUpdatesDialog();
