@@ -1,5 +1,7 @@
 TEMPLATE = subdirs
 
+include(common.pro)
+
 SUBDIRS = \
 	metaEditor/metaEditor.pro \
 	ains/editors/ainsEditor/ainsEditor.pro \

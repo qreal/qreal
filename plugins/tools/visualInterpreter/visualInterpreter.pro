@@ -3,22 +3,22 @@ QT += xml script widgets
 TEMPLATE = lib
 CONFIG += plugin c++11
 
-DESTDIR = ../../bin/plugins/
+DESTDIR = ../../../bin/plugins/
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L../../bin -lqrkernel -lqrutils
+LIBS += -L../../../bin -lqrkernel -lqrutils
 
 INCLUDEPATH += \
-	$$PWD/../.. \
-	$$PWD/../../qrgui/ \
+	$$PWD/../../.. \
+	$$PWD/../../../qrgui/ \
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/plugins/visualInterpreter_ru.ts
+TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/visualInterpreter_ru.ts
 
 HEADERS = \
-	../../qrgui/dialogs/preferencesPages/preferencesPage.h \
+	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 	visualInterpreterPlugin.h \
 	visualInterpreterPreferencesPage.h \
 	visualInterpreterUnit.h \

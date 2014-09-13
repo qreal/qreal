@@ -2,19 +2,19 @@ QT += xml
 
 TEMPLATE = lib
 CONFIG += plugin c++11
-DESTDIR = ../../../bin/plugins/
+DESTDIR = ../../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo
 
 INCLUDEPATH += \
-	$$PWD/../../.. \
-	$$PWD/../../../qrgui/ \
+	$$PWD/../../../.. \
+	$$PWD/../../../../qrgui/ \
 
 QT += widgets
 
-TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/refactoringSupport_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/refactoringSupport_ru.ts
 
 HEADERS = \
 	refactoringPlugin.h \
@@ -22,7 +22,7 @@ HEADERS = \
 	refactoringPreferencePage.h \
 	refactoringFinder.h \
 	refactoringApplier.h \
-	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
+	../../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 
 
 SOURCES = \
