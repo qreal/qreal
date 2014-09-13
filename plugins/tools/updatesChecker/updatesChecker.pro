@@ -13,6 +13,8 @@ INCLUDEPATH += \
 
 QT += widgets xml
 
+TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/updatesChecker_ru.ts
+
 HEADERS = \
 	$$PWD/updatesCheckerPlugin.h \
 	$$PWD/updater.h \

@@ -27,15 +27,17 @@ void UpdatesCheckerPlugin::init(qReal::PluginConfigurator const &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
 	mMainWindowWidget = configurator.mainWindowInterpretersInterface().windowWidget();
-	checkForUpdates();
+	checkForUpdates(false);
 }
 
-void UpdatesCheckerPlugin::checkForUpdates()
+void UpdatesCheckerPlugin::checkForUpdates(bool reportNoUpdates)
 {
 	if (SettingsManager::value("updaterActive").toBool()) {
 		Updater * const updater = new Updater(this);
 		connect(updater, &Updater::newVersionAvailable, this, &UpdatesCheckerPlugin::showUpdatesDialog);
-		connect(updater, &Updater::noNewVersionAvailable, this, &UpdatesCheckerPlugin::reportNoUpdates);
+		if (reportNoUpdates) {
+			connect(updater, &Updater::noNewVersionAvailable, this, &UpdatesCheckerPlugin::reportNoUpdates);
+		}
 
 		/// @todo: Commented out till server unavailability error will be fixed
 		QLOG_INFO() << "Starting updater...";

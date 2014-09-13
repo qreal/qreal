@@ -19,7 +19,7 @@ public:
 	void init(qReal::PluginConfigurator const &configurator) override;
 
 private slots:
-	void checkForUpdates();
+	void checkForUpdates(bool reportNoUpdates = true);
 	void showUpdatesDialog();
 	void reportNoUpdates();
 
