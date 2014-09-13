@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QWidget>
 
-namespace qReal {
+namespace updatesChecker {
 
 /// Tells user that new version is ready to be installed. Prompts user to make a decision:
 /// update immediately or to ask next time.

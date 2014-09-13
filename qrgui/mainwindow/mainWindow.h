@@ -294,9 +294,6 @@ private slots:
 	void finishUsabilityTest();
 
 private:
-	void checkForUpdates();
-	void showUpdatesDialog();
-
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
 	/// @param tab Tab to be initialized

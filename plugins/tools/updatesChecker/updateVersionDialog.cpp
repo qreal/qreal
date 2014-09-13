@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QMessageBox>
 
-using namespace qReal;
+using namespace updatesChecker;
 
 bool UpdateVersionDialog::promptUpdate(QWidget *parent)
 {

@@ -2,9 +2,9 @@
 
 #include <QtCore/QPair>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrgui/mainwindow/errorReporter.h"
-#include "../../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
+#include <qrkernel/ids.h>
+#include <qrgui/mainwindow/errorReporter.h>
+#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
 namespace qReal {
 

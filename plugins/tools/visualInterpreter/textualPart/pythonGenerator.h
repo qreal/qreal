@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../qrgui/mainwindow/errorReporter.h"
-#include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
+#include <qrgui/mainwindow/errorReporter.h>
+#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
 #include "textCodeGenerator.h"
 

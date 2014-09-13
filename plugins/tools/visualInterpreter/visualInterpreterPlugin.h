@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../qrkernel/ids.h"
-#include "../../qrutils/metamodelGeneratorSupport.h"
-#include "../../qrutils/watchListWindow.h"
-#include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "../../qrgui/mainwindow/errorReporter.h"
+#include <qrkernel/ids.h>
+#include <qrutils/metamodelGeneratorSupport.h>
+#include <qrutils/watchListWindow.h>
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/mainwindow/errorReporter.h>
 
 #include "visualInterpreterPreferencesPage.h"
 #include "visualInterpreterUnit.h"

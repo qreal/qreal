@@ -82,8 +82,6 @@
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
-    <addaction name="separator"/>
-    <addaction name="actionStart_updater"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">

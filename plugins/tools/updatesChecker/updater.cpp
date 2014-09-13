@@ -1,29 +1,29 @@
-#include "qRealUpdater.h"
+#include "updater.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcess>
 #include <QtXml/QDomDocument>
 
-using namespace utils;
+using namespace updatesChecker;
 
-QRealUpdater::QRealUpdater(QObject *parent)
+Updater::Updater(QObject *parent)
 	: QObject(parent)
 	, mUpdaterProcess(nullptr)
 {
 }
 
-void QRealUpdater::checkForNewVersion()
+void Updater::checkForNewVersion()
 {
 	executeUpdater("--checkupdates");
 }
 
-void QRealUpdater::start()
+void Updater::start()
 {
 	executeUpdater("--updater");
 }
 
-void QRealUpdater::executeUpdater(QString const &mode)
+void Updater::executeUpdater(QString const &mode)
 {
 	mUpdaterProcess = new QProcess(this);
 	mUpdaterProcess->setWorkingDirectory(QCoreApplication::applicationDirPath());
@@ -36,7 +36,7 @@ void QRealUpdater::executeUpdater(QString const &mode)
 	}
 }
 
-void QRealUpdater::readAnswer()
+void Updater::readAnswer()
 {
 	QString const output = mUpdaterProcess->readAllStandardOutput();
 	// Checking that output is a valid XML
@@ -44,5 +44,7 @@ void QRealUpdater::readAnswer()
 	parser.setContent(output);
 	if (!output.isEmpty() && !parser.isNull()) {
 		emit newVersionAvailable();
+	} else {
+		emit noNewVersionAvailable();
 	}
 }

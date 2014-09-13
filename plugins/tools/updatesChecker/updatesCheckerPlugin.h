@@ -17,6 +17,17 @@ public:
 	QList<qReal::ActionInfo> actions() override;
 
 	void init(qReal::PluginConfigurator const &configurator) override;
+
+private slots:
+	void checkForUpdates();
+	void showUpdatesDialog();
+	void reportNoUpdates();
+
+private:
+	QAction mSeparator;
+	QAction mCheckForUpdatesAction;
+	ErrorReporterInterface *mErrorReporter;
+	QWidget *mMainWindowWidget;
 };
 
 }

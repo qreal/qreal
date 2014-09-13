@@ -22,7 +22,6 @@
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
-#include <qrutils/qRealUpdater.h>
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrutils/uxInfo/uxInfo.h>
@@ -52,7 +51,6 @@
 #include "controller/commands/createGroupCommand.h"
 
 #include "dialogs/suggestToCreateProjectDialog.h"
-#include "dialogs/updateVersionDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
 
 using namespace qReal;
@@ -228,7 +226,6 @@ void MainWindow::connectActions()
 	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-	connect(mUi->actionStart_updater, &QAction::triggered, this, &MainWindow::checkForUpdates);
 
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
@@ -1964,32 +1961,6 @@ void MainWindow::initPluginsAndStartWidget()
 	{
 		openStartTab();
 	}
-
-	checkForUpdates();
-}
-
-void MainWindow::checkForUpdates()
-{
-	if (SettingsManager::value("updaterActive").toBool()) {
-		utils::QRealUpdater * const updater = new utils::QRealUpdater(this);
-		connect(updater, &utils::QRealUpdater::newVersionAvailable, this, &MainWindow::showUpdatesDialog);
-
-		/// @todo: Commented out till server unavailability error will be fixed
-		// QLOG_INFO() << "Starting updater...";
-		// updater->checkForNewVersion();
-	}
-}
-
-void MainWindow::showUpdatesDialog()
-{
-	QLOG_INFO() << "New updates found!";
-	utils::QRealUpdater * const updater = dynamic_cast<utils::QRealUpdater *>(sender());
-	if (updater && UpdateVersionDialog::promptUpdate(this)) {
-		updater->start();
-
-		QLOG_INFO() << "Shutting down to install it";
-		QApplication::quit();
-	}
 }
 
 void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu)
@@ -2008,24 +1979,21 @@ void MainWindow::initToolPlugins()
 		, *mSystemEvents, *mTextManager));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
-	foreach (ActionInfo const action, actions) {
+	for (ActionInfo const &action : actions) {
 		if (action.isAction()) {
-			if (action.toolbarName() == "file") {
-				mUi->fileToolbar->addAction(action.action());
-			} else if (action.toolbarName() == "interpreters") {
-				mUi->interpreterToolbar->addAction(action.action());
-			} else if (action.toolbarName() == "generators") {
-				mUi->generatorsToolbar->addAction(action.action());
+			QToolBar * const toolbar = findChild<QToolBar *>(action.toolbarName() + "Toolbar");
+			connect(action.action(), &QAction::triggered, mFilterObject, &FilterObject::triggeredActionActivated);
+			if (toolbar) {
+				toolbar->addAction(action.action());
 			}
-			connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
 		}
 	}
 
-	foreach (ActionInfo const action, actions) {
-		if (action.menuName() == "tools") {
-			addActionOrSubmenu(mUi->menuTools, action);
-		} else if (action.menuName() == "settings") {
-			addActionOrSubmenu(mUi->menuSettings, action);
+	for (ActionInfo const &action : actions) {
+		QString const menuName = "menu" + QString(action.menuName()[0].toUpper()) + action.menuName().mid(1);
+		QMenu * const menu = findChild<QMenu *>(menuName);
+		if (menu) {
+			addActionOrSubmenu(menu, action);
 		}
 	}
 

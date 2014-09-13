@@ -1,6 +1,6 @@
 #include "pythonInterpreter.h"
 #include "textCodeGenerator.h"
-#include "../../qrutils/outFile.h"
+#include <qrutils/outFile.h>
 
 using namespace qReal;
 

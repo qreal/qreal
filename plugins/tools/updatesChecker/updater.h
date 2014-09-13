@@ -2,19 +2,17 @@
 
 #include <qrkernel/version.h>
 
-#include "utilsDeclSpec.h"
-
 class QProcess;
 
-namespace utils {
+namespace updatesChecker {
 
 /// Starts and interacts with the maintenance component.
-class QRUTILS_EXPORT QRealUpdater : public QObject
+class Updater : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit QRealUpdater(QObject *parent = 0);
+	explicit Updater(QObject *parent = 0);
 
 	/// Updater will just perform light-weight versions comparison network operation.
 	/// If new updates are available newVersionAvailable() signal will be emitted.
@@ -25,7 +23,10 @@ public:
 	void start();
 
 signals:
+	/// Emitted when new version was found on remote server
 	void newVersionAvailable();
+	/// Emitted when no new version was found on remote server
+	void noNewVersionAvailable();
 
 private slots:
 	void readAnswer();

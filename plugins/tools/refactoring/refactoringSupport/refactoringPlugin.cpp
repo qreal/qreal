@@ -5,9 +5,9 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 
-#include "../../../qrutils/xmlUtils.h"
-#include "../../../qrutils/outFile.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrutils/xmlUtils.h>
+#include <qrutils/outFile.h>
+#include <qrkernel/settingsManager.h>
 #include "refactoringWindow.h"
 
 using namespace qReal;
