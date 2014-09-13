@@ -1,9 +1,9 @@
 TEMPLATE = subdirs
 
-include(common.pro)
+include(common.pri)
 
 # editor plugins
-SUBDIRS = \
+SUBDIRS += \
 	$$PWD/dragonDiagram/dragonDiagram.pro \
 	$$PWD/blockDiagram/blockDiagram.pro \
 #	$$PWD/hascol/hascol.pro \

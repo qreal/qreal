@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
 
 namespace exterminatus {
 
@@ -13,11 +13,11 @@ class ExterminatusPlugin : public QObject, public qReal::ToolPluginInterface
 
 public:
 	ExterminatusPlugin();
-	virtual ~ExterminatusPlugin();
+	~ExterminatusPlugin() override;
 
-	virtual QList<qReal::ActionInfo> actions();
+	QList<qReal::ActionInfo> actions() override;
 
-	virtual void init(qReal::PluginConfigurator const &configurator);
+	void init(qReal::PluginConfigurator const &configurator) override;
 
 private slots:
 	/// Deletion of all items from repository.
@@ -28,6 +28,7 @@ private:
 	QAction mAction;
 
 	/// To syncronize logical and graphical models with repository.
+	/// Doesn`t have ownership.
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;
 
 };

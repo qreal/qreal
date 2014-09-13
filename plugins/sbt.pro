@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 
-include(common.pro)
+include(common.pri)
 
-SUBDIRS = \
+SUBDIRS += \
 	metaEditor/metaEditor.pro \
 	sbt/sbt.pro \

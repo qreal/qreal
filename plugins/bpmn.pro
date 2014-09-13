@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 
-include(common.pro)
+include(common.pri)
 
-SUBDIRS = \
+SUBDIRS += \
 	bpmn/bpmn.pro \
 	rulesChecker/rulesChecker.pro \
 	classDiagram/classDiagram.pro \

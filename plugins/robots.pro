@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-include (common.pro)
+include (common.pri)
 
-SUBDIRS = \
+SUBDIRS += \
 	robots/robots.pro \
