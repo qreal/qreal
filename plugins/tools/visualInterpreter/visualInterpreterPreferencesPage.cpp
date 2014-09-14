@@ -11,7 +11,7 @@ VisualInterpreterPreferencesPage::VisualInterpreterPreferencesPage(QWidget *pare
 		: PreferencesPage(parent)
 		, mUi(new Ui::visualInterpreterPreferencesPage)
 {
-	mIcon = QIcon(":/icons/preferences/bug.png");
+	setWindowIcon(QIcon(":/icons/preferences/bug.png"));
 	mUi->setupUi(this);
 
 	QString const binFolder = qApp->applicationDirPath();

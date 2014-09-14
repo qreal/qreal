@@ -7,9 +7,9 @@
 #include <qrrepo/repoApi.h>
 
 #include "models/details/modelsAssistApi.h"
-#include "pluginManager/editorManagerInterface.h"
+#include "plugins/pluginManager/editorManagerInterface.h"
 #include "models/details/modelsImplementation/abstractModelItem.h"
-#include "toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
+#include "plugins/toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
 #include "models/details/modelsImplementation/modelIndexesInterface.h"
 
 namespace qReal {

@@ -2,7 +2,7 @@
 
 #include "controller/commands/abstractCommand.h"
 #include "controller/commands/createElementCommand.h"
-#include "view/editorViewScene.h"
+#include "editor/editorViewScene.h"
 
 namespace qReal {
 namespace commands {

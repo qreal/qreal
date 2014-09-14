@@ -1,7 +1,7 @@
 #pragma once
 
+#include <QtWidgets/QListWidgetItem>
 #include <QtWidgets/QWidget>
-#include <QtWidgets>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QCheckBox>
 #include <QtCore/QSignalMapper>

@@ -60,9 +60,9 @@ void RefactoringPlugin::init(PluginConfigurator const &configurator)
 			, &mCurrentMatch);
 }
 
-QPair<QString, PreferencesPage *> RefactoringPlugin::preferencesPage()
+QPair<QString, gui::PreferencesPage *> RefactoringPlugin::preferencesPage()
 {
-	return qMakePair(tr("Refactorings"), static_cast<PreferencesPage*>(mPreferencesPage));
+	return qMakePair(tr("Refactorings"), static_cast<gui::PreferencesPage *>(mPreferencesPage));
 }
 
 QList<qReal::ActionInfo> RefactoringPlugin::actions()

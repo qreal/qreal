@@ -11,7 +11,7 @@ RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::refactoringPreferencesPage)
 {
-	mIcon = QIcon(":/icons/preferences/pencil.png");
+	setWindowIcon(QIcon(":/icons/preferences/pencil.png"));
 	mUi->setupUi(this);
 
 	QString binFolder = qApp->applicationDirPath();

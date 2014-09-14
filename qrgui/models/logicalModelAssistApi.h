@@ -4,8 +4,8 @@
 
 #include "models/details/logicalModel.h"
 #include "models/details/modelsAssistApi.h"
-#include "toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "pluginManager/proxyEditorManager.h"
+#include "plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "plugins/pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 

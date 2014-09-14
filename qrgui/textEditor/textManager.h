@@ -5,8 +5,8 @@
 #include <QtCore/QMultiHash>
 
 #include "textManagerInterface.h"
-#include "view/editorView.h"
-#include "toolPluginInterface/systemEventsInterface.h"
+#include "editor/editorView.h"
+#include "plugins/toolPluginInterface/systemEventsInterface.h"
 
 namespace qReal {
 

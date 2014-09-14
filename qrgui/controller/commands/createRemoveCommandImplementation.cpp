@@ -1,6 +1,6 @@
 #include "createRemoveCommandImplementation.h"
 
-#include "umllib/nodeElement.h"
+#include "editor/nodeElement.h"
 
 using namespace qReal::commands;
 

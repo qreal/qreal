@@ -2,8 +2,8 @@
 
 #include <QtCore/QObject>
 
-#include "mainwindow/qscintillaTextEdit.h"
-#include "view/editorView.h"
+#include "mainWindow/qscintillaTextEdit.h"
+#include "editor/editorView.h"
 
 namespace qReal {
 

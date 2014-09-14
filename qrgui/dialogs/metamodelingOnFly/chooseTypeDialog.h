@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QDialog>
 
-#include "mainwindow/palette/paletteTree.h"
+#include "mainWindow/palette/paletteTree.h"
 
 namespace Ui {
 class ChooseTypeDialog;

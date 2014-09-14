@@ -35,9 +35,9 @@ void VisualInterpreterPlugin::init(PluginConfigurator const &configurator)
 			, configurator.mainWindowInterpretersInterface());
 }
 
-QPair<QString, PreferencesPage *> VisualInterpreterPlugin::preferencesPage()
+QPair<QString, gui::PreferencesPage *> VisualInterpreterPlugin::preferencesPage()
 {
-	return qMakePair(tr("Visual Interpreter"), static_cast<PreferencesPage*>(mPreferencesPage));
+	return qMakePair(tr("Visual Interpreter"), static_cast<gui::PreferencesPage *>(mPreferencesPage));
 }
 
 QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()

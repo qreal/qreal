@@ -2,7 +2,7 @@
 
 #include "controller/commands/createElementCommand.h"
 #include "controller/commands/removeElementCommand.h"
-#include "view/editorViewScene.h"
+#include "editor/editorViewScene.h"
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
 

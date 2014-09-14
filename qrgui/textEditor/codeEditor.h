@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 
-#include "mainwindow/qscintillaTextEdit.h"
+#include "mainWindow/qscintillaTextEdit.h"
 
 namespace qReal {
 namespace gui {

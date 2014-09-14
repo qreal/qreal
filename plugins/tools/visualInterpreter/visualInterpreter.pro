@@ -18,7 +18,6 @@ INCLUDEPATH += \
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/visualInterpreter_ru.ts
 
 HEADERS = \
-	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 	visualInterpreterPlugin.h \
 	visualInterpreterPreferencesPage.h \
 	visualInterpreterUnit.h \

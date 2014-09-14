@@ -4,7 +4,7 @@
 #include <QtWidgets/QListWidgetItem>
 
 #include "dialogs/metamodelingOnFly/restorePropertiesDialog.h"
-#include "pluginManager/interpreterEditorManager.h"
+#include "plugins/pluginManager/interpreterEditorManager.h"
 
 namespace Ui {
 class EditPropertiesDialog;

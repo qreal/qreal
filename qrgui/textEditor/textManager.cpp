@@ -1,11 +1,12 @@
 #include <QtCore/QTextStream>
+#include <QtCore/QTextCodec>
 #include <QtCore/QFile>
 
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 
 #include "textManager.h"
-#include "mainwindow/mainWindow.h"
+#include "mainWindow/mainWindow.h"
 
 using namespace qReal;
 using namespace gui;

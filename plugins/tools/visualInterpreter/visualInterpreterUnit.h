@@ -1,7 +1,7 @@
 #pragma once
 
-#include <qrgui/mainwindow/errorReporter.h>
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+#include <qrgui/mainWindow/errorReporter.h>
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 #include <qrutils/graphUtils/baseGraphTransformationUnit.h>
 #include "textualPart/ruleParser.h"
 #include "textualPart/pythonGenerator.h"

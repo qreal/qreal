@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QVBoxLayout>
 
-#include "mainwindow/mainWindow.h"
+#include "mainWindow/mainWindow.h"
 
 using namespace qReal;
 

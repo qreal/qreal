@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QLineEdit>
 
-#include <qrgui/dialogs/preferencesPages/preferencesPage.h>
+#include <qrgui/preferencesDialog/preferencesPage.h>
 
 namespace Ui {
 	class refactoringPreferencesPage;
@@ -11,7 +11,7 @@ namespace Ui {
 namespace qReal {
 
 /// Preferences page for refactoring manager. Seems to be more or less useless rigth now.
-class RefactoringPreferencesPage : public PreferencesPage
+class RefactoringPreferencesPage : public gui::PreferencesPage
 {
 	Q_OBJECT
 

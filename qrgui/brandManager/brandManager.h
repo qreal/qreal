@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pluginManager/toolPluginManager.h"
+#include "plugins/pluginManager/toolPluginManager.h"
 #include "fonts.h"
 #include "styles.h"
 

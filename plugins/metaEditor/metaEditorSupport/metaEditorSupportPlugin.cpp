@@ -57,9 +57,9 @@ QList<ActionInfo> MetaEditorSupportPlugin::actions()
 	//<< parseEditorXmlActionInfo;
 }
 
-QPair<QString, PreferencesPage *> MetaEditorSupportPlugin::preferencesPage()
+QPair<QString, gui::PreferencesPage *> MetaEditorSupportPlugin::preferencesPage()
 {
-	return qMakePair(QObject::tr("Compiler"), static_cast<PreferencesPage*>(mCompilerSettingsPage));
+	return qMakePair(QObject::tr("Compiler"), static_cast<gui::PreferencesPage *>(mCompilerSettingsPage));
 }
 
 void MetaEditorSupportPlugin::generateEditorForQrxc()

@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QLineEdit>
 
-#include <qrgui/dialogs/preferencesPages/preferencesPage.h>
+#include <qrgui/preferencesDialog/preferencesPage.h>
 
 namespace Ui {
 	class visualInterpreterPreferencesPage;
@@ -11,7 +11,7 @@ namespace Ui {
 namespace qReal {
 
 /// Preferences page for visual interpreter. Seems to be more or less useless rigth now.
-class VisualInterpreterPreferencesPage : public PreferencesPage
+class VisualInterpreterPreferencesPage : public gui::PreferencesPage
 {
 	Q_OBJECT
 

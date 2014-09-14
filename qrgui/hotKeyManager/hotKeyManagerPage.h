@@ -3,13 +3,13 @@
 #include <QtGui/QKeySequence>
 #include <QtWidgets/QTableWidgetItem>
 
-#include "dialogs/preferencesPages/preferencesPage.h"
+#include "preferencesDialog/preferencesPage.h"
 
 namespace Ui {
 	class hotKeyManagerPage;
 }
 
-class PreferencesHotKeyManagerPage : public PreferencesPage
+class PreferencesHotKeyManagerPage : public qReal::gui::PreferencesPage
 {
 	Q_OBJECT
 

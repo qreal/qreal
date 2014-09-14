@@ -1,6 +1,9 @@
 #include "addNodeDialog.h"
 #include "ui_addNodeDialog.h"
-#include "mainwindow/mainWindow.h"
+
+#include <QtWidgets/QMessageBox>
+
+#include "mainWindow/mainWindow.h"
 #include "restoreElementDialog.h"
 
 using namespace qReal;

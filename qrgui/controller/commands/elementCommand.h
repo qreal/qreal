@@ -1,7 +1,7 @@
 #pragma once
 
 #include "controller/commands/abstractCommand.h"
-#include "view/editorView.h"
+#include "editor/editorView.h"
 
 namespace qReal {
 namespace commands {

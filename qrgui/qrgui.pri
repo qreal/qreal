@@ -4,7 +4,7 @@ INCLUDEPATH += \
 	$$PWD \
 	$$PWD/.. \
 
-LIBS += -L$$PWD/../bin -lqrrepo -lqrkernel -lqrutils -lqslog #-lqrmc
+LIBS += -L$$PWD/../bin -lqrrepo -lqrkernel -lqrutils -lqslog -lpreferencesDialog #-lqrmc
 LIBS += -L$$PWD/../bin/thirdparty -lqscintilla2
 
 RESOURCES = $$PWD/qrgui.qrc

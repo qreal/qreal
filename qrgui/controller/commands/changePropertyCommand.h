@@ -4,7 +4,7 @@
 #include <QtCore/QModelIndex>
 
 #include "controller/commands/abstractCommand.h"
-#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainWindow/propertyEditorProxyModel.h"
 #include "models/logicalModelAssistApi.h"
 
 namespace qReal {

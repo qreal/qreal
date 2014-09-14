@@ -3,7 +3,7 @@
 #include <QtWidgets/QDialog>
 
 #include "restoreElementDialog.h"
-#include "pluginManager/editorManagerInterface.h"
+#include "plugins/pluginManager/editorManagerInterface.h"
 
 namespace Ui {
 class EdgePropertiesDialog;
