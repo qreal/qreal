@@ -51,6 +51,8 @@ public:
 	virtual bool open(QString const &fileName = "") = 0;
 	virtual bool suggestToSaveChangesOrCancel() = 0;
 	virtual void setUnsavedIndicator(bool isUnsaved) = 0;
+	virtual void reload() = 0;
+	virtual bool getUnsavedIndicator() = 0;
 
 signals:
 	/// Emitted each time when project manager is going to open new project

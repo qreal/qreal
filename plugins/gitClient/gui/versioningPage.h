@@ -27,7 +27,7 @@ public:
 	virtual void restoreSettings();
 
 signals:
-	void checkClienExisting();
+	void checkClientExisting();
 
 protected:
 	virtual void changeEvent(QEvent *e);

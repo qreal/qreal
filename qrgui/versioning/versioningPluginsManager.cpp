@@ -253,32 +253,32 @@ void VersioningPluginsManager::onChangesSubmitted(const bool success)
 	emit changesSubmitted(success);
 }
 
-void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTranspMode)
-{
-	foreach (VersioningPluginInterface *plugin, mPluginsWithExistClient){
-		foreach(ActionInfo const &actionInfo, plugin->actions()) {
-			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
-		}
-	}
+//void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTranspMode)
+//{
+//	foreach (VersioningPluginInterface *plugin, mPluginsWithExistClient){
+//		foreach(ActionInfo const &actionInfo, plugin->actions()) {
+//			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
+//		}
+//	}
 
-	if (!mPluginsWithExistClient.isEmpty() && !switchOnTranspMode){
-		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
-		}
-	} else if (mPluginsWithExistClient.isEmpty() || switchOnTranspMode){
-		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-			actionInfo.menu()->menuAction()->setVisible(false);
-		}
-	}
+//	if (!mPluginsWithExistClient.isEmpty() && !switchOnTranspMode){
+//		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
+//			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
+//		}
+//	} else if (mPluginsWithExistClient.isEmpty() || switchOnTranspMode){
+//		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
+//			actionInfo.menu()->menuAction()->setVisible(false);
+//		}
+//	}
 
-	if (switchOnTranspMode){
-		mTranspaentMode = new TransparentMode(mPlugins, mProjectManager);
-		emit transparentClassIsReady();
-	} else {
-		mTranspaentMode->disconnect();
-		delete mTranspaentMode;
-	}
-}
+//	if (switchOnTranspMode){
+//		mTranspaentMode = new TransparentMode(mPlugins, mProjectManager);
+//		emit transparentClassIsReady();
+//	} else {
+//		mTranspaentMode->disconnect();
+//		delete mTranspaentMode;
+//	}
+//}
 
 void VersioningPluginsManager::showDiff(QString fstHash, QString sndHash, QWidget *widget)
 {
@@ -289,47 +289,42 @@ void VersioningPluginsManager::showDiff(QString fstHash, QString sndHash, QWidge
 	}
 }
 
-void VersioningPluginsManager::setVisibleVersioningTools(QString versioningPlugin, bool visible)
-{
-	bool transparentModeIsActive = qReal::SettingsManager::value("transparentVersioningMode").toBool();
+////void VersioningPluginsManager::setVisibleVersioningTools(QString versioningPlugin, bool visible)
+//{
+//	bool transparentModeIsActive = qReal::SettingsManager::value("transparentVersioningMode").toBool();
 
-	foreach (VersioningPluginInterface *plugin, mPlugins){
-		if (plugin->friendlyName() == versioningPlugin){
-			if (visible) {
-				mPluginsWithExistClient.append(plugin);
-			} else {
-				mPluginsWithExistClient.removeOne(plugin);
-			}
-			if (!transparentModeIsActive){
-				foreach(ActionInfo const &actionInfo, plugin->actions()) {
-					actionInfo.menu()->menuAction()->setVisible(visible);
-				}
-			}
-		}
-	}
+//	foreach (VersioningPluginInterface *plugin, mPlugins){
+//		if (plugin->friendlyName() == versioningPlugin){
+//			if (visible) {
+//				mPluginsWithExistClient.append(plugin);
+//			} else {
+//				mPluginsWithExistClient.removeOne(plugin);
+//			}
+//			if (!transparentModeIsActive){
+//				foreach(ActionInfo const &actionInfo, plugin->actions()) {
+//					actionInfo.menu()->menuAction()->setVisible(visible);
+//				}
+//			}
+//		}
+//	}
 
-	if (!mPluginsWithExistClient.isEmpty() && !transparentModeIsActive){
-		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-			actionInfo.menu()->menuAction()->setVisible(true);
-		}
-	} else if (mPluginsWithExistClient.isEmpty()){
-		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-			actionInfo.menu()->menuAction()->setVisible(false);
-		}
-	}
+//	if (!mPluginsWithExistClient.isEmpty() && !transparentModeIsActive){
+//		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
+//			actionInfo.menu()->menuAction()->setVisible(true);
+//		}
+//	} else if (mPluginsWithExistClient.isEmpty()){
+//		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
+//			actionInfo.menu()->menuAction()->setVisible(false);
+//		}
+//	}
 
-	if ((mPluginsWithExistClient.isEmpty() && transparentModeIsActive)
-		|| (!qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive)){
-		emit setVisibleTransparentMode(false);
-	} else if (qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive){
-		emit transparentClassIsReady();
-	}
-}
-
-TransparentMode *VersioningPluginsManager::getLinkOnTransparentMode()
-{
-	return mTranspaentMode;
-}
+//	if ((mPluginsWithExistClient.isEmpty() && transparentModeIsActive)
+//		|| (!qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive)){
+//		emit setVisibleTransparentMode(false);
+//	} else if (qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive){
+//		emit transparentClassIsReady();
+//	}
+//}
 
 void VersioningPluginsManager::setVersion(QString hash, const bool &quiet)
 {

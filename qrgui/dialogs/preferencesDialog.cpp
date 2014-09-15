@@ -53,8 +53,6 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 	connect(behaviourPage, SIGNAL(usabilityTestingModeChanged(bool))
 			, this, SIGNAL(usabilityTestingModeChanged(bool)), Qt::UniqueConnection);
-	connect(behaviourPage, SIGNAL(transparentVersioningModeChanged(bool))
-			, this, SIGNAL(transparentVersioningModeChanged(bool)), Qt::UniqueConnection);
 
 	registerPage(tr("Behaviour"), behaviourPage);
 	registerPage(tr("Miscellanious"), miscellaniousPage);

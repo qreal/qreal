@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -98,7 +98,6 @@
      <string>&amp;Tools</string>
     </property>
     <addaction name="actionGesturesShow"/>
-    <addaction name="actionList_of_version_3"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -146,7 +145,7 @@
    <property name="minimumSize">
     <size>
      <width>80</width>
-     <height>211</height>
+     <height>217</height>
     </size>
    </property>
    <property name="windowTitle">

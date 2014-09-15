@@ -39,7 +39,6 @@ signals:
 	void fontChanged();
 	void paletteRepresentationChanged();
 	void usabilityTestingModeChanged(bool on);
-	void transparentVersioningModeChanged(bool turn);
 
 public slots:
 	void changePaletteParameters();

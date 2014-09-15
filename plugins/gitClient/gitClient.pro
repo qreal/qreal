@@ -20,6 +20,7 @@ HEADERS += \
     gitPlugin.h \
     viewInteraction.h \
     tags.h \
+	transparentMode.h \
     gui/versioningPage.h \
     ../../qrgui/dialogs/preferencesPages/preferencesPage.h \
     gui/commitDialog.h \
@@ -30,11 +31,13 @@ HEADERS += \
     gui/resetDialog.h \
     gui/logDialog.h \
     gui/statusDialog.h \
-    gui/remoteListDialog.h
+	gui/remoteListDialog.h \
+	gui/ChangeVersion.h \
 
 SOURCES += \
     gitPlugin.cpp \
     viewInteraction.cpp \
+	transparentMode.cpp \
     gui/versioningPage.cpp \
     gui/commitDialog.cpp \
     gui/pushDialog.cpp \
@@ -44,7 +47,10 @@ SOURCES += \
     gui/resetDialog.cpp \
     gui/logDialog.cpp \
     gui/statusDialog.cpp \
-    gui/remoteListDialog.cpp
+	gui/remoteListDialog.cpp \
+	gui/ChangeVersion.cpp \
+
 
 FORMS += \
-    gui/versioningPage.ui
+	gui/versioningPage.ui \
+	ChangeVersion.ui

@@ -21,7 +21,7 @@ ViewInteraction::ViewInteraction(GitPlugin *pluginInstance)
 	connect(mPlugin, SIGNAL(statusComplete(QString,bool)), this, SLOT(onStatusComplete(QString,bool)));
 	connect(mPlugin, SIGNAL(logComplete(QString,bool)), this, SLOT(onLogComplete(QString,bool)));
 	connect(mPlugin, SIGNAL(remoteListComplete(QString,bool)), this, SLOT(onRemoteListComplete(QString,bool)));
-	connect(mPreferencesPage, SIGNAL(checkClienExisting()), mPlugin, SLOT(checkClientInstalling()));
+	connect(mPreferencesPage, SIGNAL(checkClientExisting()), mPlugin, SLOT(checkClientInstalling()));
 }
 
 void ViewInteraction::initActions()
@@ -63,7 +63,11 @@ void ViewInteraction::initActions()
 	QAction *remoteListAction = gitMenu->addAction(tr("Remote -v"));
 	connect(remoteListAction, SIGNAL(triggered()), this, SLOT(remoteListClicked()));
 
-	mMenu << qReal::ActionInfo(gitMenu, "tools");
+	QAction *versionsAction = new QAction(tr("Versions"), this);
+	versionsAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
+	connect(remoteListAction, SIGNAL(triggered()), this, SLOT(versionsClicked()));
+
+	mMenu << qReal::ActionInfo(gitMenu, "tools") << qReal::ActionInfo(versionsAction, "tools", "tools");
 }
 
 QList<qReal::ActionInfo> ViewInteraction::actions() const
@@ -181,6 +185,11 @@ void ViewInteraction::logClicked()
 void ViewInteraction::remoteListClicked()
 {
 	mPlugin->doRemoteList();
+}
+
+void ViewInteraction::versionsClicked()
+{
+
 }
 
 void ViewInteraction::showMessage(const QString &message)

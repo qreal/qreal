@@ -4,7 +4,6 @@
 #include "../pluginManager/toolPluginManager.h"
 #include "versioningPluginInterface.h"
 #include "../models/models.h"
-#include "../versioning/transparentMode/transparentMode.h"
 #include "../mainwindow/projectManager/projectManager.h"
 
 namespace qReal
@@ -33,13 +32,6 @@ public:
 	bool onFileAdded(QString const &filePath, QString const &workingDir);
 	bool onFileRemoved(QString const &filePath, QString const &workingDir);
 	bool onFileChanged(QString const &filePath, QString const &workingDir);
-	TransparentMode *getLinkOnTransparentMode();
-
-signals:
-	void OnButton(bool);
-	void transparentClassIsReady();
-	void viewForTransparentModeIsReady(QGraphicsView*);
-	void setVisibleTransparentMode(bool visible);
 
 public slots:
 	void beginWorkingCopyDownloading(QString const &repoAddress
@@ -58,14 +50,12 @@ public slots:
 	QString getLog(QString const &format = QString(), bool const &quiet = false);
 	void setVersion(QString hash, bool const &quiet = false);
 	bool clientExist();
-	void switchOffOrOnAllPluginsAction(bool switchOnTranspMode);
-	void showDiff(QString fstHash, QString sndHash, QWidget *widget);
-	void setVisibleVersioningTools(QString versioningPlugin, bool visible);
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);
 	void onWorkingCopyUpdated(bool const success);
 	void onChangesSubmitted(bool const success);
+	void showDiff(QString fstHash, QString sndHash, QWidget *widget);
 
 private:
 	QString tempFolder() const;
@@ -85,7 +75,6 @@ private:
 	DiffPluginBase *mDiffPlugin;
 	QString mTempDir;
 
-	TransparentMode *mTranspaentMode;
 	ProjectManager *mProjectManager;
 };
 

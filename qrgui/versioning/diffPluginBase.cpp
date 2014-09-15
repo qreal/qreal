@@ -16,6 +16,4 @@ qReal::ProjectManagementInterface *DiffPluginBase::projectManager() const
 void DiffPluginBase::setHandler(DiffPluginInterface *handler)
 {
 	mHandler = handler;
-//	QObject::connect(mHandler, SIGNAL(viewForTransparentModeIsReady(QGraphicsView*))
-//			, SIGNAL(viewForTransparentModeIsReady(QGraphicsView*)));
 }

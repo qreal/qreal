@@ -14,6 +14,8 @@
 #include "gui/statusDialog.h"
 #include "gui/logDialog.h"
 #include "gui/remoteListDialog.h"
+//#include "gui/ChangeVersion.h"
+//#include "transparentMode.h"
 
 namespace git {
 
@@ -44,6 +46,7 @@ public slots:
 	void statusClicked();
 	void logClicked();
 	void remoteListClicked();
+	void versionsClicked();
 
 private slots:
 	void onInitComplete(bool const success);

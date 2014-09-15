@@ -1993,20 +1993,19 @@ void MainWindow::initToolPlugins()
 	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter, mProjectManager);
 
 	//deafult setting for transparent mode
-	qReal::SettingsManager::setValue("transparentVersioningMode"
-									 ,qReal::SettingsManager::value("transparentVersioningMode",true).toBool());
+//	qReal::SettingsManager::setValue("transparentVersioningMode"
+//									 ,qReal::SettingsManager::value("transparentVersioningMode",true).toBool());
 
-	connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
-								, mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
-	connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
-								, this, SLOT(switchOffOrOnEasyVers(bool)));
-	connect(mVersioningManager, SIGNAL(transparentClassIsReady()), this, SLOT(initMEasyVersioningLink()));
-	connect(mUi->actionList_of_version_3, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
-	connect(mVersioningManager, SIGNAL(setVisibleTransparentMode(bool)), mUi->actionList_of_version_3, SLOT(setVisible(bool)));
+	//connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
+	//							, mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
+	//connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
+	//							, this, SLOT(switchOffOrOnEasyVers(bool)));
+	//connect(mVersioningManager, SIGNAL(transparentClassIsReady()), this, SLOT(initMEasyVersioningLink()));
+	//connect(mUi->actionList_of_version_3, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
+	//connect(mVersioningManager, SIGNAL(setVisibleTransparentMode(bool)), mUi->actionList_of_version_3, SLOT(setVisible(bool)));
 
 	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins()), this);
-	mVersioningManager->switchOffOrOnAllPluginsAction(qReal::SettingsManager::value("transparentVersioningMode").toBool());
-	mUi->actionList_of_version_3->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
+	//mVersioningManager->switchOffOrOnAllPluginsAction(qReal::SettingsManager::value("transparentVersioningMode").toBool());
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
@@ -2271,51 +2270,51 @@ void MainWindow::setVersion(QString const &version)
 }
 
 
-void MainWindow::switchOffOrOnEasyVers(bool switchOnOrOFF)
-{
-	mUi->actionList_of_version_3->setVisible(switchOnOrOFF);
-	if (switchOnOrOFF){
-		disconnect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
-		disconnect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
-		connect(mUi->actionSave, SIGNAL(triggered()), mEasyVersioning, SLOT(saveOrSuggestToSaveAs()));
-		connect(mUi->actionSave_as, SIGNAL(triggered()), mEasyVersioning, SLOT(suggestToSaveAs()));
-	} else {
-		connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
-		connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
-		int index = mUi->tabs->indexOf(mChangeVersion);
-		if (index != -1){
-			mUi->tabs->removeTab(index);
-		}
-	}
-}
+//void MainWindow::switchOffOrOnEasyVers(bool switchOnOrOFF)
+//{
+//	//mUi->actionList_of_version_3->setVisible(switchOnOrOFF);
+//	if (switchOnOrOFF){
+//		disconnect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
+//		disconnect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
+//		connect(mUi->actionSave, SIGNAL(triggered()), mEasyVersioning, SLOT(saveOrSuggestToSaveAs()));
+//		connect(mUi->actionSave_as, SIGNAL(triggered()), mEasyVersioning, SLOT(suggestToSaveAs()));
+//	} else {
+//		connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
+//		connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
+//		int index = mUi->tabs->indexOf(mChangeVersion);
+//		if (index != -1){
+//			mUi->tabs->removeTab(index);
+//		}
+//	}
+//}
 
-void MainWindow::showChangeVersion()
-{
-	mChangeVersion = new ChangeVersion();
-	mUi->tabs->addTab(mChangeVersion, tr("Change version"));
-	mUi->tabs->setCurrentWidget(mChangeVersion);
+//void MainWindow::showChangeVersion()
+//{
+//	mChangeVersion = new ChangeVersion();
+//	mUi->tabs->addTab(mChangeVersion, tr("Change version"));
+//	mUi->tabs->setCurrentWidget(mChangeVersion);
 
-	connect(mChangeVersion, SIGNAL(showDiff(QString,QString,QWidget*))
-			, mVersioningManager, SLOT(showDiff(QString,QString,QWidget*)));
-	connect(this, SIGNAL(changeVersionShowed()), mEasyVersioning, SLOT(listLog()));
-	connect(mEasyVersioning, SIGNAL(listLogIsReady(QList<QPair<QString , QString> >)),
-				mChangeVersion, SLOT(updateLog(QList<QPair<QString , QString> >)));
-	connect(mChangeVersion, SIGNAL(hashObtained(QString)), mEasyVersioning, SLOT(setVersion(QString)));
-	connect(mChangeVersion, SIGNAL(swapTab()), this, SLOT(openFirstDiagram()));
-	emit changeVersionShowed();
-}
+//	connect(mChangeVersion, SIGNAL(showDiff(QString,QString,QWidget*))
+//			, mVersioningManager, SLOT(showDiff(QString,QString,QWidget*)));
+//	connect(this, SIGNAL(changeVersionShowed()), mEasyVersioning, SLOT(listLog()));
+//	connect(mEasyVersioning, SIGNAL(listLogIsReady(QList<QPair<QString , QString> >)),
+//				mChangeVersion, SLOT(updateLog(QList<QPair<QString , QString> >)));
+//	connect(mChangeVersion, SIGNAL(hashObtained(QString)), mEasyVersioning, SLOT(setVersion(QString)));
+//	connect(mChangeVersion, SIGNAL(swapTab()), this, SLOT(openFirstDiagram()));
+//	emit changeVersionShowed();
+//}
 
-void MainWindow::initMEasyVersioningLink()
-{
-	mEasyVersioning = mVersioningManager->getLinkOnTransparentMode();
-	switchOffOrOnEasyVers(qReal::SettingsManager::value("transparentVersioningMode").toBool()
-							&& qReal::SettingsManager::value("gitClientExist", false).toBool());
-}
+//void MainWindow::initMEasyVersioningLink()
+//{
+//	mEasyVersioning = mVersioningManager->getLinkOnTransparentMode();
+//	switchOffOrOnEasyVers(qReal::SettingsManager::value("transparentVersioningMode").toBool()
+//							&& qReal::SettingsManager::value("gitClientExist", false).toBool());
+//}
 
-void MainWindow::openStartTab()
-{
-	mStartWidget = new StartWidget(this, mProjectManager);
-	int const index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
-	mUi->tabs->setTabUnclosable(index);
-	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
-}
+//void MainWindow::openStartTab()
+//{
+//	mStartWidget = new StartWidget(this, mProjectManager);
+//	int const index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
+//	mUi->tabs->setTabUnclosable(index);
+//	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
+//}

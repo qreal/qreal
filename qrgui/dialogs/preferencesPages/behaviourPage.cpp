@@ -16,10 +16,6 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 	connect(mUi->collectErgonomicValuesCheckBox, SIGNAL(clicked(bool))
 			, &mFilterObject, SLOT(setStatusCollectUsabilityStatistics(bool)));
 	restoreSettings();
-
-	// Only for versioning. For pro users. Pro version does not working now.
-	mUi->label_2->setVisible(false);
-	mUi->frame_2->setVisible(false);
 }
 
 PreferencesBehaviourPage::~PreferencesBehaviourPage()
@@ -49,7 +45,6 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("collectErgonomicValues", mUi->collectErgonomicValuesCheckBox->isChecked()
 			|| usabilityTestingMode);
 	SettingsManager::setValue("touchMode", mUi->touchModeChackBox->isChecked());
-	qReal::SettingsManager::setValue("transparentVersioningMode", mUi->TransparentModeCheckBox->isChecked());
 
 	if (mUsabilityTestingMode != usabilityTestingMode) {
 		if (usabilityTestingMode) {
@@ -57,12 +52,6 @@ void PreferencesBehaviourPage::save()
 		}
 		mUsabilityTestingMode = usabilityTestingMode;
 		emit usabilityTestingModeChanged(mUsabilityTestingMode);
-	}
-
-	if (mTransparentVersioningMode != mUi->TransparentModeCheckBox->isChecked())
-	{
-		mTransparentVersioningMode = !mTransparentVersioningMode;
-		emit transparentVersioningModeChanged(mTransparentVersioningMode);
 	}
 }
 
@@ -76,10 +65,8 @@ void PreferencesBehaviourPage::restoreSettings()
 
 	mUi->usabilityModeCheckBox->setChecked(mUsabilityTestingMode);
 	mUi->touchModeChackBox->setChecked(SettingsManager::value("touchMode").toBool());
-	mUi->touchModeChackBox->setChecked(qReal::SettingsManager::value("transparentVersioningMode").toBool());
 
 	mUsabilityTestingMode = SettingsManager::value("usabilityTestingMode").toBool();
-	mTransparentVersioningMode = qReal::SettingsManager::value("transparentVersioningMode").toBool();
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();

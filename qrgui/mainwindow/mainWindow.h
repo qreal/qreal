@@ -46,7 +46,6 @@
 
 #include "qrgui/versioning/versioningPluginInterface.h"
 #include "qrgui/versioning/versioningPluginsManager.h"
-#include "qrgui/versioning/transparentMode/ChangeVersion.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -295,10 +294,6 @@ private slots:
 	void startUsabilityTest();
 	void finishUsabilityTest();
 
-	void switchOffOrOnEasyVers(bool switchOnOrOFF);
-	void showChangeVersion();
-	void initMEasyVersioningLink();
-
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
@@ -398,9 +393,6 @@ private:
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;
-
-	ChangeVersion *mChangeVersion;
-	TransparentMode *mEasyVersioning;
 
 	SystemEvents *mSystemEvents;
 	TextManager *mTextManager;

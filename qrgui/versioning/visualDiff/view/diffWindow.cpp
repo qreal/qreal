@@ -1,7 +1,7 @@
 #include "diffWindow.h"
 
 using namespace versioning;
-
+//добавить флажок компакт мод
 DiffWindow::DiffWindow(qReal::MainWindow *mainWindow
 		, DiffModel *diffModel, QWidget *parent)
 	: QWidget(parent), mDiffModel(diffModel), mMainWindow(mainWindow), mShowDetails(false)
