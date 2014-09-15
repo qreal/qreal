@@ -16,12 +16,14 @@
 using namespace qReal;
 using namespace utils;
 
-ProjectManager::ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager)
+ProjectManager::ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager
+							   , SystemEventsInterface *systemEvents)
 	: mMainWindow(mainWindow)
 	, mTextManager(textManager)
 	, mAutosaver(new Autosaver(this))
 	, mUnsavedIndicator(false)
 	, mSomeProjectOpened(false)
+	, mSystemEvents(systemEvents)
 {
 	setSaveFilePath();
 }
@@ -291,6 +293,7 @@ void ProjectManager::save()
 	saveTo(mSaveFilePath);
 	mAutosaver->removeAutoSave();
 	refreshApplicationStateAfterSave();
+	mSystemEvents->emitStartSave();
 }
 
 void ProjectManager::saveGenCode(QString const &text)
@@ -356,6 +359,7 @@ bool ProjectManager::saveAs(QString const &fileName)
 	mMainWindow->models()->repoControlApi().saveTo(workingFileName);
 	setSaveFilePath(workingFileName);
 	refreshApplicationStateAfterSave();
+	mSystemEvents->emitStartSave();
 	return true;
 }
 

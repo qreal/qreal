@@ -77,7 +77,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mPreferencesDialog(this)
 		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
-		, mProjectManager(new ProjectManager(this, mTextManager))
+		, mProjectManager(new ProjectManager(this, mTextManager, mSystemEvents))
 		, mStartWidget(nullptr)
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
@@ -892,38 +892,6 @@ void MainWindow::deleteFromDiagram()
 	}
 }
 
-//void MainWindow::cutElementsOnDiagram()
-//{
-//	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
-//	if (scene) {
-//		scene->cut();
-//	}
-//}
-
-//void MainWindow::copyElementsOnDiagram()
-//{
-//	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
-//	if (scene) {
-//		scene->copy();
-//	}
-//}
-
-//void MainWindow::pasteOnDiagram()
-//{
-//	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
-//	if (scene) {
-//		scene->paste(false);
-//	}
-//}
-
-//void MainWindow::pasteCopyOfLogical()
-//{
-//	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
-//	if (scene) {
-//		scene->paste(true);
-//	}
-//}
-
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"), mToolManager.customizer()->aboutText());
@@ -1006,7 +974,7 @@ void MainWindow::closeTab(int index)
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {
 		mSystemEvents->emitCodeTabClosed(QFileInfo(path));
 	} else {
-		// TODO: process other tabs (for example, start tab)
+		mSystemEvents->emitIndefiniteTabClosed(widget);
 	}
 
 	mUi->tabs->removeTab(index);
@@ -1989,23 +1957,8 @@ void MainWindow::initToolPlugins()
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
 
-
 	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter, mProjectManager);
-
-	//deafult setting for transparent mode
-//	qReal::SettingsManager::setValue("transparentVersioningMode"
-//									 ,qReal::SettingsManager::value("transparentVersioningMode",true).toBool());
-
-	//connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
-	//							, mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
-	//connect(&mPreferencesDialog, SIGNAL(transparentVersioningModeChanged(bool))
-	//							, this, SLOT(switchOffOrOnEasyVers(bool)));
-	//connect(mVersioningManager, SIGNAL(transparentClassIsReady()), this, SLOT(initMEasyVersioningLink()));
-	//connect(mUi->actionList_of_version_3, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
-	//connect(mVersioningManager, SIGNAL(setVisibleTransparentMode(bool)), mUi->actionList_of_version_3, SLOT(setVisible(bool)));
-
 	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins()), this);
-	//mVersioningManager->switchOffOrOnAllPluginsAction(qReal::SettingsManager::value("transparentVersioningMode").toBool());
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
@@ -2269,52 +2222,10 @@ void MainWindow::setVersion(QString const &version)
 	SettingsManager::setValue("version", version);
 }
 
-
-//void MainWindow::switchOffOrOnEasyVers(bool switchOnOrOFF)
-//{
-//	//mUi->actionList_of_version_3->setVisible(switchOnOrOFF);
-//	if (switchOnOrOFF){
-//		disconnect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
-//		disconnect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
-//		connect(mUi->actionSave, SIGNAL(triggered()), mEasyVersioning, SLOT(saveOrSuggestToSaveAs()));
-//		connect(mUi->actionSave_as, SIGNAL(triggered()), mEasyVersioning, SLOT(suggestToSaveAs()));
-//	} else {
-//		connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
-//		connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
-//		int index = mUi->tabs->indexOf(mChangeVersion);
-//		if (index != -1){
-//			mUi->tabs->removeTab(index);
-//		}
-//	}
-//}
-
-//void MainWindow::showChangeVersion()
-//{
-//	mChangeVersion = new ChangeVersion();
-//	mUi->tabs->addTab(mChangeVersion, tr("Change version"));
-//	mUi->tabs->setCurrentWidget(mChangeVersion);
-
-//	connect(mChangeVersion, SIGNAL(showDiff(QString,QString,QWidget*))
-//			, mVersioningManager, SLOT(showDiff(QString,QString,QWidget*)));
-//	connect(this, SIGNAL(changeVersionShowed()), mEasyVersioning, SLOT(listLog()));
-//	connect(mEasyVersioning, SIGNAL(listLogIsReady(QList<QPair<QString , QString> >)),
-//				mChangeVersion, SLOT(updateLog(QList<QPair<QString , QString> >)));
-//	connect(mChangeVersion, SIGNAL(hashObtained(QString)), mEasyVersioning, SLOT(setVersion(QString)));
-//	connect(mChangeVersion, SIGNAL(swapTab()), this, SLOT(openFirstDiagram()));
-//	emit changeVersionShowed();
-//}
-
-//void MainWindow::initMEasyVersioningLink()
-//{
-//	mEasyVersioning = mVersioningManager->getLinkOnTransparentMode();
-//	switchOffOrOnEasyVers(qReal::SettingsManager::value("transparentVersioningMode").toBool()
-//							&& qReal::SettingsManager::value("gitClientExist", false).toBool());
-//}
-
-//void MainWindow::openStartTab()
-//{
-//	mStartWidget = new StartWidget(this, mProjectManager);
-//	int const index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
-//	mUi->tabs->setTabUnclosable(index);
-//	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
-//}
+void MainWindow::openStartTab()
+{
+	mStartWidget = new StartWidget(this, mProjectManager);
+	int const index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
+	mUi->tabs->setTabUnclosable(index);
+	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
+}

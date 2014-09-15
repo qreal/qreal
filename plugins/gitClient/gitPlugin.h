@@ -48,7 +48,9 @@ public:
 	virtual QString friendlyName();
 	virtual QString getLog(QString const &format = QString(), bool const &quiet = false);
 	virtual void setVersion(QString hash, bool const &quiet = false);
+	void setDiffViewerInterface(DiffPluginInterface *interface);
 	bool clientExist();
+
 
 public slots:
 	void doInit(QString const &targetFolder = QString(), bool const &quiet = false);
@@ -70,6 +72,8 @@ public slots:
 	QString doRemoteList();
 	void doAfterOperationIsFinished(QVariant const &tag);
 	void checkClientInstalling();
+	//add more methods
+	void showDiff(QString fstHash, QString sndHash, QWidget *widget);
 
 signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);
@@ -112,6 +116,6 @@ private:
 
 	details::ViewInteraction *mViewInteraction;
 	QString mTempDir;
-
+	DiffPluginInterface *mDiffInterface;
 };
 }

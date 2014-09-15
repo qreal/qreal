@@ -21,7 +21,8 @@ ViewInteraction::ViewInteraction(GitPlugin *pluginInstance)
 	connect(mPlugin, SIGNAL(statusComplete(QString,bool)), this, SLOT(onStatusComplete(QString,bool)));
 	connect(mPlugin, SIGNAL(logComplete(QString,bool)), this, SLOT(onLogComplete(QString,bool)));
 	connect(mPlugin, SIGNAL(remoteListComplete(QString,bool)), this, SLOT(onRemoteListComplete(QString,bool)));
-	connect(mPreferencesPage, SIGNAL(checkClientExisting()), mPlugin, SLOT(checkClientInstalling()));
+
+	connect(mPreferencesPage, SIGNAL(compactMode(bool)), SLOT(modeChanged(bool)));
 }
 
 void ViewInteraction::initActions()
@@ -65,7 +66,7 @@ void ViewInteraction::initActions()
 
 	QAction *versionsAction = new QAction(tr("Versions"), this);
 	versionsAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
-	connect(remoteListAction, SIGNAL(triggered()), this, SLOT(versionsClicked()));
+	connect(versionsAction, SIGNAL(triggered()), this, SLOT(versionsClicked()));
 
 	mMenu << qReal::ActionInfo(gitMenu, "tools") << qReal::ActionInfo(versionsAction, "tools", "tools");
 }
@@ -85,6 +86,9 @@ void ViewInteraction::init(const qReal::PluginConfigurator &configurator)
 	mMainWindowIface = &(configurator.mainWindowInterpretersInterface());
 	mProjectManager = &(configurator.projectManager());
 	mRepoApi = &(configurator.repoControlInterface());
+	mSystemEvents = &(configurator.systemEvents());
+	mCompactMode = new TransparentMode(mPlugin, mProjectManager, mMainWindowIface, mSystemEvents);
+	modeChanged(qReal::SettingsManager::value("versioningCompactMode").toBool());
 }
 
 void ViewInteraction::initClicked()
@@ -187,11 +191,6 @@ void ViewInteraction::remoteListClicked()
 	mPlugin->doRemoteList();
 }
 
-void ViewInteraction::versionsClicked()
-{
-
-}
-
 void ViewInteraction::showMessage(const QString &message)
 {
 	mMainWindowIface->errorReporter()->addInformation(message);
@@ -286,6 +285,22 @@ void ViewInteraction::onRemoteListComplete(QString answer, const bool success)
 	dialog->message(answer);
 	if (QDialog::Accepted != dialog->exec()) {
 		return;
+	}
+}
+
+void ViewInteraction::versionsClicked()
+{
+	mCompactMode->openChangeVersionTab();
+}
+
+void ViewInteraction::modeChanged(bool compactMode)
+{
+	mMenu.first().menu()->menuAction()->setVisible(!compactMode);
+	mMenu.last().action()->setVisible(compactMode);
+	if (compactMode){
+		connect(mSystemEvents, SIGNAL(startSave()), mCompactMode, SLOT(saveVersion()));
+	} else {
+		disconnect(mSystemEvents, SIGNAL(startSave()), mCompactMode, SLOT(saveVersion()));
 	}
 }
 

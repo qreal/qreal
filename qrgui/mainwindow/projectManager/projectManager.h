@@ -4,6 +4,7 @@
 
 #include "mainwindow/projectManager/projectManagementInterface.h"
 #include "textEditor/textManagerInterface.h"
+#include "toolPluginInterface/systemEventsInterface.h"
 
 namespace qReal {
 
@@ -15,7 +16,8 @@ class ProjectManager : public ProjectManagementInterface
 	Q_OBJECT
 
 public:
-	explicit ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager);
+	explicit ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager
+							, SystemEventsInterface *systemEvents);
 
 public slots:
 	bool openExisting(QString const &fileName);
@@ -75,6 +77,7 @@ private:
 	bool mUnsavedIndicator;
 	QString mSaveFilePath;
 	bool mSomeProjectOpened;
+	SystemEventsInterface *mSystemEvents;
 };
 
 }

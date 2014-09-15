@@ -4,6 +4,7 @@
 #include <qrutils/versioningUtils/briefVersioningInterface.h>
 #include <qrrepo/workingCopyInspectionInterface.h>
 #include <qrrepo/workingCopyManagementInterface.h>
+#include "qrgui/versioning/diffPluginInterface.h"
 
 namespace qReal {
 
@@ -23,6 +24,8 @@ public:
 
 	virtual void setWorkingCopyManager(
 			qrRepo::WorkingCopyManagementInterface *workingCopyManager) = 0;
+
+	virtual void setDiffViewerInterface(DiffPluginInterface *interface) = 0;
 };
 
 }

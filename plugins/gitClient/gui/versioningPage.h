@@ -28,6 +28,7 @@ public:
 
 signals:
 	void checkClientExisting();
+	void compactMode(bool modeOn);
 
 protected:
 	virtual void changeEvent(QEvent *e);

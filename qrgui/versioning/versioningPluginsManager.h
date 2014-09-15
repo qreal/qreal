@@ -55,7 +55,6 @@ private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);
 	void onWorkingCopyUpdated(bool const success);
 	void onChangesSubmitted(bool const success);
-	void showDiff(QString fstHash, QString sndHash, QWidget *widget);
 
 private:
 	QString tempFolder() const;

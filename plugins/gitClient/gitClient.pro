@@ -32,7 +32,7 @@ HEADERS += \
     gui/logDialog.h \
     gui/statusDialog.h \
 	gui/remoteListDialog.h \
-	gui/ChangeVersion.h \
+    gui/changeVersionWidget.h
 
 SOURCES += \
     gitPlugin.cpp \
@@ -48,9 +48,9 @@ SOURCES += \
     gui/logDialog.cpp \
     gui/statusDialog.cpp \
 	gui/remoteListDialog.cpp \
-	gui/ChangeVersion.cpp \
+    gui/changeVersionWidget.cpp
 
 
 FORMS += \
 	gui/versioningPage.ui \
-	ChangeVersion.ui
+    gui/changeVersionWidget.ui

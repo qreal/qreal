@@ -206,6 +206,11 @@ void GitPlugin::setVersion(QString hash, bool const &quiet)
 	invokeOperation(args, false, QString(), false, true, QString(), QString(), !quiet);
 }
 
+void GitPlugin::setDiffViewerInterface(DiffPluginInterface *interface)
+{
+	mDiffInterface = interface;
+}
+
 bool GitPlugin::clientExist()
 {
 	QProcess *process = new QProcess;
@@ -500,3 +505,11 @@ void GitPlugin::onResetComplete(const bool result, const bool quiet)
 	emit workingCopyUpdated(result);
 }
 
+void GitPlugin::showDiff(QString fstHash, QString sndHash, QWidget *widget)
+{
+	if (sndHash != ""){
+		mDiffInterface->showDiff(sndHash, fstHash, QString(), widget);
+	} else {
+		mDiffInterface->showDiff(fstHash, QString(), widget);
+	}
+}

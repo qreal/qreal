@@ -17,8 +17,10 @@ PreferencesVersioningPage::PreferencesVersioningPage(QWidget *parent)
 	mAuthenticationSettings = new qReal::versioning::ui::AuthenticationSettingsWidget("git");
 	// The last widget in layout must remain spacer
 
-	//qReal::SettingsManager::setValue("transparentVersioningMode", mUi->TransparentModeCheckBox->isChecked());
 	mUi->verticalLayout->insertWidget(mUi->verticalLayout->count() - 1, mAuthenticationSettings);
+
+	mUi->checkBoxCompactMode->setChecked(qReal::SettingsManager::value("versioningCompactMode", true).toBool());
+	qReal::SettingsManager::setValue("versioningCompactMode", mUi->checkBoxCompactMode->isChecked());
 }
 
 PreferencesVersioningPage::~PreferencesVersioningPage()
@@ -42,6 +44,10 @@ void PreferencesVersioningPage::save()
 {
 	qReal::SettingsManager::setValue("pathToGitClient", mUi->pathToGitClientLineEdit->text());
 	qReal::SettingsManager::setValue("gitClientTimeout", mUi->gitTimeoutSpinBox->value());
+	if (mUi->checkBoxCompactMode->isChecked() != qReal::SettingsManager::value("versioningCompactMode", true).toBool()){
+		emit compactMode(qReal::SettingsManager::value("versioningCompactMode").toBool());
+	}
+	qReal::SettingsManager::setValue("versioningCompactMode", mUi->checkBoxCompactMode->isChecked());
 	mAuthenticationSettings->save();
 	emit checkClientExisting();
 }
@@ -51,6 +57,7 @@ void PreferencesVersioningPage::restoreSettings()
 	mAuthenticationSettings->reinit();
 	mUi->pathToGitClientLineEdit->setText(qReal::SettingsManager::value("pathToGitClient", "").toString());
 	mUi->gitTimeoutSpinBox->setValue(qReal::SettingsManager::value("gitClientTimeout", 30000).toInt());
+	mUi->checkBoxCompactMode->setChecked(qReal::SettingsManager::value("versioningCompactMode", true).toBool());
 }
 
 void PreferencesVersioningPage::on_browseGitClientButton_clicked()

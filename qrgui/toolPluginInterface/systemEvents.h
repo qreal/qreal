@@ -44,5 +44,15 @@ public:
 	{
 		emit codeTabClosed(fileInfo);
 	}
+
+	void emitStartSave()
+	{
+		emit startSave();
+	}
+
+	void emitIndefiniteTabClosed(QWidget *widget)
+	{
+		emit indefiniteTabClosed(widget);
+	}
 };
 }

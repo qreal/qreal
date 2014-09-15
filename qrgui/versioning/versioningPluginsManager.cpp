@@ -36,13 +36,11 @@ void VersioningPluginsManager::initFromToolPlugins(
 		QListIterator<ToolPluginInterface *> iterator
 		, MainWindow *mainWindow)
 {
-	bool versionPluginsLoaded = false;
 	while (iterator.hasNext()) {
 		ToolPluginInterface *toolPlugin = iterator.next();
 		VersioningPluginInterface *versioningPlugin =
 				dynamic_cast<VersioningPluginInterface *>(toolPlugin);
 		if (versioningPlugin) {
-			versionPluginsLoaded = true;
 			mPlugins.append(versioningPlugin);
 			if (versioningPlugin->clientExist()){
 				mPluginsWithExistClient.append(versioningPlugin);
@@ -58,19 +56,19 @@ void VersioningPluginsManager::initFromToolPlugins(
 					, this, SLOT(onWorkingCopyUpdated(bool const)));
 			connect(versioningPlugin, SIGNAL(changesSubmitted(bool const))
 					, this, SLOT(onChangesSubmitted(bool const)));
-			connect(versioningPlugin, SIGNAL(clientInstalled(QString, bool))
-					, this, SLOT(setVisibleVersioningTools(QString, bool)));
 		}
 		DiffPluginBase *diffPlugin =
 				dynamic_cast<DiffPluginBase *>(toolPlugin);
+		// TODO: new diffPlugin for every versioning plugin
 		if (diffPlugin) {
 			mDiffPlugin = diffPlugin;
 			mDiffPlugin->setHandler(new versioning::DiffPluginWrapper(mDiffPlugin, mRepoApi
 					, this, mainWindow, &mainWindow->editorManager()));
 		}
 	}
-	if (versionPluginsLoaded)
-		emit OnButton(true);
+	for (int i = 0; i < mPlugins.length(); i++){
+		mPlugins[i]->setDiffViewerInterface(mDiffPlugin);
+	}
 }
 
 VersioningPluginInterface *VersioningPluginsManager::activePlugin(bool needPreparation, const QString &workingDir)
@@ -252,79 +250,6 @@ void VersioningPluginsManager::onChangesSubmitted(const bool success)
 {
 	emit changesSubmitted(success);
 }
-
-//void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTranspMode)
-//{
-//	foreach (VersioningPluginInterface *plugin, mPluginsWithExistClient){
-//		foreach(ActionInfo const &actionInfo, plugin->actions()) {
-//			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
-//		}
-//	}
-
-//	if (!mPluginsWithExistClient.isEmpty() && !switchOnTranspMode){
-//		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-//			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
-//		}
-//	} else if (mPluginsWithExistClient.isEmpty() || switchOnTranspMode){
-//		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-//			actionInfo.menu()->menuAction()->setVisible(false);
-//		}
-//	}
-
-//	if (switchOnTranspMode){
-//		mTranspaentMode = new TransparentMode(mPlugins, mProjectManager);
-//		emit transparentClassIsReady();
-//	} else {
-//		mTranspaentMode->disconnect();
-//		delete mTranspaentMode;
-//	}
-//}
-
-void VersioningPluginsManager::showDiff(QString fstHash, QString sndHash, QWidget *widget)
-{
-	if (sndHash != ""){
-		mDiffPlugin->showDiff(sndHash, fstHash, QString(), widget);
-	} else {
-		mDiffPlugin->showDiff(fstHash, QString(), widget);
-	}
-}
-
-////void VersioningPluginsManager::setVisibleVersioningTools(QString versioningPlugin, bool visible)
-//{
-//	bool transparentModeIsActive = qReal::SettingsManager::value("transparentVersioningMode").toBool();
-
-//	foreach (VersioningPluginInterface *plugin, mPlugins){
-//		if (plugin->friendlyName() == versioningPlugin){
-//			if (visible) {
-//				mPluginsWithExistClient.append(plugin);
-//			} else {
-//				mPluginsWithExistClient.removeOne(plugin);
-//			}
-//			if (!transparentModeIsActive){
-//				foreach(ActionInfo const &actionInfo, plugin->actions()) {
-//					actionInfo.menu()->menuAction()->setVisible(visible);
-//				}
-//			}
-//		}
-//	}
-
-//	if (!mPluginsWithExistClient.isEmpty() && !transparentModeIsActive){
-//		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-//			actionInfo.menu()->menuAction()->setVisible(true);
-//		}
-//	} else if (mPluginsWithExistClient.isEmpty()){
-//		foreach(ActionInfo const &actionInfo, mDiffPlugin->actions()) {
-//			actionInfo.menu()->menuAction()->setVisible(false);
-//		}
-//	}
-
-//	if ((mPluginsWithExistClient.isEmpty() && transparentModeIsActive)
-//		|| (!qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive)){
-//		emit setVisibleTransparentMode(false);
-//	} else if (qReal::SettingsManager::value("gitClientExist", false).toBool() && transparentModeIsActive){
-//		emit transparentClassIsReady();
-//	}
-//}
 
 void VersioningPluginsManager::setVersion(QString hash, const bool &quiet)
 {

@@ -14,8 +14,7 @@
 #include "gui/statusDialog.h"
 #include "gui/logDialog.h"
 #include "gui/remoteListDialog.h"
-//#include "gui/ChangeVersion.h"
-//#include "transparentMode.h"
+#include "transparentMode.h"
 
 namespace git {
 
@@ -59,6 +58,7 @@ private slots:
 	void onStatusComplete(QString answer, bool const success);
 	void onLogComplete(QString answer, bool const success);
 	void onRemoteListComplete(QString answer, bool const success);
+	void modeChanged(bool compactMode);
 
 private:
 	void initActions();
@@ -71,6 +71,8 @@ private:
 	qReal::ProjectManagementInterface *mProjectManager;
 	qrRepo::RepoControlInterface *mRepoApi;
 	ui::PreferencesVersioningPage *mPreferencesPage;
+	TransparentMode *mCompactMode;
+	qReal::SystemEventsInterface *mSystemEvents;
 };
 }
 }

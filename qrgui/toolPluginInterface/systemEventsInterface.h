@@ -33,6 +33,9 @@ public:
 
 	virtual void emitCodeTabClosed(QFileInfo const &fileInfo) = 0;
 
+	virtual void emitStartSave() = 0;
+
+	virtual void emitIndefiniteTabClosed(QWidget *widget) = 0;
 signals:
 	void closedMainWindow();
 	void activeTabChanged(Id const & rootElementId);
@@ -41,5 +44,7 @@ signals:
 	void newCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo);
 	void diagramClosed(qReal::Id const &diagram);
 	void codeTabClosed(QFileInfo const &fileInfo);
+	void startSave();
+	void indefiniteTabClosed(QWidget *widget);
 };
 }

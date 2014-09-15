@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="svnFrame">
+    <widget class="QFrame" name="gitFrame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -30,23 +30,6 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Path to client</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="pathToGitClientLineEdit"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Client timeout</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1" colspan="2">
        <widget class="QSpinBox" name="gitTimeoutSpinBox">
         <property name="toolTip">
@@ -70,6 +53,30 @@
        <widget class="QPushButton" name="browseGitClientButton">
         <property name="text">
          <string>Browse...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Path to client</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="pathToGitClientLineEdit"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Client timeout</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="checkBoxCompactMode">
+        <property name="text">
+         <string>Compact versioning mode</string>
         </property>
        </widget>
       </item>
