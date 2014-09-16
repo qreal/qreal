@@ -4,9 +4,8 @@
 #include <QtCore/QObject>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
-#include <qrutils/expressionsParser/expressionsParser.h>
 
-#include "textLanguage/newRobotsBlockParser.h"
+#include "textLanguage/robotsBlockParser.h"
 
 namespace utils {
 class AbstractTimer;

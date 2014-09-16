@@ -1,4 +1,4 @@
-#include "newRobotsBlockParser.h"
+#include "robotsBlockParser.h"
 
 #include <qrtext/lua/types/integer.h>
 
@@ -10,7 +10,7 @@ QString const sensorVariablePerfix = QObject::tr("sensor");
 QString const encoderVariablePerfix = QObject::tr("encoder");
 QString const timeVariableName = QObject::tr("time");
 
-NewRobotsBlockParser::NewRobotsBlockParser(
+RobotsBlockParser::RobotsBlockParser(
 		interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, utils::ComputableNumber::IntComputer const &timeComputer)
 	: qrtext::lua::LuaToolbox()
@@ -26,10 +26,10 @@ NewRobotsBlockParser::NewRobotsBlockParser(
 			});
 
 	connect(&mRobotModelManager, &interpreterBase::robotModel::RobotModelManagerInterface::robotModelChanged
-			, this, &NewRobotsBlockParser::setReservedVariables);
+			, this, &RobotsBlockParser::setReservedVariables);
 }
 
-void NewRobotsBlockParser::setReservedVariables()
+void RobotsBlockParser::setReservedVariables()
 {
 	/// @todo Remove old reserved variables for old model.
 
@@ -51,7 +51,7 @@ void NewRobotsBlockParser::setReservedVariables()
 	}
 }
 
-QStringList const &NewRobotsBlockParser::specialVariables() const
+QStringList const &RobotsBlockParser::specialVariables() const
 {
 	return mSpecialVariables;
 }

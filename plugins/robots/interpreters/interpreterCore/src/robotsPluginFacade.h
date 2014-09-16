@@ -17,7 +17,6 @@
 #include "managers/blocksFactoryManager.h"
 #include "interpreter/interpreter.h"
 #include "textLanguage/robotsBlockParser.h"
-#include "textLanguage/newRobotsBlockParser.h"
 #include "ui/robotsSettingsPage.h"
 
 namespace interpreterCore {
@@ -72,7 +71,7 @@ private:
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
 
-	QScopedPointer<textLanguage::NewRobotsBlockParser> mParser;
+	QScopedPointer<textLanguage::RobotsBlockParser> mParser;
 
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
 	interpreter::InterpreterInterface *mInterpreter;  // Has ownership
