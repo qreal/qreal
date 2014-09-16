@@ -312,7 +312,7 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			;
 
 	// binop ::= ‘+’ | ‘-’ | ‘*’ | ‘/’ | ‘//’ | ‘^’ | ‘%’ | ‘&’ | ‘~’ | ‘|’ | ‘>>’ | ‘<<’ | ‘..’
-	//           | ‘<’ | ‘<=’ | ‘>’ | ‘>=’ | ‘==’ | ‘~=’ | and | or
+	//           | ‘<’ | ‘<=’ | ‘>’ | ‘>=’ | ‘==’ | ‘~=’ | ‘!=’ | and | or
 	binop = LuaTokenTypes::plus >> [] { return new ast::Addition(); }
 			| LuaTokenTypes::minus >> [] { return new ast::Subtraction(); }
 			| LuaTokenTypes::asterick >> [] { return new ast::Multiplication(); }
@@ -332,6 +332,7 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			| LuaTokenTypes::greaterEquals >> [] { return new ast::GreaterOrEqual(); }
 			| LuaTokenTypes::doubleEquals >> [] { return new ast::Equality(); }
 			| LuaTokenTypes::tildaEquals >> [] { return new ast::Inequality(); }
+			| LuaTokenTypes::exclamationMarkEquals >> [] { return new ast::Inequality(); }
 			| LuaTokenTypes::andKeyword >> [] { return new ast::LogicalAnd(); }
 			| LuaTokenTypes::orKeyword >> [] { return new ast::LogicalOr(); }
 			;

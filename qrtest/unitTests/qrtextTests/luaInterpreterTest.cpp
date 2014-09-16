@@ -84,3 +84,26 @@ TEST_F(LuaInterpreterTest, tableExpressions)
 	ASSERT_TRUE(mErrors.isEmpty());
 	ASSERT_EQ(239, result);
 }
+
+TEST_F(LuaInterpreterTest, inequality)
+{
+	bool result = interpret<bool>("1 != 2");
+
+	ASSERT_TRUE(mErrors.isEmpty());
+	EXPECT_TRUE(result);
+
+	result = interpret<bool>("1 != 1");
+
+	ASSERT_TRUE(mErrors.isEmpty());
+	EXPECT_FALSE(result);
+
+	result = interpret<bool>("1 ~= 2");
+
+	ASSERT_TRUE(mErrors.isEmpty());
+	EXPECT_TRUE(result);
+
+	result = interpret<bool>("1 ~= 1");
+
+	ASSERT_TRUE(mErrors.isEmpty());
+	EXPECT_FALSE(result);
+}

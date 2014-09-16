@@ -57,6 +57,7 @@ TokenPatterns<LuaTokenTypes> LuaLexer::initPatterns()
 
 	tokenDefinitions.defineToken(LuaTokenTypes::doubleEquals, QRegularExpression("=="));
 	tokenDefinitions.defineToken(LuaTokenTypes::tildaEquals, QRegularExpression("~="));
+	tokenDefinitions.defineToken(LuaTokenTypes::exclamationMarkEquals, QRegularExpression("!="));
 	tokenDefinitions.defineToken(LuaTokenTypes::lessEquals, QRegularExpression("<="));
 	tokenDefinitions.defineToken(LuaTokenTypes::greaterEquals, QRegularExpression(">="));
 	tokenDefinitions.defineToken(LuaTokenTypes::less, QRegularExpression("<"));

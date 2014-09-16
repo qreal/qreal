@@ -54,30 +54,31 @@ enum class LuaTokenTypes {
 
 	, doubleEquals
 	, tildaEquals
-	, lessEquals  // 40
+	, exclamationMarkEquals  // 40
+	, lessEquals
 	, greaterEquals
 	, less
 	, greater
-	, equals
+	, equals  // 45
 
-	, openingBracket  // 45
+	, openingBracket
 	, closingBracket
 	, openingCurlyBracket
 	, closingCurlyBracket
-	, openingSquareBracket
-	, closingSquareBracket  // 50
+	, openingSquareBracket  // 50
+	, closingSquareBracket
 	, doubleColon
 
 	, semicolon
 	, colon
-	, comma
-	, dot  // 55
+	, comma  // 55
+	, dot
 	, doubleDot
 	, tripleDot
 
 	, string
-	, integerLiteral
-	, floatLiteral  // 60
+	, integerLiteral  // 60
+	, floatLiteral
 	, comment
 };
 

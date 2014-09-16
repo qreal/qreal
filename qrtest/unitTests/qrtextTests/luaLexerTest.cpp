@@ -112,17 +112,18 @@ TEST_F(LuaLexerTest, lexemeTypes)
 	EXPECT_EQ(LuaTokenTypes::doubleGreater, result[4].token());
 	EXPECT_EQ(LuaTokenTypes::doubleSlash, result[5].token());
 
-	stream = "== ~= <= >= < > =";
+	stream = "== ~= != <= >= < > =";
 	result = mLexer->tokenize(stream);
-	ASSERT_EQ(7, result.size());
+	ASSERT_EQ(8, result.size());
 
 	EXPECT_EQ(LuaTokenTypes::doubleEquals, result[0].token());
 	EXPECT_EQ(LuaTokenTypes::tildaEquals, result[1].token());
-	EXPECT_EQ(LuaTokenTypes::lessEquals, result[2].token());
-	EXPECT_EQ(LuaTokenTypes::greaterEquals, result[3].token());
-	EXPECT_EQ(LuaTokenTypes::less, result[4].token());
-	EXPECT_EQ(LuaTokenTypes::greater, result[5].token());
-	EXPECT_EQ(LuaTokenTypes::equals, result[6].token());
+	EXPECT_EQ(LuaTokenTypes::exclamationMarkEquals, result[2].token());
+	EXPECT_EQ(LuaTokenTypes::lessEquals, result[3].token());
+	EXPECT_EQ(LuaTokenTypes::greaterEquals, result[4].token());
+	EXPECT_EQ(LuaTokenTypes::less, result[5].token());
+	EXPECT_EQ(LuaTokenTypes::greater, result[6].token());
+	EXPECT_EQ(LuaTokenTypes::equals, result[7].token());
 
 	stream = "( ) { } [ ] ::";
 	result = mLexer->tokenize(stream);

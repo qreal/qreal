@@ -13,6 +13,7 @@ LuaPrecedenceTable::LuaPrecedenceTable()
 	addOperator(LuaTokenTypes::lessEquals, 2, Associativity::left);
 	addOperator(LuaTokenTypes::greaterEquals, 2, Associativity::left);
 	addOperator(LuaTokenTypes::tildaEquals, 2, Associativity::left);
+	addOperator(LuaTokenTypes::exclamationMarkEquals, 2, Associativity::left);
 	addOperator(LuaTokenTypes::doubleEquals, 2, Associativity::left);
 
 	addOperator(LuaTokenTypes::verticalLine, 3, Associativity::left);
