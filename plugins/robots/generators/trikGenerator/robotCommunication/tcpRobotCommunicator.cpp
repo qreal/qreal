@@ -18,7 +18,7 @@ QString const infoMarker = "info: ";
 TcpRobotCommunicator::TcpRobotCommunicator(qReal::ErrorReporterInterface &errorReporter)
 	: mErrorReporter(errorReporter)
 {
-	QObject::connect(&mSocket, SIGNAL(readyRead()), this, SLOT(onIncomeData()), Qt::DirectConnection);
+	QObject::connect(&mSocket, SIGNAL(readyRead()), this, SLOT(onIncomingData()), Qt::DirectConnection);
 }
 
 TcpRobotCommunicator::~TcpRobotCommunicator()
@@ -95,15 +95,15 @@ bool TcpRobotCommunicator::stopRobot()
 	return true;
 }
 
-void TcpRobotCommunicator::onIncomeData()
+void TcpRobotCommunicator::onIncomingData()
 {
 	QStringList const messages = QString(mSocket.readAll()).split('\n');
 	for (QString const &message : messages) {
-		processIncommingMessage(message);
+		processIncomingMessage(message);
 	}
 }
 
-void TcpRobotCommunicator::processIncommingMessage(QString const &message)
+void TcpRobotCommunicator::processIncomingMessage(QString const &message)
 {
 	if (message.startsWith(errorMarker)) {
 		mErrorReporter.addError(message.mid(errorMarker.length()));

@@ -28,8 +28,8 @@ public:
 	bool stopRobot();
 
 private slots:
-	void onIncomeData();
-	void processIncommingMessage(QString const &message);
+	void onIncomingData();
+	void processIncomingMessage(QString const &message);
 
 private:
 	/// Establishes connection and initializes socket. If connection fails, leaves socket
