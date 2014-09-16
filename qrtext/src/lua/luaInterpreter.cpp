@@ -185,7 +185,19 @@ QVariant LuaInterpreter::value(QString const &identifier) const
 
 void LuaInterpreter::setVariableValue(QString const &name, QVariant const &value)
 {
-	mIdentifierValues.insert(name, value);
+	QString valueString = value.toString();
+	if (!valueString.isEmpty()
+			&& (valueString[0] == '\'' || valueString[0] == '\"')
+			&& (valueString[valueString.size() - 1] == '\'' || valueString[valueString.size() - 1] == '\"')
+			)
+	{
+		// It is a string variable, chop off quotes.
+		valueString.remove(0, 1);
+		valueString.chop(1);
+		mIdentifierValues.insert(name, valueString);
+	} else {
+		mIdentifierValues.insert(name, value);
+	}
 }
 
 QVariant LuaInterpreter::interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root

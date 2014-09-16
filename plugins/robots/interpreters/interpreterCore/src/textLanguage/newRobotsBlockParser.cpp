@@ -36,7 +36,7 @@ void NewRobotsBlockParser::setReservedVariables()
 	setVariableValue("pi", 3.14159265);
 
 	for (interpreterBase::robotModel::PortInfo const &port : mRobotModelManager.model().availablePorts()) {
-		setVariableValue(port.name(), port.name());
+		setVariableValue(port.name(), QString("'%1'").arg(port.name()));
 
 		mSpecialVariables << port.name();
 
