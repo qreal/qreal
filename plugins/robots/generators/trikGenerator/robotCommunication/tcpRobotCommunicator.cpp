@@ -50,8 +50,6 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
 
-	disconnect();
-
 	return true;
 }
 
@@ -65,8 +63,6 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 	QString const command = "run:" + programName;
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
-
-	disconnect();
 
 	return true;
 }
@@ -82,8 +78,6 @@ bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
 
-	disconnect();
-
 	return true;
 }
 
@@ -97,8 +91,6 @@ bool TcpRobotCommunicator::stopRobot()
 	QString const command = "stop";
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
-
-	disconnect();
 
 	return true;
 }
@@ -124,6 +116,10 @@ void TcpRobotCommunicator::processIncommingMessage(QString const &message)
 
 void TcpRobotCommunicator::connect()
 {
+	if (mSocket.state() == QTcpSocket::ConnectedState || mSocket.state() == QTcpSocket::ConnectingState) {
+		return;
+	}
+
 	QString const server = qReal::SettingsManager::value("TrikTcpServer").toString();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
