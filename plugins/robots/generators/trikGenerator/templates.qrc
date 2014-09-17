@@ -3,9 +3,6 @@
         <file>templates/beep.t</file>
         <file>templates/break.t</file>
         <file>templates/continue.t</file>
-        <file>templates/detectLine.t</file>
-        <file>templates/lineDetectorToVariable.t</file>
-        <file>templates/initCamera.t</file>
         <file>templates/finalNodeMain.t</file>
         <file>templates/finalNodeSubprogram.t</file>
         <file>templates/function.t</file>
@@ -84,6 +81,15 @@
         <file>templates/videosensors/ColorSensorR.t</file>
         <file>templates/videosensors/ColorSensorG.t</file>
         <file>templates/videosensors/ColorSensorB.t</file>
+        <file>templates/videosensors/detectline.t</file>
+        <file>templates/videosensors/detectobject.t</file>
+        <file>templates/videosensors/detectcolor.t</file>
+        <file>templates/videosensors/lineDetectorToVariable.t</file>
+        <file>templates/videosensors/objectDetectorToVariable.t</file>
+        <file>templates/videosensors/colorDetectorToVariable.t</file>
+        <file>templates/videosensors/initlineSensor.t</file>
+        <file>templates/videosensors/initobjectSensor.t</file>
+        <file>templates/videosensors/initcolorSensor.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>

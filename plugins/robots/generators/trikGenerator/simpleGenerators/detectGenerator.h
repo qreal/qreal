@@ -5,11 +5,11 @@
 namespace trik {
 namespace simple {
 
-/// Generator for "line detector reading to variable" block.
-class LineDetectorToVariableGenerator : public generatorBase::simple::BindingGenerator
+/// Generator for "detect line" block.
+class DetectGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	LineDetectorToVariableGenerator(qrRepo::RepoApi const &repo
+	DetectGenerator(qrRepo::RepoApi const &repo
 			, generatorBase::GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent);
