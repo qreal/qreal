@@ -24,7 +24,7 @@ QImage Customizer::applicationLogo() const
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.0.0 α13";
+	return "3.0.0 α14";
 }
 
 QString Customizer::aboutText() const
