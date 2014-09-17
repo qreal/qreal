@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vectorSensor.h"
+#include "scalarSensor.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {
@@ -8,7 +8,8 @@ namespace robotModel {
 namespace robotParts {
 
 /// Abstract accelerometer sensor.
-class ROBOTS_INTERPRETER_BASE_EXPORT AccelerometerSensor : public VectorSensor
+/// @todo: Make it vector
+class ROBOTS_INTERPRETER_BASE_EXPORT AccelerometerSensor : public ScalarSensor
 {
 	Q_OBJECT
 	Q_CLASSINFO("name", "accelerometer")

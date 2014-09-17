@@ -2069,8 +2069,6 @@
 				<element name="TrikWaitForLight"/>
 				<element name="TrikWaitForSonarDistance"/>
 				<element name="TrikWaitForIRDistance"/>
-				<element name="TrikWaitForGyroscope"/>
-				<element name="TrikWaitForAccelerometer"/>
 				<element name="TrikWaitForMotion"/>
 				<element name="TrikWaitForEncoder"/>
 				<element name="TrikWaitForEnter"/>

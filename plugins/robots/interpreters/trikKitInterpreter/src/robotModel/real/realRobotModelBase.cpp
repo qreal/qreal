@@ -18,6 +18,9 @@
 
 #include "parts/motionSensor.h"
 
+#include "parts/gyroscope.h"
+#include "parts/accelerometer.h"
+
 #include "parts/colorSensor.h"
 #include "parts/led.h"
 #include "parts/lineSensor.h"
@@ -66,6 +69,10 @@ robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, Devic
 		return new parts::SonarSensor(sonarSensorInfo(), port);
 	} else if (deviceInfo.isA(motionSensorInfo())) {
 		return new parts::MotionSensor(motionSensorInfo(), port);
+	} else if (deviceInfo.isA(gyroscopeInfo())) {
+		return new parts::Gyroscope(motionSensorInfo(), port);
+	} else if (deviceInfo.isA(accelerometerInfo())) {
+		return new parts::Accelerometer(motionSensorInfo(), port);
 	} else if (deviceInfo.isA(ledInfo())) {
 		return new parts::Led(ledInfo(), port);
 	} else if (deviceInfo.isA(lineSensorInfo())) {
