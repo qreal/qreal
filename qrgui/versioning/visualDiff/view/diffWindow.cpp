@@ -1,10 +1,10 @@
 #include "diffWindow.h"
 
 using namespace versioning;
-//добавить флажок компакт мод
 DiffWindow::DiffWindow(qReal::MainWindow *mainWindow
-		, DiffModel *diffModel, QWidget *parent)
-	: QWidget(parent), mDiffModel(diffModel), mMainWindow(mainWindow), mShowDetails(false)
+		, DiffModel *diffModel, bool compactMode, QWidget *parent)
+	: QWidget(parent), mDiffModel(diffModel), mMainWindow(mainWindow)
+	, mShowDetails(false), mCompactMode(compactMode)
 {
 	this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	initWindow();
@@ -42,7 +42,7 @@ void DiffWindow::showDetails()
 void DiffWindow::initWindow()
 {
 	setWindowTitle(tr("Diff"));
-	if (!qReal::SettingsManager::value("transparentVersioningMode").toBool()){
+	if (!mCompactMode){
 		setWindowState(Qt::WindowMaximized | Qt::WindowActive);
 	}
 	setWindowFlags(Qt::Window | Qt::WindowMinMaxButtonsHint);
@@ -66,7 +66,7 @@ void DiffWindow::initLayout()
 
 void DiffWindow::initButton()
 {
-	if (!qReal::SettingsManager::value("transparentVersioningMode").toBool()){
+	if (!mCompactMode){
 		mOkButton = new QPushButton;
 		mOkButton->setText(tr("OK"));
 		mOkButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -90,7 +90,7 @@ void DiffWindow::initViews()
 
 
 	mOldView = new details::DiffView(mMainWindow, mDiffModel, true, this);
-	if (!qReal::SettingsManager::value("transparentVersioningMode").toBool()){
+	if (!mCompactMode){
 		QFrame *oldFrame = new QFrame;
 		oldFrame->setLayout(initView(mOldView));
 		sizes << 1;
@@ -130,7 +130,7 @@ void DiffWindow::initDiffDetailsWidget()
 	mSplitter->addWidget(mDiffDetailsWidget);
 	mOldView->setDetailsWidget(mDiffDetailsWidget);
 	mNewView->setDetailsWidget(mDiffDetailsWidget);
-	if (qReal::SettingsManager::value("transparentVersioningMode").toBool()){
+	if (mCompactMode){
 		mDiffDetailsWidget->setVisible(mShowDetails);
 	}
 }

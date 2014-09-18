@@ -73,7 +73,7 @@ public slots:
 	void doAfterOperationIsFinished(QVariant const &tag);
 	void checkClientInstalling();
 	//add more methods
-	void showDiff(QString fstHash, QString sndHash, QWidget *widget);
+	void showDiff(QString fstHash, QString sndHash, QWidget *widget, const bool &compactMode = true);
 
 signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);

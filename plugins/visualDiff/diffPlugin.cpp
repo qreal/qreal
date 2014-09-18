@@ -23,7 +23,11 @@ QList<qReal::ActionInfo> DiffPlugin::actions()
 
 void DiffPlugin::diffClicked()
 {
-	showDiff(mProjectManager->saveFilePath(), NULL);
+	QWidget *widget = new QWidget();
+	QGridLayout *mLayout = new QGridLayout(widget);
+	mLayout->setMargin(0);
+	widget->setLayout(mLayout);
+	showDiff(mProjectManager->saveFilePath(), widget);
 }
 
 void DiffPlugin::diffBetweenClicked()

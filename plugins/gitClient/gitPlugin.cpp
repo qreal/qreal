@@ -505,11 +505,11 @@ void GitPlugin::onResetComplete(const bool result, const bool quiet)
 	emit workingCopyUpdated(result);
 }
 
-void GitPlugin::showDiff(QString fstHash, QString sndHash, QWidget *widget)
+void GitPlugin::showDiff(QString fstHash, QString sndHash, QWidget *widget, bool const &compactMode)
 {
 	if (sndHash != ""){
-		mDiffInterface->showDiff(sndHash, fstHash, QString(), widget);
+		mDiffInterface->showDiff(sndHash, fstHash, QString(), widget, compactMode);
 	} else {
-		mDiffInterface->showDiff(fstHash, QString(), widget);
+		mDiffInterface->showDiff(fstHash, QString(), widget, compactMode);
 	}
 }

@@ -23,25 +23,26 @@ public:
 		mProjectManager = &(configurator.projectManager());
 	}
 
-	virtual void showDiff(QString const &targetProject, QWidget *parentWidget)
+	virtual void showDiff(QString const &targetProject, QWidget *parentWidget, bool const &compactMode = false)
 	{
 		if (mHandler) {
-			mHandler->showDiff(targetProject, parentWidget);
+			mHandler->showDiff(targetProject, parentWidget, compactMode);
 		}
 	}
 
-	virtual void showDiff(QString repoRevision, QString const &targetProject, QWidget *parentWidget)
+	virtual void showDiff(QString repoRevision, QString const &targetProject
+						  , QWidget *parentWidget, bool const &compactMode = false)
 	{
 		if (mHandler) {
-			mHandler->showDiff(repoRevision, targetProject, parentWidget);
+			mHandler->showDiff(repoRevision, targetProject, parentWidget, compactMode);
 		}
 	}
 
 	virtual void showDiff(QString oldRepoRevision , QString newRepoRevision
-			, QString const &targetProject , QWidget *parentWidget)
+			, QString const &targetProject , QWidget *parentWidget, bool const &compactMode = false)
 	{
 		if (mHandler) {
-			mHandler->showDiff(oldRepoRevision, newRepoRevision, targetProject, parentWidget);
+			mHandler->showDiff(oldRepoRevision, newRepoRevision, targetProject, parentWidget, compactMode);
 		}
 	}
 

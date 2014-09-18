@@ -17,7 +17,7 @@ class DiffWindow : public QWidget
 	Q_OBJECT
 
 public:
-	DiffWindow(qReal::MainWindow *mainWindow, DiffModel *diffModel, QWidget *parent = 0);
+	DiffWindow(qReal::MainWindow *mainWindow, DiffModel *diffModel, bool compactMode, QWidget *parent = 0);
 	~DiffWindow();
 	details::DiffView *getNewModel();
 
@@ -43,6 +43,7 @@ private:
 	MainWindow *mMainWindow;
 	QLabel *mDetailsLabel;
 	bool mShowDetails;
+	bool mCompactMode;
 };
 
 }
