@@ -152,7 +152,7 @@ void Label::setPlainText(QString const &text)
 void Label::updateData(bool withUndoRedo)
 {
 	QString const value = toPlainText();
-	NodeElement * const parent = static_cast<NodeElement*>(parentItem());
+	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
 	if (mBinding == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
@@ -175,6 +175,12 @@ void Label::setTitleFont()
 
 void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (dynamic_cast<EdgeElement *>(parentItem())) {
+		// Passing event to edge because users usially want to edit its property when clicking on it.
+		QGraphicsItem::mousePressEvent(event);
+		return;
+	}
+
 	if (!mShouldMove) {
 		QGraphicsTextItem::mousePressEvent(event);
 		event->ignore();

@@ -158,6 +158,8 @@ QMap<QString, enums::variableType::VariableType> Variables::nonGenerableReserved
 		}
 	}
 
+	result.insert("time", enums::variableType::intType);
+
 	return result;
 }
 

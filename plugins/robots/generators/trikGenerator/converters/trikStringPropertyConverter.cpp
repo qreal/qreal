@@ -5,9 +5,16 @@ using namespace converters;
 using namespace generatorBase;
 using namespace parts;
 
-TrikStringPropertyConverter::TrikStringPropertyConverter(Variables const &variables)
+TrikStringPropertyConverter::TrikStringPropertyConverter(Variables const &variables
+		, ConverterInterface const &systemVariableNameConverter)
 	: mVariables(variables)
+	, mSystemVariableNameConverter(&systemVariableNameConverter)
 {
+}
+
+TrikStringPropertyConverter::~TrikStringPropertyConverter()
+{
+	delete mSystemVariableNameConverter;
 }
 
 QString TrikStringPropertyConverter::convert(QString const &data) const
@@ -15,9 +22,14 @@ QString TrikStringPropertyConverter::convert(QString const &data) const
 	QString const preparedString = StringPropertyConverter::convert(data);
 	QStringList metVariables;
 	QString const formatString = TextExpressionProcessorBase::processExpression(preparedString, metVariables);
+	QStringList rolledVariables;
+	for (QString const &variable : metVariables) {
+		/// @todo: variable name may not exactly match system variable but have it as substring.
+		rolledVariables << mSystemVariableNameConverter->convert(variable);
+	}
 
-	QString const formatVariables = metVariables.join(", ");
-	return metVariables.isEmpty()
+	QString const formatVariables = rolledVariables.join(", ");
+	return rolledVariables.isEmpty()
 			? formatString
 			: QString("%1.format(%2)").arg(formatString, formatVariables);
 }

@@ -13,7 +13,10 @@ class TrikStringPropertyConverter : public generatorBase::converters::StringProp
 		, public utils::TextExpressionProcessorBase
 {
 public:
-	explicit TrikStringPropertyConverter(generatorBase::parts::Variables const &variables);
+	explicit TrikStringPropertyConverter(generatorBase::parts::Variables const &variables
+			, ConverterInterface const &systemVariableNameConverter);
+
+	~TrikStringPropertyConverter() override;
 
 	QString convert(QString const &data) const override;
 
@@ -23,7 +26,7 @@ protected:
 
 private:
 	generatorBase::parts::Variables const &mVariables;
-	int mCurrentIndex;
+	ConverterInterface const *mSystemVariableNameConverter;  // Takes ownership
 };
 
 }
