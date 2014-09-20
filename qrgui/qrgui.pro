@@ -46,3 +46,16 @@ SUBDIRS += \
 	plugins/editorPluginInterface \
 	plugins/toolPluginInterface \
 	thirdparty \
+
+mainwindow.depends = \
+	models \
+	editor \
+	controller \
+	dialogs \
+	preferencesDialog \
+	textEditor \
+	hotKeyManager \
+	brandManager \
+	pluginManager \
+	thirdparty \
+

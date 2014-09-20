@@ -1,4 +1,4 @@
-#include "pluginManager/details/patternParser.h"
+#include "patternParser.h"
 
 #include <QtXml/QDomElement>
 #include <QtXml/QDomDocument>
@@ -6,8 +6,8 @@
 
 #include <qrkernel/ids.h>
 
-#include "pluginManager/editorManager.h"
-#include "pluginManager/pattern.h"
+#include "plugins/pluginManager/editorManager.h"
+#include "plugins/pluginManager/pattern.h"
 
 using namespace qReal;
 

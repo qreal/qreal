@@ -5,7 +5,7 @@
 
 #include <qrkernel/exception/exception.h>
 
-#include "pluginManager/listenerApi.h"
+#include "plugins/pluginManager/listenerApi.h"
 #include "models/logicalModelAssistApi.h"
 #include "models/graphicalModelAssistApi.h"
 

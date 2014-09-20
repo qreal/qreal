@@ -1,3 +1,5 @@
+TEMPLATE = subdirs
+
 INCLUDEPATH = \
 	$$PWD/ \
 	$$PWD/../../ \

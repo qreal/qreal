@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qrgui/dialogs/preferencesDialog/preferencesPage.h>
+#include <qrgui/preferencesDialog/preferencesPage.h>
 
 namespace Ui {
 	class PreferencesCompilerPage;

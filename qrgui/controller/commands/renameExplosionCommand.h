@@ -3,8 +3,6 @@
 #include "controller/commands/abstractCommand.h"
 #include "controller/commands/trackingEntity.h"
 #include "models/logicalModelAssistApi.h"
-#include "mainWindow/palette/paletteTreeWidget.h"
-#include "mainWindow/palette/draggableElement.h"
 
 namespace qReal {
 namespace commands {

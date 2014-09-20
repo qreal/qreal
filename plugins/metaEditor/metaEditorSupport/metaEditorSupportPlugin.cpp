@@ -7,8 +7,8 @@
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QDesktopWidget>
 
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrmc/metaCompiler.h"
+#include <qrkernel/settingsManager.h>
+#include <qrmc/metaCompiler.h>
 
 #include "editorGenerator.h"
 #include "xmlParser.h"

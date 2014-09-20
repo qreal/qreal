@@ -1,6 +1,5 @@
 #include "exploser.h"
 
-#include "mainwindow/palette/paletteTreeWidget.h"
 #include "models/logicalModelAssistApi.h"
 #include "controller/commands/doNothingCommand.h"
 #include "controller/commands/explosionCommand.h"

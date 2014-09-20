@@ -2,10 +2,13 @@
 
 #include <QtCore/QObject>
 
-#include "mainWindow/qscintillaTextEdit.h"
 #include "editor/editorView.h"
 
 namespace qReal {
+
+namespace gui {
+class QScintillaTextEdit;
+}
 
 class TextManagerInterface : public QObject
 {

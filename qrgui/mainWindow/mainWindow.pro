@@ -6,7 +6,10 @@ TARGET = qrgui
 
 QT += widgets printsupport xml
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrutils -lqrrepo
+LIBS += -L$$PWD/../../bin \
+			-lqrkernel -lqslog -lqrutils -lqrrepo \
+			-lmodels -leditor -lcontroller -ldialogs -lpreferencesDialog \
+			-ltextEditor -lhotKeyManager -lbrandManager -lpluginManager -lthirdparty \
 
 INCLUDEPATH = \
 	$$PWD/ \

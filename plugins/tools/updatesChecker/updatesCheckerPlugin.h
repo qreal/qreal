@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 
 namespace updatesChecker {
 

@@ -1,3 +1,5 @@
+#include "interpreterEditorManager.h"
+
 #include <QtCore/QCoreApplication>
 #include <QtCore/QtDebug>
 #include <QtCore/QUuid>
@@ -9,11 +11,9 @@
 #include <qrrepo/repoApi.h>
 #include <qrutils/outFile.h>
 
-#include "pluginManager/interpreterEditorManager.h"
-#include "umllib/nodeElement.h"
-#include "umllib/edgeElement.h"
-#include "pluginManager/details/interpreterElementImpl.h"
-#include "mainwindow/mainWindow.h"
+#include "details/interpreterElementImpl.h"
+#include "editor/nodeElement.h"
+#include "editor/edgeElement.h"
 
 using namespace qReal;
 using namespace utils;
