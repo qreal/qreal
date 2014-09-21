@@ -2,7 +2,7 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils
+LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lpluginManager
 
 INCLUDEPATH = \
 	$$PWD/ \

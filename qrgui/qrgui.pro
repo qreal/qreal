@@ -77,5 +77,8 @@ textEditor.depends = \
 hotKeyManager.depends = \
 	preferencesDialog \
 
+brandManager.depends = \
+	plugins/pluginManager \
+
 editorPluginInterface.depends =
 	plugins/toolPluginInterface

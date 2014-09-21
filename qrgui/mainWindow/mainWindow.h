@@ -42,7 +42,6 @@
 #include "dialogs/findReplaceDialog.h"
 #include "dialogs/suggestToCreateDiagramDialog.h"
 
-#include "textEditor/codeEditor.h"
 #include "textEditor/textManager.h"
 
 namespace Ui {
