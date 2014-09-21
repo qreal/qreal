@@ -15,12 +15,11 @@
 #include "editor/editorView.h"
 #include "mainWindow/mainWindow.h"
 
-#include "models/commands/createElementCommand.h"
-#include "controller/commands/createGroupCommand.h"
-#include "controller/commands/insertIntoEdgeCommand.h"
-#include "editor/private/reshapeEdgeCommand.h"
-#include "editor/private/resizeCommand.h"
-#include "editor/private/expandCommand.h"
+#include "editor/commands/createAndUpdateGroupCommand.h"
+#include "editor/commands/insertIntoEdgeCommand.h"
+#include "editor/commands/reshapeEdgeCommand.h"
+#include "editor/commands/resizeCommand.h"
+#include "editor/commands/expandCommand.h"
 
 #include "qrutils/uxInfo/uxInfo.h"
 
@@ -495,8 +494,8 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 			: Id::loadFromString(explosionTargetUuid);
 
 	if (mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
-		CreateGroupCommand *createGroupCommand = new CreateGroupCommand(
-				this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->exploser()
+		CreateAndUpdateGroupCommand *createGroupCommand = new CreateAndUpdateGroupCommand(
+				*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->exploser()
 				, mMVIface->rootId(), mMVIface->rootId(), id, isFromLogicalModel, scenePos);
 		if (executeImmediately) {
 			mController->execute(createGroupCommand);

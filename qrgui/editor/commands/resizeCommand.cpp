@@ -1,4 +1,4 @@
-#include "editor/private/resizeCommand.h"
+#include "editor/commands/resizeCommand.h"
 
 using namespace qReal::commands;
 

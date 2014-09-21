@@ -30,9 +30,9 @@
 #include "plugins/toolPluginInterface/systemEvents.h"
 
 #include "controller/commands/doNothingCommand.h"
-#include "controller/commands/arrangeLinksCommand.h"
-#include "controller/commands/updateElementCommand.h"
-#include "controller/commands/createGroupCommand.h"
+#include "editor/commands/arrangeLinksCommand.h"
+#include "editor/commands/updateElementCommand.h"
+#include "models/commands/createGroupCommand.h"
 
 #include "dialogs/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
@@ -1670,7 +1670,7 @@ void MainWindow::createDiagram(QString const &idString)
 		created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), id);
 	} else {
 		// It is a group
-		CreateGroupCommand createGroupCommand(nullptr, mModels->logicalModelAssistApi()
+		CreateGroupCommand createGroupCommand(mModels->logicalModelAssistApi()
 				, mModels->graphicalModelAssistApi(), exploser(), Id::rootId(), Id::rootId()
 				, id, false, QPointF());
 		createGroupCommand.redo();

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "controller/commands/nodeElementCommand.h"
-#include "editor/private/resizeCommand.h"
+#include "editor/commands/nodeElementCommand.h"
+#include "editor/commands/resizeCommand.h"
 
 namespace qReal {
 namespace commands {

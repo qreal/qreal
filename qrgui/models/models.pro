@@ -27,7 +27,6 @@ HEADERS += \
 	$$PWD/commands/removeElementCommand.h \
 	$$PWD/commands/createRemoveCommandImplementation.h \
 	$$PWD/commands/createGroupCommand.h \
-	$$PWD/commands/insertIntoEdgeCommand.h \
 	$$PWD/commands/changePropertyCommand.h \
 	$$PWD/commands/changeParentCommand.h \
 	$$PWD/commands/renameCommand.h \
@@ -57,7 +56,6 @@ SOURCES += \
 	$$PWD/commands/removeElementCommand.cpp \
 	$$PWD/commands/createRemoveCommandImplementation.cpp \
 	$$PWD/commands/createGroupCommand.cpp \
-	$$PWD/commands/insertIntoEdgeCommand.cpp \
 	$$PWD/commands/changePropertyCommand.cpp \
 	$$PWD/commands/changeParentCommand.cpp \
 	$$PWD/commands/renameCommand.cpp \

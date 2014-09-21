@@ -19,13 +19,12 @@
 
 #include "editor/private/resizeHandler.h"
 #include "editor/private/copyHandler.h"
-#include "editor/private/resizeCommand.h"
-#include "editor/private/foldCommand.h"
 
-#include "controller/commands/changeParentCommand.h"
-#include "controller/commands/renameCommand.h"
-#include "controller/commands/insertIntoEdgeCommand.h"
-#include "controller/commands/renameCommand.h"
+#include "models/commands/changeParentCommand.h"
+#include "models/commands/renameCommand.h"
+#include "editor/commands/resizeCommand.h"
+#include "editor/commands/foldCommand.h"
+#include "editor/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;

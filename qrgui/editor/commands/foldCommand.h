@@ -1,11 +1,9 @@
 #pragma once
 
-#include "controller/commands/nodeElementCommand.h"
+#include "editor/commands/nodeElementCommand.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class FoldCommand : public NodeElementCommand
 {

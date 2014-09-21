@@ -3,8 +3,8 @@
 #include <QtCore/QMap>
 
 #include "editor/private/resizeHandler.h"
-#include "editor/private/reshapeEdgeCommand.h"
-#include "controller/commands/nodeElementCommand.h"
+#include "editor/commands/reshapeEdgeCommand.h"
+#include "editor/commands/nodeElementCommand.h"
 #include "controller/commands/trackingEntity.h"
 
 namespace qReal

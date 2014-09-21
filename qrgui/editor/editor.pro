@@ -48,10 +48,6 @@ HEADERS += \
 	$$PWD/private/borderChecker.h \
 	$$PWD/private/portHandler.h \
 	$$PWD/private/copyHandler.h \
-	$$PWD/private/resizeCommand.h \
-	$$PWD/private/foldCommand.h \
-	$$PWD/private/reshapeEdgeCommand.h \
-	$$PWD/private/expandCommand.h \
 	$$PWD/ports/portFactory.h \
 	$$PWD/ports/statLine.h \
 	$$PWD/ports/statPoint.h \
@@ -67,6 +63,12 @@ HEADERS += \
 	$$PWD/commands/arrangeLinksCommand.h \
 	$$PWD/commands/selectElementCommand.h \
 	$$PWD/commands/updateElementCommand.h \
+	$$PWD/commands/insertIntoEdgeCommand.h \
+	$$PWD/commands/createAndUpdateGroupCommand.h \
+	$$PWD/commands/resizeCommand.h \
+	$$PWD/commands/foldCommand.h \
+	$$PWD/commands/reshapeEdgeCommand.h \
+	$$PWD/commands/expandCommand.h \
 
 SOURCES += \
 	$$PWD/editorView.cpp \
@@ -97,10 +99,6 @@ SOURCES += \
 	$$PWD/private/borderChecker.cpp \
 	$$PWD/private/portHandler.cpp \
 	$$PWD/private/copyHandler.cpp \
-	$$PWD/private/resizeCommand.cpp \
-	$$PWD/private/foldCommand.cpp \
-	$$PWD/private/reshapeEdgeCommand.cpp \
-	$$PWD/private/expandCommand.cpp \
 	$$PWD/ports/portFactory.cpp \
 	$$PWD/ports/statLine.cpp \
 	$$PWD/ports/statPoint.cpp \
@@ -116,6 +114,12 @@ SOURCES += \
 	$$PWD/commands/arrangeLinksCommand.cpp \
 	$$PWD/commands/selectElementCommand.cpp \
 	$$PWD/commands/updateElementCommand.cpp \
+	$$PWD/commands/insertIntoEdgeCommand.cpp \
+	$$PWD/commands/createAndUpdateGroupCommand.cpp \
+	$$PWD/commands/resizeCommand.cpp \
+	$$PWD/commands/foldCommand.cpp \
+	$$PWD/commands/reshapeEdgeCommand.cpp \
+	$$PWD/commands/expandCommand.cpp \
 
 RESOURCES += \
 	$$PWD/contextIcons.qrc \

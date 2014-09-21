@@ -1,10 +1,9 @@
 #include "createGroupCommand.h"
 
-#include "models/commands/insertIntoEdgeCommand.h"
+#include "models/logicalModelAssistApi.h"
+#include "models/graphicalModelAssistApi.h"
 
 using namespace qReal::commands;
-
-/// @todo: Move it to 'models' lib
 
 CreateGroupCommand::CreateGroupCommand(models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
@@ -88,16 +87,7 @@ bool CreateGroupCommand::execute()
 		Id const newEdgeId = createEdgeCommand->result();
 		mGraphicalApi.setFrom(newEdgeId, nodes.value(groupEdge.from));
 		mGraphicalApi.setTo(newEdgeId, nodes.value(groupEdge.to));
-		/// @todo:
-//		if (mScene) {
-//			mScene->reConnectLink(mScene->getEdgeById(newEdgeId));
-//		}
 	}
-
-	InsertIntoEdgeCommand *insertCommand = new InsertIntoEdgeCommand(mLogicalApi, mGraphicalApi
-			, mExploser, nodes.value(mPattern.inNode()), nodes.value(mPattern.outNode()), mGraphicalParent
-			, mPosition, mPattern.size(), mIsFromLogicalModel);
-	insertCommand->redo();
 
 	return true;
 }
@@ -107,7 +97,7 @@ bool CreateGroupCommand::restoreState()
 	return true;
 }
 
-Id CreateGroupCommand::rootId() const
+qReal::Id CreateGroupCommand::rootId() const
 {
 	return mRootId;
 }

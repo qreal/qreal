@@ -1,7 +1,7 @@
 #pragma once
 
 #include "editor/edgeElement.h"
-#include "editor/private/reshapeEdgeCommand.h"
+#include "editor/commands/reshapeEdgeCommand.h"
 
 namespace qReal {
 

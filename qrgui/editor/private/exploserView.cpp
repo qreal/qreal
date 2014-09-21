@@ -1,10 +1,8 @@
 #include "exploserView.h"
 
 #include "mainWindow/mainWindow.h"
-#include "editor/element.h"
-#include "editor/nodeElement.h"
 #include "editor/editorViewScene.h"
-#include "editor/private/expandCommand.h"
+#include "editor/commands/expandCommand.h"
 #include "models/commands/createElementCommand.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
 

@@ -5,7 +5,7 @@
 #include <qrutils/qRealFileDialog.h>
 
 #include "mainWindow/mainWindow.h"
-#include "controller/commands/changePropertyCommand.h"
+#include "models/commands/changePropertyCommand.h"
 
 PropertyEditorView::PropertyEditorView(QWidget *parent)
 		: QWidget(parent), mChangingPropertyValue(false)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "models/commands/createElementCommand.h"
-#include "editor/editorViewScene.h"
+#include "plugins/pluginManager/pattern.h"
 
 namespace qReal {
 namespace commands {
@@ -21,10 +21,9 @@ public:
 	Id rootId() const;
 
 protected:
-	virtual bool execute();
-	virtual bool restoreState();
+	bool execute() override;
+	bool restoreState() override;
 
-private:
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	Exploser &mExploser;

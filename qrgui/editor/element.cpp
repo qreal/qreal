@@ -3,7 +3,7 @@
 
 #include <QtWidgets/QGraphicsColorizeEffect>
 
-#include "controller/commands/changePropertyCommand.h"
+#include "models/commands/changePropertyCommand.h"
 
 using namespace qReal;
 
