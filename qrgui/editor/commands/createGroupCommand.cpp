@@ -1,8 +1,10 @@
 #include "createGroupCommand.h"
 
-#include "controller/commands/insertIntoEdgeCommand.h"
+#include "editor/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal::commands;
+
+/// @todo: Move it to 'models' lib
 
 CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 		, models::LogicalModelAssistApi &logicalApi

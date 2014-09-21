@@ -62,6 +62,14 @@ HEADERS += \
 	$$PWD/private/curveLine.h \
 	$$PWD/private/lineFactory.h \
 	$$PWD/private/edgeArrangeCriteria.h \
+	$$PWD/commands/elementCommand.h \
+	$$PWD/commands/nodeElementCommand.h \
+	$$PWD/commands/edgeElementCommand.h \
+	$$PWD/commands/arrangeLinksCommand.h \
+	$$PWD/commands/selectElementCommand.h \
+	$$PWD/commands/updateElementCommand.h \
+	$$PWD/commands/createGroupCommand.h \
+	$$PWD/commands/insertIntoEdgeCommand.h \
 
 SOURCES += \
 	$$PWD/editorView.cpp \
@@ -106,6 +114,14 @@ SOURCES += \
 	$$PWD/private/curveLine.cpp \
 	$$PWD/private/lineFactory.cpp \
 	$$PWD/private/edgeArrangeCriteria.cpp \
+	$$PWD/commands/elementCommand.cpp \
+	$$PWD/commands/nodeElementCommand.cpp \
+	$$PWD/commands/edgeElementCommand.cpp \
+	$$PWD/commands/arrangeLinksCommand.cpp \
+	$$PWD/commands/selectElementCommand.cpp \
+	$$PWD/commands/updateElementCommand.cpp \
+	$$PWD/commands/createGroupCommand.cpp \
+	$$PWD/commands/insertIntoEdgeCommand.cpp \
 
 RESOURCES += \
 	$$PWD/contextIcons.qrc \

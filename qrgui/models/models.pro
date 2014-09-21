@@ -26,6 +26,9 @@ HEADERS += \
 	$$PWD/commands/createElementCommand.h \
 	$$PWD/commands/removeElementCommand.h \
 	$$PWD/commands/createRemoveCommandImplementation.h \
+	$$PWD/commands/changePropertyCommand.h \
+	$$PWD/commands/changeParentCommand.h \
+	$$PWD/commands/renameCommand.h \
 	$$PWD/commands/explosionCommand.h \
 	$$PWD/commands/renameExplosionCommand.h \
 	$$PWD/details/graphicalModel.h \
@@ -50,6 +53,9 @@ SOURCES += \
 	$$PWD/commands/createElementCommand.cpp \
 	$$PWD/commands/removeElementCommand.cpp \
 	$$PWD/commands/createRemoveCommandImplementation.cpp \
+	$$PWD/commands/changePropertyCommand.cpp \
+	$$PWD/commands/changeParentCommand.cpp \
+	$$PWD/commands/renameCommand.cpp \
 	$$PWD/commands/explosionCommand.cpp \
 	$$PWD/commands/renameExplosionCommand.cpp \
 	$$PWD/details/graphicalModel.cpp \

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "controller/commands/elementCommand.h"
+#include "editor/commands/elementCommand.h"
 
 namespace qReal {
 namespace commands {

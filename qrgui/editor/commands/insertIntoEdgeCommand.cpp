@@ -2,10 +2,9 @@
 
 #include "mainWindow/mainWindow.h"
 
-namespace qReal
-{
-namespace commands
-{
+using namespace qReal::commands;
+
+/// @todo: Move it to 'models' lib
 
 InsertIntoEdgeCommand::InsertIntoEdgeCommand(EditorViewScene &scene
 		, models::LogicalModelAssistApi &logicalAssistApi
@@ -137,7 +136,4 @@ void InsertIntoEdgeCommand::makeLink(CreateElementCommand *command, NodeElement 
 	edge->setSrc(src);
 	edge->setDst(dst);
 	mScene.reConnectLink(edge);
-}
-
-}
 }
