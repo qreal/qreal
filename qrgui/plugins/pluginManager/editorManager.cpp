@@ -306,8 +306,8 @@ QStringList EditorManager::propertiesWithDefaultValues(Id const &id) const
 	return mPluginIface[id.editor()]->getPropertiesWithDefaultValues(id.element());
 }
 
-IdList EditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-		, qrRepo::GraphicalRepoApi const &graphicalApi) const
+IdList EditorManager::checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
+		, GraphicalModelAssistInterface const &graphicalApi) const
 {
 	IdList result;
 	checkNeededPluginsRecursive(logicalApi, Id::rootId(), result);
@@ -315,7 +315,7 @@ IdList EditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalAp
 	return result;
 }
 
-void EditorManager::checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api
+void EditorManager::checkNeededPluginsRecursive(details::ModelsAssistInterface const &api
 		, Id const &id, IdList &result) const
 {
 	if (id != Id::rootId() && !mPluginsLoaded.contains(id.editor())) {
@@ -600,9 +600,8 @@ QString EditorManager::getIsHidden(Id const &id) const
 	return "false";
 }
 
-void EditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
+void EditorManager::deleteElement(Id const &id) const
 {
-	Q_UNUSED(mainWindow);
 	Q_UNUSED(id);
 }
 

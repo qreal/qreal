@@ -217,8 +217,8 @@ bool ProjectManager::pluginsEnough() const
 QString ProjectManager::missingPluginNames() const
 {
 	IdList const missingPlugins = mMainWindow->editorManager().checkNeededPlugins(
-			mMainWindow->models()->logicalRepoApi()
-			, mMainWindow->models()->graphicalRepoApi());
+			mMainWindow->models()->logicalModelAssistApi()
+			, mMainWindow->models()->graphicalModelAssistApi());
 	QString result;
 	foreach (Id const &id, missingPlugins) {
 		result += id.editor() + "\n";

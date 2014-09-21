@@ -28,8 +28,18 @@
 #include <qrutils/uxInfo/uxInfo.h>
 
 #include "plugins/toolPluginInterface/systemEvents.h"
-#include "plugins/pluginManager/listenerManager.h"
+
+#include "controller/commands/doNothingCommand.h"
+#include "controller/commands/arrangeLinksCommand.h"
+#include "controller/commands/updateElementCommand.h"
+#include "controller/commands/createGroupCommand.h"
+
+#include "dialogs/suggestToCreateProjectDialog.h"
+#include "dialogs/progressDialog/progressDialog.h"
+
 #include "models/models.h"
+#include "models/commands/removeElementCommand.h"
+
 #include "editor/editorView.h"
 #include "editor/sceneCustomizer.h"
 #include "editor/element.h"
@@ -45,15 +55,6 @@
 #include "dotRunner.h"
 #include "qscintillaTextEdit.h"
 
-#include "controller/commands/removeElementCommand.h"
-#include "controller/commands/doNothingCommand.h"
-#include "controller/commands/arrangeLinksCommand.h"
-#include "controller/commands/updateElementCommand.h"
-#include "controller/commands/createGroupCommand.h"
-
-#include "dialogs/suggestToCreateProjectDialog.h"
-#include "dialogs/progressDialog/progressDialog.h"
-
 using namespace qReal;
 using namespace qReal::commands;
 using namespace gui;
@@ -66,7 +67,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mModels(nullptr)
 		, mController(new Controller)
 		, mEditorManagerProxy(new EditorManager())
-		, mListenerManager(nullptr)
 		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(nullptr)
 		, mSystemEvents(new SystemEvents())
@@ -286,7 +286,6 @@ QModelIndex MainWindow::rootIndex() const
 MainWindow::~MainWindow()
 {
 	QDir().rmdir(mTempDir);
-	delete mListenerManager;
 	delete mErrorReporter;
 	mUi->paletteTree->saveConfiguration();
 	SettingsManager::instance()->saveData();
@@ -1521,11 +1520,6 @@ void MainWindow::cropSceneToItems()
 	}
 }
 
-ListenerManager *MainWindow::listenerManager() const
-{
-	return mListenerManager;
-}
-
 models::Models *MainWindow::models() const
 {
 	return mModels;
@@ -2011,9 +2005,9 @@ void MainWindow::initToolPlugins()
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
-	mExploser->customizeExplosionTitles(
-			toolManager().customizer()->userPaletteTitle()
-			, toolManager().customizer()->userPaletteDescription());
+//	mExploser->customizeExplosionTitles(
+//			toolManager().customizer()->userPaletteTitle()
+//			, toolManager().customizer()->userPaletteDescription());
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

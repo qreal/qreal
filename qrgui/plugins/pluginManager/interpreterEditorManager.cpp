@@ -549,8 +549,8 @@ QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) 
 	return result;
 }
 
-IdList InterpreterEditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-		, qrRepo::GraphicalRepoApi const &graphicalApi) const
+IdList InterpreterEditorManager::checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
+		, GraphicalModelAssistInterface const &graphicalApi) const
 {
 	Q_UNUSED(logicalApi);
 	Q_UNUSED(graphicalApi);
@@ -1005,19 +1005,18 @@ QString InterpreterEditorManager::getIsHidden(Id const &id) const
 	return repo->stringProperty(metaId, "isHidden");
 }
 
-void InterpreterEditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
+void InterpreterEditorManager::deleteElement(Id const &id) const
 {
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
-	Id const metaId = repoAndMetaIdPair.second;
-	IdList const logicalIdList = mainWindow->models()->logicalRepoApi().logicalElements(id.type());
-	foreach (Id const &logicalId, logicalIdList) {
-		QModelIndex const index = mainWindow->models()->logicalModelAssistApi().indexById(logicalId);
-		mainWindow->models()->logicalModel()->removeRow(index.row(), index.parent());
-	}
-	repo->setProperty(metaId, "isHidden", "true");
-	//repo->removeChild(repo->parent(metaId), metaId);
-	//repo->removeElement(metaId);
+	/// @todo: Restore it
+//	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+//	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
+//	Id const metaId = repoAndMetaIdPair.second;
+//	IdList const logicalIdList = mainWindow->models()->logicalRepoApi().logicalElements(id.type());
+//	foreach (Id const &logicalId, logicalIdList) {
+//		QModelIndex const index = mainWindow->models()->logicalModelAssistApi().indexById(logicalId);
+//		mainWindow->models()->logicalModel()->removeRow(index.row(), index.parent());
+//	}
+//	repo->setProperty(metaId, "isHidden", "true");
 }
 
 bool InterpreterEditorManager::isRootDiagramNode(Id const &id) const

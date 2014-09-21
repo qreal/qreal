@@ -9,13 +9,13 @@
 using namespace qReal;
 using namespace gui;
 
-AddNodeDialog::AddNodeDialog(MainWindow &mainWindow, Id const &diagram
-		, EditorManagerInterface const &editorManagerProxy)
-		: QDialog(&mainWindow)
-		, mUi(new Ui::AddNodeDialog)
-		, mMainWindow(mainWindow)
-		, mDiagram(diagram)
-		, mEditorManagerProxy(editorManagerProxy)
+AddNodeDialog::AddNodeDialog(Id const &diagram
+		, EditorManagerInterface const &editorManagerProxy
+		, QWidget *parent)
+	: QDialog(parent)
+	, mUi(new Ui::AddNodeDialog)
+	, mDiagram(diagram)
+	, mEditorManagerProxy(editorManagerProxy)
 {
 	mUi->setupUi(this);
 	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
@@ -36,13 +36,15 @@ void AddNodeDialog::okButtonClicked()
 				, mUi->nameEdit->text(), "MetaEntityNode");
 		if (!nodesWithTheSameNameList.isEmpty()) {
 			mNodeName = mUi->nameEdit->text() + "_" + nodesWithTheSameNameList.count();
-			mRestoreElementDialog = new RestoreElementDialog(this, mMainWindow, mEditorManagerProxy, nodesWithTheSameNameList);
+			mRestoreElementDialog = new RestoreElementDialog(this, mEditorManagerProxy, nodesWithTheSameNameList);
 			mRestoreElementDialog->setModal(true);
 			mRestoreElementDialog->show();
 			connect(mRestoreElementDialog, &qReal::RestoreElementDialog::createNewChosen
 					, this, &AddNodeDialog::addNode);
 			connect(mRestoreElementDialog, &qReal::RestoreElementDialog::restoreChosen
 					, this, &AddNodeDialog::done);
+			connect(mRestoreElementDialog, &qReal::RestoreElementDialog::jobDone
+					, this, &AddNodeDialog::jobDone);
 		} else {
 			addNode();
 		}
@@ -52,6 +54,6 @@ void AddNodeDialog::okButtonClicked()
 void AddNodeDialog::addNode()
 {
 	mEditorManagerProxy.addNodeElement(mDiagram, mNodeName, mUi->nameEdit->text(), mUi->checkBox->isChecked());
-	mMainWindow.loadPlugins();
+	emit jobDone();
 	done(QDialog::Accepted);
 }

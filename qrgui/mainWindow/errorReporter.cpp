@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QDockWidget>
+#include <QtWidgets/QLabel>
 
 #include <qrkernel/exception/exception.h>
 

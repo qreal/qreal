@@ -152,7 +152,7 @@ void DraggableElement::deleteElement()
 	if (mIsRootDiagramNode) {
 		mMainWindow.closeDiagramTab(mDeletedElementId);
 	}
-	mEditorManagerProxy.deleteElement(&mMainWindow, mDeletedElementId);
+	mEditorManagerProxy.deleteElement(mDeletedElementId);
 	mMainWindow.loadPlugins();
 }
 

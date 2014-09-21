@@ -4,7 +4,7 @@
 
 #include "models/logicalModelAssistApi.h"
 #include "models/graphicalModelAssistApi.h"
-#include "plugins/pluginManager/exploser.h"
+#include "models/exploser.h"
 
 namespace qReal {
 

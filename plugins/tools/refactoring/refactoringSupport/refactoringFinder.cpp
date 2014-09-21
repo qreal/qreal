@@ -1,5 +1,7 @@
 #include "refactoringFinder.h"
 
+#include <qrkernel/settingsManager.h>
+
 #include <QEventLoop>
 #include <QSet>
 #include <QtCore/QDebug>

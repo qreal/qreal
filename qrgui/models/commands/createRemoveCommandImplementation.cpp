@@ -1,8 +1,7 @@
 #include "createRemoveCommandImplementation.h"
 
-#include "editor/nodeElement.h"
-
-using namespace qReal::commands;
+using namespace qReal;
+using namespace commands;
 
 CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 		models::LogicalModelAssistApi &logicalApi

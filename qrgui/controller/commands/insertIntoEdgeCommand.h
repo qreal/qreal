@@ -1,10 +1,10 @@
 #pragma once
 
-#include "controller/commands/createElementCommand.h"
-#include "controller/commands/removeElementCommand.h"
 #include "editor/editorViewScene.h"
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
+#include "models/commands/createElementCommand.h"
+#include "models/commands/removeElementCommand.h"
 
 namespace qReal {
 namespace commands {

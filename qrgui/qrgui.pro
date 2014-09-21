@@ -59,3 +59,5 @@ mainwindow.depends = \
 	pluginManager \
 	thirdparty \
 
+models.depends = \
+	plugins/pluginManager \

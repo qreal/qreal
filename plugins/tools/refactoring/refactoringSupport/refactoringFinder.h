@@ -4,6 +4,7 @@
 #include <qrutils/graphUtils/baseGraphTransformationUnit.h>
 #include <qrgui/mainWindow/errorReporter.h>
 #include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
+#include <qrrepo/repoApi.h>
 
 namespace qReal {
 

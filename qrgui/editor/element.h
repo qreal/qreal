@@ -16,7 +16,7 @@
 #include "models/logicalModelAssistApi.h"
 
 #include "controller/controller.h"
-#include "plugins/pluginManager/exploser.h"
+#include "models/exploser.h"
 
 namespace qReal {
 

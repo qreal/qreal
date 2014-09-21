@@ -1,12 +1,12 @@
 #include "exploser.h"
 
 #include "models/logicalModelAssistApi.h"
+#include "models/commands/explosionCommand.h"
+#include "models/commands/createElementCommand.h"
+#include "models/commands/renameExplosionCommand.h"
 #include "controller/commands/doNothingCommand.h"
-#include "controller/commands/explosionCommand.h"
 #include "controller/commands/renameCommand.h"
-#include "controller/commands/createElementCommand.h"
 #include "controller/commands/createGroupCommand.h"
-#include "controller/commands/renameExplosionCommand.h"
 
 using namespace qReal;
 using namespace models;
@@ -17,75 +17,75 @@ Exploser::Exploser(LogicalModelAssistApi &api)
 {
 }
 
-void Exploser::addUserPalette(gui::PaletteTreeWidget * const tree, Id const &diagram)
-{
-	mUserPalettes[diagram] = tree;
-	refreshPalette(tree, diagram);
-}
+//void Exploser::addUserPalette(gui::PaletteTreeWidget * const tree, Id const &diagram)
+//{
+//	mUserPalettes[diagram] = tree;
+//	refreshPalette(tree, diagram);
+//}
 
-void Exploser::refreshAllPalettes()
-{
-	if (mApi.editorManagerInterface().isInterpretationMode()) {
-		Id const interperterDiagram = mUserPalettes.keys().last();
-		refreshPalette(mUserPalettes[interperterDiagram], interperterDiagram);
-	} else {
-		foreach (Id const &diagram, mUserPalettes.keys()) {
-			refreshPalette(mUserPalettes[diagram], diagram);
-		}
-	}
-}
+//void Exploser::refreshAllPalettes()
+//{
+//	if (mApi.editorManagerInterface().isInterpretationMode()) {
+//		Id const interperterDiagram = mUserPalettes.keys().last();
+//		refreshPalette(mUserPalettes[interperterDiagram], interperterDiagram);
+//	} else {
+//		foreach (Id const &diagram, mUserPalettes.keys()) {
+//			refreshPalette(mUserPalettes[diagram], diagram);
+//		}
+//	}
+//}
 
-void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram)
-{
-	QList<QPair<QString, QList<gui::PaletteElement>>> groups;
-	QMap<QString, QString> descriptions;
-	descriptions[mUserGroupTitle] = mUserGroupDescription;
+//void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram)
+//{
+//	QList<QPair<QString, QList<gui::PaletteElement>>> groups;
+//	QMap<QString, QString> descriptions;
+//	descriptions[mUserGroupTitle] = mUserGroupDescription;
 
-	IdList const childTypes = mApi.editorManagerInterface().elements(diagram);
+//	IdList const childTypes = mApi.editorManagerInterface().elements(diagram);
 
-	for (Id const &child : childTypes) {
-		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
+//	for (Id const &child : childTypes) {
+//		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
 
-		for (Explosion const &explosion : explosions) {
-			if (!explosion.isReusable()) {
-				continue;
-			}
+//		for (Explosion const &explosion : explosions) {
+//			if (!explosion.isReusable()) {
+//				continue;
+//			}
 
-			Id const targetNodeOrGroup = explosion.target();
-			Id target;
-			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
-				target = targetNodeOrGroup;
-			} else {
-				Pattern const pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
-				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
-			}
+//			Id const targetNodeOrGroup = explosion.target();
+//			Id target;
+//			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
+//				target = targetNodeOrGroup;
+//			} else {
+//				Pattern const pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
+//				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
+//			}
 
-			IdList const allTargets = mApi.logicalRepoApi().elementsByType(target.element(), true);
-			QList<gui::PaletteElement> groupElements;
-			for (Id const &targetInstance : allTargets) {
-				if (mApi.isLogicalId(targetInstance)) {
-					groupElements << gui::PaletteElement(child
-							, mApi.logicalRepoApi().name(targetInstance)
-							, QString(), mApi.editorManagerInterface().icon(child)
-							, mApi.editorManagerInterface().iconSize(child)
-							, targetInstance);
-				}
-			}
+//			IdList const allTargets = mApi.logicalRepoApi().elementsByType(target.element(), true);
+//			QList<gui::PaletteElement> groupElements;
+//			for (Id const &targetInstance : allTargets) {
+//				if (mApi.isLogicalId(targetInstance)) {
+//					groupElements << gui::PaletteElement(child
+//							, mApi.logicalRepoApi().name(targetInstance)
+//							, QString(), mApi.editorManagerInterface().icon(child)
+//							, mApi.editorManagerInterface().iconSize(child)
+//							, targetInstance);
+//				}
+//			}
 
-			if (!groupElements.isEmpty()) {
-				groups << qMakePair(mUserGroupTitle, groupElements);
-			}
-		}
-	}
+//			if (!groupElements.isEmpty()) {
+//				groups << qMakePair(mUserGroupTitle, groupElements);
+//			}
+//		}
+//	}
 
-	tree->addGroups(groups, descriptions, true, mApi.editorManagerInterface().friendlyName(diagram), true);
-}
+//	tree->addGroups(groups, descriptions, true, mApi.editorManagerInterface().friendlyName(diagram), true);
+//}
 
-void Exploser::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)
-{
-	mUserGroupTitle = userGroupTitle;
-	mUserGroupDescription = userGroupDescription;
-}
+//void Exploser::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)
+//{
+//	mUserGroupTitle = userGroupTitle;
+//	mUserGroupDescription = userGroupDescription;
+//}
 
 IdList Exploser::elementsWithHardDependencyFrom(Id const &id) const
 {

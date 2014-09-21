@@ -2,6 +2,8 @@
 
 #include "utilsDeclSpec.h"
 
+#include <QtXml/QDomDocument>
+
 #include <qrgui/mainWindow/errorReporter.h>
 #include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 

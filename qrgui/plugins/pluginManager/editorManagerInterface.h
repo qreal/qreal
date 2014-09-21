@@ -10,10 +10,9 @@
 #include <qrkernel/ids.h>
 #include <qrkernel/version.h>
 #include <qrkernel/settingsManager.h>
-#include <qrrepo/graphicalRepoApi.h>
-#include <qrrepo/logicalRepoApi.h>
 
-#include "plugins/pluginManager/listenerManager.h"
+#include "plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 #include "plugins/editorPluginInterface/editorInterface.h"
 #include "plugins/pluginManager/pattern.h"
 #include "plugins/pluginManager/explosion.h"
@@ -22,8 +21,6 @@
 namespace qReal {
 
 class Element;
-
-class MainWindow;
 
 class EditorManagerInterface
 {
@@ -63,8 +60,8 @@ public:
 	virtual QString defaultPropertyValue(Id const &id, QString name) const = 0;
 	virtual QStringList propertiesWithDefaultValues(Id const &id) const = 0;
 
-	virtual IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-							  , qrRepo::GraphicalRepoApi const &graphicalApi) const = 0;
+	virtual IdList checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
+			, GraphicalModelAssistInterface const &graphicalApi) const = 0;
 	virtual bool hasElement(Id const &element) const = 0;
 
 	virtual Id findElementByType(QString const &type) const = 0;
@@ -98,7 +95,7 @@ public:
 	virtual void updateShape(Id const &id, QString const &graphics) const = 0;
 	virtual void resetIsHidden(Id const &id) const = 0;
 	virtual QString getIsHidden(Id const &id) const = 0;
-	virtual void deleteElement(MainWindow *mainWindow, Id const &id) const = 0;
+	virtual void deleteElement(Id const &id) const = 0;
 	virtual bool isRootDiagramNode(Id const &id) const = 0;
 	virtual void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
 			, bool isRootDiagramNode) const = 0;

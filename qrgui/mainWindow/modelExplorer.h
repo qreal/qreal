@@ -3,7 +3,7 @@
 #include <QtWidgets/QTreeView>
 
 #include "controller/controller.h"
-#include "plugins/pluginManager/exploser.h"
+#include "models/exploser.h"
 #include "plugins/toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
 
 namespace qReal {

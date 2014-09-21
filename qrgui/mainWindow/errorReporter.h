@@ -2,11 +2,11 @@
 
 #include <QtCore/QString>
 #include <QtCore/QList>
+#include <QtWidgets/QDockWidget>
 
 #include <qrkernel/ids.h>
 #include <qrkernel/definitions.h>
 
-#include "mainWindow/mainWindow.h"
 #include "mainWindow/error.h"
 #include "mainWindow/errorListWidget.h"
 #include "plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"

@@ -6,7 +6,7 @@
 #include <qrkernel/roles.h>
 
 #include "editor/edgeElement.h"
-#include "controller/commands/createElementCommand.h"
+#include "models/commands/createElementCommand.h"
 
 namespace qReal {
 

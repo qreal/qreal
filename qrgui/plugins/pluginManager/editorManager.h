@@ -11,7 +11,6 @@
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
 
-#include "plugins/pluginManager/listenerManager.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
 #include "plugins/pluginManager/pattern.h"
 #include "plugins/pluginManager/details/patternParser.h"
@@ -72,8 +71,8 @@ public:
 	QString defaultPropertyValue(Id const &id, QString name) const override;
 	QStringList propertiesWithDefaultValues(Id const &id) const override;
 
-	IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-			, qrRepo::GraphicalRepoApi const &graphicalApi) const override;
+	IdList checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
+			, GraphicalModelAssistInterface const &graphicalApi) const override;
 	bool hasElement(Id const &element) const override;
 
 	Id findElementByType(QString const &type) const override;
@@ -107,7 +106,7 @@ public:
 	void updateShape(Id const &id, QString const &graphics) const override;
 	virtual void resetIsHidden(Id const &id) const;
 	virtual QString getIsHidden(Id const &id) const;
-	void deleteElement(MainWindow *mainWindow, Id const &id) const override;
+	void deleteElement(Id const &id) const override;
 	bool isRootDiagramNode(Id const &id) const override;
 	void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
 			, bool isRootDiagramNode) const override;
@@ -131,7 +130,7 @@ public:
 
 private:
 	EditorInterface* editorInterface(QString const &editor) const;
-	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
+	void checkNeededPluginsRecursive(details::ModelsAssistInterface const &api, Id const &id, IdList &result) const;
 
 	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child
 			, QString const &parentDiagram, QString const &parent) const;

@@ -29,8 +29,8 @@ class Exploser : public QObject
 public:
 	explicit Exploser(models::LogicalModelAssistApi &api);
 
-	void customizeExplosionTitles(QString const &userGroupTitle
-			, QString const &userGroupDescription);
+//	void customizeExplosionTitles(QString const &userGroupTitle
+//			, QString const &userGroupDescription);
 
 	/// Passed to this method palette tree will be automatically updated
 	/// with actual reusable explosions information
@@ -68,8 +68,8 @@ public:
 	/// @param newNames The name which will bew assigned to all the elements in heirarchy
 	commands::AbstractCommand *renameCommands(Id const &oneOfIds, QString const &newNames) const;
 
-public slots:
-	void refreshAllPalettes();
+//public slots:
+//	void refreshAllPalettes();
 
 signals:
 	/// Emitted each time when automatically created explosion target was removed
@@ -94,10 +94,10 @@ private:
 	void refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram);
 
 	models::LogicalModelAssistApi &mApi;
-	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;
+//	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;
 
-	QString mUserGroupTitle;
-	QString mUserGroupDescription;
+//	QString mUserGroupTitle;
+//	QString mUserGroupDescription;
 };
 
 }

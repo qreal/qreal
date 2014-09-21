@@ -1,7 +1,9 @@
 #pragma once
 
 #include <qrutils/expressionsParser/expressionsParser.h>
-#include <qrgui/mainWindow/errorReporter.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 
 namespace qReal {
 

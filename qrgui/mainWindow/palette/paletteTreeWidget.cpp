@@ -116,8 +116,9 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 
 void PaletteTreeWidget::addElementPaletteActionTriggered()
 {
-	ChooseTypeDialog *chooseTypeDialog = new ChooseTypeDialog(mMainWindow
-			, mPaletteTree.currentEditor(), *mEditorManager);
+	ChooseTypeDialog *chooseTypeDialog = new ChooseTypeDialog(mPaletteTree.currentEditor()
+			, *mEditorManager, &mMainWindow);
+	connect(chooseTypeDialog, &ChooseTypeDialog::jobDone, &mMainWindow, &MainWindow::loadPlugins);
 	chooseTypeDialog->setModal(true);
 	chooseTypeDialog->show();
 }

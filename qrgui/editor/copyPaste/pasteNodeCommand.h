@@ -1,7 +1,7 @@
 #pragma once
 
 #include "editor/copyPaste/pasteCommand.h"
-#include "controller/commands/createElementCommand.h"
+#include "models/commands/createElementCommand.h"
 
 namespace qReal
 {

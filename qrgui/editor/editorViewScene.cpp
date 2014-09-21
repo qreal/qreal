@@ -15,7 +15,7 @@
 #include "editor/editorView.h"
 #include "mainWindow/mainWindow.h"
 
-#include "controller/commands/createElementCommand.h"
+#include "models/commands/createElementCommand.h"
 #include "controller/commands/createGroupCommand.h"
 #include "controller/commands/insertIntoEdgeCommand.h"
 #include "editor/private/reshapeEdgeCommand.h"

@@ -137,8 +137,8 @@ QStringList ProxyEditorManager::propertiesWithDefaultValues(Id const &id) const
 	return mProxiedEditorManager->propertiesWithDefaultValues(id);
 }
 
-IdList ProxyEditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-		, qrRepo::GraphicalRepoApi const &graphicalApi) const
+IdList ProxyEditorManager::checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
+		, GraphicalModelAssistInterface const &graphicalApi) const
 {
 	return mProxiedEditorManager->checkNeededPlugins(logicalApi, graphicalApi);
 }
@@ -276,9 +276,9 @@ QString ProxyEditorManager::getIsHidden(Id const &id) const
 	return mProxiedEditorManager->getIsHidden(id);
 }
 
-void ProxyEditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
+void ProxyEditorManager::deleteElement(Id const &id) const
 {
-	mProxiedEditorManager->deleteElement(mainWindow, id);
+	mProxiedEditorManager->deleteElement(id);
 }
 
 bool ProxyEditorManager::isRootDiagramNode(Id const &id) const

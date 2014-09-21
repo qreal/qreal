@@ -14,7 +14,6 @@
 #include <qrrepo/logicalRepoApi.h>
 #include <qrrepo/repoApi.h>
 
-#include "plugins/pluginManager/listenerManager.h"
 #include "plugins/editorPluginInterface/editorInterface.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
 
@@ -62,8 +61,8 @@ public:
 	QString defaultPropertyValue(Id const &id, QString name) const override;
 	QStringList propertiesWithDefaultValues(Id const &id) const override;
 
-	IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-			, qrRepo::GraphicalRepoApi const &graphicalApi) const override;
+	IdList checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
+			, GraphicalModelAssistInterface const &graphicalApi) const override;
 	bool hasElement(Id const &element) const override;
 
 	Id findElementByType(QString const &type) const override;
@@ -98,7 +97,7 @@ public:
 	void updateShape(Id const &id, QString const &graphics) const override;
 	virtual void resetIsHidden(Id const &id) const;
 	virtual QString getIsHidden(Id const &id) const;
-	void deleteElement(qReal::MainWindow *mainWindow, Id const &id) const override;
+	void deleteElement(Id const &id) const override;
 	bool isRootDiagramNode(Id const &id) const override;
 	void addNodeElement(Id const &diagram, QString const &name, QString const &displayedName
 			, bool isRootDiagramNode) const override;

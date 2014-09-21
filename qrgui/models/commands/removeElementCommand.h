@@ -1,7 +1,7 @@
 #pragma once
 
 #include "controller/commands/abstractCommand.h"
-#include "controller/commands/createRemoveCommandImplementation.h"
+#include "models/commands/createRemoveCommandImplementation.h"
 #include "editor/element.h"
 
 namespace qReal {

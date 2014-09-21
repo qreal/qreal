@@ -1,5 +1,7 @@
 #include "visualInterpreterUnit.h"
 
+#include <qrkernel/settingsManager.h>
+
 using namespace qReal;
 
 VisualInterpreterUnit::VisualInterpreterUnit(

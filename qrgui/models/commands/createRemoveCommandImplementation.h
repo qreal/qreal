@@ -1,6 +1,6 @@
 #pragma once
 
-#include "plugins/pluginManager/exploser.h"
+#include "models/exploser.h"
 
 namespace qReal {
 namespace commands {

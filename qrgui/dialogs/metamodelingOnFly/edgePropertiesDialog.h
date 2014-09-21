@@ -19,14 +19,18 @@ class EdgePropertiesDialog : public QDialog
 
 public:
 	/// Constructor.
-	/// @param mainWindow Reference to QReal main window.
 	/// @param diagram Id of a diagram to which we will add new edge.
 	/// @param editorManagerProxy Editor manager.
-	explicit EdgePropertiesDialog(MainWindow &mainWindow, Id const &diagram
-			, EditorManagerInterface const &editorManagerProxy);
+	explicit EdgePropertiesDialog(Id const &diagram
+			, EditorManagerInterface const &editorManagerProxy
+			, QWidget *parent = 0);
 
 	/// Destructor.
 	~EdgePropertiesDialog();
+
+signals:
+	/// Emitted when edge`s properties were modified and everything must be reloaded.
+	void jobDone();
 
 private slots:
 	void okButtonClicked();
@@ -34,7 +38,6 @@ private slots:
 
 private:
 	Ui::EdgePropertiesDialog *mUi;
-	MainWindow &mMainWindow;
 	Id const mDiagram;
 	QString mEdgeName;
 	EditorManagerInterface const &mEditorManagerProxy;

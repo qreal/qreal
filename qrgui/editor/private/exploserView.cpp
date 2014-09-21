@@ -5,7 +5,7 @@
 #include "editor/nodeElement.h"
 #include "editor/editorViewScene.h"
 #include "editor/private/expandCommand.h"
-#include "controller/commands/createElementCommand.h"
+#include "models/commands/createElementCommand.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
 
 using namespace qReal;

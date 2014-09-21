@@ -1,8 +1,8 @@
 #pragma once
 
 #include "controller/commands/abstractCommand.h"
+#include "models/exploser.h"
 #include "plugins/toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
-#include "plugins/pluginManager/exploser.h"
 
 namespace qReal {
 namespace commands {

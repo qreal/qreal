@@ -27,9 +27,10 @@
 #include "plugins/pluginManager/interpreterEditorManager.h"
 #include "plugins/pluginManager/proxyEditorManager.h"
 #include "plugins/pluginManager/toolPluginManager.h"
-#include "plugins/pluginManager/exploser.h"
 
 #include "models/logicalModelAssistApi.h"
+#include "models/exploser.h"
+
 #include "editor/propertyEditorView.h"
 #include "controller/controller.h"
 #include "plugins/toolPluginInterface/systemEvents.h"
@@ -51,7 +52,6 @@ class MainWindowUi;
 namespace qReal {
 
 class EditorView;
-class ListenerManager;
 class SceneCustomizer;
 
 namespace models {
@@ -76,7 +76,6 @@ public:
 	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
 	bool isCurrentTabShapeEdit() const;
-	ListenerManager *listenerManager() const;
 	models::Models *models() const;
 	Exploser &exploser();
 	Controller *controller() const;
@@ -386,7 +385,6 @@ private:
 	Controller *mController;
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
-	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;
 	SystemEvents *mSystemEvents;
