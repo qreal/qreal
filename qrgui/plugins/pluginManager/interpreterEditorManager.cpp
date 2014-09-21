@@ -1007,16 +1007,10 @@ QString InterpreterEditorManager::getIsHidden(Id const &id) const
 
 void InterpreterEditorManager::deleteElement(Id const &id) const
 {
-	/// @todo: Restore it
-//	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-//	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
-//	Id const metaId = repoAndMetaIdPair.second;
-//	IdList const logicalIdList = mainWindow->models()->logicalRepoApi().logicalElements(id.type());
-//	foreach (Id const &logicalId, logicalIdList) {
-//		QModelIndex const index = mainWindow->models()->logicalModelAssistApi().indexById(logicalId);
-//		mainWindow->models()->logicalModel()->removeRow(index.row(), index.parent());
-//	}
-//	repo->setProperty(metaId, "isHidden", "true");
+	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
+	Id const metaId = repoAndMetaIdPair.second;
+	repo->setProperty(metaId, "isHidden", "true");
 }
 
 bool InterpreterEditorManager::isRootDiagramNode(Id const &id) const

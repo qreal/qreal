@@ -152,7 +152,16 @@ void DraggableElement::deleteElement()
 	if (mIsRootDiagramNode) {
 		mMainWindow.closeDiagramTab(mDeletedElementId);
 	}
+
 	mEditorManagerProxy.deleteElement(mDeletedElementId);
+	/// @todo: Maybe we do not need to remove elements if we can restore them?
+	/// We can make elements grayscaled by disabling corresponding element in palette.
+	IdList const logicalIdList = mMainWindow.models()->logicalRepoApi().logicalElements(mDeletedElementId.type());
+	for (Id const &logicalId : logicalIdList) {
+		QModelIndex const index = mMainWindow.models()->logicalModelAssistApi().indexById(logicalId);
+		mMainWindow.models()->logicalModel()->removeRow(index.row(), index.parent());
+	}
+
 	mMainWindow.loadPlugins();
 }
 

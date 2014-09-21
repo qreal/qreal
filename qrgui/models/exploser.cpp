@@ -40,11 +40,9 @@ QMultiMap<Id, Id> Exploser::explosions(Id const &diagram) const
 				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
 			}
 
-			IdList const allTargets = mApi.logicalRepoApi().elementsByType(target.element(), true);
+			IdList const allTargets = mApi.logicalRepoApi().logicalElements(target.type());
 			for (Id const &targetInstance : allTargets) {
-				if (mApi.isLogicalId(targetInstance)) {
-					result.insertMulti(child, targetInstance);
-				}
+				result.insertMulti(child, targetInstance);
 			}
 		}
 	}
