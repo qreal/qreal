@@ -85,7 +85,8 @@ void PaletteTreeWidgets::initEditorTree()
 
 void PaletteTreeWidgets::initUserTree()
 {
-	mMainWindow->exploser().addUserPalette(mUserTree, mDiagram);
+	/// @todo:
+//	mMainWindow->exploser().addUserPalette(mUserTree, mDiagram);
 }
 
 void PaletteTreeWidgets::addTopItemType(PaletteElement const &data, QTreeWidget *tree)

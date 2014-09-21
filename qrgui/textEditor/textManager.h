@@ -6,7 +6,7 @@
 
 #include "textManagerInterface.h"
 #include "editor/editorView.h"
-#include "plugins/toolPluginInterface/systemEventsInterface.h"
+#include "plugins/toolPluginInterface/systemEvents.h"
 
 namespace qReal {
 
@@ -15,7 +15,7 @@ class TextManager : public TextManagerInterface
 	Q_OBJECT
 
 public:
-	TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWindow);
+	TextManager(SystemEvents *systemEvents, MainWindow *mainWindow);
 
 	/// Reads code source file and create new QScintillaTextEdit associated with this file (rather with filepath)
 	bool openFile(QString const &filePath, QString const &genName);
@@ -88,7 +88,7 @@ private:
 	QMap<QString, QString> mExtensionDescriptionByExtension;
 
 	MainWindow *mMainWindow;
-	SystemEventsInterface *mSystemEvents;
+	SystemEvents *mSystemEvents;
 };
 
 }

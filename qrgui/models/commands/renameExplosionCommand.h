@@ -2,7 +2,7 @@
 
 #include "controller/commands/abstractCommand.h"
 #include "controller/commands/trackingEntity.h"
-#include "models/logicalModelAssistApi.h"
+#include "models/exploser.h"
 
 namespace qReal {
 namespace commands {

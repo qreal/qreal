@@ -11,12 +11,12 @@
 using namespace qReal;
 using namespace gui;
 
-TextManager::TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWindow)
+TextManager::TextManager(SystemEvents *systemEvents, MainWindow *mainWindow)
 	: mMainWindow(mainWindow)
 	, mSystemEvents(systemEvents)
 
 {
-	connect(mSystemEvents, &SystemEventsInterface::codeTabClosed, this, &TextManager::onTabClosed);
+	connect(mSystemEvents, &SystemEvents::codeTabClosed, this, &TextManager::onTabClosed);
 }
 
 bool TextManager::openFile(QString const &filePath, QString const &generatorName)
@@ -207,7 +207,7 @@ void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &gen
 		QScintillaTextEdit *area = code(filePath);
 		area->show();
 		bindCode(mMainWindow->getCurrentTab(), filePath);
-		mSystemEvents->emitNewCodeAppeared(mMainWindow->activeDiagram(), QFileInfo(filePath));
+		emit mSystemEvents->newCodeAppeared(mMainWindow->activeDiagram(), QFileInfo(filePath));
 
 		mMainWindow->openTab(area,  fileInfo.fileName());
 	}

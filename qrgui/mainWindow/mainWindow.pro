@@ -4,12 +4,13 @@ DESTDIR = $$PWD/../../bin
 
 TARGET = qrgui
 
-QT += widgets printsupport xml
+QT += widgets printsupport xml svg
 
 LIBS += -L$$PWD/../../bin \
-			-lqrkernel -lqslog -lqrutils -lqrrepo \
+			-lqrkernel -lqslog -lqrutils -lqrrepo -lqscintilla2 \
 			-lmodels -leditor -lcontroller -ldialogs -lpreferencesDialog \
-			-ltextEditor -lhotKeyManager -lbrandManager -lpluginManager -lthirdparty \
+			-ltextEditor -lmouseGestures -lhotKeyManager -lbrandManager  \
+			-lpluginManager -lthirdparty \
 
 INCLUDEPATH = \
 	$$PWD/ \
@@ -165,3 +166,6 @@ SOURCES += \
 FORMS += \
 	$$PWD/shapeEdit/shapeEdit.ui \
 	$$PWD/shapeEdit/visibilityConditionsDialog.ui \
+
+RESOURCES = $$PWD/mainWindow.qrc
+RC_FILE = $$PWD/mainWindow.rc

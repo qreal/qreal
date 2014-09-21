@@ -1,5 +1,10 @@
 #include "createRemoveCommandImplementation.h"
 
+#include <QtCore/QTimer>
+
+#include "models/logicalModelAssistApi.h"
+#include "models/graphicalModelAssistApi.h"
+
 using namespace qReal;
 using namespace commands;
 

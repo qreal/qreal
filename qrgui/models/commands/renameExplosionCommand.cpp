@@ -1,6 +1,8 @@
 #include "renameExplosionCommand.h"
 
 #include "dialogs/renameDialog.h"
+#include "models/logicalModelAssistApi.h"
+#include "models/graphicalModelAssistApi.h"
 
 using namespace qReal::commands;
 

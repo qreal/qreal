@@ -17,4 +17,3 @@ HEADERS += \
 	$$PWD/projectConverter.h \
 	$$PWD/hotKeyActionInfo.h \
 	$$PWD/systemEvents.h \
-	$$PWD/systemEventsInterface.h \

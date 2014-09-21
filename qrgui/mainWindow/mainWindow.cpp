@@ -250,8 +250,9 @@ void MainWindow::connectActions()
 	connect(mUi->tabs, &QTabWidget::currentChanged, this, &MainWindow::changeWindowTitle);
 	connect(mTextManager, SIGNAL(textChanged(bool)), this, SLOT(setTextChanged(bool)));
 
-	connect(mProjectManager, SIGNAL(afterOpen(QString)), mExploser.data(), SLOT(refreshAllPalettes()));
-	connect(mProjectManager, SIGNAL(closed()), mExploser.data(), SLOT(refreshAllPalettes()));
+	/// @todo:
+//	connect(mProjectManager, SIGNAL(afterOpen(QString)), mExploser.data(), SLOT(refreshAllPalettes()));
+//	connect(mProjectManager, SIGNAL(closed()), mExploser.data(), SLOT(refreshAllPalettes()));
 	connect(mProjectManager, SIGNAL(closed()), mController, SLOT(projectClosed()));
 
 	connect(mExploser.data(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));

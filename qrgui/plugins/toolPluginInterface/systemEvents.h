@@ -2,47 +2,24 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QFileInfo>
+#include <QtWidgets/QPlainTextEdit>
 
-#include "systemEventsInterface.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 
-class SystemEvents : public SystemEventsInterface
+class SystemEvents : public QObject
 {
-public:
-	void emitCloseMainWindow()
-	{
-		emit closedMainWindow();
-	}
+	Q_OBJECT
 
-	void emitActiveTabChanged(Id const & rootElementId)
-	{
-		emit activeTabChanged(rootElementId);
-	}
-
-	void emitSettingsUpdated()
-	{
-		emit settingsUpdated();
-	}
-
-	void emitCodePathChanged(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo)
-	{
-		emit codePathChanged(diagram, oldFileInfo, newFileInfo);
-	}
-
-	void emitNewCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo)
-	{
-		emit newCodeAppeared(diagram, fileInfo);
-	}
-
-	void emitDiagramClosed(qReal::Id const &diagram)
-	{
-		emit diagramClosed(diagram);
-	}
-
-	void emitCodeTabClosed(QFileInfo const &fileInfo)
-	{
-		emit codeTabClosed(fileInfo);
-	}
+signals:
+	void closedMainWindow();
+	void activeTabChanged(Id const &rootElementId);
+	void settingsUpdated();
+	void codePathChanged(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
+	void newCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo);
+	void diagramClosed(qReal::Id const &diagram);
+	void codeTabClosed(QFileInfo const &fileInfo);
 };
+
 }
