@@ -10,7 +10,7 @@ LIBS += -L$$PWD/../../bin \
 			-lqrkernel -lqslog -lqrutils -lqrrepo -lqscintilla2 \
 			-lmodels -leditor -lcontroller -ldialogs -lpreferencesDialog \
 			-ltextEditor -lmouseGestures -lhotKeyManager -lbrandManager  \
-			-lpluginManager -lthirdparty \
+			-lpluginManager -ltoolPluginInterface -lthirdparty \
 
 INCLUDEPATH = \
 	$$PWD/ \

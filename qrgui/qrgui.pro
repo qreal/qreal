@@ -47,7 +47,7 @@ SUBDIRS += \
 	plugins/toolPluginInterface \
 	thirdparty \
 
-mainwindow.depends = \
+mainWindow.depends = \
 	models \
 	editor \
 	controller \
@@ -56,7 +56,7 @@ mainwindow.depends = \
 	textEditor \
 	hotKeyManager \
 	brandManager \
-	pluginManager \
+	plugins/pluginManager \
 	thirdparty \
 
 models.depends = \
