@@ -2,6 +2,8 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
+LIBS += -L$$PWD/../../bin -lqrkernel
+
 INCLUDEPATH = \
 	$$PWD/ \
 	$$PWD/../ \

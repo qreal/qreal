@@ -4,6 +4,8 @@ DESTDIR = $$PWD/../../bin
 
 QT += widgets
 
+LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lmodels
+
 INCLUDEPATH = \
 	$$PWD/ \
 	$$PWD/../ \

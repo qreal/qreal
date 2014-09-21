@@ -2,6 +2,8 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
+LIBS += -L$$PWD/../../bin -lqrutils -lqscintilla2 -ltoolPluginInterface
+
 QT += widgets
 
 CONFIG += c++11

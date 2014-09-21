@@ -2,7 +2,9 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../../bin
 
-LIBS += -L$$PWD/../../../bin -lqrkernel -lqrrepo
+QT += xml
+
+LIBS += -L$$PWD/../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -ltoolPluginInterface
 
 INCLUDEPATH = \
 	$$PWD/ \

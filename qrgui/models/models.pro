@@ -2,6 +2,8 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
+QT += widgets
+
 LIBS += -L$$PWD/../../bin -lqrkernel -lqrrepo -lpluginManager -lcontroller
 
 INCLUDEPATH = \

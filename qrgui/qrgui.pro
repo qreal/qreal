@@ -61,3 +61,21 @@ mainWindow.depends = \
 
 models.depends = \
 	plugins/pluginManager \
+
+editor.depends = \
+	models \
+	controller \
+	mouseGestures \
+
+dialogs.depends = \
+	models \
+	thirdparty \
+
+textEditor.depends = \
+	plugins/toolPluginInterface \
+
+hotKeyManager.depends = \
+	preferencesDialog \
+
+editorPluginInterface.depends =
+	plugins/toolPluginInterface
