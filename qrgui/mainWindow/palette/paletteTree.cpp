@@ -329,3 +329,17 @@ void PaletteTree::setEnabledForAllElements(bool enabled)
 {
 	mTree->setEnabledForAllElements(enabled);
 }
+
+void PaletteTree::refreshUserPalettes()
+{
+	for (PaletteTreeWidgets * const tree : mEditorsTrees) {
+		tree->refreshUserPalette();
+	}
+}
+
+void PaletteTree::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)
+{
+	for (PaletteTreeWidgets * const tree : mEditorsTrees) {
+		tree->customizeExplosionTitles(userGroupTitle, userGroupDescription);
+	}
+}

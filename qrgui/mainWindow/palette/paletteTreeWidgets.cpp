@@ -85,8 +85,9 @@ void PaletteTreeWidgets::initEditorTree()
 
 void PaletteTreeWidgets::initUserTree()
 {
-	/// @todo:
-//	mMainWindow->exploser().addUserPalette(mUserTree, mDiagram);
+	refreshUserPalette();
+	connect(&mMainWindow->exploser(), &Exploser::explosionsSetCouldChange
+			, this, &PaletteTreeWidgets::refreshUserPalette);
 }
 
 void PaletteTreeWidgets::addTopItemType(PaletteElement const &data, QTreeWidget *tree)
@@ -208,4 +209,32 @@ void PaletteTreeWidgets::setEnabledForAllElements(bool enabled)
 	}
 
 	mEditorTree->setEnabledForAllElements(enabled);
+}
+
+void PaletteTreeWidgets::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)
+{
+	mUserGroupTitle = userGroupTitle;
+	mUserGroupDescription = userGroupDescription;
+}
+
+void PaletteTreeWidgets::refreshUserPalette()
+{
+	QList<QPair<QString, QList<gui::PaletteElement>>> groups;
+	QMap<QString, QString> descriptions = { { mUserGroupTitle, mUserGroupDescription } };
+
+	QMultiMap<Id, Id> const types = mMainWindow->exploser().explosions(mDiagram);
+	for (Id const &source : types.keys()) {
+		QList<gui::PaletteElement> groupElements;
+		for (Id const &target : types.values(source)) {
+			groupElements << gui::PaletteElement(source
+					, mMainWindow->models()->logicalRepoApi().name(target)
+					, QString(), mEditorManager->icon(source)
+					, mEditorManager->iconSize(source)
+					, target);
+		}
+
+		groups << qMakePair(mUserGroupTitle, groupElements);
+	}
+
+	mUserTree->addGroups(groups, descriptions, true, mEditorManager->friendlyName(mDiagram), true);
 }

@@ -79,6 +79,10 @@ public:
 
 	void setEnabledForAllElements(bool enabled);
 
+	/// Sets user palettes headers and descriptions.
+	void customizeExplosionTitles(QString const &userGroupTitle
+			, QString const &userGroupDescription);
+
 signals:
 	void paletteParametersChanged();
 
@@ -100,6 +104,9 @@ public slots:
 
 	/// Changes widget representation.
 	void changeRepresentation();
+
+	/// Rereads user blocks information.
+	void refreshUserPalettes();
 
 private:
 	/// Change icon and tooltip

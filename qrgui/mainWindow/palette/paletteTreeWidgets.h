@@ -48,6 +48,13 @@ public:
 
 	void setEnabledForAllElements(bool enabled);
 
+	/// Rereads user blocks information.
+	void refreshUserPalette();
+
+	/// Sets user palette header and description.
+	void customizeExplosionTitles(QString const &userGroupTitle
+			, QString const &userGroupDescription);
+
 private:
 	void initWidgets();
 	void initWidget(PaletteTreeWidget * const tree);
@@ -65,6 +72,9 @@ private:
 	PaletteTreeWidget *mEditorTree; // Takes ownership
 	PaletteTreeWidget *mUserTree; // Takes ownership
 	QHash<Id, DraggableElement *> mPaletteElements; // Does not take ownership.
+
+	QString mUserGroupTitle;
+	QString mUserGroupDescription;
 };
 
 }

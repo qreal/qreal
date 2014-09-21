@@ -109,5 +109,5 @@ void CreateRemoveCommandImplementation::setNewPosition(QPointF const &position)
 void CreateRemoveCommandImplementation::refreshAllPalettes()
 {
 	// Calling refreshing immideately may cause segfault because of deletting drag source
-	QTimer::singleShot(0, &mExploser, SLOT(refreshAllPalettes()));
+	QTimer::singleShot(0, &mExploser, SIGNAL(explosionsSetCouldChange()));
 }

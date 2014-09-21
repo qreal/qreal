@@ -29,12 +29,9 @@ class Exploser : public QObject
 public:
 	explicit Exploser(models::LogicalModelAssistApi &api);
 
-//	void customizeExplosionTitles(QString const &userGroupTitle
-//			, QString const &userGroupDescription);
-
-	/// Passed to this method palette tree will be automatically updated
-	/// with actual reusable explosions information
-	void addUserPalette(gui::PaletteTreeWidget * const tree, Id const &diagram);
+	/// Returns information about all elements used by all explosion instances on the
+	/// diagrams of the given type. Keys are source types, values are target instances.
+	QMultiMap<Id, Id> explosions(Id const &diagram) const;
 
 	/// Returns all elements that have specified id as explosion target with hard nessesarity
 	IdList elementsWithHardDependencyFrom(Id const &id) const;
@@ -68,12 +65,14 @@ public:
 	/// @param newNames The name which will bew assigned to all the elements in heirarchy
 	commands::AbstractCommand *renameCommands(Id const &oneOfIds, QString const &newNames) const;
 
-//public slots:
-//	void refreshAllPalettes();
-
 signals:
 	/// Emitted each time when automatically created explosion target was removed
 	void explosionTargetRemoved();
+
+	/// @todo: Emit it exaclty when explosions set changes.
+	/// Emitted when explosions set potentially changes (when elements are added or removed
+	/// or renamed or explosion link was added or edited directly).
+	void explosionsSetCouldChange();
 
 private:
 	/// This method takes one of the elements of the diagram and tries
@@ -93,11 +92,9 @@ private:
 
 	void refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram);
 
-	models::LogicalModelAssistApi &mApi;
-//	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;
+	void connectCommand(commands::AbstractCommand const *command) const;
 
-//	QString mUserGroupTitle;
-//	QString mUserGroupDescription;
+	models::LogicalModelAssistApi &mApi;
 };
 
 }

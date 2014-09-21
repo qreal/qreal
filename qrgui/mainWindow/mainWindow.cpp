@@ -250,9 +250,8 @@ void MainWindow::connectActions()
 	connect(mUi->tabs, &QTabWidget::currentChanged, this, &MainWindow::changeWindowTitle);
 	connect(mTextManager, SIGNAL(textChanged(bool)), this, SLOT(setTextChanged(bool)));
 
-	/// @todo:
-//	connect(mProjectManager, SIGNAL(afterOpen(QString)), mExploser.data(), SLOT(refreshAllPalettes()));
-//	connect(mProjectManager, SIGNAL(closed()), mExploser.data(), SLOT(refreshAllPalettes()));
+	connect(mProjectManager, &ProjectManager::afterOpen, mUi->paletteTree, &PaletteTree::refreshUserPalettes);
+	connect(mProjectManager, &ProjectManager::closed, mUi->paletteTree, &PaletteTree::refreshUserPalettes);
 	connect(mProjectManager, SIGNAL(closed()), mController, SLOT(projectClosed()));
 
 	connect(mExploser.data(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
@@ -2006,9 +2005,9 @@ void MainWindow::initToolPlugins()
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
-//	mExploser->customizeExplosionTitles(
-//			toolManager().customizer()->userPaletteTitle()
-//			, toolManager().customizer()->userPaletteDescription());
+	mUi->paletteTree->customizeExplosionTitles(
+			toolManager().customizer()->userPaletteTitle()
+			, toolManager().customizer()->userPaletteDescription());
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

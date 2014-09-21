@@ -17,75 +17,40 @@ Exploser::Exploser(LogicalModelAssistApi &api)
 {
 }
 
-//void Exploser::addUserPalette(gui::PaletteTreeWidget * const tree, Id const &diagram)
-//{
-//	mUserPalettes[diagram] = tree;
-//	refreshPalette(tree, diagram);
-//}
+QMultiMap<Id, Id> Exploser::explosions(Id const &diagram) const
+{
+	QMultiMap<Id, Id> result;
 
-//void Exploser::refreshAllPalettes()
-//{
-//	if (mApi.editorManagerInterface().isInterpretationMode()) {
-//		Id const interperterDiagram = mUserPalettes.keys().last();
-//		refreshPalette(mUserPalettes[interperterDiagram], interperterDiagram);
-//	} else {
-//		foreach (Id const &diagram, mUserPalettes.keys()) {
-//			refreshPalette(mUserPalettes[diagram], diagram);
-//		}
-//	}
-//}
+	IdList const childTypes = mApi.editorManagerInterface().elements(diagram);
 
-//void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram)
-//{
-//	QList<QPair<QString, QList<gui::PaletteElement>>> groups;
-//	QMap<QString, QString> descriptions;
-//	descriptions[mUserGroupTitle] = mUserGroupDescription;
+	for (Id const &child : childTypes) {
+		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
 
-//	IdList const childTypes = mApi.editorManagerInterface().elements(diagram);
+		for (Explosion const &explosion : explosions) {
+			if (!explosion.isReusable()) {
+				continue;
+			}
 
-//	for (Id const &child : childTypes) {
-//		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
+			Id const targetNodeOrGroup = explosion.target();
+			Id target;
+			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
+				target = targetNodeOrGroup;
+			} else {
+				Pattern const pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
+				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
+			}
 
-//		for (Explosion const &explosion : explosions) {
-//			if (!explosion.isReusable()) {
-//				continue;
-//			}
+			IdList const allTargets = mApi.logicalRepoApi().elementsByType(target.element(), true);
+			for (Id const &targetInstance : allTargets) {
+				if (mApi.isLogicalId(targetInstance)) {
+					result.insertMulti(child, targetInstance);
+				}
+			}
+		}
+	}
 
-//			Id const targetNodeOrGroup = explosion.target();
-//			Id target;
-//			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
-//				target = targetNodeOrGroup;
-//			} else {
-//				Pattern const pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
-//				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
-//			}
-
-//			IdList const allTargets = mApi.logicalRepoApi().elementsByType(target.element(), true);
-//			QList<gui::PaletteElement> groupElements;
-//			for (Id const &targetInstance : allTargets) {
-//				if (mApi.isLogicalId(targetInstance)) {
-//					groupElements << gui::PaletteElement(child
-//							, mApi.logicalRepoApi().name(targetInstance)
-//							, QString(), mApi.editorManagerInterface().icon(child)
-//							, mApi.editorManagerInterface().iconSize(child)
-//							, targetInstance);
-//				}
-//			}
-
-//			if (!groupElements.isEmpty()) {
-//				groups << qMakePair(mUserGroupTitle, groupElements);
-//			}
-//		}
-//	}
-
-//	tree->addGroups(groups, descriptions, true, mApi.editorManagerInterface().friendlyName(diagram), true);
-//}
-
-//void Exploser::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)
-//{
-//	mUserGroupTitle = userGroupTitle;
-//	mUserGroupDescription = userGroupDescription;
-//}
+	return result;
+}
 
 IdList Exploser::elementsWithHardDependencyFrom(Id const &id) const
 {
@@ -167,20 +132,14 @@ AbstractCommand *Exploser::addExplosionCommand(Id const &source, Id const &targe
 		, GraphicalModelAssistApi * const graphicalApi)
 {
 	AbstractCommand *result = new ExplosionCommand(mApi, graphicalApi, source, target, true);
-	// Do not remove Qt::QueuedConnection flag.
-	// Immediate refreshing may cause segfault because of deletting drag source.
-	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
-	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
+	connectCommand(result);
 	return result;
 }
 
 AbstractCommand *Exploser::removeExplosionCommand(Id const &source, Id const &target)
 {
 	AbstractCommand *result = new ExplosionCommand(mApi, nullptr, source, target, false);
-	// Do not remove Qt::QueuedConnection flag.
-	// Immediate refreshing may cause segfault because of deletting drag source.
-	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
-	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
+	connectCommand(result);
 	return result;
 }
 
@@ -194,10 +153,7 @@ AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &new
 	}
 
 	if (!idsToRename.isEmpty()) {
-		// Do not remove Qt::QueuedConnection flag.
-		// Immediate refreshing may cause segfault because of deletting drag source.
-		connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
-		connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
+		connectCommand(result);
 	}
 
 	return result;
@@ -210,6 +166,14 @@ void Exploser::explosionsHierarchyPrivate(Id const &currentId, IdList &targetIds
 	foreach (Id const incoming, incomingExplosions) {
 		explosionsHierarchyPrivate(incoming, targetIds);
 	}
+}
+
+void Exploser::connectCommand(AbstractCommand const *command) const
+{
+	// Do not remove Qt::QueuedConnection flag.
+	// Immediate refreshing may cause segfault because of deleting drag source.
+	connect(command, &AbstractCommand::undoComplete, this, &Exploser::explosionsSetCouldChange, Qt::QueuedConnection);
+	connect(command, &AbstractCommand::redoComplete, this, &Exploser::explosionsSetCouldChange, Qt::QueuedConnection);
 }
 
 Id Exploser::explosionsRoot(Id const &id) const
