@@ -224,7 +224,7 @@ TEST_F(LuaLexerTest, numericLiterals)
 
 	ASSERT_EQ(4, result.size());
 
-	for (auto token : result) {
+	for (auto const &token : result) {
 		EXPECT_EQ(LuaTokenTypes::integerLiteral, token.token());
 	}
 
