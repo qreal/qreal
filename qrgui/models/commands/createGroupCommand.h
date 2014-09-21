@@ -9,8 +9,7 @@ namespace commands {
 class CreateGroupCommand : public AbstractCommand
 {
 public:
-	CreateGroupCommand(EditorViewScene * const scene
-			, models::LogicalModelAssistApi &logicalApi
+	CreateGroupCommand(models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
 			, Exploser &exploser
 			, Id const &logicalParent
@@ -26,8 +25,6 @@ protected:
 	virtual bool restoreState();
 
 private:
-
-	EditorViewScene *mScene;
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	Exploser &mExploser;

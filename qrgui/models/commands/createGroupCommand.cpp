@@ -1,13 +1,12 @@
 #include "createGroupCommand.h"
 
-#include "editor/commands/insertIntoEdgeCommand.h"
+#include "models/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal::commands;
 
 /// @todo: Move it to 'models' lib
 
-CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
-		, models::LogicalModelAssistApi &logicalApi
+CreateGroupCommand::CreateGroupCommand(models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
 		, Exploser &exploser
 		, Id const &logicalParent
@@ -15,8 +14,7 @@ CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 		, Id const &id
 		, bool isFromLogicalModel
 		, QPointF const &position)
-	: mScene(scene)
-	, mLogicalApi(logicalApi)
+	: mLogicalApi(logicalApi)
 	, mGraphicalApi(graphicalApi)
 	, mExploser(exploser)
 	, mLogicalParent(logicalParent)
@@ -90,17 +88,16 @@ bool CreateGroupCommand::execute()
 		Id const newEdgeId = createEdgeCommand->result();
 		mGraphicalApi.setFrom(newEdgeId, nodes.value(groupEdge.from));
 		mGraphicalApi.setTo(newEdgeId, nodes.value(groupEdge.to));
-		if (mScene) {
-			mScene->reConnectLink(mScene->getEdgeById(newEdgeId));
-		}
+		/// @todo:
+//		if (mScene) {
+//			mScene->reConnectLink(mScene->getEdgeById(newEdgeId));
+//		}
 	}
 
-	if (mScene) {
-		InsertIntoEdgeCommand *insertCommand = new InsertIntoEdgeCommand(*mScene, mLogicalApi, mGraphicalApi
-				, mExploser, nodes.value(mPattern.inNode()), nodes.value(mPattern.outNode()), mGraphicalParent
-				, mPosition, mPattern.size(), mIsFromLogicalModel);
-		insertCommand->redo();
-	}
+	InsertIntoEdgeCommand *insertCommand = new InsertIntoEdgeCommand(mLogicalApi, mGraphicalApi
+			, mExploser, nodes.value(mPattern.inNode()), nodes.value(mPattern.outNode()), mGraphicalParent
+			, mPosition, mPattern.size(), mIsFromLogicalModel);
+	insertCommand->redo();
 
 	return true;
 }

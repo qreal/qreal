@@ -4,9 +4,9 @@
 #include "models/commands/explosionCommand.h"
 #include "models/commands/createElementCommand.h"
 #include "models/commands/renameExplosionCommand.h"
+#include "models/commands/renameCommand.h"
+#include "models/commands/createGroupCommand.h"
 #include "controller/commands/doNothingCommand.h"
-#include "controller/commands/renameCommand.h"
-#include "controller/commands/createGroupCommand.h"
 
 using namespace qReal;
 using namespace models;
@@ -97,7 +97,7 @@ AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(Id const &s
 		result = new CreateElementCommand(mApi, graphicalApi, *this, Id::rootId()
 				, Id::rootId(), newElementId, false, friendlyTargetName, QPointF());
 	} else {
-		result = new CreateGroupCommand(nullptr, mApi, graphicalApi, *this, Id::rootId()
+		result = new CreateGroupCommand(mApi, graphicalApi, *this, Id::rootId()
 				, Id::rootId(), targetType, false, QPointF());
 		newElementId = static_cast<CreateGroupCommand *>(result)->rootId();
 	}

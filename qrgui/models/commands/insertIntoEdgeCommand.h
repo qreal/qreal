@@ -12,8 +12,7 @@ namespace commands {
 class InsertIntoEdgeCommand : public AbstractCommand
 {
 public:
-	InsertIntoEdgeCommand(EditorViewScene &scene
-			, models::LogicalModelAssistApi &logicalAssistApi
+	InsertIntoEdgeCommand(models::LogicalModelAssistApi &logicalAssistApi
 			, models::GraphicalModelAssistApi &graphicalAssistApi
 			, Exploser &exploser
 			, Id const &firstElem
@@ -33,8 +32,6 @@ protected:
 private:
 	void initCommand(CreateElementCommand *&command, Id const &type);
 	void makeLink(CreateElementCommand *command, NodeElement *src, NodeElement *dst);
-
-	EditorViewScene &mScene;
 
 	models::LogicalModelAssistApi &mLogicalAssistApi;
 	models::GraphicalModelAssistApi &mGraphicalAssistApi;

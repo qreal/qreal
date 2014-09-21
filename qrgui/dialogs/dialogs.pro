@@ -32,7 +32,6 @@ HEADERS += \
 	$$PWD/managedClosableDialog.h \
 	$$PWD/suggestToCreateDiagramDialog.h \
 	$$PWD/suggestToCreateProjectDialog.h \
-	$$PWD/renameDialog.h \
 
 SOURCES += \
 	$$PWD/metamodelingOnFly/propertiesDialog.cpp \
@@ -48,7 +47,6 @@ SOURCES += \
 	$$PWD/managedClosableDialog.cpp \
 	$$PWD/suggestToCreateDiagramDialog.cpp \
 	$$PWD/suggestToCreateProjectDialog.cpp \
-	$$PWD/renameDialog.cpp \
 
 FORMS += \
 	$$PWD/metamodelingOnFly/propertiesDialog.ui \

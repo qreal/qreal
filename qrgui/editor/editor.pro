@@ -67,8 +67,6 @@ HEADERS += \
 	$$PWD/commands/arrangeLinksCommand.h \
 	$$PWD/commands/selectElementCommand.h \
 	$$PWD/commands/updateElementCommand.h \
-	$$PWD/commands/createGroupCommand.h \
-	$$PWD/commands/insertIntoEdgeCommand.h \
 
 SOURCES += \
 	$$PWD/editorView.cpp \
@@ -118,8 +116,6 @@ SOURCES += \
 	$$PWD/commands/arrangeLinksCommand.cpp \
 	$$PWD/commands/selectElementCommand.cpp \
 	$$PWD/commands/updateElementCommand.cpp \
-	$$PWD/commands/createGroupCommand.cpp \
-	$$PWD/commands/insertIntoEdgeCommand.cpp \
 
 RESOURCES += \
 	$$PWD/contextIcons.qrc \

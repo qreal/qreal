@@ -26,6 +26,8 @@ HEADERS += \
 	$$PWD/commands/createElementCommand.h \
 	$$PWD/commands/removeElementCommand.h \
 	$$PWD/commands/createRemoveCommandImplementation.h \
+	$$PWD/commands/createGroupCommand.h \
+	$$PWD/commands/insertIntoEdgeCommand.h \
 	$$PWD/commands/changePropertyCommand.h \
 	$$PWD/commands/changeParentCommand.h \
 	$$PWD/commands/renameCommand.h \
@@ -37,6 +39,7 @@ HEADERS += \
 	$$PWD/details/logicalModel.h \
 	$$PWD/details/logicalModelView.h \
 	$$PWD/details/modelsAssistApi.h \
+	$$PWD/details/renameDialog.h \
 	$$PWD/details/modelsImplementation/graphicalModelItem.h \
 	$$PWD/details/modelsImplementation/abstractModel.h \
 	$$PWD/details/modelsImplementation/abstractModelItem.h \
@@ -53,6 +56,8 @@ SOURCES += \
 	$$PWD/commands/createElementCommand.cpp \
 	$$PWD/commands/removeElementCommand.cpp \
 	$$PWD/commands/createRemoveCommandImplementation.cpp \
+	$$PWD/commands/createGroupCommand.cpp \
+	$$PWD/commands/insertIntoEdgeCommand.cpp \
 	$$PWD/commands/changePropertyCommand.cpp \
 	$$PWD/commands/changeParentCommand.cpp \
 	$$PWD/commands/renameCommand.cpp \
@@ -64,6 +69,7 @@ SOURCES += \
 	$$PWD/details/logicalModel.cpp \
 	$$PWD/details/logicalModelView.cpp \
 	$$PWD/details/modelsAssistApi.cpp \
+	$$PWD/details/renameDialog.cpp \
 	$$PWD/details/modelsImplementation/graphicalModelItem.cpp \
 	$$PWD/details/modelsImplementation/abstractModel.cpp \
 	$$PWD/details/modelsImplementation/abstractModelItem.cpp \

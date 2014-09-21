@@ -1,6 +1,6 @@
 #include "renameExplosionCommand.h"
 
-#include "dialogs/renameDialog.h"
+#include "models/details/renameDialog.h"
 #include "models/logicalModelAssistApi.h"
 #include "models/graphicalModelAssistApi.h"
 
