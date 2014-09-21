@@ -13,6 +13,7 @@ HEADERS += \
 	$$PWD/exception/exception.h \
 	$$PWD/roles.h \
 	$$PWD/settingsManager.h \
+	$$PWD/settingsListener.h \
 	$$PWD/kernelDeclSpec.h \
 	$$PWD/timeMeasurer.h \
 	$$PWD/version.h \
@@ -22,6 +23,7 @@ SOURCES += \
 	$$PWD/ids.cpp \
 	$$PWD/exception/exception.cpp \
 	$$PWD/settingsManager.cpp \
+	$$PWD/settingsListener.cpp \
 	$$PWD/timeMeasurer.cpp \
 	$$PWD/version.cpp \
 	$$PWD/logging.cpp \
