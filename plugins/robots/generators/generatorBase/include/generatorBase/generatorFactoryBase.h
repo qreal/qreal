@@ -145,6 +145,10 @@ public:
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
 
+	/// Produces a converter that returns an expression that obtain values of system variables
+	/// getting its name or the given string othrewise. Transfers ownership.
+	virtual simple::Binding::ConverterInterface *systemVariableNameConverter() const;
+
 	/// Produces converter for transformation a string into valid c++-style identifier
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *nameNormalizerConverter() const;

@@ -6,8 +6,10 @@ using namespace generatorBase;
 using namespace parts;
 
 NxtStringPropertyConverter::NxtStringPropertyConverter(Variables const &variables
-		, parts::Subprograms &subprograms)
+		, parts::Subprograms &subprograms
+		, ConverterInterface const &systemVariableNameConverter)
 	: mVariables(variables)
+	, mSystemVariableNameConverter(&systemVariableNameConverter)
 {
 	QString const formatStringCode =
 			"char *formatString(char *format, ...)\n"\
@@ -22,6 +24,11 @@ NxtStringPropertyConverter::NxtStringPropertyConverter(Variables const &variable
 	subprograms.appendManualSubprogram("formatString", formatStringCode);
 }
 
+NxtStringPropertyConverter::~NxtStringPropertyConverter()
+{
+	delete mSystemVariableNameConverter;
+}
+
 QString NxtStringPropertyConverter::convert(QString const &data) const
 {
 	QString const preparedString = StringPropertyConverter::convert(data);
@@ -31,12 +38,14 @@ QString NxtStringPropertyConverter::convert(QString const &data) const
 	// Nxt OSEK does not support floating point numbers printing, so hello hacks
 	// (we print each float variable like two int ones separated with '.')
 	QStringList hackedVariables;
-	foreach (QString const &variable, metVariables) {
+	for (QString const &variable : metVariables) {
+		/// @todo: variable name may not exactly match system variable but have it as substring.
+		QString const rolledExpression = mSystemVariableNameConverter->convert(variable);
 		if (mVariables.expressionType(variable) == enums::variableType::intType) {
-			hackedVariables << variable;
+			hackedVariables << rolledExpression;
 		} else {
-			hackedVariables << "(int)" + variable
-					<< QString("((int)((%1 - (int)%1) * 1000))").arg(variable);
+			hackedVariables << "(int)" + rolledExpression
+					<< QString("((int)((%1 - (int)%1) * 1000))").arg(rolledExpression);
 		}
 	}
 

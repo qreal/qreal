@@ -14,6 +14,8 @@ QString TrikDeviceVariables::variableTemplatePath(interpreterBase::robotModel::D
 		QString templateName = port.name();
 		templateName.remove("Port");
 		return "videosensors/" + templateName + ".t";
+	} else if (device.name() == "gyroscope" || device.name() == "accelerometer") {
+		return QString("%1/%2.t").arg(device.name(), port.reservedVariable());
 	}
 
 	return generatorBase::parts::DeviceVariables::variableTemplatePath(device, port);

@@ -3,9 +3,6 @@
         <file>templates/beep.t</file>
         <file>templates/break.t</file>
         <file>templates/continue.t</file>
-        <file>templates/detectLine.t</file>
-        <file>templates/lineDetectorToVariable.t</file>
-        <file>templates/initCamera.t</file>
         <file>templates/finalNodeMain.t</file>
         <file>templates/finalNodeSubprogram.t</file>
         <file>templates/function.t</file>
@@ -69,6 +66,12 @@
         <file>templates/sensors/infrared.t</file>
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/motion.t</file>
+        <file>templates/gyroscope/gyroscopeX.t</file>
+        <file>templates/gyroscope/gyroscopeY.t</file>
+        <file>templates/gyroscope/gyroscopeZ.t</file>
+        <file>templates/accelerometer/accelerometerX.t</file>
+        <file>templates/accelerometer/accelerometerY.t</file>
+        <file>templates/accelerometer/accelerometerZ.t</file>
         <file>templates/videosensors/LineSensorX.t</file>
         <file>templates/videosensors/LineSensorSize.t</file>
         <file>templates/videosensors/LineSensorCrossroads.t</file>
@@ -78,6 +81,15 @@
         <file>templates/videosensors/ColorSensorR.t</file>
         <file>templates/videosensors/ColorSensorG.t</file>
         <file>templates/videosensors/ColorSensorB.t</file>
+        <file>templates/videosensors/detectline.t</file>
+        <file>templates/videosensors/detectobject.t</file>
+        <file>templates/videosensors/detectcolor.t</file>
+        <file>templates/videosensors/lineDetectorToVariable.t</file>
+        <file>templates/videosensors/objectDetectorToVariable.t</file>
+        <file>templates/videosensors/colorDetectorToVariable.t</file>
+        <file>templates/videosensors/initlineSensor.t</file>
+        <file>templates/videosensors/initobjectSensor.t</file>
+        <file>templates/videosensors/initcolorSensor.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>
@@ -91,6 +103,11 @@
         <file>templates/subprograms/forwardDeclaration.t</file>
         <file>templates/subprograms/implementation.t</file>
         <file>templates/subprograms/implementationsSectionHeader.t</file>
+        <file>templates/threads/call.t</file>
+        <file>templates/threads/declarationsSectionHeader.t</file>
+        <file>templates/threads/forwardDeclaration.t</file>
+        <file>templates/threads/implementation.t</file>
+        <file>templates/threads/implementationsSectionHeader.t</file>
         <file>templates/drawing/setBackground.t</file>
         <file>templates/drawing/smile.t</file>
         <file>templates/drawing/sadSmile.t</file>

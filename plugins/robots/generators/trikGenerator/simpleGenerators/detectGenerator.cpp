@@ -1,15 +1,15 @@
-#include "detectLineGenerator.h"
+#include "detectGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
 
 using namespace trik::simple;
 
-DetectLineGenerator::DetectLineGenerator(qrRepo::RepoApi const &repo
+DetectGenerator::DetectGenerator(qrRepo::RepoApi const &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, qReal::Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
-			, "detectLine.t"
+			, "videosensors/detect" + repo.property(id, "Mode").toString() + ".t"
 			, {}
 			, parent)
 {

@@ -3,18 +3,22 @@
 #include <QtNetwork/QHostAddress>
 #include <QtCore/QFileInfo>
 
-#include <QtCore/QDebug>
-
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 #include <qrutils/inFile.h>
 
 using namespace trik;
 
 static uint const port = 8888;
 
-TcpRobotCommunicator::TcpRobotCommunicator()
+QString const errorMarker = "error: ";
+QString const infoMarker = "info: ";
+
+TcpRobotCommunicator::TcpRobotCommunicator(qReal::ErrorReporterInterface &errorReporter)
+	: mErrorReporter(errorReporter)
 {
+	QObject::connect(&mSocket, SIGNAL(readyRead()), this, SLOT(onIncomingData()), Qt::DirectConnection);
 }
 
 TcpRobotCommunicator::~TcpRobotCommunicator()
@@ -46,8 +50,6 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
 
-	disconnect();
-
 	return true;
 }
 
@@ -61,8 +63,6 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 	QString const command = "run:" + programName;
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
-
-	disconnect();
 
 	return true;
 }
@@ -78,8 +78,6 @@ bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
 
-	disconnect();
-
 	return true;
 }
 
@@ -94,24 +92,45 @@ bool TcpRobotCommunicator::stopRobot()
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten(3000);
 
-	disconnect();
-
 	return true;
+}
+
+void TcpRobotCommunicator::onIncomingData()
+{
+	QStringList const messages = QString(mSocket.readAll()).split('\n');
+	for (QString const &message : messages) {
+		processIncomingMessage(message);
+	}
+}
+
+void TcpRobotCommunicator::processIncomingMessage(QString const &message)
+{
+	if (message.startsWith(errorMarker)) {
+		mErrorReporter.addError(message.mid(errorMarker.length()));
+	} else if (message.startsWith(infoMarker)) {
+		mErrorReporter.addInformation(message.mid(infoMarker.length()));
+	} else {
+		QLOG_INFO() << "Incomming message of unknown type: " << message;
+	}
 }
 
 void TcpRobotCommunicator::connect()
 {
+	if (mSocket.state() == QTcpSocket::ConnectedState || mSocket.state() == QTcpSocket::ConnectingState) {
+		return;
+	}
+
 	QString const server = qReal::SettingsManager::value("TrikTcpServer").toString();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
-		qDebug() << "Unable to resolve host. Check server address and try again";
+		QLOG_ERROR() << "Unable to resolve host. Check server address and try again";
 		return;
 	}
 
 	mSocket.connectToHost(hostAddress, static_cast<quint16>(port));
 	bool const result = mSocket.waitForConnected(5000);
 	if (!result) {
-		qDebug() << mSocket.errorString();
+		QLOG_ERROR() << mSocket.errorString();
 	}
 }
 

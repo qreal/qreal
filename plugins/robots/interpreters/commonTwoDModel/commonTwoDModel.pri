@@ -33,6 +33,8 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/parts/motor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/rangeSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/touchSensor.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/gyroscope.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/accelerometer.h \
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -99,6 +101,8 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/motor.cpp \
 	$$PWD/src/robotModel/parts/rangeSensor.cpp \
 	$$PWD/src/robotModel/parts/touchSensor.cpp \
+	$$PWD/src/robotModel/parts/gyroscope.cpp \
+	$$PWD/src/robotModel/parts/accelerometer.cpp \
 
 FORMS += \
 	$$PWD/src/engine/view/d2Form.ui \
