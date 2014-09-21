@@ -14,7 +14,7 @@ void DrawPixelBlock::doJob(interpreterBase::robotModel::robotParts::Display &dis
 	auto nxtDisplay = static_cast<robotModel::parts::NxtDisplay *>(&display);
 	int const x = eval<int>("XCoordinatePix");
 	int const y = eval<int>("YCoordinatePix");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		nxtDisplay->drawPixel(x, y);
 		emit done(mNextBlockId);
 	}

@@ -16,7 +16,7 @@ void DrawLineBlock::doJob(interpreterBase::robotModel::robotParts::Display &disp
 	int const y1 = eval<int>("Y1CoordinateLine");
 	int const x2 = eval<int>("X2CoordinateLine");
 	int const y2 = eval<int>("Y2CoordinateLine");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		trikDisplay->drawLine(x1, y1, x2, y2);
 		emit done(mNextBlockId);
 	}

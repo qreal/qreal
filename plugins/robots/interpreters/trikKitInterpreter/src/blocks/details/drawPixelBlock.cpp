@@ -14,7 +14,7 @@ void DrawPixelBlock::doJob(interpreterBase::robotModel::robotParts::Display &dis
 	auto trikDisplay = static_cast<robotModel::parts::TrikDisplay *>(&display);
 	int const x = eval<int>("XCoordinatePix");
 	int const y = eval<int>("YCoordinatePix");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		trikDisplay->drawPixel(x, y);
 		emit done(mNextBlockId);
 	}

@@ -78,7 +78,7 @@ protected:
 	void unify(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs);
 
 	/// Reports given semantic error on a given node.
-	void reportError(const QSharedPointer<ast::Node> &node, QString const &errorMessage);
+	void reportError(QSharedPointer<ast::Node> const &node, QString const &errorMessage);
 
 	/// Returns true, if given identifier was declared (or seen before).
 	bool hasDeclaration(QString const &identifierName) const;

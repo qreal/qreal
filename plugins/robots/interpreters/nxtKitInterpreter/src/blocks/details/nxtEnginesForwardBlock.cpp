@@ -14,7 +14,7 @@ void NxtEnginesForwardBlock::run()
 {
 	int const power = eval<int>("Power");
 
-	if (wereParserErrors()) {
+	if (errorsOccured()) {
 		return;
 	}
 

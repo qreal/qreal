@@ -1,5 +1,7 @@
 #include "qrtext/lua/luaToolbox.h"
 
+#include <qslog/QsLog.h>
+
 #include "qrtext/src/lua/luaLexer.h"
 #include "qrtext/src/lua/luaParser.h"
 #include "qrtext/src/lua/luaSemanticAnalyzer.h"
@@ -23,7 +25,9 @@ LuaToolbox::~LuaToolbox()
 
 QVariant LuaToolbox::interpret(QSharedPointer<Node> const &root)
 {
-	return mInterpreter->interpret(root, *mAnalyzer);
+	auto const result = mInterpreter->interpret(root, *mAnalyzer);
+	reportErrors();
+	return result;
 }
 
 void LuaToolbox::interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
@@ -50,6 +54,8 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const
 
 		if (mErrors.isEmpty()) {
 			mParsedCache[id][propertyName] = code;
+		} else {
+			reportErrors();
 		}
 	}
 
@@ -107,4 +113,18 @@ void LuaToolbox::setVariableValue(QString const &name, QString const &initCode, 
 	}
 
 	mInterpreter->setVariableValue(name, value);
+}
+
+void LuaToolbox::reportErrors()
+{
+	for (qrtext::core::Error const &error : mErrors) {
+		if (error.severity() == Severity::internalError) {
+			QLOG_ERROR() << QString("Parser internal error at %1:%2 when parsing %3:%4: %5")
+					.arg(error.connection().line())
+					.arg(error.connection().column())
+					.arg(error.connection().id().toString())
+					.arg(error.connection().propertyName())
+					.arg(error.errorMessage());
+		}
+	}
 }

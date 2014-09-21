@@ -30,6 +30,8 @@ public:
 	virtual qReal::Id const id() const = 0;
 
 	/// Returns an information about the devices that must be configured for correct work of this block.
+	/// It is not constant because it may call eval() which will change the state of the text language interpreter.
+	/// So, now devices used by block can be specified as expressions.
 	virtual QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() = 0;
 
 	/// Called each time when control flow has reached the end block of the requested for stepping into diagram.

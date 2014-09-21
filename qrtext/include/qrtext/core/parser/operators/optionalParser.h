@@ -12,7 +12,7 @@ template<typename TokenType>
 class OptionalParser : public ParserInterface<TokenType> {
 public:
 	/// Constructor. Takes parser for optional part.
-	OptionalParser(ParserRef<TokenType> parser)
+	OptionalParser(ParserRef<TokenType> const &parser)
 		: mParser(parser)
 	{
 	}

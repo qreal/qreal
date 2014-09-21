@@ -12,7 +12,7 @@ template<typename TokenType, typename SemanticAction>
 class TokenParser : public ParserInterface<TokenType> {
 public:
 	/// Constructor. Takes token to parse and lambda function to execute if token is parsed successfully.
-	explicit TokenParser(TokenType token, SemanticAction semanticAction)
+	explicit TokenParser(TokenType token, SemanticAction const &semanticAction)
 		: mToken(token), mSemanticAction(semanticAction)
 	{
 	}
@@ -23,8 +23,7 @@ public:
 		Q_UNUSED(parserContext);
 
 		Token<TokenType> const token = tokenStream.next();
-		if (!tokenStream.expect(mToken))
-		{
+		if (!tokenStream.expect(mToken)) {
 			return wrap(nullptr);
 		}
 

@@ -61,11 +61,7 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 			}
 		}
 
-		if (!statements.isEmpty()) {
-			return interpret(statements.last(), semanticAnalyzer);
-		} else {
-			return QVariant();
-		}
+		return !statements.isEmpty() ? interpret(statements.last(), semanticAnalyzer) : QVariant();
 	} else if (root->is<ast::IntegerNumber>()) {
 		/// @todo Integer and float literals may differ from those recognized in toInt() and toDouble().
 		return as<ast::IntegerNumber>(root)->stringRepresentation().toInt();
@@ -89,7 +85,7 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 			auto name = as<ast::Identifier>(variable)->name();
 			mIdentifierValues.insert(name, interpretedValue);
 			return QVariant();
-		} if (variable->is<ast::IndexingExpression>()) {
+		} else if (variable->is<ast::IndexingExpression>()) {
 			operateOnIndexingExpression(variable
 					, semanticAnalyzer
 					, [this, &value, &semanticAnalyzer] (QString const &name, QStringList &table, int index) {

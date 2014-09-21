@@ -76,6 +76,9 @@ protected:
 	/// Reports error and emits "failure" signal.
 	void error(QString const &message);
 
+	/// Reports warning.
+	void warning(QString const &message);
+
 	/// Evaluates contents of a given property using text language interpreter and returns result.
 	template<typename T>
 	T eval(QString const &propertyName)
@@ -109,8 +112,11 @@ protected:
 	/// Evaluates given code using text language interpreter.
 	void evalCode(QString const &code);
 
+	/// Evaluates contents of a given property using text language interpreter.
+	void eval(QString const &propertyName);
+
 	/// Returns true, if there were parser/interpreter errors on last eval() call.
-	bool wereParserErrors() const;
+	bool errorsOccured() const;
 
 	/// Reference to a robot model which is used by this block.
 	robotModel::RobotModelInterface &model();

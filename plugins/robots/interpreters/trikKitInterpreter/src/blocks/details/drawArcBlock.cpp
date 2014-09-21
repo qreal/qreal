@@ -18,7 +18,7 @@ void DrawArcBlock::doJob(interpreterBase::robotModel::robotParts::Display &displ
 	int const height = eval<int>("HeightArc");
 	int const startAngle = eval<int>("StartAngle");
 	int const spanAngle = eval<int>("SpanAngle");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		trikDisplay->drawArc(x, y, width, height, startAngle, spanAngle);
 		emit done(mNextBlockId);
 	}

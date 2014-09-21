@@ -17,7 +17,7 @@ template<typename TokenType, typename Transformation>
 class TransformingParser : public ParserInterface<TokenType> {
 public:
 	/// Constructor. Takes parser and semantic action to execute on a result of a parser.
-	explicit TransformingParser(ParserRef<TokenType> parser, Transformation transformation)
+	TransformingParser(ParserRef<TokenType> const &parser, Transformation const &transformation)
 		: mTransformation(transformation), mParser(parser)
 	{
 	}

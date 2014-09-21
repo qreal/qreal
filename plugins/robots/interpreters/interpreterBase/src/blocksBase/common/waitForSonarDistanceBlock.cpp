@@ -16,7 +16,7 @@ WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(interpreterBase::robotModel
 void WaitForSonarDistanceBlock::responseSlot(int reading)
 {
 	int const targetDistance = eval<int>("Distance");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		processResponce(reading, targetDistance);
 	}
 }

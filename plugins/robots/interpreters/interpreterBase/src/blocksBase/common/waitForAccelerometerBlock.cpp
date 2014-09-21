@@ -14,7 +14,7 @@ WaitForAccelerometerSensorBlock::WaitForAccelerometerSensorBlock(RobotModelInter
 void WaitForAccelerometerSensorBlock::responseSlot(int reading)
 {
 	int result = eval<int>("Acceleration");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		processResponce(reading, result);
 	}
 }

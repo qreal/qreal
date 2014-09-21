@@ -6,7 +6,7 @@
     <message>
         <location filename="../../qrtext/include/qrtext/core/lexer/lexer.h" line="45"/>
         <source>Invalid regexp: </source>
-        <translation>Некорректное регулярное выражение:</translation>
+        <translation>Некорректное регулярное выражение: </translation>
     </message>
     <message>
         <location filename="../../qrtext/include/qrtext/core/lexer/lexer.h" line="137"/>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="160"/>
         <source>Currently interpreter allows only tables denoted by identifier and by integer expression index, as in &apos;a[1 + 2] = 3&apos;</source>
-        <translation>Сейчас интерпретатор поддерживает только таблицы, обозначаемые идентификатором и с целочисленным выражением в качестве индекса, например, &apos;a[1 + 2] = 3&apos;</translation>
+        <translation>Сейчас интерпретатор поддерживает именованные таблицы с целочисленным выражением в качестве индекса, например, &apos;a[1 + 2] = 3&apos;</translation>
     </message>
     <message>
         <location filename="../../qrtext/src/lua/luaParser.cpp" line="139"/>

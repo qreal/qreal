@@ -16,7 +16,7 @@ void DrawEllipseBlock::doJob(interpreterBase::robotModel::robotParts::Display &d
 	int const y = eval<int>("YCoordinateEllipse");
 	int const width = eval<int>("WidthEllipse");
 	int const height = eval<int>("HeightEllipse");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		trikDisplay->drawEllipse(x, y, width, height);
 		emit done(mNextBlockId);
 	}

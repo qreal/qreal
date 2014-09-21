@@ -11,7 +11,7 @@ template<typename TokenType, typename SemanticAction>
 class SimpleParser : public ParserInterface<TokenType> {
 public:
 	/// Constructor. Takes token to parse and lambda function to execute if token is parsed successfully.
-	SimpleParser(TokenType token, SemanticAction semanticAction)
+	SimpleParser(TokenType token, SemanticAction const &semanticAction)
 		: mToken(token), mSemanticAction(semanticAction)
 	{
 	}

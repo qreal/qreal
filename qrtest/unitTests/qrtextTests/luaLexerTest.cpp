@@ -160,12 +160,12 @@ TEST_F(LuaLexerTest, errorReporting)
 	EXPECT_EQ(LuaTokenTypes::identifier, result[0].token());
 	EXPECT_EQ(LuaTokenTypes::nilKeyword, result[1].token());
 
-	EXPECT_EQ(QString("Lexer error"), mErrors[0].errorMessage());
+	EXPECT_FALSE(mErrors[0].errorMessage().isEmpty());
 	EXPECT_EQ(Connection(6, 0, 6), mErrors[0].connection());
 	EXPECT_EQ(ErrorType::lexicalError, mErrors[0].errorType());
 	EXPECT_EQ(Severity::error, mErrors[0].severity());
 
-	EXPECT_EQ(QString("Lexer error"), mErrors[1].errorMessage());
+	EXPECT_FALSE(mErrors[1].errorMessage().isEmpty());
 	EXPECT_EQ(Connection(10, 0, 10), mErrors[1].connection());
 	EXPECT_EQ(ErrorType::lexicalError, mErrors[1].errorType());
 	EXPECT_EQ(Severity::error, mErrors[1].severity());
@@ -185,12 +185,12 @@ TEST_F(LuaLexerTest, multilineErrorReporting)
 	EXPECT_EQ(LuaTokenTypes::identifier, result[0].token());
 	EXPECT_EQ(LuaTokenTypes::nilKeyword, result[1].token());
 
-	EXPECT_EQ(QString("Lexer error"), mErrors[0].errorMessage());
+	EXPECT_FALSE(mErrors[0].errorMessage().isEmpty());
 	EXPECT_EQ(Connection(6, 0, 6), mErrors[0].connection());
 	EXPECT_EQ(ErrorType::lexicalError, mErrors[0].errorType());
 	EXPECT_EQ(Severity::error, mErrors[0].severity());
 
-	EXPECT_EQ(QString("Lexer error"), mErrors[1].errorMessage());
+	EXPECT_FALSE( mErrors[1].errorMessage().isEmpty());
 	EXPECT_EQ(Connection(11, 1, 1), mErrors[1].connection());
 	EXPECT_EQ(ErrorType::lexicalError, mErrors[1].errorType());
 	EXPECT_EQ(Severity::error, mErrors[1].severity());
@@ -235,7 +235,7 @@ TEST_F(LuaLexerTest, numericLiterals)
 
 	ASSERT_EQ(8, result.size());
 
-	for (auto token : result) {
+	for (auto const &token : result) {
 		EXPECT_EQ(LuaTokenTypes::floatLiteral, token.token());
 	}
 }

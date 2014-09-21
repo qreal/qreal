@@ -97,6 +97,8 @@ private:
 
 	void setVariableValue(QString const &name, QString const &initCode, QVariant const &value) override;
 
+	void reportErrors();
+
 	QList<core::Error> mErrors;
 
 	QScopedPointer<details::LuaLexer> mLexer;

@@ -17,11 +17,7 @@ using namespace qrtext::lua::types;
 bool LuaGeneralizationsTable::isGeneralization(QSharedPointer<TypeExpression> const &specific
 		, QSharedPointer<TypeExpression> const &general) const
 {
-	if (specific->is<Integer>() && general->is<Float>()) {
-		return true;
-	} else {
-		return isStructurallyEquivalent(specific, general);
-	}
+	return (specific->is<Integer>() && general->is<Float>()) || isStructurallyEquivalent(specific, general);
 }
 
 bool LuaGeneralizationsTable::isStructurallyEquivalent(QSharedPointer<TypeExpression> const &type1

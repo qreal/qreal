@@ -16,7 +16,7 @@ void DrawRectBlock::doJob(interpreterBase::robotModel::robotParts::Display &disp
 	int const y = eval<int>("YCoordinateRect");
 	int const width = eval<int>("WidthRect");
 	int const height = eval<int>("HeightRect");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		nxtDisplay->drawRect(x, y, width, height);
 		emit done(mNextBlockId);
 	}

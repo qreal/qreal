@@ -21,7 +21,7 @@ public:
 			, ParserContext<TokenType> &parserContext) const override
 	{
 		if (tokenStream.isEnd()) {
-			parserContext.reportError(QObject::tr("Unexpected end of file"));
+			parserContext.reportError(QObject::tr("Unexpected end of input"));
 			return wrap(nullptr);
 		}
 

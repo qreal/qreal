@@ -14,8 +14,8 @@ namespace core {
 /// Configurable lexer based on regular expressions. Takes token patterns, provides a list of tokens by given input
 /// string, list of lexer errors and a separate list of comments. Allows Unicode input and lexeme definitions.
 /// Requires that token redefinitions are sane, for example, keywords shall match the definition of identifiers.
-/// Does syntax check on passed regexps (and reports errors as InternalError error type), but does not check whole set
-/// of patterns for consistensy. Pattern match order is arbitrary, so there shall be no ambiquities in pattern
+/// Performs syntax check on passed regexps (and reports errors as InternalError error type), but does not check whole
+/// set of patterns for consistensy. Pattern match order is arbitrary, so there shall be no ambiquities in pattern
 /// definitions (except between keywords and identifiers, keywords are processed separately). Does not add whitespaces
 /// and newlines to output token stream, but does use them for connection and error recovery, so it is recommended to
 /// not fiddle with them much.
@@ -92,9 +92,9 @@ public:
 						}
 
 						if (match.hasMatch()) {
-							int relativeLastNewLineOffset = match.capturedEnd() - 1;
-							int absoluteLastNewLineOffset = absolutePosition + relativeLastNewLineOffset;
-							int absoluteTokenEnd = bestMatch.match.capturedEnd() - 1;
+							int const relativeLastNewLineOffset = match.capturedEnd() - 1;
+							int const absoluteLastNewLineOffset = absolutePosition + relativeLastNewLineOffset;
+							int const absoluteTokenEnd = bestMatch.match.capturedEnd() - 1;
 							tokenEndColumn = absoluteTokenEnd - absoluteLastNewLineOffset - 1;
 						} else {
 							tokenEndColumn += bestMatch.match.capturedLength() - 1;
@@ -103,7 +103,7 @@ public:
 						tokenEndColumn += bestMatch.match.capturedLength() - 1;
 					}
 
-					Range range(Connection(bestMatch.match.capturedStart(), line, column)
+					Range const range(Connection(bestMatch.match.capturedStart(), line, column)
 							, Connection(bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn));
 
 					if (bestMatch.candidate == TokenType::identifier) {
@@ -114,7 +114,7 @@ public:
 					result << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
 				} else if (bestMatch.candidate == TokenType::comment) {
 					tokenEndColumn += bestMatch.match.capturedLength() - 1;
-					Range range(Connection(bestMatch.match.capturedStart(), line, column)
+					Range const range(Connection(bestMatch.match.capturedStart(), line, column)
 							, Connection(bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn));
 
 					mComments << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
@@ -133,8 +133,8 @@ public:
 
 				absolutePosition += bestMatch.match.capturedLength();
 			} else {
-				mErrors << Error({absolutePosition, line, column}
-						, QObject::tr("Lexer error"), ErrorType::lexicalError, Severity::error);
+				auto const errorConnection = Connection(absolutePosition, line, column);
+				QString skippedSymbols;
 
 				// Panic mode: syncing on nearest whitespace or newline token.
 				while (!mWhitespaceRegexp.match(input, absolutePosition
@@ -145,7 +145,13 @@ public:
 				{
 					++absolutePosition;
 					++column;
+					skippedSymbols += input.at(absolutePosition);
 				}
+
+				mErrors << Error(errorConnection
+						, QObject::tr("Unknown sequence of symbols: ") + skippedSymbols
+						, ErrorType::lexicalError
+						, Severity::error);
 			}
 		}
 
@@ -175,7 +181,7 @@ private:
 		return TokenType::identifier;
 	}
 
-	CandidateMatch findBestMatch(const QString &input, int const absolutePosition) const
+	CandidateMatch findBestMatch(QString const &input, int const absolutePosition) const
 	{
 		TokenType candidate = TokenType::whitespace;
 		QRegularExpressionMatch bestMatch;

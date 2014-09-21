@@ -14,7 +14,7 @@ WaitForLightSensorBlock::WaitForLightSensorBlock(interpreterBase::robotModel::Ro
 void WaitForLightSensorBlock::responseSlot(int reading)
 {
 	int const result = eval<int>("Percents");
-	if (wereParserErrors()) {
+	if (errorsOccured()) {
 		processResponce(reading, result);
 	}
 }

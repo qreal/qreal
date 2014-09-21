@@ -2,6 +2,7 @@ CONFIG += c++11
 
 INCLUDEPATH += \
 	$$PWD/include/ \
+	$$PWD/../thirdparty/ \
 	$$PWD/.. \
 
 LIBS += -L$$PWD/../bin -lqrkernel -lqslog

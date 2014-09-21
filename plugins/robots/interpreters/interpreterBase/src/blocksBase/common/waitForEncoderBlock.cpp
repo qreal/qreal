@@ -15,7 +15,7 @@ WaitForEncoderBlock::WaitForEncoderBlock(RobotModelInterface &robotModel)
 void WaitForEncoderBlock::responseSlot(int reading)
 {
 	int const result = eval<int>("TachoLimit");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		processResponce(reading, result);
 	}
 }

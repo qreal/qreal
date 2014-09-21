@@ -6,7 +6,6 @@
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
-
 namespace interpreterCore {
 namespace textLanguage {
 
@@ -29,6 +28,8 @@ private slots:
 	void setReservedVariables();
 
 private:
+	void addIntrinsicFuctions();
+
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	utils::ComputableNumber::IntComputer const mTimeComputer;
 	QStringList mSpecialVariables;

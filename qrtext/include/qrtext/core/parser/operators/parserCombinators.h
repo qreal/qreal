@@ -33,19 +33,19 @@ inline ParserRef<TokenType> operator | (ParserRef<TokenType> const &a, ParserRef
 
 /// Operator to build optional rules. A ::= B? is described as ParserRef a = ~b;
 template<typename TokenType>
-inline ParserRef<TokenType> operator ~ (ParserRef<TokenType> a) {
+inline ParserRef<TokenType> operator ~ (ParserRef<TokenType> const &a) {
 	return ParserRef<TokenType>(new OptionalParser<TokenType>(a));
 }
 
 /// Operator to build Kleene star rules. A ::= B* is described as ParserRef a = *b;
 template<typename TokenType>
-inline ParserRef<TokenType> operator * (ParserRef<TokenType> a) {
+inline ParserRef<TokenType> operator * (ParserRef<TokenType> const &a) {
 	return ParserRef<TokenType>(new KleeneStarParser<TokenType>(a));
 }
 
 /// Operator to attach semantic rule to a token. A ::= t { ... } is described as ParserRef a = t >> []() { ... };
 template<typename TokenType, typename SemanticAction>
-inline ParserRef<TokenType> operator >>(TokenType token, SemanticAction semanticAction)
+inline ParserRef<TokenType> operator >>(TokenType token, SemanticAction const &semanticAction)
 {
 	typedef typename std::conditional<function_traits<SemanticAction>::arity == 0
 			, SimpleParser<TokenType, SemanticAction>
@@ -57,7 +57,7 @@ inline ParserRef<TokenType> operator >>(TokenType token, SemanticAction semantic
 
 /// Operator to attach semantic rule to a parser. A ::= B { ... } is described as ParserRef a = b >> []() { ... };
 template<typename TokenType, typename Transformation>
-inline ParserRef<TokenType> operator >>(ParserRef<TokenType> parser, Transformation transformation)
+inline ParserRef<TokenType> operator >>(ParserRef<TokenType> const &parser, Transformation const &transformation)
 {
 	return ParserRef<TokenType>(new TransformingParser<TokenType, Transformation>(parser, transformation));
 }

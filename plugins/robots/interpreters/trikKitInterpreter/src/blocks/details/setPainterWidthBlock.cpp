@@ -14,7 +14,7 @@ void SetPainterWidthBlock::doJob(interpreterBase::robotModel::robotParts::Displa
 {
 	auto trikDisplay = static_cast<robotModel::parts::TrikDisplay *>(&display);
 	int const width = eval<int>("Width");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		trikDisplay->setPainterWidth(width);
 		emit done(mNextBlockId);
 	}

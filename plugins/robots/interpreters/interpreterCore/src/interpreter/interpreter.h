@@ -39,7 +39,6 @@ public:
 	/// @param blocksFactoryManager - blocks factory, needed to create "code behind" objects for blocks on diagram.
 	/// @param robotModelManager - reference to currently selected robot model.
 	/// @param parser - parser that is used to analyze and evaluate textual expressions inside properties of blocks.
-	/// @param parser - new parser implementation.
 	/// @param connectToRobotAction - reference to action that connects to robot, interpreter manages its state
 	///        depending on success or failure of its own connection attempts.
 	Interpreter(qReal::GraphicalModelAssistInterface const &graphicalModelApi
@@ -48,7 +47,7 @@ public:
 			, qReal::ProjectManagementInterface const &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::LanguageToolboxInterface &newParser
+			, qrtext::LanguageToolboxInterface &parser
 			, QAction &connectToRobotAction
 			);
 

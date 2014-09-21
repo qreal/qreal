@@ -13,7 +13,7 @@ TrikEnginesBackwardBlock::TrikEnginesBackwardBlock(interpreterBase::robotModel::
 void TrikEnginesBackwardBlock::run()
 {
 	auto const result = -eval<int>("Power");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		for (Motor * const motor : parsePorts<Motor>()) {
 			motor->on(result);
 		}

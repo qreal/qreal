@@ -84,7 +84,7 @@ class LuaParser : public core::Parser<LuaTokenTypes> {
 public:
 	/// Constructor.
 	/// @param errors - error stream to report errors to.
-	LuaParser(QList<core::Error> &errors);
+	explicit LuaParser(QList<core::Error> &errors);
 
 private:
 	/// Returns parser for Lua grammar to be called by parent. Note that this method will be called during parent construction,

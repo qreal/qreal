@@ -4,8 +4,8 @@ using namespace interpreterCore::coreBlocks::details;
 
 void FunctionBlock::run()
 {
-	eval<int>("Body");
-	if (!wereParserErrors()) {
+	eval("Body");
+	if (!errorsOccured()) {
 		emit done(mNextBlockId);
 	}
 }

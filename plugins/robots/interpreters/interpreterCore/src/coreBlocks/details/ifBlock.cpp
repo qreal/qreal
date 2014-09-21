@@ -6,7 +6,7 @@ using namespace interpreterCore::coreBlocks::details;
 void IfBlock::run()
 {
 	bool const expressionValue = eval<bool>("Condition");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		emit done(expressionValue ? mNextBlockId : mElseBlockId);
 	}
 }

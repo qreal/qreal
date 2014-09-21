@@ -15,7 +15,7 @@ void DrawCircleBlock::doJob(interpreterBase::robotModel::robotParts::Display &di
 	int const x = eval<int>("XCoordinateCircle");
 	int const y = eval<int>("YCoordinateCircle");
 	int const radius = eval<int>("CircleRadius");
-	if (!wereParserErrors()) {
+	if (!errorsOccured()) {
 		nxtDisplay->drawCircle(x, y, radius);
 		emit done(mNextBlockId);
 	}

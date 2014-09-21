@@ -146,6 +146,11 @@ void Block::error(QString const &message)
 	emit failure();
 }
 
+void Block::warning(QString const &message)
+{
+	mErrorReporter->addWarning(message, id());
+}
+
 QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedDevices()
 {
 	return QMap<robotModel::PortInfo, robotModel::DeviceInfo>();
@@ -156,7 +161,12 @@ void Block::evalCode(QString const &code)
 	evalCode<int>(code);
 }
 
-bool Block::wereParserErrors() const
+void Block::eval(QString const &propertyName)
+{
+	eval<int>(propertyName);
+}
+
+bool Block::errorsOccured() const
 {
 	return !mParser->errors().isEmpty();
 }
@@ -176,21 +186,22 @@ void Block::reportParserErrors()
 		switch (error.severity()) {
 		case qrtext::core::Severity::critical:
 		case qrtext::core::Severity::error:
-		case qrtext::core::Severity::warning:
-			this->error(QString("%1:%2 %3")
+			mErrorReporter->addError((QString("%1:%2 %3")
 					.arg(error.connection().line())
 					.arg(error.connection().column())
-					.arg(error.errorMessage()));
+					.arg(error.errorMessage()))
+					, id());
+
+			break;
+		case qrtext::core::Severity::warning:
+			mErrorReporter->addWarning(QString("%1:%2 %3")
+					.arg(error.connection().line())
+					.arg(error.connection().column())
+					.arg(error.errorMessage())
+					, id());
 
 			break;
 		case qrtext::core::Severity::internalError:
-			QLOG_ERROR() << QString("Parser internal error at %1:%2 when parsing %3:%4: %5")
-					.arg(error.connection().line())
-					.arg(error.connection().column())
-					.arg(error.connection().id().toString())
-					.arg(error.connection().propertyName())
-					.arg(error.errorMessage());
-
 			break;
 		}
 	}

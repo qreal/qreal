@@ -26,12 +26,12 @@ public:
 	/// Constructor.
 	/// @param parser - debugger interface to a text language interpreter from which to take variable values.
 	/// @param parent - parent of a window as in Qt widget parent/child relations.
-	WatchListWindow(qrtext::DebuggerInterface const &interpreter, QWidget *parent = 0);
+	explicit WatchListWindow(qrtext::DebuggerInterface const &interpreter, QWidget *parent = 0);
 
 	/// Constructor left for backwards compatibility with old parser which is still used in visual interpreter.
 	/// @param parser - text language parser/interpreter from which to take variable values.
 	/// @param parent - parent of a window as in Qt widget parent/child relations.
-	WatchListWindow(utils::ExpressionsParser const *parser, QWidget *parent = 0);
+	explicit WatchListWindow(utils::ExpressionsParser const *parser, QWidget *parent = 0);
 
 	~WatchListWindow() override;
 
