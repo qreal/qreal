@@ -5,7 +5,7 @@
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
 #include "models/exploser.h"
-#include "editor/sdfRenderer.h"
+#include "plugins/pluginManager/sdfRenderer.h"
 
 class QGraphicsItem;
 

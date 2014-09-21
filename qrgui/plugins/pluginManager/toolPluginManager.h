@@ -31,6 +31,9 @@ public:
 	QList<ActionInfo> actions() const;
 	QList<QPair<QString, gui::PreferencesPage *> > preferencesPages() const;
 
+	/// Returns a list of hotkeys specified in plugins.
+	QList<HotKeyActionInfo> hotKeyActions() const;
+
 	/// Returns a multimap of project conveters to editors whoose diagrams they convert.
 	/// @warning The result is obtained each time from scratch when you call this method so better to memorize it.
 	QMultiMap<QString, ProjectConverter> projectConverters() const;
@@ -46,9 +49,6 @@ public:
 	void activeTabChanged(Id const & rootElementId);
 
 private:
-	QList<HotKeyActionInfo> hotKeyActions() const;
-	void setHotKeyActions() const;
-
 	/// Asks plugins for custom default settings and merges them with engine`s ones.
 	void loadDefaultSettings();
 

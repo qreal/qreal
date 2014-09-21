@@ -2,7 +2,7 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../../bin
 
-QT += xml
+QT += xml svg
 
 LIBS += -L$$PWD/../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -ltoolPluginInterface
 
@@ -26,6 +26,7 @@ HEADERS += \
 	$$PWD/proxyEditorManager.h \
 	$$PWD/pattern.h \
 	$$PWD/explosion.h \
+	$$PWD/sdfRenderer.h \
 	$$PWD/details/patternParser.h \
 	$$PWD/details/interpreterElementImpl.h \
 	$$PWD/details/interpreterPortImpl.h \
@@ -37,6 +38,7 @@ SOURCES += \
 	$$PWD/proxyEditorManager.cpp \
 	$$PWD/pattern.cpp \
 	$$PWD/explosion.cpp \
+	$$PWD/sdfRenderer.cpp \
 	$$PWD/details/patternParser.cpp \
 	$$PWD/details/interpreterElementImpl.cpp \
 	$$PWD/details/interpreterPortImpl.cpp \

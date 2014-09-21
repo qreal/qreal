@@ -14,7 +14,8 @@
 #include "plugins/editorPluginInterface/elementImpl.h"
 #include "plugins/editorPluginInterface/labelInterface.h"
 #include "plugins/editorPluginInterface/elementRepoInterface.h"
-#include "editor/sdfRenderer.h"
+
+#include "plugins/pluginManager/sdfRenderer.h"
 
 namespace qReal {
 

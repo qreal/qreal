@@ -36,7 +36,6 @@ HEADERS += \
 	$$PWD/edgeElement.h \
 	$$PWD/element.h \
 	$$PWD/nodeElement.h \
-	$$PWD/sdfRenderer.h \
 	$$PWD/label.h \
 	$$PWD/labelFactory.h \
 	$$PWD/contextMenuAction.h \
@@ -88,7 +87,6 @@ SOURCES += \
 	$$PWD/edgeElement.cpp \
 	$$PWD/element.cpp \
 	$$PWD/nodeElement.cpp \
-	$$PWD/sdfRenderer.cpp \
 	$$PWD/label.cpp \
 	$$PWD/labelFactory.cpp \
 	$$PWD/contextMenuAction.cpp \

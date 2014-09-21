@@ -27,7 +27,7 @@ class SdfRenderer : public SdfRendererInterface
 
 public:
 	SdfRenderer();
-	SdfRenderer(QString const path);
+	explicit SdfRenderer(QString const path);
 	~SdfRenderer();
 
 	bool load (QString const &filename);

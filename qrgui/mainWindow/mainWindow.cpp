@@ -1991,6 +1991,10 @@ void MainWindow::initToolPlugins()
 		}
 	}
 
+	for (HotKeyActionInfo const &actionInfo : mToolManager.hotKeyActions()) {
+		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
+	}
+
 	if (mUi->generatorsToolbar->actions().isEmpty()) {
 		mUi->generatorsToolbar->hide();
 	}

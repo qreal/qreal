@@ -12,10 +12,10 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 
-#include "editor/sdfRenderer.h"
 #include "editor/element.h"
 #include "editor/edgeElement.h"
 #include "editor/embedded/linkers/embeddedLinker.h"
+#include "plugins/pluginManager/sdfRenderer.h"
 #include "plugins/editorPluginInterface/elementImpl.h"
 
 #include "editor/private/sceneGridHandler.h"

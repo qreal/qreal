@@ -15,7 +15,6 @@ ToolPluginManager::ToolPluginManager()
 	mPlugins = mPluginManager.loadAllPlugins<ToolPluginInterface>();
 
 	loadDefaultSettings();
-	setHotKeyActions();
 }
 
 ToolPluginManager::~ToolPluginManager()
@@ -50,13 +49,6 @@ QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
 	}
 
 	return result;
-}
-
-void ToolPluginManager::setHotKeyActions() const
-{
-	for (HotKeyActionInfo const &actionInfo : hotKeyActions()) {
-		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
-	}
 }
 
 void ToolPluginManager::loadDefaultSettings()
