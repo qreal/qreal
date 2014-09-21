@@ -19,8 +19,9 @@ PreferencesEditorPage::PreferencesEditorPage(QWidget *parent)
 //	, mActivateGridAction(activateGridAction)
 //	, mActivateAlignmentAction(activateAlignmentAction)
 {
-	setWindowIcon(QIcon(":/icons/preferences/editor.png"));
 	mUi->setupUi(this);
+	setObjectName("preferencesEditorPage");
+	setWindowIcon(QIcon(":/icons/preferences/editor.png"));
 
 	// changing grid size in QReal:Robots is forbidden
 	connect(mUi->gridWidthSlider, SIGNAL(valueChanged(int)), this, SLOT(widthGridSliderMoved(int)));

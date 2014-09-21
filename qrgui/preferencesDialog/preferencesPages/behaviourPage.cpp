@@ -4,21 +4,24 @@
 #include <QtCore/QDir>
 
 #include <qrkernel/settingsManager.h>
+#include <qrutils/uxInfo/uxInfo.h>
 
 using namespace qReal;
 
 PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
-		: PreferencesPage(parent)
-		, mUi(new Ui::PreferencesBehaviourPage)
+	: PreferencesPage(parent)
+	, mUi(new Ui::PreferencesBehaviourPage)
 {
-	setWindowIcon(QIcon(":/icons/preferences/behaviour.png"));
 	mUi->setupUi(this);
+	setObjectName("preferencesBehaviourPage");
+	setWindowIcon(QIcon(":/icons/preferences/behaviour.png"));
 
 	initLanguages();
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
-	connect(mUi->collectErgonomicValuesCheckBox, SIGNAL(clicked(bool))
-			, &mFilterObject, SLOT(setStatusCollectUsabilityStatistics(bool)));
+	/// @todo: Get rid of notifying components directly
+	connect(mUi->collectErgonomicValuesCheckBox, &QAbstractButton::clicked
+			, [](bool status) { utils::UXInfo::setStatus(status); });
 	restoreSettings();
 }
 
@@ -89,7 +92,8 @@ void PreferencesBehaviourPage::restoreSettings()
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
 	mUi->paletteTabCheckBox->setVisible(editorsLoadedCount != 1);
-	mFilterObject.setStatusCollectUsabilityStatistics(mUi->collectErgonomicValuesCheckBox->isChecked());
+	/// @todo: Get rid of notifying components directly
+	utils::UXInfo::setStatus(mUi->collectErgonomicValuesCheckBox->isChecked());
 }
 
 void PreferencesBehaviourPage::showAutoSaveBox(bool show)

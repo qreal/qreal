@@ -26,10 +26,12 @@ public:
 	~PreferencesDialog();
 
 	void init();
-//	void updatePluginDependendSettings();
 
 	void registerPage(QString const &pageName, PreferencesPage * const page);
 	void switchCurrentPage(QString const &pageName);
+
+	/// Returns a list of registered preferences pages.
+	QList<PreferencesPage *> pages() const;
 
 protected:
 	void changeEvent(QEvent *e);

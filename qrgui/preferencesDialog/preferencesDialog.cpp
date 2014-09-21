@@ -6,11 +6,9 @@
 #include <qrutils/qRealFileDialog.h>
 
 #include "preferencesPages/behaviourPage.h"
-#include "preferencesPages/debuggerPage.h"
 #include "preferencesPages/editorPage.h"
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/featuresPage.h"
-#include "hotKeyManager/hotKeyManagerPage.h"
 
 using namespace qReal::gui;
 using namespace utils;
@@ -34,7 +32,6 @@ void PreferencesDialog::init()
 	// Debugger page removed due to #736
 	PreferencesMiscellaniousPage *miscellaniousPage = new PreferencesMiscellaniousPage(mUi->pageContentWidget);
 	PreferencesPage *editorPage = new PreferencesEditorPage(mUi->pageContentWidget);
-	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(mUi->pageContentWidget);
 
 	connect(mUi->listWidget, &QListWidget::clicked, this, &PreferencesDialog::chooseTab);
 	connect(mUi->listWidget, &QListWidget::activated, this, &PreferencesDialog::chooseTab);
@@ -47,17 +44,11 @@ void PreferencesDialog::init()
 	registerPage(tr("Behaviour"), behaviourPage);
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
-	registerPage(tr("Shortcuts"), hotKeyManagerPage);
 
 	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	mUi->listWidget->setCurrentRow(currentTab);
 	chooseTab(mUi->listWidget->currentIndex());
 }
-
-//void PreferencesDialog::updatePluginDependendSettings()
-//{
-//	setWindowIcon(BrandManager::applicationIcon());
-//}
 
 void PreferencesDialog::applyChanges()
 {
@@ -138,6 +129,12 @@ void PreferencesDialog::switchCurrentPage(QString const &tabName)
 		mUi->pageContentWidget->setCurrentIndex(currentIndex + 1);
 	}
 }
+
+QList<PreferencesPage *> PreferencesDialog::pages() const
+{
+	return mCustomPages.values();
+}
+
 void PreferencesDialog::exportSettings()
 {
 	QString fileNameForExport = QRealFileDialog::getSaveFileName("SaveEnginePreferences", this

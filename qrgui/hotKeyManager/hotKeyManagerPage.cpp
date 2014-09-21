@@ -24,6 +24,7 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 	, mCurrentModifiers(Qt::NoModifier)
 {
 	mUi->setupUi(this);
+	setObjectName("preferencesHotKeyManagerPage");
 	setWindowIcon(QIcon(":/icons/hotkeys.png"));
 
 	mUi->hotKeysTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);

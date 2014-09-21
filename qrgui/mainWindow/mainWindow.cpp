@@ -43,7 +43,10 @@
 #include "editor/editorView.h"
 #include "editor/sceneCustomizer.h"
 #include "editor/element.h"
+
 #include "hotKeyManager/hotKeyManager.h"
+#include "hotKeyManager/hotKeyManagerPage.h"
+
 #include "brandManager/brandManager.h"
 
 #include "errorReporter.h"
@@ -1949,6 +1952,8 @@ void MainWindow::initPluginsAndStartWidget()
 	initToolPlugins();
 	BrandManager::configure(&mToolManager);
 	mPreferencesDialog.setWindowIcon(BrandManager::applicationIcon());
+	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(this);
+	mPreferencesDialog.registerPage(tr("Shortcuts"), hotKeyManagerPage);
 
 	if (!mProjectManager->restoreIncorrectlyTerminated() &&
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))

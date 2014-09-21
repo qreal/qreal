@@ -31,7 +31,6 @@ private:
 	void initLanguages();
 
 	Ui::PreferencesBehaviourPage *mUi;
-	FilterObject mFilterObject;
 	bool mUsabilityTestingMode;
 	QString mOldLanguage;
 };
