@@ -149,8 +149,8 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikLed")
 			<< id("TrikSystem")
 			<< id("TrikInitCamera")
-			<< id("TrikDetectLine")
-			<< id("TrikLineDetectorToVariable")
+			<< id("TrikDetect")
+			<< id("TrikDetectorToVariable")
 			;
 
 	result
@@ -197,8 +197,8 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikSay")
 				<< id("TrikSystem")
 				<< id("TrikInitCamera")
-				<< id("TrikDetectLine")
-				<< id("TrikLineDetectorToVariable")
+				<< id("TrikDetect")
+				<< id("TrikDetectorToVariable")
 				<< id("TrikWaitForMotion")
 				;
 	}

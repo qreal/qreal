@@ -193,7 +193,8 @@ QList<QString> TextManager::extensionDescriptions() const
 
 void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &genName)
 {
-	Q_ASSERT(!fileInfo.baseName().isEmpty());
+	/// @todo: Uncomment it
+	// Q_ASSERT(!fileInfo.baseName().isEmpty());
 
 	if (dynamic_cast<EditorView *>(mMainWindow->getCurrentTab())) {
 		QString const filePath = fileInfo.absoluteFilePath();
