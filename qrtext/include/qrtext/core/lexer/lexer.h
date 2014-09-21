@@ -28,7 +28,8 @@ namespace core {
 /// TokenType::identifier, othrewise template instantiation will fail.
 /// TokenType::comment shall be the only token that can span multiple lines, so multiline comments are not supported.
 template<typename TokenType>
-class Lexer {
+class Lexer
+{
 public:
 	/// Constructor.
 	/// @param patterns - object containing token patterns.

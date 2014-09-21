@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents arithmetic negation operator (-).
-class QRTEXT_EXPORT UnaryMinus : public UnaryOperator {
+class QRTEXT_EXPORT UnaryMinus : public UnaryOperator
+{
 };
 
 }

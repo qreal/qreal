@@ -7,7 +7,8 @@ namespace lua {
 namespace types {
 
 /// Represents integer number type.
-class Integer : public Number {
+class Integer : public Number
+{
 };
 
 }

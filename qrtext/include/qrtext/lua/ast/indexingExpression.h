@@ -6,7 +6,8 @@ namespace qrtext {
 namespace lua {
 namespace ast {
 
-class QRTEXT_EXPORT IndexingExpression : public Expression {
+class QRTEXT_EXPORT IndexingExpression : public Expression
+{
 public:
 	IndexingExpression(QSharedPointer<Expression> const &table, QSharedPointer<Expression> const &indexer)
 		: mTable(table), mIndexer(indexer)

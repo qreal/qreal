@@ -12,7 +12,8 @@ namespace core {
 /// A point in code. Characterized by absolute offset from the beginning of a code fragment (in symbols), line and
 /// column. Optionally can contain id of a node and name of a property from where this code originates.
 /// Note that coordinates are in symbols, not in bytes.
-class QRTEXT_EXPORT Connection {
+class QRTEXT_EXPORT Connection
+{
 public:
 	/// Constructor.
 	/// @param absolutePosition - position in symbols from the beginning of a text fragment being analyzed.

@@ -7,7 +7,8 @@ namespace core {
 namespace ast {
 
 /// Represents unary operator.
-class UnaryOperator : public Expression {
+class UnaryOperator : public Expression
+{
 public:
 	/// Returns operand.
 	QSharedPointer<Node> operand() const {

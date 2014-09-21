@@ -8,7 +8,8 @@ namespace lua {
 namespace ast {
 
 /// Represents method call expression.
-class QRTEXT_EXPORT MethodCall : public Expression {
+class QRTEXT_EXPORT MethodCall : public Expression
+{
 public:
 	/// Constructor.
 	/// @param object - expression which calculates to object of a method.

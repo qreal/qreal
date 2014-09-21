@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents multiplication operator (*).
-class QRTEXT_EXPORT Multiplication : public BinaryOperator {
+class QRTEXT_EXPORT Multiplication : public BinaryOperator
+{
 };
 
 }

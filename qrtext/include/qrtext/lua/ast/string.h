@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents Lua string literal.
-class QRTEXT_EXPORT String : public Expression {
+class QRTEXT_EXPORT String : public Expression
+{
 public:
 	/// Constructor.
 	/// @param string - value of a literal (without quotes).

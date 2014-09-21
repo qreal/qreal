@@ -7,7 +7,8 @@ namespace lua {
 namespace types {
 
 /// General number type that has two subtypes --- integer and float.
-class Number : public core::types::TypeExpression {
+class Number : public core::types::TypeExpression
+{
 };
 
 }

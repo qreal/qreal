@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents subtraction operator (-).
-class QRTEXT_EXPORT Subtraction : public BinaryOperator {
+class QRTEXT_EXPORT Subtraction : public BinaryOperator
+{
 };
 
 }

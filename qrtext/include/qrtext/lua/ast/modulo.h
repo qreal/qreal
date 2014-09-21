@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents modulo operator (%).
-class QRTEXT_EXPORT Modulo : public BinaryOperator {
+class QRTEXT_EXPORT Modulo : public BinaryOperator
+{
 };
 
 }

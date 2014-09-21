@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents equality operator (==).
-class QRTEXT_EXPORT Equality : public BinaryOperator {
+class QRTEXT_EXPORT Equality : public BinaryOperator
+{
 };
 
 }

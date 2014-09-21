@@ -12,7 +12,8 @@ namespace lua {
 namespace details {
 
 /// Semantic analyzer for Lua language.
-class QRTEXT_EXPORT LuaSemanticAnalyzer : public core::SemanticAnalyzer {
+class QRTEXT_EXPORT LuaSemanticAnalyzer : public core::SemanticAnalyzer
+{
 public:
 	/// Constructor.
 	/// @param errors - error stream to report errors to.

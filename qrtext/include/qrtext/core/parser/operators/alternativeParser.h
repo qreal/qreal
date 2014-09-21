@@ -9,7 +9,8 @@ namespace core {
 /// Elementary parser for parsing alternatives in form of A ::= B | C. Alternatives shall have distinct FIRST sets.
 /// Returns either first or second parser result, or nullptr if both parsers failed.
 template<typename TokenType>
-class AlternativeParser : public ParserInterface<TokenType> {
+class AlternativeParser : public ParserInterface<TokenType>
+{
 public:
 	/// Constructor. Takes parsers for two alternatives.
 	AlternativeParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)

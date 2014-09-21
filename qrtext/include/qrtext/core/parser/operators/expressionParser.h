@@ -10,7 +10,8 @@ namespace core {
 
 /// Parser for expressions using Precedence Climbing algorithm, see http://www.engr.mun.ca/~theo/Misc/exp_parsing.htm.
 template<typename TokenType>
-class ExpressionParser : public ParserInterface<TokenType> {
+class ExpressionParser : public ParserInterface<TokenType>
+{
 public:
 	/// Constructor for general case, takes precedence table, parser for primary expression and parser for binary
 	/// operator.

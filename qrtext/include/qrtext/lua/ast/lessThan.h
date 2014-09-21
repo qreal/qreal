@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents "less than" operator (<).
-class QRTEXT_EXPORT LessThan : public BinaryOperator {
+class QRTEXT_EXPORT LessThan : public BinaryOperator
+{
 };
 
 }

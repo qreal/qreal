@@ -6,7 +6,8 @@
 namespace qrtext {
 
 /// Interface for debuggers, watchers and other tools requiring direct access to text language interpterer.
-class DebuggerInterface {
+class DebuggerInterface
+{
 public:
 	virtual ~DebuggerInterface() {}
 

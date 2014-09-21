@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents function call expression.
-class QRTEXT_EXPORT FunctionCall : public Expression {
+class QRTEXT_EXPORT FunctionCall : public Expression
+{
 public:
 	/// Constructor.
 	/// @param function - an expression which calculates to a function to call.

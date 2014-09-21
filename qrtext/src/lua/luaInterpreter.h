@@ -15,7 +15,8 @@ namespace lua {
 namespace details {
 
 /// Interpreter of AST for Lua language.
-class LuaInterpreter {
+class LuaInterpreter
+{
 public:
 	/// Constructor.
 	/// @param errors - error stream to report errors to.

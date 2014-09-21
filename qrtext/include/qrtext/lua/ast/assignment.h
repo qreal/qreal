@@ -8,7 +8,8 @@ namespace lua {
 namespace ast {
 
 /// Represents single assignment.
-class Assignment : public Node {
+class Assignment : public Node
+{
 public:
 	/// Constructor.
 	/// @param variable - left-hand side expression: variable or array slice.

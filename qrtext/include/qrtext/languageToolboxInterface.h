@@ -13,7 +13,8 @@ namespace qrtext {
 
 /// Interface for language toolboxes (toolbox is a facade that integrates lexer, parser, semantic analyzer and
 /// interpreter, and provides convenient methods to use them).
-class LanguageToolboxInterface : public DebuggerInterface {
+class LanguageToolboxInterface : public DebuggerInterface
+{
 public:
 	virtual ~LanguageToolboxInterface() {}
 

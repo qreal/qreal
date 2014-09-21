@@ -9,15 +9,23 @@
         <translation>Некорректное регулярное выражение: </translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/lexer/lexer.h" line="137"/>
+        <location filename="../../qrtext/include/qrtext/core/lexer/lexer.h" line="152"/>
+        <source>Unknown sequence of symbols: </source>
+        <translation>Неизвестная последовательность символов: </translation>
+    </message>
+    <message>
         <source>Lexer error</source>
-        <translation>Лексическая ошибка</translation>
+        <translation type="vanished">Лексическая ошибка</translation>
+    </message>
+    <message>
+        <source>Unexpected end of file</source>
+        <translation type="vanished">Неожиданный конец файла</translation>
     </message>
     <message>
         <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="24"/>
         <location filename="../../qrtext/include/qrtext/core/parser/operators/concatenationParser.h" line="27"/>
-        <source>Unexpected end of file</source>
-        <translation>Неожиданный конец файла</translation>
+        <source>Unexpected end of input</source>
+        <translation>Неожиданный конец текста</translation>
     </message>
     <message>
         <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="30"/>
@@ -46,13 +54,13 @@
         <translation>Несоответствие типов.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="101"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="132"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="97"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="128"/>
         <source>This construction is not supported by interpreter</source>
         <translation>Конструкция не поддерживается интерпретатором</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="160"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="156"/>
         <source>Currently interpreter allows only tables denoted by identifier and by integer expression index, as in &apos;a[1 + 2] = 3&apos;</source>
         <translation>Сейчас интерпретатор поддерживает именованные таблицы с целочисленным выражением в качестве индекса, например, &apos;a[1 + 2] = 3&apos;</translation>
     </message>

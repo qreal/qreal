@@ -8,7 +8,8 @@ namespace lua {
 namespace ast {
 
 /// Represents field initialization in table constructor.
-class QRTEXT_EXPORT FieldInitialization : public Node {
+class QRTEXT_EXPORT FieldInitialization : public Node
+{
 public:
 	/// Constructor for initialization in form of "key = value", like "x = 1" or "[30] = 23".
 	/// @param key - table key.

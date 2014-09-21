@@ -10,7 +10,8 @@ namespace core {
 namespace types {
 
 /// Base class for all type expressions.
-class QRTEXT_EXPORT TypeExpression {
+class QRTEXT_EXPORT TypeExpression
+{
 public:
 	virtual ~TypeExpression() {}
 

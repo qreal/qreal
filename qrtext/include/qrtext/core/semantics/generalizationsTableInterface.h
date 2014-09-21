@@ -6,7 +6,8 @@ namespace qrtext {
 namespace core {
 
 /// Interface that tells type inferrer which type is a subtype of which. Shall be implemented for concrete language.
-class GeneralizationsTableInterface {
+class GeneralizationsTableInterface
+{
 public:
 	virtual ~GeneralizationsTableInterface() {}
 

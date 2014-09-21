@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents logical and operator (and).
-class QRTEXT_EXPORT LogicalAnd : public BinaryOperator {
+class QRTEXT_EXPORT LogicalAnd : public BinaryOperator
+{
 };
 
 }

@@ -7,7 +7,8 @@ namespace core {
 namespace ast {
 
 /// Base class for all expressions.
-class Expression : public Node {
+class Expression : public Node
+{
 };
 
 }

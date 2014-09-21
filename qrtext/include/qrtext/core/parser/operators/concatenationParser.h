@@ -12,7 +12,8 @@ namespace core {
 /// it will return result of the other parser (connection of discardable will be lost), if both are discardable,
 /// it will return discardable with corrected connection, if both are not discardable, it will return TemporaryPair.
 template<typename TokenType>
-class ConcatenationParser : public ParserInterface<TokenType> {
+class ConcatenationParser : public ParserInterface<TokenType>
+{
 public:
 	/// Constructor. Takes parsers to concatenate.
 	ConcatenationParser(ParserRef<TokenType> const &parser1, ParserRef<TokenType> const &parser2)

@@ -7,7 +7,8 @@ namespace lua {
 namespace types {
 
 /// Represents floating point number type.
-class Float : public Number {
+class Float : public Number
+{
 };
 
 }

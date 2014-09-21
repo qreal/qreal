@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents integer division operator (//).
-class QRTEXT_EXPORT IntegerDivision : public BinaryOperator {
+class QRTEXT_EXPORT IntegerDivision : public BinaryOperator
+{
 };
 
 }

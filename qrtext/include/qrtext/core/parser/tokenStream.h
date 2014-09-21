@@ -10,7 +10,8 @@ namespace core {
 
 /// Stream of tokens.
 template<typename TokenType>
-class TokenStream {
+class TokenStream
+{
 public:
 	/// Constructor. Takes list of tokens from lexer and a reference to error stream where to put errors.
 	TokenStream(QList<Token<TokenType>> const &tokenList, QList<Error> &errorList)

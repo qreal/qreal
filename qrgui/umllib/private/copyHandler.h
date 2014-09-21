@@ -13,7 +13,8 @@ class GraphicalModelAssistApi;
 class NodeElement;
 // class qReal::models::GraphicalModelAssistApi; because warning
 
-class CopyHandler {
+class CopyHandler
+{
 public:
 	/**
 	 * Constructs a CopyHandler.

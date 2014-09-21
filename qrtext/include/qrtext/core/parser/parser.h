@@ -17,7 +17,8 @@ namespace core {
 /// Generic parser. Uses grammar that is passed to constructor to parse a stream of tokens. Typical use case is to
 /// subclass this class for concrete language and provide its grammar in constructor of a subclass.
 template<typename TokenType>
-class Parser {
+class Parser
+{
 public:
 	/// Constructor. Takes grammar of a language to parse in form of a ParserInterface and a list of errors where to put
 	/// parser errors.

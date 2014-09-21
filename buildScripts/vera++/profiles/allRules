@@ -6,4 +6,5 @@ set rules {
   LineLength
   NoSpacesAtTheStart
   NoRelativePathsInIncludes
+  OpeningParethesisForClass
 }

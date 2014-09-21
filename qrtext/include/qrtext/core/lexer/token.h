@@ -10,7 +10,8 @@ namespace core {
 /// Token. Has type, location in source code and string representation. Parameterized by enum class containing types
 /// of tokens.
 template<typename TokenType>
-class Token {
+class Token
+{
 public:
 	/// Constructor.
 	/// @param tokenType - token type.

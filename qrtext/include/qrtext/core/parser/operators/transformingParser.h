@@ -14,7 +14,8 @@ namespace core {
 /// semantic rules to a grammar. Semantic action may opt to discard a node, in such case it shall return nullptr.
 /// Note that semantic action will be called even if parser failed, in such case nullptr will be passed.
 template<typename TokenType, typename Transformation>
-class TransformingParser : public ParserInterface<TokenType> {
+class TransformingParser : public ParserInterface<TokenType>
+{
 public:
 	/// Constructor. Takes parser and semantic action to execute on a result of a parser.
 	TransformingParser(ParserRef<TokenType> const &parser, Transformation const &transformation)

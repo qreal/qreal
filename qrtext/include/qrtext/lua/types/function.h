@@ -7,7 +7,8 @@ namespace lua {
 namespace types {
 
 /// Reresents function type.
-class Function : public core::types::TypeExpression {
+class Function : public core::types::TypeExpression
+{
 public:
 	/// Constructor.
 	/// @param returnType - type expression denoting return type of a function.

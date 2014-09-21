@@ -9,7 +9,8 @@ namespace core {
 /// Elementary parser that parses given token and executes given semantic action on a result. Semantic action takes
 /// parsed token as a parameter.
 template<typename TokenType, typename SemanticAction>
-class TokenParser : public ParserInterface<TokenType> {
+class TokenParser : public ParserInterface<TokenType>
+{
 public:
 	/// Constructor. Takes token to parse and lambda function to execute if token is parsed successfully.
 	explicit TokenParser(TokenType token, SemanticAction const &semanticAction)

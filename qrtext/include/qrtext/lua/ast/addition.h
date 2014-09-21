@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents addition operator.
-class Addition : public BinaryOperator {
+class Addition : public BinaryOperator
+{
 };
 
 }

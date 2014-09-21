@@ -7,13 +7,15 @@ namespace qrtext {
 namespace core {
 
 /// Associativity of binary operator. For example, "+" is usually left associative, i.e. 1+2+3 is parsed as (1+2)+3.
-enum class Associativity {
+enum class Associativity
+{
 	left
 	, right
 };
 
 /// Arity of operator. Now qrtext supports only unary and binary operators.
-enum class Arity {
+enum class Arity
+{
 	unary
 	, binary
 };

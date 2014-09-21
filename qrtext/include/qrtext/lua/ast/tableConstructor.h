@@ -8,7 +8,8 @@ namespace lua {
 namespace ast {
 
 /// Represents table constructor expression.
-class QRTEXT_EXPORT TableConstructor : public Expression {
+class QRTEXT_EXPORT TableConstructor : public Expression
+{
 public:
 	/// Constructor.
 	/// @param initializers - a list of field initializers.

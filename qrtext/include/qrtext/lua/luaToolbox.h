@@ -31,7 +31,8 @@ typedef core::Error Error;
 /// Note that types of variables may change during parsing next chunks, so, for example, after parsing "a = 123" type
 /// of "a" will be inferred as Integer, but after parsing "a = 1.0" it will be changed to Float. Generators may reliably
 /// use type information only when all code in a program is parsed.
-class QRTEXT_EXPORT LuaToolbox : public LanguageToolboxInterface {
+class QRTEXT_EXPORT LuaToolbox : public LanguageToolboxInterface
+{
 public:
 	/// Constructor.
 	LuaToolbox();

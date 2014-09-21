@@ -13,7 +13,8 @@ namespace core {
 namespace ast {
 
 /// Base class for all abstract syntax tree nodes.
-class QRTEXT_EXPORT Node {
+class QRTEXT_EXPORT Node
+{
 public:
 	virtual ~Node() {}
 

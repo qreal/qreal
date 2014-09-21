@@ -13,7 +13,8 @@ namespace types {
 /// A type that can be one of a set of types. Type variable can be constrained by a given set of types, reducing its
 /// possiblities. It can be constrained "too much", so there are no valid types for this variable, then it is called
 /// "empty". When variable can be of only one type, it is called "resolved".
-class QRTEXT_EXPORT TypeVariable : public TypeExpression {
+class QRTEXT_EXPORT TypeVariable : public TypeExpression
+{
 public:
 	/// Creates a variable that can contain any type.
 	TypeVariable();

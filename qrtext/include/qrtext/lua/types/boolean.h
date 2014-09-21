@@ -7,7 +7,8 @@ namespace lua {
 namespace types {
 
 /// Represents boolean type.
-class Boolean : public core::types::TypeExpression {
+class Boolean : public core::types::TypeExpression
+{
 };
 
 }

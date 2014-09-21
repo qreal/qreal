@@ -17,7 +17,8 @@ namespace core {
 /// methods --- defineToken() and defineKeyword(). Keywords are described as strings, other tokens --- as regexps.
 /// Token types and keywords are still in one enum because we want to process them uniformly by parser.
 template <typename TokenType>
-class TokenPatterns {
+class TokenPatterns
+{
 public:
 	/// Define pattern for given token to given regular expression.
 	void defineToken(TokenType tokenType, QRegularExpression const &regExp)

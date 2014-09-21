@@ -9,7 +9,8 @@ namespace lua {
 namespace details {
 
 /// Tokens recognizable by Lua lexer.
-enum class LuaTokenTypes {
+enum class LuaTokenTypes
+{
 	whitespace  // 0
 	, newline
 	, identifier

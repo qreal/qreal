@@ -6,7 +6,8 @@ namespace qrtext {
 namespace core {
 
 /// Node that is used only for connection and shall be discarded from resulting tree.
-class TemporaryDiscardableNode : public ast::Node {
+class TemporaryDiscardableNode : public ast::Node
+{
 };
 
 }

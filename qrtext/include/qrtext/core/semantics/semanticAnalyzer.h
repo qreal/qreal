@@ -48,7 +48,8 @@ namespace core {
 /// types in previous expressions can change based on information from next expressions. For example, after analyzing
 /// "a = 1" in some language type for "a" will be inferred as "int", but after "a += 0.5" its type will change to
 /// "float" (even for first assignment).
-class QRTEXT_EXPORT SemanticAnalyzer {
+class QRTEXT_EXPORT SemanticAnalyzer
+{
 public:
 	/// Constructor. Takes generalizations table for a language and a list of errors to put semantic errors to. Typical
 	/// usage pattern is to subclass SemanticAnalyzer for concrete language and provide generalizations table in

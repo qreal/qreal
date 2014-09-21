@@ -7,7 +7,8 @@ namespace lua {
 namespace ast {
 
 /// Represents bitwise right shift operator (>>).
-class QRTEXT_EXPORT BitwiseRightShift : public BinaryOperator {
+class QRTEXT_EXPORT BitwiseRightShift : public BinaryOperator
+{
 };
 
 }

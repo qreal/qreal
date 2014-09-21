@@ -7,7 +7,8 @@ namespace lua {
 namespace types {
 
 /// Represents string type.
-class String : public core::types::TypeExpression {
+class String : public core::types::TypeExpression
+{
 };
 
 }

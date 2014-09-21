@@ -10,7 +10,8 @@ namespace qrtext {
 namespace core {
 
 /// Component that detected an error.
-enum class ErrorType {
+enum class ErrorType
+{
 	lexicalError
 	, syntaxError
 	, semanticError
@@ -19,7 +20,8 @@ enum class ErrorType {
 
 /// Severity of an error. Internal error means that there is a coding error somewhere in text language implementation
 /// and is not supposed to be shown to user.
-enum class Severity {
+enum class Severity
+{
 	internalError
 	, warning
 	, error
@@ -27,7 +29,8 @@ enum class Severity {
 };
 
 /// Represents various errors in text language processing module.
-class QRTEXT_EXPORT Error {
+class QRTEXT_EXPORT Error
+{
 public:
 	/// Constructor.
 	/// @param connection - point in code where an error was detected.

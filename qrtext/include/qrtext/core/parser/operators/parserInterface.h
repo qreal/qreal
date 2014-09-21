@@ -11,7 +11,8 @@ namespace core {
 
 /// Interface for all elementary parsers.
 template<typename TokenType>
-class ParserInterface {
+class ParserInterface
+{
 public:
 	virtual ~ParserInterface() {}
 

@@ -7,7 +7,8 @@ namespace lua {
 namespace types {
 
 /// Represents table type.
-class Table : public core::types::TypeExpression {
+class Table : public core::types::TypeExpression
+{
 public:
 	/// Constructor.
 	/// @param elementType - type of table element.

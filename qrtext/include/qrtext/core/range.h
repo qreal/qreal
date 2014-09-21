@@ -8,7 +8,8 @@ namespace qrtext {
 namespace core {
 
 /// A range between two connections in code. Characterizes location of a token in code.
-class QRTEXT_EXPORT Range {
+class QRTEXT_EXPORT Range
+{
 public:
 	/// Constructor that takes start and end coordinates of a range.
 	Range(Connection const &start, Connection const &end);
