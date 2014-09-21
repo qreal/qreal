@@ -7,7 +7,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../qrgui/ \
 	$$PWD/../../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -lqrtext
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -lqrtext -lqslog
 
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
