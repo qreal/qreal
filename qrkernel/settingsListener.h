@@ -55,11 +55,13 @@ public:
 	}
 
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
-	/// QObject::connect() function in lambda case. The lambda must accept one parameter of the QVariat type.
-	/// @todo: Infer type of lambda parameter.
-	static void listen(QString const &key, std::function<void(QVariant)> const &lambda)
+	/// QObject::connect() function in lambda case. The lambda must accept one parameter of the arbitary type
+	/// to which modified settings value will be casted by qvariant_cast.
+	template <typename Func, typename Type
+			= typename QtPrivate::FunctionPointer<decltype(&Func::operator())>::Arguments::Car>
+	static void listen(QString const &key, Func lambda)
 	{
-		instance().mListeners.insertMulti(key, new LambdaListener1(lambda));
+		instance().mListeners.insertMulti(key, new LambdaListener1<Type>(lambda));
 	}
 
 private slots:

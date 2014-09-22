@@ -79,21 +79,22 @@ private:
 };
 
 /// Useful class that calls the given lambda with one parameter of the given type.
+template <typename Type>
 class LambdaListener1 : public AbstractListener
 {
 public:
-	LambdaListener1(std::function<void(QVariant)> const & lambda)
+	LambdaListener1(std::function<void(Type)> lambda)
 		: mLambda(lambda)
 	{
 	}
 
 	void fireEvent(QVariant const &value) override
 	{
-		mLambda(value);
+		mLambda(value.value<Type>());
 	}
 
 private:
-	std::function<void(QVariant)> mLambda;
+	std::function<void(Type)> mLambda;
 };
 
 }
