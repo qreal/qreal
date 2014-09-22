@@ -5,6 +5,7 @@ CONFIG += c++11
 INCLUDEPATH += \
 	$$PWD/../../.. \
 	$$PWD/../../../qrgui/ \
+	$$PWD/../../../qrtext/include/ \
 
 LIBS += -L$$PWD/../../../bin -lqrkernel -lqrutils
 

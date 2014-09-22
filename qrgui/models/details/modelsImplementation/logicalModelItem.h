@@ -8,7 +8,8 @@ namespace details {
 namespace modelsImplementation {
 
 
-class LogicalModelItem : public AbstractModelItem {
+class LogicalModelItem : public AbstractModelItem
+{
 public:
 	LogicalModelItem(Id const &id, LogicalModelItem *parent);
 };

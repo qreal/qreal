@@ -2,8 +2,9 @@
 
 #include <QtCore/QCoreApplication>
 
-#include <src/interpreter/interpreter.h>
-#include <src/textLanguage/robotsBlockParser.h>
+#include <qrtext/lua/luaToolbox.h>
+#include "src/interpreter/interpreter.h"
+#include "src/textLanguage/robotsBlockParser.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
@@ -76,12 +77,7 @@ void InterpreterTest::SetUp()
 	ON_CALL(mBlocksFactoryManager, addFactory(_, _)).WillByDefault(Return());
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_, _)).Times(0);
 
-	/// @todo Don't like it.
-	interpreterCore::textLanguage::RobotsBlockParser parser(
-			mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
-			, mModelManager
-			, []() { return 0; }
-			);
+	interpreterCore::textLanguage::RobotsBlockParser parser(mModelManager, []() { return 0; });
 
 	DummyBlockFactory *blocksFactory = new DummyBlockFactory;
 	blocksFactory->configure(
@@ -89,7 +85,7 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mModelManager
 			, *mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
-			, &parser
+			, parser
 			);
 
 	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(

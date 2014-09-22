@@ -6,6 +6,7 @@
 #include "longOperation.h"
 #include "private/functors.h"
 
+/// @todo Remove this sh~
 using namespace invocation::details;
 
 #define QT_TYPENAME typename

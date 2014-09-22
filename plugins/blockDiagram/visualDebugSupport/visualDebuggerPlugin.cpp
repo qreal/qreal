@@ -144,9 +144,10 @@ void VisualDebuggerPlugin::activeTabChanged(Id const &rootElementId)
 
 void VisualDebuggerPlugin::showWatchList()
 {
-	if (mWatchListWindow != NULL) {
+	if (mWatchListWindow) {
 		mWatchListWindow->close();
 	}
+
 	mWatchListWindow = new WatchListWindow(mParser);
 	mWatchListWindow->show();
 }
