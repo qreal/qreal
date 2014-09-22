@@ -1,6 +1,7 @@
 #pragma once
 
-#include "qrkernel/settingsManager.h"
+#include "private/listeners.h"
+#include "qrkernel/kernelDeclSpec.h"
 
 namespace qReal {
 
@@ -16,12 +17,61 @@ namespace qReal {
 /// to listeners that need it. Also this class contains lots of overrides specially for compactness of the client code.
 /// For example if we need to show or hide some widget on our 'coolSetting' modification we can write something like
 /// this:
-///     SettingsLister::listenBool("coolSetting", coolWidget, &Widget::setVisible);
+///     SettingsLister::listen("coolSetting", coolWidget, &Widget::setVisible);
 /// or this:
-///     SettingsLister::listenBool("coolSetting", [](bool value) { /* Do whatever you want */ });
-class SettingsListener : public QObject
+///     SettingsLister::listen("coolSetting", []() { /* Do whatever you want */ });
+class QRKERNEL_EXPORT SettingsListener : public QObject
 {
 public:
+	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
+	/// QObject::connect() function in member case. The slot must be parameterless.
+	template <typename Func>
+	static void listen(QString const &key
+			, typename QtPrivate::QEnableIf<
+					QtPrivate::FunctionPointer<Func>::ArgumentCount <= 0
+					, typename QtPrivate::FunctionPointer<Func>::Object *>::Type sender, Func signal)
+	{
+		instance().mListeners.insertMulti(key, new SlotListener0<Func>(sender, signal));
+	}
+
+	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
+	/// QObject::connect() function in member case. The slot must accept one parameter of the arbitary type
+	/// to which modified settings value will be casted by qvariant_cast.
+	template <typename Func>
+	static void listen(QString const &key
+			, typename QtPrivate::QEnableIf<
+					QtPrivate::FunctionPointer<Func>::ArgumentCount == 1
+					, typename QtPrivate::FunctionPointer<Func>::Object *>::Type sender, Func signal)
+	{
+		instance().mListeners.insertMulti(key, new SlotListener1<
+				typename QtPrivate::FunctionPointer<Func>::Arguments::Car, Func>(sender, signal));
+	}
+
+	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
+	/// QObject::connect() function in lambda case. The lambda must be parameterless.
+	static void listen(QString const &key, std::function<void()> const &lambda)
+	{
+		instance().mListeners.insertMulti(key, new LambdaListener0(lambda));
+	}
+
+	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
+	/// QObject::connect() function in lambda case. The lambda must accept one parameter of the QVariat type.
+	/// @todo: Infer type of lambda parameter.
+	static void listen(QString const &key, std::function<void(QVariant)> const &lambda)
+	{
+		instance().mListeners.insertMulti(key, new LambdaListener1(lambda));
+	}
+
+private slots:
+	void onSettingsChanged(QString const &name, QVariant const &oldValue, QVariant const &newValue);
+
+private:
+	SettingsListener();
+	~SettingsListener();
+
+	static SettingsListener &instance();
+
+	QMultiMap<QString, AbstractListener *> mListeners;
 };
 
 }

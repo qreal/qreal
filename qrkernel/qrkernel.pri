@@ -18,6 +18,7 @@ HEADERS += \
 	$$PWD/timeMeasurer.h \
 	$$PWD/version.h \
 	$$PWD/logging.h \
+	$$PWD/private/listeners.h \
 
 SOURCES += \
 	$$PWD/ids.cpp \

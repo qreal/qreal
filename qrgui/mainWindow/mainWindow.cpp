@@ -20,6 +20,7 @@
 #include <QtSvg/QSvgGenerator>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
@@ -243,7 +244,7 @@ void MainWindow::connectActions()
 	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
 
 //	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this, SLOT(changePaletteRepresentation()));
-//	connect(&mPreferencesDialog, &PreferencesDialog::toolbarSizeChanged, this, &MainWindow::resetToolbarSize);
+	SettingsListener::listen("toolbarSize", this, &MainWindow::resetToolbarSize);
 //	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged()), &mPreferencesDialog, SLOT(changePaletteParameters()));
 
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
