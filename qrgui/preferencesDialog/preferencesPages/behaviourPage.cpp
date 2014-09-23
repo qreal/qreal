@@ -65,7 +65,6 @@ void PreferencesBehaviourPage::save()
 		}
 
 		mUsabilityTestingMode = usabilityTestingMode;
-		emit usabilityTestingModeChanged(mUsabilityTestingMode);
 	}
 }
 

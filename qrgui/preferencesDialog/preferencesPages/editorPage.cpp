@@ -14,31 +14,17 @@ PreferencesEditorPage::PreferencesEditorPage(QWidget *parent)
 	, mWidthGrid(SettingsManager::value("GridWidth").toInt())
 	, mIndexGrid(SettingsManager::value("IndexGrid").toInt())
 	, mFontButtonWasPressed(false)
-//	, mShowGridAction(showGridAction)
-//	, mShowAlignmentAction(showAlignmentAction)
-//	, mActivateGridAction(activateGridAction)
-//	, mActivateAlignmentAction(activateAlignmentAction)
 {
 	mUi->setupUi(this);
 	setObjectName("preferencesEditorPage");
 	setWindowIcon(QIcon(":/icons/preferences/editor.png"));
 
-	// changing grid size in QReal:Robots is forbidden
 	connect(mUi->gridWidthSlider, SIGNAL(valueChanged(int)), this, SLOT(widthGridSliderMoved(int)));
 	connect(mUi->indexGridSlider, SIGNAL(valueChanged(int)), this, SLOT(indexGridSliderMoved(int)));
 	connect(mUi->dragAreaSizeSlider, SIGNAL(valueChanged(int)), this, SLOT(dragAreaSliderMoved(int)));
 	connect(mUi->fontCheckBox, SIGNAL(toggled(bool)), this, SLOT(manualFontCheckBoxChecked(bool)));
 	connect(mUi->fontSelectionButton, SIGNAL(clicked()),this, SLOT(fontSelectionButtonClicked()));
 	connect(mUi->paletteComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(paletteComboBoxClicked(int)));
-
-//	connect(mShowGridAction, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
-//	connect(mShowAlignmentAction, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
-//	connect(mActivateGridAction, SIGNAL(toggled(bool)), this, SLOT(activateGrid(bool)));
-//	connect(mActivateAlignmentAction, SIGNAL(toggled(bool)), this, SLOT(activateAlignment(bool)));
-
-	// use customizer to blick it somehow
-//	mUi->indexGridSlider->setVisible(false);
-//	mUi->label_20->setVisible(false);
 
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
@@ -89,13 +75,11 @@ void PreferencesEditorPage::changeEvent(QEvent *e)
 void PreferencesEditorPage::widthGridSliderMoved(int value)
 {
 	SettingsManager::setValue("GridWidth", value);
-//	emit gridChanged();
 }
 
 void PreferencesEditorPage::indexGridSliderMoved(int value)
 {
 	SettingsManager::setValue("IndexGrid", value);
-//	emit gridChanged();
 }
 
 void PreferencesEditorPage::dragAreaSliderMoved(int value)
@@ -121,19 +105,12 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("LabelsDistance", mUi->labelDistanceSlider->value());
 	SettingsManager::setValue("manualFontCheckBoxChecked", mUi->fontCheckBox->isChecked());
 
-//	emit paletteRepresentationChanged();
-
 	mWidthGrid = mUi->gridWidthSlider->value();
 	mIndexGrid = mUi->indexGridSlider->value();
 	mDragArea = mUi->dragAreaSizeSlider->value();
 	SettingsManager::setValue("GridWidth", mWidthGrid);
 	SettingsManager::setValue("IndexGrid", mIndexGrid);
 	SettingsManager::setValue("DragArea", mDragArea);
-
-//	mShowGridAction->setChecked(mUi->showGridCheckBox->isChecked());
-//	mShowAlignmentAction->setChecked(mUi->showAlignmentCheckBox->isChecked());
-//	mActivateGridAction->setChecked(mUi->activateGridCheckBox->isChecked());
-//	mActivateAlignmentAction->setChecked(mUi->activateAlignmentCheckBox->isChecked());
 
 	if (mWasChecked != mUi->fontCheckBox->isChecked() || mOldFont != mFont) {
 		if (mFontButtonWasPressed) {
@@ -182,24 +159,4 @@ void PreferencesEditorPage::changePaletteParameters()
 {
 	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation").toInt());
 	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount").toInt());
-}
-
-void PreferencesEditorPage::showGrid(bool show)
-{
-	mUi->showGridCheckBox->setChecked(show);
-}
-
-void PreferencesEditorPage::showAlignment(bool show)
-{
-	mUi->showAlignmentCheckBox->setChecked(show);
-}
-
-void PreferencesEditorPage::activateGrid(bool activate)
-{
-	mUi->activateGridCheckBox->setChecked(activate);
-}
-
-void PreferencesEditorPage::activateAlignment(bool activate)
-{
-	mUi->activateAlignmentCheckBox->setChecked(activate);
 }

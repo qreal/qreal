@@ -1,7 +1,9 @@
 #include "editorView.h"
 
 #include <QtCore/QTimeLine>
+#include <QtGui/QFontDatabase>
 
+#include <qrkernel/settingsListener.h>
 #include <qrutils/mathUtils/math.h>
 
 using namespace qReal;
@@ -38,6 +40,9 @@ EditorView::EditorView(QWidget *parent)
 	setAlignment(Qt::AlignCenter);
 
 	connect(&mTouchManager, SIGNAL(gestureStarted()), mScene, SLOT(deleteGesture()));
+	SettingsListener::listen("IndexGrid", mScene, &EditorViewScene::redraw);
+	SettingsListener::listen("GridWidth", mScene, &EditorViewScene::redraw);
+	SettingsListener::listen("CurrentFont", this, &EditorView::setSceneFont);
 }
 
 EditorView::~EditorView()
@@ -270,4 +275,19 @@ void EditorView::zoom(qreal const zoomFactor)
 	mMVIface->invalidateImagesZoomCache(transform().m11());
 
 	checkGrid();
+}
+
+void EditorView::setSceneFont()
+{
+	if (SettingsManager::value("CustomFont").toBool()) {
+		QFont font;
+		font.fromString(SettingsManager::value("CurrentFont").toString());
+		scene()->setFont(font);
+		scene()->update();
+	} else {
+		/// @todo: use brand manager here
+		scene()->setFont(QFont(QFontDatabase::applicationFontFamilies(
+				QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
+		scene()->update();
+	}
 }

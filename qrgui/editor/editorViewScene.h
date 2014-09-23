@@ -134,6 +134,9 @@ public slots:
 
 	void deleteGesture();
 
+	/// Makes same as QGraphicsScene::update. Useful for c++11-styled connections.
+	void redraw();
+
 signals:
 	void zoomIn();
 	void zoomOut();

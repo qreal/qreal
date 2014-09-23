@@ -226,6 +226,10 @@ void MainWindow::connectActions()
 	connect(mUi->actionShow_alignment, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
 	connect(mUi->actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 	connect(mUi->actionSwitch_on_alignment, SIGNAL(toggled(bool)), this, SLOT(switchAlignment(bool)));
+	SettingsListener::listen("ShowGrid", mUi->actionShow_grid, &QAction::setChecked);
+	SettingsListener::listen("ShowAlignment", mUi->actionShow_alignment, &QAction::setChecked);
+	SettingsListener::listen("ActivateGrid", mUi->actionSwitch_on_grid, &QAction::setChecked);
+	SettingsListener::listen("ActivateAlignment", mUi->actionSwitch_on_alignment, &QAction::setChecked);
 
 	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
@@ -243,9 +247,12 @@ void MainWindow::connectActions()
 			, mFindHelper, SLOT(handleFindDialog(QStringList)));
 	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
 
-//	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this, SLOT(changePaletteRepresentation()));
+	SettingsListener::listen("PaletteRepresentation", this, &MainWindow::changePaletteRepresentation);
+	SettingsListener::listen("PaletteIconsInARowCount", this, &MainWindow::changePaletteRepresentation);
 	SettingsListener::listen("toolbarSize", this, &MainWindow::resetToolbarSize);
-//	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged()), &mPreferencesDialog, SLOT(changePaletteParameters()));
+	SettingsListener::listen("pathToImages", this, &MainWindow::updatePaletteIcons);
+	SettingsListener::listen("usabilityTestingMode", this, &MainWindow::setUsabilityMode);
+	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &MainWindow::applySettings);
 
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
@@ -1040,14 +1047,6 @@ void MainWindow::closeTab(int index)
 
 void MainWindow::showPreferencesDialog()
 {
-//	disconnect(&mPreferencesDialog);
-//	if (getCurrentTab()) {
-//		connect(&mPreferencesDialog, SIGNAL(gridChanged()), getCurrentTab(), SLOT(invalidateScene()));
-//		connect(&mPreferencesDialog, SIGNAL(iconsetChanged()), this, SLOT(updatePaletteIcons()));
-//		connect(&mPreferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
-//		connect(&mPreferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
-//	}
-//	connect(&mPreferencesDialog, SIGNAL(usabilityTestingModeChanged(bool)), this, SLOT(setUsabilityMode(bool)));
 	if (mPreferencesDialog.exec() == QDialog::Accepted) {
 		mToolManager.updateSettings();
 	}
@@ -1070,20 +1069,6 @@ void MainWindow::openSettingsDialog(QString const &tab)
 {
 	mPreferencesDialog.switchCurrentPage(tab);
 	showPreferencesDialog();
-}
-
-void MainWindow::setSceneFont()
-{
-	if (SettingsManager::value("CustomFont").toBool()) {
-		QFont font;
-		font.fromString(SettingsManager::value("CurrentFont").toString());
-		getCurrentTab()->scene()->setFont(font);
-		getCurrentTab()->scene()->update();
-	} else {
-		getCurrentTab()->scene()->setFont(QFont(QFontDatabase::applicationFontFamilies(
-				QFontDatabase::addApplicationFont(QDir::currentPath() + "/times.ttf")).at(0), 9));
-		getCurrentTab()->scene()->update();
-	}
 }
 
 // TODO: Unify overloads.
@@ -1855,8 +1840,6 @@ void MainWindow::applySettings()
 			scene->invalidate();
 		}
 	}
-
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 }
 
 void MainWindow::resetToolbarSize(int size)

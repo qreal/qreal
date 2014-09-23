@@ -14,6 +14,10 @@ public:
 
 	/// Fires event that some entity listens for with @arg value as parameter (if needed).
 	virtual void fireEvent(QVariant const &value) = 0;
+
+	/// Returns the object that can be used for disconnection;
+	/// if no such object was provided explicitly for this listener nullptr is returned.
+	virtual QObject const *object() const = 0;
 };
 
 /// Useful class that calls the given slot with no parameters
@@ -31,6 +35,11 @@ public:
 	{
 		Q_UNUSED(value)
 		(mSender->*mSlot)();
+	}
+
+	QObject const *object() const override
+	{
+		return mSender;
 	}
 
 private:
@@ -53,6 +62,11 @@ public:
 		mLambda();
 	}
 
+	QObject const *object() const override
+	{
+		return nullptr;
+	}
+
 private:
 	std::function<void()> mLambda;
 };
@@ -73,6 +87,11 @@ public:
 		(mSender->*mSlot)(value.value<Type>());
 	}
 
+	QObject const *object() const override
+	{
+		return mSender;
+	}
+
 private:
 	typename QtPrivate::FunctionPointer<Func>::Object *mSender;
 	Func mSlot;
@@ -91,6 +110,11 @@ public:
 	void fireEvent(QVariant const &value) override
 	{
 		mLambda(value.value<Type>());
+	}
+
+	QObject const *object() const override
+	{
+		return nullptr;
 	}
 
 private:

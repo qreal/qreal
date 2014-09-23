@@ -1354,6 +1354,11 @@ void EditorViewScene::deleteGesture()
 	mMouseMovementManager->clear();
 }
 
+void EditorViewScene::redraw()
+{
+	update();
+}
+
 void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 {
 	if (wheelEvent->modifiers() == Qt::ControlModifier) {

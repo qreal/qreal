@@ -17,10 +17,6 @@ public:
 	void save();
 	virtual void restoreSettings();
 
-signals:
-	void iconsetChanged();
-	void toolbarSizeChanged(int size);
-
 protected:
 	void changeEvent(QEvent *e);
 
@@ -29,6 +25,4 @@ private slots:
 
 private:
 	Ui::PreferencesMiscellaniousPage *mUi;
-
-	QString mLastIconsetPath;
 };
