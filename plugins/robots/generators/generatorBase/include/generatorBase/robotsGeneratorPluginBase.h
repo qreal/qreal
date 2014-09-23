@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QApplication>
 
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <qrrepo/repoApi.h>
 
 #include "generatorKitPluginInterface.h"
@@ -68,7 +68,7 @@ protected:
 	interpreterBase::robotModel::RobotModelManagerInterface const *mRobotModelManager;
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
-	qReal::SystemEventsInterface *mSystemEvents; // Does not have ownership
+	qReal::SystemEvents *mSystemEvents; // Does not have ownership
 	qReal::TextManagerInterface *mTextManager;
 	QMultiHash<qReal::Id, QFileInfo> mCodePath;
 };

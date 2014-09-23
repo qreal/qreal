@@ -1,7 +1,7 @@
 #include "generatorBase/robotsGeneratorPluginBase.h"
 
 #include <qrutils/inFile.h>
-#include <qrgui/mainwindow/qscintillaTextEdit.h>
+#include <qrgui/mainWindow/qscintillaTextEdit.h>
 #include <qrutils/nameNormalizer.h>
 
 using namespace generatorBase;

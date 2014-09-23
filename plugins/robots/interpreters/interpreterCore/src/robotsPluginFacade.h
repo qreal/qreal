@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/devicesConfigurationWidget.h>
 
@@ -35,7 +35,7 @@ public:
 	void init(qReal::PluginConfigurator const &configurer);
 
 	/// Returns a pointer to settings page for robots plugin.
-	PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
+	gui::PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
 
 	/// Returns the customization class object for configuring QReal's main GUI module
 	Customizer &customizer();

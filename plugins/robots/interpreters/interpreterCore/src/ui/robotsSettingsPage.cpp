@@ -23,7 +23,7 @@ RobotsSettingsPage::RobotsSettingsPage(
 	, mKitPluginManager(kitPluginManager)
 	, mRobotModelManager(robotModelManager)
 {
-	mIcon = QIcon(":/icons/preferences/robot.svg");
+	setWindowIcon(QIcon(":/icons/preferences/robot.svg"));
 	mUi->setupUi(this);
 
 	initializeAdditionalWidgets();

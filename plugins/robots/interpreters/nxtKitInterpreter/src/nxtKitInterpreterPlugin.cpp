@@ -40,7 +40,7 @@ NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
 }
 
 void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-		, SystemEventsInterface const &systemEvents
+		, SystemEvents const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
@@ -51,7 +51,7 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 			, [this](QString const &modelName) { mCurrentlySelectedModelName = modelName; });
 
 	connect(&systemEvents
-			, &qReal::SystemEventsInterface::activeTabChanged
+			, &qReal::SystemEvents::activeTabChanged
 			, this
 			, &NxtKitInterpreterPlugin::onActiveTabChanged);
 

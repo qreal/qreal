@@ -2,11 +2,6 @@
 
 #include <QtCore/QMultiHash>
 
-#include <qrgui/toolPluginInterface/toolPluginInterface.h>
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
-#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
-#include <qrgui/toolPluginInterface/systemEventsInterface.h>
-#include <qrgui/textEditor/textManagerInterface.h>
 #include <generatorBase/robotsGeneratorPluginBase.h>
 #include "nxtFlashTool.h"
 

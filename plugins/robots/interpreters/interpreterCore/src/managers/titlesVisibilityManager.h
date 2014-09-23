@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QAction>
 
-#include <qrgui/view/sceneCustomizationInterface.h>
+#include <qrgui/editor/sceneCustomizationInterface.h>
 
 namespace interpreterCore {
 

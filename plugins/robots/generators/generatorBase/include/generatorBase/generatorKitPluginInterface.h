@@ -1,8 +1,8 @@
 #pragma once
 
-#include <qrgui/toolPluginInterface/actionInfo.h>
-#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/actionInfo.h>
+#include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 namespace generatorBase {

@@ -4,9 +4,9 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QAction>
 
-#include <qrgui/toolPluginInterface/actionInfo.h>
-#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/actionInfo.h>
+#include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 
 #include "kitPluginManager.h"
 #include "managers/robotModelManager.h"

@@ -4,7 +4,7 @@
 #include <QtCore/QDir>
 
 #include <qrkernel/settingsManager.h>
-#include <qrgui/mainwindow/qscintillaTextEdit.h>
+#include <qrgui/mainWindow/qscintillaTextEdit.h>
 #include <nxtOsekMasterGenerator.h>
 
 using namespace nxtOsek;

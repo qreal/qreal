@@ -76,7 +76,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	mInterpreter = interpreter;
 
-	connect(&configurer.systemEvents(), &SystemEventsInterface::closedMainWindow
+	connect(&configurer.systemEvents(), &SystemEvents::closedMainWindow
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
@@ -104,13 +104,13 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
-	connect(&configurer.systemEvents(), &SystemEventsInterface::activeTabChanged
+	connect(&configurer.systemEvents(), &SystemEvents::activeTabChanged
 			, &mActionsManager, &ActionsManager::onActiveTabChanged);
 
 	sync();
 }
 
-PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
+gui::PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
 {
 	return mRobotSettingsPage;
 }
