@@ -6,8 +6,9 @@ INCLUDEPATH += \
 	$$PWD/../../../../qrgui \
 	$$PWD/../../../../qrutils \
 	$$PWD/../../interpreters/interpreterBase/include \
+	$$PWD/../../../../qrtext/include \
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -linterpreterBase
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -linterpreterBase -lqrtext
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 

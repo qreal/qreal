@@ -4,7 +4,7 @@ using namespace interpreterCore;
 using namespace utils;
 using namespace interpreterBase::robotModel;
 
-GraphicsWatcherManager::GraphicsWatcherManager(ExpressionsParser * const parser, QObject *parent)
+GraphicsWatcherManager::GraphicsWatcherManager(qrtext::DebuggerInterface const &parser, QObject *parent)
 	: QObject(parent)
 	, mWatcher(new sensorsGraph::SensorsGraph(parser))
 {

@@ -7,7 +7,8 @@
 namespace qReal {
 namespace gui {
 
-class CodeEditor : public QMainWindow {
+class CodeEditor : public QMainWindow
+{
 	Q_OBJECT
 
 	public:

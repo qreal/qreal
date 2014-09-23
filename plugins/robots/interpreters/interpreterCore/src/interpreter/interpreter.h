@@ -7,6 +7,7 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrutils/watchListWindow.h>
+#include <qrtext/languageToolboxInterface.h>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
@@ -46,7 +47,7 @@ public:
 			, qReal::ProjectManagementInterface const &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, utils::ExpressionsParser &parser
+			, qrtext::LanguageToolboxInterface &parser
 			, QAction &connectToRobotAction
 			);
 

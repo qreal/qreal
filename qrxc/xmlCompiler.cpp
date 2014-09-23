@@ -660,47 +660,54 @@ void XmlCompiler::generateGetParentsOfRequest(OutFile &out)
 // ListMethodGenerator, объекты-действия - PropertiesGenerator и т.д.
 // Примечание: на С++ это выглядит уродски, на C# вообще лишнего кода бы не было.
 // Даже в Java с анонимными классами это бы выглядело лучше.
-class XmlCompiler::ListMethodGenerator {
+class XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const = 0;
 };
 
-class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateProperties(out, isNotFirst, false);
 	}
 };
 
-class XmlCompiler::PortsGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::PortsGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generatePorts(out, isNotFirst);
 	}
 };
 
-class XmlCompiler::ReferencePropertiesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::ReferencePropertiesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateProperties(out, isNotFirst, true);
 	}
 };
 
-class XmlCompiler::ContainedTypesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::ContainedTypesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateContainedTypes(out, isNotFirst);
 	}
 };
 
-class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generatePossibleEdges(out, isNotFirst);
 	}
 };
 
-class XmlCompiler::EnumValuesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::EnumValuesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateEnumValues(out, isNotFirst);
