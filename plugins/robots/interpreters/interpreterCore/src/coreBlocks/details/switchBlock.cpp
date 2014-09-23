@@ -36,7 +36,7 @@ bool SwitchBlock::initNextBlocks()
 			if (mDefaultBranch.isNull()) {
 				mDefaultBranch = targetBlockId;
 			} else {
-				error(tr("There must be exactly one link with empty 'Guard' property (dafault branch)."));
+				error(tr("There must be exactly one link with empty 'Guard' property (default branch)."));
 				return false;
 			}
 		} else {
@@ -50,7 +50,7 @@ bool SwitchBlock::initNextBlocks()
 	}
 
 	if (mDefaultBranch.isNull()) {
-		error(tr("There must be a link with empty 'Guard' property."));
+		error(tr("There must be a link with empty 'Guard' property (default branch)."));
 		return false;
 	}
 

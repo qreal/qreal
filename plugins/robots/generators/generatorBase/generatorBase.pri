@@ -32,6 +32,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/semanticTree/finalNode.h \
 	$$PWD/include/generatorBase/semanticTree/conditionalNode.h \
 	$$PWD/include/generatorBase/semanticTree/ifNode.h \
+	$$PWD/include/generatorBase/semanticTree/switchNode.h \
 	$$PWD/include/generatorBase/semanticTree/loopNode.h \
 	$$PWD/include/generatorBase/semanticTree/forkNode.h \
 	$$PWD/include/generatorBase/semanticTree/rootNode.h \
@@ -63,6 +64,8 @@ HEADERS += \
 	$$PWD/src/rules/loopRules/loopWithIterationVisitedRule.h \
 	$$PWD/src/rules/loopRules/loopWithNextVisitedRule.h \
 	$$PWD/src/rules/forkRules/forkRule.h \
+	$$PWD/src/rules/switchRules/switchInitializationRule.h \
+	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.h \
 
 SOURCES += \
 	$$PWD/src/robotsGeneratorPluginBase.cpp \
@@ -92,6 +95,7 @@ SOURCES += \
 	$$PWD/src/semanticTree/finalNode.cpp \
 	$$PWD/src/semanticTree/conditionalNode.cpp \
 	$$PWD/src/semanticTree/ifNode.cpp \
+	$$PWD/src/semanticTree/switchNode.cpp \
 	$$PWD/src/semanticTree/loopNode.cpp \
 	$$PWD/src/semanticTree/forkNode.cpp \
 	$$PWD/src/semanticTree/rootNode.cpp \
@@ -110,6 +114,8 @@ SOURCES += \
 	$$PWD/src/rules/loopRules/loopWithIterationVisitedRule.cpp \
 	$$PWD/src/rules/loopRules/loopWithNextVisitedRule.cpp \
 	$$PWD/src/rules/forkRules/forkRule.cpp \
+	$$PWD/src/rules/switchRules/switchInitializationRule.cpp \
+	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.cpp \
 
 # Simple element generators & converters
 

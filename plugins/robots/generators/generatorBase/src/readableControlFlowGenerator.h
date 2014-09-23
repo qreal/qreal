@@ -32,6 +32,7 @@ public:
 	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitConditional(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
 
 	/// This method can be used for semantic tree debug printing after all
 	/// traversal stages.
