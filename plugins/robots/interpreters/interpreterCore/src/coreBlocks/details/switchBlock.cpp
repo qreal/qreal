@@ -5,7 +5,7 @@ using namespace interpreterCore::coreBlocks::details;
 
 void SwitchBlock::run()
 {
-	QString const expressionValue = evaluate("Expression").toString();
+	QString const expressionValue = eval<QString>("Expression");
 	if (mBranches.contains(expressionValue)) {
 		emit done(mBranches[expressionValue]);
 	} else {
