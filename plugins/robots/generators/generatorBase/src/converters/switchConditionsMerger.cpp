@@ -25,7 +25,7 @@ QString SwitchConditionsMerger::convert(QString const &expression) const
 	QStringList conditions;
 	for (QString const &value : mValues) {
 		QString condition = oneCondition;
-		conditions << condition.replace("@@EXPERESSION@@", convertedExpression).replace("@@VALUE@@", value);
+		conditions << condition.replace("@@EXPRESSION@@", convertedExpression).replace("@@VALUE@@", value);
 	}
 
 	return conditions.join(conditionsSeparator);
