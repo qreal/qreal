@@ -147,6 +147,7 @@ HEADERS += \
 	$$PWD/src/converters/typeConverter.h \
 	$$PWD/src/converters/inputPortConverter.h \
 	$$PWD/src/converters/functionInvocationConverter.h \
+	$$PWD/src/converters/switchConditionsMerger.h \
 	$$PWD/src/simpleGenerators/nullGenerator.h \
 	$$PWD/src/simpleGenerators/commentElementGenerator.h \
 	$$PWD/src/simpleGenerators/functionElementGenerator.h \
@@ -155,6 +156,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/forLoopGenerator.h \
 	$$PWD/src/simpleGenerators/whileLoopGenerator.h \
 	$$PWD/src/simpleGenerators/forkCallGenerator.h \
+	$$PWD/src/simpleGenerators/switchGenerator.h \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
 	$$PWD/src/simpleGenerators/timerGenerator.h \
 	$$PWD/src/simpleGenerators/beepGenerator.h \
@@ -207,6 +209,7 @@ SOURCES += \
 	$$PWD/src/converters/typeConverter.cpp \
 	$$PWD/src/converters/inputPortConverter.cpp \
 	$$PWD/src/converters/functionInvocationConverter.cpp \
+	$$PWD/src/converters/switchConditionsMerger.cpp \
 	$$PWD/src/simpleGenerators/abstractSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/nullGenerator.cpp \
 	$$PWD/src/simpleGenerators/commentElementGenerator.cpp \
@@ -216,6 +219,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/forLoopGenerator.cpp \
 	$$PWD/src/simpleGenerators/whileLoopGenerator.cpp \
 	$$PWD/src/simpleGenerators/forkCallGenerator.cpp \
+	$$PWD/src/simpleGenerators/switchGenerator.cpp \
 	$$PWD/src/simpleGenerators/bindingGenerator.cpp \
 	$$PWD/src/simpleGenerators/binding.cpp \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.cpp \

@@ -31,6 +31,10 @@ protected:
 
 private:
 	void bind(QString const &value, ZoneNode *zone);
+	QString generatePart(GeneratorCustomizer &customizer
+		, int indent
+		, ZoneNode * const zone
+		, simple::AbstractSimpleGenerator *generator) const;
 
 	QMap<QString, ZoneNode *> mBranches;
 	ZoneNode *mDefaultBranch;

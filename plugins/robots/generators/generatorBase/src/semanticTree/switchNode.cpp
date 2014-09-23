@@ -7,8 +7,8 @@ using namespace qReal;
 
 SwitchNode::SwitchNode(Id const &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)
-	, mBranchesMerged(false)
 	, mDefaultBranch(nullptr)
+	, mBranchesMerged(false)
 {
 }
 
@@ -41,18 +41,23 @@ void SwitchNode::setBranchesMergedFlag()
 QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
 {
 	QString result;
-
-	result += "{\n";
+	bool isHead = true;
 	for (ZoneNode * const zone : mBranches.values().toSet()) {
-		for (QString const &branch : mBranches.keys(zone)) {
-			result += branch + ":\n";
+		if (zone == mDefaultBranch) {
+			// Branches merged with default on the diagram will be merged with it in code too
+			continue;
 		}
 
-		result += zone->toString(customizer, indent) + "\n";
+		result += generatePart(customizer, indent, zone, isHead
+				? customizer.factory()->switchHeadGenerator(mId, customizer, mBranches.keys(zone))
+				: customizer.factory()->switchMiddleGenerator(mId, customizer, mBranches.keys(zone)));
+
+		isHead = false;
 	}
 
-	result += "default:\n" + mDefaultBranch->toString(customizer, indent) + "\n";
-	result += "}\n";
+	result += generatePart(customizer, indent, mDefaultBranch
+			, customizer.factory()->switchDefaultGenerator(mId, customizer));
+
 	return result;
 }
 
@@ -63,6 +68,15 @@ void SwitchNode::bind(QString const &value, ZoneNode *zone)
 	} else {
 		mBranches[value] = zone;
 	}
+}
+
+QString SwitchNode::generatePart(generatorBase::GeneratorCustomizer &customizer
+		, int indent
+		, ZoneNode * const zone
+		, generatorBase::simple::AbstractSimpleGenerator *generator) const
+{
+	return utils::StringUtils::addIndent(generator->generate()
+			.replace("@@BODY@@", zone->toString(customizer, indent + 1)), indent);
 }
 
 QLinkedList<SemanticNode *> SwitchNode::children() const
