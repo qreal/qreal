@@ -1,6 +1,8 @@
 #include "updatesCheckerPlugin.h"
 
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QCheckBox>
 
 #include <qrkernel/logging.h>
 
@@ -27,6 +29,7 @@ void UpdatesCheckerPlugin::init(qReal::PluginConfigurator const &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
 	mMainWindowWidget = configurator.mainWindowInterpretersInterface().windowWidget();
+	initSettingsUi(*configurator.mainWindowInterpretersInterface().preferencesPages()["preferencesBehaviourPage"]);
 	checkForUpdates(false);
 }
 
@@ -44,7 +47,6 @@ void UpdatesCheckerPlugin::checkForUpdates(bool reportNoUpdates)
 			connect(updater, &Updater::noNewVersionAvailable, this, &UpdatesCheckerPlugin::reportNoUpdates);
 		}
 
-		/// @todo: Commented out till server unavailability error will be fixed
 		QLOG_INFO() << "Starting updater...";
 		updater->checkForNewVersion();
 	}
@@ -53,6 +55,24 @@ void UpdatesCheckerPlugin::checkForUpdates(bool reportNoUpdates)
 void UpdatesCheckerPlugin::reportNoUpdates()
 {
 	mErrorReporter->addInformation(tr("No updates available"));
+}
+
+void UpdatesCheckerPlugin::initSettingsUi(gui::PreferencesPage &behaviourPage)
+{
+	QGridLayout * const automaticsLayout = behaviourPage.findChild<QGridLayout *>("automaticsFrameLayout");
+	if (!automaticsLayout) {
+		QLOG_ERROR() << "Could not find 'automaticsFrameLayout' on preferences behaviour page";
+		return;
+	}
+
+	QCheckBox * const box = new QCheckBox(tr("Check for updates on start"), automaticsLayout->widget());
+	automaticsLayout->addWidget(box, automaticsLayout->rowCount(), 0, 1, automaticsLayout->columnCount());
+	connect(&behaviourPage, &gui::PreferencesPage::saved, [box]() {
+		SettingsManager::setValue("updaterActive", box->isChecked());
+	});
+	connect(&behaviourPage, &gui::PreferencesPage::restored, [box]() {
+		box->setChecked(SettingsManager::value("updaterActive").toBool());
+	});
 }
 
 void UpdatesCheckerPlugin::showUpdatesDialog()

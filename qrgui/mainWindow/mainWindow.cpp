@@ -628,6 +628,16 @@ void MainWindow::closeTab(QWidget *tab)
 	mUi->tabs->removeTab(mUi->tabs->indexOf(tab));
 }
 
+QMap<QString, gui::PreferencesPage *> MainWindow::preferencesPages() const
+{
+	QMap<QString, PreferencesPage *> result;
+	for (PreferencesPage * const page : mPreferencesDialog.pages()) {
+		result[page->objectName()] = page;
+	}
+
+	return result;
+}
+
 void MainWindow::closeStartTab()
 {
 	for (int i = 0; i < mUi->tabs->count(); ++i) {

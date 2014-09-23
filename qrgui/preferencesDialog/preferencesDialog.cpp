@@ -55,6 +55,7 @@ void PreferencesDialog::applyChanges()
 	bool shouldRestart = false;
 	for (PreferencesPage * const page : mCustomPages.values()) {
 		page->save();
+		emit page->saved();
 		shouldRestart |= page->mShouldRestartSystemToApply;
 		page->mShouldRestartSystemToApply = false;
 	}
@@ -72,6 +73,7 @@ void PreferencesDialog::restoreSettings()
 {
 	for (PreferencesPage * const page : mCustomPages.values()) {
 		page->restoreSettings();
+		emit page->restored();
 	}
 }
 

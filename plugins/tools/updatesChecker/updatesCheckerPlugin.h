@@ -26,6 +26,8 @@ private slots:
 	void reportNoUpdates();
 
 private:
+	void initSettingsUi(qReal::gui::PreferencesPage &behaviourPage);
+
 	QAction mSeparator;
 	QAction mCheckForUpdatesAction;
 	ErrorReporterInterface *mErrorReporter;

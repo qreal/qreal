@@ -27,14 +27,19 @@
 <context>
     <name>updatesChecker::UpdatesCheckerPlugin</name>
     <message>
-        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="14"/>
+        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="16"/>
         <source>Check for updates</source>
         <translation>Проверить на наличие обновлений</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="50"/>
+        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="57"/>
         <source>No updates available</source>
         <translation>Обновлений пока что нет</translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="68"/>
+        <source>Check for updates on start</source>
+        <translation>Проверять на наличие обновлений при старте</translation>
     </message>
 </context>
 </TS>

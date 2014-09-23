@@ -26,6 +26,13 @@ public:
 	/// This method will be called before page is shown and when user pressed "Cancel"
 	virtual void restoreSettings() = 0;
 
+signals:
+	/// Emitted when user pressed "OK" or "Apply" button in settings dialog.
+	void saved();
+
+	/// Emitted when user closed or opened settings dialog.
+	void restored();
+
 protected:
 	/// Indicates the system to prompt system restart after settings applying.
 	void setRestartFlag();

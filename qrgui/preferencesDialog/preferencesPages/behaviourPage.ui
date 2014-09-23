@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>340</height>
+    <height>364</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -54,7 +54,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frame_5">
+    <widget class="QFrame" name="automaticsFrame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -67,7 +67,21 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="automaticsFrameLayout">
+      <item row="2" column="0">
+       <widget class="QLabel" name="gestureDelayLabel">
+        <property name="text">
+         <string>Delay after gesture</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="gestureDelayTimeUnitLabel">
+        <property name="text">
+         <string>msec</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="1">
        <widget class="QSpinBox" name="gestureDelaySpinBox">
         <property name="maximum">
@@ -85,24 +99,10 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
-       <widget class="QLabel" name="gestureDelayTimeUnitLabel">
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="usabilityModeCheckBox">
         <property name="text">
-         <string>msec</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="gestureDelayLabel">
-        <property name="text">
-         <string>Delay after gesture</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QCheckBox" name="paletteTabCheckBox">
-        <property name="text">
-         <string>Palette tab switching</string>
+         <string>Usability testing mode</string>
         </property>
        </widget>
       </item>
@@ -132,13 +132,6 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QCheckBox" name="usabilityModeCheckBox">
-        <property name="text">
-         <string>Usability testing mode</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QCheckBox" name="collectErgonomicValuesCheckBox">
         <property name="text">
@@ -149,10 +142,10 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QCheckBox" name="checkForUpdatesCheckBox">
+      <item row="0" column="0" colspan="3">
+       <widget class="QCheckBox" name="paletteTabCheckBox">
         <property name="text">
-         <string>Check for updates</string>
+         <string>Palette tab switching</string>
         </property>
        </widget>
       </item>

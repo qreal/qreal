@@ -11,6 +11,7 @@
 namespace qReal {
 namespace gui {
 
+class PreferencesPage;
 class ErrorReporter;
 
 class MainWindowInterpretersInterface
@@ -108,6 +109,10 @@ public:
 	/// Commits palette modification in the system: shows or hides elements in palette, linker menus,
 	/// gestures tab and enables or disables elements on diagram.
 	virtual void endPaletteModification() = 0;
+
+	/// Returns a set of registered preferences pages. Key represents page ID, value - the page itself.
+	/// This method may be useful for storing plugins settings on existing pages.
+	virtual QMap<QString, PreferencesPage *> preferencesPages() const = 0;
 };
 
 }

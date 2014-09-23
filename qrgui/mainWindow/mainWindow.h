@@ -132,6 +132,8 @@ public:
 	virtual void openTab(QWidget *tab, QString const &title);
 	virtual void closeTab(QWidget *tab);
 
+	QMap<QString, gui::PreferencesPage *> preferencesPages() const override;
+
 	/// Closes tab having given id as root id. If there is no such tab, does nothing.
 	/// @param id Id of a diagram (root element) that we want to close.
 	void closeDiagramTab(Id const &id);
