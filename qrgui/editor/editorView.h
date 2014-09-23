@@ -50,6 +50,8 @@ private slots:
 	void zoomOutTime();
 	void animFinished();
 
+	void setSceneFont();
+
 private:
 	void checkGrid();
 

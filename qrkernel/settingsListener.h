@@ -20,8 +20,13 @@ namespace qReal {
 ///     SettingsLister::listen("coolSetting", coolWidget, &Widget::setVisible);
 /// or this:
 ///     SettingsLister::listen("coolSetting", []() { /* Do whatever you want */ });
+/// @warning: You should be careful when using lambda-listeners. They cannot be unsubscribed from listening so if they
+/// access objects that may be disposed next setting with registered key modification will cause segfaults. Slot-like
+/// connection better suits for such situations because listener will be automaticly unsubscribed on disposal.
 class QRKERNEL_EXPORT SettingsListener : public QObject
 {
+	Q_OBJECT
+
 public:
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in member case. The slot must be parameterless.
@@ -32,6 +37,8 @@ public:
 					, typename QtPrivate::FunctionPointer<Func>::Object *>::Type sender, Func signal)
 	{
 		instance().mListeners.insertMulti(key, new SlotListener0<Func>(sender, signal));
+		/// @todo: remove this restriction to QObject
+		connect(sender, SIGNAL(destroyed(QObject*)), &instance(), SLOT(disconnect(QObject*)));
 	}
 
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
@@ -45,6 +52,8 @@ public:
 	{
 		instance().mListeners.insertMulti(key, new SlotListener1<
 				typename QtPrivate::FunctionPointer<Func>::Arguments::Car, Func>(sender, signal));
+		/// @todo: remove this restriction to QObject
+		connect(sender, SIGNAL(destroyed(QObject*)), &instance(), SLOT(disconnect(QObject*)));
 	}
 
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
@@ -63,6 +72,13 @@ public:
 	{
 		instance().mListeners.insertMulti(key, new LambdaListener1<Type>(lambda));
 	}
+
+public slots:
+	/// Stops listening all settings keys for the given listener.
+	static void disconnect(QObject *listener);
+
+	/// Stops listening the given key for the given listener.
+	static void disconnect(QString const &key, QObject *listener);
 
 private slots:
 	void onSettingsChanged(QString const &name, QVariant const &oldValue, QVariant const &newValue);

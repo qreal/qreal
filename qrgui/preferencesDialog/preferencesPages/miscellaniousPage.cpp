@@ -15,7 +15,8 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 	setWindowIcon(QIcon(":/icons/preferences/miscellaneous.png"));
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
-	connect(mUi->toolbarSizeSlider, &QSlider::valueChanged, this, &PreferencesMiscellaniousPage::toolbarSizeChanged);
+	connect(mUi->toolbarSizeSlider, &QSlider::valueChanged
+			, [=](int value ) { SettingsManager::setValue("toolbarSize", value); });
 
 	mUi->colorComboBox->addItems(QColor::colorNames());
 
@@ -58,10 +59,6 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("oldLineColor", mUi->colorComboBox->currentText());
 
 	SettingsManager::setValue("toolbarSize", mUi->toolbarSizeSlider->value());
-
-	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
-		emit iconsetChanged();
-	}
 }
 
 void PreferencesMiscellaniousPage::restoreSettings()
@@ -77,6 +74,5 @@ void PreferencesMiscellaniousPage::restoreSettings()
 
 	mUi->toolbarSizeSlider->setValue(SettingsManager::value("toolbarSize").toInt());
 
-	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
-	mUi->imagesPathEdit->setText(mLastIconsetPath);
+	mUi->imagesPathEdit->setText(SettingsManager::value("pathToImages").toString());
 }

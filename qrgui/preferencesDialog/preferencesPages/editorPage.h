@@ -24,11 +24,6 @@ public:
 protected:
 	void changeEvent(QEvent *e);
 
-signals:
-//	void gridChanged();
-//	void fontChanged();
-//	void paletteRepresentationChanged();
-
 private slots:
 	void widthGridSliderMoved(int value);
 	void indexGridSliderMoved(int value);
@@ -36,11 +31,6 @@ private slots:
 	void manualFontCheckBoxChecked(bool);
 	void fontSelectionButtonClicked();
 	void paletteComboBoxClicked(int index);
-
-	void showGrid(bool);
-	void showAlignment(bool);
-	void activateGrid(bool);
-	void activateAlignment(bool);
 
 private:
 	Ui::PreferencesEditorPage *mUi;

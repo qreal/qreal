@@ -212,7 +212,6 @@ private slots:
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
 
-	void setSceneFont();
 	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 

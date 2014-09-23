@@ -18,9 +18,6 @@ public:
 	void save() override;
 	void restoreSettings() override;
 
-signals:
-	void usabilityTestingModeChanged(bool on);
-
 protected:
 	void changeEvent(QEvent *e);
 
