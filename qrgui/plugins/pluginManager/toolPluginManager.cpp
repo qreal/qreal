@@ -3,6 +3,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/logging.h>
+#include <qrkernel/settingsManager.h>
 
 #include "hotKeyManager/hotKeyManager.h"
 

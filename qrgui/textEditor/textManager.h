@@ -5,8 +5,6 @@
 #include <QtCore/QMultiHash>
 
 #include "textManagerInterface.h"
-#include "editor/editorView.h"
-#include "plugins/toolPluginInterface/systemEvents.h"
 
 namespace qReal {
 
@@ -15,7 +13,7 @@ class TextManager : public TextManagerInterface
 	Q_OBJECT
 
 public:
-	TextManager(SystemEvents *systemEvents, MainWindow *mainWindow);
+	TextManager(SystemEvents &systemEvents, gui::MainWindowInterpretersInterface &mainWindow);
 
 	/// Reads code source file and create new QScintillaTextEdit associated with this file (rather with filepath)
 	bool openFile(QString const &filePath, QString const &genName);
@@ -26,15 +24,15 @@ public:
 	void changeFilePath(QString const &from, QString const &to);
 
 	/// Binds diagram with another code source file.
-	bool bindCode(EditorView* diagram,  QString const &filePath);
+	bool bindCode(Id const &diagram, QString const &filePath);
 
 	bool unbindCode(QString const &filePath);
 	bool unbindCode(gui::QScintillaTextEdit *code);
 	gui::QScintillaTextEdit *code(QString const &filePath) const;
-	QList<gui::QScintillaTextEdit *> code(EditorView *diagram) const;
+	QList<gui::QScintillaTextEdit *> code(Id const &diagram) const;
 	bool contains(QString const &filePath) const;
-	bool removeDiagram(EditorView *diagram);
-	EditorView *diagram(gui::QScintillaTextEdit *code) const;
+	bool removeDiagram(Id const &diagram);
+	Id diagram(gui::QScintillaTextEdit *code) const;
 	QString path(gui::QScintillaTextEdit *code) const;
 	bool isDefaultPath(QString const &path) const;
 	bool isModified(QString const &path) const;
@@ -79,7 +77,7 @@ private:
 	QMap<QString, QPair<bool, bool> > mModified;
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
-	QMultiHash<EditorView*, QString> mDiagramCodeManager;
+	QMultiHash<Id, QString> mDiagramCodeManager;
 
 	/// Contains descriptions of file extensions (generator name, description of extension). Need for save dialog.
 	QMap<QString, QString> mExtensionDescriptionByGenerator;
@@ -87,8 +85,8 @@ private:
 	/// Contains descriptions of file extensions (extension, description of extension). Need for save dialog.
 	QMap<QString, QString> mExtensionDescriptionByExtension;
 
-	MainWindow *mMainWindow;
-	SystemEvents *mSystemEvents;
+	gui::MainWindowInterpretersInterface &mMainWindow;
+	SystemEvents &mSystemEvents;
 };
 
 }

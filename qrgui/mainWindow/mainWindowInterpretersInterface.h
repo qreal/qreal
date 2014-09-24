@@ -83,6 +83,8 @@ public:
 	virtual QWidget *currentTab() = 0;
 	virtual void openTab(QWidget *tab, QString const &title) = 0;
 	virtual void closeTab(QWidget *tab) = 0;
+	/// Sets text on the header of the tab containing the given widget or does nothing if such tab was not found.
+	virtual void setTabText(QWidget *tab, QString const &text) = 0;
 
 	/// Signals that engine must prepare for modifying blocks set.
 	/// After each beginPaletteModification() call there must be endPaletteModification() call.

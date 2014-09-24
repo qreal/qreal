@@ -160,7 +160,7 @@ public:
 
 	QListIterator<EditorView *> openedEditorViews() const;
 
-	void setTabText(QWidget *tab, QString const &text);
+	void setTabText(QWidget *tab, QString const &text) override;
 
 	void beginPaletteModification() override;
 	void setElementInPaletteVisible(Id const &metatype, bool visible) override;

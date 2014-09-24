@@ -1,12 +1,15 @@
 #pragma once
 
-#include <QtCore/QObject>
+#include <qrkernel/ids.h>
 
-#include "editor/editorView.h"
+class QFileInfo;
 
 namespace qReal {
 
+class SystemEvents;
+
 namespace gui {
+class MainWindowInterpretersInterface;
 class QScintillaTextEdit;
 }
 
@@ -20,13 +23,13 @@ public:
 	virtual bool openFile(QString const &filePath, QString const &genName) = 0;
 	virtual bool closeFile(QString const &filePath) = 0;
 	virtual	void changeFilePath(QString const &from, QString const &to) = 0;
-	virtual bool bindCode(EditorView *diagram,  QString const &filePath) = 0;
+	virtual bool bindCode(Id const &diagram, QString const &filePath) = 0;
 	virtual bool unbindCode(QString const &filePath) = 0;
 	virtual bool unbindCode(gui::QScintillaTextEdit *code) = 0;
 	virtual gui::QScintillaTextEdit *code(QString const &filePath) const = 0;
-	virtual QList<gui::QScintillaTextEdit *> code(EditorView *diagram) const = 0;
+	virtual QList<gui::QScintillaTextEdit *> code(Id const &diagram) const = 0;
 	virtual bool contains(QString const &filePath) const = 0;
-	virtual EditorView *diagram(gui::QScintillaTextEdit *code) const = 0;
+	virtual Id diagram(gui::QScintillaTextEdit *code) const = 0;
 	virtual QString path(gui::QScintillaTextEdit *code) const = 0;
 	virtual bool isDefaultPath(QString const &path) const = 0;
 	virtual bool isModified(QString const &path) const = 0;
@@ -38,7 +41,7 @@ public:
 	virtual QString extensionDescriptionByExtension(QString const &ext) const = 0;
 	virtual QList<QString> extensionDescriptions() const = 0;
 	virtual void showInTextEditor(QFileInfo const &fileInfo, QString const &genName) = 0;
-	virtual void showInTextEditor(const QFileInfo &fileInfo) = 0;
+	virtual void showInTextEditor(QFileInfo const &fileInfo) = 0;
 	virtual bool saveText(bool saveAs) = 0;
 	virtual QString generatorName(QString const &filepath) const  = 0;
 

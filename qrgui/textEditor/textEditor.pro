@@ -2,7 +2,7 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
-LIBS += -L$$PWD/../../bin -lqrutils -lqscintilla2 -ltoolPluginInterface
+LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqscintilla2 -ltoolPluginInterface
 
 QT += widgets
 
