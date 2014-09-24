@@ -2,8 +2,7 @@
 #include "ui_editorPage.h"
 
 #include <qrkernel/settingsManager.h>
-
-#include "mainWindow/mainWindow.h"
+#include <plugins/editorPluginInterface/elementImpl.h>
 
 using namespace qReal;
 using namespace enums::linkShape;

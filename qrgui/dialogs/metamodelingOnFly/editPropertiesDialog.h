@@ -22,8 +22,10 @@ public:
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of an element for which we edit properties.
 	/// @param parent Parent widget, who is responsible for deletion of this dialog.
-	explicit EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager, Id const &id
-			, QWidget *parent, qrRepo::LogicalRepoApi &api);
+	EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager
+			, qrRepo::LogicalRepoApi &api
+			, Id const &id
+			, QWidget *parent = 0);
 
 	/// Destructor.
 	~EditPropertiesDialog();

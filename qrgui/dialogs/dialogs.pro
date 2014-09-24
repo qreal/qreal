@@ -28,10 +28,12 @@ HEADERS += \
 	$$PWD/metamodelingOnFly/restoreElementDialog.h \
 	$$PWD/progressDialog/progressBar.h \
 	$$PWD/progressDialog/progressDialog.h \
+	$$PWD/projectManagement/listWidget.h \
+	$$PWD/projectManagement/managedClosableDialog.h \
+	$$PWD/projectManagement/suggestToCreateDiagramWidget.h \
+	$$PWD/projectManagement/suggestToCreateDiagramDialog.h \
+	$$PWD/projectManagement/suggestToCreateProjectDialog.h \
 	$$PWD/findReplaceDialog.h \
-	$$PWD/managedClosableDialog.h \
-	$$PWD/suggestToCreateDiagramDialog.h \
-	$$PWD/suggestToCreateProjectDialog.h \
 
 SOURCES += \
 	$$PWD/metamodelingOnFly/propertiesDialog.cpp \
@@ -43,10 +45,12 @@ SOURCES += \
 	$$PWD/metamodelingOnFly/restoreElementDialog.cpp \
 	$$PWD/progressDialog/progressBar.cpp \
 	$$PWD/progressDialog/progressDialog.cpp \
+	$$PWD/projectManagement/listWidget.cpp \
+	$$PWD/projectManagement/managedClosableDialog.cpp \
+	$$PWD/projectManagement/suggestToCreateDiagramWidget.cpp \
+	$$PWD/projectManagement/suggestToCreateDiagramDialog.cpp \
+	$$PWD/projectManagement/suggestToCreateProjectDialog.cpp \
 	$$PWD/findReplaceDialog.cpp \
-	$$PWD/managedClosableDialog.cpp \
-	$$PWD/suggestToCreateDiagramDialog.cpp \
-	$$PWD/suggestToCreateProjectDialog.cpp \
 
 FORMS += \
 	$$PWD/metamodelingOnFly/propertiesDialog.ui \

@@ -4,10 +4,7 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include "dialogs/suggestToCreateDiagramDialog.h"
 #include "mainWindow/mainWindow.h"
-#include "suggestToCreateDiagramWidget.h"
-#include "recentProjectsListWidget.h"
 #include "styledButton.h"
 #include "circleWidget.h"
 #include "brandManager/brandManager.h"

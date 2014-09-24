@@ -11,7 +11,7 @@
 #include "models/models.h"
 #include "editor/editorViewScene.h"
 #include "editor/editorView.h"
-#include "dialogs/suggestToCreateDiagramDialog.h"
+#include "dialogs/projectManagement/suggestToCreateDiagramDialog.h"
 
 using namespace qReal;
 using namespace utils;
@@ -305,7 +305,9 @@ void ProjectManager::suggestToCreateDiagram(bool isClosable)
 		Id const editor = mMainWindow->editorManager().editors()[0];
 		mMainWindow->createDiagram(mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram));
 	} else {
-		SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isClosable);
+		SuggestToCreateDiagramDialog suggestDialog(mMainWindow->editorManager(), mMainWindow, isClosable);
+		connect(&suggestDialog, &SuggestToCreateDiagramDialog::diagramSelected
+				, mMainWindow, &MainWindow::createDiagram);
 		suggestDialog.exec();
 	}
 }

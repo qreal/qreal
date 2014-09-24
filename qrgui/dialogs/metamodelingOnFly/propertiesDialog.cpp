@@ -11,20 +11,20 @@
 using namespace qReal;
 using namespace gui;
 
-PropertiesDialog::PropertiesDialog(MainWindow &mainWindow, EditorManagerInterface &interpreterEditorManager
-		, Id const &id)
-		: QDialog(&mainWindow)
-		, mUi(new Ui::PropertiesDialog)
-		, mInterpreterEditorManager(interpreterEditorManager)
-		, mId(id)
-		, mMainWindow(mainWindow)
-		, mEditPropertiesDialog(NULL)
-		, mElementsOnDiagram(new IdList())
+PropertiesDialog::PropertiesDialog(EditorManagerInterface &interpreterEditorManager
+		, qrRepo::LogicalRepoApi &logicalRepoApi
+		, Id const &id
+		, QWidget *parent)
+	: QDialog(parent)
+	, mUi(new Ui::PropertiesDialog)
+	, mInterpreterEditorManager(interpreterEditorManager)
+	, mLogicalRepoApi(logicalRepoApi)
+	, mId(id)
+	, mElementsOnDiagram(new IdList())
+	, mEditPropertiesDialog(interpreterEditorManager, logicalRepoApi, id)
 {
 	mUi->setupUi(this);
 
-	mEditPropertiesDialog = new EditPropertiesDialog(interpreterEditorManager, id, &mMainWindow
-			, mMainWindow.models()->mutableLogicalRepoApi());
 	setWindowTitle(tr("Properties: ") + mInterpreterEditorManager.friendlyName(mId));
 	mUi->propertiesNamesList->setWrapping(true);
 	updatePropertiesNamesList();
@@ -37,7 +37,6 @@ PropertiesDialog::PropertiesDialog(MainWindow &mainWindow, EditorManagerInterfac
 
 PropertiesDialog::~PropertiesDialog()
 {
-	delete mEditPropertiesDialog;
 	delete mElementsOnDiagram;
 	delete mUi;
 }
@@ -92,13 +91,13 @@ void PropertiesDialog::deleteProperty()
 void PropertiesDialog::change(QString const &text)
 {
 	if (!text.isEmpty()) {
-		mEditPropertiesDialog->changeProperty(
+		mEditPropertiesDialog.changeProperty(
 				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
 				, mPropertiesNames[mUi->propertiesNamesList->currentRow()]
 				, text
 				, new IdList());
 	} else {
-		mEditPropertiesDialog->changeProperty(
+		mEditPropertiesDialog.changeProperty(
 				mUi->propertiesNamesList->item(mUi->propertiesNamesList->currentRow())
 				, ""
 				, text
@@ -106,9 +105,9 @@ void PropertiesDialog::change(QString const &text)
 	}
 
 	mElementsOnDiagram->clear();
-	mEditPropertiesDialog->setModal(true);
-	mEditPropertiesDialog->show();
-	connect(mEditPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
+	mEditPropertiesDialog.setModal(true);
+	mEditPropertiesDialog.show();
+	connect(&mEditPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
 }
 
 
@@ -147,9 +146,8 @@ void PropertiesDialog::findElementsOnDiagram(qrRepo::LogicalRepoApi const &api, 
 
 void PropertiesDialog::addProperty()
 {
-	qrRepo::LogicalRepoApi const &logicalRepoApi = mMainWindow.models()->logicalRepoApi();
-	findElementsOnDiagram(logicalRepoApi, mId);
-	mUi->propertiesNamesList->setCurrentItem(NULL);
+	findElementsOnDiagram(mLogicalRepoApi, mId);
+	mUi->propertiesNamesList->setCurrentItem(nullptr);
 	change("");
 }
 

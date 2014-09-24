@@ -1,12 +1,12 @@
 #pragma once
-#include <QtWidgets/QListWidget>
 
 #include <qrkernel/ids.h>
+
 #include "listWidget.h"
 
 namespace qReal {
 
-class MainWindow;
+class EditorManagerInterface;
 
 /// @brief ListWidget filled with available diagram types
 /// Associated with item data are diagram Id
@@ -16,12 +16,13 @@ class SuggestToCreateDiagramWidget : public ListWidget
 	Q_OBJECT
 
 public:
-	explicit SuggestToCreateDiagramWidget(MainWindow *mainWindow, QWidget *parent = 0);
+	explicit SuggestToCreateDiagramWidget(EditorManagerInterface const &editorManager
+			, QWidget *parent = 0);
 
 private:
 	void addItem(Id const &editor, Id const &diagram);
 
-	MainWindow *mMainWindow;
+	EditorManagerInterface const &mEditorManager;
 };
 
 }

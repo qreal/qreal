@@ -224,8 +224,11 @@ void ExploserView::changePropertiesActionTriggered()
 {
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
-	qReal::gui::PropertiesDialog * const propertiesDialog
-			= new qReal::gui::PropertiesDialog(mMainWindow, mMainWindow.editorManager(), id);
+	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
+			mMainWindow.editorManager()
+			, mLogicalApi.mutableLogicalRepoApi()
+			, id
+			, &mMainWindow);
 	propertiesDialog->setModal(true);
 	propertiesDialog->show();
 }

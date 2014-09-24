@@ -42,9 +42,4 @@ private:
 	bool mFontButtonWasPressed;
 	bool mWasChecked;
 	QString mOldFont;
-
-//	QAction * const mShowGridAction;
-//	QAction * const mShowAlignmentAction;
-//	QAction * const mActivateGridAction;
-//	QAction * const mActivateAlignmentAction;
 };

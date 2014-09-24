@@ -6,6 +6,8 @@
 #include <qrutils/qRealFileDialog.h>
 
 #include "textManager.h"
+#include "qscintillaTextEdit.h"
+/// @todo: remove it
 #include "mainWindow/mainWindow.h"
 
 using namespace qReal;

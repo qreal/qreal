@@ -2,8 +2,7 @@
 
 #include <QtWidgets/QDialog>
 
-#include "plugins/pluginManager/interpreterEditorManager.h"
-#include "mainWindow/mainWindow.h"
+#include <plugins/pluginManager/interpreterEditorManager.h>
 #include "dialogs/metamodelingOnFly/editPropertiesDialog.h"
 
 namespace Ui {
@@ -20,10 +19,12 @@ class PropertiesDialog : public QDialog
 
 public:
 	/// Constructor.
-	/// @param mainWindow Reference to QReal main window.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of current metamodel element in which we need to change properties.
-	PropertiesDialog(MainWindow &mainWindow, EditorManagerInterface &interpreterEditorManager, Id const &id);
+	PropertiesDialog(EditorManagerInterface &interpreterEditorManager
+			, qrRepo::LogicalRepoApi &logicalRepoApi
+			, Id const &id
+			, QWidget *parent = 0);
 
 	/// Destructor.
 	~PropertiesDialog();
@@ -44,11 +45,11 @@ private:
 
 	Ui::PropertiesDialog *mUi;  // Has ownership.
 	EditorManagerInterface &mInterpreterEditorManager;
+	qrRepo::LogicalRepoApi &mLogicalRepoApi;
 	Id mId;
-	MainWindow &mMainWindow;
-	EditPropertiesDialog *mEditPropertiesDialog;  // Has ownership.
 	QStringList mPropertiesNames;
 	qReal::IdList *mElementsOnDiagram;
+	EditPropertiesDialog mEditPropertiesDialog;  // Has ownership.
 };
 
 }

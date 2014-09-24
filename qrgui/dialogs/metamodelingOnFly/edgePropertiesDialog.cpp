@@ -5,8 +5,6 @@
 #include "ui_edgePropertiesDialog.h"
 #include "restoreElementDialog.h"
 
-#include "mainWindow/mainWindow.h"
-
 using namespace qReal;
 using namespace gui;
 

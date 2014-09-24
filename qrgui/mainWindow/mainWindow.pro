@@ -7,7 +7,7 @@ TARGET = qrgui
 QT += widgets printsupport xml svg
 
 LIBS += -L$$PWD/../../bin \
-			-lqrkernel -lqslog -lqrutils -lqrrepo -lqscintilla2 \
+			-lqrkernel -lqslog -lqrutils -lqrrepo \
 			-lmodels -leditor -lcontroller -ldialogs -lpreferencesDialog \
 			-ltextEditor -lmouseGestures -lhotKeyManager -lbrandManager  \
 			-lpluginManager -ltoolPluginInterface -lthirdparty \
@@ -40,7 +40,6 @@ HEADERS += \
 	$$PWD/miniMap.h \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
-	$$PWD/qscintillaTextEdit.h \
 	$$PWD/filterObject.h \
 	$$PWD/projectManager/autosaver.h \
 	$$PWD/projectManager/projectManagementInterface.h \
@@ -51,10 +50,7 @@ HEADERS += \
 	$$PWD/palette/draggableElement.h \
 	$$PWD/palette/paletteTreeWidgets.h \
 	$$PWD/palette/paletteElement.h \
-	$$PWD/startWidget/suggestToCreateDiagramWidget.h \
 	$$PWD/startWidget/startWidget.h \
-	$$PWD/startWidget/recentProjectsListWidget.h \
-	$$PWD/startWidget/listWidget.h \
 	$$PWD/startWidget/circleWidget.h \
 	$$PWD/startWidget/styledButton.h \
 
@@ -73,7 +69,6 @@ SOURCES += \
 	$$PWD/miniMap.cpp \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
-	$$PWD/qscintillaTextEdit.cpp \
 	$$PWD/filterObject.cpp \
 	$$PWD/projectManager/autosaver.cpp \
 	$$PWD/projectManager/projectManager.cpp \
@@ -83,10 +78,7 @@ SOURCES += \
 	$$PWD/palette/draggableElement.cpp \
 	$$PWD/palette/paletteTreeWidgets.cpp \
 	$$PWD/palette/paletteElement.cpp \
-	$$PWD/startWidget/suggestToCreateDiagramWidget.cpp \
 	$$PWD/startWidget/startWidget.cpp \
-	$$PWD/startWidget/recentProjectsListWidget.cpp \
-	$$PWD/startWidget/listWidget.cpp \
 	$$PWD/startWidget/circleWidget.cpp \
 	$$PWD/startWidget/styledButton.cpp \
 

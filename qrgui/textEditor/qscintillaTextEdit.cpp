@@ -1,5 +1,4 @@
 #include "qscintillaTextEdit.h"
-#include <QDebug>
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpython.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexercpp.h>

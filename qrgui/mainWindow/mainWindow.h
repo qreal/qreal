@@ -17,7 +17,6 @@
 #include "referenceList.h"
 #include "projectManager/projectManager.h"
 #include "tabWidget.h"
-#include "qscintillaTextEdit.h"
 #include "filterObject.h"
 #include "startWidget/startWidget.h"
 #include "propertyEditorProxyModel.h"
@@ -40,9 +39,6 @@
 
 #include "preferencesDialog/preferencesDialog.h"
 #include "dialogs/findReplaceDialog.h"
-#include "dialogs/suggestToCreateDiagramDialog.h"
-
-#include "textEditor/textManager.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -52,6 +48,7 @@ namespace qReal {
 
 class EditorView;
 class SceneCustomizer;
+class TextManager;
 
 namespace models {
 class Models;
@@ -377,9 +374,6 @@ private:
 
 	/// mFindDialog - Dialog for searching elements.
 	FindReplaceDialog *mFindReplaceDialog;
-
-	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
-	QMap<EditorView*, gui::QScintillaTextEdit*> *mCodeTabManager;
 
 	models::Models *mModels;
 	Controller *mController;

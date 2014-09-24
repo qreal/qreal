@@ -3,7 +3,6 @@
 
 #include <QtWidgets/QMessageBox>
 
-#include "mainWindow/mainWindow.h"
 #include "restoreElementDialog.h"
 
 using namespace qReal;

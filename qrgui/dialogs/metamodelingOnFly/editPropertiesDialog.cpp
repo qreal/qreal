@@ -8,14 +8,16 @@
 using namespace qReal;
 
 EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager
-		, Id const &id, QWidget *parent, qrRepo::LogicalRepoApi &api)
-		: QDialog(parent)
-		, mUi(new Ui::EditPropertiesDialog)
-		, mInterpreterEditorManager(interpreterEditorManager)
-		, mId(id)
-		, mMode(addNew)
-		, mApi(api)
-		, mElementsOnDiagram(IdList())
+		, qrRepo::LogicalRepoApi &api
+		, Id const &id
+		, QWidget *parent)
+	: QDialog(parent)
+	, mUi(new Ui::EditPropertiesDialog)
+	, mInterpreterEditorManager(interpreterEditorManager)
+	, mId(id)
+	, mMode(addNew)
+	, mApi(api)
+	, mElementsOnDiagram(IdList())
 {
 	mUi->setupUi(this);
 	connect(mUi->okPushButton, &QPushButton::clicked, this, &EditPropertiesDialog::okButtonClicked);

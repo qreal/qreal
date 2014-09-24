@@ -1,6 +1,5 @@
 #include <QtGui/QStandardItemModel>
 
-#include "mainWindow/mainWindow.h"
 #include "restoreElementDialog.h"
 #include "ui_restoreElementDialog.h"
 

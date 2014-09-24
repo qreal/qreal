@@ -23,8 +23,10 @@ HEADERS += \
 	$$PWD/sqlHighlighter.h \
 	$$PWD/textManager.h \
 	$$PWD/textManagerInterface.h \
+	$$PWD/qscintillaTextEdit.h \
 
 SOURCES += \
 	$$PWD/textHighlighter.cpp \
 	$$PWD/sqlHighlighter.cpp \
 	$$PWD/textManager.cpp \
+	$$PWD/qscintillaTextEdit.cpp \

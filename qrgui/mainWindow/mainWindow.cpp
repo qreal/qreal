@@ -26,6 +26,7 @@
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
 #include <qrutils/uxInfo/uxInfo.h>
 
 #include "plugins/toolPluginInterface/systemEvents.h"
@@ -35,7 +36,7 @@
 #include "editor/commands/updateElementCommand.h"
 #include "models/commands/createGroupCommand.h"
 
-#include "dialogs/suggestToCreateProjectDialog.h"
+#include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
 
 #include "models/models.h"
@@ -50,6 +51,9 @@
 
 #include "brandManager/brandManager.h"
 
+#include "textEditor/textManager.h"
+#include "textEditor/qscintillaTextEdit.h"
+
 #include "errorReporter.h"
 #include "shapeEdit/shapeEdit.h"
 #include "propertyEditorProxyModel.h"
@@ -57,7 +61,6 @@
 #include "referenceList.h"
 #include "splashScreen.h"
 #include "dotRunner.h"
-#include "qscintillaTextEdit.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -67,7 +70,6 @@ QString const unsavedDir = "unsaved";
 
 MainWindow::MainWindow(QString const &fileToOpen)
 		: mUi(new Ui::MainWindowUi)
-		, mCodeTabManager(new QMap<EditorView*, QScintillaTextEdit*>())
 		, mModels(nullptr)
 		, mController(new Controller)
 		, mEditorManagerProxy(new EditorManager())
@@ -304,7 +306,6 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mModels;
 	delete mController;
-	delete mCodeTabManager;
 	delete mFindReplaceDialog;
 	delete mFindHelper;
 	delete mProjectManager;
@@ -567,7 +568,7 @@ void MainWindow::print()
 			getCurrentTab()->scene()->render(&painter);
 		}
 	} else {
-		QScintillaTextEdit *textTab = static_cast<QScintillaTextEdit *> (currentTab());
+		QsciScintillaBase *textTab = static_cast<QsciScintillaBase *>(currentTab());
 		QsciPrinter printer(QPrinter::HighResolution);
 		QPrintDialog dialog(&printer, this);
 		if (dialog.exec() == QDialog::Accepted) {
@@ -1702,7 +1703,9 @@ void MainWindow::createProject()
 {
 	Id const theOnlyDiagram = mEditorManagerProxy.theOnlyDiagram();
 	if (theOnlyDiagram.isNull()) {
-		SuggestToCreateProjectDialog dialog(this);
+		SuggestToCreateProjectDialog dialog(editorManager(), this);
+		connect(dialog, &SuggestToCreateProjectDialog::diagramSelected, this
+				, static_cast<void (MainWindow::*)(QString const &)>(&MainWindow::createProject));
 		dialog.exec();
 	} else {
 		Id const editor = editorManager().editors()[0];
