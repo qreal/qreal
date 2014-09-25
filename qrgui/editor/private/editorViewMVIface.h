@@ -2,24 +2,21 @@
 
 #include <QtWidgets/QAbstractItemView>
 
-#include "models/graphicalModelAssistApi.h"
-#include "models/logicalModelAssistApi.h"
-#include "models/exploser.h"
-#include "plugins/pluginManager/sdfRenderer.h"
+#include <qrkernel/ids.h>
 
 class QGraphicsItem;
 
 namespace qReal {
 
+class Exploser;
+class EditorView;
 class EditorViewScene;
-
 class Element;
 
 namespace models {
 class GraphicalModelAssistApi;
 class LogicalModelAssistApi;
 }
-class EditorView;
 
 class EditorViewMViface : public QAbstractItemView
 {
@@ -71,8 +68,6 @@ private:
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;
-
-	SdfRenderer mRenderer;
 
 	QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers);
 

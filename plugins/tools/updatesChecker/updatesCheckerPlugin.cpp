@@ -4,6 +4,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QCheckBox>
 
+#include <qrkernel/settingsManager.h>
 #include <qrkernel/logging.h>
 
 #include "updater.h"
@@ -21,8 +22,8 @@ UpdatesCheckerPlugin::UpdatesCheckerPlugin()
 
 QList<qReal::ActionInfo> UpdatesCheckerPlugin::actions()
 {
-	return { ActionInfo(&mSeparator, "", "help")
-		, ActionInfo(&mCheckForUpdatesAction, "", "help") };
+	return { qReal::ActionInfo(&mSeparator, "", "help")
+		, qReal::ActionInfo(&mCheckForUpdatesAction, "", "help") };
 }
 
 void UpdatesCheckerPlugin::init(qReal::PluginConfigurator const &configurator)
@@ -40,7 +41,7 @@ QStringList UpdatesCheckerPlugin::defaultSettingsFiles()
 
 void UpdatesCheckerPlugin::checkForUpdates(bool reportNoUpdates)
 {
-	if (SettingsManager::value("updaterActive").toBool()) {
+	if (qReal::SettingsManager::value("updaterActive").toBool()) {
 		Updater * const updater = new Updater(this);
 		connect(updater, &Updater::newVersionAvailable, this, &UpdatesCheckerPlugin::showUpdatesDialog);
 		if (reportNoUpdates) {
@@ -57,7 +58,7 @@ void UpdatesCheckerPlugin::reportNoUpdates()
 	mErrorReporter->addInformation(tr("No updates available"));
 }
 
-void UpdatesCheckerPlugin::initSettingsUi(gui::PreferencesPage &behaviourPage)
+void UpdatesCheckerPlugin::initSettingsUi(qReal::gui::PreferencesPage &behaviourPage)
 {
 	QGridLayout * const automaticsLayout = behaviourPage.findChild<QGridLayout *>("automaticsFrameLayout");
 	if (!automaticsLayout) {
@@ -67,11 +68,11 @@ void UpdatesCheckerPlugin::initSettingsUi(gui::PreferencesPage &behaviourPage)
 
 	QCheckBox * const box = new QCheckBox(tr("Check for updates on start"), automaticsLayout->widget());
 	automaticsLayout->addWidget(box, automaticsLayout->rowCount(), 0, 1, automaticsLayout->columnCount());
-	connect(&behaviourPage, &gui::PreferencesPage::saved, [box]() {
-		SettingsManager::setValue("updaterActive", box->isChecked());
+	connect(&behaviourPage, &qReal::gui::PreferencesPage::saved, [box]() {
+		qReal::SettingsManager::setValue("updaterActive", box->isChecked());
 	});
-	connect(&behaviourPage, &gui::PreferencesPage::restored, [box]() {
-		box->setChecked(SettingsManager::value("updaterActive").toBool());
+	connect(&behaviourPage, &qReal::gui::PreferencesPage::restored, [box]() {
+		box->setChecked(qReal::SettingsManager::value("updaterActive").toBool());
 	});
 }
 

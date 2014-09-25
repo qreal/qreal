@@ -76,7 +76,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(nullptr)
 		, mSystemEvents(new SystemEvents())
-		, mTextManager(new TextManager(mSystemEvents, this))
+		, mTextManager(new TextManager(*mSystemEvents, *this))
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(nullptr)
 		, mIsFullscreen(false)
@@ -1704,8 +1704,8 @@ void MainWindow::createProject()
 	Id const theOnlyDiagram = mEditorManagerProxy.theOnlyDiagram();
 	if (theOnlyDiagram.isNull()) {
 		SuggestToCreateProjectDialog dialog(editorManager(), this);
-		connect(dialog, &SuggestToCreateProjectDialog::diagramSelected, this
-				, static_cast<void (MainWindow::*)(QString const &)>(&MainWindow::createProject));
+		connect(&dialog, &SuggestToCreateProjectDialog::diagramSelected, this
+				, static_cast<bool (MainWindow::*)(QString const &)>(&MainWindow::createProject));
 		dialog.exec();
 	} else {
 		Id const editor = editorManager().editors()[0];

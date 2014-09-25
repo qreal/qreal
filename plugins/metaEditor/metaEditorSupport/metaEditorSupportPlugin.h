@@ -22,7 +22,7 @@ public:
 
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
-	virtual QPair<QString, gui::PreferencesPage *> preferencesPage();
+	virtual QPair<QString, qReal::gui::PreferencesPage *> preferencesPage();
 
 private slots:
 	/// Generates .xml file with metamodel for later compilation with qrxc tool

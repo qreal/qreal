@@ -7,7 +7,7 @@ TARGET = qrgui
 QT += widgets printsupport xml svg
 
 LIBS += -L$$PWD/../../bin \
-			-lqrkernel -lqslog -lqrutils -lqrrepo \
+			-lqrkernel -lqslog -lqrutils -lqrrepo -lqscintilla2 \
 			-lmodels -leditor -lcontroller -ldialogs -lpreferencesDialog \
 			-ltextEditor -lmouseGestures -lhotKeyManager -lbrandManager  \
 			-lpluginManager -ltoolPluginInterface -lthirdparty \
