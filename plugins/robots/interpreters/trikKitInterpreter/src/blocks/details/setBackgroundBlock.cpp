@@ -24,9 +24,3 @@ void SetBackgroundBlock::run()
 	display->setBackground(propertyToColor(stringProperty("Color")));
 	emit done(mNextBlockId);
 }
-
-QColor SetBackgroundBlock::propertyToColor(QString const &property) const
-{
-	// Qt does not support dark-yellow string color (see QColor::colorNames())
-	return property == "darkYellow" ? QColor(Qt::darkYellow) : QColor(property);
-}

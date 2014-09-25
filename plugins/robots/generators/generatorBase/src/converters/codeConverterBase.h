@@ -24,11 +24,11 @@ public:
 			, simple::Binding::ConverterInterface const *functionInvocationsConverter
 			, parts::DeviceVariables const &deviceVariables);
 
-	virtual ~CodeConverterBase();
+	~CodeConverterBase() override;
 
 	/// Substitutes all nessesary system stuff linke sensor and encoder reading
 	/// and funciton invocations code.
-	virtual QString convert(QString const &data) const;
+	QString convert(QString const &data) const override;
 
 protected:
 	/// Replaces all sensor and encoder variables occurences with corresponding

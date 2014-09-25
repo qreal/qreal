@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QtCore/QTranslator>
-
 #include "../../qrkernel/ids.h"
 #include "../../qrutils/metamodelGeneratorSupport.h"
 #include "../../qrutils/watchListWindow.h"
@@ -100,8 +98,6 @@ private:
 	qReal::VisualInterpreterUnit *mVisualInterpreterUnit;
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
 	utils::WatchListWindow *mWatchListWindow;
-
-	QTranslator mAppTranslator;
 };
 
 }

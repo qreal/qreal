@@ -52,13 +52,13 @@ protected:
 	virtual void visitSwitch(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 
 	/// This method is called when traverser gets into a block with fork semantics
-	virtual void visitFork(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
+	virtual void visitFork(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> &links) = 0;
 
 	/// This method is called when traverser gets into a block with unknown semantics
 	virtual void visitUnknown(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 
 private:
-	virtual void visit(qReal::Id const &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visit(qReal::Id const &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links);
 
 	qrRepo::RepoApi const &mRepo;
 	GeneratorCustomizer &mCustomizer;

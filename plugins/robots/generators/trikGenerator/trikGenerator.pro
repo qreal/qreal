@@ -9,7 +9,7 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase
+LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \
@@ -24,7 +24,7 @@ INCLUDEPATH += \
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin/plugins/
 }
 
-TRANSLATIONS = trikGenerator_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/trikGenerator_ru.ts
 
 RESOURCES = \
 	$$PWD/trikGenerator.qrc \
@@ -44,10 +44,10 @@ HEADERS += \
 	$$PWD/converters/encoderV4PortConverter.h \
 	$$PWD/converters/encoderV6PortConverter.h \
 	$$PWD/converters/trikStringPropertyConverter.h \
-	$$PWD/simpleGenerators/detectLineGenerator.h \
+	$$PWD/simpleGenerators/detectGenerator.h \
 	$$PWD/simpleGenerators/initCameraGenerator.h \
 	$$PWD/simpleGenerators/ledGenerator.h \
-	$$PWD/simpleGenerators/lineDetectorToVariableGenerator.h \
+	$$PWD/simpleGenerators/detectorToVariableGenerator.h \
 	$$PWD/simpleGenerators/playToneGenerator.h \
 	$$PWD/simpleGenerators/sadSmileGenerator.h \
 	$$PWD/simpleGenerators/sayGenerator.h \
@@ -59,6 +59,13 @@ HEADERS += \
 	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.h \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.h \
 	$$PWD/simpleGenerators/waitForMotionGenerator.h \
+	$$PWD/simpleGenerators/drawLineGenerator.h \
+	$$PWD/simpleGenerators/drawPixelGenerator.h \
+	$$PWD/simpleGenerators/drawRectGenerator.h \
+	$$PWD/simpleGenerators/drawEllipseGenerator.h \
+	$$PWD/simpleGenerators/drawArcGenerator.h \
+	$$PWD/simpleGenerators/setPainterWidthGenerator.h \
+	$$PWD/simpleGenerators/setPainterColorGenerator.h \
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \
@@ -74,10 +81,10 @@ SOURCES += \
 	$$PWD/converters/encoderV4PortConverter.cpp \
 	$$PWD/converters/encoderV6PortConverter.cpp \
 	$$PWD/converters/trikStringPropertyConverter.cpp \
-	$$PWD/simpleGenerators/detectLineGenerator.cpp \
+	$$PWD/simpleGenerators/detectGenerator.cpp \
 	$$PWD/simpleGenerators/initCameraGenerator.cpp \
 	$$PWD/simpleGenerators/ledGenerator.cpp \
-	$$PWD/simpleGenerators/lineDetectorToVariableGenerator.cpp \
+	$$PWD/simpleGenerators/detectorToVariableGenerator.cpp \
 	$$PWD/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/simpleGenerators/sadSmileGenerator.cpp \
 	$$PWD/simpleGenerators/sayGenerator.cpp \
@@ -89,5 +96,12 @@ SOURCES += \
 	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.cpp \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.cpp \
 	$$PWD/simpleGenerators/waitForMotionGenerator.cpp \
+	$$PWD/simpleGenerators/drawLineGenerator.cpp \
+	$$PWD/simpleGenerators/drawPixelGenerator.cpp \
+	$$PWD/simpleGenerators/drawRectGenerator.cpp \
+	$$PWD/simpleGenerators/drawEllipseGenerator.cpp \
+	$$PWD/simpleGenerators/drawArcGenerator.cpp \
+	$$PWD/simpleGenerators/setPainterWidthGenerator.cpp \
+	$$PWD/simpleGenerators/setPainterColorGenerator.cpp \
 
 include(robotCommunication/robotCommunication.pri)

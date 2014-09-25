@@ -58,13 +58,15 @@ private:
 
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, robotModel::PortInfo const &port
-			, robotModel::DeviceInfo const &sensor);
+			, robotModel::DeviceInfo const &sensor
+			, Reason reason) override;
 
 	void propagateChanges(robotModel::PortInfo const &port
 			, robotModel::DeviceInfo const &sensor);
 
 	bool areConvertible(robotModel::PortInfo const &port1
 			, robotModel::PortInfo const &port2) const;
+
 	robotModel::DeviceInfo convertibleDevice(
 			robotModel::RobotModelInterface const *robotModel
 			, robotModel::PortInfo const &port

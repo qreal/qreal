@@ -16,6 +16,7 @@ namespace generatorBase {
 namespace parts {
 class Variables;
 class Subprograms;
+class Threads;
 class Engines;
 class Sensors;
 class Functions;
@@ -52,6 +53,9 @@ public:
 
 	/// Returns a pointer to an entity processing everything about subprograms
 	virtual parts::Subprograms *subprograms();
+
+	/// Returns a pointer to a global threads storage
+	parts::Threads &threads();
 
 	/// Returns a pointer to an entity processing everything about engines usage
 	virtual parts::Engines *engines();
@@ -90,6 +94,10 @@ public:
 	/// Returns a pointer to a code generator for loops in 'for' form
 	virtual simple::AbstractSimpleGenerator *forLoopGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
+
+	/// Returns a pointer to a threads instantiation generator
+	virtual simple::AbstractSimpleGenerator *forkCallGenerator(qReal::Id const &id
+			, GeneratorCustomizer &customizer, qReal::IdList const &threads);
 
 	/// Returns a pointer to a code generator for blocks with regular semantics
 	virtual simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
@@ -136,6 +144,10 @@ public:
 	/// Produces converter for expressions which should have string type
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
+
+	/// Produces a converter that returns an expression that obtain values of system variables
+	/// getting its name or the given string othrewise. Transfers ownership.
+	virtual simple::Binding::ConverterInterface *systemVariableNameConverter() const;
 
 	/// Produces converter for transformation a string into valid c++-style identifier
 	/// without taking ownership on it
@@ -223,6 +235,7 @@ protected:
 	qReal::Id mDiagram;
 	parts::Variables *mVariables;
 	parts::Subprograms *mSubprograms;
+	parts::Threads *mThreads;
 	parts::Engines *mEngines;
 	parts::Sensors *mSensors;
 	parts::Functions *mFunctions;

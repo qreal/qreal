@@ -6,11 +6,18 @@
 #include "converters/encoderV4PortConverter.h"
 #include "converters/encoderV6PortConverter.h"
 #include "converters/trikStringPropertyConverter.h"
-#include "simpleGenerators/detectLineGenerator.h"
+#include "simpleGenerators/detectGenerator.h"
 #include "simpleGenerators/initCameraGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
-#include "simpleGenerators/lineDetectorToVariableGenerator.h"
+#include "simpleGenerators/detectorToVariableGenerator.h"
 #include "simpleGenerators/playToneGenerator.h"
+#include "simpleGenerators/drawLineGenerator.h"
+#include "simpleGenerators/drawPixelGenerator.h"
+#include "simpleGenerators/drawRectGenerator.h"
+#include "simpleGenerators/drawEllipseGenerator.h"
+#include "simpleGenerators/drawArcGenerator.h"
+#include "simpleGenerators/setPainterWidthGenerator.h"
+#include "simpleGenerators/setPainterColorGenerator.h"
 #include "simpleGenerators/sadSmileGenerator.h"
 #include "simpleGenerators/sayGenerator.h"
 #include "simpleGenerators/setBackgroundGenerator.h"
@@ -55,6 +62,20 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new TrikNullificationEncoderGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("TrikPlayTone")) {
 		return new PlayToneGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawLine") {
+		return new DrawLineGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawPixel") {
+		return new DrawPixelGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawRect") {
+		return new DrawRectGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawEllipse") {
+		return new DrawEllipseGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDrawArc") {
+		return new DrawArcGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikSetPainterWidth") {
+		return new SetPainterWidthGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikSetPainterColor") {
+		return new SetPainterColorGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSmile") {
 		return new SmileGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSadSmile") {
@@ -67,12 +88,12 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new SystemGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikLed") {
 		return new LedGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "TrikDetectLine") {
-		return new DetectLineGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDetect") {
+		return new DetectGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikInitCamera") {
 		return new InitCameraGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "TrikLineDetectorToVariable") {
-		return new LineDetectorToVariableGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikDetectorToVariable") {
+		return new DetectorToVariableGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForEnter") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForEnter.t", this);
 	} else if (elementType == "TrikWaitForLeft") {
@@ -121,7 +142,7 @@ Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
 
 generatorBase::simple::Binding::ConverterInterface *TrikGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::TrikStringPropertyConverter(*mVariables);
+	return new converters::TrikStringPropertyConverter(*mVariables, *systemVariableNameConverter());
 }
 
 void TrikGeneratorFactory::initVariables()

@@ -46,7 +46,7 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mExploser(nullptr)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
-	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
+	mWidthOfGrid = static_cast<qreal>(SettingsManager::value("GridWidth").toInt()) / 100;
 	mRealIndexGrid = SettingsManager::value("IndexGrid").toInt();
 
 	setItemIndexMethod(NoIndex);
@@ -138,12 +138,12 @@ void EditorViewScene::initMouseMoveManager()
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
 
-double EditorViewScene::realIndexGrid()
+qreal EditorViewScene::realIndexGrid()
 {
 	return mRealIndexGrid;
 }
 
-void EditorViewScene::setRealIndexGrid(double newIndexGrid)
+void EditorViewScene::setRealIndexGrid(qreal newIndexGrid)
 {
 	mRealIndexGrid = newIndexGrid;
 }
@@ -908,11 +908,15 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
 		mTimer->stop();
+
+		QPoint const pos = mainWindow()->mapFromGlobal(event->screenPos());
+		QLOG_TRACE() << "Started mouse gesture at " << pos;
+
 		mMouseMovementManager->mousePress(event->scenePos());
 		mRightButtonPressed = true;
 	}
 
-	redraw();
+	invalidate();
 
 	mShouldReparentItems = (selectedItems().size() > 0);
 }
@@ -1168,6 +1172,8 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	if (event->button() == Qt::RightButton && !(mMouseMovementManager->pathIsEmpty())) {
+		QPoint const pos = mainWindow()->mapFromGlobal(event->screenPos());
+		QLOG_TRACE() << "Mouse gesture movement to " << pos;
 		mMouseMovementManager->mouseMove(event->scenePos());
 		mRightButtonPressed = false;
 		drawGesture();
@@ -1189,7 +1195,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			return;
 		}
 
-		QLOG_TRACE() << "Mouse gesture release at " << event->scenePos();
+		QLOG_TRACE() << "Mouse gesture release at " << pos;
 
 		QPointF const start = mMouseMovementManager->firstPoint();
 		QPointF const end = mMouseMovementManager->lastPoint();
@@ -1207,7 +1213,8 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	if (element) {
-		redraw();
+		// To remove guides from scene
+		invalidate();
 	}
 }
 
@@ -1219,6 +1226,9 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	} else {
 		// button isn't recognized while mouse moves
 		if (mRightButtonPressed) {
+			QPoint const pos = mainWindow()->mapFromGlobal(event->screenPos());
+			QLOG_TRACE() << "Mouse gesture movement to " << pos;
+
 			mMouseMovementManager->mouseMove(event->scenePos());
 			drawGesture();
 		} else {
@@ -1321,17 +1331,12 @@ void EditorViewScene::setNeedDrawGrid(bool show)
 	mNeedDrawGrid = show;
 }
 
-bool EditorViewScene::getNeedDrawGrid()
-{
-	return mNeedDrawGrid;
-}
-
 void EditorViewScene::drawGesture()
 {
 	QLineF line = mMouseMovementManager->newLine();
 	QGraphicsLineItem *item = new QGraphicsLineItem(line);
-	double size = mGesture.size() * 0.1;
-	double color_ratio = pow(fabs(sin(size)), 1.5);
+	qreal size = mGesture.size() * 0.1;
+	qreal color_ratio = pow(fabs(sin(size)), 1.5);
 	QColor penColor(255 * color_ratio, 255 * (1 - color_ratio), 255);
 	item->setPen(penColor);
 	addItem(item);
@@ -1359,13 +1364,6 @@ void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 		wheelEvent->accept();
 	}
 	return;
-}
-
-void EditorViewScene::redraw()
-{
-	if (mNeedDrawGrid) {
-		invalidate();
-	}
 }
 
 void EditorViewScene::highlight(Id const &graphicalId, bool exclusive, QColor const &color)

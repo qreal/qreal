@@ -4,7 +4,7 @@ using namespace interpreterCore;
 using namespace utils;
 using namespace interpreterBase::robotModel;
 
-GraphicsWatcherManager::GraphicsWatcherManager(ExpressionsParser * const parser, QObject *parent)
+GraphicsWatcherManager::GraphicsWatcherManager(qrtext::DebuggerInterface const &parser, QObject *parent)
 	: QObject(parent)
 	, mWatcher(new sensorsGraph::SensorsGraph(parser))
 {
@@ -26,10 +26,11 @@ void GraphicsWatcherManager::forceStop()
 }
 
 void GraphicsWatcherManager::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
+	Q_UNUSED(reason)
 
 	updateSensorsList(robotModel);
 }

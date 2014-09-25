@@ -5,17 +5,23 @@
 
 #include "src/engine/model/constants.h"
 #include "src/engine/model/worldModel.h"
+#include "src/engine/model/timeline.h"
 #include "src/engine/items/wallItem.h"
 
 using namespace twoDModel::model;
 using namespace physics;
 using namespace mathUtils;
 
-RealisticPhysicsEngine::RealisticPhysicsEngine(WorldModel const &worldModel)
+RealisticPhysicsEngine::RealisticPhysicsEngine(WorldModel const &worldModel, Timeline const &timeline)
 	: PhysicsEngineBase(worldModel)
 	, mForceMoment(0.0)
 	, mAngularVelocity(0.0)
 {
+	QObject::connect(&timeline, &Timeline::started, [=]() {
+		mVelocity = QVector2D();
+		mAngularVelocity = 0.0;
+		mForceMoment = 0.0;
+	});
 }
 
 void RealisticPhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qreal speed2

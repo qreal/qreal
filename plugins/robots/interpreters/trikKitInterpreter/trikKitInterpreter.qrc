@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>trikKitInterpreter_ru.qm</file>
         <file>icons/trikTwoDRobot.svg</file>
         <file>icons/switch-2d.svg</file>
         <file>icons/switch-real-trik.svg</file>

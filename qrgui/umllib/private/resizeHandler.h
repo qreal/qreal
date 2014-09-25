@@ -6,7 +6,8 @@
 
 #include "umllib/nodeElement.h"
 
-class ResizeHandler {
+class ResizeHandler
+{
 public:
 	/**
 	 * Constructs a ResizeHandler.

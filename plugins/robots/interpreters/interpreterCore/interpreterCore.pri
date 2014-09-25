@@ -8,8 +8,9 @@ INCLUDEPATH += \
 	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
+	$$PWD/../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils -lcommonTwoDModel
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils -lcommonTwoDModel -lqrtext
 
 HEADERS += \
 	$$PWD/src/customizer.h \
@@ -90,7 +91,7 @@ SOURCES += \
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \
 
-TRANSLATIONS += $$PWD/interpreterCore_ru.ts
+TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterCore_ru.ts
 
 RESOURCES += \
 	$$PWD/interpreterCore.qrc \

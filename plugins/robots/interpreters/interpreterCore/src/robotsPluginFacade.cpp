@@ -10,8 +10,7 @@
 using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
-	: mParser(nullptr)
-	, mInterpreter(nullptr)
+	: mInterpreter(nullptr)
 	, mKitPluginManager("plugins/tools/kitPlugins")
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
@@ -24,7 +23,6 @@ RobotsPluginFacade::RobotsPluginFacade()
 RobotsPluginFacade::~RobotsPluginFacade()
 {
 	delete mInterpreter;
-	delete mParser;
 }
 
 void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
@@ -47,10 +45,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 		return;
 	}
 
-	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter()
-			, mRobotModelManager
-			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; });
-
+	mParser.reset(new textLanguage::RobotsBlockParser(mRobotModelManager
+			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }));
 
 	initSensorWidgets();
 
@@ -59,8 +55,9 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, configurer.logicalModelApi()
 			, mRobotModelManager
 			, *configurer.mainWindowInterpretersInterface().errorReporter()
-			, mParser
+			, *mParser
 			);
+
 	mBlocksFactoryManager.addFactory(coreFactory);
 
 	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
@@ -193,8 +190,11 @@ void RobotsPluginFacade::initSensorWidgets()
 		}
 	}
 
-	mWatchListWindow = new utils::WatchListWindow(mParser);
-	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
+	mWatchListWindow = new utils::WatchListWindow(*mParser);
+
+	mWatchListWindow->hideVariables(mParser->specialVariables());
+
+	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, this);
 
 	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);
 	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
@@ -242,8 +242,9 @@ void RobotsPluginFacade::initFactoriesFor(QString const &kitId
 					, configurer.logicalModelApi()
 					, mRobotModelManager
 					, *configurer.mainWindowInterpretersInterface().errorReporter()
-					, mParser
+					, *mParser
 					);
+
 			mBlocksFactoryManager.addFactory(factory, model);
 		}
 	}

@@ -71,8 +71,7 @@ private:
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
 
-	/// @todo What it is doing here?
-	textLanguage::RobotsBlockParser *mParser;  // Has ownership
+	QScopedPointer<textLanguage::RobotsBlockParser> mParser;
 
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
 	interpreter::InterpreterInterface *mInterpreter;  // Has ownership

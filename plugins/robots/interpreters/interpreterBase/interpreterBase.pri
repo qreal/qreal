@@ -5,12 +5,13 @@ INCLUDEPATH += \
 	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
+	$$PWD/../../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -lqrtext -lqslog
 
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
-TRANSLATIONS = interpreterBase_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterBase_ru.ts
 
 SOURCES += \
 	$$PWD/src/devicesConfigurationProvider.cpp \
@@ -128,6 +129,3 @@ HEADERS += \
 # qrgui code
 HEADERS += \
 	$$PWD/../../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
-
-RESOURCES += \
-	$$PWD/interpreterBase.qrc \

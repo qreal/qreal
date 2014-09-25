@@ -13,8 +13,10 @@ WaitForSoundSensorBlock::WaitForSoundSensorBlock(interpreterBase::robotModel::Ro
 
 void WaitForSoundSensorBlock::responseSlot(int reading)
 {
-	int const targetPercents = evaluate("Volume").toInt();
-	processResponce(reading, targetPercents);
+	int const result = eval<int>("Volume");
+	if (!errorsOccured()) {
+		processResponce(reading, result);
+	}
 }
 
 interpreterBase::robotModel::DeviceInfo WaitForSoundSensorBlock::device() const

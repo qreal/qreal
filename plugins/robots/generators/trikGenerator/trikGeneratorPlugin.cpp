@@ -16,18 +16,25 @@ TrikGeneratorPlugin::TrikGeneratorPlugin()
 	, mUploadProgramAction(nullptr)
 	, mRunProgramAction(nullptr)
 	, mStopRobotAction(nullptr)
+	, mCommunicator(nullptr)
 {
-	mAppTranslator.load(":/trikGenerator_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 TrikGeneratorPlugin::~TrikGeneratorPlugin()
 {
+	delete mCommunicator;
 }
 
 QString TrikGeneratorPlugin::kitId() const
 {
 	return "trikKit";
+}
+
+void TrikGeneratorPlugin::init(qReal::PluginConfigurator const &configurator
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+{
+	RobotsGeneratorPluginBase::init(configurator, robotModelManager);
+	mCommunicator = new TcpRobotCommunicator(*mMainWindowInterface->errorReporter());
 }
 
 QList<ActionInfo> TrikGeneratorPlugin::actions()
@@ -108,8 +115,7 @@ bool TrikGeneratorPlugin::uploadProgram()
 	QFileInfo const fileInfo = generateCodeForProcessing();
 
 	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
-		TcpRobotCommunicator communicator;
-		bool const result = communicator.uploadProgram(fileInfo.absoluteFilePath());
+		bool const result = mCommunicator->uploadProgram(fileInfo.absoluteFilePath());
 		if (!result) {
 			mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 		}
@@ -124,9 +130,8 @@ bool TrikGeneratorPlugin::uploadProgram()
 void TrikGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
-		TcpRobotCommunicator communicator;
 		QFileInfo const fileInfo = generateCodeForProcessing();
-		communicator.runProgram(fileInfo.fileName());
+		mCommunicator->runProgram(fileInfo.fileName());
 	} else {
 		qDebug() << "Program upload failed, aborting";
 	}
@@ -134,12 +139,11 @@ void TrikGeneratorPlugin::runProgram()
 
 void TrikGeneratorPlugin::stopRobot()
 {
-	TcpRobotCommunicator communicator;
-	if (!communicator.stopRobot()) {
+	if (!mCommunicator->stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
 
-	communicator.runDirectCommand(
+	mCommunicator->runDirectCommand(
 			"brick.system(\"killall aplay\"); \n"
 			"brick.system(\"killall vlc\"); \n"
 			"brick.system(\"killall rover-cv\");"

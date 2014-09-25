@@ -94,11 +94,11 @@ public:
 	qReal::Id to(qReal::Id const &id) const override;
 	void setTo(qReal::Id const &id, qReal::Id const &to) override;
 
-	double fromPort(qReal::Id const &id) const override;
-	void setFromPort(qReal::Id const &id, double fromPort) override;
+	qreal fromPort(qReal::Id const &id) const override;
+	void setFromPort(qReal::Id const &id, qreal fromPort) override;
 
-	double toPort(qReal::Id const &id) const override;
-	void setToPort(qReal::Id const &id, double toPort) override;
+	qreal toPort(qReal::Id const &id) const override;
+	void setToPort(qReal::Id const &id, qreal toPort) override;
 
 	QVariant position(qReal::Id const &id) const override;
 	QVariant configuration(qReal::Id const &id) const override;

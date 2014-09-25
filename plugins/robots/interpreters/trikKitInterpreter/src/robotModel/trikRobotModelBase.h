@@ -31,6 +31,9 @@ protected:
 
 	virtual interpreterBase::robotModel::DeviceInfo motionSensorInfo() const;
 
+	virtual interpreterBase::robotModel::DeviceInfo gyroscopeInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo accelerometerInfo() const;
+
 	virtual interpreterBase::robotModel::DeviceInfo ledInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo lineSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo colorSensorInfo() const;

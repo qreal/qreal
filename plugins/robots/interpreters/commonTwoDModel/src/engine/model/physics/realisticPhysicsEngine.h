@@ -4,13 +4,16 @@
 
 namespace twoDModel {
 namespace model {
+
+class Timeline;
+
 namespace physics {
 
 /// An implementation of 2D model physical engine with some realistic effects (like friction emulation)
 class RealisticPhysicsEngine : public PhysicsEngineBase
 {
 public:
-	explicit RealisticPhysicsEngine(WorldModel const &worldModel);
+	explicit RealisticPhysicsEngine(WorldModel const &worldModel, Timeline const &timeline);
 
 	void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 			, bool engine1Break, bool engine2Break

@@ -7,14 +7,15 @@ INCLUDEPATH += \
 	$$PWD/../../../utils/include \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
+	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
+	-lqrtext
 
 HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \
 	$$PWD/trikDisplayWidget.h \
 	$$PWD/trikKitInterpreterPlugin.h \
-	$$PWD/trikTwoDModelConfigurer.h \
 	$$PWD/blocks/trikBlocksFactory.h \
 	$$PWD/blocks/details/ledBlock.h \
 	$$PWD/blocks/details/setBackgroundBlock.h \
@@ -50,17 +51,25 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/motionSensor.h \
 	$$PWD/robotModel/real/parts/objectSensor.h \
 	$$PWD/robotModel/real/parts/colorSensor.h \
+	$$PWD/robotModel/real/parts/gyroscope.h \
+	$$PWD/robotModel/real/parts/accelerometer.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
+	$$PWD/blocks/details/drawLineBlock.h \
+	$$PWD/blocks/details/drawPixelBlock.h \
+	$$PWD/blocks/details/drawRectBlock.h \
+	$$PWD/blocks/details/drawEllipseBlock.h \
+	$$PWD/blocks/details/drawArcBlock.h \
+	$$PWD/blocks/details/setPainterWidthBlock.h \
+	$$PWD/blocks/details/setPainterColorBlock.h \
 	$$PWD/robotModel/twoD/parts/twoDLed.h \
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
 	$$PWD/trikKitInterpreterPlugin.cpp \
 	$$PWD/trikDisplayWidget.cpp \
-	$$PWD/trikTwoDModelConfigurer.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
 	$$PWD/blocks/details/ledBlock.cpp \
 	$$PWD/blocks/details/setBackgroundBlock.cpp \
@@ -96,10 +105,19 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/objectSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensor.cpp \
 	$$PWD/robotModel/real/parts/motionSensor.cpp \
+	$$PWD/robotModel/real/parts/gyroscope.cpp \
+	$$PWD/robotModel/real/parts/accelerometer.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
+	$$PWD/blocks/details/drawLineBlock.cpp \
+	$$PWD/blocks/details/drawPixelBlock.cpp \
+	$$PWD/blocks/details/drawRectBlock.cpp \
+	$$PWD/blocks/details/drawEllipseBlock.cpp \
+	$$PWD/blocks/details/drawArcBlock.cpp \
+	$$PWD/blocks/details/setPainterWidthBlock.cpp \
+	$$PWD/blocks/details/setPainterColorBlock.cpp \
 	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
 
 FORMS += \
@@ -109,6 +127,6 @@ FORMS += \
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \
 
-TRANSLATIONS += $$PWD/../trikKitInterpreter_ru.ts
+TRANSLATIONS += $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts
 
 include($$PWD/../qrguiIncludes.pri)

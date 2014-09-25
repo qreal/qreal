@@ -14,8 +14,9 @@ LIBS += -L../../bin -lqrkernel -lqrutils
 INCLUDEPATH += \
 	$$PWD/../.. \
 	$$PWD/../../qrgui/ \
+	$$PWD/../../qrtext/include/ \
 
-TRANSLATIONS = visualInterpreter_ru.ts
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/plugins/visualInterpreter_ru.ts
 
 HEADERS = \
 	../../qrgui/dialogs/preferencesPages/preferencesPage.h \

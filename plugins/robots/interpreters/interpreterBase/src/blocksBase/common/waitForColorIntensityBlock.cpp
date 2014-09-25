@@ -10,6 +10,8 @@ WaitForColorIntensityBlock::WaitForColorIntensityBlock(interpreterBase::robotMod
 
 void WaitForColorIntensityBlock::responseSlot(int reading)
 {
-	int const targetIntensity = evaluate("Intensity").toInt();
-	processResponce(reading, targetIntensity);
+	int const result = eval<int>("Intensity");
+	if (!errorsOccured()) {
+		processResponce(reading, result);
+	}
 }

@@ -7,15 +7,17 @@ INCLUDEPATH += \
 	$$PWD/../../../utils/include \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
+	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
+	-lqrtext
+
 
 HEADERS += \
 	$$PWD/commandConstants.h \
 	$$PWD/nxtAdditionalPreferences.h \
 	$$PWD/nxtDisplayWidget.h \
 	$$PWD/nxtKitInterpreterPlugin.h \
-	$$PWD/nxtTwoDModelConfigurer.h \
 	$$PWD/blocks/nxtBlocksFactory.h \
 	$$PWD/blocks/details/speakerBlock.h \
 	$$PWD/blocks/details/beepBlock.h \
@@ -57,7 +59,6 @@ SOURCES += \
 	$$PWD/nxtAdditionalPreferences.cpp \
 	$$PWD/nxtDisplayWidget.cpp \
 	$$PWD/nxtKitInterpreterPlugin.cpp \
-	$$PWD/nxtTwoDModelConfigurer.cpp \
 	$$PWD/blocks/nxtBlocksFactory.cpp \
 	$$PWD/blocks/details/speakerBlock.cpp \
 	$$PWD/blocks/details/beepBlock.cpp \
@@ -102,6 +103,6 @@ FORMS += \
 include($$PWD/../qrguiIncludes.pri)
 include($$PWD/communication/communication.pri)
 
-TRANSLATIONS = $$PWD/../nxtKitInterpreter_ru.ts
+TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtKitInterpreter_ru.ts
 
 RESOURCES += $$PWD/../nxtKitInterpreter.qrc

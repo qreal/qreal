@@ -11,6 +11,7 @@ class RootNode : public SemanticNode
 public:
 	explicit RootNode(qReal::Id const &initialBlock, QObject *parent = 0);
 
+	qReal::Id initialBlock() const;
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
@@ -18,6 +19,7 @@ protected:
 
 private:
 	ZoneNode *mZone;  // Takes ownership
+	qReal::Id const mInitialBlock;
 };
 
 }

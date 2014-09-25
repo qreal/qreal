@@ -1,5 +1,7 @@
 #include "pluginManagerImplementation.h"
 
+#include <qrkernel/logging.h>
+
 using namespace qReal::details;
 
 PluginManagerImplementation::PluginManagerImplementation(QString const &applicationDirPath
@@ -29,10 +31,13 @@ QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 	QList<QObject *> listOfPlugins;
 
 	for (QString const &fileName : mPluginsDir.entryList(QDir::Files)) {
-		QObject * pluginByName = pluginLoadedByName(fileName).first;
+		QPair<QObject *, QString> const pluginAndError =  pluginLoadedByName(fileName);
+		QObject * const pluginByName = pluginAndError.first;
 		if (pluginByName) {
 			listOfPlugins.append(pluginByName);
 			mFileNameAndPlugin.insert(fileName, pluginByName);
+		} else {
+			QLOG_ERROR() << "Plugin loading failed:" << pluginAndError.second;
 		}
 	}
 

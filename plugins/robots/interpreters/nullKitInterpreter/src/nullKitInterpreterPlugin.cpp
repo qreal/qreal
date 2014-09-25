@@ -7,8 +7,6 @@ using namespace nullKitInterpreter;
 NullKitInterpreterPlugin::NullKitInterpreterPlugin()
 	: mRobotModel(kitId())
 {
-	mAppTranslator.load(":/nullKitInterpreter_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 QString NullKitInterpreterPlugin::kitId() const

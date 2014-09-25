@@ -17,10 +17,6 @@ PrimaryControlFlowValidator::PrimaryControlFlowValidator(
 {
 }
 
-PrimaryControlFlowValidator::~PrimaryControlFlowValidator()
-{
-}
-
 bool PrimaryControlFlowValidator::validate()
 {
 	mIfBranches.clear();
@@ -185,8 +181,7 @@ void PrimaryControlFlowValidator::visitSwitch(Id const &id
 	// TODO
 }
 
-void PrimaryControlFlowValidator::visitFork(Id const &id
-		, QList<LinkInfo> const &links)
+void PrimaryControlFlowValidator::visitFork(Id const &id, QList<LinkInfo> &links)
 {
 	if (links.size() < 2) {
 		error(QObject::tr("Fork block must have at least TWO outgoing links"), id);

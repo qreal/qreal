@@ -6,11 +6,12 @@
 
 #include <qrkernel/roles.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
+
 #include "umllib/nodeElement.h"
 #include "controller/controller.h"
-#include "view/gestures/mouseMovementManager.h"
-#include "view/copyPaste/clipboardHandler.h"
+#include "gestures/mouseMovementManager.h"
 
+#include "view/copyPaste/clipboardHandler.h"
 #include "view/private/editorViewMVIface.h"
 #include "view/private/exploserView.h"
 
@@ -66,11 +67,10 @@ public:
 	void setEnabled(bool enabled);
 
 	void setNeedDrawGrid(bool show);
-	double realIndexGrid();
-	void setRealIndexGrid(double newIndexGrid);
+	qreal realIndexGrid();
+	void setRealIndexGrid(qreal newIndexGrid);
 
 	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
-	bool getNeedDrawGrid();
 
 	Element *lastCreatedFromLinker() const;
 
@@ -181,8 +181,6 @@ private:
 	void initCorners();
 	void setCorners(QPointF const &topLeft, QPointF const &bottomRight);
 
-	void redraw();
-
 	void initContextMenu(Element *e, QPointF const &pos);
 	bool isEmptyClipboard();
 
@@ -206,7 +204,7 @@ private:
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
 	qreal mWidthOfGrid;
-	double mRealIndexGrid;
+	qreal mRealIndexGrid;
 	graphicsUtils::GridDrawer mGridDrawer;
 
 	NodeElement *mHighlightNode;

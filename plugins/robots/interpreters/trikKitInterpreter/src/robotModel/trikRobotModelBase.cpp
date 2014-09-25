@@ -3,6 +3,8 @@
 #include <interpreterBase/robotModel/robotParts/display.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/button.h>
+#include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
+#include <interpreterBase/robotModel/robotParts/accelerometerSensor.h>
 
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 
@@ -69,6 +71,14 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
 	addAllowedConnection(PortInfo("D2", input, { "JD2" }, "sensorD2"), { sonarSensorInfo() });
 
 	addAllowedConnection(PortInfo("F1", input, { "JF1" }, "sensorF1"), { motionSensorInfo() });
+
+	addAllowedConnection(PortInfo("GyroscopePortX", input, {}, "gyroscopeX"), { gyroscopeInfo() });
+	addAllowedConnection(PortInfo("GyroscopePortY", input, {}, "gyroscopeY"), { gyroscopeInfo() });
+	addAllowedConnection(PortInfo("GyroscopePortZ", input, {}, "gyroscopeZ"), { gyroscopeInfo() });
+
+	addAllowedConnection(PortInfo("AccelerometerPortX", input, {}, "accelerometerX"), { accelerometerInfo() });
+	addAllowedConnection(PortInfo("AccelerometerPortY", input, {}, "accelerometerY"), { accelerometerInfo() });
+	addAllowedConnection(PortInfo("AccelerometerPortZ", input, {}, "accelerometerZ"), { accelerometerInfo() });
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
 
@@ -149,6 +159,16 @@ DeviceInfo TrikRobotModelBase::sonarSensorInfo() const
 DeviceInfo TrikRobotModelBase::motionSensorInfo() const
 {
 	return DeviceInfo::create<parts::TrikMotionSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::gyroscopeInfo() const
+{
+	return DeviceInfo::create<robotParts::GyroscopeSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::accelerometerInfo() const
+{
+	return DeviceInfo::create<robotParts::AccelerometerSensor>();
 }
 
 DeviceInfo TrikRobotModelBase::ledInfo() const

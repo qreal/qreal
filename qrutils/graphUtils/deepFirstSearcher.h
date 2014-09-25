@@ -12,7 +12,7 @@ class QRUTILS_EXPORT DeepFirstSearcher
 {
 public:
 	/// A storage for more comfortable processing visited nodes
-	struct  QRUTILS_EXPORT LinkInfo
+	struct QRUTILS_EXPORT LinkInfo
 	{
 	public:
 		qReal::Id linkId;
@@ -27,8 +27,10 @@ public:
 	public:
 		virtual ~VisitorInterface() {}
 
-		/// Called every time when traverser gets into new node
-		virtual void visit(qReal::Id const &nodeId, QList<LinkInfo> const &links) = 0;
+		/// Called every time when traverser gets into new node.
+		/// Visitor may modify links list (it may be useful if visitor wants to restrict
+		/// DFSer for visiting some of his children).
+		virtual void visit(qReal::Id const &nodeId, QList<LinkInfo> &links) = 0;
 
 		/// Called when model traversal is going to be started
 		virtual void beforeSearch();
