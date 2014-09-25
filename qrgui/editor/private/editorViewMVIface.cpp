@@ -6,7 +6,6 @@
 #include "editor/editorViewScene.h"
 #include "editor/element.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
-#include "mainWindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -144,7 +143,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		ElementImpl * const elementImpl = mScene->mainWindow()->editorManager().elementImpl(currentId);
+		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
 		Element *elem = elementImpl->isNode()
 				? dynamic_cast<Element *>(
 						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, *mExploser)
@@ -153,7 +152,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 						new EdgeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi)
 						);
 
-		elem->setController(mScene->mainWindow()->controller());
+		elem->setController(&mScene->controller());
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;

@@ -4,8 +4,6 @@
 
 #include <qrkernel/ids.h>
 
-class QGraphicsItem;
-
 namespace qReal {
 
 class Exploser;

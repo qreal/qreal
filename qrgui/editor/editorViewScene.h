@@ -64,6 +64,7 @@ public:
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
 	qReal::MainWindow *mainWindow() const;
+	qReal::Controller &controller() const;
 	void setEnabled(bool enabled);
 
 	void setNeedDrawGrid(bool show);

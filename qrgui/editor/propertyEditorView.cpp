@@ -4,18 +4,19 @@
 
 #include <qrutils/qRealFileDialog.h>
 
-#include "mainWindow/mainWindow.h"
 #include "models/commands/changePropertyCommand.h"
 
 PropertyEditorView::PropertyEditorView(QWidget *parent)
-		: QWidget(parent), mChangingPropertyValue(false)
-		, mModel(NULL), mPropertyEditor(new QtTreePropertyBrowser(this))
-		, mLogicalModelAssistApi(NULL)
-		, mVariantManager(NULL)
-		, mVariantFactory(NULL)
-		, mButtonManager(NULL)
-		, mButtonFactory(NULL)
-		, mController(NULL)
+		: QWidget(parent)
+		, mChangingPropertyValue(false)
+		, mModel(nullptr)
+		, mPropertyEditor(new QtTreePropertyBrowser(this))
+		, mLogicalModelAssistApi(nullptr)
+		, mVariantManager(nullptr)
+		, mVariantFactory(nullptr)
+		, mButtonManager(nullptr)
+		, mButtonFactory(nullptr)
+		, mController(nullptr)
 {
 	mPropertyEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
@@ -29,12 +30,11 @@ PropertyEditorView::~PropertyEditorView()
 	delete mButtonFactory;
 }
 
-void PropertyEditorView::init(qReal::MainWindow *mainWindow
-		, qReal::models::LogicalModelAssistApi *const logicalModelAssistApi)
+void PropertyEditorView::init(qReal::models::LogicalModelAssistApi &logicalModelAssistApi
+		, qReal::Controller &controller)
 {
-	mMainWindow = mainWindow;
-	mLogicalModelAssistApi = logicalModelAssistApi; // unused
-	mController = mainWindow->controller();
+	mLogicalModelAssistApi = &logicalModelAssistApi; // unused
+	mController = &controller;
 }
 
 /*
@@ -167,11 +167,13 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 	// there are only four types of buttons: shape, reference, text and directory path
 	if (name == "shape") {
-		mMainWindow->openShapeEditor(actualIndex, role, propertyValue, false);
+		emit shapeEditorRequested(actualIndex, role, propertyValue, false);
+		//////////mMainWindow->openShapeEditor(actualIndex, role, propertyValue, false);
 	} else {
 		QString const typeName = mModel->typeName(index).toLower();
 		if (typeName == "code") {
-			mMainWindow->openQscintillaTextEditor(actualIndex, role, propertyValue);
+			emit textEditorRequested(actualIndex, role, propertyValue);
+			/////////mMainWindow->openQscintillaTextEditor(actualIndex, role, propertyValue);
 		} else if (typeName == "directorypath") {
 			QString startPath;
 			if (propertyValue.isEmpty()) {
@@ -183,7 +185,8 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 					, this, tr("Specify directory:"), startPath);
 			mModel->setData(index, location);
 		} else {
-			mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
+			emit referenceListRequested(actualIndex, typeName, propertyValue, role);
+			///////////mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
 		}
 	}
 }

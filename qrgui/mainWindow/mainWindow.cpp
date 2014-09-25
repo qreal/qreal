@@ -267,6 +267,11 @@ void MainWindow::connectActions()
 	connect(mProjectManager, &ProjectManager::closed, mUi->paletteTree, &PaletteTree::refreshUserPalettes);
 	connect(mProjectManager, SIGNAL(closed()), mController, SLOT(projectClosed()));
 
+	connect(mUi->propertyEditor, &PropertyEditorView::shapeEditorRequested, this, static_cast<void (MainWindow::*)
+			(QPersistentModelIndex const &, int, QString const &, bool)>(&MainWindow::openShapeEditor));
+	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
+	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
+
 	connect(mExploser.data(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
 
 	setDefaultShortcuts();
@@ -1341,7 +1346,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 		return;
 	}
 
-	tab->setMainWindow(this);
+	tab->editorViewScene()->setMainWindow(this);
 	QModelIndex const index = rootIndex;
 
 	tab->mvIface()->configure(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(), exploser());
@@ -2081,7 +2086,7 @@ void MainWindow::initGridProperties()
 
 void MainWindow::initExplorers()
 {
-	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
+	mUi->propertyEditor->init(mModels->logicalModelAssistApi(), *mController);
 	mUi->propertyEditor->setModel(&mPropertyModel);
 
 	mUi->graphicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);

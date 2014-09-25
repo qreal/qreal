@@ -98,11 +98,6 @@ void EditorView::startAnimation(char const *slot)
 	anim->start();
 }
 
-void EditorView::setMainWindow(qReal::MainWindow *mainWindow)
-{
-	mMVIface->scene()->setMainWindow(mainWindow);
-}
-
 void EditorView::setDrawSceneGrid(bool show)
 {
 	mScene->setNeedDrawGrid(show);

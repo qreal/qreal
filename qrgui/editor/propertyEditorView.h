@@ -28,7 +28,7 @@ public:
 	// QAbstractItemView's methods
 	void setModel(PropertyEditorModel *model);
 	/** @brief editor initialization */
-	void init(qReal::MainWindow *mainWindow, qReal::models::LogicalModelAssistApi * const logicalModelAssistApi);
+	void init(qReal::models::LogicalModelAssistApi &logicalModelAssistApi, qReal::Controller &controller);
 	/** @brief unimplemented */
 	void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint = QAbstractItemView::EnsureVisible);
 
@@ -37,6 +37,18 @@ public:
 	}
 	
 	void installEventFilter(QObject *obj);
+
+signals:
+	/// Emitted when user wants to edits 'Shape' property.
+	void shapeEditorRequested(QPersistentModelIndex const &index, int role
+		, QString const &propertyValue, bool useTypedPorts);
+
+	/// Emitted when user wants to enter a code into a property.
+	void textEditorRequested(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
+
+	/// Emitted when user wants to edit some reference property.
+	void referenceListRequested(QPersistentModelIndex const &index, QString const &referenceType
+			, QString const &propertyValue, int role);
 
 public slots:
 

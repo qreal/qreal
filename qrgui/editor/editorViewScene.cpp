@@ -1316,6 +1316,11 @@ qReal::MainWindow *EditorViewScene::mainWindow() const
 	return mWindow;
 }
 
+Controller &EditorViewScene::controller() const
+{
+	return *mController;
+}
+
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
