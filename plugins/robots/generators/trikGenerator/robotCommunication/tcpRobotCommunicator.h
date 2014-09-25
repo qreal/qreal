@@ -39,9 +39,20 @@ private:
 	/// Disconnects from robot.
 	void disconnect();
 
+	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
+	void send(QString const &data);
+
 	/// Socket that holds connection.
 	QTcpSocket mSocket;
+
+	/// Reference to error reporter.
 	qReal::ErrorReporterInterface &mErrorReporter;
+
+	/// Buffer to accumulate parts of a message.
+	QByteArray mBuffer;
+
+	/// Declared size of a current message.
+	int mExpectedBytes = 0;
 };
 
 }

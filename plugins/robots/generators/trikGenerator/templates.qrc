@@ -139,5 +139,7 @@
         <file>templates/drawing/drawArc.t</file>
         <file>templates/drawing/setPainterWidth.t</file>
         <file>templates/drawing/setPainterColor.t</file>
+        <file>templates/messages/receiveMessage.t</file>
+        <file>templates/messages/sendMessage.t</file>
     </qresource>
 </RCC>
