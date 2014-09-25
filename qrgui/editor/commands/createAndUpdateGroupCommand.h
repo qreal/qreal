@@ -1,9 +1,11 @@
 #pragma once
 
 #include "models/commands/createGroupCommand.h"
-#include "editor/editorViewScene.h"
 
 namespace qReal {
+
+class EditorViewScene;
+
 namespace commands {
 
 /// Makes same as CreateGroupCommand and automaticly rearranges created items on the scene.
@@ -14,7 +16,7 @@ public:
 	CreateAndUpdateGroupCommand(EditorViewScene &scene
 			, models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, Exploser &exploser
+			, models::Exploser &exploser
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id

@@ -6,12 +6,12 @@
 
 namespace qReal {
 
-class Exploser;
 class EditorView;
 class EditorViewScene;
 class Element;
 
 namespace models {
+class Exploser;
 class GraphicalModelAssistApi;
 class LogicalModelAssistApi;
 }
@@ -29,7 +29,8 @@ public:
 	void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 	bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
 	void configure(models::GraphicalModelAssistApi &graphicalAssistApi
-			, models::LogicalModelAssistApi &logicalAssistApi, Exploser &exploser);
+			, models::LogicalModelAssistApi &logicalAssistApi
+			, models::Exploser &exploser);
 	void setLogicalModel(QAbstractItemModel * const logicalModel);
 	Id rootId() const;
 
@@ -62,7 +63,7 @@ private:
 	qReal::EditorView *mView;
 	models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	models::LogicalModelAssistApi *mLogicalAssistApi;
-	Exploser *mExploser;
+	models::Exploser *mExploser;
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;

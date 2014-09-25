@@ -11,7 +11,7 @@ class CreateGroupCommand : public AbstractCommand
 public:
 	CreateGroupCommand(models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, Exploser &exploser
+			, models::Exploser &exploser
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id
@@ -26,7 +26,7 @@ protected:
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
-	Exploser &mExploser;
+	models::Exploser &mExploser;
 	Id const mLogicalParent;
 	Id const mGraphicalParent;
 	Id const mId;

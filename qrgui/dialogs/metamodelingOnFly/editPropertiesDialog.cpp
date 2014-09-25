@@ -7,7 +7,7 @@
 
 using namespace qReal;
 
-EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager
+EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface const &interpreterEditorManager
 		, qrRepo::LogicalRepoApi &api
 		, Id const &id
 		, QWidget *parent)

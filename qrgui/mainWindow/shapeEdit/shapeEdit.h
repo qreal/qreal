@@ -34,7 +34,7 @@ public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role
 		, bool useTypedPorts);
-	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy
+	ShapeEdit(Id const &id, EditorManagerInterface const &editorManagerProxy
 		, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow
 		, EditorView *editorView, bool useTypedPorts);
 	~ShapeEdit();
@@ -92,7 +92,7 @@ private:
 	QPersistentModelIndex const mIndex;
 	int const mRole;
 	Id mId;
-	EditorManagerInterface *mEditorManager;  // Doesn't have ownership.
+	EditorManagerInterface const *mEditorManager;  // Doesn't have ownership.
 	IdList mGraphicalElements;
 	MainWindow *mMainWindow;  // Doesn't have ownership.
 	EditorView *mEditorView;  // Doesn't have ownership.

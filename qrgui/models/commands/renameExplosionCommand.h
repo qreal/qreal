@@ -15,7 +15,7 @@ class RenameExplosionCommand : public AbstractCommand
 public:
 	RenameExplosionCommand(models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi const * const graphicalApi
-		, Exploser &exploser
+		, models::Exploser &exploser
 		, Id const &target);
 
 	virtual ~RenameExplosionCommand();
@@ -34,7 +34,7 @@ private:
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi const *mGraphicalApi;
-	Exploser &mExploser;
+	models::Exploser &mExploser;
 	Id mTarget;
 	QString mOldName;
 	QString mNewName;

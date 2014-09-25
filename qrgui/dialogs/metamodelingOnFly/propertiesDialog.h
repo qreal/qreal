@@ -21,7 +21,7 @@ public:
 	/// Constructor.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of current metamodel element in which we need to change properties.
-	PropertiesDialog(EditorManagerInterface &interpreterEditorManager
+	PropertiesDialog(EditorManagerInterface const &interpreterEditorManager
 			, qrRepo::LogicalRepoApi &logicalRepoApi
 			, Id const &id
 			, QWidget *parent = 0);
@@ -44,7 +44,7 @@ private:
 	void disableParentProperties(QStringList const propertiesDisplayedNames);
 
 	Ui::PropertiesDialog *mUi;  // Has ownership.
-	EditorManagerInterface &mInterpreterEditorManager;
+	EditorManagerInterface const &mInterpreterEditorManager;
 	qrRepo::LogicalRepoApi &mLogicalRepoApi;
 	Id mId;
 	QStringList mPropertiesNames;

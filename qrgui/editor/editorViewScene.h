@@ -64,7 +64,9 @@ public:
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
 	qReal::MainWindow *mainWindow() const;
+	/// @todo: remove theese getters
 	qReal::Controller &controller() const;
+	qReal::EditorManagerInterface &editorManager() const;
 	void setEnabled(bool enabled);
 
 	void setNeedDrawGrid(bool show);
@@ -221,6 +223,7 @@ private:
 	qReal::EditorView *mView;
 
 	qReal::MainWindow *mWindow;
+	qReal::EditorManagerInterface *mEditorManager;
 	qReal::Controller *mController;
 
 	QList<QAction *> mContextMenuActions;

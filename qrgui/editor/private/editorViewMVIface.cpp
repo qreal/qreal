@@ -386,7 +386,8 @@ void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
 }
 
 void EditorViewMViface::configure(models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi, Exploser &exploser)
+		, models::LogicalModelAssistApi &logicalAssistApi
+		, models::Exploser &exploser)
 {
 	mGraphicalAssistApi = &graphicalAssistApi;
 	mLogicalAssistApi = &logicalAssistApi;

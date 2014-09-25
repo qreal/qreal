@@ -41,7 +41,7 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 		mCreateCommand = new CreateElementCommand(
 			*mMVIface->logicalAssistApi()
 			, *mMVIface->graphicalAssistApi()
-			, mScene->mainWindow()->exploser()
+			, mScene->mainWindow()->models()->exploser()
 			, mMVIface->rootId()
 			, newGraphicalParent()
 			, mNodeData.logicalId

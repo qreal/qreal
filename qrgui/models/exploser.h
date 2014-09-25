@@ -18,7 +18,6 @@ class AbstractCommand;
 namespace models {
 class LogicalModelAssistApi;
 class GraphicalModelAssistApi;
-}
 
 /// This class contains methods for processing all system explosion-based operations
 /// from the model aspect
@@ -97,4 +96,5 @@ private:
 	models::LogicalModelAssistApi &mApi;
 };
 
+}
 }

@@ -27,9 +27,6 @@
 #include "plugins/pluginManager/proxyEditorManager.h"
 #include "plugins/pluginManager/toolPluginManager.h"
 
-#include "models/logicalModelAssistApi.h"
-#include "models/exploser.h"
-
 #include "editor/propertyEditorView.h"
 #include "controller/controller.h"
 #include "plugins/toolPluginInterface/systemEvents.h"
@@ -73,7 +70,6 @@ public:
 	EditorView *getCurrentTab() const;
 	bool isCurrentTabShapeEdit() const;
 	models::Models *models() const;
-	Exploser &exploser();
 	Controller *controller() const;
 	PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
@@ -98,7 +94,7 @@ public:
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
 		, bool useTypedPorts);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
-	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
+	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface const &editorManagerProxy
 		, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
 			, int const &role);
@@ -232,14 +228,6 @@ private slots:
 
 	void applySettings();
 	void resetToolbarSize(int size);
-
-	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
-	commands::AbstractCommand *graphicalDeleteCommand(QGraphicsItem *target);
-	commands::AbstractCommand *logicalDeleteCommand(QModelIndex const &index);
-	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
-	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
-	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
-	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
 	void deleteFromDiagram();
 	void cutElementsOnDiagram();
@@ -383,7 +371,6 @@ private:
 	gestures::GesturesWidget *mGesturesWidget;
 	SystemEvents *mSystemEvents;
 	TextManager *mTextManager;
-	QScopedPointer<Exploser> mExploser;
 
 	QVector<bool> mSaveListChecked;
 

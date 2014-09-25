@@ -18,7 +18,7 @@ public:
 
 	void setController(Controller * const controller);
 	void setAssistApi(details::ModelsAssistInterface * const model);
-	void setExploser(Exploser &exploser);
+	void setExploser(models::Exploser &exploser);
 
 protected:
 	virtual void commitData(QWidget *editor);
@@ -26,7 +26,7 @@ protected:
 private:
 	Controller *mController; // Doesn`t take ownership
 	details::ModelsAssistInterface *mModel; // Doesn`t take ownership
-	Exploser *mExploser; // Doesn`t take ownership
+	models::Exploser *mExploser; // Doesn`t take ownership
 };
 
 }

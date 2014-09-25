@@ -12,7 +12,7 @@ public:
 	CreateElementCommand(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, Exploser &exploser
+			, models::Exploser const &exploser
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id
@@ -27,8 +27,8 @@ public:
 	void setNewPosition(QPointF const &position);
 
 protected:
-	virtual bool execute();
-	virtual bool restoreState();
+	bool execute() override;
+	bool restoreState() override;
 
 private:
 	CreateRemoveCommandImplementation mImpl;

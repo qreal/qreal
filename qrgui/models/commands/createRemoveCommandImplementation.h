@@ -11,7 +11,7 @@ public:
 	CreateRemoveCommandImplementation(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, Exploser &exploser
+			, models::Exploser const &exploser
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id
@@ -35,7 +35,7 @@ private:
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
-	Exploser &mExploser;
+	models::Exploser const &mExploser;
 	Id const mLogicalParent;
 	Id const mGraphicalParent;
 	Id mId;

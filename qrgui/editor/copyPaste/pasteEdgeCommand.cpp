@@ -39,7 +39,7 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 		mCreateCommand = new CreateElementCommand(
 				*mMVIface->logicalAssistApi()
 				, *mMVIface->graphicalAssistApi()
-				, mScene->mainWindow()->exploser()
+				, mScene->mainWindow()->models()->exploser()
 				, mMVIface->rootId()
 				, mMVIface->rootId()
 				, mEdgeData.logicalId
@@ -56,13 +56,13 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 	}
 
 	EdgeElement * const newEdge = new EdgeElement(
-			mScene->mainWindow()->editorManager().elementImpl(resultId)
+			mMVIface->logicalAssistApi()->editorManagerInterface().elementImpl(resultId)
 			, resultId
 			, *mMVIface->graphicalAssistApi()
 			, *mMVIface->logicalAssistApi()
 			);
 
-	newEdge->setController(mScene->mainWindow()->controller());
+	newEdge->setController(&mScene->controller());
 
 	return resultId;
 }

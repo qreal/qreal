@@ -7,7 +7,7 @@ using namespace qReal::commands;
 
 CreateGroupCommand::CreateGroupCommand(models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
-		, Exploser &exploser
+		, models::Exploser &exploser
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, Id const &id

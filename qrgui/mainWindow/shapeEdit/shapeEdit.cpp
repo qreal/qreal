@@ -46,7 +46,7 @@ ShapeEdit::ShapeEdit(
 
 ShapeEdit::ShapeEdit(
 	Id const &id
-	, EditorManagerInterface *editorManager
+	, EditorManagerInterface const &editorManager
 	, qrRepo::GraphicalRepoApi const &graphicalRepoApi
 	, MainWindow *mainWindow
 	, EditorView *editorView
@@ -56,7 +56,7 @@ ShapeEdit::ShapeEdit(
 	, mUi(new Ui::ShapeEdit)
 	, mRole(0)
 	, mId(id)
-	, mEditorManager(editorManager)
+	, mEditorManager(&editorManager)
 	, mMainWindow(mainWindow)
 	, mEditorView(editorView)
 	, mUseTypedPorts(useTypedPorts)

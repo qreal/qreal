@@ -33,7 +33,7 @@ NodeElement::NodeElement(ElementImpl *impl
 		, Id const &id
 		, models::GraphicalModelAssistApi &graphicalAssistApi
 		, models::LogicalModelAssistApi &logicalAssistApi
-		, Exploser &exploser
+		, models::Exploser &exploser
 		)
 	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 	, mExploser(exploser)
@@ -1349,11 +1349,10 @@ void NodeElement::initRenderedDiagram()
 	openedScene->setMainWindow(window);
 	openedScene->setNeedDrawGrid(false);
 
-	view.mvIface()->configure(window->models()->graphicalModelAssistApi()
-			, window->models()->logicalModelAssistApi(), mExploser);
+	view.mvIface()->configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);
 	view.mvIface()->setModel(window->models()->graphicalModel());
 	view.mvIface()->setLogicalModel(window->models()->logicalModel());
-	view.mvIface()->setRootIndex(window->models()->graphicalModelAssistApi().indexById(graphicalDiagram));
+	view.mvIface()->setRootIndex(mGraphicalAssistApi.indexById(graphicalDiagram));
 
 	QRectF sceneRect = openedScene->itemsBoundingRect();
 	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
@@ -1375,9 +1374,8 @@ void NodeElement::initRenderedDiagram()
 
 QRectF NodeElement::diagramRenderingRect() const
 {
-	EditorViewScene const *evScene = dynamic_cast<EditorViewScene *>(scene());
 	NodeElement const *initial = new NodeElement(
-			evScene->mainWindow()->editorManager().elementImpl(id())
+			mLogicalAssistApi.editorManagerInterface().elementImpl(id())
 			, id().sameTypeId()
 			, mGraphicalAssistApi
 			, mLogicalAssistApi

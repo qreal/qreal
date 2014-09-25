@@ -23,7 +23,7 @@ public:
 	ExploserView(MainWindow &mainWindow
 			, models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, Exploser &exploser
+			, models::Exploser &exploser
 			, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
@@ -63,7 +63,7 @@ private:
 	MainWindow &mMainWindow;
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
-	Exploser &mExploser;
+	models::Exploser &mExploser;
 };
 
 }

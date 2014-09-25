@@ -15,7 +15,7 @@ public:
 	InsertIntoEdgeCommand(EditorViewScene &scene
 			, models::LogicalModelAssistApi &logicalAssistApi
 			, models::GraphicalModelAssistApi &graphicalAssistApi
-			, Exploser &exploser
+			, models::Exploser &exploser
 			, Id const &firstElem
 			, Id const &lastElem
 			, Id const &parent
@@ -37,7 +37,7 @@ private:
 	EditorViewScene &mScene;
 	models::LogicalModelAssistApi &mLogicalAssistApi;
 	models::GraphicalModelAssistApi &mGraphicalAssistApi;
-	Exploser &mExploser;
+	models::Exploser &mExploser;
 
 	Id mFirstId;
 	Id mLastId;

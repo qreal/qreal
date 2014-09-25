@@ -1,13 +1,11 @@
 #include "insertIntoEdgeCommand.h"
 
-#include "mainWindow/mainWindow.h"
-
 using namespace qReal::commands;
 
 InsertIntoEdgeCommand::InsertIntoEdgeCommand(EditorViewScene &scene
 		, models::LogicalModelAssistApi &logicalAssistApi
 		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, Exploser &exploser
+		, models::Exploser &exploser
 		, Id const &firstElem
 		, Id const &lastElem
 		, Id const &parent
@@ -112,7 +110,7 @@ bool InsertIntoEdgeCommand::restoreState()
 void InsertIntoEdgeCommand::initCommand(CreateElementCommand *&command, Id const &type)
 {
 	if (!command) {
-		QString const name = mScene.mainWindow()->editorManager().friendlyName(type);
+		QString const name = mLogicalAssistApi.editorManagerInterface().friendlyName(type);
 		command = new CreateElementCommand(mLogicalAssistApi, mGraphicalAssistApi, mExploser, mScene.rootItemId()
 				, mParentId, Id(type, QUuid::createUuid().toString()), mIsLogical, name, mPos);
 	}

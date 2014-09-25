@@ -39,7 +39,7 @@ public:
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			, Exploser &exploser
+			, qReal::models::Exploser &exploser
 			);
 
 	virtual ~NodeElement();
@@ -264,7 +264,7 @@ private:
 
 	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
 
-	Exploser &mExploser;
+	models::Exploser &mExploser;
 
 	ContextMenuAction mSwitchGridAction;
 

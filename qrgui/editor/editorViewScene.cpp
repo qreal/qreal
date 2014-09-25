@@ -135,7 +135,7 @@ void EditorViewScene::initMouseMoveManager()
 
 	delete mMouseMovementManager;
 	mMouseMovementManager = new gestures::MouseMovementManager(diagram
-			, mWindow->editorManager(), mWindow->gesturesPainter());
+			, *mEditorManager, mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
@@ -316,8 +316,8 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const
 {
 	bool allowed = false;
-	foreach (qReal::Id const &type, mWindow->editorManager().containedTypes(container.type())) {
-		allowed = allowed || mWindow->editorManager().isParentOf(candidate, type);
+	foreach (qReal::Id const &type, mEditorManager->containedTypes(container.type())) {
+		allowed = allowed || mEditorManager->isParentOf(candidate, type);
 	}
 
 	return allowed;
@@ -343,17 +343,17 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	toDelete.append(menuSignalMapper);
 
 	QStringList targets;
-	QStringList const groups = mWindow->editorManager().paletteGroups(node->id(), node->id());
+	QStringList const groups = mEditorManager->paletteGroups(node->id(), node->id());
 
 	foreach (PossibleEdge const &pEdge, edge->getPossibleEdges()) {
 		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
 		// and vice versa
-		if (mWindow->editorManager().isParentOf(node->id(), pEdge.first.first)) {
-			targets << mWindow->editorManager().allChildrenTypesOf(pEdge.first.second);
+		if (mEditorManager->isParentOf(node->id(), pEdge.first.first)) {
+			targets << mEditorManager->allChildrenTypesOf(pEdge.first.second);
 		}
 
-		if (mWindow->editorManager().isParentOf(node->id(), pEdge.first.second)) {
-			targets << mWindow->editorManager().allChildrenTypesOf(pEdge.first.first);
+		if (mEditorManager->isParentOf(node->id(), pEdge.first.second)) {
+			targets << mEditorManager->allChildrenTypesOf(pEdge.first.first);
 		}
 	}
 
@@ -361,7 +361,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	QMap<QString, QString> targetsInGroups;
 	QStringList targetGroups;
 	foreach (QString const &group, groups) {
-		QStringList const groupsContents = mWindow->editorManager().paletteGroupList(
+		QStringList const groupsContents = mEditorManager->paletteGroupList(
 				node->id(), node->id(), group);
 		foreach (QString const &elementInGroup, groupsContents) {
 			if (targetsSet.contains(elementInGroup)) {
@@ -380,7 +380,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 		QStringList const targetsInGroup = targetsInGroups.values(targetGroups[i]);
 		foreach (QString const &target, targetsInGroup) {
 			Id const id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
-			QString const friendlyName = mWindow->editorManager().friendlyName(id);
+			QString const friendlyName = mEditorManager->friendlyName(id);
 			QAction *element = new QAction(friendlyName, createElemMenu);
 			// deleted as child of createElemMenu
 			createElemMenu->addAction(element);
@@ -444,7 +444,7 @@ qReal::Id EditorViewScene::createElement(QString const &str
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
-	QString name = mWindow->editorManager().friendlyName(typeId);
+	QString name = mEditorManager->friendlyName(typeId);
 	bool isFromLogicalModel = false;
 	stream << uuid;
 	stream << pathToItem;
@@ -495,7 +495,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 
 	if (mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
 		CreateAndUpdateGroupCommand *createGroupCommand = new CreateAndUpdateGroupCommand(
-				*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->exploser()
+				*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->models()->exploser()
 				, mMVIface->rootId(), mMVIface->rootId(), id, isFromLogicalModel, scenePos);
 		if (executeImmediately) {
 			mController->execute(createGroupCommand);
@@ -503,7 +503,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	} else {
 		Element *newParent = nullptr;
 
-		ElementImpl const * const impl = mWindow->editorManager().elementImpl(id);
+		ElementImpl const * const impl = mEditorManager->elementImpl(id);
 		bool const isNode = impl->isNode();
 		delete impl;
 
@@ -561,7 +561,7 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, boo
 	CreateElementCommand *createCommand = new CreateElementCommand(
 				*mMVIface->logicalAssistApi()
 				, *mMVIface->graphicalAssistApi()
-				, mWindow->exploser()
+				, mWindow->models()->exploser()
 				, mMVIface->rootId()
 				, parentId
 				, id
@@ -577,7 +577,7 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, boo
 		if (isNode) {
 			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInterface().iconSize(id);
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
-					*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->exploser()
+					*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->models()->exploser()
 					, Id(), Id(), parentId, position, QPointF(size.width(), size.height())
 					, isFromLogicalModel, createCommand);
 			mController->execute(insertCommand);
@@ -949,12 +949,12 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 		}
 
-		if (e->createChildrenFromMenu() && !mWindow->editorManager().containedTypes(e->id().type()).empty()) {
+		if (e->createChildrenFromMenu() && !mEditorManager->containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
 			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
 			createChildMapper = new QSignalMapper();
-			foreach (Id const &type, mWindow->editorManager().containedTypes(e->id().type())) {
-				QAction *createAction = createChildMenu->addAction(mWindow->editorManager().friendlyName(type));
+			foreach (Id const &type, mEditorManager->containedTypes(e->id().type())) {
+				QAction *createAction = createChildMenu->addAction(mEditorManager->friendlyName(type));
 				connect(createAction, SIGNAL(triggered()), createChildMapper, SLOT(map()), Qt::UniqueConnection);
 				createChildMapper->setMapping(createAction, type.toString());
 				connect(createChildMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
@@ -1009,7 +1009,7 @@ void EditorViewScene::getObjectByGesture()
 	case gestures::MouseMovementManager::createElementGesture: {
 		// Creating element with its center in the center of gesture (see #1086)
 		Id const id = result.elementType();
-		QSize const elementSize = mWindow->editorManager().iconSize(id);
+		QSize const elementSize = mEditorManager->iconSize(id);
 		QPointF const gestureCenter = mMouseMovementManager->pos();
 		QPointF const elementCenter(elementSize.width() / 2.0, elementSize.height() / 2.0);
 		createElement(id.toString(), gestureCenter - elementCenter);
@@ -1055,9 +1055,9 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 	foreach (PossibleEdge const &possibleEdge, edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
 				&& possibleEdge.first.second.diagram() == child.id().diagram()
-				&& mWindow->editorManager().isParentOf(child.id().editor(), child.id().diagram()
+				&& mEditorManager->isParentOf(child.id().editor(), child.id().diagram()
 						, possibleEdge.first.second.element(), child.id().diagram(), child.id().element())
-				&& mWindow->editorManager().isParentOf(child.id().editor(), child.id().diagram()
+				&& mEditorManager->isParentOf(child.id().editor(), child.id().diagram()
 						, possibleEdge.first.first.element(), child.id().diagram(), parent->id().element()))
 		{
 			allLinks.push_back(possibleEdge.second.second.toString());
@@ -1077,7 +1077,7 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 	QMenu *edgeMenu = new QMenu();
 	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
 	foreach (QString id, ids) {
-		QAction *element = new QAction(mWindow->editorManager().friendlyName(Id::loadFromString(id)), edgeMenu);
+		QAction *element = new QAction(mEditorManager->friendlyName(Id::loadFromString(id)), edgeMenu);
 		edgeMenu->addAction(element);
 		QObject::connect(element, SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
 		menuSignalMapper->setMapping(element, id);
@@ -1297,9 +1297,10 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
 	mController = mWindow->controller();
+	mEditorManager = &mWindow->editorManager();
 	mClipboardHandler.setController(mController);
 	mExploser = new view::details::ExploserView(*mainWindow, mainWindow->models()->logicalModelAssistApi()
-			, mainWindow->models()->graphicalModelAssistApi(), mainWindow->exploser(), this);
+			, mainWindow->models()->graphicalModelAssistApi(), mainWindow->models()->exploser(), this);
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	QAction * const separator = new QAction(this);
 	separator->setSeparator(true);
@@ -1319,6 +1320,11 @@ qReal::MainWindow *EditorViewScene::mainWindow() const
 Controller &EditorViewScene::controller() const
 {
 	return *mController;
+}
+
+EditorManagerInterface &EditorViewScene::editorManager() const
+{
+	return *mEditorManager;
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

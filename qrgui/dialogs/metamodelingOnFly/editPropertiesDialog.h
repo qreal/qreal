@@ -22,7 +22,7 @@ public:
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of an element for which we edit properties.
 	/// @param parent Parent widget, who is responsible for deletion of this dialog.
-	EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager
+	EditPropertiesDialog(EditorManagerInterface const &interpreterEditorManager
 			, qrRepo::LogicalRepoApi &api
 			, Id const &id
 			, QWidget *parent = 0);
@@ -53,7 +53,7 @@ private:
 	void initDefaultValues();
 
 	Ui::EditPropertiesDialog *mUi;
-	EditorManagerInterface &mInterpreterEditorManager;
+	EditorManagerInterface const &mInterpreterEditorManager;
 	RestorePropertiesDialog *mRestorePropertiesDialog;
 	Id mId;
 	QString mPropertyName;

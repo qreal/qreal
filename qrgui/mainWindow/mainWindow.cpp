@@ -31,9 +31,6 @@
 
 #include "plugins/toolPluginInterface/systemEvents.h"
 
-#include "controller/commands/doNothingCommand.h"
-#include "editor/commands/arrangeLinksCommand.h"
-#include "editor/commands/updateElementCommand.h"
 #include "models/commands/createGroupCommand.h"
 
 #include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
@@ -45,6 +42,7 @@
 #include "editor/editorView.h"
 #include "editor/sceneCustomizer.h"
 #include "editor/element.h"
+#include "editor/commands/multipleRemoveAndUpdateCommand.h"
 
 #include "hotKeyManager/hotKeyManager.h"
 #include "hotKeyManager/hotKeyManagerPage.h"
@@ -111,7 +109,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	initDocks();
 	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
-	mExploser.reset(new Exploser(mModels->logicalModelAssistApi()));
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -272,7 +269,7 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
-	connect(mExploser.data(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
+	connect(&mModels->exploser(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
 
 	setDefaultShortcuts();
 }
@@ -674,7 +671,12 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	if (isLogicalModel) {
 		QModelIndex const index = mUi->logicalModelExplorer->currentIndex();
 		if (index.isValid()) {
-			mController->executeGlobal(logicalDeleteCommand(index));
+			IdList temp;
+			MultipleRemoveCommand factory(mModels->logicalModelAssistApi()
+					, mModels->graphicalModelAssistApi()
+					, mModels->exploser()
+					, temp);
+			mController->executeGlobal(factory.logicalDeleteCommand(index));
 		}
 		return;
 	}
@@ -686,67 +688,53 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	}
 }
 
-void MainWindow::deleteItems(IdList &itemsToDelete, bool global)
+void MainWindow::deleteFromScene()
 {
-	IdList itemsToUpdate;
-	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
-
-	addEdgesToBeDeleted(itemsToDelete);
-	// QGraphicsScene::selectedItems() returns items in no particular order,
-	// so we should handle parent-child relationships manually
-	while (!itemsToDelete.isEmpty()) {
-		Id const currentItem = itemsToDelete.at(0);
-		IdList const children = mModels->graphicalModelAssistApi().children(currentItem);
-		foreach (Id const &child, children) {
-			itemsToDelete.removeAll(child);
-			// Child remove commands will be added in currentItem delete command
+	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
+	IdList idsToDelete;
+	foreach (QGraphicsItem const *item, itemsToDelete) {
+		Element const *element = dynamic_cast<Element const *>(item);
+		if (element) {
+			idsToDelete << element->id();
 		}
-
-		bool const isEdge = !mEditorManagerProxy.isGraphicalElementNode(currentItem);
-		if (isEdge) {
-			Id const src = mModels->graphicalModelAssistApi().from(currentItem);
-			if (src != Id() && !itemsToUpdate.contains(src)) {
-				itemsToUpdate.append(src);
-			}
-			Id const dst = mModels->graphicalModelAssistApi().to(currentItem);
-			if (dst != Id() && !itemsToUpdate.contains(dst)) {
-				itemsToUpdate.append(dst);
-			}
-			multipleRemoveCommand->insertPreAction(graphicalDeleteCommand(currentItem), 0);
-		} else {
-			multipleRemoveCommand->addPreAction(graphicalDeleteCommand(currentItem));
-		}
-
-		itemsToDelete.removeAll(currentItem);
 	}
 
-	multipleRemoveCommand->removeDuplicates();
+	deleteItems(idsToDelete);
+}
+
+void MainWindow::deleteFromDiagram()
+{
+	if (mModels->graphicalModel()) {
+		if (mUi->graphicalModelExplorer->hasFocus()) {
+			deleteFromExplorer(false);
+		} else if (getCurrentTab() && getCurrentTab()->hasFocus()) {
+			deleteFromScene();
+		}
+	}
+	if (mModels->logicalModel()) {
+		if (mUi->logicalModelExplorer->hasFocus()) {
+			deleteFromExplorer(true);
+		}
+	}
+
+	if (getCurrentTab() && getCurrentTab()->scene()) {
+		getCurrentTab()->scene()->invalidate();
+	}
+}
+
+void MainWindow::deleteItems(IdList &itemsToDelete, bool global)
+{
+	MultipleRemoveAndUpdateCommand *multipleRemoveCommand = new MultipleRemoveAndUpdateCommand(
+			*getCurrentTab()->editorViewScene()
+			, mModels->logicalModelAssistApi()
+			, mModels->graphicalModelAssistApi()
+			, mModels->exploser()
+			, itemsToDelete);
+
 	if (global) {
 		mController->executeGlobal(multipleRemoveCommand);
 	} else {
 		mController->execute(multipleRemoveCommand);
-	}
-}
-
-void MainWindow::addEdgesToBeDeleted(IdList &itemsToDelete)
-{
-	IdList elementsToDelete = itemsToDelete;
-	int i = 0;
-	while (i < elementsToDelete.count()) {
-		Id const currentElement = elementsToDelete.at(i);
-		IdList const children = mModels->graphicalModelAssistApi().children(currentElement);
-		elementsToDelete.append(children);
-		i++;
-	}
-	foreach (Id const &currentElement, elementsToDelete) {
-		IdList const linksOfCurrentElement = mModels->mutableLogicalRepoApi().links(currentElement);
-		foreach (Id const &link, linksOfCurrentElement) {
-			Id const otherEntityOfCurrentLink
-					= mModels->mutableLogicalRepoApi().otherEntityFromLink(link, currentElement);
-			if (otherEntityOfCurrentLink == Id::rootId() || elementsToDelete.contains(otherEntityOfCurrentLink)) {
-				itemsToDelete.append(link);
-			}
-		}
 	}
 }
 
@@ -780,159 +768,6 @@ void MainWindow::removeReferences(Id const &id)
 {
 	mModels->logicalModelAssistApi().removeReferencesTo(id);
 	mModels->logicalModelAssistApi().removeReferencesFrom(id);
-}
-
-void MainWindow::deleteFromScene()
-{
-	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
-	IdList idsToDelete;
-	foreach (QGraphicsItem const *item, itemsToDelete) {
-		Element const *element = dynamic_cast<Element const *>(item);
-		if (element) {
-			idsToDelete << element->id();
-		}
-	}
-
-	deleteItems(idsToDelete);
-}
-
-AbstractCommand *MainWindow::logicalDeleteCommand(QGraphicsItem *target)
-{
-	Element *elem = dynamic_cast<Element *>(target);
-	if (!elem || elem->id().isNull()) {
-		return NULL;
-	}
-	return logicalDeleteCommand(elem->id());
-}
-
-AbstractCommand *MainWindow::graphicalDeleteCommand(QGraphicsItem *target)
-{
-	Element *elem = dynamic_cast<Element *>(target);
-	if (!elem || elem->id().isNull()) {
-		return NULL;
-	}
-	return graphicalDeleteCommand(elem->id());
-}
-
-AbstractCommand *MainWindow::logicalDeleteCommand(QModelIndex const &index)
-{
-	Id const id = mModels->logicalModelAssistApi().idByIndex(index);
-	return logicalDeleteCommand(id);
-}
-
-AbstractCommand *MainWindow::graphicalDeleteCommand(QModelIndex const &index)
-{
-	Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
-	return graphicalDeleteCommand(id);
-}
-
-commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
-{
-	// Logical deletion is equal to all its graphical parts deletion
-	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
-
-	if (graphicalIds.isEmpty()) {
-		return new RemoveElementCommand(
-				mModels->logicalModelAssistApi()
-				, mModels->graphicalModelAssistApi()
-				, exploser()
-				, mModels->logicalRepoApi().parent(id)
-				, Id()
-				, id
-				, true
-				, mModels->graphicalModelAssistApi().name(id)
-				, mModels->graphicalModelAssistApi().position(id)
-				);
-	}
-
-	DoNothingCommand *result = new DoNothingCommand;
-	foreach (Id const &graphicalId, graphicalIds) {
-		result->addPreAction(graphicalDeleteCommand(graphicalId));
-	}
-	if (graphicalIds.size() != 1) { // else it was done in graphicalDeleteCommand()
-		appendExplosionsCommands(result, id);
-	}
-	result->removeDuplicates();
-	return result;
-}
-
-commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
-{
-	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
-	AbstractCommand *result = new RemoveElementCommand(
-				mModels->logicalModelAssistApi()
-				, mModels->graphicalModelAssistApi()
-				, exploser()
-				, mModels->logicalRepoApi().parent(logicalId)
-				, mModels->graphicalRepoApi().parent(id)
-				, id
-				, false
-				, mModels->graphicalModelAssistApi().name(id)
-				, mModels->graphicalModelAssistApi().position(id)
-				);
-
-	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
-	IdList const children = mModels->graphicalModelAssistApi().children(id);
-	foreach (Id const &child, children) {
-		if (mEditorManagerProxy.isGraphicalElementNode(child)) {
-			result->addPreAction(graphicalDeleteCommand(child));
-		} else {
-			// Edges are deletted first
-			result->insertPreAction(graphicalDeleteCommand(child), 0);
-		}
-	}
-
-	// correcting unremoved edges
-	ArrangeLinksCommand *arrangeCommand = new ArrangeLinksCommand(getCurrentTab(), id, true);
-	arrangeCommand->setRedoEnabled(false);
-	result->addPreAction(arrangeCommand);
-
-	UpdateElementCommand *updateCommand = new UpdateElementCommand(getCurrentTab(), id);
-	updateCommand->setRedoEnabled(false);
-	result->addPreAction(updateCommand);
-
-	IdList const links = mModels->graphicalRepoApi().links(id);
-	foreach (Id const &link, links) {
-		UpdateElementCommand *updateLinkCommand = new UpdateElementCommand(getCurrentTab(), link);
-		updateLinkCommand->setRedoEnabled(false);
-		result->addPreAction(updateLinkCommand);
-	}
-
-	if (mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId).size() == 1) {
-		appendExplosionsCommands(result, logicalId);
-	}
-
-	return result;
-}
-
-void MainWindow::appendExplosionsCommands(AbstractCommand *parentCommand, Id const &logicalId)
-{
-	IdList const toDelete = mExploser->elementsWithHardDependencyFrom(logicalId);
-	foreach (Id const &logicalChild, toDelete) {
-		parentCommand->addPreAction(logicalDeleteCommand(logicalChild));
-	}
-
-	mExploser->handleRemoveCommand(logicalId, parentCommand);
-}
-
-void MainWindow::deleteFromDiagram()
-{
-	if (mModels->graphicalModel()) {
-		if (mUi->graphicalModelExplorer->hasFocus()) {
-			deleteFromExplorer(false);
-		} else if (getCurrentTab() && getCurrentTab()->hasFocus()) {
-			deleteFromScene();
-		}
-	}
-	if (mModels->logicalModel()) {
-		if (mUi->logicalModelExplorer->hasFocus()) {
-			deleteFromExplorer(true);
-		}
-	}
-
-	if (getCurrentTab() && getCurrentTab()->scene()) {
-		getCurrentTab()->scene()->invalidate();
-	}
 }
 
 void MainWindow::cutElementsOnDiagram()
@@ -1113,8 +948,8 @@ void MainWindow::openShapeEditor(
 }
 
 // This method is for Interpreter.
-void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
-	, bool useTypedPorts)
+void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue
+		, EditorManagerInterface const &editorManagerProxy, bool useTypedPorts)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab()
 		, useTypedPorts);
@@ -1349,7 +1184,8 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	tab->editorViewScene()->setMainWindow(this);
 	QModelIndex const index = rootIndex;
 
-	tab->mvIface()->configure(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(), exploser());
+	tab->mvIface()->configure(mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi(), mModels->exploser());
 
 	tab->mvIface()->setModel(mModels->graphicalModel());
 	if (tab->sceneRect() == QRectF(0, 0, 0, 0)) {
@@ -1530,11 +1366,6 @@ models::Models *MainWindow::models() const
 	return mModels;
 }
 
-Exploser &MainWindow::exploser()
-{
-	return *mExploser.data();
-}
-
 Controller *MainWindow::controller() const
 {
 	return mController;
@@ -1676,7 +1507,7 @@ void MainWindow::createDiagram(QString const &idString)
 	} else {
 		// It is a group
 		CreateGroupCommand createGroupCommand(mModels->logicalModelAssistApi()
-				, mModels->graphicalModelAssistApi(), exploser(), Id::rootId(), Id::rootId()
+				, mModels->graphicalModelAssistApi(), mModels->exploser(), Id::rootId(), Id::rootId()
 				, id, false, QPointF());
 		createGroupCommand.redo();
 		created = createGroupCommand.rootId();
@@ -2097,7 +1928,7 @@ void MainWindow::initExplorers()
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setController(mController);
 	mUi->graphicalModelExplorer->setAssistApi(&mModels->graphicalModelAssistApi());
-	mUi->graphicalModelExplorer->setExploser(exploser());
+	mUi->graphicalModelExplorer->setExploser(mModels->exploser());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionCutElementsOnDiagram);
@@ -2107,7 +1938,7 @@ void MainWindow::initExplorers()
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 	mUi->logicalModelExplorer->setController(mController);
 	mUi->logicalModelExplorer->setAssistApi(&mModels->logicalModelAssistApi());
-	mUi->logicalModelExplorer->setExploser(exploser());
+	mUi->logicalModelExplorer->setExploser(mModels->exploser());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 
