@@ -1954,6 +1954,7 @@ Id MainWindow::activeDiagram() const
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
+
 	BrandManager::configure(&mToolManager);
 	mPreferencesDialog.updatePluginDependendSettings();
 
@@ -2018,6 +2019,11 @@ void MainWindow::initToolPlugins()
 	mExploser->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
+}
+
+void MainWindow::initInterpretedPlugins()
+{
+
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

@@ -48,6 +48,9 @@ include(editorPluginInterface/editorPluginInterface.pri)
 # Interfaces for tool plugins, used in handcoded tools
 include(toolPluginInterface/toolPluginInterface.pri)
 
+# Interfaces for interpreted plugins, used in handcoded tools
+include (interpretedPluginInterface/interpretedPluginInterface.pri)
+
 # Text Editor
 include(textEditor/textEditor.pri)
 

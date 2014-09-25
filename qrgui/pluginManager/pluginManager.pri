@@ -12,6 +12,7 @@ HEADERS += \
 	$$PWD/details/patternParser.h \
 	$$PWD/details/interpreterElementImpl.h \
 	$$PWD/details/interpreterPortImpl.h \
+	$$PWD/interpretedPluginManager.h \
 
 SOURCES += \
 	$$PWD/editorManager.cpp \
@@ -25,3 +26,4 @@ SOURCES += \
 	$$PWD/details/patternParser.cpp \
 	$$PWD/details/interpreterElementImpl.cpp \
 	$$PWD/details/interpreterPortImpl.cpp \
+	$$PWD/interpretedPluginManager.cpp \

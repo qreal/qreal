@@ -211,6 +211,7 @@ private slots:
 	/// Diagram opening must happen after plugins initialization
 	void initPluginsAndStartWidget();
 	void initToolPlugins();
+	void initInterpretedPlugins();
 
 	/// handler for menu 'button find' pressed
 	void showFindDialog();

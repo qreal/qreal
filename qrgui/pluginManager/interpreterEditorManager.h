@@ -18,6 +18,8 @@
 #include "editorPluginInterface/editorInterface.h"
 #include "pluginManager/editorManagerInterface.h"
 
+#include "interpretedPluginManager.h"
+
 namespace qReal {
 
 class Element;
@@ -139,6 +141,8 @@ public:
 
 	void setElementEnabled(Id const &type, bool enabled) override;
 
+	void loadInterpretedPlugins(PluginConfigurator const &pluginConfigurator);
+
 private:
 	class CheckPropertyForParent;
 	class CompareProperty;
@@ -147,6 +151,7 @@ private:
 
 	QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;  // Has ownership.
 	QString mMetamodelFile;
+	InterpretedPluginManager mInterpretedPluginManager;
 
 	void setProperty(qrRepo::RepoApi* repo, Id const &id, QString const &property, QVariant const &propertyValue) const;
 	Id element(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;
