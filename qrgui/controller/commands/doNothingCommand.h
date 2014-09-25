@@ -2,12 +2,14 @@
 
 #include "controller/commands/abstractCommand.h"
 
+#include "qrgui/controller/controllerDeclSpec.h"
+
 namespace qReal {
 namespace commands {
 
 /// This command does nothing. Can be useful for creating "container" commands
 /// having no actions itself
-class DoNothingCommand : public AbstractCommand
+class QRGUI_CONTROLLER_EXPORT DoNothingCommand : public AbstractCommand
 {
 public:
 	DoNothingCommand();

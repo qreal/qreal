@@ -7,6 +7,8 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+DEFINES += QRGUI_THIRDPARTY_LIBRARY
+
 win32 {
 	HEADERS += \
 		$$PWD/windowsmodernstyle.h \
@@ -16,6 +18,7 @@ win32 {
 }
 
 HEADERS += \
+	$$PWD/thirdPartyDeclSpec.h \
 	$$PWD/qsKineticScroller.h \
 
 SOURCES += \

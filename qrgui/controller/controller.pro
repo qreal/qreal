@@ -18,7 +18,10 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+DEFINES += QRGUI_CONTROLLER_LIBRARY
+
 HEADERS += \
+	$$PWD/controllerDeclSpec.h \
 	$$PWD/controller.h \
 	$$PWD/undoStack.h \
 	$$PWD/commands/abstractCommand.h \
