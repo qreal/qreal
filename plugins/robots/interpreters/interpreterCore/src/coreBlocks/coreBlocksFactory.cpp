@@ -10,6 +10,7 @@
 #include "details/loopBlock.h"
 #include "details/forkBlock.h"
 #include "details/ifBlock.h"
+#include "details/switchBlock.h"
 #include "details/commentBlock.h"
 #include "details/subprogramBlock.h"
 
@@ -30,6 +31,8 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::CommentBlock;
 	} else if (elementMetatypeIs(element, "IfBlock")) {
 		return new details::IfBlock();
+	} else if (elementMetatypeIs(element, "SwitchBlock")) {
+		return new details::SwitchBlock();
 	} else if (elementMetatypeIs(element, "Loop")) {
 		return new details::LoopBlock();
 	} else if (elementMetatypeIs(element, "Fork")) {
@@ -58,6 +61,7 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Timer")
 		, id("CommentBlock")
 		, id("IfBlock")
+		, id("SwitchBlock")
 		, id("Loop")
 		, id("Fork")
 		, id("Subprogram")

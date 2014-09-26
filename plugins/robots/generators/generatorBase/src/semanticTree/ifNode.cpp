@@ -9,6 +9,7 @@ IfNode::IfNode(Id const &idBinded, QObject *parent)
 	: ConditionalNode(idBinded, parent)
 	, mThenZone(new ZoneNode(this))
 	, mElseZone(new ZoneNode(this))
+	, mIsSimple(false)
 {
 	mThenZone->setParentNode(this);
 	mElseZone->setParentNode(this);
@@ -24,8 +25,17 @@ ZoneNode *IfNode::elseZone()
 	return mElseZone;
 }
 
+void IfNode::transformToSimple()
+{
+	mIsSimple = true;
+}
+
 QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
 {
+	if (mIsSimple) {
+		return mThenZone->toString(customizer, indent);
+	}
+
 	if (mThenZone->isEmpty() && mElseZone->isEmpty()) {
 		return QString();
 	}

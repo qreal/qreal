@@ -73,6 +73,8 @@ private:
 	Qt::Orientation orientation();
 	QRectF labelMovingRect() const;
 
+	QString enumText(QString const &enumValue) const;
+
 	bool mFocusIn;
 	bool mReadOnly;
 	bool mScalingX;

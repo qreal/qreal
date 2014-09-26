@@ -147,6 +147,25 @@ bool PropertyEditorModel::setData(QModelIndex const &index, QVariant const &valu
 	return modelChanged;
 }
 
+bool PropertyEditorModel::enumEditable(QModelIndex const &index) const
+{
+	if (!index.isValid()) {
+		return false;
+	}
+
+	AttributeClassEnum const attrClass = mFields[index.row()].attributeClass;
+	// metatype, ids and name are definitely not enums
+	if (attrClass != logicalAttribute && attrClass != graphicalAttribute) {
+		return false;
+	}
+
+	Id const id = attrClass == logicalAttribute
+			? mTargetLogicalObject.data(roles::idRole).value<Id>()
+			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
+
+	return mEditorManagerInterface.isEnumEditable(id, mFields[index.row()].fieldName);
+}
+
 QList<QPair<QString, QString>> PropertyEditorModel::enumValues(QModelIndex const &index) const
 {
 	if (!index.isValid()) {

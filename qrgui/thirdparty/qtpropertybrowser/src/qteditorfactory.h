@@ -91,10 +91,10 @@ private:
     Q_DECLARE_PRIVATE(QtSliderFactory)
     Q_DISABLE_COPY(QtSliderFactory)
     Q_PRIVATE_SLOT(d_func(), void slotPropertyChanged(QtProperty *, int))
-    Q_PRIVATE_SLOT(d_func(), void slotRangeChanged(QtProperty *, int, int))
+	Q_PRIVATE_SLOT(d_func(), void slotRangeChanged(QtProperty *, int, int))
     Q_PRIVATE_SLOT(d_func(), void slotSingleStepChanged(QtProperty *, int))
     Q_PRIVATE_SLOT(d_func(), void slotSetValue(int))
-    Q_PRIVATE_SLOT(d_func(), void slotEditorDestroyed(QObject *))
+	Q_PRIVATE_SLOT(d_func(), void slotEditorDestroyed(QObject *))
 };
 
 class QtScrollBarFactoryPrivate;
@@ -324,11 +324,17 @@ private:
     Q_DECLARE_PRIVATE(QtEnumEditorFactory)
     Q_DISABLE_COPY(QtEnumEditorFactory)
     Q_PRIVATE_SLOT(d_func(), void slotPropertyChanged(QtProperty *, int))
-    Q_PRIVATE_SLOT(d_func(), void slotEnumNamesChanged(QtProperty *,
+	/// This feature was not included into the original Qt Property Browser Framework.
+	/// It was added specially for QReal needs.
+	Q_PRIVATE_SLOT(d_func(), void slotPropertyChanged(QtProperty *, QString))
+	Q_PRIVATE_SLOT(d_func(), void slotEnumNamesChanged(QtProperty *,
                         const QStringList &))
     Q_PRIVATE_SLOT(d_func(), void slotEnumIconsChanged(QtProperty *,
                         const QMap<int, QIcon> &))
     Q_PRIVATE_SLOT(d_func(), void slotSetValue(int))
+	/// This feature was not included into the original Qt Property Browser Framework.
+	/// It was added specially for QReal needs.
+	Q_PRIVATE_SLOT(d_func(), void slotSetValue(QString))
     Q_PRIVATE_SLOT(d_func(), void slotEditorDestroyed(QObject *))
 };
 

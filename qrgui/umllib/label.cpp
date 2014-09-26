@@ -91,7 +91,9 @@ void Label::setText(QString const &text)
 
 void Label::setTextFromRepo(QString const &text)
 {
-	QString const friendlyText = mEnumValues.isEmpty() ? text : mEnumValues[text];
+	QString const friendlyText = mEnumValues.isEmpty()
+			? text
+			: mEnumValues.contains(text) ? mEnumValues[text] : enumText(text);
 	if (friendlyText != toPlainText()) {
 		QGraphicsTextItem::setPlainText(friendlyText);
 		setText(toPlainText());
@@ -156,7 +158,10 @@ void Label::updateData(bool withUndoRedo)
 	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mBinding, value, withUndoRedo);
 	} else {
-		parent->setLogicalProperty(mBinding, mEnumValues.key(value), withUndoRedo);
+		QString const repoValue = mEnumValues.values().contains(value)
+				? mEnumValues.key(value)
+				: enumText(value);
+		parent->setLogicalProperty(mBinding, repoValue, withUndoRedo);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mIndex, pos());
@@ -384,4 +389,11 @@ QRectF Label::labelMovingRect() const
 	int const distance = SettingsManager::value("LabelsDistance").toInt();
 	return mapFromItem(parentItem(), parentItem()->boundingRect()).boundingRect()
 			.adjusted(-distance, -distance, distance, distance);
+}
+
+QString Label::enumText(QString const &enumValue) const
+{
+	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mBinding)
+			? enumValue
+			: QString();
 }

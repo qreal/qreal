@@ -10,6 +10,7 @@
 #include "simpleGenerators/forLoopGenerator.h"
 #include "simpleGenerators/whileLoopGenerator.h"
 #include "simpleGenerators/forkCallGenerator.h"
+#include "simpleGenerators/switchGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
@@ -54,6 +55,7 @@
 #include "converters/intPropertyConverter.h"
 #include "converters/floatPropertyConverter.h"
 #include "converters/boolPropertyConverter.h"
+#include "converters/switchConditionsMerger.h"
 #include "generatorBase/converters/stringPropertyConverter.h"
 
 #include "generatorBase/parts/variables.h"
@@ -214,6 +216,24 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(Id const
 		, GeneratorCustomizer &customizer)
 {
 	return new ForLoopGenerator(mRepo, customizer, id, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::switchHeadGenerator(Id const &id
+		, GeneratorCustomizer &customizer, QStringList const &values)
+{
+	return new SwitchGenerator(mRepo, customizer, id, "head", values, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::switchMiddleGenerator(Id const &id
+		, GeneratorCustomizer &customizer, QStringList const &values)
+{
+	return new SwitchGenerator(mRepo, customizer, id, "middle", values, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::switchDefaultGenerator(Id const &id
+		, GeneratorCustomizer &customizer)
+{
+	return new SwitchGenerator(mRepo, customizer, id, "default", {}, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(Id const &id
@@ -426,6 +446,11 @@ Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter() const
 Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
 {
 	return new converters::TypeConverter(pathToTemplates());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::switchConditionsMerger(QStringList const &values) const
+{
+	return new converters::SwitchConditionsMerger(pathToTemplates(), systemVariableNameConverter(), values);
 }
 
 QString GeneratorFactoryBase::initCode()

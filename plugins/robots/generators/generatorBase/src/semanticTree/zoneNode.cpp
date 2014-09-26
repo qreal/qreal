@@ -84,6 +84,12 @@ SemanticNode *ZoneNode::parentNode()
 	return mParentNode;
 }
 
+SemanticNode *ZoneNode::nextChild(SemanticNode *child)
+{
+	QLinkedListIterator<SemanticNode *> iterator(mChildren);
+	return iterator.findNext(child) && iterator.hasNext() ? iterator.next() : nullptr;
+}
+
 QLinkedList<SemanticNode *> ZoneNode::children() const
 {
 	return mChildren;
