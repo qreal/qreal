@@ -21,6 +21,9 @@ public:
 	void setPathToTemplates(QString const &pathTemplates);
 
 protected:
+	/// Returns a given in constructor path to tempates root.
+	QString pathToRoot() const;
+
 	/// @param pathFromRoot A path to a concrete template relatively to specified in
 	/// constructor folder
 	QString readTemplate(QString const &pathFromRoot) const;

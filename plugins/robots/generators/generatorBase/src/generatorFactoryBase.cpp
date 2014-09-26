@@ -71,10 +71,12 @@ using namespace interpreterBase::robotModel;
 
 GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
-		, RobotModelManagerInterface const &robotModelManager)
+		, RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
+	, mTextLanguage(textLanguage)
 {
 }
 
@@ -321,6 +323,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 	return new converters::IntPropertyConverter(pathToTemplates()
 			, mErrorReporter
 			, mRobotModelManager.model()
+			, mTextLanguage
 			, currentConfiguration()
 			, inputPortConverter()
 			, functionInvocationConverter()
@@ -335,6 +338,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() cons
 	return new converters::FloatPropertyConverter(pathToTemplates()
 			, mErrorReporter
 			, mRobotModelManager.model()
+			, mTextLanguage
 			, currentConfiguration()
 			, inputPortConverter()
 			, functionInvocationConverter()
@@ -347,6 +351,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool ne
 	return new converters::BoolPropertyConverter(pathToTemplates()
 			, mErrorReporter
 			, mRobotModelManager.model()
+			, mTextLanguage
 			, currentConfiguration()
 			, inputPortConverter()
 			, functionInvocationConverter()
@@ -365,6 +370,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::systemVariableNameConverter()
 	return new converters::CodeConverterBase(pathToTemplates()
 			, mErrorReporter
 			, mRobotModelManager.model()
+			, mTextLanguage
 			, currentConfiguration()
 			, inputPortConverter()
 			, functionInvocationConverter()
@@ -386,6 +392,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() cons
 	return new converters::FunctionBlockConverter(pathToTemplates()
 			, mErrorReporter
 			, mRobotModelManager.model()
+			, mTextLanguage
 			, currentConfiguration()
 			, inputPortConverter()
 			, functionInvocationConverter()

@@ -25,6 +25,7 @@ public:
 	MasterGeneratorBase(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage
 			, qReal::Id const &diagramId);
 
 	void setProjectDir(QFileInfo const &fileInfo);
@@ -56,6 +57,7 @@ protected:
 	qrRepo::RepoApi const &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	qrtext::LanguageToolboxInterface &mTextLanguage;
 	qReal::Id mDiagram;
 	GeneratorCustomizer *mCustomizer;
 	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership

@@ -2,6 +2,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrrepo/repoApi.h>
+#include <qrtext/languageToolboxInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
@@ -34,7 +35,8 @@ class ROBOTS_GENERATOR_EXPORT GeneratorFactoryBase : public QObject
 public:
 	GeneratorFactoryBase(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage);
 
 	virtual ~GeneratorFactoryBase();
 
@@ -232,6 +234,7 @@ protected:
 	qrRepo::RepoApi const &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	qrtext::LanguageToolboxInterface &mTextLanguage;
 	qReal::Id mDiagram;
 	parts::Variables *mVariables;
 	parts::Subprograms *mSubprograms;

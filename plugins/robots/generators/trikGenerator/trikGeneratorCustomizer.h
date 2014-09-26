@@ -10,7 +10,8 @@ class TrikGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 public:
 	TrikGeneratorCustomizer(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 

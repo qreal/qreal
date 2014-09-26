@@ -18,10 +18,12 @@ using namespace qReal;
 MasterGeneratorBase::MasterGeneratorBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage
 		, Id const &diagramId)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
+	, mTextLanguage(textLanguage)
 	, mDiagram(diagramId)
 {
 }

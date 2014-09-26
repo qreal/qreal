@@ -3,12 +3,15 @@
 #include <qrkernel/settingsManager.h>
 #include <interpreterBase/robotModel/robotParts/button.h>
 
+#include "src/printers/luaPrinter.h"
+
 using namespace generatorBase::converters;
 using namespace qReal;
 
 CodeConverterBase::CodeConverterBase(QString const &pathToTemplates
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelInterface const &robotModel
+		, qrtext::LanguageToolboxInterface &textLanguage
 		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 		, simple::Binding::ConverterInterface const *inputPortConverter
 		, simple::Binding::ConverterInterface const *functionInvocationsConverter
@@ -16,6 +19,7 @@ CodeConverterBase::CodeConverterBase(QString const &pathToTemplates
 	: TemplateParametrizedConverter(pathToTemplates)
 	, mErrorReporter(errorReporter)
 	, mRobotModel(robotModel)
+	, mTextLanguage(textLanguage)
 	, mDevices(devices)
 	, mInputConverter(inputPortConverter)
 	, mFunctionInvocationsConverter(functionInvocationsConverter)
@@ -31,7 +35,31 @@ CodeConverterBase::~CodeConverterBase()
 
 QString CodeConverterBase::convert(QString const &data) const
 {
-	return replaceFunctionInvocations(replaceSystemVariables(data)).trimmed();
+	/// @todo: pass id and report errors.
+	QSharedPointer<qrtext::core::ast::Node> const tree = mTextLanguage.parse(Id(), QString(), data);
+	if (!mTextLanguage.errors().isEmpty()) {
+		/// @todo: move this code to some common place
+		for (qrtext::core::Error const &error : mTextLanguage.errors()) {
+			switch (error.severity()) {
+			case qrtext::core::Severity::error:
+				mErrorReporter.addError(error.errorMessage(), error.connection().id());
+				break;
+			case qrtext::core::Severity::critical:
+				mErrorReporter.addCritical(error.errorMessage(), error.connection().id());
+				break;
+			case qrtext::core::Severity::warning:
+				mErrorReporter.addWarning(error.errorMessage(), error.connection().id());
+				break;
+			default:
+				break;
+			}
+		}
+
+		return QString();
+	}
+
+	return printing::LuaPrinter(pathToRoot()).print(tree);
+	//return replaceFunctionInvocations(replaceSystemVariables(data)).trimmed();
 }
 
 QString CodeConverterBase::replaceSystemVariables(QString const &expression) const

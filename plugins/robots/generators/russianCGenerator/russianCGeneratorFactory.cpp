@@ -9,8 +9,9 @@ using namespace generatorBase::simple;
 
 RussianCGeneratorFactory::RussianCGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
-	: generatorBase::GeneratorFactoryBase(repo, errorReporter, robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage)
+	: generatorBase::GeneratorFactoryBase(repo, errorReporter, robotModelManager, textLanguage)
 {
 }
 

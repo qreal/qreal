@@ -7,6 +7,7 @@ using namespace qReal;
 IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelInterface const &robotModel
+		, qrtext::LanguageToolboxInterface &textLanguage
 		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
 		, simple::Binding::ConverterInterface const *inputPortConverter
 		, simple::Binding::ConverterInterface const *functionInvocationsConverter
@@ -16,6 +17,7 @@ IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
 	: CodeConverterBase(pathToTemplates
 			, errorReporter
 			, robotModel
+			, textLanguage
 			, devices
 			, inputPortConverter
 			, functionInvocationsConverter

@@ -8,7 +8,7 @@ INCLUDEPATH += \
 	$$PWD/../../interpreters/interpreterBase/include \
 	$$PWD/../../../../qrtext/include \
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -linterpreterBase -lqrtext
+LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -linterpreterBase -lqrtext
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 
@@ -179,6 +179,9 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/labelGenerator.h \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/variableInitGenerator.h \
+	$$PWD/src/printers/luaPrinter.h \
+	$$PWD/src/printers/precedenceConverterInterface.h \
+	$$PWD/src/printers/precedenceConverterBase.h \
 
 SOURCES += \
 	$$PWD/src/converters/templateParametrizedConverter.cpp \
@@ -243,3 +246,5 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/labelGenerator.cpp \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/variableInitGenerator.cpp \
+	$$PWD/src/printers/luaPrinter.cpp \
+	$$PWD/src/printers/precedenceConverterBase.cpp \
