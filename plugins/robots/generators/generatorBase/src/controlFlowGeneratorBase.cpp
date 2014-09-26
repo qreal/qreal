@@ -125,13 +125,6 @@ void ControlFlowGeneratorBase::visitFinal(Id const &id, QList<LinkInfo> const &l
 	Q_UNUSED(links)
 }
 
-void ControlFlowGeneratorBase::visitSwitch(Id const &id, QList<LinkInfo> const &links)
-{
-	Q_UNUSED(id)
-	Q_UNUSED(links)
-	error(tr("Switches are not supported in generator yet"), id, true);
-}
-
 void ControlFlowGeneratorBase::visitFork(Id const &id, QList<LinkInfo> &links)
 {
 	// n-ary fork creates (n-1) new threads and one thread is the old one.

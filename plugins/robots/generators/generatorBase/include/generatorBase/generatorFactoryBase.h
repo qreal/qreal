@@ -97,6 +97,18 @@ public:
 	virtual simple::AbstractSimpleGenerator *forLoopGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
 
+	/// Returns a pointer to a code generator for switch first enumeration block.
+	virtual simple::AbstractSimpleGenerator *switchHeadGenerator(qReal::Id const &id
+			, GeneratorCustomizer &customizer, QStringList const &values);
+
+	/// Returns a pointer to a code generator for switch enumeration block somewhere in the middle.
+	virtual simple::AbstractSimpleGenerator *switchMiddleGenerator(qReal::Id const &id
+			, GeneratorCustomizer &customizer, QStringList const &values);
+
+	/// Returns a pointer to a code generator for switch enumeration block in the end (default case).
+	virtual simple::AbstractSimpleGenerator *switchDefaultGenerator(qReal::Id const &id
+			, GeneratorCustomizer &customizer);
+
 	/// Returns a pointer to a threads instantiation generator
 	virtual simple::AbstractSimpleGenerator *forkCallGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer, qReal::IdList const &threads);
@@ -185,6 +197,10 @@ public:
 
 	/// Produces converter for variable type specification without taking ownership on it
 	virtual simple::Binding::ConverterInterface *typeConverter() const;
+
+	/// Returns a pointer to a converter that makes one composite switch enumeration block from a set
+	/// of their values. Accepts an expression that will be compared to @arg values.
+	virtual simple::Binding::ConverterInterface *switchConditionsMerger(QStringList const &values) const;
 
 	// ------------------------- Init-terminate code ---------------------------
 

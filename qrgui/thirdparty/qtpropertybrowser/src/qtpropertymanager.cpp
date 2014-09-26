@@ -4773,8 +4773,19 @@ public:
 
     struct Data
     {
-        Data() : val(-1) {}
+        Data()
+            : val(-1)
+            /// This line was not included into the original Qt Property Browser Framework.
+            /// It was added specially for QReal needs.
+            , isEditable(false)
+        {}
+
         int val;
+        /// This feature was not included into the original Qt Property Browser Framework.
+        /// It was added specially for QReal needs.
+        QString stringValue;
+        bool isEditable;
+
         QStringList enumNames;
         QMap<int, QIcon> enumIcons;
     };
@@ -4855,6 +4866,20 @@ QtEnumPropertyManager::~QtEnumPropertyManager()
     delete d_ptr;
 }
 
+/// This feature was not included into the original Qt Property Browser Framework.
+/// It was added specially for QReal needs.
+bool QtEnumPropertyManager::editable(const QtProperty *property) const
+{
+    return getData(d_ptr->m_values, &QtEnumPropertyManagerPrivate::Data::isEditable, property, false);
+}
+
+/// This feature was not included into the original Qt Property Browser Framework.
+/// It was added specially for QReal needs.
+QString QtEnumPropertyManager::stringValue(const QtProperty *property) const
+{
+    return getData(d_ptr->m_values, &QtEnumPropertyManagerPrivate::Data::stringValue, property, QString());
+}
+
 /*!
     Returns the given \a property's value which is an index in the
     list returned by enumNames()
@@ -4900,6 +4925,12 @@ QString QtEnumPropertyManager::valueText(const QtProperty *property) const
 
     const QtEnumPropertyManagerPrivate::Data &data = it.value();
 
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    if (data.isEditable) {
+        return data.stringValue;
+    }
+
     const int v = data.val;
     if (v >= 0 && v < data.enumNames.count())
         return data.enumNames.at(v);
@@ -4921,6 +4952,27 @@ QIcon QtEnumPropertyManager::valueIcon(const QtProperty *property) const
     return data.enumIcons.value(v);
 }
 
+/// This feature was not included into the original Qt Property Browser Framework.
+/// It was added specially for QReal needs.
+void QtEnumPropertyManager::setEditable(QtProperty *property, bool editable)
+{
+    const QtEnumPropertyManagerPrivate::PropertyValueMap::iterator it = d_ptr->m_values.find(property);
+    if (it == d_ptr->m_values.end())
+        return;
+
+    QtEnumPropertyManagerPrivate::Data data = it.value();
+
+    if (data.isEditable == editable)
+        return;
+
+    data.isEditable = editable;
+
+    it.value() = data;
+
+    emit propertyChanged(property);
+    emit valueChanged(property, data.isEditable);
+}
+
 /*!
     \fn void QtEnumPropertyManager::setValue(QtProperty *property, int value)
 
@@ -4931,6 +4983,29 @@ QIcon QtEnumPropertyManager::valueIcon(const QtProperty *property) const
 
     \sa value(), valueChanged()
 */
+
+/// This feature was not included into the original Qt Property Browser Framework.
+/// It was added specially for QReal needs.
+void QtEnumPropertyManager::setValue(QtProperty *property, QString const &val)
+{
+    const QtEnumPropertyManagerPrivate::PropertyValueMap::iterator it = d_ptr->m_values.find(property);
+    if (it == d_ptr->m_values.end())
+        return;
+
+    QtEnumPropertyManagerPrivate::Data data = it.value();
+
+    if (data.stringValue == val)
+        return;
+
+    data.stringValue = val;
+    data.val = data.enumNames.indexOf(val);
+
+    it.value() = data;
+
+    emit propertyChanged(property);
+    emit valueChanged(property, data.stringValue);
+}
+
 void QtEnumPropertyManager::setValue(QtProperty *property, int val)
 {
     const QtEnumPropertyManagerPrivate::PropertyValueMap::iterator it = d_ptr->m_values.find(property);
@@ -4952,11 +5027,16 @@ void QtEnumPropertyManager::setValue(QtProperty *property, int val)
         return;
 
     data.val = val;
+    data.stringValue = data.enumNames[val];
 
     it.value() = data;
 
     emit propertyChanged(property);
-    emit valueChanged(property, data.val);
+    if (data.isEditable) {
+        emit valueChanged(property, data.stringValue);
+    } else {
+        emit valueChanged(property, data.val);
+    }
 }
 
 /*!

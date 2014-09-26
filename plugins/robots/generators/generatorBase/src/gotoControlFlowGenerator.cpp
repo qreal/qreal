@@ -71,6 +71,16 @@ void GotoControlFlowGenerator::visitLoop(Id const &id, QList<LinkInfo> const &li
 	produceNextNodeIfNeeded(nextLink, thisNode);
 }
 
+void GotoControlFlowGenerator::visitSwitch(Id const &id, QList<LinkInfo> const &links)
+{
+	SwitchNode * const thisNode = static_cast<SwitchNode *>(mSemanticTree->findNodeFor(id));
+	for (LinkInfo const &branch : links) {
+		QString const value = mRepo.property(branch.linkId, "Guard").toString();
+		thisNode->addBranch(value, produceGotoNode(branch.target));
+		produceNextNodeIfNeeded(branch, thisNode);
+	}
+}
+
 void GotoControlFlowGenerator::afterSearch()
 {
 }

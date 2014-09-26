@@ -75,7 +75,9 @@ namespace details {
 /// binop ::= ‘+’ | ‘-’ | ‘*’ | ‘/’ | ‘//’ | ‘^’ | ‘%’ |
 ///     ‘&’ | ‘~’ | ‘|’ | ‘>>’ | ‘<<’ | ‘..’ |
 ///     ‘<’ | ‘<=’ | ‘>’ | ‘>=’ | ‘==’ | ‘~=’ | ‘!=’ |         // Added '!=' as a synonym for iequality for convenience.
-///     and | or
+///     and | or | && | ||
+///
+/// // Also added && and || as synonyms for 'and' and 'or'.
 ///
 /// unop ::= ‘-’ | not | ‘#’ | ‘~’
 /// @endverbatim

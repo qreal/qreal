@@ -64,6 +64,7 @@ private:
 	qReal::Id const mDefaultFinalBlockType;
 	qReal::Id const mDefaultConditionalBlockType;
 	qReal::Id const mDefaultLoopBlockType;
+	qReal::Id const mDefaultSwitchBlockType;
 	qReal::Id const mDefaultForkBlockType;
 };
 

@@ -33,6 +33,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/semanticTree/finalNode.h \
 	$$PWD/include/generatorBase/semanticTree/conditionalNode.h \
 	$$PWD/include/generatorBase/semanticTree/ifNode.h \
+	$$PWD/include/generatorBase/semanticTree/switchNode.h \
 	$$PWD/include/generatorBase/semanticTree/loopNode.h \
 	$$PWD/include/generatorBase/semanticTree/forkNode.h \
 	$$PWD/include/generatorBase/semanticTree/rootNode.h \
@@ -64,6 +65,8 @@ HEADERS += \
 	$$PWD/src/rules/loopRules/loopWithIterationVisitedRule.h \
 	$$PWD/src/rules/loopRules/loopWithNextVisitedRule.h \
 	$$PWD/src/rules/forkRules/forkRule.h \
+	$$PWD/src/rules/switchRules/switchInitializationRule.h \
+	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.h \
 
 SOURCES += \
 	$$PWD/src/robotsGeneratorPluginBase.cpp \
@@ -93,6 +96,7 @@ SOURCES += \
 	$$PWD/src/semanticTree/finalNode.cpp \
 	$$PWD/src/semanticTree/conditionalNode.cpp \
 	$$PWD/src/semanticTree/ifNode.cpp \
+	$$PWD/src/semanticTree/switchNode.cpp \
 	$$PWD/src/semanticTree/loopNode.cpp \
 	$$PWD/src/semanticTree/forkNode.cpp \
 	$$PWD/src/semanticTree/rootNode.cpp \
@@ -111,6 +115,8 @@ SOURCES += \
 	$$PWD/src/rules/loopRules/loopWithIterationVisitedRule.cpp \
 	$$PWD/src/rules/loopRules/loopWithNextVisitedRule.cpp \
 	$$PWD/src/rules/forkRules/forkRule.cpp \
+	$$PWD/src/rules/switchRules/switchInitializationRule.cpp \
+	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.cpp \
 
 # Simple element generators & converters
 
@@ -141,6 +147,7 @@ HEADERS += \
 	$$PWD/src/converters/typeConverter.h \
 	$$PWD/src/converters/inputPortConverter.h \
 	$$PWD/src/converters/functionInvocationConverter.h \
+	$$PWD/src/converters/switchConditionsMerger.h \
 	$$PWD/src/simpleGenerators/nullGenerator.h \
 	$$PWD/src/simpleGenerators/commentElementGenerator.h \
 	$$PWD/src/simpleGenerators/functionElementGenerator.h \
@@ -149,6 +156,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/forLoopGenerator.h \
 	$$PWD/src/simpleGenerators/whileLoopGenerator.h \
 	$$PWD/src/simpleGenerators/forkCallGenerator.h \
+	$$PWD/src/simpleGenerators/switchGenerator.h \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.h \
 	$$PWD/src/simpleGenerators/timerGenerator.h \
 	$$PWD/src/simpleGenerators/beepGenerator.h \
@@ -204,6 +212,7 @@ SOURCES += \
 	$$PWD/src/converters/typeConverter.cpp \
 	$$PWD/src/converters/inputPortConverter.cpp \
 	$$PWD/src/converters/functionInvocationConverter.cpp \
+	$$PWD/src/converters/switchConditionsMerger.cpp \
 	$$PWD/src/simpleGenerators/abstractSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/nullGenerator.cpp \
 	$$PWD/src/simpleGenerators/commentElementGenerator.cpp \
@@ -213,6 +222,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/forLoopGenerator.cpp \
 	$$PWD/src/simpleGenerators/whileLoopGenerator.cpp \
 	$$PWD/src/simpleGenerators/forkCallGenerator.cpp \
+	$$PWD/src/simpleGenerators/switchGenerator.cpp \
 	$$PWD/src/simpleGenerators/bindingGenerator.cpp \
 	$$PWD/src/simpleGenerators/binding.cpp \
 	$$PWD/src/simpleGenerators/enginesStopGenerator.cpp \

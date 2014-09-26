@@ -14,6 +14,9 @@ public:
 	ZoneNode *thenZone();
 	ZoneNode *elseZone();
 
+	/// Will be called when both branches link to same block, making thus if statement unnesesary.
+	void transformToSimple();
+
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
@@ -21,6 +24,7 @@ protected:
 private:
 	ZoneNode *mThenZone;  // Takes ownership
 	ZoneNode *mElseZone;  // Takes ownership
+	bool mIsSimple;
 };
 
 }

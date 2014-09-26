@@ -17,8 +17,12 @@ public:
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
 	virtual void generateExplosionsMap(utils::OutFile &out);
 
+	/// Returns true if enum was marked as editable in metamodel.
+	bool isEditable() const;
+
 private:
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 
 	QMap<QString, QString> mValues;
+	bool mIsEditable;
 };

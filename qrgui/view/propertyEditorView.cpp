@@ -120,8 +120,13 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 				}
 
 				vItem->setAttribute("enumNames", friendlyNames);
-				QVariant idx(enumPropertyIndexOf(valueCell, value.toString()));
-				vItem->setValue(idx);
+				vItem->setAttribute("enumEditable", mModel->enumEditable(valueCell));
+				int const idx = enumPropertyIndexOf(valueCell, value.toString());
+				if (mModel->enumEditable(valueCell)) {
+					vItem->setValue(idx < 0 ? value.toString() : values[idx].second);
+				} else {
+					vItem->setValue(idx);
+				}
 			}
 			item = vItem;
 		}
@@ -199,9 +204,17 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 
 	if (propertyType == QtVariantPropertyManager::enumTypeId()) {
 		QList<QPair<QString, QString>> const values = mModel->enumValues(index);
-		int const intValue = value.toInt();
-		if (intValue >= 0 && intValue < values.length()) {
-			value = values.at(intValue).first;
+		if (mModel->enumEditable(index)) {
+			for (auto const &keyValue : values) {
+				if (keyValue.second == value) {
+					value = keyValue.first;
+				}
+			}
+		} else {
+			int const intValue = value.toInt();
+			if (intValue >= 0 && intValue < values.length()) {
+				value = values.at(intValue).first;
+			}
 		}
 	}
 

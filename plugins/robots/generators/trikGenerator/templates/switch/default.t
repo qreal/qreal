@@ -1,0 +1,4 @@
+default:
+@@BODY@@
+	break;
+}

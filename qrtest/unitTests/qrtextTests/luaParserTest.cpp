@@ -18,6 +18,8 @@
 #include "qrtext/lua/ast/tableConstructor.h"
 #include "qrtext/lua/ast/identifier.h"
 #include "qrtext/lua/ast/string.h"
+#include "qrtext/lua/ast/true.h"
+#include "qrtext/lua/ast/false.h"
 
 #include "gtest/gtest.h"
 
@@ -356,4 +358,71 @@ TEST_F(LuaParserTest, tableIndexingConnection)
 
 	EXPECT_EQ(core::Connection(0, 0, 0), firstTable->start());
 	EXPECT_EQ(core::Connection(10, 0, 10), secondTable->start());
+}
+
+TEST_F(LuaParserTest, logicalOperators)
+{
+	QString stream = "true or false";
+	auto result = mParser->parse(mLexer->tokenize(stream));
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	QSharedPointer<ast::BinaryOperator> binaryOp = result.dynamicCast<ast::BinaryOperator>();
+	ASSERT_FALSE(binaryOp.isNull());
+	auto leftOperand = binaryOp->leftOperand().dynamicCast<ast::True>();
+	ASSERT_FALSE(leftOperand.isNull());
+	auto rightOperand = binaryOp->rightOperand().dynamicCast<ast::False>();
+	ASSERT_FALSE(rightOperand.isNull());
+
+
+	stream = "true and false";
+	result = mParser->parse(mLexer->tokenize(stream));
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	binaryOp = result.dynamicCast<ast::BinaryOperator>();
+	ASSERT_FALSE(binaryOp.isNull());
+	leftOperand = binaryOp->leftOperand().dynamicCast<ast::True>();
+	ASSERT_FALSE(leftOperand.isNull());
+	rightOperand = binaryOp->rightOperand().dynamicCast<ast::False>();
+	ASSERT_FALSE(rightOperand.isNull());
+
+
+	stream = "true && false";
+	result = mParser->parse(mLexer->tokenize(stream));
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	binaryOp = result.dynamicCast<ast::BinaryOperator>();
+	ASSERT_FALSE(binaryOp.isNull());
+	leftOperand = binaryOp->leftOperand().dynamicCast<ast::True>();
+	ASSERT_FALSE(leftOperand.isNull());
+	rightOperand = binaryOp->rightOperand().dynamicCast<ast::False>();
+	ASSERT_FALSE(rightOperand.isNull());
+
+
+	stream = "true || false";
+	result = mParser->parse(mLexer->tokenize(stream));
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	binaryOp = result.dynamicCast<ast::BinaryOperator>();
+	ASSERT_FALSE(binaryOp.isNull());
+	leftOperand = binaryOp->leftOperand().dynamicCast<ast::True>();
+	ASSERT_FALSE(leftOperand.isNull());
+	rightOperand = binaryOp->rightOperand().dynamicCast<ast::False>();
+	ASSERT_FALSE(rightOperand.isNull());
+
+
+	stream = "not false";
+	result = mParser->parse(mLexer->tokenize(stream));
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	QSharedPointer<ast::UnaryOperator>  unaryOp = result.dynamicCast<ast::UnaryOperator>();
+	ASSERT_FALSE(unaryOp.isNull());
+	rightOperand = unaryOp->operand().dynamicCast<ast::False>();
+	ASSERT_FALSE(leftOperand.isNull());
+}
+
+TEST_F(LuaParserTest, incorrectLogicalOperators)
+{
+	QString stream = "true ||| false";
+	mParser->parse(mLexer->tokenize(stream));
+	EXPECT_FALSE(mErrors.isEmpty());
 }
