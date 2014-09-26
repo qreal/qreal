@@ -8,6 +8,7 @@ namespace lua {
 namespace ast {
 
 /// Represents table constructor expression.
+/// See 'visitor' design pattern (http://www.oodesign.com/visitor-pattern.html).
 class QRTEXT_EXPORT TableConstructor : public Expression
 {
 public:
@@ -30,6 +31,11 @@ public:
 	}
 
 private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
+
 	QList<QSharedPointer<FieldInitialization>> mInitializers;
 };
 

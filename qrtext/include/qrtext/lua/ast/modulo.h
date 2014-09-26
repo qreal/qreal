@@ -9,6 +9,11 @@ namespace ast {
 /// Represents modulo operator (%).
 class QRTEXT_EXPORT Modulo : public BinaryOperator
 {
+private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
 };
 
 }
