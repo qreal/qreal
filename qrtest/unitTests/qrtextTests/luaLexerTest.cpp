@@ -147,6 +147,13 @@ TEST_F(LuaLexerTest, lexemeTypes)
 	EXPECT_EQ(LuaTokenTypes::dot, result[3].token());
 	EXPECT_EQ(LuaTokenTypes::doubleDot, result[4].token());
 	EXPECT_EQ(LuaTokenTypes::tripleDot, result[5].token());
+
+	stream = "|| &&";
+	result = mLexer->tokenize(stream);
+	ASSERT_EQ(2, result.size());
+
+	EXPECT_EQ(LuaTokenTypes::doubleVerticalLine, result[0].token());
+	EXPECT_EQ(LuaTokenTypes::doubleAmpersand, result[1].token());
 }
 
 TEST_F(LuaLexerTest, errorReporting)

@@ -69,6 +69,11 @@ private:
 
 			auto op = as<ast::BinaryOperator>(binOpResult);
 			op->setLeftOperand(resultAst);
+
+			if (!rightOperandResult) {
+				parserContext.reportError(QObject::tr("Right operand required"));
+			}
+
 			op->setRightOperand(rightOperandResult);
 			resultAst = op;
 		}
