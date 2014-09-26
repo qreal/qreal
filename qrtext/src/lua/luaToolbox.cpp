@@ -48,9 +48,12 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const
 	if (mParsedCache[id][propertyName] != code) {
 		auto tokenStream = mLexer->tokenize(code);
 		auto ast = mParser->parse(tokenStream);
-		mAstRoots[id][propertyName] = ast;
 
-		mAnalyzer->analyze(ast);
+		if (mErrors.isEmpty()) {
+			mAstRoots[id][propertyName] = ast;
+			/// Note that analyze() changes mErrors, so these two ifs are correct.
+			mAnalyzer->analyze(ast);
+		}
 
 		if (mErrors.isEmpty()) {
 			mParsedCache[id][propertyName] = code;

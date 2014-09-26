@@ -11,74 +11,76 @@ namespace details {
 /// Tokens recognizable by Lua lexer.
 enum class LuaTokenTypes
 {
-	whitespace  // 0
+	whitespace
 	, newline
 	, identifier
 
 	, andKeyword
 	, breakKeyword
-	, doKeyword  // 5
+	, doKeyword
 	, elseKeyword
 	, elseifKeyword
 	, endKeyword
 	, falseKeyword
-	, forKeyword  // 10
+	, forKeyword
 	, functionKeyword
 	, gotoKeyword
 	, ifKeyword
 	, inKeyword
-	, localKeyword  //15
+	, localKeyword
 	, nilKeyword
 	, notKeyword
 	, orKeyword
 	, repeatKeyword
-	, returnKeyword  // 20
+	, returnKeyword
 	, thenKeyword
 	, trueKeyword
 	, untilKeyword
 	, whileKeyword
 
-	, plus  // 25
+	, plus
 	, minus
 	, asterick
 	, slash
 	, percent
-	, hat  // 30
+	, hat
 	, sharp
 
 	, ampersand
+	, doubleAmpersand
 	, tilda
 	, verticalLine
-	, doubleLess  // 35
+	, doubleVerticalLine
+	, doubleLess
 	, doubleGreater
 	, doubleSlash
 
 	, doubleEquals
 	, tildaEquals
-	, exclamationMarkEquals  // 40
+	, exclamationMarkEquals
 	, lessEquals
 	, greaterEquals
 	, less
 	, greater
-	, equals  // 45
+	, equals
 
 	, openingBracket
 	, closingBracket
 	, openingCurlyBracket
 	, closingCurlyBracket
-	, openingSquareBracket  // 50
+	, openingSquareBracket
 	, closingSquareBracket
 	, doubleColon
 
 	, semicolon
 	, colon
-	, comma  // 55
+	, comma
 	, dot
 	, doubleDot
 	, tripleDot
 
 	, string
-	, integerLiteral  // 60
+	, integerLiteral
 	, floatLiteral
 	, comment
 };

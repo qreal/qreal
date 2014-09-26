@@ -48,3 +48,9 @@ TEST_F(LuaToolboxTest, intrinsicFunction)
 
 	EXPECT_EQ(3, result);
 }
+
+TEST_F(LuaToolboxTest, errorProcessingSanityCheck)
+{
+	mToolbox->interpret<int>("true ||| false");
+	EXPECT_FALSE(mToolbox->errors().isEmpty());
+}
