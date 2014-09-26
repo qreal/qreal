@@ -367,10 +367,10 @@ public:
     const QString m_constraintAttribute;
     const QString m_singleStepAttribute;
     const QString m_decimalsAttribute;
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	const QString m_enumEditableAttribute;
-	const QString m_enumIconsAttribute;
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    const QString m_enumEditableAttribute;
+    const QString m_enumIconsAttribute;
     const QString m_enumNamesAttribute;
     const QString m_flagNamesAttribute;
     const QString m_maximumAttribute;
@@ -384,10 +384,10 @@ QtVariantPropertyManagerPrivate::QtVariantPropertyManagerPrivate() :
     m_constraintAttribute(QLatin1String("constraint")),
     m_singleStepAttribute(QLatin1String("singleStep")),
     m_decimalsAttribute(QLatin1String("decimals")),
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	m_enumEditableAttribute(QLatin1String("enumEditable")),
-	m_enumIconsAttribute(QLatin1String("enumIcons")),
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    m_enumEditableAttribute(QLatin1String("enumEditable")),
+    m_enumIconsAttribute(QLatin1String("enumIcons")),
     m_enumNamesAttribute(QLatin1String("enumNames")),
     m_flagNamesAttribute(QLatin1String("flagNames")),
     m_maximumAttribute(QLatin1String("maximum")),
@@ -1195,21 +1195,21 @@ QtVariantPropertyManager::QtVariantPropertyManager(QObject *parent)
     QtEnumPropertyManager *enumPropertyManager = new QtEnumPropertyManager(this);
     d_ptr->m_typeToPropertyManager[enumId] = enumPropertyManager;
     d_ptr->m_typeToValueType[enumId] = QVariant::Int;
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	d_ptr->m_typeToAttributeToAttributeType[enumId][d_ptr->m_enumEditableAttribute] =
-			QVariant::Bool;
-	d_ptr->m_typeToAttributeToAttributeType[enumId][d_ptr->m_enumNamesAttribute] =
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    d_ptr->m_typeToAttributeToAttributeType[enumId][d_ptr->m_enumEditableAttribute] =
+            QVariant::Bool;
+    d_ptr->m_typeToAttributeToAttributeType[enumId][d_ptr->m_enumNamesAttribute] =
             QVariant::StringList;
     d_ptr->m_typeToAttributeToAttributeType[enumId][d_ptr->m_enumIconsAttribute] =
             iconMapTypeId();
     connect(enumPropertyManager, SIGNAL(valueChanged(QtProperty *, int)),
                 this, SLOT(slotValueChanged(QtProperty *, int)));
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	connect(enumPropertyManager, SIGNAL(valueChanged(QtProperty *, QString)),
-				this, SLOT(slotValueChanged(QtProperty *, QString)));
-	connect(enumPropertyManager, SIGNAL(enumNamesChanged(QtProperty *, const QStringList &)),
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    connect(enumPropertyManager, SIGNAL(valueChanged(QtProperty *, QString)),
+                this, SLOT(slotValueChanged(QtProperty *, QString)));
+    connect(enumPropertyManager, SIGNAL(enumNamesChanged(QtProperty *, const QStringList &)),
                 this, SLOT(slotEnumNamesChanged(QtProperty *, const QStringList &)));
     connect(enumPropertyManager, SIGNAL(enumIconsChanged(QtProperty *, const QMap<int, QIcon> &)),
                 this, SLOT(slotEnumIconsChanged(QtProperty *, const QMap<int, QIcon> &)));
@@ -1475,12 +1475,12 @@ QVariant QtVariantPropertyManager::attributeValue(const QtProperty *property, co
     if (!propType)
         return QVariant();
 
-	QMap<int, QMap<QString, int> >::ConstIterator it =
+    QMap<int, QMap<QString, int> >::ConstIterator it =
             d_ptr->m_typeToAttributeToAttributeType.find(propType);
     if (it == d_ptr->m_typeToAttributeToAttributeType.constEnd())
         return QVariant();
 
-	QMap<QString, int> attributes = it.value();
+    QMap<QString, int> attributes = it.value();
     QMap<QString, int>::ConstIterator itAttr = attributes.find(attribute);
     if (itAttr == attributes.constEnd())
         return QVariant();
@@ -1555,11 +1555,11 @@ QVariant QtVariantPropertyManager::attributeValue(const QtProperty *property, co
             return rectFManager->decimals(internProp);
         return QVariant();
     } else if (QtEnumPropertyManager *enumManager = qobject_cast<QtEnumPropertyManager *>(manager)) {
-		/// This feature was not included into the original Qt Property Browser Framework.
-		/// It was added specially for QReal needs.
-		if (attribute == d_ptr->m_enumEditableAttribute)
-			return enumManager->editable(internProp);
-		if (attribute == d_ptr->m_enumNamesAttribute)
+        /// This feature was not included into the original Qt Property Browser Framework.
+        /// It was added specially for QReal needs.
+        if (attribute == d_ptr->m_enumEditableAttribute)
+            return enumManager->editable(internProp);
+        if (attribute == d_ptr->m_enumNamesAttribute)
             return enumManager->enumNames(internProp);
         if (attribute == d_ptr->m_enumIconsAttribute) {
             QVariant v;
@@ -1694,13 +1694,13 @@ void QtVariantPropertyManager::setValue(QtProperty *property, const QVariant &va
         colorManager->setValue(internProp, qVariantValue<QColor>(val));
         return;
     } else if (QtEnumPropertyManager *enumManager = qobject_cast<QtEnumPropertyManager *>(manager)) {
-		/// This feature was not included into the original Qt Property Browser Framework.
-		/// It was added specially for QReal needs.
-		if (enumManager->editable(internProp) && val.type() == QVariant::String) {
-			enumManager->setValue(internProp, qVariantValue<QString>(val));
-		} else {
-			enumManager->setValue(internProp, qVariantValue<int>(val));
-		}
+        /// This feature was not included into the original Qt Property Browser Framework.
+        /// It was added specially for QReal needs.
+        if (enumManager->editable(internProp) && val.type() == QVariant::String) {
+            enumManager->setValue(internProp, qVariantValue<QString>(val));
+        } else {
+            enumManager->setValue(internProp, qVariantValue<int>(val));
+        }
         return;
     } else if (QtSizePolicyPropertyManager *sizePolicyManager =
                qobject_cast<QtSizePolicyPropertyManager *>(manager)) {
@@ -1734,11 +1734,11 @@ void QtVariantPropertyManager::setValue(QtProperty *property, const QVariant &va
 void QtVariantPropertyManager::setAttribute(QtProperty *property,
         const QString &attribute, const QVariant &value)
 {
-	QVariant oldAttr = attributeValue(property, attribute);
+    QVariant oldAttr = attributeValue(property, attribute);
     if (!oldAttr.isValid())
         return;
 
-	int attrType = value.userType();
+    int attrType = value.userType();
     if (!attrType)
         return;
 
@@ -1746,11 +1746,11 @@ void QtVariantPropertyManager::setAttribute(QtProperty *property,
                 !value.canConvert((QVariant::Type)attrType))
         return;
 
-	QtProperty *internProp = propertyToWrappedProperty()->value(property, 0);
+    QtProperty *internProp = propertyToWrappedProperty()->value(property, 0);
     if (internProp == 0)
         return;
 
-	QtAbstractPropertyManager *manager = internProp->propertyManager();
+    QtAbstractPropertyManager *manager = internProp->propertyManager();
     if (QtIntPropertyManager *intManager = qobject_cast<QtIntPropertyManager *>(manager)) {
         if (attribute == d_ptr->m_maximumAttribute)
             intManager->setMaximum(internProp, qVariantValue<int>(value));
@@ -1816,11 +1816,11 @@ void QtVariantPropertyManager::setAttribute(QtProperty *property,
             rectFManager->setDecimals(internProp, qVariantValue<int>(value));
         return;
     } else if (QtEnumPropertyManager *enumManager = qobject_cast<QtEnumPropertyManager *>(manager)) {
-		/// This feature was not included into the original Qt Property Browser Framework.
-		/// It was added specially for QReal needs.
-		if (attribute == d_ptr->m_enumEditableAttribute)
-			enumManager->setEditable(internProp, qVariantValue<bool>(value));
-		if (attribute == d_ptr->m_enumNamesAttribute)
+        /// This feature was not included into the original Qt Property Browser Framework.
+        /// It was added specially for QReal needs.
+        if (attribute == d_ptr->m_enumEditableAttribute)
+            enumManager->setEditable(internProp, qVariantValue<bool>(value));
+        if (attribute == d_ptr->m_enumNamesAttribute)
             enumManager->setEnumNames(internProp, qVariantValue<QStringList>(value));
         if (attribute == d_ptr->m_enumIconsAttribute)
             enumManager->setEnumIcons(internProp, qVariantValue<QtIconMap>(value));

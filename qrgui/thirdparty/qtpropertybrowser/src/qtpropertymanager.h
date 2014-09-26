@@ -579,31 +579,31 @@ public:
     QtEnumPropertyManager(QObject *parent = 0);
     ~QtEnumPropertyManager();
 
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	bool editable(const QtProperty *property) const;
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    bool editable(const QtProperty *property) const;
 
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	QString stringValue(const QtProperty *property) const;
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    QString stringValue(const QtProperty *property) const;
 
-	int value(const QtProperty *property) const;
+    int value(const QtProperty *property) const;
     QStringList enumNames(const QtProperty *property) const;
     QMap<int, QIcon> enumIcons(const QtProperty *property) const;
 
 public Q_SLOTS:
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	void setEditable(QtProperty *property, bool editable);
-	void setValue(QtProperty *property, QString const &val);
-	void setValue(QtProperty *property, int val);
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    void setEditable(QtProperty *property, bool editable);
+    void setValue(QtProperty *property, QString const &val);
+    void setValue(QtProperty *property, int val);
     void setEnumNames(QtProperty *property, const QStringList &names);
     void setEnumIcons(QtProperty *property, const QMap<int, QIcon> &icons);
 Q_SIGNALS:
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	void valueChanged(QtProperty *property, QString const &val);
-	void valueChanged(QtProperty *property, int val);
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    void valueChanged(QtProperty *property, QString const &val);
+    void valueChanged(QtProperty *property, int val);
     void enumNamesChanged(QtProperty *property, const QStringList &names);
     void enumIconsChanged(QtProperty *property, const QMap<int, QIcon> &icons);
 protected:

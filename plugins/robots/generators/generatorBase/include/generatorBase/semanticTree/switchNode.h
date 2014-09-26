@@ -5,7 +5,7 @@
 namespace generatorBase {
 namespace semantics {
 
-/// A semantic node for the block with if semantics
+/// A semantic node for the block with 'switch' semantics
 class SwitchNode : public NonZoneNode
 {
 public:

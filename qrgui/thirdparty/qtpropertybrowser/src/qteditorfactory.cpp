@@ -1908,32 +1908,32 @@ class QtEnumEditorFactoryPrivate : public EditorFactoryPrivate<QComboBox>
     Q_DECLARE_PUBLIC(QtEnumEditorFactory)
 public:
 
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	void slotPropertyChanged(QtProperty *property, QString const &value);
-	void slotPropertyChanged(QtProperty *property, int value);
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    void slotPropertyChanged(QtProperty *property, QString const &value);
+    void slotPropertyChanged(QtProperty *property, int value);
     void slotEnumNamesChanged(QtProperty *property, const QStringList &);
     void slotEnumIconsChanged(QtProperty *property, const QMap<int, QIcon> &);
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	void slotSetValue(QString const &value);
-	void slotSetValue(int value);
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    void slotSetValue(QString const &value);
+    void slotSetValue(int value);
 };
 
 /// This feature was not included into the original Qt Property Browser Framework.
 /// It was added specially for QReal needs.
 void QtEnumEditorFactoryPrivate::slotPropertyChanged(QtProperty *property, QString const &value)
 {
-	if (!m_createdEditors.contains(property))
-		return;
+    if (!m_createdEditors.contains(property))
+        return;
 
-	QListIterator<QComboBox *> itEditor(m_createdEditors[property]);
-	while (itEditor.hasNext()) {
-		QComboBox *editor = itEditor.next();
-		editor->blockSignals(true);
-		editor->setCurrentText(value);
-		editor->blockSignals(false);
-	}
+    QListIterator<QComboBox *> itEditor(m_createdEditors[property]);
+    while (itEditor.hasNext()) {
+        QComboBox *editor = itEditor.next();
+        editor->blockSignals(true);
+        editor->setCurrentText(value);
+        editor->blockSignals(false);
+    }
 }
 
 void QtEnumEditorFactoryPrivate::slotPropertyChanged(QtProperty *property, int value)
@@ -2001,17 +2001,17 @@ void QtEnumEditorFactoryPrivate::slotEnumIconsChanged(QtProperty *property,
 
 void QtEnumEditorFactoryPrivate::slotSetValue(int value)
 {
-	QObject *object = q_ptr->sender();
-	const  QMap<QComboBox *, QtProperty *>::ConstIterator ecend = m_editorToProperty.constEnd();
-	for (QMap<QComboBox *, QtProperty *>::ConstIterator itEditor = m_editorToProperty.constBegin(); itEditor != ecend; ++itEditor)
-		if (itEditor.key() == object) {
-			QtProperty *property = itEditor.value();
-			QtEnumPropertyManager *manager = q_ptr->propertyManager(property);
-			if (!manager)
-				return;
-			manager->setValue(property, value);
-			return;
-		}
+    QObject *object = q_ptr->sender();
+    const  QMap<QComboBox *, QtProperty *>::ConstIterator ecend = m_editorToProperty.constEnd();
+    for (QMap<QComboBox *, QtProperty *>::ConstIterator itEditor = m_editorToProperty.constBegin(); itEditor != ecend; ++itEditor)
+        if (itEditor.key() == object) {
+            QtProperty *property = itEditor.value();
+            QtEnumPropertyManager *manager = q_ptr->propertyManager(property);
+            if (!manager)
+                return;
+            manager->setValue(property, value);
+            return;
+        }
 }
 
 /// This feature was not included into the original Qt Property Browser Framework.
@@ -2024,7 +2024,7 @@ void QtEnumEditorFactoryPrivate::slotSetValue(QString const &value)
         if (itEditor.key() == object) {
             QtProperty *property = itEditor.value();
             QtEnumPropertyManager *manager = q_ptr->propertyManager(property);
-			if (!manager)
+            if (!manager)
                 return;
             manager->setValue(property, value);
             return;
@@ -2067,11 +2067,11 @@ QtEnumEditorFactory::~QtEnumEditorFactory()
 */
 void QtEnumEditorFactory::connectPropertyManager(QtEnumPropertyManager *manager)
 {
-	// This feature was not included into the original Qt Property Browser Framework.
-	// It was added specially for QReal needs.
-	connect(manager, SIGNAL(valueChanged(QtProperty *, QString)),
-				this, SLOT(slotPropertyChanged(QtProperty *, QString)));
-	connect(manager, SIGNAL(valueChanged(QtProperty *, int)),
+    // This feature was not included into the original Qt Property Browser Framework.
+    // It was added specially for QReal needs.
+    connect(manager, SIGNAL(valueChanged(QtProperty *, QString)),
+                this, SLOT(slotPropertyChanged(QtProperty *, QString)));
+    connect(manager, SIGNAL(valueChanged(QtProperty *, int)),
                 this, SLOT(slotPropertyChanged(QtProperty *, int)));
     connect(manager, SIGNAL(enumNamesChanged(QtProperty *, const QStringList &)),
                 this, SLOT(slotEnumNamesChanged(QtProperty *, const QStringList &)));
@@ -2089,10 +2089,10 @@ QWidget *QtEnumEditorFactory::createEditor(QtEnumPropertyManager *manager, QtPro
     editor->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
     editor->setMinimumContentsLength(1);
 
-	// This feature was not included into the original Qt Property Browser Framework.
-	// It was added specially for QReal needs.
-	editor->setEditable(manager->editable(property));
-	editor->setInsertPolicy(QComboBox::InsertAtBottom);
+    // This feature was not included into the original Qt Property Browser Framework.
+    // It was added specially for QReal needs.
+    editor->setEditable(manager->editable(property));
+    editor->setInsertPolicy(QComboBox::InsertAtBottom);
 
     editor->view()->setTextElideMode(Qt::ElideRight);
     QStringList enumNames = manager->enumNames(property);
@@ -2102,13 +2102,13 @@ QWidget *QtEnumEditorFactory::createEditor(QtEnumPropertyManager *manager, QtPro
     for (int i = 0; i < enumNamesCount; i++)
         editor->setItemIcon(i, enumIcons.value(i));
     editor->setCurrentIndex(manager->value(property));
-	editor->setCurrentText(manager->stringValue(property));
+    editor->setCurrentText(manager->stringValue(property));
 
     connect(editor, SIGNAL(currentIndexChanged(int)), this, SLOT(slotSetValue(int)));
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	connect(editor, SIGNAL(currentTextChanged(QString)), this, SLOT(slotSetValue(QString)));
-	connect(editor, SIGNAL(destroyed(QObject *)),
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    connect(editor, SIGNAL(currentTextChanged(QString)), this, SLOT(slotSetValue(QString)));
+    connect(editor, SIGNAL(destroyed(QObject *)),
                 this, SLOT(slotEditorDestroyed(QObject *)));
     return editor;
 }
@@ -2120,11 +2120,11 @@ QWidget *QtEnumEditorFactory::createEditor(QtEnumPropertyManager *manager, QtPro
 */
 void QtEnumEditorFactory::disconnectPropertyManager(QtEnumPropertyManager *manager)
 {
-	/// This feature was not included into the original Qt Property Browser Framework.
-	/// It was added specially for QReal needs.
-	disconnect(manager, SIGNAL(valueChanged(QtProperty *, QString)),
-				this, SLOT(slotPropertyChanged(QtProperty *, QString)));
-	disconnect(manager, SIGNAL(valueChanged(QtProperty *, int)),
+    /// This feature was not included into the original Qt Property Browser Framework.
+    /// It was added specially for QReal needs.
+    disconnect(manager, SIGNAL(valueChanged(QtProperty *, QString)),
+                this, SLOT(slotPropertyChanged(QtProperty *, QString)));
+    disconnect(manager, SIGNAL(valueChanged(QtProperty *, int)),
                 this, SLOT(slotPropertyChanged(QtProperty *, int)));
     disconnect(manager, SIGNAL(enumNamesChanged(QtProperty *, const QStringList &)),
                 this, SLOT(slotEnumNamesChanged(QtProperty *, const QStringList &)));
