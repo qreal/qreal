@@ -46,6 +46,11 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 	}
 
 	QMouseEvent * const mouseEvent = static_cast<QMouseEvent *>(event);
+	if (isMouseEvent && mouseEvent->source() != Qt::MouseEventNotSynthesized) {
+		// Starting from version 5.3.0 Qt generates extra mouse events even on
+		// accepted touch events, filtering out such case...
+		return true;
+	}
 
 	switch (eventType) {
 		case QEvent::Gesture:
