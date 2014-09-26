@@ -67,7 +67,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/setPainterWidthGenerator.h \
 	$$PWD/simpleGenerators/setPainterColorGenerator.h \
 	$$PWD/simpleGenerators/sendMessageGenerator.h \
-	$$PWD/simpleGenerators/receiveMessageGenerator.h \
+	$$PWD/simpleGenerators/waitForMessageGenerator.h \
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \
@@ -106,6 +106,6 @@ SOURCES += \
 	$$PWD/simpleGenerators/setPainterWidthGenerator.cpp \
 	$$PWD/simpleGenerators/setPainterColorGenerator.cpp \
 	$$PWD/simpleGenerators/sendMessageGenerator.cpp \
-	$$PWD/simpleGenerators/receiveMessageGenerator.cpp \
+	$$PWD/simpleGenerators/waitForMessageGenerator.cpp \
 
 include(robotCommunication/robotCommunication.pri)

@@ -16,7 +16,7 @@
 #include "simpleGenerators/initCameraGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
 #include "simpleGenerators/playToneGenerator.h"
-#include "simpleGenerators/receiveMessageGenerator.h"
+#include "simpleGenerators/waitForMessageGenerator.h"
 #include "simpleGenerators/sadSmileGenerator.h"
 #include "simpleGenerators/sayGenerator.h"
 #include "simpleGenerators/sendMessageGenerator.h"
@@ -86,8 +86,8 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new SayGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSendMessage") {
 		return new SendMessageGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "TrikReceiveMessage") {
-		return new ReceiveMessageGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitForMessage") {
+		return new WaitForMessageGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSetBackground") {
 		return new SetBackgroundGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSystem") {

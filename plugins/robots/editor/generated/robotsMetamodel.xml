@@ -2071,7 +2071,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Receive message" name="TrikReceiveMessage" description="Waits for a message from another robot and stores it into a variable when it arrives.">
+			<node displayedName="Wait for message" name="TrikWaitForMessage" description="Waits for a message from another robot and stores it into a variable when it arrives.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="" x1="0" y2="50" x2="50"/>
@@ -2125,7 +2125,6 @@
 				<element name="TrikDetect" />
 				<element name="TrikDetectorToVariable" />
 				<element name="TrikSendMessage" />
-				<element name="TrikReceiveMessage" />
 			</group>
 			<group name="Wait">
 				<element name="Timer"/>
@@ -2151,6 +2150,7 @@
 				<element name="TrikWaitForDown"/>
 				<element name="TrikWaitForUp"/>
 				<element name="TrikWaitForPower"/>
+				<element name="TrikWaitForMessage" />
 			</group>
 			<group name="Drawing">
 				<element name="NxtDrawRect"/>

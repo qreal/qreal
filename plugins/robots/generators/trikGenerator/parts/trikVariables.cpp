@@ -33,6 +33,6 @@ QStringList TrikVariables::expressions(qrRepo::RepoApi const &api) const
 
 	return Variables::expressions(api)
 			+ collectVariables("TrikLineDetectorToVariable", "Variable")
-			+ collectVariables("TrikReceiveMessage", "Variable")
+			+ collectVariables("TrikWaitForMessage", "Variable")
 			;
 }

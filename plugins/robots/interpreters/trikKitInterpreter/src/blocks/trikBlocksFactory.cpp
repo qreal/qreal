@@ -65,7 +65,7 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikSendMessage")) {
 		return new EmptyBlock();
-	} else if (elementMetatypeIs(element, "TrikReceiveMessage")) {
+	} else if (elementMetatypeIs(element, "TrikWaitForMessage")) {
 		return new EmptyBlock();
 
 	} else if (elementMetatypeIs(element, "TrikLed")) {
@@ -156,7 +156,7 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikDetect")
 			<< id("TrikDetectorToVariable")
 			<< id("TrikSendMessage")
-			<< id("TrikReceiveMessage")
+			<< id("TrikWaitForMessage")
 			;
 
 	result
@@ -207,7 +207,7 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikDetectorToVariable")
 				<< id("TrikWaitForMotion")
 				<< id("TrikSendMessage")
-				<< id("TrikReceiveMessage")
+				<< id("TrikWaitForMessage")
 				;
 	}
 
