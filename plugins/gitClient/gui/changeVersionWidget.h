@@ -26,6 +26,7 @@ private slots:
 
 private:
 	void initDiffWidget();
+	void clearLayout(QLayout *layout);
 
 	Ui::ChangeVersionWidget *mUi;
 	QWidget *mDiffWidget;

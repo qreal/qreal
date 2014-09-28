@@ -37,7 +37,7 @@ void ViewInteraction::initActions()
 	QAction *cloneAction = gitMenu->addAction(tr("Clone..."));
 	connect(cloneAction, SIGNAL(triggered()), this, SLOT(cloneClicked()));
 
-	QAction *remoteAction = gitMenu->addAction(tr("Remote..."));
+	QAction *remoteAction = gitMenu->addAction(tr("Remote add..."));
 	connect(remoteAction, SIGNAL(triggered()), this, SLOT(remoteClicked()));
 
 	QAction *commitAction = gitMenu->addAction(tr("Commit..."));
@@ -117,8 +117,8 @@ void ViewInteraction::remoteClicked()
 
 	QString name = dialog->remoteName();
 	QString url = dialog->remoteUrl();
-	qReal::SettingsManager::setValue("remoteName", name);
-	qReal::SettingsManager::setValue("remoteUrl", url);
+	qReal::SettingsManager::setValue("gitRemoteName", name);
+	qReal::SettingsManager::setValue("gitRemoteUrl", url);
 	mPlugin->doRemote(name, url);
 }
 
@@ -143,7 +143,7 @@ void ViewInteraction::pushClicked()
 		return;
 	}
 	QString const remote = dialog->url();
-	qReal::SettingsManager::setValue("remoteName", remote);
+	qReal::SettingsManager::setValue("gitRemoteName", remote);
 	mPlugin->startPush(remote);
 }
 
@@ -172,13 +172,14 @@ void ViewInteraction::resetClicked()
 void ViewInteraction::cleanClicked()
 {
 	if (mPlugin->doClean()) {
+		reopenWithoutSavings();
 		showMessage(tr("Clean successfully."));
 	}
 }
 
 void ViewInteraction::statusClicked()
 {
-	QString answer = mPlugin->doStatus();
+	mPlugin->doStatus();
 }
 
 void ViewInteraction::logClicked()
@@ -199,7 +200,6 @@ void ViewInteraction::showMessage(const QString &message)
 void ViewInteraction::onInitComplete(const bool success)
 {
 	if (success){
-		//mProjectManager->openExisting(targetProject);
 		showMessage(tr("Init successfully."));
 	}
 }
@@ -207,7 +207,7 @@ void ViewInteraction::onInitComplete(const bool success)
 void ViewInteraction::onCloneComplete(const bool success)
 {
 	if (success){
-		showMessage(tr("Clone successfully."));
+		showMessage(tr("Clone successfully in qreal/bin/clone.qrs"));
 	}
 }
 
@@ -264,6 +264,7 @@ void ViewInteraction::onStatusComplete(QString answer, const bool success)
 
 void ViewInteraction::onLogComplete(QString answer, const bool success)
 {
+	Q_UNUSED(success)
 	ui::LogDialog *dialog = new ui::LogDialog(mMainWindowIface->windowWidget());
 
 	if (answer.isEmpty()) {
@@ -278,8 +279,9 @@ void ViewInteraction::onLogComplete(QString answer, const bool success)
 
 void ViewInteraction::onRemoteListComplete(QString answer, const bool success)
 {
-	//if (!success)
-	//	return;
+	if (!success){
+		return;
+	}
 
 	ui::RemoteListDialog *dialog = new ui::RemoteListDialog(mMainWindowIface->windowWidget());
 	dialog->message(answer);
@@ -306,7 +308,5 @@ void ViewInteraction::modeChanged(bool compactMode)
 
 void ViewInteraction::reopenWithoutSavings()
 {
-	QString const currentProject = mRepoApi->workingFile();
-	mProjectManager->close();
-	mProjectManager->openExisting(currentProject);
+	mProjectManager->close();mProjectManager->reload();
 }

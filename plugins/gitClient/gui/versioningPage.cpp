@@ -45,7 +45,7 @@ void PreferencesVersioningPage::save()
 	qReal::SettingsManager::setValue("pathToGitClient", mUi->pathToGitClientLineEdit->text());
 	qReal::SettingsManager::setValue("gitClientTimeout", mUi->gitTimeoutSpinBox->value());
 	if (mUi->checkBoxCompactMode->isChecked() != qReal::SettingsManager::value("versioningCompactMode", true).toBool()){
-		emit compactMode(qReal::SettingsManager::value("versioningCompactMode").toBool());
+		emit compactMode(mUi->checkBoxCompactMode->isChecked());
 	}
 	qReal::SettingsManager::setValue("versioningCompactMode", mUi->checkBoxCompactMode->isChecked());
 	mAuthenticationSettings->save();

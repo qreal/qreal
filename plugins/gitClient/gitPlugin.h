@@ -66,8 +66,8 @@ public slots:
 	void startReset(QString const &hash = QString(), QString const &targetFolder = QString(), bool const &quiet = false);
 	bool doAdd(QString const &what, QString const &targetFolder, bool force = true);
 	bool doRemove(QString const &what, bool force = true);
-	bool doClean();
-	QString doStatus();
+	bool doClean(const QString &targetProject = QString());
+	QString doStatus(const QString &targetProject = QString());
 	QString doLog(QString const &format = QString(), bool const &quiet = false, bool const &showDialog = false);
 	QString doRemoteList();
 	void doAfterOperationIsFinished(QVariant const &tag);

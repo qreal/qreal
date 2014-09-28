@@ -13,9 +13,7 @@ ChangeVersionWidget::ChangeVersionWidget(QWidget *parent) :
 	connect(mUi->pushButtonLoad, SIGNAL(clicked()), SLOT(getHash()));
 	mUi->listWidgetForLog->setMinimumWidth(this->width() / 4);
 	mUi->listWidgetForLog->setMinimumWidth(this->width() / 5);
-	mDiffWidget = new QWidget();
-	mDiffWidget->setFixedWidth(0.9 * this->width());
-	mUi->horizontalLayout->addWidget(mDiffWidget, 8, Qt::AlignLeft);
+	initDiffWidget();
 }
 
 ChangeVersionWidget::~ChangeVersionWidget()
@@ -38,9 +36,8 @@ void ChangeVersionWidget::showDiff(QListWidgetItem *item)
 	int row = mUi->listWidgetForLog->row(item);
 	QListWidgetItem *item2 = mUi->listWidgetForLog->item(row + 1);
 	if (mDiffWidget->layout() != NULL){
-		delete mDiffWidget->layout();
+		clearLayout(mDiffWidget->layout());
 	}
-	initDiffWidget();
 	if (item2 != NULL){
 		emit showDiff(firstHash, item2->data(Qt::UserRole).toString(), mDiffWidget);
 	} else {
@@ -50,9 +47,12 @@ void ChangeVersionWidget::showDiff(QListWidgetItem *item)
 
 void ChangeVersionWidget::initDiffWidget()
 {
+	mDiffWidget = new QWidget();
 	QGridLayout *mLayout = new QGridLayout(mDiffWidget);
 	mLayout->setMargin(0);
 	mDiffWidget->setLayout(mLayout);
+	mDiffWidget->setFixedWidth(0.9 * this->width());
+	mUi->horizontalLayout->addWidget(mDiffWidget, 8, Qt::AlignLeft);
 }
 
 void ChangeVersionWidget::updateLog(QList<QPair<QString , QString> > listLog) // hash & mainPart
@@ -78,5 +78,20 @@ void ChangeVersionWidget::updateLog(QList<QPair<QString , QString> > listLog) //
 		QString text = "There are not version of the project or project was not versioned. \n Or project isn't loaded";
 		mUi->label->setText(text);
 		mUi->label->showMaximized();
+	}
+}
+
+void ChangeVersionWidget::clearLayout(QLayout *layout)
+{
+	QLayoutItem *item;
+	while((item = layout->takeAt(0))){
+		if (item->layout()) {
+			clearLayout(item->layout());
+			delete item->layout();
+		}
+		if (item->widget()) {
+			delete item->widget();
+		}
+		delete item;
 	}
 }

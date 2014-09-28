@@ -11,8 +11,8 @@ RemoteDialog::RemoteDialog(QWidget *parent)
 {
 	mRemoteNameLabel = new QLabel(tr("Name: "));
 	mRemoteUrlLabel = new QLabel(tr("Adress: "));
-	mRemoteNameComboBox = createComboBox(qReal::SettingsManager::value("remoteName", "").toString());
-	mRemoteUrlComboBox = createComboBox(qReal::SettingsManager::value("remoteUrl", "").toString());
+	mRemoteNameComboBox = createComboBox(qReal::SettingsManager::value("gitRemoteName", "").toString());
+	mRemoteUrlComboBox = createComboBox(qReal::SettingsManager::value("gitRemoteUrl", "").toString());
 	QPushButton *ok = new QPushButton(tr("OK"), this);
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 
