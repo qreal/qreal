@@ -974,7 +974,6 @@ void EditorViewScene::disableActions(Element *focusElement)
 	if (!focusElement) {
 		mWindow->actionDeleteFromDiagram()->setEnabled(false);
 		mWindow->actionCutElementsOnDiagram()->setEnabled(false);
-		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
 	}
 	if (isEmptyClipboard()) {
 		mWindow->actionPasteOnDiagram()->setEnabled(false);
@@ -986,7 +985,6 @@ void EditorViewScene::enableActions()
 {
 	mWindow->actionDeleteFromDiagram()->setEnabled(true);
 	mWindow->actionCutElementsOnDiagram()->setEnabled(true);
-	mWindow->actionCopyElementsOnDiagram()->setEnabled(true);
 	mWindow->actionPasteOnDiagram()->setEnabled(true);
 	mWindow->actionPasteCopyOfLogical()->setEnabled(true);
 }
@@ -1305,7 +1303,6 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
 			<< separator
 			<< mWindow->actionCutElementsOnDiagram()
-			<< mWindow->actionCopyElementsOnDiagram()
 			<< mWindow->actionPasteOnDiagram()
 			<< mWindow->actionPasteCopyOfLogical();
 }

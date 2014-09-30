@@ -170,7 +170,7 @@ void MainWindow::connectActionsForUXInfo()
 	triggeredActions << mUi->actionQuit << mUi->actionOpen << mUi->actionSave
 			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
 			<< mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
-			<< mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
+			<< mUi->actionDeleteFromDiagram
 			<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
 			<< mUi->actionPreferences << mUi->actionHelp
 			<< mUi->actionAbout << mUi->actionAboutQt
@@ -211,7 +211,6 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 	connect(mUi->actionCutElementsOnDiagram, SIGNAL(triggered()), this, SLOT(cutElementsOnDiagram()));
-	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
 	connect(mUi->actionPasteReference, SIGNAL(triggered()), this, SLOT(pasteCopyOfLogical()));
 
@@ -914,33 +913,29 @@ void MainWindow::deleteFromDiagram()
 
 void MainWindow::cutElementsOnDiagram()
 {
-	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
-	if (scene) {
-		scene->cut();
+	if (EditorView const *view = getCurrentTab()) {
+		view->editorViewScene()->cut();
 	}
 }
 
 void MainWindow::copyElementsOnDiagram()
 {
-	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
-	if (scene) {
-		scene->copy();
+	if (EditorView const *view = getCurrentTab()) {
+		view->editorViewScene()->copy();
 	}
 }
 
 void MainWindow::pasteOnDiagram()
 {
-	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
-	if (scene) {
-		scene->paste(false);
+	if (EditorView const *view = getCurrentTab()) {
+		view->editorViewScene()->paste(false);
 	}
 }
 
 void MainWindow::pasteCopyOfLogical()
 {
-	EditorViewScene* scene = dynamic_cast<EditorViewScene *>(getCurrentTab()->scene());
-	if (scene) {
-		scene->paste(true);
+	if (EditorView const *view = getCurrentTab()) {
+		view->editorViewScene()->paste(true);
 	}
 }
 
@@ -1288,6 +1283,11 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 			Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(index);
 			mController->diagramOpened(diagramId);
 		}
+
+		QAction *copyElements = new QAction(view);
+		copyElements->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+		connect(copyElements, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
+
 		mSceneCustomizer->customizeView(view);
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
@@ -1755,11 +1755,6 @@ QAction *MainWindow::actionDeleteFromDiagram() const
 	return mUi->actionDeleteFromDiagram;
 }
 
-QAction *MainWindow::actionCopyElementsOnDiagram() const
-{
-	return mUi->actionCopyElementsOnDiagram;
-}
-
 QAction *MainWindow::actionCutElementsOnDiagram() const
 {
 	return mUi->actionCutElementsOnDiagram;
@@ -2118,7 +2113,6 @@ void MainWindow::initExplorers()
 
 	mUi->graphicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionCutElementsOnDiagram);
-	mUi->graphicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
@@ -2128,7 +2122,6 @@ void MainWindow::initExplorers()
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionCutElementsOnDiagram);
-	mUi->logicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());

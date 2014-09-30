@@ -90,7 +90,6 @@ public:
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
-	QAction *actionCopyElementsOnDiagram() const;
 	QAction *actionCutElementsOnDiagram() const;
 	QAction *actionPasteOnDiagram() const;
 	QAction *actionPasteCopyOfLogical() const;

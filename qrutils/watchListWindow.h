@@ -4,6 +4,7 @@
 #include <QtCore/QSet>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDockWidget>
+#include <QtWidgets/QAction>
 
 #include <qrtext/debuggerInterface.h>
 
@@ -51,7 +52,6 @@ private:
 	QTimer mTimer;
 	qrtext::DebuggerInterface const * const mNewParser;  // Does not have ownership.
 	utils::ExpressionsParser const * const mParser;  // Does not have ownership.
-
 	QSet<QString> mHiddenVariables;
 };
 

@@ -31,7 +31,7 @@ HEADERS += \
 	$$PWD/qRealUpdater.h \
 	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
-	$$PWD/generator/abstractGenerator.h \
+	$$PWD/generator/abstractGenerator.h
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -49,7 +49,7 @@ SOURCES += \
 	$$PWD/qRealUpdater.cpp \
 	$$PWD/textElider.cpp \
 	$$PWD/virtualKeyboard.cpp \
-	$$PWD/generator/abstractGenerator.cpp \
+	$$PWD/generator/abstractGenerator.cpp
 
 FORMS += \
 	$$PWD/watchListWindow.ui
