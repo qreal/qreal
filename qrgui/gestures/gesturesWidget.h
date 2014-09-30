@@ -26,6 +26,7 @@ public:
 	void draw(QString const &paths) override;
 	Id currentElement() const override;
 	void setElements(QList<QPair<QString, Id> > const &elements) override;
+	void paintEvent(QPaintEvent *) override;
 
 signals:
 	void currentElementChanged();
@@ -33,6 +34,7 @@ signals:
 private:
 	Ui::GesturesWidget *mUi;
 	int mCurrentPointNumber;
+	QString mIconPath;
 	static int coord(int previous, int next, int part);
 };
 
