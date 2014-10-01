@@ -6,8 +6,8 @@
 #include "communication/bluetoothRobotCommunicationThread.h"
 
 //#include "parts/display.h"
-//#include "parts/speaker.h"
-//#include "parts/motor.h"
+#include "parts/speaker.h"
+#include "parts/motor.h"
 
 using namespace ev3KitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
@@ -66,14 +66,14 @@ void RealRobotModel::disconnectFromRobot()
 
 robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
-    //if (deviceInfo.isA(speakerInfo())) {
-        //return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
-    //}
+    if (deviceInfo.isA(speakerInfo())) {
+        return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
+    }
 
 
-    //if (deviceInfo.isA(motorInfo())) {
-//		return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
-    //}
+    if (deviceInfo.isA(motorInfo())) {
+        return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
+    }
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 }

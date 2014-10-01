@@ -14,6 +14,8 @@ public:
 
 protected:
     virtual interpreterBase::robotModel::DeviceInfo motorInfo() const;
+    virtual interpreterBase::robotModel::DeviceInfo speakerInfo() const;
+
 };
 
 }

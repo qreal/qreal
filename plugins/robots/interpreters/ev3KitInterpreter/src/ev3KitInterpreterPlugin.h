@@ -4,6 +4,7 @@
 #include "ev3RobotModel.h"
 #include "ev3AdditionalPreferences.h"
 
+#include "blocks/ev3BlocksFactory.h"
 #include "robotModel/real/realRobotModel.h"
 
 
@@ -39,6 +40,7 @@ public:
 private:
     robotModel::real::RealRobotModel mRealRobotModel;
     Ev3AdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+    blocks::Ev3BlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
 
 };
 

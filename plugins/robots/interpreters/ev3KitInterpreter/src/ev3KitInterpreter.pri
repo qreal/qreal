@@ -33,7 +33,6 @@ HEADERS += \
         $$PWD/blocks/details/drawRectBlock.h \
         $$PWD/blocks/details/ev3EnginesBackwardBlock.h \
         $$PWD/blocks/details/ev3EnginesForwardBlock.h \
-        $$PWD/robotModel/ev3RobotModelBase.h \
 
 
 SOURCES += \
@@ -57,7 +56,6 @@ SOURCES += \
         $$PWD/blocks/details/drawRectBlock.cpp \
         $$PWD/blocks/details/ev3EnginesBackwardBlock.cpp \
         $$PWD/blocks/details/ev3EnginesForwardBlock.cpp \
-        $$PWD/robotModel/ev3RobotModelBase.cpp \
 
 
 

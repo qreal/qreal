@@ -10,6 +10,7 @@ Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "Subprog
 
 Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
     : mRealRobotModel(kitId())
+    , mBlocksFactory(new blocks::Ev3BlocksFactory)
 {
     mAdditionalPreferences = new Ev3AdditionalPreferences(mRealRobotModel.name());
 
@@ -37,7 +38,7 @@ interpreterBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::bl
 		interpreterBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model)
-	return nullptr;
+    return mBlocksFactory;
 }
 
 interpreterBase::AdditionalPreferences *Ev3KitInterpreterPlugin::settingsWidget()
