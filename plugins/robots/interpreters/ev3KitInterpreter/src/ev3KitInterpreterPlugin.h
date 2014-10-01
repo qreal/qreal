@@ -2,17 +2,21 @@
 
 #include <interpreterBase/kitPluginInterface.h>
 #include "ev3RobotModel.h"
+#include "ev3AdditionalPreferences.h"
+
+#include "robotModel/real/realRobotModel.h"
+
 
 namespace ev3KitInterpreter {
 
-class NullKitInterpreterPlugin : public QObject, public interpreterBase::KitPluginInterface
+class Ev3KitInterpreterPlugin : public QObject, public interpreterBase::KitPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(interpreterBase::KitPluginInterface)
-	Q_PLUGIN_METADATA(IID "nullKitInterpreter.NullKitInterpreterPlugin")
+    Q_PLUGIN_METADATA(IID "Ev3KitInterpreter.Ev3KitInterpreterPlugin")
 
 public:
-	NullKitInterpreterPlugin();
+    Ev3KitInterpreterPlugin();
 
 	QString kitId() const override;
 
@@ -33,7 +37,9 @@ public:
 	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
 
 private:
-	Ev3RobotModel mRobotModel;
+    robotModel::real::RealRobotModel mRealRobotModel;
+    Ev3AdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+
 };
 
 }

@@ -3,52 +3,61 @@
 #include <QtWidgets/QApplication>
 
 using namespace ev3KitInterpreter;
+using namespace qReal;
 
-NullKitInterpreterPlugin::NullKitInterpreterPlugin()
-	: mRobotModel(kitId())
+Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
+
+Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
+    : mRealRobotModel(kitId())
 {
+    mAdditionalPreferences = new Ev3AdditionalPreferences(mRealRobotModel.name());
+
+    connect(mAdditionalPreferences, &Ev3AdditionalPreferences::settingsChanged
+            , &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+
 }
 
-QString NullKitInterpreterPlugin::kitId() const
+QString Ev3KitInterpreterPlugin::kitId() const
 {
 	return "ev3Kit";
 }
 
-QString NullKitInterpreterPlugin::friendlyKitName() const
+QString Ev3KitInterpreterPlugin::friendlyKitName() const
 {
-	return tr("EV3 - comming soon!");
+    return tr("EV3");
 }
 
-QList<interpreterBase::robotModel::RobotModelInterface *> NullKitInterpreterPlugin::robotModels()
+QList<interpreterBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugin::robotModels()
 {
-	return QList<interpreterBase::robotModel::RobotModelInterface *>() << &mRobotModel;
+    return  {&mRealRobotModel};
 }
 
-interpreterBase::blocksBase::BlocksFactoryInterface *NullKitInterpreterPlugin::blocksFactoryFor(
+interpreterBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
 		interpreterBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model)
 	return nullptr;
 }
 
-interpreterBase::AdditionalPreferences *NullKitInterpreterPlugin::settingsWidget()
+interpreterBase::AdditionalPreferences *Ev3KitInterpreterPlugin::settingsWidget()
 {
-	return nullptr;
+    return mAdditionalPreferences;
 }
 
-QList<qReal::ActionInfo> NullKitInterpreterPlugin::customActions()
-{
-	return {};
-}
-
-QList<qReal::HotKeyActionInfo> NullKitInterpreterPlugin::hotKeyActions()
+QList<qReal::ActionInfo> Ev3KitInterpreterPlugin::customActions()
 {
 	return {};
 }
 
-QIcon NullKitInterpreterPlugin::iconForFastSelector(
+QList<qReal::HotKeyActionInfo> Ev3KitInterpreterPlugin::hotKeyActions()
+{
+	return {};
+}
+
+QIcon Ev3KitInterpreterPlugin::iconForFastSelector(
 		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
 {
-	Q_UNUSED(robotModel)
+    Q_UNUSED(mRealRobotModel)
 	return QIcon();
 }
