@@ -20,20 +20,11 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
-	void on(int speed, bool breakMode = true) override;
-	void on(int speed, long unsigned int degrees, bool breakMode = true) override;
-	void stop(bool breakMode = true) override;
+	void on(int speed) override;
+	void stop() override;
 	void off() override;
-	void resetMotorPosition(bool relative);
 
 private:
-    /*void setOutputState(int speed
-			, int mode
-			, enums::regulationMode::RegulationModeEnum regulation
-			, int turnRatio
-			, enums::runState::RunStateEnum runState
-			, unsigned long tachoLimit);
-    */
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };
 

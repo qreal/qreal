@@ -1,6 +1,9 @@
 #pragma once
 
 #include "robotModel/parts/ev3Display.h"
+#include <utils/robotCommunication/robotCommunicator.h>
+
+#include "commandConstants.h"
 
 namespace ev3KitInterpreter {
 namespace robotModel {
@@ -12,7 +15,9 @@ class Display : public robotModel::parts::Ev3Display
 	Q_OBJECT
 
 public:
-	Display(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
+	Display(interpreterBase::robotModel::DeviceInfo const &info
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
 	void drawPixel(int x, int y) override;
 	void drawLine(int x1, int y1, int x2, int y2) override;
@@ -20,6 +25,9 @@ public:
 	void drawCircle(int x, int y, int radius) override;
 	void printText(int x, int y, QString const &text) override;
 	void clearScreen() override;
+
+private:
+	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };
 
 }

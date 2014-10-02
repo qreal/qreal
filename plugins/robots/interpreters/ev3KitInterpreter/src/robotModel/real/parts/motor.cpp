@@ -12,70 +12,53 @@ Motor::Motor(DeviceInfo const &info, PortInfo const &port, RobotCommunicator &ro
 {
 }
 
-void Motor::on(int speed, bool breakMode)
+void Motor::on(int speed)
 {
-	on(speed, 0, breakMode);
+	//Start motor connected to port A with given speed.
+	QByteArray command(15, 0);
+	command[0] = 13;
+	command[1] = 0x00;
+	command[2] = 0x00;
+	command[3] = 0x00;
+	command[4] = DIRECT_COMMAND_NO_REPLY;
+	int globalVariablesCount = 0;
+	int localVariablesCount = 0;
+	command[5] = globalVariablesCount & 0xFF;
+	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
+	command[7] = opOUTPUT_POWER;
+	command[8] = LC0(0); //layer(EV3)
+	command[9] = LC0(0x01);//port A
+	//LC1(speed)
+	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_1_BYTE);
+	command[11] = speed & 0xFF;
+
+	command[12] = opOUTPUT_START;
+	command[13] = LC0(0); // layer(EV3)
+	command[14] = LC0(0x01); //port A
+	mRobotCommunicator.send(this, command, 3);
 }
 
-void Motor::on(int speed, long unsigned int degrees, bool breakMode)
+void Motor::stop()
 {
-    /*int mode = enums::motorMode::MOTORON | enums::motorMode::REGULATED;
-	if (breakMode) {
-		mode |= enums::motorMode::BRAKE;
-	}
-	setOutputState(speed, mode, enums::regulationMode::REGULATION_MODE_MOTOR_SPEED
-			, 100, enums::runState::MOTOR_RUN_STATE_RUNNING, degrees);
-    */
-}
-
-void Motor::stop(bool breakMode)
-{
-	on(0, 0, breakMode);
+	on(0);
 }
 
 void Motor::off()
 {
-    //setOutputState(0, enums::motorMode::REGULATED, enums::regulationMode::REGULATION_MODE_MOTOR_SPEED
-        //	, 100, enums::runState::MOTOR_RUN_STATE_IDLE, 0);
-}
-
-/*void Motor::setOutputState(int speed, int mode
-		, enums::regulationMode::RegulationModeEnum regulation, int turnRatio
-		, enums::runState::RunStateEnum runState, unsigned long tachoLimit)
-{
-    /*QByteArray command(15, 0);
-	command[0] = 13;  // command length.
+	QByteArray command(11, 0);
+	command[0] = 9;
 	command[1] = 0x00;
-
-	command[2] = enums::telegramType::directCommandNoResponse;
-
-	command[3] = enums::commandCode::SETOUTPUTSTATE;
-
-	command[4] = port().name().at(0).toLatin1() - 'A';  // output port
-	command[5] = speed;  // power set point (range: -100 -- 100)
-	command[6] = mode;  // mode (bit field)
-
-	command[7] = regulation;  // regulation
-	command[8] = turnRatio;  // turn ratio
-
-	command[9] = runState;  // run state
-
-	command[10] = tachoLimit;  // TachoLimit
-	command[11] = tachoLimit >> 8;  // TachoLimit
-	command[12] = tachoLimit >> 16;  // TachoLimit
-	command[13] = tachoLimit >> 24;  // TachoLimit
-	command[14] = 0;                 // TachoLimit, suddenly
-    mRobotCommunicator.send(this, command, 3);
-}*/
-
-void Motor::resetMotorPosition(bool relative)
-{
-    /*QByteArray command(5, 0);
-	command[0] = 3;  // command length.
-	command[1] = 0x00;
-	command[2] = enums::telegramType::directCommandNoResponse;
-	command[3] = enums::commandCode::RESETMOTORPOSITION;
-	command[4] = relative;
+	command[2] = 0x00;
+	command[3] = 0x00;
+	command[4] = DIRECT_COMMAND_NO_REPLY;
+	int globalVariablesCount = 0;
+	int localVariablesCount = 0;
+	command[5] = globalVariablesCount & 0xFF;
+	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
+	command[7] = opOUTPUT_STOP;
+	command[8] = LC0(0); //layer
+	command[9] = LC0(0x01);//port A
+	command[10] = LC0(0x01); //Apply the brake at the end of the command
 	mRobotCommunicator.send(this, command, 3);
-    */
 }
+

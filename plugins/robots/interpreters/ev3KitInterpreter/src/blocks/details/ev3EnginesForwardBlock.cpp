@@ -18,10 +18,8 @@ void Ev3EnginesForwardBlock::run()
 		return;
 	}
 
-	bool const breakMode = stringProperty("Mode") != "float";
-
-    for (Ev3Motor * const motor : parsePorts<Ev3Motor>()) {
-		motor->on(power, breakMode);
+	for (Ev3Motor * const motor : parsePorts<Ev3Motor>()) {
+		motor->on(power);
 	}
 
 	emit done(mNextBlockId);
