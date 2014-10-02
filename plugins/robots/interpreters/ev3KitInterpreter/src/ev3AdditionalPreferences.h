@@ -31,7 +31,7 @@ private:
 	QString selectedCommunication() const;
 	QString selectedPortName() const;
 
-    Ui::Ev3AdditionalPreferences *mUi;
+	Ui::Ev3AdditionalPreferences *mUi;
 	QString const mRealRobotName;
 };
 

@@ -70,6 +70,9 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
 	}
 
+	if (deviceInfo.isA(displayInfo())) {
+		return new parts::Speaker(displayInfo(), port, *mRobotCommunicator);
+	}
 
 	if (deviceInfo.isA(motorInfo())) {
 		return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
