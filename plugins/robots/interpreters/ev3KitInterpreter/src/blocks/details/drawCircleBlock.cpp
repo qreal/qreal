@@ -11,7 +11,7 @@ DrawCircleBlock::DrawCircleBlock(interpreterBase::robotModel::RobotModelInterfac
 
 void DrawCircleBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
-    auto ev3Display = static_cast<robotModel::parts::Ev3Display *>(&display);
+	auto ev3Display = static_cast<robotModel::parts::Ev3Display *>(&display);
 	int const x = eval<int>("XCoordinateCircle");
 	int const y = eval<int>("YCoordinateCircle");
 	int const radius = eval<int>("CircleRadius");

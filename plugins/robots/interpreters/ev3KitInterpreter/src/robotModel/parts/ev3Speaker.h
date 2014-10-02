@@ -16,7 +16,7 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port);
 
 	void beep(unsigned time);
-	virtual void playTone(unsigned freq, unsigned time) = 0;
+	virtual void playTone(int volume, int frequency, int duration) = 0;
 };
 
 }

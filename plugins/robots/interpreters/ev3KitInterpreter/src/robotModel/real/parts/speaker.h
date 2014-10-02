@@ -17,7 +17,10 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
-	void playTone(unsigned freq, unsigned time) override;
+	/// @param volume.Volume to play the tone (0-100).
+	/// @param frequency.Frequency of the tone in hertz.
+	/// @param duration.Duration of the tone in milliseconds.
+	void playTone(int volume, int frequency, int duration) override;
 
 private:
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;

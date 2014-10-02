@@ -11,5 +11,5 @@ Ev3Speaker::Ev3Speaker(DeviceInfo const &info, PortInfo const &port)
 
 void Ev3Speaker::beep(unsigned time)
 {
-	playTone(1000, time);
+	playTone(70, 1000, time);
 }
