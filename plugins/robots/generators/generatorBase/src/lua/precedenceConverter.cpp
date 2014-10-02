@@ -3,6 +3,7 @@
 using namespace generatorBase::lua;
 
 int const otherNode = 100;
+int const functionCall = 99;
 
 int const logicalNot = 10;
 int const bitwiseNot = 10;
@@ -42,7 +43,7 @@ int PrecedenceConverter::precedence(qrtext::core::ast::Node const &node)
 
 qrtext::core::Associativity PrecedenceConverter::associativity(qrtext::core::ast::Node const &node)
 {
-	mLastRequestAssociativity = qrtext::core::Associativity::left;
+	mLastRequestAssociativity = qrtext::core::Associativity::right;
 	node.accept(*this);
 	return mLastRequestAssociativity;
 }
@@ -119,6 +120,12 @@ void PrecedenceConverter::visit(qrtext::lua::ast::Modulo const &)
 {
 	returnPrecedence(modulo);
 	returnAssociativity(qrtext::core::Associativity::left);
+}
+
+void PrecedenceConverter::visit(qrtext::lua::ast::Exponentiation const &)
+{
+	returnPrecedence(functionCall);
+	returnAssociativity(qrtext::core::Associativity::right);
 }
 
 void PrecedenceConverter::visit(qrtext::lua::ast::BitwiseAnd const &)

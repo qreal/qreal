@@ -1,1 +1,1 @@
-/* not supported yet */
+@@OBJECT@@.@@METHOD@@(@@ARGUMENTS@@)

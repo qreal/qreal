@@ -28,6 +28,7 @@ private:
 	void visit(qrtext::lua::ast::Division const &node) override;
 	void visit(qrtext::lua::ast::IntegerDivision const &node) override;
 	void visit(qrtext::lua::ast::Modulo const &node) override;
+	void visit(qrtext::lua::ast::Exponentiation const &node) override;
 	void visit(qrtext::lua::ast::BitwiseAnd const &node) override;
 	void visit(qrtext::lua::ast::BitwiseOr const &node) override;
 	void visit(qrtext::lua::ast::BitwiseXor const &node) override;

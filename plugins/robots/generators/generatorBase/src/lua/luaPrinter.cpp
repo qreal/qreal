@@ -91,6 +91,16 @@ QString LuaPrinter::popResult(qrtext::lua::ast::Node const &node, bool wrapIntoB
 	return wrapIntoBrackets ? "(" + code + ")" : code;
 }
 
+QStringList LuaPrinter::popResults(QList<QSharedPointer<qrtext::lua::ast::Node> > const &nodes)
+{
+	QStringList result;
+	for (QSharedPointer<qrtext::lua::ast::Node> const &node : nodes) {
+		result << popResult(*node);
+	}
+
+	return result;
+}
+
 void LuaPrinter::processTemplate(qrtext::lua::ast::Node const &node
 		, QString const &templateFileName
 		, QMap<QString, QSharedPointer<qrtext::lua::ast::Node>> const &bindings)
@@ -270,13 +280,18 @@ void LuaPrinter::visit(qrtext::lua::ast::FloatNumber const &node)
 
 void LuaPrinter::visit(qrtext::lua::ast::FieldInitialization const &node)
 {
-	processTemplate(node, "fieldInitialization.t", { {"@@KEY@@", node.key()}, {"@@VALUE@@", node.value()} });
+	QString const templatePath = node.key().data()
+			? "explicitKeyFieldInitialization.t"
+			: "implicitKeyFieldInitialization.t";
+	processTemplate(node, templatePath, { {"@@KEY@@", node.key()}, {"@@VALUE@@", node.value()} });
 }
 
 void LuaPrinter::visit(qrtext::lua::ast::TableConstructor const &node)
 {
-	/// @todo: Implement it
-	pushResult(node, "todo: implement TableConstructor");
+	QStringList const initializers = popResults(qrtext::as<qrtext::lua::ast::Node>(node.initializers()));
+	pushResult(node, readTemplate("tableConstructor.t")
+			.replace("@@COUNT@@", QString::number(initializers.count()))
+			.replace("@@INITIALIZERS@@", initializers.join(readTemplate("fieldInitializersSeparator.t"))));
 }
 
 void LuaPrinter::visit(qrtext::lua::ast::String const &node)
@@ -301,20 +316,38 @@ void LuaPrinter::visit(qrtext::lua::ast::Nil const &node)
 
 void LuaPrinter::visit(qrtext::lua::ast::Identifier const &node)
 {
-	/// @todo: implement system variables substitution
-	pushResult(node, node.name());
+	/// @todo: if some function or method will have same id as some reserved variable it will be replaced too...
+	pushResult(node, mReservedVariablesConverter->convert(node.name()));
 }
 
 void LuaPrinter::visit(qrtext::lua::ast::FunctionCall const &node)
 {
-	/// @todo: Implement it
-	pushResult(node, "todo: implement FunctionCall");
+	QString const expression = popResult(*node.function());
+	QStringList const arguments = popResults(qrtext::as<qrtext::lua::ast::Node>(node.arguments()));
+
+	qrtext::lua::ast::Identifier const *idNode = dynamic_cast<qrtext::lua::ast::Identifier *>(node.function().data());
+	QString const reservedFunctionCall = idNode
+			? mReservedFunctionsConverter.convert(idNode->name(), arguments)
+			: QString();
+
+	if (reservedFunctionCall.isEmpty()) {
+		pushResult(node, readTemplate("functionCall.t")
+				.replace("@@FUNCTION@@", expression)
+				.replace("@@ARGUMENTS@@", arguments.join(readTemplate("argumentsSeparator.t"))));
+	} else {
+		pushResult(node, reservedFunctionCall);
+	}
 }
 
 void LuaPrinter::visit(qrtext::lua::ast::MethodCall const &node)
 {
-	/// @todo: Implement it
-	pushResult(node, "todo: implement MethodCall");
+	QString const object = popResult(*node.object());
+	QString const method = popResult(*node.methodName());
+	QStringList const arguments = popResults(qrtext::as<qrtext::lua::ast::Node>(node.arguments()));
+	pushResult(node, readTemplate("methodCall.t")
+			.replace("@@OBJECT@@", object)
+			.replace("@@METHOD@@", method)
+			.replace("@@ARGUMENTS@@", arguments.join(readTemplate("argumentsSeparator.t"))));
 }
 
 void LuaPrinter::visit(qrtext::lua::ast::Assignment const &node)
@@ -324,8 +357,10 @@ void LuaPrinter::visit(qrtext::lua::ast::Assignment const &node)
 
 void LuaPrinter::visit(qrtext::lua::ast::Block const &node)
 {
-	/// @todo: Implement it
-	pushResult(node, "todo: implement Block");
+	/// @todo: 1 expression is not wraped into Block node so we cannot understand when to print semicolon.
+	QString const separator = readTemplate("statementsSeparator.t");
+	QStringList const expressions = popResults(node.children());
+	pushResult(node, expressions.join(separator) + separator);
 }
 
 void LuaPrinter::visit(qrtext::lua::ast::IndexingExpression const &node)

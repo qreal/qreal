@@ -44,7 +44,9 @@ void Node::connect(QList<Range> const &ranges)
 void Node::acceptRecursively(AstVisitorInterface &visitor) const
 {
 	for (auto const &node : children()) {
-		node->acceptRecursively(visitor);
+		if (node.data()) {
+			node->acceptRecursively(visitor);
+		}
 	}
 
 	accept(visitor);

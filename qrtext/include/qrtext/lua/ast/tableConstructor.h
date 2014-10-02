@@ -8,7 +8,6 @@ namespace lua {
 namespace ast {
 
 /// Represents table constructor expression.
-/// See 'visitor' design pattern (http://www.oodesign.com/visitor-pattern.html).
 class QRTEXT_EXPORT TableConstructor : public Expression
 {
 public:

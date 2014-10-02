@@ -80,6 +80,7 @@ private:
 
 	void pushResult(qrtext::lua::ast::Node const &node, QString const &generatedCode);
 	QString popResult(qrtext::lua::ast::Node const &node, bool wrapIntoBrackets = false);
+	QStringList popResults(QList<QSharedPointer<qrtext::lua::ast::Node>> const &nodes);
 
 	QMap<qrtext::lua::ast::Node const *, QString> mGeneratedCode;
 	PrecedenceConverterInterface &mPrecedenceTable;

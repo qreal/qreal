@@ -1,1 +1,1 @@
-/* not supported yet */
+[ @@INITIALIZERS@@ ]
