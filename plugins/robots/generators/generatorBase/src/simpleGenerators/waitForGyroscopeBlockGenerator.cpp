@@ -10,7 +10,7 @@ WaitForGyroscopeBlockGenerator::WaitForGyroscopeBlockGenerator(qrRepo::RepoApi c
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/gyroscope.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->inputPortConverter())
-			<< Binding::createConverting("@@DEGREES@@", "Degrees", customizer.factory()->intPropertyConverter())
+			<< Binding::createConverting("@@DEGREES@@", "Degrees", customizer.factory()->intPropertyConverter(id))
 			<< Binding::createConverting("@@SIGN@@", "Sign", customizer.factory()->inequalitySignConverter())
 			, parent)
 {

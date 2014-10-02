@@ -23,7 +23,7 @@ void NxtOsekMasterGenerator::generateOilAndMakeFiles()
 
 generatorBase::GeneratorCustomizer *NxtOsekMasterGenerator::createCustomizer()
 {
-	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, mTextLanguage);
+	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor());
 }
 
 QString NxtOsekMasterGenerator::targetPath()

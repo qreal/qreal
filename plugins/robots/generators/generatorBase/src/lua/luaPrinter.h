@@ -4,17 +4,21 @@
 
 #include <qrtext/lua/ast/node.h>
 #include "precedenceConverterInterface.h"
+#include "reservedFunctionsConverter.h"
 #include "generatorBase/templateParametrizedEntity.h"
+#include "generatorBase/simpleGenerators/binding.h"
 
 namespace generatorBase {
-namespace printing {
+namespace lua {
 
 class LuaPrinter : public qrtext::lua::LuaAstVisitorInterface
 		, public TemplateParametrizedEntity
 {
 public:
-	LuaPrinter(QString const &pathToTemplates);//, PrecedenceConverterInterface &precedeceTable);
-	virtual ~LuaPrinter();
+	/// Takes ownership on converters.
+	LuaPrinter(QString const &pathToTemplates
+			, PrecedenceConverterInterface &precedeceTable
+			, simple::Binding::ConverterInterface const *reservedVariablesConverter);
 
 	/// Prints the given AST to the code using a set of templates placed in the given in the constructor directory.
 	virtual QString print(QSharedPointer<qrtext::lua::ast::Node> node);
@@ -63,9 +67,11 @@ private:
 
 	/// Returns true if child expression must be wrapped into the brackets.
 	/// The default implementation returns true if the parent operation has greater precedence or
-	/// equal precedence and child operation has right associativity.
+	/// equal precedence and child is situated on the opposite side to operator`s associativity.
 	/// May be redefined by printers to concrete language.
-	virtual bool needBrackets(qrtext::lua::ast::Node const &parent, qrtext::lua::ast::Node const &child) const;
+	virtual bool needBrackets(qrtext::lua::ast::Node const &parent
+			, qrtext::lua::ast::Node const &child
+			, qrtext::core::Associativity childAssociativity = qrtext::core::Associativity::right) const;
 
 	void processUnary(qrtext::core::ast::UnaryOperator const &node, QString const &templateFileName);
 	void processBinary(qrtext::core::ast::BinaryOperator const &node, QString const &templateFileName);
@@ -76,7 +82,9 @@ private:
 	QString popResult(qrtext::lua::ast::Node const &node, bool wrapIntoBrackets = false);
 
 	QMap<qrtext::lua::ast::Node const *, QString> mGeneratedCode;
-//	PrecedenceConverterInterface &mPrecedenceTable;
+	PrecedenceConverterInterface &mPrecedenceTable;
+	simple::Binding::ConverterInterface const *mReservedVariablesConverter;
+	ReservedFunctionsConverter mReservedFunctionsConverter;
 };
 
 }

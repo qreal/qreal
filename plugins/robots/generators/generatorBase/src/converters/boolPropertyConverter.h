@@ -1,6 +1,7 @@
 #pragma once
 
 #include "codeConverterBase.h"
+#include "generatorBase/templateParametrizedEntity.h"
 
 namespace generatorBase {
 namespace converters {
@@ -8,17 +9,13 @@ namespace converters {
 /// Processes input string treating it as an expression of the bool type.
 /// Inverts this expression if it was specified in constructor. Inversion
 /// code must be specified in "conditional/negation.t" template.
-class BoolPropertyConverter : public CodeConverterBase
+class BoolPropertyConverter : public CodeConverterBase, public TemplateParametrizedEntity
 {
 public:
 	BoolPropertyConverter(QString const &pathToTemplates
-			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelInterface const &robotModel
-			, qrtext::LanguageToolboxInterface &textLanguage
-			, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
-			, simple::Binding::ConverterInterface const *inputPortConverter
-			, simple::Binding::ConverterInterface const *functionInvocationsConverter
-			, parts::DeviceVariables const &deviceVariables
+			, lua::LuaProcessor &luaTranslator
+			, qReal::Id const &id
+			, simple::Binding::ConverterInterface *reservedVariablesConverter
 			, bool needInverting);
 
 	QString convert(QString const &data) const override;

@@ -11,7 +11,7 @@ public:
 	TrikGeneratorCustomizer(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::LanguageToolboxInterface &textLanguage);
+			, generatorBase::lua::LuaProcessor &luaProcessor);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 

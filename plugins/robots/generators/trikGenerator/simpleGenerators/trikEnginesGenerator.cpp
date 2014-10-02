@@ -16,7 +16,7 @@ TrikEnginesGenerator::TrikEnginesGenerator(qrRepo::RepoApi const &repo
 			, engineType.contains("EnginesBackward") ? "engines/backward.t" : "engines/forward.t"
 			, { Binding::createMultiTarget("@@PORT@@", "Ports"
 						, dynamic_cast<trik::TrikGeneratorFactory *>(customizer.factory())->enginesConverter())
-				, Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter()) }
+				, Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter(id)) }
 			, parent)
 {
 	// AngularServo is just another block for EnginesForward, since it is controlled the same way as radial servo

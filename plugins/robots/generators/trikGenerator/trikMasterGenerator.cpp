@@ -14,7 +14,7 @@ TrikMasterGenerator::TrikMasterGenerator(qrRepo::RepoApi const &repo
 
 generatorBase::GeneratorCustomizer *TrikMasterGenerator::createCustomizer()
 {
-	return new TrikGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, mTextLanguage);
+	return new TrikGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor());
 }
 
 QString TrikMasterGenerator::targetPath()

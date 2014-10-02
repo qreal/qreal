@@ -10,7 +10,7 @@ public:
 	RussianCGeneratorFactory(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::LanguageToolboxInterface &textLanguage);
+			, generatorBase::lua::LuaProcessor &luaProcessor);
 	~RussianCGeneratorFactory() override;
 
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id

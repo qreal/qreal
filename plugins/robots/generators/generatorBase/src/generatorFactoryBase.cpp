@@ -50,7 +50,7 @@
 #include "converters/outputPortConverter.h"
 #include "converters/enginePortsConverter.h"
 #include "converters/typeConverter.h"
-#include "converters/functionInvocationConverter.h"
+#include "converters/reservedVariablesConverter.h"
 #include "converters/functionBlockConverter.h"
 #include "converters/intPropertyConverter.h"
 #include "converters/floatPropertyConverter.h"
@@ -66,6 +66,8 @@
 #include "generatorBase/parts/functions.h"
 #include "generatorBase/parts/images.h"
 
+#include "lua/luaProcessor.h"
+
 using namespace generatorBase;
 using namespace qReal;
 using namespace simple;
@@ -74,11 +76,11 @@ using namespace interpreterBase::robotModel;
 GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, RobotModelManagerInterface const &robotModelManager
-		, qrtext::LanguageToolboxInterface &textLanguage)
+		, lua::LuaProcessor &luaProcessor)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
-	, mTextLanguage(textLanguage)
+	, mLuaTranslator(luaProcessor)
 {
 }
 
@@ -89,6 +91,7 @@ GeneratorFactoryBase::~GeneratorFactoryBase()
 
 void GeneratorFactoryBase::initialize()
 {
+	mLuaTranslator.setPathToTemplates(pathToTemplates());
 	initVariables();
 	initSubprograms();
 	mThreads = new parts::Threads(pathToTemplates());
@@ -338,46 +341,21 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id cons
 
 // Converters can be instantiated without taking ownership because binders do this
 
-Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter(Id const &block) const
 {
-	return new converters::IntPropertyConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, mTextLanguage
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, *deviceVariables()
-			, typeConverter()
-			, variablesInfo()
-	);
+	return new converters::IntPropertyConverter(pathToTemplates(), mLuaTranslator, block
+			, reservedVariableNameConverter(), typeConverter());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter(Id const &block) const
 {
-	return new converters::FloatPropertyConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, mTextLanguage
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, *deviceVariables()
-	);
+	return new converters::FloatPropertyConverter(mLuaTranslator, block, reservedVariableNameConverter());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
+Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(Id const &block, bool needInverting) const
 {
-	return new converters::BoolPropertyConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, mTextLanguage
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, *deviceVariables()
-			, needInverting
-	);
+	return new converters::BoolPropertyConverter(pathToTemplates(), mLuaTranslator
+			, block, reservedVariableNameConverter(), needInverting);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
@@ -385,15 +363,13 @@ Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() con
 	return new converters::StringPropertyConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::systemVariableNameConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::reservedVariableNameConverter() const
 {
-	return new converters::CodeConverterBase(pathToTemplates()
+	return new converters::ReservedVariablesConverter(pathToTemplates()
 			, mErrorReporter
 			, mRobotModelManager.model()
-			, mTextLanguage
 			, currentConfiguration()
 			, inputPortConverter()
-			, functionInvocationConverter()
 			, *deviceVariables());
 }
 
@@ -402,22 +378,9 @@ Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() con
 	return new converters::NameNormalizerConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::functionInvocationConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter(qReal::Id const &block) const
 {
-	return new converters::FunctionInvocationConverter(pathToTemplates());
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() const
-{
-	return new converters::FunctionBlockConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, mTextLanguage
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, *deviceVariables()
-	);
+	return new converters::FunctionBlockConverter(mLuaTranslator, block, reservedVariableNameConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() const
@@ -457,7 +420,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
 
 Binding::ConverterInterface *GeneratorFactoryBase::switchConditionsMerger(QStringList const &values) const
 {
-	return new converters::SwitchConditionsMerger(pathToTemplates(), systemVariableNameConverter(), values);
+	return new converters::SwitchConditionsMerger(pathToTemplates(), reservedVariableNameConverter(), values);
 }
 
 QString GeneratorFactoryBase::initCode()

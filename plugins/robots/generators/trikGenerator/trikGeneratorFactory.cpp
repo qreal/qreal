@@ -39,8 +39,8 @@ using namespace generatorBase::simple;
 TrikGeneratorFactory::TrikGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, qrtext::LanguageToolboxInterface &textLanguage)
-	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, textLanguage)
+		, lua::LuaProcessor &luaProcessor)
+	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 {
 }
 
@@ -143,7 +143,7 @@ Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
 
 generatorBase::simple::Binding::ConverterInterface *TrikGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::TrikStringPropertyConverter(*mVariables, *systemVariableNameConverter());
+	return new converters::TrikStringPropertyConverter(*mVariables, *reservedVariableNameConverter());
 }
 
 void TrikGeneratorFactory::initVariables()

@@ -3,10 +3,10 @@
 #include <qrtext/lua/luaAstVisitorInterface.h>
 
 namespace generatorBase {
-namespace printing {
+namespace lua {
 
 /// Provides converting precedence table base implementation with typical operators precedence.
-class PrecedenceConverterBase : public PrecedenceConverterInterface
+class PrecedenceConverter : public PrecedenceConverterInterface
 		, public qrtext::lua::LuaAstVisitorInterface
 {
 public:

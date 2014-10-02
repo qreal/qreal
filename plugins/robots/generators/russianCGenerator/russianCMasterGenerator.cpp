@@ -18,7 +18,7 @@ RussianCMasterGenerator::RussianCMasterGenerator(qrRepo::RepoApi const &repo
 
 generatorBase::GeneratorCustomizer *RussianCMasterGenerator::createCustomizer()
 {
-	return new RussianCGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, mTextLanguage);
+	return new RussianCGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor());
 }
 
 QString RussianCMasterGenerator::targetPath()

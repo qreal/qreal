@@ -5,25 +5,13 @@ using namespace generatorBase::converters;
 using namespace qReal;
 
 IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
-		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelInterface const &robotModel
-		, qrtext::LanguageToolboxInterface &textLanguage
-		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
-		, simple::Binding::ConverterInterface const *inputPortConverter
-		, simple::Binding::ConverterInterface const *functionInvocationsConverter
-		, parts::DeviceVariables const &deviceVariables
-		, simple::Binding::ConverterInterface const *typeConverter
-		, parts::Variables const *variables)
-	: CodeConverterBase(pathToTemplates
-			, errorReporter
-			, robotModel
-			, textLanguage
-			, devices
-			, inputPortConverter
-			, functionInvocationsConverter
-			, deviceVariables)
+		, lua::LuaProcessor &luaTranslator
+		, qReal::Id const &id
+		, simple::Binding::ConverterInterface *reservedVariablesConverter
+		, simple::Binding::ConverterInterface *typeConverter)
+	: CodeConverterBase(luaTranslator, id, reservedVariablesConverter)
+	, TemplateParametrizedEntity(pathToTemplates)
 	, mTypeConverter(typeConverter)
-	, mVariables(variables)
 {
 }
 
@@ -39,10 +27,10 @@ QString IntPropertyConverter::convert(QString const &data) const
 		return "0";
 	}
 
-	enums::variableType::VariableType const expressionType = mVariables->expressionType(preparedCode);
-	if (expressionType == enums::variableType::intType) {
-		return preparedCode;
-	}
+//	enums::variableType::VariableType const expressionType = mVariables->expressionType(preparedCode);
+//	if (expressionType == enums::variableType::intType) {
+//		return preparedCode;
+//	}
 
 	QString castTemplate = readTemplate("types/cast.t");
 	QString const intType = mTypeConverter->convert("int");

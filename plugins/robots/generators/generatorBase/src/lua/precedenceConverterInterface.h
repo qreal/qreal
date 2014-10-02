@@ -4,7 +4,7 @@
 #include <qrtext/core/ast/node.h>
 
 namespace generatorBase {
-namespace printing {
+namespace lua {
 
 /// Provides info about precedencies and associativity of the operators of
 /// the target language (i.e. the language we generate to). Converts thus

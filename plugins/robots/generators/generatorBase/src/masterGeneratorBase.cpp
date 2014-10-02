@@ -2,9 +2,10 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
+
 #include "readableControlFlowGenerator.h"
 #include "gotoControlFlowGenerator.h"
-
+#include "lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/images.h"
 #include "generatorBase/parts/subprograms.h"
@@ -130,6 +131,11 @@ QString MasterGeneratorBase::generate()
 	afterGeneration();
 
 	return pathToOutput;
+}
+
+lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
+{
+	return new lua::LuaProcessor(mErrorReporter, mTextLanguage, this);
 }
 
 void MasterGeneratorBase::beforeGeneration()

@@ -10,7 +10,15 @@
 #include "controlFlowGeneratorBase.h"
 #include "templateParametrizedEntity.h"
 
+namespace qrtext {
+class LanguageToolboxInterface;
+}
+
 namespace generatorBase {
+
+namespace lua {
+class LuaProcessor;
+}
 
 class ReadableControlFlowGenerator;
 class GotoControlFlowGenerator;
@@ -40,6 +48,7 @@ public:
 
 protected:
 	virtual GeneratorCustomizer *createCustomizer() = 0;
+	virtual lua::LuaProcessor *createLuaProcessor();
 
 	/// Implementation must return a path to a file where all generated code
 	/// will be written. Called on the last stage of the generation process

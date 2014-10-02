@@ -11,7 +11,7 @@ public:
 	NxtOsekGeneratorCustomizer(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::LanguageToolboxInterface &textLanguage);
+			, generatorBase::lua::LuaProcessor &luaProcessor);
 
 	virtual generatorBase::GeneratorFactoryBase *factory();
 

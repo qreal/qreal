@@ -43,18 +43,20 @@
 #include <qrtext/lua/ast/block.h>
 #include <qrtext/lua/ast/indexingExpression.h>
 
-using namespace generatorBase::printing;
+#include "reservedFunctionsConverter.h"
 
-LuaPrinter::LuaPrinter(QString const &pathToTemplates)//, PrecedenceConverterInterface &precedeceTable)
+using namespace generatorBase::lua;
+
+LuaPrinter::LuaPrinter(QString const &pathToTemplates
+		, PrecedenceConverterInterface &precedeceTable
+		, simple::Binding::ConverterInterface const *reservedVariablesConverter)
 	: TemplateParametrizedEntity(pathToTemplates + "/luaPrinting")
-//	, mPrecedenceTable(precedeceTable)
+	, mPrecedenceTable(precedeceTable)
+	, mReservedVariablesConverter(reservedVariablesConverter)
+	, mReservedFunctionsConverter(pathToTemplates)
 {
 	/// @todo: remove it
 	setPathToTemplates("/home/dvvrd/dev/qreal/lua-printers/plugins/robots/generators/trikGenerator/templates/luaPrinting/");
-}
-
-LuaPrinter::~LuaPrinter()
-{
 }
 
 QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> node)
@@ -63,11 +65,11 @@ QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> node)
 	if (mGeneratedCode.keys().count() != 1 || mGeneratedCode.keys().first() != node.data()) {
 		QLOG_WARN() << "Lua printer got into the inconsistent state during printing."
 				<< mGeneratedCode.keys().count() <<"pieces of code:";
-		qDebug() << "Lua printer got into the inconsistent state during printing."
-				<< mGeneratedCode.keys().count() <<"pieces of code:";
+//		qDebug() << "Lua printer got into the inconsistent state during printing."
+//				<< mGeneratedCode.keys().count() <<"pieces of code:";
 		for (QString const &code : mGeneratedCode.values()) {
 			QLOG_INFO() << code;
-			qDebug() << code;
+//			qDebug() << code;
 		}
 
 		mGeneratedCode.clear();
@@ -79,7 +81,7 @@ QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> node)
 
 void LuaPrinter::pushResult(qrtext::lua::ast::Node const &node, QString const &generatedCode)
 {
-	qDebug() << "pushing" << generatedCode;
+//	qDebug() << "pushing" << generatedCode;
 	mGeneratedCode[&node] = generatedCode;
 }
 
@@ -110,17 +112,20 @@ void LuaPrinter::processUnary(qrtext::core::ast::UnaryOperator const &node, QStr
 void LuaPrinter::processBinary(qrtext::core::ast::BinaryOperator const &node, QString const &templateFileName)
 {
 	pushResult(node, readTemplate(templateFileName)
-			.replace("@@LEFT@@", popResult(*node.leftOperand(), needBrackets(node, *node.leftOperand())))
-			.replace("@@RIGHT@@", popResult(*node.rightOperand(), needBrackets(node, *node.rightOperand()))));
+			.replace("@@LEFT@@", popResult(*node.leftOperand(), needBrackets(node
+					, *node.leftOperand(), qrtext::core::Associativity::left)))
+			.replace("@@RIGHT@@", popResult(*node.rightOperand(), needBrackets(node
+					, *node.rightOperand(), qrtext::core::Associativity::right))));
 }
 
-bool LuaPrinter::needBrackets(qrtext::lua::ast::Node const &parent, qrtext::lua::ast::Node const &child) const
+bool LuaPrinter::needBrackets(qrtext::lua::ast::Node const &parent
+		, qrtext::lua::ast::Node const &child
+		, qrtext::core::Associativity childAssociativity) const
 {
-	return true;
-//	int const parentPrecedence = mPrecedenceTable.precedence(parent);
-//	int const childPrecedence = mPrecedenceTable.precedence(child);
-//	return parentPrecedence > childPrecedence || (parentPrecedence == childPrecedence
-//			&& mPrecedenceTable.associativity(child) == qrtext::core::Associativity::right);
+	int const parentPrecedence = mPrecedenceTable.precedence(parent);
+	int const childPrecedence = mPrecedenceTable.precedence(child);
+	return parentPrecedence > childPrecedence || (parentPrecedence == childPrecedence
+			&& mPrecedenceTable.associativity(parent) != childAssociativity);
 }
 
 void LuaPrinter::visit(qrtext::lua::ast::Number const &node)
