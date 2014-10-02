@@ -4,7 +4,7 @@ using namespace ev3KitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
 Display::Display(DeviceInfo const &info, PortInfo const &port)
-    : robotModel::parts::Ev3Display(info, port)
+	: robotModel::parts::Ev3Display(info, port)
 {
 }
 

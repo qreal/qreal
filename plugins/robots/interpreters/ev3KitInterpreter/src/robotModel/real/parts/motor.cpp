@@ -7,8 +7,8 @@ using namespace utils;
 using namespace robotCommunication;
 
 Motor::Motor(DeviceInfo const &info, PortInfo const &port, RobotCommunicator &robotCommunicator)
-    : Ev3Motor(info, port)
-	, mRobotCommunicator(robotCommunicator)
+	: Ev3Motor(info, port)
+, mRobotCommunicator(robotCommunicator)
 {
 }
 
@@ -19,13 +19,13 @@ void Motor::on(int speed, bool breakMode)
 
 void Motor::on(int speed, long unsigned int degrees, bool breakMode)
 {
-    /*int mode = enums::motorMode::MOTORON | enums::motorMode::REGULATED;
+	/*int mode = enums::motorMode::MOTORON | enums::motorMode::REGULATED;
 	if (breakMode) {
 		mode |= enums::motorMode::BRAKE;
 	}
 	setOutputState(speed, mode, enums::regulationMode::REGULATION_MODE_MOTOR_SPEED
 			, 100, enums::runState::MOTOR_RUN_STATE_RUNNING, degrees);
-    */
+	*/
 }
 
 void Motor::stop(bool breakMode)
@@ -35,15 +35,15 @@ void Motor::stop(bool breakMode)
 
 void Motor::off()
 {
-    //setOutputState(0, enums::motorMode::REGULATED, enums::regulationMode::REGULATION_MODE_MOTOR_SPEED
-        //	, 100, enums::runState::MOTOR_RUN_STATE_IDLE, 0);
+	//setOutputState(0, enums::motorMode::REGULATED, enums::regulationMode::REGULATION_MODE_MOTOR_SPEED
+	//	, 100, enums::runState::MOTOR_RUN_STATE_IDLE, 0);
 }
 
 /*void Motor::setOutputState(int speed, int mode
 		, enums::regulationMode::RegulationModeEnum regulation, int turnRatio
 		, enums::runState::RunStateEnum runState, unsigned long tachoLimit)
 {
-    /*QByteArray command(15, 0);
+	/*QByteArray command(15, 0);
 	command[0] = 13;  // command length.
 	command[1] = 0x00;
 
@@ -65,17 +65,17 @@ void Motor::off()
 	command[12] = tachoLimit >> 16;  // TachoLimit
 	command[13] = tachoLimit >> 24;  // TachoLimit
 	command[14] = 0;                 // TachoLimit, suddenly
-    mRobotCommunicator.send(this, command, 3);
+	mRobotCommunicator.send(this, command, 3);
 }*/
 
 void Motor::resetMotorPosition(bool relative)
 {
-    /*QByteArray command(5, 0);
+	/*QByteArray command(5, 0);
 	command[0] = 3;  // command length.
 	command[1] = 0x00;
 	command[2] = enums::telegramType::directCommandNoResponse;
 	command[3] = enums::commandCode::RESETMOTORPOSITION;
 	command[4] = relative;
 	mRobotCommunicator.send(this, command, 3);
-    */
+	*/
 }

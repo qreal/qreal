@@ -14,7 +14,7 @@ class Ev3Motor : public interpreterBase::robotModel::robotParts::Motor
 	Q_CLASSINFO("direction", "output")
 
 public:
-    Ev3Motor(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
+	Ev3Motor(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
 
 	void on(int speed) override;
 	void stop() override;

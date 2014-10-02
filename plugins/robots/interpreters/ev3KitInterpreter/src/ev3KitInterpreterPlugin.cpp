@@ -9,13 +9,13 @@ Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
-    : mRealRobotModel(kitId())
-    , mBlocksFactory(new blocks::Ev3BlocksFactory)
+		: mRealRobotModel(kitId())
+		, mBlocksFactory(new blocks::Ev3BlocksFactory)
 {
-    mAdditionalPreferences = new Ev3AdditionalPreferences(mRealRobotModel.name());
+	mAdditionalPreferences = new Ev3AdditionalPreferences(mRealRobotModel.name());
 
-    connect(mAdditionalPreferences, &Ev3AdditionalPreferences::settingsChanged
-            , &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+	connect(mAdditionalPreferences, &Ev3AdditionalPreferences::settingsChanged
+	, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
 
 }
 
@@ -26,24 +26,24 @@ QString Ev3KitInterpreterPlugin::kitId() const
 
 QString Ev3KitInterpreterPlugin::friendlyKitName() const
 {
-    return tr("EV3");
+	return tr("EV3");
 }
 
 QList<interpreterBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugin::robotModels()
 {
-    return  {&mRealRobotModel};
+	return  {&mRealRobotModel};
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
-		interpreterBase::robotModel::RobotModelInterface const *model)
+interpreterBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model)
-    return mBlocksFactory;
+	return mBlocksFactory;
 }
 
 interpreterBase::AdditionalPreferences *Ev3KitInterpreterPlugin::settingsWidget()
 {
-    return mAdditionalPreferences;
+	return mAdditionalPreferences;
 }
 
 QList<qReal::ActionInfo> Ev3KitInterpreterPlugin::customActions()
@@ -57,8 +57,8 @@ QList<qReal::HotKeyActionInfo> Ev3KitInterpreterPlugin::hotKeyActions()
 }
 
 QIcon Ev3KitInterpreterPlugin::iconForFastSelector(
-		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+interpreterBase::robotModel::RobotModelInterface const &robotModel) const
 {
-    Q_UNUSED(mRealRobotModel)
+	Q_UNUSED(mRealRobotModel)
 	return QIcon();
 }
