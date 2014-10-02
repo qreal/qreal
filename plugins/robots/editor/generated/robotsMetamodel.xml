@@ -830,6 +830,72 @@
 					</generalizations>
 				</logic>
 			</node>
+      <node displayedName="Beep" name="Ev3Beep" path="152, 12 : 281, 12 :  | 152, 183 : 152, 12 :  | 155, 170 : 154, 176 : 153, 183 : 151, 190 : 149, 196 : 146, 202 : 143, 208 : 139, 214 : 134, 219 : 129, 224 : 123, 228 : 117, 231 : 111, 234 : 105, 236 : 98, 238 : 91, 239 : 85, 239 : 79, 239 : 72, 238 : 65, 236 : 59, 234 : 53, 231 : 47, 228 : 41, 224 : 36, 219 : 31, 214 : 27, 208 : 24, 202 : 21, 196 : 19, 190 : 17, 183 : 16, 176 : 16, 170 : 16, 164 : 17, 157 : 19, 150 : 21, 144 : 24, 138 : 27, 132 : 31, 126 : 36, 121 : 41, 116 : 47, 112 : 53, 109 : 59, 106 : 65, 104 : 72, 102 : 79, 101 : 85, 101 : 91, 101 : 98, 102 : 105, 104 : 111, 106 : 117, 109 : 123, 112 : 129, 116 : 134, 121 : 139, 126 : 143, 132 : 146, 138 : 149, 144 : 151, 150 : 153, 157 : 154, 164 : 155, 170 : " description="Plays on the robot a sound with the fixed frequency. There are two parameters. The first one is a loudness of the sound, the second means if program should wait for sound completion or go to next block right away.">
+        <graphics>
+          <picture sizex="50" sizey="50">
+            <image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
+          </picture>
+          <labels>
+            <label x="-35" y="-30" text="Volume (%):" hard="true"/>
+            <label x="-60" y="60" text="Wait for Completion:"/>
+            <label x="60" y="-30" textBinded="Volume" hard="true" background="white"/>
+            <label x="70" y="60" textBinded="WaitForCompletion" background="white"/>
+          </labels>
+          <nonResizeable/>
+        </graphics>
+        <logic>
+          <container/>
+          <properties>
+            <property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
+              <default>true</default>
+            </property>
+            <property displayedName="Volume" type="string" name="Volume">
+              <default>50</default>
+            </property>
+          </properties>
+          <generalizations>
+            <parent parentName="AbstractNode"/>
+          </generalizations>
+        </logic>
+      </node>
+      <node displayedName="Play Tone" name="Ev3PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Plays on the robot a sound with the given frequency and duration. This block is similar to the 'Beep' block wuth the only difference that here you can specify sound parameters.">
+        <graphics>
+          <picture sizex="50" sizey="50">
+            <image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
+          </picture>
+          <labels>
+            <label x="-35" y="-30" text="Frequency (Hz):" hard="true"/>
+            <label x="-35" y="60" text="Volume (%):"/>
+            <label x="-68" y="80" text="Duration (ms):"/>
+            <label x="-68" y="100" text="Wait for Completion:"/>
+            <label x="50" y="-30" textBinded="Frequency" hard="true" background="white"/>
+            <label x="60" y="60" textBinded="Volume" background="white"/>
+            <label x="60" y="80" textBinded="Duration" background="white"/>
+            <label x="60" y="100" textBinded="WaitForCompletion" background="white"/>
+          </labels>
+          <nonResizeable/>
+        </graphics>
+        <logic>
+          <container/>
+          <properties>
+            <property displayedName="Frequency" type="string" name="Frequency">
+              <default>1000</default>
+            </property>
+            <property displayedName="Volume" type="string" name="Volume">
+              <default>50</default>
+            </property>
+            <property displayedName="Duration" type="string" name="Duration">
+              <default>1000</default>
+            </property>
+            <property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
+              <default>true</default>
+            </property>
+          </properties>
+          <generalizations>
+            <parent parentName="AbstractNode"/>
+          </generalizations>
+        </logic>
+      </node>
 			<node displayedName="Play Tone" name="TrikPlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Plays on the robot a sound file (.wav or .mp3) previously uploaded to it.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2363,6 +2429,8 @@
 				<element name="NxtEnginesForward"/>
 				<element name="NxtEnginesBackward"/>
 				<element name="NxtEnginesStop"/>
+        <element name="Ev3Beep"/>
+        <element name="Ev3PlayTone"/>
         <element name="Ev3EnginesForward"/>
 				<element name="Ev3EnginesBackward"/>
 				<element name="Ev3EnginesStop"/>
