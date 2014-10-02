@@ -7,7 +7,7 @@ using namespace utils;
 using namespace robotCommunication;
 
 Motor::Motor(DeviceInfo const &info, PortInfo const &port, RobotCommunicator &robotCommunicator)
-    : Ev3Motor(info, port)
+	: Ev3Motor(info, port)
 	, mRobotCommunicator(robotCommunicator)
 {
 }

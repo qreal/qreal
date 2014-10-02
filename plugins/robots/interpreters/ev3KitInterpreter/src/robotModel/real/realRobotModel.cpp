@@ -14,8 +14,8 @@ using namespace utils::robotCommunication;
 using namespace interpreterBase::robotModel;
 
 RealRobotModel::RealRobotModel(QString const &kitId)
-    : Ev3RobotModelBase(kitId)
-	, mRobotCommunicator(new RobotCommunicator(this))
+: Ev3RobotModelBase(kitId)
+, mRobotCommunicator(new RobotCommunicator(this))
 {
 	connect(mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
@@ -23,12 +23,12 @@ RealRobotModel::RealRobotModel(QString const &kitId)
 
 QString RealRobotModel::name() const
 {
-    return "Ev3RealRobotModel";
+	return "Ev3RealRobotModel";
 }
 
 QString RealRobotModel::friendlyName() const
 {
-	return tr("Real Robot");
+	return tr("Real Robot EV3");
 }
 
 bool RealRobotModel::needsConnection() const
@@ -38,7 +38,7 @@ bool RealRobotModel::needsConnection() const
 
 void RealRobotModel::rereadSettings()
 {
-    QString const valueOfCommunication = qReal::SettingsManager::value("Ev3ValueOfCommunication").toString();
+	QString const valueOfCommunication = qReal::SettingsManager::value("Ev3ValueOfCommunication").toString();
 	if (valueOfCommunication == mLastCommunicationValue) {
 		return;
 	}
@@ -47,8 +47,8 @@ void RealRobotModel::rereadSettings()
 	utils::robotCommunication::RobotCommunicationThreadInterface *communicator = nullptr;
 	if (valueOfCommunication == "bluetooth") {
 		communicator = new communication::BluetoothRobotCommunicationThread;
-    } else if (valueOfCommunication == "usb") {
-        communicator = new communication::BluetoothRobotCommunicationThread; // TODO usb
+	} else if (valueOfCommunication == "usb") {
+		communicator = new communication::BluetoothRobotCommunicationThread; // TODO usb
 	}
 
 	mRobotCommunicator->setRobotCommunicationThreadObject(communicator);
@@ -66,14 +66,14 @@ void RealRobotModel::disconnectFromRobot()
 
 robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)
 {
-    if (deviceInfo.isA(speakerInfo())) {
-        return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
-    }
+	if (deviceInfo.isA(speakerInfo())) {
+		return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
+	}
 
 
-    if (deviceInfo.isA(motorInfo())) {
-        return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
-    }
+	if (deviceInfo.isA(motorInfo())) {
+		return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
+	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 }

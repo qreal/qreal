@@ -47,8 +47,27 @@
       </item>
       <item row="1" column="0">
        <widget class="QRadioButton" name="usbRadioButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>USB</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="wifiRadioButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Wi-fi</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -85,9 +104,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="directInputComPortLineEdit"/>
-      </item>
       <item row="0" column="0" colspan="2">
        <widget class="QLabel" name="noComPortsFoundLabel">
         <property name="text">
@@ -97,6 +113,9 @@
          <bool>true</bool>
         </property>
        </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="directInputComPortLineEdit"/>
       </item>
       <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="manualComPortCheckbox">

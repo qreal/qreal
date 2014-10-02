@@ -9,14 +9,14 @@ using namespace qReal;
 
 Ev3AdditionalPreferences::Ev3AdditionalPreferences(QString const &realRobotName, QWidget *parent)
 	: AdditionalPreferences(parent)
-    , mUi(new Ui::Ev3AdditionalPreferences)
+	, mUi(new Ui::Ev3AdditionalPreferences)
 	, mRealRobotName(realRobotName)
 {
 	mUi->setupUi(this);
 	connect(mUi->bluetoothRadioButton, &QRadioButton::toggled
 			, mUi->bluetoothSettingsGroupBox, &QWidget::setVisible);
 	connect(mUi->manualComPortCheckbox, &QCheckBox::toggled
-            , this, &Ev3AdditionalPreferences::manualComPortCheckboxChecked);
+			, this, &Ev3AdditionalPreferences::manualComPortCheckboxChecked);
 }
 
 Ev3AdditionalPreferences::~Ev3AdditionalPreferences()
@@ -26,16 +26,16 @@ Ev3AdditionalPreferences::~Ev3AdditionalPreferences()
 
 void Ev3AdditionalPreferences::save()
 {
-    SettingsManager::setValue("Ev3BluetoothPortName", selectedPortName());
-    SettingsManager::setValue("Ev3ValueOfCommunication", selectedCommunication());
-    SettingsManager::setValue("Ev3ManualComPortCheckboxChecked", mUi->manualComPortCheckbox->isChecked());
+	SettingsManager::setValue("Ev3BluetoothPortName", selectedPortName());
+	SettingsManager::setValue("Ev3ValueOfCommunication", selectedCommunication());
+	SettingsManager::setValue("Ev3ManualComPortCheckboxChecked", mUi->manualComPortCheckbox->isChecked());
 	emit settingsChanged();
 }
 
 void Ev3AdditionalPreferences::restoreSettings()
 {
 	QList<QextPortInfo> const ports = QextSerialEnumerator::getPorts();
-    QString const defaultPortName = SettingsManager::value("Ev3BluetoothPortName").toString();
+	QString const defaultPortName = SettingsManager::value("Ev3BluetoothPortName").toString();
 	mUi->comPortComboBox->clear();
 
 	for (QextPortInfo const &info : ports) {

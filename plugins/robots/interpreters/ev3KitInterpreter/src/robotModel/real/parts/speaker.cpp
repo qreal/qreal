@@ -6,14 +6,14 @@ using namespace interpreterBase::robotModel;
 
 Speaker::Speaker(DeviceInfo const &info, PortInfo const &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-    : robotModel::parts::Ev3Speaker(info, port)
-	, mRobotCommunicator(robotCommunicator)
+		: robotModel::parts::Ev3Speaker(info, port)
+		, mRobotCommunicator(robotCommunicator)
 {
 }
 
 void Speaker::playTone(unsigned freq, unsigned time)
 {
-    /*QByteArray command(8, 0);
+	/*QByteArray command(8, 0);
 	command[0] = 0x06;  //command length
 	command[1] = 0x00;
 	command[2] = enums::telegramType::directCommandNoResponse;
@@ -23,5 +23,5 @@ void Speaker::playTone(unsigned freq, unsigned time)
 	command[6] = time;
 	command[7] = time >> 8;
 	mRobotCommunicator.send(this, command, 5);
-    */
+	*/
 }
