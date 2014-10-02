@@ -127,7 +127,9 @@ void RobotsSettingsPage::restoreSettings()
 	}
 
 	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
+	qDebug()<<selectedKit;
 	QAbstractButton * const selectedKitButton = mUi->constructorKitGroupBox->findChild<QAbstractButton *>(selectedKit);
+	qDebug()<<selectedKitButton;
 	if (selectedKitButton) {
 		selectedKitButton->setChecked(true);
 		checkSelectedRobotModelButtonFor(selectedKitButton);
@@ -196,7 +198,7 @@ void RobotsSettingsPage::checkSelectedRobotModelButtonFor(QAbstractButton * cons
 	QAbstractButton * const robotModelButton = mUi->typeOfModelGroupBox
 			->findChild<QAbstractButton *>(kitId + robotModel->name());
 	if (robotModelButton) {
-		robotModelButton->setChecked(true);
+		changeRobotModel(robotModelButton, false);
 	}
 }
 
@@ -206,16 +208,8 @@ void RobotsSettingsPage::onRobotModelRadioButtonToggled(bool checked)
 		return;
 	}
 
-	QString const selectedKit = mKitButtons->checkedButton()->objectName();
 	QAbstractButton * const robotModelButton = static_cast<QAbstractButton *>(sender());
-	robotModel::RobotModelInterface * const selectedRobotModel = mButtonsToRobotModelsMapping[robotModelButton];
-	mUi->devicesConfigurer->selectRobotModel(*selectedRobotModel);
-	for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(selectedKit)) {
-		AdditionalPreferences * const selectedKitPreferences = kitPlugin->settingsWidget();
-		if (selectedKitPreferences) {
-			selectedKitPreferences->onRobotModelChanged(selectedRobotModel);
-		}
-	}
+	changeRobotModel(robotModelButton, true);
 }
 
 void RobotsSettingsPage::showAdditionalPreferences(QString const &kitId)
@@ -293,4 +287,21 @@ void RobotsSettingsPage::saveSelectedRobotModel()
 	QAbstractButton * const selectedRobotModelButton = mKitRobotModels[selectedKitButton]->checkedButton();
 	// If null passed there default model will be used so it`s ok
 	mRobotModelManager.setModel(mButtonsToRobotModelsMapping[selectedRobotModelButton]);
+}
+
+void RobotsSettingsPage::changeRobotModel(QAbstractButton * const robotModelButton, bool const isManuallyToggled)
+{
+	if (!isManuallyToggled){
+		robotModelButton->toggle();
+	}
+
+	QString const selectedKit = mKitButtons->checkedButton()->objectName();
+	robotModel::RobotModelInterface * const selectedRobotModel = mButtonsToRobotModelsMapping[robotModelButton];
+	mUi->devicesConfigurer->selectRobotModel(*selectedRobotModel);
+	for (KitPluginInterface * const kitPlugin : mKitPluginManager.kitsById(selectedKit)) {
+		AdditionalPreferences * const selectedKitPreferences = kitPlugin->settingsWidget();
+		if (selectedKitPreferences) {
+			selectedKitPreferences->onRobotModelChanged(selectedRobotModel);
+		}
+	}
 }
