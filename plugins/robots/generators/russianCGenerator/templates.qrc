@@ -128,5 +128,44 @@
         <file>templates/variables/intVariableDeclaration.t</file>
         <file>templates/whatTime.t</file>
         <file>templates/variableInit.t</file>
-    </qresource>
+        <file>templates/luaPrinting/addition.t</file>
+        <file>templates/luaPrinting/argumentsSeparator.t</file>
+        <file>templates/luaPrinting/assignment.t</file>
+        <file>templates/luaPrinting/bitwiseAnd.t</file>
+        <file>templates/luaPrinting/bitwiseLeftShift.t</file>
+        <file>templates/luaPrinting/bitwiseNegation.t</file>
+        <file>templates/luaPrinting/bitwiseOr.t</file>
+        <file>templates/luaPrinting/bitwiseRightShift.t</file>
+        <file>templates/luaPrinting/bitwiseXor.t</file>
+        <file>templates/luaPrinting/concatenation.t</file>
+        <file>templates/luaPrinting/division.t</file>
+        <file>templates/luaPrinting/equality.t</file>
+        <file>templates/luaPrinting/explicitKeyFieldInitialization.t</file>
+        <file>templates/luaPrinting/exponentiation.t</file>
+        <file>templates/luaPrinting/false.t</file>
+        <file>templates/luaPrinting/fieldInitializersSeparator.t</file>
+        <file>templates/luaPrinting/functionCall.t</file>
+        <file>templates/luaPrinting/greaterOrEqual.t</file>
+        <file>templates/luaPrinting/greaterThan.t</file>
+        <file>templates/luaPrinting/implicitKeyFieldInitialization.t</file>
+        <file>templates/luaPrinting/indexingExpression.t</file>
+        <file>templates/luaPrinting/inequality.t</file>
+        <file>templates/luaPrinting/integerDivision.t</file>
+        <file>templates/luaPrinting/length.t</file>
+        <file>templates/luaPrinting/lessOrEqual.t</file>
+        <file>templates/luaPrinting/lessThan.t</file>
+        <file>templates/luaPrinting/logicalAnd.t</file>
+        <file>templates/luaPrinting/logicalOr.t</file>
+        <file>templates/luaPrinting/methodCall.t</file>
+        <file>templates/luaPrinting/modulo.t</file>
+        <file>templates/luaPrinting/multiplication.t</file>
+        <file>templates/luaPrinting/nil.t</file>
+        <file>templates/luaPrinting/not.t</file>
+        <file>templates/luaPrinting/statementsSeparator.t</file>
+        <file>templates/luaPrinting/string.t</file>
+        <file>templates/luaPrinting/subtraction.t</file>
+        <file>templates/luaPrinting/tableConstructor.t</file>
+        <file>templates/luaPrinting/true.t</file>
+        <file>templates/luaPrinting/unaryMinus.t</file>
+	</qresource>
 </RCC>

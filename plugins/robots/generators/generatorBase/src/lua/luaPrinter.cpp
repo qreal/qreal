@@ -55,8 +55,6 @@ LuaPrinter::LuaPrinter(QString const &pathToTemplates
 	, mReservedVariablesConverter(reservedVariablesConverter)
 	, mReservedFunctionsConverter(pathToTemplates)
 {
-	/// @todo: remove it
-	setPathToTemplates("/home/dvvrd/dev/qreal/lua-printers/plugins/robots/generators/trikGenerator/templates/luaPrinting/");
 }
 
 QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> node)
@@ -65,11 +63,8 @@ QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> node)
 	if (mGeneratedCode.keys().count() != 1 || mGeneratedCode.keys().first() != node.data()) {
 		QLOG_WARN() << "Lua printer got into the inconsistent state during printing."
 				<< mGeneratedCode.keys().count() <<"pieces of code:";
-//		qDebug() << "Lua printer got into the inconsistent state during printing."
-//				<< mGeneratedCode.keys().count() <<"pieces of code:";
 		for (QString const &code : mGeneratedCode.values()) {
 			QLOG_INFO() << code;
-//			qDebug() << code;
 		}
 
 		mGeneratedCode.clear();
@@ -81,7 +76,6 @@ QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> node)
 
 void LuaPrinter::pushResult(qrtext::lua::ast::Node const &node, QString const &generatedCode)
 {
-//	qDebug() << "pushing" << generatedCode;
 	mGeneratedCode[&node] = generatedCode;
 }
 
