@@ -544,6 +544,74 @@
 					</generalizations>
 				</logic>
 			</node>
+      <node name="Ev3EngineMovementCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Mode" type="BreakEngineMode" name="Mode">
+							<default>break</default>
+						</property>
+						<property displayedName="Ports" type="string" name="Ports" >
+							<default>B, C</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Motors Backward" name="Ev3EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="float" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="break" property="Mode" sign="="/>
+						</rectangle>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-8" y="-30" text="Ports:" hard="true"/>
+						<label x="40" y="60" textBinded="Power" background="white"/>
+						<label x="-50" y="60" text="Power (%):"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Motors Forward" name="Ev3EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Enables motors on the given ports with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="float" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="break" property="Mode" sign="="/>
+						</rectangle>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-8" y="-30" text="Ports:" hard="true"/>
+						<label x="40" y="60" textBinded="Power" background="white"/>
+						<label x="-50" y="60" text="Power (%):"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node name="TrikV6EngineMovementCommand">
 				<logic>
 					<container/>
@@ -626,6 +694,29 @@
 				</logic>
 			</node>
 			<node displayedName="Stop Motors" name="NxtEnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Disables motors on the given ports.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
+						<label x="-10" y="-30" text="Ports:" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>A, B, C</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+      <node displayedName="Stop Motors" name="Ev3EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Disables motors on the given ports.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
@@ -1760,7 +1851,144 @@
 					</generalizations>
 				</logic>
 			</node>
-
+      <!-- EV3 display drawing blocks -->
+      <node displayedName="Draw Pixel" name="Ev3DrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
+        <graphics>
+          <picture sizex="50" sizey="50">
+            <image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
+          </picture>
+          <labels>
+            <label x="36" y="60" textBinded="XCoordinatePix"/>
+            <label x="0" y="60" text="X: "/>
+            <label x="36" y="80" textBinded="YCoordinatePix"/>
+            <label x="0" y="80" text="Y: "/>
+          </labels>
+          <nonResizeable/>
+        </graphics>
+        <logic>
+          <container/>
+          <properties>
+            <property displayedName="X" type="int" name="XCoordinatePix">
+              <default>0</default>
+            </property>
+            <property displayedName="Y" type="int" name="YCoordinatePix">
+              <default>0</default>
+            </property>
+          </properties>
+          <generalizations>
+            <parent parentName="AbstractNode"/>
+          </generalizations>
+        </logic>
+      </node>
+      <node displayedName="Draw Line" name="Ev3DrawLine" description="Draws a segment on the robot screen. The parameters specify the ends of the segment.">
+        <graphics>
+          <picture sizex="50" sizey="50">
+            <image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
+          </picture>
+          <labels>
+            <label x="36" y="60" textBinded="X1CoordinateLine"/>
+            <label x="0" y="60" text="X1: "/>
+            <label x="36" y="80" textBinded="Y1CoordinateLine"/>
+            <label x="0" y="80" text="Y1: "/>
+            <label x="36" y="100" textBinded="X2CoordinateLine"/>
+            <label x="0" y="100" text="X2: "/>
+            <label x="36" y="120" textBinded="Y2CoordinateLine"/>
+            <label x="0" y="120" text="Y2: "/>
+          </labels>
+          <nonResizeable/>
+        </graphics>
+        <logic>
+          <container/>
+          <properties>
+            <property displayedName="X1" type="int" name="X1CoordinateLine">
+              <default>0</default>
+            </property>
+            <property displayedName="Y1" type="int" name="Y1CoordinateLine">
+              <default>0</default>
+            </property>
+            <property displayedName="X2" type="int" name="X2CoordinateLine">
+              <default>10</default>
+            </property>
+            <property displayedName="Y2" type="int" name="Y2CoordinateLine">
+              <default>10</default>
+            </property>
+          </properties>
+          <generalizations>
+            <parent parentName="AbstractNode"/>
+          </generalizations>
+        </logic>
+      </node>
+      <node displayedName="Draw Rectangle" name="Ev3DrawRect" description="Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.">
+        <graphics>
+          <picture sizex="50" sizey="50">
+            <image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
+          </picture>
+          <labels>
+            <label x="50" y="60" textBinded="XCoordinateRect"/>
+            <label x="-10" y="60" text="X: "/>
+            <label x="50" y="80" textBinded="YCoordinateRect"/>
+            <label x="-10" y="80" text="Y: "/>
+            <label x="50" y="100" textBinded="WidthRect"/>
+            <label x="-10" y="100" text="Width: "/>
+            <label x="50" y="120" textBinded="HeightRect"/>
+            <label x="-10" y="120" text="Height: "/>
+          </labels>
+          <nonResizeable/>
+        </graphics>
+        <logic>
+          <container/>
+          <properties>
+            <property displayedName="X" type="int" name="XCoordinateRect">
+              <default>0</default>
+            </property>
+            <property displayedName="Y" type="int" name="YCoordinateRect">
+              <default>0</default>
+            </property>
+            <property displayedName="Width" type="int" name="WidthRect">
+              <default>5</default>
+            </property>
+            <property displayedName="Height" type="int" name="HeightRect">
+              <default>5</default>
+            </property>
+          </properties>
+          <generalizations>
+            <parent parentName="AbstractNode"/>
+          </generalizations>
+        </logic>
+      </node>
+      <node displayedName="Draw Circle" name="Ev3DrawCircle" description="Draws on the robot screen a circle with the given center and radius.">
+        <graphics>
+          <picture sizex="50" sizey="50">
+            <image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
+          </picture>
+          <labels>
+            <label x="50" y="60" textBinded="XCoordinateCircle"/>
+            <label x="0" y="60" text="X: "/>
+            <label x="50" y="80" textBinded="YCoordinateCircle"/>
+            <label x="0" y="80" text="Y: "/>
+            <label x="50" y="100" textBinded="CircleRadius"/>
+            <label x="0" y="100" text="Radius: "/>
+          </labels>
+          <nonResizeable/>
+        </graphics>
+        <logic>
+          <container/>
+          <properties>
+            <property displayedName="X" type="int" name="XCoordinateCircle">
+              <default>0</default>
+            </property>
+            <property displayedName="Y" type="int" name="YCoordinateCircle">
+              <default>0</default>
+            </property>
+            <property displayedName="Radius" type="int" name="CircleRadius">
+              <default>5</default>
+            </property>
+          </properties>
+          <generalizations>
+            <parent parentName="AbstractNode"/>
+          </generalizations>
+        </logic>
+      </node>
 			<!-- TRIK display drawing blocks -->
 			<node displayedName="Painter Color" name="TrikSetPainterColor" description="Sets the painter color.">
 				<graphics>
@@ -2135,6 +2363,9 @@
 				<element name="NxtEnginesForward"/>
 				<element name="NxtEnginesBackward"/>
 				<element name="NxtEnginesStop"/>
+        <element name="Ev3EnginesForward"/>
+				<element name="Ev3EnginesBackward"/>
+				<element name="Ev3EnginesStop"/>
 				<element name="NxtClearEncoder"/>
 				<element name="TrikPlayTone"/>
 				<element name="TrikV6EnginesForward"/>
@@ -2181,6 +2412,10 @@
 				<element name="NxtDrawPixel"/>
 				<element name="NxtDrawLine"/>
 				<element name="NxtDrawCircle"/>
+        <element name="Ev3DrawRect"/>
+        <element name="Ev3DrawPixel"/>
+        <element name="Ev3DrawLine"/>
+        <element name="Ev3DrawCircle"/>
 				<!--<element name="TrikSetPainterColor"/>
 				<element name="TrikSetPainterWidth"/>-->
 				<element name="TrikDrawPixel"/>

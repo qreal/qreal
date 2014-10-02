@@ -15,7 +15,7 @@ public:
 
 protected:
 	int duration() override;
-    void doJob(robotModel::parts::Ev3Speaker &speaker) override;
+	void doJob(robotModel::parts::Ev3Speaker &speaker) override;
 };
 
 }
