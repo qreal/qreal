@@ -5,7 +5,7 @@
 
 #include "communication/bluetoothRobotCommunicationThread.h"
 
-//#include "parts/display.h"
+#include "parts/display.h"
 #include "parts/speaker.h"
 #include "parts/motor.h"
 
@@ -71,7 +71,7 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 	}
 
 	if (deviceInfo.isA(displayInfo())) {
-		return new parts::Speaker(displayInfo(), port, *mRobotCommunicator);
+		return new parts::Display(displayInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(motorInfo())) {
