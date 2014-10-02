@@ -13,8 +13,8 @@ class Ev3AdditionalPreferences : public interpreterBase::AdditionalPreferences
 	Q_OBJECT
 
 public:
-    explicit Ev3AdditionalPreferences(QString const &realRobotName, QWidget *parent = 0);
-    ~Ev3AdditionalPreferences();
+	explicit Ev3AdditionalPreferences(QString const &realRobotName, QWidget *parent = 0);
+	~Ev3AdditionalPreferences();
 
 	void save() override;
 	void restoreSettings() override;
@@ -31,7 +31,7 @@ private:
 	QString selectedCommunication() const;
 	QString selectedPortName() const;
 
-    Ui::Ev3AdditionalPreferences *mUi;
+	Ui::Ev3AdditionalPreferences *mUi;
 	QString const mRealRobotName;
 };
 
