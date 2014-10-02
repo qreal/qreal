@@ -11,11 +11,11 @@ DrawPixelBlock::DrawPixelBlock(interpreterBase::robotModel::RobotModelInterface 
 
 void DrawPixelBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
-    auto ev3Display = static_cast<robotModel::parts::Ev3Display *>(&display);
+	auto ev3Display = static_cast<robotModel::parts::Ev3Display *>(&display);
 	int const x = eval<int>("XCoordinatePix");
 	int const y = eval<int>("YCoordinatePix");
 	if (!errorsOccured()) {
-        ev3Display->drawPixel(x, y);
+		ev3Display->drawPixel(x, y);
 		emit done(mNextBlockId);
 	}
 }

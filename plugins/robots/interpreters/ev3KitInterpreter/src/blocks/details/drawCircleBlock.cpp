@@ -16,7 +16,7 @@ void DrawCircleBlock::doJob(interpreterBase::robotModel::robotParts::Display &di
 	int const y = eval<int>("YCoordinateCircle");
 	int const radius = eval<int>("CircleRadius");
 	if (!errorsOccured()) {
-        ev3Display->drawCircle(x, y, radius);
+		ev3Display->drawCircle(x, y, radius);
 		emit done(mNextBlockId);
 	}
 }

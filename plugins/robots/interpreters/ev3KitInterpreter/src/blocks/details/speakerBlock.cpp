@@ -23,8 +23,8 @@ SpeakerBlock::~SpeakerBlock()
 void SpeakerBlock::run()
 {
 	QString const port = "SpeakerPort";
-    robotModel::parts::Ev3Speaker * const speaker
-            = RobotModelUtils::findDevice<robotModel::parts::Ev3Speaker>(mRobotModel, port);
+	robotModel::parts::Ev3Speaker * const speaker
+		= RobotModelUtils::findDevice<robotModel::parts::Ev3Speaker>(mRobotModel, port);
 	if (speaker) {
 		doJob(*speaker);
 	} else {

@@ -27,7 +27,7 @@ protected:
 	virtual int duration() = 0;
 
 	/// Implementation may consider that speaker is configured and ready to work
-    virtual void doJob(robotModel::parts::Ev3Speaker &speaker) = 0;
+	virtual void doJob(robotModel::parts::Ev3Speaker &speaker) = 0;
 
 private slots:
 	void timeout();

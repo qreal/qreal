@@ -11,13 +11,13 @@ DrawRectBlock::DrawRectBlock(interpreterBase::robotModel::RobotModelInterface &r
 
 void DrawRectBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
-    auto ev3Display = static_cast<robotModel::parts::Ev3Display *>(&display);
+	auto ev3Display = static_cast<robotModel::parts::Ev3Display *>(&display);
 	int const x = eval<int>("XCoordinateRect");
 	int const y = eval<int>("YCoordinateRect");
 	int const width = eval<int>("WidthRect");
 	int const height = eval<int>("HeightRect");
 	if (!errorsOccured()) {
-        ev3Display->drawRect(x, y, width, height);
+		ev3Display->drawRect(x, y, width, height);
 		emit done(mNextBlockId);
 	}
 }
