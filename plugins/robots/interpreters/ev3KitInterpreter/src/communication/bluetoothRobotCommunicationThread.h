@@ -33,6 +33,8 @@ private:
 	void send(QByteArray const &buffer, unsigned const responseSize
 			, QByteArray &outputBuffer);
 	void send(QByteArray const &buffer) const;
+    void keepAlive();
+
 	QByteArray receive(int size) const;
 
 	QextSerialPort *mPort;
