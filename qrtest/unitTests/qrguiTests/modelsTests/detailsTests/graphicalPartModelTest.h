@@ -4,7 +4,7 @@
 #include <models/details/graphicalPartModel.h>
 #include <../qrrepo/repoApi.h>
 
-#include "../../../mocks/grgui/models/details/modelsImplementation/modelIndexesInterfaceMock.h"
+#include <mocks/qrgui/models/details/modelsImplementation/modelIndexesInterfaceMock.h>
 
 namespace qrguiTests {
 

@@ -59,7 +59,7 @@ LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id con
 
 void LogicalModel::addInsufficientProperties(Id const &id, QString const &name)
 {
-	if (!mEditorManagerInterface.hasElement(id.type()) && !mEditorManagerInterface.isDiagramNode(id.type())) {
+	if (!mEditorManagerInterface.hasElement(id.type())) {
 		return;
 	}
 
@@ -178,6 +178,7 @@ void LogicalModel::initializeElement(Id const &id, modelsImplementation::Abstrac
 	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
 	mApi.addChild(parentItem->id(), id);
+	mApi.setMetaInformation(id.editor() + "Version", mEditorManagerInterface.version(Id(id.editor())).toString());
 
 	addInsufficientProperties(id, name);
 

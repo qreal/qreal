@@ -1,8 +1,13 @@
 #include "element.h"
+#include <QtGui/QKeyEvent>
+
+#include <QtWidgets/QGraphicsColorizeEffect>
 
 #include "controller/commands/changePropertyCommand.h"
 
 using namespace qReal;
+
+qreal const disabledEffectStrength = 0.9;
 
 Element::Element(ElementImpl *elementImpl
 		, Id const &id
@@ -10,17 +15,20 @@ Element::Element(ElementImpl *elementImpl
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
 	: mMoving(false)
+	, mEnabled(true)
 	, mId(id)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(logicalAssistApi)
 	, mGraphicalAssistApi(graphicalAssistApi)
-	, mController(NULL)
+	, mController(nullptr)
 {
-	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemClipsChildrenToShape |
 			ItemClipsToShape | ItemSendsGeometryChanges);
 
 	setAcceptDrops(true);
 	setCursor(Qt::PointingHandCursor);
+
+	updateEnabledState();
 }
 
 Id Element::id() const
@@ -85,6 +93,7 @@ void Element::select(const bool singleSelected)
 	if (singleSelected) {
 		setSelectionState(true);
 	}
+
 	emit switchFolding(!singleSelected);
 }
 
@@ -112,6 +121,24 @@ bool Element::createChildrenFromMenu() const
 	return mElementImpl->createChildrenFromMenu();
 }
 
+void Element::updateEnabledState()
+{
+	bool const enabled = mLogicalAssistApi.editorManagerInterface().elements(
+			Id(mId.editor(), mId.diagram())).contains(mId.type());
+
+	mEnabled = enabled;
+	if (mEnabled) {
+		setGraphicsEffect(nullptr);
+		setOpacity(1);
+	} else {
+		QGraphicsColorizeEffect * const grayScale = new QGraphicsColorizeEffect(this);
+		grayScale->setColor(Qt::gray);
+		grayScale->setStrength(disabledEffectStrength);
+		setGraphicsEffect(grayScale);
+		setOpacity(disabledEffectStrength);
+	}
+}
+
 void Element::setTitlesVisible(bool visible)
 {
 	mTitlesVisible = visible;
@@ -128,5 +155,17 @@ void Element::setTitlesVisiblePrivate(bool visible)
 
 	foreach (Label * const label, mLabels) {
 		label->setVisible(label->isHard() || visible);
+	}
+}
+
+void Element::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_F2) {
+		for (Label * const label : mLabels) {
+			if (!label->isReadOnly()) {
+				label->startTextInteraction();
+				return;
+			}
+		}
 	}
 }

@@ -5,6 +5,8 @@ CONFIG += c++11
 INCLUDEPATH += \
 	$$PWD/..
 
+LIBS += -L$$PWD/../bin -lqslog
+
 HEADERS += \
 	$$PWD/ids.h \
 	$$PWD/definitions.h \
@@ -13,13 +15,16 @@ HEADERS += \
 	$$PWD/settingsManager.h \
 	$$PWD/kernelDeclSpec.h \
 	$$PWD/timeMeasurer.h \
-	$$PWD/uxInfoInterface.h \
+	$$PWD/version.h \
+	$$PWD/logging.h \
 
 SOURCES += \
 	$$PWD/ids.cpp \
 	$$PWD/exception/exception.cpp \
 	$$PWD/settingsManager.cpp \
 	$$PWD/timeMeasurer.cpp \
+	$$PWD/version.cpp \
+	$$PWD/logging.cpp \
 
 RESOURCES += \
-	$$PWD/qrkernel.qrc
+	$$PWD/qrkernel.qrc \

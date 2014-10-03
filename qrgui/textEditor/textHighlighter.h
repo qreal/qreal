@@ -2,7 +2,8 @@
 
 #include <QtGui/QSyntaxHighlighter>
 
-class TextHighlighter : public QSyntaxHighlighter {
+class TextHighlighter : public QSyntaxHighlighter
+{
 	public:
 		TextHighlighter(QTextDocument *document);
 		void highlightBlock(QString const &text);

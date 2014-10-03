@@ -12,6 +12,7 @@
 #include "toolPluginInterface/pluginConfigurator.h"
 #include "toolPluginInterface/actionInfo.h"
 #include "toolPluginInterface/hotKeyActionInfo.h"
+#include "toolPluginInterface/projectConverter.h"
 
 namespace qReal {
 
@@ -58,6 +59,25 @@ public:
 	virtual QList<HotKeyActionInfo> hotKeyActions()
 	{
 		return QList<HotKeyActionInfo>();
+	}
+
+	/// Returns a list of project converters provided by this plugin.
+	/// Convereters are applied to save containing corresponding diagrams
+	/// sequentially moving from save`s version to system one.
+	/// If no converter provided for some version than it is considered that
+	/// no modifications required for such save.
+	virtual QList<ProjectConverter> projectConverters()
+	{
+		return QList<ProjectConverter>();
+	}
+
+	/// Returns a list of pathes to ini files that contain default settings in key-value format
+	/// for this plugin. If there are collisions between keys in different plugins then selected
+	/// value is undefined. However engine`s default settings can be 'overloaded' by plugin ones.
+	/// Default implementation returns empty list.
+	virtual QStringList defaultSettingsFiles()
+	{
+		return QStringList();
 	}
 };
 

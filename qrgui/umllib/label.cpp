@@ -39,9 +39,18 @@ Label::~Label()
 
 void Label::init()
 {
-	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
+	QGraphicsTextItem::setFlags(ItemIsSelectable);
+	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
+
 	setTitleFont();
 	setRotation(mRotation);
+	if (!mBinding.isEmpty()) {
+		QList<QPair<QString, QString>> const values = mGraphicalModelAssistApi
+				.editorManagerInterface().enumValues(mId, mBinding);
+		for (QPair<QString, QString> const &pair : values) {
+			mEnumValues[pair.first] = pair.second;
+		}
+	}
 }
 
 void Label::moveToParentCenter()
@@ -75,15 +84,18 @@ Qt::Orientation Label::orientation()
 	return Qt::Horizontal;
 }
 
-void Label::setText(const QString &text)
+void Label::setText(QString const &text)
 {
 	setPlainText(text);
 }
 
-void Label::setTextFromRepo(QString const& text)
+void Label::setTextFromRepo(QString const &text)
 {
-	if (text != toPlainText()) {
-		QGraphicsTextItem::setHtml(text); // need this to load old saves with html markup
+	QString const friendlyText = mEnumValues.isEmpty()
+			? text
+			: mEnumValues.contains(text) ? mEnumValues[text] : enumText(text);
+	if (friendlyText != toPlainText()) {
+		QGraphicsTextItem::setPlainText(friendlyText);
 		setText(toPlainText());
 		updateData();
 	}
@@ -140,11 +152,16 @@ void Label::setPlainText(QString const &text)
 void Label::updateData(bool withUndoRedo)
 {
 	QString const value = toPlainText();
-	NodeElement * const parent = static_cast<NodeElement*>(parentItem());
+	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
 	if (mBinding == "name") {
 		parent->setName(value, withUndoRedo);
-	} else {
+	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mBinding, value, withUndoRedo);
+	} else {
+		QString const repoValue = mEnumValues.values().contains(value)
+				? mEnumValues.key(value)
+				: enumText(value);
+		parent->setLogicalProperty(mBinding, repoValue, withUndoRedo);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mIndex, pos());
@@ -158,6 +175,12 @@ void Label::setTitleFont()
 
 void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (dynamic_cast<EdgeElement *>(parentItem())) {
+		// Passing event to edge because users usially want to edit its property when clicking on it.
+		QGraphicsItem::mousePressEvent(event);
+		return;
+	}
+
 	if (!mShouldMove) {
 		QGraphicsTextItem::mousePressEvent(event);
 		event->ignore();
@@ -250,6 +273,11 @@ void Label::setHard(bool hard)
 	mIsHard = hard;
 }
 
+bool Label::isReadOnly() const
+{
+	return mReadOnly;
+}
+
 void Label::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);
@@ -283,9 +311,13 @@ void Label::keyPressEvent(QKeyEvent *event)
 
 	if ((event->modifiers() & Qt::ShiftModifier) && (event->key() == Qt::Key_Return)) {
 		// Line feed
-		QTextCursor const cursor = textCursor();
-		QString const currentText = toPlainText();
-		setText(currentText + "\n");
+		QTextCursor cursor = textCursor();
+		QString currentText = toPlainText();
+		int const oldPos = cursor.position();
+		currentText.insert(oldPos, "\n");
+		setText(currentText);
+		cursor.movePosition(QTextCursor::Start);
+		cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, oldPos + 1);
 		setTextCursor(cursor);
 		return;
 	}
@@ -357,4 +389,11 @@ QRectF Label::labelMovingRect() const
 	int const distance = SettingsManager::value("LabelsDistance").toInt();
 	return mapFromItem(parentItem(), parentItem()->boundingRect()).boundingRect()
 			.adjusted(-distance, -distance, distance, distance);
+}
+
+QString Label::enumText(QString const &enumValue) const
+{
+	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mBinding)
+			? enumValue
+			: QString();
 }

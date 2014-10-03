@@ -1,6 +1,6 @@
 #pragma once
 
-#include "models/graphicalModelAssistApi.h"
+#include "pluginManager/exploser.h"
 
 namespace qReal {
 namespace commands {
@@ -11,8 +11,9 @@ public:
 	CreateRemoveCommandImplementation(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, const Id &logicalParent
-			, const Id &graphicalParent
+			, Exploser &exploser
+			, Id const &logicalParent
+			, Id const &graphicalParent
 			, Id const &id
 			, bool isFromLogicalModel
 			, QString const &name
@@ -25,17 +26,22 @@ public:
 
 	bool equals(CreateRemoveCommandImplementation const &other) const;
 
+	/// @todo: Bad method, required only for linkers. Get rid of it.
+	/// Modifies command setting new creation position.
+	void setNewPosition(QPointF const &position);
+
 private:
 	void refreshAllPalettes();
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
+	Exploser &mExploser;
 	Id const mLogicalParent;
 	Id const mGraphicalParent;
 	Id mId;
 	bool const mIsFromLogicalModel;
 	QString const mName;
-	QPointF const mPosition;
+	QPointF mPosition;
 	QMap<QString, QVariant> mLogicalPropertiesSnapshot;
 	QMap<QString, QVariant> mGraphicalPropertiesSnapshot;
 	Id mOldLogicalId;

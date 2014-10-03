@@ -34,7 +34,8 @@ public:
 	void setModelIndexes(QModelIndex const &logicalModelIndex, QModelIndex const &graphicalModelIndex);
 	void clearModelIndexes();
 
-	QStringList enumValues(const QModelIndex &index) const;
+	bool enumEditable(QModelIndex const &index) const;
+	QList<QPair<QString, QString>> enumValues(QModelIndex const &index) const;
 
 	// Methods needed by "Reference button" delegate
 	QString typeName(const QModelIndex &index) const;

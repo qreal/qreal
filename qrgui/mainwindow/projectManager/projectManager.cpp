@@ -1,5 +1,6 @@
 #include "projectManager.h"
 
+#include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 
@@ -19,6 +20,7 @@ ProjectManager::ProjectManager(MainWindow *mainWindow, TextManagerInterface *tex
 	, mAutosaver(new Autosaver(this))
 	, mUnsavedIndicator(false)
 	, mSomeProjectOpened(false)
+	, mVersionsConverter(*mMainWindow)
 {
 	setSaveFilePath();
 }
@@ -34,7 +36,7 @@ void ProjectManager::setSaveFilePath(QString const &filePath /* = "" */)
 
 QString ProjectManager::saveFilePath() const
 {
-	return mSaveFilePath;
+	return mAutosaver->isTempFile(mSaveFilePath) ? QString() : mSaveFilePath;
 }
 
 void ProjectManager::reinitAutosaver()
@@ -73,7 +75,6 @@ bool ProjectManager::suggestToSaveChangesOrCancel()
 	case QMessageBox::RejectRole:
 		return false;
 	} // QMessageBox::AcceptRole
-
 	return saveOrSuggestToSaveAs();
 }
 
@@ -90,6 +91,24 @@ int ProjectManager::suggestToSaveOrCancelMessage()
 
 bool ProjectManager::open(QString const &fileName)
 {
+	QFileInfo const fileInfo(fileName);
+
+	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+		if (!fileName.isEmpty() && !saveFileExists(fileName)) {
+			return false;
+		}
+
+		return openProject(fileName);
+	} else {
+		mMainWindow->closeStartTab();
+		mTextManager->showInTextEditor(fileInfo);
+	}
+
+	return true;
+}
+
+bool ProjectManager::openProject(QString const &fileName)
+{
 	// 1. If Autosaver have time to save the state repository at the time of
 	// testing the sufficiency of plugins to open the project, the autosave
 	// file may become incompatible with the application. This will lead to
@@ -105,20 +124,26 @@ bool ProjectManager::open(QString const &fileName)
 	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
+	bool const someProjectWasOpened = mSomeProjectOpened;
 	if (mSomeProjectOpened) {
 		close();
 	}
+
 	if (mAutosaver->checkAutoSavedVersion(fileName)) {
 		setUnsavedIndicator(true);
 		mSomeProjectOpened = true;
 		return true;
 	}
+
 	mMainWindow->models()->repoControlApi().open(fileName);
 	mMainWindow->models()->reinit();
 
-	if (!pluginsEnough()) {
+	if (!pluginsEnough() || !checkVersions() || !checkForUnknownElements()) {
 		// restoring the session
-		mSomeProjectOpened = open(mSaveFilePath);
+		if (someProjectWasOpened) {
+			mSomeProjectOpened = open(mSaveFilePath);
+		}
+
 		return false;
 	}
 
@@ -138,6 +163,8 @@ bool ProjectManager::open(QString const &fileName)
 
 	mSomeProjectOpened = true;
 
+	QLOG_INFO() << "Opened project" << fileName;
+
 	return true;
 }
 
@@ -151,10 +178,12 @@ bool ProjectManager::import(QString const &fileName)
 	if (fileName.isEmpty()) {
 		return false;
 	}
+
 	QString const currentSaveFilePath = saveFilePath();
 	if (!open(fileName)) {
 		return open(currentSaveFilePath);
 	}
+
 	// In the hope that while the user selects a file nobody substitute for the current project with project, which
 	// has diagrams for which there are no plugins
 	mMainWindow->models()->repoControlApi().importFromDisk(currentSaveFilePath);
@@ -168,6 +197,7 @@ bool ProjectManager::saveFileExists(QString const &fileName)
 		fileNotFoundMessage(fileName);
 		return false;
 	}
+
 	return true;
 }
 
@@ -178,6 +208,7 @@ bool ProjectManager::pluginsEnough() const
 				, tr("These plugins are not present, but needed to load the save:\n") + missingPluginNames());
 		return false;
 	}
+
 	return true;
 }
 
@@ -191,6 +222,27 @@ QString ProjectManager::missingPluginNames() const
 		result += id.editor() + "\n";
 	}
 	return result;
+}
+
+bool ProjectManager::checkVersions()
+{
+	return mVersionsConverter.validateCurrentProject();
+}
+
+bool ProjectManager::checkForUnknownElements()
+{
+	IdList const allElements = mMainWindow->models()->logicalModelAssistApi().children(Id::rootId());
+	for (Id const &element : allElements) {
+		bool const isElementKnown = mMainWindow->editorManager().hasElement(element.type());
+		if (!isElementKnown) {
+			QString const errorMessage = tr("This project contains unknown element %1 and thus can`t be opened. "\
+					"Probably it was created by old or incorrectly working version of QReal.").arg(element.toString());
+			QMessageBox::information(mMainWindow, tr("Can`t open project file"), errorMessage);
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void ProjectManager::refreshApplicationStateAfterSave()
@@ -274,11 +326,13 @@ void ProjectManager::close()
 	mAutosaver->removeTemp();
 	mSomeProjectOpened = false;
 
+	QLOG_INFO() << "Project" << mSaveFilePath << "closed";
 	emit closed();
 }
 
 void ProjectManager::saveTo(QString const &fileName)
 {
+	QLOG_INFO() << "Saving project into" << fileName;
 	mMainWindow->models()->repoControlApi().saveTo(fileName);
 }
 
@@ -325,6 +379,7 @@ bool ProjectManager::suggestToSaveAs()
 		}
 		mMainWindow->editorManagerProxy().saveMetamodel(newMetamodelFileName);
 	}
+
 	return saveAs(getSaveFileName(tr("Select file to save current model to")));
 }
 
@@ -347,8 +402,13 @@ QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 	QString const defaultDirectory = pathToExamples.isEmpty()
 			? QFileInfo(mSaveFilePath).absoluteDir().absolutePath()
 			: pathToExamples;
+	QString filter = tr("QReal Save File (*.qrs)") + ";;";
+	QString const extensions = QStringList(mTextManager->extensionDescriptions()).join(";;");
+
+	filter += (extensions.isEmpty() ? "" : extensions + ";;") + tr("All files (*.*)");
+
 	QString fileName = QRealFileDialog::getOpenFileName("OpenQRSProject", mMainWindow, dialogWindowTitle
-			, defaultDirectory, tr("QReal Save File(*.qrs)"));
+			, defaultDirectory, filter);
 
 	if (!fileName.isEmpty() && !QFile::exists(fileName)) {
 		fileNotFoundMessage(fileName);

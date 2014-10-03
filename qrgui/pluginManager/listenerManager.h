@@ -13,7 +13,8 @@ namespace models {
 	class GraphicalModelAssistApi;
 }
 
-class ListenerManager: public QObject {
+class ListenerManager: public QObject
+{
 	Q_OBJECT
 
 public:

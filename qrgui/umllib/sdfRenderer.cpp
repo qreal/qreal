@@ -9,7 +9,6 @@
 #include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
-#include <QtSvg/QSvgRenderer>
 
 using namespace qReal;
 
@@ -66,6 +65,11 @@ bool SdfRenderer::load(QDomDocument const &document)
 
 void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo){
 	mElementRepo = elementRepo;
+}
+
+void SdfRenderer::invalidateSvgCache(double zoomFactor)
+{
+	mImagesCache.invalidateSvgCache(zoomFactor);
 }
 
 void SdfRenderer::render(QPainter *painter, const QRectF &bounds, bool isIcon)
@@ -293,38 +297,17 @@ void SdfRenderer::polygon(QDomElement &element)
 
 void SdfRenderer::image_draw(QDomElement &element)
 {
-	float x1 = x1_def(element);
-	float y1 = y1_def(element);
-	float x2 = x2_def(element);
-	float y2 = y2_def(element);
-	QString fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "error");
-	// TODO: rewrite this ugly spike
-	if (fileName.startsWith("./")) {
-		fileName = QApplication::applicationDirPath() + "/" + fileName;
-	}
+	float const x1 = x1_def(element);
+	float const y1 = y1_def(element);
+	float const x2 = x2_def(element);
+	float const y2 = y2_def(element);
 
-	QByteArray rawImage;
+	QString const fileName = SettingsManager::value("pathToImages").toString() + "/"
+			+ element.attribute("name", "default");
 
-	if (mMapFileImage.contains(fileName)) {
-		rawImage = mMapFileImage.value(fileName);
-		fileName = mReallyUsedFiles[fileName];
-	} else {
-		QString const oldFileName = fileName;
-		rawImage = loadPixmap(fileName);
-		mReallyUsedFiles[oldFileName] = oldFileName;
-		mMapFileImage.insert(fileName, rawImage);
-	}
+	QRect const rect(x1, y1, x2 - x1, y2 - y1);
 
-	QRect const rect(x1, y1, x2-x1, y2-y1);
-
-	if (fileName.endsWith(".svg")) {
-		QSvgRenderer renderer(rawImage);
-		renderer.render(painter, rect);
-	} else {
-		QPixmap pixmap;
-		pixmap.loadFromData(rawImage);
-		painter->drawPixmap(rect, pixmap);
-	}
+	mImagesCache.drawImage(fileName, *painter, rect);
 }
 
 void SdfRenderer::point(QDomElement &element)
@@ -775,40 +758,88 @@ void SdfRenderer::logger(QString path, QString string)
 	log.close();
 }
 
-QByteArray SdfRenderer::loadPixmap(QString &filePath)
+void SdfRenderer::noScale()
 {
-	QFileInfo const fileInfo(filePath);
-	if (fileInfo.exists()) {
-		return loadPixmapFromExistingFile(filePath);
-	}
-
-	// Our file does not exist, falling back to 'default.svg' or 'default.png' from this directory
-	QString const defaultImagePath = fileInfo.absoluteDir().path() + "/default.";
-	QString const defaultPngPath = defaultImagePath + "png";
-	QString const defaultSvgPath = defaultImagePath + "svg";
-	QFileInfo const defaultPngInfo(defaultPngPath);
-	QFileInfo const defaultSvgInfo(defaultSvgPath);
-	if (defaultSvgInfo.exists() || defaultPngInfo.exists()) {
-		filePath = defaultPngPath;
-		return loadPixmapFromExistingFile(filePath);
-	}
-
-	// Our file does not exist, falling back to system-scoped default icon, we are pretty sure in its existance
-	filePath = QString(":/icons/default.svg");
-	return loadPixmapFromExistingFile(filePath);
+	mNeedScale = false;
 }
 
-QByteArray SdfRenderer::loadPixmapFromExistingFile(QString &filePath)
+void SdfRenderer::ImagesCache::drawImage(
+		QString const &fileName
+		, QPainter &painter
+		, QRect const &rect)
 {
-	// HACK: Trying to load SVG version first, and use default file name as fallback. It is needed to test SVG images.
-	if (!filePath.endsWith("svg")) {
-		QFileInfo const svgVersion(QString(filePath).replace(filePath.size() - 3, 3, "svg"));
-		if (svgVersion.exists()) {
-			filePath = svgVersion.filePath();
+	auto savePrerenderedSvg = [this, &rect, &fileName] (QSvgRenderer &renderer) {
+		QTransform scale;
+		scale.scale(mCurrentZoomFactor, mCurrentZoomFactor);
+		auto scaledRect = scale.mapRect(rect);
+		QPixmap pixmap(scaledRect.size());
+		pixmap.fill(Qt::transparent);
+		QPainter pixmapPainter(&pixmap);
+		renderer.render(&pixmapPainter, scaledRect);
+		mPrerenderedSvgs.insert(fileName, pixmap);
+	};
+
+	if (mFileNamePixmapMap.contains(fileName)) {
+		painter.drawPixmap(rect, mFileNamePixmapMap.value(fileName));
+	} else if (mFileNameSvgRendererMap.contains(fileName)) {
+		if (!mPrerenderedSvgs.contains(fileName)) {
+			savePrerenderedSvg(*mFileNameSvgRendererMap.value(fileName));
+		}
+
+		painter.drawPixmap(rect, mPrerenderedSvgs.value(fileName));
+	} else {
+		// Cache miss - finding best file to load and loading it.
+		QString const actualFileName = fileName.startsWith("./")
+				? QApplication::applicationDirPath() + "/" + fileName
+				: fileName;
+
+		QFileInfo const actualFile = selectBestImageFile(actualFileName);
+
+		QByteArray const rawImage = loadPixmap(actualFile);
+		if (actualFile.suffix() == "svg") {
+			QSharedPointer<QSvgRenderer> renderer(new QSvgRenderer(rawImage));
+			mFileNameSvgRendererMap.insert(fileName, renderer);
+			renderer->render(&painter, rect);
+			savePrerenderedSvg(*renderer);
+		} else {
+			QPixmap pixmap;
+			pixmap.loadFromData(rawImage);
+			mFileNamePixmapMap.insert(fileName, pixmap);
+			painter.drawPixmap(rect, pixmap);
 		}
 	}
+}
 
-	QFile file(filePath);
+QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(QString const &filePath)
+{
+	QFileInfo const originalFileInfo(filePath);
+	QFileInfo const svgVersion(originalFileInfo.path() + originalFileInfo.completeBaseName() + "svg");
+
+	if (svgVersion.exists()) {
+		return svgVersion;
+	}
+
+	QFileInfo const fileInfo(filePath);
+	if (fileInfo.exists() && fileInfo.isFile()) {
+		return fileInfo;
+	}
+
+	QDir dir(fileInfo.absolutePath());
+	auto candidates = dir.entryInfoList({fileInfo.completeBaseName() + ".*"}, QDir::Files);
+	if (!candidates.empty()) {
+		return candidates.at(0);
+	}
+
+	if (fileInfo.completeBaseName() != "default") {
+		return selectBestImageFile(fileInfo.absolutePath() + "/default.svg");
+	}
+
+	return QFileInfo(":/icons/default.svg");
+}
+
+QByteArray SdfRenderer::ImagesCache::loadPixmap(QFileInfo const &fileInfo)
+{
+	QFile file(fileInfo.absoluteFilePath());
 	if (!file.open(QIODevice::ReadOnly)) {
 		return QByteArray();
 	}
@@ -816,9 +847,10 @@ QByteArray SdfRenderer::loadPixmapFromExistingFile(QString &filePath)
 	return file.readAll();
 }
 
-void SdfRenderer::noScale()
+void SdfRenderer::ImagesCache::invalidateSvgCache(double zoomFactor)
 {
-	mNeedScale = false;
+	mPrerenderedSvgs.clear();
+	mCurrentZoomFactor = zoomFactor;
 }
 
 

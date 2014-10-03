@@ -4,6 +4,8 @@
 
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
+#include "pluginManager/exploser.h"
+#include "umllib/sdfRenderer.h"
 
 class QGraphicsItem;
 
@@ -31,14 +33,18 @@ public:
 	QRect visualRect(const QModelIndex &index) const;
 	void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 	bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
-	void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi
-			, models::LogicalModelAssistApi &logicalAssistApi);
+	void configure(models::GraphicalModelAssistApi &graphicalAssistApi
+			, models::LogicalModelAssistApi &logicalAssistApi, Exploser &exploser);
 	void setLogicalModel(QAbstractItemModel * const logicalModel);
 	Id rootId() const;
 
 	EditorViewScene *scene() const;
 	models::GraphicalModelAssistApi *graphicalAssistApi() const;
 	models::LogicalModelAssistApi *logicalAssistApi() const;
+
+	/// Clears prerendered images.
+	/// @param zoomFactor - current zoom factor to render images.
+	void invalidateImagesZoomCache(qreal zoomFactor);
 
 public slots:
 	void reset();
@@ -61,9 +67,12 @@ private:
 	qReal::EditorView *mView;
 	models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	models::LogicalModelAssistApi *mLogicalAssistApi;
+	Exploser *mExploser;
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;
+
+	SdfRenderer mRenderer;
 
 	QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers);
 

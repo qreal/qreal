@@ -14,8 +14,8 @@ PropertyEditorModel::PropertyEditorModel(
 		, QObject *parent
 		)
 		: QAbstractTableModel(parent)
-		, mTargetLogicalModel(NULL)
-		, mTargetGraphicalModel(NULL)
+		, mTargetLogicalModel(nullptr)
+		, mTargetGraphicalModel(nullptr)
 		, mEditorManagerInterface(editorManagerInterface)
 {
 }
@@ -147,15 +147,36 @@ bool PropertyEditorModel::setData(QModelIndex const &index, QVariant const &valu
 	return modelChanged;
 }
 
-QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
+bool PropertyEditorModel::enumEditable(QModelIndex const &index) const
 {
-	if (!index.isValid())
-		return QStringList();
+	if (!index.isValid()) {
+		return false;
+	}
 
 	AttributeClassEnum const attrClass = mFields[index.row()].attributeClass;
 	// metatype, ids and name are definitely not enums
-	if (attrClass != logicalAttribute && attrClass != graphicalAttribute)
-		return QStringList();
+	if (attrClass != logicalAttribute && attrClass != graphicalAttribute) {
+		return false;
+	}
+
+	Id const id = attrClass == logicalAttribute
+			? mTargetLogicalObject.data(roles::idRole).value<Id>()
+			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
+
+	return mEditorManagerInterface.isEnumEditable(id, mFields[index.row()].fieldName);
+}
+
+QList<QPair<QString, QString>> PropertyEditorModel::enumValues(QModelIndex const &index) const
+{
+	if (!index.isValid()) {
+		return {};
+	}
+
+	AttributeClassEnum const attrClass = mFields[index.row()].attributeClass;
+	// metatype, ids and name are definitely not enums
+	if (attrClass != logicalAttribute && attrClass != graphicalAttribute) {
+		return {};
+	}
 
 	Id const id = attrClass == logicalAttribute
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()

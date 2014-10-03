@@ -9,8 +9,8 @@ using namespace models::details::modelsImplementation;
 
 ModelExplorer::ModelExplorer(QWidget *parent)
 	: QTreeView(parent)
-	, mController(NULL)
-	, mModel(NULL)
+	, mController(nullptr)
+	, mModel(nullptr)
 {
 }
 
@@ -24,9 +24,9 @@ void ModelExplorer::setAssistApi(details::ModelsAssistInterface * const model)
 	mModel = model;
 }
 
-void ModelExplorer::setExploser(models::Exploser * const exploser)
+void ModelExplorer::setExploser(Exploser &exploser)
 {
-	mExploser = exploser;
+	mExploser = &exploser;
 }
 
 void ModelExplorer::commitData(QWidget *editor)

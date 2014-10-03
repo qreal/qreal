@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include <QtCore/QTranslator>
-
 #include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
 
 #include "rulesChecker.h"
@@ -31,8 +29,6 @@ private:
 
 	RulesChecker *mChecker;
 	BpmnCustomizer mCustomizer;
-
-	QTranslator mTranslator;
 
 	QList<qReal::ActionInfo> mActionInfos;
 

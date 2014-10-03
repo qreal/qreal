@@ -21,7 +21,7 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 		mReadOnly = "true";
 	}
 	mIndex = index;
-	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
+	mBackground = element.attribute("background", nodeLabel && mTextBinded.isEmpty() ? "transparent" : "white");
 	mIsHard = element.attribute("hard", "false").toLower().trimmed() == "true";
 	mIsPlainText = element.attribute("isPlainText", "false").toLower().trimmed() == "true";
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {
@@ -31,9 +31,33 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	return true;
 }
 
+Label* Label::clone()
+{
+	Label* returnLabel = new Label();
+	returnLabel->mX = mX;
+	returnLabel->mY = mY;
+
+	returnLabel->mCenter = mCenter;
+	returnLabel->mText = mText;
+	returnLabel->mTextBinded = mTextBinded;
+	returnLabel->mReadOnly = mReadOnly;
+	returnLabel->mRotation = mRotation;
+
+	returnLabel->mIndex = mIndex;
+	returnLabel->mBackground = mBackground;
+	returnLabel->mIsHard = mIsHard;
+	returnLabel->mIsPlainText = mIsPlainText;
+	return returnLabel;
+}
+
 QString Label::titleName() const
 {
 	return "title_" + QString("%1").arg(mIndex);
+}
+
+void Label::changeIndex(int i)
+{
+	mIndex = i;
 }
 
 void Label::generateCodeForConstructor(OutFile &out)
@@ -47,7 +71,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 		// It is a static label, text for it is fixed.
 		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
-				+ ", QString::fromUtf8(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
+				+ ", QObject::tr(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 
@@ -94,7 +118,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 					field = "repo->logicalProperty(\"" + listElement + "\")";
 				}
 			} else {
-				field = "QString::fromUtf8(\"" + listElement + "\")";
+				field = "QObject::tr(\"" + listElement + "\")";
 			}
 
 			resultStr += " + " +  field;
@@ -115,5 +139,3 @@ void Label::generateCodeForFields(OutFile &out)
 {
 	out() << "		qReal::LabelInterface *" + titleName() + ";\n";
 }
-
-

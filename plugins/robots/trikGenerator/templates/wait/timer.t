@@ -1,1 +1,0 @@
-brick.delay(@@DELAY@@);

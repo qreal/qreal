@@ -12,6 +12,7 @@ public:
 	CreateElementCommand(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
+			, Exploser &exploser
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id
@@ -20,6 +21,10 @@ public:
 			, QPointF const &position);
 
 	Id result() const;
+
+	/// @todo: Bad method, required only for linkers. Get rid of it.
+	/// Modifies command setting new creation position.
+	void setNewPosition(QPointF const &position);
 
 protected:
 	virtual bool execute();

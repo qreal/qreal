@@ -13,7 +13,7 @@ class QRUTILS_EXPORT PaintWidget : public QWidget
 	Q_OBJECT
 public:
 	explicit PaintWidget(QWidget *parent = 0);
-	void setPainter(PainterInterface *painter);
+	void appendPainter(PainterInterface *painter);
 
 protected:
 	void paintEvent(QPaintEvent *event);

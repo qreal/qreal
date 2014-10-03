@@ -6,8 +6,11 @@
 #include <QtWidgets/QComboBox>
 #include <QtCore/QTimer>
 
-#include <qrutils/expressionsParser/expressionsParser.h>
+#include <qrtext/debuggerInterface.h>
+
 #include "sensorViewer.h"
+
+#include "qrutils/utilsDeclSpec.h"
 
 namespace Ui {
 class SensorsGraph;
@@ -22,7 +25,7 @@ class QRUTILS_EXPORT SensorsGraph : public QWidget
 	Q_OBJECT
 
 public:
-	explicit SensorsGraph(ExpressionsParser const *parser, QWidget *parent = 0);
+	explicit SensorsGraph(qrtext::DebuggerInterface const &parser, QWidget *parent = 0);
 	~SensorsGraph();
 
 	/// add new element to watch list
@@ -31,6 +34,9 @@ public:
 	/// @param displayName will be shown in ComboBox
 	void addTrackingObject(int const index, QString const &inParserName, QString const &displayName);
 	void removeTracking(int const index);
+
+	/// Removes all tracking objects
+	void clearTrackingObjects();
 
 	/// paintEvent makes resize operations
 	void paintEvent(QPaintEvent *event = 0);
@@ -74,9 +80,10 @@ private:
 	QToolButton mZoomInButton;
 	QToolButton mZoomOutButton;
 	QToolButton mResetButton;
+	QToolButton mSaveButton;
 	QComboBox mSlotComboBox;
 	QTimer mUpdateTimer;
-	ExpressionsParser const *mParser;
+	qrtext::DebuggerInterface const &mParser;
 	struct TrackObject;
 	QList<TrackObject> mWatchList;
 

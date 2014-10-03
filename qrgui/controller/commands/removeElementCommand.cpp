@@ -5,13 +5,14 @@ using namespace qReal::commands;
 RemoveElementCommand::RemoveElementCommand(
 		models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
+		, Exploser &exploser
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, Id const &id
 		, bool isFromLogicalModel
 		, QString const &name
 		, QPointF const &position)
-	: mImpl(logicalApi, graphicalApi, logicalParent, graphicalParent
+	: mImpl(logicalApi, graphicalApi, exploser, logicalParent, graphicalParent
 			, id, isFromLogicalModel, name, position)
 {
 }
@@ -19,11 +20,12 @@ RemoveElementCommand::RemoveElementCommand(
 RemoveElementCommand::RemoveElementCommand(
 		models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
+		, Exploser &exploser
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, bool isFromLogicalModel
 		, Element *element)
-	: mImpl(logicalApi, graphicalApi, logicalParent, graphicalParent
+	: mImpl(logicalApi, graphicalApi, exploser, logicalParent, graphicalParent
 			, element->id(), isFromLogicalModel, element->name(), element->pos())
 {
 }

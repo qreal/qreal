@@ -11,9 +11,6 @@ RulesPlugin::RulesPlugin()
 	, mRunCurrentDiagram(NULL)
 	, mExportToXml(NULL)
 {
-	mTranslator.load(":/rulesChecker_" + QLocale::system().name());
-	QApplication::installTranslator(&mTranslator);
-
 	initAction();
 }
 

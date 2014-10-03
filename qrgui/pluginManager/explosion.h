@@ -4,15 +4,13 @@
 
 namespace qReal {
 
-/// This class describes such entity as explosion: explosion relation between
-/// @see source() and @see target() means that @see source() can or must
-/// be binded with some instance of @see target() type. Double click on such
+/// This class describes such entity as explosion: explosion relation between source() and target() means
+/// that source() can or must be binded with some instance of target() type. Double click on such
 /// element unfolds a diagram with target element as root
 class Explosion
 {
 public:
-	Explosion(Id const &source, Id const &target
-			, bool isReusable, bool requiresImmediateLinkage);
+	Explosion(Id const &source, Id const &target, bool isReusable, bool requiresImmediateLinkage);
 
 	/// The type of the source element
 	Id source() const;

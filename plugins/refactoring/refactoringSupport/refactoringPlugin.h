@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QtCore/QTranslator>
 #include <QtWidgets/QMenu>
 
 #include "../../../qrkernel/ids.h"
@@ -152,8 +151,6 @@ private:
 	QList<QHash<Id, Id> > mMatches;
 	QHash <Id, Id> mCurrentMatch;
 	IdList mSelectedElementsOnActiveDiagram;
-
-	QTranslator mAppTranslator;
 };
 }
 }

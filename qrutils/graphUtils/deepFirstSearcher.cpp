@@ -40,7 +40,7 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 	IdList const outgoingLinks = mRepo.outgoingLinks(id);
 	QList<LinkInfo> linkInfos;
 
-	foreach (Id const &link, outgoingLinks) {
+	for (Id const &link : outgoingLinks) {
 		Id const connectedNode = mRepo.otherEntityFromLink(link, id);
 		LinkInfo info;
 		info.linkId = link;
@@ -50,11 +50,11 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 		linkInfos << info;
 	}
 
-	foreach (VisitorInterface * const visitor, visitors) {
+	for (VisitorInterface * const visitor : visitors) {
 		visitor->visit(id, linkInfos);
 	}
 
-	foreach (LinkInfo const &link, linkInfos) {
+	for (LinkInfo const &link : linkInfos) {
 		if (!link.targetVisited && link.connected && !mSearchTerminated) {
 			dfs(link.target, visitors);
 		}

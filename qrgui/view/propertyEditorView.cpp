@@ -87,7 +87,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 		int type = QVariant::String;
 		QString typeName = mModel->typeName(valueCell).toLower();
-		QStringList values = mModel->enumValues(valueCell);
+		QList<QPair<QString, QString>> const values = mModel->enumValues(valueCell);
 		bool isButton = false;
 		if (typeName == "int") {
 			type = QVariant::Int;
@@ -114,9 +114,19 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			vItem->setValue(value);
 			vItem->setToolTip(value.toString());
 			if (!values.isEmpty()) {
-				vItem->setAttribute("enumNames", values);
-				QVariant idx(enumPropertyIndexOf(valueCell, value.toString()));
-				vItem->setValue(idx);
+				QStringList friendlyNames;
+				for (QPair<QString, QString> const &pair : values) {
+					friendlyNames << pair.second;
+				}
+
+				vItem->setAttribute("enumNames", friendlyNames);
+				vItem->setAttribute("enumEditable", mModel->enumEditable(valueCell));
+				int const idx = enumPropertyIndexOf(valueCell, value.toString());
+				if (mModel->enumEditable(valueCell)) {
+					vItem->setValue(idx < 0 ? value.toString() : values[idx].second);
+				} else {
+					vItem->setValue(idx);
+				}
 			}
 			item = vItem;
 		}
@@ -193,12 +203,21 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	QModelIndex const &index = mModel->index(row, 1);
 
 	if (propertyType == QtVariantPropertyManager::enumTypeId()) {
-		QStringList const &values = mModel->enumValues(index);
-		int intValue = value.toInt();
-		if (intValue >= 0 && intValue < values.length()) {
-			value = values.at(intValue);
+		QList<QPair<QString, QString>> const values = mModel->enumValues(index);
+		if (mModel->enumEditable(index)) {
+			for (auto const &keyValue : values) {
+				if (keyValue.second == value) {
+					value = keyValue.first;
+				}
+			}
+		} else {
+			int const intValue = value.toInt();
+			if (intValue >= 0 && intValue < values.length()) {
+				value = values.at(intValue).first;
+			}
 		}
 	}
+
 	value = QVariant(value.toString());
 	QVariant const oldValue = mModel->data(index);
 
@@ -219,10 +238,13 @@ void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVa
 
 int PropertyEditorView::enumPropertyIndexOf(QModelIndex const &index, QString const &value)
 {
-	QStringList const &values = mModel->enumValues(index);
-	if (!values.empty()) {
-		return values.indexOf(value);
+	QList<QPair<QString, QString>> const values = mModel->enumValues(index);
+	for (int index = 0; index < values.count(); ++index) {
+		if (values[index].first == value) {
+			return index;
+		}
 	}
+
 	return -1;
 }
 

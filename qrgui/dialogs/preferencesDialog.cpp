@@ -1,6 +1,8 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
 
+#include <QtWidgets/QMessageBox>
+
 #include <qrutils/qRealFileDialog.h>
 
 #include "dialogs/preferencesPages/behaviourPage.h"
@@ -9,6 +11,7 @@
 #include "dialogs/preferencesPages/miscellaniousPage.h"
 #include "dialogs/preferencesPages/featuresPage.h"
 #include "hotKeyManager/hotKeyManagerPage.h"
+#include "brandManager/brandManager.h"
 
 using namespace qReal;
 using namespace utils;
@@ -66,13 +69,26 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	chooseTab(mUi->listWidget->currentIndex());
 }
 
+void PreferencesDialog::updatePluginDependendSettings()
+{
+	setWindowIcon(BrandManager::applicationIcon());
+}
+
 void PreferencesDialog::applyChanges()
 {
+	bool shouldRestart = false;
 	foreach (PreferencesPage *page, mCustomPages.values()) {
 		page->save();
+		shouldRestart |= page->mShouldRestartSystemToApply;
+		page->mShouldRestartSystemToApply = false;
 	}
 
 	SettingsManager::instance()->saveData();
+
+	if (shouldRestart) {
+		QMessageBox::information(this, tr("Information"), tr("You should restart the system to apply changes"));
+	}
+
 	emit settingsApplied();
 }
 
@@ -125,13 +141,14 @@ void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * 
 {
 	mUi->pageContentWigdet->addWidget(page);
 	mCustomPages.insert(pageName, page);
+	mPagesIndexes.insert(pageName, mCustomPages.count() - 1);
 	mUi->listWidget->addItem(new QListWidgetItem(QIcon(page->getIcon()), pageName));
 }
 
 void PreferencesDialog::switchCurrentTab(QString const &tabName)
 {
 	if (mCustomPages.contains(tabName)) {
-		int const currentIndex = mCustomPages.keys().indexOf(tabName);
+		int const currentIndex = mPagesIndexes[tabName];
 		mUi->listWidget->setCurrentRow(currentIndex);
 		mUi->pageContentWigdet->setCurrentIndex(currentIndex + 1);
 	}

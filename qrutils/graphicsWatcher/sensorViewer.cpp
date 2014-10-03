@@ -1,5 +1,10 @@
 ﻿#include "sensorViewer.h"
 
+#include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
+#include <qrutils/qRealFileDialog.h>
+#include <qrutils/outFile.h>
+
 using namespace utils::sensorsGraph;
 
 SensorViewer::SensorViewer(QWidget *parent)
@@ -96,6 +101,30 @@ void SensorViewer::clear()
 	mScaleCoefficient = 0;
 }
 
+void SensorViewer::exportHistory()
+{
+	QString fileName = QRealFileDialog::getSaveFileName("RobotsCsvSaver"
+			, this, tr("Save values history"),"", tr("Comma-Separated Values Files (*.csv)"));
+	if (fileName.isEmpty()) {
+		return;
+	}
+
+	if (!fileName.endsWith(".csv")) {
+		fileName += ".csv";
+	}
+
+	try {
+		OutFile out(fileName);
+		out() << "time" << ";" << "value" << "\n";
+		for (int i = 0; i < mPointsDataProcessor->pointsBase().size(); ++i) {
+			qreal const plotValue = mPointsDataProcessor->pointsBase()[i].y();
+			out() << i << ";" << mPointsDataProcessor->pointToAbsoluteValue(plotValue) << "\n";
+		}
+	} catch (qReal::Exception const &exception) {
+		QLOG_ERROR() << "An error occured during exporting sensor values to" << fileName << ":" << exception.message();
+	}
+}
+
 void SensorViewer::setNextValue(qreal const newValue)
 {
 	mPointsDataProcessor->addNewValue(newValue);
@@ -119,9 +148,9 @@ void SensorViewer::drawNextFrame()
 
 	QPen const regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 	QLineF quantOfGraph;
-	for (int i = 0; i < mPointsDataProcessor->pointsBase()->size() - 1; i++) {
-		quantOfGraph = QLineF(mPointsDataProcessor->pointsBase()->at(i)
-							  , mPointsDataProcessor->pointsBase()->at(i + 1));
+	for (int i = 0; i < mPointsDataProcessor->pointsBase().size() - 1; i++) {
+		quantOfGraph = QLineF(mPointsDataProcessor->pointsBase()[i]
+				, mPointsDataProcessor->pointsBase()[i + 1]);
 		mScene->addLine(quantOfGraph, regularPen);
 	}
 }

@@ -1,0 +1,1 @@
+ActivateTask(TASK_@@NAME@@);
