@@ -1,7 +1,6 @@
 #pragma once
 
 #include "preferencesDialog/preferencesPage.h"
-#include "mainWindow/filterObject.h"
 
 namespace Ui {
 	class PreferencesBehaviourPage;

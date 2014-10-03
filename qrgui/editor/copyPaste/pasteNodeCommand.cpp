@@ -1,6 +1,6 @@
 ﻿#include "pasteNodeCommand.h"
 
-#include "mainWindow/mainWindow.h"
+#include <qrgui/models/models.h>
 
 using namespace qReal::commands;
 

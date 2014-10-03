@@ -12,10 +12,6 @@
 
 #include "editor/private/pushButtonProperty.h"
 
-namespace qReal {
-	class MainWindow;
-}
-
 /** @brief This widget imitates QtCreator's property editor */
 class PropertyEditorView : public QWidget
 {
@@ -75,7 +71,6 @@ private:
 	bool mChangingPropertyValue;
 	PropertyEditorModel *mModel;
 	QtTreePropertyBrowser *mPropertyEditor;
-	qReal::MainWindow *mMainWindow;
 	qReal::models::LogicalModelAssistApi *mLogicalModelAssistApi;
 	QtVariantPropertyManager *mVariantManager;
 	QtVariantEditorFactory *mVariantFactory;

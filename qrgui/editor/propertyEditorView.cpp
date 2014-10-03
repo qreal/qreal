@@ -168,12 +168,10 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 	// there are only four types of buttons: shape, reference, text and directory path
 	if (name == "shape") {
 		emit shapeEditorRequested(actualIndex, role, propertyValue, false);
-		//////////mMainWindow->openShapeEditor(actualIndex, role, propertyValue, false);
 	} else {
 		QString const typeName = mModel->typeName(index).toLower();
 		if (typeName == "code") {
 			emit textEditorRequested(actualIndex, role, propertyValue);
-			/////////mMainWindow->openQscintillaTextEditor(actualIndex, role, propertyValue);
 		} else if (typeName == "directorypath") {
 			QString startPath;
 			if (propertyValue.isEmpty()) {
@@ -186,7 +184,6 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 			mModel->setData(index, location);
 		} else {
 			emit referenceListRequested(actualIndex, typeName, propertyValue, role);
-			///////////mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
 		}
 	}
 }

@@ -4,7 +4,6 @@
 #include "editor/copyPaste/clipboardHandler.h"
 #include "editor/copyPaste/pasteGroupCommand.h"
 #include "editor/editorViewScene.h"
-#include "mainWindow/mainWindow.h"
 
 using namespace qReal;
 
