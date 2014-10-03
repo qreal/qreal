@@ -25,6 +25,10 @@ public:
 	void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
 	void setTitlesVisible(bool visible);
 
+signals:
+	/// Emitted when for some reason root element was removed and editor must be closed.
+	void rootElementRemoved(QModelIndex const &rootGraphicsIndex);
+
 public slots:
 	void toggleAntialiasing(bool);
 	void zoomIn();

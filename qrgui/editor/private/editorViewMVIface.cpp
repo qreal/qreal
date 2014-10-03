@@ -17,6 +17,7 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mLogicalAssistApi(nullptr)
 	, mExploser(nullptr)
 {
+	connect(this, &EditorViewMViface::rootElementRemoved, mView, &EditorView::rootElementRemoved);
 }
 
 EditorViewMViface::~EditorViewMViface()
@@ -248,6 +249,13 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex curr = model()->index(row, 0, parent);
+		if (curr == rootIndex()) {
+			// Root id was removed, time to close current tab.
+			emit rootElementRemoved(curr);
+			// Now we will be deletted, nipping off...
+			return;
+		}
+
 		if(item(curr)) {
 			mScene->removeItem(item(curr));
 			delete item(curr);

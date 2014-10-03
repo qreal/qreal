@@ -42,6 +42,10 @@ public:
 	/// @param zoomFactor - current zoom factor to render images.
 	void invalidateImagesZoomCache(qreal zoomFactor);
 
+signals:
+	/// Emitted when for some reason root index was removed from the model.
+	void rootElementRemoved(QModelIndex const &graphicsIndex);
+
 public slots:
 	void reset();
 	void setRootIndex(QModelIndex const &index);

@@ -186,7 +186,6 @@ public slots:
 	bool createProject(QString const &diagramIdString);
 
 	void openFirstDiagram();
-	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle();
 
 private slots:

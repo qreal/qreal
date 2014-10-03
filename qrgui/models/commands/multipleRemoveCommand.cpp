@@ -128,7 +128,6 @@ AbstractCommand *MultipleRemoveCommand::graphicalDeleteCommand(Id const &id)
 				, mGraphicalApi.position(id)
 				);
 
-	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mGraphicalApi.children(id);
 	for (Id const &child : children) {
 		if (mLogicalApi.editorManagerInterface().isGraphicalElementNode(child)) {

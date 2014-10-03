@@ -269,8 +269,6 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
-	connect(&mModels->exploser(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
-
 	setDefaultShortcuts();
 }
 
@@ -1125,22 +1123,6 @@ void MainWindow::openFirstDiagram()
 	openNewTab(mModels->graphicalModelAssistApi().indexById(rootIds[0]));
 }
 
-void MainWindow::closeTabsWithRemovedRootElements()
-{
-	Id const rootId = mModels->graphicalModelAssistApi().rootId();
-	IdList const rootIds = mModels->graphicalModelAssistApi().children(rootId);
-	int i = 0;
-	while (i < mUi->tabs->count()) {
-		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (tab && !rootIds.contains(tab->mvIface().rootId())) {
-			closeTab(i);
-			break;
-		} else {
-			++i;
-		}
-	}
-}
-
 void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIndex)
 {
 	if (!tab) {
@@ -1167,6 +1149,8 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 			, &tab->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
 			, &tab->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
+	connect(tab, &EditorView::rootElementRemoved, this
+			, static_cast<bool (MainWindow::*)(QModelIndex const &)>(&MainWindow::closeTab));
 
 	setShortcuts(tab);
 
