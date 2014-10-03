@@ -64,8 +64,9 @@ public:
 	Controller &controller() const;
 	qReal::EditorManagerInterface const &editorManager() const;
 
-	/// Initializes and returns a widget that shows gestures available for this tab.
-	QWidget *gesturesPainterWidget();
+	/// Produces and returns a widget that shows gestures available for this tab.
+	/// Transfers owneship.
+	QWidget *gesturesPainterWidget() const;
 
 	void setEnabled(bool enabled);
 

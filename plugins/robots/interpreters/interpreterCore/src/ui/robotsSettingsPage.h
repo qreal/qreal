@@ -18,7 +18,7 @@ namespace ui {
 
 /// Preferences page for robots interpreter plugin. Contains constructor kit selector and a placeholder for
 /// kit-specific settings.
-class RobotsSettingsPage : public gui::PreferencesPage, public interpreterBase::DevicesConfigurationProvider
+class RobotsSettingsPage : public qReal::gui::PreferencesPage, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 

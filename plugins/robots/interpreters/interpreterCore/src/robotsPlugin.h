@@ -26,7 +26,7 @@ public:
 
 	void init(qReal::PluginConfigurator const &configurator) override;
 	qReal::Customizer *customizationInterface() override;  // Does not transfer ownership.
-	QPair<QString, gui::PreferencesPage *> preferencesPage() override;  // Transfers ownership.
+	QPair<QString, qReal::gui::PreferencesPage *> preferencesPage() override;  // Transfers ownership.
 	QList<qReal::ActionInfo> actions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::ProjectConverter> projectConverters() override;

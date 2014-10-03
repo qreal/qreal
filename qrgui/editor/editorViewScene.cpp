@@ -1285,9 +1285,9 @@ EditorManagerInterface const &EditorViewScene::editorManager() const
 	return mEditorManager;
 }
 
-QWidget *EditorViewScene::gesturesPainterWidget()
+QWidget *EditorViewScene::gesturesPainterWidget() const
 {
-	return mMouseMovementManager.painter();
+	return mMouseMovementManager.producePainter();
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

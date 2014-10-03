@@ -35,7 +35,7 @@ public:
 	void init(qReal::PluginConfigurator const &configurer);
 
 	/// Returns a pointer to settings page for robots plugin.
-	gui::PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
+	qReal::gui::PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
 
 	/// Returns the customization class object for configuring QReal's main GUI module
 	Customizer &customizer();

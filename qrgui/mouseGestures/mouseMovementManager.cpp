@@ -2,7 +2,7 @@
 
 #include <qrkernel/logging.h>
 
-#include "private/geometricForms.h"
+#include "gesturesWidget.h"
 #include "private/pathCorrector.h"
 #include "private/levenshteinDistance.h"
 
@@ -24,26 +24,11 @@ MouseMovementManager::MouseMovementManager(Id const &diagram
 	mKeyStringManager.reset(new KeyManager);
 	mGesturesManager.reset(new MixedGesturesManager);
 	initializeGestures();
-	connect(&mGesturesPainter, &GesturesWidget::currentElementChanged, this, &MouseMovementManager::drawIdealPath);
 }
 
-GesturesWidget *MouseMovementManager::painter()
+QWidget *MouseMovementManager::producePainter() const
 {
-	printElements();
-	return &mGesturesPainter;
-}
-
-void MouseMovementManager::drawIdealPath()
-{
-	Id const currentElement = mGesturesPainter.currentElement();
-	if (mEditorManagerInterface.elements(mDiagram).contains(currentElement)) {
-		QString const paths = mEditorManagerInterface.mouseGesture(currentElement);
-		mGesturesPainter.draw(paths);
-	}
-}
-
-void MouseMovementManager::printElements()
-{
+	GesturesWidget * const result = new GesturesWidget;
 	QList<QPair<QString, Id> > elements;
 	for (Id const &element : mEditorManagerInterface.elements(mDiagram)) {
 		if (!mEditorManagerInterface.mouseGesture(element).isEmpty()) {
@@ -51,7 +36,19 @@ void MouseMovementManager::printElements()
 		}
 	}
 
-	mGesturesPainter.setElements(elements);
+	result->setElements(elements);
+	connect(result, &GesturesWidget::currentElementChanged, this, &MouseMovementManager::drawIdealPath);
+	return result;
+}
+
+void MouseMovementManager::drawIdealPath()
+{
+	GesturesWidget * const gesturesPainter = static_cast<GesturesWidget *>(sender());
+	Id const currentElement = gesturesPainter->currentElement();
+	if (mEditorManagerInterface.elements(mDiagram).contains(currentElement)) {
+		QString const paths = mEditorManagerInterface.mouseGesture(currentElement);
+		gesturesPainter->draw(paths);
+	}
 }
 
 void MouseMovementManager::clear()

@@ -1,11 +1,12 @@
 #include "robotsPluginFacade.h"
 
+#include <qrkernel/settingsManager.h>
+#include <interpreterBase/robotModel/portInfo.h>
+
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "managers/paletteUpdateManager.h"
 #include "managers/kitAutoSwitcher.h"
 #include "managers/kitExtensionsUpdateManager.h"
-
-#include <interpreterBase/robotModel/portInfo.h>
 
 using namespace interpreterCore;
 
@@ -76,7 +77,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	mInterpreter = interpreter;
 
-	connect(&configurer.systemEvents(), &SystemEvents::closedMainWindow
+	connect(&configurer.systemEvents(), &qReal::SystemEvents::closedMainWindow
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
@@ -104,13 +105,13 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
-	connect(&configurer.systemEvents(), &SystemEvents::activeTabChanged
+	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, &mActionsManager, &ActionsManager::onActiveTabChanged);
 
 	sync();
 }
 
-gui::PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
+qReal::gui::PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
 {
 	return mRobotSettingsPage;
 }
@@ -164,13 +165,13 @@ void RobotsPluginFacade::connectInterpreterToActions()
 			);
 }
 
-bool RobotsPluginFacade::selectKit(PluginConfigurator const &configurer)
+bool RobotsPluginFacade::selectKit(qReal::PluginConfigurator const &configurer)
 {
 	/// @todo reinit it each time when robot model changes
 	/// @todo: do we need this method?
-	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
+	QString const selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
 	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
-		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
+		qReal::SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
 	} else if (mKitPluginManager.kitIds().isEmpty()) {
 		configurer.mainWindowInterpretersInterface().setEnabledForAllElementsInPalette(false);
 
@@ -229,7 +230,7 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 
 void RobotsPluginFacade::initFactoriesFor(QString const &kitId
 		, interpreterBase::robotModel::RobotModelInterface const *model
-		, PluginConfigurator const &configurer)
+		, qReal::PluginConfigurator const &configurer)
 {
 	// Pulling each robot model to each kit plugin with same ids. We need it for supporting
 	// plugin-based blocks set extension for concrete roobt model.

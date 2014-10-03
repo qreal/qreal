@@ -5,7 +5,6 @@
 #include <QtCore/QMap>
 #include <QtWidgets/QWidget>
 
-#include "gesturesWidget.h"
 #include "private/keyManager.h"
 #include "private/mixedgesturesmanager.h"
 #include "private/geometricForms.h"
@@ -55,7 +54,9 @@ public:
 
 	MouseMovementManager(Id const &diagram, EditorManagerInterface const &editorManagerInterface);
 
-	GesturesWidget *painter();
+	/// Creates and returns the widget that shows available for this manager mouse gestures.
+	/// Transfers ownership.
+	QWidget *producePainter() const;
 
 	void initializeGestures();
 	void mousePress(QPointF const &point);
@@ -74,12 +75,10 @@ public:
 private:
 	static QPoint parsePoint(QString const &str);
 	void recountCentre();
-	void printElements();
 	void drawIdealPath();
 
 	Id const mDiagram;
 	EditorManagerInterface const &mEditorManagerInterface;
-	GesturesWidget mGesturesPainter;  // Does not take ownership
 	PathVector mPath;
 	QPointF mCenter;
 	QSet<Id> mInitializedGestures;

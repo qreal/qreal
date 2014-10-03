@@ -48,6 +48,8 @@
 
 #include <brandManager/brandManager.h>
 
+#include <mouseGestures/gesturesWidget.h>
+
 #include <textEditor/textManager.h>
 #include <textEditor/qscintillaTextEdit.h>
 
@@ -1438,11 +1440,6 @@ void MainWindow::showGestures()
 	QWidget * const gesturesPainter = getCurrentTab()->mutableScene().gesturesPainterWidget();
 	mUi->tabs->addTab(gesturesPainter, tr("Gestures Show"));
 	mUi->tabs->setCurrentWidget(gesturesPainter);
-	connect(gesturesPainter, &QObject::destroyed, [=] {
-		if (int const index = mUi->tabs->indexOf(gesturesPainter)) {
-			mUi->tabs->removeTab(index);
-		}
-	} );
 }
 
 

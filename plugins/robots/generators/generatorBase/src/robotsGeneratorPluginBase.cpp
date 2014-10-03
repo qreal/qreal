@@ -1,8 +1,10 @@
 #include "generatorBase/robotsGeneratorPluginBase.h"
 
+#include <QtCore/QDateTime>
+
 #include <qrutils/inFile.h>
-#include <qrgui/mainWindow/qscintillaTextEdit.h>
 #include <qrutils/nameNormalizer.h>
+#include <qrgui/textEditor/qscintillaTextEdit.h>
 
 using namespace generatorBase;
 using namespace qReal;
