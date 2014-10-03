@@ -30,9 +30,8 @@ public:
 	void resizeBeginWithGrid(int indexGrid);
 	void reshapeEndWithGrid(int indexGrid);
 	void reshapeBeginWithGrid(int indexGrid);
-	void setBeginCoordinatesWithGrid(int indexGrid);
-	void setEndCoordinatesWithGrid(int indexGrid);
 	void setDraggedEndWithGrid(qreal x, qreal y);
+	void alignTheWall(int indexGrid);
 
 	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) override;
 	void deserialize(QDomElement const &element) override;
@@ -43,6 +42,9 @@ public:
 protected:
 	void setPrivateData();
 	qreal alignedCoordinate(qreal coord, int coef, int const indexGrid) const;
+	void setBeginCoordinatesWithGrid(int indexGrid);
+	void setEndCoordinatesWithGrid(int indexGrid);
+	void countCellNumbCoordinates(int indexGrid);
 
 	graphicsUtils::LineImpl mLineImpl;
 	QString mSerializeName;

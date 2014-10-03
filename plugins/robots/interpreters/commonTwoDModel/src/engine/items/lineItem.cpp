@@ -145,7 +145,6 @@ void LineItem::reshapeEndWithGrid(int indexGrid)
 	mCellNumbY2 = mY2 / indexGrid;
 }
 
-
 void LineItem::reshapeBeginWithGrid(int indexGrid)
 {
 	int const coefX = static_cast<int> (mX1) / indexGrid;
@@ -153,6 +152,21 @@ void LineItem::reshapeBeginWithGrid(int indexGrid)
 	setX1andY1(alignedCoordinate(mX1, coefX, indexGrid), alignedCoordinate(mY1, coefY, indexGrid));
 	mCellNumbX1 = mX1 / indexGrid;
 	mCellNumbY1 = mY1 / indexGrid;
+}
+
+void LineItem::alignTheWall(int indexGrid)
+{
+	countCellNumbCoordinates(indexGrid);
+	setBeginCoordinatesWithGrid(indexGrid);
+	setEndCoordinatesWithGrid(indexGrid);
+}
+
+void LineItem::countCellNumbCoordinates(int indexGrid)
+{
+	mCellNumbX1 = mX1 / indexGrid;
+	mCellNumbY1 = mY1 / indexGrid;
+	mCellNumbX2 = mX2 / indexGrid;
+	mCellNumbY2 = mY2 / indexGrid;
 }
 
 void LineItem::setBeginCoordinatesWithGrid(int indexGrid)
