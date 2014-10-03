@@ -325,8 +325,7 @@ void ShapeEdit::save()
 		mEditorManager->updateShape(mId, mDocument.toString(4));
 		foreach (Id const graphicalElement, mGraphicalElements) {
 			mEditorManager->updateShape(graphicalElement, mDocument.toString(4));
-			EditorViewScene *editorViewScene = mEditorView->editorViewScene();
-			foreach (QGraphicsItem * const item, editorViewScene->items()) {
+			for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
 				NodeElement * const element = dynamic_cast<NodeElement *>(item);
 				if (element && element->id().type() == mId.type()) {
 					element->updateShape(mDocument.toString(4));

@@ -19,7 +19,6 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 
 HEADERS += \
-	$$PWD/gesturesPainterInterface.h \
 	$$PWD/mouseMovementManager.h \
 	$$PWD/gesturesWidget.h \
 	$$PWD/gesturePainter.h \

@@ -12,7 +12,6 @@ class PasteEdgeCommand : public PasteCommand
 {
 public:
 	PasteEdgeCommand(EditorViewScene *scene
-			, EditorViewMViface const *mvIface
 			, EdgeData const &data
 			, QPointF const &offset
 			, bool isGraphicalCopy

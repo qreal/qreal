@@ -31,11 +31,10 @@
 #include "controller/controller.h"
 #include "plugins/toolPluginInterface/systemEvents.h"
 
-#include "mouseGestures/gesturesPainterInterface.h"
-#include "mouseGestures/gesturesWidget.h"
-
 #include "preferencesDialog/preferencesDialog.h"
 #include "dialogs/findReplaceDialog.h"
+
+class QGraphicsView;
 
 namespace Ui {
 class MainWindowUi;
@@ -77,7 +76,6 @@ public:
 	PropertyEditorModel &propertyModel();
 	ToolPluginManager &toolManager();
 
-	gestures::GesturesPainterInterface *gesturesPainter() const;
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
@@ -166,12 +164,9 @@ public:
 	void endPaletteModification() override;
 
 signals:
-	void gesturesShowed();
-	void currentIdealGestureChanged();
 	void rootDiagramChanged();
 
 public slots:
-	void deleteFromScene();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
 	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true);
@@ -235,8 +230,6 @@ private slots:
 	void pasteOnDiagram();
 	void pasteCopyOfLogical();
 
-	void cropSceneToItems();
-
 	void closeCurrentTab();
 	void closeTab(int index);
 
@@ -297,7 +290,6 @@ private:
 	virtual void closeEvent(QCloseEvent *event);
 
 	void deleteFromExplorer(bool isLogicalModel);
-	void deleteItems(IdList &itemsToDelete, bool global = false);
 
 	QString getSaveFileName(QString const &dialogWindowTitle);
 	QString getOpenFileName(QString const &dialogWindowTitle);
@@ -308,8 +300,8 @@ private:
 	int getTabIndex(const QModelIndex &index);
 
 	void initGridProperties();
-	void disconnectZoom(QGraphicsView* view);
-	void connectZoom(QGraphicsView* view);
+	void disconnectZoom(QGraphicsView *view);
+	void connectZoom(QGraphicsView *view);
 	void disconnectActionZoomTo(QWidget* widget);
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
@@ -368,7 +360,6 @@ private:
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
 	PropertyEditorModel mPropertyModel;
-	gestures::GesturesWidget *mGesturesWidget;
 	SystemEvents *mSystemEvents;
 	TextManager *mTextManager;
 

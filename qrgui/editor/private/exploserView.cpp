@@ -1,24 +1,20 @@
 #include "exploserView.h"
 
-#include "mainWindow/mainWindow.h"
+#include <qrgui/models/models.h>
+#include <qrgui/models/commands/createElementCommand.h>
+#include <qrgui/dialogs/metamodelingOnFly/propertiesDialog.h>
+
 #include "editor/editorViewScene.h"
 #include "editor/commands/expandCommand.h"
-#include "models/commands/createElementCommand.h"
-#include "dialogs/metamodelingOnFly/propertiesDialog.h"
 
 using namespace qReal;
 using namespace view::details;
 
-ExploserView::ExploserView(MainWindow &mainWindow
-		, models::LogicalModelAssistApi &logicalApi
-		, models::GraphicalModelAssistApi &graphicalApi
-		, models::Exploser &exploser
-		, QObject *parent)
+ExploserView::ExploserView(models::Models const &models, QObject *parent)
 	: QObject(parent)
-	, mMainWindow(mainWindow)
-	, mLogicalApi(logicalApi)
-	, mGraphicalApi(graphicalApi)
-	, mExploser(exploser)
+	, mLogicalApi(models.logicalModelAssistApi())
+	, mGraphicalApi(models.graphicalModelAssistApi())
+	, mExploser(models.exploser())
 {
 }
 
@@ -27,10 +23,12 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 		, Id const &alreadyConnectedElement) const
 {
 	bool hasAnyActions = false;
-	QString const menuName = alreadyConnectedElement.isNull()
-			? mMainWindow.toolManager().customizer()->addExplosionMenuName()
-			: mMainWindow.toolManager().customizer()->changeExplosionMenuName();
-	QMenu *addExplosionMenu = new QMenu(menuName);
+	/// @todo: restore it!!!!
+//	QString const menuName = alreadyConnectedElement.isNull()
+//			? mMainWindow.toolManager().customizer()->addExplosionMenuName()
+//			: mMainWindow.toolManager().customizer()->changeExplosionMenuName();
+//	QMenu *addExplosionMenu = new QMenu(menuName);
+	QMenu *addExplosionMenu = new QMenu();
 
 	for (Explosion const &explosion : explosions) {
 		for (Id const &elementId : mLogicalApi.logicalRepoApi().logicalElements(explosion.target())) {
@@ -62,8 +60,11 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 	contextMenu.addMenu(addExplosionMenu);
 
 	if (alreadyConnectedElement != Id()) {
+		/// @todo: restore it!!!!
+//		QAction * const gotoAction = contextMenu.addAction(
+//				mMainWindow.toolManager().customizer()->goToConnectedMenuName(), this, SLOT(goToActionTriggered()));
 		QAction * const gotoAction = contextMenu.addAction(
-				mMainWindow.toolManager().customizer()->goToConnectedMenuName(), this, SLOT(goToActionTriggered()));
+				"", this, SLOT(goToActionTriggered()));
 		gotoAction->setData(alreadyConnectedElement.toVariant());
 	}
 }
@@ -75,7 +76,9 @@ void ExploserView::createRemoveExplosionMenu(Element const * const element, QMen
 		return;
 	}
 
-	QAction *action = contextMenu.addAction(mMainWindow.toolManager().customizer()->deleteExplosionMenuName());
+	/// @todo: restore it!!!!
+//	QAction *action = contextMenu.addAction(mMainWindow.toolManager().customizer()->deleteExplosionMenuName());
+	QAction *action = contextMenu.addAction("mMainWindow.toolManager().customizer()->deleteExplosionMenuName()");
 	connect(action, SIGNAL(triggered()), SLOT(removeExplosionActionTriggered()));
 	action->setData(QVariantList() << element->logicalId().toVariant() << outgoingConnection.toVariant());
 }
@@ -92,12 +95,13 @@ void ExploserView::createExpandAction(Element const * const element, QMenu &cont
 		return;
 	}
 
-	QAction * expandAction = contextMenu.addAction(node->isExpanded()
-			? mMainWindow.toolManager().customizer()->collapseExplosionActionText()
-			: mMainWindow.toolManager().customizer()->expandExplosionActionText());
-	connect(expandAction, SIGNAL(triggered()), SLOT(expandExplosionActionTriggered()));
+	/// @todo: restore it!!!!
+//	QAction * expandAction = contextMenu.addAction(node->isExpanded()
+//			? mMainWindow.toolManager().customizer()->collapseExplosionActionText()
+//			: mMainWindow.toolManager().customizer()->expandExplosionActionText());
+//	connect(expandAction, SIGNAL(triggered()), SLOT(expandExplosionActionTriggered()));
 
-	expandAction->setData(element->id().toVariant());
+//	expandAction->setData(element->id().toVariant());
 }
 
 void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
@@ -146,7 +150,8 @@ void ExploserView::handleDoubleClick(Id const &id)
 			commands::AbstractCommand *createCommand =
 					mExploser.createElementWithIncomingExplosionCommand(
 							id, diagramType, mGraphicalApi);
-			mMainWindow.controller()->executeGlobal(createCommand);
+			/// @todo: restore it!!!!
+//			mMainWindow.controller()->executeGlobal(createCommand);
 			outgoingLink = static_cast<commands::CreateElementCommand *>(createCommand)->result();
 		}
 	}
@@ -172,7 +177,8 @@ void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *create
 void ExploserView::goTo(Id const &id)
 {
 	if (!id.isNull()) {
-		mMainWindow.activateItemOrDiagram(id);
+		/// @todo: restore it!!!!
+//		mMainWindow.activateItemOrDiagram(id);
 	}
 }
 
@@ -183,10 +189,12 @@ void ExploserView::addExplosionActionTriggered()
 	Id const source = connection[0].value<Id>();
 	Id const destination = connection[1].value<Id>();
 	if (action->text().startsWith(tr("New "))) {
-		mMainWindow.controller()->execute(mExploser.createElementWithIncomingExplosionCommand(
-				source, destination, mGraphicalApi));
+		/// @todo: restore it!!!!
+//		mMainWindow.controller()->execute(mExploser.createElementWithIncomingExplosionCommand(
+//				source, destination, mGraphicalApi));
 	} else {
-		mMainWindow.controller()->execute(mExploser.addExplosionCommand(source, destination));
+		/// @todo: restore it!!!!
+//		mMainWindow.controller()->execute(mExploser.addExplosionCommand(source, destination));
 	}
 }
 
@@ -203,35 +211,38 @@ void ExploserView::removeExplosionActionTriggered()
 	QList<QVariant> const connection = action->data().toList();
 	Id const source = connection[0].value<Id>();
 	Id const destination = connection[1].value<Id>();
-	mMainWindow.controller()->execute(mExploser.removeExplosionCommand(source, destination));
+	/// @todo: restore it!!!!
+//	mMainWindow.controller()->execute(mExploser.removeExplosionCommand(source, destination));
 }
 
 void ExploserView::expandExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	Id elem = action->data().value<Id>();
-	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mMainWindow.getCurrentTab()->scene());
-	if (!evScene) {
-		return;
-	}
+	/// @todo: restore it!!!!
+//	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mMainWindow.getCurrentTab()->scene());
+//	if (!evScene) {
+//		return;
+//	}
 
-	NodeElement *node = evScene->getNodeById(elem);
-	if (node) {
-		mMainWindow.controller()->execute(new qReal::commands::ExpandCommand(node));
-	}
+//	NodeElement *node = evScene->getNodeById(elem);
+//	if (node) {
+//		mMainWindow.controller()->execute(new qReal::commands::ExpandCommand(node));
+//	}
 }
 
 void ExploserView::changePropertiesActionTriggered()
 {
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
-	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
-			mLogicalApi.editorManagerInterface()
-			, mLogicalApi.mutableLogicalRepoApi()
-			, id
-			, &mMainWindow);
-	propertiesDialog->setModal(true);
-	propertiesDialog->show();
+	/// @todo: restore it!!!!
+//	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
+//			mLogicalApi.editorManagerInterface()
+//			, mLogicalApi.mutableLogicalRepoApi()
+//			, id
+//			, &mMainWindow);
+//	propertiesDialog->setModal(true);
+//	propertiesDialog->show();
 }
 
 void ExploserView::changeAppearanceActionTriggered()
@@ -239,7 +250,8 @@ void ExploserView::changeAppearanceActionTriggered()
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
 	QString const propertyValue = mLogicalApi.editorManagerInterface().shape(id);
-	mMainWindow.openShapeEditor(id, propertyValue, mLogicalApi.editorManagerInterface(), false);
+	/// @todo: restore it!!!!
+//	mMainWindow.openShapeEditor(id, propertyValue, mLogicalApi.editorManagerInterface(), false);
 }
 
 void ExploserView::addElementToPaletteActionTriggered()
@@ -247,5 +259,6 @@ void ExploserView::addElementToPaletteActionTriggered()
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
 	mLogicalApi.editorManagerInterface().resetIsHidden(id);
-	mMainWindow.loadPlugins();
+	/// @todo: restore it!!!!
+//	mMainWindow.loadPlugins();
 }

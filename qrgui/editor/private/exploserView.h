@@ -2,13 +2,23 @@
 
 #include <QtWidgets/QMenu>
 
-#include "models/logicalModelAssistApi.h"
-#include "models/graphicalModelAssistApi.h"
-#include "models/exploser.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 
-class MainWindow;
+class Element;
+class Explosion;
+
+namespace commands {
+class AbstractCommand;
+}
+
+namespace models {
+class Models;
+class LogicalModelAssistApi;
+class GraphicalModelAssistApi;
+class Exploser;
+}
 
 namespace view {
 namespace details {
@@ -20,11 +30,7 @@ class ExploserView : public QObject
 	Q_OBJECT
 
 public:
-	ExploserView(MainWindow &mainWindow
-			, models::LogicalModelAssistApi &logicalApi
-			, models::GraphicalModelAssistApi &graphicalApi
-			, models::Exploser &exploser
-			, QObject *parent = 0);
+	explicit ExploserView(models::Models const &models, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
 	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
@@ -60,7 +66,6 @@ private:
 	/// with given @see id
 	void goTo(Id const &id);
 
-	MainWindow &mMainWindow;
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;

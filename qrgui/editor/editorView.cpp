@@ -5,31 +5,32 @@
 
 #include <qrkernel/settingsListener.h>
 #include <qrutils/mathUtils/math.h>
+#include <qrgui/models/models.h>
 
 using namespace qReal;
 
 int const zoomAnimationInterval = 20;
 int const zoomAnimationTimes = 4;
 
-EditorView::EditorView(QWidget *parent)
+EditorView::EditorView(models::Models const &models, Controller &controller, Id const &rootId, QWidget *parent)
 	: QGraphicsView(parent)
+	, mScene(models, controller, rootId, this)
+	, mMVIface(this, &mScene)
 	, mMouseOldPosition()
 	, mWheelPressed(false)
 	, mTouchManager(this)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
-	mScene = new EditorViewScene(this);
-	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
-	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
-	connect(mScene, &EditorViewScene::sceneRectChanged, this
+	connect(&mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
+	connect(&mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
+	connect(&mScene, &EditorViewScene::sceneRectChanged, this
 			, static_cast<void (EditorView::*)(QRectF const &)>(&EditorView::setSceneRect));
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
 
-	mMVIface = new EditorViewMViface(this, mScene);
-	setScene(mScene);
+	setScene(&mScene);
 
 	setAcceptDrops(true);
 	setDragMode(RubberBandDrag);
@@ -39,24 +40,28 @@ EditorView::EditorView(QWidget *parent)
 
 	setAlignment(Qt::AlignCenter);
 
-	connect(&mTouchManager, SIGNAL(gestureStarted()), mScene, SLOT(deleteGesture()));
-	SettingsListener::listen("IndexGrid", mScene, &EditorViewScene::redraw);
-	SettingsListener::listen("GridWidth", mScene, &EditorViewScene::redraw);
+	connect(&mTouchManager, SIGNAL(gestureStarted()), &mScene, SLOT(deleteGesture()));
+	SettingsListener::listen("IndexGrid", &mScene, &EditorViewScene::redraw);
+	SettingsListener::listen("GridWidth", &mScene, &EditorViewScene::redraw);
 	SettingsListener::listen("CurrentFont", this, &EditorView::setSceneFont);
 }
 
-EditorView::~EditorView()
-{
-	delete mMVIface;
-	delete mScene;
-}
-
-EditorViewMViface *EditorView::mvIface() const
+EditorViewMViface const &EditorView::mvIface() const
 {
 	return mMVIface;
 }
 
-EditorViewScene *EditorView::editorViewScene() const
+EditorViewMViface &EditorView::mutableMvIface()
+{
+	return mMVIface;
+}
+
+EditorViewScene const &EditorView::editorViewScene() const
+{
+	return mScene;
+}
+
+EditorViewScene &EditorView::mutableScene()
 {
 	return mScene;
 }
@@ -84,7 +89,7 @@ void EditorView::zoomOut()
 void EditorView::checkGrid()
 {
 	if (SettingsManager::value("ShowGrid").toBool()) {
-		mScene->setNeedDrawGrid(mScene->realIndexGrid() >= 2 && mScene->realIndexGrid() <= 380);
+		mScene.setNeedDrawGrid(mScene.realIndexGrid() >= 2 && mScene.realIndexGrid() <= 380);
 	}
 }
 
@@ -100,8 +105,8 @@ void EditorView::startAnimation(char const *slot)
 
 void EditorView::setDrawSceneGrid(bool show)
 {
-	mScene->setNeedDrawGrid(show);
-	mScene->invalidate();
+	mScene.setNeedDrawGrid(show);
+	mScene.invalidate();
 }
 
 void EditorView::mouseMoveEvent(QMouseEvent *event)
@@ -124,7 +129,7 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	} else {
 		if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ControlModifier)) {
 			setDragMode(RubberBandDrag);
-			mScene->itemSelectUpdate();
+			mScene.itemSelectUpdate();
 		/*} else 	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ShiftModifier)) {
 			setDragMode(ScrollHandDrag); //  (see #615)
 			mScene->itemSelectUpdate();*/
@@ -165,7 +170,7 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 			setDragMode(RubberBandDrag);
 		}
 		if (event->modifiers() & Qt::ControlModifier) {
-			mScene->itemSelectUpdate();
+			mScene.itemSelectUpdate();
 		}
 	}
 }
@@ -173,7 +178,7 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 void EditorView::scrollContentsBy(int dx, int dy)
 {
 	QGraphicsView::scrollContentsBy(dx, dy);
-	mScene->invalidate();
+	mScene.invalidate();
 }
 
 void EditorView::keyPressEvent(QKeyEvent *event)
@@ -230,7 +235,7 @@ void EditorView::ensureElementVisible(Element const * const element
 
 void EditorView::setTitlesVisible(bool visible)
 {
-	mScene->setTitlesVisible(visible);
+	mScene.setTitlesVisible(visible);
 }
 
 void EditorView::zoomInTime()
@@ -260,14 +265,14 @@ void EditorView::zoom(qreal const zoomFactor)
 		return;
 	}
 
-	setSceneRect(mScene->sceneRect());
+	setSceneRect(mScene.sceneRect());
 	scale(zoomFactor, zoomFactor);
 
 	if (SettingsManager::value("ShowGrid").toBool()) {
-		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
+		mScene.setRealIndexGrid(mScene.realIndexGrid() * zoomFactor);
 	}
 
-	mMVIface->invalidateImagesZoomCache(transform().m11());
+	mMVIface.invalidateImagesZoomCache(transform().m11());
 
 	checkGrid();
 }

@@ -2,7 +2,6 @@
 
 #include <QtGui/QIconEngine>
 
-#include "gesturesPainterInterface.h"
 #include "private/geometricForms.h"
 
 namespace qReal {

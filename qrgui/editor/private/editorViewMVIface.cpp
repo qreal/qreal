@@ -17,8 +17,6 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mLogicalAssistApi(nullptr)
 	, mExploser(nullptr)
 {
-	mScene->setMVIface(this);
-	mScene->mView = mView;
 }
 
 EditorViewMViface::~EditorViewMViface()
@@ -394,6 +392,7 @@ void EditorViewMViface::configure(models::GraphicalModelAssistApi &graphicalAssi
 	mExploser = &exploser;
 }
 
+/// @todo: set logical model in constructor
 void EditorViewMViface::setLogicalModel(QAbstractItemModel * const logicalModel)
 {
 	connect(logicalModel, SIGNAL(dataChanged(QModelIndex, QModelIndex))

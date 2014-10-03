@@ -8,7 +8,7 @@ UpdateElementCommand::UpdateElementCommand(EditorViewScene const *scene, Id cons
 }
 
 UpdateElementCommand::UpdateElementCommand(EditorView const *view, Id const &id)
-	: ElementCommand(view->editorViewScene(), id)
+	: ElementCommand(&view->editorViewScene(), id)
 {
 }
 

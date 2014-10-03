@@ -7,24 +7,22 @@
 #include <qrkernel/roles.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 
-#include "controller/controller.h"
 #include "mouseGestures/mouseMovementManager.h"
-
-#include "nodeElement.h"
 #include "copyPaste/clipboardHandler.h"
-#include "private/editorViewMVIface.h"
 #include "private/exploserView.h"
 
 namespace qReal {
 
 const int arrowMoveOffset = 5;
 
-class EditorViewMViface;
-class EditorView;
-class MainWindow;
+class Controller;
 
 namespace commands {
 class CreateElementCommand;
+}
+
+namespace models {
+class Models;
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -32,8 +30,7 @@ class EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	explicit EditorViewScene(QObject *parent);
-	~EditorViewScene();
+	EditorViewScene(models::Models const &models, Controller &controller, Id const &rootId, QObject *parent = 0);
 
 	void addItem(QGraphicsItem *item);
 
@@ -62,11 +59,14 @@ public:
 	NodeElement *findNodeAt(QPointF const &position) const;
 
 	virtual qReal::Id rootItemId() const;
-	void setMainWindow(qReal::MainWindow *mainWindow);
-	qReal::MainWindow *mainWindow() const;
 	/// @todo: remove theese getters
-	qReal::Controller &controller() const;
-	qReal::EditorManagerInterface &editorManager() const;
+	models::Models const &models() const;
+	Controller &controller() const;
+	qReal::EditorManagerInterface const &editorManager() const;
+
+	/// Initializes and returns a widget that shows gestures available for this tab.
+	QWidget *gesturesPainterWidget();
+
 	void setEnabled(bool enabled);
 
 	void setNeedDrawGrid(bool show);
@@ -77,7 +77,8 @@ public:
 
 	Element *lastCreatedFromLinker() const;
 
-	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
+	/// Removes items selected by user with undo possibility.
+	void deleteSelectedItems();
 
 	void highlight(qReal::Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
 	void dehighlight(qReal::Id const &graphicalId);
@@ -133,8 +134,6 @@ public slots:
 	/// update all links
 	void updateEdgeElements();
 
-	void cropToItems();
-
 	void deleteGesture();
 
 	/// Makes same as QGraphicsScene::update. Useful for c++11-styled connections.
@@ -156,16 +155,14 @@ protected:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
-
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+
+	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
 	virtual void drawForeground(QPainter *painter, QRectF const &rect);
 	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
-	void printElementsOfRootDiagram();
-	void drawIdealGesture();
-	void initMouseMoveManager();
 	void createEdge(QString const &id);
 
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
@@ -176,8 +173,6 @@ private slots:
 	void deselectLabels();
 
 private:
-	void setMVIface(EditorViewMViface *mvIface);
-
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();
 	void createEdgeMenu(QList<QString> const &ids);
@@ -200,6 +195,11 @@ private:
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
+	models::Models const &mModels;
+	qReal::EditorManagerInterface const &mEditorManager;
+	qReal::Controller &mController;
+	Id const mRootId;
+
 	Id mLastCreatedFromLinker;
 	commands::CreateElementCommand *mLastCreatedFromLinkerCommand;
 
@@ -219,19 +219,12 @@ private:
 	/// list of pixmaps to be drawn on scene's foreground
 	QList<QPixmap *> mForegroundPixmaps;
 
-	qReal::EditorViewMViface *mMVIface;
-	qReal::EditorView *mView;
-
-	qReal::MainWindow *mWindow;
-	qReal::EditorManagerInterface *mEditorManager;
-	qReal::Controller *mController;
-
 	QList<QAction *> mContextMenuActions;
 
 	QPointF mCurrentMousePos;
 	QPointF mCreatePoint;
 
-	gestures::MouseMovementManager *mMouseMovementManager;
+	gestures::MouseMovementManager mMouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
 
@@ -257,9 +250,7 @@ private:
 
 	QMenu mContextMenu;
 
-	view::details::ExploserView *mExploser; // Takes ownership
-
-	friend class qReal::EditorViewMViface;
+	view::details::ExploserView mExploser; // Takes ownership
 };
 
 }

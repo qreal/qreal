@@ -3,17 +3,13 @@
 #include "controller/commands/abstractCommand.h"
 #include "editor/editorViewScene.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class PasteGroupCommand : public AbstractCommand
 {
 public:
-	PasteGroupCommand(EditorViewScene *scene
-			, EditorViewMViface const *mvIface
-			, bool isGraphicalCopy);
+	PasteGroupCommand(EditorViewScene *scene, bool isGraphicalCopy);
 	virtual ~PasteGroupCommand();
 
 	bool isEmpty() const;
@@ -30,7 +26,6 @@ private:
 	void pullDataFromClipboard(QList<NodeData> &nodesData, QList<EdgeData> &edgesData) const;
 
 	EditorViewScene *mScene;
-	EditorViewMViface const *mMVIface;
 	bool const mIsGraphicalCopy;
 	QHash<Id, Id> *mCopiedIds;
 	bool mIsEmpty;

@@ -12,7 +12,7 @@ SelectElementCommand::SelectElementCommand(EditorViewScene const *scene
 
 SelectElementCommand::SelectElementCommand(EditorView const *view
 		, Id const &id, bool shouldSelect, bool forceValueChange)
-	: ElementCommand(view->editorViewScene(), id)
+	: ElementCommand(&view->editorViewScene(), id)
 	, mNewState(shouldSelect)
 	, mForceValueChange(forceValueChange)
 {

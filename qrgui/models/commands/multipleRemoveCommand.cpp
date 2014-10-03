@@ -1,19 +1,15 @@
 #include "multipleRemoveCommand.h"
 
-#include "models/logicalModelAssistApi.h"
-#include "models/graphicalModelAssistApi.h"
+#include "models/models.h"
 
 #include "models/commands/removeElementCommand.h"
 
 using namespace qReal::commands;
 
-MultipleRemoveCommand::MultipleRemoveCommand(models::LogicalModelAssistApi &logicalApi
-		, models::GraphicalModelAssistApi &graphicalApi
-		, models::Exploser &exploser
-		, IdList &itemsToDelete)
-	: mLogicalApi(logicalApi)
-	, mGraphicalApi(graphicalApi)
-	, mExploser(exploser)
+MultipleRemoveCommand::MultipleRemoveCommand(models::Models const &models, IdList &itemsToDelete)
+	: mLogicalApi(models.logicalModelAssistApi())
+	, mGraphicalApi(models.graphicalModelAssistApi())
+	, mExploser(models.exploser())
 {
 	IdList itemsToUpdate;
 

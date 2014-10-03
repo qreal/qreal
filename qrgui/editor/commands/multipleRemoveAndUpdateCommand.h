@@ -13,11 +13,7 @@ namespace commands {
 class MultipleRemoveAndUpdateCommand : public MultipleRemoveCommand
 {
 public:
-	MultipleRemoveAndUpdateCommand(EditorViewScene &scene
-			, models::LogicalModelAssistApi &logicalApi
-			, models::GraphicalModelAssistApi &graphicalApi
-			, models::Exploser &exploser
-			, IdList &itemsToDelete);
+	MultipleRemoveAndUpdateCommand(EditorViewScene &scene, models::Models const &models, IdList &itemsToDelete);
 
 private:
 	AbstractCommand *graphicalDeleteCommand(Id const &id) override;

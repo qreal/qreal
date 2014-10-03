@@ -10,7 +10,7 @@ ArrangeLinksCommand::ArrangeLinksCommand(EditorViewScene const *scene
 
 ArrangeLinksCommand::ArrangeLinksCommand(EditorView const *view
 		, Id const &id, bool needAdjusting)
-	: ElementCommand(view->editorViewScene(), id), mNeedAdjusting(needAdjusting)
+	: ElementCommand(&view->editorViewScene(), id), mNeedAdjusting(needAdjusting)
 {
 }
 

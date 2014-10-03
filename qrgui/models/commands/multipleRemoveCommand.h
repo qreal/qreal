@@ -5,6 +5,7 @@
 namespace qReal {
 
 namespace models {
+class Models;
 class Exploser;
 class LogicalModelAssistApi;
 class GraphicalModelAssistApi;
@@ -16,10 +17,7 @@ namespace commands {
 class MultipleRemoveCommand : public DoNothingCommand
 {
 public:
-	MultipleRemoveCommand(models::LogicalModelAssistApi &logicalApi
-			, models::GraphicalModelAssistApi &graphicalApi
-			, models::Exploser &exploser
-			, IdList &itemsToDelete);
+	MultipleRemoveCommand(models::Models const &models, IdList &itemsToDelete);
 
 	/// Produces and instance of command that removes logical element and all of its graphical elements.
 	commands::AbstractCommand *logicalDeleteCommand(QModelIndex const &index);

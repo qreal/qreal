@@ -1,17 +1,19 @@
 #include "pasteEdgeCommand.h"
-#include "mainWindow/mainWindow.h"
+
+#include <qrgui/models/models.h>
+
 #include "editor/commands/reshapeEdgeCommand.h"
 
 using namespace qReal::commands;
 
 PasteEdgeCommand::PasteEdgeCommand(EditorViewScene *scene
-		, EditorViewMViface const *mvIface
 		, EdgeData const &data
 		, QPointF const &offset
 		, bool isGraphicalCopy
 		, QHash<qReal::Id, qReal::Id> *copiedIds)
-	: PasteCommand(scene, mvIface, offset, isGraphicalCopy, copiedIds)
-	, mEdgeData(data), mCreateCommand(NULL)
+	: PasteCommand(scene, offset, isGraphicalCopy, copiedIds)
+	, mEdgeData(data)
+	, mCreateCommand(nullptr)
 {
 }
 
@@ -37,14 +39,14 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 	Id resultId = mResult;
 	if (!mCreateCommand) {
 		mCreateCommand = new CreateElementCommand(
-				*mMVIface->logicalAssistApi()
-				, *mMVIface->graphicalAssistApi()
-				, mScene->mainWindow()->models()->exploser()
-				, mMVIface->rootId()
-				, mMVIface->rootId()
+				mScene->models().logicalModelAssistApi()
+				, mScene->models().graphicalModelAssistApi()
+				, mScene->models().exploser()
+				, mScene->rootItemId()
+				, mScene->rootItemId()
 				, mEdgeData.logicalId
 				, true
-				, mMVIface->graphicalAssistApi()->name(mEdgeData.id)
+				, mScene->models().graphicalModelAssistApi().name(mEdgeData.id)
 				, mEdgeData.pos);
 
 		mCreateCommand->redo();
@@ -56,10 +58,10 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 	}
 
 	EdgeElement * const newEdge = new EdgeElement(
-			mMVIface->logicalAssistApi()->editorManagerInterface().elementImpl(resultId)
+			mScene->models().logicalModelAssistApi().editorManagerInterface().elementImpl(resultId)
 			, resultId
-			, *mMVIface->graphicalAssistApi()
-			, *mMVIface->logicalAssistApi()
+			, mScene->models().graphicalModelAssistApi()
+			, mScene->models().logicalModelAssistApi()
 			);
 
 	newEdge->setController(&mScene->controller());
@@ -78,17 +80,17 @@ void PasteEdgeCommand::restoreElement()
 	Id const newSrcId = mCopiedIds->value(mEdgeData.srcId);
 	Id const newDstId = mCopiedIds->value(mEdgeData.dstId);
 
-	Id const logicalId = mMVIface->graphicalAssistApi()->logicalId(mCreateCommand->result());
-	mMVIface->graphicalAssistApi()->setProperties(logicalId, mEdgeData.logicalProperties);
+	Id const logicalId = mScene->models().graphicalModelAssistApi().logicalId(mCreateCommand->result());
+	mScene->models().graphicalModelAssistApi().setProperties(logicalId, mEdgeData.logicalProperties);
 
-	mMVIface->graphicalAssistApi()->setPosition(edgeId, mEdgeData.pos + mOffset);
-	mMVIface->graphicalAssistApi()->setConfiguration(edgeId, mEdgeData.configuration);
+	mScene->models().graphicalModelAssistApi().setPosition(edgeId, mEdgeData.pos + mOffset);
+	mScene->models().graphicalModelAssistApi().setConfiguration(edgeId, mEdgeData.configuration);
 
-	mMVIface->graphicalAssistApi()->setFrom(edgeId, newSrcId.isNull() ? Id::rootId() : newSrcId);
-	mMVIface->graphicalAssistApi()->setTo(edgeId, newDstId.isNull() ? Id::rootId() : newDstId);
+	mScene->models().graphicalModelAssistApi().setFrom(edgeId, newSrcId.isNull() ? Id::rootId() : newSrcId);
+	mScene->models().graphicalModelAssistApi().setTo(edgeId, newDstId.isNull() ? Id::rootId() : newDstId);
 
-	mMVIface->graphicalAssistApi()->setFromPort(edgeId, mEdgeData.portFrom);
-	mMVIface->graphicalAssistApi()->setToPort(edgeId, mEdgeData.portTo);
+	mScene->models().graphicalModelAssistApi().setFromPort(edgeId, mEdgeData.portFrom);
+	mScene->models().graphicalModelAssistApi().setToPort(edgeId, mEdgeData.portTo);
 
 	EdgeElement *edge = mScene->getEdgeById(edgeId);
 	if (edge) {

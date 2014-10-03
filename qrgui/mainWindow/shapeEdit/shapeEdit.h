@@ -13,9 +13,6 @@
 #include "plugins/pluginManager/editorManagerInterface.h"
 
 // TODO: lolwut?
-//#include "ui_mainWindow.h"
-
-// TODO: lolwut?
 #include "models/details/logicalModel.h"
 
 #include "mainWindow/shapeEdit/visibilityConditionsDialog.h"
@@ -26,6 +23,8 @@ class ShapeEdit;
 }
 
 namespace qReal {
+
+class MainWindow;
 
 class ShapeEdit : public QWidget {
 	Q_OBJECT

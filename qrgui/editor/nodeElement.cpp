@@ -11,17 +11,18 @@
 #include <math.h>
 #include <qrkernel/logging.h>
 
+#include <qrgui/models/models.h>
+#include <qrgui/models/commands/changeParentCommand.h>
+#include <qrgui/models/commands/renameCommand.h>
+#include <qrgui/plugins/editorPluginInterface/editorInterface.h>
+
 #include "editor/labelFactory.h"
 #include "editor/editorViewScene.h"
-#include "plugins/editorPluginInterface/editorInterface.h"
-#include "mainWindow/mainWindow.h"
 #include "editor/ports/portFactory.h"
 
 #include "editor/private/resizeHandler.h"
 #include "editor/private/copyHandler.h"
 
-#include "models/commands/changeParentCommand.h"
-#include "models/commands/renameCommand.h"
 #include "editor/commands/resizeCommand.h"
 #include "editor/commands/foldCommand.h"
 #include "editor/commands/insertIntoEdgeCommand.h"
@@ -1339,22 +1340,18 @@ void NodeElement::initRenderedDiagram()
 		return;
 	}
 
-	MainWindow *window = evScene->mainWindow();
-
 	Id const diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	Id const graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(window);
-	EditorViewScene *openedScene = dynamic_cast<EditorViewScene *>(view.scene());
-	openedScene->setMainWindow(window);
-	openedScene->setNeedDrawGrid(false);
+	EditorView view(evScene->models(), evScene->controller(), graphicalDiagram);
+	view.mutableScene().setNeedDrawGrid(false);
 
-	view.mvIface()->configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);
-	view.mvIface()->setModel(window->models()->graphicalModel());
-	view.mvIface()->setLogicalModel(window->models()->logicalModel());
-	view.mvIface()->setRootIndex(mGraphicalAssistApi.indexById(graphicalDiagram));
+	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);
+	view.mutableMvIface().setModel(evScene->models().graphicalModel());
+	view.mutableMvIface().setLogicalModel(evScene->models().logicalModel());
+	view.mutableMvIface().setRootIndex(mGraphicalAssistApi.indexById(graphicalDiagram));
 
-	QRectF sceneRect = openedScene->itemsBoundingRect();
+	QRectF sceneRect = view.editorViewScene().itemsBoundingRect();
 	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
 
@@ -1367,7 +1364,7 @@ void NodeElement::initRenderedDiagram()
 	sceneRect.moveTo(QPointF());
 	painter.drawRect(sceneRect);
 
-	openedScene->render(&painter);
+	view.mutableScene().render(&painter);
 
 	mRenderedDiagram = image;
 }

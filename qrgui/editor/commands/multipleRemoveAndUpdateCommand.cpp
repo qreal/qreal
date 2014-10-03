@@ -7,11 +7,9 @@
 using namespace qReal::commands;
 
 MultipleRemoveAndUpdateCommand::MultipleRemoveAndUpdateCommand(EditorViewScene &scene
-		, models::LogicalModelAssistApi &logicalApi
-		, models::GraphicalModelAssistApi &graphicalApi
-		, models::Exploser &exploser
+		, models::Models const &models
 		, IdList &itemsToDelete)
-	: MultipleRemoveCommand(logicalApi, graphicalApi, exploser, itemsToDelete)
+	: MultipleRemoveCommand(models, itemsToDelete)
 	, mScene(scene)
 {
 }

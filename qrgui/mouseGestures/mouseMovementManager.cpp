@@ -3,10 +3,8 @@
 #include <qrkernel/logging.h>
 
 #include "private/geometricForms.h"
-#include "private/keyManager.h"
 #include "private/pathCorrector.h"
 #include "private/levenshteinDistance.h"
-#include "private/mixedgesturesmanager.h"
 
 QString const comma = ", ";
 QString const pointDelimeter = " : ";
@@ -19,32 +17,28 @@ QString const deletionGesture = "0, 200 : 200, 0 : ";
 using namespace qReal::gestures;
 
 MouseMovementManager::MouseMovementManager(Id const &diagram
-		, qReal::EditorManagerInterface const &editorManagerInterface
-		, GesturesPainterInterface *gesturesPaintManager)
+		, qReal::EditorManagerInterface const &editorManagerInterface)
 	: mDiagram(diagram)
 	, mEditorManagerInterface(editorManagerInterface)
-	, mGesturesPaintMan(gesturesPaintManager)
 {
 	mKeyStringManager.reset(new KeyManager);
 	mGesturesManager.reset(new MixedGesturesManager);
 	initializeGestures();
+	connect(&mGesturesPainter, &GesturesWidget::currentElementChanged, this, &MouseMovementManager::drawIdealPath);
 }
 
-MouseMovementManager::~MouseMovementManager()
+GesturesWidget *MouseMovementManager::painter()
 {
-}
-
-void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gesturesPainter)
-{
-	mGesturesPaintMan = gesturesPainter;
+	printElements();
+	return &mGesturesPainter;
 }
 
 void MouseMovementManager::drawIdealPath()
 {
-	Id const currentElement = mGesturesPaintMan->currentElement();
+	Id const currentElement = mGesturesPainter.currentElement();
 	if (mEditorManagerInterface.elements(mDiagram).contains(currentElement)) {
 		QString const paths = mEditorManagerInterface.mouseGesture(currentElement);
-		mGesturesPaintMan->draw(paths);
+		mGesturesPainter.draw(paths);
 	}
 }
 
@@ -57,7 +51,7 @@ void MouseMovementManager::printElements()
 		}
 	}
 
-	mGesturesPaintMan->setElements(elements);
+	mGesturesPainter.setElements(elements);
 }
 
 void MouseMovementManager::clear()
