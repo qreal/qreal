@@ -146,9 +146,40 @@ void Display::drawCircle(int x, int y, int radius)
 
 void Display::printText(int x, int y, QString const &text)
 {
-	Q_UNUSED(x)
-	Q_UNUSED(y)
-	Q_UNUSED(text)
+	int size = 20 + text.length();
+	QByteArray textBytes = text.toLocal8Bit();
+	QByteArray command(size, 0);
+	command[0] = size - 2;
+	command[1] = 0x00;
+	command[2] = 0x00;
+	command[3] = 0x00;
+	command[4] = DIRECT_COMMAND_NO_REPLY;
+	int globalVariablesCount = 0;
+	int localVariablesCount = 0;
+	command[5] = globalVariablesCount & 0xFF;
+	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
+	command[7] = opUI_DRAW;
+	command[8] = TEXT;
+	command[9] = LC0(vmFG_COLOR);
+	//LC2(x)
+	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
+	command[11] = (x & 0xFF);
+	command[12] = ((x >> 8) & 0xFF);
+	//LC2(y)
+	command[13] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
+	command[14] = (y & 0xFF);
+	command[15] = ((y >> 8) & 0xFF);
+	command[16] = LCS;
+	int currentSymbol = 17;
+	for (int i = 0; i < textBytes.length(); i++)
+	{
+		command[currentSymbol] = textBytes[i];
+		currentSymbol++;
+	}
+	command[size - 3] = 0;
+	command[size - 2] = opUI_DRAW;
+	command[size - 1] = LC0(UPDATE);
+	mRobotCommunicator.send(this, command, 3);
 }
 
 void Display::clearScreen()

@@ -25,6 +25,8 @@ public:
 	void off() override;
 
 private:
+	char outputPort(QChar portName);
+
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };
 
