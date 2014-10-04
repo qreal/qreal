@@ -196,6 +196,7 @@ void RobotsSettingsPage::checkSelectedRobotModelButtonFor(QAbstractButton * cons
 	QAbstractButton * const robotModelButton = mUi->typeOfModelGroupBox
 			->findChild<QAbstractButton *>(kitId + robotModel->name());
 	if (robotModelButton) {
+		robotModelButton->setChecked(true);
 		changeRobotModel(robotModelButton);
 	}
 }
