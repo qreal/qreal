@@ -61,7 +61,7 @@ private:
 
 	void saveSelectedRobotModel();
 	void checkSelectedRobotModelButtonFor(QAbstractButton * const kitButton);
-	void changeRobotModel(QAbstractButton * const kitButton, bool const isManuallyToggled);
+	void changeRobotModel(QAbstractButton * const kitButton);
 
 	Ui::PreferencesRobotSettingsPage *mUi;  // Has ownership.
 	KitPluginManager &mKitPluginManager;
