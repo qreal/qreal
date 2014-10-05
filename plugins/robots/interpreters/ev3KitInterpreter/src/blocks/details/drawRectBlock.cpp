@@ -16,8 +16,9 @@ void DrawRectBlock::doJob(interpreterBase::robotModel::robotParts::Display &disp
 	int const y = eval<int>("YCoordinateRect");
 	int const width = eval<int>("WidthRect");
 	int const height = eval<int>("HeightRect");
+	bool const filled = boolProperty("Filled");
 	if (!errorsOccured()) {
-		ev3Display->drawRect(x, y, width, height);
+		ev3Display->drawRect(x, y, width, height, filled);
 		emit done(mNextBlockId);
 	}
 }

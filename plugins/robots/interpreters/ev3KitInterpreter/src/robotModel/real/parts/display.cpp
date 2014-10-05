@@ -76,7 +76,7 @@ void Display::drawLine(int x1, int y1, int x2, int y2)
 	mRobotCommunicator.send(this, command, 3);
 }
 
-void Display::drawRect(int x, int y, int width, int height)
+void Display::drawRect(int x, int y, int width, int height, bool filled)
 {
 	QByteArray command(24, 0);
 	command[0] = 22;
@@ -89,7 +89,11 @@ void Display::drawRect(int x, int y, int width, int height)
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
-	command[8] = LC0(RECT);
+	if (filled) {
+		command[8] = LC0(FILLRECT);
+	} else {
+		command[8] = LC0(RECT);
+	}
 	command[9] = LC0(vmFG_COLOR);
 	//LC2(x0)
 	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
@@ -112,7 +116,7 @@ void Display::drawRect(int x, int y, int width, int height)
 	mRobotCommunicator.send(this, command, 3);
 }
 
-void Display::drawCircle(int x, int y, int radius)
+void Display::drawCircle(int x, int y, int radius, bool filled)
 {
 	QByteArray command(21, 0);
 	command[0] = 19;
@@ -125,7 +129,11 @@ void Display::drawCircle(int x, int y, int radius)
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
-	command[8] = LC0(CIRCLE);
+	if (filled) {
+		command[8] = LC0(FILLCIRCLE);
+	} else {
+		command[8] = LC0(CIRCLE);
+	}
 	command[9] = LC0(vmFG_COLOR);
 	//LC2(x)
 	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
