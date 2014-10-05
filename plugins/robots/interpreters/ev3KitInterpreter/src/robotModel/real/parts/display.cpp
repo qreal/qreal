@@ -116,6 +116,15 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 	mRobotCommunicator.send(this, command, 3);
 }
 
+void Display::drawRect(int x, int y, int width, int height)
+{
+	Q_UNUSED(x);
+	Q_UNUSED(y);
+	Q_UNUSED(width);
+	Q_UNUSED(height);
+
+}
+
 void Display::drawCircle(int x, int y, int radius, bool filled)
 {
 	QByteArray command(21, 0);
@@ -151,6 +160,7 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 	command[20] = LC0(UPDATE);
 	mRobotCommunicator.send(this, command, 3);
 }
+
 
 void Display::printText(int x, int y, QString const &text)
 {
