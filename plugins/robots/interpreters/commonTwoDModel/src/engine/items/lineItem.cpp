@@ -165,8 +165,14 @@ void LineItem::countCellNumbCoordinates(int indexGrid)
 {
 	mCellNumbX1 = mX1 / indexGrid;
 	mCellNumbY1 = mY1 / indexGrid;
-	mCellNumbX2 = mX2 / indexGrid;
-	mCellNumbY2 = mY2 / indexGrid;
+
+	if (qAbs(mY2 - mY1) > qAbs(mX2 - mX1)) {
+		mCellNumbX2 = mCellNumbX1;
+		mCellNumbY2 = mY2 / indexGrid;
+	} else {
+		mCellNumbX2 = mX2 / indexGrid;
+		mCellNumbY2 = mCellNumbY1;
+	}
 }
 
 void LineItem::setBeginCoordinatesWithGrid(int indexGrid)
