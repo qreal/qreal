@@ -12,7 +12,7 @@ HEADERS += \
 	$$PWD/copyPaste/pasteGroupCommand.h \
 	$$PWD/copyPaste/pasteEdgeCommand.h \
 	$$PWD/private/exploserView.h \
-	$$PWD/private/touchSupportManager.h \
+	$$PWD/private/touchSupportManager.h
 
 SOURCES += \
 	$$PWD/editorView.cpp \
@@ -27,4 +27,4 @@ SOURCES += \
 	$$PWD/copyPaste/pasteGroupCommand.cpp \
 	$$PWD/copyPaste/pasteEdgeCommand.cpp \
 	$$PWD/private/exploserView.cpp \
-	$$PWD/private/touchSupportManager.cpp \
+	$$PWD/private/touchSupportManager.cpp

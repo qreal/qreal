@@ -973,20 +973,22 @@ void EditorViewScene::disableActions(Element *focusElement)
 {
 	if (!focusElement) {
 		mWindow->actionDeleteFromDiagram()->setEnabled(false);
-		mWindow->actionCutElementsOnDiagram()->setEnabled(false);
+		mActionCopyOnDiagram->setEnabled(false);
+		mActionCutOnDiagram->setEnabled(false);
 	}
 	if (isEmptyClipboard()) {
-		mWindow->actionPasteOnDiagram()->setEnabled(false);
-		mWindow->actionPasteCopyOfLogical()->setEnabled(false);
+		mActionPasteOnDiagram->setEnabled(false);
+		mActionPasteReference->setEnabled(false);
 	}
 }
 
 void EditorViewScene::enableActions()
 {
 	mWindow->actionDeleteFromDiagram()->setEnabled(true);
-	mWindow->actionCutElementsOnDiagram()->setEnabled(true);
-	mWindow->actionPasteOnDiagram()->setEnabled(true);
-	mWindow->actionPasteCopyOfLogical()->setEnabled(true);
+	mActionCopyOnDiagram->setEnabled(true);
+	mActionCutOnDiagram->setEnabled(true);
+	mActionPasteOnDiagram->setEnabled(true);
+	mActionPasteReference->setEnabled(true);
 }
 
 bool EditorViewScene::isEmptyClipboard()
@@ -1300,11 +1302,40 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	QAction * const separator = new QAction(this);
 	separator->setSeparator(true);
+
+
+	mActionCopyOnDiagram = new QAction(mView);
+	mActionCopyOnDiagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+	mActionCopyOnDiagram->setText(tr("Copy"));
+	connect(mActionCopyOnDiagram, &QAction::triggered, this, &EditorViewScene::copy);
+
+	mActionPasteOnDiagram = new QAction(mView);
+	mActionPasteOnDiagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
+	mActionPasteOnDiagram->setText(tr("Paste"));
+	connect(mActionPasteOnDiagram, &QAction::triggered, [this]() {
+		paste(false);
+	});
+
+	mActionPasteReference = new QAction(mView);
+	mActionPasteReference->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_V));
+	mActionPasteReference->setText(tr("Paste only graphical copy"));
+	connect(mActionPasteReference, &QAction::triggered, [this]() {
+		paste(true);
+	});
+
+	mActionCutOnDiagram = new QAction(mView);
+	mActionCutOnDiagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
+	mActionCutOnDiagram->setText(tr("Cut"));
+	connect(mActionCutOnDiagram, &QAction::triggered, this, &EditorViewScene::cut);
+
+	//mActionDeleteFromDiagram = mWindow->actionDeleteFromDiagram();
+
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
 			<< separator
-			<< mWindow->actionCutElementsOnDiagram()
-			<< mWindow->actionPasteOnDiagram()
-			<< mWindow->actionPasteCopyOfLogical();
+			<< mActionCutOnDiagram
+			<< mActionCopyOnDiagram
+			<< mActionPasteOnDiagram
+			<< mActionPasteReference;
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const
@@ -1498,6 +1529,11 @@ void EditorViewScene::setTitlesVisible(bool visible)
 void EditorViewScene::onElementParentChanged(Element *element)
 {
 	element->setTitlesVisible(mTitlesVisible);
+}
+
+QList<QAction *> EditorViewScene::actions()
+{
+	return mContextMenuActions;
 }
 
 void EditorViewScene::deselectLabels()

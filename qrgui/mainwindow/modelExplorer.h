@@ -19,6 +19,7 @@ public:
 	void setController(Controller * const controller);
 	void setAssistApi(details::ModelsAssistInterface * const model);
 	void setExploser(Exploser &exploser);
+	void changeActionsSet(QList<QAction *> acts);
 
 protected:
 	virtual void commitData(QWidget *editor);

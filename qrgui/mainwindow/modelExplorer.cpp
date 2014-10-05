@@ -1,5 +1,7 @@
 #include "modelExplorer.h"
 
+#include <QtWidgets/QAction>
+
 #include "controller/commands/renameCommand.h"
 #include "models/details/modelsImplementation/abstractModel.h"
 
@@ -27,6 +29,15 @@ void ModelExplorer::setAssistApi(details::ModelsAssistInterface * const model)
 void ModelExplorer::setExploser(Exploser &exploser)
 {
 	mExploser = &exploser;
+}
+
+void ModelExplorer::changeActionsSet(QList<QAction *> acts)
+{
+	for(QAction *action : actions()) {
+		removeAction(action);
+	}
+
+	addActions(acts);
 }
 
 void ModelExplorer::commitData(QWidget *editor)

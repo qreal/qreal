@@ -171,7 +171,7 @@ void MainWindow::connectActionsForUXInfo()
 			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
 			<< mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
 			<< mUi->actionDeleteFromDiagram
-			<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
+			//<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
 			<< mUi->actionPreferences << mUi->actionHelp
 			<< mUi->actionAbout << mUi->actionAboutQt
 			<< mUi->actionFullscreen << mUi->actionFind;
@@ -210,9 +210,6 @@ void MainWindow::connectActions()
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
-	connect(mUi->actionCutElementsOnDiagram, SIGNAL(triggered()), this, SLOT(cutElementsOnDiagram()));
-	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
-	connect(mUi->actionPasteReference, SIGNAL(triggered()), this, SLOT(pasteCopyOfLogical()));
 
 	connect(mUi->actionUndo, SIGNAL(triggered()), mController, SLOT(undo()));
 	connect(mUi->actionRedo, SIGNAL(triggered()), mController, SLOT(redo()));
@@ -911,34 +908,6 @@ void MainWindow::deleteFromDiagram()
 	}
 }
 
-void MainWindow::cutElementsOnDiagram()
-{
-	if (EditorView const *view = getCurrentTab()) {
-		view->editorViewScene()->cut();
-	}
-}
-
-void MainWindow::copyElementsOnDiagram()
-{
-	if (EditorView const *view = getCurrentTab()) {
-		view->editorViewScene()->copy();
-	}
-}
-
-void MainWindow::pasteOnDiagram()
-{
-	if (EditorView const *view = getCurrentTab()) {
-		view->editorViewScene()->paste(false);
-	}
-}
-
-void MainWindow::pasteCopyOfLogical()
-{
-	if (EditorView const *view = getCurrentTab()) {
-		view->editorViewScene()->paste(true);
-	}
-}
-
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"), mToolManager.customizer()->aboutText());
@@ -1284,10 +1253,6 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 			mController->diagramOpened(diagramId);
 		}
 
-		QAction *copyElements = new QAction(view);
-		copyElements->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
-		connect(copyElements, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
-
 		mSceneCustomizer->customizeView(view);
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
@@ -1463,6 +1428,8 @@ void MainWindow::currentTabChanged(int newIndex)
 	} else if (getCurrentTab()->mvIface()) {
 		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
 		mToolManager.activeTabChanged(currentTabId);
+		mUi->graphicalModelExplorer->changeActionsSet(getCurrentTab()->editorViewScene()->actions());
+		mUi->logicalModelExplorer->changeActionsSet(getCurrentTab()->editorViewScene()->actions());
 	}
 
 	emit rootDiagramChanged();
@@ -1753,21 +1720,6 @@ void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 QAction *MainWindow::actionDeleteFromDiagram() const
 {
 	return mUi->actionDeleteFromDiagram;
-}
-
-QAction *MainWindow::actionCutElementsOnDiagram() const
-{
-	return mUi->actionCutElementsOnDiagram;
-}
-
-QAction *MainWindow::actionPasteOnDiagram() const
-{
-	return mUi->actionPasteOnDiagram;
-}
-
-QAction *MainWindow::actionPasteCopyOfLogical() const
-{
-	return mUi->actionPasteReference;
 }
 
 void MainWindow::highlight(Id const &graphicalId, bool exclusive, QColor const &color)
@@ -2111,19 +2063,11 @@ void MainWindow::initExplorers()
 	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
 	mUi->propertyEditor->setModel(&mPropertyModel);
 
-	mUi->graphicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
-	mUi->graphicalModelExplorer->addAction(mUi->actionCutElementsOnDiagram);
-	mUi->graphicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
-	mUi->graphicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setController(mController);
 	mUi->graphicalModelExplorer->setAssistApi(&mModels->graphicalModelAssistApi());
 	mUi->graphicalModelExplorer->setExploser(exploser());
 
-	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
-	mUi->logicalModelExplorer->addAction(mUi->actionCutElementsOnDiagram);
-	mUi->logicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
-	mUi->logicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 	mUi->logicalModelExplorer->setController(mController);
 	mUi->logicalModelExplorer->setAssistApi(&mModels->logicalModelAssistApi());

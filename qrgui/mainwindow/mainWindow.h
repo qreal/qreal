@@ -90,9 +90,6 @@ public:
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
-	QAction *actionCutElementsOnDiagram() const;
-	QAction *actionPasteOnDiagram() const;
-	QAction *actionPasteCopyOfLogical() const;
 
 	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
 	virtual void dehighlight(Id const &graphicalId);
@@ -245,10 +242,6 @@ private slots:
 	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
 	void deleteFromDiagram();
-	void cutElementsOnDiagram();
-	void copyElementsOnDiagram();
-	void pasteOnDiagram();
-	void pasteCopyOfLogical();
 
 	void cropSceneToItems();
 

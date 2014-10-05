@@ -4,7 +4,6 @@
 #include <QtCore/QSet>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDockWidget>
-#include <QtWidgets/QAction>
 
 #include <qrtext/debuggerInterface.h>
 
