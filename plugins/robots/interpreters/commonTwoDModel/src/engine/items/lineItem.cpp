@@ -185,7 +185,7 @@ void LineItem::setEndCoordinatesWithGrid(int indexGrid)
 	setX2andY2(mCellNumbX2 * indexGrid, mCellNumbY2 * indexGrid);
 }
 
-void LineItem::setDraggedEndWithGrid(qreal x, qreal y)
+void LineItem::setDraggedEnd(qreal x, qreal y)
 {
 	setX2andY2(mX1 - x, mY1 - y);
 }

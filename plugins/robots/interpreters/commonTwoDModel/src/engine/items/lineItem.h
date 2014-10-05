@@ -30,7 +30,7 @@ public:
 	void resizeBeginWithGrid(int indexGrid);
 	void reshapeEndWithGrid(int indexGrid);
 	void reshapeBeginWithGrid(int indexGrid);
-	void setDraggedEndWithGrid(qreal x, qreal y);
+	void setDraggedEnd(qreal x, qreal y);
 	void alignTheWall(int indexGrid);
 
 	QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture) override;
