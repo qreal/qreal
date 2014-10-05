@@ -1993,6 +1993,8 @@
             <label x="-10" y="100" text="Width: "/>
             <label x="50" y="120" textBinded="HeightRect"/>
             <label x="-10" y="120" text="Height: "/>
+            <label x="50" y="140" textBinded="Filled"/>
+            <label x="-10" y="140" text="Filled: "/>
           </labels>
           <nonResizeable/>
         </graphics>
@@ -2010,6 +2012,9 @@
             </property>
             <property displayedName="Height" type="int" name="HeightRect">
               <default>5</default>
+              </property>
+            <property displayedName="Filled" type="bool" name="Filled">
+              <default>false</default>
             </property>
           </properties>
           <generalizations>
@@ -2029,6 +2034,8 @@
             <label x="0" y="80" text="Y: "/>
             <label x="50" y="100" textBinded="CircleRadius"/>
             <label x="0" y="100" text="Radius: "/>
+            <label x="50" y="120" textBinded="Filled"/>
+            <label x="0" y="120" text="Filled: "/>
           </labels>
           <nonResizeable/>
         </graphics>
@@ -2043,6 +2050,9 @@
             </property>
             <property displayedName="Radius" type="int" name="CircleRadius">
               <default>5</default>
+            </property>
+            <property displayedName="Filled" type="bool" name="Filled">
+              <default>false</default>
             </property>
           </properties>
           <generalizations>

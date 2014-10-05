@@ -21,8 +21,8 @@ public:
 
 	void drawPixel(int x, int y) override;
 	void drawLine(int x1, int y1, int x2, int y2) override;
-	void drawRect(int x, int y, int width, int height) override;
-	void drawCircle(int x, int y, int radius) override;
+	void drawRect(int x, int y, int width, int height, bool filled) override;
+	void drawCircle(int x, int y, int radius, bool filled) override;
 	void printText(int x, int y, QString const &text) override;
 	void clearScreen() override;
 
