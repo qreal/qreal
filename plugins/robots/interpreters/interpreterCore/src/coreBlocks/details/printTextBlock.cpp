@@ -15,7 +15,7 @@ void PrintTextBlock::doJob(interpreterBase::robotModel::robotParts::Display &dis
 {
 	int const x = eval<int>("XCoordinateText");
 	int const y = eval<int>("YCoordinateText");
-	auto const result = eval<QString>("PrintText");
+	QString const result = stringProperty("PrintText");
 	if (!errorsOccured()) {
 		display.printText(x, y, result);
 		emit done(mNextBlockId);
