@@ -14,10 +14,10 @@ class Ev3KitInterpreterPlugin : public QObject, public interpreterBase::KitPlugi
 {
 	Q_OBJECT
 	Q_INTERFACES(interpreterBase::KitPluginInterface)
-    Q_PLUGIN_METADATA(IID "Ev3KitInterpreter.Ev3KitInterpreterPlugin")
+	Q_PLUGIN_METADATA(IID "Ev3KitInterpreter.Ev3KitInterpreterPlugin")
 
 public:
-    Ev3KitInterpreterPlugin();
+	Ev3KitInterpreterPlugin();
 
 	QString kitId() const override;
 
@@ -38,9 +38,9 @@ public:
 	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
 
 private:
-    robotModel::real::RealRobotModel mRealRobotModel;
-    Ev3AdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
-    blocks::Ev3BlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
+	robotModel::real::RealRobotModel mRealRobotModel;
+	Ev3AdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+	blocks::Ev3BlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
 
 };
 

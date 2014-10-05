@@ -15,7 +15,7 @@ Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
 	mAdditionalPreferences = new Ev3AdditionalPreferences(mRealRobotModel.name());
 
 	connect(mAdditionalPreferences, &Ev3AdditionalPreferences::settingsChanged
-	, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
+		, &mRealRobotModel, &robotModel::real::RealRobotModel::rereadSettings);
 
 }
 
@@ -35,7 +35,7 @@ QList<interpreterBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugi
 }
 
 interpreterBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
-interpreterBase::robotModel::RobotModelInterface const *model)
+		interpreterBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model)
 	return mBlocksFactory;
@@ -57,7 +57,7 @@ QList<qReal::HotKeyActionInfo> Ev3KitInterpreterPlugin::hotKeyActions()
 }
 
 QIcon Ev3KitInterpreterPlugin::iconForFastSelector(
-interpreterBase::robotModel::RobotModelInterface const &robotModel) const
+		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
 {
 	Q_UNUSED(mRealRobotModel)
 	return QIcon();

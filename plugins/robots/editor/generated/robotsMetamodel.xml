@@ -544,7 +544,7 @@
 					</generalizations>
 				</logic>
 			</node>
-      <node name="Ev3EngineMovementCommand">
+			<node name="Ev3EngineMovementCommand">
 				<logic>
 					<container/>
 					<properties>
@@ -716,7 +716,7 @@
 					</properties>
 				</logic>
 			</node>
-      <node displayedName="Stop Motors" name="Ev3EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Disables motors on the given ports.">
+			<node displayedName="Stop Motors" name="Ev3EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Disables motors on the given ports.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
@@ -830,67 +830,67 @@
 					</generalizations>
 				</logic>
 			</node>
-      <node displayedName="Beep" name="Ev3Beep" path="152, 12 : 281, 12 :  | 152, 183 : 152, 12 :  | 155, 170 : 154, 176 : 153, 183 : 151, 190 : 149, 196 : 146, 202 : 143, 208 : 139, 214 : 134, 219 : 129, 224 : 123, 228 : 117, 231 : 111, 234 : 105, 236 : 98, 238 : 91, 239 : 85, 239 : 79, 239 : 72, 238 : 65, 236 : 59, 234 : 53, 231 : 47, 228 : 41, 224 : 36, 219 : 31, 214 : 27, 208 : 24, 202 : 21, 196 : 19, 190 : 17, 183 : 16, 176 : 16, 170 : 16, 164 : 17, 157 : 19, 150 : 21, 144 : 24, 138 : 27, 132 : 31, 126 : 36, 121 : 41, 116 : 47, 112 : 53, 109 : 59, 106 : 65, 104 : 72, 102 : 79, 101 : 85, 101 : 91, 101 : 98, 102 : 105, 104 : 111, 106 : 117, 109 : 123, 112 : 129, 116 : 134, 121 : 139, 126 : 143, 132 : 146, 138 : 149, 144 : 151, 150 : 153, 157 : 154, 164 : 155, 170 : " description="Plays on the robot a sound with the fixed frequency. There are two parameters. The first one is a loudness of the sound, the second means if program should wait for sound completion or go to next block right away.">
-        <graphics>
-          <picture sizex="50" sizey="50">
-            <image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
-          </picture>
-          <labels>
-            <label x="-60" y="60" text="Wait for Completion:"/>
-            <label x="70" y="60" textBinded="WaitForCompletion" background="white"/>
-          </labels>
-          <nonResizeable/>
-        </graphics>
-        <logic>
-          <container/>
-          <properties>
-            <property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
-              <default>true</default>
-            </property>
-          </properties>
-          <generalizations>
-            <parent parentName="AbstractNode"/>
-          </generalizations>
-        </logic>
-      </node>
-      <node displayedName="Play Tone" name="Ev3PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Plays on the robot a sound with the given frequency and duration. This block is similar to the 'Beep' block wuth the only difference that here you can specify sound parameters.">
-        <graphics>
-          <picture sizex="50" sizey="50">
-            <image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
-          </picture>
-          <labels>
-            <label x="-35" y="-30" text="Frequency (Hz):" hard="true"/>
-            <label x="-35" y="60" text="Volume (%):"/>
-            <label x="-68" y="80" text="Duration (ms):"/>
-            <label x="-68" y="100" text="Wait for Completion:"/>
-            <label x="50" y="-30" textBinded="Frequency" hard="true" background="white"/>
-            <label x="60" y="60" textBinded="Volume" background="white"/>
-            <label x="60" y="80" textBinded="Duration" background="white"/>
-            <label x="60" y="100" textBinded="WaitForCompletion" background="white"/>
-          </labels>
-          <nonResizeable/>
-        </graphics>
-        <logic>
-          <container/>
-          <properties>
-            <property displayedName="Frequency" type="string" name="Frequency">
-              <default>1000</default>
-            </property>
-            <property displayedName="Volume" type="string" name="Volume">
-              <default>50</default>
-            </property>
-            <property displayedName="Duration" type="string" name="Duration">
-              <default>1000</default>
-            </property>
-            <property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
-              <default>true</default>
-            </property>
-          </properties>
-          <generalizations>
-            <parent parentName="AbstractNode"/>
-          </generalizations>
-        </logic>
-      </node>
+			<node displayedName="Beep" name="Ev3Beep" path="152, 12 : 281, 12 :  | 152, 183 : 152, 12 :  | 155, 170 : 154, 176 : 153, 183 : 151, 190 : 149, 196 : 146, 202 : 143, 208 : 139, 214 : 134, 219 : 129, 224 : 123, 228 : 117, 231 : 111, 234 : 105, 236 : 98, 238 : 91, 239 : 85, 239 : 79, 239 : 72, 238 : 65, 236 : 59, 234 : 53, 231 : 47, 228 : 41, 224 : 36, 219 : 31, 214 : 27, 208 : 24, 202 : 21, 196 : 19, 190 : 17, 183 : 16, 176 : 16, 170 : 16, 164 : 17, 157 : 19, 150 : 21, 144 : 24, 138 : 27, 132 : 31, 126 : 36, 121 : 41, 116 : 47, 112 : 53, 109 : 59, 106 : 65, 104 : 72, 102 : 79, 101 : 85, 101 : 91, 101 : 98, 102 : 105, 104 : 111, 106 : 117, 109 : 123, 112 : 129, 116 : 134, 121 : 139, 126 : 143, 132 : 146, 138 : 149, 144 : 151, 150 : 153, 157 : 154, 164 : 155, 170 : " description="Plays on the robot a sound with the fixed frequency. There are two parameters. The first one is a loudness of the sound, the second means if program should wait for sound completion or go to next block right away.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-60" y="60" text="Wait for Completion:"/>
+						<label x="70" y="60" textBinded="WaitForCompletion" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
+							<default>true</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Play Tone" name="Ev3PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Plays on the robot a sound with the given frequency and duration. This block is similar to the 'Beep' block wuth the only difference that here you can specify sound parameters.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-35" y="-30" text="Frequency (Hz):" hard="true"/>
+						<label x="-35" y="60" text="Volume (%):"/>
+						<label x="-68" y="80" text="Duration (ms):"/>
+						<label x="-68" y="100" text="Wait for Completion:"/>
+						<label x="50" y="-30" textBinded="Frequency" hard="true" background="white"/>
+						<label x="60" y="60" textBinded="Volume" background="white"/>
+						<label x="60" y="80" textBinded="Duration" background="white"/>
+						<label x="60" y="100" textBinded="WaitForCompletion" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Frequency" type="string" name="Frequency">
+							<default>1000</default>
+						</property>
+						<property displayedName="Volume" type="string" name="Volume">
+							<default>50</default>
+						</property>
+						<property displayedName="Duration" type="string" name="Duration">
+							<default>1000</default>
+						</property>
+						<property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
+							<default>true</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Play Tone" name="TrikPlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Plays on the robot a sound file (.wav or .mp3) previously uploaded to it.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1912,154 +1912,154 @@
 					</generalizations>
 				</logic>
 			</node>
-      <!-- EV3 display drawing blocks -->
-      <node displayedName="Draw Pixel" name="Ev3DrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
-        <graphics>
-          <picture sizex="50" sizey="50">
-            <image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
-          </picture>
-          <labels>
-            <label x="36" y="60" textBinded="XCoordinatePix"/>
-            <label x="0" y="60" text="X: "/>
-            <label x="36" y="80" textBinded="YCoordinatePix"/>
-            <label x="0" y="80" text="Y: "/>
-          </labels>
-          <nonResizeable/>
-        </graphics>
-        <logic>
-          <container/>
-          <properties>
-            <property displayedName="X" type="int" name="XCoordinatePix">
-              <default>0</default>
-            </property>
-            <property displayedName="Y" type="int" name="YCoordinatePix">
-              <default>0</default>
-            </property>
-          </properties>
-          <generalizations>
-            <parent parentName="AbstractNode"/>
-          </generalizations>
-        </logic>
-      </node>
-      <node displayedName="Draw Line" name="Ev3DrawLine" description="Draws a segment on the robot screen. The parameters specify the ends of the segment.">
-        <graphics>
-          <picture sizex="50" sizey="50">
-            <image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
-          </picture>
-          <labels>
-            <label x="36" y="60" textBinded="X1CoordinateLine"/>
-            <label x="0" y="60" text="X1: "/>
-            <label x="36" y="80" textBinded="Y1CoordinateLine"/>
-            <label x="0" y="80" text="Y1: "/>
-            <label x="36" y="100" textBinded="X2CoordinateLine"/>
-            <label x="0" y="100" text="X2: "/>
-            <label x="36" y="120" textBinded="Y2CoordinateLine"/>
-            <label x="0" y="120" text="Y2: "/>
-          </labels>
-          <nonResizeable/>
-        </graphics>
-        <logic>
-          <container/>
-          <properties>
-            <property displayedName="X1" type="int" name="X1CoordinateLine">
-              <default>0</default>
-            </property>
-            <property displayedName="Y1" type="int" name="Y1CoordinateLine">
-              <default>0</default>
-            </property>
-            <property displayedName="X2" type="int" name="X2CoordinateLine">
-              <default>10</default>
-            </property>
-            <property displayedName="Y2" type="int" name="Y2CoordinateLine">
-              <default>10</default>
-            </property>
-          </properties>
-          <generalizations>
-            <parent parentName="AbstractNode"/>
-          </generalizations>
-        </logic>
-      </node>
-      <node displayedName="Draw Rectangle" name="Ev3DrawRect" description="Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.">
-        <graphics>
-          <picture sizex="50" sizey="50">
-            <image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
-          </picture>
-          <labels>
-            <label x="50" y="60" textBinded="XCoordinateRect"/>
-            <label x="-10" y="60" text="X: "/>
-            <label x="50" y="80" textBinded="YCoordinateRect"/>
-            <label x="-10" y="80" text="Y: "/>
-            <label x="50" y="100" textBinded="WidthRect"/>
-            <label x="-10" y="100" text="Width: "/>
-            <label x="50" y="120" textBinded="HeightRect"/>
-            <label x="-10" y="120" text="Height: "/>
-            <label x="50" y="140" textBinded="Filled"/>
-            <label x="-10" y="140" text="Filled: "/>
-          </labels>
-          <nonResizeable/>
-        </graphics>
-        <logic>
-          <container/>
-          <properties>
-            <property displayedName="X" type="int" name="XCoordinateRect">
-              <default>0</default>
-            </property>
-            <property displayedName="Y" type="int" name="YCoordinateRect">
-              <default>0</default>
-            </property>
-            <property displayedName="Width" type="int" name="WidthRect">
-              <default>5</default>
-            </property>
-            <property displayedName="Height" type="int" name="HeightRect">
-              <default>5</default>
-              </property>
-            <property displayedName="Filled" type="bool" name="Filled">
-              <default>false</default>
-            </property>
-          </properties>
-          <generalizations>
-            <parent parentName="AbstractNode"/>
-          </generalizations>
-        </logic>
-      </node>
-      <node displayedName="Draw Circle" name="Ev3DrawCircle" description="Draws on the robot screen a circle with the given center and radius.">
-        <graphics>
-          <picture sizex="50" sizey="50">
-            <image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
-          </picture>
-          <labels>
-            <label x="50" y="60" textBinded="XCoordinateCircle"/>
-            <label x="0" y="60" text="X: "/>
-            <label x="50" y="80" textBinded="YCoordinateCircle"/>
-            <label x="0" y="80" text="Y: "/>
-            <label x="50" y="100" textBinded="CircleRadius"/>
-            <label x="0" y="100" text="Radius: "/>
-            <label x="50" y="120" textBinded="Filled"/>
-            <label x="0" y="120" text="Filled: "/>
-          </labels>
-          <nonResizeable/>
-        </graphics>
-        <logic>
-          <container/>
-          <properties>
-            <property displayedName="X" type="int" name="XCoordinateCircle">
-              <default>0</default>
-            </property>
-            <property displayedName="Y" type="int" name="YCoordinateCircle">
-              <default>0</default>
-            </property>
-            <property displayedName="Radius" type="int" name="CircleRadius">
-              <default>5</default>
-            </property>
-            <property displayedName="Filled" type="bool" name="Filled">
-              <default>false</default>
-            </property>
-          </properties>
-          <generalizations>
-            <parent parentName="AbstractNode"/>
-          </generalizations>
-        </logic>
-      </node>
+			<!-- EV3 display drawing blocks -->
+			<node displayedName="Draw Pixel" name="Ev3DrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+		 			<labels>
+						<label x="36" y="60" textBinded="XCoordinatePix"/>
+						<label x="0" y="60" text="X: "/>
+						<label x="36" y="80" textBinded="YCoordinatePix"/>
+						<label x="0" y="80" text="Y: "/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="int" name="XCoordinatePix">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="int" name="YCoordinatePix">
+							<default>0</default>
+						</property>
+					</properties>
+				<generalizations>
+					<parent parentName="AbstractNode"/>
+				</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Line" name="Ev3DrawLine" description="Draws a segment on the robot screen. The parameters specify the ends of the segment.">
+			<graphics>
+				<picture sizex="50" sizey="50">
+					<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
+				</picture>
+				<labels>
+					<label x="36" y="60" textBinded="X1CoordinateLine"/>
+					<label x="0" y="60" text="X1: "/>
+					<label x="36" y="80" textBinded="Y1CoordinateLine"/>
+					<label x="0" y="80" text="Y1: "/>
+					<label x="36" y="100" textBinded="X2CoordinateLine"/>
+					<label x="0" y="100" text="X2: "/>
+					<label x="36" y="120" textBinded="Y2CoordinateLine"/>
+					<label x="0" y="120" text="Y2: "/>
+				</labels>
+				<nonResizeable/>
+			</graphics>
+			<logic>
+				<container/>
+				<properties>
+					<property displayedName="X1" type="int" name="X1CoordinateLine">
+						<default>0</default>
+					</property>
+					<property displayedName="Y1" type="int" name="Y1CoordinateLine">
+						<default>0</default>
+					</property>
+					<property displayedName="X2" type="int" name="X2CoordinateLine">
+					 	 <default>10</default>
+					</property>
+					<property displayedName="Y2" type="int" name="Y2CoordinateLine">
+						<default>10</default>
+					</property>
+				</properties>
+				<generalizations>
+					<parent parentName="AbstractNode"/>
+				</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Rectangle" name="Ev3DrawRect" description="Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+					<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="XCoordinateRect"/>
+						<label x="-10" y="60" text="X: "/>
+						<label x="50" y="80" textBinded="YCoordinateRect"/>
+						<label x="-10" y="80" text="Y: "/>
+						<label x="50" y="100" textBinded="WidthRect"/>
+						<label x="-10" y="100" text="Width: "/>
+						<label x="50" y="120" textBinded="HeightRect"/>
+						<label x="-10" y="120" text="Height: "/>
+						<label x="50" y="140" textBinded="Filled"/>
+						<label x="-10" y="140" text="Filled: "/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="int" name="XCoordinateRect">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="int" name="YCoordinateRect">
+							<default>0</default>
+						</property>
+						<property displayedName="Width" type="int" name="WidthRect">
+							<default>5</default>
+						</property>
+							<property displayedName="Height" type="int" name="HeightRect">
+								<default>5</default>
+						</property>
+						<property displayedName="Filled" type="bool" name="Filled">
+							<default>false</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Circle" name="Ev3DrawCircle" description="Draws on the robot screen a circle with the given center and radius.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="XCoordinateCircle"/>
+						<label x="0" y="60" text="X: "/>
+						<label x="50" y="80" textBinded="YCoordinateCircle"/>
+						<label x="0" y="80" text="Y: "/>
+						<label x="50" y="100" textBinded="CircleRadius"/>
+						<label x="0" y="100" text="Radius: "/>
+						<label x="50" y="120" textBinded="Filled"/>
+						<label x="0" y="120" text="Filled: "/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+				<container/>
+				<properties>
+						<property displayedName="X" type="int" name="XCoordinateCircle">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="int" name="YCoordinateCircle">
+							<default>0</default>
+						</property>
+						<property displayedName="Radius" type="int" name="CircleRadius">
+							<default>5</default>
+						</property>
+						<property displayedName="Filled" type="bool" name="Filled">
+							<default>false</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<!-- TRIK display drawing blocks -->
 			<node displayedName="Painter Color" name="TrikSetPainterColor" description="Sets the painter color.">
 				<graphics>
@@ -2434,9 +2434,9 @@
 				<element name="NxtEnginesForward"/>
 				<element name="NxtEnginesBackward"/>
 				<element name="NxtEnginesStop"/>
-        <element name="Ev3Beep"/>
-        <element name="Ev3PlayTone"/>
-        <element name="Ev3EnginesForward"/>
+		<element name="Ev3Beep"/>
+		<element name="Ev3PlayTone"/>
+		<element name="Ev3EnginesForward"/>
 				<element name="Ev3EnginesBackward"/>
 				<element name="Ev3EnginesStop"/>
 				<element name="NxtClearEncoder"/>
@@ -2485,10 +2485,10 @@
 				<element name="NxtDrawPixel"/>
 				<element name="NxtDrawLine"/>
 				<element name="NxtDrawCircle"/>
-        <element name="Ev3DrawRect"/>
-        <element name="Ev3DrawPixel"/>
-        <element name="Ev3DrawLine"/>
-        <element name="Ev3DrawCircle"/>
+		<element name="Ev3DrawRect"/>
+		<element name="Ev3DrawPixel"/>
+		<element name="Ev3DrawLine"/>
+		<element name="Ev3DrawCircle"/>
 				<!--<element name="TrikSetPainterColor"/>
 				<element name="TrikSetPainterWidth"/>-->
 				<element name="TrikDrawPixel"/>

@@ -13,5 +13,6 @@ interpreterCore.depends = commonTwoDModel
 nullKitInterpreter.depends = interpreterBase
 nxtKitInterpreter.depends = commonTwoDModel
 trikKitInterpreter.depends = commonTwoDModel
+ev3KitInterpreter.depends = commonTwoDModel
 ev3KitInterpreter.depends = interpreterBase
 commonTwoDModel.depends = interpreterBase
