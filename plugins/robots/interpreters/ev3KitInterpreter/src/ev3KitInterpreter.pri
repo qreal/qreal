@@ -8,7 +8,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lqextserialport \
 	-lqrtext
 
 HEADERS += \
