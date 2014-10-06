@@ -17,12 +17,7 @@ IdWidget::IdWidget(QString const &defaultText, QWidget *parent)
 	mLabelLogical->setFont(labelFont);
 	mLabelGraphical->setFont(labelFont);
 
-	mMetrics = new QFontMetrics(mLabelLogical->font());
-
-	mLabelWidth = 4 * parentWidget()->contentsRect().width();
-
-	QString elidedText = mMetrics->elidedText(mDefaultText, Qt::ElideRight, mLabelWidth);
-	mLabelLogical->setText(elidedText);
+	mLabelLogical->setText(mDefaultText);
 	mLabelLogical->setToolTip(mDefaultText);
 	mLabelLogical->setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
 	mLabelGraphical->setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }");
@@ -71,9 +66,8 @@ QString IdWidget::labelLogicalText() const
 	if (mLogicalId != qReal::Id()) {
 		result += tr("Logical Id: ") + mLogicalId.toString();
 	}
-	QString elidedText = mMetrics->elidedText(result, Qt::ElideRight, mLabelWidth);
 	mLabelLogical->setToolTip(result);
-	return elidedText;
+	return result;
 }
 
 QString IdWidget::labelGraphicalText() const
@@ -82,7 +76,6 @@ QString IdWidget::labelGraphicalText() const
 	if (mGraphicalId != qReal::Id()) {
 		result += tr("Graphical Id: ") + mGraphicalId.toString();
 	}
-	QString elidedText = mMetrics->elidedText(result, Qt::ElideRight, mLabelWidth);
 	mLabelGraphical->setToolTip(result);
-	return elidedText;
+	return result;
 }

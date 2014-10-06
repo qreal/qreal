@@ -32,7 +32,8 @@ HEADERS += \
     gui/logDialog.h \
     gui/statusDialog.h \
 	gui/remoteListDialog.h \
-    gui/changeVersionWidget.h
+    gui/changeVersionWidget.h \
+    gui/diffBetweenDialog.h
 
 SOURCES += \
     gitPlugin.cpp \
@@ -48,7 +49,8 @@ SOURCES += \
     gui/logDialog.cpp \
     gui/statusDialog.cpp \
 	gui/remoteListDialog.cpp \
-    gui/changeVersionWidget.cpp
+    gui/changeVersionWidget.cpp \
+    gui/diffBetweenDialog.cpp
 
 
 FORMS += \

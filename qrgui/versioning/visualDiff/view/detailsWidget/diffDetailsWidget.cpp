@@ -1,5 +1,5 @@
 #include <QtWidgets/QScrollArea>
-
+#include <QScrollBar>
 #include "diffDetailsWidget.h"
 #include "../../model/commonDifference.h"
 
@@ -56,7 +56,13 @@ void DiffDetailsWidget::initLayout()
 void DiffDetailsWidget::initIdWidget()
 {
 	mIdWidget = new IdWidget(tr("<Click item to see details>"), this);
-	mLayout->addWidget(mIdWidget, 0, 0, Qt::AlignCenter);
+	QGridLayout *mIdLayout = new QGridLayout(this);
+	QScrollArea *mScrollArea = new QScrollArea(this);
+	mScrollArea->setAlignment(Qt::AlignCenter);
+	mScrollArea->setWidgetResizable(true);
+	mScrollArea->setWidget(mIdWidget);
+	mIdLayout->addWidget(mScrollArea);
+	mLayout->addLayout(mIdLayout, 0, 0, Qt::AlignCenter);
 	connect(mIdWidget, SIGNAL(mouseEntered(qReal::Id)), this, SLOT(onMouseEnteredIdWidget(qReal::Id)));
 	connect(mIdWidget, SIGNAL(mouseLeaved(qReal::Id)), this, SLOT(onMouseLeavedIdWidget(qReal::Id)));
 }

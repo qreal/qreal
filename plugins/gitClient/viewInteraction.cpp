@@ -2,6 +2,7 @@
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrutils/versioningUtils/versionSelector.h"
 #include "gitPlugin.h"
+#include <QGridLayout>
 
 using namespace git::details;
 using namespace git::ui;
@@ -9,6 +10,7 @@ using namespace git::ui;
 ViewInteraction::ViewInteraction(GitPlugin *pluginInstance)
 	: mPlugin(pluginInstance)
 	, mPreferencesPage(new PreferencesVersioningPage())
+	, mDiffWidgets(QList<QWidget *>())
 {
 	initActions();
 	connect(mPlugin, SIGNAL(initComplete(bool)), this, SLOT(onInitComplete(bool)));
@@ -68,6 +70,15 @@ void ViewInteraction::initActions()
 	versionsAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
 	connect(versionsAction, SIGNAL(triggered()), this, SLOT(versionsClicked()));
 
+	QMenu *diffMenu = new QMenu(tr("Visual diff"));
+	gitMenu->addMenu(diffMenu);
+
+	QAction *diffAction = diffMenu->addAction(tr("Diff"));
+	connect(diffAction, SIGNAL(triggered()), this, SLOT(diffClicked()));
+
+	QAction *diffBetweenAction = diffMenu->addAction(tr("Diff between..."));
+	connect(diffBetweenAction, SIGNAL(triggered()), this, SLOT(diffBetweenClicked()));
+
 	mMenu << qReal::ActionInfo(gitMenu, "tools") << qReal::ActionInfo(versionsAction, "tools", "tools");
 }
 
@@ -105,7 +116,8 @@ void ViewInteraction::cloneClicked()
 
 	QString url = dialog->url();
 	qReal::SettingsManager::setValue("cloneUrl",url);
-	mPlugin->startClone(url);
+	mProjectManager->saveOrSuggestToSaveAs();
+	mPlugin->startClone(url, mRepoApi->workingFile());
 }
 
 void ViewInteraction::remoteClicked()
@@ -132,7 +144,7 @@ void ViewInteraction::commitClicked()
 	if (message.isEmpty()) {
 		message = "<no message>";
 	}
-
+	mProjectManager->saveOrSuggestToSaveAs();
 	mPlugin->startCommit(message);
 }
 
@@ -207,7 +219,8 @@ void ViewInteraction::onInitComplete(const bool success)
 void ViewInteraction::onCloneComplete(const bool success)
 {
 	if (success){
-		showMessage(tr("Clone successfully in qreal/bin/clone.qrs"));
+		showMessage(tr("Clone successfully"));
+		reopenWithoutSavings();
 	}
 }
 
@@ -295,6 +308,28 @@ void ViewInteraction::versionsClicked()
 	mCompactMode->openChangeVersionTab();
 }
 
+void ViewInteraction::diffClicked()
+{
+	QWidget *widget = makeDiffTab();
+	mPlugin->showDiff(mProjectManager->saveFilePath(), widget, false);
+}
+
+void ViewInteraction::diffBetweenClicked()
+{
+	ui::DiffBetweenDialog *dialog = new ui::DiffBetweenDialog(mMainWindowIface->windowWidget());
+	if (QDialog::Accepted != dialog->exec()) {
+		return;
+	}
+	QString const newHash = dialog->firstHash();
+	QString const oldHash = dialog->secondHash();
+	QWidget *widget = makeDiffTab();
+	if (oldHash.isEmpty()){
+		mPlugin->showDiff(newHash, mProjectManager->saveFilePath(), widget, false);
+	} else{
+		mPlugin->showDiff(oldHash, newHash, mProjectManager->saveFilePath(), widget, false);
+	}
+}
+
 void ViewInteraction::modeChanged(bool compactMode)
 {
 	mMenu.first().menu()->menuAction()->setVisible(!compactMode);
@@ -306,7 +341,34 @@ void ViewInteraction::modeChanged(bool compactMode)
 	}
 }
 
+void ViewInteraction::removeClosedTab(QWidget *widget)
+{
+	if (mDiffWidgets.contains(widget)){
+		mDiffWidgets.removeOne(widget);
+		if (mDiffWidgets.isEmpty()){
+			mMainWindowIface->makeFullScreen(isFullScreen);
+		}
+	}
+}
+
 void ViewInteraction::reopenWithoutSavings()
 {
-	mProjectManager->close();mProjectManager->reload();
+	mProjectManager->reload();
+}
+
+QWidget *ViewInteraction::makeDiffTab()
+{
+	isFullScreen = mMainWindowIface->isFullScreen();
+	if (!isFullScreen){
+		mMainWindowIface->makeFullScreen(true);
+	}
+	mMainWindowIface->makeFullScreen();
+	QWidget *widget = new QWidget();
+	QGridLayout *mLayout = new QGridLayout(widget);
+	mLayout->setMargin(0);
+	widget->setLayout(mLayout);
+	mMainWindowIface->openTab(widget, "diff");
+	mDiffWidgets << widget;
+	connect(mSystemEvents, SIGNAL(indefiniteTabClosed(QWidget*)), this, SLOT(removeClosedTab(QWidget*)));
+	return widget;
 }

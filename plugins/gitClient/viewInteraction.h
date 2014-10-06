@@ -14,6 +14,7 @@
 #include "gui/statusDialog.h"
 #include "gui/logDialog.h"
 #include "gui/remoteListDialog.h"
+#include "gui/diffBetweenDialog.h"
 #include "transparentMode.h"
 
 namespace git {
@@ -46,6 +47,8 @@ public slots:
 	void logClicked();
 	void remoteListClicked();
 	void versionsClicked();
+	void diffClicked();
+	void diffBetweenClicked();
 
 private slots:
 	void onInitComplete(bool const success);
@@ -59,11 +62,16 @@ private slots:
 	void onLogComplete(QString answer, bool const success);
 	void onRemoteListComplete(QString answer, bool const success);
 	void modeChanged(bool compactMode);
+	void removeClosedTab(QWidget *widget);
 
 private:
+	bool isFullScreen;
+	QList<QWidget *> mDiffWidgets;
+
 	void initActions();
 	void showMessage(QString const &message);
 	void reopenWithoutSavings();
+	QWidget *makeDiffTab();
 
 	QList<qReal::ActionInfo> mMenu;
 	GitPlugin *mPlugin;

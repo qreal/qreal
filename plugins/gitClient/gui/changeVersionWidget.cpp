@@ -11,7 +11,6 @@ ChangeVersionWidget::ChangeVersionWidget(QWidget *parent) :
 	mUi->setupUi(this);
 	mUi->label->hide();
 	connect(mUi->pushButtonLoad, SIGNAL(clicked()), SLOT(getHash()));
-	mUi->listWidgetForLog->setMinimumWidth(this->width() / 4);
 	mUi->listWidgetForLog->setMinimumWidth(this->width() / 5);
 	initDiffWidget();
 }
@@ -51,8 +50,9 @@ void ChangeVersionWidget::initDiffWidget()
 	QGridLayout *mLayout = new QGridLayout(mDiffWidget);
 	mLayout->setMargin(0);
 	mDiffWidget->setLayout(mLayout);
-	mDiffWidget->setFixedWidth(0.9 * this->width());
-	mUi->horizontalLayout->addWidget(mDiffWidget, 8, Qt::AlignLeft);
+
+	mDiffWidget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+	mUi->horizontalLayout->addWidget(mDiffWidget, 1, Qt::AlignLeft);
 }
 
 void ChangeVersionWidget::updateLog(QList<QPair<QString , QString> > listLog) // hash & mainPart

@@ -25,9 +25,6 @@ public:
 	virtual void showDiff(QString oldRepoRevision , QString newRepoRevision
 			, QString const &targetProject, QWidget *parentWidget, bool const &compactMode = false) = 0;
 
-signals:
-	void viewForTransparentModeIsReady(QGraphicsView*);
-
 };
 
 }

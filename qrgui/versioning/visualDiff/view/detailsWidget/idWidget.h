@@ -5,6 +5,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QGridLayout>
 
+#include <QScreen>
 #include "../../../../qrkernel/ids.h"
 
 namespace versioning
@@ -41,8 +42,6 @@ private:
 	QGridLayout *mLayout;
 	QLabel *mLabelLogical;
 	QLabel *mLabelGraphical;
-	QFontMetrics *mMetrics;
-	int mLabelWidth;
 };
 
 }

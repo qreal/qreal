@@ -138,6 +138,8 @@ public:
 	virtual QWidget *currentTab();
 	virtual void openTab(QWidget *tab, QString const &title);
 	virtual void closeTab(QWidget *tab);
+	virtual void makeFullScreen(bool const &fullScreen = true);
+	virtual bool isFullScreen();
 
 	/// Closes tab having given id as root id. If there is no such tab, does nothing.
 	/// @param id Id of a diagram (root element) that we want to close.

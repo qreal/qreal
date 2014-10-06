@@ -30,6 +30,7 @@ private slots:
 	void setVersion(QString hash);
 	void getAndUpdateLog();
 	void removeBrokenPointers(QWidget *widget);
+	void showDiff(QString newHash, QString oldHash, QWidget* widget);
 
 private:
 	ChangeVersionWidget *mCompactWidget;
@@ -40,6 +41,7 @@ private:
 
 	//TODO allow open several tabs
 	bool tabIsReady;
+	bool isFullScreen;
 
 	void init();
 	void isInit(const QString &directory = "", bool const &prepareAndProcess = true);

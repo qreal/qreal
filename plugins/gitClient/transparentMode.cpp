@@ -14,6 +14,7 @@ TransparentMode::TransparentMode(GitPlugin *plugin
 	, mMainWindowIface(mainWindowIface)
 	, mSystemInterface(systemInterface)
 	, tabIsReady(false)
+	, isFullScreen(false)
 {
 	init();
 }
@@ -23,6 +24,10 @@ void TransparentMode::openChangeVersionTab()
 	if (!tabIsReady){
 		init();
 	}
+	isFullScreen = mMainWindowIface->isFullScreen();
+	if (!isFullScreen){
+		mMainWindowIface->makeFullScreen(true);
+	}
 	getAndUpdateLog();
 	mCompactWidget->setVisible(true);
 	mMainWindowIface->openTab(mCompactWidget, "Change Version");
@@ -31,8 +36,8 @@ void TransparentMode::openChangeVersionTab()
 
 void TransparentMode::isInit(QString const &directory, const bool &prepareAndProcess)
 {
-	if (!mPlugin->isMyWorkingCopy(directory, false, prepareAndProcess)){
-		mPlugin->beginWorkingCopyDownloading(QString(), QString(), QString(), true);
+	if (!mPlugin->isMyWorkingCopy(directory, true, prepareAndProcess)){
+		mPlugin->doInit(directory, true);
 	}
 }
 
@@ -49,16 +54,21 @@ void TransparentMode::removeBrokenPointers(QWidget *widget)
 	if (widget == mCompactWidget)
 	{
 		tabIsReady = false;
+		mMainWindowIface->makeFullScreen(isFullScreen);
 	}
+}
+
+void TransparentMode::showDiff(QString newHash, QString oldHash, QWidget *widget)
+{
+	mPlugin->showDiff(oldHash, newHash, mProjectManager->saveFilePath(), widget, true);
 }
 
 void TransparentMode::init()
 {
 	mCompactWidget = new ChangeVersionWidget;
 	mCompactWidget->setVisible(false);
-	connect(mCompactWidget, SIGNAL(showDiff(QString, QString, QWidget*)), mPlugin
+	connect(mCompactWidget, SIGNAL(showDiff(QString, QString, QWidget*)), this
 			, SLOT(showDiff(QString, QString, QWidget*)));
-	//connect(mCompactWidget, SIGNAL(swapTab()),SLOT(mMainWindowIface->closeTab(mMainWindowIface->currentTab()));
 	connect(mCompactWidget, SIGNAL(loadVersion(QString)),SLOT(setVersion(QString)));
 	connect(mSystemInterface, SIGNAL(indefiniteTabClosed(QWidget*)), this, SLOT(removeBrokenPointers(QWidget*)));
 	tabIsReady = true;
@@ -66,7 +76,7 @@ void TransparentMode::init()
 
 void TransparentMode::listLog()
 {
-	if (mPlugin->isMyWorkingCopy(QString(), false, true))
+	if (mPlugin->isMyWorkingCopy(QString(), true, true))
 	{
 		if (mProjectManager->getUnsavedIndicator()){
 			mProjectManager->save();

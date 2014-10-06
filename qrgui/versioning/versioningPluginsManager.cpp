@@ -130,14 +130,14 @@ bool VersioningPluginsManager::onFileChanged(const QString &filePath, const QStr
 void VersioningPluginsManager::beginWorkingCopyDownloading(
 		  QString const &repoAddress
 		, QString const &targetProject
-		, QString revisionNumber
+		, QString commitId
 		, bool quiet)
 {
 	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
 	if (!activeVcs) {
 		return;
 	}
-	return activeVcs->beginWorkingCopyDownloading(repoAddress, targetProject, revisionNumber, quiet);
+	return activeVcs->beginWorkingCopyDownloading(repoAddress, targetProject, commitId, quiet);
 }
 
 void VersioningPluginsManager::beginWorkingCopyUpdating(QString const &targetProject)
@@ -177,13 +177,13 @@ QString VersioningPluginsManager::information(QString const &targetProject)
 	return activeVcs->information(targetProject);
 }
 
-int VersioningPluginsManager::revisionNumber(QString const &targetProject)
+QString VersioningPluginsManager::commitId(QString const &targetProject)
 {
 	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
 	if (!activeVcs) {
-		return -1;
+		return "-1";
 	}
-	return activeVcs->revisionNumber(targetProject);
+	return activeVcs->commitId(targetProject);
 }
 
 QString VersioningPluginsManager::remoteRepositoryUrl(QString const &targetProject)
@@ -251,25 +251,7 @@ void VersioningPluginsManager::onChangesSubmitted(const bool success)
 	emit changesSubmitted(success);
 }
 
-void VersioningPluginsManager::setVersion(QString hash, const bool &quiet)
-{
-	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
-	if (!activeVcs) {
-		return;
-	}
-	activeVcs->setVersion(hash,quiet);
-}
-
 bool VersioningPluginsManager::clientExist()
 {
 	activePlugin()->clientExist();
-}
-
-QString VersioningPluginsManager::getLog(const QString &format, const bool &quiet)
-{
-	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
-	if (!activeVcs) {
-		return QString();
-	}
-	return activeVcs->getLog();
 }

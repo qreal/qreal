@@ -34,28 +34,28 @@ public:
 	// Brief VCS interface
 	virtual void beginWorkingCopyDownloading(QString const &repoAddress
 			, QString const &targetProject
-			, QString revisionNumber = "-1"
+			, QString commitId = "-1"
 			, bool quiet = false);
 	virtual void beginWorkingCopyUpdating(QString const &targetProject = QString());
 	virtual void beginChangesSubmitting(const QString &description, QString const &targetProject = QString()
 											, bool const &quiet = false);
 	virtual bool reinitWorkingCopy(QString const &targetProject = QString());
 	virtual QString information(QString const &targetProject = QString());
-	virtual int revisionNumber(QString const &targetProject = QString());
+	virtual QString commitId(QString const &targetProject = QString());
 	virtual QString remoteRepositoryUrl(QString const &targetProject = QString());
 	virtual bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false
 								, bool const &prepareAndProcess = false);
 	virtual QString friendlyName();
+	bool clientExist();
+
 	virtual QString getLog(QString const &format = QString(), bool const &quiet = false);
 	virtual void setVersion(QString hash, bool const &quiet = false);
 	void setDiffViewerInterface(DiffPluginInterface *interface);
-	bool clientExist();
-
 
 public slots:
 	void doInit(QString const &targetFolder = QString(), bool const &quiet = false);
 	void startClone(QString const &from = QString()
-					, QString const &targetFolder = QString());
+					, QString const &targetProject = QString());
 	void startCommit(QString const &message, QString const &from  = QString()
 			, QString const &sourceProject = QString(), bool const &quiet = false);
 	void doRemote(QString const &remote, QString const &adress
@@ -72,8 +72,11 @@ public slots:
 	QString doRemoteList();
 	void doAfterOperationIsFinished(QVariant const &tag);
 	void checkClientInstalling();
-	//add more methods
-	void showDiff(QString fstHash, QString sndHash, QWidget *widget, const bool &compactMode = true);
+
+	void showDiff(QString const &targetProject, QWidget *widget, bool const &compactMode = true);
+	void showDiff(QString oldHash, QString newHash
+				  , QString const &targetProject, QWidget *widget, const bool &compactMode = true);
+	void showDiff(QString oldhash, QString const &targetProject, QWidget *widget, const bool &compactMode = true);
 
 signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);

@@ -1,3 +1,5 @@
+CONFIG += c++11
+
 HEADERS += \
 	$$PWD/progress.h \
 	$$PWD/longOperation.h \

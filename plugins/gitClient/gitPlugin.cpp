@@ -76,19 +76,21 @@ bool GitPlugin::onFileChanged(QString const &filePath, QString const &workingDir
 
 void GitPlugin::beginWorkingCopyDownloading(QString const &repoAddress
 		, QString const &targetProject
-		, QString revisionNumber, bool quiet)
+		, QString commitId, bool quiet)
 {
-	// wtf, see specification скорее всего нужно тупо вызвать во втором случаем clone
-	if (repoAddress == "" || targetProject == "" || revisionNumber == ""){
-		doInit(tempFolder(), quiet);
-	} else {
-		if(invokeOperation(QStringList(), true, tempFolderName, true, false, QString(), QString(), false)){
-			QStringList args;
-			args << "reset" << "--hard" << revisionNumber;
-			bool result = invokeOperation(args, false, tempFolderName, false, true, targetProject, QString(), false);
-			emit workingCopyDownloaded(result, targetProject);
+	bool success = true;
+	if (commitId.isEmpty()){
+
+		success = invokeOperation(QStringList() << "init", true, QString()
+								  , false, true, targetProject, QString(), quiet);
+	} else{
+		if(commitId == "-1"){
+			commitId = "HEAD";
 		}
+		success = invokeOperation(QStringList() << "reset" << commitId << "--hard"
+								  , true, QString(), true, true, targetProject, repoAddress, quiet);
 	}
+	emit workingCopyDownloaded(success, targetProject);
 }
 
 void GitPlugin::beginWorkingCopyUpdating(QString const &targetProject)
@@ -113,17 +115,15 @@ QString GitPlugin::information(QString const &targetProject)
 	return doStatus(targetProject);
 }
 
-int GitPlugin::revisionNumber(QString const &targetProject)
+QString GitPlugin::commitId(QString const &targetProject)
 {
-	Q_UNUSED(targetProject)
-	return 4;
-	//return currentRevision(tempFolder(), false, targetProject);
+	invokeOperation(QStringList() << "log" << "--pretty=%H" << "-1",true ,QString() ,true ,true ,targetProject);
+	return standartOutput().remove("\"");
 }
 
 QString GitPlugin::remoteRepositoryUrl(QString const &targetProject)
 {
-	Q_UNUSED(targetProject)
-	return qReal::SettingsManager::value("gitRemoteAdress", tempFolderName).toString();
+	return targetProject;
 }
 
 bool GitPlugin::isMyWorkingCopy(QString const &directory, const bool &quiet, bool const &prepareAndProcess)
@@ -157,7 +157,7 @@ void GitPlugin::setVersion(QString hash, bool const &quiet)
 {
 	//because if we have unsaved changes, it would be a crash
 	if (!this->isMyWorkingCopy(QString(), false, true)){
-		this->beginWorkingCopyDownloading(QString(), QString(), QString(), true);
+		this->doInit(QString(), true);
 	}
 	this->beginChangesSubmitting("version was saved in a transparent mode", QString(), quiet);
 
@@ -233,7 +233,7 @@ QString GitPlugin::getLog(QString const &format, bool const &quiet)
 
 void GitPlugin::doInit(QString const &targetFolder, bool const &quiet)
 {
-	bool isInit = isMyWorkingCopy(targetFolder,false,true);
+	bool isInit = isMyWorkingCopy(targetFolder,quiet,true);
 	if (!isInit){
 		QStringList arguments;
 		arguments  << "init";
@@ -254,16 +254,15 @@ void GitPlugin::doInit(QString const &targetFolder, bool const &quiet)
 }
 
 void GitPlugin::startClone(QString const &from
-		, QString const &targetFolder)
+		, QString const &targetProject)
 {
-	QString targetFolderTmp = !targetFolder.isEmpty() ? targetFolder : mTempDir;
 	QStringList arguments;
-	arguments << "clone" << from << targetFolderTmp;
+	arguments << "clone" << from << mTempDir;
 
 	const Tag tagStruct("clone");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
-	invokeOperationAsync(arguments, tagVariant, false, QString(), QString(), false);
+	invokeOperationAsync(arguments, tagVariant, false, QString(), targetProject, false);
 }
 
 void GitPlugin::startCommit(QString const &message, QString const &from
@@ -498,7 +497,7 @@ QString GitPlugin::getPassword()
 
 void GitPlugin::onCloneComplete(bool const result, const bool quiet)
 {
-	processWorkingCopy("clone.qrs");
+	processWorkingCopy();
 	if (!quiet) {
 		emit cloneComplete(result);
 		emit operationComplete("clone", result);
@@ -529,11 +528,17 @@ void GitPlugin::onResetComplete(const bool result, const bool quiet)
 	emit workingCopyUpdated(result);
 }
 
-void GitPlugin::showDiff(QString fstHash, QString sndHash, QWidget *widget, bool const &compactMode)
+void GitPlugin::showDiff(QString oldHash, QString newHash, const QString &targetProject, QWidget *widget, bool const &compactMode)
 {
-	if (sndHash != ""){
-		mDiffInterface->showDiff(sndHash, fstHash, QString(), widget, compactMode);
-	} else {
-		mDiffInterface->showDiff(fstHash, QString(), widget, compactMode);
-	}
+	mDiffInterface->showDiff(oldHash, newHash, targetProject, widget, compactMode);
+}
+
+void GitPlugin::showDiff(QString oldhash, const QString &targetProject, QWidget *widget, const bool &compactMode)
+{
+	mDiffInterface->showDiff(oldhash, targetProject, widget, compactMode);
+}
+
+void GitPlugin::showDiff(const QString &targetProject, QWidget *widget, const bool &compactMode)
+{
+	mDiffInterface->showDiff(targetProject, widget, compactMode);
 }

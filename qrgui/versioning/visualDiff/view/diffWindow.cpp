@@ -6,16 +6,19 @@ DiffWindow::DiffWindow(qReal::MainWindow *mainWindow
 	: QWidget(parent), mDiffModel(diffModel), mMainWindow(mainWindow)
 	, mShowDetails(false), mCompactMode(compactMode)
 {
-	this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-	initWindow();
+	if (compactMode){
+		this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	} else{
+		this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+	}
 	initLayout();
 	initViews();
 	initButton();
 	initDiffDetailsWidget();
 	QList<int> sizes;
-	sizes << 3 << 2;
+	sizes << 5 << 2;
 	mSplitter->setSizes(sizes);
-	mSplitter->setStretchFactor(0, 3);
+	mSplitter->setStretchFactor(0, 5);
 	mSplitter->setStretchFactor(1, 2);
 }
 
@@ -39,16 +42,6 @@ void DiffWindow::showDetails()
 	}
 }
 
-void DiffWindow::initWindow()
-{
-	setWindowTitle(tr("Diff"));
-	if (!mCompactMode){
-		setWindowState(Qt::WindowMaximized | Qt::WindowActive);
-	}
-	setWindowFlags(Qt::Window | Qt::WindowMinMaxButtonsHint);
-	setWindowOpacity(1.00);
-}
-
 void DiffWindow::initLayout()
 {
 	mLayout = new QGridLayout(this);
@@ -66,13 +59,7 @@ void DiffWindow::initLayout()
 
 void DiffWindow::initButton()
 {
-	if (!mCompactMode){
-		mOkButton = new QPushButton;
-		mOkButton->setText(tr("OK"));
-		mOkButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-		connect(mOkButton, SIGNAL(clicked()), this, SLOT(accept()));
-		mLayout->addWidget(mOkButton, 1, 0, Qt::AlignRight);
-	} else {
+	if (mCompactMode){
 		mDetailsButton = new QPushButton;
 		mDetailsButton->setText(tr("Details..."));
 		mDetailsLabel = new QLabel(tr("click on details to OPEN it"));

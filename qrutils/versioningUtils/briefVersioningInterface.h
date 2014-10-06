@@ -24,11 +24,11 @@ public slots:
 	/// Examples: svn checkout, git clone, etc...
 	/// @param repoAddress Repository URL
 	/// @param targetProject Path to target project
-	/// @param revisionNumber Order number of the required revision. If negative value specified, fetching last revision.
+	/// @param commitId Order id of the required revision. If negative value specified, fetching last revision.
 	/// @param quiet Should system inform about the errors and open project after downloading
 	virtual void beginWorkingCopyDownloading(QString const &repoAddress
 			, QString const &targetProject
-			, QString revisionNumber = "-1"
+			, QString commitId = "-1"
 			, bool quiet = false) = 0;
 
 	/// Starts updating specified project to last revision
@@ -53,7 +53,7 @@ public slots:
 	virtual QString information(QString const &targetProject = QString()) = 0;
 
 	/// Returns the order number of current working copy revision
-	virtual int revisionNumber(QString const &targetProject = QString()) = 0;
+	virtual QString commitId(QString const &targetProject = QString()) = 0;
 
 	/// Returns the address of the remote repository
 	virtual QString remoteRepositoryUrl(QString const &targetProject = QString()) = 0;
@@ -66,12 +66,6 @@ public slots:
 
 	///This method return name of plugin. Examples: GitPlugin..
 	virtual QString friendlyName() = 0;
-
-	///This method return log. just for Git
-	virtual QString getLog(QString const &format = QString(), bool const &quiet = false) = 0;
-
-	///Just for git ex: git reset
-	virtual void setVersion(QString hash, bool const &quiet = false) = 0;
 
 	///This method return true if vcs plugin have installed client
 	virtual bool clientExist() = 0;

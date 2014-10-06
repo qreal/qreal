@@ -36,19 +36,17 @@ public:
 public slots:
 	void beginWorkingCopyDownloading(QString const &repoAddress
 			, QString const &targetProject
-			, QString revisionNumber = "-1"
+			, QString commitId = "-1"
 			, bool quiet = false);
 	void beginWorkingCopyUpdating(QString const &targetProject = QString());
 	void beginChangesSubmitting(QString const &description, QString const &targetProject = QString(), bool const &quiet = false);
 	bool reinitWorkingCopy(QString const &targetProject = QString());
 	QString information(QString const &targetProject = QString());
-	int revisionNumber(QString const &targetProject = QString());
+	QString commitId(QString const &targetProject = QString());
 	QString remoteRepositoryUrl(QString const &targetProject = QString());
 	bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false
 						, bool const &prepareAndProcess = false);
 	QString friendlyName();
-	QString getLog(QString const &format = QString(), bool const &quiet = false);
-	void setVersion(QString hash, bool const &quiet = false);
 	bool clientExist();
 
 private slots:

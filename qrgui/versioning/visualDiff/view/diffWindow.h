@@ -25,7 +25,6 @@ private slots:
 	void showDetails();
 
 private:
-	void initWindow();
 	void initLayout();
 	void initButton();
 	void initViews();

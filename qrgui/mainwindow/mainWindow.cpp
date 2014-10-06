@@ -602,6 +602,18 @@ void MainWindow::closeTab(QWidget *tab)
 	mUi->tabs->removeTab(mUi->tabs->indexOf(tab));
 }
 
+void MainWindow::makeFullScreen(bool const &fullScreen)
+{
+	if (mIsFullscreen != fullScreen){
+		this->fullscreen();
+	}
+}
+
+bool MainWindow::isFullScreen()
+{
+	return mIsFullscreen;
+}
+
 void MainWindow::closeStartTab()
 {
 	for (int i = 0; i < mUi->tabs->count(); ++i) {
