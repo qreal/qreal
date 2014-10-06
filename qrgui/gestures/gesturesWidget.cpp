@@ -13,6 +13,7 @@ GesturesWidget::GesturesWidget(QWidget *parent)
 {
 	mUi->setupUi(this);
 	connect(mUi->listWidget, &QListWidget::currentItemChanged, this, &GesturesWidget::currentElementChanged);
+	mUi->gesturePixmap->setStyleSheet("background-color: white; border: 1px solid black");
 }
 
 GesturesWidget::~GesturesWidget()
@@ -30,10 +31,7 @@ void GesturesWidget::draw(QString const &paths)
 	GesturePainter painter(paths, Qt::white, Qt::blue, gestureAreaSize);
 	QPixmap const gestureIcon = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
 
-	mUi->gesturePixmap->setPixmap(gestureIcon);
-	mUi->gesturePixmap->setStyleSheet("background-color: white; border: 1px solid black");
-	mUi->gesturePixmap->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	mUi->listWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	mUi->gesturePixmap->setPixmap(gestureIcon.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }
 
 int GesturesWidget::coord(int previous, int next, int part)
@@ -56,9 +54,4 @@ void GesturesWidget::setElements(QList<QPair<QString, qReal::Id> > const &elemen
 		item->setData(Qt::UserRole, QVariant::fromValue(element.second));
 		mUi->listWidget->addItem(item);
 	}
-}
-
-void GesturesWidget::paintEvent(QPaintEvent *)
-{
-	draw(mIconPath);
 }
