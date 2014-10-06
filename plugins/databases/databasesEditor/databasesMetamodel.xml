@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<namespace>UML 2.0</namespace>
+	<diagram nodeName="Databases" name="Databases" displayedName="Databases">
+		<nonGraphicTypes>
+			<port name="EntityLeft"/>
+			<port name="EntityVertical"/>
+			<port name="EntityRight"/>
+			<enum name="DataType" displayedName="Data Type">
+				<value>bigint</value>
+				<value>int</value>
+				<value>numeric</value>
+				<value>smallint</value>
+				<value>smallmoney</value>
+				<value>tinyint</value>
+				<value>money</value>
+				<value>float</value>
+				<value>real</value>
+				<value>smallmoney</value>
+				<value>string</value>
+			</enum>
+		</nonGraphicTypes>
+		<graphicTypes>
+			<node name="Entity" displayedName="Entity">
+				<graphics>
+					<picture sizex="160" sizey="90">
+						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="90" x2="160"/>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="145" y2="145" fill-style="none" x1="42" x2="168">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+						<curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+							<start startx="15" starty="42"/>
+							<end endx="42" endy="15"/>
+							<ctrl x="13" y="13"/>
+							<showIf value="true" property="transaction" sign="="/>
+						</curve>
+					</picture>
+					<labels>
+						<label x="5a" y="3a" textBinded="Text"/>
+					</labels>
+					<ports>
+						<linePort type="EntityLeft">
+							<start startx="0" starty="0"/>
+							 <end endx="0" endy="90"/>
+						</linePort>
+						<linePort type="EntityVertical">
+							<start startx="0" starty="0"/>
+							<end endx="160" endy="0"/>
+						</linePort>
+						<linePort type="EntityRight">
+							<start startx="160" starty="0"/>
+							<end endx="160" endy="90"/>
+						</linePort>
+						<linePort type="EntityVertical">
+							<start startx="0" starty="90"/>
+							<end endx="160" endy="90"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<container>
+						<contains type="Databases::Attribute"/>
+						 <properties>
+							<sortContainer/>
+							<minimizeToChildren/>
+							<banChildrenMove/>
+							<forestalling size="0,35,0,0"/>
+							<childrenForestalling size="0"/>
+						 </properties>
+					</container>
+					<properties>
+						<property type="string" name="Text" displayedName="Text"/>
+						<property type="bool" name="transaction" displayedName="Transaction">
+							<default>false</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node name="Attribute" displayedName="Attribute">
+				<graphics>
+					<picture sizex="150" sizey="28">
+						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="28" x2="150"/>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="145" y2="145" fill-style="none" x1="42" x2="168">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+						<curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+							<start startx="15" starty="42"/>
+							<end endx="42" endy="15"/>
+							<ctrl x="13" y="13"/>
+							<showIf value="true" property="transaction" sign="="/>
+						</curve>
+					</picture>
+					<labels>
+						<label x="10a" y="10a" textBinded="Name"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<explodesTo>
+						<target type="BPMNDiagramNode" makeReusable="false" requireImmediateLinkage="false"/>
+					</explodesTo>
+					<properties>
+						<property type="string" name="Name" displayedName="Name"/>
+						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
+						<property type="bool" name="isKey" displayedName="Key"/>
+						<property type="DataType" name="DataType" displayedName="Data Type"/>
+					</properties>
+				</logic>
+			</node>
+			<edge name="ManyToManyRelationship" displayedName="Many-to-many">
+				<graphics>
+					<lineType type="solidLine"/>
+					<labels>
+						<label textBinded="Text"/>
+					</labels>
+				</graphics>
+				<logic>
+					<dividability isDividable="true"/>
+					<associations endType="many_relationship" beginType="many_relationship">
+						<association endName="end" beginName="start"/>
+					</associations>
+					<properties>
+						<property type="string" displayedName="Name" name="Name"/>
+						<property type="bool" displayedName="Default" name="default"/>
+					</properties>
+					<fromPorts>
+						<port type="EntityRight"/>
+						<port type="EntityVertical"/>
+						<port type="EntityLeft"/>
+					<toPorts>
+						<port type="EntityRight"/>
+						<port type="EntityVertical"/>
+						<port type="EntityLeft"/>
+					</toPorts>
+					<possibleEdges>
+						<possibleEdge beginName="EntityRight" directed="true" endName="EntityLeft"/>
+						<possibleEdge beginName="EntityRight" directed="true" endName="EntityRight"/>
+						<possibleEdge beginName="EntityRight" directed="true" endName="EntityVertical"/>
+						<possibleEdge beginName="EntityLeft" directed="true" endName="EntityLeft"/>
+						<possibleEdge beginName="EntityLeft" directed="true" endName="EntityVertical"/>
+						<possibleEdge beginName="EntityVertical" directed="true" endName="EntityVertical"/>
+					</possibleEdges>
+				</logic>
+			</edge>
+			<edge name="OneToManyRelationship" displayedName="One-to-many">
+				<graphics>
+					<lineType type="solidLine"/>
+					<labels>
+						<label textBinded="Text"/>
+					</labels>
+				</graphics>
+				<logic>
+					<dividability isDividable="true"/>
+					<associations endType="one_relationship" beginType="many_relationship">
+						<association endName="end" beginName="start"/>
+					</associations>
+					<properties>
+						<property type="string" displayedName="Name" name="Name"/>
+						<property type="bool" displayedName="Default" name="default"/>
+					</properties>
+					<fromPorts>
+						<port type="EntityRight"/>
+						<port type="EntityVertical"/>
+						<port type="EntityLeft"/>
+					</fromPorts>
+					<toPorts>
+						<port type="EntityRight"/>
+						<port type="EntityVertical"/>
+						<port type="EntityLeft"/>
+					</toPorts>
+					<possibleEdges>
+						<possibleEdge beginName="EntityRight" directed="true" endName="EntityLeft"/>
+						<possibleEdge beginName="EntityRight" directed="true" endName="EntityRight"/>
+						<possibleEdge beginName="EntityRight" directed="true" endName="EntityVertical"/>
+						<possibleEdge beginName="EntityLeft" directed="true" endName="EntityLeft"/>
+						<possibleEdge beginName="EntityLeft" directed="true" endName="EntityVertical"/>
+						<possibleEdge beginName="EntityVertical" directed="true" endName="EntityVertical"/>
+					</possibleEdges>
+				</logic>
+			</edge>
+			<edge name="OneToOneRelationship" displayedName="One-to-one">
+				<graphics>
+					<lineType type="solidLine"/>
+					<labels>
+						<label textBinded="Text"/>
+					</labels>
+				</graphics>
+				<logic>
+					<dividability isDividable="true"/>
+					<associations endType="one_relationship" beginType="one_relationship">
+						<association endName="end" beginName="start"/>
+					</associations>
+					<properties>
+						<property type="string" displayedName="Name" name="Name"/>
+						<property type="bool" displayedName="Default" name="default"/>
+					</properties>
+					<fromPorts>
+						<port type="EntityRight"/>
+						<port type="EntityVertical"/>
+						<port type="EntityLeft"/>
+					</fromPorts>
+					<toPorts>
+						<port type="EntityRight"/>
+						 <port type="EntityVertical"/>
+						<port type="EntityLeft"/>
+					</toPorts>
+					<possibleEdges>
+						<possibleEdge beginName="EntityRight" directed="true" endName="EntityLeft"/>
+						<possibleEdge beginName="EntityRight" directed="true" endName="EntityRight"/>
+						<possibleEdge beginName="EntityRight" directed="true" endName="EntityVertical"/>
+						<possibleEdge beginName="EntityLeft" directed="true" endName="EntityLeft"/>
+						<possibleEdge beginName="EntityLeft" directed="true" endName="EntityVertical"/>
+						<possibleEdge beginName="EntityVertical" directed="true" endName="EntityVertical"/>
+					</possibleEdges>
+				</logic>
+			</edge>
+		</graphicTypes>
+		<palette>
+		<group name="Entities and attributes">
+				<element name="Entity"/>
+				<element name="Attribute"/>
+			</group>
+			<group name="Relationships">
+				<element name="OneToOneRelationship"/>
+				<element name="OneToManyRelationship"/>
+				<element name="ManyToManyRelationship"/>
+			</group>
+		</palette>
+	</diagram>
+</metamodel>
