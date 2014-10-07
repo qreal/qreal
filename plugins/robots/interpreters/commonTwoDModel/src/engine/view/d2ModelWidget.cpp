@@ -27,6 +27,8 @@
 #include "src/engine/model/constants.h"
 #include "src/engine/model/model.h"
 
+#include "include/commonTwoDModel/engine/nullTwoDModelDisplayWidget.h"
+
 using namespace twoDModel;
 using namespace view;
 using namespace model;
@@ -41,8 +43,9 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
 	, mScene(nullptr)
+	, mSelectedRobotItem(nullptr)
 	, mModel(model)
-	, mDisplay(nullptr)
+	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mWidth(defaultPenWidth)
 	, mFirstShow(true)
 {
@@ -56,7 +59,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	mUi->enableMotorNoiseCheckBox->setChecked(mModel.settings().realisticMotors());
 	changePhysicsSettings();
 
-	connect(mScene, &D2ModelScene::selectionChanged, this, &D2ModelWidget::changePalette);
+	connect(mScene, &D2ModelScene::selectionChanged, this, &D2ModelWidget::onSelectionChange);
 	connect(mScene, &D2ModelScene::mousePressed, this, &D2ModelWidget::refreshCursor);
 	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::refreshCursor);
 	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::saveToRepo);
@@ -79,6 +82,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 
 D2ModelWidget::~D2ModelWidget()
 {
+	delete mDisplay;
 	delete mScene;
 	delete mUi;
 }
@@ -209,6 +213,7 @@ void D2ModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 	qDebug() << "unsetPortsGroupBoxAndWheelComboBoxes() in";
 	if (mCurrentConfigurer) {
 		mUi->portsGroupBox->layout()->removeWidget(mCurrentConfigurer);
+		mCurrentConfigurer->disconnectDevicesConfigurationProvider();
 
 		if (mSelectedRobotItem) {
 			mSelectedRobotItem->robotModel().configuration().disconnectDevicesConfigurationProvider();
@@ -264,7 +269,9 @@ void D2ModelWidget::init()
 	}
 
 	update();
+
 	updateWheelComboBoxes();
+	qDebug() << "init";
 }
 
 void D2ModelWidget::saveInitialRobotBeforeRun()
@@ -472,24 +479,35 @@ void D2ModelWidget::onSelectionChange()
 		}
 	}
 
-	if (oneRobotItem) {
-		if (mSelectedRobotItem
-				&& robotItem->robotModel().info()->robotId() == mSelectedRobotItem->robotModel().info()->robotId()) {
-			return;
-		}
+	if (oneRobotItem
+			&& mSelectedRobotItem
+			&& robotItem->robotModel().info()->robotId()
+			== mSelectedRobotItem->robotModel().info()->robotId()) {
+		qDebug() << 1;
+		return;
+	}
 
-		if (mSelectedRobotItem) {
-			unsetPortsGroupBoxAndWheelComboBoxes();
-			disconnect(&robotItem->robotModel(), &RobotModel::positionChanged, this
-					, &D2ModelWidget::centerOnRobot);
-			mSelectedRobotItem = nullptr;
+	if (mSelectedRobotItem) {
+		unsetPortsGroupBoxAndWheelComboBoxes();
+		disconnect(&mSelectedRobotItem->robotModel(), &RobotModel::positionChanged, this
+				, &D2ModelWidget::centerOnRobot);
+		mSelectedRobotItem = nullptr;
+
+		if (!oneRobotItem) {
+			delete mDisplay;
+			mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
 		}
+	}
+
+	if (oneRobotItem) {
 
 		if (mDisplay) {
+			dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->removeWidget(mDisplay);
 			delete mDisplay;
 		}
 
 		if (robotItem->robotModel().info()->name() == "NullTwoDRobotModel") {
+			mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
 			return;
 		}
 
@@ -502,6 +520,10 @@ void D2ModelWidget::onSelectionChange()
 
 
 		mDisplay = mSelectedRobotItem->robotModel().info()->displayWidget(this);
+		mDisplay->setMinimumSize(displaySize);
+		mDisplay->setMaximumSize(displaySize);
+		dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
+
 		connect(&mModel.timeline(), &Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
 
 		mUi->leftWheelComboBox->show();
@@ -736,6 +758,7 @@ void D2ModelWidget::initRunStopButtons()
 void D2ModelWidget::updateWheelComboBoxes()
 {
 	qDebug() << "updateWheelComboBoxes() in";
+
 	if (!mSelectedRobotItem) {
 		mUi->leftWheelComboBox->hide();
 		mUi->rightWheelComboBox->hide();
