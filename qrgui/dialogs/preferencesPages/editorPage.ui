@@ -46,7 +46,7 @@
         <x>0</x>
         <y>0</y>
         <width>480</width>
-        <height>782</height>
+        <height>762</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -406,11 +406,6 @@
               <height>20</height>
              </size>
             </property>
-            <item>
-             <property name="text">
-              <string>unset</string>
-             </property>
-            </item>
             <item>
              <property name="text">
               <string>broken</string>

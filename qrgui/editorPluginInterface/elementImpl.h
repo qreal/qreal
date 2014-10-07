@@ -18,8 +18,7 @@ namespace enums {
 namespace linkShape {
 enum LinkShape
 {
-	unset = -1
-	, broken
+	broken
 	, square
 	, curve
 };
