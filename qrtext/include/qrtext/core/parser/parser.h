@@ -30,9 +30,9 @@ public:
 	/// Parses given stream of tokens and returns AST with results or nullptr if parsing is impossible.
 	QSharedPointer<ast::Node> parse(QList<Token<TokenType>> const &tokens)
 	{
-		TokenStream<TokenType> tokenStream(tokens, mErrors);
-		ParserContext<TokenType> context(mErrors, tokenStream);
-		return mGrammar->parse(tokenStream, context);
+		mTokenStream.reset(new TokenStream<TokenType>(tokens, mErrors));
+		mContext.reset(new ParserContext<TokenType>(mErrors, *mTokenStream));
+		return mGrammar->parse(*mTokenStream, *mContext);
 	}
 
 protected:
@@ -46,6 +46,7 @@ private:
 	QList<Error> &mErrors;
 	QSharedPointer<ParserInterface<TokenType>> mGrammar;
 	QScopedPointer<ParserContext<TokenType>> mContext;
+	QScopedPointer<TokenStream<TokenType>> mTokenStream;
 };
 
 }

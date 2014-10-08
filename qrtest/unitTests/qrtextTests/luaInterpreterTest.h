@@ -20,7 +20,12 @@ protected:
 
 	template<typename T>
 	T interpret(QString const &code) {
-		return mInterpreter->interpret(parseAndAnalyze(code), *mAnalyzer).value<T>();
+		auto const ast = parseAndAnalyze(code);
+		if (mErrors.isEmpty()) {
+			return mInterpreter->interpret(ast, *mAnalyzer).value<T>();
+		} else {
+			return {};
+		}
 	}
 
 	QScopedPointer<qrtext::lua::details::LuaInterpreter> mInterpreter;
