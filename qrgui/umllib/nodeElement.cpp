@@ -574,8 +574,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->layOut();
-		if (SettingsManager::value("ActivateGrid").toBool())
-		{
+		if (SettingsManager::value("ActivateGrid").toBool()) {
 			edge->alignToGrid();
 		}
 	}
