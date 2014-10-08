@@ -59,6 +59,6 @@ QList<qReal::HotKeyActionInfo> Ev3KitInterpreterPlugin::hotKeyActions()
 QIcon Ev3KitInterpreterPlugin::iconForFastSelector(
 		interpreterBase::robotModel::RobotModelInterface const &robotModel) const
 {
-	Q_UNUSED(mRealRobotModel)
+	Q_UNUSED(robotModel)
 	return QIcon();
 }
