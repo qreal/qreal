@@ -107,17 +107,3 @@ TEST_F(LuaInterpreterTest, inequality)
 	ASSERT_TRUE(mErrors.isEmpty());
 	EXPECT_FALSE(result);
 }
-
-TEST_F(LuaInterpreterTest, incorrectNotTrue)
-{
-	interpret<int>("b = !true");
-
-	ASSERT_FALSE(mErrors.isEmpty());
-}
-
-TEST_F(LuaInterpreterTest, unknownFunctionCall)
-{
-	interpret<int>("a = b();");
-
-	ASSERT_FALSE(mErrors.isEmpty());
-}
