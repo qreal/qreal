@@ -2,11 +2,11 @@ TEMPLATE = subdirs
 
 # editor plugins
 SUBDIRS	= \
-	dragonDiagram/dragonDiagram.pro \
-	blockDiagram/blockDiagram.pro \
+#	dragonDiagram/dragonDiagram.pro \
+#	blockDiagram/blockDiagram.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
-	requirements/requirements.pro \
+#	requirements/requirements.pro \
 	domainAnalysis/domainAnalysis.pro \
 
 

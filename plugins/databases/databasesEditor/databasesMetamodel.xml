@@ -108,12 +108,6 @@
 				</logic>
 			</node>
 			<edge name="ManyToManyRelationship" displayedName="Many-to-many">
-				<graphics>
-					<lineType type="solidLine"/>
-					<labels>
-						<label textBinded="Text"/>
-					</labels>
-				</graphics>
 				<logic>
 					<dividability isDividable="true"/>
 					<associations endType="many_relationship" beginType="many_relationship">
@@ -121,12 +115,12 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
-						<property type="bool" displayedName="Default" name="default"/>
 					</properties>
 					<fromPorts>
 						<port type="EntityRight"/>
 						<port type="EntityVertical"/>
 						<port type="EntityLeft"/>
+					</fromPorts>
 					<toPorts>
 						<port type="EntityRight"/>
 						<port type="EntityVertical"/>
@@ -141,6 +135,12 @@
 						<possibleEdge beginName="EntityVertical" directed="true" endName="EntityVertical"/>
 					</possibleEdges>
 				</logic>
+				<graphics>
+					<lineType type="solidLine"/>
+					<labels>
+						<label textBinded="Text"/>
+					</labels>
+				</graphics>
 			</edge>
 			<edge name="OneToManyRelationship" displayedName="One-to-many">
 				<graphics>
