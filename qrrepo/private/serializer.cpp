@@ -153,6 +153,10 @@ void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const
 	metaInfo.clear();
 
 	QString const filePath = mWorkingDir + "/metaInfo.xml";
+	if (!QFile::exists(filePath)) {
+		return;
+	}
+
 	QDomDocument const document = xmlUtils::loadDocument(filePath);
 	for (QDomElement child = document.documentElement().firstChildElement("info")
 			; !child.isNull()

@@ -60,7 +60,7 @@ linkShape::LinkShape LineFactory::stringToShape(QString const &string)
 	} else if (string == "curve") {
 		return linkShape::curve;
 	} else {
-		return linkShape::unset;
+		return static_cast<linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
 	}
 }
 

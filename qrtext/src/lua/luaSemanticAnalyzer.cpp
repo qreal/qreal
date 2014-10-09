@@ -224,12 +224,16 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(QSharedPointer<core::ast::Node> co
 	auto function = functionCall->function();
 	if (!function->is<ast::Identifier>()) {
 		reportError(node, QObject::tr("Indirect function calls are not supported"));
+		assign(function, any());
+		assign(node, any());
 		return;
 	}
 
 	auto name = as<ast::Identifier>(function)->name();
 	if (!mIntrinsicFunctions.contains(name)) {
 		reportError(node, QObject::tr("Unknown function"));
+		assign(function, any());
+		assign(node, any());
 		return;
 	}
 
