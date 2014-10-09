@@ -12,8 +12,8 @@ MiniMapShell::MiniMapShell(EditorView *parent, MiniMap * miniMap)
 	, mShowMiniMapButton(new MiniMapButton(parent))
 	, mMainLayout(new QVBoxLayout())
 	, mAuxiliaryLayout(new QHBoxLayout())
-	, isMiniMapVisible(true)
 	, mSize(SettingsManager::value("MiniMapSize").toInt())
+	, isMiniMapVisible(true)
 
 {
 	mMiniMap->setParent(this);

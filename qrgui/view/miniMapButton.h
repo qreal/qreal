@@ -2,15 +2,12 @@
 
 #include <QtWidgets/QWidgetAction>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QWidgetAction>
 #include <QtWidgets/QMouseEventTransition>
 #include <QtGui/QMouseEvent>
 
 namespace qReal {
 
 class EditorView;
-class EditorViewMViface;
-class MainWindow;
 
 class MiniMapButton : public QPushButton
 {

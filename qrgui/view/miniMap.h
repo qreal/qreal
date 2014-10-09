@@ -7,7 +7,6 @@
 
 namespace qReal {
 
-class MainWindow;
 class EditorViewScene;
 class EditorView;
 

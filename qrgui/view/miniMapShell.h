@@ -8,8 +8,6 @@
 
 namespace qReal {
 
-class MainWindow;
-class EditorViewScene;
 class EditorView;
 
 class MiniMapShell : public QWidget
