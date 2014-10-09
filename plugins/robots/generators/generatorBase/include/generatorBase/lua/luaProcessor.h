@@ -18,7 +18,7 @@ namespace lua {
 /// A toolbox for reengineering lua code. Prints lua code into the target language,
 /// replaces reserved variables with code specified in templates from "sensors" folder
 /// and function invocations with code specified in templates from "functions" folder.
-class LuaProcessor : public QObject, public TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT LuaProcessor : public QObject, public TemplateParametrizedEntity
 {
 	Q_OBJECT
 

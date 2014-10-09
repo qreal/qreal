@@ -6,7 +6,7 @@ namespace generatorBase {
 namespace lua {
 
 /// Provides converting precedence table base implementation with typical operators precedence.
-class PrecedenceConverter : public PrecedenceConverterInterface
+class ROBOTS_GENERATOR_EXPORT PrecedenceConverter : public PrecedenceConverterInterface
 		, public qrtext::lua::LuaAstVisitorInterface
 {
 public:

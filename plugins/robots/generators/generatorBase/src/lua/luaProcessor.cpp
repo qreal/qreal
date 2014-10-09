@@ -1,4 +1,4 @@
-#include "luaProcessor.h"
+#include "generatorBase/lua/luaProcessor.h"
 
 #include <qrtext/languageToolboxInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
