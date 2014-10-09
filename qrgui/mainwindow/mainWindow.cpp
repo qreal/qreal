@@ -83,7 +83,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mStartWidget(nullptr)
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
-		, mMiniMap(new MiniMap(this))
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
@@ -100,7 +99,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	splashScreen.setProgress(20);
 
-	initMiniMap();
 	initGridProperties();
 
 	splashScreen.setProgress(40);
@@ -344,7 +342,7 @@ void MainWindow::loadPlugins()
 void MainWindow::clearSelectionOnTabs()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i), mMiniMap);
+		EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
 		if (tab != NULL) {
 			tab->scene()->clearSelection();
 		}
@@ -354,12 +352,6 @@ void MainWindow::clearSelectionOnTabs()
 void MainWindow::addEditorElementsToPalette(Id const &editor, Id const &diagram)
 {
 	mUi->paletteTree->addEditorElements(mEditorManagerProxy, editor, diagram);
-}
-
-void MainWindow::adjustMinimapZoom(int zoom)
-{
-	mMiniMap->resetMatrix();
-	mMiniMap->scale(0.01 * zoom, 0.01 * zoom);
 }
 
 void MainWindow::selectItemWithError(Id const &id)
@@ -1037,10 +1029,6 @@ void MainWindow::closeTab(int index)
 
 	mUi->tabs->removeTab(index);
 
-	if (!mUi->tabs->count()){
-		mMiniMap->setParent(0);
-	}
-
 	delete widget;
 }
 
@@ -1289,8 +1277,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 	if (tabNumber != -1) {
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
-		EditorView * const view = new EditorView(this, mMiniMap);
-		mMiniMap->show();
+		EditorView * const view = new EditorView(this);
 		if (view) {
 			Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(index);
 			mController->diagramOpened(diagramId);
@@ -1443,7 +1430,6 @@ void MainWindow::setDefaultShortcuts()
 void MainWindow::currentTabChanged(int newIndex)
 {
 	switchToTab(newIndex);
-	mMiniMap->changeSource(newIndex);
 
 	bool const isEditorTab = getCurrentTab();
 	bool const isShape = isCurrentTabShapeEdit();
@@ -1470,7 +1456,6 @@ void MainWindow::currentTabChanged(int newIndex)
 	} else if (getCurrentTab()->mvIface()) {
 		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
 		mToolManager.activeTabChanged(currentTabId);
-		replaceMiniMap(newIndex);
 	}
 
 	emit rootDiagramChanged();
@@ -2086,11 +2071,6 @@ void MainWindow::initToolManager()
 	}
 }
 
-void MainWindow::initMiniMap()
-{
-	mMiniMap->init(this);
-}
-
 void MainWindow::initTabs()
 {
 	mUi->tabs->setTabsClosable(true);
@@ -2311,15 +2291,6 @@ void MainWindow::openStartTab()
 	int const index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
 	mUi->tabs->setTabUnclosable(index);
 	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
-}
-
-void MainWindow::replaceMiniMap(int index)
-{
-	mMiniMap->parentWidget()->layout()->removeWidget(mMiniMap);
-	EditorView *currentTab = dynamic_cast<EditorView *>(mUi->tabs->widget(index));
-	//mMiniMap->changeSource(index);
-	if (currentTab) {
-		currentTab->replaceMiniMap();
 }
 
 void MainWindow::beginPaletteModification()

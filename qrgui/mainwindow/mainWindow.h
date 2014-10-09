@@ -215,7 +215,6 @@ private slots:
 	void showFindDialog();
 
 	void setSceneFont();
-	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 
 	void updateTabName(Id const &id);
@@ -293,8 +292,6 @@ private slots:
 	void startUsabilityTest();
 	void finishUsabilityTest();
 
-	void replaceMiniMap(int index);
-
 private:
 	void checkForUpdates();
 	void showUpdatesDialog();
@@ -366,7 +363,6 @@ private:
 
 	QString getNextDirName(QString const &name);
 
-	void initMiniMap();
 	void initToolManager();
 	void initTabs();
 	void initDocks();

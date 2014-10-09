@@ -10,7 +10,6 @@ HEADERS += \
 	$$PWD/splashScreen.h \
 	$$PWD/tabWidget.h \
 	$$PWD/modelExplorer.h \
-	$$PWD/miniMap.h \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
 	$$PWD/qscintillaTextEdit.h \
@@ -41,7 +40,6 @@ SOURCES += \
 	$$PWD/dotRunner.cpp \
 	$$PWD/splashScreen.cpp \
 	$$PWD/tabWidget.cpp \
-	$$PWD/miniMap.cpp \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
 	$$PWD/qscintillaTextEdit.cpp \

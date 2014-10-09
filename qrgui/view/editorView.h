@@ -6,7 +6,7 @@
 #include "view/editorViewScene.h"
 #include "view/private/editorViewMVIface.h"
 #include "view/private/touchSupportManager.h"
-#include "mainwindow/miniMap.h"
+#include "miniMap.h"
 #include "miniMapShell.h"
 
 namespace qReal {
@@ -19,7 +19,7 @@ class EditorView : public QGraphicsView
 	Q_OBJECT
 
 public:
-	explicit EditorView(QWidget *parent, MiniMap *miniMap = 0);
+	explicit EditorView(QWidget *parent);
 	~EditorView();
 
 	EditorViewMViface *mvIface() const;
@@ -39,9 +39,8 @@ public slots:
 	void zoomIn();
 	void zoomOut();
 	void zoom(qreal const zoomFactor);
-	void invalidateScene();
 	void updateMiniMap();
-	void replaceMiniMap();
+	//void replaceMiniMap();
 	void moveMiniMap(QPoint const miniMapPos);
 
 protected:
@@ -59,11 +58,12 @@ private slots:
 	void zoomInTime();
 	void zoomOutTime();
 	void animFinished();
+	void adjustMinimapZoom(int zoom);
 
 private:
 	void checkGrid();
 
-	void addMiniMap(MiniMap *mm);
+	void initMiniMap();
 
 	void startAnimation(char const *slot);
 
@@ -76,7 +76,6 @@ private:
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
 
-	int mStickDistance;
 	view::details::TouchSupportManager mTouchManager;
 };
 

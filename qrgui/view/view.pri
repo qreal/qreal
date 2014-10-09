@@ -14,7 +14,8 @@
 	$$PWD/private/exploserView.h \
 	$$PWD/private/touchSupportManager.h \
 	$$PWD/miniMapButton.h \
-	$$PWD/miniMapShell.h
+	$$PWD/miniMapShell.h \
+	$$PWD/miniMap.h
 
 SOURCES += \
 	$$PWD/editorView.cpp \
@@ -31,4 +32,5 @@ SOURCES += \
 	$$PWD/private/exploserView.cpp \
 	$$PWD/private/touchSupportManager.cpp \
 	$$PWD/miniMapButton.cpp \
-	$$PWD/miniMapShell.cpp
+	$$PWD/miniMapShell.cpp \
+	$$PWD/miniMap.cpp
