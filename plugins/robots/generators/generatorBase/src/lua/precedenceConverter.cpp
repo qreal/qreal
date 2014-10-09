@@ -1,4 +1,4 @@
-#include "precedenceConverter.h"
+#include "generatorBase/lua/precedenceConverter.h"
 
 using namespace generatorBase::lua;
 

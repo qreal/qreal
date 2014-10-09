@@ -5,7 +5,7 @@
 
 #include "readableControlFlowGenerator.h"
 #include "gotoControlFlowGenerator.h"
-#include "lua/luaProcessor.h"
+#include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/images.h"
 #include "generatorBase/parts/subprograms.h"
@@ -60,7 +60,6 @@ QString MasterGeneratorBase::generate()
 	}
 
 	mCustomizer->factory()->setMainDiagramId(mDiagram);
-	mCustomizer->factory()->variables()->reinit(mRepo);
 	mCustomizer->factory()->images()->reinit();
 
 	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {

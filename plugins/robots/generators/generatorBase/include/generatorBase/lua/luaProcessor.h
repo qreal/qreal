@@ -34,6 +34,9 @@ public:
 			, qReal::Id const &id
 			, simple::Binding::ConverterInterface const *reservedVariablesConverter);
 
+	/// Returns facade object for manipulating text language.
+	qrtext::LanguageToolboxInterface &toolbox() const;
+
 protected:
 	/// Can be overrided to return precedence precedence table for the target language.
 	/// By default C precedence table is returned (because most languages have same precedences).

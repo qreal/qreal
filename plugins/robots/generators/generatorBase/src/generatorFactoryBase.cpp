@@ -66,7 +66,7 @@
 #include "generatorBase/parts/functions.h"
 #include "generatorBase/parts/images.h"
 
-#include "lua/luaProcessor.h"
+#include "generatorBase/lua/luaProcessor.h"
 
 using namespace generatorBase;
 using namespace qReal;
@@ -110,7 +110,7 @@ void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
 
 void GeneratorFactoryBase::initVariables()
 {
-	mVariables = new parts::Variables(pathToTemplates(), mRobotModelManager.model());
+	mVariables = new parts::Variables(pathToTemplates(), mRobotModelManager.model(), mLuaTranslator.toolbox());
 }
 
 void GeneratorFactoryBase::initSubprograms()

@@ -46,6 +46,9 @@ HEADERS += \
 	$$PWD/include/generatorBase/parts/functions.h \
 	$$PWD/include/generatorBase/parts/images.h \
 	$$PWD/include/generatorBase/parts/deviceVariables.h \
+	$$PWD/include/generatorBase/lua/luaProcessor.h \
+	$$PWD/include/generatorBase/lua/precedenceConverterInterface.h \
+	$$PWD/include/generatorBase/lua/precedenceConverter.h \
 
 HEADERS += \
 	$$PWD/src/readableControlFlowGenerator.h \
@@ -187,11 +190,8 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/labelGenerator.h \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/variableInitGenerator.h \
-	$$PWD/src/lua/luaProcessor.h \
 	$$PWD/src/lua/luaPrinter.h \
 	$$PWD/src/lua/reservedFunctionsConverter.h \
-	$$PWD/src/lua/precedenceConverterInterface.h \
-	$$PWD/src/lua/precedenceConverter.h \
 
 SOURCES += \
 	$$PWD/src/converters/templateParametrizedConverter.cpp \

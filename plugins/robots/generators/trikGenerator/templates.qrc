@@ -58,8 +58,12 @@
         <file>templates/switch/default.t</file>
         <file>templates/switch/oneCase.t</file>
         <file>templates/switch/conditionsSeparator.t</file>
-        <file>templates/types/float.t</file>
         <file>templates/types/int.t</file>
+        <file>templates/types/float.t</file>
+        <file>templates/types/bool.t</file>
+        <file>templates/types/string.t</file>
+        <file>templates/types/array.t</file>
+        <file>templates/types/cast.t</file>
         <file>templates/sensors/Enter.t</file>
         <file>templates/sensors/Power.t</file>
         <file>templates/sensors/Left.t</file>
@@ -97,7 +101,6 @@
         <file>templates/videosensors/initcolorSensor.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
-        <file>templates/types/cast.t</file>
         <file>templates/wait/encoder.t</file>
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>
@@ -127,10 +130,8 @@
         <file>templates/buttons/waitForLeft.t</file>
         <file>templates/buttons/waitForRight.t</file>
         <file>templates/buttons/waitForPower.t</file>
-        <file>templates/variables/floatConstantDeclaration.t</file>
-        <file>templates/variables/floatVariableDeclaration.t</file>
-        <file>templates/variables/intConstantDeclaration.t</file>
-        <file>templates/variables/intVariableDeclaration.t</file>
+        <file>templates/variables/constantDeclaration.t</file>
+        <file>templates/variables/variableDeclaration.t</file>
         <file>templates/whatTime.t</file>
         <file>templates/variableInit.t</file>
         <file>templates/engines/backward.t</file>

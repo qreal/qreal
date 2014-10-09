@@ -47,6 +47,11 @@ QString LuaProcessor::translate(QString const &data
 	return lua::LuaPrinter(pathToRoot(), precedenceConverter(), reservedVariablesConverter).print(tree);
 }
 
+qrtext::LanguageToolboxInterface &LuaProcessor::toolbox() const
+{
+	return mTextLanguage;
+}
+
 PrecedenceConverterInterface &LuaProcessor::precedenceConverter()
 {
 	return mPrecedenceConverter;

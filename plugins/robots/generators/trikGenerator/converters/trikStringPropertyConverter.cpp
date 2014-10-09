@@ -1,5 +1,7 @@
 #include "trikStringPropertyConverter.h"
 
+#include <qrtext/core/types/any.h>
+
 using namespace trik;
 using namespace converters;
 using namespace generatorBase;
@@ -36,7 +38,7 @@ QString TrikStringPropertyConverter::convert(QString const &data) const
 
 bool TrikStringPropertyConverter::variableExists(QString const &variable) const
 {
-	return mVariables.expressionType(variable) != enums::variableType::unknown;
+	return !mVariables.expressionType(variable)->is<qrtext::core::types::Any>();
 }
 
 QString TrikStringPropertyConverter::value(QString const &variable, int index) const

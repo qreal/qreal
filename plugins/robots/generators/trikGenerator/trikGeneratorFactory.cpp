@@ -1,6 +1,9 @@
 #include "trikGeneratorFactory.h"
+
 #include <generatorBase/converters/regexpMultiConverter.h>
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
+#include <generatorBase/lua/luaProcessor.h>
+
 #include "converters/engineV4PortConverter.h"
 #include "converters/engineV6PortConverter.h"
 #include "converters/encoderV4PortConverter.h"
@@ -154,7 +157,7 @@ generatorBase::simple::Binding::ConverterInterface *TrikGeneratorFactory::string
 
 void TrikGeneratorFactory::initVariables()
 {
-	mVariables = new parts::TrikVariables(pathToTemplates(), mRobotModelManager.model());
+	mVariables = new parts::TrikVariables(pathToTemplates(), mRobotModelManager.model(), mLuaTranslator.toolbox());
 }
 
 Binding::ConverterInterface *TrikGeneratorFactory::motorPortConverter() const

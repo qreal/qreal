@@ -78,6 +78,8 @@ public:
 
 	QStringList identifiers() const override;
 
+	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const override;
+
 	/// Reintroduced method from DebuggerInterface, returns value of identifier with given name.
 	template<typename T>
 	T value(QString const &identifier) const
