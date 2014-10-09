@@ -33,7 +33,6 @@ signals:
 private:
 	Ui::GesturesWidget *mUi;
 	int mCurrentPointNumber;
-	QString mIconPath;
 	static int coord(int previous, int next, int part);
 };
 
