@@ -69,6 +69,11 @@ QSharedPointer<types::TypeExpression> SemanticAnalyzer::type(QSharedPointer<ast:
 	}
 }
 
+QStringList SemanticAnalyzer::identifiers() const
+{
+	return mIdentifierDeclarations.keys();
+}
+
 void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
 		, QSharedPointer<types::TypeExpression> const &type)
 {
