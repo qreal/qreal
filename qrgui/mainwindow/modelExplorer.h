@@ -19,12 +19,16 @@ public:
 	void setController(Controller * const controller);
 	void setAssistApi(details::ModelsAssistInterface * const model);
 	void setExploser(Exploser &exploser);
-	void changeActionsSet(QList<QAction *> acts);
+	void changeActionsSet(QList<QAction *> const &actions);
 
 protected:
 	virtual void commitData(QWidget *editor);
+	void focusOutEvent(QFocusEvent* event);
+	void focusInEvent(QFocusEvent * event);
 
 private:
+	void setActionsEnabled(bool enabled);
+
 	Controller *mController; // Doesn`t take ownership
 	details::ModelsAssistInterface *mModel; // Doesn`t take ownership
 	Exploser *mExploser; // Doesn`t take ownership

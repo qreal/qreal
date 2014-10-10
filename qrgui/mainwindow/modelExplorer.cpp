@@ -1,6 +1,7 @@
 #include "modelExplorer.h"
 
 #include <QtWidgets/QAction>
+#include <QtGui/QFocusEvent>
 
 #include "controller/commands/renameCommand.h"
 #include "models/details/modelsImplementation/abstractModel.h"
@@ -31,13 +32,13 @@ void ModelExplorer::setExploser(Exploser &exploser)
 	mExploser = &exploser;
 }
 
-void ModelExplorer::changeActionsSet(QList<QAction *> acts)
+void ModelExplorer::changeActionsSet(QList<QAction *> const &actions)
 {
-	for(QAction *action : actions()) {
+	for (QAction *action : this->actions()) {
 		removeAction(action);
 	}
 
-	addActions(acts);
+	addActions(actions);
 }
 
 void ModelExplorer::commitData(QWidget *editor)
@@ -48,5 +49,26 @@ void ModelExplorer::commitData(QWidget *editor)
 	QString const newName = model()->data(currentIndex()).toString();
 	if (oldName != newName) {
 		mController->execute(new commands::RenameCommand(*mModel, id, oldName, newName, mExploser));
+	}
+}
+
+
+void ModelExplorer::focusOutEvent(QFocusEvent *event)
+{
+	if (event->reason() != Qt::PopupFocusReason) {
+		setActionsEnabled(false);
+	}
+}
+
+void ModelExplorer::focusInEvent(QFocusEvent *event)
+{
+	Q_UNUSED(event)
+	setActionsEnabled(true);
+}
+
+void ModelExplorer::setActionsEnabled(bool enabled)
+{
+	for (QAction *action : actions()) {
+		action->setEnabled(enabled);
 	}
 }

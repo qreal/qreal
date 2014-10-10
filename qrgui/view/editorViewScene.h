@@ -117,7 +117,8 @@ public:
 	void setTitlesVisible(bool visible);
 	void onElementParentChanged(Element *element);
 
-	QList<QAction *> actions();
+	QList<QAction *> actions() const;
+	void setActionsEnabled(bool enabled);
 
 public slots:
 	qReal::Id createElement(const QString &type);
@@ -252,7 +253,6 @@ private:
 
 	QMenu mContextMenu;
 
-	//QAction *mActionDeleteFromDiagram;
 	QAction *mActionCutOnDiagram;
 	QAction *mActionCopyOnDiagram;
 	QAction *mActionPasteOnDiagram;

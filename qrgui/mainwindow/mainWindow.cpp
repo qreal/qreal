@@ -143,7 +143,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
 	mFilterObject = new FilterObject();
 	connectActionsForUXInfo();
-	connectActions();
+		connectActions();
 	initExplorers();
 
 	// So now we are going to load plugins. The problem is that if we will do it
@@ -171,7 +171,6 @@ void MainWindow::connectActionsForUXInfo()
 			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
 			<< mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
 			<< mUi->actionDeleteFromDiagram
-			//<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
 			<< mUi->actionPreferences << mUi->actionHelp
 			<< mUi->actionAbout << mUi->actionAboutQt
 			<< mUi->actionFullscreen << mUi->actionFind;

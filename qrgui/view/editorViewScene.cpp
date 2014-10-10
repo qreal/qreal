@@ -732,17 +732,7 @@ Element *EditorViewScene::lastCreatedFromLinker() const
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
-		// Forward event to text editor
-		QGraphicsScene::keyPressEvent(event);
-	} else if (event->key() == Qt::Key_Delete) {
-		// Delete selected elements from scene
-		mainWindow()->deleteFromScene();
-	} else if (event->matches(QKeySequence::Paste)) {
-		paste(event->modifiers() == Qt::ShiftModifier);
-	} else if (event->matches(QKeySequence::Copy)) {
-		copy();
-	} else if (isArrow(event->key())) {
+	if (isArrow(event->key())) {
 		moveSelectedItems(event->key());
 	} else if (event->key() == Qt::Key_Menu) {
 		initContextMenu(nullptr, QPointF()); // see #593
@@ -1308,6 +1298,7 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mActionCopyOnDiagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
 	mActionCopyOnDiagram->setText(tr("Copy"));
 	connect(mActionCopyOnDiagram, &QAction::triggered, this, &EditorViewScene::copy);
+	mView->addAction(mActionCopyOnDiagram);
 
 	mActionPasteOnDiagram = new QAction(mView);
 	mActionPasteOnDiagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
@@ -1315,6 +1306,7 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	connect(mActionPasteOnDiagram, &QAction::triggered, [this]() {
 		paste(false);
 	});
+	mView->addAction(mActionPasteOnDiagram);
 
 	mActionPasteReference = new QAction(mView);
 	mActionPasteReference->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_V));
@@ -1322,13 +1314,15 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	connect(mActionPasteReference, &QAction::triggered, [this]() {
 		paste(true);
 	});
+	mView->addAction(mActionPasteReference);
 
 	mActionCutOnDiagram = new QAction(mView);
 	mActionCutOnDiagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
 	mActionCutOnDiagram->setText(tr("Cut"));
 	connect(mActionCutOnDiagram, &QAction::triggered, this, &EditorViewScene::cut);
+	mView->addAction(mActionCutOnDiagram);
 
-	//mActionDeleteFromDiagram = mWindow->actionDeleteFromDiagram();
+	mView->addAction(mWindow->actionDeleteFromDiagram());
 
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
 			<< separator
@@ -1531,9 +1525,16 @@ void EditorViewScene::onElementParentChanged(Element *element)
 	element->setTitlesVisible(mTitlesVisible);
 }
 
-QList<QAction *> EditorViewScene::actions()
+QList<QAction *> EditorViewScene::actions() const
 {
 	return mContextMenuActions;
+}
+
+void EditorViewScene::setActionsEnabled(bool enabled)
+{
+	for (QAction *action : mContextMenuActions) {
+		action->setEnabled(enabled);
+	}
 }
 
 void EditorViewScene::deselectLabels()
