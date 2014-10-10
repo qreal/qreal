@@ -41,7 +41,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 //	mUi->indexGridSlider->setVisible(false);
 //	mUi->label_20->setVisible(false);
 
-	//connect(mUi->miniMapSize, SIGNAL(sliderMoved(int)), this, SLOT(miniMapSizeSliderMoved(int)));
+	connect(mUi->miniMapSize, SIGNAL(sliderMoved(int)), this, SLOT(miniMapSizeSliderMoved(int)));
 	mUi->miniMapSize->setMinimum(50);
 	mUi->miniMapSize->setMaximum(250);
 
@@ -107,7 +107,7 @@ void PreferencesEditorPage::indexGridSliderMoved(int value)
 void PreferencesEditorPage::miniMapSizeSliderMoved(int value)
 {
 	SettingsManager::setValue("MiniMapSize", value);
-	emit  miniMapSizeChanged();
+	emit  miniMapSizeChanged(value);
 }
 
 void PreferencesEditorPage::dragAreaSliderMoved(int value)
@@ -133,7 +133,6 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("LabelsDistance", mUi->labelDistanceSlider->value());
 	SettingsManager::setValue("manualFontCheckBoxChecked", mUi->fontCheckBox->isChecked());
 
-	emit miniMapSizeChanged();
 	emit paletteRepresentationChanged();
 
 	mWidthGrid = mUi->gridWidthSlider->value();
@@ -219,5 +218,3 @@ void PreferencesEditorPage::activateAlignment(bool activate)
 {
 	mUi->activateAlignmentCheckBox->setChecked(activate);
 }
-
-

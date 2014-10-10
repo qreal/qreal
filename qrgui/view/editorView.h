@@ -39,7 +39,7 @@ public slots:
 	void zoomIn();
 	void zoomOut();
 	void zoom(qreal const zoomFactor);
-	void updateMiniMap();
+	void updateMiniMap(int const size);
 
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);

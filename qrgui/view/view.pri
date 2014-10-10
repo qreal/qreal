@@ -1,4 +1,4 @@
-    HEADERS += \
+HEADERS += \
 	$$PWD/editorView.h \
 	$$PWD/editorViewScene.h \
 	$$PWD/sceneCustomizationInterface.h \

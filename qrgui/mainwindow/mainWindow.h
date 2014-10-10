@@ -235,6 +235,7 @@ private slots:
 
 	void applySettings();
 	void resetToolbarSize(int size);
+	void changeMiniMapSize(int size);
 
 	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
 	commands::AbstractCommand *graphicalDeleteCommand(QGraphicsItem *target);
@@ -413,7 +414,6 @@ private:
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
-	MiniMap *mMiniMap;
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
 	StartWidget *mStartWidget;

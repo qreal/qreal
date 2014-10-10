@@ -12,7 +12,6 @@ HEADERS += \
 	$$PWD/paintWidget.h \
 	$$PWD/painterInterface.h \
 	$$PWD/animatedHighlighter.h \
-    graphicsUtils/colorListEditor.h
 
 SOURCES += \
 	$$PWD/abstractItem.cpp \

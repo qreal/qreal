@@ -9,12 +9,11 @@ using namespace qReal;
 
 int const zoomAnimationInterval = 20;
 int const zoomAnimationTimes = 4;
-int const miniMapStickDistance = 50;
 
 EditorView::EditorView(QWidget *parent)
 	: QGraphicsView(parent)
-	, mMiniMap(new MiniMap(this))
-	, mMiniMapShell(new MiniMapShell(this, mMiniMap))
+	, mMiniMap(nullptr)
+	, mMiniMapShell(nullptr)
 	, mMouseOldPosition()
 	, mWheelPressed(false)
 	, mTouchManager(this)
@@ -278,9 +277,9 @@ void EditorView::zoom(qreal const zoomFactor)
 	checkGrid();
 }
 
-void EditorView::updateMiniMap()
+void EditorView::updateMiniMap(int const size)
 {
-	mMiniMapShell->changeSize();
+	mMiniMapShell->changeSize(size);
 }
 
 void EditorView::adjustMinimapZoom(int zoom)
@@ -291,8 +290,7 @@ void EditorView::adjustMinimapZoom(int zoom)
 
 void EditorView::initMiniMap()
 {
-	mMiniMap->init(this);
-
+	mMiniMap = new MiniMap(this);
 	mMiniMapShell = new MiniMapShell(this, mMiniMap);
 	mMiniMapShell->setParent(this);
 }

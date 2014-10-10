@@ -17,10 +17,10 @@ class MiniMapShell : public QWidget
 public:
 	MiniMapShell(QWidget *parent, MiniMap *miniMap);
 
-	void changeSize();
+	void changeSize(int const size);
 
 public slots:
-	void replace(QPoint const pos);
+	void replace(QPoint const &position);
 
 private slots:
 	void turnMiniMap();
@@ -32,9 +32,6 @@ private:
 
 	QVBoxLayout *mMainLayout;
 	QHBoxLayout *mAuxiliaryLayout;
-
-	int mSize;
-	bool isMiniMapVisible;
 };
 
 }

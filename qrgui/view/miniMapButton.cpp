@@ -1,7 +1,8 @@
-#include "editorView.h"
+#include "miniMapShell.h"
 #include "miniMapButton.h"
 
 using namespace qReal;
+
 MiniMapButton::MiniMapButton(MiniMapShell *parent)
 	: mWidgetMoved(false)
 {

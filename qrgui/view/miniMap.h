@@ -22,11 +22,10 @@ class MiniMap : public QGraphicsView
 	Q_OBJECT
 public:
 	/// Drag mode is used for dragging a rectangle of the main view
-	enum Mode { None, Drag };
+	enum class Mode { None, Drag };
 
-	explicit MiniMap(QWidget *parent = 0);
+	explicit MiniMap(EditorView *tab);
 
-	void init(EditorView *tab);
 	void changeSource(int index);
 
 	void setScene(QGraphicsScene *scene);

@@ -243,6 +243,7 @@ void MainWindow::connectActions()
 
 	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this, SLOT(changePaletteRepresentation()));
 	connect(&mPreferencesDialog, &PreferencesDialog::toolbarSizeChanged, this, &MainWindow::resetToolbarSize);
+	connect(&mPreferencesDialog, &PreferencesDialog::miniMapSizeChanged, this, &MainWindow::changeMiniMapSize);
 	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged()), &mPreferencesDialog, SLOT(changePaletteParameters()));
 
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
@@ -2346,5 +2347,15 @@ void MainWindow::endPaletteModification()
 		}
 
 		scene->update();
+	}
+}
+
+void MainWindow::changeMiniMapSize(int size)
+{
+	for (int i = 0; i < mUi->tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab != NULL) {
+			tab->updateMiniMap(size);
+		}
 	}
 }

@@ -53,6 +53,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
 	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this
 		, SIGNAL(paletteRepresentationChanged()));
+	connect(editorPage, SIGNAL(miniMapSizeChanged(int)), this, SIGNAL(miniMapSizeChanged(int)));
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 	connect(miscellaniousPage, &PreferencesMiscellaniousPage::toolbarSizeChanged
 			, this, &PreferencesDialog::toolbarSizeChanged);

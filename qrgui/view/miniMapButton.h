@@ -4,9 +4,10 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QMouseEventTransition>
 #include <QtGui/QMouseEvent>
-#include "miniMapShell.h"
 
 namespace qReal {
+
+class MiniMapShell;
 
 class MiniMapButton : public QPushButton
 {

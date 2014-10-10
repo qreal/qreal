@@ -29,7 +29,7 @@ signals:
 	void gridChanged();
 	void fontChanged();
 	void paletteRepresentationChanged();
-	void miniMapSizeChanged();
+	void miniMapSizeChanged(int value);
 
 private slots:
 	void widthGridSliderMoved(int value);

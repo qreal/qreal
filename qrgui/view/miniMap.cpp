@@ -4,14 +4,10 @@
 
 #include <qrkernel/settingsManager.h>
 
-MiniMap::MiniMap(QWidget *parent)
-		: QGraphicsView(parent)
-		, mEditorView(NULL)
-		, mMode(None)
-{
-}
-
-void MiniMap::init(EditorView *tab)
+MiniMap::MiniMap(EditorView *tab)
+		: QGraphicsView(tab)
+		, mEditorView(nullptr)
+		, mMode(Mode::None)
 {
 	mEditorView = tab;
 	hide();
@@ -91,7 +87,7 @@ void MiniMap::wheelEvent(QWheelEvent *event)
 void MiniMap::mousePressEvent(QMouseEvent *event)
 {
 	if (mEditorView != NULL) {
-		mMode = Drag;
+		mMode = Mode::Drag;
 		mEditorView->centerOn(mapToScene(event->pos()));
 	}
 	QGraphicsView::mousePressEvent(event);
@@ -99,7 +95,7 @@ void MiniMap::mousePressEvent(QMouseEvent *event)
 
 void MiniMap::mouseMoveEvent(QMouseEvent *event)
 {
-	if (mEditorView != NULL && mMode == Drag) {
+	if (mEditorView != NULL && mMode == Mode::Drag) {
 		mEditorView->centerOn(mapToScene(event->pos()));
 	}
 	QGraphicsView::mouseMoveEvent(event);
@@ -107,7 +103,7 @@ void MiniMap::mouseMoveEvent(QMouseEvent *event)
 
 void MiniMap::mouseReleaseEvent(QMouseEvent *event)
 {
-	mMode = None;
+	mMode = Mode::None;
 	QGraphicsView::mouseReleaseEvent(event);
 }
 
