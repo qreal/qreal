@@ -40,7 +40,6 @@ public slots:
 	void zoomOut();
 	void zoom(qreal const zoomFactor);
 	void updateMiniMap();
-	void moveMiniMap(QPoint const miniMapPos);
 
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);

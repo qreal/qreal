@@ -4,17 +4,16 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QMouseEventTransition>
 #include <QtGui/QMouseEvent>
+#include "miniMapShell.h"
 
 namespace qReal {
-
-class EditorView;
 
 class MiniMapButton : public QPushButton
 {
 	Q_OBJECT
 
 public:
-	explicit MiniMapButton(EditorView *parent = 0);
+	explicit MiniMapButton(MiniMapShell *parent);
 	void changeDragState(bool isDragged);
 	bool getDragState();
 

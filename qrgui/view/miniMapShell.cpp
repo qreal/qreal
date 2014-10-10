@@ -4,10 +4,11 @@
 using namespace qReal;
 
 int const buttonSize = 20;
+int const miniMapStickDistance = 50;
 
-MiniMapShell::MiniMapShell(EditorView *parent, MiniMap * miniMap)
+MiniMapShell::MiniMapShell(QWidget *parent, MiniMap * miniMap)
 	: QWidget()
-	, mEditorView(parent)
+	, mParentWidget(parent)
 	, mMiniMap(miniMap)
 	, mShowMiniMapButton(new MiniMapButton(parent))
 	, mMainLayout(new QVBoxLayout())
@@ -58,5 +59,66 @@ void MiniMapShell::turnMiniMap()
 		mShowMiniMapButton->changeDragState(false);
 	} else {
 		mShowMiniMapButton->changeDragState(false);
+	}
+}
+
+void MiniMapShell::replace(QPoint const pos)
+{
+	pos = mParentWidget->mapFromGlobal(pos);
+
+	move(pos.x(), pos.y());
+
+	int const editorViewHeight = mParentWidget.height();
+	int const editorViewWidth = mParentWidget.width();
+
+	if (pos.y() + height() > editorViewHeight - miniMapStickDistance) {
+		move(pos.x(), editorViewHeight - height() - 10);
+		if (pos.x() + width() > editorViewWidth - miniMapStickDistance) {
+			QPoint const newPos = QPoint(editorViewWidth- width() - 10, editorViewHeight - height() - 10);
+			move(newPos);
+		}
+
+		if (pos.x() < miniMapStickDistance) {
+			QPoint const newPos = QPoint(0, editorViewHeight - height() - 10);
+			move(newPos);
+		}
+	}
+
+	if (pos.y() < miniMapStickDistance) {
+		move(pos.x(), 0);
+		if (pos.x() + width() > editorViewWidth - miniMapStickDistance) {
+			QPoint const newPos = QPoint(editorViewWidth - width() - 10 , 0);
+			move(newPos);
+		}
+
+		if (pos.x() < miniMapStickDistance) {
+			QPoint const newPos = QPoint(0, 0);
+			move(newPos);
+		}
+	}
+
+	if (pos.x() + width() > editorViewWidth - miniMapStickDistance) {
+		move(editorViewWidth - width() - 10, pos.y());
+		if (pos.y() + height() > editorViewWidth - miniMapStickDistance) {
+			QPoint const newPos = QPoint(editorViewWidth - width() - 10, editorViewHeight - height() - 10);
+			move(newPos);
+		}
+
+		if (pos.y() < miniMapStickDistance) {
+			QPoint const newPos = QPoint(editorViewWidth - width() - 10, 0);
+			move(newPos);
+		}
+	}
+
+	if (pos.x() < miniMapStickDistance) {
+		move(0,pos.y());
+		if (pos.y() + height() > editorViewWidth - miniMapStickDistance) {
+			QPoint const newPos = QPoint(editorViewWidth - width() - 10 , 0);
+			move(newPos);
+		}
+		if (pos.y() < miniMapStickDistance) {
+			QPoint const newPos = QPoint(0, 0);
+			move(newPos);
+		}
 	}
 }

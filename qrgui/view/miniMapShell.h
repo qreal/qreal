@@ -15,15 +15,18 @@ class MiniMapShell : public QWidget
 	Q_OBJECT
 
 public:
-	MiniMapShell(EditorView *parent, MiniMap *miniMap);
+	MiniMapShell(QWidget *parent, MiniMap *miniMap);
 
 	void changeSize();
+
+public slots:
+	void replace(QPoint const pos);
 
 private slots:
 	void turnMiniMap();
 
 private:
-	EditorView *mEditorView;
+	QWidget *mParentWidget;
 	MiniMap *mMiniMap;
 	MiniMapButton *mShowMiniMapButton;
 

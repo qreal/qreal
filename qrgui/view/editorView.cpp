@@ -283,67 +283,6 @@ void EditorView::updateMiniMap()
 	mMiniMapShell->changeSize();
 }
 
-void EditorView::moveMiniMap(QPoint miniMapPos)
-{
-	miniMapPos = mapFromGlobal(miniMapPos);
-
-	mMiniMapShell->move(miniMapPos.x(), miniMapPos.y());
-
-	int const editorViewHeight = height();
-	int const editorViewWidth = width();
-
-	if (miniMapPos.y() + mMiniMapShell->height() > editorViewHeight - miniMapStickDistance) {
-		mMiniMapShell->move(miniMapPos.x(), editorViewHeight - mMiniMapShell->height() - 10);
-		if (miniMapPos.x() + mMiniMapShell->width() > editorViewWidth - miniMapStickDistance) {
-			miniMapPos = QPoint(editorViewWidth- mMiniMapShell->width() - 10, editorViewHeight - mMiniMapShell->height() - 10);
-			mMiniMapShell->move(miniMapPos);
-		}
-
-		if (miniMapPos.x() < miniMapStickDistance) {
-			miniMapPos = QPoint(0, editorViewHeight - mMiniMapShell->height() - 10);
-			mMiniMapShell->move(miniMapPos);
-		}
-	}
-
-	if (miniMapPos.y() < miniMapStickDistance) {
-		mMiniMapShell->move(miniMapPos.x(), 0);
-		if (miniMapPos.x() + mMiniMapShell->width() > editorViewWidth - miniMapStickDistance) {
-			miniMapPos = QPoint(editorViewWidth - mMiniMapShell->width() - 10 , 0);
-			mMiniMapShell->move(miniMapPos);
-		}
-
-		if (miniMapPos.x() < miniMapStickDistance) {
-			miniMapPos = QPoint(0, 0);
-			mMiniMapShell->move(miniMapPos);
-		}
-	}
-
-	if (miniMapPos.x() + mMiniMapShell->width() > editorViewWidth - miniMapStickDistance) {
-		mMiniMapShell->move(editorViewWidth - mMiniMapShell->width() - 10, miniMapPos.y());
-		if (miniMapPos.y() + mMiniMapShell->height() > editorViewWidth - miniMapStickDistance) {
-			miniMapPos = QPoint(editorViewWidth - mMiniMapShell->width() - 10, editorViewHeight - mMiniMapShell->height() - 10);
-			mMiniMapShell->move(miniMapPos);
-		}
-
-		if (miniMapPos.y() < miniMapStickDistance) {
-			miniMapPos = QPoint(editorViewWidth - mMiniMapShell->width() - 10, 0);
-			mMiniMapShell->move(miniMapPos);
-		}
-	}
-
-	if (miniMapPos.x() < miniMapStickDistance) {
-		mMiniMapShell->move(0,miniMapPos.y());
-		if (miniMapPos.y() + mMiniMapShell->height() > editorViewWidth - miniMapStickDistance) {
-			miniMapPos = QPoint(editorViewWidth - mMiniMapShell->width() - 10 , 0);
-			mMiniMapShell->move(miniMapPos);
-		}
-		if (miniMapPos.y() < miniMapStickDistance) {
-			miniMapPos = QPoint(0, 0);
-			mMiniMapShell->move(miniMapPos);
-		}
-	}
-}
-
 void EditorView::adjustMinimapZoom(int zoom)
 {
 	mMiniMap->resetMatrix();
