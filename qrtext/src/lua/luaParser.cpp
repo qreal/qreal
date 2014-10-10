@@ -162,6 +162,11 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 	// explist ::= exp(0) {‘,’ exp(0)}
 	explist = (exp & *(-LuaTokenTypes::comma & exp))
 			>> [] (QSharedPointer<TemporaryPair> node) {
+				if (!node) {
+					// There was syntax error somewhere, it shall be already reported.
+					return as<TemporaryList>(wrap(new TemporaryList()));
+				}
+
 				auto firstExp = as<ast::Expression>(node->left());
 				auto temporaryList = as<TemporaryList>(node->right());
 				temporaryList->list().prepend(firstExp);

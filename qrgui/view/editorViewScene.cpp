@@ -1453,11 +1453,9 @@ void EditorViewScene::updateEdgeElements()
 		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
 			enums::linkShape::LinkShape const shape
-					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType"
-							, enums::linkShape::unset).toInt());
-			if (shape != enums::linkShape::unset) {
-				element->changeShapeType(shape);
-			}
+					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
+
+			element->changeShapeType(shape);
 
 			if (SettingsManager::value("ActivateGrid").toBool()) {
 				element->alignToGrid();

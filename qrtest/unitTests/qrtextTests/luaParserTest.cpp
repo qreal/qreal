@@ -373,7 +373,6 @@ TEST_F(LuaParserTest, logicalOperators)
 	auto rightOperand = binaryOp->rightOperand().dynamicCast<ast::False>();
 	ASSERT_FALSE(rightOperand.isNull());
 
-
 	stream = "true and false";
 	result = mParser->parse(mLexer->tokenize(stream));
 	EXPECT_TRUE(mErrors.isEmpty());
@@ -384,7 +383,6 @@ TEST_F(LuaParserTest, logicalOperators)
 	ASSERT_FALSE(leftOperand.isNull());
 	rightOperand = binaryOp->rightOperand().dynamicCast<ast::False>();
 	ASSERT_FALSE(rightOperand.isNull());
-
 
 	stream = "true && false";
 	result = mParser->parse(mLexer->tokenize(stream));
@@ -397,7 +395,6 @@ TEST_F(LuaParserTest, logicalOperators)
 	rightOperand = binaryOp->rightOperand().dynamicCast<ast::False>();
 	ASSERT_FALSE(rightOperand.isNull());
 
-
 	stream = "true || false";
 	result = mParser->parse(mLexer->tokenize(stream));
 	EXPECT_TRUE(mErrors.isEmpty());
@@ -409,7 +406,6 @@ TEST_F(LuaParserTest, logicalOperators)
 	rightOperand = binaryOp->rightOperand().dynamicCast<ast::False>();
 	ASSERT_FALSE(rightOperand.isNull());
 
-
 	stream = "not false";
 	result = mParser->parse(mLexer->tokenize(stream));
 	EXPECT_TRUE(mErrors.isEmpty());
@@ -418,11 +414,4 @@ TEST_F(LuaParserTest, logicalOperators)
 	ASSERT_FALSE(unaryOp.isNull());
 	rightOperand = unaryOp->operand().dynamicCast<ast::False>();
 	ASSERT_FALSE(leftOperand.isNull());
-}
-
-TEST_F(LuaParserTest, incorrectLogicalOperators)
-{
-	QString stream = "true ||| false";
-	mParser->parse(mLexer->tokenize(stream));
-	EXPECT_FALSE(mErrors.isEmpty());
 }

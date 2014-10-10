@@ -367,11 +367,6 @@
         </property>
         <item>
          <property name="text">
-          <string>unset</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
           <string>broken</string>
          </property>
         </item>
