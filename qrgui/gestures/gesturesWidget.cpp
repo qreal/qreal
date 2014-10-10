@@ -23,7 +23,6 @@ GesturesWidget::~GesturesWidget()
 
 void GesturesWidget::draw(QString const &paths)
 {
-	mIconPath = paths;
 	int const frame = 10;
 	int const gestureAreaSize = qMin(mUi->gesturePixmap->width(), mUi->gesturePixmap->size().height()) - frame;
 	QSize const size(gestureAreaSize, gestureAreaSize);
