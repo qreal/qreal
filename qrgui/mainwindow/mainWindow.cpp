@@ -143,7 +143,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
 	mFilterObject = new FilterObject();
 	connectActionsForUXInfo();
-		connectActions();
+	connectActions();
 	initExplorers();
 
 	// So now we are going to load plugins. The problem is that if we will do it
