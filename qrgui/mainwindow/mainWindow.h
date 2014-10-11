@@ -202,6 +202,8 @@ public slots:
 	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle();
 
+	void initInterpretedPlugins();
+
 private slots:
 	/// Suggests user to select a root diagram for the new project
 	/// if more than one diagram loaded or creates project with the only diagram
@@ -211,7 +213,6 @@ private slots:
 	/// Diagram opening must happen after plugins initialization
 	void initPluginsAndStartWidget();
 	void initToolPlugins();
-	void initInterpretedPlugins();
 
 	/// handler for menu 'button find' pressed
 	void showFindDialog();

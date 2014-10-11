@@ -6,7 +6,7 @@ using namespace generationRules;
 
 GenerationRulesPlugin::GenerationRulesPlugin()
 	: mRepo(nullptr)
-	, mAction("Generate code", NULL)
+	, mAction("Destroy everything", NULL)
 {
 	connect(&mAction, &QAction::triggered, this, &GenerationRulesPlugin::generateCode);
 }
@@ -33,6 +33,6 @@ void GenerationRulesPlugin::init(qReal::PluginConfigurator const &configurator, 
 void GenerationRulesPlugin::generateCode()
 {
 	for (int i = 0; i < mMetamodelRepoApi->elementsCount(); ++i) {
-		qDebug() << "kokokokokokoo!!!";
+		qDebug() << "element";
 	}
 }

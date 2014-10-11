@@ -11,12 +11,11 @@ void InterpretedPluginsLoader::init(
 		EditorManagerInterface *editorManager
 		, PluginConfigurator const &configurator)
 {
-	mInterpreterEditorManager = dynamic_cast<InterpreterEditorManager *>(editorManager);
+	mInterpreterEditorManager = static_cast<InterpreterEditorManager *>(editorManager);
 	mEditorRepoApi = mInterpreterEditorManager->editorRepoApi();
 
 	for (qrRepo::RepoApi * const repo : mEditorRepoApi.values()) {
-		qrRepo::LogicalRepoApi *logicalRepoApi = dynamic_cast<qrRepo::LogicalRepoApi *>(repo);
-		mPluginManager.init(configurator, *logicalRepoApi);
+		mPluginManager.init(configurator, *repo);
 	}
 }
 

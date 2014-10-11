@@ -1956,7 +1956,6 @@ Id MainWindow::activeDiagram() const
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
-	initInterpretedPlugins();
 
 	BrandManager::configure(&mToolManager);
 	mPreferencesDialog.updatePluginDependendSettings();
@@ -2058,7 +2057,19 @@ void MainWindow::initInterpretedPlugins()
 	QList<ActionInfo> const actions = mInterpretedPluginLoader.listOfActions();
 
 	foreach (ActionInfo const action, actions) {
-		qDebug() << action.menuName();
+		if (action.isAction()) {
+			if (action.toolbarName() == "file") {
+				mUi->fileToolbar->addAction(action.action());
+			} else if (action.toolbarName() == "interpreters") {
+				mUi->interpreterToolbar->addAction(action.action());
+			} else if (action.toolbarName() == "generators") {
+				mUi->generatorsToolbar->addAction(action.action());
+			}
+			connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
+		}
+	}
+
+	foreach (ActionInfo const action, actions) {
 		if (action.menuName() == "tools") {
 			addActionOrSubmenu(mUi->menuTools, action);
 		} else if (action.menuName() == "settings") {
