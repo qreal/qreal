@@ -32,7 +32,7 @@ void GenerationRulesPlugin::init(qReal::PluginConfigurator const &configurator, 
 
 void GenerationRulesPlugin::generateCode()
 {
-	for (int i = 0; i < mMetamodelRepoApi->elementsCount(); i++) {
+	for (int i = 0; i < mMetamodelRepoApi->elementsCount(); ++i) {
 		qDebug() << "kokokokokokoo!!!";
 	}
 }

@@ -27,6 +27,7 @@
 #include "pluginManager/interpreterEditorManager.h"
 #include "pluginManager/proxyEditorManager.h"
 #include "pluginManager/toolPluginManager.h"
+#include "pluginManager/interpretedPluginsLoader.h"
 #include "pluginManager/exploser.h"
 
 #include "models/logicalModelAssistApi.h"
@@ -390,6 +391,7 @@ private:
 	Controller *mController;
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
+	InterpretedPluginsLoader mInterpretedPluginLoader;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;

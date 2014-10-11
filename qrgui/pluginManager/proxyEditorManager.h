@@ -132,6 +132,8 @@ public:
 
 	void setElementEnabled(Id const &type, bool enabled) override;
 
+	EditorManagerInterface *proxyEditorManager();
+
 private:
 	EditorManagerInterface *mProxiedEditorManager;  // Has ownership.
 };

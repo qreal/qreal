@@ -912,13 +912,9 @@ void InterpreterEditorManager::setElementEnabled(Id const &type, bool enabled)
 	Q_UNUSED(enabled)
 }
 
-void InterpreterEditorManager::loadInterpretedPlugins(PluginConfigurator const &pluginConfigurator)
+QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::editorRepoApi()
 {
-	QMap<QString, qrRepo::RepoApi*>::iterator editorRepoApiIterator;
-
-	for (editorRepoApiIterator = mEditorRepoApi.begin(); editorRepoApiIterator != mEditorRepoApi.end(); editorRepoApiIterator++) {
-		mInterpretedPluginManager.init(pluginConfigurator, *editorRepoApiIterator.value());
-	}
+	return mEditorRepoApi;
 }
 
 void InterpreterEditorManager::setProperty(qrRepo::RepoApi *repo, Id const &id

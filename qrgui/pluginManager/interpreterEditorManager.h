@@ -141,7 +141,7 @@ public:
 
 	void setElementEnabled(Id const &type, bool enabled) override;
 
-	void loadInterpretedPlugins(PluginConfigurator const &pluginConfigurator);
+	QMap<QString, qrRepo::RepoApi*> editorRepoApi();
 
 private:
 	class CheckPropertyForParent;
@@ -151,7 +151,6 @@ private:
 
 	QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;  // Has ownership.
 	QString mMetamodelFile;
-	InterpretedPluginManager mInterpretedPluginManager;
 
 	void setProperty(qrRepo::RepoApi* repo, Id const &id, QString const &property, QVariant const &propertyValue) const;
 	Id element(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;

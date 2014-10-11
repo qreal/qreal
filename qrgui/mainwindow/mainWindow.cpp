@@ -1956,6 +1956,7 @@ Id MainWindow::activeDiagram() const
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
+	initInterpretedPlugins();
 
 	BrandManager::configure(&mToolManager);
 	mPreferencesDialog.updatePluginDependendSettings();
@@ -2051,7 +2052,19 @@ void MainWindow::initToolPlugins()
 
 void MainWindow::initInterpretedPlugins()
 {
+	mInterpretedPluginLoader.init(mEditorManagerProxy.proxyEditorManager(), PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
+			, *mSystemEvents, *mTextManager));
+	QList<ActionInfo> const actions = mInterpretedPluginLoader.listOfActions();
 
+	foreach (ActionInfo const action, actions) {
+		qDebug() << action.menuName();
+		if (action.menuName() == "tools") {
+			addActionOrSubmenu(mUi->menuTools, action);
+		} else if (action.menuName() == "settings") {
+			addActionOrSubmenu(mUi->menuSettings, action);
+		}
+	}
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
