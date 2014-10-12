@@ -1,6 +1,5 @@
 #include "diffPluginWrapper.h"
 #include "view/diffWindow.h"
-
 using namespace versioning;
 
 DiffPluginWrapper::DiffPluginWrapper(DiffPluginBase *plugin

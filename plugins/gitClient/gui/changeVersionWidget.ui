@@ -14,6 +14,13 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="1">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>status</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -30,14 +37,10 @@
        </item>
       </layout>
      </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayoutDiff"/>
+     </item>
     </layout>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>status</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

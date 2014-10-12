@@ -7,7 +7,7 @@ DiffWindow::DiffWindow(qReal::MainWindow *mainWindow
 	, mShowDetails(false), mCompactMode(compactMode)
 {
 	if (compactMode){
-		this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+		this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
 	} else{
 		this->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	}
