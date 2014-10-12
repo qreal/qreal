@@ -31,6 +31,8 @@ void TransparentMode::openChangeVersionTab()
 	getAndUpdateLog();
 	mCompactWidget->setVisible(true);
 	mMainWindowIface->openTab(mCompactWidget, "Change Version");
+	mCompactWidget->setMaximumSize(mCompactWidget->size());
+
 
 }
 
