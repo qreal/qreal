@@ -58,10 +58,6 @@ void ChangeVersionWidget::initDiffWidget()
 void ChangeVersionWidget::updateLog(QList<QPair<QString , QString> > listLog) // hash & mainPart
 {
 	if (listLog.size() != 0){
-		disconnect(mUi->listWidgetForLog, SIGNAL(itemClicked(QListWidgetItem*))
-				, this, SLOT(showDiff(QListWidgetItem*)));
-		connect(mUi->listWidgetForLog, SIGNAL(itemClicked(QListWidgetItem*))
-				, this, SLOT(showDiff(QListWidgetItem*)),Qt::QueuedConnection);
 		mUi->listWidgetForLog->clear();
 		int number = 0;
 		while (number < listLog.size()){
@@ -71,6 +67,8 @@ void ChangeVersionWidget::updateLog(QList<QPair<QString , QString> > listLog) //
 			mUi->listWidgetForLog->addItem(item);
 			number++;
 		}
+		connect(mUi->listWidgetForLog, SIGNAL(itemClicked(QListWidgetItem*))
+				, this, SLOT(showDiff(QListWidgetItem*)),Qt::QueuedConnection);
 		mUi->listWidgetForLog->item(0)->setSelected(true);
 		showDiff(mUi->listWidgetForLog->item(0));
 	} else {

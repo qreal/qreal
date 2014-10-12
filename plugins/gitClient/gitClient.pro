@@ -55,4 +55,4 @@ SOURCES += \
 
 FORMS += \
 	gui/versioningPage.ui \
-    gui/changeVersionWidget.ui
+	gui/changeVersionWidget.ui

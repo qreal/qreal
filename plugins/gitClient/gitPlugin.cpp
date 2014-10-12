@@ -130,7 +130,7 @@ bool GitPlugin::isMyWorkingCopy(QString const &directory, const bool &quiet, boo
 {
 	QStringList infoArgs;
 	infoArgs << "remote" << "show";
-	return invokeOperation(infoArgs, prepareAndProcess, directory, false, prepareAndProcess, QString(), QString(), quiet);
+	return invokeOperation(infoArgs, prepareAndProcess, directory, false, prepareAndProcess, QString(), QString(), !quiet);
 }
 
 int GitPlugin::timeout() const
@@ -192,7 +192,7 @@ void GitPlugin::setVersion(QString hash, bool const &quiet)
 
 	args.clear();
 	args << "reset" << "--soft" << "branchTEMP";
-	invokeOperation(args, false, QString(), false, false, QString(), QString(), quiet);
+	invokeOperation(args, false, QString(), false, false, QString(), QString(), !quiet);
 
 	args.clear();
 	args << "commit" << "--amend" << "-m" << "version was saved in a transparent mode";
@@ -233,7 +233,7 @@ QString GitPlugin::getLog(QString const &format, bool const &quiet)
 
 void GitPlugin::doInit(QString const &targetFolder, bool const &quiet)
 {
-	bool isInit = isMyWorkingCopy(targetFolder,quiet,true);
+	bool isInit = isMyWorkingCopy(targetFolder,true,true);
 	if (!isInit){
 		QStringList arguments;
 		arguments  << "init";

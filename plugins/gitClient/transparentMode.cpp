@@ -39,6 +39,9 @@ void TransparentMode::isInit(QString const &directory, const bool &prepareAndPro
 	if (!mPlugin->isMyWorkingCopy(directory, true, prepareAndProcess)){
 		mPlugin->doInit(directory, true);
 	}
+	if (!tabIsReady){
+		init();
+	}
 }
 
 void TransparentMode::getAndUpdateLog()
@@ -90,7 +93,6 @@ void TransparentMode::listLog()
 
 void TransparentMode::setVersion(QString hash)
 {
-	isInit();
 	mPlugin->setVersion(hash, true);
 	mProjectManager->reload();
 }

@@ -78,7 +78,7 @@ VersioningPluginInterface *VersioningPluginsManager::activePlugin(bool needPrepa
 	}
 	VersioningPluginInterface *result = NULL;
 	foreach (VersioningPluginInterface *plugin, mPlugins) {
-		if (plugin->isMyWorkingCopy(workingDir)) {
+		if (plugin->isMyWorkingCopy(workingDir,true)) {
 			result = plugin;
 		}
 	}
