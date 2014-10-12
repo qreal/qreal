@@ -57,6 +57,8 @@ EditorViewScene::EditorViewScene(QObject *parent)
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
+	mAddAttribute = new QAction(tr("Add attribute"), NULL);
+	connect(mAddAttribute, SIGNAL(triggered()), this, SLOT(addAttributeToEntity()));
 }
 
 void EditorViewScene::addItem(QGraphicsItem *item)
@@ -930,6 +932,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	disableActions(e);
 	mContextMenu.clear();
 	mContextMenu.addActions(mContextMenuActions);
+	mContextMenu.addAction(mAddAttribute);
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (e) {
@@ -1522,4 +1525,60 @@ void EditorViewScene::deselectLabels()
 			label->clearMoveFlag();
 		}
 	}
+}
+
+qReal::Id EditorViewScene::addAttributeToEntity()
+{
+	QPointF scenePos = QPointF(371.0, 278.0);
+	qReal::Id id = qReal::Id::createElementId("Databases", "DatabasesMetamodel", "Attribute");
+
+	/*if (!mMVIface->graphicalAssistApi()->editorManagerInterface().hasElement(id.type())) {
+		return;
+	}*/
+
+	utils::UXInfo::reportCreation(id.editor(), id.element());
+
+	QLOG_TRACE() << "Created element, id = " << id << ", position = " << scenePos;
+
+	Id const explosionTarget = Id::loadFromString("qrm:/");
+
+	if (mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
+		CreateGroupCommand *createGroupCommand = new CreateGroupCommand(
+				this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->exploser()
+				, mMVIface->rootId(), mMVIface->rootId(), id, true, scenePos);
+		mController->execute(createGroupCommand);
+	} else {
+		Element *newParent = nullptr;
+
+		/*ElementImpl const * const impl = mWindow->editorManager().elementImpl(id);
+		bool const isNode = impl->isNode();
+		delete impl;*/
+
+		foreach (QGraphicsItem *item, items(scenePos)) {
+			NodeElement *el = dynamic_cast<NodeElement*>(item);
+			if (el && canBeContainedBy(el->id(), id)) {
+				newParent = el;
+				break;
+			}
+		}
+
+		if (newParent && dynamic_cast<NodeElement*>(newParent)) {
+			if (!canBeContainedBy(newParent->id(), id)) {
+				QString text;
+				text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
+				QMessageBox::critical(0, "Error!", text);
+				//return;
+			}
+
+			//temporary solution for chaotic changes of coordinates of created elements with edge menu
+			if (dynamic_cast<EdgeElement*>(newParent)) {
+				newParent = nullptr;
+			}
+		}
+
+		Id const parentId = newParent ? newParent->id() : mMVIface->rootId();
+
+		createSingleElement(id, "Attribute", true, QPointF(371.0, 278.0), parentId, false, explosionTarget);
+	}
+	return id;
 }

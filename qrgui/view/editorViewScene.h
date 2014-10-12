@@ -92,7 +92,7 @@ public:
 
 	void createSingleElement(Id const &id, QString const &name
 			, bool isNode, QPointF const &position
-			, Id const &parentId, bool isFromLogicalModel
+			, Id const &parentId = Id(), bool isFromLogicalModel = false
 			, Id const &explosionTarget = Id()
 			, commands::CreateElementCommand **createCommandPointer = NULL
 			, bool executeImmediately = true);
@@ -134,6 +134,8 @@ public slots:
 	void cropToItems();
 
 	void deleteGesture();
+
+	qReal::Id addAttributeToEntity();
 
 signals:
 	void zoomIn();
@@ -223,6 +225,7 @@ private:
 	qReal::Controller *mController;
 
 	QList<QAction *> mContextMenuActions;
+	QAction *mAddAttribute;
 
 	QPointF mCurrentMousePos;
 	QPointF mCreatePoint;
