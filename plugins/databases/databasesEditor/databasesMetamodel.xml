@@ -78,7 +78,7 @@
 			</node>
 			<node name="Attribute" displayedName="Attribute">
 				<graphics>
-					<picture sizex="150" sizey="28">
+					<picture sizex="150" sizey="30">
 						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="28" x2="150"/>
 						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="145" y2="145" fill-style="none" x1="42" x2="168">
 							<showIf value="true" property="transaction" sign="="/>
@@ -91,7 +91,7 @@
 						</curve>
 					</picture>
 					<labels>
-						<label x="10a" y="10a" textBinded="Name"/>
+						<label x="10a" y="a" textBinded="Name"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
