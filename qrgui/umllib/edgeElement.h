@@ -167,7 +167,6 @@ private slots:
 
 private:
 	void initLineHandler();
-	void updateShapeType();
 
 	int indentReductCoeff();
 

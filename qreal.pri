@@ -18,7 +18,7 @@ SUBDIRS = \
 	qrtranslations \
 
 qrkernel.depends = thirdparty
-qrutils.depends = qrkernel
+qrutils.depends = qrkernel qrtext
 qrrepo.depends = qrkernel qrutils
 qrxc.depends = qrutils
 qrmc.depends = qrrepo

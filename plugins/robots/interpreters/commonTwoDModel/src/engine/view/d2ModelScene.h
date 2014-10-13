@@ -112,7 +112,7 @@ private:
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
 	void drawInitialRobot();
-	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos);
+	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QRectF const &oldPos);
 
 	model::Model &mModel;
 
