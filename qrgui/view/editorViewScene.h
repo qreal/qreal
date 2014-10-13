@@ -222,7 +222,7 @@ private:
 	qReal::MainWindow *mWindow;
 	qReal::Controller *mController;
 
-	QList<QAction *> mContextMenuActions;
+	QList<QAction *> mEditorActions;
 
 	QPointF mCurrentMousePos;
 	QPointF mCreatePoint;
