@@ -16,7 +16,8 @@ class NodeElement;
 /// @brief Class for handling ports of NodeElement.
 /// Provides methods for getting port information, calculating distance between point and
 /// port, connecting ports and links (some cases).
-class PortHandler {
+class PortHandler
+{
 public:
 	/// Constructs a PortHandler.
 	/// @param node Node that ports are actually dealt with.

@@ -13,7 +13,7 @@ class QRUTILS_EXPORT ExpressionsParser
 
 public:
 	explicit ExpressionsParser(qReal::ErrorReporterInterface *errorReporter);
-	~ExpressionsParser();
+	virtual ~ExpressionsParser();
 
 	Number *parseExpression(QString const &stream, int &pos);
 	void parseProcess(QString const &stream, int& pos, qReal::Id const &curId);

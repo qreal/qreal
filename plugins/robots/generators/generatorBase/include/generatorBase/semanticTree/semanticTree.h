@@ -8,6 +8,7 @@
 #include "loopNode.h"
 #include "finalNode.h"
 #include "forkNode.h"
+#include "switchNode.h"
 #include "generatorBase/generatorCustomizer.h"
 
 namespace generatorBase {
@@ -44,6 +45,9 @@ public:
 
 	/// Produces new instance of fork node binded to specified block
 	ForkNode *produceFork(qReal::Id const &id = qReal::Id());
+
+	/// Produces new instance of switch node binded to specified block
+	SwitchNode *produceSwitch(qReal::Id const &id = qReal::Id());
 
 	/// Produces new instance of final node binded to specified block
 	FinalNode *produceFinal(qReal::Id const &id = qReal::Id());

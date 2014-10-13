@@ -249,13 +249,17 @@ QString InterpreterEditorManager::mouseGesture(Id const &id) const
 	return "";
 }
 
-class InterpreterEditorManager::CheckPropertyForParent {
+
+/// @todo Replace this with lambdas.
+class InterpreterEditorManager::CheckPropertyForParent
+{
 public:
 	virtual QString stringProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
 			, QString const &propertyName) const = 0;
 };
 
-class InterpreterEditorManager::CompareProperty: public InterpreterEditorManager::CheckPropertyForParent {
+class InterpreterEditorManager::CompareProperty: public InterpreterEditorManager::CheckPropertyForParent
+{
 public:
 	CompareProperty(QString value)
 			: mValue(value)
@@ -276,7 +280,8 @@ private:
 	QString mValue;
 };
 
-class InterpreterEditorManager::GetProperty: public InterpreterEditorManager::CheckPropertyForParent {
+class InterpreterEditorManager::GetProperty: public InterpreterEditorManager::CheckPropertyForParent
+{
 public:
 	virtual QString stringProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
 			, QString const &propertyName) const
@@ -289,7 +294,8 @@ public:
 	}
 };
 
-class InterpreterEditorManager::HasProperty: public InterpreterEditorManager::CheckPropertyForParent {
+class InterpreterEditorManager::HasProperty: public InterpreterEditorManager::CheckPropertyForParent
+{
 public:
 	virtual QString stringProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
 			, QString const &propertyName) const
@@ -477,6 +483,14 @@ IdList InterpreterEditorManager::containedTypes(Id const &id) const
 	}
 
 	return containedTypes;
+}
+
+bool InterpreterEditorManager::isEnumEditable(Id const &id, QString const &name) const
+{
+	/// @todo: Support it
+	Q_UNUSED(id)
+	Q_UNUSED(name)
+	return false;
 }
 
 QList<QPair<QString, QString>> InterpreterEditorManager::enumValues(Id const &id, const QString &name) const

@@ -47,18 +47,14 @@ EditorViewScene::EditorViewScene(models::Models const &models, Controller &contr
 	, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mIsSelectEvent(false)
 	, mTitlesVisible(true)
-	, mExploser(models, this)
-{
-	QAction * const separator = new QAction(this);
-	separator->setSeparator(true);
-	/// @todo: restore it!!!!
-//	mContextMenuActions << mWindow->actionDeleteFromDiagram()
-//			<< separator
-//			<< mWindow->actionCutElementsOnDiagram()
-//			<< mWindow->actionCopyElementsOnDiagram()
-//			<< mWindow->actionPasteOnDiagram()
-//			<< mWindow->actionPasteCopyOfLogical();
+	, mExploser(models, controller, this)
+	, mActionDeleteFromDiagram(nullptr)
+	, mActionCutOnDiagram(nullptr)
+	, mActionCopyOnDiagram(nullptr)
+	, mActionPasteOnDiagram(nullptr)
+	, mActionPasteReference(nullptr)
 
+{
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
 	mWidthOfGrid = static_cast<qreal>(SettingsManager::value("GridWidth").toInt()) / 100;
 	mRealIndexGrid = SettingsManager::value("IndexGrid").toInt();
@@ -67,6 +63,7 @@ EditorViewScene::EditorViewScene(models::Models const &models, Controller &contr
 	setEnabled(false);
 
 	initCorners();
+	initializeActions();
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
@@ -157,7 +154,7 @@ Element *EditorViewScene::getElem(qReal::Id const &id) const
 
 void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-	const QMimeData *mimeData = event->mimeData();
+	QMimeData const *mimeData = event->mimeData();
 	if (mimeData->hasFormat("application/x-real-uml-data")) {
 		QGraphicsScene::dragEnterEvent(event);
 	} else {
@@ -292,8 +289,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
-	/// @todo: restore it!!!!
-//	edgeMenu->addAction(mWindow->actionDeleteFromDiagram());
+	edgeMenu->addAction(&mActionDeleteFromDiagram);
 	edgeMenu->addAction(tr("Discard"));
 	edgeMenu->addSeparator();
 
@@ -363,9 +359,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 
 	int result = 0;
 	if (executed) {
-		/// @todo: restore it!!!!
-//		if (executed == mWindow->actionDeleteFromDiagram()) {
-		if (executed == nullptr) {
+		if (executed == &mActionDeleteFromDiagram) {
 			result = -1;
 		} else if (!(executed->text() == tr("Discard"))
 					&& !(executed->text() == tr("Connect with the current item"))) {
@@ -376,9 +370,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 		}
 	}
 
-	foreach(QObject *object, toDelete) {
-		delete object;
-	}
+	qDeleteAll(toDelete);
 
 	return result;
 }
@@ -707,22 +699,17 @@ void EditorViewScene::deleteSelectedItems()
 		}
 	}
 
+	deleteElements(idsToDelete);
+}
+
+void EditorViewScene::deleteElements(IdList &idsToDelete)
+{
 	mController.execute(new MultipleRemoveAndUpdateCommand(*this, mModels, idsToDelete));
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
-		// Forward event to text editor
-		QGraphicsScene::keyPressEvent(event);
-	} else if (event->key() == Qt::Key_Delete) {
-		// Delete selected elements from scene
-		deleteSelectedItems();
-	} else if (event->matches(QKeySequence::Paste)) {
-		paste(event->modifiers() == Qt::ShiftModifier);
-	} else if (event->matches(QKeySequence::Copy)) {
-		copy();
-	} else if (isArrow(event->key())) {
+	if (isArrow(event->key())) {
 		moveSelectedItems(event->key());
 	} else if (event->key() == Qt::Key_Menu) {
 		initContextMenu(nullptr, QPointF()); // see #593
@@ -951,26 +938,24 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 void EditorViewScene::disableActions(Element *focusElement)
 {
-	/// @todo: restore it!!!!
-//	if (!focusElement) {
-//		mWindow->actionDeleteFromDiagram()->setEnabled(false);
-//		mWindow->actionCutElementsOnDiagram()->setEnabled(false);
-//		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
-//	}
-//	if (isEmptyClipboard()) {
-//		mWindow->actionPasteOnDiagram()->setEnabled(false);
-//		mWindow->actionPasteCopyOfLogical()->setEnabled(false);
-//	}
+	if (!focusElement) {
+		mActionDeleteFromDiagram.setEnabled(false);
+		mActionCopyOnDiagram.setEnabled(false);
+		mActionCutOnDiagram.setEnabled(false);
+	}
+	if (isEmptyClipboard()) {
+		mActionPasteOnDiagram.setEnabled(false);
+		mActionPasteReference.setEnabled(false);
+	}
 }
 
 void EditorViewScene::enableActions()
 {
-	/// @todo: restore it!!!!
-//	mWindow->actionDeleteFromDiagram()->setEnabled(true);
-//	mWindow->actionCutElementsOnDiagram()->setEnabled(true);
-//	mWindow->actionCopyElementsOnDiagram()->setEnabled(true);
-//	mWindow->actionPasteOnDiagram()->setEnabled(true);
-//	mWindow->actionPasteCopyOfLogical()->setEnabled(true);
+	mActionDeleteFromDiagram.setEnabled(true);
+	mActionCopyOnDiagram.setEnabled(true);
+	mActionCutOnDiagram.setEnabled(true);
+	mActionPasteOnDiagram.setEnabled(true);
+	mActionPasteReference.setEnabled(true);
 }
 
 bool EditorViewScene::isEmptyClipboard()
@@ -1000,8 +985,7 @@ void EditorViewScene::getObjectByGesture()
 		QPointF const gestureCenter = mMouseMovementManager.pos();
 		for (QGraphicsItem * const item : items(gestureCenter)) {
 			if (NodeElement * const node = dynamic_cast<NodeElement *>(item)) {
-				/// @todo: restore it!!!!
-//				mWindow->deleteElementFromDiagram(node->id());
+				deleteElements(IdList() << node->id());
 				break;
 			}
 		}
@@ -1414,17 +1398,48 @@ void EditorViewScene::setCorners(QPointF const &topLeft, QPointF const &bottomRi
 	addItem(mBottomRightCorner);
 }
 
+void EditorViewScene::initializeActions()
+{
+	QAction * const separator = new QAction(this);
+	separator->setSeparator(true);
+
+	mActionDeleteFromDiagram.setShortcut(QKeySequence(Qt::Key_Delete));
+	mActionDeleteFromDiagram.setText(tr("Delete"));
+	connect(&mActionDeleteFromDiagram, &QAction::triggered, this, &EditorViewScene::deleteSelectedItems);
+
+	mActionCopyOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+	mActionCopyOnDiagram.setText(tr("Copy"));
+	connect(&mActionCopyOnDiagram, &QAction::triggered, this, &EditorViewScene::copy);
+
+	mActionPasteOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
+	mActionPasteOnDiagram.setText(tr("Paste"));
+	connect(&mActionPasteOnDiagram, &QAction::triggered, [=]() { paste(false); });
+
+	mActionPasteReference.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_V));
+	mActionPasteReference.setText(tr("Paste only graphical copy"));
+	connect(&mActionPasteReference, &QAction::triggered, [=]() { paste(true); });
+
+	mActionCutOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
+	mActionCutOnDiagram.setText(tr("Cut"));
+	connect(&mActionCutOnDiagram, &QAction::triggered, this, &EditorViewScene::cut);
+
+	mContextMenuActions << &mActionDeleteFromDiagram
+			<< separator
+			<< &mActionCutOnDiagram
+			<< &mActionCopyOnDiagram
+			<< &mActionPasteOnDiagram
+			<< &mActionPasteReference;
+}
+
 void EditorViewScene::updateEdgeElements()
 {
 	foreach (QGraphicsItem *item, items()) {
 		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
 			enums::linkShape::LinkShape const shape
-					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType"
-							, enums::linkShape::unset).toInt());
-			if (shape != enums::linkShape::unset) {
-				element->changeShapeType(shape);
-			}
+					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
+
+			element->changeShapeType(shape);
 
 			if (SettingsManager::value("ActivateGrid").toBool()) {
 				element->alignToGrid();
@@ -1468,6 +1483,18 @@ void EditorViewScene::setTitlesVisible(bool visible)
 void EditorViewScene::onElementParentChanged(Element *element)
 {
 	element->setTitlesVisible(mTitlesVisible);
+}
+
+QList<QAction *> EditorViewScene::actions() const
+{
+	return mContextMenuActions;
+}
+
+void EditorViewScene::setActionsEnabled(bool enabled)
+{
+	for (QAction * const action : mContextMenuActions) {
+		action->setEnabled(enabled);
+	}
 }
 
 void EditorViewScene::deselectLabels()

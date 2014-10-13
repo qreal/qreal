@@ -99,5 +99,8 @@ void PasteEdgeCommand::restoreElement()
 		edge->setLine(mEdgeData.configuration);
 		edge->connectToPort();
 		edge->updateData();
+		if (SettingsManager::value("ActivateGrid").toBool()) {
+			edge->alignToGrid();
+		}
 	}
 }

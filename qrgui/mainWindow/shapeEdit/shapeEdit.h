@@ -26,17 +26,19 @@ namespace qReal {
 
 class MainWindow;
 
-class ShapeEdit : public QWidget {
+class ShapeEdit : public QWidget
+{
 	Q_OBJECT
 
 public:
-	explicit ShapeEdit(QWidget *parent = NULL);
+	explicit ShapeEdit(QWidget *parent = nullptr);
 	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role
 		, bool useTypedPorts);
 	ShapeEdit(Id const &id, EditorManagerInterface const &editorManagerProxy
 		, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow
 		, EditorView *editorView, bool useTypedPorts);
 	~ShapeEdit();
+
 	graphicsUtils::AbstractView* getView();
 	void load(QString const &text);
 

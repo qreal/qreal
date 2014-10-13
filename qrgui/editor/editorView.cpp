@@ -44,6 +44,8 @@ EditorView::EditorView(models::Models const &models, Controller &controller, Id 
 	SettingsListener::listen("IndexGrid", &mScene, &EditorViewScene::redraw);
 	SettingsListener::listen("GridWidth", &mScene, &EditorViewScene::redraw);
 	SettingsListener::listen("CurrentFont", this, &EditorView::setSceneFont);
+
+	addActions(mScene.actions());
 }
 
 EditorViewMViface const &EditorView::mvIface() const
@@ -54,6 +56,19 @@ EditorViewMViface const &EditorView::mvIface() const
 EditorViewMViface &EditorView::mutableMvIface()
 {
 	return mMVIface;
+}
+
+void EditorView::focusOutEvent(QFocusEvent *event)
+{
+	if (event->reason() != Qt::PopupFocusReason) {
+		mScene.setActionsEnabled(false);
+	}
+}
+
+void EditorView::focusInEvent(QFocusEvent *event)
+{
+	Q_UNUSED(event)
+	mScene.setActionsEnabled(true);
 }
 
 EditorViewScene const &EditorView::editorViewScene() const

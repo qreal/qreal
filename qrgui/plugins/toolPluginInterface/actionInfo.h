@@ -6,7 +6,8 @@
 
 namespace qReal {
 
-class ActionInfo {
+class ActionInfo
+{
 public:
 	ActionInfo(QAction * const action, QString const &toolbarName, QString const &menuName)
 			: mAction(action), mMenu(nullptr), mToolbarName(toolbarName), mMenuName(menuName), mIsAction(true)

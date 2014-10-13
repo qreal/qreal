@@ -8,7 +8,8 @@
 namespace qReal {
 namespace gui {
 
-class Error {
+class Error
+{
 public:
 	enum Severity {
 		information

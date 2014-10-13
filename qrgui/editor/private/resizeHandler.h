@@ -6,7 +6,8 @@
 
 #include "editor/nodeElement.h"
 
-class ResizeHandler {
+class ResizeHandler
+{
 public:
 	/**
 	 * Constructs a ResizeHandler.

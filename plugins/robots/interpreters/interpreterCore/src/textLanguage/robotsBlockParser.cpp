@@ -1,132 +1,117 @@
 #include "robotsBlockParser.h"
 
+#include <qrtext/lua/types/integer.h>
+#include <qrtext/lua/types/float.h>
+
 using namespace qReal;
 using namespace interpreterCore::textLanguage;
-using namespace utils;
+using namespace qrtext::lua;
 
 QString const sensorVariablePerfix = QObject::tr("sensor");
 QString const encoderVariablePerfix = QObject::tr("encoder");
 QString const timeVariableName = QObject::tr("time");
 
-RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface * const errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, ComputableNumber::IntComputer const &timeComputer)
-	: ExpressionsParser(errorReporter)
+RobotsBlockParser::RobotsBlockParser(
+		interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, utils::ComputableNumber::IntComputer const &timeComputer)
+	: qrtext::lua::LuaToolbox()
 	, mRobotModelManager(robotModelManager)
 	, mTimeComputer(timeComputer)
 {
 	setReservedVariables();
+
+	addIntrinsicFuctions();
+
 	connect(&mRobotModelManager, &interpreterBase::robotModel::RobotModelManagerInterface::robotModelChanged
 			, this, &RobotsBlockParser::setReservedVariables);
 }
 
-Number *RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &pos, const Id &curId)
-{
-	mCurrentId = curId;
-
-	if (isEmpty(stream, pos)) {
-		error(emptyProcess);
-		return new Number(0, Number::intType);
-	}
-	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
-	for (int i = 0; i < (exprs.length() - 1); ++i) {
-		if (mHasParseErrors) {
-			return new Number(0, Number::intType);
-		}
-		int position = 0;
-		QString expr = exprs[i];
-		skip(expr, position);
-		parseCommand(expr + ";", position);
-	}
-	int position = 0;
-	QString valueExpression = exprs.last();
-	if (!valueExpression.contains("="))
-		return parseExpression(valueExpression, position);
-	else {
-		error(noExpression);
-		return new Number(0, Number::intType);
-	}
-}
-
-void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &pos, const Id &curId)
-{
-	mCurrentId = curId;
-
-	if (isEmpty(stream, pos)) {
-		error(emptyProcess);
-	}
-
-	bool hasParseErrorsFlag = false;
-
-	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
-	for (int i = 0; i < exprs.length(); ++i) {
-		if (mHasParseErrors) {
-			mHasParseErrors = false;
-			hasParseErrorsFlag = true;
-		}
-		int position = 0;
-		QString expr = exprs[i];
-		skip(expr, position);
-		parseCommand(expr + ";", position);
-	}
-	mHasParseErrors = hasParseErrorsFlag;
-}
-
-bool RobotsBlockParser::parseCondition(QString const &stream, int& pos, qReal::Id const &curId)
-{
-	return utils::ExpressionsParser::parseCondition(stream, pos, curId);
-}
-
-void RobotsBlockParser::deselect()
-{
-	mHasParseErrors = false;
-}
-
-bool RobotsBlockParser::checkForUsingReservedVariables(const QString &nameOfVariable)
-{
-	if (mReservedVariables.contains(nameOfVariable) || isFunction(nameOfVariable)) {
-		mHasParseErrors = true;
-		error(usingReservedVariable, "", "", nameOfVariable);
-	}
-
-	return mHasParseErrors;
-}
-
-bool RobotsBlockParser::isLetter(const QChar &symbol)
-{
-	QString rus = QString::fromUtf8("РђР°Р‘Р±Р’РІР“РіР”РґР•РµРЃС‘Р–Р¶Р—Р·РРёР™Р№РљРєР›Р»РњРјРќРЅРћРѕРџРїР СЂРЎСЃРўС‚РЈСѓР¤С„РҐС…Р¦С†Р§С‡РЁС€Р©С‰Р¬СЊР«С‹Р™Р№Р­СЌР®СЋРЇСЏ");
-	char symbolChar = symbol.toLatin1();
-	return (('A'<=symbolChar && symbolChar<='Z') || ('a'<=symbolChar && symbolChar<='z') || (rus.contains(symbol)));
-}
-
 void RobotsBlockParser::setReservedVariables()
 {
-	qDeleteAll(mVariables);
-	mVariables.clear();
-	mReservedVariables.clear();
+	/// @todo Remove old reserved variables for old model.
 
-	/// @todo: Reinitialize it each time before interpretation from robot model
-	QString const pi = "pi";
-	Number * const piValue = new Number(3.14159265, Number::doubleType);
-	mVariables.insert(pi, piValue);
-	mVariables.insert(timeVariableName, new ComputableNumber(mTimeComputer));
-	mReservedVariables.append(timeVariableName);
+	setVariableValue("pi", 3.14159265);
 
 	for (interpreterBase::robotModel::PortInfo const &port : mRobotModelManager.model().availablePorts()) {
-		QString const variable = port.reservedVariable();
-		if (!variable.isEmpty()) {
-			mVariables.insert(variable, new Number(0, Number::intType));
-			mReservedVariables.append(variable);
+		setVariableValue(port.name(), QString("'%1'").arg(port.name()));
+
+		mSpecialVariables << port.name();
+
+		for (QString const &alias : port.nameAliases()) {
+			setVariableValue(alias, port.name());
+			mSpecialVariables << alias;
+		}
+
+		if (!port.reservedVariable().isEmpty()) {
+			setVariableValue(port.reservedVariable(), 0);
 		}
 	}
 }
 
-QMap<QString, Number *> const &RobotsBlockParser::variables() const
+QStringList const &RobotsBlockParser::specialVariables() const
 {
-	return ExpressionsParser::variables();
+	return mSpecialVariables;
 }
 
-bool RobotsBlockParser::hasErrors() const
+void RobotsBlockParser::addIntrinsicFuctions()
 {
-	return ExpressionsParser::hasErrors();
+	auto const add0aryFunction = [this] (QString const &name
+			, qrtext::core::types::TypeExpression * const returnType
+			, std::function<QVariant()> const &function)
+	{
+		addIntrinsicFunction(name, returnType
+				, {}
+				, [function] (QList<QVariant> const &params) {
+						Q_UNUSED(params);
+						return function();
+				});
+	};
+
+	auto const add1aryFunction = [this] (QString const &name
+			, qrtext::core::types::TypeExpression * const returnType
+			, qrtext::core::types::TypeExpression * const argumentType
+			, std::function<QVariant(QVariant)> const &function)
+	{
+		addIntrinsicFunction(name, returnType
+				, {argumentType}
+				, [function] (QList<QVariant> const &params) {
+						Q_ASSERT(!params.isEmpty());
+						return function(params.first());
+				});
+	};
+
+	auto const addFloatFunction = [this, add1aryFunction] (QString const &name
+			, std::function<double(double)> const &function)
+	{
+		add1aryFunction(name, new types::Float, new types::Float
+				, [function](QVariant const &arg) { return function(arg.toDouble()); });
+	};
+
+	auto const addIntegerFunction = [this, add1aryFunction] (QString const &name
+			, std::function<double(double)> const &function)
+	{
+		add1aryFunction(name, new types::Integer, new types::Integer
+				, [function](QVariant const &arg) { return function(arg.toInt()); });
+	};
+
+	auto const addFloatToIntegerFunction = [this, add1aryFunction] (QString const &name
+			, std::function<int(double)> const &function)
+	{
+		add1aryFunction(name, new types::Integer(), new types::Float()
+				, [function](QVariant const &arg) { return function(arg.toDouble()); });
+	};
+
+	add0aryFunction("time", new types::Integer(), [this]() { return mTimeComputer(); });
+
+	addFloatFunction("sin", [](double x) {return sin(x); });
+	addFloatFunction("cos", [](double x) {return cos(x); });
+	addFloatFunction("ln", [](double x) {return log(x); });
+	addFloatFunction("exp", [](double x) {return exp(x); });
+	addFloatFunction("asin", [](double x) {return asin(x); });
+	addFloatFunction("acos", [](double x) {return acos(x); });
+	addFloatFunction("atan", [](double x) {return atan(x); });
+	addFloatToIntegerFunction("sgn", [](double x) {return (0 < x) - (x < 0); });
+	addFloatFunction("sqrt", [](double x) {return sqrt(x); });
+	addFloatFunction("abs", [](double x) {return abs(x); });
+	addIntegerFunction("random", [](int x) {return rand() % x; });
 }

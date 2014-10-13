@@ -82,6 +82,11 @@ IdList ProxyEditorManager::containedTypes(const Id &id) const
 	return mProxiedEditorManager->containedTypes(id);
 }
 
+bool ProxyEditorManager::isEnumEditable(Id const &id, QString const &name) const
+{
+	return mProxiedEditorManager->isEnumEditable(id, name);
+}
+
 QList<QPair<QString, QString>> ProxyEditorManager::enumValues(Id const &id, const QString &name) const
 {
 	return mProxiedEditorManager->enumValues(id, name);

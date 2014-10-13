@@ -18,7 +18,7 @@ public:
 
 	void setFailedStatus() override;
 
-	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const override;
+	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() override;
 
 protected slots:
 	/// Shall be called when something goes wrong and there will be no response from real device.

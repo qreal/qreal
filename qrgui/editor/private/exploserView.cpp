@@ -10,11 +10,12 @@
 using namespace qReal;
 using namespace view::details;
 
-ExploserView::ExploserView(models::Models const &models, QObject *parent)
+ExploserView::ExploserView(models::Models const &models, Controller &controller, QObject *parent)
 	: QObject(parent)
 	, mLogicalApi(models.logicalModelAssistApi())
 	, mGraphicalApi(models.graphicalModelAssistApi())
 	, mExploser(models.exploser())
+	, mController(controller)
 {
 }
 
@@ -150,8 +151,7 @@ void ExploserView::handleDoubleClick(Id const &id)
 			commands::AbstractCommand *createCommand =
 					mExploser.createElementWithIncomingExplosionCommand(
 							id, diagramType, mGraphicalApi);
-			/// @todo: restore it!!!!
-//			mMainWindow.controller()->executeGlobal(createCommand);
+			mController.executeGlobal(createCommand);
 			outgoingLink = static_cast<commands::CreateElementCommand *>(createCommand)->result();
 		}
 	}
@@ -189,12 +189,10 @@ void ExploserView::addExplosionActionTriggered()
 	Id const source = connection[0].value<Id>();
 	Id const destination = connection[1].value<Id>();
 	if (action->text().startsWith(tr("New "))) {
-		/// @todo: restore it!!!!
-//		mMainWindow.controller()->execute(mExploser.createElementWithIncomingExplosionCommand(
-//				source, destination, mGraphicalApi));
+		mController.execute(mExploser.createElementWithIncomingExplosionCommand(
+				source, destination, mGraphicalApi));
 	} else {
-		/// @todo: restore it!!!!
-//		mMainWindow.controller()->execute(mExploser.addExplosionCommand(source, destination));
+		mController.execute(mExploser.addExplosionCommand(source, destination));
 	}
 }
 
@@ -211,8 +209,7 @@ void ExploserView::removeExplosionActionTriggered()
 	QList<QVariant> const connection = action->data().toList();
 	Id const source = connection[0].value<Id>();
 	Id const destination = connection[1].value<Id>();
-	/// @todo: restore it!!!!
-//	mMainWindow.controller()->execute(mExploser.removeExplosionCommand(source, destination));
+	mController.execute(mExploser.removeExplosionCommand(source, destination));
 }
 
 void ExploserView::expandExplosionActionTriggered()

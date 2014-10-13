@@ -14,6 +14,7 @@ LIBS += -L../../../bin -lqrkernel -lqrutils
 INCLUDEPATH += \
 	$$PWD/../../.. \
 	$$PWD/../../../qrgui/ \
+	$$PWD/../../../qrtext/include/ \
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/visualInterpreter_ru.ts
 

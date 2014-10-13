@@ -14,7 +14,8 @@
 namespace qReal {
 namespace gui {
 
-class ErrorReporter : public QObject, public ErrorReporterInterface {
+class ErrorReporter : public QObject, public ErrorReporterInterface
+{
 	Q_OBJECT
 
 public:

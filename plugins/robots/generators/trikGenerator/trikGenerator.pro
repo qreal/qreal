@@ -9,7 +9,7 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase
+LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \
@@ -44,10 +44,10 @@ HEADERS += \
 	$$PWD/converters/encoderV4PortConverter.h \
 	$$PWD/converters/encoderV6PortConverter.h \
 	$$PWD/converters/trikStringPropertyConverter.h \
-	$$PWD/simpleGenerators/detectLineGenerator.h \
+	$$PWD/simpleGenerators/detectGenerator.h \
 	$$PWD/simpleGenerators/initCameraGenerator.h \
 	$$PWD/simpleGenerators/ledGenerator.h \
-	$$PWD/simpleGenerators/lineDetectorToVariableGenerator.h \
+	$$PWD/simpleGenerators/detectorToVariableGenerator.h \
 	$$PWD/simpleGenerators/playToneGenerator.h \
 	$$PWD/simpleGenerators/sadSmileGenerator.h \
 	$$PWD/simpleGenerators/sayGenerator.h \
@@ -66,6 +66,8 @@ HEADERS += \
 	$$PWD/simpleGenerators/drawArcGenerator.h \
 	$$PWD/simpleGenerators/setPainterWidthGenerator.h \
 	$$PWD/simpleGenerators/setPainterColorGenerator.h \
+	$$PWD/simpleGenerators/sendMessageGenerator.h \
+	$$PWD/simpleGenerators/waitForMessageGenerator.h \
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \
@@ -81,10 +83,10 @@ SOURCES += \
 	$$PWD/converters/encoderV4PortConverter.cpp \
 	$$PWD/converters/encoderV6PortConverter.cpp \
 	$$PWD/converters/trikStringPropertyConverter.cpp \
-	$$PWD/simpleGenerators/detectLineGenerator.cpp \
+	$$PWD/simpleGenerators/detectGenerator.cpp \
 	$$PWD/simpleGenerators/initCameraGenerator.cpp \
 	$$PWD/simpleGenerators/ledGenerator.cpp \
-	$$PWD/simpleGenerators/lineDetectorToVariableGenerator.cpp \
+	$$PWD/simpleGenerators/detectorToVariableGenerator.cpp \
 	$$PWD/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/simpleGenerators/sadSmileGenerator.cpp \
 	$$PWD/simpleGenerators/sayGenerator.cpp \
@@ -103,5 +105,7 @@ SOURCES += \
 	$$PWD/simpleGenerators/drawArcGenerator.cpp \
 	$$PWD/simpleGenerators/setPainterWidthGenerator.cpp \
 	$$PWD/simpleGenerators/setPainterColorGenerator.cpp \
+	$$PWD/simpleGenerators/sendMessageGenerator.cpp \
+	$$PWD/simpleGenerators/waitForMessageGenerator.cpp \
 
 include(robotCommunication/robotCommunication.pri)

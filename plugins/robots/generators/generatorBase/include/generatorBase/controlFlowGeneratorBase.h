@@ -47,8 +47,6 @@ public:
 
 	void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitFork(qReal::Id const &id, QList<LinkInfo> &links) override;
-	/// @todo: Not supported yet
-	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
 
 protected:
 	/// Can be overloaded by ancestors for custom behaviour.

@@ -418,10 +418,11 @@ void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &s
 
 void D2ModelScene::alignWalls()
 {
-	for (items::WallItem * const wall : mModel.worldModel().walls()) {
-		if (items().contains(wall)) {
-			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
-			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+	if (SettingsManager::value("2dShowGrid").toBool()) {
+		for (items::WallItem * const wall : mModel.worldModel().walls()) {
+			if (items().contains(wall)) {
+				wall->alignTheWall(SettingsManager::value("2dGridCellSize").toInt());
+			}
 		}
 	}
 }

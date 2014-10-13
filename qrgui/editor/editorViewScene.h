@@ -122,6 +122,13 @@ public:
 	void setTitlesVisible(bool visible);
 	void onElementParentChanged(Element *element);
 
+	/// Returns a list of scene actions that can be added to other views.
+	/// Currently those are copy, cut, paste and paste reference actions.
+	QList<QAction *> actions() const;
+
+	/// Enables or diasables all editor actions
+	void setActionsEnabled(bool enabled);
+
 public slots:
 	qReal::Id createElement(const QString &type);
 
@@ -174,6 +181,8 @@ private slots:
 	void deselectLabels();
 
 private:
+	void deleteElements(IdList &idsToDelete);
+
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();
 	void createEdgeMenu(QList<QString> const &ids);
@@ -183,6 +192,7 @@ private:
 	void initCorners();
 	void setCorners(QPointF const &topLeft, QPointF const &bottomRight);
 
+	void initializeActions();
 	void initContextMenu(Element *e, QPointF const &pos);
 	bool isEmptyClipboard();
 
@@ -251,7 +261,12 @@ private:
 
 	QMenu mContextMenu;
 
-	view::details::ExploserView mExploser; // Takes ownership
+	view::details::ExploserView mExploser;
+	QAction mActionDeleteFromDiagram;
+	QAction mActionCutOnDiagram;
+	QAction mActionCopyOnDiagram;
+	QAction mActionPasteOnDiagram;
+	QAction mActionPasteReference;
 };
 
 }

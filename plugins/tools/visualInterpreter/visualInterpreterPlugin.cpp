@@ -475,6 +475,7 @@ void VisualInterpreterPlugin::showWatchList()
 	if (mWatchListWindow) {
 		mWatchListWindow->close();
 	}
+
 	mWatchListWindow = new WatchListWindow(mVisualInterpreterUnit->ruleParser());
 	mWatchListWindow->show();
 }

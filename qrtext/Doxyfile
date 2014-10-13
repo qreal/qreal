@@ -1,0 +1,11 @@
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = qrtext
+OUTPUT_DIRECTORY       = ./doc
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+INPUT                  = .
+INPUT_ENCODING         = UTF-8
+RECURSIVE              = YES
+GENERATE_LATEX         = NO
+GENERATE_TREEVIEW      = YES
+JAVADOC_AUTOBRIEF      = YES

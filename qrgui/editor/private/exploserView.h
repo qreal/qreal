@@ -8,6 +8,7 @@ namespace qReal {
 
 class Element;
 class Explosion;
+class Controller;
 
 namespace commands {
 class AbstractCommand;
@@ -30,7 +31,7 @@ class ExploserView : public QObject
 	Q_OBJECT
 
 public:
-	explicit ExploserView(models::Models const &models, QObject *parent = 0);
+	explicit ExploserView(models::Models const &models, Controller &controller, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
 	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
@@ -69,6 +70,7 @@ private:
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;
+	Controller &mController;
 };
 
 }
