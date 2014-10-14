@@ -2051,7 +2051,8 @@ void MainWindow::initToolPlugins()
 
 void MainWindow::initInterpretedPlugins()
 {
-	mInterpretedPluginLoader.init(mEditorManagerProxy.proxyEditorManager(), PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
+	mInterpretedPluginLoader.init(mEditorManagerProxy.proxyEditorManager()
+			, PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
 			, *mSystemEvents, *mTextManager));
 	QList<ActionInfo> const actions = mInterpretedPluginLoader.listOfActions();
