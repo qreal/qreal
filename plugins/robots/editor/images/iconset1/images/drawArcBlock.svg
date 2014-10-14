@@ -7,12 +7,8 @@ viewBox="0 0 15000 15000"
  <defs>
   <style type="text/css">
    <![CDATA[
-    .str3 {stroke:#33CC66;stroke-width:10}
-    .str4 {stroke:#99FFFF;stroke-width:10}
-    .str5 {stroke:#CC99CC;stroke-width:10}
-    .str1 {stroke:#FF6666;stroke-width:10}
-    .str2 {stroke:#FFFF66;stroke-width:10}
-    .str0 {stroke:#CCCC33;stroke-width:127}
+    .str1 {stroke:#333333;stroke-width:127}
+    .str0 {stroke:#E6E6E6;stroke-width:1016}
     .fil55 {fill:none}
     .fil2 {fill:#538A6D}
     .fil3 {fill:#538B6E}
@@ -68,15 +64,7 @@ viewBox="0 0 15000 15000"
     .fil52 {fill:#66A887}
     .fil53 {fill:#66A988}
     .fil54 {fill:#67AA89}
-    .fil59 {fill:#FF9933;fill-rule:nonzero}
     .fil1 {fill:black;fill-opacity:0.000000}
-    .fil56 {fill:url(#id2)}
-    .fil63 {fill:url(#id3)}
-    .fil60 {fill:url(#id4)}
-    .fil62 {fill:url(#id5)}
-    .fil58 {fill:url(#id6)}
-    .fil57 {fill:url(#id7)}
-    .fil61 {fill:url(#id8)}
    ]]>
   </style>
       <clipPath id="id0">
@@ -85,38 +73,10 @@ viewBox="0 0 15000 15000"
       <clipPath id="id1">
        <path d="M2369 14080l10279 0c792,0 1440,-648 1440,-1440l0 -10279c0,-792 -648,-1440 -1440,-1440l-10279 0c-792,0 -1440,648 -1440,1440l0 10279c0,792 648,1440 1440,1440z"/>
       </clipPath>
-  <radialGradient id="id2" gradientUnits="objectBoundingBox" cx="31%" cy="25%" r="50%" fx="31%" fy="25%">
-   <stop offset="0" style="stop-color:#FAFAAF"/>
-   <stop offset="1" style="stop-color:#E8E85A"/>
-  </radialGradient>
-  <radialGradient id="id3" gradientUnits="objectBoundingBox" cx="23%" cy="32.9999%" r="50%" fx="23%" fy="32.9999%">
-   <stop offset="0" style="stop-color:#CC66FF"/>
-   <stop offset="1" style="stop-color:#660066"/>
-  </radialGradient>
-  <radialGradient id="id4" gradientUnits="objectBoundingBox" cx="25%" cy="32%" r="50%" fx="25%" fy="32%">
-   <stop offset="0" style="stop-color:yellow"/>
-   <stop offset="1" style="stop-color:#DBDB21"/>
-  </radialGradient>
-  <radialGradient id="id5" gradientUnits="objectBoundingBox" cx="25%" cy="28.0001%" r="50%" fx="25%" fy="28.0001%">
-   <stop offset="0" style="stop-color:#00CCFF"/>
-   <stop offset="1" style="stop-color:#336699"/>
-  </radialGradient>
-  <radialGradient id="id6" gradientUnits="objectBoundingBox" cx="26%" cy="27.0001%" r="50%" fx="26%" fy="27.0001%">
-   <stop offset="0" style="stop-color:#FBC780"/>
-   <stop offset="1" style="stop-color:#FF6600"/>
-  </radialGradient>
-  <radialGradient id="id7" gradientUnits="objectBoundingBox" cx="27.9999%" cy="22.0001%" r="50%" fx="27.9999%" fy="22.0001%">
-   <stop offset="0" style="stop-color:#F39FA1"/>
-   <stop offset="1" style="stop-color:red"/>
-  </radialGradient>
-  <radialGradient id="id8" gradientUnits="objectBoundingBox" cx="28.9999%" cy="32%" r="50%" fx="28.9999%" fy="32%">
-   <stop offset="0" style="stop-color:#33CC33"/>
-   <stop offset="1" style="stop-color:#006633"/>
-  </radialGradient>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_254508824">
+  <g id="_293433568">
    <g id="_343530368">
     <path class="fil0" d="M2160 27l10699 0c1173,0 2124,951 2124,2124l0 10699c0,1173 -951,2124 -2124,2124l-10699 0c-1173,0 -2124,-951 -2124,-2124l0 -10699c0,-1173 951,-2124 2124,-2124z"/>
     <g>
@@ -431,15 +391,9 @@ viewBox="0 0 15000 15000"
     </g>
    </g>
   </g>
-  <path class="fil56 str0" d="M13053 6745c2042,5850 -7445,5515 -5451,4535 2102,-1033 1132,-3127 37,-1331 -1095,1796 -4834,3896 -5855,443 -1574,-5322 8292,-12174 11269,-3647z"/>
-  <circle class="fil57 str1" cx="11163" cy="9037" r="783"/>
-  <g>
-   <path class="fil58" d="M11016 7014c495,0 897,-402 897,-897 0,-495 -402,-897 -897,-897 -495,0 -897,402 -897,897 0,495 402,897 897,897z"/>
-   <path id="1" class="fil59" d="M11909 6117l10 0 0 0 -1 46 -3 46 -6 45 -8 44 -10 43 -12 43 -14 42 -16 41 -18 40 -20 39 -22 38 -23 36 -25 35 -27 34 -28 33 -30 31 -31 30 -33 28 -34 27 -35 25 -36 23 -38 22 -39 20 -40 18 -41 16 -42 14 -43 12 -44 10 -45 8 -46 6 -47 4 -47 1 0 -2 45 -1 45 -3 44 -6 44 -8 43 -10 42 -12 42 -14 41 -16 40 -18 39 -20 38 -22 36 -23 35 -25 34 -27 33 -28 31 -30 30 -31 28 -33 27 -34 25 -35 23 -36 22 -38 20 -39 18 -40 16 -41 14 -42 12 -43 10 -43 8 -44 6 -45 3 -46 1 -46 0 0zm-892 -896l0 -2 0 0 47 1 47 4 46 6 45 8 44 10 43 12 42 14 41 16 40 18 39 20 38 22 36 23 35 25 34 27 33 28 31 30 30 31 28 33 27 34 25 35 23 36 22 38 20 39 18 40 16 41 14 42 12 43 10 43 8 44 6 45 3 46 1 46 -10 0 -1 -46 -3 -46 -6 -45 -8 -44 -10 -43 -12 -43 -14 -42 -16 -41 -18 -40 -20 -39 -22 -38 -23 -36 -25 -35 -27 -34 -28 -33 -30 -31 -31 -30 -33 -28 -34 -27 -35 -25 -36 -23 -38 -22 -39 -20 -40 -18 -41 -16 -42 -14 -42 -12 -43 -10 -44 -8 -44 -6 -45 -3 -45 -1 0 0zm-892 896l-10 0 0 0 1 -46 3 -46 6 -45 8 -44 10 -43 12 -43 14 -42 16 -41 18 -40 20 -39 22 -38 23 -36 25 -35 27 -34 28 -33 30 -31 31 -30 33 -28 34 -27 35 -25 36 -23 38 -22 39 -20 40 -18 41 -16 42 -14 43 -12 44 -10 45 -8 46 -6 47 -4 47 -1 0 2 -45 1 -45 3 -44 6 -44 8 -43 10 -42 12 -42 14 -41 16 -40 18 -39 20 -38 22 -36 23 -35 25 -34 27 -33 28 -31 30 -30 31 -28 33 -27 34 -25 35 -23 36 -22 38 -20 39 -18 40 -16 41 -14 42 -12 43 -10 43 -8 44 -6 45 -3 46 -1 46 0 0zm892 896l0 2 0 0 -47 -1 -47 -4 -46 -6 -45 -8 -44 -10 -43 -12 -42 -14 -41 -16 -40 -18 -39 -20 -38 -22 -36 -23 -35 -25 -34 -27 -33 -28 -31 -30 -30 -31 -28 -33 -27 -34 -25 -35 -23 -36 -22 -38 -20 -39 -18 -40 -16 -41 -14 -42 -12 -43 -10 -43 -8 -44 -6 -45 -3 -46 -1 -46 10 0 1 46 3 46 6 45 8 44 10 43 12 43 14 42 16 41 18 40 20 39 22 38 23 36 25 35 27 34 28 33 30 31 31 30 33 28 34 27 35 25 36 23 38 22 39 20 40 18 41 16 42 14 42 12 43 10 44 8 44 6 45 3 45 1 0 0z"/>
-  </g>
-  <circle class="fil60 str2" cx="8782" cy="4404" r="1044"/>
-  <circle class="fil61 str3" cx="5715" cy="5350" r="1044"/>
-  <circle class="fil62 str4" cx="3758" cy="7764" r="1044"/>
-  <circle class="fil63 str5" cx="3953" cy="10668" r="1044"/>
+  <path class="fil55 str0" d="M2602 10476c561,-8630 11301,-9064 9698,1183"/>
+  <rect class="fil55 str1" x="1962" y="9539" width="1347" height="1251"/>
+  <rect class="fil55 str1" x="11640" y="10664" width="1347" height="1251"/>
+  <rect class="fil55 str1" x="7664" y="3395" width="1347" height="1251"/>
  </g>
 </svg>

@@ -24,8 +24,6 @@ WatchListWindow::WatchListWindow(utils::ExpressionsParser const * const parser
 	, mParser(parser)
 {
 	mUi->setupUi(this);
-
-	updateVariables();
 	connect(&mTimer, &QTimer::timeout, this, &WatchListWindow::updateVariables);
 	mTimer.start(watchWindowRefreshInterval);
 }
