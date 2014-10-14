@@ -28,7 +28,6 @@ public:
 
 protected:
 	virtual QString deviceExpression(interpreterBase::robotModel::PortInfo const &port) const;
-	virtual QString timelineExpression() const;
 
 	qReal::ErrorReporterInterface &mErrorReporter;
 	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;

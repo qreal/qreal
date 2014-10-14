@@ -8,6 +8,7 @@ cd "$(dirname "$0")"
 cp    $BIN_DIR/qrkernel.dll                                         $PWD/../data
 cp    $BIN_DIR/qrrepo.dll                                           $PWD/../data
 cp    $BIN_DIR/qrutils.dll                                          $PWD/../data
+cp    $BIN_DIR/qrtext.dll                                           $PWD/../data
 cp    $BIN_DIR/qscintilla2.dll                                      $PWD/../data
 cp    $BIN_DIR/qslog.dll                                            $PWD/../data
 cp    $BIN_DIR/qrgui.exe                                            $PWD/../data/$PRODUCT.exe

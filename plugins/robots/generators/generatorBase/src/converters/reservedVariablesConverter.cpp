@@ -1,6 +1,6 @@
 #include "reservedVariablesConverter.h"
 
-#include "src/lua/luaProcessor.h"
+#include "generatorBase/lua/luaProcessor.h"
 
 using namespace generatorBase::converters;
 using namespace qReal;
@@ -34,10 +34,6 @@ QString ReservedVariablesConverter::convert(QString const &variable) const
 		}
 	}
 
-	if (variable == "time") {
-		return timelineExpression();
-	}
-
 	return variable;
 }
 
@@ -54,10 +50,4 @@ QString ReservedVariablesConverter::deviceExpression(interpreterBase::robotModel
 
 	// Converter must take a string like "1" or "2" (and etc) and return correct value
 	return readTemplate(templatePath).replace("@@PORT@@", mInputConverter->convert(port.name()));
-}
-
-QString ReservedVariablesConverter::timelineExpression() const
-{
-	/// @todo: generate timestamps code in only when required
-	return readTemplate("whatTime.t");
 }

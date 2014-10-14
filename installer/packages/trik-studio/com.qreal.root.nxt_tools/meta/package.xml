@@ -15,7 +15,7 @@
     </Translations> -->
     <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
     <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
-    <SortingPriority>8</SortingPriority>
+    <SortingPriority>7</SortingPriority>
     <Default>false</Default>
     <ForcedInstallation>false</ForcedInstallation>
 </Package>

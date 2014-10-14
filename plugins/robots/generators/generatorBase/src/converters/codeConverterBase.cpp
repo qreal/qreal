@@ -1,6 +1,6 @@
 #include "codeConverterBase.h"
 
-#include "src/lua/luaProcessor.h"
+#include "generatorBase/lua/luaProcessor.h"
 
 using namespace generatorBase::converters;
 using namespace qReal;

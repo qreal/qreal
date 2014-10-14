@@ -20,6 +20,11 @@ QString ReservedFunctionsConverter::convert(QString const &name, QStringList con
 		return readTemplate("functions/random.t").replace("@@UPPER_BOUND@@", args[0]);
 	}
 
+	if (name == "time") {
+		/// @todo: generate timestamps code in only when required
+		return readTemplate("whatTime.t");
+	}
+
 	/// @todo: add all supported functions here.
 
 	return QString();

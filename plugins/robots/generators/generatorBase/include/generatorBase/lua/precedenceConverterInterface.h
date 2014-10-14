@@ -3,13 +3,15 @@
 #include <qrtext/core/parser/precedenceTable.h>
 #include <qrtext/core/ast/node.h>
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace lua {
 
 /// Provides info about precedencies and associativity of the operators of
 /// the target language (i.e. the language we generate to). Converts thus
 /// lua ast nodes to target language`s operations.
-class PrecedenceConverterInterface
+class ROBOTS_GENERATOR_EXPORT PrecedenceConverterInterface
 {
 public:
 	virtual ~PrecedenceConverterInterface() {}
