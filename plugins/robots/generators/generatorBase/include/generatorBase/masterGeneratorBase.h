@@ -48,6 +48,8 @@ public:
 
 protected:
 	virtual GeneratorCustomizer *createCustomizer() = 0;
+
+	/// Default implementation takes ownership via QObject parentship system.
 	virtual lua::LuaProcessor *createLuaProcessor();
 
 	/// Implementation must return a path to a file where all generated code

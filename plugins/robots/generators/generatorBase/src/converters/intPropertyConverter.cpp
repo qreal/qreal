@@ -1,5 +1,9 @@
-
 #include "intPropertyConverter.h"
+
+#include <qrtext/lua/luaToolbox.h>
+#include <qrtext/lua/types/integer.h>
+
+#include "generatorBase/lua/luaProcessor.h"
 
 using namespace generatorBase::converters;
 using namespace qReal;
@@ -27,10 +31,11 @@ QString IntPropertyConverter::convert(QString const &data) const
 		return "0";
 	}
 
-//	enums::variableType::VariableType const expressionType = mVariables->expressionType(preparedCode);
-//	if (expressionType == enums::variableType::intType) {
-//		return preparedCode;
-//	}
+	if (mLuaTranslator.toolbox().type(mLuaTranslator.toolbox()
+			.parse(mId, QString(), data))->is<qrtext::lua::types::Integer>())
+	{
+		return preparedCode;
+	}
 
 	QString castTemplate = readTemplate("types/cast.t");
 	QString const intType = mTypeConverter->convert("int");

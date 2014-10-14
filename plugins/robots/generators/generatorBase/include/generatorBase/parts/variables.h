@@ -26,10 +26,6 @@ public:
 			, interpreterBase::robotModel::RobotModelInterface const &robotModel
 			, qrtext::LanguageToolboxInterface &luaToolbox);
 
-	/// Tries to infer types for all variables declared in all function blocks
-	/// on the specified diagram
-//	void reinit(qrRepo::RepoApi const &api);
-
 	/// Returns global variables declarations string
 	QString generateVariableString() const;
 

@@ -21,6 +21,8 @@ public:
 			, PrecedenceConverterInterface &precedeceTable
 			, simple::Binding::ConverterInterface const *reservedVariablesConverter);
 
+	~LuaPrinter();
+
 	/// Prints the given AST to the code using a set of templates placed in the given in the constructor directory.
 	virtual QString print(QSharedPointer<qrtext::lua::ast::Node> node);
 
@@ -85,7 +87,7 @@ private:
 
 	QMap<qrtext::lua::ast::Node const *, QString> mGeneratedCode;
 	PrecedenceConverterInterface &mPrecedenceTable;
-	simple::Binding::ConverterInterface const *mReservedVariablesConverter;
+	simple::Binding::ConverterInterface const *mReservedVariablesConverter;  // Takes ownership
 	ReservedFunctionsConverter mReservedFunctionsConverter;
 };
 

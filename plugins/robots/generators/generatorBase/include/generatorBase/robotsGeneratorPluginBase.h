@@ -67,7 +67,7 @@ protected:
 	qrRepo::RepoApi const *mRepo;  // Does not have ownership
 
 	interpreterBase::robotModel::RobotModelManagerInterface const *mRobotModelManager;
-	qrtext::LanguageToolboxInterface *mTextLanguage;
+	qrtext::LanguageToolboxInterface *mTextLanguage;  // Does not have ownership
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 	qReal::SystemEventsInterface *mSystemEvents; // Does not have ownership

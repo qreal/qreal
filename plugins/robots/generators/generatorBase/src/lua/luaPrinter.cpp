@@ -57,6 +57,11 @@ LuaPrinter::LuaPrinter(QString const &pathToTemplates
 {
 }
 
+LuaPrinter::~LuaPrinter()
+{
+	delete mReservedVariablesConverter;
+}
+
 QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> node)
 {
 	node->acceptRecursively(*this);
@@ -85,7 +90,7 @@ QString LuaPrinter::popResult(qrtext::lua::ast::Node const &node, bool wrapIntoB
 	return wrapIntoBrackets ? "(" + code + ")" : code;
 }
 
-QStringList LuaPrinter::popResults(QList<QSharedPointer<qrtext::lua::ast::Node> > const &nodes)
+QStringList LuaPrinter::popResults(QList<QSharedPointer<qrtext::lua::ast::Node>> const &nodes)
 {
 	QStringList result;
 	for (QSharedPointer<qrtext::lua::ast::Node> const &node : nodes) {
@@ -351,7 +356,6 @@ void LuaPrinter::visit(qrtext::lua::ast::Assignment const &node)
 
 void LuaPrinter::visit(qrtext::lua::ast::Block const &node)
 {
-	/// @todo: 1 expression is not wraped into Block node so we cannot understand when to print semicolon.
 	QString const separator = readTemplate("statementsSeparator.t");
 	QStringList const expressions = popResults(node.children());
 	pushResult(node, expressions.join(separator) + separator);
