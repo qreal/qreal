@@ -39,9 +39,10 @@ SemanticNode *SemanticTree::produceNodeFor(Id const &id)
 		return produceFinal(id);
 	case enums::semantics::forkBlock:
 		return produceFork(id);
+	case enums::semantics::switchBlock:
+		return produceSwitch(id);
 	default:
-		/// @todo: Implement switch semantics
-		return produceSimple(id);
+		return nullptr;
 	}
 }
 
@@ -63,6 +64,11 @@ LoopNode *SemanticTree::produceLoop(Id const &id)
 ForkNode *SemanticTree::produceFork(Id const &id)
 {
 	return new ForkNode(id, this);
+}
+
+SwitchNode *SemanticTree::produceSwitch(Id const &id)
+{
+	return new SwitchNode(id, this);
 }
 
 FinalNode *SemanticTree::produceFinal(Id const &id)

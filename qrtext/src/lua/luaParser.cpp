@@ -162,6 +162,11 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 	// explist ::= exp(0) {‘,’ exp(0)}
 	explist = (exp & *(-LuaTokenTypes::comma & exp))
 			>> [] (QSharedPointer<TemporaryPair> node) {
+				if (!node) {
+					// There was syntax error somewhere, it shall be already reported.
+					return as<TemporaryList>(wrap(new TemporaryList()));
+				}
+
 				auto firstExp = as<ast::Expression>(node->left());
 				auto temporaryList = as<TemporaryList>(node->right());
 				temporaryList->list().prepend(firstExp);
@@ -174,8 +179,8 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 	// primary ::= nil | false | true | Number | String | ‘...’ | prefixexp | tableconstructor | unop exp
 	primary =
 			LuaTokenTypes::nilKeyword >> [] { return new ast::Nil(); }
-			| LuaTokenTypes::falseKeyword >> [] { return new ast::True(); }
-			| LuaTokenTypes::trueKeyword >> [] { return new ast::False(); }
+			| LuaTokenTypes::falseKeyword >> [] { return new ast::False(); }
+			| LuaTokenTypes::trueKeyword >> [] { return new ast::True(); }
 			| LuaTokenTypes::integerLiteral
 					>> [] (Token<LuaTokenTypes> token) { return new ast::IntegerNumber(token.lexeme()); }
 			| LuaTokenTypes::floatLiteral
@@ -335,6 +340,8 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			| LuaTokenTypes::exclamationMarkEquals >> [] { return new ast::Inequality(); }
 			| LuaTokenTypes::andKeyword >> [] { return new ast::LogicalAnd(); }
 			| LuaTokenTypes::orKeyword >> [] { return new ast::LogicalOr(); }
+			| LuaTokenTypes::doubleAmpersand >> [] { return new ast::LogicalAnd(); }
+			| LuaTokenTypes::doubleVerticalLine >> [] { return new ast::LogicalOr(); }
 			;
 
 	// unop ::= ‘-’ | not | ‘#’ | ‘~’

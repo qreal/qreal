@@ -12,6 +12,8 @@ bool EnumType::init(QDomElement const &element, QString const &context)
 		return false;
 	}
 
+	mIsEditable = element.attribute("editable").toLower() == "true";
+
 	for (QDomElement valueElement = element.firstChildElement("value")
 		; !valueElement.isNull()
 		; valueElement = valueElement.nextSiblingElement("value"))
@@ -84,4 +86,9 @@ void EnumType::generateMouseGesturesMap(utils::OutFile &out)
 void EnumType::generateExplosionsMap(utils::OutFile &out)
 {
 	Q_UNUSED(out)
+}
+
+bool EnumType::isEditable() const
+{
+	return mIsEditable;
 }

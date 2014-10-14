@@ -144,9 +144,9 @@ public:
 								, QRegularExpression::NormalMatch, QRegularExpression::AnchoredMatchOption).hasMatch()
 						&& absolutePosition < input.length())
 				{
+					skippedSymbols += input.at(absolutePosition);
 					++absolutePosition;
 					++column;
-					skippedSymbols += input.at(absolutePosition);
 				}
 
 				mErrors << Error(errorConnection

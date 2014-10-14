@@ -6,7 +6,10 @@ using namespace qrtext::core;
 LuaPrecedenceTable::LuaPrecedenceTable()
 {
 	addOperator(LuaTokenTypes::orKeyword, 0, Associativity::left);
+	addOperator(LuaTokenTypes::doubleVerticalLine, 0, Associativity::left);
+
 	addOperator(LuaTokenTypes::andKeyword, 1, Associativity::left);
+	addOperator(LuaTokenTypes::doubleAmpersand, 1, Associativity::left);
 
 	addOperator(LuaTokenTypes::less, 2, Associativity::left);
 	addOperator(LuaTokenTypes::greater, 2, Associativity::left);

@@ -46,6 +46,19 @@ EditorView::~EditorView()
 	delete mScene;
 }
 
+void EditorView::focusOutEvent(QFocusEvent *event)
+{
+	if (event->reason() != Qt::PopupFocusReason) {
+		mScene->setActionsEnabled(false);
+	}
+}
+
+void EditorView::focusInEvent(QFocusEvent *event)
+{
+	Q_UNUSED(event)
+	mScene->setActionsEnabled(true);
+}
+
 EditorViewMViface *EditorView::mvIface() const
 {
 	return mMVIface;

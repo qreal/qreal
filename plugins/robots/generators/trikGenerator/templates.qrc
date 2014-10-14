@@ -53,6 +53,11 @@
         <file>templates/conditional/infinite.t</file>
         <file>templates/conditional/negation.t</file>
         <file>templates/conditional/whileDo.t</file>
+        <file>templates/switch/head.t</file>
+        <file>templates/switch/middle.t</file>
+        <file>templates/switch/default.t</file>
+        <file>templates/switch/oneCase.t</file>
+        <file>templates/switch/conditionsSeparator.t</file>
         <file>templates/types/float.t</file>
         <file>templates/types/int.t</file>
         <file>templates/sensors/Enter.t</file>
@@ -139,5 +144,7 @@
         <file>templates/drawing/drawArc.t</file>
         <file>templates/drawing/setPainterWidth.t</file>
         <file>templates/drawing/setPainterColor.t</file>
+        <file>templates/messages/waitForMessage.t</file>
+        <file>templates/messages/sendMessage.t</file>
     </qresource>
 </RCC>

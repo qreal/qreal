@@ -84,6 +84,7 @@ EdgeElement::EdgeElement(
 		mLabels.append(title);
 	}
 
+	mShapeType = static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
 	initLineHandler();
 	mChangeShapeAction.setMenu(mLineFactory->shapeTypeMenu());
 }
@@ -108,30 +109,14 @@ void EdgeElement::initTitles()
 
 void EdgeElement::initLineHandler()
 {
-	updateShapeType();
-
 	delete mHandler;
 	mHandler = mLineFactory->createHandler(mShapeType);
 	mHandler->connectAction(&mReverseAction, this, SLOT(reverse()));
 }
 
-void EdgeElement::updateShapeType()
-{
-	mShapeType = static_cast<linkShape::LinkShape>(SettingsManager::value("LineType", linkShape::unset).toInt());
-
-	if (mShapeType == linkShape::unset) {
-		QString const shapeString
-				= mGraphicalAssistApi.graphicalRepoApi().property(id(), "linkShape").toString();
-		mShapeType = mLineFactory->stringToShape(shapeString);
-
-		if (mShapeType == linkShape::unset) {
-			mShapeType = mElementImpl->shapeType();
-		}
-	}
-}
-
 void EdgeElement::changeShapeType(linkShape::LinkShape const shapeType)
 {
+	mShapeType = shapeType;
 	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape"
 			, mLineFactory->shapeToString(shapeType));
 	initLineHandler();
@@ -670,9 +655,7 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions(QPointF const &pos)
 {
 	QList<ContextMenuAction*> result;
 
-	if (SettingsManager::value("LineType", linkShape::unset).toInt() == linkShape::unset) {
-		result.push_back(&mChangeShapeAction);
-	}
+	result.push_back(&mChangeShapeAction);
 
 	if (reverseActionIsPossible()) {
 		result.push_back(&mReverseAction);

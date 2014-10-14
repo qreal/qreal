@@ -45,18 +45,25 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const
 {
 	mErrors.clear();
 
+	QSharedPointer<Node> ast;
+
 	if (mParsedCache[id][propertyName] != code) {
 		auto tokenStream = mLexer->tokenize(code);
-		auto ast = mParser->parse(tokenStream);
-		mAstRoots[id][propertyName] = ast;
-
-		mAnalyzer->analyze(ast);
+		ast = mParser->parse(tokenStream);
 
 		if (mErrors.isEmpty()) {
-			mParsedCache[id][propertyName] = code;
-		} else {
-			reportErrors();
+			mAstRoots[id][propertyName] = ast;
 		}
+
+		mParsedCache[id][propertyName] = code;
+	} else {
+		ast = mAstRoots[id][propertyName];
+	}
+
+	mAnalyzer->analyze(ast);
+	if (!mErrors.isEmpty()) {
+		mParsedCache[id].remove(propertyName);
+		reportErrors();
 	}
 
 	return mAstRoots[id][propertyName];
@@ -98,7 +105,7 @@ void LuaToolbox::addIntrinsicFunction(QString const &name
 
 QStringList LuaToolbox::identifiers() const
 {
-	return mInterpreter->identifiers();
+	return mAnalyzer->identifiers();
 }
 
 QVariant LuaToolbox::value(QString const &identifier) const

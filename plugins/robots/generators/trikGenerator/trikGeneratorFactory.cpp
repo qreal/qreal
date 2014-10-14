@@ -7,27 +7,29 @@
 #include "converters/encoderV6PortConverter.h"
 #include "converters/trikStringPropertyConverter.h"
 #include "simpleGenerators/detectGenerator.h"
-#include "simpleGenerators/initCameraGenerator.h"
-#include "simpleGenerators/ledGenerator.h"
 #include "simpleGenerators/detectorToVariableGenerator.h"
-#include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/drawLineGenerator.h"
 #include "simpleGenerators/drawPixelGenerator.h"
 #include "simpleGenerators/drawRectGenerator.h"
 #include "simpleGenerators/drawEllipseGenerator.h"
 #include "simpleGenerators/drawArcGenerator.h"
-#include "simpleGenerators/setPainterWidthGenerator.h"
-#include "simpleGenerators/setPainterColorGenerator.h"
+#include "simpleGenerators/initCameraGenerator.h"
+#include "simpleGenerators/ledGenerator.h"
+#include "simpleGenerators/playToneGenerator.h"
+#include "simpleGenerators/waitForMessageGenerator.h"
 #include "simpleGenerators/sadSmileGenerator.h"
 #include "simpleGenerators/sayGenerator.h"
+#include "simpleGenerators/sendMessageGenerator.h"
+#include "simpleGenerators/setPainterWidthGenerator.h"
+#include "simpleGenerators/setPainterColorGenerator.h"
 #include "simpleGenerators/setBackgroundGenerator.h"
 #include "simpleGenerators/smileGenerator.h"
 #include "simpleGenerators/systemGenerator.h"
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/trikEnginesStopGenerator.h"
+#include "simpleGenerators/trikNullificationEncoderGenerator.h"
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
-#include "simpleGenerators/trikNullificationEncoderGenerator.h"
 #include "parts/trikVariables.h"
 #include "parts/trikDeviceVariables.h"
 
@@ -82,6 +84,10 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new SadSmileGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSay") {
 		return new SayGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikSendMessage") {
+		return new SendMessageGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitForMessage") {
+		return new WaitForMessageGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSetBackground") {
 		return new SetBackgroundGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikSystem") {

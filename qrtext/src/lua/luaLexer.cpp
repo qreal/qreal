@@ -96,5 +96,8 @@ TokenPatterns<LuaTokenTypes> LuaLexer::initPatterns()
 
 	tokenDefinitions.defineToken(LuaTokenTypes::comment, QRegularExpression("--.*"));
 
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleAmpersand, QRegularExpression("&&"));
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleVerticalLine, QRegularExpression("\\|\\|"));
+
 	return tokenDefinitions;
 }

@@ -65,6 +65,9 @@ public:
 	/// Returns type for a given expression (if that expression was seen by "analyze" method before, or nullptr).
 	QSharedPointer<types::TypeExpression> type(QSharedPointer<ast::Node> const &expression) const;
 
+	/// Returns list of identifier names known to semantic analyzer.
+	QStringList identifiers() const;
+
 protected:
 	/// Assigns given type to given expression.
 	void assign(QSharedPointer<ast::Node> const &expression, QSharedPointer<types::TypeExpression> const &type);

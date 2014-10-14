@@ -20,12 +20,19 @@ QMap<QString, float> TrikVariables::floatConstants() const
 
 QStringList TrikVariables::expressions(qrRepo::RepoApi const &api) const
 {
-	QStringList lineDetectorExpressions;
-	for (qReal::Id const &block : api.elementsByType("TrikLineDetectorToVariable")) {
-		if (api.hasProperty(block, "Variable")) {
-			lineDetectorExpressions << api.stringProperty(block, "Variable") + " = 0";
+	auto collectVariables = [&api] (QString const &blockName, QString const &property) {
+		QStringList expressions;
+		for (qReal::Id const &block : api.elementsByType(blockName)) {
+			if (api.hasProperty(block, property)) {
+				expressions << api.stringProperty(block, property) + " = 0";
+			}
 		}
-	}
 
-	return Variables::expressions(api) + lineDetectorExpressions;
+		return expressions;
+	};
+
+	return Variables::expressions(api)
+			+ collectVariables("TrikLineDetectorToVariable", "Variable")
+			+ collectVariables("TrikWaitForMessage", "Variable")
+			;
 }

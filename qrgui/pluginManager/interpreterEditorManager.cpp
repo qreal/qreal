@@ -489,6 +489,14 @@ IdList InterpreterEditorManager::containedTypes(Id const &id) const
 	return containedTypes;
 }
 
+bool InterpreterEditorManager::isEnumEditable(Id const &id, QString const &name) const
+{
+	/// @todo: Support it
+	Q_UNUSED(id)
+	Q_UNUSED(name)
+	return false;
+}
+
 QList<QPair<QString, QString>> InterpreterEditorManager::enumValues(Id const &id, const QString &name) const
 {
 	QList<QPair<QString, QString>> result;

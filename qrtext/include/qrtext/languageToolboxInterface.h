@@ -23,15 +23,18 @@ public:
 	T interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
 	{
 		auto root = parse(id, propertyName, code);
-		return interpret(root).value<T>();
+		if (errors().isEmpty()) {
+			return interpret(root).value<T>();
+		} else {
+			return {};
+		}
 	}
 
 	/// Interprets given code string without connection. Returns result of an expression.
 	template<typename T>
 	T interpret(QString const &code)
 	{
-		auto root = parse(qReal::Id(), "", code);
-		return interpret(root).value<T>();
+		return interpret<T>(qReal::Id(), "", code);
 	}
 
 	/// Interprets given code string using given id and property name for connection.
