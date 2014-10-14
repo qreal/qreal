@@ -50,7 +50,7 @@ include(editorPluginInterface/editorPluginInterface.pri)
 include(toolPluginInterface/toolPluginInterface.pri)
 
 # Interfaces for interpreted plugins, used in handcoded tools
-include (interpretedPluginInterface/interpretedPluginInterface.pri)
+include(interpretedPluginInterface/interpretedPluginInterface.pri)
 
 # Text Editor
 include(textEditor/textEditor.pri)

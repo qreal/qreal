@@ -13,7 +13,7 @@ HEADERS += \
 	$$PWD/details/interpreterElementImpl.h \
 	$$PWD/details/interpreterPortImpl.h \
 	$$PWD/interpretedPluginManager.h \
-    pluginManager/interpretedPluginsLoader.h
+	$$PWD/interpretedPluginsLoader.h \
 
 SOURCES += \
 	$$PWD/editorManager.cpp \
@@ -28,4 +28,4 @@ SOURCES += \
 	$$PWD/details/interpreterElementImpl.cpp \
 	$$PWD/details/interpreterPortImpl.cpp \
 	$$PWD/interpretedPluginManager.cpp \
-    pluginManager/interpretedPluginsLoader.cpp
+	$$PWD/interpretedPluginsLoader.cpp \
