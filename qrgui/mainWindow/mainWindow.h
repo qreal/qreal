@@ -78,8 +78,6 @@ public:
 
 	QModelIndex rootIndex() const;
 
-	QAction *actionDeleteFromDiagram() const;
-
 	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
@@ -219,8 +217,6 @@ private slots:
 	void applySettings();
 	void resetToolbarSize(int size);
 
-	void deleteFromDiagram();
-
 	void closeCurrentTab();
 	void closeTab(int index);
 
@@ -279,8 +275,8 @@ private:
 	QListWidget* createSaveListWidget();
 
 	virtual void closeEvent(QCloseEvent *event);
-
-	void deleteFromExplorer(bool isLogicalModel);
+	void deleteFromLogicalExplorer();
+	void deleteFromGraphicalExplorer();
 
 	QString getSaveFileName(QString const &dialogWindowTitle);
 	QString getOpenFileName(QString const &dialogWindowTitle);

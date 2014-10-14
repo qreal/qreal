@@ -896,7 +896,9 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	disableActions(e);
 	mContextMenu.clear();
-	mContextMenu.addActions(mContextMenuActions);
+	mContextMenu.addAction(&mActionDeleteFromDiagram);
+	mContextMenu.addSeparator();
+	mContextMenu.addActions(mEditorActions);
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (e) {
@@ -932,7 +934,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	mContextMenu.exec(QCursor::pos());
 
-	enableActions();
+	setActionsEnabled(true);
 	delete createChildMapper;
 }
 
@@ -947,15 +949,6 @@ void EditorViewScene::disableActions(Element *focusElement)
 		mActionPasteOnDiagram.setEnabled(false);
 		mActionPasteReference.setEnabled(false);
 	}
-}
-
-void EditorViewScene::enableActions()
-{
-	mActionDeleteFromDiagram.setEnabled(true);
-	mActionCopyOnDiagram.setEnabled(true);
-	mActionCutOnDiagram.setEnabled(true);
-	mActionPasteOnDiagram.setEnabled(true);
-	mActionPasteReference.setEnabled(true);
 }
 
 bool EditorViewScene::isEmptyClipboard()
@@ -1423,9 +1416,7 @@ void EditorViewScene::initializeActions()
 	mActionCutOnDiagram.setText(tr("Cut"));
 	connect(&mActionCutOnDiagram, &QAction::triggered, this, &EditorViewScene::cut);
 
-	mContextMenuActions << &mActionDeleteFromDiagram
-			<< separator
-			<< &mActionCutOnDiagram
+	mEditorActions << &mActionCutOnDiagram
 			<< &mActionCopyOnDiagram
 			<< &mActionPasteOnDiagram
 			<< &mActionPasteReference;
@@ -1485,16 +1476,23 @@ void EditorViewScene::onElementParentChanged(Element *element)
 	element->setTitlesVisible(mTitlesVisible);
 }
 
-QList<QAction *> EditorViewScene::actions() const
+QAction &EditorViewScene::deleteAction()
 {
-	return mContextMenuActions;
+	return mActionDeleteFromDiagram;
+}
+
+QList<QAction *> const &EditorViewScene::editorActions() const
+{
+	return mEditorActions;
 }
 
 void EditorViewScene::setActionsEnabled(bool enabled)
 {
-	for (QAction * const action : mContextMenuActions) {
+	for (QAction * const action : mEditorActions) {
 		action->setEnabled(enabled);
 	}
+
+	mActionDeleteFromDiagram.setEnabled(enabled);
 }
 
 void EditorViewScene::deselectLabels()

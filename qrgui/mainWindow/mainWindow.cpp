@@ -208,7 +208,10 @@ void MainWindow::connectActions()
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 
-//!!!!!!!!!!!connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
+	connect(mUi->logicalModelExplorer, &ModelExplorer::elementRemoved
+			, this, &MainWindow::deleteFromLogicalExplorer);
+	connect(mUi->graphicalModelExplorer, &ModelExplorer::elementRemoved
+			, this, &MainWindow::deleteFromGraphicalExplorer);
 
 	connect(mUi->actionUndo, SIGNAL(triggered()), mController, SLOT(undo()));
 	connect(mUi->actionRedo, SIGNAL(triggered()), mController, SLOT(redo()));
@@ -589,13 +592,14 @@ void MainWindow::makeSvg()
 
 void MainWindow::deleteElementFromDiagram(Id const &id)
 {
-	bool isLogical = mModels->logicalModelAssistApi().isLogicalId(id);
+	bool const isLogical = mModels->logicalModelAssistApi().isLogicalId(id);
 	if (isLogical) {
 		mUi->logicalModelExplorer->setCurrentIndex(mModels->logicalModelAssistApi().indexById(id));
+		deleteFromLogicalExplorer();
 	} else {
 		mUi->graphicalModelExplorer->setCurrentIndex(mModels->graphicalModelAssistApi().indexById(id));
+		deleteFromGraphicalExplorer();
 	}
-	deleteFromExplorer(isLogical);
 }
 
 void MainWindow::reportOperation(invocation::LongOperation *operation)
@@ -658,42 +662,22 @@ void MainWindow::closeDiagramTab(Id const &id)
 	}
 }
 
-void MainWindow::deleteFromExplorer(bool isLogicalModel)
+void MainWindow::deleteFromLogicalExplorer()
 {
-	if (isLogicalModel) {
-		QModelIndex const index = mUi->logicalModelExplorer->currentIndex();
-		if (index.isValid()) {
-			IdList temp;
-			/// @todo: rewrite it with just MultipleRemoveCommand.
-			MultipleRemoveCommand factory(*mModels, temp);
-			mController->executeGlobal(factory.logicalDeleteCommand(index));
-		}
-		return;
-	}
-
-	Id const id = mModels->graphicalModelAssistApi().idByIndex(mUi->graphicalModelExplorer->currentIndex());
-	if (!id.isNull()) {
-		mController->executeGlobal(new MultipleRemoveCommand(*mModels, IdList() << id));
+	QModelIndex const index = mUi->logicalModelExplorer->currentIndex();
+	if (index.isValid()) {
+		IdList temp;
+		/// @todo: rewrite it with just MultipleRemoveCommand.
+		MultipleRemoveCommand factory(*mModels, temp);
+		mController->executeGlobal(factory.logicalDeleteCommand(index));
 	}
 }
 
-void MainWindow::deleteFromDiagram()
+void MainWindow::deleteFromGraphicalExplorer()
 {
-	if (mModels->graphicalModel()) {
-		if (mUi->graphicalModelExplorer->hasFocus()) {
-			deleteFromExplorer(false);
-		} else if (getCurrentTab() && getCurrentTab()->hasFocus()) {
-			getCurrentTab()->mutableScene().deleteSelectedItems();
-		}
-	}
-	if (mModels->logicalModel()) {
-		if (mUi->logicalModelExplorer->hasFocus()) {
-			deleteFromExplorer(true);
-		}
-	}
-
-	if (getCurrentTab() && getCurrentTab()->scene()) {
-		getCurrentTab()->scene()->invalidate();
+	Id const id = mModels->graphicalModelAssistApi().idByIndex(mUi->graphicalModelExplorer->currentIndex());
+	if (!id.isNull()) {
+		mController->executeGlobal(new MultipleRemoveCommand(*mModels, IdList() << id));
 	}
 }
 
@@ -1211,8 +1195,8 @@ void MainWindow::currentTabChanged(int newIndex)
 	} else {
 		Id const currentTabId = getCurrentTab()->mvIface().rootId();
 		mToolManager.activeTabChanged(currentTabId);
-		mUi->graphicalModelExplorer->changeActionsSet(getCurrentTab()->editorViewScene().actions());
-		mUi->logicalModelExplorer->changeActionsSet(getCurrentTab()->editorViewScene().actions());
+		mUi->graphicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
+		mUi->logicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
 	}
 
 	emit rootDiagramChanged();

@@ -1,6 +1,5 @@
 #include "modelExplorer.h"
 
-#include <QtWidgets/QAction>
 #include <QtGui/QFocusEvent>
 
 #include "models/commands/renameCommand.h"
@@ -14,7 +13,13 @@ ModelExplorer::ModelExplorer(QWidget *parent)
 	: QTreeView(parent)
 	, mController(nullptr)
 	, mModel(nullptr)
+	, mDeleteAction(tr("Delete"), this)
+	, mDeleteActionSeparator(this)
 {
+	mDeleteAction.setShortcut(QKeySequence(Qt::Key_Delete));
+	connect(&mDeleteAction, &QAction::triggered, this, &ModelExplorer::elementRemoved);
+	mDeleteActionSeparator.setSeparator(true);
+	mDeleteAction.setEnabled(false);
 }
 
 void ModelExplorer::setController(Controller * const controller)
@@ -32,12 +37,14 @@ void ModelExplorer::setExploser(models::Exploser const &exploser)
 	mExploser = &exploser;
 }
 
-void ModelExplorer::changeActionsSet(QList<QAction *> const &actions)
+void ModelExplorer::changeEditorActionsSet(QList<QAction *> const &actions)
 {
-	for (QAction *action : this->actions()) {
+	for (QAction * const action : this->actions()) {
 		removeAction(action);
 	}
 
+	addAction(&mDeleteAction);
+	addAction(&mDeleteActionSeparator);
 	addActions(actions);
 }
 
@@ -68,7 +75,7 @@ void ModelExplorer::focusInEvent(QFocusEvent *event)
 
 void ModelExplorer::setActionsEnabled(bool enabled)
 {
-	for (QAction *action : actions()) {
+	for (QAction * const action : actions()) {
 		action->setEnabled(enabled);
 	}
 }

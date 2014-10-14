@@ -122,11 +122,14 @@ public:
 	void setTitlesVisible(bool visible);
 	void onElementParentChanged(Element *element);
 
+	/// Returns a reference to action that removes selected elements from the scene.
+	QAction &deleteAction();
+
 	/// Returns a list of scene actions that can be added to other views.
 	/// Currently those are copy, cut, paste and paste reference actions.
-	QList<QAction *> actions() const;
+	QList<QAction *> const &editorActions() const;
 
-	/// Enables or diasables all editor actions
+	/// Enables or diasables all editor actions.
 	void setActionsEnabled(bool enabled);
 
 public slots:
@@ -197,7 +200,6 @@ private:
 	bool isEmptyClipboard();
 
 	void disableActions(Element *focusElement);
-	void enableActions();
 
 	inline bool isArrow(int key);
 
@@ -230,7 +232,7 @@ private:
 	/// list of pixmaps to be drawn on scene's foreground
 	QList<QPixmap *> mForegroundPixmaps;
 
-	QList<QAction *> mContextMenuActions;
+	QList<QAction *> mEditorActions;
 
 	QPointF mCurrentMousePos;
 	QPointF mCreatePoint;
