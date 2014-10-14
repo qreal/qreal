@@ -17,7 +17,7 @@ EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
 					: "engines/enginesForward.t"
 			, QList<Binding *>()
 					<< Binding::createMultiTarget("@@PORT@@", "Ports", customizer.factory()->enginesConverter())
-					<< Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter())
+					<< Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter(id))
 					<< Binding::createConverting("@@BREAK_MODE@@", "Mode", customizer.factory()->breakModeConverter())
 			, parent)
 {

@@ -108,6 +108,11 @@ QStringList LuaToolbox::identifiers() const
 	return mAnalyzer->identifiers();
 }
 
+QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> LuaToolbox::variableTypes() const
+{
+	return mAnalyzer->variableTypes();
+}
+
 QVariant LuaToolbox::value(QString const &identifier) const
 {
 	return mInterpreter->value(identifier);

@@ -31,9 +31,10 @@ QString TrikGeneratorPlugin::kitId() const
 }
 
 void TrikGeneratorPlugin::init(qReal::PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage)
 {
-	RobotsGeneratorPluginBase::init(configurator, robotModelManager);
+	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);
 	mCommunicator = new TcpRobotCommunicator(*mMainWindowInterface->errorReporter());
 }
 
@@ -82,6 +83,7 @@ generatorBase::MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
 	return new TrikMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, *mRobotModelManager
+			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram());
 }
 

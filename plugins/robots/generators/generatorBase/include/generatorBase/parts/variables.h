@@ -3,24 +3,18 @@
 #include <QtCore/QMap>
 #include <QtCore/QStringList>
 
+#include <qrtext/core/types/typeExpression.h>
 #include <qrrepo/repoApi.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
+
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 
+namespace qrtext {
+class LanguageToolboxInterface;
+}
+
 namespace generatorBase {
-
-namespace enums {
-namespace variableType {
-enum VariableType
-{
-	unknown = 0
-	, floatType
-	, intType
-};
-}
-}
-
 namespace parts {
 // TODO: make this class customizable in other generators
 
@@ -28,17 +22,15 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Variables : public TemplateParametrizedEntity
 {
 public:
-	Variables(QString const &pathToTemplates, interpreterBase::robotModel::RobotModelInterface const &robotModel);
-
-	/// Tries to infer types for all variables declared in all function blocks
-	/// on the specified diagram
-	void reinit(qrRepo::RepoApi const &api);
+	Variables(QString const &pathToTemplates
+			, interpreterBase::robotModel::RobotModelInterface const &robotModel
+			, qrtext::LanguageToolboxInterface &luaToolbox);
 
 	/// Returns global variables declarations string
 	QString generateVariableString() const;
 
 	/// Returns given expression type using inner type inference algorithm
-	enums::variableType::VariableType expressionType(QString const &expression) const;
+	QSharedPointer<qrtext::core::types::TypeExpression> expressionType(QString const &expression) const;
 
 	/// Adds given string to variables declaration section.
 	/// This method can be called multiple times with the same string but it
@@ -46,47 +38,22 @@ public:
 	void appendManualDeclaration(QString const &variables);
 
 protected:
-	virtual QMap<QString, enums::variableType::VariableType> nonGenerableReservedVariables() const;
+	virtual QMap<QString, qrtext::core::types::TypeExpression> nonGenerableReservedVariables() const;
 	virtual QMap<QString, int> intConstants() const;
 	virtual QMap<QString, float> floatConstants() const;
 
-	virtual QString intConstantDeclaration() const;
-	virtual QString floatConstantDeclaration() const;
-	virtual QString intVariableDeclaration() const;
-	virtual QString floatVariableDeclaration() const;
+	virtual QString typeExpression(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
+	virtual QString constantDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
+	virtual QString variableDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
 
 	/// Returns a list of variable initialization expressions in the model.
 	virtual QStringList expressions(qrRepo::RepoApi const &api) const;
 
 private:
-	QMap<QString, enums::variableType::VariableType> reservedVariables() const;
-
-	void inferTypes(QStringList const &expressions);
-
-	/// Groups given expressions by variable names
-	QMap<QString, QStringList> variablesExpressionsMap(QStringList const &expressions) const;
-
-	/// Assigns to the given variable specified type if it is wider than old one
-	void assignType(QString const &name, enums::variableType::VariableType type);
-
-	/// Adds to the target list all the variable names participating
-	/// in the expression. Returns int or float type if expression has
-	/// pre-determined type (for example, contains only int constants or one float)
-	/// or unknown else
-	enums::variableType::VariableType participatingVariables(QString const &expression
-			, QStringList &currentNames) const;
-
-	/// Invokes inference process
-	void startDeepInference(QMap<QString, QStringList> &dependencies);
-	QStringList dependentFrom(QMap<QString, QStringList> const &dependencies
-			, QString const variable) const;
-	bool removeDependenciesFrom(QMap<QString, QStringList> &dependencies
-			, QString const variable) const;
-
-	bool isIdentifier(QString const &token) const;
+	QMap<QString, qrtext::core::types::TypeExpression> reservedVariables() const;
 
 	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;
-	QMap<QString, enums::variableType::VariableType> mVariables;
+	qrtext::LanguageToolboxInterface &mLuaToolbox;
 	QStringList mManualDeclarations;
 };
 

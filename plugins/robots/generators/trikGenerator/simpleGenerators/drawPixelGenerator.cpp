@@ -8,9 +8,13 @@ DrawPixelGenerator::DrawPixelGenerator(qrRepo::RepoApi const &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, qReal::Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "drawing/drawPixel.t", QList<Binding *>()
-			<< Binding::createConverting("@@XCoordinatePix@@", "XCoordinatePix", customizer.factory()->intPropertyConverter())
-			<< Binding::createConverting("@@YCoordinatePix@@", "YCoordinatePix", customizer.factory()->intPropertyConverter())
+	: BindingGenerator(repo, customizer, id, "drawing/drawPixel.t"
+			, {
+			Binding::createConverting("@@XCoordinatePix@@", "XCoordinatePix"
+					, customizer.factory()->intPropertyConverter(id))
+			, Binding::createConverting("@@YCoordinatePix@@", "YCoordinatePix"
+					, customizer.factory()->intPropertyConverter(id))
+			}
 			, parent)
 {
 }

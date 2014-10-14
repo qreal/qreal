@@ -9,6 +9,11 @@ namespace ast {
 /// Represents subtraction operator (-).
 class QRTEXT_EXPORT Subtraction : public BinaryOperator
 {
+private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
 };
 
 }

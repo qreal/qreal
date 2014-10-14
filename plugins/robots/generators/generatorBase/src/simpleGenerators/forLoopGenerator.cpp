@@ -14,7 +14,7 @@ ForLoopGenerator::ForLoopGenerator(qrRepo::RepoApi const &repo
 			<< Binding::createStaticConverting("@@ITERATOR_TYPE@@", "int", customizer.factory()->typeConverter())
 			<< Binding::createStatic("@@ITERATOR@@", iteratorName)
 			<< Binding::createStatic("@@INITIAL_VALUE@@", "0")
-			<< Binding::createConverting("@@BOUND@@", "Iterations", customizer.factory()->intPropertyConverter())
+			<< Binding::createConverting("@@BOUND@@", "Iterations", customizer.factory()->intPropertyConverter(id))
 			, parent)
 {
 }
