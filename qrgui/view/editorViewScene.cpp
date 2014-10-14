@@ -919,7 +919,8 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	disableActions(e);
 	mContextMenu.clear();
-	mContextMenu.addActions(mContextMenuActions);
+	mContextMenu.addSeparator();
+	mContextMenu.addActions(mEditorActions);
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (e) {
@@ -1324,7 +1325,7 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 
 	mView->addAction(mWindow->actionDeleteFromDiagram());
 
-	mContextMenuActions << mWindow->actionDeleteFromDiagram()
+	mEditorActions << mWindow->actionDeleteFromDiagram()
 			<< separator
 			<< mActionCutOnDiagram
 			<< mActionCopyOnDiagram
@@ -1525,12 +1526,12 @@ void EditorViewScene::onElementParentChanged(Element *element)
 
 QList<QAction *> EditorViewScene::actions() const
 {
-	return mContextMenuActions;
+	return mEditorActions;
 }
 
 void EditorViewScene::setActionsEnabled(bool enabled)
 {
-	for (QAction *action : mContextMenuActions) {
+	for (QAction *action : mEditorActions) {
 		action->setEnabled(enabled);
 	}
 }

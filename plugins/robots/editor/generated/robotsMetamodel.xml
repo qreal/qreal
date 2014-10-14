@@ -2064,7 +2064,7 @@
 			<node displayedName="Painter Color" name="TrikSetPainterColor" description="Sets the painter color.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/brushColorBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-15" y="-30" text="Color:" hard="true"/>
@@ -2087,7 +2087,7 @@
 			<node displayedName="Painter Width" name="TrikSetPainterWidth" description="Sets the painter width.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/brushWidthBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-15" y="-30" text="Width:" hard="true"/>
@@ -2252,7 +2252,7 @@
 			<node displayedName="Draw Arc" name="TrikDrawArc" description="Draws the arc defined by the rectangle beginning at (x, y) with the specified width and height, and the given startAngle and spanAngle.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/drawArcBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="XCoordinateArc"/>
@@ -2372,7 +2372,7 @@
 			<node displayedName="Send message" name="TrikSendMessage" description="Sends message to another robot.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/sendMessageBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-40" y="60" text="Message:" hard="false"/>
@@ -2396,7 +2396,7 @@
 			<node displayedName="Wait for message" name="TrikWaitForMessage" description="Waits for a message from another robot and stores it into a variable when it arrives.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/waitForMessageBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-40" y="60" text="Variable:" hard="false"/>
@@ -2485,17 +2485,17 @@
 				<element name="NxtDrawPixel"/>
 				<element name="NxtDrawLine"/>
 				<element name="NxtDrawCircle"/>
-		<element name="Ev3DrawRect"/>
-		<element name="Ev3DrawPixel"/>
-		<element name="Ev3DrawLine"/>
-		<element name="Ev3DrawCircle"/>
-				<!--<element name="TrikSetPainterColor"/>
-				<element name="TrikSetPainterWidth"/>-->
+				<element name="Ev3DrawRect"/>
+				<element name="Ev3DrawPixel"/>
+				<element name="Ev3DrawLine"/>
+				<element name="Ev3DrawCircle"/>
+				<element name="TrikSetPainterColor"/>
+				<element name="TrikSetPainterWidth"/>
 				<element name="TrikDrawPixel"/>
 				<element name="TrikDrawLine"/>
 				<element name="TrikDrawRect"/>
 				<element name="TrikDrawEllipse"/>
-				<!--<element name="TrikDrawArc"/>-->
+				<element name="TrikDrawArc"/>
 				<element name="TrikSmile"/>
 				<element name="TrikSadSmile"/>
 				<element name="TrikSetBackground"/>

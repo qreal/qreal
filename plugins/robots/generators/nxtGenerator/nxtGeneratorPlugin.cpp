@@ -80,15 +80,17 @@ QList<ActionInfo> NxtGeneratorPlugin::actions()
 	checkNxtTools();
 
 	mGenerateCodeAction.setText(tr("Generate code"));
-	mGenerateCodeAction.setIcon(QIcon(":/images/generateCode.svg"));
+	mGenerateCodeAction.setIcon(QIcon(":/nxt/images/generateOsekCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
 	mFlashRobotAction.setText(tr("Flash robot"));
+	mFlashRobotAction.setIcon(QIcon(":/nxt/images/flashRobot.svg"));
 	ActionInfo flashRobotActionInfo(&mFlashRobotAction, "generators", "tools");
 	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
 
 	mUploadProgramAction.setText(tr("Upload program"));
+	mUploadProgramAction.setIcon(QIcon(":/nxt/images/uploadProgram.svg"));
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
 	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 

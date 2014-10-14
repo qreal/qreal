@@ -68,7 +68,7 @@ void ModelExplorer::focusInEvent(QFocusEvent *event)
 
 void ModelExplorer::setActionsEnabled(bool enabled)
 {
-	for (QAction *action : actions()) {
+	for (QAction * const action : actions()) {
 		action->setEnabled(enabled);
 	}
 }
