@@ -2,7 +2,7 @@
 
 #include <QtNetwork/QTcpSocket>
 
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace trik {
 

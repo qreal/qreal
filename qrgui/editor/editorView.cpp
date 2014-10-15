@@ -12,9 +12,13 @@ using namespace qReal;
 int const zoomAnimationInterval = 20;
 int const zoomAnimationTimes = 4;
 
-EditorView::EditorView(models::Models const &models, Controller &controller, Id const &rootId, QWidget *parent)
+EditorView::EditorView(models::Models const &models
+		, Controller &controller
+		, SceneCustomizer const &customizer
+		, Id const &rootId
+		, QWidget *parent)
 	: QGraphicsView(parent)
-	, mScene(models, controller, rootId, this)
+	, mScene(models, controller, customizer, rootId, this)
 	, mMVIface(this, &mScene)
 	, mMouseOldPosition()
 	, mWheelPressed(false)
@@ -247,11 +251,6 @@ void EditorView::ensureElementVisible(Element const * const element
 	if (element) {
 		ensureVisible(element, xMargin, yMargin);
 	}
-}
-
-void EditorView::setTitlesVisible(bool visible)
-{
-	mScene.setTitlesVisible(visible);
 }
 
 void EditorView::zoomInTime()

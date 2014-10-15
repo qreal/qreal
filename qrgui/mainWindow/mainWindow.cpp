@@ -84,7 +84,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this, mTextManager))
 		, mStartWidget(nullptr)
-		, mSceneCustomizer(new SceneCustomizer(this))
+		, mSceneCustomizer(new SceneCustomizer)
 		, mInitialFileToOpen(fileToOpen)
 {
 	mUi->setupUi(this);
@@ -1031,11 +1031,9 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
 		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(index);
-		EditorView * const view = new EditorView(*models(), *controller(), diagramId, this);
+		EditorView * const view = new EditorView(*models(), *controller(), *mSceneCustomizer, diagramId, this);
 		mController->diagramOpened(diagramId);
 		initCurrentTab(view, index);
-		/// @todo: get rid of scene customizer?
-		mSceneCustomizer->customizeView(view);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
 
@@ -1922,18 +1920,6 @@ void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 {
 	mAdditionalDocks << dockWidget;
 	QMainWindow::addDockWidget(area, dockWidget);
-}
-
-QListIterator<EditorView *> MainWindow::openedEditorViews() const
-{
-	QList<EditorView *> views;
-	for (int i = 0; i < mUi->tabs->count(); ++i) {
-		EditorView *view = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (view) {
-			views << view;
-		}
-	}
-	return QListIterator<EditorView *>(views);
 }
 
 void MainWindow::setTabText(QWidget *tab, QString const &text)

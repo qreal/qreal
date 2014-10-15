@@ -13,6 +13,7 @@
 #include <qrkernel/logging.h>
 #include <qrgui/models/models.h>
 
+#include "editor/sceneCustomizer.h"
 #include "editor/commands/multipleRemoveAndUpdateCommand.h"
 #include "editor/commands/createAndUpdateGroupCommand.h"
 #include "editor/commands/insertIntoEdgeCommand.h"
@@ -26,11 +27,16 @@ using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui;
 
-EditorViewScene::EditorViewScene(models::Models const &models, Controller &controller, Id const &rootId, QObject *parent)
+EditorViewScene::EditorViewScene(models::Models const &models
+		, Controller &controller
+		, SceneCustomizer const &customizer
+		, Id const &rootId
+		, QObject *parent)
 	: QGraphicsScene(parent)
 	, mModels(models)
 	, mEditorManager(models.logicalModelAssistApi().editorManagerInterface())
 	, mController(controller)
+	, mCustomizer(customizer)
 	, mRootId(rootId)
 	, mLastCreatedFromLinker(nullptr)
 	, mClipboardHandler(*this, controller)
@@ -46,7 +52,6 @@ EditorViewScene::EditorViewScene(models::Models const &models, Controller &contr
 	, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mIsSelectEvent(false)
-	, mTitlesVisible(true)
 	, mExploser(models, controller, this)
 	, mActionDeleteFromDiagram(nullptr)
 	, mActionCutOnDiagram(nullptr)
@@ -68,15 +73,6 @@ EditorViewScene::EditorViewScene(models::Models const &models, Controller &contr
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
-}
-
-void EditorViewScene::addItem(QGraphicsItem *item)
-{
-	Element *element = dynamic_cast<Element *>(item);
-	if (element) {
-		element->setTitlesVisible(mTitlesVisible);
-	}
-	QGraphicsScene::addItem(item);
 }
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
@@ -1262,6 +1258,11 @@ EditorManagerInterface const &EditorViewScene::editorManager() const
 	return mEditorManager;
 }
 
+SceneCustomizer const &EditorViewScene::customizer() const
+{
+	return mCustomizer;
+}
+
 QWidget *EditorViewScene::gesturesPainterWidget() const
 {
 	return mMouseMovementManager.producePainter();
@@ -1458,22 +1459,6 @@ void EditorViewScene::initNodes()
 
 		}
 	}
-}
-
-void EditorViewScene::setTitlesVisible(bool visible)
-{
-	mTitlesVisible = visible;
-	foreach (QGraphicsItem *item, items()) {
-		Element *element = dynamic_cast<Element *>(item);
-		if (element) {
-			element->setTitlesVisible(visible);
-		}
-	}
-}
-
-void EditorViewScene::onElementParentChanged(Element *element)
-{
-	element->setTitlesVisible(mTitlesVisible);
 }
 
 QAction &EditorViewScene::deleteAction()

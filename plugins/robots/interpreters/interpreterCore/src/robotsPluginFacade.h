@@ -10,7 +10,6 @@
 #include "customizer.h"
 #include "managers/kitPluginManager.h"
 #include "managers/robotModelManager.h"
-#include "managers/titlesVisibilityManager.h"
 #include "managers/actionsManager.h"
 #include "managers/devicesConfigurationManager.h"
 #include "managers/graphicsWatcherManager.h"
@@ -82,7 +81,6 @@ private:
 	KitPluginManager mKitPluginManager;
 	RobotModelManager mRobotModelManager;
 	ActionsManager mActionsManager;
-	QScopedPointer<TitlesVisibilityManager> mTitlesVisibilityManager;
 	QScopedPointer<DevicesConfigurationManager> mDevicesConfigurationManager;
 
 	interpreterBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership

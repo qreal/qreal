@@ -13,7 +13,11 @@ class EditorView : public QGraphicsView
 	Q_OBJECT
 
 public:
-	EditorView(models::Models const &models, Controller &controller, Id const &rootId, QWidget *parent = 0);
+	EditorView(models::Models const &models
+			, Controller &controller
+			, SceneCustomizer const &customizer
+			, Id const &rootId
+			, QWidget *parent = 0);
 
 	EditorViewMViface const &mvIface() const;
 	EditorViewMViface &mutableMvIface();
@@ -23,7 +27,6 @@ public:
 	void setDrawSceneGrid(bool show);
 	void ensureElementVisible(Element const * const element);
 	void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
-	void setTitlesVisible(bool visible);
 
 signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.

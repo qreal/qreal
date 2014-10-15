@@ -1082,10 +1082,6 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 
 void NodeElement::updateByNewParent()
 {
-	EditorViewScene *editorScene = dynamic_cast<EditorViewScene *>(scene());
-	if (editorScene) {
-		editorScene->onElementParentChanged(this);
-	}
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (!parent || parent->mElementImpl->hasMovableChildren()) {
 		setFlag(ItemIsMovable, true);
@@ -1164,7 +1160,7 @@ void NodeElement::select(bool const singleSelected)
 {
 	initEmbeddedLinkers();
 	setVisibleEmbeddedLinkers(singleSelected);
-	setTitlesVisiblePrivate(singleSelected || mTitlesVisible);
+	setHideNonHardLabels(!singleSelected && SettingsManager::value("hideNonHardLabels").toBool());
 	Element::select(singleSelected);
 }
 
@@ -1342,7 +1338,7 @@ void NodeElement::initRenderedDiagram()
 	Id const diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	Id const graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(evScene->models(), evScene->controller(), graphicalDiagram);
+	EditorView view(evScene->models(), evScene->controller(), evScene->customizer(), graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);
 
 	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);

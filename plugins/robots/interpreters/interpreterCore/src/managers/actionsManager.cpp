@@ -25,9 +25,9 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	mConnectToRobotAction.setCheckable(true);
 
 	mTitlesAction.setCheckable(true);
-	mTitlesAction.setChecked(
-			qReal::SettingsManager::value("showTitlesForRobots").toBool()
-			);
+	mTitlesAction.setChecked(!qReal::SettingsManager::value("hideNonHardLabels").toBool());
+	connect(&mTitlesAction, &QAction::triggered
+			, [](bool checked) { qReal::SettingsManager::setValue("hideNonHardLabels", !checked); });
 
 	mSeparator1.setSeparator(true);
 	mSeparator2.setSeparator(true);

@@ -16,6 +16,7 @@ namespace qReal {
 const int arrowMoveOffset = 5;
 
 class Controller;
+class SceneCustomizer;
 
 namespace commands {
 class CreateElementCommand;
@@ -30,9 +31,12 @@ class EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	EditorViewScene(models::Models const &models, Controller &controller, Id const &rootId, QObject *parent = 0);
-
-	void addItem(QGraphicsItem *item);
+	EditorViewScene(models::Models const &models
+			, Controller &controller
+			/// @todo: move scene customizer properties to metamodel
+			, SceneCustomizer const &customizer
+			, Id const &rootId
+			, QObject *parent = 0);
 
 	void clearScene();
 
@@ -62,7 +66,8 @@ public:
 	/// @todo: remove theese getters
 	models::Models const &models() const;
 	Controller &controller() const;
-	qReal::EditorManagerInterface const &editorManager() const;
+	EditorManagerInterface const &editorManager() const;
+	SceneCustomizer const &customizer() const;
 
 	/// Produces and returns a widget that shows gestures available for this tab.
 	/// Transfers owneship.
@@ -118,9 +123,6 @@ public:
 
 	/// update (for a beauty) all edges when tab is opening
 	void initNodes();
-
-	void setTitlesVisible(bool visible);
-	void onElementParentChanged(Element *element);
 
 	/// Returns a reference to action that removes selected elements from the scene.
 	QAction &deleteAction();
@@ -209,8 +211,9 @@ private:
 	QPointF offsetByDirection(int direction);
 
 	models::Models const &mModels;
-	qReal::EditorManagerInterface const &mEditorManager;
-	qReal::Controller &mController;
+	EditorManagerInterface const &mEditorManager;
+	Controller &mController;
+	SceneCustomizer const &mCustomizer;
 	Id const mRootId;
 
 	Id mLastCreatedFromLinker;
@@ -259,7 +262,6 @@ private:
 	QList<QGraphicsItem* > mSelectList;
 
 	bool mIsSelectEvent;
-	bool mTitlesVisible;
 
 	QMenu mContextMenu;
 

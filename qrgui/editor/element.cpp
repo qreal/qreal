@@ -1,7 +1,9 @@
 #include "element.h"
-#include <QtGui/QKeyEvent>
 
+#include <QtGui/QKeyEvent>
 #include <QtWidgets/QGraphicsColorizeEffect>
+
+#include <qrkernel/settingsListener.h>
 
 #include "models/commands/changePropertyCommand.h"
 
@@ -29,6 +31,8 @@ Element::Element(ElementImpl *elementImpl
 	setCursor(Qt::PointingHandCursor);
 
 	updateEnabledState();
+	setHideNonHardLabels(SettingsManager::value("hideNonHardLabels").toBool());
+	SettingsListener::listen("hideNonHardLabels", this, &Element::setHideNonHardLabels);
 }
 
 Id Element::id() const
@@ -139,22 +143,16 @@ void Element::updateEnabledState()
 	}
 }
 
-void Element::setTitlesVisible(bool visible)
+void Element::setHideNonHardLabels(bool hide)
 {
-	mTitlesVisible = visible;
-	setTitlesVisiblePrivate(visible);
-}
-
-void Element::setTitlesVisiblePrivate(bool visible)
-{
-	foreach (Label const * const label, mLabels) {
+	for (Label const * const label : mLabels) {
 		if (label->isSelected()) {
 			return;
 		}
 	}
 
-	foreach (Label * const label, mLabels) {
-		label->setVisible(label->isHard() || visible);
+	for (Label * const label : mLabels) {
+		label->setVisible(label->isHard() || !hide);
 	}
 }
 

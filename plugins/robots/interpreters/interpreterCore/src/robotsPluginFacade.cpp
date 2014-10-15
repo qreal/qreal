@@ -37,10 +37,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, configurer.systemEvents()
 			));
 
-	mTitlesVisibilityManager.reset(
-			new TitlesVisibilityManager(mActionsManager.titlesVisibilityAction(), configurer.sceneCustomizer())
-			);
-
 	if (!selectKit(configurer)) {
 		/// @todo Correctly handle unselected kit.
 		return;

@@ -146,8 +146,6 @@ public:
 	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
 	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
 
-	QListIterator<EditorView *> openedEditorViews() const;
-
 	void setTabText(QWidget *tab, QString const &text) override;
 
 	void beginPaletteModification() override;
