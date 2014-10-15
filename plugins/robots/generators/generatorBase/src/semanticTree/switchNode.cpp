@@ -55,6 +55,11 @@ QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent) co
 		isHead = false;
 	}
 
+	if (result.isEmpty()) {
+		// Then all branches lead to one block, we may ignore switch construction.
+		return mDefaultBranch->toString(customizer, indent);
+	}
+
 	result += generatePart(customizer, indent, mDefaultBranch
 			, customizer.factory()->switchDefaultGenerator(mId, customizer));
 
