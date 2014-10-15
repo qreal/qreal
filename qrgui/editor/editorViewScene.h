@@ -15,15 +15,8 @@ namespace qReal {
 
 const int arrowMoveOffset = 5;
 
-class Controller;
-class SceneCustomizer;
-
 namespace commands {
 class CreateElementCommand;
-}
-
-namespace models {
-class Models;
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -155,6 +148,9 @@ public slots:
 signals:
 	void zoomIn();
 	void zoomOut();
+
+	/// Emitted when user requested to switch to some element (for example doubled-clicked element with explosion).
+	void goTo(Id const &id);
 
 protected:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);

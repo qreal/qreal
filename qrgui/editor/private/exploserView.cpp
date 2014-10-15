@@ -5,17 +5,22 @@
 #include <qrgui/dialogs/metamodelingOnFly/propertiesDialog.h>
 
 #include "editor/editorViewScene.h"
+#include "editor/sceneCustomizer.h"
 #include "editor/commands/expandCommand.h"
 
 using namespace qReal;
 using namespace view::details;
 
-ExploserView::ExploserView(models::Models const &models, Controller &controller, QObject *parent)
+ExploserView::ExploserView(models::Models const &models
+		, Controller &controller
+		, SceneCustomizer const &customizer
+		, QObject *parent)
 	: QObject(parent)
 	, mLogicalApi(models.logicalModelAssistApi())
 	, mGraphicalApi(models.graphicalModelAssistApi())
 	, mExploser(models.exploser())
 	, mController(controller)
+	, mCustomizer(customizer)
 {
 }
 
@@ -24,12 +29,10 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 		, Id const &alreadyConnectedElement) const
 {
 	bool hasAnyActions = false;
-	/// @todo: restore it!!!!
-//	QString const menuName = alreadyConnectedElement.isNull()
-//			? mMainWindow.toolManager().customizer()->addExplosionMenuName()
-//			: mMainWindow.toolManager().customizer()->changeExplosionMenuName();
-//	QMenu *addExplosionMenu = new QMenu(menuName);
-	QMenu *addExplosionMenu = new QMenu();
+	QString const menuName = alreadyConnectedElement.isNull()
+			? mCustomizer.addExplosionMenuName()
+			: mCustomizer.changeExplosionMenuName();
+	QMenu *addExplosionMenu = new QMenu(menuName);
 
 	for (Explosion const &explosion : explosions) {
 		for (Id const &elementId : mLogicalApi.logicalRepoApi().logicalElements(explosion.target())) {
@@ -61,11 +64,8 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 	contextMenu.addMenu(addExplosionMenu);
 
 	if (alreadyConnectedElement != Id()) {
-		/// @todo: restore it!!!!
-//		QAction * const gotoAction = contextMenu.addAction(
-//				mMainWindow.toolManager().customizer()->goToConnectedMenuName(), this, SLOT(goToActionTriggered()));
-		QAction * const gotoAction = contextMenu.addAction(
-				"", this, SLOT(goToActionTriggered()));
+		QAction * const gotoAction = contextMenu.addAction(mCustomizer.goToConnectedMenuName()
+				, this, SLOT(goToActionTriggered()));
 		gotoAction->setData(alreadyConnectedElement.toVariant());
 	}
 }
@@ -77,9 +77,7 @@ void ExploserView::createRemoveExplosionMenu(Element const * const element, QMen
 		return;
 	}
 
-	/// @todo: restore it!!!!
-//	QAction *action = contextMenu.addAction(mMainWindow.toolManager().customizer()->deleteExplosionMenuName());
-	QAction *action = contextMenu.addAction("mMainWindow.toolManager().customizer()->deleteExplosionMenuName()");
+	QAction * const action = contextMenu.addAction(mCustomizer.deleteExplosionMenuName());
 	connect(action, SIGNAL(triggered()), SLOT(removeExplosionActionTriggered()));
 	action->setData(QVariantList() << element->logicalId().toVariant() << outgoingConnection.toVariant());
 }
@@ -96,13 +94,12 @@ void ExploserView::createExpandAction(Element const * const element, QMenu &cont
 		return;
 	}
 
-	/// @todo: restore it!!!!
-//	QAction * expandAction = contextMenu.addAction(node->isExpanded()
-//			? mMainWindow.toolManager().customizer()->collapseExplosionActionText()
-//			: mMainWindow.toolManager().customizer()->expandExplosionActionText());
-//	connect(expandAction, SIGNAL(triggered()), SLOT(expandExplosionActionTriggered()));
+	QAction *expandAction = contextMenu.addAction(node->isExpanded()
+			? mCustomizer.collapseExplosionActionText()
+			: mCustomizer.expandExplosionActionText());
+	connect(expandAction, SIGNAL(triggered()), SLOT(expandExplosionActionTriggered()));
 
-//	expandAction->setData(element->id().toVariant());
+	expandAction->setData(element->id().toVariant());
 }
 
 void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
@@ -174,14 +171,6 @@ void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *create
 	}
 }
 
-void ExploserView::goTo(Id const &id)
-{
-	if (!id.isNull()) {
-		/// @todo: restore it!!!!
-//		mMainWindow.activateItemOrDiagram(id);
-	}
-}
-
 void ExploserView::addExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
@@ -198,9 +187,7 @@ void ExploserView::addExplosionActionTriggered()
 
 void ExploserView::goToActionTriggered()
 {
-	QAction *action = static_cast<QAction *>(sender());
-	Id const target = action->data().value<Id>();
-	goTo(target);
+	emit goTo(static_cast<QAction *>(sender())->data().value<Id>());
 }
 
 void ExploserView::removeExplosionActionTriggered()

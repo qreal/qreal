@@ -436,6 +436,10 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool setSelected)
 
 void MainWindow::activateItemOrDiagram(Id const &id, bool setSelected)
 {
+	if (id.isNull()) {
+		return;
+	}
+
 	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
 		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), setSelected);
 		return;
@@ -1095,13 +1099,11 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 			, &tab->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(tab, &EditorView::rootElementRemoved, this
 			, static_cast<bool (MainWindow::*)(QModelIndex const &)>(&MainWindow::closeTab));
+	connect(&tab->editorViewScene(), &EditorViewScene::goTo, [=](Id const &id) { activateItemOrDiagram(id); });
 
 	setShortcuts(tab);
 
-	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(tab->scene());
-	if (scene) {
-		scene->initNodes();
-	}
+	tab->mutableScene().initNodes();
 }
 
 void MainWindow::setShortcuts(EditorView * const tab)

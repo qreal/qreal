@@ -52,7 +52,7 @@ EditorViewScene::EditorViewScene(models::Models const &models
 	, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mIsSelectEvent(false)
-	, mExploser(models, controller, this)
+	, mExploser(models, controller, customizer, this)
 	, mActionDeleteFromDiagram(nullptr)
 	, mActionCutOnDiagram(nullptr)
 	, mActionCopyOnDiagram(nullptr)
@@ -73,6 +73,7 @@ EditorViewScene::EditorViewScene(models::Models const &models
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
+	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
 }
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)

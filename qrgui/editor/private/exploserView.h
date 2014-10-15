@@ -9,6 +9,7 @@ namespace qReal {
 class Element;
 class Explosion;
 class Controller;
+class SceneCustomizer;
 
 namespace commands {
 class AbstractCommand;
@@ -31,7 +32,10 @@ class ExploserView : public QObject
 	Q_OBJECT
 
 public:
-	explicit ExploserView(models::Models const &models, Controller &controller, QObject *parent = 0);
+	explicit ExploserView(models::Models const &models
+			, Controller &controller
+			, SceneCustomizer const &customizer
+			, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
 	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
@@ -42,6 +46,11 @@ public:
 	/// Adds commands of explosion creation to given element creation command
 	void handleCreationWithExplosion(commands::AbstractCommand *createCommand
 			, Id const &source, Id const &target);
+
+signals:
+	/// Activates first binded with explosion link graphical instance of the element
+	/// with given @arg id.
+	void goTo(Id const &id);
 
 private slots:
 	void addExplosionActionTriggered();
@@ -63,14 +72,11 @@ private:
 	void createExpandAction(Element const * const element
 			, QMenu &contextMenu, qReal::Id const &alreadyConnectedElement) const;
 
-	/// Activates first binded with explosion link graphical instance of the element
-	/// with given @see id
-	void goTo(Id const &id);
-
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;
 	Controller &mController;
+	SceneCustomizer const &mCustomizer;
 };
 
 }
