@@ -4,7 +4,7 @@
 
 #include "visualDebugger.h"
 
-#include <qrgui/mainWindow/propertyEditorProxyModel.h>
+#include <qrgui/models/propertyEditorModel.h>
 #include <qrgui/models/models.h>
 
 #include <qrkernel/exception/exception.h>

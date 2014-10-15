@@ -329,6 +329,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 
 #ifdef Q_OS_WIN
 
+#include <windows.h>
 #include <winuser.h>
 
 DraggableElement::HackTouchDragThread::HackTouchDragThread(QObject *parent)

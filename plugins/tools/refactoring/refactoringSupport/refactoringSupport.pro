@@ -6,7 +6,7 @@ DESTDIR = ../../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lpreferencesDialog
 
 INCLUDEPATH += \
 	$$PWD/../../../.. \
