@@ -91,14 +91,19 @@ int ProjectManager::suggestToSaveOrCancelMessage()
 
 bool ProjectManager::open(QString const &fileName)
 {
-	QFileInfo const fileInfo(fileName);
+	QString const dequotedFileName = (fileName.startsWith("'") && fileName.endsWith("'"))
+			|| (fileName.startsWith("\"") && fileName.endsWith("\""))
+					? fileName.mid(1, fileName.length() - 2)
+					: fileName;
+
+	QFileInfo const fileInfo(dequotedFileName);
 
 	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
-		if (!fileName.isEmpty() && !saveFileExists(fileName)) {
+		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
 
-		return openProject(fileName);
+		return openProject(dequotedFileName);
 	} else {
 		mMainWindow->closeStartTab();
 		mTextManager->showInTextEditor(fileInfo);

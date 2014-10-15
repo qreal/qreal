@@ -134,9 +134,10 @@ int main(int argc, char *argv[])
 				QString const settingsFileName = app.arguments().at(setIndex + 1);
 				SettingsManager::instance()->loadSettings(settingsFileName);
 			}
-			for (int i = 0; i < argc; i++) {
-				if (app.arguments().at(i).endsWith(".qrs")) {
-					fileToOpen = app.arguments().at(i);
+
+			for (QString const &argument : app.arguments()) {
+				if (argument.endsWith(".qrs") || argument.endsWith(".qrs'") || argument.endsWith(".qrs\"")) {
+					fileToOpen = argument;
 					break;
 				}
 			}
