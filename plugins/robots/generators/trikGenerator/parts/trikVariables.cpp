@@ -3,8 +3,9 @@
 using namespace trik::parts;
 
 TrikVariables::TrikVariables(QString const &pathToTemplates
-		, interpreterBase::robotModel::RobotModelInterface const &robotModel)
-	: Variables(pathToTemplates, robotModel)
+		, interpreterBase::robotModel::RobotModelInterface const &robotModel
+		, qrtext::LanguageToolboxInterface &luaToolbox)
+	: Variables(pathToTemplates, robotModel, luaToolbox)
 {
 }
 

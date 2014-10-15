@@ -1,5 +1,9 @@
 #include "nxtStringPropertyConverter.h"
 
+#include <qrtext/core/types/any.h>
+#include <qrtext/lua/types/integer.h>
+#include <qrtext/lua/types/float.h>
+
 using namespace nxtOsek;
 using namespace converters;
 using namespace generatorBase;
@@ -41,11 +45,11 @@ QString NxtStringPropertyConverter::convert(QString const &data) const
 	for (QString const &variable : metVariables) {
 		/// @todo: variable name may not exactly match system variable but have it as substring.
 		QString const rolledExpression = mSystemVariableNameConverter->convert(variable);
-		if (mVariables.expressionType(variable) == enums::variableType::intType) {
-			hackedVariables << rolledExpression;
-		} else {
+		if (mVariables.expressionType(variable)->is<qrtext::lua::types::Float>()) {
 			hackedVariables << "(int)" + rolledExpression
 					<< QString("((int)((%1 - (int)%1) * 1000))").arg(rolledExpression);
+		} else {
+			hackedVariables << rolledExpression;
 		}
 	}
 
@@ -57,11 +61,13 @@ QString NxtStringPropertyConverter::convert(QString const &data) const
 
 bool NxtStringPropertyConverter::variableExists(QString const &variable) const
 {
-	return mVariables.expressionType(variable) != enums::variableType::unknown;
+	return !mVariables.expressionType(variable)->is<qrtext::core::types::Any>();
 }
 
 QString NxtStringPropertyConverter::value(QString const &variable, int index) const
 {
 	Q_UNUSED(index)
-	return mVariables.expressionType(variable) == enums::variableType::intType ? "%d" : "%d.%d";
+	return mVariables.expressionType(variable)->is<qrtext::lua::types::Integer>() ? "%d"
+			: mVariables.expressionType(variable)->is<qrtext::lua::types::Float>() ? "%d.%d"
+			: "%<unsupported variable type, will be implemented later!>";
 }

@@ -402,7 +402,7 @@ void D2ModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos)
+void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QRectF const &oldPos)
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
@@ -411,7 +411,7 @@ void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &s
 	{
 		wall->setFlag(QGraphicsItem::ItemIsMovable, !isNeedStop);
 		if (isNeedStop) {
-			wall->setPos(oldPos);
+			wall->setCoordinates(oldPos);
 		}
 	}
 }

@@ -67,6 +67,7 @@ MasterGeneratorBase *RussianCGeneratorPlugin::masterGenerator()
 	return new RussianCMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, *mRobotModelManager
+			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram());
 }
 

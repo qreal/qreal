@@ -3,6 +3,7 @@
 #include <qrgui/plugins/toolPluginInterface/actionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrtext/languageToolboxInterface.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 namespace generatorBase {
@@ -39,10 +40,12 @@ public:
 	/// Shall be overriden in concrete plugin to initialize itself.
 	/// @param configurator Object that contains all needed information for a plugin, like refs to models.
 	virtual void init(qReal::PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage)
 	{
 		Q_UNUSED(configurator);
 		Q_UNUSED(robotModelManager)
+		Q_UNUSED(textLanguage)
 	}
 
 	/// Shall be overridden to return QAction instances for their customization in

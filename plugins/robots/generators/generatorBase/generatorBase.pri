@@ -8,7 +8,7 @@ INCLUDEPATH += \
 	$$PWD/../../interpreters/interpreterBase/include \
 	$$PWD/../../../../qrtext/include \
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -linterpreterBase -lqrtext
+LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -linterpreterBase -lqrtext
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 
@@ -46,6 +46,9 @@ HEADERS += \
 	$$PWD/include/generatorBase/parts/functions.h \
 	$$PWD/include/generatorBase/parts/images.h \
 	$$PWD/include/generatorBase/parts/deviceVariables.h \
+	$$PWD/include/generatorBase/lua/luaProcessor.h \
+	$$PWD/include/generatorBase/lua/precedenceConverterInterface.h \
+	$$PWD/include/generatorBase/lua/precedenceConverter.h \
 
 HEADERS += \
 	$$PWD/src/readableControlFlowGenerator.h \
@@ -79,7 +82,6 @@ SOURCES += \
 	$$PWD/src/primaryControlFlowValidator.cpp \
 	$$PWD/src/generatorFactoryBase.cpp \
 	$$PWD/src/templateParametrizedEntity.cpp \
-	$$PWD/src/parts/deviceVariables.cpp \
 	$$PWD/src/parts/variables.cpp \
 	$$PWD/src/parts/subprograms.cpp \
 	$$PWD/src/parts/threads.cpp \
@@ -88,6 +90,7 @@ SOURCES += \
 	$$PWD/src/parts/sensors.cpp \
 	$$PWD/src/parts/functions.cpp \
 	$$PWD/src/parts/images.cpp \
+	$$PWD/src/parts/deviceVariables.cpp \
 	$$PWD/src/semanticTree/semanticTree.cpp \
 	$$PWD/src/semanticTree/semanticNode.cpp \
 	$$PWD/src/semanticTree/nonZoneNode.cpp \
@@ -133,6 +136,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/simpleGenerators/waitForButtonGenerator.h \
 
 HEADERS += \
+	$$PWD/src/converters/reservedVariablesConverter.h \
 	$$PWD/src/converters/codeConverterBase.h \
 	$$PWD/src/converters/intPropertyConverter.h \
 	$$PWD/src/converters/floatPropertyConverter.h \
@@ -146,7 +150,6 @@ HEADERS += \
 	$$PWD/src/converters/enginePortsConverter.h \
 	$$PWD/src/converters/typeConverter.h \
 	$$PWD/src/converters/inputPortConverter.h \
-	$$PWD/src/converters/functionInvocationConverter.h \
 	$$PWD/src/converters/switchConditionsMerger.h \
 	$$PWD/src/simpleGenerators/nullGenerator.h \
 	$$PWD/src/simpleGenerators/commentElementGenerator.h \
@@ -187,6 +190,8 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/labelGenerator.h \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/variableInitGenerator.h \
+	$$PWD/src/lua/luaPrinter.h \
+	$$PWD/src/lua/reservedFunctionsConverter.h \
 
 SOURCES += \
 	$$PWD/src/converters/templateParametrizedConverter.cpp \
@@ -194,6 +199,7 @@ SOURCES += \
 	$$PWD/src/converters/regexpMultiConverter.cpp \
 	$$PWD/src/converters/enumConverterBase.cpp \
 	$$PWD/src/converters/dynamicPathConverter.cpp \
+	$$PWD/src/converters/reservedVariablesConverter.cpp \
 	$$PWD/src/converters/codeConverterBase.cpp \
 	$$PWD/src/converters/intPropertyConverter.cpp \
 	$$PWD/src/converters/floatPropertyConverter.cpp \
@@ -208,7 +214,6 @@ SOURCES += \
 	$$PWD/src/converters/enginePortsConverter.cpp \
 	$$PWD/src/converters/typeConverter.cpp \
 	$$PWD/src/converters/inputPortConverter.cpp \
-	$$PWD/src/converters/functionInvocationConverter.cpp \
 	$$PWD/src/converters/switchConditionsMerger.cpp \
 	$$PWD/src/simpleGenerators/abstractSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/nullGenerator.cpp \
@@ -253,3 +258,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/labelGenerator.cpp \
 	$$PWD/src/simpleGenerators/gotoSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/variableInitGenerator.cpp \
+	$$PWD/src/lua/luaProcessor.cpp \
+	$$PWD/src/lua/luaPrinter.cpp \
+	$$PWD/src/lua/reservedFunctionsConverter.cpp \
+	$$PWD/src/lua/precedenceConverter.cpp \

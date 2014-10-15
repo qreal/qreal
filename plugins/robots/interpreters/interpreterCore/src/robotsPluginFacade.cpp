@@ -219,7 +219,7 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 		}
 
 		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
-			generator->init(configurer, mRobotModelManager);
+			generator->init(configurer, mRobotModelManager, *mParser);
 		}
 	}
 }

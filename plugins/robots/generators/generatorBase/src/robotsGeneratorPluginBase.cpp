@@ -110,7 +110,8 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 }
 
 void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage)
 {
 	mProjectManager = &configurator.projectManager();
 	mSystemEvents = &configurator.systemEvents();
@@ -120,6 +121,7 @@ void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator
 	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
 	mProjectManager = &configurator.projectManager();
 	mRobotModelManager = &robotModelManager;
+	mTextLanguage = &textLanguage;
 
 	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
 			, this, SLOT(regenerateCode(qReal::Id, QFileInfo, QFileInfo)));

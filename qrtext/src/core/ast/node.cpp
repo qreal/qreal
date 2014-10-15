@@ -40,3 +40,19 @@ void Node::connect(QList<Range> const &ranges)
 	mRanges << ranges;
 	qSort(mRanges.begin(), mRanges.end(), [](Range a, Range b) { return a.start() < b.start(); });
 }
+
+void Node::acceptRecursively(AstVisitorInterface &visitor) const
+{
+	for (auto const &node : children()) {
+		if (node.data()) {
+			node->acceptRecursively(visitor);
+		}
+	}
+
+	accept(visitor);
+}
+
+void Node::accept(AstVisitorInterface &visitor) const
+{
+	visitor.visit(*this);
+}

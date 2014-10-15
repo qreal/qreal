@@ -254,3 +254,13 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(QSharedPointer<core::ast::Node> co
 		}
 	}
 }
+
+QMap<QString, QSharedPointer<types::TypeExpression>> LuaSemanticAnalyzer::variableTypes() const
+{
+	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> result = SemanticAnalyzer::variableTypes();
+	for (QString const &identifier : mIntrinsicFunctions.keys()) {
+		result.remove(identifier);
+	}
+
+	return result;
+}

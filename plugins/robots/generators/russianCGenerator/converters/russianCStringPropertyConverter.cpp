@@ -1,5 +1,9 @@
 #include "russianCStringPropertyConverter.h"
 
+#include <qrtext/core/types/any.h>
+#include <qrtext/lua/types/integer.h>
+#include <qrtext/lua/types/float.h>
+
 using namespace russianC;
 using namespace converters;
 
@@ -27,11 +31,11 @@ QString RussianCStringPropertyConverter::convert(QString const &data) const
 	for (QString const &variable : metVariables) {
 		/// @todo: variable name may not exactly match system variable but have it as substring.
 		QString const rolledExpression = mSystemVariableNameConverter->convert(variable);
-		if (mVariables.expressionType(variable) == generatorBase::enums::variableType::intType) {
-			hackedVariables << rolledExpression;
-		} else {
+		if (mVariables.expressionType(variable)->is<qrtext::lua::types::Float>()) {
 			hackedVariables << "(целое)" + rolledExpression
 					<< QString("((целое)((%1 - (целое))%1) * 1000))").arg(rolledExpression);
+		} else {
+			hackedVariables << rolledExpression;
 		}
 	}
 
@@ -43,11 +47,13 @@ QString RussianCStringPropertyConverter::convert(QString const &data) const
 
 bool RussianCStringPropertyConverter::variableExists(QString const &variable) const
 {
-	return mVariables.expressionType(variable) != generatorBase::enums::variableType::unknown;
+	return !mVariables.expressionType(variable)->is<qrtext::core::types::Any>();
 }
 
 QString RussianCStringPropertyConverter::value(QString const &variable, int index) const
 {
 	Q_UNUSED(index)
-	return mVariables.expressionType(variable) == generatorBase::enums::variableType::intType ? "%ц" : "%ц.%ц";
+	return mVariables.expressionType(variable)->is<qrtext::lua::types::Integer>() ? "%ц"
+			: mVariables.expressionType(variable)->is<qrtext::lua::types::Float>() ? "%ц.%ц"
+			: "%<такой тип переменных пока не поддерживается!>";
 }
