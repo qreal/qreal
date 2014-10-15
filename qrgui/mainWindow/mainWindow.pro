@@ -27,7 +27,6 @@ RCC_DIR = .moc
 HEADERS += \
 	$$PWD/qRealApplication.h \
 	$$PWD/mainWindow.h \
-	$$PWD/propertyEditorProxyModel.h \
 	$$PWD/errorReporter.h \
 	$$PWD/error.h \
 	$$PWD/errorListWidget.h \
@@ -58,7 +57,6 @@ SOURCES += \
 	$$PWD/main.cpp \
 	$$PWD/qRealApplication.cpp \
 	$$PWD/mainWindow.cpp \
-	$$PWD/propertyEditorProxyModel.cpp \
 	$$PWD/errorReporter.cpp \
 	$$PWD/error.cpp \
 	$$PWD/errorListWidget.cpp \

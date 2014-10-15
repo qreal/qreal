@@ -66,6 +66,9 @@ editor.depends = \
 	models \
 	controller \
 	mouseGestures \
+	brandManager \
+	plugins/pluginManager \
+	thirdparty \
 
 dialogs.depends = \
 	models \

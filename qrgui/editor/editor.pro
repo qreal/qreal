@@ -2,7 +2,8 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrutils -lmouseGestures -lthirdparty
+LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrutils \
+		-lmouseGestures -lthirdparty -lmodels -lcontroller -lpluginManager -lbrandManager
 
 INCLUDEPATH = \
 	$$PWD/ \

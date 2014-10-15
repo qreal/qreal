@@ -1,7 +1,3 @@
-/** @file propertyeditorproxymodel.h
-*	@brief Property editor model
-* */
-
 #pragma once
 
 #include <QtCore/QAbstractTableModel>

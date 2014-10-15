@@ -12,14 +12,12 @@
 
 #include "mainWindowInterpretersInterface.h"
 #include "mainWindowDockInterface.h"
-#include "propertyEditorProxyModel.h"
 #include "findManager.h"
 #include "referenceList.h"
 #include "projectManager/projectManager.h"
 #include "tabWidget.h"
 #include "filterObject.h"
 #include "startWidget/startWidget.h"
-#include "propertyEditorProxyModel.h"
 
 #include "plugins/pluginManager/editorManagerInterface.h"
 #include "plugins/pluginManager/editorManager.h"
@@ -28,6 +26,7 @@
 #include "plugins/pluginManager/toolPluginManager.h"
 
 #include "editor/propertyEditorView.h"
+#include "models/propertyEditorModel.h"
 #include "controller/controller.h"
 #include "plugins/toolPluginInterface/systemEvents.h"
 

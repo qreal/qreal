@@ -55,7 +55,6 @@
 
 #include "errorReporter.h"
 #include "shapeEdit/shapeEdit.h"
-#include "propertyEditorProxyModel.h"
 #include "startWidget/startWidget.h"
 #include "referenceList.h"
 #include "splashScreen.h"

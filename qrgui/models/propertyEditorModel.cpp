@@ -1,8 +1,4 @@
-/** @file propertyeditorproxymodel.cpp
-*	@brief Property editor model
-* */
-
-#include "propertyEditorProxyModel.h"
+#include "propertyEditorModel.h"
 
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/definitions.h>
@@ -13,10 +9,10 @@ PropertyEditorModel::PropertyEditorModel(
 		qReal::EditorManagerInterface const &editorManagerInterface
 		, QObject *parent
 		)
-		: QAbstractTableModel(parent)
-		, mTargetLogicalModel(nullptr)
-		, mTargetGraphicalModel(nullptr)
-		, mEditorManagerInterface(editorManagerInterface)
+	: QAbstractTableModel(parent)
+	, mTargetLogicalModel(nullptr)
+	, mTargetGraphicalModel(nullptr)
+	, mEditorManagerInterface(editorManagerInterface)
 {
 }
 

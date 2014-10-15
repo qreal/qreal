@@ -23,6 +23,7 @@ HEADERS += \
 	$$PWD/graphicalModelAssistApi.h \
 	$$PWD/logicalModelAssistApi.h \
 	$$PWD/exploser.h \
+	$$PWD/propertyEditorModel.h \
 	$$PWD/commands/createElementCommand.h \
 	$$PWD/commands/removeElementCommand.h \
 	$$PWD/commands/multipleRemoveCommand.h \
@@ -53,6 +54,7 @@ SOURCES += \
 	$$PWD/graphicalModelAssistApi.cpp \
 	$$PWD/logicalModelAssistApi.cpp \
 	$$PWD/exploser.cpp \
+	$$PWD/propertyEditorModel.cpp \
 	$$PWD/commands/createElementCommand.cpp \
 	$$PWD/commands/removeElementCommand.cpp \
 	$$PWD/commands/multipleRemoveCommand.cpp \

@@ -4,11 +4,12 @@
 #include <QtWidgets/QAbstractItemView>
 #include <QtGui/QResizeEvent>
 
-#include "mainWindow/propertyEditorProxyModel.h"
+#include "models/propertyEditorModel.h"
+#include "models/logicalModelAssistApi.h"
+
 #include "controller/controller.h"
 
 #include "thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
-#include "models/logicalModelAssistApi.h"
 
 #include "editor/private/pushButtonProperty.h"
 
