@@ -10,7 +10,7 @@ WaitForSoundBlockGenerator::WaitForSoundBlockGenerator(qrRepo::RepoApi const &re
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/sound.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->inputPortConverter())
-			<< Binding::createConverting("@@VOLUME@@", "Volume", customizer.factory()->intPropertyConverter())
+			<< Binding::createConverting("@@VOLUME@@", "Volume", customizer.factory()->intPropertyConverter(id))
 			<< Binding::createConverting("@@SIGN@@", "Sign", customizer.factory()->inequalitySignConverter())
 			, parent)
 {

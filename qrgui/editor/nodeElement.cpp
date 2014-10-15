@@ -11,17 +11,18 @@
 #include <math.h>
 #include <qrkernel/logging.h>
 
+#include <qrgui/models/models.h>
+#include <qrgui/models/commands/changeParentCommand.h>
+#include <qrgui/models/commands/renameCommand.h>
+#include <qrgui/plugins/editorPluginInterface/editorInterface.h>
+
 #include "editor/labelFactory.h"
 #include "editor/editorViewScene.h"
-#include "plugins/editorPluginInterface/editorInterface.h"
-#include "mainWindow/mainWindow.h"
 #include "editor/ports/portFactory.h"
 
 #include "editor/private/resizeHandler.h"
 #include "editor/private/copyHandler.h"
 
-#include "models/commands/changeParentCommand.h"
-#include "models/commands/renameCommand.h"
 #include "editor/commands/resizeCommand.h"
 #include "editor/commands/foldCommand.h"
 #include "editor/commands/insertIntoEdgeCommand.h"
@@ -33,7 +34,7 @@ NodeElement::NodeElement(ElementImpl *impl
 		, Id const &id
 		, models::GraphicalModelAssistApi &graphicalAssistApi
 		, models::LogicalModelAssistApi &logicalAssistApi
-		, Exploser &exploser
+		, models::Exploser &exploser
 		)
 	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 	, mExploser(exploser)
@@ -573,8 +574,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->layOut();
-		if (SettingsManager::value("ActivateGrid").toBool())
-		{
+		if (SettingsManager::value("ActivateGrid").toBool()) {
 			edge->alignToGrid();
 		}
 	}
@@ -1082,10 +1082,6 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 
 void NodeElement::updateByNewParent()
 {
-	EditorViewScene *editorScene = dynamic_cast<EditorViewScene *>(scene());
-	if (editorScene) {
-		editorScene->onElementParentChanged(this);
-	}
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (!parent || parent->mElementImpl->hasMovableChildren()) {
 		setFlag(ItemIsMovable, true);
@@ -1164,7 +1160,7 @@ void NodeElement::select(bool const singleSelected)
 {
 	initEmbeddedLinkers();
 	setVisibleEmbeddedLinkers(singleSelected);
-	setTitlesVisiblePrivate(singleSelected || mTitlesVisible);
+	setHideNonHardLabels(!singleSelected && SettingsManager::value("hideNonHardLabels").toBool());
 	Element::select(singleSelected);
 }
 
@@ -1339,23 +1335,18 @@ void NodeElement::initRenderedDiagram()
 		return;
 	}
 
-	MainWindow *window = evScene->mainWindow();
-
 	Id const diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	Id const graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(window);
-	EditorViewScene *openedScene = dynamic_cast<EditorViewScene *>(view.scene());
-	openedScene->setMainWindow(window);
-	openedScene->setNeedDrawGrid(false);
+	EditorView view(evScene->models(), evScene->controller(), evScene->customizer(), graphicalDiagram);
+	view.mutableScene().setNeedDrawGrid(false);
 
-	view.mvIface()->configure(window->models()->graphicalModelAssistApi()
-			, window->models()->logicalModelAssistApi(), mExploser);
-	view.mvIface()->setModel(window->models()->graphicalModel());
-	view.mvIface()->setLogicalModel(window->models()->logicalModel());
-	view.mvIface()->setRootIndex(window->models()->graphicalModelAssistApi().indexById(graphicalDiagram));
+	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);
+	view.mutableMvIface().setModel(evScene->models().graphicalModel());
+	view.mutableMvIface().setLogicalModel(evScene->models().logicalModel());
+	view.mutableMvIface().setRootIndex(mGraphicalAssistApi.indexById(graphicalDiagram));
 
-	QRectF sceneRect = openedScene->itemsBoundingRect();
+	QRectF sceneRect = view.editorViewScene().itemsBoundingRect();
 	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
 
@@ -1368,16 +1359,15 @@ void NodeElement::initRenderedDiagram()
 	sceneRect.moveTo(QPointF());
 	painter.drawRect(sceneRect);
 
-	openedScene->render(&painter);
+	view.mutableScene().render(&painter);
 
 	mRenderedDiagram = image;
 }
 
 QRectF NodeElement::diagramRenderingRect() const
 {
-	EditorViewScene const *evScene = dynamic_cast<EditorViewScene *>(scene());
 	NodeElement const *initial = new NodeElement(
-			evScene->mainWindow()->editorManager().elementImpl(id())
+			mLogicalAssistApi.editorManagerInterface().elementImpl(id())
 			, id().sameTypeId()
 			, mGraphicalAssistApi
 			, mLogicalAssistApi

@@ -3,6 +3,7 @@
 #include <qrgui/plugins/toolPluginInterface/actionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrtext/languageToolboxInterface.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 namespace generatorBase {
@@ -31,25 +32,27 @@ public:
 	/// Shall be overriden to return QAction or QMenu objects along with where to put them in
 	/// main window. Menus can contains more actions. These actions shall be connected
 	/// to slots of a plugin, so when user clicks on an action, some code in plugin gets executed
-	virtual QList<ActionInfo> actions()
+	virtual QList<qReal::ActionInfo> actions()
 	{
-		return QList<ActionInfo>();
+		return QList<qReal::ActionInfo>();
 	}
 
 	/// Shall be overriden in concrete plugin to initialize itself.
 	/// @param configurator Object that contains all needed information for a plugin, like refs to models.
-	virtual void init(PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+	virtual void init(qReal::PluginConfigurator const &configurator
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage)
 	{
 		Q_UNUSED(configurator);
 		Q_UNUSED(robotModelManager)
+		Q_UNUSED(textLanguage)
 	}
 
 	/// Shall be overridden to return QAction instances for their customization in
 	/// hot key manager.
-	virtual QList<HotKeyActionInfo> hotKeyActions()
+	virtual QList<qReal::HotKeyActionInfo> hotKeyActions()
 	{
-		return QList<HotKeyActionInfo>();
+		return QList<qReal::HotKeyActionInfo>();
 	}
 };
 

@@ -57,7 +57,8 @@ public:
 
 	IdList containedTypes(const Id &id) const override;
 	QList<Explosion> explosions(Id const &source) const override;
-	QList<QPair<QString, QString>> enumValues(Id const &id, const QString &name) const override;
+	bool isEnumEditable(Id const &id, QString const &name) const override;
+	QList<QPair<QString, QString>> enumValues(Id const &id, QString const &name) const override;
 	QString typeName(Id const &id, const QString &name) const override;
 	QStringList allChildrenTypesOf(Id const &parent) const override;
 

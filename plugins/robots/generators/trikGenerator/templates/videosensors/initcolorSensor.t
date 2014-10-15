@@ -1,0 +1,1 @@
+brick.colorSensor().init(true);

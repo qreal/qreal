@@ -5,13 +5,10 @@
 #include "propertiesDialog.h"
 #include "ui_propertiesDialog.h"
 
-#include "editor/editorView.h"
-#include "editor/editorViewScene.h"
-
 using namespace qReal;
 using namespace gui;
 
-PropertiesDialog::PropertiesDialog(EditorManagerInterface &interpreterEditorManager
+PropertiesDialog::PropertiesDialog(EditorManagerInterface const &interpreterEditorManager
 		, qrRepo::LogicalRepoApi &logicalRepoApi
 		, Id const &id
 		, QWidget *parent)

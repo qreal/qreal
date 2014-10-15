@@ -5,7 +5,8 @@
 #include <QtCore/QMap>
 #include <QtWidgets/QWidget>
 
-#include "gesturesPainterInterface.h"
+#include "private/keyManager.h"
+#include "private/mixedgesturesmanager.h"
 #include "private/geometricForms.h"
 
 #include "plugins/pluginManager/editorManagerInterface.h"
@@ -13,11 +14,10 @@
 namespace qReal {
 namespace gestures {
 
-class KeyManager;
-class GesturesManager;
-
-class MouseMovementManager
+class MouseMovementManager : public QObject
 {
+	Q_OBJECT
+
 public:
 	/// Specifies the type of the result of the gesture made by user: regular element creation or some metagesture
 	/// (e.g. element deletion).
@@ -52,25 +52,22 @@ public:
 		Id mId;
 	};
 
-	MouseMovementManager(Id const &diagram
-			, EditorManagerInterface const &editorManagerInterface
-			, GesturesPainterInterface *gesturesPaintManager);
+	MouseMovementManager(Id const &diagram, EditorManagerInterface const &editorManagerInterface);
 
-	~MouseMovementManager();
+	/// Creates and returns the widget that shows available for this manager mouse gestures.
+	/// Transfers ownership.
+	QWidget *producePainter() const;
 
 	void initializeGestures();
 	void mousePress(QPointF const &point);
 	void mouseMove(QPointF const &point);
 	void clear();
-	void setGesturesPainter(GesturesPainterInterface *gesturesPainter);
 	GestureResult result();
 	static PathVector stringToPath(QString const &str);
 	QPointF pos();
 	QPointF firstPoint();
 	QPointF lastPoint();
 	QLineF newLine();
-	void printElements();
-	void drawIdealPath();
 	bool wasMoving();
 	bool isEdgeCandidate();
 	bool pathIsEmpty();
@@ -78,10 +75,10 @@ public:
 private:
 	static QPoint parsePoint(QString const &str);
 	void recountCentre();
+	void drawIdealPath();
 
 	Id const mDiagram;
 	EditorManagerInterface const &mEditorManagerInterface;
-	GesturesPainterInterface *mGesturesPaintMan;  // Does not take ownership
 	PathVector mPath;
 	QPointF mCenter;
 	QSet<Id> mInitializedGestures;

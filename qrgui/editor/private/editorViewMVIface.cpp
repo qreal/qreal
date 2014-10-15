@@ -6,7 +6,6 @@
 #include "editor/editorViewScene.h"
 #include "editor/element.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
-#include "mainWindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -18,8 +17,7 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mLogicalAssistApi(nullptr)
 	, mExploser(nullptr)
 {
-	mScene->setMVIface(this);
-	mScene->mView = mView;
+	connect(this, &EditorViewMViface::rootElementRemoved, mView, &EditorView::rootElementRemoved);
 }
 
 EditorViewMViface::~EditorViewMViface()
@@ -144,7 +142,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		ElementImpl * const elementImpl = mScene->mainWindow()->editorManager().elementImpl(currentId);
+		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
 		Element *elem = elementImpl->isNode()
 				? dynamic_cast<Element *>(
 						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, *mExploser)
@@ -153,7 +151,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 						new EdgeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi)
 						);
 
-		elem->setController(mScene->mainWindow()->controller());
+		elem->setController(&mScene->controller());
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
@@ -251,6 +249,13 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex curr = model()->index(row, 0, parent);
+		if (curr == rootIndex()) {
+			// Root id was removed, time to close current tab.
+			emit rootElementRemoved(curr);
+			// Now we will be deletted, nipping off...
+			return;
+		}
+
 		if(item(curr)) {
 			mScene->removeItem(item(curr));
 			delete item(curr);
@@ -387,13 +392,15 @@ void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
 }
 
 void EditorViewMViface::configure(models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi, Exploser &exploser)
+		, models::LogicalModelAssistApi &logicalAssistApi
+		, models::Exploser &exploser)
 {
 	mGraphicalAssistApi = &graphicalAssistApi;
 	mLogicalAssistApi = &logicalAssistApi;
 	mExploser = &exploser;
 }
 
+/// @todo: set logical model in constructor
 void EditorViewMViface::setLogicalModel(QAbstractItemModel * const logicalModel)
 {
 	connect(logicalModel, SIGNAL(dataChanged(QModelIndex, QModelIndex))

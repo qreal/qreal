@@ -1,6 +1,7 @@
 #include "startWidget.h"
 
 #include <QtWidgets/QInputDialog>
+#include <QtWidgets/QScrollArea>
 
 #include <qrkernel/settingsManager.h>
 

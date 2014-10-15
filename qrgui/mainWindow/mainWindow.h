@@ -27,18 +27,14 @@
 #include "plugins/pluginManager/proxyEditorManager.h"
 #include "plugins/pluginManager/toolPluginManager.h"
 
-#include "models/logicalModelAssistApi.h"
-#include "models/exploser.h"
-
 #include "editor/propertyEditorView.h"
 #include "controller/controller.h"
 #include "plugins/toolPluginInterface/systemEvents.h"
 
-#include "mouseGestures/gesturesPainterInterface.h"
-#include "mouseGestures/gesturesWidget.h"
-
 #include "preferencesDialog/preferencesDialog.h"
 #include "dialogs/findReplaceDialog.h"
+
+class QGraphicsView;
 
 namespace Ui {
 class MainWindowUi;
@@ -73,7 +69,6 @@ public:
 	EditorView *getCurrentTab() const;
 	bool isCurrentTabShapeEdit() const;
 	models::Models *models() const;
-	Exploser &exploser();
 	Controller *controller() const;
 	PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
@@ -81,14 +76,7 @@ public:
 	PropertyEditorModel &propertyModel();
 	ToolPluginManager &toolManager();
 
-	gestures::GesturesPainterInterface *gesturesPainter() const;
 	QModelIndex rootIndex() const;
-
-	QAction *actionDeleteFromDiagram() const;
-	QAction *actionCopyElementsOnDiagram() const;
-	QAction *actionCutElementsOnDiagram() const;
-	QAction *actionPasteOnDiagram() const;
-	QAction *actionPasteCopyOfLogical() const;
 
 	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
 	virtual void dehighlight(Id const &graphicalId);
@@ -98,7 +86,7 @@ public:
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
 		, bool useTypedPorts);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
-	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
+	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface const &editorManagerProxy
 		, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
 			, int const &role);
@@ -158,8 +146,6 @@ public:
 	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
 	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
 
-	QListIterator<EditorView *> openedEditorViews() const;
-
 	void setTabText(QWidget *tab, QString const &text) override;
 
 	void beginPaletteModification() override;
@@ -170,12 +156,9 @@ public:
 	void endPaletteModification() override;
 
 signals:
-	void gesturesShowed();
-	void currentIdealGestureChanged();
 	void rootDiagramChanged();
 
 public slots:
-	void deleteFromScene();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
 	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true);
@@ -195,7 +178,6 @@ public slots:
 	bool createProject(QString const &diagramIdString);
 
 	void openFirstDiagram();
-	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle();
 
 private slots:
@@ -232,22 +214,6 @@ private slots:
 
 	void applySettings();
 	void resetToolbarSize(int size);
-
-	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
-	commands::AbstractCommand *graphicalDeleteCommand(QGraphicsItem *target);
-	commands::AbstractCommand *logicalDeleteCommand(QModelIndex const &index);
-	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
-	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
-	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
-	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
-
-	void deleteFromDiagram();
-	void cutElementsOnDiagram();
-	void copyElementsOnDiagram();
-	void pasteOnDiagram();
-	void pasteCopyOfLogical();
-
-	void cropSceneToItems();
 
 	void closeCurrentTab();
 	void closeTab(int index);
@@ -307,9 +273,8 @@ private:
 	QListWidget* createSaveListWidget();
 
 	virtual void closeEvent(QCloseEvent *event);
-
-	void deleteFromExplorer(bool isLogicalModel);
-	void deleteItems(IdList &itemsToDelete, bool global = false);
+	void deleteFromLogicalExplorer();
+	void deleteFromGraphicalExplorer();
 
 	QString getSaveFileName(QString const &dialogWindowTitle);
 	QString getOpenFileName(QString const &dialogWindowTitle);
@@ -320,8 +285,8 @@ private:
 	int getTabIndex(const QModelIndex &index);
 
 	void initGridProperties();
-	void disconnectZoom(QGraphicsView* view);
-	void connectZoom(QGraphicsView* view);
+	void disconnectZoom(QGraphicsView *view);
+	void connectZoom(QGraphicsView *view);
 	void disconnectActionZoomTo(QWidget* widget);
 	void connectActionZoomTo(QWidget* widget);
 	void setConnectActionZoomTo(QWidget* widget);
@@ -380,10 +345,8 @@ private:
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
 	PropertyEditorModel mPropertyModel;
-	gestures::GesturesWidget *mGesturesWidget;
 	SystemEvents *mSystemEvents;
 	TextManager *mTextManager;
-	QScopedPointer<Exploser> mExploser;
 
 	QVector<bool> mSaveListChecked;
 

@@ -86,7 +86,7 @@ void PaletteTreeWidgets::initEditorTree()
 void PaletteTreeWidgets::initUserTree()
 {
 	refreshUserPalette();
-	connect(&mMainWindow->exploser(), &Exploser::explosionsSetCouldChange
+	connect(&mMainWindow->models()->exploser(), &models::Exploser::explosionsSetCouldChange
 			, this, &PaletteTreeWidgets::refreshUserPalette);
 }
 
@@ -222,7 +222,7 @@ void PaletteTreeWidgets::refreshUserPalette()
 	QList<QPair<QString, QList<gui::PaletteElement>>> groups;
 	QMap<QString, QString> descriptions = { { mUserGroupTitle, mUserGroupDescription } };
 
-	QMultiMap<Id, Id> const types = mMainWindow->exploser().explosions(mDiagram);
+	QMultiMap<Id, Id> const types = mMainWindow->models()->exploser().explosions(mDiagram);
 	for (Id const &source : types.keys()) {
 		QList<gui::PaletteElement> groupElements;
 		for (Id const &target : types.values(source)) {

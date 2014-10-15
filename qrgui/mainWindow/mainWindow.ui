@@ -489,17 +489,6 @@
     <string>Export to SVG</string>
    </property>
   </action>
-  <action name="actionDeleteFromDiagram">
-   <property name="text">
-    <string>Delete</string>
-   </property>
-   <property name="shortcut">
-    <string>Del</string>
-   </property>
-   <property name="shortcutContext">
-    <enum>Qt::WidgetShortcut</enum>
-   </property>
-  </action>
   <action name="openNewTab">
    <property name="text">
     <string>Open in new tab</string>
@@ -729,50 +718,6 @@
   <action name="actionFind_and_replace">
    <property name="text">
     <string>Find and replace</string>
-   </property>
-  </action>
-  <action name="actionCutElementsOnDiagram">
-   <property name="text">
-    <string>Cut</string>
-   </property>
-   <property name="toolTip">
-    <string>Cut</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+X</string>
-   </property>
-  </action>
-  <action name="actionCopyElementsOnDiagram">
-   <property name="text">
-    <string>Copy</string>
-   </property>
-   <property name="toolTip">
-    <string>Copy</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+C</string>
-   </property>
-  </action>
-  <action name="actionPasteOnDiagram">
-   <property name="text">
-    <string>Paste</string>
-   </property>
-   <property name="toolTip">
-    <string>Paste</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+V</string>
-   </property>
-  </action>
-  <action name="actionPasteReference">
-   <property name="text">
-    <string>Paste only graphical copy</string>
-   </property>
-   <property name="toolTip">
-    <string>Paste only graphical copy</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+V</string>
    </property>
   </action>
   <action name="actionUndo">

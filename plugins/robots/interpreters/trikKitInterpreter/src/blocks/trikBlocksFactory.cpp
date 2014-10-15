@@ -63,6 +63,10 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikLineDetectorToVariable")) {
 		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikSendMessage")) {
+		return new EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitForMessage")) {
+		return new EmptyBlock();
 
 	} else if (elementMetatypeIs(element, "TrikLed")) {
 		return new LedBlock(mRobotModelManager->model());
@@ -149,8 +153,10 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikLed")
 			<< id("TrikSystem")
 			<< id("TrikInitCamera")
-			<< id("TrikDetectLine")
-			<< id("TrikLineDetectorToVariable")
+			<< id("TrikDetect")
+			<< id("TrikDetectorToVariable")
+			<< id("TrikSendMessage")
+			<< id("TrikWaitForMessage")
 			;
 
 	result
@@ -197,9 +203,11 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikSay")
 				<< id("TrikSystem")
 				<< id("TrikInitCamera")
-				<< id("TrikDetectLine")
-				<< id("TrikLineDetectorToVariable")
+				<< id("TrikDetect")
+				<< id("TrikDetectorToVariable")
 				<< id("TrikWaitForMotion")
+				<< id("TrikSendMessage")
+				<< id("TrikWaitForMessage")
 				;
 	}
 

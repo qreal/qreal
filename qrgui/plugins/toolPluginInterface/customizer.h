@@ -71,41 +71,6 @@ public:
 		Q_UNUSED(dockInterface)
 	}
 
-	virtual QString addExplosionMenuName() const
-	{
-		return QObject::tr("Add connection");
-	}
-
-	virtual QString changeExplosionMenuName() const
-	{
-		return QObject::tr("Connect to other");
-	}
-
-	virtual QString deleteExplosionMenuName() const
-	{
-		return QObject::tr("Disconnect");
-	}
-
-	virtual QString goToConnectedMenuName() const
-	{
-		return QObject::tr("Go to connected element");
-	}
-
-	virtual bool showExpandConnectionAction() const
-	{
-		return false;
-	}
-
-	virtual QString expandExplosionActionText() const
-	{
-		return QObject::tr("Expand explosion");
-	}
-
-	virtual QString collapseExplosionActionText() const
-	{
-		return QObject::tr("Collapse explosion");
-	}
-
 	virtual QString userPaletteTitle() const
 	{
 		return QObject::tr("Existing connections");

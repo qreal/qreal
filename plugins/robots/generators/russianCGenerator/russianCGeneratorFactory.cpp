@@ -9,8 +9,9 @@ using namespace generatorBase::simple;
 
 RussianCGeneratorFactory::RussianCGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
-	: generatorBase::GeneratorFactoryBase(repo, errorReporter, robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, generatorBase::lua::LuaProcessor &luaProcessor)
+	: generatorBase::GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 {
 }
 
@@ -42,5 +43,5 @@ QString RussianCGeneratorFactory::pathToTemplates() const
 
 generatorBase::simple::Binding::ConverterInterface *RussianCGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::RussianCStringPropertyConverter(*mVariables, *systemVariableNameConverter());
+	return new converters::RussianCStringPropertyConverter(*mVariables, *reservedVariableNameConverter());
 }

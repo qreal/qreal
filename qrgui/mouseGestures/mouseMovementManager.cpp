@@ -2,11 +2,9 @@
 
 #include <qrkernel/logging.h>
 
-#include "private/geometricForms.h"
-#include "private/keyManager.h"
+#include "gesturesWidget.h"
 #include "private/pathCorrector.h"
 #include "private/levenshteinDistance.h"
-#include "private/mixedgesturesmanager.h"
 
 QString const comma = ", ";
 QString const pointDelimeter = " : ";
@@ -19,37 +17,18 @@ QString const deletionGesture = "0, 200 : 200, 0 : ";
 using namespace qReal::gestures;
 
 MouseMovementManager::MouseMovementManager(Id const &diagram
-		, qReal::EditorManagerInterface const &editorManagerInterface
-		, GesturesPainterInterface *gesturesPaintManager)
+		, qReal::EditorManagerInterface const &editorManagerInterface)
 	: mDiagram(diagram)
 	, mEditorManagerInterface(editorManagerInterface)
-	, mGesturesPaintMan(gesturesPaintManager)
 {
 	mKeyStringManager.reset(new KeyManager);
 	mGesturesManager.reset(new MixedGesturesManager);
 	initializeGestures();
 }
 
-MouseMovementManager::~MouseMovementManager()
+QWidget *MouseMovementManager::producePainter() const
 {
-}
-
-void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gesturesPainter)
-{
-	mGesturesPaintMan = gesturesPainter;
-}
-
-void MouseMovementManager::drawIdealPath()
-{
-	Id const currentElement = mGesturesPaintMan->currentElement();
-	if (mEditorManagerInterface.elements(mDiagram).contains(currentElement)) {
-		QString const paths = mEditorManagerInterface.mouseGesture(currentElement);
-		mGesturesPaintMan->draw(paths);
-	}
-}
-
-void MouseMovementManager::printElements()
-{
+	GesturesWidget * const result = new GesturesWidget;
 	QList<QPair<QString, Id> > elements;
 	for (Id const &element : mEditorManagerInterface.elements(mDiagram)) {
 		if (!mEditorManagerInterface.mouseGesture(element).isEmpty()) {
@@ -57,7 +36,19 @@ void MouseMovementManager::printElements()
 		}
 	}
 
-	mGesturesPaintMan->setElements(elements);
+	result->setElements(elements);
+	connect(result, &GesturesWidget::currentElementChanged, this, &MouseMovementManager::drawIdealPath);
+	return result;
+}
+
+void MouseMovementManager::drawIdealPath()
+{
+	GesturesWidget * const gesturesPainter = static_cast<GesturesWidget *>(sender());
+	Id const currentElement = gesturesPainter->currentElement();
+	if (mEditorManagerInterface.elements(mDiagram).contains(currentElement)) {
+		QString const paths = mEditorManagerInterface.mouseGesture(currentElement);
+		gesturesPainter->draw(paths);
+	}
 }
 
 void MouseMovementManager::clear()

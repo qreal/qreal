@@ -8,7 +8,7 @@ ResizeCommand::ResizeCommand(EditorViewScene const *scene, Id const &id)
 }
 
 ResizeCommand::ResizeCommand(EditorView const *view, Id const &id)
-	: NodeElementCommand(view->editorViewScene(), id)
+	: NodeElementCommand(&view->editorViewScene(), id)
 {
 }
 

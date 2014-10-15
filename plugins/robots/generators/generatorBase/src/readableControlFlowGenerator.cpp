@@ -12,6 +12,9 @@
 #include "rules/loopRules/loopWithIterationVisitedRule.h"
 #include "rules/loopRules/loopWithNextVisitedRule.h"
 
+#include "rules/switchRules/switchInitializationRule.h"
+#include "rules/switchRules/mergedSwitchBranchesRule.h"
+
 using namespace generatorBase;
 using namespace qReal;
 using namespace semantics;
@@ -64,14 +67,15 @@ void ReadableControlFlowGenerator::visitRegular(Id const &id
 {
 	SimpleUnvisitedRule unvisitedRule(mSemanticTree, id, links[0]);
 	SimpleVisitedOneZoneRule visitedOneZoneRule(mSemanticTree, id, links[0]);
-	SimpleMergedIfBranchesRule mergedBranchesRule(mSemanticTree, id, links[0]);
+	SimpleMergedIfBranchesRule ifMergedBranchesRule(mSemanticTree, id, links[0]);
+	MergedSwitchBranchesRule switchMergedBranchesRule(mSemanticTree, id, links[0]);
 	SimpleIfInsideCycleRule ifInsideCycle(mSemanticTree, id, links[0]);
 
 	QList<SemanticTransformationRule *> rules;
 	if (mTravelingForSecondTime) {
 		rules << &visitedOneZoneRule << &ifInsideCycle;
 	} else {
-		rules << &unvisitedRule << &mergedBranchesRule;
+		rules << &unvisitedRule << &ifMergedBranchesRule << &switchMergedBranchesRule;
 	}
 
 	applyFirstPossible(id, rules, !mTravelingForSecondTime);
@@ -115,6 +119,12 @@ void ReadableControlFlowGenerator::visitLoop(Id const &id
 			, branches.first, branches.second);
 
 	applyFirstPossible(id, { &bothUnvisitedRule, &iterationVisitedRule, &nextVisitedRule }, false);
+}
+
+void ReadableControlFlowGenerator::visitSwitch(Id const &id, QList<LinkInfo> const &links)
+{
+	SwitchInitializationRule buildingRule(mSemanticTree, id, links, mRepo);
+	applyFirstPossible(id, { &buildingRule }, false);
 }
 
 void ReadableControlFlowGenerator::afterSearch()

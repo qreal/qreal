@@ -1,18 +1,17 @@
 ﻿#include "pasteNodeCommand.h"
 
-#include "mainWindow/mainWindow.h"
+#include <qrgui/models/models.h>
 
 using namespace qReal::commands;
 
 PasteNodeCommand::PasteNodeCommand(EditorViewScene *scene
-		, EditorViewMViface const *mvIface
 		, NodeData const &data
 		, QPointF const &offset
 		, bool isGraphicalCopy
 		, QHash<Id, Id> *copiedIds)
-	: PasteCommand(scene, mvIface, offset, isGraphicalCopy, copiedIds)
+	: PasteCommand(scene, offset, isGraphicalCopy, copiedIds)
 	, mNodeData(data)
-	, mCreateCommand(NULL)
+	, mCreateCommand(nullptr)
 {
 }
 
@@ -39,14 +38,14 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 	Id resultId = mResult;
 	if (!mCreateCommand && explosionTargetExists()) {
 		mCreateCommand = new CreateElementCommand(
-			*mMVIface->logicalAssistApi()
-			, *mMVIface->graphicalAssistApi()
-			, mScene->mainWindow()->exploser()
-			, mMVIface->rootId()
+			mScene->models().logicalModelAssistApi()
+			, mScene->models().graphicalModelAssistApi()
+			, mScene->models().exploser()
+			, mScene->rootItemId()
 			, newGraphicalParent()
 			, mNodeData.logicalId
 			, true
-			, mMVIface->graphicalAssistApi()->name(mNodeData.id)
+			, mScene->models().graphicalModelAssistApi().name(mNodeData.id)
 			, newGraphicalPos()
 			);
 
@@ -67,12 +66,12 @@ void PasteNodeCommand::restoreElement()
 		return;
 	}
 
-	Id const logicalId = mMVIface->graphicalAssistApi()->logicalId(mCreateCommand->result());
-	mMVIface->graphicalAssistApi()->setProperties(logicalId, mNodeData.logicalProperties);
-	mMVIface->graphicalAssistApi()->setProperties(mResult, mNodeData.graphicalProperties);
-	mMVIface->graphicalAssistApi()->setPosition(mResult, newGraphicalPos());
+	Id const logicalId = mScene->models().graphicalModelAssistApi().logicalId(mCreateCommand->result());
+	mScene->models().graphicalModelAssistApi().setProperties(logicalId, mNodeData.logicalProperties);
+	mScene->models().graphicalModelAssistApi().setProperties(mResult, mNodeData.graphicalProperties);
+	mScene->models().graphicalModelAssistApi().setPosition(mResult, newGraphicalPos());
 	if (mCopiedIds->contains(mNodeData.parentId)) {
-		mMVIface->graphicalAssistApi()->changeParent(mResult, mCopiedIds->value(mNodeData.parentId), newPos());
+		mScene->models().graphicalModelAssistApi().changeParent(mResult, mCopiedIds->value(mNodeData.parentId), newPos());
 	}
 
 	NodeElement *element = mScene->getNodeById(mResult);
@@ -83,13 +82,13 @@ void PasteNodeCommand::restoreElement()
 
 bool PasteNodeCommand::explosionTargetExists() const
 {
-	return mNodeData.explosion.isNull() || mMVIface->logicalAssistApi()->logicalRepoApi().exist(mNodeData.explosion);
+	return mNodeData.explosion.isNull() || mScene->models().logicalRepoApi().exist(mNodeData.explosion);
 }
 
 QPointF PasteNodeCommand::newPos() const
 {
 	return mNodeData.pos + (mCopiedIds->contains(mNodeData.parentId) ?
-			mMVIface->graphicalAssistApi()->position(mCopiedIds->value(mNodeData.parentId)) : mOffset);
+			mScene->models().graphicalModelAssistApi().position(mCopiedIds->value(mNodeData.parentId)) : mOffset);
 }
 
 QPointF PasteNodeCommand::newGraphicalPos() const
@@ -101,7 +100,7 @@ QPointF PasteNodeCommand::newGraphicalPos() const
 Id PasteNodeCommand::newGraphicalParent() const
 {
 	return (mCopiedIds->contains(mNodeData.parentId) ?
-			mCopiedIds->value(mNodeData.parentId) : mMVIface->rootId());
+			mCopiedIds->value(mNodeData.parentId) : mScene->rootItemId());
 }
 
 QPointF PasteNodeCommand::vectorFromContainer() const

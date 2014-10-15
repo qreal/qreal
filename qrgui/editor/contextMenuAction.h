@@ -5,7 +5,8 @@
 // saves cursor's position within the scene
 // could be useful to call Element's event handlers from the scene
 
-class ContextMenuAction: public QAction {
+class ContextMenuAction: public QAction
+{
 	Q_OBJECT
 
 public:

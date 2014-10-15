@@ -148,6 +148,15 @@ void AbstractItem::setX2andY2(qreal x, qreal y)
 	update();
 }
 
+void AbstractItem::setCoordinates(QRectF const &pos)
+{
+	mX1 = pos.left();
+	mY1 = pos.top();
+	mX2 = pos.right();
+	mY2 = pos.bottom();
+	update();
+}
+
 void AbstractItem::reshapeRectWithShift()
 {
 	qreal const size = qMax(abs(mX2 - mX1), abs(mY2 - mY1));

@@ -6,19 +6,14 @@
 #include "editor/edgeElement.h"
 #include "editor/serializationData.h"
 
-namespace qReal
-{
+namespace qReal {
 
 class EditorViewScene;
-class EditorViewMViface;
 
 class ClipboardHandler
 {
 public:
-	ClipboardHandler(EditorViewScene *scene);
-
-	void setMVIface(EditorViewMViface * const mvIface);
-	void setController(Controller * const controller);
+	ClipboardHandler(EditorViewScene &scene, Controller &controller);
 
 	void cut();
 	void copy();
@@ -31,9 +26,8 @@ private:
 	QList<EdgeData> getEdgesData();
 	void addChildren(NodeElement *node, QList<NodeElement *> &nodes);
 
-	EditorViewScene *mScene;
-	EditorViewMViface *mMVIface;
-	Controller *mController;
+	EditorViewScene &mScene;
+	Controller &mController;
 };
 
 }

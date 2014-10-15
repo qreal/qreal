@@ -1,0 +1,1 @@
+@@LEFT@@ == @@RIGHT@@ /* WARNING: This will not work for string types, will be implemented later. Use strcmp instead. */

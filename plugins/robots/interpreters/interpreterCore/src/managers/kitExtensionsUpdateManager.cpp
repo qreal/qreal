@@ -4,7 +4,7 @@ using namespace interpreterCore;
 using namespace generatorBase;
 
 KitExtensionsUpdateManager::KitExtensionsUpdateManager(interpreterCore::KitPluginManager const &kitManager
-		, TextManagerInterface &textManager
+		, qReal::TextManagerInterface &textManager
 		, QObject *parent)
 	: QObject(parent)
 	, mKitManager(kitManager)

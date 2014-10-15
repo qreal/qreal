@@ -56,6 +56,7 @@ public:
 	virtual QString getPropertyType(QString const &element, QString const &name) const = 0;
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const = 0;
 	virtual QList<QPair<QString, QString>> getEnumValues(QString const &name) const = 0;
+	virtual bool isEnumEditable(QString const &name) const = 0;
 	virtual QString getGroupsXML() const = 0;
 	virtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const = 0;
 

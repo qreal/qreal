@@ -10,7 +10,6 @@
 
 #include "editor/editorViewScene.h"
 #include "editor/commands/reshapeEdgeCommand.h"
-#include "mainWindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -227,7 +226,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 		QString const type = "qrm:/" + mMaster->id().editor() + "/" +
 							 mMaster->id().diagram() + "/" + mEdgeType.element();
-		if (scene->mainWindow()->editorManager().hasElement(Id::loadFromString(type))) {
+		if (scene->editorManager().hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
 			mInitialClickPoint = event->scenePos();
 			Id const edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);

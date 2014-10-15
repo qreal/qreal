@@ -17,7 +17,6 @@ public:
 
 protected:
 	PasteCommand(EditorViewScene *scene
-			, EditorViewMViface const *mvIface
 			, QPointF const &offset
 			, bool isGraphicalCopy
 			, QHash<Id, Id> *copiedIds);
@@ -30,7 +29,6 @@ protected:
 	virtual void restoreElement() = 0;
 
 	EditorViewScene *mScene;
-	EditorViewMViface const *mMVIface;
 	QPointF const mOffset;
 	QHash<Id, Id> *mCopiedIds;
 	Id mResult;

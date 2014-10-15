@@ -1,28 +1,86 @@
 #include "sceneCustomizer.h"
 
+#include <QtCore/QObject>
+
 using namespace qReal;
 
-SceneCustomizer::SceneCustomizer(MainWindow *mainWindow)
-	: mMainWindow(mainWindow)
-	, mTitlesVisible(true)
+SceneCustomizer::SceneCustomizer()
+	: mAddExplosionMenuName(QObject::tr("Add connection"))
+	, mChangeExplosionMenuName(QObject::tr("Connect to other"))
+	, mDeleteExplosionMenuName(QObject::tr("Disconnect"))
+	, mGoToConnectedMenuName(QObject::tr("Go to connected element"))
+	, mShowExpandConnectionAction(false)
+	, mExpandExplosionActionText(QObject::tr("Expand explosion"))
+	, mCollapseExplosionActionText(QObject::tr("Collapse explosion"))
 {
 }
 
-void SceneCustomizer::customizeView(EditorView *view)
+QString SceneCustomizer::addExplosionMenuName() const
 {
-	view->setTitlesVisible(mTitlesVisible);
+	return mAddExplosionMenuName;
 }
 
-void SceneCustomizer::refreshCustomization()
+QString SceneCustomizer::changeExplosionMenuName() const
 {
-	QListIterator<EditorView *> views = mMainWindow->openedEditorViews();
-	while (views.hasNext()) {
-		customizeView(views.next());
-	}
+	return mChangeExplosionMenuName;
 }
 
-void SceneCustomizer::setTitlesVisible(bool visible)
+QString SceneCustomizer::deleteExplosionMenuName() const
 {
-	mTitlesVisible = visible;
-	refreshCustomization();
+	return mDeleteExplosionMenuName;
+}
+
+QString SceneCustomizer::goToConnectedMenuName() const
+{
+	return mGoToConnectedMenuName;
+}
+
+bool SceneCustomizer::showExpandConnectionAction() const
+{
+	return mShowExpandConnectionAction;
+}
+
+QString SceneCustomizer::expandExplosionActionText() const
+{
+	return mExpandExplosionActionText;
+}
+
+QString SceneCustomizer::collapseExplosionActionText() const
+{
+	return mCollapseExplosionActionText;
+}
+
+void SceneCustomizer::setAddExplosionMenuName(QString const &text)
+{
+	mAddExplosionMenuName = text;
+}
+
+void SceneCustomizer::setChangeExplosionMenuName(QString const &text)
+{
+	mChangeExplosionMenuName = text;
+}
+
+void SceneCustomizer::setDeleteExplosionMenuName(QString const &text)
+{
+	mDeleteExplosionMenuName = text;
+}
+
+void SceneCustomizer::setGoToConnectedMenuName(QString const &text)
+{
+	mGoToConnectedMenuName = text;
+}
+
+void SceneCustomizer::setShowExpandConnectionAction(bool show)
+{
+	mShowExpandConnectionAction = show;
+}
+
+void SceneCustomizer::setExpandExplosionActionText(QString const &text)
+{
+	mExpandExplosionActionText = text;
+}
+
+void SceneCustomizer::setCollapseExplosionActionText(QString const &text)
+{
+	mCollapseExplosionActionText = text;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QTreeView>
+#include <QtWidgets/QAction>
 
 #include "controller/controller.h"
 #include "models/exploser.h"
@@ -18,15 +19,32 @@ public:
 
 	void setController(Controller * const controller);
 	void setAssistApi(details::ModelsAssistInterface * const model);
-	void setExploser(Exploser &exploser);
+	void setExploser(models::Exploser const &exploser);
+
+	/// Replaces current set of editor actions  with new one.
+	/// Editor actions will be shown on context menu and their shortcuts will be triggered
+	/// when model explorers are active.
+	void changeEditorActionsSet(QList<QAction *> const &actions);
+
+signals:
+	/// Emitted when user wants to remove an element from the model.
+	/// @todo: The implementation of the deletion process is currently placed to main window.
+	/// Model explorers must be an independent components (maybe even pluginized).
+	void elementRemoved();
 
 protected:
-	virtual void commitData(QWidget *editor);
+	void commitData(QWidget *editor) override;
+	void focusOutEvent(QFocusEvent *event) override;
+	void focusInEvent(QFocusEvent *event) override;
 
 private:
+	void setActionsEnabled(bool enabled);
+
 	Controller *mController; // Doesn`t take ownership
 	details::ModelsAssistInterface *mModel; // Doesn`t take ownership
-	Exploser *mExploser; // Doesn`t take ownership
+	models::Exploser const *mExploser; // Doesn`t take ownership
+	QAction mDeleteAction;
+	QAction mDeleteActionSeparator;
 };
 
 }

@@ -11,10 +11,10 @@
 #include <qmath.h>
 
 #include <qrkernel/logging.h>
+#include <qrgui/models/models.h>
 
-#include "editor/editorView.h"
-#include "mainWindow/mainWindow.h"
-
+#include "editor/sceneCustomizer.h"
+#include "editor/commands/multipleRemoveAndUpdateCommand.h"
 #include "editor/commands/createAndUpdateGroupCommand.h"
 #include "editor/commands/insertIntoEdgeCommand.h"
 #include "editor/commands/reshapeEdgeCommand.h"
@@ -27,25 +27,38 @@ using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui;
 
-EditorViewScene::EditorViewScene(QObject *parent)
-		: QGraphicsScene(parent)
-		, mLastCreatedFromLinker(nullptr)
-		, mClipboardHandler(this)
-		, mRightButtonPressed(false)
-		, mLeftButtonPressed(false)
-		, mHighlightNode(nullptr)
-		, mWindow(nullptr)
-		, mMouseMovementManager(nullptr)
-		, mActionSignalMapper(new QSignalMapper(this))
-		, mTimer(new QTimer(this))
-		, mTimerForArrowButtons(new QTimer(this))
-		, mOffset(QPointF(0, 0))
-		, mShouldReparentItems(false)
-		, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
-		, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
-		, mIsSelectEvent(false)
-		, mTitlesVisible(true)
-		, mExploser(nullptr)
+EditorViewScene::EditorViewScene(models::Models const &models
+		, Controller &controller
+		, SceneCustomizer const &customizer
+		, Id const &rootId
+		, QObject *parent)
+	: QGraphicsScene(parent)
+	, mModels(models)
+	, mEditorManager(models.logicalModelAssistApi().editorManagerInterface())
+	, mController(controller)
+	, mCustomizer(customizer)
+	, mRootId(rootId)
+	, mLastCreatedFromLinker(nullptr)
+	, mClipboardHandler(*this, controller)
+	, mRightButtonPressed(false)
+	, mLeftButtonPressed(false)
+	, mHighlightNode(nullptr)
+	, mMouseMovementManager(mRootId, mEditorManager)
+	, mActionSignalMapper(new QSignalMapper(this))
+	, mTimer(new QTimer(this))
+	, mTimerForArrowButtons(new QTimer(this))
+	, mOffset(QPointF(0, 0))
+	, mShouldReparentItems(false)
+	, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
+	, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
+	, mIsSelectEvent(false)
+	, mExploser(models, controller, customizer, this)
+	, mActionDeleteFromDiagram(nullptr)
+	, mActionCutOnDiagram(nullptr)
+	, mActionCopyOnDiagram(nullptr)
+	, mActionPasteOnDiagram(nullptr)
+	, mActionPasteReference(nullptr)
+
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
 	mWidthOfGrid = static_cast<qreal>(SettingsManager::value("GridWidth").toInt()) / 100;
@@ -55,19 +68,12 @@ EditorViewScene::EditorViewScene(QObject *parent)
 	setEnabled(false);
 
 	initCorners();
+	initializeActions();
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
-}
-
-void EditorViewScene::addItem(QGraphicsItem *item)
-{
-	Element *element = dynamic_cast<Element *>(item);
-	if (element) {
-		element->setTitlesVisible(mTitlesVisible);
-	}
-	QGraphicsScene::addItem(item);
+	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
 }
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
@@ -89,55 +95,6 @@ void EditorViewScene::putOnForeground(QPixmap *pixmap)
 void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
 {
 	mForegroundPixmaps.removeAll(pixmap);
-}
-
-EditorViewScene::~EditorViewScene()
-{
-	delete mActionSignalMapper;
-	delete mMouseMovementManager;
-}
-
-void EditorViewScene::setMVIface(EditorViewMViface *mvIface)
-{
-	mMVIface = mvIface;
-	mClipboardHandler.setMVIface(mvIface);
-}
-
-void EditorViewScene::drawIdealGesture()
-{
-	mMouseMovementManager->drawIdealPath();
-}
-
-void EditorViewScene::printElementsOfRootDiagram()
-{
-	mMouseMovementManager->setGesturesPainter(mWindow->gesturesPainter());
-	mMouseMovementManager->printElements();
-}
-
-void EditorViewScene::initMouseMoveManager()
-{
-	if (!mMVIface || !mMVIface->graphicalAssistApi() || mMouseMovementManager) {
-		return;
-	}
-
-	qReal::Id const diagram = mMVIface->rootId();
-
-	if (!mainWindow() || mainWindow()->activeDiagram() != diagram) {
-		// If it is not our diagram, do nothing. We will init mouse manager when our diagram will be activated
-		return;
-	}
-
-	if (diagram.isNull()) {
-		// Root diagram is not set, for example, current tab is disabled. No need
-		// to do anything with mouse manager.
-		return;
-	}
-
-	delete mMouseMovementManager;
-	mMouseMovementManager = new gestures::MouseMovementManager(diagram
-			, mWindow->editorManager(), mWindow->gesturesPainter());
-	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
-	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
 
 qreal EditorViewScene::realIndexGrid()
@@ -194,7 +151,7 @@ Element *EditorViewScene::getElem(qReal::Id const &id) const
 
 void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-	const QMimeData *mimeData = event->mimeData();
+	QMimeData const *mimeData = event->mimeData();
 	if (mimeData->hasFormat("application/x-real-uml-data")) {
 		QGraphicsScene::dragEnterEvent(event);
 	} else {
@@ -298,11 +255,8 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 
 void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_ASSERT(mWindow);  // should be initialized separately.
-	// constuctor is bad for this, because the scene is created in generated .ui file
-
 	// if there's no diagrams. create nothing
-	if (!mMVIface->graphicalAssistApi()->hasRootDiagrams()) {
+	if (!mModels.graphicalModelAssistApi().hasRootDiagrams()) {
 		return;
 	}
 
@@ -316,8 +270,8 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const
 {
 	bool allowed = false;
-	foreach (qReal::Id const &type, mWindow->editorManager().containedTypes(container.type())) {
-		allowed = allowed || mWindow->editorManager().isParentOf(candidate, type);
+	foreach (qReal::Id const &type, mEditorManager.containedTypes(container.type())) {
+		allowed = allowed || mEditorManager.isParentOf(candidate, type);
 	}
 
 	return allowed;
@@ -332,7 +286,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
-	edgeMenu->addAction(mWindow->actionDeleteFromDiagram());
+	edgeMenu->addAction(&mActionDeleteFromDiagram);
 	edgeMenu->addAction(tr("Discard"));
 	edgeMenu->addSeparator();
 
@@ -343,17 +297,17 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	toDelete.append(menuSignalMapper);
 
 	QStringList targets;
-	QStringList const groups = mWindow->editorManager().paletteGroups(node->id(), node->id());
+	QStringList const groups = mEditorManager.paletteGroups(node->id(), node->id());
 
 	foreach (PossibleEdge const &pEdge, edge->getPossibleEdges()) {
 		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
 		// and vice versa
-		if (mWindow->editorManager().isParentOf(node->id(), pEdge.first.first)) {
-			targets << mWindow->editorManager().allChildrenTypesOf(pEdge.first.second);
+		if (mEditorManager.isParentOf(node->id(), pEdge.first.first)) {
+			targets << mEditorManager.allChildrenTypesOf(pEdge.first.second);
 		}
 
-		if (mWindow->editorManager().isParentOf(node->id(), pEdge.first.second)) {
-			targets << mWindow->editorManager().allChildrenTypesOf(pEdge.first.first);
+		if (mEditorManager.isParentOf(node->id(), pEdge.first.second)) {
+			targets << mEditorManager.allChildrenTypesOf(pEdge.first.first);
 		}
 	}
 
@@ -361,7 +315,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	QMap<QString, QString> targetsInGroups;
 	QStringList targetGroups;
 	foreach (QString const &group, groups) {
-		QStringList const groupsContents = mWindow->editorManager().paletteGroupList(
+		QStringList const groupsContents = mEditorManager.paletteGroupList(
 				node->id(), node->id(), group);
 		foreach (QString const &elementInGroup, groupsContents) {
 			if (targetsSet.contains(elementInGroup)) {
@@ -380,7 +334,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 		QStringList const targetsInGroup = targetsInGroups.values(targetGroups[i]);
 		foreach (QString const &target, targetsInGroup) {
 			Id const id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
-			QString const friendlyName = mWindow->editorManager().friendlyName(id);
+			QString const friendlyName = mEditorManager.friendlyName(id);
 			QAction *element = new QAction(friendlyName, createElemMenu);
 			// deleted as child of createElemMenu
 			createElemMenu->addAction(element);
@@ -402,7 +356,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 
 	int result = 0;
 	if (executed) {
-		if (executed == mWindow->actionDeleteFromDiagram()) {
+		if (executed == &mActionDeleteFromDiagram) {
 			result = -1;
 		} else if (!(executed->text() == tr("Discard"))
 					&& !(executed->text() == tr("Connect with the current item"))) {
@@ -413,9 +367,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 		}
 	}
 
-	foreach(QObject *object, toDelete) {
-		delete object;
-	}
+	qDeleteAll(toDelete);
 
 	return result;
 }
@@ -444,7 +396,7 @@ qReal::Id EditorViewScene::createElement(QString const &str
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
-	QString name = mWindow->editorManager().friendlyName(typeId);
+	QString name = mEditorManager.friendlyName(typeId);
 	bool isFromLogicalModel = false;
 	stream << uuid;
 	stream << pathToItem;
@@ -481,7 +433,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 
 	Id const id = Id::loadFromString(uuid);
 
-	if (!mMVIface->graphicalAssistApi()->editorManagerInterface().hasElement(id.type())) {
+	if (!mEditorManager.hasElement(id.type())) {
 		return;
 	}
 
@@ -493,17 +445,17 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);
 
-	if (mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
+	if (mEditorManager.getPatternNames().contains(id.element())) {
 		CreateAndUpdateGroupCommand *createGroupCommand = new CreateAndUpdateGroupCommand(
-				*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->exploser()
-				, mMVIface->rootId(), mMVIface->rootId(), id, isFromLogicalModel, scenePos);
+				*this, mModels.logicalModelAssistApi(), mModels.graphicalModelAssistApi(), mModels.exploser()
+				, mRootId, mRootId, id, isFromLogicalModel, scenePos);
 		if (executeImmediately) {
-			mController->execute(createGroupCommand);
+			mController.execute(createGroupCommand);
 		}
 	} else {
 		Element *newParent = nullptr;
 
-		ElementImpl const * const impl = mWindow->editorManager().elementImpl(id);
+		ElementImpl const * const impl = mEditorManager.elementImpl(id);
 		bool const isNode = impl->isNode();
 		delete impl;
 
@@ -538,7 +490,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 				? scenePos
 				: newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
-		Id const parentId = newParent ? newParent->id() : mMVIface->rootId();
+		Id const parentId = newParent ? newParent->id() : mRootId;
 
 		createSingleElement(id, name, isNode, position, parentId, isFromLogicalModel
 				, explosionTarget, createCommandPointer, executeImmediately);
@@ -547,7 +499,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 		if (parentNode) {
 			Element *nextNode = parentNode->getPlaceholderNextElement();
 			if (nextNode) {
-				mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
+				mModels.graphicalModelAssistApi().stackBefore(id, nextNode->id());
 			}
 		}
 	}
@@ -559,10 +511,10 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, boo
 		, bool executeImmediately)
 {
 	CreateElementCommand *createCommand = new CreateElementCommand(
-				*mMVIface->logicalAssistApi()
-				, *mMVIface->graphicalAssistApi()
-				, mWindow->exploser()
-				, mMVIface->rootId()
+				mModels.logicalModelAssistApi()
+				, mModels.graphicalModelAssistApi()
+				, mModels.exploser()
+				, mRootId
 				, parentId
 				, id
 				, isFromLogicalModel
@@ -572,17 +524,18 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, boo
 	if (createCommandPointer) {
 		(*createCommandPointer) = createCommand;
 	}
-	mExploser->handleCreationWithExplosion(createCommand, id, explosionTarget);
+
+	mExploser.handleCreationWithExplosion(createCommand, id, explosionTarget);
 	if (executeImmediately) {
 		if (isNode) {
-			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInterface().iconSize(id);
+			QSize const size = mEditorManager.iconSize(id);
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
-					*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), mWindow->exploser()
+					*this, mModels.logicalModelAssistApi(), mModels.graphicalModelAssistApi(), mModels.exploser()
 					, Id(), Id(), parentId, position, QPointF(size.width(), size.height())
 					, isFromLogicalModel, createCommand);
-			mController->execute(insertCommand);
+			mController.execute(insertCommand);
 		} else {
-			mController->execute(createCommand);
+			mController.execute(createCommand);
 		}
 	}
 }
@@ -634,7 +587,7 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, QPointF const &scenePos
 
 		QPointF offsetPoint(nodeLine.p2() - closeNodeLine.p2());
 		closeNode->setPos(closeNode->pos() + offsetPoint);
-		mMVIface->graphicalAssistApi()->setPosition(closeNode->id(), closeNode->pos());
+		mModels.graphicalModelAssistApi().setPosition(closeNode->id(), closeNode->pos());
 		shifting.insert(closeNode->id(), offsetPoint);
 
 		arrangeNodeLinks(closeNode);
@@ -647,7 +600,7 @@ void EditorViewScene::returnElementsToOldPositions(const QMap<Id, QPointF> &shif
 	foreach (qReal::Id const &id, shifting.keys()) {
 		NodeElement *node = getNodeById(id);
 		node->setPos(node->pos() - shifting[id]);
-		mMVIface->graphicalAssistApi()->setPosition(node->id(), node->pos());
+		mModels.graphicalModelAssistApi().setPosition(node->id(), node->pos());
 	}
 }
 
@@ -732,19 +685,28 @@ Element *EditorViewScene::lastCreatedFromLinker() const
 	return getElem(mLastCreatedFromLinker);
 }
 
+void EditorViewScene::deleteSelectedItems()
+{
+	QList<QGraphicsItem *> itemsToDelete = selectedItems();
+	IdList idsToDelete;
+	for (QGraphicsItem const *item : itemsToDelete) {
+		Element const *element = dynamic_cast<Element const *>(item);
+		if (element) {
+			idsToDelete << element->id();
+		}
+	}
+
+	deleteElements(idsToDelete);
+}
+
+void EditorViewScene::deleteElements(IdList &idsToDelete)
+{
+	mController.execute(new MultipleRemoveAndUpdateCommand(*this, mModels, idsToDelete));
+}
+
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
-		// Forward event to text editor
-		QGraphicsScene::keyPressEvent(event);
-	} else if (event->key() == Qt::Key_Delete) {
-		// Delete selected elements from scene
-		mainWindow()->deleteFromScene();
-	} else if (event->matches(QKeySequence::Paste)) {
-		paste(event->modifiers() == Qt::ShiftModifier);
-	} else if (event->matches(QKeySequence::Copy)) {
-		copy();
-	} else if (isArrow(event->key())) {
+	if (isArrow(event->key())) {
 		moveSelectedItems(event->key());
 	} else if (event->key() == Qt::Key_Menu) {
 		initContextMenu(nullptr, QPointF()); // see #593
@@ -820,7 +782,7 @@ bool EditorViewScene::moveNodes()
 
 	if (resizeCommand) {
 		resizeCommand->stopTracking();
-		mController->execute(resizeCommand);
+		mController.execute(resizeCommand);
 	}
 
 	return movedNodesPresent;
@@ -844,7 +806,7 @@ void EditorViewScene::moveEdges()
 			}
 
 			edgeCommand->stopTracking();
-			mController->execute(edgeCommand);
+			mController.execute(edgeCommand);
 		}
 	}
 }
@@ -911,10 +873,10 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
 		mTimer->stop();
 
-		QPoint const pos = mainWindow()->mapFromGlobal(event->screenPos());
+		QPoint const pos = views()[0]->window()->mapFromGlobal(event->screenPos());
 		QLOG_TRACE() << "Started mouse gesture at " << pos;
 
-		mMouseMovementManager->mousePress(event->scenePos());
+		mMouseMovementManager.mousePress(event->scenePos());
 		mRightButtonPressed = true;
 	}
 
@@ -931,7 +893,9 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	disableActions(e);
 	mContextMenu.clear();
-	mContextMenu.addActions(mContextMenuActions);
+	mContextMenu.addAction(&mActionDeleteFromDiagram);
+	mContextMenu.addSeparator();
+	mContextMenu.addActions(mEditorActions);
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (e) {
@@ -949,12 +913,12 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 		}
 
-		if (e->createChildrenFromMenu() && !mWindow->editorManager().containedTypes(e->id().type()).empty()) {
+		if (e->createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
 			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
 			createChildMapper = new QSignalMapper();
-			foreach (Id const &type, mWindow->editorManager().containedTypes(e->id().type())) {
-				QAction *createAction = createChildMenu->addAction(mWindow->editorManager().friendlyName(type));
+			foreach (Id const &type, mEditorManager.containedTypes(e->id().type())) {
+				QAction *createAction = createChildMenu->addAction(mEditorManager.friendlyName(type));
 				connect(createAction, SIGNAL(triggered()), createChildMapper, SLOT(map()), Qt::UniqueConnection);
 				createChildMapper->setMapping(createAction, type.toString());
 				connect(createChildMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
@@ -962,35 +926,26 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 		}
 
 		mContextMenu.addSeparator();
-		mExploser->createConnectionSubmenus(mContextMenu, e);
+		mExploser.createConnectionSubmenus(mContextMenu, e);
 	}
 
 	mContextMenu.exec(QCursor::pos());
 
-	enableActions();
+	setActionsEnabled(true);
 	delete createChildMapper;
 }
 
 void EditorViewScene::disableActions(Element *focusElement)
 {
 	if (!focusElement) {
-		mWindow->actionDeleteFromDiagram()->setEnabled(false);
-		mWindow->actionCutElementsOnDiagram()->setEnabled(false);
-		mWindow->actionCopyElementsOnDiagram()->setEnabled(false);
+		mActionDeleteFromDiagram.setEnabled(false);
+		mActionCopyOnDiagram.setEnabled(false);
+		mActionCutOnDiagram.setEnabled(false);
 	}
 	if (isEmptyClipboard()) {
-		mWindow->actionPasteOnDiagram()->setEnabled(false);
-		mWindow->actionPasteCopyOfLogical()->setEnabled(false);
+		mActionPasteOnDiagram.setEnabled(false);
+		mActionPasteReference.setEnabled(false);
 	}
-}
-
-void EditorViewScene::enableActions()
-{
-	mWindow->actionDeleteFromDiagram()->setEnabled(true);
-	mWindow->actionCutElementsOnDiagram()->setEnabled(true);
-	mWindow->actionCopyElementsOnDiagram()->setEnabled(true);
-	mWindow->actionPasteOnDiagram()->setEnabled(true);
-	mWindow->actionPasteCopyOfLogical()->setEnabled(true);
 }
 
 bool EditorViewScene::isEmptyClipboard()
@@ -1002,25 +957,25 @@ bool EditorViewScene::isEmptyClipboard()
 void EditorViewScene::getObjectByGesture()
 {
 	mTimer->stop();
-	gestures::MouseMovementManager::GestureResult const result = mMouseMovementManager->result();
+	gestures::MouseMovementManager::GestureResult const result = mMouseMovementManager.result();
 	switch (result.type()) {
 	case gestures::MouseMovementManager::invalidGesture:
 		break;
 	case gestures::MouseMovementManager::createElementGesture: {
 		// Creating element with its center in the center of gesture (see #1086)
 		Id const id = result.elementType();
-		QSize const elementSize = mWindow->editorManager().iconSize(id);
-		QPointF const gestureCenter = mMouseMovementManager->pos();
+		QSize const elementSize = mEditorManager.iconSize(id);
+		QPointF const gestureCenter = mMouseMovementManager.pos();
 		QPointF const elementCenter(elementSize.width() / 2.0, elementSize.height() / 2.0);
 		createElement(id.toString(), gestureCenter - elementCenter);
 		break;
 	}
 	case gestures::MouseMovementManager::deleteGesture:
 		// Deletting element under the gesture center
-		QPointF const gestureCenter = mMouseMovementManager->pos();
+		QPointF const gestureCenter = mMouseMovementManager.pos();
 		for (QGraphicsItem * const item : items(gestureCenter)) {
 			if (NodeElement * const node = dynamic_cast<NodeElement *>(item)) {
-				mWindow->deleteElementFromDiagram(node->id());
+				deleteElements(IdList() << node->id());
 				break;
 			}
 		}
@@ -1043,7 +998,7 @@ void EditorViewScene::updateMovedElements()
 
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
-			mMVIface->graphicalAssistApi()->setPosition(element->id(), newPos);
+			mModels.graphicalModelAssistApi().setPosition(element->id(), newPos);
 		}
 	}
 }
@@ -1055,9 +1010,9 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 	foreach (PossibleEdge const &possibleEdge, edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
 				&& possibleEdge.first.second.diagram() == child.id().diagram()
-				&& mWindow->editorManager().isParentOf(child.id().editor(), child.id().diagram()
+				&& mEditorManager.isParentOf(child.id().editor(), child.id().diagram()
 						, possibleEdge.first.second.element(), child.id().diagram(), child.id().element())
-				&& mWindow->editorManager().isParentOf(child.id().editor(), child.id().diagram()
+				&& mEditorManager.isParentOf(child.id().editor(), child.id().diagram()
 						, possibleEdge.first.first.element(), child.id().diagram(), parent->id().element()))
 		{
 			allLinks.push_back(possibleEdge.second.second.toString());
@@ -1077,7 +1032,7 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 	QMenu *edgeMenu = new QMenu();
 	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
 	foreach (QString id, ids) {
-		QAction *element = new QAction(mWindow->editorManager().friendlyName(Id::loadFromString(id)), edgeMenu);
+		QAction *element = new QAction(mEditorManager.friendlyName(Id::loadFromString(id)), edgeMenu);
 		edgeMenu->addAction(element);
 		QObject::connect(element, SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
 		menuSignalMapper->setMapping(element, id);
@@ -1089,8 +1044,8 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 
 void EditorViewScene::createEdge(QString const &idStr)
 {
-	QPointF const start = mMouseMovementManager->firstPoint();
-	QPointF const end = mMouseMovementManager->lastPoint();
+	QPointF const start = mMouseMovementManager.firstPoint();
+	QPointF const end = mMouseMovementManager.lastPoint();
 	CreateElementCommand *createCommand;
 	Id const id = createElement(idStr, start, true, &createCommand);
 	Element *edgeElement = getElem(id);
@@ -1172,10 +1127,10 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mShouldReparentItems = false;
 	}
 
-	if (event->button() == Qt::RightButton && !(mMouseMovementManager->pathIsEmpty())) {
-		QPoint const pos = mainWindow()->mapFromGlobal(event->screenPos());
+	if (event->button() == Qt::RightButton && !(mMouseMovementManager.pathIsEmpty())) {
+		QPoint const pos = views()[0]->window()->mapFromGlobal(event->screenPos());
 		QLOG_TRACE() << "Mouse gesture movement to " << pos;
-		mMouseMovementManager->mouseMove(event->scenePos());
+		mMouseMovementManager.mouseMove(event->scenePos());
 		mRightButtonPressed = false;
 		drawGesture();
 		EdgeElement * const edgeElement = dynamic_cast<EdgeElement *>(element);
@@ -1185,7 +1140,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				return;
 			}
 		}
-		if (!mMouseMovementManager->wasMoving()) {
+		if (!mMouseMovementManager.wasMoving()) {
 			deleteGesture();
 			if (element && !element->isSelected()) {
 				element->setSelected(true);
@@ -1198,11 +1153,11 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 		QLOG_TRACE() << "Mouse gesture release at " << pos;
 
-		QPointF const start = mMouseMovementManager->firstPoint();
-		QPointF const end = mMouseMovementManager->lastPoint();
+		QPointF const start = mMouseMovementManager.firstPoint();
+		QPointF const end = mMouseMovementManager.lastPoint();
 		NodeElement * const startNode = findNodeAt(start);
 		NodeElement * const endNode = findNodeAt(end);
-		if (startNode && endNode && mMouseMovementManager->isEdgeCandidate()
+		if (startNode && endNode && mMouseMovementManager.isEdgeCandidate()
 				&& startNode->id() != endNode->id()) {
 			getLinkByGesture(startNode, *endNode);
 			deleteGesture();
@@ -1227,10 +1182,10 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	} else {
 		// button isn't recognized while mouse moves
 		if (mRightButtonPressed) {
-			QPoint const pos = mainWindow()->mapFromGlobal(event->screenPos());
+			QPoint const pos = views()[0]->window()->mapFromGlobal(event->screenPos());
 			QLOG_TRACE() << "Mouse gesture movement to " << pos;
 
-			mMouseMovementManager->mouseMove(event->scenePos());
+			mMouseMovementManager.mouseMove(event->scenePos());
 			drawGesture();
 		} else {
 			QGraphicsScene::mouseMoveEvent(event);
@@ -1245,10 +1200,6 @@ QPointF EditorViewScene::getMousePos() const
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	Element *e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
-	if (e && e->isSelected() && !event->modifiers()) {
-		mainWindow()->graphicalModelExplorer()->setFocus();
-	}
 	QGraphicsScene::mouseDoubleClickEvent(event);
 
 	if (event->button() == Qt::LeftButton && !event->modifiers()) {
@@ -1261,7 +1212,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 			}
 		} else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
 			event->accept();
-			mExploser->handleDoubleClick(element->logicalId());
+			mExploser.handleDoubleClick(element->logicalId());
 		}
 	}
 }
@@ -1290,30 +1241,32 @@ NodeElement *EditorViewScene::findNodeAt(QPointF const &position) const
 
 qReal::Id EditorViewScene::rootItemId() const
 {
-	return mMVIface->rootId();
+	return mRootId;
 }
 
-void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
+models::Models const &EditorViewScene::models() const
 {
-	mWindow = mainWindow;
-	mController = mWindow->controller();
-	mClipboardHandler.setController(mController);
-	mExploser = new view::details::ExploserView(*mainWindow, mainWindow->models()->logicalModelAssistApi()
-			, mainWindow->models()->graphicalModelAssistApi(), mainWindow->exploser(), this);
-	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
-	QAction * const separator = new QAction(this);
-	separator->setSeparator(true);
-	mContextMenuActions << mWindow->actionDeleteFromDiagram()
-			<< separator
-			<< mWindow->actionCutElementsOnDiagram()
-			<< mWindow->actionCopyElementsOnDiagram()
-			<< mWindow->actionPasteOnDiagram()
-			<< mWindow->actionPasteCopyOfLogical();
+	return mModels;
 }
 
-qReal::MainWindow *EditorViewScene::mainWindow() const
+Controller &EditorViewScene::controller() const
 {
-	return mWindow;
+	return mController;
+}
+
+EditorManagerInterface const &EditorViewScene::editorManager() const
+{
+	return mEditorManager;
+}
+
+SceneCustomizer const &EditorViewScene::customizer() const
+{
+	return mCustomizer;
+}
+
+QWidget *EditorViewScene::gesturesPainterWidget() const
+{
+	return mMouseMovementManager.producePainter();
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
@@ -1334,7 +1287,7 @@ void EditorViewScene::setNeedDrawGrid(bool show)
 
 void EditorViewScene::drawGesture()
 {
-	QLineF line = mMouseMovementManager->newLine();
+	QLineF line = mMouseMovementManager.newLine();
 	QGraphicsLineItem *item = new QGraphicsLineItem(line);
 	qreal size = mGesture.size() * 0.1;
 	qreal color_ratio = pow(fabs(sin(size)), 1.5);
@@ -1351,7 +1304,7 @@ void EditorViewScene::deleteGesture()
 		removeItem(item);
 	}
 	mGesture.clear();
-	mMouseMovementManager->clear();
+	mMouseMovementManager.clear();
 }
 
 void EditorViewScene::redraw()
@@ -1369,7 +1322,6 @@ void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 		}
 		wheelEvent->accept();
 	}
-	return;
 }
 
 void EditorViewScene::highlight(Id const &graphicalId, bool exclusive, QColor const &color)
@@ -1408,9 +1360,10 @@ void EditorViewScene::dehighlight(Id const &graphicalId)
 void EditorViewScene::dehighlight()
 {
 	foreach (Element *element, mHighlightedElements) {
-		if (mainWindow()->getCurrentTab()->scene()->items().contains(element))
+		if (items().contains(element))
 			element->setGraphicsEffect(nullptr);
 	}
+
 	mHighlightedElements.clear();
 }
 
@@ -1440,17 +1393,35 @@ void EditorViewScene::setCorners(QPointF const &topLeft, QPointF const &bottomRi
 	addItem(mBottomRightCorner);
 }
 
-// this needs to do something with it: make the behavior of sceneRect adequate
-void EditorViewScene::cropToItems()
+void EditorViewScene::initializeActions()
 {
-	removeItem(mTopLeftCorner);
-	removeItem(mBottomRightCorner);
+	QAction * const separator = new QAction(this);
+	separator->setSeparator(true);
 
-	QRectF newRect = itemsBoundingRect();
+	mActionDeleteFromDiagram.setShortcut(QKeySequence(Qt::Key_Delete));
+	mActionDeleteFromDiagram.setText(tr("Delete"));
+	connect(&mActionDeleteFromDiagram, &QAction::triggered, this, &EditorViewScene::deleteSelectedItems);
 
-	setSceneRect(newRect);
-	mView->setSceneRect(newRect);
-	setCorners(newRect.topLeft(), newRect.bottomRight());
+	mActionCopyOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
+	mActionCopyOnDiagram.setText(tr("Copy"));
+	connect(&mActionCopyOnDiagram, &QAction::triggered, this, &EditorViewScene::copy);
+
+	mActionPasteOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
+	mActionPasteOnDiagram.setText(tr("Paste"));
+	connect(&mActionPasteOnDiagram, &QAction::triggered, [=]() { paste(false); });
+
+	mActionPasteReference.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_V));
+	mActionPasteReference.setText(tr("Paste only graphical copy"));
+	connect(&mActionPasteReference, &QAction::triggered, [=]() { paste(true); });
+
+	mActionCutOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
+	mActionCutOnDiagram.setText(tr("Cut"));
+	connect(&mActionCutOnDiagram, &QAction::triggered, this, &EditorViewScene::cut);
+
+	mEditorActions << &mActionCutOnDiagram
+			<< &mActionCopyOnDiagram
+			<< &mActionPasteOnDiagram
+			<< &mActionPasteReference;
 }
 
 void EditorViewScene::updateEdgeElements()
@@ -1459,11 +1430,9 @@ void EditorViewScene::updateEdgeElements()
 		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
 			enums::linkShape::LinkShape const shape
-					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType"
-							, enums::linkShape::unset).toInt());
-			if (shape != enums::linkShape::unset) {
-				element->changeShapeType(shape);
-			}
+					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
+
+			element->changeShapeType(shape);
 
 			if (SettingsManager::value("ActivateGrid").toBool()) {
 				element->alignToGrid();
@@ -1478,13 +1447,13 @@ void EditorViewScene::initNodes()
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
 			node->adjustLinks();
-			if (mMVIface->graphicalAssistApi()->properties(node->id()).contains("expanded")
-					&& mMVIface->graphicalAssistApi()->graphicalRepoApi().property(
+			if (mModels.graphicalModelAssistApi().properties(node->id()).contains("expanded")
+					&& mModels.graphicalRepoApi().property(
 							node->id(), "expanded").toString() == "true") {
 				node->changeExpanded();
 			}
-			if (mMVIface->graphicalAssistApi()->properties(node->id()).contains("folded")
-					&& mMVIface->graphicalAssistApi()->graphicalRepoApi().property(
+			if (mModels.graphicalModelAssistApi().properties(node->id()).contains("folded")
+					&& mModels.graphicalRepoApi().property(
 							node->id(), "folded").toString() == "true") {
 				node->changeFoldState();
 			}
@@ -1493,20 +1462,23 @@ void EditorViewScene::initNodes()
 	}
 }
 
-void EditorViewScene::setTitlesVisible(bool visible)
+QAction &EditorViewScene::deleteAction()
 {
-	mTitlesVisible = visible;
-	foreach (QGraphicsItem *item, items()) {
-		Element *element = dynamic_cast<Element *>(item);
-		if (element) {
-			element->setTitlesVisible(visible);
-		}
-	}
+	return mActionDeleteFromDiagram;
 }
 
-void EditorViewScene::onElementParentChanged(Element *element)
+QList<QAction *> const &EditorViewScene::editorActions() const
 {
-	element->setTitlesVisible(mTitlesVisible);
+	return mEditorActions;
+}
+
+void EditorViewScene::setActionsEnabled(bool enabled)
+{
+	for (QAction * const action : mEditorActions) {
+		action->setEnabled(enabled);
+	}
+
+	mActionDeleteFromDiagram.setEnabled(enabled);
 }
 
 void EditorViewScene::deselectLabels()

@@ -2,24 +2,19 @@
 
 #include <QtWidgets/QAbstractItemView>
 
-#include "models/graphicalModelAssistApi.h"
-#include "models/logicalModelAssistApi.h"
-#include "models/exploser.h"
-#include "plugins/pluginManager/sdfRenderer.h"
-
-class QGraphicsItem;
+#include <qrkernel/ids.h>
 
 namespace qReal {
 
+class EditorView;
 class EditorViewScene;
-
 class Element;
 
 namespace models {
+class Exploser;
 class GraphicalModelAssistApi;
 class LogicalModelAssistApi;
 }
-class EditorView;
 
 class EditorViewMViface : public QAbstractItemView
 {
@@ -34,7 +29,8 @@ public:
 	void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 	bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
 	void configure(models::GraphicalModelAssistApi &graphicalAssistApi
-			, models::LogicalModelAssistApi &logicalAssistApi, Exploser &exploser);
+			, models::LogicalModelAssistApi &logicalAssistApi
+			, models::Exploser &exploser);
 	void setLogicalModel(QAbstractItemModel * const logicalModel);
 	Id rootId() const;
 
@@ -45,6 +41,10 @@ public:
 	/// Clears prerendered images.
 	/// @param zoomFactor - current zoom factor to render images.
 	void invalidateImagesZoomCache(qreal zoomFactor);
+
+signals:
+	/// Emitted when for some reason root index was removed from the model.
+	void rootElementRemoved(QModelIndex const &graphicsIndex);
 
 public slots:
 	void reset();
@@ -67,12 +67,10 @@ private:
 	qReal::EditorView *mView;
 	models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	models::LogicalModelAssistApi *mLogicalAssistApi;
-	Exploser *mExploser;
+	models::Exploser *mExploser;
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;
-
-	SdfRenderer mRenderer;
 
 	QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers);
 

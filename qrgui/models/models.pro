@@ -25,6 +25,7 @@ HEADERS += \
 	$$PWD/exploser.h \
 	$$PWD/commands/createElementCommand.h \
 	$$PWD/commands/removeElementCommand.h \
+	$$PWD/commands/multipleRemoveCommand.h \
 	$$PWD/commands/createRemoveCommandImplementation.h \
 	$$PWD/commands/createGroupCommand.h \
 	$$PWD/commands/changePropertyCommand.h \
@@ -54,6 +55,7 @@ SOURCES += \
 	$$PWD/exploser.cpp \
 	$$PWD/commands/createElementCommand.cpp \
 	$$PWD/commands/removeElementCommand.cpp \
+	$$PWD/commands/multipleRemoveCommand.cpp \
 	$$PWD/commands/createRemoveCommandImplementation.cpp \
 	$$PWD/commands/createGroupCommand.cpp \
 	$$PWD/commands/changePropertyCommand.cpp \

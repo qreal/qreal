@@ -8,7 +8,7 @@ EdgeElementCommand::EdgeElementCommand(EditorViewScene const *scene, Id const &i
 }
 
 EdgeElementCommand::EdgeElementCommand(EditorView const *view, Id const &id)
-	: ElementCommand(view->editorViewScene(), id)
+	: ElementCommand(&view->editorViewScene(), id)
 {
 }
 

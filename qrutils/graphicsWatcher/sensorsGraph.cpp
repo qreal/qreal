@@ -28,7 +28,7 @@ struct SensorsGraph::TrackObject {
 	}
 };
 
-SensorsGraph::SensorsGraph(utils::ExpressionsParser const *parser, QWidget *parent)
+SensorsGraph::SensorsGraph(qrtext::DebuggerInterface const &parser, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::SensorsGraph)
 	, mParser(parser)
@@ -174,6 +174,7 @@ void SensorsGraph::startJob()
 	if (mWatchList.isEmpty()) {
 		return;
 	}
+
 	mUpdateTimer.start(mUpdateInterval);
 	mPlotFrame->startJob();
 }
@@ -181,14 +182,13 @@ void SensorsGraph::startJob()
 void SensorsGraph::updateValues()
 {
 	int const notExists = -1;
-	QMap<QString, Number *> const &variables = mParser->variables();
 
 	TrackObject currentObject(mCurrentSlot);
 	int const index = mWatchList.indexOf(currentObject);
 	if (index != notExists) {
-		Number *const number = variables[mWatchList.at(index).inParserName];
+		double number = mParser.value<double>(mWatchList.at(index).inParserName);
 		if (number) {
-			sensorsInput(mCurrentSlot, number->value().toDouble());
+			sensorsInput(mCurrentSlot, number);
 		}
 	}
 }

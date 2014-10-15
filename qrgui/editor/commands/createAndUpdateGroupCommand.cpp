@@ -1,5 +1,6 @@
 #include "createAndUpdateGroupCommand.h"
 
+#include "editor/editorViewScene.h"
 #include "editor/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal::commands;
@@ -7,7 +8,7 @@ using namespace qReal::commands;
 CreateAndUpdateGroupCommand::CreateAndUpdateGroupCommand(EditorViewScene &scene
 		, models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi &graphicalApi
-		, Exploser &exploser
+		, models::Exploser &exploser
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, Id const &id

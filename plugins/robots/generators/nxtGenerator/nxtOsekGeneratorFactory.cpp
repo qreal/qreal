@@ -9,8 +9,9 @@ using namespace generatorBase::simple;
 
 NxtOsekGeneratorFactory::NxtOsekGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
-	: GeneratorFactoryBase(repo, errorReporter, robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, generatorBase::lua::LuaProcessor &luaProcessor)
+	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 {
 }
 
@@ -42,5 +43,5 @@ QString NxtOsekGeneratorFactory::pathToTemplates() const
 
 generatorBase::simple::Binding::ConverterInterface *NxtOsekGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::NxtStringPropertyConverter(*mVariables, *mSubprograms, *systemVariableNameConverter());
+	return new converters::NxtStringPropertyConverter(*mVariables, *mSubprograms, *reservedVariableNameConverter());
 }

@@ -30,7 +30,7 @@ private:
 
 	QAction mSeparator;
 	QAction mCheckForUpdatesAction;
-	ErrorReporterInterface *mErrorReporter;
+	qReal::ErrorReporterInterface *mErrorReporter;
 	QWidget *mMainWindowWidget;
 };
 

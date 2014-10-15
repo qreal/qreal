@@ -4,29 +4,19 @@
 #include "editor/copyPaste/clipboardHandler.h"
 #include "editor/copyPaste/pasteGroupCommand.h"
 #include "editor/editorViewScene.h"
-#include "mainWindow/mainWindow.h"
 
 using namespace qReal;
 
-ClipboardHandler::ClipboardHandler(EditorViewScene *scene)
-	: mScene(scene), mMVIface(NULL)
+ClipboardHandler::ClipboardHandler(EditorViewScene &scene, Controller &controller)
+	: mScene(scene)
+	, mController(controller)
 {
-}
-
-void ClipboardHandler::setMVIface(EditorViewMViface *mvIface)
-{
-	mMVIface = mvIface;
-}
-
-void ClipboardHandler::setController(Controller * const controller)
-{
-	mController = controller;
 }
 
 void ClipboardHandler::cut()
 {
 	copy();
-	mScene->mainWindow()->deleteFromScene();
+	mScene.deleteSelectedItems();
 }
 
 void ClipboardHandler::copy()
@@ -52,9 +42,9 @@ QList<NodeData> ClipboardHandler::getNodesData(QList<NodeElement *> const &nodes
 QList<NodeElement *> ClipboardHandler::getNodesForCopying()
 {
 	QList<NodeElement *> nodes;
-	for (QGraphicsItem * const item : mScene->selectedItems()) {
+	for (QGraphicsItem * const item : mScene.selectedItems()) {
 		NodeElement *node = dynamic_cast<NodeElement *>(item);
-		if (node && !mScene->selectedItems().contains(node->parentItem())) {
+		if (node && !mScene.selectedItems().contains(node->parentItem())) {
 			nodes << node;
 		}
 	}
@@ -80,12 +70,13 @@ void ClipboardHandler::addChildren(NodeElement *node, QList<NodeElement *> &node
 QList<EdgeData> ClipboardHandler::getEdgesData()
 {
 	QList<EdgeData> edgesData;
-	foreach (QGraphicsItem *item, mScene->selectedItems()) {
+	for (QGraphicsItem *item : mScene.selectedItems()) {
 		EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
 		if (edge) {
 			edgesData << edge->data();
 		}
 	}
+
 	return edgesData;
 }
 
@@ -106,8 +97,8 @@ void ClipboardHandler::pushDataToClipboard(QList<NodeData> const &nodesData, QLi
 
 void ClipboardHandler::paste(bool isGraphicalCopy)
 {
-	commands::PasteGroupCommand *pasteCommand = new commands::PasteGroupCommand(mScene, mMVIface, isGraphicalCopy);
+	commands::PasteGroupCommand *pasteCommand = new commands::PasteGroupCommand(&mScene, isGraphicalCopy);
 	if (!pasteCommand->isEmpty()) {
-		mController->execute(pasteCommand);
+		mController.execute(pasteCommand);
 	}
 }

@@ -2,31 +2,35 @@
 
 #include <QtWidgets/QGraphicsView>
 
+#include "editor/private/touchSupportManager.h"
 #include "editor/editorViewScene.h"
 #include "editor/private/editorViewMVIface.h"
-#include "editor/private/touchSupportManager.h"
 
 namespace qReal {
-
-class EditorViewMViface;
-class MainWindow;
 
 class EditorView : public QGraphicsView
 {
 	Q_OBJECT
 
 public:
-	explicit EditorView(QWidget *parent);
-	~EditorView();
+	EditorView(models::Models const &models
+			, Controller &controller
+			, SceneCustomizer const &customizer
+			, Id const &rootId
+			, QWidget *parent = 0);
 
-	EditorViewMViface *mvIface() const;
-	EditorViewScene *editorViewScene() const;
+	EditorViewMViface const &mvIface() const;
+	EditorViewMViface &mutableMvIface();
+	EditorViewScene const &editorViewScene() const;
+	EditorViewScene &mutableScene();
 
-	void setMainWindow(qReal::MainWindow *mainWindow);
 	void setDrawSceneGrid(bool show);
 	void ensureElementVisible(Element const * const element);
 	void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
-	void setTitlesVisible(bool visible);
+
+signals:
+	/// Emitted when for some reason root element was removed and editor must be closed.
+	void rootElementRemoved(QModelIndex const &rootGraphicsIndex);
 
 public slots:
 	void toggleAntialiasing(bool);
@@ -44,6 +48,8 @@ protected:
 	virtual void keyReleaseEvent(QKeyEvent *event);
 
 	virtual bool viewportEvent(QEvent *event);
+	void focusOutEvent(QFocusEvent* event);
+	void focusInEvent(QFocusEvent * event);
 
 private slots:
 	void zoomInTime();
@@ -57,8 +63,8 @@ private:
 
 	void startAnimation(char const *slot);
 
-	EditorViewMViface *mMVIface;
-	EditorViewScene *mScene;
+	EditorViewScene mScene;
+	EditorViewMViface mMVIface;
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
 	view::details::TouchSupportManager mTouchManager;

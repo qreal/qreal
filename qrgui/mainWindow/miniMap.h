@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtWidgets/QGraphicsView>
 
 #include "editor/editorView.h"
 #include "editor/editorViewScene.h"

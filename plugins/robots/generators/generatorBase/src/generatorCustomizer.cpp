@@ -8,6 +8,7 @@ GeneratorCustomizer::GeneratorCustomizer()
 	, mDefaultFinalBlockType("RobotsMetamodel", "RobotsDiagram", "FinalNode")
 	, mDefaultConditionalBlockType("RobotsMetamodel", "RobotsDiagram", "IfBlock")
 	, mDefaultLoopBlockType("RobotsMetamodel", "RobotsDiagram", "Loop")
+	, mDefaultSwitchBlockType("RobotsMetamodel", "RobotsDiagram", "SwitchBlock")
 	, mDefaultForkBlockType("RobotsMetamodel", "RobotsDiagram", "Fork")
 {
 }
@@ -39,9 +40,7 @@ bool GeneratorCustomizer::isLoop(Id const &block) const
 
 bool GeneratorCustomizer::isSwitch(Id const &block) const
 {
-	// TODO:
-	Q_UNUSED(block)
-	return false;
+	return block.type() == mDefaultSwitchBlockType;
 }
 
 bool GeneratorCustomizer::isFork(Id const &block) const

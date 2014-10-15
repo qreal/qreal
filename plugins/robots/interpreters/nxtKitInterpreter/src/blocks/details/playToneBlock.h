@@ -14,7 +14,6 @@ public:
 	explicit PlayToneBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
 protected:
-	int frequency();
 	int duration() override;
 	void doJob(robotModel::parts::NxtSpeaker &speaker) override;
 };

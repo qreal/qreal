@@ -8,7 +8,8 @@
 namespace qReal {
 
 /// Interface for getting data from the repo by plugins' classes.
-class ElementRepoInterface {
+class ElementRepoInterface
+{
 public:
 	virtual QString logicalProperty(QString const &roleName) const = 0;
 	virtual qReal::Id id() const = 0;

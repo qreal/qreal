@@ -13,9 +13,6 @@
 #include "plugins/pluginManager/editorManagerInterface.h"
 
 // TODO: lolwut?
-//#include "ui_mainWindow.h"
-
-// TODO: lolwut?
 #include "models/details/logicalModel.h"
 
 #include "mainWindow/shapeEdit/visibilityConditionsDialog.h"
@@ -27,17 +24,21 @@ class ShapeEdit;
 
 namespace qReal {
 
-class ShapeEdit : public QWidget {
+class MainWindow;
+
+class ShapeEdit : public QWidget
+{
 	Q_OBJECT
 
 public:
-	explicit ShapeEdit(QWidget *parent = NULL);
+	explicit ShapeEdit(QWidget *parent = nullptr);
 	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role
 		, bool useTypedPorts);
-	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy
+	ShapeEdit(Id const &id, EditorManagerInterface const &editorManagerProxy
 		, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow
 		, EditorView *editorView, bool useTypedPorts);
 	~ShapeEdit();
+
 	graphicsUtils::AbstractView* getView();
 	void load(QString const &text);
 
@@ -92,7 +93,7 @@ private:
 	QPersistentModelIndex const mIndex;
 	int const mRole;
 	Id mId;
-	EditorManagerInterface *mEditorManager;  // Doesn't have ownership.
+	EditorManagerInterface const *mEditorManager;  // Doesn't have ownership.
 	IdList mGraphicalElements;
 	MainWindow *mMainWindow;  // Doesn't have ownership.
 	EditorView *mEditorView;  // Doesn't have ownership.

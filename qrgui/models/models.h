@@ -4,6 +4,7 @@
 #include "models/details/logicalModel.h"
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
+#include "models/exploser.h"
 
 namespace qReal {
 namespace models {
@@ -27,6 +28,8 @@ public:
 
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 
+	Exploser &exploser() const;
+
 	void reinit();
 
 private:
@@ -34,6 +37,7 @@ private:
 	models::details::GraphicalPartModel *mGraphicalPartModel;
 	models::details::LogicalModel *mLogicalModel;
 	qrRepo::RepoControlInterface *mRepoApi;
+	Exploser *mExploser;
 };
 
 }

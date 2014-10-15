@@ -5,7 +5,7 @@
 namespace generatorBase {
 namespace semantics {
 
-/// A base class for all simple-block semantic transformation rules
+/// Creates fork in semantic tree: the execution will proceed by all the branches given in constructor.
 class ForkRule : public SemanticTransformationRule
 {
 public:
@@ -13,7 +13,7 @@ public:
 
 	bool apply() override;
 
-protected:
+private:
 	QList<LinkInfo> const mThreads;
 	parts::Threads &mThreadsStorage;
 };

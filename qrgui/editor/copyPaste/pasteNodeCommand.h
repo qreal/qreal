@@ -12,7 +12,6 @@ class PasteNodeCommand : public PasteCommand
 {
 public:
 	PasteNodeCommand(EditorViewScene *scene
-			, EditorViewMViface const *mvIface
 			, NodeData const &data
 			, QPointF const &offset
 			, bool isGraphicalCopy

@@ -5,7 +5,7 @@
     <Description>Install it for working with Lego NXT in Trik Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором Lego NXT</Description>
     <Version inheritVersionFrom="com.qreal.root.robots">1</Version>
-    <ReleaseDate>2014-09-04</ReleaseDate>
+    <ReleaseDate>2014-10-09</ReleaseDate>
     <Licenses>
         <License name="QextSerialPort Component License" file="QextSerialPort-license.txt" />
     </Licenses>

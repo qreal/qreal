@@ -65,6 +65,7 @@ HEADERS += \
 	$$PWD/commands/updateElementCommand.h \
 	$$PWD/commands/insertIntoEdgeCommand.h \
 	$$PWD/commands/createAndUpdateGroupCommand.h \
+	$$PWD/commands/multipleRemoveAndUpdateCommand.h \
 	$$PWD/commands/resizeCommand.h \
 	$$PWD/commands/foldCommand.h \
 	$$PWD/commands/reshapeEdgeCommand.h \
@@ -116,6 +117,7 @@ SOURCES += \
 	$$PWD/commands/updateElementCommand.cpp \
 	$$PWD/commands/insertIntoEdgeCommand.cpp \
 	$$PWD/commands/createAndUpdateGroupCommand.cpp \
+	$$PWD/commands/multipleRemoveAndUpdateCommand.cpp \
 	$$PWD/commands/resizeCommand.cpp \
 	$$PWD/commands/foldCommand.cpp \
 	$$PWD/commands/reshapeEdgeCommand.cpp \

@@ -75,15 +75,12 @@ public:
 public slots:
 	virtual void select(bool const singleSelected);
 	virtual void setSelectionState(bool const selected);
-	void setTitlesVisible(bool visible);
 
 signals:
 	void switchFolding(bool);
 
 protected:
-	void initTitlesBy(QRectF const& contents);
-	/// Sets titles visibility without state registering
-	void setTitlesVisiblePrivate(bool visible);
+	void setHideNonHardLabels(bool visible);
 
 	void keyPressEvent(QKeyEvent *event) override;
 
@@ -92,7 +89,6 @@ protected:
 	Id const mId;
 	ElementImpl * const mElementImpl;  // Has ownership.
 	QList<Label *> mLabels;
-	bool mTitlesVisible;
 
 	models::LogicalModelAssistApi &mLogicalAssistApi;
 	models::GraphicalModelAssistApi &mGraphicalAssistApi;

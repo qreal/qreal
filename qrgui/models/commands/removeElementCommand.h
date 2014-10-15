@@ -2,7 +2,6 @@
 
 #include "controller/commands/abstractCommand.h"
 #include "models/commands/createRemoveCommandImplementation.h"
-#include "editor/element.h"
 
 namespace qReal {
 namespace commands {
@@ -13,22 +12,13 @@ public:
 	RemoveElementCommand(
 			models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
-			, Exploser &exploser
+			, models::Exploser const &exploser
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id
 			, bool isFromLogicalModel
 			, QString const &name
 			, QPointF const &position);
-
-	RemoveElementCommand(
-			models::LogicalModelAssistApi &logicalApi
-			, models::GraphicalModelAssistApi &graphicalApi
-			, Exploser &exploser
-			, const Id &logicalParent
-			, const Id &graphicalParent
-			, bool isFromLogicalModel
-			, Element *element);
 
 	virtual bool equals(AbstractCommand const &other) const;
 

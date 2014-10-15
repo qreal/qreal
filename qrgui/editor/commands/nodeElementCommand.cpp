@@ -8,7 +8,7 @@ NodeElementCommand::NodeElementCommand(EditorViewScene const *scene, Id const &i
 }
 
 NodeElementCommand::NodeElementCommand(EditorView const *view, Id const &id)
-	: ElementCommand(view->editorViewScene(), id)
+	: ElementCommand(&view->editorViewScene(), id)
 {
 }
 

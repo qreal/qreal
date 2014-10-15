@@ -47,6 +47,7 @@ private:
 	void generateNodesAndEdges(utils::OutFile &out);
 	void generateGroupsXML(utils::OutFile &out);
 	void generateEnumValues(utils::OutFile &out);
+	void generateEditableEnums(utils::OutFile &out);
 	void generateResourceFile();
 	void generatePropertyTypesRequests(utils::OutFile &out);
 	void generatePropertyDefaultsRequests(utils::OutFile &out);
