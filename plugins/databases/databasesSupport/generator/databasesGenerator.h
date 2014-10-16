@@ -30,6 +30,26 @@ private:
 	//qReal::BlockParser *mParser;
 
 	//QTranslator mAppTranslator;
+
+	void setCodeFileName(QString const &name);
+	void setWorkDir(QString const &path);
+
+
+	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
+	qReal::LogicalModelAssistInterface const &mLogicalModelApi;
+	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
+	//VisualDebugger::ErrorType mError;
+	Id mCurrentDiagram;
+	Id mCurrentId;
+
+	//QMap<int, Id> mIdByLineCorrelation;
+	//bool mHasCodeGenerationError;
+	//bool mHasNotEndWithFinalNode;
+	QString mCodeFileName;
+	QString mWorkDir;
+	QFile codeFile;
+
+	//int tabsCount;
 };
 }
 }

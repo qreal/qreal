@@ -8,19 +8,19 @@ using namespace databasesSupport;
 QString const databases = "Databases";
 
 DatabasesGenerator::DatabasesGenerator(const PluginConfigurator configurator)
-	: mErrorReporter(NULL)
+	: mCurrentDiagram(Id::rootId())
+	, mCurrentId(Id::rootId())
+	, mCodeFileName("code.c")
+	, mWorkDir("")
+	, mLogicalModelApi(configurator.logicalModelApi())
+	, mGraphicalModelApi(configurator.graphicalModelApi())
+	, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
+	, mErrorReporter(configurator.mainWindowInterpretersInterface().errorReporter())
 {
 	//mAppTranslator.load(":/DatabasesGenerator_" + QLocale::system().name());
 	//QApplication::installTranslator(&mAppTranslator);
 
-	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
 	//mParser = new BlockParser(mErrorReporter);
-
-	/*mVisualDebugger = new VisualDebugger(configurator.logicalModelApi()
-			, configurator.graphicalModelApi()
-			, configurator.mainWindowInterpretersInterface()
-			, mParser
-	); */
 }
 
 DatabasesGenerator::~DatabasesGenerator()
@@ -39,6 +39,17 @@ void DatabasesGenerator::activeTabChanged(Id const &rootElementId)
 	}*/
 }
 
+void DatabasesGenerator::setCodeFileName(QString const &name)
+{
+	mCodeFileName = name;
+}
+
+void DatabasesGenerator::setWorkDir(QString const &path)
+{
+	if (path != "") {
+		mWorkDir = path + "/";
+	}
+}
 
 void DatabasesGenerator::generateSQL()
 {
