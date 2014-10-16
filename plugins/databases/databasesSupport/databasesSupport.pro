@@ -14,7 +14,8 @@ INCLUDEPATH += \
 LIBS += -L$$PWD/../../../bin -lqrkernel -lqrutils -lqrmc
 
 HEADERS += \
-	../../../qrgui/dialogs/preferencesPages/preferencesPage.h
+	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
+    generator/databasesGenerator.h
 
 HEADERS += \
     databasesSupportPlugin.h \
@@ -24,7 +25,8 @@ HEADERS += \
 SOURCES += \
 	databasesSupportPlugin.cpp \
     databasesPreferencesPage.cpp \
-    databasesCustomizer.cpp
+    databasesCustomizer.cpp \
+    generator/databasesGenerator.cpp
 
 OTHER_FILES += \
     databasesSupport.pri

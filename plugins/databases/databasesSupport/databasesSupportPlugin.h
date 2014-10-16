@@ -11,6 +11,7 @@
 
 #include "databasesPreferencesPage.h"
 #include "databasesCustomizer.h"
+#include "generator/databasesGenerator.h"
 
 namespace qReal {
 namespace databasesSupport {
@@ -36,6 +37,7 @@ public slots:
 private:
 	DatabasesPreferencesPage *mPreferencesPage;
 	DatabasesCustomizer mCustomizer;
+	DatabasesGenerator *mDatabasesGenerator;
 	void initActions();
 
 	QAction *mGenerateCodeAction;

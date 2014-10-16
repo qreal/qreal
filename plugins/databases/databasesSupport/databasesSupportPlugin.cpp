@@ -24,7 +24,7 @@ DatabasesSupportPlugin::~DatabasesSupportPlugin()
 
 void DatabasesSupportPlugin::init(PluginConfigurator const &configurator)
 {
-	//mVisualDebugSupport = new VisualDebugSupport(configurator);
+	mDatabasesGenerator = new DatabasesGenerator(configurator);
 	initActions();
 }
 
@@ -58,7 +58,7 @@ void DatabasesSupportPlugin::initActions()
 
 void DatabasesSupportPlugin::generateCode()
 {
-
+	mDatabasesGenerator->generateSQL();
 }
 }
 }
