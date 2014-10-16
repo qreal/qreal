@@ -78,6 +78,9 @@ void PasteEdgeCommand::restoreElement()
 	Id const newSrcId = mCopiedIds->value(mEdgeData.srcId);
 	Id const newDstId = mCopiedIds->value(mEdgeData.dstId);
 
+	Id const logicalId = mMVIface->graphicalAssistApi()->logicalId(mCreateCommand->result());
+	mMVIface->graphicalAssistApi()->setProperties(logicalId, mEdgeData.logicalProperties);
+
 	mMVIface->graphicalAssistApi()->setPosition(edgeId, mEdgeData.pos + mOffset);
 	mMVIface->graphicalAssistApi()->setConfiguration(edgeId, mEdgeData.configuration);
 
@@ -94,5 +97,8 @@ void PasteEdgeCommand::restoreElement()
 		edge->setLine(mEdgeData.configuration);
 		edge->connectToPort();
 		edge->updateData();
+		if (SettingsManager::value("ActivateGrid").toBool()) {
+			edge->alignToGrid();
+		}
 	}
 }

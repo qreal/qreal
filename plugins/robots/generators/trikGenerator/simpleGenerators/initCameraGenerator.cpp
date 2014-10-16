@@ -9,7 +9,7 @@ InitCameraGenerator::InitCameraGenerator(qrRepo::RepoApi const &repo
 		, qReal::Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
-			, "initCamera.t"
+			, "videosensors/init" + repo.property(id, "Mode").toString() + "Sensor.t"
 			, {}
 			, parent)
 {

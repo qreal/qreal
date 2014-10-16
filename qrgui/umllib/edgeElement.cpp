@@ -6,7 +6,10 @@
 #include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QMenu>
+
 #include <math.h>
+#include <qrkernel/logging.h>
+#include <qrutils/mathUtils/geometry.h>
 
 #include "umllib/edgeElement.h"
 #include "umllib/nodeElement.h"
@@ -19,7 +22,7 @@
 using namespace qReal;
 using namespace enums;
 
-const double pi = 3.14159265358979;
+const qreal pi = 3.14159265358979;
 
 const qreal epsilon = 0.00000000001;
 
@@ -81,6 +84,7 @@ EdgeElement::EdgeElement(
 		mLabels.append(title);
 	}
 
+	mShapeType = static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
 	initLineHandler();
 	mChangeShapeAction.setMenu(mLineFactory->shapeTypeMenu());
 }
@@ -105,30 +109,14 @@ void EdgeElement::initTitles()
 
 void EdgeElement::initLineHandler()
 {
-	updateShapeType();
-
 	delete mHandler;
 	mHandler = mLineFactory->createHandler(mShapeType);
 	mHandler->connectAction(&mReverseAction, this, SLOT(reverse()));
 }
 
-void EdgeElement::updateShapeType()
-{
-	mShapeType = static_cast<linkShape::LinkShape>(SettingsManager::value("LineType", linkShape::unset).toInt());
-
-	if (mShapeType == linkShape::unset) {
-		QString const shapeString
-				= mGraphicalAssistApi.graphicalRepoApi().property(id(), "linkShape").toString();
-		mShapeType = mLineFactory->stringToShape(shapeString);
-
-		if (mShapeType == linkShape::unset) {
-			mShapeType = mElementImpl->shapeType();
-		}
-	}
-}
-
 void EdgeElement::changeShapeType(linkShape::LinkShape const shapeType)
 {
+	mShapeType = shapeType;
 	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape"
 			, mLineFactory->shapeToString(shapeType));
 	initLineHandler();
@@ -621,7 +609,8 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 {
 	QPainterPath circlePath;
 	int const searchAreaRadius = SettingsManager::value("IndexGrid", 25).toInt() / 2;
-	circlePath.addEllipse(mapToScene(position), searchAreaRadius, searchAreaRadius);
+	QPointF const positionInSceneCoordinates = mapToScene(position);
+	circlePath.addEllipse(positionInSceneCoordinates, searchAreaRadius, searchAreaRadius);
 	QList<QGraphicsItem*> const items = scene()->items(circlePath);
 
 	qreal minimalDistance = 10e10;  // Very large number
@@ -631,9 +620,9 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 	for (QGraphicsItem * const item : items) {
 		NodeElement * const currentNode = dynamic_cast<NodeElement *>(item);
 		if (currentNode) {
-			QPointF const positionInSceneCoordinates = mapToScene(position);
-			qreal const currentDistance = currentNode->shortestDistanceToPort(positionInSceneCoordinates
+			QPointF const nearestPortPoint = currentNode->closestPortPoint(positionInSceneCoordinates
 					, isStart ? fromPortTypes() : toPortTypes());
+			qreal const currentDistance = mathUtils::Geometry::distance(positionInSceneCoordinates, nearestPortPoint);
 			if (currentDistance < minimalDistance) {
 				minimalDistance = currentDistance;
 				closestNode = currentNode;
@@ -666,9 +655,7 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions(QPointF const &pos)
 {
 	QList<ContextMenuAction*> result;
 
-	if (SettingsManager::value("LineType", linkShape::unset).toInt() == linkShape::unset) {
-		result.push_back(&mChangeShapeAction);
-	}
+	result.push_back(&mChangeShapeAction);
 
 	if (reverseActionIsPossible()) {
 		result.push_back(&mReverseAction);
@@ -1022,6 +1009,13 @@ EdgeData& EdgeElement::data()
 
 	mData.shapeType = mShapeType;
 
+	QMap<QString, QVariant> const properties = mGraphicalAssistApi.properties(logicalId());
+	for (QString const &property : properties.keys()) {
+		if (property != "from" && property != "to") {
+			mData.logicalProperties[property] = properties[property];
+		}
+	}
+
 	return mData;
 }
 
@@ -1110,7 +1104,7 @@ void EdgeElement::setPos(QPointF const &pos)
 {
 	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
 		Element::setPos(QPointF());
-		qDebug() << "NaN passed to EdgeElement::setPos(). That means that something went wrong."\
+		QLOG_WARN() << "NaN passed to EdgeElement::setPos(). That means that something went wrong."\
 				"Learn to reproduce this message. The position has been set to (0,0).";
 	} else {
 		Element::setPos(pos);

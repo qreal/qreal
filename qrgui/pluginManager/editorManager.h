@@ -17,6 +17,8 @@
 #include "editorPluginInterface/editorInterface.h"
 #include "pluginManager/details/patternParser.h"
 
+#include <qrutils/pluginManagers/pluginManager.h>
+
 namespace qReal {
 
 class Element;
@@ -42,8 +44,8 @@ public:
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const override;
 	bool shallPaletteBeSorted(Id const &editor, Id const &diagram) const override;
 
-	bool loadPlugin(QString const &pluginName) override;
-	bool unloadPlugin(QString const &pluginName) override;
+	QString loadPlugin(QString const &pluginName) override;
+	QString unloadPlugin(QString const &pluginName) override;
 
 	QString mouseGesture(Id const &id) const override;
 	QString friendlyName(Id const &id) const override;
@@ -56,7 +58,8 @@ public:
 
 	IdList containedTypes(const Id &id) const override;
 	QList<Explosion> explosions(Id const &source) const override;
-	QList<QPair<QString, QString>> enumValues(Id const &id, const QString &name) const override;
+	bool isEnumEditable(Id const &id, QString const &name) const override;
+	QList<QPair<QString, QString>> enumValues(Id const &id, QString const &name) const override;
 	QString typeName(Id const &id, const QString &name) const override;
 	QStringList allChildrenTypesOf(Id const &parent) const override;
 
@@ -139,10 +142,12 @@ private:
 	QList<Pattern> mDiagramGroups;
 	QMap<QString, Pattern> mGroups;
 	QMap<QString, EditorInterface *> mPluginIface;
-	QMap<QString, QPluginLoader *> mLoaders;
 
 	QDir mPluginsDir;
 	QStringList mPluginFileNames;
+
+	/// Common part of plugin loaders
+	PluginManager mPluginManager;
 
 	QSet<Id> mDisabledElements;
 };

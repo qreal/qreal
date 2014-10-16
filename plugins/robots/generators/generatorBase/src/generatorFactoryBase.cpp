@@ -9,7 +9,8 @@
 #include "simpleGenerators/infiniteLoopGenerator.h"
 #include "simpleGenerators/forLoopGenerator.h"
 #include "simpleGenerators/whileLoopGenerator.h"
-#include "generatorBase/simpleGenerators/bindingGenerator.h"
+#include "simpleGenerators/forkCallGenerator.h"
+#include "simpleGenerators/switchGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
@@ -49,19 +50,23 @@
 #include "converters/outputPortConverter.h"
 #include "converters/enginePortsConverter.h"
 #include "converters/typeConverter.h"
-#include "converters/functionInvocationConverter.h"
+#include "converters/reservedVariablesConverter.h"
 #include "converters/functionBlockConverter.h"
 #include "converters/intPropertyConverter.h"
 #include "converters/floatPropertyConverter.h"
 #include "converters/boolPropertyConverter.h"
+#include "converters/switchConditionsMerger.h"
 #include "generatorBase/converters/stringPropertyConverter.h"
 
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/engines.h"
 #include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/functions.h"
 #include "generatorBase/parts/images.h"
+
+#include "generatorBase/lua/luaProcessor.h"
 
 using namespace generatorBase;
 using namespace qReal;
@@ -70,25 +75,31 @@ using namespace interpreterBase::robotModel;
 
 GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
-		, RobotModelManagerInterface const &robotModelManager)
+		, RobotModelManagerInterface const &robotModelManager
+		, lua::LuaProcessor &luaProcessor)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
+	, mLuaTranslator(luaProcessor)
 {
 }
 
 GeneratorFactoryBase::~GeneratorFactoryBase()
 {
+	delete mDeviceVariables;
 }
 
 void GeneratorFactoryBase::initialize()
 {
+	mLuaTranslator.setPathToTemplates(pathToTemplates());
 	initVariables();
 	initSubprograms();
+	mThreads = new parts::Threads(pathToTemplates());
 	initEngines();
 	initSensors();
 	initFunctions();
 	initImages();
+	initDeviceVariables();
 }
 
 void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
@@ -99,7 +110,7 @@ void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
 
 void GeneratorFactoryBase::initVariables()
 {
-	mVariables = new parts::Variables(pathToTemplates(), mRobotModelManager.model());
+	mVariables = new parts::Variables(pathToTemplates(), mRobotModelManager.model(), mLuaTranslator.toolbox());
 }
 
 void GeneratorFactoryBase::initSubprograms()
@@ -128,6 +139,11 @@ void GeneratorFactoryBase::initImages()
 	mImages = new parts::Images(pathToTemplates());
 }
 
+void GeneratorFactoryBase::initDeviceVariables()
+{
+	mDeviceVariables = new parts::DeviceVariables();
+}
+
 QList<parts::InitTerminateCodeGenerator *> GeneratorFactoryBase::initTerminateGenerators()
 {
 	return QList<parts::InitTerminateCodeGenerator *>()
@@ -149,6 +165,11 @@ parts::Subprograms *GeneratorFactoryBase::subprograms()
 	return mSubprograms;
 }
 
+parts::Threads &GeneratorFactoryBase::threads()
+{
+	return *mThreads;
+}
+
 parts::Engines *GeneratorFactoryBase::engines()
 {
 	return mEngines;
@@ -167,6 +188,11 @@ parts::Functions *GeneratorFactoryBase::functions()
 parts::Images *GeneratorFactoryBase::images()
 {
 	return mImages;
+}
+
+parts::DeviceVariables *GeneratorFactoryBase::deviceVariables() const
+{
+	return mDeviceVariables;
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
@@ -195,6 +221,30 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(Id const
 		, GeneratorCustomizer &customizer)
 {
 	return new ForLoopGenerator(mRepo, customizer, id, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::switchHeadGenerator(Id const &id
+		, GeneratorCustomizer &customizer, QStringList const &values)
+{
+	return new SwitchGenerator(mRepo, customizer, id, "head", values, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::switchMiddleGenerator(Id const &id
+		, GeneratorCustomizer &customizer, QStringList const &values)
+{
+	return new SwitchGenerator(mRepo, customizer, id, "middle", values, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::switchDefaultGenerator(Id const &id
+		, GeneratorCustomizer &customizer)
+{
+	return new SwitchGenerator(mRepo, customizer, id, "default", {}, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(Id const &id
+		, GeneratorCustomizer &customizer, IdList const &threads)
+{
+	return new ForkCallGenerator(mRepo, customizer, id, threads, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &id
@@ -291,37 +341,21 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id cons
 
 // Converters can be instantiated without taking ownership because binders do this
 
-Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter(Id const &block) const
 {
-	return new converters::IntPropertyConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, typeConverter()
-			, variablesInfo());
+	return new converters::IntPropertyConverter(pathToTemplates(), mLuaTranslator, block
+			, reservedVariableNameConverter(), typeConverter());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter(Id const &block) const
 {
-	return new converters::FloatPropertyConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter());
+	return new converters::FloatPropertyConverter(mLuaTranslator, block, reservedVariableNameConverter());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
+Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(Id const &block, bool needInverting) const
 {
-	return new converters::BoolPropertyConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, needInverting);
+	return new converters::BoolPropertyConverter(pathToTemplates(), mLuaTranslator
+			, block, reservedVariableNameConverter(), needInverting);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
@@ -329,24 +363,24 @@ Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() con
 	return new converters::StringPropertyConverter;
 }
 
+Binding::ConverterInterface *GeneratorFactoryBase::reservedVariableNameConverter() const
+{
+	return new converters::ReservedVariablesConverter(pathToTemplates()
+			, mErrorReporter
+			, mRobotModelManager.model()
+			, currentConfiguration()
+			, inputPortConverter()
+			, *deviceVariables());
+}
+
 Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() const
 {
 	return new converters::NameNormalizerConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::functionInvocationConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter(qReal::Id const &block) const
 {
-	return new converters::FunctionInvocationConverter(pathToTemplates());
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() const
-{
-	return new converters::FunctionBlockConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter());
+	return new converters::FunctionBlockConverter(mLuaTranslator, block, reservedVariableNameConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() const
@@ -382,6 +416,11 @@ Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter() const
 Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
 {
 	return new converters::TypeConverter(pathToTemplates());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::switchConditionsMerger(QStringList const &values) const
+{
+	return new converters::SwitchConditionsMerger(pathToTemplates(), reservedVariableNameConverter(), values);
 }
 
 QString GeneratorFactoryBase::initCode()

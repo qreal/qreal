@@ -7,6 +7,8 @@
 #include "ifNode.h"
 #include "loopNode.h"
 #include "finalNode.h"
+#include "forkNode.h"
+#include "switchNode.h"
 #include "generatorBase/generatorCustomizer.h"
 
 namespace generatorBase {
@@ -19,6 +21,10 @@ class SemanticTree : public QObject
 public:
 	SemanticTree(GeneratorCustomizer &customizer, qReal::Id const &initialBlock
 			, bool isMainTree, QObject *parent = 0);
+
+	/// Returns an id of the initial node in this semantic tree. Semantic trees are
+	/// equal if their root ids are equal.
+	qReal::Id initialBlock() const;
 
 	/// Generates code by this tree. Target language is defined with customizer
 	/// that was passed into constructor.
@@ -36,6 +42,12 @@ public:
 
 	/// Produces new instance of loop node binded to specified block
 	LoopNode *produceLoop(qReal::Id const &id = qReal::Id());
+
+	/// Produces new instance of fork node binded to specified block
+	ForkNode *produceFork(qReal::Id const &id = qReal::Id());
+
+	/// Produces new instance of switch node binded to specified block
+	SwitchNode *produceSwitch(qReal::Id const &id = qReal::Id());
 
 	/// Produces new instance of final node binded to specified block
 	FinalNode *produceFinal(qReal::Id const &id = qReal::Id());

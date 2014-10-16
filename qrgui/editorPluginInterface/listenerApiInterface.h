@@ -2,7 +2,8 @@
 
 namespace qReal {
 
-class ListenerApiInterface {
+class ListenerApiInterface
+{
 public:
 	virtual ~ListenerApiInterface() {}
 

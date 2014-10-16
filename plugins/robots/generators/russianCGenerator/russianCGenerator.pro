@@ -4,7 +4,7 @@ CONFIG += c++11
 
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../../bin/plugins/kitPlugins/
+DESTDIR = ../../../../bin/plugins/tools/kitPlugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
@@ -16,6 +16,7 @@ INCLUDEPATH += \
 	$$PWD/../../interpreters/interpreterBase/include \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui \
+	$$PWD/../../../../qrtext/include \
 
 # workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # when fixed it would become possible to use QMAKE_LFLAGS_RPATH
@@ -24,7 +25,7 @@ INCLUDEPATH += \
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin/plugins/
 }
 
-TRANSLATIONS = russianCGenerator_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/russianCGenerator_ru.ts
 
 RESOURCES = \
 	$$PWD/russianCGenerator.qrc \

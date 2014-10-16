@@ -1,25 +1,21 @@
-
 #include "intPropertyConverter.h"
+
+#include <qrtext/lua/luaToolbox.h>
+#include <qrtext/lua/types/integer.h>
+
+#include "generatorBase/lua/luaProcessor.h"
 
 using namespace generatorBase::converters;
 using namespace qReal;
 
 IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
-		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelInterface const &robotModel
-		, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
-		, simple::Binding::ConverterInterface const *inputPortConverter
-		, simple::Binding::ConverterInterface const *functionInvocationsConverter
-		, simple::Binding::ConverterInterface const *typeConverter
-		, parts::Variables const *variables)
-	: CodeConverterBase(pathToTemplates
-			, errorReporter
-			, robotModel
-			, devices
-			, inputPortConverter
-			, functionInvocationsConverter)
+		, lua::LuaProcessor &luaTranslator
+		, qReal::Id const &id
+		, simple::Binding::ConverterInterface *reservedVariablesConverter
+		, simple::Binding::ConverterInterface *typeConverter)
+	: CodeConverterBase(luaTranslator, id, reservedVariablesConverter)
+	, TemplateParametrizedEntity(pathToTemplates)
 	, mTypeConverter(typeConverter)
-	, mVariables(variables)
 {
 }
 
@@ -35,8 +31,9 @@ QString IntPropertyConverter::convert(QString const &data) const
 		return "0";
 	}
 
-	enums::variableType::VariableType const expressionType = mVariables->expressionType(preparedCode);
-	if (expressionType == enums::variableType::intType) {
+	if (mLuaTranslator.toolbox().type(mLuaTranslator.toolbox()
+			.parse(mId, QString(), data))->is<qrtext::lua::types::Integer>())
+	{
 		return preparedCode;
 	}
 

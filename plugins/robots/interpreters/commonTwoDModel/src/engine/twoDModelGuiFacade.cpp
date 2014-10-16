@@ -25,7 +25,7 @@ QWidget *TwoDModelGuiFacade::widget(QString const &type, QString const &name)
 	return nullptr;
 }
 
-QWidget *TwoDModelGuiFacade::d2ModelScene()
+QWidget *TwoDModelGuiFacade::d2ModelSceneViewport()
 {
 	return mD2ModelWidget.scene()->views()[0]->viewport();
 }

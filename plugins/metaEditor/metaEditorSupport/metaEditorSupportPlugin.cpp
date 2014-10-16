@@ -23,8 +23,6 @@ MetaEditorSupportPlugin::MetaEditorSupportPlugin()
 		, mRepoControlApi(NULL)
 		, mCompilerSettingsPage(new PreferencesCompilerPage())
 {
-	mAppTranslator.load(":/metaEditorSupport_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 MetaEditorSupportPlugin::~MetaEditorSupportPlugin()

@@ -10,7 +10,8 @@ class TrikGeneratorFactory : public generatorBase::GeneratorFactoryBase
 public:
 	TrikGeneratorFactory(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, generatorBase::lua::LuaProcessor &luaProcessor);
 
 	~TrikGeneratorFactory() override;
 
@@ -26,6 +27,8 @@ public:
 	generatorBase::simple::Binding::ConverterInterface *outputPortConverter() const override;
 
 	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
+
+	generatorBase::parts::DeviceVariables *deviceVariables() const override;
 
 protected:
 	void initVariables() override;

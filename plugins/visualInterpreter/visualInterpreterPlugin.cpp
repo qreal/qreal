@@ -16,8 +16,6 @@ VisualInterpreterPlugin::VisualInterpreterPlugin()
 	: mPreferencesPage(new VisualInterpreterPreferencesPage())
 	, mWatchListWindow(NULL)
 {
-	mAppTranslator.load(":/visualInterpreter_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 VisualInterpreterPlugin::~VisualInterpreterPlugin()
@@ -477,6 +475,7 @@ void VisualInterpreterPlugin::showWatchList()
 	if (mWatchListWindow) {
 		mWatchListWindow->close();
 	}
+
 	mWatchListWindow = new WatchListWindow(mVisualInterpreterUnit->ruleParser());
 	mWatchListWindow->show();
 }

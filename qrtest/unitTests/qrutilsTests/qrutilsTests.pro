@@ -6,6 +6,12 @@ include(../common.pri)
 
 include(../../../qrutils/qrutils.pri)
 
+LIBS += -L../../../bin -lqslog
+
+HEADERS += \
+	expressionsParser/expressionsParserTest.h \
+	metamodelGeneratorSupportTest.h \
+
 SOURCES += \
 	expressionsParser/expressionsParserTest.cpp \
 	expressionsParser/numberTest.cpp \
@@ -13,7 +19,3 @@ SOURCES += \
 	inFileTest.cpp \
 	outFileTest.cpp \
 	xmlUtilsTest.cpp \
-
-HEADERS += \
-	expressionsParser/expressionsParserTest.h \
-	metamodelGeneratorSupportTest.h \

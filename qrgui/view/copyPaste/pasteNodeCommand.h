@@ -25,6 +25,8 @@ protected:
 	virtual void restoreElement();
 
 private:
+	bool explosionTargetExists() const;
+
 	//! @returns real new pos on scene
 	QPointF newPos() const;
 	//! @returns pos for normal CreateElementCommand usage

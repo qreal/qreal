@@ -2,12 +2,14 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
+
 #include "readableControlFlowGenerator.h"
 #include "gotoControlFlowGenerator.h"
-
+#include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/images.h"
 #include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/initTerminateCodeGenerator.h"
 
@@ -17,10 +19,12 @@ using namespace qReal;
 MasterGeneratorBase::MasterGeneratorBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage
 		, Id const &diagramId)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
+	, mTextLanguage(textLanguage)
 	, mDiagram(diagramId)
 {
 }
@@ -56,7 +60,6 @@ QString MasterGeneratorBase::generate()
 	}
 
 	mCustomizer->factory()->setMainDiagramId(mDiagram);
-	mCustomizer->factory()->variables()->reinit(mRepo);
 	mCustomizer->factory()->images()->reinit();
 
 	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {
@@ -69,7 +72,11 @@ QString MasterGeneratorBase::generate()
 		mainCode = mainControlFlow->toString(1);
 		bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
 		if (!subprogramsResult) {
-			mainCode = QString();
+			if (supportsGotoGeneration()) {
+				mainCode = QString();
+			} else {
+				return QString();
+			}
 		}
 	} else {
 		if (mReadableControlFlowGenerator->errorsOccured()) {
@@ -101,7 +108,10 @@ QString MasterGeneratorBase::generate()
 	}
 
 	QString resultCode = readTemplate("main.t");
-	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->generatedCode());
+	resultCode.replace("@@SUBPROGRAMS_FORWARDING@@", mCustomizer->factory()->subprograms()->forwardDeclarations());
+	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->implementations());
+	resultCode.replace("@@THREADS_FORWARDING@@", mCustomizer->factory()->threads().generateDeclarations());
+	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations());
 	resultCode.replace("@@MAIN_CODE@@", mainCode);
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->initCode(), 1));
@@ -111,6 +121,8 @@ QString MasterGeneratorBase::generate()
 			mCustomizer->factory()->isrHooksCode(), 1));
 	resultCode.replace("@@BMP_FILES@@", mCustomizer->factory()->images()->generate());
 	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
+	// This will remove too many empty lines
+	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
 	QString const pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
@@ -118,6 +130,11 @@ QString MasterGeneratorBase::generate()
 	afterGeneration();
 
 	return pathToOutput;
+}
+
+lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
+{
+	return new lua::LuaProcessor(mErrorReporter, mTextLanguage, this);
 }
 
 void MasterGeneratorBase::beforeGeneration()
@@ -135,6 +152,8 @@ void MasterGeneratorBase::afterGeneration()
 
 void MasterGeneratorBase::outputCode(QString const &path, QString const &code)
 {
+	// File must be removed to leave created and modified timestamps equal.
+	QFile::remove(path);
 	utils::OutFile out(path);
 	out() << code;
 }

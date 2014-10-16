@@ -4,6 +4,8 @@
 
 namespace trik {
 
+class TcpRobotCommunicator;
+
 /// Generation of QtScript program for TRIK, uploading and execution of a program.
 /// Uses setting "tcpServer" from RobotsInterpreter.
 class TrikGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
@@ -19,6 +21,10 @@ public:
 
 	QList<qReal::ActionInfo> actions() override;
 	QList<HotKeyActionInfo> hotKeyActions() override;
+
+	void init(qReal::PluginConfigurator const &configurator
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage) override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
@@ -55,7 +61,7 @@ private:
 	/// Action that stops script execution and turns off motors.
 	QAction mStopRobotAction;
 
-	QTranslator mAppTranslator;
+	TcpRobotCommunicator *mCommunicator;
 };
 
 }

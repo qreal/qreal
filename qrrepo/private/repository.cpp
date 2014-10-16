@@ -498,7 +498,10 @@ void Repository::exterminate()
 	printDebug();
 	mObjects.clear();
 	//serializer.clearWorkingDir();
-	mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
+	if (!mWorkingFile.isEmpty()) {
+		mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
+	}
+
 	init();
 	printDebug();
 }

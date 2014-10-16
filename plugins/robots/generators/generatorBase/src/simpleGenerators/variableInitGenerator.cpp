@@ -10,7 +10,7 @@ VariableInitGenerator::VariableInitGenerator(qrRepo::RepoApi const &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "variableInit.t", QList<Binding *>()
 			<< Binding::createDirect("@@VARIABLE@@", "variable")
-			<< Binding::createConverting("@@VALUE@@", "value", customizer.factory()->floatPropertyConverter())
+			<< Binding::createConverting("@@VALUE@@", "value", customizer.factory()->floatPropertyConverter(id))
 			, parent)
 {
 }

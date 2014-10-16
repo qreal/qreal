@@ -13,7 +13,7 @@ IfElementGenerator::IfElementGenerator(qrRepo::RepoApi const &repo
 	: BindingGenerator(repo, customizer, id
 			, elseIsEmpty ? "conditional/if.t" : "conditional/ifElse.t"
 			, QList<Binding *>() << Binding::createConverting("@@CONDITION@@", "Condition"
-					, customizer.factory()->boolPropertyConverter(needInverting))
+					, customizer.factory()->boolPropertyConverter(id, needInverting))
 			, parent)
 {
 }

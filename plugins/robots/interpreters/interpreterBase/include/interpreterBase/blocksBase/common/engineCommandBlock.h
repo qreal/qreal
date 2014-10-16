@@ -18,7 +18,7 @@ public:
 	/// Constructor, takes current robot model as parameter.
 	explicit EngineCommandBlock(robotModel::RobotModelInterface &robotModel);
 
-	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const override;
+	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() override;
 
 protected slots:
 	/// @todo Why it is needed and where it is used?
@@ -28,10 +28,10 @@ protected:
 	/// Splits 'Port' property for the blocks and returns motor devices on them. Implementation may consider
 	/// that devices are non-null.
 	template<class MotorType>
-	QList<MotorType *> parsePorts() const
+	QList<MotorType *> parsePorts()
 	{
 		QList<MotorType *> result;
-		QStringList const ports = stringProperty("Ports").split(',', QString::SkipEmptyParts);
+		QStringList const ports = eval<QStringList>("Ports");
 
 		for (QString const &port : ports) {
 			MotorType * const motor = robotModel::RobotModelUtils::findDevice<MotorType>(mRobotModel, port.trimmed());

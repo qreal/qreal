@@ -40,6 +40,10 @@ public:
 
 	void setElementRepo(ElementRepoInterface *elementRepo);
 
+	/// Clears prerendered images.
+	/// @param zoomFactor - current zoom factor to render images.
+	void invalidateSvgCache(qreal zoomFactor);
+
 private:
 
 	/// Cache for images that contains them pre-loaded and parsed and is able to quickly draw it on a painter.
@@ -50,6 +54,9 @@ private:
 		/// an image will be loaded may be different from fileName, as described in selectBestImageFile.
 		/// @see selectBestImageFile
 		void drawImage(QString const &fileName, QPainter &painter, QRect const &rect);
+
+		/// Clears prerendered svg cache.
+		void invalidateSvgCache(double zoomFactor);
 
 	private:
 		/// Selects "best available" image file, using following rules:
@@ -69,6 +76,12 @@ private:
 
 		/// Maps file name to a svg renderer object.
 		QHash<QString, QSharedPointer<QSvgRenderer>> mFileNameSvgRendererMap;
+
+		/// Maps file name to pixmaps with pre-rendered svg images.
+		QHash<QString, QPixmap> mPrerenderedSvgs;
+
+		/// Current scene zoom factor for rendering svg files.
+		double mCurrentZoomFactor = 1;
 	};
 
 	QString mWorkingDirName;

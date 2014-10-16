@@ -61,7 +61,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::Diagram"/>
+						<parent parentName="KernelDiagram::Diagram" overrides="all"/>
 					</generalizations>
 					<properties/>
 				</logic>
@@ -132,7 +132,7 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::Diagram"/>
+						<parent parentName="KernelDiagram::Diagram" overrides="all"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="displayedName"/>
@@ -183,12 +183,13 @@
 				</graphics>
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::Diagram"/>
+						<parent parentName="KernelDiagram::Diagram" overrides="all"/>
 					</generalizations>
 					<properties>
 						<property type="string" name="displayedName"/>
 						<property type="string" name="shape"/>
 						<property type="string" name="description"/>
+						<property type="string" name="abstract"/>
 						<property type="bool" name="isAction">
 							<default>false</default>
 						</property>
@@ -489,6 +490,9 @@
 					<generalizations>
 						<parent parentName="KernelDiagram::Relationship"/>
 					</generalizations>
+					<properties>
+					        <property type="string" name="overrides"/>
+					</properties>
 				</logic>
 			</edge>
 			<edge name="Container" displayedName="Container" description="Связь, указывающая отношение вложенности между элементами (направления – от вкладываемого элемента к тому, в который вкладывается)">

@@ -10,11 +10,14 @@ class TrikVariables : public generatorBase::parts::Variables
 {
 public:
 	TrikVariables(QString const &pathToTemplates
-			, interpreterBase::robotModel::RobotModelInterface const &robotModel);
+			, interpreterBase::robotModel::RobotModelInterface const &robotModel
+			, qrtext::LanguageToolboxInterface &luaToolbox);
 
-protected:
+private:
 	QMap<QString, int> intConstants() const override;
 	QMap<QString, float> floatConstants() const override;
+
+	QStringList expressions(qrRepo::RepoApi const &api) const override;
 };
 
 }

@@ -51,8 +51,6 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 	}
 
 	mPluginVersion = mEditors[mCurrentEditor]->version();
-	/// @todo: other languages?
-	addResource(QString("\t<file>translations/%1_ru.qm</file>\n").arg(inputXmlFileInfo.baseName()));
 
 	generateCode();
 	return true;
@@ -158,7 +156,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtCore/QMap>\n"
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QtCore/QPair>\n"
-		<< "#include <QtCore/QTranslator>"
 		<< "\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
@@ -192,6 +189,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQStringList getPortTypes(QString const &diagram, QString const &element) const override;\n"
 		<< "\tQStringList getReferenceProperties(QString const &diagram, QString const &element) const override;\n"
 		<< "\tQList<QPair<QString, QString>> getEnumValues(QString const &name) const override;\n"
+		<< "\tbool isEnumEditable(QString const &name) const override;\n"
 		<< "\tQString getGroupsXML() const override;\n"
 		<< "\tQList<QPair<QString, QString>> getParentsOf(QString const &diagram, QString const &element) "
 				"const override;\n"
@@ -247,7 +245,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QString>> mPaletteGroupsDescriptionMap;\n"
 		<< "\tQMap<QString, bool> mShallPaletteBeSortedMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;\n"
-		<< "\tQTranslator mAppTranslator;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -272,6 +269,7 @@ void XmlCompiler::generatePluginSource()
 	generateNodesAndEdges(out);
 	generateGroupsXML(out);
 	generateEnumValues(out);
+	generateEditableEnums(out);
 	generatePropertyTypesRequests(out);
 	generatePropertyDefaultsRequests(out);
 
@@ -283,21 +281,15 @@ void XmlCompiler::generateIncludes(OutFile &out)
 	out() << "#include \"" << "pluginInterface.h\"\n" //mPluginName
 		<< "\n";
 
-	out() << "#include <QtWidgets/QApplication>\n\n";
-
 	out() << "#include \"" << "elements.h" << "\"\n";
 
 	out() << "\n";
 
 	mEditors[mCurrentEditor]->generateListenerIncludes(out);
 
-	QString const translationName = QFileInfo(mCurrentEditor).baseName();
-
 	out()
 		//<< "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
 		<< mPluginName << "Plugin::" << mPluginName << "Plugin()\n{\n"
-		<< "\tmAppTranslator.load(\":/translations/" + translationName + "_\" + QLocale().name());\n"
-		<< "\tQApplication::installTranslator(&mAppTranslator);\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n";
 }
@@ -668,47 +660,54 @@ void XmlCompiler::generateGetParentsOfRequest(OutFile &out)
 // ListMethodGenerator, объекты-действия - PropertiesGenerator и т.д.
 // Примечание: на С++ это выглядит уродски, на C# вообще лишнего кода бы не было.
 // Даже в Java с анонимными классами это бы выглядело лучше.
-class XmlCompiler::ListMethodGenerator {
+class XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const = 0;
 };
 
-class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateProperties(out, isNotFirst, false);
 	}
 };
 
-class XmlCompiler::PortsGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::PortsGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generatePorts(out, isNotFirst);
 	}
 };
 
-class XmlCompiler::ReferencePropertiesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::ReferencePropertiesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateProperties(out, isNotFirst, true);
 	}
 };
 
-class XmlCompiler::ContainedTypesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::ContainedTypesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateContainedTypes(out, isNotFirst);
 	}
 };
 
-class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generatePossibleEdges(out, isNotFirst);
 	}
 };
 
-class XmlCompiler::EnumValuesGenerator: public XmlCompiler::ListMethodGenerator {
+class XmlCompiler::EnumValuesGenerator: public XmlCompiler::ListMethodGenerator 
+{
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateEnumValues(out, isNotFirst);
@@ -839,5 +838,22 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 	}
 
 	out() << "\treturn {};\n"
+		<< "}\n\n";
+}
+
+void XmlCompiler::generateEditableEnums(OutFile &out)
+{
+	out() << "bool " << mPluginName << "Plugin::isEnumEditable(QString const &name) const\n{\n";
+
+	QStringList editableEnums;
+	for (EnumType const *type : mEditors[mCurrentEditor]->getAllEnumTypes()) {
+		if (type->isEditable()) {
+			editableEnums << "\"" + type->name() + "\"";
+		}
+	}
+
+	out() << QString("\tQStringList const editableEnums = { %1 };\n").arg(editableEnums.join(", "));
+
+	out() << "\treturn editableEnums.contains(name);\n"
 		<< "}\n\n";
 }

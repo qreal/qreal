@@ -9,7 +9,7 @@
 #include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include <math.h>
-#include <qrutils/mathUtils/geometry.h>
+#include <qrkernel/logging.h>
 
 #include "umllib/labelFactory.h"
 #include "view/editorViewScene.h"
@@ -56,13 +56,12 @@ NodeElement::NodeElement(ElementImpl *impl
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
-	mRenderer = new SdfRenderer();
 	LabelFactory labelFactory(graphicalAssistApi, mId);
 	QList<LabelInterface*> titles;
 
 	QList<PortInterface *> ports;
 	PortFactory portFactory;
-	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, this);
+	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, &mRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
 	foreach (LabelInterface * const labelInterface, titles) {
@@ -103,7 +102,6 @@ NodeElement::~NodeElement()
 		delete title;
 	}
 
-	delete mRenderer;
 	delete mElementImpl;
 
 	foreach (ContextMenuAction* action, mBonusContextMenuActions) {
@@ -146,6 +144,11 @@ QMap<QString, QVariant> NodeElement::logicalProperties() const
 	return mGraphicalAssistApi.properties(logicalId());
 }
 
+void NodeElement::invalidateImagesZoomCache(qreal zoomFactor)
+{
+	mRenderer.invalidateSvgCache(zoomFactor);
+}
+
 void NodeElement::setName(QString const &value, bool withUndoRedo)
 {
 	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
@@ -172,8 +175,16 @@ void NodeElement::setGeometry(QRectF const &geom)
 
 void NodeElement::setPos(QPointF const &pos)
 {
-	mPos = pos;
-	QGraphicsItem::setPos(pos);
+	if (std::isnan(pos.x()) || std::isnan(pos.y())) {
+		setPos(QPointF());
+		mContents.moveTo(QPointF());
+		storeGeometry();
+		QLOG_WARN() << "NaN passed to NodeElement::setPos(). That means that something went wrong. "\
+				"Learn to reproduce this message. The position has been set to (0,0). Attend element with id" << id();
+	} else {
+		mPos = pos;
+		QGraphicsItem::setPos(pos);
+	}
 }
 
 void NodeElement::setPos(qreal x, qreal y)
@@ -563,8 +574,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->layOut();
-		if (SettingsManager::value("ActivateGrid").toBool())
-		{
+		if (SettingsManager::value("ActivateGrid").toBool()) {
 			edge->alignToGrid();
 		}
 	}
@@ -589,6 +599,7 @@ void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void NodeElement::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
+	update();
 }
 
 void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
@@ -599,6 +610,7 @@ void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
+	update();
 }
 
 void NodeElement::startResize()
@@ -809,10 +821,9 @@ qreal NodeElement::portId(QPointF const &location, QStringList const &types) con
 	return mPortHandler->portId(location, types);
 }
 
-qreal NodeElement::shortestDistanceToPort(QPointF const &location, QStringList const &types) const
+QPointF NodeElement::closestPortPoint(QPointF const &location, QStringList const &types) const
 {
-	QPointF const nearestPortPoint = mPortHandler->nearestPort(location, types);
-	return mathUtils::Geometry::distance(location, mapToScene(nearestPortPoint));
+	return mapToScene(mPortHandler->nearestPort(location, types));
 }
 
 void NodeElement::setPortsVisible(QStringList const &types)
@@ -833,10 +844,10 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style
 		painter->save();
 		painter->setPen(QPen(Qt::blue));
 		QRectF rect = boundingRect();
-		double x1 = rect.x() + 9;
-		double y1 = rect.y() + 9;
-		double x2 = rect.x() + rect.width() - 9;
-		double y2 = rect.y() + rect.height() - 9;
+		qreal x1 = rect.x() + 9;
+		qreal y1 = rect.y() + 9;
+		qreal x2 = rect.x() + rect.width() - 9;
+		qreal y2 = rect.y() + rect.height() - 9;
 		painter->drawRect(QRectF(QPointF(x1, y1), QPointF(x2, y2)));
 		painter->restore();
 	}
@@ -1109,7 +1120,7 @@ void NodeElement::updateChildrenOrder()
 
 }
 
-QList<double> NodeElement::borderValues() const
+QList<qreal> NodeElement::borderValues() const
 {
 	return mElementImpl->border();
 }
@@ -1172,6 +1183,7 @@ NodeData& NodeElement::data()
 	mData.graphicalProperties["links"] = IdListHelper::toVariant(IdList());
 	mData.pos = mPos;
 	mData.contents = mContents;
+	mData.explosion = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 
 	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
 	if (parent) {

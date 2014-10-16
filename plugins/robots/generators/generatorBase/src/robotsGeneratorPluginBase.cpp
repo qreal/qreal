@@ -9,10 +9,12 @@ using namespace qReal;
 using namespace gui;
 using namespace utils;
 
+/// If file info creation and modification timestamps differ less than on this value it is considered
+/// that file was created and filled at the same time.
+int const maxTimestampsDifference = 3000;
+
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 {
-	mAppTranslator.load(":/generatorBase_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 QString RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) const
@@ -44,7 +46,8 @@ QString RobotsGeneratorPluginBase::defaultProjectName() const
 bool RobotsGeneratorPluginBase::canGenerateTo(QString const &project)
 {
 	QFileInfo const fileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(project));
-	return !fileInfo.exists() || fileInfo.created() == fileInfo.lastModified();
+	int const difference = fileInfo.lastModified().toMSecsSinceEpoch() - fileInfo.created().toMSecsSinceEpoch();
+	return !fileInfo.exists() || difference < maxTimestampsDifference;
 }
 
 QFileInfo RobotsGeneratorPluginBase::srcPath()
@@ -96,16 +99,17 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 		} else {
 			return QFileInfo();
 		}
-	} else {
-		QScintillaTextEdit *code = static_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab());
+	} else if (QScintillaTextEdit *code = dynamic_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab())) {
 		fileInfo = QFileInfo(mTextManager->path(code));
+		mTextManager->saveText(false);
 	}
 
 	return fileInfo;
 }
 
 void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage)
 {
 	mProjectManager = &configurator.projectManager();
 	mSystemEvents = &configurator.systemEvents();
@@ -115,6 +119,7 @@ void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator
 	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
 	mProjectManager = &configurator.projectManager();
 	mRobotModelManager = &robotModelManager;
+	mTextLanguage = &textLanguage;
 
 	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
 			, this, SLOT(regenerateCode(qReal::Id, QFileInfo, QFileInfo)));

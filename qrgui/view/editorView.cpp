@@ -46,6 +46,19 @@ EditorView::~EditorView()
 	delete mScene;
 }
 
+void EditorView::focusOutEvent(QFocusEvent *event)
+{
+	if (event->reason() != Qt::PopupFocusReason) {
+		mScene->setActionsEnabled(false);
+	}
+}
+
+void EditorView::focusInEvent(QFocusEvent *event)
+{
+	Q_UNUSED(event)
+	mScene->setActionsEnabled(true);
+}
+
 EditorViewMViface *EditorView::mvIface() const
 {
 	return mMVIface;
@@ -112,6 +125,7 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 			qreal const dx = (event->localPos().x() - mMouseOldPosition.x()) / scaleFactor;
 			qreal const dy = (event->localPos().y() - mMouseOldPosition.y()) / scaleFactor;
 			viewport()->scroll(dx, dy);
+			scene()->update();
 		}
 
 		mMouseOldPosition = event->localPos();
@@ -135,10 +149,6 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 			}
 		}
 	}
-
-	if (mScene->getNeedDrawGrid()) {
-		mScene->invalidate();
-	}
 }
 
 void EditorView::mouseReleaseEvent(QMouseEvent *event)
@@ -148,9 +158,6 @@ void EditorView::mouseReleaseEvent(QMouseEvent *event)
 		mMouseOldPosition = QPointF();
 	}
 	QGraphicsView::mouseReleaseEvent(event);
-	if (mScene->getNeedDrawGrid()) {
-		mScene->invalidate();
-	}
 }
 
 void EditorView::mousePressEvent(QMouseEvent *event)
@@ -179,9 +186,7 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 void EditorView::scrollContentsBy(int dx, int dy)
 {
 	QGraphicsView::scrollContentsBy(dx, dy);
-	if (mScene->getNeedDrawGrid()) {
-		mScene->invalidate();
-	}
+	mScene->invalidate();
 }
 
 void EditorView::keyPressEvent(QKeyEvent *event)
@@ -215,11 +220,6 @@ bool EditorView::viewportEvent(QEvent *event)
 		break;
 	}
 	return QGraphicsView::viewportEvent(event);
-}
-
-void EditorView::invalidateScene()
-{
-	scene()->invalidate();
 }
 
 void EditorView::ensureElementVisible(Element const * const element)
@@ -279,6 +279,8 @@ void EditorView::zoom(qreal const zoomFactor)
 	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
+
+	mMVIface->invalidateImagesZoomCache(transform().m11());
 
 	checkGrid();
 }

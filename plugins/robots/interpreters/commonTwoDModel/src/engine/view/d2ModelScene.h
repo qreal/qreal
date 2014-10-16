@@ -10,8 +10,6 @@
 
 namespace twoDModel {
 
-class Configurer;
-
 namespace items {
 class WallItem;
 class LineItem;
@@ -33,10 +31,9 @@ class D2ModelScene: public graphicsUtils::AbstractScene, public interpreterBase:
 
 public:
 	D2ModelScene(model::Model &model
-			, Configurer const &configurer
 			, graphicsUtils::AbstractView *view
 			, QObject *parent = 0);
-	~D2ModelScene();
+	~D2ModelScene() override;
 
 public slots:
 	/// Sets a flag that next user mouse actions should draw a wall on the scene.
@@ -55,8 +52,10 @@ public slots:
 	void setNoneStatus();
 
 	/// Clears everything on the scene besides a robot and its sensors.
-	/// @param removeRobot If true robot graphics item will be fully recreated, its position will be nullified.
-	void clearScene(bool removeRobot = false);
+	/// @param removeRobot - if true robot graphics item will be fully recreated, its position will be nullified.
+	/// @param reason - reason for scene clearing --- user action or internal needs. Depending on this we can decide
+	///        whether to save changes into model.
+	void clearScene(bool removeRobot, Reason reason);
 
 	/// Aligns existing walls on the grid.
 	/// @todo: Walls that do not fit on the grid must not be removed.
@@ -113,10 +112,9 @@ private:
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
 	void drawInitialRobot();
-	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos);
+	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QRectF const &oldPos);
 
 	model::Model &mModel;
-	Configurer const &mConfigurer;
 
 	graphicsUtils::GridDrawer mGridDrawer;
 	qreal mWidthOfGrid;
@@ -124,13 +122,13 @@ private:
 	/// Current action (toggled button on left panel)
 	DrawingAction mDrawingAction;
 
-	RobotItem *mRobot;
+	RobotItem *mRobot = nullptr;
 
 	/// Temporary wall that's being created. When it's complete, it's added to world model
-	items::WallItem *mCurrentWall;
-	items::LineItem *mCurrentLine;
-	items::StylusItem *mCurrentStylus;
-	items::EllipseItem *mCurrentEllipse;
+	items::WallItem *mCurrentWall = nullptr;
+	items::LineItem *mCurrentLine = nullptr;
+	items::StylusItem *mCurrentStylus = nullptr;
+	items::EllipseItem *mCurrentEllipse = nullptr;
 };
 
 }

@@ -26,19 +26,11 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Devices
 	Q_OBJECT
 
 public:
-	/// Takes ownership on configurer.
-	D2ModelWidget(model::Model &model, Configurer const * const configurer, QWidget *parent = 0);
+	explicit D2ModelWidget(model::Model &model, QWidget *parent = 0);
 	~D2ModelWidget();
 
 	void init();
 	void close();
-
-	/// Get current scene position of robot
-	/// Enables Run and Stop buttons
-	void enableRunStopButtons();
-
-	/// Disables Run and Stop buttons, used when current tab is not related to robots
-	void disableRunStopButtons();
 
 	D2ModelScene *scene();
 
@@ -51,9 +43,6 @@ public:
 	SensorItem *sensorItem(interpreterBase::robotModel::PortInfo const &port);
 
 	void loadXml(QDomDocument const &worldModel);
-
-	/// Enables or disables interpreter control buttons.
-	void setRunStopButtonsEnabled(bool enabled);
 
 public slots:
 	void saveInitialRobotBeforeRun();
@@ -82,9 +71,12 @@ protected:
 
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, const interpreterBase::robotModel::DeviceInfo &device) override;
+			, const interpreterBase::robotModel::DeviceInfo &device
+			, Reason reason) override;
 
 private slots:
+	void bringToFront();
+
 	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
@@ -115,7 +107,7 @@ private:
 		, drawEllipse
 	};
 
-	static const int defaultPenWidth = 15;
+	static const int defaultPenWidth = 6;
 
 	static const int indexOfNoneSensor = 0;
 	static const int indexOfTouchSensor = 1;
@@ -152,7 +144,6 @@ private:
 	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
-	void setNoPalette();
 
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(CursorType cursor);
@@ -173,14 +164,14 @@ private:
 
 	void updateWheelComboBoxes();
 
-	Ui::D2Form *mUi;
-	D2ModelScene *mScene;
+	Ui::D2Form *mUi = nullptr;
+	D2ModelScene *mScene = nullptr;
 
 	model::Model &mModel;
 
-	engine::TwoDModelDisplayWidget *mDisplay;
+	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 
-	int mWidth;
+	int mWidth = 0;
 
 	QButtonGroup mButtonGroup;
 	QButtonGroup mCursorButtonGroup;
@@ -188,13 +179,11 @@ private:
 	CursorType mNoneCursorType; // cursorType for noneStatus
 	CursorType mCursorType; // current cursorType
 
-	bool mFollowRobot;
+	bool mFollowRobot = false;
 
-	bool mFirstShow;
+	bool mFirstShow = true;
 
 	RobotState mInitialRobotBeforeRun;
-
-	QScopedPointer<Configurer const> mConfigurer;
 };
 
 }

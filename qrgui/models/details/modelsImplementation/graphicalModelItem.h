@@ -7,7 +7,8 @@ namespace models {
 namespace details {
 namespace modelsImplementation {
 
-class GraphicalModelItem : public modelsImplementation::AbstractModelItem {
+class GraphicalModelItem : public modelsImplementation::AbstractModelItem
+{
 public:
 	GraphicalModelItem(Id const &id, Id const &logicalId, GraphicalModelItem *parent);
 	Id logicalId() const;

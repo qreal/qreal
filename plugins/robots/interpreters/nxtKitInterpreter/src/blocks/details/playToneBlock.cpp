@@ -10,17 +10,16 @@ PlayToneBlock::PlayToneBlock(interpreterBase::robotModel::RobotModelInterface &r
 {
 }
 
-int PlayToneBlock::frequency()
-{
-	return evaluate("Frequency").toInt();
-}
-
 int PlayToneBlock::duration()
 {
-	return evaluate("Duration").toInt();
+	return eval<int>("Duration");
 }
 
 void PlayToneBlock::doJob(nxtKitInterpreter::robotModel::parts::NxtSpeaker &speaker)
 {
-	speaker.playTone(frequency(), duration());
+	int const frequencyValue = eval<int>("Frequency");
+	int const durationValue = duration();
+	if (!errorsOccured()) {
+		speaker.playTone(frequencyValue, durationValue);
+	}
 }

@@ -6,8 +6,9 @@ INCLUDEPATH += \
 	$$PWD \
 	$$PWD/.. \
 	$$PWD/../qrgui \
+	$$PWD/../qrtext/include \
 
-LIBS += -L$$PWD/../bin -lqrkernel
+LIBS += -L$$PWD/../bin -lqrkernel -lqslog -lqrtext
 
 DEFINES += QRUTILS_LIBRARY
 
@@ -27,6 +28,7 @@ HEADERS += \
 	$$PWD/stringUtils.h \
 	$$PWD/qRealDialog.h \
 	$$PWD/qRealFileDialog.h \
+	$$PWD/qRealUpdater.h \
 	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
 	$$PWD/generator/abstractGenerator.h \
@@ -44,6 +46,7 @@ SOURCES += \
 	$$PWD/stringUtils.cpp \
 	$$PWD/qRealDialog.cpp \
 	$$PWD/qRealFileDialog.cpp \
+	$$PWD/qRealUpdater.cpp \
 	$$PWD/textElider.cpp \
 	$$PWD/virtualKeyboard.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
@@ -71,3 +74,6 @@ include($$PWD/uxInfo/uxInfo.pri)
 
 # Real-time plot
 include($$PWD/graphicsWatcher/sensorsGraph.pri)
+
+#Plugin managers
+include($$PWD/pluginManagers/pluginManagers.pri)

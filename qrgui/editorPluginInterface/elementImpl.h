@@ -18,8 +18,7 @@ namespace enums {
 namespace linkShape {
 enum LinkShape
 {
-	unset = -1
-	, broken
+	broken
 	, square
 	, curve
 };
@@ -38,7 +37,8 @@ typedef QPair<qReal::Id, qReal::Id> ElementPair;
 *	TODO: split into NodeElementImpl and EdgeElementImpl
 * */
 
-class ElementImpl {
+class ElementImpl
+{
 public:
 	virtual ~ElementImpl() {}
 	virtual void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
@@ -76,7 +76,7 @@ public:
 
 	virtual bool createChildrenFromMenu() const = 0;
 
-	virtual QList<double> border() const = 0;
+	virtual QList<qreal> border() const = 0;
 
 	virtual QStringList bonusContextMenuFields() const = 0;
 

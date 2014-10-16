@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -132,6 +132,13 @@
         </property>
        </widget>
       </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="usabilityModeCheckBox">
+        <property name="text">
+         <string>Usability testing mode</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QCheckBox" name="collectErgonomicValuesCheckBox">
         <property name="text">
@@ -142,10 +149,10 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QCheckBox" name="usabilityModeCheckBox">
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="checkForUpdatesCheckBox">
         <property name="text">
-         <string>Usability testing mode</string>
+         <string>Check for updates</string>
         </property>
        </widget>
       </item>

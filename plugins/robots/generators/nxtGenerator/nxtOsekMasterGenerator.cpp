@@ -1,6 +1,8 @@
 #include "nxtOsekMasterGenerator.h"
 
+#include <qrutils/stringUtils.h>
 #include <generatorBase/parts/images.h>
+#include <generatorBase/parts/threads.h>
 #include "nxtOsekGeneratorCustomizer.h"
 
 using namespace nxtOsek;
@@ -8,8 +10,9 @@ using namespace nxtOsek;
 NxtOsekMasterGenerator::NxtOsekMasterGenerator(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage
 		, qReal::Id const &diagramId)
-	: MasterGeneratorBase(repo, errorReporter, robotModelManager, diagramId)
+	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId)
 {
 }
 
@@ -20,7 +23,7 @@ void NxtOsekMasterGenerator::generateOilAndMakeFiles()
 
 generatorBase::GeneratorCustomizer *NxtOsekMasterGenerator::createCustomizer()
 {
-	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager);
+	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor());
 }
 
 QString NxtOsekMasterGenerator::targetPath()
@@ -43,10 +46,18 @@ void NxtOsekMasterGenerator::afterGeneration()
 void NxtOsekMasterGenerator::generateOilFile(QString const &projectName
 		, QString const &projectDir)
 {
-	QString const taskNumber = "0";
-	QString const task = readTemplate("oilTask.t").replace("@@NUMBER@@", taskNumber);
-	QString const resultOil = readTemplate("oil.t").replace("@@TASK@@", task);
+	QStringList tasks;
+	for (QString const &task : mCustomizer->factory()->threads().threadNames()) {
+		tasks << generateOilTask(task);
+	}
+
+	QString const resultOil = readTemplate("oil.t").replace("@@TASKS@@", tasks.join("\n"));
 	outputCode(projectDir + "/" + projectName + ".oil", resultOil);
+}
+
+QString NxtOsekMasterGenerator::generateOilTask(QString const &taskName)
+{
+	return utils::StringUtils::addIndent(readTemplate("oilTask.t").replace("@@NAME@@", taskName), 1);
 }
 
 void NxtOsekMasterGenerator::generateMakeFile(QString const &projectName

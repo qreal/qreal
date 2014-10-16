@@ -9,9 +9,7 @@ RCC_DIR = .moc
 
 LIBS += -L../../../bin -lqrkernel -lqrutils
 
-TRANSLATIONS = hascolSupport_ru.ts
-
-RESOURCES = hascolSupport.qrc
+TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/hascolSupport_ru.ts
 
 HEADERS += \
 	hascolSupportPlugin.h \

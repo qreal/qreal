@@ -18,8 +18,13 @@
 
 #include "parts/motionSensor.h"
 
+#include "parts/gyroscope.h"
+#include "parts/accelerometer.h"
+
+#include "parts/colorSensor.h"
 #include "parts/led.h"
-#include "parts/cameraLineDetector.h"
+#include "parts/lineSensor.h"
+#include "parts/objectSensor.h"
 
 using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
@@ -64,10 +69,18 @@ robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, Devic
 		return new parts::SonarSensor(sonarSensorInfo(), port);
 	} else if (deviceInfo.isA(motionSensorInfo())) {
 		return new parts::MotionSensor(motionSensorInfo(), port);
+	} else if (deviceInfo.isA(gyroscopeInfo())) {
+		return new parts::Gyroscope(motionSensorInfo(), port);
+	} else if (deviceInfo.isA(accelerometerInfo())) {
+		return new parts::Accelerometer(motionSensorInfo(), port);
 	} else if (deviceInfo.isA(ledInfo())) {
 		return new parts::Led(ledInfo(), port);
-	} else if (deviceInfo.isA(cameraLineDetectorSensorInfo())) {
-		return new parts::CameraLineDetector(cameraLineDetectorSensorInfo(), port);
+	} else if (deviceInfo.isA(lineSensorInfo())) {
+		return new parts::LineSensor(lineSensorInfo(), port);
+	} else if (deviceInfo.isA(colorSensorInfo())) {
+		return new parts::LineSensor(colorSensorInfo(), port);
+	} else if (deviceInfo.isA(objectSensorInfo())) {
+		return new parts::LineSensor(objectSensorInfo(), port);
 	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());

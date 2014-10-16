@@ -4,8 +4,7 @@
 
 using namespace twoDModel::model;
 
-Model::Model(interpreterBase::robotModel::RobotModelInterface &robotModel
-		, QObject *parent)
+Model::Model(robotModel::TwoDRobotModel &robotModel, QObject *parent)
 	: QObject(parent)
 	, mRobotModel(robotModel, mSettings, this)
 {
@@ -15,7 +14,7 @@ Model::Model(interpreterBase::robotModel::RobotModelInterface &robotModel
 	connect(&mTimeline, &Timeline::tick, &mRobotModel, &RobotModel::recalculateParams);
 	connect(&mTimeline, &Timeline::nextFrame, &mRobotModel, &RobotModel::nextFragment);
 
-	auto resetPhysics = [this]() { mRobotModel.resetPhysics(mWorldModel); };
+	auto resetPhysics = [this]() { mRobotModel.resetPhysics(mWorldModel, mTimeline); };
 	connect(&mSettings, &Settings::physicsChanged, resetPhysics);
 	resetPhysics();
 }
