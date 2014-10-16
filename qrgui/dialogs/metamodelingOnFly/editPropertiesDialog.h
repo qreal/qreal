@@ -3,8 +3,9 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListWidgetItem>
 
-#include "dialogs/metamodelingOnFly/restorePropertiesDialog.h"
-#include "plugins/pluginManager/interpreterEditorManager.h"
+#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+
+#include "qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.h"
 
 namespace Ui {
 class EditPropertiesDialog;
@@ -13,7 +14,7 @@ class EditPropertiesDialog;
 namespace qReal {
 
 /// Window where you can edit the attributes of the selected property.
-class EditPropertiesDialog : public QDialog
+class QRGUI_DIALOGS_EXPORT EditPropertiesDialog : public QDialog
 {
 	Q_OBJECT
 

@@ -8,7 +8,7 @@ namespace qReal {
 namespace commands {
 
 /// Assigns to element with given id given name using given model (logical or graphical)
-class RenameCommand : public AbstractCommand
+class QRGUI_MODELS_EXPORT RenameCommand : public AbstractCommand
 {
 public:
 	/// This overload gets old name automatically using models api

@@ -6,6 +6,7 @@
 
 #include <qrrepo/repoApi.h>
 
+#include "models/modelsDeclSpec.h"
 #include "models/details/modelsAssistApi.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
 #include "models/details/modelsImplementation/abstractModelItem.h"
@@ -17,7 +18,7 @@ namespace models {
 namespace details {
 namespace modelsImplementation {
 
-class AbstractModel : public QAbstractItemModel, public ModelIndexesInterface
+class QRGUI_MODELS_EXPORT AbstractModel : public QAbstractItemModel, public ModelIndexesInterface
 {
 	Q_OBJECT
 

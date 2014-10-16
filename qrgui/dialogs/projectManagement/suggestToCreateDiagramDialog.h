@@ -8,7 +8,7 @@ class EditorManagerInterface;
 
 /// @brief Dialog for create a diagram
 /// This dialog prompts the user to create one of the available diagrams
-class SuggestToCreateDiagramDialog : public ManagedClosableDialog
+class QRGUI_DIALOGS_EXPORT SuggestToCreateDiagramDialog : public ManagedClosableDialog
 {
 	Q_OBJECT
 

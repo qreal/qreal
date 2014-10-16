@@ -3,10 +3,11 @@
 #include <QtCore/QList>
 #include <QtCore/QPair>
 
-#include "plugins/editorPluginInterface/elementImpl.h"
-#include "editor/element.h"
-#include "editor/serializationData.h"
-#include "editor/private/edgeArrangeCriteria.h"
+#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
+
+#include "qrgui/editor/element.h"
+#include "qrgui/editor/serializationData.h"
+#include "qrgui/editor/private/edgeArrangeCriteria.h"
 
 namespace qReal {
 
@@ -19,7 +20,7 @@ class LineHandler;
 * @brief class for an edge on a diagram
 */
 
-class EdgeElement : public Element
+class QRGUI_EDITOR_EXPORT EdgeElement : public Element
 {
 	Q_OBJECT
 

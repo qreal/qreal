@@ -9,18 +9,20 @@
 #include <QtCore/QObject>
 #include <QtCore/QMap>
 
-#include "preferencesDialog/preferencesPage.h"
-#include "plugins/toolPluginInterface/toolPluginInterface.h"
-#include "plugins/toolPluginInterface/customizer.h"
-#include "plugins/toolPluginInterface/pluginConfigurator.h"
-#include "plugins/toolPluginInterface/hotKeyActionInfo.h"
-#include "plugins/toolPluginInterface/systemEvents.h"
-
 #include <qrutils/pluginManagers/pluginManager.h>
+#include <qrgui/preferencesDialog/preferencesPage.h>
+
+#include <plugins/toolPluginInterface/toolPluginInterface.h>
+#include <plugins/toolPluginInterface/customizer.h>
+#include <plugins/toolPluginInterface/pluginConfigurator.h>
+#include <plugins/toolPluginInterface/hotKeyActionInfo.h>
+#include <plugins/toolPluginInterface/systemEvents.h>
+
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 namespace qReal {
 
-class ToolPluginManager
+class QRGUI_PLUGINS_MANAGER_EXPORT ToolPluginManager
 {
 public:
 	ToolPluginManager();

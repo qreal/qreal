@@ -2,13 +2,13 @@
 
 #include <QtWidgets/QGraphicsView>
 
-#include "editor/private/touchSupportManager.h"
-#include "editor/editorViewScene.h"
-#include "editor/private/editorViewMVIface.h"
+#include "qrgui/editor/editorViewScene.h"
+#include "qrgui/editor/private/touchSupportManager.h"
+#include "qrgui/editor/private/editorViewMVIface.h"
 
 namespace qReal {
 
-class EditorView : public QGraphicsView
+class QRGUI_EDITOR_EXPORT EditorView : public QGraphicsView
 {
 	Q_OBJECT
 

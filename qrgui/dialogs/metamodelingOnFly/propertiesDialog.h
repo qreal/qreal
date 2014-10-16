@@ -2,8 +2,9 @@
 
 #include <QtWidgets/QDialog>
 
-#include <plugins/pluginManager/interpreterEditorManager.h>
-#include "dialogs/metamodelingOnFly/editPropertiesDialog.h"
+#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+
+#include "qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.h"
 
 namespace Ui {
 class PropertiesDialog;
@@ -13,7 +14,7 @@ namespace qReal {
 namespace gui {
 
 /// Window where you can edit the properties of the selected item
-class PropertiesDialog : public QDialog
+class QRGUI_DIALOGS_EXPORT PropertiesDialog : public QDialog
 {
 	Q_OBJECT
 

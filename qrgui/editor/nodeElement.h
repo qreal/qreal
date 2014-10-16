@@ -12,15 +12,16 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 
-#include "editor/element.h"
-#include "editor/edgeElement.h"
-#include "editor/embedded/linkers/embeddedLinker.h"
-#include "plugins/pluginManager/sdfRenderer.h"
-#include "plugins/editorPluginInterface/elementImpl.h"
+#include <plugins/pluginManager/sdfRenderer.h>
+#include <plugins/editorPluginInterface/elementImpl.h>
 
-#include "editor/private/sceneGridHandler.h"
-#include "editor/private/umlPortHandler.h"
-#include "editor/private/portHandler.h"
+#include "qrgui/editor/element.h"
+#include "qrgui/editor/edgeElement.h"
+#include "qrgui/editor/embedded/linkers/embeddedLinker.h"
+
+#include "qrgui/editor/private/sceneGridHandler.h"
+#include "qrgui/editor/private/umlPortHandler.h"
+#include "qrgui/editor/private/portHandler.h"
 
 #include "editor/serializationData.h"
 
@@ -30,7 +31,7 @@ namespace commands {
 class ResizeCommand;
 }
 
-class NodeElement : public Element
+class QRGUI_EDITOR_EXPORT NodeElement : public Element
 {
 	Q_OBJECT
 

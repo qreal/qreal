@@ -4,17 +4,18 @@
 #include <QtWidgets/QAbstractItemView>
 #include <QtGui/QResizeEvent>
 
-#include "models/propertyEditorModel.h"
-#include "models/logicalModelAssistApi.h"
+#include <qrgui/models/propertyEditorModel.h>
+#include <qrgui/models/logicalModelAssistApi.h>
 
-#include "controller/controller.h"
+#include <qrgui/controller/controller.h>
 
-#include "thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
+#include <qrgui/thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h>
 
-#include "editor/private/pushButtonProperty.h"
+#include "qrgui/editor/editorDeclSpec.h"
+#include "qrgui/editor/private/pushButtonProperty.h"
 
 /** @brief This widget imitates QtCreator's property editor */
-class PropertyEditorView : public QWidget
+class QRGUI_EDITOR_EXPORT PropertyEditorView : public QWidget
 {
 	Q_OBJECT
 

@@ -6,9 +6,11 @@
 
 #include <qrkernel/ids.h>
 
+#include "qrgui/plugins/toolPluginInterface/toolPluginInterfaceDeclSpec.h"
+
 namespace qReal {
 
-class SystemEvents : public QObject
+class QRGUI_TOOL_PLUGIN_INTERFACE_EXPORT SystemEvents : public QObject
 {
 	Q_OBJECT
 

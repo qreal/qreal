@@ -9,7 +9,7 @@
 namespace qReal {
 namespace models {
 
-class Models
+class QRGUI_MODELS_EXPORT Models
 {
 public:
 	Models(QString const &workingCopy, EditorManagerInterface &editorManager);

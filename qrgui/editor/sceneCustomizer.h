@@ -1,12 +1,13 @@
 #pragma once
 
-#include "editor/sceneCustomizationInterface.h"
+#include "qrgui/editor/editorDeclSpec.h"
+#include "qrgui/editor/sceneCustomizationInterface.h"
 
 namespace qReal {
 
 /// Provides some information for the scene from plugins.
 /// @todo: All entities in this class must be specified in the medamodel!
-class SceneCustomizer : public SceneCustomizationInterface
+class QRGUI_EDITOR_EXPORT SceneCustomizer : public SceneCustomizationInterface
 {
 public:
 	SceneCustomizer();

@@ -7,15 +7,16 @@
 #include <QtCore/QSignalMapper>
 
 #include <qrutils/qRealDialog.h>
+#include <qrgui/models/logicalModelAssistApi.h>
 
-#include "models/logicalModelAssistApi.h"
+#include "qrgui/dialogs/dialogsDeclSpec.h"
 
 namespace Ui {
 	class FindReplaceDialog;
 }
 
 /// Class that manages ui of find & replace menu.
-class FindReplaceDialog : public utils::QRealDialog
+class QRGUI_DIALOGS_EXPORT FindReplaceDialog : public utils::QRealDialog
 {
 	Q_OBJECT
 

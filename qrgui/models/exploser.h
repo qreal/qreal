@@ -5,6 +5,8 @@
 
 #include <qrkernel/ids.h>
 
+#include "qrgui/models/modelsDeclSpec.h"
+
 namespace qReal {
 
 namespace gui {
@@ -21,7 +23,7 @@ class GraphicalModelAssistApi;
 
 /// This class contains methods for processing all system explosion-based operations
 /// from the model aspect
-class Exploser : public QObject
+class QRGUI_MODELS_EXPORT Exploser : public QObject
 {
 	Q_OBJECT
 

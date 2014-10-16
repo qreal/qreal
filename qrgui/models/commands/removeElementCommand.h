@@ -6,7 +6,7 @@
 namespace qReal {
 namespace commands {
 
-class RemoveElementCommand : public AbstractCommand
+class QRGUI_MODELS_EXPORT RemoveElementCommand : public AbstractCommand
 {
 public:
 	RemoveElementCommand(

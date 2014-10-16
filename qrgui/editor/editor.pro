@@ -19,7 +19,10 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+DEFINES += QRGUI_EDITOR_LIBRARY
+
 HEADERS += \
+	$$PWD/editorDeclSpec.h \
 	$$PWD/editorView.h \
 	$$PWD/editorViewScene.h \
 	$$PWD/sceneCustomizationInterface.h \

@@ -6,10 +6,11 @@
 
 #include <qrkernel/roles.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
+#include <qrgui/mouseGestures/mouseMovementManager.h>
 
-#include "mouseGestures/mouseMovementManager.h"
-#include "copyPaste/clipboardHandler.h"
-#include "private/exploserView.h"
+#include "qrgui/editor/editorDeclSpec.h"
+#include "qrgui/editor/copyPaste/clipboardHandler.h"
+#include "qrgui/editor/private/exploserView.h"
 
 namespace qReal {
 
@@ -19,7 +20,7 @@ namespace commands {
 class CreateElementCommand;
 }
 
-class EditorViewScene : public QGraphicsScene
+class QRGUI_EDITOR_EXPORT EditorViewScene : public QGraphicsScene
 {
 	Q_OBJECT
 

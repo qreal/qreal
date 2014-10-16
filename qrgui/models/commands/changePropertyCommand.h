@@ -11,7 +11,7 @@ namespace qReal {
 namespace commands {
 
 /// Sets given property to a given value
-class ChangePropertyCommand : public AbstractCommand
+class QRGUI_MODELS_EXPORT ChangePropertyCommand : public AbstractCommand
 {
 public:
 	/// Use this overload to modify properties via models api

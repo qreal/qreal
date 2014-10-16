@@ -5,11 +5,12 @@
 
 #include <qrrepo/logicalRepoApi.h>
 
+#include "models/modelsDeclSpec.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
 
 /// Proxy model for property editor, maps single element from main model
 /// (logical or graphical) to a list model with element properties.
-class PropertyEditorModel : public QAbstractTableModel
+class QRGUI_MODELS_EXPORT PropertyEditorModel : public QAbstractTableModel
 {
 	Q_OBJECT
 

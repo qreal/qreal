@@ -4,6 +4,9 @@
 
 #include <qrkernel/ids.h>
 
+/// @todo: Make editor view mviface fully private.
+#include "qrgui/editor/editorDeclSpec.h"
+
 namespace qReal {
 
 class EditorView;
@@ -16,7 +19,7 @@ class GraphicalModelAssistApi;
 class LogicalModelAssistApi;
 }
 
-class EditorViewMViface : public QAbstractItemView
+class QRGUI_EDITOR_EXPORT EditorViewMViface : public QAbstractItemView
 {
 	Q_OBJECT
 

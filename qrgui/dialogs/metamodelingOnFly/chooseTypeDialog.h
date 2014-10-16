@@ -4,6 +4,8 @@
 
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
+#include "qrgui/dialogs/dialogsDeclSpec.h"
+
 namespace Ui {
 class ChooseTypeDialog;
 }
@@ -12,7 +14,7 @@ namespace qReal {
 namespace gui {
 
 /// Dialog for metatype selection.
-class ChooseTypeDialog : public QDialog
+class QRGUI_DIALOGS_EXPORT ChooseTypeDialog : public QDialog
 {
 	Q_OBJECT
 

@@ -2,8 +2,6 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
-DEFINES += QRGUI_PREFERENCES_DIALOG_LIBRARY
-
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/preferencesDialog_ru.ts
 
 QT += widgets
@@ -21,6 +19,8 @@ OBJECTS_DIR = .obj
 UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
+
+DEFINES += QRGUI_PREFERENCES_DIALOG_LIBRARY
 
 HEADERS += \
 	$$PWD/preferencesDialogDeclSpec.h \

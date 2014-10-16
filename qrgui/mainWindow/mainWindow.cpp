@@ -67,24 +67,24 @@ using namespace gui;
 QString const unsavedDir = "unsaved";
 
 MainWindow::MainWindow(QString const &fileToOpen)
-		: mUi(new Ui::MainWindowUi)
-		, mModels(nullptr)
-		, mController(new Controller)
-		, mEditorManagerProxy(new EditorManager())
-		, mPropertyModel(mEditorManagerProxy)
-		, mSystemEvents(new SystemEvents())
-		, mTextManager(new TextManager(*mSystemEvents, *this))
-		, mRootIndex(QModelIndex())
-		, mErrorReporter(nullptr)
-		, mIsFullscreen(false)
-		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
-		, mPreferencesDialog(this)
-		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
-		, mRecentProjectsMapper(new QSignalMapper())
-		, mProjectManager(new ProjectManager(this, mTextManager))
-		, mStartWidget(nullptr)
-		, mSceneCustomizer(new SceneCustomizer)
-		, mInitialFileToOpen(fileToOpen)
+	: mUi(new Ui::MainWindowUi)
+	, mModels(nullptr)
+	, mController(new Controller)
+	, mEditorManagerProxy(new EditorManager())
+	, mPropertyModel(mEditorManagerProxy)
+	, mSystemEvents(new SystemEvents())
+	, mTextManager(new TextManager(*mSystemEvents, *this))
+	, mRootIndex(QModelIndex())
+	, mErrorReporter(nullptr)
+	, mIsFullscreen(false)
+	, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
+	, mPreferencesDialog(this)
+	, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
+	, mRecentProjectsMapper(new QSignalMapper())
+	, mProjectManager(new ProjectManager(this, mTextManager))
+	, mStartWidget(nullptr)
+	, mSceneCustomizer(new SceneCustomizer)
+	, mInitialFileToOpen(fileToOpen)
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
@@ -407,7 +407,7 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool setSelected)
 
 	if (numTab != -1) {
 		mUi->tabs->setCurrentIndex(numTab);
-		Id const currentTabId = getCurrentTab()->mvIface().rootId();
+		Id const currentTabId = getCurrentTab()->editorViewScene().rootItemId();
 		mToolManager.activeTabChanged(currentTabId);
 	} else {
 		openNewTab(idx);
@@ -797,7 +797,7 @@ void MainWindow::closeTab(int index)
 	QString const path = mTextManager->path(possibleCodeTab);
 
 	if (diagram) {
-		Id const diagramId = diagram->mvIface().rootId();
+		Id const diagramId = diagram->editorViewScene().rootItemId();
 		mController->diagramClosed(diagramId);
 		emit mSystemEvents->diagramClosed(diagramId);
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {

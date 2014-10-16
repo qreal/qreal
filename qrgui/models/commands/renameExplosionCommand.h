@@ -8,7 +8,7 @@ namespace qReal {
 namespace commands {
 
 /// This command triggeres palette item editing process for given explosion instance
-class RenameExplosionCommand : public AbstractCommand
+class QRGUI_MODELS_EXPORT RenameExplosionCommand : public AbstractCommand
 {
 	Q_OBJECT
 

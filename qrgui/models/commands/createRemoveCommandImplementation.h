@@ -5,7 +5,7 @@
 namespace qReal {
 namespace commands {
 
-class CreateRemoveCommandImplementation
+class QRGUI_MODELS_EXPORT CreateRemoveCommandImplementation
 {
 public:
 	CreateRemoveCommandImplementation(

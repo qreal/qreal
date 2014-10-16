@@ -18,7 +18,10 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+DEFINES += QRGUI_MOUSE_GESTURES_LIBRARY
+
 HEADERS += \
+	$$PWD/mouseGesturesDeclSpec.h \
 	$$PWD/mouseMovementManager.h \
 	$$PWD/gesturesWidget.h \
 	$$PWD/gesturePainter.h \

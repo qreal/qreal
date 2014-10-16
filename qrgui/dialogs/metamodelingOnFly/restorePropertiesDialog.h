@@ -2,7 +2,9 @@
 
 #include <QtWidgets/QDialog>
 
-#include "plugins/pluginManager/editorManagerInterface.h"
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+
+#include "qrgui/dialogs/dialogsDeclSpec.h"
 
 namespace Ui {
 class RestorePropertiesDialog;
@@ -11,7 +13,7 @@ class RestorePropertiesDialog;
 namespace qReal {
 
 /// Window where you can restore the property with the same name, which was renamed or removed.
-class RestorePropertiesDialog : public QDialog
+class QRGUI_DIALOGS_EXPORT RestorePropertiesDialog : public QDialog
 {
 	Q_OBJECT
 

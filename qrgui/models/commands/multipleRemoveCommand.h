@@ -1,6 +1,7 @@
 #pragma once
 
 #include "controller/commands/doNothingCommand.h"
+#include "models/modelsDeclSpec.h"
 
 namespace qReal {
 
@@ -14,7 +15,7 @@ class GraphicalModelAssistApi;
 namespace commands {
 
 /// Accepts a list of ids and removes them from model.
-class MultipleRemoveCommand : public DoNothingCommand
+class QRGUI_MODELS_EXPORT MultipleRemoveCommand : public DoNothingCommand
 {
 public:
 	MultipleRemoveCommand(models::Models const &models, IdList &itemsToDelete);

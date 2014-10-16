@@ -6,7 +6,7 @@
 namespace qReal {
 namespace commands {
 
-class CreateElementCommand : public AbstractCommand
+class QRGUI_MODELS_EXPORT CreateElementCommand : public AbstractCommand
 {
 public:
 	CreateElementCommand(

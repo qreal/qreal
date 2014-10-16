@@ -18,7 +18,10 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+DEFINES += QRGUI_DIALOGS_LIBRARY
+
 HEADERS += \
+	$$PWD/dialogsDeclSpec.h \
 	$$PWD/metamodelingOnFly/propertiesDialog.h \
 	$$PWD/metamodelingOnFly/editPropertiesDialog.h \
 	$$PWD/metamodelingOnFly/chooseTypeDialog.h \

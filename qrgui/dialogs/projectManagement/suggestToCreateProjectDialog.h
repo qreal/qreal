@@ -2,6 +2,8 @@
 
 #include <QtWidgets/QDialog>
 
+#include "qrgui/dialogs/dialogsDeclSpec.h"
+
 namespace qReal {
 
 class EditorManagerInterface;
@@ -9,7 +11,7 @@ class EditorManagerInterface;
 /// @brief Dialog for creating a new project.
 /// This dialog prompts the user to select one of the available diagrams
 /// and new project with selected diagram will be created
-class SuggestToCreateProjectDialog : public QDialog
+class QRGUI_DIALOGS_EXPORT SuggestToCreateProjectDialog : public QDialog
 {
 	Q_OBJECT
 

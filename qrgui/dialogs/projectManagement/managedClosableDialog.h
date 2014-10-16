@@ -2,10 +2,12 @@
 
 #include <QtWidgets/QDialog>
 
+#include "qrgui/dialogs/dialogsDeclSpec.h"
+
 namespace qReal {
 
 /// Dialog with managed closability
-class ManagedClosableDialog : public QDialog
+class QRGUI_DIALOGS_EXPORT ManagedClosableDialog : public QDialog
 {
 	Q_OBJECT
 

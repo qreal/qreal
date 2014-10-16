@@ -5,6 +5,8 @@
 #include <QtCore/QMap>
 #include <QtWidgets/QWidget>
 
+#include "qrgui/mouseGestures/mouseGesturesDeclSpec.h"
+
 #include "private/keyManager.h"
 #include "private/mixedgesturesmanager.h"
 #include "private/geometricForms.h"
@@ -14,7 +16,7 @@
 namespace qReal {
 namespace gestures {
 
-class MouseMovementManager : public QObject
+class QRGUI_MOUSE_GESTURES_EXPORT MouseMovementManager : public QObject
 {
 	Q_OBJECT
 
@@ -29,7 +31,7 @@ public:
 	};
 
 	/// Specifies the result of the gesture made.
-	struct GestureResult
+	struct QRGUI_MOUSE_GESTURES_EXPORT GestureResult
 	{
 	public:
 		GestureResult();

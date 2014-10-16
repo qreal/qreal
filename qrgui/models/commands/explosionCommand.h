@@ -8,7 +8,7 @@ namespace qReal {
 namespace commands {
 
 /// Adds or removes explosion between specified elements
-class ExplosionCommand : public AbstractCommand
+class QRGUI_MODELS_EXPORT ExplosionCommand : public AbstractCommand
 {
 public:
 	/// Creates new instance of a command that creates or removes explosions.

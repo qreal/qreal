@@ -17,7 +17,7 @@ namespace details {
 
 class LogicalModel;
 
-class GraphicalModel : public modelsImplementation::AbstractModel
+class QRGUI_MODELS_EXPORT GraphicalModel : public modelsImplementation::AbstractModel
 {
 	Q_OBJECT
 

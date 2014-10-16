@@ -6,17 +6,19 @@
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
 
-#include "plugins/editorPluginInterface/elementRepoInterface.h"
-#include "plugins/editorPluginInterface/elementImpl.h"
+#include <qrgui/plugins/editorPluginInterface/elementRepoInterface.h>
+#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
 
-#include "editor/label.h"
-#include "editor/contextMenuAction.h"
+#include <qrgui/models/graphicalModelAssistApi.h>
+#include <qrgui/models/logicalModelAssistApi.h>
+#include <qrgui/models/exploser.h>
 
-#include "models/graphicalModelAssistApi.h"
-#include "models/logicalModelAssistApi.h"
+#include <qrgui/controller/controller.h>
 
-#include "controller/controller.h"
-#include "models/exploser.h"
+#include "qrgui/editor/editorDeclSpec.h"
+#include "qrgui/editor/label.h"
+#include "qrgui/editor/contextMenuAction.h"
+
 
 namespace qReal {
 
@@ -24,7 +26,7 @@ namespace qReal {
 const int kvadratik = 10;
 
 /// base class for an element on a diagram
-class Element : public QObject, public QGraphicsItem, public ElementRepoInterface
+class QRGUI_EDITOR_EXPORT Element : public QObject, public QGraphicsItem, public ElementRepoInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(QGraphicsItem)

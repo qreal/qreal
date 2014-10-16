@@ -13,12 +13,15 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+DEFINES += QRGUI_TEXT_EDITOR_LIBRARY
+
 INCLUDEPATH = \
 	$$PWD/ \
 	$$PWD/../ \
 	$$PWD/../../ \
 
 HEADERS += \
+	$$PWD/textEditorDeclSpec.h \
 	$$PWD/textHighlighter.h \
 	$$PWD/sqlHighlighter.h \
 	$$PWD/textManager.h \

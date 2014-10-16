@@ -7,7 +7,7 @@
 namespace qReal {
 namespace commands {
 
-class ChangeParentCommand : public AbstractCommand
+class QRGUI_MODELS_EXPORT ChangeParentCommand : public AbstractCommand
 {
 public:
 	ChangeParentCommand(

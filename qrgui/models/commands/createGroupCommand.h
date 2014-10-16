@@ -6,7 +6,7 @@
 namespace qReal {
 namespace commands {
 
-class CreateGroupCommand : public AbstractCommand
+class QRGUI_MODELS_EXPORT CreateGroupCommand : public AbstractCommand
 {
 public:
 	CreateGroupCommand(models::LogicalModelAssistApi &logicalApi

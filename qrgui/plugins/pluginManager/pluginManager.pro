@@ -18,7 +18,10 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+DEFINES += QRGUI_PLUGIN_MANAGER_LIBRARY
+
 HEADERS += \
+	$$PWD/pluginsManagerDeclSpec.h \
 	$$PWD/editorManager.h \
 	$$PWD/toolPluginManager.h \
 	$$PWD/interpreterEditorManager.h \

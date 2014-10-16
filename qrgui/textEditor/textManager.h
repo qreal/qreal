@@ -4,11 +4,12 @@
 #include <QtCore/QMap>
 #include <QtCore/QMultiHash>
 
-#include "textManagerInterface.h"
+#include "qrgui/textEditor/textEditorDeclSpec.h"
+#include "qrgui/textEditor/textManagerInterface.h"
 
 namespace qReal {
 
-class TextManager : public TextManagerInterface
+class QRGUI_TEXT_EDITOR_EXPORT TextManager : public TextManagerInterface
 {
 	Q_OBJECT
 

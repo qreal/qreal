@@ -18,7 +18,10 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+DEFINES += QRGUI_MODELS_LIBRARY
+
 HEADERS += \
+	$$PWD/modelsDeclSpec.h \
 	$$PWD/models.h \
 	$$PWD/graphicalModelAssistApi.h \
 	$$PWD/logicalModelAssistApi.h \

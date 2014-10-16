@@ -2,7 +2,8 @@
 
 #include <QtGui/QIconEngine>
 
-#include "private/geometricForms.h"
+#include "qrgui/mouseGestures/mouseGesturesDeclSpec.h"
+#include "qrgui/mouseGestures/private/geometricForms.h"
 
 namespace qReal {
 namespace gestures {
@@ -10,7 +11,7 @@ namespace gestures {
 /// This class get the gesture in QString. Call method pixmap
 /// returns the icon as a pixmap with the required size, mode, and state.
 /// The default implementation creates a new pixmap and calls paint() to fill it.
-class GesturePainter : public QIconEngine
+class QRGUI_MOUSE_GESTURES_EXPORT GesturePainter : public QIconEngine
 {
 public:
 	GesturePainter(QString const &gesture

@@ -18,7 +18,10 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+DEFINES += QRGUI_HOTKEY_MANAGER_LIBRARY
+
 HEADERS += \
+	$$PWD/hotKeyManagerDeclSpec.h \
 	$$PWD/hotKeyManagerPage.h \
 	$$PWD/hotKeyManager.h \
 	$$PWD/shortcutEdit.h \
