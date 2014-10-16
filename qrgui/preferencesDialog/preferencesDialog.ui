@@ -32,8 +32,8 @@
    <string>Preferences</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../qrgui.qrc">
-    <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
+   <iconset resource="preferencesDialog.qrc">
+    <normaloff>:/preferencesDialog/images/settings.png</normaloff>:/preferencesDialog/images/settings.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="4" column="1">
@@ -154,7 +154,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../qrgui.qrc"/>
+  <include location="preferencesDialog.qrc"/>
  </resources>
  <connections/>
 </ui>

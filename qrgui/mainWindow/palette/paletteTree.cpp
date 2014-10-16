@@ -47,7 +47,7 @@ void PaletteTree::initUi()
 
 	mChangeRepresentation = new QToolButton;
 	mChangeRepresentation->setGeometry(0, 0, 30, 30);
-	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
+	mChangeRepresentation->setIcon(QIcon(":/mainWindow/images/changeRepresentation.png"));
 	mChangeRepresentation->setToolTip(tr("Change representation"));
 	mChangeRepresentation->setIconSize(QSize(30, 30));
 	connect(mChangeRepresentation, SIGNAL(clicked()), this, SLOT(changeRepresentation()));
@@ -296,10 +296,10 @@ void PaletteTree::changeExpansionState()
 void PaletteTree::setExpansionButtonAppearance()
 {
 	if (mNodesStateButtonExpands) {
-		mChangeExpansionState->setIcon(QIcon(":/icons/collapseAll.png"));
+		mChangeExpansionState->setIcon(QIcon(":/mainWindow/images/collapseAll.png"));
 		mChangeExpansionState->setToolTip(tr("Collapse all"));
 	} else {
-		mChangeExpansionState->setIcon(QIcon(":/icons/expandAll.png"));
+		mChangeExpansionState->setIcon(QIcon(":/mainWindow/images/expandAll.png"));
 		mChangeExpansionState->setToolTip(tr("Expand all"));
 	}
 }

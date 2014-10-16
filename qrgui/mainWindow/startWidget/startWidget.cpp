@@ -100,7 +100,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 	mProjectsManagementLayout->addStretch();
 
 	mOpenProjectButton = new StyledButton(tr("Open existing project")
-			, ":icons/startTab/open.svg");
+			, ":/mainWindow/images/startTab/open.svg");
 	connect(mOpenProjectButton, &QPushButton::clicked, this, &StartWidget::openExistingProject);
 	mProjectsManagementLayout->addWidget(mOpenProjectButton);
 
@@ -126,9 +126,9 @@ QWidget *StartWidget::createProjectsManagementWidget()
 	}
 
 	mOpenInterpreterButton = new StyledButton(tr("Open interpreted diagram")
-			, ":icons/startTab/openInterpreted.svg");
+			, ":/mainWindow/images/startTab/openInterpreted.svg");
 	mCreateInterpreterButton = new StyledButton(tr("Create interpreted diagram")
-			, ":icons/startTab/createInterpreted.svg");
+			, ":/mainWindow/images/startTab/createInterpreted.svg");
 	connect(mOpenInterpreterButton, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
 	connect(mCreateInterpreterButton, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
 
@@ -200,7 +200,7 @@ QLayout *StartWidget::createRecentProjectsList(QString const &recentProjects)
 
 QWidget *StartWidget::createPluginsList()
 {
-	QWidget * const circleWidget = new CircleWidget(QSize(70, 70), ":/icons/startTab/new.svg");
+	QWidget * const circleWidget = new CircleWidget(QSize(70, 70), ":/mainWindow/images/startTab/new.svg");
 	circleWidget->setStyleSheet(BrandManager::styles()->startTabButtonStyle());
 
 	QVBoxLayout * const innerLayout = new QVBoxLayout;

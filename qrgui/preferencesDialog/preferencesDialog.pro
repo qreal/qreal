@@ -50,3 +50,6 @@ FORMS += \
 	$$PWD/preferencesPages/debuggerPage.ui \
 	$$PWD/preferencesPages/behaviourPage.ui \
 	$$PWD/preferencesPages/featuresPage.ui \
+
+RESOURCES += \
+	$$PWD/preferencesDialog.qrc \

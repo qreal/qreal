@@ -13,10 +13,6 @@
   <property name="windowTitle">
    <string>QReal</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="mainWindow.qrc">
-    <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
-  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout">
     <property name="leftMargin">
@@ -435,7 +431,7 @@
   <action name="actionZoom_In">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/zoomin.png</normaloff>:/icons/zoomin.png</iconset>
+     <normaloff>:/mainWindow/images/zoomin.png</normaloff>:/mainWindow/images/zoomin.png</iconset>
    </property>
    <property name="text">
     <string>Zoom In</string>
@@ -447,7 +443,7 @@
   <action name="actionZoom_Out">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/zoomout.png</normaloff>:/icons/zoomout.png</iconset>
+     <normaloff>:/mainWindow/images/zoomout.png</normaloff>:/mainWindow/images/zoomout.png</iconset>
    </property>
    <property name="text">
     <string>Zoom Out</string>
@@ -478,7 +474,7 @@
   <action name="actionPrint">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
+     <normaloff>:/mainWindow/images/print.png</normaloff>:/mainWindow/images/print.png</iconset>
    </property>
    <property name="text">
     <string>Print</string>
@@ -523,7 +519,7 @@
   <action name="actionSave">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/save.svg</normaloff>:/icons/save.svg</iconset>
+     <normaloff>:/mainWindow/images/save.svg</normaloff>:/mainWindow/images/save.svg</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -543,7 +539,7 @@
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/open.svg</normaloff>:/icons/open.svg</iconset>
+     <normaloff>:/mainWindow/images/open.svg</normaloff>:/mainWindow/images/open.svg</iconset>
    </property>
    <property name="text">
     <string>Open...</string>
@@ -617,7 +613,7 @@
   <action name="actionGenerate_and_build">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/build.png</normaloff>:/icons/build.png</iconset>
+     <normaloff>:/mainWindow/images/build.png</normaloff>:/mainWindow/images/build.png</iconset>
    </property>
    <property name="text">
     <string>Generate and build</string>
@@ -656,7 +652,7 @@
   <action name="actionNew_Diagram">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/newDiagram.svg</normaloff>:/icons/newDiagram.svg</iconset>
+     <normaloff>:/mainWindow/images/newDiagram.svg</normaloff>:/mainWindow/images/newDiagram.svg</iconset>
    </property>
    <property name="text">
     <string>New Diagram</string>
@@ -668,7 +664,7 @@
   <action name="actionFullscreen">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/fullScreen.svg</normaloff>:/icons/fullScreen.svg</iconset>
+     <normaloff>:/mainWindow/images/fullScreen.svg</normaloff>:/mainWindow/images/fullScreen.svg</iconset>
    </property>
    <property name="text">
     <string>Fullscreen Mode</string>
@@ -683,7 +679,7 @@
   <action name="actionNewProject">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/newProject.svg</normaloff>:/icons/newProject.svg</iconset>
+     <normaloff>:/mainWindow/images/newProject.svg</normaloff>:/mainWindow/images/newProject.svg</iconset>
    </property>
    <property name="text">
     <string>New Project</string>
@@ -723,7 +719,7 @@
   <action name="actionUndo">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
+     <normaloff>:/mainWindow/images/undo.png</normaloff>:/mainWindow/images/undo.png</iconset>
    </property>
    <property name="text">
     <string>Undo</string>
@@ -735,7 +731,7 @@
   <action name="actionRedo">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
-     <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
+     <normaloff>:/mainWindow/images/redo.png</normaloff>:/mainWindow/images/redo.png</iconset>
    </property>
    <property name="text">
     <string>Redo</string>

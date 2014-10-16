@@ -47,3 +47,6 @@ SOURCES += \
 	$$PWD/details/patternParser.cpp \
 	$$PWD/details/interpreterElementImpl.cpp \
 	$$PWD/details/interpreterPortImpl.cpp \
+
+RESOURCES += \
+	$$PWD/pluginManager.qrc \

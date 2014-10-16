@@ -12,7 +12,7 @@ PreferencesDebuggerPage::PreferencesDebuggerPage(QWidget *parent)
 {
 	mUi->setupUi(this);
 	setObjectName("preferencesDebuggerPage");
-	setWindowIcon(QIcon(":/icons/preferences/bug.png"));
+	setWindowIcon(QIcon(":/preferencesDialog/images/bug.png"));
 
 	restoreSettings();
 }

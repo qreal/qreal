@@ -11,7 +11,7 @@ PreferencesFeaturesPage::PreferencesFeaturesPage(QWidget *parent)
 {
 	mUi->setupUi(this);
 	setObjectName("preferencesFeaturesPage");
-	setWindowIcon(QIcon(":/icons/preferences/features.png"));
+	setWindowIcon(QIcon(":/preferencesDialog/images/features.png"));
 
 	restoreSettings();
 }

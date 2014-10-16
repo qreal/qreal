@@ -14,7 +14,7 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 {
 	mUi->setupUi(this);
 	setObjectName("preferencesBehaviourPage");
-	setWindowIcon(QIcon(":/icons/preferences/behaviour.png"));
+	setWindowIcon(QIcon(":/preferencesDialog/images/behaviour.png"));
 
 	initLanguages();
 

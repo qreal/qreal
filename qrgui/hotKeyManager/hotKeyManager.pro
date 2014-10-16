@@ -35,3 +35,6 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/hotKeyManagerPage.ui \
+
+RESOURCES += \
+	$$PWD/hotKeyManager.qrc \

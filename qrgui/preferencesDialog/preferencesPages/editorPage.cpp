@@ -16,7 +16,7 @@ PreferencesEditorPage::PreferencesEditorPage(QWidget *parent)
 {
 	mUi->setupUi(this);
 	setObjectName("preferencesEditorPage");
-	setWindowIcon(QIcon(":/icons/preferences/editor.png"));
+	setWindowIcon(QIcon(":/preferencesDialog/images/editor.png"));
 
 	connect(mUi->gridWidthSlider, SIGNAL(valueChanged(int)), this, SLOT(widthGridSliderMoved(int)));
 	connect(mUi->indexGridSlider, SIGNAL(valueChanged(int)), this, SLOT(indexGridSliderMoved(int)));

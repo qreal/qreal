@@ -12,7 +12,7 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 {
 	mUi->setupUi(this);
 	setObjectName("preferencesMiscellaniousPage");
-	setWindowIcon(QIcon(":/icons/preferences/miscellaneous.png"));
+	setWindowIcon(QIcon(":/preferencesDialog/images/miscellaneous.png"));
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 	connect(mUi->toolbarSizeSlider, &QSlider::valueChanged

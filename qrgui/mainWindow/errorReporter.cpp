@@ -130,16 +130,16 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 			error.timestamp(), severityMessage(error), error.message());
 	switch (error.severity()) {
 	case Error::information:
-		item->setIcon(QIcon(":/icons/information.png"));
+		item->setIcon(QIcon(":/mainWindow/images/information.png"));
 		break;
 	case Error::warning:
-		item->setIcon(QIcon(":/icons/warning.png"));
+		item->setIcon(QIcon(":/mainWindow/images/warning.png"));
 		break;
 	case Error::error:
-		item->setIcon(QIcon(":/icons/error.png"));
+		item->setIcon(QIcon(":/mainWindow/images/error.png"));
 		break;
 	case Error::critical:
-		item->setIcon(QIcon(":/icons/critical.png"));
+		item->setIcon(QIcon(":/mainWindow/images/critical.png"));
 		break;
 	default:
 		throw new Exception("Incorrect total severity");

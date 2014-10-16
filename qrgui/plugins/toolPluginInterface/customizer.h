@@ -32,7 +32,7 @@ public:
 	/// Customizes QReal`s logo in large format
 	virtual QImage applicationLogo() const
 	{
-		return QImage(":/icons/kroki6.png");
+		return QImage(":/mainWindow/images/kroki6.png");
 	}
 
 	/// Customizes product version

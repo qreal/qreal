@@ -834,7 +834,7 @@ QFileInfo SdfRenderer::ImagesCache::selectBestImageFile(QString const &filePath)
 		return selectBestImageFile(fileInfo.absolutePath() + "/default.svg");
 	}
 
-	return QFileInfo(":/icons/default.svg");
+	return QFileInfo(":/pluginManager/images/default.svg");
 }
 
 QByteArray SdfRenderer::ImagesCache::loadPixmap(QFileInfo const &fileInfo)
