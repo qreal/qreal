@@ -40,6 +40,8 @@ public:
 	void activeTabChanged(Id const & rootElementId);
 
 	/// Returns plugin gui script facade.
+	/// This class allows to search and get objects of graphical user interface of plugin`s user interface
+	/// from scripting language
 	QObject *pluginGuiFacade(QString const &pluginName);
 
 private:

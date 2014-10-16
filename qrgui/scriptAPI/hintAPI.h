@@ -20,10 +20,10 @@ class HintAPI  : public QObject, public HintInterface
 public:
 	HintAPI(ScriptAPI *ScriptAPI);
 
-	/// Send message as HintReporter in parent widget. Exists for lifeTime.
+	/// Sends message as HintReporter in parent widget. Exists for lifeTime.
 	Q_INVOKABLE void addHint(QString const &message, int const lifeTime, QWidget *parent);
 
-	/// Draw arrow near target with parent widget with angle. Exists for lifeTime.
+	/// Draws arrow near target with parent widget with angle. Exists for lifeTime.
 	Q_INVOKABLE void arrowToWidget(QWidget *target, qreal angle, int lifeTime, QWidget *parent);
 
 private slots:

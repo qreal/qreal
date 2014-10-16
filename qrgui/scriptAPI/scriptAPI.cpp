@@ -1,9 +1,9 @@
 #include "scriptAPI.h"
 
-#include <QtTest/QTest>
-#include <QCoreApplication>
+#include <QtCore/QCoreApplication>
 
 #include <qrkernel/exception/exception.h>
+#include <qrutils/inFile.h>
 
 #include "mainwindow/mainWindow.h"
 #include "view/editorView.h"
@@ -11,6 +11,7 @@
 
 using namespace qReal;
 using namespace gui;
+using namespace utils;
 
 ScriptAPI::ScriptAPI()
 	: mGuiFacade (nullptr)
@@ -50,9 +51,6 @@ void ScriptAPI::init(MainWindow *mainWindow)
 	QScriptValue const guiFacade = mScriptEngine.newQObject(mGuiFacade);
 	mScriptEngine.globalObject().setProperty("guiFacade", guiFacade);
 
-	QScriptValue const robotsGuiFacade = mScriptEngine.newQObject(mGuiFacade->pluginGuiFacade("qRealRobots.RobotsPlugin"));
-	mScriptEngine.globalObject().setProperty("pluginGuiFacade", robotsGuiFacade);
-
 	QScriptValue const virtualCursor = mScriptEngine.newQObject(mVirtualCursor);
 	mScriptEngine.globalObject().setProperty("cursor", virtualCursor);
 
@@ -69,25 +67,21 @@ void ScriptAPI::init(MainWindow *mainWindow)
 	mScriptEngine.globalObject().setProperty("sceneAPI", sceneAPI);
 
 	QString const fileName(SettingsManager::value("scriptName").toString());
-	QFile scriptFile(fileName);
-	scriptFile.open(QIODevice::ReadOnly);
-	QTextStream stream(&scriptFile);
+
+	QString const &fileContent = InFile::readAll(fileName);
 
 	mScriptEngine.setProcessEventsInterval(20);
-	mScriptEngine.evaluate(stream.readAll(), fileName);
-
-	scriptFile.close();
+	mScriptEngine.evaluate(fileContent, fileName);
 }
 
 void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, QString const &name, int const duration)
 {
 	int const comboBoxHeight = comboBox->height()/2;
 	int const rowHeight = (comboBox->view()->height() - comboBoxHeight) / comboBox->count();
-	QByteArray const data = name.toLocal8Bit();
 
 	int i;
 	for (i = 1; i <= comboBox->count(); ++i) {
-		if (!comboBox->itemData(i-1, Qt::DisplayRole).toString().compare(data.data())) {
+		if (!comboBox->itemData(i - 1, Qt::DisplayRole).toString().compare(name)) {
 			break;
 		}
 	}
@@ -106,31 +100,29 @@ void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, QString const &name, int c
 	timer->setInterval(100);
 
 	connect(timer, &QTimer::timeout,
-		[this, comboBox]() {
-			mVirtualCursor->moved(comboBox->view()->viewport());
-		});
+			[this, comboBox]() {
+				mVirtualCursor->moved(comboBox->view()->viewport());
+			});
 	timer->start();
 	mVirtualCursor->moveToRect(target, duration);
 	timer->stop();
-
 	QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress
-										 , QPoint(0, rowHeight*i)
-										 , Qt::LeftButton
-										 , Qt::LeftButton
-										 , Qt::NoModifier);
+			,  mVirtualCursor->pos()
+			, Qt::LeftButton
+			, Qt::LeftButton
+			, Qt::NoModifier);
 	QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease
-										   , QPoint(0, rowHeight*i)
-										   , Qt::LeftButton
-										   , Qt::LeftButton
-										   , Qt::NoModifier);
+			, mVirtualCursor->pos()
+			, Qt::LeftButton
+			, Qt::LeftButton
+			, Qt::NoModifier);
+
 	QApplication::postEvent(comboBox->view()->viewport(), pressEvent);
 	QApplication::postEvent(comboBox->view()->viewport(), releaseEvent);
-	wait(200);
 	newPos = comboBox->mapTo(parent, mVirtualCursor->pos());
 	mVirtualCursor->setParent(parent);
 	mVirtualCursor->move(newPos);
 	mVirtualCursor->show();
-	mVirtualCursor->raise();
 }
 
 
@@ -154,6 +146,12 @@ void ScriptAPI::changeWindow(QWidget *parent)
 	mVirtualCursor->show();
 	mVirtualCursor->leftButtonPress(parent);
 	mVirtualCursor->leftButtonRelease(parent);
+}
+
+void ScriptAPI::loadPluginGuiFacade(QString const pluginName)
+{
+	QScriptValue const pluginGuiFacade = mScriptEngine.newQObject(mGuiFacade->pluginGuiFacade(pluginName));
+	mScriptEngine.globalObject().setProperty("pluginGuiFacade", pluginGuiFacade);
 }
 
 void ScriptAPI::abortEvaluate()

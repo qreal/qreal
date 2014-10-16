@@ -21,7 +21,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
-#include <qrutils/graphicsUtils/animatedHighlighter.h>
+#include <qrutils/graphicsUtils/animatedEffects.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrutils/uxInfo/uxInfo.h>
 
@@ -376,7 +376,7 @@ void MainWindow::selectItemWithError(Id const &id)
 	centerOn(graphicalId);
 
 	Element * const element = getCurrentTab() ? getCurrentTab()->editorViewScene()->getElem(graphicalId) : nullptr;
-	graphicsUtils::AnimatedHighlighter::highlight(element);
+	graphicsUtils::AnimatedEffects::highlight(element);
 }
 
 void MainWindow::selectItem(Id const &id)
@@ -2284,7 +2284,7 @@ void MainWindow::initScriptAPI()
 	QThread *scriptAPIthread = new QThread(this);
 	mScriptAPI.init(this);
 	mScriptAPI.moveToThread(scriptAPIthread);
-	connect(mSystemEvents, SIGNAL(closedMainWindow()), scriptAPIthread, SLOT(quit()));
+	connect(mSystemEvents, &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
 	scriptAPIthread->start();
 }
 
@@ -2351,7 +2351,7 @@ void MainWindow::initActionWidgetsNames()
 	for (QAction *action : actionList) {
 		QList<QWidget *> const widgetList = action->associatedWidgets();
 		for (QWidget *widget : widgetList) {
-			if (widget->objectName() == "") {
+			if (widget->objectName().isEmpty()) {
 				widget->setObjectName(action->objectName());
 			}
 		}

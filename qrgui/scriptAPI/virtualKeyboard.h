@@ -16,7 +16,7 @@ class VirtualKeyboard : public QObject
 public:
 	VirtualKeyboard(ScriptAPI *mScriptAPI);
 
-	/// Emulate keyboard to type message for over duration time.
+	/// Emulates keyboard to type message for over duration time.
 	Q_INVOKABLE void type(QString const &message, int const duration);
 
 private:

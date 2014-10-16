@@ -33,22 +33,20 @@ DraggableElement *GuiFacade::draggableElement(QString const &widgetId)
 			return paletteElement;
 		}
 	}
+
 	return nullptr;
 }
 
 QRect GuiFacade::propertyRect(QString const &name)
 {
-	QByteArray const data = name.toLocal8Bit();
-	QTreeWidget const *editorTree = dynamic_cast<QTreeWidget *>(
-				mMainWindow->propertyEditor()->children()[0]->children()[1]);
-	for (int i = 0; i < editorTree->topLevelItemCount(); ++i) {
-		QTreeWidgetItem const *item = editorTree->topLevelItem(i);
-		if (item->data(0, Qt::DisplayRole).toString() == data.data()) {
-			QRect const globalTarget = QRect(mMainWindow->propertyEditor()->mapToGlobal(editorTree->visualItemRect(item).center() + QPoint(10, 0))
-									, editorTree->visualItemRect(item).size());
-			return globalTarget;
-		}
-	}
+	QTreeWidget *editorTree = mMainWindow->
+			propertyEditor()->
+			findChild<QtTreePropertyBrowser *>()->
+			findChild<QTreeWidget *>();
+	QRect const globalTarget = QRect(mMainWindow->propertyEditor()->mapToGlobal(
+			editorTree->visualItemRect(propertyTreeWidgetItem(name)).center() + QPoint(10, 0))
+			, editorTree->visualItemRect(propertyTreeWidgetItem(name)).size());
+	return globalTarget;
 }
 
 QObject *GuiFacade::pluginGuiFacade(QString const &pluginName)
@@ -59,38 +57,35 @@ QObject *GuiFacade::pluginGuiFacade(QString const &pluginName)
 QWidget *GuiFacade::property(QString const &type, QString const &name)
 {
 	if (type == "QComboBox") {
-		QByteArray const data = name.toLocal8Bit();
-		QTreeWidget *editorTree = dynamic_cast<QTreeWidget *>(
-					mMainWindow->propertyEditor()->children()[0]->children()[1]);
-		for (int i = 0; i < editorTree->topLevelItemCount(); ++i) {
-			QTreeWidgetItem *item = editorTree->topLevelItem(i);
-			if (item->data(0, Qt::DisplayRole).toString() == data.data()) {
-				return editorTree->itemWidget(item, 1);
-			}
-		}
+		QTreeWidget *editorTree = mMainWindow->
+				propertyEditor()->
+				findChild<QtTreePropertyBrowser *>()->
+				findChild<QTreeWidget *>();
+		return editorTree->itemWidget(propertyTreeWidgetItem(name), 1);
 	}
 
 	return nullptr;
 }
 
-QWidget *GuiFacade::pluginAction(QString const &name)
+QWidget *GuiFacade::pluginActionToolButton(QString const &name)
 {
 	QList<ActionInfo > actionList = mMainWindow->toolManager().actions();
 	for(ActionInfo &actionInfo : actionList) {
 		if (actionInfo.action()->objectName() == name) {
 			QList<QWidget *> const widgetList = actionInfo.action()->associatedWidgets();
 			for (QWidget *widget : widgetList) {
-				QString buttonClassName = "QToolButton";
+				QString const buttonClassName = "QToolButton";
 				if (buttonClassName == widget->metaObject()->className() && widget->isVisible()) {
 					return widget;
 				}
 			}
 		}
 	}
+
 	return nullptr;
 }
 
-QWidget *GuiFacade::scene()
+QWidget *GuiFacade::sceneViewport()
 {
 	return mMainWindow->getCurrentTab()->viewport();
 }
@@ -106,5 +101,20 @@ QWidget *GuiFacade::propertyEditor()
 	return propertyEditor->
 			findChild<QtTreePropertyBrowser *>()->
 			findChild<QTreeWidget *>()->viewport();
+}
 
+QTreeWidgetItem *GuiFacade::propertyTreeWidgetItem(QString const &name)
+{
+	QTreeWidget *editorTree = mMainWindow->
+			propertyEditor()->
+			findChild<QtTreePropertyBrowser *>()->
+			findChild<QTreeWidget *>();
+	for (int i = 0; i < editorTree->topLevelItemCount(); ++i) {
+		QTreeWidgetItem *item = editorTree->topLevelItem(i);
+		if (item->data(0, Qt::DisplayRole).toString() == name) {
+			return item;
+		}
+	}
+
+	return nullptr;
 }

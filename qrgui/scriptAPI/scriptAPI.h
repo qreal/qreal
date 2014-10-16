@@ -33,14 +33,17 @@ public:
 	/// Initialize script API.
 	void init(MainWindow *mainWindow);
 
-	/// Stop execution for duration. Starting event loop, which breaking when duration time ellapsed.
+	/// Stops execution for duration. Starting event loop, which breaking when duration time ellapsed.
 	Q_INVOKABLE void wait(int duration);
 
-	/// Change virtual cursor parent. Virtual cursor is QWidget child, so his icon must have parent.
+	/// Changes virtual cursor parent. Virtual cursor is QWidget child, so his icon must have parent.
 	Q_INVOKABLE void changeWindow(QWidget *parent);
 
-	/// Pick combo box item. Virtual cursor can pick any item in sight of view. Cant scroll bars.
+	/// Picks combo box item. Virtual cursor can pick any item in sight of view. Cant scroll bars.
 	Q_INVOKABLE void pickComboBoxItem(QComboBox *comboBox, QString const &name, int const duration);
+
+	/// Will make plugin gui facade available in scripting file.
+	Q_INVOKABLE void loadPluginGuiFacade(QString const pluginName);
 
 	/// Returns gui facade.
 	GuiFacade *guiFacade();
@@ -61,7 +64,7 @@ public:
 	PaletteAPI *paletteAPI();
 
 public slots:
-	///Break event loop.
+	///Breaks event loop.
 	void breakWaiting();
 
 	///Aborts evaluating of script.

@@ -21,36 +21,38 @@ class GuiFacade : public QObject
 public:
 	explicit GuiFacade(MainWindow *mainWindow);
 
-	/// Return widget defined by type(class name) and object name.
+	/// Returns widget defined by type(class name) and object name.
 	Q_INVOKABLE QWidget *widget(QString const &type, QString const &name = "");
 
-	/// Return action belongs to plugin by object name.
-	Q_INVOKABLE QWidget *pluginAction(QString const &name);
+	/// Returns action belongs to plugin by object name.
+	Q_INVOKABLE QWidget *pluginActionToolButton(QString const &name);
 
-	/// Return QRect of property widget by her name. Need to click on property editor, on property position
+	/// Returns QRect of property widget by her name. Need to click on property editor, on property position
 	/// before use property widget.
 	Q_INVOKABLE QRect propertyRect(QString const &name);
 
-	/// Return combo box widget from property editor.
+	/// Returns combo box widget from property editor.
 	Q_INVOKABLE QWidget *property(QString const &type, QString const &name);
 
-	/// Return viewport(because scene viewport, not scene, recieve mouse event) of EditorViewScene of
+	/// Returns viewport(because scene viewport, not scene, recieve mouse event) of EditorViewScene of
 	/// current tab.
-	Q_INVOKABLE QWidget *scene();
+	Q_INVOKABLE QWidget *sceneViewport();
 
-	/// Return main window.
+	/// Returns main window.
 	Q_INVOKABLE QWidget *mainWindow();
 
-	/// Return viewport(because viewport, not PropertyEditorView, recieve mouse event) PropertyEditorView.
+	/// Returns viewport(because viewport, not PropertyEditorView, recieve mouse event) PropertyEditorView.
 	Q_INVOKABLE QWidget *propertyEditor();
 
-	/// Return draggable element from palette by id.
+	/// Returns draggable element from palette by id.
 	DraggableElement *draggableElement(QString const &widgetId);
 
-	/// Return plugin gui facade;
+	/// Returns plugin gui facade;
 	QObject *pluginGuiFacade(QString const &pluginName);
 
 private:
+	QTreeWidgetItem *propertyTreeWidgetItem(QString const &name);
+
 	MainWindow *mMainWindow;
 };
 }

@@ -36,7 +36,7 @@ public:
 
 	utils::TimelineInterface &modelTimeline() override;
 	engine::TwoDModelDisplayInterface *display() override;
-	engine::TwoDModelGuiFacade *guiFacade() override;
+	engine::TwoDModelGuiFacade *guiFacade() const override;
 
 private:
 	QPair<QPointF, qreal> countPositionAndDirection(interpreterBase::robotModel::PortInfo const &port) const;

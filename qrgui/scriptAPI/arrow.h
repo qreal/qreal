@@ -23,7 +23,7 @@ protected:
 	void paintEvent(QPaintEvent *);
 
 private slots:
-	void disappear();
+	void startDisappear();
 
 private:
 	QPoint mSourcePoint;

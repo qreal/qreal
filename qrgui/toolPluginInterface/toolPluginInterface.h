@@ -61,8 +61,8 @@ public:
 		return QList<HotKeyActionInfo>();
 	}
 
-	/// Shall be overriden to return facade for access to plugin gui.
-	virtual QObject* guiScriptFacade()
+	/// Shall be overriden to return facade for access to plugin`s user interface from scripting language.
+	virtual QObject *guiScriptFacade()
 	{
 		return nullptr;
 	}

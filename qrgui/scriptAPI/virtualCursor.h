@@ -4,6 +4,7 @@
 #include <QtCore/QString>
 #include <QtWidgets/QComboBox>
 #include <QtCore/QPropertyAnimation>
+#include <QtCore/QEvent>
 
 namespace qReal {
 
@@ -34,31 +35,32 @@ public:
 	/// Moves virtual cursor to pos on scene with type for duration ms.
 	Q_INVOKABLE void sceneMoveTo(QWidget *target, int duration, int xSceneCoord, int ySceneCoord);
 
-	/// Post left mouse button press to widget.
+	/// Posts left mouse button press to widget.
 	Q_INVOKABLE void leftButtonPress(QWidget *target, int delay = -1);
 
-	/// Post left mouse button release to widget.
+	/// Posts left mouse button release to widget.
 	Q_INVOKABLE void leftButtonRelease(QWidget *target, int delay = -1);
 
-	/// Post left mouse button release to widget.
+	/// Posts left mouse button release to widget.
 	Q_INVOKABLE void rightButtonPress(QWidget *target, int delay = -1);
 
-	/// Post right mouse button release to widget.
+	/// Posts right mouse button release to widget.
 	Q_INVOKABLE void rightButtonRelease(QWidget *target, int delay = -1);
 
-	/// Post mouse move event to widget.
+	/// Posts mouse move event to widget.
 	Q_INVOKABLE void moved(QWidget *target);
 
-	/// Draw palette element icon near virtual cursor by name.
-	void attachPaletteElement(QIcon iconName);
+	/// Draws palette element icon near virtual cursor by name.
+	void startDrag(QIcon const &iconName);
 
-	/// Redraw virtual cursor without ant icon.
-	void detachPaletteElementIcon();
+	/// Redraws virtual cursor without ant icon.
+	void endDrag();
 
 protected:
 	void paintEvent(QPaintEvent *event) override;
 
 private:
+	void simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos, Qt::MouseButton buttons);
 	void edgeFinished();
 
 	QIcon mPaletteElementIcon;
@@ -66,7 +68,7 @@ private:
 	QPropertyAnimation *mCursorMoveAnimation;
 
 	bool mRightButtonPressed;
-	bool mIsPaletteElementAttached;
+	bool mDragStarted;
 };
 
 }

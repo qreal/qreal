@@ -14,37 +14,29 @@ SceneAPI::SceneAPI(ScriptAPI *scriptAPI, MainWindow *mainWindow)
 {
 }
 
-QString SceneAPI::initialNode()
-{
-	QList<QGraphicsItem *> items = mMainWindow->getCurrentTab()->editorViewScene()->items();
-	foreach (QGraphicsItem *item, items) {
-		NodeElement *node = dynamic_cast<NodeElement*>(item);
-		if (node) {
-			if (!node->id().diagram().compare("RobotsDiagram") && !node->id().element().compare("InitialNode")) {
-				return node->id().toString();
-			}
-		}
-	}
-	return "";
-}
-
 void SceneAPI::drawLink(QString const &fromElementId, QString const &toElementId, int const duration)
 {
-	NodeElement *fromNode = mMainWindow->getCurrentTab()->editorViewScene()->getNodeById(Id::loadFromString(fromElementId));
-	mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport()
-			, duration/2
-			, fromNode->pos().x() + 100
-			, fromNode->pos().y() + 10);
+	EditorViewScene *scene = mMainWindow->getCurrentTab()->editorViewScene() ;
+	EditorView *sceneView = mMainWindow->getCurrentTab();
 
-	mScriptAPI->virtualCursor()->rightButtonPress(mMainWindow->getCurrentTab()->viewport());
+	NodeElement *toNode = scene->getNodeById(Id::loadFromString(toElementId));
+	NodeElement *fromNode = scene->getNodeById(Id::loadFromString(fromElementId));
 
-	NodeElement *toNode = mMainWindow->getCurrentTab()->editorViewScene()->getNodeById(Id::loadFromString(toElementId));
-	mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport()
-			, duration/2
-			, toNode->pos().x() + 100
-			, toNode->pos().y() + 10);
+	if (toNode && fromNode) {
+		mScriptAPI->virtualCursor()->sceneMoveTo(sceneView
+				, duration / 2
+				, sceneView->mapFromScene(fromNode->pos()).x() + 20
+				, sceneView->mapFromScene(fromNode->pos()).y());
 
-	mScriptAPI->virtualCursor()->rightButtonRelease(mMainWindow->getCurrentTab()->viewport());
+		mScriptAPI->virtualCursor()->rightButtonPress(mMainWindow->getCurrentTab()->viewport());
+
+		mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport()
+				, duration / 2
+				, sceneView->mapFromScene(toNode->pos()).x() + 20
+				, sceneView->mapFromScene(toNode->pos()).y());
+
+		mScriptAPI->virtualCursor()->rightButtonRelease(mMainWindow->getCurrentTab()->viewport(), 50);
+	}
 }
 
 QString SceneAPI::createBlockOnScene(DraggableElement const *paletteElement, int const xSceneCoord, int const ySceneCoord)
@@ -52,16 +44,32 @@ QString SceneAPI::createBlockOnScene(DraggableElement const *paletteElement, int
 	Id elementId(paletteElement->id(), QUuid::createUuid().toString());
 	QMimeData *mimeData = paletteElement->mimeData(elementId);
 	mMainWindow->getCurrentTab()->editorViewScene()->createElement(
-				paletteElement->mimeData(elementId)
-				, QPoint(xSceneCoord - 100, ySceneCoord + 20)
-				, false
-				, nullptr
-				, true);
+			paletteElement->mimeData(elementId)
+			, QPoint(xSceneCoord - 100, ySceneCoord + 20)
+			, false
+			, nullptr
+			, true);
 
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 	QDataStream inStream(&itemData, QIODevice::ReadOnly);
-	QString uuid = "";
+	QString uuid;
 	inStream >> uuid;
 	Id const sceneId = Id::loadFromString(uuid);
 	return sceneId.toString();
+}
+
+QStringList SceneAPI::nodeList(QString const &diagram, QString const &element)
+{
+	QList<QGraphicsItem *> items = mMainWindow->getCurrentTab()->editorViewScene()->items();
+	QStringList result;
+	foreach (QGraphicsItem *item, items) {
+		NodeElement *node = dynamic_cast<NodeElement*>(item);
+		if (node) {
+			if (!node->id().diagram().compare(diagram) && !node->id().element().compare(element)) {
+				result.append(node->id().toString());
+			}
+		}
+	}
+
+	return result;
 }

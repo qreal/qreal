@@ -4,47 +4,41 @@
 #include <QtCore/QPropertyAnimation>
 #include <QtWidgets/QGraphicsOpacityEffect>
 
+#include <qrutils/graphicsUtils/animatedEffects.h>
+
 using namespace qReal;
 using namespace gui;
+using namespace graphicsUtils;
 
 HintReporter::HintReporter(QWidget *parent, QString const &message, int const lifeTime)
 	: QLabel(parent)
 {
 	setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 	setWindowFlags(Qt::WindowStaysOnTopHint);
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
 	setAutoFillBackground(false);
 	setStyleSheet("background-color: #ffffff; border: 1px solid; border-radius: 7px; border-color: #303030;"); // по вкусу
-	setFixedSize(300, 50);
+	setMinimumSize(300, 50);
 	move(parent->width() - this->width(), 0);
 	setWordWrap(true);
 	show();
 	raise();
 
 	addHint(message);
-	mDuration = lifeTime/2;
-	QTimer::singleShot(mDuration, this, SLOT(disappear()));
+	mDuration = lifeTime / 2;
+	QTimer::singleShot(mDuration, this, SLOT(startDisappear()));
 }
 
 void HintReporter::addHint(QString const &hint)
 {
-	QString const message= "<b>Подсказка :\n</b>"+hint;
+	QString const message = "<b>Подсказка :\n</b>" + hint;
 	setText(message);
 }
 
-void HintReporter::disappear()
+void HintReporter::startDisappear()
 {
-	QGraphicsOpacityEffect* const opacityEffect = new QGraphicsOpacityEffect(this);
-	opacityEffect->setOpacity(1);
-	setGraphicsEffect(opacityEffect);
-	QPropertyAnimation* const opacityAnim = new QPropertyAnimation(this);
-	opacityAnim->setTargetObject(opacityEffect);
-	opacityAnim->setPropertyName("opacity");
-	opacityAnim->setDuration(mDuration);
-	opacityAnim->setStartValue(opacityEffect->opacity());
-	opacityAnim->setEndValue(0);
-	opacityAnim->setEasingCurve(QEasingCurve::OutQuad);
-	opacityAnim->start(QAbstractAnimation::DeleteWhenStopped);
+	AnimatedEffects::disappear(this, mDuration);
 }
 
 void HintReporter::mousePressEvent(QMouseEvent *)

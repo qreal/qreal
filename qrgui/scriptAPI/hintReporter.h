@@ -23,7 +23,7 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *);
 
 private slots:
-	void disappear();
+	void startDisappear();
 
 private:
 	void addHint(QString const &hint);

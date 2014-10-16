@@ -1,7 +1,5 @@
 #include "virtualCursor.h"
 
-#include <QtTest/QTest>
-
 #include "scriptAPI.h"
 #include "mainwindow/mainWindow.h"
 #include "mainwindow/palette/draggableElement.h"
@@ -12,9 +10,9 @@ using namespace gui;
 VirtualCursor::VirtualCursor(ScriptAPI *scriptAPI, QWidget *parent)
 	: QLabel(parent)
 	, mScriptAPI(scriptAPI)
-	, mCursorMoveAnimation (new QPropertyAnimation(this, "geometry"))
+	, mCursorMoveAnimation(new QPropertyAnimation(this, "geometry"))
 	, mRightButtonPressed(false)
-	, mIsPaletteElementAttached(false)
+	, mDragStarted(false)
 {
 	setFixedSize(32, 32);
 	show();
@@ -24,11 +22,11 @@ VirtualCursor::VirtualCursor(ScriptAPI *scriptAPI, QWidget *parent)
 
 void VirtualCursor::paintEvent(QPaintEvent *event)
 {
-	(void)event;
+	Q_UNUSED(event)
 	QPainter mPainter(this);
 	QPixmap const virtCursorIcon(":/icons/virtcursor.png");
 	mPainter.drawPixmap(0,0, virtCursorIcon);
-	if (mIsPaletteElementAttached) {
+	if (mDragStarted) {
 		setFixedSize(64, 64);
 		mPainter.drawPixmap(QPoint(32,32), mPaletteElementIcon.pixmap(32, 32));
 	} else {
@@ -38,8 +36,8 @@ void VirtualCursor::paintEvent(QPaintEvent *event)
 
 void VirtualCursor::moveTo(QWidget const *target, int duration)
 {
-	int const xcoord = target->mapTo(parentWidget(), QPoint()).x();
-	int const ycoord = target->mapTo(parentWidget(), QPoint()).y();
+	int const xcoord = target->mapTo(parentWidget(), QPoint(target->width()/2,0)).x();
+	int const ycoord = target->mapTo(parentWidget(), QPoint(0, target->height()/2)	).y();
 
 	mCursorMoveAnimation->setDuration(duration);
 	mCursorMoveAnimation->setStartValue(QRect(mapToParent(QPoint()).x(), mapToParent(QPoint()).y(), 0, 0));
@@ -79,36 +77,29 @@ void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, 
 
 	connect (mCursorMoveAnimation, &QPropertyAnimation::finished, mScriptAPI, &ScriptAPI::breakWaiting);
 
+	QTimer *timer = new QTimer(this);
 	if (mRightButtonPressed) {
-		QTimer *timer = new QTimer(this);
 		timer->setInterval(100);
 
 		connect(timer, &QTimer::timeout,
-			[this, target]() {
-				QEvent *moveEvent = new QMouseEvent(QMouseEvent::MouseMove
-													, target->mapFromGlobal(pos())
-													, Qt::RightButton
-													, Qt::RightButton
-													, Qt::NoModifier);
-				QApplication::postEvent(target, moveEvent);
-			});
+				[this, target]() {
+					QPoint cursorPos = target->mapFrom(parentWidget(), pos());
+					simulateMouse(target, QEvent::MouseMove, cursorPos, Qt::NoButton);
+				});
 		timer->start();
 	}
 
 	mCursorMoveAnimation->start();
 
 	mScriptAPI->wait(-1);
+	timer->stop();
 }
 
 void VirtualCursor::leftButtonPress(QWidget *target, int delay)
 {
 	QPoint cursorPos = target->mapFrom(parentWidget(), pos());
-	QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress
-										 , cursorPos
-										 , Qt::LeftButton
-										 , Qt::LeftButton
-										 , Qt::NoModifier);
-	QApplication::postEvent(target, pressEvent);
+
+	simulateMouse(target, QEvent::MouseButtonPress, cursorPos, Qt::LeftButton);
 
 	if (delay != -1) {
 		mScriptAPI->wait(delay);
@@ -118,12 +109,8 @@ void VirtualCursor::leftButtonPress(QWidget *target, int delay)
 void VirtualCursor::leftButtonRelease(QWidget *target, int delay)
 {
 	QPoint cursorPos = target->mapFrom(parentWidget(), pos());
-	QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease
-										   , cursorPos
-										   , Qt::LeftButton
-										   , Qt::LeftButton
-										   , Qt::NoModifier);
-	QApplication::postEvent(target, releaseEvent);
+
+	simulateMouse(target, QEvent::MouseButtonRelease, cursorPos, Qt::LeftButton);
 
 	if (delay != -1) {
 		mScriptAPI->wait(delay);
@@ -134,54 +121,49 @@ void VirtualCursor::rightButtonPress(QWidget *target, int delay)
 {
 	mRightButtonPressed = true;
 	QPoint cursorPos = target->mapFrom(parentWidget(), pos());
-	QEvent *pressEvent = new QMouseEvent(QMouseEvent::MouseButtonPress
-										 , cursorPos
-										 , Qt::RightButton
-										 , Qt::RightButton
-										 , Qt::NoModifier);
-	QApplication::postEvent(target, pressEvent);
+
+	simulateMouse(target, QEvent::MouseButtonPress, cursorPos, Qt::RightButton);
 
 	if (delay != -1) {
 		mScriptAPI->wait(delay);
 	}
 }
 
-void VirtualCursor::rightButtonRelease(QWidget  *target, int delay)
+void VirtualCursor::rightButtonRelease(QWidget *target, int delay)
 {
 	mRightButtonPressed = false;
 	QPoint cursorPos = target->mapFrom(parentWidget(), pos());
-	QEvent *releaseEvent = new QMouseEvent(QMouseEvent::MouseButtonRelease
-										   , cursorPos
-										   , Qt::RightButton
-										   , Qt::RightButton
-										   , Qt::NoModifier);
-	QApplication::postEvent(target, releaseEvent);
+
+	simulateMouse(target, QEvent::MouseButtonRelease, cursorPos, Qt::RightButton);
 
 	if (delay != -1) {
 		mScriptAPI->wait(delay);
 	}
 }
 
-void VirtualCursor::attachPaletteElement(QIcon icon)
+void VirtualCursor::startDrag(QIcon const &icon)
 {
-	mIsPaletteElementAttached = true;
+	mDragStarted = true;
 	mPaletteElementIcon = icon;
 	update();
 }
 
-void VirtualCursor::detachPaletteElementIcon()
+void VirtualCursor::endDrag()
 {
-	 mIsPaletteElementAttached = false;
+	 mDragStarted = false;
 	 update();
 }
 
 void VirtualCursor::moved(QWidget *target)
 {
 	QPoint cursorPos = target->mapFrom(parentWidget(), pos());
-	QEvent *moveEvent = new QMouseEvent(QMouseEvent::MouseMove
-										, cursorPos
-										, Qt::RightButton
-										, Qt::RightButton
-										, Qt::NoModifier);
-	QApplication::postEvent(target, moveEvent);
+
+	simulateMouse(target, QEvent::MouseMove, cursorPos, Qt::NoButton);
+}
+
+void VirtualCursor::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos
+		, Qt::MouseButton button)
+{
+	QMouseEvent *mouseEvent = new QMouseEvent(event, pos, button, button, Qt::NoModifier);
+	QApplication::postEvent(reciever, mouseEvent);
 }

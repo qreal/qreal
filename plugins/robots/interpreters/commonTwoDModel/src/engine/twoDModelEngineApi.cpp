@@ -280,7 +280,7 @@ QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(PortInfo con
 	return { position, direction };
 }
 
-engine::TwoDModelGuiFacade *TwoDModelEngineApi::guiFacade()
+engine::TwoDModelGuiFacade *TwoDModelEngineApi::guiFacade() const
 {
 	return mGuiFacade;
 }
