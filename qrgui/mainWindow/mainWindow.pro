@@ -24,6 +24,8 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
+
 HEADERS += \
 	$$PWD/qRealApplication.h \
 	$$PWD/mainWindow.h \

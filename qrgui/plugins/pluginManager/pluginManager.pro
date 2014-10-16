@@ -20,6 +20,8 @@ RCC_DIR = .moc
 
 DEFINES += QRGUI_PLUGIN_MANAGER_LIBRARY
 
+TRANSLATIONS = $$PWD/../../../qrtranslations/ru/qrgui_pluginsManager_ru.ts
+
 HEADERS += \
 	$$PWD/pluginsManagerDeclSpec.h \
 	$$PWD/editorManager.h \

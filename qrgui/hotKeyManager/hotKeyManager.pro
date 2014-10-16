@@ -20,6 +20,8 @@ RCC_DIR = .moc
 
 DEFINES += QRGUI_HOTKEY_MANAGER_LIBRARY
 
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_hotKeyManager_ru.ts
+
 HEADERS += \
 	$$PWD/hotKeyManagerDeclSpec.h \
 	$$PWD/hotKeyManagerPage.h \

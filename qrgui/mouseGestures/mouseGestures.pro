@@ -20,6 +20,8 @@ RCC_DIR = .moc
 
 DEFINES += QRGUI_MOUSE_GESTURES_LIBRARY
 
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mouseGestures_ru.ts
+
 HEADERS += \
 	$$PWD/mouseGesturesDeclSpec.h \
 	$$PWD/mouseMovementManager.h \

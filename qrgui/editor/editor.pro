@@ -21,6 +21,8 @@ RCC_DIR = .moc
 
 DEFINES += QRGUI_EDITOR_LIBRARY
 
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_editor_ru.ts
+
 HEADERS += \
 	$$PWD/editorDeclSpec.h \
 	$$PWD/editorView.h \

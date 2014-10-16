@@ -18,6 +18,8 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_models_ru.ts
+
 DEFINES += QRGUI_MODELS_LIBRARY
 
 HEADERS += \

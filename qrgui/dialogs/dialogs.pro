@@ -20,6 +20,8 @@ RCC_DIR = .moc
 
 DEFINES += QRGUI_DIALOGS_LIBRARY
 
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_dialogs_ru.ts
+
 HEADERS += \
 	$$PWD/dialogsDeclSpec.h \
 	$$PWD/metamodelingOnFly/propertiesDialog.h \

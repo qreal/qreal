@@ -15,6 +15,8 @@ RCC_DIR = .moc
 
 DEFINES += QRGUI_TEXT_EDITOR_LIBRARY
 
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_textEditor_ru.ts
+
 INCLUDEPATH = \
 	$$PWD/ \
 	$$PWD/../ \

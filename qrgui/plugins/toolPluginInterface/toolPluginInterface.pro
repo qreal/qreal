@@ -6,6 +6,8 @@ LIBS += -L$$PWD/../../../bin -lqrkernel
 
 DEFINES += QRGUI_TOOL_PLUGIN_INTERFACE_LIBRARY
 
+TRANSLATIONS = $$PWD/../../../qrtranslations/ru/qrgui_toolPluginInterface_ru.ts
+
 INCLUDEPATH = \
 	$$PWD/ \
 	$$PWD/../../ \
