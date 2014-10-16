@@ -33,7 +33,8 @@ private:
 
 	void setCodeFileName(QString const &name);
 	void setWorkDir(QString const &path);
-
+	IdList findNodes(QString const &name);
+	QVariant getProperty(Id const &id, QString const &propertyName);
 
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	qReal::LogicalModelAssistInterface const &mLogicalModelApi;

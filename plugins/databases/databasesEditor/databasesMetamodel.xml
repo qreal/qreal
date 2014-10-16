@@ -36,7 +36,7 @@
 						</curve>
 					</picture>
 					<labels>
-						<label x="5a" y="3a" textBinded="Text"/>
+						<label x="5a" y="3a" textBinded="Name"/>
 					</labels>
 					<ports>
 						<linePort type="EntityLeft">
@@ -69,7 +69,8 @@
 						 </properties>
 					</container>
 					<properties>
-						<property type="string" name="Text" displayedName="Text"/>
+						<property type="string" name="Name" displayedName="Name">
+						</property>
 						<property type="bool" name="transaction" displayedName="Transaction">
 							<default>false</default>
 						</property>
