@@ -286,14 +286,15 @@ bool RobotModel::onTheGround() const
 	return mIsOnTheGround;
 }
 
-void RobotModel::serialize(QDomDocument &target) const
+QDomElement RobotModel::serialize(QDomDocument &target) const
 {
-	QDomElement robot = target.createElement("robots");
+	QDomElement robot = target.createElement("robot");
 	robot.setAttribute("id", mRobotModel.robotId());
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", mAngle);
 	mSensorsConfiguration.serialize(robot, target);
-	target.firstChildElement("root").appendChild(robot);
+	return robot;
+	//target.firstChildElement("root").appendChild(robot);
 }
 
 void RobotModel::deserialize(QDomElement const &robotElement)

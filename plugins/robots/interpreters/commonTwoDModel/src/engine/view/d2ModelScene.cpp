@@ -57,7 +57,7 @@ D2ModelScene::~D2ModelScene()
 
 bool D2ModelScene::oneRobot() const
 {
-	return false;//mRobots.size() == 1;
+	return mRobots.size() == 1;
 }
 
 void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)

@@ -62,7 +62,7 @@ public:
 	/// Returns false if robot item is dragged by user at the moment.
 	bool onTheGround() const;
 
-	void serialize(QDomDocument &target) const;
+	QDomElement serialize(QDomDocument &target) const;
 	void deserialize(const QDomElement &robotElement);
 
 	void onRobotLiftedFromGround();

@@ -33,14 +33,3 @@ void AbstractView::keyPressEvent(QKeyEvent *event)
 	if (event->matches(QKeySequence::Delete))
 		emit deleteItem();
 }
-
-#include <QDebug>
-#include <QMouseEvent>
-
-void AbstractView::mouseMoveEvent(QMouseEvent *mouseEvent)
-{
-	if (mouseEvent->buttons() != Qt::NoButton) {
-		qDebug() << mouseEvent->source() << mouseEvent;
-	}
-	QGraphicsView::mouseMoveEvent(mouseEvent);
-}

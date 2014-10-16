@@ -40,16 +40,19 @@ QDomDocument Model::serialize() const
 	save.appendChild(root);
 	root.appendChild(mWorldModel.serialize(save, QPoint(0, 0)));
 
-	for (RobotModel *robot : mRobotModels) {
-		robot->serialize(save);
+	QDomElement robots = save.createElement("robots");
+	for (RobotModel *robotModel : mRobotModels) {
+		QDomElement robot = robotModel->serialize(save);
+		robots.appendChild(robot);
 	}
+
+	root.appendChild(robots);
 
 	return save;
 }
 
 void Model::deserialize(QDomDocument const &xml)
 {
-	qDebug() << "Model::deserialize()";
 	QDomNodeList const worldList = xml.elementsByTagName("world");
 	QDomNodeList const robotList = xml.elementsByTagName("robots");
 
@@ -60,17 +63,18 @@ void Model::deserialize(QDomDocument const &xml)
 
 	mWorldModel.deserialize(worldList.at(0).toElement());
 
+	QDomNodeList robots = xml.elementsByTagName("robots").at(0).toElement().elementsByTagName("robot");
 	QMutableListIterator<RobotModel *> iterator(mRobotModels);
 	QList<int> presentRobots;
 
 	while(iterator.hasNext()) {
 		bool exist = false;
-		RobotModel *robot = iterator.next();
+		RobotModel *robotModel = iterator.next();
 
-		for (int i = 0; i < robotList.size(); i++) {
-			if (robot->info()->robotId() == robotList.at(i).toElement().attribute("id")) {
-				robot->deserialize(robotList.at(i).toElement());
-				robot->configuration().deserialize(robotList.at(i).toElement());
+		for (int i = 0; i < robots.size(); i++) {
+			if (robotModel->info()->robotId() == robots.at(i).toElement().attribute("id")) {
+				robotModel->deserialize(robots.at(i).toElement());
+				robotModel->configuration().deserialize(robots.at(i).toElement());
 				exist = true;
 				presentRobots.append(i);
 				break;
@@ -78,19 +82,19 @@ void Model::deserialize(QDomDocument const &xml)
 
 			if (!exist) {
 				iterator.remove();
-				emit robotRemoved(robot);
-				delete robot;
+				emit robotRemoved(robotModel);
+				delete robotModel;
 			}
 		}
 	}
 
-	for (int i = 0; i < robotList.size(); i++) {
+	for (int i = 0; i < robots.size(); i++) {
 		if (presentRobots.indexOf(i) == -1) {
-			twoDModel::robotModel::NullTwoDRobotModel *robot = new twoDModel::robotModel::NullTwoDRobotModel(
-					robotList.at(i).toElement().attribute("id"));
-			addRobotModel(*robot);
-			mRobotModels.last()->deserialize(robotList.at(i).toElement());
-			mRobotModels.last()->configuration().deserialize(robotList.at(i).toElement());
+			twoDModel::robotModel::NullTwoDRobotModel *robotModel = new twoDModel::robotModel::NullTwoDRobotModel(
+					robots.at(i).toElement().attribute("id"));
+			addRobotModel(*robotModel);
+			mRobotModels.last()->deserialize(robots.at(i).toElement());
+			mRobotModels.last()->configuration().deserialize(robots.at(i).toElement());
 		}
 	}
 }

@@ -533,10 +533,11 @@ engine::TwoDModelDisplayWidget *D2ModelWidget::display()
 
 void D2ModelWidget::setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible)
 {
-	qDebug() << "setSensorVisible()";
-	/*if (mScene->robot()->sensors()[port]) {
-		mScene->robot()->sensors()[port]->setVisible(isVisible);
-	}*/
+	RobotModel *robotModel = mModel.robotModels()[0];
+
+	if (mScene->robot(*robotModel)->sensors()[port]) {
+		mScene->robot(*robotModel)->sensors()[port]->setVisible(isVisible);
+	}
 }
 
 void D2ModelWidget::enableRunStopButtons()
@@ -558,8 +559,7 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 
 SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
 {       	
-	qDebug() << "sensorItem()";
-	//return mScene->robot()->sensors().value(port);
+	return mScene->robot(*mModel.robotModels()[0])->sensors().value(port);
 }
 
 void D2ModelWidget::saveToRepo()
@@ -792,7 +792,7 @@ void D2ModelWidget::updateWheelComboBoxes()
 void D2ModelWidget::onRobotListChange()
 {
 	if (mScene->oneRobot()) {
-		setSelectedRobotItem(mScene->robot(*mModel.robotModels().at(0)));
+		setSelectedRobotItem(mScene->robot(*mModel.robotModels()[0]));
 	}
 }
 
