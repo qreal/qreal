@@ -81,6 +81,8 @@ public:
 	virtual QRectF sceneBoundingRectCoord(QPoint const &topLeftPicture);
 	void readPenBrush(QDomElement const &docItem);
 
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+
 protected:
 	DragState mDragState;
 	QRectF mBoundingRect;

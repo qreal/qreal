@@ -71,6 +71,12 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
+	// Due to screen rectangle change, mouse moves for all items on the scene. Actually
+	// it doesn't happen because screen coordinates don't change.
+	if (event->lastScreenPos() == event->screenPos()) {
+		return;
+	}
+
 	QPointF const oldPos = pos();
 	if (SettingsManager::value("2dShowGrid").toBool() && mDragged
 			&& ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {

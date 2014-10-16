@@ -9,6 +9,8 @@
 
 #include "sonarSensorItem.h"
 
+#include <QDebug>
+
 using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace twoDModel::model;

@@ -55,6 +55,11 @@ D2ModelScene::~D2ModelScene()
 	//delete mRobot;
 }
 
+bool D2ModelScene::oneRobot() const
+{
+	return false;//mRobots.size() == 1;
+}
+
 void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 {
 	qDebug() << "handleNewRobotPosition() in";
@@ -87,6 +92,8 @@ void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 	if (mRobots.size() == 1) {
 		centerOnRobot();
 	}
+
+	emit robotListChanged();
 }
 
 void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
@@ -95,6 +102,8 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 
 	removeItem(robotItem);
 	mRobots.remove(robotModel);
+
+	emit robotListChanged();
 }
 
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -483,7 +492,6 @@ void D2ModelScene::alignWalls()
 
 RobotItem *D2ModelScene::robot(model::RobotModel &robotModel)
 {
-	qDebug() << "robot() in";
 	return mRobots[&robotModel];
 }
 

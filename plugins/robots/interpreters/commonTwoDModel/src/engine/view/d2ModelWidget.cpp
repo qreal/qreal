@@ -48,6 +48,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mWidth(defaultPenWidth)
 	, mFirstShow(true)
+	, mDisplayIsVisible(false)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -64,6 +65,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::refreshCursor);
 	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::saveToRepo);
 	connect(mScene, &D2ModelScene::robotPressed, [this]() { mUi->noneButton->setChecked(true); });
+	connect(mScene, &D2ModelScene::robotListChanged, this, &D2ModelWidget::onRobotListChange);
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { mUi->timelineBox->setValue(0); });
 
@@ -109,14 +111,10 @@ void D2ModelWidget::initWidget()
 
 	initButtonGroups();
 
-	if (mDisplay) {
-		mDisplay->setMinimumSize(displaySize);
-		mDisplay->setMaximumSize(displaySize);
-		dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
-		mUi->displayFrame->setVisible(true);
-	} else {
-		mUi->displayFrame->setVisible(false);
-	}
+	mDisplay->setMinimumSize(displaySize);
+	mDisplay->setMaximumSize(displaySize);
+	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
+	mUi->displayFrame->setEnabled(false);
 
 	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
 
@@ -458,24 +456,24 @@ void D2ModelWidget::onSelectionChange()
 	qDebug() << "onSelectionChange() in";
 	changePalette();
 
+	if (mScene->oneRobot()) {
+		return;
+	}
+
 	QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
 	RobotItem *robotItem = nullptr;
 	bool oneRobotItem = false;
 
 	for (QGraphicsItem *item : listSelectedItems) {
-		if (static_cast<RobotItem *>(item) != nullptr) {
-			if (!oneRobotItem) {
-				robotItem = static_cast<RobotItem *>(item);
-				oneRobotItem = true;
-			} else {
+		if (dynamic_cast<RobotItem *>(item)) {
+			robotItem = dynamic_cast<RobotItem *>(item);
+			if (oneRobotItem) {
 				if (mSelectedRobotItem) {
-					unsetPortsGroupBoxAndWheelComboBoxes();
-					mSelectedRobotItem = nullptr;
-					mUi->leftWheelComboBox->hide();
-					mUi->rightWheelComboBox->hide();
+					unsetSelectedRobotItem();
 				}
 				return;
 			}
+			oneRobotItem = true;
 		}
 	}
 
@@ -483,51 +481,19 @@ void D2ModelWidget::onSelectionChange()
 			&& mSelectedRobotItem
 			&& robotItem->robotModel().info()->robotId()
 			== mSelectedRobotItem->robotModel().info()->robotId()) {
-		qDebug() << 1;
 		return;
 	}
 
 	if (mSelectedRobotItem) {
-		unsetPortsGroupBoxAndWheelComboBoxes();
-		disconnect(&mSelectedRobotItem->robotModel(), &RobotModel::positionChanged, this
-				, &D2ModelWidget::centerOnRobot);
-		mSelectedRobotItem = nullptr;
-
-		if (!oneRobotItem) {
-			delete mDisplay;
-			mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
-		}
+		unsetSelectedRobotItem();
 	}
 
 	if (oneRobotItem) {
-
-		if (mDisplay) {
-			dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->removeWidget(mDisplay);
-			delete mDisplay;
-		}
-
 		if (robotItem->robotModel().info()->name() == "NullTwoDRobotModel") {
-			mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
 			return;
 		}
 
-		mSelectedRobotItem = robotItem;
-
-		connect(&robotItem->robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
-
-		setPortsGroupBoxAndWheelComboBoxes();
-		updateWheelComboBoxes();
-
-
-		mDisplay = mSelectedRobotItem->robotModel().info()->displayWidget(this);
-		mDisplay->setMinimumSize(displaySize);
-		mDisplay->setMaximumSize(displaySize);
-		dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
-
-		connect(&mModel.timeline(), &Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
-
-		mUi->leftWheelComboBox->show();
-		mUi->rightWheelComboBox->show();
+		setSelectedRobotItem(robotItem);
 	}
 	qDebug() << "onSelectionChange() out";
 }
@@ -647,15 +613,12 @@ void D2ModelWidget::changePhysicsSettings()
 
 void D2ModelWidget::toggleDisplayVisibility()
 {
-	setDisplayVisibility(!mDisplay->isVisible());
+	setDisplayVisibility(!mDisplayIsVisible);
 }
 
 void D2ModelWidget::setDisplayVisibility(bool visible)
 {
-	if (!mDisplay) {
-		return;
-	}
-
+	mDisplayIsVisible = visible;
 	mDisplay->setVisible(visible);
 	QString const direction = visible ? "right" : "left";
 	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
@@ -824,6 +787,53 @@ void D2ModelWidget::updateWheelComboBoxes()
 		}
 	}
 	qDebug() << "updateWheelComboBoxes() out";
+}
+
+void D2ModelWidget::onRobotListChange()
+{
+	if (mScene->oneRobot()) {
+		setSelectedRobotItem(mScene->robot(*mModel.robotModels().at(0)));
+	}
+}
+
+void D2ModelWidget::setSelectedRobotItem(RobotItem *robotItem)
+{
+	mSelectedRobotItem = robotItem;
+
+	connect(&mSelectedRobotItem->robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
+
+	setPortsGroupBoxAndWheelComboBoxes();
+	updateWheelComboBoxes();
+
+	delete mDisplay;
+	mDisplay = mSelectedRobotItem->robotModel().info()->displayWidget(this);
+	mDisplay->setMinimumSize(displaySize);
+	mDisplay->setMaximumSize(displaySize);
+	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
+	mUi->displayFrame->setEnabled(true);
+	setDisplayVisibility(mDisplayIsVisible);
+
+	connect(&mModel.timeline(), &Timeline::started, mDisplay, &engine::TwoDModelDisplayWidget::clear);
+
+	mUi->leftWheelComboBox->show();
+	mUi->rightWheelComboBox->show();
+}
+
+void D2ModelWidget::unsetSelectedRobotItem()
+{
+	if (mSelectedRobotItem) {
+		unsetPortsGroupBoxAndWheelComboBoxes();
+		disconnect(&mSelectedRobotItem->robotModel(), &RobotModel::positionChanged, this
+				, &D2ModelWidget::centerOnRobot);
+		mSelectedRobotItem = nullptr;
+	}
+
+	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->removeWidget(mDisplay);
+	delete mDisplay;
+	mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
+	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
+
+	mUi->displayFrame->setEnabled(false);
 }
 
 D2ModelWidget::RobotState::RobotState()

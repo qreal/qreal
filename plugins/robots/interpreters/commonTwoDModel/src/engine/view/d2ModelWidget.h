@@ -178,6 +178,11 @@ private:
 
 	void updateWheelComboBoxes();
 
+	void onRobotListChange();
+
+	void setSelectedRobotItem(RobotItem *robotItem);
+	void unsetSelectedRobotItem();
+
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
 
@@ -201,6 +206,8 @@ private:
 	bool mFirstShow;
 
 	QMap<model::RobotModel *, RobotState> mInitialRobotsBeforeRun;
+
+	bool mDisplayIsVisible;
 };
 
 }

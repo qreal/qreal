@@ -37,6 +37,8 @@ public:
 			, QObject *parent = 0);
 	~D2ModelScene();
 
+	bool oneRobot() const;
+
 public slots:
 	/// Sets a flag that next user mouse actions should draw a wall on the scene.
 	void addWall();
@@ -76,6 +78,8 @@ signals:
 
 	/// Emitted each time when user presses mouse button on the robot item.
 	void robotPressed();
+
+	void robotListChanged();
 
 private slots:
 	void handleNewRobotPosition(RobotItem *robotItem);

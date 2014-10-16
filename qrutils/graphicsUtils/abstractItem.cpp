@@ -392,3 +392,12 @@ QStringList AbstractItem::getBrushStyleList()
 {
 	return QStringList() << "None" << "Solid";
 }
+
+void AbstractItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+	// Due to screen rectangle change, mouse moves for all items on the scene. Actually
+	// it doesn't happen because screen coordinates don't change.
+	if (event->lastScreenPos() != event->screenPos()) {
+		QGraphicsItem::mouseMoveEvent(event);
+	}
+}

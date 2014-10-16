@@ -24,5 +24,7 @@ signals:
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void wheelEvent(QWheelEvent *event);
+	void mouseMoveEvent(QMouseEvent *mouseEvent) override;
+
 };
 }
