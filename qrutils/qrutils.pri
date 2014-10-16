@@ -10,6 +10,13 @@ INCLUDEPATH += \
 
 LIBS += -L$$PWD/../bin -lqrkernel -lqslog -lqrtext
 
+# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
+# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
+!macx {
+	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../bin/
+	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdparty/
+}
+
 DEFINES += QRUTILS_LIBRARY
 
 RESOURCES = $$PWD/qrutils.qrc
