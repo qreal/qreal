@@ -9,12 +9,14 @@ namespace databasesSupport {
 
 DatabasesPreferencesPage::DatabasesPreferencesPage(QWidget *parent)
 		: PreferencesPage(parent)
+		, mUi(new Ui::DatabasesPreferencesPage())
 {
+	mUi->setupUi(this);
 }
 
 DatabasesPreferencesPage::~DatabasesPreferencesPage()
 {
-	//delete mUi;
+	delete mUi;
 }
 
 void DatabasesPreferencesPage::save()

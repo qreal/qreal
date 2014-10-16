@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	databasesSupport/databasesSupport.pro \
+	databasesSupport \
 	databasesEditor/databasesEditor.pro \

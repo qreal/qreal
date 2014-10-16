@@ -4,9 +4,10 @@
 #include <QtWidgets/QLineEdit>
 
 #include "../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
+#include "ui_databasesPreferencesPage.h"
 
 namespace Ui {
-	class ViewInteractionPreferencesPage;
+	class DatabasesPreferencesPage;
 }
 
 namespace qReal {
@@ -20,6 +21,8 @@ public:
 
 	void save();
 	virtual void restoreSettings();
+private:
+	Ui::DatabasesPreferencesPage *mUi;
 };
 
 }
