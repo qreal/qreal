@@ -18,8 +18,9 @@ using namespace interpreterBase::robotModel::robotParts;
 
 int const border = 0;
 
-RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel)
-	: RotateItem()
+RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel, QObject *parent)
+	: QObject(parent)
+	, RotateItem()
 	, mImage(QImage(robotImageFileName))
 	, mBeepItem(new BeepItem)
 	, mRotater(nullptr)

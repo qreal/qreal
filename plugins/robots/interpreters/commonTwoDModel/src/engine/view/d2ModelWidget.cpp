@@ -184,7 +184,6 @@ void D2ModelWidget::initButtonGroups()
 
 void D2ModelWidget::setPortsGroupBoxAndWheelComboBoxes()
 {
-	qDebug() << "setPortsGroupBoxAndWheelComboBoxes() in";
 	mCurrentConfigurer = new DevicesConfigurationWidget(mUi->portsGroupBox, true, true);
 	mCurrentConfigurer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	mCurrentConfigurer->loadRobotModels({ mSelectedRobotItem->robotModel().info() });
@@ -203,12 +202,10 @@ void D2ModelWidget::setPortsGroupBoxAndWheelComboBoxes()
 
 	connectWheelComboBox(mUi->leftWheelComboBox, RobotModel::left);
 	connectWheelComboBox(mUi->rightWheelComboBox, RobotModel::right);
-	qDebug() << "setPortsGroupBoxAndWheelComboBoxes() out";
 }
 
 void D2ModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 {
-	qDebug() << "unsetPortsGroupBoxAndWheelComboBoxes() in";
 	if (mCurrentConfigurer) {
 		mUi->portsGroupBox->layout()->removeWidget(mCurrentConfigurer);
 		mCurrentConfigurer->disconnectDevicesConfigurationProvider();
@@ -219,7 +216,6 @@ void D2ModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 
 		delete mCurrentConfigurer;
 	}
-	qDebug() << "unsetPortsGroupBoxAndWheelComboBoxes() out";
 }
 
 void D2ModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)
@@ -269,24 +265,20 @@ void D2ModelWidget::init()
 	update();
 
 	updateWheelComboBoxes();
-	qDebug() << "init";
 }
 
 void D2ModelWidget::saveInitialRobotBeforeRun()
 {
-	qDebug() << "saveInitialRobotBeforeRun() in";
 	for (RobotModel *robotModel : mModel.robotModels()) {
 		RobotState state;
 		state.pos = robotModel->position();
 		state.rotation = robotModel->rotation();
 		mInitialRobotsBeforeRun.insert(robotModel, state);
 	}
-	qDebug() << "saveInitialRobotBeforeRun() out";
 }
 
 void D2ModelWidget::setInitialRobotBeforeRun()
 {
-	qDebug() << "setInitialRobotBeforeRun() in";
 	QMapIterator<RobotModel *, RobotState> i(mInitialRobotsBeforeRun);
 
 	while (i.hasNext()) {
@@ -294,7 +286,6 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 		i.key()->setPosition(i.value().pos);
 		i.key()->setRotation(i.value().rotation);
 	}
-	qDebug() << "setInitialRobotBeforeRun() out";
 }
 
 void D2ModelWidget::keyPressEvent(QKeyEvent *event)
@@ -345,11 +336,9 @@ void D2ModelWidget::onFirstShow()
 
 void D2ModelWidget::centerOnRobot()
 {
-	qDebug() << "centerOnRobot() in";
 	if (mSelectedRobotItem && mFollowRobot && mSelectedRobotItem->robotModel().onTheGround()) {
 		mScene->centerOnRobot(mSelectedRobotItem);
 	}
-	qDebug() << "centerOnRobot() out";
 }
 
 void D2ModelWidget::setCursorTypeForDrawing(CursorType type)
@@ -380,7 +369,6 @@ void D2ModelWidget::saveWorldModel()
 
 void D2ModelWidget::loadWorldModel()
 {
-	qDebug() << "loadWorldModel() in";
 	// Loads world and robot models simultaneously.
 	QString const loadFileName = QRealFileDialog::getOpenFileName("Open2DModelWidget", this
 			, tr("Loading world and robot model"), ".", tr("2D model saves (*.xml)"));
@@ -390,7 +378,6 @@ void D2ModelWidget::loadWorldModel()
 
 	QDomDocument const save = utils::xmlUtils::loadDocument(loadFileName);
 	loadXml(save);
-	qDebug() << "loadWorldModel() out";
 }
 
 bool D2ModelWidget::isColorItem(AbstractItem * const item) const
@@ -453,7 +440,6 @@ void D2ModelWidget::changePalette()
 
 void D2ModelWidget::onSelectionChange()
 {
-	qDebug() << "onSelectionChange() in";
 	changePalette();
 
 	if (mScene->oneRobot()) {
@@ -495,7 +481,6 @@ void D2ModelWidget::onSelectionChange()
 
 		setSelectedRobotItem(robotItem);
 	}
-	qDebug() << "onSelectionChange() out";
 }
 
 void D2ModelWidget::setValuePenColorComboBox(QColor const &penColor)
@@ -704,12 +689,10 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 {
 	Q_UNUSED(port)
 	Q_UNUSED(device)
-	qDebug() << "onDeviceConfigurationChanged() in";
 	/// @todo Convert configuration between models or something?
 	if (mSelectedRobotItem && robotModel == mSelectedRobotItem->robotModel().info()->robotId()) {
 		updateWheelComboBoxes();
 	}
-	qDebug() << "onDeviceConfigurationChanged() out";
 }
 
 void D2ModelWidget::initRunStopButtons()
@@ -720,8 +703,6 @@ void D2ModelWidget::initRunStopButtons()
 
 void D2ModelWidget::updateWheelComboBoxes()
 {
-	qDebug() << "updateWheelComboBoxes() in";
-
 	if (!mSelectedRobotItem) {
 		mUi->leftWheelComboBox->hide();
 		mUi->rightWheelComboBox->hide();
@@ -763,9 +744,6 @@ void D2ModelWidget::updateWheelComboBoxes()
 		if (!setSelectedPort(mUi->leftWheelComboBox
 				, mSelectedRobotItem->robotModel().info()->defaultLeftWheelPort())) {
 
-			//qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
-			//		<<  mSelectedRobotItem->robotModel().info();
-
 			if (mUi->leftWheelComboBox->count() > 1) {
 				mUi->leftWheelComboBox->setCurrentIndex(1);
 			}
@@ -786,7 +764,6 @@ void D2ModelWidget::updateWheelComboBoxes()
 			}
 		}
 	}
-	qDebug() << "updateWheelComboBoxes() out";
 }
 
 void D2ModelWidget::onRobotListChange()

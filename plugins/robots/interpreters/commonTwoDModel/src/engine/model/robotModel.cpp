@@ -294,7 +294,6 @@ QDomElement RobotModel::serialize(QDomDocument &target) const
 	robot.setAttribute("direction", mAngle);
 	mSensorsConfiguration.serialize(robot, target);
 	return robot;
-	//target.firstChildElement("root").appendChild(robot);
 }
 
 void RobotModel::deserialize(QDomElement const &robotElement)

@@ -52,7 +52,7 @@ D2ModelScene::D2ModelScene(model::Model &model
 
 D2ModelScene::~D2ModelScene()
 {
-	//delete mRobot;
+
 }
 
 bool D2ModelScene::oneRobot() const
@@ -62,19 +62,17 @@ bool D2ModelScene::oneRobot() const
 
 void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 {
-	qDebug() << "handleNewRobotPosition() in";
 	for (items::WallItem const *wall : mModel.worldModel().walls()) {
 		if (wall->realShape().intersects(robotItem->realBoundingRect())) {
 			robotItem->recoverDragStartPosition();
 			return;
 		}
 	}
-	qDebug() << "handleNewRobotPosition() out";
 }
 
 void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 {
-	RobotItem *robotItem = new RobotItem(robotModel->info()->robotImage(), *robotModel);
+	RobotItem *robotItem = new RobotItem(robotModel->info()->robotImage(), *robotModel, this);
 
 	connect(robotItem, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
 	connect(robotItem, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
@@ -102,6 +100,8 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 
 	removeItem(robotItem);
 	mRobots.remove(robotModel);
+
+	delete robotItem;
 
 	emit robotListChanged();
 }
