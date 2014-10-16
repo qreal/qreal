@@ -54,16 +54,29 @@ QDomDocument Model::serialize() const
 void Model::deserialize(QDomDocument const &xml)
 {
 	QDomNodeList const worldList = xml.elementsByTagName("world");
-	QDomNodeList const robotList = xml.elementsByTagName("robots");
+	QDomNodeList const robotsList = xml.elementsByTagName("robots");
 
-	if (worldList.count() != 1 || robotList.count() != 1) {
+	if (worldList.count() != 1) {
 		/// @todo Report error
 		return;
 	}
 
+	if (robotsList.count() != 1) {
+		// need for backward compatibility with old format
+		QDomNodeList const robotList = xml.elementsByTagName("robot");
+
+		if (robotList.count() != 1) {
+			/// @todo Report error
+			return;
+		}
+
+		mRobotModels[0]->deserialize(robotList.at(0).toElement());
+		mRobotModels[0]->configuration().deserialize(robotList.at(0).toElement());
+	}
+
 	mWorldModel.deserialize(worldList.at(0).toElement());
 
-	QDomNodeList robots = xml.elementsByTagName("robots").at(0).toElement().elementsByTagName("robot");
+	QDomNodeList robots = robotsList.at(0).toElement().elementsByTagName("robot");
 	QMutableListIterator<RobotModel *> iterator(mRobotModels);
 	QList<int> presentRobots;
 
