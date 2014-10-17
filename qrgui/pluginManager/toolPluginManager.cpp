@@ -2,12 +2,15 @@
 
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/logging.h>
+
 #include "hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 
 ToolPluginManager::ToolPluginManager()
 	: mCustomizer()
+	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/tools"))
 {
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
@@ -43,11 +46,11 @@ ToolPluginManager::ToolPluginManager()
 
 ToolPluginManager::~ToolPluginManager()
 {
-	qDeleteAll(mLoaders);
 }
 
 void ToolPluginManager::init(PluginConfigurator const &configurator)
 {
+	QLOG_INFO() << "Initializing tool plugins...";
 	mSystemEvents = &configurator.systemEvents();
 
 	for (ToolPluginInterface * const toolPlugin : mPlugins.values()) {
@@ -91,7 +94,7 @@ void ToolPluginManager::loadDefaultSettings()
 	}
 }
 
-QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const
+QList<QPair<QString, PreferencesPage *>> ToolPluginManager::preferencesPages() const
 {
 	QList<QPair<QString, PreferencesPage *> > result;
 	for (ToolPluginInterface * const toolPlugin : mPlugins.values()) {

@@ -1,0 +1,1 @@
+const @@TYPE@@ @@NAME@@ = @@VALUE@@;

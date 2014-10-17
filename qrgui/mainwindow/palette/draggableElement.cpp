@@ -11,11 +11,14 @@
 #include "mainwindow/mainWindow.h"
 #include "mainwindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
+#include "gestures/gesturePainter.h"
 #include "view/editorView.h"
 #include "view/editorViewScene.h"
 
 using namespace qReal;
 using namespace gui;
+
+int const gestureTipSize = 30;
 
 DraggableElement::DraggableElement(
 		MainWindow &mainWindow
@@ -36,6 +39,7 @@ DraggableElement::DraggableElement(
 	mLabel = new QLabel(this);
 	mLabel->setPixmap(mData.icon().pixmap(size - 2, size - 2));
 	layout->addWidget(mLabel);
+
 	if (!iconsOnly) {
 		QLabel *text = new QLabel(this);
 		text->setText(mData.name());
@@ -44,17 +48,33 @@ DraggableElement::DraggableElement(
 	}
 
 	setLayout(layout);
-	QString modifiedDescription = mData.description();
-	if (!modifiedDescription.isEmpty()) {
-		modifiedDescription.insert(0, "<body>");  //turns alignment on
-		setToolTip(modifiedDescription);
+
+	QString description = mData.description();
+	if (!description.isEmpty()) {
+		QString const rawGesture = mEditorManagerProxy.mouseGesture(data.id());
+		if (!rawGesture.isEmpty()) {
+			QSize const size(gestureTipSize, gestureTipSize);
+			gestures::GesturePainter painter(rawGesture, Qt::white, Qt::blue, gestureTipSize);
+			QPixmap const gesture = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
+			QByteArray byteArray;
+			QBuffer buffer(&byteArray);
+			gesture.save(&buffer, "PNG");
+			QString const gestureDescription = tr("Mouse gesture");
+			description += QString("<br><table><tr><td valign='middle'>%1:&nbsp;&nbsp;&nbsp;</td>"\
+					"<td><img src=\"data:image/png;base64,%2\"/></td></tr></table>")
+							.arg(gestureDescription, QString(byteArray.toBase64()));
+		}
+
+		setToolTip(QString("<body>%1</body>").arg(description));
 	}
+
 	setCursor(Qt::OpenHandCursor);
 
 	setAttribute(Qt::WA_AcceptTouchEvents);
 
 	setObjectName(mData.name());
 }
+
 
 QIcon DraggableElement::icon() const
 {

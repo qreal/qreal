@@ -1,0 +1,1 @@
+brick.lineSensor().init(true);

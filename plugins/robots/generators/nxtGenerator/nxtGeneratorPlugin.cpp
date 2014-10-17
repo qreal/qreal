@@ -17,8 +17,6 @@ NxtGeneratorPlugin::NxtGeneratorPlugin()
 	, mUploadProgramAction(nullptr)
 	, mNxtToolsPresent(false)
 {
-	mAppTranslator.load(":/nxtGenerator_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 	checkNxtTools();
 	initHotKeyActions();
 }
@@ -69,9 +67,10 @@ bool NxtGeneratorPlugin::canGenerateTo(QString const &project)
 }
 
 void NxtGeneratorPlugin::init(PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage)
 {
-	RobotsGeneratorPluginBase::init(configurator, robotModelManager);
+	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 	connect(mFlashTool, &NxtFlashTool::uploadingComplete, this, &NxtGeneratorPlugin::onUploadingComplete);
@@ -82,17 +81,19 @@ QList<ActionInfo> NxtGeneratorPlugin::actions()
 	checkNxtTools();
 
 	mGenerateCodeAction.setText(tr("Generate code"));
-	mGenerateCodeAction.setIcon(QIcon(":/images/generateCode.svg"));
+	mGenerateCodeAction.setIcon(QIcon(":/nxt/images/generateOsekCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	mGenerateCodeAction.setObjectName("generateCode");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
 	mFlashRobotAction.setText(tr("Flash robot"));
+	mFlashRobotAction.setIcon(QIcon(":/nxt/images/flashRobot.svg"));
 	ActionInfo flashRobotActionInfo(&mFlashRobotAction, "generators", "tools");
 	mFlashRobotAction.setObjectName("flashRobot");
 	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
 
 	mUploadProgramAction.setText(tr("Upload program"));
+	mUploadProgramAction.setIcon(QIcon(":/nxt/images/uploadProgram.svg"));
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
 	mUploadProgramAction.setObjectName("uploadProgram");
 	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
@@ -146,6 +147,7 @@ generatorBase::MasterGeneratorBase *NxtGeneratorPlugin::masterGenerator()
 	return new nxtOsek::NxtOsekMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, *mRobotModelManager
+			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram());
 }
 
@@ -154,6 +156,7 @@ void NxtGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 	nxtOsek::NxtOsekMasterGenerator * const generator = new nxtOsek::NxtOsekMasterGenerator(*mRepo
 		, *mMainWindowInterface->errorReporter()
 		, *mRobotModelManager
+		, *mTextLanguage
 		, mMainWindowInterface->activeDiagram());
 	generator->initialize();
 	generator->setProjectDir(newFileInfo);

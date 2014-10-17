@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Kernel components</DisplayName>
+    <DisplayName xml:lang="ru_ru">Компоненты ядра</DisplayName>
+    <Description>Trik Studio engine, must be installed</Description>
+    <Description xml:lang="ru_ru">Ядро системы Trik Studio, обязательно к установке</Description>
+    <Version>3.0.0-2-1</Version>
+    <ReleaseDate>2014-10-15</ReleaseDate>
+    <Licenses/>
+    <!--<Translations>
+        <Translation>sv_se.qm</Translation>
+        <Translation>de_de.qm</Translation>
+    </Translations> -->
+    <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
+    <!--<AutoDependOn>com.vendor.root.component3</AutoDependOn>-->
+    <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
+    <SortingPriority>10</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>true</ForcedInstallation>
+</Package>

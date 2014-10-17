@@ -1,0 +1,2 @@
+если (@@CONDITION@@) {
+@@BODY@@

@@ -107,11 +107,12 @@ QLayout *DevicesConfigurationWidget::initPort(QString const &robotModel
 
 
 void DevicesConfigurationWidget::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
+	Q_UNUSED(reason)
 
 	// This method can be called when we did not accomplish processing all combo boxes during saving.
 	// So ignoring such case.
@@ -173,11 +174,11 @@ void DevicesConfigurationWidget::propagateChanges(PortInfo const &port, DeviceIn
 		for (PortInfo const &otherPort : robotModel->configurablePorts()) {
 			if (areConvertible(port, otherPort)) {
 				if (sensor.isNull()) {
-					deviceConfigurationChanged(robotModelId, otherPort, DeviceInfo());
+					deviceConfigurationChanged(robotModelId, otherPort, DeviceInfo(), Reason::userAction);
 				} else {
 					DeviceInfo const otherDevice = convertibleDevice(robotModel, otherPort, sensor);
 					if (!otherDevice.isNull()) {
-						deviceConfigurationChanged(robotModelId, otherPort, otherDevice);
+						deviceConfigurationChanged(robotModelId, otherPort, otherDevice, Reason::userAction);
 					}
 				}
 			}

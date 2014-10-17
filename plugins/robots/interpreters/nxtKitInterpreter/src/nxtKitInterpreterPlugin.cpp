@@ -4,8 +4,6 @@
 
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
 
-#include "src/nxtTwoDModelConfigurer.h"
-
 using namespace nxtKitInterpreter;
 using namespace qReal;
 
@@ -17,12 +15,9 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 	, mTwoDRobotModel(mRealRobotModel)
 	, mBlocksFactory(new blocks::NxtBlocksFactory)
 {
-	mAppTranslator.load(":/nxtKitInterpreter_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
-
 	mAdditionalPreferences = new NxtAdditionalPreferences(mRealRobotModel.name());
 
-	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel, new NxtTwoDModelConfigurer());
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
 
 	mTwoDRobotModel.setEngine(modelEngine->engine());
 	mTwoDModel.reset(modelEngine);
@@ -33,10 +28,22 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 			, &mTwoDRobotModel, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
+NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
+{
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
+
+	if (mOwnsBlocksFactory) {
+		delete mBlocksFactory;
+	}
+}
+
 void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 		, SystemEventsInterface const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
+		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
@@ -48,7 +55,8 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 			, this
 			, &NxtKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModel->init(eventsForKitPlugin, systemEvents, graphicalModel, logicalModel, interpreterControl);
+	mTwoDModel->init(eventsForKitPlugin, systemEvents, graphicalModel
+			, logicalModel, interpretersInterface, interpreterControl);
 }
 
 QString NxtKitInterpreterPlugin::kitId() const
@@ -70,6 +78,7 @@ interpreterBase::blocksBase::BlocksFactoryInterface *NxtKitInterpreterPlugin::bl
 		interpreterBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model);
+	mOwnsBlocksFactory = false;
 	return mBlocksFactory;
 }
 
@@ -80,6 +89,7 @@ interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defau
 
 interpreterBase::AdditionalPreferences *NxtKitInterpreterPlugin::settingsWidget()
 {
+	mOwnsAdditionalPreferences = false;
 	return mAdditionalPreferences;
 }
 
