@@ -74,9 +74,23 @@ QVariant DatabasesGenerator::getProperty(Id const &id, QString const &propertyNa
 	return mLogicalModelApi.logicalRepoApi().property(mGraphicalModelApi.logicalId(id), propertyName);
 }
 
+IdList DatabasesGenerator::getChildren(Id const &id)
+{
+	//Id s = mGraphicalModelApi.graphicalRepoApi().parent(mGraphicalModelApi.graphicalIdsByLogicalId(child).at(0));
+
+	if (mLogicalModelApi.isLogicalId(id)) {
+		return mGraphicalModelApi.graphicalRepoApi().children(mGraphicalModelApi.graphicalIdsByLogicalId(id).at(0));
+	}
+
+	return mGraphicalModelApi.graphicalRepoApi().children(id);
+}
+
 void DatabasesGenerator::generateSQL()
 {
 	mErrorReporter->clear();
+
+	IdList passedElements;
+	passedElements.clear();
 
 	//setCodeFileName(SettingsManager::value("databasesCodeFileName").toString());
 
@@ -84,23 +98,51 @@ void DatabasesGenerator::generateSQL()
 	codeFile.open(QIODevice::WriteOnly);
 
 	IdList entityNodes = findNodes("Entity");
+	//IdList attributeNodes = findNodes("Attribute");
+
 
 	foreach (Id const &entityId, entityNodes) {
-		codeFile.write("\nCREATE TABLE ");
-		QVariant f = getProperty(entityId, "transaction");
-		codeFile.write(getProperty(entityId, "Name").toByteArray());
-		codeFile.write("\n{\n");
-		codeFile.write("\n}\n");
+		passedElements.append(entityId);
+		IdList relationships = mLogicalModelApi.logicalRepoApi().outgoingLinks(entityId);
+
+		if (relationships.isEmpty()) {
+			codeFile.write("CREATE TABLE ");
+			codeFile.write(getProperty(entityId, "Name").toByteArray());
+			codeFile.write("\r\n(");
+			IdList attributesSet = getChildren(entityId);
+
+			bool first = true;
+			foreach (Id const &attribute, attributesSet) {
+				if (!first) {
+					codeFile.write(",");
+				}
+				first = false;
+				codeFile.write("\r\n");
+				codeFile.write(getProperty(attribute, "Name").toByteArray());
+				codeFile.write(" ");
+				codeFile.write(getProperty(attribute, "DataType").toByteArray());
+			}
+			codeFile.write("\r\n);\r\n\r\n");
+		} else {
+			IdList attributesSet = getChildren(entityId);
+			QString tableName = getProperty(entityId, "Name").toByteArray();
+
+			foreach (Id const &relationship, relationships) {
+				QString relationshipName = getProperty(relationship, "name").toByteArray();
+				if (relationshipName == "One-to-one") {
+
+				} else if (relationshipName == "One-to-many") {
+					Id c = mLogicalModelApi.logicalRepoApi().to(relationship);
+				} else if (relationshipName == "Many-to-many") {
+
+				}
+			}
+		}
 	}
 
 
 	codeFile.close();
-	/*
-	//mVisualDebugger->setCurrentDiagram();
-
-	//mVisualDebugger->generateCode();
-
-			if (!mDebuggerConnector->hasBuildError()) {
+	/*	if (!mDebuggerConnector->hasBuildError()) {
 				mErrorReporter->addInformation(tr("Code generated and builded successfully"));
 			} */
 }

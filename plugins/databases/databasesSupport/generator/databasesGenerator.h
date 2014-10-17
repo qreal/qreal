@@ -35,6 +35,7 @@ private:
 	void setWorkDir(QString const &path);
 	IdList findNodes(QString const &name);
 	QVariant getProperty(Id const &id, QString const &propertyName);
+	IdList getChildren(Id const &id);
 
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	qReal::LogicalModelAssistInterface const &mLogicalModelApi;

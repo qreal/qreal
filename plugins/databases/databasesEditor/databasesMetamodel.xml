@@ -104,7 +104,7 @@
 						<property type="string" name="Name" displayedName="Name"/>
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
 						<property type="bool" name="isKey" displayedName="Key"/>
-						<property type="DataType" name="DataType" displayedName="Data Type"/>
+						<property type="string" name="DataType" displayedName="Data Type"/>
 					</properties>
 				</logic>
 			</node>
