@@ -10,7 +10,9 @@ INCLUDEPATH += \
 	$$PWD/../../../../qrgui/ \
 	$$PWD/../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils -lcommonTwoDModel -lqrtext
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils \
+		-lmodels -lcontroller -lpreferencesDialog -lpluginManager -ltoolPluginInterface \
+		-linterpreterBase -lutils -lcommonTwoDModel -lqrtext \
 
 HEADERS += \
 	$$PWD/src/customizer.h \
