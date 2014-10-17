@@ -1,6 +1,7 @@
 #pragma once
 
 #include "qrtext/core/ast/binaryOperator.h"
+#include "qrtext/lua/luaAstVisitorInterface.h"
 
 namespace qrtext {
 namespace lua {

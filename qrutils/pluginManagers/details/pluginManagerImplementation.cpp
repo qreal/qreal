@@ -38,6 +38,7 @@ QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 			mFileNameAndPlugin.insert(fileName, pluginByName);
 		} else {
 			QLOG_ERROR() << "Plugin loading failed:" << pluginAndError.second;
+			qDebug() << "Plugin loading failed:" << pluginAndError.second;
 		}
 	}
 

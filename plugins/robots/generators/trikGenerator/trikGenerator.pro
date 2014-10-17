@@ -16,6 +16,7 @@ INCLUDEPATH += \
 	$$PWD/../../interpreters/interpreterBase/include \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui \
+	$$PWD/../../../../qrtext/include \
 
 # workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # when fixed it would become possible to use QMAKE_LFLAGS_RPATH

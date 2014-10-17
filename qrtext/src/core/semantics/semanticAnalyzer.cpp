@@ -74,6 +74,16 @@ QStringList SemanticAnalyzer::identifiers() const
 	return mIdentifierDeclarations.keys();
 }
 
+QMap<QString, QSharedPointer<types::TypeExpression> > SemanticAnalyzer::variableTypes() const
+{
+	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> result;
+	for (QString const &identifier : mIdentifierDeclarations.keys()) {
+		result[identifier] = type(mIdentifierDeclarations[identifier]);
+	}
+
+	return result;
+}
+
 void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
 		, QSharedPointer<types::TypeExpression> const &type)
 {

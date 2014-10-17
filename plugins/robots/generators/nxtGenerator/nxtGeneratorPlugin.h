@@ -28,7 +28,8 @@ public:
 	QString kitId() const override;
 
 	void init(qReal::PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager) override;
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage) override;
 	QList<qReal::ActionInfo> actions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 

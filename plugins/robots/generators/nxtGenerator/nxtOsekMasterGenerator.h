@@ -10,6 +10,7 @@ public:
 	NxtOsekMasterGenerator(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage
 			, qReal::Id const &diagramId);
 
 	void generateOilAndMakeFiles();

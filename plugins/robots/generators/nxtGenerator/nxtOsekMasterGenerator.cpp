@@ -10,8 +10,9 @@ using namespace nxtOsek;
 NxtOsekMasterGenerator::NxtOsekMasterGenerator(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage
 		, qReal::Id const &diagramId)
-	: MasterGeneratorBase(repo, errorReporter, robotModelManager, diagramId)
+	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId)
 {
 }
 
@@ -22,7 +23,7 @@ void NxtOsekMasterGenerator::generateOilAndMakeFiles()
 
 generatorBase::GeneratorCustomizer *NxtOsekMasterGenerator::createCustomizer()
 {
-	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager);
+	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor());
 }
 
 QString NxtOsekMasterGenerator::targetPath()

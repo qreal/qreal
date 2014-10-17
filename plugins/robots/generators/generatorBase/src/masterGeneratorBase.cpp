@@ -2,9 +2,10 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
+
 #include "readableControlFlowGenerator.h"
 #include "gotoControlFlowGenerator.h"
-
+#include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/images.h"
 #include "generatorBase/parts/subprograms.h"
@@ -18,10 +19,12 @@ using namespace qReal;
 MasterGeneratorBase::MasterGeneratorBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage
 		, Id const &diagramId)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
+	, mTextLanguage(textLanguage)
 	, mDiagram(diagramId)
 {
 }
@@ -57,7 +60,6 @@ QString MasterGeneratorBase::generate()
 	}
 
 	mCustomizer->factory()->setMainDiagramId(mDiagram);
-	mCustomizer->factory()->variables()->reinit(mRepo);
 	mCustomizer->factory()->images()->reinit();
 
 	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {
@@ -128,6 +130,11 @@ QString MasterGeneratorBase::generate()
 	afterGeneration();
 
 	return pathToOutput;
+}
+
+lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
+{
+	return new lua::LuaProcessor(mErrorReporter, mTextLanguage, this);
 }
 
 void MasterGeneratorBase::beforeGeneration()

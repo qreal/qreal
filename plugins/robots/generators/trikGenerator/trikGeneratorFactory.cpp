@@ -1,6 +1,9 @@
 #include "trikGeneratorFactory.h"
+
 #include <generatorBase/converters/regexpMultiConverter.h>
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
+#include <generatorBase/lua/luaProcessor.h>
+
 #include "converters/engineV4PortConverter.h"
 #include "converters/engineV6PortConverter.h"
 #include "converters/encoderV4PortConverter.h"
@@ -40,8 +43,9 @@ using namespace generatorBase::simple;
 
 TrikGeneratorFactory::TrikGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
-	: GeneratorFactoryBase(repo, errorReporter, robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, lua::LuaProcessor &luaProcessor)
+	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 {
 }
 
@@ -148,12 +152,12 @@ Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
 
 generatorBase::simple::Binding::ConverterInterface *TrikGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::TrikStringPropertyConverter(*mVariables, *systemVariableNameConverter());
+	return new converters::TrikStringPropertyConverter(*mVariables, *reservedVariableNameConverter());
 }
 
 void TrikGeneratorFactory::initVariables()
 {
-	mVariables = new parts::TrikVariables(pathToTemplates(), mRobotModelManager.model());
+	mVariables = new parts::TrikVariables(pathToTemplates(), mRobotModelManager.model(), mLuaTranslator.toolbox());
 }
 
 Binding::ConverterInterface *TrikGeneratorFactory::motorPortConverter() const

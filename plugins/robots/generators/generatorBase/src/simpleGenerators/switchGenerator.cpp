@@ -12,7 +12,7 @@ SwitchGenerator::SwitchGenerator(qrRepo::RepoApi const &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, QString("switch/%1.t").arg(part), {
 			Binding::createConverting("@@EXPRESSION@@", "Expression"
-					, customizer.factory()->systemVariableNameConverter())
+					, customizer.factory()->reservedVariableNameConverter())
 			, Binding::createConverting("@@CONDITION@@", "Expression"
 					, customizer.factory()->switchConditionsMerger(values))
 			}, parent)

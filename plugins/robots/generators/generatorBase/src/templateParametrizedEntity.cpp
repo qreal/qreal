@@ -42,3 +42,8 @@ void TemplateParametrizedEntity::setPathToTemplates(QString const &pathTemplates
 {
 	mPathToRoot = pathTemplates;
 }
+
+QString TemplateParametrizedEntity::pathToRoot() const
+{
+	return mPathToRoot;
+}

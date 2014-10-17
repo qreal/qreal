@@ -10,7 +10,15 @@
 #include "controlFlowGeneratorBase.h"
 #include "templateParametrizedEntity.h"
 
+namespace qrtext {
+class LanguageToolboxInterface;
+}
+
 namespace generatorBase {
+
+namespace lua {
+class LuaProcessor;
+}
 
 class ReadableControlFlowGenerator;
 class GotoControlFlowGenerator;
@@ -25,6 +33,7 @@ public:
 	MasterGeneratorBase(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage
 			, qReal::Id const &diagramId);
 
 	void setProjectDir(QFileInfo const &fileInfo);
@@ -39,6 +48,9 @@ public:
 
 protected:
 	virtual GeneratorCustomizer *createCustomizer() = 0;
+
+	/// Default implementation takes ownership via QObject parentship system.
+	virtual lua::LuaProcessor *createLuaProcessor();
 
 	/// Implementation must return a path to a file where all generated code
 	/// will be written. Called on the last stage of the generation process
@@ -56,6 +68,7 @@ protected:
 	qrRepo::RepoApi const &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
+	qrtext::LanguageToolboxInterface &mTextLanguage;
 	qReal::Id mDiagram;
 	GeneratorCustomizer *mCustomizer;
 	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership

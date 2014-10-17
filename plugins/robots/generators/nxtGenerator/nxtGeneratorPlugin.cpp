@@ -67,9 +67,10 @@ bool NxtGeneratorPlugin::canGenerateTo(QString const &project)
 }
 
 void NxtGeneratorPlugin::init(PluginConfigurator const &configurator
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage)
 {
-	RobotsGeneratorPluginBase::init(configurator, robotModelManager);
+	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 	connect(mFlashTool, &NxtFlashTool::uploadingComplete, this, &NxtGeneratorPlugin::onUploadingComplete);
@@ -143,6 +144,7 @@ generatorBase::MasterGeneratorBase *NxtGeneratorPlugin::masterGenerator()
 	return new nxtOsek::NxtOsekMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, *mRobotModelManager
+			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram());
 }
 
@@ -151,6 +153,7 @@ void NxtGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 	nxtOsek::NxtOsekMasterGenerator * const generator = new nxtOsek::NxtOsekMasterGenerator(*mRepo
 		, *mMainWindowInterface->errorReporter()
 		, *mRobotModelManager
+		, *mTextLanguage
 		, mMainWindowInterface->activeDiagram());
 	generator->initialize();
 	generator->setProjectDir(newFileInfo);

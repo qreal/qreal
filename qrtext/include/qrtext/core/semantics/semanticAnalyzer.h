@@ -68,6 +68,9 @@ public:
 	/// Returns list of identifier names known to semantic analyzer.
 	QStringList identifiers() const;
 
+	/// Returns a mapping of variable identifiers known to semantic analyzer to their types.
+	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const;
+
 protected:
 	/// Assigns given type to given expression.
 	void assign(QSharedPointer<ast::Node> const &expression, QSharedPointer<types::TypeExpression> const &type);
