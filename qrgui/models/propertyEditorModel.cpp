@@ -178,7 +178,12 @@ QList<QPair<QString, QString>> PropertyEditorModel::enumValues(QModelIndex const
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
-	return mEditorManagerInterface.enumValues(id, mFields[index.row()].fieldName);
+	/// @todo: null id must not be met here but for some reason sometimes it happens.
+	/// This is pretty strange because mTargetLogicalObject without manual modification
+	/// becomes invalid index.
+	return id.isNull()
+			? QList<QPair<QString, QString>>()
+			: mEditorManagerInterface.enumValues(id, mFields[index.row()].fieldName);
 }
 
 void PropertyEditorModel::rereadData(QModelIndex const &topLeftIndex, QModelIndex const &bottomRightIndex)

@@ -272,7 +272,7 @@ void StartWidget::openInterpretedDiagram()
 	QString const fileName = mProjectManager->openFileName(tr("Select file with metamodel to open"));
 	ProxyEditorManager &editorManagerProxy = mMainWindow->editorManagerProxy();
 
-	if (!fileName.isEmpty() && mProjectManager->open(fileName)) {
+	if (!fileName.isEmpty()) {
 		editorManagerProxy.setProxyManager(new InterpreterEditorManager(fileName));
 		QStringList interpreterDiagramsList;
 		foreach (Id const &editor, editorManagerProxy.editors()) {
