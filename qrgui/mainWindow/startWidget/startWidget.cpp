@@ -109,7 +109,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 		Id const editor = mMainWindow->editorManager().editors()[0];
 		QString const diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
-		mNewProjectButton = new StyledButton(tr("New project"), ":icons/startTab/open.svg");
+		mNewProjectButton = new StyledButton(tr("New project"), ":/mainWindow/images/startTab/new.svg");
 		mProjectsManagementLayout->addWidget(mNewProjectButton);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);

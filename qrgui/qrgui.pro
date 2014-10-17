@@ -1,20 +1,24 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-	$$PWD/mainWindow \
-	$$PWD/models \
-	$$PWD/editor \
-	$$PWD/controller \
-	$$PWD/dialogs \
-	$$PWD/preferencesDialog \
-	$$PWD/textEditor \
-	$$PWD/mouseGestures \
-	$$PWD/hotKeyManager \
-	$$PWD/brandManager \
-	$$PWD/plugins/pluginManager \
-	$$PWD/plugins/editorPluginInterface \
-	$$PWD/plugins/toolPluginInterface \
-	$$PWD/thirdparty \
+	mainWindow \
+	models \
+	editor \
+	controller \
+	dialogs \
+	preferencesDialog \
+	textEditor \
+	mouseGestures \
+	hotKeyManager \
+	brandManager \
+	pluginManager \
+	editorPluginInterface \
+	toolPluginInterface \
+	thirdparty \
+
+pluginManager.file = $$PWD/plugins/pluginManager/pluginManager.pro
+toolPluginInterface.file = $$PWD/plugins/toolPluginInterface/toolPluginInterface.pro
+editorPluginInterface.file = $$PWD/plugins/editorPluginInterface/editorPluginInterface.pro
 
 mainWindow.depends = \
 	models \
@@ -25,18 +29,18 @@ mainWindow.depends = \
 	textEditor \
 	hotKeyManager \
 	brandManager \
-	plugins/pluginManager \
+	pluginManager \
 	thirdparty \
 
 models.depends = \
-	plugins/pluginManager \
+	pluginManager \
 
 editor.depends = \
 	models \
 	controller \
 	mouseGestures \
 	brandManager \
-	plugins/pluginManager \
+	pluginManager \
 	thirdparty \
 
 dialogs.depends = \
@@ -44,13 +48,13 @@ dialogs.depends = \
 	thirdparty \
 
 textEditor.depends = \
-	plugins/toolPluginInterface \
+	toolPluginInterface \
 
 hotKeyManager.depends = \
 	preferencesDialog \
 
 brandManager.depends = \
-	plugins/pluginManager \
+	pluginManager \
 
-editorPluginInterface.depends =
-	plugins/toolPluginInterface
+pluginManager.depends = \
+	toolPluginInterface \
