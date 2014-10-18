@@ -14,9 +14,9 @@ public:
 	GenerationRulesPlugin();
 	virtual ~GenerationRulesPlugin();
 
-	virtual QList<qReal::ActionInfo> actions() override;
+	QList<qReal::ActionInfo> actions() override;
 
-	virtual void init(qReal::PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi) override;
+	void init(qReal::PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi) override;
 
 private slots:
 	void generateCode();
