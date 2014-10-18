@@ -26,10 +26,15 @@ public:
 	InterpretedPluginManager();
 	~InterpretedPluginManager();
 
+	/// Inits interpreted plugins.
+	/// @param configurator - information about model
+	/// @param metamodelRepoApi - information about metamodel
 	void init(PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi);
 	void updateSettings();
+	/// Returns list of actions of all plugins.
 	QList<ActionInfo> actions() const;
-	QList<QPair<QString, PreferencesPage *> > preferencesPages() const;
+	/// Returns list of all preferences pages.
+	QList<QPair<QString, PreferencesPage *>> preferencesPages() const;
 
 	/// Returns a multimap of project conveters to editors whoose diagrams they convert.
 	/// @warning The result is obtained each time from scratch when you call this method so better to memorize it.
@@ -54,15 +59,13 @@ private:
 
 	QDir mPluginsDir;
 
-	QList<InterpretedPluginInterface *> mPlugins;
+	QList<InterpretedPluginInterface *> mPlugins; // doesn't have ownership
 
 	/// An object and that is used to customize GUI with values from plugins
 	Customizer mCustomizer;
 
 	/// Common part of all plugin managers
 	PluginManager mPluginManager;
-
-	SystemEvents *mSystemEvents;
 };
 
 }

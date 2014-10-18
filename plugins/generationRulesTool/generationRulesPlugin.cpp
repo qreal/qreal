@@ -6,7 +6,7 @@ using namespace generationRules;
 
 GenerationRulesPlugin::GenerationRulesPlugin()
 	: mRepo(nullptr)
-	, mAction("Destroy everything", NULL)
+	, mAction(tr("Destroy everything"), nullptr)
 {
 	connect(&mAction, &QAction::triggered, this, &GenerationRulesPlugin::generateCode);
 }
@@ -18,9 +18,7 @@ GenerationRulesPlugin::~GenerationRulesPlugin()
 QList<qReal::ActionInfo> GenerationRulesPlugin::actions()
 {
 	qReal::ActionInfo info(&mAction, "file", "tools");
-	QList<qReal::ActionInfo> result;
-	result << info;
-	return result;
+	return {info};
 }
 
 void GenerationRulesPlugin::init(qReal::PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi)

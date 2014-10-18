@@ -198,6 +198,7 @@ public slots:
 	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle();
 
+	/// Inits interpreted plugins and adds their actions to the toolbar.
 	void initInterpretedPlugins();
 
 private slots:
@@ -335,6 +336,10 @@ private:
 	void setSwitchAlignment(bool isChecked);
 
 	void addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu);
+
+	/// Traverses list of actions and adds buttons to toolbar.
+	/// @param actions - list of actions to traverse
+	void traverseListOfActions(QList<ActionInfo> const actions);
 
 	void setIndexesOfPropertyEditor(Id const &id);
 

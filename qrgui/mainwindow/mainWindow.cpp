@@ -1948,14 +1948,9 @@ void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMen
 	}
 }
 
-void MainWindow::initToolPlugins()
+void MainWindow::traverseListOfActions(QList<ActionInfo> const actions)
 {
-	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
-		, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-		, *mSystemEvents, *mTextManager));
-
-	QList<ActionInfo> const actions = mToolManager.actions();
-	foreach (ActionInfo const action, actions) {
+	for (ActionInfo const action : actions) {
 		if (action.isAction()) {
 			if (action.toolbarName() == "file") {
 				mUi->fileToolbar->addAction(action.action());
@@ -1964,17 +1959,27 @@ void MainWindow::initToolPlugins()
 			} else if (action.toolbarName() == "generators") {
 				mUi->generatorsToolbar->addAction(action.action());
 			}
-			connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
+			connect(action.action(), &QAction::triggered, mFilterObject, &FilterObject::triggeredActionActivated);
 		}
 	}
 
-	foreach (ActionInfo const action, actions) {
+	for (ActionInfo const action : actions) {
 		if (action.menuName() == "tools") {
 			addActionOrSubmenu(mUi->menuTools, action);
 		} else if (action.menuName() == "settings") {
 			addActionOrSubmenu(mUi->menuSettings, action);
 		}
 	}
+}
+
+void MainWindow::initToolPlugins()
+{
+	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
+		, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
+		, *mSystemEvents, *mTextManager));
+
+	QList<ActionInfo> const actions = mToolManager.actions();
+	traverseListOfActions(actions);
 
 	if (mUi->generatorsToolbar->actions().isEmpty()) {
 		mUi->generatorsToolbar->hide();
@@ -1997,32 +2002,13 @@ void MainWindow::initToolPlugins()
 
 void MainWindow::initInterpretedPlugins()
 {
-	mInterpretedPluginLoader.init(mEditorManagerProxy.proxyEditorManager()
+	mInterpretedPluginLoader.init(mEditorManagerProxy.proxiedEditorManager()
 			, PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
 			, *mSystemEvents, *mTextManager));
+
 	QList<ActionInfo> const actions = mInterpretedPluginLoader.listOfActions();
-
-	foreach (ActionInfo const action, actions) {
-		if (action.isAction()) {
-			if (action.toolbarName() == "file") {
-				mUi->fileToolbar->addAction(action.action());
-			} else if (action.toolbarName() == "interpreters") {
-				mUi->interpreterToolbar->addAction(action.action());
-			} else if (action.toolbarName() == "generators") {
-				mUi->generatorsToolbar->addAction(action.action());
-			}
-			connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
-		}
-	}
-
-	foreach (ActionInfo const action, actions) {
-		if (action.menuName() == "tools") {
-			addActionOrSubmenu(mUi->menuTools, action);
-		} else if (action.menuName() == "settings") {
-			addActionOrSubmenu(mUi->menuSettings, action);
-		}
-	}
+	traverseListOfActions(actions);
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

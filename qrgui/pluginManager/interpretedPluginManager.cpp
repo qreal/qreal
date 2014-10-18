@@ -9,9 +9,6 @@ InterpretedPluginManager::InterpretedPluginManager()
 	, mPluginManager(PluginManager(qApp->applicationDirPath(), "plugins/interpreted"))
 {
 	mPlugins = mPluginManager.loadAllPlugins<InterpretedPluginInterface>();
-
-	loadDefaultSettings();
-	setHotKeyActions();
 }
 
 InterpretedPluginManager::~InterpretedPluginManager()
@@ -37,10 +34,8 @@ QList<ActionInfo> InterpretedPluginManager::actions() const
 
 void InterpretedPluginManager::loadDefaultSettings()
 {
-
 }
 
 void InterpretedPluginManager::setHotKeyActions() const
 {
-
 }

@@ -16,7 +16,7 @@ SUBDIRS += \
 #	testInvocation/testInvocation.pro \
 	exterminatus/exterminatus.pro \
 	visualInterpreter/visualInterpreter.pro \
-#	refactoring/refactoring.pro \
+	refactoring/refactoring.pro \
 
 # interpreted plugins
 SUBDIRS += \

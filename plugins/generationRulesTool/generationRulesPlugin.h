@@ -1,6 +1,8 @@
 #include "../../qrgui/interpretedPluginInterface/interpretedPluginInterface.h"
 
 namespace generationRules {
+
+/// Class, which represents example of using interpreted plugin.
 class GenerationRulesPlugin : public QObject, public qReal::InterpretedPluginInterface
 {
 	Q_OBJECT
@@ -8,15 +10,15 @@ class GenerationRulesPlugin : public QObject, public qReal::InterpretedPluginInt
 	Q_PLUGIN_METADATA(IID "wtfisthis")
 
 public:
+	/// Constructor of class GenerationRulesPlugin.
 	GenerationRulesPlugin();
 	virtual ~GenerationRulesPlugin();
 
-	virtual QList<qReal::ActionInfo> actions();
+	virtual QList<qReal::ActionInfo> actions() override;
 
-	virtual void init(qReal::PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi);
+	virtual void init(qReal::PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi) override;
 
 private slots:
-
 	void generateCode();
 
 private:
@@ -24,10 +26,10 @@ private:
 	QAction mAction; // "Generate" button
 
 	/// To syncronize logical and graphical models with repository.
-	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;
+	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface; // Doesn't have ownership
 
 	/// Metamodel repo api.
-	qrRepo::LogicalRepoApi *mMetamodelRepoApi;
+	qrRepo::LogicalRepoApi *mMetamodelRepoApi; // Doesn't have ownership
 };
 
 }

@@ -12,7 +12,7 @@ void InterpretedPluginsLoader::init(
 		, PluginConfigurator const &configurator)
 {
 	mInterpreterEditorManager = static_cast<InterpreterEditorManager *>(editorManager);
-	mEditorRepoApi = mInterpreterEditorManager->editorRepoApi();
+	mEditorRepoApi = mInterpreterEditorManager->listOfMetamodels();
 
 	for (qrRepo::RepoApi * const repo : mEditorRepoApi.values()) {
 		mPluginManager.init(configurator, *repo);
@@ -21,6 +21,5 @@ void InterpretedPluginsLoader::init(
 
 QList<ActionInfo> InterpretedPluginsLoader::listOfActions() const
 {
-	QList<ActionInfo> const actions = mPluginManager.actions();
-	return actions;
+	return mPluginManager.actions();
 }
