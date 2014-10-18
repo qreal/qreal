@@ -337,7 +337,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	mLeftPressed = true;
 	setZValue(1);
 
-	if (!isPort() && (flags() & ItemIsMovable)) {
+	if (flags() & ItemIsMovable) {
 		recalculateHighlightedNode(event->scenePos());
 	}
 }
@@ -538,7 +538,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	// insert current element into them and set mHighlightedNode to nullptr
 	// but because of mouseRelease twice triggering we can't do it
 	// This may cause more bugs
-	if (!isPort() && (flags() & ItemIsMovable)) {
+	if (flags() & ItemIsMovable) {
 		if (mHighlightedNode) {
 			NodeElement *newParent = mHighlightedNode;
 			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
