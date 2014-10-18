@@ -85,12 +85,46 @@ IdList DatabasesGenerator::getChildren(Id const &id)
 	return mGraphicalModelApi.graphicalRepoApi().children(id);
 }
 
+IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
+{
+	IdList relationshipsOut = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
+	IdList boundedEntities;
+	boundedEntities.clear();
+	boundedEntities.append(id);
+
+	foreach (Id const &relationship, relationshipsOut) {
+		if (mPassedElements.indexOf(relationship) == -1) {
+			mPassedElements.append(relationship);
+			QString relationshipName = getProperty(relationship, "name").toByteArray();
+			if (relationshipName == "One-to-one") {
+				Id newEntity = mLogicalModelApi.logicalRepoApi().to(relationship);
+				mPassedElements.append(newEntity);
+				boundedEntities.append(getBoundedWithOneToOneRealationship(newEntity));
+			}
+		}
+	}
+
+	IdList relationshipsIn = mLogicalModelApi.logicalRepoApi().incomingLinks(id);
+	foreach (Id const &relationship, relationshipsIn) {
+		if (mPassedElements.indexOf(relationship) == -1) {
+			mPassedElements.append(relationship);
+			QString relationshipName = getProperty(relationship, "name").toByteArray();
+			if (relationshipName == "One-to-one") {
+				Id newEntity = mLogicalModelApi.logicalRepoApi().from(relationship);
+				mPassedElements.append(newEntity);
+				boundedEntities.append(getBoundedWithOneToOneRealationship(newEntity));
+			}
+		}
+	}
+	return boundedEntities;
+}
+
 void DatabasesGenerator::generateSQL()
 {
 	mErrorReporter->clear();
 
-	IdList passedElements;
-	passedElements.clear();
+
+	mPassedElements.clear();
 
 	//setCodeFileName(SettingsManager::value("databasesCodeFileName").toString());
 
@@ -100,12 +134,15 @@ void DatabasesGenerator::generateSQL()
 	IdList entityNodes = findNodes("Entity");
 	//IdList attributeNodes = findNodes("Attribute");
 
+	QList<IdList> oneToOneAllTablesSet;
+	oneToOneAllTablesSet.clear();
 
 	foreach (Id const &entityId, entityNodes) {
-		passedElements.append(entityId);
 		IdList relationships = mLogicalModelApi.logicalRepoApi().outgoingLinks(entityId);
+		relationships.append(mLogicalModelApi.logicalRepoApi().incomingLinks(entityId));
 
 		if (relationships.isEmpty()) {
+			mPassedElements.append(entityId);
 			codeFile.write("CREATE TABLE ");
 			codeFile.write(getProperty(entityId, "Name").toByteArray());
 			codeFile.write("\r\n(");
@@ -124,18 +161,22 @@ void DatabasesGenerator::generateSQL()
 			}
 			codeFile.write("\r\n);\r\n\r\n");
 		} else {
-			IdList attributesSet = getChildren(entityId);
-			QString tableName = getProperty(entityId, "Name").toByteArray();
+			if (mPassedElements.indexOf(entityId) == -1) {
+				mPassedElements.append(entityId);
+				// List for set of tables bounded with one-to-one relationship
+				IdList oneToOneTableSet;
+				oneToOneTableSet.clear();
 
-			foreach (Id const &relationship, relationships) {
-				QString relationshipName = getProperty(relationship, "name").toByteArray();
-				if (relationshipName == "One-to-one") {
+				oneToOneTableSet = getBoundedWithOneToOneRealationship(entityId);
 
-				} else if (relationshipName == "One-to-many") {
-					Id c = mLogicalModelApi.logicalRepoApi().to(relationship);
-				} else if (relationshipName == "Many-to-many") {
+				/*foreach (Id const &relationship, relationships) {
+					QString relationshipName = getProperty(relationship, "name").toByteArray();
+					if (relationshipName == "One-to-one") {
+						Id c = mLogicalModelApi.logicalRepoApi().to(relationship);
+					}
+				}*/
 
-				}
+				oneToOneAllTablesSet.append(oneToOneTableSet);
 			}
 		}
 	}

@@ -36,6 +36,7 @@ private:
 	IdList findNodes(QString const &name);
 	QVariant getProperty(Id const &id, QString const &propertyName);
 	IdList getChildren(Id const &id);
+	IdList getBoundedWithOneToOneRealationship(Id const &id);
 
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	qReal::LogicalModelAssistInterface const &mLogicalModelApi;
@@ -43,6 +44,7 @@ private:
 	//VisualDebugger::ErrorType mError;
 	Id mCurrentDiagram;
 	Id mCurrentId;
+	IdList mPassedElements;
 
 	//QMap<int, Id> mIdByLineCorrelation;
 	//bool mHasCodeGenerationError;
