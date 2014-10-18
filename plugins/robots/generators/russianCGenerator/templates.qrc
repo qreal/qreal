@@ -66,8 +66,21 @@
         <file>templates/sensors/port2.t</file>
         <file>templates/sensors/port3.t</file>
         <file>templates/sensors/port4.t</file>
+        <file>templates/functions/abs.t</file>
+        <file>templates/functions/acos.t</file>
+        <file>templates/functions/asin.t</file>
+        <file>templates/functions/atan.t</file>
+        <file>templates/functions/ceil.t</file>
+        <file>templates/functions/cos.t</file>
+        <file>templates/functions/exp.t</file>
+        <file>templates/functions/floor.t</file>
+        <file>templates/functions/ln.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
+        <file>templates/functions/sgn.t</file>
+        <file>templates/functions/sin.t</file>
+        <file>templates/functions/sqrt.t</file>
+        <file>templates/functions/time.t</file>
         <file>templates/engines/nullifyEncoder.t</file>
         <file>templates/wait/color.t</file>
         <file>templates/wait/colorIntensity.t</file>
@@ -127,7 +140,6 @@
         <file>templates/buttons/waitForRight.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
-        <file>templates/whatTime.t</file>
         <file>templates/variableInit.t</file>
         <file>templates/luaPrinting/addition.t</file>
         <file>templates/luaPrinting/argumentsSeparator.t</file>
