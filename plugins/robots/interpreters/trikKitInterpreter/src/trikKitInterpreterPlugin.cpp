@@ -3,9 +3,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 
-#include <qrkernel/settingsManager.h>
 #include <commonTwoDModel/engine/twoDModelEngineFacade.h>
-
+#include <qrkernel/settingsManager.h>
 
 using namespace trikKitInterpreter;
 using namespace qReal;
@@ -14,13 +13,10 @@ Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
-	: mRealRobotModelV6(kitId())
+	: mRealRobotModelV6(kitId(), "trikKitRobot") // todo: somewhere generate robotId for each robot
 	, mTwoDRobotModelV6(mRealRobotModelV6)
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
 {
-	mAppTranslator.load(":/trikKitInterpreter_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
-
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
 
 	QLineEdit * const quickPreferences = new QLineEdit;
@@ -36,7 +32,6 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	mIpAdressQuicksConfigurer = quickPreferences;
 
 	mTwoDRobotModelV6.setWheelPorts("M3", "M4");
-
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6);
 
 	mTwoDRobotModelV6.setEngine(modelEngine->engine());
@@ -48,10 +43,26 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 			, &mTwoDRobotModelV6, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
+TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
+{
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
+
+	if (mOwnsBlocksFactory) {
+		delete mBlocksFactory;
+	}
+
+	if (mOwnsIpAdressQuicksConfigurer) {
+		delete mIpAdressQuicksConfigurer;
+	}
+}
+
 void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
 		, SystemEventsInterface const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
+		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
@@ -61,7 +72,8 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
 			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
 
-	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel, logicalModel, interpreterControl);
+	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel
+			, logicalModel, interpretersInterface, interpreterControl);
 }
 
 QString TrikKitInterpreterPlugin::kitId() const
@@ -83,6 +95,7 @@ interpreterBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPlugin::b
 		interpreterBase::robotModel::RobotModelInterface const *model)
 {
 	Q_UNUSED(model);
+	mOwnsBlocksFactory = false;
 	return mBlocksFactory;
 }
 
@@ -93,12 +106,18 @@ interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defa
 
 interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget()
 {
+	mOwnsAdditionalPreferences = false;
 	return mAdditionalPreferences;
 }
 
 QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model)
 {
-	return model.name().toLower().contains("twod") ? nullptr : mIpAdressQuicksConfigurer;
+	if (model.name().toLower().contains("twod")) {
+		return nullptr;
+	} else {
+		mOwnsIpAdressQuicksConfigurer = false;
+		return mIpAdressQuicksConfigurer;
+	}
 }
 
 QList<qReal::ActionInfo> TrikKitInterpreterPlugin::customActions()

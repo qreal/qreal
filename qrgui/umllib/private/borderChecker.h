@@ -57,16 +57,16 @@ private:
 	* List of NodeElement border corner coordinates.
 	* Uses only for initializing mXHor, mYHor, mXVert, mYVert constants.
 	*/
-	QList<double> const mBorderValues;
+	QList<qreal> const mBorderValues;
 
 	/**
 	* Some kind of tabulation for ports.
 	* TODO: understand that it actually is.
 	*/
-	double const mXHor;
-	double const mYHor;
-	double const mXVert;
-	double const mYVert;
+	qreal const mXHor;
+	qreal const mYHor;
+	qreal const mXVert;
+	qreal const mYVert;
 };
 
 }

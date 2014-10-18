@@ -4,12 +4,12 @@ CONFIG += c++11
 
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../../bin/plugins/kitPlugins/
+DESTDIR = ../../../../bin/plugins/tools/kitPlugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase
+LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lgeneratorBase
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \
@@ -24,7 +24,7 @@ INCLUDEPATH += \
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin/plugins/
 }
 
-TRANSLATIONS = nxtGenerator_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/nxtGenerator_ru.ts
 
 RESOURCES = \
 	$$PWD/nxtGenerator.qrc \

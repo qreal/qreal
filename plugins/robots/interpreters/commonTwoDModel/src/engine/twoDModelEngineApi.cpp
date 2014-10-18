@@ -20,6 +20,7 @@
 
 using namespace twoDModel;
 using namespace interpreterBase::robotModel;
+using namespace twoDModel::model;
 
 TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
 	: mModel(model)
@@ -49,19 +50,19 @@ int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
-	QPointF sensorPosition(neededPosDir.first);
-	qreal const width = sensorWidth / 2.0;
-	QRectF const scanningRect = QRectF(
-			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
-			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
-			, 2 * width + touchSensorStrokeIncrement
-			, 2 * width + touchSensorStrokeIncrement);
+	QPointF const position(neededPosDir.first);
+	qreal const rotation = neededPosDir.second / 180 * mathUtils::pi;
+	QSizeF const size = mModel.robotModels()[0]->sensorRect(port, position).size();
 
 	QPainterPath sensorPath;
-	sensorPath.addRect(scanningRect);
-	bool const res = mModel.worldModel().checkCollision(sensorPath, touchSensorWallStrokeIncrement);
+	qreal const touchRegionRadius = size.height() / 2;
+	qreal const stickCenter = size.width() / 2 - touchRegionRadius;
+	// (0,0) in sensor coordinates is sensor`s center
+	QPointF const ellipseCenter = QPointF(stickCenter * cos(rotation), stickCenter * sin(rotation));
+	sensorPath.addEllipse(position + ellipseCenter, touchRegionRadius, touchRegionRadius);
 
-	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
+	bool const pressed = mModel.worldModel().checkCollision(sensorPath);
+	return pressed ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
 
 int TwoDModelEngineApi::readSonarSensor(PortInfo const &port) const
@@ -124,13 +125,14 @@ uint TwoDModelEngineApi::spoilColor(uint const color) const
 
 QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 {
-	if (mModel.robotModels()[0]->configuration().type(port).isNull()) {
+	DeviceInfo const device = mModel.robotModels()[0]->configuration().type(port);
+	if (device.isNull()) {
 		return QImage();
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
-	qreal const width = sensorWidth / 2.0;
+	qreal const width = mModel.robotModels()[0]->info()->sensorImageRect(device).width() / 2.0;
 	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);

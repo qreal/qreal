@@ -20,7 +20,6 @@
         <file>icons/warning.png</file>
         <file>icons/information.png</file>
         <file>icons/critical.png</file>
-        <file>qrgui_ru.qm</file>
         <file>icons/build.png</file>
         <file>icons/next.png</file>
         <file>icons/run.png</file>
@@ -32,7 +31,6 @@
         <file>icons/collapseAll.png</file>
         <file>icons/expandAll.png</file>
         <file>icons/changeRepresentation.png</file>
-        <file>qt_ru.qm</file>
         <file>icons/open.svg</file>
         <file>icons/fullScreen.svg</file>
         <file>icons/unFullScreen.svg</file>

@@ -24,7 +24,7 @@ QImage Customizer::applicationLogo() const
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.0.0 α8";
+	return "3.0.0 α14";
 }
 
 QString Customizer::aboutText() const
@@ -60,7 +60,8 @@ void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWa
 {
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
 	watchWindow->setFloating(false);
-	QDockWidget *graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
+
+	QDockWidget * const graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
 
 	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);

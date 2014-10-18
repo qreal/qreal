@@ -4,7 +4,8 @@
 #include <QtCore/QObject>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
-#include <qrutils/expressionsParser/expressionsParser.h>
+
+#include "textLanguage/robotsBlockParser.h"
 
 namespace utils {
 class AbstractTimer;
@@ -24,9 +25,8 @@ public:
 	/// Constructor.
 	/// @param robotModelManager - has reference to current robot model.
 	/// @param parser - contains sensor variables and is needed here to update them.
-	SensorVariablesUpdater(
-			interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, utils::ExpressionsParser &parser  /// @todo direct dependency from ExpressionsParser shall be removed.
+	SensorVariablesUpdater(interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::DebuggerInterface &textLanguageToolbox
 			);
 
 	/// Starts background polling process.
@@ -48,7 +48,7 @@ private:
 
 	utils::AbstractTimer *mUpdateTimer;
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
-	utils::ExpressionsParser &mParser;
+	qrtext::DebuggerInterface &mParser;
 };
 
 }

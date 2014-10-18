@@ -26,6 +26,10 @@ public:
 
 	bool equals(CreateRemoveCommandImplementation const &other) const;
 
+	/// @todo: Bad method, required only for linkers. Get rid of it.
+	/// Modifies command setting new creation position.
+	void setNewPosition(QPointF const &position);
+
 private:
 	void refreshAllPalettes();
 
@@ -37,7 +41,7 @@ private:
 	Id mId;
 	bool const mIsFromLogicalModel;
 	QString const mName;
-	QPointF const mPosition;
+	QPointF mPosition;
 	QMap<QString, QVariant> mLogicalPropertiesSnapshot;
 	QMap<QString, QVariant> mGraphicalPropertiesSnapshot;
 	Id mOldLogicalId;

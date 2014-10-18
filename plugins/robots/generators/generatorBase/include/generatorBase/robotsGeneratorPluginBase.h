@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QtCore/QTranslator>
 #include <QtWidgets/QApplication>
 
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
@@ -67,9 +66,6 @@ protected:
 	qrRepo::RepoApi const *mRepo;  // Does not have ownership
 
 	interpreterBase::robotModel::RobotModelManagerInterface const *mRobotModelManager;
-
-	/// Translator object for this plugin
-	QTranslator mAppTranslator;
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 	qReal::SystemEventsInterface *mSystemEvents; // Does not have ownership

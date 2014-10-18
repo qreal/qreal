@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QtCore/QTranslator>
-
 #include <qrgui/toolPluginInterface/toolPluginInterface.h>
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
 #include <qrutils/expressionsParser/expressionsParser.h>
@@ -118,8 +116,6 @@ private:
 	utils::WatchListWindow *mWatchListWindow;
 	qReal::BlockParser *mParser;
 	qReal::VisualDebuggerPreferencesPage *mPreferencesPage;
-
-	QTranslator mAppTranslator;
 };
 
 }

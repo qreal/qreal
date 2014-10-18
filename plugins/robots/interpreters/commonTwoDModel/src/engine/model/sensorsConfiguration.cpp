@@ -15,7 +15,7 @@ SensorsConfiguration::SensorsConfiguration(QString const &robotModelName)
 }
 
 void SensorsConfiguration::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &device)
+		, PortInfo const &port, DeviceInfo const &device, Reason reason)
 {
 	if (robotModel != mRobotModelName) {
 		// Ignoring external events
@@ -24,11 +24,12 @@ void SensorsConfiguration::onDeviceConfigurationChanged(QString const &robotMode
 
 	if (device.isNull()) {
 		mSensorsInfo[port] = SensorInfo();
-		emit deviceRemoved(port);
+		emit deviceRemoved(port, reason == Reason::loading);
 		return;
 	}
 
-	emit deviceAdded(port);
+	emit deviceAdded(port, reason == Reason::loading);
+
 	// If there was no sensor before then placing it right in front of the robot;
 	// else putting it instead of old one.
 	mSensorsInfo[port] = mSensorsInfo[port].isNull ? SensorInfo(defaultPosition(), 0) : mSensorsInfo[port];
@@ -118,9 +119,8 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 
 		qreal const direction = sensorNode.attribute("direction", "0").toDouble();
 
-		deviceConfigurationChanged(mRobotModelName, port, DeviceInfo());
-		deviceConfigurationChanged(mRobotModelName, port, type);
-
+		deviceConfigurationChanged(mRobotModelName, port, DeviceInfo(), Reason::loading);
+		deviceConfigurationChanged(mRobotModelName, port, type, Reason::loading);
 		setPosition(port, position);
 		setDirection(port, direction);
 	}

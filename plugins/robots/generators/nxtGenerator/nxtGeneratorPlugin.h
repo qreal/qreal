@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QtCore/QTranslator>
 #include <QtCore/QMultiHash>
 
 #include <qrgui/toolPluginInterface/toolPluginInterface.h>
@@ -76,11 +75,9 @@ private:
 	bool mNxtToolsPresent;
 
 	/// Flasher object
-	NxtFlashTool *mFlashTool;  // Has ownership
+	NxtFlashTool *mFlashTool = nullptr;  // Has ownership
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
-
-	QTranslator mAppTranslator;
 };
 
 }

@@ -41,8 +41,6 @@ public:
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
@@ -75,7 +73,6 @@ protected:
 	model::SensorsConfiguration &mConfiguration;
 	interpreterBase::robotModel::PortInfo const mPort;
 	QPointF mRotatePoint;
-	bool mDragged;
 	graphicsUtils::PointImpl mPointImpl;
 	Rotater *mRotater;
 

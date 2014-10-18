@@ -3,7 +3,6 @@
 #include <QtGui/QPainterPath>
 
 #include <commonTwoDModel/robotModel/twoDRobotModel.h>
-
 #include "sensorsConfiguration.h"
 
 namespace twoDModel {
@@ -36,6 +35,7 @@ public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
 	RobotModel(twoDModel::robotModel::TwoDRobotModel &robotModel
 			, Settings const &settings, QObject *parent = 0);
+
 	~RobotModel();
 
 	void reinit();
@@ -47,6 +47,7 @@ public:
 	void setNewMotor(int speed, uint degrees, interpreterBase::robotModel::PortInfo const &port, bool breakMode);
 
 	SensorsConfiguration &configuration();
+
 	/// Returns a reference to external robot description.
 	twoDModel::robotModel::TwoDRobotModel *info();
 
@@ -70,8 +71,10 @@ public:
 
 	void setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotModel::PortInfo const &port);
 
+	QRectF sensorRect(interpreterBase::robotModel::PortInfo const &port, QPointF const sensorPos) const;
+
 public slots:
-	void resetPhysics(WorldModel const &worldModel);
+	void resetPhysics(WorldModel const &worldModel, Timeline const &timeline);
 
 	void recalculateParams();
 	void nextFragment();

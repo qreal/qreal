@@ -9,7 +9,8 @@
 #include "simpleGenerators/infiniteLoopGenerator.h"
 #include "simpleGenerators/forLoopGenerator.h"
 #include "simpleGenerators/whileLoopGenerator.h"
-#include "generatorBase/simpleGenerators/bindingGenerator.h"
+#include "simpleGenerators/forkCallGenerator.h"
+#include "simpleGenerators/switchGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
@@ -54,10 +55,12 @@
 #include "converters/intPropertyConverter.h"
 #include "converters/floatPropertyConverter.h"
 #include "converters/boolPropertyConverter.h"
+#include "converters/switchConditionsMerger.h"
 #include "generatorBase/converters/stringPropertyConverter.h"
 
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/engines.h"
 #include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/functions.h"
@@ -79,16 +82,19 @@ GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
 
 GeneratorFactoryBase::~GeneratorFactoryBase()
 {
+	delete mDeviceVariables;
 }
 
 void GeneratorFactoryBase::initialize()
 {
 	initVariables();
 	initSubprograms();
+	mThreads = new parts::Threads(pathToTemplates());
 	initEngines();
 	initSensors();
 	initFunctions();
 	initImages();
+	initDeviceVariables();
 }
 
 void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
@@ -128,6 +134,11 @@ void GeneratorFactoryBase::initImages()
 	mImages = new parts::Images(pathToTemplates());
 }
 
+void GeneratorFactoryBase::initDeviceVariables()
+{
+	mDeviceVariables = new parts::DeviceVariables();
+}
+
 QList<parts::InitTerminateCodeGenerator *> GeneratorFactoryBase::initTerminateGenerators()
 {
 	return QList<parts::InitTerminateCodeGenerator *>()
@@ -149,6 +160,11 @@ parts::Subprograms *GeneratorFactoryBase::subprograms()
 	return mSubprograms;
 }
 
+parts::Threads &GeneratorFactoryBase::threads()
+{
+	return *mThreads;
+}
+
 parts::Engines *GeneratorFactoryBase::engines()
 {
 	return mEngines;
@@ -167,6 +183,11 @@ parts::Functions *GeneratorFactoryBase::functions()
 parts::Images *GeneratorFactoryBase::images()
 {
 	return mImages;
+}
+
+parts::DeviceVariables *GeneratorFactoryBase::deviceVariables() const
+{
+	return mDeviceVariables;
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
@@ -195,6 +216,30 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(Id const
 		, GeneratorCustomizer &customizer)
 {
 	return new ForLoopGenerator(mRepo, customizer, id, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::switchHeadGenerator(Id const &id
+		, GeneratorCustomizer &customizer, QStringList const &values)
+{
+	return new SwitchGenerator(mRepo, customizer, id, "head", values, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::switchMiddleGenerator(Id const &id
+		, GeneratorCustomizer &customizer, QStringList const &values)
+{
+	return new SwitchGenerator(mRepo, customizer, id, "middle", values, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::switchDefaultGenerator(Id const &id
+		, GeneratorCustomizer &customizer)
+{
+	return new SwitchGenerator(mRepo, customizer, id, "default", {}, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(Id const &id
+		, GeneratorCustomizer &customizer, IdList const &threads)
+{
+	return new ForkCallGenerator(mRepo, customizer, id, threads, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &id
@@ -299,8 +344,10 @@ Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 			, currentConfiguration()
 			, inputPortConverter()
 			, functionInvocationConverter()
+			, *deviceVariables()
 			, typeConverter()
-			, variablesInfo());
+			, variablesInfo()
+	);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
@@ -310,7 +357,9 @@ Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() cons
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
-			, functionInvocationConverter());
+			, functionInvocationConverter()
+			, *deviceVariables()
+	);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
@@ -321,12 +370,25 @@ Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool ne
 			, currentConfiguration()
 			, inputPortConverter()
 			, functionInvocationConverter()
-			, needInverting);
+			, *deviceVariables()
+			, needInverting
+	);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
 {
 	return new converters::StringPropertyConverter;
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::systemVariableNameConverter() const
+{
+	return new converters::CodeConverterBase(pathToTemplates()
+			, mErrorReporter
+			, mRobotModelManager.model()
+			, currentConfiguration()
+			, inputPortConverter()
+			, functionInvocationConverter()
+			, *deviceVariables());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() const
@@ -346,7 +408,9 @@ Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() cons
 			, mRobotModelManager.model()
 			, currentConfiguration()
 			, inputPortConverter()
-			, functionInvocationConverter());
+			, functionInvocationConverter()
+			, *deviceVariables()
+	);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() const
@@ -382,6 +446,11 @@ Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter() const
 Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
 {
 	return new converters::TypeConverter(pathToTemplates());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::switchConditionsMerger(QStringList const &values) const
+{
+	return new converters::SwitchConditionsMerger(pathToTemplates(), systemVariableNameConverter(), values);
 }
 
 QString GeneratorFactoryBase::initCode()

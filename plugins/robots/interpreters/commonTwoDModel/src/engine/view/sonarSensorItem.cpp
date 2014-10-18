@@ -3,13 +3,15 @@
 using namespace twoDModel::view;
 using namespace interpreterBase::robotModel;
 
-SonarSensorItem::SonarSensorItem(model::SensorsConfiguration &configuration
+SonarSensorItem::SonarSensorItem(model::WorldModel const &worldModel
+		, model::SensorsConfiguration &configuration
 		, PortInfo const &port
 		, QString const &pathToImage
 		, QRect const &imageSize
 		)
 	: SensorItem(configuration, port, pathToImage, imageSize)
 	, mIcon(":/icons/sensors/2d_sonar.png")
+	, mWorldModel(worldModel)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 }
@@ -52,7 +54,7 @@ QRectF SonarSensorItem::boundingRect() const
 
 QPainterPath SonarSensorItem::scanningRegion() const
 {
-	return twoDModel::model::WorldModel::sonarScanningRegion(QPointF());
+	return mWorldModel.sonarScanningRegion(QPointF());
 }
 
 QPainterPath SonarSensorItem::shape() const
@@ -60,4 +62,13 @@ QPainterPath SonarSensorItem::shape() const
 	QPainterPath result = scanningRegion();
 	result.addRect(mBoundingRect);
 	return result;
+}
+
+void SonarSensorItem::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	if (!imageRect().contains(mouseEvent->pos())) {
+		setFlag(ItemIsMovable, false);
+	}
+
+	AbstractItem::mousePressEvent(mouseEvent);
 }

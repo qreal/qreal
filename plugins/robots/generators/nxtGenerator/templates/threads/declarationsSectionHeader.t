@@ -1,0 +1,1 @@
+/* OSEK declarations */

@@ -55,6 +55,10 @@ public:
 	QMap<QString, QVariant> graphicalProperties() const;
 	QMap<QString, QVariant> logicalProperties() const;
 
+	/// Clears prerendered images.
+	/// @param zoomFactor - current zoom factor to render images.
+	void invalidateImagesZoomCache(qreal zoomFactor);
+
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
 	QRectF boundingRect() const;
@@ -91,9 +95,9 @@ public:
 	/// @return Port ID in terms of described in 'Useful information' in PortHandler class.
 	qreal portId(QPointF const &location, QStringList const &types) const;
 
-	/// Returns a distance to a closest from the given point port (line or point) on this element.
-	/// Location is assumed to be in SCENE coordinates!
-	qreal shortestDistanceToPort(QPointF const &location, QStringList const &types) const;
+	/// Returns a closest to the given point point on the port (line or point) on this element.
+	/// Location is assumed to be in SCENE coordinates! The result is in scene coordinates too.
+	QPointF closestPortPoint(QPointF const &location, QStringList const &types) const;
 
 	/// @return List of edges connected to the node
 	QList<EdgeElement *> getEdges() const;
@@ -115,7 +119,7 @@ public:
 	bool isPort() const;
 	bool canHavePorts();
 
-	QList<double> borderValues() const;
+	QList<qreal> borderValues() const;
 
 	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 
@@ -280,7 +284,7 @@ private:
 
 	QTransform mTransform;
 
-	SdfRenderer *mRenderer;
+	SdfRenderer mRenderer;
 
 	bool mIsExpanded;
 

@@ -13,7 +13,10 @@ class RussianCStringPropertyConverter : public generatorBase::converters::String
 		, public utils::TextExpressionProcessorBase
 {
 public:
-	explicit RussianCStringPropertyConverter(generatorBase::parts::Variables const &variables);
+	explicit RussianCStringPropertyConverter(generatorBase::parts::Variables const &variables
+			, ConverterInterface const &systemVariableNameConverter);
+
+	~RussianCStringPropertyConverter() override;
 
 	QString convert(QString const &data) const override;
 
@@ -23,6 +26,7 @@ protected:
 
 private:
 	generatorBase::parts::Variables const &mVariables;
+	ConverterInterface const *mSystemVariableNameConverter;  // Takes ownership
 };
 
 }

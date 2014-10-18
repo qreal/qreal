@@ -36,6 +36,11 @@
         <file>templates/conditional/infinite.t</file>
         <file>templates/conditional/negation.t</file>
         <file>templates/conditional/whileDo.t</file>
+        <file>templates/switch/head.t</file>
+        <file>templates/switch/middle.t</file>
+        <file>templates/switch/default.t</file>
+        <file>templates/switch/oneCase.t</file>
+        <file>templates/switch/conditionsSeparator.t</file>
         <file>templates/types/float.t</file>
         <file>templates/types/int.t</file>
         <file>templates/sensors/Enter.t</file>
@@ -74,6 +79,11 @@
         <file>templates/subprograms/forwardDeclaration.t</file>
         <file>templates/subprograms/implementation.t</file>
         <file>templates/subprograms/implementationsSectionHeader.t</file>
+        <file>templates/threads/call.t</file>
+        <file>templates/threads/declarationsSectionHeader.t</file>
+        <file>templates/threads/forwardDeclaration.t</file>
+        <file>templates/threads/implementation.t</file>
+        <file>templates/threads/implementationsSectionHeader.t</file>
         <file>templates/main.t</file>
         <file>templates/makefile.t</file>
         <file>templates/oil.t</file>

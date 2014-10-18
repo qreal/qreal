@@ -17,6 +17,7 @@
 
 #include <interpreterBase/robotModel/robotModelUtils.h>
 
+#include "trikDisplayWidget.h"
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
 #include "robotModel/twoD/parts/twoDInfraredSensor.h"
@@ -32,6 +33,8 @@ using namespace interpreterBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
+	, mLeftWheelPort("M3")
+	, mRightWheelPort("M4")
 {
 }
 
@@ -83,22 +86,39 @@ PortInfo TwoDRobotModel::defaultRightWheelPort() const
 	return PortInfo(mRightWheelPort, output);
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget * parent) const
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget *parent) const
 {
 	return new TrikDisplayWidget(parent);
 }
 
-QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
+QString TwoDRobotModel::sensorImagePath(DeviceInfo const &deviceType) const
 {
 	if (deviceType.isA<interpreterBase::robotModel::robotParts::LightSensor>()) {
 		return ":icons/twoDColorEmpty.svg";
 	}
 
-	return "";
+	return QString();
 }
 
 void TwoDRobotModel::setWheelPorts(QString const &leftWheelPort, QString const &rightWheelPort)
 {
 	mLeftWheelPort = leftWheelPort;
 	mRightWheelPort = rightWheelPort;
+}
+
+QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
+{
+	if (deviceType.isA<robotParts::TouchSensor>()) {
+		return QRect(-12, -5, 25, 10);
+	} else if (deviceType.isA<robotParts::ColorSensor>()
+			|| deviceType.isA<robotParts::LightSensor>())
+	{
+		return QRect(-6, -6, 12, 12);
+	}
+	if (deviceType.isA<robotParts::RangeSensor>()) {
+		return QRect(-20, -10, 40, 20);;
+	} else {
+		Q_ASSERT(!"Unknown sensor type");
+		return QRect();
+	}
 }

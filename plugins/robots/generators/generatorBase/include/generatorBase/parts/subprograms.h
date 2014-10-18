@@ -37,15 +37,18 @@ public:
 	/// Starts subprograms code generation process
 	bool generate(ControlFlowGeneratorBase *mainGenerator);
 
-	/// Returns the generation process result. If it was unsuccessfull returns an empty string.
-	QString generatedCode() const;
+	/// Returns the subprograms forward declarations code. If generation was unsuccessfull returns an empty string.
+	QString forwardDeclarations() const;
+
+	/// Returns the subprograms code. If generation was unsuccessfull returns an empty string.
+	QString implementations() const;
 
 	void appendManualSubprogram(QString const &name, QString const &body);
 
 private:
 	bool checkIdentifier(QString const &identifier, QString const &rawName);
 
-	void mergeCode(QMap<qReal::Id, QString> const &declarations
+	void obtainCode(QMap<qReal::Id, QString> const &declarations
 			, QMap<qReal::Id, QString> const &implementations);
 
 	QString generateManualDeclarations() const;
@@ -66,7 +69,8 @@ private:
 	/// the code.
 	QMap<qReal::Id, bool> mDiscoveredSubprograms;
 
-	QStringList mGeneratedCode;
+	QStringList mImplementationsCode;
+	QStringList mForwardDeclarationsCode;
 
 	QSet<QString> mUsedNames;
 

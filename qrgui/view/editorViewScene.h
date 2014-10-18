@@ -6,11 +6,12 @@
 
 #include <qrkernel/roles.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
+
 #include "umllib/nodeElement.h"
 #include "controller/controller.h"
-#include "view/gestures/mouseMovementManager.h"
-#include "view/copyPaste/clipboardHandler.h"
+#include "gestures/mouseMovementManager.h"
 
+#include "view/copyPaste/clipboardHandler.h"
 #include "view/private/editorViewMVIface.h"
 #include "view/private/exploserView.h"
 
@@ -46,7 +47,8 @@ public:
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommand = 0
 			, bool executeImmediately = true
-			, QPointF const shiftToParent = QPointF());
+			, QPointF const &shiftToParent = QPointF()
+			, QString const &explosionTargetUuid = QString());
 
 	virtual void createElement(QMimeData const *mimeData, QPointF const &scenePos
 			, bool searchForParents = true
@@ -56,7 +58,8 @@ public:
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
 	virtual Element *getElem(qReal::Id const &id) const;
-	Element *getElemAt(const QPointF &position) const;
+	Element *findElemAt(QPointF const &position) const;
+	NodeElement *findNodeAt(QPointF const &position) const;
 
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
@@ -64,13 +67,12 @@ public:
 	void setEnabled(bool enabled);
 
 	void setNeedDrawGrid(bool show);
-	double realIndexGrid();
-	void setRealIndexGrid(double newIndexGrid);
+	qreal realIndexGrid();
+	void setRealIndexGrid(qreal newIndexGrid);
 
 	bool canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const;
-	bool getNeedDrawGrid();
 
-	Element *getLastCreated();
+	Element *lastCreatedFromLinker() const;
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
@@ -179,8 +181,6 @@ private:
 	void initCorners();
 	void setCorners(QPointF const &topLeft, QPointF const &bottomRight);
 
-	void redraw();
-
 	void initContextMenu(Element *e, QPointF const &pos);
 	bool isEmptyClipboard();
 
@@ -194,8 +194,8 @@ private:
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
-	Element *mLastCreatedWithEdge;
-	commands::CreateElementCommand *mLastCreatedWithEdgeCommand;
+	Id mLastCreatedFromLinker;
+	commands::CreateElementCommand *mLastCreatedFromLinkerCommand;
 
 	ClipboardHandler mClipboardHandler;
 
@@ -204,7 +204,7 @@ private:
 	bool mNeedDrawGrid; // if true, the grid will be shown (as scene's background)
 
 	qreal mWidthOfGrid;
-	double mRealIndexGrid;
+	qreal mRealIndexGrid;
 	graphicsUtils::GridDrawer mGridDrawer;
 
 	NodeElement *mHighlightNode;

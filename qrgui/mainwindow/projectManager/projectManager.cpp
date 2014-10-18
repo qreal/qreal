@@ -1,5 +1,6 @@
 #include "projectManager.h"
 
+#include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 
@@ -162,6 +163,8 @@ bool ProjectManager::openProject(QString const &fileName)
 
 	mSomeProjectOpened = true;
 
+	QLOG_INFO() << "Opened project" << fileName;
+
 	return true;
 }
 
@@ -323,11 +326,13 @@ void ProjectManager::close()
 	mAutosaver->removeTemp();
 	mSomeProjectOpened = false;
 
+	QLOG_INFO() << "Project" << mSaveFilePath << "closed";
 	emit closed();
 }
 
 void ProjectManager::saveTo(QString const &fileName)
 {
+	QLOG_INFO() << "Saving project into" << fileName;
 	mMainWindow->models()->repoControlApi().saveTo(fileName);
 }
 

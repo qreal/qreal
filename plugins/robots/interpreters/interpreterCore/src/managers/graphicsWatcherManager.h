@@ -5,6 +5,8 @@
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 
+#include <qrtext/debuggerInterface.h>
+
 namespace interpreterCore {
 
 /// Incapsulates inner operations on managing graphics watcher in the dock window.
@@ -14,7 +16,7 @@ public:
 	/// Constructor.
 	/// @param parser - blocks parser, used to show values of variables on graphs.
 	/// @param parent - parent of this widget in Qt widget hierarchy.
-	explicit GraphicsWatcherManager(utils::ExpressionsParser * const parser, QObject *parent = 0);
+	explicit GraphicsWatcherManager(qrtext::DebuggerInterface const &parser, QObject *parent = 0);
 
 	/// Returns the graphics watcher widget itself for placing it into dock.
 	/// Note that if this method will not be called, nobody will delete a widget, which will result in memleak.
@@ -30,7 +32,8 @@ public slots:
 private:
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
+			, interpreterBase::robotModel::DeviceInfo const &sensor
+			, Reason reason) override;
 
 	void updateSensorsList(QString const &currentRobotModel);
 

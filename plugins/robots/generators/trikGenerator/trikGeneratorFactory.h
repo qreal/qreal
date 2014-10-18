@@ -27,6 +27,8 @@ public:
 
 	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
 
+	generatorBase::parts::DeviceVariables *deviceVariables() const override;
+
 protected:
 	void initVariables() override;
 

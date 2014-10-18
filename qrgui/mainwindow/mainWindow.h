@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtCore/QSignalMapper>
-#include <QtCore/QTranslator>
 #include <QtCore/QDir>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QSplashScreen>
@@ -14,7 +13,6 @@
 #include "mainwindow/mainWindowInterpretersInterface.h"
 #include "mainwindow/mainWindowDockInterface.h"
 #include "mainwindow/propertyEditorProxyModel.h"
-#include "mainwindow/gesturesPainterInterface.h"
 #include "mainwindow/findManager.h"
 #include "mainwindow/referenceList.h"
 #include "mainwindow/projectManager/projectManager.h"
@@ -23,7 +21,6 @@
 #include "mainwindow/filterObject.h"
 #include "mainwindow/startWidget/startWidget.h"
 #include "mainwindow/propertyEditorProxyModel.h"
-#include "mainwindow/gesturesPainterInterface.h"
 
 #include "pluginManager/editorManagerInterface.h"
 #include "pluginManager/editorManager.h"
@@ -37,7 +34,9 @@
 #include "controller/controller.h"
 #include "toolPluginInterface/systemEvents.h"
 
-#include "dialogs/gesturesShow/gesturesWidget.h"
+#include "gestures/gesturesPainterInterface.h"
+#include "gestures/gesturesWidget.h"
+
 #include "dialogs/preferencesDialog.h"
 #include "dialogs/findReplaceDialog.h"
 #include "dialogs/suggestToCreateDiagramDialog.h"
@@ -100,7 +99,7 @@ public:
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
-	virtual Id activeDiagram();
+	virtual Id activeDiagram() const;
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
 		, bool useTypedPorts);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
@@ -295,7 +294,8 @@ private slots:
 	void finishUsabilityTest();
 
 private:
-	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
+	void checkForUpdates();
+	void showUpdatesDialog();
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on

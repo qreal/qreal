@@ -43,34 +43,35 @@ void DevicesConfigurationProvider::disconnectDevicesConfigurationProvider()
 }
 
 void DevicesConfigurationProvider::deviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &device)
+		, PortInfo const &port, DeviceInfo const &device, Reason reason)
 {
 	if (mCurrentConfiguration[robotModel][port] != device) {
 		mCurrentConfiguration[robotModel][port] = device;
 
 		for (DevicesConfigurationProvider * const provider : mConnectedProviders) {
 			// Broadcast change.
-			provider->deviceConfigurationChanged(robotModel, port, device);
+			provider->deviceConfigurationChanged(robotModel, port, device, reason);
 
 			// Allow connected providers to react on configuration change.
-			provider->onDeviceConfigurationChanged(robotModel, port, device);
+			provider->onDeviceConfigurationChanged(robotModel, port, device, reason);
 		}
 	}
 }
 
 void DevicesConfigurationProvider::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port);
 	Q_UNUSED(sensor);
+	Q_UNUSED(reason);
 }
 
-void DevicesConfigurationProvider::clearConfiguration()
+void DevicesConfigurationProvider::clearConfiguration(Reason reason)
 {
 	for (QString const &robotModel : mCurrentConfiguration.keys()) {
 		for (PortInfo const &port : mCurrentConfiguration[robotModel].keys()) {
-			deviceConfigurationChanged(robotModel, port, DeviceInfo());
+			deviceConfigurationChanged(robotModel, port, DeviceInfo(), reason);
 		}
 	}
 }

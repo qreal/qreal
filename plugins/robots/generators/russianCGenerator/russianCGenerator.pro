@@ -4,7 +4,7 @@ CONFIG += c++11
 
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = ../../../../bin/plugins/kitPlugins/
+DESTDIR = ../../../../bin/plugins/tools/kitPlugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
@@ -24,7 +24,7 @@ INCLUDEPATH += \
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin/plugins/
 }
 
-TRANSLATIONS = russianCGenerator_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/russianCGenerator_ru.ts
 
 RESOURCES = \
 	$$PWD/russianCGenerator.qrc \

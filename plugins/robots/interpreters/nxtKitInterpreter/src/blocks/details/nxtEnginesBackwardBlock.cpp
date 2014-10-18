@@ -12,7 +12,11 @@ NxtEnginesBackwardBlock::NxtEnginesBackwardBlock(interpreterBase::robotModel::Ro
 
 void NxtEnginesBackwardBlock::run()
 {
-	int const power = -evaluate("Power").toInt();
+	int const power = -eval<int>("Power");
+
+	if (errorsOccured()) {
+		return;
+	}
 
 	bool const breakMode = stringProperty("Mode") != "float";
 

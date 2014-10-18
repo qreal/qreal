@@ -33,8 +33,6 @@ private:
 
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
-
-	QTranslator mAppTranslator;
 };
 
 }

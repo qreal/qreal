@@ -14,6 +14,8 @@
 #include "commonTwoDModel/robotModel/parts/motor.h"
 #include "commonTwoDModel/robotModel/parts/rangeSensor.h"
 #include "commonTwoDModel/robotModel/parts/touchSensor.h"
+#include "commonTwoDModel/robotModel/parts/gyroscope.h"
+#include "commonTwoDModel/robotModel/parts/accelerometer.h"
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
@@ -129,6 +131,14 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 	if (deviceInfo.isA<robotModel::parts::ColorSensorBlue>()) {
 		return new parts::ColorSensorBlue(deviceInfo, port, *mEngine);
+	}
+
+	if (deviceInfo.isA<robotModel::parts::Gyroscope>()) {
+		return new parts::Gyroscope(deviceInfo, port, *mEngine);
+	}
+
+	if (deviceInfo.isA<robotModel::parts::Accelerometer>()) {
+		return new parts::Accelerometer(deviceInfo, port, *mEngine);
 	}
 
 	qDebug() << "Unknown device " + deviceInfo.toString() + " requested on port " + port.name();

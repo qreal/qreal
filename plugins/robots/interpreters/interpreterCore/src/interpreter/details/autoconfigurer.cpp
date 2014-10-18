@@ -25,7 +25,7 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, QString const &
 		IdList const children = mGraphicalModelApi.graphicalRepoApi().children(diagram);
 
 		for (Id const &child : children) {
-			interpreterBase::blocksBase::BlockInterface const * const block = mBlocksTable.block(child);
+			interpreterBase::blocksBase::BlockInterface * const block = mBlocksTable.block(child);
 			if (!block) {
 				continue;
 			}
@@ -40,7 +40,7 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, QString const &
 					return false;
 				} else if (existingDevice.isNull()) {
 					/// @todo: Do it loudly, user must notice it
-					deviceConfigurationChanged(robotModelName, port, device);
+					deviceConfigurationChanged(robotModelName, port, device, Reason::automaticConfiguration);
 				}
 			}
 		}

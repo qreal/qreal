@@ -35,8 +35,10 @@ public:
 	virtual IdList elements(Id const &diagram) const = 0;
 	virtual Version version(Id const &editor) const = 0;
 
-	virtual bool loadPlugin(QString const &pluginName) = 0;
-	virtual bool unloadPlugin(QString const &pluginName) = 0;
+	/// @returns Error message if something went wrong or empty string if everything was ok.
+	virtual QString loadPlugin(QString const &pluginName) = 0;
+	/// @returns Error message if something went wrong or empty string if everything was ok.
+	virtual QString unloadPlugin(QString const &pluginName) = 0;
 
 	virtual QString mouseGesture(Id const &id) const = 0;
 	virtual QString friendlyName(Id const &id) const = 0;
@@ -48,6 +50,7 @@ public:
 
 	virtual IdList containedTypes(const Id &id) const = 0;
 	virtual QList<Explosion> explosions(Id const &source) const = 0;
+	virtual bool isEnumEditable(Id const &id, QString const &name) const = 0;
 	virtual QList<QPair<QString, QString>> enumValues(Id const &id, const QString &name) const = 0;
 	virtual QString typeName(Id const &id, const QString &name) const = 0;
 	virtual QStringList allChildrenTypesOf(Id const &parent) const = 0;

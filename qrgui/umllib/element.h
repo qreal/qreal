@@ -85,6 +85,8 @@ protected:
 	/// Sets titles visibility without state registering
 	void setTitlesVisiblePrivate(bool visible);
 
+	void keyPressEvent(QKeyEvent *event) override;
+
 	bool mMoving;
 	bool mEnabled;
 	Id const mId;

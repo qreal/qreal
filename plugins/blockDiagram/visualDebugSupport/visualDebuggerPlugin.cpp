@@ -17,8 +17,6 @@ VisualDebuggerPlugin::VisualDebuggerPlugin()
 		, mParser(NULL)
 		, mPreferencesPage(new VisualDebuggerPreferencesPage())
 {
-	mAppTranslator.load(":/visualDebugSupport_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 VisualDebuggerPlugin::~VisualDebuggerPlugin()
@@ -146,9 +144,10 @@ void VisualDebuggerPlugin::activeTabChanged(Id const &rootElementId)
 
 void VisualDebuggerPlugin::showWatchList()
 {
-	if (mWatchListWindow != NULL) {
+	if (mWatchListWindow) {
 		mWatchListWindow->close();
 	}
+
 	mWatchListWindow = new WatchListWindow(mParser);
 	mWatchListWindow->show();
 }

@@ -61,6 +61,8 @@ void Model::deserialize(QDomDocument const &xml)
 		return;
 	}
 
+	mWorldModel.deserialize(worldList.at(0).toElement());
+
 	if (robotsList.count() != 1) {
 		// need for backward compatibility with old format
 		QDomNodeList const robotList = xml.elementsByTagName("robot");
@@ -72,9 +74,9 @@ void Model::deserialize(QDomDocument const &xml)
 
 		mRobotModels[0]->deserialize(robotList.at(0).toElement());
 		mRobotModels[0]->configuration().deserialize(robotList.at(0).toElement());
-	}
 
-	mWorldModel.deserialize(worldList.at(0).toElement());
+		return;
+	}
 
 	QDomNodeList robots = robotsList.at(0).toElement().elementsByTagName("robot");
 	QMutableListIterator<RobotModel *> iterator(mRobotModels);
@@ -115,7 +117,6 @@ void Model::deserialize(QDomDocument const &xml)
 void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const &pos)
 {
 	RobotModel *robot = new RobotModel(robotModel, mSettings, this);
-	robotModel.setParent(robot);
 	robot->setPosition(pos);
 
 	connect(&mTimeline, &Timeline::started, robot, &RobotModel::reinit);
@@ -124,7 +125,7 @@ void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const 
 	connect(&mTimeline, &Timeline::tick, robot, &RobotModel::recalculateParams);
 	connect(&mTimeline, &Timeline::nextFrame, robot, &RobotModel::nextFragment);
 
-	auto resetPhysics = [this, robot]() { robot->resetPhysics(mWorldModel); };
+	auto resetPhysics = [this, robot]() { robot->resetPhysics(mWorldModel, mTimeline); };
 	connect(&mSettings, &Settings::physicsChanged, resetPhysics);
 	resetPhysics();
 

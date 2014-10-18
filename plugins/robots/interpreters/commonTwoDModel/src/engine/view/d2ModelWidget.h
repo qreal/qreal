@@ -38,13 +38,6 @@ public:
 	void init();
 	void close();
 
-	/// Get current scene position of robot
-	/// Enables Run and Stop buttons
-	void enableRunStopButtons();
-
-	/// Disables Run and Stop buttons, used when current tab is not related to robots
-	void disableRunStopButtons();
-
 	D2ModelScene *scene();
 
 	engine::TwoDModelDisplayWidget *display();
@@ -56,9 +49,6 @@ public:
 	SensorItem *sensorItem(interpreterBase::robotModel::PortInfo const &port);
 
 	void loadXml(QDomDocument const &worldModel);
-
-	/// Enables or disables interpreter control buttons.
-	void setRunStopButtonsEnabled(bool enabled);
 
 public slots:
 	void saveInitialRobotBeforeRun();
@@ -87,9 +77,12 @@ protected:
 
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, const interpreterBase::robotModel::DeviceInfo &device) override;
+			, const interpreterBase::robotModel::DeviceInfo &device
+			, Reason reason) override;
 
 private slots:
+	void bringToFront();
+
 	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
@@ -120,7 +113,7 @@ private:
 		, drawEllipse
 	};
 
-	static const int defaultPenWidth = 15;
+	static const int defaultPenWidth = 6;
 
 	static const int indexOfNoneSensor = 0;
 	static const int indexOfTouchSensor = 1;
@@ -154,10 +147,12 @@ private:
 	/// Get QPushButton for current sensor
 	QPushButton *currentPortButton();
 
+	/// Reread sensor configuration on given port, delete old sensor item and create new.
+	void reinitSensor(RobotItem *robotItem, interpreterBase::robotModel::PortInfo const &port);
+
 	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
-	void setNoPalette();
 
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(CursorType cursor);
@@ -178,22 +173,22 @@ private:
 
 	void updateWheelComboBoxes();
 
-	void onRobotListChange();
+	void onRobotListChange(RobotItem *robotItem);
 
 	void setSelectedRobotItem(RobotItem *robotItem);
 	void unsetSelectedRobotItem();
 
-	Ui::D2Form *mUi;
-	D2ModelScene *mScene;
+	Ui::D2Form *mUi = nullptr;
+	D2ModelScene *mScene = nullptr;
 
-	RobotItem *mSelectedRobotItem;
+	RobotItem *mSelectedRobotItem = nullptr;
 	interpreterBase::DevicesConfigurationWidget *mCurrentConfigurer;
 
 	model::Model &mModel;
 
-	engine::TwoDModelDisplayWidget *mDisplay;
+	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 
-	int mWidth;
+	int mWidth = 0;
 
 	QButtonGroup mButtonGroup;
 	QButtonGroup mCursorButtonGroup;
@@ -201,13 +196,13 @@ private:
 	CursorType mNoneCursorType; // cursorType for noneStatus
 	CursorType mCursorType; // current cursorType
 
-	bool mFollowRobot;
+	bool mFollowRobot = false;
 
-	bool mFirstShow;
+	bool mFirstShow = true;
 
 	QMap<model::RobotModel *, RobotState> mInitialRobotsBeforeRun;
 
-	bool mDisplayIsVisible;
+	bool mDisplayIsVisible = false;
 };
 
 }

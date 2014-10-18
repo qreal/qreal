@@ -22,8 +22,8 @@
 using namespace nxtKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-NxtRobotModelBase::NxtRobotModelBase(QString const &kitId)
-	: CommonRobotModel(kitId, "")
+NxtRobotModelBase::NxtRobotModelBase(QString const &kitId, QString const &robotId)
+	: CommonRobotModel(kitId, robotId)
 {
 	QList<DeviceInfo> const inputPortConnections = {
 			touchSensorInfo()

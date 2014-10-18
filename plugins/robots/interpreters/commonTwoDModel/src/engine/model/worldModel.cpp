@@ -12,6 +12,11 @@
 using namespace twoDModel;
 using namespace model;
 
+#ifdef D2_MODEL_FRAMES_DEBUG
+#include <QtWidgets/QGraphicsPathItem>
+QGraphicsPathItem *debugPath = nullptr;
+#endif
+
 WorldModel::WorldModel()
 {
 }
@@ -47,12 +52,12 @@ bool WorldModel::checkSonarDistance(int const distance, QPointF const &position
 	return rayPath.intersects(wallPath);
 }
 
-QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, int range)
+QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, int range) const
 {
 	return sonarScanningRegion(position, 0, range);
 }
 
-QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal direction, int range)
+QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal direction, int range) const
 {
 	qreal const rayWidthDegrees = 10.0;
 	qreal const rangeInPixels = range * pixelsInCm;
@@ -66,16 +71,27 @@ QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal dire
 	return sensorPositionTransform.map(rayPath);
 }
 
-bool WorldModel::checkCollision(QPainterPath const &robotPath, int stroke) const
+bool WorldModel::checkCollision(QPainterPath const &path) const
 {
-	QPainterPathStroker wallPathStroker;
-	wallPathStroker.setWidth(stroke);
-	QPainterPath const wallPath = buildWallPath();
-	QPainterPath const wallStrokedPath = stroke
-			? wallPathStroker.createStroke(wallPath)
-			: wallPath;
+#ifdef D2_MODEL_FRAMES_DEBUG
+	delete debugPath;
+	QPainterPath commonPath = buildWallPath();
+	commonPath.addPath(path);
+	debugPath = new QGraphicsPathItem(commonPath);
+	debugPath->setBrush(Qt::red);
+	debugPath->setPen(QPen(QColor(Qt::blue)));
+	debugPath->setZValue(100);
 
-	return wallStrokedPath.intersects(robotPath);
+	QGraphicsScene * const scene = mWalls.isEmpty()
+			? (mColorFields.isEmpty() ? nullptr : mColorFields[0]->scene())
+			: mWalls[0]->scene();
+	if (scene) {
+		scene->addItem(debugPath);
+		scene->update();
+	}
+#endif
+
+	return buildWallPath().intersects(path);
 }
 
 QList<items::WallItem *> const &WorldModel::walls() const
@@ -138,9 +154,8 @@ QPainterPath WorldModel::buildWallPath() const
 	/// @todo Maintain a cache for this.
 	QPainterPath wallPath;
 
-	foreach (items::WallItem *wall, mWalls) {
-		wallPath.moveTo(wall->begin());
-		wallPath.lineTo(wall->end());
+	for (items::WallItem *wall : mWalls) {
+		wallPath.addPath(wall->path());
 	}
 
 	return wallPath;

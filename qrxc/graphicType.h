@@ -37,11 +37,14 @@ public:
 	virtual void generateParentsMapping(utils::OutFile &out);
 	virtual void generateExplosionsMap(utils::OutFile &out);
 	virtual bool copyPorts(NodeType *parent) = 0;
+	void copyLabels(GraphicType *parent);
+	virtual bool copyPictures(GraphicType *parent) = 0;
 
 	QString description() const;
 	void setDescription(QString const &description);
 
 protected:
+	/// @todo Remove this sh~.
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;  // Lol
 
 	struct ContainerProperties {
@@ -55,9 +58,17 @@ protected:
 		bool maximizesChildren;
 	};
 
+	struct GeneralizationProperties {
+		GeneralizationProperties(QString const &name, QString const &overrides);
+		QString name;
+		bool overridePorts = false;
+		bool overrideLabels = false;
+		bool overridePictures = false;
+	};
+
 	QDomElement mLogic;
 	QDomElement mGraphics;
-	QStringList mParents;
+	QList<GeneralizationProperties> mParents;
 	QDomElement mElement;
 	bool mVisible;
 	int mWidth;
@@ -70,7 +81,6 @@ protected:
 	QMap<QString, QPair<bool, bool> > mExplosions;
 	bool mCreateChildrenFromMenu;
 	QString mAbstract;
-
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
 	virtual bool isResolving() const;

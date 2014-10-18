@@ -4,7 +4,7 @@ using namespace interpreterCore;
 using namespace utils;
 using namespace interpreterBase::robotModel;
 
-GraphicsWatcherManager::GraphicsWatcherManager(ExpressionsParser * const parser, QObject *parent)
+GraphicsWatcherManager::GraphicsWatcherManager(qrtext::DebuggerInterface const &parser, QObject *parent)
 	: QObject(parent)
 	, mWatcher(new sensorsGraph::SensorsGraph(parser))
 {
@@ -26,10 +26,11 @@ void GraphicsWatcherManager::forceStop()
 }
 
 void GraphicsWatcherManager::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &sensor)
+		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
+	Q_UNUSED(reason)
 
 	updateSensorsList(robotModel);
 }
@@ -41,7 +42,7 @@ void GraphicsWatcherManager::updateSensorsList(QString const &currentRobotModel)
 	for (PortInfo const &port : configuredPorts(currentRobotModel)) {
 		DeviceInfo const device = currentConfiguration(currentRobotModel, port);
 		/// @todo It must depend on port, port must return its variable
-		QString const variableName = "sensor" + QString::number(index + 1);
+		QString const variableName = port.reservedVariable();
 		mWatcher->addTrackingObject(index, variableName, device.friendlyName());
 		++index;
 	}

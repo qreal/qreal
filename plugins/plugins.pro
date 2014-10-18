@@ -5,9 +5,9 @@ SUBDIRS	= \
 	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
 #	hascol/hascol.pro \
-        metaEditor/metaEditor.pro \
-        requirements/requirements.pro \
-        domainAnalysis/domainAnalysis.pro \
+	metaEditor/metaEditor.pro \
+	requirements/requirements.pro \
+	domainAnalysis/domainAnalysis.pro \
 
 
 

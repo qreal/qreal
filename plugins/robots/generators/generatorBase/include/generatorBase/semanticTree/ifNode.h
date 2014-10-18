@@ -11,11 +11,11 @@ class IfNode : public ConditionalNode
 public:
 	explicit IfNode(qReal::Id const &idBinded, QObject *parent = 0);
 
-	ZoneNode *parentZone() const;
-
 	ZoneNode *thenZone();
 	ZoneNode *elseZone();
 
+	/// Will be called when both branches link to same block, making thus if statement unnesesary.
+	void transformToSimple();
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
@@ -24,6 +24,7 @@ protected:
 private:
 	ZoneNode *mThenZone;  // Takes ownership
 	ZoneNode *mElseZone;  // Takes ownership
+	bool mIsSimple;
 };
 
 }

@@ -9,12 +9,14 @@
 
 #include "generatorBase/simpleGenerators/abstractSimpleGenerator.h"
 #include "generatorBase/simpleGenerators/binding.h"
+#include "generatorBase/parts/deviceVariables.h"
 
 namespace generatorBase {
 
 namespace parts {
 class Variables;
 class Subprograms;
+class Threads;
 class Engines;
 class Sensors;
 class Functions;
@@ -52,6 +54,9 @@ public:
 	/// Returns a pointer to an entity processing everything about subprograms
 	virtual parts::Subprograms *subprograms();
 
+	/// Returns a pointer to a global threads storage
+	parts::Threads &threads();
+
 	/// Returns a pointer to an entity processing everything about engines usage
 	virtual parts::Engines *engines();
 
@@ -64,6 +69,9 @@ public:
 
 	/// Returns a pointer to an entity processing everything about images
 	virtual parts::Images *images();
+
+	/// Returns a pointer to an entity processing everything about sensor/device variables.
+	virtual parts::DeviceVariables *deviceVariables() const;
 
 	// ----------------------------- Generators --------------------------------
 
@@ -86,6 +94,22 @@ public:
 	/// Returns a pointer to a code generator for loops in 'for' form
 	virtual simple::AbstractSimpleGenerator *forLoopGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);
+
+	/// Returns a pointer to a code generator for switch first enumeration block.
+	virtual simple::AbstractSimpleGenerator *switchHeadGenerator(qReal::Id const &id
+			, GeneratorCustomizer &customizer, QStringList const &values);
+
+	/// Returns a pointer to a code generator for switch enumeration block somewhere in the middle.
+	virtual simple::AbstractSimpleGenerator *switchMiddleGenerator(qReal::Id const &id
+			, GeneratorCustomizer &customizer, QStringList const &values);
+
+	/// Returns a pointer to a code generator for switch enumeration block in the end (default case).
+	virtual simple::AbstractSimpleGenerator *switchDefaultGenerator(qReal::Id const &id
+			, GeneratorCustomizer &customizer);
+
+	/// Returns a pointer to a threads instantiation generator
+	virtual simple::AbstractSimpleGenerator *forkCallGenerator(qReal::Id const &id
+			, GeneratorCustomizer &customizer, qReal::IdList const &threads);
 
 	/// Returns a pointer to a code generator for blocks with regular semantics
 	virtual simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
@@ -133,6 +157,10 @@ public:
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
 
+	/// Produces a converter that returns an expression that obtain values of system variables
+	/// getting its name or the given string othrewise. Transfers ownership.
+	virtual simple::Binding::ConverterInterface *systemVariableNameConverter() const;
+
 	/// Produces converter for transformation a string into valid c++-style identifier
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *nameNormalizerConverter() const;
@@ -167,6 +195,10 @@ public:
 
 	/// Produces converter for variable type specification without taking ownership on it
 	virtual simple::Binding::ConverterInterface *typeConverter() const;
+
+	/// Returns a pointer to a converter that makes one composite switch enumeration block from a set
+	/// of their values. Accepts an expression that will be compared to @arg values.
+	virtual simple::Binding::ConverterInterface *switchConditionsMerger(QStringList const &values) const;
 
 	// ------------------------- Init-terminate code ---------------------------
 
@@ -204,6 +236,12 @@ protected:
 	/// Implementation must prepare images controller
 	virtual void initImages();
 
+	/// Implementation must prepare device variables controller
+	virtual void initDeviceVariables();
+
+	/// @todo Why "init*" methods and corresponding "*" methods are both virtual? It is not clear what we supposed
+	/// to override in concrete generators?
+
 	/// Returns sensors configuration for the given robot model.
 	QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> currentConfiguration() const;
 
@@ -213,10 +251,12 @@ protected:
 	qReal::Id mDiagram;
 	parts::Variables *mVariables;
 	parts::Subprograms *mSubprograms;
+	parts::Threads *mThreads;
 	parts::Engines *mEngines;
 	parts::Sensors *mSensors;
 	parts::Functions *mFunctions;
 	parts::Images *mImages;
+	parts::DeviceVariables *mDeviceVariables;  // Has ownership.
 };
 
 }

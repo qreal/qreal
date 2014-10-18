@@ -8,8 +8,9 @@ INCLUDEPATH += \
 	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
+	$$PWD/../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils -lcommonTwoDModel
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils -lcommonTwoDModel -lqrtext
 
 HEADERS += \
 	$$PWD/src/customizer.h \
@@ -21,6 +22,7 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/finalBlock.h \
 	$$PWD/src/coreBlocks/details/initialBlock.h \
 	$$PWD/src/coreBlocks/details/ifBlock.h \
+	$$PWD/src/coreBlocks/details/switchBlock.h \
 	$$PWD/src/coreBlocks/details/loopBlock.h \
 	$$PWD/src/coreBlocks/details/forkBlock.h \
 	$$PWD/src/coreBlocks/details/subprogramBlock.h \
@@ -60,6 +62,7 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/finalBlock.cpp \
 	$$PWD/src/coreBlocks/details/initialBlock.cpp \
 	$$PWD/src/coreBlocks/details/ifBlock.cpp \
+	$$PWD/src/coreBlocks/details/switchBlock.cpp \
 	$$PWD/src/coreBlocks/details/loopBlock.cpp \
 	$$PWD/src/coreBlocks/details/forkBlock.cpp \
 	$$PWD/src/coreBlocks/details/subprogramBlock.cpp \
@@ -90,7 +93,7 @@ SOURCES += \
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \
 
-TRANSLATIONS += $$PWD/interpreterCore_ru.ts
+TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterCore_ru.ts
 
 RESOURCES += \
 	$$PWD/interpreterCore.qrc \

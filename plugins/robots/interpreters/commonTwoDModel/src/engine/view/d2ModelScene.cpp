@@ -27,10 +27,6 @@ D2ModelScene::D2ModelScene(model::Model &model
 	: AbstractScene(view, parent)
 	, mModel(model)
 	, mDrawingAction(none)
-	, mCurrentWall(nullptr)
-	, mCurrentLine(nullptr)
-	, mCurrentStylus(nullptr)
-	, mCurrentEllipse(nullptr)
 {
 	mFirstPenWidth = 6;
 	mSizeEmptyRectX = 1000;
@@ -52,7 +48,6 @@ D2ModelScene::D2ModelScene(model::Model &model
 
 D2ModelScene::~D2ModelScene()
 {
-
 }
 
 bool D2ModelScene::oneRobot() const
@@ -87,11 +82,7 @@ void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 
 	mRobots.insert(robotModel, robotItem);
 
-	if (mRobots.size() == 1) {
-		centerOnRobot();
-	}
-
-	emit robotListChanged();
+	emit robotListChanged(robotItem);
 }
 
 void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
@@ -103,7 +94,7 @@ void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
 
 	delete robotItem;
 
-	emit robotListChanged();
+	emit robotListChanged(nullptr);
 }
 
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -295,7 +286,7 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 			interpreterBase::robotModel::PortInfo const port = robotItem->sensors().key(sensor);
 			if (port.isValid()) {
 				deviceConfigurationChanged(robotItem->robotModel().info()->robotId()
-						, port, interpreterBase::robotModel::DeviceInfo());
+						, port, interpreterBase::robotModel::DeviceInfo(), Reason::userAction);
 			}
 		}
 	} else if (items::WallItem * const wall = dynamic_cast<items::WallItem *>(item)) {
@@ -389,12 +380,18 @@ void D2ModelScene::setNoneStatus()
 	mDrawingAction = none;
 }
 
-void D2ModelScene::clearScene(bool removeRobot)
+void D2ModelScene::clearScene(bool removeRobot, Reason reason)
 {
 	mModel.worldModel().clear();
 
 	for (model::RobotModel *robotModel : mRobots.keys()) {
 		robotModel->clear();
+		if (removeRobot) {
+			for (interpreterBase::robotModel::PortInfo const &port : robot(*robotModel)->sensors().keys()) {
+				deviceConfigurationChanged(robotModel->info()->robotId()
+						, port, interpreterBase::robotModel::DeviceInfo(), reason);
+			}
+		}
 	}
 }
 
@@ -482,17 +479,18 @@ void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &s
 
 void D2ModelScene::alignWalls()
 {
-	for (items::WallItem * const wall : mModel.worldModel().walls()) {
-		if (items().contains(wall)) {
-			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
-			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+	if (SettingsManager::value("2dShowGrid").toBool()) {
+		for (items::WallItem * const wall : mModel.worldModel().walls()) {
+			if (items().contains(wall)) {
+				wall->alignTheWall(SettingsManager::value("2dGridCellSize").toInt());
+			}
 		}
 	}
 }
 
 RobotItem *D2ModelScene::robot(model::RobotModel &robotModel)
 {
-	return mRobots[&robotModel];
+	return mRobots.value(&robotModel);
 }
 
 void D2ModelScene::centerOnRobot(RobotItem *selectedItem)

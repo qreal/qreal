@@ -133,7 +133,8 @@ inline QDebug operator<<(QDebug dbg, Id const &id)
 typedef QList<Id> IdList;
 
 /// Static class with convenience functions for Id lists.
-class QRKERNEL_EXPORT IdListHelper {
+class QRKERNEL_EXPORT IdListHelper
+{
 public:
 	static QVariant toVariant(IdList const &list);
 };

@@ -37,7 +37,8 @@ public:
 private:
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
-			, interpreterBase::robotModel::DeviceInfo const &sensor) override;
+			, interpreterBase::robotModel::DeviceInfo const &sensor
+			, Reason reason) override;
 
 	/// Reacts to changing of editor tab.
 	/// @param graphicalRootId - id of a root diagram of newly selected tab.

@@ -7,8 +7,11 @@ INCLUDEPATH += \
 	$$PWD/../../../utils/include \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
+	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
+	-lqrtext
+
 
 HEADERS += \
 	$$PWD/commandConstants.h \
@@ -100,6 +103,6 @@ FORMS += \
 include($$PWD/../qrguiIncludes.pri)
 include($$PWD/communication/communication.pri)
 
-TRANSLATIONS = $$PWD/../nxtKitInterpreter_ru.ts
+TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtKitInterpreter_ru.ts
 
 RESOURCES += $$PWD/../nxtKitInterpreter.qrc

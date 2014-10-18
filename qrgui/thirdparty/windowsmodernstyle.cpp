@@ -95,15 +95,15 @@ static QColor colorRole( QPalette::ColorRole role )
 	return QApplication::palette().color( role );
 }
 
-static QColor blendColors( const QColor& src, const QColor& dest, double alpha )
+static QColor blendColors( const QColor& src, const QColor& dest, qreal alpha )
 {
-	double red = alpha * src.red() + ( 1.0 - alpha ) * dest.red();
-	double green = alpha * src.green() + ( 1.0 - alpha ) * dest.green();
-	double blue = alpha * src.blue() + ( 1.0 - alpha ) * dest.blue();
+	qreal red = alpha * src.red() + ( 1.0 - alpha ) * dest.red();
+	qreal green = alpha * src.green() + ( 1.0 - alpha ) * dest.green();
+	qreal blue = alpha * src.blue() + ( 1.0 - alpha ) * dest.blue();
 	return QColor( (int)( red + 0.5 ), (int)( green + 0.5 ), (int)( blue + 0.5 ) );
 }
 
-static QColor blendRoles( QPalette::ColorRole src, QPalette::ColorRole dest, double alpha )
+static QColor blendRoles( QPalette::ColorRole src, QPalette::ColorRole dest, qreal alpha )
 {
 	QPalette palette = QApplication::palette();
 	return blendColors( palette.color( src ), palette.color( dest ), alpha );

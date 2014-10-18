@@ -42,13 +42,9 @@ using namespace robotParts;
 D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	: QRealDialog("D2ModelWindow", parent)
 	, mUi(new Ui::D2Form)
-	, mScene(nullptr)
-	, mSelectedRobotItem(nullptr)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mWidth(defaultPenWidth)
-	, mFirstShow(true)
-	, mDisplayIsVisible(false)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -63,12 +59,11 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &D2ModelScene::selectionChanged, this, &D2ModelWidget::onSelectionChange);
 	connect(mScene, &D2ModelScene::mousePressed, this, &D2ModelWidget::refreshCursor);
 	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::refreshCursor);
-	connect(mScene, &D2ModelScene::mouseReleased, this, &D2ModelWidget::saveToRepo);
+	connect(mScene, &D2ModelScene::mouseReleased, this, [this](){ saveToRepo(); });
 	connect(mScene, &D2ModelScene::robotPressed, [this]() { mUi->noneButton->setChecked(true); });
 	connect(mScene, &D2ModelScene::robotListChanged, this, &D2ModelWidget::onRobotListChange);
 
-	connect(&mModel.timeline(), &Timeline::started, [this]() { mUi->timelineBox->setValue(0); });
-
+	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
 	connect(&mModel.timeline(), &Timeline::tick, [this]() { mUi->timelineBox->stepBy(1); });
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
@@ -102,6 +97,8 @@ void D2ModelWidget::initWidget()
 	move(0, 0);
 
 	mUi->penWidthSpinBox->setRange(1, 30);
+	mUi->penWidthSpinBox->setValue(mWidth);
+	mUi->penColorComboBox->setColor(QColor("black"));
 
 	QStringList const colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
 	QStringList const translatedColorList = { tr("Black"), tr("Blue"), tr("Green"), tr("Yellow"), tr("Red") };
@@ -140,7 +137,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->wallButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawWall); });
 	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 
-	connect(mUi->clearButton, &QAbstractButton::clicked, mScene, &D2ModelScene::clearScene);
+	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){ mScene->clearScene(false, Reason::userAction); });
 	connect(&mButtonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *, bool)>(&QButtonGroup::buttonToggled)
 			, [this](QAbstractButton *button, bool toggled) {
 				if (toggled) {
@@ -254,13 +251,7 @@ void D2ModelWidget::changeSpeed(int curIndex)
 void D2ModelWidget::init()
 {
 	mUi->graphicsView->show();
-	if (isHidden()) {
-		show();
-	}
-
-	if (!isActiveWindow()) {
-		activateWindow();
-	}
+	bringToFront();
 
 	update();
 
@@ -291,11 +282,11 @@ void D2ModelWidget::setInitialRobotBeforeRun()
 void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
-	if (event->matches(QKeySequence::ZoomIn)) {
+	if ((event->key() == Qt::Key_Equal || event->key() == Qt::Key_Plus) && event->modifiers() == Qt::ControlModifier) {
 		mScene->mainView()->zoomIn();
 	} else if (event->matches(QKeySequence::ZoomOut)) {
 		mScene->mainView()->zoomOut();
-	} else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Space) {
+	} else if (event->key() == Qt::Key_F5) {
 		mUi->runButton->animateClick();
 	} else if (event->key() == Qt::Key_Escape) {
 		mUi->stopButton->animateClick();
@@ -380,6 +371,38 @@ void D2ModelWidget::loadWorldModel()
 	loadXml(save);
 }
 
+void D2ModelWidget::reinitSensor(RobotItem *robotItem, PortInfo const &port)
+{
+	robotItem->removeSensor(port);
+	RobotModel &robotModel = robotItem->robotModel();
+
+	DeviceInfo const &device = robotModel.configuration().type(port);
+	if (device.isNull() || (
+			/// @todo: Add supported by 2D model sensors here
+			!device.isA<TouchSensor>()
+			&& !device.isA<ColorSensor>()
+			&& !device.isA<LightSensor>()
+			&& !device.isA<RangeSensor>()
+			))
+	{
+		return;
+	}
+
+	SensorItem *sensor = device.isA<RangeSensor>()
+			? new SonarSensorItem(mModel.worldModel(), robotModel.configuration()
+					, port
+					, robotModel.info()->sensorImagePath(device)
+					, robotModel.info()->sensorImageRect(device)
+					)
+			: new SensorItem(robotModel.configuration()
+					, port
+					, robotModel.info()->sensorImagePath(device)
+					, robotModel.info()->sensorImageRect(device)
+					);
+
+	robotItem->addSensor(port, sensor);
+}
+
 bool D2ModelWidget::isColorItem(AbstractItem * const item) const
 {
 	return dynamic_cast<items::ColorFieldItem *>(item)
@@ -424,10 +447,7 @@ void D2ModelWidget::changePenColor(int textIndex)
 void D2ModelWidget::changePalette()
 {
 	QList<QGraphicsItem *> const listSelectedItems = mScene->selectedItems();
-	if (listSelectedItems.isEmpty()) {
-		setNoPalette();
-		mScene->setEmptyPenBrushItems();
-	} else {
+	if (!listSelectedItems.isEmpty()) {
 		AbstractItem *item = dynamic_cast<AbstractItem *>(listSelectedItems.back());
 		if (isColorItem(item)) {
 			QPen const penItem = item->pen();
@@ -496,14 +516,12 @@ void D2ModelWidget::setValuePenWidthSpinBox(int width)
 void D2ModelWidget::setItemPalette(QPen const &penItem, QBrush const &brushItem)
 {
 	Q_UNUSED(brushItem)
+	mUi->penColorComboBox->blockSignals(true);
+	mUi->penWidthSpinBox->blockSignals(true);
 	setValuePenWidthSpinBox(penItem.width());
 	setValuePenColorComboBox(penItem.color());
-}
-
-void D2ModelWidget::setNoPalette()
-{
-	mUi->penWidthSpinBox->setValue(mWidth);
-	mUi->penColorComboBox->setColor(QColor("black"));
+	mUi->penColorComboBox->blockSignals(false);
+	mUi->penWidthSpinBox->blockSignals(false);
 }
 
 D2ModelScene *D2ModelWidget::scene()
@@ -523,16 +541,6 @@ void D2ModelWidget::setSensorVisible(interpreterBase::robotModel::PortInfo const
 	if (mScene->robot(*robotModel)->sensors()[port]) {
 		mScene->robot(*robotModel)->sensors()[port]->setVisible(isVisible);
 	}
-}
-
-void D2ModelWidget::enableRunStopButtons()
-{
-	mUi->runButton->setEnabled(true);
-}
-
-void D2ModelWidget::disableRunStopButtons()
-{
-	mUi->runButton->setEnabled(false);
 }
 
 void D2ModelWidget::closeEvent(QCloseEvent *event)
@@ -559,17 +567,10 @@ QDomDocument D2ModelWidget::generateXml() const
 
 void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 {
-
-	mScene->clearScene(true);
+	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
 
 	saveInitialRobotBeforeRun();
-}
-
-void D2ModelWidget::setRunStopButtonsEnabled(bool enabled)
-{
-	mUi->runButton->setEnabled(enabled);
-	mUi->stopButton->setEnabled(enabled);
 }
 
 void D2ModelWidget::enableRobotFollowing(bool on)
@@ -685,13 +686,26 @@ void D2ModelWidget::syncCursorButtons()
 }
 
 void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
-		, PortInfo const &port, DeviceInfo const &device)
+		, PortInfo const &port, DeviceInfo const &device, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(device)
+	Q_UNUSED(reason)
+
 	/// @todo Convert configuration between models or something?
 	if (mSelectedRobotItem && robotModel == mSelectedRobotItem->robotModel().info()->robotId()) {
 		updateWheelComboBoxes();
+	}
+}
+
+void D2ModelWidget::bringToFront()
+{
+	if (isHidden()) {
+		show();
+	}
+
+	if (!isActiveWindow()) {
+		activateWindow();
 	}
 }
 
@@ -743,6 +757,8 @@ void D2ModelWidget::updateWheelComboBoxes()
 	if (!setSelectedPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
 		if (!setSelectedPort(mUi->leftWheelComboBox
 				, mSelectedRobotItem->robotModel().info()->defaultLeftWheelPort())) {
+			qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
+					<< mSelectedRobotItem->robotModel().info()->defaultLeftWheelPort().toString();
 
 			if (mUi->leftWheelComboBox->count() > 1) {
 				mUi->leftWheelComboBox->setCurrentIndex(1);
@@ -766,10 +782,25 @@ void D2ModelWidget::updateWheelComboBoxes()
 	}
 }
 
-void D2ModelWidget::onRobotListChange()
+void D2ModelWidget::onRobotListChange(RobotItem *robotItem)
 {
 	if (mScene->oneRobot()) {
 		setSelectedRobotItem(mScene->robot(*mModel.robotModels()[0]));
+	}
+
+	if (robotItem) {
+		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded
+				, [this, robotItem](PortInfo const &port) { reinitSensor(robotItem, port); });
+
+		auto checkAndSaveToRepo = [this](PortInfo const &port, bool isLoaded) {
+			Q_UNUSED(port);
+			if (!isLoaded) {
+				saveToRepo();
+			}
+		};
+
+		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded, checkAndSaveToRepo);
+		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceRemoved, checkAndSaveToRepo);
 	}
 }
 

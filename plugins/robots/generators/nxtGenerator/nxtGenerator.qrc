@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>nxtGenerator_ru.qm</file>
         <file>images/generateCode.svg</file>
     </qresource>
 </RCC>

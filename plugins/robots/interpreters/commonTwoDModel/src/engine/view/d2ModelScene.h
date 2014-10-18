@@ -35,7 +35,7 @@ public:
 	D2ModelScene(model::Model &model
 			, graphicsUtils::AbstractView *view
 			, QObject *parent = 0);
-	~D2ModelScene();
+	~D2ModelScene() override;
 
 	bool oneRobot() const;
 
@@ -56,8 +56,10 @@ public slots:
 	void setNoneStatus();
 
 	/// Clears everything on the scene besides a robot and its sensors.
-	/// @param removeRobot If true robot graphics item will be fully recreated, its position will be nullified.
-	void clearScene(bool removeRobot = false);
+	/// @param removeRobot - if true robot graphics item will be fully recreated, its position will be nullified.
+	/// @param reason - reason for scene clearing --- user action or internal needs. Depending on this we can decide
+	///        whether to save changes into model.
+	void clearScene(bool removeRobot, Reason reason);
 
 	/// Aligns existing walls on the grid.
 	/// @todo: Walls that do not fit on the grid must not be removed.
@@ -79,7 +81,7 @@ signals:
 	/// Emitted each time when user presses mouse button on the robot item.
 	void robotPressed();
 
-	void robotListChanged();
+	void robotListChanged(RobotItem *robotItem);
 
 private slots:
 	void handleNewRobotPosition(RobotItem *robotItem);
@@ -130,10 +132,10 @@ private:
 	QMap<model::RobotModel *, RobotItem *> mRobots;
 
 	/// Temporary wall that's being created. When it's complete, it's added to world model
-	items::WallItem *mCurrentWall;
-	items::LineItem *mCurrentLine;
-	items::StylusItem *mCurrentStylus;
-	items::EllipseItem *mCurrentEllipse;
+	items::WallItem *mCurrentWall = nullptr;
+	items::LineItem *mCurrentLine = nullptr;
+	items::StylusItem *mCurrentStylus = nullptr;
+	items::EllipseItem *mCurrentEllipse = nullptr;
 };
 
 }

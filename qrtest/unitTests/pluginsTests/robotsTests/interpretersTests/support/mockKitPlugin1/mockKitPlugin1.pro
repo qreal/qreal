@@ -16,6 +16,7 @@ INCLUDEPATH += \
 	../../../../../../../plugins/robots/utils/include/ \
 	../../../../../../../qrgui/ \
 	../../../../../../../ \
+	../../../../../../../qrtext/include \
 
 HEADERS += \
 	mockKitPlugin1Interface.h \

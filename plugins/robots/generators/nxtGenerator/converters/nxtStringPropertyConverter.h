@@ -14,7 +14,10 @@ class NxtStringPropertyConverter : public generatorBase::converters::StringPrope
 {
 public:
 	NxtStringPropertyConverter(generatorBase::parts::Variables const &variables
-			, generatorBase::parts::Subprograms &subprograms);
+			, generatorBase::parts::Subprograms &subprograms
+			, ConverterInterface const &systemVariableNameConverter);
+
+	~NxtStringPropertyConverter() override;
 
 	QString convert(QString const &data) const override;
 
@@ -24,6 +27,7 @@ protected:
 
 private:
 	generatorBase::parts::Variables const &mVariables;
+	ConverterInterface const *mSystemVariableNameConverter;  // Takes ownership
 };
 
 }

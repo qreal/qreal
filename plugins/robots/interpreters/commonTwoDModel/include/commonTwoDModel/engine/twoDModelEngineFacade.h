@@ -3,8 +3,8 @@
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
 
-#include <interpreterBase/robotModel/robotModelInterface.h>
 
+#include "commonTwoDModel/robotModel/twoDRobotModel.h"
 #include "commonTwoDModel/engine/twoDModelControlInterface.h"
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
@@ -38,6 +38,7 @@ public:
 			, qReal::SystemEventsInterface const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
+			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
@@ -50,8 +51,6 @@ public slots:
 	void onStopInterpretation() override;
 
 private:
-	/// @todo: Ask interpreters interface for it?
-	qReal::Id mActiveDiagramLogicalId;
 	QString const mRobotModelName;
 	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 

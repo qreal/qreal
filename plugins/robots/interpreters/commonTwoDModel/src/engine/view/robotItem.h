@@ -77,9 +77,6 @@ private:
 
 	void onLanded();
 
-	/// Reread sensor configuration on given port, delete old sensor item and create new.
-	void reinitSensor(interpreterBase::robotModel::PortInfo const &port);
-
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;
 	// Takes ownership

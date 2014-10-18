@@ -85,8 +85,8 @@ RobotModel::Motor *RobotModel::initMotor(int radius, int speed, long unsigned in
 	///       physically plugged into one port, so we can find corresponding port by name. But in TRIK encoders can be
 	///       connected differently.
 	for (Device const * const device : mRobotModel.configuration().devices()) {
-		if (device->deviceInfo().isA<EncoderSensor>() &&
-				(device->port().name() == port.name() || device->port().nameAliases().contains(port.name())))
+		if (device->deviceInfo().isA<EncoderSensor>()
+				&& (device->port().name() == port.name() || device->port().nameAliases().contains(port.name())))
 		{
 			mMotorToEncoderPortMap[port] = device->port();
 			mTurnoverEngines[mMotorToEncoderPortMap[port]] = 0;
@@ -180,20 +180,36 @@ QPainterPath RobotModel::robotBoundingPath() const
 	QRectF const boundingRect(QPointF(), QSizeF(robotWidth, robotHeight));
 	path.addRect(boundingRect);
 
-	for (PortInfo const &port : mRobotModel.configurablePorts()) {
-		if (!mSensorsConfiguration.type(port).isNull()) {
-			QPointF const sensorPos = mSensorsConfiguration.position(port);
-			/// @todo: Consider rotation and differentiate sizes.
-			path.addRect({sensorPos - QPointF(sensorWidth / 2, sensorWidth / 2), QSizeF{sensorWidth, sensorWidth}});
-		}
-	}
-
 	QPointF const realRotatePoint = QPointF(boundingRect.width() / 2, boundingRect.height() / 2);
 	QPointF const translationToZero = -realRotatePoint - boundingRect.topLeft();
 	QPointF const finalTranslation = mPos + realRotatePoint + boundingRect.topLeft();
 	QTransform const transform = QTransform().translate(finalTranslation.x(), finalTranslation.y())
 			.rotate(mAngle).translate(translationToZero.x(), translationToZero.y());
+
+	for (PortInfo const &port : mRobotModel.configurablePorts()){
+		if (!mSensorsConfiguration.type(port).isNull()) {
+			QPointF const sensorPos = mSensorsConfiguration.position(port);
+			QPainterPath tempSensorPath;
+			tempSensorPath.addRect(sensorRect(port, sensorPos));
+			QTransform const transformSensor = QTransform()
+					.translate(sensorPos.x(), sensorPos.y())        // /\  And going back again
+					.rotate(mSensorsConfiguration.direction(port))  // ||  Then rotating
+					.translate(-sensorPos.x(), -sensorPos.y());     // ||  First translating to zero
+			path.addPath(transformSensor.map(tempSensorPath));
+		}
+	}
+
 	return transform.map(path);
+}
+
+QRectF RobotModel::sensorRect(PortInfo const &port, QPointF const sensorPos) const
+{
+	if (!mSensorsConfiguration.type(port).isNull()) {
+		QSizeF const size = mRobotModel.sensorImageRect(mSensorsConfiguration.type(port)).size();
+		return QRectF(sensorPos - QPointF(size.width() / 2, size.height() / 2), size);
+	}
+
+	return QRectF();
 }
 
 void RobotModel::nextStep()
@@ -230,7 +246,7 @@ void RobotModel::recalculateParams()
 		return EngineOutput{
 				engine->spoiledSpeed * 2 * M_PI * engine->radius * onePercentAngularVelocity / 360
 				, engine->breakMode
-				};
+		};
 	};
 
 	EngineOutput const outputLeft = calculateMotorOutput(left);
@@ -324,11 +340,11 @@ void RobotModel::setMotorPortOnWheel(WheelEnum wheel, interpreterBase::robotMode
 	mWheelsToMotorPortsMap[wheel] = port;
 }
 
-void RobotModel::resetPhysics(WorldModel const &worldModel)
+void RobotModel::resetPhysics(WorldModel const &worldModel, Timeline const &timeline)
 {
 	physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
 	if (mSettings.realisticPhysics()) {
-		mPhysicsEngine = new physics::RealisticPhysicsEngine(worldModel);
+		mPhysicsEngine = new physics::RealisticPhysicsEngine(worldModel, timeline);
 	} else {
 		mPhysicsEngine = new physics::SimplePhysicsEngine(worldModel);
 	}

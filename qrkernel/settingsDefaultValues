@@ -61,5 +61,6 @@ nodesStateButtonExpands=true
 recentProjectsLimit=5
 dragArea = 12
 usabilityTestingMode=false
-collectErgonomicValues=true
+collectErgonomicValues=false
 touchMode=false
+updaterActive=true

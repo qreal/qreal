@@ -16,7 +16,8 @@ class SonarSensorItem : public SensorItem
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-	SonarSensorItem(model::SensorsConfiguration &configuration
+	SonarSensorItem(model::WorldModel const &worldModel
+			, model::SensorsConfiguration &configuration
 			, interpreterBase::robotModel::PortInfo const &port
 			, QString const &pathToImage
 			, QRect const &imageSize
@@ -28,9 +29,12 @@ public:
 	QPainterPath shape() const;
 
 private:
+	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+
 	/// Returns scanning region of a sensor as painter path, in relative to sensor coordinates.
 	QPainterPath scanningRegion() const;
 
+	model::WorldModel const &mWorldModel;
 	QImage const mIcon;
 };
 

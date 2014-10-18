@@ -3,6 +3,8 @@
 #include <interpreterBase/robotModel/robotParts/display.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/button.h>
+#include <interpreterBase/robotModel/robotParts/gyroscopeSensor.h>
+#include <interpreterBase/robotModel/robotParts/accelerometerSensor.h>
 
 #include <interpreterBase/robotModel/robotParts/encoderSensor.h>
 
@@ -13,14 +15,16 @@
 #include "parts/trikInfraredSensor.h"
 #include "parts/trikSonarSensor.h"
 #include "parts/trikMotionSensor.h"
-#include "parts/trikCameraLineDetector.h"
+#include "parts/trikColorSensor.h"
+#include "parts/trikLineSensor.h"
+#include "parts/trikObjectSensor.h"
 #include "parts/trikLed.h"
 
 using namespace trikKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
-	: CommonRobotModel(kitId, "")
+TrikRobotModelBase::TrikRobotModelBase(QString const &kitId, QString const &robotId)
+	: CommonRobotModel(kitId, robotId)
 {
 	QList<DeviceInfo> const analogPortConnections = {
 		lightSensorInfo()
@@ -68,8 +72,27 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
 
 	addAllowedConnection(PortInfo("F1", input, { "JF1" }, "sensorF1"), { motionSensorInfo() });
 
+	addAllowedConnection(PortInfo("GyroscopePortX", input, {}, "gyroscopeX"), { gyroscopeInfo() });
+	addAllowedConnection(PortInfo("GyroscopePortY", input, {}, "gyroscopeY"), { gyroscopeInfo() });
+	addAllowedConnection(PortInfo("GyroscopePortZ", input, {}, "gyroscopeZ"), { gyroscopeInfo() });
+
+	addAllowedConnection(PortInfo("AccelerometerPortX", input, {}, "accelerometerX"), { accelerometerInfo() });
+	addAllowedConnection(PortInfo("AccelerometerPortY", input, {}, "accelerometerY"), { accelerometerInfo() });
+	addAllowedConnection(PortInfo("AccelerometerPortZ", input, {}, "accelerometerZ"), { accelerometerInfo() });
+
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
-	addAllowedConnection(PortInfo("LineDetectorPort", input), { cameraLineDetectorSensorInfo() });
+
+	addAllowedConnection(PortInfo("LineSensorXPort", input, {}, "lineSensorX"), { lineSensorInfo() });
+	addAllowedConnection(PortInfo("LineSensorSizePort", input, {}, "lineSensorSize"), { lineSensorInfo() });
+	addAllowedConnection(PortInfo("LineSensorCrossroadsPort", input, {}, "lineSensorCross"), { lineSensorInfo() });
+
+	addAllowedConnection(PortInfo("ObjectSensorXPort", input, {}, "objectSensorX"), { objectSensorInfo() });
+	addAllowedConnection(PortInfo("ObjectSensorYPort", input, {}, "objectSensorY"), { objectSensorInfo() });
+	addAllowedConnection(PortInfo("ObjectSensorSizePort", input, {}, "objectSensorSize"), { objectSensorInfo() });
+
+	addAllowedConnection(PortInfo("ColorSensorRPort", input, {}, "colorSensorR"), { colorSensorInfo() });
+	addAllowedConnection(PortInfo("ColorSensorGPort", input, {}, "colorSensorG"), { colorSensorInfo() });
+	addAllowedConnection(PortInfo("ColorSensorBPort", input, {}, "colorSensorB"), { colorSensorInfo() });
 }
 
 QList<PortInfo> TrikRobotModelBase::configurablePorts() const
@@ -138,12 +161,32 @@ DeviceInfo TrikRobotModelBase::motionSensorInfo() const
 	return DeviceInfo::create<parts::TrikMotionSensor>();
 }
 
+DeviceInfo TrikRobotModelBase::gyroscopeInfo() const
+{
+	return DeviceInfo::create<robotParts::GyroscopeSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::accelerometerInfo() const
+{
+	return DeviceInfo::create<robotParts::AccelerometerSensor>();
+}
+
 DeviceInfo TrikRobotModelBase::ledInfo() const
 {
 	return DeviceInfo::create<parts::TrikLed>();
 }
 
-DeviceInfo TrikRobotModelBase::cameraLineDetectorSensorInfo() const
+DeviceInfo TrikRobotModelBase::lineSensorInfo() const
 {
-	return DeviceInfo::create<parts::TrikCameraLineDetector>();
+	return DeviceInfo::create<parts::TrikLineSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::colorSensorInfo() const
+{
+	return DeviceInfo::create<parts::TrikColorSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::objectSensorInfo() const
+{
+	return DeviceInfo::create<parts::TrikObjectSensor>();
 }

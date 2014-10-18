@@ -56,7 +56,7 @@ void WaitBlock::stopActiveTimerInBlock()
 	mActiveWaitingTimer.stop();
 }
 
-QMap<PortInfo, DeviceInfo> WaitBlock::usedDevices() const
+QMap<PortInfo, DeviceInfo> WaitBlock::usedDevices()
 {
 	DeviceInfo const deviceInfo = device();
 	PortInfo const portInfo = RobotModelUtils::findPort(mRobotModel, port(), deviceInfo.direction());

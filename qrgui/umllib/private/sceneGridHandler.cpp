@@ -289,6 +289,7 @@ void SceneGridHandler::drawGuides()
 		painter.setPen(mGuidesPen);
 		painter.drawLines(mLines);
 		evScene->putOnForeground(mGuidesPixmap);
+		evScene->update();
 	}
 }
 

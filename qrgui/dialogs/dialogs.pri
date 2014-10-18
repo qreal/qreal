@@ -1,10 +1,11 @@
 HEADERS += \
-	$$PWD/gesturesShow/gesturesWidget.h \
 	$$PWD/metamodelingOnFly/propertiesDialog.h \
 	$$PWD/metamodelingOnFly/editPropertiesDialog.h \
 	$$PWD/metamodelingOnFly/chooseTypeDialog.h \
 	$$PWD/metamodelingOnFly/edgePropertiesDialog.h \
 	$$PWD/metamodelingOnFly/addNodeDialog.h \
+	$$PWD/metamodelingOnFly/restorePropertiesDialog.h \
+	$$PWD/metamodelingOnFly/restoreElementDialog.h \
 	$$PWD/preferencesPages/behaviourPage.h \
 	$$PWD/preferencesPages/debuggerPage.h \
 	$$PWD/preferencesPages/editorPage.h \
@@ -19,16 +20,16 @@ HEADERS += \
 	$$PWD/suggestToCreateDiagramDialog.h \
 	$$PWD/suggestToCreateProjectDialog.h \
 	$$PWD/renameDialog.h \
-	$$PWD/metamodelingOnFly/restorePropertiesDialog.h \
-	$$PWD/metamodelingOnFly/restoreElementDialog.h \
+	$$PWD/updateVersionDialog.h \
 
 SOURCES += \
-	$$PWD/gesturesShow/gesturesWidget.cpp \
 	$$PWD/metamodelingOnFly/propertiesDialog.cpp \
 	$$PWD/metamodelingOnFly/editPropertiesDialog.cpp \
 	$$PWD/metamodelingOnFly/chooseTypeDialog.cpp \
 	$$PWD/metamodelingOnFly/edgePropertiesDialog.cpp \
 	$$PWD/metamodelingOnFly/addNodeDialog.cpp \
+	$$PWD/metamodelingOnFly/restorePropertiesDialog.cpp \
+	$$PWD/metamodelingOnFly/restoreElementDialog.cpp \
 	$$PWD/preferencesPages/behaviourPage.cpp \
 	$$PWD/preferencesPages/debuggerPage.cpp \
 	$$PWD/preferencesPages/editorPage.cpp \
@@ -42,11 +43,9 @@ SOURCES += \
 	$$PWD/suggestToCreateDiagramDialog.cpp \
 	$$PWD/suggestToCreateProjectDialog.cpp \
 	$$PWD/renameDialog.cpp \
-	$$PWD/metamodelingOnFly/restorePropertiesDialog.cpp \
-	$$PWD/metamodelingOnFly/restoreElementDialog.cpp \
+	$$PWD/updateVersionDialog.cpp \
 
 FORMS += \
-	$$PWD/gesturesShow/gesturesWidget.ui \
 	$$PWD/metamodelingOnFly/propertiesDialog.ui \
 	$$PWD/metamodelingOnFly/editPropertiesDialog.ui \
 	$$PWD/metamodelingOnFly/chooseTypeDialog.ui \

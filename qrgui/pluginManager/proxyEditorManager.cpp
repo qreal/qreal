@@ -32,12 +32,12 @@ Version ProxyEditorManager::version(Id const &editor) const
 	return mProxiedEditorManager->version(editor);
 }
 
-bool ProxyEditorManager::loadPlugin(QString const &pluginName)
+QString ProxyEditorManager::loadPlugin(QString const &pluginName)
 {
 	return mProxiedEditorManager->loadPlugin(pluginName);
 }
 
-bool ProxyEditorManager::unloadPlugin(QString const &pluginName)
+QString ProxyEditorManager::unloadPlugin(QString const &pluginName)
 {
 	return mProxiedEditorManager->unloadPlugin(pluginName);
 }
@@ -80,6 +80,11 @@ ElementImpl *ProxyEditorManager::elementImpl(Id const &id) const
 IdList ProxyEditorManager::containedTypes(const Id &id) const
 {
 	return mProxiedEditorManager->containedTypes(id);
+}
+
+bool ProxyEditorManager::isEnumEditable(Id const &id, QString const &name) const
+{
+	return mProxiedEditorManager->isEnumEditable(id, name);
 }
 
 QList<QPair<QString, QString>> ProxyEditorManager::enumValues(Id const &id, const QString &name) const

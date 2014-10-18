@@ -17,7 +17,7 @@ public:
 	MOCK_METHOD1(dehighlight, void(qReal::Id const &graphicalId));
 	MOCK_METHOD0(dehighlight, void());
 	MOCK_METHOD0(errorReporter, qReal::ErrorReporterInterface *());
-	MOCK_METHOD0(activeDiagram, qReal::Id());
+	MOCK_CONST_METHOD0(activeDiagram, qReal::Id());
 	MOCK_METHOD1(openSettingsDialog, void(QString const &tab));
 	MOCK_METHOD0(reinitModels, void());
 	MOCK_METHOD0(windowWidget, QWidget *());
