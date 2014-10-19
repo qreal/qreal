@@ -7,6 +7,7 @@
 
 #include <qrrepo/repoControlInterface.h>
 #include <qrrepo/logicalRepoApi.h>
+
 #include "dialogs/preferencesPages/preferencesPage.h"
 
 #include "toolPluginInterface/customizer.h"
@@ -23,18 +24,13 @@ namespace qReal {
 class InterpretedPluginInterface : public PluginInterface
 {
 public:
-
 	/// Shall be overriden in concrete plugin to initialize itself.
 	/// @param configurator - Object that contains all needed information for a plugin, like refs to models.
 	/// @param metamodelRepoApi - Object that contains information about metamodel
 	virtual void init(
 			PluginConfigurator const &configurator
 			, qrRepo::LogicalRepoApi &metamodelRepoApi
-			)
-	{
-		Q_UNUSED(configurator);
-		Q_UNUSED(metamodelRepoApi);
-	}
+			) = 0;
 };
 
 }

@@ -22,14 +22,14 @@ private slots:
 	void generateCode();
 
 private:
-	qrRepo::RepoControlInterface *mRepo; // Doesn't have ownership
-	QAction mAction; // "Generate" button
+	qrRepo::RepoControlInterface *mRepo;  // Doesn't have ownership
+	QAction mAction;  // "Generate" button
 
 	/// To syncronize logical and graphical models with repository.
-	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface; // Doesn't have ownership
+	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Doesn't have ownership
 
 	/// Metamodel repo api.
-	qrRepo::LogicalRepoApi *mMetamodelRepoApi; // Doesn't have ownership
+	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // Doesn't have ownership
 };
 
 }

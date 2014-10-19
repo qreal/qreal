@@ -920,7 +920,7 @@ void InterpreterEditorManager::setElementEnabled(Id const &type, bool enabled)
 	Q_UNUSED(enabled)
 }
 
-QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::listOfMetamodels()
+QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::listOfMetamodels() const
 {
 	return mEditorRepoApi;
 }

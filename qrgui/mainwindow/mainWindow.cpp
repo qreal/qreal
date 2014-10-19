@@ -1948,9 +1948,9 @@ void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMen
 	}
 }
 
-void MainWindow::traverseListOfActions(QList<ActionInfo> const actions)
+void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 {
-	for (ActionInfo const action : actions) {
+	for (ActionInfo const &action : actions) {
 		if (action.isAction()) {
 			if (action.toolbarName() == "file") {
 				mUi->fileToolbar->addAction(action.action());
@@ -1963,7 +1963,7 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const actions)
 		}
 	}
 
-	for (ActionInfo const action : actions) {
+	for (ActionInfo const &action : actions) {
 		if (action.menuName() == "tools") {
 			addActionOrSubmenu(mUi->menuTools, action);
 		} else if (action.menuName() == "settings") {

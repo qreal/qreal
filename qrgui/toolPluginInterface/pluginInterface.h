@@ -16,20 +16,18 @@
 
 namespace qReal {
 
-/// Base class for tool and interpreted plugins, actually an interface with default implementations.
-/// This is all that qrgui knows about plugins. Every plugin shall have
+/// Base class for tool and interpreted plugins, actually an interface with default implementations. Every plugin shall have
 /// a class derived from this and override needed methods. Default implementations
 /// are provided as "do nothing" behavior, so if a plugin doesn't need some features,
 /// it shouldn't care about them.
 class PluginInterface
 {
 public:
-
 	/// Shall be overriden to return customizer that allows to change window title,
 	/// show/hide certain GUI elements and so on.
 	virtual Customizer* customizationInterface()
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	/// Shall be overriden to return QAction or QMenu objects along with where to put them in
@@ -37,21 +35,21 @@ public:
 	/// to slots of a plugin, so when user clicks on an action, some code in plugin gets executed
 	virtual QList<ActionInfo> actions()
 	{
-		return QList<ActionInfo>();
+		return {};
 	}
 
 	/// Returns preferences page along with its name if plugin has any, NULL otherwise.
 	/// Ownership is passed to the caller.
 	virtual QPair<QString, PreferencesPage *> preferencesPage()
 	{
-		return QPair<QString, PreferencesPage *>(QString(), NULL);
+		return {};
 	}
 
 	/// Shall be overridden to return QAction instances for their customization in
 	/// hot key manager.
 	virtual QList<HotKeyActionInfo> hotKeyActions()
 	{
-		return QList<HotKeyActionInfo>();
+		return {};
 	}
 
 	/// Returns a list of project converters provided by this plugin.
@@ -61,7 +59,7 @@ public:
 	/// no modifications required for such save.
 	virtual QList<ProjectConverter> projectConverters()
 	{
-		return QList<ProjectConverter>();
+		return {};
 	}
 
 	/// Returns a list of pathes to ini files that contain default settings in key-value format
@@ -70,7 +68,7 @@ public:
 	/// Default implementation returns empty list.
 	virtual QStringList defaultSettingsFiles()
 	{
-		return QStringList();
+		return {};
 	}
 };
 

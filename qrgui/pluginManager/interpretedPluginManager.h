@@ -20,6 +20,7 @@
 
 namespace qReal {
 
+/// This class inits interpreter plugins and returns their actions and preferences pages for mainwindow.
 class InterpretedPluginManager
 {
 public:
@@ -30,7 +31,7 @@ public:
 	/// @param configurator - information about model
 	/// @param metamodelRepoApi - information about metamodel
 	void init(PluginConfigurator const &configurator, qrRepo::LogicalRepoApi &metamodelRepoApi);
-	void updateSettings();
+
 	/// Returns list of actions of all plugins.
 	QList<ActionInfo> actions() const;
 	/// Returns list of all preferences pages.
@@ -59,7 +60,7 @@ private:
 
 	QDir mPluginsDir;
 
-	QList<InterpretedPluginInterface *> mPlugins; // doesn't have ownership
+	QList<InterpretedPluginInterface *> mPlugins;  // doesn't have ownership
 
 	/// An object and that is used to customize GUI with values from plugins
 	Customizer mCustomizer;

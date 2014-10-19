@@ -339,7 +339,7 @@ private:
 
 	/// Traverses list of actions and adds buttons to toolbar.
 	/// @param actions - list of actions to traverse
-	void traverseListOfActions(QList<ActionInfo> const actions);
+	void traverseListOfActions(QList<ActionInfo> const &actions);
 
 	void setIndexesOfPropertyEditor(Id const &id);
 

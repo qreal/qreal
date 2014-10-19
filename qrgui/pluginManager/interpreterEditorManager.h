@@ -143,7 +143,7 @@ public:
 	void setElementEnabled(Id const &type, bool enabled) override;
 
 	/// Returns list of metamodels for interpreted plugins.
-	QMap<QString, qrRepo::RepoApi*> listOfMetamodels();
+	QMap<QString, qrRepo::RepoApi*> listOfMetamodels() const;
 
 private:
 	class CheckPropertyForParent;
