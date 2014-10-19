@@ -103,15 +103,17 @@ void RobotsBlockParser::addIntrinsicFuctions()
 
 	add0aryFunction("time", new types::Integer(), [this]() { return mTimeComputer(); });
 
-	addFloatFunction("sin", [](double x) {return sin(x); });
-	addFloatFunction("cos", [](double x) {return cos(x); });
-	addFloatFunction("ln", [](double x) {return log(x); });
-	addFloatFunction("exp", [](double x) {return exp(x); });
-	addFloatFunction("asin", [](double x) {return asin(x); });
-	addFloatFunction("acos", [](double x) {return acos(x); });
-	addFloatFunction("atan", [](double x) {return atan(x); });
-	addFloatToIntegerFunction("sgn", [](double x) {return (0 < x) - (x < 0); });
-	addFloatFunction("sqrt", [](double x) {return sqrt(x); });
-	addFloatFunction("abs", [](double x) {return abs(x); });
+	addFloatFunction("sin", [](qreal x) {return sin(x); });
+	addFloatFunction("cos", [](qreal x) {return cos(x); });
+	addFloatFunction("ln", [](qreal x) {return log(x); });
+	addFloatFunction("exp", [](qreal x) {return exp(x); });
+	addFloatFunction("asin", [](qreal x) {return asin(x); });
+	addFloatFunction("acos", [](qreal x) {return acos(x); });
+	addFloatFunction("atan", [](qreal x) {return atan(x); });
+	addFloatToIntegerFunction("sgn", [](qreal x) {return (0 < x) - (x < 0); });
+	addFloatFunction("sqrt", [](qreal x) {return sqrt(x); });
+	addFloatFunction("abs", [](qreal x) {return abs(x); });
+	addFloatToIntegerFunction("ceil", [](qreal x) {return static_cast<int>(ceil(x)); });
+	addFloatToIntegerFunction("floor", [](qreal x) {return static_cast<int>(floor(x)); });
 	addIntegerFunction("random", [](int x) {return rand() % x; });
 }
