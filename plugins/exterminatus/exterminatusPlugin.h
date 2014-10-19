@@ -15,9 +15,9 @@ public:
 	ExterminatusPlugin();
 	virtual ~ExterminatusPlugin();
 
-	virtual QList<qReal::ActionInfo> actions();
+	QList<qReal::ActionInfo> actions() override;
 
-	virtual void init(qReal::PluginConfigurator const &configurator);
+	void init(qReal::PluginConfigurator const &configurator) override;
 
 private slots:
 	/// Deletion of all items from repository.

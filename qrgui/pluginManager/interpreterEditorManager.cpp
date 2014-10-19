@@ -153,13 +153,17 @@ Version InterpreterEditorManager::version(Id const &editor) const
 QString InterpreterEditorManager::friendlyName(Id const &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "displayedName")
-			&& !repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "displayedName").isEmpty())
-	{
-		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "displayedName");
+	if (repoAndMetaIdPair.first) {
+		if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "displayedName")
+				&& !repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "displayedName").isEmpty())
+		{
+			return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "displayedName");
+		}
+
+		return repoAndMetaIdPair.first->name(repoAndMetaIdPair.second);
 	}
 
-	return repoAndMetaIdPair.first->name(repoAndMetaIdPair.second);
+	return QString();
 }
 
 bool InterpreterEditorManager::hasElement(Id const &elementId) const
@@ -914,6 +918,11 @@ void InterpreterEditorManager::setElementEnabled(Id const &type, bool enabled)
 {
 	Q_UNUSED(type)
 	Q_UNUSED(enabled)
+}
+
+QMap<QString, qrRepo::RepoApi*> InterpreterEditorManager::listOfMetamodels() const
+{
+	return mEditorRepoApi;
 }
 
 void InterpreterEditorManager::setProperty(qrRepo::RepoApi *repo, Id const &id

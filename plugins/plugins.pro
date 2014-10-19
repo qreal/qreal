@@ -18,6 +18,9 @@ SUBDIRS += \
 	visualInterpreter/visualInterpreter.pro \
 	refactoring/refactoring.pro \
 
+# interpreted plugins
+SUBDIRS += \
+	generationRulesTool/generationRulesTool.pro \
 
 # QReal:Robots
 SUBDIRS += \

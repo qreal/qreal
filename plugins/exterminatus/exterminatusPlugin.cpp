@@ -3,8 +3,8 @@
 using namespace exterminatus;
 
 ExterminatusPlugin::ExterminatusPlugin()
-	: mRepo(NULL)
-	, mAction(tr("exterminate"), NULL)
+	: mRepo(nullptr)
+	, mAction(tr("exterminate"), nullptr)
 {
 	connect(&mAction, SIGNAL(triggered()), this, SLOT(exterminate()));
 }
@@ -16,9 +16,7 @@ ExterminatusPlugin::~ExterminatusPlugin()
 QList<qReal::ActionInfo> ExterminatusPlugin::actions()
 {
 	qReal::ActionInfo info(&mAction, "file", "tools");
-	QList<qReal::ActionInfo> result;
-	result << info;
-	return result;
+	return {info};
 }
 
 void ExterminatusPlugin::init(qReal::PluginConfigurator const &configurator)

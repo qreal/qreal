@@ -18,6 +18,8 @@
 #include "editorPluginInterface/editorInterface.h"
 #include "pluginManager/editorManagerInterface.h"
 
+#include "interpretedPluginManager.h"
+
 namespace qReal {
 
 class Element;
@@ -139,6 +141,9 @@ public:
 	void restoreRenamedProperty(Id const &propertyId, QString const &previousName) const override;
 
 	void setElementEnabled(Id const &type, bool enabled) override;
+
+	/// Returns list of metamodels for interpreted plugins.
+	QMap<QString, qrRepo::RepoApi*> listOfMetamodels() const;
 
 private:
 	class CheckPropertyForParent;

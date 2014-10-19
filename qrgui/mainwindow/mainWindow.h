@@ -27,6 +27,7 @@
 #include "pluginManager/interpreterEditorManager.h"
 #include "pluginManager/proxyEditorManager.h"
 #include "pluginManager/toolPluginManager.h"
+#include "pluginManager/interpretedPluginsLoader.h"
 #include "pluginManager/exploser.h"
 
 #include "models/logicalModelAssistApi.h"
@@ -197,6 +198,9 @@ public slots:
 	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle();
 
+	/// Inits interpreted plugins and adds their actions to the toolbar.
+	void initInterpretedPlugins();
+
 private slots:
 	/// Suggests user to select a root diagram for the new project
 	/// if more than one diagram loaded or creates project with the only diagram
@@ -333,6 +337,10 @@ private:
 
 	void addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu);
 
+	/// Traverses list of actions and adds buttons to toolbar.
+	/// @param actions - list of actions to traverse
+	void traverseListOfActions(QList<ActionInfo> const &actions);
+
 	void setIndexesOfPropertyEditor(Id const &id);
 
 	void setBackReference(QPersistentModelIndex const &index, QString const &data);
@@ -381,6 +389,7 @@ private:
 	Controller *mController;
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
+	InterpretedPluginsLoader mInterpretedPluginLoader;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;

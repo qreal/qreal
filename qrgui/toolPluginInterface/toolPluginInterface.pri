@@ -11,3 +11,4 @@ HEADERS += \
 	$$PWD/hotKeyActionInfo.h \
 	$$PWD/systemEvents.h \
 	$$PWD/systemEventsInterface.h \
+	$$PWD/pluginInterface.h
