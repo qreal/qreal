@@ -16,8 +16,8 @@
 
 namespace qReal {
 
-/// Base class for tool and interpreted plugins, actually an interface with default implementations. Every plugin shall have
-/// a class derived from this and override needed methods. Default implementations
+/// Base class for tool and interpreted plugins, actually an interface with default implementations.
+/// Every plugin shall have a class derived from this and override needed methods. Default implementations
 /// are provided as "do nothing" behavior, so if a plugin doesn't need some features,
 /// it shouldn't care about them.
 class PluginInterface
