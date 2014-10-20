@@ -226,7 +226,7 @@ void ExploserView::changeAppearanceActionTriggered()
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
 	QString const propertyValue = mLogicalApi.editorManagerInterface().shape(id);
-	emit openShapeEditor(id, propertyValue, mLogicalApi.editorManagerInterface(), false);
+	emit openShapeEditor(id, propertyValue, &mLogicalApi.editorManagerInterface(), false);
 }
 
 void ExploserView::addElementToPaletteActionTriggered()

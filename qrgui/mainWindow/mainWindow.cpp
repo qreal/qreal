@@ -862,10 +862,12 @@ void MainWindow::openShapeEditor(
 }
 
 // This method is for Interpreter.
-void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue
-		, EditorManagerInterface const &editorManagerProxy, bool useTypedPorts)
+void MainWindow::openShapeEditor(Id const &id
+		, QString const &propertyValue
+		, EditorManagerInterface const *editorManagerProxy
+		, bool useTypedPorts)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab()
+	ShapeEdit *shapeEdit = new ShapeEdit(id, *editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab()
 		, useTypedPorts);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
@@ -1101,7 +1103,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	connect(&tab->editorViewScene(), &EditorViewScene::goTo, [=](Id const &id) { activateItemOrDiagram(id); });
 	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadPlugins);
 	connect(&tab->editorViewScene(), &EditorViewScene::openShapeEditor, this, static_cast<void (MainWindow::*)
-			(Id const &, QString const &, EditorManagerInterface const &, bool)>(&MainWindow::openShapeEditor));
+			(Id const &, QString const &, EditorManagerInterface const *, bool)>(&MainWindow::openShapeEditor));
 
 	setShortcuts(tab);
 

@@ -159,7 +159,8 @@ signals:
 	/// Emitted when user requested to change some element`s graphical representation.
 	void openShapeEditor(Id const &id
 		, QString const &propertyValue
-		, EditorManagerInterface const &editorManagerProxy
+		/// @todo: whan passing it by reference the build on travis fails
+		, EditorManagerInterface const *editorManagerProxy
 		, bool useTypedPorts);
 
 protected:

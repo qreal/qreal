@@ -86,8 +86,11 @@ public:
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
 		, bool useTypedPorts);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
-	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface const &editorManagerProxy
-		, bool useTypedPorts);
+	void openShapeEditor(Id const &id
+			, QString const &propertyValue
+			/// @todo: whan passing it by reference the build on travis fails
+			, EditorManagerInterface const *editorManagerProxy
+			, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
 			, int const &role);
 	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
