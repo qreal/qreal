@@ -59,8 +59,7 @@ private:
 
 	QDir mPluginsDir;
 
-	QMap<QString, ToolPluginInterface *> mPlugins;
-	QList<QPluginLoader *> mLoaders;
+	QList<ToolPluginInterface *> mPlugins;
 
 	/// An object and that is used to customize GUI with values from plugins
 	Customizer mCustomizer;

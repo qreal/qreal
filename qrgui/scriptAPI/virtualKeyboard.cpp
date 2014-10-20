@@ -16,7 +16,7 @@ VirtualKeyboard::VirtualKeyboard(ScriptAPI *scriptAPI)
 void VirtualKeyboard::type(QString const &message, int const duration)
 {
 	printValue(message, duration);
-	QTest::keyClick((QWidget *) nullptr, Qt::Key_Enter, Qt::NoModifier, 200);
+	QTest::keyClick(QApplication::focusWidget(), Qt::Key_Enter, Qt::NoModifier, 0);
 	mScriptAPI->wait(300);
 }
 

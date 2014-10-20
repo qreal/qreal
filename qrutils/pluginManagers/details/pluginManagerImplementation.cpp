@@ -52,7 +52,7 @@ QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QStrin
 	QObject *plugin = loader->instance();
 
 	if (plugin) {
-		mFileNameAndPlugin.insert(pluginName, plugin);
+		mFileNameAndPlugin.insert(loader->metaData()["IID"].toString(), plugin);
 		return qMakePair(plugin, QString());
 	}
 
@@ -105,4 +105,9 @@ QString PluginManagerImplementation::unloadPlugin(QString const &pluginName)
 QString PluginManagerImplementation::fileName(QObject *plugin) const
 {
 	return mFileNameAndPlugin.key(plugin);
+}
+
+QObject *PluginManagerImplementation::pluginByName(QString const &pluginName)
+{
+	return mFileNameAndPlugin[pluginName];
 }

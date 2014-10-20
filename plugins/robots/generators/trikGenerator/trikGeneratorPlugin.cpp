@@ -43,42 +43,26 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 	mGenerateCodeAction.setText(tr("Generate TRIK code"));
 	mGenerateCodeAction.setIcon(QIcon(":/images/generateQtsCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-<<<<<<< HEAD
 	mGenerateCodeAction.setObjectName("generateTRIKCode");
-	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
-=======
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()), Qt::UniqueConnection);
->>>>>>> trunc/master
 
 	mUploadProgramAction.setText(tr("Upload program"));
 	mUploadProgramAction.setIcon(QIcon(":/images/uploadProgram.svg"));
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-<<<<<<< HEAD
 	mUploadProgramAction.setObjectName("uploadProgram");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
-=======
 	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()), Qt::UniqueConnection);
->>>>>>> trunc/master
 
 	mRunProgramAction.setText(tr("Run program"));
 	mRunProgramAction.setIcon(QIcon(":/images/uploadAndExecuteProgram.svg"));
 	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
-<<<<<<< HEAD
 	mRunProgramAction.setObjectName("runProgram");
-	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()));
-=======
 	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()), Qt::UniqueConnection);
->>>>>>> trunc/master
 
 	mStopRobotAction.setText(tr("Stop robot"));
 	mStopRobotAction.setIcon(QIcon(":/images/stopRobot.svg"));
 	ActionInfo stopRobotActionInfo(&mStopRobotAction, "generators", "tools");
-<<<<<<< HEAD
 	mStopRobotAction.setObjectName("stopRobot");
-	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()));
-=======
 	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()), Qt::UniqueConnection);
->>>>>>> trunc/master
 
 	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }

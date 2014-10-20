@@ -1,6 +1,6 @@
 API.loadPluginGuiFacade("qRealRobots.RobotsPlugin");
-var mainWindow = guiFacade.mainWindow();
-hintAPI.addHint("Добро пожаловать в среду визуального программирования QReal:Robots!", 1300, mainWindow);
+var mainWindow = guiFacade.mainWindow();//Rename to 'ui'
+hintAPI.addHint("Добро пожаловать в среду визуального программирования QReal:Robots!", 1300, mainWindow);//hintAPI -> 'ui'
 API.wait(1500);
 hintAPI.addHint("Сейчас мы нарисуем одну диаграмму за вас, чтобы показать, как все работает.", 1300, mainWindow);
 API.wait(1500);
@@ -15,12 +15,6 @@ var mainScene = guiFacade.sceneViewport();
 hintAPI.addHint("Добавим пару блоков из палитры на сцену...", 1000, mainWindow);
 var engF = paletteAPI.dragPaletteElement("qrm:/RobotsMetamodel/RobotsDiagram/TrikV6EnginesForward", 500, 150, 275);
 var sonar = paletteAPI.dragPaletteElement("qrm:/RobotsMetamodel/RobotsDiagram/TrikWaitForSonarDistance",  500, 250, 275);
-hintAPI.addHint("Добавим роботу сенсор расстояния...", 2000, mainWindow);
-var sensors = guiFacade.widget("QComboBox", "Port A1 DeviceConfig");
-cursor.moveTo(sensors, 1000);
-cursor.leftButtonPress(sensors);
-cursor.leftButtonRelease(sensors, 300);
-API.pickComboBoxItem(sensors, "Инфракрасный сенсор", 1000);
 hintAPI.addHint("Отредактируем их свойства...", 3000, mainWindow);
 var propertyEditor = guiFacade.propertyEditor();
 var prop1 = guiFacade.propertyRect("Считанное значение");
@@ -47,6 +41,12 @@ sceneAPI.drawLink(sonar, engB, 1000);
 sceneAPI.drawLink(engB, beep, 1000);
 sceneAPI.drawLink(beep, timer, 1000);
 sceneAPI.drawLink(timer, engF, 1000);
+hintAPI.addHint("Добавим роботу сенсор расстояния...", 2000, mainWindow);
+var sensors = guiFacade.widget("QComboBox", "Port A1 DeviceConfig");
+cursor.moveTo(sensors, 1000);
+cursor.leftButtonPress(sensors);
+cursor.leftButtonRelease(sensors, 300);
+API.pickComboBoxItem(sensors, "Инфракрасный сенсор", 1000);
 var open2DModel = guiFacade.pluginActionToolButton("show2dModelTrik");
 hintAPI.addHint("Можно посмотреть, что получилось.", 3000, mainWindow);
 cursor.moveTo(open2DModel, 3000);

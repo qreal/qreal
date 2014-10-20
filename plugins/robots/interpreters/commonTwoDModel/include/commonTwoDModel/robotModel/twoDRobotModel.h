@@ -65,7 +65,6 @@ public:
 		return QRect();
 	}
 
-protected:
 	engine::TwoDModelEngineInterface *engine();
 
 protected:

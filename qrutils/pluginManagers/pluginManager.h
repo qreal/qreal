@@ -49,6 +49,12 @@ public:
 		return mPluginManagerLoader.fileName(reinterpret_cast<QObject *>(plugin));
 	}
 
+	template <class InterfaceType>
+	InterfaceType *plugin(QString const &pluginName)
+	{
+		return dynamic_cast<InterfaceType *>(mPluginManagerLoader.pluginByName(pluginName));
+	}
+
 private:
 	/// Casts list of objects to list of interfaces.
 	template <class InterfaceType>

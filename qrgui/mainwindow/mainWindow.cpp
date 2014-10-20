@@ -22,12 +22,8 @@
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
-<<<<<<< HEAD
 #include <qrutils/graphicsUtils/animatedEffects.h>
-=======
 #include <qrutils/qRealUpdater.h>
-#include <qrutils/graphicsUtils/animatedHighlighter.h>
->>>>>>> trunc/master
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrutils/uxInfo/uxInfo.h>
 
@@ -319,12 +315,9 @@ EditorManagerInterface &MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-<<<<<<< HEAD
 	emit mSystemEvents->closedMainWindow();
 	mScriptAPI.abortEvaluate();
 
-=======
->>>>>>> trunc/master
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
 		return;
