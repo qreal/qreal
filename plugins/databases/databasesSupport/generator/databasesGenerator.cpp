@@ -175,9 +175,11 @@ QString DatabasesGenerator::getPrimaryKeyNameOfSet(IdList const &entitySet)
 
 int DatabasesGenerator::getParentList(Id const &childEntity, QList<IdList> set)
 {
+	int listCounter = 0;
 	foreach (IdList const &list, set) {
 		if (list.indexOf(childEntity) != -1)
-			return list.indexOf(childEntity);
+			return listCounter;
+		listCounter++;
 	}
 	return -1;
 }
@@ -191,8 +193,8 @@ QString DatabasesGenerator::getListTableName(IdList const &list)
 			name += "And";
 		} else {
 			first = false;
-			name += getProperty(id, "Name").toByteArray();
 		}
+		name += getProperty(id, "Name").toByteArray();
 	}
 	return name;
 }
@@ -245,30 +247,19 @@ void DatabasesGenerator::generateSQL()
 				// List for set of tables bounded with one-to-one relationship
 				IdList oneToOneTableSet;
 				oneToOneTableSet.clear();
-
 				oneToOneTableSet = getBoundedWithOneToOneRealationship(entityId);
-
-				/*foreach (Id const &relationship, relationships) {
-					QString relationshipName = getProperty(relationship, "name").toByteArray();
-					if (relationshipName == "One-to-one") {
-						Id c = mLogicalModelApi.logicalRepoApi().to(relationship);
-					}
-				}*/
-
 				oneToOneAllTablesSet.append(oneToOneTableSet);
 			}
 		}
 	}
 
-	//QList<int> passedLists;
-	//passedLists.clear();
 	QString* extraAttributes = new QString[oneToOneAllTablesSet.size()];
 	for(int i = 0; i < oneToOneAllTablesSet.size(); i++) {
 		extraAttributes[i] = "";
 	}
 
 
-	IdList oneToManyRelationships = findNodes("One-to-many");
+	IdList oneToManyRelationships = findNodes("OneToManyRelationship");
 	foreach (Id const &relationship, oneToManyRelationships) {
 		Id to = mLogicalModelApi.logicalRepoApi().to(relationship);
 		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
@@ -280,15 +271,15 @@ void DatabasesGenerator::generateSQL()
 		extraAttributes[fromSet] += (",\r\n" + toPrimaryKeyName + " " + getProperty(toPrimaryKey, "DataType").toString());
 	}
 
-	IdList manyToManyRelationships = findNodes("Many-to-many");
+	IdList manyToManyRelationships = findNodes("ManyToManyRelationship");
 	foreach (Id const &relationship, manyToManyRelationships) {
 		Id to = mLogicalModelApi.logicalRepoApi().to(relationship);
 		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
 		int toSet = getParentList(to, oneToOneAllTablesSet);
 		int fromSet = getParentList(from, oneToOneAllTablesSet);
 
-		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(fromSet));
-		QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(fromSet));
+		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(toSet));
+		QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
 		Id fromPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(fromSet));
 		QString fromPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(fromSet));
 
@@ -308,7 +299,6 @@ void DatabasesGenerator::generateSQL()
 		codeFile.write("CREATE TABLE ");
 		codeFile.write(getListTableName(list).toUtf8());
 		codeFile.write("\r\n(");
-		codeFile.write("\r\n");
 
 		IdList attributesSet;
 		foreach (Id const &id, list) {
