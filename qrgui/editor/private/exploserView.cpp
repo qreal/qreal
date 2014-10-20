@@ -1,5 +1,7 @@
 #include "exploserView.h"
 
+#include <QtWidgets/QApplication>
+
 #include <qrgui/models/models.h>
 #include <qrgui/models/commands/createElementCommand.h>
 #include <qrgui/dialogs/metamodelingOnFly/propertiesDialog.h>
@@ -202,31 +204,21 @@ void ExploserView::removeExplosionActionTriggered()
 void ExploserView::expandExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
-	Id elem = action->data().value<Id>();
-	/// @todo: restore it!!!!
-//	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mMainWindow.getCurrentTab()->scene());
-//	if (!evScene) {
-//		return;
-//	}
-
-//	NodeElement *node = evScene->getNodeById(elem);
-//	if (node) {
-//		mMainWindow.controller()->execute(new qReal::commands::ExpandCommand(node));
-//	}
+	Id const elem = action->data().value<Id>();
+	emit expandElement(elem);
 }
 
 void ExploserView::changePropertiesActionTriggered()
 {
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
-	/// @todo: restore it!!!!
-//	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
-//			mLogicalApi.editorManagerInterface()
-//			, mLogicalApi.mutableLogicalRepoApi()
-//			, id
-//			, &mMainWindow);
-//	propertiesDialog->setModal(true);
-//	propertiesDialog->show();
+	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
+			mLogicalApi.editorManagerInterface()
+			, mLogicalApi.mutableLogicalRepoApi()
+			, id
+			, QApplication::allWidgets().isEmpty() ? nullptr : QApplication::allWidgets()[0]);
+	propertiesDialog->setModal(true);
+	propertiesDialog->show();
 }
 
 void ExploserView::changeAppearanceActionTriggered()
@@ -234,8 +226,7 @@ void ExploserView::changeAppearanceActionTriggered()
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
 	QString const propertyValue = mLogicalApi.editorManagerInterface().shape(id);
-	/// @todo: restore it!!!!
-//	mMainWindow.openShapeEditor(id, propertyValue, mLogicalApi.editorManagerInterface(), false);
+	emit openShapeEditor(id, propertyValue, mLogicalApi.editorManagerInterface(), false);
 }
 
 void ExploserView::addElementToPaletteActionTriggered()
@@ -243,6 +234,5 @@ void ExploserView::addElementToPaletteActionTriggered()
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
 	mLogicalApi.editorManagerInterface().resetIsHidden(id);
-	/// @todo: restore it!!!!
-//	mMainWindow.loadPlugins();
+	emit refreshPalette();
 }

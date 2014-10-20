@@ -74,6 +74,13 @@ EditorViewScene::EditorViewScene(models::Models const &models
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
 	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
+	connect(&mExploser, &view::details::ExploserView::refreshPalette, this, &EditorViewScene::refreshPalette);
+	connect(&mExploser, &view::details::ExploserView::openShapeEditor, this, &EditorViewScene::openShapeEditor);
+	connect(&mExploser, &view::details::ExploserView::expandElement, [=](Id const &element) {
+		if (NodeElement * const node = getNodeById(element)) {
+			mController.execute(new qReal::commands::ExpandCommand(node));
+		}
+	});
 }
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)

@@ -1099,6 +1099,9 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	connect(tab, &EditorView::rootElementRemoved, this
 			, static_cast<bool (MainWindow::*)(QModelIndex const &)>(&MainWindow::closeTab));
 	connect(&tab->editorViewScene(), &EditorViewScene::goTo, [=](Id const &id) { activateItemOrDiagram(id); });
+	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadPlugins);
+	connect(&tab->editorViewScene(), &EditorViewScene::openShapeEditor, this, static_cast<void (MainWindow::*)
+			(Id const &, QString const &, EditorManagerInterface const &, bool)>(&MainWindow::openShapeEditor));
 
 	setShortcuts(tab);
 

@@ -153,6 +153,15 @@ signals:
 	/// Emitted when user requested to switch to some element (for example doubled-clicked element with explosion).
 	void goTo(Id const &id);
 
+	/// Emitted when palette contents could change and thus must be reread.
+	void refreshPalette();
+
+	/// Emitted when user requested to change some element`s graphical representation.
+	void openShapeEditor(Id const &id
+		, QString const &propertyValue
+		, EditorManagerInterface const &editorManagerProxy
+		, bool useTypedPorts);
+
 protected:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent(QGraphicsSceneDragDropEvent *event);

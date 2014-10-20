@@ -10,6 +10,7 @@ class Element;
 class Explosion;
 class Controller;
 class SceneCustomizer;
+class EditorManagerInterface;
 
 namespace commands {
 class AbstractCommand;
@@ -51,6 +52,18 @@ signals:
 	/// Activates first binded with explosion link graphical instance of the element
 	/// with given @arg id.
 	void goTo(Id const &id);
+
+	/// Emitted when palette contents could change and thus must be reread.
+	void refreshPalette();
+
+	/// Emitted when user requested to change some element`s graphical representation.
+	void openShapeEditor(Id const &id
+		, QString const &propertyValue
+		, EditorManagerInterface const &editorManagerProxy
+		, bool useTypedPorts);
+
+	/// Emitted each time when scene must invoke ExpandCommand to the child instance with the given id.
+	void expandElement(Id const &element);
 
 private slots:
 	void addExplosionActionTriggered();
