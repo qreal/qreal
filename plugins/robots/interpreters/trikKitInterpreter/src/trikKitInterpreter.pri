@@ -57,6 +57,9 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
+	$$PWD/robotModel/twoD/parts/twoDLineSensor.h \
+	$$PWD/robotModel/twoD/parts/twoDObjectSensor.h \
+	$$PWD/robotModel/twoD/parts/twoDColorSensor.h \
 	$$PWD/blocks/details/drawLineBlock.h \
 	$$PWD/blocks/details/drawPixelBlock.h \
 	$$PWD/blocks/details/drawRectBlock.h \
@@ -111,6 +114,9 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
+	$$PWD/robotModel/twoD/parts/twoDLineSensor.cpp \
+	$$PWD/robotModel/twoD/parts/twoDObjectSensor.cpp \
+	$$PWD/robotModel/twoD/parts/twoDColorSensor.cpp \
 	$$PWD/blocks/details/drawLineBlock.cpp \
 	$$PWD/blocks/details/drawPixelBlock.cpp \
 	$$PWD/blocks/details/drawRectBlock.cpp \
