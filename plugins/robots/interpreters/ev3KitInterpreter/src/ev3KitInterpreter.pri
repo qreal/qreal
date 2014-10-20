@@ -9,7 +9,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrtext/include \
 
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
-		-lpreferencesDialog -ltoolPluginInterface \
+		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
 		-lutils -linterpreterBase -lqextserialport \
 
 HEADERS += \

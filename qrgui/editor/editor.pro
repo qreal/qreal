@@ -2,8 +2,11 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
+TARGET = qrgui-editor
+
 LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrutils \
-		-lmouseGestures -lthirdparty -lmodels -lcontroller -lpluginManager -lbrandManager
+		-lqrgui-mouse-gestures -lqrgui-thirdparty -lqrgui-models \
+		-lqrgui-controller -lqrgui-plugin-manager -lqrgui-brand-manager \
 
 INCLUDEPATH = \
 	$$PWD/ \

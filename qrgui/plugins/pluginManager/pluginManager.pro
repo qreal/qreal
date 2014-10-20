@@ -2,9 +2,11 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../../bin
 
+TARGET = qrgui-plugin-manager
+
 QT += xml svg
 
-LIBS += -L$$PWD/../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -ltoolPluginInterface
+LIBS += -L$$PWD/../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lqrgui-tool-plugin-interface
 
 INCLUDEPATH = \
 	$$PWD/ \

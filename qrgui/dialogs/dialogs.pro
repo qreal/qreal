@@ -2,9 +2,11 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
+TARGET = qrgui-dialogs
+
 QT += widgets
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lmodels
+LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqrgui-models
 
 INCLUDEPATH = \
 	$$PWD/ \

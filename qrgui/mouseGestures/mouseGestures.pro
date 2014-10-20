@@ -2,6 +2,8 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
+TARGET = qrgui-mouse-gestures
+
 LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils
 
 INCLUDEPATH = \

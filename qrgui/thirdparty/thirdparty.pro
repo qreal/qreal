@@ -2,6 +2,8 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
+TARGET = qrgui-thirdparty
+
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 MOC_DIR = .moc

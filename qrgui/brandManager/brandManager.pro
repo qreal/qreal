@@ -2,7 +2,9 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lpluginManager
+TARGET = qrgui-brand-manager
+
+LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqrgui-plugin-manager
 
 INCLUDEPATH = \
 	$$PWD/ \

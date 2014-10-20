@@ -8,9 +8,9 @@ QT += widgets printsupport xml svg
 
 LIBS += -L$$PWD/../../bin \
 			-lqrkernel -lqslog -lqrutils -lqrrepo -lqscintilla2 \
-			-lmodels -leditor -lcontroller -ldialogs -lpreferencesDialog \
-			-ltextEditor -lmouseGestures -lhotKeyManager -lbrandManager  \
-			-lpluginManager -ltoolPluginInterface -lthirdparty \
+			-lqrgui-models -lqrgui-editor -lqrgui-controller -lqrgui-dialogs -lqrgui-preferences-dialog \
+			-lqrgui-text-editor -lqrgui-mouse-gestures -lqrgui-hotkey-manager -lqrgui-brand-manager  \
+			-lqrgui-plugin-manager -lqrgui-tool-plugin-interface -lqrgui-thirdparty \
 
 INCLUDEPATH = \
 	$$PWD/ \

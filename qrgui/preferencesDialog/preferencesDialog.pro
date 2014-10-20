@@ -2,6 +2,8 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
+TARGET = qrgui-preferences-dialog
+
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/preferencesDialog_ru.ts
 
 QT += widgets

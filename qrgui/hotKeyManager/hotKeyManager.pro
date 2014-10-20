@@ -2,7 +2,9 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
-LIBS += -L$$PWD/../../bin -lpreferencesDialog
+TARGET = qrgui-hotkey-manager
+
+LIBS += -L$$PWD/../../bin -lqrgui-preferences-dialog
 
 INCLUDEPATH = \
 	$$PWD/ \

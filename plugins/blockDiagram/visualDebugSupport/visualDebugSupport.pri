@@ -7,7 +7,7 @@ INCLUDEPATH += \
 	$$PWD/../../../qrgui/ \
 	$$PWD/../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../bin -lqrkernel -lqrutils -lpreferencesDialog
+LIBS += -L$$PWD/../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/visualDebugSupport_ru.ts
 

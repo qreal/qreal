@@ -2,7 +2,9 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqscintilla2 -ltoolPluginInterface
+TARGET = qrgui-text-editor
+
+LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqscintilla2 -lqrgui-tool-plugin-interface
 
 QT += widgets
 

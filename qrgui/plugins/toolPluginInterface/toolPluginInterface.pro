@@ -2,6 +2,8 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../../bin
 
+TARGET = qrgui-tool-plugin-interface
+
 LIBS += -L$$PWD/../../../bin -lqrkernel
 
 DEFINES += QRGUI_TOOL_PLUGIN_INTERFACE_LIBRARY

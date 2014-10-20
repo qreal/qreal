@@ -11,7 +11,7 @@ INCLUDEPATH += \
 	$$PWD/../../.. \
 	$$PWD/../../../qrgui/ \
 
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrmc -lpreferencesDialog
+LIBS += -L../../../bin -lqrkernel -lqrutils -lqrmc -lqrgui-preferences-dialog
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/metaEditorSupport_ru.ts
 

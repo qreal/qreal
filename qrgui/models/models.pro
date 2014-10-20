@@ -2,9 +2,11 @@ TEMPLATE = lib
 
 DESTDIR = $$PWD/../../bin
 
+TARGET = qrgui-models
+
 QT += widgets
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrrepo -lpluginManager -lcontroller
+LIBS += -L$$PWD/../../bin -lqrkernel -lqrrepo -lqrgui-plugin-manager -lqrgui-controller
 
 INCLUDEPATH = \
 	$$PWD/ \
