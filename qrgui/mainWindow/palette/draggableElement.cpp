@@ -123,7 +123,7 @@ void DraggableElement::changeAppearancePaletteActionTriggered()
 	QAction const * const action = static_cast<QAction *>(sender());
 	Id const id = action->data().value<Id>();
 	QString const propertyValue = mEditorManagerProxy.shape(id);
-	mMainWindow.openShapeEditor(id, propertyValue, mEditorManagerProxy, false);
+	mMainWindow.openShapeEditor(id, propertyValue, &mEditorManagerProxy, false);
 }
 
 void DraggableElement::deleteElementPaletteActionTriggered()
