@@ -48,8 +48,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	mParser.reset(new textLanguage::RobotsBlockParser(mRobotModelManager
 			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }));
 
-	initSensorWidgets();
-
 	interpreterBase::blocksBase::BlocksFactoryInterface * const coreFactory = new coreBlocks::CoreBlocksFactory();
 	coreFactory->configure(configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
@@ -79,6 +77,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
 
 	initKitPlugins(configurer);
+
+	initSensorWidgets();
 
 	auto paletteUpdateManager = new PaletteUpdateManager(configurer.mainWindowInterpretersInterface()
 			, mBlocksFactoryManager, this);
