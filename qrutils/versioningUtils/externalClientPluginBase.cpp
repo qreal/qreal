@@ -77,11 +77,14 @@ invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(QStrin
 	if (needPreparation) {
 		prepareWorkingCopy(workingDir, sourceProject);
 	}
-	invocation::FunctorOperation<bool> *operation = new invocation::FunctorOperation<bool>;
+	invocation::details::FunctorInterface<bool> *functor =
+			new invocation::details::Functor<bool, ExternalClientPluginBase
+			, bool(ExternalClientPluginBase::*)(const QStringList&, bool, const QString&, const bool)
+			,const QStringList&, bool, const QString&, const bool>(this, &ExternalClientPluginBase::startAndWait, args
+																	 , reportErrors, workingDir, checkWorkingDir);
+
+	invocation::FunctorOperation<bool> *operation = new invocation::FunctorOperation<bool>(functor);
 	// TODO: make it with progress
-	operation->setInvocationTarget(this
-			, &ExternalClientPluginBase::startAndWait, args
-			, reportErrors, workingDir, checkWorkingDir);
 	connect(operation, SIGNAL(finished(invocation::LongOperation*))
 			, this, SLOT(onOperationComplete(invocation::LongOperation*)));
 	mRunningOperationsCallbacksMap.insert(operation, tag);
