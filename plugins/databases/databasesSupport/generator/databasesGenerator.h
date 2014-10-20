@@ -23,6 +23,11 @@ public slots:
 	//bool wereErrors();
 
 private:
+	/*enum ErrorType {
+		missingBeginNode,
+		noErrors
+	};*/
+
 	//qReal::VisualDebugger *mVisualDebugger;
 	qReal::ErrorReporterInterface *mErrorReporter;
 	//QList<qReal::ActionInfo> mActionInfos;
@@ -37,6 +42,13 @@ private:
 	QVariant getProperty(Id const &id, QString const &propertyName);
 	IdList getChildren(Id const &id);
 	IdList getBoundedWithOneToOneRealationship(Id const &id);
+	void error(QString error, bool isCritical);
+	Id getPrimaryKey(Id const &entityId);
+
+	Id getPrimaryKeyOfSet(IdList const &entitySet);
+	QString getPrimaryKeyNameOfSet(IdList const &entitySet);
+	int getParentList(Id const &childEntity,QList<IdList> set);
+	QString getListTableName(IdList const &list);
 
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	qReal::LogicalModelAssistInterface const &mLogicalModelApi;

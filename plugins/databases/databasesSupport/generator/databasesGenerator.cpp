@@ -94,9 +94,9 @@ IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
 
 	foreach (Id const &relationship, relationshipsOut) {
 		if (mPassedElements.indexOf(relationship) == -1) {
-			mPassedElements.append(relationship);
 			QString relationshipName = getProperty(relationship, "name").toByteArray();
 			if (relationshipName == "One-to-one") {
+				mPassedElements.append(relationship);
 				Id newEntity = mLogicalModelApi.logicalRepoApi().to(relationship);
 				mPassedElements.append(newEntity);
 				boundedEntities.append(getBoundedWithOneToOneRealationship(newEntity));
@@ -107,9 +107,9 @@ IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
 	IdList relationshipsIn = mLogicalModelApi.logicalRepoApi().incomingLinks(id);
 	foreach (Id const &relationship, relationshipsIn) {
 		if (mPassedElements.indexOf(relationship) == -1) {
-			mPassedElements.append(relationship);
 			QString relationshipName = getProperty(relationship, "name").toByteArray();
 			if (relationshipName == "One-to-one") {
+				mPassedElements.append(relationship);
 				Id newEntity = mLogicalModelApi.logicalRepoApi().from(relationship);
 				mPassedElements.append(newEntity);
 				boundedEntities.append(getBoundedWithOneToOneRealationship(newEntity));
@@ -119,9 +119,88 @@ IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
 	return boundedEntities;
 }
 
+void DatabasesGenerator::error(QString error, bool isCritical)
+{
+	if (isCritical) {
+		mInterpretersInterface.errorReporter()->addCritical(error);
+	} else {
+		mInterpretersInterface.errorReporter()->addWarning(error, Id::rootId());
+	}
+	/*switch (error) {
+		case missingBeginNode:
+			mInterpretersInterface.errorReporter()->addCritical(tr("The diagram doesn't have Initial Node"));
+			break;
+		case endWithNotEndNode:
+			mInterpretersInterface.errorReporter()->addWarning(
+					tr("There are no links from this node and it mismatches Final Node")
+					, mCurrentId);
+			break;
+		case noErrors:
+			return;
+			break;
+	}*/
+	mCurrentId = Id::rootId();
+	mCurrentDiagram = Id::rootId();
+}
+
+Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
+{
+	IdList attributesSet = getChildren(entityId);
+	/*if(attributesSet.isEmpty()) {
+		error(emptyEntity);
+	}*/
+	Id primaryKey = Id::rootId();
+	int primaryKeyCount = 0;
+	foreach (Id const &attributeId, attributesSet) {
+		bool isPrimaryKey = getProperty(attributeId, "isPrimaryKey").toBool();
+		if (isPrimaryKey) {
+			primaryKey = attributeId;
+			primaryKeyCount++;
+		}
+	}
+	if (primaryKeyCount != 1) {
+		error("Invalid number of primary key in entity " + getProperty(entityId, "isPrimaryKey").toString() +  ": " + primaryKeyCount, true);
+	}
+	return primaryKey;
+}
+
+Id DatabasesGenerator::getPrimaryKeyOfSet(IdList const &entitySet)
+{
+	return getPrimaryKey(entitySet.at(0));
+}
+QString DatabasesGenerator::getPrimaryKeyNameOfSet(IdList const &entitySet)
+{
+	return("PrimaryKeyOfTable" + getProperty(entitySet.at(0), "Name").toByteArray());
+}
+
+int DatabasesGenerator::getParentList(Id const &childEntity, QList<IdList> set)
+{
+	foreach (IdList const &list, set) {
+		if (list.indexOf(childEntity) != -1)
+			return list.indexOf(childEntity);
+	}
+	return -1;
+}
+
+QString DatabasesGenerator::getListTableName(IdList const &list)
+{
+	QString name = "";
+	bool first = true;
+	foreach (Id const &id, list) {
+		if (!first) {
+			name += "And";
+		} else {
+			first = false;
+			name += getProperty(id, "Name").toByteArray();
+		}
+	}
+	return name;
+}
+
 void DatabasesGenerator::generateSQL()
 {
 	mErrorReporter->clear();
+	//error(missingBeginNode);
 
 
 	mPassedElements.clear();
@@ -181,143 +260,81 @@ void DatabasesGenerator::generateSQL()
 		}
 	}
 
-
-	codeFile.close();
-	/*	if (!mDebuggerConnector->hasBuildError()) {
-				mErrorReporter->addInformation(tr("Code generated and builded successfully"));
-			} */
-}
-
-/*void VisualDebugger::generateCode()
-{
-	QList<Id> passedElements;
-	mHasCodeGenerationError = false;
-
-	setCodeFileName(SettingsManager::value("codeFileName").toString());
-	setWorkDir(SettingsManager::value("debugWorkingDirectory").toString());
-
-	codeFile.setFileName(mWorkDir + mCodeFileName);
-	codeFile.open(QIODevice::WriteOnly);
-
-	printTabs(0);
-	codeFile.write("void main(int argc, char* argv[]) {\n");
-	tabsCount++;
-	Id const startId = findBeginNode("InitialNode");
-
-	if (startId != Id::rootId()) {
-		generateCode(startId, codeFile, passedElements);
-		printTabs(-1);
-		codeFile.write("}");
-		codeFile.close();
-		return;
+	//QList<int> passedLists;
+	//passedLists.clear();
+	QString* extraAttributes = new QString[oneToOneAllTablesSet.size()];
+	for(int i = 0; i < oneToOneAllTablesSet.size(); i++) {
+		extraAttributes[i] = "";
 	}
 
-	codeFile.close();
-	error(codeGenerationError);
-	return;
-}
 
-void VisualDebugger::getConditionLinks(IdList const &outLinks, Id &falseEdge, Id &trueEdge)
-{
-	foreach (Id const &outLink, outLinks) {
-		if (checkForIncorrectUseOfLink(outLink, "ControlFlow")) {
-			error(codeGenerationError);
-			return;
-		}
+	IdList oneToManyRelationships = findNodes("One-to-many");
+	foreach (Id const &relationship, oneToManyRelationships) {
+		Id to = mLogicalModelApi.logicalRepoApi().to(relationship);
+		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
+		int toSet = getParentList(to, oneToOneAllTablesSet);
+		int fromSet = getParentList(from, oneToOneAllTablesSet);
 
-		bool type = getProperty(outLink, "condition").toBool();
-		if (type) {
-			trueEdge = outLink;
-		} else {
-			falseEdge = outLink;
-		}
+		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(toSet));
+		QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
+		extraAttributes[fromSet] += (",\r\n" + toPrimaryKeyName + " " + getProperty(toPrimaryKey, "DataType").toString());
 	}
-}
 
-void VisualDebugger::generateCode(Id const &id, QFile &codeFile, QList<Id> passedElements)
-{
-	if (passedElements.contains(id)) {
-		error(incorrectUseOfCycle);
-		return;
+	IdList manyToManyRelationships = findNodes("Many-to-many");
+	foreach (Id const &relationship, manyToManyRelationships) {
+		Id to = mLogicalModelApi.logicalRepoApi().to(relationship);
+		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
+		int toSet = getParentList(to, oneToOneAllTablesSet);
+		int fromSet = getParentList(from, oneToOneAllTablesSet);
+
+		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(fromSet));
+		QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(fromSet));
+		Id fromPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(fromSet));
+		QString fromPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(fromSet));
+
+		codeFile.write("CREATE TABLE ");
+		codeFile.write((getListTableName(oneToOneAllTablesSet.at(fromSet)) + "-" + getListTableName(oneToOneAllTablesSet.at(toSet))).toUtf8());
+		codeFile.write("\r\n(");
+		codeFile.write("\r\n");
+
+		codeFile.write((toPrimaryKeyName + " " + getProperty(toPrimaryKey, "DataType").toByteArray()).toUtf8());
+		codeFile.write(",\r\n");
+		codeFile.write((fromPrimaryKeyName + " " + getProperty(fromPrimaryKey, "DataType").toByteArray()).toUtf8());
+		codeFile.write("\r\n);\r\n\r\n");
 	}
-	passedElements.append(id);
-	if (id.element() == "ConditionNode") {
-		printTabs(0);
-		codeFile.write("if (");
-		codeFile.write(getProperty(id, "condition").toByteArray());
-		codeFile.write(") {\n");
-		tabsCount++;
 
-		IdList const outLinks = mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
-		Id falseEdge = falseEdge.rootId();
-		Id trueEdge = trueEdge.rootId();
+	int i = 0;
+	foreach (IdList const &list, oneToOneAllTablesSet) {
+		codeFile.write("CREATE TABLE ");
+		codeFile.write(getListTableName(list).toUtf8());
+		codeFile.write("\r\n(");
+		codeFile.write("\r\n");
 
-		getConditionLinks(outLinks, falseEdge, trueEdge);
-
-		if (mHasCodeGenerationError) {
-			return;
-		}
-		if (trueEdge == trueEdge.rootId()) {
-			error(VisualDebugger::missingValidLink);
-			error(codeGenerationError);
-			return;
+		IdList attributesSet;
+		foreach (Id const &id, list) {
+			attributesSet.append(getChildren(id));
 		}
 
-		generateCode(trueEdge, codeFile, passedElements);
-		printTabs(-1);
-		codeFile.write("}");
-
-		if (falseEdge != falseEdge.rootId()) {
-			codeFile.write(" else {\n");
-			tabsCount++;
-			generateCode(falseEdge, codeFile, passedElements);
-			printTabs(-1);
-			codeFile.write("}\n");
-		} else {
-			codeFile.write("\n");
-		}
-
-	} else if (id.element() == "ActionElement") {
-		QString const code = getProperty(id, "process").toString();
-		printTabs(0);
-		if (code.mid(0,4) == "var ") {
-			codeFile.write(code.mid(4).toLatin1());
-		} else {
-			codeFile.write(code.toLatin1());
-		}
-
-		codeFile.write("\n");
-		if (mLogicalModelApi.logicalRepoApi().outgoingLinks(id).count() != 0) {
-			Id const nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
-			if (checkForIncorrectUseOfLink(nextEdge, "ConditionControlFlow")) {
-				error(codeGenerationError);
-				return;
+		bool first = true;
+		foreach (Id const &attribute, attributesSet) {
+			if (!first) {
+				codeFile.write(",");
 			}
-
-			generateCode(nextEdge, codeFile, passedElements);
-		} else {
-			error(VisualDebugger::missingEndNode);
-			error(codeGenerationError);
-			return;
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write(getProperty(attribute, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(attribute, "DataType").toByteArray());
 		}
+		codeFile.write(extraAttributes[i].toUtf8());
+		i++;
 
-	} else if (id.element() == "InitialNode") {
-		Id const nextEdge = mLogicalModelApi.logicalRepoApi().outgoingLinks(id).at(0);
-		if (checkForIncorrectUseOfLink(nextEdge, "ConditionControlFlow")) {
-			error(codeGenerationError);
-			return;
-		}
-		generateCode(nextEdge, codeFile, passedElements);
-	} else if (id.element() == "BlockFinalNode") {
-		return;
-	} else {
-		Id const nextNode = mLogicalModelApi.logicalRepoApi().to(id);
-		generateCode(nextNode, codeFile, passedElements);
+
+		//codeFile.write(toPrimaryKeyName + " " + getProperty(toPrimaryKey, "DataType").toByteArray(););
+		//codeFile.write(",\r\n");
+
+		codeFile.write("\r\n);\r\n\r\n");
 	}
-}*/
-
-
-
-
-
+	codeFile.close();
+}
 
