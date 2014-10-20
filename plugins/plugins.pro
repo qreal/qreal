@@ -11,6 +11,9 @@ SUBDIRS += \
 	$$PWD/requirements/requirements.pro \
 	$$PWD/domainAnalysis/domainAnalysis.pro \
 
+# interpreted plugins
+SUBDIRS += \
+	generationRulesTool/generationRulesTool.pro \
 
 
 # tool plugins

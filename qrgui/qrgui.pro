@@ -14,11 +14,13 @@ SUBDIRS += \
 	pluginManager \
 	editorPluginInterface \
 	toolPluginInterface \
+	interpretedPluginInterface \
 	thirdparty \
 
 pluginManager.file = $$PWD/plugins/pluginManager/pluginManager.pro
-toolPluginInterface.file = $$PWD/plugins/toolPluginInterface/toolPluginInterface.pro
 editorPluginInterface.file = $$PWD/plugins/editorPluginInterface/editorPluginInterface.pro
+toolPluginInterface.file = $$PWD/plugins/toolPluginInterface/toolPluginInterface.pro
+interpretedPluginInterface.file = $$PWD/plugins/interpretedPluginInterface/interpretedPluginInterface.pro
 
 mainWindow.depends = \
 	models \

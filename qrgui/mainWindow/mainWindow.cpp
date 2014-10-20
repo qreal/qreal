@@ -1640,6 +1640,7 @@ Id MainWindow::activeDiagram() const
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
+
 	BrandManager::configure(&mToolManager);
 	mPreferencesDialog.setWindowIcon(BrandManager::applicationIcon());
 	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(this);
@@ -1661,13 +1662,8 @@ void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMen
 	}
 }
 
-void MainWindow::initToolPlugins()
+void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 {
-	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
-		, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-		, *mSystemEvents, *mTextManager));
-
-	QList<ActionInfo> const actions = mToolManager.actions();
 	for (ActionInfo const &action : actions) {
 		if (action.isAction()) {
 			QToolBar * const toolbar = findChild<QToolBar *>(action.toolbarName() + "Toolbar");
@@ -1675,6 +1671,8 @@ void MainWindow::initToolPlugins()
 			if (toolbar) {
 				toolbar->addAction(action.action());
 			}
+
+			connect(action.action(), &QAction::triggered, mFilterObject, &FilterObject::triggeredActionActivated);
 		}
 	}
 
@@ -1685,6 +1683,16 @@ void MainWindow::initToolPlugins()
 			addActionOrSubmenu(menu, action);
 		}
 	}
+}
+
+void MainWindow::initToolPlugins()
+{
+	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
+		, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
+		, *mSystemEvents, *mTextManager));
+
+	QList<ActionInfo> const actions = mToolManager.actions();
+	traverseListOfActions(actions);
 
 	for (HotKeyActionInfo const &actionInfo : mToolManager.hotKeyActions()) {
 		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
@@ -1707,6 +1715,17 @@ void MainWindow::initToolPlugins()
 	mUi->paletteTree->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
+}
+
+void MainWindow::initInterpretedPlugins()
+{
+	mInterpretedPluginLoader.init(mEditorManagerProxy.proxiedEditorManager()
+			, PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
+			, *mSystemEvents, *mTextManager));
+
+	QList<ActionInfo> const actions = mInterpretedPluginLoader.listOfActions();
+	traverseListOfActions(actions);
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

@@ -24,6 +24,7 @@
 #include "plugins/pluginManager/interpreterEditorManager.h"
 #include "plugins/pluginManager/proxyEditorManager.h"
 #include "plugins/pluginManager/toolPluginManager.h"
+#include "plugins/pluginManager/interpretedPluginsLoader.h"
 
 #include "editor/propertyEditorView.h"
 #include "models/propertyEditorModel.h"
@@ -179,6 +180,9 @@ public slots:
 	void openFirstDiagram();
 	void changeWindowTitle();
 
+	/// Inits interpreted plugins and adds their actions to the toolbar.
+	void initInterpretedPlugins();
+
 private slots:
 	/// Suggests user to select a root diagram for the new project
 	/// if more than one diagram loaded or creates project with the only diagram
@@ -298,6 +302,10 @@ private:
 
 	void addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu);
 
+	/// Traverses list of actions and adds buttons to toolbar.
+	/// @param actions - list of actions to traverse
+	void traverseListOfActions(QList<ActionInfo> const &actions);
+
 	void setIndexesOfPropertyEditor(Id const &id);
 
 	void setBackReference(QPersistentModelIndex const &index, QString const &data);
@@ -343,6 +351,7 @@ private:
 	Controller *mController;
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
+	InterpretedPluginsLoader mInterpretedPluginLoader;
 	PropertyEditorModel mPropertyModel;
 	SystemEvents *mSystemEvents;
 	TextManager *mTextManager;

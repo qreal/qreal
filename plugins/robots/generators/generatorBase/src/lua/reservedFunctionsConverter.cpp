@@ -11,21 +11,18 @@ ReservedFunctionsConverter::ReservedFunctionsConverter(QString const &pathToTemp
 
 QString ReservedFunctionsConverter::convert(QString const &name, QStringList const &args) const
 {
-	if (name == "random") {
-		if (args.count() != 1) {
-			/// @todo: report error.
-			return QString();
-		}
-
-		return readTemplate("functions/random.t").replace("@@UPPER_BOUND@@", args[0]);
+	QStringList const oneArgumentFloatFunctions = { "sin", "cos", "ln", "exp", "asin", "acos", "atan"
+			, "sgn", "sqrt", "abs", "ceil", "floor", "random" };
+	int const index = oneArgumentFloatFunctions.indexOf(name);
+	if (index >= 0) {
+		return readTemplate(QString("functions/%1.t").arg(name)).replace("@@ARGUMENT@@"
+				, args.count() ? args[0] : QString());
 	}
 
 	if (name == "time") {
 		/// @todo: generate timestamps code in only when required
-		return readTemplate("whatTime.t");
+		return readTemplate("functions/time.t");
 	}
-
-	/// @todo: add all supported functions here.
 
 	return QString();
 }

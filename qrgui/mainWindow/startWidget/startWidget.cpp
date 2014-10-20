@@ -287,6 +287,8 @@ void StartWidget::openInterpretedDiagram()
 			}
 		}
 
+		mMainWindow->initInterpretedPlugins();
+
 		foreach (QString const &interpreterIdString, interpreterDiagramsList) {
 			// TODO: ???
 			mMainWindow->models()->repoControlApi().exterminate();
@@ -319,6 +321,7 @@ void StartWidget::createInterpretedDiagram()
 		mMainWindow->models()->repoControlApi().exterminate();
 		mMainWindow->models()->reinit();
 		mMainWindow->loadPlugins();
+		mMainWindow->initInterpretedPlugins();
 	} else {
 		show();
 		editorManagerProxy.setProxyManager(new EditorManager());

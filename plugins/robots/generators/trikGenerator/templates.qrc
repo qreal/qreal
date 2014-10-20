@@ -99,8 +99,21 @@
         <file>templates/videosensors/initlineSensor.t</file>
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>
+        <file>templates/functions/abs.t</file>
+        <file>templates/functions/acos.t</file>
+        <file>templates/functions/asin.t</file>
+        <file>templates/functions/atan.t</file>
+        <file>templates/functions/ceil.t</file>
+        <file>templates/functions/cos.t</file>
+        <file>templates/functions/exp.t</file>
+        <file>templates/functions/floor.t</file>
+        <file>templates/functions/ln.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
+        <file>templates/functions/sgn.t</file>
+        <file>templates/functions/sin.t</file>
+        <file>templates/functions/sqrt.t</file>
+        <file>templates/functions/time.t</file>
         <file>templates/wait/encoder.t</file>
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>
@@ -132,7 +145,6 @@
         <file>templates/buttons/waitForPower.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
-        <file>templates/whatTime.t</file>
         <file>templates/variableInit.t</file>
         <file>templates/engines/backward.t</file>
         <file>templates/engines/forward.t</file>

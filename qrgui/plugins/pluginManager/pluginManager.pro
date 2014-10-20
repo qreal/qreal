@@ -32,6 +32,8 @@ HEADERS += \
 	$$PWD/pattern.h \
 	$$PWD/explosion.h \
 	$$PWD/sdfRenderer.h \
+	$$PWD/interpretedPluginManager.h \
+	$$PWD/interpretedPluginsLoader.h \
 	$$PWD/details/patternParser.h \
 	$$PWD/details/interpreterElementImpl.h \
 	$$PWD/details/interpreterPortImpl.h \
@@ -44,6 +46,8 @@ SOURCES += \
 	$$PWD/pattern.cpp \
 	$$PWD/explosion.cpp \
 	$$PWD/sdfRenderer.cpp \
+	$$PWD/interpretedPluginManager.cpp \
+	$$PWD/interpretedPluginsLoader.cpp \
 	$$PWD/details/patternParser.cpp \
 	$$PWD/details/interpreterElementImpl.cpp \
 	$$PWD/details/interpreterPortImpl.cpp \
