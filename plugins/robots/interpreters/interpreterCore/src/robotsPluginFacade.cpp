@@ -192,7 +192,9 @@ void RobotsPluginFacade::initSensorWidgets()
 
 	mWatchListWindow = new utils::WatchListWindow(*mParser);
 
-	mWatchListWindow->hideVariables(mParser->specialVariables());
+	auto hideVariables = [=]() { mWatchListWindow->hideVariables(mParser->specialVariables()); };
+	hideVariables();
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, hideVariables);
 
 	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, this);
 
