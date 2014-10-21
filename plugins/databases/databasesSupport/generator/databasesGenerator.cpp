@@ -126,21 +126,8 @@ void DatabasesGenerator::error(QString error, bool isCritical)
 	} else {
 		mInterpretersInterface.errorReporter()->addWarning(error, Id::rootId());
 	}
-	/*switch (error) {
-		case missingBeginNode:
-			mInterpretersInterface.errorReporter()->addCritical(tr("The diagram doesn't have Initial Node"));
-			break;
-		case endWithNotEndNode:
-			mInterpretersInterface.errorReporter()->addWarning(
-					tr("There are no links from this node and it mismatches Final Node")
-					, mCurrentId);
-			break;
-		case noErrors:
-			return;
-			break;
-	}*/
-	mCurrentId = Id::rootId();
-	mCurrentDiagram = Id::rootId();
+	//mCurrentId = Id::rootId();
+	//mCurrentDiagram = Id::rootId();
 }
 
 Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
@@ -199,25 +186,75 @@ QString DatabasesGenerator::getListTableName(IdList const &list)
 	return name;
 }
 
+bool DatabasesGenerator::checkEntities()
+{
+	bool result = true;
+	IdList entities = findNodes("Entity");
+	foreach (Id const &entity, entities) {
+		QString name = getProperty(entity, "Name").toString();
+		if (name == "") {
+			result = false;
+			error(tr("Entity has no name"), true);
+		}
+	}
+	return result;
+}
+
+bool DatabasesGenerator::checkAttributes()
+{
+	bool result = true;
+	IdList attributes = findNodes("Attribute");
+	foreach (Id const &attribute, attributes) {
+		QString name = getProperty(attribute, "Name").toString();
+		QString datatype = getProperty(attribute, "DataType").toString();
+		if (name == "") {
+			result = false;
+			error(tr("Attribute has no name"), true);
+		}
+		if (datatype == "") {
+			result = false;
+			error(tr("Attribute has no datatype"), true);
+		}
+	}
+	return result;
+}
+
+bool DatabasesGenerator::checkRelationships()
+{
+	bool result = true;
+	IdList relationships = findNodes("OneToManyRelationship");
+	relationships.append(findNodes("ManyToManyRelationship"));
+	relationships.append(findNodes("OneToOneRelationship"));
+	foreach (Id const &relationship, relationships) {
+		Id out = mLogicalModelApi.logicalRepoApi().to(relationship);
+		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
+		if (out == Id::rootId() || from == Id::rootId()) {
+			result = false;
+			error(getProperty(relationship, "name").toString() + tr(" relationship with name '") + getProperty(relationship, "Name").toString() + tr("' has invalid ends"), true);
+		}
+	}
+	return result;
+}
+
 void DatabasesGenerator::generateSQL()
 {
 	mErrorReporter->clear();
-	//error(missingBeginNode);
-
-
 	mPassedElements.clear();
 
-	//setCodeFileName(SettingsManager::value("databasesCodeFileName").toString());
+	if (!(checkRelationships() && checkAttributes() && checkEntities())) {
+		return;
+	}
 
 	codeFile.setFileName(mWorkDir + mCodeFileName);
 	codeFile.open(QIODevice::WriteOnly);
 
 	IdList entityNodes = findNodes("Entity");
-	//IdList attributeNodes = findNodes("Attribute");
 
 	QList<IdList> oneToOneAllTablesSet;
 	oneToOneAllTablesSet.clear();
 
+/// Search for alone entities (we make table for each alone entity)
+/// Formation of one-to-one sets (we union entities bounded by one-to-one relationship in one table)
 	foreach (Id const &entityId, entityNodes) {
 		IdList relationships = mLogicalModelApi.logicalRepoApi().outgoingLinks(entityId);
 		relationships.append(mLogicalModelApi.logicalRepoApi().incomingLinks(entityId));
@@ -228,6 +265,9 @@ void DatabasesGenerator::generateSQL()
 			codeFile.write(getProperty(entityId, "Name").toByteArray());
 			codeFile.write("\r\n(");
 			IdList attributesSet = getChildren(entityId);
+			if (attributesSet.isEmpty()) {
+				error("Entity without attributes with name '" + getProperty(entityId, "Name").toString() + "'", false);
+			}
 
 			bool first = true;
 			foreach (Id const &attribute, attributesSet) {

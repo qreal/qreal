@@ -139,7 +139,7 @@
 				<graphics>
 					<lineType type="solidLine"/>
 					<labels>
-						<label textBinded="Text"/>
+						<label textBinded="Name"/>
 					</labels>
 				</graphics>
 			</edge>
@@ -147,7 +147,7 @@
 				<graphics>
 					<lineType type="solidLine"/>
 					<labels>
-						<label textBinded="Text"/>
+						<label textBinded="Name"/>
 					</labels>
 				</graphics>
 				<logic>
@@ -183,7 +183,7 @@
 				<graphics>
 					<lineType type="solidLine"/>
 					<labels>
-						<label textBinded="Text"/>
+						<label textBinded="Name"/>
 					</labels>
 				</graphics>
 				<logic>

@@ -49,6 +49,9 @@ private:
 	QString getPrimaryKeyNameOfSet(IdList const &entitySet);
 	int getParentList(Id const &childEntity,QList<IdList> set);
 	QString getListTableName(IdList const &list);
+	bool checkEntities();
+	bool checkAttributes();
+	bool checkRelationships();
 
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	qReal::LogicalModelAssistInterface const &mLogicalModelApi;
