@@ -14,9 +14,6 @@ public:
 			, qrtext::LanguageToolboxInterface &luaToolbox);
 
 private:
-	QMap<QString, int> intConstants() const override;
-	QMap<QString, float> floatConstants() const override;
-
 	QStringList expressions(qrRepo::RepoApi const &api) const override;
 };
 
