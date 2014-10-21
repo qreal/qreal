@@ -974,6 +974,9 @@
 				<logic>
 					<properties>
 						<property displayedName="Command" type="string" name="Command" />
+						<property displayedName="Code" type="bool" name="Code">
+							<default>false</default>
+						</property>
 					</properties>
 					<container/>
 					<generalizations>

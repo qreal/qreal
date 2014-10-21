@@ -12,6 +12,7 @@
         <file>templates/led.t</file>
         <file>templates/say.t</file>
         <file>templates/system.t</file>
+        <file>templates/nativeCode.t</file>
         <file>templates/backgroundColors/white.t</file>
         <file>templates/backgroundColors/black.t</file>
         <file>templates/backgroundColors/red.t</file>
