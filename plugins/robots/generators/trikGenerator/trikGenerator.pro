@@ -40,10 +40,6 @@ HEADERS += \
 	$$PWD/parts/trikVariables.h \
 	$$PWD/converters/backgroundColorConverter.h \
 	$$PWD/converters/ledColorConverter.h \
-	$$PWD/converters/engineV4PortConverter.h \
-	$$PWD/converters/engineV6PortConverter.h \
-	$$PWD/converters/encoderV4PortConverter.h \
-	$$PWD/converters/encoderV6PortConverter.h \
 	$$PWD/converters/trikStringPropertyConverter.h \
 	$$PWD/simpleGenerators/detectGenerator.h \
 	$$PWD/simpleGenerators/initCameraGenerator.h \
@@ -56,8 +52,6 @@ HEADERS += \
 	$$PWD/simpleGenerators/setBackgroundGenerator.h \
 	$$PWD/simpleGenerators/smileGenerator.h \
 	$$PWD/simpleGenerators/trikEnginesGenerator.h \
-	$$PWD/simpleGenerators/trikEnginesStopGenerator.h \
-	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.h \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.h \
 	$$PWD/simpleGenerators/waitForMotionGenerator.h \
 	$$PWD/simpleGenerators/drawLineGenerator.h \
@@ -79,10 +73,6 @@ SOURCES += \
 	$$PWD/parts/trikVariables.cpp \
 	$$PWD/converters/backgroundColorConverter.cpp \
 	$$PWD/converters/ledColorConverter.cpp \
-	$$PWD/converters/engineV4PortConverter.cpp \
-	$$PWD/converters/engineV6PortConverter.cpp \
-	$$PWD/converters/encoderV4PortConverter.cpp \
-	$$PWD/converters/encoderV6PortConverter.cpp \
 	$$PWD/converters/trikStringPropertyConverter.cpp \
 	$$PWD/simpleGenerators/detectGenerator.cpp \
 	$$PWD/simpleGenerators/initCameraGenerator.cpp \
@@ -95,8 +85,6 @@ SOURCES += \
 	$$PWD/simpleGenerators/setBackgroundGenerator.cpp \
 	$$PWD/simpleGenerators/smileGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesGenerator.cpp \
-	$$PWD/simpleGenerators/trikEnginesStopGenerator.cpp \
-	$$PWD/simpleGenerators/trikNullificationEncoderGenerator.cpp \
 	$$PWD/simpleGenerators/waitForInfraredSensorGenerator.cpp \
 	$$PWD/simpleGenerators/waitForMotionGenerator.cpp \
 	$$PWD/simpleGenerators/drawLineGenerator.cpp \

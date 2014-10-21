@@ -13,10 +13,13 @@
         <file>templates/colors/red.t</file>
         <file>templates/colors/white.t</file>
         <file>templates/colors/yellow.t</file>
-        <file>templates/drawing/printText.t</file>
-        <file>templates/engines/engineA.t</file>
-        <file>templates/engines/engineB.t</file>
-        <file>templates/engines/engineC.t</file>
+        <file>templates/ports/A.t</file>
+        <file>templates/ports/B.t</file>
+        <file>templates/ports/C.t</file>
+        <file>templates/ports/1.t</file>
+        <file>templates/ports/2.t</file>
+        <file>templates/ports/3.t</file>
+        <file>templates/ports/4.t</file>
         <file>templates/engines/enginesBackward.t</file>
         <file>templates/engines/enginesForward.t</file>
         <file>templates/engines/enginesStop.t</file>
@@ -62,10 +65,6 @@
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/sound.t</file>
         <file>templates/sensors/touch.t</file>
-        <file>templates/sensors/port1.t</file>
-        <file>templates/sensors/port2.t</file>
-        <file>templates/sensors/port3.t</file>
-        <file>templates/sensors/port4.t</file>
         <file>templates/functions/abs.t</file>
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>
@@ -132,6 +131,7 @@
         <file>templates/isrHooks/colorRed.t</file>
         <file>templates/isrHooks/encoder.t</file>
         <file>templates/isrHooks/buttons.t</file>
+        <file>templates/drawing/printText.t</file>
         <file>templates/drawing/bmpDeclaration.t</file>
         <file>templates/drawing/clearUnusedScreen.t</file>
         <file>templates/drawing/clearUsedScreen.t</file>

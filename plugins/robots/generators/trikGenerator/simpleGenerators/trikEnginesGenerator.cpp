@@ -14,8 +14,7 @@ TrikEnginesGenerator::TrikEnginesGenerator(qrRepo::RepoApi const &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, engineType.contains("EnginesBackward") ? "engines/backward.t" : "engines/forward.t"
-			, { Binding::createMultiTarget("@@PORT@@", "Ports"
-						, dynamic_cast<trik::TrikGeneratorFactory *>(customizer.factory())->enginesConverter())
+			, { Binding::createMultiTarget("@@PORT@@", "Ports", customizer.factory()->enginesConverter())
 				, Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter(id)) }
 			, parent)
 {

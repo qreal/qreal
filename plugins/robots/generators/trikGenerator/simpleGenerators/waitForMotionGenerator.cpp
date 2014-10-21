@@ -11,7 +11,7 @@ WaitForMotionGenerator::WaitForMotionGenerator(qrRepo::RepoApi const &repo
 		, Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/motion.t", QList<Binding *>()
-			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->inputPortConverter())
+			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())
 			<< Binding::createConverting("@@DISTANCE@@", "Distance", customizer.factory()->intPropertyConverter(id))
 			<< Binding::createConverting("@@SIGN@@", "Sign", customizer.factory()->inequalitySignConverter())
 			, parent)

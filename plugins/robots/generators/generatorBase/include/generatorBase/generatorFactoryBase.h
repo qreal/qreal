@@ -183,11 +183,8 @@ public:
 	/// without taking ownership on it
 	virtual simple::Binding::MultiConverterInterface *enginesConverter() const;
 
-	/// Produces converter for sensor port specification without taking ownership on it
-	virtual simple::Binding::ConverterInterface *inputPortConverter() const;
-
-	/// Produces converter for engine port specification without taking ownership on it
-	virtual simple::Binding::ConverterInterface *outputPortConverter() const;
+	/// Produces converter for port names without taking ownership on it
+	virtual simple::Binding::ConverterInterface *portNameConverter() const;
 
 	/// Produces converter for color specification without taking ownership on it
 	virtual simple::Binding::ConverterInterface *colorConverter() const;

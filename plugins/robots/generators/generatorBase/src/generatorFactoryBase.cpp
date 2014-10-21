@@ -46,8 +46,7 @@
 #include "converters/inequalitySignConverter.h"
 #include "converters/colorConverter.h"
 #include "converters/breakModeConverter.h"
-#include "converters/inputPortConverter.h"
-#include "converters/outputPortConverter.h"
+#include "converters/portNameConverter.h"
 #include "converters/enginePortsConverter.h"
 #include "converters/typeConverter.h"
 #include "converters/reservedVariablesConverter.h"
@@ -121,12 +120,12 @@ void GeneratorFactoryBase::initSubprograms()
 
 void GeneratorFactoryBase::initEngines()
 {
-	mEngines = new parts::Engines(pathToTemplates(), outputPortConverter(), enginesConverter());
+	mEngines = new parts::Engines(pathToTemplates(), portNameConverter(), enginesConverter());
 }
 
 void GeneratorFactoryBase::initSensors()
 {
-	mSensors = new parts::Sensors(pathToTemplates(), inputPortConverter());
+	mSensors = new parts::Sensors(pathToTemplates(), portNameConverter());
 }
 
 void GeneratorFactoryBase::initFunctions()
@@ -369,7 +368,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::reservedVariableNameConverter
 			, mErrorReporter
 			, mRobotModelManager.model()
 			, currentConfiguration()
-			, inputPortConverter()
+			, portNameConverter()
 			, *deviceVariables());
 }
 
@@ -390,17 +389,12 @@ Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() con
 
 Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter() const
 {
-	return new converters::EnginePortsConverter(outputPortConverter());
+	return new converters::EnginePortsConverter(portNameConverter());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::inputPortConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::portNameConverter() const
 {
-	return new converters::InputPortConverter(pathToTemplates());
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::outputPortConverter() const
-{
-	return new converters::OutputPortConverter(pathToTemplates());
+	return new converters::PortNameConverter(pathToTemplates(), mRobotModelManager.model().availablePorts());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::colorConverter() const

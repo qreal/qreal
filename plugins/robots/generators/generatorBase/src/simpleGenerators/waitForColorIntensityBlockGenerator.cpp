@@ -9,7 +9,7 @@ WaitForColorIntensityBlockGenerator::WaitForColorIntensityBlockGenerator(qrRepo:
 		, Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/colorIntensity.t", QList<Binding *>()
-			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->inputPortConverter())
+			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())
 			<< Binding::createConverting("@@INTENSITY@@", "Intensity", customizer.factory()->intPropertyConverter(id))
 			<< Binding::createConverting("@@SIGN@@", "Sign", customizer.factory()->inequalitySignConverter())
 			, parent)

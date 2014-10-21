@@ -20,22 +20,12 @@ public:
 
 	QString pathToTemplates() const override;
 
-	generatorBase::simple::Binding::MultiConverterInterface *enginesConverter() const override;
-	generatorBase::simple::Binding::MultiConverterInterface *encodersConverter() const;
-
-	generatorBase::simple::Binding::ConverterInterface *inputPortConverter() const override;
-	generatorBase::simple::Binding::ConverterInterface *outputPortConverter() const override;
-
 	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
 
 	generatorBase::parts::DeviceVariables *deviceVariables() const override;
 
 protected:
 	void initVariables() override;
-
-	QString motorPortSplitRegexp() const;
-	generatorBase::simple::Binding::ConverterInterface *motorPortConverter() const;
-	generatorBase::simple::Binding::ConverterInterface *encoderPortConverter() const;
 };
 
 }
