@@ -1,1 +1,1 @@
-const @@TYPE@@ @@NAME@@ = @@VALUE@@;
+@@TYPE@@ @@NAME@@ = @@VALUE@@;
