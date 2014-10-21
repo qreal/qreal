@@ -46,7 +46,7 @@ void ScriptAPI::init(MainWindow *mainWindow)
 	mHintAPI = new HintAPI(this);
 
 	QScriptValue const scriptAPI = mScriptEngine.newQObject(this);
-	mScriptEngine.globalObject().setProperty("API", scriptAPI);
+	mScriptEngine.globalObject().setProperty("api", scriptAPI);
 
 	QScriptValue const guiFacade = mScriptEngine.newQObject(mGuiFacade);
 	mScriptEngine.globalObject().setProperty("guiFacade", guiFacade);
@@ -148,10 +148,10 @@ void ScriptAPI::changeWindow(QWidget *parent)
 	mVirtualCursor->leftButtonRelease(parent);
 }
 
-void ScriptAPI::loadPluginGuiFacade(QString const pluginName)
+QScriptValue ScriptAPI::pluginUi(QString const pluginName)
 {
-	QScriptValue const pluginGuiFacade = mScriptEngine.newQObject(mGuiFacade->pluginGuiFacade(pluginName));
-	mScriptEngine.globalObject().setProperty("pluginGuiFacade", pluginGuiFacade);
+	return mScriptEngine.newQObject(mGuiFacade->pluginGuiFacade(pluginName)
+			, QScriptEngine::ScriptOwnership);
 }
 
 void ScriptAPI::abortEvaluate()
@@ -169,22 +169,37 @@ VirtualCursor *ScriptAPI::virtualCursor()
 	return mVirtualCursor;
 }
 
-VirtualKeyboard *ScriptAPI::virtualKeyboard()
-{
-	return mVirtualKeyboard;
-}
-
-HintAPI *ScriptAPI::hintAPI()
-{
-	return mHintAPI;
-}
-
 SceneAPI *ScriptAPI::sceneAPI()
 {
 	return mSceneAPI;
 }
 
-PaletteAPI *ScriptAPI::paletteAPI()
+QScriptValue ScriptAPI::ui()
 {
-	return mPaletteAPI;
+	return mScriptEngine.newQObject(mGuiFacade, QScriptEngine::ScriptOwnership);
+}
+
+QScriptValue ScriptAPI::hints()
+{
+	return mScriptEngine.newQObject(mHintAPI, QScriptEngine::ScriptOwnership);
+}
+
+QScriptValue ScriptAPI::palette()
+{
+	return mScriptEngine.newQObject(mPaletteAPI, QScriptEngine::ScriptOwnership);
+}
+
+QScriptValue ScriptAPI::scene()
+{
+	return mScriptEngine.newQObject(mSceneAPI, QScriptEngine::ScriptOwnership);
+}
+
+QScriptValue ScriptAPI::cursor()
+{
+	return mScriptEngine.newQObject(mVirtualCursor, QScriptEngine::ScriptOwnership);
+}
+
+QScriptValue ScriptAPI::keyboard()
+{
+	return mScriptEngine.newQObject(mVirtualKeyboard, QScriptEngine::ScriptOwnership);
 }

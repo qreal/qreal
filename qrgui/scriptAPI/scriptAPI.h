@@ -43,7 +43,25 @@ public:
 	Q_INVOKABLE void pickComboBoxItem(QComboBox *comboBox, QString const &name, int const duration);
 
 	/// Will make plugin gui facade available in scripting file.
-	Q_INVOKABLE void loadPluginGuiFacade(QString const pluginName);
+	Q_INVOKABLE QScriptValue pluginUi(QString const pluginName);
+
+	/// Returns gui facade in script.
+	Q_INVOKABLE QScriptValue ui();
+
+	/// Returns virtual cursor in script.
+	Q_INVOKABLE QScriptValue cursor();
+
+	/// Returns virtual keyboard in script.
+	Q_INVOKABLE QScriptValue keyboard();
+
+	/// Returns sceneAPI in script.
+	Q_INVOKABLE QScriptValue scene();
+
+	/// Returns hintAPI in script.
+	Q_INVOKABLE QScriptValue hints();
+
+	/// Returns paletteAPI in script.
+	Q_INVOKABLE QScriptValue palette();
 
 	/// Returns gui facade.
 	GuiFacade *guiFacade();
@@ -51,17 +69,8 @@ public:
 	/// Returns virtual cursor.
 	VirtualCursor *virtualCursor();
 
-	/// Returns virtual keyboard.
-	VirtualKeyboard *virtualKeyboard();
-
 	/// Returns scene API.
 	SceneAPI *sceneAPI();
-
-	/// Returns hint API.
-	HintAPI *hintAPI();
-
-	/// Returns palette API.
-	PaletteAPI *paletteAPI();
 
 public slots:
 	///Breaks event loop.
