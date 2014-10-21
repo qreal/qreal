@@ -140,7 +140,6 @@
         <file>templates/buttons/waitForRight.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
-        <file>templates/variableInit.t</file>
         <file>templates/luaPrinting/addition.t</file>
         <file>templates/luaPrinting/argumentsSeparator.t</file>
         <file>templates/luaPrinting/assignment.t</file>
