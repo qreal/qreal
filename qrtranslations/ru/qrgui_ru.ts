@@ -714,17 +714,17 @@
 <context>
     <name>GesturesWidget</name>
     <message>
-        <location filename="../../qrgui/gestures/gesturesWidget.ui" line="14"/>
+        <location filename="../../qrgui/gestures/gesturesWidget.ui" line="20"/>
         <source>Form</source>
         <translation>Жесты</translation>
     </message>
     <message>
-        <location filename="../../qrgui/gestures/gesturesWidget.ui" line="26"/>
+        <location filename="../../qrgui/gestures/gesturesWidget.ui" line="36"/>
         <source>List of mouse gestures</source>
         <translation>Список жестов мышью</translation>
     </message>
     <message>
-        <location filename="../../qrgui/gestures/gesturesWidget.ui" line="39"/>
+        <location filename="../../qrgui/gestures/gesturesWidget.ui" line="49"/>
         <source>Click to see how to draw it:</source>
         <translation>Кликните, чтобы посмотреть, как рисовать жест:</translation>
     </message>
@@ -895,43 +895,40 @@
         <translation>Найти...</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="738"/>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="741"/>
         <source>Cut</source>
-        <translation>Вырезать</translation>
+        <translation type="vanished">Вырезать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="744"/>
         <source>Ctrl+X</source>
-        <translation>Ctrl+X</translation>
+        <translation type="vanished">Ctrl+X</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="786"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="742"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="789"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="745"/>
         <source>Ctrl+Z</source>
         <translation>Ctrl+Z</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="798"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="754"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="801"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="757"/>
         <source>Ctrl+Shift+Z</source>
         <translation>Ctrl+Shift+Z</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="806"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="762"/>
         <source>Export to XML</source>
         <translation>Экспортировать в XML</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="811"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="767"/>
         <source>Check for updates...</source>
         <translation>Проверить на наличие обновлений</translation>
     </message>
@@ -945,38 +942,29 @@
         <translation>Найти и заменить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="749"/>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="752"/>
         <source>Copy</source>
-        <translation>Копировать</translation>
+        <translation type="vanished">Копировать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="755"/>
         <source>Ctrl+C</source>
-        <translation>Ctrl+C</translation>
+        <translation type="vanished">Ctrl+C</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="760"/>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="763"/>
         <source>Paste</source>
-        <translation>Вставить</translation>
+        <translation type="vanished">Вставить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="766"/>
         <source>Ctrl+V</source>
-        <translation>Ctrl+V</translation>
+        <translation type="vanished">Ctrl+V</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="771"/>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="774"/>
         <source>Paste only graphical copy</source>
         <oldsource>Paste copy of logical element</oldsource>
-        <translation>Вставить только графическую копию</translation>
+        <translation type="vanished">Вставить только графическую копию</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.ui" line="777"/>
         <source>Ctrl+Shift+V</source>
-        <translation>Ctrl+Shift+V</translation>
+        <translation type="vanished">Ctrl+Shift+V</translation>
     </message>
     <message>
         <source>Recent projects</source>
@@ -1490,7 +1478,7 @@
         <translation type="obsolete">Предложения</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/behaviourPage.cpp" line="101"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/behaviourPage.cpp" line="103"/>
         <source>&lt;System Language&gt;</source>
         <translation>&lt;Системный язык&gt;</translation>
     </message>
@@ -1594,12 +1582,12 @@
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesDialog.ui" line="136"/>
+        <location filename="../../qrgui/dialogs/preferencesDialog.ui" line="143"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesDialog.ui" line="143"/>
+        <location filename="../../qrgui/dialogs/preferencesDialog.ui" line="150"/>
         <source>Import</source>
         <translation>Импорт</translation>
     </message>
@@ -1627,8 +1615,12 @@
     </message>
     <message>
         <location filename="../../qrgui/dialogs/preferencesDialog.cpp" line="89"/>
-        <source>You should restart the system to apply changes</source>
+        <source>You should restart the program to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
+    </message>
+    <message>
+        <source>You should restart the system to apply changes</source>
+        <translation type="vanished">Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
         <location filename="../../qrgui/dialogs/preferencesDialog.cpp" line="166"/>
@@ -1855,67 +1847,67 @@
 <context>
     <name>PreferencesEditorPage</name>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="527"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="481"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="534"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="488"/>
         <source>Indent</source>
         <translation>Отступ</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="209"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="120"/>
         <source>Show grid</source>
         <translation>Показать сетку</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="192"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="136"/>
         <source>Activate grid</source>
         <translation>Выравнивание по сетке</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="202"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="204"/>
         <source>Width</source>
         <translation>Толщина сетки</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="179"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="236"/>
         <source>Cell size</source>
         <translation>Размер ячейки</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="292"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="274"/>
         <source>Node Elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="324"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="306"/>
         <source>Drag area</source>
         <translation>Размер области масштабирования</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="357"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="316"/>
         <source>Edge</source>
         <translation>Связи</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="434"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="388"/>
         <source>Line mode</source>
         <translation>Тип связей</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="416"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="370"/>
         <source>broken</source>
         <translation>Ломаные линии</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="421"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="375"/>
         <source>square</source>
         <translation>Прямоугольные линии</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="426"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="380"/>
         <source>curve</source>
         <translation>Кривые Безье</translation>
     </message>
@@ -1924,77 +1916,76 @@
         <translation type="obsolete">Связи-петли</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="600"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="560"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="616"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="576"/>
         <source>   Representation   </source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="643"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="603"/>
         <source>Icons  and names</source>
         <translation>Иконки и названия</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="648"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="608"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="623"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="583"/>
         <source>   Count of items in a row </source>
         <translation>Количество иконок в строке</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="169"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="181"/>
         <source>Activate alignment</source>
         <translation>Выравнивание по направляющим</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="225"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="152"/>
         <source>Show alignment</source>
         <translation>Показать направляющие</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="116"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="98"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="411"/>
         <source>unset</source>
-        <translation>По умолчанию</translation>
+        <translation type="vanished">По умолчанию</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="447"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="401"/>
         <source>Loop edges indent</source>
         <translation>Отступ связей-петель</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="485"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="439"/>
         <source>Embedded Linkers</source>
         <translation>Встроенные линкеры</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="544"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="498"/>
         <source>Labels</source>
         <translation>Надписи на элементах</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="560"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="520"/>
         <source>Enable move</source>
         <translation>Разрешить перемещать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="570"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="530"/>
         <source>Enable resize</source>
         <translation>Разрешить изменять размер</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="580"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="540"/>
         <source>Label distance</source>
         <translation>Расстояние от надписей до элемента</translation>
     </message>
@@ -2007,17 +1998,17 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="56"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="38"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="93"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="75"/>
         <source>Use some of system fonts</source>
         <translation>Использовать системный шрифт</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="106"/>
+        <location filename="../../qrgui/dialogs/preferencesPages/editorPage.ui" line="88"/>
         <source>Choose Font</source>
         <translation>Выбрать шрифт</translation>
     </message>
@@ -2354,7 +2345,7 @@
 <context>
     <name>PropertyEditorView</name>
     <message>
-        <location filename="../../qrgui/view/propertyEditorView.cpp" line="181"/>
+        <location filename="../../qrgui/view/propertyEditorView.cpp" line="186"/>
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
     </message>
@@ -2643,7 +2634,7 @@
 <context>
     <name>QtColorEditWidget</name>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2289"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2346"/>
         <source>...</source>
         <translation></translation>
     </message>
@@ -2651,22 +2642,22 @@
 <context>
     <name>QtColorPropertyManager</name>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6375"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6455"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6383"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6463"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6391"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6471"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6399"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6479"/>
         <source>Alpha</source>
         <translation>Прозрачность</translation>
     </message>
@@ -2772,12 +2763,12 @@
 <context>
     <name>QtFontEditWidget</name>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2498"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2555"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2518"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2575"/>
         <source>Select Font</source>
         <translation>Выбрать шрифт</translation>
     </message>
@@ -2785,37 +2776,37 @@
 <context>
     <name>QtFontPropertyManager</name>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6049"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6129"/>
         <source>Family</source>
         <translation>Семейство</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6062"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6142"/>
         <source>Point Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6070"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6150"/>
         <source>Bold</source>
         <translation>Полужирный</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6077"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6157"/>
         <source>Italic</source>
         <translation>Наклонный</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6084"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6164"/>
         <source>Underline</source>
         <translation>Подчёркнутый</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6091"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6171"/>
         <source>Strikeout</source>
         <translation>Зачёркнутый</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6098"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6178"/>
         <source>Kerning</source>
         <translation>Кернинг</translation>
     </message>
@@ -2972,33 +2963,33 @@
 <context>
     <name>QtSizePolicyPropertyManager</name>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5561"/>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5562"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5641"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5642"/>
         <source>&lt;Invalid&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5563"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5643"/>
         <source>[%1, %2, %3, %4]</source>
         <translation>[%1, %2, %3, %4]</translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5608"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5688"/>
         <source>Horizontal Policy</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5617"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5697"/>
         <source>Vertical Policy</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5626"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5706"/>
         <source>Horizontal Stretch</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5634"/>
+        <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5714"/>
         <source>Vertical Stretch</source>
         <translation></translation>
     </message>
@@ -3809,12 +3800,12 @@
 <context>
     <name>qReal::EdgeElement</name>
     <message>
-        <location filename="../../qrgui/umllib/edgeElement.cpp" line="52"/>
+        <location filename="../../qrgui/umllib/edgeElement.cpp" line="53"/>
         <source>Reverse</source>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="../../qrgui/umllib/edgeElement.cpp" line="53"/>
+        <location filename="../../qrgui/umllib/edgeElement.cpp" line="54"/>
         <source>Change shape type</source>
         <translation>Изменить тип линии</translation>
     </message>
@@ -3931,25 +3922,45 @@
         <translation>Соединить с данным элементом</translation>
     </message>
     <message>
-        <location filename="../../qrgui/view/editorViewScene.cpp" line="952"/>
+        <location filename="../../qrgui/view/editorViewScene.cpp" line="946"/>
         <source>Add child</source>
         <translation>Добавить элемент</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/view/editorViewScene.cpp" line="1303"/>
+        <source>Copy</source>
+        <translation>Копировать</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/view/editorViewScene.cpp" line="1309"/>
+        <source>Paste</source>
+        <translation>Вставить</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/view/editorViewScene.cpp" line="1317"/>
+        <source>Paste only graphical copy</source>
+        <translation>Вставить только графическую копию</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/view/editorViewScene.cpp" line="1325"/>
+        <source>Cut</source>
+        <translation>Вырезать</translation>
     </message>
 </context>
 <context>
     <name>qReal::InterpreterEditorManager</name>
     <message>
-        <location filename="../../qrgui/pluginManager/interpreterEditorManager.cpp" line="852"/>
+        <location filename="../../qrgui/pluginManager/interpreterEditorManager.cpp" line="870"/>
         <source>Deleted</source>
         <translation>Удалено</translation>
     </message>
     <message>
-        <location filename="../../qrgui/pluginManager/interpreterEditorManager.cpp" line="858"/>
+        <location filename="../../qrgui/pluginManager/interpreterEditorManager.cpp" line="876"/>
         <source>Existed</source>
         <translation>Используется</translation>
     </message>
     <message>
-        <location filename="../../qrgui/pluginManager/interpreterEditorManager.cpp" line="860"/>
+        <location filename="../../qrgui/pluginManager/interpreterEditorManager.cpp" line="878"/>
         <source>Renamed to </source>
         <translation>Переименовано в </translation>
     </message>
@@ -4000,7 +4011,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="949"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="912"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -4151,93 +4162,93 @@
         <translation>Завершить тест</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="970"/>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="985"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="933"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="948"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="970"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="933"/>
         <source>Plugin unloading failed: </source>
         <translation>Выгрузка плагина завершилась ошибкой: </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="985"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="948"/>
         <source>Plugin loading failed: </source>
         <translation>Загрузка плагина завершилась ошибкой: </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1144"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1107"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1421"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1385"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1422"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1386"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1423"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1387"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1424"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1388"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1425"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1389"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1426"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1390"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1427"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1391"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1428"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1392"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1429"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1393"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1430"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1394"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1431"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1395"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1432"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1396"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1433"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1397"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="2304"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="2258"/>
         <source>Getting Started</source>
         <translation>Добро пожаловать!</translation>
     </message>
@@ -4246,9 +4257,9 @@
         <translation type="obsolete">Добро пожаловать!</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1109"/>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1124"/>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1152"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1072"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1087"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1115"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -4257,17 +4268,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="2150"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="2104"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="2181"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="2135"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="2181"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="2135"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -4288,7 +4299,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1657"/>
+        <location filename="../../qrgui/mainwindow/mainWindow.cpp" line="1623"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -4318,7 +4329,7 @@
 <context>
     <name>qReal::NodeElement</name>
     <message>
-        <location filename="../../qrgui/umllib/nodeElement.cpp" line="40"/>
+        <location filename="../../qrgui/umllib/nodeElement.cpp" line="41"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
     </message>
@@ -4395,80 +4406,80 @@
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="173"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="178"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="238"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="243"/>
         <source>This project contains unknown element %1 and thus can`t be opened. Probably it was created by old or incorrectly working version of QReal.</source>
         <translation>Данный проект содержит неизвестный элемент %1 и потому не может быть открыт. Возможно он был создан старой или некорректной версией QReal.</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="240"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="245"/>
         <source>Can`t open project file</source>
         <translation>Не могу открыть проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="269"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="274"/>
         <source>Unsaved project</source>
         <translation>Несохраненный проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="405"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="410"/>
         <source>QReal Save File (*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="408"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="413"/>
         <source>All files (*.*)</source>
         <oldsource>All files(*.*)</oldsource>
         <translation>Все файлы (*.*)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="439"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="444"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="440"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="445"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="440"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="445"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="207"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="212"/>
         <source>There are missing plugins</source>
         <translation>Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="208"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="213"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="376"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="381"/>
         <source>Select file to save current metamodel to</source>
         <translation>Выберите файл для сохранения метамодели</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="383"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="388"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения модели</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="423"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="428"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="276"/>
+        <location filename="../../qrgui/mainwindow/projectManager/projectManager.cpp" line="281"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>
@@ -4779,14 +4790,14 @@
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/startWidget/startWidget.cpp" line="309"/>
-        <location filename="../../qrgui/mainwindow/startWidget/startWidget.cpp" line="312"/>
+        <location filename="../../qrgui/mainwindow/startWidget/startWidget.cpp" line="311"/>
+        <location filename="../../qrgui/mainwindow/startWidget/startWidget.cpp" line="314"/>
         <source>Enter the diagram name:</source>
         <translation>Введите имя диаграммы:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainwindow/startWidget/startWidget.cpp" line="309"/>
-        <location filename="../../qrgui/mainwindow/startWidget/startWidget.cpp" line="312"/>
+        <location filename="../../qrgui/mainwindow/startWidget/startWidget.cpp" line="311"/>
+        <location filename="../../qrgui/mainwindow/startWidget/startWidget.cpp" line="314"/>
         <source>diagram name:</source>
         <translation>имя диаграммы:</translation>
     </message>
@@ -4823,12 +4834,12 @@
 <context>
     <name>qReal::TextManager</name>
     <message>
-        <location filename="../../qrgui/textEditor/textManager.cpp" line="246"/>
+        <location filename="../../qrgui/textEditor/textManager.cpp" line="247"/>
         <source>All files (*)</source>
         <translation>Все файлы (*)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/textEditor/textManager.cpp" line="254"/>
+        <location filename="../../qrgui/textEditor/textManager.cpp" line="255"/>
         <source>Save generated code</source>
         <translation>Сохранение сгенерированного кода</translation>
     </message>
