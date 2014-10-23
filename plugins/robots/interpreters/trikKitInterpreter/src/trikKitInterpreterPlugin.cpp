@@ -73,6 +73,8 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 
 	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel
 			, logicalModel, interpretersInterface, interpreterControl);
+
+	mRealRobotModelV6.setErrorReporter(interpretersInterface.errorReporter());
 }
 
 QString TrikKitInterpreterPlugin::kitId() const

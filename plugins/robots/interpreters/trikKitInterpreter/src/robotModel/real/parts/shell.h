@@ -1,6 +1,6 @@
 #pragma once
 
-#include "robotModel/parts/trikLineSensor.h"
+#include "robotModel/parts/trikShell.h"
 #include <utils/tcpRobotCommunicator.h>
 
 namespace trikKitInterpreter {
@@ -8,19 +8,18 @@ namespace robotModel {
 namespace real {
 namespace parts {
 
-/// Stub for TRIK color sensor for interpreter.
-class LineSensor : public robotModel::parts::TrikLineSensor
+class Shell : public robotModel::parts::TrikShell
 {
 	Q_OBJECT
 
 public:
-	LineSensor(interpreterBase::robotModel::DeviceInfo const &info
+	Shell(interpreterBase::robotModel::DeviceInfo const &info
 			, interpreterBase::robotModel::PortInfo const &port
 			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
-	void init() override;
-	void detectLine() override;
-	void read() override;
+	void runCommand(QString const &command) override;
+
+	void say(QString const &text) override;
 
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;

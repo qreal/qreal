@@ -18,7 +18,7 @@ public:
 			, interpreterBase::robotModel::PortInfo const &port);
 
 	/// @todo: led color enum here
-	virtual void setColor(QColor const &color) = 0;
+	virtual void setColor(QString const &color) = 0;
 };
 
 }

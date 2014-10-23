@@ -3,8 +3,9 @@
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
 
-Button::Button(DeviceInfo const &info, PortInfo const &port)
-	: robotParts::Button(info, port)
+Button::Button(DeviceInfo const &info, PortInfo const &port
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+	: robotParts::Button(info, port), mRobotCommunicator(tcpRobotCommunicator)
 {
 }
 

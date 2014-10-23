@@ -1,18 +1,20 @@
 #pragma once
 
 #include <QtNetwork/QTcpSocket>
+#include "utilsDeclSpec.h"
 
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-namespace trik {
+namespace utils {
 
 /// Class that handles connection to robot and sends commands to it.
-class TcpRobotCommunicator : public QObject
+class ROBOTS_UTILS_EXPORT TcpRobotCommunicator : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit TcpRobotCommunicator(qReal::ErrorReporterInterface &errorReporter);
+	explicit TcpRobotCommunicator(QString const &settings);
+
 	~TcpRobotCommunicator();
 
 	/// Reads generated program from a file and uploads it to a robot using "file" command.
@@ -27,11 +29,6 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	bool stopRobot();
 
-private slots:
-	void onIncomingData();
-	void processIncomingMessage(QString const &message);
-
-private:
 	/// Establishes connection and initializes socket. If connection fails, leaves socket
 	/// in invalid state.
 	void connect();
@@ -39,6 +36,19 @@ private:
 	/// Disconnects from robot.
 	void disconnect();
 
+	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
+
+signals:
+	/// Return correctness of the connection
+	void connected(bool result);
+	/// Signal of disconnection
+	void disconnected();
+
+private slots:
+	void onIncomingData();
+	void processIncomingMessage(QString const &message);
+
+private:
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
 	void send(QString const &data);
 
@@ -46,13 +56,15 @@ private:
 	QTcpSocket mSocket;
 
 	/// Reference to error reporter.
-	qReal::ErrorReporterInterface &mErrorReporter;
+	qReal::ErrorReporterInterface *mErrorReporter;
 
 	/// Buffer to accumulate parts of a message.
 	QByteArray mBuffer;
 
 	/// Declared size of a current message.
 	int mExpectedBytes = 0;
+
+	QString mSettings;
 };
 
 }

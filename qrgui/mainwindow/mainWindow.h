@@ -95,7 +95,7 @@ public:
 	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
-	virtual ErrorReporterInterface *errorReporter();
+	virtual ErrorReporterInterface *errorReporter() const;
 	virtual Id activeDiagram() const;
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue
 		, bool useTypedPorts);

@@ -1,6 +1,9 @@
 #pragma once
 
 #include <robotModel/trikRobotModelBase.h>
+#include <utils/tcpRobotCommunicator.h>
+
+#include <toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -17,10 +20,15 @@ public:
 	void connectToRobot() override;
 	void disconnectFromRobot() override;
 
+	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
+
 protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
 			interpreterBase::robotModel::PortInfo const &port
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
+
+private:
+	utils::TcpRobotCommunicator *mRobotCommunicator;
 };
 
 }

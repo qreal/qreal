@@ -1,10 +1,9 @@
 #pragma once
 
 #include <generatorBase/robotsGeneratorPluginBase.h>
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trik {
-
-class TcpRobotCommunicator;
 
 /// Generation of QtScript program for TRIK, uploading and execution of a program.
 /// Uses setting "tcpServer" from RobotsInterpreter.
@@ -61,7 +60,7 @@ private:
 	/// Action that stops script execution and turns off motors.
 	QAction mStopRobotAction;
 
-	TcpRobotCommunicator *mCommunicator;
+	utils::TcpRobotCommunicator *mCommunicator;
 };
 
 }
