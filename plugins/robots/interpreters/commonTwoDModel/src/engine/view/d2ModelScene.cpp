@@ -99,7 +99,7 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	QPointF const position = mouseEvent->scenePos();
 
-	for (RobotItem *robotItem : mRobots.values()) {
+	for (RobotItem * const robotItem : mRobots.values()) {
 		robotItem->checkSelection();
 
 		for (SensorItem *sensor : robotItem->sensors().values()) {
@@ -202,7 +202,7 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	for (RobotItem *robotItem : mRobots.values()) {
+	for (RobotItem * const robotItem : mRobots.values()) {
 		robotItem->checkSelection();
 		for (SensorItem *sensor : robotItem->sensors().values()) {
 			if (sensor) {
@@ -251,7 +251,7 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 	setMoveFlag(mouseEvent);
 
-	for (RobotItem *robotItem : mRobots) {
+	for (RobotItem * const robotItem : mRobots) {
 		setSceneRect(sceneRect().united(robotItem->sceneBoundingRect()));
 	}
 
@@ -280,7 +280,7 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 	}
 
 	if (SensorItem * const sensor = dynamic_cast<SensorItem *>(item)) {
-		for (RobotItem *robotItem : mRobots.values()) {
+		for (RobotItem * const robotItem : mRobots.values()) {
 			interpreterBase::robotModel::PortInfo const port = robotItem->sensors().key(sensor);
 			if (port.isValid()) {
 				deviceConfigurationChanged(robotItem->robotModel().info().robotId()
@@ -321,7 +321,7 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 
 		QPainterPath shape;
 
-		for (RobotItem *robotItem : mRobots.values()) {
+		for (RobotItem * const robotItem : mRobots.values()) {
 			shape.addRect(robotItem->realBoundingRect());
 		}
 
@@ -405,7 +405,7 @@ void D2ModelScene::reshapeWall(QGraphicsSceneMouseEvent *event)
 		} else {
 			QPainterPath const shape = mCurrentWall->realShape();
 
-			for (RobotItem *robotItem : mRobots.values()) {
+			for (RobotItem * const robotItem : mRobots.values()) {
 				if (shape.intersects(robotItem->realBoundingRect())) {
 					mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
 					break;
@@ -453,7 +453,7 @@ void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &s
 {
 	bool isNeedStop = false;
 
-	for (RobotItem *robotItem : mRobots.values()) {
+	for (RobotItem * const robotItem : mRobots.values()) {
 		if (shape.intersects(robotItem->realBoundingRect())) {
 			isNeedStop = true;
 			break;

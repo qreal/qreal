@@ -24,7 +24,7 @@
 using namespace twoDModel::robotModel;
 using namespace interpreterBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
+TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
 	: CommonRobotModel(realModel.kitId(), realModel.robotId())
 	, mRealModel(&realModel)
 	, mEngine(nullptr)
