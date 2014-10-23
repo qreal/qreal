@@ -4,12 +4,15 @@ CONFIG += c++11
 
 TEMPLATE = lib
 CONFIG += plugin
+
 DESTDIR = ../../../../bin/plugins/tools/kitPlugins/
+TARGET = robots-trik-qts-generator
+
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase
+LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lrobots-generator-base -lrobots-interpreter-base
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \

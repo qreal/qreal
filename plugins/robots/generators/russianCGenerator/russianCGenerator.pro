@@ -4,12 +4,15 @@ CONFIG += c++11
 
 TEMPLATE = lib
 CONFIG += plugin
+
 DESTDIR = ../../../../bin/plugins/tools/kitPlugins/
+TARGET = robots-nxt-russian-c-generator
+
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lgeneratorBase
+LIBS += -L../../../../bin -lqrkernel -lqrutils -lqrrepo -lrobots-generator-base
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \

@@ -8,7 +8,7 @@ INCLUDEPATH += \
 	$$PWD/../../interpreters/interpreterBase/include \
 	$$PWD/../../../../qrtext/include \
 
-LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -linterpreterBase -lqrtext
+LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lqrtext -lrobots-interpreter-base
 
 DEFINES += ROBOTS_GENERATOR_LIBRARY
 

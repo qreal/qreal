@@ -9,8 +9,8 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
-	-lqrtext
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
+		-lrobots-utils -lrobots-interpreter-base -lrobots-common-2d-model -lqextserialport \
 
 
 HEADERS += \

@@ -8,8 +8,8 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lqextserialport \
-	-lqrtext
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
+		-lrobots-utils -lrobots-interpreter-base -lqextserialport \
 
 HEADERS += \
 	$$PWD/commandConstants.h \

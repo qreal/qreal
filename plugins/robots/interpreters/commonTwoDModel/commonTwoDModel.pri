@@ -9,7 +9,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -linterpreterBase
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lrobots-utils -lrobots-interpreter-base
 
 TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/commonTwoDModel_ru.ts
 
