@@ -5,6 +5,7 @@
 namespace twoDModel {
 namespace engine {
 
+/// Display widget for NullRobotModel
 class NullTwoDModelDisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
 {
 	Q_OBJECT
