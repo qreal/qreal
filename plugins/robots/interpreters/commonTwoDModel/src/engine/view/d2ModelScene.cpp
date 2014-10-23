@@ -1,7 +1,5 @@
 #include "d2ModelScene.h"
 
-#include "QDebug"
-
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
@@ -67,7 +65,7 @@ void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 
 void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
 {
-	RobotItem *robotItem = new RobotItem(robotModel->info()->robotImage(), *robotModel, this);
+	RobotItem * const robotItem = new RobotItem(robotModel->info().robotImage(), *robotModel, this);
 
 	connect(robotItem, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
 	connect(robotItem, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
@@ -126,7 +124,7 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		mModel.worldModel().addColorField(item);
 	};
 
-	for (RobotItem *robotItem : mRobots.values()) {
+	for (RobotItem * const robotItem : mRobots.values()) {
 		if (!robotItem->realBoundingRect().contains(position)) {
 			switch (mDrawingAction) {
 			case wall:
@@ -162,7 +160,7 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	if (mouseEvent->buttons() & Qt::LeftButton) {
-		for (RobotItem *robotItem : mRobots.values()) {
+		for (RobotItem * const robotItem : mRobots.values()) {
 			robotItem->checkSelection();
 			for (SensorItem *sensor : robotItem->sensors().values()) {
 				if (sensor) {
@@ -285,7 +283,7 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 		for (RobotItem *robotItem : mRobots.values()) {
 			interpreterBase::robotModel::PortInfo const port = robotItem->sensors().key(sensor);
 			if (port.isValid()) {
-				deviceConfigurationChanged(robotItem->robotModel().info()->robotId()
+				deviceConfigurationChanged(robotItem->robotModel().info().robotId()
 						, port, interpreterBase::robotModel::DeviceInfo(), Reason::userAction);
 			}
 		}
@@ -388,7 +386,7 @@ void D2ModelScene::clearScene(bool removeRobot, Reason reason)
 		robotModel->clear();
 		if (removeRobot) {
 			for (interpreterBase::robotModel::PortInfo const &port : robot(*robotModel)->sensors().keys()) {
-				deviceConfigurationChanged(robotModel->info()->robotId()
+				deviceConfigurationChanged(robotModel->info().robotId()
 						, port, interpreterBase::robotModel::DeviceInfo(), reason);
 			}
 		}
@@ -406,16 +404,12 @@ void D2ModelScene::reshapeWall(QGraphicsSceneMouseEvent *event)
 			mCurrentWall->reshapeEndWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 		} else {
 			QPainterPath const shape = mCurrentWall->realShape();
-			bool intersects = false;
 
 			for (RobotItem *robotItem : mRobots.values()) {
 				if (shape.intersects(robotItem->realBoundingRect())) {
-					intersects = true;
+					mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
 					break;
 				}
-			}
-			if (intersects) {
-				mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
 			}
 
 			if (event->modifiers() & Qt::ShiftModifier) {

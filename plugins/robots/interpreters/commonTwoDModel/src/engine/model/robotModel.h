@@ -32,7 +32,6 @@ public:
 		, right
 	};
 
-	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
 	RobotModel(twoDModel::robotModel::TwoDRobotModel &robotModel
 			, Settings const &settings, QObject *parent = 0);
 
@@ -49,7 +48,7 @@ public:
 	SensorsConfiguration &configuration();
 
 	/// Returns a reference to external robot description.
-	twoDModel::robotModel::TwoDRobotModel *info();
+	robotModel::TwoDRobotModel &info();
 
 	int readEncoder(interpreterBase::robotModel::PortInfo const &port) const;
 	void resetEncoder(interpreterBase::robotModel::PortInfo const &port);

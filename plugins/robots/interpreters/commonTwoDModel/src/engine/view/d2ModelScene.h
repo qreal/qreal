@@ -8,8 +8,6 @@
 
 #include <interpreterBase/devicesConfigurationProvider.h>
 
-#include <src/engine/model/robotModel.h>
-
 namespace twoDModel {
 
 namespace items {
@@ -21,6 +19,7 @@ class EllipseItem;
 
 namespace model {
 class Model;
+class RobotModel;
 }
 
 namespace view {
@@ -37,6 +36,7 @@ public:
 			, QObject *parent = 0);
 	~D2ModelScene() override;
 
+	/// Returns true if existing only one robot
 	bool oneRobot() const;
 
 public slots:
@@ -81,11 +81,18 @@ signals:
 	/// Emitted each time when user presses mouse button on the robot item.
 	void robotPressed();
 
+	/// Emitted at any changes of robot list (adding or removing)
 	void robotListChanged(RobotItem *robotItem);
 
 private slots:
 	void handleNewRobotPosition(RobotItem *robotItem);
+
+	/// Called after robot model was added and create new robot item
+	/// @param robotModel Robot model which was added
 	void onRobotAdd(model::RobotModel *robotModel);
+
+	/// Called after robot model was removed and removes robot item associated with this robot model
+	/// @param robotModel Robot model which was removed
 	void onRobotRemove(model::RobotModel *robotModel);
 
 private:

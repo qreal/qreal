@@ -105,6 +105,8 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/touchSensor.cpp \
 	$$PWD/src/robotModel/parts/gyroscope.cpp \
 	$$PWD/src/robotModel/parts/accelerometer.cpp \
+	$$PWD/src/engine/nullTwoDModelDisplayWidget.cpp \
+    src/robotModel/nullTwoDRobotModel.cpp
 
 FORMS += \
 	$$PWD/src/engine/view/d2Form.ui \

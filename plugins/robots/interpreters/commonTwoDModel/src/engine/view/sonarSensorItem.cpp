@@ -10,8 +10,8 @@ SonarSensorItem::SonarSensorItem(model::WorldModel const &worldModel
 		, QRect const &imageSize
 		)
 	: SensorItem(configuration, port, pathToImage, imageSize)
-	, mIcon(":/icons/sensors/2d_sonar.png")
 	, mWorldModel(worldModel)
+	, mIcon(":/icons/sensors/2d_sonar.png")
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 }

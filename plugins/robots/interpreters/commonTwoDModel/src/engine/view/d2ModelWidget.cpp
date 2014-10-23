@@ -110,7 +110,7 @@ void D2ModelWidget::initWidget()
 
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
-	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
+	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
 	mUi->displayFrame->setEnabled(false);
 
 	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
@@ -183,8 +183,8 @@ void D2ModelWidget::setPortsGroupBoxAndWheelComboBoxes()
 {
 	mCurrentConfigurer = new DevicesConfigurationWidget(mUi->portsGroupBox, true, true);
 	mCurrentConfigurer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-	mCurrentConfigurer->loadRobotModels({ mSelectedRobotItem->robotModel().info() });
-	mCurrentConfigurer->selectRobotModel(*mSelectedRobotItem->robotModel().info());
+	mCurrentConfigurer->loadRobotModels({ &mSelectedRobotItem->robotModel().info() });
+	mCurrentConfigurer->selectRobotModel(mSelectedRobotItem->robotModel().info());
 	mUi->portsGroupBox->layout()->addWidget(mCurrentConfigurer);
 	mCurrentConfigurer->connectDevicesConfigurationProvider(&mSelectedRobotItem->robotModel().configuration());
 	connectDevicesConfigurationProvider(&mSelectedRobotItem->robotModel().configuration());
@@ -270,12 +270,12 @@ void D2ModelWidget::saveInitialRobotBeforeRun()
 
 void D2ModelWidget::setInitialRobotBeforeRun()
 {
-	QMapIterator<RobotModel *, RobotState> i(mInitialRobotsBeforeRun);
+	QMapIterator<RobotModel *, RobotState> iterator(mInitialRobotsBeforeRun);
 
-	while (i.hasNext()) {
-		i.next();
-		i.key()->setPosition(i.value().pos);
-		i.key()->setRotation(i.value().rotation);
+	while (iterator.hasNext()) {
+		iterator.next();
+		iterator.key()->setPosition(iterator.value().pos);
+		iterator.key()->setRotation(iterator.value().rotation);
 	}
 }
 
@@ -391,13 +391,13 @@ void D2ModelWidget::reinitSensor(RobotItem *robotItem, PortInfo const &port)
 	SensorItem *sensor = device.isA<RangeSensor>()
 			? new SonarSensorItem(mModel.worldModel(), robotModel.configuration()
 					, port
-					, robotModel.info()->sensorImagePath(device)
-					, robotModel.info()->sensorImageRect(device)
+					, robotModel.info().sensorImagePath(device)
+					, robotModel.info().sensorImageRect(device)
 					)
 			: new SensorItem(robotModel.configuration()
 					, port
-					, robotModel.info()->sensorImagePath(device)
-					, robotModel.info()->sensorImageRect(device)
+					, robotModel.info().sensorImagePath(device)
+					, robotModel.info().sensorImageRect(device)
 					);
 
 	robotItem->addSensor(port, sensor);
@@ -466,7 +466,7 @@ void D2ModelWidget::onSelectionChange()
 		return;
 	}
 
-	QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
+	QList<QGraphicsItem *> const listSelectedItems = mScene->selectedItems();
 	RobotItem *robotItem = nullptr;
 	bool oneRobotItem = false;
 
@@ -485,8 +485,8 @@ void D2ModelWidget::onSelectionChange()
 
 	if (oneRobotItem
 			&& mSelectedRobotItem
-			&& robotItem->robotModel().info()->robotId()
-			== mSelectedRobotItem->robotModel().info()->robotId()) {
+			&& robotItem->robotModel().info().robotId()
+			== mSelectedRobotItem->robotModel().info().robotId()) {
 		return;
 	}
 
@@ -495,7 +495,7 @@ void D2ModelWidget::onSelectionChange()
 	}
 
 	if (oneRobotItem) {
-		if (robotItem->robotModel().info()->name() == "NullTwoDRobotModel") {
+		if (robotItem->robotModel().info().name() == "NullTwoDRobotModel") {
 			return;
 		}
 
@@ -551,7 +551,7 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 }
 
 SensorItem *D2ModelWidget::sensorItem(interpreterBase::robotModel::PortInfo const &port)
-{       	
+{
 	return mScene->robot(*mModel.robotModels()[0])->sensors().value(port);
 }
 
@@ -693,7 +693,7 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 	Q_UNUSED(reason)
 
 	/// @todo Convert configuration between models or something?
-	if (mSelectedRobotItem && robotModel == mSelectedRobotItem->robotModel().info()->robotId()) {
+	if (mSelectedRobotItem && robotModel == mSelectedRobotItem->robotModel().info().robotId()) {
 		updateWheelComboBoxes();
 	}
 }
@@ -733,8 +733,8 @@ void D2ModelWidget::updateWheelComboBoxes()
 	mUi->leftWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 	mUi->rightWheelComboBox->addItem(tr("No wheel"), QVariant::fromValue(PortInfo("None", output)));
 
-	for (PortInfo const &port : mSelectedRobotItem->robotModel().info()->availablePorts()) {
-		for (DeviceInfo const &device : mSelectedRobotItem->robotModel().info()->allowedDevices(port)) {
+	for (PortInfo const &port : mSelectedRobotItem->robotModel().info().availablePorts()) {
+		for (DeviceInfo const &device : mSelectedRobotItem->robotModel().info().allowedDevices(port)) {
 			if (device.isA<Motor>()) {
 				QString const item = tr("%1 (port %2)").arg(device.friendlyName(), port.name());
 				mUi->leftWheelComboBox->addItem(item, QVariant::fromValue(port));
@@ -756,9 +756,9 @@ void D2ModelWidget::updateWheelComboBoxes()
 
 	if (!setSelectedPort(mUi->leftWheelComboBox, leftWheelOldPort)) {
 		if (!setSelectedPort(mUi->leftWheelComboBox
-				, mSelectedRobotItem->robotModel().info()->defaultLeftWheelPort())) {
+				, mSelectedRobotItem->robotModel().info().defaultLeftWheelPort())) {
 			qDebug() << "Incorrect defaultLeftWheelPort set in configurer:"
-					<< mSelectedRobotItem->robotModel().info()->defaultLeftWheelPort().toString();
+					<< mSelectedRobotItem->robotModel().info().defaultLeftWheelPort().toString();
 
 			if (mUi->leftWheelComboBox->count() > 1) {
 				mUi->leftWheelComboBox->setCurrentIndex(1);
@@ -768,10 +768,10 @@ void D2ModelWidget::updateWheelComboBoxes()
 
 	if (!setSelectedPort(mUi->rightWheelComboBox, rightWheelOldPort)) {
 		if (!setSelectedPort(mUi->rightWheelComboBox
-				, mSelectedRobotItem->robotModel().info()->defaultRightWheelPort())) {
+				, mSelectedRobotItem->robotModel().info().defaultRightWheelPort())) {
 
 			qDebug() << "Incorrect defaultRightWheelPort set in configurer:"
-					<< mSelectedRobotItem->robotModel().info()->defaultRightWheelPort().toString();
+					<< mSelectedRobotItem->robotModel().info().defaultRightWheelPort().toString();
 
 			if (mUi->rightWheelComboBox->count() > 2) {
 				mUi->rightWheelComboBox->setCurrentIndex(2);
@@ -814,10 +814,10 @@ void D2ModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 	updateWheelComboBoxes();
 
 	delete mDisplay;
-	mDisplay = mSelectedRobotItem->robotModel().info()->displayWidget(this);
+	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget(this);
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
-	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
+	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
 	mUi->displayFrame->setEnabled(true);
 	setDisplayVisibility(mDisplayIsVisible);
 
@@ -836,10 +836,10 @@ void D2ModelWidget::unsetSelectedRobotItem()
 		mSelectedRobotItem = nullptr;
 	}
 
-	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->removeWidget(mDisplay);
+	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->removeWidget(mDisplay);
 	delete mDisplay;
 	mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
-	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
+	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
 
 	mUi->displayFrame->setEnabled(false);
 }

@@ -1,7 +1,5 @@
 #include "model.h"
 
-#include <QDebug>
-
 #include <qrkernel/settingsManager.h>
 
 #include "include/commonTwoDModel/robotModel/nullTwoDRobotModel.h"
@@ -72,44 +70,49 @@ void Model::deserialize(QDomDocument const &xml)
 			return;
 		}
 
-		mRobotModels[0]->deserialize(robotList.at(0).toElement());
-		mRobotModels[0]->configuration().deserialize(robotList.at(0).toElement());
+		mRobotModels.at(0)->deserialize(robotList.at(0).toElement());
+		mRobotModels.at(0)->configuration().deserialize(robotList.at(0).toElement());
 
 		return;
 	}
 
-	QDomNodeList robots = robotsList.at(0).toElement().elementsByTagName("robot");
 	QMutableListIterator<RobotModel *> iterator(mRobotModels);
-	QList<int> presentRobots;
+
+	bool const oneRobot = robotsList.at(0).toElement().elementsByTagName("robot").size() == 1
+			&& mRobotModels.size() == 1;
 
 	while(iterator.hasNext()) {
 		bool exist = false;
 		RobotModel *robotModel = iterator.next();
 
-		for (int i = 0; i < robots.size(); i++) {
-			if (robotModel->info()->robotId() == robots.at(i).toElement().attribute("id")) {
-				robotModel->deserialize(robots.at(i).toElement());
-				robotModel->configuration().deserialize(robots.at(i).toElement());
+		for (QDomElement element = robotsList.at(0).firstChildElement("robot"); !element.isNull();
+				element = element.nextSiblingElement("robot")) {
+			if (robotModel->info().robotId() == element.toElement().attribute("id")) {
+				robotModel->deserialize(element);
+				robotModel->configuration().deserialize(element);
 				exist = true;
-				presentRobots.append(i);
+				robotsList.at(0).removeChild(static_cast<QDomNode>(element));
 				break;
 			}
+		}
 
-			if (!exist) {
-				iterator.remove();
-				emit robotRemoved(robotModel);
-				delete robotModel;
-			}
+		if (!exist && !oneRobot) {
+			iterator.remove();
+			emit robotRemoved(robotModel);
+			delete robotModel;
 		}
 	}
 
-	for (int i = 0; i < robots.size(); i++) {
-		if (presentRobots.indexOf(i) == -1) {
+	if (oneRobot && !robotsList.at(0).firstChildElement("robot").isNull()) {
+		QDomElement element = robotsList.at(0).firstChildElement("robot");
+		mRobotModels.at(0)->deserialize(element);
+	} else {
+		for (QDomElement element = robotsList.at(0).firstChildElement("robot"); !element.isNull();
+				element = element.nextSiblingElement("robot")) {
 			twoDModel::robotModel::NullTwoDRobotModel *robotModel = new twoDModel::robotModel::NullTwoDRobotModel(
-					robots.at(i).toElement().attribute("id"));
+					element.attribute("id"));
 			addRobotModel(*robotModel);
-			mRobotModels.last()->deserialize(robots.at(i).toElement());
-			mRobotModels.last()->configuration().deserialize(robots.at(i).toElement());
+			mRobotModels.last()->deserialize(element);
 		}
 	}
 }
@@ -136,42 +139,39 @@ void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const 
 
 void Model::removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel)
 {
-	int const i = findModel(robotModel);
+	int const index = findModel(robotModel);
 
-	if (i == -1) {
+	if (index == -1) {
 		return;
 	}
 
-	RobotModel *robot = mRobotModels.at(i);
-
-	mRobotModels.removeOne(mRobotModels.at(i));
-
+	RobotModel *robot = mRobotModels.at(index);
+	mRobotModels.removeOne(mRobotModels.at(index));
 	emit robotRemoved(robot);
-
 	delete robot;
 }
 
 void Model::replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
 		, twoDModel::robotModel::TwoDRobotModel &newModel)
 {
-	int const i = findModel(oldModel);
+	int const index = findModel(oldModel);
 
-	if (i == -1) {
+	if (index == -1) {
 		return;
 	}
 
-	QPointF const pos = mRobotModels.at(i)->position();
-
+	QPointF const pos = mRobotModels.at(index)->position();
 	removeRobotModel(oldModel);
 	addRobotModel(newModel, pos);
 }
 
 int Model::findModel(twoDModel::robotModel::TwoDRobotModel const &robotModel)
 {
-	for (RobotModel *model : mRobotModels) {
-		if (model->info()->robotId() == robotModel.robotId()) {
-			return mRobotModels.indexOf(model);
+	for (int i = 0; i < mRobotModels.count(); i++) {
+		if (mRobotModels.at(i)->info().robotId() == robotModel.robotId()) {
+			return i;
 		}
 	}
+
 	return -1;
 }

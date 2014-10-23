@@ -24,7 +24,7 @@ public:
 	/// Returns a reference to a 2D model timeline.
 	Timeline &timeline();
 
-	/// Returns a reference to a 2D robot models components.
+	/// Returns a list of existing robot models
 	QList<RobotModel *> robotModels();
 
 	/// Returns a reference to a 2D model`s settings storage.
@@ -33,8 +33,16 @@ public:
 	QDomDocument serialize() const;
 	void deserialize(QDomDocument const &xml);
 
+	/// Add new robot model
+	/// @param robotModel Model to be added
+	/// @param pos Initial positon of robot model
 	void addRobotModel(robotModel::TwoDRobotModel &robotModel, QPointF const &pos = QPointF());
+
+	/// Remove robot model
+	/// @param robotMode Model to be removed
 	void removeRobotModel(twoDModel::robotModel::TwoDRobotModel const &robotModel);
+
+	/// Delete old model and add new model with the same coordinates that old model
 	void replaceRobotModel(twoDModel::robotModel::TwoDRobotModel const &oldModel
 			, robotModel::TwoDRobotModel &newModel);
 
@@ -43,7 +51,12 @@ signals:
 	/// @param xml World model description in xml format
 	void modelChanged(QDomDocument const &xml);
 
+	/// Emitted after new robot model added
+	/// @param robotModel Pointer to robot model which was removed
 	void robotAdded(RobotModel *robotModel);
+
+	/// Emitted after robot model removed
+	/// @param robotModel Pointer to robot model which was added
 	void robotRemoved(RobotModel *robotModel);
 
 private:

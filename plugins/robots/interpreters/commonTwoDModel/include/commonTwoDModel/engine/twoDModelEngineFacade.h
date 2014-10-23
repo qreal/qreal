@@ -10,8 +10,6 @@
 
 #include "commonTwoDModel/commonTwoDModelDeclSpec.h"
 
-#include "commonTwoDModel/robotModel/twoDRobotModel.h"
-
 namespace twoDModel {
 
 namespace model {

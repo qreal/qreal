@@ -144,9 +144,9 @@ SensorsConfiguration &RobotModel::configuration()
 	return mSensorsConfiguration;
 }
 
-twoDModel::robotModel::TwoDRobotModel *RobotModel::info()
+twoDModel::robotModel::TwoDRobotModel &RobotModel::info()
 {
-	return &mRobotModel;
+	return mRobotModel;
 }
 
 void RobotModel::stopRobot()
@@ -321,7 +321,7 @@ void RobotModel::deserialize(QDomElement const &robotElement)
 	onRobotReturnedOnGround();
 	setPosition(QPointF(x, y));
 	setRotation(robotElement.attribute("direction", "0").toDouble());
-	configuration().deserialize(robotElement);
+	//configuration().deserialize(robotElement);
 	nextFragment();
 }
 

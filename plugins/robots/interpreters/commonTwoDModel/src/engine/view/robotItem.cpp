@@ -2,15 +2,6 @@
 
 #include "src/engine/model/constants.h"
 
-#include <interpreterBase/robotModel/robotParts/touchSensor.h>
-#include <interpreterBase/robotModel/robotParts/colorSensor.h>
-#include <interpreterBase/robotModel/robotParts/lightSensor.h>
-#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
-
-#include "sonarSensorItem.h"
-
-#include <QDebug>
-
 using namespace twoDModel::view;
 using namespace graphicsUtils;
 using namespace twoDModel::model;

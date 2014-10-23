@@ -395,8 +395,11 @@ QStringList AbstractItem::getBrushStyleList()
 
 void AbstractItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-	// Due to screen rectangle change, mouse moves for all items on the scene. Actually
-	// it doesn't happen because screen coordinates don't change.
+	// When selecting a robot item on the scene than display widget may appear.
+	// After that scene would be shrinked and mouse move event would be generated (but actually
+	// mouse cursor is not moved). Because of that selected robot item moves which should not be because you
+	// only select robot item and not move it. It also happens when you unselect robot item by selecting another
+	// item (not only robot item). In this case new selected item moves.
 	if (event->lastScreenPos() != event->screenPos()) {
 		QGraphicsItem::mouseMoveEvent(event);
 	}

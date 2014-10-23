@@ -132,7 +132,7 @@ QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
-	qreal const width = mModel.robotModels()[0]->info()->sensorImageRect(device).width() / 2.0;
+	qreal const width = mModel.robotModels()[0]->info().sensorImageRect(device).width() / 2.0;
 	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);

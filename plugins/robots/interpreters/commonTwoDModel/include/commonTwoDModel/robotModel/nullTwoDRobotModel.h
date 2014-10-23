@@ -1,11 +1,13 @@
 #pragma once
 
 #include "twoDRobotModel.h"
+#include "include/commonTwoDModel/engine/nullTwoDModelDisplayWidget.h"
 
 namespace twoDModel {
 
 namespace engine {
 class TwoDModelEngineInterface;
+class NullTwoDModelDisplayWidget;
 }
 
 namespace robotModel {
@@ -15,49 +17,17 @@ class NullTwoDRobotModel : public twoDModel::robotModel::TwoDRobotModel
 	Q_OBJECT
 
 public:
-	NullTwoDRobotModel(QString const &robotId)
-		: TwoDRobotModel(robotId)
-	{
-	}
+	NullTwoDRobotModel(QString const &robotId);
 
-	QString name() const override
-	{
-		return "NullTwoDRobotModel";
-	}
-	QString friendlyName() const override
-	{
-		return "";
-	}
+	QString name() const override;
+	QString friendlyName() const override;
+	QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override;
+	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
+	QString robotImage() const;
+	interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const;
+	interpreterBase::robotModel::PortInfo defaultRightWheelPort() const override;
 
-	QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override
-	{
-		return QList<interpreterBase::robotModel::PortInfo>();
-	}
-	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override
-	{
-		return QList<interpreterBase::robotModel::DeviceInfo>();
-	}
-
-	QString robotImage() const
-	{
-		return ":icons/trikTwoDRobot.svg";
-	}
-
-	interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const
-	{
-		return interpreterBase::robotModel::PortInfo();
-	}
-
-	virtual interpreterBase::robotModel::PortInfo defaultRightWheelPort() const
-	{
-		return interpreterBase::robotModel::PortInfo();
-	}
-
-	engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const
-	{
-		Q_UNUSED(parent)
-		return nullptr;
-	}
+	engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const;
 };
 
 }
