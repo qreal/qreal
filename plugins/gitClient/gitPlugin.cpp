@@ -14,7 +14,7 @@ int const defaultTimeout = 30000;
 
 GitPlugin::GitPlugin()
 	: mViewInteraction(new details::ViewInteraction(this))
-	, mTempDir(tempFolderName)
+	, mTempDir(qApp->applicationDirPath() + "/" + tempFolderName)
 {
 	qReal::SettingsManager::instance()->setValue("gitTempDir", mTempDir);
 	setPathToClient(pathToGit());
@@ -207,9 +207,9 @@ void GitPlugin::setVersion(QString hash, bool const &quiet)
 	invokeOperation(args, false, QString(), false, true, QString(), QString(), !quiet);
 }
 
-void GitPlugin::setDiffViewerInterface(DiffPluginInterface *interface)
+void GitPlugin::setDiffViewerInterface(DiffPluginInterface *diffInterface)
 {
-	mDiffInterface = interface;
+    mDiffInterface = diffInterface;
 }
 
 bool GitPlugin::clientExist()
@@ -238,9 +238,6 @@ void GitPlugin::doInit(QString const &targetFolder, bool const &quiet)
 		QStringList arguments;
 		arguments  << "init";
 		bool result = invokeOperation(arguments, true, targetFolder, false, true, QString(), QString(), !quiet);
-		if (!quiet){
-			emit initComplete(result);
-		}
 
 		arguments.clear();
 		arguments << "add" << "-A";
@@ -248,6 +245,10 @@ void GitPlugin::doInit(QString const &targetFolder, bool const &quiet)
 
 		doUserEmailConfig();
 		doUserNameConfig();
+
+		if (!quiet){
+			emit initComplete(result);
+		}
 	}else{
 		emit initComplete(isInit);
 	}
@@ -262,7 +263,7 @@ void GitPlugin::startClone(QString const &from
 	const Tag tagStruct("clone");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
-	invokeOperationAsync(arguments, tagVariant, false, QString(), targetProject, false);
+	invokeOperationAsync(arguments, tagVariant, false, qApp->applicationDirPath(), targetProject, false);
 }
 
 void GitPlugin::startCommit(QString const &message, QString const &from

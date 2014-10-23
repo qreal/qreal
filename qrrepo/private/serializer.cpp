@@ -161,7 +161,9 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Objec
 
 void Serializer::prepareWorkingCopy(const QString &targetFolder, QString const &sourceProject)
 {
-	clearDir(targetFolder);
+	if (!QDir(targetFolder).removeRecursively()){
+		clearDir(targetFolder);
+	}
 	QString const workingFile = sourceProject.isEmpty() ? mWorkingFile : sourceProject;
 	if (QFileInfo(workingFile).exists()) {
 		FolderCompressor::decompressFolder(workingFile, targetFolder);
@@ -177,8 +179,10 @@ void Serializer::processWorkingCopy(const QString &workingCopyPath, QString cons
 		if (QDir(workingCopyPath).exists()) {
 		FolderCompressor::compressFolder(workingCopyPath, targetProjectPath);
 	}
-	clearDir(workingCopyPath);
-	QDir().rmdir(workingCopyPath);
+	if (!QDir(workingCopyPath).removeRecursively()){
+		clearDir(workingCopyPath);
+		QDir(workingCopyPath).rmdir(workingCopyPath);
+	}
 }
 
 void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash)
@@ -219,6 +223,9 @@ void Serializer::clearDir(QString const &path)
 			clearDir(fileInfo.filePath());
 			dir.rmdir(fileInfo.fileName());
 		} else {
+			if(!QFile::setPermissions(fileInfo.fileName(), QFile::ReadOther | QFile::WriteOther)){
+				FileSystemUtils::resetAttributes(fileInfo.filePath());
+			}
 			dir.remove(fileInfo.fileName());
 		}
 	}

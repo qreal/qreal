@@ -25,7 +25,7 @@ public:
 	virtual void setWorkingCopyManager(
 			qrRepo::WorkingCopyManagementInterface *workingCopyManager) = 0;
 
-	virtual void setDiffViewerInterface(DiffPluginInterface *interface) = 0;
+    virtual void setDiffViewerInterface(DiffPluginInterface *diffInterface) = 0;
 };
 
 }

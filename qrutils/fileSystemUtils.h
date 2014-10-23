@@ -28,6 +28,8 @@ public:
 	/// Removes specified file. Returns if operation succeeded
 	static bool removeFile(QString const &filePath);
 
+	static void resetAttributes(QString const &filePath);
+
 private:
 	static bool clearDir(QDir dir);
 };

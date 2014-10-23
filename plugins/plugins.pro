@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 
 # editor plugins
-SUBDIRS	= \
+SUBDIRS = \
 	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
 #	hascol/hascol.pro \

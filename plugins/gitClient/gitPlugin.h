@@ -50,7 +50,7 @@ public:
 
 	virtual QString getLog(QString const &format = QString(), bool const &quiet = false);
 	virtual void setVersion(QString hash, bool const &quiet = false);
-	void setDiffViewerInterface(DiffPluginInterface *interface);
+    void setDiffViewerInterface(DiffPluginInterface *diffInterface);
 
 public slots:
 	void doInit(QString const &targetFolder = QString(), bool const &quiet = false);

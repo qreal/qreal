@@ -48,6 +48,14 @@ bool FileSystemUtils::removeFile(QString const &filePath)
 	return file.remove();
 }
 
+void FileSystemUtils::resetAttributes(const QString &filePath)
+{
+	#if defined(Q_OS_WIN)
+	wchar_t *arr = (wchar_t*)filePath.utf16();
+	SetFileAttributes(arr, FILE_ATTRIBUTE_NORMAL);
+	#endif
+}
+
 bool FileSystemUtils::clearDir(QDir dir)
 {
 	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot)) {

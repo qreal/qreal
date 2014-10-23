@@ -42,11 +42,15 @@ void VersioningPluginsManager::initFromToolPlugins(
 				dynamic_cast<VersioningPluginInterface *>(toolPlugin);
 		if (versioningPlugin) {
 			mPlugins.append(versioningPlugin);
-			if (versioningPlugin->clientExist()){
+			if (versioningPlugin->clientExist()) {
 				mPluginsWithExistClient.append(versioningPlugin);
 			} else {
 				foreach(ActionInfo const &actionInfo, versioningPlugin->actions()) {
-					actionInfo.menu()->menuAction()->setVisible(false);
+					if (actionInfo.isAction()){
+						actionInfo.action()->setVisible(false);
+					} else {
+						actionInfo.menu()->menuAction()->setVisible(false);
+					}
 				}
 			}
 			versioningPlugin->setWorkingCopyManager(mRepoApi);

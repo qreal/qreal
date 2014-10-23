@@ -28,7 +28,7 @@ CloneDialog::CloneDialog(QWidget *parent)
 	mainLayout->addLayout(buttonsLayout,2, 0, 1, 3);
 	setLayout(mainLayout);
 
-	setWindowTitle(tr("Push options"));
+	setWindowTitle(tr("Clone options"));
 	setFixedSize(500,100);
 }
 

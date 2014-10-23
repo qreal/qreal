@@ -26,10 +26,10 @@ DiffBetweenDialog::DiffBetweenDialog(QWidget *parent)
 
 	QGridLayout *mainLayout = new QGridLayout;
 	mainLayout->addWidget(mFirstHashLabel, 0, 0);
-	mainLayout->addWidget(mFirstHash, 0, 1, 1, 2);
-	mainLayout->addWidget(mScndHashLabel, 0, 2);
-	mainLayout->addWidget(mScndHash, 0, 3, 1, 2);
-	mainLayout->addLayout(buttonsLayout,2, 4, 1, 3);
+	mainLayout->addWidget(mFirstHash, 1, 0, 1, 2);
+	mainLayout->addWidget(mScndHashLabel, 2, 0);
+	mainLayout->addWidget(mScndHash, 3, 0, 1, 2);
+	mainLayout->addLayout(buttonsLayout, 4, 2, 1, 3);
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("DiffBetween options"));
@@ -38,10 +38,10 @@ DiffBetweenDialog::DiffBetweenDialog(QWidget *parent)
 
 QString DiffBetweenDialog::firstHash()
 {
-	mFirstHash->currentText();
+	return mFirstHash->currentText();
 }
 
 QString DiffBetweenDialog::secondHash()
 {
-	mScndHash->currentText();
+	return mScndHash->currentText();
 }
