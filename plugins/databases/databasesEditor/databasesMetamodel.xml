@@ -8,35 +8,26 @@
 			<port name="EntityRight"/>
 		</nonGraphicTypes>
 		<graphicTypes>
-		<node name="DatabasesNode" displayedName="Databases Diagram">
-			<graphics>
-				<picture/>
-				<labels/>
-				<ports/>
-			</graphics>
-			<logic>
-				<container>
-					<contains type="Databases::Entity"/>
-					<contains type="Databases::Attribute"/>
-					<contains type="Databases::OneToOneRelationship"/>
-					<contains type="Databases::OneToManyRelationship"/>
-					<contains type="Databases::ManyToManyRelationship"/>
-				</container>
-			</logic>
-		</node>
+			<node name="DatabasesNode" displayedName="Databases Diagram">
+				<graphics>
+					<picture/>
+					<labels/>
+					<ports/>
+				 </graphics>
+				<logic>
+					<container>
+						<contains type="Databases::Entity"/>
+						<contains type="Databases::Attribute"/>
+						<contains type="Databases::OneToOneRelationship"/>
+						<contains type="Databases::OneToManyRelationship"/>
+						<contains type="Databases::ManyToManyRelationship"/>
+					</container>
+				</logic>
+			</node>
 			<node name="Entity" displayedName="Entity">
 				<graphics>
 					<picture sizex="160" sizey="90">
 						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="90" x2="160"/>
-						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="145" y2="145" fill-style="none" x1="42" x2="168">
-							<showIf value="true" property="transaction" sign="="/>
-						</line>
-						<curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
-							<start startx="15" starty="42"/>
-							<end endx="42" endy="15"/>
-							<ctrl x="13" y="13"/>
-							<showIf value="true" property="transaction" sign="="/>
-						</curve>
 					</picture>
 					<labels>
 						<label x="5a" y="3a" textBinded="Name"/>
@@ -44,15 +35,15 @@
 					<ports>
 						<linePort type="EntityLeft">
 							<start startx="0" starty="0"/>
-							 <end endx="0" endy="90"/>
-						</linePort>
-						<linePort type="EntityVertical">
-							<start startx="0" starty="0"/>
-							<end endx="160" endy="0"/>
+							<end endx="0" endy="90"/>
 						</linePort>
 						<linePort type="EntityRight">
 							<start startx="160" starty="0"/>
 							<end endx="160" endy="90"/>
+						</linePort>
+						<linePort type="EntityVertical">
+							<start startx="0" starty="0"/>
+							<end endx="160" endy="0"/>
 						</linePort>
 						<linePort type="EntityVertical">
 							<start startx="0" starty="90"/>
@@ -73,9 +64,6 @@
 					</container>
 					<properties>
 						<property type="string" name="Name" displayedName="Name">
-						</property>
-						<property type="bool" name="transaction" displayedName="Transaction">
-							<default>false</default>
 						</property>
 					</properties>
 				</logic>
@@ -172,7 +160,6 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
-						<property type="bool" displayedName="Default" name="default"/>
 					</properties>
 					<fromPorts>
 						<port type="EntityRight"/>
@@ -208,7 +195,6 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
-						<property type="bool" displayedName="Default" name="default"/>
 					</properties>
 					<fromPorts>
 						<port type="EntityRight"/>
