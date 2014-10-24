@@ -10,15 +10,19 @@
 
 using namespace utils;
 
-static uint const port = 8888;
+static uint const controlPort = 8888;
 static uint const telemetryPort = 9000;
 
 TcpRobotCommunicator::TcpRobotCommunicator(QString const &settings)
 	: mErrorReporter(nullptr)
+	, mControlConnection(controlPort)
+	, mTelemetryConnection(telemetryPort)
 	, mSettings(settings)
 {
-	QObject::connect(&mSocket, SIGNAL(readyRead()), this, SLOT(onIncomingControlData()), Qt::DirectConnection);
-	QObject::connect(&mTelemetrySocket, SIGNAL(readyRead()), this, SLOT(onIncomingSensorsData()), Qt::DirectConnection);
+	QObject::connect(&mControlConnection, SIGNAL(messageReceived(QString))
+			, this, SLOT(processControlMessage(QString)));
+	QObject::connect(&mTelemetryConnection, SIGNAL(messageReceived(QString))
+			, this, SLOT(processTelemetryMessage(QString)));
 }
 
 TcpRobotCommunicator::~TcpRobotCommunicator()
@@ -40,13 +44,13 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 	}
 
 	connect();
-	if (mSocket.state() != QAbstractSocket::ConnectedState) {
+	if (!mControlConnection.isConnected()) {
 		return false;
 	}
 
 	QString const &fileNameOnARobot = QFileInfo(programName).fileName();
 
-	send("file:" + fileNameOnARobot + ":" + fileContents, mSocket);
+	mControlConnection.send("file:" + fileNameOnARobot + ":" + fileContents);
 
 	return true;
 }
@@ -54,22 +58,22 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 bool TcpRobotCommunicator::runProgram(QString const &programName)
 {
 	connect();
-	if (mSocket.state() != QAbstractSocket::ConnectedState) {
+	if (!mControlConnection.isConnected()) {
 		return false;
 	}
 
-	send("run:" + programName, mSocket);
+	mControlConnection.send("run:" + programName);
 
 	return true;
 }
 
 bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 {
-	if (mSocket.state() != QAbstractSocket::ConnectedState) {
+	if (!mControlConnection.isConnected()) {
 		return false;
 	}
 
-	send("direct:" + directCommand, mSocket);
+	mControlConnection.send("direct:" + directCommand);
 
 	return true;
 }
@@ -77,22 +81,22 @@ bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 bool TcpRobotCommunicator::stopRobot()
 {
 	connect();
-	if (mSocket.state() != QAbstractSocket::ConnectedState) {
+	if (!mControlConnection.isConnected()) {
 		return false;
 	}
 
-	send("stop", mSocket);
+	mControlConnection.send("stop");
 
 	return true;
 }
 
 void TcpRobotCommunicator::requestData(QString const &sensor)
 {
-	if (mTelemetrySocket.state() != QAbstractSocket::ConnectedState) {
+	if (!mTelemetryConnection.isConnected()) {
 		return;
 	}
 
-	send("sensor:" + sensor, mTelemetrySocket);
+	mTelemetryConnection.send("sensor:" + sensor);
 }
 
 void TcpRobotCommunicator::setErrorReporter(qReal::ErrorReporterInterface *errorReporter)
@@ -100,69 +104,25 @@ void TcpRobotCommunicator::setErrorReporter(qReal::ErrorReporterInterface *error
 	mErrorReporter = errorReporter;
 }
 
-void TcpRobotCommunicator::onIncomingControlData()
-{
-	processIncomingData(mSocket, mBuffer, mExpectedBytes);
-}
-
-void TcpRobotCommunicator::onIncomingSensorsData()
-{
-	processIncomingData(mTelemetrySocket, mTelemetryBuffer, mExpectedBytesFromTelemetry);
-}
-
-void TcpRobotCommunicator::processIncomingData(QTcpSocket &socket, QByteArray &buffer, int &expectedBytes)
-{
-	if (!socket.isValid()) {
-		return;
-	}
-
-	QByteArray const &data = socket.readAll();
-	buffer.append(data);
-
-	while (!buffer.isEmpty()) {
-		if (expectedBytes == 0) {
-			// Determining the length of a message.
-			int const delimiterIndex = buffer.indexOf(':');
-			if (delimiterIndex == -1) {
-				// We did not receive full message length yet.
-				return;
-			} else {
-				QByteArray const length = buffer.left(delimiterIndex);
-				buffer = buffer.mid(delimiterIndex + 1);
-				bool ok;
-				expectedBytes = length.toInt(&ok);
-				if (!ok) {
-					QLOG_ERROR() << "Malformed message, can not determine message length from this:" << length;
-					expectedBytes = 0;
-				}
-			}
-		} else {
-			if (buffer.size() >= expectedBytes) {
-				QByteArray const message = buffer.left(expectedBytes);
-				buffer = buffer.mid(expectedBytes);
-
-				processIncomingMessage(message);
-
-				expectedBytes = 0;
-			} else {
-				// We don't have all message yet.
-				return;
-			}
-		}
-	}
-}
-
-void TcpRobotCommunicator::processIncomingMessage(QString const &message)
+void TcpRobotCommunicator::processControlMessage(QString const &message)
 {
 	QString const errorMarker("error: ");
 	QString const infoMarker("info: ");
-	QString const sensorMarker("sensor:");
 
 	if (message.startsWith(errorMarker) && mErrorReporter) {
 		mErrorReporter->addError(message.mid(errorMarker.length()));
 	} else if (message.startsWith(infoMarker) && mErrorReporter) {
 		mErrorReporter->addInformation(message.mid(infoMarker.length()));
-	} else if (message.startsWith(sensorMarker)){
+	} else {
+		QLOG_INFO() << "Incoming message of unknown type: " << message;
+	}
+}
+
+void TcpRobotCommunicator::processTelemetryMessage(QString const &message)
+{
+	QString const sensorMarker("sensor:");
+
+	if (message.startsWith(sensorMarker)){
 		QString data(message);
 		data.remove(0, sensorMarker.length());
 		QStringList portAndValue = data.split(":");
@@ -193,58 +153,18 @@ void TcpRobotCommunicator::connect()
 		return;
 	}
 
-	if (mSocket.state() == QTcpSocket::ConnectedState || mSocket.state() == QTcpSocket::ConnectingState) {
+	if (mControlConnection.isConnected() && mTelemetryConnection.isConnected()) {
 		return;
 	}
 
-	mSocket.connectToHost(hostAddress, static_cast<quint16>(port));
-	bool result = mSocket.waitForConnected(5000);
-	if (!result) {
-		QLOG_ERROR() << mSocket.errorString();
-	}
-
-	mBuffer.clear();
-	mExpectedBytes = 0;
-
-	emit connected(result);
-
-	if (mTelemetrySocket.state() == QTcpSocket::ConnectedState || mTelemetrySocket.state() == QTcpSocket::ConnectingState) {
-		return;
-	}
-
-	mTelemetrySocket.connectToHost(hostAddress, static_cast<quint16>(telemetryPort));
-	result = mTelemetrySocket.waitForConnected(5000);
-	if (!result) {
-		QLOG_ERROR() << mTelemetrySocket.errorString();
-	}
-
-	mTelemetryBuffer.clear();
-	mExpectedBytesFromTelemetry = 0;
-
+	bool const result = mControlConnection.connect(hostAddress) && mTelemetryConnection.connect(hostAddress);
 	emit connected(result);
 }
 
 void TcpRobotCommunicator::disconnect()
 {
-	if (mSocket.state() == QTcpSocket::ConnectedState) {
-		mSocket.disconnectFromHost();
-		mSocket.waitForDisconnected(3000);
-	}
-
-	if (mTelemetrySocket.state() == QTcpSocket::ConnectedState) {
-		mTelemetrySocket.disconnectFromHost();
-		mTelemetrySocket.waitForDisconnected(3000);
-	}
+	mControlConnection.disconnect();
+	mTelemetryConnection.disconnect();
 
 	emit disconnected();
-}
-
-void TcpRobotCommunicator::send(QString const &data, QTcpSocket &socket)
-{
-	QByteArray dataByteArray = data.toUtf8();
-	dataByteArray = QByteArray::number(dataByteArray.size()) + ':' + dataByteArray;
-	socket.write(dataByteArray);
-	if (!socket.waitForBytesWritten(3000)) {
-		QLOG_ERROR() << "Unable to send data" << data << "to" << socket.peerAddress();
-	}
 }

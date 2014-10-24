@@ -4,6 +4,7 @@
 #include "utilsDeclSpec.h"
 
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <utils/tcpConnectionHandler.h>
 
 namespace utils {
 
@@ -52,34 +53,18 @@ signals:
 	void newVectorSensorData(QString const &port, QVector<int> const &data);
 
 private slots:
-	void processIncomingData(QTcpSocket &socket, QByteArray &buffer, int &expectedBytes);
-
-	void onIncomingControlData();
-	void onIncomingSensorsData();
-
-	void processIncomingMessage(QString const &message);
+	void processControlMessage(QString const &message);
+	void processTelemetryMessage(QString const &message);
 
 private:
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
 	void send(QString const &data, QTcpSocket &socket);
 
-	/// Socket that holds connection.
-	QTcpSocket mSocket;
-
-	QTcpSocket mTelemetrySocket;
-
 	/// Reference to error reporter.
 	qReal::ErrorReporterInterface *mErrorReporter;
 
-	/// Buffer to accumulate parts of a message.
-	QByteArray mBuffer;
-
-	QByteArray mTelemetryBuffer;
-
-	/// Declared size of a current message.
-	int mExpectedBytes = 0;
-
-	int mExpectedBytesFromTelemetry = 0;
+	TcpConnectionHandler mControlConnection;
+	TcpConnectionHandler mTelemetryConnection;
 
 	QString mSettings;
 };
