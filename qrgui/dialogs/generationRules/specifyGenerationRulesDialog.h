@@ -26,10 +26,16 @@ public:
 	SpecifyGenerationRulesDialog(MainWindow &mainWindow, EditorManagerInterface &interpreterEditorManager, Id const &id);
 	~SpecifyGenerationRulesDialog();
 
+private slots:
+	/// Inserts property into the code.
+	/// @param propertyName Property to insert.
+	void insertPropertyIntoCode(QListWidgetItem* property);
+
 private:
 	/// Adds properties to the properties list.
 	void addPropertiesList();
 	/// Returns properties displayed names list.
+	/// @param propertiesNames List of properties.
 	QStringList propertiesDisplayedNamesList(QStringList const &propertiesNames);
 
 	Ui::SpecifyGenerationRulesDialog *mUi;  // has ownership

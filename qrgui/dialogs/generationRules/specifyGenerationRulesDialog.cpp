@@ -15,11 +15,18 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(MainWindow &mainWindo
 	mUi->setupUi(this);
 
 	addPropertiesList();
+	connect(mUi->propertiesView, &QListWidget::itemDoubleClicked, this, &SpecifyGenerationRulesDialog::insertPropertyIntoCode);
 }
 
 SpecifyGenerationRulesDialog::~SpecifyGenerationRulesDialog()
 {
 	delete mUi;
+}
+
+void SpecifyGenerationRulesDialog::insertPropertyIntoCode(QListWidgetItem* property)
+{
+	QString const propertyName = property->text();
+	mUi->codeArea->insertPlainText(propertyName);
 }
 
 void SpecifyGenerationRulesDialog::addPropertiesList()
