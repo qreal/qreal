@@ -11,6 +11,7 @@
 #include "mainwindow/mainWindow.h"
 #include "mainwindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
+#include "dialogs/generationRules/specifyGenerationRulesDialog.h"
 #include "gestures/gesturePainter.h"
 #include "view/editorView.h"
 #include "view/editorViewScene.h"
@@ -140,6 +141,15 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 	if (messageBox.exec() == QMessageBox::Ok) {
 		checkElementForChildren();
 	}
+}
+
+void DraggableElement::openGenerationToolsWindowActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	Id id = action->data().value<Id>();
+	SpecifyGenerationRulesDialog *rulesDialog = new SpecifyGenerationRulesDialog(mMainWindow, mEditorManagerProxy, id);
+	rulesDialog->setModal(true);
+	rulesDialog->show();
 }
 
 void DraggableElement::deleteElement()
@@ -273,16 +283,26 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		if (mEditorManagerProxy.isInterpretationMode()) {
 			QMenu *menu = new QMenu();
 			QAction * const changePropertiesPaletteAction = menu->addAction(tr("Change Properties"));
-			connect(changePropertiesPaletteAction, SIGNAL(triggered()), SLOT(changePropertiesPaletteActionTriggered()));
+			connect(changePropertiesPaletteAction, &QAction::triggered
+					, this, &DraggableElement::changePropertiesPaletteActionTriggered);
 			changePropertiesPaletteAction->setData(elementId.toVariant());
+
 			QAction * const changeAppearancePaletteAction = menu->addAction(tr("Change Appearance"));
-			connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearancePaletteActionTriggered()));
+			connect(changeAppearancePaletteAction, &QAction::triggered
+					, this,  &DraggableElement::changeAppearancePaletteActionTriggered);
 			changeAppearancePaletteAction->setData(elementId.toVariant());
+
 			QAction * const deleteElementPaletteAction = menu->addAction(tr("Delete Element"));
 			connect(deleteElementPaletteAction, &QAction::triggered
 					, this, &DraggableElement::deleteElementPaletteActionTriggered
 					, Qt::QueuedConnection);
 			deleteElementPaletteAction->setData(elementId.toVariant());
+
+			QAction * const addGenerationRulesAction = menu->addAction(tr("Add generation rules"));
+			connect(addGenerationRulesAction, &QAction::triggered
+					, this, &DraggableElement::openGenerationToolsWindowActionTriggered);
+			addGenerationRulesAction->setData(elementId.toVariant());
+
 			menu->exec(QCursor::pos());
 		}
 	} else {

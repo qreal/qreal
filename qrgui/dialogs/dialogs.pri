@@ -21,6 +21,7 @@ HEADERS += \
 	$$PWD/suggestToCreateProjectDialog.h \
 	$$PWD/renameDialog.h \
 	$$PWD/updateVersionDialog.h \
+	$$PWD/generationRules/specifyGenerationRulesDialog.h
 
 SOURCES += \
 	$$PWD/metamodelingOnFly/propertiesDialog.cpp \
@@ -44,6 +45,7 @@ SOURCES += \
 	$$PWD/suggestToCreateProjectDialog.cpp \
 	$$PWD/renameDialog.cpp \
 	$$PWD/updateVersionDialog.cpp \
+	$$PWD/generationRules/specifyGenerationRulesDialog.cpp
 
 FORMS += \
 	$$PWD/metamodelingOnFly/propertiesDialog.ui \
@@ -60,3 +62,4 @@ FORMS += \
 	$$PWD/preferencesDialog.ui \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.ui \
 	$$PWD/metamodelingOnFly/restoreElementDialog.ui \
+	$$PWD/generationRules/specifyGenerationRulesDialog.ui
