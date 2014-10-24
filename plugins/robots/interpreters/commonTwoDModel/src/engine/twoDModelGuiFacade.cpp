@@ -16,7 +16,7 @@ QWidget *TwoDModelGuiFacade::widget(QString const &type, QString const &name)
 {
 	QList<QWidget *> const widgetList = mD2ModelWidget.findChildren<QWidget *>(name);
 
-	for (QWidget *widget : widgetList) {
+	for (QWidget * const widget : widgetList) {
 		if (type == widget->metaObject()->className() && widget->isVisible()) {
 			return widget;
 		}

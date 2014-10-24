@@ -31,8 +31,8 @@ public:
 	/// before use property widget.
 	Q_INVOKABLE QRect propertyRect(QString const &name);
 
-	/// Returns combo box widget from property editor.
-	Q_INVOKABLE QWidget *property(QString const &type, QString const &name);
+	/// Returns widget by name from property editor tree widget.
+	Q_INVOKABLE QWidget *property(QString const &name);
 
 	/// Returns viewport(because scene viewport, not scene, recieve mouse event) of EditorViewScene of
 	/// current tab.

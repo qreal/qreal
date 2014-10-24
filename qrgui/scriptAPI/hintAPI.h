@@ -26,10 +26,6 @@ public:
 	/// Draws arrow near target with parent widget with angle. Exists for lifeTime.
 	Q_INVOKABLE void arrowToWidget(QWidget *target, qreal angle, int lifeTime, QWidget *parent);
 
-private slots:
-	void destroyHint();
-	void destroyArrow();
-
 private:
 	ScriptAPI *mScriptAPI;
 	HintReporter *mHintReporter;

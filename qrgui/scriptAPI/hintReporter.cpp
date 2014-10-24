@@ -3,6 +3,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QPropertyAnimation>
 #include <QtWidgets/QGraphicsOpacityEffect>
+#include <QtGui/QMouseEvent>
 
 #include <qrutils/graphicsUtils/animatedEffects.h>
 
@@ -27,7 +28,9 @@ HintReporter::HintReporter(QWidget *parent, QString const &message, int const li
 
 	addHint(message);
 	mDuration = lifeTime / 2;
-	QTimer::singleShot(mDuration, this, SLOT(startDisappear()));
+
+	QTimer::singleShot(mDuration, this, SLOT(disappear()));
+	QTimer::singleShot(lifeTime, this, SLOT(deleteLater()));
 }
 
 void HintReporter::addHint(QString const &hint)
@@ -36,12 +39,13 @@ void HintReporter::addHint(QString const &hint)
 	setText(message);
 }
 
-void HintReporter::startDisappear()
+void HintReporter::disappear()
 {
 	AnimatedEffects::disappear(this, mDuration);
 }
 
-void HintReporter::mousePressEvent(QMouseEvent *)
+void HintReporter::mouseReleaseEvent(QMouseEvent *event)
 {
-	emit clicked();
+	Q_UNUSED(event)
+	deleteLater();
 }

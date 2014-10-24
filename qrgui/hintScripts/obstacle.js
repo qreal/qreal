@@ -21,7 +21,7 @@ var prop = api.ui().propertyRect("Расстояние");
 api.cursor().moveToRect(prop1, 1000);
 api.cursor().leftButtonPress(propertyEditor);
 api.cursor().leftButtonRelease(propertyEditor, 400); 	
-var val = api.ui().property("QComboBox", "Считанное значение");
+var val = api.ui().property("Считанное значение");
 api.cursor().leftButtonPress(val);
 api.cursor().leftButtonRelease(val, 50);
 api.pickComboBoxItem(val, "меньше", 1000);

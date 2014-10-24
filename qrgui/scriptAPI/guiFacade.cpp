@@ -16,7 +16,7 @@ QWidget *GuiFacade::widget(QString const &type, QString const &name)
 {
 	QList<QWidget *> const widgetList = mMainWindow->findChildren<QWidget *>(name);
 
-	for (QWidget *widget : widgetList) {
+	for (QWidget * const widget : widgetList) {
 		if (type == widget->metaObject()->className() && widget->isVisible()) {
 			return widget;
 		}
@@ -28,7 +28,7 @@ QWidget *GuiFacade::widget(QString const &type, QString const &name)
 DraggableElement *GuiFacade::draggableElement(QString const &widgetId)
 {
 	QList<DraggableElement *> const paletteWidgets = mMainWindow->findChildren<DraggableElement *>();
-	for (DraggableElement *paletteElement : paletteWidgets) {
+	for (DraggableElement * const paletteElement : paletteWidgets) {
 		if (paletteElement->id().toString() == widgetId) {
 			return paletteElement;
 		}
@@ -39,7 +39,7 @@ DraggableElement *GuiFacade::draggableElement(QString const &widgetId)
 
 QRect GuiFacade::propertyRect(QString const &name)
 {
-	QTreeWidget *editorTree = mMainWindow->
+	QTreeWidget * const editorTree = mMainWindow->
 			propertyEditor()->
 			findChild<QtTreePropertyBrowser *>()->
 			findChild<QTreeWidget *>();
@@ -54,15 +54,13 @@ QObject *GuiFacade::pluginGuiFacade(QString const &pluginName)
 	return mMainWindow->toolManager().pluginGuiFacade(pluginName);
 }
 
-QWidget *GuiFacade::property(QString const &type, QString const &name)
+QWidget *GuiFacade::property(QString const &name)
 {
-	if (type == "QComboBox") {
-		QTreeWidget *editorTree = mMainWindow->
-				propertyEditor()->
-				findChild<QtTreePropertyBrowser *>()->
-				findChild<QTreeWidget *>();
-		return editorTree->itemWidget(propertyTreeWidgetItem(name), 1);
-	}
+	QTreeWidget * const editorTree = mMainWindow->
+			propertyEditor()->
+			findChild<QtTreePropertyBrowser *>()->
+			findChild<QTreeWidget *>();
+	return editorTree->itemWidget(propertyTreeWidgetItem(name), 1);
 
 	return nullptr;
 }
@@ -70,10 +68,10 @@ QWidget *GuiFacade::property(QString const &type, QString const &name)
 QWidget *GuiFacade::pluginActionToolButton(QString const &name)
 {
 	QList<ActionInfo > actionList = mMainWindow->toolManager().actions();
-	for(ActionInfo &actionInfo : actionList) {
+	for(ActionInfo const &actionInfo : actionList) {
 		if (actionInfo.action()->objectName() == name) {
 			QList<QWidget *> const widgetList = actionInfo.action()->associatedWidgets();
-			for (QWidget *widget : widgetList) {
+			for (QWidget * const widget : widgetList) {
 				QString const buttonClassName = "QToolButton";
 				if (buttonClassName == widget->metaObject()->className() && widget->isVisible()) {
 					return widget;
@@ -105,12 +103,12 @@ QWidget *GuiFacade::propertyEditor()
 
 QTreeWidgetItem *GuiFacade::propertyTreeWidgetItem(QString const &name)
 {
-	QTreeWidget *editorTree = mMainWindow->
+	QTreeWidget * const editorTree = mMainWindow->
 			propertyEditor()->
 			findChild<QtTreePropertyBrowser *>()->
 			findChild<QTreeWidget *>();
 	for (int i = 0; i < editorTree->topLevelItemCount(); ++i) {
-		QTreeWidgetItem *item = editorTree->topLevelItem(i);
+		QTreeWidgetItem * const item = editorTree->topLevelItem(i);
 		if (item->data(0, Qt::DisplayRole).toString() == name) {
 			return item;
 		}

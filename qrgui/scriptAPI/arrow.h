@@ -16,14 +16,11 @@ class Arrow : public QWidget
 public:
 	Arrow(QPoint const &sourcePoint, QPoint const &destPoint, int const lifeTime, QWidget *parent);
 
-signals:
-	void mousePressEvent();
-
 protected:
 	void paintEvent(QPaintEvent *);
 
 private slots:
-	void startDisappear();
+	void disappear();
 
 private:
 	QPoint mSourcePoint;

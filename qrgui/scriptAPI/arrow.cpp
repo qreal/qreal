@@ -25,8 +25,11 @@ Arrow::Arrow(QPoint const &sourcePoint, QPoint const &destPoint, int const lifeT
 	setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	setWindowFlags(Qt::WindowStaysOnTopHint);
 	activateWindow();
+
 	mDuration = lifeTime / 2;
-	QTimer::singleShot(mDuration, this, SLOT(startDisappear()));
+
+	QTimer::singleShot(mDuration, this, SLOT(disappear()));
+	QTimer::singleShot(lifeTime, this, SLOT(deleteLater()));
 }
 
 void Arrow::paintEvent(QPaintEvent *)
@@ -53,7 +56,7 @@ void Arrow::paintEvent(QPaintEvent *)
 	painter.drawPolygon(QPolygonF() << line.p2() << destArrowFirst << destArrowSecond);
 }
 
-void Arrow::startDisappear()
+void Arrow::disappear()
 {
 	AnimatedEffects::disappear(this, mDuration);
 }

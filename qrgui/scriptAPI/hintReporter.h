@@ -16,14 +16,11 @@ class HintReporter : public QLabel
 public:
 	HintReporter(QWidget *parent, QString const &message, int const lifeTime);
 
-signals:
-	void clicked();
-
 protected:
-	virtual void mousePressEvent(QMouseEvent *);
+	virtual void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
-	void startDisappear();
+	void disappear();
 
 private:
 	void addHint(QString const &hint);
