@@ -63,6 +63,6 @@ dragArea = 12
 usabilityTestingMode=false
 collectErgonomicValues=false
 touchMode=false
+updaterActive=true
 scriptInterpretation=true
 scriptName=:/hintScripts/obstacle.js
-updaterActive=true

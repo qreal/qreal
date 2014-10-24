@@ -18,7 +18,7 @@ INCLUDEPATH += \
 DESTDIR += ../bin
 
 !macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../bin"
+        QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../bin"
 }
 
 HEADERS += association.h \

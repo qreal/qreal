@@ -25,16 +25,6 @@ ScriptAPI::ScriptAPI()
 {
 }
 
-ScriptAPI::~ScriptAPI()
-{
-	delete mHintAPI;
-	delete mPaletteAPI;
-	delete mSceneAPI;
-	delete mVirtualKeyboard;
-	delete mVirtualCursor;
-	delete mGuiFacade;
-}
-
 void ScriptAPI::init(MainWindow *mainWindow)
 {
 	mMainWindow = mainWindow;
@@ -47,31 +37,20 @@ void ScriptAPI::init(MainWindow *mainWindow)
 
 	QScriptValue const scriptAPI = mScriptEngine.newQObject(this);
 	mScriptEngine.globalObject().setProperty("api", scriptAPI);
+}
 
-	QScriptValue const guiFacade = mScriptEngine.newQObject(mGuiFacade);
-	mScriptEngine.globalObject().setProperty("guiFacade", guiFacade);
-
-	QScriptValue const virtualCursor = mScriptEngine.newQObject(mVirtualCursor);
-	mScriptEngine.globalObject().setProperty("cursor", virtualCursor);
-
-	QScriptValue const virtualKeyboard = mScriptEngine.newQObject(mVirtualKeyboard);
-	mScriptEngine.globalObject().setProperty("keyboard", virtualKeyboard);
-
-	QScriptValue const paletteAPI = mScriptEngine.newQObject(mPaletteAPI);
-	mScriptEngine.globalObject().setProperty("paletteAPI", paletteAPI);
-
-	QScriptValue const hintAPI = mScriptEngine.newQObject(mHintAPI);
-	mScriptEngine.globalObject().setProperty("hintAPI", hintAPI);
-
-	QScriptValue const sceneAPI = mScriptEngine.newQObject(mSceneAPI);
-	mScriptEngine.globalObject().setProperty("sceneAPI", sceneAPI);
-
+void ScriptAPI::evaluate()
+{
 	QString const fileName(SettingsManager::value("scriptName").toString());
-
 	QString const &fileContent = InFile::readAll(fileName);
+
+	mVirtualCursor->show();
+	mVirtualCursor->raise();
 
 	mScriptEngine.setProcessEventsInterval(20);
 	mScriptEngine.evaluate(fileContent, fileName);
+
+	abortEvaluate();
 }
 
 void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, QString const &name, int const duration)

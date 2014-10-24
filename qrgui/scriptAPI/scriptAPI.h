@@ -28,10 +28,12 @@ class ScriptAPI : public QObject
 
 public:
 	ScriptAPI();
-	~ScriptAPI();
 
 	/// Initialize script API.
 	void init(MainWindow *mainWindow);
+
+	/// Start evaluating of script with script engine.
+	void evaluate();
 
 	/// Stops execution for duration. Starting event loop, which breaking when duration time ellapsed.
 	Q_INVOKABLE void wait(int duration);

@@ -15,9 +15,7 @@ VirtualCursor::VirtualCursor(ScriptAPI *scriptAPI, QWidget *parent)
 	, mDragStarted(false)
 {
 	setFixedSize(32, 32);
-	show();
 	setWindowFlags(Qt::WindowStaysOnTopHint);
-	raise();
 }
 
 void VirtualCursor::paintEvent(QPaintEvent *event)

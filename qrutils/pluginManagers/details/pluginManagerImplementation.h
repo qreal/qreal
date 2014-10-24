@@ -64,6 +64,5 @@ private:
 	/// for robots it can be "plugins/kitPlugins", for example
 	QString mAdditionalPart;
 };
-
 }
 }

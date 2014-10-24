@@ -315,7 +315,6 @@ EditorManagerInterface &MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	emit mSystemEvents->closedMainWindow();
 	mScriptAPI.abortEvaluate();
 
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
@@ -2257,8 +2256,14 @@ void MainWindow::initScriptAPI()
 {
 	QThread *scriptAPIthread = new QThread(this);
 	mScriptAPI.init(this);
-	mScriptAPI.moveToThread(scriptAPIthread);
+
+	QAction *evalAction = new QAction(this);
+	evalAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F12));
+	connect(evalAction, &QAction::triggered, &mScriptAPI, &ScriptAPI::evaluate, Qt::DirectConnection);
+	addAction(evalAction);
+
 	connect(mSystemEvents, &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
+	mScriptAPI.moveToThread(scriptAPIthread);
 	scriptAPIthread->start();
 }
 
