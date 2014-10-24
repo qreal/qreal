@@ -39,7 +39,7 @@ namespace invocation
 /// @param TResult Must be function return value type
 
 template<typename TResult>
-class QRUTILS_EXPORT FunctorOperation : public LongOperation
+class FunctorOperation : public LongOperation
 {
 public:
 	/// @param timeout Operation timeout

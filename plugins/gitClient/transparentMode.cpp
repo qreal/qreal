@@ -102,7 +102,7 @@ void TransparentMode::setVersion(QString hash)
 void TransparentMode::saveVersion()
 {
 	isInit();
-	mPlugin->beginChangesSubmitting("version was saved in a transparent mode", QString(), true);
+	mPlugin->beginChangesSubmitting("version was saved in a transparent mode", mProjectManager->saveFilePath(), true);
 	getAndUpdateLog();
 }
 

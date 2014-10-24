@@ -272,12 +272,12 @@ void GitPlugin::startCommit(QString const &message, QString const &from
 	Q_UNUSED(from)
 	QStringList arguments;
 	arguments << "add" << "-A";
-	invokeOperation(arguments, true, QString(), true, true, QString(), sourceProject, !quiet);
-
-	arguments.clear();
-	arguments << "commit" << "-m" << message;
-
 	bool result = invokeOperation(arguments, true, QString(), true, true, QString(), sourceProject, !quiet);
+	if (result){
+		arguments.clear();
+		arguments << "commit" << "-m" << message;
+		result = invokeOperation(arguments, true, QString(), false, true, QString(), sourceProject, !quiet);
+	}
 	if (!quiet){
 		emit commitComplete(result);
 		emit operationComplete("commit", result);
@@ -369,7 +369,7 @@ void GitPlugin::doUserNameConfig()
 void GitPlugin::doUserEmailConfig()
 {
 	QString const enabledKey = qReal::versioning::ui::AuthenticationSettingsWidget::enabledSettingsName("git");
-	QString const emailKey = qReal::versioning::ui::AuthenticationSettingsWidget::usernameSettingsName("git");
+	QString const emailKey = qReal::versioning::ui::AuthenticationSettingsWidget::emailSettingsName("git");
 	QString email = "qReal@qrealmail.com";
 
 	bool const authenticationEnabled = qReal::SettingsManager::value(enabledKey, false).toBool();
@@ -498,6 +498,8 @@ QString GitPlugin::getPassword()
 
 void GitPlugin::onCloneComplete(bool const result, const bool quiet)
 {
+	doUserNameConfig();
+	doUserEmailConfig();
 	processWorkingCopy();
 	if (!quiet) {
 		emit cloneComplete(result);

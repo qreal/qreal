@@ -65,20 +65,19 @@ private slots:
 	void removeClosedTab(QWidget *widget);
 
 private:
-	bool isFullScreen;
-	QList<QWidget *> mDiffWidgets;
-
 	void initActions();
 	void showMessage(QString const &message);
 	void reopenWithoutSavings();
 	QWidget *makeDiffTab();
 
+	bool isFullScreen;
 	QList<qReal::ActionInfo> mMenu;
 	GitPlugin *mPlugin;
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowIface;
 	qReal::ProjectManagementInterface *mProjectManager;
 	qrRepo::RepoControlInterface *mRepoApi;
 	ui::PreferencesVersioningPage *mPreferencesPage;
+	QList<QWidget *> mDiffWidgets;
 	TransparentMode *mCompactMode;
 	qReal::SystemEventsInterface *mSystemEvents;
 };
