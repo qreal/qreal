@@ -15,7 +15,7 @@ void PowerMotor::on(int speed)
 {
 	QString const pathToCommand = ":/trik/templates/engines/forward.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@PORT@@", port().name())
+			.replace("@@PORT@@", "\"" + port().name() + "\"")
 			.replace("@@POWER@@", QString::number(speed)) + "brick.run();";
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

@@ -38,7 +38,7 @@ void Display::clearScreen()
 void Display::printText(int x, int y, QString const &text)
 {
 	QString const pathToCommand = ":/trik/templates/drawing/printText.t";
-	QString const directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", text)
+	QString const directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", "\"" + text + "\"")
 		.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y)) + "brick.run();";
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
