@@ -79,8 +79,8 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 
 D2ModelWidget::~D2ModelWidget()
 {
-	delete mDisplay;
 	delete mScene;
+	delete mDisplay;
 	delete mUi;
 }
 
