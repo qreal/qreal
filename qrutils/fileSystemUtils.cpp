@@ -50,10 +50,12 @@ bool FileSystemUtils::removeFile(QString const &filePath)
 
 void FileSystemUtils::resetAttributes(const QString &filePath)
 {
-	#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN)
 	wchar_t *arr = (wchar_t*)filePath.utf16();
 	SetFileAttributes(arr, FILE_ATTRIBUTE_NORMAL);
-	#endif
+#else
+	Q_UNUSED(filePath)
+#endif
 }
 
 bool FileSystemUtils::clearDir(QDir dir)
