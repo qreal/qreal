@@ -10,11 +10,20 @@ EncoderSensor::EncoderSensor(DeviceInfo const &info, PortInfo const &port
 	: interpreterBase::robotModel::robotParts::EncoderSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
+	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+			, this, &EncoderSensor::onIncomingData);
 }
 
 void EncoderSensor::read()
 {
-	emit newData(0);
+	mRobotCommunicator.requestData(port().name());
+}
+
+void EncoderSensor::onIncomingData(QString const &portName, int value)
+{
+	if (portName == port().name()) {
+		emit newData(value);
+	}
 }
 
 void EncoderSensor::nullify()

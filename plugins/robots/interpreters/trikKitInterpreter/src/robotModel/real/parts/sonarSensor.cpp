@@ -8,9 +8,18 @@ SonarSensor::SonarSensor(DeviceInfo const &info, PortInfo const &port
 	: robotModel::parts::TrikSonarSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
+	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+			, this, &SonarSensor::onIncomingData);
 }
 
 void SonarSensor::read()
 {
-	emit newData(0);
+	mRobotCommunicator.requestData(port().name());
+}
+
+void SonarSensor::onIncomingData(QString const &portName, int value)
+{
+	if (portName == port().name()) {
+		emit newData(value);
+	}
 }

@@ -82,15 +82,15 @@ robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, Devic
 	} else if (deviceInfo.isA(motionSensorInfo())) {
 		return new parts::MotionSensor(motionSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gyroscopeInfo())) {
-		return new parts::Gyroscope(motionSensorInfo(), port);
+		return new parts::Gyroscope(motionSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(accelerometerInfo())) {
-		return new parts::Accelerometer(motionSensorInfo(), port);
+		return new parts::Accelerometer(motionSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(lineSensorInfo())) {
 		return new parts::LineSensor(lineSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(colorSensorInfo())) {
-		return new parts::LineSensor(colorSensorInfo(), port, *mRobotCommunicator);
+		return new parts::ColorSensor(colorSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(objectSensorInfo())) {
-		return new parts::LineSensor(objectSensorInfo(), port, *mRobotCommunicator);
+		return new parts::ObjectSensor(objectSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(ledInfo())) {
 		return new parts::Led(ledInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(shellInfo())) {

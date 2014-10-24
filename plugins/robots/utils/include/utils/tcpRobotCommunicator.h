@@ -29,6 +29,8 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	bool stopRobot();
 
+	void requestData(QString const &sensor);
+
 	/// Establishes connection and initializes socket. If connection fails, leaves socket
 	/// in invalid state.
 	void connect();
@@ -41,19 +43,30 @@ public:
 signals:
 	/// Return correctness of the connection
 	void connected(bool result);
+
 	/// Signal of disconnection
 	void disconnected();
 
+	void newScalarSensorData(QString const &port, int data);
+
+	void newVectorSensorData(QString const &port, QVector<int> const &data);
+
 private slots:
-	void onIncomingData();
+	void processIncomingData(QTcpSocket &socket, QByteArray &buffer, int &expectedBytes);
+
+	void onIncomingControlData();
+	void onIncomingSensorsData();
+
 	void processIncomingMessage(QString const &message);
 
 private:
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
-	void send(QString const &data);
+	void send(QString const &data, QTcpSocket &socket);
 
 	/// Socket that holds connection.
 	QTcpSocket mSocket;
+
+	QTcpSocket mTelemetrySocket;
 
 	/// Reference to error reporter.
 	qReal::ErrorReporterInterface *mErrorReporter;
@@ -61,8 +74,12 @@ private:
 	/// Buffer to accumulate parts of a message.
 	QByteArray mBuffer;
 
+	QByteArray mTelemetryBuffer;
+
 	/// Declared size of a current message.
 	int mExpectedBytes = 0;
+
+	int mExpectedBytesFromTelemetry = 0;
 
 	QString mSettings;
 };

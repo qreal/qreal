@@ -10,6 +10,8 @@ MotionSensor::MotionSensor(DeviceInfo const &info, PortInfo const &port
 	: robotModel::parts::TrikMotionSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
+	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+			, this, &MotionSensor::onIncomingData);
 }
 
 void MotionSensor::read()
@@ -18,6 +20,12 @@ void MotionSensor::read()
 	QString const directCommand = utils::InFile::readAll(pathToCommand) + "brick.run()";
 	mRobotCommunicator.runDirectCommand(directCommand);
 
-	/// @todo: feedback from trikRuntime. Now, the command is only sent there
-	emit newData(0);
+	mRobotCommunicator.requestData(port().name());
+}
+
+void MotionSensor::onIncomingData(QString const &portName, int value)
+{
+	if (portName == port().name()) {
+		emit newData(value);
+	}
 }

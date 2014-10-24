@@ -8,9 +8,19 @@ InfraredSensor::InfraredSensor(DeviceInfo const &info, PortInfo const &port
 	: robotModel::parts::TrikInfraredSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
+	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+			, this, &InfraredSensor::onIncomingData);
 }
 
 void InfraredSensor::read()
 {
-	emit newData(0);
+	mRobotCommunicator.requestData(port().name());
 }
+
+void InfraredSensor::onIncomingData(QString const &portName, int value)
+{
+	if (portName == port().name()) {
+		emit newData(value);
+	}
+}
+

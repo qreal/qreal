@@ -20,6 +20,9 @@ public:
 	void read() override;
 	void nullify() override;
 
+public slots:
+	void onIncomingData(QString const &portName, int value);
+
 private:
 	utils::TcpRobotCommunicator &mRobotCommunicator;
 };

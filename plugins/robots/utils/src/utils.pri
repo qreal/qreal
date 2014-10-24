@@ -18,7 +18,7 @@ HEADERS += \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationThreadInterface.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicator.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationException.h \
-	$$PWD/../include/utils/tcpRobotCommunicator.h \
+	$$PWD/../include/utils/tcpRobotCommunicator.h
 
 SOURCES += \
 	$$PWD/abstractTimer.cpp \
@@ -28,4 +28,4 @@ SOURCES += \
 	$$PWD/tracer.cpp \
 	$$PWD/robotCommunication/robotCommunicator.cpp \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \
-	$$PWD/tcpRobotCommunicator.cpp \
+	$$PWD/tcpRobotCommunicator.cpp
