@@ -2,7 +2,7 @@
 
 #include <QtGui/QPainterPath>
 
-#include <commonTwoDModel/robotModel/twoDRobotModel.h>
+#include "commonTwoDModel/robotModel/twoDRobotModel.h"
 #include "sensorsConfiguration.h"
 
 namespace twoDModel {

@@ -1,7 +1,5 @@
 #include "commonTwoDModel/engine/twoDModelEngineFacade.h"
 
-#include <QDebug>
-
 #include "model/model.h"
 #include "view/d2ModelWidget.h"
 #include "twoDModelEngineApi.h"

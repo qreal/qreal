@@ -321,7 +321,6 @@ void RobotModel::deserialize(QDomElement const &robotElement)
 	onRobotReturnedOnGround();
 	setPosition(QPointF(x, y));
 	setRotation(robotElement.attribute("direction", "0").toDouble());
-	//configuration().deserialize(robotElement);
 	nextFragment();
 }
 
