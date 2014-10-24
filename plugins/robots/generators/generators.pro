@@ -2,10 +2,14 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 	generatorBase \
-	nxtGenerator \
-	trikGenerator \
-	russianCGenerator \
+	trikQtsGenerator \
+	nxtOsekCGenerator \
+	nxtRussianCGenerator \
 
-nxtGenerator.depends = generatorBase
-trikGenerator.depends = generatorBase
-russianCGenerator.depends = generatorBase
+trikQtsGenerator.file = $$PWD/trik/trikQtsGenerator
+nxtOsekCGenerator.file = $$PWD/nxt/nxtOsekCGenerator
+nxtRussianCGenerator.file = $$PWD/nxt/nxtRussianCGenerator
+
+trikQtsGenerator.depends = generatorBase
+nxtOsekCGenerator.depends = generatorBase
+nxtRussianCGenerator.depends = generatorBase
