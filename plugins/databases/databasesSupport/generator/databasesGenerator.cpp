@@ -133,9 +133,9 @@ void DatabasesGenerator::error(QString error, bool isCritical)
 Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
 {
 	IdList attributesSet = getChildren(entityId);
-	/*if(attributesSet.isEmpty()) {
-		error(emptyEntity);
-	}*/
+	if(attributesSet.isEmpty()) {
+		return Id::rootId();
+	}
 	Id primaryKey = Id::rootId();
 	int primaryKeyCount = 0;
 	foreach (Id const &attributeId, attributesSet) {
@@ -146,7 +146,8 @@ Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
 		}
 	}
 	if (primaryKeyCount != 1) {
-		error("Invalid number of primary key in entity " + getProperty(entityId, "isPrimaryKey").toString() +  ": " + primaryKeyCount, true);
+		error("Invalid number of primary key in entity with name '" + getProperty(entityId, "Name").toString() +  "': " + QString::number(primaryKeyCount), true);
+		return Id::rootId();
 	}
 	return primaryKey;
 }
@@ -195,6 +196,10 @@ bool DatabasesGenerator::checkEntities()
 		if (name == "") {
 			result = false;
 			error(tr("Entity has no name"), true);
+		}
+		IdList attributes = getChildren(entity);
+		if (attributes.isEmpty()) {
+			error(tr("Entity should have attributes"), true);
 		}
 	}
 	return result;
@@ -307,6 +312,9 @@ void DatabasesGenerator::generateSQL()
 		int fromSet = getParentList(from, oneToOneAllTablesSet);
 
 		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(toSet));
+		if (toPrimaryKey == Id::rootId()) {
+			return;
+		}
 		QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
 		extraAttributes[fromSet] += (",\r\n" + toPrimaryKeyName + " " + getProperty(toPrimaryKey, "DataType").toString());
 	}
@@ -319,9 +327,15 @@ void DatabasesGenerator::generateSQL()
 		int fromSet = getParentList(from, oneToOneAllTablesSet);
 
 		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(toSet));
+		if (toPrimaryKey == Id::rootId()) {
+			return;
+		}
 		QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
 		Id fromPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(fromSet));
 		QString fromPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(fromSet));
+		if (fromPrimaryKey == Id::rootId()) {
+			return;
+		}
 
 		codeFile.write("CREATE TABLE ");
 		codeFile.write((getListTableName(oneToOneAllTablesSet.at(fromSet)) + "-" + getListTableName(oneToOneAllTablesSet.at(toSet))).toUtf8());
@@ -358,11 +372,6 @@ void DatabasesGenerator::generateSQL()
 		}
 		codeFile.write(extraAttributes[i].toUtf8());
 		i++;
-
-
-		//codeFile.write(toPrimaryKeyName + " " + getProperty(toPrimaryKey, "DataType").toByteArray(););
-		//codeFile.write(",\r\n");
-
 		codeFile.write("\r\n);\r\n\r\n");
 	}
 	codeFile.close();
