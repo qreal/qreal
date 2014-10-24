@@ -1707,8 +1707,8 @@ void MainWindow::initToolPlugins()
 		mUi->generatorsToolbar->hide();
 	}
 
-	if (mUi->interpreterToolbar->actions().isEmpty()) {
-		mUi->interpreterToolbar->hide();
+	if (mUi->interpretersToolbar->actions().isEmpty()) {
+		mUi->interpretersToolbar->hide();
 	}
 
 	QList<QPair<QString, PreferencesPage *> > const preferencesPages = mToolManager.preferencesPages();
