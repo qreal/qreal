@@ -1094,6 +1094,8 @@ void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &
 		repo->setProperty(diag, "nodeName", name);
 	}
 
+	// ну, надо же хотя бы поэкспериментировать..
+	repo->setProperty(nodeId, "parent", diagram.rootId());
 	repo->setProperty(nodeId, "name", name);
 	repo->setProperty(nodeId, "displayedName", displayedName);
 	repo->setProperty(nodeId, "shape", shape);

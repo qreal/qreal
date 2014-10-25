@@ -154,7 +154,9 @@ bool EditorManager::isElement(const Id &id) const
 
 QString EditorManager::friendlyName(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	if (!mPluginsLoaded.contains(id.editor())) {
+		Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	}
 
 	switch (id.idSize()) {
 	case 1:
