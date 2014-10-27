@@ -29,7 +29,7 @@ qReal::Customizer *RobotsPlugin::customizationInterface()
 	return &mRobotsPluginFacade->customizer();
 }
 
-QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
+QPair<QString, gui::PreferencesPage *> RobotsPlugin::preferencesPage()
 {
 	return qMakePair(QObject::tr("Robots"), mRobotsPluginFacade->robotsSettingsPage());
 }

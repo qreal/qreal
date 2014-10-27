@@ -3,38 +3,15 @@ TARGET = robots_interpreterCore_unittests
 include(../../../../common.pri)
 
 include(../../../../../../plugins/robots/interpreters/interpreterCore/interpreterCore.pri)
-include(../../../../../../qrgui/models/models.pri)
 
-LIBS += -L../../../../../../bin -lqslog
+LIBS += -L../../../../../../bin -lqrkernel -lqslog
 
 INCLUDEPATH += \
-	../../../../../../plugins/robots/interpreters \
-	../../../../../../plugins/robots/interpreters/interpreterCore \
-	../../../../../../plugins/robots/interpreters/interpreterBase/include/ \
-	../../../../mocks/plugins/robots/interpreters/interpreterBase/include \
-	../../../../mocks/plugins/robots/interpreters \
-
-#qrgui sources
-HEADERS += \
-	../../../../../../qrgui/mainwindow/mainWindowInterpretersInterface.h \
-	../../../../../../qrgui/toolPluginInterface/customizer.h \
-	../../../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h \
-	../../../../../../qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h \
-	../../../../../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h \
-	../../../../../../qrgui/pluginManager/editorManager.h \
-	../../../../../../qrgui/pluginManager/listenerManager.h \
-	../../../../../../qrgui/pluginManager/pattern.h \
-	../../../../../../qrgui/pluginManager/explosion.h \
-	../../../../../../qrgui/pluginManager/details/patternParser.h \
-	../../../../../../qrgui/umllib/sdfRenderer.h \
-
-SOURCES += \
-	../../../../../../qrgui/pluginManager/editorManager.cpp \
-	../../../../../../qrgui/pluginManager/listenerManager.cpp \
-	../../../../../../qrgui/pluginManager/pattern.cpp \
-	../../../../../../qrgui/pluginManager/explosion.cpp \
-	../../../../../../qrgui/pluginManager/details/patternParser.cpp \
-	../../../../../../qrgui/umllib/sdfRenderer.cpp \
+	$$PWD/../../../../../../plugins/robots/interpreters \
+	$$PWD/../../../../../../plugins/robots/interpreters/interpreterCore \
+	$$PWD/../../../../../../plugins/robots/interpreters/interpreterBase/include/ \
+	$$PWD/../../../../mocks/plugins/robots/interpreters/interpreterBase/include \
+	$$PWD/../../../../mocks/plugins/robots/interpreters \
 
 # Tests
 HEADERS += \
@@ -51,13 +28,8 @@ SOURCES += \
 	managersTests/sensorsConfigurationManagerTest.cpp \
 	support/dummySensorsConfigurer.cpp \
 
-LIBS += -L../../../../../../bin/ -lqslog
-
 # Mocks
 include(mocks.pri)
-
-# InterpreterBase
-#include(../../../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase.pri)
 
 # Supporting code
 HEADERS += \

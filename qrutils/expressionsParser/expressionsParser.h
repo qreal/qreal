@@ -3,8 +3,8 @@
 #include <QtCore/QMap>
 
 #include "number.h"
-#include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../utilsDeclSpec.h"
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 

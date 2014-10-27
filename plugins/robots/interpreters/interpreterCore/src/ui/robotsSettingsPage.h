@@ -3,7 +3,7 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QRadioButton>
 
-#include <qrgui/dialogs/preferencesPages/preferencesPage.h>
+#include <qrgui/preferencesDialog/preferencesPage.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 
 #include "managers/kitPluginManager.h"
@@ -18,7 +18,7 @@ namespace ui {
 
 /// Preferences page for robots interpreter plugin. Contains constructor kit selector and a placeholder for
 /// kit-specific settings.
-class RobotsSettingsPage : public PreferencesPage, public interpreterBase::DevicesConfigurationProvider
+class RobotsSettingsPage : public qReal::gui::PreferencesPage, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 

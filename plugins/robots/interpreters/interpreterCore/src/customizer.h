@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include <qrgui/toolPluginInterface/customizer.h>
+#include <qrgui/plugins/toolPluginInterface/customizer.h>
 
 namespace interpreterCore {
 

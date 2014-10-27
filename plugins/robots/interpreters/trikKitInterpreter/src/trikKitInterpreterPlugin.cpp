@@ -58,7 +58,7 @@ TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 }
 
 void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-		, SystemEventsInterface const &systemEvents
+		, SystemEvents const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
@@ -68,7 +68,7 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](QString const &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
+	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
 			, this, &TrikKitInterpreterPlugin::onActiveTabChanged);
 
 	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel
