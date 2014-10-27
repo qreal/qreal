@@ -18,6 +18,7 @@ Models::Models(QString const &workingCopy, EditorManagerInterface &editorManager
 			, mGraphicalPartModel, SLOT(rowsAboutToBeRemovedInGraphicalModel(QModelIndex, int, int)));
 
 	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager);
+	mExploser = new Exploser(logicalModelAssistApi());
 	mRepoApi = repoApi;
 
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);
@@ -29,6 +30,7 @@ Models::~Models()
 	delete mGraphicalModel;
 	delete mLogicalModel;
 	delete mRepoApi;
+	delete mExploser;
 }
 
 QAbstractItemModel* Models::graphicalModel() const
@@ -69,6 +71,11 @@ qrRepo::LogicalRepoApi &Models::mutableLogicalRepoApi() const
 qrRepo::GraphicalRepoApi const &Models::graphicalRepoApi() const
 {
 	return mGraphicalModel->api();
+}
+
+Exploser &Models::exploser() const
+{
+	return *mExploser;
 }
 
 void Models::reinit()

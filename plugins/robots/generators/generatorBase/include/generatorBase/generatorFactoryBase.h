@@ -2,7 +2,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrrepo/repoApi.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 #include "robotsGeneratorDeclSpec.h"

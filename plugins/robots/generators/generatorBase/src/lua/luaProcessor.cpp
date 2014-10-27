@@ -1,7 +1,7 @@
 #include "generatorBase/lua/luaProcessor.h"
 
 #include <qrtext/languageToolboxInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "src/lua/luaPrinter.h"
 

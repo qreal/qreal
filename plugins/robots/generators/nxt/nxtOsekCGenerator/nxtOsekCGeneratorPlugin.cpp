@@ -1,10 +1,10 @@
 #include "nxtOsekCGeneratorPlugin.h"
 
-#include <QtWidgets/QApplication>
 #include <QtCore/QDir>
+#include <QtCore/QDateTime>
+#include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
-#include <qrgui/mainwindow/qscintillaTextEdit.h>
 
 #include "nxtOsekCMasterGenerator.h"
 
