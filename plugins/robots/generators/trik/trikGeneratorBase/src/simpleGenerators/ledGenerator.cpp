@@ -1,7 +1,7 @@
 #include "ledGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
-#include "converters/ledColorConverter.h"
+#include "src/converters/ledColorConverter.h"
 
 using namespace trik::simple;
 using namespace trik::converters;

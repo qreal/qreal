@@ -11,9 +11,11 @@ namespace converters {
 /// Splits given string selecting just numbers and returns converted output port values
 class TrikStringPropertyConverter : public generatorBase::converters::StringPropertyConverter
 		, public utils::TextExpressionProcessorBase
+		, public generatorBase::TemplateParametrizedEntity
 {
 public:
-	explicit TrikStringPropertyConverter(generatorBase::parts::Variables const &variables
+	TrikStringPropertyConverter(QString const &pathToTemplates
+			, generatorBase::parts::Variables const &variables
 			, ConverterInterface const &systemVariableNameConverter);
 
 	~TrikStringPropertyConverter() override;

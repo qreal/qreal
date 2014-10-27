@@ -8,7 +8,7 @@
 #include "robotCommunication/tcpRobotCommunicator.h"
 #include "trikQtsMasterGenerator.h"
 
-using namespace trik;
+using namespace trik::qts;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
@@ -23,11 +23,6 @@ TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
 TrikQtsGeneratorPlugin::~TrikQtsGeneratorPlugin()
 {
 	delete mCommunicator;
-}
-
-QString TrikQtsGeneratorPlugin::kitId() const
-{
-	return "trikKit";
 }
 
 void TrikQtsGeneratorPlugin::init(qReal::PluginConfigurator const &configurator
@@ -84,12 +79,8 @@ generatorBase::MasterGeneratorBase *TrikQtsGeneratorPlugin::masterGenerator()
 			, *mMainWindowInterface->errorReporter()
 			, *mRobotModelManager
 			, *mTextLanguage
-			, mMainWindowInterface->activeDiagram());
-}
-
-void TrikQtsGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
-{
-	Q_UNUSED(newFileInfo);
+			, mMainWindowInterface->activeDiagram()
+			, generatorName());
 }
 
 QString TrikQtsGeneratorPlugin::defaultFilePath(QString const &projectName) const
@@ -104,12 +95,12 @@ QString TrikQtsGeneratorPlugin::extension() const
 
 QString TrikQtsGeneratorPlugin::extensionDescription() const
 {
-	return tr("TRIK Source File");
+	return tr("QtScript Source File");
 }
 
 QString TrikQtsGeneratorPlugin::generatorName() const
 {
-	return "Trik";
+	return "trikQts";
 }
 
 bool TrikQtsGeneratorPlugin::uploadProgram()

@@ -5,15 +5,16 @@
 namespace trik {
 
 /// Generator factory implemtation for TRIK platform
-class TrikQtsGeneratorFactory : public generatorBase::GeneratorFactoryBase
+class TrikGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
-	TrikQtsGeneratorFactory(qrRepo::RepoApi const &repo
+	TrikGeneratorFactory(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, generatorBase::lua::LuaProcessor &luaProcessor);
+			, generatorBase::lua::LuaProcessor &luaProcessor
+			, QString const &generatorName);
 
-	~TrikQtsGeneratorFactory() override;
+	~TrikGeneratorFactory() override;
 
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
@@ -26,6 +27,9 @@ public:
 
 protected:
 	void initVariables() override;
+
+private:
+	QString const mGeneratorName;
 };
 
 }

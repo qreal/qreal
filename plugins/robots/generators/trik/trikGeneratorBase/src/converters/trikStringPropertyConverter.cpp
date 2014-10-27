@@ -7,9 +7,11 @@ using namespace converters;
 using namespace generatorBase;
 using namespace parts;
 
-TrikStringPropertyConverter::TrikStringPropertyConverter(Variables const &variables
+TrikStringPropertyConverter::TrikStringPropertyConverter(QString const &pathToTemplates
+		, Variables const &variables
 		, ConverterInterface const &systemVariableNameConverter)
-	: mVariables(variables)
+	: TemplateParametrizedEntity(pathToTemplates)
+	, mVariables(variables)
 	, mSystemVariableNameConverter(&systemVariableNameConverter)
 {
 }
@@ -26,7 +28,6 @@ QString TrikStringPropertyConverter::convert(QString const &data) const
 	QString const formatString = TextExpressionProcessorBase::processExpression(preparedString, metVariables);
 	QStringList rolledVariables;
 	for (QString const &variable : metVariables) {
-		/// @todo: variable name may not exactly match system variable but have it as substring.
 		rolledVariables << mSystemVariableNameConverter->convert(variable);
 	}
 

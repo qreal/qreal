@@ -2,22 +2,23 @@
 
 #include <generatorBase/generatorCustomizer.h>
 
-#include "trikQtsGeneratorFactory.h"
+#include "trikGeneratorFactory.h"
 
 namespace trik {
 
-class TrikQtsGeneratorCustomizer : public generatorBase::GeneratorCustomizer
+class TrikGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
-	TrikQtsGeneratorCustomizer(qrRepo::RepoApi const &repo
+	TrikGeneratorCustomizer(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, generatorBase::lua::LuaProcessor &luaProcessor);
+			, generatorBase::lua::LuaProcessor &luaProcessor
+			, QString const &generatorName);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
 private:
-	TrikQtsGeneratorFactory mFactory;
+	TrikGeneratorFactory mFactory;
 };
 
 }

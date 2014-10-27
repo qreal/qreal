@@ -1,4 +1,4 @@
-#include "trikQtsGeneratorFactory.h"
+#include "trikGeneratorFactory.h"
 
 #include <generatorBase/converters/regexpMultiConverter.h>
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
@@ -35,19 +35,21 @@ using namespace trik::simple;
 using namespace generatorBase;
 using namespace generatorBase::simple;
 
-TrikQtsGeneratorFactory::TrikQtsGeneratorFactory(qrRepo::RepoApi const &repo
+TrikGeneratorFactory::TrikGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, lua::LuaProcessor &luaProcessor)
+		, lua::LuaProcessor &luaProcessor
+		, QString const &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
+	, mGeneratorName(generatorName)
 {
 }
 
-TrikQtsGeneratorFactory::~TrikQtsGeneratorFactory()
+TrikGeneratorFactory::~TrikGeneratorFactory()
 {
 }
 
-AbstractSimpleGenerator *TrikQtsGeneratorFactory::simpleGenerator(qReal::Id const &id
+AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &id
 		, GeneratorCustomizer &customizer)
 {
 	QString const elementType = id.element();
@@ -115,22 +117,22 @@ AbstractSimpleGenerator *TrikQtsGeneratorFactory::simpleGenerator(qReal::Id cons
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }
 
-QString TrikQtsGeneratorFactory::pathToTemplates() const
+QString TrikGeneratorFactory::pathToTemplates() const
 {
-	return ":/trik/templates";
+	return ":/" + mGeneratorName + "/templates";
 }
 
-generatorBase::simple::Binding::ConverterInterface *TrikQtsGeneratorFactory::stringPropertyConverter() const
+generatorBase::simple::Binding::ConverterInterface *TrikGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::TrikStringPropertyConverter(*mVariables, *reservedVariableNameConverter());
+	return new converters::TrikStringPropertyConverter(mGeneratorName, *mVariables, *reservedVariableNameConverter());
 }
 
-void TrikQtsGeneratorFactory::initVariables()
+void TrikGeneratorFactory::initVariables()
 {
 	mVariables = new parts::TrikVariables(pathToTemplates(), mRobotModelManager.model(), mLuaTranslator.toolbox());
 }
 
-generatorBase::parts::DeviceVariables *TrikQtsGeneratorFactory::deviceVariables() const
+generatorBase::parts::DeviceVariables *TrikGeneratorFactory::deviceVariables() const
 {
 	return new trik::parts::TrikDeviceVariables();
 }

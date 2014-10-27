@@ -29,7 +29,7 @@ INCLUDEPATH += \
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../../../bin/plugins/
 }
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/russianCGenerator_ru.ts
+TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtRussianCGenerator_ru.ts
 
 HEADERS += \
 	$$PWD/nxtRussianCGeneratorPlugin.h \

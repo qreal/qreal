@@ -2,13 +2,13 @@
 
 #include <generatorBase/masterGeneratorBase.h>
 
-namespace nxt {
+namespace trik {
 
-/// Master generator base implementation for every generator from NXT kit
-class NxtMasterGeneratorBase : public generatorBase::MasterGeneratorBase
+/// Master generator base implementation for every generator from TRIK kit
+class TrikMasterGeneratorBase : public generatorBase::MasterGeneratorBase
 {
 public:
-	NxtMasterGeneratorBase(qrRepo::RepoApi const &repo
+	TrikMasterGeneratorBase(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
@@ -17,11 +17,8 @@ public:
 
 protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
-	void afterGeneration() override;
 
 private:
-	void saveImages(QString const &projectDir);
-
 	QString const mGeneratorName;
 };
 

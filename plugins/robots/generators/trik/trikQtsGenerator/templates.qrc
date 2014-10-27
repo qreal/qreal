@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/trik">
+    <qresource prefix="/trikQts">
         <file>templates/beep.t</file>
         <file>templates/break.t</file>
         <file>templates/continue.t</file>

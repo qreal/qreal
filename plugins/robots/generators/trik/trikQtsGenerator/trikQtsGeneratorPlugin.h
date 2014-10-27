@@ -1,23 +1,23 @@
 #pragma once
 
-#include <generatorBase/robotsGeneratorPluginBase.h>
+#include <trikGeneratorBase/trikGeneratorPluginBase.h>
 
 namespace trik {
 
 class TcpRobotCommunicator;
 
+namespace qts {
+
 /// Generation of QtScript program for TRIK, uploading and execution of a program.
 /// Uses setting "tcpServer" from RobotsInterpreter.
-class TrikQtsGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
+class TrikQtsGeneratorPlugin : public TrikGeneratorPluginBase
 {
 	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "trik.TrikGeneratorPlugin")
+	Q_PLUGIN_METADATA(IID "trik.TrikQtsGeneratorPlugin")
 
 public:
 	TrikQtsGeneratorPlugin();
 	~TrikQtsGeneratorPlugin() override;
-
-	QString kitId() const override;
 
 	QList<qReal::ActionInfo> actions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
@@ -28,7 +28,6 @@ public:
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
-	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
 	QString defaultFilePath(QString const &projectName) const override;
 	QString extension() const override;
 	QString extensionDescription() const override;
@@ -64,4 +63,5 @@ private:
 	TcpRobotCommunicator *mCommunicator;
 };
 
+}
 }
