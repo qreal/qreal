@@ -3,27 +3,22 @@
 #include <qrutils/stringUtils.h>
 #include <generatorBase/parts/images.h>
 #include <generatorBase/parts/threads.h>
-#include "nxtOsekCGeneratorCustomizer.h"
 
-using namespace nxtOsek;
+using namespace nxt::osekC;
 
 NxtOsekCMasterGenerator::NxtOsekCMasterGenerator(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId)
-	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId)
+		, qReal::Id const &diagramId
+		, QString const &generatorName)
+	: NxtMasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId, generatorName)
 {
 }
 
 void NxtOsekCMasterGenerator::generateOilAndMakeFiles()
 {
 	afterGeneration();
-}
-
-generatorBase::GeneratorCustomizer *NxtOsekCMasterGenerator::createCustomizer()
-{
-	return new NxtOsekCGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor());
 }
 
 QString NxtOsekCMasterGenerator::targetPath()
@@ -40,7 +35,7 @@ void NxtOsekCMasterGenerator::afterGeneration()
 {
 	generateOilFile(mProjectName, mProjectDir);
 	generateMakeFile(mProjectName, mProjectDir);
-	saveImages(mProjectDir);
+	NxtMasterGeneratorBase::afterGeneration();
 }
 
 void NxtOsekCMasterGenerator::generateOilFile(QString const &projectName
@@ -69,12 +64,4 @@ void NxtOsekCMasterGenerator::generateMakeFile(QString const &projectName
 	outputCode(projectDir + "/makefile", makefileTemplate
 			.replace("@@PROJECT_NAME@@", projectName.toUtf8())
 			.replace("@@BMPFILES@@", bmps));
-}
-
-void NxtOsekCMasterGenerator::saveImages(QString const &projectDir)
-{
-	QMap<QString, QImage> &images = mCustomizer->factory()->images()->bmpFiles();
-	foreach (QString const &fileName, images.keys()) {
-		images[fileName].save(projectDir + '/' + fileName + ".bmp", "BMP", -1);
-	}
 }

@@ -5,21 +5,11 @@
 
 #include "nxtRussianCMasterGenerator.h"
 
-using namespace russianC;
-using namespace generatorBase;
+using namespace nxt::russianC;
 
 NxtRussianCGeneratorPlugin::NxtRussianCGeneratorPlugin()
 	: mGenerateCodeAction(nullptr)
 {
-}
-
-NxtRussianCGeneratorPlugin::~NxtRussianCGeneratorPlugin()
-{
-}
-
-QString NxtRussianCGeneratorPlugin::kitId() const
-{
-	return "nxtKit";
 }
 
 QString NxtRussianCGeneratorPlugin::defaultFilePath(QString const &projectName) const
@@ -39,7 +29,7 @@ QString NxtRussianCGeneratorPlugin::extensionDescription() const
 
 QString NxtRussianCGeneratorPlugin::generatorName() const
 {
-	return "RussianC";
+	return "nxtRussianC";
 }
 
 QList<ActionInfo> NxtRussianCGeneratorPlugin::actions()
@@ -62,25 +52,17 @@ QList<HotKeyActionInfo> NxtRussianCGeneratorPlugin::hotKeyActions()
 	return { generateActionInfo };
 }
 
-MasterGeneratorBase *NxtRussianCGeneratorPlugin::masterGenerator()
+generatorBase::MasterGeneratorBase *NxtRussianCGeneratorPlugin::masterGenerator()
 {
 	return new NxtRussianCMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, *mRobotModelManager
 			, *mTextLanguage
-			, mMainWindowInterface->activeDiagram());
+			, mMainWindowInterface->activeDiagram()
+			, generatorName());
 }
-
 
 void NxtRussianCGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 {
 	Q_UNUSED(newFileInfo);
-}
-
-
-void NxtRussianCGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool trigger)
-{
-	foreach (ActionInfo const &actionInfo, info) {
-		actionInfo.action()->setEnabled(trigger);
-	}
 }

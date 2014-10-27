@@ -1,25 +1,27 @@
-#include "nxtRussianCGeneratorFactory.h"
+#include "nxtGeneratorFactory.h"
 
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 
-#include "converters/russianCStringPropertyConverter.h"
+#include "converters/nxtStringPropertyConverter.h"
 
-using namespace russianC;
+using namespace nxt;
 using namespace generatorBase::simple;
 
-NxtRussianCGeneratorFactory::NxtRussianCGeneratorFactory(qrRepo::RepoApi const &repo
+NxtGeneratorFactory::NxtGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, generatorBase::lua::LuaProcessor &luaProcessor)
-	: generatorBase::GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
+		, generatorBase::lua::LuaProcessor &luaProcessor
+		, QString const &generatorName)
+	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
+	, mGeneratorName(generatorName)
 {
 }
 
-NxtRussianCGeneratorFactory::~NxtRussianCGeneratorFactory()
+NxtGeneratorFactory::~NxtGeneratorFactory()
 {
 }
 
-generatorBase::simple::AbstractSimpleGenerator *NxtRussianCGeneratorFactory::simpleGenerator(qReal::Id const &id
+generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGenerator(qReal::Id const &id
 		, generatorBase::GeneratorCustomizer &customizer)
 {
 	QString const elementType = id.element();
@@ -36,12 +38,15 @@ generatorBase::simple::AbstractSimpleGenerator *NxtRussianCGeneratorFactory::sim
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }
 
-QString NxtRussianCGeneratorFactory::pathToTemplates() const
+QString NxtGeneratorFactory::pathToTemplates() const
 {
-	return ":/russianC/templates";
+	return ":/" + mGeneratorName + "/templates";
 }
 
-generatorBase::simple::Binding::ConverterInterface *NxtRussianCGeneratorFactory::stringPropertyConverter() const
+generatorBase::simple::Binding::ConverterInterface *NxtGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::RussianCStringPropertyConverter(*mVariables, *reservedVariableNameConverter());
+	return new converters::NxtStringPropertyConverter(pathToTemplates()
+			, *mVariables
+			, *mSubprograms
+			, *reservedVariableNameConverter());
 }

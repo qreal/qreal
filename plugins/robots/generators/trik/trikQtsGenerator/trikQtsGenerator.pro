@@ -12,7 +12,8 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lrobots-generator-base -lrobots-interpreter-base
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
+		-lrobots-generator-base -lrobots-interpreter-base \
 
 INCLUDEPATH += \
 	$$PWD/../../generatorBase/include/ \

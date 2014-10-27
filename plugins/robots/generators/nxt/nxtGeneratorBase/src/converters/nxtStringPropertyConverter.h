@@ -5,15 +5,17 @@
 #include <generatorBase/parts/subprograms.h>
 #include <qrutils/expressionsParser/textExpressionProcessorBase.h>
 
-namespace nxtOsek {
+namespace nxt {
 namespace converters {
 
 /// Splits given string selecting just numbers and returns converted output port values
 class NxtStringPropertyConverter : public generatorBase::converters::StringPropertyConverter
 		, public utils::TextExpressionProcessorBase
+		, public generatorBase::TemplateParametrizedEntity
 {
 public:
-	NxtStringPropertyConverter(generatorBase::parts::Variables const &variables
+	NxtStringPropertyConverter(QString const &pathToTemplates
+			, generatorBase::parts::Variables const &variables
 			, generatorBase::parts::Subprograms &subprograms
 			, ConverterInterface const &systemVariableNameConverter);
 

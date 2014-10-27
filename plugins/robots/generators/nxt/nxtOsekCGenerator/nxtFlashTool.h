@@ -5,7 +5,7 @@
 
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-namespace nxtOsek {
+namespace nxt {
 
 /// Class that handles flashing NXT robot via USB.
 class NxtFlashTool : public QObject

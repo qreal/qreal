@@ -6,7 +6,7 @@
 #include <QtCore/QDir>
 #include <QtWidgets/QMessageBox>
 
-using namespace nxtOsek;
+using namespace nxt;
 using namespace qReal;
 
 NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)

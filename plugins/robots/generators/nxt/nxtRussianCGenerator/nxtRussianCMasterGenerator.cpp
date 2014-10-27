@@ -1,24 +1,17 @@
 #include "nxtRussianCMasterGenerator.h"
-#include "nxtRussianCGeneratorCustomizer.h"
 
 #include <generatorBase/parts/images.h>
 
-using namespace russianC;
-using namespace generatorBase;
-using namespace qReal;
+using namespace nxt::russianC;
 
 NxtRussianCMasterGenerator::NxtRussianCMasterGenerator(qrRepo::RepoApi const &repo
-		, ErrorReporterInterface &errorReporter
+		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, Id const &diagramId)
-	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId)
+		, qReal::Id const &diagramId
+		, QString const &generatorName)
+	: NxtMasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId, generatorName)
 {
-}
-
-generatorBase::GeneratorCustomizer *NxtRussianCMasterGenerator::createCustomizer()
-{
-	return new NxtRussianCGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor());
 }
 
 QString NxtRussianCMasterGenerator::targetPath()
@@ -29,17 +22,4 @@ QString NxtRussianCMasterGenerator::targetPath()
 bool NxtRussianCMasterGenerator::supportsGotoGeneration() const
 {
 	return false;
-}
-
-void NxtRussianCMasterGenerator::afterGeneration()
-{
-	saveImages(mProjectDir);
-}
-
-void NxtRussianCMasterGenerator::saveImages(QString const &projectDir)
-{
-	QMap<QString, QImage> &images = mCustomizer->factory()->images()->bmpFiles();
-	foreach (QString const &fileName, images.keys()) {
-		images[fileName].save(projectDir + '/' + fileName + ".bmp", "BMP", -1);
-	}
 }

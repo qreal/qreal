@@ -1,31 +1,26 @@
 #pragma once
 
-#include <QtCore/QMultiHash>
+#include <nxtGeneratorBase/nxtGeneratorPluginBase.h>
 
-#include <qrgui/toolPluginInterface/toolPluginInterface.h>
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
-#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
-#include <qrgui/toolPluginInterface/systemEventsInterface.h>
-#include <qrgui/textEditor/textManagerInterface.h>
-#include <generatorBase/robotsGeneratorPluginBase.h>
 #include "nxtFlashTool.h"
 
-namespace nxtOsek {
+namespace nxt {
+namespace osekC {
+
+class NxtOsekCMasterGenerator;
 
 /// Main plugin class for NXT code generator. Provides generator that generates
 /// C code for nxtOSEK from robot diagrams, and interface for standalone nxt-tools
 /// toolset, used to compile generated sources and flash them to robot, or
 /// install nxtOSEK on a robot.
-class NxtOsekCGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
+class NxtOsekCGeneratorPlugin : public NxtGeneratorPluginBase
 {
 	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "nxtOsek.NxtGeneratorPlugin")
+	Q_PLUGIN_METADATA(IID "nxt.NxtOsekCGeneratorPlugin")
 
 public:
 	NxtOsekCGeneratorPlugin();
-	virtual ~NxtOsekCGeneratorPlugin();
-
-	QString kitId() const override;
+	~NxtOsekCGeneratorPlugin() override;
 
 	void init(qReal::PluginConfigurator const &configurator
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
@@ -58,27 +53,23 @@ private:
 	/// subfolder of QReal installation), and sets mNxtToolsPresent flag.
 	void checkNxtTools();
 
-	/// Disable/enable tab in QList<ActionInfo> info
-	void changeActiveTab(QList<qReal::ActionInfo> const &info, bool const &trigger);
-
 	void initHotKeyActions();
 
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
-
 	/// Action that uploads nxtOSEK on a robot
 	QAction mFlashRobotAction;
-
 	/// Action that compiles and uploads program on a robot
 	QAction mUploadProgramAction;
+	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 
 	/// When true, nxt-tools are found by QReal and flashing and uploading is possible
 	bool mNxtToolsPresent;
-
 	/// Flasher object
 	NxtFlashTool *mFlashTool = nullptr;  // Has ownership
 
-	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
+	NxtOsekCMasterGenerator *mMasterGenerator;
 };
 
+}
 }

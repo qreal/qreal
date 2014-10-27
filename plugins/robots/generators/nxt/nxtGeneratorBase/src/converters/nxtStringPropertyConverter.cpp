@@ -4,28 +4,23 @@
 #include <qrtext/lua/types/integer.h>
 #include <qrtext/lua/types/float.h>
 
-using namespace nxtOsek;
+using namespace nxt;
 using namespace converters;
 using namespace generatorBase;
 using namespace parts;
 
-NxtStringPropertyConverter::NxtStringPropertyConverter(Variables const &variables
+NxtStringPropertyConverter::NxtStringPropertyConverter(QString const &pathToTemplates
+		, Variables const &variables
 		, parts::Subprograms &subprograms
 		, ConverterInterface const &systemVariableNameConverter)
-	: mVariables(variables)
+	: TemplateParametrizedEntity(pathToTemplates)
+	, mVariables(variables)
 	, mSystemVariableNameConverter(&systemVariableNameConverter)
 {
-	QString const formatStringCode =
-			"char *formatString(char *format, ...)\n"\
-			"{\n"\
-			"	char buffer[256];\n"\
-			"	va_list args;\n"\
-			"	va_start(args, format);\n"\
-			"	vsnprintf(buffer, 256, format, args);\n"\
-			"	va_end(args);\n"\
-			"	return buffer;\n"\
-			"}";
-	subprograms.appendManualSubprogram("formatString", formatStringCode);
+	QString const formatStringCode = readTemplate("printTextBlock/formatStringImplementation.t");
+	if (!formatStringCode.isEmpty()) {
+		subprograms.appendManualSubprogram(readTemplate("printTextBlock/formatStringIdentifier.t"), formatStringCode);
+	}
 }
 
 NxtStringPropertyConverter::~NxtStringPropertyConverter()
@@ -42,12 +37,16 @@ QString NxtStringPropertyConverter::convert(QString const &data) const
 	// Nxt OSEK does not support floating point numbers printing, so hello hacks
 	// (we print each float variable like two int ones separated with '.')
 	QStringList hackedVariables;
+	QString const intType = readTemplate("types/int.t");
+	QString const castToInt = readTemplate("types/cast.t").replace("@@TYPE@@", intType);
 	for (QString const &variable : metVariables) {
-		/// @todo: variable name may not exactly match system variable but have it as substring.
 		QString const rolledExpression = mSystemVariableNameConverter->convert(variable);
 		if (mVariables.expressionType(variable)->is<qrtext::lua::types::Float>()) {
-			hackedVariables << "(int)" + rolledExpression
-					<< QString("((int)((%1 - (int)%1) * 1000))").arg(rolledExpression);
+			QString const fractionalPart = QString("@@EXPRESSION@@ - " + castToInt)
+					.replace("@@EXPRESSION@@", rolledExpression);
+			QString const threeLastDigits = QString("(%1) * 1000").arg(fractionalPart);
+			hackedVariables << QString(castToInt).replace("@@EXPRESSION@@", rolledExpression)
+				<< QString(castToInt).replace("@@EXPRESSION@@", threeLastDigits);
 		} else {
 			hackedVariables << rolledExpression;
 		}
@@ -56,7 +55,8 @@ QString NxtStringPropertyConverter::convert(QString const &data) const
 	QString const formatVariables = hackedVariables.join(", ");
 	return hackedVariables.isEmpty()
 			? formatString
-			: QString("formatString(%1, %2)").arg(formatString, formatVariables);
+			: QString("%1(%2, %3)").arg(readTemplate("printTextBlock/formatStringIdentifier.t")
+					, formatString, formatVariables);
 }
 
 bool NxtStringPropertyConverter::variableExists(QString const &variable) const
@@ -67,7 +67,9 @@ bool NxtStringPropertyConverter::variableExists(QString const &variable) const
 QString NxtStringPropertyConverter::value(QString const &variable, int index) const
 {
 	Q_UNUSED(index)
-	return mVariables.expressionType(variable)->is<qrtext::lua::types::Integer>() ? "%d"
-			: mVariables.expressionType(variable)->is<qrtext::lua::types::Float>() ? "%d.%d"
-			: "%<unsupported variable type, will be implemented later!>";
+	return mVariables.expressionType(variable)->is<qrtext::lua::types::Integer>()
+			? readTemplate("printTextBlock/intSpecifier.t")
+			: mVariables.expressionType(variable)->is<qrtext::lua::types::Float>()
+					? readTemplate("printTextBlock/floatSpecifier.t")
+					: readTemplate("printTextBlock/unsupportedMessage.t");
 }

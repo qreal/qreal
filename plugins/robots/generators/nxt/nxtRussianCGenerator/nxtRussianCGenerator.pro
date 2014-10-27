@@ -12,9 +12,10 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../../bin -lqrkernel -lqrutils -lqrrepo -lrobots-generator-base
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrrepo -lrobots-nxt-generator-base
 
 INCLUDEPATH += \
+	$$PWD/../nxtGeneratorBase/include/ \
 	$$PWD/../../generatorBase/include/ \
 	$$PWD/../../../interpreters/interpreterBase/include \
 	$$PWD/../../../../../ \
@@ -33,16 +34,10 @@ TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/russianCGen
 HEADERS += \
 	$$PWD/nxtRussianCGeneratorPlugin.h \
 	$$PWD/nxtRussianCMasterGenerator.h \
-	$$PWD/nxtRussianCGeneratorCustomizer.h \
-	$$PWD/nxtRussianCGeneratorFactory.h \
-	$$PWD/converters/russianCStringPropertyConverter.h \
 
 SOURCES += \
 	$$PWD/nxtRussianCGeneratorPlugin.cpp \
 	$$PWD/nxtRussianCMasterGenerator.cpp \
-	$$PWD/nxtRussianCGeneratorCustomizer.cpp \
-	$$PWD/nxtRussianCGeneratorFactory.cpp \
-	$$PWD/converters/russianCStringPropertyConverter.cpp \
 
 RESOURCES = \
 	$$PWD/nxtRussianCGenerator.qrc \

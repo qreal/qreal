@@ -2,16 +2,17 @@
 
 #include <generatorBase/generatorFactoryBase.h>
 
-namespace russianC {
+namespace nxt {
 
-class NxtRussianCGeneratorFactory : public generatorBase::GeneratorFactoryBase
+class NxtGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
-	NxtRussianCGeneratorFactory(qrRepo::RepoApi const &repo
+	NxtGeneratorFactory(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, generatorBase::lua::LuaProcessor &luaProcessor);
-	~NxtRussianCGeneratorFactory() override;
+			, generatorBase::lua::LuaProcessor &luaProcessor
+			, QString const &generatorName);
+	~NxtGeneratorFactory() override;
 
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
@@ -19,6 +20,9 @@ public:
 	QString pathToTemplates() const override;
 
 	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
+
+private:
+	QString const mGeneratorName;
 };
 
 }

@@ -5,9 +5,10 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrgui/mainwindow/qscintillaTextEdit.h>
-#include <nxtOsekCMasterGenerator.h>
 
-using namespace nxtOsek;
+#include "nxtOsekCMasterGenerator.h"
+
+using namespace nxt::osekC;
 using namespace qReal;
 using namespace gui;
 
@@ -16,6 +17,7 @@ NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
 	, mFlashRobotAction(nullptr)
 	, mUploadProgramAction(nullptr)
 	, mNxtToolsPresent(false)
+	, mMasterGenerator(nullptr)
 {
 	checkNxtTools();
 	initHotKeyActions();
@@ -24,11 +26,6 @@ NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
 NxtOsekCGeneratorPlugin::~NxtOsekCGeneratorPlugin()
 {
 	delete mFlashTool;
-}
-
-QString NxtOsekCGeneratorPlugin::kitId() const
-{
-	return "nxtKit";
 }
 
 QString NxtOsekCGeneratorPlugin::defaultFilePath(QString const &projectName) const
@@ -48,7 +45,7 @@ QString NxtOsekCGeneratorPlugin::extensionDescription() const
 
 QString NxtOsekCGeneratorPlugin::generatorName() const
 {
-	return "nxtOsek";
+	return "nxtOsekC";
 }
 
 bool NxtOsekCGeneratorPlugin::canGenerateTo(QString const &project)
@@ -141,30 +138,20 @@ QList<HotKeyActionInfo> NxtOsekCGeneratorPlugin::hotKeyActions()
 
 generatorBase::MasterGeneratorBase *NxtOsekCGeneratorPlugin::masterGenerator()
 {
-	return new nxtOsek::NxtOsekCMasterGenerator(*mRepo
+	mMasterGenerator = new NxtOsekCMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, *mRobotModelManager
 			, *mTextLanguage
-			, mMainWindowInterface->activeDiagram());
+			, mMainWindowInterface->activeDiagram()
+			, generatorName());
+	return mMasterGenerator;
 }
 
 void NxtOsekCGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 {
-	nxtOsek::NxtOsekCMasterGenerator * const generator = new nxtOsek::NxtOsekCMasterGenerator(*mRepo
-		, *mMainWindowInterface->errorReporter()
-		, *mRobotModelManager
-		, *mTextLanguage
-		, mMainWindowInterface->activeDiagram());
-	generator->initialize();
-	generator->setProjectDir(newFileInfo);
-	generator->generateOilAndMakeFiles();
-}
-
-void NxtOsekCGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
-{
-	foreach (ActionInfo const &actionInfo, info) {
-		actionInfo.action()->setEnabled(trigger);
-	}
+	mMasterGenerator->initialize();
+	mMasterGenerator->setProjectDir(newFileInfo);
+	mMasterGenerator->generateOilAndMakeFiles();
 }
 
 void NxtOsekCGeneratorPlugin::flashRobot()
