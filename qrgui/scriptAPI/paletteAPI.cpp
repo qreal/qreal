@@ -22,7 +22,7 @@ QString PaletteAPI::dragPaletteElement(QString const &paletteElementId, int cons
 
 	mScriptAPI->virtualCursor()->startDrag(paletteElement->icon());
 
-	mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport()
+	mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()
 			, duration / 2
 			, xSceneCoord
 			, ySceneCoord);

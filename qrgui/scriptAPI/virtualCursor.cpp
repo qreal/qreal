@@ -66,8 +66,8 @@ void VirtualCursor::moveToRect(QRect const &target, int duration)
 
 void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, int ySceneCoord)
 {
-	int const xcoord = target->mapToGlobal(QPoint(0, 0)).x() + xSceneCoord;
-	int const ycoord = target->mapToGlobal(QPoint(0, 0)).y() + ySceneCoord;
+	int const xcoord = target->mapTo(parentWidget(), QPoint(0, 0)).x() + xSceneCoord;
+	int const ycoord = target->mapTo(parentWidget(), QPoint(0, 0)).y() + ySceneCoord;
 
 	mCursorMoveAnimation->setDuration(duration);
 	mCursorMoveAnimation->setStartValue(QRect(pos().x(), pos().y(), 0, 0));

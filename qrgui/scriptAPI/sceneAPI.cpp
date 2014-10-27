@@ -25,14 +25,14 @@ void SceneAPI::drawLink(QString const &fromElementId, QString const &toElementId
 	if (toNode && fromNode) {
 		mScriptAPI->virtualCursor()->sceneMoveTo(sceneView
 				, duration / 2
-				, sceneView->mapFromScene(fromNode->pos()).x() + 20
+				, sceneView->mapFromScene(fromNode->pos()).x()
 				, sceneView->mapFromScene(fromNode->pos()).y());
 
 		mScriptAPI->virtualCursor()->rightButtonPress(mMainWindow->getCurrentTab()->viewport());
 
 		mScriptAPI->virtualCursor()->sceneMoveTo(mMainWindow->getCurrentTab()->editorViewScene()->views()[0]->viewport()
 				, duration / 2
-				, sceneView->mapFromScene(toNode->pos()).x() + 20
+				, sceneView->mapFromScene(toNode->pos()).x()
 				, sceneView->mapFromScene(toNode->pos()).y());
 
 		mScriptAPI->virtualCursor()->rightButtonRelease(mMainWindow->getCurrentTab()->viewport(), 50);
@@ -45,7 +45,7 @@ QString SceneAPI::createBlockOnScene(DraggableElement const *paletteElement, int
 	QMimeData *mimeData = paletteElement->mimeData(elementId);
 	mMainWindow->getCurrentTab()->editorViewScene()->createElement(
 			paletteElement->mimeData(elementId)
-			, QPoint(xSceneCoord - 100, ySceneCoord + 20)
+			, mMainWindow->getCurrentTab()->mapToScene(QPoint(xSceneCoord, ySceneCoord))
 			, false
 			, nullptr
 			, true);

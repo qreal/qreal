@@ -43,7 +43,7 @@ QRect GuiFacade::propertyRect(QString const &name)
 			propertyEditor()->
 			findChild<QtTreePropertyBrowser *>()->
 			findChild<QTreeWidget *>();
-	QRect const globalTarget = QRect(mMainWindow->propertyEditor()->mapToGlobal(
+	QRect const globalTarget = QRect(editorTree->findChild<QWidget *>("qt_scrollarea_viewport")->mapTo(mMainWindow,
 			editorTree->visualItemRect(propertyTreeWidgetItem(name)).center() + QPoint(10, 0))
 			, editorTree->visualItemRect(propertyTreeWidgetItem(name)).size());
 	return globalTarget;
