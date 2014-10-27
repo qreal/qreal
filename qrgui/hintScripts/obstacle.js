@@ -15,12 +15,15 @@ api.hints().addHint("Добавим пару блоков из палитры н
 var engF = api.palette().dragPaletteElement("qrm:/RobotsMetamodel/RobotsDiagram/TrikV6EnginesForward", 500, 150, 275);
 var sonar = api.palette().dragPaletteElement("qrm:/RobotsMetamodel/RobotsDiagram/TrikWaitForSonarDistance",  500, 250, 275);
 api.hints().addHint("Отредактируем их свойства...", 3000, mainWindow);
-var propertyEditor = api.ui().propertyEditor();
 var prop1 = api.ui().propertyRect("Считанное значение");
 var prop = api.ui().propertyRect("Расстояние");
 api.cursor().moveToRect(prop1, 1000);
+var propertyEditor = api.ui().propertyEditor();
 api.cursor().leftButtonPress(propertyEditor);
-api.cursor().leftButtonRelease(propertyEditor, 400); 	
+api.cursor().leftButtonRelease(propertyEditor, 400);
+api.cursor().leftButtonPress(propertyEditor);
+api.cursor().leftButtonRelease(propertyEditor, 400); 
+api.wait(5000);	
 var val = api.ui().property("Считанное значение");
 api.cursor().leftButtonPress(val);
 api.cursor().leftButtonRelease(val, 50);
