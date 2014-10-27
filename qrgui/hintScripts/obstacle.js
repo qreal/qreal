@@ -23,7 +23,6 @@ api.cursor().leftButtonPress(propertyEditor);
 api.cursor().leftButtonRelease(propertyEditor, 400);
 api.cursor().leftButtonPress(propertyEditor);
 api.cursor().leftButtonRelease(propertyEditor, 400); 
-api.wait(5000);	
 var val = api.ui().property("Считанное значение");
 api.cursor().leftButtonPress(val);
 api.cursor().leftButtonRelease(val, 50);
