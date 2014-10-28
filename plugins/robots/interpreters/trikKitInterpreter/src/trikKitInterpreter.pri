@@ -9,8 +9,9 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
-	-lqrtext
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
+		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
+		-lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
 
 HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \
@@ -134,5 +135,3 @@ RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \
 
 TRANSLATIONS += $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts
-
-include($$PWD/../qrguiIncludes.pri)

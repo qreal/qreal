@@ -1,4 +1,4 @@
-#include "../../qrgui/interpretedPluginInterface/interpretedPluginInterface.h"
+#include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 
 namespace generationRules {
 

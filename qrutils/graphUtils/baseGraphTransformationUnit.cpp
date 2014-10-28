@@ -1,5 +1,7 @@
 #include "baseGraphTransformationUnit.h"
 
+#include <QtCore/QEventLoop>
+
 using namespace qReal;
 
 BaseGraphTransformationUnit::BaseGraphTransformationUnit(

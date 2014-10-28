@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/preferencesDialog/">
+        <file>images/settings.png</file>
+        <file>images/behaviour.png</file>
+        <file>images/bug.png</file>
+        <file>images/editor.png</file>
+        <file>images/miscellaneous.png</file>
+    </qresource>
+</RCC>
