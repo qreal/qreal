@@ -386,6 +386,7 @@ private:
 	FilterObject *mFilterObject; // Has ownership
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
+	QMap<QWidget *, int> mLastTabBarIndexes;
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
