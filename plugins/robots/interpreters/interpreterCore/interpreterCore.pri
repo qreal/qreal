@@ -10,7 +10,9 @@ INCLUDEPATH += \
 	$$PWD/../../../../qrgui/ \
 	$$PWD/../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils -lcommonTwoDModel -lqrtext
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils \
+		-lqrgui-models -lqrgui-controller -lqrgui-preferences-dialog -lqrgui-plugin-manager \
+		-lqrgui-tool-plugin-interface -linterpreterBase -lutils -lcommonTwoDModel -lqrtext \
 
 HEADERS += \
 	$$PWD/src/customizer.h \
@@ -44,7 +46,6 @@ HEADERS += \
 	$$PWD/src/managers/kitPluginManager.h \
 	$$PWD/src/managers/robotModelManager.h \
 	$$PWD/src/managers/devicesConfigurationManager.h \
-	$$PWD/src/managers/titlesVisibilityManager.h \
 	$$PWD/src/managers/paletteUpdateManager.h \
 	$$PWD/src/managers/saveConvertionManager.h \
 	$$PWD/src/managers/kitAutoSwitcher.h \
@@ -82,7 +83,6 @@ SOURCES += \
 	$$PWD/src/managers/kitPluginManager.cpp \
 	$$PWD/src/managers/robotModelManager.cpp \
 	$$PWD/src/managers/devicesConfigurationManager.cpp \
-	$$PWD/src/managers/titlesVisibilityManager.cpp \
 	$$PWD/src/managers/paletteUpdateManager.cpp \
 	$$PWD/src/managers/saveConvertionManager.cpp \
 	$$PWD/src/managers/kitAutoSwitcher.cpp \

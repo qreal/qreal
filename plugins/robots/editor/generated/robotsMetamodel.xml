@@ -982,12 +982,6 @@
 				</logic>
 			</node>
 			<node abstract="true" name="VideocameraBlock">
-				<graphics>
-					<labels>
-						<label x="-15" y="-30" text="Mode" hard="true" background="white"/>
-						<label x="65" y="-30" textBinded="Mode" hard="true" background="white"/>
-					</labels>
-				</graphics>
 				<logic>
 					<properties>
 						<property displayedName="Mode" type="VideoSensor" name="Mode">

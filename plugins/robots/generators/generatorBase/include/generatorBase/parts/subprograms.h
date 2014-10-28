@@ -5,7 +5,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrrepo/repoApi.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 #include "generatorBase/templateParametrizedEntity.h"

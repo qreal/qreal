@@ -4,9 +4,9 @@
 #include <QtGui/QColor>
 
 #include <qrkernel/ids.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include <interpreterBase/blocksBase/blockInterface.h>
 #include <interpreterBase/blocksBase/blockParserInterface.h>
