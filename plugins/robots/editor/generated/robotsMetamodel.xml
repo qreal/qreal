@@ -673,7 +673,7 @@
 					<labels>
 						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
 						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="50" y="60" textBinded="Power" background="white"/>
+						<label x="65" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Angle (degrees):"/>
 					</labels>
 					<nonResizeable/>
