@@ -101,6 +101,7 @@ void LuaToolbox::addIntrinsicFunction(QString const &name
 
 	mAnalyzer->addIntrinsicFunction(name, functionType);
 	mInterpreter->addIntrinsicFunction(name, semantic);
+	markAsSpecial(name);
 }
 
 QStringList LuaToolbox::identifiers() const
@@ -111,6 +112,31 @@ QStringList LuaToolbox::identifiers() const
 QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> LuaToolbox::variableTypes() const
 {
 	return mAnalyzer->variableTypes();
+}
+
+QStringList const &LuaToolbox::specialIdentifiers() const
+{
+	return mSpecialIdentifiers;
+}
+
+QStringList const &LuaToolbox::specialConstants() const
+{
+	return mSpecialConstants;
+}
+
+void LuaToolbox::markAsSpecialConstant(QString const &identifier)
+{
+	markAsSpecial(identifier);
+	if (!mSpecialConstants.contains(identifier)) {
+		mSpecialConstants << identifier;
+	}
+}
+
+void LuaToolbox::markAsSpecial(QString const &identifier)
+{
+	if (!mSpecialIdentifiers.contains(identifier)) {
+		mSpecialIdentifiers << identifier;
+	}
 }
 
 QVariant LuaToolbox::value(QString const &identifier) const

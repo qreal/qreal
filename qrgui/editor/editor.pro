@@ -7,6 +7,7 @@ TARGET = qrgui-editor
 LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrutils \
 		-lqrgui-mouse-gestures -lqrgui-thirdparty -lqrgui-models \
 		-lqrgui-controller -lqrgui-plugin-manager -lqrgui-brand-manager \
+		-lqrgui-dialogs \
 
 INCLUDEPATH = \
 	$$PWD/ \

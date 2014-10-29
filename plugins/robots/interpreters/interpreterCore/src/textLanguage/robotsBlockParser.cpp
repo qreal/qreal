@@ -31,26 +31,30 @@ void RobotsBlockParser::setReservedVariables()
 	/// @todo Remove old reserved variables for old model.
 
 	setVariableValue("pi", 3.14159265);
+	markAsSpecialConstant("pi");
 
 	for (interpreterBase::robotModel::PortInfo const &port : mRobotModelManager.model().availablePorts()) {
 		setVariableValue(port.name(), QString("'%1'").arg(port.name()));
 
-		mSpecialVariables << port.name();
+		markAsSpecial(port.name());
+		mHiddenVariables << port.name();
 
 		for (QString const &alias : port.nameAliases()) {
 			setVariableValue(alias, port.name());
-			mSpecialVariables << alias;
+			markAsSpecial(alias);
+			mHiddenVariables << alias;
 		}
 
 		if (!port.reservedVariable().isEmpty()) {
 			setVariableValue(port.reservedVariable(), 0);
+			markAsSpecial(port.reservedVariable());
 		}
 	}
 }
 
-QStringList const &RobotsBlockParser::specialVariables() const
+QStringList const &RobotsBlockParser::hiddenVariables() const
 {
-	return mSpecialVariables;
+	return mHiddenVariables;
 }
 
 void RobotsBlockParser::addIntrinsicFuctions()

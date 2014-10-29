@@ -11,9 +11,9 @@ DrawPixelGenerator::DrawPixelGenerator(qrRepo::RepoApi const &repo
 	: BindingGenerator(repo, customizer, id, "drawing/drawPixel.t"
 			, {
 			Binding::createConverting("@@XCoordinatePix@@", "XCoordinatePix"
-					, customizer.factory()->intPropertyConverter(id))
+					, customizer.factory()->intPropertyConverter(id, "XCoordinatePix"))
 			, Binding::createConverting("@@YCoordinatePix@@", "YCoordinatePix"
-					, customizer.factory()->intPropertyConverter(id))
+					, customizer.factory()->intPropertyConverter(id, "YCoordinatePix"))
 			}
 			, parent)
 {

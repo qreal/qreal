@@ -21,8 +21,8 @@ public:
 	RobotsBlockParser(interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, utils::ComputableNumber::IntComputer const &timeComputer);
 
-	/// Returns a list of predefined variables (sensor variables, basically).
-	QStringList const &specialVariables() const;
+	/// Returns a list of predefined variables that should be hidden from user (sensor and port variables, basically).
+	QStringList const &hiddenVariables() const;
 
 private slots:
 	void setReservedVariables();
@@ -32,7 +32,7 @@ private:
 
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	utils::ComputableNumber::IntComputer const mTimeComputer;
-	QStringList mSpecialVariables;
+	QStringList mHiddenVariables;
 };
 
 }

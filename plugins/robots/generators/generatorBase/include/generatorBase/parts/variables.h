@@ -38,20 +38,11 @@ public:
 	void appendManualDeclaration(QString const &variables);
 
 protected:
-	virtual QMap<QString, qrtext::core::types::TypeExpression> nonGenerableReservedVariables() const;
-	virtual QMap<QString, int> intConstants() const;
-	virtual QMap<QString, float> floatConstants() const;
-
-	virtual QString typeExpression(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-	virtual QString constantDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-	virtual QString variableDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-
-	/// Returns a list of variable initialization expressions in the model.
-	virtual QStringList expressions(qrRepo::RepoApi const &api) const;
+	QString typeExpression(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
+	QString constantDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
+	QString variableDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
 
 private:
-	QMap<QString, qrtext::core::types::TypeExpression> reservedVariables() const;
-
 	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;
 	qrtext::LanguageToolboxInterface &mLuaToolbox;
 	QStringList mManualDeclarations;

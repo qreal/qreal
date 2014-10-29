@@ -170,6 +170,7 @@ protected:
 	void dropEvent(QGraphicsSceneDragDropEvent *event);
 
 	void keyPressEvent(QKeyEvent *event);
+	void keyReleaseEvent(QKeyEvent *event);
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);

@@ -208,11 +208,6 @@ void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	if (!SettingsManager::value("MoveLabels", true).toBool()) {
-		event->ignore();
-		return;
-	}
-
 	mWasMoved = true;
 
 	if (!labelMovingRect().contains(event->pos())) {
