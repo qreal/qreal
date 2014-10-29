@@ -12,9 +12,10 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lrobots-generator-base
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lrobots-nxt-generator-base
 
 INCLUDEPATH += \
+	$$PWD/../nxtGeneratorBase/include/ \
 	$$PWD/../../generatorBase/include/ \
 	$$PWD/../../../interpreters/interpreterBase/include \
 	$$PWD/../../../../../ \
@@ -28,23 +29,17 @@ INCLUDEPATH += \
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../../../bin/plugins/
 }
 
-TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtGenerator_ru.ts
+TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtOsekCGenerator_ru.ts
 
 HEADERS += \
 	$$PWD/nxtOsekCGeneratorPlugin.h \
 	$$PWD/nxtOsekCMasterGenerator.h \
-	$$PWD/nxtOsekCGeneratorCustomizer.h \
-	$$PWD/nxtOsekCGeneratorFactory.h \
 	$$PWD/nxtFlashTool.h \
-	$$PWD/converters/nxtStringPropertyConverter.h \
 
 SOURCES += \
 	$$PWD/nxtOsekCGeneratorPlugin.cpp \
 	$$PWD/nxtOsekCMasterGenerator.cpp \
-	$$PWD/nxtOsekCGeneratorCustomizer.cpp \
-	$$PWD/nxtOsekCGeneratorFactory.cpp \
 	$$PWD/nxtFlashTool.cpp \
-	$$PWD/converters/nxtStringPropertyConverter.cpp \
 
 RESOURCES = \
 	$$PWD/nxtOsekCGenerator.qrc \

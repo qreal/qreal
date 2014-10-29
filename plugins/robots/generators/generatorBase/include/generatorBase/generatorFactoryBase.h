@@ -20,7 +20,6 @@ class Threads;
 class Engines;
 class Sensors;
 class Functions;
-class Images;
 class InitTerminateCodeGenerator;
 }
 
@@ -71,9 +70,6 @@ public:
 	/// Returns a pointer to an entity processing everything about functions
 	/// with property 'Initialization' set to 'true'
 	virtual parts::Functions *functions();
-
-	/// Returns a pointer to an entity processing everything about images
-	virtual parts::Images *images();
 
 	/// Returns a pointer to an entity processing everything about sensor/device variables.
 	virtual parts::DeviceVariables *deviceVariables() const;
@@ -189,9 +185,6 @@ public:
 	/// Produces converter for port names without taking ownership on it
 	virtual simple::Binding::ConverterInterface *portNameConverter() const;
 
-	/// Produces converter for color specification without taking ownership on it
-	virtual simple::Binding::ConverterInterface *colorConverter() const;
-
 	/// Produces converter for engine break mode specification without taking ownership on it
 	virtual simple::Binding::ConverterInterface *breakModeConverter() const;
 
@@ -235,9 +228,6 @@ protected:
 	/// Implementation must prepare function initialization code controller
 	virtual void initFunctions();
 
-	/// Implementation must prepare images controller
-	virtual void initImages();
-
 	/// Implementation must prepare device variables controller
 	virtual void initDeviceVariables();
 
@@ -258,7 +248,6 @@ protected:
 	parts::Engines *mEngines;
 	parts::Sensors *mSensors;
 	parts::Functions *mFunctions;
-	parts::Images *mImages;
 	parts::DeviceVariables *mDeviceVariables;  // Has ownership.
 };
 

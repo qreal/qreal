@@ -1,20 +1,15 @@
 #include "trikQtsMasterGenerator.h"
-#include "trikQtsGeneratorCustomizer.h"
 
-using namespace trik;
+using namespace trik::qts;
 
 TrikQtsMasterGenerator::TrikQtsMasterGenerator(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId)
-	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId)
+		, qReal::Id const &diagramId
+		, QString const &generatorName)
+	: TrikMasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, diagramId, generatorName)
 {
-}
-
-generatorBase::GeneratorCustomizer *TrikQtsMasterGenerator::createCustomizer()
-{
-	return new TrikQtsGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor());
 }
 
 QString TrikQtsMasterGenerator::targetPath()

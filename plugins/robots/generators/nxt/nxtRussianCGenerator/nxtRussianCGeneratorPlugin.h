@@ -1,20 +1,18 @@
 #pragma once
 
-#include <generatorBase/robotsGeneratorPluginBase.h>
+#include <nxtGeneratorBase/nxtGeneratorPluginBase.h>
 
+namespace nxt {
 namespace russianC {
 
 /// Main plugin class for russian C code generator
-class NxtRussianCGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
+class NxtRussianCGeneratorPlugin : public NxtGeneratorPluginBase
 {
 	Q_OBJECT
-	Q_PLUGIN_METADATA(IID "russianC.RussianCGeneratorPlugin")
+	Q_PLUGIN_METADATA(IID "nxt.NxtRussianCGeneratorPlugin")
 
 public:
 	NxtRussianCGeneratorPlugin();
-	~NxtRussianCGeneratorPlugin() override;
-
-	QString kitId() const override;
 
 	QList<qReal::ActionInfo> actions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
@@ -28,11 +26,9 @@ protected:
 	QString generatorName() const override;
 
 private:
-	/// Disable/enable tab in QList<ActionInfo> info
-	void changeActiveTab(QList<qReal::ActionInfo> const &info, bool trigger);
-
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
 };
 
+}
 }

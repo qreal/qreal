@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/nxtOSEK">
+    <qresource prefix="/nxtOsekC">
         <file>templates/beep.t</file>
         <file>templates/break.t</file>
         <file>templates/continue.t</file>
@@ -137,6 +137,11 @@
         <file>templates/drawing/clearUsedScreen.t</file>
         <file>templates/drawing/drawBitmap.t</file>
         <file>templates/drawing/variablesDeclaration.t</file>
+        <file>templates/printTextBlock/floatSpecifier.t</file>
+        <file>templates/printTextBlock/formatStringIdentifier.t</file>
+        <file>templates/printTextBlock/formatStringImplementation.t</file>
+        <file>templates/printTextBlock/intSpecifier.t</file>
+        <file>templates/printTextBlock/notSupportedMessage.t</file>
         <file>templates/buttons/waitForEnter.t</file>
         <file>templates/buttons/waitForEscape.t</file>
         <file>templates/buttons/waitForLeft.t</file>
@@ -184,5 +189,5 @@
         <file>templates/luaPrinting/tableConstructor.t</file>
         <file>templates/luaPrinting/true.t</file>
         <file>templates/luaPrinting/unaryMinus.t</file>
-	</qresource>
+    </qresource>
 </RCC>

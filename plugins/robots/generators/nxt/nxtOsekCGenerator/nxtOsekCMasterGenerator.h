@@ -1,22 +1,23 @@
 #pragma once
 
-#include <generatorBase/masterGeneratorBase.h>
+#include <nxtGeneratorBase/nxtMasterGeneratorBase.h>
 
-namespace nxtOsek {
+namespace nxt {
+namespace osekC {
 
-class NxtOsekCMasterGenerator : public generatorBase::MasterGeneratorBase
+class NxtOsekCMasterGenerator : public NxtMasterGeneratorBase
 {
 public:
 	NxtOsekCMasterGenerator(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
-			, qReal::Id const &diagramId);
+			, qReal::Id const &diagramId
+			, QString const &generatorName);
 
 	void generateOilAndMakeFiles();
 
 protected:
-	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
 
@@ -26,7 +27,7 @@ private:
 	void generateOilFile(QString const &projectName, QString const &projectDir);
 	QString generateOilTask(QString const &taskName);
 	void generateMakeFile(QString const &projectName, QString const &projectDir);
-	void saveImages(QString const &projectDir);
 };
 
+}
 }

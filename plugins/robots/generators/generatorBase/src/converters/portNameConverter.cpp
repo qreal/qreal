@@ -29,5 +29,5 @@ QString PortNameConverter::convert(QString const &portNameOrAlias) const
 	}
 
 	QString const portTemplate = QString("ports/%1.t").arg(portName);
-	return QFile(pathToRoot() + "/" + portTemplate).exists() ? readTemplate(portTemplate) : portName;
+	return readTemplateIfExists(portTemplate, portName);
 }

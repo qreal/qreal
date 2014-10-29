@@ -1,29 +1,24 @@
 #pragma once
 
-#include <generatorBase/masterGeneratorBase.h>
+#include <nxtGeneratorBase/nxtMasterGeneratorBase.h>
 
+namespace nxt {
 namespace russianC {
 
-class NxtRussianCMasterGenerator : public generatorBase::MasterGeneratorBase
+class NxtRussianCMasterGenerator : public NxtMasterGeneratorBase
 {
 public:
 	NxtRussianCMasterGenerator(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
-			, qReal::Id const &diagramId);
+			, qReal::Id const &diagramId
+			, QString const &generatorName);
 
 protected:
-	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
-
-	void afterGeneration() override;
-
-private:
-	void saveImages(QString const &projectDir);
-
-	int mCurInitialNodeNumber;
 };
 
+}
 }

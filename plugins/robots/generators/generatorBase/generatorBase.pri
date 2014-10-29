@@ -44,7 +44,6 @@ HEADERS += \
 	$$PWD/include/generatorBase/parts/initTerminateCodeGenerator.h \
 	$$PWD/include/generatorBase/parts/sensors.h \
 	$$PWD/include/generatorBase/parts/functions.h \
-	$$PWD/include/generatorBase/parts/images.h \
 	$$PWD/include/generatorBase/parts/deviceVariables.h \
 	$$PWD/include/generatorBase/lua/luaProcessor.h \
 	$$PWD/include/generatorBase/lua/precedenceConverterInterface.h \
@@ -89,7 +88,6 @@ SOURCES += \
 	$$PWD/src/parts/initTerminateCodeGenerator.cpp \
 	$$PWD/src/parts/sensors.cpp \
 	$$PWD/src/parts/functions.cpp \
-	$$PWD/src/parts/images.cpp \
 	$$PWD/src/parts/deviceVariables.cpp \
 	$$PWD/src/semanticTree/semanticTree.cpp \
 	$$PWD/src/semanticTree/semanticNode.cpp \
@@ -144,7 +142,6 @@ HEADERS += \
 	$$PWD/src/converters/nameNormalizerConverter.h \
 	$$PWD/src/converters/functionBlockConverter.h \
 	$$PWD/src/converters/inequalitySignConverter.h \
-	$$PWD/src/converters/colorConverter.h \
 	$$PWD/src/converters/breakModeConverter.h \
 	$$PWD/src/converters/portNameConverter.h \
 	$$PWD/src/converters/enginePortsConverter.h \
@@ -165,7 +162,6 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/playToneGenerator.h \
 	$$PWD/src/simpleGenerators/finalNodeGenerator.h \
 	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.h \
-	$$PWD/src/simpleGenerators/waitForColorBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForColorIntensityBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForLightBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForSonarBlockGenerator.h \
@@ -176,13 +172,8 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/waitForSoundBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForGyroscopeBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForAccelerometerBlockGenerator.h \
-	$$PWD/src/simpleGenerators/drawPixelBlockGenerator.h \
-	$$PWD/src/simpleGenerators/drawLineBlockGenerator.h \
-	$$PWD/src/simpleGenerators/drawCircleBlockGenerator.h \
 	$$PWD/src/simpleGenerators/printTextBlockGenerator.h \
-	$$PWD/src/simpleGenerators/drawRectBlockGenerator.h \
 	$$PWD/src/simpleGenerators/clearScreenBlockGenerator.h \
-	$$PWD/src/simpleGenerators/drawBlockGenerator.h \
 	$$PWD/src/simpleGenerators/subprogramsSimpleGenerator.h \
 	$$PWD/src/simpleGenerators/breakGenerator.h \
 	$$PWD/src/simpleGenerators/continueGenerator.h \
@@ -207,7 +198,6 @@ SOURCES += \
 	$$PWD/src/converters/nameNormalizerConverter.cpp \
 	$$PWD/src/converters/functionBlockConverter.cpp \
 	$$PWD/src/converters/inequalitySignConverter.cpp \
-	$$PWD/src/converters/colorConverter.cpp \
 	$$PWD/src/converters/breakModeConverter.cpp \
 	$$PWD/src/converters/portNameConverter.cpp \
 	$$PWD/src/converters/enginePortsConverter.cpp \
@@ -231,7 +221,6 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/src/simpleGenerators/finalNodeGenerator.cpp \
 	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.cpp \
-	$$PWD/src/simpleGenerators/waitForColorBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForColorIntensityBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForLightBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForSonarBlockGenerator.cpp \
@@ -242,14 +231,9 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/waitForSoundBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForGyroscopeBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForAccelerometerBlockGenerator.cpp \
-	$$PWD/src/simpleGenerators/drawPixelBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForButtonGenerator.cpp \
-	$$PWD/src/simpleGenerators/drawLineBlockGenerator.cpp \
-	$$PWD/src/simpleGenerators/drawCircleBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/printTextBlockGenerator.cpp \
-	$$PWD/src/simpleGenerators/drawRectBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/clearScreenBlockGenerator.cpp \
-	$$PWD/src/simpleGenerators/drawBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/subprogramsSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/breakGenerator.cpp \
 	$$PWD/src/simpleGenerators/continueGenerator.cpp \
