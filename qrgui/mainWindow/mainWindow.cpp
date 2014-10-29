@@ -1614,11 +1614,26 @@ void MainWindow::fullscreen()
 
 		mUi->actionFullscreen->setIcon(QIcon(":/mainWindow/images/fullScreen.svg"));
 	}
-	foreach (QDockWidget *dock, mAdditionalDocks) {
+	for (QDockWidget * const dock : mAdditionalDocks) {
 		if (mIsFullscreen) {
 			hideDockWidget(dock, dock->windowTitle());
 		} else {
 			showDockWidget(dock, dock->windowTitle());
+		}
+	}
+
+	if (mIsFullscreen) {
+		mLastTabBarIndexes.clear();
+		for (QTabBar * const bar : findChildren<QTabBar *>()) {
+			if (bar->objectName().isEmpty()) {  // Else we can modify the central tab widget`s current index
+				mLastTabBarIndexes[bar] = bar->currentIndex();
+			}
+		}
+	} else {
+		for (QTabBar * const bar : findChildren<QTabBar *>()) {
+			if (mLastTabBarIndexes.contains(bar)) {
+				bar->setCurrentIndex(mLastTabBarIndexes[bar]);
+			}
 		}
 	}
 }

@@ -713,13 +713,26 @@ void EditorViewScene::deleteElements(IdList &idsToDelete)
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (isArrow(event->key())) {
+	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
+		// Forward event to text editor
+		QGraphicsScene::keyPressEvent(event);
+	} else if (isArrow(event->key())) {
 		moveSelectedItems(event->key());
 	} else if (event->key() == Qt::Key_Menu) {
 		initContextMenu(nullptr, QPointF()); // see #593
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}
+}
+
+void EditorViewScene::keyReleaseEvent(QKeyEvent *event)
+{
+	if (isArrow(event->key()) && !selectedItems().isEmpty()) {
+		event->accept();
+		return;
+	}
+
+	QGraphicsScene::keyReleaseEvent(event);
 }
 
 inline bool EditorViewScene::isArrow(int key)

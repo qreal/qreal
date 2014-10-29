@@ -11,6 +11,7 @@ class FloatPropertyConverter : public CodeConverterBase
 public:
 	FloatPropertyConverter(lua::LuaProcessor &luaTranslator
 			, qReal::Id const &id
+			, QString const &propertyName
 			, simple::Binding::ConverterInterface *reservedVariablesConverter);
 };
 

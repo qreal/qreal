@@ -10,7 +10,7 @@ SystemGenerator::SystemGenerator(qrRepo::RepoApi const &repo
 		, qReal::Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
-			, "system.t"
+			, repo.property(id, "Code").toBool() ? "system.t" : "nativeCode.t"
 			, QList<Binding *>()
 					<< Binding::createDirect("@@COMMAND@@", "Command")
 			, parent)

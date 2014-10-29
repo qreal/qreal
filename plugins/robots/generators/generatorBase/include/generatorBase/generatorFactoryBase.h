@@ -148,16 +148,18 @@ public:
 
 	/// Produces converter for expressions which should have int type
 	/// without taking ownership on it
-	virtual simple::Binding::ConverterInterface *intPropertyConverter(qReal::Id const &block) const;
+	virtual simple::Binding::ConverterInterface *intPropertyConverter(qReal::Id const &block
+			, QString const &property) const;
 
 	/// Produces converter for expressions which should have float type
 	/// without taking ownership on it
-	virtual simple::Binding::ConverterInterface *floatPropertyConverter(qReal::Id const &block) const;
+	virtual simple::Binding::ConverterInterface *floatPropertyConverter(qReal::Id const &block
+			, QString const &property) const;
 
 	/// Produces converter for expressions which should have bool type
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *boolPropertyConverter(qReal::Id const &block
-			, bool needInverting) const;
+			, QString const &property, bool needInverting) const;
 
 	/// Produces converter for expressions which should have string type
 	/// without taking ownership on it
@@ -173,7 +175,8 @@ public:
 
 	/// Produces converter for transformation function block code into
 	/// generator-dependent code without taking ownership on it
-	virtual simple::Binding::ConverterInterface *functionBlockConverter(qReal::Id const &block) const;
+	virtual simple::Binding::ConverterInterface *functionBlockConverter(qReal::Id const &block
+			, QString const &property) const;
 
 	/// Produces converter for transformation repo property of the type 'Sign' to
 	/// generator-dependent infix inequality sign without taking ownership on it
@@ -183,11 +186,8 @@ public:
 	/// without taking ownership on it
 	virtual simple::Binding::MultiConverterInterface *enginesConverter() const;
 
-	/// Produces converter for sensor port specification without taking ownership on it
-	virtual simple::Binding::ConverterInterface *inputPortConverter() const;
-
-	/// Produces converter for engine port specification without taking ownership on it
-	virtual simple::Binding::ConverterInterface *outputPortConverter() const;
+	/// Produces converter for port names without taking ownership on it
+	virtual simple::Binding::ConverterInterface *portNameConverter() const;
 
 	/// Produces converter for color specification without taking ownership on it
 	virtual simple::Binding::ConverterInterface *colorConverter() const;

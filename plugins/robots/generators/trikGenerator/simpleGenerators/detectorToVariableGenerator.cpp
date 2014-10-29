@@ -9,9 +9,29 @@ DetectorToVariableGenerator::DetectorToVariableGenerator(qrRepo::RepoApi const &
 		, generatorBase::GeneratorCustomizer &customizer
 		, qReal::Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id
-			, "videosensors/" + repo.property(id, "Mode").toString() + "DetectorToVariable.t"
-			, {Binding::createDirect("@@VAR@@", "Variable")}
-			, parent)
+	: BindingGenerator(repo, customizer, id, "function.t"
+			, { Binding::createStaticConverting("@@BODY@@"
+					, repo.property(id, "Variable").toString() + "="
+							+ lineSensorVariableFromMode(repo.property(id, "Mode").toString())
+					, customizer.factory()->functionBlockConverter(id, "Mode"))
+			}, parent)
 {
+}
+
+QString DetectorToVariableGenerator::lineSensorVariableFromMode(QString const &mode) const
+{
+	if (mode == "line") {
+		return "lineSensorX";
+	}
+
+	if (mode == "line") {
+		return "lineSensorX";
+	}
+
+	if (mode == "colorSensor") {
+		return "colorSensorR";
+	}
+
+	/// @todo: Report an error?
+	return "0";
 }
