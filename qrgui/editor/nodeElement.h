@@ -117,9 +117,6 @@ public:
 	/// Make ports of specified types visible, hide other ports
 	void setPortsVisible(QStringList const &types);
 
-	bool isPort() const;
-	bool canHavePorts();
-
 	QList<qreal> borderValues() const;
 
 	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);

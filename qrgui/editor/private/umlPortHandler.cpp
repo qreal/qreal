@@ -25,26 +25,24 @@ void UmlPortHandler::handleMoveEvent(bool const leftPressed
 	BorderChecker const actionItemBorderChecker(actionItem);
 	QPointF posInItem = QPointF(0, 0);
 	if (actionItem && ((actionItem == parentNode) || (!parentNode))) {
-		if (actionItem->canHavePorts()) {
-			posInItem = actionItem->mapFromScene(scenePos);
+		posInItem = actionItem->mapFromScene(scenePos);
 
-			bool const checkLowerBorder = actionItemBorderChecker.checkLowerBorder(posInItem);
-			bool const checkUpperBorder = actionItemBorderChecker.checkUpperBorder(posInItem);
-			bool const checkRightBorder = actionItemBorderChecker.checkRightBorder(posInItem);
-			bool const checkLeftBorder = actionItemBorderChecker.checkLeftBorder(posInItem);
-			bool const checkBorders = checkLowerBorder || checkUpperBorder
-				|| checkRightBorder || checkLeftBorder;
+		bool const checkLowerBorder = actionItemBorderChecker.checkLowerBorder(posInItem);
+		bool const checkUpperBorder = actionItemBorderChecker.checkUpperBorder(posInItem);
+		bool const checkRightBorder = actionItemBorderChecker.checkRightBorder(posInItem);
+		bool const checkLeftBorder = actionItemBorderChecker.checkLeftBorder(posInItem);
+		bool const checkBorders = checkLowerBorder || checkUpperBorder
+			|| checkRightBorder || checkLeftBorder;
 
-			if (checkBorders) {
-				mNode->setParentItem(actionItem);
-				parentNode = actionItem;
-				pos = mNode->pos();
-				mBelongsToHorizontalBorders = checkLowerBorder || checkUpperBorder;
-			} else {
-				handleHorizontalBorders(actionItem, parentNode, pos, posInItem);
-			}
+		if (checkBorders) {
+			mNode->setParentItem(actionItem);
+			parentNode = actionItem;
+			pos = mNode->pos();
+			mBelongsToHorizontalBorders = checkLowerBorder || checkUpperBorder;
+		} else {
+			handleHorizontalBorders(actionItem, parentNode, pos, posInItem);
 		}
-	} else if ((parentNode) && (parentNode->canHavePorts())) {
+	} else if (parentNode) {
 			mNode->setPos(pos);
 			if (parentNode) {
 				posInItem = parentNode->mapFromScene(scenePos);

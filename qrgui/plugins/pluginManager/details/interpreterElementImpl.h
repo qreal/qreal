@@ -79,9 +79,6 @@ public:
 
 	enums::linkShape::LinkShape shapeType() const;
 
-	bool isPort() const;
-	bool hasPin() const;
-
 	bool createChildrenFromMenu() const;
 
 	QList<qreal> border() const;

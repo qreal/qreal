@@ -71,9 +71,6 @@ public:
 
 	virtual enums::linkShape::LinkShape shapeType() const = 0;
 
-	virtual bool isPort() const = 0;
-	virtual bool hasPin() const = 0;
-
 	virtual bool createChildrenFromMenu() const = 0;
 
 	virtual QList<qreal> border() const = 0;
