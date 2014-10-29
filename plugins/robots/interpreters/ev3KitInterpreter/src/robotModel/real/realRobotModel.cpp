@@ -7,6 +7,7 @@
 
 #include "parts/display.h"
 #include "parts/speaker.h"
+#include "parts/button.h"
 #include "parts/motor.h"
 
 using namespace ev3KitInterpreter::robotModel::real;
@@ -68,6 +69,10 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 {
 	if (deviceInfo.isA(speakerInfo())) {
 		return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(buttonInfo())) {
+		return new parts::Button(buttonInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(displayInfo())) {

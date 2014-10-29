@@ -61,8 +61,8 @@ interpreterBase::blocksBase::Block *Ev3BlocksFactory::produceBlock(qReal::Id con
 	} else if (elementMetatypeIs(element, "Ev3WaitForSound")) {
 		return new WaitForSoundSensorBlock(mRobotModelManager->model());
 
-	} else if (elementMetatypeIs(element, "Ev3WaitForEnter")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "EnterButtonPort");
+	} else if (elementMetatypeIs(element, "Ev3WaitForUp")) {
+		return new WaitForButtonBlock(mRobotModelManager->model(), "UpButtonPort");
 	} else if (elementMetatypeIs(element, "Ev3WaitForEscape")) {
 		return new WaitForButtonBlock(mRobotModelManager->model(), "EscapeButtonPort");
 	} else if (elementMetatypeIs(element, "Ev3WaitForLeft")) {
@@ -97,7 +97,7 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3WaitForColor")
 		, id("Ev3WaitForColorIntensity")
 		, id("Ev3WaitForEncoder")
-		, id("Ev3WaitForLight")
+		, id("Ev3WaitForUp")
 		, id("Ev3WaitForSound")
 		, id("Ev3WaitForEnter")
 		, id("Ev3WaitForEscape")
