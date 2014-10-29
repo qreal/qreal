@@ -5,7 +5,7 @@
     <Description>Install it for working with Trik in Trik Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором Trik</Description>
     <Version inheritVersionFrom="com.qreal.root.robots">1</Version>
-    <ReleaseDate>2014-10-15</ReleaseDate>
+    <ReleaseDate>2014-10-29</ReleaseDate>
     <Licenses/>
     <!--<Translations>
         <Translation>sv_se.qm</Translation>
