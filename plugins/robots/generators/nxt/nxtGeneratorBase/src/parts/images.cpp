@@ -1,16 +1,15 @@
-#include "generatorBase/parts/images.h"
+#include "nxtGeneratorBase/parts/images.h"
 
 #include <QtCore/QStringList>
 
-using namespace generatorBase::parts;
+using namespace nxt::parts;
 
 Images::Images(QString const &pathToTemplates)
-	: TemplateParametrizedEntity(pathToTemplates)
+	: generatorBase::TemplateParametrizedEntity(pathToTemplates)
 {
 	reinit();
 }
 
-// TODO: display width and bmps are NXT-only concepts, get rid of it here
 int Images::displayWidth() const
 {
 	return 100;

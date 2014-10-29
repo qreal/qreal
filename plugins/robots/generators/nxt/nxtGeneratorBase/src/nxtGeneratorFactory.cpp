@@ -1,10 +1,16 @@
-#include "nxtGeneratorFactory.h"
+#include "nxtGeneratorBase/nxtGeneratorFactory.h"
 
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 
+#include "simpleGenerators/clearScreenBlockGenerator.h"
+#include "simpleGenerators/drawPixelBlockGenerator.h"
+#include "simpleGenerators/drawRectBlockGenerator.h"
+#include "simpleGenerators/drawLineBlockGenerator.h"
+#include "simpleGenerators/drawCircleBlockGenerator.h"
 #include "converters/nxtStringPropertyConverter.h"
 
 using namespace nxt;
+using namespace nxt::simple;
 using namespace generatorBase::simple;
 
 NxtGeneratorFactory::NxtGeneratorFactory(qrRepo::RepoApi const &repo
@@ -14,11 +20,17 @@ NxtGeneratorFactory::NxtGeneratorFactory(qrRepo::RepoApi const &repo
 		, QString const &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
+	, mImages(pathToTemplates())
 {
 }
 
 NxtGeneratorFactory::~NxtGeneratorFactory()
 {
+}
+
+parts::Images &NxtGeneratorFactory::images()
+{
+	return mImages;
 }
 
 generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGenerator(qReal::Id const &id
@@ -33,6 +45,16 @@ generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGener
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForLeft.t", this);
 	} else if (elementType == "NxtWaitForRight") {
 		return new WaitForButtonGenerator(mRepo, customizer, id, "buttons/waitForRight.t", this);
+	} else if (elementType == "ClearScreen") {
+		return new ClearScreenBlockGenerator(mRepo, customizer, id, this);
+	} else if (elementType.contains("DrawPixel")) {
+		return new DrawPixelBlockGenerator(mRepo, customizer, id, this);
+	} else if (elementType.contains("DrawLine")) {
+		return new DrawLineBlockGenerator(mRepo, customizer, id, this);
+	} else if (elementType.contains("DrawCircle")) {
+		return new DrawCircleBlockGenerator(mRepo, customizer, id, this);
+	} else if (elementType.contains("DrawRect")) {
+		return new DrawRectBlockGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
@@ -50,3 +72,4 @@ generatorBase::simple::Binding::ConverterInterface *NxtGeneratorFactory::stringP
 			, *mSubprograms
 			, *reservedVariableNameConverter());
 }
+

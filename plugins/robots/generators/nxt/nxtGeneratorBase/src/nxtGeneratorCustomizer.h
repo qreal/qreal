@@ -2,7 +2,7 @@
 
 #include <generatorBase/generatorCustomizer.h>
 
-#include "nxtGeneratorFactory.h"
+#include "nxtGeneratorBase/nxtGeneratorFactory.h"
 
 namespace nxt {
 

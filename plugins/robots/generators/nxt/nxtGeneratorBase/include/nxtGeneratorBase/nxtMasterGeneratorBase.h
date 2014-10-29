@@ -17,6 +17,8 @@ public:
 
 protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
+	void beforeGeneration() override;
+	void processGeneratedCode(QString &code) override;
 	void afterGeneration() override;
 
 private:

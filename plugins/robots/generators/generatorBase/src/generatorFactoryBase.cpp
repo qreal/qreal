@@ -21,11 +21,7 @@
 #include "simpleGenerators/nullificationEncoderGenerator.h"
 #include "simpleGenerators/waitForColorBlockGenerator.h"
 #include "simpleGenerators/waitForColorIntensityBlockGenerator.h"
-#include "simpleGenerators/drawPixelBlockGenerator.h"
-#include "simpleGenerators/drawRectBlockGenerator.h"
 #include "simpleGenerators/clearScreenBlockGenerator.h"
-#include "simpleGenerators/drawLineBlockGenerator.h"
-#include "simpleGenerators/drawCircleBlockGenerator.h"
 #include "simpleGenerators/printTextBlockGenerator.h"
 #include "simpleGenerators/waitForLightBlockGenerator.h"
 #include "simpleGenerators/waitForSonarBlockGenerator.h"
@@ -63,7 +59,6 @@
 #include "generatorBase/parts/engines.h"
 #include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/functions.h"
-#include "generatorBase/parts/images.h"
 
 #include "generatorBase/lua/luaProcessor.h"
 
@@ -97,7 +92,6 @@ void GeneratorFactoryBase::initialize()
 	initEngines();
 	initSensors();
 	initFunctions();
-	initImages();
 	initDeviceVariables();
 }
 
@@ -131,11 +125,6 @@ void GeneratorFactoryBase::initSensors()
 void GeneratorFactoryBase::initFunctions()
 {
 	mFunctions = new parts::Functions(pathToTemplates());
-}
-
-void GeneratorFactoryBase::initImages()
-{
-	mImages = new parts::Images(pathToTemplates());
 }
 
 void GeneratorFactoryBase::initDeviceVariables()
@@ -182,11 +171,6 @@ parts::Sensors *GeneratorFactoryBase::sensors()
 parts::Functions *GeneratorFactoryBase::functions()
 {
 	return mFunctions;
-}
-
-parts::Images *GeneratorFactoryBase::images()
-{
-	return mImages;
 }
 
 parts::DeviceVariables *GeneratorFactoryBase::deviceVariables() const
@@ -287,18 +271,10 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 		return new WaitForGyroscopeBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("WaitForAccelerometer")) {
 		return new WaitForAccelerometerBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("DrawPixel")) {
-		return new DrawPixelBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("DrawLine")) {
-		return new DrawLineBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("DrawCircle")) {
-		return new DrawCircleBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("PrintText")) {
-		return new PrintTextBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("DrawRect")) {
-		return new DrawRectBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("ClearScreen")) {
 		return new ClearScreenBlockGenerator(mRepo, customizer, id, this);
+	} else if (elementType.contains("PrintText")) {
+		return new PrintTextBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Subprogram") {
 		return new SubprogramsSimpleGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "VariableInit") {

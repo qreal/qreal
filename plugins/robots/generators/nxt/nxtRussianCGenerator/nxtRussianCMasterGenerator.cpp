@@ -1,7 +1,5 @@
 #include "nxtRussianCMasterGenerator.h"
 
-#include <generatorBase/parts/images.h>
-
 using namespace nxt::russianC;
 
 NxtRussianCMasterGenerator::NxtRussianCMasterGenerator(qrRepo::RepoApi const &repo

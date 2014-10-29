@@ -7,23 +7,22 @@
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 #include "generatorBase/templateParametrizedEntity.h"
 
-namespace generatorBase {
+namespace nxt {
 namespace parts {
 
 // TODO: rewrite it with generating code that generates buffer
-// TODO: move this class into NxtOSEK-only generator
 
 /// Class responsible for everything with images generation
-class ROBOTS_GENERATOR_EXPORT Images : public TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT Images : public generatorBase::TemplateParametrizedEntity
 {
 public:
 	explicit Images(QString const &pathToTemplates);
 
 	/// Returns target robot display width in pixels
-	virtual int displayWidth() const;
+	int displayWidth() const;
 
 	/// Returns target robot display height in pixels
-	virtual int displayHeight() const;
+	int displayHeight() const;
 
 	/// Prepares this instance for new usage
 	void reinit();
@@ -31,7 +30,6 @@ public:
 	/// Generates code for declaration resulting BMPs inside the program
 	QString generate() const;
 
-	// TODO: move it into osek
 	/// Generates code for declaration resulting BMPs inside the makefiles
 	QString generateBmpFilesStringForMake() const;
 

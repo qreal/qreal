@@ -2,15 +2,15 @@
 
 #include "drawBlockGenerator.h"
 
-namespace generatorBase {
+namespace nxt {
 namespace simple {
 
-/// Generator for 'DrawLine' block
+/// Generator for 'DrawLine' block in NXT kit.
 class DrawLineBlockGenerator : public DrawBlockGenerator
 {
 public:
 	DrawLineBlockGenerator(qrRepo::RepoApi const &repo
-			, GeneratorCustomizer &customizer
+			, generatorBase::GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent = 0);
 

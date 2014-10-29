@@ -39,7 +39,6 @@
         <file>templates/ledColors/red.t</file>
         <file>templates/ledColors/green.t</file>
         <file>templates/ledColors/off.t</file>
-        <file>templates/drawing/printText.t</file>
         <file>templates/signs/equals.t</file>
         <file>templates/signs/greater.t</file>
         <file>templates/signs/less.t</file>
@@ -127,14 +126,18 @@
         <file>templates/threads/forwardDeclaration.t</file>
         <file>templates/threads/implementation.t</file>
         <file>templates/threads/implementationsSectionHeader.t</file>
+        <file>templates/drawing/printText.t</file>
         <file>templates/drawing/setBackground.t</file>
         <file>templates/drawing/smile.t</file>
         <file>templates/drawing/sadSmile.t</file>
-        <file>templates/drawing/bmpDeclaration.t</file>
-        <file>templates/drawing/clearUnusedScreen.t</file>
-        <file>templates/drawing/clearUsedScreen.t</file>
-        <file>templates/drawing/drawBitmap.t</file>
-        <file>templates/drawing/variablesDeclaration.t</file>
+        <file>templates/drawing/clearScreen.t</file>
+        <file>templates/drawing/drawLine.t</file>
+        <file>templates/drawing/drawPixel.t</file>
+        <file>templates/drawing/drawRect.t</file>
+        <file>templates/drawing/drawEllipse.t</file>
+        <file>templates/drawing/drawArc.t</file>
+        <file>templates/drawing/setPainterWidth.t</file>
+        <file>templates/drawing/setPainterColor.t</file>
         <file>templates/buttons/waitForEnter.t</file>
         <file>templates/buttons/waitForUp.t</file>
         <file>templates/buttons/waitForDown.t</file>
@@ -147,13 +150,6 @@
         <file>templates/engines/forward.t</file>
         <file>templates/engines/stop.t</file>
         <file>templates/engines/nullifyEncoder.t</file>
-        <file>templates/drawing/drawLine.t</file>
-        <file>templates/drawing/drawPixel.t</file>
-        <file>templates/drawing/drawRect.t</file>
-        <file>templates/drawing/drawEllipse.t</file>
-        <file>templates/drawing/drawArc.t</file>
-        <file>templates/drawing/setPainterWidth.t</file>
-        <file>templates/drawing/setPainterColor.t</file>
         <file>templates/messages/waitForMessage.t</file>
         <file>templates/messages/sendMessage.t</file>
         <file>templates/luaPrinting/addition.t</file>

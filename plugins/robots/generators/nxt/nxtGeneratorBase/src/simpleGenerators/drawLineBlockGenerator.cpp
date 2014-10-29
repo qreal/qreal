@@ -1,11 +1,10 @@
 #include "drawLineBlockGenerator.h"
 
-using namespace generatorBase::simple;
-using namespace qReal;
+using namespace nxt::simple;
 
 DrawLineBlockGenerator::DrawLineBlockGenerator(qrRepo::RepoApi const &repo
-		, GeneratorCustomizer &customizer
-		, Id const &id
+		, generatorBase::GeneratorCustomizer &customizer
+		, qReal::Id const &id
 		, QObject *parent)
 	: DrawBlockGenerator(repo, customizer, id, parent)
 {

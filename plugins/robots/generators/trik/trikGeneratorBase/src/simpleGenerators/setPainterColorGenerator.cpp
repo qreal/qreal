@@ -1,7 +1,7 @@
 #include "setPainterColorGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
-#include "converters/backgroundColorConverter.h"
+#include "src/converters/backgroundColorConverter.h"
 
 using namespace trik::simple;
 using namespace trik::converters;

@@ -1,8 +1,9 @@
 #include "nxtOsekCMasterGenerator.h"
 
 #include <qrutils/stringUtils.h>
-#include <generatorBase/parts/images.h>
 #include <generatorBase/parts/threads.h>
+#include <nxtGeneratorBase/nxtGeneratorFactory.h>
+#include <nxtGeneratorBase/parts/images.h>
 
 using namespace nxt::osekC;
 
@@ -58,7 +59,8 @@ QString NxtOsekCMasterGenerator::generateOilTask(QString const &taskName)
 void NxtOsekCMasterGenerator::generateMakeFile(QString const &projectName
 		, QString const &projectDir)
 {
-	QString const bmps = mCustomizer->factory()->images()->generateBmpFilesStringForMake().toUtf8();
+	QString const bmps = static_cast<NxtGeneratorFactory *>(mCustomizer->factory())->images()
+			.generateBmpFilesStringForMake().toUtf8();
 
 	QString makefileTemplate = readTemplate("makefile.t");
 	outputCode(projectDir + "/makefile", makefileTemplate

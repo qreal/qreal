@@ -34,8 +34,15 @@ TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtGenerato
 HEADERS += \
 	$$PWD/include/nxtGeneratorBase/nxtGeneratorPluginBase.h \
 	$$PWD/include/nxtGeneratorBase/nxtMasterGeneratorBase.h \
+	$$PWD/include/nxtGeneratorBase/nxtGeneratorFactory.h \
+	$$PWD/include/nxtGeneratorBase/parts/images.h \
 	$$PWD/src/nxtGeneratorCustomizer.h \
-	$$PWD/src/nxtGeneratorFactory.h \
+	$$PWD/src/simpleGenerators/clearScreenBlockGenerator.h \
+	$$PWD/src/simpleGenerators/drawBlockGenerator.h \
+	$$PWD/src/simpleGenerators/drawPixelBlockGenerator.h \
+	$$PWD/src/simpleGenerators/drawRectBlockGenerator.h \
+	$$PWD/src/simpleGenerators/drawLineBlockGenerator.h \
+	$$PWD/src/simpleGenerators/drawCircleBlockGenerator.h \
 	$$PWD/src/converters/nxtStringPropertyConverter.h \
 
 SOURCES += \
@@ -43,4 +50,11 @@ SOURCES += \
 	$$PWD/src/nxtMasterGeneratorBase.cpp \
 	$$PWD/src/nxtGeneratorCustomizer.cpp \
 	$$PWD/src/nxtGeneratorFactory.cpp \
+	$$PWD/src/parts/images.cpp \
+	$$PWD/src/simpleGenerators/clearScreenBlockGenerator.cpp \
+	$$PWD/src/simpleGenerators/drawBlockGenerator.cpp \
+	$$PWD/src/simpleGenerators/drawPixelBlockGenerator.cpp \
+	$$PWD/src/simpleGenerators/drawRectBlockGenerator.cpp \
+	$$PWD/src/simpleGenerators/drawLineBlockGenerator.cpp \
+	$$PWD/src/simpleGenerators/drawCircleBlockGenerator.cpp \
 	$$PWD/src/converters/nxtStringPropertyConverter.cpp \

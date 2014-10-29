@@ -1,11 +1,10 @@
 #include "drawPixelBlockGenerator.h"
 
-using namespace generatorBase::simple;
-using namespace qReal;
+using namespace nxt::simple;
 
 DrawPixelBlockGenerator::DrawPixelBlockGenerator(qrRepo::RepoApi const &repo
-		, GeneratorCustomizer &customizer
-		, Id const &id
+		, generatorBase::GeneratorCustomizer &customizer
+		, qReal::Id const &id
 		, QObject *parent)
 	: DrawBlockGenerator(repo, customizer, id, parent)
 {

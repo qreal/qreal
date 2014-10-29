@@ -3,17 +3,17 @@
 #include <QtGui/QImage>
 #include <QtGui/QPainter>
 
-#include "generatorBase/simpleGenerators/bindingGenerator.h"
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
 
-namespace generatorBase {
+namespace nxt {
 namespace simple {
 
-/// A base for all generators for drawing blocks
-class DrawBlockGenerator : public BindingGenerator
+/// A base for all generators for drawing blocks in NXT kit.
+class DrawBlockGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
 	DrawBlockGenerator(qrRepo::RepoApi const &repo
-			, GeneratorCustomizer &customizer
+			, generatorBase::GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent = 0);
 
@@ -24,7 +24,7 @@ protected:
 	virtual void drawBmp(QPainter *painter) = 0;
 
 private:
-	QString imageName(GeneratorCustomizer &customizer) const;
+	QString imageName(generatorBase::GeneratorCustomizer &customizer) const;
 };
 
 }

@@ -2,6 +2,8 @@
 
 #include <generatorBase/generatorFactoryBase.h>
 
+#include "parts/images.h"
+
 namespace nxt {
 
 class NxtGeneratorFactory : public generatorBase::GeneratorFactoryBase
@@ -14,6 +16,9 @@ public:
 			, QString const &generatorName);
 	~NxtGeneratorFactory() override;
 
+	/// Returns an entity processing everything about BMP images that will be embedded into an executable.
+	parts::Images &images();
+
 	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
@@ -23,6 +28,7 @@ public:
 
 private:
 	QString const mGeneratorName;
+	parts::Images mImages;
 };
 
 }
