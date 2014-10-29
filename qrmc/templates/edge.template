@@ -21,8 +21,6 @@
 		bool minimizesToChildren() const { return false; }
 		bool isClass() { return false; }
 		bool maximizesChildren() const { return false; }
-		bool isPort() const { return false; }
-		bool hasPin() const { return false; }
 		bool isResizeable() const { return true; }
 		int getPenWidth() const { return 1; }
 		QColor getPenColor() const { return QColor(); }
@@ -33,7 +31,6 @@
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
-		bool hasPorts() const { return false; }
 		Qt::PenStyle getPenStyle() const { return @@LineType@@; }
 		QStringList bonusContextMenuFields() const
 		{

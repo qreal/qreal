@@ -29,11 +29,7 @@
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts() const
-		{
-			return @@NodeHasPorts@@;
-		}
-
+		
 		void updateData(ElementRepoInterface *repo) const
 		{
 @@UpdateData@@
@@ -78,17 +74,7 @@
 		{
 			return @@MaximizesChildren@@;
 		}
-
-		bool isPort() const
-		{
-			return @@IsPort@@;
-		}
-
-		bool hasPin() const
-		{
-			return @@HasPin@@;
-		}
-
+                
 		QList<double> border() const
 		{
 			QList<double> list;

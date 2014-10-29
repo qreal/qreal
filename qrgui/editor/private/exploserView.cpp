@@ -210,23 +210,16 @@ void ExploserView::expandExplosionActionTriggered()
 
 void ExploserView::changePropertiesActionTriggered()
 {
-//	QAction const * const action = static_cast<QAction const *>(sender());
-//	Id const id = action->data().value<Id>();
-//	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
-//			mLogicalApi.editorManagerInterface()
-//			, mLogicalApi.mutableLogicalRepoApi()
-//			, id
-//			, QApplication::allWidgets().isEmpty() ? nullptr : QApplication::allWidgets()[0]);
+	QAction const * const action = static_cast<QAction const *>(sender());
+	Id const id = action->data().value<Id>();
+	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(
+			mLogicalApi.editorManagerInterface()
+			, mLogicalApi.mutableLogicalRepoApi()
+			, id
+			, QApplication::allWidgets().isEmpty() ? nullptr : QApplication::allWidgets()[0]);
 
-
-////	PropertiesDialog(EditorManagerInterface const &interpreterEditorManager
-////			, qrRepo::LogicalRepoApi &logicalRepoApi
-////			, Id const &id
-////			, QWidget *parent = 0);
-
-
-//	propertiesDialog->setModal(true);
-//	propertiesDialog->show();
+	propertiesDialog->setModal(true);
+	propertiesDialog->show();
 }
 
 void ExploserView::changeAppearanceActionTriggered()
