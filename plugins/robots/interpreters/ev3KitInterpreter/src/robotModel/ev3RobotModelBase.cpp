@@ -19,11 +19,11 @@ Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId)
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
 
 	addAllowedConnection(PortInfo("UpButtonPort", input, {}, "upButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("DownButtonPort", input, {}, "downButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("LeftButtonPort", input, {}, "leftButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("RightButtonPort", input, {}, "rightButton"), { buttonInfo() });
-	addAllowedConnection(PortInfo("BackButtonPort", input, {}, "backButton"), { buttonInfo() });
 	addAllowedConnection(PortInfo("EnterButtonPort", input, {}, "enterButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("DownButtonPort", input, {}, "downButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("RightButtonPort", input, {}, "rightButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("LeftButtonPort", input, {}, "leftButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("BackButtonPort", input, {}, "backButton"), { buttonInfo() });
 
 	addAllowedConnection(PortInfo("A", output), { motorInfo() });
 	addAllowedConnection(PortInfo("B", output), { motorInfo() });

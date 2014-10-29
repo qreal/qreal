@@ -1100,7 +1100,91 @@
 					</generalizations>
 				</logic>
 			</node>
-
+			<node displayedName="Wait for \&quot;Enter\&quot; button" name="Ev3WaitForEnter" description="Waits for \&quot;Enter\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Enter" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Down\&quot; button" name="Ev3WaitForDown" description="Waits for \&quot;Down\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Down" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Right\&quot; button" name="Ev3WaitForRight" description="Waits for \&quot;Right\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Right" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Left\&quot; button" name="Ev3WaitForLeft" description="Waits for \&quot;Left\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Left" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Back\&quot; button" name="Ev3WaitForBack" description="Waits for \&quot;Back\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Back" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<!-- Waiting for sensors blocks, NXT -->
 			<node name="NxtSensorBlock">
 				<logic>
@@ -2476,6 +2560,11 @@
 			<group name="Wait">
 				<element name="Timer"/>
 				<element name="Ev3WaitForUp"/>
+				<element name="Ev3WaitForEnter"/>
+				<element name="Ev3WaitForDown"/>
+				<element name="Ev3WaitForRight"/>
+				<element name="Ev3WaitForLeft"/>
+				<element name="Ev3WaitForBack"/>
 				<element name="NxtWaitForTouchSensor"/>
 				<element name="NxtWaitForSonarDistance"/>
 				<element name="NxtWaitForColor"/>
