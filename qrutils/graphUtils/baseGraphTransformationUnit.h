@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
-#include "../../qrgui/mainwindow/errorReporter.h"
-#include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 
 namespace qReal {
 

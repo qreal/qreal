@@ -23,7 +23,7 @@ public:
 	~TrikKitInterpreterPlugin() override;
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::SystemEvents const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface

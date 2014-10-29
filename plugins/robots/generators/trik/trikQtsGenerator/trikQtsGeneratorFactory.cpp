@@ -27,7 +27,6 @@
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
-#include "parts/trikVariables.h"
 #include "parts/trikDeviceVariables.h"
 
 using namespace trik;
@@ -123,11 +122,6 @@ QString TrikQtsGeneratorFactory::pathToTemplates() const
 generatorBase::simple::Binding::ConverterInterface *TrikQtsGeneratorFactory::stringPropertyConverter() const
 {
 	return new converters::TrikStringPropertyConverter(*mVariables, *reservedVariableNameConverter());
-}
-
-void TrikQtsGeneratorFactory::initVariables()
-{
-	mVariables = new parts::TrikVariables(pathToTemplates(), mRobotModelManager.model(), mLuaTranslator.toolbox());
 }
 
 generatorBase::parts::DeviceVariables *TrikQtsGeneratorFactory::deviceVariables() const

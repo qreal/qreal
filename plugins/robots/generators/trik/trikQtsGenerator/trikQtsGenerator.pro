@@ -40,7 +40,6 @@ HEADERS += \
 	$$PWD/trikQtsGeneratorCustomizer.h \
 	$$PWD/trikQtsGeneratorFactory.h \
 	$$PWD/parts/trikDeviceVariables.h \
-	$$PWD/parts/trikVariables.h \
 	$$PWD/converters/backgroundColorConverter.h \
 	$$PWD/converters/ledColorConverter.h \
 	$$PWD/converters/trikStringPropertyConverter.h \
@@ -73,7 +72,6 @@ SOURCES += \
 	$$PWD/trikQtsGeneratorCustomizer.cpp \
 	$$PWD/trikQtsGeneratorFactory.cpp \
 	$$PWD/parts/trikDeviceVariables.cpp \
-	$$PWD/parts/trikVariables.cpp \
 	$$PWD/converters/backgroundColorConverter.cpp \
 	$$PWD/converters/ledColorConverter.cpp \
 	$$PWD/converters/trikStringPropertyConverter.cpp \

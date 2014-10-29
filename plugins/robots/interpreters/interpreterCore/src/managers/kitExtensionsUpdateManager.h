@@ -12,7 +12,7 @@ class KitExtensionsUpdateManager : public QObject
 
 public:
 	KitExtensionsUpdateManager(interpreterCore::KitPluginManager const &kitManager
-			, TextManagerInterface &textManager
+			, qReal::TextManagerInterface &textManager
 			, QObject *parent = 0);
 
 public slots:
@@ -20,7 +20,7 @@ public slots:
 
 private:
 	interpreterCore::KitPluginManager const &mKitManager;
-	TextManagerInterface &mTextManager;
+	qReal::TextManagerInterface &mTextManager;
 };
 
 }

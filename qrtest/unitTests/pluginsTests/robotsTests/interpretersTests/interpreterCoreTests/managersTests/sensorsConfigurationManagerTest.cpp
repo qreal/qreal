@@ -3,7 +3,7 @@
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/colorSensor.h>
 
-#include "mocks/qrgui/mainwindow/mainWindowInterpretersInterfaceMock.h"
+#include "mocks/qrgui/mainWindow/mainWindowInterpretersInterfaceMock.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 

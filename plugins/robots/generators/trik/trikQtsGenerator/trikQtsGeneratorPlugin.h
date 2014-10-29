@@ -15,12 +15,12 @@ class TrikQtsGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 
 public:
 	TrikQtsGeneratorPlugin();
-	virtual ~TrikQtsGeneratorPlugin();
+	~TrikQtsGeneratorPlugin() override;
 
 	QString kitId() const override;
 
 	QList<qReal::ActionInfo> actions() override;
-	QList<HotKeyActionInfo> hotKeyActions() override;
+	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 	void init(qReal::PluginConfigurator const &configurator
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager

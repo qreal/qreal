@@ -10,6 +10,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrtext/include \
 
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
+		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
 		-lrobots-utils -lrobots-interpreter-base -lrobots-common-2d-model -lqextserialport \
 
 HEADERS += \
@@ -134,5 +135,3 @@ RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \
 
 TRANSLATIONS += $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts
-
-include($$PWD/../qrguiIncludes.pri)

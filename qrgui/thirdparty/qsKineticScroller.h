@@ -33,13 +33,15 @@
 #include <QtWidgets/QGesture>
 #include <QtGui/QMouseEvent>
 
+#include "thirdPartyDeclSpec.h"
+
 class QsKineticScrollerImpl;
 class QAbstractScrollArea;
 class QEvent;
 
 //! Vertical kinetic scroller implementation without overshoot and bouncing.
 //! A temporary solution to get kinetic-like scrolling on Symbian.
-class QsKineticScroller: public QObject
+class QRGUI_THIRDPARTY_EXPORT QsKineticScroller: public QObject
 {
    Q_OBJECT
 

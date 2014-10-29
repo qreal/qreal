@@ -9,7 +9,8 @@ INCLUDEPATH += \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lrobots-utils -lrobots-interpreter-base
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lqrgui-tool-plugin-interface \
+		-lrobots-utils -lrobots-interpreter-base \
 
 TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/commonTwoDModel_ru.ts
 
@@ -106,7 +107,3 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/src/engine/view/d2Form.ui \
-
-# qrgui includes
-HEADERS += \
-	$$PWD/../../../../qrgui/toolPluginInterface/systemEventsInterface.h \

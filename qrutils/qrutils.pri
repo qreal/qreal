@@ -10,6 +10,13 @@ INCLUDEPATH += \
 
 LIBS += -L$$PWD/../bin -lqrkernel -lqslog -lqrtext
 
+# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
+# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
+!macx {
+	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../bin/
+	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdparty/
+}
+
 DEFINES += QRUTILS_LIBRARY
 
 RESOURCES = $$PWD/qrutils.qrc
@@ -28,7 +35,6 @@ HEADERS += \
 	$$PWD/stringUtils.h \
 	$$PWD/qRealDialog.h \
 	$$PWD/qRealFileDialog.h \
-	$$PWD/qRealUpdater.h \
 	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
 	$$PWD/generator/abstractGenerator.h \
@@ -46,7 +52,6 @@ SOURCES += \
 	$$PWD/stringUtils.cpp \
 	$$PWD/qRealDialog.cpp \
 	$$PWD/qRealFileDialog.cpp \
-	$$PWD/qRealUpdater.cpp \
 	$$PWD/textElider.cpp \
 	$$PWD/virtualKeyboard.cpp \
 	$$PWD/generator/abstractGenerator.cpp \

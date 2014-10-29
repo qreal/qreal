@@ -1,42 +1,28 @@
 TEMPLATE = subdirs
 
+include(common.pri)
+
 # editor plugins
-SUBDIRS	= \
-	dragonDiagram/dragonDiagram.pro \
-	blockDiagram/blockDiagram.pro \
-#	hascol/hascol.pro \
-	metaEditor/metaEditor.pro \
-	requirements/requirements.pro \
-	domainAnalysis/domainAnalysis.pro \
-
-
-
-# tool plugins
 SUBDIRS += \
-#	testInvocation/testInvocation.pro \
-	exterminatus/exterminatus.pro \
-	visualInterpreter/visualInterpreter.pro \
-	refactoring/refactoring.pro \
+	$$PWD/dragonDiagram/dragonDiagram.pro \
+	$$PWD/blockDiagram/blockDiagram.pro \
+#	$$PWD/hascol/hascol.pro \
+	$$PWD/metaEditor/metaEditor.pro \
+	$$PWD/requirements/requirements.pro \
+	$$PWD/domainAnalysis/domainAnalysis.pro \
 
 # interpreted plugins
 SUBDIRS += \
 	generationRulesTool/generationRulesTool.pro \
 
-# QReal:Robots
+
+# tool plugins
 SUBDIRS += \
-#	robots/robots.pro \
+	$$PWD/tools/exterminatus/exterminatus.pro \
+	$$PWD/tools/visualInterpreter/visualInterpreter.pro \
+	$$PWD/tools/refactoring/refactoring.pro \
+#	$$PWD/tools/testInvocation/testInvocation.pro \
 
-
-# QReal:BP
-SUBDIRS += \
-#	bpmn/bpmn.pro \
-#	rulesChecker/rulesChecker.pro \
-#	classDiagram/classDiagram.pro \
-
-
-# QReal:Ubiq
-SUBDIRS += \
-#	ubiq/ubiq.pro \
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qrutils/release/ -lqrutils
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../qrutils/debug/ -lqrutils
