@@ -182,9 +182,6 @@ public:
 	/// Produces converter for port names without taking ownership on it
 	virtual simple::Binding::ConverterInterface *portNameConverter() const;
 
-	/// Produces converter for color specification without taking ownership on it
-	virtual simple::Binding::ConverterInterface *colorConverter() const;
-
 	/// Produces converter for engine break mode specification without taking ownership on it
 	virtual simple::Binding::ConverterInterface *breakModeConverter() const;
 

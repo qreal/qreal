@@ -142,7 +142,6 @@ HEADERS += \
 	$$PWD/src/converters/nameNormalizerConverter.h \
 	$$PWD/src/converters/functionBlockConverter.h \
 	$$PWD/src/converters/inequalitySignConverter.h \
-	$$PWD/src/converters/colorConverter.h \
 	$$PWD/src/converters/breakModeConverter.h \
 	$$PWD/src/converters/portNameConverter.h \
 	$$PWD/src/converters/enginePortsConverter.h \
@@ -163,7 +162,6 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/playToneGenerator.h \
 	$$PWD/src/simpleGenerators/finalNodeGenerator.h \
 	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.h \
-	$$PWD/src/simpleGenerators/waitForColorBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForColorIntensityBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForLightBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForSonarBlockGenerator.h \
@@ -200,7 +198,6 @@ SOURCES += \
 	$$PWD/src/converters/nameNormalizerConverter.cpp \
 	$$PWD/src/converters/functionBlockConverter.cpp \
 	$$PWD/src/converters/inequalitySignConverter.cpp \
-	$$PWD/src/converters/colorConverter.cpp \
 	$$PWD/src/converters/breakModeConverter.cpp \
 	$$PWD/src/converters/portNameConverter.cpp \
 	$$PWD/src/converters/enginePortsConverter.cpp \
@@ -224,7 +221,6 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/src/simpleGenerators/finalNodeGenerator.cpp \
 	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.cpp \
-	$$PWD/src/simpleGenerators/waitForColorBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForColorIntensityBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForLightBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForSonarBlockGenerator.cpp \

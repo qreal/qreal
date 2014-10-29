@@ -30,12 +30,6 @@
         <file>templates/backgroundColors/gray.t</file>
         <file>templates/backgroundColors/darkGray.t</file>
         <file>templates/backgroundColors/lightGray.t</file>
-        <file>templates/colors/black.t</file>
-        <file>templates/colors/blue.t</file>
-        <file>templates/colors/green.t</file>
-        <file>templates/colors/red.t</file>
-        <file>templates/colors/white.t</file>
-        <file>templates/colors/yellow.t</file>
         <file>templates/ledColors/red.t</file>
         <file>templates/ledColors/green.t</file>
         <file>templates/ledColors/off.t</file>

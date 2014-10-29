@@ -26,6 +26,9 @@ public:
 
 	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
 
+	/// Produces converter for color specification without taking ownership on it
+	generatorBase::simple::Binding::ConverterInterface *colorConverter() const;
+
 private:
 	QString const mGeneratorName;
 	parts::Images mImages;

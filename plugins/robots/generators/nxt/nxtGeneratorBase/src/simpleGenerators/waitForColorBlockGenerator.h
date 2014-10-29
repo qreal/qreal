@@ -2,15 +2,15 @@
 
 #include "generatorBase/simpleGenerators/bindingGenerator.h"
 
-namespace generatorBase {
+namespace nxt {
 namespace simple {
 
 /// Generator for 'WaitForColor' block
-class WaitForColorBlockGenerator : public BindingGenerator
+class WaitForColorBlockGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
 	WaitForColorBlockGenerator(qrRepo::RepoApi const &repo
-			, GeneratorCustomizer &customizer
+			, generatorBase::GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent = 0);
 };

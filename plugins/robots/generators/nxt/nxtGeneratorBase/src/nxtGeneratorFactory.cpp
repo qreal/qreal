@@ -7,7 +7,9 @@
 #include "simpleGenerators/drawRectBlockGenerator.h"
 #include "simpleGenerators/drawLineBlockGenerator.h"
 #include "simpleGenerators/drawCircleBlockGenerator.h"
+#include "simpleGenerators/waitForColorBlockGenerator.h"
 #include "converters/nxtStringPropertyConverter.h"
+#include "converters/colorConverter.h"
 
 using namespace nxt;
 using namespace nxt::simple;
@@ -55,6 +57,8 @@ generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGener
 		return new DrawCircleBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("DrawRect")) {
 		return new DrawRectBlockGenerator(mRepo, customizer, id, this);
+	} else if (elementType.contains("WaitForColor")) {
+		return new WaitForColorBlockGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
@@ -73,3 +77,7 @@ generatorBase::simple::Binding::ConverterInterface *NxtGeneratorFactory::stringP
 			, *reservedVariableNameConverter());
 }
 
+Binding::ConverterInterface *NxtGeneratorFactory::colorConverter() const
+{
+	return new converters::ColorConverter(pathToTemplates());
+}

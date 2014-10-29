@@ -19,7 +19,6 @@
 #include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/finalNodeGenerator.h"
 #include "simpleGenerators/nullificationEncoderGenerator.h"
-#include "simpleGenerators/waitForColorBlockGenerator.h"
 #include "simpleGenerators/waitForColorIntensityBlockGenerator.h"
 #include "simpleGenerators/clearScreenBlockGenerator.h"
 #include "simpleGenerators/printTextBlockGenerator.h"
@@ -40,7 +39,6 @@
 
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
-#include "converters/colorConverter.h"
 #include "converters/breakModeConverter.h"
 #include "converters/portNameConverter.h"
 #include "converters/enginePortsConverter.h"
@@ -253,8 +251,6 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 		return new InitialNodeGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("ClearEncoder")) {
 		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("WaitForColor")) {
-		return new WaitForColorBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("WaitForColorIntensity")) {
 		return new WaitForColorIntensityBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("WaitForLight")) {
@@ -371,11 +367,6 @@ Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter() const
 Binding::ConverterInterface *GeneratorFactoryBase::portNameConverter() const
 {
 	return new converters::PortNameConverter(pathToTemplates(), mRobotModelManager.model().availablePorts());
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::colorConverter() const
-{
-	return new converters::ColorConverter(pathToTemplates());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter() const
