@@ -310,12 +310,15 @@ void ViewInteraction::versionsClicked()
 
 void ViewInteraction::diffClicked()
 {
+	mMainWindowIface->windowWidget()->setEnabled(false);
 	QWidget *widget = makeDiffTab();
 	mPlugin->showDiff(mProjectManager->saveFilePath(), widget, false);
+	mMainWindowIface->windowWidget()->setEnabled(true);
 }
 
 void ViewInteraction::diffBetweenClicked()
 {
+	mMainWindowIface->windowWidget()->setEnabled(false);
 	ui::DiffBetweenDialog *dialog = new ui::DiffBetweenDialog(mMainWindowIface->windowWidget());
 	if (QDialog::Accepted != dialog->exec()) {
 		return;
@@ -328,6 +331,7 @@ void ViewInteraction::diffBetweenClicked()
 	} else{
 		mPlugin->showDiff(oldHash, newHash, mProjectManager->saveFilePath(), widget, false);
 	}
+	mMainWindowIface->windowWidget()->setEnabled(true);
 }
 
 void ViewInteraction::modeChanged(bool compactMode)

@@ -26,7 +26,7 @@ void DiffPluginWrapper::showDiff(const QString &targetProject, QWidget *parentWi
 }
 
 void DiffPluginWrapper::showDiff(QString repoRevision, const QString &targetProject
-								 , QWidget *parentWidget, bool const &compactMode = false)
+								 , QWidget *parentWidget, bool const &compactMode)
 {
 	mCompactMode = compactMode;
 	mParentWidget = parentWidget;
