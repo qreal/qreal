@@ -1776,8 +1776,8 @@
 						<image name="images/prepareMarker.svg" x1="0" x2="50" y1="0" y2="50" />
 					</picture>
 					<labels>
-						<label x="37" y="60" textBinded="Color" hard="true"/>
-						<label x="0" y="60" text="Color:" hard="true"/>
+						<label x="27" y="-30" textBinded="Color" hard="true"/>
+						<label x="-10" y="-30" text="Color:" hard="true"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
