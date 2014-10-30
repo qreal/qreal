@@ -60,7 +60,10 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const
 		ast = mAstRoots[id][propertyName];
 	}
 
-	mAnalyzer->analyze(ast);
+	if (mErrors.isEmpty()) {
+		mAnalyzer->analyze(ast);
+	}
+
 	if (!mErrors.isEmpty()) {
 		mParsedCache[id].remove(propertyName);
 		reportErrors();
