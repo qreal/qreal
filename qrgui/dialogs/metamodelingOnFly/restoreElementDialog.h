@@ -3,7 +3,7 @@
 #include <QtWidgets/QDialog>
 #include <QtGui/QStandardItem>
 
-#include "pluginManager/editorManagerInterface.h"
+#include "plugins/pluginManager/editorManagerInterface.h"
 
 namespace Ui {
 class RestoreElementDialog;
@@ -19,16 +19,18 @@ class RestoreElementDialog : public QDialog
 public:
 	/// Constructor.
 	/// @param parent Parent widget, who is responsible for deletion of this dialog.
-	/// @param mainWindow Reference to QReal main window.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param elementsWithTheSameNameList IdList of elements with the same name.
-	explicit RestoreElementDialog(QWidget *parent, MainWindow &mainWindow
-			, EditorManagerInterface const &interpreterEditorManager, IdList const &elementsWithTheSameNameList);
+	RestoreElementDialog(QWidget *parent
+			, EditorManagerInterface const &interpreterEditorManager
+			, IdList const &elementsWithTheSameNameList);
 
 	/// Destructor.
 	~RestoreElementDialog();
 
 signals:
+	/// Emitted when element was restored and everything must be reloaded.
+	void jobDone();
 	void createNewChosen();
 	void restoreChosen(int result);
 
@@ -38,7 +40,6 @@ private slots:
 
 private:
 	Ui::RestoreElementDialog *mUi; // Has ownership
-	MainWindow &mMainWindow;
 	EditorManagerInterface const &mInterpreterEditorManager;
 	IdList mElementsWithTheSameNameList;
 

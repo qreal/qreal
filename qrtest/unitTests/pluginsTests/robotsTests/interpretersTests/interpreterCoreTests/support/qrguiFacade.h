@@ -3,11 +3,11 @@
 #include <QtCore/QString>
 
 #include <qrgui/models/models.h>
-#include <qrgui/pluginManager/editorManager.h>
-#include <qrgui/toolPluginInterface/systemEvents.h>
-#include <mocks/qrgui/mainwindow/mainWindowInterpretersInterfaceMock.h>
-#include <mocks/qrgui/mainwindow/projectManager/projectManagementInterfaceMock.h>
-#include <mocks/qrgui/toolPluginInterface/usedInterface/errorReporterMock.h>
+#include <qrgui/plugins/pluginManager/editorManager.h>
+#include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <mocks/qrgui/mainWindow/mainWindowInterpretersInterfaceMock.h>
+#include <mocks/qrgui/mainWindow/projectManager/projectManagementInterfaceMock.h>
+#include <mocks/qrgui/plugins/toolPluginInterface/usedInterface/errorReporterMock.h>
 #include <mocks/qrgui/view/sceneCustomizationInterfaceMock.h>
 
 namespace qrTest {

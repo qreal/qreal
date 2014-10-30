@@ -3,7 +3,7 @@
 #include <robotModel/trikRobotModelBase.h>
 #include <utils/tcpRobotCommunicator.h>
 
-#include <toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {

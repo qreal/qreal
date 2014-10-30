@@ -6,6 +6,8 @@
 #include <QtGui/QKeySequence>
 #include <QtGui/QKeyEvent>
 
+#include "qrgui/hotKeyManager/hotKeyManagerDeclSpec.h"
+
 namespace qReal {
 
 enum MouseButtons
@@ -18,7 +20,7 @@ enum MouseButtons
 	, MouseWD
 };
 
-class HotKeyManager
+class QRGUI_HOTKEY_MANAGER_EXPORT HotKeyManager
 {
 public:
 	static HotKeyManager& instance();

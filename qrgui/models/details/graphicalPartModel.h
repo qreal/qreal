@@ -6,7 +6,7 @@
 
 #include <qrrepo/repoApi.h>
 
-#include "pluginManager/editorManagerInterface.h"
+#include "plugins/pluginManager/editorManagerInterface.h"
 #include "models/details/modelsImplementation/graphicalPartModelItem.h"
 #include "models/details/modelsImplementation/modelIndexesInterface.h"
 

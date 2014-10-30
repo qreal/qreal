@@ -71,6 +71,12 @@ public:
 	/// Returns a mapping of variable identifiers to their types.
 	virtual QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const = 0;
 
+	/// Returns a list of predefined identifiers that are reserved by the system.
+	virtual QStringList const &specialIdentifiers() const = 0;
+
+	/// Returns a list of predefined constants that are reserved by the system.
+	virtual QStringList const &specialConstants() const = 0;
+
 private:
 	/// Interprets given AST. Returns result of an expression. Must be implemented for concrete language.
 	virtual QVariant interpret(QSharedPointer<core::ast::Node> const &root) = 0;

@@ -12,6 +12,7 @@
         <file>templates/led.t</file>
         <file>templates/say.t</file>
         <file>templates/system.t</file>
+        <file>templates/nativeCode.t</file>
         <file>templates/backgroundColors/white.t</file>
         <file>templates/backgroundColors/black.t</file>
         <file>templates/backgroundColors/red.t</file>
@@ -93,9 +94,6 @@
         <file>templates/videosensors/detectline.t</file>
         <file>templates/videosensors/detectobject.t</file>
         <file>templates/videosensors/detectcolor.t</file>
-        <file>templates/videosensors/lineDetectorToVariable.t</file>
-        <file>templates/videosensors/objectDetectorToVariable.t</file>
-        <file>templates/videosensors/colorDetectorToVariable.t</file>
         <file>templates/videosensors/initlineSensor.t</file>
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>
@@ -145,7 +143,6 @@
         <file>templates/buttons/waitForPower.t</file>
         <file>templates/variables/constantDeclaration.t</file>
         <file>templates/variables/variableDeclaration.t</file>
-        <file>templates/variableInit.t</file>
         <file>templates/engines/backward.t</file>
         <file>templates/engines/forward.t</file>
         <file>templates/engines/stop.t</file>

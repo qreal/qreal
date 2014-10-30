@@ -4,12 +4,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/lexer/lexer.h" line="45"/>
+        <location filename="../../qrtext/include/qrtext/core/lexer/lexer.h" line="46"/>
         <source>Invalid regexp: </source>
         <translation>Некорректное регулярное выражение: </translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/lexer/lexer.h" line="152"/>
+        <location filename="../../qrtext/include/qrtext/core/lexer/lexer.h" line="153"/>
         <source>Unknown sequence of symbols: </source>
         <translation>Неизвестная последовательность символов: </translation>
     </message>
@@ -22,19 +22,20 @@
         <translation type="vanished">Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="24"/>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/concatenationParser.h" line="27"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="25"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/concatenationParser.h" line="28"/>
         <source>Unexpected end of input</source>
         <translation>Неожиданный конец текста</translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="30"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="31"/>
         <source>Parser can not decide which alternative to use on </source>
         <translation>Синтаксический анализатор не может решить, какую альтернативу использовать в продукции </translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="41"/>
-        <location filename="../../qrtext/include/qrtext/core/parser/operators/concatenationParser.h" line="54"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/alternativeParser.h" line="42"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/concatenationParser.h" line="55"/>
+        <location filename="../../qrtext/include/qrtext/core/parser/parser.h" line="37"/>
         <source>Unexpected token</source>
         <translation>Неожиданная лексема</translation>
     </message>
@@ -49,7 +50,7 @@
         <translation>Несоответствие типов</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="94"/>
+        <location filename="../../qrtext/src/core/semantics/semanticAnalyzer.cpp" line="109"/>
         <source>Type mismatch.</source>
         <translation>Несоответствие типов.</translation>
     </message>
@@ -95,19 +96,24 @@
         <translation>Непрямые вызовы функций не поддержаны</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="232"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="234"/>
         <source>Unknown function</source>
         <translation>Неизвестная функция</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="242"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="246"/>
         <source>Too many parameters, %1 expected</source>
         <translation>Слишком много параметров, ожидается %1</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="245"/>
+        <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="249"/>
         <source>Not enough parameters, %1 expected</source>
         <translation>Недостаточно параметров, ожидалось %1</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/core/parser/operators/expressionParser.h" line="84"/>
+        <source>Right operand required</source>
+        <translation>Правый операнд не найден</translation>
     </message>
 </context>
 </TS>

@@ -32,6 +32,7 @@ public:
 	/// Takes ownership on @arg reservedVariablesConverter.
 	QString translate(QString const &luaCode
 			, qReal::Id const &id
+			, QString const &propertyName
 			, simple::Binding::ConverterInterface const *reservedVariablesConverter);
 
 	/// Returns facade object for manipulating text language.

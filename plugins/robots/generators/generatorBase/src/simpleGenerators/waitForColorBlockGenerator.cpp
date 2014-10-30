@@ -9,7 +9,7 @@ WaitForColorBlockGenerator::WaitForColorBlockGenerator(qrRepo::RepoApi const &re
 		, Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/color.t", QList<Binding *>()
-			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->inputPortConverter())
+			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())
 			<< Binding::createConverting("@@COLOR@@", "Color", customizer.factory()->colorConverter())
 			, parent)
 {

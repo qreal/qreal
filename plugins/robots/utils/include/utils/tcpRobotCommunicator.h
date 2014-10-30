@@ -3,7 +3,7 @@
 #include <QtNetwork/QTcpSocket>
 #include "utilsDeclSpec.h"
 
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <utils/tcpConnectionHandler.h>
 
 namespace utils {

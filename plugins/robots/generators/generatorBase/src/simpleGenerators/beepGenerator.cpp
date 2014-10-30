@@ -9,7 +9,8 @@ BeepGenerator::BeepGenerator(qrRepo::RepoApi const &repo
 		, Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "beep.t"
-			, {Binding::createConverting("@@VOLUME@@", "Volume", customizer.factory()->intPropertyConverter(id))}
+			, {Binding::createConverting("@@VOLUME@@", "Volume"
+					, customizer.factory()->intPropertyConverter(id, "Volume"))}
 			, parent)
 {
 }
