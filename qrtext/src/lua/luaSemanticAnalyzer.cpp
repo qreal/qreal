@@ -164,7 +164,14 @@ void LuaSemanticAnalyzer::analyzeBinaryOperator(QSharedPointer<core::ast::Node> 
 		///       they are converted to floats, the operation is performed following the usual rules for floating-point
 		///       arithmetic (usually the IEEE 754 standard), and the result is a float."
 		///       (http://www.lua.org/work/doc/manual.html#3.4.1)
-		assign(node, mFloat);
+		///       Code below is a hack, here we need more complex constraints over type variables.
+		if (typeVariable(left)->isResolved() && typeVariable(left)->finalType() == mInteger
+				&& typeVariable(right)->isResolved() && typeVariable(right)->finalType() == mInteger)
+		{
+			assign(node, mInteger);
+		} else {
+			assign(node, mFloat);
+		}
 	} else if (node->is<ast::Division>() || node->is<ast::Exponentiation>()) {
 		constrain(node, left, {mFloat});
 		constrain(node, right, {mFloat});

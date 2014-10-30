@@ -71,6 +71,9 @@ public:
 	/// Returns a mapping of variable identifiers known to semantic analyzer to their types.
 	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const;
 
+	/// Clears the state of semantic analyzer, forgetting known identifiers and expression types.
+	virtual void clear();
+
 protected:
 	/// Assigns given type to given expression.
 	void assign(QSharedPointer<ast::Node> const &expression, QSharedPointer<types::TypeExpression> const &type);

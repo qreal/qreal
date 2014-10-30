@@ -84,6 +84,12 @@ QMap<QString, QSharedPointer<types::TypeExpression> > SemanticAnalyzer::variable
 	return result;
 }
 
+void SemanticAnalyzer::clear()
+{
+	mTypes.clear();
+	mIdentifierDeclarations.clear();
+}
+
 void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
 		, QSharedPointer<types::TypeExpression> const &type)
 {
