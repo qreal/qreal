@@ -2,10 +2,12 @@
 
 #include <generatorBase/masterGeneratorBase.h>
 
+#include "trikGeneratorBase/trikGeneratorBaseDeclSpec.h"
+
 namespace trik {
 
 /// Master generator base implementation for every generator from TRIK kit
-class TrikMasterGeneratorBase : public generatorBase::MasterGeneratorBase
+class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikMasterGeneratorBase : public generatorBase::MasterGeneratorBase
 {
 public:
 	TrikMasterGeneratorBase(qrRepo::RepoApi const &repo

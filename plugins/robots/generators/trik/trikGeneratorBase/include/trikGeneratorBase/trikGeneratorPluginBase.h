@@ -2,10 +2,12 @@
 
 #include <generatorBase/robotsGeneratorPluginBase.h>
 
+#include "trikGeneratorBase/trikGeneratorBaseDeclSpec.h"
+
 namespace trik {
 
 /// A base class for every generator from the TRIK kit.
-class TrikGeneratorPluginBase : public generatorBase::RobotsGeneratorPluginBase
+class ROBOTS_TRIK_GENERATOR_BASE_EXPORT TrikGeneratorPluginBase : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
 

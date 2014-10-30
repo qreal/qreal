@@ -4,8 +4,10 @@
 #include <QtCore/QMap>
 #include <QtGui/QImage>
 
-#include "generatorBase/robotsGeneratorDeclSpec.h"
-#include "generatorBase/templateParametrizedEntity.h"
+#include <generatorBase/robotsGeneratorDeclSpec.h>
+#include <generatorBase/templateParametrizedEntity.h>
+
+#include "nxtGeneratorBase/nxtGeneratorBaseDeclSpec.h"
 
 namespace nxt {
 namespace parts {
@@ -13,7 +15,7 @@ namespace parts {
 // TODO: rewrite it with generating code that generates buffer
 
 /// Class responsible for everything with images generation
-class ROBOTS_GENERATOR_EXPORT Images : public generatorBase::TemplateParametrizedEntity
+class ROBOTS_NXT_GENERATOR_BASE_EXPORT Images : public generatorBase::TemplateParametrizedEntity
 {
 public:
 	explicit Images(QString const &pathToTemplates);

@@ -2,10 +2,12 @@
 
 #include <generatorBase/robotsGeneratorPluginBase.h>
 
+#include "nxtGeneratorBase/nxtGeneratorBaseDeclSpec.h"
+
 namespace nxt {
 
 /// A base class for every generator from the NXT kit.
-class NxtGeneratorPluginBase : public generatorBase::RobotsGeneratorPluginBase
+class ROBOTS_NXT_GENERATOR_BASE_EXPORT NxtGeneratorPluginBase : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
 
