@@ -5,6 +5,7 @@
 #include <QtCore/QPair>
 #include <QtGui/QPainterPath>
 #include <QtGui/QPolygon>
+#include <QtWidgets/QGraphicsLineItem>
 #include <QtXml/QDomDocument>
 
 class QGraphicsItem;
@@ -51,6 +52,11 @@ public:
 
 	void clear();
 
+	/// Appends one more segment of the given to the robot`s trace.
+	void appendRobotTrace(QPen const &pen, QPointF const &begin, QPointF const &end);
+	/// Removes all the segments from the current robot`s trace.
+	void clearRobotTrace();
+
 	/// Saves world to XML.
 	QDomElement serialize(QDomDocument &document, QPointF const &topLeftPicture) const;
 	void deserialize(QDomElement const &element);
@@ -61,6 +67,9 @@ signals:
 
 	/// Emitted each time when model is appended with some new color field item.
 	void colorItemAdded(items::ColorFieldItem *item);
+
+	/// Emitted each time when model is appended with some new item.
+	void otherItemAdded(QGraphicsItem *item);
 
 	/// Emitted each time when some item was removed from the 2D model world.
 	void itemRemoved(QGraphicsItem *item);
@@ -73,6 +82,7 @@ private:
 
 	QList<items::WallItem *> mWalls;
 	QList<items::ColorFieldItem *> mColorFields;
+	QList<QGraphicsLineItem *> mRobotTrace;
 };
 
 }

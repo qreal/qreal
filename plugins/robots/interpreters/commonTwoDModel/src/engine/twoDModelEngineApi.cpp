@@ -248,6 +248,16 @@ void TwoDModelEngineApi::playSound(int timeInMs)
 	mModel.robotModel().playSound(timeInMs);
 }
 
+void TwoDModelEngineApi::prepareMarker(QColor const &color)
+{
+	mModel.robotModel().prepareMarker(color);
+}
+
+void TwoDModelEngineApi::removeMarker()
+{
+	mModel.robotModel().removeMarker();
+}
+
 utils::TimelineInterface &TwoDModelEngineApi::modelTimeline()
 {
 	return mModel.timeline();

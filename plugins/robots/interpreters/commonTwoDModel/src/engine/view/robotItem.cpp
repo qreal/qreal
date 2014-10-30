@@ -17,6 +17,7 @@ RobotItem::RobotItem(model::RobotModel &robotModel)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 
+	connect(&mRobotModel, &model::RobotModel::robotRided, this, &RobotItem::ride);
 	connect(&mRobotModel, &model::RobotModel::positionChanged, this, &RobotItem::setPos);
 	connect(&mRobotModel, &model::RobotModel::rotationChanged, this, &RobotItem::setRotation);
 	connect(&mRobotModel, &model::RobotModel::playingSoundChanged, this, &RobotItem::setNeededBeep);
@@ -33,6 +34,7 @@ RobotItem::RobotItem(model::RobotModel &robotModel)
 	setZValue(1);
 	mX2 = mX1 + robotWidth;
 	mY2 = mY1 + robotHeight;
+	mMarkerPoint = QPointF(0, mY2 / 2);  // Marker is situated behind the robot
 
 	setTransformOriginPoint(rotatePoint);
 	mBeepItem->setParentItem(this);
@@ -106,6 +108,15 @@ void RobotItem::setPos(QPointF const &newPos)
 void RobotItem::setRotation(qreal rotation)
 {
 	QGraphicsItem::setRotation(rotation);
+}
+
+void RobotItem::ride(QPointF const &newPos, qreal rotation)
+{
+	QPointF const oldMarker = mapToScene(mMarkerPoint);
+	setPos(newPos);
+	setRotation(rotation);
+	QPointF const newMarker = mapToScene(mMarkerPoint);
+	emit drawTrace(mRobotModel.markerColor(), oldMarker, newMarker);
 }
 
 void RobotItem::addSensor(interpreterBase::robotModel::PortInfo const &port, SensorItem *sensor)

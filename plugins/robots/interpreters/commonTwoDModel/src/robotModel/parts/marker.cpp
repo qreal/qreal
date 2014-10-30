@@ -1,5 +1,7 @@
 #include "commonTwoDModel/robotModel/parts/marker.h"
 
+#include "commonTwoDModel/engine/twoDModelEngineInterface.h"
+
 using namespace twoDModel::robotModel::parts;
 
 Marker::Marker(interpreterBase::robotModel::DeviceInfo const &info
@@ -10,16 +12,12 @@ Marker::Marker(interpreterBase::robotModel::DeviceInfo const &info
 {
 }
 
-#include <QDebug>
-#include <QColor>
 void Marker::prepare(QColor const &color)
 {
-	qDebug() << "prepared" << color;
+	mEngine.prepareMarker(color);
 }
 
-/// Lifts the marker of the 2D model robot up.
-/// The robot stops drawing its trace on the floor after that.
 void Marker::remove()
 {
-	qDebug() << "lifted";
+	mEngine.removeMarker();
 }
