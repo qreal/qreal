@@ -69,5 +69,21 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("VariableInit")
 		, id("ClearScreen")
 		, id("PrintText")
+		, id("PrepareMarker")
+		, id("RemoveMarker")
 	};
+}
+
+qReal::IdList CoreBlocksFactory::blocksToDisable() const
+{
+	qReal::IdList result;
+
+	if (!mRobotModelManager->model().name().contains("TwoD")) {
+		result
+				<< id("PrepareMarker")
+				<< id("RemoveMarker")
+				;
+	}
+
+	return result;
 }
