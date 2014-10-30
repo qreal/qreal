@@ -72,6 +72,8 @@ protected:
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo
 			) override;
 
+	virtual interpreterBase::robotModel::DeviceInfo markerInfo() const;
+
 private:
 	interpreterBase::robotModel::RobotModelInterface const &mRealModel;
 	engine::TwoDModelEngineInterface *mEngine = nullptr;  // Does not have ownership.

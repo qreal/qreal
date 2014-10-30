@@ -17,6 +17,9 @@
 #include "details/printTextBlock.h"
 #include "details/clearScreenBlock.h"
 
+#include <commonTwoDModel/blocks/prepareMarkerBlock.h>
+#include <commonTwoDModel/blocks/removeMarkerBlock.h>
+
 using namespace interpreterCore::coreBlocks;
 
 interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id const &element)
@@ -47,6 +50,10 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::PrintTextBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "ClearScreen")) {
 		return new details::ClearScreenBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "PrepareMarker")) {
+		return new twoDModel::blocks::PrepareMarkerBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "RemoveMarker")) {
+		return new twoDModel::blocks::RemoveMarkerBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;

@@ -35,6 +35,9 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/parts/touchSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/gyroscope.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/accelerometer.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/marker.h \
+	$$PWD/include/commonTwoDModel/blocks/prepareMarkerBlock.h \
+	$$PWD/include/commonTwoDModel/blocks/removeMarkerBlock.h \
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -103,6 +106,9 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/touchSensor.cpp \
 	$$PWD/src/robotModel/parts/gyroscope.cpp \
 	$$PWD/src/robotModel/parts/accelerometer.cpp \
+	$$PWD/src/robotModel/parts/marker.cpp \
+	$$PWD/src/blocks/prepareMarkerBlock.cpp \
+	$$PWD/src/blocks/removeMarkerBlock.cpp \
 
 FORMS += \
 	$$PWD/src/engine/view/d2Form.ui \
