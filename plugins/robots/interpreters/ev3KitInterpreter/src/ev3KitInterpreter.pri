@@ -33,6 +33,7 @@ HEADERS += \
 	$$PWD/blocks/details/drawRectBlock.h \
 	$$PWD/blocks/details/ev3EnginesBackwardBlock.h \
 	$$PWD/blocks/details/ev3EnginesForwardBlock.h \
+	$$PWD/robotModel/real/parts/button.h \
 
 
 SOURCES += \
@@ -56,6 +57,7 @@ SOURCES += \
 	$$PWD/blocks/details/drawRectBlock.cpp \
 	$$PWD/blocks/details/ev3EnginesBackwardBlock.cpp \
 	$$PWD/blocks/details/ev3EnginesForwardBlock.cpp \
+	$$PWD/robotModel/real/parts/button.cpp \
 
 
 FORMS += \

@@ -61,14 +61,18 @@ interpreterBase::blocksBase::Block *Ev3BlocksFactory::produceBlock(qReal::Id con
 	} else if (elementMetatypeIs(element, "Ev3WaitForSound")) {
 		return new WaitForSoundSensorBlock(mRobotModelManager->model());
 
+	} else if (elementMetatypeIs(element, "Ev3WaitForUp")) {
+		return new WaitForButtonBlock(mRobotModelManager->model(), "UpButtonPort");
 	} else if (elementMetatypeIs(element, "Ev3WaitForEnter")) {
 		return new WaitForButtonBlock(mRobotModelManager->model(), "EnterButtonPort");
-	} else if (elementMetatypeIs(element, "Ev3WaitForEscape")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "EscapeButtonPort");
-	} else if (elementMetatypeIs(element, "Ev3WaitForLeft")) {
-		return new WaitForButtonBlock(mRobotModelManager->model(), "LeftButtonPort");
+	} else if (elementMetatypeIs(element, "Ev3WaitForDown")) {
+		return new WaitForButtonBlock(mRobotModelManager->model(), "DownButtonPort");
 	} else if (elementMetatypeIs(element, "Ev3WaitForRight")) {
 		return new WaitForButtonBlock(mRobotModelManager->model(), "RightButtonPort");
+	} else if (elementMetatypeIs(element, "Ev3WaitForLeft")) {
+		return new WaitForButtonBlock(mRobotModelManager->model(), "LeftButtonPort");
+	} else if (elementMetatypeIs(element, "Ev3WaitForBack")) {
+		return new WaitForButtonBlock(mRobotModelManager->model(), "BackButtonPort");
 	} else if (elementMetatypeIs(element, "Ev3DrawPixel")) {
 		return new DrawPixelBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "Ev3DrawLine")) {
@@ -97,12 +101,13 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3WaitForColor")
 		, id("Ev3WaitForColorIntensity")
 		, id("Ev3WaitForEncoder")
-		, id("Ev3WaitForLight")
-		, id("Ev3WaitForSound")
+		, id("Ev3WaitForUp")
 		, id("Ev3WaitForEnter")
-		, id("Ev3WaitForEscape")
-		, id("Ev3WaitForLeft")
+		, id("Ev3WaitForDown")
 		, id("Ev3WaitForRight")
+		, id("Ev3WaitForLeft")
+		, id("Ev3WaitForBack")
+		, id("Ev3WaitForSound")
 
 		, id("Ev3DrawPixel")
 		, id("Ev3DrawLine")
