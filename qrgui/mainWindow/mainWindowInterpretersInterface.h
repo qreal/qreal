@@ -23,7 +23,7 @@ public:
 	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red) = 0;
 	virtual void dehighlight(Id const &graphicalId) = 0;
 	virtual void dehighlight() = 0;
-	virtual ErrorReporterInterface *errorReporter() const = 0;
+	virtual ErrorReporterInterface *errorReporter() = 0;
 
 	/// Gets graphical Id of diagram currently opened in editor.
 	/// @returns Id of opened diagram, empty Id if there is none.

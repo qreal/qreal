@@ -1505,7 +1505,7 @@ void MainWindow::dehighlight()
 	dehighlight(Id());
 }
 
-ErrorReporterInterface *MainWindow::errorReporter() const
+ErrorReporterInterface *MainWindow::errorReporter()
 {
 	return mErrorReporter;
 }
