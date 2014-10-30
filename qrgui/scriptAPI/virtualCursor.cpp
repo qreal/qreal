@@ -34,18 +34,20 @@ void VirtualCursor::paintEvent(QPaintEvent *event)
 
 void VirtualCursor::moveTo(QWidget const *target, int duration)
 {
-	int const xcoord = target->mapTo(parentWidget(), QPoint(target->width()/2,0)).x();
-	int const ycoord = target->mapTo(parentWidget(), QPoint(0, target->height()/2)	).y();
+	if (target) {
+		int const xcoord = target->mapTo(parentWidget(), QPoint(target->width()/2,0)).x();
+		int const ycoord = target->mapTo(parentWidget(), QPoint(0, target->height()/2)	).y();
 
-	mCursorMoveAnimation->setDuration(duration);
-	mCursorMoveAnimation->setStartValue(QRect(mapToParent(QPoint()).x(), mapToParent(QPoint()).y(), 0, 0));
-	mCursorMoveAnimation->setEndValue(QRect(xcoord, ycoord, 0, 0));
+		mCursorMoveAnimation->setDuration(duration);
+		mCursorMoveAnimation->setStartValue(QRect(mapToParent(QPoint()).x(), mapToParent(QPoint()).y(), 0, 0));
+		mCursorMoveAnimation->setEndValue(QRect(xcoord, ycoord, 0, 0));
 
-	connect (mCursorMoveAnimation, &QPropertyAnimation::finished, mScriptAPI, &ScriptAPI::breakWaiting);
+		connect (mCursorMoveAnimation, &QPropertyAnimation::finished, mScriptAPI, &ScriptAPI::breakWaiting);
 
-	mCursorMoveAnimation->start();
+		mCursorMoveAnimation->start();
 
-	mScriptAPI->wait(-1);
+		mScriptAPI->wait(-1);
+	}
 }
 
 void VirtualCursor::moveToRect(QRect const &target, int duration)
@@ -66,31 +68,34 @@ void VirtualCursor::moveToRect(QRect const &target, int duration)
 
 void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, int ySceneCoord)
 {
-	int const xcoord = target->mapTo(parentWidget(), QPoint(0, 0)).x() + xSceneCoord;
-	int const ycoord = target->mapTo(parentWidget(), QPoint(0, 0)).y() + ySceneCoord;
+	if (target) {
+		/// Adding 20 to coords needed to navigate in center of targeted item because it haven't size.
+		int const xcoord = target->mapTo(parentWidget(), QPoint(0, 0)).x() + xSceneCoord + 20;
+		int const ycoord = target->mapTo(parentWidget(), QPoint(0, 0)).y() + ySceneCoord + 20;
 
-	mCursorMoveAnimation->setDuration(duration);
-	mCursorMoveAnimation->setStartValue(QRect(pos().x(), pos().y(), 0, 0));
-	mCursorMoveAnimation->setEndValue(QRect(xcoord, ycoord, 0, 0));
+		mCursorMoveAnimation->setDuration(duration);
+		mCursorMoveAnimation->setStartValue(QRect(pos().x(), pos().y(), 0, 0));
+		mCursorMoveAnimation->setEndValue(QRect(xcoord, ycoord, 0, 0));
 
-	connect (mCursorMoveAnimation, &QPropertyAnimation::finished, mScriptAPI, &ScriptAPI::breakWaiting);
+		connect (mCursorMoveAnimation, &QPropertyAnimation::finished, mScriptAPI, &ScriptAPI::breakWaiting);
 
-	QTimer *timer = new QTimer(this);
-	if (mRightButtonPressed) {
-		timer->setInterval(100);
+		QTimer *timer = new QTimer(this);
+		if (mRightButtonPressed) {
+			timer->setInterval(100);
 
-		connect(timer, &QTimer::timeout,
-				[this, target]() {
-					QPoint cursorPos = target->mapFrom(parentWidget(), pos());
-					simulateMouse(target, QEvent::MouseMove, cursorPos, Qt::NoButton);
-				});
-		timer->start();
+			connect(timer, &QTimer::timeout,
+					[this, target]() {
+						QPoint cursorPos = target->mapFrom(parentWidget(), pos());
+						simulateMouse(target, QEvent::MouseMove, cursorPos, Qt::NoButton);
+					});
+			timer->start();
+		}
+
+		mCursorMoveAnimation->start();
+
+		mScriptAPI->wait(-1);
+		timer->stop();
 	}
-
-	mCursorMoveAnimation->start();
-
-	mScriptAPI->wait(-1);
-	timer->stop();
 }
 
 void VirtualCursor::leftButtonPress(QWidget *target, int delay)

@@ -41,21 +41,24 @@ void SceneAPI::drawLink(QString const &fromElementId, QString const &toElementId
 
 QString SceneAPI::createBlockOnScene(DraggableElement const *paletteElement, int const xSceneCoord, int const ySceneCoord)
 {
-	Id elementId(paletteElement->id(), QUuid::createUuid().toString());
-	QMimeData *mimeData = paletteElement->mimeData(elementId);
-	mMainWindow->getCurrentTab()->editorViewScene()->createElement(
-			paletteElement->mimeData(elementId)
-			, mMainWindow->getCurrentTab()->mapToScene(QPoint(xSceneCoord, ySceneCoord))
-			, false
-			, nullptr
-			, true);
+	if (mMainWindow->getCurrentTab()) {
+		Id elementId(paletteElement->id(), QUuid::createUuid().toString());
+		QMimeData *mimeData = paletteElement->mimeData(elementId);
+		mMainWindow->getCurrentTab()->editorViewScene()->createElement(
+				paletteElement->mimeData(elementId)
+				, mMainWindow->getCurrentTab()->mapToScene(QPoint(xSceneCoord, ySceneCoord))
+				, false
+				, nullptr
+				, true);
 
-	QByteArray itemData = mimeData->data("application/x-real-uml-data");
-	QDataStream inStream(&itemData, QIODevice::ReadOnly);
-	QString uuid;
-	inStream >> uuid;
-	Id const sceneId = Id::loadFromString(uuid);
-	return sceneId.toString();
+		QByteArray itemData = mimeData->data("application/x-real-uml-data");
+		QDataStream inStream(&itemData, QIODevice::ReadOnly);
+		QString uuid;
+		inStream >> uuid;
+		Id const sceneId = Id::loadFromString(uuid);
+		return sceneId.toString();
+	}
+	return "";
 }
 
 QStringList SceneAPI::nodeList(QString const &diagram, QString const &element)
