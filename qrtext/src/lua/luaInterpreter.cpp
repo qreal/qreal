@@ -196,6 +196,11 @@ void LuaInterpreter::setVariableValue(QString const &name, QVariant const &value
 	}
 }
 
+void LuaInterpreter::clear()
+{
+	mIdentifierValues.clear();
+}
+
 QVariant LuaInterpreter::interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root
 		, core::SemanticAnalyzer const &semanticAnalyzer)
 {

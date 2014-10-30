@@ -4,6 +4,8 @@
 #include <QtWidgets/QAction>
 #include <QtCore/QDebug>
 
+#include <qrtext/languageToolboxInterface.h>
+
 #include <utils/timelineInterface.h>
 #include <utils/tracer.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
@@ -20,7 +22,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::ProjectManagementInterface const &projectManager
 		, BlocksFactoryManagerInterface &blocksFactoryManager
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, qrtext::LanguageToolboxInterface &parser
+		, qrtext::LanguageToolboxInterface &languageToolbox
 		, QAction &connectToRobotAction
 		)
 	: mGraphicalModelApi(graphicalModelApi)
@@ -30,8 +32,9 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	, mRobotModelManager(robotModelManager)
 	, mBlocksTable(new details::BlocksTable(blocksFactoryManager, robotModelManager))
 	, mActionConnectToRobot(connectToRobotAction)
-	, mSensorVariablesUpdater(robotModelManager, parser)
+	, mSensorVariablesUpdater(robotModelManager, languageToolbox)
 	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
+	, mLanguageToolbox(languageToolbox)
 {
 	connect(
 			&mRobotModelManager
@@ -61,6 +64,7 @@ Interpreter::~Interpreter()
 void Interpreter::interpret()
 {
 	mInterpretersInterface.errorReporter()->clear();
+	mLanguageToolbox.clear();
 
 	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
 		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));

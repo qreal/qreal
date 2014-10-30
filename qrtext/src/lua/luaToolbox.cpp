@@ -153,6 +153,12 @@ void LuaToolbox::setVariableValue(QString const &name, QString const &initCode, 
 	mInterpreter->setVariableValue(name, value);
 }
 
+void LuaToolbox::clear()
+{
+	mAnalyzer->clear();
+	mInterpreter->clear();
+}
+
 void LuaToolbox::reportErrors()
 {
 	for (qrtext::core::Error const &error : mErrors) {
