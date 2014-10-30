@@ -12,7 +12,8 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lrobots-trik-generator-base
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
+		-lrobots-generator-base -lrobots-trik-generator-base \
 
 INCLUDEPATH += \
 	$$PWD/../trikGeneratorBase/include/ \

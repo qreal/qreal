@@ -15,6 +15,8 @@ OBJECTS_DIR = .obj
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
 		-lrobots-generator-base -lrobots-interpreter-base \
 
+DEFINES += ROBOTS_TRIK_GENERATOR_BASE_LIBRARY
+
 INCLUDEPATH += \
 	$$PWD/include \
 	$$PWD/../../generatorBase/include/ \
@@ -33,12 +35,12 @@ INCLUDEPATH += \
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikGeneratorBase_ru.ts
 
 HEADERS += \
+	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
 	$$PWD/src/trikGeneratorCustomizer.h \
 	$$PWD/src/trikGeneratorFactory.h \
 	$$PWD/src/parts/trikDeviceVariables.h \
-	$$PWD/src/parts/trikVariables.h \
 	$$PWD/src/converters/backgroundColorConverter.h \
 	$$PWD/src/converters/ledColorConverter.h \
 	$$PWD/src/converters/trikStringPropertyConverter.h \
@@ -71,7 +73,6 @@ SOURCES += \
 	$$PWD/src/trikGeneratorCustomizer.cpp \
 	$$PWD/src/trikGeneratorFactory.cpp \
 	$$PWD/src/parts/trikDeviceVariables.cpp \
-	$$PWD/src/parts/trikVariables.cpp \
 	$$PWD/src/converters/backgroundColorConverter.cpp \
 	$$PWD/src/converters/ledColorConverter.cpp \
 	$$PWD/src/converters/trikStringPropertyConverter.cpp \

@@ -21,26 +21,6 @@ Variables::Variables(QString const &pathToTemplates
 {
 }
 
-QStringList Variables::expressions(qrRepo::RepoApi const &api) const
-{
-	QStringList result;
-	IdList const funtionBlocks = api.elementsByType("Function");
-	for (Id const &block : funtionBlocks) {
-		if (api.hasProperty(block, "Body")) {
-			result << api.stringProperty(block, "Body");
-		}
-	}
-
-	IdList const initializationBlocks = api.elementsByType("VariableInit");
-	for (Id const &block : initializationBlocks) {
-		if (api.hasProperty(block, "variable") && api.hasProperty(block, "value")) {
-			result << api.stringProperty(block, "variable") + " = " + api.stringProperty(block, "value");
-		}
-	}
-
-	return result;
-}
-
 QString Variables::generateVariableString() const
 {
 	QString result;
@@ -80,7 +60,8 @@ QString Variables::typeExpression(QSharedPointer<qrtext::core::types::TypeExpres
 		return readTemplate("types/array.t").replace("@@ELEMENT_TYPE@@", typeExpression(elementType));
 	}
 
-	return readTemplate("<unknown_type!>");
+	/// @todo: Add error reporting?
+	return readTemplate("types/int.t");
 }
 
 QString Variables::constantDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const

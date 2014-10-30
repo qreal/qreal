@@ -725,6 +725,16 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 	}
 }
 
+void EditorViewScene::keyReleaseEvent(QKeyEvent *event)
+{
+	if (isArrow(event->key()) && !selectedItems().isEmpty()) {
+		event->accept();
+		return;
+	}
+
+	QGraphicsScene::keyReleaseEvent(event);
+}
+
 inline bool EditorViewScene::isArrow(int key)
 {
 	return key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Down || key == Qt::Key_Up;

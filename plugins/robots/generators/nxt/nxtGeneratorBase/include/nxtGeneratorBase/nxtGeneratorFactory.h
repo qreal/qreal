@@ -2,11 +2,12 @@
 
 #include <generatorBase/generatorFactoryBase.h>
 
+#include "nxtGeneratorBase/nxtGeneratorBaseDeclSpec.h"
 #include "parts/images.h"
 
 namespace nxt {
 
-class NxtGeneratorFactory : public generatorBase::GeneratorFactoryBase
+class ROBOTS_NXT_GENERATOR_BASE_EXPORT NxtGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
 	NxtGeneratorFactory(qrRepo::RepoApi const &repo

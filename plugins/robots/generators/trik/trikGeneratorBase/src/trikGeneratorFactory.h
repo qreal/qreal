@@ -25,9 +25,6 @@ public:
 
 	generatorBase::parts::DeviceVariables *deviceVariables() const override;
 
-protected:
-	void initVariables() override;
-
 private:
 	QString const mGeneratorName;
 };

@@ -38,12 +38,9 @@ public:
 	void appendManualDeclaration(QString const &variables);
 
 protected:
-	virtual QString typeExpression(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-	virtual QString constantDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-	virtual QString variableDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
-
-	/// Returns a list of variable initialization expressions in the model.
-	virtual QStringList expressions(qrRepo::RepoApi const &api) const;
+	QString typeExpression(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
+	QString constantDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
+	QString variableDeclaration(QSharedPointer<qrtext::core::types::TypeExpression> const &type) const;
 
 private:
 	interpreterBase::robotModel::RobotModelInterface const &mRobotModel;

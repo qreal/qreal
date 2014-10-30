@@ -394,8 +394,12 @@
     </message>
     <message>
         <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="66"/>
-        <source>You should restart the system to apply changes</source>
+        <source>You should restart the program to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
+    </message>
+    <message>
+        <source>You should restart the system to apply changes</source>
+        <translation type="vanished">Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
         <location filename="../../qrgui/preferencesDialog/preferencesDialog.cpp" line="143"/>

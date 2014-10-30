@@ -14,6 +14,8 @@ OBJECTS_DIR = .obj
 
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lrobots-generator-base
 
+DEFINES += ROBOTS_NXT_GENERATOR_BASE_LIBRARY
+
 INCLUDEPATH += \
 	$$PWD/include \
 	$$PWD/../../generatorBase/include/ \
@@ -32,6 +34,7 @@ INCLUDEPATH += \
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtGeneratorBase_ru.ts
 
 HEADERS += \
+	$$PWD/include/nxtGeneratorBase/nxtGeneratorBaseDeclSpec.h \
 	$$PWD/include/nxtGeneratorBase/nxtGeneratorPluginBase.h \
 	$$PWD/include/nxtGeneratorBase/nxtMasterGeneratorBase.h \
 	$$PWD/include/nxtGeneratorBase/nxtGeneratorFactory.h \

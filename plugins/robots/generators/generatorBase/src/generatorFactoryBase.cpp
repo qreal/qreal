@@ -312,21 +312,22 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id cons
 
 // Converters can be instantiated without taking ownership because binders do this
 
-Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter(Id const &block) const
+Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter(Id const &id, QString const &property) const
 {
-	return new converters::IntPropertyConverter(pathToTemplates(), mLuaTranslator, block
-			, reservedVariableNameConverter(), typeConverter());
+	return new converters::IntPropertyConverter(pathToTemplates(), mLuaTranslator, id
+			, property, reservedVariableNameConverter(), typeConverter());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter(Id const &block) const
+Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter(Id const &id, QString const &property) const
 {
-	return new converters::FloatPropertyConverter(mLuaTranslator, block, reservedVariableNameConverter());
+	return new converters::FloatPropertyConverter(mLuaTranslator, id, property, reservedVariableNameConverter());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(Id const &block, bool needInverting) const
+Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(Id const &id
+		, QString const &property, bool needInverting) const
 {
 	return new converters::BoolPropertyConverter(pathToTemplates(), mLuaTranslator
-			, block, reservedVariableNameConverter(), needInverting);
+			, id, property, reservedVariableNameConverter(), needInverting);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
@@ -349,9 +350,10 @@ Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() con
 	return new converters::NameNormalizerConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter(qReal::Id const &block) const
+Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter(qReal::Id const &block
+		, QString const &property) const
 {
-	return new converters::FunctionBlockConverter(mLuaTranslator, block, reservedVariableNameConverter());
+	return new converters::FunctionBlockConverter(mLuaTranslator, block, property, reservedVariableNameConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() const

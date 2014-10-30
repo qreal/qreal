@@ -43,7 +43,8 @@ void setDefaultLocale(bool localizationDisabled)
 		return;
 	}
 
-	QString const locale = SettingsManager::value("systemLocale").toString();
+	QString const localeInSettings = SettingsManager::value("systemLocale").toString();
+	QString const locale = localeInSettings.isEmpty() ? QLocale().name().left(2) : localeInSettings;
 	if (!locale.isEmpty()) {
 		QLocale::setDefault(QLocale(locale));
 		loadTranslators(locale);

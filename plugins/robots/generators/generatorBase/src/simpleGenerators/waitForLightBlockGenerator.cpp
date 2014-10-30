@@ -10,7 +10,8 @@ WaitForLightBlockGenerator::WaitForLightBlockGenerator(qrRepo::RepoApi const &re
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/light.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())
-			<< Binding::createConverting("@@PERCENTS@@", "Percents", customizer.factory()->intPropertyConverter(id))
+			<< Binding::createConverting("@@PERCENTS@@", "Percents"
+					, customizer.factory()->intPropertyConverter(id, "Percents"))
 			<< Binding::createConverting("@@SIGN@@", "Sign", customizer.factory()->inequalitySignConverter())
 			, parent)
 {

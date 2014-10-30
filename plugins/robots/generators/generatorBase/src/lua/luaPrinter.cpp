@@ -356,9 +356,8 @@ void LuaPrinter::visit(qrtext::lua::ast::Assignment const &node)
 
 void LuaPrinter::visit(qrtext::lua::ast::Block const &node)
 {
-	QString const separator = readTemplate("statementsSeparator.t");
 	QStringList const expressions = popResults(node.children());
-	pushResult(node, expressions.join(separator) + separator);
+	pushResult(node, expressions.join(readTemplate("statementsSeparator.t")));
 }
 
 void LuaPrinter::visit(qrtext::lua::ast::IndexingExpression const &node)
