@@ -9,6 +9,11 @@ namespace ast {
 /// Represents floating point division operator (/).
 class QRTEXT_EXPORT Division : public BinaryOperator
 {
+private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
 };
 
 }

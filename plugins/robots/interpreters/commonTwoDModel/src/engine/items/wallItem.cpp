@@ -82,7 +82,8 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		return;
 	}
 
-	QPointF const oldPos = pos();
+	QRectF const oldPos =  QRectF(QPointF(mX1, mY1), QPointF(mX2, mY2));
+
 	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		QPointF const pos = event->scenePos();
 		qreal const deltaX = (mX1 - mX2);
@@ -100,9 +101,7 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		}
 
 		setDraggedEnd(deltaX, deltaY);
-	}
-
-	 else if (mDragged) {
+	}  else if (mDragged) {
 		QGraphicsItem::mouseMoveEvent(event);
 	}
 

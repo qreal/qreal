@@ -45,6 +45,11 @@ public:
 	}
 
 private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
+
 	QSharedPointer<Expression> mKey;
 	QSharedPointer<Expression> mValue;
 	bool mImplicitKey;

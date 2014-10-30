@@ -11,8 +11,9 @@ WaitForInfraredSensorGenerator::WaitForInfraredSensorGenerator(qrRepo::RepoApi c
 		, Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/infrared.t", QList<Binding *>()
-			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->inputPortConverter())
-			<< Binding::createConverting("@@DISTANCE@@", "Distance", customizer.factory()->intPropertyConverter())
+			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())
+			<< Binding::createConverting("@@DISTANCE@@", "Distance"
+					, customizer.factory()->intPropertyConverter(id, "Distance"))
 			<< Binding::createConverting("@@SIGN@@", "Sign", customizer.factory()->inequalitySignConverter())
 			, parent)
 {

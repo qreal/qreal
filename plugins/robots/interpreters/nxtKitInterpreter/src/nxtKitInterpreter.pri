@@ -9,9 +9,9 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
-	-lqrtext
-
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext\
+		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
+		-lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
 
 HEADERS += \
 	$$PWD/commandConstants.h \
@@ -100,7 +100,6 @@ FORMS += \
 	$$PWD/nxtAdditionalPreferences.ui \
 	$$PWD/nxtDisplayWidget.ui \
 
-include($$PWD/../qrguiIncludes.pri)
 include($$PWD/communication/communication.pri)
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtKitInterpreter_ru.ts

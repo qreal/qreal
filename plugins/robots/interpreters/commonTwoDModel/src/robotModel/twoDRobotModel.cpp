@@ -133,15 +133,14 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::ColorSensorBlue(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<robotModel::parts::Gyroscope>()) {
+	if (deviceInfo.isA<interpreterBase::robotModel::robotParts::GyroscopeSensor>()) {
 		return new parts::Gyroscope(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<robotModel::parts::Accelerometer>()) {
+	if (deviceInfo.isA<interpreterBase::robotModel::robotParts::AccelerometerSensor>()) {
 		return new parts::Accelerometer(deviceInfo, port, *mEngine);
 	}
 
 	qDebug() << "Unknown device " + deviceInfo.toString() + " requested on port " + port.name();
-	//	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 	return nullptr;
 }

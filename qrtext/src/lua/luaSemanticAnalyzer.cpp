@@ -164,7 +164,14 @@ void LuaSemanticAnalyzer::analyzeBinaryOperator(QSharedPointer<core::ast::Node> 
 		///       they are converted to floats, the operation is performed following the usual rules for floating-point
 		///       arithmetic (usually the IEEE 754 standard), and the result is a float."
 		///       (http://www.lua.org/work/doc/manual.html#3.4.1)
-		assign(node, mFloat);
+		///       Code below is a hack, here we need more complex constraints over type variables.
+		if (typeVariable(left)->isResolved() && typeVariable(left)->finalType() == mInteger
+				&& typeVariable(right)->isResolved() && typeVariable(right)->finalType() == mInteger)
+		{
+			assign(node, mInteger);
+		} else {
+			assign(node, mFloat);
+		}
 	} else if (node->is<ast::Division>() || node->is<ast::Exponentiation>()) {
 		constrain(node, left, {mFloat});
 		constrain(node, right, {mFloat});
@@ -224,12 +231,16 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(QSharedPointer<core::ast::Node> co
 	auto function = functionCall->function();
 	if (!function->is<ast::Identifier>()) {
 		reportError(node, QObject::tr("Indirect function calls are not supported"));
+		assign(function, any());
+		assign(node, any());
 		return;
 	}
 
 	auto name = as<ast::Identifier>(function)->name();
 	if (!mIntrinsicFunctions.contains(name)) {
 		reportError(node, QObject::tr("Unknown function"));
+		assign(function, any());
+		assign(node, any());
 		return;
 	}
 
@@ -249,4 +260,14 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(QSharedPointer<core::ast::Node> co
 			constrain(actualParameters[i], actualParameters[i], {formalParameters[i]});
 		}
 	}
+}
+
+QMap<QString, QSharedPointer<types::TypeExpression>> LuaSemanticAnalyzer::variableTypes() const
+{
+	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> result = SemanticAnalyzer::variableTypes();
+	for (QString const &identifier : mIntrinsicFunctions.keys()) {
+		result.remove(identifier);
+	}
+
+	return result;
 }

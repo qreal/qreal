@@ -484,19 +484,19 @@ p, li { white-space: pre-wrap; }
         <translation>Конфигурация сенсоров противоречива. Проверьте, что в указанные в программе используются два разных сенсора на одном порту</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="7"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="10"/>
         <source>sensor</source>
         <oldsource>Sensor</oldsource>
         <translation>sensor</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="8"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="11"/>
         <source>encoder</source>
         <oldsource>Encoder</oldsource>
         <translation>encoder</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="9"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="12"/>
         <source>time</source>
         <translation>time</translation>
     </message>
@@ -581,7 +581,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPlugin.cpp" line="44"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPlugin.cpp" line="34"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -715,7 +715,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="106"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="103"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -749,27 +749,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::coreBlocks::details::IfBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="21"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="23"/>
         <source>There must be exactly TWO links outgoing from if block</source>
         <translation>От условного блока должно отходить ровно ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="28"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="30"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="37"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="39"/>
         <source>Two links marked with &apos;true&apos; found</source>
         <translation>Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="44"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="46"/>
         <source>Two links marked with &apos;false&apos; found</source>
         <translation>Обе связи помечены условием &apos;Ложь&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="51"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="53"/>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
         <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
@@ -803,6 +803,34 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/subprogramBlock.cpp" line="22"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
+    </message>
+</context>
+<context>
+    <name>interpreterCore::coreBlocks::details::SwitchBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="23"/>
+        <source>There must be at list TWO links outgoing from switch block</source>
+        <translation>От блока выбора должно отходить минимум ДВЕ связи</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="30"/>
+        <source>Outgoing link is not connected</source>
+        <translation>Исходящая связь ни к чему не подключена</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="39"/>
+        <source>There must be exactly one link with empty &apos;Guard&apos; property (default branch).</source>
+        <translation>Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="44"/>
+        <source>Duplicate case branch: &apos;%1&apos;</source>
+        <translation>Найдено более одной ветки &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="53"/>
+        <source>There must be a link with empty &apos;Guard&apos; property (default branch).</source>
+        <translation>От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
     </message>
 </context>
 <context>

@@ -9,9 +9,12 @@ PlayToneGenerator::PlayToneGenerator(qrRepo::RepoApi const &repo
 		, Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "playTone.t", QList<Binding *>()
-			<< Binding::createConverting("@@FREQUENCY@@", "Frequency", customizer.factory()->intPropertyConverter())
-			<< Binding::createConverting("@@DURATION@@", "Duration", customizer.factory()->intPropertyConverter())
-			<< Binding::createConverting("@@VOLUME@@", "Volume", customizer.factory()->intPropertyConverter())
+			<< Binding::createConverting("@@FREQUENCY@@", "Frequency"
+					, customizer.factory()->intPropertyConverter(id, "Frequency"))
+			<< Binding::createConverting("@@DURATION@@", "Duration"
+					, customizer.factory()->intPropertyConverter(id, "Duration"))
+			<< Binding::createConverting("@@VOLUME@@", "Volume"
+					, customizer.factory()->intPropertyConverter(id, "Volume"))
 			, parent)
 {
 }

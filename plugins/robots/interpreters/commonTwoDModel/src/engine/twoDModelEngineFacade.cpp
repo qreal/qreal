@@ -30,7 +30,7 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 }
 
 void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-		, qReal::SystemEventsInterface const &systemEvents
+		, qReal::SystemEvents const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
@@ -82,7 +82,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 				, &interpreterControl, &interpreterBase::InterpreterControlInterface::stopRobot);
 	};
 
-	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged, onActiveTabChanged);
+	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, onActiveTabChanged);
 
 	connect(mModel.data(), &model::Model::modelChanged, [this, &graphicalModel, &logicalModel
 			, &interpreterControl, &interpretersInterface] (QDomDocument const &xml) {
@@ -92,8 +92,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 				}
 	});
 
-	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
-			, [=](){ mView.reset(); });
+	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); });
 
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged

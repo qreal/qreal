@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qrgui/toolPluginInterface/projectConverter.h>
+#include <qrgui/plugins/toolPluginInterface/projectConverter.h>
 
 namespace interpreterCore {
 

@@ -9,7 +9,8 @@ SetPainterWidthGenerator::SetPainterWidthGenerator(qrRepo::RepoApi const &repo
 		, qReal::Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "drawing/setPainterWidth.t", QList<Binding *>()
-			<< Binding::createConverting("@@Width@@", "Width", customizer.factory()->intPropertyConverter())
+			<< Binding::createConverting("@@Width@@", "Width"
+					, customizer.factory()->intPropertyConverter(id, "Width"))
 			, parent)
 {
 }

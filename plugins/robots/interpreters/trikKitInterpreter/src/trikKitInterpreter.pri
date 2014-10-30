@@ -9,8 +9,9 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
-	-lqrtext
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
+		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
+		-lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
 
 HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \
@@ -57,6 +58,9 @@ HEADERS += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.h \
+	$$PWD/robotModel/twoD/parts/twoDLineSensor.h \
+	$$PWD/robotModel/twoD/parts/twoDObjectSensor.h \
+	$$PWD/robotModel/twoD/parts/twoDColorSensor.h \
 	$$PWD/blocks/details/drawLineBlock.h \
 	$$PWD/blocks/details/drawPixelBlock.h \
 	$$PWD/blocks/details/drawRectBlock.h \
@@ -111,6 +115,9 @@ SOURCES += \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/robotModel/twoD/parts/twoDInfraredSensor.cpp \
+	$$PWD/robotModel/twoD/parts/twoDLineSensor.cpp \
+	$$PWD/robotModel/twoD/parts/twoDObjectSensor.cpp \
+	$$PWD/robotModel/twoD/parts/twoDColorSensor.cpp \
 	$$PWD/blocks/details/drawLineBlock.cpp \
 	$$PWD/blocks/details/drawPixelBlock.cpp \
 	$$PWD/blocks/details/drawRectBlock.cpp \
@@ -128,5 +135,3 @@ RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \
 
 TRANSLATIONS += $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikKitInterpreter_ru.ts
-
-include($$PWD/../qrguiIncludes.pri)

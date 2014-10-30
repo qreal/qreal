@@ -1,1 +1,1 @@
-Math.random() * @@UPPER_BOUND@@
+Math.random() * @@ARGUMENT@@

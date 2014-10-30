@@ -1,10 +1,9 @@
 #include "trikGeneratorFactory.h"
+
 #include <generatorBase/converters/regexpMultiConverter.h>
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
-#include "converters/engineV4PortConverter.h"
-#include "converters/engineV6PortConverter.h"
-#include "converters/encoderV4PortConverter.h"
-#include "converters/encoderV6PortConverter.h"
+#include <generatorBase/lua/luaProcessor.h>
+
 #include "converters/trikStringPropertyConverter.h"
 #include "simpleGenerators/detectGenerator.h"
 #include "simpleGenerators/detectorToVariableGenerator.h"
@@ -26,11 +25,8 @@
 #include "simpleGenerators/smileGenerator.h"
 #include "simpleGenerators/systemGenerator.h"
 #include "simpleGenerators/trikEnginesGenerator.h"
-#include "simpleGenerators/trikEnginesStopGenerator.h"
-#include "simpleGenerators/trikNullificationEncoderGenerator.h"
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
-#include "parts/trikVariables.h"
 #include "parts/trikDeviceVariables.h"
 
 using namespace trik;
@@ -40,8 +36,9 @@ using namespace generatorBase::simple;
 
 TrikGeneratorFactory::TrikGeneratorFactory(qrRepo::RepoApi const &repo
 		, qReal::ErrorReporterInterface &errorReporter
-		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager)
-	: GeneratorFactoryBase(repo, errorReporter, robotModelManager)
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, lua::LuaProcessor &luaProcessor)
+	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 {
 }
 
@@ -58,10 +55,6 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 			|| elementType.contains("AngularServo"))
 	{
 		return new TrikEnginesGenerator(mRepo, customizer, id, elementType, this);
-	} else if (elementType.contains("EnginesStop")) {
-		return new TrikEnginesStopGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("ClearEncoder")) {
-		return new TrikNullificationEncoderGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("TrikPlayTone")) {
 		return new PlayToneGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikDrawLine") {
@@ -126,70 +119,9 @@ QString TrikGeneratorFactory::pathToTemplates() const
 	return ":/trik/templates";
 }
 
-Binding::MultiConverterInterface *TrikGeneratorFactory::enginesConverter() const
-{
-	return new generatorBase::converters::RegexpMultiConverter(motorPortSplitRegexp(), motorPortConverter());
-}
-
-Binding::MultiConverterInterface *TrikGeneratorFactory::encodersConverter() const
-{
-	return new generatorBase::converters::RegexpMultiConverter(motorPortSplitRegexp(), encoderPortConverter());
-}
-
-Binding::ConverterInterface *TrikGeneratorFactory::inputPortConverter() const
-{
-	return new Binding::EmptyConverter;
-}
-
-Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
-{
-	return encoderPortConverter();
-}
-
 generatorBase::simple::Binding::ConverterInterface *TrikGeneratorFactory::stringPropertyConverter() const
 {
-	return new converters::TrikStringPropertyConverter(*mVariables, *systemVariableNameConverter());
-}
-
-void TrikGeneratorFactory::initVariables()
-{
-	mVariables = new parts::TrikVariables(pathToTemplates(), mRobotModelManager.model());
-}
-
-Binding::ConverterInterface *TrikGeneratorFactory::motorPortConverter() const
-{
-	if (mRobotModelManager.model().name().contains("V4")) {
-		return new converters::PowerV4MotorPortConverter;
-	} else if (mRobotModelManager.model().name().contains("V6")) {
-		return new converters::PowerV6MotorPortConverter;
-	}
-
-	/// @todo: Inconsistent scenario
-	return new converters::PowerV6MotorPortConverter;
-}
-
-Binding::ConverterInterface *TrikGeneratorFactory::encoderPortConverter() const
-{
-	if (mRobotModelManager.model().name().contains("V4")) {
-		return new converters::EncoderV4PortConverter;
-	} else if (mRobotModelManager.model().name().contains("V6")) {
-		return new converters::EncoderV6PortConverter;
-	}
-
-	/// @todo: Inconsistent scenario
-	return new converters::EncoderV6PortConverter;
-}
-
-QString TrikGeneratorFactory::motorPortSplitRegexp() const
-{
-	if (mRobotModelManager.model().name().contains("V4")) {
-		return converters::PowerV4MotorPortConverter::splitRegexp();
-	} else if (mRobotModelManager.model().name().contains("V6")) {
-		return converters::PowerV6MotorPortConverter::splitRegexp();
-	}
-
-	/// @todo: Inconsistent scenario
-	return converters::PowerV6MotorPortConverter::splitRegexp();
+	return new converters::TrikStringPropertyConverter(*mVariables, *reservedVariableNameConverter());
 }
 
 generatorBase::parts::DeviceVariables *TrikGeneratorFactory::deviceVariables() const

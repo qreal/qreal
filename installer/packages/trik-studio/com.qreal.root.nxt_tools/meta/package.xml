@@ -7,7 +7,7 @@
     <Version>2.0.0</Version>
     <ReleaseDate>2013-08-10</ReleaseDate> <!--TODO-->
     <Licenses>
-        <License name="NXT Tools License" file="TODO_NXT_TOOLS_LICENSE.txt" />
+        <!-- TODO -->
     </Licenses>
     <!--<Translations>
         <Translation>sv_se.qm</Translation>
@@ -15,7 +15,7 @@
     </Translations> -->
     <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
     <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
-    <SortingPriority>8</SortingPriority>
-    <Default>false</Default>
+    <SortingPriority>7</SortingPriority>
+    <Default>true</Default>
     <ForcedInstallation>false</ForcedInstallation>
 </Package>

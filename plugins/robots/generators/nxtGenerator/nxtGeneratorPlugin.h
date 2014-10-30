@@ -2,11 +2,6 @@
 
 #include <QtCore/QMultiHash>
 
-#include <qrgui/toolPluginInterface/toolPluginInterface.h>
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
-#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
-#include <qrgui/toolPluginInterface/systemEventsInterface.h>
-#include <qrgui/textEditor/textManagerInterface.h>
 #include <generatorBase/robotsGeneratorPluginBase.h>
 #include "nxtFlashTool.h"
 
@@ -28,7 +23,8 @@ public:
 	QString kitId() const override;
 
 	void init(qReal::PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager) override;
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage) override;
 	QList<qReal::ActionInfo> actions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
