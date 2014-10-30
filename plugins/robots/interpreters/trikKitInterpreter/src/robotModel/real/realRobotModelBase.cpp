@@ -49,6 +49,11 @@ void RealRobotModelBase::connectToRobot()
 	mRobotCommunicator->connect();
 }
 
+void RealRobotModelBase::stopRobot()
+{
+	mRobotCommunicator->stopRobot();
+}
+
 void RealRobotModelBase::disconnectFromRobot()
 {
 	mRobotCommunicator->disconnect();
