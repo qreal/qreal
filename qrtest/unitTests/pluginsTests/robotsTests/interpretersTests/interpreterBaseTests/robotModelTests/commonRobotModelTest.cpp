@@ -120,7 +120,7 @@ TEST_F(CommonRobotModelTest, twoDNoSensorsLifecycleTest)
 }
 
 CommonRobotModelTest::CommonRobotModelDescendantMock::CommonRobotModelDescendantMock(bool immediateConnection)
-	: CommonRobotModel("test")
+	: CommonRobotModel("test", "testRobot")
 	, mImmediateConnection(immediateConnection)
 {
 	addAllowedConnection(PortInfo("1", input)
