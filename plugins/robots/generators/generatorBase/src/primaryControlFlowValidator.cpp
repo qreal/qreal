@@ -9,8 +9,10 @@ PrimaryControlFlowValidator::PrimaryControlFlowValidator(
 		qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
-		, Id const &diagramId)
-	: RobotsDiagramVisitor(repo, customizer)
+		, Id const &diagramId
+		, QObject *parent)
+	: QObject(parent)
+	, RobotsDiagramVisitor(repo, customizer)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
