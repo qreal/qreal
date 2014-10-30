@@ -74,6 +74,9 @@ signals:
 	/// Emitted each time when some item was removed from the 2D model world.
 	void itemRemoved(QGraphicsItem *item);
 
+	/// Emitted when robot trace is non-empty any more or was cleared from the floor.
+	void robotTraceAppearedOrDisappeared(bool appeared);
+
 private:
 	/// Returns true if ray intersects some wall.
 	bool checkSonarDistance(int const distance, QPointF const &position

@@ -165,6 +165,10 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 
 	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){ mScene->clearScene(false, Reason::userAction); });
+	connect(mUi->clearFloorButton, &QAbstractButton::clicked, &mModel.worldModel(), &WorldModel::clearRobotTrace);
+	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
+			, mUi->clearFloorButton, &QAbstractButton::setVisible, Qt::QueuedConnection);
+
 	connect(&mButtonGroup, static_cast<void (QButtonGroup::*)(QAbstractButton *, bool)>(&QButtonGroup::buttonToggled)
 			, [this](QAbstractButton *button, bool toggled) {
 				if (toggled) {

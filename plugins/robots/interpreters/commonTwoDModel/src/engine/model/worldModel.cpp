@@ -160,6 +160,10 @@ void WorldModel::appendRobotTrace(QPen const &pen, QPointF const &begin, QPointF
 	QGraphicsLineItem * const traceItem = new QGraphicsLineItem(QLineF(begin, end));
 	traceItem->setPen(pen);
 
+	if (mRobotTrace.isEmpty()) {
+		emit robotTraceAppearedOrDisappeared(true);
+	}
+
 	mRobotTrace << traceItem;
 	emit otherItemAdded(traceItem);
 }
@@ -171,6 +175,8 @@ void WorldModel::clearRobotTrace()
 		mRobotTrace.removeOne(toRemove);
 		emit itemRemoved(toRemove);
 	}
+
+	emit robotTraceAppearedOrDisappeared(false);
 }
 
 QPainterPath WorldModel::buildWallPath() const
