@@ -116,7 +116,10 @@ void RobotItem::ride(QPointF const &newPos, qreal rotation)
 	setPos(newPos);
 	setRotation(rotation);
 	QPointF const newMarker = mapToScene(mMarkerPoint);
-	emit drawTrace(mRobotModel.markerColor(), oldMarker, newMarker);
+	QPen pen;
+	pen.setColor(mRobotModel.markerColor());
+	pen.setWidth(mPen.width());
+	emit drawTrace(pen, oldMarker, newMarker);
 }
 
 void RobotItem::addSensor(interpreterBase::robotModel::PortInfo const &port, SensorItem *sensor)

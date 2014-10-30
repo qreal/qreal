@@ -410,7 +410,7 @@ QList<AbstractItem *> D2ModelWidget::selectedColorItems() const
 	QList<AbstractItem *> resList;
 	for (QGraphicsItem * const graphicsItem : mScene->selectedItems()) {
 		AbstractItem *item = dynamic_cast<AbstractItem*>(graphicsItem);
-		if (item && isColorItem(item)) {
+		if (item && (isColorItem(item) || dynamic_cast<RobotItem *>(item))) {
 			resList << item;
 		}
 	}
