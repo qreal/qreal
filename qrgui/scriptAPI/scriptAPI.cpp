@@ -75,7 +75,7 @@ void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, QString const &name, int c
 	mVirtualCursor->move(newPos);
 	mVirtualCursor->raise();
 	mVirtualCursor->show();
-	QTimer *timer = new QTimer(this);
+	QTimer *timer = new QTimer();
 	timer->setInterval(100);
 
 	connect(timer, &QTimer::timeout,
