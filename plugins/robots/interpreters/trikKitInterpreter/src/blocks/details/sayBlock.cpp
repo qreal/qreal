@@ -5,11 +5,8 @@
 
 #include "src/robotModel/parts/trikShell.h"
 
-using namespace trikKitInterpreter;
-using namespace blocks;
-using namespace details;
+using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::robotModel;
-using namespace utils;
 
 SayBlock::SayBlock(RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)

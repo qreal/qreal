@@ -9,6 +9,7 @@ namespace utils {
 class ROBOTS_UTILS_EXPORT TcpConnectionHandler : public QObject
 {
 	Q_OBJECT
+
 public:
 	explicit TcpConnectionHandler(int port);
 

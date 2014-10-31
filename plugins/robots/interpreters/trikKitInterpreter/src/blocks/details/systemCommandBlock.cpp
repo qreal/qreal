@@ -6,11 +6,8 @@
 #include "src/robotModel/twoD/parts/twoDLed.h"
 #include "src/robotModel/parts/trikShell.h"
 
-using namespace trikKitInterpreter;
-using namespace blocks;
-using namespace details;
+using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::robotModel;
-using namespace utils;
 
 SystemCommandBlock::SystemCommandBlock(RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)
@@ -36,4 +33,3 @@ void SystemCommandBlock::run()
 
 	emit done(mNextBlockId);
 }
-

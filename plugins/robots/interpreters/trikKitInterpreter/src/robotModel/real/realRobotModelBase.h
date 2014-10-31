@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include <robotModel/trikRobotModelBase.h>
 #include <utils/tcpRobotCommunicator.h>
 
@@ -29,7 +31,7 @@ protected:
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
 
 private:
-	utils::TcpRobotCommunicator *mRobotCommunicator;
+	QScopedPointer<utils::TcpRobotCommunicator> mRobotCommunicator;
 };
 
 }

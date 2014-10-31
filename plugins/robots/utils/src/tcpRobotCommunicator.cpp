@@ -122,7 +122,7 @@ void TcpRobotCommunicator::processTelemetryMessage(QString const &message)
 {
 	QString const sensorMarker("sensor:");
 
-	if (message.startsWith(sensorMarker)){
+	if (message.startsWith(sensorMarker)) {
 		QString data(message);
 		data.remove(0, sensorMarker.length());
 		QStringList portAndValue = data.split(":");

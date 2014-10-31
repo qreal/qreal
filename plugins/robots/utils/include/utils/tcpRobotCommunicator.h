@@ -61,7 +61,7 @@ private:
 	void send(QString const &data, QTcpSocket &socket);
 
 	/// Reference to error reporter.
-	qReal::ErrorReporterInterface *mErrorReporter;
+	qReal::ErrorReporterInterface *mErrorReporter;  // Does not have ownership.
 
 	TcpConnectionHandler mControlConnection;
 	TcpConnectionHandler mTelemetryConnection;

@@ -8,7 +8,7 @@ namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
 
-/// An interpreter`s implementation for SYSETEM_COMMNAD block.
+/// An interpreter`s implementation for "System Command" block.
 class SystemCommandBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
