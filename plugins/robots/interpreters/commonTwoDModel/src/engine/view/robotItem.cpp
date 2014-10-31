@@ -6,6 +6,7 @@ using namespace twoDModel::view;
 using namespace graphicsUtils;
 
 int const border = 0;
+int const defaultTraceWidth = 6;
 
 RobotItem::RobotItem(model::RobotModel &robotModel)
 	: RotateItem()
@@ -35,6 +36,7 @@ RobotItem::RobotItem(model::RobotModel &robotModel)
 	mX2 = mX1 + robotWidth;
 	mY2 = mY1 + robotHeight;
 	mMarkerPoint = QPointF(0, mY2 / 2);  // Marker is situated behind the robot
+	mPen.setWidth(defaultTraceWidth);
 
 	setTransformOriginPoint(rotatePoint);
 	mBeepItem->setParentItem(this);

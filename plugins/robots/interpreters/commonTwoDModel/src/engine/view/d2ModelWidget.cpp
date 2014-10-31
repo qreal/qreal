@@ -94,6 +94,8 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	connectWheelComboBox(mUi->leftWheelComboBox, RobotModel::left);
 	connectWheelComboBox(mUi->rightWheelComboBox, RobotModel::right);
 
+	updateWheelComboBoxes();
+
 	setFocus();
 
 	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);

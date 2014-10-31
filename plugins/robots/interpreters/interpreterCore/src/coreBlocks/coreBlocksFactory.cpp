@@ -50,9 +50,9 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::PrintTextBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "ClearScreen")) {
 		return new details::ClearScreenBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "PrepareMarker")) {
+	} else if (elementMetatypeIs(element, "MarkerDown")) {
 		return new twoDModel::blocks::MarkerDownBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "RemoveMarker")) {
+	} else if (elementMetatypeIs(element, "MarkerUp")) {
 		return new twoDModel::blocks::MarkerUpBlock(mRobotModelManager->model());
 	}
 

@@ -47,6 +47,7 @@ void RobotModel::reinit()
 {
 	qDeleteAll(mMotors);
 	mMotors.clear();
+	mMarker = Qt::transparent;
 
 	for (Device const * const device : mRobotModel.configuration().devices()) {
 		if (device->deviceInfo().isA<robotParts::Motor>()) {
