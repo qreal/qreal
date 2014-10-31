@@ -14,9 +14,6 @@ LedBlock::LedBlock(RobotModelInterface &robotModel)
 
 void LedBlock::doJob(robotModel::parts::TrikLed &led)
 {
-	QString const stringColor = stringProperty("Color");
-	QColor const color = stringColor == "off" ? QColor(Qt::gray) : QColor(stringColor);
-	led.setColor(color);
-
+	led.setColor(stringProperty("Color"));
 	emit done(mNextBlockId);
 }

@@ -9,11 +9,12 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase
+LIBS += -L../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lgeneratorBase -linterpreterBase -lutils
 
 INCLUDEPATH += \
 	$$PWD/../generatorBase/include/ \
 	$$PWD/../../interpreters/interpreterBase/include \
+	$$PWD/../../utils/include \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui \
 	$$PWD/../../../../qrtext/include \
@@ -94,5 +95,3 @@ SOURCES += \
 	$$PWD/simpleGenerators/setPainterColorGenerator.cpp \
 	$$PWD/simpleGenerators/sendMessageGenerator.cpp \
 	$$PWD/simpleGenerators/waitForMessageGenerator.cpp \
-
-include(robotCommunication/robotCommunication.pri)

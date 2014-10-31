@@ -396,7 +396,6 @@
 					<container/>
 					<properties>
 						<property displayedName="Body" type="string" name="Body"/>
-						<property displayedName="Initialization" type="bool" name="Init"/>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>

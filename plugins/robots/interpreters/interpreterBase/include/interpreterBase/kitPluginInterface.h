@@ -35,7 +35,7 @@ public:
 			, qReal::SystemEvents const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
-			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
+			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, InterpreterControlInterface &interpreterControl)
 	{
 		Q_UNUSED(eventsForKitPlugin)

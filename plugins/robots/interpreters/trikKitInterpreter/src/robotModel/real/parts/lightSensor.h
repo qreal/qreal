@@ -1,6 +1,7 @@
 #pragma once
 
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -13,9 +14,16 @@ class LightSensor : public interpreterBase::robotModel::robotParts::LightSensor
 
 public:
 	LightSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
+
+public slots:
+	void onIncomingData(QString const &portName, int value);
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

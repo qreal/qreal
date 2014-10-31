@@ -60,7 +60,10 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const
 		ast = mAstRoots[id][propertyName];
 	}
 
-	mAnalyzer->analyze(ast);
+	if (mErrors.isEmpty()) {
+		mAnalyzer->analyze(ast);
+	}
+
 	if (!mErrors.isEmpty()) {
 		mParsedCache[id].remove(propertyName);
 		reportErrors();
@@ -151,6 +154,12 @@ void LuaToolbox::setVariableValue(QString const &name, QString const &initCode, 
 	}
 
 	mInterpreter->setVariableValue(name, value);
+}
+
+void LuaToolbox::clear()
+{
+	mAnalyzer->clear();
+	mInterpreter->clear();
 }
 
 void LuaToolbox::reportErrors()

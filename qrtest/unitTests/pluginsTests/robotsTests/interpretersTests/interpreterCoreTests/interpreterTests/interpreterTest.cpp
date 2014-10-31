@@ -4,7 +4,6 @@
 
 #include <qrtext/lua/luaToolbox.h>
 #include "src/interpreter/interpreter.h"
-#include "src/textLanguage/robotsBlockParser.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
@@ -77,7 +76,7 @@ void InterpreterTest::SetUp()
 	ON_CALL(mBlocksFactoryManager, addFactory(_, _)).WillByDefault(Return());
 	EXPECT_CALL(mBlocksFactoryManager, addFactory(_, _)).Times(0);
 
-	interpreterCore::textLanguage::RobotsBlockParser parser(mModelManager, []() { return 0; });
+	mParser.reset(new interpreterCore::textLanguage::RobotsBlockParser(mModelManager, []() { return 0; }));
 
 	DummyBlockFactory *blocksFactory = new DummyBlockFactory;
 	blocksFactory->configure(
@@ -85,7 +84,7 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mModelManager
 			, *mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
-			, parser
+			, *mParser
 			);
 
 	ON_CALL(mBlocksFactoryManager, block(_, _)).WillByDefault(
@@ -111,7 +110,7 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->projectManagementInterface()
 			, mBlocksFactoryManager
 			, mModelManager
-			, parser
+			, *mParser
 			, *mFakeConnectToRobotAction
 			));
 }

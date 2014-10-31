@@ -45,7 +45,7 @@ public:
 			mErrorList << Error(next().range().start()
 					, QString("Expected %1, got %2").arg(static_cast<int>(token)).arg(static_cast<int>(next().token()))
 					, ErrorType::syntaxError
-					, Severity::error);
+					, Severity::internalError);
 
 			return false;
 		}
