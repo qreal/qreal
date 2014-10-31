@@ -1,5 +1,7 @@
 #include "actionsManager.h"
 
+#include <QtCore/QSignalMapper>
+
 #include <qrkernel/settingsManager.h>
 
 using namespace interpreterCore;
@@ -24,9 +26,9 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	mConnectToRobotAction.setCheckable(true);
 
 	mTitlesAction.setCheckable(true);
-	mTitlesAction.setChecked(
-			qReal::SettingsManager::value("showTitlesForRobots").toBool()
-			);
+	mTitlesAction.setChecked(!qReal::SettingsManager::value("hideNonHardLabels").toBool());
+	connect(&mTitlesAction, &QAction::triggered
+			, [](bool checked) { qReal::SettingsManager::setValue("hideNonHardLabels", !checked); });
 
 	mSeparator1.setSeparator(true);
 	mSeparator2.setSeparator(true);
@@ -124,7 +126,9 @@ void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModel
 
 	/// @todo: this stupid visibility management may show actions with custom avalability logic.
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		for (ActionInfo const &actionInfo : mRobotModelActions.values(kitId) + mGeneratorActionsInfo.values(kitId)) {
+		for (qReal::ActionInfo const &actionInfo
+				: mRobotModelActions.values(kitId) + mGeneratorActionsInfo.values(kitId))
+		{
 			if (actionInfo.isAction()) {
 				actionInfo.action()->setVisible(currentKitId == kitId);
 				actionInfo.action()->setChecked(actionInfo.action()->objectName() == switchActionName);
@@ -135,7 +139,7 @@ void ActionsManager::onRobotModelChanged(interpreterBase::robotModel::RobotModel
 	}
 }
 
-void ActionsManager::onActiveTabChanged(Id const &activeTabId)
+void ActionsManager::onActiveTabChanged(qReal::Id const &activeTabId)
 {
 	bool const isDiagramTab = !activeTabId.isNull();
 	mRunAction.setEnabled(isDiagramTab);
@@ -193,7 +197,7 @@ void ActionsManager::initKitPluginActions()
 				connect(fastSelectionAction, SIGNAL(triggered()), robotModelMapper, SLOT(map()));
 				fastSelectionAction->setCheckable(true);
 				fastSelectionAction->setObjectName("switchTo" + kitId + robotModel->name());
-				ActionInfo const actionInfo(fastSelectionAction, "interpreters", "tools");
+				qReal::ActionInfo const actionInfo(fastSelectionAction, "interpreters", "tools");
 				mRobotModelActions.insertMulti(kitId, actionInfo);
 			}
 
@@ -202,7 +206,7 @@ void ActionsManager::initKitPluginActions()
 
 		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
 			// generator->actions() must be called once so storing it into the field.
-			for (ActionInfo const &action : generator->actions()) {
+			for (qReal::ActionInfo const &action : generator->actions()) {
 				mGeneratorActionsInfo.insertMulti(kitId, action);
 			}
 

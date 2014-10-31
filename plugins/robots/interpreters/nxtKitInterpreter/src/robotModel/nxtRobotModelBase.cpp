@@ -47,9 +47,9 @@ NxtRobotModelBase::NxtRobotModelBase(QString const &kitId)
 	addAllowedConnection(PortInfo("EnterButtonPort", input, {}, "enterButton"), { buttonInfo() });
 	addAllowedConnection(PortInfo("EscapeButtonPort", input, {}, "escapeButton"), { buttonInfo() });
 
-	addAllowedConnection(PortInfo("A", output), { motorInfo() });
-	addAllowedConnection(PortInfo("B", output), { motorInfo() });
-	addAllowedConnection(PortInfo("C", output), { motorInfo() });
+	addAllowedConnection(PortInfo("A", output, { QString::fromUtf8("А") }), { motorInfo() });
+	addAllowedConnection(PortInfo("B", output, { QString::fromUtf8("Б") }), { motorInfo() });
+	addAllowedConnection(PortInfo("C", output, { QString::fromUtf8("В"), QString::fromUtf8("С") }), { motorInfo() });
 
 	addAllowedConnection(PortInfo("A", input, {}, "encoderA"), { encoderInfo() });
 	addAllowedConnection(PortInfo("B", input, {}, "encoderB"), { encoderInfo() });

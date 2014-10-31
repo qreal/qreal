@@ -8,8 +8,9 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lutils -linterpreterBase -lqextserialport \
-	-lqrtext
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
+		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
+		-lutils -linterpreterBase -lqextserialport \
 
 HEADERS += \
 	$$PWD/commandConstants.h \
@@ -61,7 +62,6 @@ SOURCES += \
 FORMS += \
 	$$PWD/ev3AdditionalPreferences.ui \
 
-include($$PWD/../qrguiIncludes.pri)
 include($$PWD/communication/communication.pri)
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/ev3KitInterpreter_ru.ts

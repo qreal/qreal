@@ -20,6 +20,7 @@ public:
 	/// Takes ownership on @arg reservedVariablesConverter.
 	CodeConverterBase(lua::LuaProcessor &luaTranslator
 			, qReal::Id const &id
+			, QString const &propertyName
 			, simple::Binding::ConverterInterface *reservedVariablesConverter);
 
 	QString convert(QString const &luaCode) const override;
@@ -27,6 +28,7 @@ public:
 protected:
 	lua::LuaProcessor &mLuaTranslator;
 	qReal::Id const mId;
+	QString const mPropertyName;
 	simple::Binding::ConverterInterface const *mReservedVariablesConverter;  // LuaProcessor will take ownership;
 };
 

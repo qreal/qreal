@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qrgui/dialogs/preferencesPages/preferencesPage.h>
+#include <qrgui/preferencesDialog/preferencesPage.h>
 
 #include "robotModel/robotModelInterface.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
@@ -8,7 +8,7 @@
 namespace interpreterBase {
 
 /// A base class for additional widget on the robots settings page. Can be subclassed in concrete plugins.
-class ROBOTS_INTERPRETER_BASE_EXPORT AdditionalPreferences : public PreferencesPage
+class ROBOTS_INTERPRETER_BASE_EXPORT AdditionalPreferences : public qReal::gui::PreferencesPage
 {
 	Q_OBJECT
 

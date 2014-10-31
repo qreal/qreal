@@ -3,14 +3,13 @@
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/devicesConfigurationWidget.h>
 
 #include "customizer.h"
 #include "managers/kitPluginManager.h"
 #include "managers/robotModelManager.h"
-#include "managers/titlesVisibilityManager.h"
 #include "managers/actionsManager.h"
 #include "managers/devicesConfigurationManager.h"
 #include "managers/graphicsWatcherManager.h"
@@ -36,7 +35,7 @@ public:
 	void init(qReal::PluginConfigurator const &configurer);
 
 	/// Returns a pointer to settings page for robots plugin.
-	PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
+	qReal::gui::PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
 
 	/// Returns the customization class object for configuring QReal's main GUI module
 	Customizer &customizer();
@@ -86,7 +85,6 @@ private:
 	KitPluginManager mKitPluginManager;
 	RobotModelManager mRobotModelManager;
 	ActionsManager mActionsManager;
-	QScopedPointer<TitlesVisibilityManager> mTitlesVisibilityManager;
 	QScopedPointer<DevicesConfigurationManager> mDevicesConfigurationManager;
 
 	interpreterBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership

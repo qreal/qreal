@@ -7,14 +7,13 @@ INCLUDEPATH += \
 	$$PWD/../../../qrgui/ \
 	$$PWD/../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../bin -lqrkernel -lqrutils
+LIBS += -L$$PWD/../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/visualDebugSupport_ru.ts
 
 HEADERS = \
 	$$PWD/visualDebuggerPlugin.h \
 	$$PWD/visualDebuggerPreferencesPage.h \
-	$$PWD/../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 
 SOURCES = \
 	$$PWD/visualDebuggerPlugin.cpp \

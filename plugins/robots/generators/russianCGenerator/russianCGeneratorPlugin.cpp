@@ -42,22 +42,22 @@ QString RussianCGeneratorPlugin::generatorName() const
 	return "RussianC";
 }
 
-QList<ActionInfo> RussianCGeneratorPlugin::actions()
+QList<qReal::ActionInfo> RussianCGeneratorPlugin::actions()
 {
 	mGenerateCodeAction.setText(tr("Generate to Russian C"));
 	mGenerateCodeAction.setIcon(QIcon(":/images/generateRussianCCode.svg"));
-	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
+	qReal::ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	mGenerateCodeAction.setObjectName("generateRussianC");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
 	return { generateCodeActionInfo };
 }
 
-QList<HotKeyActionInfo> RussianCGeneratorPlugin::hotKeyActions()
+QList<qReal::HotKeyActionInfo> RussianCGeneratorPlugin::hotKeyActions()
 {
 	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G));
 
-	HotKeyActionInfo generateActionInfo("Generator.GenerateNxtRussianC"
+	qReal::HotKeyActionInfo generateActionInfo("Generator.GenerateNxtRussianC"
 			, tr("Generate Russian C Code"), &mGenerateCodeAction);
 
 	return { generateActionInfo };
@@ -79,9 +79,9 @@ void RussianCGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 }
 
 
-void RussianCGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool trigger)
+void RussianCGeneratorPlugin::changeActiveTab(QList<qReal::ActionInfo> const &info, bool trigger)
 {
-	foreach (ActionInfo const &actionInfo, info) {
+	for (qReal::ActionInfo const &actionInfo : info) {
 		actionInfo.action()->setEnabled(trigger);
 	}
 }

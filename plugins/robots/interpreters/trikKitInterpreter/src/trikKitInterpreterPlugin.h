@@ -23,7 +23,7 @@ public:
 	~TrikKitInterpreterPlugin() override;
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::SystemEvents const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
@@ -49,6 +49,8 @@ public:
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
+	QString defaultSettingsFile() const override;
+
 	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
 
 	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
@@ -69,8 +71,8 @@ private:
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
 	bool mOwnsAdditionalPreferences = true;
 
-	QWidget *mIpAdressQuicksConfigurer = nullptr;  // Transfers ownership
-	bool mOwnsIpAdressQuicksConfigurer = true;
+	QWidget *mIpAdressQuickConfigurer = nullptr;  // Transfers ownership
+	bool mOwnsIpAdressQuickConfigurer = true;
 
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;

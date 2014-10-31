@@ -6,9 +6,10 @@ using namespace qReal;
 BoolPropertyConverter::BoolPropertyConverter(QString const &pathToTemplates
 		, lua::LuaProcessor &luaTranslator
 		, qReal::Id const &id
+		, QString const &propertyName
 		, simple::Binding::ConverterInterface *reservedVariablesConverter
 		, bool needInverting)
-	: CodeConverterBase(luaTranslator, id, reservedVariablesConverter)
+	: CodeConverterBase(luaTranslator, id, propertyName, reservedVariablesConverter)
 	, TemplateParametrizedEntity(pathToTemplates)
 	, mNeedInverting(needInverting)
 {

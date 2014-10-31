@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 
 #include <qrrepo/repoApi.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "robotsGeneratorDeclSpec.h"
 #include "generatorCustomizer.h"

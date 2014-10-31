@@ -21,12 +21,12 @@ public:
 	void setPathToTemplates(QString const &pathTemplates);
 
 protected:
+	/// Reads the given file contents. A path to file must be relative to templates folder root.
+	/// @param pathFromRoot A path to a concrete template relatively to specified in constructor folder.
+	QString readTemplate(QString const &pathFromRoot) const;
+
 	/// Returns a given in constructor path to tempates root.
 	QString pathToRoot() const;
-
-	/// @param pathFromRoot A path to a concrete template relatively to specified in
-	/// constructor folder
-	QString readTemplate(QString const &pathFromRoot) const;
 
 private:
 	QString mPathToRoot;

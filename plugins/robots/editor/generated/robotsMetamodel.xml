@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-beta1">
+<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-beta2">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
@@ -396,7 +396,6 @@
 					<container/>
 					<properties>
 						<property displayedName="Body" type="string" name="Body"/>
-						<property displayedName="Initialization" type="bool" name="Init"/>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -409,7 +408,7 @@
 						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="60" textBinded="Condition" isPlainText="true" background="white"/>
+						<label x="40" y="60" textBinded="Condition" background="white"/>
 						<label x="-25" y="60" text="Condition:"/>
 					</labels>
 					<nonResizeable/>
@@ -433,7 +432,7 @@
 						<image y1="0" name="images/switchBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="Expression" isPlainText="true" background="white"/>
+						<label x="50" y="60" textBinded="Expression" background="white"/>
 						<label x="-25" y="60" text="Expression:"/>
 					</labels>
 					<nonResizeable/>
@@ -673,7 +672,7 @@
 					<labels>
 						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
 						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="50" y="60" textBinded="Power" background="white"/>
+						<label x="65" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Angle (degrees):"/>
 					</labels>
 					<nonResizeable/>
@@ -974,6 +973,9 @@
 				<logic>
 					<properties>
 						<property displayedName="Command" type="string" name="Command" />
+						<property displayedName="Code" type="bool" name="Code">
+							<default>false</default>
+						</property>
 					</properties>
 					<container/>
 					<generalizations>
@@ -982,12 +984,6 @@
 				</logic>
 			</node>
 			<node abstract="true" name="VideocameraBlock">
-				<graphics>
-					<labels>
-						<label x="-15" y="-30" text="Mode" hard="true" background="white"/>
-						<label x="65" y="-30" textBinded="Mode" hard="true" background="white"/>
-					</labels>
-				</graphics>
 				<logic>
 					<properties>
 						<property displayedName="Mode" type="VideoSensor" name="Mode">

@@ -84,6 +84,12 @@ QMap<QString, QSharedPointer<types::TypeExpression> > SemanticAnalyzer::variable
 	return result;
 }
 
+void SemanticAnalyzer::clear()
+{
+	mTypes.clear();
+	mIdentifierDeclarations.clear();
+}
+
 void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
 		, QSharedPointer<types::TypeExpression> const &type)
 {
@@ -104,6 +110,11 @@ void SemanticAnalyzer::constrain(QSharedPointer<ast::Node> const &operation
 		, QSharedPointer<ast::Node> const &node, QList<QSharedPointer<types::TypeExpression>> const &types)
 {
 	auto nodeType = mTypes.value(as<ast::Expression>(node));
+	if (!nodeType) {
+		reportError(node, QObject::tr("This construction is not supported by semantic analysis"));
+		return;
+	}
+
 	nodeType->constrain(types, generalizationsTable());
 	if (nodeType->isEmpty()) {
 		reportError(operation, QObject::tr("Type mismatch."));
