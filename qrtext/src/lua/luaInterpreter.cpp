@@ -53,6 +53,10 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 {
 	Q_UNUSED(semanticAnalyzer);
 
+	if (!root) {
+		return QVariant();
+	}
+
 	if (root->is<ast::Block>()) {
 		auto statements = as<ast::Block>(root)->children();
 		for (auto statement : statements) {
