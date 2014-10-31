@@ -12,12 +12,12 @@ Marker::Marker(interpreterBase::robotModel::DeviceInfo const &info
 {
 }
 
-void Marker::prepare(QColor const &color)
+void Marker::down(QColor const &color)
 {
-	mEngine.prepareMarker(color);
+	mEngine.markerDown(color);
 }
 
-void Marker::remove()
+void Marker::up()
 {
-	mEngine.removeMarker();
+	mEngine.markerUp();
 }

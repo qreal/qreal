@@ -36,8 +36,8 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/parts/gyroscope.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/accelerometer.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/marker.h \
-	$$PWD/include/commonTwoDModel/blocks/prepareMarkerBlock.h \
-	$$PWD/include/commonTwoDModel/blocks/removeMarkerBlock.h \
+	$$PWD/include/commonTwoDModel/blocks/markerDownBlock.h \
+	$$PWD/include/commonTwoDModel/blocks/markerUpBlock.h \
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -107,8 +107,8 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/gyroscope.cpp \
 	$$PWD/src/robotModel/parts/accelerometer.cpp \
 	$$PWD/src/robotModel/parts/marker.cpp \
-	$$PWD/src/blocks/prepareMarkerBlock.cpp \
-	$$PWD/src/blocks/removeMarkerBlock.cpp \
+	$$PWD/src/blocks/markerDownBlock.cpp \
+	$$PWD/src/blocks/markerUpBlock.cpp \
 
 FORMS += \
 	$$PWD/src/engine/view/d2Form.ui \

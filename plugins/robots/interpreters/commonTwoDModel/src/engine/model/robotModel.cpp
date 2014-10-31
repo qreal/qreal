@@ -217,12 +217,12 @@ QColor RobotModel::markerColor() const
 	return mMarker;
 }
 
-void RobotModel::prepareMarker(QColor const &color)
+void RobotModel::markerDown(QColor const &color)
 {
 	mMarker = color;
 }
 
-void RobotModel::removeMarker()
+void RobotModel::markerUp()
 {
 	mMarker = Qt::transparent;
 }

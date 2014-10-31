@@ -76,11 +76,11 @@ public:
 	/// Moves the marker of the 2D model robot down to the floor.
 	/// The robot will draw its trace on the floor after that.
 	/// If the marker of another color is already drawing at the moment it will be replaced.
-	void prepareMarker(QColor const &color);
+	void markerDown(QColor const &color);
 
 	/// Lifts the marker of the 2D model robot up.
 	/// The robot stops drawing its trace on the floor after that.
-	void removeMarker();
+	void markerUp();
 
 public slots:
 	void resetPhysics(WorldModel const &worldModel, Timeline const &timeline);

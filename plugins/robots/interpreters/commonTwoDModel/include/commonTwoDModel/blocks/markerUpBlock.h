@@ -8,12 +8,12 @@ namespace twoDModel {
 namespace blocks {
 
 /// An interpreter`s implementation for RemoveMarker block. See description in documentation.
-class RemoveMarkerBlock : public interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::Marker>
+class MarkerUpBlock : public interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::Marker>
 {
 	Q_OBJECT
 
 public:
-	explicit RemoveMarkerBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	explicit MarkerUpBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
 private:
 	void doJob(robotModel::parts::Marker &marker) override;

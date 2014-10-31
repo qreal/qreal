@@ -17,8 +17,8 @@
 #include "details/printTextBlock.h"
 #include "details/clearScreenBlock.h"
 
-#include <commonTwoDModel/blocks/prepareMarkerBlock.h>
-#include <commonTwoDModel/blocks/removeMarkerBlock.h>
+#include <commonTwoDModel/blocks/markerDownBlock.h>
+#include <commonTwoDModel/blocks/markerUpBlock.h>
 
 using namespace interpreterCore::coreBlocks;
 
@@ -51,9 +51,9 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "ClearScreen")) {
 		return new details::ClearScreenBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "PrepareMarker")) {
-		return new twoDModel::blocks::PrepareMarkerBlock(mRobotModelManager->model());
+		return new twoDModel::blocks::MarkerDownBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "RemoveMarker")) {
-		return new twoDModel::blocks::RemoveMarkerBlock(mRobotModelManager->model());
+		return new twoDModel::blocks::MarkerUpBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -76,8 +76,8 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("VariableInit")
 		, id("ClearScreen")
 		, id("PrintText")
-		, id("PrepareMarker")
-		, id("RemoveMarker")
+		, id("MarkerDown")
+		, id("MarkerUp")
 	};
 }
 
@@ -87,8 +87,8 @@ qReal::IdList CoreBlocksFactory::blocksToDisable() const
 
 	if (!mRobotModelManager->model().name().contains("TwoD")) {
 		result
-				<< id("PrepareMarker")
-				<< id("RemoveMarker")
+				<< id("MarkerDown")
+				<< id("MarkerUp")
 				;
 	}
 

@@ -30,8 +30,8 @@ public:
 
 	void playSound(int timeInMs) override;
 
-	void prepareMarker(QColor const &color) override;
-	void removeMarker() override;
+	void markerDown(QColor const &color) override;
+	void markerUp() override;
 
 	utils::TimelineInterface &modelTimeline() override;
 	engine::TwoDModelDisplayInterface *display() override;

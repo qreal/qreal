@@ -1,16 +1,16 @@
-#include "commonTwoDModel/blocks/removeMarkerBlock.h"
+#include "commonTwoDModel/blocks/markerUpBlock.h"
 
 using namespace twoDModel;
 using namespace blocks;
 using namespace interpreterBase::robotModel;
 
-RemoveMarkerBlock::RemoveMarkerBlock(RobotModelInterface &robotModel)
+MarkerUpBlock::MarkerUpBlock(RobotModelInterface &robotModel)
 	: interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::Marker>(robotModel)
 {
 }
 
-void RemoveMarkerBlock::doJob(robotModel::parts::Marker &marker)
+void MarkerUpBlock::doJob(robotModel::parts::Marker &marker)
 {
-	marker.remove();
+	marker.up();
 	emit done(mNextBlockId);
 }
