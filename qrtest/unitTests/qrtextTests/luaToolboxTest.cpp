@@ -54,3 +54,16 @@ TEST_F(LuaToolboxTest, errorProcessingSanityCheck)
 	mToolbox->interpret<int>("true ||| false");
 	EXPECT_FALSE(mToolbox->errors().isEmpty());
 }
+
+TEST_F(LuaToolboxTest, tables)
+{
+	mToolbox->interpret<int>("a = {10; 15}");
+
+	int result = mToolbox->interpret<int>("a[0]");
+	EXPECT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ(10, result);
+
+	result = mToolbox->interpret<int>("a[1]");
+	EXPECT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ(15, result);
+}

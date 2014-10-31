@@ -64,7 +64,6 @@ Interpreter::~Interpreter()
 void Interpreter::interpret()
 {
 	mInterpretersInterface.errorReporter()->clear();
-	mLanguageToolbox.clear();
 
 	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
 		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
@@ -82,6 +81,8 @@ void Interpreter::interpret()
 	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().name())) {
 		return;
 	}
+
+	mLanguageToolbox.clear();
 
 	/// @todo Temporarily loading initial configuration from a network of SensorConfigurationProviders.
 	///       To be done more adequately.
