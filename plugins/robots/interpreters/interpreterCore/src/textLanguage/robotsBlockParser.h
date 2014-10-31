@@ -24,6 +24,8 @@ public:
 	/// Returns a list of predefined variables that should be hidden from user (sensor and port variables, basically).
 	QStringList const &hiddenVariables() const;
 
+	void clear() override;
+
 private slots:
 	void setReservedVariables();
 
