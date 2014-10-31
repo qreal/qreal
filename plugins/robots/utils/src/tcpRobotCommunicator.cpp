@@ -80,7 +80,6 @@ bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 
 bool TcpRobotCommunicator::stopRobot()
 {
-	connect();
 	if (!mControlConnection.isConnected()) {
 		return false;
 	}
