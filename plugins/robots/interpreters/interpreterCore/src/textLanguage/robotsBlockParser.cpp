@@ -57,6 +57,12 @@ QStringList const &RobotsBlockParser::hiddenVariables() const
 	return mHiddenVariables;
 }
 
+void RobotsBlockParser::clear()
+{
+	qrtext::lua::LuaToolbox::clear();
+	setReservedVariables();
+}
+
 void RobotsBlockParser::addIntrinsicFuctions()
 {
 	auto const add0aryFunction = [this] (QString const &name

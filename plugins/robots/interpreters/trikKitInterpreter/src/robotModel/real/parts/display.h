@@ -1,6 +1,7 @@
 #pragma once
 
 #include "robotModel/parts/trikDisplay.h"
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -12,13 +13,16 @@ class Display : public robotModel::parts::TrikDisplay
 	Q_OBJECT
 
 public:
-	Display(interpreterBase::robotModel::DeviceInfo const &info, interpreterBase::robotModel::PortInfo const &port);
+	Display(interpreterBase::robotModel::DeviceInfo const &info
+		, interpreterBase::robotModel::PortInfo const &port
+		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void drawSmile(bool sad) override;
 	/// @todo: color enum here?
 	void setBackground(QColor const &color) override;
 	void clearScreen() override;
 	void printText(int x, int y, QString const &text) override;
+
 	void setPainterColor(QColor const &color) override;
 	void setPainterWidth(int penWidth) override;
 	void drawPixel(int x, int y) override;
@@ -26,6 +30,9 @@ public:
 	void drawRect(int x, int y, int width, int height)  override;
 	void drawEllipse(int x, int y, int width, int height) override;
 	void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)  override;
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

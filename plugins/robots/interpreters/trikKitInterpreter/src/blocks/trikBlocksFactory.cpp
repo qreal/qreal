@@ -23,8 +23,11 @@
 #include "details/trikEnginesBackwardBlock.h"
 #include "details/trikEnginesForwardBlock.h"
 #include "details/waitForMotionBlock.h"
+#include "details/speakerBlock.h"
 #include "robotModel/parts/trikInfraredSensor.h"
 #include "details/ledBlock.h"
+#include "details/sayBlock.h"
+#include "details/systemCommandBlock.h"
 
 using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
@@ -33,7 +36,7 @@ using namespace interpreterBase::blocksBase::common;
 interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
 {
 	if (elementMetatypeIs(element, "TrikPlayTone")) {
-		return new EmptyBlock();
+		return new SpeakerBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikV4EnginesBackward")
 			|| elementMetatypeIs(element, "TrikV6EnginesBackward"))
 	{
@@ -54,9 +57,9 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 		return new ClearEncoderBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "TrikSay")) {
-		return new EmptyBlock();
+		return new SayBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikSystem")) {
-		return new EmptyBlock();
+		return new SystemCommandBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
 		return new EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikDetectLine")) {
