@@ -49,7 +49,7 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 		, SystemEvents const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
-		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
+		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
 	connect(&eventsForKitPlugin
@@ -62,6 +62,7 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 	mTwoDModelV6->init(eventsForKitPlugin, systemEvents, graphicalModel
 			, logicalModel, interpretersInterface, interpreterControl);
 
+	mRealRobotModelV6.setErrorReporter(interpretersInterface.errorReporter());
 	QLineEdit * const quickPreferences = new QLineEdit;
 	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
 	auto updateQuickPreferences = [quickPreferences]() {

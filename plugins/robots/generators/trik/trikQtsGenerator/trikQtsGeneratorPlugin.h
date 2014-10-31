@@ -2,10 +2,11 @@
 
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 
-namespace trik {
-
+namespace utils {
 class TcpRobotCommunicator;
+}
 
+namespace trik {
 namespace qts {
 
 /// Generation of QtScript program for TRIK, uploading and execution of a program.
@@ -60,7 +61,7 @@ private:
 	/// Action that stops script execution and turns off motors.
 	QAction mStopRobotAction;
 
-	TcpRobotCommunicator *mCommunicator;
+	utils::TcpRobotCommunicator *mCommunicator;
 };
 
 }

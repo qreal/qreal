@@ -47,7 +47,7 @@ public:
 			, qReal::ProjectManagementInterface const &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::LanguageToolboxInterface &parser
+			, qrtext::LanguageToolboxInterface &languageToolbox
 			, QAction &connectToRobotAction
 			);
 
@@ -95,6 +95,9 @@ private:
 
 	details::SensorVariablesUpdater mSensorVariablesUpdater;
 	details::Autoconfigurer mAutoconfigurer;
+
+	/// Reference to a parser to be able to clear parser state when starting interpretation.
+	qrtext::LanguageToolboxInterface &mLanguageToolbox;
 };
 
 }

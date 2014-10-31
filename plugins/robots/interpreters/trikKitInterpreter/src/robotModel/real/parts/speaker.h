@@ -1,6 +1,7 @@
 #pragma once
 
 #include "robotModel/parts/trikSpeaker.h"
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -13,9 +14,13 @@ class Speaker : public robotModel::parts::TrikSpeaker
 
 public:
 	Speaker(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void play(QString const &filePath) override;
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

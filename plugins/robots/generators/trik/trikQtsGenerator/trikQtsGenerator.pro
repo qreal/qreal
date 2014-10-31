@@ -13,12 +13,13 @@ RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
-		-lrobots-generator-base -lrobots-trik-generator-base \
+		-lrobots-generator-base -lrobots-trik-generator-base -lrobots-utils \
 
 INCLUDEPATH += \
 	$$PWD/../trikGeneratorBase/include/ \
 	$$PWD/../../generatorBase/include/ \
 	$$PWD/../../../interpreters/interpreterBase/include \
+	$$PWD/../../../utils/include/ \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui \
 	$$PWD/../../../../../qrtext/include \
@@ -43,5 +44,3 @@ SOURCES += \
 RESOURCES = \
 	$$PWD/trikQtsGenerator.qrc \
 	$$PWD/templates.qrc \
-
-include(robotCommunication/robotCommunication.pri)

@@ -19,6 +19,7 @@
 #include "parts/trikLineSensor.h"
 #include "parts/trikObjectSensor.h"
 #include "parts/trikLed.h"
+#include "parts/trikShell.h"
 
 using namespace trikKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
@@ -93,6 +94,8 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
 	addAllowedConnection(PortInfo("ColorSensorRPort", input, {}, "colorSensorR"), { colorSensorInfo() });
 	addAllowedConnection(PortInfo("ColorSensorGPort", input, {}, "colorSensorG"), { colorSensorInfo() });
 	addAllowedConnection(PortInfo("ColorSensorBPort", input, {}, "colorSensorB"), { colorSensorInfo() });
+
+	addAllowedConnection(PortInfo("ShellPort", output), { shellInfo() });
 }
 
 QList<PortInfo> TrikRobotModelBase::configurablePorts() const
@@ -190,3 +193,9 @@ DeviceInfo TrikRobotModelBase::objectSensorInfo() const
 {
 	return DeviceInfo::create<parts::TrikObjectSensor>();
 }
+
+DeviceInfo TrikRobotModelBase::shellInfo() const
+{
+	return DeviceInfo::create<parts::TrikShell>();
+}
+

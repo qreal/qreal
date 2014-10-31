@@ -98,6 +98,8 @@ public:
 		DebuggerInterface::setVariableValue<T>(name, value);
 	}
 
+	void clear() override;
+
 protected:
 	/// Tells that the given identifier is a constant and reserved by the system (like 'pi').
 	void markAsSpecialConstant(QString const &identifier);
