@@ -215,6 +215,11 @@ void LuaSemanticAnalyzer::constrainAssignment(QSharedPointer<core::ast::Node> co
 	auto lhsType = typeVariable(lhs);
 	auto rhsType = typeVariable(rhs);
 	bool wasCoercion = false;
+	if (!lhsType || !rhsType) {
+		// Most likely error is already reported.
+		return;
+	}
+
 	lhsType->constrainAssignment(rhsType, generalizationsTable(), &wasCoercion);
 	if (lhsType->isEmpty()) {
 		reportError(operation, QObject::tr("Left and right operand have mismatched types."));
