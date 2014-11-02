@@ -16,6 +16,7 @@ DatabasesGenerator::DatabasesGenerator(const PluginConfigurator configurator)
 	, mGraphicalModelApi(configurator.graphicalModelApi())
 	, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
 	, mErrorReporter(configurator.mainWindowInterpretersInterface().errorReporter())
+	, mDatatypesChecker(new DatatypesChecker(""))
 {
 	//mAppTranslator.load(":/DatabasesGenerator_" + QLocale::system().name());
 	//QApplication::installTranslator(&mAppTranslator);
@@ -25,6 +26,7 @@ DatabasesGenerator::DatabasesGenerator(const PluginConfigurator configurator)
 
 DatabasesGenerator::~DatabasesGenerator()
 {
+	delete mDatatypesChecker;
 }
 
 void DatabasesGenerator::activeTabChanged(Id const &rootElementId)
@@ -246,12 +248,14 @@ void DatabasesGenerator::generateSQL()
 	mErrorReporter->clear();
 	mPassedElements.clear();
 
+	mDatatypesChecker->isDatatype("qqqq");
+
 	if (!(checkRelationships() && checkAttributes() && checkEntities())) {
 		return;
 	}
 
 	codeFile.setFileName(mWorkDir + mCodeFileName);
-	codeFile.open(QIODevice::WriteOnly);
+	int y = codeFile.open(QIODevice::WriteOnly);
 
 	IdList entityNodes = findNodes("Entity");
 
@@ -338,7 +342,7 @@ void DatabasesGenerator::generateSQL()
 		}
 
 		codeFile.write("CREATE TABLE ");
-		codeFile.write((getListTableName(oneToOneAllTablesSet.at(fromSet)) + "-" + getListTableName(oneToOneAllTablesSet.at(toSet))).toUtf8());
+		codeFile.write((getListTableName(oneToOneAllTablesSet.at(fromSet)) + "_" + getListTableName(oneToOneAllTablesSet.at(toSet))).toUtf8());
 		codeFile.write("\r\n(");
 		codeFile.write("\r\n");
 

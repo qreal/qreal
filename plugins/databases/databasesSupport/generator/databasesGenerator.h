@@ -3,6 +3,7 @@
 #include <QtCore/QTranslator>
 #include <qrgui/mainwindow/errorReporter.h>
 #include <qrkernel/ids.h>
+#include "datatypesChecker.h"
 
 namespace qReal {
 namespace databasesSupport {
@@ -67,6 +68,8 @@ private:
 	QString mCodeFileName;
 	QString mWorkDir;
 	QFile codeFile;
+
+	DatatypesChecker *mDatatypesChecker;
 
 	//int tabsCount;
 };
