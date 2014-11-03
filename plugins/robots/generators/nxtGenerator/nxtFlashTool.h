@@ -3,7 +3,7 @@
 #include <QtCore/QProcess>
 #include <QtCore/QFileInfo>
 
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace nxtOsek {
 

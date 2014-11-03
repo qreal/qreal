@@ -1,7 +1,7 @@
 #pragma once
 
 #include <qrtext/languageToolboxInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include "generatorBase/converters/templateParametrizedConverter.h"

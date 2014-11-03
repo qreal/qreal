@@ -5,7 +5,6 @@
 
 #include <QtCore/QDebug>
 
-#include "robotCommunication/tcpRobotCommunicator.h"
 #include "trikMasterGenerator.h"
 
 using namespace trik;
@@ -35,7 +34,7 @@ void TrikGeneratorPlugin::init(qReal::PluginConfigurator const &configurator
 		, qrtext::LanguageToolboxInterface &textLanguage)
 {
 	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);
-	mCommunicator = new TcpRobotCommunicator(*mMainWindowInterface->errorReporter());
+	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
 }
 
 QList<ActionInfo> TrikGeneratorPlugin::actions()

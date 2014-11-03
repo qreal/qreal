@@ -6,6 +6,7 @@
 #include <gtest/gtest.h>
 
 #include <src/interpreter/interpreterInterface.h>
+#include <src/textLanguage/robotsBlockParser.h>
 #include <interpreterBase/robotModel/robotModelInterfaceMock.h>
 #include <interpreterBase/robotModel/robotModelManagerInterfaceMock.h>
 #include <interpreterBase/robotModel/configurationInterfaceMock.h>
@@ -34,6 +35,7 @@ protected:
 	QScopedPointer<QAction> mFakeConnectToRobotAction;
 	BlocksFactoryManagerInterfaceMock mBlocksFactoryManager;
 	ConfigurationInterfaceMock mConfigurationInterfaceMock;
+	QScopedPointer<interpreterCore::textLanguage::RobotsBlockParser> mParser;
 };
 
 }

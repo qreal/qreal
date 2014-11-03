@@ -42,10 +42,10 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4998"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="5171"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="8642"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12247"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12548"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12721"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12894"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12199"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12500"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12673"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12846"/>
         <source>Ports:</source>
         <translation>Порты:</translation>
     </message>
@@ -57,10 +57,10 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4303"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4476"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="7548"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9337"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9574"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9984"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10157"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9305"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9542"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9952"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10125"/>
         <source>X: </source>
         <translation>X: </translation>
     </message>
@@ -72,10 +72,10 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4315"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4488"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="7560"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9349"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9586"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9996"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10169"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9317"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9554"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9964"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10137"/>
         <source>Y: </source>
         <translation>Y: </translation>
     </message>
@@ -94,46 +94,46 @@
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="1225"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4098"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9779"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9747"/>
         <source>X1: </source>
         <translation>X1: </translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="1237"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4110"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9791"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9759"/>
         <source>Y1: </source>
         <translation>Y1: </translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="1249"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4122"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9803"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9771"/>
         <source>X2: </source>
         <translation>X2: </translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="1261"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4134"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9815"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9783"/>
         <source>Y2: </source>
         <translation>Y2: </translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="1627"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4500"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9361"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9598"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10181"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9329"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9566"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10149"/>
         <source>Width: </source>
         <translation>Ширина: </translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="1639"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4512"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9373"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9610"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10193"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9341"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9578"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10161"/>
         <source>Height: </source>
         <translation>Высота: </translation>
     </message>
@@ -142,8 +142,8 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="2153"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="4837"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="5010"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12560"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12733"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12512"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12685"/>
         <source>Power (%):</source>
         <translation>Мощность (%): </translation>
     </message>
@@ -188,19 +188,19 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="7013"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="7202"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="7391"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13389"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13900"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14238"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14584"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15039"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13341"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13852"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14190"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14536"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14991"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="5689"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10537"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11469"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11626"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10489"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11421"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11578"/>
         <source>Color:</source>
         <translation>Цвет:</translation>
     </message>
@@ -215,18 +215,18 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="6699"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="7037"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="7226"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13063"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13413"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13739"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13924"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14262"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15063"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13015"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13365"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13691"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13876"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14214"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15015"/>
         <source>Sign:</source>
         <translation>Считанное значение:</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="6051"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13401"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13353"/>
         <source>Tacho Limit:</source>
         <translation>Предел оборотов:</translation>
     </message>
@@ -237,7 +237,7 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="6687"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14250"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14202"/>
         <source>Percents:</source>
         <translation>Проценты:</translation>
     </message>
@@ -270,17 +270,17 @@
         <translation type="vanished">Детектировать линию</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9385"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9353"/>
         <source>StartAngle: </source>
         <translation>Начальный угол:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9397"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9365"/>
         <source>SpanAngle: </source>
         <translation>Конечный угол:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10368"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10336"/>
         <source>Initialize Videocamera</source>
         <translation>Включить видеокамеру</translation>
     </message>
@@ -289,88 +289,88 @@
         <translation type="vanished">Датчик линии в переменную</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9008"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14421"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15377"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="8992"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14373"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15329"/>
         <source>Variable:</source>
         <translation>Переменная:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10694"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10646"/>
         <source>File name:</source>
         <translation>Имя файла:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10995"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10947"/>
         <source>Text:</source>
         <translation>Текст:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11152"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11104"/>
         <source>Message:</source>
         <translation>Сообщение:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11164"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11116"/>
         <source>Hull number:</source>
         <translation>Бортномер:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11783"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="11735"/>
         <source>Width:</source>
         <translation>Ширина:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12084"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="12036"/>
         <source>Command:</source>
         <translation>Команда:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13051"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13003"/>
         <source>Acceleration:</source>
         <translation>Ускорение:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13075"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13027"/>
         <source>Acceleration Axis:</source>
         <translation>Ускорение по оси:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13234"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13186"/>
         <source>Wait for Down</source>
         <translation>Ждать Вниз</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="6222"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13572"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13524"/>
         <source>Wait for  Enter</source>
         <translation>Ждать Ввод</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13727"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13679"/>
         <source>Degrees/sec:</source>
         <translation>Градусы/сек:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13912"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15051"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="13864"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15003"/>
         <source>Distance:</source>
         <translation>Расстояние:</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="6520"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14083"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14035"/>
         <source>Wait for Left</source>
         <translation>Ждать Влево</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14735"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14687"/>
         <source>Wait for Power</source>
         <translation>Ждать Питание</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="6858"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14884"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14836"/>
         <source>Wait for Right</source>
         <translation>Ждать Вправо</translation>
     </message>
@@ -381,12 +381,8 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="8809"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="8827"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="8990"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9020"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10356"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10374"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15544"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="8974"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="10324"/>
         <source>Mode</source>
         <translation>Режим</translation>
     </message>
@@ -396,22 +392,22 @@
         <translation>Детектировать по камере</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9002"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="8986"/>
         <source>Detector into Variable</source>
         <translation>Значение детектора в переменную</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14578"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="14530"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15222"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15174"/>
         <source>Wait for Up</source>
         <translation>Ждать Вверх</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15389"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="15341"/>
         <source>Value:</source>
         <translation>Значение:</translation>
     </message>
@@ -804,10 +800,10 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="166"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="168"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="198"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="233"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="234"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="236"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="238"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="235"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="237"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="239"/>
         <source>Ports</source>
         <translation>Порты</translation>
     </message>
@@ -921,8 +917,8 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="136"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="164"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="167"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="235"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="237"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="236"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="238"/>
         <source>Power (%)</source>
         <translation>Мощность (%)</translation>
     </message>
@@ -976,10 +972,10 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="185"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="187"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="190"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="242"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="248"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="251"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="255"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="243"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="249"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="252"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="256"/>
         <source>Port</source>
         <translation>Порт</translation>
     </message>
@@ -994,31 +990,31 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="183"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="186"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="188"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="241"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="243"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="246"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="249"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="252"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="256"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="242"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="244"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="247"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="250"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="253"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="257"/>
         <source>Sign</source>
         <translation>Считанное значение</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="180"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="244"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="245"/>
         <source>Tacho Limit</source>
         <translation>Предел оборотов</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="181"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="250"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="251"/>
         <source>Percents</source>
         <translation>Проценты</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="184"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="247"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="254"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="248"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="255"/>
         <source>Distance</source>
         <translation>Расстояние</translation>
     </message>
@@ -1053,8 +1049,8 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="202"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="253"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="258"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="254"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="259"/>
         <source>Variable</source>
         <translation>Переменная</translation>
     </message>
@@ -1070,127 +1066,132 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="232"/>
+        <source>Code</source>
+        <translation>Код</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="233"/>
         <source>Command</source>
         <translation>Команда</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="239"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="240"/>
         <source>Acceleration</source>
         <translation>Ускорение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="240"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="241"/>
         <source>Acceleration Axis</source>
         <translation>Ускорение по оси</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="245"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="246"/>
         <source>Degrees/sec</source>
         <translation>Градусы/сек</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="257"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="258"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="275"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="276"/>
         <source>Algorithms</source>
         <translation>Алгоритмы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="303"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="304"/>
         <source>Actions</source>
         <translation>Действия</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="331"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="332"/>
         <source>Wait</source>
         <translation>Ожидания</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="355"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="356"/>
         <source>Drawing</source>
         <translation>Рисование на дисплее</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="635"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="709"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="637"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="711"/>
         <source>Enter some text here...</source>
         <translation>Введите текст...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="663"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="694"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="699"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="702"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="707"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="712"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="715"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="750"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="755"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="665"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="696"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="701"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="704"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="709"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="714"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="717"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="752"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="757"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="760"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="763"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="766"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="759"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="762"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="765"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="768"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="664"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="666"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="661"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="665"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="690"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="663"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="667"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="692"/>
         <source>50</source>
         <translation>50</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="658"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="667"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="687"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="660"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="669"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="689"/>
         <source>A, B, C</source>
         <translation>A, B, C</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="653"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="656"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="682"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="685"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="655"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="658"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="684"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="687"/>
         <source>B, C</source>
         <translation>B, C</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="654"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="657"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="683"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="686"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="746"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="656"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="659"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="685"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="688"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="748"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="750"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="659"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="660"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="688"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="689"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="713"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="661"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="662"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="690"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="691"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="715"/>
         <source>1000</source>
         <translation>1000</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="710"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="711"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="712"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="713"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="697"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="699"/>
         <source>B</source>
         <translation>B</translation>
     </message>
@@ -1199,7 +1200,7 @@
         <translation type="vanished">JE1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="740"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="742"/>
         <source>media/beep.wav</source>
         <translation>media/beep.wav</translation>
     </message>
@@ -1224,121 +1225,121 @@
         <translation type="vanished">JB1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="767"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="769"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="773"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="775"/>
         <source>This block can hold text notes that are ignored by generators and interpreters. Use it for improving the diagram readability.</source>
         <translation>Блок с текстовыми заметками, которые игнорируются при генерации и интерпретации. Используйте его для повышения наглядности диаграммы.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="774"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="776"/>
         <source>For creating a link between two elements A and B you can just hover a mouse above A, press the right mouse button and (without releasing it) draw a line to the element B. Alternatively you can just &apos;pull&apos; a link from a small blue circle next to the element.</source>
         <translation>Для того, чтобы создать связь между двумя элементами A и B, можно навести курсор на элемент A, нажать правую кнопку мыши и, не отпуская ее, провести линию до элемента B, либо &apos;вытащить&apos; связь из кружочка справа от элемента.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="784"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="786"/>
         <source>The final node of the program. If the program consists of some parallel execution lines the reachment of this block terminates the corresponding execution line. This block can`t have outgoing links.</source>
         <translation>Конец программы. Если программа состоит из нескольких параллельных участков выполнения, достижение этого блока завершает соответствующий участок выполнения. У данного блока не может быть исходящих связей.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="785"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="787"/>
         <source>Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links.</source>
         <translation>Разделить выполнение программы на несколько потоков, которые с точки зрения программиста будут выполняться параллельно. Так, например, можно одновременно ждать срабатывания сенсора и истечения временного интервала. Блок должен иметь хотя бы две исходящие связи.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="786"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="788"/>
         <source>Evaluates a value of the given expression. Also new variables can be defined in this block. See the &apos;Expressions Syntax&apos; chapter in help for more information about &apos;Function&apos; block syntax.</source>
         <translation>Посчитать значение заданного выражения. Также в данном блоке допускается определение переменных. Подробнее про синтаксис допустимых выражений параметра &apos;Функция&apos; см. в документации в разделе &apos;Синтаксис выражений&apos;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="787"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="789"/>
         <source>Separates program execution in correspondece with the given condition. The &apos;Condition&apos; parameter value must be some boolean expression that will determine subsequent program execution line. This block must have two outgoing links, at least one of them must have &apos;Guard&apos; parameter set to &apos;true&apos; or &apos;false&apos;. The execution will be proceed trough the link marked with the guard corresponding to &apos;Condition&apos; parameter of the block.</source>
         <translation>Разделить выполнение программы в соответствии с заданным условием. Значением параметра &apos;Условие&apos; является некое логическое выражение, на основе значения которого будет осуществлен выбор дальнейшего пути выполнения диаграммы. У данного блока должны быть две исходящие связи, у одной из которых должно быть задано значение параметра &apos;Условие&apos; (возможные варианты — &apos;истина&apos; и &apos;ложь&apos;). При невыполнении данного условия выполнение передается по другой связи.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="788"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="790"/>
         <source>The entry point of the program execution. Each diagram should have only one such block, it must not have incomming links and it must have only one outgoing link. The interpretation process starts from exactly this block.</source>
         <translation>Начальная точка выполнения программы. На каждой диаграмме такой блок должен быть только один, в него не должно быть входящих связей, исходящая связь из этого элемента должна быть только одна. Процесс интерпретации диаграммы начинается именно с этого блока.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="789"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="791"/>
         <source>This block executes a sequence of blocks for a given number of times. The number of repetitions is specified by the &apos;Iterations&apos; parameter. This block must have two outgoing links. One of them must be marked with the &apos;iteration&apos; guard (that means that the property &apos;Guard&apos; of the link must be set to &apos;iteration&apos; value). Another outgoing link must be unmarked: the program execution will be proceeded through this link when it will go through our &apos;Loop&apos; block for the given number of times.</source>
         <translation>Блок, организующий выполнение последовательности блоков несколько раз. Число повторений задается значением параметра &apos;Итераций&apos;. Блок должен иметь две исходящие связи, одна из которых должна быть помечена значением &apos;итерация&apos; (то есть значение параметра &apos;Условие&apos; должно быть &apos;итерация&apos;). Другая связь, исходящая из блока &apos;Цикл&apos;, должна оставаться непомеченной: по ней будет осуществляться переход, когда программа пройдет через блок &apos;Цикл&apos; указанное число раз.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="775"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="790"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="777"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="792"/>
         <source>Plays on the robot a sound with the fixed frequency. There are two parameters. The first one is a loudness of the sound, the second means if program should wait for sound completion or go to next block right away.</source>
         <translation>Проиграть на роботе звук с фиксированной частотой. Имеется два параметра. Первый - это громкость звука, второй означает ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку. Допустимые значения — истина и ложь.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="791"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="834"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="793"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="836"/>
         <source>Nullifies tacho limit of the motors on the given ports.</source>
         <translation>Сбросить показания количества оборотов моторов по заданным портам.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="772"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="774"/>
         <source>Clears everything drawn on the robot`s screen.</source>
         <translation>Стереть всё, что нарисовано на экране робота.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="776"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="792"/>
-        <source>Draws on the robot screen a circle with the given center and radius.</source>
-        <translation>Нарисовать на экране круг с заданным центром и заданным радиусом.</translation>
-    </message>
-    <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="777"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="793"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="820"/>
-        <source>Draws a segment on the robot screen. The parameters specify the ends of the segment.</source>
-        <translation>Нарисовать на экране отрезок. В качестве параметров блоку указываются концы отрезка.</translation>
-    </message>
-    <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="778"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="794"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="821"/>
-        <source>Draws one pixel in the specified coordinates on the robot screen.</source>
-        <translation>Нарисовать на экране точку в указанных координатах.</translation>
+        <source>Draws on the robot screen a circle with the given center and radius.</source>
+        <translation>Нарисовать на экране круг с заданным центром и заданным радиусом.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="779"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="795"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="822"/>
-        <source>Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.</source>
-        <translation>Нарисовать на экране прямоугольник. В качестве параметров указываются координаты левого верхнего угла, ширина и высота прямоугольника.</translation>
+        <source>Draws a segment on the robot screen. The parameters specify the ends of the segment.</source>
+        <translation>Нарисовать на экране отрезок. В качестве параметров блоку указываются концы отрезка.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="780"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="796"/>
-        <source>Enables motors on the given ports in reverse mode with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.</source>
-        <translation>Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.</translation>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="823"/>
+        <source>Draws one pixel in the specified coordinates on the robot screen.</source>
+        <translation>Нарисовать на экране точку в указанных координатах.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="781"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="797"/>
-        <source>Enables motors on the given ports with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.</source>
-        <translation>Включить моторы по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.</translation>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="824"/>
+        <source>Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.</source>
+        <translation>Нарисовать на экране прямоугольник. В качестве параметров указываются координаты левого верхнего угла, ширина и высота прямоугольника.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="782"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="798"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="837"/>
-        <source>Disables motors on the given ports.</source>
-        <translation>Выключить моторы по заданным портам.</translation>
+        <source>Enables motors on the given ports in reverse mode with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.</source>
+        <translation>Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="783"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="799"/>
+        <source>Enables motors on the given ports with the given power. Ports are specified with A, B or C letters divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.</source>
+        <translation>Включить моторы по заданным портам с заданной мощностью. Порты задаются буквами A, B или C, разделенными запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="784"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="800"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="839"/>
+        <source>Disables motors on the given ports.</source>
+        <translation>Выключить моторы по заданным портам.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="785"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="801"/>
         <source>Plays on the robot a sound with the given frequency and duration. This block is similar to the &apos;Beep&apos; block wuth the only difference that here you can specify sound parameters.</source>
         <translation>Проиграть на роботе звук с заданной частотой и длительностью. Аналогичен блоку &apos;Гудок&apos;, но позволяет задавать параметры звука. Имеется параметр, определяющий, ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="811"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="813"/>
         <source>Prints a given line in the specified coordinates on the robot`s screen. &apos;$&apos; token can be used in front of the identifier for printing its value. This feature is ignored in case when backslash (&apos;\&apos;) is written before the &apos;$&apos; token. Example: &apos;\$a = $a&apos; expression will print &apos;$a = 5&apos; if the value of the variable &apos;a&apos; is 5.</source>
         <translation>Напечатать заданную строку в заданных координатах на экране. Можно использовать символ доллара (&apos;$&apos;) перед идентификатором переменной для вывода ее значения. Данный сценарий игнорируется, если перед символом доллара стоит обратный слеш (&apos;\&apos;). Пример: строка &apos;\$a = $a&apos; напечатает &apos;$a = 5&apos;, если значение переменной a равно 5.</translation>
     </message>
@@ -1347,55 +1348,55 @@
         <translation type="vanished">Ждать, пока заданные кнопки на роботе не будут нажаты заданное количество раз. Счётчики нажатия можно задать для каждой кнопки отдельно, блок продолжит выполнение, только когда все счётчики сработают.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="800"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="802"/>
         <source>Waits till the color sensor on the given port will recognize the given color.</source>
         <translation>Ждать, пока сенсор цвета в режиме распознавания цветов не вернет указанный цвет.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="801"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="803"/>
         <source>Waits till the value returned by the color sensor on the given port will be greater or lower then the given in the &apos;Intensity&apos; parameter value (the intensity is specified in percents, 0 to 100).</source>
         <translation>Ждать, пока значение, возвращаемое сенсором цвета на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Интенсивность&apos; (задается в процентах). Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения с введенной интенсивностью.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="802"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="839"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="804"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="841"/>
         <source>Waits till the tacho limit of the motor on the given port will reach the value of the &apos;Tacho Limit&apos; parameter.</source>
         <translation>Ждать, пока показания счетчика количества оборотов на заданном моторе не достинут указанного в значении параметра &apos;Предел оборотов&apos;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="804"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="806"/>
         <source>Waits for &quot;Escape&quot; button press.</source>
         <translation>Ждать нажатия на нижнюю кнопку.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="806"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="844"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="808"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="846"/>
         <source>Waits till the value returned by the light sensor on the given port will be greater or lower then the given in the &apos;Percents&apos; parameter value (0 to 100).</source>
         <translation>Ждать, пока значение, возвращаемое сенсором света на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Проценты&apos;. Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения со значением параметра &apos;Проценты&apos;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="808"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="849"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="810"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="851"/>
         <source>Waits till the value returned by the ultrasonic sensor on the given port will be greater or lower then the given in the &apos;Distance&apos; parameter value (the distance is specified in centimeters, 0 to 255).</source>
         <translation>Ждать, пока расстояние, возвращаемое ультразвуковым сенсором расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos; (расстояние задается в сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="809"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="811"/>
         <source>Waits till the loudness obtained by the sound sensor on the given port will be greater or lower then the given value.</source>
         <translation>Ждать, пока громкость, считанная микрофоном на заданном порту, не будет выше или ниже заданного значения.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="810"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="812"/>
         <source>Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).</source>
         <translation>Ждать, пока не сработает сенсор касания. Параметром указывается номер порта, к которому подключен сенсор касания. Допустимые значения: 1, 2, 3, 4.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="812"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="814"/>
         <source>Subprogram call. Subprograms are used for splitting repetitive program parts into a separate diagram and then calling it from main diagram or other subprograms. When this block is added into a diagram it will be suggested to enter subprogram name. The double click on subprogram call block may open the corresponding subprogram diagram. Moreover user palette will appear containing existing subrpograms, they can be dragged into a diagram like the usial blocks.</source>
         <translation>Вызов подпрограммы. Подпрограммы используются для того, чтобы вынести повторяющиеся фрагменты программы на отдельную диаграмму, а потом вызывать фрагмент программы с этой диаграммы в нескольких местах основной программы или других подпрограмм. При добавлении этого блока на диаграмму будет предложено ввести имя подпрограммы, после чего двойным кликом на блоке можно будет перейти на диаграмму, соответствующую данной подпрограмме. Кроме того, появится дополнительная палитра со всеми подпрограммами, подпрограммы из неё можно перетаскивать на сцену и использовать как обычные блоки.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="814"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="816"/>
         <source>Waits for a given time in milliseconds.</source>
         <translation>Ждать заданное количество времени в миллисекундах.</translation>
     </message>
@@ -1408,12 +1409,12 @@
         <translation type="vanished">Инициализировать датчик линии по видеокамере цветом объекта в центре поля зрения камеры.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="818"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="820"/>
         <source>Draws the arc defined by the rectangle beginning at (x, y) with the specified width and height, and the given startAngle and spanAngle.</source>
         <translation>Рисует на экране дугу, ограниченную прямоугольником с началом в (x, y) и заданными шириной и высотой, также задаётся начальный и конечный угол дуги.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="819"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="821"/>
         <source>Draws the ellipse defined by the rectangle beginning at (x, y) with the given width and height.</source>
         <translation>Рисует на экране эллипс, ограниченный прямоугольником с началом в (x, y) и заданными шириной и высотой.</translation>
     </message>
@@ -1422,7 +1423,7 @@
         <translation type="vanished">Включить датчик линии по видеокамере, вывести на экран картинку.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="824"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="826"/>
         <source>Sets the color of the led on the robot`s front panel.</source>
         <translation>Установить цвет светодиода на передней панели роота.</translation>
     </message>
@@ -1431,42 +1432,42 @@
         <translation type="vanished">Сохранить текущее значение датчика линии по видеокамере в заданную переменную.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="825"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="827"/>
         <source>Plays on the robot a sound file (.wav or .mp3) previously uploaded to it.</source>
         <translation>Проигрывает на роботе указанный звуковой файл (в формате .wav или .mp3), который должен быть на него предварительно загружен.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="826"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="828"/>
         <source>Draws a sad smile on the robot`s screen :(</source>
         <translation>Рисует на экране грустный смайлик :(</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="827"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="829"/>
         <source>Synthesizes the given phrase and plays it on the robot.</source>
         <translation>Воспроизводит заданную фразу на роботе.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="829"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="831"/>
         <source>Sets the background color of the current picture on the robot`s screen.</source>
         <translation>Устанавливает цвет фона активной картинки на экране робота.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="830"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="832"/>
         <source>Sets the painter color.</source>
         <translation>Устанавливает цвет кисти.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="831"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="833"/>
         <source>Sets the painter width.</source>
         <translation>Устанавливает толщину кисти.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="832"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="834"/>
         <source>Draws a smile on the robot`s screen :)</source>
         <translation>Рисует на экране смайлик :)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="833"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="835"/>
         <source>Invokes bash script-style command on the robot.</source>
         <translation>Выполняет заданную bash-команду на роботе.</translation>
     </message>
@@ -1479,205 +1480,205 @@
         <translation type="vanished">Включить моторы по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, JM1, JE2), и раделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="838"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="840"/>
         <source>Waits for &quot;Down&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Вниз&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="803"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="840"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="805"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="842"/>
         <source>Waits for &quot;Enter&quot;. button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Ввод&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="841"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="843"/>
         <source>Waits till the value returned by the gyroscope on the given port will be greater or lower then the given in the &apos;Degrees/sec&apos; parameter value.</source>
         <translation>Ждать, пока значение, возвращаемое гироскопом на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Градусы/сек&apos;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="842"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="844"/>
         <source>Waits till the value returned by the infrared sensor on the given port will be greater or lower then the given in the &apos;Distance&apos; parameter value (the distance is specified in centimeters, 0 to 255).</source>
         <translation>Ждать, пока расстояние, возвращаемое инфракрасным сенсором расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos;. Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="805"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="843"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="807"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="845"/>
         <source>Waits for &quot;Left&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Влево&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="847"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="849"/>
         <source>Waits for &quot;Power&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Питание&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="807"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="848"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="809"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="850"/>
         <source>Waits for &quot;Right&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Вправо&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="850"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="852"/>
         <source>Waits for &quot;Up&quot; button press.</source>
         <translation>Ждать нажатия на кнопку &quot;Вверх&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="851"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="853"/>
         <source>Assignes a given value to a given variable.</source>
         <translation>Присвоить указанной переменной указанное значение.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2486"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2480"/>
         <source>Composite</source>
         <translation>Композиция</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2486"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2480"/>
         <source>None</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2486"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2480"/>
         <source>Shared</source>
         <translation>Общая</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2474"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2470"/>
         <source>False</source>
         <translation>Ложь</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2474"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2470"/>
         <source>True</source>
         <translation>Истина</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2462"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2456"/>
         <source>greater</source>
         <translation>больше</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2462"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2456"/>
         <source>less</source>
         <translation>меньше</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2462"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2456"/>
         <source>not greater</source>
         <translation>не больше</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2462"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2456"/>
         <source>not less</source>
         <translation>не меньше</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2472"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
         <source>Concurrent</source>
         <translation>Параллеьный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="714"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="716"/>
         <source>E1</source>
         <translation>E1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="749"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="751"/>
         <source>M1, M2, M3, M4</source>
         <translation>M1, M2, M3, M4</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="745"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="747"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="749"/>
         <source>M3, M4</source>
         <translation>M3, M4</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="753"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="755"/>
         <source>B1</source>
         <translation>B1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="835"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="837"/>
         <source>Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usial mode.</source>
         <translation>Включить моторы в режиме реверса по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, M1, E2) и разделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в обычном режиме.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="836"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="838"/>
         <source>Enables motors on the given ports with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.</source>
         <translation>Включить моторы по заданным портам с заданной мощностью. Порты задаются так, как они обозначены на плате (например, M1, E2) и разделяются запятыми. Мощность задается в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2472"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
         <source>Guarded</source>
         <translation>Защищенный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2472"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
         <source>Sequential</source>
         <translation>Последовательный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2460"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2468"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2488"/>
         <source>A1</source>
         <translation>A1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2460"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2468"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2488"/>
         <source>A2</source>
         <translation>A2</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2460"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2468"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2488"/>
         <source>A3</source>
         <translation>A3</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2460"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2468"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2488"/>
         <source>A4</source>
         <translation>A4</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2460"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2468"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2488"/>
         <source>A5</source>
         <translation>A5</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2460"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2468"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2488"/>
         <source>A6</source>
         <translation>A6</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2468"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2476"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2488"/>
         <source>D1</source>
         <translation>D1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2468"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2476"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2488"/>
         <source>D2</source>
         <translation>D2</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2482"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2488"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>black</source>
         <translation>черный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="846"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="848"/>
         <source>Waits till the motion sensor on the given port is triggered.</source>
         <translation>Ждет, пока не сработает сенсор движения.</translation>
     </message>
@@ -1692,139 +1693,139 @@
         <translation>Сообщение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="816"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="818"/>
         <source>Initializes videocamera line or object or color detector with the color of the object in the middle of the camera`s sight.</source>
         <translation>Инициализировать датчик линии или объектов или цвета по видеокамере цветом объекта в центре поля зрения камеры.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="817"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="819"/>
         <source>Stores  current videocamera line or object or color detector`s value into a given variable.</source>
         <translation>Сохранить текущее значение датчика линии или объекта или цвета по видеокамере в заданную переменную.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="823"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="825"/>
         <source>Enables line or object or color detector by videocamera and draws videostream on the robot`s screen.</source>
         <translation>Включить датчик линии или объекта или цвета по видеокамере, вывести на экран картинку.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="845"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="847"/>
         <source>Waits for a message from another robot and stores it into a variable when it arrives.</source>
         <translation>Ждёт сообщения с другого робота и сохраняет его в переменную, когда оно приходит.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="828"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="830"/>
         <source>Sends message to another robot.</source>
         <translation>Посылает сообщение на другого робота.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="813"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="815"/>
         <source>Selects the program execution branch in correspondence with some expression value. The value of the expression written in &apos;Expression&apos; property is compared to the values on the outgoing links. If equal value is found then execution will be proceeded by that branch. Else branch without a marker will be selected.</source>
         <translation>Выбирает ветку, по которой будет продолжено исполнение программы. Значение выражения, указанного в свойстве &apos;Выражение&apos; сравнивается со значениями на исходящих связях. Если среди них найдено равное, исполнение будет продолжено по этой ветке. В противном случае будет выбрана ветка без маркера.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>blue</source>
         <translation>синий</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>cyan</source>
         <translation>сине-зелёный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>dark blue</source>
         <translation>тёмно-синий</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>dark cyan</source>
         <translation>тёмносине-зеленый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>dark gray</source>
         <translation>тёмно-серый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>dark green</source>
         <translation>тёмно-зелёный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>dark magenta</source>
         <translation>тёмно-пурпурный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>dark yellow</source>
         <translation>тёмно-жёлтый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>dark red</source>
         <translation>тёмно-красный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>gray</source>
         <translation>серый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2456"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2486"/>
         <source>green</source>
         <translation>зелёный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>light gray</source>
         <translation>светло-серый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>magenta</source>
         <translation>пурпурный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2456"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2486"/>
         <source>red</source>
         <translation>красный</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>white</source>
         <translation>белый</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2464"/>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
         <source>yellow</source>
         <translation>жёлтый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2470"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2462"/>
         <source>Color sensor</source>
         <translation>Сенсор цвета</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2470"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2462"/>
         <source>Line sensor</source>
         <translation>Сенсор линии</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2470"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2462"/>
         <source>Object sensor</source>
         <translation>Сенсор объекта</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2456"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2486"/>
         <source>off</source>
         <translation>выключен</translation>
     </message>
@@ -1834,82 +1835,82 @@
         <translation>Угол (в градусах)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="744"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="746"/>
         <source>B1, B2, B3, B4</source>
         <translation>B1, B2, B3, B4</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="815"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="817"/>
         <source>Manages angular servomotor. Sets up rotation angle on the given port in degrees. Values from 0 to 90 are correspond to a clockwise rotation and values from -90 to 0 correspond to counterclockwise rotation.</source>
         <translation>Управление угловым сервомотором. Устанавливает угол поворота вала мотора на данном порту (в градусах). Значения от 0 до 90 соотвествуют повороту по часовой, значения от -90 до 0 --- повороту против часовой.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2484"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2478"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2458"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2472"/>
         <source>In</source>
         <translation>Входной</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2458"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2472"/>
         <source>Inout</source>
         <translation>Входной-выходной</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2458"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2472"/>
         <source>Out</source>
         <translation>Выходной</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2458"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2472"/>
         <source>Return</source>
         <translation>Возвращается</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2466"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2474"/>
         <source>norm</source>
         <translation>норма</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2466"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2474"/>
         <source>x-axis</source>
         <translation>ось x</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2466"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2474"/>
         <source>y-axis</source>
         <translation>ось y</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2466"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2474"/>
         <source>z-axis</source>
         <translation>ось z</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2480"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2466"/>
         <source>false</source>
         <translation>ложь</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2480"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2466"/>
         <source>iteration</source>
         <translation>итерация</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2480"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2466"/>
         <source>true</source>
         <translation>истина</translation>
     </message>
@@ -1950,32 +1951,32 @@
         <translation type="vanished">JF1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2476"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2458"/>
         <source>Package</source>
         <translation>Пакет</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2476"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2458"/>
         <source>Private</source>
         <translation>Приватный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2476"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2458"/>
         <source>Protected</source>
         <translation>Защищенный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2476"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2458"/>
         <source>Public</source>
         <translation>Публичный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2454"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2460"/>
         <source>break</source>
         <translation>тормозить</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2454"/>
+        <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2460"/>
         <source>float</source>
         <translation>скользить</translation>
     </message>

@@ -3,9 +3,9 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QAction>
 
-#include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/mainWindow/projectManager/projectManagementInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrutils/watchListWindow.h>
 #include <qrtext/languageToolboxInterface.h>
 
@@ -47,7 +47,7 @@ public:
 			, qReal::ProjectManagementInterface const &projectManager
 			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-			, qrtext::LanguageToolboxInterface &parser
+			, qrtext::LanguageToolboxInterface &languageToolbox
 			, QAction &connectToRobotAction
 			);
 
@@ -95,6 +95,9 @@ private:
 
 	details::SensorVariablesUpdater mSensorVariablesUpdater;
 	details::Autoconfigurer mAutoconfigurer;
+
+	/// Reference to a parser to be able to clear parser state when starting interpretation.
+	qrtext::LanguageToolboxInterface &mLanguageToolbox;
 };
 
 }

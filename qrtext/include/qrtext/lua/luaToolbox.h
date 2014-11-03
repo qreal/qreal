@@ -80,6 +80,10 @@ public:
 
 	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const override;
 
+	QStringList const &specialIdentifiers() const override;
+
+	QStringList const &specialConstants() const override;
+
 	/// Reintroduced method from DebuggerInterface, returns value of identifier with given name.
 	template<typename T>
 	T value(QString const &identifier) const
@@ -93,6 +97,15 @@ public:
 	{
 		DebuggerInterface::setVariableValue<T>(name, value);
 	}
+
+	void clear() override;
+
+protected:
+	/// Tells that the given identifier is a constant and reserved by the system (like 'pi').
+	void markAsSpecialConstant(QString const &identifier);
+
+	/// Tells that the given identifier is reserved by the system.
+	void markAsSpecial(QString const &identifier);
 
 private:
 	QVariant interpret(QSharedPointer<core::ast::Node> const &root) override;
@@ -111,6 +124,9 @@ private:
 
 	QHash<qReal::Id, QHash<QString, QSharedPointer<core::ast::Node>>> mAstRoots;
 	QHash<qReal::Id, QHash<QString, QString>> mParsedCache;
+
+	QStringList mSpecialConstants;
+	QStringList mSpecialIdentifiers;
 };
 
 }

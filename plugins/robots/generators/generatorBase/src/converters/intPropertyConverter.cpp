@@ -11,9 +11,10 @@ using namespace qReal;
 IntPropertyConverter::IntPropertyConverter(QString const &pathToTemplates
 		, lua::LuaProcessor &luaTranslator
 		, qReal::Id const &id
+		, QString const &propertyName
 		, simple::Binding::ConverterInterface *reservedVariablesConverter
 		, simple::Binding::ConverterInterface *typeConverter)
-	: CodeConverterBase(luaTranslator, id, reservedVariablesConverter)
+	: CodeConverterBase(luaTranslator, id, propertyName, reservedVariablesConverter)
 	, TemplateParametrizedEntity(pathToTemplates)
 	, mTypeConverter(typeConverter)
 {

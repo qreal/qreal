@@ -7,7 +7,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../qrgui/ \
 	$$PWD/../../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -lqrtext -lqslog
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -lqrtext -lqslog -lqrgui-preferences-dialog
 
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
@@ -125,7 +125,3 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/robotParts/soundSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/touchSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/vectorSensor.h \
-
-# qrgui code
-HEADERS += \
-	$$PWD/../../../../qrgui/dialogs/preferencesPages/preferencesPage.h \

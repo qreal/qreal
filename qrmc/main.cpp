@@ -6,20 +6,21 @@
 
 using namespace qrmc;
 
-void myMessageOutput(QtMsgType type, const char *msg)
+void myMessageOutput(QtMsgType type, QMessageLogContext const &context, QString const &msg)
  {
+	QByteArray localMsg = msg.toLocal8Bit();
 	switch (type) {
 		case QtDebugMsg:
-			fprintf(stdout, "Debug: %s\n", msg);
+			fprintf(stdout, "Debug: %s\n", localMsg.constData());
 			break;
 		case QtWarningMsg:
-			fprintf(stderr, "Warning: %s\n", msg);
+			fprintf(stderr, "Warning: %s\n", localMsg.constData());
 			break;
 		case QtCriticalMsg:
-			fprintf(stderr, "Critical: %s\n", msg);
+			fprintf(stderr, "Critical: %s\n", localMsg.constData());
 			break;
 		case QtFatalMsg:
-			fprintf(stderr, "Fatal: %s\n", msg);
+			fprintf(stderr, "Fatal: %s\n", localMsg.constData());
 			abort();
 	}
 }

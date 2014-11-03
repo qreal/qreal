@@ -1,7 +1,7 @@
 #pragma once
 
-#include <qrgui/toolPluginInterface/toolPluginInterface.h>
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <qrutils/expressionsParser/expressionsParser.h>
 
 #include "visualDebuggerPreferencesPage.h"
@@ -10,7 +10,7 @@
 #include "interpreter/debuggerConnector.h"
 
 #include <qrutils/watchListWindow.h>
-#include <qrgui/mainwindow/errorReporter.h>
+#include <qrgui/mainWindow/errorReporter.h>
 
 #include <qrkernel/ids.h>
 
@@ -32,7 +32,7 @@ public:
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
 
-	virtual QPair<QString, PreferencesPage *> preferencesPage();
+	virtual QPair<QString, gui::PreferencesPage *> preferencesPage();
 
 private slots:
 

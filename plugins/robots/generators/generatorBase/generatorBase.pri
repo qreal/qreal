@@ -146,10 +146,9 @@ HEADERS += \
 	$$PWD/src/converters/inequalitySignConverter.h \
 	$$PWD/src/converters/colorConverter.h \
 	$$PWD/src/converters/breakModeConverter.h \
-	$$PWD/src/converters/outputPortConverter.h \
+	$$PWD/src/converters/portNameConverter.h \
 	$$PWD/src/converters/enginePortsConverter.h \
 	$$PWD/src/converters/typeConverter.h \
-	$$PWD/src/converters/inputPortConverter.h \
 	$$PWD/src/converters/switchConditionsMerger.h \
 	$$PWD/src/simpleGenerators/nullGenerator.h \
 	$$PWD/src/simpleGenerators/commentElementGenerator.h \
@@ -210,10 +209,9 @@ SOURCES += \
 	$$PWD/src/converters/inequalitySignConverter.cpp \
 	$$PWD/src/converters/colorConverter.cpp \
 	$$PWD/src/converters/breakModeConverter.cpp \
-	$$PWD/src/converters/outputPortConverter.cpp \
+	$$PWD/src/converters/portNameConverter.cpp \
 	$$PWD/src/converters/enginePortsConverter.cpp \
 	$$PWD/src/converters/typeConverter.cpp \
-	$$PWD/src/converters/inputPortConverter.cpp \
 	$$PWD/src/converters/switchConditionsMerger.cpp \
 	$$PWD/src/simpleGenerators/abstractSimpleGenerator.cpp \
 	$$PWD/src/simpleGenerators/nullGenerator.cpp \

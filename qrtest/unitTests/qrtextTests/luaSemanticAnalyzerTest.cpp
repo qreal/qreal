@@ -241,3 +241,32 @@ TEST_F(LuaSemanticAnalyzerTest, tableIndexingExpression)
 	EXPECT_TRUE(mAnalyzer->type(table)->is<types::Table>());
 	EXPECT_TRUE(mAnalyzer->type(index)->is<types::Integer>());
 }
+
+TEST_F(LuaSemanticAnalyzerTest, complexByteOperationsExpression)
+{
+	auto tree = parse("a2 = 7 | 15 & 40");
+
+	mAnalyzer->analyze(tree);
+
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	auto assignment = as<ast::Assignment>(tree);
+
+	auto a2 = assignment->variable();
+
+	EXPECT_TRUE(mAnalyzer->type(a2)->is<types::Integer>());
+
+	mAnalyzer->clear();
+
+	tree = parse("a2 = 3 + 7 | 15 & 40");
+
+	mAnalyzer->analyze(tree);
+
+	EXPECT_TRUE(mErrors.isEmpty());
+
+	assignment = as<ast::Assignment>(tree);
+	a2 = assignment->variable();
+
+	EXPECT_TRUE(mAnalyzer->type(a2)->is<types::Integer>());
+}
+
