@@ -4,7 +4,7 @@ INCLUDEPATH += \
 	$$PWD/../include \
 	$$PWD/../../../../ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils
+LIBS += -L$$PWD/../../../../bin/ -lqslog -lqrkernel -lqrutils
 
 DEFINES += ROBOTS_UTILS_LIBRARY
 

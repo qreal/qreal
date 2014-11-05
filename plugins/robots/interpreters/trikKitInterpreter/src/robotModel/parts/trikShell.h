@@ -6,8 +6,8 @@ namespace trikKitInterpreter {
 namespace robotModel {
 namespace parts {
 
-///Executes shell commands on TRIK controller
-class ROBOTS_INTERPRETER_BASE_EXPORT TrikShell : public interpreterBase::robotModel::robotParts::Device
+/// Executes shell commands on TRIK controller
+class TrikShell : public interpreterBase::robotModel::robotParts::Device
 {
 	Q_OBJECT
 	Q_CLASSINFO("name", "shell")
