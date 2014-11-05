@@ -80,7 +80,7 @@ bool WorldModel::checkCollision(QPainterPath const &path) const
 	debugPath = new QGraphicsPathItem(commonPath);
 	debugPath->setBrush(Qt::red);
 	debugPath->setPen(QPen(QColor(Qt::blue)));
-q	debugPath->setZValue(100);
+	debugPath->setZValue(100);
 
 	QGraphicsScene * const scene = mWalls.isEmpty()
 			? (mColorFields.isEmpty() ? nullptr : mColorFields[0]->scene())
