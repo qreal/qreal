@@ -72,35 +72,35 @@ viewBox="0 0 15000 15000"
       <clipPath id="id1">
        <path d="M2377 14068l10257 0c790,0 1437,-647 1437,-1437l0 -10257c0,-790 -647,-1437 -1437,-1437l-10257 0c-790,0 -1437,647 -1437,1437l0 10257c0,790 647,1437 1437,1437z"/>
       </clipPath>
-  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="7663.81" y1="10539.8" x2="7663.81" y2="4340.81">
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="4869.59" y1="10619.7" x2="4869.59" y2="4420.67">
    <stop offset="0" style="stop-color:#99CC33"/>
    <stop offset="1" style="stop-color:#CCFF66"/>
   </linearGradient>
-  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="4514.95" y1="10409.7" x2="4514.95" y2="3972.05">
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="10757.7" y1="10489.5" x2="10757.7" y2="4051.92">
    <stop offset="0" style="stop-color:#4D4D4D"/>
    <stop offset="1" style="stop-color:#B3B3B3"/>
   </linearGradient>
-  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="12323.6" y1="9691.74" x2="12323.6" y2="4853.09">
+  <linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="3303.14" y1="9771.6" x2="3303.14" y2="4932.95">
    <stop offset="0" style="stop-color:#E6E6E6"/>
    <stop offset="1" style="stop-color:white"/>
   </linearGradient>
-  <linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="13984.9" y1="4894.44" x2="13379.6" y2="5758.93">
+  <linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="4964.42" y1="4974.31" x2="4359.1" y2="5838.8">
    <stop offset="0" style="stop-color:#B3B3B3"/>
    <stop offset="0.568627" style="stop-color:#E6E6E6"/>
    <stop offset="1" style="stop-color:#E6E6E6"/>
   </linearGradient>
-  <linearGradient id="id6" gradientUnits="userSpaceOnUse" x1="4514.99" y1="9921.68" x2="4514.99" y2="7644.27">
+  <linearGradient id="id6" gradientUnits="userSpaceOnUse" x1="10757.8" y1="10001.5" x2="10757.8" y2="7724.13">
    <stop offset="0" style="stop-color:#CCCCCC"/>
    <stop offset="1" style="stop-color:#FEFEFE"/>
   </linearGradient>
-  <linearGradient id="id7" gradientUnits="userSpaceOnUse" x1="4385.19" y1="6104.07" x2="4385.19" y2="4505.06">
+  <linearGradient id="id7" gradientUnits="userSpaceOnUse" x1="10628" y1="6183.94" x2="10628" y2="4584.92">
    <stop offset="0" style="stop-color:#B3B3B3"/>
    <stop offset="1" style="stop-color:#E6E6E6"/>
   </linearGradient>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_290348608">
+  <g id="_124805224">
    <g id="_348901048">
     <path class="fil0" d="M2168 45l10675 0c1170,0 2119,949 2119,2119l0 10675c0,1170 -949,2119 -2119,2119l-10675 0c-1170,0 -2119,-949 -2119,-2119l0 -10675c0,-1170 949,-2119 2119,-2119z"/>
     <g>
@@ -418,11 +418,15 @@ viewBox="0 0 15000 15000"
  </g>
  <g id="Слой_x0020_1">
   <metadata id="CorelCorpID_1Corel-Layer"/>
-  <polygon class="fil49 str0" points="10500,9692 14148,9692 14148,5732 13634,5451 13163,4864 13120,4853 10500,4853 "/>
-  <path class="fil50 str0" d="M13180 4893c362,63 874,557 1004,868 0,0 -966,-1 -980,-11 -14,-10 -23,-857 -23,-857z"/>
-  <path class="fil51 str1" d="M8295 6322c-2,-271 -40,-250 230,-53 441,323 882,646 1322,968 326,239 335,162 16,398 -447,331 -889,662 -1338,994 -264,195 -215,172 -217,-92l-14 -2215z"/>
-  <path class="fil52" d="M1590 3972l5304 0c719,0 808,563 839,718l0 5425c0,162 -132,294 -294,294l-5849 0c-162,0 -294,-132 -294,-294l0 -5849c0,-162 132,-294 294,-294z"/>
-  <rect class="fil53" x="2144" y="7156" width="4742" height="3253" rx="225" ry="226"/>
-  <path class="fil54" d="M2508 3972l3755 0 0 2665 -3755 0 0 -2665zm2284 519l900 0 0 1557 -900 0 0 -1557z"/>
+  <g id="_124680152">
+   <polygon class="fil49 str0" points="1479,9772 5127,9772 5127,5811 4613,5531 4142,4944 4100,4933 1479,4933 "/>
+   <path class="fil50 str0" d="M4160 4972c362,63 874,557 1004,868 0,0 -966,-1 -980,-11 -14,-10 -23,-857 -23,-857z"/>
+  </g>
+  <path class="fil51 str1" d="M5501 6402c-2,-271 -40,-250 230,-53 441,323 882,646 1322,968 326,239 335,162 16,398 -447,331 -889,662 -1338,994 -264,195 -215,172 -217,-92l-14 -2215z"/>
+  <g id="_123989576">
+   <path class="fil52" d="M7833 4052l5304 0c719,0 808,563 839,718l0 5425c0,162 -132,294 -294,294l-5849 0c-162,0 -294,-132 -294,-294l0 -5849c0,-162 132,-294 294,-294z"/>
+   <rect class="fil53" x="8387" y="7236" width="4742" height="3253" rx="225" ry="226"/>
+   <path class="fil54" d="M8750 4052l3755 0 0 2665 -3755 0 0 -2665zm2284 519l900 0 0 1557 -900 0 0 -1557z"/>
+  </g>
  </g>
 </svg>
