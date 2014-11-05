@@ -120,3 +120,10 @@ TEST_F(LuaInterpreterTest, inequality)
 	ASSERT_TRUE(mErrors.isEmpty());
 	EXPECT_FALSE(result);
 }
+
+TEST_F(LuaInterpreterTest, concatenation)
+{
+	auto result = interpret<QString>("'ab' .. 'cd'");
+	ASSERT_TRUE(mErrors.isEmpty());
+	EXPECT_EQ("abcd", result);
+}
