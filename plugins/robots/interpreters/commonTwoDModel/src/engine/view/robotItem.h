@@ -91,7 +91,6 @@ private:
 	QPointF mMarkerPoint;
 
 	model::RobotModel &mRobotModel;
-
 };
 
 }

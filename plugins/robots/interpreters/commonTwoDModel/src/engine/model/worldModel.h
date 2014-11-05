@@ -54,6 +54,7 @@ public:
 
 	/// Appends one more segment of the given to the robot`s trace.
 	void appendRobotTrace(QPen const &pen, QPointF const &begin, QPointF const &end);
+
 	/// Removes all the segments from the current robot`s trace.
 	void clearRobotTrace();
 
