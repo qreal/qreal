@@ -38,6 +38,7 @@ D2ModelScene::D2ModelScene(model::Model &model
 		connect(wall, &items::WallItem::wallDragged, this, &D2ModelScene::worldWallDragged);
 	});
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &QGraphicsScene::addItem);
+	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &QGraphicsScene::addItem);
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [](QGraphicsItem *item) { delete item; });
 
 	drawInitialRobot();
@@ -52,6 +53,7 @@ void D2ModelScene::drawInitialRobot()
 	mRobot = new RobotItem(mModel.robotModel());
 	connect(mRobot, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
 	connect(mRobot, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
+	connect(mRobot, &RobotItem::drawTrace, &mModel.worldModel(), &model::WorldModel::appendRobotTrace);
 	addItem(mRobot);
 
 	Rotater * const rotater = new Rotater();

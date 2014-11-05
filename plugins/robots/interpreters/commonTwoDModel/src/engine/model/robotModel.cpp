@@ -32,6 +32,7 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	, mAngle(0)
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
+	, mMarker(Qt::transparent)
 	, mPhysicsEngine(nullptr)
 {
 	reinit();
@@ -46,6 +47,7 @@ void RobotModel::reinit()
 {
 	qDeleteAll(mMotors);
 	mMotors.clear();
+	mMarker = Qt::transparent;
 
 	for (Device const * const device : mRobotModel.configuration().devices()) {
 		if (device->deviceInfo().isA<robotParts::Motor>()) {
@@ -211,6 +213,21 @@ QRectF RobotModel::sensorRect(PortInfo const &port, QPointF const sensorPos) con
 	return QRectF();
 }
 
+QColor RobotModel::markerColor() const
+{
+	return mMarker;
+}
+
+void RobotModel::markerDown(QColor const &color)
+{
+	mMarker = color;
+}
+
+void RobotModel::markerUp()
+{
+	mMarker = Qt::transparent;
+}
+
 void RobotModel::nextStep()
 {
 	// Changing position quietly, they must not be caught by UI here.
@@ -266,8 +283,7 @@ void RobotModel::nextFragment()
 	}
 
 	countBeep();
-	emit positionChanged(mPos);
-	emit rotationChanged(mAngle);
+	emit robotRided(mPos, mAngle);
 }
 
 QPointF RobotModel::position() const
@@ -320,7 +336,8 @@ void RobotModel::deserialize(QDomElement const &robotElement)
 	setPosition(QPointF(x, y));
 	setRotation(robotElement.attribute("direction", "0").toDouble());
 	configuration().deserialize(robotElement);
-	nextFragment();
+	emit positionChanged(mPos);
+	emit rotationChanged(mAngle);
 }
 
 void RobotModel::onRobotLiftedFromGround()
