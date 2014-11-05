@@ -5,14 +5,11 @@
 using namespace qReal;
 using namespace databasesSupport;
 
-DatatypesChecker::DatatypesChecker(QString workDir)
-	: mDatatypesGlossaryFileName("../plugins/databases/databasesSupport/generator/glossary/datatypes.txt")
+DatatypesChecker::DatatypesChecker(QString workDir, qReal::ErrorReporterInterface *errorReporter)
+	: mDatatypesGlossaryFileName("../plugins/databases/databasesSupport/generator/glossary/datatypesRegExp.txt")
 	, mWorkDir(workDir)
+	, mErrorReporter(errorReporter)
 {
-	bool d = isTwoParameters("(3,)");
-	bool s = isTwoParameters(" (3 ,24)");
-	bool r = isTwoParameters("(3,34 ) ");
-
 	QFile datatypesGlossary(mDatatypesGlossaryFileName);
 	QString line;
 	if (datatypesGlossary.open(QIODevice::ReadOnly)) {
@@ -21,28 +18,19 @@ DatatypesChecker::DatatypesChecker(QString workDir)
 				line = textStream.readLine();
 				line.trimmed();
 				if ((line != "") && (line != "\n")&& (line != "	" ))
-					mDatatypes << line;
+					mDatatypesRegExps.append(QRegExp(line));
 			}
 		datatypesGlossary.close();
 	}
 }
-
-bool DatatypesChecker::isOneParameter(const QString &str)
-{
-	QRegExp regExp("\\s?\\(\\s?[0-9]+\\s?\\)\\s?");
-	return regExp.exactMatch(str);
-}
-
-bool DatatypesChecker::isTwoParameters(const QString &str)
-{
-	QRegExp regExp("\\s?\\(\\s?[0-9]+\\s?\\,\\s?[0-9]+\\s?\\)\\s?");
-	return regExp.exactMatch(str);
-}
-
 bool DatatypesChecker::isDatatype(QString str)
 {
-
-
+	foreach (QRegExp regExp, mDatatypesRegExps) {
+		bool isMatch = regExp.exactMatch(str);
+		if (isMatch)
+			return true;
+	}
+	return false;
 }
 
 DatatypesChecker::~DatatypesChecker()

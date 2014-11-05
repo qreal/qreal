@@ -16,7 +16,7 @@ DatabasesGenerator::DatabasesGenerator(const PluginConfigurator configurator)
 	, mGraphicalModelApi(configurator.graphicalModelApi())
 	, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
 	, mErrorReporter(configurator.mainWindowInterpretersInterface().errorReporter())
-	, mDatatypesChecker(new DatatypesChecker(""))
+	, mDatatypesChecker(new DatatypesChecker("", configurator.mainWindowInterpretersInterface().errorReporter()))
 {
 	//mAppTranslator.load(":/DatabasesGenerator_" + QLocale::system().name());
 	//QApplication::installTranslator(&mAppTranslator);
@@ -74,6 +74,15 @@ QVariant DatabasesGenerator::getProperty(Id const &id, QString const &propertyNa
 	}
 
 	return mLogicalModelApi.logicalRepoApi().property(mGraphicalModelApi.logicalId(id), propertyName);
+}
+
+Id DatabasesGenerator::getParent(Id const &id)
+{
+	if (mLogicalModelApi.isLogicalId(id)) {
+		return mGraphicalModelApi.graphicalRepoApi().parent(mGraphicalModelApi.graphicalIdsByLogicalId(id).at(0));
+	}
+
+	return mGraphicalModelApi.graphicalRepoApi().parent(id);
 }
 
 IdList DatabasesGenerator::getChildren(Id const &id)
@@ -214,13 +223,19 @@ bool DatabasesGenerator::checkAttributes()
 	foreach (Id const &attribute, attributes) {
 		QString name = getProperty(attribute, "Name").toString();
 		QString datatype = getProperty(attribute, "DataType").toString();
+		Id parent = getParent(attribute);
+		QString parentName = getProperty(parent, "Name").toString();
 		if (name == "") {
 			result = false;
-			error(tr("Attribute has no name"), true);
+			error(tr("Attribute has no name in entity '") + parentName + "'", true);
 		}
 		if (datatype == "") {
 			result = false;
-			error(tr("Attribute has no datatype"), true);
+			error(tr("Attribute has no datatype in entity '") + parentName + "'", true);
+		}
+		if (!mDatatypesChecker->isDatatype(datatype)) {
+			result = false;
+			error(tr("Invalid datatype in entity '") + parentName + "'", true);
 		}
 	}
 	return result;
@@ -248,7 +263,7 @@ void DatabasesGenerator::generateSQL()
 	mErrorReporter->clear();
 	mPassedElements.clear();
 
-	mDatatypesChecker->isDatatype("qqqq");
+	bool s = mDatatypesChecker->isDatatype("Int");
 
 	if (!(checkRelationships() && checkAttributes() && checkEntities())) {
 		return;

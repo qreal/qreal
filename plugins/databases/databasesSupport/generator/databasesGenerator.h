@@ -41,6 +41,7 @@ private:
 	void setWorkDir(QString const &path);
 	IdList findNodes(QString const &name);
 	QVariant getProperty(Id const &id, QString const &propertyName);
+	Id getParent(Id const &id);
 	IdList getChildren(Id const &id);
 	IdList getBoundedWithOneToOneRealationship(Id const &id);
 	void error(QString error, bool isCritical);

@@ -11,16 +11,15 @@ class DatatypesChecker: public QObject
 {
 	Q_OBJECT
 public:
-	DatatypesChecker(const QString workDir);
+	DatatypesChecker(const QString workDir, qReal::ErrorReporterInterface *errorReporter);
 	~DatatypesChecker();
 
 	bool isDatatype(QString str);
 private:
-	bool isOneParameter(const QString &str);
-	bool isTwoParameters(const QString &str);
 	QString mDatatypesGlossaryFileName;
 	QString mWorkDir;
-	QStringList mDatatypes;
+	QList<QRegExp> mDatatypesRegExps;
+	qReal::ErrorReporterInterface *mErrorReporter;
 };
 
 }
