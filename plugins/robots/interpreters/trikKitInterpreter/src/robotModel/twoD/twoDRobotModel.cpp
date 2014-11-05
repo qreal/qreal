@@ -114,6 +114,5 @@ QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo co
 		return QRect(-20, -10, 40, 20);;
 	}
 
-	Q_ASSERT(!"Unknown sensor type in TRIK 2D model");
 	return QRect();
 }
