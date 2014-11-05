@@ -1,1 +1,1 @@
-@@LEFT@@ + @@RIGHT@@
+concat(toString(@@LEFT@@), toString(@@RIGHT@@))
