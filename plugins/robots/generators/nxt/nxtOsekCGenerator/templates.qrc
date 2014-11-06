@@ -189,5 +189,9 @@
         <file>templates/luaPrinting/tableConstructor.t</file>
         <file>templates/luaPrinting/true.t</file>
         <file>templates/luaPrinting/unaryMinus.t</file>
+        <file>templates/luaPrinting/intToString.t</file>
+        <file>templates/luaPrinting/floatToString.t</file>
+        <file>templates/luaPrinting/boolToString.t</file>
+        <file>templates/luaPrinting/otherToString.t</file>
     </qresource>
 </RCC>

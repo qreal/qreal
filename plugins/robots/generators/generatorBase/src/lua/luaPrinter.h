@@ -9,6 +9,10 @@
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/simpleGenerators/binding.h"
 
+namespace qrtext {
+class LanguageToolboxInterface;
+}
+
 namespace generatorBase {
 namespace lua {
 
@@ -18,6 +22,7 @@ class LuaPrinter : public qrtext::lua::LuaAstVisitorInterface
 public:
 	/// Takes ownership on converters.
 	LuaPrinter(QString const &pathToTemplates
+			, qrtext::LanguageToolboxInterface const &textLanguage
 			, PrecedenceConverterInterface &precedeceTable
 			, simple::Binding::ConverterInterface const *reservedVariablesConverter);
 
@@ -85,6 +90,9 @@ private:
 	QString popResult(qrtext::lua::ast::Node const &node, bool wrapIntoBrackets = false);
 	QStringList popResults(QList<QSharedPointer<qrtext::lua::ast::Node>> const &nodes);
 
+	QString toString(QSharedPointer<qrtext::lua::ast::Node> const &node);
+
+	qrtext::LanguageToolboxInterface const &mTextLanguage;
 	QMap<qrtext::lua::ast::Node const *, QString> mGeneratedCode;
 	PrecedenceConverterInterface &mPrecedenceTable;
 	simple::Binding::ConverterInterface const *mReservedVariablesConverter;  // Takes ownership

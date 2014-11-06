@@ -1,1 +1,1 @@
-concat(toString(@@LEFT@@), toString(@@RIGHT@@))
+concat(@@LEFT@@, @@RIGHT@@)

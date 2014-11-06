@@ -2,6 +2,7 @@
 #include "kernel.h"
 #include "kernel_id.h"
 #include "ecrobot_interface.h"
+#include "trik_studio_utils.h"
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
