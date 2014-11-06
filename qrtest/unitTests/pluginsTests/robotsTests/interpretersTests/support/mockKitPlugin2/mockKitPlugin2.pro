@@ -9,13 +9,14 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 UI_DIR = .ui
 
-LIBS += -L../../../../../../../bin -linterpreterBase
+LIBS += -L../../../../../../../bin -lrobots-interpreter-base
 
 INCLUDEPATH += \
 	../../../../../../../plugins/robots/interpreters/interpreterBase/include/ \
 	../../../../../../../plugins/robots/utils/include/ \
 	../../../../../../../qrgui/ \
 	../../../../../../../ \
+	../../../../../../../qrtext/include \
 
 HEADERS += \
 	mockKitPlugin2Interface.h \

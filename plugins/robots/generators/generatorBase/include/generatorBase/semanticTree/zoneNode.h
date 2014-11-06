@@ -33,9 +33,12 @@ public:
 	/// themselves and returns removed tail. Removes all if node is null.
 	QLinkedList<SemanticNode *> removeStartingFrom(SemanticNode *node);
 
-
 	/// Returns parent semantic node. The result is never NULL.
 	SemanticNode *parentNode();
+
+	/// Returns an immediate child folowing after the given node or nullptr if no such node
+	/// (i.e. @arg child is not a child of this zone or the last child).
+	SemanticNode *nextChild(SemanticNode *child);
 
 protected:
 	virtual QLinkedList<SemanticNode *> children() const;

@@ -1,6 +1,0 @@
-<RCC>
-	<qresource prefix="/">
-		<file>icons/preferences/pencil.png</file>
-		<file>refactoringSupport_ru.qm</file>
-	</qresource>
-</RCC>

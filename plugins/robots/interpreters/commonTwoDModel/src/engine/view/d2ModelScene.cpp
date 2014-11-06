@@ -38,6 +38,7 @@ D2ModelScene::D2ModelScene(model::Model &model
 		connect(wall, &items::WallItem::wallDragged, this, &D2ModelScene::worldWallDragged);
 	});
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &QGraphicsScene::addItem);
+	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &QGraphicsScene::addItem);
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [](QGraphicsItem *item) { delete item; });
 
 	drawInitialRobot();
@@ -52,6 +53,7 @@ void D2ModelScene::drawInitialRobot()
 	mRobot = new RobotItem(mModel.robotModel());
 	connect(mRobot, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
 	connect(mRobot, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
+	connect(mRobot, &RobotItem::drawTrace, &mModel.worldModel(), &model::WorldModel::appendRobotTrace);
 	addItem(mRobot);
 
 	Rotater * const rotater = new Rotater();
@@ -402,7 +404,7 @@ void D2ModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QPointF const &oldPos)
+void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QRectF const &oldPos)
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
@@ -411,17 +413,18 @@ void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &s
 	{
 		wall->setFlag(QGraphicsItem::ItemIsMovable, !isNeedStop);
 		if (isNeedStop) {
-			wall->setPos(oldPos);
+			wall->setCoordinates(oldPos);
 		}
 	}
 }
 
 void D2ModelScene::alignWalls()
 {
-	for (items::WallItem * const wall : mModel.worldModel().walls()) {
-		if (items().contains(wall)) {
-			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
-			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+	if (SettingsManager::value("2dShowGrid").toBool()) {
+		for (items::WallItem * const wall : mModel.worldModel().walls()) {
+			if (items().contains(wall)) {
+				wall->alignTheWall(SettingsManager::value("2dGridCellSize").toInt());
+			}
 		}
 	}
 }

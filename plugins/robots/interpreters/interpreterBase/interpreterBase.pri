@@ -5,12 +5,13 @@ INCLUDEPATH += \
 	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
+	$$PWD/../../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqslog -lqrutils -lqrtext -lqrgui-preferences-dialog -lrobots-utils
 
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
-TRANSLATIONS = interpreterBase_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterBase_ru.ts
 
 SOURCES += \
 	$$PWD/src/devicesConfigurationProvider.cpp \
@@ -21,7 +22,6 @@ SOURCES += \
 	$$PWD/src/blocksBase/common/emptyBlock.cpp \
 	$$PWD/src/blocksBase/common/engineCommandBlock.cpp \
 	$$PWD/src/blocksBase/common/enginesStopBlock.cpp \
-	$$PWD/src/blocksBase/common/displayBlock.cpp \
 	$$PWD/src/blocksBase/common/waitBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForAccelerometerBlock.cpp \
 	$$PWD/src/blocksBase/common/waitForColorBlock.cpp \
@@ -80,6 +80,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/blocksBase/common/emptyBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/engineCommandBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/enginesStopBlock.h \
+	$$PWD/include/interpreterBase/blocksBase/common/deviceBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/displayBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/waitForAccelerometerBlock.h \
@@ -124,10 +125,3 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/robotParts/soundSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/touchSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/vectorSensor.h \
-
-# qrgui code
-HEADERS += \
-	$$PWD/../../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
-
-RESOURCES += \
-	$$PWD/interpreterBase.qrc \

@@ -4,9 +4,9 @@
 #include <QtGui/QColor>
 
 #include <qrkernel/ids.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include <interpreterBase/blocksBase/blockInterface.h>
 #include <interpreterBase/blocksBase/blockParserInterface.h>
@@ -29,7 +29,7 @@ public:
 
 	qReal::Id const id() const override;
 
-	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() const override;
+	QMap<robotModel::PortInfo, robotModel::DeviceInfo> usedDevices() override;
 
 	void finishedSteppingInto() override;
 
@@ -39,11 +39,21 @@ public:
 			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
-			, BlockParserInterface * const parser
 			, robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			);
 
 protected:
+	/// Enum with flags whether to report parser errors or let the language toolbox fail silently.
+	enum class ReportErrors {
+		/// Do report parser errors.
+		report
+
+		/// Do not report errors to user. Used when parser shall only try to parse a code (for example, in
+		/// autoconfigurer).
+		, doNotReport
+	};
+
 	Block();
 
 	/// Returns a property of current block with given name as QVariant.
@@ -76,11 +86,47 @@ protected:
 	/// Reports error and emits "failure" signal.
 	void error(QString const &message);
 
-	/// Returns calculated value of an expression in a property with given name as QVariant.
-	QVariant evaluate(QString const &propertyName);
+	/// Reports warning.
+	void warning(QString const &message);
 
-	/// Returns calculated value of an expression in a property with given name as bool.
-	bool evaluateBool(QString const &propertyName);
+	/// Evaluates contents of a given property using text language interpreter and returns result.
+	template<typename T>
+	T eval(QString const &propertyName, ReportErrors reportErrors = ReportErrors::report)
+	{
+		return evalCode<T>(stringProperty(propertyName), reportErrors);
+	}
+
+	/// Evaluates given code using text language interpreter and returns result.
+	template<typename T>
+	T evalCode(QString const &code, ReportErrors reportErrors = ReportErrors::report)
+	{
+		return evalCode<T>(code, "", reportErrors);
+	}
+
+	/// Evaluates given code using text language interpreter and returns result.
+	/// @param code - code to evaluate.
+	/// @param propertyName - name of corresponding property, used for connection.
+	template<typename T>
+	T evalCode(QString const &code, QString const &propertyName, ReportErrors reportErrors = ReportErrors::report)
+	{
+		T result = mParser->interpret<T>(mGraphicalId, propertyName, code);
+		if (!mParser->errors().isEmpty() && reportErrors == ReportErrors::report) {
+			reportParserErrors();
+			emit failure();
+			return result;
+		}
+
+		return result;
+	}
+
+	/// Evaluates given code using text language interpreter.
+	void evalCode(QString const &code);
+
+	/// Evaluates contents of a given property using text language interpreter.
+	void eval(QString const &propertyName);
+
+	/// Returns true, if there were parser/interpreter errors on last eval() call.
+	bool errorsOccured() const;
 
 	/// Reference to a robot model which is used by this block.
 	robotModel::RobotModelInterface &model();
@@ -88,11 +134,10 @@ protected:
 	/// @todo: there is no such things as protected fields. State of a class shall not be directly available to
 	/// descendants.
 	qReal::Id mNextBlockId;
-	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
-	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
+	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership.
+	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Doesn't have ownership.
 
 	qReal::Id mGraphicalId;
-	BlockParserInterface * mParser;  // Does not have ownership
 
 private slots:
 	void finishedRunning();
@@ -104,6 +149,8 @@ private:
 		, failed
 	};
 
+	void reportParserErrors();
+
 	/// Shall be reimplemented to set ids of next blocks. Default implementation covers usual sequential blocks, like
 	/// "motors on", it is reimplemented in "if", "loop" and such kinds of blocks.
 	virtual bool initNextBlocks();
@@ -111,8 +158,10 @@ private:
 	/// Shall be reimplemented to provide semantics of block execution.
 	virtual void run() = 0;
 
+	qrtext::LanguageToolboxInterface *mParser;  // Doesn't have ownership.
+
 	State mState;
-	qReal::ErrorReporterInterface * mErrorReporter;  // Doesn't have ownership.
+	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn't have ownership.
 	robotModel::RobotModelManagerInterface const *mRobotModelManager;  // Doesn't have ownership.
 };
 

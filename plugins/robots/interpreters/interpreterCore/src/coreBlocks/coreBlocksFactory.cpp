@@ -10,11 +10,15 @@
 #include "details/loopBlock.h"
 #include "details/forkBlock.h"
 #include "details/ifBlock.h"
+#include "details/switchBlock.h"
 #include "details/commentBlock.h"
 #include "details/subprogramBlock.h"
 
 #include "details/printTextBlock.h"
 #include "details/clearScreenBlock.h"
+
+#include <commonTwoDModel/blocks/markerDownBlock.h>
+#include <commonTwoDModel/blocks/markerUpBlock.h>
 
 using namespace interpreterCore::coreBlocks;
 
@@ -30,6 +34,8 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::CommentBlock;
 	} else if (elementMetatypeIs(element, "IfBlock")) {
 		return new details::IfBlock();
+	} else if (elementMetatypeIs(element, "SwitchBlock")) {
+		return new details::SwitchBlock();
 	} else if (elementMetatypeIs(element, "Loop")) {
 		return new details::LoopBlock();
 	} else if (elementMetatypeIs(element, "Fork")) {
@@ -44,6 +50,10 @@ interpreterBase::blocksBase::Block *CoreBlocksFactory::produceBlock(qReal::Id co
 		return new details::PrintTextBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "ClearScreen")) {
 		return new details::ClearScreenBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "MarkerDown")) {
+		return new twoDModel::blocks::MarkerDownBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "MarkerUp")) {
+		return new twoDModel::blocks::MarkerUpBlock(mRobotModelManager->model());
 	}
 
 	return nullptr;
@@ -58,6 +68,7 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("Timer")
 		, id("CommentBlock")
 		, id("IfBlock")
+		, id("SwitchBlock")
 		, id("Loop")
 		, id("Fork")
 		, id("Subprogram")
@@ -65,5 +76,21 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("VariableInit")
 		, id("ClearScreen")
 		, id("PrintText")
+		, id("MarkerDown")
+		, id("MarkerUp")
 	};
+}
+
+qReal::IdList CoreBlocksFactory::blocksToDisable() const
+{
+	qReal::IdList result;
+
+	if (!mRobotModelManager->model().name().contains("TwoD")) {
+		result
+				<< id("MarkerDown")
+				<< id("MarkerUp")
+				;
+	}
+
+	return result;
 }

@@ -33,4 +33,3 @@ QString TrikFSharpAdditionalPreferences::defaultSettingsFile() const
 {
 	return ":/trikDefaultSettings.ini";
 }
-

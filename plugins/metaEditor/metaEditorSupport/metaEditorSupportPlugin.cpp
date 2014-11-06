@@ -7,8 +7,8 @@
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QDesktopWidget>
 
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrmc/metaCompiler.h"
+#include <qrkernel/settingsManager.h>
+#include <qrmc/metaCompiler.h>
 
 #include "editorGenerator.h"
 #include "xmlParser.h"
@@ -23,8 +23,6 @@ MetaEditorSupportPlugin::MetaEditorSupportPlugin()
 		, mRepoControlApi(NULL)
 		, mCompilerSettingsPage(new PreferencesCompilerPage())
 {
-	mAppTranslator.load(":/metaEditorSupport_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
 }
 
 MetaEditorSupportPlugin::~MetaEditorSupportPlugin()
@@ -59,9 +57,9 @@ QList<ActionInfo> MetaEditorSupportPlugin::actions()
 	//<< parseEditorXmlActionInfo;
 }
 
-QPair<QString, PreferencesPage *> MetaEditorSupportPlugin::preferencesPage()
+QPair<QString, gui::PreferencesPage *> MetaEditorSupportPlugin::preferencesPage()
 {
-	return qMakePair(QObject::tr("Compiler"), static_cast<PreferencesPage*>(mCompilerSettingsPage));
+	return qMakePair(QObject::tr("Compiler"), static_cast<gui::PreferencesPage *>(mCompilerSettingsPage));
 }
 
 void MetaEditorSupportPlugin::generateEditorForQrxc()

@@ -1,5 +1,7 @@
 #include <interpreterBase/blocksBase/block.h>
 
+#include <thirdparty/qslog/QsLog.h>
+
 using namespace interpreterBase;
 using namespace blocksBase;
 using namespace qReal;
@@ -9,7 +11,6 @@ Block::Block()
 	, mGraphicalModelApi(nullptr)
 	, mLogicalModelApi(nullptr)
 	, mGraphicalId(Id())
-	, mParser(nullptr)
 	, mState(idle)
 	, mErrorReporter(nullptr)
 	, mRobotModelManager(nullptr)
@@ -21,16 +22,15 @@ void Block::init(Id const &graphicalId
 		, GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
 		, ErrorReporterInterface * const errorReporter
-		, BlockParserInterface * const parser
 		, robotModel::RobotModelManagerInterface const &robotModelManager
-		)
+		, qrtext::LanguageToolboxInterface &textLanguageToolbox)
 {
 	mGraphicalId = graphicalId;
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
 	mErrorReporter = errorReporter;
-	mParser = parser;
 	mRobotModelManager = &robotModelManager;
+	mParser = &textLanguageToolbox;
 }
 
 bool Block::initNextBlocks()
@@ -146,37 +146,29 @@ void Block::error(QString const &message)
 	emit failure();
 }
 
-QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedDevices() const
+void Block::warning(QString const &message)
 {
-	return QMap<robotModel::PortInfo, robotModel::DeviceInfo>();
+	mErrorReporter->addWarning(message, id());
 }
 
-QVariant Block::evaluate(QString const &propertyName)
+QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedDevices()
 {
-	int position = 0;
-	utils::Number *result = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
-	if (mParser->hasErrors()) {
-		mParser->deselect();
-		emit failure();
-		delete result;
-		return QVariant();
-	}
-
-	QVariant const value = result->value();
-	delete result;
-	return value;
+	return {};
 }
 
-bool Block::evaluateBool(QString const &propertyName)
+void Block::evalCode(QString const &code)
 {
-	int position = 0;
-	bool const value = mParser->parseCondition(stringProperty(propertyName), position, mGraphicalId);
-	if (mParser->hasErrors()) {
-		mParser->deselect();
-		emit failure();
-	}
+	evalCode<int>(code);
+}
 
-	return value;
+void Block::eval(QString const &propertyName)
+{
+	eval<int>(propertyName);
+}
+
+bool Block::errorsOccured() const
+{
+	return !mParser->errors().isEmpty();
 }
 
 interpreterBase::robotModel::RobotModelInterface &Block::model()
@@ -186,4 +178,31 @@ interpreterBase::robotModel::RobotModelInterface &Block::model()
 
 void Block::finishedSteppingInto()
 {
+}
+
+void Block::reportParserErrors()
+{
+	for (qrtext::core::Error const &error : mParser->errors()) {
+		switch (error.severity()) {
+		case qrtext::core::Severity::critical:
+		case qrtext::core::Severity::error:
+			mErrorReporter->addError((QString("%1:%2 %3")
+					.arg(error.connection().line())
+					.arg(error.connection().column())
+					.arg(error.errorMessage()))
+					, id());
+
+			break;
+		case qrtext::core::Severity::warning:
+			mErrorReporter->addWarning(QString("%1:%2 %3")
+					.arg(error.connection().line())
+					.arg(error.connection().column())
+					.arg(error.errorMessage())
+					, id());
+
+			break;
+		case qrtext::core::Severity::internalError:
+			break;
+		}
+	}
 }

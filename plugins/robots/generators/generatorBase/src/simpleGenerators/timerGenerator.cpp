@@ -9,7 +9,7 @@ TimerGenerator::TimerGenerator(qrRepo::RepoApi const &repo
 		, Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "wait/timer.t", QList<Binding *>()
-			<< Binding::createConverting("@@DELAY@@", "Delay", customizer.factory()->intPropertyConverter())
+			<< Binding::createConverting("@@DELAY@@", "Delay", customizer.factory()->intPropertyConverter(id, "Delay"))
 			, parent)
 {
 }

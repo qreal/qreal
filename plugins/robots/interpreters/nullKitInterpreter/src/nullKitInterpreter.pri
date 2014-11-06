@@ -5,8 +5,9 @@ INCLUDEPATH += \
 	$$PWD/../../../utils/include \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
+	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -linterpreterBase
+LIBS += -L$$PWD/../../../../../bin -lqrtext -lrobots-interpreter-base
 
 HEADERS += \
 	$$PWD/nullKitInterpreterPlugin.h \
@@ -16,6 +17,4 @@ SOURCES += \
 	$$PWD/nullKitInterpreterPlugin.cpp \
 	$$PWD/nullRobotModel.cpp \
 
-TRANSLATIONS = $$PWD/../nullKitInterpreter_ru.ts
-
-RESOURCES += $$PWD/../nullKitInterpreter.qrc
+TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/nullKitInterpreter_ru.ts

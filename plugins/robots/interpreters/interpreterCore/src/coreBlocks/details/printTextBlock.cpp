@@ -1,6 +1,5 @@
 #include "printTextBlock.h"
 
-#include <utils/textExpressionProcessor.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
 #include <interpreterBase/robotModel/robotParts/display.h>
 
@@ -13,11 +12,11 @@ PrintTextBlock::PrintTextBlock(interpreterBase::robotModel::RobotModelInterface 
 
 void PrintTextBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
-	int const x = evaluate("XCoordinateText").toInt();
-	int const y = evaluate("YCoordinateText").toInt();
-	QString const rawText = stringProperty("PrintText");
-	QString const text = utils::TextExpressionProcessor(mParser->variables()).processExpression(rawText);
-
-	display.printText(x, y, text);
-	emit done(mNextBlockId);
+	int const x = eval<int>("XCoordinateText");
+	int const y = eval<int>("YCoordinateText");
+	QString const result = eval<QString>("PrintText");
+	if (!errorsOccured()) {
+		display.printText(x, y, result);
+		emit done(mNextBlockId);
+	}
 }

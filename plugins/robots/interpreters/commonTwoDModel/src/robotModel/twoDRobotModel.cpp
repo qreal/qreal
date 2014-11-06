@@ -14,6 +14,9 @@
 #include "commonTwoDModel/robotModel/parts/motor.h"
 #include "commonTwoDModel/robotModel/parts/rangeSensor.h"
 #include "commonTwoDModel/robotModel/parts/touchSensor.h"
+#include "commonTwoDModel/robotModel/parts/gyroscope.h"
+#include "commonTwoDModel/robotModel/parts/accelerometer.h"
+#include "commonTwoDModel/robotModel/parts/marker.h"
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
@@ -30,6 +33,8 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
 	for (PortInfo const &port : realModel.availablePorts()) {
 		addAllowedConnection(port, realModel.allowedDevices(port));
 	}
+
+	addAllowedConnection(PortInfo("MarkerPort", output), { markerInfo() });
 }
 
 QString TwoDRobotModel::name() const
@@ -124,7 +129,23 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::ColorSensorBlue(deviceInfo, port, *mEngine);
 	}
 
+	if (deviceInfo.isA<interpreterBase::robotModel::robotParts::GyroscopeSensor>()) {
+		return new parts::Gyroscope(deviceInfo, port, *mEngine);
+	}
+
+	if (deviceInfo.isA<interpreterBase::robotModel::robotParts::AccelerometerSensor>()) {
+		return new parts::Accelerometer(deviceInfo, port, *mEngine);
+	}
+
+	if (deviceInfo.isA(markerInfo())) {
+		return new parts::Marker(deviceInfo, port, *mEngine);
+	}
+
 	qDebug() << "Unknown device " + deviceInfo.toString() + " requested on port " + port.name();
-	//	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 	return nullptr;
+}
+
+DeviceInfo TwoDRobotModel::markerInfo() const
+{
+	return DeviceInfo::create<parts::Marker>();
 }

@@ -1,7 +1,11 @@
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include <robotModel/trikRobotModelBase.h>
 #include <utils/tcpRobotCommunicator.h>
+
+#include <plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -16,7 +20,10 @@ public:
 
 	bool needsConnection() const override;
 	void connectToRobot() override;
+	void stopRobot() override;
 	void disconnectFromRobot() override;
+
+	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
 
 protected:
 	interpreterBase::robotModel::robotParts::Device *createDevice(
@@ -24,7 +31,7 @@ protected:
 			, interpreterBase::robotModel::DeviceInfo const &deviceInfo) override;
 
 private:
-	utils::TcpRobotCommunicator *mRobotCommunicator; // Has ownership
+	QScopedPointer<utils::TcpRobotCommunicator> mRobotCommunicator;
 };
 
 }

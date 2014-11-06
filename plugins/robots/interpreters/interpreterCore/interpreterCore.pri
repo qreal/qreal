@@ -8,8 +8,11 @@ INCLUDEPATH += \
 	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
+	$$PWD/../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase -lutils -lcommonTwoDModel
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -lqrtext \
+		-lqrgui-models -lqrgui-controller -lqrgui-preferences-dialog -lqrgui-plugin-manager \
+		-lqrgui-tool-plugin-interface -lrobots-interpreter-base -lrobots-utils -lrobots-common-2d-model \
 
 HEADERS += \
 	$$PWD/src/customizer.h \
@@ -21,6 +24,7 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/finalBlock.h \
 	$$PWD/src/coreBlocks/details/initialBlock.h \
 	$$PWD/src/coreBlocks/details/ifBlock.h \
+	$$PWD/src/coreBlocks/details/switchBlock.h \
 	$$PWD/src/coreBlocks/details/loopBlock.h \
 	$$PWD/src/coreBlocks/details/forkBlock.h \
 	$$PWD/src/coreBlocks/details/subprogramBlock.h \
@@ -42,7 +46,6 @@ HEADERS += \
 	$$PWD/src/managers/kitPluginManager.h \
 	$$PWD/src/managers/robotModelManager.h \
 	$$PWD/src/managers/devicesConfigurationManager.h \
-	$$PWD/src/managers/titlesVisibilityManager.h \
 	$$PWD/src/managers/paletteUpdateManager.h \
 	$$PWD/src/managers/saveConvertionManager.h \
 	$$PWD/src/managers/kitAutoSwitcher.h \
@@ -60,6 +63,7 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/finalBlock.cpp \
 	$$PWD/src/coreBlocks/details/initialBlock.cpp \
 	$$PWD/src/coreBlocks/details/ifBlock.cpp \
+	$$PWD/src/coreBlocks/details/switchBlock.cpp \
 	$$PWD/src/coreBlocks/details/loopBlock.cpp \
 	$$PWD/src/coreBlocks/details/forkBlock.cpp \
 	$$PWD/src/coreBlocks/details/subprogramBlock.cpp \
@@ -79,7 +83,6 @@ SOURCES += \
 	$$PWD/src/managers/kitPluginManager.cpp \
 	$$PWD/src/managers/robotModelManager.cpp \
 	$$PWD/src/managers/devicesConfigurationManager.cpp \
-	$$PWD/src/managers/titlesVisibilityManager.cpp \
 	$$PWD/src/managers/paletteUpdateManager.cpp \
 	$$PWD/src/managers/saveConvertionManager.cpp \
 	$$PWD/src/managers/kitAutoSwitcher.cpp \
@@ -90,7 +93,7 @@ SOURCES += \
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \
 
-TRANSLATIONS += $$PWD/interpreterCore_ru.ts
+TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterCore_ru.ts
 
 RESOURCES += \
 	$$PWD/interpreterCore.qrc \

@@ -8,38 +8,16 @@ using namespace blocksBase::common;
 using namespace robotModel;
 
 WaitForEncoderBlock::WaitForEncoderBlock(RobotModelInterface &robotModel)
-	: WaitBlock(robotModel)
-	, mEncoderSensor(nullptr)
+	: WaitForSensorBlock(robotModel)
 {
-}
-
-void WaitForEncoderBlock::run()
-{
-	QString const port = stringProperty("Port");
-	mEncoderSensor = RobotModelUtils::findDevice<robotParts::EncoderSensor>(mRobotModel, port);
-
-	if (!mEncoderSensor) {
-		mActiveWaitingTimer.stop();
-		error(tr("Encoder sensor is not configured on port %1").arg(port));
-		return;
-	}
-
-	connect(mEncoderSensor, &robotParts::EncoderSensor::newData, this, &WaitForEncoderBlock::responseSlot);
-	connect(mEncoderSensor, &robotParts::EncoderSensor::failure, this, &WaitForEncoderBlock::failureSlot);
-
-	mEncoderSensor->read();
-	mActiveWaitingTimer.start();
 }
 
 void WaitForEncoderBlock::responseSlot(int reading)
 {
-	int const tachoLimit = evaluate("TachoLimit").toInt();
-	processResponce(reading, tachoLimit);
-}
-
-void WaitForEncoderBlock::timerTimeout()
-{
-	mEncoderSensor->read();
+	int const result = eval<int>("TachoLimit");
+	if (!errorsOccured()) {
+		processResponce(reading, result);
+	}
 }
 
 DeviceInfo WaitForEncoderBlock::device() const

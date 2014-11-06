@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtCore/QScopedPointer>
-#include <QtCore/QTranslator>
 
 #include <interpreterBase/kitPluginInterface.h>
 #include <commonTwoDModel/engine/twoDModelControlInterface.h>
@@ -24,10 +23,10 @@ public:
 	~NxtKitInterpreterPlugin() override;
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::SystemEvents const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
-			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
+			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	QString kitId() const override;
@@ -72,7 +71,6 @@ private:
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	interpreterBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
-	QTranslator mAppTranslator;
 };
 
 }

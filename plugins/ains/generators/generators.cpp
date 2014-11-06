@@ -1,18 +1,12 @@
 #include "generators.h"
 
-#include <QtCore/QTranslator>
 #include <QtWidgets/QApplication>
-
-Q_EXPORT_PLUGIN2(ainsPlugin, qReal::ains::AinsPlugin)
 
 using namespace qReal;
 using namespace ains;
 
 AinsPlugin::AinsPlugin()
 {
-	QTranslator *appTranslator = new QTranslator();
-	appTranslator->load(":/ains_" + QLocale().name());
-	QApplication::installTranslator(appTranslator);
 }
 
 AinsPlugin::~AinsPlugin()

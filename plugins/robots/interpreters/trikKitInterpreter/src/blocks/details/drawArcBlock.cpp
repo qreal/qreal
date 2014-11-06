@@ -12,12 +12,14 @@ DrawArcBlock::DrawArcBlock(interpreterBase::robotModel::RobotModelInterface &rob
 void DrawArcBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
 	auto trikDisplay = static_cast<robotModel::parts::TrikDisplay *>(&display);
-	int const x = evaluate("XCoordinateArc").toInt();
-	int const y = evaluate("YCoordinateArc").toInt();
-	int const width = evaluate("WidthArc").toInt();
-	int const height = evaluate("HeightArc").toInt();
-	int const startAngle = evaluate("StartAngle").toInt();
-	int const spanAngle = evaluate("SpanAngle").toInt();
-	trikDisplay->drawArc(x, y, width, height, startAngle, spanAngle);
-	emit done(mNextBlockId);
+	int const x = eval<int>("XCoordinateArc");
+	int const y = eval<int>("YCoordinateArc");
+	int const width = eval<int>("WidthArc");
+	int const height = eval<int>("HeightArc");
+	int const startAngle = eval<int>("StartAngle");
+	int const spanAngle = eval<int>("SpanAngle");
+	if (!errorsOccured()) {
+		trikDisplay->drawArc(x, y, width, height, startAngle, spanAngle);
+		emit done(mNextBlockId);
+	}
 }

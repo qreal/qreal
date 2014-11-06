@@ -1,0 +1,1 @@
+concat(@@LEFT@@, @@RIGHT@@)

@@ -10,10 +10,10 @@ EngineCommandBlock::EngineCommandBlock(RobotModelInterface &robotModel)
 {
 }
 
-QMap<PortInfo, DeviceInfo> EngineCommandBlock::usedDevices() const
+QMap<PortInfo, DeviceInfo> EngineCommandBlock::usedDevices()
 {
 	QMap<PortInfo, DeviceInfo> result;
-	for (robotParts::Motor * const motor : parsePorts<robotParts::Motor>()) {
+	for (robotParts::Motor * const motor : parsePorts<robotParts::Motor>(ReportErrors::doNotReport)) {
 		result[motor->port()] = motor->deviceInfo();
 	}
 

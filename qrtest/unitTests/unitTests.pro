@@ -9,3 +9,4 @@ SUBDIRS = \
 	qrkernelTests \
 	qrrepoTests \
 	qrutilsTests \
+	qrtextTests \

@@ -3,8 +3,8 @@
 #include <QtCore/QMap>
 
 #include "number.h"
-#include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../utilsDeclSpec.h"
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include "qrutils/utilsDeclSpec.h"
 
 namespace utils {
 
@@ -13,7 +13,7 @@ class QRUTILS_EXPORT ExpressionsParser
 
 public:
 	explicit ExpressionsParser(qReal::ErrorReporterInterface *errorReporter);
-	~ExpressionsParser();
+	virtual ~ExpressionsParser();
 
 	Number *parseExpression(QString const &stream, int &pos);
 	void parseProcess(QString const &stream, int& pos, qReal::Id const &curId);

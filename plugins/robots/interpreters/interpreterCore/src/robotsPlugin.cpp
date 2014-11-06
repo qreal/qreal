@@ -16,18 +16,6 @@ static int const gridWidth = 25; // Half of element size
 RobotsPlugin::RobotsPlugin()
 	: mMainWindowInterpretersInterface(nullptr)
 {
-	// WARNING: hack!
-	forceLoadLibs();
-	mInterpreterBaseTranslator.load(":/interpreterBase_" + QLocale().name());
-	mCommonTwoDModelTranslator.load(":/commonTwoDModel_" + QLocale().name());
-	mInterpreterCoreTranslator.load(":/interpreterCore_" + QLocale().name());
-	mUtilsTranslator.load(":/utils_" + QLocale().name());
-	QApplication::installTranslator(&mInterpreterBaseTranslator);
-	QApplication::installTranslator(&mCommonTwoDModelTranslator);
-	QApplication::installTranslator(&mInterpreterCoreTranslator);
-	QApplication::installTranslator(&mUtilsTranslator);
-
-	// This will start kit plugins loading and so on so we must load translators first.
 	mRobotsPluginFacade.reset(new RobotsPluginFacade);
 }
 
@@ -42,7 +30,7 @@ qReal::Customizer *RobotsPlugin::customizationInterface()
 	return &mRobotsPluginFacade->customizer();
 }
 
-QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
+QPair<QString, gui::PreferencesPage *> RobotsPlugin::preferencesPage()
 {
 	return qMakePair(QObject::tr("Robots"), mRobotsPluginFacade->robotsSettingsPage());
 }
@@ -65,12 +53,4 @@ QList<ProjectConverter> RobotsPlugin::projectConverters()
 QStringList RobotsPlugin::defaultSettingsFiles()
 {
 	return mRobotsPluginFacade->defaultSettingsFiles();
-}
-
-void RobotsPlugin::forceLoadLibs()
-{
-	// This will request some symbols from commonTwoDModel lib immediate loading.
-	// This hack workarrounds Window`s lazy dependencies loading (else we cannot obtain 2D model translitions).
-	QString name = twoDModel::TwoDModelControlInterface::staticMetaObject.className();
-	name = utils::AbstractTimer::staticMetaObject.className();
 }

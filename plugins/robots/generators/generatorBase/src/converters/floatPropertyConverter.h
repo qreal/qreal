@@ -1,6 +1,6 @@
 #pragma once
 
-#include "generatorBase/converters/codeConverterBase.h"
+#include "codeConverterBase.h"
 
 namespace generatorBase {
 namespace converters {
@@ -9,14 +9,10 @@ namespace converters {
 class FloatPropertyConverter : public CodeConverterBase
 {
 public:
-	FloatPropertyConverter(QString const &pathToTemplates
-			, qReal::ErrorReporterInterface &errorReporter
-			, interpreterBase::robotModel::RobotModelInterface const &robotModel
-			, QMap<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::DeviceInfo> const &devices
-			, simple::Binding::ConverterInterface const *inputPortConverter
-			, simple::Binding::ConverterInterface const *functionInvocationsConverter
-			, parts::DeviceVariables const &deviceVariables
-	);
+	FloatPropertyConverter(lua::LuaProcessor &luaTranslator
+			, qReal::Id const &id
+			, QString const &propertyName
+			, simple::Binding::ConverterInterface *reservedVariablesConverter);
 };
 
 }

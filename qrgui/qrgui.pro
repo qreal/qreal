@@ -1,30 +1,62 @@
-DESTDIR = ../bin
+TEMPLATE = subdirs
 
-CONFIG += c++11
+SUBDIRS += \
+	mainWindow \
+	models \
+	editor \
+	controller \
+	dialogs \
+	preferencesDialog \
+	textEditor \
+	mouseGestures \
+	hotKeyManager \
+	brandManager \
+	pluginManager \
+	editorPluginInterface \
+	toolPluginInterface \
+	interpretedPluginInterface \
+	thirdparty \
 
-CONFIG += rpath_libdirs
-macx {
-	CONFIG -= app_bundle
-}
+pluginManager.file = $$PWD/plugins/pluginManager/pluginManager.pro
+editorPluginInterface.file = $$PWD/plugins/editorPluginInterface/editorPluginInterface.pro
+toolPluginInterface.file = $$PWD/plugins/toolPluginInterface/toolPluginInterface.pro
+interpretedPluginInterface.file = $$PWD/plugins/interpretedPluginInterface/interpretedPluginInterface.pro
 
-SOURCES = main.cpp
+mainWindow.depends = \
+	models \
+	editor \
+	controller \
+	dialogs \
+	preferencesDialog \
+	textEditor \
+	hotKeyManager \
+	brandManager \
+	pluginManager \
+	thirdparty \
 
-TRANSLATIONS = qrgui_ru.ts
+models.depends = \
+	pluginManager \
 
-# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
-# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
-!macx {
-	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../bin/
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdparty/
-}
+editor.depends = \
+	models \
+	controller \
+	mouseGestures \
+	brandManager \
+	pluginManager \
+	thirdparty \
 
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
+dialogs.depends = \
+	models \
+	thirdparty \
 
-if (equals(QMAKE_CXX, "g++") : !macx) {
-	QMAKE_LFLAGS += -Wl,-E
-}
+textEditor.depends = \
+	toolPluginInterface \
 
-include(qrgui.pri)
+hotKeyManager.depends = \
+	preferencesDialog \
+
+brandManager.depends = \
+	pluginManager \
+
+pluginManager.depends = \
+	toolPluginInterface \

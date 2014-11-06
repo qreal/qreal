@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 #include "blocksFactoryManager.h"
 
 namespace interpreterCore {

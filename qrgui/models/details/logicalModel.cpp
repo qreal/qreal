@@ -59,7 +59,7 @@ LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id con
 
 void LogicalModel::addInsufficientProperties(Id const &id, QString const &name)
 {
-	if (!mEditorManagerInterface.hasElement(id.type()) && !mEditorManagerInterface.isDiagramNode(id.type())) {
+	if (!mEditorManagerInterface.hasElement(id.type())) {
 		return;
 	}
 
@@ -67,7 +67,7 @@ void LogicalModel::addInsufficientProperties(Id const &id, QString const &name)
 	standardProperties.insert("name", name);
 	standardProperties.insert("from", Id::rootId().toVariant());
 	standardProperties.insert("to", Id::rootId().toVariant());
-	standardProperties.insert("linkShape", static_cast<int>(enums::linkShape::unset));
+	standardProperties.insert("linkShape", static_cast<int>(enums::linkShape::broken));
 	standardProperties.insert("links", IdListHelper::toVariant(IdList()));
 	standardProperties.insert("outgoingExplosion", Id().toVariant());
 	standardProperties.insert("incomingExplosions", IdListHelper::toVariant(IdList()));

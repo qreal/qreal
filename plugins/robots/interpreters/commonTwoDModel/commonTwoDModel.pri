@@ -7,10 +7,12 @@ INCLUDEPATH += \
 	$$PWD/../../utils/include/ \
 	$$PWD/../interpreterBase/include/ \
 	$$PWD/../../../../ \
+	$$PWD/../../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lutils -linterpreterBase
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lqrgui-tool-plugin-interface \
+		-lrobots-utils -lrobots-interpreter-base \
 
-TRANSLATIONS = commonTwoDModel_ru.ts
+TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/commonTwoDModel_ru.ts
 
 HEADERS += \
 	$$PWD/include/commonTwoDModel/commonTwoDModelDeclSpec.h \
@@ -32,6 +34,11 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/parts/motor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/rangeSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/touchSensor.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/gyroscope.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/accelerometer.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/marker.h \
+	$$PWD/include/commonTwoDModel/blocks/markerDownBlock.h \
+	$$PWD/include/commonTwoDModel/blocks/markerUpBlock.h \
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -98,13 +105,11 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/motor.cpp \
 	$$PWD/src/robotModel/parts/rangeSensor.cpp \
 	$$PWD/src/robotModel/parts/touchSensor.cpp \
+	$$PWD/src/robotModel/parts/gyroscope.cpp \
+	$$PWD/src/robotModel/parts/accelerometer.cpp \
+	$$PWD/src/robotModel/parts/marker.cpp \
+	$$PWD/src/blocks/markerDownBlock.cpp \
+	$$PWD/src/blocks/markerUpBlock.cpp \
 
 FORMS += \
 	$$PWD/src/engine/view/d2Form.ui \
-
-RESOURCES += \
-	commonTwoDModel.qrc \
-
-# qrgui includes
-HEADERS += \
-	$$PWD/../../../../qrgui/toolPluginInterface/systemEventsInterface.h \

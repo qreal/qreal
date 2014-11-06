@@ -3,7 +3,7 @@
 #include <QtCore/QTranslator>
 #include <QtCore/QScopedPointer>
 
-#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 
 namespace trikRuntimeUploaderPlugin {
 

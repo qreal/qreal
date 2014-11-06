@@ -14,14 +14,14 @@ DevicesConfigurationManager::DevicesConfigurationManager(
 		qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 		, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 		, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
-		, qReal::SystemEventsInterface &systemEvents
+		, qReal::SystemEvents &systemEvents
 		)
 	: DevicesConfigurationProvider("DevicesConfigurationManager")
 	, mGraphicalModelAssistInterface(graphicalModelAssistInterface)
 	, mLogicalModelAssistInterface(logicalModelAssistInterface)
 	, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 {
-	QObject::connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
+	QObject::connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
 			, [&] (Id const &diagramRootId) { this->onActiveTabChanged(diagramRootId); });
 }
 
@@ -61,10 +61,13 @@ void DevicesConfigurationManager::load(QString const &configuration)
 void DevicesConfigurationManager::onDeviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &sensor, Reason reason)
 {
+	if (reason == Reason::loading) {
+		return;
+	}
+
 	Q_UNUSED(robotModel)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
-	Q_UNUSED(reason)
 
 	qReal::Id const activeDiagramGraphicalId = mMainWindowInterpretersInterface.activeDiagram();
 	if (activeDiagramGraphicalId.isNull()) {

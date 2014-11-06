@@ -5,9 +5,9 @@
 #include <QtXml/QDomElement>
 #include <QtCore/QHash>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../../../qrrepo/logicalRepoApi.h"
+#include <qrkernel/ids.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrrepo/logicalRepoApi.h>
 
 namespace metaEditor {
 
@@ -54,7 +54,7 @@ private:
 	static QString calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource);
 	static QString calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource);
 	static QString calculateRelativePath(QString const &pathOne, QString const &pathTwo);
-	static void generateTranslations(QString const &path, QString const &name);
+	static void generateTranslations(QString const &path, QString const &name, QString const &qrealRoot);
 
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;

@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>trikKitInterpreter_ru.qm</file>
+        <file>trikDefaultSettings.ini</file>
         <file>icons/trikTwoDRobot.svg</file>
         <file>icons/switch-2d.svg</file>
         <file>icons/switch-real-trik.svg</file>
@@ -12,6 +12,5 @@
         <file>icons/smile.png</file>
         <file>icons/twoDColorEmpty.svg</file>
         <file>icons/twoDVideoModule.svg</file>
-        <file>trikDefaultSettings.ini</file>
     </qresource>
 </RCC>

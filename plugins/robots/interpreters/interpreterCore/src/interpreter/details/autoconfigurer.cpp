@@ -25,14 +25,14 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, QString const &
 		IdList const children = mGraphicalModelApi.graphicalRepoApi().children(diagram);
 
 		for (Id const &child : children) {
-			interpreterBase::blocksBase::BlockInterface const * const block = mBlocksTable.block(child);
+			interpreterBase::blocksBase::BlockInterface * const block = mBlocksTable.block(child);
 			if (!block) {
 				continue;
 			}
 
-			QMap<PortInfo, DeviceInfo> const usedSensors = block->usedDevices();
-			for (PortInfo const &port : usedSensors.keys()) {
-				DeviceInfo const device = usedSensors[port];
+			QMap<PortInfo, DeviceInfo> const usedDevices = block->usedDevices();
+			for (PortInfo const &port : usedDevices.keys()) {
+				DeviceInfo const device = usedDevices[port];
 				DeviceInfo const existingDevice = currentConfiguration(robotModelName, port);
 				if (!existingDevice.isNull() && !existingDevice.isA(device)) {
 					mErrorReporter.addError(QObject::tr("Sensor configuration conflict, please check that sensor"\

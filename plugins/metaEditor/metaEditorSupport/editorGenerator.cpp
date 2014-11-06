@@ -101,7 +101,7 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 		outpro() << QString("include (%1)").arg(relativeQRealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
 		outpro() << "\n\n";
 
-		generateTranslations(pathToFile, fileBaseName);
+		generateTranslations(pathToFile, fileBaseName, relativeQRealSourcesPath);
 	}
 	catch (char *) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file name"));
@@ -155,10 +155,10 @@ QString EditorGenerator::calculateRelativePath(QString const &pathOne, QString c
 	return result;
 }
 
-void EditorGenerator::generateTranslations(QString const &path, QString const &name)
+void EditorGenerator::generateTranslations(QString const &path, QString const &name, QString const &qrealRoot)
 {
 	// Creating translation subdir
-	QDir translationsDir(path + "/translations");
+	QDir translationsDir(path);
 	QString const absolutePath = translationsDir.absolutePath();
 	if (!translationsDir.exists()) {
 		translationsDir.mkpath(absolutePath);
@@ -166,12 +166,9 @@ void EditorGenerator::generateTranslations(QString const &path, QString const &n
 
 	/// @todo: implement languages selection, not only _ru.ts
 	OutFile translationPro(absolutePath + "/translations.pro");
-	translationPro() << "HEADERS = $$PWD/../generated/pluginInterface.h $$PWD/../generated/elements.h\n\n";
-	translationPro() << "SOURCES = $$PWD/../generated/pluginInterface.cpp\n\n";
-	translationPro() << QString("TRANSLATIONS = $$PWD/%1_ru.ts\n").arg(name);
-	// Writing empty qm-file because resources will require it
-	OutFile qmFile(QString("%1/%2_ru.qm").arg(absolutePath, name));
-	qmFile() << "";
+	translationPro() << "HEADERS = $$PWD/generated/pluginInterface.h $$PWD/generated/elements.h\n\n";
+	translationPro() << "SOURCES = $$PWD/generated/pluginInterface.cpp\n\n";
+	translationPro() << QString("TRANSLATIONS = $$PWD/%1/%2_ru.ts\n").arg(qrealRoot, name);
 }
 
 void EditorGenerator::copyImages(QString const &pathToFile)
