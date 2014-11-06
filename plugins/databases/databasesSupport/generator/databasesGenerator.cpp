@@ -263,8 +263,6 @@ void DatabasesGenerator::generateSQL()
 	mErrorReporter->clear();
 	mPassedElements.clear();
 
-	bool s = mDatatypesChecker->isDatatype("Int");
-
 	if (!(checkRelationships() && checkAttributes() && checkEntities())) {
 		return;
 	}
@@ -322,6 +320,19 @@ void DatabasesGenerator::generateSQL()
 		extraAttributes[i] = "";
 	}
 
+	// match[i][k] =
+	// 0 - no relationships
+	// 1 - one-to-many relationship (i - many, k - one)
+	// -1 - one-to-many relationship (i - one, k - many)
+	// 2 - many-to-many relationship
+	int oneToOneAllTablesSetSize = oneToOneAllTablesSet.size();
+	int** match = new int*[oneToOneAllTablesSetSize];
+	for (int i = 0; i < oneToOneAllTablesSetSize; i++) {
+		match[i] = new int[oneToOneAllTablesSetSize];
+		for (int k = 0; k < oneToOneAllTablesSetSize; k++) {
+			match[i][k] = 0;
+		}
+	}
 
 	IdList oneToManyRelationships = findNodes("OneToManyRelationship");
 	foreach (Id const &relationship, oneToManyRelationships) {
@@ -330,12 +341,20 @@ void DatabasesGenerator::generateSQL()
 		int toSet = getParentList(to, oneToOneAllTablesSet);
 		int fromSet = getParentList(from, oneToOneAllTablesSet);
 
+		if (match[toSet][fromSet] != 0) {
+			error("Too many relationships from "+ getProperty(from, "Name").toString() + "to " + getProperty(to, "Name").toString(), true);
+			return;
+		}
+
 		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(toSet));
 		if (toPrimaryKey == Id::rootId()) {
 			return;
 		}
 		QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
 		extraAttributes[fromSet] += (",\r\n" + toPrimaryKeyName + " " + getProperty(toPrimaryKey, "DataType").toString());
+
+		match[fromSet][toSet] = 1;
+		match[toSet][fromSet] = -1;
 	}
 
 	IdList manyToManyRelationships = findNodes("ManyToManyRelationship");
@@ -344,6 +363,11 @@ void DatabasesGenerator::generateSQL()
 		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
 		int toSet = getParentList(to, oneToOneAllTablesSet);
 		int fromSet = getParentList(from, oneToOneAllTablesSet);
+
+		if (match[toSet][fromSet] != 0) {
+			error("Too many relationships from "+ getProperty(from, "Name").toString() + " to " + getProperty(to, "Name").toString(), true);
+			return;
+		}
 
 		Id toPrimaryKey = getPrimaryKeyOfSet(oneToOneAllTablesSet.at(toSet));
 		if (toPrimaryKey == Id::rootId()) {
@@ -365,6 +389,9 @@ void DatabasesGenerator::generateSQL()
 		codeFile.write(",\r\n");
 		codeFile.write((fromPrimaryKeyName + " " + getProperty(fromPrimaryKey, "DataType").toByteArray()).toUtf8());
 		codeFile.write("\r\n);\r\n\r\n");
+
+		match[toSet][fromSet] = 2;
+		match[toSet][fromSet] = 2;
 	}
 
 	int i = 0;
@@ -393,6 +420,11 @@ void DatabasesGenerator::generateSQL()
 		i++;
 		codeFile.write("\r\n);\r\n\r\n");
 	}
+	delete[] extraAttributes;
+	for (int i = 0; i < oneToOneAllTablesSetSize; i++) {
+		delete[] match[i];
+	}
+	delete[] match;
 	codeFile.close();
 }
 
