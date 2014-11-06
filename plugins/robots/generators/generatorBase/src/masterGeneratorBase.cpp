@@ -2,6 +2,7 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
+#include <qrtext/languageToolboxInterface.h>
 
 #include "readableControlFlowGenerator.h"
 #include "gotoControlFlowGenerator.h"
@@ -58,6 +59,7 @@ QString MasterGeneratorBase::generate()
 		QDir().mkpath(mProjectDir);
 	}
 
+	mTextLanguage.clear();
 	mCustomizer->factory()->setMainDiagramId(mDiagram);
 
 	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {

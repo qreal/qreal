@@ -125,7 +125,6 @@ HEADERS += \
 	$$PWD/include/generatorBase/converters/templateParametrizedConverter.h \
 	$$PWD/include/generatorBase/converters/templateParametrizedMultiConverter.h \
 	$$PWD/include/generatorBase/converters/regexpMultiConverter.h \
-	$$PWD/include/generatorBase/converters/stringPropertyConverter.h \
 	$$PWD/include/generatorBase/converters/enumConverterBase.h \
 	$$PWD/include/generatorBase/converters/dynamicPathConverter.h \
 	$$PWD/include/generatorBase/simpleGenerators/abstractSimpleGenerator.h \
@@ -139,6 +138,7 @@ HEADERS += \
 	$$PWD/src/converters/intPropertyConverter.h \
 	$$PWD/src/converters/floatPropertyConverter.h \
 	$$PWD/src/converters/boolPropertyConverter.h \
+	$$PWD/src/converters/stringPropertyConverter.h \
 	$$PWD/src/converters/nameNormalizerConverter.h \
 	$$PWD/src/converters/functionBlockConverter.h \
 	$$PWD/src/converters/inequalitySignConverter.h \

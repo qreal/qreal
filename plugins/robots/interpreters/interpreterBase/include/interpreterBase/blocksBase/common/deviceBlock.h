@@ -12,7 +12,7 @@ namespace common {
 /// perform search of some device of the given type and call doJob() from it if it was found
 /// or display an error otherwise.
 template<typename Device>
-class ROBOTS_INTERPRETER_BASE_EXPORT DeviceBlock : public interpreterBase::blocksBase::Block
+class DeviceBlock : public interpreterBase::blocksBase::Block
 {
 public:
 	explicit DeviceBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
