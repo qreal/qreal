@@ -13,6 +13,8 @@ public:
 			, qReal::Id const &id
 			, QString const &propertyName
 			, simple::Binding::ConverterInterface *reservedVariablesConverter);
+
+	QString convert(QString const &expression) const override;
 };
 
 }
