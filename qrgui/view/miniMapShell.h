@@ -15,12 +15,13 @@ class MiniMapShell : public QWidget
 	Q_OBJECT
 
 public:
-	MiniMapShell(QWidget *parent, MiniMap *miniMap);
+	MiniMapShell(QWidget *parent);
 
 	void changeSize(int const size);
 
 public slots:
 	void replace(QPoint const &position);
+	void adjustMinimapZoom(int zoom);
 
 private slots:
 	void turnMiniMap();

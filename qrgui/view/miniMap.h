@@ -24,7 +24,7 @@ public:
 	/// Drag mode is used for dragging a rectangle of the main view
 	enum class Mode { None, Drag };
 
-	explicit MiniMap(EditorView *tab);
+	explicit MiniMap(QWidget *tab);
 
 	void changeSource(int index);
 

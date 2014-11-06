@@ -58,19 +58,15 @@ private slots:
 	void zoomInTime();
 	void zoomOutTime();
 	void animFinished();
-	void adjustMinimapZoom(int zoom);
 
 private:
 	void checkGrid();
-
-	void initMiniMap();
 
 	void startAnimation(char const *slot);
 
 	EditorViewMViface *mMVIface;
 	EditorViewScene *mScene;
 
-	MiniMap *mMiniMap;
 	MiniMapShell *mMiniMapShell;
 
 	QPointF mMouseOldPosition;

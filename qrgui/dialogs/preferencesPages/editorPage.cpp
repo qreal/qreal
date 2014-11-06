@@ -41,7 +41,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 //	mUi->indexGridSlider->setVisible(false);
 //	mUi->label_20->setVisible(false);
 
-	connect(mUi->miniMapSize, SIGNAL(sliderMoved(int)), this, SLOT(miniMapSizeSliderMoved(int)));
+	connect(mUi->miniMapSize, &QSlider::sliderMoved, this, &PreferencesEditorPage::miniMapSizeSliderMoved);
 	mUi->miniMapSize->setMinimum(50);
 	mUi->miniMapSize->setMaximum(250);
 

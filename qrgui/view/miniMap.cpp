@@ -4,12 +4,12 @@
 
 #include <qrkernel/settingsManager.h>
 
-MiniMap::MiniMap(EditorView *tab)
+MiniMap::MiniMap(QWidget *tab)
 		: QGraphicsView(tab)
 		, mEditorView(nullptr)
 		, mMode(Mode::None)
 {
-	mEditorView = tab;
+	mEditorView = static_cast<EditorView *>(tab);
 	hide();
 
 	setRenderHint(QPainter::Antialiasing, true);

@@ -35,7 +35,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(mUi->pageContentWigdet);
 	// Debugger page removed due to #736
 	PreferencesMiscellaniousPage *miscellaniousPage = new PreferencesMiscellaniousPage(mUi->pageContentWigdet);
-	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
+	PreferencesEditorPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, mUi->pageContentWigdet);
 	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(mUi->pageContentWigdet);
 
@@ -53,7 +53,10 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
 	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this
 		, SIGNAL(paletteRepresentationChanged()));
-	connect(editorPage, SIGNAL(miniMapSizeChanged(int)), this, SIGNAL(miniMapSizeChanged(int)));
+	connect(editorPage
+			, &PreferencesEditorPage::miniMapSizeChanged
+			, this
+			, &PreferencesDialog::miniMapSizeChanged);
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 	connect(miscellaniousPage, &PreferencesMiscellaniousPage::toolbarSizeChanged
 			, this, &PreferencesDialog::toolbarSizeChanged);

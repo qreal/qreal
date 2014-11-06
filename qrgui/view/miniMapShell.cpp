@@ -6,31 +6,33 @@ using namespace qReal;
 int const buttonSize = 20;
 int const miniMapStickDistance = 50;
 
-MiniMapShell::MiniMapShell(QWidget *parent, MiniMap * miniMap)
+MiniMapShell::MiniMapShell(QWidget *parent)
 	: QWidget()
 	, mParentWidget(parent)
-	, mMiniMap(miniMap)
+	, mMiniMap(new MiniMap(parent))
 	, mShowMiniMapButton(new MiniMapButton(this))
 	, mMainLayout(new QVBoxLayout())
 	, mAuxiliaryLayout(new QHBoxLayout())
 
+
 {
+	int const size = SettingsManager::value("MiniMapSize").toInt();
+
 	mMiniMap->setParent(this);
 	mMiniMap->show();
-	mShowMiniMapButton->setParent(this);
-
-	int const size = SettingsManager::value("MiniMapSize").toInt();
-	setFixedSize(size + buttonSize, size + buttonSize);
 	mMiniMap->setGeometry(0, 0, size, size);
+
+	mShowMiniMapButton->setParent(this);
 	mShowMiniMapButton->setGeometry(0, 0, buttonSize, buttonSize);
 	mShowMiniMapButton->raise();
-
-	mMainLayout->addWidget(mMiniMap);
-	this->setLayout(mMainLayout);
-
+	mShowMiniMapButton->setIcon(QIcon(":/icons/show.png"));
 	connect(mShowMiniMapButton, &MiniMapButton::clicked, this, &MiniMapShell::turnMiniMap);
 
-	mShowMiniMapButton->setIcon(QIcon(":/icons/show.png"));
+	mMainLayout->addWidget(mMiniMap);
+	setFixedSize(size + buttonSize, size + buttonSize);
+	setLayout(mMainLayout);
+	show();
+	setParent(parent);
 }
 
 void MiniMapShell::changeSize(int const size)
@@ -43,7 +45,7 @@ void MiniMapShell::turnMiniMap()
 {
 	if (!mShowMiniMapButton->getDragState()) {
 		int const size = SettingsManager::value("MiniMapmSize").toInt();
-		if (!mMiniMap->isHidden()){
+		if (mMiniMap->isHidden()){
 			mShowMiniMapButton->setIcon(QIcon(":/icons/show.png"));
 			mMiniMap->show();
 			setGeometry(this->x()
@@ -102,4 +104,10 @@ void MiniMapShell::replace(QPoint const &position)
 	if (pos.x() < miniMapStickDistance) {
 		move(0,pos.y());
 	}
+}
+
+void MiniMapShell::adjustMinimapZoom(int zoom)
+{
+	mMiniMap->resetMatrix();
+	mMiniMap->scale(0.01 * zoom, 0.01 * zoom);
 }

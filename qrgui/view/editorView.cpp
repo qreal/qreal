@@ -12,8 +12,7 @@ int const zoomAnimationTimes = 4;
 
 EditorView::EditorView(QWidget *parent)
 	: QGraphicsView(parent)
-	, mMiniMap(nullptr)
-	, mMiniMapShell(nullptr)
+	, mMiniMapShell(new MiniMapShell(this))
 	, mMouseOldPosition()
 	, mWheelPressed(false)
 	, mTouchManager(this)
@@ -42,7 +41,7 @@ EditorView::EditorView(QWidget *parent)
 
 	connect(&mTouchManager, SIGNAL(gestureStarted()), mScene, SLOT(deleteGesture()));
 
-	initMiniMap();
+	//initMiniMap();
 }
 
 EditorView::~EditorView()
@@ -293,17 +292,4 @@ void EditorView::zoom(qreal const zoomFactor)
 void EditorView::updateMiniMap(int const size)
 {
 	mMiniMapShell->changeSize(size);
-}
-
-void EditorView::adjustMinimapZoom(int zoom)
-{
-	mMiniMap->resetMatrix();
-	mMiniMap->scale(0.01 * zoom, 0.01 * zoom);
-}
-
-void EditorView::initMiniMap()
-{
-	mMiniMap = new MiniMap(this);
-	mMiniMapShell = new MiniMapShell(this, mMiniMap);
-	mMiniMapShell->setParent(this);
 }
