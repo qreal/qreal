@@ -418,7 +418,7 @@ TEST_F(LuaParserTest, logicalOperators)
 
 TEST_F(LuaParserTest, concatenation)
 {
-	QString const stream = "'1'..'2'";
+	QString const stream = "'1' .. '2'";
 	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	QSharedPointer<ast::BinaryOperator> binaryOp = result.dynamicCast<ast::BinaryOperator>();

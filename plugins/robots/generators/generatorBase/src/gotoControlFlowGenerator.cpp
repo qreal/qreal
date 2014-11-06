@@ -17,8 +17,11 @@ GotoControlFlowGenerator::GotoControlFlowGenerator(
 
 ControlFlowGeneratorBase *GotoControlFlowGenerator::cloneFor(qReal::Id const &diagramId)
 {
-	return new GotoControlFlowGenerator(mRepo, mErrorReporter, mCustomizer
-			, diagramId, parent(), false);
+	GotoControlFlowGenerator * const copy = new GotoControlFlowGenerator(mRepo
+			, mErrorReporter, mCustomizer, diagramId, parent(), false);
+	delete copy->mValidator;
+	copy->mValidator = mValidator;
+	return copy;
 }
 
 void GotoControlFlowGenerator::beforeSearch()
