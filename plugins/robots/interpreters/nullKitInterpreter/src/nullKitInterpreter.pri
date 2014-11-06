@@ -7,7 +7,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../../bin -linterpreterBase -lqrtext
+LIBS += -L$$PWD/../../../../../bin -lqrtext -lrobots-interpreter-base
 
 HEADERS += \
 	$$PWD/nullKitInterpreterPlugin.h \

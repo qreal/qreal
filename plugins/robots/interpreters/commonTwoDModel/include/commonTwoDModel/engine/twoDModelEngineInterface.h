@@ -46,6 +46,15 @@ public:
 	/// Draws sound waves during the given amount of time thus showing that the robot plays some sound.
 	virtual void playSound(int timeInMs) = 0;
 
+	/// Moves the marker of the 2D model robot down to the floor.
+	/// The robot will draw its trace on the floor after that.
+	/// If the marker of another color is already drawing at the moment it will be replaced.
+	virtual void markerDown(QColor const &color) = 0;
+
+	/// Lifts the marker of the 2D model robot up.
+	/// The robot stops drawing its trace on the floor after that.
+	virtual void markerUp() = 0;
+
 	/// Retuns the timeline implementation for the 2D model time.
 	virtual utils::TimelineInterface &modelTimeline() = 0;
 

@@ -77,6 +77,10 @@ public:
 	/// Returns a list of predefined constants that are reserved by the system.
 	virtual QStringList const &specialConstants() const = 0;
 
+	/// Clears the state of the parser making it forget types of all identifiers, other expressions and clear
+	/// all remembered information except caches.
+	virtual void clear() = 0;
+
 private:
 	/// Interprets given AST. Returns result of an expression. Must be implemented for concrete language.
 	virtual QVariant interpret(QSharedPointer<core::ast::Node> const &root) = 0;

@@ -1,4 +1,4 @@
-QT += widgets
+QT += widgets network
 
 INCLUDEPATH += \
 	$$PWD \
@@ -11,19 +11,22 @@ INCLUDEPATH += \
 
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
 		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
-		-lutils -linterpreterBase -lcommonTwoDModel -lqextserialport \
+		-lrobots-utils -lrobots-interpreter-base -lrobots-common-2d-model -lqextserialport \
 
 HEADERS += \
 	$$PWD/trikAdditionalPreferences.h \
 	$$PWD/trikDisplayWidget.h \
 	$$PWD/trikKitInterpreterPlugin.h \
 	$$PWD/blocks/trikBlocksFactory.h \
-	$$PWD/blocks/details/ledBlock.h \
 	$$PWD/blocks/details/setBackgroundBlock.h \
 	$$PWD/blocks/details/smileBlock.h \
 	$$PWD/blocks/details/trikEnginesForwardBlock.h \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.h \
 	$$PWD/blocks/details/waitForMotionBlock.h \
+	$$PWD/blocks/details/speakerBlock.h \
+	$$PWD/blocks/details/ledBlock.h \
+	$$PWD/blocks/details/sayBlock.h \
+	$$PWD/blocks/details/systemCommandBlock.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
 	$$PWD/robotModel/parts/trikColorSensor.h \
 	$$PWD/robotModel/parts/trikDisplay.h \
@@ -36,6 +39,7 @@ HEADERS += \
 	$$PWD/robotModel/parts/trikMotionSensor.h \
 	$$PWD/robotModel/parts/trikSonarSensor.h \
 	$$PWD/robotModel/parts/trikObjectSensor.h \
+	$$PWD/robotModel/parts/trikShell.h \
 	$$PWD/robotModel/real/realRobotModelBase.h \
 	$$PWD/robotModel/real/realRobotModelV6.h \
 	$$PWD/robotModel/real/parts/display.h \
@@ -54,6 +58,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/colorSensor.h \
 	$$PWD/robotModel/real/parts/gyroscope.h \
 	$$PWD/robotModel/real/parts/accelerometer.h \
+	$$PWD/robotModel/real/parts/shell.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
@@ -75,12 +80,15 @@ SOURCES += \
 	$$PWD/trikKitInterpreterPlugin.cpp \
 	$$PWD/trikDisplayWidget.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
-	$$PWD/blocks/details/ledBlock.cpp \
 	$$PWD/blocks/details/setBackgroundBlock.cpp \
 	$$PWD/blocks/details/smileBlock.cpp \
 	$$PWD/blocks/details/trikEnginesForwardBlock.cpp \
 	$$PWD/blocks/details/trikEnginesBackwardBlock.cpp \
 	$$PWD/blocks/details/waitForMotionBlock.cpp \
+	$$PWD/blocks/details/speakerBlock.cpp \
+	$$PWD/blocks/details/ledBlock.cpp \
+	$$PWD/blocks/details/sayBlock.cpp \
+	$$PWD/blocks/details/systemCommandBlock.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
 	$$PWD/robotModel/parts/trikColorSensor.cpp \
 	$$PWD/robotModel/parts/trikDisplay.cpp \
@@ -93,6 +101,7 @@ SOURCES += \
 	$$PWD/robotModel/parts/trikServoMotor.cpp \
 	$$PWD/robotModel/parts/trikSonarSensor.cpp \
 	$$PWD/robotModel/parts/trikSpeaker.cpp \
+	$$PWD/robotModel/parts/trikShell.cpp \
 	$$PWD/robotModel/real/realRobotModelBase.cpp \
 	$$PWD/robotModel/real/realRobotModelV6.cpp \
 	$$PWD/robotModel/real/parts/display.cpp \
@@ -111,6 +120,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/motionSensor.cpp \
 	$$PWD/robotModel/real/parts/gyroscope.cpp \
 	$$PWD/robotModel/real/parts/accelerometer.cpp \
+	$$PWD/robotModel/real/parts/shell.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \

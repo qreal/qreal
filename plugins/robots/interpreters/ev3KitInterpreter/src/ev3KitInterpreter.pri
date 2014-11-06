@@ -10,7 +10,7 @@ INCLUDEPATH += \
 
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
 		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
-		-lutils -linterpreterBase -lqextserialport \
+		-lrobots-utils -lrobots-interpreter-base -lqextserialport \
 
 HEADERS += \
 	$$PWD/commandConstants.h \

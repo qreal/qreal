@@ -22,7 +22,7 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(
 	, mCustomizer(customizer)
 	, mIsMainGenerator(isThisDiagramMain)
 	, mDiagram(diagramId)
-	, mValidator(repo, errorReporter, customizer, diagramId)
+	, mValidator(new PrimaryControlFlowValidator(repo, errorReporter, customizer, diagramId, this))
 {
 }
 
@@ -32,7 +32,7 @@ ControlFlowGeneratorBase::~ControlFlowGeneratorBase()
 
 bool ControlFlowGeneratorBase::preGenerationCheck()
 {
-	return mValidator.validate();
+	return mValidator->validate();
 }
 
 semantics::SemanticTree *ControlFlowGeneratorBase::generate(qReal::Id const &initialNode)
@@ -101,17 +101,17 @@ enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id cons
 
 qReal::Id ControlFlowGeneratorBase::initialNode() const
 {
-	return mValidator.initialNode();
+	return mValidator->initialNode();
 }
 
 QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::ifBranchesFor(qReal::Id const &id) const
 {
-	return mValidator.ifBranchesFor(id);
+	return mValidator->ifBranchesFor(id);
 }
 
 QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::loopBranchesFor(qReal::Id const &id) const
 {
-	return mValidator.loopBranchesFor(id);
+	return mValidator->loopBranchesFor(id);
 }
 
 GeneratorCustomizer &ControlFlowGeneratorBase::customizer() const

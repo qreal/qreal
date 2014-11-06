@@ -34,6 +34,9 @@ public:
 
 	void playSound(int timeInMs) override;
 
+	void markerDown(QColor const &color) override;
+	void markerUp() override;
+
 	utils::TimelineInterface &modelTimeline() override;
 	engine::TwoDModelDisplayInterface *display() override;
 	engine::TwoDModelGuiFacade *guiFacade() const override;

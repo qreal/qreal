@@ -153,7 +153,7 @@ void Block::warning(QString const &message)
 
 QMap<robotModel::PortInfo, robotModel::DeviceInfo> Block::usedDevices()
 {
-	return QMap<robotModel::PortInfo, robotModel::DeviceInfo>();
+	return {};
 }
 
 void Block::evalCode(QString const &code)

@@ -53,6 +53,10 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 {
 	Q_UNUSED(semanticAnalyzer);
 
+	if (!root) {
+		return QVariant();
+	}
+
 	if (root->is<ast::Block>()) {
 		auto statements = as<ast::Block>(root)->children();
 		for (auto statement : statements) {
@@ -194,6 +198,11 @@ void LuaInterpreter::setVariableValue(QString const &name, QVariant const &value
 	} else {
 		mIdentifierValues.insert(name, value);
 	}
+}
+
+void LuaInterpreter::clear()
+{
+	mIdentifierValues.clear();
 }
 
 QVariant LuaInterpreter::interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root
