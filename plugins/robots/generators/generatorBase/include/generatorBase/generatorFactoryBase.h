@@ -159,7 +159,8 @@ public:
 
 	/// Produces converter for expressions which should have string type
 	/// without taking ownership on it
-	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
+	virtual simple::Binding::ConverterInterface *stringPropertyConverter(qReal::Id const &block
+			, QString const &property) const;
 
 	/// Produces a converter that returns an expression that obtain values of system variables
 	/// getting its name or the given string othrewise. Transfers ownership.

@@ -134,11 +134,6 @@
         <file>templates/drawing/clearUsedScreen.t</file>
         <file>templates/drawing/drawBitmap.t</file>
         <file>templates/drawing/variablesDeclaration.t</file>
-        <file>templates/printTextBlock/floatSpecifier.t</file>
-        <file>templates/printTextBlock/formatStringIdentifier.t</file>
-        <file>templates/printTextBlock/formatStringImplementation.t</file>
-        <file>templates/printTextBlock/intSpecifier.t</file>
-        <file>templates/printTextBlock/notSupportedMessage.t</file>
         <file>templates/buttons/waitForEnter.t</file>
         <file>templates/buttons/waitForEscape.t</file>
         <file>templates/buttons/waitForLeft.t</file>
