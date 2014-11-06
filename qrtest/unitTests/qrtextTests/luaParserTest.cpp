@@ -38,7 +38,7 @@ void LuaParserTest::SetUp()
 TEST_F(LuaParserTest, sanityCheck)
 {
 	QString const stream = "123";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	auto number = result.dynamicCast<ast::Number>();
 	ASSERT_FALSE(number.isNull());
@@ -48,7 +48,7 @@ TEST_F(LuaParserTest, sanityCheck)
 TEST_F(LuaParserTest, unaryOp)
 {
 	QString const stream = "-123";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	QSharedPointer<ast::UnaryOperator> unaryOp = result.dynamicCast<ast::UnaryOperator>();
 	ASSERT_FALSE(unaryOp.isNull());
@@ -60,7 +60,7 @@ TEST_F(LuaParserTest, unaryOp)
 TEST_F(LuaParserTest, connections)
 {
 	QString const stream = "-123";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	QSharedPointer<ast::UnaryOperator> unaryOp = result.dynamicCast<ast::UnaryOperator>();
 	ASSERT_FALSE(unaryOp.isNull());
@@ -74,7 +74,7 @@ TEST_F(LuaParserTest, connections)
 TEST_F(LuaParserTest, binaryOp)
 {
 	QString const stream = "1+2";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	QSharedPointer<ast::BinaryOperator> binaryOp = result.dynamicCast<ast::BinaryOperator>();
 	ASSERT_FALSE(binaryOp.isNull());
@@ -90,7 +90,7 @@ TEST_F(LuaParserTest, associativity)
 {
 	// Left-associative addition.
 	QString stream = "1 + 2 + 3";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	auto firstAddition = result.dynamicCast<ast::Addition>();
@@ -113,7 +113,7 @@ TEST_F(LuaParserTest, associativity)
 
 	// Right-associative exponentiation.
 	stream = "1 ^ 2 ^ 3";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	auto firstExponentiation = result.dynamicCast<ast::Exponentiation>();
@@ -138,7 +138,7 @@ TEST_F(LuaParserTest, associativity)
 TEST_F(LuaParserTest, precedence)
 {
 	QString const stream = "1 * 2 + 3 * 4 + 5 * 6";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	auto firstAddition = result.dynamicCast<ast::Addition>();
@@ -185,7 +185,7 @@ TEST_F(LuaParserTest, tableConstructor)
 {
 	// Empty table constructor
 	QString stream = "{}";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	QSharedPointer<ast::TableConstructor> emptyConstructor = result.dynamicCast<ast::TableConstructor>();
@@ -194,7 +194,7 @@ TEST_F(LuaParserTest, tableConstructor)
 
 	// Some simple initializers
 	stream = "{ 1, [30] = 23; 45 }";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	QSharedPointer<ast::TableConstructor> constructor = result.dynamicCast<ast::TableConstructor>();
 	ASSERT_FALSE(constructor.isNull());
@@ -202,7 +202,7 @@ TEST_F(LuaParserTest, tableConstructor)
 
 	// Test from Lua reference
 	stream = "{ [f(1)] = g; \"x\", \"y\"; x = 1, f(x), [30] = 23; 45 }";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	constructor = result.dynamicCast<ast::TableConstructor>();
 	ASSERT_FALSE(constructor.isNull());
@@ -212,7 +212,7 @@ TEST_F(LuaParserTest, tableConstructor)
 TEST_F(LuaParserTest, identifier)
 {
 	QString const stream = "f";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	auto identifier = result.dynamicCast<ast::Identifier>();
 	ASSERT_FALSE(identifier.isNull());
@@ -223,7 +223,7 @@ TEST_F(LuaParserTest, tableIndexing)
 {
 	// Indexers with square brackets
 	QString stream = "t[1]";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	auto indexingExpression = as<ast::IndexingExpression>(result);
 	ASSERT_FALSE(indexingExpression.isNull());
@@ -238,7 +238,7 @@ TEST_F(LuaParserTest, tableIndexing)
 
 	// "Field-like" indexers
 	stream = "t.x";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	indexingExpression = as<ast::IndexingExpression>(result);
 	ASSERT_FALSE(indexingExpression.isNull());
@@ -256,7 +256,7 @@ TEST_F(LuaParserTest, functionCalls)
 {
 	// Functions
 	QString stream = "f(x)";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	auto call = as<ast::FunctionCall>(result);
 	ASSERT_FALSE(call.isNull());
@@ -272,7 +272,7 @@ TEST_F(LuaParserTest, functionCalls)
 
 	// Methods
 	stream = "a:m(x)";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	auto methodCall = as<ast::MethodCall>(result);
 	ASSERT_FALSE(call.isNull());
@@ -292,7 +292,7 @@ TEST_F(LuaParserTest, functionCalls)
 
 	// More complex case, calling method of some unknown object
 	stream = "(a[1].someObject):method(1, 2, 3)";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 	methodCall = as<ast::MethodCall>(result);
 	ASSERT_FALSE(call.isNull());
@@ -324,7 +324,7 @@ TEST_F(LuaParserTest, tableIndexingConnection)
 {
 	//                0    5    10   1517
 	QString stream = "a[1] = 1; a[2] = 2";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	auto block = as<ast::Block>(result);
@@ -363,7 +363,7 @@ TEST_F(LuaParserTest, tableIndexingConnection)
 TEST_F(LuaParserTest, logicalOperators)
 {
 	QString stream = "true or false";
-	auto result = mParser->parse(mLexer->tokenize(stream));
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	QSharedPointer<ast::BinaryOperator> binaryOp = result.dynamicCast<ast::BinaryOperator>();
@@ -374,7 +374,7 @@ TEST_F(LuaParserTest, logicalOperators)
 	ASSERT_FALSE(rightOperand.isNull());
 
 	stream = "true and false";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	binaryOp = result.dynamicCast<ast::BinaryOperator>();
@@ -385,7 +385,7 @@ TEST_F(LuaParserTest, logicalOperators)
 	ASSERT_FALSE(rightOperand.isNull());
 
 	stream = "true && false";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	binaryOp = result.dynamicCast<ast::BinaryOperator>();
@@ -396,7 +396,7 @@ TEST_F(LuaParserTest, logicalOperators)
 	ASSERT_FALSE(rightOperand.isNull());
 
 	stream = "true || false";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	binaryOp = result.dynamicCast<ast::BinaryOperator>();
@@ -407,11 +407,26 @@ TEST_F(LuaParserTest, logicalOperators)
 	ASSERT_FALSE(rightOperand.isNull());
 
 	stream = "not false";
-	result = mParser->parse(mLexer->tokenize(stream));
+	result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_TRUE(mErrors.isEmpty());
 
 	QSharedPointer<ast::UnaryOperator>  unaryOp = result.dynamicCast<ast::UnaryOperator>();
 	ASSERT_FALSE(unaryOp.isNull());
 	rightOperand = unaryOp->operand().dynamicCast<ast::False>();
 	ASSERT_FALSE(leftOperand.isNull());
+}
+
+TEST_F(LuaParserTest, concatenation)
+{
+	QString const stream = "'1'..'2'";
+	auto result = mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
+	EXPECT_TRUE(mErrors.isEmpty());
+	QSharedPointer<ast::BinaryOperator> binaryOp = result.dynamicCast<ast::BinaryOperator>();
+	ASSERT_FALSE(binaryOp.isNull());
+	QSharedPointer<ast::String> leftOperand = binaryOp->leftOperand().dynamicCast<ast::String>();
+	ASSERT_FALSE(leftOperand.isNull());
+	EXPECT_EQ("1", leftOperand->string());
+	QSharedPointer<ast::String> rightOperand = binaryOp->rightOperand().dynamicCast<ast::String>();
+	ASSERT_FALSE(rightOperand.isNull());
+	EXPECT_EQ("2", rightOperand->string());
 }
