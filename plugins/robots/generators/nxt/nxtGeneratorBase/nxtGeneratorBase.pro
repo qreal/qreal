@@ -47,7 +47,6 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/drawLineBlockGenerator.h \
 	$$PWD/src/simpleGenerators/drawCircleBlockGenerator.h \
 	$$PWD/src/simpleGenerators/waitForColorBlockGenerator.h \
-	$$PWD/src/converters/nxtStringPropertyConverter.h \
 	$$PWD/src/converters/colorConverter.h \
 
 SOURCES += \
@@ -63,5 +62,4 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/drawLineBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/drawCircleBlockGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForColorBlockGenerator.cpp \
-	$$PWD/src/converters/nxtStringPropertyConverter.cpp \
 	$$PWD/src/converters/colorConverter.cpp \

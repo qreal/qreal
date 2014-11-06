@@ -28,9 +28,12 @@ public:
 	}
 
 	/// Parses given stream of tokens and returns AST with results or nullptr if parsing is impossible.
-	QSharedPointer<ast::Node> parse(QList<Token<TokenType>> const &tokens)
+	/// @param tokens - a stream of tokens to parse.
+	/// @param tokenUserFriendlyNames - map with displayed names of tokens.
+	QSharedPointer<ast::Node> parse(QList<Token<TokenType>> const &tokens
+			, QHash<TokenType, QString> const &tokenUserFriendlyNames)
 	{
-		mTokenStream.reset(new TokenStream<TokenType>(tokens, mErrors));
+		mTokenStream.reset(new TokenStream<TokenType>(tokens, tokenUserFriendlyNames, mErrors));
 		mContext.reset(new ParserContext<TokenType>(mErrors, *mTokenStream));
 		auto const ast = mGrammar->parse(*mTokenStream, *mContext);
 		if (!mTokenStream->isEnd()) {

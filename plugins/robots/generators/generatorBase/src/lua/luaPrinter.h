@@ -9,6 +9,10 @@
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/simpleGenerators/binding.h"
 
+namespace qrtext {
+class LanguageToolboxInterface;
+}
+
 namespace generatorBase {
 namespace lua {
 
@@ -18,13 +22,17 @@ class LuaPrinter : public qrtext::lua::LuaAstVisitorInterface
 public:
 	/// Takes ownership on converters.
 	LuaPrinter(QString const &pathToTemplates
+			, qrtext::LanguageToolboxInterface const &textLanguage
 			, PrecedenceConverterInterface &precedeceTable
 			, simple::Binding::ConverterInterface const *reservedVariablesConverter);
 
 	~LuaPrinter();
 
 	/// Prints the given AST to the code using a set of templates placed in the given in the constructor directory.
-	virtual QString print(QSharedPointer<qrtext::lua::ast::Node> node);
+	virtual QString print(QSharedPointer<qrtext::lua::ast::Node> const &node);
+
+	/// Prints the given AST to the code on the target language and casts it to string.
+	virtual QString castToString(QSharedPointer<qrtext::lua::ast::Node> const &node);
 
 private:
 	void visit(qrtext::lua::ast::Number const &node) override;
@@ -85,6 +93,10 @@ private:
 	QString popResult(qrtext::lua::ast::Node const &node, bool wrapIntoBrackets = false);
 	QStringList popResults(QList<QSharedPointer<qrtext::lua::ast::Node>> const &nodes);
 
+	bool printWithoutPop(QSharedPointer<qrtext::lua::ast::Node> const &node);
+	QString toString(QSharedPointer<qrtext::lua::ast::Node> const &node);
+
+	qrtext::LanguageToolboxInterface const &mTextLanguage;
 	QMap<qrtext::lua::ast::Node const *, QString> mGeneratedCode;
 	PrecedenceConverterInterface &mPrecedenceTable;
 	simple::Binding::ConverterInterface const *mReservedVariablesConverter;  // Takes ownership

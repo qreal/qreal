@@ -49,7 +49,7 @@
 #include "converters/floatPropertyConverter.h"
 #include "converters/boolPropertyConverter.h"
 #include "converters/switchConditionsMerger.h"
-#include "generatorBase/converters/stringPropertyConverter.h"
+#include "converters/stringPropertyConverter.h"
 
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"
@@ -330,9 +330,10 @@ Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(Id cons
 			, id, property, reservedVariableNameConverter(), needInverting);
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter(qReal::Id const &block
+		, QString const &property) const
 {
-	return new converters::StringPropertyConverter;
+	return new converters::StringPropertyConverter(mLuaTranslator, block, property, reservedVariableNameConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::reservedVariableNameConverter() const
