@@ -1,0 +1,1 @@
+other_to_string(@@VALUE@@)

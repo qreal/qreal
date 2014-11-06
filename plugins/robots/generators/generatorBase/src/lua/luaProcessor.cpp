@@ -23,6 +23,26 @@ QString LuaProcessor::translate(QString const &data
 		, QString const &propertyName
 		, simple::Binding::ConverterInterface const *reservedVariablesConverter)
 {
+	QSharedPointer<qrtext::core::ast::Node> const tree = parse(data, id, propertyName);
+	return lua::LuaPrinter(pathToRoot(), mTextLanguage
+			, precedenceConverter(), reservedVariablesConverter).print(tree);
+}
+
+
+QString LuaProcessor::castToString(QString const &data
+		, Id const &id
+		, QString const &propertyName
+		, simple::Binding::ConverterInterface const *reservedVariablesConverter)
+{
+	QSharedPointer<qrtext::core::ast::Node> const tree = parse(data, id, propertyName);
+	return lua::LuaPrinter(pathToRoot(), mTextLanguage
+			, precedenceConverter(), reservedVariablesConverter).castToString(tree);
+}
+
+QSharedPointer<qrtext::core::ast::Node> LuaProcessor::parse(QString const &data
+		, qReal::Id const &id
+		, QString const &propertyName) const
+{
 	QSharedPointer<qrtext::core::ast::Node> const tree = mTextLanguage.parse(id, propertyName, data);
 	if (!mTextLanguage.errors().isEmpty()) {
 		/// @todo: move this code to some common place
@@ -42,10 +62,10 @@ QString LuaProcessor::translate(QString const &data
 			}
 		}
 
-		return QString();
+		return qrtext::wrap(nullptr);
 	}
 
-	return lua::LuaPrinter(pathToRoot(), precedenceConverter(), reservedVariablesConverter).print(tree);
+	return tree;
 }
 
 qrtext::LanguageToolboxInterface &LuaProcessor::toolbox() const
