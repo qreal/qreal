@@ -37,7 +37,7 @@ QString Engines::readEngineTemplate(QString const &pathToTemplate)
 {
 	QStringList result;
 	foreach (QString const &port, mUsedPorts) {
-		result << readTemplate(pathToTemplate).replace("@@PORT@@", port);
+		result << readTemplateIfExists(pathToTemplate).replace("@@PORT@@", port);
 	}
 
 	return result.join('\n');

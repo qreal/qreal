@@ -415,3 +415,18 @@ TEST_F(LuaParserTest, logicalOperators)
 	rightOperand = unaryOp->operand().dynamicCast<ast::False>();
 	ASSERT_FALSE(leftOperand.isNull());
 }
+
+TEST_F(LuaParserTest, concatenation)
+{
+	QString const stream = "'1' .. '2'";
+	auto result = mParser->parse(mLexer->tokenize(stream));
+	EXPECT_TRUE(mErrors.isEmpty());
+	QSharedPointer<ast::BinaryOperator> binaryOp = result.dynamicCast<ast::BinaryOperator>();
+	ASSERT_FALSE(binaryOp.isNull());
+	QSharedPointer<ast::String> leftOperand = binaryOp->leftOperand().dynamicCast<ast::String>();
+	ASSERT_FALSE(leftOperand.isNull());
+	EXPECT_EQ("1", leftOperand->string());
+	QSharedPointer<ast::String> rightOperand = binaryOp->rightOperand().dynamicCast<ast::String>();
+	ASSERT_FALSE(rightOperand.isNull());
+	EXPECT_EQ("2", rightOperand->string());
+}

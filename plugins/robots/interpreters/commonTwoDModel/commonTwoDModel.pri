@@ -9,7 +9,8 @@ INCLUDEPATH += \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrtext/include/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lqrgui-tool-plugin-interface -lutils -linterpreterBase
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils -lqrgui-tool-plugin-interface \
+		-lrobots-utils -lrobots-interpreter-base \
 
 TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/commonTwoDModel_ru.ts
 
@@ -37,6 +38,9 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/parts/accelerometer.h \
 	$$PWD/include/commonTwoDModel/robotModel/nullTwoDRobotModel.h \
 	$$PWD/include/commonTwoDModel/engine/nullTwoDModelDisplayWidget.h \
+	$$PWD/include/commonTwoDModel/robotModel/parts/marker.h \
+	$$PWD/include/commonTwoDModel/blocks/markerDownBlock.h \
+	$$PWD/include/commonTwoDModel/blocks/markerUpBlock.h \
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -106,7 +110,10 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/gyroscope.cpp \
 	$$PWD/src/robotModel/parts/accelerometer.cpp \
 	$$PWD/src/engine/nullTwoDModelDisplayWidget.cpp \
-    src/robotModel/nullTwoDRobotModel.cpp
+	$$PWD/src/robotModel/nullTwoDRobotModel.cpp \
+	$$PWD/src/robotModel/parts/marker.cpp \
+	$$PWD/src/blocks/markerDownBlock.cpp \
+	$$PWD/src/blocks/markerUpBlock.cpp \
 
 FORMS += \
 	$$PWD/src/engine/view/d2Form.ui \

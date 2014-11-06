@@ -1,6 +1,6 @@
 #pragma once
 
-#include "drawBlockGenerator.h"
+#include "generatorBase/simpleGenerators/bindingGenerator.h"
 
 namespace generatorBase {
 namespace simple {

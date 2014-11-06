@@ -13,7 +13,7 @@ FunctionElementGenerator::FunctionElementGenerator(qrRepo::RepoApi const &repo
 	: BindingGenerator(repo, customizer, id, "function.t", QList<Binding *>()
 			<< Binding::createConverting("@@BODY@@", "Body", customizer.factory()->functionBlockConverter(id, "Body"))
 			, parent)
-	, mGenerateToInit(mRepo.property(id, "Init").toBool())
+	, mGenerateToInit(false)  // maybe it will be useful one day...
 {
 }
 

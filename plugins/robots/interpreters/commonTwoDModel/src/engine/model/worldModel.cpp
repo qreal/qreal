@@ -147,6 +147,36 @@ void WorldModel::clear()
 	while (!mColorFields.isEmpty()) {
 		removeColorField(mColorFields.last());
 	}
+
+	clearRobotTrace();
+}
+
+void WorldModel::appendRobotTrace(QPen const &pen, QPointF const &begin, QPointF const &end)
+{
+	if (pen.color() == QColor(Qt::transparent)) {
+		return;
+	}
+
+	QGraphicsLineItem * const traceItem = new QGraphicsLineItem(QLineF(begin, end));
+	traceItem->setPen(pen);
+
+	if (mRobotTrace.isEmpty()) {
+		emit robotTraceAppearedOrDisappeared(true);
+	}
+
+	mRobotTrace << traceItem;
+	emit otherItemAdded(traceItem);
+}
+
+void WorldModel::clearRobotTrace()
+{
+	while (!mRobotTrace.isEmpty()) {
+		QGraphicsLineItem * const toRemove = mRobotTrace.first();
+		mRobotTrace.removeOne(toRemove);
+		emit itemRemoved(toRemove);
+	}
+
+	emit robotTraceAppearedOrDisappeared(false);
 }
 
 QPainterPath WorldModel::buildWallPath() const
@@ -165,9 +195,22 @@ QDomElement WorldModel::serialize(QDomDocument &document, QPointF const &topLeft
 {
 	QDomElement result = document.createElement("world");
 
+	QDomElement trace = document.createElement("trace");
+	result.appendChild(trace);
+	for (QGraphicsLineItem *line : mRobotTrace) {
+		QDomElement traceSegment = document.createElement("segment");
+		traceSegment.setAttribute("x1", line->line().x1());
+		traceSegment.setAttribute("x2", line->line().x2());
+		traceSegment.setAttribute("y1", line->line().y1());
+		traceSegment.setAttribute("y2", line->line().y2());
+		traceSegment.setAttribute("color", line->pen().color().name());
+		traceSegment.setAttribute("width", line->pen().width());
+		trace.appendChild(traceSegment);
+	}
+
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
-	for (items::WallItem *wall : mWalls) {
+	for (items::WallItem * const wall : mWalls) {
 		QDomElement wallNode = wall->serialize(document, topLeftPicture.toPoint());
 		walls.appendChild(wallNode);
 	}
@@ -190,6 +233,19 @@ void WorldModel::deserialize(QDomElement const &element)
 	}
 
 	clear();
+
+	for (QDomElement traceNode = element.firstChildElement("trace"); !traceNode.isNull();
+			traceNode = traceNode.nextSiblingElement("trace")) {
+		for (QDomElement segmentNode = traceNode.firstChildElement("segment"); !segmentNode.isNull();
+				segmentNode = segmentNode.nextSiblingElement("segment")) {
+			QPointF const from(segmentNode.attribute("x1").toDouble(), segmentNode.attribute("y1").toDouble());
+			QPointF const to(segmentNode.attribute("x2").toDouble(), segmentNode.attribute("y2").toDouble());
+			QPen pen;
+			pen.setColor(QColor(segmentNode.attribute("color")));
+			pen.setWidth(segmentNode.attribute("width").toInt());
+			appendRobotTrace(pen, from, to);
+		}
+	}
 
 	for (QDomElement wallsNode = element.firstChildElement("walls"); !wallsNode.isNull();
 			wallsNode = wallsNode.nextSiblingElement("walls")) {

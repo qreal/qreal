@@ -64,6 +64,10 @@ LuaPrinter::~LuaPrinter()
 
 QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> node)
 {
+	if (!node) {
+		return "";
+	}
+
 	node->acceptRecursively(*this);
 	if (mGeneratedCode.keys().count() != 1 || mGeneratedCode.keys().first() != node.data()) {
 		QLOG_WARN() << "Lua printer got into the inconsistent state during printing."

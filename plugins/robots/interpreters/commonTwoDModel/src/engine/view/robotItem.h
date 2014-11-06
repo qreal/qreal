@@ -57,6 +57,7 @@ protected:
 signals:
 	void mousePressed();
 	void changedPosition(RobotItem *robotItem);
+	void drawTrace(QPen const &pen, QPointF const &from, QPointF const &to);
 
 private:
 	class BeepItem : public QGraphicsItem
@@ -74,6 +75,7 @@ private:
 	void setPos(QPointF const &newPos);
 	/// Same as QGraphicsItem::setRotation(). Needed as slot for connection.
 	void setRotation(qreal rotation) override;
+	void ride(QPointF const &newPos, qreal rotation);
 
 	void onLanded();
 
@@ -87,6 +89,7 @@ private:
 	QPointF mDragStart;
 	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;
+	QPointF mMarkerPoint;
 
 	model::RobotModel &mRobotModel;
 };

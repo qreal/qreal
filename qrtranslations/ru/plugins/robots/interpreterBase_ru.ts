@@ -43,11 +43,18 @@
     </message>
 </context>
 <context>
+    <name>interpreterBase::blocksBase::common::DeviceBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/blocksBase/common/deviceBlock.h" line="31"/>
+        <source>%1 is not configured.</source>
+        <translation>%1 не сконфигурирован.</translation>
+    </message>
+</context>
+<context>
     <name>interpreterBase::blocksBase::common::DisplayBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/displayBlock.cpp" line="27"/>
         <source>Display is not configured (WTF?)</source>
-        <translation>Дисплей не сконфигурирован (што?)</translation>
+        <translation type="vanished">Дисплей не сконфигурирован (што?)</translation>
     </message>
 </context>
 <context>

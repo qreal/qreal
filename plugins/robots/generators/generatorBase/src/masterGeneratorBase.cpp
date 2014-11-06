@@ -7,7 +7,6 @@
 #include "gotoControlFlowGenerator.h"
 #include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
-#include "generatorBase/parts/images.h"
 #include "generatorBase/parts/subprograms.h"
 #include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/sensors.h"
@@ -60,7 +59,6 @@ QString MasterGeneratorBase::generate()
 	}
 
 	mCustomizer->factory()->setMainDiagramId(mDiagram);
-	mCustomizer->factory()->images()->reinit();
 
 	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {
 		generator->reinit();
@@ -119,10 +117,11 @@ QString MasterGeneratorBase::generate()
 			mCustomizer->factory()->terminateCode(), 1));
 	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->isrHooksCode(), 1));
-	resultCode.replace("@@BMP_FILES@@", mCustomizer->factory()->images()->generate());
 	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
+
+	processGeneratedCode(resultCode);
 
 	QString const pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);

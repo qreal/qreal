@@ -85,6 +85,19 @@ TEST_F(LuaInterpreterTest, tableExpressions)
 	ASSERT_EQ(239, result);
 }
 
+TEST_F(LuaInterpreterTest, moreTables)
+{
+	interpret<int>("a = {10; 15}");
+
+	int result = interpret<int>("a[0]");
+	ASSERT_TRUE(mErrors.isEmpty());
+	EXPECT_EQ(10, result);
+
+	result = interpret<int>("a[1]");
+	ASSERT_TRUE(mErrors.isEmpty());
+	EXPECT_EQ(15, result);
+}
+
 TEST_F(LuaInterpreterTest, inequality)
 {
 	bool result = interpret<bool>("1 != 2");
@@ -106,4 +119,11 @@ TEST_F(LuaInterpreterTest, inequality)
 
 	ASSERT_TRUE(mErrors.isEmpty());
 	EXPECT_FALSE(result);
+}
+
+TEST_F(LuaInterpreterTest, concatenation)
+{
+	auto result = interpret<QString>("'ab' .. 'cd'");
+	ASSERT_TRUE(mErrors.isEmpty());
+	EXPECT_EQ("abcd", result);
 }

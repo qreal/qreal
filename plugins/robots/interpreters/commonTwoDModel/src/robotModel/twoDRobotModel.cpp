@@ -16,6 +16,7 @@
 #include "commonTwoDModel/robotModel/parts/touchSensor.h"
 #include "commonTwoDModel/robotModel/parts/gyroscope.h"
 #include "commonTwoDModel/robotModel/parts/accelerometer.h"
+#include "commonTwoDModel/robotModel/parts/marker.h"
 
 #include "commonTwoDModel/engine/twoDModelEngineInterface.h"
 
@@ -32,6 +33,8 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
 	for (PortInfo const &port : realModel.availablePorts()) {
 		addAllowedConnection(port, realModel.allowedDevices(port));
 	}
+
+	addAllowedConnection(PortInfo("MarkerPort", output), { markerInfo() });
 }
 
 TwoDRobotModel::TwoDRobotModel(QString const &robotId)
@@ -141,6 +144,15 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::Accelerometer(deviceInfo, port, *mEngine);
 	}
 
+	if (deviceInfo.isA(markerInfo())) {
+		return new parts::Marker(deviceInfo, port, *mEngine);
+	}
+
 	qDebug() << "Unknown device " + deviceInfo.toString() + " requested on port " + port.name();
 	return nullptr;
+}
+
+DeviceInfo TwoDRobotModel::markerInfo() const
+{
+	return DeviceInfo::create<parts::Marker>();
 }

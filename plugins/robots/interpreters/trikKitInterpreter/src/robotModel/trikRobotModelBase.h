@@ -10,7 +10,7 @@ class TrikRobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 	Q_OBJECT
 
 public:
-	explicit TrikRobotModelBase(QString const &kitId, QString const &robotId);
+	TrikRobotModelBase(QString const &kitId, QString const &robotId);
 
 	QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;
@@ -38,6 +38,7 @@ protected:
 	virtual interpreterBase::robotModel::DeviceInfo lineSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo colorSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo objectSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo shellInfo() const;
 };
 
 }

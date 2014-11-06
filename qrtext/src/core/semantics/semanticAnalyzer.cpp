@@ -16,6 +16,10 @@ SemanticAnalyzer::~SemanticAnalyzer()
 
 QSharedPointer<ast::Node> SemanticAnalyzer::analyze(QSharedPointer<ast::Node> const &root)
 {
+	if (!root) {
+		return root;
+	}
+
 	mRecheckNeeded = true;
 
 	while (mRecheckNeeded) {
