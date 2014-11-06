@@ -15,8 +15,9 @@
 #include "physics/simplePhysicsEngine.h"
 #include "physics/realisticPhysicsEngine.h"
 
-using namespace twoDModel;
-using namespace model;
+#include "include/commonTwoDModel/robotModel/nullTwoDRobotModel.h"
+
+using namespace twoDModel::model;
 using namespace physics;
 using namespace interpreterBase::robotModel;
 using namespace interpreterBase::robotModel::robotParts;
@@ -27,7 +28,7 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	: QObject(parent)
 	, mSettings(settings)
 	, mRobotModel(robotModel)
-	, mSensorsConfiguration(robotModel.name())
+	, mSensorsConfiguration(robotModel.robotId())
 	, mPos(QPointF(0,0))
 	, mAngle(0)
 	, mBeepTime(0)
@@ -145,7 +146,7 @@ SensorsConfiguration &RobotModel::configuration()
 	return mSensorsConfiguration;
 }
 
-robotModel::TwoDRobotModel &RobotModel::info()
+twoDModel::robotModel::TwoDRobotModel &RobotModel::info()
 {
 	return mRobotModel;
 }
@@ -317,13 +318,14 @@ bool RobotModel::onTheGround() const
 	return mIsOnTheGround;
 }
 
-void RobotModel::serialize(QDomDocument &target) const
+QDomElement RobotModel::serialize(QDomDocument &target) const
 {
 	QDomElement robot = target.createElement("robot");
+	robot.setAttribute("id", mRobotModel.robotId());
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", mAngle);
 	mSensorsConfiguration.serialize(robot, target);
-	target.firstChildElement("root").appendChild(robot);
+	return robot;
 }
 
 void RobotModel::deserialize(QDomElement const &robotElement)
@@ -335,9 +337,7 @@ void RobotModel::deserialize(QDomElement const &robotElement)
 	onRobotReturnedOnGround();
 	setPosition(QPointF(x, y));
 	setRotation(robotElement.attribute("direction", "0").toDouble());
-	configuration().deserialize(robotElement);
-	emit positionChanged(mPos);
-	emit rotationChanged(mAngle);
+	nextFragment();
 }
 
 void RobotModel::onRobotLiftedFromGround()

@@ -234,13 +234,10 @@ void WorldModel::deserialize(QDomElement const &element)
 
 	clear();
 
-	QDomNodeList allTraces = element.elementsByTagName("trace");
-	for (int i = 0; i < allTraces.count(); ++i) {
-		QDomElement const trace = allTraces.at(i).toElement();
-
-		QDomNodeList segments = trace.elementsByTagName("segment");
-		for (int j = 0; j < segments.count(); ++j) {
-			QDomElement const segmentNode = segments.at(j).toElement();
+	for (QDomElement traceNode = element.firstChildElement("trace"); !traceNode.isNull();
+			traceNode = traceNode.nextSiblingElement("trace")) {
+		for (QDomElement segmentNode = traceNode.firstChildElement("segment"); !segmentNode.isNull();
+				segmentNode = segmentNode.nextSiblingElement("segment")) {
 			QPointF const from(segmentNode.attribute("x1").toDouble(), segmentNode.attribute("y1").toDouble());
 			QPointF const to(segmentNode.attribute("x2").toDouble(), segmentNode.attribute("y2").toDouble());
 			QPen pen;
@@ -250,42 +247,34 @@ void WorldModel::deserialize(QDomElement const &element)
 		}
 	}
 
-	QDomNodeList allWalls = element.elementsByTagName("walls");
-	for (int i = 0; i < allWalls.count(); ++i) {
-		QDomElement const wallsNode = allWalls.at(i).toElement();
-
-		QDomNodeList walls = wallsNode.elementsByTagName("wall");
-		for (int j = 0; j < walls.count(); ++j) {
-			QDomElement const wallNode = walls.at(j).toElement();
+	for (QDomElement wallsNode = element.firstChildElement("walls"); !wallsNode.isNull();
+			wallsNode = wallsNode.nextSiblingElement("walls")) {
+		for (QDomElement wallNode = wallsNode.firstChildElement("wall"); !wallNode.isNull();
+				wallNode = wallNode.nextSiblingElement("wall")) {
 			items::WallItem *wall = new items::WallItem(QPointF(0, 0), QPointF(0, 0));
 			wall->deserialize(wallNode);
 			addWall(wall);
 		}
 	}
 
-	QDomNodeList colorFields = element.elementsByTagName("colorFields");
-	for (int i = 0; i < colorFields.count(); ++i) {
-		QDomElement const colorFieldNode = colorFields.at(i).toElement();
-
-		QDomNodeList ellipses = colorFieldNode.elementsByTagName("ellipse");
-		for (int j = 0; j < ellipses.count(); ++j) {
-			QDomElement const ellipseNode = ellipses.at(j).toElement();
+	for (QDomElement colorFieldsNode = element.firstChildElement("colorFields"); !colorFieldsNode.isNull();
+			colorFieldsNode = colorFieldsNode.nextSiblingElement("colorFields")) {
+		for (QDomElement ellipseNode = colorFieldsNode.firstChildElement("ellipse"); !ellipseNode.isNull();
+				ellipseNode = ellipseNode.nextSiblingElement("ellipse")) {
 			items::EllipseItem *ellipseItem = new items::EllipseItem(QPointF(0, 0), QPointF(0, 0));
 			ellipseItem->deserialize(ellipseNode);
 			addColorField(ellipseItem);
 		}
 
-		QDomNodeList lines = colorFieldNode.elementsByTagName("line");
-		for (int j = 0; j < lines.count(); ++j) {
-			QDomElement const lineNode = lines.at(j).toElement();
+		for (QDomElement lineNode = colorFieldsNode.firstChildElement("line"); !lineNode.isNull();
+				lineNode = lineNode.nextSiblingElement("line")) {
 			items::LineItem* lineItem = new items::LineItem(QPointF(0, 0), QPointF(0, 0));
 			lineItem->deserialize(lineNode);
 			addColorField(lineItem);
 		}
 
-		QDomNodeList styluses = colorFieldNode.elementsByTagName("stylus");
-		for (int j = 0; j < styluses.count(); ++j) {
-			QDomElement const stylusNode = styluses.at(j).toElement();
+		for (QDomElement stylusNode = colorFieldsNode.firstChildElement("stylus"); !stylusNode.isNull();
+				stylusNode = stylusNode.nextSiblingElement("stylus")) {
 			items::StylusItem *stylusItem = new items::StylusItem(0, 0);
 			stylusItem->deserialize(stylusNode);
 			addColorField(stylusItem);

@@ -3,7 +3,7 @@
 using namespace nullKitInterpreter;
 
 NullRobotModel::NullRobotModel(QString const &kitId)
-	: interpreterBase::robotModel::CommonRobotModel(kitId)
+	: interpreterBase::robotModel::CommonRobotModel(kitId, "")
 {
 }
 

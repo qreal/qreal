@@ -25,6 +25,23 @@ void DevicesConfigurationProvider::connectDevicesConfigurationProvider(
 	}
 }
 
+void DevicesConfigurationProvider::disconnectDevicesConfigurationProvider(
+		DevicesConfigurationProvider * const provider)
+{
+	if (!provider) {
+		return;
+	}
+
+	mConnectedProviders.removeOne(provider);
+}
+
+void DevicesConfigurationProvider::disconnectDevicesConfigurationProvider()
+{
+	for (DevicesConfigurationProvider *provider : mConnectedProviders) {
+		provider->disconnectDevicesConfigurationProvider(this);
+	}
+}
+
 void DevicesConfigurationProvider::deviceConfigurationChanged(QString const &robotModel
 		, PortInfo const &port, DeviceInfo const &device, Reason reason)
 {
