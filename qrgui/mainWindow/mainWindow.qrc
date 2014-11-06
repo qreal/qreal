@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/mainWindow/">
+    <qresource prefix="/mainWindow">
         <file>images/print.png</file>
         <file>images/zoomin.png</file>
         <file>images/zoomout.png</file>
@@ -39,5 +39,7 @@
         <file>images/startTab/open.svg</file>
         <file>images/startTab/createInterpreted.svg</file>
         <file>images/startTab/openInterpreted.svg</file>
+        <file>images/scriptAPI/virtcursor.png</file>
+        <file>hintScripts/obstacle.js</file>
     </qresource>
 </RCC>

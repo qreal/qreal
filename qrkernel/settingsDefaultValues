@@ -65,4 +65,4 @@ usabilityTestingMode=false
 collectErgonomicValues=false
 touchMode=false
 scriptInterpretation=true
-scriptName=:/hintScripts/obstacle.js
+scriptName=:/mainWindow/hintScripts/obstacle.js
