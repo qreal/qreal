@@ -19,7 +19,7 @@ bool TcpConnectionHandler::connect(QHostAddress const &serverAddress)
 	}
 
 	mSocket.connectToHost(serverAddress, static_cast<quint16>(mPort));
-	bool const result = mSocket.waitForConnected(5000);
+	bool const result = mSocket.waitForConnected(3000);
 	if (!result) {
 		QLOG_ERROR() << mSocket.errorString();
 	}
@@ -45,6 +45,7 @@ void TcpConnectionHandler::disconnect()
 
 void TcpConnectionHandler::send(QString const &data)
 {
+	qDebug() << "TcpConnectionHandler::send()" << data;
 	QByteArray dataByteArray = data.toUtf8();
 	dataByteArray = QByteArray::number(dataByteArray.size()) + ':' + dataByteArray;
 	mSocket.write(dataByteArray);

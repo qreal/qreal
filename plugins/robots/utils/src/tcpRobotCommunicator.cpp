@@ -1,4 +1,5 @@
 #include <utils/tcpRobotCommunicator.h>
+#include <utils/requiredVersion.h>
 
 #include <QtNetwork/QHostAddress>
 #include <QtCore/QFileInfo>
@@ -23,6 +24,7 @@ TcpRobotCommunicator::TcpRobotCommunicator(QString const &settings)
 			, this, SLOT(processControlMessage(QString)));
 	QObject::connect(&mTelemetryConnection, SIGNAL(messageReceived(QString))
 			, this, SLOT(processTelemetryMessage(QString)));
+	QObject::connect(&mVersionTimer, SIGNAL(timeout()), this, SLOT(versionTimeOut()));
 }
 
 TcpRobotCommunicator::~TcpRobotCommunicator()
@@ -107,8 +109,17 @@ void TcpRobotCommunicator::processControlMessage(QString const &message)
 {
 	QString const errorMarker("error: ");
 	QString const infoMarker("info: ");
+	QString const versionMarker("version: ");
 
-	if (message.startsWith(errorMarker) && mErrorReporter) {
+	qDebug() << "TcpRobotCommunicator::processIncomingMessage()" << message;
+	if (message.startsWith(versionMarker) && mErrorReporter) {
+		mVersionTimer.stop();
+		QString currentVersion = message.mid(versionMarker.length());
+		qDebug() << "TcpRobotCommunicator::processIncomingMessage::versionMarker" << requiredVersion;
+		if (currentVersion != requiredVersion) {
+			mErrorReporter->addError(tr("Current trik version is not equal to version required by Studio"));
+		}
+	} else if (message.startsWith(errorMarker) && mErrorReporter) {
 		mErrorReporter->addError(message.mid(errorMarker.length()));
 	} else if (message.startsWith(infoMarker) && mErrorReporter) {
 		mErrorReporter->addInformation(message.mid(infoMarker.length()));
@@ -143,6 +154,20 @@ void TcpRobotCommunicator::processTelemetryMessage(QString const &message)
 	}
 }
 
+void TcpRobotCommunicator::versionTimeOut()
+{
+	qDebug() << "TcpRobotCommunicator::versionTimeOut()";
+	mVersionTimer.stop();
+	mErrorReporter->addError(tr("Current trik version can not be received"));
+}
+
+void TcpRobotCommunicator::versionRequest()
+{
+	qDebug() << "TcpRobotCommunicator::versionRequest()";
+	mControlConnection.send("version");
+	mVersionTimer.start(3000);
+}
+
 void TcpRobotCommunicator::connect()
 {
 	QString const server = qReal::SettingsManager::value(mSettings).toString();
@@ -157,6 +182,7 @@ void TcpRobotCommunicator::connect()
 	}
 
 	bool const result = mControlConnection.connect(hostAddress) && mTelemetryConnection.connect(hostAddress);
+	versionRequest();
 	emit connected(result);
 }
 
