@@ -23,6 +23,8 @@ public:
 	{
 		return dynamic_cast<Type const * const>(this) != nullptr;
 	}
+
+	virtual QString toString() const = 0;
 };
 
 }

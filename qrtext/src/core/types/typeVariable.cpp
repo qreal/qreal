@@ -1,5 +1,7 @@
 #include "qrtext/core/types/typeVariable.h"
 
+#include <QtCore/QStringList>
+
 #include "qrtext/core/types/any.h"
 
 using namespace qrtext::core::types;
@@ -96,4 +98,19 @@ void TypeVariable::constrainAssignment(QSharedPointer<TypeVariable> const &other
 	}
 
 	mAllowedTypes = result;
+}
+
+QSet<QSharedPointer<TypeExpression>> TypeVariable::allowedTypes() const
+{
+	return mAllowedTypes;
+}
+
+QString TypeVariable::toString() const
+{
+	QStringList result;
+	for (QSharedPointer<types::TypeExpression> const &type : mAllowedTypes) {
+		result.append(type->toString());
+	}
+
+	return result.join(", ");
 }

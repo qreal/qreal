@@ -46,6 +46,11 @@ public:
 			, GeneralizationsTableInterface const &generalizationsTable
 			, bool *wasCoercion);
 
+	/// Returns all types allowed for this variable now, used for error reporting.
+	QSet<QSharedPointer<TypeExpression>> allowedTypes() const;
+
+	QString toString() const override;
+
 private:
 	QSet<QSharedPointer<TypeExpression>> mAllowedTypes;
 };
