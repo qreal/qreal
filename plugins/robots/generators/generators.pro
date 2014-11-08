@@ -5,6 +5,7 @@ SUBDIRS = \
 	trikGeneratorBase \
 	trikQtsGenerator \
 	trikFSharpGenerator \
+	trikRuntimeUploaderPlugin \
 	nxtGeneratorBase \
 	nxtOsekCGenerator \
 	nxtRussianCGenerator \
@@ -12,6 +13,7 @@ SUBDIRS = \
 trikGeneratorBase.file = $$PWD/trik/trikGeneratorBase/trikGeneratorBase.pro
 trikQtsGenerator.file = $$PWD/trik/trikQtsGenerator/trikQtsGenerator.pro
 trikFSharpGenerator.file = $$PWD/trik/trikFSharpGenerator/trikFSharpGenerator.pro
+trikRuntimeUploaderPlugin.file = $$PWD/trik/trikRuntimeUploaderPlugin/trikRuntimeUploaderPlugin.pro
 nxtGeneratorBase.file = $$PWD/nxt/nxtGeneratorBase/nxtGeneratorBase.pro
 nxtOsekCGenerator.file = $$PWD/nxt/nxtOsekCGenerator/nxtOsekCGenerator.pro
 nxtRussianCGenerator.file = $$PWD/nxt/nxtRussianCGenerator/nxtRussianCGenerator.pro

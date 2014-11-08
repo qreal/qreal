@@ -5,31 +5,21 @@
 
 #include <qrkernel/settingsManager.h>
 
-using namespace trikRuntimeUploaderPlugin;
+using namespace trik;
 
 TrikRuntimeUploaderPlugin::TrikRuntimeUploaderPlugin()
 {
-	mAppTranslator.load(":/trikRuntimeUploaderPlugin_" + QLocale().name());
-	QApplication::installTranslator(&mAppTranslator);
-
-	mAction.reset(new QAction(tr("Upload Runtime"), nullptr));
-
+	mAction.reset(new QAction(QIcon(":/trik/images/flashRobot.svg"), tr("Upload Runtime"), nullptr));
 	connect(mAction.data(), &QAction::triggered, this, &TrikRuntimeUploaderPlugin::uploadRuntime);
-}
-
-TrikRuntimeUploaderPlugin::~TrikRuntimeUploaderPlugin()
-{
 }
 
 QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
 {
+	QAction *separator = new QAction(this);
+	separator->setSeparator(true);
+	qReal::ActionInfo separatorInfo(separator, "generators", "tools");
 	qReal::ActionInfo info(mAction.data(), "generators", "tools");
-	return {info};
-}
-
-void TrikRuntimeUploaderPlugin::init(qReal::PluginConfigurator const &configurator)
-{
-	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
+	return { info, separatorInfo };
 }
 
 void TrikRuntimeUploaderPlugin::uploadRuntime()
@@ -54,12 +44,17 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 
 
 	if (!scpProcess.startDetached(command + " \"exit\" ")) {
-		mMainWindowInterpretersInterface->errorReporter()->addError(
-			tr("WinSCP process failed to launch, check path in settings")
+		mMainWindowInterface->errorReporter()->addError(
+			tr("WinSCP process failed to launch, check path in settings.")
 		);
 	} else {
-		mMainWindowInterpretersInterface->errorReporter()->addWarning(
-			tr("Attention! Start downloading the runtime. Please do not turn off the robot")
+		mMainWindowInterface->errorReporter()->addWarning(
+			tr("Attention! Started to download the runtime. Please do not turn off the robot.")
 		);
 	}
+}
+
+generatorBase::MasterGeneratorBase *TrikRuntimeUploaderPlugin::masterGenerator()
+{
+	return nullptr;
 }

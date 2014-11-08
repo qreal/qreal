@@ -36,6 +36,10 @@ void TrikQtsGeneratorPlugin::init(qReal::PluginConfigurator const &configurator
 
 QList<ActionInfo> TrikQtsGeneratorPlugin::actions()
 {
+	QAction *separator = new QAction(this);
+	separator->setSeparator(true);
+	qReal::ActionInfo separatorInfo(separator, "generators", "tools");
+
 	mGenerateCodeAction.setText(tr("Generate TRIK code"));
 	mGenerateCodeAction.setIcon(QIcon(":/images/generateQtsCode.svg"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
@@ -56,7 +60,7 @@ QList<ActionInfo> TrikQtsGeneratorPlugin::actions()
 	ActionInfo stopRobotActionInfo(&mStopRobotAction, "generators", "tools");
 	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()), Qt::UniqueConnection);
 
-	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
+	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo, separatorInfo};
 }
 
 QList<HotKeyActionInfo> TrikQtsGeneratorPlugin::hotKeyActions()
