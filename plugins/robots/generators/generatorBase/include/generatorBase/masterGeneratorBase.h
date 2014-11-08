@@ -63,7 +63,7 @@ protected:
 	virtual void processGeneratedCode(QString &generatedCode);
 	virtual void afterGeneration();
 
-	virtual void outputCode(QString const &path, QString const &code);
+	void outputCode(QString const &path, QString const &code);
 
 	qrRepo::RepoApi const &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;

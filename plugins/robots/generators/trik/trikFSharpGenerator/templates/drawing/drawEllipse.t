@@ -1,1 +1,1 @@
-// Display is currently not supported
+(* Display is currently not supported *)

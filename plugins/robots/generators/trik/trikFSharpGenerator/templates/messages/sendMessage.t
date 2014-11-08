@@ -1,1 +1,1 @@
-// Messages are currently not supported
+(* Messages are currently not supported *)

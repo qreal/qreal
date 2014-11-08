@@ -1,1 +1,1 @@
-//brick.keys().wasPressed(KeysEnum.Power)
+(* brick.keys().wasPressed(KeysEnum.Power) *)

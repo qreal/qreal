@@ -25,10 +25,7 @@ bool TrikFSharpMasterGenerator::supportsGotoGeneration() const
 	return false;
 }
 
-void TrikFSharpMasterGenerator::outputCode(QString const &path, QString const &code)
+void TrikFSharpMasterGenerator::processGeneratedCode(QString &code)
 {
-	utils::OutFile out(path);
-	QString copy = code;
-	out() << copy.replace('\t', "    ").replace("robot.MotorE1", "robot.ServoE1")
-			.replace("robot.MotorE2", "robot.ServoE2");
+	code.replace('\t', "    ");
 }
