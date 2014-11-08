@@ -1,0 +1,1 @@
+model.ObjectSensor.Read().Y

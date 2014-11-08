@@ -1,1 +1,1 @@
-//brick.display().smile();
+// Display is currently not supported

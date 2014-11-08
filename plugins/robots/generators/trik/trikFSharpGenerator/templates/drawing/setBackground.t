@@ -1,1 +1,1 @@
-//brick.display().setBackground("@@COLOR@@");
+// Display is currently not supported

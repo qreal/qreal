@@ -1,1 +1,1 @@
-let mutable
+float

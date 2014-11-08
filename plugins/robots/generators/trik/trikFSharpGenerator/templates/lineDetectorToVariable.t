@@ -1,1 +1,0 @@
-//@@VAR@@ = brick.cameraLineDetector().read();

@@ -1,1 +1,1 @@
-red
+LedColor.Red

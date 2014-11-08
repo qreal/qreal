@@ -1,3 +1,3 @@
-IMPLEMENTATION.T let @@NAME@@ () =
+let @@NAME@@() =
 @@BODY@@
 

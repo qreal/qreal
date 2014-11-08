@@ -21,6 +21,10 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 
 	mTwoDRobotModelV6.setEngine(modelEngine->engine());
 	mTwoDModelV6.reset(modelEngine);
+
+	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
+	mFSharpAdditionalPreferences = new TrikFSharpAdditionalPreferences();
+	mWinScpAdditionalPreferences = new TrikWinScpAdditionalPreferences();
 }
 
 TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
@@ -58,10 +62,6 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 			, logicalModel, interpretersInterface, interpreterControl);
 
 	mRealRobotModelV6.setErrorReporter(interpretersInterface.errorReporter());
-
-	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
-	mFSharpAdditionalPreferences = new TrikFSharpAdditionalPreferences();
-	mWinScpAdditionalPreferences = new TrikWinScpAdditionalPreferences();
 
 	QLineEdit * const quickPreferences = new QLineEdit;
 	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
