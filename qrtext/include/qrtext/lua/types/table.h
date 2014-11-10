@@ -25,6 +25,11 @@ public:
 		return mElementType;
 	}
 
+	QString toString() const override
+	{
+		return QObject::tr("table[%1]").arg(mElementType->toString());
+	}
+
 private:
 	QSharedPointer<core::types::TypeExpression> mElementType;
 	int mSize;
