@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file alias="left-right">icons/arrowL-R.png</file>
-        <file alias="top-bottom">icons/arrowT-B.png</file>
-    </qresource>
-</RCC>

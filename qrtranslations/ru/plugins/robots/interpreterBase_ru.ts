@@ -11,7 +11,7 @@
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="83"/>
         <source>%1:</source>
-        <translation type="unfinished"></translation>
+        <translation>%1:</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="89"/>
@@ -43,11 +43,18 @@
     </message>
 </context>
 <context>
+    <name>interpreterBase::blocksBase::common::DeviceBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/blocksBase/common/deviceBlock.h" line="31"/>
+        <source>%1 is not configured.</source>
+        <translation>%1 не сконфигурирован.</translation>
+    </message>
+</context>
+<context>
     <name>interpreterBase::blocksBase::common::DisplayBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/displayBlock.cpp" line="27"/>
         <source>Display is not configured (WTF?)</source>
-        <translation>Дисплей не сконфигурирован (што?)</translation>
+        <translation type="vanished">Дисплей не сконфигурирован (што?)</translation>
     </message>
 </context>
 <context>
@@ -94,9 +101,8 @@
 <context>
     <name>interpreterBase::blocksBase::common::WaitForEncoderBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/common/waitForEncoderBlock.cpp" line="23"/>
         <source>Encoder sensor is not configured on port %1</source>
-        <translation>Энкодер не сконфигурирован на порту %1</translation>
+        <translation type="vanished">Энкодер не сконфигурирован на порту %1</translation>
     </message>
 </context>
 <context>
@@ -110,7 +116,7 @@
 <context>
     <name>interpreterBase::robotModel::robotParts::AccelerometerSensor</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/robotModel/robotParts/accelerometerSensor.h" line="15"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/robotModel/robotParts/accelerometerSensor.h" line="16"/>
         <source>Accelerometer</source>
         <translation>Акселерометр</translation>
     </message>
@@ -181,8 +187,9 @@
 <context>
     <name>interpreterBase::robotModel::robotParts::Display</name>
     <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/robotModel/robotParts/display.h" line="15"/>
         <source>Display</source>
-        <translation type="vanished">Дисплей</translation>
+        <translation>Дисплей</translation>
     </message>
 </context>
 <context>

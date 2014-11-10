@@ -2,11 +2,11 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
+
 #include "readableControlFlowGenerator.h"
 #include "gotoControlFlowGenerator.h"
-
+#include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
-#include "generatorBase/parts/images.h"
 #include "generatorBase/parts/subprograms.h"
 #include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/sensors.h"
@@ -18,10 +18,12 @@ using namespace qReal;
 MasterGeneratorBase::MasterGeneratorBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, qrtext::LanguageToolboxInterface &textLanguage
 		, Id const &diagramId)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
+	, mTextLanguage(textLanguage)
 	, mDiagram(diagramId)
 {
 }
@@ -57,8 +59,6 @@ QString MasterGeneratorBase::generate()
 	}
 
 	mCustomizer->factory()->setMainDiagramId(mDiagram);
-	mCustomizer->factory()->variables()->reinit(mRepo);
-	mCustomizer->factory()->images()->reinit();
 
 	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {
 		generator->reinit();
@@ -117,10 +117,11 @@ QString MasterGeneratorBase::generate()
 			mCustomizer->factory()->terminateCode(), 1));
 	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->isrHooksCode(), 1));
-	resultCode.replace("@@BMP_FILES@@", mCustomizer->factory()->images()->generate());
 	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
+
+	processGeneratedCode(resultCode);
 
 	QString const pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
@@ -128,6 +129,11 @@ QString MasterGeneratorBase::generate()
 	afterGeneration();
 
 	return pathToOutput;
+}
+
+lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
+{
+	return new lua::LuaProcessor(mErrorReporter, mTextLanguage, this);
 }
 
 void MasterGeneratorBase::beforeGeneration()

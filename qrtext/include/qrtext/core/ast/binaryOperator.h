@@ -43,6 +43,11 @@ public:
 	}
 
 private:
+	void accept(AstVisitorInterface &visitor) const override
+	{
+		visitor.visit(*this);
+	}
+
 	QSharedPointer<Node> mLeftOperand;
 	QSharedPointer<Node> mRightOperand;
 };

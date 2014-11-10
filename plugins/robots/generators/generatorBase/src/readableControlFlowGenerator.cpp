@@ -33,8 +33,11 @@ ReadableControlFlowGenerator::ReadableControlFlowGenerator(
 
 ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(Id const &diagramId)
 {
-	return new ReadableControlFlowGenerator(mRepo, mErrorReporter, mCustomizer
-			, diagramId, parent(), false);
+	ReadableControlFlowGenerator * const copy = new ReadableControlFlowGenerator(mRepo
+			, mErrorReporter, mCustomizer, diagramId, parent(), false);
+	delete copy->mValidator;
+	copy->mValidator = mValidator;
+	return copy;
 }
 
 void ReadableControlFlowGenerator::performGeneration()

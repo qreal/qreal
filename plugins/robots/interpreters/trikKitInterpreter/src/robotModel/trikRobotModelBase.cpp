@@ -19,6 +19,7 @@
 #include "parts/trikLineSensor.h"
 #include "parts/trikObjectSensor.h"
 #include "parts/trikLed.h"
+#include "parts/trikShell.h"
 
 using namespace trikKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
@@ -50,15 +51,15 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
 	addAllowedConnection(PortInfo("E3", output, { "JE3" }), { servoMotorInfo() });
 	addAllowedConnection(PortInfo("E4", output, { "JE4" }), { servoMotorInfo() });
 
-	addAllowedConnection(PortInfo("M1", output, { "JM1" }), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("M2", output, { "JM2" }), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("M3", output, { "JM3" }), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("M4", output, { "JM4" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M1", output, { "JM1", "A", "1" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M2", output, { "JM2", "B", "2" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M3", output, { "JM3", "C", "3" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M4", output, { "JM4", "D", "4" }), { powerMotorInfo() });
 
-	addAllowedConnection(PortInfo("B1", input, { "JB1", "M1", "JM1" }, "encoder1"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B2", input, { "JB2", "M2", "JM2" }, "encoder2"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B3", input, { "JB3", "M3", "JM3" }, "encoder3"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B4", input, { "JB4", "M4", "JM4" }, "encoder4"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B1", input, { "JB1", "M1", "JM1", "A", "1" }, "encoder1"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B2", input, { "JB2", "M2", "JM2", "B", "2" }, "encoder2"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B3", input, { "JB3", "M3", "JM3", "C", "3" }, "encoder3"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B4", input, { "JB4", "M4", "JM4", "D", "4" }, "encoder4"), { encoderInfo() });
 
 	addAllowedConnection(PortInfo("A1", input, { "JA1" }, "sensorA1"), analogPortConnections);
 	addAllowedConnection(PortInfo("A2", input, { "JA2" }, "sensorA2"), analogPortConnections);
@@ -93,6 +94,8 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
 	addAllowedConnection(PortInfo("ColorSensorRPort", input, {}, "colorSensorR"), { colorSensorInfo() });
 	addAllowedConnection(PortInfo("ColorSensorGPort", input, {}, "colorSensorG"), { colorSensorInfo() });
 	addAllowedConnection(PortInfo("ColorSensorBPort", input, {}, "colorSensorB"), { colorSensorInfo() });
+
+	addAllowedConnection(PortInfo("ShellPort", output), { shellInfo() });
 }
 
 QList<PortInfo> TrikRobotModelBase::configurablePorts() const
@@ -190,3 +193,9 @@ DeviceInfo TrikRobotModelBase::objectSensorInfo() const
 {
 	return DeviceInfo::create<parts::TrikObjectSensor>();
 }
+
+DeviceInfo TrikRobotModelBase::shellInfo() const
+{
+	return DeviceInfo::create<parts::TrikShell>();
+}
+

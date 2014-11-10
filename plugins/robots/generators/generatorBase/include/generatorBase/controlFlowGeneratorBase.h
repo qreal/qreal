@@ -70,9 +70,8 @@ protected:
 	bool mErrorsOccured;
 	bool const mIsMainGenerator;
 
-private:
 	qReal::Id const mDiagram;
-	PrimaryControlFlowValidator mValidator;
+	PrimaryControlFlowValidator *mValidator;  // Takes owneship via Qt parentship system
 };
 
 }

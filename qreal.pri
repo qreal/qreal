@@ -32,7 +32,6 @@ qrgui.depends = \
 	qrkernel \
 	qrmc \
 	thirdparty \
-	plugins \
 
 plugins.depends = \
 	qrxc \
@@ -40,6 +39,7 @@ plugins.depends = \
 	qrutils \
 	qrkernel \
 	qrmc \
+	qrgui \
 	qrtext \
 
 qrtext.depends = qrkernel

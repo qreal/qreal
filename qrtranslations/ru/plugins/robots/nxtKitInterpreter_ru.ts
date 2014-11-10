@@ -63,12 +63,12 @@
 <context>
     <name>nxtKitInterpreter::NxtKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="72"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="69"/>
         <source>Lego NXT</source>
         <translation>Лего NXT</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="108"/>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/nxtKitInterpreterPlugin.cpp" line="105"/>
         <source>Show 2d model</source>
         <translation>Открыть 2D модель</translation>
     </message>
@@ -83,9 +83,8 @@
 <context>
     <name>nxtKitInterpreter::blocks::details::SpeakerBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/blocks/details/speakerBlock.cpp" line="31"/>
         <source>Speaker is not configured (WTF?)</source>
-        <translation>Динамик не сконфигурирован (што?)</translation>
+        <translation type="vanished">Динамик не сконфигурирован (што?)</translation>
     </message>
 </context>
 <context>

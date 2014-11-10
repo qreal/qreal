@@ -180,92 +180,92 @@ code file name:</oldsource>
 <context>
     <name>qReal::visualDebugger::VisualDebuggerPlugin</name>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="46"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="44"/>
         <source>Block Diagram Debug</source>
         <translation>Отладка блок-схем</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="51"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="49"/>
         <source>Visual debug</source>
         <translation>Визуальная отладка</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="54"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="52"/>
         <source>Interpret (automatic)</source>
         <translation>Интерпретировать (автоматический режим)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="59"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="57"/>
         <source>Interpret (one step)</source>
         <translation>Интерпретировать (один шаг)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="64"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="62"/>
         <source>Show watch list</source>
         <translation>Показать список переменных</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="69"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="67"/>
         <source>Visual debug (with gdb)</source>
         <translation>Визуальная отладка (при помощи gdb)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="72"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="70"/>
         <source>Generate and build</source>
         <translation>Сгенерировать и скомпилировать</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="77"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="75"/>
         <source>Start debugger (gdb)</source>
         <translation>Запустить отладчик (gdb)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="97"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="95"/>
         <source>run</source>
         <translation>Запустить отладку в gdb</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="112"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="110"/>
         <source>kill</source>
         <translation>Остановить отладку в gdb</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="122"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="120"/>
         <source>Cancel debug</source>
         <translation>Закончить отладку</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="107"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="105"/>
         <source>cont</source>
         <translation>Перейти к следующей точки останова</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="102"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="100"/>
         <source>next</source>
         <translation>Перейти к следующей строчке</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="92"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="90"/>
         <source>Set breakpoints on each element</source>
         <translation>Поставить точки останова на каждом элементе диаграммы</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="82"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="80"/>
         <source>Configure</source>
         <translation>Настроить gdb</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="87"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="85"/>
         <source>Set breakpoint at start</source>
         <translation>Поставить точку останова в начале программы</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="117"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="115"/>
         <source>Start debug (automatic)</source>
         <translation>Начать отладку (автоматический режим)</translation>
     </message>
     <message>
-        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="188"/>
+        <location filename="../../../plugins/blockDiagram/visualDebugSupport/visualDebuggerPlugin.cpp" line="187"/>
         <source>Code generated and builded successfully</source>
         <translation>Исходный код сгенерирован и скомпилирован успешно</translation>
     </message>

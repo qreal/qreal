@@ -5,7 +5,7 @@
 using namespace interpreterCore::coreBlocks::details;
 
 ClearScreenBlock::ClearScreenBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
-	: DisplayBlock(robotModel)
+	: interpreterBase::blocksBase::common::DisplayBlock(robotModel)
 {
 }
 

@@ -4,9 +4,9 @@
 #include <QtGui/QColor>
 
 #include <qrkernel/ids.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include <interpreterBase/blocksBase/blockInterface.h>
 #include <interpreterBase/blocksBase/blockParserInterface.h>
@@ -44,6 +44,16 @@ public:
 			);
 
 protected:
+	/// Enum with flags whether to report parser errors or let the language toolbox fail silently.
+	enum class ReportErrors {
+		/// Do report parser errors.
+		report
+
+		/// Do not report errors to user. Used when parser shall only try to parse a code (for example, in
+		/// autoconfigurer).
+		, doNotReport
+	};
+
 	Block();
 
 	/// Returns a property of current block with given name as QVariant.
@@ -81,26 +91,26 @@ protected:
 
 	/// Evaluates contents of a given property using text language interpreter and returns result.
 	template<typename T>
-	T eval(QString const &propertyName)
+	T eval(QString const &propertyName, ReportErrors reportErrors = ReportErrors::report)
 	{
-		return evalCode<T>(stringProperty(propertyName));
+		return evalCode<T>(stringProperty(propertyName), reportErrors);
 	}
 
 	/// Evaluates given code using text language interpreter and returns result.
 	template<typename T>
-	T evalCode(QString const &code)
+	T evalCode(QString const &code, ReportErrors reportErrors = ReportErrors::report)
 	{
-		return evalCode<T>(code, "");
+		return evalCode<T>(code, "", reportErrors);
 	}
 
 	/// Evaluates given code using text language interpreter and returns result.
 	/// @param code - code to evaluate.
 	/// @param propertyName - name of corresponding property, used for connection.
 	template<typename T>
-	T evalCode(QString const &code, QString const &propertyName)
+	T evalCode(QString const &code, QString const &propertyName, ReportErrors reportErrors = ReportErrors::report)
 	{
 		T result = mParser->interpret<T>(mGraphicalId, propertyName, code);
-		if (!mParser->errors().isEmpty()) {
+		if (!mParser->errors().isEmpty() && reportErrors == ReportErrors::report) {
 			reportParserErrors();
 			emit failure();
 			return result;

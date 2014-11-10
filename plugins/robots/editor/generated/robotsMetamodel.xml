@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-alpha15">
+<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-beta2">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
@@ -396,7 +396,6 @@
 					<container/>
 					<properties>
 						<property displayedName="Body" type="string" name="Body"/>
-						<property displayedName="Initialization" type="bool" name="Init"/>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -409,7 +408,7 @@
 						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="60" textBinded="Condition" isPlainText="true" background="white"/>
+						<label x="40" y="60" textBinded="Condition" background="white"/>
 						<label x="-25" y="60" text="Condition:"/>
 					</labels>
 					<nonResizeable/>
@@ -433,7 +432,7 @@
 						<image y1="0" name="images/switchBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="60" textBinded="Expression" isPlainText="true" background="white"/>
+						<label x="50" y="60" textBinded="Expression" background="white"/>
 						<label x="-25" y="60" text="Expression:"/>
 					</labels>
 					<nonResizeable/>
@@ -673,7 +672,7 @@
 					<labels>
 						<label x="40" y="-30" textBinded="Ports" hard="true" background="white"/>
 						<label x="-8" y="-30" text="Ports:" hard="true"/>
-						<label x="50" y="60" textBinded="Power" background="white"/>
+						<label x="65" y="60" textBinded="Power" background="white"/>
 						<label x="-50" y="60" text="Angle (degrees):"/>
 					</labels>
 					<nonResizeable/>
@@ -974,6 +973,9 @@
 				<logic>
 					<properties>
 						<property displayedName="Command" type="string" name="Command" />
+						<property displayedName="Code" type="bool" name="Code">
+							<default>false</default>
+						</property>
 					</properties>
 					<container/>
 					<generalizations>
@@ -982,12 +984,6 @@
 				</logic>
 			</node>
 			<node abstract="true" name="VideocameraBlock">
-				<graphics>
-					<labels>
-						<label x="-15" y="-30" text="Mode" hard="true" background="white"/>
-						<label x="65" y="-30" textBinded="Mode" hard="true" background="white"/>
-					</labels>
-				</graphics>
 				<logic>
 					<properties>
 						<property displayedName="Mode" type="VideoSensor" name="Mode">
@@ -1773,6 +1769,43 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Marker Down" name="MarkerDown" description="Moves the marker of the 2D model robot down to the floor: the robot will draw its trace on the floor after that. If the marker of another color is already drawing at the moment it will be replaced.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image name="images/markerDown.svg" x1="0" x2="50" y1="0" y2="50" />
+					</picture>
+					<labels>
+						<label x="27" y="-30" textBinded="Color" hard="true"/>
+						<label x="-10" y="-30" text="Color:" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Color" type="BackgroundColor" name="Color">
+							<default>blue</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Marker Up" name="MarkerUp" description="Lifts the marker of the 2D model robot up: the robot stops drawing its trace on the floor after that.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image name="images/markerUp.svg" x1="0" x2="50" y1="0" y2="50" />
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 
 			<!-- NXT display drawing blocks -->
 			<node displayedName="Draw Pixel" name="NxtDrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
@@ -2064,7 +2097,7 @@
 			<node displayedName="Painter Color" name="TrikSetPainterColor" description="Sets the painter color.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/brushColorBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-15" y="-30" text="Color:" hard="true"/>
@@ -2087,7 +2120,7 @@
 			<node displayedName="Painter Width" name="TrikSetPainterWidth" description="Sets the painter width.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/brushWidthBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-15" y="-30" text="Width:" hard="true"/>
@@ -2252,7 +2285,7 @@
 			<node displayedName="Draw Arc" name="TrikDrawArc" description="Draws the arc defined by the rectangle beginning at (x, y) with the specified width and height, and the given startAngle and spanAngle.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/drawArcBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="XCoordinateArc"/>
@@ -2372,7 +2405,7 @@
 			<node displayedName="Send message" name="TrikSendMessage" description="Sends message to another robot.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/sendMessageBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-40" y="60" text="Message:" hard="false"/>
@@ -2396,7 +2429,7 @@
 			<node displayedName="Wait for message" name="TrikWaitForMessage" description="Waits for a message from another robot and stores it into a variable when it arrives.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/waitForMessageBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-40" y="60" text="Variable:" hard="false"/>
@@ -2485,22 +2518,24 @@
 				<element name="NxtDrawPixel"/>
 				<element name="NxtDrawLine"/>
 				<element name="NxtDrawCircle"/>
-		<element name="Ev3DrawRect"/>
-		<element name="Ev3DrawPixel"/>
-		<element name="Ev3DrawLine"/>
-		<element name="Ev3DrawCircle"/>
-				<!--<element name="TrikSetPainterColor"/>
-				<element name="TrikSetPainterWidth"/>-->
+				<element name="Ev3DrawRect"/>
+				<element name="Ev3DrawPixel"/>
+				<element name="Ev3DrawLine"/>
+				<element name="Ev3DrawCircle"/>
+				<element name="TrikSetPainterColor"/>
+				<element name="TrikSetPainterWidth"/>
 				<element name="TrikDrawPixel"/>
 				<element name="TrikDrawLine"/>
 				<element name="TrikDrawRect"/>
 				<element name="TrikDrawEllipse"/>
-				<!--<element name="TrikDrawArc"/>-->
+				<element name="TrikDrawArc"/>
 				<element name="TrikSmile"/>
 				<element name="TrikSadSmile"/>
 				<element name="TrikSetBackground"/>
 				<element name="PrintText"/>
 				<element name="ClearScreen"/>
+				<element name="MarkerDown"/>
+				<element name="MarkerUp"/>
 			</group>
 		</palette>
 	</diagram>

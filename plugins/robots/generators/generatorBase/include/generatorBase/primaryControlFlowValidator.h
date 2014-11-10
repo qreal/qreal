@@ -2,7 +2,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrrepo/repoApi.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "generatorBase/generatorCustomizer.h"
 #include "robotsDiagramVisitor.h"
@@ -14,13 +14,14 @@ typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 /// Validates given diagram checking all nessesary for each generator conditions
 /// (like all links are connected correctly marked and so on). Also collects
 /// simplest info about diagram (like initial node id, if/then branches and so on).
-class PrimaryControlFlowValidator : public RobotsDiagramVisitor
+class PrimaryControlFlowValidator : public QObject, public RobotsDiagramVisitor
 {
 public:
 	PrimaryControlFlowValidator(qrRepo::RepoApi const &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, qReal::Id const &diagramId);
+			, qReal::Id const &diagramId
+			, QObject *parent = 0);
 
 	/// Validates diagram with id specified in constructor. Returns 'true' if
 	/// diagram is correct, 'false' otherwise
