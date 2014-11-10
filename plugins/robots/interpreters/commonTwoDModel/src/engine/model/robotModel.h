@@ -32,7 +32,9 @@ public:
 		, right
 	};
 
-	RobotModel(robotModel::TwoDRobotModel &robotModel, Settings const &settings, QObject *parent = 0);
+	RobotModel(twoDModel::robotModel::TwoDRobotModel &robotModel
+			, Settings const &settings, QObject *parent = 0);
+
 	~RobotModel();
 
 	void reinit();
@@ -44,6 +46,7 @@ public:
 	void setNewMotor(int speed, uint degrees, interpreterBase::robotModel::PortInfo const &port, bool breakMode);
 
 	SensorsConfiguration &configuration();
+
 	/// Returns a reference to external robot description.
 	robotModel::TwoDRobotModel &info();
 
@@ -59,7 +62,7 @@ public:
 	/// Returns false if robot item is dragged by user at the moment.
 	bool onTheGround() const;
 
-	void serialize(QDomDocument &target) const;
+	QDomElement serialize(QDomDocument &target) const;
 	void deserialize(const QDomElement &robotElement);
 
 	void onRobotLiftedFromGround();
@@ -138,7 +141,7 @@ private:
 	QHash<interpreterBase::robotModel::PortInfo, interpreterBase::robotModel::PortInfo> mMotorToEncoderPortMap;
 
 	Settings const &mSettings;
-	robotModel::TwoDRobotModel &mRobotModel;
+	twoDModel::robotModel::TwoDRobotModel &mRobotModel;
 	SensorsConfiguration mSensorsConfiguration;
 
 	QPointF mPos;

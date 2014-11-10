@@ -8,7 +8,6 @@
 #include "simpleGenerators/drawLineBlockGenerator.h"
 #include "simpleGenerators/drawCircleBlockGenerator.h"
 #include "simpleGenerators/waitForColorBlockGenerator.h"
-#include "converters/nxtStringPropertyConverter.h"
 #include "converters/colorConverter.h"
 
 using namespace nxt;
@@ -67,14 +66,6 @@ generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGener
 QString NxtGeneratorFactory::pathToTemplates() const
 {
 	return ":/" + mGeneratorName + "/templates";
-}
-
-generatorBase::simple::Binding::ConverterInterface *NxtGeneratorFactory::stringPropertyConverter() const
-{
-	return new converters::NxtStringPropertyConverter(pathToTemplates()
-			, *mVariables
-			, *mSubprograms
-			, *reservedVariableNameConverter());
 }
 
 Binding::ConverterInterface *NxtGeneratorFactory::colorConverter() const

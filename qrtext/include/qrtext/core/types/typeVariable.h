@@ -46,6 +46,8 @@ public:
 			, GeneralizationsTableInterface const &generalizationsTable
 			, bool *wasCoercion);
 
+	QString toString() const override;
+
 private:
 	QSet<QSharedPointer<TypeExpression>> mAllowedTypes;
 };

@@ -25,8 +25,6 @@ public:
 
 	QString pathToTemplates() const override;
 
-	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
-
 	/// Produces converter for color specification without taking ownership on it
 	generatorBase::simple::Binding::ConverterInterface *colorConverter() const;
 

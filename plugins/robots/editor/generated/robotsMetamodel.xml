@@ -249,7 +249,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Comment" type="string" name="Comment">
-							<default>Enter some text here...</default>
+							<default>\"Enter some text here...\"</default>
 						</property>
 					</properties>
 					<generalizations>

@@ -40,6 +40,7 @@ public:
 
 	/// Returns a list of walls in the world model.
 	QList<items::WallItem *> const &walls() const;
+
 	QList<items::ColorFieldItem *> const &colorFields() const;
 
 	int wallsCount() const;

@@ -26,6 +26,10 @@ RCC_DIR = .moc
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
 
+!macx {
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,."
+}
+
 HEADERS += \
 	$$PWD/qRealApplication.h \
 	$$PWD/mainWindow.h \

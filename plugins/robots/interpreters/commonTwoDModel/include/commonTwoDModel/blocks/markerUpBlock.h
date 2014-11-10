@@ -8,7 +8,8 @@ namespace twoDModel {
 namespace blocks {
 
 /// An interpreter`s implementation for RemoveMarker block. See description in documentation.
-class COMMON_TWO_D_MODEL_EXPORT MarkerUpBlock : public interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::Marker>
+class COMMON_TWO_D_MODEL_EXPORT MarkerUpBlock
+		: public interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::Marker>
 {
 	Q_OBJECT
 
