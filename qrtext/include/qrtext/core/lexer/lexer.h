@@ -112,13 +112,17 @@ public:
 						bestMatch.candidate = checkForKeyword(bestMatch.match.captured());
 					}
 
-					result << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
+					result << Token<TokenType>(bestMatch.candidate
+							, range
+							, bestMatch.match.captured());
 				} else if (bestMatch.candidate == TokenType::comment) {
 					tokenEndColumn += bestMatch.match.capturedLength() - 1;
 					Range const range(Connection(bestMatch.match.capturedStart(), line, column)
 							, Connection(bestMatch.match.capturedEnd() - 1, tokenEndLine, tokenEndColumn));
 
-					mComments << Token<TokenType>(bestMatch.candidate, range, bestMatch.match.captured());
+					mComments << Token<TokenType>(bestMatch.candidate
+							, range
+							, bestMatch.match.captured());
 				}
 
 				// Keeping connection updated.
@@ -163,6 +167,12 @@ public:
 	QList<Token<TokenType>> comments() const
 	{
 		return mComments;
+	}
+
+	/// Returns a map with user-friendly names of tokens.
+	QHash<TokenType, QString> userFriendlyTokenNames() const
+	{
+		return mPatterns.tokenUserFriendlyNames();
 	}
 
 private:

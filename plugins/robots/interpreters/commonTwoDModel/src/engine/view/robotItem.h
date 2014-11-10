@@ -21,7 +21,7 @@ class RobotItem : public QObject, public graphicsUtils::RotateItem
 	Q_OBJECT
 
 public:
-	explicit RobotItem(model::RobotModel &robotModel);
+	RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel, QObject *parent = 0);
 
 	QRectF rect() const override;
 	void setSelected(bool isSelected) override;
@@ -49,13 +49,15 @@ public:
 	void setNeededBeep(bool isNeededBeep);
 
 	void recoverDragStartPosition();
+	model::RobotModel &robotModel();
 
 protected:
 	QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 signals:
 	void mousePressed();
-	void changedPosition();
+	void changedPosition(RobotItem *robotItem);
+	void drawTrace(QPen const &pen, QPointF const &from, QPointF const &to);
 
 private:
 	class BeepItem : public QGraphicsItem
@@ -73,6 +75,7 @@ private:
 	void setPos(QPointF const &newPos);
 	/// Same as QGraphicsItem::setRotation(). Needed as slot for connection.
 	void setRotation(qreal rotation) override;
+	void ride(QPointF const &newPos, qreal rotation);
 
 	void onLanded();
 
@@ -86,6 +89,7 @@ private:
 	QPointF mDragStart;
 	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;
+	QPointF mMarkerPoint;
 
 	model::RobotModel &mRobotModel;
 };

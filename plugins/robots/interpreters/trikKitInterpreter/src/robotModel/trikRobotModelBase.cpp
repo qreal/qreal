@@ -24,8 +24,8 @@
 using namespace trikKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-TrikRobotModelBase::TrikRobotModelBase(QString const &kitId)
-	: CommonRobotModel(kitId)
+TrikRobotModelBase::TrikRobotModelBase(QString const &kitId, QString const &robotId)
+	: CommonRobotModel(kitId, robotId)
 {
 	QList<DeviceInfo> const analogPortConnections = {
 		lightSensorInfo()

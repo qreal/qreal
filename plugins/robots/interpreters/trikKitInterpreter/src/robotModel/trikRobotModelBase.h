@@ -10,7 +10,7 @@ class TrikRobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 	Q_OBJECT
 
 public:
-	explicit TrikRobotModelBase(QString const &kitId);
+	TrikRobotModelBase(QString const &kitId, QString const &robotId);
 
 	QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<interpreterBase::robotModel::DeviceInfo> convertibleBases() const override;

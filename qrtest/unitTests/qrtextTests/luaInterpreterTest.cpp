@@ -20,7 +20,7 @@ void LuaInterpreterTest::SetUp()
 
 QSharedPointer<qrtext::core::ast::Node> LuaInterpreterTest::parseAndAnalyze(QString const &code)
 {
-	return mAnalyzer->analyze(mParser->parse(mLexer->tokenize(code)));
+	return mAnalyzer->analyze(mParser->parse(mLexer->tokenize(code), mLexer->userFriendlyTokenNames()));
 }
 
 TEST_F(LuaInterpreterTest, sanityCheck)
@@ -119,4 +119,11 @@ TEST_F(LuaInterpreterTest, inequality)
 
 	ASSERT_TRUE(mErrors.isEmpty());
 	EXPECT_FALSE(result);
+}
+
+TEST_F(LuaInterpreterTest, concatenation)
+{
+	auto result = interpret<QString>("'ab' .. 'cd'");
+	ASSERT_TRUE(mErrors.isEmpty());
+	EXPECT_EQ("abcd", result);
 }

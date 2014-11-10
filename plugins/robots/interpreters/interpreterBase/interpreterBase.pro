@@ -2,6 +2,7 @@ TEMPLATE = lib
 CONFIG += c++11
 
 DESTDIR = ../../../../bin/
+TARGET = robots-interpreter-base
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc

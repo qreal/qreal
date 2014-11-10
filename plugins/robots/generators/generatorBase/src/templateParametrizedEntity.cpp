@@ -6,7 +6,6 @@
 #include <qrkernel/exception/exception.h>
 
 using namespace generatorBase;
-using namespace qReal;
 
 TemplateParametrizedEntity::TemplateParametrizedEntity()
 {
@@ -38,12 +37,32 @@ QString TemplateParametrizedEntity::readTemplate(QString const &pathFromRoot) co
 	return result;
 }
 
-void TemplateParametrizedEntity::setPathToTemplates(QString const &pathTemplates)
+QString TemplateParametrizedEntity::readTemplateIfExists(QString const &pathFromRoot, QString const &fallback) const
 {
-	mPathToRoot = pathTemplates;
+	QString const fullPath = mPathToRoot + '/' + pathFromRoot;
+	if (!QFile(fullPath).exists()) {
+		return fallback;
+	}
+
+	QString result = fallback;
+
+	try {
+		result = utils::InFile::readAll(fullPath);
+	} catch (qReal::Exception const &) {
+		// Without this try-catch program would be failing every time when
+		// someone forgets or missprints tamplate name or unknown block with
+		// common generation rule will ty to read template
+	}
+
+	return result;
 }
 
 QString TemplateParametrizedEntity::pathToRoot() const
 {
 	return mPathToRoot;
+}
+
+void TemplateParametrizedEntity::setPathToTemplates(QString const &pathTemplates)
+{
+	mPathToRoot = pathTemplates;
 }

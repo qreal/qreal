@@ -13,6 +13,7 @@ class RobotModelInterfaceMock : public interpreterBase::robotModel::RobotModelIn
 	Q_OBJECT
 
 public:
+	MOCK_CONST_METHOD0(robotId, QString());
 	MOCK_CONST_METHOD0(name, QString());
 	MOCK_CONST_METHOD0(friendlyName, QString());
 	MOCK_CONST_METHOD0(kitId, QString());

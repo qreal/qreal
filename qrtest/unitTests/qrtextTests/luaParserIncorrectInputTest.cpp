@@ -17,6 +17,6 @@ void LuaParserIncorrectInputTest::SetUp()
 TEST_F(LuaParserIncorrectInputTest, incorrectLogicalOperators)
 {
 	QString stream = "true ||| false";
-	mParser->parse(mLexer->tokenize(stream));
+	mParser->parse(mLexer->tokenize(stream), mLexer->userFriendlyTokenNames());
 	EXPECT_FALSE(mErrors.isEmpty());
 }

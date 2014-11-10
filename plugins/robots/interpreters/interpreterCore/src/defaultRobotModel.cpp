@@ -3,7 +3,7 @@
 using namespace interpreterCore;
 
 DefaultRobotModel::DefaultRobotModel()
-	: CommonRobotModel("default")
+	: CommonRobotModel("default", "")
 {
 }
 
