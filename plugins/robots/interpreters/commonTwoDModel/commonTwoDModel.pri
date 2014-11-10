@@ -36,6 +36,8 @@ HEADERS += \
 	$$PWD/include/commonTwoDModel/robotModel/parts/touchSensor.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/gyroscope.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/accelerometer.h \
+	$$PWD/include/commonTwoDModel/robotModel/nullTwoDRobotModel.h \
+	$$PWD/include/commonTwoDModel/engine/nullTwoDModelDisplayWidget.h \
 	$$PWD/include/commonTwoDModel/robotModel/parts/marker.h \
 	$$PWD/include/commonTwoDModel/blocks/markerDownBlock.h \
 	$$PWD/include/commonTwoDModel/blocks/markerUpBlock.h \
@@ -107,6 +109,8 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/touchSensor.cpp \
 	$$PWD/src/robotModel/parts/gyroscope.cpp \
 	$$PWD/src/robotModel/parts/accelerometer.cpp \
+	$$PWD/src/engine/nullTwoDModelDisplayWidget.cpp \
+	$$PWD/src/robotModel/nullTwoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/marker.cpp \
 	$$PWD/src/blocks/markerDownBlock.cpp \
 	$$PWD/src/blocks/markerUpBlock.cpp \

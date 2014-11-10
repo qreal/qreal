@@ -61,6 +61,8 @@ public:
 	/// Destructor.
 	virtual ~RobotModelInterface() {}
 
+	virtual QString robotId() const = 0;
+
 	/// Returns internal name (id) of a model. Used to identify a model in kit manager, configuration and so on.
 	/// Shall be unique.
 	virtual QString name() const = 0;

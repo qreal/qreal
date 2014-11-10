@@ -30,29 +30,29 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget 
 
 void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, PortInfo const &port, bool breakMode)
 {
-	mModel.robotModel().setNewMotor(speed, degrees, port, breakMode);
+	mModel.robotModels()[0]->setNewMotor(speed, degrees, port, breakMode);
 }
 
 int TwoDModelEngineApi::readEncoder(PortInfo const &port) const
 {
-	return mModel.robotModel().readEncoder(port);
+	return mModel.robotModels()[0]->readEncoder(port);
 }
 
 void TwoDModelEngineApi::resetEncoder(PortInfo const &port)
 {
-	mModel.robotModel().resetEncoder(port);
+	mModel.robotModels()[0]->resetEncoder(port);
 }
 
 int TwoDModelEngineApi::readTouchSensor(PortInfo const &port) const
 {
-	if (!mModel.robotModel().configuration().type(port).isA<robotParts::TouchSensor>()) {
+	if (!mModel.robotModels()[0]->configuration().type(port).isA<robotParts::TouchSensor>()) {
 		return touchSensorNotPressedSignal;
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position(neededPosDir.first);
 	qreal const rotation = neededPosDir.second / 180 * mathUtils::pi;
-	QSizeF const size = mModel.robotModel().sensorRect(port, position).size();
+	QSizeF const size = mModel.robotModels()[0]->sensorRect(port, position).size();
 
 	QPainterPath sensorPath;
 	qreal const touchRegionRadius = size.height() / 2;
@@ -91,15 +91,15 @@ int TwoDModelEngineApi::readColorSensor(PortInfo const &port) const
 		++countsColor[color];
 	}
 
-	if (mModel.robotModel().configuration().type(port).isA<robotParts::ColorSensorFull>()) {
+	if (mModel.robotModels()[0]->configuration().type(port).isA<robotParts::ColorSensorFull>()) {
 		return readColorFullSensor(countsColor);
-	} else if (mModel.robotModel().configuration().type(port).isA<robotParts::ColorSensorPassive>()) {
+	} else if (mModel.robotModels()[0]->configuration().type(port).isA<robotParts::ColorSensorPassive>()) {
 		return readColorNoneSensor(countsColor, n);
-	} else if (mModel.robotModel().configuration().type(port).isA<robotParts::ColorSensorRed>()) {
+	} else if (mModel.robotModels()[0]->configuration().type(port).isA<robotParts::ColorSensorRed>()) {
 		return readSingleColorSensor(red, countsColor, n);
-	} else if (mModel.robotModel().configuration().type(port).isA<robotParts::ColorSensorGreen>()) {
+	} else if (mModel.robotModels()[0]->configuration().type(port).isA<robotParts::ColorSensorGreen>()) {
 		return readSingleColorSensor(green, countsColor, n);
-	} else if (mModel.robotModel().configuration().type(port).isA<robotParts::ColorSensorBlue>()) {
+	} else if (mModel.robotModels()[0]->configuration().type(port).isA<robotParts::ColorSensorBlue>()) {
 		return readSingleColorSensor(blue, countsColor, n);
 	}
 
@@ -125,14 +125,14 @@ uint TwoDModelEngineApi::spoilColor(uint const color) const
 
 QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 {
-	DeviceInfo const device = mModel.robotModel().configuration().type(port);
+	DeviceInfo const device = mModel.robotModels()[0]->configuration().type(port);
 	if (device.isNull()) {
 		return QImage();
 	}
 
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
-	qreal const width = mModel.robotModel().info().sensorImageRect(device).width() / 2.0;
+	qreal const width = mModel.robotModels()[0]->info().sensorImageRect(device).width() / 2.0;
 	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -245,17 +245,17 @@ int TwoDModelEngineApi::readLightSensor(PortInfo const &port) const
 
 void TwoDModelEngineApi::playSound(int timeInMs)
 {
-	mModel.robotModel().playSound(timeInMs);
+	mModel.robotModels()[0]->playSound(timeInMs);
 }
 
 void TwoDModelEngineApi::markerDown(QColor const &color)
 {
-	mModel.robotModel().markerDown(color);
+	mModel.robotModels()[0]->markerDown(color);
 }
 
 void TwoDModelEngineApi::markerUp()
 {
-	mModel.robotModel().markerUp();
+	mModel.robotModels()[0]->markerUp();
 }
 
 utils::TimelineInterface &TwoDModelEngineApi::modelTimeline()
@@ -285,6 +285,6 @@ QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(PortInfo con
 {
 	view::SensorItem const *sensor = mView.sensorItem(port);
 	QPointF const position = sensor ? sensor->scenePos() : QPointF();
-	qreal const direction = sensor ? sensor->rotation() + mModel.robotModel().rotation() : 0;
+	qreal const direction = sensor ? sensor->rotation() + mModel.robotModels()[0]->rotation() : 0;
 	return { position, direction };
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QStringList>
+
 #include "qrtext/core/types/typeExpression.h"
 
 namespace qrtext {
@@ -30,6 +32,17 @@ public:
 	{
 		return mFormalParameters;
 	}
+
+	QString toString() const override
+	{
+		QStringList parameterTypes;
+		for (QSharedPointer<core::types::TypeExpression> const &type : mFormalParameters) {
+			parameterTypes << type->toString();
+		}
+
+		return QString("%1(%2)").arg(mReturnType->toString()).arg(parameterTypes.join(", ")) +  QObject::tr("");
+	}
+
 
 private:
 	QSharedPointer<core::types::TypeExpression> mReturnType;

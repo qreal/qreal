@@ -109,7 +109,7 @@ bool LuaPrinter::printWithoutPop(QSharedPointer<qrtext::lua::ast::Node> const &n
 	node->acceptRecursively(*this);
 	if (mGeneratedCode.keys().count() != 1 || mGeneratedCode.keys().first() != node.data()) {
 		QLOG_WARN() << "Lua printer got into the inconsistent state during printing."
-				<< mGeneratedCode.keys().count() <<"pieces of code:";
+				<< mGeneratedCode.keys().count() << "pieces of code:";
 		for (QString const &code : mGeneratedCode.values()) {
 			QLOG_INFO() << code;
 		}

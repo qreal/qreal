@@ -47,15 +47,20 @@ QSharedPointer<qrtext::core::ast::Node> LuaProcessor::parse(QString const &data
 	if (!mTextLanguage.errors().isEmpty()) {
 		/// @todo: move this code to some common place
 		for (qrtext::core::Error const &error : mTextLanguage.errors()) {
+			QString const errorMessage = QString("%1:%2 %3")
+					.arg(error.connection().line())
+					.arg(error.connection().column())
+					.arg(error.errorMessage());
+
 			switch (error.severity()) {
 			case qrtext::core::Severity::error:
-				mErrorReporter.addError(error.errorMessage(), id);
+				mErrorReporter.addError(errorMessage, id);
 				break;
 			case qrtext::core::Severity::critical:
-				mErrorReporter.addCritical(error.errorMessage(), id);
+				mErrorReporter.addCritical(errorMessage, id);
 				break;
 			case qrtext::core::Severity::warning:
-				mErrorReporter.addWarning(error.errorMessage(), id);
+				mErrorReporter.addWarning(errorMessage, id);
 				break;
 			default:
 				break;

@@ -11,8 +11,8 @@
 using namespace ev3KitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId)
-	: CommonRobotModel(kitId)
+Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId, QString const &robotId)
+	: CommonRobotModel(kitId, robotId)
 {
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
