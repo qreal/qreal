@@ -30,7 +30,7 @@ DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool aut
 void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> const &models)
 {
 	for (RobotModelInterface * const model : models) {
-		QString const name = model->name();
+		QString const name = model->robotId();
 		mRobotModels[name] = model;
 		QWidget * const configurer = configurerForRobotModel(*model);
 		mRobotModelConfigurers[name] = configurer;
@@ -39,7 +39,7 @@ void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 
 void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
-	QString const robotModelId = robotModel.name();
+	QString const robotModelId = robotModel.robotId();
 	mCurrentModel = robotModelId;
 	takeWidget();
 	if (mRobotModels.contains(robotModelId)) {
@@ -54,8 +54,8 @@ void DevicesConfigurationWidget::prependCustomWidget(RobotModelInterface &robotM
 		return;
 	}
 
-	Q_ASSERT(mRobotModelConfigurers.contains(robotModel.name()));
-	QVBoxLayout *layout = dynamic_cast<QVBoxLayout *>(mRobotModelConfigurers[robotModel.name()]->layout());
+	Q_ASSERT(mRobotModelConfigurers.contains(robotModel.robotId()));
+	QVBoxLayout *layout = dynamic_cast<QVBoxLayout *>(mRobotModelConfigurers[robotModel.robotId()]->layout());
 	Q_ASSERT(layout);
 	layout->insertWidget(0, widget);
 }
@@ -71,7 +71,7 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 	result->setLayout(layout);
 	QList<PortInfo> const configurablePorts = robotModel.configurablePorts();
 	for (PortInfo const &port : configurablePorts) {
-		layout->addLayout(initPort(robotModel.name(), port, robotModel.allowedDevices(port)));
+		layout->addLayout(initPort(robotModel.robotId(), port, robotModel.allowedDevices(port)));
 	}
 
 	return result;

@@ -26,8 +26,8 @@ using namespace twoDModel::robotModel;
 using namespace interpreterBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
-	: CommonRobotModel(realModel.kitId())
-	, mRealModel(realModel)
+	: CommonRobotModel(realModel.kitId(), realModel.robotId())
+	, mRealModel(&realModel)
 	, mEngine(nullptr)
 {
 	for (PortInfo const &port : realModel.availablePorts()) {
@@ -37,15 +37,22 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
 	addAllowedConnection(PortInfo("MarkerPort", output), { markerInfo() });
 }
 
+TwoDRobotModel::TwoDRobotModel(QString const &robotId)
+	:CommonRobotModel("", robotId)
+	, mRealModel(nullptr)
+	, mEngine(nullptr)
+{
+}
+
 QString TwoDRobotModel::name() const
 {
-	return "TwoDRobotModelFor" + mRealModel.name();
+	return "TwoDRobotModelFor" + mRealModel->name();
 }
 
 QString TwoDRobotModel::friendlyName() const
 {
 	QRegExp versionRegExp("\\(.*\\)");
-	int const pos = versionRegExp.indexIn(mRealModel.friendlyName());
+	int const pos = versionRegExp.indexIn(mRealModel->friendlyName());
 	if (pos == -1) {
 		return tr("2D Model");
 	}
@@ -65,12 +72,12 @@ utils::TimelineInterface &TwoDRobotModel::timeline()
 
 QList<PortInfo> TwoDRobotModel::configurablePorts() const
 {
-	return mRealModel.configurablePorts();
+	return mRealModel->configurablePorts();
 }
 
 QList<DeviceInfo> TwoDRobotModel::convertibleBases() const
 {
-	return mRealModel.convertibleBases();
+	return mRealModel->convertibleBases();
 }
 
 twoDModel::engine::TwoDModelEngineInterface *TwoDRobotModel::engine()

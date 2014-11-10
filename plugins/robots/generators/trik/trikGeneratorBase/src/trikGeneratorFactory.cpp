@@ -4,7 +4,6 @@
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 #include <generatorBase/lua/luaProcessor.h>
 
-#include "converters/trikStringPropertyConverter.h"
 #include "simpleGenerators/detectGenerator.h"
 #include "simpleGenerators/detectorToVariableGenerator.h"
 #include "simpleGenerators/drawLineGenerator.h"
@@ -119,11 +118,6 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 QString TrikGeneratorFactory::pathToTemplates() const
 {
 	return ":/" + mGeneratorName + "/templates";
-}
-
-generatorBase::simple::Binding::ConverterInterface *TrikGeneratorFactory::stringPropertyConverter() const
-{
-	return new converters::TrikStringPropertyConverter(mGeneratorName, *mVariables, *reservedVariableNameConverter());
 }
 
 generatorBase::parts::DeviceVariables *TrikGeneratorFactory::deviceVariables() const

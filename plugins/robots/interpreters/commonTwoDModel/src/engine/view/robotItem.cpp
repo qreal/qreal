@@ -4,13 +4,16 @@
 
 using namespace twoDModel::view;
 using namespace graphicsUtils;
+using namespace twoDModel::model;
+using namespace interpreterBase::robotModel::robotParts;
 
 int const border = 0;
 int const defaultTraceWidth = 6;
 
-RobotItem::RobotItem(model::RobotModel &robotModel)
-	: RotateItem()
-	, mImage(QImage(robotModel.info().robotImage()))
+RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel, QObject *parent)
+	: QObject(parent)
+	, RotateItem()
+	, mImage(QImage(robotImageFileName))
 	, mBeepItem(new BeepItem)
 	, mRotater(nullptr)
 	, mRectangleImpl()
@@ -89,7 +92,7 @@ void RobotItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void RobotItem::onLanded()
 {
 	mRobotModel.onRobotReturnedOnGround();
-	emit changedPosition();
+	emit changedPosition(this);
 }
 
 void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
@@ -204,6 +207,11 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, QVariant const &value)
 void RobotItem::recoverDragStartPosition()
 {
 	mRobotModel.setPosition(mDragStart);
+}
+
+RobotModel &RobotItem::robotModel()
+{
+	return mRobotModel;
 }
 
 void RobotItem::BeepItem::paint(QPainter *painter, QStyleOptionGraphicsItem const *option

@@ -10,7 +10,7 @@ class Ev3RobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 	Q_OBJECT
 
 public:
-	Ev3RobotModelBase(QString const &kitId);
+	Ev3RobotModelBase(QString const &kitId, QString const &robotId);
 
 protected:
 	virtual interpreterBase::robotModel::DeviceInfo motorInfo() const;

@@ -6,9 +6,14 @@
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
 
+#include <interpreterBase/devicesConfigurationWidget.h>
+#include <interpreterBase/devicesConfigurationProvider.h>
+
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
+
+#include "src/engine/model/model.h"
 
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
@@ -26,7 +31,7 @@ class D2ModelWidget : public utils::QRealDialog, public interpreterBase::Devices
 	Q_OBJECT
 
 public:
-	explicit D2ModelWidget(model::Model &model, QWidget *parent = 0);
+	D2ModelWidget(model::Model &model, QWidget *parent = 0);
 	~D2ModelWidget();
 
 	void init();
@@ -83,7 +88,7 @@ private slots:
 
 	void changePenWidth(int width);
 	void changePenColor(int textIndex);
-	void changePalette();
+	void onSelectionChange();
 
 	void changeSpeed(int curIndex);
 
@@ -123,9 +128,12 @@ private:
 		double rotation;
 	};
 
+	void changePalette();
 	void connectUiButtons();
 	void initButtonGroups();
-	void initPorts();
+	void setPortsGroupBoxAndWheelComboBoxes();
+	void unsetPortsGroupBoxAndWheelComboBoxes();
+
 	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void setDisplayVisibility(bool visible);
@@ -139,7 +147,7 @@ private:
 	QPushButton *currentPortButton();
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
-	void reinitSensor(interpreterBase::robotModel::PortInfo const &port);
+	void reinitSensor(RobotItem *robotItem, interpreterBase::robotModel::PortInfo const &port);
 
 	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
@@ -164,8 +172,16 @@ private:
 
 	void updateWheelComboBoxes();
 
+	void onRobotListChange(RobotItem *robotItem);
+
+	void setSelectedRobotItem(RobotItem *robotItem);
+	void unsetSelectedRobotItem();
+
 	Ui::D2Form *mUi = nullptr;
 	D2ModelScene *mScene = nullptr;
+
+	RobotItem *mSelectedRobotItem = nullptr;
+	interpreterBase::DevicesConfigurationWidget *mCurrentConfigurer;
 
 	model::Model &mModel;
 
@@ -183,7 +199,9 @@ private:
 
 	bool mFirstShow = true;
 
-	RobotState mInitialRobotBeforeRun;
+	QMap<model::RobotModel *, RobotState> mInitialRobotsBeforeRun;
+
+	bool mDisplayIsVisible = false;
 };
 
 }

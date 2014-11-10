@@ -21,8 +21,6 @@ public:
 
 	QString pathToTemplates() const override;
 
-	generatorBase::simple::Binding::ConverterInterface *stringPropertyConverter() const override;
-
 	generatorBase::parts::DeviceVariables *deviceVariables() const override;
 
 private:
