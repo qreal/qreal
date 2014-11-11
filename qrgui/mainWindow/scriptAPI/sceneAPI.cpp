@@ -3,8 +3,8 @@
 #include <editor/editorView.h>
 #include <editor/editorViewScene.h>
 
-#include "mainwindow/mainWindow.h"
-#include "mainwindow/palette/draggableElement.h"
+#include "mainWindow.h"
+#include "palette/draggableElement.h"
 #include "scriptAPI.h"
 
 using namespace qReal;

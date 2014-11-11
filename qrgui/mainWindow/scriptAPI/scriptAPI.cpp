@@ -7,7 +7,7 @@
 #include <editor/editorView.h>
 #include <models/commands/createElementCommand.h>
 
-#include "mainwindow/mainWindow.h"
+#include "mainWindow.h"
 
 using namespace qReal;
 using namespace gui;

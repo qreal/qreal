@@ -3,8 +3,8 @@
 #include <plugins/toolPluginInterface/toolPluginInterface.h>
 #include <editor/editorView.h>
 
-#include "mainwindow/mainWindow.h"
-#include "mainwindow/palette/draggableElement.h"
+#include "mainWindow.h"
+#include "palette/draggableElement.h"
 
 using namespace qReal;
 using namespace gui;

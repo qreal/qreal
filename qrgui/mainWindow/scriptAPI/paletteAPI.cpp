@@ -2,7 +2,7 @@
 
 #include "scriptAPI.h"
 
-#include "mainwindow/palette/draggableElement.h"
+#include "palette/draggableElement.h"
 
 using namespace qReal;
 using namespace gui;
