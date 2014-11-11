@@ -296,7 +296,7 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 					>> [] (QSharedPointer<TemporaryPair> pair) {
 						auto initializer = as<ast::Expression>(pair->right());
 						auto indexer = as<ast::Expression>(pair->left());
-						return wrap(new ast::FieldInitialization(initializer, indexer));
+						return wrap(new ast::FieldInitialization(indexer, initializer));
 					}
 			| (exp & ~(-LuaTokenTypes::equals & exp))
 					>> [] (QSharedPointer<TemporaryPair> node) {

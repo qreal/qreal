@@ -9,6 +9,9 @@
 #include "qrtext/lua/ast/identifier.h"
 #include "qrtext/lua/ast/integerNumber.h"
 #include "qrtext/lua/ast/string.h"
+#include "qrtext/lua/ast/true.h"
+#include "qrtext/lua/ast/false.h"
+#include "qrtext/lua/ast/nil.h"
 #include "qrtext/lua/ast/tableConstructor.h"
 #include "qrtext/lua/ast/indexingExpression.h"
 #include "qrtext/lua/ast/block.h"
@@ -68,15 +71,34 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		return !statements.isEmpty() ? interpret(statements.last(), semanticAnalyzer) : QVariant();
 	} else if (root->is<ast::IntegerNumber>()) {
 		/// @todo Integer and float literals may differ from those recognized in toInt() and toDouble().
-		return as<ast::IntegerNumber>(root)->stringRepresentation().toInt();
+		bool ok = false;
+		return as<ast::IntegerNumber>(root)->stringRepresentation().toInt(&ok, 0);
 	} else if (root->is<ast::FloatNumber>()) {
 		return as<ast::FloatNumber>(root)->stringRepresentation().toDouble();
 	} else if (root->is<ast::String>()) {
 		return as<ast::String>(root)->string();
 	} else if (root->is<ast::TableConstructor>()) {
 		QStringList temp;
-		for (auto node : as<ast::TableConstructor>(root)->initializers()) {
-			temp << interpret(node->value(), semanticAnalyzer).value<QString>();
+		for (auto const &node : as<ast::TableConstructor>(root)->initializers()) {
+			if (node->implicitKey()) {
+				temp << interpret(node->value(), semanticAnalyzer).value<QString>();
+			} else {
+				if (semanticAnalyzer.type(node->key())->is<types::Number>()) {
+					auto const index = interpret(node->key(), semanticAnalyzer).toInt();
+					if (temp.size() <= index) {
+						for (int i = 0; index >= temp.size(); ++i) {
+							/// @todo: add proper "nil" value.
+							temp.append("");
+						}
+					}
+
+					temp[index] = interpret(node->value(), semanticAnalyzer).value<QString>();
+				} else {
+					mErrors.append(core::Error(root->start()
+							, QObject::tr("Explicit table indexes of non-integer type are not supported")
+							, core::ErrorType::runtimeError, core::Severity::error));
+				}
+			}
 		}
 
 		return QVariant(temp);
@@ -128,6 +150,12 @@ QVariant LuaInterpreter::interpret(QSharedPointer<core::ast::Node> const &root
 		return interpretUnaryOperator(root, semanticAnalyzer);
 	} else if (root->is<ast::BinaryOperator>()) {
 		return interpretBinaryOperator(root, semanticAnalyzer);
+	} else if (root->is<ast::True>()) {
+		return true;
+	} else if (root->is<ast::False>()) {
+		return false;
+	} else if (root->is<ast::Nil>()) {
+		return QVariant();
 	} else {
 		mErrors.append(core::Error(root->start(), QObject::tr("This construction is not supported by interpreter")
 				, core::ErrorType::runtimeError, core::Severity::error));
@@ -148,6 +176,7 @@ QVariant LuaInterpreter::operateOnIndexingExpression(const QSharedPointer<core::
 			auto table = mIdentifierValues.value(name).value<QStringList>();
 			if (table.size() <= index) {
 				for (int i = 0; index >= table.size(); ++i) {
+					/// @todo: add proper "nil" value.
 					table.append("");
 				}
 			}
@@ -249,18 +278,38 @@ QVariant LuaInterpreter::interpretBinaryOperator(QSharedPointer<core::ast::Node>
 		return leftOperandValue.toDouble()
 				* interpret(rightOperand, semanticAnalyzer).toDouble();
 	} else if (root->is<ast::Division>()) {
-		return interpret(leftOperand, semanticAnalyzer).toDouble()
-				/ interpret(rightOperand, semanticAnalyzer).toDouble();
+		auto const leftOperandValue = interpret(leftOperand, semanticAnalyzer).toDouble();
+		auto const rightOperandValue = interpret(rightOperand, semanticAnalyzer).toDouble();
+		if (rightOperandValue != 0) {
+			return leftOperandValue / rightOperandValue;
+		} else {
+			mErrors.append(core::Error(root->start(), QObject::tr("Division by zero")
+					, core::ErrorType::runtimeError, core::Severity::error));
+			return 0;
+		}
 	} else if (root->is<ast::IntegerDivision>()) {
-		return interpret(leftOperand, semanticAnalyzer).toInt()
-				/ interpret(rightOperand, semanticAnalyzer).toInt();
+		auto const leftOperandValue = interpret(leftOperand, semanticAnalyzer).toInt();
+		auto const rightOperandValue = interpret(rightOperand, semanticAnalyzer).toInt();
+		if (rightOperandValue != 0) {
+			return leftOperandValue / rightOperandValue;
+		} else {
+			mErrors.append(core::Error(root->start(), QObject::tr("Division by zero")
+					, core::ErrorType::runtimeError, core::Severity::error));
+			return 0;
+		}
 	} else if (root->is<ast::Exponentiation>()) {
 		return pow(interpret(leftOperand, semanticAnalyzer).toDouble()
 				, interpret(rightOperand, semanticAnalyzer).toDouble());
 	} else if (root->is<ast::Modulo>()) {
-		return interpret(leftOperand, semanticAnalyzer).toInt()
-				% interpret(rightOperand, semanticAnalyzer).toInt();
-
+		auto const leftOperandValue = interpret(leftOperand, semanticAnalyzer).toInt();
+		auto const rightOperandValue = interpret(rightOperand, semanticAnalyzer).toInt();
+		if (rightOperandValue != 0) {
+			return leftOperandValue % rightOperandValue;
+		} else {
+			mErrors.append(core::Error(root->start(), QObject::tr("Division by zero")
+					, core::ErrorType::runtimeError, core::Severity::error));
+			return 0;
+		}
 	} else if (root->is<ast::BitwiseAnd>()) {
 		return interpret(leftOperand, semanticAnalyzer).toInt()
 				& interpret(rightOperand, semanticAnalyzer).toInt();
@@ -275,7 +324,7 @@ QVariant LuaInterpreter::interpretBinaryOperator(QSharedPointer<core::ast::Node>
 				<< interpret(rightOperand, semanticAnalyzer).toInt();
 	} else if (root->is<ast::BitwiseRightShift>()) {
 		return interpret(leftOperand, semanticAnalyzer).toInt()
-				<< interpret(rightOperand, semanticAnalyzer).toInt();
+				>> interpret(rightOperand, semanticAnalyzer).toInt();
 
 	} else if (root->is<ast::Concatenation>()) {
 		return interpret(leftOperand, semanticAnalyzer).toString()
@@ -295,11 +344,9 @@ QVariant LuaInterpreter::interpretBinaryOperator(QSharedPointer<core::ast::Node>
 		return interpret(leftOperand, semanticAnalyzer).toDouble()
 				>= interpret(rightOperand, semanticAnalyzer).toDouble();
 	} else if (root->is<ast::Equality>()) {
-		return interpret(leftOperand, semanticAnalyzer).toDouble()
-				== interpret(rightOperand, semanticAnalyzer).toDouble();
+		return interpret(leftOperand, semanticAnalyzer) == interpret(rightOperand, semanticAnalyzer);
 	} else if (root->is<ast::Inequality>()) {
-		return interpret(leftOperand, semanticAnalyzer).toDouble()
-				!= interpret(rightOperand, semanticAnalyzer).toDouble();
+		return interpret(leftOperand, semanticAnalyzer) != interpret(rightOperand, semanticAnalyzer);
 	} else if (root->is<ast::LogicalAnd>()) {
 		return interpret(leftOperand, semanticAnalyzer).toInt()
 				&& interpret(rightOperand, semanticAnalyzer).toInt();
