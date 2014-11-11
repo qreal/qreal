@@ -64,15 +64,27 @@
         <translation>Несоответствие типов.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="101"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="132"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="98"/>
+        <source>Explicit table indexes of non-integer type are not supported</source>
+        <translation>Явное указание индексов нечисловых типов в таблицах не поддержано</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="123"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="160"/>
         <source>This construction is not supported by interpreter</source>
         <translation>Конструкция не поддерживается интерпретатором</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="160"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="189"/>
         <source>Currently interpreter allows only tables denoted by identifier and by integer expression index, as in &apos;a[1 + 2] = 3&apos;</source>
         <translation>Сейчас интерпретатор поддерживает именованные таблицы с целочисленным выражением в качестве индекса, например, &apos;a[1 + 2] = 3&apos;</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="286"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="296"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="309"/>
+        <source>Division by zero</source>
+        <translation>Деление на 0</translation>
     </message>
     <message>
         <location filename="../../qrtext/src/lua/luaParser.cpp" line="139"/>
