@@ -424,7 +424,8 @@ QMap<PortInfo, DeviceInfo> GeneratorFactoryBase::currentConfiguration() const
 {
 	Id const logicalId = mRepo.logicalId(mDiagram);
 	QString const configuration = mRepo.property(logicalId, "devicesConfiguration").toString();
-	QMap<PortInfo, DeviceInfo> result = RobotModelUtils::deserialize(configuration)[mRobotModelManager.model().name()];
+	QMap<PortInfo, DeviceInfo> result =
+			RobotModelUtils::deserialize(configuration)[mRobotModelManager.model().robotId()];
 	// At the moment we have sensors configuration from widget-configurer. We must also add here non-configurable
 	// by user devices (like encoders, displays and so on).
 	for (PortInfo const &port : mRobotModelManager.model().availablePorts()) {

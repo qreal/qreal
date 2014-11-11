@@ -78,7 +78,7 @@ void Interpreter::interpret()
 	mBlocksTable->clear();
 	mState = waitingForDevicesConfiguredToLaunch;
 
-	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().name())) {
+	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().robotId())) {
 		return;
 	}
 
