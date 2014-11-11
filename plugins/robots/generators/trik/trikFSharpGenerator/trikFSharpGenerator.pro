@@ -24,6 +24,13 @@ INCLUDEPATH += \
 	$$PWD/../../../../../qrgui \
 	$$PWD/../../../../../qrtext/include \
 
+win32 {
+	QMAKE_POST_LINK = "cmd /C "copy lib\\Trik.Core.dll ..\\..\\..\\..\\..\\bin /y""
+}
+else {
+	QMAKE_POST_LINK = "cp lib/Trik.Core.dll ../../../../../bin"
+}
+
 # workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # when fixed it would become possible to use QMAKE_LFLAGS_RPATH
 !macx {

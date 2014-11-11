@@ -21,6 +21,7 @@ nxtRussianCGenerator.file = $$PWD/nxt/nxtRussianCGenerator/nxtRussianCGenerator.
 trikGeneratorBase.depends = generatorBase
 trikQtsGenerator.depends = trikGeneratorBase
 trikFSharpGenerator.depends = trikGeneratorBase
+trikRuntimeUploaderPlugin.depends = trikGeneratorBase
 nxtGeneratorBase.depends = generatorBase
 nxtOsekCGenerator.depends = nxtGeneratorBase
 nxtRussianCGenerator.depends = nxtGeneratorBase
