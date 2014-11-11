@@ -13,7 +13,7 @@ Shell::Shell(DeviceInfo const &info, PortInfo const &port
 
 void Shell::say(QString const &text)
 {
-	QString const pathToCommand = ":/trik/templates/say.t";
+	QString const pathToCommand = ":/trikQts/templates/say.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@TEXT@@", text) + "brick.run();";
 
@@ -23,7 +23,7 @@ void Shell::say(QString const &text)
 
 void Shell::runCommand(QString const &command)
 {
-	QString const pathToCommand = ":/trik/templates/system.t";
+	QString const pathToCommand = ":/trikQts/templates/system.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@COMMAND@@", command) + "brick.run();";
 
