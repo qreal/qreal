@@ -26,8 +26,8 @@ public:
 	void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector);
 
 	void removeFromDisk(qReal::Id const &id) const;
-	void saveToDisk(QList<Object *> const &objects);
-	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash);
+	void saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo);
+	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash, QHash<QString, QVariant> &metaInfo);
 
 	void prepareWorkingCopy(const QString &workingCopyPath, QString const &sourceProject = QString());
 	void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
@@ -39,6 +39,9 @@ private:
 
 	void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object *> &objectsHash);
 	void loadModel(QDir const &dir, QHash<qReal::Id, Object *> &objectsHash);
+
+	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const;
+	void loadMetaInfo(QHash<QString, QVariant> &metaInfo) const;
 
 	QString pathToElement(qReal::Id const &id) const;
 	QString createDirectory(qReal::Id const &id, bool logical);

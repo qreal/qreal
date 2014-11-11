@@ -1,4 +1,4 @@
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 #include "compilerPage.h"
 #include "ui_compilerPage.h"
 
@@ -9,7 +9,7 @@ PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesCompilerPage)
 {
-	mIcon = QIcon(":/icons/tools.png");
+	setWindowIcon(QIcon(":/icons/tools.png"));
 	mUi->setupUi(this);
 
 	connect(mUi->linuxButton, SIGNAL(clicked()), this, SLOT(changeSystem()));

@@ -28,11 +28,11 @@ struct SensorsGraph::TrackObject {
 	}
 };
 
-SensorsGraph::SensorsGraph(utils::ExpressionsParser const *parser, QWidget *parent)
+SensorsGraph::SensorsGraph(qrtext::DebuggerInterface const &parser, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::SensorsGraph)
 	, mParser(parser)
-	, mUpdateInterval(50)
+	, mUpdateInterval(100)
 	, mCurrentSlot(0)
 {
 	mUi->setupUi(this);
@@ -68,6 +68,13 @@ void SensorsGraph::removeTracking(const int index)
 	watchListChanged();
 }
 
+void SensorsGraph::clearTrackingObjects()
+{
+	for (int i = 0; i < mWatchList.count(); ++i) {
+		removeTracking(i);
+	}
+}
+
 void SensorsGraph::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
@@ -89,6 +96,7 @@ void SensorsGraph::initGui()
 	mToolLayout.addWidget(&mZoomInButton, 0);
 	mToolLayout.addWidget(&mZoomOutButton, 0);
 	mToolLayout.addWidget(&mResetButton, 0);
+	mToolLayout.addWidget(&mSaveButton, 0);
 
 	mPlotFrame = new SensorViewer(this);
 
@@ -118,15 +126,21 @@ void SensorsGraph::setupToolElements()
 
 	mZoomOutButton.setIcon(QPixmap("://graphicsWatcher/icons/zoomOut_btn.png"));
 	mZoomOutButton.setIconSize(iconSize);
+
+	mSaveButton.setIcon(QPixmap("://icons/save_as.png"));
+	mSaveButton.setIconSize(iconSize);
+
 }
 
 void SensorsGraph::makeConnections()
 {
-	connect(&mStopButton, SIGNAL(clicked()), mPlotFrame, SLOT(stopJob()));
-	connect(&mStartButton, SIGNAL(clicked()), mPlotFrame, SLOT(startJob()));
-	connect(&mResetButton, SIGNAL(clicked()), mPlotFrame, SLOT(clear()));
-	connect(&mZoomInButton, SIGNAL(clicked()), mPlotFrame, SLOT(zoomIn()));
-	connect(&mZoomOutButton, SIGNAL(clicked()), mPlotFrame, SLOT(zoomOut()));
+	connect(&mStartButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::startJob);
+	connect(&mStopButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::stopJob);
+	connect(&mSaveButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::exportHistory);
+	connect(&mResetButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::clear);
+	connect(&mZoomInButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::zoomIn);
+	connect(&mZoomOutButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::zoomOut);
+
 	connect(&mSlotComboBox, SIGNAL(currentIndexChanged(int)), mPlotFrame, SLOT(onSensorChange()));
 	connect(&mSlotComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentSensor(int)));
 }
@@ -160,6 +174,7 @@ void SensorsGraph::startJob()
 	if (mWatchList.isEmpty()) {
 		return;
 	}
+
 	mUpdateTimer.start(mUpdateInterval);
 	mPlotFrame->startJob();
 }
@@ -167,12 +182,14 @@ void SensorsGraph::startJob()
 void SensorsGraph::updateValues()
 {
 	int const notExists = -1;
-	QMap<QString, Number *> const &variables = mParser->variables();
 
 	TrackObject currentObject(mCurrentSlot);
 	int const index = mWatchList.indexOf(currentObject);
 	if (index != notExists) {
-		sensorsInput(mCurrentSlot, variables[mWatchList.at(index).inParserName]->value().toDouble());
+		double number = mParser.value<double>(mWatchList.at(index).inParserName);
+		if (number) {
+			sensorsInput(mCurrentSlot, number);
+		}
 	}
 }
 

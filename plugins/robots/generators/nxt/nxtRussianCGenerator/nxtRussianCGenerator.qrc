@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/generateRussianCCode.svg</file>
+    </qresource>
+</RCC>

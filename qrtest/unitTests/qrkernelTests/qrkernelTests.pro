@@ -6,10 +6,13 @@ include(../common.pri)
 
 include(../../../qrkernel/qrkernel.pri)
 
+INCLUDEPATH += $$PWD/../../../
+
 SOURCES += \
-	idsTest.cpp \
-	exception/exceptionTest.cpp \
-	settingsManagerTest.cpp \
+	$$PWD/idsTest.cpp \
+	$$PWD/exception/exceptionTest.cpp \
+	$$PWD/settingsManagerTest.cpp \
+	$$PWD/versionTest.cpp \
 
 HEADERS += \
-	settingsManagerTest.h \
+	$$PWD/settingsManagerTest.h \

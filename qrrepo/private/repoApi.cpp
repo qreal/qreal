@@ -312,24 +312,24 @@ void RepoApi::setTo(Id const &id, Id const &to)
 	addToIdList(to, "links", id, "to");
 }
 
-double RepoApi::fromPort(Id const &id) const
+qreal RepoApi::fromPort(Id const &id) const
 {
-	Q_ASSERT(mRepository.property(id, "fromPort").canConvert<double>());
-	return mRepository.property(id, "fromPort").value<double>();
+	Q_ASSERT(mRepository.property(id, "fromPort").canConvert<qreal>());
+	return mRepository.property(id, "fromPort").value<qreal>();
 }
 
-void RepoApi::setFromPort(Id const &id, double fromPort)
+void RepoApi::setFromPort(Id const &id, qreal fromPort)
 {
 	mRepository.setProperty(id, "fromPort", fromPort);
 }
 
-double RepoApi::toPort(Id const &id) const
+qreal RepoApi::toPort(Id const &id) const
 {
-	Q_ASSERT(mRepository.property(id, "toPort").canConvert<double>());
-	return mRepository.property(id, "toPort").value<double>();
+	Q_ASSERT(mRepository.property(id, "toPort").canConvert<qreal>());
+	return mRepository.property(id, "toPort").value<qreal>();
 }
 
-void RepoApi::setToPort(Id const &id, double toPort)
+void RepoApi::setToPort(Id const &id, qreal toPort)
 {
 	mRepository.setProperty(id, "toPort", toPort);
 }
@@ -407,7 +407,7 @@ void RepoApi::importFromDisk(QString const &importedFile)
 	mRepository.importFromDisk(importedFile);
 }
 
-void RepoApi::save(qReal::IdList list)
+void RepoApi::save(IdList &list)
 {
 	mRepository.save(list);
 }
@@ -449,7 +449,7 @@ void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &d
 
 	IdList list = mRepository.property(target, listName).value<IdList>();
 
-	// Значения в списке должны быть уникальны.
+	// Values in the list must be unique.
 	if (list.contains(data))
 		return;
 
@@ -594,4 +594,19 @@ void RepoApi::setGraphicalPartProperty(
 		)
 {
 	mRepository.setGraphicalPartProperty(id, partIndex, propertyName, value);
+}
+
+QStringList RepoApi::metaInformationKeys() const
+{
+	return mRepository.metaInformationKeys();
+}
+
+QVariant RepoApi::metaInformation(QString const &key) const
+{
+	return mRepository.metaInformation(key);
+}
+
+void RepoApi::setMetaInformation(QString const &key, QVariant const &info)
+{
+	mRepository.setMetaInformation(key, info);
 }

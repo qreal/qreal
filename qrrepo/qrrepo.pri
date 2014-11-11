@@ -1,5 +1,7 @@
 DEFINES += QRREPO_LIBRARY
 
+CONFIG += c++11
+
 QT += xml
 
 LIBS += -L$$PWD/../bin/ -lqrkernel -lqrutils

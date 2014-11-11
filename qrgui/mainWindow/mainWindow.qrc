@@ -1,0 +1,43 @@
+<RCC>
+    <qresource prefix="/mainWindow/">
+        <file>images/print.png</file>
+        <file>images/zoomin.png</file>
+        <file>images/zoomout.png</file>
+        <file>images/kroki2.PNG</file>
+        <file>images/kroki3.PNG</file>
+        <file>images/line.png</file>
+        <file>images/curve.png</file>
+        <file>images/ellipse.png</file>
+        <file>images/linePort.png</file>
+        <file>images/rect.png</file>
+        <file>images/staticText.png</file>
+        <file>images/dynamicText.png</file>
+        <file>images/textPicture.png</file>
+        <file>images/pencil.png</file>
+        <file>images/error.png</file>
+        <file>images/warning.png</file>
+        <file>images/information.png</file>
+        <file>images/critical.png</file>
+        <file>images/build.png</file>
+        <file>images/next.png</file>
+        <file>images/run.png</file>
+        <file>images/stop.png</file>
+        <file>images/collapseAll.png</file>
+        <file>images/expandAll.png</file>
+        <file>images/changeRepresentation.png</file>
+        <file>images/open.svg</file>
+        <file>images/fullScreen.svg</file>
+        <file>images/unFullScreen.svg</file>
+        <file>images/save.svg</file>
+        <file>images/save_as.png</file>
+        <file>images/undo.png</file>
+        <file>images/redo.png</file>
+        <file>images/kroki6.png</file>
+        <file>images/newDiagram.svg</file>
+        <file>images/newProject.svg</file>
+        <file>images/startTab/new.svg</file>
+        <file>images/startTab/open.svg</file>
+        <file>images/startTab/createInterpreted.svg</file>
+        <file>images/startTab/openInterpreted.svg</file>
+    </qresource>
+</RCC>

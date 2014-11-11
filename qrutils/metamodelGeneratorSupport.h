@@ -2,8 +2,9 @@
 
 #include "utilsDeclSpec.h"
 
-#include "../qrgui/mainwindow/errorReporter.h"
-#include "../qrgui/mainwindow/mainWindowInterpretersInterface.h"
+#include <QtXml/QDomDocument>
+
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 
 namespace utils {
 

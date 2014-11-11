@@ -1,5 +1,8 @@
 TEMPLATE = lib
+
 CONFIG += plugin
+CONFIG += c++11
+
 DESTDIR = ../../../bin/plugins/
 
 LIBS += -L../../../bin -lqrkernel -lqrutils

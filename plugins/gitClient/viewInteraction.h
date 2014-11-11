@@ -2,8 +2,8 @@
 
 #include <QtCore/QObject>
 
-#include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "../../qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
+#include "../../qrgui/plugins/toolPluginInterface/pluginConfigurator.h"
 #include "gui/pushDialog.h"
 #include "gui/pullDialog.h"
 #include "gui/commitDialog.h"

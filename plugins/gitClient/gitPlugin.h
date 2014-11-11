@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../qrutils/versioningUtils/externalClientPluginBase.h"
-#include "../../qrgui/toolPluginInterface/customizer.h"
+#include "../../qrgui/plugins/toolPluginInterface/customizer.h"
 #include "viewInteraction.h"
 
 namespace git

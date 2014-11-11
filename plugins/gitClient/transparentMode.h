@@ -2,8 +2,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QList>
 #include <QtCore/QPair>
-#include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "../../qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
+#include "../../qrgui/plugins/toolPluginInterface/pluginConfigurator.h"
 #include "gui/changeVersionWidget.h"
 
 namespace git {
@@ -16,7 +16,7 @@ public:
 	explicit TransparentMode(GitPlugin *plugin
 							 , qReal::ProjectManagementInterface *projectManager
 							 , qReal::gui::MainWindowInterpretersInterface *mainWindowIface
-							 , qReal::SystemEventsInterface *systemInterface);
+							 , qReal::SystemEvents *systemInterface);
 	void openChangeVersionTab();
 
 signals:
@@ -37,7 +37,7 @@ private:
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowIface;
 	qReal::ProjectManagementInterface *mProjectManager;
 	GitPlugin *mPlugin;
-	SystemEventsInterface *mSystemInterface;
+	qReal::SystemEvents *mSystemInterface;
 
 	//TODO allow open several tabs
 	bool tabIsReady;

@@ -1,1 +1,0 @@
-rand() % @@UPPER_BOUND@@

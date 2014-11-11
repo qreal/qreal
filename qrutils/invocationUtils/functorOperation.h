@@ -5,6 +5,9 @@
 #include "private/functors.h"
 #include "longOperation.h"
 
+
+using namespace invocation::details;
+
 #define QT_TYPENAME typename
 
 namespace invocation

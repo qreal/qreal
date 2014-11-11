@@ -2,6 +2,7 @@ QT += widgets
 
 TEMPLATE = lib
 CONFIG += plugin
+CONFIG += c++11
 DESTDIR = ../../bin/plugins/
 
 LIBS += -L../../bin -lqrkernel -lqrutils
@@ -10,9 +11,7 @@ INCLUDEPATH += \
 	../../ \
 	../../qrgui \
 
-TRANSLATIONS = rulesChecker_ru.ts
-
-RESOURCES += rulesChecker.qrc \
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/plugins/bmpnRulesChecker_ru.ts
 
 HEADERS += \
 	rulesChecker.h \

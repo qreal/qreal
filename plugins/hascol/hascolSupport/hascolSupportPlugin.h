@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QtCore/QTranslator>
-
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 
@@ -35,9 +33,6 @@ private:
 
 	/// Action that launches hascol parser
 	QAction mParseSourcesAction;
-
-	/// Thanslator object for this plugin, provides localisation
-	QTranslator mAppTranslator;
 
 	/// Interface of MainWindow, used, for example, to reinit models when finished parsing
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership

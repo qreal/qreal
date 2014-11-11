@@ -2,16 +2,15 @@
 
 #include <QtGui/QPainter>
 
-#include "../utilsDeclSpec.h"
+#include "qrutils/utilsDeclSpec.h"
 
-namespace graphicsUtils
-{
+namespace graphicsUtils {
 
 class QRUTILS_EXPORT PainterInterface
 {
 public:
-	PainterInterface();
-	virtual void paint(QPainter *painter);
+	virtual void paint(QPainter *painter) = 0;
+	virtual void clear() = 0;
 };
 
 }

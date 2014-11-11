@@ -1,36 +1,35 @@
 TEMPLATE = subdirs
 
+include(common.pri)
+
 # editor plugins
-SUBDIRS = \
-	dragonDiagram/dragonDiagram.pro \
-	blockDiagram/blockDiagram.pro \
-#	hascol/hascol.pro \
-	metaEditor/metaEditor.pro \
-	requirements/requirements.pro \
+SUBDIRS += \
+	$$PWD/dragonDiagram/dragonDiagram.pro \
+	$$PWD/blockDiagram/blockDiagram.pro \
+#	$$PWD/hascol/hascol.pro \
+	$$PWD/metaEditor/metaEditor.pro \
+	$$PWD/requirements/requirements.pro \
+	$$PWD/domainAnalysis/domainAnalysis.pro \
+
+# interpreted plugins
+SUBDIRS += \
+	generationRulesTool/generationRulesTool.pro \
 
 
 # tool plugins
 SUBDIRS += \
-#	testInvocation/testInvocation.pro \
-	exterminatus/exterminatus.pro \
-	visualInterpreter/visualInterpreter.pro \
-	refactoring/refactoring.pro \
-#	subversionClient/subversionClient.pro \
-	gitClient/gitClient.pro \
-	visualDiff/visualDiff.pro \
-
-# QReal:Robots
-SUBDIRS += \
-#	robots/robots.pro \
+	$$PWD/tools/exterminatus/exterminatus.pro \
+	$$PWD/tools/visualInterpreter/visualInterpreter.pro \
+	$$PWD/tools/refactoring/refactoring.pro \
+#	$$PWD/tools/testInvocation/testInvocation.pro \
+#	$$PWD/subversionClient/subversionClient.pro \
+#	$$PWD/gitClient/gitClient.pro \
+#	$$PWD/visualDiff/visualDiff.pro \
 
 
-# QReal:BP
-SUBDIRS += \
-#	bpmn/bpmn.pro \
-#	rulesChecker/rulesChecker.pro \
-#	classDiagram/classDiagram.pro \
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qrutils/release/ -lqrutils
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../qrutils/debug/ -lqrutils
+else:unix: LIBS += -L$$OUT_PWD/../qrutils/ -lqrutils
 
-
-# QReal:Ubiq
-SUBDIRS += \
-#	ubiq/ubiq.pro \
+INCLUDEPATH += $$PWD/../qrutils
+DEPENDPATH += $$PWD/../qrutils

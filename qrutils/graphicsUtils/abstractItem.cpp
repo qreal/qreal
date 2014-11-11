@@ -148,6 +148,15 @@ void AbstractItem::setX2andY2(qreal x, qreal y)
 	update();
 }
 
+void AbstractItem::setCoordinates(QRectF const &pos)
+{
+	mX1 = pos.left();
+	mY1 = pos.top();
+	mX2 = pos.right();
+	mY2 = pos.bottom();
+	update();
+}
+
 void AbstractItem::reshapeRectWithShift()
 {
 	qreal const size = qMax(abs(mX2 - mX1), abs(mY2 - mY1));
@@ -391,4 +400,16 @@ QStringList AbstractItem::getPenStyleList()
 QStringList AbstractItem::getBrushStyleList()
 {
 	return QStringList() << "None" << "Solid";
+}
+
+void AbstractItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+	// When selecting a robot item on the scene than display widget may appear.
+	// After that scene would be shrinked and mouse move event would be generated (but actually
+	// mouse cursor is not moved). Because of that selected robot item moves which should not be because you
+	// only select robot item and not move it. It also happens when you unselect robot item by selecting another
+	// item (not only robot item). In this case new selected item moves.
+	if (event->lastScreenPos() != event->screenPos()) {
+		QGraphicsItem::mouseMoveEvent(event);
+	}
 }

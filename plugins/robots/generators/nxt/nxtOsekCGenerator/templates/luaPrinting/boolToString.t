@@ -1,0 +1,1 @@
+bool_to_string(@@VALUE@@)

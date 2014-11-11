@@ -2,9 +2,9 @@
 
 #include <QtCore/QDir>
 
-#include "../utilsDeclSpec.h"
-#include "../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include <qrutils/utilsDeclSpec.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace utils {
 /// File name for generation utility templates. Searched in templates folder.

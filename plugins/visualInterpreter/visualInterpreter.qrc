@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>icons/preferences/bug.png</file>
-        <file>visualInterpreter_ru.qm</file>
-    </qresource>
-</RCC>

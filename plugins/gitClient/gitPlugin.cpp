@@ -209,7 +209,7 @@ void GitPlugin::setVersion(QString hash, bool const &quiet)
 
 void GitPlugin::setDiffViewerInterface(DiffPluginInterface *diffInterface)
 {
-    mDiffInterface = diffInterface;
+	mDiffInterface = diffInterface;
 }
 
 bool GitPlugin::clientExist()

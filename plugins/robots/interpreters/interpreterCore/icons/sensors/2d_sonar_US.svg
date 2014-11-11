@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#333333;stroke-width:79.375}
+    .str1 {stroke:#1A1A1A;stroke-width:127}
+    .str2 {stroke:#666666;stroke-width:127}
+    .str3 {stroke:#666666;stroke-width:158.75}
+    .fil2 {fill:none}
+    .fil0 {fill:url(#id0)}
+    .fil1 {fill:url(#id1)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="objectBoundingBox" x1="50%" y1="100%" x2="50%" y2="0%">
+   <stop offset="0" style="stop-color:#999999"/>
+   <stop offset="0.501961" style="stop-color:#E6E6E6"/>
+   <stop offset="1" style="stop-color:#999999"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="3164.39" y1="13703.4" x2="3164.39" y2="1469.4">
+   <stop offset="0" style="stop-color:#333333"/>
+   <stop offset="0.301961" style="stop-color:#999999"/>
+   <stop offset="0.501961" style="stop-color:#B3B3B3"/>
+   <stop offset="0.701961" style="stop-color:#999999"/>
+   <stop offset="1" style="stop-color:#333333"/>
+  </linearGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <rect class="fil0 str0" x="5641" y="2657" width="1278" height="3881"/>
+  <rect class="fil0 str0" x="5641" y="8684" width="1278" height="3881"/>
+  <rect class="fil1 str1" x="618" y="1469" width="5092" height="12234" rx="306" ry="354"/>
+  <g id="_134267424">
+   <path class="fil2 str2" d="M7785 3739c949,-5 938,1384 3,1390"/>
+   <path class="fil2 str2" d="M9620 3171c1831,-9 1810,2670 7,2682"/>
+   <path class="fil2 str3" d="M12308 2097c2478,-15 2451,4499 9,4519"/>
+   <path class="fil2 str2" d="M7785 10191c949,-5 938,1384 3,1390"/>
+   <path class="fil2 str2" d="M9620 9622c1831,-9 1810,2670 7,2682"/>
+   <path class="fil2 str3" d="M12308 8548c2478,-15 2451,4499 9,4519"/>
+  </g>
+ </g>
+</svg>
