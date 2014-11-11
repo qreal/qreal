@@ -100,11 +100,6 @@ void TypeVariable::constrainAssignment(QSharedPointer<TypeVariable> const &other
 	mAllowedTypes = result;
 }
 
-QSet<QSharedPointer<TypeExpression>> TypeVariable::allowedTypes() const
-{
-	return mAllowedTypes;
-}
-
 QString TypeVariable::toString() const
 {
 	QStringList result;
