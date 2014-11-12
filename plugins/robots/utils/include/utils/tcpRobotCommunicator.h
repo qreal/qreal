@@ -25,7 +25,8 @@ public:
 	bool runProgram(QString const &programName);
 
 	/// Sends a script to be executed directly, without a need for a file.
-	bool runDirectCommand(QString const &directCommand);
+	/// @param asScript - if true, the state of a robot will be reset before command evalutation.
+	bool runDirectCommand(QString const &directCommand, bool asScript = false);
 
 	/// Sends a command to remotely abort script execution and stop robot.
 	bool stopRobot();

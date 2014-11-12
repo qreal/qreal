@@ -75,6 +75,7 @@ void Interpreter::interpret()
 		return;
 	}
 
+	mRobotModelManager.model().stopRobot();
 	mBlocksTable->clear();
 	mState = waitingForDevicesConfiguredToLaunch;
 

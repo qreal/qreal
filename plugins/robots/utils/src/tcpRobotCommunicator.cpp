@@ -67,13 +67,14 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 	return true;
 }
 
-bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
+bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand, bool asScript)
 {
 	if (!mControlConnection.isConnected()) {
 		return false;
 	}
 
-	mControlConnection.send("direct:" + directCommand);
+	QString const command = asScript ? "directScript" : "direct";
+	mControlConnection.send(command + ":" + directCommand);
 
 	return true;
 }

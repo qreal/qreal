@@ -13,8 +13,8 @@ Display::Display(DeviceInfo const &info, PortInfo const &port, utils::TcpRobotCo
 
 void Display::drawSmile(bool sad)
 {
-	QString const pathToCommand = sad ? ":/trik/templates/drawing/sadSmile.t"
-			: ":/trik/templates/drawing/smile.t";
+	QString const pathToCommand = sad ? ":/trikQts/templates/drawing/sadSmile.t"
+			: ":/trikQts/templates/drawing/smile.t";
 
 	QString const directCommand = utils::InFile::readAll(pathToCommand);
 	mRobotCommunicator.runDirectCommand(directCommand);
@@ -22,7 +22,7 @@ void Display::drawSmile(bool sad)
 
 void Display::setBackground(QColor const &color)
 {
-	QString const pathToCommand = ":/trik/templates/drawing/setBackground.t";
+	QString const pathToCommand = ":/trikQts/templates/drawing/setBackground.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@COLOR@@", color.name());
 
@@ -31,14 +31,14 @@ void Display::setBackground(QColor const &color)
 
 void Display::clearScreen()
 {
-	QString const pathToCommand = ":/trik/templates/drawing/clearUsedScreen.t";
+	QString const pathToCommand = ":/trikQts/templates/drawing/clearUsedScreen.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand);
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
 void Display::printText(int x, int y, QString const &text)
 {
-	QString const pathToCommand = ":/trik/templates/drawing/printText.t";
+	QString const pathToCommand = ":/trikQts/templates/drawing/printText.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand).replace("@@TEXT@@", "\"" + text + "\"")
 			.replace("@@X@@", QString::number(x)).replace("@@Y@@", QString::number(y)) + "brick.run();";
 

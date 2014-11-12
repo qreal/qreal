@@ -117,15 +117,15 @@ void InterpreterTest::SetUp()
 
 TEST_F(InterpreterTest, interpret)
 {
-	EXPECT_CALL(mModel, stopRobot()).Times(1);
+	EXPECT_CALL(mModel, stopRobot()).Times(2);
 
 	mInterpreter->interpret();
 }
 
 TEST_F(InterpreterTest, stopRobot)
 {
-	// It shall be called directly here and in destructor of a model.
-	EXPECT_CALL(mModel, stopRobot()).Times(2);
+	// It shall be called directly here, before interpretation and in destructor of a model.
+	EXPECT_CALL(mModel, stopRobot()).Times(3);
 
 	mInterpreter->interpret();
 	mInterpreter->stopRobot();
