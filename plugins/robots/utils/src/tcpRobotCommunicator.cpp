@@ -1,4 +1,4 @@
-#include <utils/tcpRobotCommunicator.h>
+#include "utils/tcpRobotCommunicator.h"
 
 #include <QtNetwork/QHostAddress>
 #include <QtCore/QFileInfo>
@@ -13,11 +13,12 @@ using namespace utils;
 static uint const controlPort = 8888;
 static uint const telemetryPort = 9000;
 
-TcpRobotCommunicator::TcpRobotCommunicator(QString const &settings)
+TcpRobotCommunicator::TcpRobotCommunicator(QString const &serverIpSettingsKey)
 	: mErrorReporter(nullptr)
 	, mControlConnection(controlPort)
 	, mTelemetryConnection(telemetryPort)
-	, mSettings(settings)
+	, mIsConnected(false)
+	, mServerIpSettingsKey(serverIpSettingsKey)
 {
 	QObject::connect(&mControlConnection, SIGNAL(messageReceived(QString))
 			, this, SLOT(processControlMessage(QString)));
@@ -146,7 +147,7 @@ void TcpRobotCommunicator::processTelemetryMessage(QString const &message)
 
 void TcpRobotCommunicator::connect()
 {
-	QString const server = qReal::SettingsManager::value(mSettings).toString();
+	QString const server = qReal::SettingsManager::value(mServerIpSettingsKey).toString();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
 		QLOG_ERROR() << "Unable to resolve host.";
@@ -158,7 +159,7 @@ void TcpRobotCommunicator::connect()
 	}
 
 	bool const result = mControlConnection.connect(hostAddress) && mTelemetryConnection.connect(hostAddress);
-	emit connected(result);
+	emit connected(result, QString());
 }
 
 void TcpRobotCommunicator::disconnect()

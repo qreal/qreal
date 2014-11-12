@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: CorelDRAW X6 -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xml:space="preserve"
+   width="150px"
+   height="150px"
+   version="1.1"
+   style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+   viewBox="0 0 15000 15000"
+   id="svg2"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="uploadAndExecuteProgram.svg"><metadata
+   id="metadata49"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="817"
+   inkscape:window-height="529"
+   id="namedview47"
+   showgrid="false"
+   inkscape:zoom="1.5733333"
+   inkscape:cx="74.999998"
+   inkscape:cy="60.877052"
+   inkscape:window-x="2176"
+   inkscape:window-y="105"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="svg2" />
+ <defs
+   id="defs4">
+  <style
+   type="text/css"
+   id="style6">
+   
+    .str1 {stroke:#9CAFD6;stroke-width:35.56}
+    .str0 {stroke:#666666;stroke-width:127}
+    .fil2 {fill:url(#id0)}
+    .fil4 {fill:url(#id1)}
+    .fil0 {fill:url(#id2)}
+    .fil1 {fill:url(#id3)}
+    .fil3 {fill:url(#id4)}
+   
+  </style>
+  <linearGradient
+   id="id0"
+   gradientUnits="userSpaceOnUse"
+   x1="2737.98"
+   y1="1286.61"
+   x2="12263"
+   y2="1286.61">
+   <stop
+   offset="0"
+   style="stop-color:#6699FF"
+   id="stop9" />
+   <stop
+   offset="1"
+   style="stop-color:#6666CC"
+   id="stop11" />
+  </linearGradient>
+  <linearGradient
+   id="id1"
+   gradientUnits="userSpaceOnUse"
+   x1="5505.18"
+   y1="12127.6"
+   x2="5505.18"
+   y2="2330.36">
+   <stop
+   offset="0"
+   style="stop-color:black"
+   id="stop14" />
+   <stop
+   offset="1"
+   style="stop-color:#1A1A1A"
+   id="stop16" />
+  </linearGradient>
+  <linearGradient
+   id="id2"
+   gradientUnits="userSpaceOnUse"
+   x1="7489.56"
+   y1="13975.2"
+   x2="7489.56"
+   y2="640.185">
+   <stop
+   offset="0"
+   style="stop-color:#E6E6E6"
+   id="stop19" />
+   <stop
+   offset="1"
+   style="stop-color:white"
+   id="stop21" />
+  </linearGradient>
+  <linearGradient
+   id="id3"
+   gradientUnits="userSpaceOnUse"
+   x1="11970.7"
+   y1="13958.4"
+   x2="10302.5"
+   y2="11576">
+   <stop
+   offset="0"
+   style="stop-color:#B3B3B3"
+   id="stop24" />
+   <stop
+   offset="0.568627"
+   style="stop-color:#E6E6E6"
+   id="stop26" />
+   <stop
+   offset="1"
+   style="stop-color:#E6E6E6"
+   id="stop28" />
+  </linearGradient>
+  <radialGradient
+   id="id4"
+   gradientUnits="objectBoundingBox"
+   cx="34%"
+   cy="36%"
+   r="50%"
+   fx="34%"
+   fy="36%">
+   <stop
+   offset="0"
+   style="stop-color:#FEFEFE"
+   id="stop31" />
+   <stop
+   offset="1"
+   style="stop-color:#6699FF"
+   id="stop33" />
+  </radialGradient>
+ </defs>
+ <g
+   id="Layer_x0020_1">
+  <metadata
+   id="CorelCorpID_0Corel-Layer" />
+  <polygon
+   class="fil0 str0"
+   points="2462,640 12517,640 12517,11554 11100,12326 9802,13945 9686,13975 2462,13975 "
+   id="polygon37" />
+  <path
+   class="fil1 str0"
+   d="M9753 13964c998,-173 2410,-1536 2767,-2393 0,0 -2662,3 -2702,30 -40,26 -64,2363 -64,2363z"
+   id="path39" />
+  <rect
+   class="fil2"
+   x="2738"
+   y="784"
+   width="9525"
+   height="1005"
+   id="rect41" />
+  <circle
+   class="fil3 str1"
+   cx="7409"
+   cy="7233"
+   r="3281"
+   id="circle43" />
+  <path
+   class="fil4"
+   d="M6503 5462c-3,-428 -63,-394 364,-83 697,510 1393,1020 2090,1530 515,377 529,257 25,630 -706,524 -1406,1047 -2115,1571 -418,308 -340,272 -343,-146l-21 -3501z"
+   id="path45" />
+ </g>
+<text
+   xml:space="preserve"
+   style="font-size:4000px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+   x="2571.875"
+   y="13651.172"
+   id="text3022"
+   sodipodi:linespacing="125%"><tspan
+     sodipodi:role="line"
+     x="2571.875"
+     y="13651.172"
+     id="tspan3007">F#</tspan></text>
+
+</svg>

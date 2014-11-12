@@ -10,7 +10,7 @@ class LuaProcessor;
 
 namespace converters {
 
-/// A base class for all converters processing code. Prints the given lua code on the
+/// A base class for all converters processing code. Prints the given lua code to the
 /// target language replacing reserved variables with code specified in templates from
 /// "sensors" folder, and function invocations with code specified in templates from
 /// "functions" folder.

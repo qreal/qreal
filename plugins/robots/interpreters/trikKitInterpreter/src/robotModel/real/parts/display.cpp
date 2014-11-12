@@ -1,6 +1,8 @@
 #include "display.h"
-#include <qrutils/inFile.h>
+
 #include <QtGui/QColor>
+
+#include <qrutils/inFile.h>
 
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;

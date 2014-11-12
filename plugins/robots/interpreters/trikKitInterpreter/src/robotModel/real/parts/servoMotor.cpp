@@ -1,4 +1,5 @@
 #include "servoMotor.h"
+
 #include <qrutils/inFile.h>
 
 using namespace trikKitInterpreter::robotModel::real::parts;
@@ -31,4 +32,3 @@ void ServoMotor::off()
 	/// @todo It shall be a separate command, to power off motor, not to leave it in blocked state.
 	on(0);
 }
-
