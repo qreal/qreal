@@ -79,7 +79,7 @@ void Interpreter::interpret()
 	mBlocksTable->clear();
 	mState = waitingForDevicesConfiguredToLaunch;
 
-	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().name())) {
+	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().robotId())) {
 		return;
 	}
 
@@ -114,7 +114,7 @@ int Interpreter::timeElapsed() const
 			: 0;
 }
 
-void Interpreter::connectedSlot(bool success)
+void Interpreter::connectedSlot(bool success, QString const &errorString)
 {
 	qDebug() << "Interpreter::connectedSlot";
 
@@ -125,7 +125,11 @@ void Interpreter::connectedSlot(bool success)
 	} else {
 		utils::Tracer::debug(utils::Tracer::initialization, "Interpreter::connectedSlot"
 				, "Robot connection status: " + QString::number(success));
-		mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
+		if (errorString.isEmpty()) {
+			mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
+		} else {
+			mInterpretersInterface.errorReporter()->addError(errorString);
+		}
 	}
 
 	mActionConnectToRobot.setChecked(success);

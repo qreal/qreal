@@ -4,6 +4,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <commonTwoDModel/engine/twoDModelControlInterface.h>
+#include <utils/abstractTimer.h>
 
 #include "managers/saveConvertionManager.h"
 

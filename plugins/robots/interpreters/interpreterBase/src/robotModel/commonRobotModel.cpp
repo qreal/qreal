@@ -45,7 +45,7 @@ void CommonRobotModel::init()
 
 void CommonRobotModel::connectToRobot()
 {
-	emit connected(true);
+	emit connected(true, QString());
 }
 
 void CommonRobotModel::stopRobot()

@@ -1,4 +1,5 @@
 #include "powerMotor.h"
+
 #include <qrutils/inFile.h>
 
 using namespace trikKitInterpreter::robotModel::real::parts;
