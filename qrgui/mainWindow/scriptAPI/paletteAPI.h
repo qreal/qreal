@@ -23,7 +23,8 @@ public:
 	/// Drag palette element to scene with virtual cursor by id for duration. Virtual cursor moving to
 	/// palette, redrawing with icon of palette element, then moving to scene. Creates block on scene by
 	/// coordinates.
-	Q_INVOKABLE QString dragPaletteElement(QString const &paletteElementId, int const duration, int const xSceneCoord, int const ySceneCoord);
+	Q_INVOKABLE QString dragPaletteElement(QString const &paletteElementId, int const duration
+			, int const xSceneCoord, int const ySceneCoord);
 
 private:
 	ScriptAPI *mScriptAPI;

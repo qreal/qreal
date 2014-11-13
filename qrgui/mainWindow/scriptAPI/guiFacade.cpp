@@ -47,8 +47,8 @@ QRect GuiFacade::propertyRect(QString const &name)
 			findChild<QTreeWidget *>();
 
 	/// Adding 10 to coords needed to navigate in second column with interactive widgets.
-	QRect const globalTarget = QRect(editorTree->findChild<QWidget *>("qt_scrollarea_viewport")->mapTo(mMainWindow,
-			editorTree->visualItemRect(propertyTreeWidgetItem(name)).center() + QPoint(10, 0))
+	QRect const globalTarget = QRect(editorTree->findChild<QWidget *>("qt_scrollarea_viewport")->mapTo(mMainWindow
+			, editorTree->visualItemRect(propertyTreeWidgetItem(name)).center() + QPoint(10, 0))
 			, editorTree->visualItemRect(propertyTreeWidgetItem(name)).size());
 	return globalTarget;
 }

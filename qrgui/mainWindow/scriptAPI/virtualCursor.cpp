@@ -85,8 +85,8 @@ void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, 
 		if (mRightButtonPressed) {
 			timer->setInterval(100);
 
-			connect(timer, &QTimer::timeout,
-					[this, target]() {
+			connect(timer, &QTimer::timeout
+					, [this, target]() {
 						QPoint cursorPos = target->mapFrom(parentWidget(), pos());
 						simulateMouse(target, QEvent::MouseMove, cursorPos, Qt::NoButton);
 					});

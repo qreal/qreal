@@ -47,10 +47,10 @@ void Arrow::paintEvent(QPaintEvent *)
 		angle = 2 * pi - angle;
 	}
 
-	QPointF const destArrowFirst = mDestPoint + QPoint(sin(angle - pi / 3) * arrowSize,
-														cos(angle - pi / 3) * arrowSize);
-	QPointF const destArrowSecond = mDestPoint + QPoint(sin(angle - 2 * pi / 3) * arrowSize,
-														cos(angle - 2 * pi / 3) * arrowSize);
+	QPointF const destArrowFirst = mDestPoint + QPoint(sin(angle - pi / 3) * arrowSize
+			, cos(angle - pi / 3) * arrowSize);
+	QPointF const destArrowSecond = mDestPoint + QPoint(sin(angle - 2 * pi / 3) * arrowSize
+			, cos(angle - 2 * pi / 3) * arrowSize);
 
 	painter.setBrush(Qt::black);
 	painter.drawPolygon(QPolygonF() << line.p2() << destArrowFirst << destArrowSecond);
