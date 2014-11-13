@@ -243,7 +243,9 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	}
 	default:
-		forReleaseResize(mouseEvent);
+		if (itemToSelect) {
+			forReleaseResize(mouseEvent);
+		}
 		break;
 	}
 
