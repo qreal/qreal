@@ -13,8 +13,6 @@ public:
 			, GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent = 0);
-
-	virtual QString generate();
 };
 
 }

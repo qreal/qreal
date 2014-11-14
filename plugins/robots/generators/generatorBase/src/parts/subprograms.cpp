@@ -65,7 +65,7 @@ bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator)
 			return false;
 		}
 
-		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId);
+		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId, true);
 		semantics::SemanticTree *controlFlow = generator->generate();
 		if (!controlFlow) {
 			return false;
