@@ -154,6 +154,7 @@ twoDModel::robotModel::TwoDRobotModel &RobotModel::info()
 void RobotModel::stopRobot()
 {
 	mBeepTime = 0;
+	emit interpretationStopped();
 	emit playingSoundChanged(false);
 	for (Motor * const engine : mMotors) {
 		engine->speed = 0;
