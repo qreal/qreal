@@ -131,5 +131,6 @@ void TwoDModelEngineFacade::onStartInterpretation()
 
 void TwoDModelEngineFacade::onStopInterpretation()
 {
+	mView.data()->display()->clear();
 	mModel->timeline().stop();
 }
