@@ -44,6 +44,7 @@ protected:
 	qreal alignedCoordinate(qreal coord, int coef, int const indexGrid) const;
 	void setBeginCoordinatesWithGrid(int indexGrid);
 	void setEndCoordinatesWithGrid(int indexGrid);
+	void countCellNumbCoordinates(int indexGrid);
 
 	graphicsUtils::LineImpl mLineImpl;
 	QString mSerializeName;
