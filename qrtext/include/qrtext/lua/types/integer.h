@@ -9,6 +9,10 @@ namespace types {
 /// Represents integer number type.
 class Integer : public Number
 {
+	QString toString() const override
+	{
+		return QObject::tr("integer");
+	}
 };
 
 }

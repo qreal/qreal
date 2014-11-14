@@ -9,6 +9,10 @@ namespace types {
 /// Represents floating point number type.
 class Float : public Number
 {
+	QString toString() const override
+	{
+		return QObject::tr("float");
+	}
 };
 
 }

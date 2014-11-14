@@ -30,8 +30,10 @@ void InterpreterTest::SetUp()
 	/// @todo: Do we need this code in some common place? Why do we need to write
 	/// it every time when we are going to use RobotModelManager mock?
 
+	ON_CALL(mModel, robotId()).WillByDefault(Return("mockRobot"));
+	EXPECT_CALL(mModel, robotId()).Times(AtLeast(1));
+
 	ON_CALL(mModel, name()).WillByDefault(Return("mockRobot"));
-	EXPECT_CALL(mModel, name()).Times(AtLeast(1));
 
 	ON_CALL(mModel, needsConnection()).WillByDefault(Return(false));
 	EXPECT_CALL(mModel, needsConnection()).Times(AtLeast(0));
@@ -117,15 +119,15 @@ void InterpreterTest::SetUp()
 
 TEST_F(InterpreterTest, interpret)
 {
-	EXPECT_CALL(mModel, stopRobot()).Times(1);
+	EXPECT_CALL(mModel, stopRobot()).Times(2);
 
 	mInterpreter->interpret();
 }
 
 TEST_F(InterpreterTest, stopRobot)
 {
-	// It shall be called directly here and in destructor of a model.
-	EXPECT_CALL(mModel, stopRobot()).Times(2);
+	// It shall be called directly here, before interpretation and in destructor of a model.
+	EXPECT_CALL(mModel, stopRobot()).Times(3);
 
 	mInterpreter->interpret();
 	mInterpreter->stopRobot();

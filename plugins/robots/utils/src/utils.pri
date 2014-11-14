@@ -29,4 +29,8 @@ SOURCES += \
 	$$PWD/robotCommunication/robotCommunicator.cpp \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \
 	$$PWD/tcpRobotCommunicator.cpp \
-	$$PWD/tcpConnectionHandler.cpp
+	$$PWD/tcpConnectionHandler.cpp \
+
+TRANSLATIONS += $$PWD/../utils_ru.ts
+
+RESOURCES += $$PWD/../utils.qrc

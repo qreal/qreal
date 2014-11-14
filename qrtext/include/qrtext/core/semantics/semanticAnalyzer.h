@@ -37,7 +37,7 @@ namespace core {
 ///
 /// Current implementation only works for simple types.
 ///
-/// Algorithm of type inferrence is at first assigns to every expression type variable which type initialized to Any,
+/// Algorithm of type inference is at first assigns to every expression type variable which type initialized to Any,
 /// then for each specific node expression types are constrained by semantics of the expression, and in some cases
 /// type variables are unified (two expressions assigned to one type variable). For example, expression "-a" can be
 /// unified with expression "a", so it has one type, and in the same time constrained to type "int" or "float", as they
