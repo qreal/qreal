@@ -116,31 +116,31 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::LightSensor(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<robotModel::parts::ColorSensorPassive>()) {
+	if (deviceInfo.isA<robotParts::ColorSensorPassive>()) {
 		return new parts::ColorSensorPassive(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<robotModel::parts::ColorSensorFull>()) {
+	if (deviceInfo.isA<robotParts::ColorSensorFull>()) {
 		return new parts::ColorSensorFull(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<robotModel::parts::ColorSensorRed>()) {
+	if (deviceInfo.isA<robotParts::ColorSensorRed>()) {
 		return new parts::ColorSensorRed(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<robotModel::parts::ColorSensorGreen>()) {
+	if (deviceInfo.isA<robotParts::ColorSensorGreen>()) {
 		return new parts::ColorSensorGreen(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<robotModel::parts::ColorSensorBlue>()) {
+	if (deviceInfo.isA<robotParts::ColorSensorBlue>()) {
 		return new parts::ColorSensorBlue(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<interpreterBase::robotModel::robotParts::GyroscopeSensor>()) {
+	if (deviceInfo.isA<robotParts::GyroscopeSensor>()) {
 		return new parts::Gyroscope(deviceInfo, port, *mEngine);
 	}
 
-	if (deviceInfo.isA<interpreterBase::robotModel::robotParts::AccelerometerSensor>()) {
+	if (deviceInfo.isA<robotParts::AccelerometerSensor>()) {
 		return new parts::Accelerometer(deviceInfo, port, *mEngine);
 	}
 
