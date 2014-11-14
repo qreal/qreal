@@ -18,10 +18,11 @@
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
     <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
-    <TargetDir>@HomeDir@/QReal</TargetDir>
-    <AdminTargetDir>@RootDir@/QReal</AdminTargetDir>
+    <TargetDir>@HomeDir@QReal</TargetDir>
+    <AdminTargetDir>@RootDir@QReal</AdminTargetDir>
 
-    <RunProgram>@TargetDir@/qreal</RunProgram>
+<!-- TODO: Due to some issues in QtIFW if user modifies initial target dir RunProgram is still substitutes here initial value. Uncomment it when fixed -->
+<!--    <RunProgram>@TargetDir@/qreal</RunProgram> -->
 
     <RemoteRepositories>
         <Repository>
