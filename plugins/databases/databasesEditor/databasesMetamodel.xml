@@ -63,8 +63,8 @@
 						 </properties>
 					</container>
 					<properties>
-						<property type="string" name="Name" displayedName="Name">
-						</property>
+						<property type="string" name="Name" displayedName="Name"/>
+						<property type="bool" name="AutoIncrementPrimaryKey"/>
 					</properties>
 				</logic>
 			</node>

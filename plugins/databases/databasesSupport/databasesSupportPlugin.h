@@ -32,6 +32,7 @@ public:
 signals:
 
 public slots:
+	void checkCorrectness();
 	void generateCode();
 
 private:
@@ -41,6 +42,7 @@ private:
 	void initActions();
 
 	QAction *mGenerateCodeAction;
+	QAction *mCheckCorectnessAction;
 	QMenu *mDatabasesMenu;
 	QList<qReal::ActionInfo> mActionInfos;
 

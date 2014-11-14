@@ -258,12 +258,25 @@ bool DatabasesGenerator::checkRelationships()
 	return result;
 }
 
+void DatabasesGenerator::checkCorrectness()
+{
+	bool checkOne = checkRelationships();
+	bool checkTwo = checkAttributes();
+	bool checkThree = checkEntities();
+	if (checkOne && checkTwo && checkThree) {
+		mErrorReporter->addInformation("Diagram is correct.");
+	}
+}
+
 void DatabasesGenerator::generateSQL()
 {
 	mErrorReporter->clear();
 	mPassedElements.clear();
 
-	if (!(checkRelationships() && checkAttributes() && checkEntities())) {
+	bool checkRel = checkRelationships();
+	bool checkAtt = checkAttributes();
+	bool checkEnt = checkEntities();
+	if (!(checkRel && checkAtt && checkEnt)) {
 		return;
 	}
 
@@ -325,13 +338,14 @@ void DatabasesGenerator::generateSQL()
 	// 1 - one-to-many relationship (i - many, k - one)
 	// -1 - one-to-many relationship (i - one, k - many)
 	// 2 - many-to-many relationship
+	// 3 - one-to-one relationship
 	int oneToOneAllTablesSetSize = oneToOneAllTablesSet.size();
 	int** match = new int*[oneToOneAllTablesSetSize];
 	for (int i = 0; i < oneToOneAllTablesSetSize; i++) {
 		match[i] = new int[oneToOneAllTablesSetSize];
-		for (int k = 0; k < oneToOneAllTablesSetSize; k++) {
+		for (int k = 0; k < oneToOneAllTablesSetSize; k++)
 			match[i][k] = 0;
-		}
+		match[i][i] = 3;
 	}
 
 	IdList oneToManyRelationships = findNodes("OneToManyRelationship");
@@ -426,5 +440,6 @@ void DatabasesGenerator::generateSQL()
 	}
 	delete[] match;
 	codeFile.close();
+	mErrorReporter->addInformation(tr("Code was generated successfully"));
 }
 

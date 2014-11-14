@@ -45,15 +45,24 @@ QList<qReal::ActionInfo> DatabasesSupportPlugin::actions()
 
 void DatabasesSupportPlugin::initActions()
 {
+	mCheckCorectnessAction = new QAction(tr("Check correctness"), NULL);
+	connect(mCheckCorectnessAction, SIGNAL(triggered()), this, SLOT(checkCorrectness()));
+
 	mGenerateCodeAction = new QAction(tr("Generate SQL"), NULL);
 	//ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
 	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
 	mDatabasesMenu = new QMenu(tr("Databases"));
 	mDatabasesMenu->addAction(mGenerateCodeAction);
+	mDatabasesMenu->addAction(mCheckCorectnessAction);
 	ActionInfo databasesMenuInfo(mDatabasesMenu, "tools");
 
 	mActionInfos << databasesMenuInfo;
+}
+
+void DatabasesSupportPlugin::checkCorrectness()
+{
+	mDatabasesGenerator->checkCorrectness();
 }
 
 void DatabasesSupportPlugin::generateCode()

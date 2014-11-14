@@ -1,5 +1,5 @@
 [Ii][Nn][Tt]
-[Ii][Nn][Tt]\\s+[Uu][Nn][Ss][Ii][Gg][Nn][Ee][Dd]
+[Ii][Nn][Tt]\s+[Uu][Nn][Ss][Ii][Gg][Nn][Ee][Dd]
 [Tt][Ii][Nn][Yy][Ii][Nn][Tt]
 [Tt][Ii][Nn][Yy][Ii][Nn][Tt]\s+[Uu][Nn][Ss][Ii][Gg][Nn][Ee][Dd]
 [Ss][Mm][Aa][Ll][Ll][Ii][Nn][Tt]

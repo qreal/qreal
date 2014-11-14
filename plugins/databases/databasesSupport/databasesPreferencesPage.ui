@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>629</width>
     <height>300</height>
    </rect>
   </property>
@@ -18,15 +18,15 @@
     <rect>
      <x>0</x>
      <y>30</y>
-     <width>371</width>
-     <height>151</height>
+     <width>361</width>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="builderPathLabel">
+     <widget class="QLabel" name="dialectLabel">
       <property name="text">
-       <string>Builder path:</string>
+       <string>Choose Database management system:</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -34,55 +34,110 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="builderPathLineEdit"/>
-    </item>
-    <item>
-     <widget class="QLabel" name="visDebWorkDirLabel">
-      <property name="text">
-       <string>Working directory:</string>
-      </property>
+     <widget class="QComboBox" name="comboBox">
+      <item>
+       <property name="text">
+        <string>MySQL</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Oracle</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SQLite</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Microsoft SQL Server</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Microsoft Access</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>PostgreSQL</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Informix</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Progress</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>IBM DB2</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Ingres</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Sybase</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Teradata</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SQL Anywhere</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Firebird</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>InterBase</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>NexusDB</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MariaDB</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Paradox</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Hitachi HiRDB</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Netezza</string>
+       </property>
+      </item>
      </widget>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="visDebWorkDirLineEdit"/>
-    </item>
-    <item>
-     <widget class="QLabel" name="codeFileNameLabel">
-      <property name="text">
-       <string>Generated code file name:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="codeFileNameLineEdit"/>
     </item>
    </layout>
-  </widget>
-  <widget class="QPushButton" name="builderPathPushButton">
-   <property name="geometry">
-    <rect>
-     <x>497</x>
-     <y>80</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>...</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="visDebWorkDirPushButton">
-   <property name="geometry">
-    <rect>
-     <x>497</x>
-     <y>109</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>...</string>
-   </property>
   </widget>
  </widget>
  <resources/>

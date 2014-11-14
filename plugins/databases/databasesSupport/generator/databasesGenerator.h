@@ -18,6 +18,7 @@ public:
 
 	void activeTabChanged(qReal::Id const &rootElementId);
 public slots:
+	void checkCorrectness();
 	/// Generate code from block diagram and build it in executable file
 	void generateSQL();
 
