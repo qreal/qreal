@@ -45,7 +45,6 @@ void TcpConnectionHandler::disconnect()
 
 void TcpConnectionHandler::send(QString const &data)
 {
-	qDebug() << "TcpConnectionHandler::send()" << data;
 	QByteArray dataByteArray = data.toUtf8();
 	dataByteArray = QByteArray::number(dataByteArray.size()) + ':' + dataByteArray;
 	mSocket.write(dataByteArray);

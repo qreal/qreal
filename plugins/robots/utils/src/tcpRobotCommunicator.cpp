@@ -111,11 +111,9 @@ void TcpRobotCommunicator::processControlMessage(QString const &message)
 	QString const infoMarker("info: ");
 	QString const versionMarker("version: ");
 
-	qDebug() << "TcpRobotCommunicator::processIncomingMessage()" << message;
 	if (message.startsWith(versionMarker) && mErrorReporter) {
 		mVersionTimer.stop();
 		QString currentVersion = message.mid(versionMarker.length());
-		qDebug() << "TcpRobotCommunicator::processIncomingMessage::versionMarker" << requiredVersion;
 		if (currentVersion != requiredVersion) {
 			mErrorReporter->addError(tr("Current trik version is not equal to version required by Studio"));
 		}
@@ -156,14 +154,12 @@ void TcpRobotCommunicator::processTelemetryMessage(QString const &message)
 
 void TcpRobotCommunicator::versionTimeOut()
 {
-	qDebug() << "TcpRobotCommunicator::versionTimeOut()";
 	mVersionTimer.stop();
 	mErrorReporter->addError(tr("Current trik version can not be received"));
 }
 
 void TcpRobotCommunicator::versionRequest()
 {
-	qDebug() << "TcpRobotCommunicator::versionRequest()";
 	mControlConnection.send("version");
 	mVersionTimer.start(3000);
 }

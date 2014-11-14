@@ -32,6 +32,7 @@ void TrikQtsGeneratorPlugin::init(qReal::PluginConfigurator const &configurator
 {
 	RobotsGeneratorPluginBase::init(configurator, robotModelManager, textLanguage);
 	mCommunicator = new utils::TcpRobotCommunicator("TrikTcpServer");
+	mCommunicator->setErrorReporter(configurator.mainWindowInterpretersInterface().errorReporter());
 }
 
 QList<ActionInfo> TrikQtsGeneratorPlugin::actions()
