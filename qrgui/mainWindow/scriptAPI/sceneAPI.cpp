@@ -41,7 +41,8 @@ void SceneAPI::drawLink(QString const &fromElementId, QString const &toElementId
 	}
 }
 
-QString SceneAPI::createBlockOnScene(DraggableElement const *paletteElement, int const xSceneCoord, int const ySceneCoord)
+QString SceneAPI::createBlockOnScene(DraggableElement const *paletteElement
+		, int const xSceneCoord, int const ySceneCoord)
 {
 	EditorView *currentTab = mMainWindow->getCurrentTab();
 	if (currentTab) {
