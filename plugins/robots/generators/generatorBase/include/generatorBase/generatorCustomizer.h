@@ -33,6 +33,9 @@ public:
 	/// Implementation must tell if block with given id has final node semantics
 	virtual bool isFinalNode(qReal::Id const &block) const;
 
+	/// Implementation must tell if block with given id calls some new routine
+	virtual bool isSubprogramCall(qReal::Id const &block) const;
+
 	/// Returns semantics type of the given block
 	enums::semantics::Semantics semanticsOf(qReal::Id const &block) const;
 
@@ -66,6 +69,7 @@ private:
 	qReal::Id const mDefaultLoopBlockType;
 	qReal::Id const mDefaultSwitchBlockType;
 	qReal::Id const mDefaultForkBlockType;
+	qReal::Id const mDefaultSubprogramCallBlockType;
 };
 
 }
