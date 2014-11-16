@@ -364,8 +364,13 @@ void DatabasesGenerator::generateSQL()
 		if (toPrimaryKey == Id::rootId()) {
 			return;
 		}
-		QString toPrimaryKeyName = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
-		extraAttributes[fromSet] += (",\r\n" + toPrimaryKeyName + " " + getProperty(toPrimaryKey, "DataType").toString());
+
+		QString columnNameForRelationship = getProperty(relationship, "ColumnName").toString();
+		if (columnNameForRelationship.isEmpty()) {
+			mErrorReporter->addInformation(tr("Column name for one-to-one relationship with name '") + getProperty(relationship, "Name").toString()+ tr("' is`n specified. Column name was generated automatically."));
+			columnNameForRelationship = getPrimaryKeyNameOfSet(oneToOneAllTablesSet.at(toSet));
+		}
+		extraAttributes[fromSet] += (",\r\n" + columnNameForRelationship + " " + getProperty(toPrimaryKey, "DataType").toString());
 
 		match[fromSet][toSet] = 1;
 		match[toSet][fromSet] = -1;
@@ -379,7 +384,7 @@ void DatabasesGenerator::generateSQL()
 		int fromSet = getParentList(from, oneToOneAllTablesSet);
 
 		if (match[toSet][fromSet] != 0) {
-			error("Too many relationships from "+ getProperty(from, "Name").toString() + " to " + getProperty(to, "Name").toString(), true);
+			error(tr("Too many relationships from ") + getProperty(from, "Name").toString() + tr(" to ") + getProperty(to, "Name").toString(), true);
 			return;
 		}
 
@@ -395,7 +400,12 @@ void DatabasesGenerator::generateSQL()
 		}
 
 		codeFile.write("CREATE TABLE ");
-		codeFile.write((getListTableName(oneToOneAllTablesSet.at(fromSet)) + "_" + getListTableName(oneToOneAllTablesSet.at(toSet))).toUtf8());
+		QString relationshipTableName = getProperty(relationship, "TableName").toString();
+		if (relationshipTableName.isEmpty()) {
+			mErrorReporter->addInformation(tr("Table name for many-to-many relationship with name '") + getProperty(relationship, "Name").toString() +  tr("' is`t specified. Table name was generated automatically"), Id::rootId());
+			relationshipTableName = (getListTableName(oneToOneAllTablesSet.at(fromSet)) + "_" + getListTableName(oneToOneAllTablesSet.at(toSet))).toUtf8();
+		}
+		codeFile.write(relationshipTableName.toUtf8());
 		codeFile.write("\r\n(");
 		codeFile.write("\r\n");
 

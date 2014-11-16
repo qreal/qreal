@@ -70,8 +70,8 @@
 			</node>
 			<node name="Attribute" displayedName="Attribute">
 				<graphics>
-					<picture sizex="150" sizey="30">
-						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="28" x2="150"/>
+					<picture sizex="150" sizey="31">
+						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="31" x2="150"/>
 						<rectangle stroke-style="solid" stroke="#000000" y1="8" stroke-width="0" x1="136" y2="13" x2="140">
 							<showIf value="true" property="isPrimaryKey" sign="="/>
 						</rectangle>
@@ -95,7 +95,7 @@
 						</line>
 					</picture>
 					<labels>
-						<label x="10a" y="a" textBinded="Name"/>
+						<label x="10a" y="1a" textBinded="Name"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -119,6 +119,7 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
+						<property type="string" displayedName="Table Name" name="TableName"/>
 					</properties>
 					<fromPorts>
 						<port type="EntityRight"/>
@@ -160,6 +161,7 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
+						<property type="string" displayedName="Column Name" name="ColumnName"/>
 					</properties>
 					<fromPorts>
 						<port type="EntityRight"/>
@@ -195,6 +197,9 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
+						<property type="bool" name="Merging" displayedName="Merging into a single table">
+							<default>true</default>
+						</property>
 					</properties>
 					<fromPorts>
 						<port type="EntityRight"/>
