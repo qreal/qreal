@@ -12,7 +12,7 @@ SemanticTree::SemanticTree(GeneratorCustomizer &customizer, Id const &initialBlo
 	: QObject(parent)
 	, mCustomizer(customizer)
 	, mIsMainTree(isMainTree)
-	, mRoot(new RootNode(initialBlock, this))
+	, mRoot(new RootNode(produceNodeFor(initialBlock), this))
 {
 }
 
