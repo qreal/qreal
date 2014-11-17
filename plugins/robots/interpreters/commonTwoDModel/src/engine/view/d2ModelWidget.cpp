@@ -3,6 +3,7 @@
 
 #include <QtCore/qmath.h>
 #include <QtCore/QDebug>
+#include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
@@ -137,7 +138,19 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->wallButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawWall); });
 	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 
-	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){ mScene->clearScene(false, Reason::userAction); });
+	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){
+		QMessageBox *confirmation = new QMessageBox(this
+				, "Предупреждение"
+				, "Вы действительно хотите очистить сцену?"
+				, QMessageBox::Yes | QMessageBox::No);
+		confirmation.setButtonText(QMessageBox::Yes, "Да");
+		confirmation.setButtonText(QMessageBox::No, "Отмена");
+		int n = confirmation.exec();
+		delete confirmation;
+		if (n == QMessageBox::Yes) {
+			mScene->clearScene(false, Reason::userAction);
+		}
+	});
 	connect(mUi->clearFloorButton, &QAbstractButton::clicked, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
 			, mUi->clearFloorButton, &QAbstractButton::setVisible, Qt::QueuedConnection);
