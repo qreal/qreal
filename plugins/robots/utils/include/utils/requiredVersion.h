@@ -3,5 +3,7 @@
 #include <QtCore/QString>
 
 namespace utils {
-QString requiredVersion = "3.0.0-B2";
+
+QString const requiredVersion = "3.0.0-b2";
+
 }

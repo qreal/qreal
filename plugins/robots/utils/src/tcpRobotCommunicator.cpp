@@ -21,11 +21,11 @@ TcpRobotCommunicator::TcpRobotCommunicator(QString const &serverIpSettingsKey)
 	, mIsConnected(false)
 	, mServerIpSettingsKey(serverIpSettingsKey)
 {
-	QObject::connect(&mControlConnection, SIGNAL(messageReceived(QString))
-			, this, SLOT(processControlMessage(QString)));
-	QObject::connect(&mTelemetryConnection, SIGNAL(messageReceived(QString))
-			, this, SLOT(processTelemetryMessage(QString)));
-	QObject::connect(&mVersionTimer, SIGNAL(timeout()), this, SLOT(versionTimeOut()));
+	QObject::connect(&mControlConnection, &TcpConnectionHandler::messageReceived
+			, this, &TcpRobotCommunicator::processControlMessage);
+	QObject::connect(&mTelemetryConnection, &TcpConnectionHandler::messageReceived
+			, this, &TcpRobotCommunicator::processTelemetryMessage);
+	QObject::connect(&mVersionTimer, &QTimer::timeout, this, &TcpRobotCommunicator::versionTimeOut);
 }
 
 TcpRobotCommunicator::~TcpRobotCommunicator()
@@ -115,9 +115,9 @@ void TcpRobotCommunicator::processControlMessage(QString const &message)
 
 	if (message.startsWith(versionMarker) && mErrorReporter) {
 		mVersionTimer.stop();
-		QString currentVersion = message.mid(versionMarker.length());
+		QString const currentVersion = message.mid(versionMarker.length());
 		if (currentVersion != requiredVersion) {
-			mErrorReporter->addError(tr("Current trik version is not equal to version required by Studio"));
+			mErrorReporter->addError(tr("Current TRIK runtime version is not equal to version required by TRIKStudio"));
 		}
 	} else if (message.startsWith(errorMarker) && mErrorReporter) {
 		mErrorReporter->addError(message.mid(errorMarker.length()));
@@ -157,7 +157,7 @@ void TcpRobotCommunicator::processTelemetryMessage(QString const &message)
 void TcpRobotCommunicator::versionTimeOut()
 {
 	mVersionTimer.stop();
-	mErrorReporter->addError(tr("Current trik version can not be received"));
+	mErrorReporter->addError(tr("Current TRIK runtime version can not be received"));
 }
 
 void TcpRobotCommunicator::versionRequest()
