@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtNetwork/QTcpSocket>
-
+#include <QtCore/QTimer>
 #include "utilsDeclSpec.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
@@ -59,10 +59,17 @@ signals:
 private slots:
 	void processControlMessage(QString const &message);
 	void processTelemetryMessage(QString const &message);
+	void versionTimeOut();
 
 private:
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
 	void send(QString const &data, QTcpSocket &socket);
+
+	/// Sends version request and starts version timer
+	void versionRequest();
+
+	/// Socket that holds connection.
+	QTcpSocket mSocket;
 
 	/// Reference to error reporter.
 	qReal::ErrorReporterInterface *mErrorReporter;  // Does not have ownership.
@@ -72,6 +79,9 @@ private:
 
 	bool mIsConnected;
 	QString const mServerIpSettingsKey;
+
+	/// Timer for version request
+	QTimer mVersionTimer;
 };
 
 }
