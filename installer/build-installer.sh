@@ -24,9 +24,18 @@ find $PWD -name prebuild-common.sh | bash
 find $PWD -name prebuild-$OS.sh | bash
 
 echo "Building online installer..."
-$QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-online-installer
+$QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT-$OS.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-online-$OS-installer
 
 echo "Building offline installer..."
-$QTIFW_DIR/binarycreator --offline-only -c config/$PRODUCT.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-offline-installer
+$QTIFW_DIR/binarycreator --offline-only -c config/$PRODUCT-$OS.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-offline-$OS-installer
+
+echo "Building updates repository..."
+$QTIFW_DIR/repogen -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-repository
+
+echo "Uploading repository to server..."
+scp $PRODUCT-repository/* qrealproject@195.19.241.150:/home/qrealproject/public/$PRODUCT-repo-$OS
+
+echo "Removing temporary files..."
+rm -rf $PRODUCT-repository
 
 echo "Done"

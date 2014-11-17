@@ -18,15 +18,15 @@
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
     <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
-    <TargetDir>@RootDir@TRIKStudio</TargetDir>
-    <AdminTargetDir>@RootDir@TRIKStudio</AdminTargetDir>
+    <TargetDir>@HomeDir@TRIKStudio</TargetDir>
+    <AdminTargetDir>@HomeDir@TRIKStudio</AdminTargetDir>
 
 <!-- TODO: Due to some issues in QtIFW if user modifies initial target dir RunProgram is still substitutes here initial value. Uncomment it when fixed -->
 <!--    <RunProgram>trik-studio</RunProgram> -->
 
     <RemoteRepositories>
         <Repository>
-            <Url>http://127.0.0.1/trik_studio_repo/</Url>
+            <Url>http://downloads.trikset.com/trik-studio-repo-linux-gnu/</Url>
         </Repository>
     </RemoteRepositories>
 </Installer>
