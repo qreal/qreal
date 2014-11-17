@@ -1,9 +1,10 @@
 #include "diffWindow.h"
 
 using namespace versioning;
-DiffWindow::DiffWindow(qReal::MainWindow *mainWindow
-		, DiffModel *diffModel, bool compactMode, QWidget *parent)
-	: QWidget(parent), mDiffModel(diffModel), mMainWindow(mainWindow)
+DiffWindow::DiffWindow(DiffModel *diffModel, bool compactMode, QWidget *parent
+		)
+	: QWidget(parent), mDiffModel(diffModel), mMainWindow(parent)
+	, mSceneCustomizer(new SceneCustomizer), mController(new Controller)
 	, mShowDetails(false), mCompactMode(compactMode)
 {
 	if (compactMode){
@@ -75,8 +76,9 @@ void DiffWindow::initViews()
 	QList<int> sizes;
 	sizes << 1;
 
-
-	mOldView = new details::DiffView(mMainWindow, mDiffModel, true, this);
+	QModelIndex indexForOld = mDiffModel->oldModel()->graphicalModel()->index(0,0);
+	Id rootIdForOld = mDiffModel->oldModel()->graphicalModelAssistApi().idByIndex(indexForOld);
+	mOldView = new details::DiffView(mMainWindow, mDiffModel, true, *mController, *mSceneCustomizer, rootIdForOld);
 	if (!mCompactMode){
 		QFrame *oldFrame = new QFrame;
 		oldFrame->setLayout(initView(mOldView));
@@ -86,7 +88,9 @@ void DiffWindow::initViews()
 		mOldView->setVisible(false);
 	}
 
-	mNewView = new details::DiffView(mMainWindow, mDiffModel, false, this);
+	QModelIndex indexForNew = mDiffModel->newModel()->graphicalModel()->index(0,0);
+	Id rootIdForNew = mDiffModel->newModel()->graphicalModelAssistApi().idByIndex(indexForNew);
+	mNewView = new details::DiffView(mMainWindow, mDiffModel, false, *mController, *mSceneCustomizer, rootIdForNew);
 	QFrame *newFrame = new QFrame;
 	newFrame->setLayout(initView(mNewView));
 

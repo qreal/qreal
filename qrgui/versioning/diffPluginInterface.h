@@ -1,6 +1,5 @@
 #pragma once
-
-#include "plugins/toolPluginInterface/toolPluginInterface.h"
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 
 namespace qReal
 {

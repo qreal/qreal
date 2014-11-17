@@ -13,7 +13,7 @@ INCLUDEPATH += \
 	$$PWD/../.. \
 	$$PWD/../../qrgui/ \
 
-LIBS += -L../../bin -lqrkernel -lqrutils
+LIBS += -L../../bin -lqrkernel -lqrutils -lqrgui-versioning-plugins-manager
 
 HEADERS += \
 	diffPlugin.h \

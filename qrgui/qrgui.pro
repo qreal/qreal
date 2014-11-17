@@ -16,6 +16,7 @@ SUBDIRS += \
 	toolPluginInterface \
 	interpretedPluginInterface \
 	thirdparty \
+	versioning \
 
 pluginManager.file = $$PWD/plugins/pluginManager/pluginManager.pro
 editorPluginInterface.file = $$PWD/plugins/editorPluginInterface/editorPluginInterface.pro
@@ -33,6 +34,7 @@ mainWindow.depends = \
 	brandManager \
 	pluginManager \
 	thirdparty \
+	versioning \
 
 models.depends = \
 	pluginManager \
@@ -60,3 +62,11 @@ brandManager.depends = \
 
 pluginManager.depends = \
 	toolPluginInterface \
+
+versioning.depends = \
+	toolPluginInterface \
+	models \
+	thirdparty \
+	controller \
+	editor \
+	mouseGestures \

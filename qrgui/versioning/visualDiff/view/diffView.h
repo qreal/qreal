@@ -2,10 +2,11 @@
 
 #include "diffScene.h"
 #include "detailsWidget/diffDetailsWidget.h"
-#include "../../../view/editorView.h"
+#include <qrgui/editor/editorView.h>
 #include "../model/diffModel.h"
-#include "../../../mainwindow/mainWindow.h"
-#include "../../../models/models.h"
+#include <qrgui/models/models.h>
+#include <qrgui/editor/sceneCustomizer.h>
+#include <qrgui/controller/controller.h>
 
 namespace versioning
 {
@@ -17,8 +18,12 @@ class DiffView : public EditorView
 	Q_OBJECT
 
 public:
-	DiffView(qReal::MainWindow *mainWindow, versioning::DiffModel *diffModel
-			, bool isOldModel, QWidget *parent = 0);
+	DiffView(QWidget *parent
+			, versioning::DiffModel *diffModel
+			, bool isOldModel
+			, Controller &controller
+			, SceneCustomizer const &customizer
+			, Id const &rootId);
 	void setDetailsWidget(DiffDetailsWidget *widget);
 
 public slots:
@@ -44,7 +49,8 @@ private slots:
 	void unhintItem(qReal::Id const &graphicalId);
 
 private:
-	DiffScene *diffScene();
+	DiffScene mScene;
+	EditorViewMViface mMVIface;
 	void highlightElements();
 	void highlight(qReal::Id const &id);
 

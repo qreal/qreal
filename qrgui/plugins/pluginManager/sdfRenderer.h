@@ -16,8 +16,8 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include "plugins/editorPluginInterface/sdfRendererInterface.h"
-#include "plugins/editorPluginInterface/elementRepoInterface.h"
+#include "qrgui/plugins/editorPluginInterface/sdfRendererInterface.h"
+#include "qrgui/plugins/editorPluginInterface/elementRepoInterface.h"
 
 namespace qReal {
 

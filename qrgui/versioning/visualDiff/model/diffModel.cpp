@@ -1,6 +1,9 @@
 #include "diffModel.h"
 #include "difference.h"
 
+#include "qrgui/models/graphicalModelAssistApi.h"
+#include "qrgui/models/logicalModelAssistApi.h"
+
 using namespace versioning;
 using namespace versioning::details;
 
@@ -25,12 +28,12 @@ Difference *DiffModel::difference(const qReal::Id &id) const
 	}
 }
 
-qReal::models::Models *DiffModel::oldModel() const
+qReal::models::Models *DiffModel::oldModel()
 {
 	return mOldModel;
 }
 
-qReal::models::Models *DiffModel::newModel() const
+qReal::models::Models *DiffModel::newModel()
 {
 	return mNewModel;
 }

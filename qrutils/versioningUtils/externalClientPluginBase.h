@@ -4,7 +4,7 @@
 #include <QtCore/QProcess>
 
 #include "../utilsDeclSpec.h"
-#include <qrgui/versioning/versioningPluginInterface.h>
+#include "qrgui/versioning/versioningPluginInterface.h"
 
 namespace qReal {
 namespace versioning {

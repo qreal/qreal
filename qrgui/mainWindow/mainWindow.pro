@@ -11,6 +11,7 @@ LIBS += -L$$PWD/../../bin \
 			-lqrgui-models -lqrgui-editor -lqrgui-controller -lqrgui-dialogs -lqrgui-preferences-dialog \
 			-lqrgui-text-editor -lqrgui-mouse-gestures -lqrgui-hotkey-manager -lqrgui-brand-manager  \
 			-lqrgui-plugin-manager -lqrgui-tool-plugin-interface -lqrgui-thirdparty \
+			-lqrgui-versioning-plugins-manager \
 
 INCLUDEPATH = \
 	$$PWD/ \

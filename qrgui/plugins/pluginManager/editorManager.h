@@ -11,10 +11,10 @@
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
 
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "plugins/pluginManager/pattern.h"
-#include "plugins/pluginManager/details/patternParser.h"
-#include "plugins/editorPluginInterface/editorInterface.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/plugins/pluginManager/pattern.h"
+#include "qrgui/plugins/pluginManager/details/patternParser.h"
+#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
 
 #include <qrutils/pluginManagers/pluginManager.h>
 

@@ -1,5 +1,5 @@
 QT += widgets
-LIBS += -L../../bin -lqrkernel -lqrutils
+LIBS += -L../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog
 
 INCLUDEPATH += \
 	$$PWD/../.. \
@@ -8,7 +8,7 @@ INCLUDEPATH += \
 TEMPLATE = lib
 CONFIG += plugin
 CONFIG += c++11
-DESTDIR = ../../bin/plugins/
+DESTDIR = ../../bin/plugins/tools/
 
 MOC_DIR = .moc
 RCC_DIR = .rcc
@@ -23,7 +23,7 @@ HEADERS += \
     tags.h \
 	transparentMode.h \
     gui/versioningPage.h \
-    ../../qrgui/dialogs/preferencesPages/preferencesPage.h \
+#    ../../qrgui/dialogs/preferencesPages/preferencesPage.h \
     gui/commitDialog.h \
     gui/pushDialog.h \
     gui/cloneDialog.h \

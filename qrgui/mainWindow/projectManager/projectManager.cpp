@@ -16,13 +16,14 @@
 using namespace qReal;
 using namespace utils;
 
-ProjectManager::ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager)
+ProjectManager::ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager, SystemEvents *systemEvents)
 	: mMainWindow(mainWindow)
 	, mTextManager(textManager)
 	, mAutosaver(new Autosaver(this))
 	, mUnsavedIndicator(false)
 	, mSomeProjectOpened(false)
 	, mVersionsConverter(*mMainWindow)
+	, mSystemEvents(systemEvents)
 {
 	setSaveFilePath();
 }
@@ -278,6 +279,11 @@ void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 	refreshTitleModifiedSuffix();
 }
 
+bool ProjectManager::getUnsavedIndicator()
+{
+	return mUnsavedIndicator;
+}
+
 void ProjectManager::refreshTitleModifiedSuffix()
 {
 	QString const modifiedSuffix = tr(" [modified]");
@@ -354,6 +360,7 @@ void ProjectManager::save()
 	saveTo(mSaveFilePath);
 	mAutosaver->removeAutoSave();
 	refreshApplicationStateAfterSave();
+	emit mSystemEvents->projectManagerSaveComplete();
 }
 
 bool ProjectManager::restoreIncorrectlyTerminated()
@@ -402,6 +409,7 @@ bool ProjectManager::saveAs(QString const &fileName)
 	mMainWindow->models()->repoControlApi().saveTo(workingFileName);
 	setSaveFilePath(workingFileName);
 	refreshApplicationStateAfterSave();
+	emit mSystemEvents->projectManagerSaveComplete();
 	return true;
 }
 

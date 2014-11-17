@@ -1,6 +1,5 @@
 #pragma once
 
-#include <pluginManager/toolPluginManager.h>
 #include <qrutils/versioningUtils/briefVersioningInterface.h>
 #include <qrrepo/workingCopyInspectionInterface.h>
 #include <qrrepo/workingCopyManagementInterface.h>
@@ -25,7 +24,7 @@ public:
 	virtual void setWorkingCopyManager(
 			qrRepo::WorkingCopyManagementInterface *workingCopyManager) = 0;
 
-    virtual void setDiffViewerInterface(DiffPluginInterface *diffInterface) = 0;
+	virtual void setDiffViewerInterface(DiffPluginInterface *diffInterface) = 0;
 };
 
 }

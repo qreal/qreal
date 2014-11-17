@@ -16,7 +16,7 @@ public:
 	DiffPluginWrapper(qReal::DiffPluginBase *plugin
 			, qrRepo::WorkingCopyManagementInterface *workingCopyManager
 			, qReal::BriefVersioningInterface *vcs
-			, qReal::MainWindow *mainWindow
+			, QWidget *parent
 			, qReal::EditorManagerInterface *manager);
 
 public slots:
@@ -31,7 +31,7 @@ private slots:
 private:
 	qrRepo::WorkingCopyManagementInterface *mWorkingCopyManager;
 	qReal::BriefVersioningInterface *mVcs;
-	qReal::MainWindow *mMainWindow;
+	QWidget *mMainWindow;
 	qReal::EditorManagerInterface *mEditorManager;
 	qReal::ErrorReporterInterface *mErrorReporter;
 	qReal::ProjectManagementInterface *mProjectManager;

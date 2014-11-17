@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-#include "mainWindow/projectManager/autosaver.h"
+#include "qrgui/mainWindow/projectManager/autosaver.h"
 
 namespace qReal
 {
@@ -52,6 +52,8 @@ public:
 
 	/// Returns path to save file. If temp file it will return empty string.
 	virtual QString saveFilePath() const = 0;
+
+	virtual bool getUnsavedIndicator() = 0;
 
 signals:
 	/// Emitted each time when project manager is going to open new project

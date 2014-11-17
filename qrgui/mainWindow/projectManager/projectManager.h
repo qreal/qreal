@@ -2,8 +2,8 @@
 
 #include <QtCore/QFileInfo>
 
-#include "mainWindow/projectManager/projectManagementInterface.h"
-#include "textEditor/textManagerInterface.h"
+#include "qrgui/mainWindow/projectManager/projectManagementInterface.h"
+#include "qrgui/textEditor/textManagerInterface.h"
 #include "versionsConverterManager.h"
 
 namespace qReal {
@@ -16,7 +16,8 @@ class ProjectManager : public ProjectManagementInterface
 	Q_OBJECT
 
 public:
-	explicit ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager);
+	explicit ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager
+		,SystemEvents *systemEvents);
 
 public slots:
 	bool openExisting(QString const &fileName);
@@ -51,6 +52,7 @@ public:
 	bool restoreIncorrectlyTerminated();
 
 	void refreshWindowTitleAccordingToSaveFile();
+	bool getUnsavedIndicator();
 
 private:
 	bool openProject(QString const &fileName);
@@ -80,6 +82,7 @@ private:
 	QString mSaveFilePath;
 	bool mSomeProjectOpened;
 	VersionsConverterManager mVersionsConverter;
+	SystemEvents *mSystemEvents;
 };
 
 }

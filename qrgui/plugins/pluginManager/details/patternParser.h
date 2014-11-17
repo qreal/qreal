@@ -5,7 +5,7 @@
 
 #include <qrkernel/ids.h>
 
-#include "plugins/pluginManager/pattern.h"
+#include "qrgui/plugins/pluginManager/pattern.h"
 
 namespace qReal {
 class EditorManager;

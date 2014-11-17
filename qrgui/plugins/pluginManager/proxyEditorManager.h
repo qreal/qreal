@@ -12,8 +12,8 @@
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
 
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "plugins/editorPluginInterface/editorInterface.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
 
 namespace qReal {
 

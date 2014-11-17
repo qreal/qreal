@@ -5,6 +5,8 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QPushButton>
 
+#include <qrgui/editor/sceneCustomizer.h>
+#include <qrgui/controller/controller.h>
 #include "../model/diffModel.h"
 #include "diffView.h"
 #include "detailsWidget/diffDetailsWidget.h"
@@ -17,7 +19,7 @@ class DiffWindow : public QWidget
 	Q_OBJECT
 
 public:
-	DiffWindow(qReal::MainWindow *mainWindow, DiffModel *diffModel, bool compactMode, QWidget *parent = 0);
+	DiffWindow(DiffModel *diffModel, bool compactMode, QWidget *parent = 0);
 	~DiffWindow();
 	details::DiffView *getNewModel();
 
@@ -39,8 +41,10 @@ private:
 	details::DiffView *mOldView;
 	details::DiffView *mNewView;
 	details::DiffDetailsWidget *mDiffDetailsWidget;
-	MainWindow *mMainWindow;
+	QWidget *mMainWindow;
 	QLabel *mDetailsLabel;
+	SceneCustomizer *mSceneCustomizer;
+	Controller *mController;
 	bool mShowDetails;
 	bool mCompactMode;
 };

@@ -6,9 +6,9 @@
 
 #include <qrrepo/repoApi.h>
 
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "models/details/modelsImplementation/graphicalPartModelItem.h"
-#include "models/details/modelsImplementation/modelIndexesInterface.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/models/details/modelsImplementation/graphicalPartModelItem.h"
+#include "qrgui/models/details/modelsImplementation/modelIndexesInterface.h"
 
 namespace qReal {
 namespace models {

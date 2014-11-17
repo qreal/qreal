@@ -22,6 +22,8 @@ signals:
 	void newCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo);
 	void diagramClosed(qReal::Id const &diagram);
 	void codeTabClosed(QFileInfo const &fileInfo);
+	void indefiniteTabClosed(QWidget *widget);
+	void projectManagerSaveComplete();
 };
 
 }

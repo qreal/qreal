@@ -3,6 +3,7 @@
 #include "../mainwindow/mainWindow.h"
 #include "visualDiff/diffPluginWrapper.h"
 #include "../../qrutils/fileSystemUtils.h"
+#include <QtWidgets/QApplication>
 #include <QDebug>
 
 using namespace qReal;
@@ -32,9 +33,8 @@ void VersioningPluginsManager::prepareWorkingCopy()
 	mRepoApi->prepareWorkingCopy(tempFolder());
 }
 
-void VersioningPluginsManager::initFromToolPlugins(
-		QListIterator<ToolPluginInterface *> iterator
-		, MainWindow *mainWindow)
+void VersioningPluginsManager::initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
+		, EditorManagerInterface *editorManager, QWidget *parent)
 {
 	while (iterator.hasNext()) {
 		ToolPluginInterface *toolPlugin = iterator.next();
@@ -63,11 +63,11 @@ void VersioningPluginsManager::initFromToolPlugins(
 		}
 		DiffPluginBase *diffPlugin =
 				dynamic_cast<DiffPluginBase *>(toolPlugin);
-		// TODO: new diffPlugin for every versioning plugin
+		/// @todo: new diffPlugin for every versioning plugin
 		if (diffPlugin) {
 			mDiffPlugin = diffPlugin;
 			mDiffPlugin->setHandler(new versioning::DiffPluginWrapper(mDiffPlugin, mRepoApi
-					, this, mainWindow, &mainWindow->editorManager()));
+					, this, parent, editorManager));
 		}
 	}
 	for (int i = 0; i < mPlugins.length(); i++){
@@ -246,7 +246,9 @@ void VersioningPluginsManager::onWorkingCopyDownloaded(const bool success
 
 void VersioningPluginsManager::onWorkingCopyUpdated(const bool success)
 {
-	mProjectManager->reload();
+	QString currentAdress = mProjectManager->saveFilePath();
+	mProjectManager->close();
+	mProjectManager->open(currentAdress);
 	emit workingCopyUpdated(success);
 }
 

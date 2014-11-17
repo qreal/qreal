@@ -1,7 +1,7 @@
 #pragma once
 
-#include "controller/commands/abstractCommand.h"
-#include "models/commands/createRemoveCommandImplementation.h"
+#include "qrgui/controller/commands/abstractCommand.h"
+#include "qrgui/models/commands/createRemoveCommandImplementation.h"
 
 namespace qReal {
 namespace commands {

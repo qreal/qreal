@@ -1,8 +1,8 @@
 #pragma once
 
-#include "models/graphicalModelAssistApi.h"
-#include "editor/ports/statLine.h"
-#include "editor/ports/statPoint.h"
+#include "qrgui/models/graphicalModelAssistApi.h"
+#include "qrgui/editor/ports/statLine.h"
+#include "qrgui/editor/ports/statPoint.h"
 
 // Useful information:
 // In this class port ID represents by qreal type.

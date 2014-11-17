@@ -53,7 +53,7 @@ void GitPlugin::init(qReal::PluginConfigurator const &configurator)
 	mViewInteraction->init(configurator);
 }
 
-QPair<QString, PreferencesPage *> GitPlugin::preferencesPage()
+QPair<QString, qReal::gui::PreferencesPage *> GitPlugin::preferencesPage()
 {
 	return mViewInteraction->preferencesPage();
 }
@@ -207,10 +207,10 @@ void GitPlugin::setVersion(QString hash, bool const &quiet)
 	invokeOperation(args, false, QString(), false, true, QString(), QString(), !quiet);
 }
 
-void GitPlugin::setDiffViewerInterface(DiffPluginInterface *diffInterface)
-{
-	mDiffInterface = diffInterface;
-}
+//void GitPlugin::setDiffViewerInterface(DiffPluginInterface *diffInterface)
+//{
+//	mDiffInterface = diffInterface;
+//}
 
 bool GitPlugin::clientExist()
 {
@@ -533,15 +533,15 @@ void GitPlugin::onResetComplete(const bool result, const bool quiet)
 
 void GitPlugin::showDiff(QString oldHash, QString newHash, const QString &targetProject, QWidget *widget, bool const &compactMode)
 {
-	mDiffInterface->showDiff(oldHash, newHash, targetProject, widget, compactMode);
+//	mDiffInterface->showDiff(oldHash, newHash, targetProject, widget, compactMode);
 }
 
 void GitPlugin::showDiff(QString oldhash, const QString &targetProject, QWidget *widget, const bool &compactMode)
 {
-	mDiffInterface->showDiff(oldhash, targetProject, widget, compactMode);
+//	mDiffInterface->showDiff(oldhash, targetProject, widget, compactMode);
 }
 
 void GitPlugin::showDiff(const QString &targetProject, QWidget *widget, const bool &compactMode)
 {
-	mDiffInterface->showDiff(targetProject, widget, compactMode);
+//	mDiffInterface->showDiff(targetProject, widget, compactMode);
 }

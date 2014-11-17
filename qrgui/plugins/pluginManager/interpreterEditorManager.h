@@ -14,8 +14,8 @@
 #include <qrrepo/logicalRepoApi.h>
 #include <qrrepo/repoApi.h>
 
-#include "plugins/editorPluginInterface/editorInterface.h"
-#include "plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 
 #include "interpretedPluginManager.h"
 

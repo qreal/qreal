@@ -6,7 +6,7 @@
 
 #include <qrkernel/ids.h>
 
-#include "models/models.h"
+#include "qrgui/models/models.h"
 
 namespace Ui
 {

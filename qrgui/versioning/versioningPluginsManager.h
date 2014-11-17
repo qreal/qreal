@@ -1,19 +1,19 @@
 #pragma once
 
 #include "../../qrutils/versioningUtils/briefVersioningInterface.h"
-#include "../pluginManager/toolPluginManager.h"
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/pluginInterface.h>
 #include "versioningPluginInterface.h"
 #include "../models/models.h"
 #include "../mainwindow/projectManager/projectManager.h"
+#include "qrgui/versioning/versioningPluginsManagerDeclSpec.h"
 
 namespace qReal
 {
 
-class MainWindow;
-
 class DiffPluginBase;
 
-class VersioningPluginsManager
+class /*QRGUI_VERSIONING_PLUGINS_MANAGER_EXPORT*/ VersioningPluginsManager
 		: public BriefVersioningInterface
 		, public qrRepo::WorkingCopyInspectionInterface
 {
@@ -22,10 +22,10 @@ class VersioningPluginsManager
 public:
 	/// Inits plugin list using loaded by plugin manager ones
 	VersioningPluginsManager(qrRepo::RepoControlInterface *repoApi
-		, ErrorReporterInterface *errorReporter, ProjectManager * projectManager); // MainWindow used till refactoring
+		, ErrorReporterInterface *errorReporter, ProjectManager * projectManager);
 
 	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
-			, MainWindow *mainWindow);
+			, EditorManagerInterface *editorManager, QWidget *parent);
 
 	BriefVersioningInterface *activeClient(const QString &workingDir);
 

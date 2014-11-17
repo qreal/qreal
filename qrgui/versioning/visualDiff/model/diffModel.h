@@ -12,8 +12,8 @@ public:
 	DiffModel(qReal::models::Models *oldModel, qReal::models::Models *newModel);
 
 	details::Difference *difference(qReal::Id const &id) const;
-	qReal::models::Models *oldModel() const;
-	qReal::models::Models *newModel() const;
+	qReal::models::Models *oldModel();
+	qReal::models::Models *newModel();
 	qReal::IdList oldGraphicalElements() const;
 	qReal::IdList newGraphicalElements() const;
 	qReal::Id logicalId(qReal::Id const &id) const;

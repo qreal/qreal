@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/editorPluginInterface/listenerApiInterface.h"
+#include "qrgui/plugins/editorPluginInterface/listenerApiInterface.h"
 
 namespace qReal {
 

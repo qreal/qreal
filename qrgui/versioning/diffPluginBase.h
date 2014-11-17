@@ -2,7 +2,8 @@
 
 #include "diffPluginInterface.h"
 #include "../../qrutils/versioningUtils/briefVersioningInterface.h"
-#include "../mainwindow/mainWindow.h"
+#include "qrgui/versioning/versioningPluginsManagerDeclSpec.h"
+
 
 namespace qReal
 {

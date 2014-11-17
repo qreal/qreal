@@ -7,8 +7,9 @@
 using namespace git;
 
 TransparentMode::TransparentMode(GitPlugin *plugin
-								 , ProjectManagementInterface *projectManager
-								 , gui::MainWindowInterpretersInterface *mainWindowIface, SystemEventsInterface *systemInterface):
+								 , qReal::ProjectManagementInterface *projectManager
+								 , qReal::gui::MainWindowInterpretersInterface *mainWindowIface
+								 , qReal::SystemEvents *systemInterface):
 	mPlugin(plugin)
 	, mProjectManager(projectManager)
 	, mMainWindowIface(mainWindowIface)
@@ -24,10 +25,10 @@ void TransparentMode::openChangeVersionTab()
 	if (!tabIsReady){
 		init();
 	}
-	isFullScreen = mMainWindowIface->isFullScreen();
-	if (!isFullScreen){
-		mMainWindowIface->makeFullScreen(true);
-	}
+//	isFullScreen = mMainWindowIface->isFullScreen();
+//	if (!isFullScreen){
+//		mMainWindowIface->makeFullScreen(true);
+//	}
 	getAndUpdateLog();
 	mCompactWidget->setVisible(true);
 	mMainWindowIface->openTab(mCompactWidget, "Change Version");
@@ -59,7 +60,7 @@ void TransparentMode::removeBrokenPointers(QWidget *widget)
 	if (widget == mCompactWidget)
 	{
 		tabIsReady = false;
-		mMainWindowIface->makeFullScreen(isFullScreen);
+//		mMainWindowIface->makeFullScreen(isFullScreen);
 	}
 }
 
@@ -85,7 +86,7 @@ void TransparentMode::listLog()
 {
 	if (mPlugin->isMyWorkingCopy(QString(), true, true))
 	{
-		if (mProjectManager->getUnsavedIndicator()){
+		if (/*mProjectManager->getUnsavedIndicator()*/true){
 			mProjectManager->save();
 		} else {
 			getAndUpdateLog();
@@ -98,7 +99,7 @@ void TransparentMode::listLog()
 void TransparentMode::setVersion(QString hash)
 {
 	mPlugin->setVersion(hash, true);
-	mProjectManager->reload();
+//	mProjectManager->reload();
 }
 
 void TransparentMode::saveVersion()

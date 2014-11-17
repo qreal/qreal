@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "../../qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
+#include "../../qrgui/plugins/toolPluginInterface/pluginInterface.h"
 #include "../../qrgui/plugins/toolPluginInterface/pluginConfigurator.h"
 #include "gui/pushDialog.h"
 #include "gui/pullDialog.h"
@@ -31,7 +31,7 @@ public:
 	explicit ViewInteraction(GitPlugin *pluginInstance);
 
 	QList<qReal::ActionInfo> actions() const;
-	QPair<QString, PreferencesPage *> preferencesPage() const;
+	QPair<QString, qReal::gui::PreferencesPage *> preferencesPage() const;
 	void init(qReal::PluginConfigurator const &configurator);
 
 public slots:
@@ -79,7 +79,7 @@ private:
 	ui::PreferencesVersioningPage *mPreferencesPage;
 	QList<QWidget *> mDiffWidgets;
 	TransparentMode *mCompactMode;
-	qReal::SystemEventsInterface *mSystemEvents;
+	qReal::SystemEvents *mSystemEvents;
 };
 }
 }

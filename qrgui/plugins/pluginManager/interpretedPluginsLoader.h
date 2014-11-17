@@ -1,6 +1,6 @@
 #pragma once
 
-#include "plugins/toolPluginInterface/pluginConfigurator.h"
+#include "qrgui/plugins/toolPluginInterface/pluginConfigurator.h"
 #include "interpreterEditorManager.h"
 
 namespace qReal {

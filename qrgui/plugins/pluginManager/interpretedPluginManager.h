@@ -1,6 +1,6 @@
 #pragma once
 
-#include "plugins/interpretedPluginInterface/interpretedPluginInterface.h"
+#include "qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h"
 
 #include <qrutils/pluginManagers/pluginManager.h>
 

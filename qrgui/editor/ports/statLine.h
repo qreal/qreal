@@ -1,6 +1,6 @@
 #pragma once
 
-#include "plugins/editorPluginInterface/portHelpers.h"
+#include "qrgui/plugins/editorPluginInterface/portHelpers.h"
 
 /** @brief line port description */
 class StatLine : public PortInterface

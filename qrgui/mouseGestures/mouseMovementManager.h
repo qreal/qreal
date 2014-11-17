@@ -11,7 +11,7 @@
 #include "private/mixedgesturesmanager.h"
 #include "private/geometricForms.h"
 
-#include "plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 namespace gestures {

@@ -3,22 +3,30 @@
 
 using namespace versioning;
 using namespace versioning::details;
+using namespace qReal;
 
-DiffView::DiffView(qReal::MainWindow *mainWindow, DiffModel *diffModel, bool isOldModel, QWidget *parent)
-	: EditorView(new DiffScene, parent)
-	, mDiffModel(diffModel), mIsOldModel(isOldModel)
+DiffView::DiffView(QWidget *parent, DiffModel *diffModel, bool isOldModel, Controller &controller
+	, const SceneCustomizer &customizer, const Id &rootId)
+	: EditorView( *(isOldModel ? diffModel->oldModel() : diffModel->newModel())
+		, controller
+		, customizer
+		, rootId
+		, parent)
+	, mScene(*(isOldModel ? diffModel->oldModel() : diffModel->newModel()), controller, customizer, rootId, this)
+	, mMVIface(this, &mScene)
+	, mDiffModel(diffModel)
+	, mIsOldModel(isOldModel)
 	, mModel(mIsOldModel ? mDiffModel->oldModel() : mDiffModel->newModel())
 	, mDetailsWidget(NULL)
 {
 	this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
-	setMainWindow(mainWindow);
+	setScene(&mScene);
+	mMVIface.configure(mModel->graphicalModelAssistApi(), mModel->logicalModelAssistApi(), mModel->exploser());
+	mMVIface.setModel(mModel->graphicalModel());
+	mMVIface.setLogicalModel(mModel->logicalModel());
+	mMVIface.setRootIndex(mModel->graphicalModel()->index(0,0));
 
-	mvIface()->setAssistApi(mModel->graphicalModelAssistApi(), mModel->logicalModelAssistApi());
-	mvIface()->setModel(mModel->graphicalModel());
-	mvIface()->setLogicalModel(mModel->logicalModel());
-	mvIface()->setRootIndex(mModel->graphicalModel()->index(0,0));
-
-	diffScene()->initForDiff();
+	mScene.initForDiff();
 	highlightElements();
 }
 
@@ -122,11 +130,6 @@ void DiffView::onClickCancel()
 	}
 }
 
-DiffScene *DiffView::diffScene()
-{
-	return dynamic_cast<DiffScene *>(mvIface()->scene());
-}
-
 void DiffView::highlightElements()
 {
 	qReal::IdList const ids = (mIsOldModel) ? mDiffModel->oldGraphicalElements() : mDiffModel->newGraphicalElements();
@@ -141,13 +144,13 @@ void DiffView::highlight(const qReal::Id &id)
 	if (difference) {
 		DiffState const state = (PurelyGraphical == difference->elementType()) ?
 				difference->graphicalDifference()->state() : difference->logicalDifference()->state();
-		diffScene()->highlight(id, state);
+		mScene.highlight(id, state);
 	}
 }
 
 void DiffView::hintItem(const qReal::Id &graphicalId)
 {
-	diffScene()->hint(graphicalId);
+	mScene.hint(graphicalId);
 }
 
 void DiffView::unhintItem(const qReal::Id &graphicalId)

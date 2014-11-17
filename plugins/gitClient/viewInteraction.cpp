@@ -87,9 +87,9 @@ QList<qReal::ActionInfo> ViewInteraction::actions() const
 	return mMenu;
 }
 
-QPair<QString, PreferencesPage *> ViewInteraction::preferencesPage() const
+QPair<QString, qReal::gui::PreferencesPage *> ViewInteraction::preferencesPage() const
 {
-	return QPair<QString, PreferencesPage *>("Git", mPreferencesPage);
+	return QPair<QString, qReal::gui::PreferencesPage *>("Git", mPreferencesPage);
 }
 
 void ViewInteraction::init(const qReal::PluginConfigurator &configurator)
@@ -310,28 +310,28 @@ void ViewInteraction::versionsClicked()
 
 void ViewInteraction::diffClicked()
 {
-	mMainWindowIface->windowWidget()->setEnabled(false);
-	QWidget *widget = makeDiffTab();
-	mPlugin->showDiff(mProjectManager->saveFilePath(), widget, false);
-	mMainWindowIface->windowWidget()->setEnabled(true);
+//	mMainWindowIface->windowWidget()->setEnabled(false);
+//	QWidget *widget = makeDiffTab();
+//	mPlugin->showDiff(mProjectManager->saveFilePath(), widget, false);
+//	mMainWindowIface->windowWidget()->setEnabled(true);
 }
 
 void ViewInteraction::diffBetweenClicked()
 {
-	mMainWindowIface->windowWidget()->setEnabled(false);
-	ui::DiffBetweenDialog *dialog = new ui::DiffBetweenDialog(mMainWindowIface->windowWidget());
-	if (QDialog::Accepted != dialog->exec()) {
-		return;
-	}
-	QString const newHash = dialog->firstHash();
-	QString const oldHash = dialog->secondHash();
-	QWidget *widget = makeDiffTab();
-	if (oldHash.isEmpty()){
-		mPlugin->showDiff(newHash, mProjectManager->saveFilePath(), widget, false);
-	} else{
-		mPlugin->showDiff(oldHash, newHash, mProjectManager->saveFilePath(), widget, false);
-	}
-	mMainWindowIface->windowWidget()->setEnabled(true);
+//	mMainWindowIface->windowWidget()->setEnabled(false);
+//	ui::DiffBetweenDialog *dialog = new ui::DiffBetweenDialog(mMainWindowIface->windowWidget());
+//	if (QDialog::Accepted != dialog->exec()) {
+//		return;
+//	}
+//	QString const newHash = dialog->firstHash();
+//	QString const oldHash = dialog->secondHash();
+//	QWidget *widget = makeDiffTab();
+//	if (oldHash.isEmpty()){
+//		mPlugin->showDiff(newHash, mProjectManager->saveFilePath(), widget, false);
+//	} else{
+//		mPlugin->showDiff(oldHash, newHash, mProjectManager->saveFilePath(), widget, false);
+//	}
+//	mMainWindowIface->windowWidget()->setEnabled(true);
 }
 
 void ViewInteraction::modeChanged(bool compactMode)
@@ -347,32 +347,32 @@ void ViewInteraction::modeChanged(bool compactMode)
 
 void ViewInteraction::removeClosedTab(QWidget *widget)
 {
-	if (mDiffWidgets.contains(widget)){
-		mDiffWidgets.removeOne(widget);
-		if (mDiffWidgets.isEmpty()){
-			mMainWindowIface->makeFullScreen(isFullScreen);
-		}
-	}
+//	if (mDiffWidgets.contains(widget)){
+//		mDiffWidgets.removeOne(widget);
+//		if (mDiffWidgets.isEmpty()){
+//			mMainWindowIface->makeFullScreen(isFullScreen);
+//		}
+//	}
 }
 
 void ViewInteraction::reopenWithoutSavings()
 {
-	mProjectManager->reload();
+//	mProjectManager->reload();
 }
 
 QWidget *ViewInteraction::makeDiffTab()
 {
-	isFullScreen = mMainWindowIface->isFullScreen();
-	if (!isFullScreen){
-		mMainWindowIface->makeFullScreen(true);
-	}
-	mMainWindowIface->makeFullScreen();
-	QWidget *widget = new QWidget();
-	QGridLayout *mLayout = new QGridLayout(widget);
-	mLayout->setMargin(0);
-	widget->setLayout(mLayout);
-	mMainWindowIface->openTab(widget, "diff");
-	mDiffWidgets << widget;
-	connect(mSystemEvents, SIGNAL(indefiniteTabClosed(QWidget*)), this, SLOT(removeClosedTab(QWidget*)));
-	return widget;
+//	isFullScreen = mMainWindowIface->isFullScreen();
+//	if (!isFullScreen){
+//		mMainWindowIface->makeFullScreen(true);
+//	}
+//	mMainWindowIface->makeFullScreen();
+//	QWidget *widget = new QWidget();
+//	QGridLayout *mLayout = new QGridLayout(widget);
+//	mLayout->setMargin(0);
+//	widget->setLayout(mLayout);
+//	mMainWindowIface->openTab(widget, "diff");
+//	mDiffWidgets << widget;
+//	connect(mSystemEvents, SIGNAL(indefiniteTabClosed(QWidget*)), this, SLOT(removeClosedTab(QWidget*)));
+//	return widget;
 }

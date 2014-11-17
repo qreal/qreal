@@ -81,7 +81,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	, mPreferencesDialog(this)
 	, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 	, mRecentProjectsMapper(new QSignalMapper())
-	, mProjectManager(new ProjectManager(this, mTextManager))
+	, mProjectManager(new ProjectManager(this, mTextManager, mSystemEvents))
 	, mStartWidget(nullptr)
 	, mSceneCustomizer(new SceneCustomizer)
 	, mInitialFileToOpen(fileToOpen)
@@ -630,6 +630,18 @@ void MainWindow::closeTab(QWidget *tab)
 	mUi->tabs->removeTab(mUi->tabs->indexOf(tab));
 }
 
+void MainWindow::makeFullScreen(bool const &fullScreen)
+{
+	if (mIsFullscreen != fullScreen){
+		this->fullscreen();
+	}
+}
+
+bool MainWindow::isFullScreen()
+{
+	return mIsFullscreen;
+}
+
 QMap<QString, gui::PreferencesPage *> MainWindow::preferencesPages() const
 {
 	QMap<QString, PreferencesPage *> result;
@@ -790,7 +802,7 @@ void MainWindow::closeCurrentTab()
 
 void MainWindow::closeTab(int index)
 {
-	QWidget * const widget = mUi->tabs->widget(index);
+	QWidget *widget = mUi->tabs->widget(index);
 	EditorView * const diagram = dynamic_cast<EditorView *>(widget);
 	QScintillaTextEdit * const possibleCodeTab = dynamic_cast<QScintillaTextEdit *>(widget);
 
@@ -803,6 +815,7 @@ void MainWindow::closeTab(int index)
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {
 		emit mSystemEvents->codeTabClosed(QFileInfo(path));
 	} else {
+		emit mSystemEvents->indefiniteTabClosed(widget);
 		// TODO: process other tabs (for example, start tab)
 	}
 
@@ -1735,6 +1748,10 @@ void MainWindow::initToolPlugins()
 	mUi->paletteTree->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());
+
+	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter, mProjectManager);
+	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins())
+			,&editorManager(), this);
 }
 
 void MainWindow::initInterpretedPlugins()

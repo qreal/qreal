@@ -4,6 +4,8 @@ DESTDIR = $$PWD/../../../bin
 
 TARGET = qrgui-tool-plugin-interface
 
+QT += widgets
+
 LIBS += -L$$PWD/../../../bin -lqrkernel
 
 DEFINES += QRGUI_TOOL_PLUGIN_INTERFACE_LIBRARY

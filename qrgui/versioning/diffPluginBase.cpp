@@ -1,5 +1,4 @@
 #include "diffPluginBase.h"
-#include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
 

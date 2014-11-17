@@ -4,6 +4,7 @@
 #include "../../qrgui/plugins/toolPluginInterface/customizer.h"
 #include "viewInteraction.h"
 
+
 namespace git
 {
 
@@ -24,7 +25,7 @@ public:
 	virtual void updateSettings();
 	virtual QList<qReal::ActionInfo> actions();
 	virtual void init(qReal::PluginConfigurator const &configurator);
-	virtual QPair<QString, PreferencesPage *> preferencesPage();
+	virtual QPair<QString, qReal::gui::PreferencesPage *> preferencesPage();
 
 	// Working copy inspection
 	virtual bool onFileAdded(QString const &filePath, QString const &workingDir);
@@ -50,7 +51,7 @@ public:
 
 	virtual QString getLog(QString const &format = QString(), bool const &quiet = false);
 	virtual void setVersion(QString hash, bool const &quiet = false);
-	void setDiffViewerInterface(DiffPluginInterface *diffInterface);
+//	void setDiffViewerInterface(DiffPluginInterface *diffInterface);
 
 public slots:
 	void doInit(QString const &targetFolder = QString(), bool const &quiet = false);
@@ -119,6 +120,6 @@ private:
 
 	details::ViewInteraction *mViewInteraction;
 	QString mTempDir;
-	DiffPluginInterface *mDiffInterface;
+//	DiffPluginInterface *mDiffInterface;
 };
 }

@@ -19,20 +19,23 @@
 #include "filterObject.h"
 #include "startWidget/startWidget.h"
 
-#include "plugins/pluginManager/editorManagerInterface.h"
-#include "plugins/pluginManager/editorManager.h"
-#include "plugins/pluginManager/interpreterEditorManager.h"
-#include "plugins/pluginManager/proxyEditorManager.h"
-#include "plugins/pluginManager/toolPluginManager.h"
-#include "plugins/pluginManager/interpretedPluginsLoader.h"
+#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
+#include "qrgui/plugins/pluginManager/editorManager.h"
+#include "qrgui/plugins/pluginManager/interpreterEditorManager.h"
+#include "qrgui/plugins/pluginManager/proxyEditorManager.h"
+#include "qrgui/plugins/pluginManager/toolPluginManager.h"
+#include "qrgui/plugins/pluginManager/interpretedPluginsLoader.h"
 
-#include "editor/propertyEditorView.h"
-#include "models/propertyEditorModel.h"
-#include "controller/controller.h"
-#include "plugins/toolPluginInterface/systemEvents.h"
+#include "qrgui/editor/propertyEditorView.h"
+#include "qrgui/models/propertyEditorModel.h"
+#include "qrgui/controller/controller.h"
+#include "qrgui/plugins/toolPluginInterface/systemEvents.h"
 
-#include "preferencesDialog/preferencesDialog.h"
-#include "dialogs/findReplaceDialog.h"
+#include "qrgui/preferencesDialog/preferencesDialog.h"
+#include "qrgui/dialogs/findReplaceDialog.h"
+
+#include "qrgui/versioning/versioningPluginInterface.h"
+#include "qrgui/versioning/versioningPluginsManager.h"
 
 class QGraphicsView;
 
@@ -119,6 +122,8 @@ public:
 	virtual QWidget *currentTab();
 	virtual void openTab(QWidget *tab, QString const &title);
 	virtual void closeTab(QWidget *tab);
+	virtual void makeFullScreen(bool const &fullScreen = true);
+	virtual bool isFullScreen();
 
 	QMap<QString, gui::PreferencesPage *> preferencesPages() const override;
 
@@ -354,6 +359,7 @@ private:
 	Controller *mController;
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
+	VersioningPluginsManager *mVersioningManager;
 	InterpretedPluginsLoader mInterpretedPluginLoader;
 	PropertyEditorModel mPropertyModel;
 	SystemEvents *mSystemEvents;

@@ -2,7 +2,8 @@
 
 #include <QtGui/QTouchEvent>
 
-#include "thirdparty/qsKineticScroller.h"
+#include "qrgui/thirdparty/qsKineticScroller.h"
+#include "qrgui/editor/editorDeclSpec.h"
 
 namespace qReal {
 class EditorView;
@@ -10,7 +11,7 @@ class EditorView;
 namespace view {
 namespace details {
 
-class TouchSupportManager : public QObject
+class QRGUI_EDITOR_EXPORT TouchSupportManager : public QObject
 {
 	Q_OBJECT
 

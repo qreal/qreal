@@ -6,7 +6,7 @@
 #include <QtWidgets/QGridLayout>
 
 #include <QScreen>
-#include "../../../../qrkernel/ids.h"
+#include "qrkernel/ids.h"
 
 namespace versioning
 {

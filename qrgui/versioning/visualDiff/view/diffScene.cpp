@@ -10,8 +10,9 @@
 using namespace versioning;
 using namespace versioning::details;
 
-DiffScene::DiffScene(QObject *parent)
-	: EditorViewScene(parent)
+DiffScene::DiffScene(const models::Models &models, Controller &controller, const SceneCustomizer &customizer
+	, const Id &rootId, QObject *parent)
+	: EditorViewScene(models, controller, customizer, rootId, parent)
 {
 	mAddedRemovedColor = SettingsManager::value("diffAddedRemovedColor"
 		, ui::DiffColorPreferencesDialog::defaultAddedRemovedColor()).value<QColor>();

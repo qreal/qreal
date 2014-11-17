@@ -2,9 +2,9 @@
 
 #include <QtCore/QObject>
 
-#include "editor/nodeElement.h"
-#include "editor/edgeElement.h"
-#include "editor/serializationData.h"
+#include "qrgui/editor/nodeElement.h"
+#include "qrgui/editor/edgeElement.h"
+#include "qrgui/editor/serializationData.h"
 
 namespace qReal {
 

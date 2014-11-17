@@ -5,10 +5,10 @@ using namespace versioning;
 DiffPluginWrapper::DiffPluginWrapper(DiffPluginBase *plugin
 		, qrRepo::WorkingCopyManagementInterface *workingCopyManager
 		, BriefVersioningInterface *vcs
-		, MainWindow *mainWindow
+		, QWidget *parent
 		, EditorManagerInterface *manager)
 	: mWorkingCopyManager(workingCopyManager)
-	, mVcs(vcs), mMainWindow(mainWindow), mEditorManager(manager)
+	, mVcs(vcs), mMainWindow(parent), mEditorManager(manager)
 	, mErrorReporter(plugin->errorReporter())
 	, mProjectManager(plugin->projectManager())
 	, mLoader(new details::ModelLoader(mVcs, mErrorReporter
@@ -46,7 +46,7 @@ void DiffPluginWrapper::onModelLoaded(DiffModel *model)
 	if (!model) {
 		return;
 	}
-	DiffWindow *diffWindow = new DiffWindow(mMainWindow, model, mCompactMode, mMainWindow);
+	DiffWindow *diffWindow = new DiffWindow(model, mCompactMode, mMainWindow);
 	mParentWidget->layout()->addWidget(diffWindow);
 }
 
