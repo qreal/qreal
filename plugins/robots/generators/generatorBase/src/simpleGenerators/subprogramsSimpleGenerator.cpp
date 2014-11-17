@@ -15,9 +15,3 @@ SubprogramsSimpleGenerator::SubprogramsSimpleGenerator(qrRepo::RepoApi const &re
 			, parent)
 {
 }
-
-QString SubprogramsSimpleGenerator::generate()
-{
-	mCustomizer.factory()->subprograms()->usageFound(mId);
-	return BindingGenerator::generate();
-}
