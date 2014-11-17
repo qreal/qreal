@@ -156,7 +156,10 @@ void LineItem::reshapeBeginWithGrid(int indexGrid)
 
 void LineItem::alignTheWall(int indexGrid)
 {
-	countCellNumbCoordinates(indexGrid);
+	if (mX1 != mX2 && mY1 != mY2) {
+		countCellNumbCoordinates(indexGrid);
+	}
+
 	setBeginCoordinatesWithGrid(indexGrid);
 	setEndCoordinatesWithGrid(indexGrid);
 }
