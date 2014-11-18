@@ -8,6 +8,7 @@
 #include "parts/display.h"
 #include "parts/speaker.h"
 #include "parts/motor.h"
+#include "parts/touchSensor.h"
 
 using namespace ev3KitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
@@ -77,6 +78,10 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 	if (deviceInfo.isA(motorInfo())) {
 		return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
 	}
+
+    if (deviceInfo.isA(touchSensorInfo())) {
+        return new parts::TouchSensor(touchSensorInfo(), port, *mRobotCommunicator);
+    }
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 }

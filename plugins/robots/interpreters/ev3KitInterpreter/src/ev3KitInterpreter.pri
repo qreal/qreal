@@ -34,6 +34,8 @@ HEADERS += \
 	$$PWD/blocks/details/drawRectBlock.h \
 	$$PWD/blocks/details/ev3EnginesBackwardBlock.h \
 	$$PWD/blocks/details/ev3EnginesForwardBlock.h \
+    $$PWD/robotModel/real/parts/ev3InputDevice.h \
+    $$PWD/robotModel/real/parts/touchSensor.h
 
 
 SOURCES += \
@@ -57,6 +59,8 @@ SOURCES += \
 	$$PWD/blocks/details/drawRectBlock.cpp \
 	$$PWD/blocks/details/ev3EnginesBackwardBlock.cpp \
 	$$PWD/blocks/details/ev3EnginesForwardBlock.cpp \
+    $$PWD/robotModel/real/parts/ev3InputDevice.cpp \
+    $$PWD/robotModel/real/parts/touchSensor.cpp
 
 
 FORMS += \
