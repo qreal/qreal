@@ -15,12 +15,15 @@ GotoControlFlowGenerator::GotoControlFlowGenerator(
 {
 }
 
-ControlFlowGeneratorBase *GotoControlFlowGenerator::cloneFor(qReal::Id const &diagramId)
+ControlFlowGeneratorBase *GotoControlFlowGenerator::cloneFor(qReal::Id const &diagramId, bool cloneForNewDiagram)
 {
 	GotoControlFlowGenerator * const copy = new GotoControlFlowGenerator(mRepo
 			, mErrorReporter, mCustomizer, diagramId, parent(), false);
-	delete copy->mValidator;
-	copy->mValidator = mValidator;
+	if (!cloneForNewDiagram) {
+		delete copy->mValidator;
+		copy->mValidator = mValidator;
+	}
+
 	return copy;
 }
 
@@ -30,6 +33,7 @@ void GotoControlFlowGenerator::beforeSearch()
 
 void GotoControlFlowGenerator::visitRegular(Id const &id, QList<LinkInfo> const &links)
 {
+	ControlFlowGeneratorBase::visitRegular(id, links);
 	SimpleNode * const thisNode = static_cast<SimpleNode *>(mSemanticTree->findNodeFor(id));
 	SemanticNode *nextNode = nullptr;
 	if (mSemanticTree->findNodeFor(links[0].target)) {

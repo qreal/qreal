@@ -33,6 +33,7 @@
         <file>templates/ledColors/red.t</file>
         <file>templates/ledColors/green.t</file>
         <file>templates/ledColors/off.t</file>
+        <file>templates/ledColors/orange.t</file>
         <file>templates/signs/equals.t</file>
         <file>templates/signs/greater.t</file>
         <file>templates/signs/less.t</file>

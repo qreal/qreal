@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtNetwork/QTcpSocket>
+#include <QtCore/QTimer>
 #include "utilsDeclSpec.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
@@ -14,8 +15,9 @@ class ROBOTS_UTILS_EXPORT TcpRobotCommunicator : public QObject
 	Q_OBJECT
 
 public:
-	explicit TcpRobotCommunicator(QString const &settings);
-
+	/// Constructor.
+	/// @param serverIpSettingsKey - where to find server ip setting in a registry.
+	explicit TcpRobotCommunicator(QString const &serverIpSettingsKey);
 	~TcpRobotCommunicator();
 
 	/// Reads generated program from a file and uploads it to a robot using "file" command.
@@ -25,7 +27,8 @@ public:
 	bool runProgram(QString const &programName);
 
 	/// Sends a script to be executed directly, without a need for a file.
-	bool runDirectCommand(QString const &directCommand);
+	/// @param asScript - if true, the state of a robot will be reset before command evalutation.
+	bool runDirectCommand(QString const &directCommand, bool asScript = false);
 
 	/// Sends a command to remotely abort script execution and stop robot.
 	bool stopRobot();
@@ -42,10 +45,11 @@ public:
 	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
 
 signals:
-	/// Return correctness of the connection
-	void connected(bool result);
+	/// Emitted when tcp socket with robot was opened or failed to open.
+	/// @param errorString contains fail reason in that case.
+	void connected(bool result, QString const &errorString);
 
-	/// Signal of disconnection
+	/// Emitted each time when connection with robot was aborted.
 	void disconnected();
 
 	void newScalarSensorData(QString const &port, int data);
@@ -55,10 +59,17 @@ signals:
 private slots:
 	void processControlMessage(QString const &message);
 	void processTelemetryMessage(QString const &message);
+	void versionTimeOut();
 
 private:
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
 	void send(QString const &data, QTcpSocket &socket);
+
+	/// Sends version request and starts version timer
+	void versionRequest();
+
+	/// Socket that holds connection.
+	QTcpSocket mSocket;
 
 	/// Reference to error reporter.
 	qReal::ErrorReporterInterface *mErrorReporter;  // Does not have ownership.
@@ -66,7 +77,11 @@ private:
 	TcpConnectionHandler mControlConnection;
 	TcpConnectionHandler mTelemetryConnection;
 
-	QString mSettings;
+	bool mIsConnected;
+	QString const mServerIpSettingsKey;
+
+	/// Timer for version request
+	QTimer mVersionTimer;
 };
 
 }

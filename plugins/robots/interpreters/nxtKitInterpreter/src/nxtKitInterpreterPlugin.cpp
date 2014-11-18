@@ -87,10 +87,10 @@ interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defau
 	return &mTwoDRobotModel;
 }
 
-interpreterBase::AdditionalPreferences *NxtKitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> NxtKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
-	return mAdditionalPreferences;
+	return {mAdditionalPreferences};
 }
 
 QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()

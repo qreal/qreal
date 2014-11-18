@@ -140,6 +140,7 @@ bool Autosaver::checkTempFile()
 	}
 	if (QMessageBox::question(QApplication::activeWindow(), tr("Question")
 			, openTempFilePrompt()) != QMessageBox::Yes) {
+		QFile(tempFileInfo.absoluteFilePath()).remove();
 		return false;
 	}
 	return openTemp();

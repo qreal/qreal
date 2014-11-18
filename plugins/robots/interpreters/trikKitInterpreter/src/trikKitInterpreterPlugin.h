@@ -6,6 +6,9 @@
 #include <commonTwoDModel/engine/twoDModelControlInterface.h>
 
 #include "trikAdditionalPreferences.h"
+#include "trikFSharpAdditionalPreferences.h"
+#include "trikWinScpAdditionalPreferences.h"
+
 #include "blocks/trikBlocksFactory.h"
 #include "robotModel/real/realRobotModelV6.h"
 #include "robotModel/twoD/twoDRobotModel.h"
@@ -30,30 +33,24 @@ public:
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	QString kitId() const override;
-
 	QString friendlyKitName() const override;
 
 	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
+	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
 	interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
 			interpreterBase::robotModel::RobotModelInterface const *model) override;
 
-	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
-
 	// Transfers ownership.
-	interpreterBase::AdditionalPreferences *settingsWidget() override;
-
+	QList<interpreterBase::AdditionalPreferences *> settingsWidgets() override;
 	QWidget *quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model) override;
+	QString defaultSettingsFile() const override;
+	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
+	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
 
 	QList<qReal::ActionInfo> customActions() override;
-
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
-	QString defaultSettingsFile() const override;
-
-	QIcon iconForFastSelector(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;
-
-	interpreterBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
 
 private slots:
 	/// Shows or hides 2d model action depending on whether current tab is robots diagram.
@@ -69,6 +66,8 @@ private:
 	bool mOwnsBlocksFactory = true;
 
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+	TrikFSharpAdditionalPreferences *mFSharpAdditionalPreferences = nullptr;  //Transfers ownership
+	TrikWinScpAdditionalPreferences *mWinScpAdditionalPreferences = nullptr;  //Transfers ownership
 	bool mOwnsAdditionalPreferences = true;
 
 	QWidget *mIpAdressQuickConfigurer = nullptr;  // Transfers ownership
