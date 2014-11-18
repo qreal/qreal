@@ -19,6 +19,9 @@ protected:
     virtual interpreterBase::robotModel::DeviceInfo speakerInfo() const;
     virtual interpreterBase::robotModel::DeviceInfo displayInfo() const;
     virtual interpreterBase::robotModel::DeviceInfo touchSensorInfo() const;
+    virtual interpreterBase::robotModel::DeviceInfo lightSensorInfo() const;
+    virtual interpreterBase::robotModel::DeviceInfo rangeSensorInfo() const;
+    virtual interpreterBase::robotModel::DeviceInfo colorFullSensorInfo() const;
 };
 
 }

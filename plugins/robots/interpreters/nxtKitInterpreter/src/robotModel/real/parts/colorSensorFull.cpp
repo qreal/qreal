@@ -15,10 +15,10 @@ ColorSensorFull::ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &
 
 void ColorSensorFull::read()
 {
-	mImpl.read();
+    mImpl.read();
 }
 
 void ColorSensorFull::doConfiguration()
 {
-	mImpl.doConfiguration();
+    mImpl.doConfiguration();
 }

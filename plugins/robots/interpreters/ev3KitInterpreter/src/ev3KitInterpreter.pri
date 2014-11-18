@@ -35,7 +35,11 @@ HEADERS += \
 	$$PWD/blocks/details/ev3EnginesBackwardBlock.h \
 	$$PWD/blocks/details/ev3EnginesForwardBlock.h \
     $$PWD/robotModel/real/parts/ev3InputDevice.h \
-    $$PWD/robotModel/real/parts/touchSensor.h
+    $$PWD/robotModel/real/parts/touchSensor.h \
+    $$PWD/robotModel/real/parts/lightSensor.h \
+    $$PWD/robotModel/real/parts/rangeSensor.h \
+    $$PWD/robotModel/real/parts/colorSensorFull.h \
+    $$PWD/robotModel/real/parts/implementations/colorSensorImpl.h
 
 
 SOURCES += \
@@ -60,7 +64,11 @@ SOURCES += \
 	$$PWD/blocks/details/ev3EnginesBackwardBlock.cpp \
 	$$PWD/blocks/details/ev3EnginesForwardBlock.cpp \
     $$PWD/robotModel/real/parts/ev3InputDevice.cpp \
-    $$PWD/robotModel/real/parts/touchSensor.cpp
+    $$PWD/robotModel/real/parts/touchSensor.cpp \
+    $$PWD/robotModel/real/parts/lightSensor.cpp \
+    $$PWD/robotModel/real/parts/rangeSensor.cpp \
+    $$PWD/robotModel/real/parts/colorSensorFull.cpp \
+    $$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp
 
 
 FORMS += \

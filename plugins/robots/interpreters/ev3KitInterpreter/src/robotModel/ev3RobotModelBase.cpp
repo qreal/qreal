@@ -7,6 +7,9 @@
 #include <interpreterBase/robotModel/robotParts/display.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
+#include <interpreterBase/robotModel/robotParts/lightSensor.h>
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
+#include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
 
 using namespace ev3KitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
@@ -16,6 +19,9 @@ Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId, QString const &robotI
 {
     QList<DeviceInfo> const inputPortConnections = {
             touchSensorInfo()
+            , lightSensorInfo()
+            , rangeSensorInfo()
+            , colorFullSensorInfo()
     };
 
     addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
@@ -36,6 +42,9 @@ Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId, QString const &robotI
 QList<DeviceInfo> Ev3RobotModelBase::convertibleBases() const
 {
     return { DeviceInfo::create<robotParts::TouchSensor>()
+            , DeviceInfo::create<robotParts::LightSensor>()
+            , DeviceInfo::create<robotParts::RangeSensor>()
+            , DeviceInfo::create<robotParts::ColorSensorFull>()
     };
 }
 
@@ -57,4 +66,19 @@ DeviceInfo Ev3RobotModelBase::speakerInfo() const
 DeviceInfo Ev3RobotModelBase::touchSensorInfo() const
 {
     return DeviceInfo::create<robotParts::TouchSensor>();
+}
+
+DeviceInfo Ev3RobotModelBase::lightSensorInfo() const
+{
+    return DeviceInfo::create<robotParts::LightSensor>();
+}
+
+DeviceInfo Ev3RobotModelBase::rangeSensorInfo() const
+{
+    return DeviceInfo::create<robotParts::RangeSensor>();
+}
+
+DeviceInfo Ev3RobotModelBase::colorFullSensorInfo() const
+{
+    return DeviceInfo::create<robotParts::ColorSensorFull>();
 }

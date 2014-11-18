@@ -1110,6 +1110,91 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Wait for Color" name="Ev3WaitForColor" path="196, 12 : 196, 154 :  | 12, 12 : 380, 12 : 380, 154 : 12, 154 : 12, 12 : " description="Waits till the color sensor on the given port will recognize the given color.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="37" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="37" y="60" textBinded="Color"/>
+						<label x="0" y="60" text="Color:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Color" type="Color" name="Color">
+							<default>red</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Light" name="Ev3WaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Waits till the value returned by the light sensor on the given port will be greater or lower then the given in the 'Percents' parameter value (0 to 100).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Port" hard="true"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="45" y="60" textBinded="Percents"/>
+						<label x="-26" y="60" text="Percents:"/>
+						<label x="50" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Percents" type="string" name="Percents">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Sonar Distance" name="Ev3WaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or lower then the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+						<label x="50" y="60" textBinded="Distance" background="white"/>
+						<label x="-60" y="60" text="Distance (cm):"/>
+						<label x="55" y="80" textBinded="Sign" background="white"/>
+						<label x="-90" y="80" text="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Distance" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
 
 			<!-- Waiting for sensors blocks, NXT -->
 			<node name="NxtSensorBlock">
@@ -2523,6 +2608,9 @@
 			<group name="Wait">
 				<element name="Timer"/>
 				<element name="Ev3WaitForTouchSensor"/>
+				<element name="Ev3WaitForColor"/>
+				<element name="Ev3WaitForLight"/>
+				<element name="Ev3WaitForSonarDistance"/>
 				<element name="NxtWaitForTouchSensor"/>
 				<element name="NxtWaitForSonarDistance"/>
 				<element name="NxtWaitForColor"/>
