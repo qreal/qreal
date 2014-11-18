@@ -1,10 +1,13 @@
 #include "abstractItem.h"
 
 #include <QtGui/QPainter>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
+
+#include <QtCore/QDebug>
 
 using namespace graphicsUtils;
 
@@ -411,5 +414,16 @@ void AbstractItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	// item (not only robot item). In this case new selected item moves.
 	if (event->lastScreenPos() != event->screenPos()) {
 		QGraphicsItem::mouseMoveEvent(event);
+	}
+}
+
+void AbstractItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+	QMenu *menu = new QMenu();
+	QAction *removeAction = menu->addAction(QObject::tr("Remove"));
+	QAction *selectedAction = menu->exec(event->screenPos());
+	delete menu;
+	if (selectedAction == removeAction) {
+		delete this;
 	}
 }
