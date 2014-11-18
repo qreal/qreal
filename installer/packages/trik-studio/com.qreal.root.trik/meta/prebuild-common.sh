@@ -14,7 +14,7 @@ cd $PWD/../data/
 rm -rf trik-runtime-builds
 git clone --depth=0 https://github.com/qreal/trik-runtime-builds
 rm -rf winscp
-mv trik-runtime-builds/winscp $$PWD
+mv trik-runtime-builds/winscp $PWD
 mkdir -p trikRuntime
 cd trikRuntime
 tar xfvzh ../trik-runtime-builds/trikRuntime.tar.gz
