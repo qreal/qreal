@@ -23,7 +23,7 @@ document.write('\
 			<li>ТРИК\
 				<ul>\
 					<li><a href="trik-robot-setup.html">Подключение робота</a></li>\
-					<li><a href="trik-additional-blocks.html">Специальные блоки</a></li>\
+					<li><a href="trik-additional-blocks.html">Блоки ТРИК</a></li>\
 					<li><a href="trik-run-programs.html">Запуск программ</a></li>\
 					<ul>\
 						<li><a href="trik-run-programs.html#wifi">Интерпретация по Wi-Fi</a></li>\
@@ -36,7 +36,7 @@ document.write('\
 				<ul>\
 					<li><a href="nxt.html#connection">Подключение робота</a></li>\
 					<li><a href="nxt.html#flashing">Прошивка робота</a></li>\
-					<li><a href="nxt.html#blocks">Специальные блоки</a></li>\
+					<li><a href="nxt.html#blocks">Блоки Lego NXT</a></li>\
 					<li><a href="nxt-run-programs.html">Запуск программ</a></li>\
 					<ul>\
 						<li><a href="nxt-run-programs.html#bluetooth">Интерпретация по Bluetooth</a></li>\
