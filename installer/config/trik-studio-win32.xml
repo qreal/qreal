@@ -26,7 +26,7 @@
 
     <RemoteRepositories>
         <Repository>
-            <Url>http://downloads.trikset.com/trik-studio-repo-win32/</Url>
+            <Url>http://195.19.241.150/packages/trik-studio-repo-win32/</Url>
         </Repository>
     </RemoteRepositories>
 </Installer>

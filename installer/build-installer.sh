@@ -33,7 +33,7 @@ echo "Building updates repository..."
 $QTIFW_DIR/repogen -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-repository
 
 echo "Uploading repository to server..."
-scp $PRODUCT-repository/* qrealproject@195.19.241.150:/home/qrealproject/public/$PRODUCT-repo-$OS
+scp -r $PRODUCT-repository/* qrealproject@195.19.241.150:/home/qrealproject/public/$PRODUCT-repo-$OS
 
 echo "Removing temporary files..."
 rm -rf $PRODUCT-repository
