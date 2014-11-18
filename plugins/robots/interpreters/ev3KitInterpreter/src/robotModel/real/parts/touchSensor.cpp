@@ -11,26 +11,12 @@ TouchSensor::TouchSensor(interpreterBase::robotModel::DeviceInfo const &info
                          , utils::robotCommunication::RobotCommunicator &robotCommunicator)
     : robotParts::TouchSensor(info, port)
     , mImplementation(robotCommunicator, port, SWITCH, READY_RAW)
+    , mRobotCommunicator(robotCommunicator)
 {
 }
-/*
-void TouchSensor::sensorSpecificProcessResponse(QByteArray const &reading)
-{
-    mImplementation.setState(Ev3InputDevice::idle);
-    if (reading[8] < 500) {
-        // Sensor is pressed.
-        emit newData(1);
-    } else {
-        emit newData(0);
-    }
-}*/
 
 void TouchSensor::read()
 {
-//    if (mImplementation.state() == Ev3InputDevice::pending) {
-//        return;
-//    }
-
     int size = 21;
     QByteArray command(size, 0);
     command[0] = size - 2;
@@ -56,13 +42,19 @@ void TouchSensor::read()
     command[18] = 1; //Number of return values
     command[19] = 225;
     command[20] = 0;
-
+    /*
     QByteArray reading;
     mImplementation.send(command, touchSensorResponseSize, reading);
-
     //mImplementation.setState(Ev3InputDevice::idle);
-    if (reading[8] < 500) {
+    if (int(reading.data()[6]) < 15) {
         // Sensor is pressed.
+        emit newData(1);
+    } else {
+        emit newData(0);
+    }*/
+    QByteArray outputBuf;
+    mRobotCommunicator.send(command, touchSensorResponseSize, outputBuf);
+    if (outputBuf.data()[8] == 63) {
         emit newData(1);
     } else {
         emit newData(0);

@@ -1078,6 +1078,39 @@
 				</logic>
 			</node>
 
+			<!-- Waiting for sensors blocks, EV3 -->
+			<node name="Ev3SensorBlock">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="Ev3SensorPort" name="Port">
+							<default>1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Touch Sensor" name="Ev3WaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-30" textBinded="Port" hard="true" background="white"/>
+						<label x="0" y="-30" text="Port:" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+
 			<!-- Waiting for sensors blocks, NXT -->
 			<node name="NxtSensorBlock">
 				<logic>
@@ -2489,6 +2522,7 @@
 			</group>
 			<group name="Wait">
 				<element name="Timer"/>
+				<element name="Ev3WaitForTouchSensor"/>
 				<element name="NxtWaitForTouchSensor"/>
 				<element name="NxtWaitForSonarDistance"/>
 				<element name="NxtWaitForColor"/>
