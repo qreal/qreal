@@ -5,17 +5,19 @@ document.write('\
 			<li><a href="interface.html">Пользовательский интерфейс</a>\
 				<ul>\
 					<li><a href="interface.html#overview">Обзор</li>\
-					<li><a href="interface.html#settings">Диалог настроек</li>\
+					<li><a href="interface.html#settings">Диалог настроек TRIKStudio</li>\
 					<li><a href="interface.html#d2model">Диалог двумерной модели робота</li>\
 				</ul>\
 			</li>\
 			<li><a href="programming.html">Создание программ</a>\
 				<ul>\
-					<li><a href="programming.html#diagrams">Создание диаграмм</a></li>\
+					<li><a href="programming.html#diagrams">Работа с диаграммами</a></li>\
 					<li><a href="programming.html#blocks">Создание блоков</a></li>\
 					<li><a href="programming.html#links">Создание связей</a></li>\
 					<li><a href="programming.html#functions">Синтаксис выражений</a></li>\
 					<li><a href="programming.html#properties">Редактирование свойств элементов</a></li>\
+					<li><a href="programming.html#graphs">Графики</a></li>\
+					<li><a href="programming.html#text-tab">Программирование на текстовом языке</a></li>\
 				</ul>\
 			</li>\
 			<li>ТРИК\
@@ -30,10 +32,11 @@ document.write('\
 					</ul>\
 				</ul>\
 			</li>\
-			<li>Lego NXT\
+			<li><a href="nxt.html">Lego NXT</a>\
 				<ul>\
-					<li><a href="nxt-robot-setup.html">Подключение робота</a></li>\
-					<li><a href="nxt-robot-setup.html">Специальные блоки</a></li>\
+					<li><a href="nxt.html#connection">Подключение робота</a></li>\
+					<li><a href="nxt.html#flashing">Прошивка робота</a></li>\
+					<li><a href="nxt.html#blocks">Специальные блоки</a></li>\
 					<li><a href="nxt-run-programs.html">Запуск программ</a></li>\
 					<ul>\
 						<li><a href="nxt-run-programs.html#bluetooth">Интерпретация по Bluetooth</a></li>\
