@@ -71,7 +71,7 @@ Component.prototype.createOperations = function()
 		if (installer.value("os") == "win") {
 			var timeoutBatch = "ping 127.0.0.1 -n 4 > nul";
 			component.addOperation("Execute", "cmd", "/c", timeoutBatch);
-			var joinBatch = "for /l %N in () do (tasklist | find \"cscript\" >null && ping 127.0.0.1 -n 2 > null || exit 0) ";
+			var joinBatch = "for /l %N in () do (tasklist | find \"cscript\" >null && ping 127.0.0.1 -n 2 >null || exit 0) ";
 			component.addOperation("Execute", "cmd", "/c", joinBatch);
 		}
 	}
