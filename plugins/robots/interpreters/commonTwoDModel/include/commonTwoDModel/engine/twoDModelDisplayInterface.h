@@ -28,6 +28,9 @@ public:
 
 	/// Clears the display erasing everything on it.
 	virtual void clear() const = 0;
+
+	/// Clears the display erasing everything on it. Resets LED on TRIK.
+	virtual void reset() = 0;
 };
 
 }

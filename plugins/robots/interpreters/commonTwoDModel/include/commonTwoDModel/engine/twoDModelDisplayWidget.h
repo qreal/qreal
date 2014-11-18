@@ -18,6 +18,7 @@ public:
 
 	void setPainter(graphicsUtils::PainterInterface *painter) override;
 	void clear() const override;
+	void reset() override;
 
 private:
 	graphicsUtils::PainterInterface *mPainter;

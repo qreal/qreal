@@ -74,3 +74,14 @@ void TrikDisplayWidget::paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	painter.drawImage(QRect(0, 0, width(), height()), mBackground);
 }
+
+void TrikDisplayWidget::reset()
+{
+	TwoDModelDisplayWidget::reset();
+	resetLed();
+}
+
+void TrikDisplayWidget::resetLed()
+{
+	setLedColor("off");
+}

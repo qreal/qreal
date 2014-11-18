@@ -19,3 +19,8 @@ void TwoDModelDisplayWidget::clear() const
 		mPainter->clear();
 	}
 }
+
+void TwoDModelDisplayWidget::reset()
+{
+	clear();
+}

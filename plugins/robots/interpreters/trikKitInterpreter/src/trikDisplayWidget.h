@@ -21,6 +21,8 @@ public:
 	explicit TrikDisplayWidget(QWidget *parent = nullptr);
 	~TrikDisplayWidget();
 
+	void reset() override;
+
 	void setPainter(graphicsUtils::PainterInterface *painter) override;
 
 	void repaintDisplay() override;
@@ -35,6 +37,8 @@ protected:
 	void paintEvent(QPaintEvent *event) override;
 
 private:
+	void resetLed();
+
 	Ui::TrikDisplayWidget *mUi;
 	QImage mBackground;
 };
