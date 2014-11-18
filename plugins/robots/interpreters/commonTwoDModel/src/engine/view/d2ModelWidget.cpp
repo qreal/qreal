@@ -139,15 +139,17 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 
 	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){
-		QMessageBox *confirmation = new QMessageBox(this
-				, "Предупреждение"
-				, "Вы действительно хотите очистить сцену?"
-				, QMessageBox::Yes | QMessageBox::No);
-		confirmation.setButtonText(QMessageBox::Yes, "Да");
-		confirmation.setButtonText(QMessageBox::No, "Отмена");
-		int n = confirmation.exec();
+		QMessageBox *confirmation = new QMessageBox("Предупреждение",
+													"Вы действительно хотите очистить сцену?",
+													QMessageBox::Question,
+													QMessageBox::Yes,
+													QMessageBox::No,
+													NULL);
+		confirmation->setButtonText(QMessageBox::Yes, "Да");
+		confirmation->setButtonText(QMessageBox::No, "Отмена");
+		int answer = confirmation->exec();
 		delete confirmation;
-		if (n == QMessageBox::Yes) {
+		if (answer == QMessageBox::Yes) {
 			mScene->clearScene(false, Reason::userAction);
 		}
 	});
