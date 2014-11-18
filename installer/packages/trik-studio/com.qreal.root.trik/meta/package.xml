@@ -6,7 +6,9 @@
     <Description xml:lang="ru_ru">Установите это для работы с конструктором Trik</Description>
     <Version>3.0.0-2-2</Version>
     <ReleaseDate>2014-10-31</ReleaseDate>
-    <Licenses/>
+    <Licenses>
+        <License name="WinScp Component License" file="WinScp-license.txt" />
+    </Licenses>
     <!--<Translations>
         <Translation>sv_se.qm</Translation>
         <Translation>de_de.qm</Translation>
