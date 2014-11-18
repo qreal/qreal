@@ -224,7 +224,7 @@
     <name>NxtDisplay</name>
     <message>
         <source>tr(NxtDisplay)</source>
-        <translation type="vanished">Дисплей NXT</translation>
+        <translation type="obsolete">Дисплей NXT</translation>
     </message>
 </context>
 <context>
@@ -239,69 +239,69 @@
     <name>twoDModel::D2ModelWidget</name>
     <message>
         <source>Black</source>
-        <translation type="vanished">Черный</translation>
+        <translation type="obsolete">Черный</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="vanished">Синий</translation>
+        <translation type="obsolete">Синий</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="vanished">Зеленый</translation>
+        <translation type="obsolete">Зеленый</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="vanished">Желтый</translation>
+        <translation type="obsolete">Желтый</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation type="vanished">Красный</translation>
+        <translation type="obsolete">Красный</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="vanished">Нет сенсора</translation>
+        <translation type="obsolete">Нет сенсора</translation>
     </message>
     <message>
         <source>Port </source>
-        <translation type="vanished">Порт</translation>
+        <translation type="obsolete">Порт</translation>
     </message>
     <message>
         <source>none</source>
-        <translation type="vanished">Нет сенсора</translation>
+        <translation type="obsolete">Нет сенсора</translation>
     </message>
     <message>
         <source>Saving world and robot model</source>
-        <translation type="vanished">Сохранение модели мира</translation>
+        <translation type="obsolete">Сохранение модели мира</translation>
     </message>
     <message>
         <source>2D model saves (*.xml)</source>
-        <translation type="vanished">Файлы 2D модели (*.xml)</translation>
+        <translation type="obsolete">Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
         <source>Loading world and robot model</source>
-        <translation type="vanished">Загрузка модели мира</translation>
+        <translation type="obsolete">Загрузка модели мира</translation>
     </message>
     <message>
         <source>No wheel</source>
-        <translation type="vanished">Отсутствует</translation>
+        <translation type="obsolete">Отсутствует</translation>
     </message>
     <message>
         <source>%1 (port %2)</source>
-        <translation type="vanished">%1 (порт %2)</translation>
+        <translation type="obsolete">%1 (порт %2)</translation>
     </message>
 </context>
 <context>
     <name>twoDModel::GridParameters</name>
     <message>
         <source>Grid</source>
-        <translation type="vanished">Сетка</translation>
+        <translation type="obsolete">Сетка</translation>
     </message>
 </context>
 <context>
     <name>twoDModel::robotModel::TwoDRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/robotModel/twoDRobotModel.cpp" line="50"/>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/robotModel/twoDRobotModel.cpp" line="53"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/robotModel/twoDRobotModel.cpp" line="57"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/robotModel/twoDRobotModel.cpp" line="60"/>
         <source>2D Model</source>
         <translation>2D модель</translation>
     </message>
@@ -357,54 +357,74 @@
 <context>
     <name>twoDModel::view::D2ModelWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="125"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
         <source>Black</source>
         <translation>Черный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="125"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="125"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
         <source>Green</source>
         <translation>Зеленый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="125"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
         <source>Yellow</source>
         <translation>Желтый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="125"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="105"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="342"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="142"/>
+        <source>Warning</source>
+        <translation>Предупреждение</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="143"/>
+        <source>Do you really want to clear scene?</source>
+        <translation>Вы действительно хотите очистить сцену?</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="148"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="149"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="364"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="342"/>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="362"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="364"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="384"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="362"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="384"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели мира</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="679"/>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="680"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="752"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="753"/>
         <source>No wheel</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="685"/>
+        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2ModelWidget.cpp" line="758"/>
         <source>%1 (port %2)</source>
         <translation>%1 (порт %2)</translation>
     </message>
