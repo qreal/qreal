@@ -2,8 +2,8 @@
 <Package>
     <DisplayName>Russian</DisplayName>
     <DisplayName xml:lang="ru_ru">Русский</DisplayName>
-    <ReleaseDate>2014-10-31</ReleaseDate>
-    <Version>3.0.0-2-2</Version>
+    <ReleaseDate>2014-11-19</ReleaseDate>
+    <Version>3.0.0-3-1</Version>
     <SortingPriority>8</SortingPriority>
     <Default>true</Default>
     <ForcedInstallation>false</ForcedInstallation>
