@@ -8,6 +8,7 @@ GraphicsWatcherManager::GraphicsWatcherManager(qrtext::DebuggerInterface const &
 	: QObject(parent)
 	, mWatcher(new sensorsGraph::SensorsGraph(parser))
 {
+	mWatcher->setStartStopButtonsVisible(false);
 }
 
 QWidget *GraphicsWatcherManager::widget()
@@ -43,7 +44,9 @@ void GraphicsWatcherManager::updateSensorsList(QString const &currentRobotModel)
 		DeviceInfo const device = currentConfiguration(currentRobotModel, port);
 		/// @todo It must depend on port, port must return its variable
 		QString const variableName = port.reservedVariable();
-		mWatcher->addTrackingObject(index, variableName, device.friendlyName());
-		++index;
+		if (!device.isNull() && !variableName.isEmpty()) {
+			mWatcher->addTrackingObject(index, variableName, QString("%1: %2").arg(port.name(), device.friendlyName()));
+			++index;
+		}
 	}
 }

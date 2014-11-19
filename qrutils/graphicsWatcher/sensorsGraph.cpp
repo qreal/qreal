@@ -50,6 +50,12 @@ SensorsGraph::~SensorsGraph()
 	delete mUi;
 }
 
+void SensorsGraph::setStartStopButtonsVisible(bool visible)
+{
+	mStartButton.setVisible(visible);
+	mStopButton.setVisible(visible);
+}
+
 void SensorsGraph::addTrackingObject(int const index, QString const &inParserName, QString const &displayName)
 {
 	TrackObject newObject(index, inParserName, displayName);
@@ -112,24 +118,29 @@ void SensorsGraph::setupToolElements()
 {
 	QSize const iconSize(20, 20);
 
-	mStopButton.setIcon(QPixmap("://graphicsWatcher/icons/stop_btn.png"));
+	mStopButton.setIcon(QPixmap(":/graphicsWatcher/icons/stop_btn.png"));
 	mStopButton.setIconSize(iconSize);
+	mStopButton.setToolTip(tr("Stop tracking"));
 
-	mStartButton.setIcon(QPixmap("://graphicsWatcher/icons/start_btn.png"));
+	mStartButton.setIcon(QPixmap(":/graphicsWatcher/icons/start_btn.png"));
 	mStartButton.setIconSize(iconSize);
+	mStartButton.setToolTip(tr("Start tracking"));
 
-	mResetButton.setIcon(QPixmap("://graphicsWatcher/icons/reset_btn.png"));
+	mResetButton.setIcon(QPixmap(":/graphicsWatcher/icons/reset_btn.png"));
 	mResetButton.setIconSize(iconSize);
+	mResetButton.setToolTip(tr("Reset plot"));
 
-	mZoomInButton.setIcon(QPixmap("://graphicsWatcher/icons/zoomIn_btn.png"));
+	mZoomInButton.setIcon(QPixmap(":/graphicsWatcher/icons/zoomIn_btn.png"));
 	mZoomInButton.setIconSize(iconSize);
+	mZoomInButton.setToolTip(tr("Zoom In"));
 
-	mZoomOutButton.setIcon(QPixmap("://graphicsWatcher/icons/zoomOut_btn.png"));
+	mZoomOutButton.setIcon(QPixmap(":/graphicsWatcher/icons/zoomOut_btn.png"));
 	mZoomOutButton.setIconSize(iconSize);
+	mZoomOutButton.setToolTip(tr("Zoom Out"));
 
-	mSaveButton.setIcon(QPixmap("://icons/save_as.png"));
+	mSaveButton.setIcon(QPixmap(":/mainWindow/images/save_as.png"));
 	mSaveButton.setIconSize(iconSize);
-
+	mSaveButton.setToolTip(tr("Export values..."));
 }
 
 void SensorsGraph::makeConnections()
