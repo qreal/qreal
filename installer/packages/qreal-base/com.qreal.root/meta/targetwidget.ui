@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TargetWidget</class>
+ <widget class="QWidget" name="TargetWidget">
+  <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+      <widget class="QLabel" name="label" />
+    </item>
+    <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLineEdit" name="targetDirectory"/>
+       </item>
+       <item>
+        <widget class="QToolButton" name="targetChooser">
+          <property name="text">
+            <string>...</string>
+          </property>
+        </widget>
+       </item>
+      </layout>
+    </item>
+    <item>
+      <widget class="QLabel" name="labelOverwrite">
+        <property name="wordWrap">
+          <bool>true</bool>
+        </property>
+      </widget>
+    </item>
+  </layout>
+ </widget>
+</ui>
