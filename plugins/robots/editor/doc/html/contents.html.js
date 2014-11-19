@@ -20,11 +20,12 @@ document.write('\
 					<li><a href="programming.html#text-tab">Программирование на текстовом языке</a></li>\
 				</ul>\
 			</li>\
-			<li>ТРИК\
+			<li><a href="trik.html">ТРИК</a>\
 				<ul>\
-					<li><a href="trik-robot-setup.html">Подключение робота</a></li>\
-					<li><a href="trik-additional-blocks.html">Блоки ТРИК</a></li>\
-					<li><a href="trik-run-programs.html">Запуск программ</a></li>\
+					<li><a href="trik.html#robot-setup">Подключение робота</a></li>\
+					<li><a href="trik.html#blocks">Блоки ТРИК</a></li>\
+					<li><a href="trik.html#textual-programming">Текстовое программирование</a></li>\
+					<li><a href="trik.html#run-programs">Запуск программ</a></li>\
 					<ul>\
 						<li><a href="trik-run-programs.html#wifi">Интерпретация по Wi-Fi</a></li>\
 						<li><a href="trik-run-programs.html#uploading">Загрузка программы на робот (Qts)</a></li>\
