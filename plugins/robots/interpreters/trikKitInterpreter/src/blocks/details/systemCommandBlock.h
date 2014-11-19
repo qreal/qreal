@@ -14,7 +14,6 @@ class SystemCommandBlock : public interpreterBase::blocksBase::common::DeviceBlo
 
 public:
 	explicit SystemCommandBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~SystemCommandBlock() override;
 
 private:
 	void doJob(robotModel::parts::TrikShell &shell) override;
