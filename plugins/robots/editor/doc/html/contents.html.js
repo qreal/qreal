@@ -37,10 +37,11 @@ document.write('\
 					<li><a href="nxt.html#connection">Подключение робота</a></li>\
 					<li><a href="nxt.html#flashing">Прошивка робота</a></li>\
 					<li><a href="nxt.html#blocks">Блоки Lego NXT</a></li>\
-					<li><a href="nxt-run-programs.html">Запуск программ</a></li>\
+					<li><a href="nxt.html#textual-programming">Текстовое программирование</a></li>\
+					<li><a href="nxt.html#run-programs">Запуск программ</a></li>\
 					<ul>\
-						<li><a href="nxt-run-programs.html#bluetooth">Интерпретация по Bluetooth</a></li>\
-						<li><a href="nxt-run-programs.html#flashing">Прошивка в робота</a></li>\
+						<li><a href="nxt.html#run-programs-bluetooth">Интерпретация по Bluetooth</a></li>\
+						<li><a href="nxt.html#run-programs-flashing">Прошивка в робота</a></li>\
 					</ul>\
 				</ul>\
 			</li>\
