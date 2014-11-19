@@ -28,6 +28,9 @@ public:
 	explicit SensorsGraph(qrtext::DebuggerInterface const &parser, QWidget *parent = 0);
 	~SensorsGraph();
 
+	/// Hides or shows start and stop buttons.
+	void setStartStopButtonsVisible(bool visible);
+
 	/// add new element to watch list
 	/// @param index is like slot number
 	/// @param inParserName how to find value in expressionsParser

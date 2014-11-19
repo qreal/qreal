@@ -6,7 +6,7 @@
     <message>
         <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="14"/>
         <source>2D Robot Model</source>
-        <translation>Двухмерная модель</translation>
+        <translation>Двумерная модель</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/src/engine/view/d2Form.ui" line="44"/>

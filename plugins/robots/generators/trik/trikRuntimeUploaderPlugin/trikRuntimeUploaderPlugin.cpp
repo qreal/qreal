@@ -34,8 +34,13 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 
 	QString const moveCommand = " \"synchronize remote trikRuntime /home/root/trik\"";
 
+	QString const rawWinscpPath = qReal::SettingsManager::value("WinScpPath").toString();
+	QString const winscpPath = rawWinscpPath.startsWith("./")
+			? QApplication::applicationDirPath() + rawWinscpPath.mid(1)
+			: rawWinscpPath;
+
 	QString const command = QString("\"%1\" /command %2 %3 %4 %5 %6")
-			.arg(qReal::SettingsManager::value("WinScpPath").toString())
+			.arg(winscpPath)
 			.arg(openConnection)
 			.arg(killTrikGui)
 			.arg(moveCommand)
