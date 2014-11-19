@@ -6,7 +6,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdarg.h>
 #include <math.h>
 
 U32 __interpretation_started_timestamp__ = 0;
