@@ -7,7 +7,6 @@
 
 #include "trikAdditionalPreferences.h"
 #include "trikFSharpAdditionalPreferences.h"
-#include "trikWinScpAdditionalPreferences.h"
 
 #include "blocks/trikBlocksFactory.h"
 #include "robotModel/real/realRobotModelV6.h"
@@ -67,7 +66,6 @@ private:
 
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
 	TrikFSharpAdditionalPreferences *mFSharpAdditionalPreferences = nullptr;  //Transfers ownership
-	TrikWinScpAdditionalPreferences *mWinScpAdditionalPreferences = nullptr;  //Transfers ownership
 	bool mOwnsAdditionalPreferences = true;
 
 	QWidget *mIpAdressQuickConfigurer = nullptr;  // Transfers ownership

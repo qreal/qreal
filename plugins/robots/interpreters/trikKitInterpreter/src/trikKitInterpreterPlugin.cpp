@@ -25,7 +25,6 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
 	mFSharpAdditionalPreferences = new TrikFSharpAdditionalPreferences();
-	mWinScpAdditionalPreferences = new TrikWinScpAdditionalPreferences();
 }
 
 TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
@@ -33,7 +32,6 @@ TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 	if (mOwnsAdditionalPreferences) {
 		delete mAdditionalPreferences;
 		delete mFSharpAdditionalPreferences;
-		delete mWinScpAdditionalPreferences;
 	}
 
 	if (mOwnsBlocksFactory) {
@@ -113,7 +111,7 @@ interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defa
 QList<interpreterBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
-	return {mAdditionalPreferences, mFSharpAdditionalPreferences, mWinScpAdditionalPreferences};
+	return {mAdditionalPreferences, mFSharpAdditionalPreferences};
 }
 
 QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model)
