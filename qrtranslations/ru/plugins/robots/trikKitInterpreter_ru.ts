@@ -28,14 +28,50 @@
     </message>
 </context>
 <context>
+    <name>TrikFSharpAdditionalPreferences</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="14"/>
+        <source>Form</source>
+        <translation>Настройки F#</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="35"/>
+        <source>F# settings</source>
+        <translation>Настройки F#</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="65"/>
+        <source>enter path to F# compile </source>
+        <translation>Введите путь к компилятору F#</translation>
+    </message>
+</context>
+<context>
+    <name>TrikWinScpAdditionalPreferences</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikWinScpAdditionalPreferences.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Настройки TRIK</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikWinScpAdditionalPreferences.ui" line="35"/>
+        <source>WinSCP settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikWinScpAdditionalPreferences.ui" line="65"/>
+        <source>enter path to WinSCP.com </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="66"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="68"/>
         <source>Enter robot`s IP-address here...</source>
         <translation>Введите IP-адрес робота...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="85"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="92"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
@@ -44,7 +80,7 @@
         <translation type="vanished">Открыть 2D модель для TRIK v4</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="131"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="138"/>
         <source>Show 2d model for TRIK v6</source>
         <translation>Открыть 2D модель для TRIK v6</translation>
     </message>
@@ -54,6 +90,22 @@
     <message>
         <source>Led is not configured (WTF?)</source>
         <translation type="vanished">Светодиод не сконфигурирован</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::blocks::details::SayBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/blocks/details/sayBlock.cpp" line="30"/>
+        <source>Shell is not configured (WTF?)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::blocks::details::SpeakerBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/blocks/details/speakerBlock.cpp" line="32"/>
+        <source>Speaker is not configured (WTF?)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -143,6 +195,14 @@
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikServoMotor.h" line="13"/>
         <source>Servo Motor</source>
         <translation>Сервомотор</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::robotModel::parts::TrikShell</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikShell.h" line="14"/>
+        <source>Shell</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
