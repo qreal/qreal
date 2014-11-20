@@ -1,7 +1,5 @@
 #include "twoDDisplay.h"
 
-#include <QtCore/QDebug>
-
 using namespace trikKitInterpreter::robotModel::twoD::parts;
 using namespace interpreterBase::robotModel;
 
