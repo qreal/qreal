@@ -16,8 +16,7 @@ class SonarSensorItem : public SensorItem
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-	SonarSensorItem(
-			model::WorldModel const &worldModel
+	SonarSensorItem(model::WorldModel const &worldModel
 			, model::SensorsConfiguration &configuration
 			, interpreterBase::robotModel::PortInfo const &port
 			, QString const &pathToImage

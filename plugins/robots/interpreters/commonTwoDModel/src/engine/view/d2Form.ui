@@ -142,7 +142,7 @@
              <string>Tools</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_3">
-             <item row="4" column="0" colspan="2">
+             <item row="5" column="0" colspan="2">
               <widget class="QGroupBox" name="penBrushToolBox">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -280,7 +280,7 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="0" colspan="2">
+             <item row="6" column="0" colspan="2">
               <spacer name="verticalSpacer_2">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -439,6 +439,20 @@
                </property>
                <property name="checkable">
                 <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QPushButton" name="clearFloorButton">
+               <property name="toolTip">
+                <string>Clear floor</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
+                 <normaloff>:/icons/2d_clear_floor.png</normaloff>:/icons/2d_clear_floor.png</iconset>
                </property>
               </widget>
              </item>

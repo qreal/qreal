@@ -93,7 +93,7 @@
         <translation type="obsolete">Обнаружено более 1 исходящей связи!</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="53"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="52"/>
         <source>There is no opened diagram</source>
         <translation>Сначала откройте диаграмму </translation>
     </message>
@@ -179,17 +179,17 @@
 <context>
     <name>generatorBase::MasterGeneratorBase</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="88"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="86"/>
         <source>This diagram cannot be generated into the structured code. Generating it into the code with &apos;goto&apos; statements.</source>
         <translation>Данная диаграмма не может быть сгенерирована в структурированный код. Генерирую код с &apos;goto&apos;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="101"/>
         <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers (WTF did you do?)</source>
         <translation>Данная диаграмма не может быть сгенерирована даже в код с &apos;goto&apos;. Обратитесь к разработчикам (что вы там понаписали :)?)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="103"/>
         <source>This diagram cannot be generated into the structured code.</source>
         <translation>Данная диаграмма не может быть сгенерирована в структурированный код.</translation>
     </message>

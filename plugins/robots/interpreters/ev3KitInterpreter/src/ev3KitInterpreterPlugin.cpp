@@ -9,7 +9,7 @@ Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
-		: mRealRobotModel(kitId())
+		: mRealRobotModel(kitId(), "ev3robot") // todo: somewhere generate robotId for each robot
 		, mBlocksFactory(new blocks::Ev3BlocksFactory)
 {
 	mAdditionalPreferences = new Ev3AdditionalPreferences(mRealRobotModel.name());
@@ -41,9 +41,9 @@ interpreterBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::bl
 	return mBlocksFactory;
 }
 
-interpreterBase::AdditionalPreferences *Ev3KitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> Ev3KitInterpreterPlugin::settingsWidgets()
 {
-	return mAdditionalPreferences;
+	return { mAdditionalPreferences };
 }
 
 QList<qReal::ActionInfo> Ev3KitInterpreterPlugin::customActions()

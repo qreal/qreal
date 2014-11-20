@@ -42,15 +42,22 @@
 #include <qrtext/lua/ast/assignment.h>
 #include <qrtext/lua/ast/block.h>
 #include <qrtext/lua/ast/indexingExpression.h>
+#include <qrtext/languageToolboxInterface.h>
+#include <qrtext/lua/types/integer.h>
+#include <qrtext/lua/types/float.h>
+#include <qrtext/lua/types/boolean.h>
+#include <qrtext/lua/types/string.h>
 
 #include "reservedFunctionsConverter.h"
 
 using namespace generatorBase::lua;
 
 LuaPrinter::LuaPrinter(QString const &pathToTemplates
+		, qrtext::LanguageToolboxInterface const &textLanguage
 		, PrecedenceConverterInterface &precedeceTable
 		, simple::Binding::ConverterInterface const *reservedVariablesConverter)
 	: TemplateParametrizedEntity(pathToTemplates + "/luaPrinting")
+	, mTextLanguage(textLanguage)
 	, mPrecedenceTable(precedeceTable)
 	, mReservedVariablesConverter(reservedVariablesConverter)
 	, mReservedFunctionsConverter(pathToTemplates)
@@ -62,25 +69,14 @@ LuaPrinter::~LuaPrinter()
 	delete mReservedVariablesConverter;
 }
 
-QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> node)
+QString LuaPrinter::print(QSharedPointer<qrtext::lua::ast::Node> const &node)
 {
-	if (!node) {
-		return "";
-	}
+	return printWithoutPop(node) ? popResult(*node) : QString();
+}
 
-	node->acceptRecursively(*this);
-	if (mGeneratedCode.keys().count() != 1 || mGeneratedCode.keys().first() != node.data()) {
-		QLOG_WARN() << "Lua printer got into the inconsistent state during printing."
-				<< mGeneratedCode.keys().count() <<"pieces of code:";
-		for (QString const &code : mGeneratedCode.values()) {
-			QLOG_INFO() << code;
-		}
-
-		mGeneratedCode.clear();
-		return QString();
-	}
-
-	return popResult(*node);
+QString LuaPrinter::castToString(QSharedPointer<qrtext::lua::ast::Node> const &node)
+{
+	return printWithoutPop(node) ? toString(node) : QString();
 }
 
 void LuaPrinter::pushResult(qrtext::lua::ast::Node const &node, QString const &generatedCode)
@@ -102,6 +98,27 @@ QStringList LuaPrinter::popResults(QList<QSharedPointer<qrtext::lua::ast::Node>>
 	}
 
 	return result;
+}
+
+bool LuaPrinter::printWithoutPop(QSharedPointer<qrtext::lua::ast::Node> const &node)
+{
+	if (!node) {
+		return false;
+	}
+
+	node->acceptRecursively(*this);
+	if (mGeneratedCode.keys().count() != 1 || mGeneratedCode.keys().first() != node.data()) {
+		QLOG_WARN() << "Lua printer got into the inconsistent state during printing."
+				<< mGeneratedCode.keys().count() << "pieces of code:";
+		for (QString const &code : mGeneratedCode.values()) {
+			QLOG_INFO() << code;
+		}
+
+		mGeneratedCode.clear();
+		return false;
+	}
+
+	return true;
 }
 
 void LuaPrinter::processTemplate(qrtext::lua::ast::Node const &node
@@ -238,7 +255,9 @@ void LuaPrinter::visit(qrtext::lua::ast::BitwiseRightShift const &node)
 
 void LuaPrinter::visit(qrtext::lua::ast::Concatenation const &node)
 {
-	processBinary(node, "concatenation.t");
+	pushResult(node, readTemplate("concatenation.t")
+			.replace("@@LEFT@@", toString(node.leftOperand()))
+			.replace("@@RIGHT@@", toString(node.rightOperand())));
 }
 
 void LuaPrinter::visit(qrtext::lua::ast::Equality const &node)
@@ -367,4 +386,27 @@ void LuaPrinter::visit(qrtext::lua::ast::Block const &node)
 void LuaPrinter::visit(qrtext::lua::ast::IndexingExpression const &node)
 {
 	processTemplate(node, "indexingExpression.t", { {"@@TABLE@@", node.table()}, {"@@INDEXER@@", node.indexer()} });
+}
+
+QString LuaPrinter::toString(QSharedPointer<qrtext::lua::ast::Node> const &node)
+{
+	QSharedPointer<qrtext::core::types::TypeExpression> const type = mTextLanguage.type(node);
+	QString const value = popResult(*node);
+	if (type->is<qrtext::lua::types::String>()) {
+		return value;
+	}
+
+	if (type->is<qrtext::lua::types::Integer>()) {
+		return readTemplate("intToString.t").replace("@@VALUE@@", value);
+	}
+
+	if (type->is<qrtext::lua::types::Float>()) {
+		return readTemplate("floatToString.t").replace("@@VALUE@@", value);
+	}
+
+	if (type->is<qrtext::lua::types::Integer>()) {
+		return readTemplate("boolToString.t").replace("@@VALUE@@", value);
+	}
+
+	return readTemplate("otherToString.t").replace("@@VALUE@@", value);
 }

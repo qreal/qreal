@@ -69,7 +69,7 @@ void BluetoothRobotCommunicationThread::connect()
 	keepAlive();
 	QByteArray const response = receive(keepAliveResponseSize);
 
-	emit connected(response != QByteArray());
+	emit connected(response != QByteArray(), QString());
 
 	mKeepAliveTimer->start(500);
 }

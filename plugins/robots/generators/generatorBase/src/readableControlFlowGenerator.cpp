@@ -31,10 +31,16 @@ ReadableControlFlowGenerator::ReadableControlFlowGenerator(
 {
 }
 
-ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(Id const &diagramId)
+ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(Id const &diagramId, bool cloneForNewDiagram)
 {
-	return new ReadableControlFlowGenerator(mRepo, mErrorReporter, mCustomizer
-			, diagramId, parent(), false);
+	ReadableControlFlowGenerator * const copy = new ReadableControlFlowGenerator(mRepo
+			, mErrorReporter, mCustomizer, diagramId, parent(), false);
+	if (!cloneForNewDiagram) {
+		delete copy->mValidator;
+		copy->mValidator = mValidator;
+	}
+
+	return copy;
 }
 
 void ReadableControlFlowGenerator::performGeneration()
@@ -65,6 +71,7 @@ void ReadableControlFlowGenerator::beforeSearch()
 void ReadableControlFlowGenerator::visitRegular(Id const &id
 		, QList<LinkInfo> const &links)
 {
+	ControlFlowGeneratorBase::visitRegular(id, links);
 	SimpleUnvisitedRule unvisitedRule(mSemanticTree, id, links[0]);
 	SimpleVisitedOneZoneRule visitedOneZoneRule(mSemanticTree, id, links[0]);
 	SimpleMergedIfBranchesRule ifMergedBranchesRule(mSemanticTree, id, links[0]);

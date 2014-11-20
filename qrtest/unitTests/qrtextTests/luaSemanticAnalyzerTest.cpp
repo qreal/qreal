@@ -30,7 +30,7 @@ void LuaSemanticAnalyzerTest::SetUp()
 
 QSharedPointer<qrtext::core::ast::Node> LuaSemanticAnalyzerTest::parse(QString const &code)
 {
-	return mParser->parse(mLexer->tokenize(code));
+	return mParser->parse(mLexer->tokenize(code), mLexer->userFriendlyTokenNames());
 }
 
 TEST_F(LuaSemanticAnalyzerTest, sanityCheck)

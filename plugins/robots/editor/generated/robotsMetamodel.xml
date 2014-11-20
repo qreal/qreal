@@ -249,7 +249,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Comment" type="string" name="Comment">
-							<default>Enter some text here...</default>
+							<default>\"Enter some text here...\"</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1769,6 +1769,43 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Marker Down" name="MarkerDown" description="Moves the marker of the 2D model robot down to the floor: the robot will draw its trace on the floor after that. If the marker of another color is already drawing at the moment it will be replaced.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image name="images/markerDown.svg" x1="0" x2="50" y1="0" y2="50" />
+					</picture>
+					<labels>
+						<label x="27" y="-30" textBinded="Color" hard="true"/>
+						<label x="-10" y="-30" text="Color:" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Color" type="BackgroundColor" name="Color">
+							<default>blue</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Marker Up" name="MarkerUp" description="Lifts the marker of the 2D model robot up: the robot stops drawing its trace on the floor after that.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image name="images/markerUp.svg" x1="0" x2="50" y1="0" y2="50" />
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 
 			<!-- NXT display drawing blocks -->
 			<node displayedName="Draw Pixel" name="NxtDrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
@@ -2497,6 +2534,8 @@
 				<element name="TrikSetBackground"/>
 				<element name="PrintText"/>
 				<element name="ClearScreen"/>
+				<element name="MarkerDown"/>
+				<element name="MarkerUp"/>
 			</group>
 		</palette>
 	</diagram>

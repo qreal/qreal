@@ -20,16 +20,18 @@ template <typename TokenType>
 class TokenPatterns
 {
 public:
-	/// Define pattern for given token to given regular expression.
-	void defineToken(TokenType tokenType, QRegularExpression const &regExp)
+	/// Define pattern for given token to given regular expression with given display name.
+	void defineToken(TokenType tokenType, QRegularExpression const &regExp, QString const &userFriendlyName)
 	{
 		mPatterns.insert(tokenType, regExp);
+		mUserFriendlyNames.insert(tokenType, userFriendlyName);
 	}
 
 	/// Description for given keyword to given string.
 	void defineKeyword(TokenType keywordType, QString const &keyword)
 	{
 		mKeywords.insert(keywordType, keyword);
+		mUserFriendlyNames.insert(keywordType, keyword);
 	}
 
 	/// Returns a list of all tokens with known patterns.
@@ -42,6 +44,12 @@ public:
 	QRegularExpression tokenPattern(TokenType type) const
 	{
 		return mPatterns.value(type);
+	}
+
+	/// Returns a table of user-friendly names for tokens.
+	QHash<TokenType, QString> tokenUserFriendlyNames() const
+	{
+		return mUserFriendlyNames;
 	}
 
 	/// Returns a list of all keywords with known definitions.
@@ -58,6 +66,7 @@ public:
 
 private:
 	QHash<TokenType, QRegularExpression> mPatterns;
+	QHash<TokenType, QString> mUserFriendlyNames;
 	QHash<TokenType, QString> mKeywords;
 };
 

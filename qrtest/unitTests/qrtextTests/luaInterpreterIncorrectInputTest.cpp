@@ -21,7 +21,7 @@ void LuaInterpreterIncorrectInputTest::SetUp()
 QSharedPointer<qrtext::core::ast::Node> LuaInterpreterIncorrectInputTest::parseAndAnalyze(QString const &code)
 {
 	mErrors.clear();
-	auto const ast = mParser->parse(mLexer->tokenize(code));
+	auto const ast = mParser->parse(mLexer->tokenize(code), mLexer->userFriendlyTokenNames());
 	if (mErrors.isEmpty()) {
 		return mAnalyzer->analyze(ast);
 	} else {

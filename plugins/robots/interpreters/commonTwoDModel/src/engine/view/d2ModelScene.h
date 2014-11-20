@@ -19,6 +19,7 @@ class EllipseItem;
 
 namespace model {
 class Model;
+class RobotModel;
 }
 
 namespace view {
@@ -34,6 +35,9 @@ public:
 			, graphicsUtils::AbstractView *view
 			, QObject *parent = 0);
 	~D2ModelScene() override;
+
+	/// Returns true if existing only one robot
+	bool oneRobot() const;
 
 public slots:
 	/// Sets a flag that next user mouse actions should draw a wall on the scene.
@@ -62,10 +66,10 @@ public slots:
 	void alignWalls();
 
 	/// Returns a pointer to a robot graphics item.
-	RobotItem *robot();
+	RobotItem *robot(model::RobotModel &robotModel);
 
 	/// Focuses all graphics views on the robot if it is not visible.
-	void centerOnRobot();
+	void centerOnRobot(RobotItem *selectedItem = nullptr);
 
 signals:
 	/// Emitted each time when user presses mouse button somewhere on the scene.
@@ -77,8 +81,19 @@ signals:
 	/// Emitted each time when user presses mouse button on the robot item.
 	void robotPressed();
 
+	/// Emitted at any changes of robot list (adding or removing)
+	void robotListChanged(RobotItem *robotItem);
+
 private slots:
-	void handleNewRobotPosition();
+	void handleNewRobotPosition(RobotItem *robotItem);
+
+	/// Called after robot model was added and create new robot item
+	/// @param robotModel Robot model which was added
+	void onRobotAdd(model::RobotModel *robotModel);
+
+	/// Called after robot model was removed and removes robot item associated with this robot model
+	/// @param robotModel Robot model which was removed
+	void onRobotRemove(model::RobotModel *robotModel);
 
 private:
 	enum DrawingAction
@@ -100,9 +115,9 @@ private:
 	void keyPressEvent(QKeyEvent *event) override;
 
 	void forPressResize(QGraphicsSceneMouseEvent *event) override;
-	void forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
-	void forReleaseResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
-	void reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect);
+	void forMoveResize(QGraphicsSceneMouseEvent *event);
+	void forReleaseResize(QGraphicsSceneMouseEvent *event);
+	void reshapeItem(QGraphicsSceneMouseEvent *event);
 
 	void deleteItem(QGraphicsItem *item);
 
@@ -111,7 +126,6 @@ private:
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
-	void drawInitialRobot();
 	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QRectF const &oldPos);
 
 	model::Model &mModel;
@@ -122,7 +136,7 @@ private:
 	/// Current action (toggled button on left panel)
 	DrawingAction mDrawingAction;
 
-	RobotItem *mRobot = nullptr;
+	QMap<model::RobotModel *, RobotItem *> mRobots;
 
 	/// Temporary wall that's being created. When it's complete, it's added to world model
 	items::WallItem *mCurrentWall = nullptr;

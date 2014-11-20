@@ -30,8 +30,9 @@
 using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
 
-RealRobotModelBase::RealRobotModelBase(QString const &kitId)
-	: TrikRobotModelBase(kitId), mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
+RealRobotModelBase::RealRobotModelBase(QString const &kitId, QString const &robotId)
+	: TrikRobotModelBase(kitId, robotId)
+	, mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
 {
 	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::connected
 			, this, &RealRobotModelBase::connected);

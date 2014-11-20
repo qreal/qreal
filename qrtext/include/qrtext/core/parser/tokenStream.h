@@ -13,9 +13,11 @@ template<typename TokenType>
 class TokenStream
 {
 public:
-	/// Constructor. Takes list of tokens from lexer and a reference to error stream where to put errors.
-	TokenStream(QList<Token<TokenType>> const &tokenList, QList<Error> &errorList)
-		: mTokenList(tokenList), mErrorList(errorList), mPosition(0)
+	/// Constructor. Takes list of tokens and names of tokens (for error reporting) from lexer and a reference to error
+	/// stream where to put errors.
+	TokenStream(QList<Token<TokenType>> const &tokenList, QHash<TokenType, QString> const &tokenUserFriendlyNames
+			, QList<Error> &errorList)
+		: mTokenList(tokenList), mErrorList(errorList), mTokenUserFriendlyNames(tokenUserFriendlyNames), mPosition(0)
 	{
 	}
 
@@ -43,9 +45,11 @@ public:
 			return true;
 		} else {
 			mErrorList << Error(next().range().start()
-					, QString("Expected %1, got %2").arg(static_cast<int>(token)).arg(static_cast<int>(next().token()))
+					, QString(QObject::tr("Expected \"%1\", got \"%2\""))
+							.arg(mTokenUserFriendlyNames[token])
+							.arg(mTokenUserFriendlyNames[next().token()])
 					, ErrorType::syntaxError
-					, Severity::internalError);
+					, Severity::error);
 
 			return false;
 		}
@@ -60,6 +64,7 @@ public:
 private:
 	QList<Token<TokenType>> mTokenList;
 	QList<Error> &mErrorList;
+	QHash<TokenType, QString> mTokenUserFriendlyNames;
 	int mPosition;
 };
 

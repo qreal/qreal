@@ -11,7 +11,7 @@ Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
-	: mRealRobotModel(kitId())
+	: mRealRobotModel(kitId(), "nxtKitRobot") // todo: somewhere generate robotId for each robot
 	, mTwoDRobotModel(mRealRobotModel)
 	, mBlocksFactory(new blocks::NxtBlocksFactory)
 {
@@ -87,10 +87,10 @@ interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defau
 	return &mTwoDRobotModel;
 }
 
-interpreterBase::AdditionalPreferences *NxtKitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> NxtKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
-	return mAdditionalPreferences;
+	return {mAdditionalPreferences};
 }
 
 QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()

@@ -10,9 +10,9 @@ INCLUDEPATH += \
 	$$PWD/../../../../qrgui/ \
 	$$PWD/../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils \
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -lqrtext \
 		-lqrgui-models -lqrgui-controller -lqrgui-preferences-dialog -lqrgui-plugin-manager \
-		-lqrgui-tool-plugin-interface -linterpreterBase -lutils -lcommonTwoDModel -lqrtext \
+		-lqrgui-tool-plugin-interface -lrobots-interpreter-base -lrobots-utils -lrobots-common-2d-model \
 
 HEADERS += \
 	$$PWD/src/customizer.h \

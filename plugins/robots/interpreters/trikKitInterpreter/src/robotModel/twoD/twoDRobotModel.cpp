@@ -19,11 +19,13 @@
 #include "robotModel/parts/trikInfraredSensor.h"
 #include "robotModel/parts/trikSonarSensor.h"
 
+#include "trikDisplayWidget.h"
+
 using namespace trikKitInterpreter::robotModel;
 using namespace trikKitInterpreter::robotModel::twoD;
 using namespace interpreterBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
+TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
@@ -104,6 +106,12 @@ QString TwoDRobotModel::sensorImagePath(DeviceInfo const &deviceType) const
 	return QString();
 }
 
+void TwoDRobotModel::setWheelPorts(QString const &leftWheelPort, QString const &rightWheelPort)
+{
+	mLeftWheelPort = leftWheelPort;
+	mRightWheelPort = rightWheelPort;
+}
+
 QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
 {
 	if (deviceType.isA<robotParts::LightSensor>()) {
@@ -114,6 +122,5 @@ QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo co
 		return QRect(-20, -10, 40, 20);;
 	}
 
-	Q_ASSERT(!"Unknown sensor type in TRIK 2D model");
 	return QRect();
 }

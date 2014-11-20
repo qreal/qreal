@@ -67,3 +67,11 @@ TEST_F(LuaToolboxTest, tables)
 	EXPECT_TRUE(mToolbox->errors().isEmpty());
 	EXPECT_EQ(15, result);
 }
+
+TEST_F(LuaToolboxTest, concatenation)
+{
+	mToolbox->interpret<int>("s = \"a = \" .. \"1\"");
+	auto result = mToolbox->interpret<QString>("s");
+	ASSERT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ("a = 1", result);
+}

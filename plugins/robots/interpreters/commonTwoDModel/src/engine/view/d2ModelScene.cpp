@@ -38,49 +38,76 @@ D2ModelScene::D2ModelScene(model::Model &model
 		connect(wall, &items::WallItem::wallDragged, this, &D2ModelScene::worldWallDragged);
 	});
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &QGraphicsScene::addItem);
+	connect(&mModel.worldModel(), &model::WorldModel::otherItemAdded, this, &QGraphicsScene::addItem);
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [](QGraphicsItem *item) { delete item; });
 
-	drawInitialRobot();
+	connect(&mModel, &model::Model::robotAdded, this, &D2ModelScene::onRobotAdd);
+	connect(&mModel, &model::Model::robotRemoved, this, &D2ModelScene::onRobotRemove);
 }
 
 D2ModelScene::~D2ModelScene()
 {
 }
 
-void D2ModelScene::drawInitialRobot()
+bool D2ModelScene::oneRobot() const
 {
-	mRobot = new RobotItem(mModel.robotModel());
-	connect(mRobot, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
-	connect(mRobot, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
-	addItem(mRobot);
-
-	Rotater * const rotater = new Rotater();
-	rotater->setMasterItem(mRobot);
-	rotater->setVisible(false);
-
-	mRobot->setRotater(rotater);
-
-	centerOnRobot();
+	return mRobots.size() == 1;
 }
 
-void D2ModelScene::handleNewRobotPosition()
+void D2ModelScene::handleNewRobotPosition(RobotItem *robotItem)
 {
 	for (items::WallItem const *wall : mModel.worldModel().walls()) {
-		if (wall->realShape().intersects(mRobot->realBoundingRect())) {
-			mRobot->recoverDragStartPosition();
+		if (wall->realShape().intersects(robotItem->realBoundingRect())) {
+			robotItem->recoverDragStartPosition();
 			return;
 		}
 	}
+}
+
+void D2ModelScene::onRobotAdd(model::RobotModel *robotModel)
+{
+	RobotItem * const robotItem = new RobotItem(robotModel->info().robotImage(), *robotModel, this);
+
+	connect(robotItem, &RobotItem::changedPosition, this, &D2ModelScene::handleNewRobotPosition);
+	connect(robotItem, &RobotItem::mousePressed, this, &D2ModelScene::robotPressed);
+	connect(robotItem, &RobotItem::drawTrace, &mModel.worldModel(), &model::WorldModel::appendRobotTrace);
+
+	addItem(robotItem);
+
+	Rotater * const rotater = new Rotater();
+	rotater->setMasterItem(robotItem);
+	rotater->setVisible(false);
+
+	robotItem->setRotater(rotater);
+
+	mRobots.insert(robotModel, robotItem);
+
+	emit robotListChanged(robotItem);
+}
+
+void D2ModelScene::onRobotRemove(model::RobotModel *robotModel)
+{
+	RobotItem *robotItem = mRobots[robotModel];
+
+	removeItem(robotItem);
+	mRobots.remove(robotModel);
+
+	delete robotItem;
+
+	emit robotListChanged(nullptr);
 }
 
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	QPointF const position = mouseEvent->scenePos();
 
-	mRobot->checkSelection();
-	for (SensorItem *sensor : mRobot->sensors().values()) {
-		if (sensor) {
-			sensor->checkSelection();
+	for (RobotItem * const robotItem : mRobots.values()) {
+		robotItem->checkSelection();
+
+		for (SensorItem *sensor : robotItem->sensors().values()) {
+			if (sensor) {
+				sensor->checkSelection();
+			}
 		}
 	}
 
@@ -99,27 +126,29 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		mModel.worldModel().addColorField(item);
 	};
 
-	if (!mRobot->realBoundingRect().contains(position)) {
-		switch (mDrawingAction) {
-		case wall:
-			mCurrentWall = new items::WallItem(position, position);
-			initItem(mCurrentWall);
-			mModel.worldModel().addWall(mCurrentWall);
-			break;
-		case line:
-			mCurrentLine = new items::LineItem(position, position);
-			initColorField(mCurrentLine);
-			break;
-		case stylus:
-			mCurrentStylus = new items::StylusItem(position.x(), position.y());
-			initColorField(mCurrentStylus);
-			break;
-		case ellipse:
-			mCurrentEllipse = new items::EllipseItem(position, position);
-			initColorField(mCurrentEllipse);
-			break;
-		default:
-			break;
+	for (RobotItem * const robotItem : mRobots.values()) {
+		if (!robotItem->realBoundingRect().contains(position)) {
+			switch (mDrawingAction) {
+			case wall:
+				mCurrentWall = new items::WallItem(position, position);
+				initItem(mCurrentWall);
+				mModel.worldModel().addWall(mCurrentWall);
+				break;
+			case line:
+				mCurrentLine = new items::LineItem(position, position);
+				initColorField(mCurrentLine);
+				break;
+			case stylus:
+				mCurrentStylus = new items::StylusItem(position.x(), position.y());
+				initColorField(mCurrentStylus);
+				break;
+			case ellipse:
+				mCurrentEllipse = new items::EllipseItem(position, position);
+				initColorField(mCurrentEllipse);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
@@ -133,10 +162,12 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	if (mouseEvent->buttons() & Qt::LeftButton) {
-		mRobot->checkSelection();
-		for (SensorItem *sensor : mRobot->sensors().values()) {
-			if (sensor) {
-				sensor->checkSelection();
+		for (RobotItem * const robotItem : mRobots.values()) {
+			robotItem->checkSelection();
+			for (SensorItem *sensor : robotItem->sensors().values()) {
+				if (sensor) {
+					sensor->checkSelection();
+				}
 			}
 		}
 	}
@@ -158,7 +189,7 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	default:
 		needUpdate = false;
 		if (mouseEvent->buttons() & Qt::LeftButton) {
-			forMoveResize(mouseEvent, mRobot->realBoundingRect());
+			forMoveResize(mouseEvent);
 		}
 
 		AbstractScene::mouseMoveEvent(mouseEvent);
@@ -173,10 +204,12 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	mRobot->checkSelection();
-	for (SensorItem *sensor : mRobot->sensors().values()) {
-		if (sensor) {
-			sensor->checkSelection();
+	for (RobotItem * const robotItem : mRobots.values()) {
+		robotItem->checkSelection();
+		for (SensorItem *sensor : robotItem->sensors().values()) {
+			if (sensor) {
+				sensor->checkSelection();
+			}
 		}
 	}
 
@@ -210,7 +243,9 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	}
 	default:
-		forReleaseResize(mouseEvent, mRobot->realBoundingRect());
+		if (itemToSelect) {
+			forReleaseResize(mouseEvent);
+		}
 		break;
 	}
 
@@ -220,7 +255,10 @@ void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 	setMoveFlag(mouseEvent);
 
-	setSceneRect(sceneRect().united(mRobot->sceneBoundingRect()));
+	for (RobotItem * const robotItem : mRobots) {
+		setSceneRect(sceneRect().united(robotItem->sceneBoundingRect()));
+	}
+
 	update();
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
@@ -246,10 +284,12 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 	}
 
 	if (SensorItem * const sensor = dynamic_cast<SensorItem *>(item)) {
-		interpreterBase::robotModel::PortInfo const port = mRobot->sensors().key(sensor);
-		if (port.isValid()) {
-			deviceConfigurationChanged(mModel.robotModel().info().name()
-					, port, interpreterBase::robotModel::DeviceInfo(), Reason::userAction);
+		for (RobotItem * const robotItem : mRobots.values()) {
+			interpreterBase::robotModel::PortInfo const port = robotItem->sensors().key(sensor);
+			if (port.isValid()) {
+				deviceConfigurationChanged(robotItem->robotModel().info().robotId()
+						, port, interpreterBase::robotModel::DeviceInfo(), Reason::userAction);
+			}
 		}
 	} else if (items::WallItem * const wall = dynamic_cast<items::WallItem *>(item)) {
 		mModel.worldModel().removeWall(wall);
@@ -258,20 +298,20 @@ void D2ModelScene::deleteItem(QGraphicsItem *item)
 	}
 }
 
-void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect)
+void D2ModelScene::forMoveResize(QGraphicsSceneMouseEvent *event)
 {
-	reshapeItem(event, rect);
+	reshapeItem(event);
 	update();
 }
 
-void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event, QRectF const &rect)
+void D2ModelScene::forReleaseResize(QGraphicsSceneMouseEvent * event)
 {
-	reshapeItem(event, rect);
+	reshapeItem(event);
 	mGraphicsItem = nullptr;
 	update();
 }
 
-void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect)
+void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
 	if (mGraphicsItem) {
@@ -283,7 +323,13 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &re
 
 		mGraphicsItem->resizeItem(event);
 
-		if (mGraphicsItem->realShape().intersects(rect) && dynamic_cast<items::WallItem *>(mGraphicsItem)) {
+		QPainterPath shape;
+
+		for (RobotItem * const robotItem : mRobots.values()) {
+			shape.addRect(robotItem->realBoundingRect());
+		}
+
+		if (mGraphicsItem->realShape().intersects(shape) && dynamic_cast<items::WallItem *>(mGraphicsItem)) {
 			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
 		}
 	}
@@ -339,15 +385,15 @@ void D2ModelScene::setNoneStatus()
 void D2ModelScene::clearScene(bool removeRobot, Reason reason)
 {
 	mModel.worldModel().clear();
-	mModel.robotModel().clear();
-	if (removeRobot) {
-		for (interpreterBase::robotModel::PortInfo const &port : mRobot->sensors().keys()) {
-			deviceConfigurationChanged(mModel.robotModel().info().name()
-					, port, interpreterBase::robotModel::DeviceInfo(), reason);
-		}
 
-		clear();
-		drawInitialRobot();
+	for (model::RobotModel *robotModel : mRobots.keys()) {
+		robotModel->clear();
+		if (removeRobot) {
+			for (interpreterBase::robotModel::PortInfo const &port : robot(*robotModel)->sensors().keys()) {
+				deviceConfigurationChanged(robotModel->info().robotId()
+						, port, interpreterBase::robotModel::DeviceInfo(), reason);
+			}
+		}
 	}
 }
 
@@ -361,8 +407,13 @@ void D2ModelScene::reshapeWall(QGraphicsSceneMouseEvent *event)
 			mCurrentWall->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 			mCurrentWall->reshapeEndWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 		} else {
-			if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
-				mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+			QPainterPath const shape = mCurrentWall->realShape();
+
+			for (RobotItem * const robotItem : mRobots.values()) {
+				if (shape.intersects(robotItem->realBoundingRect())) {
+					mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+					break;
+				}
 			}
 
 			if (event->modifiers() & Qt::ShiftModifier) {
@@ -404,7 +455,15 @@ void D2ModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 
 void D2ModelScene::worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QRectF const &oldPos)
 {
-	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
+	bool isNeedStop = false;
+
+	for (RobotItem * const robotItem : mRobots.values()) {
+		if (shape.intersects(robotItem->realBoundingRect())) {
+			isNeedStop = true;
+			break;
+		}
+	}
+
 	wall->onOverlappedWithRobot(isNeedStop);
 	if (wall->isDragged() && ((mDrawingAction == none) ||
 			(mDrawingAction == D2ModelScene::wall && mCurrentWall == wall)))
@@ -427,19 +486,25 @@ void D2ModelScene::alignWalls()
 	}
 }
 
-RobotItem *D2ModelScene::robot()
+RobotItem *D2ModelScene::robot(model::RobotModel &robotModel)
 {
-	return mRobot;
+	return mRobots.value(&robotModel);
 }
 
-void D2ModelScene::centerOnRobot()
+void D2ModelScene::centerOnRobot(RobotItem *selectedItem)
 {
+	RobotItem *robotItem = mRobots.values().first();
+
+	if (selectedItem) {
+		robotItem = selectedItem;
+	}
+
 	for (QGraphicsView * const view : views()) {
 		QRectF const viewPortRect = view->mapToScene(view->viewport()->rect()).boundingRect();
-		if (!viewPortRect.contains(mRobot->sceneBoundingRect().toRect())) {
-			QRectF const requiredViewPort = viewPortRect.translated(mRobot->scenePos() - viewPortRect.center());
+		if (!viewPortRect.contains(robotItem->sceneBoundingRect().toRect())) {
+			QRectF const requiredViewPort = viewPortRect.translated(robotItem->scenePos() - viewPortRect.center());
 			setSceneRect(itemsBoundingRect().united(requiredViewPort));
-			view->centerOn(mRobot);
+			view->centerOn(robotItem);
 		}
 	}
 }

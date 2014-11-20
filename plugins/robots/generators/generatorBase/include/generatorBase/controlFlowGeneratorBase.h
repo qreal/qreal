@@ -32,7 +32,7 @@ public:
 	/// parent. Implementation must pay attention to isThisDiagramMain parameter
 	/// (it should be always false in copied objects).
 	/// Ownership on the cloned generators is taken by this generator`s parent.
-	virtual ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId) = 0;
+	virtual ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId, bool cloneForNewDiagram) = 0;
 
 	/// Generates control flow object representation (SemanticTree) and returns
 	/// a pointer to it if generation process was successfull or NULL otherwise.
@@ -45,6 +45,7 @@ public:
 	/// control flow generators (fatal errors occured).
 	bool errorsOccured() const;
 
+	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitFork(qReal::Id const &id, QList<LinkInfo> &links) override;
 
@@ -70,9 +71,8 @@ protected:
 	bool mErrorsOccured;
 	bool const mIsMainGenerator;
 
-private:
 	qReal::Id const mDiagram;
-	PrimaryControlFlowValidator mValidator;
+	PrimaryControlFlowValidator *mValidator;  // Takes owneship via Qt parentship system
 };
 
 }

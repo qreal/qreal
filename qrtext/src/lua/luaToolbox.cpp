@@ -49,7 +49,7 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const
 
 	if (mParsedCache[id][propertyName] != code) {
 		auto tokenStream = mLexer->tokenize(code);
-		ast = mParser->parse(tokenStream);
+		ast = mParser->parse(tokenStream, mLexer->userFriendlyTokenNames());
 
 		if (mErrors.isEmpty()) {
 			mAstRoots[id][propertyName] = ast;

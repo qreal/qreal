@@ -1,4 +1,5 @@
 #include "abstractItemView.h"
+
 using namespace graphicsUtils;
 
 AbstractView::AbstractView(QWidget * parent) : QGraphicsView(parent)

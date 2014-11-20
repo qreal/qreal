@@ -15,7 +15,7 @@ class SensorsConfiguration : public QObject, public interpreterBase::DevicesConf
 	Q_OBJECT
 
 public:
-	explicit SensorsConfiguration(QString const &robotModelName);
+	SensorsConfiguration(QString const &robotModelName);
 
 	void setPosition(interpreterBase::robotModel::PortInfo const &port, QPointF const &position);
 	QPointF position(interpreterBase::robotModel::PortInfo const &port) const;
@@ -62,7 +62,7 @@ private:
 
 	QPointF defaultPosition() const;
 
-	QString const mRobotModel;
+	QString mRobotModelName;
 	QHash<interpreterBase::robotModel::PortInfo, SensorInfo> mSensorsInfo;
 };
 

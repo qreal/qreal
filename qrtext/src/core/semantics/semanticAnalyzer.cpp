@@ -47,11 +47,17 @@ void SemanticAnalyzer::finalizeResolve(QSharedPointer<ast::Node> const &node)
 	if (node->is<ast::Expression>()) {
 		auto expression = as<ast::Expression>(node);
 		if (mTypes.contains(expression)) {
-			auto typeVariable = mTypes.value(expression);
-			if (!typeVariable->isResolved()) {
-				reportError(expression, QObject::tr("Can not deduce type"));
-			} else if (typeVariable->isEmpty()) {
+			QSharedPointer<types::TypeVariable> const &typeVariable = mTypes.value(expression);
+			if (typeVariable->isEmpty()) {
 				reportError(expression, QObject::tr("Type mismatch"));
+			} else if (!typeVariable->isResolved()) {
+				if (typeVariable->finalType() == mAny) {
+					reportError(expression, QObject::tr("Can not deduce type, this expression can be of any type"));
+				} else {
+					QString const error = QObject::tr("Can not deduce type, expression can be of following types: %1")
+							.arg(typeVariable->toString());
+					reportError(expression, error);
+				}
 			}
 		}
 	}

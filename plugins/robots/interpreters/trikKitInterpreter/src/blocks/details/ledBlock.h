@@ -1,10 +1,7 @@
 #pragma once
 
-#include <QtGui/QColor>
-
-#include "trikDisplayWidget.h"
-#include "interpreterBase/blocksBase/block.h"
-#include "interpreterBase/robotModel/robotModelInterface.h"
+#include "interpreterBase/blocksBase/common/deviceBlock.h"
+#include "src/robotModel/parts/trikLed.h"
 
 namespace trikKitInterpreter {
 namespace blocks {
@@ -12,18 +9,15 @@ namespace details {
 
 /// An interpreter`s implementation for LED block.
 /// sets LED widget's color.
-class LedBlock : public interpreterBase::blocksBase::Block
+class LedBlock : public interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::TrikLed>
 {
 	Q_OBJECT
 
 public:
 	explicit LedBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~LedBlock() override;
-	void run() override;
 
 private:
-	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
-
+	void doJob(robotModel::parts::TrikLed &led) override;
 };
 
 }

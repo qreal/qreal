@@ -7,7 +7,7 @@ viewBox="0 0 15000 15000"
  <defs>
   <style type="text/css">
    <![CDATA[
-    .str0 {stroke:#663333;stroke-width:39.69}
+    .str0 {stroke:#873E3E;stroke-width:39.69}
     .fil48 {fill:none}
     .fil0 {fill:#5E4377}
     .fil2 {fill:#5E4378}
@@ -94,14 +94,14 @@ viewBox="0 0 15000 15000"
    <stop offset="0.529412" style="stop-color:#E6E6E6"/>
    <stop offset="1" style="stop-color:#B3B3B3"/>
   </linearGradient>
-  <linearGradient id="id7" gradientUnits="objectBoundingBox" x1="49.9998%" y1="63%" x2="49.9998%" y2="37%">
+  <linearGradient id="id7" gradientUnits="userSpaceOnUse" x1="11146.5" y1="8075.91" x2="11146.5" y2="7097.02">
    <stop offset="0" style="stop-color:#C40000"/>
    <stop offset="1" style="stop-color:#D60000"/>
   </linearGradient>
  </defs>
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <g id="_291067320">
+  <g id="_122769400">
    <g id="_348901048">
     <path class="fil0" d="M2168 45l10675 0c1170,0 2119,949 2119,2119l0 10675c0,1170 -949,2119 -2119,2119l-10675 0c-1170,0 -2119,-949 -2119,-2119l0 -10675c0,-1170 949,-2119 2119,-2119z"/>
     <g>
@@ -438,7 +438,6 @@ viewBox="0 0 15000 15000"
   <ellipse class="fil53" cx="4923" cy="11112" rx="2008" ry="593"/>
   <path class="fil54" d="M4396 9600l1018 0c262,0 477,215 477,477l0 740c0,617 -1972,547 -1972,0l0 -740c0,-262 215,-477 477,-477z"/>
   <path class="fil55" d="M4982 10114c880,-20 1702,-347 2376,-1279 288,-398 539,-798 572,-2425l0 0 0 -6c1,-74 2,-151 3,-230l-3 0 0 -157 -786 0 0 393 250 0c109,2229 -1350,3071 -2436,3076 -1566,7 -2670,-1515 -2528,-3091l299 0 0 -381 -792 0c0,589 -38,1274 90,1826 311,1337 1571,2305 2956,2274z"/>
-  <rect class="fil56 str0" x="9392" y="5241" width="1199" height="4763" rx="71" ry="71"/>
-  <rect class="fil56 str0" x="11191" y="5241" width="1199" height="4763" rx="71" ry="71"/>
+  <rect class="fil56 str0" x="9264" y="5704" width="3765" height="3765" rx="176" ry="44"/>
  </g>
 </svg>

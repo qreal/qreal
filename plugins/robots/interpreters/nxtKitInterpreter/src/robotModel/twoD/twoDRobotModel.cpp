@@ -16,12 +16,13 @@
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
 #include "robotModel/twoD/parts/twoDMotor.h"
+#include "nxtDisplayWidget.h"
 
 using namespace nxtKitInterpreter::robotModel;
 using namespace nxtKitInterpreter::robotModel::twoD;
 using namespace interpreterBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
+TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 {
 }
@@ -67,15 +68,17 @@ QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo co
 {
 	if (deviceType.isA<robotParts::TouchSensor>()) {
 		return QRect(-12, -5, 25, 10);
-	} else if (deviceType.isA<robotParts::ColorSensor>()
+	}
+
+	if (deviceType.isA<robotParts::ColorSensor>()
 			|| deviceType.isA<robotParts::LightSensor>())
 	{
 		return QRect(-6, -6, 12, 12);
 	}
+
 	if (deviceType.isA<robotParts::RangeSensor>()) {
 		return QRect(-20, -10, 40, 20);;
-	} else {
-		Q_ASSERT(!"Unknown sensor type");
-		return QRect();
 	}
+
+	return QRect();
 }

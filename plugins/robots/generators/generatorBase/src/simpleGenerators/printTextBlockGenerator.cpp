@@ -13,7 +13,8 @@ PrintTextBlockGenerator::PrintTextBlockGenerator(qrRepo::RepoApi const &repo
 					, customizer.factory()->intPropertyConverter(id, "XCoordinateText"))
 			<< Binding::createConverting("@@Y@@", "YCoordinateText"
 					, customizer.factory()->intPropertyConverter(id, "YCoordinateText"))
-			<< Binding::createConverting("@@TEXT@@", "PrintText", customizer.factory()->stringPropertyConverter())
+			<< Binding::createConverting("@@TEXT@@", "PrintText"
+					, customizer.factory()->stringPropertyConverter(id, "PrintText"))
 			, parent)
 {
 }

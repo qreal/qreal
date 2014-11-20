@@ -30,12 +30,12 @@
 <context>
     <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="26"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="66"/>
         <source>Enter robot`s IP-address here...</source>
         <translation>Введите IP-адрес робота...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="88"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="85"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
@@ -44,7 +44,7 @@
         <translation type="vanished">Открыть 2D модель для TRIK v4</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="134"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="131"/>
         <source>Show 2d model for TRIK v6</source>
         <translation>Открыть 2D модель для TRIK v6</translation>
     </message>
@@ -52,9 +52,8 @@
 <context>
     <name>trikKitInterpreter::blocks::details::LedBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/blocks/details/ledBlock.cpp" line="38"/>
         <source>Led is not configured (WTF?)</source>
-        <translation>Светодиод не сконфигурирован</translation>
+        <translation type="vanished">Светодиод не сконфигурирован</translation>
     </message>
 </context>
 <context>

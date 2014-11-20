@@ -521,7 +521,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">2D модель</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="13"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="15"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -530,32 +530,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="14"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="16"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="15"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="17"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="17"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="19"/>
         <source>Text under pictogram</source>
         <translation>Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="76"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="78"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="77"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="79"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="80"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="82"/>
         <source>Toggle titles visibility</source>
         <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
@@ -572,7 +572,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Переключиться в режим TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="16"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="18"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -692,7 +692,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ActionsManager</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="189"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="193"/>
         <source>Switch to </source>
         <translation>Переключиться в режим </translation>
     </message>
@@ -715,7 +715,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="100"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>

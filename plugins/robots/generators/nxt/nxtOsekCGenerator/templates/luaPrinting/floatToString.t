@@ -1,0 +1,1 @@
+float_to_string(@@VALUE@@)

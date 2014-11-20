@@ -13,9 +13,9 @@ using namespace ev3KitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
 using namespace interpreterBase::robotModel;
 
-RealRobotModel::RealRobotModel(QString const &kitId)
-: Ev3RobotModelBase(kitId)
-, mRobotCommunicator(new RobotCommunicator(this))
+RealRobotModel::RealRobotModel(QString const &kitId, QString const &robotId)
+	: Ev3RobotModelBase(kitId, robotId)
+	, mRobotCommunicator(new RobotCommunicator(this))
 {
 	connect(mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);

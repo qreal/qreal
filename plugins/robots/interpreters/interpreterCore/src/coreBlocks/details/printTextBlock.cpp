@@ -1,6 +1,5 @@
 #include "printTextBlock.h"
 
-#include <utils/textExpressionProcessor.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
 #include <interpreterBase/robotModel/robotParts/display.h>
 
@@ -15,7 +14,7 @@ void PrintTextBlock::doJob(interpreterBase::robotModel::robotParts::Display &dis
 {
 	int const x = eval<int>("XCoordinateText");
 	int const y = eval<int>("YCoordinateText");
-	QString const result = stringProperty("PrintText");
+	QString const result = eval<QString>("PrintText");
 	if (!errorsOccured()) {
 		display.printText(x, y, result);
 		emit done(mNextBlockId);

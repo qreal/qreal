@@ -16,7 +16,7 @@ namespace converters {
 class PortNameConverter : public TemplateParametrizedConverter
 {
 public:
-	explicit PortNameConverter(QString const &pathToTemplates
+	PortNameConverter(QString const &pathToTemplates
 			, QList<interpreterBase::robotModel::PortInfo> const &ports);
 
 	QString convert(QString const &portNameOrAlias) const override;

@@ -25,7 +25,7 @@ public:
 			, bool isThisDiagramMain = true);
 
 	/// Implementation of clone operation for readable generator
-	ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId) override;
+	ControlFlowGeneratorBase *cloneFor(qReal::Id const &diagramId, bool cloneForNewDiagram) override;
 
 	void beforeSearch() override;
 

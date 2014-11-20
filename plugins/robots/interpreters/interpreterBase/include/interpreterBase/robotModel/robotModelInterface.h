@@ -61,6 +61,8 @@ public:
 	/// Destructor.
 	virtual ~RobotModelInterface() {}
 
+	virtual QString robotId() const = 0;
+
 	/// Returns internal name (id) of a model. Used to identify a model in kit manager, configuration and so on.
 	/// Shall be unique.
 	virtual QString name() const = 0;
@@ -151,7 +153,8 @@ signals:
 	/// Emitted when model is connected to a robot. If there is no need to connect (for example, 2d model), emitted
 	/// immediately after connectToRobot() call.
 	/// @param success - true, if connected successfully.
-	void connected(bool success);
+	/// @param errorString - if connection failed, contains string to show to user.
+	void connected(bool success, QString const &errorString);
 
 	/// Emitted when robot is disconnected. Not emitted when connection attempt fails.
 	void disconnected();
