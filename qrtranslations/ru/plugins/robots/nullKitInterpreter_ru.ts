@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.0" language="ru_RU">
 <context>
     <name>nullKitInterpreter::NullKitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/nullKitInterpreter/src/nullKitInterpreterPlugin.cpp" line="21"/>
+        <location filename="../../../../plugins/robots/interpreters/nullKitInterpreter/src/nullKitInterpreterPlugin.cpp" line="19"/>
         <source>Empty Kit</source>
         <translation>Пустая модель</translation>
     </message>

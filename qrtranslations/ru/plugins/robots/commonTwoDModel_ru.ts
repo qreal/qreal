@@ -349,9 +349,8 @@
 <context>
     <name>twoDModel::robotModel::parts::Marker</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/commonTwoDModel/include/commonTwoDModel/robotModel/parts/marker.h" line="23"/>
         <source>Marker</source>
-        <translation>Маркер</translation>
+        <translation type="obsolete">Маркер</translation>
     </message>
 </context>
 <context>

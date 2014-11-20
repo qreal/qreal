@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.0" language="ru_RU">
 <context>
     <name>interpreterBase::DevicesConfigurationWidget</name>
     <message>
@@ -45,16 +45,15 @@
 <context>
     <name>interpreterBase::blocksBase::common::DeviceBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/blocksBase/common/deviceBlock.h" line="31"/>
         <source>%1 is not configured.</source>
-        <translation>%1 не сконфигурирован.</translation>
+        <translation type="obsolete">%1 не сконфигурирован.</translation>
     </message>
 </context>
 <context>
     <name>interpreterBase::blocksBase::common::DisplayBlock</name>
     <message>
         <source>Display is not configured (WTF?)</source>
-        <translation type="vanished">Дисплей не сконфигурирован (што?)</translation>
+        <translation type="obsolete">Дисплей не сконфигурирован (што?)</translation>
     </message>
 </context>
 <context>
@@ -102,7 +101,7 @@
     <name>interpreterBase::blocksBase::common::WaitForEncoderBlock</name>
     <message>
         <source>Encoder sensor is not configured on port %1</source>
-        <translation type="vanished">Энкодер не сконфигурирован на порту %1</translation>
+        <translation type="obsolete">Энкодер не сконфигурирован на порту %1</translation>
     </message>
 </context>
 <context>
@@ -133,7 +132,7 @@
     <name>interpreterBase::robotModel::robotParts::Buttons</name>
     <message>
         <source>Buttons</source>
-        <translation type="vanished">Кнопки</translation>
+        <translation type="obsolete">Кнопки</translation>
     </message>
 </context>
 <context>
@@ -187,9 +186,8 @@
 <context>
     <name>interpreterBase::robotModel::robotParts::Display</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/robotModel/robotParts/display.h" line="15"/>
         <source>Display</source>
-        <translation>Дисплей</translation>
+        <translation type="obsolete">Дисплей</translation>
     </message>
 </context>
 <context>

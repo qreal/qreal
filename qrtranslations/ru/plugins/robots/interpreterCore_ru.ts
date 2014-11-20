@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.0" language="ru_RU">
 <context>
     <name>D2Form</name>
     <message>
         <source>2D Robot Model</source>
-        <translation type="vanished">Двухмерная модель</translation>
+        <translation type="obsolete">Двухмерная модель</translation>
     </message>
     <message>
         <source>do nothing</source>
@@ -13,7 +13,7 @@
     </message>
     <message>
         <source>Clear</source>
-        <translation type="vanished">Очистить</translation>
+        <translation type="obsolete">Очистить</translation>
     </message>
     <message>
         <source>Wall</source>
@@ -22,7 +22,7 @@
     <message>
         <source>Line (L)</source>
         <oldsource>Line</oldsource>
-        <translation type="vanished">Линия (L)</translation>
+        <translation type="obsolete">Линия (L)</translation>
     </message>
     <message>
         <source>Stylus</source>
@@ -34,71 +34,71 @@
     </message>
     <message>
         <source>L</source>
-        <translation type="vanished">L</translation>
+        <translation type="obsolete">L</translation>
     </message>
     <message>
         <source>Wall (W)</source>
-        <translation type="vanished">Стена (W)</translation>
+        <translation type="obsolete">Стена (W)</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation type="vanished">Инструменты</translation>
+        <translation type="obsolete">Инструменты</translation>
     </message>
     <message>
         <source>W</source>
-        <translation type="vanished">W</translation>
+        <translation type="obsolete">W</translation>
     </message>
     <message>
         <source>Pencil (P)</source>
-        <translation type="vanished">Карандаш (P)</translation>
+        <translation type="obsolete">Карандаш (P)</translation>
     </message>
     <message>
         <source>P</source>
-        <translation type="vanished">P</translation>
+        <translation type="obsolete">P</translation>
     </message>
     <message>
         <source>Ellipse (E)</source>
-        <translation type="vanished">Эллипс (E)</translation>
+        <translation type="obsolete">Эллипс (E)</translation>
     </message>
     <message>
         <source>E</source>
-        <translation type="vanished">E</translation>
+        <translation type="obsolete">E</translation>
     </message>
     <message>
         <source>None (N)</source>
-        <translation type="vanished">Курсор (N)</translation>
+        <translation type="obsolete">Курсор (N)</translation>
     </message>
     <message>
         <source>N</source>
-        <translation type="vanished">N</translation>
+        <translation type="obsolete">N</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="vanished">Перо</translation>
+        <translation type="obsolete">Перо</translation>
     </message>
     <message>
         <source>Width</source>
-        <translation type="vanished">Ширина</translation>
+        <translation type="obsolete">Ширина</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="vanished">Цвет</translation>
+        <translation type="obsolete">Цвет</translation>
     </message>
     <message>
         <source> sec.</source>
-        <translation type="vanished"> сек.</translation>
+        <translation type="obsolete"> сек.</translation>
     </message>
     <message>
         <source>Port 1:</source>
-        <translation type="vanished">Порт 1:</translation>
+        <translation type="obsolete">Порт 1:</translation>
     </message>
     <message>
         <source>Port 2:</source>
-        <translation type="vanished">Порт 2:</translation>
+        <translation type="obsolete">Порт 2:</translation>
     </message>
     <message>
         <source>Port 3:</source>
-        <translation type="vanished">Порт 3:</translation>
+        <translation type="obsolete">Порт 3:</translation>
     </message>
     <message>
         <source>Noise</source>
@@ -107,7 +107,7 @@
     <message>
         <source>Realistic sensors</source>
         <oldsource>Enable sensor noise</oldsource>
-        <translation type="vanished">Реалистичные сенсоры</translation>
+        <translation type="obsolete">Реалистичные сенсоры</translation>
     </message>
     <message>
         <source>Enable motor noise</source>
@@ -115,35 +115,35 @@
     </message>
     <message>
         <source>Return a robot to initial position</source>
-        <translation type="vanished">Вернуть робот в начальное положение</translation>
+        <translation type="obsolete">Вернуть робот в начальное положение</translation>
     </message>
     <message>
         <source>empty</source>
-        <translation type="vanished">нет сенсора</translation>
+        <translation type="obsolete">нет сенсора</translation>
     </message>
     <message>
         <source>touch</source>
-        <translation type="vanished">Сенсор касания</translation>
+        <translation type="obsolete">Сенсор касания</translation>
     </message>
     <message>
         <source>color</source>
-        <translation type="vanished">Сенсор цвета</translation>
+        <translation type="obsolete">Сенсор цвета</translation>
     </message>
     <message>
         <source>sonar</source>
-        <translation type="vanished">Сенсор расстояния</translation>
+        <translation type="obsolete">Сенсор расстояния</translation>
     </message>
     <message>
         <source>light</source>
-        <translation type="vanished">Сенсор света</translation>
+        <translation type="obsolete">Сенсор света</translation>
     </message>
     <message>
         <source>Stop program (Esc)</source>
-        <translation type="vanished">Остановить программу (Esc)</translation>
+        <translation type="obsolete">Остановить программу (Esc)</translation>
     </message>
     <message>
         <source>Set speed</source>
-        <translation type="vanished">Установить скорость</translation>
+        <translation type="obsolete">Установить скорость</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -151,7 +151,7 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600;&quot;&gt;Speed&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -159,64 +159,64 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Low</source>
-        <translation type="vanished">Низкая</translation>
+        <translation type="obsolete">Низкая</translation>
     </message>
     <message>
         <source>Medium</source>
-        <translation type="vanished">Средняя</translation>
+        <translation type="obsolete">Средняя</translation>
     </message>
     <message>
         <source>High</source>
-        <translation type="vanished">Высокая</translation>
+        <translation type="obsolete">Высокая</translation>
     </message>
     <message>
         <source>Physics</source>
-        <translation type="vanished">Физика</translation>
+        <translation type="obsolete">Физика</translation>
     </message>
     <message>
         <source>Realistic physics</source>
-        <translation type="vanished">Реалистичная физика</translation>
+        <translation type="obsolete">Реалистичная физика</translation>
     </message>
     <message>
         <source>Realistic engines</source>
-        <translation type="vanished">Реалистичные моторы</translation>
+        <translation type="obsolete">Реалистичные моторы</translation>
     </message>
     <message>
         <source>Save World Model (Ctrl+S)</source>
-        <translation type="vanished">Сохранить модель мира (Ctrl+S)</translation>
+        <translation type="obsolete">Сохранить модель мира (Ctrl+S)</translation>
     </message>
     <message>
         <source>Ctrl+S</source>
-        <translation type="vanished">Ctrl+S</translation>
+        <translation type="obsolete">Ctrl+S</translation>
     </message>
     <message>
         <source>Time in 2D model</source>
-        <translation type="vanished">Время в 2D модели</translation>
+        <translation type="obsolete">Время в 2D модели</translation>
     </message>
     <message>
         <source>Load World Model (Ctrl+O)</source>
         <oldsource>Load World Model (Crtl+O)</oldsource>
-        <translation type="vanished">Загрузить модель мира (Ctrl+O)</translation>
+        <translation type="obsolete">Загрузить модель мира (Ctrl+O)</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="vanished">Ctrl+O</translation>
+        <translation type="obsolete">Ctrl+O</translation>
     </message>
     <message>
         <source>Hand dragging mode</source>
-        <translation type="vanished">Режим таскания сцены</translation>
+        <translation type="obsolete">Режим таскания сцены</translation>
     </message>
     <message>
         <source>Multiselection mode</source>
-        <translation type="vanished">Режим выделения</translation>
+        <translation type="obsolete">Режим выделения</translation>
     </message>
     <message>
         <source>Camera following robot</source>
-        <translation type="vanished">Следование за роботом</translation>
+        <translation type="obsolete">Следование за роботом</translation>
     </message>
     <message>
         <source>Run program (Enter)</source>
-        <translation type="vanished">Запустить программу (Enter)</translation>
+        <translation type="obsolete">Запустить программу (Enter)</translation>
     </message>
     <message>
         <source>Stop program (Enter)</source>
@@ -228,7 +228,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Port 4:</source>
-        <translation type="vanished">Порт 4:</translation>
+        <translation type="obsolete">Порт 4:</translation>
     </message>
     <message>
         <source>Save World Model</source>
@@ -251,22 +251,22 @@ p, li { white-space: pre-wrap; }
     <name>NxtDisplay</name>
     <message>
         <source>tr(NxtDisplay)</source>
-        <translation type="vanished">Дисплей</translation>
+        <translation type="obsolete">Дисплей</translation>
     </message>
 </context>
 <context>
     <name>PreferencesRobotSettingsPage</name>
     <message>
         <source>Type of Robot Model</source>
-        <translation type="vanished">Тип модели робота</translation>
+        <translation type="obsolete">Тип модели робота</translation>
     </message>
     <message>
         <source>Null model</source>
-        <translation type="vanished">Пустая модель</translation>
+        <translation type="obsolete">Пустая модель</translation>
     </message>
     <message>
         <source>2D robot model</source>
-        <translation type="vanished">Двухмерная модель</translation>
+        <translation type="obsolete">Двухмерная модель</translation>
     </message>
     <message>
         <source>Real robot</source>
@@ -295,51 +295,51 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Lego NXT</source>
-        <translation type="vanished">Лего NXT</translation>
+        <translation type="obsolete">Лего NXT</translation>
     </message>
     <message>
         <source>TRIK</source>
-        <translation type="vanished">ТРИК</translation>
+        <translation type="obsolete">ТРИК</translation>
     </message>
     <message>
         <source>Bluetooth Settings</source>
-        <translation type="vanished">Настройки Bluetooth</translation>
+        <translation type="obsolete">Настройки Bluetooth</translation>
     </message>
     <message>
         <source>COM Port:</source>
-        <translation type="vanished">COM-порт:</translation>
+        <translation type="obsolete">COM-порт:</translation>
     </message>
     <message>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
-        <translation type="vanished">COM-порты не найдены. Если установлено Bluetooth-соединение с активным COM-портом, пожалуйста, укажите его имя. Пример: COM3</translation>
+        <translation type="obsolete">COM-порты не найдены. Если установлено Bluetooth-соединение с активным COM-портом, пожалуйста, укажите его имя. Пример: COM3</translation>
     </message>
     <message>
         <source>Specify COM port manually</source>
-        <translation type="vanished">Указать COM-порт вручную</translation>
+        <translation type="obsolete">Указать COM-порт вручную</translation>
     </message>
     <message>
         <source>Type of Communication</source>
-        <translation type="vanished">Тип связи</translation>
+        <translation type="obsolete">Тип связи</translation>
     </message>
     <message>
         <source>TCP</source>
-        <translation type="vanished">TCP</translation>
+        <translation type="obsolete">TCP</translation>
     </message>
     <message>
         <source>Elements</source>
-        <translation type="vanished">Элементы</translation>
+        <translation type="obsolete">Элементы</translation>
     </message>
     <message>
         <source>Text visible</source>
-        <translation type="vanished">Показывать текст под пиктограммой</translation>
+        <translation type="obsolete">Показывать текст под пиктограммой</translation>
     </message>
     <message>
         <source>TCP Settings</source>
-        <translation type="vanished">Настройки TCP</translation>
+        <translation type="obsolete">Настройки TCP</translation>
     </message>
     <message>
         <source>Enter server address here</source>
-        <translation type="vanished">IP-адрес сервера</translation>
+        <translation type="obsolete">IP-адрес сервера</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="205"/>
@@ -438,11 +438,11 @@ p, li { white-space: pre-wrap; }
     <name>QObject</name>
     <message>
         <source>QReal:Robots</source>
-        <translation type="vanished">QReal:Robots</translation>
+        <translation type="obsolete">QReal:Robots</translation>
     </message>
     <message>
         <source>Configure sensors</source>
-        <translation type="vanished">Настройки сенсоров</translation>
+        <translation type="obsolete">Настройки сенсоров</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="11"/>
@@ -518,7 +518,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>2d model</source>
-        <translation type="vanished">2D модель</translation>
+        <translation type="obsolete">2D модель</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="15"/>
@@ -561,15 +561,15 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Switch to 2d model</source>
-        <translation type="vanished">Переключиться в режим 2D-модели</translation>
+        <translation type="obsolete">Переключиться в режим 2D-модели</translation>
     </message>
     <message>
         <source>Switch to Lego NXT mode</source>
-        <translation type="vanished">Переключиться в режим Lego NXT</translation>
+        <translation type="obsolete">Переключиться в режим Lego NXT</translation>
     </message>
     <message>
         <source>Switch to TRIK mode</source>
-        <translation type="vanished">Переключиться в режим TRIK</translation>
+        <translation type="obsolete">Переключиться в режим TRIK</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="18"/>
@@ -581,41 +581,41 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPlugin.cpp" line="34"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPlugin.cpp" line="35"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
     <message>
         <source>Add connection</source>
-        <translation type="vanished">Соединить с</translation>
+        <translation type="obsolete">Соединить с</translation>
     </message>
     <message>
         <source>Connect to other</source>
-        <translation type="vanished">Пересоединить</translation>
+        <translation type="obsolete">Пересоединить</translation>
     </message>
     <message>
         <source>Disconnect</source>
-        <translation type="vanished">Отсоединить</translation>
+        <translation type="obsolete">Отсоединить</translation>
     </message>
     <message>
         <source>Go to connected element</source>
-        <translation type="vanished">Перейти к элементу по ссылке</translation>
+        <translation type="obsolete">Перейти к элементу по ссылке</translation>
     </message>
     <message>
         <source>Expand explosion</source>
-        <translation type="vanished">Раскрыть эксплозию</translation>
+        <translation type="obsolete">Раскрыть эксплозию</translation>
     </message>
     <message>
         <source>Collapse explosion</source>
-        <translation type="vanished">Схлопнуть эксплозию</translation>
+        <translation type="obsolete">Схлопнуть эксплозию</translation>
     </message>
     <message>
         <source>Existing connections</source>
-        <translation type="vanished">Существующие соединения</translation>
+        <translation type="obsolete">Существующие соединения</translation>
     </message>
     <message>
         <source>Elements from this group exist for reusing all created connections</source>
-        <translation type="vanished">Элементы этой группы существуют для переиспользования всех существующих соединений</translation>
+        <translation type="obsolete">Элементы этой группы существуют для переиспользования всех существующих соединений</translation>
     </message>
     <message>
         <source>Show grid</source>
@@ -623,70 +623,70 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Unused</source>
-        <translation type="vanished">Не используется</translation>
+        <translation type="obsolete">Не используется</translation>
     </message>
     <message>
         <source>Touch sensor (boolean value)</source>
-        <translation type="vanished">Сенсор касания</translation>
+        <translation type="obsolete">Сенсор касания</translation>
     </message>
     <message>
         <source>Touch sensor (raw value)</source>
-        <translation type="vanished">Сенсор касания (сырое значение)</translation>
+        <translation type="obsolete">Сенсор касания (сырое значение)</translation>
     </message>
     <message>
         <source>Sonar sensor</source>
-        <translation type="vanished">Сенсор расстояния</translation>
+        <translation type="obsolete">Сенсор расстояния</translation>
     </message>
     <message>
         <source>Light sensor</source>
-        <translation type="vanished">Сенсор света</translation>
+        <translation type="obsolete">Сенсор света</translation>
     </message>
     <message>
         <source>Color sensor (full colors)</source>
-        <translation type="vanished">Сенсор цвета (распознавание цветов)</translation>
+        <translation type="obsolete">Сенсор цвета (распознавание цветов)</translation>
     </message>
     <message>
         <source>Color sensor (red)</source>
-        <translation type="vanished">Сенсор цвета (красный)</translation>
+        <translation type="obsolete">Сенсор цвета (красный)</translation>
     </message>
     <message>
         <source>Color sensor (green)</source>
-        <translation type="vanished">Сенсор цвета (зелёный)</translation>
+        <translation type="obsolete">Сенсор цвета (зелёный)</translation>
     </message>
     <message>
         <source>Color sensor (blue)</source>
-        <translation type="vanished">Сенсор цвета (синий)</translation>
+        <translation type="obsolete">Сенсор цвета (синий)</translation>
     </message>
     <message>
         <source>Color sensor (passive)</source>
-        <translation type="vanished">Сенсор цвета (пассивный)</translation>
+        <translation type="obsolete">Сенсор цвета (пассивный)</translation>
     </message>
     <message>
         <source>Sound sensor</source>
-        <translation type="vanished">Звуковой сенсор</translation>
+        <translation type="obsolete">Звуковой сенсор</translation>
     </message>
     <message>
         <source>Gyroscope</source>
-        <translation type="vanished">Гироскоп</translation>
+        <translation type="obsolete">Гироскоп</translation>
     </message>
 </context>
 <context>
     <name>SensorsConfigurationWidget</name>
     <message>
         <source>Port 1:</source>
-        <translation type="vanished">Порт 1:</translation>
+        <translation type="obsolete">Порт 1:</translation>
     </message>
     <message>
         <source>Port 2:</source>
-        <translation type="vanished">Порт 2:</translation>
+        <translation type="obsolete">Порт 2:</translation>
     </message>
     <message>
         <source>Port 3:</source>
-        <translation type="vanished">Порт 3:</translation>
+        <translation type="obsolete">Порт 3:</translation>
     </message>
     <message>
         <source>Port 4:</source>
-        <translation type="vanished">Порт 4:</translation>
+        <translation type="obsolete">Порт 4:</translation>
     </message>
 </context>
 <context>
@@ -709,7 +709,7 @@ p, li { white-space: pre-wrap; }
     <name>interpreterCore::RobotsPlugin</name>
     <message>
         <source>Robots</source>
-        <translation type="vanished">Роботы</translation>
+        <translation type="obsolete">Роботы</translation>
     </message>
 </context>
 <context>
@@ -837,68 +837,68 @@ p, li { white-space: pre-wrap; }
     <name>interpreterCore::coreBlocks::details::WaitForColorBlock</name>
     <message>
         <source>Black</source>
-        <translation type="vanished">Чёрный</translation>
+        <translation type="obsolete">Чёрный</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="vanished">Синий</translation>
+        <translation type="obsolete">Синий</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="vanished">Зелёный</translation>
+        <translation type="obsolete">Зелёный</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="vanished">Жёлтый</translation>
+        <translation type="obsolete">Жёлтый</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation type="vanished">Красный</translation>
+        <translation type="obsolete">Красный</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="vanished">Белый</translation>
+        <translation type="obsolete">Белый</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::WaitForEncoderBlock</name>
     <message>
         <source>Encoder sensor is not configured on port %1</source>
-        <translation type="vanished">Энкодер не сконфигурирован на порту %1</translation>
+        <translation type="obsolete">Энкодер не сконфигурирован на порту %1</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::coreBlocks::details::WaitForSensorBlock</name>
     <message>
         <source>%1 is not configured on port %2</source>
-        <translation type="vanished">%1 не сконфигурирован на порту %2</translation>
+        <translation type="obsolete">%1 не сконфигурирован на порту %2</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="66"/>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="134"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="69"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="144"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="71"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="74"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="117"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="123"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="122"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="129"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="182"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="192"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
@@ -920,22 +920,22 @@ p, li { white-space: pre-wrap; }
     <name>interpreterCore::ui::DevicesConfigurationWidget</name>
     <message>
         <source>Port %1:</source>
-        <translation type="vanished">Порт %1:</translation>
+        <translation type="obsolete">Порт %1:</translation>
     </message>
     <message>
         <source>Unused</source>
-        <translation type="vanished">Не используется</translation>
+        <translation type="obsolete">Не используется</translation>
     </message>
 </context>
 <context>
     <name>interpreterCore::ui::RobotsSettingsPage</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="60"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="62"/>
         <source>No constructor kit plugins loaded</source>
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="180"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="186"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>
@@ -944,15 +944,15 @@ p, li { white-space: pre-wrap; }
     <name>qReal::EditorManager</name>
     <message>
         <source>error</source>
-        <translation type="vanished">Ошибка</translation>
+        <translation type="obsolete">Ошибка</translation>
     </message>
     <message>
         <source>Plugin loading failed: </source>
-        <translation type="vanished">Не удалось загрузить плагин: </translation>
+        <translation type="obsolete">Не удалось загрузить плагин: </translation>
     </message>
     <message>
         <source>Plugin unloading failed: </source>
-        <translation type="vanished">Не удалось выгрузить плагин: </translation>
+        <translation type="obsolete">Не удалось выгрузить плагин: </translation>
     </message>
 </context>
 <context>
@@ -963,7 +963,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Blocks</source>
-        <translation type="vanished">Блоки</translation>
+        <translation type="obsolete">Блоки</translation>
     </message>
 </context>
 <context>
@@ -1055,27 +1055,27 @@ p, li { white-space: pre-wrap; }
     <name>qReal::interpreters::robots::RobotsPlugin</name>
     <message>
         <source>Text under pictogram</source>
-        <translation type="vanished">Текст под пиктограммами</translation>
+        <translation type="obsolete">Текст под пиктограммами</translation>
     </message>
     <message>
         <source>Show 2d model</source>
-        <translation type="vanished">Открыть окно 2D модели</translation>
+        <translation type="obsolete">Открыть окно 2D модели</translation>
     </message>
     <message>
         <source>Run interpreter</source>
-        <translation type="vanished">Запуск интерпретации</translation>
+        <translation type="obsolete">Запуск интерпретации</translation>
     </message>
     <message>
         <source>Stop interpreter</source>
-        <translation type="vanished">Остановить интерпретацию</translation>
+        <translation type="obsolete">Остановить интерпретацию</translation>
     </message>
     <message>
         <source>Toggle titles visibility</source>
-        <translation type="vanished">Показать/скрыть встроенные редакторы свойств</translation>
+        <translation type="obsolete">Показать/скрыть встроенные редакторы свойств</translation>
     </message>
     <message>
         <source>Robots</source>
-        <translation type="vanished">Роботы</translation>
+        <translation type="obsolete">Роботы</translation>
     </message>
 </context>
 <context>
@@ -1093,23 +1093,23 @@ p, li { white-space: pre-wrap; }
     <name>qReal::interpreters::robots::details::Interpreter</name>
     <message>
         <source>No connection to robot</source>
-        <translation type="vanished">Нет соединения с роботом</translation>
+        <translation type="obsolete">Нет соединения с роботом</translation>
     </message>
     <message>
         <source>Interpreter is already running</source>
-        <translation type="vanished">Программа уже запущена</translation>
+        <translation type="obsolete">Программа уже запущена</translation>
     </message>
     <message>
         <source>Connected successfully</source>
-        <translation type="vanished">Подключение к роботу выполнено</translation>
+        <translation type="obsolete">Подключение к роботу выполнено</translation>
     </message>
     <message>
         <source>Can&apos;t connect to a robot.</source>
-        <translation type="vanished">Не удалось подключиться к роботу.</translation>
+        <translation type="obsolete">Не удалось подключиться к роботу.</translation>
     </message>
     <message>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
-        <translation type="vanished">Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
+        <translation type="obsolete">Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
 </context>
 <context>
@@ -1175,29 +1175,29 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Unable to resolve %1. Check server address and try again.</source>
-        <translation type="vanished">Сервер %1 не найден. Проверьте адрес и попробуйте еще раз.</translation>
+        <translation type="obsolete">Сервер %1 не найден. Проверьте адрес и попробуйте еще раз.</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::Thread</name>
     <message>
         <source>No entry point found, please add Initial Node to a diagram</source>
-        <translation type="vanished">Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
+        <translation type="obsolete">Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
         <source>Stack overflow</source>
-        <translation type="vanished">Переполнение стека</translation>
+        <translation type="obsolete">Переполнение стека</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::UsbRobotCommunicationThread</name>
     <message>
         <source>Fantom Driver is unavailable. Usb connection to robot is impossible.</source>
-        <translation type="vanished">Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
+        <translation type="obsolete">Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
     </message>
     <message>
         <source> You can download Fantom Driver on &lt;a href=&apos;%1&apos;&gt;Lego website&lt;/a&gt;</source>
-        <translation type="vanished">Вы можете скачать драйвера Fantom на &lt;a href=&apos;%1&apos;&gt;сайте Lego&lt;/a&gt;</translation>
+        <translation type="obsolete">Вы можете скачать драйвера Fantom на &lt;a href=&apos;%1&apos;&gt;сайте Lego&lt;/a&gt;</translation>
     </message>
     <message>
         <source> You can download Fantom Driver on </source>
@@ -1208,76 +1208,76 @@ p, li { white-space: pre-wrap; }
     <name>qReal::interpreters::robots::details::blocks::Block</name>
     <message>
         <source>Control flow break detected, stopping</source>
-        <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
+        <translation type="obsolete">Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
         <source>Too many outgoing links</source>
-        <translation type="vanished">Слишком много исходящих связей</translation>
+        <translation type="obsolete">Слишком много исходящих связей</translation>
     </message>
     <message>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
-        <translation type="vanished">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
+        <translation type="obsolete">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
         <source>Outgoing link is not connected</source>
-        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
+        <translation type="obsolete">Исходящая связь ни к чему не подключена</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::ClearScreenBlock</name>
     <message>
         <source>Display</source>
-        <translation type="vanished">Дисплей</translation>
+        <translation type="obsolete">Дисплей</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::CommentBlock</name>
     <message>
         <source>The comment block with incoming links detected!</source>
-        <translation type="vanished">Блок &quot;Комментарий&quot; не может иметь входящих связей!</translation>
+        <translation type="obsolete">Блок &quot;Комментарий&quot; не может иметь входящих связей!</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::DrawCircleBlock</name>
     <message>
         <source>Display</source>
-        <translation type="vanished">Дисплей</translation>
+        <translation type="obsolete">Дисплей</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::DrawLineBlock</name>
     <message>
         <source>Display</source>
-        <translation type="vanished">Дисплей</translation>
+        <translation type="obsolete">Дисплей</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::DrawPixelBlock</name>
     <message>
         <source>Display</source>
-        <translation type="vanished">Дисплей</translation>
+        <translation type="obsolete">Дисплей</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::DrawRectBlock</name>
     <message>
         <source>Display</source>
-        <translation type="vanished">Дисплей</translation>
+        <translation type="obsolete">Дисплей</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::ForkBlock</name>
     <message>
         <source>Outgoing link is not connected</source>
-        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
+        <translation type="obsolete">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
         <source>There must be an outgoing link, use &quot;End&quot; block to finish a program</source>
-        <translation type="vanished">Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
+        <translation type="obsolete">Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
     </message>
     <message>
         <source>There must be at least two outgoing links</source>
-        <translation type="vanished">Должно быть как минимум две исходящие связи</translation>
+        <translation type="obsolete">Должно быть как минимум две исходящие связи</translation>
     </message>
 </context>
 <context>
@@ -1296,19 +1296,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>There must be exactly TWO links outgoing from if block</source>
-        <translation type="vanished">От условного блока должно отходить ровно ДВЕ связи</translation>
+        <translation type="obsolete">От условного блока должно отходить ровно ДВЕ связи</translation>
     </message>
     <message>
         <source>Outgoing link is not connected</source>
-        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
+        <translation type="obsolete">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
         <source>Two links marked with &apos;true&apos; found</source>
-        <translation type="vanished">Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
+        <translation type="obsolete">Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
     </message>
     <message>
         <source>Two links marked with &apos;false&apos; found</source>
-        <translation type="vanished">Обе связи помечены условием &apos;Ложь&apos;</translation>
+        <translation type="obsolete">Обе связи помечены условием &apos;Ложь&apos;</translation>
     </message>
     <message>
         <source>Two links marked with condition found</source>
@@ -1320,7 +1320,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
-        <translation type="vanished">Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
+        <translation type="obsolete">Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
     <message>
         <source>There must be a non-marked outgoing link</source>
@@ -1338,11 +1338,11 @@ p, li { white-space: pre-wrap; }
     <name>qReal::interpreters::robots::details::blocks::LoopBlock</name>
     <message>
         <source>There must be an outgoing link with property &lt;b&gt;Guard&lt;/b&gt; set as &lt;b&gt;iteration&lt;/b&gt;. See help, chapter &lt;i&gt;Programming&lt;/i&gt;</source>
-        <translation type="vanished">Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
+        <translation type="obsolete">Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Outgoing link is not connected</source>
-        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
+        <translation type="obsolete">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
         <source>iteration</source>
@@ -1350,7 +1350,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Two links marked as &quot;iteration&quot; found</source>
-        <translation type="vanished">Найдено две связи, помеченные как &quot;итерация&quot;</translation>
+        <translation type="obsolete">Найдено две связи, помеченные как &quot;итерация&quot;</translation>
     </message>
     <message>
         <source>Two outgoing links to a next element found</source>
@@ -1362,7 +1362,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>There must be a non-marked outgoing link</source>
-        <translation type="vanished">Должна быть непомеченная исходящая связь</translation>
+        <translation type="obsolete">Должна быть непомеченная исходящая связь</translation>
     </message>
 </context>
 <context>
@@ -1376,14 +1376,14 @@ p, li { white-space: pre-wrap; }
     <name>qReal::interpreters::robots::details::blocks::PrintTextBlock</name>
     <message>
         <source>Display</source>
-        <translation type="vanished">Дисплей</translation>
+        <translation type="obsolete">Дисплей</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::SubprogramBlock</name>
     <message>
         <source>Please enter valid c-style name for subprogram &quot;</source>
-        <translation type="vanished">Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
+        <translation type="obsolete">Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
     </message>
 </context>
 <context>
@@ -1394,14 +1394,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Accelerometer</source>
-        <translation type="vanished">Акселерометр</translation>
+        <translation type="obsolete">Акселерометр</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForButtonsBlock</name>
     <message>
         <source>Buttons</source>
-        <translation type="vanished">Кнопки</translation>
+        <translation type="obsolete">Кнопки</translation>
     </message>
 </context>
 <context>
@@ -1412,27 +1412,27 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Black</source>
-        <translation type="vanished">Чёрный</translation>
+        <translation type="obsolete">Чёрный</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="vanished">Синий</translation>
+        <translation type="obsolete">Синий</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="vanished">Зелёный</translation>
+        <translation type="obsolete">Зелёный</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="vanished">Жёлтый</translation>
+        <translation type="obsolete">Жёлтый</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation type="vanished">Красный</translation>
+        <translation type="obsolete">Красный</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="vanished">Белый</translation>
+        <translation type="obsolete">Белый</translation>
     </message>
 </context>
 <context>
@@ -1446,21 +1446,21 @@ p, li { white-space: pre-wrap; }
     <name>qReal::interpreters::robots::details::blocks::WaitForColorSensorBlockBase</name>
     <message>
         <source>Color sensor</source>
-        <translation type="vanished">Сенсор цвета</translation>
+        <translation type="obsolete">Сенсор цвета</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForEncoderBlock</name>
     <message>
         <source>Encoder sensor is not configured on this port </source>
-        <translation type="vanished">Энкодер не сконфигурирован на этом порту</translation>
+        <translation type="obsolete">Энкодер не сконфигурирован на этом порту</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
     <message>
         <source>Gyroscope</source>
-        <translation type="vanished">Гироскоп</translation>
+        <translation type="obsolete">Гироскоп</translation>
     </message>
 </context>
 <context>
@@ -1471,14 +1471,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Light sensor</source>
-        <translation type="vanished">Сенсор света</translation>
+        <translation type="obsolete">Сенсор света</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForSensorBlock</name>
     <message>
         <source>%1 is not configured on port %2</source>
-        <translation type="vanished">%1 не сконфигурирован на порту %2</translation>
+        <translation type="obsolete">%1 не сконфигурирован на порту %2</translation>
     </message>
 </context>
 <context>
@@ -1489,14 +1489,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Sonar sensor</source>
-        <translation type="vanished">Сенсор расстояния</translation>
+        <translation type="obsolete">Сенсор расстояния</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForSoundSensorBlock</name>
     <message>
         <source>Sound sensor</source>
-        <translation type="vanished">Звуковой сенсор</translation>
+        <translation type="obsolete">Звуковой сенсор</translation>
     </message>
 </context>
 <context>
@@ -1507,49 +1507,49 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Touch sensor</source>
-        <translation type="vanished">Сенсор касания</translation>
+        <translation type="obsolete">Сенсор касания</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
         <source>Black</source>
-        <translation type="vanished">Чёрный</translation>
+        <translation type="obsolete">Чёрный</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="vanished">Синий</translation>
+        <translation type="obsolete">Синий</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="vanished">Зелёный</translation>
+        <translation type="obsolete">Зелёный</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="vanished">Жёлтый</translation>
+        <translation type="obsolete">Жёлтый</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation type="vanished">Красный</translation>
+        <translation type="obsolete">Красный</translation>
     </message>
     <message>
         <source>Saving world and robot model</source>
-        <translation type="vanished">Сохранение модели робота и модели мира</translation>
+        <translation type="obsolete">Сохранение модели робота и модели мира</translation>
     </message>
     <message>
         <source>2D model saves (*.xml)</source>
-        <translation type="vanished">Файлы 2D-модели (*.xml)</translation>
+        <translation type="obsolete">Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
         <source>Loading world and robot model</source>
-        <translation type="vanished">Загрузка модели робота и модели мира</translation>
+        <translation type="obsolete">Загрузка модели робота и модели мира</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
     <message>
         <source>Grid</source>
-        <translation type="vanished">Сетка</translation>
+        <translation type="obsolete">Сетка</translation>
     </message>
 </context>
 <context>

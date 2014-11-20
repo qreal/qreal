@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.0" language="ru_RU">
 <context>
     <name>TrikAdditionalPreferences</name>
     <message>
@@ -28,6 +28,24 @@
     </message>
 </context>
 <context>
+    <name>TrikFSharpAdditionalPreferences</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Настройки TRIK</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="35"/>
+        <source>F# settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikFSharpAdditionalPreferences.ui" line="65"/>
+        <source>enter path to F# compile </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>trikKitInterpreter::TrikKitInterpreterPlugin</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="66"/>
@@ -35,16 +53,16 @@
         <translation>Введите IP-адрес робота...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="85"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="90"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
     <message>
         <source>Show 2d model for TRIK v4</source>
-        <translation type="vanished">Открыть 2D модель для TRIK v4</translation>
+        <translation type="obsolete">Открыть 2D модель для TRIK v4</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="131"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/trikKitInterpreterPlugin.cpp" line="136"/>
         <source>Show 2d model for TRIK v6</source>
         <translation>Открыть 2D модель для TRIK v6</translation>
     </message>
@@ -53,25 +71,49 @@
     <name>trikKitInterpreter::blocks::details::LedBlock</name>
     <message>
         <source>Led is not configured (WTF?)</source>
-        <translation type="vanished">Светодиод не сконфигурирован</translation>
+        <translation type="obsolete">Светодиод не сконфигурирован</translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::blocks::details::SayBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/blocks/details/sayBlock.cpp" line="30"/>
+        <source>Shell is not configured (WTF?)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::blocks::details::SpeakerBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/blocks/details/speakerBlock.cpp" line="32"/>
+        <source>Speaker is not configured (WTF?)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>trikKitInterpreter::blocks::details::SystemCommandBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/blocks/details/systemCommandBlock.cpp" line="31"/>
+        <source>Shell is not configured (WTF?)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::blocks::details::WaitForButtonsBlock</name>
     <message>
         <source>Buttons are not configured (WTF?)</source>
-        <translation type="vanished">Кнопки не сконфигурированы (што?)</translation>
+        <translation type="obsolete">Кнопки не сконфигурированы (што?)</translation>
     </message>
     <message>
         <source>Buttons</source>
-        <translation type="vanished">Кнопки</translation>
+        <translation type="obsolete">Кнопки</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::parts::TrikCameraLineDetector</name>
     <message>
         <source>Camera Line Detector</source>
-        <translation type="vanished">Детектор линии по камере</translation>
+        <translation type="obsolete">Детектор линии по камере</translation>
     </message>
 </context>
 <context>
@@ -118,7 +160,7 @@
     <name>trikKitInterpreter::robotModel::parts::TrikMovementSensor</name>
     <message>
         <source>Movement Sensor</source>
-        <translation type="vanished">Сенсор движения</translation>
+        <translation type="obsolete">Сенсор движения</translation>
     </message>
 </context>
 <context>
@@ -146,6 +188,14 @@
     </message>
 </context>
 <context>
+    <name>trikKitInterpreter::robotModel::parts::TrikShell</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikShell.h" line="14"/>
+        <source>Shell</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>trikKitInterpreter::robotModel::parts::TrikSonarSensor</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreter/src/robotModel/parts/trikSonarSensor.h" line="12"/>
@@ -157,14 +207,14 @@
     <name>trikKitInterpreter::robotModel::real::RealRobotModelV4</name>
     <message>
         <source>Real Robot (v4)</source>
-        <translation type="vanished">Реальный робот (v4)</translation>
+        <translation type="obsolete">Реальный робот (v4)</translation>
     </message>
 </context>
 <context>
     <name>trikKitInterpreter::robotModel::real::RealRobotModelV5</name>
     <message>
         <source>Real Robot (v5)</source>
-        <translation type="vanished">Реальный робот (v5)</translation>
+        <translation type="obsolete">Реальный робот (v5)</translation>
     </message>
 </context>
 <context>
@@ -179,7 +229,7 @@
     <name>trikKitInterpreter::robotModel::twoD::TwoDRobotModel</name>
     <message>
         <source>2D Model</source>
-        <translation type="vanished">2D модель</translation>
+        <translation type="obsolete">2D модель</translation>
     </message>
 </context>
 </TS>

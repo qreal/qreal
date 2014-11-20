@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.0" language="ru_RU">
 <context>
     <name>NxtAdditionalPreferences</name>
     <message>
@@ -49,7 +49,7 @@
     <name>NxtDisplay</name>
     <message>
         <source>tr(NxtDisplay)</source>
-        <translation type="vanished">Дисплей NXT</translation>
+        <translation type="obsolete">Дисплей NXT</translation>
     </message>
 </context>
 <context>
@@ -77,21 +77,21 @@
     <name>nxtKitInterpreter::blocks::details::DisplayBlock</name>
     <message>
         <source>Display is not configured (WTF?)</source>
-        <translation type="vanished">Дисплей не сконфигурирован (што?)</translation>
+        <translation type="obsolete">Дисплей не сконфигурирован (што?)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::blocks::details::SpeakerBlock</name>
     <message>
         <source>Speaker is not configured (WTF?)</source>
-        <translation type="vanished">Динамик не сконфигурирован (што?)</translation>
+        <translation type="obsolete">Динамик не сконфигурирован (што?)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::blocks::details::WaitForButtonsBlock</name>
     <message>
         <source>Buttons are not configured (WTF?)</source>
-        <translation type="vanished">Кнопки не сконфигурированы (што?)</translation>
+        <translation type="obsolete">Кнопки не сконфигурированы (што?)</translation>
     </message>
 </context>
 <context>
@@ -127,35 +127,35 @@
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorBlue</name>
     <message>
         <source>Color sensor (blue)</source>
-        <translation type="vanished">Сенсор цвета (синий)</translation>
+        <translation type="obsolete">Сенсор цвета (синий)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorFull</name>
     <message>
         <source>Color sensor (full)</source>
-        <translation type="vanished">Сенсор цвета (распознавание цветов)</translation>
+        <translation type="obsolete">Сенсор цвета (распознавание цветов)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorGreen</name>
     <message>
         <source>Color sensor (green)</source>
-        <translation type="vanished">Сенсор цвета (зеленый)</translation>
+        <translation type="obsolete">Сенсор цвета (зеленый)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorPassive</name>
     <message>
         <source>Color sensor (passive)</source>
-        <translation type="vanished">Сенсор цвета (пассивный)</translation>
+        <translation type="obsolete">Сенсор цвета (пассивный)</translation>
     </message>
 </context>
 <context>
     <name>nxtKitInterpreter::robotModel::real::parts::ColorSensorRed</name>
     <message>
         <source>Color sensor (red)</source>
-        <translation type="vanished">Сенсор цвета (красный)</translation>
+        <translation type="obsolete">Сенсор цвета (красный)</translation>
     </message>
 </context>
 <context>
@@ -170,7 +170,7 @@
     <name>nxtKitInterpreter::robotModel::twoD::TwoDRobotModel</name>
     <message>
         <source>2D Model</source>
-        <translation type="vanished">2D модель</translation>
+        <translation type="obsolete">2D модель</translation>
     </message>
 </context>
 </TS>

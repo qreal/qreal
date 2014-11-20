@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.0" language="ru_RU">
 <context>
     <name>qReal::GraphTransformationUnit</name>
     <message>
@@ -64,7 +64,7 @@
     </message>
     <message>
         <source>Specify reaction file:</source>
-        <translation type="vanished">Укажите путь до скрипта-реакции:</translation>
+        <translation type="obsolete">Укажите путь до скрипта-реакции:</translation>
     </message>
 </context>
 <context>
@@ -227,7 +227,7 @@
     </message>
     <message>
         <source>Reaction script path:</source>
-        <translation type="vanished">Путь до скрипта-реакции:</translation>
+        <translation type="obsolete">Путь до скрипта-реакции:</translation>
     </message>
 </context>
 </TS>
