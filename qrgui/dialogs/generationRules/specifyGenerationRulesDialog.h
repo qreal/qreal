@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QDialog>
 
-#include "pluginManager/interpreterEditorManager.h"
+#include "plugins/pluginManager/interpreterEditorManager.h"
 #include "mainwindow/mainWindow.h"
 #include "dialogs/metamodelingOnFly/editPropertiesDialog.h"
 
