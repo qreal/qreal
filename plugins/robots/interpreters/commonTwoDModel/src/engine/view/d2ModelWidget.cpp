@@ -139,12 +139,12 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 
 	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){
-		QMessageBox *confirmation = new QMessageBox(tr("Warning"),
-													tr("Do you really want to clear scene?"),
-													QMessageBox::Question,
-													QMessageBox::Yes,
-													QMessageBox::Cancel,
-													NULL);
+		QMessageBox *confirmation = new QMessageBox(tr("Warning")
+				, tr("Do you really want to clear scene?")
+				, QMessageBox::Question
+				, QMessageBox::Yes
+				, QMessageBox::Cancel
+				, NULL);
 		confirmation->setButtonText(QMessageBox::Yes, tr("Yes"));
 		confirmation->setButtonText(QMessageBox::Cancel, tr("Cancel"));
 		int answer = confirmation->exec();
