@@ -68,6 +68,11 @@
         <source>Integer division by zero</source>
         <translation>Целичисленное деление на ноль</translation>
     </message>
+    <message>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="423"/>
+        <source>Remove</source>
+        <translation>Удалить</translation>
+    </message>
 </context>
 <context>
     <name>SensorsGraph</name>

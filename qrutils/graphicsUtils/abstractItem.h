@@ -85,6 +85,8 @@ public:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
 protected:
+	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+
 	DragState mDragState;
 	QRectF mBoundingRect;
 	QPen mPen;

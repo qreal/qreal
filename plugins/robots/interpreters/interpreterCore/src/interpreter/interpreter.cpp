@@ -87,8 +87,8 @@ void Interpreter::interpret()
 
 	/// @todo Temporarily loading initial configuration from a network of SensorConfigurationProviders.
 	///       To be done more adequately.
+	QString const modelName = mRobotModelManager.model().robotId();
 	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
-		QString const modelName = mRobotModelManager.model().name();
 		DeviceInfo const deviceInfo = currentConfiguration(modelName, port);
 		mRobotModelManager.model().configureDevice(port, deviceInfo);
 	}

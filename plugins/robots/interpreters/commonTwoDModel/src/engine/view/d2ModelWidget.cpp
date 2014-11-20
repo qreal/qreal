@@ -805,6 +805,10 @@ void D2ModelWidget::onRobotListChange(RobotItem *robotItem)
 {
 	if (mScene->oneRobot()) {
 		setSelectedRobotItem(mScene->robot(*mModel.robotModels()[0]));
+	} else {
+		if (mSelectedRobotItem) {
+			unsetSelectedRobotItem();
+		}
 	}
 
 	if (robotItem) {
@@ -827,6 +831,7 @@ void D2ModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 {
 	mSelectedRobotItem = robotItem;
 
+	connect(&mSelectedRobotItem->robotModel(), &RobotModel::robotRided, this, &D2ModelWidget::centerOnRobot);
 	connect(&mSelectedRobotItem->robotModel(), &RobotModel::positionChanged, this, &D2ModelWidget::centerOnRobot);
 
 	setPortsGroupBoxAndWheelComboBoxes();
@@ -850,8 +855,11 @@ void D2ModelWidget::unsetSelectedRobotItem()
 {
 	if (mSelectedRobotItem) {
 		unsetPortsGroupBoxAndWheelComboBoxes();
+		disconnect(&mSelectedRobotItem->robotModel(), &RobotModel::robotRided, this
+				, &D2ModelWidget::centerOnRobot);
 		disconnect(&mSelectedRobotItem->robotModel(), &RobotModel::positionChanged, this
 				, &D2ModelWidget::centerOnRobot);
+
 		mSelectedRobotItem = nullptr;
 	}
 

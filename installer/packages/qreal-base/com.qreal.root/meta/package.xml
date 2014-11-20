@@ -17,10 +17,12 @@
         <License name="Qt Property Browser Component License" file="QtPropertyBrowser-license.txt" />
         <License name="Windows Modern Style Component License" file="WindowsModernStyle-license.txt" />
     </Licenses>
-    <!--<Translations>
-        <Translation>sv_se.qm</Translation>
-        <Translation>de_de.qm</Translation>
-    </Translations> -->
     <Default>true</Default>
     <ForcedInstallation>true</ForcedInstallation>
+    <UserInterfaces>
+        <UserInterface>targetwidget.ui</UserInterface>
+    </UserInterfaces>
+    <Translations>
+        <Translation>ru_ru.qm</Translation>
+    </Translations>
 </Package>

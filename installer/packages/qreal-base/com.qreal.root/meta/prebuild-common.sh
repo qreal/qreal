@@ -16,4 +16,5 @@ cp     $INSTALLER_ROOT/licenses/WindowsModernStyle-license*.txt          $PWD
 mkdir -p $PWD/../data/platforms
 mkdir -p $PWD/../data/imageformats
 mkdir -p $PWD/../data/iconengines
+mkdir -p $PWD/../data/plugins/tools
 cp     $BIN_DIR/changelog.txt                                            $PWD/../data
