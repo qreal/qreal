@@ -82,21 +82,21 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
 	}
 
-    if (deviceInfo.isA(touchSensorInfo())) {
-        return new parts::TouchSensor(touchSensorInfo(), port, *mRobotCommunicator);
-    }
+	if (deviceInfo.isA(touchSensorInfo())) {
+		return new parts::TouchSensor(touchSensorInfo(), port, *mRobotCommunicator);
+	}
 
-    if (deviceInfo.isA(lightSensorInfo())) {
-        return new parts::LightSensor(lightSensorInfo(), port, *mRobotCommunicator);
-    }
+	if (deviceInfo.isA(lightSensorInfo())) {
+		return new parts::LightSensor(lightSensorInfo(), port, *mRobotCommunicator);
+	}
 
-    if (deviceInfo.isA(rangeSensorInfo())) {
-        return new parts::RangeSensor(rangeSensorInfo(), port, *mRobotCommunicator);
-    }
+	if (deviceInfo.isA(rangeSensorInfo())) {
+		return new parts::RangeSensor(rangeSensorInfo(), port, *mRobotCommunicator);
+	}
 
-    if (deviceInfo.isA(colorFullSensorInfo())) {
-        return new parts::ColorSensorFull(colorFullSensorInfo(), port, *mRobotCommunicator);
-    }
+	if (deviceInfo.isA(colorFullSensorInfo())) {
+		return new parts::ColorSensorFull(colorFullSensorInfo(), port, *mRobotCommunicator);
+	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());
 }

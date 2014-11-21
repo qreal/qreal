@@ -13,18 +13,18 @@ namespace parts {
 
 class TouchSensor : public interpreterBase::robotModel::robotParts::TouchSensor
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    TouchSensor(interpreterBase::robotModel::DeviceInfo const &info
-              , interpreterBase::robotModel::PortInfo const &port
-              , utils::robotCommunication::RobotCommunicator &robotCommunicator);
+	TouchSensor(interpreterBase::robotModel::DeviceInfo const &info
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
-    void read() override;
+	void read() override;
 
 private:
-    Ev3InputDevice mImplementation;
-    utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
+	Ev3InputDevice mImplementation;
+	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };
 
 }

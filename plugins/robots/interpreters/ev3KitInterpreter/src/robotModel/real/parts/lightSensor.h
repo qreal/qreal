@@ -13,18 +13,18 @@ namespace parts {
 
 class LightSensor : public interpreterBase::robotModel::robotParts::LightSensor
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    LightSensor(interpreterBase::robotModel::DeviceInfo const &info
-              , interpreterBase::robotModel::PortInfo const &port
-              , utils::robotCommunication::RobotCommunicator &robotCommunicator);
+	LightSensor(interpreterBase::robotModel::DeviceInfo const &info
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
-    void read() override;
+	void read() override;
 
 private:
-    Ev3InputDevice mImplementation;
-    utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
+	Ev3InputDevice mImplementation;
+	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };
 
 }

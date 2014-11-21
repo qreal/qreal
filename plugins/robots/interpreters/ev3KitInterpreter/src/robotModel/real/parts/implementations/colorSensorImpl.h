@@ -13,22 +13,22 @@ namespace parts {
 
 class ColorSensorImpl : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    ColorSensorImpl(interpreterBase::robotModel::PortInfo const &port
-              , utils::robotCommunication::RobotCommunicator &robotCommunicator
-              , SensorTypeEnum lowLevelType);
+	ColorSensorImpl(interpreterBase::robotModel::PortInfo const &port
+			, utils::robotCommunication::RobotCommunicator &robotCommunicator
+			, SensorTypeEnum lowLevelType);
 
-    void read();
+	void read();
 
 signals:
-    void newData(int reading);
+	void newData(int reading);
 
 private:
-    Ev3InputDevice mImplementation;
-    utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
-    SensorTypeEnum mLowLevelType;
+	Ev3InputDevice mImplementation;
+	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
+	SensorTypeEnum mLowLevelType;
 };
 
 }

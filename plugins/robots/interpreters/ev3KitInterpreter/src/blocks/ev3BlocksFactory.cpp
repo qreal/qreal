@@ -48,8 +48,8 @@ interpreterBase::blocksBase::Block *Ev3BlocksFactory::produceBlock(qReal::Id con
 		return new WaitForTouchSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "Ev3WaitForSonarDistance")) {
 		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
-                , interpreterBase::robotModel::DeviceInfo::create<
-                    interpreterBase::robotModel::robotParts::RangeSensor>());
+				, interpreterBase::robotModel::DeviceInfo::create<
+						interpreterBase::robotModel::robotParts::RangeSensor>());
 	} else if (elementMetatypeIs(element, "Ev3WaitForColor")) {
 		return new WaitForColorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "Ev3WaitForEncoder")) {

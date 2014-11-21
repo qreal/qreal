@@ -1,6 +1,7 @@
 #pragma once
 
 #include "colorSensor.h"
+
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {

@@ -12,18 +12,18 @@ namespace parts {
 
 class ColorSensorFull : public interpreterBase::robotModel::robotParts::ColorSensorFull
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &info
-              , interpreterBase::robotModel::PortInfo const &port
-              , utils::robotCommunication::RobotCommunicator &robotCommunicator);
+	ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &info
+			  , interpreterBase::robotModel::PortInfo const &port
+			  , utils::robotCommunication::RobotCommunicator &robotCommunicator);
 
-    void read() override;
+	void read() override;
 
 private:
-    ColorSensorImpl mColorSensor;
-    utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
+	ColorSensorImpl mColorSensor;
+	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 };
 
 }
