@@ -46,7 +46,9 @@ void RobotCommunicator::disconnect()
 
 void RobotCommunicator::checkConsistency()
 {
-	mRobotCommunicationThreadObject->checkConsistency();
+	if (mRobotCommunicationThreadObject) {
+		mRobotCommunicationThreadObject->checkConsistency();
+	}
 }
 
 void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication)
