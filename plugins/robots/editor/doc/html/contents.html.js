@@ -46,7 +46,7 @@ document.write('\
 					</ul>\
 				</ul>\
 			</li>\
-			<li>Lego EV3\
+			<!-- <li>Lego EV3\
 				<ul>\
 					<li><a href="ev3-robot-setup.html">Подключение робота</a></li>\
 					<li><a href="ev3-run-programs.html">Запуск программ</a></li>\
@@ -54,7 +54,7 @@ document.write('\
 						<li><a href="ev3-run-programs.html#bluetooth">Интерпретация по Bluetooth</a></li>\
 					</ul>\
 				</ul>\
-			</li>\
+			</li> -->\
 		</ul>\
 	</div>\
 ');
