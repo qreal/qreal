@@ -90,6 +90,7 @@ QString DraggableElement::text() const
 
 Id DraggableElement::id() const
 {
+	qDebug()<<mData.id().createElementId();
 	return mData.id();
 }
 
