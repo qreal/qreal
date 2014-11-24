@@ -27,7 +27,10 @@ public:
 	interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const;
 	interpreterBase::robotModel::PortInfo defaultRightWheelPort() const override;
 
-	engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const;
+	engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent = nullptr) override;
+
+private:
+	engine::TwoDModelDisplayWidget *mDisplayWidget;
 };
 
 }

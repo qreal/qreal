@@ -94,7 +94,6 @@ public slots:
 signals:
 	void positionChanged(QPointF const &newPosition);
 	void rotationChanged(qreal newRotation);
-	void interpretationStopped();
 
 	/// Emitted when robot rided himself (moved on motors force, not dragged by cursor or smth) from one point to other.
 	void robotRided(QPointF const &newPosition, qreal const newRotation);

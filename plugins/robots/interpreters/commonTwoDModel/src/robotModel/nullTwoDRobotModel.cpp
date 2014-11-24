@@ -40,7 +40,10 @@ interpreterBase::robotModel::PortInfo NullTwoDRobotModel::defaultRightWheelPort(
 	return interpreterBase::robotModel::PortInfo();
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *NullTwoDRobotModel::displayWidget(QWidget * parent) const
+twoDModel::engine::TwoDModelDisplayWidget *NullTwoDRobotModel::displayWidget(QWidget * parent)
 {
-	return new twoDModel::engine::NullTwoDModelDisplayWidget(parent);
+	if (parent) {
+		mDisplayWidget = new twoDModel::engine::NullTwoDModelDisplayWidget(parent);
+	}
+	return mDisplayWidget;
 }

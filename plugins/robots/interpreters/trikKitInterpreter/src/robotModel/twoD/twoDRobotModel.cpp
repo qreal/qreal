@@ -92,9 +92,12 @@ PortInfo TwoDRobotModel::defaultRightWheelPort() const
 	return PortInfo(mRightWheelPort, output);
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget *parent) const
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget *parent)
 {
-	return new TrikDisplayWidget(parent);
+	if (parent) {
+		mDisplayWidget = new TrikDisplayWidget(parent);
+	}
+	return mDisplayWidget;
 }
 
 QString TwoDRobotModel::sensorImagePath(DeviceInfo const &deviceType) const
