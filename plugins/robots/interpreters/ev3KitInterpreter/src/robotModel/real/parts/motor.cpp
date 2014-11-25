@@ -21,8 +21,8 @@ void Motor::on(int speed)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
+	int const globalVariablesCount = 0;
+	int const localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opOUTPUT_POWER;
@@ -51,8 +51,8 @@ void Motor::off()
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
+	int const globalVariablesCount = 0;
+	int const localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opOUTPUT_STOP;

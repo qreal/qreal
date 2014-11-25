@@ -36,7 +36,6 @@ Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId, QString const &robotI
 	addAllowedConnection(PortInfo("2", input, {}, "sensor2"), inputPortConnections);
 	addAllowedConnection(PortInfo("3", input, {}, "sensor3"), inputPortConnections);
 	addAllowedConnection(PortInfo("4", input, {}, "sensor4"), inputPortConnections);
-
 }
 
 QList<DeviceInfo> Ev3RobotModelBase::convertibleBases() const

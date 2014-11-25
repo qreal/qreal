@@ -20,8 +20,8 @@ void Display::drawPixel(int x, int y)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
+	int const globalVariablesCount = 0;
+	int const localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -48,8 +48,8 @@ void Display::drawLine(int x1, int y1, int x2, int y2)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
+	int const globalVariablesCount = 0;
+	int const localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -84,8 +84,8 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
+	int const globalVariablesCount = 0;
+	int const localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -94,6 +94,7 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 	} else {
 		command[8] = LC0(RECT);
 	}
+
 	command[9] = LC0(vmFG_COLOR);
 	//LC2(x0)
 	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
@@ -133,8 +134,8 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
+	int const globalVariablesCount = 0;
+	int const localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -143,6 +144,7 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 	} else {
 		command[8] = LC0(CIRCLE);
 	}
+
 	command[9] = LC0(vmFG_COLOR);
 	//LC2(x)
 	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
@@ -164,7 +166,7 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 
 void Display::printText(int x, int y, QString const &text)
 {
-	int size = 20 + text.length();
+	int const size = 20 + text.length();
 	QByteArray textBytes = text.toLocal8Bit();
 	QByteArray command(size, 0);
 	command[0] = size - 2;
@@ -172,8 +174,8 @@ void Display::printText(int x, int y, QString const &text)
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
+	int const globalVariablesCount = 0;
+	int const localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;
@@ -189,11 +191,11 @@ void Display::printText(int x, int y, QString const &text)
 	command[15] = ((y >> 8) & 0xFF);
 	command[16] = LCS;
 	int currentSymbol = 17;
-	for (int i = 0; i < textBytes.length(); i++)
-	{
+	for (int i = 0; i < textBytes.length(); i++) {
 		command[currentSymbol] = textBytes[i];
 		currentSymbol++;
 	}
+
 	command[size - 3] = 0;
 	command[size - 2] = opUI_DRAW;
 	command[size - 1] = LC0(UPDATE);
@@ -208,8 +210,8 @@ void Display::clearScreen()
 	command[2] = 0x00;
 	command[3] = 0x00;
 	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
+	int const globalVariablesCount = 0;
+	int const localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opUI_DRAW;

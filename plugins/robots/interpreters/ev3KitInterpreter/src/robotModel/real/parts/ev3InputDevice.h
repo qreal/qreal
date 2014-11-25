@@ -28,6 +28,8 @@ public:
 	/// Returns a value of port that can be used as corresponding byte in request packages.
 	char lowLevelPort() const;
 
+private:
+
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
 	char mLowLevelPort;
 	SensorTypeEnum mLowLevelSensorType;

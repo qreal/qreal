@@ -20,7 +20,7 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-DEFINES += QRGUI_PLUGIN_MANAGER_LIBRARY
+DEFINES += QRGUI_PLUGINS_MANAGER_LIBRARY
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/qrgui_pluginsManager_ru.ts
 

@@ -1,5 +1,4 @@
 #include "colorSensorFull.h"
-#include <QDebug>
 
 unsigned const colorSensorResponseSize = 9;
 
@@ -17,17 +16,15 @@ ColorSensorFull::ColorSensorFull(interpreterBase::robotModel::DeviceInfo const &
 
 void ColorSensorFull::read()
 {
-	//mColorSensor.read();
-
-	int size = 21;
+	int const size = 21;
 	QByteArray command(size, 0);
 	command[0] = size - 2;
 	command[1] = size >> 8;
 	command[2] = 4;
 	command[3] = 0;
 	command[4] = DIRECT_COMMAND_REPLY;
-	int globalVariablesCount = 4;
-	int localVariablesCount = 0;
+	int const globalVariablesCount = 4;
+	int const localVariablesCount = 0;
 	command[5] = globalVariablesCount & 0xFF;
 	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
 	command[7] = opINPUT_DEVICE;
@@ -47,6 +44,6 @@ void ColorSensorFull::read()
 
 	QByteArray outputBuf;
 	mRobotCommunicator.send(command, colorSensorResponseSize, outputBuf);
-	emit newData(int(outputBuf.data()[6]));
+	emit newData(static_cast<int>(outputBuf.data()[6]));
 }
 
