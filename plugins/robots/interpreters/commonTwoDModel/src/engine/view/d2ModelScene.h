@@ -128,6 +128,8 @@ private:
 
 	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QRectF const &oldPos);
 
+	void itemContextMenuRemove();
+
 	model::Model &mModel;
 
 	graphicsUtils::GridDrawer mGridDrawer;

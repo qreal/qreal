@@ -124,6 +124,7 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		item->setPenBrush(penStyleItems(), penWidthItems(), penColorItems()
 				, brushStyleItems(), brushColorItems());
 		mModel.worldModel().addColorField(item);
+		connect(&item, &AbstractItem::removeActionTriggered, this, &D2ModelScene::itemContextMenuRemove);
 	};
 
 	for (RobotItem * const robotItem : mRobots.values()) {
@@ -506,5 +507,16 @@ void D2ModelScene::centerOnRobot(RobotItem *selectedItem)
 			setSceneRect(itemsBoundingRect().united(requiredViewPort));
 			view->centerOn(robotItem);
 		}
+	}
+}
+
+void itemContextMenuRemove()
+{
+	if (selectedItems().size() > 0) {
+		for (QGraphicsItem * const item : selectedItems()) {
+			deleteItem(item);
+		}
+	} else {
+		QGraphicsScene::keyPressEvent(event);
 	}
 }

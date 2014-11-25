@@ -419,13 +419,10 @@ void AbstractItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void AbstractItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
-	QMenu *menu = new QMenu();
-	QAction *removeAction = menu->addAction(QObject::tr("Remove"));
-	QAction *selectedAction = menu->exec(event->screenPos());
-	delete menu;
+	QMenu menu;
+	QAction *removeAction = menu.addAction(QObject::tr("Remove"));
+	QAction *selectedAction = menu.exec(event->screenPos());
 	if (selectedAction == removeAction) {
-		for (QGraphicsItem * const item : scene()->selectedItems()) {
-			scene()->removeItem(item);
-		}
+		emit removeActionTriggered();
 	}
 }
