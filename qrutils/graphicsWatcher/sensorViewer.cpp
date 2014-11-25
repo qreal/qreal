@@ -25,9 +25,7 @@ SensorViewer::SensorViewer(QWidget *parent)
 
 SensorViewer::~SensorViewer()
 {
-	mScene->removeItem(mMainPoint);
 	delete mMainPoint;
-	mScene->removeItem(mMarker);
 	delete mMarker;
 
 	delete mPointsDataProcessor;
@@ -103,8 +101,8 @@ void SensorViewer::clear()
 
 void SensorViewer::exportHistory()
 {
-	QString fileName = QRealFileDialog::getSaveFileName("RobotsCsvSaver"
-			, this, tr("Save values history"),"", tr("Comma-Separated Values Files (*.csv)"));
+	QString fileName = QRealFileDialog::getSaveFileName("PlotterCsvSaver"
+			, this, tr("Save values history"), QString(), tr("Comma-Separated Values Files (*.csv)"));
 	if (fileName.isEmpty()) {
 		return;
 	}
