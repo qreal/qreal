@@ -68,6 +68,7 @@
 				<value name="green" displayedName="green"/>
 				<value name="red" displayedName="red"/>
 				<value name="off" displayedName="off"/>
+                                <value name="orange" displayedName="orange"/>
 			</enum>
 			<enum name="BackgroundColor">
 				<value name="white" displayedName="white"/>
