@@ -64,7 +64,7 @@ public:
 
 	bool isDividable() const;
 
-	void overridesProperties (QList<QDomElement> &elements, const Id &id, QList<PortInterface *> &ports
+	void inheritanceProperties (QList<QDomElement> &elements, const Id &id, QList<PortInterface *> &ports
 			, const PortFactoryInterface &portFactory, SdfRendererInterface *renderer
 			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const;
 

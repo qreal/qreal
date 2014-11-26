@@ -129,9 +129,9 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 	}
 }
 
-void InterpreterElementImpl::overridesProperties(QList<QDomElement> &elements,Id const &id
-												, QList<PortInterface *> &ports,PortFactoryInterface const &portFactory, SdfRendererInterface *renderer,
-		LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const
+void InterpreterElementImpl::inheritanceProperties(QList<QDomElement> &elements,Id const &id
+		, QList<PortInterface *> &ports,PortFactoryInterface const &portFactory, SdfRendererInterface *renderer
+		, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const
 {
 	bool overrPictures = false;
 	bool overrPorts = false;
@@ -143,7 +143,7 @@ void InterpreterElementImpl::overridesProperties(QList<QDomElement> &elements,Id
 		if (link.element() == "Inheritance") {
 			Id const &parent = mEditorRepoApi->otherEntityFromLink(link, id);
 			if (!parent.isNull()) {
-				overridesProperties(elements, parent, ports, portFactory, renderer, labelFactory, labels);
+				inheritanceProperties(elements, parent, ports, portFactory, renderer, labelFactory, labels);
 				InterpreterElementImpl * const impl = new InterpreterElementImpl(mEditorRepoApi, parent);
 				impl->mGraphics.setContent(mEditorRepoApi->stringProperty(parent, "shape"));
 				QDomElement sdfElement = impl->mGraphics.firstChildElement("graphics").firstChildElement("picture");
@@ -198,11 +198,12 @@ void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &
 		QDomElement sdfElement = mGraphics.firstChildElement("graphics").firstChildElement("picture");
 
 		QList<QDomElement> elementsWithGraphic;
-		overridesProperties(elementsWithGraphic, mId, ports, portFactory, renderer, labelFactory, labels);
+		inheritanceProperties(elementsWithGraphic, mId, ports, portFactory, renderer, labelFactory, labels);
 
 		foreach (QDomElement tempElementWithGraphic, elementsWithGraphic) {
 			sdfElement.appendChild(tempElementWithGraphic.firstChild());
 		}
+
 		classDoc.appendChild(classDoc.importNode(sdfElement, true));
 		if (!classDoc.childNodes().isEmpty()) {
 			mRenderer = renderer;
