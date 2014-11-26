@@ -217,7 +217,6 @@ void ExploserView::changePropertiesActionTriggered()
 			, mLogicalApi.mutableLogicalRepoApi()
 			, id
 			, QApplication::allWidgets().isEmpty() ? nullptr : QApplication::allWidgets()[0]);
-
 	propertiesDialog->setModal(true);
 	propertiesDialog->show();
 }

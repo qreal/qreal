@@ -54,7 +54,6 @@ HEADERS += \
 	$$PWD/startWidget/startWidget.h \
 	$$PWD/startWidget/circleWidget.h \
 	$$PWD/startWidget/styledButton.h \
-    modelExplorer.h
 
 SOURCES += \
 	$$PWD/main.cpp \
