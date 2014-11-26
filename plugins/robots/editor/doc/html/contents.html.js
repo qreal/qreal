@@ -25,11 +25,15 @@ document.write('\
 					<li><a href="trik.html#robot-setup">Подключение робота</a></li>\
 					<li><a href="trik.html#blocks">Блоки ТРИК</a></li>\
 					<li><a href="trik.html#textual-programming">Текстовое программирование</a></li>\
+					<ul>\
+						<li><a href="trik.html#textual-programming-qts">Qt Script</a></li>\
+						<li><a href="trik.html#textual-programming-fsharp">F#</a></li>\
+					</ul>\
 					<li><a href="trik.html#run-programs">Запуск программ</a></li>\
 					<ul>\
-						<li><a href="trik-run-programs.html#wifi">Интерпретация по Wi-Fi</a></li>\
-						<li><a href="trik-run-programs.html#uploading">Загрузка программы на робот (Qts)</a></li>\
-						<li><a href="trik-run-programs.html#uploading">Загрузка программы на робот (F#)</a></li>\
+						<li><a href="trik.html#wifi">Интерпретация по Wi-Fi</a></li>\
+						<li><a href="trik.html#uploading">Загрузка программы на робот (Qts)</a></li>\
+						<li><a href="trik.html#uploading">Загрузка программы на робот (F#)</a></li>\
 					</ul>\
 				</ul>\
 			</li>\
