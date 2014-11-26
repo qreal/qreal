@@ -64,6 +64,10 @@ public:
 
 	bool isDividable() const;
 
+	void overridesProperties (QList<QDomElement> &elements, const Id &id, QList<PortInterface *> &ports
+			, const PortFactoryInterface &portFactory, SdfRendererInterface *renderer
+			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const;
+
 	/*Container properties*/
 	bool hasContainerProperty(QString const &property) const;
 	bool isContainer() const;

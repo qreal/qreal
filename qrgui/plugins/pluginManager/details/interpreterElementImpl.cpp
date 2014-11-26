@@ -129,6 +129,64 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 	}
 }
 
+void InterpreterElementImpl::overridesProperties(QList<QDomElement> &elements,Id const &id
+												, QList<PortInterface *> &ports,PortFactoryInterface const &portFactory, SdfRendererInterface *renderer,
+		LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const
+{
+	bool overrPictures = false;
+	bool overrPorts = false;
+	bool overrLabels = false;
+	foreach (Id const &link, mEditorRepoApi->incomingLinks(id)) {
+		overrPictures = false;
+		overrPorts = false;
+		overrLabels = false;
+		if (link.element() == "Inheritance") {
+			Id const &parent = mEditorRepoApi->otherEntityFromLink(link, id);
+			if (!parent.isNull()) {
+				overridesProperties(elements, parent, ports, portFactory, renderer, labelFactory, labels);
+				InterpreterElementImpl * const impl = new InterpreterElementImpl(mEditorRepoApi, parent);
+				impl->mGraphics.setContent(mEditorRepoApi->stringProperty(parent, "shape"));
+				QDomElement sdfElement = impl->mGraphics.firstChildElement("graphics").firstChildElement("picture");
+
+				int width = 0;
+				int height = 0;
+				if (!sdfElement.isNull()) {
+					width = sdfElement.attribute("sizex").toInt();
+					height = sdfElement.attribute("sizey").toInt();
+				}
+
+				if (mEditorRepoApi->stringProperty(link, "overrides") == "pictures") {
+					overrPictures = true;
+				}
+
+				if (mEditorRepoApi->stringProperty(link, "overrides") == "ports") {
+					overrPorts = true;
+				}
+
+				if (mEditorRepoApi->stringProperty(link, "overrides") == "labels") {
+					overrLabels = true;
+				}
+
+				if (!overrPictures && (mEditorRepoApi->stringProperty(link, "overrides") == "" ||
+					mEditorRepoApi->stringProperty(link, "overrides") != "pictures")) {
+					elements.append(sdfElement);
+				}
+
+				if (!overrPorts && (mEditorRepoApi->stringProperty(link, "overrides") == "" ||
+					mEditorRepoApi->stringProperty(link, "overrides") != "ports")) {
+					impl->initPointPorts(portFactory, ports, width, height);
+				}
+
+				if (!overrLabels && (mEditorRepoApi->stringProperty(link, "overrides") == "" ||
+						mEditorRepoApi->stringProperty(link, "overrides") != "labels")) {
+					impl->initLabels(width, height, labelFactory, labels);
+				}
+				delete impl;
+			}
+		}
+	}
+}
+
 void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &portFactory
 		, QList<PortInterface *> &ports, LabelFactoryInterface &labelFactory
 		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
@@ -138,6 +196,13 @@ void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &
 		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
 		QDomDocument classDoc;
 		QDomElement sdfElement = mGraphics.firstChildElement("graphics").firstChildElement("picture");
+
+		QList<QDomElement> elementsWithGraphic;
+		overridesProperties(elementsWithGraphic, mId, ports, portFactory, renderer, labelFactory, labels);
+
+		foreach (QDomElement tempElementWithGraphic, elementsWithGraphic) {
+			sdfElement.appendChild(tempElementWithGraphic.firstChild());
+		}
 		classDoc.appendChild(classDoc.importNode(sdfElement, true));
 		if (!classDoc.childNodes().isEmpty()) {
 			mRenderer = renderer;

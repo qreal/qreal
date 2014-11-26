@@ -127,6 +127,12 @@ IdList InterpreterEditorManager::elements(Id const &diagram) const
 					if (diagramChild.element() == "MetaEntityEdge"
 							|| !repo->stringProperty(diagramChild, "shape").isEmpty())
 					{
+						if (repo->hasProperty(diagramChild,"abstract")) {
+							if (repo->stringProperty(diagramChild, "abstract") == "true") {
+								repo->setProperty(diagramChild, "isHidden", "true");
+							}
+						}
+
 						if (!repo->hasProperty(diagramChild, "isHidden")) {
 							repo->setProperty(diagramChild, "isHidden", "false");
 						}
