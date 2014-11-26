@@ -1,5 +1,7 @@
 #include "pluginManagerImplementation.h"
 
+#include <QtCore/QCoreApplication>
+
 #include <qrkernel/logging.h>
 
 using namespace qReal::details;
@@ -47,7 +49,7 @@ QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 
 QPair<QObject *, QString> PluginManagerImplementation::pluginLoadedByName(QString const &pluginName)
 {
-	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName));
+	QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
 	loader->load();
 	QObject *plugin = loader->instance();
 

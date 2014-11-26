@@ -50,16 +50,16 @@ private slots:
 
 private:
 	/// Action that launches code generator
-	QAction mGenerateCodeAction;
+	QAction *mGenerateCodeAction;
 
 	/// Action that generates and uploads program on a robot
-	QAction mUploadProgramAction;
+	QAction *mUploadProgramAction;
 
 	/// Action that generates and uploads program on a robot
-	QAction mRunProgramAction;
+	QAction *mRunProgramAction;
 
 	/// Action that stops script execution and turns off motors.
-	QAction mStopRobotAction;
+	QAction *mStopRobotAction;
 
 	utils::TcpRobotCommunicator *mCommunicator;
 };

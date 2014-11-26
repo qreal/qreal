@@ -8,9 +8,9 @@
 using namespace trik;
 
 TrikRuntimeUploaderPlugin::TrikRuntimeUploaderPlugin()
+	: mAction(new QAction(QIcon(":/trik/images/flashRobot.svg"), tr("Upload Runtime"), nullptr))
 {
-	mAction.reset(new QAction(QIcon(":/trik/images/flashRobot.svg"), tr("Upload Runtime"), nullptr));
-	connect(mAction.data(), &QAction::triggered, this, &TrikRuntimeUploaderPlugin::uploadRuntime);
+	connect(mAction, &QAction::triggered, this, &TrikRuntimeUploaderPlugin::uploadRuntime);
 }
 
 QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
@@ -18,7 +18,7 @@ QList<qReal::ActionInfo> TrikRuntimeUploaderPlugin::actions()
 	QAction *separator = new QAction(this);
 	separator->setSeparator(true);
 	qReal::ActionInfo separatorInfo(separator, "generators", "tools");
-	qReal::ActionInfo info(mAction.data(), "generators", "tools");
+	qReal::ActionInfo info(mAction, "generators", "tools");
 	return { info, separatorInfo };
 }
 
@@ -29,6 +29,7 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString());
 
 	QString const killTrikGui = "\"call killall trikGui\"";
+	QString const removePermissions = "\"call chmod a-x trik/trik*\"";
 	QString const restorePermissions = "\"call chmod a+x trik/trik*\"";
 	QString const restartTrikGui = "\"call cd trik\" \"call ./trikGui -qws &\"";
 
@@ -39,9 +40,10 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 			? QApplication::applicationDirPath() + rawWinscpPath.mid(1)
 			: rawWinscpPath;
 
-	QString const command = QString("\"%1\" /command %2 %3 %4 %5 %6")
+	QString const command = QString("\"%1\" /command %2 %3 %4 %5 %6 %7")
 			.arg(winscpPath)
 			.arg(openConnection)
+			.arg(removePermissions)
 			.arg(killTrikGui)
 			.arg(moveCommand)
 			.arg(restorePermissions)
