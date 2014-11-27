@@ -423,6 +423,6 @@ void AbstractItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 	QAction *removeAction = menu.addAction(QObject::tr("Remove"));
 	QAction *selectedAction = menu.exec(event->screenPos());
 	if (selectedAction == removeAction) {
-		emit removeActionTriggered();
+		emit deleteItem();
 	}
 }

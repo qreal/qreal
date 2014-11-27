@@ -85,7 +85,7 @@ public:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
 signals:
-	void removeActionTriggered();
+	void deleteItem();
 
 protected:
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);

@@ -124,7 +124,7 @@ void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		item->setPenBrush(penStyleItems(), penWidthItems(), penColorItems()
 				, brushStyleItems(), brushColorItems());
 		mModel.worldModel().addColorField(item);
-		connect(&item, &AbstractItem::removeActionTriggered, this, &D2ModelScene::itemContextMenuRemove);
+		connect(&item, &AbstractItem::deleteItem, this, &D2ModelScene::itemContextMenuRemove);
 	};
 
 	for (RobotItem * const robotItem : mRobots.values()) {
