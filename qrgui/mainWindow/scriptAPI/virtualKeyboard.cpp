@@ -16,7 +16,8 @@ VirtualKeyboard::VirtualKeyboard(ScriptAPI *scriptAPI)
 void VirtualKeyboard::type(QString const &message, int const duration)
 {
 	if (QApplication::focusWidget()) {
-		printValue(message, duration);
+		QTest::keyClicks(nullptr, message, Qt::NoModifier, duration);
+		//printValue(message, duration);
 		QTest::keyClick(QApplication::focusWidget(), Qt::Key_Enter, Qt::NoModifier, 0);
 		mScriptAPI->wait(300);
 	}
@@ -29,7 +30,7 @@ void VirtualKeyboard::printValue(QString const &value, int const duration)
 		QTimer *timer = new QTimer(this);
 		timer->setInterval(charDuration);
 		timer->setSingleShot(true);
-		connect (timer, &QTimer::timeout, mScriptAPI, &ScriptAPI::breakWaiting);
+		connect(timer, &QTimer::timeout, mScriptAPI, &ScriptAPI::breakWaiting);
 		timer->start();
 		mScriptAPI->wait(-1);
 		QTest::keyClicks(nullptr, ch.toLower(), Qt::NoModifier, 0);

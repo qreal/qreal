@@ -110,7 +110,7 @@ void DraggableElement::setIconSize(int size)
 	mLabel->setPixmap(mData.icon().pixmap(size , size));
 }
 
-QMimeData* DraggableElement::mimeData(Id elementId) const
+QMimeData *DraggableElement::mimeData(Id const &elementId) const
 {
 	QByteArray itemData;
 	bool isFromLogicalModel = false;

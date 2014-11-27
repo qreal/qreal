@@ -49,7 +49,7 @@ public:
 
 	QSize iconsPreferredSize() const;
 
-	QMimeData *mimeData(Id elementId) const;
+	QMimeData *mimeData(Id const &elementId) const;
 
 private slots:
 	void changePropertiesPaletteActionTriggered();

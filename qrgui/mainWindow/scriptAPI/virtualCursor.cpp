@@ -9,6 +9,9 @@
 using namespace qReal;
 using namespace gui;
 
+int const cursorSize = 32;
+int const iconSize = 32;
+
 VirtualCursor::VirtualCursor(ScriptAPI *scriptAPI, QWidget *parent)
 	: QLabel(parent)
 	, mScriptAPI(scriptAPI)
@@ -16,7 +19,7 @@ VirtualCursor::VirtualCursor(ScriptAPI *scriptAPI, QWidget *parent)
 	, mRightButtonPressed(false)
 	, mDragStarted(false)
 {
-	setFixedSize(32, 32);
+	setFixedSize(cursorSize, cursorSize);
 	setWindowFlags(Qt::WindowStaysOnTopHint);
 }
 
@@ -27,10 +30,10 @@ void VirtualCursor::paintEvent(QPaintEvent *event)
 	QPixmap const virtCursorIcon(":/mainWindow/images/scriptAPI/virtcursor.png");
 	mPainter.drawPixmap(0,0, virtCursorIcon);
 	if (mDragStarted) {
-		setFixedSize(64, 64);
+		setFixedSize(cursorSize + iconSize, cursorSize + iconSize);
 		mPainter.drawPixmap(QPoint(32,32), mPaletteElementIcon.pixmap(32, 32));
 	} else {
-		setFixedSize(32, 32);
+		setFixedSize(cursorSize, cursorSize);
 	}
 }
 
