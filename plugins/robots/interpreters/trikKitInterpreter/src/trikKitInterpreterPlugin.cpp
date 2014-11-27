@@ -17,25 +17,21 @@ TrikKitInterpreterPlugin::TrikKitInterpreterPlugin()
 	, mTwoDRobotModelV6(mRealRobotModelV6)
 	, mBlocksFactory(new blocks::TrikBlocksFactory)
 {
-	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
-
 	mTwoDRobotModelV6.setWheelPorts("M3", "M4");
-
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModelV6);
 
 	mTwoDRobotModelV6.setEngine(modelEngine->engine());
 	mTwoDModelV6.reset(modelEngine);
 
-	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, &mRealRobotModelV6, &robotModel::real::RealRobotModelV6::rereadSettings);
-	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, &mTwoDRobotModelV6, &robotModel::twoD::TwoDRobotModel::rereadSettings);
+	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModelV6.name() });
+	mFSharpAdditionalPreferences = new TrikFSharpAdditionalPreferences();
 }
 
 TrikKitInterpreterPlugin::~TrikKitInterpreterPlugin()
 {
 	if (mOwnsAdditionalPreferences) {
 		delete mAdditionalPreferences;
+		delete mFSharpAdditionalPreferences;
 	}
 
 	if (mOwnsBlocksFactory) {
@@ -65,6 +61,7 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 			, logicalModel, interpretersInterface, interpreterControl);
 
 	mRealRobotModelV6.setErrorReporter(interpretersInterface.errorReporter());
+
 	QLineEdit * const quickPreferences = new QLineEdit;
 	quickPreferences->setPlaceholderText(tr("Enter robot`s IP-address here..."));
 	auto updateQuickPreferences = [quickPreferences]() {
@@ -76,6 +73,11 @@ void TrikKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface
 		qReal::SettingsManager::setValue("TrikTcpServer", text);
 	});
 	mIpAdressQuickConfigurer = quickPreferences;
+
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+			, &mRealRobotModelV6, &robotModel::real::RealRobotModelV6::rereadSettings);
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+			, &mTwoDRobotModelV6, &robotModel::twoD::TwoDRobotModel::rereadSettings);
 }
 
 QString TrikKitInterpreterPlugin::kitId() const
@@ -106,10 +108,10 @@ interpreterBase::robotModel::RobotModelInterface *TrikKitInterpreterPlugin::defa
 	return &mTwoDRobotModelV6;
 }
 
-interpreterBase::AdditionalPreferences *TrikKitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> TrikKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
-	return mAdditionalPreferences;
+	return {mAdditionalPreferences, mFSharpAdditionalPreferences};
 }
 
 QWidget *TrikKitInterpreterPlugin::quickPreferencesFor(interpreterBase::robotModel::RobotModelInterface const &model)

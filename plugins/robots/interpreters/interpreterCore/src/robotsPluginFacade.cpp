@@ -197,6 +197,10 @@ void RobotsPluginFacade::initSensorWidgets()
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, hideVariables);
 
 	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, this);
+	connect(mInterpreter, &interpreter::InterpreterInterface::started
+			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStart);
+	connect(mInterpreter, &interpreter::InterpreterInterface::stopped
+			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStop);
 
 	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);
 	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());

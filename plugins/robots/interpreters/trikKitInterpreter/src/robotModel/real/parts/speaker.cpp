@@ -1,4 +1,5 @@
 #include "speaker.h"
+
 #include <qrutils/inFile.h>
 
 using namespace trikKitInterpreter::robotModel::real::parts;
@@ -13,7 +14,7 @@ Speaker::Speaker(DeviceInfo const &info, PortInfo const &port
 
 void Speaker::play(QString const &filePath)
 {
-	QString const pathToCommand = ":/trik/templates/playTone.t";
+	QString const pathToCommand = ":/trikQts/templates/playTone.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@FILENAME@@", filePath) + "brick.run();";
 

@@ -1,25 +1,22 @@
 #pragma once
 
-#include "trikDisplayWidget.h"
-#include "interpreterBase/blocksBase/block.h"
-#include "interpreterBase/robotModel/robotModelInterface.h"
+#include <interpreterBase/blocksBase/common/deviceBlock.h>
+#include "robotModel/parts/trikShell.h"
 
 namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
 
 /// An interpreter`s implementation for SAY block.
-class SayBlock : public interpreterBase::blocksBase::Block
+class SayBlock : public interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::TrikShell>
 {
 	Q_OBJECT
 
 public:
 	explicit SayBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~SayBlock() override;
-	void run() override;
 
 private:
-	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
+	void doJob(robotModel::parts::TrikShell &shell) override;
 };
 
 }

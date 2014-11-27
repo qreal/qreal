@@ -1539,6 +1539,27 @@ typedef   enum
 }
 DEVCMD;
 
+enum SensorTypeEnum {
+    NO_SENSOR = 0x00
+    , SWITCH = 0x01
+    , TEMPERATURE = 0x02
+    , REFLECTION = 0x03
+    , ANGLE = 0x04
+    , LIGHT_ACTIVE = 0x05
+    , LIGHT_INACTIVE = 0x06
+    , SOUND_DB = 0x07
+    , SOUND_DBA = 0x08
+    , CUSTOM = 0x09
+    , LOWSPEED = 0x0A
+    , LOWSPEED_9V = 0x0B
+    , SONAR_METRIC = 0x0C  // Not documented
+    , COLORFULL = 0x0D
+    , COLORRED = 0x0E
+    , COLORGREEN = 0x0F
+    , COLORBLUE = 0x10
+    , COLORNONE = 0x11
+};
+
 /*\endverbatim
  *
  *  \n

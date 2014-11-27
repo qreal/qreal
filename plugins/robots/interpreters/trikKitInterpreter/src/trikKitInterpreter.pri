@@ -74,9 +74,11 @@ HEADERS += \
 	$$PWD/blocks/details/setPainterWidthBlock.h \
 	$$PWD/blocks/details/setPainterColorBlock.h \
 	$$PWD/robotModel/twoD/parts/twoDLed.h \
+	$$PWD/trikFSharpAdditionalPreferences.h \
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
+	$$PWD/trikFSharpAdditionalPreferences.cpp \
 	$$PWD/trikKitInterpreterPlugin.cpp \
 	$$PWD/trikDisplayWidget.cpp \
 	$$PWD/blocks/trikBlocksFactory.cpp \
@@ -140,6 +142,7 @@ SOURCES += \
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
 	$$PWD/trikDisplayWidget.ui \
+	$$PWD/trikFSharpAdditionalPreferences.ui \
 
 RESOURCES += \
 	$$PWD/../trikKitInterpreter.qrc \

@@ -2,6 +2,7 @@
 
 #include "generatorBase/semanticTree/semanticTree.h"
 #include "generatorBase/parts/threads.h"
+#include "generatorBase/parts/subprograms.h"
 
 #include "src/rules/forkRules/forkRule.h"
 
@@ -69,7 +70,7 @@ bool ControlFlowGeneratorBase::generateForks()
 {
 	while (mCustomizer.factory()->threads().hasUnprocessedThreads()) {
 		Id const thread = mCustomizer.factory()->threads().nextUnprocessedThread();
-		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(thread);
+		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(thread, false);
 		if (!threadGenerator->generate(thread)) {
 			return false;
 		}
@@ -92,6 +93,14 @@ void ControlFlowGeneratorBase::error(QString const &message, Id const &id, bool 
 bool ControlFlowGeneratorBase::errorsOccured() const
 {
 	return mErrorsOccured;
+}
+
+void ControlFlowGeneratorBase::visitRegular(Id const &id, QList<LinkInfo> const &links)
+{
+	Q_UNUSED(links)
+	if (mCustomizer.isSubprogramCall(id)) {
+		mCustomizer.factory()->subprograms()->usageFound(id);
+	}
 }
 
 enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id const &id) const

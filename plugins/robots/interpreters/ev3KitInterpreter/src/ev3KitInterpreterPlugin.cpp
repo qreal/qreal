@@ -41,9 +41,9 @@ interpreterBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::bl
 	return mBlocksFactory;
 }
 
-interpreterBase::AdditionalPreferences *Ev3KitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> Ev3KitInterpreterPlugin::settingsWidgets()
 {
-	return mAdditionalPreferences;
+	return { mAdditionalPreferences };
 }
 
 QList<qReal::ActionInfo> Ev3KitInterpreterPlugin::customActions()

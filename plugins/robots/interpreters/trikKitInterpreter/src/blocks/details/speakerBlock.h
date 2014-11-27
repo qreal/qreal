@@ -1,26 +1,22 @@
 #pragma once
 
-#include <QtGui/QColor>
-
-#include "interpreterBase/blocksBase/block.h"
-#include "interpreterBase/robotModel/robotModelInterface.h"
+#include <interpreterBase/blocksBase/common/deviceBlock.h>
+#include "robotModel/parts/trikSpeaker.h"
 
 namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
 
-/// An interpreter`s implementation for SPEAKERBLOCK block.
-class SpeakerBlock : public interpreterBase::blocksBase::Block
+/// An interpreter`s implementation for speaker block.
+class SpeakerBlock : public interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::TrikSpeaker>
 {
 	Q_OBJECT
 
 public:
 	explicit SpeakerBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
-	~SpeakerBlock() override;
-	void run() override;
 
 private:
-	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
+	void doJob(robotModel::parts::TrikSpeaker &shell) override;
 };
 
 }

@@ -46,17 +46,21 @@ void NxtKitInterpreterPlugin::init(interpreterBase::EventsForKitPluginInterface 
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, interpreterBase::InterpreterControlInterface &interpreterControl)
 {
-	connect(&eventsForKitPlugin
-			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
+	connect(&eventsForKitPlugin, &interpreterBase::EventsForKitPluginInterface::robotModelChanged
 			, [this](QString const &modelName) { mCurrentlySelectedModelName = modelName; });
 
-	connect(&systemEvents
-			, &qReal::SystemEvents::activeTabChanged
-			, this
-			, &NxtKitInterpreterPlugin::onActiveTabChanged);
+	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
+			, this, &NxtKitInterpreterPlugin::onActiveTabChanged);
+
+	connect(&mRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
+			, [&interpretersInterface](QString const &message) {
+				interpretersInterface.errorReporter()->addError(message);
+	});
+	mRealRobotModel.checkConnection();
 
 	mTwoDModel->init(eventsForKitPlugin, systemEvents, graphicalModel
 			, logicalModel, interpretersInterface, interpreterControl);
+
 }
 
 QString NxtKitInterpreterPlugin::kitId() const
@@ -87,10 +91,10 @@ interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defau
 	return &mTwoDRobotModel;
 }
 
-interpreterBase::AdditionalPreferences *NxtKitInterpreterPlugin::settingsWidget()
+QList<interpreterBase::AdditionalPreferences *> NxtKitInterpreterPlugin::settingsWidgets()
 {
 	mOwnsAdditionalPreferences = false;
-	return mAdditionalPreferences;
+	return {mAdditionalPreferences};
 }
 
 QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
@@ -100,7 +104,7 @@ QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 
 QList<HotKeyActionInfo> NxtKitInterpreterPlugin::hotKeyActions()
 {
-	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));	
 	mTwoDModel->showTwoDModelWidgetActionInfo().action()->setObjectName("show2dModel");
 
 	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModelForNxt", tr("Show 2d model")
