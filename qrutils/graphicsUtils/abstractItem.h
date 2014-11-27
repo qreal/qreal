@@ -7,6 +7,8 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QPair>
 #include <QtCore/QList>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QGraphicsSceneContextMenuEvent>
 
 #include "../utilsDeclSpec.h"
 
@@ -18,8 +20,9 @@ const int scalingRect = 6;
 namespace graphicsUtils
 {
 
-class QRUTILS_EXPORT AbstractItem : public QGraphicsItem
+class QRUTILS_EXPORT AbstractItem : public QGraphicsObject
 {
+	Q_OBJECT
 public:
 	enum DragState {
 		None,

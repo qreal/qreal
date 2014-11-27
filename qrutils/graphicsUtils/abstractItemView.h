@@ -2,6 +2,8 @@
 
 #include <QtWidgets/QGraphicsView>
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QGraphicsSceneContextMenuEvent>
 
 #include "../utilsDeclSpec.h"
 

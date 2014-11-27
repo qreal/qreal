@@ -95,6 +95,9 @@ private slots:
 	/// @param robotModel Robot model which was removed
 	void onRobotRemove(model::RobotModel *robotModel);
 
+	/// Called after removing item on item context menu.
+	void itemRemove();
+
 private:
 	enum DrawingAction
 	{
@@ -127,8 +130,6 @@ private:
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
 	void worldWallDragged(items::WallItem *wall, QPainterPath const &shape, QRectF const &oldPos);
-
-	void itemContextMenuRemove();
 
 	model::Model &mModel;
 

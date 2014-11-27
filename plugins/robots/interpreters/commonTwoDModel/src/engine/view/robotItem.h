@@ -16,7 +16,7 @@ namespace twoDModel {
 namespace view {
 
 /** @brief Class that represents a robot in 2D model */
-class RobotItem : public QObject, public graphicsUtils::RotateItem
+class RobotItem : public graphicsUtils::RotateItem
 {
 	Q_OBJECT
 
