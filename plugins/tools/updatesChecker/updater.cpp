@@ -5,6 +5,8 @@
 #include <QtCore/QProcess>
 #include <QtXml/QDomDocument>
 
+#include <qrkernel/logging.h>
+
 using namespace updatesChecker;
 
 Updater::Updater(QObject *parent)
@@ -43,6 +45,7 @@ void Updater::readAnswer()
 	QDomDocument parser;
 	parser.setContent(output);
 	if (!output.isEmpty() && !parser.isNull()) {
+		QLOG_INFO() << "Updater output:" << output;
 		emit newVersionAvailable();
 	} else {
 		emit noNewVersionAvailable();
