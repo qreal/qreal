@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QTreeWidgetItem>
+#include <QtWidgets/QScrollBar>
 
 #include <plugins/toolPluginInterface/toolPluginInterface.h>
 

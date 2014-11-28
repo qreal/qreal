@@ -2,6 +2,7 @@
 
 #include <plugins/toolPluginInterface/toolPluginInterface.h>
 #include <editor/editorView.h>
+#include <qrutils/widgetFinder.h>
 
 #include "mainWindow.h"
 #include "palette/draggableElement.h"
@@ -16,15 +17,7 @@ GuiFacade::GuiFacade(MainWindow *mainWindow)
 
 QWidget *GuiFacade::widget(QString const &type, QString const &name)
 {
-	QList<QWidget *> const widgetList = mMainWindow->findChildren<QWidget *>(name);
-
-	for (QWidget * const widget : widgetList) {
-		if (type == widget->metaObject()->className() && widget->isVisible()) {
-			return widget;
-		}
-	}
-
-	return nullptr;
+	return utils::WidgetFinder::widget(mMainWindow, type, name);
 }
 
 DraggableElement *GuiFacade::draggableElement(QString const &widgetId)

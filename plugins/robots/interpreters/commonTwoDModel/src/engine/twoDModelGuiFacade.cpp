@@ -1,6 +1,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QComboBox>
 
+#include <qrutils/widgetFinder.h>
 #include "commonTwoDModel/engine/twoDModelGuiFacade.h"
 #include "view/d2ModelWidget.h"
 
@@ -14,15 +15,7 @@ TwoDModelGuiFacade::TwoDModelGuiFacade(D2ModelWidget &view)
 
 QWidget *TwoDModelGuiFacade::widget(QString const &type, QString const &name)
 {
-	QList<QWidget *> const widgetList = mD2ModelWidget.findChildren<QWidget *>(name);
-
-	for (QWidget * const widget : widgetList) {
-		if (type == widget->metaObject()->className() && widget->isVisible()) {
-			return widget;
-		}
-	}
-
-	return nullptr;
+	return utils::WidgetFinder::widget(&mD2ModelWidget, type, name);
 }
 
 QWidget *TwoDModelGuiFacade::d2ModelSceneViewport()

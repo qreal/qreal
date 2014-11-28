@@ -3,6 +3,9 @@ api.hints().addHint("Добро пожаловать в среду визуал�
 api.wait(1500);
 api.hints().addHint("Сейчас мы нарисуем одну диаграмму за вас, чтобы показать, как все работает.", 1300, mainWindow);
 api.wait(1500);
+var scroller = api.ui().widget("QScrollArea", "devicesConfigurer");
+print(scroller);
+api.cursor().moveTo(scroller, 2000);
 var newDiagram = api.ui().widget("QToolButton", "actionNew_Diagram");
 api.hints().addHint("Сперва создадим новую диаграмму...", 2000, mainWindow);
 api.cursor().moveTo(newDiagram, 1000);
