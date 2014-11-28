@@ -2,6 +2,7 @@
 
 #include <QtScript/QScriptEngine>
 #include <QtCore/QEventLoop>
+#include <QtWidgets/QScrollArea>
 
 #include "guiFacade.h"
 #include "virtualCursor.h"
@@ -43,6 +44,9 @@ public:
 
 	/// Picks combo box item. Virtual cursor can pick any item in sight of view. Cant scroll bars.
 	Q_INVOKABLE void pickComboBoxItem(QComboBox *comboBox, QString const &name, int const duration);
+
+	/// Changes QScrollArea viewport to make target widget visible.
+	Q_INVOKABLE void scroll(QScrollArea *area, QWidget *widget);
 
 	/// Will make plugin gui facade available in scripting file.
 	Q_INVOKABLE QScriptValue pluginUi(QString const pluginName);

@@ -1,6 +1,7 @@
 #include "scriptAPI.h"
 
 #include <QtWidgets/QApplication>
+#include <QtGui/QWidgetList>
 
 #include <qrkernel/exception/exception.h>
 #include <qrutils/inFile.h>
@@ -151,6 +152,11 @@ VirtualCursor *ScriptAPI::virtualCursor()
 SceneAPI *ScriptAPI::sceneAPI()
 {
 	return mSceneAPI;
+}
+
+void ScriptAPI::scroll(QScrollArea *area, QWidget *widget)
+{
+	area->ensureWidgetVisible(widget, 0, 0);
 }
 
 QScriptValue ScriptAPI::ui()
