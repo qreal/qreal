@@ -17,15 +17,6 @@ GuiFacade::GuiFacade(MainWindow *mainWindow)
 
 QWidget *GuiFacade::widget(QString const &type, QString const &name)
 {
-//	QList<QScrollArea *> wList = mMainWindow->findChildren<QScrollArea *>();
-
-//	qDebug()<<wList.size();
-
-//	for (QScrollArea * widget : wList) {
-//		qDebug()<< widget->objectName();
-//		qDebug()<<widget->isVisible();
-//	}
-//	return nullptr;
 	return utils::WidgetFinder::widget(mMainWindow, type, name);
 }
 
