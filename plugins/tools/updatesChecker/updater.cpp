@@ -5,6 +5,8 @@
 #include <QtCore/QProcess>
 #include <QtXml/QDomDocument>
 
+#include <qrkernel/logging.h>
+
 using namespace updatesChecker;
 
 Updater::Updater(QObject *parent)
@@ -42,7 +44,8 @@ void Updater::readAnswer()
 	// Checking that output is a valid XML
 	QDomDocument parser;
 	parser.setContent(output);
-	if (!output.isEmpty() && !parser.isNull()) {
+	QLOG_INFO() << "Updater output:" << output;
+	if (!output.isEmpty() && !parser.isNull() && output.trimmed().startsWith("<")) {
 		emit newVersionAvailable();
 	} else {
 		emit noNewVersionAvailable();
