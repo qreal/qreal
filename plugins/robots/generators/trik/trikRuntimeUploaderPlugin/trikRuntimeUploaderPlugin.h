@@ -20,7 +20,7 @@ private slots:
 private:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
 
-	QAction *mAction;
+	QAction *mAction;  // Takes ownership; may be disposed by GUI.
 };
 
 }

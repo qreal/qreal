@@ -50,16 +50,16 @@ private slots:
 
 private:
 	/// Action that launches code generator
-	QAction *mGenerateCodeAction;
+	QAction *mGenerateCodeAction;  // Takes ownership; may be disposed by GUI.
 
 	/// Action that generates and uploads program on a robot
-	QAction *mUploadProgramAction;
+	QAction *mUploadProgramAction;  // Takes ownership; may be disposed by GUI.
 
 	/// Action that generates and uploads program on a robot
-	QAction *mRunProgramAction;
+	QAction *mRunProgramAction;  // Takes ownership; may be disposed by GUI.
 
 	/// Action that stops script execution and turns off motors.
-	QAction *mStopRobotAction;
+	QAction *mStopRobotAction;  // Takes ownership; may be disposed by GUI.
 
 	utils::TcpRobotCommunicator *mCommunicator;
 };
