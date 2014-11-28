@@ -7,7 +7,8 @@ QWidget *WidgetFinder::widget(QWidget *parent, QString const &type, QString cons
 	QList<QWidget *> const widgetList = parent->findChildren<QWidget *>(name);
 
 	for (QWidget * const widget : widgetList) {
-		if (type == widget->metaObject()->classInfo() && widget->isVisible()) {
+		const char *ch = type.toStdString().c_str();
+		if (widget->inherits(ch) && widget->isVisible()) {
 			return widget;
 		}
 	}
