@@ -365,6 +365,10 @@ brick.run();</pre>
 			</p>
 			
 			<h5><a name="textual-programming-qts-brick">Класс "Brick"</a></h5>
+			
+			<p>
+			Представляет контроллер, предоставляет доступ к устройствам робота, моторам, датчикам и функциям операционной системы.
+			</p>
 
 			<table cellspacing="2" border="1" cellpadding="5" width="800" >
 				<tr>
@@ -390,57 +394,57 @@ brick.run();</pre>
 				<tr>
 					<td>motor</td>
 					<td>brick.motor("M1");</td>
-					<td>Возвращает мотор (класс Motor, силовой или сервомотор) на указанном порту.</td>
+					<td>Возвращает мотор (класс <a href="#textual-programming-qts-motor">Motor</a>, силовой или сервомотор) на указанном порту.</td>
 				</tr>
 				<tr>
 					<td>sensor</td>
 					<td>brick.sensor("A1");</td>
-					<td>Возвращает сенсор (класс Sensor) на указанном порту.</td>
+					<td>Возвращает сенсор (класс <a href="#textual-programming-qts-sensor">Sensor</a>) на указанном порту.</td>
 				</tr>
 				<tr>
 					<td>accelerometer</td>
 					<td>brick.accelerometer();</td>
-					<td>Возвращает акселерометр (класс Sensor3d).</td>
+					<td>Возвращает акселерометр (класс <a href="#textual-programming-qts-sensor3d">Sensor3d</a>).</td>
 				</tr>
 				<tr>
 					<td>gyroscope</td>
 					<td>brick.gyroscope();</td>
-					<td>Возвращает гироскоп (класс Sensor3d).</td>
+					<td>Возвращает гироскоп (класс <a href="#textual-programming-qts-sensor3d">Sensor3d</a>).</td>
 				</tr>
 				<tr>
 					<td>lineSensor</td>
 					<td>brick.lineSensor();</td>
-					<td>Возвращает датчик линии по видеокамере (класс LineSensor).</td>
+					<td>Возвращает датчик линии по видеокамере (класс <a href="#textual-programming-qts-lineSensor">LineSensor</a>).</td>
 				</tr>
 				<tr>
 					<td>colorSensor</td>
 					<td>brick.colorSensor();</td>
-					<td>Возвращает датчик цвета по видеокамере (класс ColorSensor).</td>
+					<td>Возвращает датчик цвета по видеокамере (класс <a href="#textual-programming-qts-colorSensor">ColorSensor</a>).</td>
 				</tr>
 				<tr>
 					<td>objectSensor</td>
 					<td>brick.objectSensor();</td>
-					<td>Возвращает датчик объекта по видеокамере (класс ObjectSensor).</td>
+					<td>Возвращает датчик объекта по видеокамере (класс <a href="#textual-programming-qts-objectSensor">ObjectSensor</a>).</td>
 				</tr>
 				<tr>
 					<td>encoder</td>
 					<td>brick.encoder('B1');</td>
-					<td>Возвращает энкодер на указанном порту (класс Encoder).</td>
+					<td>Возвращает энкодер на указанном порту (класс <a href="#textual-programming-qts-encoder">Encoder</a>).</td>
 				</tr>
 				<tr>
 					<td>battery</td>
 					<td>brick.battery();</td>
-					<td>Возвращает объект, предоставляющий доступ к батарее (класс Battery).</td>
+					<td>Возвращает объект, предоставляющий доступ к батарее (класс <a href="#textual-programming-qts-battery">Battery</a>).</td>
 				</tr>
 				<tr>
 					<td>keys</td>
 					<td>brick.keys();</td>
-					<td>Возвращает объект, предоставляющий доступ к кнопкам на корпусе робота (класс Keys).</td>
+					<td>Возвращает объект, предоставляющий доступ к кнопкам на корпусе робота (класс <a href="#textual-programming-qts-keys">Keys</a>).</td>
 				</tr>
 				<tr>
 					<td>gamepad</td>
 					<td>brick.gamepad();</td>
-					<td>Возвращает объект, предоставляющий доступ к Android-пульту (класс Gamepad).</td>
+					<td>Возвращает объект, предоставляющий доступ к Android-пульту (класс <a href="#textual-programming-qts-gamepad">Gamepad</a>).</td>
 				</tr>
 				<tr>
 					<td>timer</td>
@@ -460,17 +464,17 @@ brick.run();</pre>
 				<tr>
 					<td>display</td>
 					<td>brick.display();</td>
-					<td>Возвращает объект, предоставляющий доступ к дисплею робота (класс Display).</td>
+					<td>Возвращает объект, предоставляющий доступ к дисплею робота (класс <a href="#textual-programming-qts-display">Display</a>).</td>
 				</tr>
 				<tr>
 					<td>led</td>
 					<td>brick.led();</td>
-					<td>Возвращает объект, предоставляющий доступ к светодиоду на корпусе робота (класс Led).</td>
+					<td>Возвращает объект, предоставляющий доступ к светодиоду на корпусе робота (класс <a href="#textual-programming-qts-led">Led</a>).</td>
 				</tr>
 				<tr>
 					<td>mailbox</td>
 					<td>brick.mailbox();</td>
-					<td>Возвращает объект, предоставляющий доступ к функциональности "почтовых ящиков" (класс Mailbox).</td>
+					<td>Возвращает объект, предоставляющий доступ к функциональности "почтовых ящиков" (класс <a href="#textual-programming-qts-mailbox">Mailbox</a>).</td>
 				</tr>
 				<tr>
 					<td>run</td>
@@ -490,6 +494,10 @@ brick.run();</pre>
 			</table>
 			
 			<h5><a name="textual-programming-qts-battery">Класс "Battery"</a></h5>
+			
+			<p>
+			Предоставляет доступ к информации о батарее или блоке питания.
+			</p>
 
 			<table cellspacing="2" border="1" cellpadding="5" width="800" >
 				<tr>
@@ -505,6 +513,10 @@ brick.run();</pre>
 			</table>
 			
 			<h5><a name="textual-programming-qts-colorSensor">Класс "ColorSensor"</a></h5>
+			
+			<p>
+			Датчик цвета по видеокамере.
+			</p>
 
 			<table cellspacing="2" border="1" cellpadding="5" width="800" >
 				<tr>
@@ -530,6 +542,10 @@ brick.run();</pre>
 			</table>
 			
 			<h5><a name="textual-programming-qts-lineSensor">Класс "LineSensor"</a></h5>
+			
+			<p>
+			Датчик линии по видеокамере.
+			</p>
 
 			<table cellspacing="2" border="1" cellpadding="5" width="800" >
 				<tr>
@@ -566,6 +582,10 @@ brick.run();</pre>
 			</table>
 			
 			<h5><a name="textual-programming-qts-objectSensor">Класс "ObjectSensor"</a></h5>
+			
+			<p>
+			Датчик объекта по видеокамере. Захватывает контрастный объект в центре кадра и возвращает его координаты и размер в кадре .
+			</p>
 
 			<table cellspacing="2" border="1" cellpadding="5" width="800" >
 				<tr>
@@ -598,6 +618,378 @@ brick.run();</pre>
 					<td>stop</td>
 					<td>brick.objectSensor().stop();</td>
 					<td>Выключает видеокамеру и прекращает работу датчика.</td>
+				</tr>
+			</table>
+			
+			<h5><a name="textual-programming-qts-sensor">Класс "Sensor"</a></h5>
+			
+			<p>
+			Представляет сенсор (аналоговый или цифровой), подключающийся к портам A1, ..., A6, D1, D2, F1.
+			</p>
+
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название метода</b></td>
+					<td><b>Пример вызова</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>read</td>
+					<td>brick.sensor("A1").read();</td>
+					<td>Возвращает текущее показание сенсора (цифрового или аналогового), подключённого к данному порту. Возвращается приведённое значение, зависящее от конфигурации порта, которая описывается в файле config.xml в папке trik на роботе. Например, ИК-датчик расстояния возвращает значение в сантиметрах.</td>
+				</tr>	
+				<tr>
+					<td>readRawData</td>
+					<td>brick.sensor("A1").readRawData();</td>
+					<td>Возвращает текущее "сырое" показание сенсора (цифрового или аналогового), подключённого к данному порту. Диапазон значений зависит от конкретного сенсора и не учитывает конфигурацию робота (возвращаются физические показания сенсора, например, задержка принятого ультразвукового сигнала).</td>
+				</tr>	
+			</table>
+
+			<h5><a name="textual-programming-qts-sensor3d">Класс "Sensor3d"</a></h5>
+			
+			<p>
+			Представляет сенсор, возвращающий в качестве значения массив из трёх чисел (гироскоп или акселерометр).
+			</p>
+
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название метода</b></td>
+					<td><b>Пример вызова</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>read</td>
+					<td>brick.gyroscope().read();</td>
+					<td>Возвращает текущее показание сенсора в виде массива из трёх элементов, соответствующих показаниям сенсора по каждой из осей.</td>
+				</tr>
+				<tr>
+					<td>newData</td>
+					<td>brick.gyroscope().newData.connect(function (x) { print(x[0]); });</td>
+					<td>Сигнал, посылаемый сенсором, когда у него готовы новые данные. В качестве параметра передаётся массив из трёх элементов, соответствующих показаниям сенсора по каждой из осей.</td>
+				</tr>
+			</table>
+			
+			<h5><a name="textual-programming-qts-display">Класс "Display"</a></h5>
+			
+			<p>
+			Предоставляет доступ к дисплею робота.
+			</p>
+			
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название метода</b></td>
+					<td><b>Пример вызова</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>showImage</td>
+					<td>brick.display().showImage('media/trik_smile_sad.png');</td>
+					<td>Вывести на экран изображение, предварительно загруженное на робот. Параметр – имя файла с изображением (в форматах BMP, GIF, JPG, JPEG, PNG, PBM, PGM, PPM, TIFF, XBM, XPM), путь указывается либо абсолютным, либо относительно папки trik.</td>
+				</tr>
+				<tr>
+					<td>addLabel</td>
+					<td>brick.display().addLabel('Привет, мир!', 1, 1);</td>
+					<td>Вывести на экран переданный в качестве параметра текст в указанные координаты. Если в указанных координатах уже был текст, он будет заменён новым.</td>
+				</tr>
+				<tr>
+					<td>removeLabels</td>
+					<td>brick.display().removeLabels();</td>
+					<td>Удаляет с экрана весь текст, добавленный на него вызовами метода addLabel().</td>
+				</tr>
+				<tr>
+					<td>setPainterColor</td>
+					<td>brick.display().setPainterColor("red");</td>
+					<td>Устанавливает цвет кисти, которой рисуются графические примитивы. Возможные цвета таковы: white, red, darkRed, green, darkGreen, blue, darkBlue, cyan, darkCyan, magenta, darkMagenta, yellow, darkYellow, gray, darkGray, lightGray, black.</td>
+				</tr>
+				<tr>
+					<td>setPainterWidth</td>
+					<td>brick.display().setPainterWidth(5);</td>
+					<td>Устанавливает толщину кисти, которой рисуются графические примитивы, в пикселах.</td>
+				</tr>
+				<tr>
+					<td>drawLine</td>
+					<td>brick.display().drawLine(0, 0, 10, 10);</td>
+					<td>Рисует линию с началом и концом в заданных координатах.</td>
+				</tr>
+				<tr>
+					<td>drawPoint</td>
+					<td>brick.display().drawPoint(10, 10);</td>
+					<td>Рисует точку в заданных координатах.</td>
+				</tr>
+				<tr>
+					<td>drawRect</td>
+					<td>brick.display().drawRect(0, 0, 10, 10);</td>
+					<td>Рисует прямоугольник с левым верхним углом в указанных координатах и имеющий заданную ширину и высоту.</td>
+				</tr>
+				<tr>
+					<td>drawEllipse</td>
+					<td>brick.display().drawEllipse(0, 0, 10, 10);</td>
+					<td>Рисует эллипс, вписанный в прямоугольник с левым верхним углом в указанных координатах и имеющий заданную ширину и высоту.</td>
+				</tr>
+				
+				<tr>
+					<td>drawArc</td>
+					<td>brick.display().drawArc(0, 0, 10, 10, 20, 50);</td>
+					<td>Рисует дугу эллипса, вписанного в прямоугольник с левым верхним углом в указанных координатах и имеющий заданную ширину и высоту. Последние два параметра – начальный и конечный угол, ограничивающие дугу.</td>
+				</tr>
+				<tr>
+					<td>setBackground</td>
+					<td>brick.display().setBackground("red");</td>
+					<td>Устанавливает фон экрана в указанный цвет. Возможные цвета таковы: white, red, darkRed, green, darkGreen, blue, darkBlue, cyan, darkCyan, magenta, darkMagenta, yellow, darkYellow, gray, darkGray, lightGray, black.</td>
+				</tr>
+				<tr>
+					<td>hide</td>
+					<td>brick.display().hide();</td>
+					<td>Закрывает и очищает окно для рисования.</td>
+				</tr>
+				<tr>
+					<td>clear</td>
+					<td>brick.display().clear();</td>
+					<td>Очищает окно для рисования.</td>
+				</tr>
+			</table>
+			
+			<h5><a name="textual-programming-qts-encoder">Класс "Encoder"</a></h5>
+			
+			<p>
+			Представляет энкодеры силовых моторов, подключающиеся к портам B1, B2, B3, B4.
+			</p>
+
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название метода</b></td>
+					<td><b>Пример вызова</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>read</td>
+					<td>brick.encoder("B1").read();</td>
+					<td>Возвращает текущее показание энкодера в градусах на заданном порту.</td>
+				</tr>
+				<tr>
+					<td>readRawData</td>
+					<td>brick.encoder("B1").readRawData();</td>
+					<td>Возвращает текущее показание энкодера в "тиках" на заданном порту.</td>
+				</tr>
+				<tr>
+					<td>reset</td>
+					<td>brick.encoder("B1").reset();</td>
+					<td>Сбрасывает в 0 текущее показание энкодера.</td>
+				</tr>
+			</table>
+
+			<h5><a name="textual-programming-qts-gamepad">Класс "Gamepad"</a></h5>
+			
+			<p>
+			Служит для работы с Android-пультом управления, <a href="https://play.google.com/store/apps/details?id=com.trik.gamepad">https://play.google.com/store/apps/details?id=com.trik.gamepad</a>.
+			</p>
+
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название метода</b></td>
+					<td><b>Пример вызова</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>reset</td>
+					<td>brick.gamepad().reset();</td>
+					<td>Сбрасывает запомненные события от Android-пульта.</td>
+				</tr>
+				<tr>
+					<td>buttonWasPressed</td>
+					<td>brick.gamepad().buttonWasPressed(1);</td>
+					<td>Возвращает true, если на пульте была нажата кнопка с указанным номером. Сбрасывает запомненное нажатие для этой кнопки. Кнопки нумеруются от 1 до 5.</td>
+				</tr>
+				<tr>
+					<td>isPadPressed</td>
+					<td>brick.gamepad().isPadPressed(1);</td>
+					<td>Возвращает, нажата ли в данный момент область управления на пульте. Области управления имеют номера 0 и 1.</td>
+				</tr>
+				<tr>
+					<td>padX</td>
+					<td>brick.gamepad().padX(1);</td>
+					<td>Если указанная область управления на пульте нажата, возвращает текущую x-координату нажатия.</td>
+				</tr>
+				<tr>
+					<td>padY</td>
+					<td>brick.gamepad().padY(1);</td>
+					<td>Если указанная область управления на пульте нажата, возвращает текущую y-координату нажатия.</td>
+				</tr>
+				<tr>
+					<td>padUp</td>
+					<td>brick.gamepad().padUp.connect( function(padId, x, y) { brick.stop(); });</td>
+					<td>Посылается, когда пользователь оторвал палец от области управления с указанным номером. В качестве параметров имеет номер области управления и координаты последнего известного положения пальца на ней.</td>
+				</tr>
+				<tr>
+					<td>wheel</td>
+					<td>brick.gamepad().wheel.connect( function(percent) { brick.motor("E1").setPower(percent); });</td>
+					<td>Посылается, когда на пульте включён "руль" (события от акселерометра Android-устройства) и пользователь повернул Android-устройство. В качестве параметра передаётся число от -100 до 100, -100 соответствует крайнему левому положению "руля", 100 – крайнему правому.</td>
+				</tr>
+				<tr>
+					<td>pad</td>
+					<td>brick.gamepad().pad.connect(function(padId, x, y) { print(padId + ":" + x + "," + y); });</td>
+					<td>Посылается, когда пользователь нажал на область управления на пульте или переместил палец по ней. В качестве параметров передаётся номер области управления и координаты нажатия (числа от -100 до 100, координата -100, -100 соответствует левому верхнему углу области управления).</td>
+				</tr>
+				<tr>
+					<td>button</td>
+					<td>brick.gamepad().button.connect(function(button, pressed) { if (button == 1) brick.stop(); });</td>
+					<td>Посылается, когда пользователь нажал на одну из пяти кнопок внизу пульта. Первый параметр – номер кнопки (от 1 до 5), второй – 1, если кнопка нажата, 0 – если кнопка отпущена.</td>
+				</tr>
+				<tr>
+					<td>disconnect</td>
+					<td>brick.gamepad().button.disconnect(function() { brick.stop(); });</td>
+					<td>Посылается при отключении пульта.</td>
+				</tr>
+			</table>
+
+			<h5><a name="textual-programming-qts-keys">Класс "Keys"</a></h5>
+			
+			<p>
+			Служит для работы с кнопками на пульте робота.
+			</p>
+
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название метода</b></td>
+					<td><b>Пример вызова</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>reset</td>
+					<td>brick.keys().reset();</td>
+					<td>Сбрасывает запомненные нажатия кнопок.</td>
+				</tr>
+				<tr>
+					<td>wasPressed</td>
+					<td>brick.keys().wasPressed(KeysEnum.Up);</td>
+					<td>Возвращает, была ли нажата кнопка с указанным кодом, сбрасывает запомненные нажатия для этой кнопки.</td>
+				</tr>
+				<tr>
+					<td>isPressed</td>
+					<td>brick.keys().isPressed(KeysEnum.Up);</td>
+					<td>Возвращает true, если кнопка с указанным кодом нажата в данный момент.</td>
+				</tr>
+				<tr>
+					<td>buttonPressed</td>
+					<td>brick.keys().buttonPressed.connect(function(code, value) { if (code == KeysEnum.Up) brick.stop(); });</td>
+					<td>Посылается, когда кнопка с указанным кодом нажата или отпущена. Первый параметр – код кнопки, второй – 1, если кнопка нажата, 0, если отпущена.</td>
+				</tr>				
+			</table>
+			
+			<h5><a name="textual-programming-qts-led">Класс "Led"</a></h5>
+			
+			<p>
+			Предоставляет управление светодиодом на корпусе робота.
+			</p>
+
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название метода</b></td>
+					<td><b>Пример вызова</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>red</td>
+					<td>brick.led().red();</td>
+					<td>Включает светодиод в режим "красный".</td>
+				</tr>
+				<tr>
+					<td>green</td>
+					<td>brick.led().green();</td>
+					<td>Включает светодиод в режим "зелёный".</td>
+				</tr>
+				<tr>
+					<td>orange</td>
+					<td>brick.led().orange();</td>
+					<td>Включает светодиод в режим "оранжевый".</td>
+				</tr>
+				<tr>
+					<td>off</td>
+					<td>brick.led().off();</td>
+					<td>Выключает светодиод.</td>
+				</tr>				
+			</table>
+			
+			<h5><a name="textual-programming-qts-mailbox">Класс "Mailbox"</a></h5>
+			
+			<p>
+			Реализует связь между роботами в сети посредством механизма почтовых ящиков.
+			</p>
+
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название метода</b></td>
+					<td><b>Пример вызова</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>connect</td>
+					<td>brick.mailbox().connect("192.168.0.20", 8889);</td>
+					<td>Подключается к роботу с заданным IP-адресом по заданному порту, сообщает ему свой бортовой номер и регистрируется в сети "почтовых ящиков".</td>
+				</tr>
+				<tr>
+					<td>connect</td>
+					<td>brick.mailbox().connect("192.168.0.20");</td>
+					<td>Подключается к роботу с заданным IP-адресом и портом по умолчанию, сообщает ему свой бортовой номер и регистрируется в сети "почтовых ящиков".</td>
+				</tr>				
+				<tr>
+					<td>send</td>
+					<td>brick.mailbox().send(1, "Hello");</td>
+					<td>Посылает роботу с указанным бортовым номером указанное сообщение.</td>
+				</tr>
+				<tr>
+					<td>send</td>
+					<td>brick.mailbox().send("Hello");</td>
+					<td>Посылает указанное сообщение всем зарегистрированным роботам в сети.</td>
+				</tr>
+				<tr>
+					<td>hasMessages</td>
+					<td>brick.mailbox().hasMessages();</td>
+					<td>Возвращает true, если роботу пришло новое сообщение.</td>
+				</tr>
+				<tr>
+					<td>receive</td>
+					<td>var message = brick.mailbox().receive();</td>
+					<td>Получает новое сообщение или блокирует исполнение скрипта до тех пор, пока сообщение не придёт.</td>
+				</tr>
+				<tr>
+					<td>myHullNumber</td>
+					<td>var x = brick.mailbox().myHullNumber();</td>
+					<td>Возвращает бортовой номер робота.</td>
+				</tr>	
+				<tr>
+					<td>newMessage</td>
+					<td>brick.mailbox().newMessage.connect(function(sender, message) { print(message); });</td>
+					<td>Посылается, когда робот получает новое сообщение. Первый параметр – бортовой номер отправителя, второй – само сообщение.</td>
+				</tr>				
+			</table>
+			
+			<h5><a name="textual-programming-qts-motor">Класс "Motor"</a></h5>
+			
+			<p>
+			Предоставляет управление мотором робота (силовым или сервомотором).
+			</p>
+
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название метода</b></td>
+					<td><b>Пример вызова</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>setPower</td>
+					<td>brick.motor().setPower(100);</td>
+					<td>Включает мотор с указанной мощностью. Мощность задаётся в диапазоне от -100 ("полный назад") до 100 ("полный вперёд"). 0 соответствует "force break", то есть мотор останавливается, при этом он заблокирован и остаётся под напряжением.</td>
+				</tr>
+				<tr>
+					<td>power</td>
+					<td>var x = brick.motor().power();</td>
+					<td>Возвращает текущую мощность мотора (от -100 до 100).</td>
+				</tr>
+				<tr>
+					<td>powerOff</td>
+					<td>brick.motor().powerOff();</td>
+					<td>Выключает мотор.</td>
 				</tr>
 			</table>
 
