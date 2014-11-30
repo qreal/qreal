@@ -26,7 +26,6 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()
 {
-	delete mTwoDModelActionInfo.action();
 }
 
 void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin

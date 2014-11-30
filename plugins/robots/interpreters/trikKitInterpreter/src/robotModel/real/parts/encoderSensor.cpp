@@ -28,7 +28,7 @@ void EncoderSensor::onIncomingData(QString const &portName, int value)
 
 void EncoderSensor::nullify()
 {
-	QString const pathToCommand = ":/trikQts/templates/.t";
+	QString const pathToCommand = ":/trikQts/templates/engines/nullifyEncoder.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand).replace("@@PORT@@", port().name());
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

@@ -13,10 +13,10 @@ using namespace trik::qts;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
-	: mGenerateCodeAction(nullptr)
-	, mUploadProgramAction(nullptr)
-	, mRunProgramAction(nullptr)
-	, mStopRobotAction(nullptr)
+	: mGenerateCodeAction(new QAction(nullptr))
+	, mUploadProgramAction(new QAction(nullptr))
+	, mRunProgramAction(new QAction(nullptr))
+	, mStopRobotAction(new QAction(nullptr))
 	, mCommunicator(nullptr)
 {
 }
@@ -41,40 +41,40 @@ QList<ActionInfo> TrikQtsGeneratorPlugin::actions()
 	separator->setSeparator(true);
 	qReal::ActionInfo separatorInfo(separator, "generators", "tools");
 
-	mGenerateCodeAction.setText(tr("Generate TRIK code"));
-	mGenerateCodeAction.setIcon(QIcon(":/images/generateQtsCode.svg"));
-	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()), Qt::UniqueConnection);
+	mGenerateCodeAction->setText(tr("Generate TRIK code"));
+	mGenerateCodeAction->setIcon(QIcon(":/images/generateQtsCode.svg"));
+	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
+	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()), Qt::UniqueConnection);
 
-	mUploadProgramAction.setText(tr("Upload program"));
-	mUploadProgramAction.setIcon(QIcon(":/images/uploadProgram.svg"));
-	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()), Qt::UniqueConnection);
+	mUploadProgramAction->setText(tr("Upload program"));
+	mUploadProgramAction->setIcon(QIcon(":/images/uploadProgram.svg"));
+	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
+	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()), Qt::UniqueConnection);
 
-	mRunProgramAction.setText(tr("Run program"));
-	mRunProgramAction.setIcon(QIcon(":/images/uploadAndExecuteProgram.svg"));
-	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
-	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()), Qt::UniqueConnection);
+	mRunProgramAction->setText(tr("Run program"));
+	mRunProgramAction->setIcon(QIcon(":/images/uploadAndExecuteProgram.svg"));
+	ActionInfo runProgramActionInfo(mRunProgramAction, "generators", "tools");
+	connect(mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()), Qt::UniqueConnection);
 
-	mStopRobotAction.setText(tr("Stop robot"));
-	mStopRobotAction.setIcon(QIcon(":/images/stopRobot.svg"));
-	ActionInfo stopRobotActionInfo(&mStopRobotAction, "generators", "tools");
-	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()), Qt::UniqueConnection);
+	mStopRobotAction->setText(tr("Stop robot"));
+	mStopRobotAction->setIcon(QIcon(":/images/stopRobot.svg"));
+	ActionInfo stopRobotActionInfo(mStopRobotAction, "generators", "tools");
+	connect(mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()), Qt::UniqueConnection);
 
 	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo, separatorInfo};
 }
 
 QList<HotKeyActionInfo> TrikQtsGeneratorPlugin::hotKeyActions()
 {
-	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
-	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
-	mRunProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
-	mStopRobotAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F5));
+	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+	mRunProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
+	mStopRobotAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F5));
 
-	HotKeyActionInfo generateCodeInfo("Generator.GenerateTrik", tr("Generate TRIK Code"), &mGenerateCodeAction);
-	HotKeyActionInfo uploadProgramInfo("Generator.UploadTrik", tr("Upload TRIK Program"), &mUploadProgramAction);
-	HotKeyActionInfo runProgramInfo("Generator.RunTrik", tr("Run TRIK Program"), &mRunProgramAction);
-	HotKeyActionInfo stopRobotInfo("Generator.StopTrik", tr("Stop TRIK Robot"), &mStopRobotAction);
+	HotKeyActionInfo generateCodeInfo("Generator.GenerateTrik", tr("Generate TRIK Code"), mGenerateCodeAction);
+	HotKeyActionInfo uploadProgramInfo("Generator.UploadTrik", tr("Upload TRIK Program"), mUploadProgramAction);
+	HotKeyActionInfo runProgramInfo("Generator.RunTrik", tr("Run TRIK Program"), mRunProgramAction);
+	HotKeyActionInfo stopRobotInfo("Generator.StopTrik", tr("Stop TRIK Robot"), mStopRobotAction);
 
 	return { generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo };
 }

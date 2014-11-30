@@ -9,3 +9,6 @@ SUBDIRS = \
 
 generated.file = generated/robotsMetamodel.pro
 
+OTHER_FILES += \
+	doc/changelog.txt \
+

@@ -13,9 +13,9 @@ using namespace qReal;
 using namespace gui;
 
 NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
-	: mGenerateCodeAction(nullptr)
-	, mFlashRobotAction(nullptr)
-	, mUploadProgramAction(nullptr)
+	: mGenerateCodeAction(new QAction(nullptr))
+	, mFlashRobotAction(new QAction(nullptr))
+	, mUploadProgramAction(new QAction(nullptr))
 	, mNxtToolsPresent(false)
 	, mMasterGenerator(nullptr)
 {
@@ -77,20 +77,20 @@ QList<ActionInfo> NxtOsekCGeneratorPlugin::actions()
 {
 	checkNxtTools();
 
-	mGenerateCodeAction.setText(tr("Generate code"));
-	mGenerateCodeAction.setIcon(QIcon(":/nxt/images/generateOsekCode.svg"));
-	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+	mGenerateCodeAction->setText(tr("Generate code"));
+	mGenerateCodeAction->setIcon(QIcon(":/nxt/images/generateOsekCode.svg"));
+	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
+	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
-	mFlashRobotAction.setText(tr("Flash robot"));
-	mFlashRobotAction.setIcon(QIcon(":/nxt/images/flashRobot.svg"));
-	ActionInfo flashRobotActionInfo(&mFlashRobotAction, "generators", "tools");
-	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
+	mFlashRobotAction->setText(tr("Flash robot"));
+	mFlashRobotAction->setIcon(QIcon(":/nxt/images/flashRobot.svg"));
+	ActionInfo flashRobotActionInfo(mFlashRobotAction, "generators", "tools");
+	connect(mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
 
-	mUploadProgramAction.setText(tr("Upload program"));
-	mUploadProgramAction.setIcon(QIcon(":/nxt/images/uploadProgram.svg"));
-	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	mUploadProgramAction->setText(tr("Upload program"));
+	mUploadProgramAction->setIcon(QIcon(":/nxt/images/uploadProgram.svg"));
+	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
+	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	return mNxtToolsPresent
 			? QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo << uploadProgramActionInfo
@@ -99,11 +99,11 @@ QList<ActionInfo> NxtOsekCGeneratorPlugin::actions()
 
 void NxtOsekCGeneratorPlugin::initHotKeyActions()
 {
-	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
-	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
 
-	HotKeyActionInfo generateActionInfo("Generator.GenerateNxt", tr("Generate NXT OSEK code"), &mGenerateCodeAction);
-	HotKeyActionInfo uploadActionInfo("Generator.UploadNxt", tr("Upload program to NXT device"), &mUploadProgramAction);
+	HotKeyActionInfo generateActionInfo("Generator.GenerateNxt", tr("Generate NXT OSEK code"), mGenerateCodeAction);
+	HotKeyActionInfo uploadActionInfo("Generator.UploadNxt", tr("Upload program to NXT device"), mUploadProgramAction);
 
 	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
 }
@@ -204,6 +204,6 @@ void NxtOsekCGeneratorPlugin::checkNxtTools()
 #endif
 	}
 
-	mUploadProgramAction.setVisible(mNxtToolsPresent);
-	mFlashRobotAction.setVisible(mNxtToolsPresent);
+	mUploadProgramAction->setVisible(mNxtToolsPresent);
+	mFlashRobotAction->setVisible(mNxtToolsPresent);
 }
