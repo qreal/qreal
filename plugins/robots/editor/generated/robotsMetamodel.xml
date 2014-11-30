@@ -734,7 +734,7 @@
 					</generalizations>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
-							<default>A, B, C</default>
+							<default>A, B, C, D</default>
 						</property>
 					</properties>
 				</logic>
@@ -1977,7 +1977,7 @@
 							<default>1</default>
 						</property>
 						<property displayedName="Text" type="string" name="PrintText">
-							<default>Enter some text here...</default>
+							<default>'Enter some text here'</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2236,15 +2236,15 @@
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="XCoordinateRect"/>
-						<label x="-10" y="60" text="X: "/>
+						<label x="-20" y="60" text="X: "/>
 						<label x="50" y="80" textBinded="YCoordinateRect"/>
-						<label x="-10" y="80" text="Y: "/>
+						<label x="-20" y="80" text="Y: "/>
 						<label x="50" y="100" textBinded="WidthRect"/>
-						<label x="-10" y="100" text="Width: "/>
+						<label x="-20" y="100" text="Width: "/>
 						<label x="50" y="120" textBinded="HeightRect"/>
-						<label x="-10" y="120" text="Height: "/>
+						<label x="-20" y="120" text="Height: "/>
 						<label x="50" y="140" textBinded="Filled"/>
-						<label x="-10" y="140" text="Filled: "/>
+						<label x="-20" y="140" text="Filled: "/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2279,13 +2279,13 @@
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="XCoordinateCircle"/>
-						<label x="0" y="60" text="X: "/>
+						<label x="-20" y="60" text="X: "/>
 						<label x="50" y="80" textBinded="YCoordinateCircle"/>
-						<label x="0" y="80" text="Y: "/>
+						<label x="-20" y="80" text="Y: "/>
 						<label x="50" y="100" textBinded="CircleRadius"/>
-						<label x="0" y="100" text="Radius: "/>
+						<label x="-20" y="100" text="Radius: "/>
 						<label x="50" y="120" textBinded="Filled"/>
-						<label x="0" y="120" text="Filled: "/>
+						<label x="-20" y="120" text="Filled: "/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
