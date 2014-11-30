@@ -11,7 +11,7 @@
 
 #include "commandConstants.h"
 
-unsigned const keepAliveResponseSize = 8;
+unsigned const keepAliveResponseSize = 5;
 
 using namespace ev3KitInterpreter::communication;
 

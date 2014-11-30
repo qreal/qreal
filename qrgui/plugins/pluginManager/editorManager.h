@@ -18,11 +18,13 @@
 
 #include <qrutils/pluginManagers/pluginManager.h>
 
+#include "pluginsManagerDeclSpec.h"
+
 namespace qReal {
 
 class Element;
 
-class EditorManager : public QObject, public EditorManagerInterface
+class QRGUI_PLUGINS_MANAGER_EXPORT EditorManager : public QObject, public EditorManagerInterface
 {
 	Q_OBJECT
 

@@ -1,6 +1,6 @@
 #include "encoderSensor.h"
 
-#include <utils/tracer.h>
+#include <qrutils/inFile.h>
 
 using namespace trikKitInterpreter::robotModel::real::parts;
 using namespace interpreterBase::robotModel;
@@ -28,4 +28,7 @@ void EncoderSensor::onIncomingData(QString const &portName, int value)
 
 void EncoderSensor::nullify()
 {
+	QString const pathToCommand = ":/trikQts/templates/.t";
+	QString const directCommand = utils::InFile::readAll(pathToCommand).replace("@@PORT@@", port().name());
+	mRobotCommunicator.runDirectCommand(directCommand);
 }
