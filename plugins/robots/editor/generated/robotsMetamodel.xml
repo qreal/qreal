@@ -93,6 +93,10 @@
 				<value name="object" displayedName="Object sensor"/>
 				<value name="color" displayedName="Color sensor"/>
 			</enum>
+			<enum name="DetectableVideoSensor">
+				<value name="line" displayedName="Line sensor"/>
+				<value name="object" displayedName="Object sensor"/>
+			</enum>
 			<groups>
 				<group name="RobotsDiagramGroup" rootNode="diagram">
 					<groupNode type="RobotsDiagramNode" name="diagram" xPosition="0" yPosition="0"/>
@@ -980,18 +984,6 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node abstract="true" name="VideocameraBlock">
-				<logic>
-					<properties>
-						<property displayedName="Mode" type="VideoSensor" name="Mode">
-							<default>line</default>
-						</property>
-					</properties>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
 			<node displayedName="Initialize Videocamera" name="TrikInitCamera" description="Enables line or object or color detector by videocamera and draws videostream on the robot`s screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1005,12 +997,17 @@
 					<nonResizeable/>
 				</graphics>
 				<logic>
+					<properties>
+						<property displayedName="Mode" type="VideoSensor" name="Mode">
+							<default>line</default>
+						</property>
+					</properties>
 					<generalizations>
-						<parent parentName="VideocameraBlock"/>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Detect by Videocamera" name="TrikDetect" description="Initializes videocamera line or object or color detector with the color of the object in the middle of the camera`s sight.">
+			<node displayedName="Detect by Videocamera" name="TrikDetect" description="Initializes videocamera line or object detector with the color of the object in the middle of the camera`s sight.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/detectBlock.svg" x1="0" y2="50" x2="50"/>
@@ -1023,20 +1020,23 @@
 					<nonResizeable/>
 				</graphics>
 				<logic>
+					<properties>
+						<property displayedName="Mode" type="DetectableVideoSensor" name="Mode">
+							<default>line</default>
+						</property>
+					</properties>
 					<generalizations>
-						<parent parentName="VideocameraBlock"/>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Detector into Variable" name="TrikDetectorToVariable" description="Stores  current videocamera line or object or color detector`s value into a given variable.">
+			<node displayedName="Line Detector into Variable" name="TrikDetectorToVariable" description="Stores videocamera line detector`s value into a given variable.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/detectorIntoVariableBlock.svg" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/lineDetectorIntoVariableBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-15" y="-30" text="Mode" hard="true" background="white"/>
-						<label x="65" y="-30" textBinded="Mode" hard="true" background="white"/>
-						<label x="-15" y="60" text="Detector into Variable" background="white"/>
+						<label x="-15" y="60" text="Line Detector into Variable" background="white"/>
 						<label x="-15" y="80" text="Variable:"/>
 						<label x="85" y="80" textBinded="Variable" background="white"/>
 					</labels>
@@ -1047,7 +1047,7 @@
 						<property displayedName="Variable" type="string" name="Variable" />
 					</properties>
 					<generalizations>
-						<parent parentName="VideocameraBlock"/>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>

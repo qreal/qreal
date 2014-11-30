@@ -87,7 +87,6 @@
         <file>templates/videosensors/ColorSensorB.t</file>
         <file>templates/videosensors/detectline.t</file>
         <file>templates/videosensors/detectobject.t</file>
-        <file>templates/videosensors/detectcolor.t</file>
         <file>templates/videosensors/initlineSensor.t</file>
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>

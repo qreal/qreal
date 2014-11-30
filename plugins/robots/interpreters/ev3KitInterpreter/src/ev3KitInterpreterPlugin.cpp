@@ -26,7 +26,7 @@ QString Ev3KitInterpreterPlugin::kitId() const
 
 QString Ev3KitInterpreterPlugin::friendlyKitName() const
 {
-	return tr("EV3");
+	return tr("Lego EV3");
 }
 
 QList<interpreterBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugin::robotModels()

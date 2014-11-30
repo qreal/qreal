@@ -162,12 +162,12 @@
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="2814"/>
         <source>Wait for Back</source>
-        <translation>Ждать &quot;Назад&quot;</translation>
+        <translation>Ждать Назад</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="3285"/>
         <source>Wait for Enter</source>
-        <translation>Ждать &quot;Ввод&quot;</translation>
+        <translation>Ждать Ввод</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/elements.h" line="9619"/>
@@ -1954,6 +1954,14 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="898"/>
         <source>Manages angular servomotor. Sets up rotation angle on the given port in degrees. Values from 0 to 90 are correspond to a clockwise rotation and values from -90 to 0 correspond to counterclockwise rotation.</source>
         <translation>Управление угловым сервомотором. Устанавливает угол поворота вала мотора на данном порту (в градусах). Значения от 0 до 90 соотвествуют повороту по часовой, значения от -90 до 0 --- повороту против часовой.</translation>
+    </message>
+    <message>
+        <source>Initializes videocamera line or object detector with the color of the object in the middle of the camera`s sight.</source>
+        <translation type="vanished">Инициализировать датчик линии или объектов по видеокамере цветом объекта в центре поля зрения камеры.</translation>
+    </message>
+    <message>
+        <source>Stores videocamera line detector`s value into a given variable.</source>
+        <translation type="vanished">Сохранить текущее значение датчика линии по видеокамере в заданную переменную.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="2762"/>
