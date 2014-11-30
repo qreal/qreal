@@ -31,9 +31,8 @@ document.write('\
 					</ul>\
 					<li><a href="trik.html#run-programs">Запуск программ</a></li>\
 					<ul>\
-						<li><a href="trik.html#wifi">Интерпретация по Wi-Fi</a></li>\
-						<li><a href="trik.html#uploading">Загрузка программы на робот (Qts)</a></li>\
-						<li><a href="trik.html#uploading">Загрузка программы на робот (F#)</a></li>\
+						<li><a href="trik.html#run-programs-wifi">Интерпретация по Wi-Fi</a></li>\
+						<li><a href="trik.html#run-programs-uploading">Загрузка программы на робот</a></li>\
 					</ul>\
 				</ul>\
 			</li>\
