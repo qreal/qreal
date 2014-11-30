@@ -24,6 +24,7 @@ document.write('\
                 <ul>\
                     <li><a href="trik.html#robot-setup">Подключение робота</a></li>\
                     <li><a href="trik.html#blocks">Блоки ТРИК</a></li>\
+                    <li><a href="trik.html#sensor-variables">Сенсорные переменные</a></li>\
                     <li><a href="trik.html#textual-programming">Текстовое программирование</a></li>\
                     <ul>\
                         <li><a href="trik.html#textual-programming-qts">Qt Script</a></li>\
@@ -41,6 +42,7 @@ document.write('\
                     <li><a href="nxt.html#connection">Подключение робота</a></li>\
                     <li><a href="nxt.html#flashing">Прошивка робота</a></li>\
                     <li><a href="nxt.html#blocks">Блоки Lego NXT</a></li>\
+                    <li><a href="nxt.html#sensor-variables">Сенсорные переменные</a></li>\
                     <li><a href="nxt.html#textual-programming">Текстовое программирование</a></li>\
                     <li><a href="nxt.html#run-programs">Запуск программ</a></li>\
                     <ul>\
@@ -53,6 +55,7 @@ document.write('\
                 <ul>\
                     <li><a href="ev3.html#robot-setup">Подключение робота</a></li>\
                     <li><a href="ev3.html#blocks">Блоки Lego EV3</a></li>\
+                    <li><a href="ev3.html#sensor-variables">Сенсорные переменные</a></li>\
                     <li><a href="ev3.html#run-programs">Запуск программ</a></li>\
                     <ul>\
                         <li><a href="ev3.html#run-programs-bluetooth">Интерпретация по Bluetooth</a></li>\
