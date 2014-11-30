@@ -31,7 +31,7 @@
 			Первое, что необходимо сделать для программирования Lego EV3 – переключить TRIKStudio в режим поддержки Lego EV3. Это делается в окне "Настройки", вкладка "Роботы":
 			</p>
 
-			<center><img src="pics/ev3-kit-selection.png" alt="Выбор конструктора Lego EV3" width="660"></center>
+			<center><img src="pics/ev3/kit-selection.png" alt="Выбор конструктора Lego EV3" width="660"></center>
 
 			<h4>Подключение по Bluetooth</h4>
 
@@ -61,28 +61,28 @@
 				</tr>
 				<tr>
 					<td>Гудок</td>
-					<td><center><img src="pics/ev3-beepBlock.png" alt="Гудок"></center></td>
+					<td><center><img src="pics/ev3/beep.png" alt="Гудок"></center></td>
 					<td>Проиграть на роботе звук с фиксированной частотой. Имеется один параметр — ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку. Допустимые значения — Истина и Ложь.</td>
 				</tr>
 				<tr>
 					<td>Играть звук</td>
-					<td><center><img src="pics/ev3-toneBlock.png" alt="Играть звук"></center></td>
+					<td><center><img src="pics/ev3/playTone.png" alt="Играть звук"></center></td>
 					<td>Проиграть на роботе звук с заданной частотой и длительностью. Аналогичен блоку "Гудок", но позволяет задавать параметры звука. Имеется параметр, определяющий, ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку. </td>
 				</tr>
 				<tr>
 					<td>Моторы вперёд</td>
-					<td><center><img src="pics/ev3-enginesForwardBlock.png" alt="Моторы вперёд"></center></td>
+					<td><center><img src="pics/ev3/enginesForward.png" alt="Моторы вперёд"></center></td>
 					<td>Включить моторы по заданным портам с заданной мощностью. Порты задаются буквами A, B, C или D, разделенными запятыми. Мощность задаётся в процентах числом от -100 до 100, если задано отрицательное значение, мотор включается в режиме реверса. Так, на картинке изображена команда включения моторов на портах B и C с мощностью 100%. Кроме того, моторы имеют разные режимы работы: режим торможения и режим скольжения (отображаемые красным или зелёным прямоугольником на блоке соответственно). Режимы влияют на то, как двигатель отрабатывает команду — режим торможения стопорит двигатель при отключении, режим скольжения позволяет двигателю прокручиваться по инерции.
 					</td>
 				</tr>
 				<tr>
 					<td>Моторы назад</td>
-					<td><center><img src="pics/ev3-enginesBackwardBlock.png" alt="Моторы назад"></center></td>
+					<td><center><img src="pics/ev3/enginesBackward.png" alt="Моторы назад"></center></td>
 					<td>Включить моторы в режиме реверса по заданным портам с заданной мощностью. Параметры аналогичны параметрами блока "Моторы вперёд".</td>
 				</tr>
 				<tr>
 					<td>Моторы стоп</td>
-					<td><center><img src="pics/ev3-enginesStopBlock.png" alt="Моторы стоп"></center></td>
+					<td><center><img src="pics/ev3/enginesStop.png" alt="Моторы стоп"></center></td>
 					<td>Выключить моторы по заданным портам.</td>
 				</tr>
 			</table>
@@ -99,13 +99,13 @@
 				</tr>
 				<tr>
 					<td>Ждать сенсор касания</td>
-					<td><center><img src="pics/ev3-waitTouchBlock.png" alt="Ждать сенсор касания"></center></td>
+					<td><center><img src="pics/ev3/waitTouch.png" alt="Ждать сенсор касания"></center></td>
 					<td>Ждать, пока не сработает датчик касания. Параметром указывается номер порта, к которому
 							подключен датчик. Допустимые значения: 1, 2, 3, 4.</td>
 				</tr>
 				<tr>
 					<td>Ждать сонар</td>
-					<td><center><img src="pics/ev3-waitSonarBlock.png" alt="Ждать сенсор расстояния"></center></td>
+					<td><center><img src="pics/ev3/waitSonar.png" alt="Ждать сенсор расстояния"></center></td>
 					<td>Ждать, пока расстояние, возвращаемое ультразвуковым или инфракрасным сенсором расстояния, не
 							будет сравнимо с указанным в значении параметра "Расстояние" (расстояние задается в
 							сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик
@@ -121,32 +121,32 @@
 				</tr>-->
 				<tr>
 					<td>Ждать нажатия кнопки "Вверх"</td>
-					<td><center><img src="pics/ev3-waitForUp.png" alt="Ждать нажатия кнопки 'Вверх'"></center></td>
+					<td><center><img src="pics/ev3/waitUp.png" alt="Ждать нажатия кнопки 'Вверх'"></center></td>
 					<td>Ждать, пока не будет нажата кнопка "Вверх" на корпусе робота.</td>
 				</tr>
 				<tr>
 					<td>Ждать нажатия кнопки "Ввод"</td>
-					<td><center><img src="pics/ev3-waitForEnter.png" alt="Ждать нажатия кнопки 'Ввод'"></center></td>
+					<td><center><img src="pics/ev3/waitEnter.png" alt="Ждать нажатия кнопки 'Ввод'"></center></td>
 					<td>Ждать, пока не будет нажата кнопка "Ввод" (центральная) на корпусе робота.</td>
 				</tr>
 				<tr>
 					<td>Ждать нажатия кнопки "Вниз"</td>
-					<td><center><img src="pics/ev3-waitForDown.png" alt="Ждать нажатия кнопки 'Вниз'"></center></td>
+					<td><center><img src="pics/ev3/waitDown.png" alt="Ждать нажатия кнопки 'Вниз'"></center></td>
 					<td>Ждать, пока не будет нажата кнопка "Вниз" на корпусе робота.</td>
 				</tr>
 				<tr>
 					<td>Ждать нажатия кнопки "Вправо"</td>
-					<td><center><img src="pics/ev3-waitForRight.png" alt="Ждать нажатия кнопки 'Вправо'"></center></td>
+					<td><center><img src="pics/ev3/waitRight.png" alt="Ждать нажатия кнопки 'Вправо'"></center></td>
 					<td>Ждать, пока не будет нажата кнопка "Вправо" на корпусе робота.</td>
 				</tr>
 				<tr>
 					<td>Ждать нажатия кнопки "Влево"</td>
-					<td><center><img src="pics/ev3-waitForLeft.png" alt="Ждать нажатия кнопки 'Влево'"></center></td>
+					<td><center><img src="pics/ev3/waitLeft.png" alt="Ждать нажатия кнопки 'Влево'"></center></td>
 					<td>Ждать, пока не будет нажата кнопка "Влево" на корпусе робота.</td>
 				</tr>
 				<tr>
 					<td>Ждать нажатия кнопки "Назад"</td>
-					<td><center><img src="pics/ev3-waitForBack.png" alt="Ждать нажатия кнопки 'Назад'"></center></td>
+					<td><center><img src="pics/ev3/waitBack.png" alt="Ждать нажатия кнопки 'Назад'"></center></td>
 					<td>Ждать, пока не будет нажата кнопка "Назад" (серая) на корпусе робота.</td>
 				</tr>
 			</table>
@@ -161,35 +161,35 @@
 				</tr>
 				<tr>
 					<td>Нарисовать прямоугольник</td>
-					<td><center><img src="pics/ev3-drawRect.png" alt="Нарисовать прямоугольник"></center></td>
+					<td><center><img src="pics/ev3/drawRect.png" alt="Нарисовать прямоугольник"></center></td>
 					<td>Нарисовать на экране прямоугольник. В качестве параметров указываются координаты левого верхнего
 							угла, ширина и высота прямоугольника, а также заливать его внутреннюю область или нет.</td>
 				</tr>
 				<tr>
 					<td>Нарисовать точку</td>
-					<td><center><img src="pics/ev3-drawPoint.png" alt="Нарисовать точку"></center></td>
+					<td><center><img src="pics/ev3/drawPoint.png" alt="Нарисовать точку"></center></td>
 					<td>Нарисовать на экране точку в указанных координатах.</td>
 				</tr>
 				<tr>
 					<td>Нарисовать линию</td>
-					<td><center><img src="pics/ev3-drawLine.png" alt="Нарисовать линию"></center></td>
+					<td><center><img src="pics/ev3/drawLine.png" alt="Нарисовать линию"></center></td>
 					<td>Нарисовать на экране отрезок. В качестве параметров блоку указываются концы отрезка.</td>
 				</tr>
 				<tr>
 					<td>Нарисовать круг</td>
-					<td><center><img src="pics/ev3-drawCircle.png" alt="Нарисовать круг"></center></td>
+					<td><center><img src="pics/ev3/drawCircle.png" alt="Нарисовать круг"></center></td>
 					<td>Нарисовать на экране круг с заданным центром и заданным радиусом, залитый внутри или нет.</td>
 				</tr>
 				<tr>
 					<td>Напечатать текст</td>
-					<td><center><img src="pics/ev3-printText.png" alt="Напечатать текст"></center></td>
+					<td><center><img src="pics/ev3/printText.png" alt="Напечатать текст"></center></td>
 					<td>Напечатать заданное значение в заданных координатах на экране. Обратите внимание, что
 							напечатается результат вычисления выражения, поэтому строки, которые нужно вывести на экран,
 							надо заключать в кавычки.</td>
 				</tr>
 				<tr>
 					<td>Очистить экран</td>
-					<td><center><img src="pics/ev3-clearScreen.png" alt="Очистить экран"></center></td>
+					<td><center><img src="pics/ev3/clearScreen.png" alt="Очистить экран"></center></td>
 					<td>Стереть всё, что нарисовано на экране.</td>
 				</tr>
 			</table>
@@ -231,7 +231,7 @@
 			после чего нажать кнопку "Выполнить" панели "Интерпретатор" или меню "Инструменты":
 			</p>
 
-			<center><img src="pics/ev3-execute-toolbar.png" alt="Запуск программы"></center>
+			<center><img src="pics/ev3/execute-toolbar.png" alt="Запуск программы"></center>
 
 			<p>
 			После этого интерпретатор ищет блок "Начало", с которого и начинается выполнение программы. Если такой блок
@@ -245,7 +245,7 @@
 			"Интерпретатор" или меню "Инструменты":
 			</p>
 
-			<center><img src="pics/ev3-stop-interpreter.png" alt="Остановка программы"></center>
+			<center><img src="pics/ev3/stop-interpreter.png" alt="Остановка программы"></center>
 
 		</div>
 		<!-- end #content -->
