@@ -341,7 +341,6 @@
 					<dividability isDividable="true"/>
 				</logic>
 			</edge>
-
 			<node displayedName="Loop" name="Loop" path="154, 251 : 205, 302 :  | 154, 251 : 209, 196 :  | 100, 12 : 154, 66 :  | 154, 66 : 103, 117 :  | 12, 66 : 297, 66 : 297, 251 : 12, 251 : 12, 66 : " description="This block executes a sequence of blocks for a given number of times. The number of repetitions is specified by the 'Iterations' parameter. This block must have two outgoing links. One of them must be marked with the 'iteration' guard (that means that the property 'Guard' of the link must be set to 'iteration' value). Another outgoing link must be unmarked: the program execution will be proceeded through this link when it will go through our 'Loop' block for the given number of times.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -365,7 +364,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
 			<node displayedName="Fork" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -425,7 +423,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
 			<node displayedName="Switch" name="SwitchBlock" description="Selects the program execution branch in correspondence with some expression value. The value of the expression written in 'Expression' property is compared to the values on the outgoing links. If equal value is found then execution will be proceeded by that branch. Else branch without a marker will be selected.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1195,6 +1192,108 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Wait for \&quot;Up\&quot; button" name="Ev3WaitForUp" description="Waits for \&quot;Up\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Up" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Enter\&quot; button" name="Ev3WaitForEnter" description="Waits for \&quot;Enter\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Enter" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Down\&quot; button" name="Ev3WaitForDown" description="Waits for \&quot;Down\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Down" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Right\&quot; button" name="Ev3WaitForRight" description="Waits for \&quot;Right\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Right" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Left\&quot; button" name="Ev3WaitForLeft" description="Waits for \&quot;Left\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Left" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for \&quot;Back\&quot; button" name="Ev3WaitForBack" description="Waits for \&quot;Back\&quot;. button press.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait for Back" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 
 			<!-- Waiting for sensors blocks, NXT -->
 			<node name="NxtSensorBlock">
@@ -1404,7 +1503,6 @@
 					</generalizations>
 				</logic>
 			</node>
-
 			<node displayedName="Wait for \&quot;Enter\&quot; button" name="NxtWaitForEnter" description="Waits for \&quot;Enter\&quot;. button press.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -2063,13 +2161,14 @@
 					</generalizations>
 				</logic>
 			</node>
+
 			<!-- EV3 display drawing blocks -->
 			<node displayedName="Draw Pixel" name="Ev3DrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
-		 			<labels>
+					<labels>
 						<label x="36" y="60" textBinded="XCoordinatePix"/>
 						<label x="0" y="60" text="X: "/>
 						<label x="36" y="80" textBinded="YCoordinatePix"/>
@@ -2119,7 +2218,7 @@
 						<default>0</default>
 					</property>
 					<property displayedName="X2" type="int" name="X2CoordinateLine">
-					 	 <default>10</default>
+						 <default>10</default>
 					</property>
 					<property displayedName="Y2" type="int" name="Y2CoordinateLine">
 						<default>10</default>
@@ -2211,6 +2310,7 @@
 					</generalizations>
 				</logic>
 			</node>
+
 			<!-- TRIK display drawing blocks -->
 			<node displayedName="Painter Color" name="TrikSetPainterColor" description="Sets the painter color.">
 				<graphics>
@@ -2566,6 +2666,7 @@
 				</logic>
 			</node>
 		</graphicTypes>
+
 		<palette sorted="false">
 			<group name="Algorithms">
 				<element name="InitialNode"/>
@@ -2585,9 +2686,9 @@
 				<element name="NxtEnginesForward"/>
 				<element name="NxtEnginesBackward"/>
 				<element name="NxtEnginesStop"/>
-		<element name="Ev3Beep"/>
-		<element name="Ev3PlayTone"/>
-		<element name="Ev3EnginesForward"/>
+				<element name="Ev3Beep"/>
+				<element name="Ev3PlayTone"/>
+				<element name="Ev3EnginesForward"/>
 				<element name="Ev3EnginesBackward"/>
 				<element name="Ev3EnginesStop"/>
 				<element name="NxtClearEncoder"/>
@@ -2611,6 +2712,12 @@
 				<element name="Ev3WaitForColor"/>
 				<element name="Ev3WaitForLight"/>
 				<element name="Ev3WaitForSonarDistance"/>
+				<element name="Ev3WaitForUp"/>
+				<element name="Ev3WaitForEnter"/>
+				<element name="Ev3WaitForDown"/>
+				<element name="Ev3WaitForRight"/>
+				<element name="Ev3WaitForLeft"/>
+				<element name="Ev3WaitForBack"/>
 				<element name="NxtWaitForTouchSensor"/>
 				<element name="NxtWaitForSonarDistance"/>
 				<element name="NxtWaitForColor"/>

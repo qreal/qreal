@@ -6,6 +6,7 @@
 
 #include <interpreterBase/robotModel/robotParts/display.h>
 #include <interpreterBase/robotModel/robotParts/speaker.h>
+#include <interpreterBase/robotModel/robotParts/button.h>
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
@@ -26,6 +27,13 @@ Ev3RobotModelBase::Ev3RobotModelBase(QString const &kitId, QString const &robotI
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
+
+	addAllowedConnection(PortInfo("UpButtonPort", input, {}, "upButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("EnterButtonPort", input, {}, "enterButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("DownButtonPort", input, {}, "downButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("RightButtonPort", input, {}, "rightButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("LeftButtonPort", input, {}, "leftButton"), { buttonInfo() });
+	addAllowedConnection(PortInfo("BackButtonPort", input, {}, "backButton"), { buttonInfo() });
 
 	addAllowedConnection(PortInfo("A", output), { motorInfo() });
 	addAllowedConnection(PortInfo("B", output), { motorInfo() });
@@ -60,6 +68,11 @@ DeviceInfo Ev3RobotModelBase::displayInfo() const
 DeviceInfo Ev3RobotModelBase::speakerInfo() const
 {
 	return DeviceInfo::create<ev3KitInterpreter::robotModel::parts::Ev3Speaker>();
+}
+
+DeviceInfo Ev3RobotModelBase::buttonInfo() const
+{
+	return DeviceInfo::create<robotParts::Button>();
 }
 
 DeviceInfo Ev3RobotModelBase::touchSensorInfo() const
