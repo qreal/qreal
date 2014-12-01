@@ -129,24 +129,24 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 	}
 }
 
-void InterpreterElementImpl::inheritanceProperties(QList<QDomElement> &elements,Id const &id
-		, QList<PortInterface *> &ports,PortFactoryInterface const &portFactory, SdfRendererInterface *renderer
+void InterpreterElementImpl::inheritProperties(QList<QDomElement> &elements, Id const &id
+		, QList<PortInterface *> &ports, PortFactoryInterface const &portFactory, SdfRendererInterface *renderer
 		, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const
 {
-	bool overrPictures = false;
-	bool overrPorts = false;
-	bool overrLabels = false;
-	foreach (Id const &link, mEditorRepoApi->incomingLinks(id)) {
-		overrPictures = false;
-		overrPorts = false;
-		overrLabels = false;
+	bool overridePictures = false;
+	bool overridePorts = false;
+	bool overrideLabels = false;
+	for (Id const &link : mEditorRepoApi->incomingLinks(id)) {
+		overridePictures = false;
+		overridePorts = false;
+		overrideLabels = false;
 		if (link.element() == "Inheritance") {
 			Id const &parent = mEditorRepoApi->otherEntityFromLink(link, id);
 			if (!parent.isNull()) {
-				inheritanceProperties(elements, parent, ports, portFactory, renderer, labelFactory, labels);
-				InterpreterElementImpl * const impl = new InterpreterElementImpl(mEditorRepoApi, parent);
-				impl->mGraphics.setContent(mEditorRepoApi->stringProperty(parent, "shape"));
-				QDomElement sdfElement = impl->mGraphics.firstChildElement("graphics").firstChildElement("picture");
+				inheritProperties(elements, parent, ports, portFactory, renderer, labelFactory, labels);
+				InterpreterElementImpl impl = InterpreterElementImpl(mEditorRepoApi, parent);
+				impl.mGraphics.setContent(mEditorRepoApi->stringProperty(parent, "shape"));
+				QDomElement sdfElement = impl.mGraphics.firstChildElement("graphics").firstChildElement("picture");
 
 				int width = 0;
 				int height = 0;
@@ -156,32 +156,31 @@ void InterpreterElementImpl::inheritanceProperties(QList<QDomElement> &elements,
 				}
 
 				if (mEditorRepoApi->stringProperty(link, "overrides") == "pictures") {
-					overrPictures = true;
+					overridePictures = true;
 				}
 
 				if (mEditorRepoApi->stringProperty(link, "overrides") == "ports") {
-					overrPorts = true;
+					overridePorts = true;
 				}
 
 				if (mEditorRepoApi->stringProperty(link, "overrides") == "labels") {
-					overrLabels = true;
+					overrideLabels = true;
 				}
 
-				if (!overrPictures && (mEditorRepoApi->stringProperty(link, "overrides") == "" ||
+				if (!overridePictures && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty() ||
 					mEditorRepoApi->stringProperty(link, "overrides") != "pictures")) {
 					elements.append(sdfElement);
 				}
 
-				if (!overrPorts && (mEditorRepoApi->stringProperty(link, "overrides") == "" ||
+				if (!overridePorts && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty() ||
 					mEditorRepoApi->stringProperty(link, "overrides") != "ports")) {
-					impl->initPointPorts(portFactory, ports, width, height);
+					impl.initPointPorts(portFactory, ports, width, height);
 				}
 
-				if (!overrLabels && (mEditorRepoApi->stringProperty(link, "overrides") == "" ||
+				if (!overrideLabels && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty() ||
 						mEditorRepoApi->stringProperty(link, "overrides") != "labels")) {
-					impl->initLabels(width, height, labelFactory, labels);
+					impl.initLabels(width, height, labelFactory, labels);
 				}
-				delete impl;
 			}
 		}
 	}
@@ -198,9 +197,9 @@ void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &
 		QDomElement sdfElement = mGraphics.firstChildElement("graphics").firstChildElement("picture");
 
 		QList<QDomElement> elementsWithGraphic;
-		inheritanceProperties(elementsWithGraphic, mId, ports, portFactory, renderer, labelFactory, labels);
+		inheritProperties(elementsWithGraphic, mId, ports, portFactory, renderer, labelFactory, labels);
 
-		foreach (QDomElement tempElementWithGraphic, elementsWithGraphic) {
+		for (QDomElement tempElementWithGraphic : elementsWithGraphic) {
 			sdfElement.appendChild(tempElementWithGraphic.firstChild());
 		}
 
