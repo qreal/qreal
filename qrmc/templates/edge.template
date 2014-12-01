@@ -1,10 +1,14 @@
-	class @@ElementName@@ : public ElementImpl {
+	class @@ElementName@@ : public qReal::ElementImpl {
 	public:
-		void init(QRectF &, QList<StatPoint> &, QList<StatLine> &,
-				ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,
+	/*	void init(QRectF &, QList<StatPoint> &, QList<StatLine> &,
+				qReal::LabelFactoryInterface &, QList<qReal::LabelFactoryInterface*> &,
 				SdfRendererInterface *, SdfRendererInterface *) {}
+	*/
+		void init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,
+											qReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,
+											qReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}		
 
-		void init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)
+		void init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelFactoryInterface*> &titles)
 		{
 @@EdgeInit@@
 		}
@@ -15,25 +19,34 @@
 		bool isNode() const { return false; }
 		bool isContainer() const { return false; }
 		bool isSortingContainer() const { return false; }
-		int sizeOfForestalling() const { return 0; }
+                QVector<int> sizeOfForestalling() const { return QVector<int>(4, 0); }
 		int sizeOfChildrenForestalling() const { return 0; }
 		bool hasMovableChildren() const { return false; }
 		bool minimizesToChildren() const { return false; }
-		bool isClass() { return false; }
+	//	bool isClass() { return false; }
 		bool maximizesChildren() const { return false; }
-		bool isPort() const { return false; }
-		bool hasPin() const { return false; }
 		bool isResizeable() const { return true; }
-		int getPenWidth() const { return 1; }
-		QColor getPenColor() const { return QColor(); }
+	//	int getPenWidth() const { return 1; }
+	//	QColor getPenColor() const { return QColor(); }
 		bool isDividable() const { return false; }
+
+
+		qReal::ElementImpl *clone() { return NULL; }
+
+
 		QList<double> border () const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
-		bool hasPorts() const { return false; }
+		
+		
+		int getPenWidth() const { return 1; }
+//думаю, гдe color нужны @@		
+		QColor getPenColor() const { return QColor(0,0,0); }
+
+
 		Qt::PenStyle getPenStyle() const { return @@LineType@@; }
 		QStringList bonusContextMenuFields() const
 		{
@@ -63,11 +76,11 @@
 			painter->setBrush(old);
 		}
 
-		void updateData(ElementRepoInterface *repo) const
+		void updateData(qReal::ElementRepoInterface *repo) const
 		{
 @@UpdateData@@
 		}
 
 	private:
-@@LabelDefinition@@
+//@@LabelDefinition@@
 	};

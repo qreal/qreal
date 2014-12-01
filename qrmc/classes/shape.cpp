@@ -149,9 +149,9 @@ void Shape::generate(QString &classTemplate) const
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
 	}
-	if (!hasLinePorts()) {
-		unused += nodeIndent + "Q_UNUSED(linePorts)" + endline;
-	}
+//	if (!hasLinePorts()) {
+//		unused += nodeIndent + "Q_UNUSED(linePorts) OLOLO" + endline;
+//	}
 	if (!hasLabels()) {
 		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
 	}

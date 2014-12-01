@@ -10,8 +10,8 @@
 using namespace qrmc;
 using namespace qReal;
 
-NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id) : GraphicType(diagram, api, id), mIsPin(false),
-	mIsHavePin(false)
+NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id) : GraphicType(diagram, api, id)/*, mIsPin(false),
+	mIsHavePin(false)*/
 {
 }
 
@@ -72,8 +72,8 @@ QString NodeType::generateNodeClass(QString const &classTemplate)
 					: compiler->getTemplateUtils(nodeInvalidBorderTag);
 
 	nodeClass.replace(isContainerTag, isContainer)
-			.replace(isPortTag, loadBoolProperty(mId, "isPin"))
-			.replace(hasPinTag, isAction)
+//			.replace(isPortTag, loadBoolProperty(mId, "isPin"))
+//			.replace(hasPinTag, isAction)
 			.replace(nodeBorderTag, border)
 			.replace(isNodeTag, "true")
 			.replace(elementNameTag, name())
@@ -135,7 +135,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 				.replace(minimizeToChildrenTag, "false")
 				.replace(maximizeChildrenTag, "false")
 				.replace(hasMovableChildrenTag, "true")
-				.replace(forestallingSizeTag, "0")
+				.replace(forestallingSizeTag, "QVector<int>()")
 				.replace(childrenForestallingSizeTag, "0");
 }
 

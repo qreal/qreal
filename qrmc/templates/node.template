@@ -1,13 +1,18 @@
-	class @@ElementName@@ : public ElementImpl
+	class @@ElementName@@ : public qReal::ElementImpl
 	{
 	public:
 @@NodeConstructor@@
-		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+		void init(qReal::LabelFactoryInterface &, QList<qReal::LabelFactoryInterface*> &) {}
 
-		void init(QRectF &contents, QList<StatPoint> &pointPorts,
-				QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-				QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
-				SdfRendererInterface *portRenderer)
+                void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports,
+                                 qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles,
+	                         qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)
+
+
+		/*void init(QRectF &contents, QList<StatPoint> &pointPorts,
+				QList<StatLine> &linePorts, qReal::LabelFactoryInterface &factory,
+				QList<qReal::LabelFactoryInterface*> &titles, qReal::SdfRendererInterface *renderer,
+				SdfRendererInterface *portRenderer)    */
 		{
 @@NodeUnusedArgs@@
 			mRenderer = renderer;
@@ -26,15 +31,16 @@
 		}
 
 		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+		
+
+		int getPenWidth() const { return 0; }
+		QColor getPenColor() const { return QColor(); }
+
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts() const
-		{
-			return @@NodeHasPorts@@;
-		}
 
-		void updateData(ElementRepoInterface *repo) const
+		void updateData(qReal::ElementRepoInterface *repo) const
 		{
 @@UpdateData@@
 		}
@@ -54,7 +60,7 @@
 			return @@IsSortContainer@@;
 		}
 
-		int sizeOfForestalling() const
+                QVector<int> sizeOfForestalling() const
 		{
 			return @@SizeOfForestalling@@;
 		}       
@@ -79,16 +85,6 @@
 			return @@MaximizesChildren@@;
 		}
 
-		bool isPort() const
-		{
-			return @@IsPort@@;
-		}
-
-		bool hasPin() const
-		{
-			return @@HasPin@@;
-		}
-
 		QList<double> border() const
 		{
 			QList<double> list;
@@ -106,7 +102,7 @@
 			return @@IsResizeable@@;
 		}
 
-		int getPenWidth() const
+	/*	int getPenWidth() const
 		{ 
 			return 0; 
 		}
@@ -114,7 +110,7 @@
 		QColor getPenColor() const 
 		{ 
 			return QColor(); 
-		}
+		}      */
 
 		bool isDividable() const
 		{
@@ -122,8 +118,8 @@
 		}
 
 	private:
-		SdfRendererInterface *mRenderer;
-		QStringList mBonusContextMenuFields;
+		qReal::SdfRendererInterface *mRenderer;
+		//QStringList mBonusContextMenuFields;
 @@LabelDefinition@@
 	};
 

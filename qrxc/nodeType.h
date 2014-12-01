@@ -27,8 +27,8 @@ private:
 	QList<Port*> mPorts;
 	QDomElement mSdfDomElement;
 	QDomElement mPortsDomElement;
-	bool mIsPin;
-	bool mIsHavePin;
+//	bool mIsPin;
+//	bool mIsHavePin;
 	bool mIsResizeable;
 
 	virtual bool initAssociations();

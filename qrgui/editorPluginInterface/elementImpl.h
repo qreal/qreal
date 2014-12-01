@@ -56,7 +56,6 @@ public:
 	virtual void drawStartArrow(QPainter *painter) const = 0;
 	virtual void drawEndArrow(QPainter *painter) const = 0;
 	virtual bool isDividable() const = 0;
-
 	/*Container properties*/
 	virtual bool isContainer() const = 0;
 	virtual bool isSortingContainer() const = 0;
@@ -71,8 +70,8 @@ public:
 
 	virtual enums::linkShape::LinkShape shapeType() const = 0;
 
-	virtual bool isPort() const = 0;
-	virtual bool hasPin() const = 0;
+//	virtual bool isPort() const = 0;
+//	virtual bool hasPin() const = 0;
 
 	virtual bool createChildrenFromMenu() const = 0;
 

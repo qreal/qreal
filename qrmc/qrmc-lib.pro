@@ -9,7 +9,7 @@ DEPENDPATH += . \
 	templates
 
 INCLUDEPATH += \
-	$$PWD/.. \
+	$$PWD/.. \                          
 
 LIBS += -L../bin -lqrkernel -lqrrepo
 

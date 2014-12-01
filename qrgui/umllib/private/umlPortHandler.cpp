@@ -25,7 +25,7 @@ void UmlPortHandler::handleMoveEvent(bool const leftPressed
 	BorderChecker const actionItemBorderChecker(actionItem);
 	QPointF posInItem = QPointF(0, 0);
 	if (actionItem && ((actionItem == parentNode) || (!parentNode))) {
-		if (actionItem->canHavePorts()) {
+//		if (actionItem->canHavePorts()) {
 			posInItem = actionItem->mapFromScene(scenePos);
 
 			bool const checkLowerBorder = actionItemBorderChecker.checkLowerBorder(posInItem);
@@ -43,8 +43,8 @@ void UmlPortHandler::handleMoveEvent(bool const leftPressed
 			} else {
 				handleHorizontalBorders(actionItem, parentNode, pos, posInItem);
 			}
-		}
-	} else if ((parentNode) && (parentNode->canHavePorts())) {
+	//	}
+	} else if ((parentNode)/* && (parentNode->canHavePorts())*/) {
 			mNode->setPos(pos);
 			if (parentNode) {
 				posInItem = parentNode->mapFromScene(scenePos);

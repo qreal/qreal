@@ -8,4 +8,4 @@ HEADERS += \
 	$$PWD/listenerInterface.h \
 	$$PWD/listenerApiInterface.h \
 	$$PWD/portHelpers.h
-
+#INCLUDEPATH += ../../editorPluginInterface \
