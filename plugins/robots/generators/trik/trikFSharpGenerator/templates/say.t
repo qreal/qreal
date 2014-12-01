@@ -1,1 +1,1 @@
-robot.Say \"@@TEXT@@\"
+robot.Say @@TEXT@@
