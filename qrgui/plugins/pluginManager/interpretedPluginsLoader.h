@@ -3,10 +3,12 @@
 #include "plugins/toolPluginInterface/pluginConfigurator.h"
 #include "interpreterEditorManager.h"
 
+#include "pluginsManagerDeclSpec.h"
+
 namespace qReal {
 
 /// This class loads interpreted plugins given model and metamodel.
-class InterpretedPluginsLoader
+class QRGUI_PLUGINS_MANAGER_EXPORT InterpretedPluginsLoader
 {
 public:
 	InterpretedPluginsLoader();

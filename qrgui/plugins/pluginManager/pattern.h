@@ -4,6 +4,8 @@
 
 #include <qrkernel/ids.h>
 
+#include "pluginsManagerDeclSpec.h"
+
 namespace qReal {
 
 class EditorManager;
@@ -29,7 +31,7 @@ public:
 	QString to;
 };
 
-class Pattern
+class QRGUI_PLUGINS_MANAGER_EXPORT Pattern
 {
 public:
 	Pattern();

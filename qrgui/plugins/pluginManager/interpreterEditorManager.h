@@ -19,11 +19,13 @@
 
 #include "interpretedPluginManager.h"
 
+#include "pluginsManagerDeclSpec.h"
+
 namespace qReal {
 
 class Element;
 
-class InterpreterEditorManager : public QObject, public EditorManagerInterface
+class QRGUI_PLUGINS_MANAGER_EXPORT InterpreterEditorManager : public QObject, public EditorManagerInterface
 {
 	Q_OBJECT
 

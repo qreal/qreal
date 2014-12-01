@@ -38,7 +38,7 @@ HEADERS += \
 	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
 	$$PWD/generator/abstractGenerator.h \
-    $$PWD/widgetFinder.h
+	$$PWD/widgetFinder.h
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -56,7 +56,7 @@ SOURCES += \
 	$$PWD/textElider.cpp \
 	$$PWD/virtualKeyboard.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
-    $$PWD/widgetFinder.cpp
+	$$PWD/widgetFinder.cpp
 
 FORMS += \
 	$$PWD/watchListWindow.ui
