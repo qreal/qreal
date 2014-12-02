@@ -93,7 +93,7 @@ protected:
 	template<typename T>
 	T eval(QString const &propertyName, ReportErrors reportErrors = ReportErrors::report)
 	{
-		return evalCode<T>(stringProperty(propertyName), reportErrors);
+		return evalCode<T>(stringProperty(propertyName), propertyName, reportErrors);
 	}
 
 	/// Evaluates given code using text language interpreter and returns result.
