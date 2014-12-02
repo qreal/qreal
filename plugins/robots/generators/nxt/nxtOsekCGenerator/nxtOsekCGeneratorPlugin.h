@@ -56,11 +56,14 @@ private:
 	void initHotKeyActions();
 
 	/// Action that launches code generator
-	QAction mGenerateCodeAction;
+	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
+
 	/// Action that uploads nxtOSEK on a robot
-	QAction mFlashRobotAction;
+	QAction *mFlashRobotAction;  // Doesn't have ownership; may be disposed by GUI.
+
 	/// Action that compiles and uploads program on a robot
-	QAction mUploadProgramAction;
+	QAction *mUploadProgramAction;  // Doesn't have ownership; may be disposed by GUI.
+
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 
 	/// When true, nxt-tools are found by QReal and flashing and uploading is possible

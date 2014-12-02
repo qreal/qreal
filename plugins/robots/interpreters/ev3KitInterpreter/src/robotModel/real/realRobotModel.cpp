@@ -7,7 +7,12 @@
 
 #include "parts/display.h"
 #include "parts/speaker.h"
+#include "parts/button.h"
 #include "parts/motor.h"
+#include "parts/touchSensor.h"
+#include "parts/lightSensor.h"
+#include "parts/rangeSensor.h"
+#include "parts/colorSensorFull.h"
 
 using namespace ev3KitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
@@ -70,12 +75,32 @@ robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInf
 		return new parts::Speaker(speakerInfo(), port, *mRobotCommunicator);
 	}
 
+	if (deviceInfo.isA(buttonInfo())) {
+		return new parts::Button(buttonInfo(), port, *mRobotCommunicator);
+	}
+
 	if (deviceInfo.isA(displayInfo())) {
 		return new parts::Display(displayInfo(), port, *mRobotCommunicator);
 	}
 
 	if (deviceInfo.isA(motorInfo())) {
 		return new parts::Motor(motorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(touchSensorInfo())) {
+		return new parts::TouchSensor(touchSensorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(lightSensorInfo())) {
+		return new parts::LightSensor(lightSensorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(rangeSensorInfo())) {
+		return new parts::RangeSensor(rangeSensorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(colorFullSensorInfo())) {
+		return new parts::ColorSensorFull(colorFullSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());

@@ -4,10 +4,12 @@
 
 #include <qrutils/pluginManagers/pluginManager.h>
 
+#include "pluginsManagerDeclSpec.h"
+
 namespace qReal {
 
 /// This class inits interpreter plugins and returns their actions and preferences pages for mainwindow.
-class InterpretedPluginManager
+class QRGUI_PLUGINS_MANAGER_EXPORT InterpretedPluginManager
 {
 public:
 	InterpretedPluginManager();

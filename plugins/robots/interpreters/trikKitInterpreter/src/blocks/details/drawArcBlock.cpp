@@ -16,8 +16,10 @@ void DrawArcBlock::doJob(interpreterBase::robotModel::robotParts::Display &displ
 	int const y = eval<int>("YCoordinateArc");
 	int const width = eval<int>("WidthArc");
 	int const height = eval<int>("HeightArc");
-	int const startAngle = eval<int>("StartAngle");
-	int const spanAngle = eval<int>("SpanAngle");
+
+	/// Multiplying on 16 needed because Qt require argument in 1/16 degree format.
+	int const startAngle = eval<int>("StartAngle") * 16;
+	int const spanAngle = eval<int>("SpanAngle") * 16;
 	if (!errorsOccured()) {
 		trikDisplay->drawArc(x, y, width, height, startAngle, spanAngle);
 		emit done(mNextBlockId);
