@@ -2,19 +2,27 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/blocksBase/common/deviceBlock.h" line="31"/>
+        <source>%1 is not configured.</source>
+        <translation>%1 не сконфигурирован.</translation>
+    </message>
+</context>
+<context>
     <name>interpreterBase::DevicesConfigurationWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="83"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="82"/>
         <source>Port %1:</source>
         <translation>Порт %1:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="83"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="82"/>
         <source>%1:</source>
         <translation>%1:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="89"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="88"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
@@ -45,9 +53,8 @@
 <context>
     <name>interpreterBase::blocksBase::common::DeviceBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/blocksBase/common/deviceBlock.h" line="31"/>
         <source>%1 is not configured.</source>
-        <translation>%1 не сконфигурирован.</translation>
+        <translation type="vanished">%1 не сконфигурирован.</translation>
     </message>
 </context>
 <context>

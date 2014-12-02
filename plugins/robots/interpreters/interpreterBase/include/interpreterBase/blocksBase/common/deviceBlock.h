@@ -28,7 +28,7 @@ public:
 		if (device) {
 			doJob(*device);
 		} else {
-			error(tr("%1 is not configured.").arg(deviceInfo.friendlyName()));
+			error(QObject::tr("%1 is not configured.").arg(deviceInfo.friendlyName()));
 		}
 	}
 
