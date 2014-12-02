@@ -49,6 +49,10 @@ D2ModelScene::D2ModelScene(model::Model &model
 	connect(&mModel.worldModel(), &model::WorldModel::itemAdded, [this](AbstractItem *item) {
 		connect(item, &AbstractItem::deleteItem, this, &D2ModelScene::itemRemove);
 	});
+
+	connect(&mModel.c, &model::WorldModel::itemAdded, [this](AbstractItem *item) {
+		connect(item, &AbstractItem::deleteItem, this, &D2ModelScene::itemRemove);
+	});
 }
 
 D2ModelScene::~D2ModelScene()
