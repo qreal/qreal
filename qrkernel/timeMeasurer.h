@@ -21,7 +21,7 @@ public:
 	/// This method is used to avoid unused variables problem,
 	/// because sometimes the functionality of the object of this class
 	/// is limited to the functionality in destructor.
-	void doNothing();
+	void doNothing() const;
 
 private:
 	/// Time of start of measured interval.
@@ -31,3 +31,6 @@ private:
 	QString mMethodName;
 };
 }
+
+/// Macro to conveniently log time it takes to exit current block.
+#define LOG_TIME qReal::TimeMeasurer const measurer(Q_FUNC_INFO); measurer.doNothing();
