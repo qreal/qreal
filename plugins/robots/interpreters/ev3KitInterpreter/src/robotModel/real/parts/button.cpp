@@ -43,18 +43,18 @@ void Button::read()
 char Button::parsePort(QString portName)
 {
 	if (portName == "UpButtonPort") {
-		return 0x01;
+		return enums::brickButton::BrickButtonEnum::UP;
 	} else if (portName == "EnterButtonPort") {
-		return 0x02;
+		return enums::brickButton::BrickButtonEnum::ENTER;
 	} else if (portName == "DownButtonPort") {
-		return 0x03;
+		return enums::brickButton::BrickButtonEnum::DOWN;
 	} else if (portName == "RightButtonPort") {
-		return 0x04;
+		return enums::brickButton::BrickButtonEnum::RIGHT;
 	} else if (portName == "LeftButtonPort") {
-		return 0x05;
+		return enums::brickButton::BrickButtonEnum::LEFT;
 	} else if (portName == "BackButtonPort") {
-		return 0x06;
+		return enums::brickButton::BrickButtonEnum::BACK;
 	}
 
-	return 0x00;
+	return enums::brickButton::BrickButtonEnum::ANY;
 }

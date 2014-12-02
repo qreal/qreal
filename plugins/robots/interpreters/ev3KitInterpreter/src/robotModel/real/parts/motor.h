@@ -4,6 +4,7 @@
 #include <utils/robotCommunication/robotCommunicator.h>
 #include "src/robotModel/parts/ev3Motor.h"
 
+#include "src/robotModel/real/ev3DirectCommand.h"
 #include "commandConstants.h"
 
 namespace ev3KitInterpreter {

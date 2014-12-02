@@ -9,6 +9,7 @@
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
 #include <utils/tracer.h>
 
+#include "src/robotModel/real/ev3DirectCommand.h"
 #include "commandConstants.h"
 
 unsigned const keepAliveResponseSize = 5;
@@ -36,7 +37,7 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee
 	}
 
 	send(buffer);
-	if (buffer.size() >= 5 && buffer[4] == DIRECT_COMMAND_REPLY) {
+	if (buffer.size() >= 5 && buffer[4] == enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY) {
 		QByteArray const result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
@@ -143,17 +144,8 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 
 void BluetoothRobotCommunicationThread::keepAlive()
 {
-	QByteArray command(9, 0);
-	command[0] = 7;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_REPLY;
-	int globalVariablesCount = 0;
-	int localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opKEEP_ALIVE;
+	QByteArray command = robotModel::real::Ev3DirectCommand::formCommand(9, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
+	command[7] = enums::opcode::OpcodeEnum::KEEP_ALIVE;
 	command[8] = 10;
 	send(command);
 }

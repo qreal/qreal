@@ -14,24 +14,15 @@ Motor::Motor(DeviceInfo const &info, PortInfo const &port, RobotCommunicator &ro
 
 void Motor::on(int speed)
 {
-	QByteArray command(15, 0);
-	command[0] = 13;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opOUTPUT_POWER;
-	command[8] = LC0(0); //layer(EV3)
-	command[9] = parsePort(port().name().at(0).toLatin1());
-	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_1_BYTE);
-	command[11] = speed & 0xFF;
-	command[12] = opOUTPUT_START;
-	command[13] = LC0(0); // layer(EV3)
-	command[14] = parsePort(port().name().at(0).toLatin1());
+	QByteArray command = Ev3DirectCommand::formCommand(19, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	int index = 7;
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::OUTPUT_POWER, command, index);
+	Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);
+	Ev3DirectCommand::addByteParameter(parsePort(port().name().at(0).toLatin1()), command, index);
+	Ev3DirectCommand::addByteParameter(speed, command, index);
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::OUTPUT_START, command, index);
+	Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);
+	Ev3DirectCommand::addByteParameter(parsePort(port().name().at(0).toLatin1()), command, index);
 	mRobotCommunicator.send(this, command, 3);
 }
 
@@ -42,33 +33,25 @@ void Motor::stop()
 
 void Motor::off()
 {
-	QByteArray command(11, 0);
-	command[0] = 9;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opOUTPUT_STOP;
-	command[8] = LC0(0); //layer(EV3)
-	command[9] = parsePort(port().name().at(0).toLatin1());
-	command[10] = LC0(0x00);
+	QByteArray command = Ev3DirectCommand::formCommand(14, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	int index = 7;
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::OUTPUT_STOP, command, index);
+	Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);
+	Ev3DirectCommand::addByteParameter(parsePort(port().name().at(0).toLatin1()), command, index);
+	Ev3DirectCommand::addByteParameter(0x00, command, index); // brake (0 = coast, 1 = brake)
 	mRobotCommunicator.send(this, command, 3);
 }
 
 char Motor::parsePort(QChar portName)
 {
 	if (portName == 'A') {
-		return 0x01;
+		return enums::outputPort::OutputPortEnum::A;
 	} else if (portName == 'B') {
-		return 0x02;
+		return enums::outputPort::OutputPortEnum::B;
 	} else if (portName == 'C') {
-		return 0x04;
+		return enums::outputPort::OutputPortEnum::C;
 	} else if (portName == 'D') {
-		return 0x08;
+		return enums::outputPort::OutputPortEnum::D;
 	}
 	return 0x00;
 }

@@ -41,6 +41,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/rangeSensor.h \
 	$$PWD/robotModel/real/parts/colorSensorFull.h \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.h \
+	$$PWD/robotModel/real/ev3DirectCommand.h \
 
 
 SOURCES += \
@@ -71,6 +72,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/rangeSensor.cpp \
 	$$PWD/robotModel/real/parts/colorSensorFull.cpp \
 	$$PWD/robotModel/real/parts/implementations/colorSensorImpl.cpp \
+	$$PWD/robotModel/real/ev3DirectCommand.cpp \
 
 
 FORMS += \
