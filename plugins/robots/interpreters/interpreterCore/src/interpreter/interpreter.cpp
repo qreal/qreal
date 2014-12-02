@@ -116,8 +116,6 @@ int Interpreter::timeElapsed() const
 
 void Interpreter::connectedSlot(bool success, QString const &errorString)
 {
-	qDebug() << "Interpreter::connectedSlot";
-
 	if (success) {
 		if (mRobotModelManager.model().needsConnection()) {
 			mInterpretersInterface.errorReporter()->addInformation(tr("Connected successfully"));
