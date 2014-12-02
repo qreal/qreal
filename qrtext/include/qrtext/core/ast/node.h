@@ -18,7 +18,9 @@ namespace ast {
 class QRTEXT_EXPORT Node
 {
 public:
-	virtual ~Node() {}
+	Node();
+
+	virtual ~Node();
 
 	/// Returns start of a node.
 	Connection const &start() const;
@@ -61,6 +63,10 @@ public:
 	/// See 'visitor' design pattern (http://www.oodesign.com/visitor-pattern.html).
 	virtual void accept(AstVisitorInterface &visitor) const;
 
+	static int nodesCount() {
+		return mNodesCount;
+	}
+
 private:
 	void connect(QList<Range> const &ranges);
 
@@ -69,6 +75,8 @@ private:
 
 	/// Static object denoting absent connection (for example, for generated nodes).
 	static Connection const noConnection;
+
+	static int mNodesCount;
 };
 
 }
