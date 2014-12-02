@@ -216,10 +216,9 @@ bool Object::hasProperty(QString const &name, bool sensitivity, bool regExpressi
 		caseSensitivity = Qt::CaseInsensitive;
 	}
 
-	QRegExp *regExp = new QRegExp(name, caseSensitivity);
-
 	if (regExpression) {
-		return !properties.filter(*regExp).isEmpty();
+		QRegExp regExp(name, caseSensitivity);
+		return !properties.filter(regExp).isEmpty();
 	} else {
 		return properties.contains(name, caseSensitivity);
 	}

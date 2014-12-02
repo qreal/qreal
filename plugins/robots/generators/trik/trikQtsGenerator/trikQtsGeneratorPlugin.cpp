@@ -13,10 +13,10 @@ using namespace trik::qts;
 using namespace qReal;
 
 TrikQtsGeneratorPlugin::TrikQtsGeneratorPlugin()
-	: mGenerateCodeAction(nullptr)
-	, mUploadProgramAction(nullptr)
-	, mRunProgramAction(nullptr)
-	, mStopRobotAction(nullptr)
+	: mGenerateCodeAction(new QAction(nullptr))
+	, mUploadProgramAction(new QAction(nullptr))
+	, mRunProgramAction(new QAction(nullptr))
+	, mStopRobotAction(new QAction(nullptr))
 	, mCommunicator(nullptr)
 {
 }
@@ -70,15 +70,15 @@ QList<ActionInfo> TrikQtsGeneratorPlugin::actions()
 
 QList<HotKeyActionInfo> TrikQtsGeneratorPlugin::hotKeyActions()
 {
-	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
-	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
-	mRunProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
-	mStopRobotAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F5));
+	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+	mRunProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
+	mStopRobotAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F5));
 
-	HotKeyActionInfo generateCodeInfo("Generator.GenerateTrik", tr("Generate TRIK Code"), &mGenerateCodeAction);
-	HotKeyActionInfo uploadProgramInfo("Generator.UploadTrik", tr("Upload TRIK Program"), &mUploadProgramAction);
-	HotKeyActionInfo runProgramInfo("Generator.RunTrik", tr("Run TRIK Program"), &mRunProgramAction);
-	HotKeyActionInfo stopRobotInfo("Generator.StopTrik", tr("Stop TRIK Robot"), &mStopRobotAction);
+	HotKeyActionInfo generateCodeInfo("Generator.GenerateTrik", tr("Generate TRIK Code"), mGenerateCodeAction);
+	HotKeyActionInfo uploadProgramInfo("Generator.UploadTrik", tr("Upload TRIK Program"), mUploadProgramAction);
+	HotKeyActionInfo runProgramInfo("Generator.RunTrik", tr("Run TRIK Program"), mRunProgramAction);
+	HotKeyActionInfo stopRobotInfo("Generator.StopTrik", tr("Stop TRIK Robot"), mStopRobotAction);
 
 	return { generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo };
 }

@@ -13,9 +13,6 @@ public:
 			, generatorBase::GeneratorCustomizer &customizer
 			, qReal::Id const &id
 			, QObject *parent);
-
-private:
-	QString lineSensorVariableFromMode(QString const &mode) const;
 };
 
 }

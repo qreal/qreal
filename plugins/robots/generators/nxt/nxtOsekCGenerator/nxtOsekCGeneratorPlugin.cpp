@@ -13,9 +13,9 @@ using namespace qReal;
 using namespace gui;
 
 NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
-	: mGenerateCodeAction(nullptr)
-	, mFlashRobotAction(nullptr)
-	, mUploadProgramAction(nullptr)
+	: mGenerateCodeAction(new QAction(nullptr))
+	, mFlashRobotAction(new QAction(nullptr))
+	, mUploadProgramAction(new QAction(nullptr))
 	, mNxtToolsPresent(false)
 	, mMasterGenerator(nullptr)
 {
@@ -102,11 +102,11 @@ QList<ActionInfo> NxtOsekCGeneratorPlugin::actions()
 
 void NxtOsekCGeneratorPlugin::initHotKeyActions()
 {
-	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
-	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
 
-	HotKeyActionInfo generateActionInfo("Generator.GenerateNxt", tr("Generate NXT OSEK code"), &mGenerateCodeAction);
-	HotKeyActionInfo uploadActionInfo("Generator.UploadNxt", tr("Upload program to NXT device"), &mUploadProgramAction);
+	HotKeyActionInfo generateActionInfo("Generator.GenerateNxt", tr("Generate NXT OSEK code"), mGenerateCodeAction);
+	HotKeyActionInfo uploadActionInfo("Generator.UploadNxt", tr("Upload program to NXT device"), mUploadProgramAction);
 
 	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
 }
@@ -207,6 +207,6 @@ void NxtOsekCGeneratorPlugin::checkNxtTools()
 #endif
 	}
 
-	mUploadProgramAction.setVisible(mNxtToolsPresent);
-	mFlashRobotAction.setVisible(mNxtToolsPresent);
+	mUploadProgramAction->setVisible(mNxtToolsPresent);
+	mFlashRobotAction->setVisible(mNxtToolsPresent);
 }
