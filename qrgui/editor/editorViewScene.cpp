@@ -708,7 +708,9 @@ void EditorViewScene::deleteSelectedItems()
 
 void EditorViewScene::deleteElements(IdList &idsToDelete)
 {
-	mController.execute(new MultipleRemoveAndUpdateCommand(*this, mModels, idsToDelete));
+	MultipleRemoveAndUpdateCommand * const command = new MultipleRemoveAndUpdateCommand(*this, mModels);
+	command->setItemsToDelete(idsToDelete);
+	mController.execute(command);
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
