@@ -100,6 +100,26 @@ void SemanticAnalyzer::clear()
 	mIdentifierDeclarations.clear();
 }
 
+void SemanticAnalyzer::forget(QSharedPointer<ast::Node> const &root)
+{
+	if (!root) {
+		return;
+	}
+
+	if (!mIdentifierDeclarations.values().contains(root)) {
+		auto const expression = root.dynamicCast<ast::Expression>();
+		if (expression) {
+			mTypes.remove(expression);
+		}
+	}
+
+	for (auto const &child : root->children()) {
+		if (!child.isNull()) {
+			forget(child);
+		}
+	}
+}
+
 void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
 		, QSharedPointer<types::TypeExpression> const &type)
 {

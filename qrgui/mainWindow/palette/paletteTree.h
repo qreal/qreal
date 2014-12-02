@@ -133,7 +133,7 @@ private:
 	/// @param editorManager Editor manager which all editors with elements are taken from.
 	void loadEditors(EditorManagerInterface &editorManagerProxy);
 
-	EditorManagerInterface *mEditorManager;
+	EditorManagerInterface *mEditorManager = nullptr;
 
 	MainWindow *mMainWindow;
 
