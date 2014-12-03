@@ -132,11 +132,48 @@ enum ColorEnum {
 
 namespace outputPort {
 enum OutputPortEnum {
-	A	= 0x01
-	, B	= 0x02
-	, C	= 0x04
-	, D	= 0x08
-	, All	= 0x0f
+	A = 0x01
+	, B = 0x02
+	, C = 0x04
+	, D = 0x08
+	, ALL = 0x0f
+};
+}
+
+namespace inputPort {
+enum InputPortEnum {
+	One = 0x00
+	, Two = 0x01
+	, Three = 0x02
+	, Four = 0x03
+
+	, A = 0x10
+	, B = 0x11
+	, C = 0x12
+	, D = 0x13
+};
+}
+
+namespace sensorType {
+enum SensorTypeEnum {
+	NO_SENSOR = 0x00
+	, SWITCH = 0x01
+	, TEMPERATURE = 0x02
+	, REFLECTION = 0x03
+	, ANGLE = 0x04
+	, LIGHT_ACTIVE = 0x05
+	, LIGHT_INACTIVE = 0x06
+	, SOUND_DB = 0x07
+	, SOUND_DBA = 0x08
+	, CUSTOM = 0x09
+	, LOW_SPEED = 0x0A
+	, LOW_SPEED_9V = 0x0B
+	, SONAR_METRIC = 0x0C  // Not documented
+	, COLOR_FULL = 0x0D
+	, COLOR_RED = 0x0E
+	, COLOR_GREEN = 0x0F
+	, COLOR_BLUE = 0x10
+	, COLOR_NONE = 0x11
 };
 }
 

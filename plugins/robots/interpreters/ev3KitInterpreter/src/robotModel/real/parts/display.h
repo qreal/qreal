@@ -3,6 +3,7 @@
 #include "robotModel/parts/ev3Display.h"
 #include <utils/robotCommunication/robotCommunicator.h>
 
+#include "src/robotModel/real/ev3DirectCommand.h"
 #include "commandConstants.h"
 
 namespace ev3KitInterpreter {

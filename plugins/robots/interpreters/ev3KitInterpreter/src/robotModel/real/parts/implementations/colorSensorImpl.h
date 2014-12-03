@@ -18,7 +18,7 @@ class ColorSensorImpl : public QObject
 public:
 	ColorSensorImpl(interpreterBase::robotModel::PortInfo const &port
 			, utils::robotCommunication::RobotCommunicator &robotCommunicator
-			, SensorTypeEnum lowLevelType);
+			, enums::sensorType::SensorTypeEnum lowLevelType);
 
 	void read();
 
@@ -28,7 +28,7 @@ signals:
 private:
 	Ev3InputDevice mImplementation;
 	utils::robotCommunication::RobotCommunicator &mRobotCommunicator;
-	SensorTypeEnum mLowLevelType;
+	enums::sensorType::SensorTypeEnum mLowLevelType;
 };
 
 }

@@ -3,6 +3,9 @@
 #include "robotModel/parts/ev3Speaker.h"
 #include <utils/robotCommunication/robotCommunicator.h>
 
+#include "src/robotModel/real/ev3DirectCommand.h"
+#include "commandConstants.h"
+
 namespace ev3KitInterpreter {
 namespace robotModel {
 namespace real {

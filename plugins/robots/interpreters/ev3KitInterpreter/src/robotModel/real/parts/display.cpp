@@ -14,106 +14,45 @@ Display::Display(DeviceInfo const &info, PortInfo const &port, RobotCommunicator
 
 void Display::drawPixel(int x, int y)
 {
-	QByteArray command(18, 0);
-	command[0] = 16;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opUI_DRAW;
-	command[8] = LC0(PIXEL);
-	command[9] = LC0(vmFG_COLOR);
-	//LC2(x)
-	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[11] = (x & 0xFF);
-	command[12] = ((x >> 8) & 0xFF);
-	//LC2(y)
-	command[13] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[14] = (y & 0xFF);
-	command[15] = ((y >> 8) & 0xFF);
-	command[16] = opUI_DRAW;
-	command[17] = LC0(UPDATE);
+	QByteArray command = Ev3DirectCommand::formCommand(19, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	int index = 7;
+	Ev3DirectCommand::addOpcode(enums::opcode::UI_DRAW_PIXEL, command, index);
+	Ev3DirectCommand::addByteParameter(enums::color::ColorEnum::FOREGROUND, command, index);
+	Ev3DirectCommand::addShortParameter(x, command, index);
+	Ev3DirectCommand::addShortParameter(y, command, index);
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_UPDATE, command, index);
 	mRobotCommunicator.send(this, command, 3);
 }
 
 void Display::drawLine(int x1, int y1, int x2, int y2)
 {
-	QByteArray command(24, 0);
-	command[0] = 22;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opUI_DRAW;
-	command[8] = LC0(LINE);
-	command[9] = LC0(vmFG_COLOR);
-	//LC2(x0)
-	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[11] = (x1 & 0xFF);
-	command[12] = ((x2 >> 8) & 0xFF);
-	//LC2(y0)
-	command[13] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[14] = (y1 & 0xFF);
-	command[15] = ((y1 >> 8) & 0xFF);
-	//LC2(x1)
-	command[16] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[17] = (x2 & 0xFF);
-	command[18] = ((x2 >> 8) & 0xFF);
-	//LC2(y1)
-	command[19] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[20] = (y2 & 0xFF);
-	command[21] = ((y2 >> 8) & 0xFF);
-	command[22] = opUI_DRAW;
-	command[23] = LC0(UPDATE);
+	QByteArray command = Ev3DirectCommand::formCommand(25, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	int index = 7;
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_LINE, command, index);
+	Ev3DirectCommand::addByteParameter(enums::color::ColorEnum::FOREGROUND, command, index);
+	Ev3DirectCommand::addShortParameter(x1, command, index);
+	Ev3DirectCommand::addShortParameter(y1, command, index);
+	Ev3DirectCommand::addShortParameter(x2, command, index);
+	Ev3DirectCommand::addShortParameter(y2, command, index);
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_UPDATE, command, index);
 	mRobotCommunicator.send(this, command, 3);
 }
 
 void Display::drawRect(int x, int y, int width, int height, bool filled)
 {
-	QByteArray command(24, 0);
-	command[0] = 22;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opUI_DRAW;
+	QByteArray command = Ev3DirectCommand::formCommand(25, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	int index = 7;
 	if (filled) {
-		command[8] = LC0(FILLRECT);
+		Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_FILL_RECT, command, index);
 	} else {
-		command[8] = LC0(RECT);
+		Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_RECT, command, index);
 	}
-
-	command[9] = LC0(vmFG_COLOR);
-	//LC2(x0)
-	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[11] = (x & 0xFF);
-	command[12] = ((x >> 8) & 0xFF);
-	//LC2(y0)
-	command[13] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[14] = (y & 0xFF);
-	command[15] = ((y >> 8) & 0xFF);
-	//LC2(x1)
-	command[16] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[17] = (width & 0xFF);
-	command[18] = ((width >> 8) & 0xFF);
-	//LC2(y1)
-	command[19] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[20] = (height & 0xFF);
-	command[21] = ((height >> 8) & 0xFF);
-	command[22] = opUI_DRAW;
-	command[23] = LC0(UPDATE);
+	Ev3DirectCommand::addByteParameter(enums::color::ColorEnum::FOREGROUND, command, index);
+	Ev3DirectCommand::addShortParameter(x, command, index);
+	Ev3DirectCommand::addShortParameter(y, command, index);
+	Ev3DirectCommand::addShortParameter(width, command, index);
+	Ev3DirectCommand::addShortParameter(height, command, index);
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_UPDATE, command, index);
 	mRobotCommunicator.send(this, command, 3);
 }
 
@@ -128,95 +67,40 @@ void Display::drawRect(int x, int y, int width, int height)
 
 void Display::drawCircle(int x, int y, int radius, bool filled)
 {
-	QByteArray command(21, 0);
-	command[0] = 19;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opUI_DRAW;
+	QByteArray command = Ev3DirectCommand::formCommand(22, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	int index = 7;
 	if (filled) {
-		command[8] = LC0(FILLCIRCLE);
+		Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_FILL_CIRCLE, command, index);
 	} else {
-		command[8] = LC0(CIRCLE);
+		Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_CIRCLE, command, index);
 	}
-
-	command[9] = LC0(vmFG_COLOR);
-	//LC2(x)
-	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[11] = (x & 0xFF);
-	command[12] = ((x >> 8) & 0xFF);
-	//LC2(y)
-	command[13] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[14] = (y & 0xFF);
-	command[15] = ((y >> 8) & 0xFF);
-	//LC2(radius)
-	command[16] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[17] = (radius & 0xFF);
-	command[18] = ((radius >> 8) & 0xFF);
-	command[19] = opUI_DRAW;
-	command[20] = LC0(UPDATE);
+	Ev3DirectCommand::addByteParameter(enums::color::ColorEnum::FOREGROUND, command, index);
+	Ev3DirectCommand::addShortParameter(x, command, index);
+	Ev3DirectCommand::addShortParameter(y, command, index);
+	Ev3DirectCommand::addShortParameter(radius, command, index);
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_UPDATE, command, index);
 	mRobotCommunicator.send(this, command, 3);
 }
 
 
 void Display::printText(int x, int y, QString const &text)
 {
-	int const size = 20 + text.length();
-	QByteArray textBytes = text.toLocal8Bit();
-	QByteArray command(size, 0);
-	command[0] = size - 2;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opUI_DRAW;
-	command[8] = TEXT;
-	command[9] = LC0(vmFG_COLOR);
-	//LC2(x)
-	command[10] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[11] = (x & 0xFF);
-	command[12] = ((x >> 8) & 0xFF);
-	//LC2(y)
-	command[13] = (PRIMPAR_LONG  | PRIMPAR_CONST | PRIMPAR_2_BYTES);
-	command[14] = (y & 0xFF);
-	command[15] = ((y >> 8) & 0xFF);
-	command[16] = LCS;
-	int currentSymbol = 17;
-	for (int i = 0; i < textBytes.length(); i++) {
-		command[currentSymbol] = textBytes[i];
-		currentSymbol++;
-	}
-
-	command[size - 3] = 0;
-	command[size - 2] = opUI_DRAW;
-	command[size - 1] = LC0(UPDATE);
+	QByteArray command = Ev3DirectCommand::formCommand(21 + text.length(), 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	int index = 7;
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_TEXT, command, index);
+	Ev3DirectCommand::addByteParameter(enums::color::ColorEnum::FOREGROUND, command, index);
+	Ev3DirectCommand::addShortParameter(x, command, index);
+	Ev3DirectCommand::addShortParameter(y, command, index);
+	Ev3DirectCommand::addStringParameter(text, command, index);
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_UPDATE, command, index);
 	mRobotCommunicator.send(this, command, 3);
 }
 
 void Display::clearScreen()
 {
-	QByteArray command(11, 0);
-	command[0] = 9;
-	command[1] = 0x00;
-	command[2] = 0x00;
-	command[3] = 0x00;
-	command[4] = DIRECT_COMMAND_NO_REPLY;
-	int const globalVariablesCount = 0;
-	int const localVariablesCount = 0;
-	command[5] = globalVariablesCount & 0xFF;
-	command[6] = ((localVariablesCount << 2) | (globalVariablesCount >> 8));
-	command[7] = opUI_DRAW;
-	command[8] = LC0(CLEAN);
-	command[9] = opUI_DRAW;
-	command[10] = LC0(UPDATE);
+	QByteArray command = Ev3DirectCommand::formCommand(11, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+	int index = 7;
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_CLEAN, command, index);
+	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_UPDATE, command, index);
 	mRobotCommunicator.send(this, command, 3);
 }

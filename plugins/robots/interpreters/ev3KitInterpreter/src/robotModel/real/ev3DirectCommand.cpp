@@ -9,10 +9,10 @@ Ev3DirectCommand::Ev3DirectCommand()
 QByteArray Ev3DirectCommand::formCommand(int size, int messageCounter, ushort globalSize, int localSize, enums::commandType::CommandTypeEnum type)
 {
 	QByteArray command(size, 0);
-	command[0] = size - 2;
-	command[1] = size >> 8;
-	command[2] = messageCounter;
-	command[3] = messageCounter >> 8;
+	command[0] = (size - 2) & 0xFF;
+	command[1] = (size >> 8) & 0xFF ;
+	command[2] = messageCounter & 0xFF;
+	command[3] = (messageCounter >> 8) & 0xFF;
 	command[4] = type;
 	command[5] = globalSize & 0xFF;
 	command[6] = ((localSize << 2) | (globalSize >> 8));
@@ -39,4 +39,20 @@ void Ev3DirectCommand::addShortParameter(qint16 parameter, QByteArray &command, 
 	command[index++] = enums::argumentSize::ArgumentSizeEnum::SHORT;
 	command[index++] = parameter & 0xFF;
 	command[index++] = (parameter >> 8) & 0xFF;
+}
+
+void Ev3DirectCommand::addStringParameter(QString const &parameter, QByteArray &command, int &index)
+{
+	QByteArray parameterBytes = parameter.toLocal8Bit();
+	command[index++] = enums::argumentSize::ArgumentSizeEnum::STRING;
+	for (int i = 0; i < parameter.length(); i++) {
+		command[index++] = parameterBytes[i];
+	}
+	command[index++] = 0x00;
+}
+
+void Ev3DirectCommand::addGlobalIndex(qint8 globalIndex, QByteArray &command, int &index)
+{
+	command[index++] = 0xE1; // 0xE1 = global index, long format, 1 byte
+	command[index++] = globalIndex & 0xFF;
 }
