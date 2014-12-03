@@ -17,6 +17,6 @@ TimeMeasurer::~TimeMeasurer()
 			.arg(mMethodName, QString::number(static_cast<qlonglong>(mStartTime.msecsTo(currentTime))));
 }
 
-void TimeMeasurer::doNothing()
+void TimeMeasurer::doNothing() const
 {
 }

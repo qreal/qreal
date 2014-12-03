@@ -1988,7 +1988,7 @@
 			<node displayedName="Marker Down" name="MarkerDown" description="Moves the marker of the 2D model robot down to the floor: the robot will draw its trace on the floor after that. If the marker of another color is already drawing at the moment it will be replaced.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image name="images/markerDown.svg" x1="0" x2="50" y1="0" y2="50" />
+						<image name="images/markerDownBlock.svg" x1="0" x2="50" y1="0" y2="50" />
 					</picture>
 					<labels>
 						<label x="27" y="-30" textBinded="Color" hard="true"/>
@@ -2011,7 +2011,7 @@
 			<node displayedName="Marker Up" name="MarkerUp" description="Lifts the marker of the 2D model robot up: the robot stops drawing its trace on the floor after that.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image name="images/markerUp.svg" x1="0" x2="50" y1="0" y2="50" />
+						<image name="images/markerUpBlock.svg" x1="0" x2="50" y1="0" y2="50" />
 					</picture>
 					<nonResizeable/>
 				</graphics>

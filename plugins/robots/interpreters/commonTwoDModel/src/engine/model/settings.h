@@ -30,9 +30,9 @@ signals:
 	void physicsChanged(bool isRealistic);
 
 private:
-	bool mRealisticPhysics;
-	bool mRealisticSensors;
-	bool mRealisticMotors;
+	bool mRealisticPhysics = false;
+	bool mRealisticSensors = false;
+	bool mRealisticMotors = false;
 };
 
 }
