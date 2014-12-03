@@ -155,15 +155,15 @@ void InterpreterElementImpl::inheritProperties(QList<QDomElement> &elements, Id 
 					height = sdfElement.attribute("sizey").toInt();
 				}
 
-				if (mEditorRepoApi->stringProperty(link, "overrides") == "pictures") {
+				if (mEditorRepoApi->stringProperty(link, "overrides").contains("pictures")) {
 					overridePictures = true;
 				}
 
-				if (mEditorRepoApi->stringProperty(link, "overrides") == "ports") {
+				if (mEditorRepoApi->stringProperty(link, "overrides").contains("ports")) {
 					overridePorts = true;
 				}
 
-				if (mEditorRepoApi->stringProperty(link, "overrides") == "labels") {
+				if (mEditorRepoApi->stringProperty(link, "overrides").contains("labels")) {
 					overrideLabels = true;
 				}
 
