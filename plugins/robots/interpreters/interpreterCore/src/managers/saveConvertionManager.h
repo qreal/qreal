@@ -19,6 +19,9 @@ private:
 	/// sensor1- and digitSensor1-form variables into sensorA1- and sensorD1-form ones.
 	static qReal::ProjectConverter from300Alpha4to300Alpha5Converter();
 
+	/// Returns a converter that apppends quotes to text blocks (like PrintText or TrikSay).
+	static qReal::ProjectConverter from300Beta2to300rc1Converter();
+
 	static bool isRobotsDiagram(qReal::Id const &diagram);
 	static qReal::IdList elementsOfRobotsDiagrams(qReal::LogicalModelAssistInterface const &logicalApi);
 	static QString editor();

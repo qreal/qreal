@@ -1977,7 +1977,7 @@
 							<default>1</default>
 						</property>
 						<property displayedName="Text" type="string" name="PrintText">
-							<default>Enter some text here...</default>
+							<default>\"Enter some text here...\"</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2612,7 +2612,9 @@
 				</graphics>
 				<logic>
 					<properties>
-						<property displayedName="Text" type="string" name="Text" />
+						<property displayedName="Text" type="string" name="Text">
+							<default>\"Hi!\"</default>
+						</property>
 					</properties>
 					<container/>
 					<generalizations>

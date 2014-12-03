@@ -12,3 +12,13 @@ cp    $BIN_DIR/robots-trik-generator-base.dll                                   
 
 
 cp    $QT_DIR/bin/Qt5Network.dll                                                  $PWD/../data
+
+cd $PWD/../data/
+rm -rf trik-runtime-builds
+git clone --depth=0 https://github.com/qreal/trik-runtime-builds
+rm -rf winscp
+mv trik-runtime-builds/winscp $PWD
+mkdir -p trikRuntime
+cd trikRuntime
+tar xfvzh ../trik-runtime-builds/trikRuntime.tar.gz
+rm -rf ../trik-runtime-builds

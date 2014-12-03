@@ -15,11 +15,10 @@ void Shell::say(QString const &text)
 {
 	QString const pathToCommand = ":/trikQts/templates/say.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand)
-			.replace("@@TEXT@@", text) + "brick.run();";
+			.replace("@@TEXT@@", "\"" + text + "\"") + "brick.run();";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
-
 
 void Shell::runCommand(QString const &command)
 {

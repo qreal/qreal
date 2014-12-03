@@ -24,7 +24,6 @@ CommonRobotModel::CommonRobotModel(QString const &kitId, QString const &robotId)
 
 CommonRobotModel::~CommonRobotModel()
 {
-	stopRobot();
 }
 
 QString CommonRobotModel::robotId() const
