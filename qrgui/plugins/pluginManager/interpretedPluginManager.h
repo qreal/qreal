@@ -1,13 +1,14 @@
 #pragma once
 
-#include "plugins/interpretedPluginInterface/interpretedPluginInterface.h"
-
 #include <qrutils/pluginManagers/pluginManager.h>
+
+#include <plugins/interpretedPluginInterface/interpretedPluginInterface.h>
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 namespace qReal {
 
 /// This class inits interpreter plugins and returns their actions and preferences pages for mainwindow.
-class InterpretedPluginManager
+class QRGUI_PLUGINS_MANAGER_EXPORT InterpretedPluginManager
 {
 public:
 	InterpretedPluginManager();

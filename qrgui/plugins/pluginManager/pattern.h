@@ -4,6 +4,8 @@
 
 #include <qrkernel/ids.h>
 
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
+
 namespace qReal {
 
 class EditorManager;
@@ -29,7 +31,7 @@ public:
 	QString to;
 };
 
-class Pattern
+class QRGUI_PLUGINS_MANAGER_EXPORT Pattern
 {
 public:
 	Pattern();
@@ -51,8 +53,8 @@ public:
 	QList<GroupNode> nodes() const;
 	QList<GroupEdge> edges() const;
 
-	QString inNode()const;
-	QString outNode()const;
+	QString inNode() const;
+	QString outNode() const;
 	void setInNode(QString const &id);
 	void setOutNode(QString const &id);
 

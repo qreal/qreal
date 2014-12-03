@@ -44,7 +44,6 @@ namespace qReal {
 
 class EditorView;
 class SceneCustomizer;
-class TextManager;
 
 namespace models {
 class Models;
@@ -53,6 +52,10 @@ class Models;
 namespace gui {
 class ErrorReporter;
 class PaletteTree;
+}
+
+namespace text {
+class TextManager;
 }
 
 class MainWindow : public QMainWindow
@@ -357,7 +360,7 @@ private:
 	InterpretedPluginsLoader mInterpretedPluginLoader;
 	PropertyEditorModel mPropertyModel;
 	SystemEvents *mSystemEvents;
-	TextManager *mTextManager;
+	text::TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;
 

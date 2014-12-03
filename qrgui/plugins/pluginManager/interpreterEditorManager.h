@@ -14,16 +14,16 @@
 #include <qrrepo/logicalRepoApi.h>
 #include <qrrepo/repoApi.h>
 
-#include "plugins/editorPluginInterface/editorInterface.h"
+#include <plugins/editorPluginInterface/editorInterface.h>
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
-
-#include "interpretedPluginManager.h"
+#include "plugins/pluginManager/interpretedPluginManager.h"
 
 namespace qReal {
 
 class Element;
 
-class InterpreterEditorManager : public QObject, public EditorManagerInterface
+class QRGUI_PLUGINS_MANAGER_EXPORT InterpreterEditorManager : public QObject, public EditorManagerInterface
 {
 	Q_OBJECT
 

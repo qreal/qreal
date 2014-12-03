@@ -8,7 +8,6 @@
 
 using namespace generatorBase;
 using namespace qReal;
-using namespace gui;
 using namespace utils;
 
 /// If file info creation and modification timestamps differ less than on this value it is considered
@@ -101,7 +100,7 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 		} else {
 			return QFileInfo();
 		}
-	} else if (QScintillaTextEdit *code = dynamic_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab())) {
+	} else if (auto code = dynamic_cast<text::QScintillaTextEdit *>(mMainWindowInterface->currentTab())) {
 		fileInfo = QFileInfo(mTextManager->path(code));
 		mTextManager->saveText(false);
 	}

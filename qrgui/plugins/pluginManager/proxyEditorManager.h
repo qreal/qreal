@@ -12,15 +12,16 @@
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
 
+#include <plugins/editorPluginInterface/editorInterface.h>
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
-#include "plugins/editorPluginInterface/editorInterface.h"
 
 namespace qReal {
 
 class Element;
 
 /// Proxy for changing between generative and interpretive approach.
-class ProxyEditorManager : public EditorManagerInterface
+class QRGUI_PLUGINS_MANAGER_EXPORT ProxyEditorManager : public EditorManagerInterface
 {
 public:
 	explicit ProxyEditorManager(EditorManagerInterface *editorManagerInterface);

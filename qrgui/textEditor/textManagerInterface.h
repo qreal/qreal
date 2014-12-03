@@ -8,8 +8,7 @@ namespace qReal {
 
 class SystemEvents;
 
-namespace gui {
-class MainWindowInterpretersInterface;
+namespace text {
 class QScintillaTextEdit;
 }
 
@@ -25,12 +24,12 @@ public:
 	virtual	void changeFilePath(QString const &from, QString const &to) = 0;
 	virtual bool bindCode(Id const &diagram, QString const &filePath) = 0;
 	virtual bool unbindCode(QString const &filePath) = 0;
-	virtual bool unbindCode(gui::QScintillaTextEdit *code) = 0;
-	virtual gui::QScintillaTextEdit *code(QString const &filePath) const = 0;
-	virtual QList<gui::QScintillaTextEdit *> code(Id const &diagram) const = 0;
+	virtual bool unbindCode(text::QScintillaTextEdit *code) = 0;
+	virtual text::QScintillaTextEdit *code(QString const &filePath) const = 0;
+	virtual QList<text::QScintillaTextEdit *> code(Id const &diagram) const = 0;
 	virtual bool contains(QString const &filePath) const = 0;
-	virtual Id diagram(gui::QScintillaTextEdit *code) const = 0;
-	virtual QString path(gui::QScintillaTextEdit *code) const = 0;
+	virtual Id diagram(text::QScintillaTextEdit *code) const = 0;
+	virtual QString path(text::QScintillaTextEdit *code) const = 0;
 	virtual bool isDefaultPath(QString const &path) const = 0;
 	virtual bool isModified(QString const &path) const = 0;
 	virtual bool isModifiedEver(QString const &path) const = 0;
@@ -49,7 +48,7 @@ signals:
 	void textChanged(bool changed);
 
 private slots:
-	virtual void setModified(gui::QScintillaTextEdit *code, bool modified = true) = 0;
+	virtual void setModified(text::QScintillaTextEdit *code, bool modified = true) = 0;
 };
 
 }

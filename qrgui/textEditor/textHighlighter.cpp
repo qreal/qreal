@@ -1,5 +1,8 @@
 #include "textHighlighter.h"
 
+using namespace qReal;
+using namespace text;
+
 TextHighlighter::TextHighlighter(QTextDocument *document): QSyntaxHighlighter(document)
 {
 	HighlightingRule rule;

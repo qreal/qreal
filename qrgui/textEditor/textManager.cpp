@@ -12,9 +12,9 @@
 #include "qscintillaTextEdit.h"
 
 using namespace qReal;
-using namespace gui;
+using namespace text;
 
-TextManager::TextManager(SystemEvents &systemEvents, MainWindowInterpretersInterface &mainWindow)
+TextManager::TextManager(SystemEvents &systemEvents, gui::MainWindowInterpretersInterface &mainWindow)
 	: mMainWindow(mainWindow)
 	, mSystemEvents(systemEvents)
 
@@ -62,7 +62,7 @@ bool TextManager::unbindCode(QString const &filePath)
 	return mDiagramCodeManager.remove(mDiagramCodeManager.key(filePath), filePath) != 0;
 }
 
-bool TextManager::unbindCode(gui::QScintillaTextEdit *code)
+bool TextManager::unbindCode(text::QScintillaTextEdit *code)
 {
 	return unbindCode(mPath.value(code));
 }
@@ -102,9 +102,9 @@ QScintillaTextEdit *TextManager::code(QString const &filePath) const
 	return mText.value(filePath);
 }
 
-QList<gui::QScintillaTextEdit *> TextManager::code(Id const &diagram) const
+QList<text::QScintillaTextEdit *> TextManager::code(Id const &diagram) const
 {
-	QList<gui::QScintillaTextEdit *> codeList;
+	QList<text::QScintillaTextEdit *> codeList;
 
 	for (QString const &filePath : mDiagramCodeManager.values(diagram)) {
 		codeList += mText.value(filePath);
@@ -123,12 +123,12 @@ bool TextManager::removeDiagram(Id const &diagram)
 	return mDiagramCodeManager.remove(diagram);
 }
 
-Id TextManager::diagram(gui::QScintillaTextEdit *code) const
+Id TextManager::diagram(text::QScintillaTextEdit *code) const
 {
 	return mDiagramCodeManager.key(mPath.value(code));
 }
 
-QString TextManager::path(gui::QScintillaTextEdit *code) const
+QString TextManager::path(text::QScintillaTextEdit *code) const
 {
 	return mPath.value(code);
 }
@@ -148,7 +148,7 @@ bool TextManager::isModifiedEver(QString const &path) const
 	return mModified.value(path).first;
 }
 
-void TextManager::setModified(gui::QScintillaTextEdit *code, bool modified)
+void TextManager::setModified(text::QScintillaTextEdit *code, bool modified)
 {
 	QPair<bool, bool> mod = mModified.value(mPath.value(code));
 	mod.first = !modified || mod.first;

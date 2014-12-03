@@ -4,12 +4,12 @@
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexercpp.h>
 
 using namespace qReal;
-using namespace gui;
+using namespace text;
 
 QScintillaTextEdit::QScintillaTextEdit()
-	:mRole(0)
+	: mRole(0)
 {
-	connect(this, SIGNAL(textChanged()), this, SLOT(emitTextWasModified()));
+	connect(this, &QsciScintilla::textChanged, this, &QScintillaTextEdit::emitTextWasModified);
 	setCppLexer();
 	setPythonEditorProperties();
 }

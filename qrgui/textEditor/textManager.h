@@ -9,6 +9,12 @@
 
 namespace qReal {
 
+namespace gui {
+class MainWindowInterpretersInterface;
+}
+
+namespace text {
+
 class QRGUI_TEXT_EDITOR_EXPORT TextManager : public TextManagerInterface
 {
 	Q_OBJECT
@@ -28,13 +34,13 @@ public:
 	bool bindCode(Id const &diagram, QString const &filePath);
 
 	bool unbindCode(QString const &filePath);
-	bool unbindCode(gui::QScintillaTextEdit *code);
-	gui::QScintillaTextEdit *code(QString const &filePath) const;
-	QList<gui::QScintillaTextEdit *> code(Id const &diagram) const;
+	bool unbindCode(text::QScintillaTextEdit *code);
+	text::QScintillaTextEdit *code(QString const &filePath) const;
+	QList<text::QScintillaTextEdit *> code(Id const &diagram) const;
 	bool contains(QString const &filePath) const;
 	bool removeDiagram(Id const &diagram);
-	Id diagram(gui::QScintillaTextEdit *code) const;
-	QString path(gui::QScintillaTextEdit *code) const;
+	Id diagram(text::QScintillaTextEdit *code) const;
+	QString path(text::QScintillaTextEdit *code) const;
 	bool isDefaultPath(QString const &path) const;
 	bool isModified(QString const &path) const;
 	bool isModifiedEver(QString const &path) const;
@@ -61,12 +67,12 @@ public:
 	QString generatorName(QString const &filepath) const;
 
 private slots:
-	void setModified(gui::QScintillaTextEdit *code, bool modified = true);
+	void setModified(text::QScintillaTextEdit *code, bool modified = true);
 	void onTabClosed(QFileInfo const &file);
 
 private:
-	QMap<QString, gui::QScintillaTextEdit *> mText;
-	QMap<gui::QScintillaTextEdit *, QString> mPath;
+	QMap<QString, text::QScintillaTextEdit *> mText;
+	QMap<text::QScintillaTextEdit *, QString> mPath;
 
 	/// If default path - true.
 	QMap<QString, bool> mPathType;
@@ -90,4 +96,5 @@ private:
 	SystemEvents &mSystemEvents;
 };
 
+}
 }
