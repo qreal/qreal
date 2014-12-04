@@ -15,7 +15,9 @@ CommonBlocksFactory::CommonBlocksFactory()
 
 BlockInterface *CommonBlocksFactory::block(qReal::Id const &element)
 {
-	interpreterBase::blocksBase::Block *newBlock = produceBlock(element);
+	interpreterBase::blocksBase::Block *newBlock = blocksToDisable().contains(element.type())
+			? new common::EmptyBlock
+			: produceBlock(element);
 
 	if (!newBlock) {
 		newBlock = new common::EmptyBlock;

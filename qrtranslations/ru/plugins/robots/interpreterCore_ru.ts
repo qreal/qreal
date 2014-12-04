@@ -445,9 +445,13 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="11"/>
         <source>Trik Studio</source>
-        <translation>Trik Studio</translation>
+        <translation type="vanished">Trik Studio</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="11"/>
+        <source>TRIK Studio</source>
+        <translation>TRIK Studio</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="50"/>
@@ -581,7 +585,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPlugin.cpp" line="34"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPlugin.cpp" line="35"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -877,28 +881,28 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="66"/>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="134"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="69"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="144"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="71"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="74"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="117"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="123"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="122"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="129"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="182"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="192"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
@@ -930,12 +934,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ui::RobotsSettingsPage</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="60"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="62"/>
         <source>No constructor kit plugins loaded</source>
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="180"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="186"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>

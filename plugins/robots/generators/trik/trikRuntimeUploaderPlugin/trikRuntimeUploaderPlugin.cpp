@@ -29,9 +29,10 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString());
 
 	QString const killTrikGui = "\"call killall trikGui\"";
+	QString const createTrikDirectory = "\"call mkdir -p /home/root/trik\"";
 	QString const removePermissions = "\"call chmod a-x trik/trik*\"";
 	QString const restorePermissions = "\"call chmod a+x trik/trik*\"";
-	QString const restartTrikGui = "\"call cd trik\" \"call ./trikGui -qws &\"";
+	QString const restartTrikGui = "\"call /bin/sh -c '/etc/trik/trikGui.sh &'\"";
 
 	QString const moveCommand = " \"synchronize remote trikRuntime /home/root/trik\"";
 
@@ -40,15 +41,15 @@ void TrikRuntimeUploaderPlugin::uploadRuntime()
 			? QApplication::applicationDirPath() + rawWinscpPath.mid(1)
 			: rawWinscpPath;
 
-	QString const command = QString("\"%1\" /command %2 %3 %4 %5 %6 %7")
+	QString const command = QString("\"%1\" /command %2 %3 %4 %5 %6 %7 %8")
 			.arg(winscpPath)
 			.arg(openConnection)
+			.arg(createTrikDirectory)
 			.arg(removePermissions)
 			.arg(killTrikGui)
 			.arg(moveCommand)
 			.arg(restorePermissions)
 			.arg(restartTrikGui);
-
 
 	if (!scpProcess.startDetached(command + " \"exit\" ")) {
 		mMainWindowInterface->errorReporter()->addError(

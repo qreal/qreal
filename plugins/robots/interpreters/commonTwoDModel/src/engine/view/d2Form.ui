@@ -452,7 +452,7 @@
                </property>
                <property name="icon">
                 <iconset resource="../../../../interpreterCore/interpreterCore.qrc">
-                 <normaloff>:/icons/2d_clear_floor.png</normaloff>:/icons/2d_clear_floor.png</iconset>
+                 <normaloff>:/icons/2d_clear_floor.svg</normaloff>:/icons/2d_clear_floor.svg</iconset>
                </property>
               </widget>
              </item>

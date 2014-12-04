@@ -669,9 +669,8 @@ void MainWindow::deleteFromLogicalExplorer()
 {
 	QModelIndex const index = mUi->logicalModelExplorer->currentIndex();
 	if (index.isValid()) {
-		IdList temp;
 		/// @todo: rewrite it with just MultipleRemoveCommand.
-		MultipleRemoveCommand factory(*mModels, temp);
+		MultipleRemoveCommand factory(*mModels);
 		mController->executeGlobal(factory.logicalDeleteCommand(index));
 	}
 }
@@ -680,7 +679,9 @@ void MainWindow::deleteFromGraphicalExplorer()
 {
 	Id const id = mModels->graphicalModelAssistApi().idByIndex(mUi->graphicalModelExplorer->currentIndex());
 	if (!id.isNull()) {
-		mController->executeGlobal(new MultipleRemoveCommand(*mModels, IdList() << id));
+		MultipleRemoveCommand * const command = new MultipleRemoveCommand(*mModels);
+		command->setItemsToDelete(IdList() << id);
+		mController->executeGlobal(command);
 	}
 }
 

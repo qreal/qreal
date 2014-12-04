@@ -6,10 +6,14 @@
 
 using namespace qReal::commands;
 
-MultipleRemoveCommand::MultipleRemoveCommand(models::Models const &models, IdList &itemsToDelete)
+MultipleRemoveCommand::MultipleRemoveCommand(models::Models const &models)
 	: mLogicalApi(models.logicalModelAssistApi())
 	, mGraphicalApi(models.graphicalModelAssistApi())
 	, mExploser(models.exploser())
+{
+}
+
+void MultipleRemoveCommand::setItemsToDelete(IdList &itemsToDelete)
 {
 	IdList itemsToUpdate;
 

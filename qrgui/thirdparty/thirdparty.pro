@@ -11,6 +11,8 @@ RCC_DIR = .moc
 
 DEFINES += QRGUI_THIRDPARTY_LIBRARY
 
+TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_thirdparty_ru.ts
+
 win32 {
 	HEADERS += \
 		$$PWD/windowsmodernstyle.h \

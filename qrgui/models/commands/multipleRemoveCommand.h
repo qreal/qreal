@@ -18,7 +18,12 @@ namespace commands {
 class QRGUI_MODELS_EXPORT MultipleRemoveCommand : public DoNothingCommand
 {
 public:
-	MultipleRemoveCommand(models::Models const &models, IdList &itemsToDelete);
+	explicit MultipleRemoveCommand(models::Models const &models);
+
+	/// Initializes subcommands that will remove and restore the given elements.
+	/// This paremeter can`t be passed into the constructor because it calls some
+	/// virtual methods. The list will be cleared in result.
+	void setItemsToDelete(IdList &itemsToDelete);
 
 	/// Produces and instance of command that removes logical element and all of its graphical elements.
 	commands::AbstractCommand *logicalDeleteCommand(QModelIndex const &index);
