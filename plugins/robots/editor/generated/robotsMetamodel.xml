@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-rc1">
+<metamodel xmlns="http://schema.real.com/schema/" version="3.0.0-rc2">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
@@ -735,7 +735,7 @@
 					</generalizations>
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
-							<default>A, B, C</default>
+							<default>A, B, C, D</default>
 						</property>
 					</properties>
 				</logic>
@@ -1163,7 +1163,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Sonar Distance" name="Ev3WaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or lower then the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+			<node displayedName="Wait for Range Sensor" name="Ev3WaitForRangeSensor" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the ultrasonic or infrared range sensor on the given port will be greater or lower then the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
@@ -1978,7 +1978,7 @@
 							<default>1</default>
 						</property>
 						<property displayedName="Text" type="string" name="PrintText">
-							<default>\"Enter some text here...\"</default>
+							<default>'Enter some text here'</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2237,15 +2237,15 @@
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="XCoordinateRect"/>
-						<label x="-10" y="60" text="X: "/>
+						<label x="-20" y="60" text="X: "/>
 						<label x="50" y="80" textBinded="YCoordinateRect"/>
-						<label x="-10" y="80" text="Y: "/>
+						<label x="-20" y="80" text="Y: "/>
 						<label x="50" y="100" textBinded="WidthRect"/>
-						<label x="-10" y="100" text="Width: "/>
+						<label x="-20" y="100" text="Width: "/>
 						<label x="50" y="120" textBinded="HeightRect"/>
-						<label x="-10" y="120" text="Height: "/>
+						<label x="-20" y="120" text="Height: "/>
 						<label x="50" y="140" textBinded="Filled"/>
-						<label x="-10" y="140" text="Filled: "/>
+						<label x="-20" y="140" text="Filled: "/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2280,13 +2280,13 @@
 					</picture>
 					<labels>
 						<label x="50" y="60" textBinded="XCoordinateCircle"/>
-						<label x="0" y="60" text="X: "/>
+						<label x="-20" y="60" text="X: "/>
 						<label x="50" y="80" textBinded="YCoordinateCircle"/>
-						<label x="0" y="80" text="Y: "/>
+						<label x="-20" y="80" text="Y: "/>
 						<label x="50" y="100" textBinded="CircleRadius"/>
-						<label x="0" y="100" text="Radius: "/>
+						<label x="-20" y="100" text="Radius: "/>
 						<label x="50" y="120" textBinded="Filled"/>
-						<label x="0" y="120" text="Filled: "/>
+						<label x="-20" y="120" text="Filled: "/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2712,9 +2712,9 @@
 			<group name="Wait">
 				<element name="Timer"/>
 				<element name="Ev3WaitForTouchSensor"/>
-				<element name="Ev3WaitForColor"/>
-				<element name="Ev3WaitForLight"/>
-				<element name="Ev3WaitForSonarDistance"/>
+<!--				<element name="Ev3WaitForColor"/>
+				<element name="Ev3WaitForLight"/>-->
+				<element name="Ev3WaitForRangeSensor"/>
 				<element name="Ev3WaitForUp"/>
 				<element name="Ev3WaitForEnter"/>
 				<element name="Ev3WaitForDown"/>
