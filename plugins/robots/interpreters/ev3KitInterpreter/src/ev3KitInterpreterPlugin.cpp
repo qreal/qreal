@@ -19,6 +19,17 @@ Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
 
 }
 
+Ev3KitInterpreterPlugin::~Ev3KitInterpreterPlugin()
+{
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
+
+	if (mOwnsBlocksFactory) {
+		delete mBlocksFactory;
+	}
+}
+
 QString Ev3KitInterpreterPlugin::kitId() const
 {
 	return "ev3Kit";
