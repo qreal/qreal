@@ -2180,10 +2180,10 @@
 					<container/>
 					<properties>
 						<property displayedName="X" type="int" name="XCoordinatePix">
-							<default>0</default>
+							<default>90</default>
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinatePix">
-							<default>0</default>
+							<default>70</default>
 						</property>
 					</properties>
 				<generalizations>
@@ -2212,16 +2212,16 @@
 				<container/>
 				<properties>
 					<property displayedName="X1" type="int" name="X1CoordinateLine">
-						<default>0</default>
+						<default>20</default>
 					</property>
 					<property displayedName="Y1" type="int" name="Y1CoordinateLine">
-						<default>0</default>
+						<default>90</default>
 					</property>
 					<property displayedName="X2" type="int" name="X2CoordinateLine">
-						 <default>10</default>
+						 <default>150</default>
 					</property>
 					<property displayedName="Y2" type="int" name="Y2CoordinateLine">
-						<default>10</default>
+						<default>20</default>
 					</property>
 				</properties>
 				<generalizations>
@@ -2252,16 +2252,16 @@
 					<container/>
 					<properties>
 						<property displayedName="X" type="int" name="XCoordinateRect">
-							<default>0</default>
+							<default>75</default>
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinateRect">
-							<default>0</default>
+							<default>50</default>
 						</property>
 						<property displayedName="Width" type="int" name="WidthRect">
-							<default>5</default>
+							<default>40</default>
 						</property>
-							<property displayedName="Height" type="int" name="HeightRect">
-								<default>5</default>
+						<property displayedName="Height" type="int" name="HeightRect">
+							<default>30</default>
 						</property>
 						<property displayedName="Filled" type="bool" name="Filled">
 							<default>false</default>
@@ -2293,13 +2293,13 @@
 				<container/>
 				<properties>
 						<property displayedName="X" type="int" name="XCoordinateCircle">
-							<default>0</default>
+							<default>85</default>
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinateCircle">
-							<default>0</default>
+							<default>70</default>
 						</property>
 						<property displayedName="Radius" type="int" name="CircleRadius">
-							<default>5</default>
+							<default>40</default>
 						</property>
 						<property displayedName="Filled" type="bool" name="Filled">
 							<default>false</default>
