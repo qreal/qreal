@@ -23,6 +23,7 @@ using namespace interpreterBase::robotModel;
 
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
+	, mDisplayWidget(new NxtDisplayWidget())
 {
 }
 
@@ -58,11 +59,8 @@ PortInfo TwoDRobotModel::defaultRightWheelPort() const
 	return PortInfo("C", output);
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget * parent)
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget() const
 {
-	if (parent) {
-		mDisplayWidget = new NxtDisplayWidget(parent);
-	}
 	return mDisplayWidget;
 }
 

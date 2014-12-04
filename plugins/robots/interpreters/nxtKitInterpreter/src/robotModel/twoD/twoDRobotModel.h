@@ -1,7 +1,6 @@
 #pragma once
 
 #include <commonTwoDModel/robotModel/twoDRobotModel.h>
-#include "robotModel/twoD/parts/twoDDisplay.h"
 
 namespace nxtKitInterpreter {
 namespace robotModel {
@@ -17,7 +16,7 @@ public:
 	QString robotImage() const override;
 	interpreterBase::robotModel::PortInfo defaultLeftWheelPort() const override;
 	interpreterBase::robotModel::PortInfo defaultRightWheelPort() const override;
-	twoDModel::engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent = nullptr) override;
+	twoDModel::engine::TwoDModelDisplayWidget *displayWidget() const override;
 	QRect sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const;
 
 protected:

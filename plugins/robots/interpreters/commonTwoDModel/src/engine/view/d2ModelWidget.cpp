@@ -15,7 +15,6 @@
 #include <interpreterBase/robotModel/robotParts/colorSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
-#include <interpreterBase/robotModel/robotModelUtils.h>
 
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
@@ -819,7 +818,8 @@ void D2ModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 	updateWheelComboBoxes();
 
 	delete mDisplay;
-	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget(this);
+	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget();
+	mDisplay->setParent(this);
 	mDisplay->setMinimumSize(displaySize);
 	mDisplay->setMaximumSize(displaySize);
 	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);

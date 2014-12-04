@@ -4,6 +4,7 @@ using namespace twoDModel::robotModel;
 
 NullTwoDRobotModel::NullTwoDRobotModel(QString const &robotId)
 	: TwoDRobotModel(robotId)
+	, mDisplayWidget(new twoDModel::engine::NullTwoDModelDisplayWidget())
 {
 }
 
@@ -40,10 +41,7 @@ interpreterBase::robotModel::PortInfo NullTwoDRobotModel::defaultRightWheelPort(
 	return interpreterBase::robotModel::PortInfo();
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *NullTwoDRobotModel::displayWidget(QWidget * parent)
+twoDModel::engine::TwoDModelDisplayWidget *NullTwoDRobotModel::displayWidget() const
 {
-	if (parent) {
-		mDisplayWidget = new twoDModel::engine::NullTwoDModelDisplayWidget(parent);
-	}
 	return mDisplayWidget;
 }

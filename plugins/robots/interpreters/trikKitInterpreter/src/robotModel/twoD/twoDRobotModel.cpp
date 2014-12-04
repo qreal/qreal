@@ -29,6 +29,7 @@ TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
+	, mDisplayWidget(new TrikDisplayWidget())
 {
 }
 
@@ -92,11 +93,8 @@ PortInfo TwoDRobotModel::defaultRightWheelPort() const
 	return PortInfo(mRightWheelPort, output);
 }
 
-twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget(QWidget *parent)
+twoDModel::engine::TwoDModelDisplayWidget *TwoDRobotModel::displayWidget() const
 {
-	if (parent) {
-		mDisplayWidget = new TrikDisplayWidget(parent);
-	}
 	return mDisplayWidget;
 }
 

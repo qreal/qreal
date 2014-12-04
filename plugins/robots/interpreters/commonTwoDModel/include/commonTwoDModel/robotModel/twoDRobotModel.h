@@ -47,7 +47,7 @@ public:
 	virtual interpreterBase::robotModel::PortInfo defaultRightWheelPort() const = 0;
 
 	/// Returns a pointer to a widget with display emulator for current robot model.
-	virtual engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent = nullptr) = 0;
+	virtual engine::TwoDModelDisplayWidget *displayWidget() const = 0;
 
 	/// Provides path to sensor image by given device type or empty string if default sensor image shall be used.
 	virtual QString sensorImagePath(interpreterBase::robotModel::DeviceInfo const &deviceType) const
