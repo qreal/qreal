@@ -41,29 +41,29 @@ QList<ActionInfo> TrikQtsGeneratorPlugin::actions()
 	separator->setSeparator(true);
 	qReal::ActionInfo separatorInfo(separator, "generators", "tools");
 
-	mGenerateCodeAction.setText(tr("Generate TRIK code"));
-	mGenerateCodeAction.setIcon(QIcon(":/images/generateQtsCode.svg"));
-	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-	mGenerateCodeAction.setObjectName("generateTRIKCode");
-	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()), Qt::UniqueConnection);
+	mGenerateCodeAction->setText(tr("Generate TRIK code"));
+	mGenerateCodeAction->setIcon(QIcon(":/images/generateQtsCode.svg"));
+	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
+	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()), Qt::UniqueConnection);
+	mGenerateCodeAction->setObjectName("generateTRIKCode");
 
-	mUploadProgramAction.setText(tr("Upload program"));
-	mUploadProgramAction.setIcon(QIcon(":/images/uploadProgram.svg"));
-	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	mUploadProgramAction.setObjectName("uploadProgram");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()), Qt::UniqueConnection);
+	mUploadProgramAction->setText(tr("Upload program"));
+	mUploadProgramAction->setIcon(QIcon(":/images/uploadProgram.svg"));
+	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
+	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()), Qt::UniqueConnection);
+	mUploadProgramAction->setObjectName("uploadProgram");
 
-	mRunProgramAction.setText(tr("Run program"));
-	mRunProgramAction.setIcon(QIcon(":/images/uploadAndExecuteProgram.svg"));
-	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
-	mRunProgramAction.setObjectName("runProgram");
-	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()), Qt::UniqueConnection);
+	mRunProgramAction->setText(tr("Run program"));
+	mRunProgramAction->setIcon(QIcon(":/images/uploadAndExecuteProgram.svg"));
+	ActionInfo runProgramActionInfo(mRunProgramAction, "generators", "tools");
+	connect(mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()), Qt::UniqueConnection);
+	mRunProgramAction->setObjectName("runProgram");
 
-	mStopRobotAction.setText(tr("Stop robot"));
-	mStopRobotAction.setIcon(QIcon(":/images/stopRobot.svg"));
-	ActionInfo stopRobotActionInfo(&mStopRobotAction, "generators", "tools");
-	mStopRobotAction.setObjectName("stopRobot");
-	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()), Qt::UniqueConnection);
+	mStopRobotAction->setText(tr("Stop robot"));
+	mStopRobotAction->setIcon(QIcon(":/images/stopRobot.svg"));
+	ActionInfo stopRobotActionInfo(mStopRobotAction, "generators", "tools");
+	connect(mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()), Qt::UniqueConnection);
+	mStopRobotAction->setObjectName("stopRobot");
 
 	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo, separatorInfo};
 }

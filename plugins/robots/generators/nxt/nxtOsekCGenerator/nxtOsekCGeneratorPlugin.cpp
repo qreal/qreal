@@ -77,23 +77,23 @@ QList<ActionInfo> NxtOsekCGeneratorPlugin::actions()
 {
 	checkNxtTools();
 
-	mGenerateCodeAction.setText(tr("Generate code"));
-	mGenerateCodeAction.setIcon(QIcon(":/nxt/images/generateOsekCode.svg"));
-	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-	mGenerateCodeAction.setObjectName("generateCode");
-	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+	mGenerateCodeAction->setText(tr("Generate code"));
+	mGenerateCodeAction->setIcon(QIcon(":/nxt/images/generateOsekCode.svg"));
+	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
+	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
+	mGenerateCodeAction->setObjectName("generateCode");
 
-	mFlashRobotAction.setText(tr("Flash robot"));
-	mFlashRobotAction.setIcon(QIcon(":/nxt/images/flashRobot.svg"));
-	ActionInfo flashRobotActionInfo(&mFlashRobotAction, "generators", "tools");
-	mFlashRobotAction.setObjectName("flashRobot");
-	connect(&mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
+	mFlashRobotAction->setText(tr("Flash robot"));
+	mFlashRobotAction->setIcon(QIcon(":/nxt/images/flashRobot.svg"));
+	ActionInfo flashRobotActionInfo(mFlashRobotAction, "generators", "tools");
+	connect(mFlashRobotAction, SIGNAL(triggered()), this, SLOT(flashRobot()));
+	mFlashRobotAction->setObjectName("flashRobot");
 
-	mUploadProgramAction.setText(tr("Upload program"));
-	mUploadProgramAction.setIcon(QIcon(":/nxt/images/uploadProgram.svg"));
-	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	mUploadProgramAction.setObjectName("uploadProgram");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	mUploadProgramAction->setText(tr("Upload program"));
+	mUploadProgramAction->setIcon(QIcon(":/nxt/images/uploadProgram.svg"));
+	ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
+	connect(mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+	mUploadProgramAction->setObjectName("uploadProgram");
 
 	return mNxtToolsPresent
 			? QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo << uploadProgramActionInfo
