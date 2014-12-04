@@ -144,9 +144,10 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 
 void BluetoothRobotCommunicationThread::keepAlive()
 {
-	QByteArray command = robotModel::real::Ev3DirectCommand::formCommand(9, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
-	command[7] = enums::opcode::OpcodeEnum::KEEP_ALIVE;
-	command[8] = 10;
+	QByteArray command = robotModel::real::Ev3DirectCommand::formCommand(10, 0, 0, 0, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
+	int index = 7;
+	robotModel::real::Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::KEEP_ALIVE, command, index);
+	robotModel::real::Ev3DirectCommand::addByteParameter(10, command, index); //10 - Number of minutes before entering sleep mode.
 	send(command);
 }
 
