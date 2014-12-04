@@ -7,8 +7,6 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QPair>
 #include <QtCore/QList>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QGraphicsSceneContextMenuEvent>
 
 #include "../utilsDeclSpec.h"
 
@@ -88,7 +86,7 @@ public:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
 signals:
-	void deleteItem();
+	void itemDeleted(AbstractItem *item);
 
 protected:
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);

@@ -5,8 +5,7 @@
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
-
-#include <QtCore/QDebug>
+#include <QtWidgets/QMenu>
 
 using namespace graphicsUtils;
 
@@ -419,10 +418,10 @@ void AbstractItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void AbstractItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
-	QMenu *menu = new QMenu();
-	QAction *removeAction = menu->addAction(QObject::tr("Remove"));
-	QAction *selectedAction = menu->exec(event->screenPos());
+	QMenu menu;
+	QAction *removeAction = menu.addAction(QObject::tr("Remove"));
+	QAction *selectedAction = menu.exec(event->screenPos());
 	if (selectedAction == removeAction) {
-		emit deleteItem();
+		emit itemDeleted(this);
 	}
 }

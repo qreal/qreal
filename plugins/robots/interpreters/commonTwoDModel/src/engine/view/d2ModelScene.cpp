@@ -14,8 +14,6 @@
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/ellipseItem.h"
 
-#include <QtCore/QtDebug>
-
 using namespace twoDModel;
 using namespace view;
 using namespace qReal;
@@ -47,11 +45,7 @@ D2ModelScene::D2ModelScene(model::Model &model
 	connect(&mModel, &model::Model::robotRemoved, this, &D2ModelScene::onRobotRemove);
 
 	connect(&mModel.worldModel(), &model::WorldModel::itemAdded, [this](AbstractItem *item) {
-		connect(item, &AbstractItem::deleteItem, this, &D2ModelScene::itemRemove);
-	});
-
-	connect(&mModel.c, &model::WorldModel::itemAdded, [this](AbstractItem *item) {
-		connect(item, &AbstractItem::deleteItem, this, &D2ModelScene::itemRemove);
+		connect(item, &AbstractItem::itemDeleted, this, &D2ModelScene::itemRemove);
 	});
 }
 
@@ -519,11 +513,13 @@ void D2ModelScene::centerOnRobot(RobotItem *selectedItem)
 	}
 }
 
-void D2ModelScene::itemRemove()
+void D2ModelScene::itemRemove(AbstractItem *item)
 {
 	if (selectedItems().size() > 0) {
-		for (QGraphicsItem * const item : selectedItems()) {
-			deleteItem(item);
+		for (QGraphicsItem * const selectedItem : selectedItems()) {
+			deleteItem(selectedItem);
 		}
+	} else {
+		deleteItem(item);
 	}
 }
