@@ -1179,7 +1179,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="386"/>
         <source>Drawing</source>
-        <translation>Рисование на дисплее</translation>
+        <translation>Рисование</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="691"/>
