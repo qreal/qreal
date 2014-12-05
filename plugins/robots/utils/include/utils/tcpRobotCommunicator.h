@@ -74,6 +74,7 @@ private:
 	/// Reference to error reporter.
 	qReal::ErrorReporterInterface *mErrorReporter;  // Does not have ownership.
 
+	QString mCurrentIP;
 	TcpConnectionHandler mControlConnection;
 	TcpConnectionHandler mTelemetryConnection;
 
