@@ -2,7 +2,7 @@
 	{
 	public:
 @@NodeConstructor@@
-		void init(qReal::LabelFactoryInterface &, QList<qReal::LabelFactoryInterface*> &) {}
+		void init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}
 
                 void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports,
                                  qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles,
@@ -21,6 +21,11 @@
 @@NodeSetContents@@
 @@NodeInitPorts@@
 @@NodeInit@@
+
+//extremely temporary fixing
+		ports << portFactory.createPort(QPointF(0.994424, 0.54334), false, false, 538, 473, new NonTyped());
+                mRenderer->setElementRepo(elementRepo);
+
 		}
 
 		~@@ElementName@@() {}
@@ -85,6 +90,12 @@
 			return @@MaximizesChildren@@;
 		}
 
+//temporary fixing
+		bool createChildrenFromMenu() const
+		{
+			return true;
+		}
+
 		QList<double> border() const
 		{
 			QList<double> list;
@@ -111,6 +122,24 @@
 		{ 
 			return QColor(); 
 		}      */
+
+//temporary fixing		
+		QStringList fromPortTypes() const
+		{
+			return QStringList("NonTyped");
+		}
+
+//temporary fixing
+		QStringList toPortTypes() const
+		{
+			return QStringList("NonTyped");
+		}
+
+//temporary fixing
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
 
 		bool isDividable() const
 		{

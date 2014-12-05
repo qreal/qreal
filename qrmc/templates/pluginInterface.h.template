@@ -27,6 +27,9 @@ public:
 
 	virtual QString id() const { return "@@MetamodelName@@"; }
 
+//temporary fixing
+	QString version() const { return "1.0.0"; };
+
 	virtual QStringList diagrams() const;
 	virtual QStringList elements(QString const &diagram) const;
 	virtual QString elementDescription(QString const &diagram, QString const &element) const;
@@ -52,7 +55,7 @@ public:
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;
 	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;
 	virtual QStringList getReferenceProperties(QString const &/*diagram*/, QString const &element) const;
-	virtual QStringList getEnumValues(QString name) const;
+//	virtual QStringList getEnumValues(QString name) const;
 
 	virtual QString editorName() const;
 	virtual QString diagramName(QString const &diagram) const;

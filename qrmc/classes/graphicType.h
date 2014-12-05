@@ -82,4 +82,6 @@ namespace qrmc {
 
 		bool mResolving;
 	};
+
+		bool initCreateChildrenFromMenu();
 }

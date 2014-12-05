@@ -5,7 +5,7 @@
 #include "elements.h"
 
 
-Q_EXPORT_PLUGIN2(qreal_editors, @@MetamodelName@@Plugin);
+//Q_EXPORT_PLUGIN2(qreal_editors, @@MetamodelName@@Plugin);
 
 @@MetamodelName@@Plugin::@@MetamodelName@@Plugin()
 {
@@ -195,12 +195,12 @@ int @@MetamodelName@@Plugin::isNodeOrEdge(QString const &element) const
 @@IsNodeOrEdgeLine@@
 	return 0;
 }
-QStringList @@MetamodelName@@Plugin::getEnumValues(QString name) const
-{
-	QStringList result;
-@@GetEnumValuesLine@@
-	return result;
-}
+//QStringList @@MetamodelName@@Plugin::getEnumValues(QString name) const
+//{
+//	QStringList result;
+//@@GetEnumValuesLine@@
+//	return result;
+//}
 
 QString @@MetamodelName@@Plugin::getPropertyType(QString const &element, QString const &property) const
 {
@@ -244,7 +244,7 @@ bool @@MetamodelName@@Plugin::isEnumEditable(QString const &name) const
 	return editableEnums.contains(name);
 }
 
-QString @@MetamodelName@@::getGroupsXML() const 
+QString @@MetamodelName@@Plugin::getGroupsXML() const 
 {
 	return QString::fromUtf8("");
 }

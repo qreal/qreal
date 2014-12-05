@@ -8,7 +8,7 @@
 											qReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,
 											qReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}		
 
-		void init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelFactoryInterface*> &titles)
+		void init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)
 		{
 @@EdgeInit@@
 		}
@@ -33,6 +33,7 @@
 
 		qReal::ElementImpl *clone() { return NULL; }
 
+		bool createChildrenFromMenu() const { return false; }
 
 		QList<double> border () const
 		{
@@ -43,10 +44,32 @@
 		
 		
 		int getPenWidth() const { return 1; }
-//думаю, гдe color нужны @@		
+
+//temporary fixing		
 		QColor getPenColor() const { return QColor(0,0,0); }
 
+		
+//temporary fixing
+		QStringList fromPortTypes() const
+		{
+			QStringList result;
+			result << "@@PortsForFromPortTypes@@";
+			return result;
+		}
 
+//temporary fixing 
+                QStringList toPortTypes() const
+		{
+			QStringList result;
+			result << "NonTyped";
+			return result;
+		}
+
+//temporary fixing		
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
 		Qt::PenStyle getPenStyle() const { return @@LineType@@; }
 		QStringList bonusContextMenuFields() const
 		{

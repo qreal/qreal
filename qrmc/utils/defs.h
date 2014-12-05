@@ -99,6 +99,7 @@ QString const endXScalabilityTag = "@@NodeLinePortEndXScalable@@";
 QString const endYScalabilityTag = "@@NodeLinePortEndYScalable@@";
 
 QString const labelRotationTag = "@@Rotation@@";
+QString const portsForFromPortTypesTag = "@@PortsForFromPortTypes@@";
 
 QString const labelXTag = "@@LabelX@@";
 QString const labelYTag = "@@LabelY@@";
