@@ -29,10 +29,11 @@ $QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT-$OS.xml -p packages/qr
 echo "Building offline installer..."
 $QTIFW_DIR/binarycreator --offline-only -c config/$PRODUCT-$OS.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-offline-$OS-installer
 
-echo "Building updates repository..."
+echo "Building updates repository... This step can be safely skipped, the ofline installer is already ready, press Ctrl+C if you are not sure what to do next."
+rm -rf $PRODUCT-repository
 $QTIFW_DIR/repogen -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-repository
 
-echo "Uploading repository to server..."
+echo "Uploading repository to server... This step can be also safely skipped, the ofline installer is already ready, press Ctrl+C if you are not sure what to do next."
 scp -r $PRODUCT-repository/* qrealproject@195.19.241.150:/home/qrealproject/public/$PRODUCT-repo-$OS
 
 echo "Removing temporary files..."
