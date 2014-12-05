@@ -83,5 +83,5 @@ void TrikDisplayWidget::reset()
 
 void TrikDisplayWidget::resetLed()
 {
-	setLedColor("off");
+	setLedColor("red");
 }
