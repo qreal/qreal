@@ -1,10 +1,13 @@
 #pragma once
 
 #include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QLayout>
 
 #include "qrgui/editor/editorViewScene.h"
 #include "qrgui/editor/private/touchSupportManager.h"
 #include "qrgui/editor/private/editorViewMVIface.h"
+#include "miniMap/miniMap.h"
+#include "miniMap/miniMapShell.h"
 
 namespace qReal {
 
@@ -32,11 +35,15 @@ signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.
 	void rootElementRemoved(QModelIndex const &rootGraphicsIndex);
 
+signals:
+	void changeMiniMapPos(QPoint miniMapPos);
+
 public slots:
 	void toggleAntialiasing(bool);
 	void zoomIn();
 	void zoomOut();
 	void zoom(qreal const zoomFactor);
+	void updateMiniMap(int const size);
 
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);
@@ -63,10 +70,14 @@ private:
 
 	void startAnimation(char const *slot);
 
-	EditorViewScene mScene;
 	EditorViewMViface mMVIface;
+	EditorViewScene mScene;
+
+	MiniMapShell mMiniMapShell;
+
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
+
 	view::details::TouchSupportManager mTouchManager;
 };
 

@@ -1,4 +1,5 @@
 #include "editorView.h"
+#include "miniMap/miniMapShell.h"
 
 #include <QtCore/QTimeLine>
 #include <QtGui/QFontDatabase>
@@ -20,6 +21,7 @@ EditorView::EditorView(models::Models const &models
 	: QGraphicsView(parent)
 	, mScene(models, controller, customizer, rootId, this)
 	, mMVIface(this, &mScene)
+	, mMiniMapShell(this)
 	, mMouseOldPosition()
 	, mWheelPressed(false)
 	, mTouchManager(this)
@@ -290,6 +292,11 @@ void EditorView::zoom(qreal const zoomFactor)
 	mMVIface.invalidateImagesZoomCache(transform().m11());
 
 	checkGrid();
+}
+
+void EditorView::updateMiniMap(int const size)
+{
+	mMiniMapShell.changeSize(size);
 }
 
 void EditorView::setSceneFont()

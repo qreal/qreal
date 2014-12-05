@@ -101,7 +101,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	splashScreen.setProgress(20);
 
-	initMiniMap();
 	initGridProperties();
 
 	splashScreen.setProgress(40);
@@ -357,12 +356,6 @@ void MainWindow::clearSelectionOnTabs()
 void MainWindow::addEditorElementsToPalette(Id const &editor, Id const &diagram)
 {
 	mUi->paletteTree->addEditorElements(mEditorManagerProxy, editor, diagram);
-}
-
-void MainWindow::adjustMinimapZoom(int zoom)
-{
-	mUi->minimapView->resetMatrix();
-	mUi->minimapView->scale(0.01 * zoom, 0.01 * zoom);
 }
 
 void MainWindow::selectItemWithError(Id const &id)
@@ -808,6 +801,7 @@ void MainWindow::closeTab(int index)
 	}
 
 	mUi->tabs->removeTab(index);
+
 	delete widget;
 }
 
@@ -1173,7 +1167,6 @@ void MainWindow::setDefaultShortcuts()
 void MainWindow::currentTabChanged(int newIndex)
 {
 	switchToTab(newIndex);
-	mUi->minimapView->changeSource(newIndex);
 
 	bool const isEditorTab = getCurrentTab();
 	bool const isShape = isCurrentTabShapeEdit();
@@ -1599,7 +1592,6 @@ void MainWindow::fullscreen()
 	mIsFullscreen = !mIsFullscreen;
 
 	if (mIsFullscreen) {
-		hideDockWidget(mUi->minimapDock, "minimap");
 		hideDockWidget(mUi->graphicalModelDock, "graphicalModel");
 		hideDockWidget(mUi->logicalModelDock, "logicalModel");
 		hideDockWidget(mUi->propertyDock, "propertyEditor");
@@ -1607,7 +1599,6 @@ void MainWindow::fullscreen()
 
 		mUi->actionFullscreen->setIcon(QIcon(":/mainWindow/images/unFullScreen.svg"));
 	} else {
-		showDockWidget(mUi->minimapDock, "minimap");
 		showDockWidget(mUi->graphicalModelDock, "graphicalModel");
 		showDockWidget(mUi->logicalModelDock, "logicalModel");
 		showDockWidget(mUi->propertyDock, "propertyEditor");
@@ -1779,11 +1770,6 @@ void MainWindow::initToolManager()
 		setVersion(customizer->productVersion());
 		customizer->customizeDocks(this);
 	}
-}
-
-void MainWindow::initMiniMap()
-{
-	mUi->minimapView->init(this);
 }
 
 void MainWindow::initTabs()
@@ -2039,5 +2025,15 @@ void MainWindow::endPaletteModification()
 		}
 
 		scene->update();
+	}
+}
+
+void MainWindow::changeMiniMapSize(int size)
+{
+	for (int i = 0; i < mUi->tabs->count(); i++) {
+		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab != NULL) {
+			tab->updateMiniMap(size);
+		}
 	}
 }

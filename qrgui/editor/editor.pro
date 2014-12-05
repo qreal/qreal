@@ -80,6 +80,9 @@ HEADERS += \
 	$$PWD/commands/foldCommand.h \
 	$$PWD/commands/reshapeEdgeCommand.h \
 	$$PWD/commands/expandCommand.h \
+	$$PWD/miniMap/miniMap.h \
+	$$PWD/miniMap/miniMapButton.h \
+	$$PWD/miniMap/miniMapShell.h
 
 SOURCES += \
 	$$PWD/editorView.cpp \
@@ -132,6 +135,9 @@ SOURCES += \
 	$$PWD/commands/foldCommand.cpp \
 	$$PWD/commands/reshapeEdgeCommand.cpp \
 	$$PWD/commands/expandCommand.cpp \
+	$$PWD/miniMap/miniMap.cpp \
+	$$PWD/miniMap/miniMapButton.cpp \
+	$$PWD/miniMap/miniMapShell.cpp
 
 RESOURCES += \
 	$$PWD/contextIcons.qrc \

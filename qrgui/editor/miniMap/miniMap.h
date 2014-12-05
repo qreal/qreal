@@ -1,11 +1,14 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QGraphicsView>
 
-#include "editor/editorView.h"
-#include "editor/editorViewScene.h"
-#include "mainWindow/mainWindow.h"
+
+namespace qReal {
+
+class EditorViewScene;
+class EditorView;
 
 /** @brief Minimap for the current viewed diagram
 *
@@ -19,11 +22,10 @@ class MiniMap : public QGraphicsView
 	Q_OBJECT
 public:
 	/// Drag mode is used for dragging a rectangle of the main view
-	enum Mode { None, Drag };
+	enum class Mode { None, Drag };
 
-	explicit MiniMap(QWidget *parent = 0);
+	explicit MiniMap(QWidget *tab);
 
-	void init(qReal::MainWindow *window);
 	void changeSource(int index);
 
 	void setScene(QGraphicsScene *scene);
@@ -40,19 +42,11 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *event);
 	void resizeEvent(QResizeEvent *event);
 
-	void drawForeground(QPainter *painter, QRectF const &rect);
-	/// painting out the areas which aren't to be painted on the minimap (not in the scene rect)
-	void drawNonExistentAreas(QPainter *painter, QRectF const &rect);
-	/// @return list of areas visible on the minimap but not included in the scene rectangle
-	QList<QRectF> getNonExistentAreas(QRectF const &rect);
-
 private:
 	void setCurrentScene();
 	void clear();
 	/// @return a rectangle of the scene which is viewed in the editor view
 	QRectF getNewRect();
-
-	qReal::MainWindow *mWindow;
 
 	EditorView *mEditorView;
 	/// in the scene coordinates
@@ -60,3 +54,5 @@ private:
 
 	Mode mMode;
 };
+
+}

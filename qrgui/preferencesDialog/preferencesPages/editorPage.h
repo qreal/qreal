@@ -27,6 +27,7 @@ protected:
 private slots:
 	void widthGridSliderMoved(int value);
 	void indexGridSliderMoved(int value);
+	void miniMapSizeSliderMoved(int value);
 	void dragAreaSliderMoved(int value);
 	void manualFontCheckBoxChecked(bool);
 	void fontSelectionButtonClicked();
@@ -36,6 +37,7 @@ private:
 	Ui::PreferencesEditorPage *mUi;
 	int mWidthGrid;
 	int mIndexGrid;
+	int mMiniMapSize;
 	int mDragArea;
 	QString mFont;
 

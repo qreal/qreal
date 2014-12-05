@@ -42,7 +42,6 @@ HEADERS += \
 	$$PWD/splashScreen.h \
 	$$PWD/tabWidget.h \
 	$$PWD/modelExplorer.h \
-	$$PWD/miniMap.h \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
 	$$PWD/filterObject.h \
@@ -58,6 +57,7 @@ HEADERS += \
 	$$PWD/startWidget/startWidget.h \
 	$$PWD/startWidget/circleWidget.h \
 	$$PWD/startWidget/styledButton.h \
+    modelExplorer.h
 
 SOURCES += \
 	$$PWD/main.cpp \
@@ -70,7 +70,6 @@ SOURCES += \
 	$$PWD/dotRunner.cpp \
 	$$PWD/splashScreen.cpp \
 	$$PWD/tabWidget.cpp \
-	$$PWD/miniMap.cpp \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
 	$$PWD/filterObject.cpp \
@@ -85,6 +84,7 @@ SOURCES += \
 	$$PWD/startWidget/startWidget.cpp \
 	$$PWD/startWidget/circleWidget.cpp \
 	$$PWD/startWidget/styledButton.cpp \
+    macExternBrowser.cpp
 
 win32 {
 	HEADERS += \

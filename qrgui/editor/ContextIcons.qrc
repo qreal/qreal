@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file alias="left-right">icons/arrowL-R.png</file>
         <file alias="top-bottom">icons/arrowT-B.png</file>
+        <file>icons/hide.png</file>
+        <file>icons/show.png</file>
     </qresource>
 </RCC>

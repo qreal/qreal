@@ -199,7 +199,6 @@ private slots:
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
 
-	void adjustMinimapZoom(int zoom);
 	void toggleShowSplash(bool show);
 
 	void updateTabName(Id const &id);
@@ -220,6 +219,7 @@ private slots:
 
 	void applySettings();
 	void resetToolbarSize(int size);
+	void changeMiniMapSize(int size);
 
 	void closeCurrentTab();
 	void closeTab(int index);
@@ -332,7 +332,6 @@ private:
 
 	QString getNextDirName(QString const &name);
 
-	void initMiniMap();
 	void initToolManager();
 	void initTabs();
 	void initDocks();
@@ -378,7 +377,6 @@ private:
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
-
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
 	StartWidget *mStartWidget;

@@ -12,6 +12,7 @@ PreferencesEditorPage::PreferencesEditorPage(QWidget *parent)
 	, mUi(new Ui::PreferencesEditorPage)
 	, mWidthGrid(SettingsManager::value("GridWidth").toInt())
 	, mIndexGrid(SettingsManager::value("IndexGrid").toInt())
+	, mMiniMapSize(SettingsManager::value("MiniMapSize").toInt())
 	, mFontButtonWasPressed(false)
 {
 	mUi->setupUi(this);
@@ -24,9 +25,14 @@ PreferencesEditorPage::PreferencesEditorPage(QWidget *parent)
 	connect(mUi->fontCheckBox, SIGNAL(toggled(bool)), this, SLOT(manualFontCheckBoxChecked(bool)));
 	connect(mUi->fontSelectionButton, SIGNAL(clicked()),this, SLOT(fontSelectionButtonClicked()));
 	connect(mUi->paletteComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(paletteComboBoxClicked(int)));
+	connect(mUi->miniMapSize, &QSlider::sliderMoved, this, &PreferencesEditorPage::miniMapSizeSliderMoved);
+	
+	mUi->miniMapSize->setMinimum(50);
+	mUi->miniMapSize->setMaximum(250);
 
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
+	mUi->miniMapSize->setValue(mMiniMapSize);
 
 	mDragArea = mUi->dragAreaSizeSlider->value();
 	SettingsManager::setValue("DragArea", mDragArea);
@@ -81,6 +87,11 @@ void PreferencesEditorPage::indexGridSliderMoved(int value)
 	SettingsManager::setValue("IndexGrid", value);
 }
 
+void PreferencesEditorPage::miniMapSizeSliderMoved(int value)
+{
+	SettingsManager::setValue("MiniMapSize", value);
+}
+
 void PreferencesEditorPage::dragAreaSliderMoved(int value)
 {
 	SettingsManager::setValue("DragArea", value);
@@ -107,9 +118,11 @@ void PreferencesEditorPage::save()
 	mWidthGrid = mUi->gridWidthSlider->value();
 	mIndexGrid = mUi->indexGridSlider->value();
 	mDragArea = mUi->dragAreaSizeSlider->value();
+	mMiniMapSize = mUi->miniMapSize->value();
 	SettingsManager::setValue("GridWidth", mWidthGrid);
 	SettingsManager::setValue("IndexGrid", mIndexGrid);
 	SettingsManager::setValue("DragArea", mDragArea);
+	SettingsManager::setValue("MiniMapSize", mMiniMapSize);
 
 	if (mWasChecked != mUi->fontCheckBox->isChecked() || mOldFont != mFont) {
 		if (mFontButtonWasPressed) {
@@ -146,6 +159,7 @@ void PreferencesEditorPage::restoreSettings()
 	paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
 	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount").toInt());
 	mFont = SettingsManager::value("CurrentFont").toString();
+	mUi->miniMapSize->setValue(SettingsManager::value("MiniMapSize").toInt());
 	mOldFont = mFont;
 }
 

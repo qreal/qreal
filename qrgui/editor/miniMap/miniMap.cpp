@@ -1,15 +1,16 @@
 #include "miniMap.h"
+#include "editorView.h"
+#include "editorViewScene.h"
 
-MiniMap::MiniMap(QWidget *parent)
-		: QGraphicsView(parent)
-		, mEditorView(NULL)
-		, mMode(None)
-{
-}
+#include <qrkernel/settingsManager.h>
 
-void MiniMap::init(qReal::MainWindow *window)
+MiniMap::MiniMap(QWidget *tab)
+		: QGraphicsView(tab)
+		, mEditorView(nullptr)
+		, mMode(Mode::None)
 {
-	mWindow = window;
+	mEditorView = static_cast<EditorView *>(tab);
+	hide();
 
 	setRenderHint(QPainter::Antialiasing, true);
 
@@ -30,14 +31,10 @@ void MiniMap::changeSource(int index)
 
 void MiniMap::setCurrentScene()
 {
-	mEditorView = mWindow->getCurrentTab();
-	if (mEditorView == NULL) {
-		return;
-	}
-
-	setScene(mEditorView->scene());
+	EditorViewScene *editorViewScene = static_cast<EditorViewScene *>(mEditorView->scene());
+	setScene(editorViewScene);
 	// can affect zoom - need to change it if we make another desision about it
-	connect(mEditorView->scene(), SIGNAL(sceneRectChanged(QRectF)), this, SLOT(showScene()));
+	connect(editorViewScene, SIGNAL(sceneRectChanged(QRectF)), this, SLOT(showScene()));
 }
 
 void MiniMap::setScene(QGraphicsScene *scene)
@@ -88,7 +85,7 @@ void MiniMap::wheelEvent(QWheelEvent *event)
 void MiniMap::mousePressEvent(QMouseEvent *event)
 {
 	if (mEditorView != NULL) {
-		mMode = Drag;
+		mMode = Mode::Drag;
 		mEditorView->centerOn(mapToScene(event->pos()));
 	}
 	QGraphicsView::mousePressEvent(event);
@@ -96,7 +93,7 @@ void MiniMap::mousePressEvent(QMouseEvent *event)
 
 void MiniMap::mouseMoveEvent(QMouseEvent *event)
 {
-	if (mEditorView != NULL && mMode == Drag) {
+	if (mEditorView != NULL && mMode == Mode::Drag) {
 		mEditorView->centerOn(mapToScene(event->pos()));
 	}
 	QGraphicsView::mouseMoveEvent(event);
@@ -104,7 +101,7 @@ void MiniMap::mouseMoveEvent(QMouseEvent *event)
 
 void MiniMap::mouseReleaseEvent(QMouseEvent *event)
 {
-	mMode = None;
+	mMode = Mode::None;
 	QGraphicsView::mouseReleaseEvent(event);
 }
 
@@ -112,37 +109,4 @@ void MiniMap::resizeEvent(QResizeEvent *event)
 {
 	showScene();
 	QGraphicsView::resizeEvent(event);
-}
-
-void MiniMap::drawForeground(QPainter *painter, QRectF const &rect)
-{
-	QGraphicsView::drawForeground(painter, rect);
-	painter->setPen(Qt::darkYellow);
-
-	if (mEditorView) {
-		mEditorViewRect = getNewRect();
-	}
-	drawNonExistentAreas(painter, rect);
-	painter->drawRect(mEditorViewRect);
-}
-
-void MiniMap::drawNonExistentAreas(QPainter *painter, QRectF const &rect)
-{
-	QList<QRectF> areas = getNonExistentAreas(rect);
-	foreach (QRectF area, areas) {
-		painter->fillRect(area, Qt::lightGray);
-	}
-}
-
-QList<QRectF> MiniMap::getNonExistentAreas(QRectF const &rect)
-{
-	QRectF existent = rect.intersected(sceneRect());
-
-	QList<QRectF> areas;
-	areas << QRectF(rect.topLeft(), existent.bottomLeft())
-			<< QRectF(rect.topLeft(), QPointF(rect.right(), existent.top()))
-			<< QRectF(existent.topRight(), rect.bottomRight())
-			<< QRectF(QPointF(rect.left(), existent.bottom()), rect.bottomRight());
-
-	return areas;
 }
