@@ -1,6 +1,8 @@
 #include "usbRobotCommunicationThread.h"
 #include <QtCore/QThread>
 
+#include "commandConstants.h"
+
 #define EV3_VID 0x0694
 #define EV3_PID 0x0005
 #define EV3_USB_TIMEOUT 2000
@@ -28,23 +30,21 @@ UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 void UsbRobotCommunicationThread::send(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize)
 {
-	Q_UNUSED(addressee);
-	Q_UNUSED(buffer);
-	Q_UNUSED(responseSize);
-	//if (!mHandle) {
-	//	emit response(addressee, QByteArray());
-	//	return;
-	//}
+	if (!mHandle) {
+		emit response(addressee, QByteArray());
+		return;
+	}
 
-	//send(buffer);
-	//if (buffer.size() >= 5 && buffer[4] == DIRECT_COMMAND_REPLY) {
-	//	QByteArray const result = receive(responseSize);
-	//	emit response(addressee, result);
-	//} else {
-	//	emit response(addressee, QByteArray());
-	//}
+	send(buffer);
+	if (buffer.size() >= 5 && buffer[4] == enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY) {
+		QByteArray const result = receive(responseSize);
+		emit response(addressee, result);
+	} else {
+		emit response(addressee, QByteArray());
+	}
 }
 
+///todo: Add check for connection.
 void UsbRobotCommunicationThread::connect()
 {
 	if (mHandle) {
