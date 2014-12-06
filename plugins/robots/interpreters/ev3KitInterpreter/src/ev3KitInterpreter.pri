@@ -7,10 +7,12 @@ INCLUDEPATH += \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
+	$$PWD/../../../../../plugins/robots/thirdparty/libusb-1.0.19/include/libusb-1.0 \
 
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
 		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
 		-lrobots-utils -lrobots-interpreter-base -lqextserialport \
+		-L$$PWD/../../../../../plugins/robots/thirdparty/libusb-1.0.19/MinGW32/dll -llibusb-1.0 \
 
 HEADERS += \
 	$$PWD/commandConstants.h \
