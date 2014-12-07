@@ -173,18 +173,21 @@ void InterpreterElementImpl::inheritProperties(QList<QDomElement> &elements, Id 
 					overrideLabels = true;
 				}
 
-				if (!overridePictures && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty() ||
-					mEditorRepoApi->stringProperty(link, "overrides") != "pictures")) {
+				if (!overridePictures && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty()
+						|| mEditorRepoApi->stringProperty(link, "overrides") != "pictures"))
+				{
 					elements.append(sdfElement);
 				}
 
-				if (!overridePorts && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty() ||
-					mEditorRepoApi->stringProperty(link, "overrides") != "ports")) {
+				if (!overridePorts && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty()
+						|| mEditorRepoApi->stringProperty(link, "overrides") != "ports"))
+				{
 					impl.initPointPorts(portFactory, ports, width, height);
 				}
 
-				if (!overrideLabels && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty() ||
-						mEditorRepoApi->stringProperty(link, "overrides") != "labels")) {
+				if (!overrideLabels && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty()
+						|| mEditorRepoApi->stringProperty(link, "overrides") != "labels"))
+				{
 					impl.initLabels(width, height, labelFactory, labels);
 				}
 			}
