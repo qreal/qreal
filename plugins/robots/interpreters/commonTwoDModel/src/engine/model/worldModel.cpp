@@ -103,6 +103,7 @@ void WorldModel::addWall(items::WallItem *wall)
 {
 	mWalls.append(wall);
 	emit wallAdded(wall);
+	emit itemAdded(wall);
 }
 
 void WorldModel::removeWall(items::WallItem *wall)
@@ -130,6 +131,7 @@ void WorldModel::addColorField(items::ColorFieldItem *colorField)
 {
 	mColorFields.append(colorField);
 	emit colorItemAdded(colorField);
+	emit itemAdded(colorField);
 }
 
 void WorldModel::removeColorField(items::ColorFieldItem *colorField)

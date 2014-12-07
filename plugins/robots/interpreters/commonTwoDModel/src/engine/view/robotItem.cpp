@@ -11,14 +11,14 @@ int const border = 0;
 int const defaultTraceWidth = 6;
 
 RobotItem::RobotItem(QString const &robotImageFileName, model::RobotModel &robotModel, QObject *parent)
-	: QObject(parent)
-	, RotateItem()
+	: RotateItem()
 	, mImage(QImage(robotImageFileName))
 	, mBeepItem(new BeepItem)
 	, mRotater(nullptr)
 	, mRectangleImpl()
 	, mRobotModel(robotModel)
 {
+	setParent(parent);
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 
 	connect(&mRobotModel, &model::RobotModel::robotRided, this, &RobotItem::ride);

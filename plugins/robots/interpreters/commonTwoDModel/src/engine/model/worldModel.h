@@ -8,6 +8,8 @@
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtXml/QDomDocument>
 
+#include <qrutils/graphicsUtils/abstractItem.h>
+
 class QGraphicsItem;
 
 namespace twoDModel {
@@ -78,6 +80,8 @@ signals:
 
 	/// Emitted when robot trace is non-empty any more or was cleared from the floor.
 	void robotTraceAppearedOrDisappeared(bool appeared);
+
+	void itemAdded(graphicsUtils::AbstractItem *item);
 
 private:
 	/// Returns true if ray intersects some wall.

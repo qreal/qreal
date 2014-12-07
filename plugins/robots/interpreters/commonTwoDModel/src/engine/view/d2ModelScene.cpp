@@ -43,6 +43,10 @@ D2ModelScene::D2ModelScene(model::Model &model
 
 	connect(&mModel, &model::Model::robotAdded, this, &D2ModelScene::onRobotAdd);
 	connect(&mModel, &model::Model::robotRemoved, this, &D2ModelScene::onRobotRemove);
+
+	connect(&mModel.worldModel(), &model::WorldModel::itemAdded, [this](AbstractItem *item) {
+		connect(item, &AbstractItem::itemDeleted, this, &D2ModelScene::itemRemove);
+	});
 }
 
 D2ModelScene::~D2ModelScene()
@@ -506,5 +510,16 @@ void D2ModelScene::centerOnRobot(RobotItem *selectedItem)
 			setSceneRect(itemsBoundingRect().united(requiredViewPort));
 			view->centerOn(robotItem);
 		}
+	}
+}
+
+void D2ModelScene::itemRemove(AbstractItem *item)
+{
+	if (selectedItems().size() > 0) {
+		for (QGraphicsItem * const selectedItem : selectedItems()) {
+			deleteItem(selectedItem);
+		}
+	} else {
+		deleteItem(item);
 	}
 }

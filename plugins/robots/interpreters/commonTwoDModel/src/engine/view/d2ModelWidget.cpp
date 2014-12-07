@@ -416,6 +416,7 @@ void D2ModelWidget::reinitSensor(RobotItem *robotItem, PortInfo const &port)
 					);
 
 	robotItem->addSensor(port, sensor);
+	emit mModel.worldModel().itemAdded(sensor);
 }
 
 bool D2ModelWidget::isColorItem(AbstractItem * const item) const

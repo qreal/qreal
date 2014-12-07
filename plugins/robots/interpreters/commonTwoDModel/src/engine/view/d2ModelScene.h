@@ -5,6 +5,7 @@
 
 #include <qrutils/graphicsUtils/abstractScene.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
+#include <qrutils/graphicsUtils/abstractItem.h>
 
 #include <interpreterBase/devicesConfigurationProvider.h>
 
@@ -94,6 +95,9 @@ private slots:
 	/// Called after robot model was removed and removes robot item associated with this robot model
 	/// @param robotModel Robot model which was removed
 	void onRobotRemove(model::RobotModel *robotModel);
+
+	/// Called after removing item on item context menu.
+	void itemRemove(graphicsUtils::AbstractItem *item);
 
 private:
 	enum DrawingAction

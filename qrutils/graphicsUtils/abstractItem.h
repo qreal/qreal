@@ -18,8 +18,9 @@ const int scalingRect = 6;
 namespace graphicsUtils
 {
 
-class QRUTILS_EXPORT AbstractItem : public QGraphicsItem
+class QRUTILS_EXPORT AbstractItem : public QGraphicsObject
 {
+	Q_OBJECT
 public:
 	enum DragState {
 		None,
@@ -83,6 +84,9 @@ public:
 	void readPenBrush(QDomElement const &docItem);
 
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+
+signals:
+	void itemDeleted(AbstractItem *item);
 
 protected:
 	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);

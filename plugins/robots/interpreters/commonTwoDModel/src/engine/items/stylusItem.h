@@ -13,7 +13,7 @@
 namespace twoDModel {
 namespace items {
 
-class StylusItem : public QObject, public ColorFieldItem
+class StylusItem : public ColorFieldItem
 {
 	Q_OBJECT
 

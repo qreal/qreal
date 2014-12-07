@@ -1,18 +1,16 @@
 #include "abstractItem.h"
 
 #include <QtGui/QPainter>
-#include <QtWidgets/QMenu>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
-
-#include <QtCore/QDebug>
+#include <QtWidgets/QMenu>
 
 using namespace graphicsUtils;
 
 AbstractItem::AbstractItem(QGraphicsItem* parent)
-	: QGraphicsItem(parent), mDragState(None)
+	: QGraphicsObject(parent), mDragState(None)
 	, mX1(0), mY1(0), mX2(0), mY2(0), mView(nullptr)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -417,13 +415,13 @@ void AbstractItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	}
 }
 
+
 void AbstractItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
-	QMenu *menu = new QMenu();
-	QAction *removeAction = menu->addAction(QObject::tr("Remove"));
-	QAction *selectedAction = menu->exec(event->screenPos());
-	delete menu;
+	QMenu menu;
+	QAction *removeAction = menu.addAction(QObject::tr("Remove"));
+	QAction *selectedAction = menu.exec(event->screenPos());
 	if (selectedAction == removeAction) {
-		scene()->removeItem(this);
+		emit itemDeleted(this);
 	}
 }
