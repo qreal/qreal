@@ -49,7 +49,7 @@ void Serializer::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspect
 	mWorkingCopyInspector = inspector;
 }
 
-void Serializer::prepareSaving()
+bool Serializer::prepareSaving()
 {
 	mSavedDirectories.clear();
 	mSavedFiles.clear();
@@ -57,7 +57,9 @@ void Serializer::prepareSaving()
 	clearDir(mWorkingDir);
 	if (QFileInfo(mWorkingFile).exists()) {
 		decompressFile(mWorkingFile);
+		return false;
 	}
+	return true;
 }
 
 bool Serializer::reportAdded(const QString &fileName)
@@ -91,9 +93,9 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 			, "Serializer::saveToDisk(...)"
 			, "may be Client of RepoApi (see Models constructor also) has been initialised with empty filename?");
 
-	prepareSaving();
+	bool firstTimeSave = prepareSaving();
 
-	for (Object const * const object : objects) {
+	foreach (Object const * const object, objects) {
 		QString const filePath = createDirectory(object->id(), object->isLogicalObject());
 
 		QDomDocument doc;
@@ -115,9 +117,8 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		}
 	}
 
-
+	saveMetaInfo(metaInfo, firstTimeSave);
 	removeUnsaved(mWorkingDir);
-	saveMetaInfo(metaInfo);
 
 	QFileInfo fileInfo(mWorkingFile);
 	QString fileName = fileInfo.baseName();
@@ -211,7 +212,7 @@ void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHa
 	}
 }
 
-void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const
+void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo, bool isFirstTimeSave)
 {
 	QDomDocument document;
 	QDomElement root = document.createElement("metaInformation");
@@ -227,6 +228,12 @@ void Serializer::saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const
 	QString const filePath = mWorkingDir + "/metaInfo.xml";
 	OutFile out(filePath);
 	out() << document.toString(4);
+
+	if (isFirstTimeSave) {
+		reportAdded(filePath);
+	} else {
+		reportChanged(filePath);
+	}
 }
 
 void Serializer::loadMetaInfo(QHash<QString, QVariant> &metaInfo) const

@@ -7,7 +7,7 @@ TARGET = qrgui-versioning-plugins-manager
 QT += widgets
 
 LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lqrgui-tool-plugin-interface -lqrgui-models \
-			    -lqrgui-editor -lqrgui-controller -lqrgui-mouse-gestures -lqrgui-thirdparty \
+				-lqrgui-editor -lqrgui-controller -lqrgui-mouse-gestures -lqrgui-thirdparty \
 
 DEFINES += QRGUI_VERSIONING_PLUGINS_MANAGER_LIBRARY
 

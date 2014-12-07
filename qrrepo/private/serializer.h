@@ -40,7 +40,7 @@ private:
 	void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object *> &objectsHash);
 	void loadModel(QDir const &dir, QHash<qReal::Id, Object *> &objectsHash);
 
-	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const;
+	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo, bool isFirstTimeSave);
 	void loadMetaInfo(QHash<QString, QVariant> &metaInfo) const;
 
 	QString pathToElement(qReal::Id const &id) const;
@@ -49,7 +49,7 @@ private:
 	bool addSaved();
 	bool removeUnsaved(QString const &path);
 
-	void prepareSaving();
+	bool prepareSaving();
 
 	bool reportAdded(QString const &fileName);
 	bool reportRemoved(QString const &fileName);

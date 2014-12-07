@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../qrutils/versioningUtils/briefVersioningInterface.h"
+#include "qrutils/versioningUtils/briefVersioningInterface.h"
 #include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 #include <qrgui/plugins/toolPluginInterface/pluginInterface.h>
 #include "versioningPluginInterface.h"
-#include "../models/models.h"
-#include "../mainwindow/projectManager/projectManager.h"
+#include "qrgui/models/models.h"
+#include "qrgui/mainWindow/projectManager/projectManager.h"
 #include "qrgui/versioning/versioningPluginsManagerDeclSpec.h"
 
 namespace qReal

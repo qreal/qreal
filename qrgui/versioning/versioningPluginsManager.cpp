@@ -1,8 +1,8 @@
 #include "versioningPluginsManager.h"
 #include "diffPluginBase.h"
-#include "../mainwindow/mainWindow.h"
+#include "qrgui/mainWindow/mainWindow.h"
 #include "visualDiff/diffPluginWrapper.h"
-#include "../../qrutils/fileSystemUtils.h"
+#include "qrutils/fileSystemUtils.h"
 #include <QtWidgets/QApplication>
 #include <QDebug>
 

@@ -22,7 +22,7 @@ CONFIG += c++11
 
 OBJECTS_DIR = .obj
 UI_DIR = .ui
-MOC_DIR = .moc
+MOC_DIR = .mocqrutils
 RCC_DIR = .moc
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
