@@ -20,7 +20,7 @@ StatusDialog::StatusDialog(QWidget *parent) : QDialog(parent)
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("Git status: "));
-	setFixedSize(400,300);
+	setMinimumSize(400,300);
 }
 
 void StatusDialog::message(QString message)

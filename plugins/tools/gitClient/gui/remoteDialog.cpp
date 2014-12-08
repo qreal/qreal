@@ -33,7 +33,7 @@ RemoteDialog::RemoteDialog(QWidget *parent)
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("New remote"));
-	setFixedSize(500,100);
+	setMinimumSize(500,150);
 }
 
 QPushButton *RemoteDialog::createButton(const QString &text, const char *member)

@@ -29,7 +29,7 @@ CloneDialog::CloneDialog(QWidget *parent)
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("Clone options"));
-	setFixedSize(500,100);
+	setMinimumSize(500,100);
 }
 
 QPushButton *CloneDialog::createButton(const QString &text, const char *member)

@@ -29,7 +29,7 @@ ResetDialog::ResetDialog(QWidget *parent)
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("Reset options"));
-	setFixedSize(500,100);
+	setMinimumSize(500,100);
 }
 
 QPushButton *ResetDialog::createButton(const QString &text, const char *member)

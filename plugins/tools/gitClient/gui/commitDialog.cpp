@@ -25,7 +25,7 @@ CommitDialog::CommitDialog(QWidget *parent) : QDialog(parent)
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("Enter commit message"));
-	setFixedSize(400,300);
+	setMinimumSize(400,300);
 }
 
 QString CommitDialog::message() const

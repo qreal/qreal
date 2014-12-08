@@ -20,7 +20,7 @@ LogDialog::LogDialog(QWidget *parent) : QDialog(parent)
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("Commits: "));
-	setFixedSize(400,300);
+	setMinimumSize(400,300);
 }
 
 void LogDialog::message(QString message)

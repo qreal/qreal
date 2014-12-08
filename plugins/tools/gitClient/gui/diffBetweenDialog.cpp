@@ -33,7 +33,7 @@ DiffBetweenDialog::DiffBetweenDialog(QWidget *parent)
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("DiffBetween options"));
-	setFixedSize(600,200);
+	setMinimumSize(600,200);
 }
 
 QString DiffBetweenDialog::firstHash()

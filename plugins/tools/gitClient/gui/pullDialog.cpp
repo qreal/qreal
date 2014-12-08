@@ -29,7 +29,7 @@ PullDialog::PullDialog(QWidget *parent)
 	setLayout(mainLayout);
 
 	setWindowTitle(tr("Pull options"));
-	setFixedSize(500,100);
+	setMinimumSize(500,100);
 }
 
 QPushButton *PullDialog::createButton(const QString &text, const char *member)
