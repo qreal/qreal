@@ -24,7 +24,7 @@ DiffView::DiffView(QWidget *parent, DiffModel *diffModel, bool isOldModel, Contr
 	mMVIface.configure(mModel->graphicalModelAssistApi(), mModel->logicalModelAssistApi(), mModel->exploser());
 	mMVIface.setModel(mModel->graphicalModel());
 	mMVIface.setLogicalModel(mModel->logicalModel());
-	mMVIface.setRootIndex(mModel->graphicalModel()->index(0,0));
+	mMVIface.setRootIndex(mModel->graphicalModelAssistApi().indexById(rootId));
 
 	mScene.initForDiff();
 	highlightElements();

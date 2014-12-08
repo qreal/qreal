@@ -1,5 +1,8 @@
+#include <QtWidgets/QTabWidget>
+
 #include "diffPluginWrapper.h"
 #include "view/diffWindow.h"
+
 using namespace versioning;
 
 DiffPluginWrapper::DiffPluginWrapper(qReal::ProjectManagementInterface *projectManager
@@ -47,7 +50,13 @@ void DiffPluginWrapper::onModelLoaded(DiffModel *model)
 	if (!model) {
 		return;
 	}
-	DiffWindow *diffWindow = new DiffWindow(model, mCompactMode, mMainWindow);
-	mParentWidget->layout()->addWidget(diffWindow);
+
+	int diagrams = model->newModel()->graphicalModelAssistApi().childrenOfRootDiagram();
+	QTabWidget *diffWindowSet = new QTabWidget;
+	for (int i = 0; i < diagrams; i++){
+		diffWindowSet->addTab(new DiffWindow(model, mCompactMode, i, mMainWindow), QString(tr("diagram ") + QString::number(i+1)));
+	}
+
+	mParentWidget->layout()->addWidget(diffWindowSet);
 }
 
