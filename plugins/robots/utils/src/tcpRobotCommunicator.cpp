@@ -176,9 +176,14 @@ void TcpRobotCommunicator::connect()
 	}
 
 	if (mControlConnection.isConnected() && mTelemetryConnection.isConnected()) {
-		return;
+		if (mCurrentIP == server) {
+			return;
+		}
+
+		disconnect();
 	}
 
+	mCurrentIP = server;
 	bool const result = mControlConnection.connect(hostAddress) && mTelemetryConnection.connect(hostAddress);
 	versionRequest();
 	emit connected(result, QString());

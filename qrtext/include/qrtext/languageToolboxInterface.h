@@ -22,7 +22,7 @@ public:
 	template<typename T>
 	T interpret(qReal::Id const &id, QString const &propertyName, QString const &code)
 	{
-		auto root = parse(id, propertyName, code);
+		auto const &root = parse(id, propertyName, code);
 		if (errors().isEmpty()) {
 			return interpret(root).value<T>();
 		} else {

@@ -3,6 +3,8 @@
 #include <plugins/toolPluginInterface/pluginConfigurator.h>
 #include "plugins/pluginManager/interpreterEditorManager.h"
 
+#include "pluginsManagerDeclSpec.h"
+
 namespace qReal {
 
 /// This class loads interpreted plugins given model and metamodel.

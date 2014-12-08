@@ -16,6 +16,8 @@
 #include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
 
+#include "pluginsManagerDeclSpec.h"
+
 namespace qReal {
 
 class Element;

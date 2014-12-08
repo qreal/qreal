@@ -26,7 +26,7 @@ protected:
 
 private:
 	/// Action that launches code generator
-	QAction *mGenerateCodeAction;  // Takes ownership; may be disposed by GUI.
+	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 };
 
 }

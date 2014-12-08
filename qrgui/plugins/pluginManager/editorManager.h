@@ -19,6 +19,8 @@
 #include "plugins/pluginManager/details/patternParser.h"
 
 
+#include "pluginsManagerDeclSpec.h"
+
 namespace qReal {
 
 class Element;

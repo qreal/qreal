@@ -21,7 +21,7 @@ private:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
 	qReal::text::LanguageInfo language() const override;
 
-	QAction *mAction;  // Takes ownership; may be disposed by GUI.
+	QAction *mAction;  // Doesn't have ownership; may be disposed by GUI.
 };
 
 }

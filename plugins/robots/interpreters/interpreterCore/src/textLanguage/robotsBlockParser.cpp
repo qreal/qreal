@@ -29,6 +29,7 @@ RobotsBlockParser::RobotsBlockParser(
 void RobotsBlockParser::setReservedVariables()
 {
 	/// @todo Remove old reserved variables for old model.
+	qrtext::lua::LuaToolbox::clear();
 
 	setVariableValue("pi", 3.14159265);
 	markAsSpecialConstant("pi");
@@ -59,7 +60,6 @@ QStringList const &RobotsBlockParser::hiddenVariables() const
 
 void RobotsBlockParser::clear()
 {
-	qrtext::lua::LuaToolbox::clear();
 	setReservedVariables();
 }
 

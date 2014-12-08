@@ -40,16 +40,16 @@ private slots:
 
 private:
 	/// Action that launches code generator
-	QAction *mGenerateCodeAction;  // Takes ownership; may be disposed by GUI.
+	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 
 	/// Action that generates and uploads program on a robot
-	QAction *mUploadProgramAction;  // Takes ownership; may be disposed by GUI.
+	QAction *mUploadProgramAction;  // Doesn't have ownership; may be disposed by GUI.
 
 	/// Action that generates and uploads program on a robot
-	QAction *mRunProgramAction;  // Takes ownership; may be disposed by GUI.
+	QAction *mRunProgramAction;  // Doesn't have ownership; may be disposed by GUI.
 
 	/// Action that stops script execution and turns off motors.
-	QAction *mStopRobotAction;  // Takes ownership; may be disposed by GUI.
+	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
 };
 
 }

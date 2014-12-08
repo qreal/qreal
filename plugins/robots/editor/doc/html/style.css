@@ -53,6 +53,7 @@ a:hover {
 #wrapper {
 	overflow: hidden;
 	background: #F1F2E9;
+	min-width: 1260px;
 }
 
 .container {
