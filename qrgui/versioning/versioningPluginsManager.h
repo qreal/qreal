@@ -67,12 +67,10 @@ private:
 
 	qrRepo::RepoControlInterface *mRepoApi;
 	QList<VersioningPluginInterface *> mPlugins;
-	QList<VersioningPluginInterface *> mPluginsWithExistClient;
 	ErrorReporterInterface *mErrorReporter;
-	DiffPluginBase *mDiffPlugin;
-	QString mTempDir;
-
+	DiffPluginInterface *mDiffInterface;
 	ProjectManager *mProjectManager;
+	QString mTempDir;
 };
 
 }

@@ -29,12 +29,10 @@ HEADERS += \
 	$$PWD/versioningPluginsManagerDeclSpec.h \
 	$$PWD/versioningPluginsManager.h \
 	$$PWD/versioningPluginInterface.h \
-	$$PWD/diffPluginBase.h \
 	$$PWD/diffPluginInterface.h \
 
 SOURCES += \
 	$$PWD/versioningPluginsManager.cpp \
-	$$PWD/diffPluginBase.cpp \
 
 # Visual diff
 # This a temp solution till system would be refactored

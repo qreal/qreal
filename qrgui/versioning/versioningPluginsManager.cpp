@@ -1,5 +1,4 @@
 #include "versioningPluginsManager.h"
-#include "diffPluginBase.h"
 #include "qrgui/mainWindow/mainWindow.h"
 #include "visualDiff/diffPluginWrapper.h"
 #include "qrutils/fileSystemUtils.h"
@@ -15,7 +14,7 @@ VersioningPluginsManager::VersioningPluginsManager(/*ToolPluginManager const &pl
 		, ErrorReporterInterface *errorReporter
 		, ProjectManager *projectManager)
 	: mRepoApi(repoApi), mErrorReporter(errorReporter)
-	, mDiffPlugin(NULL)
+	, mDiffInterface(NULL)
 	, mProjectManager(projectManager)
 	, mTempDir(qApp->applicationDirPath() + "/" + tempFolderName)
 {
@@ -36,15 +35,15 @@ void VersioningPluginsManager::prepareWorkingCopy()
 void VersioningPluginsManager::initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
 		, EditorManagerInterface *editorManager, QWidget *parent)
 {
+	mDiffInterface = new versioning::DiffPluginWrapper(mProjectManager, mErrorReporter, mRepoApi, this, parent, editorManager);
 	while (iterator.hasNext()) {
 		ToolPluginInterface *toolPlugin = iterator.next();
 		VersioningPluginInterface *versioningPlugin =
 				dynamic_cast<VersioningPluginInterface *>(toolPlugin);
 		if (versioningPlugin) {
 			mPlugins.append(versioningPlugin);
-			if (versioningPlugin->clientExist()) {
-				mPluginsWithExistClient.append(versioningPlugin);
-			} else {
+			versioningPlugin->setDiffViewerInterface(mDiffInterface);
+			if (!versioningPlugin->clientExist()) {
 				foreach(ActionInfo const &actionInfo, versioningPlugin->actions()) {
 					if (actionInfo.isAction()){
 						actionInfo.action()->setVisible(false);
@@ -61,17 +60,6 @@ void VersioningPluginsManager::initFromToolPlugins(QListIterator<ToolPluginInter
 			connect(versioningPlugin, SIGNAL(changesSubmitted(bool const))
 					, this, SLOT(onChangesSubmitted(bool const)));
 		}
-		DiffPluginBase *diffPlugin =
-				dynamic_cast<DiffPluginBase *>(toolPlugin);
-		/// @todo: new diffPlugin for every versioning plugin
-		if (diffPlugin) {
-			mDiffPlugin = diffPlugin;
-			mDiffPlugin->setHandler(new versioning::DiffPluginWrapper(mDiffPlugin, mRepoApi
-					, this, parent, editorManager));
-		}
-	}
-	for (int i = 0; i < mPlugins.length(); i++){
-		mPlugins[i]->setDiffViewerInterface(mDiffPlugin);
 	}
 }
 
@@ -202,7 +190,8 @@ QString VersioningPluginsManager::remoteRepositoryUrl(QString const &targetProje
 bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory, bool const &quiet
 												, bool const &prepareAndProcess)
 {
-	return activePlugin(false, directory) != NULL;
+	Q_UNUSED(quiet)
+	return activePlugin(prepareAndProcess, directory) != NULL;
 }
 
 QString VersioningPluginsManager::friendlyName()
@@ -259,5 +248,5 @@ void VersioningPluginsManager::onChangesSubmitted(const bool success)
 
 bool VersioningPluginsManager::clientExist()
 {
-	activePlugin()->clientExist();
+	return activePlugin()->clientExist();
 }

@@ -13,7 +13,8 @@ class DiffPluginWrapper : public QObject, public qReal::DiffPluginInterface
 	Q_OBJECT
 
 public:
-	DiffPluginWrapper(qReal::DiffPluginBase *plugin
+	DiffPluginWrapper(qReal::ProjectManagementInterface *projectManager
+			, qReal::ErrorReporterInterface *errorReporter
 			, qrRepo::WorkingCopyManagementInterface *workingCopyManager
 			, qReal::BriefVersioningInterface *vcs
 			, QWidget *parent

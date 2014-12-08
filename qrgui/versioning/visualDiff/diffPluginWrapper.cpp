@@ -2,15 +2,16 @@
 #include "view/diffWindow.h"
 using namespace versioning;
 
-DiffPluginWrapper::DiffPluginWrapper(DiffPluginBase *plugin
+DiffPluginWrapper::DiffPluginWrapper(qReal::ProjectManagementInterface *projectManager
+		, qReal::ErrorReporterInterface *errorReporter
 		, qrRepo::WorkingCopyManagementInterface *workingCopyManager
 		, BriefVersioningInterface *vcs
 		, QWidget *parent
 		, EditorManagerInterface *manager)
 	: mWorkingCopyManager(workingCopyManager)
 	, mVcs(vcs), mMainWindow(parent), mEditorManager(manager)
-	, mErrorReporter(plugin->errorReporter())
-	, mProjectManager(plugin->projectManager())
+	, mErrorReporter(errorReporter)
+	, mProjectManager(projectManager)
 	, mLoader(new details::ModelLoader(mVcs, mErrorReporter
 			, mEditorManager, mWorkingCopyManager))
 {
