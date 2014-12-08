@@ -31,9 +31,11 @@ HEADERS += \
 	$$PWD/textManager.h \
 	$$PWD/textManagerInterface.h \
 	$$PWD/qscintillaTextEdit.h \
+	$$PWD/languageInfo.h \
 
 SOURCES += \
 	$$PWD/textHighlighter.cpp \
 	$$PWD/sqlHighlighter.cpp \
 	$$PWD/textManager.cpp \
 	$$PWD/qscintillaTextEdit.cpp \
+	$$PWD/languageInfo.cpp \

@@ -12,21 +12,21 @@ SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
 {
 }
 
-QString SimpleNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString SimpleNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
 {
 	switch (mSyntheticBinding) {
 	case breakNode:
 		return utils::StringUtils::addIndent(customizer.factory()->breakGenerator(mId
-				, customizer)->generate(), indent);
+				, customizer)->generate(), indent, indentString);
 	case continueNode:
 		return utils::StringUtils::addIndent(customizer.factory()->continueGenerator(mId
-				, customizer)->generate(), indent);
+				, customizer)->generate(), indent, indentString);
 	case gotoNode:
 		return utils::StringUtils::addIndent(customizer.factory()->gotoSimpleGenerator(mId
-				, customizer)->generate(), indent);
+				, customizer)->generate(), indent, indentString);
 	default:
 		return utils::StringUtils::addIndent(customizer.factory()->simpleGenerator(mId
-				, customizer)->generate(), indent);
+				, customizer)->generate(), indent, indentString);
 	}
 }
 

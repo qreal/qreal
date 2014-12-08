@@ -3,6 +3,7 @@
 #include <qrgui/plugins/toolPluginInterface/actionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/textEditor/languageInfo.h>
 #include <qrtext/languageToolboxInterface.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
@@ -14,12 +15,10 @@ class GeneratorKitPluginInterface
 public:
 	virtual ~GeneratorKitPluginInterface() {}
 
-	/// Returns the extension of generated files.
-	virtual QString extension() const = 0;
-
-	/// Returns the extension description (filter for the extension).
-	/// Uses for update filter field in save/open dialog after kit change.
-	virtual QString extensionDescription() const = 0;
+	/// Returns an information about the language code on which will be generated;
+	/// this information will be used by text editors when user will be edit the generated code.
+	/// Transfers ownership.
+//	virtual qReal::text::LanguageInfo *targetLanguage() const = 0;
 
 	/// Internal id of a generator, must be unique.
 	virtual QString generatorName() const = 0;

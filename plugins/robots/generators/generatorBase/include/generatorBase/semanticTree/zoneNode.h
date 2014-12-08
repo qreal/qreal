@@ -42,7 +42,7 @@ public:
 
 protected:
 	virtual QLinkedList<SemanticNode *> children() const;
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const override;
 
 private:
 	QLinkedList<SemanticNode *> mChildren;

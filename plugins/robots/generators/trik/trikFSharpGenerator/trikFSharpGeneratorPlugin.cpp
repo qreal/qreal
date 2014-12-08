@@ -75,14 +75,9 @@ QString TrikFSharpGeneratorPlugin::defaultFilePath(QString const &projectName) c
 	return QString("trik/%1/%1.fs").arg(projectName);
 }
 
-QString TrikFSharpGeneratorPlugin::extension() const
+text::LanguageInfo TrikFSharpGeneratorPlugin::language() const
 {
-	return "fs";
-}
-
-QString TrikFSharpGeneratorPlugin::extensionDescription() const
-{
-	return tr("FSharp Source File");
+	return qReal::text::Languages::fSharp();
 }
 
 QString TrikFSharpGeneratorPlugin::generatorName() const

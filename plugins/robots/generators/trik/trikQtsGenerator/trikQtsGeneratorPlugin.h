@@ -30,8 +30,7 @@ public:
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
 	QString defaultFilePath(QString const &projectName) const override;
-	QString extension() const override;
-	QString extensionDescription() const override;
+	qReal::text::LanguageInfo language() const override;
 	QString generatorName() const override;
 
 private slots:

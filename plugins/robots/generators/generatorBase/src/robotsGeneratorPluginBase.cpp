@@ -23,16 +23,6 @@ QString RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) c
 	return projectName;
 }
 
-QString RobotsGeneratorPluginBase::extension() const
-{
-	return QString();
-}
-
-QString RobotsGeneratorPluginBase::extensionDescription() const
-{
-	return QString();
-}
-
 QString RobotsGeneratorPluginBase::generatorName() const
 {
 	return QString();
@@ -140,7 +130,7 @@ bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 	generator->initialize();
 	generator->setProjectDir(path);
 
-	QString const generatedSrcPath = generator->generate();
+	QString const generatedSrcPath = generator->generate(language().indent());
 
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		delete generator;
@@ -151,7 +141,7 @@ bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 
 	QString const generatedCode = utils::InFile::readAll(generatedSrcPath);
 	if (!generatedCode.isEmpty()) {
-		mTextManager->showInTextEditor(path, generatorName());
+		mTextManager->showInTextEditor(path, generatorName(), language());
 	}
 
 	if (!openTab) {
@@ -166,7 +156,7 @@ void RobotsGeneratorPluginBase::regenerateCode(qReal::Id const &diagram
 		, QFileInfo const &oldFileInfo
 		, QFileInfo const &newFileInfo)
 {
-	if (!oldFileInfo.completeSuffix().compare(extension())) {
+	if (!oldFileInfo.completeSuffix().compare(language().extension)) {
 		mCodePath.remove(diagram, oldFileInfo);
 		mCodePath.insert(diagram, newFileInfo);
 		regenerateExtraFiles(newFileInfo);

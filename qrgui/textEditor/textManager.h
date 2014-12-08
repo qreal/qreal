@@ -23,7 +23,7 @@ public:
 	TextManager(SystemEvents &systemEvents, gui::MainWindowInterpretersInterface &mainWindow);
 
 	/// Reads code source file and create new QScintillaTextEdit associated with this file (rather with filepath)
-	bool openFile(QString const &filePath, QString const &genName);
+	bool openFile(QString const &filePath, QString const &genName, LanguageInfo const &language);
 
 	/// Remove all info about filePath (including QScintillaTextEdit associated with it)
 	bool closeFile(QString const &filePath);
@@ -44,21 +44,21 @@ public:
 	bool isDefaultPath(QString const &path) const;
 	bool isModified(QString const &path) const;
 	bool isModifiedEver(QString const &path) const;
-	void addExtensionDescriptionByGenerator(QString const &generatorName, QString const &description);
-	void addExtensionDescriptionByExtension(QString const &extension, QString const &description);
-	void removeExtensions();
-	QString extensionDescriptionByGenerator(QString const &genName) const;
-	QString extensionDescriptionByExtension(QString const &ext) const;
-	QList<QString> extensionDescriptions() const;
+//	void addExtensionDescriptionByGenerator(QString const &generatorName, QString const &description);
+//	void addExtensionDescriptionByExtension(QString const &extension, QString const &description);
+//	void removeExtensions();
+//	QString extensionDescriptionByGenerator(QString const &genName) const;
+//	QString extensionDescriptionByExtension(QString const &ext) const;
+//	QList<QString> extensionDescriptions() const;
 
 	/// Opens new tab with file created by some generator in text editor and shows a text in it
 	/// @param fileInfo A filepath to file with text
 	/// @param genName A name of generator which created this file
-	void showInTextEditor(QFileInfo const &fileInfo, QString const &genName);
+	void showInTextEditor(QFileInfo const &fileInfo, QString const &genName, LanguageInfo const &language);
 
 	/// Opens new tab with file
 	/// @param fileInfo A filepath to file with text
-	void showInTextEditor(QFileInfo const &fileInfo);
+	void showInTextEditor(QFileInfo const &fileInfo, LanguageInfo const &language);
 
 	/// Saves text from tab to another or same file
 	/// @param saveAs Defines what to do: save to the same file or in another
@@ -86,11 +86,11 @@ private:
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMultiHash<Id, QString> mDiagramCodeManager;
 
-	/// Contains descriptions of file extensions (generator name, description of extension). Need for save dialog.
-	QMap<QString, QString> mExtensionDescriptionByGenerator;
+//	/// Contains descriptions of file extensions (generator name, description of extension). Need for save dialog.
+//	QMap<QString, QString> mExtensionDescriptionByGenerator;
 
-	/// Contains descriptions of file extensions (extension, description of extension). Need for save dialog.
-	QMap<QString, QString> mExtensionDescriptionByExtension;
+//	/// Contains descriptions of file extensions (extension, description of extension). Need for save dialog.
+//	QMap<QString, QString> mExtensionDescriptionByExtension;
 
 	gui::MainWindowInterpretersInterface &mMainWindow;
 	SystemEvents &mSystemEvents;

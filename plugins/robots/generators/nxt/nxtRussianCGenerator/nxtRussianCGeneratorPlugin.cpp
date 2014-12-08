@@ -17,14 +17,9 @@ QString NxtRussianCGeneratorPlugin::defaultFilePath(QString const &projectName) 
 	return QString::fromUtf8("russianC/%1/%1.си").arg(projectName);
 }
 
-QString NxtRussianCGeneratorPlugin::extension() const
+qReal::text::LanguageInfo NxtRussianCGeneratorPlugin::language() const
 {
-	return QString::fromUtf8("си");
-}
-
-QString NxtRussianCGeneratorPlugin::extensionDescription() const
-{
-	return tr("RussianC Source File");
+	return qReal::text::Languages::russianC();
 }
 
 QString NxtRussianCGeneratorPlugin::generatorName() const

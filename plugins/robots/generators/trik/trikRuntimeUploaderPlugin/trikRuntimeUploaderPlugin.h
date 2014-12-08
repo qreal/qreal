@@ -19,6 +19,7 @@ private slots:
 
 private:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
+	qReal::text::LanguageInfo language() const override;
 
 	QAction *mAction;  // Takes ownership; may be disposed by GUI.
 };

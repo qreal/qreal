@@ -66,3 +66,8 @@ generatorBase::MasterGeneratorBase *TrikRuntimeUploaderPlugin::masterGenerator()
 {
 	return nullptr;
 }
+
+qReal::text::LanguageInfo TrikRuntimeUploaderPlugin::language() const
+{
+	return qReal::text::Languages::textFileInfo("*.txt");
+}

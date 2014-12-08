@@ -22,7 +22,7 @@ TextManager::TextManager(SystemEvents &systemEvents, gui::MainWindowInterpreters
 	connect(&mSystemEvents, &SystemEvents::codeTabClosed, this, &TextManager::onTabClosed);
 }
 
-bool TextManager::openFile(QString const &filePath, QString const &generatorName)
+bool TextManager::openFile(QString const &filePath, QString const &generatorName, text::LanguageInfo const &language)
 {
 	QFile file(filePath);
 	QTextStream *inStream = nullptr;
@@ -33,6 +33,7 @@ bool TextManager::openFile(QString const &filePath, QString const &generatorName
 
 		QScintillaTextEdit *area = new QScintillaTextEdit();
 
+		area->setCurrentLanguage(language);
 		area->setText(inStream->readAll());
 		mText.insert(filePath, area);
 		mPath.insert(area, filePath);
@@ -164,38 +165,39 @@ void TextManager::onTabClosed(QFileInfo const &file)
 	closeFile(file.absoluteFilePath());
 }
 
-void TextManager::addExtensionDescriptionByGenerator(QString const &generatorName, QString const &description)
-{
-	mExtensionDescriptionByGenerator.insert(generatorName, description);
-}
+//void TextManager::addExtensionDescriptionByGenerator(QString const &generatorName, QString const &description)
+//{
+//	mExtensionDescriptionByGenerator.insert(generatorName, description);
+//}
 
-void TextManager::addExtensionDescriptionByExtension(QString const &extension, QString const &description)
-{
-	mExtensionDescriptionByExtension.insert(extension, description);
-}
+//void TextManager::addExtensionDescriptionByExtension(QString const &extension, QString const &description)
+//{
+//	mExtensionDescriptionByExtension.insert(extension, description);
+//}
 
-void TextManager::removeExtensions()
-{
-	mExtensionDescriptionByGenerator.clear();
-	mExtensionDescriptionByExtension.clear();
-}
+//void TextManager::removeExtensions()
+//{
+//	mExtensionDescriptionByGenerator.clear();
+//	mExtensionDescriptionByExtension.clear();
+//}
 
-QString TextManager::extensionDescriptionByGenerator(QString const &generatorName) const
-{
-	return mExtensionDescriptionByGenerator.value(generatorName, QString());
-}
+//QString TextManager::extensionDescriptionByGenerator(QString const &generatorName) const
+//{
+//	return mExtensionDescriptionByGenerator.value(generatorName, QString());
+//}
 
-QString TextManager::extensionDescriptionByExtension(QString const &extension) const
-{
-	return mExtensionDescriptionByExtension.value(extension, QString());
-}
+//QString TextManager::extensionDescriptionByExtension(QString const &extension) const
+//{
+//	return mExtensionDescriptionByExtension.value(extension, QString());
+//}
 
-QList<QString> TextManager::extensionDescriptions() const
-{
-	return mExtensionDescriptionByGenerator.values();
-}
+//QList<QString> TextManager::extensionDescriptions() const
+//{
+//	return mExtensionDescriptionByGenerator.values();
+//}
 
-void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &genName)
+void TextManager::showInTextEditor(QFileInfo const &fileInfo
+		, QString const &genName, text::LanguageInfo const &language)
 {
 	/// @todo: Uncomment it
 	// Q_ASSERT(!fileInfo.baseName().isEmpty());
@@ -207,7 +209,7 @@ void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &gen
 			mMainWindow.closeTab(code(filePath));
 		}
 
-		openFile(filePath, genName);
+		openFile(filePath, genName, language);
 		QScintillaTextEdit *area = code(filePath);
 		area->show();
 		bindCode(mMainWindow.activeDiagram(), filePath);
@@ -217,7 +219,7 @@ void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &gen
 	}
 }
 
-void TextManager::showInTextEditor(QFileInfo const &fileInfo)
+void TextManager::showInTextEditor(QFileInfo const &fileInfo, text::LanguageInfo const &language)
 {
 	Q_ASSERT(!fileInfo.baseName().isEmpty());
 
@@ -227,7 +229,7 @@ void TextManager::showInTextEditor(QFileInfo const &fileInfo)
 		mMainWindow.closeTab(code(filePath));
 	}
 
-	openFile(filePath, "");
+	openFile(filePath, QString(), language);
 	QScintillaTextEdit *area = code(filePath);
 	area->show();
 
@@ -236,26 +238,19 @@ void TextManager::showInTextEditor(QFileInfo const &fileInfo)
 
 bool TextManager::saveText(bool saveAs)
 {
-	if (!mMainWindow.activeDiagram().isNull()) {
+	QScintillaTextEdit * const area = dynamic_cast<QScintillaTextEdit *>(mMainWindow.currentTab());
+	if (!area) {
 		return false;
 	}
 
-	QScintillaTextEdit * const area = dynamic_cast<QScintillaTextEdit *>(mMainWindow.currentTab());
 	Id const diagram = TextManager::diagram(area);
 	QFileInfo fileInfo;
 	QString const filepath = path(area);
 	bool const defaultPath = isDefaultPath(filepath);
-	QString const generatorName = this->generatorName(filepath);
-	QString const extensions = QStringList(extensionDescriptions()).join(";;");
-	QString *currentExtensionDescription = new QString((!generatorName.isEmpty()
-			? extensionDescriptionByGenerator(generatorName)
-			: extensionDescriptionByExtension(QFileInfo(filepath).suffix())));
 
-	QString extensionDescriptions = tr("All files (*)") + (extensions.isEmpty() ? "" : ";;" + extensions);
-
-	if (currentExtensionDescription->isEmpty()) {
-		currentExtensionDescription = nullptr;
-	}
+	QString editorExtension = area->currentLanguage().extensionDescription;
+	QString const extensionDescriptions = tr("All files (*)") + ";;" + editorExtension;
+	QString *currentExtensionDescription = &editorExtension;
 
 	if (saveAs) {
 		fileInfo = QFileInfo(utils::QRealFileDialog::getSaveFileName("SaveTextFromTextManager"
@@ -267,8 +262,6 @@ bool TextManager::saveText(bool saveAs)
 	} else {
 		fileInfo = path(area);
 	}
-
-	delete currentExtensionDescription;
 
 	if (!fileInfo.fileName().isEmpty()) {
 		mMainWindow.setTabText(area, fileInfo.fileName());

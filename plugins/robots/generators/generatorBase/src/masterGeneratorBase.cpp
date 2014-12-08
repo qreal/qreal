@@ -47,7 +47,7 @@ void MasterGeneratorBase::initialize()
 			, mErrorReporter, *mCustomizer, mDiagram, this);
 }
 
-QString MasterGeneratorBase::generate()
+QString MasterGeneratorBase::generate(QString const &indentString)
 {
 	if (mDiagram.isNull()) {
 		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
@@ -69,8 +69,9 @@ QString MasterGeneratorBase::generate()
 	QString mainCode;
 	semantics::SemanticTree const *mainControlFlow = mReadableControlFlowGenerator->generate();
 	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
-		mainCode = mainControlFlow->toString(1);
-		bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
+		mainCode = mainControlFlow->toString(1, indentString);
+		bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator
+				, indentString);
 		if (!subprogramsResult) {
 			if (supportsGotoGeneration()) {
 				mainCode = QString();
@@ -89,9 +90,9 @@ QString MasterGeneratorBase::generate()
 				" Generating it into the code with 'goto' statements."));
 		semantics::SemanticTree const *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 		if (gotoMainControlFlow) {
-			mainCode = gotoMainControlFlow->toString(1);
+			mainCode = gotoMainControlFlow->toString(1, indentString);
 			bool const gotoSubprogramsResult = mCustomizer->factory()
-					->subprograms()->generate(mGotoControlFlowGenerator);
+					->subprograms()->generate(mGotoControlFlowGenerator, indentString);
 			if (!gotoSubprogramsResult) {
 				mainCode = QString();
 			}
@@ -111,14 +112,14 @@ QString MasterGeneratorBase::generate()
 	resultCode.replace("@@SUBPROGRAMS_FORWARDING@@", mCustomizer->factory()->subprograms()->forwardDeclarations());
 	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->implementations());
 	resultCode.replace("@@THREADS_FORWARDING@@", mCustomizer->factory()->threads().generateDeclarations());
-	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations());
+	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations(indentString));
 	resultCode.replace("@@MAIN_CODE@@", mainCode);
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->initCode(), 1));
+			mCustomizer->factory()->initCode(), 1, indentString));
 	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->terminateCode(), 1));
+			mCustomizer->factory()->terminateCode(), 1, indentString));
 	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->isrHooksCode(), 1));
+			mCustomizer->factory()->isrHooksCode(), 1, indentString));
 	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");

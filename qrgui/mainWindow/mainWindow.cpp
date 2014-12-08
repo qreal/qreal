@@ -883,13 +883,11 @@ void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, in
 		, QString const &propertyValue)
 {
 	text::QScintillaTextEdit *textEdit = new text::QScintillaTextEdit(index, role);
+	textEdit->setCurrentLanguage(text::Languages::python());
 
 	if (!propertyValue.isEmpty()) {
 		textEdit->setText(propertyValue.toUtf8());
 	}
-
-	textEdit->setPythonLexer();
-	textEdit->setPythonEditorProperties();
 
 	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &))
 			, this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));

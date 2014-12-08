@@ -44,7 +44,7 @@ public:
 
 	/// Starts code generation process. Returns path to file with generated code
 	/// if it was successfull and an empty string otherwise.
-	virtual QString generate();
+	virtual QString generate(QString const &indentString);
 
 protected:
 	virtual GeneratorCustomizer *createCustomizer() = 0;
