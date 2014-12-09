@@ -41,7 +41,8 @@ bool TextManager::openFile(QString const &filePath, QString const &generatorName
 		mModified.insert(filePath, QPair<bool, bool>(false, false));
 		mGeneratorName.insert(filePath, generatorName);
 
-		connect(area, SIGNAL(textWasModified(gui::QScintillaTextEdit*)), this, SLOT(setModified(gui::QScintillaTextEdit*)));
+		connect(area, SIGNAL(textWasModified(text::QScintillaTextEdit*))
+				, this, SLOT(setModified(text::QScintillaTextEdit*)));
 
 		return true;
 	}

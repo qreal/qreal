@@ -16,7 +16,6 @@ struct LanguageInfo
 {
 	~LanguageInfo()
 	{
-		delete lexer;
 	}
 
 	/// The extension of the files containing code on this language.
@@ -33,7 +32,7 @@ struct LanguageInfo
 	int tabSize;
 
 	/// A pointer to text edit colorer object; nullptr can be passed to disable coloring.
-	QsciLexer *lexer;  // Has ownership.
+	QSharedPointer<QsciLexer> lexer;
 
 	/// Help method that returns an indent string using the specified indentation info.
 	QString indent() const
@@ -62,68 +61,68 @@ public:
 	/// Returns editor settings when it edits information on an unknown language.
 	static LanguageInfo textFileInfo(QString const &extension)
 	{
-		return {extension                                                    /* extension */
+		return LanguageInfo{extension                                        /* extension */
 				, QObject::tr("Text File")                                   /* extension description */
 				, true                                                       /* tabs indentation */
-				, 4                                                          /* tab size */
-				, nullptr                                                    /* lexer */
+				, 8                                                          /* tab size */
+				, QSharedPointer<QsciLexer>(nullptr)                         /* lexer */
 		};
 	}
 
 	/// Returns the information about the c language.
 	static LanguageInfo c()
 	{
-		return {"c"                                                          /* extension */
+		return LanguageInfo{"c"                                              /* extension */
 				, QObject::tr("C Language Source File")                      /* extension description */
 				, true                                                       /* tabs indentation */
-				, 4                                                          /* tab size */
-				, new QsciLexerCPP()                                         /* lexer */
+				, 8                                                          /* tab size */
+				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
 		};
 	}
 
 	/// The information about the russian algorithmic language.
 	static LanguageInfo russianC()
 	{
-		return {QString::fromUtf8("си")                                      /* extension */
+		return LanguageInfo{QString::fromUtf8("си")                          /* extension */
 				, QObject::tr("Russian Algorithmic Language Source File")    /* extension description */
 				, true                                                       /* tabs indentation */
-				, 4                                                          /* tab size */
+				, 8                                                          /* tab size */
 				/// @todo: write own lexer
-				, new QsciLexerCPP()                                         /* lexer */
+				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
 		};
 	}
 
 	/// The information about the python language.
 	static LanguageInfo python()
 	{
-		return {"py"                                                         /* extension */
+		return LanguageInfo{"py"                                             /* extension */
 				, QObject::tr("Python Source File")                          /* extension description */
 				, false                                                      /* tabs indentation */
 				, 2                                                          /* tab size */
-				, new QsciLexerPython()                                      /* lexer */
+				, QSharedPointer<QsciLexer>(new QsciLexerPython())           /* lexer */
 		};
 	}
 
 	/// The information about the qt-script language.
 	static LanguageInfo qtScript()
 	{
-		return {"qts"                                                        /* extension */
+		return LanguageInfo{"qts"                                            /* extension */
 				, QObject::tr("QtSctipt Language Source File")               /* extension description */
 				, true                                                       /* tabs indentation */
-				, 4                                                          /* tab size */
-				, new QsciLexerCPP()                                         /* lexer */
+				, 8                                                          /* tab size */
+				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
 		};
 	}
 
 	/// The information about the F# language.
 	static LanguageInfo fSharp()
 	{
-		return {"fs"                                                         /* extension */
+		return LanguageInfo{"fs"                                             /* extension */
 				, QObject::tr("F# Language Source File")                     /* extension description */
 				, false                                                      /* tabs indentation */
 				, 4                                                          /* tab size */
 				/// @todo: write own lexer
-				, new QsciLexerCPP()                                         /* lexer */
+				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
 		};
 	}
 

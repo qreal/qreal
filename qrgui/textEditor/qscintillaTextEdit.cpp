@@ -21,20 +21,19 @@ QScintillaTextEdit::~QScintillaTextEdit()
 	emit textSaved(text(), mIndex, mRole);
 }
 
-LanguageInfo const &QScintillaTextEdit::currentLanguage() const
+LanguageInfo QScintillaTextEdit::currentLanguage() const
 {
-	return *mLanguage;
+	return mLanguage;
 }
 
 void QScintillaTextEdit::setCurrentLanguage(LanguageInfo const &language)
 {
 	setLexer(0);
-	delete mLanguage;
 
-	mLanguage = &language;
-	setIndentationsUseTabs(mLanguage->tabIndentation);
-	setIndentationWidth(mLanguage->tabSize);
-	setLexer(mLanguage->lexer);
+	mLanguage = language;
+	setIndentationsUseTabs(mLanguage.tabIndentation);
+	setTabWidth(mLanguage.tabSize);
+	setLexer(mLanguage.lexer.data());
 }
 
 void QScintillaTextEdit::init()
@@ -53,6 +52,9 @@ void QScintillaTextEdit::setDefaultSettings()
 	// Auto indent
 	setAutoIndent(true);
 	setIndentationGuides(false);
+
+	// Tab size will be used
+	setIndentationWidth(0);
 
 	// Whitespaces visibility
 	setWhitespaceVisibility(QsciScintilla::WsVisible);

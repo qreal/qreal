@@ -25,7 +25,7 @@ public:
 	~QScintillaTextEdit();
 
 	/// Returns a reference to an object that keeps current editor settings.s
-	LanguageInfo const &currentLanguage() const;
+	LanguageInfo currentLanguage() const;
 
 	/// Applies language editor settings to current editor instance.
 	/// Takes ownership on passed language.
@@ -47,7 +47,7 @@ private:
 
 	QPersistentModelIndex const mIndex;
 	int const mRole;
-	LanguageInfo const *mLanguage;
+	LanguageInfo mLanguage;
 };
 
 }
