@@ -77,7 +77,7 @@ QString TrikFSharpGeneratorPlugin::defaultFilePath(QString const &projectName) c
 
 text::LanguageInfo TrikFSharpGeneratorPlugin::language() const
 {
-	return qReal::text::Languages::fSharp();
+	return qReal::text::Languages::fSharp({ "robot" });
 }
 
 QString TrikFSharpGeneratorPlugin::generatorName() const

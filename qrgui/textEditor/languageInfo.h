@@ -62,31 +62,31 @@ public:
 	static LanguageInfo pickByExtension(QString const &extension);
 
 	/// Returns editor settings when it edits information on an unknown language.
-	static LanguageInfo textFileInfo(QString const &extension)
+	static LanguageInfo textFileInfo(QString const &extension, QStringList const &additionalTokens = QStringList())
 	{
 		return LanguageInfo{extension                                        /* extension */
 				, QObject::tr("Text File")                                   /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
 				, QSharedPointer<QsciLexer>(nullptr)                         /* lexer */
-				, {}                                                         /* additional autocompletion tokens */
+				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
 
 	/// Returns the information about the c language.
-	static LanguageInfo c()
+	static LanguageInfo c(QStringList const &additionalTokens = QStringList())
 	{
 		return LanguageInfo{"c"                                              /* extension */
 				, QObject::tr("C Language Source File")                      /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
 				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
-				, {}                                                         /* additional autocompletion tokens */
+				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
 
 	/// The information about the russian algorithmic language.
-	static LanguageInfo russianC()
+	static LanguageInfo russianC(QStringList const &additionalTokens = QStringList())
 	{
 		return LanguageInfo{QString::fromUtf8("си")                          /* extension */
 				, QObject::tr("Russian Algorithmic Language Source File")    /* extension description */
@@ -94,36 +94,36 @@ public:
 				, 8                                                          /* tab size */
 				/// @todo: write own lexer
 				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
-				, {}                                                         /* additional autocompletion tokens */
+				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
 
 	/// The information about the python language.
-	static LanguageInfo python()
+	static LanguageInfo python(QStringList const &additionalTokens = QStringList())
 	{
 		return LanguageInfo{"py"                                             /* extension */
 				, QObject::tr("Python Source File")                          /* extension description */
 				, false                                                      /* tabs indentation */
 				, 2                                                          /* tab size */
 				, QSharedPointer<QsciLexer>(new QsciLexerPython())           /* lexer */
-				, {}                                                         /* additional autocompletion tokens */
+				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
 
 	/// The information about the qt-script language.
-	static LanguageInfo qtScript()
+	static LanguageInfo qtScript(QStringList const &additionalTokens = QStringList())
 	{
 		return LanguageInfo{"qts"                                            /* extension */
 				, QObject::tr("QtScript Language Source File")               /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
 				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
-				, {}                                                         /* additional autocompletion tokens */
+				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
 
 	/// The information about the F# language.
-	static LanguageInfo fSharp()
+	static LanguageInfo fSharp(QStringList const &additionalTokens = QStringList())
 	{
 		return LanguageInfo{"fs"                                             /* extension */
 				, QObject::tr("F# Language Source File")                     /* extension description */
@@ -131,7 +131,7 @@ public:
 				, 4                                                          /* tab size */
 				/// @todo: write own lexer
 				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
-				, {}                                                         /* additional autocompletion tokens */
+				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
 
