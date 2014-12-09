@@ -1,5 +1,9 @@
 #include "qscintillaTextEdit.h"
 
+#include <QtWidgets/QShortcut>
+
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciapis.h>
+
 using namespace qReal;
 using namespace text;
 
@@ -34,6 +38,15 @@ void QScintillaTextEdit::setCurrentLanguage(LanguageInfo const &language)
 	setIndentationsUseTabs(mLanguage.tabIndentation);
 	setTabWidth(mLanguage.tabSize);
 	setLexer(mLanguage.lexer.data());
+
+	if (mLanguage.lexer.data()) {
+		QsciAPIs * const api = new QsciAPIs(mLanguage.lexer.data());
+		for (QString const &additionalToken : mLanguage.additionalAutocompletionTokens) {
+			api->add(additionalToken);
+		}
+
+		api->prepare();
+	}
 }
 
 void QScintillaTextEdit::init()
@@ -69,7 +82,7 @@ void QScintillaTextEdit::setDefaultSettings()
 	setAutoCompletionCaseSensitivity(true);
 	setAutoCompletionReplaceWord(true);
 	setAutoCompletionShowSingle(true);
-	setAutoCompletionThreshold(2);
+	setAutoCompletionThreshold(1);
 
 	// Autohighlighting of brackets
 	setBraceMatching(QsciScintilla::SloppyBraceMatch);
@@ -87,6 +100,10 @@ void QScintillaTextEdit::setDefaultSettings()
 
 	// Input encoding
 	setUtf8(true);
+
+	// Ctrl + Space Autocomplete
+	QShortcut * const ctrlSpace = new QShortcut(QKeySequence("Ctrl+Space"), this);
+	connect(ctrlSpace, &QShortcut::activated, this, &QScintillaTextEdit::autoCompleteFromAll);
 }
 
 void QScintillaTextEdit::emitTextWasModified()

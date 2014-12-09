@@ -212,7 +212,7 @@ QString ProjectManager::textFileFilters() const
 {
 	QStringList result;
 	for (text::LanguageInfo const &language : text::Languages::knownLanguages()) {
-		result << language.extensionDescription;
+		result << QString("%1 (*.%2)").arg(language.extensionDescription, language.extension);
 	}
 
 	return result.join(";;");

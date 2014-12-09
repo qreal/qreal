@@ -23,6 +23,7 @@ INCLUDEPATH = \
 	$$PWD/ \
 	$$PWD/../ \
 	$$PWD/../../ \
+	$$PWD/../../thirdparty/qscintilla/Qt4Qt5 \
 
 HEADERS += \
 	$$PWD/textEditorDeclSpec.h \

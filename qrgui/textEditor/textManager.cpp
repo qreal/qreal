@@ -249,8 +249,10 @@ bool TextManager::saveText(bool saveAs)
 	QString const filepath = path(area);
 	bool const defaultPath = isDefaultPath(filepath);
 
-	QString editorExtension = area->currentLanguage().extensionDescription;
-	QString const extensionDescriptions = tr("All files (*)") + ";;" + editorExtension;
+	QString editorExtension = QString("%1 (*.%2)").arg(
+			area->currentLanguage().extensionDescription
+			, area->currentLanguage().extension);
+	QString const extensionDescriptions = editorExtension + ";;" + tr("All files (*)");
 	QString *currentExtensionDescription = &editorExtension;
 
 	if (saveAs) {

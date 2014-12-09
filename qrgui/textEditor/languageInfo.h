@@ -34,6 +34,9 @@ struct LanguageInfo
 	/// A pointer to text edit colorer object; nullptr can be passed to disable coloring.
 	QSharedPointer<QsciLexer> lexer;
 
+	/// A list of tokens that will be proposed to user in autocompletion window.
+	QStringList additionalAutocompletionTokens;
+
 	/// Help method that returns an indent string using the specified indentation info.
 	QString indent() const
 	{
@@ -66,6 +69,7 @@ public:
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
 				, QSharedPointer<QsciLexer>(nullptr)                         /* lexer */
+				, {}                                                         /* additional autocompletion tokens */
 		};
 	}
 
@@ -77,6 +81,7 @@ public:
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
 				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, {}                                                         /* additional autocompletion tokens */
 		};
 	}
 
@@ -89,6 +94,7 @@ public:
 				, 8                                                          /* tab size */
 				/// @todo: write own lexer
 				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, {}                                                         /* additional autocompletion tokens */
 		};
 	}
 
@@ -100,6 +106,7 @@ public:
 				, false                                                      /* tabs indentation */
 				, 2                                                          /* tab size */
 				, QSharedPointer<QsciLexer>(new QsciLexerPython())           /* lexer */
+				, {}                                                         /* additional autocompletion tokens */
 		};
 	}
 
@@ -107,10 +114,11 @@ public:
 	static LanguageInfo qtScript()
 	{
 		return LanguageInfo{"qts"                                            /* extension */
-				, QObject::tr("QtSctipt Language Source File")               /* extension description */
+				, QObject::tr("QtScript Language Source File")               /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
 				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, {}                                                         /* additional autocompletion tokens */
 		};
 	}
 
@@ -123,6 +131,7 @@ public:
 				, 4                                                          /* tab size */
 				/// @todo: write own lexer
 				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, {}                                                         /* additional autocompletion tokens */
 		};
 	}
 
