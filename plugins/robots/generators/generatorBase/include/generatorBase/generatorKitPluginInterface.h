@@ -15,11 +15,6 @@ class GeneratorKitPluginInterface
 public:
 	virtual ~GeneratorKitPluginInterface() {}
 
-	/// Returns an information about the language code on which will be generated;
-	/// this information will be used by text editors when user will be edit the generated code.
-	/// Transfers ownership.
-//	virtual qReal::text::LanguageInfo *targetLanguage() const = 0;
-
 	/// Internal id of a generator, must be unique.
 	virtual QString generatorName() const = 0;
 

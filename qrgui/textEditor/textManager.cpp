@@ -166,37 +166,6 @@ void TextManager::onTabClosed(QFileInfo const &file)
 	closeFile(file.absoluteFilePath());
 }
 
-//void TextManager::addExtensionDescriptionByGenerator(QString const &generatorName, QString const &description)
-//{
-//	mExtensionDescriptionByGenerator.insert(generatorName, description);
-//}
-
-//void TextManager::addExtensionDescriptionByExtension(QString const &extension, QString const &description)
-//{
-//	mExtensionDescriptionByExtension.insert(extension, description);
-//}
-
-//void TextManager::removeExtensions()
-//{
-//	mExtensionDescriptionByGenerator.clear();
-//	mExtensionDescriptionByExtension.clear();
-//}
-
-//QString TextManager::extensionDescriptionByGenerator(QString const &generatorName) const
-//{
-//	return mExtensionDescriptionByGenerator.value(generatorName, QString());
-//}
-
-//QString TextManager::extensionDescriptionByExtension(QString const &extension) const
-//{
-//	return mExtensionDescriptionByExtension.value(extension, QString());
-//}
-
-//QList<QString> TextManager::extensionDescriptions() const
-//{
-//	return mExtensionDescriptionByGenerator.values();
-//}
-
 void TextManager::showInTextEditor(QFileInfo const &fileInfo
 		, QString const &genName, text::LanguageInfo const &language)
 {

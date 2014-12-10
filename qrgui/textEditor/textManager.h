@@ -44,12 +44,6 @@ public:
 	bool isDefaultPath(QString const &path) const;
 	bool isModified(QString const &path) const;
 	bool isModifiedEver(QString const &path) const;
-//	void addExtensionDescriptionByGenerator(QString const &generatorName, QString const &description);
-//	void addExtensionDescriptionByExtension(QString const &extension, QString const &description);
-//	void removeExtensions();
-//	QString extensionDescriptionByGenerator(QString const &genName) const;
-//	QString extensionDescriptionByExtension(QString const &ext) const;
-//	QList<QString> extensionDescriptions() const;
 
 	/// Opens new tab with file created by some generator in text editor and shows a text in it
 	/// @param fileInfo A filepath to file with text
@@ -85,12 +79,6 @@ private:
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMultiHash<Id, QString> mDiagramCodeManager;
-
-//	/// Contains descriptions of file extensions (generator name, description of extension). Need for save dialog.
-//	QMap<QString, QString> mExtensionDescriptionByGenerator;
-
-//	/// Contains descriptions of file extensions (extension, description of extension). Need for save dialog.
-//	QMap<QString, QString> mExtensionDescriptionByExtension;
 
 	gui::MainWindowInterpretersInterface &mMainWindow;
 	SystemEvents &mSystemEvents;
