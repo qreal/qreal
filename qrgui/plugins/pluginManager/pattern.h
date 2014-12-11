@@ -4,7 +4,7 @@
 
 #include <qrkernel/ids.h>
 
-#include "pluginsManagerDeclSpec.h"
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 namespace qReal {
 
@@ -53,8 +53,8 @@ public:
 	QList<GroupNode> nodes() const;
 	QList<GroupEdge> edges() const;
 
-	QString inNode()const;
-	QString outNode()const;
+	QString inNode() const;
+	QString outNode() const;
 	void setInNode(QString const &id);
 	void setOutNode(QString const &id);
 

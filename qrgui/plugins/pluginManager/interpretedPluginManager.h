@@ -1,10 +1,9 @@
 #pragma once
 
-#include "plugins/interpretedPluginInterface/interpretedPluginInterface.h"
-
 #include <qrutils/pluginManagers/pluginManager.h>
 
-#include "pluginsManagerDeclSpec.h"
+#include <plugins/interpretedPluginInterface/interpretedPluginInterface.h>
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 namespace qReal {
 

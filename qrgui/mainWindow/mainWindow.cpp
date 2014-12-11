@@ -73,7 +73,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	, mEditorManagerProxy(new EditorManager())
 	, mPropertyModel(mEditorManagerProxy)
 	, mSystemEvents(new SystemEvents())
-	, mTextManager(new TextManager(*mSystemEvents, *this))
+	, mTextManager(new text::TextManager(*mSystemEvents, *this))
 	, mRootIndex(QModelIndex())
 	, mErrorReporter(nullptr)
 	, mIsFullscreen(false)
@@ -689,7 +689,7 @@ void MainWindow::changeWindowTitle()
 {
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
 
-	QScintillaTextEdit *area = dynamic_cast<QScintillaTextEdit *>(currentTab());
+	text::QScintillaTextEdit *area = dynamic_cast<text::QScintillaTextEdit *>(currentTab());
 	if (area) {
 		QString const filePath = mTextManager->path(area);
 		setWindowTitle(windowTitle + " " + filePath);
@@ -702,7 +702,7 @@ void MainWindow::changeWindowTitle()
 
 void MainWindow::setTextChanged(bool changed)
 {
-	QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
+	text::QScintillaTextEdit *area = static_cast<text::QScintillaTextEdit *>(currentTab());
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
 	QString const filePath = mTextManager->path(area);
 	QString const chIndicator = changed ? "*" : "";
@@ -793,7 +793,7 @@ void MainWindow::closeTab(int index)
 {
 	QWidget * const widget = mUi->tabs->widget(index);
 	EditorView * const diagram = dynamic_cast<EditorView *>(widget);
-	QScintillaTextEdit * const possibleCodeTab = dynamic_cast<QScintillaTextEdit *>(widget);
+	text::QScintillaTextEdit * const possibleCodeTab = dynamic_cast<text::QScintillaTextEdit *>(widget);
 
 	QString const path = mTextManager->path(possibleCodeTab);
 
@@ -882,14 +882,12 @@ void MainWindow::openShapeEditor(Id const &id
 void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role
 		, QString const &propertyValue)
 {
-	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
+	text::QScintillaTextEdit *textEdit = new text::QScintillaTextEdit(index, role);
+	textEdit->setCurrentLanguage(text::Languages::python());
 
 	if (!propertyValue.isEmpty()) {
 		textEdit->setText(propertyValue.toUtf8());
 	}
-
-	textEdit->setPythonLexer();
-	textEdit->setPythonEditorProperties();
 
 	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &))
 			, this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));

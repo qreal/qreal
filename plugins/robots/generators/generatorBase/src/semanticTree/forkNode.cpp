@@ -19,8 +19,8 @@ QLinkedList<SemanticNode *> ForkNode::children() const
 	return {};
 }
 
-QString ForkNode::toStringImpl(generatorBase::GeneratorCustomizer &customizer, int indent) const
+QString ForkNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
 {
 	QString const code = customizer.factory()->forkCallGenerator(mId, customizer, mThreads.toList())->generate();
-	return utils::StringUtils::addIndent(code, indent);
+	return utils::StringUtils::addIndent(code, indent, indentString);
 }

@@ -28,7 +28,7 @@ public:
 
 	/// Generates code by this tree. Target language is defined with customizer
 	/// that was passed into constructor.
-	QString toString(int indent) const;
+	QString toString(int indent, QString const &indentString) const;
 
 	/// Produces new instance of semantic node binded to specified block
 	/// autodetecting block`s semantics

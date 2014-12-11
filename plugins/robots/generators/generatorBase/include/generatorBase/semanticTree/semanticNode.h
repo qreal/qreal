@@ -26,7 +26,7 @@ public:
 	void addLabel();
 
 	/// Generates code for this semantic node
-	QString toString(GeneratorCustomizer &customizer, int indent) const;
+	QString toString(GeneratorCustomizer &customizer, int indent, QString const &indentString) const;
 
 	/// Performs deep (recursive) search in children subhierarchy and returns
 	/// a node with specified id binded if such was found or NULL otherwise.
@@ -37,7 +37,7 @@ protected:
 
 	virtual QLinkedList<SemanticNode *> children() const = 0;
 
-	virtual QString toStringImpl(GeneratorCustomizer &customizer, int indent) const = 0;
+	virtual QString toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const = 0;
 
 	qReal::Id mId;
 	SemanticNode *mParentNode;

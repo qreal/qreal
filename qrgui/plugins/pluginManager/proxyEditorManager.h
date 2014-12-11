@@ -12,8 +12,9 @@
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
 
+#include <plugins/editorPluginInterface/editorInterface.h>
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
-#include "plugins/editorPluginInterface/editorInterface.h"
 
 #include "pluginsManagerDeclSpec.h"
 

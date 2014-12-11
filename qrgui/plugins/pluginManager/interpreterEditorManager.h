@@ -14,10 +14,10 @@
 #include <qrrepo/logicalRepoApi.h>
 #include <qrrepo/repoApi.h>
 
-#include "plugins/editorPluginInterface/editorInterface.h"
+#include <plugins/editorPluginInterface/editorInterface.h>
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
-
-#include "interpretedPluginManager.h"
+#include "plugins/pluginManager/interpretedPluginManager.h"
 
 #include "pluginsManagerDeclSpec.h"
 

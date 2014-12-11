@@ -30,10 +30,10 @@ void IfNode::transformToSimple()
 	mIsSimple = true;
 }
 
-QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
 {
 	if (mIsSimple) {
-		return mThenZone->toString(customizer, indent);
+		return mThenZone->toString(customizer, indent, indentString);
 	}
 
 	if (mThenZone->isEmpty() && mElseZone->isEmpty()) {
@@ -42,10 +42,10 @@ QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
 
 	bool const elseIsEmpty = mElseZone->isEmpty();
 	QString result = utils::StringUtils::addIndent(customizer.factory()->
-			ifGenerator(mId, customizer, elseIsEmpty, mAddNotToCondition)->generate(), indent);
+			ifGenerator(mId, customizer, elseIsEmpty, mAddNotToCondition)->generate(), indent, indentString);
 
-	QString const thenBlock = mThenZone->toString(customizer, indent + 1);
-	QString const elseBlock = mElseZone->toString(customizer, indent + 1);
+	QString const thenBlock = mThenZone->toString(customizer, indent + 1, indentString);
+	QString const elseBlock = mElseZone->toString(customizer, indent + 1, indentString);
 
 	result.replace("@@THEN_BODY@@", thenBlock);
 	result.replace("@@ELSE_BODY@@", elseBlock);

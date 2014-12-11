@@ -21,9 +21,9 @@ Id SemanticTree::initialBlock() const
 	return mRoot->initialBlock();
 }
 
-QString SemanticTree::toString(int indent) const
+QString SemanticTree::toString(int indent, QString const &indentString) const
 {
-	return mRoot->toString(mCustomizer, indent);
+	return mRoot->toString(mCustomizer, indent, indentString);
 }
 
 SemanticNode *SemanticTree::produceNodeFor(Id const &id)

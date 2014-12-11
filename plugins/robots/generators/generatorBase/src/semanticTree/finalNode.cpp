@@ -11,10 +11,10 @@ FinalNode::FinalNode(Id const &idBinded, bool inMainDigram, QObject *parent)
 {
 }
 
-QString FinalNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString FinalNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
 {
 	return utils::StringUtils::addIndent(customizer.factory()->finalNodeGenerator(mId
-			, customizer, mInMainDiagram)->generate(), indent);
+			, customizer, mInMainDiagram)->generate(), indent, indentString);
 }
 
 QLinkedList<SemanticNode *> FinalNode::children() const

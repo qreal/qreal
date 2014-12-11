@@ -33,14 +33,9 @@ QString NxtOsekCGeneratorPlugin::defaultFilePath(QString const &projectName) con
 	return QString("nxt-tools/%1/%1.c").arg(projectName);
 }
 
-QString NxtOsekCGeneratorPlugin::extension() const
+text::LanguageInfo NxtOsekCGeneratorPlugin::language() const
 {
-	return "c";
-}
-
-QString NxtOsekCGeneratorPlugin::extensionDescription() const
-{
-	return tr("Lego NXT Source File");
+	return qReal::text::Languages::c();
 }
 
 QString NxtOsekCGeneratorPlugin::generatorName() const

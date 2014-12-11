@@ -19,7 +19,6 @@ public:
 protected:
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
-	void processGeneratedCode(QString &code) override;
 };
 
 }

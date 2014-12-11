@@ -2,7 +2,7 @@
 
 #include <qrkernel/ids.h>
 
-#include "pluginsManagerDeclSpec.h"
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 namespace qReal {
 

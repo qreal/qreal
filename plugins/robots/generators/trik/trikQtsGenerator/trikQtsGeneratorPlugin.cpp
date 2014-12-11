@@ -94,14 +94,9 @@ QString TrikQtsGeneratorPlugin::defaultFilePath(QString const &projectName) cons
 	return QString("trik/%1/%1.qts").arg(projectName);
 }
 
-QString TrikQtsGeneratorPlugin::extension() const
+text::LanguageInfo TrikQtsGeneratorPlugin::language() const
 {
-	return "qts";
-}
-
-QString TrikQtsGeneratorPlugin::extensionDescription() const
-{
-	return tr("QtScript Source File");
+	return qReal::text::Languages::qtScript({ "brick" });
 }
 
 QString TrikQtsGeneratorPlugin::generatorName() const

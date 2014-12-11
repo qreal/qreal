@@ -98,42 +98,41 @@
 <context>
     <name>nxt::osekC::NxtOsekCGeneratorPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="43"/>
         <source>Lego NXT Source File</source>
-        <translation>Файл исходного кода Lego NXT OSEK C</translation>
+        <translation type="vanished">Файл исходного кода Lego NXT OSEK C</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="80"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="75"/>
         <source>Generate code</source>
         <translation>Генерировать код</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="85"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="80"/>
         <source>Flash robot</source>
         <translation>Прошить</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="90"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="85"/>
         <source>Upload program</source>
         <translation>Загрузить программу</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="100"/>
         <source>Generate NXT OSEK code</source>
         <translation>Сгенерировать код NXT OSEK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="106"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="101"/>
         <source>Upload program to NXT device</source>
         <translation>Загрузить программу на устройство NXT</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="160"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="155"/>
         <source>flash.sh not found. Make sure it is present in QReal installation directory</source>
         <translation>Не найден скрипт flash.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="170"/>
+        <location filename="../../../../plugins/robots/generators/nxt/nxtOsekCGenerator/nxtOsekCGeneratorPlugin.cpp" line="165"/>
         <source>upload.sh not found. Make sure it is present in QReal installation directory</source>
         <translation>Не найден скрипт upload.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>

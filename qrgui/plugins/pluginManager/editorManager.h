@@ -8,15 +8,16 @@
 
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
+#include <qrutils/pluginManagers/pluginManager.h>
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
 
+#include <plugins/editorPluginInterface/editorInterface.h>
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
 #include "plugins/pluginManager/pattern.h"
 #include "plugins/pluginManager/details/patternParser.h"
-#include "plugins/editorPluginInterface/editorInterface.h"
 
-#include <qrutils/pluginManagers/pluginManager.h>
 
 #include "pluginsManagerDeclSpec.h"
 

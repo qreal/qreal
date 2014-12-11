@@ -38,7 +38,7 @@ public:
 	QString generateDeclarations() const;
 
 	/// Generates and returns the code of the section with threads code.
-	QString generateImplementations() const;
+	QString generateImplementations(QString const &indentString) const;
 
 private:
 	QString name(semantics::SemanticTree const *tree) const;

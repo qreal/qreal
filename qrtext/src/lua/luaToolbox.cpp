@@ -162,6 +162,8 @@ void LuaToolbox::clear()
 {
 	mAnalyzer->clear();
 	mInterpreter->clear();
+	mSpecialConstants.clear();
+	mSpecialIdentifiers.clear();
 }
 
 void LuaToolbox::reportErrors()
