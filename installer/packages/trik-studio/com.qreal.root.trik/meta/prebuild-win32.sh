@@ -15,7 +15,8 @@ cp    $QT_DIR/bin/Qt5Network.dll                                                
 
 cd $PWD/../data/
 rm -rf trik-runtime-builds
-git clone --depth=0 https://github.com/qreal/trik-runtime-builds
+git clone https://github.com/qreal/trik-runtime-builds
+[ -z "${QREAL_BUILD_TAG:-}" ] && : || cd trik-runtime-builds && git checkout $QREAL_BUILD_TAG
 rm -rf winscp
 mv trik-runtime-builds/winscp $PWD
 mkdir -p trikRuntime
