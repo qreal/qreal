@@ -60,3 +60,6 @@ include(brandManager/brandManager.pri)
 
 # Mouse gestures support
 include (gestures/gestures.pri)
+
+# Interfaces for plugins with constraints
+include(constraintsPluginInterface/constraintsPluginInterface.pri)

@@ -598,8 +598,8 @@
                     </container>
                     <properties>
                         <property displayedName="Metamodel Name" type="string" name="metamodelName"/>
-                        <property displayedName="Output Dir Path" type="string" name="outputDirPath"/>
-                        <property displayedName="Dir Path to QReal" type="string" name="pathToQReal"/>
+                        <property displayedName="Output Dir Path" type="DirectoryPath" name="outputDirPath"/>
+                        <property displayedName="Dir Path to QReal" type="DirectoryPath" name="pathToQReal"/>
                     </properties>
                     <explodesTo/>
                 </logic>

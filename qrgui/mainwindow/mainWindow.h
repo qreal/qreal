@@ -27,6 +27,7 @@
 #include "pluginManager/interpreterEditorManager.h"
 #include "pluginManager/proxyEditorManager.h"
 #include "pluginManager/toolPluginManager.h"
+#include "pluginManager/constraintsManager.h"
 #include "pluginManager/exploser.h"
 
 #include "models/logicalModelAssistApi.h"
@@ -122,6 +123,9 @@ public:
 	virtual bool unloadPlugin(QString const &pluginName);
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
+
+	virtual bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId);
+	virtual bool loadConstraintsPlugin(QString const &fileName);
 
 	virtual void saveDiagramAsAPictureToFile(QString const &fileName);
 	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles);
@@ -389,6 +393,7 @@ private:
 	Controller *mController;
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
+	ConstraintsManager mConstraintsManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;

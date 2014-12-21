@@ -978,6 +978,16 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 	return true;
 }
 
+bool MainWindow::unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId)
+{
+	if (mConstraintsManager.pluginsIds().contains(Id(pluginId)) && mConstraintsManager.pluginsNames().contains(pluginName)) {
+		if (!mConstraintsManager.unloadPlugin(pluginId)) {
+			return false;
+		}
+	}
+	return true;
+}
+
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
 	QString const error = mEditorManagerProxy.loadPlugin(fileName);
@@ -991,6 +1001,14 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 	}
 
 	mUi->paletteTree->initDone();
+	return true;
+}
+
+bool MainWindow::loadConstraintsPlugin(QString const &fileName)
+{
+	if (!mConstraintsManager.loadPlugin(fileName)) {
+		return false;
+	}
 	return true;
 }
 

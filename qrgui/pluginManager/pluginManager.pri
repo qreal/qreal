@@ -3,6 +3,7 @@ HEADERS += \
 	$$PWD/listenerManager.h \
 	$$PWD/listenerApi.h \
 	$$PWD/toolPluginManager.h \
+	$$PWD/constraintsManager.h \
 	$$PWD/interpreterEditorManager.h \
 	$$PWD/editorManagerInterface.h \
 	$$PWD/proxyEditorManager.h \
@@ -17,6 +18,7 @@ SOURCES += \
 	$$PWD/editorManager.cpp \
 	$$PWD/listenerManager.cpp \
 	$$PWD/toolPluginManager.cpp \
+	$$PWD/constraintsManager.cpp \
 	$$PWD/interpreterEditorManager.cpp \
 	$$PWD/proxyEditorManager.cpp \
 	$$PWD/pattern.cpp \
