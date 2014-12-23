@@ -3,6 +3,7 @@
 # Path to Qt and Qt Installer Framework must be to bin folder (for example ~/Qt/5.3/gcc_64/bin or ~/Qt/QtIFW-1.5.0/bin/).
 # This script will build the installer using the config in './config/$3-config.xml',
 # and all components in 'packages/qreal-base' and 'packages/$3'. 'qrgui' will be renamed to $3.
+# If QREAL_BUILD_TAG is nonempty then the version will be built using dependencies tagged with its value.
 
 set -o nounset
 set -o errexit
@@ -29,12 +30,14 @@ $QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT-$OS.xml -p packages/qr
 echo "Building offline installer..."
 $QTIFW_DIR/binarycreator --offline-only -c config/$PRODUCT-$OS.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-offline-$OS-installer
 
+[ -f ~/.ssh/id_rsa ] && : || echo "Done"; exit 0
+
 echo "Building updates repository... This step can be safely skipped, the offline installer is already ready, press Ctrl+C if you are not sure what to do next."
 rm -rf $PRODUCT-repository
 $QTIFW_DIR/repogen -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-repository
 
 echo "Uploading repository to server... This step can be also safely skipped, the offine installer is already ready, press Ctrl+C if you are not sure what to do next."
-scp -r $PRODUCT-repository/* qrealproject@195.19.241.150:/home/qrealproject/public/$PRODUCT-repo-$OS
+scp -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -r $PRODUCT-repository/* qrealproject@195.19.241.150:/home/qrealproject/public/$PRODUCT-repo-$OS
 
 echo "Removing temporary files..."
 rm -rf $PRODUCT-repository
