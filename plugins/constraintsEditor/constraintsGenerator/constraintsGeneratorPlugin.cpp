@@ -63,7 +63,8 @@ void ConstraintsGeneratorPlugin::generate()
 						  , SettingsManager::value("pathToQmake", "").toString()
 						  , SettingsManager::value("pathToMake", "").toString()
 						  , SettingsManager::value("pluginExtension", "").toString()
-						  , SettingsManager::value("prefix", "").toString());
+						  , SettingsManager::value("prefix", "").toString()
+						  , mGenerator.buildConfiguration());
 		}
 	}
 }
@@ -74,7 +75,9 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 		, QString const &commandFirst
 		, QString const &commandSecond
 		, QString const &extension
-		, QString const &prefix)
+		, QString const &prefix
+		, QString const &buildConfiguration
+		)
 {
 	int const progressBarWidth = 240;
 	int const progressBarHeight = 20;
@@ -111,7 +114,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 
 	QProcess builder;
 	builder.setWorkingDirectory(directoryName);
-	builder.start(commandFirst);
+	builder.start(commandFirst, {"CONFIG+=" + buildConfiguration});
 
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);

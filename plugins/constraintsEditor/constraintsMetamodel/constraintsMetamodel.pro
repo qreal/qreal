@@ -3,4 +3,3 @@ QREAL_EDITOR_PATH = constraintsEditor/constraintsMetamodel
 ROOT = ../../..
 
 include (../../../plugins/editorsSdk/editorsCommon.pri)
-

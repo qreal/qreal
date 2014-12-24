@@ -28,6 +28,7 @@ public:
 	QString constraintConstraintsModelName();
 	QString constraintNormalizerConstraintsModelName();
 	QString constraintModelId();
+	QString buildConfiguration();
 
 private:
 	bool isCorrectedName(QString const &name);
@@ -42,6 +43,7 @@ private:
 	QString mConstraintConstraintsModelName;
 	QString mConstraintNormalizerConstraintsModelName;
 	QString mConstraintModelId;
+	QString mBuildConfiguration;
 };
 
 }

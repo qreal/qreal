@@ -1006,10 +1006,7 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 
 bool MainWindow::loadConstraintsPlugin(QString const &fileName)
 {
-	if (!mConstraintsManager.loadPlugin(fileName)) {
-		return false;
-	}
-	return true;
+	return mConstraintsManager.loadPlugin(fileName);
 }
 
 bool MainWindow::pluginLoaded(QString const &pluginName)

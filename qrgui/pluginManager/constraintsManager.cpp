@@ -16,6 +16,7 @@ ConstraintsManager::ConstraintsManager()
 	}
 
 	mPluginsDir.cd("plugins");
+	mPluginsDir.cd("tools");
 
 	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
 		// TODO: Free memory
@@ -25,7 +26,6 @@ ConstraintsManager::ConstraintsManager()
 		if (plugin) {
 			ConstraintsPluginInterface *constraintsPlugin = qobject_cast<ConstraintsPluginInterface *>(plugin);
 			if (constraintsPlugin) {
-//				mPlugins << constraintsPlugin;
 				mPluginsLoaded += constraintsPlugin->id();
 				mPluginFileName.insert(constraintsPlugin->id(), fileName);
 				mLoaders.insert(fileName, loader);
@@ -52,7 +52,6 @@ bool ConstraintsManager::loadPlugin(const QString &pluginName)
 	if (plugin) {
 		ConstraintsPluginInterface *constraintsPlugin = qobject_cast<ConstraintsPluginInterface *>(plugin);
 		if (constraintsPlugin) {
-//			mPlugins << constraintsPlugin;
 			mPluginsLoaded += constraintsPlugin->id();
 			mPluginFileName.insert(constraintsPlugin->id(), pluginName);
 			mLoaders.insert(pluginName, loader);

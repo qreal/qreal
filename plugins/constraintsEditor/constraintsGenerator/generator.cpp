@@ -38,6 +38,9 @@ void Generator::generate(qReal::Id const &metamodel)
 {
 	mErrorReporter->clear();
 	mErrorReporter->clearErrors();
+
+	mBuildConfiguration = mLogicalModel->propertyByRoleName(metamodel, "buildConfiguration").toString();
+
 	QString outputDirPath = mLogicalModel->propertyByRoleName(metamodel, "outputDirPath").toString();
 	if (outputDirPath.isEmpty()) {
 		mErrorReporter->addCritical(tr("OutputDirPath of constraints model not found"), metamodel);
@@ -98,4 +101,9 @@ QString Generator::constraintNormalizerConstraintsModelName()
 QString Generator::constraintModelId()
 {
 	return mConstraintModelId;
+}
+
+QString Generator::buildConfiguration()
+{
+	return mBuildConfiguration;
 }

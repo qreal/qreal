@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/" version="1.0.0">
     <namespace>UML 2.0</namespace>
-    <diagram displayedName="Constraints Editor" nodeName="MetamodelConstraints" name="ConstraintsEditor">
+    <diagram displayedName="Constraints Editor" name="ConstraintsEditor" nodeName="MetamodelConstraints">
         <nonGraphicTypes>
             <enum displayedName="Error Type" name="errorTypeType">
                 <value name="warning"/>
@@ -13,17 +13,21 @@
                 <value name="true"/>
                 <value name="does not matter"/>
             </enum>
+            <enum displayedName="Build Configuration" name="buildConfiguration">
+                <value displayedName="Debug" name="debug"/>
+                <value displayedName="Release" name="release"/>
+            </enum>
         </nonGraphicTypes>
         <graphicTypes>
             <node displayedName="Constraints Diagram" description="Элемент для описания ограничений на конкретный язык. В его свойствах указывается имя соответсвующего языка. Должен вкладываться в Metamodel Constraints" name="constraintsDiagram">
                 <graphics>
                     <picture sizex="200" sizey="200">
-                        <line fill-style="none" fill="#000000" stroke-style="solid" y1="40" y2="159" stroke-width="0" x1="-1" x2="0" stroke="#000000"/>
-                        <line fill-style="none" fill="#000000" stroke-style="solid" y1="40" y2="159" stroke-width="0" x1="199" x2="200" stroke="#000000"/>
-                        <arc startAngle="1440" y1="0" y2="79" x1="0" spanAngle="1440" x2="79"/>
-                        <arc startAngle="0" y1="0" y2="79" x1="120" spanAngle="1440" x2="199"/>
-                        <arc startAngle="2880" y1="120" y2="199" x1="0" spanAngle="1440" x2="79"/>
-                        <arc startAngle="0" y1="120" y2="199" x1="120" spanAngle="-1440" x2="199"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#000000" y1="40" stroke="#000000" y2="159" x1="-1" x2="0"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#000000" y1="40" stroke="#000000" y2="159" x1="199" x2="200"/>
+                        <arc spanAngle="1440" startAngle="1440" y1="0" y2="79" x1="0" x2="79"/>
+                        <arc spanAngle="1440" startAngle="0" y1="0" y2="79" x1="120" x2="199"/>
+                        <arc spanAngle="1440" startAngle="2880" y1="120" y2="199" x1="0" x2="79"/>
+                        <arc spanAngle="-1440" startAngle="0" y1="120" y2="199" x1="120" x2="199"/>
                     </picture>
                     <labels>
                         <label textBinded="name" x="30" y="15"/>
@@ -44,7 +48,7 @@
                         <contains type="abstractErrorTypeNode"/>
                     </container>
                     <properties>
-                        <property displayedName="Language Name" type="string" name="languageName"/>
+                        <property displayedName="Language Name" name="languageName" type="string"/>
                     </properties>
                     <explodesTo/>
                 </logic>
@@ -52,9 +56,9 @@
             <node displayedName="Node Constraint" description="Элемент для задания ограничения на один конкретный узел рассматриваемого языка. Должен вкладываться в Constraints Diagram" name="nodeConstraint">
                 <graphics>
                     <picture sizex="247" sizey="196">
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="0" y2="195" stroke-width="0" x1="0" x2="246" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="39a" y2="39a" stroke-width="0" x1="1" x2="246" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="160" y2="160" stroke-width="0" x1="0a" x2="245" stroke="#000000"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="0" stroke="#000000" y2="195" x1="0" x2="246"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="39a" stroke="#000000" y2="39a" x1="1" x2="246"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="160" stroke="#000000" y2="160" x1="0a" x2="245"/>
                     </picture>
                     <labels>
                         <label textBinded="name" x="11a" y="10a"/>
@@ -69,7 +73,7 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractErrorTypeNode" overrides=""/>
+                        <parent overrides="" parentName="abstractErrorTypeNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -77,9 +81,9 @@
             <node displayedName="Edge Constraint" description="Элемент для задания ограничения на одну конкретную связь рассматриваемого языка. Должен вкладываться в Constraints Diagram" name="edgeConstraint">
                 <graphics>
                     <picture sizex="248" sizey="197">
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="0" y2="196" stroke-width="0" x1="0" x2="247" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="39a" y2="40a" stroke-width="0" x1="1" x2="247" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="160" y2="161" stroke-width="0" x1="0a" x2="246" stroke="#000000"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="0" stroke="#000000" y2="196" x1="0" x2="247"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="39a" stroke="#000000" y2="40a" x1="1" x2="247"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="160" stroke="#000000" y2="161" x1="0a" x2="246"/>
                     </picture>
                     <labels>
                         <label textBinded="name" x="11a" y="10a"/>
@@ -94,7 +98,7 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractErrorTypeNode" overrides=""/>
+                        <parent overrides="" parentName="abstractErrorTypeNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -102,7 +106,7 @@
             <node displayedName="Property" description="Сущность для задания ограничения на некоторое свойство узла или связи рассматриваемого языка. Должен вкладываться в элементы задания ограничений на узлы или связи" name="propertyNode">
                 <graphics>
                     <picture sizex="207" sizey="37">
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="0" y2="36" stroke-width="0" x1="0" x2="206" stroke="#000000"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="0" stroke="#000000" y2="36" x1="0" x2="206"/>
                     </picture>
                     <labels>
                         <label textBinded="##property## ##sign## ##value##" x="4" y="7"/>
@@ -129,9 +133,9 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Property" type="string" name="property"/>
-                        <property displayedName="Sign" type="string" name="sign"/>
-                        <property displayedName="Value" type="string" name="value"/>
+                        <property displayedName="Property" name="property" type="string"/>
+                        <property displayedName="Sign" name="sign" type="string"/>
+                        <property displayedName="Value" name="value" type="string"/>
                     </properties>
                     <explodesTo/>
                 </logic>
@@ -139,11 +143,11 @@
             <node displayedName="Incoming Links" description="Сущность для задания ограничения на набор связей рассматриваемого языка, входящих в некоторый элемент. Должен вкладываться в элементы задания ограничений на узлы" name="incomingLinks">
                 <graphics>
                     <picture sizex="199" sizey="150">
-                        <ellipse fill-style="none" fill="#ffffff" stroke-style="solid" y1="2" y2="147" stroke-width="0" x1="53" x2="196" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="45" y2="45" stroke-width="0" x1="60" x2="187" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="74" y2="75" stroke-width="0" x1="1" x2="48" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="61" y2="73" stroke-width="0" x1="32" x2="49" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="89" y2="76" stroke-width="0" x1="34" x2="48" stroke="#000000"/>
+                        <ellipse stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="2" stroke="#000000" y2="147" x1="53" x2="196"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="45" stroke="#000000" y2="45" x1="60" x2="187"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="74" stroke="#000000" y2="75" x1="1" x2="48"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="61" stroke="#000000" y2="73" x1="32" x2="49"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="89" stroke="#000000" y2="76" x1="34" x2="48"/>
                     </picture>
                     <labels>
                         <label textBinded="selection" x="79" y="19"/>
@@ -175,8 +179,8 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractNodeForNodeConstraint" overrides=""/>
-                        <parent parentName="abstractListOfElementsNode" overrides=""/>
+                        <parent overrides="" parentName="abstractNodeForNodeConstraint"/>
+                        <parent overrides="" parentName="abstractListOfElementsNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -184,11 +188,11 @@
             <node displayedName="Outgoing Links" description="Сущность для задания ограничения на набор связей рассматриваемого языка, исходящих из некоторого элемента. Должен вкладываться в элементы задания ограничений на узлы" name="outgoingLinks">
                 <graphics>
                     <picture sizex="200" sizey="151">
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="80" y2="80" stroke-width="0" x1="3" x2="52" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="69" y2="79" stroke-width="0" x1="19" x2="2" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="94" y2="81" stroke-width="0" x1="21" x2="2" stroke="#000000"/>
-                        <ellipse fill-style="none" fill="#ffffff" stroke-style="solid" y1="3" y2="147" stroke-width="0" x1="54" x2="196" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="45" y2="46" stroke-width="0" x1="61" x2="187" stroke="#000000"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="80" stroke="#000000" y2="80" x1="3" x2="52"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="69" stroke="#000000" y2="79" x1="19" x2="2"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="94" stroke="#000000" y2="81" x1="21" x2="2"/>
+                        <ellipse stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="3" stroke="#000000" y2="147" x1="54" x2="196"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="45" stroke="#000000" y2="46" x1="61" x2="187"/>
                     </picture>
                     <labels>
                         <label textBinded="selection" x="81" y="19"/>
@@ -220,8 +224,8 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractNodeForNodeConstraint" overrides=""/>
-                        <parent parentName="abstractListOfElementsNode" overrides=""/>
+                        <parent overrides="" parentName="abstractNodeForNodeConstraint"/>
+                        <parent overrides="" parentName="abstractListOfElementsNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -230,7 +234,7 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Selection" type="string" name="selection">
+                        <property displayedName="Selection" name="selection" type="string">
                             <default>all</default>
                         </property>
                     </properties>
@@ -243,8 +247,8 @@
                     <shape type="square"/>
                 </graphics>
                 <logic>
-                    <associations endType="empty_arrow" beginType="empty_arrow">
-                        <association beginName="begin" endName="end"/>
+                    <associations beginType="empty_arrow" endType="empty_arrow">
+                        <association endName="end" beginName="begin"/>
                     </associations>
                     <fromPorts/>
                     <toPorts/>
@@ -254,7 +258,7 @@
             <node displayedName="Begin Node" description="Сущность для задания ограничения на узел, находящийся в начале некоторой связи. Должен вкладываться в элементы задания ограничений на связи" name="beginNode">
                 <graphics>
                     <picture sizex="149" sizey="149">
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="0" y2="148" stroke-width="3" x1="0" x2="148" stroke="#7cfc00"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="3" fill="#ffffff" y1="0" stroke="#7cfc00" y2="148" x1="0" x2="148"/>
                     </picture>
                     <labels>
                         <label textBinded="exists" x="18" y="20"/>
@@ -285,7 +289,7 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractExistsNodeForEdge" overrides=""/>
+                        <parent overrides="" parentName="abstractExistsNodeForEdge"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -293,7 +297,7 @@
             <node displayedName="End Node" description="Сущность для задания ограничения на узел, находящийся в конце некоторой связи. Должен вкладываться в элементы задания ограничений на связи" name="endNode">
                 <graphics>
                     <picture sizex="148" sizey="149">
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="1" y2="148" stroke-width="3" x1="0" x2="147" stroke="#ff4500"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="3" fill="#ffffff" y1="1" stroke="#ff4500" y2="148" x1="0" x2="147"/>
                     </picture>
                     <labels>
                         <label textBinded="exists" x="18" y="21"/>
@@ -324,7 +328,7 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractExistsNodeForEdge" overrides=""/>
+                        <parent overrides="" parentName="abstractExistsNodeForEdge"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -332,11 +336,11 @@
             <node displayedName="Outgoing Nodes" description="Сущность для задания ограничения на набор узлов рассматриваемого языка, находящихся на других концах исходящих из некоторого элемента связей. Должен вкладываться в элементы задания ограничений на узлы" name="outgoingNodes">
                 <graphics>
                     <picture sizex="203" sizey="151">
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="40" y2="40" stroke-width="0" x1="54" x2="200" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="76" y2="76" stroke-width="0" x1="1" x2="50" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="60" y2="73" stroke-width="0" x1="34" x2="50" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="89" y2="77" stroke-width="0" x1="37" x2="51" stroke="#000000"/>
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="2" y2="148" stroke-width="0" x1="55" x2="200" stroke="#000000"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="40" stroke="#000000" y2="40" x1="54" x2="200"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="76" stroke="#000000" y2="76" x1="1" x2="50"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="60" stroke="#000000" y2="73" x1="34" x2="50"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="89" stroke="#000000" y2="77" x1="37" x2="51"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="2" stroke="#000000" y2="148" x1="55" x2="200"/>
                     </picture>
                     <labels>
                         <label textBinded="selection" x="66" y="13"/>
@@ -368,8 +372,8 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractNodeForNodeConstraint" overrides=""/>
-                        <parent parentName="abstractListOfElementsNode" overrides=""/>
+                        <parent overrides="" parentName="abstractNodeForNodeConstraint"/>
+                        <parent overrides="" parentName="abstractListOfElementsNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -377,11 +381,11 @@
             <node displayedName="Incoming Nodes" description="Сущность для задания ограничения на набор узлов рассматриваемого языка, находящихся на других концах входящих в некоторый элемент связей. Должен вкладываться в элементы задания ограничений на узлы" name="incomingNodes">
                 <graphics>
                     <picture sizex="201" sizey="150">
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="40" y2="40" stroke-width="0" x1="55" x2="199" stroke="#000000"/>
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="2" y2="147" stroke-width="0" x1="54" x2="198" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="79" y2="79" stroke-width="0" x1="3" x2="50" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="69" y2="77" stroke-width="0" x1="17" x2="2" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="92" y2="81" stroke-width="0" x1="19" x2="2" stroke="#000000"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="40" stroke="#000000" y2="40" x1="55" x2="199"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="2" stroke="#000000" y2="147" x1="54" x2="198"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="79" stroke="#000000" y2="79" x1="3" x2="50"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="69" stroke="#000000" y2="77" x1="17" x2="2"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="92" stroke="#000000" y2="81" x1="19" x2="2"/>
                     </picture>
                     <labels>
                         <label textBinded="selection" x="66" y="11"/>
@@ -413,8 +417,8 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractNodeForNodeConstraint" overrides=""/>
-                        <parent parentName="abstractListOfElementsNode" overrides=""/>
+                        <parent overrides="" parentName="abstractNodeForNodeConstraint"/>
+                        <parent overrides="" parentName="abstractListOfElementsNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -422,8 +426,8 @@
             <node displayedName="Parent" description="Сущность для задания ограничения на родителя (в смысле контейнеров) некоторого элемента рассматриваемого языка. Должен вкладываться в элементы задания ограничений на узлы" name="parent">
                 <graphics>
                     <picture sizex="150" sizey="153">
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="1" y2="151" stroke-width="2" x1="2" x2="149" stroke="#000000"/>
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="10" y2="142" stroke-width="1" x1="12" x2="141" stroke="#a9a9a9"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="2" fill="#ffffff" y1="1" stroke="#000000" y2="151" x1="2" x2="149"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="1" fill="#ffffff" y1="10" stroke="#a9a9a9" y2="142" x1="12" x2="141"/>
                     </picture>
                     <labels>
                         <label textBinded="exists" x="18" y="18"/>
@@ -454,8 +458,8 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractNodeForNodeConstraint" overrides=""/>
-                        <parent parentName="abstractExistNode" overrides=""/>
+                        <parent overrides="" parentName="abstractNodeForNodeConstraint"/>
+                        <parent overrides="" parentName="abstractExistNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -463,9 +467,9 @@
             <node displayedName="Childrens" description="Сущность для задания ограничения на детей (в смысле контейнеров) некоторого элемента рассматриваемого языка. Должен вкладываться в элементы задания ограничений на узлы" name="childrens">
                 <graphics>
                     <picture sizex="149" sizey="152">
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="1" y2="150" stroke-width="1" x1="1" x2="147" stroke="#a9a9a9"/>
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="11" y2="142" stroke-width="2" x1="10" x2="138" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="45" y2="45" stroke-width="0" x1="10" x2="137" stroke="#000000"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="1" fill="#ffffff" y1="1" stroke="#a9a9a9" y2="150" x1="1" x2="147"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="2" fill="#ffffff" y1="11" stroke="#000000" y2="142" x1="10" x2="138"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="45" stroke="#000000" y2="45" x1="10" x2="137"/>
                     </picture>
                     <labels>
                         <label textBinded="selection" x="20" y="19"/>
@@ -497,8 +501,8 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractNodeForNodeConstraint" overrides=""/>
-                        <parent parentName="abstractListOfElementsNode" overrides=""/>
+                        <parent overrides="" parentName="abstractNodeForNodeConstraint"/>
+                        <parent overrides="" parentName="abstractListOfElementsNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -506,9 +510,9 @@
             <node displayedName="Nodes Constraint" description="Элемент для задания ограничения на некоторый набор узлов рассматриваемого языка. Должен вкладываться в Constraints Diagram" name="nodesConstraint">
                 <graphics>
                     <picture sizex="244" sizey="193">
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="0" y2="192" stroke-width="0" x1="0" x2="243" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="37a" y2="38a" stroke-width="0" x1="1" x2="243" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="158" y2="159" stroke-width="0" x1="0a" x2="242" stroke="#000000"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="0" stroke="#000000" y2="192" x1="0" x2="243"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="37a" stroke="#000000" y2="38a" x1="1" x2="243"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="158" stroke="#000000" y2="159" x1="0a" x2="242"/>
                     </picture>
                     <labels>
                         <label textBinded="errorType" x="10a" y="170"/>
@@ -523,8 +527,8 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractSelectionNode" overrides=""/>
-                        <parent parentName="abstractErrorTypeNode" overrides=""/>
+                        <parent overrides="" parentName="abstractSelectionNode"/>
+                        <parent overrides="" parentName="abstractErrorTypeNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -532,9 +536,9 @@
             <node displayedName="Edges Constraint" description="Элемент для задания ограничения на некоторый набор связей рассматриваемого языка. Должен вкладываться в Constraints Diagram" name="edgesConstraint">
                 <graphics>
                     <picture sizex="244" sizey="193">
-                        <rectangle fill-style="none" fill="#ffffff" stroke-style="solid" y1="0" y2="192" stroke-width="0" x1="0" x2="243" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="37a" y2="38a" stroke-width="0" x1="1" x2="243" stroke="#000000"/>
-                        <line fill-style="none" fill="#ffffff" stroke-style="solid" y1="158" y2="159" stroke-width="0" x1="0a" x2="242" stroke="#000000"/>
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="0" stroke="#000000" y2="192" x1="0" x2="243"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="37a" stroke="#000000" y2="38a" x1="1" x2="243"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="158" stroke="#000000" y2="159" x1="0a" x2="242"/>
                     </picture>
                     <labels>
                         <label textBinded="errorType" x="10a" y="170"/>
@@ -549,8 +553,8 @@
                         <contains type="MultiOrNode"/>
                     </container>
                     <generalizations>
-                        <parent parentName="abstractSelectionNode" overrides=""/>
-                        <parent parentName="abstractErrorTypeNode" overrides=""/>
+                        <parent overrides="" parentName="abstractSelectionNode"/>
+                        <parent overrides="" parentName="abstractErrorTypeNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -559,10 +563,10 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Error Type" type="errorTypeType" name="errorType">
+                        <property displayedName="Error Type" name="errorType" type="errorTypeType">
                             <default>warning</default>
                         </property>
-                        <property displayedName="Text of error" type="string" name="errorText">
+                        <property displayedName="Text of error" name="errorText" type="string">
                             <default>fail_text</default>
                         </property>
                     </properties>
@@ -573,7 +577,7 @@
                 <logic>
                     <container/>
                     <generalizations>
-                        <parent parentName="abstractExistNode" overrides=""/>
+                        <parent overrides="" parentName="abstractExistNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -587,7 +591,7 @@
             <node displayedName="Metamodel Constraints" description="Корневой элемент модели ограничений на метамодель. В его свойствах указываются имя метамодели, на которые накладываются ограничения, и необходимые для сборки параметры" name="metamodelConstraints">
                 <graphics>
                     <picture sizex="88" sizey="79">
-                        <ellipse fill-style="none" fill="#ffffff" stroke-style="solid" y1="0" y2="78" stroke-width="0" x1="0" x2="87" stroke="#000000"/>
+                        <ellipse stroke-style="solid" fill-style="none" stroke-width="0" fill="#ffffff" y1="0" stroke="#000000" y2="78" x1="0" x2="87"/>
                     </picture>
                     <labels/>
                     <ports/>
@@ -597,9 +601,12 @@
                         <contains type="constraintsDiagram"/>
                     </container>
                     <properties>
-                        <property displayedName="Metamodel Name" type="string" name="metamodelName"/>
-                        <property displayedName="Output Dir Path" type="DirectoryPath" name="outputDirPath"/>
-                        <property displayedName="Dir Path to QReal" type="DirectoryPath" name="pathToQReal"/>
+                        <property displayedName="Metamodel Name" name="metamodelName" type="string"/>
+                        <property displayedName="Output Dir Path" name="outputDirPath" type="DirectoryPath"/>
+                        <property displayedName="Dir Path to QReal" name="pathToQReal" type="DirectoryPath"/>
+                        <property displayedName="Build Configuration" name="buildConfiguration" type="buildConfiguration">
+                            <default>release</default>
+                        </property>
                     </properties>
                     <explodesTo/>
                 </logic>
@@ -608,10 +615,10 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Count" type="string" name="count"/>
+                        <property displayedName="Count" name="count" type="string"/>
                     </properties>
                     <generalizations>
-                        <parent parentName="abstractSelectionNode" overrides=""/>
+                        <parent overrides="" parentName="abstractSelectionNode"/>
                     </generalizations>
                     <explodesTo/>
                 </logic>
@@ -622,8 +629,8 @@
                     <shape type="square"/>
                 </graphics>
                 <logic>
-                    <associations endType="no_arrow" beginType="no_arrow">
-                        <association beginName="begin" endName="end"/>
+                    <associations beginType="no_arrow" endType="no_arrow">
+                        <association endName="end" beginName="begin"/>
                     </associations>
                     <fromPorts/>
                     <toPorts/>
@@ -633,7 +640,7 @@
             <node displayedName="Multi Or Node" description="Элемент, позволяющий задавать логическое ИЛИ между группой элементарных ограничений при помощи связи 'Multi Or Edge'. Должен вкладываться в элементы задания ограничений на узлы или связи" name="MultiOrNode">
                 <graphics>
                     <picture sizex="42" sizey="44">
-                        <ellipse fill-style="solid" fill="#faebd7" stroke-style="solid" y1="2" y2="41" stroke-width="0" x1="1" x2="40" stroke="#faebd7"/>
+                        <ellipse stroke-style="solid" fill-style="solid" stroke-width="0" fill="#faebd7" y1="2" stroke="#faebd7" y2="41" x1="1" x2="40"/>
                     </picture>
                     <labels/>
                     <ports>
@@ -652,7 +659,7 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property displayedName="Exists" type="existsType" name="exists">
+                        <property displayedName="Exists" name="exists" type="existsType">
                             <default>true</default>
                         </property>
                     </properties>
@@ -660,7 +667,7 @@
                 </logic>
             </node>
         </graphicTypes>
-        <palette>
+		        <palette>
           <group name="Root Diagrams" description="Корневые элементы">
             <element name="metamodelConstraints"/>
             <element name="constraintsDiagram"/>
