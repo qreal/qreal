@@ -21,8 +21,10 @@ namespace modelsImplementation {
 class AbstractModel;
 }
 
-class ModelsAssistApi
+class ModelsAssistApi : public QObject
 {
+	Q_OBJECT
+
 public:
 	ModelsAssistApi(details::modelsImplementation::AbstractModel &model
 			, EditorManagerInterface const &editorManagerInterface);
@@ -52,6 +54,9 @@ public:
 	void setProperty(Id const &elem, QVariant const &newValue, int const role);
 	QVariant property(Id const &elem, int const role) const;
 	int roleIndexByName(Id const &elem, QString const &roleName) const;
+
+signals:
+	void propertyChangedInModelApi(Id const &elem);
 
 private:
 

@@ -29,6 +29,8 @@ public:
 
 	void reinit();
 
+	Id logicalId(Id const &element) const;
+
 private:
 	models::details::GraphicalModel *mGraphicalModel;
 	models::details::GraphicalPartModel *mGraphicalPartModel;

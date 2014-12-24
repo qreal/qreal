@@ -30,6 +30,7 @@ public:
 	explicit InterpreterEditorManager(QString const &fileName, QObject *parent = NULL);
 	~InterpreterEditorManager();
 
+	virtual MetaType metaTypeOfElement(qReal::Id const& element) const;
 	IdList editors() const override;
 	IdList diagrams(Id const &editor) const override;
 	IdList elements(Id const &diagram) const override;

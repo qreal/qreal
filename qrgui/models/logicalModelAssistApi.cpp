@@ -12,10 +12,35 @@ LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
 		, mLogicalModel(logicalModel)
 		, mEditorManager(editorManagerInterface)
 {
+	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SLOT(propertyChangedSlot(Id)));
+	QObject::connect(&mLogicalModel, SIGNAL(parentChanged(IdList)), this, SLOT(parentChangedSlot(IdList)));
+	QObject::connect(&mLogicalModel, SIGNAL(nameChanged(Id)), this, SLOT(nameChangedSlot(Id)));
+	QObject::connect(&mLogicalModel, SIGNAL(addedElementToModel(Id)), this, SLOT(addedElementToModelSlot(Id)));
+	QObject::connect(&mLogicalModel, SIGNAL(propertyChanged(Id)), this, SLOT(propertyChangedSlot(Id)));
 }
 
 LogicalModelAssistApi::~LogicalModelAssistApi()
 {
+}
+
+void LogicalModelAssistApi::propertyChangedSlot(Id const &elem)
+{
+	emit propertyChanged(elem);
+}
+
+void LogicalModelAssistApi::parentChangedSlot(IdList const &elements)
+{
+	emit parentChanged(elements);
+}
+
+void LogicalModelAssistApi::nameChangedSlot(Id const &element)
+{
+	emit nameChanged(element);
+}
+
+void LogicalModelAssistApi::addedElementToModelSlot(Id const &element)
+{
+	emit addedElementToModel(element);
 }
 
 EditorManagerInterface const &LogicalModelAssistApi::editorManagerInterface() const

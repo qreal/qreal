@@ -151,6 +151,14 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
+
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));
+	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex)), this, SLOT(checkConstraints(QModelIndex)));
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(parentChanged(IdList)), this, SLOT(checkConstraints(IdList)));
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(addedElementToModel(Id)), this, SLOT(checkConstraints(Id)));
+
 	mUsabilityTestingToolbar = new QToolBar();
 	mStartTest = new QAction(tr("Start test"), NULL);
 	mStartTest->setEnabled(true);
@@ -2249,6 +2257,108 @@ void MainWindow::updateActiveDiagram()
 	reinitModels();
 	activateItemOrDiagram(diagramId);
 	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
+}
+
+gui::Error::Severity MainWindow::severityByErrorType(CheckStatus::ErrorType const &errorType)
+{
+	if (errorType == CheckStatus::warning) {
+		return gui::Error::warning;
+	} else if (errorType == CheckStatus::critical) {
+		return gui::Error::critical;
+	} else if (errorType == CheckStatus::verification) {
+		return gui::Error::error; //else gui::Error::warning
+	}
+	return gui::Error::warning;
+}
+
+void MainWindow::checkOwnConstraints(Id const &id)
+{
+	Id const logicalId = mModels->logicalId(id);
+	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+
+	QList<CheckStatus> checkStatusList = mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManagerProxy);
+	bool checkStatus = true;
+	foreach (CheckStatus check, checkStatusList) {
+		gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
+		QString errorMessage = check.message();
+
+		if (check.checkStatus()) {
+			if (errorSeverity != gui::Error::warning) {
+				mErrorReporter->delUniqueError(errorMessage, errorSeverity, id);
+			}
+		} else {
+			checkStatus = false;
+			if (errorSeverity != gui::Error::warning) {
+				mErrorReporter->addUniqueError(errorMessage, errorSeverity, id);
+			}
+		}
+	}
+
+	if (checkStatus) {
+		foreach (Id const &graphicalId, graphicalIds) {
+			dehighlight(graphicalId);
+		}
+	} else {
+		foreach (Id const &graphicalId, graphicalIds) {
+			highlight(graphicalId, false);
+		}
+	}
+}
+
+void MainWindow::checkConstraints(Id const &id)
+{
+	EditorManagerInterface::MetaType metaType = mEditorManagerProxy.metaTypeOfElement(id);
+	checkOwnConstraints(id);
+	if (metaType == EditorManagerInterface::node) {
+		QModelIndex index = mModels->logicalModelAssistApi().indexById(id);
+		checkChildrensConstraints(id);
+		checkParentsConstraints(index);
+		checkLinksConstraints(id);
+	}
+}
+
+void MainWindow::checkConstraints(QModelIndex const &index)
+{
+	Id const id = mModels->logicalModelAssistApi().idByIndex(index);
+	checkConstraints(id);
+}
+
+void MainWindow::checkConstraints(IdList const &idList)
+{
+	foreach (Id const &id, idList) {
+		checkConstraints(id);
+	}
+}
+
+void MainWindow::checkParentsConstraints(QModelIndex const &index)
+{
+	QModelIndex parent = mModels->logicalModel()->parent(index);
+	Id const parentId = mModels->logicalModelAssistApi().idByIndex(parent);
+	if (mModels->logicalModelAssistApi().isLogicalId(parentId)) {
+		checkOwnConstraints(parentId);
+		checkParentsConstraints(parent);
+	}
+}
+
+void MainWindow::checkChildrensConstraints(Id const &id)
+{
+	IdList childrenList = mModels->logicalModelAssistApi().children(id);
+	foreach (Id const &childrenId, childrenList) {
+		if (mModels->logicalModelAssistApi().isLogicalId(childrenId)) {
+			checkOwnConstraints(childrenId);
+			checkChildrensConstraints(childrenId);
+		}
+	}
+}
+
+void MainWindow::checkLinksConstraints(Id const &id)
+{
+	IdList linksList = mModels->logicalRepoApi().links(id);
+	foreach (Id const &linkId, linksList) {
+		if (mModels->logicalModelAssistApi().isLogicalId(linkId)) {
+			checkOwnConstraints(linkId);
+		}
+	}
 }
 
 QDockWidget *MainWindow::logicalModelDock() const

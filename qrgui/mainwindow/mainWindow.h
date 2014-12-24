@@ -205,6 +205,10 @@ public slots:
 	void closeTabsWithRemovedRootElements();
 	void changeWindowTitle();
 
+	void checkConstraints(Id const &id);
+	void checkConstraints(QModelIndex const &index);
+	void checkConstraints(IdList const &idList);
+
 private slots:
 	/// Suggests user to select a root diagram for the new project
 	/// if more than one diagram loaded or creates project with the only diagram
@@ -298,6 +302,13 @@ private slots:
 	void finishUsabilityTest();
 
 private:
+
+	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //forCheckConstraints
+	void checkOwnConstraints(Id const &id);
+	void checkParentsConstraints(QModelIndex const &index);
+	void checkChildrensConstraints(Id const &id);
+	void checkLinksConstraints(Id const &id);
+
 	void checkForUpdates();
 	void showUpdatesDialog();
 
