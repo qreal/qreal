@@ -1312,8 +1312,8 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 			mController->diagramOpened(diagramId);
 		}
 		mSceneCustomizer->customizeView(view);
-		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
+		initCurrentTab(view, index);
 		mUi->tabs->setCurrentWidget(view);
 
 		// Focusing on scene top left corner

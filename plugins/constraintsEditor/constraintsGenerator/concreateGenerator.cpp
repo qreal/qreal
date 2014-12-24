@@ -136,6 +136,7 @@ ConcreateGenerator::NeededStringsForConcreateGenerate ConcreateGenerator::genera
 		if (!mApi.isLogicalElement(element) || mApi.parent(element) != diagram) {
 			continue;
 		}
+
 		QString elementName = mApi.name(element);
 		if (elementName == "(Edge Constraint)" || elementName == "(Node Constraint)") {
 			mErrorReporter.addCritical(QObject::tr("Name of constraintNode not found!"), element);
