@@ -9,7 +9,7 @@ SUBDIRS	= \
 #	requirements/requirements.pro \
 #	domainAnalysis/domainAnalysis.pro \
 	constraintsEditor/constraintsEditor.pro \
-
+#	constraintsEditor/constraintsGenerator/examples/constraintsAllMetamodelsConstraints/constraintsAllMetamodelsConstraints.pro
 
 
 # tool plugins
