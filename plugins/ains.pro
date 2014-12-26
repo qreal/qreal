@@ -1,6 +1,8 @@
 TEMPLATE = subdirs
 
-SUBDIRS = \
+include(common.pri)
+
+SUBDIRS += \
 	metaEditor/metaEditor.pro \
 	ains/editors/ainsEditor/ainsEditor.pro \
 	ains/editors/databaseEditor/databaseEditor.pro \

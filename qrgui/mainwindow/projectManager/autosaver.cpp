@@ -5,8 +5,8 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include "mainwindow/projectManager/projectManager.h"
-#include "mainwindow/projectManager/autosaver.h"
+#include "mainWindow/projectManager/projectManager.h"
+#include "mainWindow/projectManager/autosaver.h"
 
 using namespace qReal;
 
@@ -140,6 +140,7 @@ bool Autosaver::checkTempFile()
 	}
 	if (QMessageBox::question(QApplication::activeWindow(), tr("Question")
 			, openTempFilePrompt()) != QMessageBox::Yes) {
+		QFile(tempFileInfo.absoluteFilePath()).remove();
 		return false;
 	}
 	return openTemp();

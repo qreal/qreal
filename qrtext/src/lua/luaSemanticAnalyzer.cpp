@@ -164,7 +164,14 @@ void LuaSemanticAnalyzer::analyzeBinaryOperator(QSharedPointer<core::ast::Node> 
 		///       they are converted to floats, the operation is performed following the usual rules for floating-point
 		///       arithmetic (usually the IEEE 754 standard), and the result is a float."
 		///       (http://www.lua.org/work/doc/manual.html#3.4.1)
-		assign(node, mFloat);
+		///       Code below is a hack, here we need more complex constraints over type variables.
+		if (typeVariable(left)->isResolved() && typeVariable(left)->finalType() == mInteger
+				&& typeVariable(right)->isResolved() && typeVariable(right)->finalType() == mInteger)
+		{
+			assign(node, mInteger);
+		} else {
+			assign(node, mFloat);
+		}
 	} else if (node->is<ast::Division>() || node->is<ast::Exponentiation>()) {
 		constrain(node, left, {mFloat});
 		constrain(node, right, {mFloat});
@@ -194,6 +201,8 @@ void LuaSemanticAnalyzer::analyzeBinaryOperator(QSharedPointer<core::ast::Node> 
 		///       value is different from nil and false; otherwise, 'or' returns its second argument.
 		///       (http://www.lua.org/work/doc/manual.html#3.4.5)
 		assign(node, mBoolean);
+	} else if (node->is<ast::Concatenation>()) {
+		assign(node, mString);
 	}
 }
 
@@ -208,6 +217,11 @@ void LuaSemanticAnalyzer::constrainAssignment(QSharedPointer<core::ast::Node> co
 	auto lhsType = typeVariable(lhs);
 	auto rhsType = typeVariable(rhs);
 	bool wasCoercion = false;
+	if (!lhsType || !rhsType) {
+		// Most likely error is already reported.
+		return;
+	}
+
 	lhsType->constrainAssignment(rhsType, generalizationsTable(), &wasCoercion);
 	if (lhsType->isEmpty()) {
 		reportError(operation, QObject::tr("Left and right operand have mismatched types."));
@@ -224,12 +238,16 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(QSharedPointer<core::ast::Node> co
 	auto function = functionCall->function();
 	if (!function->is<ast::Identifier>()) {
 		reportError(node, QObject::tr("Indirect function calls are not supported"));
+		assign(function, any());
+		assign(node, any());
 		return;
 	}
 
 	auto name = as<ast::Identifier>(function)->name();
 	if (!mIntrinsicFunctions.contains(name)) {
 		reportError(node, QObject::tr("Unknown function"));
+		assign(function, any());
+		assign(node, any());
 		return;
 	}
 
@@ -249,4 +267,14 @@ void LuaSemanticAnalyzer::analyzeFunctionCall(QSharedPointer<core::ast::Node> co
 			constrain(actualParameters[i], actualParameters[i], {formalParameters[i]});
 		}
 	}
+}
+
+QMap<QString, QSharedPointer<types::TypeExpression>> LuaSemanticAnalyzer::variableTypes() const
+{
+	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> result = SemanticAnalyzer::variableTypes();
+	for (QString const &identifier : mIntrinsicFunctions.keys()) {
+		result.remove(identifier);
+	}
+
+	return result;
 }

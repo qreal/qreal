@@ -8,7 +8,7 @@
 
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
-#include "pluginManager/editorManager.h"
+#include "plugins/pluginManager/editorManager.h"
 
 namespace qReal {
 

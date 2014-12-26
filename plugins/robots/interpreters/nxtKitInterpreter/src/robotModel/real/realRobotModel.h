@@ -12,7 +12,7 @@ class RealRobotModel : public NxtRobotModelBase
 	Q_OBJECT
 
 public:
-	explicit RealRobotModel(QString const &kitId);
+	RealRobotModel(QString const &kitId, QString const &robotId);
 
 	QString name() const override;
 	QString friendlyName() const override;
@@ -20,6 +20,13 @@ public:
 
 	void connectToRobot() override;
 	void disconnectFromRobot() override;
+
+	/// Checks if connection can be established or emits errorOccured();
+	void checkConnection();
+
+signals:
+	/// Emitted when communicator throws an error to be displayed with error reporter.
+	void errorOccured(QString const &text);
 
 public slots:
 	void rereadSettings() override;

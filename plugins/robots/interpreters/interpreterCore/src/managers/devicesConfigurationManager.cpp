@@ -14,14 +14,14 @@ DevicesConfigurationManager::DevicesConfigurationManager(
 		qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 		, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 		, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
-		, qReal::SystemEventsInterface &systemEvents
+		, qReal::SystemEvents &systemEvents
 		)
 	: DevicesConfigurationProvider("DevicesConfigurationManager")
 	, mGraphicalModelAssistInterface(graphicalModelAssistInterface)
 	, mLogicalModelAssistInterface(logicalModelAssistInterface)
 	, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 {
-	QObject::connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged
+	QObject::connect(&systemEvents, &qReal::SystemEvents::activeTabChanged
 			, [&] (Id const &diagramRootId) { this->onActiveTabChanged(diagramRootId); });
 }
 

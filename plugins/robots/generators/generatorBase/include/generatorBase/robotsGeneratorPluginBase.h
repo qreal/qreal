@@ -2,7 +2,8 @@
 
 #include <QtWidgets/QApplication>
 
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/textEditor/languageInfo.h>
 #include <qrrepo/repoApi.h>
 
 #include "generatorKitPluginInterface.h"
@@ -20,7 +21,8 @@ public:
 	RobotsGeneratorPluginBase();
 
 	void init(qReal::PluginConfigurator const &configurator
-			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager) override;
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, qrtext::LanguageToolboxInterface &textLanguage) override;
 
 protected slots:
 	/// Calls code generator. Returns true if operation was successful.
@@ -46,10 +48,12 @@ protected:
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo) = 0;
 	QFileInfo srcPath();
 	virtual QString defaultFilePath(QString const &project) const;
-	QString extension() const override;
-	QString extensionDescription() const override;
 	QFileInfo generateCodeForProcessing();
 	QString generatorName() const override;
+
+	/// Returns an information about the language code on which will be generated;
+	/// this information will be used by text editors when user will be edit the generated code.
+	virtual qReal::text::LanguageInfo language() const = 0;
 
 	/// Returns default name for generated file.
 	virtual QString defaultProjectName() const;
@@ -66,9 +70,10 @@ protected:
 	qrRepo::RepoApi const *mRepo;  // Does not have ownership
 
 	interpreterBase::robotModel::RobotModelManagerInterface const *mRobotModelManager;
+	qrtext::LanguageToolboxInterface *mTextLanguage;  // Does not have ownership
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
-	qReal::SystemEventsInterface *mSystemEvents; // Does not have ownership
+	qReal::SystemEvents *mSystemEvents; // Does not have ownership
 	qReal::TextManagerInterface *mTextManager;
 	QMultiHash<qReal::Id, QFileInfo> mCodePath;
 };

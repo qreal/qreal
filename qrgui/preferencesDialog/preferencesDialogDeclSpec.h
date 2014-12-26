@@ -1,0 +1,11 @@
+#pragma once
+
+#include <QtCore/qglobal.h>
+
+#ifndef QRGUI_PREFERENCES_DIALOG_EXPORT
+#  if defined(QRGUI_PREFERENCES_DIALOG_LIBRARY)
+#    define QRGUI_PREFERENCES_DIALOG_EXPORT Q_DECL_EXPORT
+#  else
+#    define QRGUI_PREFERENCES_DIALOG_EXPORT Q_DECL_IMPORT
+#  endif
+#endif

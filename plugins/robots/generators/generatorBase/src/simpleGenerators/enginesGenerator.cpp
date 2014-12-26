@@ -13,13 +13,13 @@ EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, engineType.contains("EnginesBackward")
-					? "engines/enginesBackward.t"
-					: "engines/enginesForward.t"
-			, QList<Binding *>()
-					<< Binding::createMultiTarget("@@PORT@@", "Ports", customizer.factory()->enginesConverter())
-					<< Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter())
-					<< Binding::createConverting("@@BREAK_MODE@@", "Mode", customizer.factory()->breakModeConverter())
-			, parent)
+					? "engines/backward.t"
+					: "engines/forward.t"
+			, { Binding::createMultiTarget("@@PORT@@", "Ports", customizer.factory()->enginesConverter())
+					, Binding::createConverting("@@POWER@@", "Power"
+							, customizer.factory()->intPropertyConverter(id, "Power"))
+					, Binding::createConverting("@@BREAK_MODE@@", "Mode", customizer.factory()->breakModeConverter())
+			}, parent)
 {
 	mCustomizer.factory()->engines()->registerUsageOnPorts(repo.property(id, "Ports").toString());
 }

@@ -4,10 +4,11 @@
 
 #include <qrkernel/ids.h>
 
+#include "models/modelsDeclSpec.h"
 #include "models/details/graphicalModel.h"
 #include "models/details/graphicalPartModel.h"
 #include "models/details/modelsAssistApi.h"
-#include "toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
+#include "plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 
 namespace qReal {
 
@@ -19,7 +20,7 @@ namespace details {
 class GraphicalModel;
 }
 
-class GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInterface
+class QRGUI_MODELS_EXPORT GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInterface
 {
 	Q_OBJECT
 

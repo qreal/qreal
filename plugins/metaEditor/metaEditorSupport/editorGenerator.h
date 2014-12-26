@@ -5,9 +5,9 @@
 #include <QtXml/QDomElement>
 #include <QtCore/QHash>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../../../qrrepo/logicalRepoApi.h"
+#include <qrkernel/ids.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrrepo/logicalRepoApi.h>
 
 namespace metaEditor {
 

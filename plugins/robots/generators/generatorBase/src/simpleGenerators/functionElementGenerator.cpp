@@ -11,9 +11,9 @@ FunctionElementGenerator::FunctionElementGenerator(qrRepo::RepoApi const &repo
 		, Id const &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "function.t", QList<Binding *>()
-			<< Binding::createConverting("@@BODY@@", "Body", customizer.factory()->functionBlockConverter())
+			<< Binding::createConverting("@@BODY@@", "Body", customizer.factory()->functionBlockConverter(id, "Body"))
 			, parent)
-	, mGenerateToInit(mRepo.property(id, "Init").toBool())
+	, mGenerateToInit(false)  // maybe it will be useful one day...
 {
 }
 

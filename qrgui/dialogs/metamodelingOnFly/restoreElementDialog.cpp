@@ -1,16 +1,15 @@
 #include <QtGui/QStandardItemModel>
 
-#include "mainwindow/mainWindow.h"
 #include "restoreElementDialog.h"
 #include "ui_restoreElementDialog.h"
 
 using namespace qReal;
 
-RestoreElementDialog::RestoreElementDialog(QWidget *parent, MainWindow &mainWindow
-		, EditorManagerInterface const &interpreterEditorManager, IdList const &elementsWithTheSameNameList)
+RestoreElementDialog::RestoreElementDialog(QWidget *parent
+		, EditorManagerInterface const &interpreterEditorManager
+		, IdList const &elementsWithTheSameNameList)
 	: QDialog(parent)
 	, mUi(new Ui::RestoreElementDialog)
-	, mMainWindow(mainWindow)
 	, mInterpreterEditorManager(interpreterEditorManager)
 	, mElementsWithTheSameNameList(elementsWithTheSameNameList)
 {
@@ -82,7 +81,7 @@ void RestoreElementDialog::restoreButtonClicked()
 	Id const node = mElementsWithTheSameNameList[selectedRow];
 	if (mInterpreterEditorManager.getIsHidden(node) == "true") {
 		mInterpreterEditorManager.resetIsHidden(node);
-		mMainWindow.loadPlugins();
+		emit jobDone();
 	}
 
 	emit restoreChosen(1);

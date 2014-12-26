@@ -1,5 +1,6 @@
 #include "kitAutoSwitcher.h"
 
+#include <qrkernel/settingsManager.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
 
 using namespace interpreterCore;

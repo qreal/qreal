@@ -2,7 +2,7 @@
 
 #include <qrutils/graphicsUtils/lineImpl.h>
 
-#include "mainwindow/shapeEdit/item.h"
+#include "mainWindow/shapeEdit/item.h"
 
 class Line : public Item
 {

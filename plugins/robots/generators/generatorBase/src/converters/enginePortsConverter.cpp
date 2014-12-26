@@ -4,6 +4,6 @@ using namespace generatorBase::converters;
 using namespace qReal;
 
 EnginePortsConverter::EnginePortsConverter(simple::Binding::ConverterInterface const *oneEngineConverter)
-	: RegexpMultiConverter("[^ABC]", oneEngineConverter)
+	: RegexpMultiConverter("\\W+", oneEngineConverter)
 {
 }

@@ -3,7 +3,7 @@
 #include <QtWidgets/QDialog>
 #include <QtCore/QMap>
 
-#include "mainwindow/shapeEdit/item.h"
+#include "mainWindow/shapeEdit/item.h"
 
 namespace Ui {
 class VisibilityConditionsDialog;

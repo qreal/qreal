@@ -4,9 +4,9 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QAction>
 
-#include <qrgui/toolPluginInterface/actionInfo.h>
-#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/actionInfo.h>
+#include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 
 #include "kitPluginManager.h"
 #include "managers/robotModelManager.h"
@@ -60,7 +60,7 @@ public slots:
 
 	/// Reacts to selection of a new tab on scene.
 	/// @param activeTabId - id of a root element of new active tab.
-	void onActiveTabChanged(Id const &activeTabId);
+	void onActiveTabChanged(qReal::Id const &activeTabId);
 
 private slots:
 	void onRobotModelActionChecked(QObject *robotModelObject);
@@ -103,15 +103,15 @@ private:
 	QList<QAction *> mActions;  // Does not have ownership (actions already present as fields).
 
 	/// List of actions from kit plugins.
-	QList<ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
+	QList<qReal::ActionInfo> mPluginActionInfos;  // Does not have ownership over underlying QActions.
 
 	/// Actions that are placed on the panel for quick switching between robot models.
-	QMap<QString, ActionInfo> mRobotModelActions;
+	QMap<QString, qReal::ActionInfo> mRobotModelActions;
 
-	QMap<QString, ActionInfo> mGeneratorActionsInfo;  // Does not have ownership over underlying QActions.
+	QMap<QString, qReal::ActionInfo> mGeneratorActionsInfo;  // Does not have ownership over underlying QActions.
 
 	/// List of hotkey customizations from kit plugins.
-	QList<HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
+	QList<qReal::HotKeyActionInfo> mPluginHotKeyActionInfos;  // Does not have ownership over underlying QActions.
 
 	/// Main window interface object, to ask about currently open tab and so on.
 	// Does not have ownership

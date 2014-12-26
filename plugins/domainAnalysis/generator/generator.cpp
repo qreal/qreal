@@ -14,7 +14,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/nameNormalizer.h>
 #include <qrkernel/settingsManager.h>
-#include <qrgui/pluginManager/editorManager.h>
+#include <qrgui/plugins/pluginManager/editorManager.h>
 
 using namespace qReal;
 using namespace domainAnalysis;

@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "mainwindow/mainWindowInterpretersInterface.h"
+#include "mainWindow/mainWindowInterpretersInterface.h"
 #include "models/logicalModelAssistApi.h"
 #include "dialogs/findReplaceDialog.h"
 

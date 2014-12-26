@@ -5,7 +5,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrrepo/repoApi.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 #include "generatorBase/templateParametrizedEntity.h"
@@ -35,7 +35,7 @@ public:
 	void usageFound(qReal::Id const &logicalId);
 
 	/// Starts subprograms code generation process
-	bool generate(ControlFlowGeneratorBase *mainGenerator);
+	bool generate(ControlFlowGeneratorBase *mainGenerator, QString const &indentString);
 
 	/// Returns the subprograms forward declarations code. If generation was unsuccessfull returns an empty string.
 	QString forwardDeclarations() const;

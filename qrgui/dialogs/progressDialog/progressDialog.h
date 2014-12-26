@@ -2,13 +2,13 @@
 
 #include <QtWidgets/QProgressDialog>
 
-#include "dialogs/progressDialog/progressBar.h"
+#include "qrgui/dialogs/dialogsDeclSpec.h"
+#include "qrgui/dialogs/progressDialog/progressBar.h"
 
-namespace qReal
-{
+namespace qReal {
 
 /// @brief Progress dialog capable with invocation utils. Uses @see ProgressBar
-class ProgressDialog : public QProgressDialog
+class QRGUI_DIALOGS_EXPORT ProgressDialog : public QProgressDialog
 {
 	Q_OBJECT
 

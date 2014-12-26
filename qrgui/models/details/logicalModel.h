@@ -4,7 +4,7 @@
 
 #include <qrrepo/repoApi.h>
 
-#include "pluginManager/editorManagerInterface.h"
+#include "plugins/pluginManager/editorManagerInterface.h"
 #include "models/details/modelsImplementation/logicalModelItem.h"
 #include "models/details/modelsImplementation/abstractModel.h"
 #include "models/details/graphicalModelView.h"
@@ -19,7 +19,7 @@ namespace details {
 
 class GraphicalModel;
 
-class LogicalModel : public modelsImplementation::AbstractModel
+class QRGUI_MODELS_EXPORT LogicalModel : public modelsImplementation::AbstractModel
 {
 	Q_OBJECT
 

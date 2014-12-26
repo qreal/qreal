@@ -445,9 +445,13 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="11"/>
         <source>Trik Studio</source>
-        <translation>Trik Studio</translation>
+        <translation type="vanished">Trik Studio</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="11"/>
+        <source>TRIK Studio</source>
+        <translation>TRIK Studio</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="50"/>
@@ -484,19 +488,19 @@ p, li { white-space: pre-wrap; }
         <translation>Конфигурация сенсоров противоречива. Проверьте, что в указанные в программе используются два разных сенсора на одном порту</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="7"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="10"/>
         <source>sensor</source>
         <oldsource>Sensor</oldsource>
         <translation>sensor</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="8"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="11"/>
         <source>encoder</source>
         <oldsource>Encoder</oldsource>
         <translation>encoder</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="9"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="12"/>
         <source>time</source>
         <translation>time</translation>
     </message>
@@ -521,7 +525,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">2D модель</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="13"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="15"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -530,32 +534,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="14"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="16"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="15"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="17"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="17"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="19"/>
         <source>Text under pictogram</source>
         <translation>Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="76"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="78"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="77"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="79"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="80"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="82"/>
         <source>Toggle titles visibility</source>
         <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
@@ -572,7 +576,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Переключиться в режим TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="16"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="18"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -581,7 +585,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPlugin.cpp" line="44"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPlugin.cpp" line="35"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -692,7 +696,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ActionsManager</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="189"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="193"/>
         <source>Switch to </source>
         <translation>Переключиться в режим </translation>
     </message>
@@ -715,7 +719,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="106"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="100"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -749,27 +753,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::coreBlocks::details::IfBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="21"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="23"/>
         <source>There must be exactly TWO links outgoing from if block</source>
         <translation>От условного блока должно отходить ровно ДВЕ связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="28"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="30"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="37"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="39"/>
         <source>Two links marked with &apos;true&apos; found</source>
         <translation>Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="44"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="46"/>
         <source>Two links marked with &apos;false&apos; found</source>
         <translation>Обе связи помечены условием &apos;Ложь&apos;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="51"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/ifBlock.cpp" line="53"/>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
         <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
@@ -803,6 +807,34 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/subprogramBlock.cpp" line="22"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
+    </message>
+</context>
+<context>
+    <name>interpreterCore::coreBlocks::details::SwitchBlock</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="23"/>
+        <source>There must be at list TWO links outgoing from switch block</source>
+        <translation>От блока выбора должно отходить минимум ДВЕ связи</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="30"/>
+        <source>Outgoing link is not connected</source>
+        <translation>Исходящая связь ни к чему не подключена</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="39"/>
+        <source>There must be exactly one link with empty &apos;Guard&apos; property (default branch).</source>
+        <translation>Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="44"/>
+        <source>Duplicate case branch: &apos;%1&apos;</source>
+        <translation>Найдено более одной ветки &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/coreBlocks/details/switchBlock.cpp" line="53"/>
+        <source>There must be a link with empty &apos;Guard&apos; property (default branch).</source>
+        <translation>От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
     </message>
 </context>
 <context>
@@ -849,28 +881,28 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="66"/>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="134"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="69"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="144"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="71"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="74"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="117"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="123"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="122"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="129"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="182"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="192"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
@@ -902,12 +934,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::ui::RobotsSettingsPage</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="60"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="62"/>
         <source>No constructor kit plugins loaded</source>
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="180"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="186"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>

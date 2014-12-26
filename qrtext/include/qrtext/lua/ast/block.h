@@ -12,7 +12,7 @@ class QRTEXT_EXPORT Block : public Node
 public:
 	/// Constructor.
 	/// @param statements - a list of statements in a block.
-	Block(QList<QSharedPointer<Node>> const &statements)
+	explicit Block(QList<QSharedPointer<Node>> const &statements)
 		: mStatements(statements)
 	{
 	}
@@ -23,6 +23,11 @@ public:
 	}
 
 private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
+
 	QList<QSharedPointer<Node>> mStatements;
 };
 

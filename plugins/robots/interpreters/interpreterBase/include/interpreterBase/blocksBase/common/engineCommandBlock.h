@@ -28,10 +28,10 @@ protected:
 	/// Splits 'Port' property for the blocks and returns motor devices on them. Implementation may consider
 	/// that devices are non-null.
 	template<class MotorType>
-	QList<MotorType *> parsePorts()
+	QList<MotorType *> parsePorts(ReportErrors reportErrors = ReportErrors::report)
 	{
 		QList<MotorType *> result;
-		QStringList const ports = eval<QStringList>("Ports");
+		QStringList const ports = eval<QStringList>("Ports", reportErrors);
 
 		for (QString const &port : ports) {
 			MotorType * const motor = robotModel::RobotModelUtils::findDevice<MotorType>(mRobotModel, port.trimmed());

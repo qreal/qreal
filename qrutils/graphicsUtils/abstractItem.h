@@ -66,6 +66,7 @@ public:
 	void setX1andY2(qreal x, qreal y);
 	void setX2andY1(qreal x, qreal y);
 	void setX2andY2(qreal x, qreal y);
+	void setCoordinates(QRectF const &pos);
 
 	virtual void reshapeRectWithShift();
 	virtual void changeDragState(qreal x, qreal y);
@@ -81,7 +82,11 @@ public:
 	virtual QRectF sceneBoundingRectCoord(QPoint const &topLeftPicture);
 	void readPenBrush(QDomElement const &docItem);
 
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+
 protected:
+	virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+
 	DragState mDragState;
 	QRectF mBoundingRect;
 	QPen mPen;

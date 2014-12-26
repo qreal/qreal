@@ -1,10 +1,12 @@
 #pragma once
 
+#include "qrgui/controller/controllerDeclSpec.h"
+
 namespace qReal {
 namespace commands {
 
 /// A helper class for commands that track some continious user operation
-class TrackingEntity
+class QRGUI_CONTROLLER_EXPORT TrackingEntity
 {
 public:
 	virtual ~TrackingEntity() {}

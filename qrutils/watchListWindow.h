@@ -51,7 +51,6 @@ private:
 	QTimer mTimer;
 	qrtext::DebuggerInterface const * const mNewParser;  // Does not have ownership.
 	utils::ExpressionsParser const * const mParser;  // Does not have ownership.
-
 	QSet<QString> mHiddenVariables;
 };
 

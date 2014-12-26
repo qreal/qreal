@@ -4,16 +4,16 @@
 
 using namespace utils;
 
-QString StringUtils::addIndent(QString const &code, int indent)
+QString StringUtils::addIndent(QString const &code, int indent, QString const &oneIndentString)
 {
-	if (!indent) {
+	if (!indent || oneIndentString.isEmpty()) {
 		return code;
 	}
 
 	QStringList const lines = code.split("\n", QString::SkipEmptyParts);
-	QString const indentString(indent, '\t');
+	QString const indentString = oneIndentString.repeated(indent);
 	QStringList result;
-	foreach (QString const &line, lines) {
+	for (QString const &line : lines) {
 		result << indentString + line;
 	}
 

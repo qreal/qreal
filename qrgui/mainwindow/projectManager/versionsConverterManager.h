@@ -1,7 +1,7 @@
 #pragma once
 
 #include "models/logicalModelAssistApi.h"
-#include "toolPluginInterface/projectConverter.h"
+#include "plugins/toolPluginInterface/projectConverter.h"
 
 namespace qReal {
 

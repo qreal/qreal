@@ -39,12 +39,23 @@ public:
 		return mValue;
 	}
 
+	/// Returns whether the key was implicitly or explicitly specified.
+	bool implicitKey() const
+	{
+		return mImplicitKey;
+	}
+
 	QList<QSharedPointer<Node>> children() const override
 	{
 		return {mKey, mValue};
 	}
 
 private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
+
 	QSharedPointer<Expression> mKey;
 	QSharedPointer<Expression> mValue;
 	bool mImplicitKey;

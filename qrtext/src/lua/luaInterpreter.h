@@ -43,6 +43,9 @@ public:
 	/// Sets a value of identifier with given name to given value.
 	void setVariableValue(QString const &name, QVariant const &value);
 
+	/// Clear all execution state, except added intrinsic functions.
+	void clear();
+
 private:
 	QVariant interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root
 			, core::SemanticAnalyzer const &semanticAnalyzer);

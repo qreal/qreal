@@ -64,7 +64,7 @@
   <customwidget>
    <class>VisibilityValueWidget</class>
    <extends>QWidget</extends>
-   <header>mainwindow/shapeEdit/visibilityValueWidget.h</header>
+   <header>mainWindow/shapeEdit/visibilityValueWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

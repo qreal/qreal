@@ -5,8 +5,8 @@
 #include <QtCore/QSignalMapper>
 
 #include <qrkernel/ids.h>
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 
 #include <interpreterBase/blocksBase/blockInterface.h>
 

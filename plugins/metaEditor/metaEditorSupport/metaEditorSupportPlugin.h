@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 
 #include "compilerPage.h"
 
@@ -22,7 +22,7 @@ public:
 
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
-	virtual QPair<QString, PreferencesPage *> preferencesPage();
+	virtual QPair<QString, qReal::gui::PreferencesPage *> preferencesPage();
 
 private slots:
 	/// Generates .xml file with metamodel for later compilation with qrxc tool

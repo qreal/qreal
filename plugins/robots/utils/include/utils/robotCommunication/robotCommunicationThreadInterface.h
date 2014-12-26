@@ -26,7 +26,7 @@ public slots:
 	virtual void checkConsistency() = 0;
 
 signals:
-	void connected(bool success);
+	void connected(bool success, QString const &errorString);
 	void disconnected();
 	void response(QObject *addressee, QByteArray const &buffer);
 	void errorOccured(QString const &message);

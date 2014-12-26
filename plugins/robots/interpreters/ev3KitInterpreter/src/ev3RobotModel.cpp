@@ -3,7 +3,7 @@
 using namespace ev3KitInterpreter;
 
 Ev3RobotModel::Ev3RobotModel(QString const &kitId)
-	: interpreterBase::robotModel::CommonRobotModel(kitId)
+	: interpreterBase::robotModel::CommonRobotModel(kitId, "")
 {
 }
 

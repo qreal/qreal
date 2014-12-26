@@ -1,6 +1,7 @@
 #include "styledButton.h"
 
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QStyle>
 
 #include "brandManager/brandManager.h"
 #include "circleWidget.h"

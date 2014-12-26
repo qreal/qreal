@@ -1,11 +1,11 @@
 #include "startWidget.h"
 
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QScrollArea>
+
 #include <qrkernel/settingsManager.h>
 
-#include "dialogs/suggestToCreateDiagramDialog.h"
-#include "mainwindow/mainWindow.h"
-#include "suggestToCreateDiagramWidget.h"
-#include "recentProjectsListWidget.h"
+#include "mainWindow/mainWindow.h"
 #include "styledButton.h"
 #include "circleWidget.h"
 #include "brandManager/brandManager.h"
@@ -100,7 +100,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 	mProjectsManagementLayout->addStretch();
 
 	mOpenProjectButton = new StyledButton(tr("Open existing project")
-			, ":icons/startTab/open.svg");
+			, ":/mainWindow/images/startTab/open.svg");
 	connect(mOpenProjectButton, &QPushButton::clicked, this, &StartWidget::openExistingProject);
 	mProjectsManagementLayout->addWidget(mOpenProjectButton);
 
@@ -109,7 +109,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 		Id const editor = mMainWindow->editorManager().editors()[0];
 		QString const diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
-		mNewProjectButton = new StyledButton(tr("New project"), ":icons/startTab/open.svg");
+		mNewProjectButton = new StyledButton(tr("New project"), ":/mainWindow/images/startTab/new.svg");
 		mProjectsManagementLayout->addWidget(mNewProjectButton);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
@@ -126,9 +126,9 @@ QWidget *StartWidget::createProjectsManagementWidget()
 	}
 
 	mOpenInterpreterButton = new StyledButton(tr("Open interpreted diagram")
-			, ":icons/startTab/openInterpreted.svg");
+			, ":/mainWindow/images/startTab/openInterpreted.svg");
 	mCreateInterpreterButton = new StyledButton(tr("Create interpreted diagram")
-			, ":icons/startTab/createInterpreted.svg");
+			, ":/mainWindow/images/startTab/createInterpreted.svg");
 	connect(mOpenInterpreterButton, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
 	connect(mCreateInterpreterButton, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
 
@@ -200,7 +200,7 @@ QLayout *StartWidget::createRecentProjectsList(QString const &recentProjects)
 
 QWidget *StartWidget::createPluginsList()
 {
-	QWidget * const circleWidget = new CircleWidget(QSize(70, 70), ":/icons/startTab/new.svg");
+	QWidget * const circleWidget = new CircleWidget(QSize(70, 70), ":/mainWindow/images/startTab/new.svg");
 	circleWidget->setStyleSheet(BrandManager::styles()->startTabButtonStyle());
 
 	QVBoxLayout * const innerLayout = new QVBoxLayout;
@@ -272,7 +272,7 @@ void StartWidget::openInterpretedDiagram()
 	QString const fileName = mProjectManager->openFileName(tr("Select file with metamodel to open"));
 	ProxyEditorManager &editorManagerProxy = mMainWindow->editorManagerProxy();
 
-	if (!fileName.isEmpty() && mProjectManager->open(fileName)) {
+	if (!fileName.isEmpty()) {
 		editorManagerProxy.setProxyManager(new InterpreterEditorManager(fileName));
 		QStringList interpreterDiagramsList;
 		foreach (Id const &editor, editorManagerProxy.editors()) {
@@ -286,6 +286,8 @@ void StartWidget::openInterpretedDiagram()
 						+ diagram.diagram() + "/" + diagramNodeName);
 			}
 		}
+
+		mMainWindow->initInterpretedPlugins();
 
 		foreach (QString const &interpreterIdString, interpreterDiagramsList) {
 			// TODO: ???
@@ -319,6 +321,7 @@ void StartWidget::createInterpretedDiagram()
 		mMainWindow->models()->repoControlApi().exterminate();
 		mMainWindow->models()->reinit();
 		mMainWindow->loadPlugins();
+		mMainWindow->initInterpretedPlugins();
 	} else {
 		show();
 		editorManagerProxy.setProxyManager(new EditorManager());

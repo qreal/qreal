@@ -26,12 +26,13 @@ using namespace nxtKitInterpreter::robotModel::real;
 using namespace utils::robotCommunication;
 using namespace interpreterBase::robotModel;
 
-RealRobotModel::RealRobotModel(QString const &kitId)
-	: NxtRobotModelBase(kitId)
+RealRobotModel::RealRobotModel(QString const &kitId, QString const &robotId)
+	: NxtRobotModelBase(kitId, robotId)
 	, mRobotCommunicator(new RobotCommunicator(this))
 {
 	connect(mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
+	connect(mRobotCommunicator, &RobotCommunicator::errorOccured, this, &RealRobotModel::errorOccured);
 }
 
 QString RealRobotModel::name() const
@@ -75,6 +76,11 @@ void RealRobotModel::connectToRobot()
 void RealRobotModel::disconnectFromRobot()
 {
 	mRobotCommunicator->disconnect();
+}
+
+void RealRobotModel::checkConnection()
+{
+	mRobotCommunicator->checkConsistency();
 }
 
 robotParts::Device *RealRobotModel::createDevice(PortInfo const &port, DeviceInfo const &deviceInfo)

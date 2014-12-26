@@ -9,6 +9,11 @@ namespace ast {
 /// Represents logical and operator (and).
 class QRTEXT_EXPORT LogicalAnd : public BinaryOperator
 {
+private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
 };
 
 }

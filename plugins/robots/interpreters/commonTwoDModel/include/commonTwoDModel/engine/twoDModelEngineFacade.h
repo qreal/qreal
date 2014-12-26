@@ -27,12 +27,13 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlI
 	Q_OBJECT
 
 public:
-	explicit TwoDModelEngineFacade(robotModel::TwoDRobotModel &robotModel);
+	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
+	TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel);
 
 	~TwoDModelEngineFacade();
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::SystemEvents const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface

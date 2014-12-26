@@ -4,6 +4,8 @@
 #include <QtWidgets/QAction>
 #include <QtCore/QDebug>
 
+#include <qrtext/languageToolboxInterface.h>
+
 #include <utils/timelineInterface.h>
 #include <utils/tracer.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
@@ -20,7 +22,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::ProjectManagementInterface const &projectManager
 		, BlocksFactoryManagerInterface &blocksFactoryManager
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
-		, qrtext::LanguageToolboxInterface &parser
+		, qrtext::LanguageToolboxInterface &languageToolbox
 		, QAction &connectToRobotAction
 		)
 	: mGraphicalModelApi(graphicalModelApi)
@@ -30,8 +32,9 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	, mRobotModelManager(robotModelManager)
 	, mBlocksTable(new details::BlocksTable(blocksFactoryManager, robotModelManager))
 	, mActionConnectToRobot(connectToRobotAction)
-	, mSensorVariablesUpdater(robotModelManager, parser)
+	, mSensorVariablesUpdater(robotModelManager, languageToolbox)
 	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
+	, mLanguageToolbox(languageToolbox)
 {
 	connect(
 			&mRobotModelManager
@@ -72,17 +75,20 @@ void Interpreter::interpret()
 		return;
 	}
 
+	mRobotModelManager.model().stopRobot();
 	mBlocksTable->clear();
 	mState = waitingForDevicesConfiguredToLaunch;
 
-	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().name())) {
+	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().robotId())) {
 		return;
 	}
 
+	mLanguageToolbox.clear();
+
 	/// @todo Temporarily loading initial configuration from a network of SensorConfigurationProviders.
 	///       To be done more adequately.
+	QString const modelName = mRobotModelManager.model().robotId();
 	for (PortInfo const &port : mRobotModelManager.model().configurablePorts()) {
-		QString const modelName = mRobotModelManager.model().name();
 		DeviceInfo const deviceInfo = currentConfiguration(modelName, port);
 		mRobotModelManager.model().configureDevice(port, deviceInfo);
 	}
@@ -108,10 +114,8 @@ int Interpreter::timeElapsed() const
 			: 0;
 }
 
-void Interpreter::connectedSlot(bool success)
+void Interpreter::connectedSlot(bool success, QString const &errorString)
 {
-	qDebug() << "Interpreter::connectedSlot";
-
 	if (success) {
 		if (mRobotModelManager.model().needsConnection()) {
 			mInterpretersInterface.errorReporter()->addInformation(tr("Connected successfully"));
@@ -119,7 +123,11 @@ void Interpreter::connectedSlot(bool success)
 	} else {
 		utils::Tracer::debug(utils::Tracer::initialization, "Interpreter::connectedSlot"
 				, "Robot connection status: " + QString::number(success));
-		mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
+		if (errorString.isEmpty()) {
+			mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
+		} else {
+			mInterpretersInterface.errorReporter()->addError(errorString);
+		}
 	}
 
 	mActionConnectToRobot.setChecked(success);

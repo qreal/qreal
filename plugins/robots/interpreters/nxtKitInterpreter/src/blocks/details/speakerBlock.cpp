@@ -9,26 +9,17 @@ using namespace nxtKitInterpreter::blocks::details;
 using namespace interpreterBase::robotModel;
 
 SpeakerBlock::SpeakerBlock(RobotModelInterface &robotModel)
-	: mRobotModel(robotModel)
+	: interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::NxtSpeaker>(robotModel)
 	, mTimer(robotModel.timeline().produceTimer())
 {
 	mTimer->setParent(this);
 	connect(mTimer, &utils::AbstractTimer::timeout, this, &SpeakerBlock::timeout);
 }
 
-SpeakerBlock::~SpeakerBlock()
-{
-}
-
 void SpeakerBlock::run()
 {
-	QString const port = "SpeakerPort";
-	robotModel::parts::NxtSpeaker * const speaker
-			= RobotModelUtils::findDevice<robotModel::parts::NxtSpeaker>(mRobotModel, port);
-	if (speaker) {
-		doJob(*speaker);
-	} else {
-		error(tr("Speaker is not configured (WTF?)"));
+	DeviceBlock::run();
+	if (errorsOccured()) {
 		return;
 	}
 

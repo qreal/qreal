@@ -3,7 +3,7 @@
 #include <QtCore/QMap>
 
 #include <qrutils/expressionsParser/expressionsParser.h>
-#include <qrgui/mainwindow/errorReporter.h>
+#include <qrgui/mainWindow/errorReporter.h>
 
 namespace qReal {
 

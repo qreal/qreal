@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include <qrgui/view/sceneCustomizationInterface.h>
+#include <qrgui/editor/sceneCustomizationInterface.h>
 
 #include <gmock/gmock.h>
 

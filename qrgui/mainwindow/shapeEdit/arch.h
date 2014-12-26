@@ -2,8 +2,8 @@
 
 #include <QtGui/QPainter>
 
-#include "mainwindow/shapeEdit/item.h"
-#include "mainwindow/shapeEdit/ellipse.h"
+#include "mainWindow/shapeEdit/item.h"
+#include "mainWindow/shapeEdit/ellipse.h"
 
 class Arch : public Item
 {

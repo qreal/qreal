@@ -8,15 +8,15 @@
 #include <qrutils/graphicsUtils/abstractItemView.h>
 #include <qrkernel/ids.h>
 
-#include "mainwindow/shapeEdit/scene.h"
-#include "mainwindow/shapeEdit/item.h"
-#include "pluginManager/editorManagerInterface.h"
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item.h"
+#include "plugins/pluginManager/editorManagerInterface.h"
 
 // TODO: lolwut?
 #include "models/details/logicalModel.h"
 
-#include "mainwindow/shapeEdit/visibilityConditionsDialog.h"
-#include "view/editorView.h"
+#include "mainWindow/shapeEdit/visibilityConditionsDialog.h"
+#include "editor/editorView.h"
 
 namespace Ui {
 class ShapeEdit;
@@ -24,18 +24,21 @@ class ShapeEdit;
 
 namespace qReal {
 
+class MainWindow;
+
 class ShapeEdit : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit ShapeEdit(QWidget *parent = NULL);
+	explicit ShapeEdit(QWidget *parent = nullptr);
 	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role
 		, bool useTypedPorts);
-	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy
+	ShapeEdit(Id const &id, EditorManagerInterface const &editorManagerProxy
 		, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow
 		, EditorView *editorView, bool useTypedPorts);
 	~ShapeEdit();
+
 	graphicsUtils::AbstractView* getView();
 	void load(QString const &text);
 
@@ -90,7 +93,7 @@ private:
 	QPersistentModelIndex const mIndex;
 	int const mRole;
 	Id mId;
-	EditorManagerInterface *mEditorManager;  // Doesn't have ownership.
+	EditorManagerInterface const *mEditorManager;  // Doesn't have ownership.
 	IdList mGraphicalElements;
 	MainWindow *mMainWindow;  // Doesn't have ownership.
 	EditorView *mEditorView;  // Doesn't have ownership.

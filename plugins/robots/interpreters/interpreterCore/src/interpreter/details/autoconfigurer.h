@@ -1,8 +1,8 @@
 #pragma once
 
 #include <interpreterBase/devicesConfigurationProvider.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "blocksTable.h"
 

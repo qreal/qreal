@@ -1,6 +1,9 @@
 #pragma once
 
-#include <QSyntaxHighlighter>
+#include <QtGui/QSyntaxHighlighter>
+
+namespace qReal {
+namespace text {
 
 /// Syntax Highlighter for sql code.
 class SQLHighlighter : public QSyntaxHighlighter
@@ -28,3 +31,6 @@ private:
 	QTextCharFormat mSignFormat;
 	QTextCharFormat mSomeStringFormat;
 };
+
+}
+}

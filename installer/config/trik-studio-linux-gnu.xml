@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>TRIK Studio</Name>
+    <Version>1.0.0</Version>
+    <Title>TRIK Studio</Title>
+    <Publisher>SPbSU</Publisher>
+    <ProductUrl>http://robots.qreal.com</ProductUrl>
+
+    <InstallerWindowIcon>../images/trik-studio.ico</InstallerWindowIcon>
+    <InstallerApplicationIcon>../images/trik-studio.ico</InstallerApplicationIcon>
+    <Logo>../images/trik-studio-logo.png</Logo>
+    <Watermark>../images/trik-studio-watermark.png</Watermark>
+
+    <StartMenuDir>TRIK Studio</StartMenuDir>
+    <UninstallerName>maintenance</UninstallerName>
+    <RemoveTargetDir>true</RemoveTargetDir>
+    <AllowSpaceInPath>false</AllowSpaceInPath>
+    <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
+
+    <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
+    <TargetDir>@HomeDir@TRIKStudio</TargetDir>
+    <AdminTargetDir>@HomeDir@TRIKStudio</AdminTargetDir>
+
+<!-- TODO: Due to some issues in QtIFW if user modifies initial target dir RunProgram is still substitutes here initial value. Uncomment it when fixed -->
+<!--    <RunProgram>trik-studio</RunProgram> -->
+
+    <RemoteRepositories>
+        <Repository>
+            <Url>http://195.19.241.150/packages/trik-studio-repo-linux-gnu/</Url>
+        </Repository>
+    </RemoteRepositories>
+</Installer>

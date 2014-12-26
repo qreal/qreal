@@ -7,7 +7,3 @@ TemplateParametrizedConverter::TemplateParametrizedConverter(QString const &path
 	: TemplateParametrizedEntity(pathToTemplates)
 {
 }
-
-TemplateParametrizedConverter::~TemplateParametrizedConverter()
-{
-}

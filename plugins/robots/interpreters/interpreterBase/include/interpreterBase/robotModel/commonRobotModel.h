@@ -18,8 +18,10 @@ class ROBOTS_INTERPRETER_BASE_EXPORT CommonRobotModel : public RobotModelInterfa
 	Q_OBJECT
 
 public:
-	CommonRobotModel(QString const &kitId);
+	CommonRobotModel(QString const &kitId, QString const &robotId);
 	~CommonRobotModel() override;
+
+	QString robotId() const;
 
 	QString kitId() const final;
 
@@ -107,6 +109,7 @@ private:
 
 	/// Id of a kit in which model is defined.
 	QString const mKitId;
+	QString const mRobotId;
 };
 
 }

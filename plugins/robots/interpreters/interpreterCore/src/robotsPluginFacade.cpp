@@ -1,11 +1,11 @@
 #include "robotsPluginFacade.h"
 
+#include <qrkernel/settingsManager.h>
+#include <interpreterBase/robotModel/portInfo.h>
+
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "managers/paletteUpdateManager.h"
 #include "managers/kitAutoSwitcher.h"
-#include "managers/kitExtensionsUpdateManager.h"
-
-#include <interpreterBase/robotModel/portInfo.h>
 
 using namespace interpreterCore;
 
@@ -36,10 +36,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, configurer.systemEvents()
 			));
 
-	mTitlesVisibilityManager.reset(
-			new TitlesVisibilityManager(mActionsManager.titlesVisibilityAction(), configurer.sceneCustomizer())
-			);
-
 	if (!selectKit(configurer)) {
 		/// @todo Correctly handle unselected kit.
 		return;
@@ -47,8 +43,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	mParser.reset(new textLanguage::RobotsBlockParser(mRobotModelManager
 			, [this]() { return mInterpreter ? mInterpreter->timeElapsed() : 0; }));
-
-	initSensorWidgets();
 
 	interpreterBase::blocksBase::BlocksFactoryInterface * const coreFactory = new coreBlocks::CoreBlocksFactory();
 	coreFactory->configure(configurer.graphicalModelApi()
@@ -73,23 +67,20 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	mInterpreter = interpreter;
 
-	connect(&configurer.systemEvents(), &SystemEventsInterface::closedMainWindow
+	connect(&configurer.systemEvents(), &qReal::SystemEvents::closedMainWindow
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
 
 	initKitPlugins(configurer);
 
+	initSensorWidgets();
+
 	auto paletteUpdateManager = new PaletteUpdateManager(configurer.mainWindowInterpretersInterface()
 			, mBlocksFactoryManager, this);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, paletteUpdateManager, &PaletteUpdateManager::updatePalette);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
-
-	auto kitExtensionsUpdateManager = new KitExtensionsUpdateManager(mKitPluginManager
-			, configurer.textManager(), this);
-	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, kitExtensionsUpdateManager, &KitExtensionsUpdateManager::updateExtensions);
 
 	// It will subscribe to all signals itself and free memory too.
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
@@ -101,13 +92,13 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
-	connect(&configurer.systemEvents(), &SystemEventsInterface::activeTabChanged
+	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
 			, &mActionsManager, &ActionsManager::onActiveTabChanged);
 
 	sync();
 }
 
-PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
+qReal::gui::PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
 {
 	return mRobotSettingsPage;
 }
@@ -161,13 +152,13 @@ void RobotsPluginFacade::connectInterpreterToActions()
 			);
 }
 
-bool RobotsPluginFacade::selectKit(PluginConfigurator const &configurer)
+bool RobotsPluginFacade::selectKit(qReal::PluginConfigurator const &configurer)
 {
 	/// @todo reinit it each time when robot model changes
 	/// @todo: do we need this method?
-	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
+	QString const selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
 	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
-		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
+		qReal::SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
 	} else if (mKitPluginManager.kitIds().isEmpty()) {
 		configurer.mainWindowInterpretersInterface().setEnabledForAllElementsInPalette(false);
 
@@ -192,9 +183,15 @@ void RobotsPluginFacade::initSensorWidgets()
 
 	mWatchListWindow = new utils::WatchListWindow(*mParser);
 
-	mWatchListWindow->hideVariables(mParser->specialVariables());
+	auto hideVariables = [=]() { mWatchListWindow->hideVariables(mParser->hiddenVariables()); };
+	hideVariables();
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, hideVariables);
 
 	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, this);
+	connect(mInterpreter, &interpreter::InterpreterInterface::started
+			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStart);
+	connect(mInterpreter, &interpreter::InterpreterInterface::stopped
+			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStop);
 
 	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);
 	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
@@ -222,14 +219,14 @@ void RobotsPluginFacade::initKitPlugins(qReal::PluginConfigurator const &configu
 		}
 
 		for (generatorBase::GeneratorKitPluginInterface * const generator : mKitPluginManager.generatorsById(kitId)) {
-			generator->init(configurer, mRobotModelManager);
+			generator->init(configurer, mRobotModelManager, *mParser);
 		}
 	}
 }
 
 void RobotsPluginFacade::initFactoriesFor(QString const &kitId
 		, interpreterBase::robotModel::RobotModelInterface const *model
-		, PluginConfigurator const &configurer)
+		, qReal::PluginConfigurator const &configurer)
 {
 	// Pulling each robot model to each kit plugin with same ids. We need it for supporting
 	// plugin-based blocks set extension for concrete roobt model.

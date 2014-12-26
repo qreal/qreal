@@ -1,7 +1,7 @@
 #pragma once
 
 #include <qrutils/expressionsParser/expressionsParser.h>
-#include <mocks/qrgui/toolPluginInterface/usedInterface/errorReporterMock.h>
+#include <mocks/qrgui/plugins/toolPluginInterface/usedInterface/errorReporterMock.h>
 
 #include <gtest/gtest.h>
 

@@ -3,11 +3,11 @@
 #include <QtCore/QString>
 #include <QtXml/QDomDocument>
 
-#include <qrgui/toolPluginInterface/actionInfo.h>
-#include <qrgui/toolPluginInterface/systemEventsInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/actionInfo.h>
+#include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/interpreterControlInterface.h>
@@ -34,7 +34,7 @@ public:
 	/// Performs 2D model`s initialization with the given system components.
 	/// @todo: Separate twoD model engine from the enviroment (get rid of parameters)
 	virtual void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::SystemEvents const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface

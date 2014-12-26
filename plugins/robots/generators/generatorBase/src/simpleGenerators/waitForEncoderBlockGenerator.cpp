@@ -8,10 +8,11 @@ WaitForEncoderBlockGenerator::WaitForEncoderBlockGenerator(qrRepo::RepoApi const
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "wait/encoder.t", QList<Binding *>()
-			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->outputPortConverter())
-			<< Binding::createConverting("@@TACHO_LIMIT@@", "TachoLimit", customizer.factory()->intPropertyConverter())
-			<< Binding::createConverting("@@SIGN@@", "Sign", customizer.factory()->inequalitySignConverter())
+	: BindingGenerator(repo, customizer, id, "wait/encoder.t",
+			{ Binding::createConverting("@@PORT@@", "Port", customizer.factory()->portNameConverter())
+			, Binding::createConverting("@@TACHO_LIMIT@@", "TachoLimit"
+					, customizer.factory()->intPropertyConverter(id, "TachoLimit"))
+			, Binding::createConverting("@@SIGN@@", "Sign", customizer.factory()->inequalitySignConverter()) }
 			, parent)
 {
 }

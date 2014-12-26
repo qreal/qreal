@@ -1,24 +1,28 @@
 #include <QtCore/QTextStream>
+#include <QtCore/QTextCodec>
 #include <QtCore/QFile>
 
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 
+#include <plugins/toolPluginInterface/systemEvents.h>
+#include <mainWindow/mainWindowInterpretersInterface.h>
+
 #include "textManager.h"
-#include "mainwindow/mainWindow.h"
+#include "qscintillaTextEdit.h"
 
 using namespace qReal;
-using namespace gui;
+using namespace text;
 
-TextManager::TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWindow)
+TextManager::TextManager(SystemEvents &systemEvents, gui::MainWindowInterpretersInterface &mainWindow)
 	: mMainWindow(mainWindow)
 	, mSystemEvents(systemEvents)
 
 {
-	connect(mSystemEvents, &SystemEventsInterface::codeTabClosed, this, &TextManager::onTabClosed);
+	connect(&mSystemEvents, &SystemEvents::codeTabClosed, this, &TextManager::onTabClosed);
 }
 
-bool TextManager::openFile(QString const &filePath, QString const &generatorName)
+bool TextManager::openFile(QString const &filePath, QString const &generatorName, text::LanguageInfo const &language)
 {
 	QFile file(filePath);
 	QTextStream *inStream = nullptr;
@@ -29,6 +33,7 @@ bool TextManager::openFile(QString const &filePath, QString const &generatorName
 
 		QScintillaTextEdit *area = new QScintillaTextEdit();
 
+		area->setCurrentLanguage(language);
 		area->setText(inStream->readAll());
 		mText.insert(filePath, area);
 		mPath.insert(area, filePath);
@@ -36,7 +41,8 @@ bool TextManager::openFile(QString const &filePath, QString const &generatorName
 		mModified.insert(filePath, QPair<bool, bool>(false, false));
 		mGeneratorName.insert(filePath, generatorName);
 
-		connect(area, SIGNAL(textWasModified(gui::QScintillaTextEdit*)), this, SLOT(setModified(gui::QScintillaTextEdit*)));
+		connect(area, SIGNAL(textWasModified(text::QScintillaTextEdit*))
+				, this, SLOT(setModified(text::QScintillaTextEdit*)));
 
 		return true;
 	}
@@ -44,7 +50,7 @@ bool TextManager::openFile(QString const &filePath, QString const &generatorName
 	return false;
 }
 
-bool TextManager::bindCode(EditorView* diagram,  QString const &filePath)
+bool TextManager::bindCode(Id const &diagram,  QString const &filePath)
 {
 	if (mText.contains(filePath)) {
 		mDiagramCodeManager.insert(diagram, filePath);
@@ -58,7 +64,7 @@ bool TextManager::unbindCode(QString const &filePath)
 	return mDiagramCodeManager.remove(mDiagramCodeManager.key(filePath), filePath) != 0;
 }
 
-bool TextManager::unbindCode(gui::QScintillaTextEdit *code)
+bool TextManager::unbindCode(text::QScintillaTextEdit *code)
 {
 	return unbindCode(mPath.value(code));
 }
@@ -78,7 +84,7 @@ void TextManager::changeFilePath(QString const &from, QString const &to)
 	QScintillaTextEdit *code = mText.value(from);
 	QPair<bool, bool> mod(true, false);
 	QString const genName = generatorName(from);
-	EditorView *diagram = mDiagramCodeManager.key(from, nullptr);
+	Id const diagram = mDiagramCodeManager.key(from);
 
 	closeFile(from);
 
@@ -88,7 +94,7 @@ void TextManager::changeFilePath(QString const &from, QString const &to)
 	mModified.insert(to, mod);
 	mGeneratorName.insert(to, genName);
 
-	if (diagram != nullptr) {
+	if (!diagram.isNull()) {
 		bindCode(diagram, to);
 	}
 }
@@ -98,11 +104,11 @@ QScintillaTextEdit *TextManager::code(QString const &filePath) const
 	return mText.value(filePath);
 }
 
-QList<gui::QScintillaTextEdit *> TextManager::code(EditorView* diagram) const
+QList<text::QScintillaTextEdit *> TextManager::code(Id const &diagram) const
 {
-	QList<gui::QScintillaTextEdit *> codeList;
+	QList<text::QScintillaTextEdit *> codeList;
 
-	foreach (QString const &filePath, mDiagramCodeManager.values(diagram)) {
+	for (QString const &filePath : mDiagramCodeManager.values(diagram)) {
 		codeList += mText.value(filePath);
 	}
 
@@ -114,17 +120,17 @@ bool TextManager::contains(QString const &filePath) const
 	return mText.contains(filePath);
 }
 
-bool TextManager::removeDiagram(EditorView *diagram)
+bool TextManager::removeDiagram(Id const &diagram)
 {
 	return mDiagramCodeManager.remove(diagram);
 }
 
-EditorView *TextManager::diagram(gui::QScintillaTextEdit *code) const
+Id TextManager::diagram(text::QScintillaTextEdit *code) const
 {
-	return mDiagramCodeManager.key(mPath.value(code), nullptr);
+	return mDiagramCodeManager.key(mPath.value(code));
 }
 
-QString TextManager::path(gui::QScintillaTextEdit *code) const
+QString TextManager::path(text::QScintillaTextEdit *code) const
 {
 	return mPath.value(code);
 }
@@ -144,7 +150,7 @@ bool TextManager::isModifiedEver(QString const &path) const
 	return mModified.value(path).first;
 }
 
-void TextManager::setModified(gui::QScintillaTextEdit *code, bool modified)
+void TextManager::setModified(text::QScintillaTextEdit *code, bool modified)
 {
 	QPair<bool, bool> mod = mModified.value(mPath.value(code));
 	mod.first = !modified || mod.first;
@@ -160,127 +166,94 @@ void TextManager::onTabClosed(QFileInfo const &file)
 	closeFile(file.absoluteFilePath());
 }
 
-void TextManager::addExtensionDescriptionByGenerator(QString const &generatorName, QString const &description)
-{
-	mExtensionDescriptionByGenerator.insert(generatorName, description);
-}
-
-void TextManager::addExtensionDescriptionByExtension(QString const &extension, QString const &description)
-{
-	mExtensionDescriptionByExtension.insert(extension, description);
-}
-
-void TextManager::removeExtensions()
-{
-	mExtensionDescriptionByGenerator.clear();
-	mExtensionDescriptionByExtension.clear();
-}
-
-QString TextManager::extensionDescriptionByGenerator(QString const &generatorName) const
-{
-	return mExtensionDescriptionByGenerator.value(generatorName, QString());
-}
-
-QString TextManager::extensionDescriptionByExtension(QString const &extension) const
-{
-	return mExtensionDescriptionByExtension.value(extension, QString());
-}
-
-QList<QString> TextManager::extensionDescriptions() const
-{
-	return mExtensionDescriptionByGenerator.values();
-}
-
-void TextManager::showInTextEditor(QFileInfo const &fileInfo, QString const &genName)
+void TextManager::showInTextEditor(QFileInfo const &fileInfo
+		, QString const &genName, text::LanguageInfo const &language)
 {
 	/// @todo: Uncomment it
 	// Q_ASSERT(!fileInfo.baseName().isEmpty());
 
-	if (dynamic_cast<EditorView *>(mMainWindow->getCurrentTab())) {
+	if (!mMainWindow.activeDiagram().isNull()) {
 		QString const filePath = fileInfo.absoluteFilePath();
 
 		if (contains(filePath)) {
-			mMainWindow->closeTab(code(filePath));
+			mMainWindow.closeTab(code(filePath));
 		}
 
-		openFile(filePath, genName);
+		openFile(filePath, genName, language);
 		QScintillaTextEdit *area = code(filePath);
 		area->show();
-		bindCode(mMainWindow->getCurrentTab(), filePath);
-		mSystemEvents->emitNewCodeAppeared(mMainWindow->activeDiagram(), QFileInfo(filePath));
+		bindCode(mMainWindow.activeDiagram(), filePath);
+		emit mSystemEvents.newCodeAppeared(mMainWindow.activeDiagram(), QFileInfo(filePath));
 
-		mMainWindow->openTab(area,  fileInfo.fileName());
+		mMainWindow.openTab(area, fileInfo.fileName());
 	}
 }
 
-void TextManager::showInTextEditor(QFileInfo const &fileInfo)
+void TextManager::showInTextEditor(QFileInfo const &fileInfo, text::LanguageInfo const &language)
 {
 	Q_ASSERT(!fileInfo.baseName().isEmpty());
 
 	QString const filePath = fileInfo.absoluteFilePath();
 
 	if (contains(filePath)) {
-		mMainWindow->closeTab(code(filePath));
+		mMainWindow.closeTab(code(filePath));
 	}
 
-	openFile(filePath, "");
+	openFile(filePath, QString(), language);
 	QScintillaTextEdit *area = code(filePath);
 	area->show();
 
-	mMainWindow->openTab(area,  fileInfo.fileName());
+	mMainWindow.openTab(area,  fileInfo.fileName());
 }
 
 bool TextManager::saveText(bool saveAs)
 {
-	if (!dynamic_cast<EditorView *>(mMainWindow->getCurrentTab())) {
-		QScintillaTextEdit * const area = dynamic_cast<QScintillaTextEdit *>(mMainWindow->currentTab());
-		EditorView * const diagram = TextManager::diagram(area);
-		QFileInfo fileInfo;
-		QString const filepath = path(area);
-		bool const defaultPath = isDefaultPath(filepath);
-		QString const generatorName = this->generatorName(filepath);
-		QString const extensions = QStringList(extensionDescriptions()).join(";;");
-		QString *currentExtensionDescription = new QString((!generatorName.isEmpty()
-				? extensionDescriptionByGenerator(generatorName)
-				: extensionDescriptionByExtension(QFileInfo(filepath).suffix())));
-
-		QString extensionDescriptions = tr("All files (*)") + (extensions.isEmpty() ? "" : ";;" + extensions);
-
-		if (currentExtensionDescription->isEmpty()) {
-			currentExtensionDescription = nullptr;
-		}
-
-		if (saveAs) {
-			fileInfo = QFileInfo(utils::QRealFileDialog::getSaveFileName("SaveTextFromTextManager"
-					, mMainWindow, tr("Save generated code"), "", extensionDescriptions, currentExtensionDescription));
-		} else {
-			fileInfo = path(area);
-		}
-
-		delete currentExtensionDescription;
-
-		if (fileInfo.fileName() != "") {
-			mMainWindow->setTabText(area, fileInfo.fileName());
-
-			utils::OutFile out(fileInfo.absoluteFilePath());
-
-			out() << area->text();
-
-			if (defaultPath || saveAs) {
-				changeFilePath(path(area), fileInfo.absoluteFilePath());
-			}
-
-			setModified(area, false);
-
-			if (saveAs && diagram != nullptr) {
-				emit mSystemEvents->codePathChanged(diagram->mvIface()->rootId(), path(area), fileInfo);
-			}
-		}
-
-		return true;
+	QScintillaTextEdit * const area = dynamic_cast<QScintillaTextEdit *>(mMainWindow.currentTab());
+	if (!area) {
+		return false;
 	}
 
-	return false;
+	Id const diagram = TextManager::diagram(area);
+	QFileInfo fileInfo;
+	QString const filepath = path(area);
+	bool const defaultPath = isDefaultPath(filepath);
+
+	QString editorExtension = QString("%1 (*.%2)").arg(
+			area->currentLanguage().extensionDescription
+			, area->currentLanguage().extension);
+	QString const extensionDescriptions = editorExtension + ";;" + tr("All files (*)");
+	QString *currentExtensionDescription = &editorExtension;
+
+	if (saveAs) {
+		fileInfo = QFileInfo(utils::QRealFileDialog::getSaveFileName("SaveTextFromTextManager"
+				, mMainWindow.windowWidget()
+				, tr("Save generated code")
+				, QString()
+				, extensionDescriptions
+				, currentExtensionDescription));
+	} else {
+		fileInfo = path(area);
+	}
+
+	if (!fileInfo.fileName().isEmpty()) {
+		mMainWindow.setTabText(area, fileInfo.fileName());
+
+		utils::OutFile out(fileInfo.absoluteFilePath());
+
+		out() << area->text();
+
+		if (defaultPath || saveAs) {
+			changeFilePath(path(area), fileInfo.absoluteFilePath());
+		}
+
+		setModified(area, false);
+
+		if (saveAs && !diagram.isNull()) {
+			emit mSystemEvents.codePathChanged(diagram, path(area), fileInfo);
+		}
+	}
+
+	return true;
 }
 
 QString TextManager::generatorName(QString const &filePath) const

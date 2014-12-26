@@ -5,12 +5,15 @@
 
 #include <qrkernel/ids.h>
 
+#include "qrgui/controller/controllerDeclSpec.h"
+
 namespace qReal {
 namespace commands {
 
-class AbstractCommand : public QObject, public QUndoCommand
+class QRGUI_CONTROLLER_EXPORT AbstractCommand : public QObject, public QUndoCommand
 {
 	Q_OBJECT
+
 public:
 	AbstractCommand();
 	virtual ~AbstractCommand();

@@ -9,6 +9,11 @@ namespace ast {
 /// Base class for all expressions.
 class Expression : public Node
 {
+private:
+	void accept(AstVisitorInterface &visitor) const override
+	{
+		visitor.visit(*this);
+	}
 };
 
 }

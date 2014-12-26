@@ -3,8 +3,8 @@
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QMenu>
 
-#include "mainwindow/palette/paletteTree.h"
-#include "mainwindow/palette/draggableElement.h"
+#include "mainWindow/palette/paletteTree.h"
+#include "mainWindow/palette/draggableElement.h"
 #include "dialogs/metamodelingOnFly/chooseTypeDialog.h"
 
 using namespace qReal;
@@ -116,8 +116,9 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 
 void PaletteTreeWidget::addElementPaletteActionTriggered()
 {
-	ChooseTypeDialog *chooseTypeDialog = new ChooseTypeDialog(mMainWindow
-			, mPaletteTree.currentEditor(), *mEditorManager);
+	ChooseTypeDialog *chooseTypeDialog = new ChooseTypeDialog(mPaletteTree.currentEditor()
+			, *mEditorManager, &mMainWindow);
+	connect(chooseTypeDialog, &ChooseTypeDialog::jobDone, &mMainWindow, &MainWindow::loadPlugins);
 	chooseTypeDialog->setModal(true);
 	chooseTypeDialog->show();
 }

@@ -13,9 +13,11 @@ TokenPatterns<LuaTokenTypes> LuaLexer::initPatterns()
 {
 	TokenPatterns<LuaTokenTypes> tokenDefinitions;
 
-	tokenDefinitions.defineToken(LuaTokenTypes::whitespace, QRegularExpression("[ \t]+"));
-	tokenDefinitions.defineToken(LuaTokenTypes::newline, QRegularExpression("[\n]"));
-	tokenDefinitions.defineToken(LuaTokenTypes::identifier, QRegularExpression(R"([\p{L}_][\p{L}0-9_]*)"));
+	tokenDefinitions.defineToken(LuaTokenTypes::whitespace, QRegularExpression("[ \t]+"), QObject::tr("whitespace"));
+	tokenDefinitions.defineToken(LuaTokenTypes::newline, QRegularExpression("[\n]"), QObject::tr("newline"));
+	tokenDefinitions.defineToken(LuaTokenTypes::identifier
+			, QRegularExpression(R"([\p{L}_][\p{L}0-9_]*)")
+			, QObject::tr("identifier"));
 
 	tokenDefinitions.defineKeyword(LuaTokenTypes::andKeyword, "and");
 	tokenDefinitions.defineKeyword(LuaTokenTypes::breakKeyword, "break");
@@ -40,64 +42,74 @@ TokenPatterns<LuaTokenTypes> LuaLexer::initPatterns()
 	tokenDefinitions.defineKeyword(LuaTokenTypes::untilKeyword, "until");
 	tokenDefinitions.defineKeyword(LuaTokenTypes::whileKeyword, "while");
 
-	tokenDefinitions.defineToken(LuaTokenTypes::plus, QRegularExpression("\\+"));
-	tokenDefinitions.defineToken(LuaTokenTypes::minus, QRegularExpression("-"));
-	tokenDefinitions.defineToken(LuaTokenTypes::asterick, QRegularExpression("\\*"));
-	tokenDefinitions.defineToken(LuaTokenTypes::slash, QRegularExpression("/"));
-	tokenDefinitions.defineToken(LuaTokenTypes::percent, QRegularExpression("%"));
-	tokenDefinitions.defineToken(LuaTokenTypes::hat, QRegularExpression("\\^"));
-	tokenDefinitions.defineToken(LuaTokenTypes::sharp, QRegularExpression("#"));
+	tokenDefinitions.defineToken(LuaTokenTypes::plus, QRegularExpression("\\+"), "+");
+	tokenDefinitions.defineToken(LuaTokenTypes::minus, QRegularExpression("-"), "-");
+	tokenDefinitions.defineToken(LuaTokenTypes::asterick, QRegularExpression("\\*"), "*");
+	tokenDefinitions.defineToken(LuaTokenTypes::slash, QRegularExpression("/"), "/");
+	tokenDefinitions.defineToken(LuaTokenTypes::percent, QRegularExpression("%"), "%");
+	tokenDefinitions.defineToken(LuaTokenTypes::hat, QRegularExpression("\\^"), "^");
+	tokenDefinitions.defineToken(LuaTokenTypes::sharp, QRegularExpression("#"), "#");
 
-	tokenDefinitions.defineToken(LuaTokenTypes::ampersand, QRegularExpression("&"));
-	tokenDefinitions.defineToken(LuaTokenTypes::tilda, QRegularExpression("~"));
-	tokenDefinitions.defineToken(LuaTokenTypes::verticalLine, QRegularExpression("\\|"));
-	tokenDefinitions.defineToken(LuaTokenTypes::doubleLess, QRegularExpression("<<"));
-	tokenDefinitions.defineToken(LuaTokenTypes::doubleGreater, QRegularExpression(">>"));
-	tokenDefinitions.defineToken(LuaTokenTypes::doubleSlash, QRegularExpression("//"));
+	tokenDefinitions.defineToken(LuaTokenTypes::ampersand, QRegularExpression("&"), "&");
+	tokenDefinitions.defineToken(LuaTokenTypes::tilda, QRegularExpression("~"), "~");
+	tokenDefinitions.defineToken(LuaTokenTypes::verticalLine, QRegularExpression("\\|"), "|");
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleLess, QRegularExpression("<<"), "<<");
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleGreater, QRegularExpression(">>"), ">>");
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleSlash, QRegularExpression("//"), "//");
 
-	tokenDefinitions.defineToken(LuaTokenTypes::doubleEquals, QRegularExpression("=="));
-	tokenDefinitions.defineToken(LuaTokenTypes::tildaEquals, QRegularExpression("~="));
-	tokenDefinitions.defineToken(LuaTokenTypes::exclamationMarkEquals, QRegularExpression("!="));
-	tokenDefinitions.defineToken(LuaTokenTypes::lessEquals, QRegularExpression("<="));
-	tokenDefinitions.defineToken(LuaTokenTypes::greaterEquals, QRegularExpression(">="));
-	tokenDefinitions.defineToken(LuaTokenTypes::less, QRegularExpression("<"));
-	tokenDefinitions.defineToken(LuaTokenTypes::greater, QRegularExpression(">"));
-	tokenDefinitions.defineToken(LuaTokenTypes::equals, QRegularExpression("="));
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleEquals, QRegularExpression("=="), "==");
+	tokenDefinitions.defineToken(LuaTokenTypes::tildaEquals, QRegularExpression("~="), "~=");
+	tokenDefinitions.defineToken(LuaTokenTypes::exclamationMarkEquals, QRegularExpression("!="), "!=");
+	tokenDefinitions.defineToken(LuaTokenTypes::lessEquals, QRegularExpression("<="), "<=");
+	tokenDefinitions.defineToken(LuaTokenTypes::greaterEquals, QRegularExpression(">="), ">=");
+	tokenDefinitions.defineToken(LuaTokenTypes::less, QRegularExpression("<"), "<");
+	tokenDefinitions.defineToken(LuaTokenTypes::greater, QRegularExpression(">"), ">");
+	tokenDefinitions.defineToken(LuaTokenTypes::equals, QRegularExpression("="), "=");
 
-	tokenDefinitions.defineToken(LuaTokenTypes::openingBracket, QRegularExpression("\\("));
-	tokenDefinitions.defineToken(LuaTokenTypes::closingBracket, QRegularExpression("\\)"));
-	tokenDefinitions.defineToken(LuaTokenTypes::openingCurlyBracket, QRegularExpression("{"));
-	tokenDefinitions.defineToken(LuaTokenTypes::closingCurlyBracket, QRegularExpression("}"));
-	tokenDefinitions.defineToken(LuaTokenTypes::openingSquareBracket, QRegularExpression("\\["));
-	tokenDefinitions.defineToken(LuaTokenTypes::closingSquareBracket, QRegularExpression("\\]"));
-	tokenDefinitions.defineToken(LuaTokenTypes::doubleColon, QRegularExpression("::"));
+	tokenDefinitions.defineToken(LuaTokenTypes::openingBracket, QRegularExpression("\\("), "(");
+	tokenDefinitions.defineToken(LuaTokenTypes::closingBracket, QRegularExpression("\\)"), ")");
+	tokenDefinitions.defineToken(LuaTokenTypes::openingCurlyBracket, QRegularExpression("{"), "{");
+	tokenDefinitions.defineToken(LuaTokenTypes::closingCurlyBracket, QRegularExpression("}"), "}");
+	tokenDefinitions.defineToken(LuaTokenTypes::openingSquareBracket, QRegularExpression("\\["), "[");
+	tokenDefinitions.defineToken(LuaTokenTypes::closingSquareBracket, QRegularExpression("\\]"), "]");
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleColon, QRegularExpression("::"), "::");
 
-	tokenDefinitions.defineToken(LuaTokenTypes::semicolon, QRegularExpression(";"));
-	tokenDefinitions.defineToken(LuaTokenTypes::colon, QRegularExpression(":"));
-	tokenDefinitions.defineToken(LuaTokenTypes::comma, QRegularExpression(","));
-	tokenDefinitions.defineToken(LuaTokenTypes::dot, QRegularExpression("\\."));
-	tokenDefinitions.defineToken(LuaTokenTypes::doubleDot, QRegularExpression("\\.\\."));
-	tokenDefinitions.defineToken(LuaTokenTypes::tripleDot, QRegularExpression("\\.\\.\\."));
+	tokenDefinitions.defineToken(LuaTokenTypes::semicolon, QRegularExpression(";"), ";");
+	tokenDefinitions.defineToken(LuaTokenTypes::colon, QRegularExpression(":"), ":");
+	tokenDefinitions.defineToken(LuaTokenTypes::comma, QRegularExpression(","), ",");
+	tokenDefinitions.defineToken(LuaTokenTypes::dot, QRegularExpression("\\."), ".");
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleDot, QRegularExpression("\\.\\."), "..");
+	tokenDefinitions.defineToken(LuaTokenTypes::tripleDot, QRegularExpression("\\.\\.\\."), "...");
 
-	tokenDefinitions.defineToken(LuaTokenTypes::string, QRegularExpression(R"(("[^"\\]*(\\(.|\n)[^"\\]*)*"))"
-			R"(|('[^'\\]*(\\(.|\n)[^'\\]*)*'))"));
+	tokenDefinitions.defineToken(LuaTokenTypes::string
+			, QRegularExpression(R"(("[^"\\]*(\\(.|\n)[^"\\]*)*"))"
+					R"(|('[^'\\]*(\\(.|\n)[^'\\]*)*'))")
+			, QObject::tr("string")
+			);
 
-	tokenDefinitions.defineToken(LuaTokenTypes::integerLiteral, QRegularExpression("(0[xX][0-9a-fA-F]+)|([0-9]+)"));
-	tokenDefinitions.defineToken(LuaTokenTypes::floatLiteral, QRegularExpression(
-			"(0[xX][0-9a-fA-F]+("
-					"(\\.[0-9a-fA-F]+[pP](([+-][0-9a-fA-F]+)|([0-9a-fA-F]*)))"
-					"|(\\.[0-9a-fA-F]+)"
-					"|([pP](([+-][0-9a-fA-F]+)|([0-9a-fA-F]*)))))"
-			"|([0-9]+("
-					"(\\.[0-9]+)[eE](([+-][0-9]+)|([0-9]*))"
-					"|(\\.[0-9]+)"
-					"|([eE](([+-][0-9]+)|([0-9]*)))))"
-			));
+	tokenDefinitions.defineToken(LuaTokenTypes::integerLiteral
+			, QRegularExpression("(0[xX][0-9a-fA-F]+)|([0-9]+)")
+			, QObject::tr("integer literal")
+			);
 
-	tokenDefinitions.defineToken(LuaTokenTypes::comment, QRegularExpression("--.*"));
+	tokenDefinitions.defineToken(LuaTokenTypes::floatLiteral
+			, QRegularExpression(
+					"(0[xX][0-9a-fA-F]+("
+							"(\\.[0-9a-fA-F]+[pP](([+-][0-9a-fA-F]+)|([0-9a-fA-F]*)))"
+							"|(\\.[0-9a-fA-F]+)"
+							"|([pP](([+-][0-9a-fA-F]+)|([0-9a-fA-F]*)))))"
+					"|([0-9]+("
+							"(\\.[0-9]+)[eE](([+-][0-9]+)|([0-9]*))"
+							"|(\\.[0-9]+)"
+							"|([eE](([+-][0-9]+)|([0-9]*)))))"
+					)
+			, QObject::tr("float literal")
+			);
 
-	tokenDefinitions.defineToken(LuaTokenTypes::doubleAmpersand, QRegularExpression("&&"));
-	tokenDefinitions.defineToken(LuaTokenTypes::doubleVerticalLine, QRegularExpression("\\|\\|"));
+	tokenDefinitions.defineToken(LuaTokenTypes::comment, QRegularExpression("--.*"), QObject::tr("comment"));
+
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleAmpersand, QRegularExpression("&&"), "&&");
+	tokenDefinitions.defineToken(LuaTokenTypes::doubleVerticalLine, QRegularExpression("\\|\\|"), "||");
 
 	return tokenDefinitions;
 }

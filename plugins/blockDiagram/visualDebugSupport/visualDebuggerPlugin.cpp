@@ -1,7 +1,7 @@
 #include <QtWidgets/QApplication>
 
 #include "visualDebuggerPlugin.h"
-#include "toolPluginInterface/systemEvents.h"
+#include "plugins/toolPluginInterface/systemEvents.h"
 
 using namespace qReal;
 using namespace visualDebugger;
@@ -39,9 +39,9 @@ void VisualDebuggerPlugin::init(PluginConfigurator const &configurator)
 	connect(&configurator.systemEvents(), SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(qReal::Id)));
 }
 
-QPair<QString, PreferencesPage *> VisualDebuggerPlugin::preferencesPage()
+QPair<QString, gui::PreferencesPage *> VisualDebuggerPlugin::preferencesPage()
 {
-	return qMakePair(tr("Block Diagram Debug"), static_cast<PreferencesPage*>(mPreferencesPage));
+	return qMakePair(tr("Block Diagram Debug"), static_cast<gui::PreferencesPage*>(mPreferencesPage));
 }
 
 QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()

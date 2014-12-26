@@ -28,6 +28,11 @@ public:
 	}
 
 private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
+
 	QSharedPointer<Expression> mTable;
 	QSharedPointer<Expression> mIndexer;
 };

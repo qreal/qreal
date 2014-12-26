@@ -5,7 +5,7 @@
 namespace generatorBase {
 namespace converters {
 
-/// Splits given string selecting just 'A', 'B' and 'C' symbols and returns converted output port values.
+/// Splits given string selecting just letter, digit symbols and underscore and returns converted output port values.
 class EnginePortsConverter : public RegexpMultiConverter
 {
 public:

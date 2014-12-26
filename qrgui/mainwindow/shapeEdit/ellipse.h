@@ -4,7 +4,7 @@
 
 #include <qrutils/graphicsUtils/rectangleImpl.h>
 
-#include "mainwindow/shapeEdit/item.h"
+#include "mainWindow/shapeEdit/item.h"
 
 class QRealEllipse : public Item
 {

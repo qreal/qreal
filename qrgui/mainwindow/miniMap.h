@@ -1,10 +1,11 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtWidgets/QGraphicsView>
 
-#include "view/editorView.h"
-#include "view/editorViewScene.h"
-#include "mainwindow/mainWindow.h"
+#include "editor/editorView.h"
+#include "editor/editorViewScene.h"
+#include "mainWindow/mainWindow.h"
 
 /** @brief Minimap for the current viewed diagram
 *

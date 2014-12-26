@@ -23,10 +23,10 @@ public:
 	~NxtKitInterpreterPlugin() override;
 
 	void init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::SystemEvents const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
-			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
+			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, interpreterBase::InterpreterControlInterface &interpreterControl) override;
 
 	QString kitId() const override;
@@ -41,7 +41,7 @@ public:
 	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
 	// Transfers ownership.
-	interpreterBase::AdditionalPreferences *settingsWidget() override;
+	QList<interpreterBase::AdditionalPreferences *> settingsWidgets() override;
 
 	QList<qReal::ActionInfo> customActions() override;
 

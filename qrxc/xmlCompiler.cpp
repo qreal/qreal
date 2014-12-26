@@ -122,16 +122,16 @@ void XmlCompiler::generateElementClasses()
 	outElements() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementImpl.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelFactoryInterface.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/elementImpl.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/elementRepoInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/labelFactoryInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/labelInterface.h\"\n"
 		<< "#include \"ports.h\"\n\n"
 		;
 
 	OutFile outPorts("generated/ports.h");
 	outPorts() << "#pragma once\n\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/portHelpers.h\"\n\n";
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/portHelpers.h\"\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		foreach (Type *type, diagram->types().values()) {
@@ -157,7 +157,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QtCore/QPair>\n"
 		<< "\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"

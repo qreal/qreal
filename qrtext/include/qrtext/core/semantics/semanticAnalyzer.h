@@ -37,7 +37,7 @@ namespace core {
 ///
 /// Current implementation only works for simple types.
 ///
-/// Algorithm of type inferrence is at first assigns to every expression type variable which type initialized to Any,
+/// Algorithm of type inference is at first assigns to every expression type variable which type initialized to Any,
 /// then for each specific node expression types are constrained by semantics of the expression, and in some cases
 /// type variables are unified (two expressions assigned to one type variable). For example, expression "-a" can be
 /// unified with expression "a", so it has one type, and in the same time constrained to type "int" or "float", as they
@@ -64,6 +64,19 @@ public:
 
 	/// Returns type for a given expression (if that expression was seen by "analyze" method before, or nullptr).
 	QSharedPointer<types::TypeExpression> type(QSharedPointer<ast::Node> const &expression) const;
+
+	/// Returns list of identifier names known to semantic analyzer.
+	QStringList identifiers() const;
+
+	/// Returns a mapping of variable identifiers known to semantic analyzer to their types.
+	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const;
+
+	/// Clears the state of semantic analyzer, forgetting known identifiers and expression types.
+	virtual void clear();
+
+	/// Forgets types of an expression and all subexpressions, used when corresponding text is reparsed. Does not forget
+	/// types of identifiers declared there.
+	void forget(QSharedPointer<ast::Node> const &root);
 
 protected:
 	/// Assigns given type to given expression.

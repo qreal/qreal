@@ -2,34 +2,30 @@
 
 #include <QtGui/QColor>
 
-#include <interpreterBase/robotModel/robotParts/button.h>
-#include <interpreterBase/robotModel/robotParts/speaker.h>
-#include <interpreterBase/robotModel/robotParts/motor.h>
-#include <interpreterBase/robotModel/robotParts/encoderSensor.h>
-#include <interpreterBase/robotModel/robotParts/touchSensor.h>
-#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
-#include <interpreterBase/robotModel/robotParts/lightSensor.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorBlue.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorFull.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorGreen.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorPassive.h>
-#include <interpreterBase/robotModel/robotParts/colorSensorRed.h>
-
 #include <interpreterBase/robotModel/robotModelUtils.h>
+#include <interpreterBase/robotModel/robotParts/lightSensor.h>
 
 #include "trikDisplayWidget.h"
 #include "robotModel/twoD/parts/twoDDisplay.h"
 #include "robotModel/twoD/parts/twoDSpeaker.h"
 #include "robotModel/twoD/parts/twoDInfraredSensor.h"
 #include "robotModel/twoD/parts/twoDLed.h"
+#include "robotModel/twoD/parts/twoDLineSensor.h"
+#include "robotModel/twoD/parts/twoDObjectSensor.h"
+#include "robotModel/twoD/parts/twoDColorSensor.h"
+#include "robotModel/parts/trikLineSensor.h"
+#include "robotModel/parts/trikObjectSensor.h"
+#include "robotModel/parts/trikColorSensor.h"
 #include "robotModel/parts/trikInfraredSensor.h"
 #include "robotModel/parts/trikSonarSensor.h"
+
+#include "trikDisplayWidget.h"
 
 using namespace trikKitInterpreter::robotModel;
 using namespace trikKitInterpreter::robotModel::twoD;
 using namespace interpreterBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
+TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
@@ -52,6 +48,18 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 	if (deviceInfo.isA<robotModel::parts::TrikLed>()) {
 		return new parts::TwoDLed(deviceInfo, port, *engine());
+	}
+
+	if (deviceInfo.isA<robotModel::parts::TrikLineSensor>()) {
+		return new parts::LineSensor(deviceInfo, port);
+	}
+
+	if (deviceInfo.isA<robotModel::parts::TrikObjectSensor>()) {
+		return new parts::ObjectSensor(deviceInfo, port);
+	}
+
+	if (deviceInfo.isA<robotModel::parts::TrikColorSensor>()) {
+		return new parts::ColorSensor(deviceInfo, port);
 	}
 
 	return twoDModel::robotModel::TwoDRobotModel::createDevice(port, deviceInfo);
@@ -98,19 +106,21 @@ QString TwoDRobotModel::sensorImagePath(DeviceInfo const &deviceType) const
 	return QString();
 }
 
+void TwoDRobotModel::setWheelPorts(QString const &leftWheelPort, QString const &rightWheelPort)
+{
+	mLeftWheelPort = leftWheelPort;
+	mRightWheelPort = rightWheelPort;
+}
+
 QRect TwoDRobotModel::sensorImageRect(interpreterBase::robotModel::DeviceInfo const &deviceType) const
 {
-	if (deviceType.isA<robotParts::TouchSensor>()) {
-		return QRect(-12, -5, 25, 10);
-	} else if (deviceType.isA<robotParts::ColorSensor>()
-			|| deviceType.isA<robotParts::LightSensor>())
-	{
+	if (deviceType.isA<robotParts::LightSensor>()) {
 		return QRect(-6, -6, 12, 12);
 	}
+
 	if (deviceType.isA<robotParts::RangeSensor>()) {
 		return QRect(-20, -10, 40, 20);;
-	} else {
-		Q_ASSERT(!"Unknown sensor type");
-		return QRect();
 	}
+
+	return QRect();
 }

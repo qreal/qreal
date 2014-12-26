@@ -13,7 +13,7 @@ LoopNode::LoopNode(Id const &idBinded, QObject *parent)
 	mBodyZone->setParentNode(this);
 }
 
-QString LoopNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString LoopNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
 {
 	simple::AbstractSimpleGenerator *generator = nullptr;
 	if (mId.isNull()) {
@@ -30,8 +30,8 @@ QString LoopNode::toStringImpl(GeneratorCustomizer &customizer, int indent) cons
 		}
 	}
 
-	QString result = utils::StringUtils::addIndent(generator->generate(), indent);
-	QString const bodyCode = mBodyZone->toString(customizer, indent + 1);
+	QString result = utils::StringUtils::addIndent(generator->generate(), indent, indentString);
+	QString const bodyCode = mBodyZone->toString(customizer, indent + 1, indentString);
 	result.replace("@@BODY@@", bodyCode);
 	return result;
 }

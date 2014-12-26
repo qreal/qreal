@@ -2,10 +2,10 @@
 
 #include <qrkernel/ids.h>
 
+#include "models/modelsDeclSpec.h"
 #include "models/details/logicalModel.h"
 #include "models/details/modelsAssistApi.h"
-#include "toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "pluginManager/proxyEditorManager.h"
+#include "plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 
 namespace qReal {
 
@@ -14,7 +14,7 @@ class EditorManagerInterface;
 
 namespace models {
 
-class LogicalModelAssistApi : public QObject, public qReal::LogicalModelAssistInterface
+class QRGUI_MODELS_EXPORT LogicalModelAssistApi : public QObject, public qReal::LogicalModelAssistInterface
 {
 	Q_OBJECT
 public:

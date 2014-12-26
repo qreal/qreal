@@ -13,7 +13,7 @@ WhileLoopGenerator::WhileLoopGenerator(qrRepo::RepoApi const &repo
 	: BindingGenerator(repo, customizer, id
 			, doWhileForm ? "conditional/doWhile.t" : "conditional/whileDo.t"
 			, QList<Binding *>() << Binding::createConverting("@@CONDITION@@", "Condition"
-					, customizer.factory()->boolPropertyConverter(needInverting))
+					, customizer.factory()->boolPropertyConverter(id, "Condition", needInverting))
 			, parent)
 {
 }

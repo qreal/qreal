@@ -1,1 +1,0 @@
-const var @@NAME@@ = @@VALUE@@;

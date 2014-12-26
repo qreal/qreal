@@ -9,6 +9,11 @@ namespace ast {
 /// Represents "greater than" operator (>).
 class QRTEXT_EXPORT GreaterThan : public BinaryOperator
 {
+private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
 };
 
 }

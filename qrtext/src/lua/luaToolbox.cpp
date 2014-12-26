@@ -45,21 +45,30 @@ QSharedPointer<Node> const &LuaToolbox::parse(qReal::Id const &id, QString const
 {
 	mErrors.clear();
 
+	QSharedPointer<Node> ast;
+
 	if (mParsedCache[id][propertyName] != code) {
 		auto tokenStream = mLexer->tokenize(code);
-		auto ast = mParser->parse(tokenStream);
+
+		ast = mParser->parse(tokenStream, mLexer->userFriendlyTokenNames());
 
 		if (mErrors.isEmpty()) {
+			mAnalyzer->forget(mAstRoots[id][propertyName]);
 			mAstRoots[id][propertyName] = ast;
-			/// Note that analyze() changes mErrors, so these two ifs are correct.
-			mAnalyzer->analyze(ast);
 		}
 
-		if (mErrors.isEmpty()) {
-			mParsedCache[id][propertyName] = code;
-		} else {
-			reportErrors();
-		}
+		mParsedCache[id][propertyName] = code;
+	} else {
+		ast = mAstRoots[id][propertyName];
+	}
+
+	if (mErrors.isEmpty()) {
+		mAnalyzer->analyze(ast);
+	}
+
+	if (!mErrors.isEmpty()) {
+		mParsedCache[id].remove(propertyName);
+		reportErrors();
 	}
 
 	return mAstRoots[id][propertyName];
@@ -97,11 +106,42 @@ void LuaToolbox::addIntrinsicFunction(QString const &name
 
 	mAnalyzer->addIntrinsicFunction(name, functionType);
 	mInterpreter->addIntrinsicFunction(name, semantic);
+	markAsSpecial(name);
 }
 
 QStringList LuaToolbox::identifiers() const
 {
-	return mInterpreter->identifiers();
+	return mAnalyzer->identifiers();
+}
+
+QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> LuaToolbox::variableTypes() const
+{
+	return mAnalyzer->variableTypes();
+}
+
+QStringList const &LuaToolbox::specialIdentifiers() const
+{
+	return mSpecialIdentifiers;
+}
+
+QStringList const &LuaToolbox::specialConstants() const
+{
+	return mSpecialConstants;
+}
+
+void LuaToolbox::markAsSpecialConstant(QString const &identifier)
+{
+	markAsSpecial(identifier);
+	if (!mSpecialConstants.contains(identifier)) {
+		mSpecialConstants << identifier;
+	}
+}
+
+void LuaToolbox::markAsSpecial(QString const &identifier)
+{
+	if (!mSpecialIdentifiers.contains(identifier)) {
+		mSpecialIdentifiers << identifier;
+	}
 }
 
 QVariant LuaToolbox::value(QString const &identifier) const
@@ -116,6 +156,14 @@ void LuaToolbox::setVariableValue(QString const &name, QString const &initCode, 
 	}
 
 	mInterpreter->setVariableValue(name, value);
+}
+
+void LuaToolbox::clear()
+{
+	mAnalyzer->clear();
+	mInterpreter->clear();
+	mSpecialConstants.clear();
+	mSpecialIdentifiers.clear();
 }
 
 void LuaToolbox::reportErrors()

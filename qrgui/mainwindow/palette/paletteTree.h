@@ -12,9 +12,9 @@
 
 #include <qrkernel/ids.h>
 
-#include "mainwindow/mainWindow.h"
-#include "pluginManager/proxyEditorManager.h"
-#include "mainwindow/palette/paletteTreeWidgets.h"
+#include "mainWindow/mainWindow.h"
+#include "mainWindow/palette/paletteTreeWidgets.h"
+#include "plugins/pluginManager/proxyEditorManager.h"
 
 namespace  qReal {
 namespace gui {
@@ -79,6 +79,10 @@ public:
 
 	void setEnabledForAllElements(bool enabled);
 
+	/// Sets user palettes headers and descriptions.
+	void customizeExplosionTitles(QString const &userGroupTitle
+			, QString const &userGroupDescription);
+
 signals:
 	void paletteParametersChanged();
 
@@ -100,6 +104,9 @@ public slots:
 
 	/// Changes widget representation.
 	void changeRepresentation();
+
+	/// Rereads user blocks information.
+	void refreshUserPalettes();
 
 private:
 	/// Change icon and tooltip
@@ -126,7 +133,7 @@ private:
 	/// @param editorManager Editor manager which all editors with elements are taken from.
 	void loadEditors(EditorManagerInterface &editorManagerProxy);
 
-	EditorManagerInterface *mEditorManager;
+	EditorManagerInterface *mEditorManager = nullptr;
 
 	MainWindow *mMainWindow;
 

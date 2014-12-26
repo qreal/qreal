@@ -54,3 +54,53 @@ TEST_F(LuaToolboxTest, errorProcessingSanityCheck)
 	mToolbox->interpret<int>("true ||| false");
 	EXPECT_FALSE(mToolbox->errors().isEmpty());
 }
+
+TEST_F(LuaToolboxTest, tables)
+{
+	mToolbox->interpret<int>("a = {10; 15}");
+
+	int result = mToolbox->interpret<int>("a[0]");
+	EXPECT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ(10, result);
+
+	result = mToolbox->interpret<int>("a[1]");
+	EXPECT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ(15, result);
+}
+
+TEST_F(LuaToolboxTest, concatenation)
+{
+	mToolbox->interpret<int>("s = \"a = \" .. \"1\"");
+	auto result = mToolbox->interpret<QString>("s");
+	ASSERT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ("a = 1", result);
+}
+
+TEST_F(LuaToolboxTest, memory)
+{
+	ASSERT_EQ(0, qrtext::core::ast::Node::nodesCount());
+
+	mToolbox->interpret<int>("sensorA1 = 30; M4 = 'M4'; M3 = 'M3'");
+
+	mToolbox->interpret<int>("S=sensorA1; Sold=S;");
+	mToolbox->interpret<int>("u=2.5*(S-sensorA1)+5*(Sold-sensorA1); Sold=sensorA1;");
+	mToolbox->interpret<int>("M4");
+	mToolbox->interpret<int>("50-u");
+	mToolbox->interpret<int>("M3");
+	mToolbox->interpret<int>("50+u");
+	mToolbox->interpret<int>("30");
+
+	EXPECT_NE(0, qrtext::core::ast::Node::nodesCount());
+
+	mToolbox.reset(new LuaToolbox());
+
+	EXPECT_EQ(0, qrtext::core::ast::Node::nodesCount());
+
+	mToolbox->interpret<int>(qReal::Id("1", "2", "3", "test"), "test", "123");
+
+	EXPECT_NE(0, qrtext::core::ast::Node::nodesCount());
+
+	mToolbox.reset();
+
+	EXPECT_EQ(0, qrtext::core::ast::Node::nodesCount());
+}

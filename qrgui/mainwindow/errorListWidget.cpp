@@ -4,7 +4,7 @@
 #include <QtWidgets/QLabel>
 #include <QtGui/QClipboard>
 
-#include "mainwindow/mainWindow.h"
+#include "mainWindow/mainWindow.h"
 
 ErrorListWidget::ErrorListWidget(QWidget *parent)
 {

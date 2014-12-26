@@ -12,9 +12,9 @@
 
 #include <qrkernel/ids.h>
 
-#include "mainwindow/palette/paletteElement.h"
-#include "mainwindow/mainWindow.h"
-#include "pluginManager/proxyEditorManager.h"
+#include "mainWindow/palette/paletteElement.h"
+#include "mainWindow/mainWindow.h"
+#include "plugins/pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 namespace gui {

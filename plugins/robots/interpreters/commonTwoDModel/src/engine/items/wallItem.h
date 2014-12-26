@@ -37,7 +37,7 @@ public:
 	QPainterPath path() const;
 
 signals:
-	void wallDragged(WallItem *item, QPainterPath const &shape, QPointF const &oldPos);
+	void wallDragged(WallItem *item, QPainterPath const &shape, QRectF const &oldPos);
 
 protected:
 	void setPrivateData();

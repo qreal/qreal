@@ -1,6 +1,7 @@
 #pragma once
 
 #include "robotModel/parts/trikColorSensor.h"
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -14,10 +15,14 @@ class ColorSensor : public robotModel::parts::TrikColorSensor
 
 public:
 	ColorSensor(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::TcpRobotCommunicator &robotCommunicator);
 
 	void init() override;
 	void read() override;
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

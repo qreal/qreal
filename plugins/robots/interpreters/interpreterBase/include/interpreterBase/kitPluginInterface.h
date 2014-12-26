@@ -5,10 +5,10 @@
 #include <QtWidgets/QWidget>
 
 #include <qrkernel/ids.h>
-#include <qrgui/toolPluginInterface/actionInfo.h>
-#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
-#include <qrgui/toolPluginInterface/systemEventsInterface.h>
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/actionInfo.h>
+#include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
+#include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
@@ -32,10 +32,10 @@ public:
 	/// @param interpreterControl - interface with methods that allow plugin to control interpreter, such as starting
 	///        and stopping it.
 	virtual void init(EventsForKitPluginInterface const &eventsForKitPlugin
-			, qReal::SystemEventsInterface const &systemEvents
+			, qReal::SystemEvents const &systemEvents
 			, qReal::GraphicalModelAssistInterface &graphicalModel
 			, qReal::LogicalModelAssistInterface &logicalModel
-			, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
+			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, InterpreterControlInterface &interpreterControl)
 	{
 		Q_UNUSED(eventsForKitPlugin)
@@ -68,11 +68,11 @@ public:
 		return nullptr;
 	}
 
+	/// returned no widget is added on settings tab
 	/// Widget with specific settings for a plugin. save() method is called when user saves all settings,
 	/// restoreSettings() - each time when used selects other robot model for this kit. If nullptr is
-	/// returned no widget is added on settings tab
 	/// Transfers ownership.
-	virtual AdditionalPreferences *settingsWidget() = 0;
+	virtual QList<AdditionalPreferences *> settingsWidgets() = 0;
 
 	/// Returns a widget that will be placed at devices configuration widget in the left-hand side dock.
 	/// The default implementation returns nullptr.

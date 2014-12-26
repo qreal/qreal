@@ -1,13 +1,15 @@
 #pragma once
 
-#include "pluginManager/toolPluginManager.h"
-#include "fonts.h"
-#include "styles.h"
+#include <qrgui/plugins/pluginManager/toolPluginManager.h>
+
+#include "qrgui/brandManager/brandManagerDeclSpec.h"
+#include "qrgui/brandManager/fonts.h"
+#include "qrgui/brandManager/styles.h"
 
 namespace qReal {
 
 /// Provides information about everything about application appearance: fonts, styles and so on
-class BrandManager
+class QRGUI_BRAND_MANAGER_EXPORT BrandManager
 {
 public:
 	static BrandManager &instance();

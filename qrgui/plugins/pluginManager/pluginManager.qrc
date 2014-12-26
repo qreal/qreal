@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/pluginManager/">
+        <file>images/default.svg</file>
+    </qresource>
+</RCC>

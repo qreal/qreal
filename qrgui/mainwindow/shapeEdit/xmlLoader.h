@@ -2,8 +2,8 @@
 
 #include <QtXml/QDomDocument>
 
-#include "mainwindow/shapeEdit/scene.h"
-#include "mainwindow/shapeEdit/item.h"
+#include "mainWindow/shapeEdit/scene.h"
+#include "mainWindow/shapeEdit/item.h"
 
 const int distanceFigure = 50;
 

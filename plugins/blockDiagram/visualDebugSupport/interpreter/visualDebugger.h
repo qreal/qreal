@@ -2,8 +2,10 @@
 
 #include <QtCore/QList>
 
-#include <qrgui/mainwindow/errorReporter.h>
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+#include <qrgui/mainWindow/errorReporter.h>
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 
 #include "blockParser.h"
 

@@ -19,13 +19,8 @@
 #include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/finalNodeGenerator.h"
 #include "simpleGenerators/nullificationEncoderGenerator.h"
-#include "simpleGenerators/waitForColorBlockGenerator.h"
 #include "simpleGenerators/waitForColorIntensityBlockGenerator.h"
-#include "simpleGenerators/drawPixelBlockGenerator.h"
-#include "simpleGenerators/drawRectBlockGenerator.h"
 #include "simpleGenerators/clearScreenBlockGenerator.h"
-#include "simpleGenerators/drawLineBlockGenerator.h"
-#include "simpleGenerators/drawCircleBlockGenerator.h"
 #include "simpleGenerators/printTextBlockGenerator.h"
 #include "simpleGenerators/waitForLightBlockGenerator.h"
 #include "simpleGenerators/waitForSonarBlockGenerator.h"
@@ -44,19 +39,17 @@
 
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
-#include "converters/colorConverter.h"
 #include "converters/breakModeConverter.h"
-#include "converters/inputPortConverter.h"
-#include "converters/outputPortConverter.h"
+#include "converters/portNameConverter.h"
 #include "converters/enginePortsConverter.h"
 #include "converters/typeConverter.h"
-#include "converters/functionInvocationConverter.h"
+#include "converters/reservedVariablesConverter.h"
 #include "converters/functionBlockConverter.h"
 #include "converters/intPropertyConverter.h"
 #include "converters/floatPropertyConverter.h"
 #include "converters/boolPropertyConverter.h"
 #include "converters/switchConditionsMerger.h"
-#include "generatorBase/converters/stringPropertyConverter.h"
+#include "converters/stringPropertyConverter.h"
 
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"
@@ -64,7 +57,8 @@
 #include "generatorBase/parts/engines.h"
 #include "generatorBase/parts/sensors.h"
 #include "generatorBase/parts/functions.h"
-#include "generatorBase/parts/images.h"
+
+#include "generatorBase/lua/luaProcessor.h"
 
 using namespace generatorBase;
 using namespace qReal;
@@ -73,10 +67,12 @@ using namespace interpreterBase::robotModel;
 
 GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
-		, RobotModelManagerInterface const &robotModelManager)
+		, RobotModelManagerInterface const &robotModelManager
+		, lua::LuaProcessor &luaProcessor)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
+	, mLuaTranslator(luaProcessor)
 {
 }
 
@@ -87,13 +83,13 @@ GeneratorFactoryBase::~GeneratorFactoryBase()
 
 void GeneratorFactoryBase::initialize()
 {
+	mLuaTranslator.setPathToTemplates(pathToTemplates());
 	initVariables();
 	initSubprograms();
 	mThreads = new parts::Threads(pathToTemplates());
 	initEngines();
 	initSensors();
 	initFunctions();
-	initImages();
 	initDeviceVariables();
 }
 
@@ -105,7 +101,7 @@ void GeneratorFactoryBase::setMainDiagramId(Id const &diagramId)
 
 void GeneratorFactoryBase::initVariables()
 {
-	mVariables = new parts::Variables(pathToTemplates(), mRobotModelManager.model());
+	mVariables = new parts::Variables(pathToTemplates(), mRobotModelManager.model(), mLuaTranslator.toolbox());
 }
 
 void GeneratorFactoryBase::initSubprograms()
@@ -116,22 +112,17 @@ void GeneratorFactoryBase::initSubprograms()
 
 void GeneratorFactoryBase::initEngines()
 {
-	mEngines = new parts::Engines(pathToTemplates(), outputPortConverter(), enginesConverter());
+	mEngines = new parts::Engines(pathToTemplates(), portNameConverter(), enginesConverter());
 }
 
 void GeneratorFactoryBase::initSensors()
 {
-	mSensors = new parts::Sensors(pathToTemplates(), inputPortConverter());
+	mSensors = new parts::Sensors(pathToTemplates(), portNameConverter());
 }
 
 void GeneratorFactoryBase::initFunctions()
 {
 	mFunctions = new parts::Functions(pathToTemplates());
-}
-
-void GeneratorFactoryBase::initImages()
-{
-	mImages = new parts::Images(pathToTemplates());
 }
 
 void GeneratorFactoryBase::initDeviceVariables()
@@ -178,11 +169,6 @@ parts::Sensors *GeneratorFactoryBase::sensors()
 parts::Functions *GeneratorFactoryBase::functions()
 {
 	return mFunctions;
-}
-
-parts::Images *GeneratorFactoryBase::images()
-{
-	return mImages;
 }
 
 parts::DeviceVariables *GeneratorFactoryBase::deviceVariables() const
@@ -265,8 +251,6 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 		return new InitialNodeGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("ClearEncoder")) {
 		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("WaitForColor")) {
-		return new WaitForColorBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("WaitForColorIntensity")) {
 		return new WaitForColorIntensityBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("WaitForLight")) {
@@ -283,18 +267,10 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 		return new WaitForGyroscopeBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("WaitForAccelerometer")) {
 		return new WaitForAccelerometerBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("DrawPixel")) {
-		return new DrawPixelBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("DrawLine")) {
-		return new DrawLineBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("DrawCircle")) {
-		return new DrawCircleBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("PrintText")) {
-		return new PrintTextBlockGenerator(mRepo, customizer, id, this);
-	} else if (elementType.contains("DrawRect")) {
-		return new DrawRectBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("ClearScreen")) {
 		return new ClearScreenBlockGenerator(mRepo, customizer, id, this);
+	} else if (elementType.contains("PrintText")) {
+		return new PrintTextBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Subprogram") {
 		return new SubprogramsSimpleGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "VariableInit") {
@@ -336,58 +312,37 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id cons
 
 // Converters can be instantiated without taking ownership because binders do this
 
-Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter(Id const &id, QString const &property) const
 {
-	return new converters::IntPropertyConverter(pathToTemplates()
+	return new converters::IntPropertyConverter(pathToTemplates(), mLuaTranslator, id
+			, property, reservedVariableNameConverter(), typeConverter());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter(Id const &id, QString const &property) const
+{
+	return new converters::FloatPropertyConverter(mLuaTranslator, id, property, reservedVariableNameConverter());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(Id const &id
+		, QString const &property, bool needInverting) const
+{
+	return new converters::BoolPropertyConverter(pathToTemplates(), mLuaTranslator
+			, id, property, reservedVariableNameConverter(), needInverting);
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter(qReal::Id const &block
+		, QString const &property) const
+{
+	return new converters::StringPropertyConverter(mLuaTranslator, block, property, reservedVariableNameConverter());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::reservedVariableNameConverter() const
+{
+	return new converters::ReservedVariablesConverter(pathToTemplates()
 			, mErrorReporter
 			, mRobotModelManager.model()
 			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, *deviceVariables()
-			, typeConverter()
-			, variablesInfo()
-	);
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
-{
-	return new converters::FloatPropertyConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, *deviceVariables()
-	);
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
-{
-	return new converters::BoolPropertyConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, *deviceVariables()
-			, needInverting
-	);
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
-{
-	return new converters::StringPropertyConverter;
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::systemVariableNameConverter() const
-{
-	return new converters::CodeConverterBase(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
+			, portNameConverter()
 			, *deviceVariables());
 }
 
@@ -396,21 +351,10 @@ Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() con
 	return new converters::NameNormalizerConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::functionInvocationConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter(qReal::Id const &block
+		, QString const &property) const
 {
-	return new converters::FunctionInvocationConverter(pathToTemplates());
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() const
-{
-	return new converters::FunctionBlockConverter(pathToTemplates()
-			, mErrorReporter
-			, mRobotModelManager.model()
-			, currentConfiguration()
-			, inputPortConverter()
-			, functionInvocationConverter()
-			, *deviceVariables()
-	);
+	return new converters::FunctionBlockConverter(mLuaTranslator, block, property, reservedVariableNameConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() const
@@ -420,22 +364,12 @@ Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() con
 
 Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter() const
 {
-	return new converters::EnginePortsConverter(outputPortConverter());
+	return new converters::EnginePortsConverter(portNameConverter());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::inputPortConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::portNameConverter() const
 {
-	return new converters::InputPortConverter(pathToTemplates());
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::outputPortConverter() const
-{
-	return new converters::OutputPortConverter(pathToTemplates());
-}
-
-Binding::ConverterInterface *GeneratorFactoryBase::colorConverter() const
-{
-	return new converters::ColorConverter(pathToTemplates());
+	return new converters::PortNameConverter(pathToTemplates(), mRobotModelManager.model().availablePorts());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter() const
@@ -450,7 +384,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
 
 Binding::ConverterInterface *GeneratorFactoryBase::switchConditionsMerger(QStringList const &values) const
 {
-	return new converters::SwitchConditionsMerger(pathToTemplates(), systemVariableNameConverter(), values);
+	return new converters::SwitchConditionsMerger(pathToTemplates(), reservedVariableNameConverter(), values);
 }
 
 QString GeneratorFactoryBase::initCode()
@@ -490,7 +424,8 @@ QMap<PortInfo, DeviceInfo> GeneratorFactoryBase::currentConfiguration() const
 {
 	Id const logicalId = mRepo.logicalId(mDiagram);
 	QString const configuration = mRepo.property(logicalId, "devicesConfiguration").toString();
-	QMap<PortInfo, DeviceInfo> result = RobotModelUtils::deserialize(configuration)[mRobotModelManager.model().name()];
+	QMap<PortInfo, DeviceInfo> result =
+			RobotModelUtils::deserialize(configuration)[mRobotModelManager.model().robotId()];
 	// At the moment we have sensors configuration from widget-configurer. We must also add here non-configurable
 	// by user devices (like encoders, displays and so on).
 	for (PortInfo const &port : mRobotModelManager.model().availablePorts()) {

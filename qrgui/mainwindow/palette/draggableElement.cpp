@@ -1,19 +1,23 @@
 #include "draggableElement.h"
 
 #include <QtCore/QUuid>
-#include <QtGui/QMouseEvent>
 #include <QtCore/QtAlgorithms>
+#include <QtCore/QBuffer>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QDrag>
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/definitions.h>
 
-#include "mainwindow/mainWindow.h"
-#include "mainwindow/palette/paletteTree.h"
+#include "mainWindow/mainWindow.h"
+#include "mainWindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
-#include "gestures/gesturePainter.h"
-#include "view/editorView.h"
-#include "view/editorViewScene.h"
+#include "mouseGestures/gesturePainter.h"
+#include "editor/editorView.h"
+#include "editor/editorViewScene.h"
 
 using namespace qReal;
 using namespace gui;
@@ -108,7 +112,8 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	Id id = action->data().value<Id>();
-	PropertiesDialog *propDialog = new PropertiesDialog(mMainWindow, mEditorManagerProxy, id);
+	PropertiesDialog *propDialog = new PropertiesDialog(mEditorManagerProxy
+			, mMainWindow.models()->mutableLogicalRepoApi(), id, &mMainWindow);
 	propDialog->setModal(true);
 	propDialog->show();
 }
@@ -148,7 +153,16 @@ void DraggableElement::deleteElement()
 	if (mIsRootDiagramNode) {
 		mMainWindow.closeDiagramTab(mDeletedElementId);
 	}
-	mEditorManagerProxy.deleteElement(&mMainWindow, mDeletedElementId);
+
+	mEditorManagerProxy.deleteElement(mDeletedElementId);
+	/// @todo: Maybe we do not need to remove elements if we can restore them?
+	/// We can make elements grayscaled by disabling corresponding element in palette.
+	IdList const logicalIdList = mMainWindow.models()->logicalRepoApi().logicalElements(mDeletedElementId.type());
+	for (Id const &logicalId : logicalIdList) {
+		QModelIndex const index = mMainWindow.models()->logicalModelAssistApi().indexById(logicalId);
+		mMainWindow.models()->logicalModel()->removeRow(index.row(), index.parent());
+	}
+
 	mMainWindow.loadPlugins();
 }
 
@@ -315,6 +329,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 
 #ifdef Q_OS_WIN
 
+#include <windows.h>
 #include <winuser.h>
 
 DraggableElement::HackTouchDragThread::HackTouchDragThread(QObject *parent)

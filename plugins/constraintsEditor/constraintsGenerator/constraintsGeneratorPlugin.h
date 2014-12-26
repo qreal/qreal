@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QTranslator>
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include "../../../qrgui/plugins/toolPluginInterface/toolPluginInterface.h"
 #include "generator.h"
 
 namespace constraints {

@@ -5,13 +5,13 @@
 using namespace generatorBase::semantics;
 using namespace qReal;
 
-RootNode::RootNode(Id const &initialBlock, QObject *parent)
+RootNode::RootNode(SemanticNode * const initialBlock, QObject *parent)
 	: SemanticNode(Id(), parent)
 	, mZone(new ZoneNode(this))
-	, mInitialBlock(initialBlock)
+	, mInitialBlock(initialBlock->id())
 {
 	mZone->setParentNode(this);
-	mZone->appendChild(new SimpleNode(initialBlock, mZone));
+	mZone->appendChild(initialBlock);
 }
 
 Id RootNode::initialBlock() const
@@ -19,9 +19,9 @@ Id RootNode::initialBlock() const
 	return mInitialBlock;
 }
 
-QString RootNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString RootNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
 {
-	return mZone->toString(customizer, indent);
+	return mZone->toString(customizer, indent, indentString);
 }
 
 QLinkedList<SemanticNode *> RootNode::children() const

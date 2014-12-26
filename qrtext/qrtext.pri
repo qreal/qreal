@@ -18,6 +18,7 @@ HEADERS += \
 	$$PWD/include/qrtext/core/error.h \
 	$$PWD/include/qrtext/core/connection.h \
 	$$PWD/include/qrtext/core/range.h \
+	$$PWD/include/qrtext/core/astVisitorInterface.h \
 	$$PWD/include/qrtext/core/ast/node.h \
 	$$PWD/include/qrtext/core/ast/expression.h \
 	$$PWD/include/qrtext/core/ast/binaryOperator.h \
@@ -51,6 +52,7 @@ HEADERS += \
 	$$PWD/include/qrtext/core/types/typeExpression.h \
 	$$PWD/include/qrtext/core/types/typeVariable.h \
 	$$PWD/include/qrtext/lua/luaToolbox.h \
+	$$PWD/include/qrtext/lua/luaAstVisitorInterface.h \
 	$$PWD/include/qrtext/lua/ast/number.h \
 	$$PWD/include/qrtext/lua/ast/unaryMinus.h \
 	$$PWD/include/qrtext/lua/ast/not.h \
@@ -85,8 +87,6 @@ HEADERS += \
 	$$PWD/include/qrtext/lua/ast/floatNumber.h \
 	$$PWD/include/qrtext/lua/ast/fieldInitialization.h \
 	$$PWD/include/qrtext/lua/ast/tableConstructor.h \
-	$$PWD/include/qrtext/lua/ast/integerNumber.h \
-	$$PWD/include/qrtext/lua/ast/floatNumber.h \
 	$$PWD/include/qrtext/lua/ast/string.h \
 	$$PWD/include/qrtext/lua/ast/true.h \
 	$$PWD/include/qrtext/lua/ast/false.h \

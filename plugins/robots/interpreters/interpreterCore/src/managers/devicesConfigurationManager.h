@@ -2,10 +2,10 @@
 
 #include <interpreterBase/devicesConfigurationProvider.h>
 
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/systemEvents.h>
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 
 namespace interpreterCore {
 
@@ -31,7 +31,7 @@ public:
 	DevicesConfigurationManager(qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface
 			, qReal::LogicalModelAssistInterface &logicalModelAssistInterface
 			, qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
-			, qReal::SystemEventsInterface &systemEvents
+			, qReal::SystemEvents &systemEvents
 			);
 
 private:

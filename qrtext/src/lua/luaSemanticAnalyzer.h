@@ -24,6 +24,9 @@ public:
 	/// @param type - type of a function.
 	void addIntrinsicFunction(QString const &name, QSharedPointer<types::Function> const &type);
 
+	/// Override that excludes intrinsic function identifiers.
+	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const;
+
 private:
 	void analyzeNode(QSharedPointer<core::ast::Node> const &node) override;
 	void analyzeUnaryOperator(QSharedPointer<core::ast::Node> const &node);

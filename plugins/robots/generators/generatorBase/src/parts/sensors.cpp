@@ -35,7 +35,7 @@ QString Sensors::code(QString const &directory
 {
 	QString const portString = mInputPortConverter->convert(port.name());
 	QString const templatePath = QString("%1/%2.t").arg(directory, device.name());
-	return readTemplate(templatePath).replace("@@PORT@@", portString);
+	return readTemplateIfExists(templatePath).replace("@@PORT@@", portString);
 }
 
 void Sensors::reinit(QMap<interpreterBase::robotModel::PortInfo

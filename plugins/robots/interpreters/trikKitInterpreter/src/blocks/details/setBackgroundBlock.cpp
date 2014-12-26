@@ -10,17 +10,13 @@ using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::robotModel::robotParts;
 
 SetBackgroundBlock::SetBackgroundBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
-	: mRobotModel(robotModel)
+	: interpreterBase::blocksBase::common::DisplayBlock(robotModel)
 {
 }
 
-void SetBackgroundBlock::run()
+void SetBackgroundBlock::doJob(interpreterBase::robotModel::robotParts::Display &display)
 {
-	robotModel::parts::TrikDisplay * const display =
-			interpreterBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(
-					mRobotModel, "DisplayPort"
-			);
-
-	display->setBackground(propertyToColor(stringProperty("Color")));
+	auto trikDisplay = static_cast<robotModel::parts::TrikDisplay *>(&display);
+	trikDisplay->setBackground(propertyToColor(stringProperty("Color")));
 	emit done(mNextBlockId);
 }

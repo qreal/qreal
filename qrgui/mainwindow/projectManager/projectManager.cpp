@@ -1,15 +1,17 @@
 #include "projectManager.h"
 
+#include <QtWidgets/QMessageBox>
+
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 
-#include "mainwindow/mainWindow.h"
+#include "mainWindow/mainWindow.h"
 
-#include "models/models.h"
-#include "view/editorViewScene.h"
-#include "view/editorView.h"
-#include "dialogs/suggestToCreateDiagramDialog.h"
+#include <models/models.h>
+#include <editor/editorViewScene.h>
+#include <editor/editorView.h>
+#include <dialogs/projectManagement/suggestToCreateDiagramDialog.h>
 
 using namespace qReal;
 using namespace utils;
@@ -91,17 +93,22 @@ int ProjectManager::suggestToSaveOrCancelMessage()
 
 bool ProjectManager::open(QString const &fileName)
 {
-	QFileInfo const fileInfo(fileName);
+	QString const dequotedFileName = (fileName.startsWith("'") && fileName.endsWith("'"))
+			|| (fileName.startsWith("\"") && fileName.endsWith("\""))
+					? fileName.mid(1, fileName.length() - 2)
+					: fileName;
+
+	QFileInfo const fileInfo(dequotedFileName);
 
 	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
-		if (!fileName.isEmpty() && !saveFileExists(fileName)) {
+		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
 
-		return openProject(fileName);
+		return openProject(dequotedFileName);
 	} else {
 		mMainWindow->closeStartTab();
-		mTextManager->showInTextEditor(fileInfo);
+		mTextManager->showInTextEditor(fileInfo, text::Languages::pickByExtension(fileInfo.suffix()));
 	}
 
 	return true;
@@ -191,7 +198,7 @@ bool ProjectManager::import(QString const &fileName)
 	return true;
 }
 
-bool ProjectManager::saveFileExists(QString const &fileName)
+bool ProjectManager::saveFileExists(QString const &fileName) const
 {
 	if (!QFile::exists(fileName)) {
 		fileNotFoundMessage(fileName);
@@ -199,6 +206,16 @@ bool ProjectManager::saveFileExists(QString const &fileName)
 	}
 
 	return true;
+}
+
+QString ProjectManager::textFileFilters() const
+{
+	QStringList result;
+	for (text::LanguageInfo const &language : text::Languages::knownLanguages()) {
+		result << QString("%1 (*.%2)").arg(language.extensionDescription, language.extension);
+	}
+
+	return result.join(";;");
 }
 
 bool ProjectManager::pluginsEnough() const
@@ -215,8 +232,8 @@ bool ProjectManager::pluginsEnough() const
 QString ProjectManager::missingPluginNames() const
 {
 	IdList const missingPlugins = mMainWindow->editorManager().checkNeededPlugins(
-			mMainWindow->models()->logicalRepoApi()
-			, mMainWindow->models()->graphicalRepoApi());
+			mMainWindow->models()->logicalModelAssistApi()
+			, mMainWindow->models()->graphicalModelAssistApi());
 	QString result;
 	foreach (Id const &id, missingPlugins) {
 		result += id.editor() + "\n";
@@ -303,7 +320,9 @@ void ProjectManager::suggestToCreateDiagram(bool isClosable)
 		Id const editor = mMainWindow->editorManager().editors()[0];
 		mMainWindow->createDiagram(mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram));
 	} else {
-		SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isClosable);
+		SuggestToCreateDiagramDialog suggestDialog(mMainWindow->editorManager(), mMainWindow, isClosable);
+		connect(&suggestDialog, &SuggestToCreateDiagramDialog::diagramSelected
+				, mMainWindow, &MainWindow::createDiagram);
 		suggestDialog.exec();
 	}
 }
@@ -403,7 +422,7 @@ QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 			? QFileInfo(mSaveFilePath).absoluteDir().absolutePath()
 			: pathToExamples;
 	QString filter = tr("QReal Save File (*.qrs)") + ";;";
-	QString const extensions = QStringList(mTextManager->extensionDescriptions()).join(";;");
+	QString const extensions = textFileFilters();
 
 	filter += (extensions.isEmpty() ? "" : extensions + ";;") + tr("All files (*.*)");
 

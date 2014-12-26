@@ -17,7 +17,7 @@ public:
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
-	QString toStringImpl(GeneratorCustomizer &customizer, int indent) const override;
+	QString toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const override;
 
 private:
 	bool const mInMainDiagram;

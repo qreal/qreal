@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
+#include <qrgui/preferencesDialog/preferencesPage.h>
 
 namespace Ui {
 	class PreferencesCompilerPage;
@@ -9,7 +9,7 @@ namespace Ui {
 namespace metaEditor {
 
 /// Page with plugin compiler settings to be shown in preferences dialog
-class PreferencesCompilerPage : public PreferencesPage
+class PreferencesCompilerPage : public qReal::gui::PreferencesPage
 {
 	Q_OBJECT
 
@@ -17,7 +17,6 @@ public:
 	/// Constructor
 	/// @param parent Parent widget
 	explicit PreferencesCompilerPage(QWidget *parent = 0);
-
 	~PreferencesCompilerPage();
 
 	void save();

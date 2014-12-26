@@ -1,5 +1,7 @@
 TEMPLATE = subdirs
 
-SUBDIRS = \
+include(common.pri)
+
+SUBDIRS += \
 	ubiq/ubiq.pro \
 

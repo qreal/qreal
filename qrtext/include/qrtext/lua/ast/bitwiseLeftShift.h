@@ -9,6 +9,11 @@ namespace ast {
 /// Represents bitwise left shift operator (<<).
 class QRTEXT_EXPORT BitwiseLeftShift : public BinaryOperator
 {
+private:
+	void accept(core::AstVisitorInterface &visitor) const override
+	{
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+	}
 };
 
 }

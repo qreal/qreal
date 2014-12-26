@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/nxt/">
+        <file>images/generateOsekCode.svg</file>
+        <file>images/flashRobot.svg</file>
+        <file>images/uploadProgram.svg</file>
+    </qresource>
+</RCC>

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <qrgui/toolPluginInterface/toolPluginInterface.h>
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
-#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 
 #include "ui/robotsSettingsPage.h"
 
@@ -26,7 +26,7 @@ public:
 
 	void init(qReal::PluginConfigurator const &configurator) override;
 	qReal::Customizer *customizationInterface() override;  // Does not transfer ownership.
-	QPair<QString, PreferencesPage *> preferencesPage() override;  // Transfers ownership.
+	QPair<QString, qReal::gui::PreferencesPage *> preferencesPage() override;  // Transfers ownership.
 	QList<qReal::ActionInfo> actions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
 	QList<qReal::ProjectConverter> projectConverters() override;

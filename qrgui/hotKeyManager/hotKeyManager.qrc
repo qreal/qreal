@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/hotKeyManager/">
+        <file>images/hotkeys.png</file>
+    </qresource>
+</RCC>

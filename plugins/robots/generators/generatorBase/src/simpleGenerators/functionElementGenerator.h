@@ -14,7 +14,7 @@ public:
 		, qReal::Id const &id
 		, QObject *parent = 0);
 
-	virtual QString generate();
+	QString generate() override;
 
 private:
 	bool const mGenerateToInit;

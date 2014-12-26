@@ -9,21 +9,21 @@
 #include <qrutils/graphicsUtils/abstractScene.h>
 #include <qrkernel/settingsManager.h>
 
-#include "mainwindow/shapeEdit/view.h"
-#include "mainwindow/shapeEdit/item.h"
-#include "mainwindow/shapeEdit/arch.h"
-#include "mainwindow/shapeEdit/line.h"
-#include "mainwindow/shapeEdit/ellipse.h"
-#include "mainwindow/shapeEdit/rectangle.h"
-#include "mainwindow/shapeEdit/text.h"
-#include "mainwindow/shapeEdit/textPicture.h"
-#include "mainwindow/shapeEdit/pointPort.h"
-#include "mainwindow/shapeEdit/linePort.h"
-#include "mainwindow/shapeEdit/stylus.h"
-#include "mainwindow/shapeEdit/path.h"
-#include "mainwindow/shapeEdit/curve.h"
-#include "mainwindow/shapeEdit/image.h"
-#include "umllib/label.h"
+#include "mainWindow/shapeEdit/view.h"
+#include "mainWindow/shapeEdit/item.h"
+#include "mainWindow/shapeEdit/arch.h"
+#include "mainWindow/shapeEdit/line.h"
+#include "mainWindow/shapeEdit/ellipse.h"
+#include "mainWindow/shapeEdit/rectangle.h"
+#include "mainWindow/shapeEdit/text.h"
+#include "mainWindow/shapeEdit/textPicture.h"
+#include "mainWindow/shapeEdit/pointPort.h"
+#include "mainWindow/shapeEdit/linePort.h"
+#include "mainWindow/shapeEdit/stylus.h"
+#include "mainWindow/shapeEdit/path.h"
+#include "mainWindow/shapeEdit/curve.h"
+#include "mainWindow/shapeEdit/image.h"
+#include "editor/label.h"
 
 const int sizeEmptyRectX = 680;
 const int sizeEmptyRectY = 580;

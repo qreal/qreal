@@ -2,7 +2,7 @@
 
 #include <QtCore/QPair>
 
-#include "mainwindow/shapeEdit/item.h"
+#include "mainWindow/shapeEdit/item.h"
 
 class Path : public Item
 {

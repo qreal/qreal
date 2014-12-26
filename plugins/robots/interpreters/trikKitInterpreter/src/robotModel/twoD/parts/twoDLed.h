@@ -19,7 +19,7 @@ public:
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	/// sets LED widget's color in 2D model.
-	void setColor(QColor const &color) override;
+	void setColor(QString const &color) override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

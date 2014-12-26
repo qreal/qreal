@@ -16,6 +16,10 @@ SemanticAnalyzer::~SemanticAnalyzer()
 
 QSharedPointer<ast::Node> SemanticAnalyzer::analyze(QSharedPointer<ast::Node> const &root)
 {
+	if (!root) {
+		return root;
+	}
+
 	mRecheckNeeded = true;
 
 	while (mRecheckNeeded) {
@@ -43,11 +47,17 @@ void SemanticAnalyzer::finalizeResolve(QSharedPointer<ast::Node> const &node)
 	if (node->is<ast::Expression>()) {
 		auto expression = as<ast::Expression>(node);
 		if (mTypes.contains(expression)) {
-			auto typeVariable = mTypes.value(expression);
-			if (!typeVariable->isResolved()) {
-				reportError(expression, QObject::tr("Can not deduce type"));
-			} else if (typeVariable->isEmpty()) {
+			QSharedPointer<types::TypeVariable> const &typeVariable = mTypes.value(expression);
+			if (typeVariable->isEmpty()) {
 				reportError(expression, QObject::tr("Type mismatch"));
+			} else if (!typeVariable->isResolved()) {
+				if (typeVariable->finalType() == mAny) {
+					reportError(expression, QObject::tr("Can not deduce type, this expression can be of any type"));
+				} else {
+					QString const error = QObject::tr("Can not deduce type, expression can be of following types: %1")
+							.arg(typeVariable->toString());
+					reportError(expression, error);
+				}
 			}
 		}
 	}
@@ -66,6 +76,47 @@ QSharedPointer<types::TypeExpression> SemanticAnalyzer::type(QSharedPointer<ast:
 		return mTypes.value(castedExpression)->finalType();
 	} else {
 		return mAny;
+	}
+}
+
+QStringList SemanticAnalyzer::identifiers() const
+{
+	return mIdentifierDeclarations.keys();
+}
+
+QMap<QString, QSharedPointer<types::TypeExpression> > SemanticAnalyzer::variableTypes() const
+{
+	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> result;
+	for (QString const &identifier : mIdentifierDeclarations.keys()) {
+		result[identifier] = type(mIdentifierDeclarations[identifier]);
+	}
+
+	return result;
+}
+
+void SemanticAnalyzer::clear()
+{
+	mTypes.clear();
+	mIdentifierDeclarations.clear();
+}
+
+void SemanticAnalyzer::forget(QSharedPointer<ast::Node> const &root)
+{
+	if (!root) {
+		return;
+	}
+
+	if (!mIdentifierDeclarations.values().contains(root)) {
+		auto const expression = root.dynamicCast<ast::Expression>();
+		if (expression) {
+			mTypes.remove(expression);
+		}
+	}
+
+	for (auto const &child : root->children()) {
+		if (!child.isNull()) {
+			forget(child);
+		}
 	}
 }
 
@@ -89,6 +140,11 @@ void SemanticAnalyzer::constrain(QSharedPointer<ast::Node> const &operation
 		, QSharedPointer<ast::Node> const &node, QList<QSharedPointer<types::TypeExpression>> const &types)
 {
 	auto nodeType = mTypes.value(as<ast::Expression>(node));
+	if (!nodeType) {
+		reportError(node, QObject::tr("This construction is not supported by semantic analysis"));
+		return;
+	}
+
 	nodeType->constrain(types, generalizationsTable());
 	if (nodeType->isEmpty()) {
 		reportError(operation, QObject::tr("Type mismatch."));

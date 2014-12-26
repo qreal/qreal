@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QLineEdit>
 
-#include "../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
+#include <qrgui/preferencesDialog/preferencesPage.h>
 
 namespace Ui {
 	class VisualDebuggerPreferencesPage;
@@ -11,7 +11,7 @@ namespace Ui {
 namespace qReal {
 
 /// Preference page for visual debugger of block diagrams (also with gdb debug)
-class VisualDebuggerPreferencesPage : public PreferencesPage
+class VisualDebuggerPreferencesPage : public gui::PreferencesPage
 {
 	Q_OBJECT
 

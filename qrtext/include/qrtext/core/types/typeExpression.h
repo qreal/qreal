@@ -23,6 +23,9 @@ public:
 	{
 		return dynamic_cast<Type const * const>(this) != nullptr;
 	}
+
+	/// Returns string representation of type expression, supposed to be used for error reporting.
+	virtual QString toString() const = 0;
 };
 
 }

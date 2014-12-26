@@ -6,16 +6,17 @@
 
 using namespace twoDModel::engine;
 
-TwoDModelEngineFacade::TwoDModelEngineFacade(robotModel::TwoDRobotModel &robotModel)
+TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
 	: mRobotModelName(robotModel.name())
 	, mTwoDModelActionInfo(
 			new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr)
 			, "interpreters"
 			, "tools")
-	, mModel(new model::Model(robotModel))
+	, mModel(new model::Model())
 	, mView(new view::D2ModelWidget(*mModel.data()))
 	, mApi(new TwoDModelEngineApi(*mModel.data(), *mView.data()))
 {
+	mModel.data()->addRobotModel(robotModel);
 	connect(mTwoDModelActionInfo.action(), &QAction::triggered, mView.data(), &view::D2ModelWidget::init);
 
 	connect(mView.data(), &view::D2ModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
@@ -25,11 +26,10 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(robotModel::TwoDRobotModel &robotMo
 
 TwoDModelEngineFacade::~TwoDModelEngineFacade()
 {
-	delete mTwoDModelActionInfo.action();
 }
 
 void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface const &eventsForKitPlugin
-		, qReal::SystemEventsInterface const &systemEvents
+		, qReal::SystemEvents const &systemEvents
 		, qReal::GraphicalModelAssistInterface &graphicalModel
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::gui::MainWindowInterpretersInterface const &interpretersInterface
@@ -81,7 +81,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 				, &interpreterControl, &interpreterBase::InterpreterControlInterface::stopRobot);
 	};
 
-	connect(&systemEvents, &qReal::SystemEventsInterface::activeTabChanged, onActiveTabChanged);
+	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, onActiveTabChanged);
 
 	connect(mModel.data(), &model::Model::modelChanged, [this, &graphicalModel, &logicalModel
 			, &interpreterControl, &interpretersInterface] (QDomDocument const &xml) {
@@ -91,8 +91,7 @@ void TwoDModelEngineFacade::init(interpreterBase::EventsForKitPluginInterface co
 				}
 	});
 
-	connect(&systemEvents, &qReal::SystemEventsInterface::closedMainWindow
-			, [=](){ mView.reset(); });
+	connect(&systemEvents, &qReal::SystemEvents::closedMainWindow, [=](){ mView.reset(); });
 
 	connect(&eventsForKitPlugin
 			, &interpreterBase::EventsForKitPluginInterface::robotModelChanged

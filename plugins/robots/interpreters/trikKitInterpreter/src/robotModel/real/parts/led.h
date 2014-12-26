@@ -1,6 +1,7 @@
 #pragma once
 
 #include "robotModel/parts/trikLed.h"
+#include <utils/tcpRobotCommunicator.h>
 
 namespace trikKitInterpreter {
 namespace robotModel {
@@ -13,9 +14,14 @@ class Led : public robotModel::parts::TrikLed
 
 public:
 	Led(interpreterBase::robotModel::DeviceInfo const &info
-			, interpreterBase::robotModel::PortInfo const &port);
+			, interpreterBase::robotModel::PortInfo const &port
+			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
 
-	void setColor(QColor const &color) override;
+
+	void setColor(QString const &color) override;
+
+private:
+	utils::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

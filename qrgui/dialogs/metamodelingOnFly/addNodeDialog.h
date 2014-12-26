@@ -3,7 +3,7 @@
 #include <QtWidgets/QDialog>
 
 #include "restoreElementDialog.h"
-#include "pluginManager/editorManagerInterface.h"
+#include "plugins/pluginManager/editorManagerInterface.h"
 
 namespace Ui {
 class AddNodeDialog;
@@ -19,13 +19,16 @@ class AddNodeDialog : public QDialog
 
 public:
 	/// Constructor.
-	/// @param mainWindow Reference to QReal main window.
 	/// @param diagram Id of a diagram to which we will add new node.
 	/// @param editorManagerProxy Editor manager.
-	explicit AddNodeDialog(MainWindow &mainWindow, Id const &diagram, EditorManagerInterface const &editorManagerProxy);
+	explicit AddNodeDialog(Id const &diagram, EditorManagerInterface const &editorManagerProxy, QWidget *parent = 0);
 
 	/// Destructor.
 	~AddNodeDialog();
+
+signals:
+	/// Emitted when node is added and editors must be reloaded.
+	void jobDone();
 
 private slots:
 	void okButtonClicked();
@@ -33,7 +36,6 @@ private slots:
 
 private:
 	Ui::AddNodeDialog *mUi;
-	MainWindow &mMainWindow;
 	Id const mDiagram;
 	QString mNodeName;
 	EditorManagerInterface const &mEditorManagerProxy;

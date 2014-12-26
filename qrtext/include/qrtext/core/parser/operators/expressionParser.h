@@ -55,6 +55,11 @@ private:
 	{
 		auto resultAst = mPrimary->parse(tokenStream, parserContext);
 
+		if (!resultAst) {
+			// There was an error, which shall be already reported.
+			return wrap(nullptr);
+		}
+
 		while (mPrecedenceTable->binaryOperators().contains(tokenStream.next().token())
 				&& mPrecedenceTable->precedence(tokenStream.next().token(), Arity::binary) >= currentPrecedence)
 		{
@@ -68,6 +73,11 @@ private:
 			auto rightOperandResult = parse(tokenStream, parserContext, newPrecedence);
 
 			auto op = as<ast::BinaryOperator>(binOpResult);
+			if (!op) {
+				// There was an error when parsing binary operator, it shall be already reported.
+				return wrap(nullptr);
+			}
+
 			op->setLeftOperand(resultAst);
 
 			if (!rightOperandResult) {

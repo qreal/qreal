@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>updatesCheckerDefaultSettings.ini</file>
+    </qresource>
+</RCC>

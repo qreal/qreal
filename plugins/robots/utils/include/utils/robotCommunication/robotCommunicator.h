@@ -26,9 +26,12 @@ public:
 
 	void setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication);
 
+	/// Checks if connection can be established or emits errorOccured();
+	void checkConsistency();
+
 signals:
 	void errorOccured(QString const &message);
-	void connected(bool success);
+	void connected(bool success, QString const &errorString);
 	void disconnected();
 	void response(QObject *addressee, QByteArray const &buffer);
 

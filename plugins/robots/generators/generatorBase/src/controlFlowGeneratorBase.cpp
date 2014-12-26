@@ -2,6 +2,7 @@
 
 #include "generatorBase/semanticTree/semanticTree.h"
 #include "generatorBase/parts/threads.h"
+#include "generatorBase/parts/subprograms.h"
 
 #include "src/rules/forkRules/forkRule.h"
 
@@ -22,7 +23,7 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(
 	, mCustomizer(customizer)
 	, mIsMainGenerator(isThisDiagramMain)
 	, mDiagram(diagramId)
-	, mValidator(repo, errorReporter, customizer, diagramId)
+	, mValidator(new PrimaryControlFlowValidator(repo, errorReporter, customizer, diagramId, this))
 {
 }
 
@@ -32,7 +33,7 @@ ControlFlowGeneratorBase::~ControlFlowGeneratorBase()
 
 bool ControlFlowGeneratorBase::preGenerationCheck()
 {
-	return mValidator.validate();
+	return mValidator->validate();
 }
 
 semantics::SemanticTree *ControlFlowGeneratorBase::generate(qReal::Id const &initialNode)
@@ -69,7 +70,7 @@ bool ControlFlowGeneratorBase::generateForks()
 {
 	while (mCustomizer.factory()->threads().hasUnprocessedThreads()) {
 		Id const thread = mCustomizer.factory()->threads().nextUnprocessedThread();
-		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(thread);
+		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(thread, false);
 		if (!threadGenerator->generate(thread)) {
 			return false;
 		}
@@ -94,6 +95,14 @@ bool ControlFlowGeneratorBase::errorsOccured() const
 	return mErrorsOccured;
 }
 
+void ControlFlowGeneratorBase::visitRegular(Id const &id, QList<LinkInfo> const &links)
+{
+	Q_UNUSED(links)
+	if (mCustomizer.isSubprogramCall(id)) {
+		mCustomizer.factory()->subprograms()->usageFound(id);
+	}
+}
+
 enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id const &id) const
 {
 	return mCustomizer.semanticsOf(id.type());
@@ -101,17 +110,17 @@ enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id cons
 
 qReal::Id ControlFlowGeneratorBase::initialNode() const
 {
-	return mValidator.initialNode();
+	return mValidator->initialNode();
 }
 
 QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::ifBranchesFor(qReal::Id const &id) const
 {
-	return mValidator.ifBranchesFor(id);
+	return mValidator->ifBranchesFor(id);
 }
 
 QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::loopBranchesFor(qReal::Id const &id) const
 {
-	return mValidator.loopBranchesFor(id);
+	return mValidator->loopBranchesFor(id);
 }
 
 GeneratorCustomizer &ControlFlowGeneratorBase::customizer() const

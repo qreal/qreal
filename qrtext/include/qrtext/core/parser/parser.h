@@ -28,11 +28,19 @@ public:
 	}
 
 	/// Parses given stream of tokens and returns AST with results or nullptr if parsing is impossible.
-	QSharedPointer<ast::Node> parse(QList<Token<TokenType>> const &tokens)
+	/// @param tokens - a stream of tokens to parse.
+	/// @param tokenUserFriendlyNames - map with displayed names of tokens.
+	QSharedPointer<ast::Node> parse(QList<Token<TokenType>> const &tokens
+			, QHash<TokenType, QString> const &tokenUserFriendlyNames)
 	{
-		TokenStream<TokenType> tokenStream(tokens, mErrors);
-		ParserContext<TokenType> context(mErrors, tokenStream);
-		return mGrammar->parse(tokenStream, context);
+		mTokenStream.reset(new TokenStream<TokenType>(tokens, tokenUserFriendlyNames, mErrors));
+		mContext.reset(new ParserContext<TokenType>(mErrors, *mTokenStream));
+		auto const ast = mGrammar->parse(*mTokenStream, *mContext);
+		if (!mTokenStream->isEnd()) {
+			mContext->reportError(QObject::tr("Unexpected token"));
+		}
+
+		return ast;
 	}
 
 protected:
@@ -46,6 +54,7 @@ private:
 	QList<Error> &mErrors;
 	QSharedPointer<ParserInterface<TokenType>> mGrammar;
 	QScopedPointer<ParserContext<TokenType>> mContext;
+	QScopedPointer<TokenStream<TokenType>> mTokenStream;
 };
 
 }

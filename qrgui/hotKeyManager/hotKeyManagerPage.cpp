@@ -24,9 +24,10 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 	, mCurrentModifiers(Qt::NoModifier)
 {
 	mUi->setupUi(this);
-	mIcon = QIcon(":/icons/hotkeys.png");
+	setObjectName("preferencesHotKeyManagerPage");
+	setWindowIcon(QIcon(":/hotKeyManager/images/hotkeys.png"));
 
-	mUi->hotKeysTable->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+	mUi->hotKeysTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 
 	// TODO: implement export/import
 	mUi->importPushButton->hide();

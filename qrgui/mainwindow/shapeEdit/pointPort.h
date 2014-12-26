@@ -2,8 +2,8 @@
 
 #include <qrutils/graphicsUtils/pointImpl.h>
 
-#include "mainwindow/shapeEdit/item.h"
-#include "mainwindow/shapeEdit/ellipse.h"
+#include "mainWindow/shapeEdit/item.h"
+#include "mainWindow/shapeEdit/ellipse.h"
 
 class PointPort : public Item
 {

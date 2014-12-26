@@ -1,7 +1,7 @@
 #pragma once
 
-#include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/mainWindow/projectManager/projectManagementInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 
 #include "blocksFactoryManagerInterface.h"
 #include "kitPluginManager.h"

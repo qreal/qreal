@@ -4,6 +4,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <commonTwoDModel/engine/twoDModelControlInterface.h>
+#include <utils/abstractTimer.h>
 
 #include "managers/saveConvertionManager.h"
 
@@ -29,7 +30,7 @@ qReal::Customizer *RobotsPlugin::customizationInterface()
 	return &mRobotsPluginFacade->customizer();
 }
 
-QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
+QPair<QString, gui::PreferencesPage *> RobotsPlugin::preferencesPage()
 {
 	return qMakePair(QObject::tr("Robots"), mRobotsPluginFacade->robotsSettingsPage());
 }

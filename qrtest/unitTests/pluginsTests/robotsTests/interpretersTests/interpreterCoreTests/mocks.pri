@@ -1,6 +1,6 @@
 HEADERS += \
-	../../../../mocks/qrgui/mainwindow/mainWindowInterpretersInterfaceMock.h \
-	../../../../mocks/qrgui/mainwindow/projectManager/projectManagementInterfaceMock.h \
+	../../../../mocks/qrgui/mainWindow/mainWindowInterpretersInterfaceMock.h \
+	../../../../mocks/qrgui/mainWindow/projectManager/projectManagementInterfaceMock.h \
 	../../../../mocks/qrgui/view/sceneCustomizationInterfaceMock.h \
 
 HEADERS += \

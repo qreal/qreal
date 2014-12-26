@@ -6,6 +6,8 @@
 #include "qrtext/core/range.h"
 #include "qrtext/core/lexer/token.h"
 
+#include "qrtext/core/astVisitorInterface.h"
+
 #include "qrtext/declSpec.h"
 
 namespace qrtext {
@@ -16,7 +18,9 @@ namespace ast {
 class QRTEXT_EXPORT Node
 {
 public:
-	virtual ~Node() {}
+	Node();
+
+	virtual ~Node();
 
 	/// Returns start of a node.
 	Connection const &start() const;
@@ -51,6 +55,18 @@ public:
 		return {};
 	}
 
+	/// Calls visit() method of the given visitor for all children and self.
+	void acceptRecursively(AstVisitorInterface &visitor) const;
+
+	/// Calls visit() method of the given visitor for self.
+	/// The descendants should override this method to call corresponding visit() method overload.
+	/// See 'visitor' design pattern (http://www.oodesign.com/visitor-pattern.html).
+	virtual void accept(AstVisitorInterface &visitor) const;
+
+	static int nodesCount() {
+		return mNodesCount;
+	}
+
 private:
 	void connect(QList<Range> const &ranges);
 
@@ -59,6 +75,8 @@ private:
 
 	/// Static object denoting absent connection (for example, for generated nodes).
 	static Connection const noConnection;
+
+	static int mNodesCount;
 };
 
 }

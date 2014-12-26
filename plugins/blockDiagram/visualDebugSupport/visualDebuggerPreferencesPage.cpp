@@ -11,7 +11,7 @@ VisualDebuggerPreferencesPage::VisualDebuggerPreferencesPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::VisualDebuggerPreferencesPage)
 {
-	mIcon = QIcon(":/icons/preferences/bug.png");
+	setWindowIcon(QIcon(":/icons/preferences/bug.png"));
 
 	mUi->setupUi(this);
 

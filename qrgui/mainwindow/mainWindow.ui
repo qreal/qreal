@@ -13,10 +13,6 @@
   <property name="windowTitle">
    <string>QReal</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="../qrgui.qrc">
-    <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
-  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout">
     <property name="leftMargin">
@@ -82,8 +78,6 @@
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionAboutQt"/>
-    <addaction name="separator"/>
-    <addaction name="actionStart_updater"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -404,7 +398,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="interpreterToolbar">
+  <widget class="QToolBar" name="interpretersToolbar">
    <property name="windowTitle">
     <string>Interpreter Toolbar</string>
    </property>
@@ -436,8 +430,8 @@
   </action>
   <action name="actionZoom_In">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/zoomin.png</normaloff>:/icons/zoomin.png</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/zoomin.png</normaloff>:/mainWindow/images/zoomin.png</iconset>
    </property>
    <property name="text">
     <string>Zoom In</string>
@@ -448,8 +442,8 @@
   </action>
   <action name="actionZoom_Out">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/zoomout.png</normaloff>:/icons/zoomout.png</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/zoomout.png</normaloff>:/mainWindow/images/zoomout.png</iconset>
    </property>
    <property name="text">
     <string>Zoom Out</string>
@@ -479,8 +473,8 @@
   </action>
   <action name="actionPrint">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/print.png</normaloff>:/mainWindow/images/print.png</iconset>
    </property>
    <property name="text">
     <string>Print</string>
@@ -489,17 +483,6 @@
   <action name="actionMakeSvg">
    <property name="text">
     <string>Export to SVG</string>
-   </property>
-  </action>
-  <action name="actionDeleteFromDiagram">
-   <property name="text">
-    <string>Delete</string>
-   </property>
-   <property name="shortcut">
-    <string>Del</string>
-   </property>
-   <property name="shortcutContext">
-    <enum>Qt::WidgetShortcut</enum>
    </property>
   </action>
   <action name="openNewTab">
@@ -535,8 +518,8 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/save.svg</normaloff>:/icons/save.svg</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/save.svg</normaloff>:/mainWindow/images/save.svg</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -555,8 +538,8 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/open.svg</normaloff>:/icons/open.svg</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/open.svg</normaloff>:/mainWindow/images/open.svg</iconset>
    </property>
    <property name="text">
     <string>Open...</string>
@@ -629,8 +612,8 @@
   </action>
   <action name="actionGenerate_and_build">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/build.png</normaloff>:/icons/build.png</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/build.png</normaloff>:/mainWindow/images/build.png</iconset>
    </property>
    <property name="text">
     <string>Generate and build</string>
@@ -668,8 +651,8 @@
   </action>
   <action name="actionNew_Diagram">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/newDiagram.svg</normaloff>:/icons/newDiagram.svg</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/newDiagram.svg</normaloff>:/mainWindow/images/newDiagram.svg</iconset>
    </property>
    <property name="text">
     <string>New Diagram</string>
@@ -680,8 +663,8 @@
   </action>
   <action name="actionFullscreen">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/fullScreen.svg</normaloff>:/icons/fullScreen.svg</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/fullScreen.svg</normaloff>:/mainWindow/images/fullScreen.svg</iconset>
    </property>
    <property name="text">
     <string>Fullscreen Mode</string>
@@ -695,8 +678,8 @@
   </action>
   <action name="actionNewProject">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/newProject.svg</normaloff>:/icons/newProject.svg</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/newProject.svg</normaloff>:/mainWindow/images/newProject.svg</iconset>
    </property>
    <property name="text">
     <string>New Project</string>
@@ -733,54 +716,10 @@
     <string>Find and replace</string>
    </property>
   </action>
-  <action name="actionCutElementsOnDiagram">
-   <property name="text">
-    <string>Cut</string>
-   </property>
-   <property name="toolTip">
-    <string>Cut</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+X</string>
-   </property>
-  </action>
-  <action name="actionCopyElementsOnDiagram">
-   <property name="text">
-    <string>Copy</string>
-   </property>
-   <property name="toolTip">
-    <string>Copy</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+C</string>
-   </property>
-  </action>
-  <action name="actionPasteOnDiagram">
-   <property name="text">
-    <string>Paste</string>
-   </property>
-   <property name="toolTip">
-    <string>Paste</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+V</string>
-   </property>
-  </action>
-  <action name="actionPasteReference">
-   <property name="text">
-    <string>Paste only graphical copy</string>
-   </property>
-   <property name="toolTip">
-    <string>Paste only graphical copy</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+V</string>
-   </property>
-  </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/undo.png</normaloff>:/mainWindow/images/undo.png</iconset>
    </property>
    <property name="text">
     <string>Undo</string>
@@ -791,8 +730,8 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
+    <iconset resource="mainWindow.qrc">
+     <normaloff>:/mainWindow/images/redo.png</normaloff>:/mainWindow/images/redo.png</iconset>
    </property>
    <property name="text">
     <string>Redo</string>
@@ -806,49 +745,44 @@
     <string>Export to XML</string>
    </property>
   </action>
-  <action name="actionStart_updater">
-   <property name="text">
-    <string>Check for updates...</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
   <customwidget>
    <class>qReal::gui::PaletteTree</class>
    <extends>QToolBox</extends>
-   <header>mainwindow/palette/paletteTree.h</header>
+   <header>mainWindow/palette/paletteTree.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ErrorListWidget</class>
    <extends>QListWidget</extends>
-   <header>mainwindow/errorListWidget.h</header>
+   <header>mainWindow/errorListWidget.h</header>
   </customwidget>
   <customwidget>
    <class>PropertyEditorView</class>
    <extends>QWidget</extends>
-   <header>view/propertyEditorView.h</header>
+   <header>editor/propertyEditorView.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MiniMap</class>
    <extends>QGraphicsView</extends>
-   <header>mainwindow/miniMap.h</header>
+   <header>mainWindow/miniMap.h</header>
   </customwidget>
   <customwidget>
    <class>qReal::gui::TabWidget</class>
    <extends>QWidget</extends>
-   <header>mainwindow/tabWidget.h</header>
+   <header>mainWindow/tabWidget.h</header>
   </customwidget>
   <customwidget>
    <class>qReal::gui::ModelExplorer</class>
    <extends>QWidget</extends>
-   <header>mainwindow/modelExplorer.h</header>
+   <header>mainWindow/modelExplorer.h</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../qrgui.qrc"/>
+  <include location="mainWindow.qrc"/>
  </resources>
  <connections/>
 </ui>

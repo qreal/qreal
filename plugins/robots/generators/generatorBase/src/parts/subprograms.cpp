@@ -44,7 +44,7 @@ void Subprograms::usageFound(Id const &logicalId)
 	}
 }
 
-bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator)
+bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator, QString const &indentString)
 {
 	QMap<Id, QString> declarations;
 	QMap<Id, QString> implementations;
@@ -65,13 +65,13 @@ bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator)
 			return false;
 		}
 
-		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId);
+		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId, true);
 		semantics::SemanticTree *controlFlow = generator->generate();
 		if (!controlFlow) {
 			return false;
 		}
 
-		implementations[toGen] = controlFlow->toString(1);
+		implementations[toGen] = controlFlow->toString(1, indentString);
 
 		QString const forwardDeclaration = readSubprogramTemplate(toGen, "subprograms/forwardDeclaration.t");
 		declarations[toGen] = forwardDeclaration;

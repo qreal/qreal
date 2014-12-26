@@ -10,6 +10,7 @@ GeneratorCustomizer::GeneratorCustomizer()
 	, mDefaultLoopBlockType("RobotsMetamodel", "RobotsDiagram", "Loop")
 	, mDefaultSwitchBlockType("RobotsMetamodel", "RobotsDiagram", "SwitchBlock")
 	, mDefaultForkBlockType("RobotsMetamodel", "RobotsDiagram", "Fork")
+	, mDefaultSubprogramCallBlockType("RobotsMetamodel", "RobotsDiagram", "Subprogram")
 {
 }
 
@@ -26,6 +27,11 @@ bool GeneratorCustomizer::isInitialNode(qReal::Id const &block) const
 bool GeneratorCustomizer::isFinalNode(Id const &block) const
 {
 	return block.type() == mDefaultFinalBlockType;
+}
+
+bool GeneratorCustomizer::isSubprogramCall(Id const &block) const
+{
+	return block.type() == mDefaultSubprogramCallBlockType;
 }
 
 bool GeneratorCustomizer::isConditional(Id const &block) const

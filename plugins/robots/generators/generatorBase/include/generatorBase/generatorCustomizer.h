@@ -27,14 +27,14 @@ enum Semantics {
 class ROBOTS_GENERATOR_EXPORT GeneratorCustomizer
 {
 public:
-	// TODO: make it protected
-	GeneratorCustomizer();
-
 	/// Implementation must tell if block with given id has initial node semantics
 	virtual bool isInitialNode(qReal::Id const &block) const;
 
 	/// Implementation must tell if block with given id has final node semantics
 	virtual bool isFinalNode(qReal::Id const &block) const;
+
+	/// Implementation must tell if block with given id calls some new routine
+	virtual bool isSubprogramCall(qReal::Id const &block) const;
 
 	/// Returns semantics type of the given block
 	enums::semantics::Semantics semanticsOf(qReal::Id const &block) const;
@@ -48,6 +48,8 @@ public:
 	virtual GeneratorFactoryBase *factory() = 0;
 
 protected:
+	GeneratorCustomizer();
+
 	/// Implementation must tell if block with given id has if-block semantics
 	virtual bool isConditional(qReal::Id const &block) const;
 
@@ -67,6 +69,7 @@ private:
 	qReal::Id const mDefaultLoopBlockType;
 	qReal::Id const mDefaultSwitchBlockType;
 	qReal::Id const mDefaultForkBlockType;
+	qReal::Id const mDefaultSubprogramCallBlockType;
 };
 
 }

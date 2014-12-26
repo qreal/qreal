@@ -68,6 +68,11 @@
         <source>Integer division by zero</source>
         <translation>Целичисленное деление на ноль</translation>
     </message>
+    <message>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="423"/>
+        <source>Remove</source>
+        <translation>Удалить</translation>
+    </message>
 </context>
 <context>
     <name>SensorsGraph</name>
@@ -80,23 +85,23 @@
 <context>
     <name>qReal::BaseGraphTransformationUnit</name>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="29"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="31"/>
         <source>no current diagram</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="56"/>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="102"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="58"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="104"/>
         <source>Rule &apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="56"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="58"/>
         <source>&apos; has not any appropriate nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="102"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="104"/>
         <source>&apos; has unconnected link</source>
         <translation type="unfinished"></translation>
     </message>
@@ -104,22 +109,22 @@
 <context>
     <name>utils::MetamodelGeneratorSupport</name>
     <message>
-        <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="57"/>
+        <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="58"/>
         <source>Please, fill compiler settings</source>
         <translation>Пожалуйста, заполните форму настроек копмилятора в настройках</translation>
     </message>
     <message>
-        <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="77"/>
+        <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="78"/>
         <source>Cannot unload plugin</source>
         <translation>Не могу отгрузить плагин</translation>
     </message>
     <message>
-        <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="100"/>
+        <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="101"/>
         <source>Cannot load new editor</source>
         <translation>Не могу загрузить новый редактор</translation>
     </message>
     <message>
-        <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="106"/>
+        <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="107"/>
         <source>Cannot build new editor</source>
         <translation>Не могу скомпилировать новый редактор. Проверьте имена элементов</translation>
     </message>
@@ -127,35 +132,72 @@
 <context>
     <name>utils::sensorsGraph::SensorViewer</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="107"/>
+        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="105"/>
         <source>Save values history</source>
         <translation>Сохранить историю показаний</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="107"/>
+        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="105"/>
         <source>Comma-Separated Values Files (*.csv)</source>
-        <translation>Значения, разделенные запятой (*csv)</translation>
+        <translation>Значения, разделенные запятой (*.csv)</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="213"/>
+        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="211"/>
         <source>value: </source>
         <translation>значение: </translation>
     </message>
 </context>
 <context>
+    <name>utils::sensorsGraph::SensorsGraph</name>
+    <message>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="123"/>
+        <source>Stop tracking</source>
+        <translation>Остановить слежение</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="127"/>
+        <source>Start tracking</source>
+        <translation>Начать слежение</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="131"/>
+        <source>Reset plot</source>
+        <translation>Очистить график</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="135"/>
+        <source>Zoom In</source>
+        <translation>Приблизить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="139"/>
+        <source>Zoom Out</source>
+        <translation>Отдалить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="143"/>
+        <source>Export values...</source>
+        <translation>Экспорт значений...</translation>
+    </message>
+    <message>
+        <source>Export values</source>
+        <translation type="obsolete">Экспорт значений...</translation>
+    </message>
+</context>
+<context>
     <name>watchListWindow</name>
     <message>
-        <location filename="../../qrutils/watchListWindow.ui" line="38"/>
+        <location filename="../../qrutils/watchListWindow.ui" line="41"/>
         <source>Watch List</source>
         <translation>Переменные</translation>
     </message>
     <message>
-        <location filename="../../qrutils/watchListWindow.ui" line="85"/>
+        <location filename="../../qrutils/watchListWindow.ui" line="100"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../../qrutils/watchListWindow.ui" line="90"/>
+        <location filename="../../qrutils/watchListWindow.ui" line="105"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>

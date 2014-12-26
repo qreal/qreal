@@ -1,6 +1,7 @@
 #include "metamodelGeneratorSupport.h"
 
 #include <QtCore/QProcess>
+#include <QtCore/QDir>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QDesktopWidget>
