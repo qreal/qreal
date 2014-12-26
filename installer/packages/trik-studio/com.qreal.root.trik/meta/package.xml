@@ -9,13 +9,6 @@
     <Licenses>
         <License name="WinScp Component License" file="WinScp-license.txt" />
     </Licenses>
-    <!--<Translations>
-        <Translation>sv_se.qm</Translation>
-        <Translation>de_de.qm</Translation>
-    </Translations> -->
-    <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
-    <!--<AutoDependOn>com.vendor.root.component3</AutoDependOn>-->
-    <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
     <SortingPriority>10</SortingPriority>
     <Default>true</Default>
     <ForcedInstallation>false</ForcedInstallation>

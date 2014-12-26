@@ -5,16 +5,10 @@
     <Description>Install it for uploading programs to Lego NXT device</Description>
     <Description xml:lang="ru_ru">Установите это для возможности загрузки программ на робота Lego NXT</Description>
     <Version>3.0.0</Version>
-    <ReleaseDate>2013-11-19</ReleaseDate> <!--TODO-->
+    <ReleaseDate>2013-11-19</ReleaseDate>
     <Licenses>
         <!-- TODO -->
     </Licenses>
-    <!--<Translations>
-        <Translation>sv_se.qm</Translation>
-        <Translation>de_de.qm</Translation>
-    </Translations> -->
-    <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
-    <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
     <SortingPriority>7</SortingPriority>
     <Default>true</Default>
     <ForcedInstallation>false</ForcedInstallation>
