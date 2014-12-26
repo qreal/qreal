@@ -1,6 +1,6 @@
 #pragma once
-#include "../../qrgui/pluginManager/editorManagerInterface.h"
-#include "../../qrgui/constraintsPluginInterface/constraintsPluginInterface.h"
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include <qrgui/plugins/constraintsPluginInterface/constraintsPluginInterface.h>
 
 namespace constraints {
 

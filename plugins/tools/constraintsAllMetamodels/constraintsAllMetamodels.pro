@@ -4,7 +4,7 @@ DESTDIR = ../../../bin/plugins/tools
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
+LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo -lqrgui-constraints-plugin-interface
 
 INCLUDEPATH += \
 	$$PWD/../../.. \
@@ -12,12 +12,12 @@ INCLUDEPATH += \
 
 HEADERS += \
 	constraintsAllMetamodelsPlugin.h \
-	../../../qrgui/pluginManager/editorManagerInterface.h \
+	../../../qrgui/plugins/pluginManager/editorManagerInterface.h \
+	../../../qrgui/plugins/constraintsPluginInterface/checkStatus.h \
 	constraintsAllLanguages.h \
 
 
 SOURCES += \
 	constraintsAllMetamodelsPlugin.cpp \
-	../../../qrgui/constraintsPluginInterface/checkStatus.cpp \
 	constraintsAllLanguages.cpp \
 
