@@ -1047,8 +1047,8 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(index);
 		EditorView * const view = new EditorView(*models(), *controller(), *mSceneCustomizer, diagramId, this);
 		mController->diagramOpened(diagramId);
-		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
+		initCurrentTab(view, index);
 		mUi->tabs->setCurrentWidget(view);
 
 		// Focusing on scene top left corner
