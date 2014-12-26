@@ -31,8 +31,10 @@ public:
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 	void updateVisibility(bool isVisible);
 
-	void addUniqueError(QString const &message, Error::Severity const &severity = Error::error, Id const &position = Id::rootId());
-	void delUniqueError(QString const &message, Error::Severity const &severity = Error::error, Id const &position = Id::rootId());
+	void addUniqueError(QString const &message, Error::Severity const &severity = Error::error
+						, Id const &position = Id::rootId());
+	void delUniqueError(QString const &message, Error::Severity const &severity = Error::error
+						, Id const &position = Id::rootId());
 	void delAllErrorOfElement(Id const &position);
 
 public slots:

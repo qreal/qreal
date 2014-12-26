@@ -154,7 +154,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
 
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));
-	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex)), this, SLOT(checkConstraints(QModelIndex)));
+	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex))
+			, this, SLOT(checkConstraints(QModelIndex)));
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(parentChanged(IdList)), this, SLOT(checkConstraints(IdList)));
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
@@ -2053,7 +2054,8 @@ void MainWindow::endPaletteModification()
 
 bool MainWindow::unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId)
 {
-	if (mConstraintsManager.pluginsIds().contains(Id(pluginId)) && mConstraintsManager.pluginsNames().contains(pluginName)) {
+	if (mConstraintsManager.pluginsIds().contains(Id(pluginId))
+		&& mConstraintsManager.pluginsNames().contains(pluginName)) {
 		if (!mConstraintsManager.unloadPlugin(pluginId)) {
 			return false;
 		}
@@ -2081,9 +2083,12 @@ gui::Error::Severity MainWindow::severityByErrorType(CheckStatus::ErrorType cons
 void MainWindow::checkOwnConstraints(Id const &id)
 {
 	Id const logicalId = mModels->logicalId(id);
-	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+	IdList const graphicalIds =
+			mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 
-	QList<CheckStatus> checkStatusList = mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManagerProxy);
+	QList<CheckStatus> checkStatusList =
+			mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManagerProxy);
+
 	bool checkStatus = true;
 	foreach (CheckStatus check, checkStatusList) {
 		gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
