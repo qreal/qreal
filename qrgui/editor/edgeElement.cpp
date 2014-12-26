@@ -19,7 +19,7 @@
 #include "editor/private/lineFactory.h"
 #include "editor/private/lineHandler.h"
 
-#include "mainwindow/mainWindow.h"
+#include "mainWindow/mainWindow.h"
 
 using namespace qReal;
 using namespace enums;

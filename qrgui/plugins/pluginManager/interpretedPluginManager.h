@@ -7,7 +7,7 @@
 
 namespace qReal {
 
-/// This class inits interpreter plugins and returns their actions and preferences pages for mainwindow.
+/// This class inits interpreter plugins and returns their actions and preferences pages for mainWindow.
 class QRGUI_PLUGINS_MANAGER_EXPORT InterpretedPluginManager
 {
 public:

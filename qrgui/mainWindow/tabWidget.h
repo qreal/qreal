@@ -5,7 +5,7 @@
 namespace qReal {
 namespace gui {
 
-/// Custom class for showing tabs in mainwindow.
+/// Custom class for showing tabs in mainWindow.
 class TabWidget : public QTabWidget
 {
 	Q_OBJECT

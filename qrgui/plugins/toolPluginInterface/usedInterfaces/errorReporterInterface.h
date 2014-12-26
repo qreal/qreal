@@ -5,7 +5,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrkernel/definitions.h>
-#include "qrgui/mainwindow/error.h"
+#include <qrgui/mainWindow/error.h>
 
 namespace qReal {
 
