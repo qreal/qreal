@@ -128,6 +128,8 @@ public:
 	/// Enables or diasables all editor actions.
 	void setActionsEnabled(bool enabled);
 
+	void checkConstraints(IdList const &elementsList);
+
 public slots:
 	qReal::Id createElement(const QString &type);
 
@@ -162,6 +164,8 @@ signals:
 		/// @todo: whan passing it by reference the build on travis fails
 		, EditorManagerInterface const *editorManagerProxy
 		, bool useTypedPorts);
+
+	void checkConstraintsSignal(IdList const &elementsList);
 
 protected:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);

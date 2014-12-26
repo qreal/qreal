@@ -5,6 +5,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrkernel/definitions.h>
+#include <qrgui/mainWindow/error.h>
 
 namespace qReal {
 
@@ -15,6 +16,10 @@ public:
 	virtual void addWarning(QString const &message, Id const &position = Id::rootId()) = 0;
 	virtual void addError(QString const &message, Id const &position = Id::rootId()) = 0;
 	virtual void addCritical(QString const &message, Id const &position = Id::rootId()) = 0;
+
+	virtual void addUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error, Id const &position = Id::rootId()) = 0;
+	virtual void delUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error, Id const &position = Id::rootId()) = 0;
+	virtual void delAllErrorOfElement(Id const &position) = 0;
 
 	virtual void clear() = 0;
 	virtual void clearErrors() = 0;

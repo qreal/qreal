@@ -84,3 +84,12 @@ void Models::reinit()
 	mGraphicalModel->reinit();
 	mGraphicalPartModel->reinit();
 }
+
+Id Models::logicalId(Id const &element) const
+{
+	if (mLogicalModel->logicalModelAssistApi().isLogicalId(element)) {
+		return element;
+	} else {
+		return mGraphicalModel->graphicalModelAssistApi().logicalId(element);
+	}
+}

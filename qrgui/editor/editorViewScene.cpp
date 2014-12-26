@@ -83,6 +83,11 @@ EditorViewScene::EditorViewScene(models::Models const &models
 	});
 }
 
+void EditorViewScene::checkConstraints(IdList const &elementsList)
+{
+	emit checkConstraintsSignal(elementsList);
+}
+
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
 {
 	QPointF const point = sceneRect().topLeft();

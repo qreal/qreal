@@ -18,11 +18,20 @@ SUBDIRS = \
 	qrtranslations \
 
 qrkernel.depends = thirdparty
-qrutils.depends = qrkernel qrtext
+qrtext.depends = qrkernel
+qrutils.depends = qrkernel
 qrrepo.depends = qrkernel qrutils
 qrxc.depends = qrutils
 qrmc.depends = qrrepo
 qrmc.file = qrmc/qrmc-lib.pro
+
+plugins.depends = \
+	qrxc \
+	qrrepo \
+	qrutils \
+	qrkernel \
+	qrmc \
+	qrtext \
 
 qrgui.depends = \
 #	doc \
@@ -32,14 +41,6 @@ qrgui.depends = \
 	qrkernel \
 	qrmc \
 	thirdparty \
+	plugins \
 
-plugins.depends = \
-	qrxc \
-	qrrepo \
-	qrutils \
-	qrkernel \
-	qrmc \
-	qrgui \
-	qrtext \
 
-qrtext.depends = qrkernel

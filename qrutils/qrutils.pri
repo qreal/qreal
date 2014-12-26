@@ -82,3 +82,4 @@ include($$PWD/graphicsWatcher/sensorsGraph.pri)
 
 #Plugin managers
 include($$PWD/pluginManagers/pluginManagers.pri)
+

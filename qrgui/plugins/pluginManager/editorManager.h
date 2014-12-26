@@ -82,6 +82,8 @@ public:
 	Id findElementByType(QString const &type) const override;
 	QList<ListenerInterface *> listeners() const override;
 
+	MetaType metaTypeOfElement(Id const& element) const;
+
 	bool isDiagramNode(Id const &id) const override;
 
 	bool isParentOf(Id const &child, Id const &parent) const override;

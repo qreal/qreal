@@ -155,6 +155,8 @@ private:
 	QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;  // Has ownership.
 	QString mMetamodelFile;
 
+	virtual MetaType metaTypeOfElement(qReal::Id const& element) const;
+
 	void setProperty(qrRepo::RepoApi* repo, Id const &id, QString const &property, QVariant const &propertyValue) const;
 	Id element(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;
 	Id diagramOrElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &editor) const;

@@ -14,6 +14,7 @@ SUBDIRS += \
 	pluginManager \
 	editorPluginInterface \
 	toolPluginInterface \
+	constraintsPluginInterface \
 	interpretedPluginInterface \
 	thirdparty \
 
@@ -21,6 +22,7 @@ pluginManager.file = $$PWD/plugins/pluginManager/pluginManager.pro
 editorPluginInterface.file = $$PWD/plugins/editorPluginInterface/editorPluginInterface.pro
 toolPluginInterface.file = $$PWD/plugins/toolPluginInterface/toolPluginInterface.pro
 interpretedPluginInterface.file = $$PWD/plugins/interpretedPluginInterface/interpretedPluginInterface.pro
+constraintsPluginInterface.file = $$PWD/plugins/constraintsPluginInterface/constraintsPluginInterface.pro
 
 mainWindow.depends = \
 	models \
@@ -63,4 +65,5 @@ brandManager.depends = \
 	pluginManager \
 
 pluginManager.depends = \
+	constraintsPluginInterface \
 	toolPluginInterface \

@@ -121,6 +121,7 @@ bool PropertyEditorModel::setData(QModelIndex const &index, QVariant const &valu
 		switch (mFields[index.row()].attributeClass) {
 		case logicalAttribute: {
 			mTargetLogicalModel->setData(mTargetLogicalObject, value, mFields[index.row()].role);
+			emit propertyChangedFromPropertyEditor(mTargetLogicalObject);
 			break;
 		}
 		case graphicalAttribute:
@@ -128,6 +129,7 @@ bool PropertyEditorModel::setData(QModelIndex const &index, QVariant const &valu
 			break;
 		case namePseudoattribute:
 			mTargetLogicalModel->setData(mTargetLogicalObject, value, Qt::DisplayRole);
+			emit propertyChangedFromPropertyEditor(mTargetLogicalObject);
 			break;
 		default:
 			modelChanged = false;

@@ -21,8 +21,9 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 	for (int row = start; row <= end; ++row) {
 		QPersistentModelIndex const current = model()->index(row, 0, parent);
 		Id const logicalId = current.data(roles::logicalIdRole).value<Id>();
-		if (parentLogicalId.isNull() || parentLogicalId.editor() != "MetaEditor"
-				|| logicalId.editor() != "MetaEditor")
+		if (parentLogicalId.isNull()
+				|| (parentLogicalId.editor() != "MetaEditor" && parentLogicalId.editor() != "ConstraintsMetamodel")
+				|| (logicalId.editor() != "MetaEditor" && logicalId.editor() != "ConstraintsMetamodel"))
 		{
 			parentLogicalId = Id::rootId();
 		}

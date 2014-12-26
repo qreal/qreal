@@ -19,6 +19,8 @@
 #include "editor/private/lineFactory.h"
 #include "editor/private/lineHandler.h"
 
+#include "mainWindow/mainWindow.h"
+
 using namespace qReal;
 using namespace enums;
 
@@ -289,6 +291,7 @@ void EdgeElement::updateLongestPart()
 
 void EdgeElement::connectToPort()
 {
+	IdList nodesForCheckConstraints;
 	mMoving = true;
 
 	NodeElement *newSrc = getNodeAt(mLine.first(), true);
@@ -306,16 +309,19 @@ void EdgeElement::connectToPort()
 	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last()), toPortTypes()) : -1.0;
 
 	if (mSrc) {
+		nodesForCheckConstraints.push_back(mSrc->logicalId());
 		mSrc->delEdge(this);
 		mSrc = nullptr;
 	}
 
 	if (mDst) {
+		nodesForCheckConstraints.push_back(mDst->logicalId());
 		mDst->delEdge(this);
 		mDst = nullptr;
 	}
 
 	if (mPortFrom >= -epsilon) {
+		nodesForCheckConstraints.push_back(newSrc->logicalId());
 		mSrc = newSrc;
 		mSrc->addEdge(this);
 	}
@@ -324,6 +330,7 @@ void EdgeElement::connectToPort()
 	mGraphicalAssistApi.setFromPort(id(), mPortFrom);
 
 	if (mPortTo >= -epsilon) {
+		nodesForCheckConstraints.push_back(newDst->logicalId());
 		mDst = newDst;
 		mDst->addEdge(this);
 	}
@@ -341,11 +348,7 @@ void EdgeElement::connectToPort()
 
 	mMoving = false;
 
-	if (newSrc && newDst) {
-		highlight(mPenColor);
-	} else {
-		highlight(Qt::red);
-	}
+	(dynamic_cast<EditorViewScene*>(scene()))->checkConstraints(nodesForCheckConstraints);
 }
 
 void EdgeElement::layOut()
@@ -904,7 +907,6 @@ void EdgeElement::updateData()
 
 	update();
 	updateLongestPart();
-	highlight((mSrc && mDst) ? mPenColor : Qt::red);
 }
 
 void EdgeElement::removeLink(NodeElement const *from)

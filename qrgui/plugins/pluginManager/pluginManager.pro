@@ -39,6 +39,8 @@ HEADERS += \
 	$$PWD/details/patternParser.h \
 	$$PWD/details/interpreterElementImpl.h \
 	$$PWD/details/interpreterPortImpl.h \
+	$$PWD/constraintsManager.h \
+	$$PWD/../toolPluginInterface/systemEvents.h \
 
 SOURCES += \
 	$$PWD/editorManager.cpp \
@@ -53,6 +55,7 @@ SOURCES += \
 	$$PWD/details/patternParser.cpp \
 	$$PWD/details/interpreterElementImpl.cpp \
 	$$PWD/details/interpreterPortImpl.cpp \
+	$$PWD/constraintsManager.cpp \
 
 RESOURCES += \
 	$$PWD/pluginManager.qrc \
