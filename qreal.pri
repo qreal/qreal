@@ -5,7 +5,6 @@ contains(QT_VERSION, ^4\\.[0-5]\\..*){
 
 TEMPLATE = subdirs
 SUBDIRS = \
-#	doc \
 	qrmc \
 	qrxc \
 	qrgui \
@@ -32,15 +31,15 @@ plugins.depends = \
 	qrkernel \
 	qrmc \
 	qrtext \
+	qrgui \
 
 qrgui.depends = \
-#	doc \
 	qrxc \
 	qrrepo \
 	qrutils \
 	qrkernel \
 	qrmc \
 	thirdparty \
-	plugins \
+
 
 
