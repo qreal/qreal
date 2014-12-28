@@ -15,6 +15,12 @@ public:
 	MOCK_METHOD2(addError, void(QString const &message, qReal::Id const &position));
 	MOCK_METHOD2(addCritical, void(QString const &message, qReal::Id const &position));
 
+	MOCK_METHOD3(addUniqueError, void(QString const &message, qReal::gui::Error::Severity const &severity
+			, qReal::Id const &position));
+	MOCK_METHOD3(delUniqueError, void(QString const &message, qReal::gui::Error::Severity const &severity
+			, qReal::Id const &position));
+	MOCK_METHOD1(delAllErrorOfElement, void(qReal::Id const &position));
+
 	MOCK_METHOD0(clear, void());
 	MOCK_METHOD0(clearErrors, void());
 	MOCK_METHOD0(wereErrors, bool());

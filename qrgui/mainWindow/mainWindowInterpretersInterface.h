@@ -60,7 +60,7 @@ public:
 	/// @param pluginName Name of an constraintsEditor plugin to unload
 	/// @returns True, if plugin unloaded successfully or no plugin with such name
 	/// was loaded, false if plugin is not unloaded.
-		virtual bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId) = 0;
+	virtual bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId) = 0;
 
 	/// Tries to load constraintsEditor plugin with given name.
 	/// @param fileName Name of an constraintsEditor plugin file to load (.dll or .so name without extension)
