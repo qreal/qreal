@@ -64,6 +64,10 @@ public:
 
 	bool isDividable() const;
 
+	void inheritProperties(QList<QDomElement> &elements, const Id &id, QList<PortInterface *> &ports
+			, const PortFactoryInterface &portFactory, SdfRendererInterface *renderer
+			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const;
+
 	/*Container properties*/
 	bool hasContainerProperty(QString const &property) const;
 	bool isContainer() const;
@@ -78,9 +82,6 @@ public:
 	QStringList toPortTypes() const;
 
 	enums::linkShape::LinkShape shapeType() const;
-
-	bool isPort() const;
-	bool hasPin() const;
 
 	bool createChildrenFromMenu() const;
 
