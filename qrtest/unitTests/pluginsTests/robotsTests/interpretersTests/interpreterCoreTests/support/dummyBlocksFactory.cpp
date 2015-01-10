@@ -5,7 +5,7 @@
 using namespace qrTest::robotsTests::interpreterCoreTests;
 using namespace qReal;
 
-interpreterBase::blocksBase::Block *DummyBlockFactory::produceBlock(Id const &element)
+qReal::interpretation::Block *DummyBlockFactory::produceBlock(Id const &element)
 {
 	Q_UNUSED(element)
 	return new DummyBlock;
