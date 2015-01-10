@@ -97,7 +97,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			type = QVariant::Bool;
 		} else if (typeName == "string") {
 			type = QVariant::String;
-		} else if (typeName == "code" || typeName == "directorypath") {
+		} else if (typeName == "code" || typeName == "directorypath" || typeName == "filepath") {
 			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
@@ -178,14 +178,14 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 		if (typeName == "code") {
 			emit textEditorRequested(actualIndex, role, propertyValue);
 		} else if (typeName == "directorypath") {
-			QString startPath;
-			if (propertyValue.isEmpty()) {
-				startPath = qApp->applicationDirPath();
-			} else {
-				startPath = propertyValue;
-			}
+			QString const startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
 			QString const location = utils::QRealFileDialog::getExistingDirectory("OpenDirectoryForPropertyEditor"
 					, this, tr("Specify directory:"), startPath);
+			mModel->setData(index, location);
+		} else if (typeName == "filepath") {
+			QString const startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
+			QString const location = utils::QRealFileDialog::getOpenFileName("OpenFileForPropertyEditor"
+					, this, tr("Select file:"), startPath);
 			mModel->setData(index, location);
 		} else {
 			emit referenceListRequested(actualIndex, typeName, propertyValue, role);
