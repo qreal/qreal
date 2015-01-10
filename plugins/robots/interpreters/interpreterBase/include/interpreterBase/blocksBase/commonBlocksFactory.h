@@ -3,10 +3,14 @@
 #include "blocksFactoryInterface.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
+namespace qReal {
+namespace interpretation {
+class Block;
+}
+}
+
 namespace interpreterBase {
 namespace blocksBase {
-
-class Block;
 
 /// Base implementation of all blocks factories. Provides common functionality and default implementations for
 /// BlocksFactoryInterface methods.
@@ -15,7 +19,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT CommonBlocksFactory : public BlocksFactoryI
 public:
 	CommonBlocksFactory();
 
-	BlockInterface *block(qReal::Id const &element) override;
+	qReal::interpretation::BlockInterface *block(qReal::Id const &element) override;
 
 	/// Does not take ownership.
 	void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
@@ -35,7 +39,7 @@ protected:
 
 	/// Implementation must instantiate a concrete block object by the given id. Future preparation
 	/// is performed in parent code.
-	virtual Block *produceBlock(qReal::Id const &element) = 0;
+	virtual qReal::interpretation::Block *produceBlock(qReal::Id const &element) = 0;
 
 	/// @todo: there is no such thing as protected fields. One can not trust its descendants.
 	interpreterBase::robotModel::RobotModelManagerInterface *mRobotModelManager;  // Does not have ownership.

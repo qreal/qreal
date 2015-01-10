@@ -20,24 +20,13 @@ HEADERS += \
 	$$PWD/src/robotsPlugin.h \
 	$$PWD/src/robotsPluginFacade.h \
 	$$PWD/src/coreBlocks/coreBlocksFactory.h \
-	$$PWD/src/coreBlocks/details/commentBlock.h \
-	$$PWD/src/coreBlocks/details/finalBlock.h \
-	$$PWD/src/coreBlocks/details/initialBlock.h \
-	$$PWD/src/coreBlocks/details/ifBlock.h \
-	$$PWD/src/coreBlocks/details/switchBlock.h \
-	$$PWD/src/coreBlocks/details/loopBlock.h \
-	$$PWD/src/coreBlocks/details/forkBlock.h \
-	$$PWD/src/coreBlocks/details/subprogramBlock.h \
-	$$PWD/src/coreBlocks/details/functionBlock.h \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
-	$$PWD/src/coreBlocks/details/variableInitBlock.h \
 	$$PWD/src/coreBlocks/details/printTextBlock.h \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.h \
 	$$PWD/src/interpreter/interpreter.h \
 	$$PWD/src/interpreter/interpreterInterface.h \
 	$$PWD/src/interpreter/details/autoconfigurer.h \
 	$$PWD/src/interpreter/details/blocksTable.h \
-	$$PWD/src/interpreter/details/thread.h \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.h \
 	$$PWD/src/managers/actionsManager.h \
 	$$PWD/src/managers/blocksFactoryManager.h \
@@ -58,23 +47,12 @@ SOURCES += \
 	$$PWD/src/robotsPlugin.cpp \
 	$$PWD/src/robotsPluginFacade.cpp \
 	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
-	$$PWD/src/coreBlocks/details/commentBlock.cpp \
-	$$PWD/src/coreBlocks/details/finalBlock.cpp \
-	$$PWD/src/coreBlocks/details/initialBlock.cpp \
-	$$PWD/src/coreBlocks/details/ifBlock.cpp \
-	$$PWD/src/coreBlocks/details/switchBlock.cpp \
-	$$PWD/src/coreBlocks/details/loopBlock.cpp \
-	$$PWD/src/coreBlocks/details/forkBlock.cpp \
-	$$PWD/src/coreBlocks/details/subprogramBlock.cpp \
-	$$PWD/src/coreBlocks/details/functionBlock.cpp \
 	$$PWD/src/coreBlocks/details/timerBlock.cpp \
-	$$PWD/src/coreBlocks/details/variableInitBlock.cpp \
 	$$PWD/src/coreBlocks/details/printTextBlock.cpp \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
-	$$PWD/src/interpreter/details/thread.cpp \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.cpp \
 	$$PWD/src/managers/actionsManager.cpp \
 	$$PWD/src/managers/blocksFactoryManager.cpp \

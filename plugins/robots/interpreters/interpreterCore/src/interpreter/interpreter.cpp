@@ -155,7 +155,7 @@ void Interpreter::devicesConfiguredSlot()
 
 		Id const &currentDiagramId = mInterpretersInterface.activeDiagram();
 
-		details::Thread * const initialThread = new details::Thread(&mGraphicalModelApi
+		qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
 				, mInterpretersInterface, currentDiagramId, *mBlocksTable);
 
 		emit started();
@@ -166,7 +166,7 @@ void Interpreter::devicesConfiguredSlot()
 
 void Interpreter::threadStopped()
 {
-	details::Thread * const thread = static_cast<details::Thread *>(sender());
+	qReal::interpretation::Thread * const thread = static_cast<qReal::interpretation::Thread *>(sender());
 
 	mThreads.removeAll(thread);
 	delete thread;
@@ -178,13 +178,13 @@ void Interpreter::threadStopped()
 
 void Interpreter::newThread(Id const &startBlockId)
 {
-	details::Thread * const thread = new details::Thread(&mGraphicalModelApi
+	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
 			, mInterpretersInterface, *mBlocksTable, startBlockId);
 
 	addThread(thread);
 }
 
-void Interpreter::addThread(details::Thread * const thread)
+void Interpreter::addThread(qReal::interpretation::Thread * const thread)
 {
 	if (mThreads.count() >= maxThreadsCount) {
 		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
@@ -194,7 +194,7 @@ void Interpreter::addThread(details::Thread * const thread)
 	mThreads.append(thread);
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
-	connect(thread, &details::Thread::newThread, this, &Interpreter::newThread);
+	connect(thread, &qReal::interpretation::Thread::newThread, this, &Interpreter::newThread);
 
 	QCoreApplication::processEvents();
 	if (mState != idle) {

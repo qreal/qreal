@@ -13,34 +13,7 @@ BlocksTable::BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
 {
 }
 
-BlocksTable::~BlocksTable()
+interpretation::BlockInterface *BlocksTable::produceBlock(Id const &element)
 {
-	qDeleteAll(mBlocks);
-}
-
-BlockInterface *BlocksTable::block(Id const &element)
-{
-	if (mBlocks.contains(element)) {
-		return mBlocks[element];
-	}
-
-	BlockInterface * const newBlock = mBlocksFactoryManager.block(element, mRobotModelManager.model());
-	if (newBlock) {
-		mBlocks.insert(element, newBlock);
-	}
-
-	return newBlock;
-}
-
-void BlocksTable::clear()
-{
-	qDeleteAll(mBlocks);
-	mBlocks.clear();
-}
-
-void BlocksTable::setFailure()
-{
-	for (BlockInterface * const block : mBlocks.values()) {
-		block->setFailedStatus();
-	}
+	return mBlocksFactoryManager.block(element, mRobotModelManager.model());
 }

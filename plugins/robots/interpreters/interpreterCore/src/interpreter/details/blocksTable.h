@@ -1,12 +1,6 @@
 #pragma once
 
-#include <QtCore/QHash>
-#include <QtCore/QScopedPointer>
-
-#include <qrkernel/ids.h>
-
-#include <interpreterBase/blocksBase/blocksTableInterface.h>
-#include <interpreterBase/blocksBase/blockInterface.h>
+#include <qrutils/interpreter/blocksTableBase.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 #include "src/managers/blocksFactoryManagerInterface.h"
@@ -20,7 +14,7 @@ namespace details {
 /// clients can simply request a block by given id, and a block table will do the rest.
 /// Also supports operations that shall be performed on all blocks in a system, such as setting failure or idle flags.
 /// and objects implementing logic of that blocks.
-class BlocksTable : public interpreterBase::blocksBase::BlocksTableInterface
+class BlocksTable : public qReal::interpretation::BlocksTableBase
 {
 public:
 	/// Constructor.
@@ -29,19 +23,9 @@ public:
 	BlocksTable(BlocksFactoryManagerInterface &blocksFactoryManager
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager);
 
-	~BlocksTable() override;
-
-	interpreterBase::blocksBase::BlockInterface *block(qReal::Id const &element) override;
-
-	/// Clears blocks table.
-	void clear();
-
-	/// Sets "failure" state for all blocks, which allows to abort program execution: if block is failed, it will not
-	/// invoke next block.
-	void setFailure();
-
 private:
-	QHash<qReal::Id, interpreterBase::blocksBase::BlockInterface *> mBlocks;  // Has ownership
+	qReal::interpretation::BlockInterface *produceBlock(qReal::Id const &element) override;
+
 	BlocksFactoryManagerInterface &mBlocksFactoryManager;
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interpreterBase/blocksBase/block.h>
+#include <interpreterBase/blocksBase/robotsBlock.h>
 
 namespace interpreterBase {
 
@@ -14,7 +14,7 @@ namespace blocksBase {
 namespace common {
 
 /// An interpreter's implementation for "clear encoder" block.
-class ROBOTS_INTERPRETER_BASE_EXPORT ClearEncoderBlock : public Block
+class ROBOTS_INTERPRETER_BASE_EXPORT ClearEncoderBlock : public RobotsBlock
 {
 	Q_OBJECT
 

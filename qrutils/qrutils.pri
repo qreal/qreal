@@ -82,3 +82,6 @@ include($$PWD/graphicsWatcher/sensorsGraph.pri)
 
 #Plugin managers
 include($$PWD/pluginManagers/pluginManagers.pri)
+
+# Tools for interpreting behavioral diagrams
+include($$PWD/interpreter/interpreter.pri)
