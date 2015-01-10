@@ -14,6 +14,7 @@ using namespace qReal;
 using namespace interpreterCore::interpreter;
 using namespace interpreterBase::robotModel;
 
+Id const startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 int const maxThreadsCount = 100;
 
 Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
@@ -156,7 +157,7 @@ void Interpreter::devicesConfiguredSlot()
 		Id const &currentDiagramId = mInterpretersInterface.activeDiagram();
 
 		qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
-				, mInterpretersInterface, currentDiagramId, *mBlocksTable);
+				, mInterpretersInterface, startingElementType, currentDiagramId, *mBlocksTable);
 
 		emit started();
 
@@ -179,7 +180,7 @@ void Interpreter::threadStopped()
 void Interpreter::newThread(Id const &startBlockId)
 {
 	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
-			, mInterpretersInterface, *mBlocksTable, startBlockId);
+			, mInterpretersInterface, startingElementType, *mBlocksTable, startBlockId);
 
 	addThread(thread);
 }

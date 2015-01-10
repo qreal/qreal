@@ -15,8 +15,8 @@
 namespace qReal {
 namespace interpretation {
 
-/// Interprets behavoiural diagram by sequential executing blocks.  and sending commands to robot model.
-/// It is the main class for all interpretation subsystem.
+/// Interprets behavioural diagram by sequential executing blocks.
+/// It is the main class for diagrams interpretation subsystem.
 class Interpreter : public QObject
 {
 	Q_OBJECT
@@ -28,12 +28,13 @@ public:
 	/// @param interpretersInterface - reference to QReal main window. Used to highlight executing blocks and so on.
 	/// @param blocksTable - an entity that will produce logic of the block by its id.
 	/// @param parser - parser that is used to analyze and evaluate textual expressions inside properties of blocks.
+	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
 	Interpreter(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, BlocksTableInterface &blocksTable
 			, qrtext::LanguageToolboxInterface &languageToolbox
-			);
+			, Id const &initialNodeType);
 
 	~Interpreter();
 
@@ -42,7 +43,7 @@ public slots:
 	void stopInterpretation();
 
 signals:
-	/// Emitted when connection to robot is established, devices are configured and interpretation is started.
+	/// Emitted when started.
 	void started();
 
 	/// Emitted when program is finished or stopped by user.
@@ -73,6 +74,8 @@ private:
 
 	/// Reference to a parser to be able to clear parser state when starting interpretation.
 	qrtext::LanguageToolboxInterface &mLanguageToolbox;
+
+	Id const mInitialNodeType;
 };
 
 }

@@ -23,21 +23,25 @@ public:
 	/// Creates new instance of thread starting from specified block.
 	/// @param graphicalModelApi - graphical model, contains diagram.
 	/// @param interpretersInterface - reference to QReal main window.
+	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
 	/// @param initialNode - node that shall be executed first in this thread.
 	Thread(qReal::GraphicalModelAssistInterface const *graphicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, Id const &initialNodeType
 			, BlocksTableInterface &blocksTable
-			, qReal::Id const &initialNode);
+			, Id const &initialNode);
 
 	/// Creates new instance of thread starting from initial node of specified diagram.
 	/// @param graphicalModelApi - graphical model, contains diagram.
 	/// @param interpretersInterface - reference to QReal main window.
+	/// @param initialNodeType - the type of the element to start on diagram when stepping into it.
 	/// @param diagramToInterpret - diagram, whose initial node shall be executed in a new thread.
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
 	Thread(qReal::GraphicalModelAssistInterface const *graphicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, qReal::Id const &diagramToInterpret
+			, Id const &initialNodeType
+			, Id const &diagramToInterpret
 			, BlocksTableInterface &blocksTable);
 
 	~Thread() override;
@@ -73,6 +77,7 @@ private:
 
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
+	Id const mInitialNodeType;
 	BlocksTableInterface &mBlocksTable;
 	BlockInterface *mCurrentBlock;  // Doesn't have ownership
 	QStack<BlockInterface *> mStack;  // Doesn't have ownership

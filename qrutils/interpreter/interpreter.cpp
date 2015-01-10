@@ -15,13 +15,15 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, BlocksTableInterface &blocksTable
-		, qrtext::LanguageToolboxInterface &languageToolbox)
+		, qrtext::LanguageToolboxInterface &languageToolbox
+		, Id const &initialNodeType)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mState(idle)
 	, mBlocksTable(blocksTable)
 	, mLanguageToolbox(languageToolbox)
+	, mInitialNodeType(initialNodeType)
 {
 }
 
@@ -68,7 +70,8 @@ void Interpreter::threadStopped()
 
 void Interpreter::newThread(Id const &startBlockId)
 {
-	Thread * const thread = new Thread(&mGraphicalModelApi, mInterpretersInterface, mBlocksTable, startBlockId);
+	Thread * const thread = new Thread(&mGraphicalModelApi, mInterpretersInterface
+			, mInitialNodeType, mBlocksTable, startBlockId);
 	addThread(thread);
 }
 

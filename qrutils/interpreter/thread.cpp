@@ -6,15 +6,16 @@
 using namespace qReal;
 using namespace interpretation;
 
-Id const startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 int const blocksCountTillProcessingEvents = 100;
 
 Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
+		, Id const &initialNodeType
 		, BlocksTableInterface &blocksTable
 		, Id const &initialNode)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
+	, mInitialNodeType(initialNodeType)
 	, mBlocksTable(blocksTable)
 	, mCurrentBlock(mBlocksTable.block(initialNode))
 	, mBlocksSincePreviousEventsProcessing(0)
@@ -26,10 +27,12 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 
 Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
+		, Id const &initialNodeType
 		, Id const &diagramToInterpret
 		, BlocksTableInterface &blocksTable)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
+	, mInitialNodeType(initialNodeType)
 	, mBlocksTable(blocksTable)
 	, mCurrentBlock(nullptr)
 	, mInitialDiagram(diagramToInterpret)
@@ -122,7 +125,7 @@ Id Thread::findStartingElement(Id const &diagram) const
 	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
 
 	for (Id const &child : children) {
-		if (child.type() == startingElementType) {
+		if (child.type() == mInitialNodeType) {
 			return child;
 		}
 	}
