@@ -42,9 +42,17 @@ void Interpreter::startInterpretation()
 	}
 
 	mBlocksTable.clear();
-	mState = waitingForDevicesConfiguredToLaunch;
-
 	mLanguageToolbox.clear();
+
+	mState = interpreting;
+
+	Id const currentDiagramId = mInterpretersInterface.activeDiagram();
+
+	qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
+			, mInterpretersInterface, mInitialNodeType, currentDiagramId, mBlocksTable);
+
+	emit started();
+	addThread(initialThread);
 }
 
 void Interpreter::stopInterpretation()

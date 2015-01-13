@@ -320,7 +320,7 @@
     <number>8</number>
    </attribute>
    <widget class="QWidget" name="errorDockWidgetContents">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="ErrorListWidget" name="errorListWidget"/>
      </item>

@@ -502,7 +502,7 @@
 						<property displayedName="File" type="string" name="File">
 							<default></default>
 						</property>
-						<property displayedName="FolderId" type="string" name="FolderId">
+						<property displayedName="Folder Id" type="string" name="FolderId">
 							<default>0B0YEMCLGZLEnVzdESHJ5djhibVU</default>
 						</property>
 						<property displayedName="User (email)" type="string" name="Username">

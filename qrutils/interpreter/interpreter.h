@@ -6,7 +6,6 @@
 #include <qrgui/mainWindow/projectManager/projectManagementInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrutils/watchListWindow.h>
 #include <qrtext/languageToolboxInterface.h>
 
 #include "qrutils/interpreter/thread.h"
@@ -56,7 +55,6 @@ private slots:
 private:
 	enum InterpreterState {
 		interpreting
-		, waitingForDevicesConfiguredToLaunch
 		, idle
 	};
 
