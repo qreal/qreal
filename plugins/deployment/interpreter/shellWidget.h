@@ -1,10 +1,13 @@
-#ifndef SHELLWIDGET_H
-#define SHELLWIDGET_H
+#pragma once
 
-class ShellWidget
+#include <QtWidgets/QTextEdit>
+
+namespace deployment {
+
+class ShellWidget : public QTextEdit
 {
 public:
-	ShellWidget();
+	explicit ShellWidget(QWidget *parent = 0);
 };
 
-#endif // SHELLWIDGET_H
+}

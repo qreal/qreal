@@ -1,10 +1,18 @@
-#ifndef UPLOADTOGOOGLEDRIVEBLOCK_H
-#define UPLOADTOGOOGLEDRIVEBLOCK_H
+#pragma once
 
-class UploadToGoogleDriveBlock
+#include "shellBlock.h"
+
+namespace deployment {
+namespace blocks {
+
+class UploadToGoogleDriveBlock : public ShellBlock
 {
 public:
-	UploadToGoogleDriveBlock();
+	explicit UploadToGoogleDriveBlock(ShellWidget *shellWidget);
+
+private:
+	QStringList arguments() override;
 };
 
-#endif // UPLOADTOGOOGLEDRIVEBLOCK_H
+}
+}

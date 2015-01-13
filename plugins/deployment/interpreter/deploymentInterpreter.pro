@@ -10,6 +10,7 @@ RCC_DIR = .moc
 INCLUDEPATH += \
 	$$PWD/../../.. \
 	$$PWD/../../../qrgui/ \
+	$$PWD/../../../qrtext/include/ \
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog
 
@@ -19,6 +20,18 @@ RESOURCES = deploymentInterpreter.qrc
 
 HEADERS += \
 	$$PWD/deploymentInterpreterPlugin.h \
+	$$PWD/blocksTable.h \
+	$$PWD/blocks/shellBlock.h \
+	$$PWD/blocks/uploadToGoogleDriveBlock.h \
+    shellWidget.h
 
 SOURCES += \
 	$$PWD/deploymentInterpreterPlugin.cpp \
+	$$PWD/blocksTable.cpp \
+	$$PWD/blocks/shellBlock.cpp \
+	$$PWD/blocks/uploadToGoogleDriveBlock.cpp \
+    shellWidget.cpp
+
+# qrgui includes
+HEADERS +=  \
+	$$PWD/../../../qrgui/mainWindow/projectManager/projectManagementInterface.h \
