@@ -15,7 +15,7 @@ public:
 	/// Constructor, takes current robot model as parameter.
 	explicit WaitForColorSensorBlockBase(robotModel::RobotModelInterface &robotModel);
 
-protected:
+private:
 	robotModel::DeviceInfo device() const override;
 };
 

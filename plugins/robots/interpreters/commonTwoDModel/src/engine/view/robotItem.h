@@ -27,6 +27,8 @@ public:
 	void setSelected(bool isSelected) override;
 	void checkSelection() override;
 
+	/// Returns robot`s rotater item.
+	Rotater *rotater() const;
 	void setRotater(Rotater *rotater);
 
 	QRectF boundingRect() const override;
