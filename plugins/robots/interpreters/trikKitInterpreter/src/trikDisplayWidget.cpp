@@ -50,11 +50,11 @@ bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
 	} else if (buttonPort == "DownButtonPort") {
 		return mUi->buttonDown->isDown();
 	} else if (buttonPort == "EnterButtonPort") {
-		return mUi->buttonDownLeft->isDown();
+		return mUi->buttonEnter->isDown();
 	} else if (buttonPort == "EscapeButtonPort") {
-		return mUi->buttonAttach->isDown();
+		return mUi->buttonEscape->isDown();
 	} else if (buttonPort == "PowerButtonPort") {
-		return mUi->buttonOn->isDown();
+		return mUi->buttonPower->isDown();
 	}
 
 	throw qReal::Exception("Incorrect button id in TrikDisplayWidget::buttonIsDown");
