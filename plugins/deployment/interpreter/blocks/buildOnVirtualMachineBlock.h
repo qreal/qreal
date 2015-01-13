@@ -5,15 +5,13 @@
 namespace deployment {
 namespace blocks {
 
-class UploadToGoogleDriveBlock : public ShellBlock
+class BuildOnVirtualMachineBlock : public ShellBlock
 {
 public:
-	explicit UploadToGoogleDriveBlock(ShellWidget *shellWidget);
+	explicit BuildOnVirtualMachineBlock(ShellWidget *shellWidget);
 
 private:
 	QStringList arguments() override;
-
-	QRegExp mUrlRegexp;
 };
 
 }

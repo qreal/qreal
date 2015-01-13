@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QProcess>
+
 #include <qrutils/interpreter/block.h>
 
 #include "shellWidget.h"
@@ -17,6 +19,10 @@ public:
 protected:
 	/// Wraps the given string with the qoutes
 	QString wrap(QString const &string) const;
+
+	QProcess *mProcess;
+	QString mLastOutput;
+	QString mLastError;
 
 private:
 	/// May be overrided to run custom process. Default implementation runs bash.

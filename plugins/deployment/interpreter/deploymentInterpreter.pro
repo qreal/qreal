@@ -21,16 +21,26 @@ RESOURCES = deploymentInterpreter.qrc
 HEADERS += \
 	$$PWD/deploymentInterpreterPlugin.h \
 	$$PWD/blocksTable.h \
+	$$PWD/shellWidget.h \
 	$$PWD/blocks/shellBlock.h \
+	$$PWD/blocks/incrementVersionInSourceCodeBlock.h \
+	$$PWD/blocks/helpWithChangelogBlock.h \
+	$$PWD/blocks/buildOnVirtualMachineBlock.h \
 	$$PWD/blocks/uploadToGoogleDriveBlock.h \
-    shellWidget.h
+	$$PWD/blocks/updateDownloadsCounterBlock.h \
+	$$PWD/blocks/uploadToGoogleSiteBlock.h \
 
 SOURCES += \
 	$$PWD/deploymentInterpreterPlugin.cpp \
 	$$PWD/blocksTable.cpp \
+	$$PWD/shellWidget.cpp \
 	$$PWD/blocks/shellBlock.cpp \
+	$$PWD/blocks/incrementVersionInSourceCodeBlock.cpp \
+	$$PWD/blocks/helpWithChangelogBlock.cpp \
+	$$PWD/blocks/buildOnVirtualMachineBlock.cpp \
 	$$PWD/blocks/uploadToGoogleDriveBlock.cpp \
-    shellWidget.cpp
+	$$PWD/blocks/updateDownloadsCounterBlock.cpp \
+	$$PWD/blocks/uploadToGoogleSiteBlock.cpp \
 
 # qrgui includes
 HEADERS +=  \

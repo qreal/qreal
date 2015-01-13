@@ -14,6 +14,8 @@
 #include <qrutils/interpreter/blocks/subprogramBlock.h>
 
 #include "blocks/uploadToGoogleDriveBlock.h"
+#include "blocks/updateDownloadsCounterBlock.h"
+#include "blocks/uploadToGoogleSiteBlock.h"
 
 using namespace deployment;
 
@@ -54,6 +56,10 @@ qReal::interpretation::Block *BlocksTable::produceRawBlock(qReal::Id const &elem
 		return new qReal::interpretation::blocks::VariableInitBlock();
 	} else if (elementMetatypeIs(element, "UploadToGoogleDrive")) {
 		return new blocks::UploadToGoogleDriveBlock(mShellWidget);
+	} else if (elementMetatypeIs(element, "UpdateDownloadsCounter")) {
+		return new blocks::UpdateDownloadsCounterBlock(mShellWidget);
+	} else if (elementMetatypeIs(element, "UploadToGoogleSite")) {
+		return new blocks::UploadToGoogleSiteBlock(mShellWidget);
 	}
 
 	return nullptr;

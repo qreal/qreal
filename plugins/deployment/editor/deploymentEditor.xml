@@ -495,6 +495,8 @@
 						<label x="-50" y="100" text="User (email):"/>
 						<label x="50" y="120" textBinded="Password" background="white"/>
 						<label x="-50" y="120" text="Password:"/>
+						<label x="50" y="120" textBinded="ResultingVariable" background="white"/>
+						<label x="-50" y="120" text="Resulting Variable:"/>
 					</labels>
 				</graphics>
 				<logic>
@@ -510,6 +512,9 @@
 						</property>
 						<property displayedName="Password" type="string" name="Password">
 							<default></default>
+						</property>
+						<property displayedName="Resulting Variable" type="string" name="ResultingVariable">
+							<default>uploadedUrl</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -546,7 +551,7 @@
 						</property>
 						<property displayedName="Path to private key" type="FilePath" name="SshKey">
 							<default></default>
-						</property>						
+						</property>
 						<property displayedName="Keys" type="string" name="Keys">
 							<default>keys</default>
 						</property>

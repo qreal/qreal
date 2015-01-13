@@ -2,13 +2,17 @@
 
 #include <QtCore/QCoreApplication>
 
-#include <qrutils/stringUtils.h>
-
 using namespace deployment::blocks;
 
 UploadToGoogleDriveBlock::UploadToGoogleDriveBlock(ShellWidget *shellWidget)
 	: ShellBlock(shellWidget)
+	, mUrlRegexp("^Uploaded successfully, URL to download: (.*)$")
 {
+	connect(mProcess, &QProcess::readyReadStandardOutput, [=]() {
+		if (mUrlRegexp.exactMatch(mLastOutput)) {
+			evalCode(stringProperty(id(), "ResultingVariable") + " = \"" + mUrlRegexp.cap(1).trimmed() + "\"");
+		}
+	});
 }
 
 QStringList UploadToGoogleDriveBlock::arguments()
