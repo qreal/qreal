@@ -226,6 +226,10 @@ void MainWindow::connectActions()
 	SettingsListener::listen("ActivateGrid", mUi->actionSwitch_on_grid, &QAction::setChecked);
 	SettingsListener::listen("ActivateAlignment", mUi->actionSwitch_on_alignment, &QAction::setChecked);
 
+	mUi->actionShow_all_text->setChecked(!qReal::SettingsManager::value("hideNonHardLabels").toBool());
+	connect(mUi->actionShow_all_text, &QAction::triggered
+			, [](bool checked) { SettingsManager::setValue("hideNonHardLabels", !checked); });
+
 	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -1166,6 +1170,7 @@ void MainWindow::setDefaultShortcuts()
 	HotKeyManager::setCommand("Editor.CloseAllTabs", tr("Close all tabs"), closeAllTabsAction);
 	HotKeyManager::setCommand("Editor.Print", tr("Print"), mUi->actionPrint);
 	HotKeyManager::setCommand("Editor.Find", tr("Find"), mUi->actionFind);
+	HotKeyManager::setCommand("Editor.ToggleTitles", tr("Show all text"), mUi->actionShow_all_text);
 }
 
 void MainWindow::currentTabChanged(int newIndex)
