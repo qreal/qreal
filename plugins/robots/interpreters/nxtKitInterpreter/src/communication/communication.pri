@@ -1,5 +1,4 @@
 HEADERS += \
-	$$PWD/robotCommunicationThreadBase.h \
 	$$PWD/bluetoothRobotCommunicationThread.h \
 	$$PWD/usbRobotCommunicationThread.h \
 	$$PWD/fantom.h \
@@ -7,7 +6,6 @@ HEADERS += \
 	$$PWD/i2cCommunicator.h \
 
 SOURCES += \
-	$$PWD/robotCommunicationThreadBase.cpp \
 	$$PWD/bluetoothRobotCommunicationThread.cpp \
 	$$PWD/usbRobotCommunicationThread.cpp \
 	$$PWD/i2cCommunicator.cpp \
