@@ -4,8 +4,8 @@
     <DisplayName xml:lang="ru_ru">Компоненты ядра</DisplayName>
     <Description>Trik Studio engine, must be installed</Description>
     <Description xml:lang="ru_ru">Ядро системы Trik Studio, обязательно к установке</Description>
-    <Version>3.0.0-3-2</Version>
-    <ReleaseDate>2014-12-03</ReleaseDate>
+    <Version>3.0.0</Version>
+    <ReleaseDate>2015-01-15</ReleaseDate>
     <Licenses/>
     <SortingPriority>10</SortingPriority>
     <Default>true</Default>
