@@ -86,7 +86,9 @@ void QRealApplication::logDrop(QWidget * const target, QDropEvent * const event)
 
 	QWidget * const window = target->window();
 	QPoint const pos = target->mapTo(window, event->pos());
-	QLOG_TRACE() << "Dropped in" << pos;
+	QLOG_TRACE() << "Drop in"
+			<< "in" << pos << "with target"
+			<< window->windowTitle() << window->size();
 }
 
 void QRealApplication::onFocusChanged(QWidget *old, QWidget *now)
