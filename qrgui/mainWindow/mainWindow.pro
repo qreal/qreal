@@ -31,7 +31,7 @@ TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
 }
 
 HEADERS += \
-	$$PWD/qRealApplication.h \
+	$$PWD/qrealApplication.h \
 	$$PWD/mainWindow.h \
 	$$PWD/errorReporter.h \
 	$$PWD/error.h \
@@ -61,7 +61,7 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/main.cpp \
-	$$PWD/qRealApplication.cpp \
+	$$PWD/qrealApplication.cpp \
 	$$PWD/mainWindow.cpp \
 	$$PWD/errorReporter.cpp \
 	$$PWD/error.cpp \

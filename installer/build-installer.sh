@@ -30,7 +30,7 @@ $QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT-$OS.xml -p packages/qr
 echo "Building offline installer..."
 $QTIFW_DIR/binarycreator --offline-only -c config/$PRODUCT-$OS.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-offline-$OS-installer
 
-[ -f ~/.ssh/id_rsa ] && : || echo "Done"; exit 0
+[ -f ~/.ssh/id_rsa ] && : || { echo "Done"; exit 0; }
 
 echo "Building updates repository... This step can be safely skipped, the offline installer is already ready, press Ctrl+C if you are not sure what to do next."
 rm -rf $PRODUCT-repository

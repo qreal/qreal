@@ -33,6 +33,9 @@ bool QRealApplication::notify(QObject *obj, QEvent *e)
 	case QEvent::KeyRelease:
 		logKey(static_cast<QKeyEvent *>(e));
 		break;
+	case QEvent::Drop:
+		logDrop(dynamic_cast<QWidget*>(obj), static_cast<QDropEvent *>(e));
+		break;
 	default:
 		break;
 	}
@@ -73,6 +76,19 @@ void QRealApplication::logKey(QKeyEvent * const event)
 	QLOG_TRACE() << "Key"
 			<< (event->type() == QEvent::KeyPress ? "press" : "release")
 			<< "with" << event->key() << "modifiers" << event->modifiers();
+}
+
+void QRealApplication::logDrop(QWidget * const target, QDropEvent * const event)
+{
+	if (!target) {
+		return;
+	}
+
+	QWidget * const window = target->window();
+	QPoint const pos = target->mapTo(window, event->pos());
+	QLOG_TRACE() << "Drop in"
+			<< "in" << pos << "with target"
+			<< window->windowTitle() << window->size();
 }
 
 void QRealApplication::onFocusChanged(QWidget *old, QWidget *now)
