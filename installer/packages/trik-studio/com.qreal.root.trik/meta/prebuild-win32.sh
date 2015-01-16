@@ -13,13 +13,14 @@ cp    $BIN_DIR/robots-trik-generator-base.dll                                   
 
 cp    $QT_DIR/bin/Qt5Network.dll                                                  $PWD/../data
 
-function checkout_tag_or_warn { [ $'\n'$(git tag)$'\n' =~ $'\n'$1$'\n' ] && git checkout $1 || echo "Warning: TRIKRuntime doesn't have tag "$1; }
+function checkout_tag_or_warn { { PATTERN=$'\n'$1$'\n'; echo "$'\n'$(git tag)$'\n'" | grep -E $PATTERN; } && git checkout $1 || echo "Warning: TRIKRuntime doesn't have tag "$1; }
 
 cd $PWD/../data/
 rm -rf trik-runtime-builds
 git clone https://github.com/qreal/trik-runtime-builds
 
 [ -z "${QREAL_BUILD_TAG:-}" ] && : || { cd trik-runtime-builds; checkout_tag_or_warn $QREAL_BUILD_TAG; }
+cd "$(dirname "$0")"/../data
 rm -rf winscp
 mv trik-runtime-builds/winscp $PWD
 mkdir -p trikRuntime
