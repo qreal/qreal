@@ -5,7 +5,7 @@ set -o errexit
 cd "$(dirname "$0")"
 
 
-function checkout_tag_or_warn { [ $'\n'$(git tag)$'\n' =~ $'\n'$1$'\n' ] && git checkout $1 || echo "Warning: NXT Tools doesn't have tag "$1; }
+function checkout_tag_or_warn { { PATTERN=$'\n'$1$'\n'; echo "$'\n'$(git tag)$'\n'" | grep -E $PATTERN; } && git checkout $1 || echo "Warning: NXT Tools doesn't have tag "$1; }
 
 mkdir -p $PWD/../data/
 
