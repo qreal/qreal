@@ -16,7 +16,7 @@ export PRODUCT=$3
 export OS=$OSTYPE
 # All windows platforms can be enumerated below
 [ $OSTYPE == "msys" ] && export OS="win32" || :
-[ $OSTYPE == "linux-gnu" ] && OS_EXT=$OS`getconf LONG_BIT` || :
+[ $OSTYPE == "linux-gnu" ] && OS_EXT=$OS`getconf LONG_BIT` || OS_EXT=$OS
 
 [ $OS == "win" ] && SSH_DIR=/.ssh || SSH_DIR=~/.ssh
 
