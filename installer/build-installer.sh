@@ -18,7 +18,7 @@ export OS=$OSTYPE
 [ $OSTYPE == "msys" ] && export OS="win32" || :
 [ $OSTYPE == "linux-gnu" ] && OS_EXT=$OS`getconf LONG_BIT` || OS_EXT=$OS
 
-[ $OS == "win" ] && SSH_DIR=/.ssh || SSH_DIR=~/.ssh
+[ $OS == "win32" ] && SSH_DIR="/.ssh" || SSH_DIR="~/.ssh"
 
 # $2 will be passed to all prebuild.sh scripts
 echo "Executing prebuild actions..."
