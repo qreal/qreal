@@ -14,5 +14,5 @@ cd $PWD/../data
 rm -rf nxt-tools
 git clone https://github.com/qreal/nxt-tools.git
 [ -z "${QREAL_BUILD_TAG:-}" ] && : || { cd nxt-tools; checkout_tag_or_warn $QREAL_BUILD_TAG; }
-rm -rf nxt-tools/.git
+rm -rf "$(dirname "$0")"/../data/nxt-tools/.git
 git config --global core.autocrlf true
