@@ -27,6 +27,9 @@ GREEK_OLD_VERSION=`echo $SHORT_OLD_VERSION | sed "s/-a/-α/g;s/-b/-β/g"`
 GREEK_NEW_VERSION=`echo $SHORT_NEW_VERSION | sed "s/-a/-α/g;s/-b/-β/g"`
 DIGITAL_OLD_VERSION=`echo $SHORT_OLD_VERSION | sed "s/-a/-1-/g;s/-b/-2-/g;s/-rc/-3-/g"`
 DIGITAL_NEW_VERSION=`echo $SHORT_NEW_VERSION | sed "s/-a/-1-/g;s/-b/-2-/g;s/-rc/-3-/g"`
+function add_suffix { [[ $1 =~ "-" ]] && echo $1 || echo $1-4; }
+DIGITAL_OLD_VERSION=`add_suffix $DIGITAL_OLD_VERSION`
+DIGITAL_NEW_VERSION=`add_suffix $DIGITAL_NEW_VERSION`
 
 DATE="$(date +'%Y-%m-%d')"
 YEAR="$(date +'%Y')"
@@ -40,4 +43,5 @@ bash $PWD/replace.sh "<Version>$DIGITAL_OLD_VERSION<\\/Version>\n    <ReleaseDat
 cd $ROOT
 git add -A && git commit -m "TRIK Studio version incremented to $SHORT_NEW_VERSION"
 git tag trikStudio-$SHORT_NEW_VERSION
-git push
+git push origin master
+git push origin trikStudio-$SHORT_NEW_VERSION

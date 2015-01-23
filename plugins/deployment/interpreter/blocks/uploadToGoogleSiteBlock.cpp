@@ -30,10 +30,10 @@ QStringList UploadToGoogleSiteBlock::arguments()
 	}
 
 	QStringList result = {
-		QCoreApplication::applicationDirPath() + "/deployment-scripts/uploading/upload_to_google_site.sh"
+		QCoreApplication::applicationDirPath() + "/deployment-scripts/uploading/upload_to_google_site.py"
 		, stringProperty(id(), "Site")
-		, stringProperty(id(), "Username")
-		, stringProperty(id(), "Password")
+		, eval<QString>("Username")
+		, eval<QString>("Password")
 	};
 
 	for (int i = 0; i < urls.count(); ++i) {

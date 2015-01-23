@@ -48,18 +48,18 @@ esac
 mkdir -p $QREAL_DIR
 mkdir -p $SSH_DIR
 
-rm -rf $TARGET
-cd $QREAL_DIR
-git clone https://github.com/qreal/qreal.git $VERSION
+#rm -rf $TARGET
+#cd $QREAL_DIR
+#git clone https://github.com/qreal/qreal.git $VERSION
 cd $TARGET
-function checkout_tag_or_warn { [ $'\n'$(git tag)$'\n' =~ $'\n'$TAG$'\n' ] && git checkout $1 || echo "WARNING: TAG  "$TAG" NOT FOUND, BUILDING MASTER"; }
+function checkout_tag_or_warn { { PATTERN=$'\n'$1$'\n'; echo "$'\n'$(git tag)$'\n'" | grep -E $PATTERN; } && git checkout $1 || echo "WARNING: TAG  "$TAG" NOT FOUND, BUILDING MASTER"; }
 [ -z "${TAG:-}" ] && : || checkout_tag_or_warn $TAG
 
-echo "Building..."
-export PATH=$PATH_WITHOUT_BASH
-$QMAKE CONFIG+=Release CONFIG-=Debug $PRO_FILE
-C:/Qt/Tools/mingw482_32/bin/mingw32-make -j2
-export PATH=$PATH_WITH_BASH
+#echo "Building..."
+#export PATH=$PATH_WITHOUT_BASH
+#$QMAKE CONFIG+=Release CONFIG-=Debug $PRO_FILE
+#C:/Qt/Tools/mingw482_32/bin/mingw32-make -j2
+#export PATH=$PATH_WITH_BASH
 cd installer
 [ -f $SHARE_DIR/id_rsa ] && cp $SHARE_DIR/id_rsa $SSH_DIR || :
 [ -f $SHARE_DIR/id_rsa.pub ] && cp $SHARE_DIR/id_rsa.pub $SSH_DIR || :

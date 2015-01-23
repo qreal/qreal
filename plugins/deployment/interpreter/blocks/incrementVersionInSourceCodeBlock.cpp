@@ -13,8 +13,8 @@ QStringList IncrementVersionInSourceCodeBlock::arguments()
 {
 	return {
 		QCoreApplication::applicationDirPath() + "/deployment-scripts/version_increment/increment_trik_studio.sh"
-		, stringProperty(id(), "Path")
-		, stringProperty(id(), "OldVersion")
-		, stringProperty(id(), "NewVersion")
+		, eval<QString>("Path")
+		, eval<QString>("OldVersion")
+		, eval<QString>("NewVersion")
 	};
 }

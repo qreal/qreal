@@ -26,7 +26,7 @@ echo "Uploading $1 to Google Drive..."
 
 token=`cat /tmp/login.txt | grep Auth | cut -d \= -f 2`
 
-uploadlink=`/usr/bin/curl -Sv -k --request POST -H "Content-Length: 0" -H "Authorization: GoogleLogin auth=${token}" -H "GData-Version: 3.0" -H "Content-Type: $mime_type" -H "Slug: $slug" "https://docs.google.com/feeds/upload/create-session/default/private/full/folder:$folder_id/contents?convert=false" -D /dev/stdout | grep "Location:" | sed s/"Location: "//`
+uploadlink=`/usr/bin/curl -Sv -k --request POST -H "Content-Length: 0" -H "Authorization: GoogleLogin auth=${token}" -H "GData-Version: 3.0" -H "Content-Type: $mime_type" -H "Slug: $slug" "https://docs.google.com/feeds/upload/create-session/default/private/full/folder:$folder_id/contents?convert=false" -D /dev/stdout | grep "Location:" | sed s/"Location: "// | tr '\r' ' '`
 
 /usr/bin/curl -Sv -k --request POST --data-binary "@$file" -H "Authorization: GoogleLogin auth=${token}" -H "GData-Version: 3.0" -H "Content-Type: $mime_type" -H "Slug: $slug" "$uploadlink" > /tmp/goolog.upload.txt
 

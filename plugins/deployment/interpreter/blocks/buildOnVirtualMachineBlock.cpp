@@ -15,10 +15,11 @@ QStringList BuildOnVirtualMachineBlock::arguments()
 		QCoreApplication::applicationDirPath() + "/deployment-scripts/virtualbox/build.sh"
 		, stringProperty(id(), "OsType")
 		, stringProperty(id(), "ProductName")
-		, stringProperty(id(), "Version")
+		, eval<QString>("Version")
 	};
-	QString const vdi = stringProperty(id(), "VDI");
-	QString const sharedFolder = stringProperty(id(), "SharedFloder");
+
+	QString const vdi = eval<QString>("VDI");
+	QString const sharedFolder = eval<QString>("SharedFolder");
 	if (!vdi.isEmpty() && !sharedFolder.isEmpty()) {
 		result << vdi << sharedFolder;
 	}

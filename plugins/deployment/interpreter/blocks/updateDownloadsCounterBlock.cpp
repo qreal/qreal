@@ -30,10 +30,10 @@ QStringList UpdateDownloadsCounterBlock::arguments()
 	}
 
 	QStringList result = {
-		QCoreApplication::applicationDirPath() + "/deployment-scripts/uploading/upload_to_google_site.sh"
+		QCoreApplication::applicationDirPath() + "/deployment-scripts/uploading/update_site_scripts.sh"
 		, stringProperty(id(), "Mode")
-		, stringProperty(id(), "NewVersion")
-		, stringProperty(id(), "SshKey")
+		, eval<QString>("NewVersion")
+		, eval<QString>("SshKey")
 	};
 
 	for (int i = 0; i < keys.count(); ++i) {

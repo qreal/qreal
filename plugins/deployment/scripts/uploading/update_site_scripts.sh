@@ -47,7 +47,7 @@ function create_map {
 	RESULT="\n"
 	while (( "$#" )); do
 
-		RESULT=$RESULT"\n\ \ \ \ \ \ \ \ \ \ \ \ lastMap[\"$1\"] = \"$2\";"
+		RESULT=$RESULT"\n\ \ \ \ \ \ \ \ \ \ \ \ linksMap[\"$1\"] = \"$2\";"
 		shift 2
 
 	done
@@ -104,7 +104,7 @@ else
 fi
 
 echo "Pushing changes to qreal/tools repository..."
-git push
+git push origin master
 echo "Removing temporary files..."
 cd ..
 rm -rf $TOOLS_DIR

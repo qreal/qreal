@@ -123,4 +123,9 @@ print "Machine was booted successfully";
 time.sleep(5);
 
 print "Running build script...";
-runProcess("/bin/bash", ["/home/qreal/scripts/build.sh", productName, version], session);
+
+bash = "/bin/bash" if machineType.startswith("Ubuntu") else "C:/Users/qreal/AppData/Local/GitHub/PortableGit_c2ba306e536fdf878271f7fe636a147ff37326ad/bin/bash.exe"; 
+path = "/home/qreal/scripts/build.sh" if machineType.startswith("Ubuntu") else "c:/users/qreal/build.sh";
+runProcess(bash, [path, productName, version], session);
+
+session.console.powerDown();

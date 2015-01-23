@@ -13,7 +13,7 @@
 			</enum>
 			<enum name="VirtualBoxMachineType" editable="true">
 				<value name="Windows81" displayedName="Windows 8.1"/>
-				<value name="Ubuntu_32" displayedName="Ubuntu 32"/>
+				<value name="Ubuntu" displayedName="Ubuntu 32"/>
 				<value name="Ubuntu_64" displayedName="Ubuntu 64"/>
 			</enum>
 			<enum name="ProductName" editable="false">
@@ -449,10 +449,9 @@
 						<label x="50" y="100" textBinded="Version" background="white"/>
 						<label x="-50" y="100" text="Version:"/>
 						<label x="50" y="120" textBinded="VDI" background="white"/>
-						<label x="-50" y="120" text="VDI Image*:"/>
+						<label x="-50" y="120" text="VDI Image:"/>
 						<label x="50" y="140" textBinded="SharedFolder" background="white"/>
-						<label x="-50" y="140" text="Shared Folder*:"/>
-						<label x="-50" y="160" text="* - must be specified only first time"/>
+						<label x="-50" y="140" text="Shared Folder:"/>
 					</labels>
 				</graphics>
 				<logic>
@@ -495,8 +494,8 @@
 						<label x="-50" y="100" text="User (email):"/>
 						<label x="50" y="120" textBinded="Password" background="white"/>
 						<label x="-50" y="120" text="Password:"/>
-						<label x="50" y="120" textBinded="ResultingVariable" background="white"/>
-						<label x="-50" y="120" text="Resulting Variable:"/>
+						<label x="50" y="140" textBinded="ResultingVariable" background="white"/>
+						<label x="-50" y="140" text="Result:"/>
 					</labels>
 				</graphics>
 				<logic>

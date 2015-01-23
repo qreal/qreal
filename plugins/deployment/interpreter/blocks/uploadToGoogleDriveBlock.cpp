@@ -20,8 +20,8 @@ QStringList UploadToGoogleDriveBlock::arguments()
 	return {
 		QCoreApplication::applicationDirPath() + "/deployment-scripts/uploading/upload_to_google_drive.sh"
 		, eval<QString>("File")
-		, stringProperty(id(), "FolderId")
-		, stringProperty(id(), "Username")
-		, stringProperty(id(), "Password")
+		, eval<QString>("FolderId")
+		, eval<QString>("Username")
+		, eval<QString>("Password")
 	};
 }

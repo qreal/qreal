@@ -13,6 +13,9 @@
 #include <qrutils/interpreter/blocks/commentBlock.h>
 #include <qrutils/interpreter/blocks/subprogramBlock.h>
 
+#include "blocks/incrementVersionInSourceCodeBlock.h"
+#include "blocks/helpWithChangelogBlock.h"
+#include "blocks/buildOnVirtualMachineBlock.h"
 #include "blocks/uploadToGoogleDriveBlock.h"
 #include "blocks/updateDownloadsCounterBlock.h"
 #include "blocks/uploadToGoogleSiteBlock.h"
@@ -54,6 +57,12 @@ qReal::interpretation::Block *BlocksTable::produceRawBlock(qReal::Id const &elem
 		return new qReal::interpretation::blocks::FunctionBlock();
 	} else if (elementMetatypeIs(element, "VariableInit")) {
 		return new qReal::interpretation::blocks::VariableInitBlock();
+	} else if (elementMetatypeIs(element, "IncrementVersionInSourceCode")) {
+		return new blocks::IncrementVersionInSourceCodeBlock(mShellWidget);
+	} else if (elementMetatypeIs(element, "HelpWithChangelog")) {
+		return new blocks::HelpWithChangelogBlock(mShellWidget);
+	} else if (elementMetatypeIs(element, "BuildOnVirtualMachine")) {
+		return new blocks::BuildOnVirtualMachineBlock(mShellWidget);
 	} else if (elementMetatypeIs(element, "UploadToGoogleDrive")) {
 		return new blocks::UploadToGoogleDriveBlock(mShellWidget);
 	} else if (elementMetatypeIs(element, "UpdateDownloadsCounter")) {

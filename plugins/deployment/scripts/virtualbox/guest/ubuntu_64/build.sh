@@ -10,7 +10,7 @@
 set -o nounset
 set -o errexit
 
-OS=linux-gnu
+OS=linux-gnu64
 OUTPUT_OS=linux-x64
 INSTALLER_EXTENSION=.run
 QREAL_DIR=/home/qreal/builds
@@ -53,7 +53,7 @@ echo "Building..."
 $QMAKE CONFIG+=Release CONFIG-=Debug $PRO_FILE
 make -j2
 cd installer
-[ -f $SHARE_DIR/id_rsa ] && cp $SHARE_DIR/id_rsa* /home/qreal/.ssh || :
+[ -f $SHARE_DIR/id_rsa ] && { sudo cp $SHARE_DIR/id_rsa* /home/qreal/.ssh; sudo chmod 777 /home/qreal/.ssh/id_rsa*; } || :
 bash build-$IFW_PRODUCT_NAME.sh $QT_DIR $QT_IFW_DIR $TAG
 
 echo "Moving built installers to shared folder..."
