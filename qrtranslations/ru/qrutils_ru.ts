@@ -132,12 +132,12 @@
 <context>
     <name>qReal::interpretation::Interpreter</name>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="38"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="40"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="78"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="89"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
@@ -145,12 +145,12 @@
 <context>
     <name>qReal::interpretation::Thread</name>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="85"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="88"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="90"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="93"/>
         <source>Stack overflow</source>
         <translation>Переполнение стека</translation>
     </message>
@@ -205,8 +205,12 @@
     </message>
     <message>
         <location filename="../../qrutils/interpreter/blocks/ifBlock.cpp" line="52"/>
+        <source>There must be at least one link with &quot;true&quot; or &quot;false&quot; marker on it</source>
+        <translation>Должна быть как минимум одна связь с маркером &quot;истина&quot; или &quot;ложь&quot;</translation>
+    </message>
+    <message>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
-        <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
+        <translation type="vanished">Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
 </context>
 <context>
@@ -254,8 +258,17 @@
     </message>
     <message>
         <location filename="../../qrutils/interpreter/blocks/switchBlock.cpp" line="38"/>
+        <source>There must be exactly one link without marker on it (default branch)</source>
+        <translation>Ветка без маркера должна быть в точности одна (ветка &quot;default&quot;)</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/interpreter/blocks/switchBlock.cpp" line="52"/>
+        <source>There must be a link without marker on it (default branch)</source>
+        <translation>Должна быть связь без маркера (ветка &quot;default&quot;)</translation>
+    </message>
+    <message>
         <source>There must be exactly one link with empty &apos;Guard&apos; property (default branch).</source>
-        <translation>Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
+        <translation type="vanished">Связь с пустым свойством &quot;Условие&quot; должна быть только одна (ветка &quot;default&quot;).</translation>
     </message>
     <message>
         <location filename="../../qrutils/interpreter/blocks/switchBlock.cpp" line="43"/>
@@ -263,9 +276,8 @@
         <translation>Найдено более одной ветки &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/switchBlock.cpp" line="52"/>
         <source>There must be a link with empty &apos;Guard&apos; property (default branch).</source>
-        <translation>От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
+        <translation type="vanished">От блока &quot;Выбор&quot; должна отходить ветка с пустым свойством &quot;Условие&quot; (ветка &quot;default&quot;).</translation>
     </message>
 </context>
 <context>
