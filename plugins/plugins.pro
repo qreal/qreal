@@ -10,6 +10,7 @@ SUBDIRS += \
 	$$PWD/metaEditor/metaEditor.pro \
 	$$PWD/requirements/requirements.pro \
 	$$PWD/domainAnalysis/domainAnalysis.pro \
+	$$PWD/deployment/deploymentEditor.pro \
 
 # interpreted plugins
 SUBDIRS += \

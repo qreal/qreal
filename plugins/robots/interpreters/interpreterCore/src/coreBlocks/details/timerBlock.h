@@ -1,6 +1,6 @@
 #pragma once
 
-#include <interpreterBase/blocksBase/block.h>
+#include <qrutils/interpreter/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace utils {
@@ -14,7 +14,7 @@ namespace details {
 /// Interpreter`s implementation for timer block.
 /// Waits for the given amount of time using robot model`s timeline.
 /// @todo Why it does not inherit WaitBlock?
-class TimerBlock : public interpreterBase::blocksBase::Block
+class TimerBlock : public qReal::interpretation::Block
 {
 	Q_OBJECT
 

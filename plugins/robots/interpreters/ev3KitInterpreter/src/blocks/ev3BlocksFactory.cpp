@@ -29,7 +29,7 @@ using namespace ev3KitInterpreter::blocks;
 using namespace details;
 using namespace interpreterBase::blocksBase::common;
 
-interpreterBase::blocksBase::Block *Ev3BlocksFactory::produceBlock(qReal::Id const &element)
+qReal::interpretation::Block *Ev3BlocksFactory::produceBlock(qReal::Id const &element)
 {
 	if (elementMetatypeIs(element, "Ev3Beep")) {
 		return new BeepBlock(mRobotModelManager->model());

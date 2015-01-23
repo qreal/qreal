@@ -1,6 +1,5 @@
 #include "trikBlocksFactory.h"
 
-#include <interpreterBase/blocksBase/common/emptyBlock.h>
 #include <interpreterBase/blocksBase/common/enginesStopBlock.h>
 #include <interpreterBase/blocksBase/common/clearEncoderBlock.h>
 
@@ -11,6 +10,7 @@
 #include <interpreterBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <interpreterBase/blocksBase/common/waitForButtonBlock.h>
 
+#include <qrutils/interpreter/blocks/emptyBlock.h>
 #include "details/smileBlock.h"
 #include "details/drawPixelBlock.h"
 #include "details/drawLineBlock.h"
@@ -33,7 +33,7 @@ using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::blocksBase::common;
 
-interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
+qReal::interpretation::Block *TrikBlocksFactory::produceBlock(qReal::Id const &element)
 {
 	if (elementMetatypeIs(element, "TrikPlayTone")) {
 		return new SpeakerBlock(mRobotModelManager->model());
@@ -61,15 +61,15 @@ interpreterBase::blocksBase::Block *TrikBlocksFactory::produceBlock(qReal::Id co
 	} else if (elementMetatypeIs(element, "TrikSystem")) {
 		return new SystemCommandBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikInitCamera")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikDetectLine")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikLineDetectorToVariable")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikSendMessage")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikWaitForMessage")) {
-		return new EmptyBlock();
+		return new qReal::interpretation::blocks::EmptyBlock();
 
 	} else if (elementMetatypeIs(element, "TrikLed")) {
 		return new LedBlock(mRobotModelManager->model());

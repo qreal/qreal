@@ -1,12 +1,12 @@
 #pragma once
 
-#include <interpreterBase/blocksBase/block.h>
+#include <qrutils/interpreter/block.h>
 
 namespace qrTest {
 namespace robotsTests {
 namespace interpreterCoreTests {
 
-class DummyBlock : public interpreterBase::blocksBase::Block
+class DummyBlock : public qReal::interpretation::Block
 {
 	Q_OBJECT
 

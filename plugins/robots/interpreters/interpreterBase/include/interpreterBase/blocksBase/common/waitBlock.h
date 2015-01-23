@@ -1,13 +1,13 @@
 #pragma once
 
-#include <interpreterBase/blocksBase/block.h>
+#include <interpreterBase/blocksBase/robotsBlock.h>
 
 namespace interpreterBase {
 namespace blocksBase {
 namespace common {
 
 /// A base for all blocks that wait for sensor or button or something other.
-class ROBOTS_INTERPRETER_BASE_EXPORT WaitBlock : public Block
+class ROBOTS_INTERPRETER_BASE_EXPORT WaitBlock : public RobotsBlock
 {
 	Q_OBJECT
 

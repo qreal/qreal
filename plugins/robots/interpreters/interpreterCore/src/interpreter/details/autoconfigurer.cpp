@@ -2,7 +2,7 @@
 
 #include <qrkernel/exception/exception.h>
 
-#include <interpreterBase/blocksBase/block.h>
+#include <interpreterBase/blocksBase/robotsBlock.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 #include <utils/tracer.h>
 
@@ -25,7 +25,8 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, QString const &
 		IdList const children = mGraphicalModelApi.graphicalRepoApi().children(diagram);
 
 		for (Id const &child : children) {
-			interpreterBase::blocksBase::BlockInterface * const block = mBlocksTable.block(child);
+			interpreterBase::blocksBase::RobotsBlock * const block
+					= dynamic_cast<interpreterBase::blocksBase::RobotsBlock *>(mBlocksTable.block(child));
 			if (!block) {
 				continue;
 			}

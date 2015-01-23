@@ -64,3 +64,4 @@ dragArea = 12
 usabilityTestingMode=false
 collectErgonomicValues=false
 touchMode=false
+interpreterStackSize=4000

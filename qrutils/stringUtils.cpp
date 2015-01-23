@@ -19,3 +19,8 @@ QString StringUtils::addIndent(QString const &code, int indent, QString const &o
 
 	return result.join('\n');
 }
+
+QString StringUtils::wrap(QString const &string)
+{
+	return "\"" + string + "\"";
+}
