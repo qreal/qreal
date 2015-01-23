@@ -294,7 +294,6 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	QMenu *edgeMenu = new QMenu();
 	toDelete.append(edgeMenu);
 	edgeMenu->addAction(&mActionDeleteFromDiagram);
-	edgeMenu->addAction(tr("Discard"));
 	edgeMenu->addSeparator();
 
 	QMenu *createElemMenu = new QMenu(tr("Create new element"), edgeMenu); // deleted as child of edgeMenu
@@ -365,8 +364,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	if (executed) {
 		if (executed == &mActionDeleteFromDiagram) {
 			result = -1;
-		} else if (!(executed->text() == tr("Discard"))
-					&& !(executed->text() == tr("Connect with the current item"))) {
+		} else if (!(executed->text() == tr("Connect with the current item"))) {
 			result = 1;
 			if (createCommand && mLastCreatedFromLinkerCommand) {
 				*createCommand = mLastCreatedFromLinkerCommand;
