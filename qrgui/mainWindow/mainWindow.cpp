@@ -27,7 +27,6 @@
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
-#include <qrutils/uxInfo/uxInfo.h>
 
 #include <plugins/toolPluginInterface/systemEvents.h>
 
@@ -53,6 +52,7 @@
 #include <textEditor/textManager.h>
 #include <textEditor/qscintillaTextEdit.h>
 
+#include "qrealApplication.h"
 #include "errorReporter.h"
 #include "shapeEdit/shapeEdit.h"
 #include "startWidget/startWidget.h"
@@ -141,9 +141,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
-	mFilterObject = new FilterObject();
-	connectActionsForUXInfo();
 	connectActions();
+	connectSystemEvents();
 	initExplorers();
 
 	// So now we are going to load plugins. The problem is that if we will do it
@@ -151,41 +150,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
-	mUsabilityTestingToolbar = new QToolBar();
-	mStartTest = new QAction(tr("Start test"), NULL);
-	mStartTest->setEnabled(true);
-	connect(mStartTest, SIGNAL(triggered()), this, SLOT(startUsabilityTest()));
-	mFinishTest = new QAction(tr("Finish test"), NULL);
-	mFinishTest->setEnabled(false);
-	connect(mFinishTest, SIGNAL(triggered()), this, SLOT(finishUsabilityTest()));
-	mUsabilityTestingToolbar->addAction(mStartTest);
-	mUsabilityTestingToolbar->addAction(mFinishTest);
-	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
-	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
-}
-
-void MainWindow::connectActionsForUXInfo()
-{
-	QList<QAction*> triggeredActions;
-	triggeredActions << mUi->actionQuit << mUi->actionOpen << mUi->actionSave
-			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
-			<< mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
-			<< mUi->actionPreferences << mUi->actionHelp
-			<< mUi->actionAbout << mUi->actionAboutQt
-			<< mUi->actionFullscreen << mUi->actionFind;
-
-	foreach (QAction* const action, triggeredActions) {
-		connect(action, SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
-	}
-
-	QList<QAction*> toggledActions;
-	toggledActions << mUi->actionShowSplash << mUi->actionShow_grid
-			<< mUi->actionShow_alignment << mUi->actionSwitch_on_grid
-			<< mUi->actionSwitch_on_alignment;
-
-	foreach (QAction* const action, toggledActions) {
-		connect(action, SIGNAL(toggled(bool)), mFilterObject, SLOT(toggledActionActivated(bool)));
-	}
 }
 
 void MainWindow::connectActions()
@@ -250,7 +214,6 @@ void MainWindow::connectActions()
 	SettingsListener::listen("PaletteIconsInARowCount", this, &MainWindow::changePaletteRepresentation);
 	SettingsListener::listen("toolbarSize", this, &MainWindow::resetToolbarSize);
 	SettingsListener::listen("pathToImages", this, &MainWindow::updatePaletteIcons);
-	SettingsListener::listen("usabilityTestingMode", this, &MainWindow::setUsabilityMode);
 	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &MainWindow::applySettings);
 
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
@@ -270,6 +233,22 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
 	setDefaultShortcuts();
+}
+
+void MainWindow::connectSystemEvents()
+{
+	connect(&mModels->logicalModelAssistApi(), &models::LogicalModelAssistApi::elementAdded
+			, mSystemEvents, &SystemEvents::logicalElementAdded);
+	connect(&mModels->graphicalModelAssistApi(), &models::GraphicalModelAssistApi::elementAdded
+			, mSystemEvents, &SystemEvents::graphicalElementAdded);
+
+	connect(mErrorReporter, &ErrorReporter::informationAdded, mSystemEvents, &SystemEvents::informationAdded);
+	connect(mErrorReporter, &ErrorReporter::warningAdded, mSystemEvents, &SystemEvents::warningAdded);
+	connect(mErrorReporter, &ErrorReporter::errorAdded, mSystemEvents, &SystemEvents::errorAdded);
+	connect(mErrorReporter, &ErrorReporter::criticalAdded, mSystemEvents, &SystemEvents::criticalAdded);
+
+	connect(static_cast<QRealApplication *>(qApp), &QRealApplication::lowLevelEvent
+			, mSystemEvents, &SystemEvents::lowLevelEvent);
 }
 
 void MainWindow::initActionsFromSettings()
@@ -312,11 +291,6 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mSystemEvents;
-	delete mFilterObject;
-	delete mStartTest;
-	delete mFinishTest;
-	delete mUsabilityTestingToolbar;
-	utils::UXInfo::instance()->closeUXInfo();
 }
 
 EditorManagerInterface &MainWindow::editorManager()
@@ -826,8 +800,6 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
-	connect(SettingsManager::instance(), &SettingsManager::settingsChanged
-			, utils::UXInfo::instance(), &utils::UXInfo::reportSettingsChanges);
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir)) {
@@ -1526,25 +1498,6 @@ void MainWindow::updatePaletteIcons()
 	mUi->paletteTree->setComboBox(currentId);
 }
 
-void MainWindow::setUsabilityMode(bool mode)
-{
-	mUsabilityTestingToolbar->setVisible(mode);
-}
-
-void MainWindow::startUsabilityTest()
-{
-	mStartTest->setEnabled(false);
-	mFinishTest->setEnabled(true);
-	mFilterObject->reportTestStarted();
-}
-
-void MainWindow::finishUsabilityTest()
-{
-	mFinishTest->setEnabled(false);
-	mStartTest->setEnabled(true);
-	mFilterObject->reportTestFinished();
-}
-
 void MainWindow::applySettings()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
@@ -1691,12 +1644,9 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 	for (ActionInfo const &action : actions) {
 		if (action.isAction()) {
 			QToolBar * const toolbar = findChild<QToolBar *>(action.toolbarName() + "Toolbar");
-			connect(action.action(), &QAction::triggered, mFilterObject, &FilterObject::triggeredActionActivated);
 			if (toolbar) {
 				toolbar->addAction(action.action());
 			}
-
-			connect(action.action(), &QAction::triggered, mFilterObject, &FilterObject::triggeredActionActivated);
 		}
 	}
 

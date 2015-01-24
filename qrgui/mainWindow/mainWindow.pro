@@ -45,7 +45,6 @@ HEADERS += \
 	$$PWD/miniMap.h \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
-	$$PWD/filterObject.h \
 	$$PWD/projectManager/autosaver.h \
 	$$PWD/projectManager/projectManagementInterface.h \
 	$$PWD/projectManager/projectManager.h \
@@ -73,7 +72,6 @@ SOURCES += \
 	$$PWD/miniMap.cpp \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
-	$$PWD/filterObject.cpp \
 	$$PWD/projectManager/autosaver.cpp \
 	$$PWD/projectManager/projectManager.cpp \
 	$$PWD/projectManager/versionsConverterManager.cpp \

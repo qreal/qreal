@@ -21,8 +21,6 @@
 #include "editor/commands/resizeCommand.h"
 #include "editor/commands/expandCommand.h"
 
-#include "qrutils/uxInfo/uxInfo.h"
-
 using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui;
@@ -441,8 +439,6 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	if (!mEditorManager.hasElement(id.type())) {
 		return;
 	}
-
-	utils::UXInfo::reportCreation(id.editor(), id.element());
 
 	QLOG_TRACE() << "Created element, id = " << id << ", position = " << scenePos;
 

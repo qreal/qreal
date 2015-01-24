@@ -14,8 +14,10 @@ class EditorManagerInterface;
 
 namespace models {
 
-class QRGUI_MODELS_EXPORT LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
+class QRGUI_MODELS_EXPORT LogicalModelAssistApi : public QObject, public qReal::LogicalModelAssistInterface
 {
+	Q_OBJECT
+
 public:
 	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface);
 	virtual ~LogicalModelAssistApi();
@@ -65,6 +67,10 @@ public:
 
 	/// Returns a mapping of known editors used for current save creation to their versions.
 	QMap<Id, Version> editorVersions() const;
+
+signals:
+	/// Emitted each time when new element was added into the logical model.
+	void elementAdded(Id const &id);
 
 private:
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden

@@ -4,9 +4,14 @@
 <context>
     <name>PropertyEditorView</name>
     <message>
-        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="188"/>
+        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="183"/>
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="188"/>
+        <source>Select file:</source>
+        <translation>Выберите файл:</translation>
     </message>
 </context>
 <context>
@@ -84,49 +89,47 @@
 <context>
     <name>qReal::EditorViewScene</name>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="290"/>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="361"/>
         <source>Discard</source>
-        <translation>Отменить</translation>
+        <translation type="vanished">Отменить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="293"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="297"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="352"/>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="362"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="356"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="365"/>
         <source>Connect with the current item</source>
         <translation>Соединить с данным элементом</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="918"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="934"/>
         <source>Add child</source>
         <translation>Добавить элемент</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1402"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1418"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1406"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1422"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1410"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1426"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1414"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1430"/>
         <source>Paste only graphical copy</source>
         <translation>Вставить только графическую копию</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1418"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1434"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
@@ -168,23 +171,23 @@
 <context>
     <name>qReal::view::details::ExploserView</name>
     <message>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="59"/>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="180"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="61"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="182"/>
         <source>New </source>
         <translation>Новый </translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="109"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="111"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="112"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="114"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="117"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="119"/>
         <source>Add element to palette</source>
         <translation>Добавить элемент в палитру</translation>
     </message>

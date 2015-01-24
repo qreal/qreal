@@ -17,7 +17,8 @@ GraphicalModelAssistApi::GraphicalModelAssistApi(
 	, mModelsAssistApi(graphicalModel, editorManagerInterface)
 	, mGraphicalPartModel(graphicalPartModel)
 {
-	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
+	connect(&graphicalModel, &GraphicalModel::elementAdded, this, &GraphicalModelAssistApi::elementAdded);
+	connect(&graphicalModel, &GraphicalModel::nameChanged, this, &GraphicalModelAssistApi::nameChanged);
 }
 
 EditorManagerInterface const &GraphicalModelAssistApi::editorManagerInterface() const

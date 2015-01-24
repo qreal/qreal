@@ -6,7 +6,6 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/logging.h>
-#include <qrutils/uxInfo/uxInfo.h>
 #include <qrutils/virtualKeyboard.h>
 
 using namespace qReal;
@@ -19,7 +18,8 @@ QRealApplication::QRealApplication(int &argc, char **argv)
 
 bool QRealApplication::notify(QObject *obj, QEvent *e)
 {
-	/// @todo: restore UX info reporting.
+	/// @todo: Move user actions logging into plugin?
+	/// Then we can ask user about his agreement for actions collection in installer.
 
 	switch (e->type()) {
 	case QEvent::MouseButtonPress:
@@ -40,6 +40,7 @@ bool QRealApplication::notify(QObject *obj, QEvent *e)
 		break;
 	}
 
+	emit lowLevelEvent(obj, e);
 	return QApplication::notify(obj, e);
 }
 

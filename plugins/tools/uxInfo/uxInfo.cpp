@@ -6,7 +6,7 @@
 
 #include <qrkernel/settingsManager.h>
 
-using namespace utils;
+using namespace uxInfo;
 
 UXInfo* UXInfo::object = nullptr;
 
@@ -120,7 +120,7 @@ void UXInfo::reportErrorsOfElements(const QString &type, const QString &editorNa
 	mErrorReporterNumber++;
 }
 
-void UXInfo::reportTotalTimeOfExec(const QString &totalTime, const int &exitCode)
+void UXInfo::reportTotalTimeOfExec(QString const &totalTime)
 {
 	if (!writeData(mTotalTimeStream)) {
 		return;
@@ -128,7 +128,7 @@ void UXInfo::reportTotalTimeOfExec(const QString &totalTime, const int &exitCode
 
 	mTotalTimeStream << "TotalSessionTime: "
 			<< totalTime << " secs Exit code:"
-			<< exitCode << "\n";
+			<< 0 << "\n";
 }
 
 void UXInfo::reportMenuElementsUsing(const QString &elementName, const QString &status)
@@ -294,9 +294,9 @@ void UXInfo::reportErrors(const QString &type, const QString &editorName, const 
 	instance()->reportErrorsOfElements(type, editorName, elementName, message);
 }
 
-void UXInfo::reportTotalTime(QString const &totalTime, int const &exitCode)
+void UXInfo::reportTotalTime(QString const &totalTime)
 {
-	instance()->reportTotalTimeOfExec(totalTime, exitCode);
+	instance()->reportTotalTimeOfExec(totalTime);
 }
 
 void UXInfo::reportMenuElements(const QString &elementName, const QString &status)
