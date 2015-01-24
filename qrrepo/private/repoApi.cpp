@@ -14,7 +14,10 @@ RepoApi::RepoApi(QString const &workingDirectory, bool ignoreAutosave)
 
 QString RepoApi::name(Id const &id) const
 {
-	Q_ASSERT(mRepository.property(id, "name").canConvert<QString>());
+	if (!mRepository.property(id, "name").canConvert<QString>()) {
+		Q_ASSERT(mRepository.property(id, "name").canConvert<QString>());
+	}
+
 	return mRepository.property(id, "name").toString();
 }
 
