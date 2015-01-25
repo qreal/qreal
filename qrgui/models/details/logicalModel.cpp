@@ -93,7 +93,7 @@ void LogicalModel::connectToGraphicalModel(GraphicalModel * const graphicalModel
 
 AbstractModelItem *LogicalModel::createModelItem(Id const &id, AbstractModelItem *parentItem) const
 {
-	return new LogicalModelItem(id, static_cast<LogicalModelItem *>(parentItem));
+return new LogicalModelItem(id, static_cast<LogicalModelItem *>(parentItem));
 }
 
 void LogicalModel::updateElements(Id const &logicalId, QString const &name)
@@ -166,6 +166,8 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 		newItem = createModelItem(id, parentItem);
 		initializeElement(id, parentItem, newItem, name, position);
 	}
+
+	emit elementAdded(id);
 }
 
 void LogicalModel::initializeElement(Id const &id, modelsImplementation::AbstractModelItem *parentItem

@@ -2351,7 +2351,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Width" type="int" name="Width">
-							<default>0</default>
+							<default>1</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -2376,10 +2376,10 @@
 					<container/>
 					<properties>
 						<property displayedName="X" type="int" name="XCoordinatePix">
-							<default>0</default>
+							<default>5</default>
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinatePix">
-							<default>0</default>
+							<default>5</default>
 						</property>
 					</properties>
 					<generalizations>

@@ -7,14 +7,13 @@
 #include <qrkernel/exception/exception.h>
 
 #include "mainWindow/errorListWidget.h"
-#include "qrutils/uxInfo/uxInfo.h"
 
 using namespace qReal;
 using namespace gui;
 
 ErrorReporter::ErrorReporter()
-	: mErrorListWidget(NULL)
-	, mErrorList(NULL)
+	: mErrorListWidget(nullptr)
+	, mErrorList(nullptr)
 	, mIsVisible(true)
 {
 }
@@ -44,34 +43,34 @@ void ErrorReporter::updateVisibility(bool isVisible)
 
 void ErrorReporter::addInformation(QString const &message, Id const &position)
 {
-	utils::UXInfo::reportErrors("information", position.editor(), position.element(), message);
 	Error error(message, Error::information, position);
 	mErrors.append(error);
 	showError(error, mErrorListWidget);
+	emit informationAdded(message, position);
 }
 
 void ErrorReporter::addWarning(QString const &message, Id const &position)
 {
-	utils::UXInfo::reportErrors("warning", position.editor(), position.element(), message);
 	Error error(message, Error::warning, position);
 	mErrors.append(error);
 	showError(error, mErrorListWidget);
+	emit warningAdded(message, position);
 }
 
 void ErrorReporter::addError(QString const &message, Id const &position)
 {
-	utils::UXInfo::reportErrors("error", position.editor(), position.element(), message);
 	Error error(message, Error::error, position);
 	mErrors.append(error);
 	showError(error, mErrorListWidget);
+	emit errorAdded(message, position);
 }
 
 void ErrorReporter::addCritical(QString const &message, Id const &position)
 {
-	utils::UXInfo::reportErrors("critical", position.editor(), position.element(), message);
 	Error error(message, Error::critical, position);
 	mErrors.append(error);
 	showError(error, mErrorListWidget);
+	emit criticalAdded(message, position);
 }
 
 bool ErrorReporter::showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const

@@ -66,6 +66,15 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
 	connect(&mModel.timeline(), &Timeline::tick, [this]() { mUi->timelineBox->stepBy(1); });
+	connect(&mModel.timeline(), &Timeline::started, [this]() {
+		mUi->runButton->setVisible(false);
+		mUi->stopButton->setVisible(true);
+	});
+	connect(&mModel.timeline(), &Timeline::stopped, [this]() {
+		mUi->runButton->setVisible(true);
+		mUi->stopButton->setVisible(false);
+	});
+	mUi->stopButton->setVisible(false);
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();

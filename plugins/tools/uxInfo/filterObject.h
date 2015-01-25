@@ -2,6 +2,8 @@
 
 #include <QtCore/QObject>
 
+namespace uxInfo {
+
 /// Class for user experience information about
 /// using menu elements and setting usability
 /// testing mode and collection ux information mode.
@@ -31,3 +33,5 @@ public slots:
 	///Record about start of the usability test.
 	void reportTestFinished();
 };
+
+}
