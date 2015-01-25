@@ -4,13 +4,11 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QDateTime>
 
-#include <qrutils/utilsDeclSpec.h>
-
 namespace uxInfo {
 
 /// Singleton class for collecting user experience information about setting changes,
 /// click coordinates, diagram element creation and others.
-class QRUTILS_EXPORT UXInfo : public QObject
+class UXInfo : public QObject
 {
 	Q_OBJECT
 

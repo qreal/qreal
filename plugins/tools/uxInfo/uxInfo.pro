@@ -5,7 +5,7 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L../../../bin -lqrkernel -lqslog -lqrgui-preferences-dialog
+LIBS += -L../../../bin -lqrkernel -lqslog -lqrgui-preferences-dialog -lqrgui-tool-plugin-interface
 
 INCLUDEPATH += \
 	$$PWD/../../../ \

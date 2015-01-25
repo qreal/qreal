@@ -30,9 +30,9 @@ private:
 
 	void processEvent(QObject *obj, QEvent *e);
 
-	QToolBar *mUsabilityTestingToolbar; // Has ownership
-	QAction *mStartTest;
-	QAction *mFinishTest;
+	QToolBar *mUsabilityTestingToolbar;  // Has ownership
+	QAction *mStartTest;  // Has ownership via Qt parentship system
+	QAction *mFinishTest;  // Has ownership via Qt parentship system
 	bool mUsabilityTestingMode;
 	FilterObject mFilterObject;
 	int mStartTimestamp;
