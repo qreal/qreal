@@ -7,6 +7,7 @@
 
 #include <qrutils/interpreter/blocksTableInterface.h>
 #include <qrutils/interpreter/blockInterface.h>
+#include <qrutils/utilsDeclSpec.h>
 
 namespace qReal {
 namespace interpretation {
@@ -15,7 +16,7 @@ namespace interpretation {
 /// clients can simply request a block by given id, and a block table will do the rest.
 /// Also supports operations that shall be performed on all blocks in a system, such as setting failure or idle flags.
 /// and objects implementing logic of that blocks.
-class BlocksTableBase : public BlocksTableInterface
+class QRUTILS_EXPORT BlocksTableBase : public BlocksTableInterface
 {
 public:
 	/// Constructor. (c) Captain Obvious, 2008-2015
