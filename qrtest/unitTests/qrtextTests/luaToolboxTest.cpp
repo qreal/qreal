@@ -104,3 +104,11 @@ TEST_F(LuaToolboxTest, memory)
 
 	EXPECT_EQ(0, qrtext::core::ast::Node::nodesCount());
 }
+
+TEST_F(LuaToolboxTest, integerDivision)
+{
+	mToolbox->interpret<int>("s = 5 // 2");
+	auto result = mToolbox->interpret<int>("s");
+	ASSERT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ(2, result);
+}
