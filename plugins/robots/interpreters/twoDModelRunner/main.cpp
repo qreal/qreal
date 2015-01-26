@@ -1,14 +1,22 @@
 #include <QtCore/QDir>
+#include <QtCore/QCommandLineParser>
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/logging.h>
 #include <qrkernel/platformInfo.h>
 
-int const maxLogSize = 10 * 1024 * 1024;  // 10 MB
+#include "runner.h"
+
+const int maxLogSize = 10 * 1024 * 1024;  // 10 MB
+
+const QString description = QObject::tr(
+		"Emulates robot`s behaviour on TRIK Studio 2D model separately from programming environment. "\
+		"Passed .qrs will be interpreted just like when 'Run' button was pressed in TRIK Studio."
+);
 
 void initLogging()
 {
-	QDir const logsDir(QApplication::applicationDirPath() + "/logs");
+	const QDir logsDir(QApplication::applicationDirPath() + "/logs");
 	if (logsDir.mkpath(logsDir.absolutePath())) {
 		qReal::Logger::addLogTarget(logsDir.filePath("2d-model.log"), maxLogSize, 2, QsLogging::DebugLevel);
 	}
@@ -17,6 +25,14 @@ void initLogging()
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
+	QCoreApplication::setApplicationName("2D-model");
+	QCoreApplication::setApplicationVersion("1.0");
+
+	QCommandLineParser parser;
+	parser.setApplicationDescription(description);
+	parser.addHelpOption();
+	parser.addVersionOption();
+	parser.addPositionalArgument("qrs-file", QObject::tr("Save file to be interpreted"));
 
 	qsrand(time(0));
 	initLogging();
@@ -25,7 +41,16 @@ int main(int argc, char *argv[])
 	QLOG_INFO() << "Arguments:" << app.arguments();
 	QLOG_INFO() << "Setting default locale to" << QLocale().name();
 
-	int const exitCode = app.exec();
+	parser.process(app);
+
+	const QStringList positionalArgs = parser.positionalArguments();
+	if (positionalArgs.size() != 1) {
+		parser.showHelp();
+	}
+
+	const QString qrsFile = positionalArgs.first();
+
+	const int exitCode = app.exec();
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";
 	return exitCode;
 }

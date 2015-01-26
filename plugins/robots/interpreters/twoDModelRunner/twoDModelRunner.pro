@@ -22,6 +22,8 @@ LIBS += -L$$PWD/../../../../bin/ -lqslog -lqrkernel -lqrutils -lqrgui-tool-plugi
 TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModelRunner_ru.ts
 
 HEADERS += \
+	$$PWD/runner.h \
 
 SOURCES += \
 	$$PWD/main.cpp \
+	$$PWD/runner.cpp \
