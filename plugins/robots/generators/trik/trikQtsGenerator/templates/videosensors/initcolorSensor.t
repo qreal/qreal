@@ -1,1 +1,1 @@
-brick.colorSensor().init(true);
+brick.colorSensor("video0").init(true);

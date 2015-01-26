@@ -1,5 +1,5 @@
 /*
 while (!brick.keys().wasPressed()) {
-	brick.wait(100);
+	script.wait(100);
 }
 */
