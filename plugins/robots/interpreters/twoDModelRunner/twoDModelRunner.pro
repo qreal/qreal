@@ -12,14 +12,23 @@ UI_DIR = .ui
 QT += widgets
 
 INCLUDEPATH += \
-	$$PWD/include/ \
+	$$PWD/ \
+	$$PWD/../interpreterCore/include/ \
 	$$PWD/../interpreterBase/include/ \
+	$$PWD/../../generators/generatorBase/include/ \
+	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \
+	$$PWD/../../../../qrgui/ \
+	$$PWD/../../../../qrtext/include \
 
 LIBS += -L$$PWD/../../../../bin/ -lqslog -lqrkernel -lqrutils -lqrgui-tool-plugin-interface -lqrgui-preferences-dialog \
-		-lrobots-utils -lrobots-interpreter-base -lrobots-common-2d-model \
+		-lrobots-utils -lrobots-interpreter-base -lrobots-interpreter-core -lrobots-common-2d-model \
 
 TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModelRunner_ru.ts
+
+!macx {
+	QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../../../../bin"
+}
 
 HEADERS += \
 	$$PWD/runner.h \

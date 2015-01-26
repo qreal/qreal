@@ -1,6 +1,7 @@
 #pragma once
 
-#include<QString>
+#include <interpreterCore/robotsPluginFacade.h>
+
 namespace twoDModel {
 
 class Runner
@@ -8,7 +9,10 @@ class Runner
 public:
 	Runner();
 
-	void interpret(QString const &saveFile);
+	void interpret(const QString &saveFile);
+
+private:
+	interpreterCore::RobotsPluginFacade mPluginFacade;
 };
 
 }
