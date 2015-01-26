@@ -1,4 +1,4 @@
-#include "autoconfigurer.h"
+#include "interpreterCore/interpreter/details/autoconfigurer.h"
 
 #include <qrkernel/exception/exception.h>
 

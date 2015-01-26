@@ -1,4 +1,4 @@
-#include "kitAutoSwitcher.h"
+#include "interpreterCore/managers/kitAutoSwitcher.h"
 
 #include <qrkernel/settingsManager.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>

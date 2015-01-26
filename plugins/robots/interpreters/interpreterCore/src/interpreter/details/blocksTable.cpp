@@ -1,4 +1,4 @@
-#include "blocksTable.h"
+#include "interpreterCore/interpreter/details/blocksTable.h"
 
 #include <qrkernel/exception/exception.h>
 

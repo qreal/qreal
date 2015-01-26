@@ -1,4 +1,4 @@
-#include "customizer.h"
+#include "interpreterCore/customizer.h"
 
 #include <QtWidgets/QApplication>
 

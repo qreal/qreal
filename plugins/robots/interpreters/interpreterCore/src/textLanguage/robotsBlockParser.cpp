@@ -1,4 +1,4 @@
-#include "robotsBlockParser.h"
+#include "interpreterCore/textLanguage/robotsBlockParser.h"
 
 #include <qrtext/lua/types/integer.h>
 #include <qrtext/lua/types/float.h>

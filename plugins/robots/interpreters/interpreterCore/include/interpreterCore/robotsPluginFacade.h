@@ -16,9 +16,12 @@
 #include "interpreterCore/managers/blocksFactoryManager.h"
 #include "interpreter/interpreter.h"
 #include "textLanguage/robotsBlockParser.h"
-#include "ui/robotsSettingsPage.h"
 
 namespace interpreterCore {
+
+namespace ui {
+class RobotsSettingsPage;
+}
 
 /// Responsible for initialization, interconnecting and keeping in sync core plugin subsystems.
 class RobotsPluginFacade : public QObject

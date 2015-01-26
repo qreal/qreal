@@ -5,9 +5,8 @@
 #include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 
 #include <interpreterCore/robotsPluginFacade.h>
-#include <interpreterCore/managers/actionsManager.h>
 
-namespace interpreterCore {
+namespace robotsPlugin {
 
 /// Provides entry points to robots plugin. Responsible for implementation of ToolPluginInterface and for
 /// interaction with QReal, including ActionInfo objects and other stuff that has nothing to do with plugin logic,
@@ -34,7 +33,7 @@ private:
 	/// Main window interface object, used to call GUI functionality.
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
 
-	QScopedPointer<RobotsPluginFacade> mRobotsPluginFacade;
+	QScopedPointer<interpreterCore::RobotsPluginFacade> mRobotsPluginFacade;
 };
 
 }

@@ -1,4 +1,4 @@
-#include "robotModelManager.h"
+#include "interpreterCore/managers/robotModelManager.h"
 
 #include <qrkernel/settingsManager.h>
 
