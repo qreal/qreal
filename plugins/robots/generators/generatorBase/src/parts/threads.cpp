@@ -69,7 +69,7 @@ QString Threads::generateDeclarations() const
 	return declarationsHeader + declarations.join("\n");
 }
 
-QString Threads::generateImplementations() const
+QString Threads::generateImplementations(QString const &indentString) const
 {
 	QList<semantics::SemanticTree *> const threads = this->threads();
 	QString const implementation = readTemplate("threads/implementation.t");
@@ -80,7 +80,7 @@ QString Threads::generateImplementations() const
 	QString const implementationsHeader = readTemplate("threads/implementationsSectionHeader.t");
 	QStringList implementations;
 	for (semantics::SemanticTree const *thread : threads) {
-		QString const code = thread->toString(1);
+		QString const code = thread->toString(1, indentString);
 		implementations << QString(implementation).replace("@@NAME@@", name(thread)).replace("@@BODY@@", code);
 	}
 

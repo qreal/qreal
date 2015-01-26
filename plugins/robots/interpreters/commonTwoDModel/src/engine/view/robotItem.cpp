@@ -186,6 +186,11 @@ void RobotItem::checkSelection()
 	mRotater->setVisible(isSelected());
 }
 
+Rotater *RobotItem::rotater() const
+{
+	return mRotater;
+}
+
 void RobotItem::setNeededBeep(bool isNeededBeep)
 {
 	mBeepItem->setVisible(isNeededBeep);

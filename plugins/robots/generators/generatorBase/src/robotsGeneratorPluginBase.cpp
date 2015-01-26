@@ -8,7 +8,6 @@
 
 using namespace generatorBase;
 using namespace qReal;
-using namespace gui;
 using namespace utils;
 
 /// If file info creation and modification timestamps differ less than on this value it is considered
@@ -22,16 +21,6 @@ RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 QString RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) const
 {
 	return projectName;
-}
-
-QString RobotsGeneratorPluginBase::extension() const
-{
-	return QString();
-}
-
-QString RobotsGeneratorPluginBase::extensionDescription() const
-{
-	return QString();
 }
 
 QString RobotsGeneratorPluginBase::generatorName() const
@@ -101,7 +90,7 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 		} else {
 			return QFileInfo();
 		}
-	} else if (QScintillaTextEdit *code = dynamic_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab())) {
+	} else if (auto code = dynamic_cast<text::QScintillaTextEdit *>(mMainWindowInterface->currentTab())) {
 		fileInfo = QFileInfo(mTextManager->path(code));
 		mTextManager->saveText(false);
 	}
@@ -141,7 +130,7 @@ bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 	generator->initialize();
 	generator->setProjectDir(path);
 
-	QString const generatedSrcPath = generator->generate();
+	QString const generatedSrcPath = generator->generate(language().indent());
 
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		delete generator;
@@ -152,7 +141,7 @@ bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 
 	QString const generatedCode = utils::InFile::readAll(generatedSrcPath);
 	if (!generatedCode.isEmpty()) {
-		mTextManager->showInTextEditor(path, generatorName());
+		mTextManager->showInTextEditor(path, generatorName(), language());
 	}
 
 	if (!openTab) {
@@ -167,7 +156,7 @@ void RobotsGeneratorPluginBase::regenerateCode(qReal::Id const &diagram
 		, QFileInfo const &oldFileInfo
 		, QFileInfo const &newFileInfo)
 {
-	if (!oldFileInfo.completeSuffix().compare(extension())) {
+	if (!oldFileInfo.completeSuffix().compare(language().extension)) {
 		mCodePath.remove(diagram, oldFileInfo);
 		mCodePath.insert(diagram, newFileInfo);
 		regenerateExtraFiles(newFileInfo);

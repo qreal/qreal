@@ -10,6 +10,7 @@ SUBDIRS += \
 	$$PWD/metaEditor/metaEditor.pro \
 	$$PWD/requirements/requirements.pro \
 	$$PWD/domainAnalysis/domainAnalysis.pro \
+	$$PWD/deployment/deploymentEditor.pro \
 
 # interpreted plugins
 SUBDIRS += \
@@ -22,6 +23,7 @@ SUBDIRS += \
 	$$PWD/tools/visualInterpreter/visualInterpreter.pro \
 	$$PWD/tools/refactoring/refactoring.pro \
 #	$$PWD/tools/testInvocation/testInvocation.pro \
+	$$PWD/tools/uxInfo/uxInfo.pro \
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qrutils/release/ -lqrutils

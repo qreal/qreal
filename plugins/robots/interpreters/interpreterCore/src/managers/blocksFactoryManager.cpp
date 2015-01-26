@@ -1,6 +1,6 @@
 #include "blocksFactoryManager.h"
 
-#include <interpreterBase/blocksBase/common/emptyBlock.h>
+#include <qrutils/interpreter/blocks/emptyBlock.h>
 
 using namespace interpreterCore;
 using namespace interpreterBase;
@@ -19,13 +19,14 @@ void BlocksFactoryManager::addFactory(BlocksFactoryInterface * const factory, Ro
 	}
 }
 
-BlockInterface *BlocksFactoryManager::block(qReal::Id const &element, RobotModelInterface const &robotModel)
+qReal::interpretation::BlockInterface *BlocksFactoryManager::block(qReal::Id const &element
+		, RobotModelInterface const &robotModel)
 {
-	BlockInterface *emptyBlock = nullptr;
+	qReal::interpretation::BlockInterface *emptyBlock = nullptr;
 
 	for (BlocksFactoryInterface * const factory : factoriesFor(robotModel)) {
-		BlockInterface * const block = factory->block(element);
-		if (block && !dynamic_cast<common::EmptyBlock *>(block)) {
+		qReal::interpretation::BlockInterface * const block = factory->block(element);
+		if (block && !dynamic_cast<qReal::interpretation::blocks::EmptyBlock *>(block)) {
 			return block;
 		} else {
 			/// @todo: Ask for empty block somewhere else, not memorizing it here.

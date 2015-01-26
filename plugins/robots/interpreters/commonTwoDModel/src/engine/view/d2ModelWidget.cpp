@@ -3,6 +3,7 @@
 
 #include <QtCore/qmath.h>
 #include <QtCore/QDebug>
+#include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
@@ -65,6 +66,15 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
 	connect(&mModel.timeline(), &Timeline::tick, [this]() { mUi->timelineBox->stepBy(1); });
+	connect(&mModel.timeline(), &Timeline::started, [this]() {
+		mUi->runButton->setVisible(false);
+		mUi->stopButton->setVisible(true);
+	});
+	connect(&mModel.timeline(), &Timeline::stopped, [this]() {
+		mUi->runButton->setVisible(true);
+		mUi->stopButton->setVisible(false);
+	});
+	mUi->stopButton->setVisible(false);
 
 	setCursorType(static_cast<CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -137,7 +147,17 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->wallButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(drawWall); });
 	connect(mUi->noneButton, &QAbstractButton::toggled, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 
-	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){ mScene->clearScene(false, Reason::userAction); });
+	connect(mUi->clearButton, &QAbstractButton::clicked, [this](){
+		QMessageBox confirmation;
+		confirmation.setWindowTitle(tr("Warning"));
+		confirmation.setText(tr("Do you really want to clear scene?"));
+		confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+		confirmation.setButtonText(QMessageBox::Yes, tr("Yes"));
+		confirmation.setButtonText(QMessageBox::Cancel, tr("Cancel"));
+		if (QMessageBox::Yes == confirmation.exec()) {
+			mScene->clearScene(false, Reason::userAction);
+		}
+	});
 	connect(mUi->clearFloorButton, &QAbstractButton::clicked, &mModel.worldModel(), &WorldModel::clearRobotTrace);
 	connect(&mModel.worldModel(), &WorldModel::robotTraceAppearedOrDisappeared
 			, mUi->clearFloorButton, &QAbstractButton::setVisible, Qt::QueuedConnection);

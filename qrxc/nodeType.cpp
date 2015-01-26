@@ -16,8 +16,6 @@ using namespace utils;
 
 NodeType::NodeType(Diagram *diagram)
 		: GraphicType(diagram)
-		, mIsPin(false)
-		, mIsHavePin(false)
 		, mIsResizeable(true)
 {
 }
@@ -40,8 +38,6 @@ Type* NodeType::clone() const
 
 	result->mSdfDomElement = mSdfDomElement;
 	result->mPortsDomElement = mPortsDomElement;
-	result->mIsPin = mIsPin;
-	result->mIsHavePin = mIsHavePin;
 	result->mIsResizeable = mIsResizeable;
 	return result;
 }
@@ -171,19 +167,7 @@ bool NodeType::initLabel(Label *label, QDomElement const &element, int const &co
 
 bool NodeType::initBooleanProperties()
 {
-	mIsPin = false;
-	mIsHavePin = false;
 	mIsResizeable = true;
-
-	QDomElement const element = mLogic.firstChildElement("pin");
-	if (!element.isNull()) {
-		mIsPin = true;
-	}
-
-	QDomElement const element1 = mLogic.firstChildElement("action");
-	if (!element1.isNull()) {
-		mIsHavePin = true;
-	}
 
 	QDomElement const element2 = mGraphics.firstChildElement("nonResizeable");
 	if (!element2.isNull()) {
@@ -329,26 +313,12 @@ void NodeType::generateCode(OutFile &out)
 
 	<< "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n\t\t\treturn enums::linkShape::square;\n\t\t}\n\n"
 
-	<< "\t\tbool isPort() const\n\t\t{\n"
-	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
-
-	<< "\t\tbool hasPin() const\n\t\t{\n"
-	<< (mIsHavePin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
-
 	<< "\t\tbool createChildrenFromMenu() const\n\t\t{\n"
 	<< (mCreateChildrenFromMenu ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n";
 
 	out() << "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n";
-
-	if (mIsHavePin) {
-		out() << "\t\t\tlist << 30 << 15 << 15 << 25;\n";
-	} else {
-		out() << "\t\t\tlist << 0 << 0 << 0 << 0;\n";
-	}
 
 	out() << "\t\t\treturn list;\n"
 	<< "\t\t}\n\n";

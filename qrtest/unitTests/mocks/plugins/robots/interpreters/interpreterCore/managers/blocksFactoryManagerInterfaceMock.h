@@ -11,7 +11,7 @@ class BlocksFactoryManagerInterfaceMock : public interpreterCore::BlocksFactoryM
 public:
 	MOCK_METHOD2(addFactory, void(interpreterBase::blocksBase::BlocksFactoryInterface * const factory
 			, interpreterBase::robotModel::RobotModelInterface const *robotModel));
-	MOCK_METHOD2(block, interpreterBase::blocksBase::BlockInterface *(qReal::Id const &element
+	MOCK_METHOD2(block, qReal::interpretation::BlockInterface *(qReal::Id const &element
 			, interpreterBase::robotModel::RobotModelInterface const &robotModel));
 	MOCK_CONST_METHOD1(enabledBlocks, QSet<qReal::Id>(
 			interpreterBase::robotModel::RobotModelInterface const &robotModel));

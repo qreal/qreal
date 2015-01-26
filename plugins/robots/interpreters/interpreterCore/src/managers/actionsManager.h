@@ -46,10 +46,6 @@ public:
 	/// Action for establishing connection to a robot.
 	QAction &connectToRobotAction();
 
-	/// Action for showing or hiding labels of blocks on scene.
-	/// @todo Move this action to QReal core.
-	QAction &titlesVisibilityAction();
-
 	/// Action that shows settings page with "robots" tab selected.
 	QAction &robotSettingsAction();
 
@@ -92,9 +88,6 @@ private:
 
 	/// Action that shows robots tab in settings dialog
 	QAction mRobotSettingsAction;
-
-	/// Action that shows or hides titles on diagram
-	QAction mTitlesAction;
 
 	QAction mSeparator1;
 	QAction mSeparator2;

@@ -31,6 +31,16 @@ public:
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
 	void updateVisibility(bool isVisible);
 
+signals:
+	/// Emitted when new message with level 'Info' added to error reporter.
+	void informationAdded(QString const &message, Id const &position);
+	/// Emitted when new message with level 'Warning' added to error reporter.
+	void warningAdded(QString const &message, Id const &position);
+	/// Emitted when new message with level 'Error' added to error reporter.
+	void errorAdded(QString const &message, Id const &position);
+	/// Emitted when new message with level 'Critical' added to error reporter.
+	void criticalAdded(QString const &message, Id const &position);
+
 public slots:
 	virtual void clear();
 	virtual void clearErrors();

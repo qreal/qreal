@@ -18,7 +18,7 @@ public:
 	void addFactory(interpreterBase::blocksBase::BlocksFactoryInterface * const factory
 			, interpreterBase::robotModel::RobotModelInterface const *robotModel = nullptr) override;
 
-	interpreterBase::blocksBase::BlockInterface *block(qReal::Id const &element
+	qReal::interpretation::BlockInterface *block(qReal::Id const &element
 			, interpreterBase::robotModel::RobotModelInterface const &robotModel) override;
 
 	QSet<qReal::Id> enabledBlocks(interpreterBase::robotModel::RobotModelInterface const &robotModel) const override;

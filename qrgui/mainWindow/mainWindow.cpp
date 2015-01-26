@@ -27,7 +27,6 @@
 #include <qrutils/graphicsUtils/animatedHighlighter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
-#include <qrutils/uxInfo/uxInfo.h>
 
 #include <plugins/toolPluginInterface/systemEvents.h>
 
@@ -53,6 +52,7 @@
 #include <textEditor/textManager.h>
 #include <textEditor/qscintillaTextEdit.h>
 
+#include "qrealApplication.h"
 #include "errorReporter.h"
 #include "shapeEdit/shapeEdit.h"
 #include "startWidget/startWidget.h"
@@ -73,7 +73,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	, mEditorManagerProxy(new EditorManager())
 	, mPropertyModel(mEditorManagerProxy)
 	, mSystemEvents(new SystemEvents())
-	, mTextManager(new TextManager(*mSystemEvents, *this))
+	, mTextManager(new text::TextManager(*mSystemEvents, *this))
 	, mRootIndex(QModelIndex())
 	, mErrorReporter(nullptr)
 	, mIsFullscreen(false)
@@ -141,9 +141,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
-	mFilterObject = new FilterObject();
-	connectActionsForUXInfo();
 	connectActions();
+	connectSystemEvents();
 	initExplorers();
 
 	// So now we are going to load plugins. The problem is that if we will do it
@@ -151,41 +150,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
-	mUsabilityTestingToolbar = new QToolBar();
-	mStartTest = new QAction(tr("Start test"), NULL);
-	mStartTest->setEnabled(true);
-	connect(mStartTest, SIGNAL(triggered()), this, SLOT(startUsabilityTest()));
-	mFinishTest = new QAction(tr("Finish test"), NULL);
-	mFinishTest->setEnabled(false);
-	connect(mFinishTest, SIGNAL(triggered()), this, SLOT(finishUsabilityTest()));
-	mUsabilityTestingToolbar->addAction(mStartTest);
-	mUsabilityTestingToolbar->addAction(mFinishTest);
-	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
-	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
-}
-
-void MainWindow::connectActionsForUXInfo()
-{
-	QList<QAction*> triggeredActions;
-	triggeredActions << mUi->actionQuit << mUi->actionOpen << mUi->actionSave
-			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
-			<< mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
-			<< mUi->actionPreferences << mUi->actionHelp
-			<< mUi->actionAbout << mUi->actionAboutQt
-			<< mUi->actionFullscreen << mUi->actionFind;
-
-	foreach (QAction* const action, triggeredActions) {
-		connect(action, SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
-	}
-
-	QList<QAction*> toggledActions;
-	toggledActions << mUi->actionShowSplash << mUi->actionShow_grid
-			<< mUi->actionShow_alignment << mUi->actionSwitch_on_grid
-			<< mUi->actionSwitch_on_alignment;
-
-	foreach (QAction* const action, toggledActions) {
-		connect(action, SIGNAL(toggled(bool)), mFilterObject, SLOT(toggledActionActivated(bool)));
-	}
 }
 
 void MainWindow::connectActions()
@@ -226,6 +190,10 @@ void MainWindow::connectActions()
 	SettingsListener::listen("ActivateGrid", mUi->actionSwitch_on_grid, &QAction::setChecked);
 	SettingsListener::listen("ActivateAlignment", mUi->actionSwitch_on_alignment, &QAction::setChecked);
 
+	mUi->actionShow_all_text->setChecked(!qReal::SettingsManager::value("hideNonHardLabels").toBool());
+	connect(mUi->actionShow_all_text, &QAction::triggered
+			, [](bool checked) { SettingsManager::setValue("hideNonHardLabels", !checked); });
+
 	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -246,7 +214,6 @@ void MainWindow::connectActions()
 	SettingsListener::listen("PaletteIconsInARowCount", this, &MainWindow::changePaletteRepresentation);
 	SettingsListener::listen("toolbarSize", this, &MainWindow::resetToolbarSize);
 	SettingsListener::listen("pathToImages", this, &MainWindow::updatePaletteIcons);
-	SettingsListener::listen("usabilityTestingMode", this, &MainWindow::setUsabilityMode);
 	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &MainWindow::applySettings);
 
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
@@ -266,6 +233,22 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
 	setDefaultShortcuts();
+}
+
+void MainWindow::connectSystemEvents()
+{
+	connect(&mModels->logicalModelAssistApi(), &models::LogicalModelAssistApi::elementAdded
+			, mSystemEvents, &SystemEvents::logicalElementAdded);
+	connect(&mModels->graphicalModelAssistApi(), &models::GraphicalModelAssistApi::elementAdded
+			, mSystemEvents, &SystemEvents::graphicalElementAdded);
+
+	connect(mErrorReporter, &ErrorReporter::informationAdded, mSystemEvents, &SystemEvents::informationAdded);
+	connect(mErrorReporter, &ErrorReporter::warningAdded, mSystemEvents, &SystemEvents::warningAdded);
+	connect(mErrorReporter, &ErrorReporter::errorAdded, mSystemEvents, &SystemEvents::errorAdded);
+	connect(mErrorReporter, &ErrorReporter::criticalAdded, mSystemEvents, &SystemEvents::criticalAdded);
+
+	connect(static_cast<QRealApplication *>(qApp), &QRealApplication::lowLevelEvent
+			, mSystemEvents, &SystemEvents::lowLevelEvent);
 }
 
 void MainWindow::initActionsFromSettings()
@@ -308,11 +291,6 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mSystemEvents;
-	delete mFilterObject;
-	delete mStartTest;
-	delete mFinishTest;
-	delete mUsabilityTestingToolbar;
-	utils::UXInfo::instance()->closeUXInfo();
 }
 
 EditorManagerInterface &MainWindow::editorManager()
@@ -669,9 +647,8 @@ void MainWindow::deleteFromLogicalExplorer()
 {
 	QModelIndex const index = mUi->logicalModelExplorer->currentIndex();
 	if (index.isValid()) {
-		IdList temp;
 		/// @todo: rewrite it with just MultipleRemoveCommand.
-		MultipleRemoveCommand factory(*mModels, temp);
+		MultipleRemoveCommand factory(*mModels);
 		mController->executeGlobal(factory.logicalDeleteCommand(index));
 	}
 }
@@ -680,7 +657,9 @@ void MainWindow::deleteFromGraphicalExplorer()
 {
 	Id const id = mModels->graphicalModelAssistApi().idByIndex(mUi->graphicalModelExplorer->currentIndex());
 	if (!id.isNull()) {
-		mController->executeGlobal(new MultipleRemoveCommand(*mModels, IdList() << id));
+		MultipleRemoveCommand * const command = new MultipleRemoveCommand(*mModels);
+		command->setItemsToDelete(IdList() << id);
+		mController->executeGlobal(command);
 	}
 }
 
@@ -688,7 +667,7 @@ void MainWindow::changeWindowTitle()
 {
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
 
-	QScintillaTextEdit *area = dynamic_cast<QScintillaTextEdit *>(currentTab());
+	text::QScintillaTextEdit *area = dynamic_cast<text::QScintillaTextEdit *>(currentTab());
 	if (area) {
 		QString const filePath = mTextManager->path(area);
 		setWindowTitle(windowTitle + " " + filePath);
@@ -701,7 +680,7 @@ void MainWindow::changeWindowTitle()
 
 void MainWindow::setTextChanged(bool changed)
 {
-	QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
+	text::QScintillaTextEdit *area = static_cast<text::QScintillaTextEdit *>(currentTab());
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
 	QString const filePath = mTextManager->path(area);
 	QString const chIndicator = changed ? "*" : "";
@@ -792,7 +771,7 @@ void MainWindow::closeTab(int index)
 {
 	QWidget * const widget = mUi->tabs->widget(index);
 	EditorView * const diagram = dynamic_cast<EditorView *>(widget);
-	QScintillaTextEdit * const possibleCodeTab = dynamic_cast<QScintillaTextEdit *>(widget);
+	text::QScintillaTextEdit * const possibleCodeTab = dynamic_cast<text::QScintillaTextEdit *>(widget);
 
 	QString const path = mTextManager->path(possibleCodeTab);
 
@@ -821,8 +800,6 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
-	connect(SettingsManager::instance(), &SettingsManager::settingsChanged
-			, utils::UXInfo::instance(), &utils::UXInfo::reportSettingsChanges);
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir)) {
@@ -881,14 +858,12 @@ void MainWindow::openShapeEditor(Id const &id
 void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role
 		, QString const &propertyValue)
 {
-	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
+	text::QScintillaTextEdit *textEdit = new text::QScintillaTextEdit(index, role);
+	textEdit->setCurrentLanguage(text::Languages::python());
 
 	if (!propertyValue.isEmpty()) {
 		textEdit->setText(propertyValue.toUtf8());
 	}
-
-	textEdit->setPythonLexer();
-	textEdit->setPythonEditorProperties();
 
 	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &))
 			, this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));
@@ -1167,6 +1142,7 @@ void MainWindow::setDefaultShortcuts()
 	HotKeyManager::setCommand("Editor.CloseAllTabs", tr("Close all tabs"), closeAllTabsAction);
 	HotKeyManager::setCommand("Editor.Print", tr("Print"), mUi->actionPrint);
 	HotKeyManager::setCommand("Editor.Find", tr("Find"), mUi->actionFind);
+	HotKeyManager::setCommand("Editor.ToggleTitles", tr("Show all text"), mUi->actionShow_all_text);
 }
 
 void MainWindow::currentTabChanged(int newIndex)
@@ -1522,25 +1498,6 @@ void MainWindow::updatePaletteIcons()
 	mUi->paletteTree->setComboBox(currentId);
 }
 
-void MainWindow::setUsabilityMode(bool mode)
-{
-	mUsabilityTestingToolbar->setVisible(mode);
-}
-
-void MainWindow::startUsabilityTest()
-{
-	mStartTest->setEnabled(false);
-	mFinishTest->setEnabled(true);
-	mFilterObject->reportTestStarted();
-}
-
-void MainWindow::finishUsabilityTest()
-{
-	mFinishTest->setEnabled(false);
-	mStartTest->setEnabled(true);
-	mFilterObject->reportTestFinished();
-}
-
 void MainWindow::applySettings()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
@@ -1687,12 +1644,9 @@ void MainWindow::traverseListOfActions(QList<ActionInfo> const &actions)
 	for (ActionInfo const &action : actions) {
 		if (action.isAction()) {
 			QToolBar * const toolbar = findChild<QToolBar *>(action.toolbarName() + "Toolbar");
-			connect(action.action(), &QAction::triggered, mFilterObject, &FilterObject::triggeredActionActivated);
 			if (toolbar) {
 				toolbar->addAction(action.action());
 			}
-
-			connect(action.action(), &QAction::triggered, mFilterObject, &FilterObject::triggeredActionActivated);
 		}
 	}
 

@@ -23,6 +23,7 @@ INCLUDEPATH = \
 	$$PWD/ \
 	$$PWD/../ \
 	$$PWD/../../ \
+	$$PWD/../../thirdparty/qscintilla/Qt4Qt5 \
 
 HEADERS += \
 	$$PWD/textEditorDeclSpec.h \
@@ -31,9 +32,11 @@ HEADERS += \
 	$$PWD/textManager.h \
 	$$PWD/textManagerInterface.h \
 	$$PWD/qscintillaTextEdit.h \
+	$$PWD/languageInfo.h \
 
 SOURCES += \
 	$$PWD/textHighlighter.cpp \
 	$$PWD/sqlHighlighter.cpp \
 	$$PWD/textManager.cpp \
 	$$PWD/qscintillaTextEdit.cpp \
+	$$PWD/languageInfo.cpp \

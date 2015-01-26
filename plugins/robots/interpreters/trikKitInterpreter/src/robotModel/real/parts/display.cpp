@@ -33,7 +33,7 @@ void Display::setBackground(QColor const &color)
 
 void Display::clearScreen()
 {
-	QString const pathToCommand = ":/trikQts/templates/drawing/clearUsedScreen.t";
+	QString const pathToCommand = ":/trikQts/templates/drawing/clearScreen.t";
 	QString const directCommand = utils::InFile::readAll(pathToCommand);
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

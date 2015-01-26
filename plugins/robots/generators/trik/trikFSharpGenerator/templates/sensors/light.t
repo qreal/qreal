@@ -1,1 +1,1 @@
-model.AnalogSensor.["JA@@PORT@@"].Read()
+model.AnalogSensor.["@@PORT@@"].Read()

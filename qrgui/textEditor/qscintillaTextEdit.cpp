@@ -1,48 +1,62 @@
 #include "qscintillaTextEdit.h"
 
-#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpython.h>
-#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexercpp.h>
+#include <QtWidgets/QShortcut>
+
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciapis.h>
 
 using namespace qReal;
-using namespace gui;
+using namespace text;
 
 QScintillaTextEdit::QScintillaTextEdit()
-	:mRole(0)
+	: mRole(0)
 {
-	connect(this, SIGNAL(textChanged()), this, SLOT(emitTextWasModified()));
-	setCppLexer();
-	setPythonEditorProperties();
+	init();
 }
 
-QScintillaTextEdit::QScintillaTextEdit(QPersistentModelIndex const &index
-		, int const &role)
-		: mIndex(index)
-		, mRole(role)
-{}
+QScintillaTextEdit::QScintillaTextEdit(QPersistentModelIndex const &index, int const &role)
+	: mIndex(index)
+	, mRole(role)
+{
+	init();
+}
 
 QScintillaTextEdit::~QScintillaTextEdit()
 {
 	emit textSaved(text(), mIndex, mRole);
 }
 
-void QScintillaTextEdit::setPythonLexer()
+LanguageInfo QScintillaTextEdit::currentLanguage() const
 {
-	QsciLexerPython *lexPython = new QsciLexerPython();
-	setLexer(lexPython);
+	return mLanguage;
 }
 
-void QScintillaTextEdit::setCppLexer()
+void QScintillaTextEdit::setCurrentLanguage(LanguageInfo const &language)
 {
-	QsciLexerCPP *lexCpp = new QsciLexerCPP();
-	setLexer(lexCpp);
+	setLexer(0);
+
+	mLanguage = language;
+	setIndentationsUseTabs(mLanguage.tabIndentation);
+	setTabWidth(mLanguage.tabSize);
+	setLexer(mLanguage.lexer.data());
+
+	if (mLanguage.lexer.data()) {
+		QsciAPIs * const api = new QsciAPIs(mLanguage.lexer.data());
+		for (QString const &additionalToken : mLanguage.additionalAutocompletionTokens) {
+			api->add(additionalToken);
+		}
+
+		api->prepare();
+	}
 }
 
-void QScintillaTextEdit::emitTextWasModified()
+void QScintillaTextEdit::init()
 {
-	emit textWasModified(this);
+	connect(this, &QsciScintilla::textChanged, this, &QScintillaTextEdit::emitTextWasModified);
+	setDefaultSettings();
+	setCurrentLanguage(Languages::textFileInfo("*.txt"));
 }
 
-void QScintillaTextEdit::setPythonEditorProperties()
+void QScintillaTextEdit::setDefaultSettings()
 {
 	// Current line highlighting
 	setCaretLineVisible(true);
@@ -52,9 +66,8 @@ void QScintillaTextEdit::setPythonEditorProperties()
 	setAutoIndent(true);
 	setIndentationGuides(false);
 
-	// Replace tabs with 2 spaces
-	setIndentationsUseTabs(false);
-	setIndentationWidth(2);
+	// Tab size will be used
+	setIndentationWidth(0);
 
 	// Whitespaces visibility
 	setWhitespaceVisibility(QsciScintilla::WsVisible);
@@ -69,7 +82,7 @@ void QScintillaTextEdit::setPythonEditorProperties()
 	setAutoCompletionCaseSensitivity(true);
 	setAutoCompletionReplaceWord(true);
 	setAutoCompletionShowSingle(true);
-	setAutoCompletionThreshold(2);
+	setAutoCompletionThreshold(1);
 
 	// Autohighlighting of brackets
 	setBraceMatching(QsciScintilla::SloppyBraceMatch);
@@ -77,14 +90,23 @@ void QScintillaTextEdit::setPythonEditorProperties()
 	setUnmatchedBraceForegroundColor(Qt::blue);
 
 	// EOL symbol
-#if defined Q_WS_X11
+#if defined Q_OS_X11
 	setEolMode(QsciScintilla::EolUnix);
-#elif defined Q_WS_WIN
+#elif defined Q_OS_WIN
 	setEolMode(QsciScintilla::EolWindows);
-#elif defined Q_WS_MAC
+#elif defined Q_OS_MAC
 	setEolMode(QsciScintilla::EolMac);
 #endif
 
 	// Input encoding
 	setUtf8(true);
+
+	// Ctrl + Space Autocomplete
+	QShortcut * const ctrlSpace = new QShortcut(QKeySequence("Ctrl+Space"), this);
+	connect(ctrlSpace, &QShortcut::activated, this, &QScintillaTextEdit::autoCompleteFromAll);
+}
+
+void QScintillaTextEdit::emitTextWasModified()
+{
+	emit textWasModified(this);
 }

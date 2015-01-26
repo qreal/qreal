@@ -21,13 +21,12 @@ protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
 	void regenerateExtraFiles(QFileInfo const &newFileInfo) override;
 	QString defaultFilePath(QString const &projectName) const override;
-	QString extension() const override;
-	QString extensionDescription() const override;
+	qReal::text::LanguageInfo language() const override;
 	QString generatorName() const override;
 
 private:
 	/// Action that launches code generator
-	QAction mGenerateCodeAction;
+	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 };
 
 }

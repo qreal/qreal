@@ -49,10 +49,6 @@ public:
 
 	void loadXml(QDomDocument const &worldModel);
 
-public slots:
-	void saveInitialRobotBeforeRun();
-	void setInitialRobotBeforeRun();
-
 signals:
 	/// Emitted each time when user closes 2D model window.
 	void widgetClosed();
@@ -99,6 +95,9 @@ private slots:
 	void changePhysicsSettings();
 
 	void toggleDisplayVisibility();
+
+	void saveInitialRobotBeforeRun();
+	void setInitialRobotBeforeRun();
 
 private:
 	enum CursorType

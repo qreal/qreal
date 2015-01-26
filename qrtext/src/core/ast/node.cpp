@@ -4,6 +4,17 @@ using namespace qrtext::core;
 using namespace qrtext::core::ast;
 
 Connection const Node::noConnection = Connection();
+int Node::mNodesCount = 0;
+
+Node::Node()
+{
+	++mNodesCount;
+}
+
+Node::~Node()
+{
+	--mNodesCount;
+}
 
 Connection const &Node::start() const
 {

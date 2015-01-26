@@ -38,7 +38,7 @@ void SwitchNode::setBranchesMergedFlag()
 	mBranchesMerged = true;
 }
 
-QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent) const
+QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
 {
 	QString result;
 	bool isHead = true;
@@ -48,7 +48,7 @@ QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent) co
 			continue;
 		}
 
-		result += generatePart(customizer, indent, zone, isHead
+		result += generatePart(customizer, indent, indentString, zone, isHead
 				? customizer.factory()->switchHeadGenerator(mId, customizer, mBranches.keys(zone))
 				: customizer.factory()->switchMiddleGenerator(mId, customizer, mBranches.keys(zone)));
 
@@ -57,10 +57,10 @@ QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent) co
 
 	if (result.isEmpty()) {
 		// Then all branches lead to one block, we may ignore switch construction.
-		return mDefaultBranch->toString(customizer, indent);
+		return mDefaultBranch->toString(customizer, indent, indentString);
 	}
 
-	result += generatePart(customizer, indent, mDefaultBranch
+	result += generatePart(customizer, indent, indentString, mDefaultBranch
 			, customizer.factory()->switchDefaultGenerator(mId, customizer));
 
 	return result;
@@ -77,11 +77,12 @@ void SwitchNode::bind(QString const &value, ZoneNode *zone)
 
 QString SwitchNode::generatePart(generatorBase::GeneratorCustomizer &customizer
 		, int indent
+		, QString const &indentString
 		, ZoneNode * const zone
 		, generatorBase::simple::AbstractSimpleGenerator *generator) const
 {
 	return utils::StringUtils::addIndent(generator->generate()
-			.replace("@@BODY@@", zone->toString(customizer, indent + 1)), indent);
+			.replace("@@BODY@@", zone->toString(customizer, indent + 1, indentString)), indent, indentString);
 }
 
 QLinkedList<SemanticNode *> SwitchNode::children() const

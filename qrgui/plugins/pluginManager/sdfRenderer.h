@@ -16,12 +16,15 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include "plugins/editorPluginInterface/sdfRendererInterface.h"
-#include "plugins/editorPluginInterface/elementRepoInterface.h"
+#include <plugins/editorPluginInterface/sdfRendererInterface.h>
+#include <plugins/editorPluginInterface/elementRepoInterface.h>
+#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
+
+#include "pluginsManagerDeclSpec.h"
 
 namespace qReal {
 
-class SdfRenderer : public SdfRendererInterface
+class QRGUI_PLUGINS_MANAGER_EXPORT SdfRenderer : public SdfRendererInterface
 {
 	Q_OBJECT
 

@@ -4,7 +4,7 @@
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 
-#include "robotCommunicationThreadBase.h"
+#include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 #include "fantom.h"
 
 class QextSerialPort;
@@ -12,7 +12,7 @@ class QextSerialPort;
 namespace nxtKitInterpreter {
 namespace communication {
 
-class UsbRobotCommunicationThread : public RobotCommunicationThreadBase
+class UsbRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
 {
 	Q_OBJECT
 

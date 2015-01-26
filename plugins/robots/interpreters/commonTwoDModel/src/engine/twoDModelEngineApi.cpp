@@ -144,11 +144,20 @@ QImage TwoDModelEngineApi::printColorSensor(PortInfo const &port) const
 	painter.setPen(QPen(Qt::white));
 	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
 
-	bool const wasSelected = mView.sensorItem(port)->isSelected();
+	QGraphicsItem * const sensorItem = mView.sensorItem(port);
+	view::RobotItem * const robot = dynamic_cast<view::RobotItem *>(mView.sensorItem(port)->parentItem());
+	bool const wasSelected = sensorItem->isSelected();
+	bool const rotaterWasVisible = robot->rotater()->isVisible();
+	bool const rotaterWasSelected = robot->rotater()->isSelected();
 	mView.setSensorVisible(port, false);
+	robot->rotater()->setVisible(false);
+
 	mView.scene()->render(&painter, QRectF(), scanningRect);
+
 	mView.setSensorVisible(port, true);
 	mView.sensorItem(port)->setSelected(wasSelected);
+	robot->rotater()->setVisible(rotaterWasVisible);
+	robot->rotater()->setSelected(rotaterWasSelected);
 
 	return image;
 }

@@ -55,7 +55,8 @@ public:
 private:
 	bool openProject(QString const &fileName);
 	bool import(QString const &fileName);
-	bool saveFileExists(QString const &fileName);
+	bool saveFileExists(QString const &fileName) const;
+	QString textFileFilters() const;
 	bool pluginsEnough() const;
 	QString missingPluginNames() const;
 

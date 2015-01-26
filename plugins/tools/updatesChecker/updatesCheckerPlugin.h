@@ -28,8 +28,8 @@ private slots:
 private:
 	void initSettingsUi(qReal::gui::PreferencesPage &behaviourPage);
 
-	QAction mSeparator;
-	QAction mCheckForUpdatesAction;
+	QAction *mSeparator;
+	QAction *mCheckForUpdatesAction;
 	qReal::ErrorReporterInterface *mErrorReporter;
 	QWidget *mMainWindowWidget;
 };

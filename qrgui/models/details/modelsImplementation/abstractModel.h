@@ -49,6 +49,10 @@ public:
 
 	void reinit();
 
+signals:
+	/// Emitted each time when new element was added into model.
+	void elementAdded(Id const &id);
+
 protected:
 	EditorManagerInterface const &mEditorManagerInterface;
 	QHash<Id, AbstractModelItem *> mModelItems;

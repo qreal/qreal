@@ -1,6 +1,5 @@
 #pragma once
 
-#include <interpreterBase/blocksBase/blockParserInterface.h>
 #include <interpreterBase/blocksBase/blocksFactoryInterface.h>
 
 namespace interpreterCore {
@@ -20,7 +19,7 @@ public:
 	/// Produces the block of the given type for the given robot model.
 	/// If such type of blocks is disabled or unknown then nullptr is returned.
 	/// Transfers ownership.
-	virtual interpreterBase::blocksBase::BlockInterface *block(
+	virtual qReal::interpretation::BlockInterface *block(
 			qReal::Id const &element
 			, interpreterBase::robotModel::RobotModelInterface const &robotModel) = 0;
 

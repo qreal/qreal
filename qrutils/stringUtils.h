@@ -6,10 +6,16 @@
 
 namespace utils {
 
+/// Contains useful methods extending QString class
 class QRUTILS_EXPORT StringUtils
 {
 public:
-	static QString addIndent(QString const &code, int indent);
+	/// Splits string into a set of lines and prepends each line with
+	/// the given @arg indentString repeated @arg indent times.
+	static QString addIndent(QString const &code, int indent, QString const &indentString/* = "\t"*/);
+
+	/// Wraps the given string into double quotes and returns the result.
+	static QString wrap(QString const &string);
 };
 
 }

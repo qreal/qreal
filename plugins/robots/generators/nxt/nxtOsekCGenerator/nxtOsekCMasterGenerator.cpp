@@ -53,7 +53,7 @@ void NxtOsekCMasterGenerator::generateOilFile(QString const &projectName
 
 QString NxtOsekCMasterGenerator::generateOilTask(QString const &taskName)
 {
-	return utils::StringUtils::addIndent(readTemplate("oilTask.t").replace("@@NAME@@", taskName), 1);
+	return utils::StringUtils::addIndent(readTemplate("oilTask.t").replace("@@NAME@@", taskName), 1, "\t");
 }
 
 void NxtOsekCMasterGenerator::generateMakeFile(QString const &projectName

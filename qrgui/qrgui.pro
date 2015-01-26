@@ -29,13 +29,16 @@ mainWindow.depends = \
 	dialogs \
 	preferencesDialog \
 	textEditor \
+	mouseGestures \
 	hotKeyManager \
 	brandManager \
 	pluginManager \
+	toolPluginInterface \
 	thirdparty \
 
 models.depends = \
 	pluginManager \
+	controller \
 
 editor.depends = \
 	models \
@@ -44,6 +47,7 @@ editor.depends = \
 	brandManager \
 	pluginManager \
 	thirdparty \
+	dialogs \
 
 dialogs.depends = \
 	models \

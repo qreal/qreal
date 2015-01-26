@@ -1,0 +1,8 @@
+1. Removed lots of standard tools
+2. Placed onBooted.bat to c:/users/qreal/главное меню/Programs/Startup
+3. Placed build.sh to c:/users/qreal/
+4. Installed Github Windows client
+5. Installed Qt 5.3.2
+6. Installed winrar
+7. Installed QtIFW-1.6.0
+8. Portable git, Qt and mingw4.8.2 bin folders added to path (second one with direct slashes)

@@ -41,5 +41,3 @@ cp -pr $QT_DIR/lib/libicuuc.so*                                         $PWD/../
 cp     $QT_DIR/plugins/platforms/libqxcb.so                             $PWD/../data/platforms
 cp     $QT_DIR/plugins/imageformats/libqsvg.so                          $PWD/../data/imageformats
 cp     $QT_DIR/plugins/iconengines/libqsvgicon.so                       $PWD/../data/iconengines
-
-cp -pr /usr/lib/libstdc++.so*                                           $PWD/../data

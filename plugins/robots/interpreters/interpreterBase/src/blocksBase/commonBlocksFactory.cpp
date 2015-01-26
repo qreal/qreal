@@ -1,6 +1,7 @@
 #include "interpreterBase/blocksBase/commonBlocksFactory.h"
-#include "interpreterBase/blocksBase/block.h"
-#include "interpreterBase/blocksBase/common/emptyBlock.h"
+
+#include <interpreterBase/blocksBase/robotsBlock.h>
+#include <qrutils/interpreter/blocks/emptyBlock.h>
 
 using namespace interpreterBase::blocksBase;
 
@@ -13,15 +14,22 @@ CommonBlocksFactory::CommonBlocksFactory()
 {
 }
 
-BlockInterface *CommonBlocksFactory::block(qReal::Id const &element)
+qReal::interpretation::BlockInterface *CommonBlocksFactory::block(qReal::Id const &element)
 {
-	interpreterBase::blocksBase::Block *newBlock = produceBlock(element);
+	qReal::interpretation::Block *newBlock = blocksToDisable().contains(element.type())
+			? new qReal::interpretation::blocks::EmptyBlock
+			: produceBlock(element);
 
 	if (!newBlock) {
-		newBlock = new common::EmptyBlock;
+		newBlock = new qReal::interpretation::blocks::EmptyBlock;
 	}
 
-	newBlock->init(element, *mGraphicalModelApi, *mLogicalModelApi, mErrorReporter, *mRobotModelManager, *mParser);
+	if (RobotsBlock * const robotsBlock = dynamic_cast<RobotsBlock *>(newBlock)) {
+		robotsBlock->init(element, *mGraphicalModelApi, *mLogicalModelApi
+				, mErrorReporter, *mRobotModelManager, *mParser);
+	} else {
+		newBlock->init(element, *mGraphicalModelApi, *mLogicalModelApi, mErrorReporter, *mParser);
+	}
 
 	return newBlock;
 }

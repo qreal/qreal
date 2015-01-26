@@ -4,7 +4,6 @@
 #include <QtCore/QDir>
 
 #include <qrkernel/settingsManager.h>
-#include <qrutils/uxInfo/uxInfo.h>
 
 using namespace qReal;
 
@@ -19,9 +18,6 @@ PreferencesBehaviourPage::PreferencesBehaviourPage(QWidget *parent)
 	initLanguages();
 
 	connect(mUi->autoSaveCheckBox, SIGNAL(clicked(bool)), this, SLOT(showAutoSaveBox(bool)));
-	/// @todo: Get rid of notifying components directly
-	connect(mUi->collectErgonomicValuesCheckBox, &QAbstractButton::clicked
-			, [](bool status) { utils::UXInfo::setStatus(status); });
 	restoreSettings();
 }
 
@@ -53,18 +49,7 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("Autosave", mUi->autoSaveCheckBox->isChecked());
 	SettingsManager::setValue("AutosaveInterval", mUi->autoSaveSpinBox->value());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
-	bool const usabilityTestingMode = mUi->usabilityModeCheckBox->isChecked();
-	SettingsManager::setValue("usabilityTestingMode", usabilityTestingMode);
-	SettingsManager::setValue("collectErgonomicValues", mUi->collectErgonomicValuesCheckBox->isChecked()
-			|| usabilityTestingMode);
 	SettingsManager::setValue("touchMode", mUi->touchModeCheckBox->isChecked());
-	if (mUsabilityTestingMode != usabilityTestingMode) {
-		if (usabilityTestingMode) {
-			mUi->collectErgonomicValuesCheckBox->setChecked(true);
-		}
-
-		mUsabilityTestingMode = usabilityTestingMode;
-	}
 }
 
 void PreferencesBehaviourPage::restoreSettings()
@@ -81,16 +66,11 @@ void PreferencesBehaviourPage::restoreSettings()
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
 	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
-	mUi->collectErgonomicValuesCheckBox->setChecked(SettingsManager::value("collectErgonomicValues").toBool());
-	mUsabilityTestingMode = SettingsManager::value("usabilityTestingMode").toBool();
-	mUi->usabilityModeCheckBox->setChecked(mUsabilityTestingMode);
 	mUi->touchModeCheckBox->setChecked(SettingsManager::value("touchMode").toBool());
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
 	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
 	mUi->paletteTabCheckBox->setVisible(editorsLoadedCount != 1);
-	/// @todo: Get rid of notifying components directly
-	utils::UXInfo::setStatus(mUi->collectErgonomicValuesCheckBox->isChecked());
 }
 
 void PreferencesBehaviourPage::showAutoSaveBox(bool show)

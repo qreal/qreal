@@ -5,7 +5,7 @@
 
 using namespace utils;
 
-QString NameNormalizer::normalize(QString const &name, bool const isUpperFirst)
+QString NameNormalizer::normalize(QString const &name, bool isUpperFirst)
 {
 	QString result = name;
 	result = result.simplified().replace(" ", "_");
@@ -17,7 +17,7 @@ QString NameNormalizer::normalize(QString const &name, bool const isUpperFirst)
 	return result;
 }
 
-QString NameNormalizer::normalizeStrongly(QString const &name, bool const upperFirst)
+QString NameNormalizer::normalizeStrongly(QString const &name, bool upperFirst)
 {
 	QString filteredName;
 	foreach (QChar const &character, name) {
@@ -27,6 +27,10 @@ QString NameNormalizer::normalizeStrongly(QString const &name, bool const upperF
 		{
 			filteredName += character;
 		}
+	}
+
+	if (!name.isEmpty() && filteredName.isEmpty()) {
+		return normalizeStrongly("_" + name, upperFirst);
 	}
 
 	return russianTranslit(normalize(filteredName, upperFirst));

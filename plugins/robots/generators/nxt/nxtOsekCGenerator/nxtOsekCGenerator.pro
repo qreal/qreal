@@ -12,7 +12,7 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo \
+LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqslog -lqrutils -lqrrepo -lqscintilla2 \
 		-lrobots-generator-base -lrobots-nxt-generator-base \
 
 INCLUDEPATH += \

@@ -16,10 +16,9 @@ TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterBas
 SOURCES += \
 	$$PWD/src/devicesConfigurationProvider.cpp \
 	$$PWD/src/devicesConfigurationWidget.cpp \
-	$$PWD/src/blocksBase/block.cpp \
+	$$PWD/src/blocksBase/robotsBlock.cpp \
 	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
 	$$PWD/src/blocksBase/common/clearEncoderBlock.cpp \
-	$$PWD/src/blocksBase/common/emptyBlock.cpp \
 	$$PWD/src/blocksBase/common/engineCommandBlock.cpp \
 	$$PWD/src/blocksBase/common/enginesStopBlock.cpp \
 	$$PWD/src/blocksBase/common/waitBlock.cpp \
@@ -70,14 +69,10 @@ HEADERS += \
 	$$PWD/include/interpreterBase/devicesConfigurationWidget.h \
 	$$PWD/include/interpreterBase/eventsForKitPluginInterface.h \
 	$$PWD/include/interpreterBase/interpreterControlInterface.h \
-	$$PWD/include/interpreterBase/blocksBase/block.h \
-	$$PWD/include/interpreterBase/blocksBase/blockInterface.h \
-	$$PWD/include/interpreterBase/blocksBase/blockParserInterface.h \
-	$$PWD/include/interpreterBase/blocksBase/blocksTableInterface.h \
+	$$PWD/include/interpreterBase/blocksBase/robotsBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/blocksFactoryInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/commonBlocksFactory.h \
 	$$PWD/include/interpreterBase/blocksBase/common/clearEncoderBlock.h \
-	$$PWD/include/interpreterBase/blocksBase/common/emptyBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/engineCommandBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/enginesStopBlock.h \
 	$$PWD/include/interpreterBase/blocksBase/common/deviceBlock.h \

@@ -41,9 +41,9 @@ void BlocksTableTest::SetUp()
 TEST_F(BlocksTableTest, blocksCreation)
 {
 	BlocksTable table(mBlocksFactoryManager, mModelManager);
-	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
+	qReal::interpretation::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
 	ASSERT_NE(nullptr, block1);
 	ASSERT_EQ(block1, block2);
 	ASSERT_NE(nullptr, block3);
@@ -53,9 +53,9 @@ TEST_F(BlocksTableTest, blocksCreation)
 TEST_F(BlocksTableTest, clear)
 {
 	BlocksTable table(mBlocksFactoryManager, mModelManager);
-	interpreterBase::blocksBase::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
+	qReal::interpretation::BlockInterface *block1 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block2 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block3 = table.block(qReal::Id("a", "b", "c", "e"));
 	ASSERT_NE(nullptr, block1);
 	ASSERT_EQ(block1, block2);
 	ASSERT_NE(nullptr, block3);
@@ -65,9 +65,9 @@ TEST_F(BlocksTableTest, clear)
 	ASSERT_EQ(QString("block1"), block1->objectName());
 	ASSERT_EQ(QString("block3"), block3->objectName());
 	table.clear();
-	interpreterBase::blocksBase::BlockInterface *block4 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block5 = table.block(qReal::Id("a", "b", "c", "d"));
-	interpreterBase::blocksBase::BlockInterface *block6 = table.block(qReal::Id("a", "b", "c", "e"));
+	qReal::interpretation::BlockInterface *block4 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block5 = table.block(qReal::Id("a", "b", "c", "d"));
+	qReal::interpretation::BlockInterface *block6 = table.block(qReal::Id("a", "b", "c", "e"));
 	ASSERT_NE(nullptr, block4);
 	ASSERT_EQ(block4, block5);
 	ASSERT_NE(nullptr, block6);

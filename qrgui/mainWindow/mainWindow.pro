@@ -31,7 +31,7 @@ TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
 }
 
 HEADERS += \
-	$$PWD/qRealApplication.h \
+	$$PWD/qrealApplication.h \
 	$$PWD/mainWindow.h \
 	$$PWD/errorReporter.h \
 	$$PWD/error.h \
@@ -45,7 +45,6 @@ HEADERS += \
 	$$PWD/miniMap.h \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
-	$$PWD/filterObject.h \
 	$$PWD/projectManager/autosaver.h \
 	$$PWD/projectManager/projectManagementInterface.h \
 	$$PWD/projectManager/projectManager.h \
@@ -61,7 +60,7 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/main.cpp \
-	$$PWD/qRealApplication.cpp \
+	$$PWD/qrealApplication.cpp \
 	$$PWD/mainWindow.cpp \
 	$$PWD/errorReporter.cpp \
 	$$PWD/error.cpp \
@@ -73,7 +72,6 @@ SOURCES += \
 	$$PWD/miniMap.cpp \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
-	$$PWD/filterObject.cpp \
 	$$PWD/projectManager/autosaver.cpp \
 	$$PWD/projectManager/projectManager.cpp \
 	$$PWD/projectManager/versionsConverterManager.cpp \

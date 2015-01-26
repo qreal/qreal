@@ -2,19 +2,27 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/blocksBase/common/deviceBlock.h" line="31"/>
+        <source>%1 is not configured.</source>
+        <translation>%1 не сконфигурирован.</translation>
+    </message>
+</context>
+<context>
     <name>interpreterBase::DevicesConfigurationWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="83"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="82"/>
         <source>Port %1:</source>
         <translation>Порт %1:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="83"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="82"/>
         <source>%1:</source>
         <translation>%1:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="89"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/devicesConfigurationWidget.cpp" line="88"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
@@ -22,32 +30,27 @@
 <context>
     <name>interpreterBase::blocksBase::Block</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/block.cpp" line="39"/>
         <source>Control flow break detected, stopping</source>
-        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
+        <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/block.cpp" line="46"/>
         <source>Too many outgoing links</source>
-        <translation>Слишком много исходящих связей</translation>
+        <translation type="vanished">Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/block.cpp" line="51"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
-        <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
+        <translation type="vanished">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/src/blocksBase/block.cpp" line="58"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
 </context>
 <context>
     <name>interpreterBase::blocksBase::common::DeviceBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterBase/include/interpreterBase/blocksBase/common/deviceBlock.h" line="31"/>
         <source>%1 is not configured.</source>
-        <translation>%1 не сконфигурирован.</translation>
+        <translation type="vanished">%1 не сконфигурирован.</translation>
     </message>
 </context>
 <context>

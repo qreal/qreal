@@ -1,6 +1,6 @@
 #pragma once
 
-#include "interpreterBase/blocksBase/block.h"
+#include "interpreterBase/blocksBase/robotsBlock.h"
 #include "interpreterBase/robotModel/robotModelInterface.h"
 #include "interpreterBase/robotModel/robotModelUtils.h"
 
@@ -12,7 +12,7 @@ namespace common {
 /// perform search of some device of the given type and call doJob() from it if it was found
 /// or display an error otherwise.
 template<typename Device>
-class DeviceBlock : public interpreterBase::blocksBase::Block
+class DeviceBlock : public RobotsBlock
 {
 public:
 	explicit DeviceBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
@@ -28,7 +28,7 @@ public:
 		if (device) {
 			doJob(*device);
 		} else {
-			error(tr("%1 is not configured.").arg(deviceInfo.friendlyName()));
+			error(QObject::tr("%1 is not configured.").arg(deviceInfo.friendlyName()));
 		}
 	}
 

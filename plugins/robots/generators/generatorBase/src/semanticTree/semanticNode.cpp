@@ -33,12 +33,12 @@ void SemanticNode::addLabel()
 	mLabeled = true;
 }
 
-QString SemanticNode::toString(GeneratorCustomizer &customizer, int indent) const
+QString SemanticNode::toString(GeneratorCustomizer &customizer, int indent, QString const &indentString) const
 {
 	return (mLabeled
 			? utils::StringUtils::addIndent(customizer.factory()->labelGenerator(mId
-					, customizer)->generate(), indent) + "\n"
-			: QString()) + toStringImpl(customizer, indent);
+					, customizer)->generate(), indent, indentString) + "\n"
+			: QString()) + toStringImpl(customizer, indent, indentString);
 }
 
 SemanticNode *SemanticNode::findNodeFor(Id const &id)

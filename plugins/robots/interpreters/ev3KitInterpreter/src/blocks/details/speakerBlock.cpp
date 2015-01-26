@@ -9,26 +9,17 @@ using namespace ev3KitInterpreter::blocks::details;
 using namespace interpreterBase::robotModel;
 
 SpeakerBlock::SpeakerBlock(RobotModelInterface &robotModel)
-	: mRobotModel(robotModel)
+	: interpreterBase::blocksBase::common::DeviceBlock<robotModel::parts::Ev3Speaker>(robotModel)
 	, mTimer(robotModel.timeline().produceTimer())
 {
 	mTimer->setParent(this);
 	connect(mTimer, &utils::AbstractTimer::timeout, this, &SpeakerBlock::timeout);
 }
 
-SpeakerBlock::~SpeakerBlock()
-{
-}
-
 void SpeakerBlock::run()
 {
-	QString const port = "SpeakerPort";
-	robotModel::parts::Ev3Speaker * const speaker
-		= RobotModelUtils::findDevice<robotModel::parts::Ev3Speaker>(mRobotModel, port);
-	if (speaker) {
-		doJob(*speaker);
-	} else {
-		error(tr("Speaker is not configured (WTF?)"));
+	DeviceBlock::run();
+	if (errorsOccured()) {
 		return;
 	}
 

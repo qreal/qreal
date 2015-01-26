@@ -7,12 +7,12 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrutils/watchListWindow.h>
+#include <qrutils/interpreter/thread.h>
 #include <qrtext/languageToolboxInterface.h>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 
-#include "details/thread.h"
 #include "details/blocksTable.h"
 #include "details/sensorVariablesUpdater.h"
 #include "details/autoconfigurer.h"
@@ -76,7 +76,7 @@ private:
 		, idle
 	};
 
-	void addThread(details::Thread * const thread);
+	void addThread(qReal::interpretation::Thread * const thread);
 
 	void reportError(QString const &message);
 
@@ -86,7 +86,7 @@ private:
 
 	InterpreterState mState;
 	quint64 mInterpretationStartedTimestamp;
-	QList<details::Thread *> mThreads;  // Has ownership
+	QList<qReal::interpretation::Thread *> mThreads;  // Has ownership
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
 

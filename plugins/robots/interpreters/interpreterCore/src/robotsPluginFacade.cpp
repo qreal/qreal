@@ -6,7 +6,6 @@
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "managers/paletteUpdateManager.h"
 #include "managers/kitAutoSwitcher.h"
-#include "managers/kitExtensionsUpdateManager.h"
 
 using namespace interpreterCore;
 
@@ -82,11 +81,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, paletteUpdateManager, &PaletteUpdateManager::updatePalette);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
-
-	auto kitExtensionsUpdateManager = new KitExtensionsUpdateManager(mKitPluginManager
-			, configurer.textManager(), this);
-	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, kitExtensionsUpdateManager, &KitExtensionsUpdateManager::updateExtensions);
 
 	// It will subscribe to all signals itself and free memory too.
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
@@ -194,6 +188,18 @@ void RobotsPluginFacade::initSensorWidgets()
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, hideVariables);
 
 	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, this);
+	connect(mInterpreter, &interpreter::InterpreterInterface::started
+			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStart);
+	connect(mInterpreter, &interpreter::InterpreterInterface::stopped
+			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStop);
+	connect(mInterpreter, &interpreter::InterpreterInterface::started, mGraphicsWatcherManager, [=]() {
+		mActionsManager.runAction().setVisible(false);
+		mActionsManager.stopRobotAction().setVisible(true);
+	});
+	connect(mInterpreter, &interpreter::InterpreterInterface::stopped, mGraphicsWatcherManager, [=]() {
+		mActionsManager.runAction().setVisible(true);
+		mActionsManager.stopRobotAction().setVisible(false);
+	});
 
 	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);
 	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());

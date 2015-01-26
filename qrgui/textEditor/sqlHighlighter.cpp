@@ -1,6 +1,10 @@
 #include "sqlHighlighter.h"
 
-SQLHighlighter::SQLHighlighter(QTextDocument *document): QSyntaxHighlighter(document)
+using namespace qReal;
+using namespace text;
+
+SQLHighlighter::SQLHighlighter(QTextDocument *document)
+	: QSyntaxHighlighter(document)
 {
 	HighlightingRule rule;
 

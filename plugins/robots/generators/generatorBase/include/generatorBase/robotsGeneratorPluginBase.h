@@ -3,6 +3,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/textEditor/languageInfo.h>
 #include <qrrepo/repoApi.h>
 
 #include "generatorKitPluginInterface.h"
@@ -47,10 +48,12 @@ protected:
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo) = 0;
 	QFileInfo srcPath();
 	virtual QString defaultFilePath(QString const &project) const;
-	QString extension() const override;
-	QString extensionDescription() const override;
 	QFileInfo generateCodeForProcessing();
 	QString generatorName() const override;
+
+	/// Returns an information about the language code on which will be generated;
+	/// this information will be used by text editors when user will be edit the generated code.
+	virtual qReal::text::LanguageInfo language() const = 0;
 
 	/// Returns default name for generated file.
 	virtual QString defaultProjectName() const;

@@ -74,6 +74,10 @@ public:
 	/// Clears the state of semantic analyzer, forgetting known identifiers and expression types.
 	virtual void clear();
 
+	/// Forgets types of an expression and all subexpressions, used when corresponding text is reparsed. Does not forget
+	/// types of identifiers declared there.
+	void forget(QSharedPointer<ast::Node> const &root);
+
 protected:
 	/// Assigns given type to given expression.
 	void assign(QSharedPointer<ast::Node> const &expression, QSharedPointer<types::TypeExpression> const &type);

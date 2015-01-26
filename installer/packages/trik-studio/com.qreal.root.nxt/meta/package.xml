@@ -4,17 +4,11 @@
     <DisplayName xml:lang="ru_ru">Поддержка Lego NXT</DisplayName>
     <Description>Install it for working with Lego NXT in Trik Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором Lego NXT</Description>
-    <Version>3.0.0-2-2</Version>
-    <ReleaseDate>2014-10-31</ReleaseDate>
+    <Version>3.0.0-4</Version>
+    <ReleaseDate>2015-01-16</ReleaseDate>
     <Licenses>
         <License name="QextSerialPort Component License" file="QextSerialPort-license.txt" />
     </Licenses>
-    <!--<Translations>
-        <Translation>sv_se.qm</Translation>
-        <Translation>de_de.qm</Translation>
-    </Translations> -->
-    <!-- <DownloadableArchives>component2.7z, component2a.7z</DownloadableArchives> -->
-    <!-- <UpdateText>This changed compared to the last release</UpdateText> -->
     <SortingPriority>9</SortingPriority>
     <Default>true</Default>
     <ForcedInstallation>false</ForcedInstallation>

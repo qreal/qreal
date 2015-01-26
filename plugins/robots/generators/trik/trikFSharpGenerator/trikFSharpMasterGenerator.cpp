@@ -24,8 +24,3 @@ bool TrikFSharpMasterGenerator::supportsGotoGeneration() const
 {
 	return false;
 }
-
-void TrikFSharpMasterGenerator::processGeneratedCode(QString &code)
-{
-	code.replace('\t', "    ");
-}

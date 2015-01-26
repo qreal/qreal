@@ -221,10 +221,10 @@ void PaletteTreeWidgets::refreshUserPalette()
 {
 	QList<QPair<QString, QList<gui::PaletteElement>>> groups;
 	QMap<QString, QString> descriptions = { { mUserGroupTitle, mUserGroupDescription } };
+	QList<gui::PaletteElement> groupElements;
 
 	QMultiMap<Id, Id> const types = mMainWindow->models()->exploser().explosions(mDiagram);
-	for (Id const &source : types.keys()) {
-		QList<gui::PaletteElement> groupElements;
+	for (Id const &source : types.uniqueKeys()) {
 		for (Id const &target : types.values(source)) {
 			groupElements << gui::PaletteElement(source
 					, mMainWindow->models()->logicalRepoApi().name(target)
@@ -232,7 +232,9 @@ void PaletteTreeWidgets::refreshUserPalette()
 					, mEditorManager->iconSize(source)
 					, target);
 		}
+	}
 
+	if (!groupElements.isEmpty()) {
 		groups << qMakePair(mUserGroupTitle, groupElements);
 	}
 

@@ -16,18 +16,12 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 	, mStopRobotAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr)
 	, mConnectToRobotAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr)
 	, mRobotSettingsAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), nullptr)
-	, mTitlesAction(QObject::tr("Text under pictogram"), nullptr)
 	, mSeparator1(nullptr)
 	, mSeparator2(nullptr)
 {
 	initKitPluginActions();
 
 	mConnectToRobotAction.setCheckable(true);
-
-	mTitlesAction.setCheckable(true);
-	mTitlesAction.setChecked(!qReal::SettingsManager::value("hideNonHardLabels").toBool());
-	connect(&mTitlesAction, &QAction::triggered
-			, [](bool checked) { qReal::SettingsManager::setValue("hideNonHardLabels", !checked); });
 
 	mSeparator1.setSeparator(true);
 	mSeparator2.setSeparator(true);
@@ -37,7 +31,6 @@ ActionsManager::ActionsManager(KitPluginManager &kitPluginManager, RobotModelMan
 			<< &mRunAction
 			<< &mStopRobotAction
 			<< &mRobotSettingsAction
-			<< &mTitlesAction
 			;
 }
 
@@ -58,7 +51,6 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 
 	result << qReal::ActionInfo(&mSeparator2, "interpreters", "tools")
 			<< qReal::ActionInfo(&mRobotSettingsAction, "interpreters", "tools")
-			<< qReal::ActionInfo(&mTitlesAction, "", "settings")
 			;
 
 	return result;
@@ -68,7 +60,6 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 {
 	mStopRobotAction.setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 	mRunAction.setShortcut(QKeySequence(Qt::Key_F5));
-	mTitlesAction.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_T));
 
 	QList<qReal::HotKeyActionInfo> result;
 
@@ -77,9 +68,6 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 	result
 			<< qReal::HotKeyActionInfo("Interpreter.Run", QObject::tr("Run interpreter"), &mRunAction)
 			<< qReal::HotKeyActionInfo("Interpreter.Stop", QObject::tr("Stop interpreter"), &mStopRobotAction)
-
-			/// @todo Move it into engine
-			<< qReal::HotKeyActionInfo("Editor.ToggleTitles", QObject::tr("Toggle titles visibility"), &mTitlesAction)
 			;
 
 	return result;
@@ -105,11 +93,6 @@ void ActionsManager::init(qReal::gui::MainWindowInterpretersInterface *mainWindo
 	mMainWindowInterpretersInterface = mainWindowInterpretersInterface;
 
 	updateEnabledActions();
-}
-
-QAction &ActionsManager::titlesVisibilityAction()
-{
-	return mTitlesAction;
 }
 
 QAction &ActionsManager::robotSettingsAction()

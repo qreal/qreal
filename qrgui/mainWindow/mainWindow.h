@@ -16,7 +16,6 @@
 #include "referenceList.h"
 #include "projectManager/projectManager.h"
 #include "tabWidget.h"
-#include "filterObject.h"
 #include "startWidget/startWidget.h"
 
 #include "plugins/pluginManager/editorManagerInterface.h"
@@ -44,7 +43,6 @@ namespace qReal {
 
 class EditorView;
 class SceneCustomizer;
-class TextManager;
 
 namespace models {
 class Models;
@@ -53,6 +51,10 @@ class Models;
 namespace gui {
 class ErrorReporter;
 class PaletteTree;
+}
+
+namespace text {
+class TextManager;
 }
 
 class MainWindow : public QMainWindow
@@ -232,8 +234,8 @@ private slots:
 
 	void initSettingsManager();
 	void connectActions();
+	void connectSystemEvents();
 	void initActionsFromSettings();
-	void connectActionsForUXInfo();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
@@ -256,10 +258,6 @@ private slots:
 
 	void updatePaletteIcons();
 	void setTextChanged(bool changed);
-
-	void setUsabilityMode(bool mode);
-	void startUsabilityTest();
-	void finishUsabilityTest();
 
 private:
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
@@ -357,7 +355,7 @@ private:
 	InterpretedPluginsLoader mInterpretedPluginLoader;
 	PropertyEditorModel mPropertyModel;
 	SystemEvents *mSystemEvents;
-	TextManager *mTextManager;
+	text::TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;
 
@@ -383,17 +381,12 @@ private:
 	ProjectManager *mProjectManager;
 	StartWidget *mStartWidget;
 
-	FilterObject *mFilterObject; // Has ownership
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 	QMap<QWidget *, int> mLastTabBarIndexes;
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
-
-	QToolBar *mUsabilityTestingToolbar; // Has ownership
-	QAction *mStartTest; // Has ownership
-	QAction *mFinishTest; // Has ownership
 };
 
 }
