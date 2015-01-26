@@ -107,8 +107,7 @@ void PrimaryControlFlowValidator::visitConditional(Id const &id
 
 		default:
 			if (nonMarkedLink) {
-				error(QObject::tr("There must be a link with property \"Guard\""\
-						" set to one of the conditions"), id);
+				error(QObject::tr("There must be at least one link with \"true\" or \"false\" marker on it"), id);
 				return;
 			} else {
 				nonMarkedLink = &link;
@@ -159,8 +158,7 @@ void PrimaryControlFlowValidator::visitLoop(Id const &id
 			break;
 		default:
 			if (nonMarkedBlock) {
-				error(QObject::tr("There must be a link with property \"Guard\""\
-						" set to \"iteration\""), id);
+				error(QObject::tr("There must be a link with \"iteration\" marker on it"), id);
 				return;
 			} else {
 				nonMarkedBlock = &link;
@@ -193,7 +191,7 @@ void PrimaryControlFlowValidator::visitSwitch(Id const &id
 		QString const condition = mRepo.property(link.linkId, "Guard").toString();
 		if (condition.isEmpty()) {
 			if (defaultBranchFound) {
-				error(QObject::tr("There must be exactly one link with empty 'Guard' property (default branch)."), id);
+				error(QObject::tr("There must be exactly one link without marker on it (default branch)"), id);
 				return;
 			} else {
 				defaultBranchFound = true;
@@ -209,7 +207,7 @@ void PrimaryControlFlowValidator::visitSwitch(Id const &id
 	}
 
 	if (!defaultBranchFound) {
-		error(QObject::tr("There must be a link with empty 'Guard' property (default branch)."), id);
+		error(QObject::tr("There must be a link without marker on it (default branch)"), id);
 	}
 }
 
@@ -235,6 +233,7 @@ void PrimaryControlFlowValidator::visitUnknown(Id const &id
 void PrimaryControlFlowValidator::error(QString const &message, qReal::Id const &id)
 {
 	mErrorReporter.addError(message, id);
+
 	// Returns false for possibility of one-line 'return error(...);'
 	mErrorsOccured = true;
 }

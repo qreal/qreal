@@ -7,7 +7,6 @@
 
 #include <qrkernel/logging.h>
 #include <qrkernel/platformInfo.h>
-#include <qrutils/uxInfo/uxInfo.h>
 
 #include "mainWindow/mainWindow.h"
 #include "thirdparty/windowsmodernstyle.h"
@@ -63,7 +62,6 @@ void initLogging()
 
 int main(int argc, char *argv[])
 {
-	QDateTime const startedTime = QDateTime::currentDateTime();
 	QRealApplication app(argc, argv);
 
 	qsrand(time(0));
@@ -107,9 +105,6 @@ int main(int argc, char *argv[])
 		exitCode = app.exec();
 	}
 
-	QDateTime const currentTime = QDateTime::currentDateTime();
-	QString const totalTime = QString::number(static_cast<qlonglong>(startedTime.secsTo(currentTime)));
-	utils::UXInfo::reportTotalTime(totalTime, exitCode);
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";
 	return exitCode;
 }

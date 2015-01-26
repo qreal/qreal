@@ -3,7 +3,9 @@
 #include <QtCore/QEvent>
 #include <QtWidgets/QAction>
 
-#include "qrutils/uxInfo/uxInfo.h"
+#include "uxInfo.h"
+
+using namespace uxInfo;
 
 FilterObject::FilterObject(QObject *parent)
 	: QObject(parent)
@@ -21,7 +23,7 @@ void FilterObject::triggeredActionActivated()
 {
 	QAction* const action = static_cast<QAction* const>(sender());
 	if (action) {
-		utils::UXInfo::reportMenuElements(action->text());
+		UXInfo::reportMenuElements(action->text());
 	}
 }
 
@@ -31,21 +33,21 @@ void FilterObject::toggledActionActivated(bool status)
 	QAction* const action = static_cast<QAction* const>(sender());
 	if (action) {
 		QString const statusForUStatistics = "status change on: " + statusText;
-		utils::UXInfo::reportMenuElements(action->text(), statusForUStatistics);
+		UXInfo::reportMenuElements(action->text(), statusForUStatistics);
 	}
 }
 
 void FilterObject::setStatusCollectUsabilityStatistics(bool status)
 {
-	 utils::UXInfo::setStatus(status);
+	UXInfo::setStatus(status);
 }
 
 void FilterObject::reportTestStarted()
 {
-	utils::UXInfo::reportTestStarted();
+	UXInfo::reportTestStarted();
 }
 
 void FilterObject::reportTestFinished()
 {
-	utils::UXInfo::reportTestFinished();
+	UXInfo::reportTestFinished();
 }

@@ -4,13 +4,11 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QDateTime>
 
-#include <qrutils/utilsDeclSpec.h>
-
-namespace utils {
+namespace uxInfo {
 
 /// Singleton class for collecting user experience information about setting changes,
 /// click coordinates, diagram element creation and others.
-class QRUTILS_EXPORT UXInfo : public QObject
+class UXInfo : public QObject
 {
 	Q_OBJECT
 
@@ -33,8 +31,7 @@ public:
 
 	/// Add to ux files record about total time of current session.
 	/// @param totalTime total session time.
-	/// @param exitCode exit code of application.
-	static void reportTotalTime(QString const &totalTime, int const &exitCode);
+	static void reportTotalTime(QString const &totalTime);
 
 	/// Add to ux files record about using menu elements.
 	/// @param elementName name of menu element.
@@ -71,7 +68,7 @@ private:
 	void reportCreationOfElements(QString const &editorName, QString const elementName);
 	void reportErrorsOfElements(QString const &type, QString const &editorName, QString const &elementName,
 			QString const &message);
-	void reportTotalTimeOfExec(QString const &totalTime, int const &exitCode);
+	void reportTotalTimeOfExec(QString const &totalTime);
 	void reportMenuElementsUsing(QString const &elementName, QString const &status = "none");
 	void reportMouseClickPosition(QPoint const &pos);
 	void reportSettingsChangesInfo(const QString &name, const QString &oldValue, const QString &newValue);

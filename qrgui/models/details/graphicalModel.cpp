@@ -120,6 +120,7 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 	}
 
 	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
+	emit elementAdded(id);
 }
 
 void GraphicalModel::initializeElement(const Id &id, const Id &logicalId

@@ -49,7 +49,7 @@ bool IfBlock::initNextBlocks()
 			if (nonMarkedBlockId.isNull()) {
 				nonMarkedBlockId = targetBlockId;
 			} else {
-				error(tr("There must be a link with property \"Guard\" set to one of the conditions"));
+				error(tr("There must be at least one link with \"true\" or \"false\" marker on it"));
 				return false;
 			}
 		}

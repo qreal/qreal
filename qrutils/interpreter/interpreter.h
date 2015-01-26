@@ -16,7 +16,7 @@ namespace interpretation {
 
 /// Interprets behavioural diagram by sequential executing blocks.
 /// It is the main class for diagrams interpretation subsystem.
-class Interpreter : public QObject
+class QRUTILS_EXPORT Interpreter : public QObject
 {
 	Q_OBJECT
 

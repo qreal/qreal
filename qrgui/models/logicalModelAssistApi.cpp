@@ -8,10 +8,11 @@ using namespace models::details;
 
 LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
 		, EditorManagerInterface const &editorManagerInterface)
-		: mModelsAssistApi(logicalModel, editorManagerInterface)
-		, mLogicalModel(logicalModel)
-		, mEditorManager(editorManagerInterface)
+	: mModelsAssistApi(logicalModel, editorManagerInterface)
+	, mLogicalModel(logicalModel)
+	, mEditorManager(editorManagerInterface)
 {
+	connect(&logicalModel, &LogicalModel::elementAdded, this, &LogicalModelAssistApi::elementAdded);
 }
 
 LogicalModelAssistApi::~LogicalModelAssistApi()

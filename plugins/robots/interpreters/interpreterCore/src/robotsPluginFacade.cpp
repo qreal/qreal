@@ -193,6 +193,14 @@ void RobotsPluginFacade::initSensorWidgets()
 			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStart);
 	connect(mInterpreter, &interpreter::InterpreterInterface::stopped
 			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStop);
+	connect(mInterpreter, &interpreter::InterpreterInterface::started, mGraphicsWatcherManager, [=]() {
+		mActionsManager.runAction().setVisible(false);
+		mActionsManager.stopRobotAction().setVisible(true);
+	});
+	connect(mInterpreter, &interpreter::InterpreterInterface::stopped, mGraphicsWatcherManager, [=]() {
+		mActionsManager.runAction().setVisible(true);
+		mActionsManager.stopRobotAction().setVisible(false);
+	});
 
 	mCustomizer.placeDevicesConfig(mDockDevicesConfigurer);
 	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());

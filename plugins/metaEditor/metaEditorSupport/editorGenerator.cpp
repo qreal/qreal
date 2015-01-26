@@ -199,6 +199,9 @@ void EditorGenerator::createDiagrams(QDomElement &parent, Id const &id)
 			QDomElement diagram = mDocument.createElement("diagram");
 			ensureCorrectness(typeElement, diagram, "name", mApi.name(typeElement));
 			ensureCorrectness(typeElement, diagram, "displayedName", mApi.stringProperty(typeElement, "displayedName"));
+
+			QString const rootNode = mApi.stringProperty(typeElement, "nodeName");
+			checkRootNodeValid(typeElement, rootNode);
 			ensureCorrectness(typeElement, diagram, "nodeName", mApi.stringProperty(typeElement, "nodeName"));
 			parent.appendChild(diagram);
 			serializeObjects(diagram, typeElement);
@@ -697,4 +700,23 @@ bool EditorGenerator::findPort(QString const &name) const
 	}
 
 	return false;
+}
+
+void EditorGenerator::checkRootNodeValid(Id const &diagram, QString const rootNode)
+{
+	for (Id const &child : mApi.children(diagram)) {
+		if (child.element() == "MetaEntityNode" && mApi.name(child) == rootNode) {
+			if (!mApi.hasProperty(child, "shape") || mApi.stringProperty(child, "shape").isEmpty()) {
+				mErrorReporter.addError(
+						QObject::tr("Root node for diagram %1 (which is %2) shall not be abstract "
+									"(i.e. have 'shape' property)")
+						.arg(mApi.name(diagram)).arg(rootNode), diagram);
+			}
+
+			return;
+		}
+	}
+
+	mErrorReporter.addError(QObject::tr("Root node for diagram %1 (which is %2) shall exist")
+			.arg(mApi.name(diagram)).arg(rootNode), diagram);
 }

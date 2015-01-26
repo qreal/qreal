@@ -56,6 +56,8 @@ private:
 	static QString calculateRelativePath(QString const &pathOne, QString const &pathTwo);
 	static void generateTranslations(QString const &path, QString const &name, QString const &qrealRoot);
 
+	void checkRootNodeValid(qReal::Id const &diagram, QString const rootNode);
+
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;
 	QString mErrorText;

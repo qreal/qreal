@@ -10,12 +10,13 @@
 
 #include <qrutils/interpreter/blockInterface.h>
 #include <qrutils/interpreter/blocksTableInterface.h>
+#include <qrutils/utilsDeclSpec.h>
 
 namespace qReal {
 namespace interpretation {
 
 /// Program execution thread. Has currently executed block, and its own stack.
-class Thread : public QObject
+class QRUTILS_EXPORT Thread : public QObject
 {
 	Q_OBJECT
 

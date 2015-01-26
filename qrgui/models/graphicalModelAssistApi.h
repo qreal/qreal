@@ -134,6 +134,9 @@ public:
 signals:
 	void nameChanged(Id const &id);
 
+	/// Emitted each time when new element was added into the graphical model.
+	void elementAdded(Id const &id);
+
 private:
 	GraphicalModelAssistApi(GraphicalModelAssistApi const &);
 	GraphicalModelAssistApi& operator =(GraphicalModelAssistApi const &);
