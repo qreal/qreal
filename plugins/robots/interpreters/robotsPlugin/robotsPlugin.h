@@ -4,10 +4,8 @@
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 
-#include "ui/robotsSettingsPage.h"
-
-#include "robotsPluginFacade.h"
-#include "managers/actionsManager.h"
+#include <interpreterCore/robotsPluginFacade.h>
+#include <interpreterCore/managers/actionsManager.h>
 
 namespace interpreterCore {
 

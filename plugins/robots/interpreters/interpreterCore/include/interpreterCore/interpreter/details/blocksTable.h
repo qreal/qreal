@@ -3,7 +3,7 @@
 #include <qrutils/interpreter/blocksTableBase.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
-#include "src/managers/blocksFactoryManagerInterface.h"
+#include "interpreterCore/managers/blocksFactoryManagerInterface.h"
 
 namespace interpreterCore {
 namespace interpreter {

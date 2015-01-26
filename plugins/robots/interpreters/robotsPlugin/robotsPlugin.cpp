@@ -3,10 +3,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
-#include <commonTwoDModel/engine/twoDModelControlInterface.h>
-#include <utils/abstractTimer.h>
-
-#include "managers/saveConvertionManager.h"
+#include <interpreterCore/managers/saveConvertionManager.h>
 
 using namespace qReal;
 using namespace interpreterCore;

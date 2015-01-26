@@ -1,11 +1,9 @@
 #pragma once
 
-#include <QtCore/QObject>
-
 #include <interpreterBase/robotModel/robotModelInterface.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
-#include "src/defaultRobotModel.h"
+#include "interpreterCore/defaultRobotModel.h"
 
 namespace interpreterCore {
 

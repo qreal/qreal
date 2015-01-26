@@ -5,7 +5,7 @@
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
-#include "textLanguage/robotsBlockParser.h"
+#include "interpreterCore/textLanguage/robotsBlockParser.h"
 
 namespace utils {
 class AbstractTimer;

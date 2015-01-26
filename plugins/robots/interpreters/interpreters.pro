@@ -8,6 +8,7 @@ SUBDIRS = \
 	trikKitInterpreter \
 	ev3KitInterpreter \
 	commonTwoDModel \
+	robotsPlugin \
 	twoDModelRunner \
 
 interpreterCore.depends = commonTwoDModel
@@ -16,4 +17,5 @@ nxtKitInterpreter.depends = commonTwoDModel
 trikKitInterpreter.depends = commonTwoDModel
 ev3KitInterpreter.depends = interpreterBase
 commonTwoDModel.depends = interpreterBase
-twoDModelRunner.depends = commonTwoDModel
+robotsPlugin.depends = interpreterCore
+twoDModelRunner.depends = interpreterCore

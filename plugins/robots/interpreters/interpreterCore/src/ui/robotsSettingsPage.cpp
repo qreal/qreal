@@ -8,7 +8,8 @@
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
 #include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/robotModel/robotModelUtils.h>
-#include "managers/robotModelManager.h"
+
+#include "interpreterCore/managers/robotModelManager.h"
 
 using namespace interpreterCore::ui;
 using namespace interpreterBase;

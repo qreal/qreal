@@ -8,8 +8,8 @@
 #include <qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h>
 #include <qrgui/mainWindow/mainWindowInterpretersInterface.h>
 
-#include "kitPluginManager.h"
-#include "managers/robotModelManager.h"
+#include "interpreterCore/managers/kitPluginManager.h"
+#include "interpreterCore/managers/robotModelManager.h"
 
 namespace interpreterCore {
 
