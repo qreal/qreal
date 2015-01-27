@@ -13,7 +13,9 @@
 #include "qrtext/core/parser/operators/concatenationParser.h"
 #include "qrtext/core/parser/operators/optionalParser.h"
 #include "qrtext/core/parser/operators/kleeneStarParser.h"
+#include "qrtext/core/parser/operators/namedParser.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
 #include "qrtext/core/parser/utils/functionTraits.h"
 
 namespace qrtext {
@@ -98,7 +100,7 @@ inline ParserRef<TokenType> operator & (TokenType const &token1, TokenType const
 template<typename TokenType>
 inline ParserRef<TokenType> operator - (TokenType const &token)
 {
-	return token >> [] { return new TemporaryDiscardableNode(); };
+	return token >> [] () { return new TemporaryDiscardableNode(); };
 }
 
 /// Operator to discard a result of parser, used to ignore entire subtree. Connections from ignored subtree
@@ -107,10 +109,20 @@ template<typename TokenType>
 inline ParserRef<TokenType> operator - (ParserRef<TokenType> const &parser)
 {
 	return parser >> [] (QSharedPointer<ast::Node> node) {
-			Q_UNUSED(node);
-			return wrap(new TemporaryDiscardableNode());
+			if (node->is<TemporaryErrorNode>()) {
+				return node;
+			} else {
+				return wrap(new TemporaryDiscardableNode());
+			}
 	};
 }
+
+template<typename TokenType>
+inline ParserRef<TokenType> operator /= (const ParserRef<TokenType> &a, const QString &name)
+{
+	return ParserRef<TokenType>(new NamedParser<TokenType>(a, name));
+}
+
 
 }
 }

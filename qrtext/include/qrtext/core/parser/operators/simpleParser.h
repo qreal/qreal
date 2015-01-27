@@ -1,6 +1,7 @@
 #pragma once
 
 #include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
 
 namespace qrtext {
 namespace core {
@@ -24,12 +25,14 @@ public:
 
 		Token<TokenType> const token = tokenStream.next();
 		if (!tokenStream.expect(mToken)) {
-			return wrap(nullptr);
+			return wrap(new TemporaryErrorNode());
 		}
 
 		auto const node = wrap(mSemanticAction());
 		if (node) {
 			node->connect(token);
+		} else {
+			Q_ASSERT(false);
 		}
 
 		return node;

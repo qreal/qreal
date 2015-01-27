@@ -104,6 +104,10 @@ inline QList<QSharedPointer<TargetType>> as(QList<QSharedPointer<SourceType>> co
 /// Helper function that makes shared pointer to a given node.
 inline QSharedPointer<core::ast::Node> wrap(core::ast::Node *node)
 {
+	if (!node) {
+		Q_ASSERT(false);
+	}
+
 	return QSharedPointer<core::ast::Node>(node);
 }
 

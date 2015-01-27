@@ -2,6 +2,7 @@
 
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/parserRef.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
 
 namespace qrtext {
 namespace core {
@@ -23,7 +24,7 @@ public:
 	{
 		if (tokenStream.isEnd()) {
 			parserContext.reportError(QObject::tr("Unexpected end of input"));
-			return wrap(nullptr);
+			return wrap(new TemporaryErrorNode());
 		}
 
 		if (!(mParser1->first().intersect(mParser2->first())).isEmpty()) {
@@ -40,7 +41,7 @@ public:
 		}
 
 		parserContext.reportError(QObject::tr("Unexpected token"));
-		return wrap(nullptr);
+		return wrap(new TemporaryErrorNode());
 	}
 
 	QSet<TokenType> first() const override
