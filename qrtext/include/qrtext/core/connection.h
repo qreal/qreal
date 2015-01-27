@@ -22,7 +22,7 @@ public:
 	/// @param id - id of a block where the code is located.
 	/// @param propertyName - name of a property in a block which uses this code.
 	Connection(int absolutePosition, int line, int column, qReal::Id const &id = qReal::Id()
-			, QString const &propertyName = "");
+			, const QString &propertyName = "");
 
 	/// Constructor for invalid connection object.
 	Connection();
@@ -41,7 +41,7 @@ public:
 
 	/// Returns name of a property in a block which uses this code, or empty string, if connection is not related to
 	/// some block.
-	QString const &propertyName() const;
+	const QString &propertyName() const;
 
 private:
 	int mAbsolutePosition = -1;

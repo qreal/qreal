@@ -92,16 +92,16 @@ protected:
 	void unify(QSharedPointer<ast::Node> const &lhs, QSharedPointer<ast::Node> const &rhs);
 
 	/// Reports given semantic error on a given node.
-	void reportError(QSharedPointer<ast::Node> const &node, QString const &errorMessage);
+	void reportError(QSharedPointer<ast::Node> const &node, const QString &errorMessage);
 
 	/// Returns true, if given identifier was declared (or seen before).
-	bool hasDeclaration(QString const &identifierName) const;
+	bool hasDeclaration(const QString &identifierName) const;
 
 	/// Returns expression where given identifier was declared or encountered first.
-	QSharedPointer<ast::Node> declaration(QString const &identifierName) const;
+	QSharedPointer<ast::Node> declaration(const QString &identifierName) const;
 
 	/// Adds declaration of a given identifier to identifiers table.
-	void addDeclaration(QString const &identifierName, QSharedPointer<ast::Node> const &declaration);
+	void addDeclaration(const QString &identifierName, QSharedPointer<ast::Node> const &declaration);
 
 	/// Provides Any type constant to descendants.
 	QSharedPointer<types::TypeExpression> const &any();

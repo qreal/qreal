@@ -13,13 +13,13 @@ public:
 	/// Constructor.
 	/// @param stringRepresentation - string representation of a number. Actual value shall be calculated by
 	/// interpreter.
-	Number(QString const &stringRepresentation)
+	Number(const QString &stringRepresentation)
 		: mStringRepresentation(stringRepresentation)
 	{
 	}
 
 	/// Returns string representation of a number.
-	QString const &stringRepresentation() const {
+	const QString &stringRepresentation() const {
 		return mStringRepresentation;
 	}
 

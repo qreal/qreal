@@ -16,9 +16,9 @@ class LuaInterpreterIncorrectInputTest : public testing::Test
 protected:
 	void SetUp() override;
 
-	QSharedPointer<qrtext::core::ast::Node> parseAndAnalyze(QString const &code);
+	QSharedPointer<qrtext::core::ast::Node> parseAndAnalyze(const QString &code);
 
-	void interpret(QString const &code) {
+	void interpret(const QString &code) {
 		auto const ast = parseAndAnalyze(code);
 		if (mErrors.isEmpty()) {
 			mInterpreter->interpret(ast, *mAnalyzer);

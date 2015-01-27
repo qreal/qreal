@@ -56,7 +56,7 @@ public:
 	}
 
 	/// Tokenizes input string, returns list of detected tokens, list of errors and separate list of comments.
-	QList<Token<TokenType>> tokenize(QString const &input)
+	QList<Token<TokenType>> tokenize(const QString &input)
 	{
 		mComments.clear();
 
@@ -181,7 +181,7 @@ private:
 		QRegularExpressionMatch match;
 	};
 
-	TokenType checkForKeyword(QString const &identifier) const
+	TokenType checkForKeyword(const QString &identifier) const
 	{
 		for (TokenType const keyword : mPatterns.allKeywords()) {
 			if (mPatterns.keywordPattern(keyword) == identifier) {
@@ -192,7 +192,7 @@ private:
 		return TokenType::identifier;
 	}
 
-	CandidateMatch findBestMatch(QString const &input, int const absolutePosition) const
+	CandidateMatch findBestMatch(const QString &input, int const absolutePosition) const
 	{
 		TokenType candidate = TokenType::whitespace;
 		QRegularExpressionMatch bestMatch;

@@ -14,7 +14,7 @@ void LuaLexerTest::SetUp()
 
 TEST_F(LuaLexerTest, tokenizeSanityCheck)
 {
-	QString const stream = "  123 abc";
+	const QString stream = "  123 abc";
 
 	auto result = mLexer->tokenize(stream);
 
@@ -26,7 +26,7 @@ TEST_F(LuaLexerTest, tokenizeSanityCheck)
 
 TEST_F(LuaLexerTest, connections)
 {
-	QString const stream = "  123 abc\n  456";
+	const QString stream = "  123 abc\n  456";
 
 	auto result = mLexer->tokenize(stream);
 
@@ -44,7 +44,7 @@ TEST_F(LuaLexerTest, connections)
 
 TEST_F(LuaLexerTest, keywords)
 {
-	QString const stream = "and And _and +break";
+	const QString stream = "and And _and +break";
 
 	auto result = mLexer->tokenize(stream);
 
@@ -158,7 +158,7 @@ TEST_F(LuaLexerTest, lexemeTypes)
 
 TEST_F(LuaLexerTest, errorReporting)
 {
-	QString const stream = "ololo @~= !!! nil";
+	const QString stream = "ololo @~= !!! nil";
 
 	auto result = mLexer->tokenize(stream);
 
@@ -182,7 +182,7 @@ TEST_F(LuaLexerTest, errorReporting)
 
 TEST_F(LuaLexerTest, multilineErrorReporting)
 {
-	QString const stream = "ololo @~=\n !!! nil";
+	const QString stream = "ololo @~=\n !!! nil";
 
 	auto result = mLexer->tokenize(stream);
 
@@ -207,7 +207,7 @@ TEST_F(LuaLexerTest, multilineErrorReporting)
 
 TEST_F(LuaLexerTest, unicode)
 {
-	QString const stream = "ололо русский\n язык";
+	const QString stream = "ололо русский\n язык";
 
 	auto result = mLexer->tokenize(stream);
 
