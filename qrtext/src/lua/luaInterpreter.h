@@ -26,36 +26,36 @@ public:
 	/// @param name - name of a function.
 	/// @param semantic - actual C++ function that implements it. Must take list of actual parameters and return
 	///        calculated value as QVariant.
-	void addIntrinsicFunction(QString const &name
+	void addIntrinsicFunction(const QString &name
 			, std::function<QVariant(QList<QVariant> const &)> const &semantic);
 
 	/// Interprets given AST using type information provided by given semantic analyzer, returns the result of
 	/// calculation or QVariant() if there is no result (error or AST is not supposed to return anything).
 	/// @todo Remove direct reference to semanticAnalyzer.
-	QVariant interpret(QSharedPointer<core::ast::Node> const &root, core::SemanticAnalyzer const &semanticAnalyzer);
+	QVariant interpret(const QSharedPointer<core::ast::Node> &root, core::SemanticAnalyzer const &semanticAnalyzer);
 
 	/// Returns a list of known identifiers
 	QStringList identifiers() const;
 
 	/// Returns a value of an identifier with given name.
-	QVariant value(QString const &identifier) const;
+	QVariant value(const QString &identifier) const;
 
 	/// Sets a value of identifier with given name to given value.
-	void setVariableValue(QString const &name, QVariant const &value);
+	void setVariableValue(const QString &name, QVariant const &value);
 
 	/// Clear all execution state, except added intrinsic functions.
 	void clear();
 
 private:
-	QVariant interpretUnaryOperator(QSharedPointer<core::ast::Node> const &root
+	QVariant interpretUnaryOperator(const QSharedPointer<core::ast::Node> &root
 			, core::SemanticAnalyzer const &semanticAnalyzer);
 
-	QVariant interpretBinaryOperator(QSharedPointer<core::ast::Node> const &root
+	QVariant interpretBinaryOperator(const QSharedPointer<core::ast::Node> &root
 			, core::SemanticAnalyzer const &semanticAnalyzer);
 
-	QVariant operateOnIndexingExpression(QSharedPointer<core::ast::Node> const &indexingExpression
+	QVariant operateOnIndexingExpression(const QSharedPointer<core::ast::Node> &indexingExpression
 			, core::SemanticAnalyzer const &semanticAnalyzer
-			, std::function<QVariant(QString const &, QStringList &, int)> const &action);
+			, std::function<QVariant(const QString &, QStringList &, int)> const &action);
 
 	QHash<QString, QVariant> mIdentifierValues;
 	QHash<QString, std::function<QVariant(QList<QVariant> const &)>> mIntrinsicFunctions;
