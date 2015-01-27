@@ -2,6 +2,7 @@
 
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 
 namespace qrtext {
 namespace core {
@@ -32,7 +33,10 @@ public:
 		if (node) {
 			node->connect(token);
 		} else {
-			Q_ASSERT(false);
+			parserContext.reportInternalError(
+					QObject::tr("Semantic action incorrectly discarded node in SimpleParser"));
+
+			return wrap(new TemporaryDiscardableNode());
 		}
 
 		return node;
