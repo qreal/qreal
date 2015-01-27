@@ -5,6 +5,7 @@
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
 #include "qrtext/core/parser/utils/functionTraits.h"
 
 namespace qrtext {
@@ -31,7 +32,11 @@ public:
 		typedef typename function_traits<DereferenceOperatorType>::result_type NodeReference;
 		typedef typename std::remove_reference<NodeReference>::type NodeType;
 
-		auto parserResult = mParser->parse(tokenStream, parserContext);
+		QSharedPointer<ast::Node> parserResult = mParser->parse(tokenStream, parserContext);
+		if (parserResult->is<TemporaryErrorNode>()) {
+			return parserResult;
+		}
+
 		auto node = as<NodeType>(parserResult);
 		parserResult = as<ast::Node>(mTransformation(node));
 		if (!parserResult) {

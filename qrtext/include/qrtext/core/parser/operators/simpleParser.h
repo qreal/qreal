@@ -1,6 +1,8 @@
 #pragma once
 
 #include "qrtext/core/parser/operators/parserInterface.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
+#include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 
 namespace qrtext {
 namespace core {
@@ -24,12 +26,17 @@ public:
 
 		Token<TokenType> const token = tokenStream.next();
 		if (!tokenStream.expect(mToken)) {
-			return wrap(nullptr);
+			return wrap(new TemporaryErrorNode());
 		}
 
 		auto const node = wrap(mSemanticAction());
 		if (node) {
 			node->connect(token);
+		} else {
+			parserContext.reportInternalError(
+					QObject::tr("Semantic action incorrectly discarded node in SimpleParser"));
+
+			return wrap(new TemporaryDiscardableNode());
 		}
 
 		return node;

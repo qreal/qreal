@@ -27,7 +27,7 @@ TEST_F(LuaToolboxTest, easyTableInitializationSyntax)
 {
 	qReal::Id const testId = qReal::Id("1", "2", "3", "test");
 	QStringList result = mToolbox->interpret<QStringList>(testId, "test", "'M1', 'M2', 'M3'");
-	EXPECT_EQ(3, result.size());
+	ASSERT_EQ(3, result.size());
 	EXPECT_TRUE(mToolbox->errors().isEmpty());
 
 	EXPECT_EQ("M1", result[0]);
@@ -103,4 +103,12 @@ TEST_F(LuaToolboxTest, memory)
 	mToolbox.reset();
 
 	EXPECT_EQ(0, qrtext::core::ast::Node::nodesCount());
+}
+
+TEST_F(LuaToolboxTest, integerDivision)
+{
+	mToolbox->interpret<int>("s = 5 // 2");
+	auto result = mToolbox->interpret<int>("s");
+	ASSERT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ(2, result);
 }

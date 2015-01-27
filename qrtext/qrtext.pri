@@ -41,7 +41,9 @@ HEADERS += \
 	$$PWD/include/qrtext/core/parser/operators/optionalParser.h \
 	$$PWD/include/qrtext/core/parser/operators/kleeneStarParser.h \
 	$$PWD/include/qrtext/core/parser/operators/expressionParser.h \
+	$$PWD/include/qrtext/core/parser/operators/namedParser.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h \
+	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryErrorNode.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryList.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryPair.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryToken.h \
