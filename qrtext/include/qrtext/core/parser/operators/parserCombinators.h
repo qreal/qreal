@@ -117,6 +117,7 @@ inline ParserRef<TokenType> operator - (ParserRef<TokenType> const &parser)
 	};
 }
 
+/// Operator that assigns name to a production.
 template<typename TokenType>
 inline ParserRef<TokenType> operator /= (const ParserRef<TokenType> &a, const QString &name)
 {

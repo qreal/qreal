@@ -94,7 +94,7 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 				for (const auto &stat : statList->list()) {
 					if (stat->is<TemporaryList>()) {
 						// It is a list of assignments.
-						for (auto const &assignment : as<TemporaryList>(stat)->list()) {
+						for (const auto &assignment : as<TemporaryList>(stat)->list()) {
 							result << assignment;
 						}
 					} else {
@@ -138,9 +138,14 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 					}
 				}
 
-				auto pair = as<TemporaryPair>(node);
-				auto variables = as<TemporaryList>(pair->left())->list();
-				auto values = as<TemporaryList>(pair->right())->list();
+				const auto pair = as<TemporaryPair>(node);
+				if (!pair) {
+					context().reportInternalError(QObject::tr("node in 'stat' semantic action is of unexpected type"));
+					return wrap(new TemporaryErrorNode());
+				}
+
+				const auto variables = as<TemporaryList>(pair->left())->list();
+				const auto values = as<TemporaryList>(pair->right())->list();
 				if (variables.size() != values.size()) {
 					context().reportError(pair, QObject::tr(
 							"Number of variables in assignment shall be equal to the number of assigned values"));
@@ -148,17 +153,17 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 					return wrap(new TemporaryErrorNode());
 				}
 
-				auto result = QSharedPointer<TemporaryList>(new TemporaryList());
+				const auto result = QSharedPointer<TemporaryList>(new TemporaryList());
 
 				for (int i = 0; i < variables.size(); ++i) {
-					auto variable = as<ast::Expression>(variables[i]);
+					const auto variable = as<ast::Expression>(variables[i]);
 
 					if (variable->is<ast::FunctionCall>()) {
 						context().reportError(pair, QObject::tr("Assignment to function call is impossible"));
 						continue;
 					}
 
-					auto value = as<ast::Expression>(values[i]);
+					const auto value = as<ast::Expression>(values[i]);
 					result->list() << wrap(new ast::Assignment(variable, value));
 				}
 
@@ -170,13 +175,8 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 	// explist ::= exp(0) {‘,’ exp(0)}
 	explist = (exp & *(-LuaTokenTypes::comma & exp))
 			>> [] (QSharedPointer<TemporaryPair> node) {
-				if (!node) {
-					// There was syntax error somewhere, it shall be already reported.
-					return as<TemporaryList>(wrap(new TemporaryList()));
-				}
-
-				auto firstExp = as<ast::Expression>(node->left());
-				auto temporaryList = as<TemporaryList>(node->right());
+				const auto firstExp = as<ast::Expression>(node->left());
+				const auto temporaryList = as<TemporaryList>(node->right());
 				temporaryList->list().prepend(firstExp);
 				return temporaryList;
 			}
@@ -213,7 +213,7 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 					precedenceTable, LuaTokenTypes::minus, primary, binop))
 					)
 					>> [] (QSharedPointer<TemporaryPair> node) {
-						auto unOp = as<ast::UnaryOperator>(node->left());
+						const auto unOp = as<ast::UnaryOperator>(node->left());
 						unOp->setOperand(node->right());
 						return unOp;
 					}
@@ -224,15 +224,15 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 	prefixexp = (prefixterm & *(functioncallpart | varpart))
 			>> [] (QSharedPointer<TemporaryPair> node) {
 				auto result = as<ast::Expression>(node->left());
-				for (auto const &part : as<TemporaryList>(node->right())->list()) {
+				for (const auto &part : as<TemporaryList>(node->right())->list()) {
 					if (part->is<ast::Expression>()) {
 						// It is varpart (indexing expression)
 						result = QSharedPointer<ast::Expression>(
 								new ast::IndexingExpression(result, as<ast::Expression>(part)));
 					} else if (part->is<TemporaryPair>()) {
 						// It is functioncallpart (method call)
-						auto const methodName = as<ast::Identifier>(as<TemporaryPair>(part)->left());
-						auto const args = as<ast::Expression>(
+						const auto methodName = as<ast::Identifier>(as<TemporaryPair>(part)->left());
+						const auto args = as<ast::Expression>(
 								as<TemporaryList>(as<TemporaryPair>(part)->right())->list());
 
 						result = QSharedPointer<ast::Expression>(new ast::MethodCall(result, methodName, args));
@@ -249,15 +249,7 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 			;
 
 	// varpart ::= ‘[’ exp(0) ‘]’ | ‘.’ Name
-	varpart = (-LuaTokenTypes::openingSquareBracket & exp & -LuaTokenTypes::closingSquareBracket
-				>> [this](QSharedPointer<ast::Node> node) {
-					if (node->is<TemporaryPair>()) {
-						context().reportError(node, QObject::tr("Array indexer incorrect"));
-					}
-
-					return node;
-				}
-			)
+	varpart = (-LuaTokenTypes::openingSquareBracket & exp & -LuaTokenTypes::closingSquareBracket)
 			| (-LuaTokenTypes::dot & LuaTokenTypes::identifier >> [] (Token<LuaTokenTypes> const &token) {
 						return new ast::String(token.lexeme());
 					}
@@ -278,13 +270,17 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 	args = ((-LuaTokenTypes::openingBracket & ~explist & -LuaTokenTypes::closingBracket)
 			| tableconstructor
 			| LuaTokenTypes::string >> [] (Token<LuaTokenTypes> token) { return new ast::String(token.lexeme()); }
-			) >> [] (QSharedPointer<ast::Node> node) {
-					if (node && node->is<TemporaryList>()) {
+			) >> [this] (QSharedPointer<ast::Node> node) {
+					if (node->is<TemporaryList>()) {
 						return node;
 					} else {
-						auto result = QSharedPointer<TemporaryList>(new TemporaryList());
-						if (node) {
+						const auto result = QSharedPointer<TemporaryList>(new TemporaryList());
+						if (node->is<ast::Expression>()) {
 							result->list() << as<ast::Expression>(node);
+						} else {
+							context().reportInternalError(QObject::tr("In 'args' semantic action node is "
+									"of incorrect type"));
+							return wrap(new TemporaryErrorNode());
 						}
 
 						return as<ast::Node>(result);
@@ -295,11 +291,18 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 
 	// tableconstructor ::= ‘{’ [fieldlist] ‘}’
 	tableconstructor = (-LuaTokenTypes::openingCurlyBracket & ~fieldlist & -LuaTokenTypes::closingCurlyBracket)
-			>> [] (QSharedPointer<TemporaryList> fieldList) {
-				if (!fieldList) {
+			>> [this] (QSharedPointer<ast::Node> fieldList) {
+				if (fieldList->is<TemporaryDiscardableNode>()) {
 					return wrap(new ast::TableConstructor({}));
 				} else {
-					return wrap(new ast::TableConstructor(as<ast::FieldInitialization>(fieldList->list())));
+					const auto list = as<TemporaryList>(fieldList);
+					if (!list) {
+						context().reportInternalError(QObject::tr("In 'table constructor' semantic action fieldList is "
+								"of incorrect type"));
+						return wrap(new TemporaryErrorNode());
+					}
+
+					return wrap(new ast::TableConstructor(as<ast::FieldInitialization>(list->list())));
 				}
 			}
 			/= "tableconstructor"
@@ -327,14 +330,19 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 						return wrap(new ast::FieldInitialization(indexer, initializer));
 					}
 			| (exp & ~(-LuaTokenTypes::equals & exp))
-					>> [] (QSharedPointer<TemporaryPair> node) {
-							auto const left = as<ast::Expression>(node->left());
-							if (!node->right()) {
-								return wrap(new ast::FieldInitialization(left));
-							} else {
-								auto const initializer = as<ast::Expression>(node->right());
+					>> [this] (QSharedPointer<ast::Node> node) {
+							if (node->is<TemporaryPair>()) {
+								const auto pair = as<TemporaryPair>(node);
+								const auto left = as<ast::Expression>(pair->left());
+								const auto initializer = as<ast::Expression>(pair->right());
 								/// @todo Report error if "left" is something different from Name.
 								return wrap(new ast::FieldInitialization(left, initializer));
+							} else if (node->is<ast::Expression>()) {
+								return wrap(new ast::FieldInitialization(as<ast::Expression>(node)));
+							} else {
+								context().reportInternalError(QObject::tr("In 'field' semantic action node is "
+										"of incorrect type"));
+								return wrap(new TemporaryErrorNode());
 							}
 						}
 			/= "field"
