@@ -7,9 +7,10 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
-
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 #include <qrutils/interpreter/blockInterface.h>
 #include <qrtext/languageToolboxInterface.h>
+#include <qrutils/parserErrorReporter.h>
 
 namespace qReal {
 namespace interpretation {
@@ -105,7 +106,7 @@ protected:
 	{
 		T result = mParser->interpret<T>(mGraphicalId, propertyName, code);
 		if (!mParser->errors().isEmpty() && reportErrors == ReportErrors::report) {
-			reportParserErrors();
+			mParserErrorReporter->reportErrors(id(), propertyName);
 			emit failure();
 			return result;
 		}
@@ -140,8 +141,6 @@ private:
 		, failed
 	};
 
-	void reportParserErrors();
-
 	/// Shall be reimplemented to set ids of next blocks. Default implementation covers usual sequential blocks, like
 	/// "motors on", it is reimplemented in "if", "loop" and such kinds of blocks.
 	virtual bool initNextBlocks();
@@ -153,6 +152,9 @@ private:
 
 	State mState;
 	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn't have ownership.
+
+	/// @todo: Block shall not own ParserErrorReporter, it shall be received from factory.
+	QScopedPointer<utils::ParserErrorReporter> mParserErrorReporter;
 };
 
 }

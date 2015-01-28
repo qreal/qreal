@@ -1,5 +1,7 @@
 #pragma once
 
+#include <qrutils/parserErrorReporter.h>
+
 #include "precedenceConverter.h"
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/simpleGenerators/binding.h"
@@ -25,6 +27,7 @@ class ROBOTS_GENERATOR_EXPORT LuaProcessor : public QObject, public TemplatePara
 public:
 	LuaProcessor(qReal::ErrorReporterInterface &errorReporter
 			, qrtext::LanguageToolboxInterface &textLanguage
+			, const utils::ParserErrorReporter &parserErrorReporter
 			, QObject *parent = 0);
 
 	/// Converts the given Lua code into the target language and substitues all
@@ -60,6 +63,8 @@ private:
 			, QString const &propertyName) const;
 
 	PrecedenceConverter mPrecedenceConverter;
+
+	const utils::ParserErrorReporter &mParserErrorReporter;
 };
 
 }

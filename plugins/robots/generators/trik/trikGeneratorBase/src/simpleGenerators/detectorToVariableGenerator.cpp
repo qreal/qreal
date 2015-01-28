@@ -12,7 +12,7 @@ DetectorToVariableGenerator::DetectorToVariableGenerator(qrRepo::RepoApi const &
 	: BindingGenerator(repo, customizer, id, "function.t"
 			, { Binding::createStaticConverting("@@BODY@@"
 					, repo.property(id, "Variable").toString() + "= lineSensorX"
-					, customizer.factory()->functionBlockConverter(id, "Mode"))
+					, customizer.factory()->functionBlockConverter(id, "Variable"))
 			}, parent)
 {
 }

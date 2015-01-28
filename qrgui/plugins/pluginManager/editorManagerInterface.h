@@ -11,12 +11,14 @@
 #include <qrkernel/version.h>
 #include <qrkernel/settingsManager.h>
 
-#include "plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
-#include "plugins/editorPluginInterface/editorInterface.h"
-#include "plugins/pluginManager/pattern.h"
-#include "plugins/pluginManager/explosion.h"
-#include "plugins/pluginManager/details/patternParser.h"
+/// @todo: Metamodel information shall not be dependent on models.
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
+
+#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
+#include "qrgui/plugins/pluginManager/pattern.h"
+#include "qrgui/plugins/pluginManager/explosion.h"
+#include "qrgui/plugins/pluginManager/details/patternParser.h"
 
 namespace qReal {
 
