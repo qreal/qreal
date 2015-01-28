@@ -3,9 +3,8 @@ QT += widgets network
 INCLUDEPATH += \
 	$$PWD/../include \
 	$$PWD/../../../../ \
-	$$PWD/../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../bin/ -lqslog -lqrkernel -lqrutils -lqrtext
+LIBS += -L$$PWD/../../../../bin/ -lqslog -lqrkernel -lqrutils
 
 DEFINES += ROBOTS_UTILS_LIBRARY
 
