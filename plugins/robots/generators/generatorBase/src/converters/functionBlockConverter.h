@@ -6,7 +6,7 @@ namespace generatorBase {
 namespace converters {
 
 /// Processes input string treating it as a set of expressions in some 'function'
-/// block. Splits it by ';' separator and joines resulting lines of code.
+/// block. Splits it by ';' separator and joins resulting lines of code.
 class FunctionBlockConverter : public CodeConverterBase
 {
 public:
