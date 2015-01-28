@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#333333;stroke-width:79.375}
+    .str1 {stroke:#1A1A1A;stroke-width:127}
+    .str2 {stroke:#333333;stroke-width:127}
+    .str3 {stroke:#666666;stroke-width:127}
+    .str4 {stroke:#666666;stroke-width:158.75}
+    .fil3 {fill:none}
+    .fil2 {fill:#999999}
+    .fil0 {fill:url(#id0)}
+    .fil1 {fill:url(#id1)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="objectBoundingBox" x1="50%" y1="100%" x2="50%" y2="0%">
+   <stop offset="0" style="stop-color:#999999"/>
+   <stop offset="0.501961" style="stop-color:#E6E6E6"/>
+   <stop offset="1" style="stop-color:#999999"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="2244.69" y1="11748.1" x2="2244.69" y2="3483.01">
+   <stop offset="0" style="stop-color:#333333"/>
+   <stop offset="0.301961" style="stop-color:#999999"/>
+   <stop offset="0.501961" style="stop-color:#B3B3B3"/>
+   <stop offset="0.701961" style="stop-color:#999999"/>
+   <stop offset="1" style="stop-color:#333333"/>
+  </linearGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <rect class="fil0 str0" x="3918" y="4285" width="864" height="2622"/>
+  <rect class="fil0 str0" x="3918" y="8357" width="864" height="2622"/>
+  <rect class="fil1 str1" x="525" y="3483" width="3440" height="8265" rx="207" ry="239"/>
+  <g id="_133838648">
+   <path class="fil3 str3" d="M5367 5016c641,-3 634,935 2,939"/>
+   <path class="fil3 str3" d="M6606 4633c1237,-6 1223,1804 4,1812"/>
+   <path class="fil3 str4" d="M8422 3907c1674,-10 1656,3040 6,3053"/>
+   <path class="fil3 str4" d="M10642 3567c2170,-12 2146,3633 8,3648"/>
+   <path class="fil3 str3" d="M5367 9375c641,-3 634,935 2,939"/>
+   <path class="fil3 str3" d="M6606 8991c1237,-6 1223,1804 4,1812"/>
+   <path class="fil3 str4" d="M8422 8265c1674,-10 1656,3040 6,3053"/>
+   <path class="fil3 str4" d="M10642 7926c2170,-12 2146,3633 8,3648"/>
+  </g>
+ </g>
+</svg>
