@@ -20,6 +20,7 @@
 #include "parts/trikObjectSensor.h"
 #include "parts/trikLed.h"
 #include "parts/trikShell.h"
+#include "parts/trikGamepadPad.h"
 
 using namespace trikKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
@@ -96,6 +97,18 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId, QString const &robo
 	addAllowedConnection(PortInfo("ColorSensorBPort", input, {}, "colorSensorB"), { colorSensorInfo() });
 
 	addAllowedConnection(PortInfo("ShellPort", output), { shellInfo() });
+
+	addAllowedConnection(PortInfo("GamepadPad1PosPort", input, {}, "gamepadPad1"), { gamepadPadInfo() });
+	addAllowedConnection(PortInfo("GamepadPad2PosPort", input, {}, "gamepadPad2"), { gamepadPadInfo() });
+//	addAllowedConnection(PortInfo("GamepadPad1PressedPort", input, {}, "gamepadPad1Pressed"), {});
+//	addAllowedConnection(PortInfo("GamepadPad2PressedPort", input, {}, "gamepadPad2Pressed"), {});
+//	addAllowedConnection(PortInfo("GamepadWheelPort", input, {}, "gamepadWheel"), {});
+
+//	addAllowedConnection(PortInfo("GamepadButton1Port", input, {}, "gamepadButton1"), {});
+//	addAllowedConnection(PortInfo("GamepadButton2Port", input, {}, "gamepadButton2"), {});
+//	addAllowedConnection(PortInfo("GamepadButton3Port", input, {}, "gamepadButton3"), {});
+//	addAllowedConnection(PortInfo("GamepadButton4Port", input, {}, "gamepadButton4"), {});
+//	addAllowedConnection(PortInfo("GamepadButton5Port", input, {}, "gamepadButton5"), {});
 }
 
 QList<PortInfo> TrikRobotModelBase::configurablePorts() const
@@ -199,3 +212,7 @@ DeviceInfo TrikRobotModelBase::shellInfo() const
 	return DeviceInfo::create<parts::TrikShell>();
 }
 
+DeviceInfo TrikRobotModelBase::gamepadPadInfo() const
+{
+	return DeviceInfo::create<parts::TrikGamepadPad>();
+}

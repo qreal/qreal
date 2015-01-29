@@ -13,19 +13,16 @@
 
 #include "parts/lightSensor.h"
 #include "parts/infraredSensor.h"
-
 #include "parts/sonarSensor.h"
-
 #include "parts/motionSensor.h"
-
 #include "parts/gyroscope.h"
 #include "parts/accelerometer.h"
-
 #include "parts/colorSensor.h"
 #include "parts/led.h"
 #include "parts/lineSensor.h"
 #include "parts/objectSensor.h"
 #include "parts/shell.h"
+#include "parts/gamepadPad.h"
 
 using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
@@ -101,6 +98,8 @@ robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, Devic
 		return new parts::Led(ledInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(shellInfo())) {
 		return new parts::Shell(shellInfo(), port, *mRobotCommunicator);
+	} else if (deviceInfo.isA(gamepadPadInfo())) {
+		return new parts::GamepadPad(shellInfo(), port, *mRobotCommunicator);
 	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());

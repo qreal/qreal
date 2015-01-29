@@ -39,6 +39,8 @@ protected:
 	virtual interpreterBase::robotModel::DeviceInfo colorSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo objectSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo shellInfo() const;
+
+	virtual interpreterBase::robotModel::DeviceInfo gamepadPadInfo() const;
 };
 
 }

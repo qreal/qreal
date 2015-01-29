@@ -59,6 +59,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/gyroscope.h \
 	$$PWD/robotModel/real/parts/accelerometer.h \
 	$$PWD/robotModel/real/parts/shell.h \
+	$$PWD/robotModel/real/parts/gamepadPad.h \
 	$$PWD/robotModel/twoD/twoDRobotModel.h \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.h \
@@ -75,6 +76,7 @@ HEADERS += \
 	$$PWD/blocks/details/setPainterColorBlock.h \
 	$$PWD/robotModel/twoD/parts/twoDLed.h \
 	$$PWD/trikFSharpAdditionalPreferences.h \
+	$$PWD/robotModel/parts/trikGamepadPad.h \
 
 SOURCES += \
 	$$PWD/trikAdditionalPreferences.cpp \
@@ -123,6 +125,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/gyroscope.cpp \
 	$$PWD/robotModel/real/parts/accelerometer.cpp \
 	$$PWD/robotModel/real/parts/shell.cpp \
+	$$PWD/robotModel/real/parts/gamepadPad.cpp \
 	$$PWD/robotModel/twoD/twoDRobotModel.cpp \
 	$$PWD/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/robotModel/twoD/parts/twoDSpeaker.cpp \
@@ -138,6 +141,7 @@ SOURCES += \
 	$$PWD/blocks/details/setPainterWidthBlock.cpp \
 	$$PWD/blocks/details/setPainterColorBlock.cpp \
 	$$PWD/robotModel/twoD/parts/twoDLed.cpp \
+	$$PWD/robotModel/parts/trikGamepadPad.cpp \
 
 FORMS += \
 	$$PWD/trikAdditionalPreferences.ui \
