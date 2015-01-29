@@ -28,6 +28,22 @@ public:
 		setVariableValue(name, QString("%1 = %2").arg(name).arg(value), QVariant(value));
 	}
 
+	/// Sets a value of given identifier in interpreter to given vector value.
+	template<typename T>
+	void setVectorVariableValue(const QString &name, const QVector<T> &value)
+	{
+		QStringList valueStringList;
+		for (const T &valueItem : value) {
+			valueStringList.append(QString("%1").arg(valueItem));
+		}
+
+		const QString valueString = QString("{ %1 }").arg(valueStringList.join(", "));
+		QVariant variant;
+		variant.setValue(value);
+
+		setVariableValue(name, QString("%1 = %2").arg(name).arg(valueString), variant);
+	}
+
 private:
 	/// Non-generic variant of value(), returns identifier value as QVariant.
 	virtual QVariant value(const QString &identifier) const = 0;
@@ -39,4 +55,3 @@ private:
 };
 
 }
-
