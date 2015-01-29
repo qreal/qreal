@@ -21,7 +21,8 @@ INCLUDEPATH += \
 	$$PWD/../../../../qrgui/ \
 	$$PWD/../../../../qrtext/include \
 
-LIBS += -L$$PWD/../../../../bin/ -lqslog -lqrkernel -lqrutils -lqrgui-tool-plugin-interface -lqrgui-preferences-dialog \
+LIBS += -L$$PWD/../../../../bin/ -lqslog -lqrkernel -lqrutils \
+		-lqrgui-tool-plugin-interface -lqrgui-preferences-dialog -lqrgui-facade \
 		-lrobots-utils -lrobots-interpreter-base -lrobots-interpreter-core -lrobots-common-2d-model \
 
 TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModelRunner_ru.ts

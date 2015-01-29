@@ -10,10 +10,10 @@
 using namespace qReal;
 using namespace gui;
 
-EditorManagerInterface *PaletteTreeWidget::mEditorManager = NULL;
+EditorManagerInterface const *PaletteTreeWidget::mEditorManager = nullptr;
 
 PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindow
-		, EditorManagerInterface &editorManagerProxy, bool editable)
+		, EditorManagerInterface const &editorManagerProxy, bool editable)
 	: mMainWindow(mainWindow)
 	, mPaletteTree(palette)
 	, mEditable(editable)

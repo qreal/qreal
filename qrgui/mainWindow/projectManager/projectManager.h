@@ -57,8 +57,10 @@ private:
 	bool import(QString const &fileName);
 	bool saveFileExists(QString const &fileName) const;
 	QString textFileFilters() const;
+
 	bool pluginsEnough() const;
 	QString missingPluginNames() const;
+	void checkNeededPluginsRecursive(const details::ModelsAssistInterface &api, const Id &id, QStringList &result) const;
 
 	bool checkVersions();
 	bool checkForUnknownElements();

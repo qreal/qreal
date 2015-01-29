@@ -142,8 +142,8 @@ bool ProjectManager::openProject(QString const &fileName)
 		return true;
 	}
 
-	mMainWindow->models()->repoControlApi().open(fileName);
-	mMainWindow->models()->reinit();
+	mMainWindow->models().repoControlApi().open(fileName);
+	mMainWindow->models().reinit();
 
 	if (!pluginsEnough() || !checkVersions() || !checkForUnknownElements()) {
 		// restoring the session
@@ -155,10 +155,10 @@ bool ProjectManager::openProject(QString const &fileName)
 	}
 
 	mMainWindow->closeStartTab();
-	mMainWindow->propertyModel().setSourceModels(mMainWindow->models()->logicalModel()
-			, mMainWindow->models()->graphicalModel());
-	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models()->graphicalModel());
-	mMainWindow->logicalModelExplorer()->setModel(mMainWindow->models()->logicalModel());
+	mMainWindow->propertyModel().setSourceModels(mMainWindow->models().logicalModel()
+			, mMainWindow->models().graphicalModel());
+	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models().graphicalModel());
+	mMainWindow->logicalModelExplorer()->setModel(mMainWindow->models().logicalModel());
 
 	/// @todo Crashes metamodeling on fly.
 	mMainWindow->openFirstDiagram();
@@ -193,8 +193,8 @@ bool ProjectManager::import(QString const &fileName)
 
 	// In the hope that while the user selects a file nobody substitute for the current project with project, which
 	// has diagrams for which there are no plugins
-	mMainWindow->models()->repoControlApi().importFromDisk(currentSaveFilePath);
-	mMainWindow->models()->reinit();
+	mMainWindow->models().repoControlApi().importFromDisk(currentSaveFilePath);
+	mMainWindow->models().reinit();
 	return true;
 }
 
@@ -231,14 +231,27 @@ bool ProjectManager::pluginsEnough() const
 
 QString ProjectManager::missingPluginNames() const
 {
-	IdList const missingPlugins = mMainWindow->editorManager().checkNeededPlugins(
-			mMainWindow->models()->logicalModelAssistApi()
-			, mMainWindow->models()->graphicalModelAssistApi());
-	QString result;
-	foreach (Id const &id, missingPlugins) {
-		result += id.editor() + "\n";
+	QStringList missingPlugins;
+	checkNeededPluginsRecursive(mMainWindow->models().logicalModelAssistApi(), Id::rootId(), missingPlugins);
+	checkNeededPluginsRecursive(mMainWindow->models().graphicalModelAssistApi(), Id::rootId(), missingPlugins);
+	return missingPlugins.join("\n");
+}
+
+void ProjectManager::checkNeededPluginsRecursive(const details::ModelsAssistInterface &api
+		, const Id &id, QStringList &result) const
+{
+	const IdList loadedEditors = mMainWindow->editorManager().editors();
+	const Id currentEditor = Id(id.editor());
+	if (id != Id::rootId() && !loadedEditors.contains(currentEditor)) {
+		QString const missingEditor = mMainWindow->editorManager().friendlyName(currentEditor);
+		if (!result.contains(missingEditor)) {
+			result.append(missingEditor);
+		}
 	}
-	return result;
+
+	for (const Id &child : api.children(id)) {
+		checkNeededPluginsRecursive(api, child, result);
+	}
 }
 
 bool ProjectManager::checkVersions()
@@ -248,7 +261,7 @@ bool ProjectManager::checkVersions()
 
 bool ProjectManager::checkForUnknownElements()
 {
-	IdList const allElements = mMainWindow->models()->logicalModelAssistApi().children(Id::rootId());
+	IdList const allElements = mMainWindow->models().logicalModelAssistApi().children(Id::rootId());
 	for (Id const &element : allElements) {
 		bool const isElementKnown = mMainWindow->editorManager().hasElement(element.type());
 		if (!isElementKnown) {
@@ -332,8 +345,8 @@ void ProjectManager::close()
 	if (mMainWindow->propertyEditor()->model()) {
 		static_cast<PropertyEditorModel *>(mMainWindow->propertyEditor()->model())->clearModelIndexes();
 	}
-	mMainWindow->graphicalModelExplorer()->setModel(NULL);
-	mMainWindow->logicalModelExplorer()->setModel(NULL);
+	mMainWindow->graphicalModelExplorer()->setModel(nullptr);
+	mMainWindow->logicalModelExplorer()->setModel(nullptr);
 
 	if (mMainWindow->getCurrentTab()) {
 		static_cast<EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearScene();
@@ -352,7 +365,7 @@ void ProjectManager::close()
 void ProjectManager::saveTo(QString const &fileName)
 {
 	QLOG_INFO() << "Saving project into" << fileName;
-	mMainWindow->models()->repoControlApi().saveTo(fileName);
+	mMainWindow->models().repoControlApi().saveTo(fileName);
 }
 
 void ProjectManager::save()
@@ -409,7 +422,7 @@ bool ProjectManager::saveAs(QString const &fileName)
 		return false;
 	}
 	mAutosaver->removeAutoSave();
-	mMainWindow->models()->repoControlApi().saveTo(workingFileName);
+	mMainWindow->models().repoControlApi().saveTo(workingFileName);
 	setSaveFilePath(workingFileName);
 	refreshApplicationStateAfterSave();
 	return true;

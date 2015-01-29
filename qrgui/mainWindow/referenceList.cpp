@@ -26,9 +26,9 @@ ReferenceList::~ReferenceList()
 
 void ReferenceList::loadList(QString const &refType)
 {
-	const qrRepo::LogicalRepoApi *repoApi = &(mWindow->models()->logicalRepoApi());
+	const qrRepo::LogicalRepoApi *repoApi = &(mWindow->models().logicalRepoApi());
 	// there will be no need in this when models are synchronized
-	qReal::models::GraphicalModelAssistApi &assistApi = mWindow->models()->graphicalModelAssistApi();
+	qReal::models::GraphicalModelAssistApi &assistApi = mWindow->models().graphicalModelAssistApi();
 
 	foreach (qReal::Id element, repoApi->elementsByType(refType)) {
 		if (repoApi->isLogicalElement(element) && !assistApi.graphicalIdsByLogicalId(element).isEmpty()) {
@@ -39,7 +39,7 @@ void ReferenceList::loadList(QString const &refType)
 
 void ReferenceList::addItem(qReal::Id const &element)
 {
-	QString name = mWindow->models()->logicalRepoApi().name(element);
+	QString name = mWindow->models().logicalRepoApi().name(element);
 
 	QListWidgetItem *item = new QListWidgetItem(name, mUi->listWidget);
 	item->setData(Qt::UserRole, element.toString());
@@ -86,6 +86,6 @@ QStringList ReferenceList::getNewValue() const
 
 void ReferenceList::restoreSelected()
 {
-	qReal::Id indexId = mWindow->models()->logicalModelAssistApi().idByIndex(mIndex);
+	qReal::Id indexId = mWindow->models().logicalModelAssistApi().idByIndex(mIndex);
 	mWindow->activateItemOrDiagram(indexId, true);
 }

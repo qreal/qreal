@@ -14,12 +14,12 @@ VersionsConverterManager::VersionsConverterManager(MainWindow &mainWindow)
 bool VersionsConverterManager::validateCurrentProject()
 {
 	QSet<QString> editorsToCheck;
-	IdList const allElements = mMainWindow.models()->logicalModelAssistApi().children(Id::rootId());
+	IdList const allElements = mMainWindow.models().logicalModelAssistApi().children(Id::rootId());
 	for (Id const &element : allElements) {
 		editorsToCheck << element.editor();
 	}
 
-	QMap<Id, Version> const savedVersions = mMainWindow.models()->logicalModelAssistApi().editorVersions();
+	QMap<Id, Version> const savedVersions = mMainWindow.models().logicalModelAssistApi().editorVersions();
 	QMultiMap<QString, ProjectConverter> const converters = mMainWindow.toolManager().projectConverters();
 
 	for (QString const &editor : editorsToCheck) {
@@ -69,8 +69,8 @@ bool VersionsConverterManager::convertProject(Version const &enviromentVersion
 	for (ProjectConverter &converter : sortedConverters) {
 		if (converter.fromVersion() >= saveVersion && converter.toVersion() <= enviromentVersion) {
 			ProjectConverter::ConvertionResult const result = converter.convert(
-					mMainWindow.models()->graphicalModelAssistApi()
-					, mMainWindow.models()->logicalModelAssistApi());
+					mMainWindow.models().graphicalModelAssistApi()
+					, mMainWindow.models().logicalModelAssistApi());
 			switch (result) {
 			case ProjectConverter::Success:
 				converterApplied = true;
