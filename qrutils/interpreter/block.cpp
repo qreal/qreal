@@ -28,8 +28,10 @@ void Block::init(Id const &graphicalId
 	mLogicalModelApi = &logicalModelApi;
 	mErrorReporter = errorReporter;
 	mParser = &textLanguageToolbox;
-	mParserErrorReporter.reset(new utils::ParserErrorReporter(*mParser, *mErrorReporter
-			, mLogicalModelApi->editorManagerInterface()));
+	if (mLogicalModelApi) {
+		mParserErrorReporter.reset(new utils::ParserErrorReporter(*mParser, *mErrorReporter
+				, mLogicalModelApi->editorManagerInterface()));
+	}
 }
 
 bool Block::initNextBlocks()

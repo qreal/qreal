@@ -106,7 +106,10 @@ protected:
 	{
 		T result = mParser->interpret<T>(mGraphicalId, propertyName, code);
 		if (!mParser->errors().isEmpty() && reportErrors == ReportErrors::report) {
-			mParserErrorReporter->reportErrors(id(), propertyName);
+			if (!mParserErrorReporter.isNull()) {
+				mParserErrorReporter->reportErrors(id(), propertyName);
+			}
+
 			emit failure();
 			return result;
 		}
