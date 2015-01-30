@@ -40,7 +40,10 @@ protected:
 	virtual interpreterBase::robotModel::DeviceInfo objectSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo shellInfo() const;
 
+	virtual interpreterBase::robotModel::DeviceInfo gamepadButtonInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo gamepadPadInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo gamepadPadPressSensorInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo gamepadWheelInfo() const;
 };
 
 }

@@ -1,0 +1,1 @@
+gamepad.buttonWasPressed(@@PORT@@)

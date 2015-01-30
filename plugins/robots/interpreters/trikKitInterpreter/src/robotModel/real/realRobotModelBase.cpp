@@ -22,7 +22,10 @@
 #include "parts/lineSensor.h"
 #include "parts/objectSensor.h"
 #include "parts/shell.h"
+#include "parts/gamepadButton.h"
 #include "parts/gamepadPad.h"
+#include "parts/gamepadPadPressSensor.h"
+#include "parts/gamepadWheel.h"
 
 using namespace trikKitInterpreter::robotModel::real;
 using namespace interpreterBase::robotModel;
@@ -98,8 +101,14 @@ robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, Devic
 		return new parts::Led(ledInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(shellInfo())) {
 		return new parts::Shell(shellInfo(), port, *mRobotCommunicator);
+	} else if (deviceInfo.isA(gamepadButtonInfo())) {
+		return new parts::GamepadButton(gamepadButtonInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gamepadPadInfo())) {
-		return new parts::GamepadPad(shellInfo(), port, *mRobotCommunicator);
+		return new parts::GamepadPad(gamepadPadInfo(), port, *mRobotCommunicator);
+	} else if (deviceInfo.isA(gamepadPadPressSensorInfo())) {
+		return new parts::GamepadPadPressSensor(gamepadPadPressSensorInfo(), port, *mRobotCommunicator);
+	} else if (deviceInfo.isA(gamepadWheelInfo())) {
+		return new parts::GamepadWheel(gamepadWheelInfo(), port, *mRobotCommunicator);
 	}
 
 	throw qReal::Exception("Unknown device " + deviceInfo.toString() + " requested on port " + port.name());

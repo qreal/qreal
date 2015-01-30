@@ -90,9 +90,19 @@
         <file>templates/videosensors/initlineSensor.t</file>
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>
+        <file>templates/gamepad/gamepadButton.t</file>
         <file>templates/gamepad/gamepadPad.t</file>
+        <file>templates/gamepad/gamepadPadPressSensor.t</file>
+        <file>templates/gamepad/gamepadWheel.t</file>
+        <file>templates/ports/GamepadButton1Port.t</file>
+        <file>templates/ports/GamepadButton2Port.t</file>
+        <file>templates/ports/GamepadButton3Port.t</file>
+        <file>templates/ports/GamepadButton4Port.t</file>
+        <file>templates/ports/GamepadButton5Port.t</file>
         <file>templates/ports/GamepadPad1PosPort.t</file>
+        <file>templates/ports/GamepadPad1PressedPort.t</file>
         <file>templates/ports/GamepadPad2PosPort.t</file>
+        <file>templates/ports/GamepadPad2PressedPort.t</file>
         <file>templates/functions/abs.t</file>
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>
