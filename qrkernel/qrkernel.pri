@@ -1,11 +1,6 @@
 DEFINES += QRKERNEL_LIBRARY
 
-CONFIG += c++11
-
-INCLUDEPATH += \
-	$$PWD/..
-
-LIBS += -L$$PWD/../bin -lqslog
+include(../global.pri)
 
 HEADERS += \
 	$$PWD/ids.h \
@@ -31,3 +26,6 @@ SOURCES += \
 
 RESOURCES += \
 	$$PWD/qrkernel.qrc \
+
+includes(thirdparty/qslog)
+links(qslog)

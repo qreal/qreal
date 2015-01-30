@@ -1,6 +1,6 @@
 #include "qrtext/lua/luaToolbox.h"
 
-#include <qslog/QsLog.h>
+#include <QsLog.h>
 
 #include "qrtext/src/lua/luaLexer.h"
 #include "qrtext/src/lua/luaParser.h"

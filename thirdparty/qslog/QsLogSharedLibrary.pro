@@ -2,15 +2,15 @@
 include(QsLog.pri)
 
 TARGET = qslog
+
+include(../../global.pri)
+
 QT -= gui
 CONFIG -= console
 CONFIG -= app_bundle
 CONFIG += shared
-TEMPLATE = lib
 
-DESTDIR = $$PWD/../../bin
-OBJECTS_DIR = $$PWD/.obj
-MOC_DIR = $$PWD/.moc
+TEMPLATE = lib
 
 win32 {
     DEFINES += QSLOG_IS_SHARED_LIBRARY

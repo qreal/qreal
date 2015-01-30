@@ -1,15 +1,4 @@
-CONFIG += c++11
-
-INCLUDEPATH += \
-	$$PWD/include/ \
-	$$PWD/../thirdparty/ \
-	$$PWD/.. \
-
-LIBS += -L$$PWD/../bin -lqrkernel -lqslog
-
-DEFINES += QRTEXT_LIBRARY
-
-TRANSLATIONS = $$PWD/../qrtranslations/ru/qrtext_ru.ts
+include(../global.pri)
 
 HEADERS += \
 	$$PWD/include/qrtext/debuggerInterface.h \
@@ -129,3 +118,10 @@ SOURCES += \
 	$$PWD/src/lua/luaPrecedenceTable.cpp \
 	$$PWD/src/lua/luaSemanticAnalyzer.cpp \
 	$$PWD/src/lua/luaToolbox.cpp \
+
+TRANSLATIONS = $$PWD/../qrtranslations/ru/qrtext_ru.ts
+
+includes(qrkernel thirdparty/qslog)
+links(qrkernel qslog)
+
+DEFINES += QRTEXT_LIBRARY

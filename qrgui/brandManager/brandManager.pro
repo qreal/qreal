@@ -1,26 +1,4 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
-
-TARGET = qrgui-brand-manager
-
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqrgui-plugin-manager
-
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
-
-QT += widgets
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
-
-DEFINES += QRGUI_BRAND_MANAGER_LIBRARY
+include(../../global.pri)
 
 HEADERS += \
 	$$PWD/brandManagerDeclSpec.h \
@@ -34,3 +12,14 @@ SOURCES += \
 RESOURCES += \
 	$$PWD/fonts/fonts.qrc \
 	$$PWD/styles/styles.qrc \
+
+TEMPLATE = lib
+
+TARGET = qrgui-brand-manager
+
+QT += widgets
+
+DEFINES += QRGUI_BRAND_MANAGER_LIBRARY
+
+uses(qrkernel qrutils qrgui-plugin-manager)
+
