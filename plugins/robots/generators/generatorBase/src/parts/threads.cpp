@@ -10,11 +10,17 @@ Threads::Threads(QString const &pathToTemplates)
 {
 }
 
-void Threads::registerThread(qReal::Id const &id)
+void Threads::registerThread(qReal::Id const &id, const QString &threadId)
 {
 	if (!mUnprocessedThreads.contains(id) && !mProcessedThreads.keys().contains(id)) {
 		mUnprocessedThreads.insert(id);
+		mThreadIds[id] = threadId;
 	}
+}
+
+QString Threads::threadId(const qReal::Id &id) const
+{
+	return mThreadIds[id];
 }
 
 void Threads::threadProcessed(qReal::Id const &id, semantics::SemanticTree &tree)

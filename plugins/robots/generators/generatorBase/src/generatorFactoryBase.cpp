@@ -223,7 +223,7 @@ AbstractSimpleGenerator *GeneratorFactoryBase::switchDefaultGenerator(Id const &
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(Id const &id
-		, GeneratorCustomizer &customizer, IdList const &threads)
+		, GeneratorCustomizer &customizer, QMap<Id, QString> const &threads)
 {
 	return new ForkCallGenerator(mRepo, customizer, id, threads, this);
 }

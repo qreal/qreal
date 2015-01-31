@@ -24,6 +24,7 @@ protected:
 		, iterationGuard
 		, trueGuard
 		, falseGuard
+		, threadIdGuard
 	};
 
 	/// Starts repo graph dfs-traversal

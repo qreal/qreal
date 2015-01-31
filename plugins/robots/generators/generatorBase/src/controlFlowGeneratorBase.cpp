@@ -36,8 +36,10 @@ bool ControlFlowGeneratorBase::preGenerationCheck()
 	return mValidator->validate();
 }
 
-semantics::SemanticTree *ControlFlowGeneratorBase::generate(qReal::Id const &initialNode)
+semantics::SemanticTree *ControlFlowGeneratorBase::generate(qReal::Id const &initialNode, const QString &threadId)
 {
+	mThreadId = threadId;
+
 	// If initial node is non-null then pregeneration check was already performed;
 	if (initialNode.isNull() && !preGenerationCheck()) {
 		mSemanticTree = nullptr;
@@ -71,7 +73,7 @@ bool ControlFlowGeneratorBase::generateForks()
 	while (mCustomizer.factory()->threads().hasUnprocessedThreads()) {
 		Id const thread = mCustomizer.factory()->threads().nextUnprocessedThread();
 		ControlFlowGeneratorBase * const threadGenerator = this->cloneFor(thread, false);
-		if (!threadGenerator->generate(thread)) {
+		if (!threadGenerator->generate(thread, mCustomizer.factory()->threads().threadId(thread))) {
 			return false;
 		}
 	}
@@ -136,12 +138,22 @@ void ControlFlowGeneratorBase::visitFinal(Id const &id, QList<LinkInfo> const &l
 
 void ControlFlowGeneratorBase::visitFork(Id const &id, QList<LinkInfo> &links)
 {
-	// n-ary fork creates (n-1) new threads and one thread is the old one.
-	LinkInfo const currentThread = links.first();
-	// In case of current thread fork block behaviours like nop-block.
+	LinkInfo currentThread;
+	QList<LinkInfo> newThreads;
+	QHash<Id, QString> threadIds;
+
+	for (const LinkInfo &thread : links) {
+		QString threadId = mRepo.stringProperty(thread.linkId, "Guard");
+		if (threadId == mThreadId) {
+			currentThread = thread;
+		} else {
+			threadIds[thread.linkId] = threadId;
+			newThreads << thread;
+		}
+	}
+
 	visitRegular(id, { currentThread });
-	QList<LinkInfo> const newThreads = links.mid(1);
-	semantics::ForkRule rule(mSemanticTree, id, newThreads, mCustomizer.factory()->threads());
+	semantics::ForkRule rule(mSemanticTree, id, newThreads, threadIds, mCustomizer.factory()->threads());
 	rule.apply();
 
 	// Restricting visiting other threads, they will be generated to new semantic trees.

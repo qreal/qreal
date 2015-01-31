@@ -39,7 +39,7 @@ public:
 	/// Takes ownership on result.
 	/// @param initialNode The starting block of the traversal. If empty then initial node
 	/// of the diagram given in constructor will be used.
-	semantics::SemanticTree *generate(qReal::Id const &initialNode = qReal::Id());
+	semantics::SemanticTree *generate(qReal::Id const &initialNode = qReal::Id(), const QString &threadId = "main");
 
 	/// Returns true if some generation errors occured and the generation process can`t be proceeded with other
 	/// control flow generators (fatal errors occured).
@@ -68,6 +68,7 @@ protected:
 	qrRepo::RepoApi const &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
+	QString mThreadId;
 	bool mErrorsOccured;
 	bool const mIsMainGenerator;
 

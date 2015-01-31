@@ -17,7 +17,9 @@ public:
 	/// Must be called each time when generator gets into the block with the
 	/// fork semantics for every block that start new thread.
 	/// @param id The initial node of the thread
-	void registerThread(qReal::Id const &id);
+	void registerThread(qReal::Id const &id, const QString &threadId);
+
+	QString threadId(const qReal::Id &id) const;
 
 	/// Must be called each time when semantic tree for some thread was built.
 	void threadProcessed(qReal::Id const &id, semantics::SemanticTree &tree);
@@ -45,6 +47,7 @@ private:
 
 	QSet<qReal::Id> mUnprocessedThreads;
 	QMap<qReal::Id, semantics::SemanticTree *> mProcessedThreads;
+	QMap<qReal::Id, QString> mThreadIds;
 };
 
 }
