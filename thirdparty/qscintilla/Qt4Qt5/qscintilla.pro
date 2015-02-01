@@ -21,26 +21,27 @@
 # 
 # This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
 # WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-
+#
+# Modified by Yurii Litvinov to comply with QReal build rules.
 
 # This must be kept in sync with configure.py.
 !win32:VERSION = 8.0.2
 
-TEMPLATE = lib
-DESTDIR = ../../../bin
 TARGET = qscintilla2
+
+include(../../../global.pri)
+TEMPLATE = lib
+
 CONFIG += qt warn_off thread
+
 INCLUDEPATH = . ../include ../lexlib ../src
+
 DEFINES = STATIC_BUILD QT SCI_LEXER
 
 greaterThan(QT_MAJOR_VERSION, 4) {
 	QT += widgets
 	QT += printsupport
 }
-
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
-RCC_DIR = .moc
 
 # Comment this in if you want the internal Scintilla classes to be placed in a
 # Scintilla namespace rather than pollute the global namespace.

@@ -6,7 +6,7 @@
 #include <QtGui/QIconEngineV2>
 #include <QtXml/QDomDocument>
 
-#include "plugins/editorPluginInterface/elementRepoInterface.h"
+#include "qrgui/plugins/editorPluginInterface/elementRepoInterface.h"
 
 namespace qReal {
 

@@ -10,15 +10,15 @@ QMAKE_EXTRA_COMPILERS += qrxc_source
 FAKE_COMMAND = cd .
 
 qrxc_header.commands = $$FAKE_COMMAND
-qrxc_header.depends = $$QRXC $$QREAL_XML_DEPENDS
+qrxc_header.depends = $$QRXC $$QREAL_XML_DEPENDS generated/pluginInterface.cpp
 qrxc_header.input = QREAL_XML
 qrxc_header.output = generated/pluginInterface.h
-qrxc_header.variable_out = HEADERS
+qrxc_header.variable_out = MOC_HEADERS
 
 QMAKE_EXTRA_COMPILERS += qrxc_header
 
 qrxc_elements.commands = $$FAKE_COMMAND
-qrxc_elements.depends = $$QRXC $$QREAL_XML_DEPENDS
+qrxc_elements.depends = $$QRXC $$QREAL_XML_DEPENDS generated/pluginInterface.cpp
 qrxc_elements.input = QREAL_XML
 qrxc_elements.output = generated/elements.h
 qrxc_elements.variable_out = HEADERS
@@ -26,11 +26,19 @@ qrxc_elements.variable_out = HEADERS
 QMAKE_EXTRA_COMPILERS += qrxc_elements
 
 qrxc_resource.commands = $$FAKE_COMMAND
-qrxc_resource.depends = $$QRXC $$QREAL_XML_DEPENDS
+qrxc_resource.depends = $$QRXC $$QREAL_XML_DEPENDS generated/pluginInterface.cpp
 qrxc_resource.input = QREAL_XML
 qrxc_resource.output = plugin.qrc
 qrxc_resource.variable_out = RESOURCES
 
 QMAKE_EXTRA_COMPILERS += qrxc_resource
+
+# Here we need to call moc explicitly because by tefault it will be called before any files were generated
+new_moc.output  = $$MOC_DIR/moc_${QMAKE_FILE_BASE}.cpp
+new_moc.commands = moc ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}
+new_moc.input = MOC_HEADERS
+new_moc.variable_out = SOURCES
+
+QMAKE_EXTRA_COMPILERS += new_moc
 
 include(extraCompilersSdf.pri)

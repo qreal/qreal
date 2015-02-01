@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include "plugins/editorPluginInterface/labelInterface.h"
+#include "qrgui/plugins/editorPluginInterface/labelInterface.h"
 
 namespace qReal {
 

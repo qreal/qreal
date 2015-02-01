@@ -4,7 +4,7 @@
 
 #include <qrkernel/ids.h>
 
-#include "mainWindow/error.h"
+#include "qrgui/mainWindow/error.h"
 
 namespace qReal {
 	class MainWindow;

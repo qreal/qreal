@@ -7,9 +7,9 @@
 #include <qrkernel/ids.h>
 #include <qrkernel/definitions.h>
 
-#include "mainWindow/error.h"
-#include "mainWindow/errorListWidget.h"
-#include "plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "qrgui/mainWindow/error.h"
+#include "qrgui/mainWindow/errorListWidget.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
 namespace gui {
