@@ -2,7 +2,7 @@ QREAL_XML = hascolEditor.xml
 
 QREAL_XML_DEPENDS =  \
 	../../commonMetamodels/kernelMetamodel.xml \
-	../../classDiagram/editor/classMetamodel.xml \
+	../../umlClassDiagram/editor/classMetamodel.xml \
 	../../umlActivityDiagram/editor/activityMetamodel.xml \
 
 QREAL_EDITOR_PATH = hascol/editor
