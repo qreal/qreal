@@ -1,7 +1,5 @@
 DEFINES += QRKERNEL_LIBRARY
 
-include(../global.pri)
-
 HEADERS += \
 	$$PWD/ids.h \
 	$$PWD/definitions.h \

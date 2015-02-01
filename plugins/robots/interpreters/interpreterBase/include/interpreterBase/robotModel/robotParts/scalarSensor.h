@@ -1,6 +1,6 @@
 #pragma once
 
-#include "abstractSensor.h"
+#include <interpreterBase/robotModel/robotParts/abstractSensor.h>
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 

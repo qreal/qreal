@@ -4,7 +4,7 @@ include(../../../../common.pri)
 
 include(../../../../../../plugins/robots/interpreters/interpreterCore/interpreterCore.pri)
 
-LIBS += -L../../../../../../bin -lqrkernel -lqslog
+links(qrkernel qslog)
 
 INCLUDEPATH += \
 	$$PWD/../../../../../../plugins/robots/interpreters \

@@ -1,5 +1,3 @@
-include(../global.pri)
-
 HEADERS += \
 	$$PWD/outFile.h \
 	$$PWD/utilsDeclSpec.h \

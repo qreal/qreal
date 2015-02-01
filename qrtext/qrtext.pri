@@ -1,5 +1,3 @@
-include(../global.pri)
-
 HEADERS += \
 	$$PWD/include/qrtext/debuggerInterface.h \
 	$$PWD/include/qrtext/declSpec.h \

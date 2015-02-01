@@ -1,5 +1,3 @@
-include(../global.pri)
-
 links(qrkernel qrutils)
 
 HEADERS += \
