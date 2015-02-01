@@ -6,13 +6,13 @@
 #include <QtWidgets/QAction>
 
 #include <qrrepo/repoControlInterface.h>
-#include "preferencesDialog/preferencesPage.h"
+#include "qrgui/preferencesDialog/preferencesPage.h"
 
-#include "plugins/toolPluginInterface/customizer.h"
-#include "plugins/toolPluginInterface/pluginConfigurator.h"
-#include "plugins/toolPluginInterface/actionInfo.h"
-#include "plugins/toolPluginInterface/hotKeyActionInfo.h"
-#include "plugins/toolPluginInterface/projectConverter.h"
+#include "qrgui/plugins/toolPluginInterface/customizer.h"
+#include "qrgui/plugins/toolPluginInterface/pluginConfigurator.h"
+#include "qrgui/plugins/toolPluginInterface/actionInfo.h"
+#include "qrgui/plugins/toolPluginInterface/hotKeyActionInfo.h"
+#include "qrgui/plugins/toolPluginInterface/projectConverter.h"
 
 namespace qReal {
 

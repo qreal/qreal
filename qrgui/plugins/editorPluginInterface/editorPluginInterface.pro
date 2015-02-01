@@ -1,10 +1,5 @@
 TEMPLATE = subdirs
 
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../../ \
-	$$PWD/../../../ \
-
 HEADERS += \
 	$$PWD/editorInterface.h \
 	$$PWD/elementImpl.h \

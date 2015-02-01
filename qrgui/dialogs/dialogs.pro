@@ -1,24 +1,13 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
-
 TARGET = qrgui-dialogs
+
+include(../../global.pri)
+
+TEMPLATE = lib
 
 QT += widgets
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrutils -lqrgui-models
-
-INCLUDEPATH = \
-	$$PWD/ \
-	$$PWD/../ \
-	$$PWD/../../ \
-
-CONFIG += c++11
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
+links(qrkernel qrutils qrgui-models)
+includes(qrgui)
 
 DEFINES += QRGUI_DIALOGS_LIBRARY
 

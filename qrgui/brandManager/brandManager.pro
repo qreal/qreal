@@ -1,3 +1,5 @@
+TARGET = qrgui-brand-manager
+
 include(../../global.pri)
 
 HEADERS += \
@@ -15,11 +17,10 @@ RESOURCES += \
 
 TEMPLATE = lib
 
-TARGET = qrgui-brand-manager
-
 QT += widgets
 
 DEFINES += QRGUI_BRAND_MANAGER_LIBRARY
 
-uses(qrkernel qrutils qrgui-plugin-manager)
+links(qrkernel qrutils qrgui-plugin-manager)
+includes(qrgui)
 

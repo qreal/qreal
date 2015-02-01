@@ -28,19 +28,6 @@ isEmpty(QREAL_EDITOR_PATH) {
 # QMake generates debug and release makefiles and executes this step for debug and release configurations even when exact configuration is specified
 # Since there is no point to build debug and release versions of qrxc, we simply skip this step if no qrxc exists.
 exists($$QRXC) {
-#	win32 {
-#		!exists($$PWD\\..\\$$QREAL_EDITOR_PATH/generated/pluginInterface.h) {
-#			COMMAND = cd $$PWD\\..\\$$QREAL_EDITOR_PATH && \"$$QRXC\" $$QREAL_XML $$ROOT
-#			SYS = $$system($$COMMAND)
-#		}
-#	} else {
-#		!exists($$PWD/../$$QREAL_EDITOR_PATH/generated/pluginInterface.h) {
-#			COMMAND = cd $$PWD/../$$QREAL_EDITOR_PATH && \"$$QRXC\" $$QREAL_XML $$ROOT
-#			SYS = $$system($$COMMAND)
-#		}
-#	}
-
-
 	if (equals(QMAKE_CXX, "g++")) {
 		QMAKE_LFLAGS += -Wl,-E
 	}

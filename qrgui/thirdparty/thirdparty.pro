@@ -1,13 +1,8 @@
-TEMPLATE = lib
-
-DESTDIR = $$PWD/../../bin
-
 TARGET = qrgui-thirdparty
 
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
+include(../../global.pri)
+
+TEMPLATE = lib
 
 DEFINES += QRGUI_THIRDPARTY_LIBRARY
 
@@ -28,4 +23,4 @@ HEADERS += \
 SOURCES += \
 	$$PWD/qsKineticScroller.cpp \
 
-include ($$PWD/qtpropertybrowser/src/qtpropertybrowser.pri)
+include($$PWD/qtpropertybrowser/src/qtpropertybrowser.pri)
