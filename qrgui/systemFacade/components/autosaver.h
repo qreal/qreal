@@ -25,27 +25,27 @@ public:
 		Autosaver &mAutosaver;
 	};
 
-	explicit Autosaver(ProjectManager *projectManager);
+	explicit Autosaver(ProjectManager &projectManager);
 	void reinit();
 
 	QString tempFilePath() const;
-	bool isAutosave(QString const &fileName) const;
-	bool isTempFile(QString const &fileName) const;
-	QString originalFile(QString const &fileName) const;
+	bool isAutosave(const QString &fileName) const;
+	bool isTempFile(const QString &fileName) const;
+	QString originalFile(const QString &fileName) const;
 
 	bool openTemp();
-	bool openAutosave(QString const &fileName);
+	bool openAutosave(const QString &fileName);
 
 	bool removeTemp();
 	bool removeAutoSave();
-	bool removeAutoSave(QString const &fileName);
+	bool removeAutoSave(const QString &fileName);
 
 	/// Performs search in project`s folder and tries to find autosaved version
 	/// of specified project. If such version was not found returns false.
 	/// Otherwise prompts user to recover the newest version.
 	/// Returns true if user agrees and autosave was opened successfully,
 	/// otherwise returns false.
-	bool checkAutoSavedVersion(QString const &originalProjectPath);
+	bool checkAutoSavedVersion(const QString &originalProjectPath);
 
 	/// Similar to @see checkAutoSavedVersion, but searches for temp save
 	bool checkTempFile();
@@ -56,20 +56,20 @@ private slots:
 
 private:
 	QString autosaveFilePath() const;
-	QString autosaveFilePath(QString const &currentFilePath) const;
+	QString autosaveFilePath(const QString &currentFilePath) const;
 	void resume();
 	void suspend();
 
 	uint interval() const;
 	QString openAutosavePrompt() const;
 	QString openTempFilePrompt() const;
-	bool removeFile(QString const &fileName);
+	bool removeFile(const QString &fileName);
 
 	// if option AutosaveInterval in not specified
 	static uint const defaultInterval = 600;
 
-	ProjectManager *mProjectManager;
-	QTimer *mTimer;
+	ProjectManager &mProjectManager;
+	QTimer mTimer;
 };
 
 }

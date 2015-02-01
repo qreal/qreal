@@ -14,7 +14,7 @@
 #include "mainWindowDockInterface.h"
 #include "findManager.h"
 #include "referenceList.h"
-#include "projectManager/projectManager.h"
+#include "projectManager/projectManagerWrapper.h"
 #include "tabWidget.h"
 #include "startWidget/startWidget.h"
 
@@ -376,7 +376,7 @@ private:
 	QMenu *mRecentProjectsMenu;
 
 	FindManager *mFindHelper;
-	ProjectManager *mProjectManager;
+	ProjectManagerWrapper *mProjectManager;
 	StartWidget *mStartWidget;
 
 	SceneCustomizer *mSceneCustomizer;

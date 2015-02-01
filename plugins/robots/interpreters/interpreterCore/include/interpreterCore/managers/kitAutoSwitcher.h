@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qrgui/mainWindow/projectManager/projectManagementInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 
 #include "blocksFactoryManagerInterface.h"

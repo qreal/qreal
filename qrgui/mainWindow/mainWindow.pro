@@ -45,9 +45,7 @@ HEADERS += \
 	$$PWD/miniMap.h \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
-	$$PWD/projectManager/autosaver.h \
-	$$PWD/projectManager/projectManagementInterface.h \
-	$$PWD/projectManager/projectManager.h \
+	$$PWD/projectManager/projectManagerWrapper.h \
 	$$PWD/projectManager/versionsConverterManager.h \
 	$$PWD/palette/paletteTree.h \
 	$$PWD/palette/paletteTreeWidget.h \
@@ -72,8 +70,7 @@ SOURCES += \
 	$$PWD/miniMap.cpp \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
-	$$PWD/projectManager/autosaver.cpp \
-	$$PWD/projectManager/projectManager.cpp \
+	$$PWD/projectManager/projectManagerWrapper.cpp \
 	$$PWD/projectManager/versionsConverterManager.cpp \
 	$$PWD/palette/paletteTree.cpp \
 	$$PWD/palette/paletteTreeWidget.cpp \

@@ -25,6 +25,7 @@ HEADERS += \
 	$$PWD/usedInterfaces/details/modelsAssistInterface.h \
 	$$PWD/usedInterfaces/graphicalModelAssistInterface.h \
 	$$PWD/usedInterfaces/logicalModelAssistInterface.h \
+	$$PWD/usedInterfaces/projectManagementInterface.h \
 	$$PWD/projectConverter.h \
 	$$PWD/hotKeyActionInfo.h \
 	$$PWD/systemEvents.h \

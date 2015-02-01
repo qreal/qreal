@@ -4,11 +4,13 @@
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 #include <qrgui/models/models.h>
 
+#include "qrgui/systemFacade/systemFacadeDeclSpec.h"
+
 namespace qReal {
 
 /// Initializes and provides all main backend parts of the visual modeling system.
 /// This class is just a convenient way to use system infrastrucure from different frontends.
-class SystemFacade
+class QRGUI_SYSTEM_FACADE_EXPORT SystemFacade
 {
 public:
 	SystemFacade();

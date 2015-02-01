@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QAction>
 
-#include <qrgui/mainWindow/projectManager/projectManagementInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrutils/watchListWindow.h>

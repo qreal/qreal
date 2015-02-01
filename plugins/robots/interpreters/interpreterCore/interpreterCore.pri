@@ -72,5 +72,3 @@ TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterCo
 
 RESOURCES += \
 	$$PWD/interpreterCore.qrc \
-
-include($$PWD/qrguiIncludes.pri)

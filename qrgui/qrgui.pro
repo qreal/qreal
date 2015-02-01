@@ -37,6 +37,7 @@ mainWindow.depends = \
 
 systemFacade.depends = \
 	models \
+	textEditor \
 	pluginManager \
 	toolPluginInterface \
 

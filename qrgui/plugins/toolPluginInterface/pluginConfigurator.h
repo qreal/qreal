@@ -4,8 +4,8 @@
 
 #include "usedInterfaces/graphicalModelAssistInterface.h"
 #include "usedInterfaces/logicalModelAssistInterface.h"
+#include "usedInterfaces/projectManagementInterface.h"
 #include "mainWindow/mainWindowInterpretersInterface.h"
-#include "mainWindow/projectManager/projectManagementInterface.h"
 #include "editor/sceneCustomizationInterface.h"
 #include "textEditor/textManagerInterface.h"
 #include "systemEvents.h"
