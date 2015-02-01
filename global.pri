@@ -57,6 +57,7 @@ GLOBAL_PWD = $$PWD
 # from http://stackoverflow.com/questions/3984104/qmake-how-to-copy-a-file-to-the-output
 defineTest(copyToDestdir) {
 	FILES = $$1
+	NOW = $$2
 
 	for(FILE, FILES) {
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
@@ -70,7 +71,15 @@ defineTest(copyToDestdir) {
 		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/
 		win32:DDIR ~= s,/,\,g
 
-		QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+		isEmpty(NOW) {
+			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+		} else {
+			win32 {
+				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
+			} else {
+				system("cp -r $$FILE $$DESTDIR")
+			}
+		}
 	}
 
 	export(QMAKE_POST_LINK)

@@ -1,11 +1,11 @@
-TEMPLATE = lib
-CONFIG += plugin c++11
-DESTDIR = ../../../bin/plugins/tools/
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
-RCC_DIR = .moc
+include(../../../global.pri)
 
-LIBS += -L../../../bin -lqrkernel -lqslog -lqrgui-preferences-dialog
+TEMPLATE = lib
+CONFIG += plugin 
+
+DESTDIR = $$DESTDIR/plugins/tools/
+
+links(qrkernel qslog qrgui-preferences-dialog)
 
 INCLUDEPATH += \
 	$$PWD/../../../ \

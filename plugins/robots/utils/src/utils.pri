@@ -1,10 +1,6 @@
 QT += widgets network
 
-INCLUDEPATH += \
-	$$PWD/../include \
-	$$PWD/../../../../ \
-
-LIBS += -L$$PWD/../../../../bin/ -lqslog -lqrkernel -lqrutils
+links(qslog qrkernel qrutils)
 
 DEFINES += ROBOTS_UTILS_LIBRARY
 
