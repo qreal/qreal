@@ -4,7 +4,7 @@
 
 namespace qReal {
 
-class QRGUI_TEXT_EDITOR_EXPORT NullTextManager : public TextManagerInterface
+class NullTextManager : public TextManagerInterface
 {
 	Q_OBJECT
 

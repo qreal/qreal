@@ -20,8 +20,6 @@ public slots:
 	virtual bool suggestToOpenExisting() = 0;
 	/// Creating a new project
 	virtual bool openNewWithDiagram() = 0;
-	/// Creating a new diagramm
-	virtual void suggestToCreateDiagram(bool isClosable = true) = 0;
 	/// Offers the user select a file (by a dialog) and import all diagrams from it into the current project.
 	virtual bool suggestToImport() = 0;
 

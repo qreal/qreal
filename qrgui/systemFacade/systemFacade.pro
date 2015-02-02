@@ -29,6 +29,7 @@ HEADERS += \
 	$$PWD/systemFacade.h \
 	$$PWD/components/nullErrorReporter.h \
 	$$PWD/components/consoleErrorReporter.h \
+	$$PWD/components/nullTextManager.h \
 	$$PWD/components/projectManager.h \
 	$$PWD/components/autosaver.h \
 	$$PWD/components/nullMainWindow.h \

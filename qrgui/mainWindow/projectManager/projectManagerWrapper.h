@@ -20,7 +20,9 @@ public:
 
 public slots:
 	bool openNewWithDiagram() override;
-	void suggestToCreateDiagram(bool isClosable = true) override;
+
+	/// Creating a new diagram
+	void suggestToCreateDiagram(bool isClosable = true);
 
 	void close() override;
 
