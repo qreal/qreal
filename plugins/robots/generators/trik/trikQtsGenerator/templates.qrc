@@ -119,10 +119,14 @@
         <file>templates/functions/sqrt.t</file>
         <file>templates/functions/time.t</file>
         <file>templates/wait/encoder.t</file>
+        <file>templates/wait/gamepadButton.t</file>
+        <file>templates/wait/gamepadDisconnect.t</file>
+        <file>templates/wait/gamepadWheel.t</file>
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>
         <file>templates/wait/infrared.t</file>
         <file>templates/wait/motion.t</file>
+        <file>templates/wait/padPress.t</file>
         <file>templates/subprograms/subprogramCall.t</file>
         <file>templates/subprograms/declarationsSectionHeader.t</file>
         <file>templates/subprograms/forwardDeclaration.t</file>

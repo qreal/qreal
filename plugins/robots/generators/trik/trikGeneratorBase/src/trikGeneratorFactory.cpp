@@ -26,6 +26,10 @@
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
+#include "simpleGenerators/waitGamepadButtonGenerator.h"
+#include "simpleGenerators/waitGamepadDisconnectGenerator.h"
+#include "simpleGenerators/waitGamepadWheelGenerator.h"
+#include "simpleGenerators/waitPadPressGenerator.h"
 #include "parts/trikDeviceVariables.h"
 
 using namespace trik;
@@ -110,6 +114,14 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new WaitForMotionGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForIRDistance") {
 		return new WaitForInfraredSensorGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitGamepadButton") {
+		return new WaitGamepadButtonGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitPadPress") {
+		return new WaitPadPressGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitGamepadWheel") {
+		return new WaitGamepadWheelGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitGamepadDisconnect") {
+		return new WaitGamepadDisconnectGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);

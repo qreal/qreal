@@ -65,6 +65,10 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/setPainterColorGenerator.h \
 	$$PWD/src/simpleGenerators/sendMessageGenerator.h \
 	$$PWD/src/simpleGenerators/waitForMessageGenerator.h \
+	$$PWD/src/simpleGenerators/waitGamepadButtonGenerator.h \
+	$$PWD/src/simpleGenerators/waitGamepadDisconnectGenerator.h \
+	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.h \
+	$$PWD/src/simpleGenerators/waitPadPressGenerator.h \
 
 SOURCES += \
 	$$PWD/src/trikGeneratorPluginBase.cpp \
@@ -96,3 +100,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/setPainterColorGenerator.cpp \
 	$$PWD/src/simpleGenerators/sendMessageGenerator.cpp \
 	$$PWD/src/simpleGenerators/waitForMessageGenerator.cpp \
+	$$PWD/src/simpleGenerators/waitGamepadButtonGenerator.cpp \
+	$$PWD/src/simpleGenerators/waitGamepadDisconnectGenerator.cpp \
+	$$PWD/src/simpleGenerators/waitGamepadWheelGenerator.cpp \
+	$$PWD/src/simpleGenerators/waitPadPressGenerator.cpp \
