@@ -9,6 +9,8 @@ namespace engine {
 class TwoDModelDisplayInterface
 {
 public:
+	virtual ~TwoDModelDisplayInterface() {}
+
 	/// Accepts the given painter and draws on the display area with it.
 	virtual void setPainter(graphicsUtils::PainterInterface *painter) = 0;
 

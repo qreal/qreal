@@ -32,10 +32,10 @@ equals(TEMPLATE, app) {
 	}
 }
 
-OBJECTS_DIR = .build/$$CONFIGURATION/.obj
-MOC_DIR = .build/$$CONFIGURATION/.moc
-RCC_DIR = .build/$$CONFIGURATION/.rcc
-UI_DIR = .build/$$CONFIGURATION/.ui
+OBJECTS_DIR = .build/$$CONFIGURATION/obj
+MOC_DIR = .build/$$CONFIGURATION/moc
+RCC_DIR = .build/$$CONFIGURATION/rcc
+UI_DIR = .build/$$CONFIGURATION/ui
 
 INCLUDEPATH += $$_PRO_FILE_PWD_ \
 	$$_PRO_FILE_PWD_/include \
@@ -48,8 +48,8 @@ unix {
 	INSTALLS += target
 }
 
-QMAKE_CXXFLAGS += -std=c++11
-QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor -Woverloaded-virtual
+CONFIG += c++11
+QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor
 
 GLOBAL_PWD = $$PWD
 

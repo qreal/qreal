@@ -390,6 +390,7 @@ void Editor::generateDiagramNodeNamesMap()
 
 class Editor::MethodGenerator {
 public:
+	virtual ~MethodGenerator() {}
 	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const = 0;
 };
 

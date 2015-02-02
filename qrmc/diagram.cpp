@@ -138,6 +138,7 @@ void Diagram::print()
 
 class Diagram::MapMethodGenerator {
 public:
+	virtual ~MapMethodGenerator() {}
 	virtual QString generate(Type *type, QString const &lineTemplate) const = 0;
 };
 
@@ -247,6 +248,7 @@ QString Diagram::generateParentsMap(QString const &lineTemplate) const
 
 class Diagram::ListMethodGenerator {
 public:
+	virtual ~ListMethodGenerator() {}
 	virtual QString generate(Type *type, QString const &lineTemplate) const = 0;
 };
 

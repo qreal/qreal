@@ -8,6 +8,9 @@ DEFINES += QRGUI_THIRDPARTY_LIBRARY
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_thirdparty_ru.ts
 
+# Some warnings are turned off because of problems specific to thirdparty code.
+QMAKE_CXXFLAGS += -Wno-switch
+
 win32 {
 	HEADERS += \
 		$$PWD/windowsmodernstyle.h \
