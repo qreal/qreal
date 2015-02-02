@@ -23,6 +23,8 @@ namespace qReal {
 class PluginInterface
 {
 public:
+	virtual ~PluginInterface() {}
+
 	/// Shall be overriden to return customizer that allows to change window title,
 	/// show/hide certain GUI elements and so on.
 	virtual Customizer* customizationInterface()

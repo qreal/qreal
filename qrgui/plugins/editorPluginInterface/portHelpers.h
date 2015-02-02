@@ -45,6 +45,8 @@ protected:
 class PortFactoryInterface
 {
 public:
+	virtual ~PortFactoryInterface() {}
+
 	virtual PortInterface *createPort(QPointF const &point, bool propX, bool propY, int initWidth, int initHeight
 			, PortImpl *impl) const = 0;
 	virtual PortInterface *createPort(QLineF const &line, bool propX1, bool propY1, bool propX2, bool propY2

@@ -12,6 +12,7 @@ namespace qReal {
 class ToolPluginInterface : public PluginInterface
 {
 public:
+	virtual ~ToolPluginInterface() {}
 
 	/// Shall be overriden in concrete plugin to initialize itself.
 	/// @param configurator Object that contains all needed information for a plugin, like refs to models.

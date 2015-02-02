@@ -14,6 +14,13 @@ public:
 
 	qreal getMaxDistance(QString const &);
 	bool isMultistroke();
+
+	qreal getDistance(QString const &item) override
+	{
+		const auto key = mGestures[item];
+		return getDistance(mKey, key);
+	}
+
 	qreal getDistance(QPair<qreal *, qreal *> const &key1, QPair<qreal *, qreal *> const &key2);
 	QPair<qreal *, qreal *> getKey(PathVector const &path);
 };

@@ -264,6 +264,7 @@ QString InterpreterEditorManager::mouseGesture(Id const &id) const
 class InterpreterEditorManager::CheckPropertyForParent
 {
 public:
+	virtual ~CheckPropertyForParent() {}
 	virtual QString stringProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
 			, QString const &propertyName) const = 0;
 };
