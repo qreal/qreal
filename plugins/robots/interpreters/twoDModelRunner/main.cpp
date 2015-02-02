@@ -49,6 +49,8 @@ int main(int argc, char *argv[])
 	}
 
 	const QString qrsFile = positionalArgs.first();
+	twoDModel::Runner runner;
+	runner.interpret(qrsFile);
 
 	const int exitCode = app.exec();
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";

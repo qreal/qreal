@@ -15,9 +15,12 @@ Runner::Runner()
 			, mQRealFacade.events()
 			, mTextManager)
 {
+	mPluginFacade.customizer().customizeDocks(&mMainWindow);
 	mPluginFacade.init(mConfigurator);
 }
 
 void Runner::interpret(const QString &saveFile)
 {
+	mProjectManager.open(saveFile);
+	mPluginFacade.actionsManager().runAction().trigger();
 }

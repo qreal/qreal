@@ -7,6 +7,11 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	: mErrorReporter(errorReporter)
 	, mEvents(events)
 	, mGraphicalModel(nullptr)
+	, mLogicalModelDock(new QDockWidget)
+	, mGraphicalModelDock(new QDockWidget)
+	, mPropertyEditorDock(new QDockWidget)
+	, mErrorReporterDock(new QDockWidget)
+	, mPaletteDock(new QDockWidget)
 {
 }
 
@@ -17,8 +22,22 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	: mErrorReporter(errorReporter)
 	, mEvents(events)
 	, mGraphicalModel(&graphicalModel)
+	, mLogicalModelDock(new QDockWidget)
+	, mGraphicalModelDock(new QDockWidget)
+	, mPropertyEditorDock(new QDockWidget)
+	, mErrorReporterDock(new QDockWidget)
+	, mPaletteDock(new QDockWidget)
 {
 	connect(&projectManager, &ProjectManagementInterface::afterOpen, this, &NullMainWindow::openFirstDiagram);
+}
+
+NullMainWindow::~NullMainWindow()
+{
+	delete mLogicalModelDock;
+	delete mGraphicalModelDock;
+	delete mPropertyEditorDock;
+	delete mErrorReporterDock;
+	delete mPaletteDock;
 }
 
 
@@ -203,4 +222,41 @@ void NullMainWindow::openTabWithEditor(const Id &id)
 {
 	mActiveId = id;
 	emit mEvents.activeTabChanged(id);
+}
+
+QDockWidget *NullMainWindow::logicalModelDock() const
+{
+	return mLogicalModelDock;
+}
+
+QDockWidget *NullMainWindow::graphicalModelDock() const
+{
+	return mGraphicalModelDock;
+}
+
+QDockWidget *NullMainWindow::propertyEditorDock() const
+{
+	return mPropertyEditorDock;
+}
+
+QDockWidget *NullMainWindow::errorReporterDock() const
+{
+	return mErrorReporterDock;
+}
+
+QDockWidget *NullMainWindow::paletteDock() const
+{
+	return mPaletteDock;
+}
+
+void NullMainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
+{
+	Q_UNUSED(first)
+	Q_UNUSED(second)
+}
+
+void NullMainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
+{
+	Q_UNUSED(area)
+	Q_UNUSED(dockWidget)
 }
