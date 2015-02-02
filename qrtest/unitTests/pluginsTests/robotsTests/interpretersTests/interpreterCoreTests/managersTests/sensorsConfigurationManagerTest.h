@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 
-#include <interpreterCore/src/managers/devicesConfigurationManager.h>
+#include <interpreterCore/managers/devicesConfigurationManager.h>
 
 #include "support/qrguiFacade.h"
 #include "support/dummySensorsConfigurer.h"

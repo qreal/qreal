@@ -1,6 +1,6 @@
 #include "kitPluginManagerTest.h"
 
-#include <src/managers/kitPluginManager.h>
+#include <interpreterCore/managers/kitPluginManager.h>
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 using namespace interpreterCore;

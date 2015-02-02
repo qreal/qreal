@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include <qrgui/mainWindow/projectManager/projectManagementInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 
 #include <gmock/gmock.h>
 
