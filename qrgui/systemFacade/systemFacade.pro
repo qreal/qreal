@@ -31,6 +31,7 @@ HEADERS += \
 	$$PWD/components/consoleErrorReporter.h \
 	$$PWD/components/projectManager.h \
 	$$PWD/components/autosaver.h \
+	$$PWD/components/nullMainWindow.h \
 
 SOURCES += \
 	$$PWD/systemFacade.cpp \
@@ -39,3 +40,4 @@ SOURCES += \
 	$$PWD/components/nullTextManager.cpp \
 	$$PWD/components/projectManager.cpp \
 	$$PWD/components/autosaver.cpp \
+	$$PWD/components/nullMainWindow.cpp \

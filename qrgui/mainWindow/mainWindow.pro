@@ -36,7 +36,6 @@ HEADERS += \
 	$$PWD/errorReporter.h \
 	$$PWD/error.h \
 	$$PWD/errorListWidget.h \
-	$$PWD/mainWindowInterpretersInterface.h \
 	$$PWD/findManager.h \
 	$$PWD/dotRunner.h \
 	$$PWD/splashScreen.h \

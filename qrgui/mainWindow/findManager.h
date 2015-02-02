@@ -2,11 +2,9 @@
 
 #include <QtCore/QObject>
 
-#include "mainWindow/mainWindowInterpretersInterface.h"
-#include "models/logicalModelAssistApi.h"
-#include "dialogs/findReplaceDialog.h"
-
-class MainWindowInterpretersInterface;
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/models/logicalModelAssistApi.h>
+#include <qrgui/dialogs/findReplaceDialog.h>
 
 /// Class that manages operations of find & replace.
 class FindManager : public QObject

@@ -1,121 +1,127 @@
 #pragma once
 
-#include <QtGui/QColor>
-#include <QtCore/QFileInfo>
-
-#include <qrkernel/ids.h>
-#include <qrutils/invocationUtils/longOperation.h>
-
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 
 namespace qReal {
-namespace gui {
 
-class PreferencesPage;
-class ErrorReporter;
-
-class MainWindowInterpretersInterface
+class NullMainWindow : public QObject, public gui::MainWindowInterpretersInterface
 {
+	Q_OBJECT
+
 public:
-	virtual ~MainWindowInterpretersInterface() {}
-	virtual void selectItem(Id const &graphicalId) = 0;
-	virtual void selectItemOrDiagram(Id const &graphicalId) = 0;
-	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red) = 0;
-	virtual void dehighlight(Id const &graphicalId) = 0;
-	virtual void dehighlight() = 0;
-	virtual ErrorReporterInterface *errorReporter() = 0;
+	NullMainWindow(ErrorReporterInterface &errorReporter, SystemEvents &events);
+	NullMainWindow(ErrorReporterInterface &errorReporter, SystemEvents &events
+			, ProjectManagementInterface const &projectManager, GraphicalModelAssistInterface const &graphicalModel);
+
+	void selectItem(const Id &graphicalId) override;
+	void selectItemOrDiagram(const Id &graphicalId) override;
+	void highlight(const Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red) override;
+	void dehighlight(const Id &graphicalId) override;
+	void dehighlight() override;
+	ErrorReporterInterface *errorReporter() override;
 
 	/// Gets graphical Id of diagram currently opened in editor.
 	/// @returns Id of opened diagram, empty Id if there is none.
 	/// @todo Make it const if possible.
-	virtual Id activeDiagram() const = 0;
+	Id activeDiagram() const override;
 
-	virtual void openSettingsDialog(QString const &tab) = 0;
+	void openSettingsDialog(const QString &tab) override;
 
 	/// Rereads model information from repository and reinitializes models
 	/// and all related views. Needs to be called after major changes in repo.
-	virtual void reinitModels() = 0;
+	void reinitModels() override;
 
 	/// Returns reference to MainWindow to use as a parent in different plugin windows
-	virtual QWidget *windowWidget() = 0;
+	QWidget *windowWidget() override;
 
 	/// Tries to unload editor plugin with given name.
 	/// @param pluginName Name of an editor plugin to unload
 	/// @returns True, if plugin unloaded successfully or no plugin with such name
 	/// was loaded, false if plugin is not unloaded.
-	virtual bool unloadPlugin(QString const &pluginName) = 0;
+	bool unloadPlugin(const QString &pluginName) override;
 
 	/// Tries to load editor plugin with given name.
 	/// @param fileName Name of an editor plugin file to load (.dll or .so name without extension)
 	/// @param pluginName Name of an editor plugin itself (as it will return in id())
 	/// @returns True, if plugin loaded successfully, false if plugin is not loaded.
-	virtual bool loadPlugin(QString const &fileName, QString const &pluginName) = 0;
+	bool loadPlugin(const QString &fileName, const QString &pluginName) override;
 
 	/// Checks if an editor plugin is loaded
 	/// @param pluginName Name of a plugin to check (as it will return in id() method)
 	/// @returns True, if plugin is present and loaded
-	virtual bool pluginLoaded(QString const &pluginName) = 0;
+	bool pluginLoaded(const QString &pluginName) override;
 
 	/// Saves active diagram to .png with chosen file name
 	/// @param fileName Name for saving
-	virtual void saveDiagramAsAPictureToFile(QString const &fileName) = 0;
+	void saveDiagramAsAPictureToFile(const QString &fileName) override;
 
 	/// automatically arrange elements on active diagram
 	/// @param algorithm Way of arrangement
 	/// @param absolutePathToDotFiles Path to directory DotFiles
-	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles) = 0;
+	void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles) override;
 
 	/// returns selected elements on current tab
-	virtual IdList selectedElementsOnActiveDiagram() = 0;
+	IdList selectedElementsOnActiveDiagram() override;
 
 	/// Shows element`s tab if it is not active and selects element if @see setSelected is true
-	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true) = 0;
+	void activateItemOrDiagram(const Id &id, bool setSelected = true) override;
 
-	virtual void updateActiveDiagram() = 0;
+	void updateActiveDiagram() override;
 
-	virtual void deleteElementFromDiagram(Id const &id) = 0;
+	void deleteElementFromDiagram(const Id &id) override;
 
 	/// Must be called before some long operation start.
 	/// Shows progress bar on operation start
 	/// @param operation Operation that going to be invoced
-	virtual void reportOperation(invocation::LongOperation *operation) = 0;
+	void reportOperation(invocation::LongOperation *operation) override;
 
-	virtual QWidget *currentTab() = 0;
-	virtual void openTab(QWidget *tab, QString const &title) = 0;
-	virtual void closeTab(QWidget *tab) = 0;
+	QWidget *currentTab() override;
+	void openTab(QWidget *tab, const QString &title) override;
+	void closeTab(QWidget *tab) override;
 	/// Sets text on the header of the tab containing the given widget or does nothing if such tab was not found.
-	virtual void setTabText(QWidget *tab, QString const &text) = 0;
+	void setTabText(QWidget *tab, const QString &text) override;
 
 	/// Signals that engine must prepare for modifying blocks set.
 	/// After each beginPaletteModification() call there must be endPaletteModification() call.
-	virtual void beginPaletteModification() = 0;
+	void beginPaletteModification() override;
 
 	/// Shows or hides given element on a palette.
 	/// @param metatype - id of an element type to be shown/hidden.
 	/// @param visible - true, if element shall be visible, false if hidden.
-	virtual void setElementInPaletteVisible(Id const &metatype, bool visible) = 0;
+	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
 
 	/// Shows or hides all elements in palette.
 	/// @param visible - true, if all elements shall be visible, false if hidden.
-	virtual void setVisibleForAllElementsInPalette(bool visible) = 0;
+	void setVisibleForAllElementsInPalette(bool visible) override;
 
 	/// Disables/enables given element on a palette.
 	/// @param metatype - id of an element type to be disabled/enabled.
 	/// @param enabled - true, if element shall be enabled, false if disabled (greyed out).
-	virtual void setElementInPaletteEnabled(Id const &metatype, bool enabled) = 0;
+	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
 
 	/// Enables or disables all elements in palette.
 	/// @param enabled - true, if all elements shall be enabled, false if all elements shall be disabled.
-	virtual void setEnabledForAllElementsInPalette(bool enabled) = 0;
+	void setEnabledForAllElementsInPalette(bool enabled) override;
 
 	/// Commits palette modification in the system: shows or hides elements in palette, linker menus,
 	/// gestures tab and enables or disables elements on diagram.
-	virtual void endPaletteModification() = 0;
+	void endPaletteModification() override;
 
 	/// Returns a set of registered preferences pages. Key represents page ID, value - the page itself.
 	/// This method may be useful for storing plugins settings on existing pages.
-	virtual QMap<QString, PreferencesPage *> preferencesPages() const = 0;
+	QMap<QString, gui::PreferencesPage *> preferencesPages() const override;
+
+private:
+	void openFirstDiagram();
+	void openTabWithEditor(const Id &id);
+
+	ErrorReporterInterface &mErrorReporter;
+	SystemEvents &mEvents;
+	GraphicalModelAssistInterface const *mGraphicalModel;
+	Id mActiveId;
 };
 
-}
 }

@@ -10,14 +10,14 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include "mainWindowInterpretersInterface.h"
-#include "mainWindowDockInterface.h"
 #include "findManager.h"
 #include "referenceList.h"
 #include "projectManager/projectManagerWrapper.h"
 #include "tabWidget.h"
 #include "startWidget/startWidget.h"
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 #include <qrgui/plugins/pluginManager/editorManager.h>
 #include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
