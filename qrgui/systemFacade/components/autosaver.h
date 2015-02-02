@@ -3,6 +3,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 
+#include "qrgui/systemFacade/systemFacadeDeclSpec.h"
+
 namespace qReal {
 
 class ProjectManager;
@@ -10,7 +12,7 @@ class ProjectManager;
 /// @brief class provides automatic saving of the project at equal time intervals.
 /// All options for working are retrieved from the settings manager.
 /// Autosaver provides an interface that allows you to make it reload parameters
-class Autosaver : public QObject
+class QRGUI_SYSTEM_FACADE_EXPORT Autosaver : public QObject
 {
 	Q_OBJECT
 

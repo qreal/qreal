@@ -11,7 +11,7 @@ namespace qReal {
 class MainWindow;
 
 /// ProjectManagementInterface implementation
-class ProjectManager : public ProjectManagementInterface
+class QRGUI_SYSTEM_FACADE_EXPORT ProjectManager : public ProjectManagementInterface
 {
 	Q_OBJECT
 

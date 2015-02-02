@@ -2,9 +2,11 @@
 
 #include <qrgui/textEditor/textManagerInterface.h>
 
+#include "qrgui/systemFacade/systemFacadeDeclSpec.h"
+
 namespace qReal {
 
-class NullTextManager : public TextManagerInterface
+class QRGUI_SYSTEM_FACADE_EXPORT NullTextManager : public TextManagerInterface
 {
 	Q_OBJECT
 

@@ -6,9 +6,11 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 
+#include "qrgui/systemFacade/systemFacadeDeclSpec.h"
+
 namespace qReal {
 
-class NullMainWindow : public QObject
+class QRGUI_SYSTEM_FACADE_EXPORT NullMainWindow : public QObject
 		, public gui::MainWindowInterpretersInterface
 		, public gui::MainWindowDockInterface
 {

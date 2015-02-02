@@ -6,7 +6,8 @@ TARGET = qrgui-facade
 
 QT += widgets
 
-LIBS += -L$$PWD/../../bin -lqrkernel -lqrgui-models -lqrgui-plugin-manager -lqrgui-text-editor
+LIBS += -L$$PWD/../../bin -lqrkernel -lqslog -lqrgui-models -lqrgui-plugin-manager -lqrgui-text-editor \
+		-lqrgui-tool-plugin-interface \
 
 INCLUDEPATH = \
 	$$PWD/ \

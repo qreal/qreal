@@ -2,10 +2,12 @@
 
 #include <QtCore/QObject>
 
+#include "qrgui/plugins/toolPluginInterface/toolPluginInterfaceDeclSpec.h"
+
 namespace qReal {
 
 /// Interface that provides all of the work load project from a file, stored in the project file, and so on
-class ProjectManagementInterface : public QObject
+class QRGUI_TOOL_PLUGIN_INTERFACE_EXPORT ProjectManagementInterface : public QObject
 {
 	Q_OBJECT
 

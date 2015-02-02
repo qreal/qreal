@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include <QtCore/QDir>
 #include <QtCore/QCommandLineParser>
 #include <QtWidgets/QApplication>
