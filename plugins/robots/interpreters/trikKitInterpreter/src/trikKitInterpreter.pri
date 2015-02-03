@@ -28,10 +28,16 @@ HEADERS += \
 	$$PWD/blocks/details/ledBlock.h \
 	$$PWD/blocks/details/sayBlock.h \
 	$$PWD/blocks/details/systemCommandBlock.h \
+	$$PWD/blocks/details/waitGamepadButtonBlock.h \
+	$$PWD/blocks/details/waitGamepadConnectBlock.h \
+	$$PWD/blocks/details/waitGamepadDisconnectBlock.h \
+	$$PWD/blocks/details/waitGamepadWheelBlock.h \
+	$$PWD/blocks/details/waitPadPressBlock.h \
 	$$PWD/robotModel/trikRobotModelBase.h \
 	$$PWD/robotModel/parts/trikColorSensor.h \
 	$$PWD/robotModel/parts/trikDisplay.h \
 	$$PWD/robotModel/parts/trikGamepadButton.h \
+	$$PWD/robotModel/parts/trikGamepadConnectionIndicator.h \
 	$$PWD/robotModel/parts/trikGamepadPad.h \
 	$$PWD/robotModel/parts/trikGamepadPadPressSensor.h \
 	$$PWD/robotModel/parts/trikGamepadWheel.h \
@@ -65,6 +71,7 @@ HEADERS += \
 	$$PWD/robotModel/real/parts/accelerometer.h \
 	$$PWD/robotModel/real/parts/shell.h \
 	$$PWD/robotModel/real/parts/gamepadButton.h \
+	$$PWD/robotModel/real/parts/gamepadConnectionIndicator.h \
 	$$PWD/robotModel/real/parts/gamepadPad.h \
 	$$PWD/robotModel/real/parts/gamepadPadPressSensor.h \
 	$$PWD/robotModel/real/parts/gamepadWheel.h \
@@ -99,10 +106,16 @@ SOURCES += \
 	$$PWD/blocks/details/ledBlock.cpp \
 	$$PWD/blocks/details/sayBlock.cpp \
 	$$PWD/blocks/details/systemCommandBlock.cpp \
+	$$PWD/blocks/details/waitGamepadButtonBlock.cpp \
+	$$PWD/blocks/details/waitGamepadConnectBlock.cpp \
+	$$PWD/blocks/details/waitGamepadDisconnectBlock.cpp \
+	$$PWD/blocks/details/waitGamepadWheelBlock.cpp \
+	$$PWD/blocks/details/waitPadPressBlock.cpp \
 	$$PWD/robotModel/trikRobotModelBase.cpp \
 	$$PWD/robotModel/parts/trikColorSensor.cpp \
 	$$PWD/robotModel/parts/trikDisplay.cpp \
 	$$PWD/robotModel/parts/trikGamepadButton.cpp \
+	$$PWD/robotModel/parts/trikGamepadConnectionIndicator.cpp \
 	$$PWD/robotModel/parts/trikGamepadPad.cpp \
 	$$PWD/robotModel/parts/trikGamepadPadPressSensor.cpp \
 	$$PWD/robotModel/parts/trikGamepadWheel.cpp \
@@ -136,6 +149,7 @@ SOURCES += \
 	$$PWD/robotModel/real/parts/accelerometer.cpp \
 	$$PWD/robotModel/real/parts/shell.cpp \
 	$$PWD/robotModel/real/parts/gamepadButton.cpp \
+	$$PWD/robotModel/real/parts/gamepadConnectionIndicator.cpp \
 	$$PWD/robotModel/real/parts/gamepadPad.cpp \
 	$$PWD/robotModel/real/parts/gamepadPadPressSensor.cpp \
 	$$PWD/robotModel/real/parts/gamepadWheel.cpp \

@@ -91,6 +91,7 @@
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>
         <file>templates/gamepad/gamepadButton.t</file>
+        <file>templates/gamepad/gamepadConnectionIndicator.t</file>
         <file>templates/gamepad/gamepadPad.t</file>
         <file>templates/gamepad/gamepadPadPressSensor.t</file>
         <file>templates/gamepad/gamepadWheel.t</file>

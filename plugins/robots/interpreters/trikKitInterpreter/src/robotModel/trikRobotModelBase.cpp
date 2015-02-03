@@ -21,6 +21,7 @@
 #include "parts/trikLed.h"
 #include "parts/trikShell.h"
 #include "parts/trikGamepadButton.h"
+#include "parts/trikGamepadConnectionIndicator.h"
 #include "parts/trikGamepadPad.h"
 #include "parts/trikGamepadPadPressSensor.h"
 #include "parts/trikGamepadWheel.h"
@@ -116,6 +117,9 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId, QString const &robo
 	addAllowedConnection(PortInfo("GamepadButton3Port", input, {}, "gamepadButton3"), { gamepadButtonInfo() });
 	addAllowedConnection(PortInfo("GamepadButton4Port", input, {}, "gamepadButton4"), { gamepadButtonInfo() });
 	addAllowedConnection(PortInfo("GamepadButton5Port", input, {}, "gamepadButton5"), { gamepadButtonInfo() });
+
+	addAllowedConnection(PortInfo("GamepadConnectionIndicatorPort", input, {}, "gamepadConnected")
+			, { gamepadConnectionIndicatorInfo() });
 }
 
 QList<PortInfo> TrikRobotModelBase::configurablePorts() const
@@ -237,4 +241,9 @@ DeviceInfo TrikRobotModelBase::gamepadPadPressSensorInfo() const
 DeviceInfo TrikRobotModelBase::gamepadWheelInfo() const
 {
 	return DeviceInfo::create<parts::TrikGamepadWheel>();
+}
+
+DeviceInfo TrikRobotModelBase::gamepadConnectionIndicatorInfo() const
+{
+	return DeviceInfo::create<parts::TrikGamepadConnectionIndicator>();
 }

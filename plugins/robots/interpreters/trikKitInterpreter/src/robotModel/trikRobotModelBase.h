@@ -44,6 +44,7 @@ protected:
 	virtual interpreterBase::robotModel::DeviceInfo gamepadPadInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo gamepadPadPressSensorInfo() const;
 	virtual interpreterBase::robotModel::DeviceInfo gamepadWheelInfo() const;
+	virtual interpreterBase::robotModel::DeviceInfo gamepadConnectionIndicatorInfo() const;
 };
 
 }

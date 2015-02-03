@@ -23,6 +23,7 @@
 #include "parts/objectSensor.h"
 #include "parts/shell.h"
 #include "parts/gamepadButton.h"
+#include "parts/gamepadConnectionIndicator.h"
 #include "parts/gamepadPad.h"
 #include "parts/gamepadPadPressSensor.h"
 #include "parts/gamepadWheel.h"
@@ -103,6 +104,8 @@ robotParts::Device *RealRobotModelBase::createDevice(PortInfo const &port, Devic
 		return new parts::Shell(shellInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gamepadButtonInfo())) {
 		return new parts::GamepadButton(gamepadButtonInfo(), port, *mRobotCommunicator);
+	} else if (deviceInfo.isA(gamepadConnectionIndicatorInfo())) {
+		return new parts::GamepadConnectionIndicator(gamepadConnectionIndicatorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gamepadPadInfo())) {
 		return new parts::GamepadPad(gamepadPadInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(gamepadPadPressSensorInfo())) {
