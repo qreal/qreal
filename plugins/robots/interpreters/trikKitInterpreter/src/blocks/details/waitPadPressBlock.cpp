@@ -1,27 +1,35 @@
-#include "waitForMotionBlock.h"
+#include "waitPadPressBlock.h"
 
-#include "robotModel/parts/trikMotionSensor.h"
+#include "robotModel/parts/trikGamepadPadPressSensor.h"
 
 using namespace trikKitInterpreter::blocks::details;
 
-WaitForMotionBlock::WaitForMotionBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+WaitPadPressBlock::WaitPadPressBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: WaitForSensorBlock(robotModel)
 {
 }
 
-void WaitForMotionBlock::responseSlot(int reading)
+void WaitPadPressBlock::responseSlot(int reading)
 {
-	if (reading > 0) {
+	if (reading == 1) {
 		stop();
 	}
 }
 
-QString WaitForMotionBlock::port() const
+QString WaitPadPressBlock::port()
 {
-	return "F1";
+	int const result = eval<int>("Pad");
+	switch (result) {
+	case 1:
+		return "GamepadPad1PressedPort";
+	case 2:
+		return "GamepadPad2PressedPort";
+	}
+
+	return "";
 }
 
-interpreterBase::robotModel::DeviceInfo WaitForMotionBlock::device() const
+interpreterBase::robotModel::DeviceInfo WaitPadPressBlock::device() const
 {
-	return interpreterBase::robotModel::DeviceInfo::create<robotModel::parts::TrikMotionSensor>();
+	return interpreterBase::robotModel::DeviceInfo::create<robotModel::parts::TrikGamepadPadPressSensor>();
 }

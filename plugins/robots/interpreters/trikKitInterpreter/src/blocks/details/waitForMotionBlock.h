@@ -15,7 +15,7 @@ private slots:
 	void responseSlot(int reading) override;
 
 private:
-	QString port() const override;
+	QString port();
 	interpreterBase::robotModel::DeviceInfo device() const override;
 };
 

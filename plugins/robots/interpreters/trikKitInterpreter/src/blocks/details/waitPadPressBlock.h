@@ -6,16 +6,16 @@ namespace trikKitInterpreter {
 namespace blocks {
 namespace details {
 
-class WaitForMotionBlock : public interpreterBase::blocksBase::common::WaitForSensorBlock
+class WaitPadPressBlock : public interpreterBase::blocksBase::common::WaitForSensorBlock
 {
 public:
-	explicit WaitForMotionBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
+	explicit WaitPadPressBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
 private slots:
 	void responseSlot(int reading) override;
 
 private:
-	QString port() const override;
+	QString port() override;
 	interpreterBase::robotModel::DeviceInfo device() const override;
 };
 
