@@ -17,7 +17,7 @@ class Runner
 public:
 	Runner();
 
-	void interpret(const QString &saveFile);
+	void interpret(const QString &saveFile, bool background);
 
 private:
 	qReal::SystemFacade mQRealFacade;

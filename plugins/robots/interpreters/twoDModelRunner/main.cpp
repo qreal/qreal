@@ -32,7 +32,9 @@ int main(int argc, char *argv[])
 	parser.setApplicationDescription(description);
 	parser.addHelpOption();
 	parser.addVersionOption();
-	parser.addPositionalArgument("qrs-file", QObject::tr("Save file to be interpreted"));
+	parser.addPositionalArgument("qrs-file", QObject::tr("Save file to be interpreted."));
+	QCommandLineOption backgroundOption({"b", "background"}, QObject::tr("Run emulation in background."));
+	parser.addOption(backgroundOption);
 
 	qsrand(time(0));
 	initLogging();
@@ -49,8 +51,9 @@ int main(int argc, char *argv[])
 	}
 
 	const QString qrsFile = positionalArgs.first();
+	const bool backgroundMode = parser.isSet(backgroundOption);
 	twoDModel::Runner runner;
-	runner.interpret(qrsFile);
+	runner.interpret(qrsFile, backgroundMode);
 
 	const int exitCode = app.exec();
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";

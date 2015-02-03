@@ -2,6 +2,7 @@
 
 #include <QtCore/QSignalMapper>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QGraphicsView>
 
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
@@ -9,22 +10,31 @@
 #include <interpreterBase/devicesConfigurationWidget.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 
-#include "d2ModelScene.h"
-#include "robotItem.h"
-#include "rotater.h"
-
-#include "src/engine/model/model.h"
-
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
 class QComboBox;
+class QDomDocument;
 
 namespace Ui {
 class D2Form;
 }
 
+namespace graphicsUtils {
+class AbstractItem;
+}
+
 namespace twoDModel {
+
+namespace model {
+class Model;
+class RobotModel;
+}
+
 namespace view {
+
+class D2ModelScene;
+class SensorItem;
+class RobotItem;
 
 class D2ModelWidget : public utils::QRealDialog, public interpreterBase::DevicesConfigurationProvider
 {
@@ -37,15 +47,15 @@ public:
 	void init();
 	void close();
 
-	D2ModelScene *scene();
+	/// If auto-open is enabled 2D model window will appear each time when interpreter run action triggered.
+	/// By default this option is enabled.
+	void setAutoOpen(bool enabled);
 
+	D2ModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
 
-	void setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible);
-
-	void closeEvent(QCloseEvent *event);
-
 	SensorItem *sensorItem(interpreterBase::robotModel::PortInfo const &port);
+	void setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible);
 
 	void loadXml(QDomDocument const &worldModel);
 
@@ -66,9 +76,10 @@ signals:
 	void stopButtonPressed();
 
 protected:
-	virtual void changeEvent(QEvent *e);
-	virtual void showEvent(QShowEvent *e);
-	virtual void keyPressEvent(QKeyEvent *event);
+	void changeEvent(QEvent *e) override;
+	void showEvent(QShowEvent *e) override;
+	void keyPressEvent(QKeyEvent *event) override;
+	void closeEvent(QCloseEvent *event) override;
 
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
@@ -201,6 +212,8 @@ private:
 	QMap<model::RobotModel *, RobotState> mInitialRobotsBeforeRun;
 
 	bool mDisplayIsVisible = false;
+
+	bool mAutoOpen;
 };
 
 }

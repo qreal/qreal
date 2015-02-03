@@ -1,5 +1,7 @@
 #include "nullMainWindow.h"
 
+#include <QtCore/QCoreApplication>
+
 using namespace qReal;
 
 NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
@@ -259,4 +261,15 @@ void NullMainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWid
 {
 	Q_UNUSED(area)
 	Q_UNUSED(dockWidget)
+}
+
+void NullMainWindow::emulateClose()
+{
+	if (mClosed) {
+		return;
+	}
+
+	mClosed = true;
+	emit mEvents.closedMainWindow();
+	QCoreApplication::exit(0);
 }

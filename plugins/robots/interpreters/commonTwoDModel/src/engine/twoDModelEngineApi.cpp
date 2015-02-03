@@ -16,7 +16,9 @@
 #include "model/model.h"
 #include "model/constants.h"
 
-#include "view/d2ModelWidget.h"
+#include "commonTwoDModel/engine/view/d2ModelWidget.h"
+#include "view/d2ModelScene.h"
+#include "view/robotItem.h"
 
 using namespace twoDModel;
 using namespace interpreterBase::robotModel;

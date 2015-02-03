@@ -83,6 +83,9 @@ public:
 	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
 	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
 
+	/// Sends close event via SystemEvents.
+	void emulateClose();
+
 private:
 	void openFirstDiagram();
 	void openTabWithEditor(const Id &id);
@@ -96,6 +99,7 @@ private:
 	QDockWidget *mPropertyEditorDock;  // Takes ownership
 	QDockWidget *mErrorReporterDock;  // Takes ownership
 	QDockWidget *mPaletteDock;  // Takes ownership
+	bool mClosed = false;
 };
 
 }

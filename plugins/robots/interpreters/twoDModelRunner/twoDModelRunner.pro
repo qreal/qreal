@@ -15,6 +15,7 @@ INCLUDEPATH += \
 	$$PWD/ \
 	$$PWD/../interpreterCore/include/ \
 	$$PWD/../interpreterBase/include/ \
+	$$PWD/../commonTwoDModel/include/ \
 	$$PWD/../../generators/generatorBase/include/ \
 	$$PWD/../../utils/include/ \
 	$$PWD/../../../../ \

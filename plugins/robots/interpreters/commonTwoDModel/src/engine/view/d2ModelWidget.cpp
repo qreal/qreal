@@ -1,4 +1,4 @@
-#include "d2ModelWidget.h"
+#include "commonTwoDModel/engine/view/d2ModelWidget.h"
 #include "ui_d2Form.h"
 
 #include <QtCore/qmath.h>
@@ -20,6 +20,9 @@
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
 #include "rotater.h"
+
+#include "src/engine/view/d2ModelScene.h"
+#include "src/engine/view/robotItem.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/ellipseItem.h"
@@ -46,6 +49,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mWidth(defaultPenWidth)
+	, mAutoOpen(true)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -320,6 +324,11 @@ void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 void D2ModelWidget::close()
 {
 	setVisible(false);
+}
+
+void D2ModelWidget::setAutoOpen(bool enabled)
+{
+	mAutoOpen = enabled;
 }
 
 void D2ModelWidget::changeEvent(QEvent *e)
@@ -724,6 +733,10 @@ void D2ModelWidget::onDeviceConfigurationChanged(QString const &robotModel
 
 void D2ModelWidget::bringToFront()
 {
+	if (!mAutoOpen) {
+		return;
+	}
+
 	if (isHidden()) {
 		show();
 	}

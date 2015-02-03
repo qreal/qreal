@@ -49,6 +49,9 @@ public:
 	/// collects all non-empty default settings file pathes and returns them.
 	QStringList defaultSettingsFiles() const;
 
+	/// Returns diagram interpter`s management interface.
+	interpreter::InterpreterInterface &interpreter() const;
+
 private:
 	void connectInterpreterToActions();
 

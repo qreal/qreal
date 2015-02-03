@@ -129,6 +129,11 @@ QStringList RobotsPluginFacade::defaultSettingsFiles() const
 	return result;
 }
 
+interpreter::InterpreterInterface &RobotsPluginFacade::interpreter() const
+{
+	return *mInterpreter;
+}
+
 void RobotsPluginFacade::connectInterpreterToActions()
 {
 	QObject::connect(
