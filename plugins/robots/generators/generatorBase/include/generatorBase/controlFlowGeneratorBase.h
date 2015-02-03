@@ -48,6 +48,7 @@ public:
 	void visitRegular(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitFinal(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitFork(qReal::Id const &id, QList<LinkInfo> &links) override;
+	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
 
 protected:
 	/// Can be overloaded by ancestors for custom behaviour.

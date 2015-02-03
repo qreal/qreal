@@ -55,6 +55,8 @@ protected:
 	/// This method is called when traverser gets into a block with fork semantics
 	virtual void visitFork(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> &links) = 0;
 
+	virtual void visitJoin(const qReal::Id &id, QList<utils::DeepFirstSearcher::LinkInfo> &links) = 0;
+
 	/// This method is called when traverser gets into a block with unknown semantics
 	virtual void visitUnknown(qReal::Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 

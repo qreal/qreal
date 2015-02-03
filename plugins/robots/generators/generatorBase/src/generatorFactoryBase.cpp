@@ -10,6 +10,7 @@
 #include "simpleGenerators/forLoopGenerator.h"
 #include "simpleGenerators/whileLoopGenerator.h"
 #include "simpleGenerators/forkCallGenerator.h"
+#include "simpleGenerators/joinGenerator.h"
 #include "simpleGenerators/switchGenerator.h"
 #include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
@@ -226,6 +227,12 @@ AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(Id const &id
 		, GeneratorCustomizer &customizer, QMap<Id, QString> const &threads)
 {
 	return new ForkCallGenerator(mRepo, customizer, id, threads, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::joinGenerator(const Id &id, GeneratorCustomizer &customizer
+		, const QStringList &joinedThreads, const QString &mainThreadId)
+{
+	return new JoinGenerator(mRepo, customizer, id, joinedThreads, mainThreadId, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &id

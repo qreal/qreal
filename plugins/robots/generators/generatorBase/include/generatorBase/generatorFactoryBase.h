@@ -112,6 +112,9 @@ public:
 	virtual simple::AbstractSimpleGenerator *forkCallGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer, const QMap<qReal::Id, QString> &threads);
 
+	virtual simple::AbstractSimpleGenerator *joinGenerator(const qReal::Id &id
+			, GeneratorCustomizer &customizer, const QStringList &joinedThreads, const QString &mainThreadId);
+
 	/// Returns a pointer to a code generator for blocks with regular semantics
 	virtual simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
 			, GeneratorCustomizer &customizer);

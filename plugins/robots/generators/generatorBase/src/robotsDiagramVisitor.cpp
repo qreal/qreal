@@ -69,6 +69,9 @@ void RobotsDiagramVisitor::visit(qReal::Id const &nodeId, QList<utils::DeepFirst
 	case enums::semantics::forkBlock:
 		visitFork(nodeId, links);
 		break;
+	case enums::semantics::joinBlock:
+		visitJoin(nodeId, links);
+		break;
 	default:
 		visitUnknown(nodeId, links);
 		break;

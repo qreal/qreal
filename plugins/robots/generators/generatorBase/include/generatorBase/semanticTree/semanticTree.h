@@ -8,6 +8,7 @@
 #include "loopNode.h"
 #include "finalNode.h"
 #include "forkNode.h"
+#include "joinNode.h"
 #include "switchNode.h"
 #include "generatorBase/generatorCustomizer.h"
 
@@ -45,6 +46,8 @@ public:
 
 	/// Produces new instance of fork node binded to specified block
 	ForkNode *produceFork(qReal::Id const &id = qReal::Id());
+
+	JoinNode *produceJoin(qReal::Id const &id = qReal::Id());
 
 	/// Produces new instance of switch node binded to specified block
 	SwitchNode *produceSwitch(qReal::Id const &id = qReal::Id());

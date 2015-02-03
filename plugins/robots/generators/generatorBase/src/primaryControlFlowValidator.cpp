@@ -223,6 +223,23 @@ void PrimaryControlFlowValidator::visitFork(Id const &id, QList<LinkInfo> &links
 	}
 }
 
+void PrimaryControlFlowValidator::visitJoin(const Id &id, QList<LinkInfo> &links)
+{
+	if (links.size() != 1) {
+		error(QObject::tr("Join block must have exactly one outgoing link"), id);
+		return;
+	}
+
+	if (guardOf(links[0].linkId) != threadIdGuard) {
+		error(QObject::tr("Incorrect guard type: must be thread id"), id);
+		return;
+	}
+
+	// check thread id
+
+	checkForConnected(links[0]);
+}
+
 void PrimaryControlFlowValidator::visitUnknown(Id const &id
 		, QList<LinkInfo> const &links)
 {

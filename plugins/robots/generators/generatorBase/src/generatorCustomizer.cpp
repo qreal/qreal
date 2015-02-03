@@ -10,6 +10,7 @@ GeneratorCustomizer::GeneratorCustomizer()
 	, mDefaultLoopBlockType("RobotsMetamodel", "RobotsDiagram", "Loop")
 	, mDefaultSwitchBlockType("RobotsMetamodel", "RobotsDiagram", "SwitchBlock")
 	, mDefaultForkBlockType("RobotsMetamodel", "RobotsDiagram", "Fork")
+	, mDefaultJoinBlockType("RobotsMetamodel", "RobotsDiagram", "Join")
 	, mDefaultSubprogramCallBlockType("RobotsMetamodel", "RobotsDiagram", "Subprogram")
 {
 }
@@ -54,6 +55,11 @@ bool GeneratorCustomizer::isFork(Id const &block) const
 	return block.type() == mDefaultForkBlockType;
 }
 
+bool GeneratorCustomizer::isJoin(const Id &block) const
+{
+	return block.type() == mDefaultJoinBlockType;
+}
+
 enums::semantics::Semantics GeneratorCustomizer::semanticsOf(Id const &block) const
 {
 	if (isConditional(block)) {
@@ -70,6 +76,10 @@ enums::semantics::Semantics GeneratorCustomizer::semanticsOf(Id const &block) co
 
 	if (isFork(block)) {
 		return enums::semantics::forkBlock;
+	}
+
+	if (isJoin(block)) {
+		return enums::semantics::joinBlock;
 	}
 
 	if (isFinalNode(block)) {

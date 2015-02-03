@@ -369,10 +369,25 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Fork" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links.">
+			<node displayedName="Fork" name="Fork" path="13, 86 : 231, 86 :  | 12, 12 : 231, 12 : " description="Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links. 'Guard' property of every link must contain unique thread identifiers, and one of those identifiers must be the same as the identifier of a thread where fork is placed (it must be 'main' if it is the first fork in a program.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/forkBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Join" name="Join" description="Joins a number of threads into one. 'Guard' property of the single outgoing link must contain an identifier of one of threads being joined. The specified thread would wait until the rest of them finish execution, and then proceed in a normal way.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<rectangle fill="#ffffff" stroke-width="1" fill-style="solid" y1="5" y2="45" x1="5" stroke="#000000" x2="45" stroke-style="none"/>
 					</picture>
 					<labels/>
 					<nonResizeable/>
@@ -2680,6 +2695,7 @@
 				<element name="Loop"/>
 				<element name="Subprogram"/>
 				<element name="Fork"/>
+				<element name="Join"/>
 				<element name="VariableInit"/>
 				<element name="CommentBlock"/>
 			</group>

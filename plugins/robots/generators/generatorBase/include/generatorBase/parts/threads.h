@@ -36,6 +36,10 @@ public:
 	/// Returns a list of thread names on all diagrams of the model.
 	QStringList threadNames() const;
 
+	void addJoin(const qReal::Id &id, const QString &threadId);
+
+	QStringList joinedThreads(const qReal::Id &id) const;
+
 	/// Generates and returns the code of the section with threads forward declarations.
 	QString generateDeclarations() const;
 
@@ -48,6 +52,7 @@ private:
 	QSet<qReal::Id> mUnprocessedThreads;
 	QMap<qReal::Id, semantics::SemanticTree *> mProcessedThreads;
 	QMap<qReal::Id, QString> mThreadIds;
+	QMap<qReal::Id, QStringList> mJoins;
 };
 
 }

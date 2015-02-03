@@ -71,6 +71,7 @@ qReal::IdList CoreBlocksFactory::providedBlocks() const
 		, id("SwitchBlock")
 		, id("Loop")
 		, id("Fork")
+		, id("Join")
 		, id("Subprogram")
 		, id("Function")
 		, id("VariableInit")

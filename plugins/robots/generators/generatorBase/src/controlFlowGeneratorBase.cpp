@@ -5,6 +5,7 @@
 #include "generatorBase/parts/subprograms.h"
 
 #include "src/rules/forkRules/forkRule.h"
+#include "src/rules/joinRules/joinRule.h"
 
 using namespace generatorBase;
 using namespace qReal;
@@ -158,4 +159,18 @@ void ControlFlowGeneratorBase::visitFork(Id const &id, QList<LinkInfo> &links)
 
 	// Restricting visiting other threads, they will be generated to new semantic trees.
 	links = {currentThread};
+}
+
+void ControlFlowGeneratorBase::visitJoin(const Id &id, QList<LinkInfo> &links)
+{
+	bool const fromMain = (mRepo.stringProperty(links[0].linkId, "Guard") == mThreadId);
+	semantics::JoinRule rule(mSemanticTree, id, mThreadId, mCustomizer.factory()->threads(), fromMain);
+	rule.apply();
+
+	if (fromMain) {
+		visitRegular(id, links);
+	} else {
+		links.clear();
+		visitFinal(id, links);
+	}
 }

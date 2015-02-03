@@ -53,6 +53,7 @@ private:
 	void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitFork(qReal::Id const &id, QList<LinkInfo> &links) override;
+	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
 	void visitUnknown(qReal::Id const &id, QList<LinkInfo> const &links) override;
 
 	qrRepo::RepoApi const &mRepo;

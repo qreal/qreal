@@ -58,6 +58,20 @@ QStringList Threads::threadNames() const
 	return result;
 }
 
+void Threads::addJoin(const qReal::Id &id, const QString &threadId)
+{
+	if (!mJoins.contains(id)) {
+		mJoins[id] = QStringList();
+	}
+
+	mJoins[id] << threadId;
+}
+
+QStringList Threads::joinedThreads(const qReal::Id &id) const
+{
+	return mJoins[id];
+}
+
 QString Threads::generateDeclarations() const
 {
 	QStringList const threads = threadNames();
