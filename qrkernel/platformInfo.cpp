@@ -1,5 +1,7 @@
 #include "platformInfo.h"
 
+#include <QtCore/QString>
+
 using namespace qReal;
 
 #if defined Q_OS_WIN32

@@ -14,7 +14,7 @@ namespace text {
 class QScintillaTextEdit;
 }
 
-class TextManagerInterface : public QObject
+class QRGUI_TEXT_EDITOR_EXPORT TextManagerInterface : public QObject
 {
 	Q_OBJECT
 

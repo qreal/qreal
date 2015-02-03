@@ -1,11 +1,11 @@
 #pragma once
 
-#include <QtCore/QString>
+#include <qrkernel/kernelDeclSpec.h>
 
 namespace qReal {
 
 /// Provides some useful methods for getting information about external environment.
-class PlatformInfo
+class QRKERNEL_EXPORT PlatformInfo
 {
 public:
 	/// Returns printable information about operating system which runs this application.

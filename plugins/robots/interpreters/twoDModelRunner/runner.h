@@ -9,7 +9,6 @@
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <interpreterCore/robotsPluginFacade.h>
 
-
 namespace twoDModel {
 
 class Runner
