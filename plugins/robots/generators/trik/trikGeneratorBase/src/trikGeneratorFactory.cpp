@@ -27,6 +27,7 @@
 #include "simpleGenerators/waitForInfraredSensorGenerator.h"
 #include "simpleGenerators/waitForMotionGenerator.h"
 #include "simpleGenerators/waitGamepadButtonGenerator.h"
+#include "simpleGenerators/waitGamepadConnectGenerator.h"
 #include "simpleGenerators/waitGamepadDisconnectGenerator.h"
 #include "simpleGenerators/waitGamepadWheelGenerator.h"
 #include "simpleGenerators/waitPadPressGenerator.h"
@@ -120,6 +121,8 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new WaitPadPressGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitGamepadWheel") {
 		return new WaitGamepadWheelGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "TrikWaitGamepadConnect") {
+		return new WaitGamepadConnectGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitGamepadDisconnect") {
 		return new WaitGamepadDisconnectGenerator(mRepo, customizer, id, this);
 	}

@@ -120,6 +120,7 @@
         <file>templates/functions/time.t</file>
         <file>templates/wait/encoder.t</file>
         <file>templates/wait/gamepadButton.t</file>
+        <file>templates/wait/gamepadConnect.t</file>
         <file>templates/wait/gamepadDisconnect.t</file>
         <file>templates/wait/gamepadWheel.t</file>
         <file>templates/wait/light.t</file>

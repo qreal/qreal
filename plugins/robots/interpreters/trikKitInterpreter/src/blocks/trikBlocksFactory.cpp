@@ -132,6 +132,8 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(qReal::Id const &e
 		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikWaitGamepadDisconnect")) {
 		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadConnect")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
 	}
 
 	return nullptr;
@@ -205,6 +207,7 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikWaitPadPress")
 			<< id("TrikWaitGamepadWheel")
 			<< id("TrikWaitGamepadDisconnect")
+			<< id("TrikWaitGamepadConnect")
 			;
 
 	return result;
@@ -231,6 +234,7 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikWaitPadPress")
 				<< id("TrikWaitGamepadWheel")
 				<< id("TrikWaitGamepadDisconnect")
+				<< id("TrikWaitGamepadConnect")
 				;
 	}
 
