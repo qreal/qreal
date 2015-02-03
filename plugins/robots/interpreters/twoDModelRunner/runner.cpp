@@ -46,7 +46,7 @@ void Runner::interpret(const QString &saveFile, bool background)
 				, &mMainWindow, &qReal::NullMainWindow::emulateClose);
 
 		if (background) {
-			twoDModelWindow->setAutoOpen(false);
+			twoDModelWindow->setBackgroundMode(true);
 			QObject::connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped
 					, &mMainWindow, &qReal::NullMainWindow::emulateClose);
 		}

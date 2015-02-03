@@ -47,9 +47,10 @@ public:
 	void init();
 	void close();
 
-	/// If auto-open is enabled 2D model window will appear each time when interpreter run action triggered.
-	/// By default this option is enabled.
-	void setAutoOpen(bool enabled);
+	/// Enables or disables background 2D model mode.
+	/// In background mode the window is not shown and robot modeling is performed momently.
+	/// By default background mode is disabled.
+	void setBackgroundMode(bool enabled);
 
 	D2ModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
@@ -186,6 +187,8 @@ private:
 
 	void setSelectedRobotItem(RobotItem *robotItem);
 	void unsetSelectedRobotItem();
+
+	void incrementTimelineCounter();
 
 	Ui::D2Form *mUi = nullptr;
 	D2ModelScene *mScene = nullptr;

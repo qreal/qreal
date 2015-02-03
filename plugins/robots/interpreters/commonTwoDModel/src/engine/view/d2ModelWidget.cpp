@@ -69,7 +69,7 @@ D2ModelWidget::D2ModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &D2ModelScene::robotListChanged, this, &D2ModelWidget::onRobotListChange);
 
 	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
-	connect(&mModel.timeline(), &Timeline::tick, [this]() { mUi->timelineBox->stepBy(1); });
+	connect(&mModel.timeline(), &Timeline::tick, this, &D2ModelWidget::incrementTimelineCounter);
 	connect(&mModel.timeline(), &Timeline::started, [this]() {
 		mUi->runButton->setVisible(false);
 		mUi->stopButton->setVisible(true);
@@ -326,9 +326,10 @@ void D2ModelWidget::close()
 	setVisible(false);
 }
 
-void D2ModelWidget::setAutoOpen(bool enabled)
+void D2ModelWidget::setBackgroundMode(bool enabled)
 {
-	mAutoOpen = enabled;
+	mAutoOpen = !enabled;
+	mModel.timeline().setImmediateMode(enabled);
 }
 
 void D2ModelWidget::changeEvent(QEvent *e)
@@ -887,6 +888,11 @@ void D2ModelWidget::unsetSelectedRobotItem()
 	static_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mDisplay);
 
 	mUi->displayFrame->setEnabled(false);
+}
+
+void D2ModelWidget::incrementTimelineCounter()
+{
+	mUi->timelineBox->stepBy(1);
 }
 
 D2ModelWidget::RobotState::RobotState()
