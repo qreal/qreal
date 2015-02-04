@@ -29,6 +29,12 @@
 #include "details/sayBlock.h"
 #include "details/systemCommandBlock.h"
 
+#include "details/waitGamepadButtonBlock.h"
+#include "details/waitGamepadConnectBlock.h"
+#include "details/waitGamepadDisconnectBlock.h"
+#include "details/waitGamepadWheelBlock.h"
+#include "details/waitPadPressBlock.h"
+
 using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::blocksBase::common;
@@ -125,7 +131,7 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(qReal::Id const &e
 		return new SetBackgroundBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "TrikWaitGamepadButton")) {
-		return new qReal::interpretation::blocks::EmptyBlock();
+		return new WaitGamepadButtonBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitPadPress")) {
 		return new qReal::interpretation::blocks::EmptyBlock();
 	} else if (elementMetatypeIs(element, "TrikWaitGamepadWheel")) {

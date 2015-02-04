@@ -135,6 +135,18 @@ void SensorVariablesUpdater::onTimerTimeout()
 
 			scalarSensor->read();
 		}
+
+		robotParts::VectorSensor * const vectorSensor = dynamic_cast<robotParts::VectorSensor *>(device);
+		if (vectorSensor && !vectorSensor->port().reservedVariable().isEmpty()) {
+
+			if (!vectorSensor->ready()) {
+				/// @todo Error reporting
+				continue;
+			}
+
+			vectorSensor->read();
+		}
+
 	}
 
 	mUpdateTimer->start(updateInterval());

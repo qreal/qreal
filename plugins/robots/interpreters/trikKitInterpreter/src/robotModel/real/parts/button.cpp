@@ -13,6 +13,10 @@ Button::Button(DeviceInfo const &info, PortInfo const &port
 
 void Button::read()
 {
+	if (port().name().startsWith("Gamepad")) {
+		int x = 0;
+	}
+
 	mRobotCommunicator.requestData("button:" + port().name());
 }
 

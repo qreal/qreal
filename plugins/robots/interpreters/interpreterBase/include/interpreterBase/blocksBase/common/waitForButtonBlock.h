@@ -14,7 +14,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT WaitForButtonBlock : public WaitBlock
 	Q_OBJECT
 
 public:
-	/// Constructor, takes current robot model as parameter.
+	/// Constructor, takes current robot model and specific button port as parameters.
 	WaitForButtonBlock(robotModel::RobotModelInterface &robotModel, QString const &portName);
 
 private slots:
