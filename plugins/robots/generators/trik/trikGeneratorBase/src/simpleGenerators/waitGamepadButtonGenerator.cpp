@@ -6,8 +6,6 @@ using namespace trik::simple;
 using namespace qReal;
 using namespace generatorBase::simple;
 
-int const sleepInterval = 10;
-
 WaitGamepadButtonGenerator::WaitGamepadButtonGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const Id &id

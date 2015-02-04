@@ -7,8 +7,6 @@ using namespace qReal;
 using namespace generatorBase;
 using namespace generatorBase::simple;
 
-int const sleepInterval = 10;
-
 WaitPadPressGenerator::WaitPadPressGenerator(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
 		, const Id &id
