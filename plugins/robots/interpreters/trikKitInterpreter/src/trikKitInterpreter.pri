@@ -8,6 +8,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
 	$$PWD/../../../../../qrtext/include \
+	$$PWD/../../../../../thirdparty/qslog \
 
 LIBS += -L$$PWD/../../../../../bin -lqrkernel -lqrutils -lqrtext \
 		-lqrgui-preferences-dialog -lqrgui-tool-plugin-interface \
