@@ -7,7 +7,7 @@ QT += widgets network
 TEMPLATE = lib
 CONFIG += plugin
 
-copyToDestdir(lib/Trik.Core.dll)
+copyToDestdir($$PWD/lib/Trik.Core.dll)
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 

@@ -43,11 +43,6 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 
 LIBS += -L$$DESTDIR
 
-unix {
-	target.path = $$[INSTALL_ROOT]/
-	INSTALLS += target
-}
-
 CONFIG += c++11
 QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor
 
