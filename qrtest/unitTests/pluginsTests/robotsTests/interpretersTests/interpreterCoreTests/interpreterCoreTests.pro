@@ -42,5 +42,4 @@ SOURCES += \
 	support/dummyBlocksFactory.cpp \
 	support/qrguiFacade.cpp \
 
-DESTDIR = $$DESTDIR/unittests
-copyToDestdir(../support/testData)
+copyToDestdir(../support/testData/)
