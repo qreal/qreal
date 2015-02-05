@@ -4,6 +4,13 @@
 
 using namespace twoDModel::constraints::details;
 
+ConditionsFactory::ConditionsFactory(Events &events, Variables &variables, Objects const &objects)
+	: mEvents(events)
+	, mVariables(variables)
+	, mObjects(objects)
+{
+}
+
 Condition ConditionsFactory::combined(const QList<Condition> &conditions, Glue glue) const
 {
 	return [conditions, glue]() {
@@ -78,5 +85,28 @@ Condition ConditionsFactory::dropped(const QString &eventId)
 		}
 
 		return !mEvents[eventId]->isAlive();
+	};
+}
+
+Condition ConditionsFactory::timerCondition(int timeout, bool forceDrop, const Value &timestamp, Event &event)
+{
+	// We must remember somewhere timestamp when parent event was setted up.
+	// We can do this in the event itself, by why? There will be no need in it except here, so storing it in heap...
+	qint64 *lastSetUpTimestamp = new qint64(-1);
+
+	QObject::connect(&event, &Event::settedUp, [lastSetUpTimestamp, timestamp]() {
+		*lastSetUpTimestamp = timestamp().toLongLong();
+	});
+
+	return [timeout, forceDrop, timestamp, &event, lastSetUpTimestamp]() {
+		const bool timeElapsed = *lastSetUpTimestamp > 0 && timestamp().toLongLong() - *lastSetUpTimestamp >= timeout;
+		if (timeElapsed && forceDrop) {
+			// Someone may think that dropping here will not let the event fire even if all conditions are satisfied.
+			// But we get into this lambda after checking this event`s aliveness, so it will fire (but after drop).
+			/// @todo: Write test checking the statement above.
+			event.drop();
+		}
+
+		return timeElapsed;
 	};
 }

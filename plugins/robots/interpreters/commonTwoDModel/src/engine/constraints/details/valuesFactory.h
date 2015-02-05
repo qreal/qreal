@@ -2,6 +2,10 @@
 
 #include "defines.h"
 
+namespace utils {
+class TimelineInterface;
+}
+
 namespace twoDModel {
 namespace constraints {
 namespace details {
@@ -19,6 +23,8 @@ public:
 
 	Value typeOf(const QString &objectId) const;
 	Value objectState(const QString &objectId, const QString &property) const;
+
+	Value timestamp(const utils::TimelineInterface &timeline) const;
 
 private:
 	Variables &mVariables;

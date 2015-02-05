@@ -1,6 +1,7 @@
 #include "constraintsChecker.h"
 
 #include "details/constraintsParser.h"
+#include "details/event.h"
 
 using namespace twoDModel::constraints;
 
@@ -17,7 +18,7 @@ bool ConstraintsChecker::parseConstraints(const QString &constraintsXml)
 	mVariables.clear();
 	mObjects.clear();
 
-	details::ConstraintsParser parser(mEvents, mVariables);
+	details::ConstraintsParser parser(mEvents, mVariables, mObjects);
 	if (!parser.parse(constraintsXml)) {
 		qDebug() << parser.errorString();
 		return false;

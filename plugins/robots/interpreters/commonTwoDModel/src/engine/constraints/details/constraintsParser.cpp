@@ -4,9 +4,10 @@
 
 using namespace twoDModel::constraints::details;
 
-ConstraintsParser::ConstraintsParser(Events &events, Variables &variables)
+ConstraintsParser::ConstraintsParser(Events &events, Variables &variables, Objects const &objects)
 	: mEvents(events)
 	, mVariables(variables)
+	, mObjects(objects)
 {
 }
 
@@ -18,6 +19,10 @@ QString ConstraintsParser::errorString() const
 bool ConstraintsParser::parse(const QString &constraintsXml)
 {
 	mError = QString();
+
+	if (constraintsXml.isEmpty()) {
+		return true;
+	}
 
 	QDomDocument document;
 	QString errorMessage;
@@ -31,6 +36,8 @@ bool ConstraintsParser::parse(const QString &constraintsXml)
 		mError = QObject::tr("Root element must be \"constraints\" tag");
 		return false;
 	}
+
+	return true;
 }
 
 void ConstraintsParser::parseConstraints(const QDomElement &constraints)
@@ -48,7 +55,7 @@ void ConstraintsParser::parseConstraints(const QDomElement &constraints)
 
 		} else if (name == "timelimit") {
 			// Timelimit is just an event with timeout and fail trigger.
-			QString timeLimitMessage = QObject::tr("Program worked for too long time");
+			const QString timeLimitMessage = QObject::tr("Program worked for too long time");
 		}
 	}
 }

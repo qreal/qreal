@@ -1,5 +1,7 @@
 #include "valuesFactory.h"
 
+#include <utils/timelineInterface.h>
+
 using namespace twoDModel::constraints::details;
 
 const QString typeOfNull = "undefined";
@@ -84,4 +86,9 @@ Value ValuesFactory::objectState(const QString &objectId, const QString &propert
 
 		return object->property(qPrintable(property));
 	};
+}
+
+Value ValuesFactory::timestamp(const utils::TimelineInterface &timeline) const
+{
+	return [&timeline]() { return timeline.timestamp(); };
 }

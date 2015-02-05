@@ -9,7 +9,7 @@ namespace details {
 class ConditionsFactory
 {
 public:
-	ConditionsFactory(Events &events, Variables &variables);
+	ConditionsFactory(Events &events, Variables &variables, Objects const &objects);
 
 	Condition combined(const QList<Condition> &conditions, Glue glue) const;
 
@@ -25,9 +25,12 @@ public:
 	Condition settedUp(const QString &eventId);
 	Condition dropped(const QString &eventId);
 
+	Condition timerCondition(int timeout, bool forceDrop, const Value &timestamp, Event &event);
+
 private:
 	Events &mEvents;
 	Variables &mVariables;
+	Objects const &mObjects;
 };
 
 }

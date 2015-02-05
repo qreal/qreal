@@ -11,7 +11,7 @@ namespace details {
 class ConstraintsParser
 {
 public:
-	ConstraintsParser(Events &events, Variables &variables);
+	ConstraintsParser(Events &events, Variables &variables, Objects const &objects);
 
 	bool parse(const QString &constrtaintsXml);
 	QString errorString() const;
@@ -24,6 +24,7 @@ private:
 	QString mError;
 	Events &mEvents;
 	Variables &mVariables;
+	Objects const &mObjects;
 };
 
 }
