@@ -2,4 +2,4 @@ TEMPLATE = subdirs
 
 include(../../../global.pri)
 
-copyToDestdir(examples, now)
+copyToDestdir(examples/, now)

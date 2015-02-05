@@ -23,7 +23,7 @@ cp    $BIN_DIR/qrgui-preferences-dialog.dll                         $PWD/../data
 cp    $BIN_DIR/qrgui-text-editor.dll                                $PWD/../data
 cp    $BIN_DIR/qrgui-thirdparty.dll                                 $PWD/../data
 cp    $BIN_DIR/qrgui-tool-plugin-interface.dll                      $PWD/../data
-cp    $BIN_DIR/qrgui.exe                                            $PWD/../data/$PRODUCT.exe
+cp    $BIN_DIR/qreal.exe                                            $PWD/../data/$PRODUCT.exe
 cp    $BIN_DIR/plugins/tools/updatesChecker.dll                     $PWD/../data/plugins/tools/
 
 

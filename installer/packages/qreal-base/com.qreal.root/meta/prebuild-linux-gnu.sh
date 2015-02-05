@@ -22,7 +22,7 @@ cp -pr $BIN_DIR/libqrgui-preferences-dialog.so*                         $PWD/../
 cp -pr $BIN_DIR/libqrgui-text-editor.so*                                $PWD/../data
 cp -pr $BIN_DIR/libqrgui-thirdparty.so*                                 $PWD/../data
 cp -pr $BIN_DIR/libqrgui-tool-plugin-interface.so*                      $PWD/../data
-cp     $BIN_DIR/qrgui                                                   $PWD/../data/$PRODUCT
+cp     $BIN_DIR/qreal                                                   $PWD/../data/$PRODUCT
 cp     $BIN_DIR/plugins/tools/libupdatesChecker.so                      $PWD/../data/plugins/tools
 
 

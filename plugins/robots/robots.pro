@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 	editor \
+	examples \
 	interpreters \
 	generators \
 	qextserialport \
