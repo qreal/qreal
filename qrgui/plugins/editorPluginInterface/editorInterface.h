@@ -5,9 +5,9 @@
 #include <QtCore/QString>
 #include <QtGui/QIcon>
 
-#include "plugins/editorPluginInterface/sdfRendererInterface.h"
-#include "plugins/editorPluginInterface/elementImpl.h"
-#include "plugins/editorPluginInterface/listenerInterface.h"
+#include "qrgui/plugins/editorPluginInterface/sdfRendererInterface.h"
+#include "qrgui/plugins/editorPluginInterface/elementImpl.h"
+#include "qrgui/plugins/editorPluginInterface/listenerInterface.h"
 
 namespace qReal {
 

@@ -4,7 +4,7 @@
 
 #include <qrkernel/ids.h>
 
-#include "plugins/pluginManager/pluginsManagerDeclSpec.h"
+#include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 namespace qReal {
 

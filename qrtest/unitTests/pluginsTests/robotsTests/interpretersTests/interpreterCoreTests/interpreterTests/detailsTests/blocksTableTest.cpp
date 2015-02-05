@@ -24,6 +24,7 @@ void BlocksTableTest::SetUp()
 					return blocksFactory->block(id);
 			} )
 			);
+
 	EXPECT_CALL(mBlocksFactoryManager, block(_, _)).Times(AtLeast(0));
 
 	ON_CALL(mBlocksFactoryManager, enabledBlocks(_)).WillByDefault(

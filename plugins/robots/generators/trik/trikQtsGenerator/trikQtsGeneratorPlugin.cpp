@@ -83,6 +83,7 @@ generatorBase::MasterGeneratorBase *TrikQtsGeneratorPlugin::masterGenerator()
 {
 	return new TrikQtsMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mParserErrorReporter
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()

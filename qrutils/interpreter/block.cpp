@@ -28,6 +28,10 @@ void Block::init(Id const &graphicalId
 	mLogicalModelApi = &logicalModelApi;
 	mErrorReporter = errorReporter;
 	mParser = &textLanguageToolbox;
+	if (mLogicalModelApi) {
+		mParserErrorReporter.reset(new utils::ParserErrorReporter(*mParser, *mErrorReporter
+				, mLogicalModelApi->editorManagerInterface()));
+	}
 }
 
 bool Block::initNextBlocks()
@@ -165,28 +169,4 @@ bool Block::errorsOccured() const
 
 void Block::finishedSteppingInto()
 {
-}
-
-void Block::reportParserErrors()
-{
-	for (qrtext::core::Error const &error : mParser->errors()) {
-		QString const errorMessage = QString("%1:%2 %3")
-				.arg(error.connection().line())
-				.arg(error.connection().column())
-				.arg(error.errorMessage());
-
-		switch (error.severity()) {
-		case qrtext::core::Severity::critical:
-		case qrtext::core::Severity::error:
-			mErrorReporter->addError(errorMessage, id());
-
-			break;
-		case qrtext::core::Severity::warning:
-			mErrorReporter->addWarning(errorMessage, id());
-
-			break;
-		case qrtext::core::Severity::internalError:
-			break;
-		}
-	}
 }
