@@ -1,4 +1,4 @@
-#include "devicesConfigurationManager.h"
+#include "interpreterCore/managers/devicesConfigurationManager.h"
 
 #include <QtXml/QDomDocument>
 

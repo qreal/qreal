@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtWidgets/QAction>
 
-#include <qrgui/mainWindow/projectManager/projectManagementInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrutils/watchListWindow.h>
@@ -13,11 +13,11 @@
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 
-#include "details/blocksTable.h"
-#include "details/sensorVariablesUpdater.h"
-#include "details/autoconfigurer.h"
+#include "interpreterCore/interpreter/details/blocksTable.h"
+#include "interpreterCore/interpreter/details/sensorVariablesUpdater.h"
+#include "interpreterCore/interpreter/details/autoconfigurer.h"
 
-#include "interpreterInterface.h"
+#include "interpreterCore/interpreter/interpreterInterface.h"
 
 namespace interpreterCore {
 namespace interpreter {

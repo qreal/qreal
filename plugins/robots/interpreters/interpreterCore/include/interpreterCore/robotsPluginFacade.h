@@ -7,18 +7,21 @@
 #include <interpreterBase/eventsForKitPluginInterface.h>
 #include <interpreterBase/devicesConfigurationWidget.h>
 
-#include "customizer.h"
-#include "managers/kitPluginManager.h"
-#include "managers/robotModelManager.h"
-#include "managers/actionsManager.h"
-#include "managers/devicesConfigurationManager.h"
-#include "managers/graphicsWatcherManager.h"
-#include "managers/blocksFactoryManager.h"
+#include "interpreterCore/customizer.h"
+#include "interpreterCore/managers/kitPluginManager.h"
+#include "interpreterCore/managers/robotModelManager.h"
+#include "interpreterCore/managers/actionsManager.h"
+#include "interpreterCore/managers/devicesConfigurationManager.h"
+#include "interpreterCore/managers/graphicsWatcherManager.h"
+#include "interpreterCore/managers/blocksFactoryManager.h"
 #include "interpreter/interpreter.h"
 #include "textLanguage/robotsBlockParser.h"
-#include "ui/robotsSettingsPage.h"
 
 namespace interpreterCore {
+
+namespace ui {
+class RobotsSettingsPage;
+}
 
 /// Responsible for initialization, interconnecting and keeping in sync core plugin subsystems.
 class RobotsPluginFacade : public QObject
@@ -45,6 +48,9 @@ public:
 	/// A convenience method that travels around all loaded kit plugins,
 	/// collects all non-empty default settings file pathes and returns them.
 	QStringList defaultSettingsFiles() const;
+
+	/// Returns diagram interpter`s management interface.
+	interpreter::InterpreterInterface &interpreter() const;
 
 private:
 	void connectInterpreterToActions();

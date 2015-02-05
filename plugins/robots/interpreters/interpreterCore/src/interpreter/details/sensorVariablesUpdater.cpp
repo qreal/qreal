@@ -1,4 +1,4 @@
-#include "sensorVariablesUpdater.h"
+#include "interpreterCore/interpreter/details/sensorVariablesUpdater.h"
 
 #include <utils/tracer.h>
 #include <utils/timelineInterface.h>

@@ -45,7 +45,7 @@ public:
 	QString editor() const;
 
 	void setDiagram(QString const &diagram);
-	QString diagram();
+	QString diagram() const;
 
 	void addNode(QString const &type, QString const &id, QPointF const &pos, QString const &parent);
 	void addEdge(QString const &type, QString const &from, QString const &to);

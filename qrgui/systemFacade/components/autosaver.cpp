@@ -1,21 +1,19 @@
+#include "autosaver.h"
+
 #include <QtCore/QFileInfo>
-#include <QtCore/QDir>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
 
-#include "mainWindow/projectManager/projectManager.h"
-#include "mainWindow/projectManager/autosaver.h"
+#include "qrgui/systemFacade/components/projectManager.h"
 
 using namespace qReal;
 
-Autosaver::Autosaver(ProjectManager *projectManager)
-	: QObject(projectManager)
+Autosaver::Autosaver(ProjectManager &projectManager)
+	: QObject(&projectManager)
 	, mProjectManager(projectManager)
-	, mTimer(new QTimer(this))
 {
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(saveAutoSave()));
+	connect(&mTimer, &QTimer::timeout, this, &Autosaver::saveAutoSave);
 }
 
 void Autosaver::reinit()
@@ -26,15 +24,15 @@ void Autosaver::reinit()
 void Autosaver::resume()
 {
 	if (SettingsManager::value("Autosave").toBool()) {
-		mTimer->start(interval() * 1000);
+		mTimer.start(interval() * 1000);
 	} else {
-		mTimer->stop();
+		mTimer.stop();
 	}
 }
 
 void Autosaver::suspend()
 {
-	mTimer->stop();
+	mTimer.stop();
 }
 
 uint Autosaver::interval() const
@@ -59,14 +57,15 @@ Autosaver::Pauser::~Pauser()
 
 QString Autosaver::autosaveFilePath() const
 {
-	return autosaveFilePath(mProjectManager->saveFilePath());
+	return autosaveFilePath(mProjectManager.saveFilePath());
 }
 
-QString Autosaver::autosaveFilePath(QString const &currentFilePath) const
+QString Autosaver::autosaveFilePath(const QString &currentFilePath) const
 {
 	if (currentFilePath.isEmpty() || currentFilePath == tempFilePath()) {
 		return tempFilePath();
 	}
+
 	QFileInfo const currentProject(currentFilePath);
 	QString const autosaveDirectory = currentProject.absoluteDir().exists()
 			? currentProject.absolutePath()
@@ -84,51 +83,53 @@ QString Autosaver::tempFilePath() const
 			, SettingsManager::value("AutosaveTempFile").toString());
 }
 
-bool Autosaver::isAutosave(QString const &fileName) const
+bool Autosaver::isAutosave(const QString &fileName) const
 {
 	return QFileInfo(fileName).fileName().contains("~");
 }
 
-bool Autosaver::isTempFile(QString const &fileName) const
+bool Autosaver::isTempFile(const QString &fileName) const
 {
 	return fileName == tempFilePath();
 }
 
-QString Autosaver::originalFile(QString const &fileName) const
+QString Autosaver::originalFile(const QString &fileName) const
 {
 	if (!isAutosave(fileName)) {
 		return fileName;
 	}
+
 	QFileInfo fileInfo(fileName);
 	return fileInfo.absolutePath() + "/" + fileInfo.fileName().remove("~");
 }
 
 bool Autosaver::openTemp()
 {
-	return mProjectManager->open(tempFilePath());
+	return mProjectManager.open(tempFilePath());
 }
 
-bool Autosaver::openAutosave(QString const &fileName)
+bool Autosaver::openAutosave(const QString &fileName)
 {
-	return mProjectManager->open(autosaveFilePath(fileName));
+	return mProjectManager.open(autosaveFilePath(fileName));
 }
 
 void Autosaver::saveTemp()
 {
-	mProjectManager->saveTo(tempFilePath());
+	mProjectManager.saveTo(tempFilePath());
 }
 
-bool Autosaver::checkAutoSavedVersion(QString const &originalProjectPath)
+bool Autosaver::checkAutoSavedVersion(const QString &originalProjectPath)
 {
 	QString const autosave = autosaveFilePath(originalProjectPath);
 	QFileInfo const autosaveInfo(autosave);
 	if (!autosaveInfo.exists() || autosave == originalProjectPath) {
 		return false;
 	}
-	if (QMessageBox::question(QApplication::activeWindow(), tr("Question")
-			, openAutosavePrompt()) != QMessageBox::Yes) {
+
+	if (!mProjectManager.askQuestion(tr("Question"), openAutosavePrompt())) {
 		return false;
 	}
+
 	return openAutosave(originalProjectPath);
 }
 
@@ -138,11 +139,12 @@ bool Autosaver::checkTempFile()
 	if (!tempFileInfo.exists()) {
 		return false;
 	}
-	if (QMessageBox::question(QApplication::activeWindow(), tr("Question")
-			, openTempFilePrompt()) != QMessageBox::Yes) {
+
+	if (!mProjectManager.askQuestion(tr("Question"), openTempFilePrompt())) {
 		QFile(tempFileInfo.absoluteFilePath()).remove();
 		return false;
 	}
+
 	return openTemp();
 }
 
@@ -160,10 +162,10 @@ QString Autosaver::openTempFilePrompt() const
 
 void Autosaver::saveAutoSave()
 {
-	mProjectManager->saveTo(autosaveFilePath());
+	mProjectManager.saveTo(autosaveFilePath());
 }
 
-bool Autosaver::removeFile(QString const &fileName)
+bool Autosaver::removeFile(const QString &fileName)
 {
 	return QFile::remove(fileName);
 }
@@ -178,7 +180,7 @@ bool Autosaver::removeAutoSave()
 	return removeFile(autosaveFilePath());
 }
 
-bool Autosaver::removeAutoSave(QString const &fileName)
+bool Autosaver::removeAutoSave(const QString &fileName)
 {
 	return removeFile(autosaveFilePath(fileName));
 }

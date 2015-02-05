@@ -1,11 +1,12 @@
-#include "robotsPluginFacade.h"
+#include "interpreterCore/robotsPluginFacade.h"
 
 #include <qrkernel/settingsManager.h>
 #include <interpreterBase/robotModel/portInfo.h>
 
 #include "src/coreBlocks/coreBlocksFactory.h"
-#include "managers/paletteUpdateManager.h"
-#include "managers/kitAutoSwitcher.h"
+#include "src/ui/robotsSettingsPage.h"
+#include "interpreterCore/managers/paletteUpdateManager.h"
+#include "interpreterCore/managers/kitAutoSwitcher.h"
 
 using namespace interpreterCore;
 
@@ -126,6 +127,11 @@ QStringList RobotsPluginFacade::defaultSettingsFiles() const
 	}
 
 	return result;
+}
+
+interpreter::InterpreterInterface &RobotsPluginFacade::interpreter() const
+{
+	return *mInterpreter;
 }
 
 void RobotsPluginFacade::connectInterpreterToActions()

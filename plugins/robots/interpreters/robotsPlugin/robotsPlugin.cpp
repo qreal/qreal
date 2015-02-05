@@ -3,20 +3,17 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
-#include <commonTwoDModel/engine/twoDModelControlInterface.h>
-#include <utils/abstractTimer.h>
-
-#include "managers/saveConvertionManager.h"
+#include <interpreterCore/managers/saveConvertionManager.h>
 
 using namespace qReal;
-using namespace interpreterCore;
+using namespace robotsPlugin;
 
 static int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
 	: mMainWindowInterpretersInterface(nullptr)
 {
-	mRobotsPluginFacade.reset(new RobotsPluginFacade);
+	mRobotsPluginFacade.reset(new interpreterCore::RobotsPluginFacade);
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
@@ -47,7 +44,7 @@ QList<HotKeyActionInfo> RobotsPlugin::hotKeyActions()
 
 QList<ProjectConverter> RobotsPlugin::projectConverters()
 {
-	return SaveConvertionManager::converters();
+	return interpreterCore::SaveConvertionManager::converters();
 }
 
 QStringList RobotsPlugin::defaultSettingsFiles()

@@ -23,7 +23,7 @@ ErrorReporter::ErrorReporter(ErrorListWidget* const errorListWidget, QDockWidget
 	, mErrorList(errorList)
 	, mIsVisible(true)
 {
-	connect(mErrorListWidget, SIGNAL(clearRequested()), this, SLOT(clear()));
+	connect(mErrorListWidget, &ErrorListWidget::clearRequested, this, &ErrorReporter::clear);
 }
 
 void ErrorReporter::updateVisibility(bool isVisible)
@@ -41,7 +41,7 @@ void ErrorReporter::updateVisibility(bool isVisible)
 	}
 }
 
-void ErrorReporter::addInformation(QString const &message, Id const &position)
+void ErrorReporter::addInformation(const QString &message, const Id &position)
 {
 	Error error(message, Error::information, position);
 	mErrors.append(error);
@@ -49,7 +49,7 @@ void ErrorReporter::addInformation(QString const &message, Id const &position)
 	emit informationAdded(message, position);
 }
 
-void ErrorReporter::addWarning(QString const &message, Id const &position)
+void ErrorReporter::addWarning(const QString &message, const Id &position)
 {
 	Error error(message, Error::warning, position);
 	mErrors.append(error);
@@ -57,7 +57,7 @@ void ErrorReporter::addWarning(QString const &message, Id const &position)
 	emit warningAdded(message, position);
 }
 
-void ErrorReporter::addError(QString const &message, Id const &position)
+void ErrorReporter::addError(const QString &message, const Id &position)
 {
 	Error error(message, Error::error, position);
 	mErrors.append(error);
@@ -65,7 +65,7 @@ void ErrorReporter::addError(QString const &message, Id const &position)
 	emit errorAdded(message, position);
 }
 
-void ErrorReporter::addCritical(QString const &message, Id const &position)
+void ErrorReporter::addCritical(const QString &message, const Id &position)
 {
 	Error error(message, Error::critical, position);
 	mErrors.append(error);
@@ -83,9 +83,10 @@ bool ErrorReporter::showErrors(ErrorListWidget* const errorListWidget, QDockWidg
 	}
 
 	errorList->setVisible(true);
-	foreach (Error error, mErrors) {
+	for (const Error &error : mErrors) {
 		showError(error, errorListWidget);
 	}
+
 	return false;
 }
 
@@ -106,7 +107,7 @@ void ErrorReporter::clearErrors()
 
 bool ErrorReporter::wereErrors()
 {
-	foreach (Error const &error, mErrors) {
+	for (const Error &error : mErrors) {
 		if (error.severity() == Error::critical || error.severity() == Error::error) {
 			return true;
 		}
@@ -114,7 +115,7 @@ bool ErrorReporter::wereErrors()
 	return false;
 }
 
-void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorListWidget) const
+void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorListWidget) const
 {
 	if (!errorListWidget) {
 		return;
@@ -124,7 +125,7 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 		mErrorList->setVisible(true);
 	}
 
-	QListWidgetItem* item = new QListWidgetItem(errorListWidget);
+	QListWidgetItem *item = new QListWidgetItem(errorListWidget);
 	QString const message = QString(" <font color='gray'>%1</font> <u>%2</u> %3").arg(
 			error.timestamp(), severityMessage(error), error.message());
 	switch (error.severity()) {
@@ -143,6 +144,7 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 	default:
 		throw new Exception("Incorrect total severity");
 	}
+
 	QLabel *label = new QLabel(message.trimmed());
 	label->setAlignment(Qt::AlignVCenter);
 	label->setOpenExternalLinks(true);
@@ -152,7 +154,7 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 	errorListWidget->setCurrentItem(item);
 }
 
-QString ErrorReporter::severityMessage(Error const &error)
+QString ErrorReporter::severityMessage(const Error &error)
 {
 	switch (error.severity()) {
 	case Error::information:

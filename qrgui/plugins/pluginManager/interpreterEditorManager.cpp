@@ -573,14 +573,6 @@ QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) 
 	return result;
 }
 
-IdList InterpreterEditorManager::checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
-		, GraphicalModelAssistInterface const &graphicalApi) const
-{
-	Q_UNUSED(logicalApi);
-	Q_UNUSED(graphicalApi);
-	return IdList();
-}
-
 QList<ListenerInterface *> InterpreterEditorManager::listeners() const
 {
 	return QList<ListenerInterface *>();

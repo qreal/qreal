@@ -2,6 +2,7 @@
 
 #include <QtCore/QSignalMapper>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QGraphicsView>
 
 #include <qrutils/qRealDialog.h>
 #include <qrutils/graphicsUtils/lineImpl.h>
@@ -9,24 +10,35 @@
 #include <interpreterBase/devicesConfigurationWidget.h>
 #include <interpreterBase/devicesConfigurationProvider.h>
 
-#include "d2ModelScene.h"
-#include "robotItem.h"
-#include "rotater.h"
-
-#include "src/engine/model/model.h"
-
 #include "commonTwoDModel/engine/twoDModelDisplayWidget.h"
 
+#include "commonTwoDModel/commonTwoDModelDeclSpec.h"
+
 class QComboBox;
+class QDomDocument;
 
 namespace Ui {
 class D2Form;
 }
 
+namespace graphicsUtils {
+class AbstractItem;
+}
+
 namespace twoDModel {
+
+namespace model {
+class Model;
+class RobotModel;
+}
+
 namespace view {
 
-class D2ModelWidget : public utils::QRealDialog, public interpreterBase::DevicesConfigurationProvider
+class D2ModelScene;
+class SensorItem;
+class RobotItem;
+
+class COMMON_TWO_D_MODEL_EXPORT D2ModelWidget : public utils::QRealDialog, public interpreterBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -37,15 +49,16 @@ public:
 	void init();
 	void close();
 
-	D2ModelScene *scene();
+	/// Enables or disables background 2D model mode.
+	/// In background mode the window is not shown and robot modeling is performed momently.
+	/// By default background mode is disabled.
+	void setBackgroundMode(bool enabled);
 
+	D2ModelScene *scene();
 	engine::TwoDModelDisplayWidget *display();
 
-	void setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible);
-
-	void closeEvent(QCloseEvent *event);
-
 	SensorItem *sensorItem(interpreterBase::robotModel::PortInfo const &port);
+	void setSensorVisible(interpreterBase::robotModel::PortInfo const &port, bool isVisible);
 
 	void loadXml(QDomDocument const &worldModel);
 
@@ -66,9 +79,10 @@ signals:
 	void stopButtonPressed();
 
 protected:
-	virtual void changeEvent(QEvent *e);
-	virtual void showEvent(QShowEvent *e);
-	virtual void keyPressEvent(QKeyEvent *event);
+	void changeEvent(QEvent *e) override;
+	void showEvent(QShowEvent *e) override;
+	void keyPressEvent(QKeyEvent *event) override;
+	void closeEvent(QCloseEvent *event) override;
 
 	void onDeviceConfigurationChanged(QString const &robotModel
 			, interpreterBase::robotModel::PortInfo const &port
@@ -176,6 +190,8 @@ private:
 	void setSelectedRobotItem(RobotItem *robotItem);
 	void unsetSelectedRobotItem();
 
+	void incrementTimelineCounter();
+
 	Ui::D2Form *mUi = nullptr;
 	D2ModelScene *mScene = nullptr;
 
@@ -201,6 +217,8 @@ private:
 	QMap<model::RobotModel *, RobotState> mInitialRobotsBeforeRun;
 
 	bool mDisplayIsVisible = false;
+
+	bool mAutoOpen;
 };
 
 }

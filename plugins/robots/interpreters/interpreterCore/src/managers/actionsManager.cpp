@@ -1,4 +1,4 @@
-#include "actionsManager.h"
+#include "interpreterCore/managers/actionsManager.h"
 
 #include <QtCore/QSignalMapper>
 

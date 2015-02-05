@@ -18,12 +18,12 @@ public:
 
 	PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWindow
 			, EditorManagerInterface &editorManagerProxy
-			, Id const &editor, Id const &diagram);
+			, const Id &editor, const Id &diagram);
 
 	/// Adds top item type to some editor's tree.
 	/// @param data Parameters of new element
 	/// @param tree Editor's tree.
-	void addTopItemType(PaletteElement const &data, QTreeWidget *tree);
+	void addTopItemType(const PaletteElement &data, QTreeWidget *tree);
 
 	/// Collapses all nodes of all current trees.
 	void collapse();
