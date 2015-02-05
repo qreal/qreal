@@ -1,6 +1,6 @@
 QT += xml widgets
 TEMPLATE =  lib
-CONFIG += plugin 
+CONFIG += plugin
 
 include($$PWD/../../global.pri)
 
@@ -14,10 +14,11 @@ win32 {
 	QRXC = $$DESTDIR/qrxc$$CONFIGURATION_SUFFIX
 }
 
+QRXC_DIR = $$DESTDIR
 DESTDIR = $$DESTDIR/plugins/editors/
 
 # Needed because somehow QMake fails to create .rcc directory if RESOURCES is in extra compiler output.
-RCC_DIR = .build/$$CONFIGURATION/.obj
+RCC_DIR = .build/$$CONFIGURATION/obj
 
 links(qrkernel)
 

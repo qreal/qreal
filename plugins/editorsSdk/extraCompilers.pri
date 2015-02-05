@@ -1,4 +1,10 @@
-qrxc_source.commands = $$QRXC $$QREAL_XML $$ROOT
+win32 {
+	QRXC_COMMAND = $$QRXC
+} else {
+	QRXC_COMMAND = export LD_LIBRARY_PATH=$$QRXC_DIR && $$QRXC
+}
+
+qrxc_source.commands = $$QRXC_COMMAND $$QREAL_XML $$ROOT
 qrxc_source.depends = $$QRXC $$QREAL_XML_DEPENDS
 qrxc_source.input = QREAL_XML
 qrxc_source.output = generated/pluginInterface.cpp
