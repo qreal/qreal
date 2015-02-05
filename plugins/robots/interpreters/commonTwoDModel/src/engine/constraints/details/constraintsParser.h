@@ -2,6 +2,8 @@
 
 #include "defines.h"
 
+class QDomElement;
+
 namespace twoDModel {
 namespace constraints {
 namespace details {

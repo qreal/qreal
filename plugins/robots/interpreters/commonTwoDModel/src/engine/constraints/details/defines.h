@@ -16,9 +16,9 @@ enum class Glue
 	, Or
 };
 
-typedef function<bool()> Condition;
-typedef function<void()> Trigger;
-typedef function<QVariant()> Value;
+typedef std::function<bool()> Condition;
+typedef std::function<void()> Trigger;
+typedef std::function<QVariant()> Value;
 
 typedef QMap<QString, QVariant> Variables;
 typedef QMap<QString, Event *> Events;

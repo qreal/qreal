@@ -58,20 +58,20 @@ Value ValuesFactory::typeOf(const QString &objectId) const
 			return typeOfNull;
 		}
 
-		QObject const *object = mObjects[id];
+		QObject const *object = mObjects[objectId];
 		return object == nullptr ? typeOfNull : object->metaObject()->className();
 	};
 }
 
 Value ValuesFactory::objectState(const QString &objectId, const QString &property) const
 {
-	return [this, objectId]() {
+	return [this, objectId, property]() {
 		if (!mObjects.contains(objectId)) {
 			/// @todo: Show error;
 			return QVariant();
 		}
 
-		QObject const *object = mObjects[id];
+		QObject const *object = mObjects[objectId];
 		if (!object) {
 			return QVariant();
 		}

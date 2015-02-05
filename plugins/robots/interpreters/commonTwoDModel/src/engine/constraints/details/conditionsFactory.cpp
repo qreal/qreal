@@ -59,7 +59,7 @@ Condition ConditionsFactory::inside(const QString &objectId, const QString &regi
 
 Condition ConditionsFactory::settedUp(const QString &eventId)
 {
-	return [eventId, mEvents]() {
+	return [eventId, this]() {
 		if (mEvents.contains(eventId)) {
 			/// @todo: Display error!
 			return false;
@@ -71,7 +71,7 @@ Condition ConditionsFactory::settedUp(const QString &eventId)
 
 Condition ConditionsFactory::dropped(const QString &eventId)
 {
-	return [eventId, mEvents]() {
+	return [eventId, this]() {
 		if (mEvents.contains(eventId)) {
 			/// @todo: Display error!
 			return true;

@@ -22,22 +22,22 @@ bool ConstraintsParser::parse(const QString &constraintsXml)
 	QDomDocument document;
 	QString errorMessage;
 	int errorLine, errorColumn;
-	if (!document.setContent(constraintsXml, &errorMessage, errorLine, errorColumn)) {
+	if (!document.setContent(constraintsXml, &errorMessage, &errorLine, &errorColumn)) {
 		mError = QString("%1:%2: %3").arg(QString::number(errorLine), QString::number(errorColumn), errorMessage);
 		return false;
 	}
 
-	if (!document.documentElement().tagName().toLower() != "constraints") {
-		mError = tr("Root element must be \"constraints\" tag");
+	if (document.documentElement().tagName().toLower() != "constraints") {
+		mError = QObject::tr("Root element must be \"constraints\" tag");
 		return false;
 	}
 }
 
 void ConstraintsParser::parseConstraints(const QDomElement &constraints)
 {
-	for (QDomElement &constraint = constraints.firstChildElement()
-			; !constraints.isNull()
-			; constraint = constraints.nextSiblingElement())
+	for (QDomElement constraint = constraints.firstChildElement()
+			; !constraint.isNull()
+			; constraint = constraint.nextSiblingElement())
 	{
 		const QString name = constraint.tagName().toLower();
 		if (name == "event") {
@@ -48,7 +48,7 @@ void ConstraintsParser::parseConstraints(const QDomElement &constraints)
 
 		} else if (name == "timelimit") {
 			// Timelimit is just an event with timeout and fail trigger.
-			QString timeLimitMessage = tr("Program worked for too long time");
+			QString timeLimitMessage = QObject::tr("Program worked for too long time");
 		}
 	}
 }

@@ -32,17 +32,17 @@ Trigger TriggersFactory::combined(const QList<Trigger> &triggers) const
 
 Trigger TriggersFactory::setVariable(const QString &name, const QString &value) const
 {
-	return [this]() { mVariables[name] = value; };
+	return [this, name, value]() { mVariables[name] = value; };
 }
 
 Trigger TriggersFactory::addToVariable(const QString &name, const QString &value) const
 {
-	return [this]() { mVariables[name] = value; };
+	return [this, name, value]() { mVariables[name] = value; };
 }
 
 Trigger TriggersFactory::setUpEvent(const QString &id) const
 {
-	return [this]() {
+	return [this, id]() {
 		if (!mEvents.contains(id)) {
 			/// @todo: Show error;
 		}
@@ -53,7 +53,7 @@ Trigger TriggersFactory::setUpEvent(const QString &id) const
 
 Trigger TriggersFactory::dropEvent(const QString &id) const
 {
-	return [this]() {
+	return [this, id]() {
 		if (!mEvents.contains(id)) {
 			/// @todo: Show error;
 		}
