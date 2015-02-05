@@ -8,7 +8,6 @@ SUBDIRS = \
 	qextserialport \
 	utils \
 
-qextserialport.file = $$PWD/thirdparty/qextserialport/qextserialport.pro
-interpreters.depends = qextserialport
-interpreters.depends = utils
+qextserialport.subdir = $$PWD/thirdparty/qextserialport
+interpreters.depends = qextserialport utils
 generators.depends = interpreters
