@@ -1,5 +1,5 @@
 include(../../../../global.pri)
-                            
+
 TEMPLATE = lib
 
 unix:QT = core

@@ -7,4 +7,4 @@ SUBDIRS = \
 	images \
 	generated \
 
-generated.file = generated/robotsMetamodel.pro
+generated.file = $$PWD/generated/robotsMetamodel.pro
