@@ -17,8 +17,8 @@ public:
 	Trigger fail(const QString &message) const;
 	Trigger success() const;
 
-	Trigger setVariable(const QString &name, const QString &value) const;
-	Trigger addToVariable(const QString &name, const QString &value) const;
+	Trigger setVariable(const QString &name, const QVariant &value) const;
+	Trigger addToVariable(const QString &name, const QVariant &value) const;
 
 	Trigger setUpEvent(const QString &id) const;
 	Trigger dropEvent(const QString &id) const;

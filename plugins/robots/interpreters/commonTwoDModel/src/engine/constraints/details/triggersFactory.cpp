@@ -35,14 +35,30 @@ Trigger TriggersFactory::combined(const QList<Trigger> &triggers) const
 	};
 }
 
-Trigger TriggersFactory::setVariable(const QString &name, const QString &value) const
+Trigger TriggersFactory::setVariable(const QString &name, const QVariant &value) const
 {
 	return [this, name, value]() { mVariables[name] = value; };
 }
 
-Trigger TriggersFactory::addToVariable(const QString &name, const QString &value) const
+Trigger TriggersFactory::addToVariable(const QString &name, const QVariant &value) const
 {
-	return [this, name, value]() { mVariables[name] = value; };
+	return [this, name, value]() {
+		QVariant sum;
+		/// @todo: We may calculate of string and int, for example!
+		switch (value.type()) {
+		case QVariant::Int:
+			sum = mVariables[name].toInt() + value.toInt();
+			break;
+		case QVariant::Double:
+			sum = mVariables[name].toDouble() + value.toDouble();
+			break;
+		default:
+			sum = mVariables[name].toString() + value.toString();
+			break;
+		}
+
+		mVariables[name] = sum;
+	};
 }
 
 Trigger TriggersFactory::setUpEvent(const QString &id) const

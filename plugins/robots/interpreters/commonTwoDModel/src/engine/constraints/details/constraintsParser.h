@@ -30,6 +30,7 @@ private:
 	Event *parseConstraintTag(const QDomElement &element);
 	Event *parseTimeLimitTag(const QDomElement &element);
 
+	Condition parseConditionsAlternative(const QDomElement &element);
 	Condition parseConditionsTag(const QDomElement &element);
 	Condition parseConditionTag(const QDomElement &element);
 	Condition parseConditionContents(const QDomElement &element);
@@ -52,12 +53,14 @@ private:
 
 	QString id(const QDomElement &element) const;
 	int intAttribute(const QDomElement &element, QString const &attributeName, int defaultValue = -1);
+	QVariant bestVariant(const QString &value) const;
 
 	bool addToEvents(Event * const event);
 	bool assertChildrenExactly(const QDomElement &element, int count);
 	bool assertChildrenMoreThan(const QDomElement &element, int count);
 	bool assertHasAttribute(const QDomElement &element, const QString &attribute);
 	bool assertTagName(const QDomElement &element, const QString &nameInLowerCase);
+	bool assertAttributeNonEmpty(const QDomElement &element, const QString &attribute);
 
 	bool error(const QString &message);
 
@@ -68,9 +71,9 @@ private:
 	const Objects &mObjects;
 	const utils::TimelineInterface &mTimeline;
 
-	const TriggersFactory mTriggersFactory;
-	const ConditionsFactory mConditionsFactory;
-	const ValuesFactory mValuesFactory;
+	const TriggersFactory mTriggers;
+	const ConditionsFactory mConditions;
+	const ValuesFactory mValues;
 };
 
 }

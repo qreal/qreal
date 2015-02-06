@@ -90,10 +90,10 @@
 	<event id="Done?">
 		<conditions>
 			<timer timeout="0" forceDropOnTimeout="true"/>
-			<greaterOrEquals>
+			<notLess>
 				<variableValue name="counter"/>
 				<int value="3"/>
-			</equals>
+			</notLess>
 		</conditions>
 		<trigger>
 			<success/>
