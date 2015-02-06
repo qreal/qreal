@@ -102,8 +102,10 @@ TrikRobotModelBase::TrikRobotModelBase(QString const &kitId, QString const &robo
 
 	addAllowedConnection(PortInfo("ShellPort", output), { shellInfo() });
 
-	addAllowedConnection(PortInfo("GamepadPad1PosPort", input, {}, "gamepadPad1"), { gamepadPadInfo() });
-	addAllowedConnection(PortInfo("GamepadPad2PosPort", input, {}, "gamepadPad2"), { gamepadPadInfo() });
+	addAllowedConnection(PortInfo("GamepadPad1PosPort", input, {}, "gamepadPad1"
+			, PortInfo::ReservedVariableType::vector), { gamepadPadInfo() });
+	addAllowedConnection(PortInfo("GamepadPad2PosPort", input, {}, "gamepadPad2"
+			, PortInfo::ReservedVariableType::vector), { gamepadPadInfo() });
 
 	addAllowedConnection(PortInfo("GamepadPad1PressedPort", input, {}, "gamepadPad1Pressed")
 			, { gamepadPadPressSensorInfo() });
