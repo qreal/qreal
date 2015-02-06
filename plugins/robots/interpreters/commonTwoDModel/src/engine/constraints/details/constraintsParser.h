@@ -51,8 +51,17 @@ private:
 	Trigger parseAddToVariableTag(const QDomElement &element);
 	Trigger parseEventSetDropTag(const QDomElement &element);
 
+	Value parseValue(const QDomElement &element);
+	Value parseIntTag(const QDomElement &element);
+	Value parseDoubleTag(const QDomElement &element);
+	Value parseStringTag(const QDomElement &element);
+	Value parseVariableValueTag(const QDomElement &element);
+	Value parseTypeOfTag(const QDomElement &element);
+	Value parseObjectStateTag(const QDomElement &element);
+
 	QString id(const QDomElement &element) const;
 	int intAttribute(const QDomElement &element, QString const &attributeName, int defaultValue = -1);
+	qreal doubleAttribute(const QDomElement &element, QString const &attributeName, qreal defaultValue = 0.0);
 	bool boolAttribute(const QDomElement &element, QString const &attributeName, bool defaultValue = false);
 	QVariant bestVariant(const QString &value) const;
 

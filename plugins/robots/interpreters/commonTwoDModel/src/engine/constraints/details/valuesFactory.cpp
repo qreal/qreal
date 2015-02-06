@@ -12,26 +12,19 @@ ValuesFactory::ValuesFactory(Variables &variables, const Objects &objects)
 {
 }
 
-
-Value ValuesFactory::intValue(const QString &decimalString) const
+Value ValuesFactory::invalidValue() const
 {
-	bool ok;
-	const int value = decimalString.toInt(&ok);
-	if (!ok) {
-		/// @todo: Show error;
-	}
+	return []() { return QVariant(); };
+}
 
+
+Value ValuesFactory::intValue(int value) const
+{
 	return [value]() { return value; };
 }
 
-Value ValuesFactory::floatValue(const QString &decimalString) const
+Value ValuesFactory::doubleValue(qreal value) const
 {
-	bool ok;
-	const qreal value = decimalString.toDouble(&ok);
-	if (!ok) {
-		/// @todo: Show error;
-	}
-
 	return [value]() { return value; };
 }
 

@@ -15,8 +15,10 @@ class ValuesFactory
 public:
 	ValuesFactory(Variables &variables, const Objects &objects);
 
-	Value intValue(const QString &decimalString) const;
-	Value floatValue(const QString &decimalString) const;
+	Value invalidValue() const;
+
+	Value intValue(int value) const;
+	Value doubleValue(qreal value) const;
 	Value stringValue(const QString &value) const;
 
 	Value variableValue(const QString &name) const;

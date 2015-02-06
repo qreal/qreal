@@ -183,6 +183,10 @@ Event *ConstraintsParser::parseConstraintTag(const QDomElement &element)
 
 Event *ConstraintsParser::parseTimeLimitTag(const QDomElement &element)
 {
+	if (!assertHasAttribute(element, "value")) {
+		return nullptr;
+	}
+
 	// Timelimit is just an event with timeout and fail trigger.
 	const int value = intAttribute(element, "value");
 	if (value < 0) {
@@ -465,6 +469,92 @@ Trigger ConstraintsParser::parseEventSetDropTag(const QDomElement &element)
 			: mTriggers.dropEvent(id);
 }
 
+Value ConstraintsParser::parseValue(const QDomElement &element)
+{
+	const QString tag = element.tagName().toLower();
+
+	if (tag == "int") {
+		return parseIntTag(element);
+	}
+
+	if (tag == "double") {
+		return parseDoubleTag(element);
+	}
+
+	if (tag == "string") {
+		return parseStringTag(element);
+	}
+
+	if (tag == "variablevalue") {
+		return parseVariableValueTag(element);
+	}
+
+	if (tag == "typeof") {
+		return parseTypeOfTag(element);
+	}
+
+	if (tag == "objectstate") {
+		return parseObjectStateTag(element);
+	}
+
+	error(QObject::tr("Unknown value \"%1\".").arg(element.tagName()));
+	return mValues.invalidValue();
+}
+
+Value ConstraintsParser::parseIntTag(const QDomElement &element)
+{
+	if (!assertAttributeNonEmpty(element, "value")) {
+		return mValues.invalidValue();
+	}
+
+	return mValues.intValue(intAttribute(element, "value"));
+}
+
+Value ConstraintsParser::parseDoubleTag(const QDomElement &element)
+{
+	if (!assertAttributeNonEmpty(element, "value")) {
+		return mValues.invalidValue();
+	}
+
+	return mValues.doubleValue(doubleAttribute(element, "value"));
+}
+
+Value ConstraintsParser::parseStringTag(const QDomElement &element)
+{
+	if (!assertHasAttribute(element, "value")) {
+		return mValues.invalidValue();
+	}
+
+	return mValues.stringValue(element.attribute("value"));
+}
+
+Value ConstraintsParser::parseVariableValueTag(const QDomElement &element)
+{
+	if (!assertAttributeNonEmpty(element, "name")) {
+		return mValues.invalidValue();
+	}
+
+	return mValues.variableValue(element.attribute("name"));
+}
+
+Value ConstraintsParser::parseTypeOfTag(const QDomElement &element)
+{
+	if (!assertAttributeNonEmpty(element, "objectId")) {
+		return mValues.invalidValue();
+	}
+
+	return mValues.typeOf(element.attribute("objectId"));
+}
+
+Value ConstraintsParser::parseObjectStateTag(const QDomElement &element)
+{
+	if (!assertAttributeNonEmpty(element, "objectId") || !assertAttributeNonEmpty(element, "property")) {
+		return mValues.invalidValue();
+	}
+
+	return mValues.objectState(element.attribute("objectId"), element.attribute("property"));
+}
+
 QString ConstraintsParser::id(const QDomElement &element) const
 {
 	const QString attribute = element.attribute("id");
@@ -474,16 +564,26 @@ QString ConstraintsParser::id(const QDomElement &element) const
 
 int ConstraintsParser::intAttribute(const QDomElement &element, const QString &attributeName, int defaultValue)
 {
-	if (!assertHasAttribute(element, "value")) {
-		return 0;
-	}
-
 	QString const attributeValue = element.attribute(attributeName);
 	bool ok = false;
 	const int result = attributeValue.toInt(&ok);
 	if (!ok) {
 		/// @todo: Make it warning
 		error(QObject::tr("Invalid integer value \"%1\"").arg(attributeValue));
+		return defaultValue;
+	}
+
+	return result;
+}
+
+qreal ConstraintsParser::doubleAttribute(const QDomElement &element, const QString &attributeName, qreal defaultValue)
+{
+	QString const attributeValue = element.attribute(attributeName);
+	bool ok = false;
+	const qreal result = attributeValue.toDouble(&ok);
+	if (!ok) {
+		/// @todo: Make it warning
+		error(QObject::tr("Invalid floating point value \"%1\"").arg(attributeValue));
 		return defaultValue;
 	}
 
