@@ -249,6 +249,57 @@ Condition ConstraintsParser::parseConditionTag(const QDomElement &element)
 
 Condition ConstraintsParser::parseConditionContents(const QDomElement &element)
 {
+	const QString tag = element.tagName();
+
+	if (tag == "not") {
+		return parseNegationTag(element);
+	}
+
+	if (tag == "equals" || tag == "notEquals"
+			|| tag == "greater" || tag == "less"
+			|| tag == "notGreater" || tag == "notLess")
+	{
+		return parseComparisonTag(element);
+	}
+
+	if (tag == "inside") {
+		return parseInsideTag(element);
+	}
+
+	if (tag == "settedUp" || tag == "dropped") {
+		return parseEventSettedDroppedTag(element);
+	}
+
+	if (tag == "timer") {
+		return parseTimerTag(element);
+	}
+
+	error(QObject::tr("Unknown tag \"%1\".").arg(element.tagName()));
+	return mConditionsFactory.constant(true);
+}
+
+Condition ConstraintsParser::parseNegationTag(const QDomElement &element)
+{
+
+}
+
+Condition ConstraintsParser::parseComparisonTag(const QDomElement &element)
+{
+
+}
+
+Condition ConstraintsParser::parseInsideTag(const QDomElement &element)
+{
+
+}
+
+Condition ConstraintsParser::parseEventSettedDroppedTag(const QDomElement &element)
+{
+
+}
+
+Condition ConstraintsParser::parseTimerTag(const QDomElement &element)
+{
 
 }
 
@@ -284,6 +335,55 @@ Trigger ConstraintsParser::parseTriggerTag(const QDomElement &element)
 
 Trigger ConstraintsParser::parseTriggerContents(const QDomElement &element)
 {
+	const QString tag = element.tagName();
+
+	if (tag == "fail") {
+		return parseFailTag(element);
+	}
+
+	if (tag == "success") {
+		return parseSuccessTag(element);
+	}
+
+	if (tag == "setVariable") {
+		return parseSetVariableTag(element);
+	}
+
+	if (tag == "addToVariable") {
+		return parseAddToVariableTag(element);
+	}
+
+	if (tag == "setUp" || tag == "drop") {
+		return parseEventSetDropTag(element);
+	}
+
+	error(QObject::tr("Unknown tag \"%1\".").arg(element.tagName()));
+	return mTriggersFactory.doNothing();
+}
+
+Trigger ConstraintsParser::parseFailTag(const QDomElement &element)
+{
+
+}
+
+Trigger ConstraintsParser::parseSuccessTag(const QDomElement &element)
+{
+
+}
+
+Trigger ConstraintsParser::parseSetVariableTag(const QDomElement &element)
+{
+
+}
+
+Trigger ConstraintsParser::parseAddToVariableTag(const QDomElement &element)
+{
+
+}
+
+Trigger ConstraintsParser::parseEventSetDropTag(const QDomElement &element)
+{
+
 }
 
 QString ConstraintsParser::id(const QDomElement &element) const

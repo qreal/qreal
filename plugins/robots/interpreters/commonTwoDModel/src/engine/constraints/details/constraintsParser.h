@@ -34,9 +34,21 @@ private:
 	Condition parseConditionTag(const QDomElement &element);
 	Condition parseConditionContents(const QDomElement &element);
 
+	Condition parseNegationTag(const QDomElement &element);
+	Condition parseComparisonTag(const QDomElement &element);
+	Condition parseInsideTag(const QDomElement &element);
+	Condition parseEventSettedDroppedTag(const QDomElement &element);
+	Condition parseTimerTag(const QDomElement &element);
+
 	Trigger parseTriggersTag(const QDomElement &element);
 	Trigger parseTriggerTag(const QDomElement &element);
 	Trigger parseTriggerContents(const QDomElement &element);
+
+	Trigger parseFailTag(const QDomElement &element);
+	Trigger parseSuccessTag(const QDomElement &element);
+	Trigger parseSetVariableTag(const QDomElement &element);
+	Trigger parseAddToVariableTag(const QDomElement &element);
+	Trigger parseEventSetDropTag(const QDomElement &element);
 
 	QString id(const QDomElement &element) const;
 	int intAttribute(const QDomElement &element, QString const &attributeName, int defaultValue = -1);
