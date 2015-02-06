@@ -22,6 +22,7 @@ void ConstraintsParserTests::SetUp()
 	mTimeline.setTimestamp(0);
 
 	mObjects["testObject"] = &mTestObject;
+	mObjects["nullObject"] = nullptr;
 }
 
 TEST_F(ConstraintsParserTests, emptyXmlTest)
@@ -180,7 +181,7 @@ TEST_F(ConstraintsParserTests, noGlueErrorTest)
 	ASSERT_EQ(mParser.errors().count(), 1);
 }
 
-TEST_F(ConstraintsParserTests, equalityTest)
+TEST_F(ConstraintsParserTests, comparisonTest)
 {
 	auto testSign = [this](const QString &sign, const QString &type) {
 		mEvents.clear();
@@ -234,3 +235,53 @@ TEST_F(ConstraintsParserTests, equalityTest)
 	mTestObject.setStringProperty("99");
 	testSign("greater", "string");
 }
+
+TEST_F(ConstraintsParserTests, constraintTagAndTypeOfTagTest)
+{
+	auto testCase = [this](bool checkOnce, const QString &objectId, const QString &type) {
+		mEvents.clear();
+		const QString xml = QString(
+				"<constraints>"\
+				"	<timelimit value=\"2000\"/>"\
+				"	<constraint id=\"constraint\" checkOnce=\"%1\" failMessage=\"fail!\">"\
+				"		<equals>"
+				"			<typeof objectId=\"%2\"/>"
+				"			<string value=\"%3\"/>"
+				"		</equals>"
+				"	</constraint>"\
+				"</constraints>").arg(checkOnce ? "true" : "false", objectId, type);
+		ASSERT_TRUE(mParser.parse(xml));
+		ASSERT_TRUE(mEvents.count() == 2);
+		Event * const event = mEvents["constraint"];
+		ASSERT_NE(event, nullptr);
+
+		bool eventFired = false;
+		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
+
+		event->check();
+		ASSERT_FALSE(eventFired);
+		ASSERT_NE(checkOnce, event->isAlive());
+	};
+
+	testCase(true, "testObject", "qrTest::robotsTests::commonTwoDModelTests::TestObject");
+	testCase(false, "nullObject", "undefined");
+}
+
+TEST_F(ConstraintsParserTests, forgottenFailMessageErrorTest)
+{
+	const QString xml =
+			"<constraints>"\
+			"	<timelimit value=\"2000\"/>"\
+			"	<constraint id=\"constraint\" checkOnce=\"false\">"\
+			"		<equals>"
+			"			<typeof objectId=\"nullObject\"/>"
+			"			<string value=\"undefined\"/>"
+			"		</equals>"
+			"	</constraint>"\
+			"</constraints>";
+	ASSERT_FALSE(mParser.parse(xml));
+	qDebug() << mParser.errors();
+	ASSERT_EQ(mParser.errors().count(), 1);
+}
+
+/// @todo: Add inside tag testcases

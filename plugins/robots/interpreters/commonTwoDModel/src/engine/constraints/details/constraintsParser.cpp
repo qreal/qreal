@@ -178,7 +178,7 @@ Event *ConstraintsParser::parseConstraintTag(const QDomElement &element)
 		condition = mConditions.combined({ timeout, condition }, Glue::And);
 	}
 
-	result->setCondition(condition);
+	result->setCondition(mConditions.negation(condition));
 	result->setUp();
 	return result;
 }
