@@ -76,7 +76,7 @@ bool ConstraintsParser::parseConstraints(const QDomElement &constraints)
 		return false;
 	}
 
-	return true;
+	return mErrors.isEmpty();
 }
 
 Event *ConstraintsParser::parseConstraint(const QDomElement &constraint)
@@ -84,10 +84,11 @@ Event *ConstraintsParser::parseConstraint(const QDomElement &constraint)
 	const QString name = constraint.tagName().toLower();
 
 	if (name == "event") {
-
+		return parseEventTag(constraint);
 	}
 
 	if (name == "constraint") {
+		return parseConstraintTag(constraint);
 	}
 
 	if (name == "timelimit") {
@@ -138,7 +139,7 @@ Event *ConstraintsParser::parseEventTag(const QDomElement &element)
 
 	const Condition condition = conditionName == "condition"
 			? parseConditionTag(conditionTag, *result)
-			: parseConditionTag(conditionTag, *result);
+			: parseConditionsTag(conditionTag, *result);
 
 	result->setCondition(condition);
 	if (setUpInitially) {
@@ -161,9 +162,6 @@ Event *ConstraintsParser::parseConstraintTag(const QDomElement &element)
 		return nullptr;
 	}
 
-	const QDomElement child = element.firstChildElement();
-	const QString childName = child.tagName().toLower();
-
 	const QString failMessage = element.attribute("failMessage");
 	const Trigger trigger = mTriggers.fail(failMessage);
 
@@ -172,7 +170,7 @@ Event *ConstraintsParser::parseConstraintTag(const QDomElement &element)
 
 	Event * const result = new Event(id(element), mConditions.constant(true), trigger);
 
-	Condition condition = parseConditionsAlternative(element, *result);
+	Condition condition = parseConditionsAlternative(element.firstChildElement(), *result);
 
 	if (checkOnce) {
 		const Value timestamp = mValues.timestamp(mTimeline);
@@ -243,11 +241,7 @@ Condition ConstraintsParser::parseConditionsTag(const QDomElement &element, Even
 			; !condition.isNull()
 			; condition = condition.nextSiblingElement())
 	{
-		if (!assertTagName(condition, "condition")) {
-			return mConditions.constant(true);
-		}
-
-		conditions << parseConditionsTag(condition, event);
+		conditions << parseConditionsAlternative(condition, event);
 	}
 
 	return mConditions.combined(conditions, glue);
@@ -259,7 +253,7 @@ Condition ConstraintsParser::parseConditionTag(const QDomElement &element, Event
 		return mConditions.constant(true);
 	}
 
-	return parseConditionContents(element, event);
+	return parseConditionContents(element.firstChildElement(), event);
 }
 
 Condition ConstraintsParser::parseConditionContents(const QDomElement &element, Event &event)
@@ -391,7 +385,7 @@ Trigger ConstraintsParser::parseTriggerTag(const QDomElement &element)
 		return mTriggers.doNothing();
 	}
 
-	return parseTriggerContents(element);
+	return parseTriggerContents(element.firstChildElement());
 }
 
 Trigger ConstraintsParser::parseTriggerContents(const QDomElement &element)

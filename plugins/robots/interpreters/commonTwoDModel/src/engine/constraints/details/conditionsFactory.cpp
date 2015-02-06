@@ -113,7 +113,6 @@ Condition ConditionsFactory::timerCondition(int timeout, bool forceDrop, const V
 		if (timeElapsed && forceDrop) {
 			// Someone may think that dropping here will not let the event fire even if all conditions are satisfied.
 			// But we get into this lambda after checking this event`s aliveness, so it will fire (but after drop).
-			/// @todo: Write test checking the statement above.
 			event.drop();
 		}
 
