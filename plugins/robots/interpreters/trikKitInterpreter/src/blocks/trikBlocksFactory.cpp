@@ -29,6 +29,12 @@
 #include "details/sayBlock.h"
 #include "details/systemCommandBlock.h"
 
+#include "details/waitGamepadButtonBlock.h"
+#include "details/waitGamepadConnectBlock.h"
+#include "details/waitGamepadDisconnectBlock.h"
+#include "details/waitGamepadWheelBlock.h"
+#include "details/waitPadPressBlock.h"
+
 using namespace trikKitInterpreter::blocks;
 using namespace trikKitInterpreter::blocks::details;
 using namespace interpreterBase::blocksBase::common;
@@ -123,6 +129,17 @@ qReal::interpretation::Block *TrikBlocksFactory::produceBlock(qReal::Id const &e
 		return new SmileBlock(mRobotModelManager->model(), true);
 	} else if (elementMetatypeIs(element, "TrikSetBackground")) {
 		return new SetBackgroundBlock(mRobotModelManager->model());
+
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadButton")) {
+		return new WaitGamepadButtonBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "TrikWaitPadPress")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadWheel")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadDisconnect")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
+	} else if (elementMetatypeIs(element, "TrikWaitGamepadConnect")) {
+		return new qReal::interpretation::blocks::EmptyBlock();
 	}
 
 	return nullptr;
@@ -191,6 +208,14 @@ qReal::IdList TrikBlocksFactory::providedBlocks() const
 			<< id("TrikSetBackground")
 			;
 
+	result
+			<< id("TrikWaitGamepadButton")
+			<< id("TrikWaitPadPress")
+			<< id("TrikWaitGamepadWheel")
+			<< id("TrikWaitGamepadDisconnect")
+			<< id("TrikWaitGamepadConnect")
+			;
+
 	return result;
 }
 
@@ -211,6 +236,11 @@ qReal::IdList TrikBlocksFactory::blocksToDisable() const
 				<< id("TrikWaitForMotion")
 				<< id("TrikSendMessage")
 				<< id("TrikWaitForMessage")
+				<< id("TrikWaitGamepadButton")
+				<< id("TrikWaitPadPress")
+				<< id("TrikWaitGamepadWheel")
+				<< id("TrikWaitGamepadDisconnect")
+				<< id("TrikWaitGamepadConnect")
 				;
 	}
 

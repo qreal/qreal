@@ -14,6 +14,11 @@ namespace robotModel {
 class ROBOTS_INTERPRETER_BASE_EXPORT PortInfo
 {
 public:
+	enum class ReservedVariableType {
+		scalar
+		, vector
+	};
+
 	/// Deserializes PortInfo instance from the string obtained by toString() method.
 	static PortInfo fromString(QString const &string);
 
@@ -24,7 +29,8 @@ public:
 	/// Ports with same names but different directions are considered to be different.
 	explicit PortInfo(QString const &name, Direction direction
 			, QStringList const &nameAliases = QStringList()
-			, QString const &reservedVariableName = QString());
+			, QString const &reservedVariableName = QString()
+			, ReservedVariableType reservedVariableType = ReservedVariableType::scalar);
 
 	/// Returns true if this PortInfo is non-empty (i.e. really describes some port)
 	bool isValid() const;
@@ -44,6 +50,8 @@ public:
 	/// devices values on this port).
 	QString reservedVariable() const;
 
+	ReservedVariableType reservedVariableType() const;
+
 	/// Serializes this PortInfo instance into the inner string representation.
 	QString toString() const;
 
@@ -52,6 +60,7 @@ private:
 	Direction mDirection;
 	QStringList mNameAliases;
 	QString mReservedVariable;
+	ReservedVariableType mReservedVariableType;
 };
 
 inline bool operator ==(PortInfo const &left, PortInfo const &right)

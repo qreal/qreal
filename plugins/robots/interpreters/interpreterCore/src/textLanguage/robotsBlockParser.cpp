@@ -28,7 +28,6 @@ RobotsBlockParser::RobotsBlockParser(
 
 void RobotsBlockParser::setReservedVariables()
 {
-	/// @todo Remove old reserved variables for old model.
 	qrtext::lua::LuaToolbox::clear();
 
 	setVariableValue("pi", 3.14159265);
@@ -47,7 +46,12 @@ void RobotsBlockParser::setReservedVariables()
 		}
 
 		if (!port.reservedVariable().isEmpty()) {
-			setVariableValue(port.reservedVariable(), 0);
+			if (port.reservedVariableType() == interpreterBase::robotModel::PortInfo::ReservedVariableType::scalar) {
+				setVariableValue(port.reservedVariable(), 0);
+			} else {
+				setVectorVariableValue(port.reservedVariable(), QVector<int>());
+			}
+
 			markAsSpecial(port.reservedVariable());
 		}
 	}

@@ -6,12 +6,14 @@ PortInfo::PortInfo()
 {
 }
 
-PortInfo::PortInfo(QString const &name, Direction direction
-		, QStringList const &nameAliases, QString const &reservedVariableName)
+PortInfo::PortInfo(const QString &name, Direction direction
+		, const QStringList &nameAliases, const QString &reservedVariableName
+		, ReservedVariableType reservedVariableType)
 	: mName(name)
 	, mDirection(direction)
 	, mNameAliases(nameAliases)
 	, mReservedVariable(reservedVariableName)
+	, mReservedVariableType(reservedVariableType)
 {
 }
 
@@ -38,6 +40,11 @@ QStringList PortInfo::nameAliases() const
 QString PortInfo::reservedVariable() const
 {
 	return mReservedVariable;
+}
+
+PortInfo::ReservedVariableType PortInfo::reservedVariableType() const
+{
+	return mReservedVariableType;
 }
 
 QString PortInfo::toString() const

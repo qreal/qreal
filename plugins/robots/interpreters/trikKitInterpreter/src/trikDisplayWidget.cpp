@@ -2,6 +2,7 @@
 #include "ui_trikDisplayWidget.h"
 
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/logging.h>
 
 using namespace trikKitInterpreter;
 
@@ -57,7 +58,9 @@ bool TrikDisplayWidget::buttonIsDown(QString const &buttonPort) const
 		return mUi->buttonPower->isDown();
 	}
 
-	throw qReal::Exception("Incorrect button id in TrikDisplayWidget::buttonIsDown");
+	QLOG_WARN() << "Button on port" << buttonPort << "is not supported by 2d model";
+
+	return false;
 }
 
 void TrikDisplayWidget::setLedColor(QColor const &color)
