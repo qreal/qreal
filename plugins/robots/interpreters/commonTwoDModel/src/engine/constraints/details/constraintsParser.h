@@ -41,6 +41,7 @@ private:
 	Condition parseEventSettedDroppedTag(const QDomElement &element);
 	Condition parseTimerTag(const QDomElement &element, Event &event);
 
+	Trigger parseTriggersAlternative(const QDomElement &element);
 	Trigger parseTriggersTag(const QDomElement &element);
 	Trigger parseTriggerTag(const QDomElement &element);
 	Trigger parseTriggerContents(const QDomElement &element);

@@ -131,9 +131,7 @@ Event *ConstraintsParser::parseEventTag(const QDomElement &element)
 	const bool setUpInitially = boolAttribute(element, "settedUpInitially", false);
 	const bool dropsOnFire = boolAttribute(element, "dropsOnFire", true);
 
-	const Trigger trigger = triggerName == "trigger"
-			? parseTriggerTag(triggerTag)
-			: parseTriggersTag(triggerTag);
+	const Trigger trigger = parseTriggersAlternative(triggerTag);
 
 	Event * const result = new Event(id(element), mConditions.constant(true), trigger, dropsOnFire);
 
@@ -363,6 +361,16 @@ Condition ConstraintsParser::parseTimerTag(const QDomElement &element, Event &ev
 	return mConditions.timerCondition(timeout, forceDrop, timestamp, event);
 }
 
+Trigger ConstraintsParser::parseTriggersAlternative(const QDomElement &element)
+{
+	const QString name = element.tagName().toLower();
+	return name == "triggers"
+			? parseTriggersTag(element)
+			: name == "trigger"
+					? parseTriggerTag(element)
+					: parseTriggerContents(element);
+}
+
 Trigger ConstraintsParser::parseTriggersTag(const QDomElement &element)
 {
 	if (!assertChildrenMoreThan(element, 0)) {
@@ -374,11 +382,7 @@ Trigger ConstraintsParser::parseTriggersTag(const QDomElement &element)
 			; !trigger.isNull()
 			; trigger = trigger.nextSiblingElement())
 	{
-		if (!assertTagName(trigger, "trigger")) {
-			return mTriggers.doNothing();
-		}
-
-		triggers << parseTriggerTag(trigger);
+		triggers << parseTriggersAlternative(trigger);
 	}
 
 	return mTriggers.combined(triggers);
