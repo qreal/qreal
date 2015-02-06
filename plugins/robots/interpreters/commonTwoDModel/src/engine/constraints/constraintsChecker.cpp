@@ -5,12 +5,17 @@
 
 using namespace twoDModel::constraints;
 
+ConstraintsChecker::ConstraintsChecker()
+{
+}
+
 ConstraintsChecker::~ConstraintsChecker()
 {
 	qDeleteAll(mEvents);
 }
 
 #include<QDebug>
+#include<utils/realTimeline.h>
 bool ConstraintsChecker::parseConstraints(const QString &constraintsXml)
 {
 	qDeleteAll(mEvents);
@@ -18,9 +23,10 @@ bool ConstraintsChecker::parseConstraints(const QString &constraintsXml)
 	mVariables.clear();
 	mObjects.clear();
 
-	details::ConstraintsParser parser(mEvents, mVariables, mObjects);
+	utils::RealTimeline *timeline = new utils::RealTimeline;
+	details::ConstraintsParser parser(mEvents, mVariables, mObjects, *timeline);
 	if (!parser.parse(constraintsXml)) {
-		qDebug() << parser.errorString();
+		qDebug() << parser.errors();
 		return false;
 	}
 

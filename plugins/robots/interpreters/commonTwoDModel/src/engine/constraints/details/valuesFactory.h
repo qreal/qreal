@@ -13,7 +13,7 @@ namespace details {
 class ValuesFactory
 {
 public:
-	ValuesFactory(Variables &variables, Objects &objects);
+	ValuesFactory(Variables &variables, const Objects &objects);
 
 	Value intValue(const QString &decimalString) const;
 	Value floatValue(const QString &decimalString) const;
@@ -28,7 +28,7 @@ public:
 
 private:
 	Variables &mVariables;
-	Objects &mObjects;
+	const Objects &mObjects;
 };
 
 }

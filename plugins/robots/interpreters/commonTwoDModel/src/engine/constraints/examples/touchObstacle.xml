@@ -27,8 +27,8 @@
 		<inside objectId="robot" regionId="warzone"/>
 	</constraint>
 
-	<event id="We are alive, first move" setUpInitially="true" [dropsOnFire="true/false"]>
-		<conditions [glue="and/or"]> <!-- optional -->
+	<event id="We are alive, first move" setUpInitially="true">
+		<conditions> <!-- optional -->
 			<condition>
 				<greater>
 					<objectState objectId="motorM1" property="power"/>

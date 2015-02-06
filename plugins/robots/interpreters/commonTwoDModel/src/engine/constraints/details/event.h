@@ -11,7 +11,12 @@ class Event : public QObject
 	Q_OBJECT
 
 public:
-	Event(const Condition &condition, const Trigger &trigger, bool dropsOnFire = true);
+	Event(const QString &id
+		, const Condition &condition
+		, const Trigger &trigger
+		, bool dropsOnFire = true);
+
+	QString id() const;
 
 	bool isAlive() const;
 
@@ -20,15 +25,18 @@ public:
 
 	void check();
 
+	void setCondition(const Condition &condition);
+
 signals:
 	void settedUp();
 	void dropped();
 	void fired();
 
 private:
+	const QString mId;
 	bool mIsAlive;
-	const Condition &mCondition;
-	const Trigger &mTrigger;
+	Condition mCondition;
+	const Trigger mTrigger;
 	bool mDropsOnFire;
 };
 

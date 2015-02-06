@@ -4,11 +4,16 @@
 
 using namespace twoDModel::constraints::details;
 
-ConditionsFactory::ConditionsFactory(Events &events, Variables &variables, Objects const &objects)
+ConditionsFactory::ConditionsFactory(Events &events, Variables &variables, const Objects &objects)
 	: mEvents(events)
 	, mVariables(variables)
 	, mObjects(objects)
 {
+}
+
+Condition ConditionsFactory::constant(bool value) const
+{
+	return [value]() { return value; };
 }
 
 Condition ConditionsFactory::combined(const QList<Condition> &conditions, Glue glue) const
@@ -26,6 +31,11 @@ Condition ConditionsFactory::combined(const QList<Condition> &conditions, Glue g
 
 		return glue == Glue::And;
 	};
+}
+
+Condition ConditionsFactory::negation(const Condition &condition) const
+{
+	return [condition]() { return !condition(); };
 }
 
 Condition ConditionsFactory::equals(const Value &leftValue, const Value &rightValue) const
@@ -64,7 +74,7 @@ Condition ConditionsFactory::inside(const QString &objectId, const QString &regi
 	return []() { return true; };
 }
 
-Condition ConditionsFactory::settedUp(const QString &eventId)
+Condition ConditionsFactory::settedUp(const QString &eventId) const
 {
 	return [eventId, this]() {
 		if (mEvents.contains(eventId)) {
@@ -76,7 +86,7 @@ Condition ConditionsFactory::settedUp(const QString &eventId)
 	};
 }
 
-Condition ConditionsFactory::dropped(const QString &eventId)
+Condition ConditionsFactory::dropped(const QString &eventId) const
 {
 	return [eventId, this]() {
 		if (mEvents.contains(eventId)) {
@@ -88,7 +98,7 @@ Condition ConditionsFactory::dropped(const QString &eventId)
 	};
 }
 
-Condition ConditionsFactory::timerCondition(int timeout, bool forceDrop, const Value &timestamp, Event &event)
+Condition ConditionsFactory::timerCondition(int timeout, bool forceDrop, const Value &timestamp, Event &event) const
 {
 	// We must remember somewhere timestamp when parent event was setted up.
 	// We can do this in the event itself, by why? There will be no need in it except here, so storing it in heap...

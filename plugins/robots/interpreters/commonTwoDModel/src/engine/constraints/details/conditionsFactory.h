@@ -9,9 +9,11 @@ namespace details {
 class ConditionsFactory
 {
 public:
-	ConditionsFactory(Events &events, Variables &variables, Objects const &objects);
+	ConditionsFactory(Events &events, Variables &variables, const Objects &objects);
 
+	Condition constant(bool value) const;
 	Condition combined(const QList<Condition> &conditions, Glue glue) const;
+	Condition negation(const Condition &condition) const;
 
 	Condition equals(const Value &leftValue, const Value &rightValue) const;
 	Condition notEqual(const Value &leftValue, const Value &rightValue) const;
@@ -22,15 +24,15 @@ public:
 
 	Condition inside(const QString &objectId, const QString &regionId) const;
 
-	Condition settedUp(const QString &eventId);
-	Condition dropped(const QString &eventId);
+	Condition settedUp(const QString &eventId) const;
+	Condition dropped(const QString &eventId) const;
 
-	Condition timerCondition(int timeout, bool forceDrop, const Value &timestamp, Event &event);
+	Condition timerCondition(int timeout, bool forceDrop, const Value &timestamp, Event &event) const;
 
 private:
 	Events &mEvents;
 	Variables &mVariables;
-	Objects const &mObjects;
+	const Objects &mObjects;
 };
 
 }

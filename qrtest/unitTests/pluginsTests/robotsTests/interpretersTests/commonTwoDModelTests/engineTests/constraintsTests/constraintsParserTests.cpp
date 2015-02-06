@@ -1,11 +1,12 @@
 #include "constraintsParserTests.h"
 
 #include <src/engine/constraints/constraintsChecker.h>
+#include <src/engine/constraints/details/event.h>
 
 using namespace qrTest::robotsTests::commonTwoDModelTests;
 
 ConstraintsParserTests::ConstraintsParserTests()
-	: mParser(mEvents, mVariables, mObjects)
+	: mParser(mEvents, mVariables, mObjects, mTimeline)
 {
 }
 

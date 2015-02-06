@@ -2,11 +2,20 @@
 
 using namespace twoDModel::constraints::details;
 
-Event::Event(const Condition &condition, const Trigger &trigger, bool dropsOnFire)
-	: mCondition(condition)
+Event::Event(const QString &id
+		, const Condition &condition
+		, const Trigger &trigger
+		, bool dropsOnFire)
+	: mId(id)
+	, mCondition(condition)
 	, mTrigger(trigger)
 	, mDropsOnFire(dropsOnFire)
 {
+}
+
+QString Event::id() const
+{
+	return mId;
 }
 
 bool Event::isAlive() const
@@ -37,4 +46,9 @@ void Event::check()
 	if (mDropsOnFire) {
 		drop();
 	}
+}
+
+void Event::setCondition(const Condition &condition)
+{
+	mCondition = condition;
 }

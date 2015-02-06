@@ -5,8 +5,10 @@
 namespace twoDModel {
 namespace constraints {
 
-class ConstraintsChecker
+class ConstraintsChecker : public QObject
 {
+	Q_OBJECT
+
 public:
 	ConstraintsChecker();
 	~ConstraintsChecker();

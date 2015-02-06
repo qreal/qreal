@@ -6,7 +6,7 @@ using namespace twoDModel::constraints::details;
 
 const QString typeOfNull = "undefined";
 
-ValuesFactory::ValuesFactory(Variables &variables, Objects &objects)
+ValuesFactory::ValuesFactory(Variables &variables, const Objects &objects)
 	: mVariables(variables)
 	, mObjects(objects)
 {
