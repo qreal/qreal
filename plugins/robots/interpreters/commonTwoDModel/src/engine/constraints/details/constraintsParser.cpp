@@ -123,19 +123,20 @@ Event *ConstraintsParser::parseEventTag(const QDomElement &element)
 		return nullptr;
 	}
 
-	const Condition condition = conditionName == "condition"
-			? parseConditionTag(conditionTag)
-			: parseConditionTag(conditionTag);
+	const bool setUpInitially = boolAttribute(element, "settedUpInitially", false);
+	const bool dropsOnFire = boolAttribute(element, "dropsOnFire", true);
+
 	const Trigger trigger = triggerName == "trigger"
 			? parseTriggerTag(triggerTag)
 			: parseTriggersTag(triggerTag);
 
-	const QString setUpInitiallyAttribute = element.attribute("settedUpInitially", "false").toLower();
-	const QString dropsOnFireAttribute = element.attribute("dropsOnFire", "true").toLower();
-	const bool setUpInitially = setUpInitiallyAttribute == "true";
-	const bool dropsOnFire = dropsOnFireAttribute == "true";
+	Event * const result = new Event(id(element), mConditions.constant(true), trigger, dropsOnFire);
 
-	Event * const result = new Event(id(element), condition, trigger, dropsOnFire);
+	const Condition condition = conditionName == "condition"
+			? parseConditionTag(conditionTag, *result)
+			: parseConditionTag(conditionTag, *result);
+
+	result->setCondition(condition);
 	if (setUpInitially) {
 		result->setUp();
 	}
@@ -159,8 +160,6 @@ Event *ConstraintsParser::parseConstraintTag(const QDomElement &element)
 	const QDomElement child = element.firstChildElement();
 	const QString childName = child.tagName().toLower();
 
-	Condition condition = parseConditionsAlternative(element);
-
 	const QString failMessage = element.attribute("failMessage");
 	const Trigger trigger = mTriggers.fail(failMessage);
 
@@ -168,6 +167,8 @@ Event *ConstraintsParser::parseConstraintTag(const QDomElement &element)
 	const bool checkOnce = checkOneAttribute == "true";
 
 	Event * const result = new Event(id(element), mConditions.constant(true), trigger);
+
+	Condition condition = parseConditionsAlternative(element, *result);
 
 	if (checkOnce) {
 		const Value timestamp = mValues.timestamp(mTimeline);
@@ -202,17 +203,17 @@ Event *ConstraintsParser::parseTimeLimitTag(const QDomElement &element)
 	return event;
 }
 
-Condition ConstraintsParser::parseConditionsAlternative(const QDomElement &element)
+Condition ConstraintsParser::parseConditionsAlternative(const QDomElement &element, Event &event)
 {
 	const QString name = element.tagName().toLower();
 	return name == "conditions"
-			? parseConditionsTag(element)
+			? parseConditionsTag(element, event)
 			: name == "condition"
-					? parseConditionTag(element)
-					: parseConditionContents(element);
+					? parseConditionTag(element, event)
+					: parseConditionContents(element, event);
 }
 
-Condition ConstraintsParser::parseConditionsTag(const QDomElement &element)
+Condition ConstraintsParser::parseConditionsTag(const QDomElement &element, Event &event)
 {
 	if (!assertChildrenMoreThan(element, 0) || !assertAttributeNonEmpty(element, "glue")) {
 		return mConditions.constant(true);
@@ -238,27 +239,27 @@ Condition ConstraintsParser::parseConditionsTag(const QDomElement &element)
 			return mConditions.constant(true);
 		}
 
-		conditions << parseConditionsTag(condition);
+		conditions << parseConditionsTag(condition, event);
 	}
 
 	return mConditions.combined(conditions, glue);
 }
 
-Condition ConstraintsParser::parseConditionTag(const QDomElement &element)
+Condition ConstraintsParser::parseConditionTag(const QDomElement &element, Event &event)
 {
 	if (!assertChildrenExactly(element, 1)) {
 		return mConditions.constant(true);
 	}
 
-	return parseConditionContents(element);
+	return parseConditionContents(element, event);
 }
 
-Condition ConstraintsParser::parseConditionContents(const QDomElement &element)
+Condition ConstraintsParser::parseConditionContents(const QDomElement &element, Event &event)
 {
 	const QString tag = element.tagName();
 
 	if (tag == "not") {
-		return parseNegationTag(element);
+		return parseNegationTag(element, event);
 	}
 
 	if (tag == "equals" || tag.startsWith("notequal")
@@ -277,20 +278,20 @@ Condition ConstraintsParser::parseConditionContents(const QDomElement &element)
 	}
 
 	if (tag == "timer") {
-		return parseTimerTag(element);
+		return parseTimerTag(element, event);
 	}
 
 	error(QObject::tr("Unknown tag \"%1\".").arg(element.tagName()));
 	return mConditions.constant(true);
 }
 
-Condition ConstraintsParser::parseNegationTag(const QDomElement &element)
+Condition ConstraintsParser::parseNegationTag(const QDomElement &element, Event &event)
 {
 	if (!assertChildrenExactly(element, 1)) {
 		return mConditions.constant(true);
 	}
 
-	return parseConditionsAlternative(element.firstChildElement());
+	return parseConditionsAlternative(element.firstChildElement(), event);
 }
 
 Condition ConstraintsParser::parseComparisonTag(const QDomElement &element)
@@ -343,9 +344,16 @@ Condition ConstraintsParser::parseEventSettedDroppedTag(const QDomElement &eleme
 			: mConditions.dropped(id);
 }
 
-Condition ConstraintsParser::parseTimerTag(const QDomElement &element)
+Condition ConstraintsParser::parseTimerTag(const QDomElement &element, Event &event)
 {
+	if (!assertAttributeNonEmpty(element, "timeout")) {
+		return mConditions.constant(true);
+	}
 
+	const int timeout = intAttribute(element, "timeout", 0);
+	const bool forceDrop = boolAttribute(element, "forceDropOnTimeout", true);
+	const Value timestamp = mValues.timestamp(mTimeline);
+	return mConditions.timerCondition(timeout, forceDrop, timestamp, event);
 }
 
 Trigger ConstraintsParser::parseTriggersTag(const QDomElement &element)
@@ -474,12 +482,26 @@ int ConstraintsParser::intAttribute(const QDomElement &element, const QString &a
 	bool ok = false;
 	const int result = attributeValue.toInt(&ok);
 	if (!ok) {
+		/// @todo: Make it warning
 		error(QObject::tr("Invalid integer value \"%1\"").arg(attributeValue));
-		/// @todo: Show error;
 		return defaultValue;
 	}
 
 	return result;
+}
+
+bool ConstraintsParser::boolAttribute(const QDomElement &element, const QString &attributeName, bool defaultValue)
+{
+	const QString defaultString = defaultValue ? "true" : "false";
+	const QString stringValue = element.attribute(attributeName, defaultString).toLower();
+	if (stringValue != "true" && stringValue != "false") {
+		/// @todo: Make it warning
+		error(QObject::tr("Invalid boolean value \"%1\" (expected \"true\" or \"false\")")
+				.arg(element.attribute(attributeName)));
+		return defaultValue;
+	}
+
+	return stringValue == "true";
 }
 
 QVariant ConstraintsParser::bestVariant(const QString &value) const

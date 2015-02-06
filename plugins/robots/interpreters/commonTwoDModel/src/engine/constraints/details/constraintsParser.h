@@ -30,16 +30,16 @@ private:
 	Event *parseConstraintTag(const QDomElement &element);
 	Event *parseTimeLimitTag(const QDomElement &element);
 
-	Condition parseConditionsAlternative(const QDomElement &element);
-	Condition parseConditionsTag(const QDomElement &element);
-	Condition parseConditionTag(const QDomElement &element);
-	Condition parseConditionContents(const QDomElement &element);
+	Condition parseConditionsAlternative(const QDomElement &element, Event &event);
+	Condition parseConditionsTag(const QDomElement &element, Event &event);
+	Condition parseConditionTag(const QDomElement &element, Event &event);
+	Condition parseConditionContents(const QDomElement &element, Event &event);
 
-	Condition parseNegationTag(const QDomElement &element);
+	Condition parseNegationTag(const QDomElement &element, Event &event);
 	Condition parseComparisonTag(const QDomElement &element);
 	Condition parseInsideTag(const QDomElement &element);
 	Condition parseEventSettedDroppedTag(const QDomElement &element);
-	Condition parseTimerTag(const QDomElement &element);
+	Condition parseTimerTag(const QDomElement &element, Event &event);
 
 	Trigger parseTriggersTag(const QDomElement &element);
 	Trigger parseTriggerTag(const QDomElement &element);
@@ -53,6 +53,7 @@ private:
 
 	QString id(const QDomElement &element) const;
 	int intAttribute(const QDomElement &element, QString const &attributeName, int defaultValue = -1);
+	bool boolAttribute(const QDomElement &element, QString const &attributeName, bool defaultValue = false);
 	QVariant bestVariant(const QString &value) const;
 
 	bool addToEvents(Event * const event);
