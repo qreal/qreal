@@ -2,7 +2,7 @@
 #include "ui_trikDisplayWidget.h"
 
 #include <qrkernel/exception/exception.h>
-#include <QsLog.h>
+#include <qrkernel/logging.h>
 
 using namespace trikKitInterpreter;
 
