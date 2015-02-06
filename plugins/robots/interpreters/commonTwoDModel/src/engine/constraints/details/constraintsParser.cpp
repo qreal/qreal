@@ -258,7 +258,7 @@ Condition ConstraintsParser::parseConditionTag(const QDomElement &element, Event
 
 Condition ConstraintsParser::parseConditionContents(const QDomElement &element, Event &event)
 {
-	const QString tag = element.tagName();
+	const QString tag = element.tagName().toLower();
 
 	if (tag == "not") {
 		return parseNegationTag(element, event);
@@ -298,9 +298,14 @@ Condition ConstraintsParser::parseNegationTag(const QDomElement &element, Event 
 
 Condition ConstraintsParser::parseComparisonTag(const QDomElement &element)
 {
+	if (!assertChildrenExactly(element, 2)) {
+		return mConditions.constant(true);
+	}
+
 	const QString operation = element.tagName().toLower();
 
-	Value leftValue, rightValue;
+	const Value leftValue = parseValue(element.firstChildElement());
+	const Value rightValue = parseValue(element.firstChildElement().nextSiblingElement());
 
 	if (operation == "equals") {
 		return mConditions.equals(leftValue, rightValue);

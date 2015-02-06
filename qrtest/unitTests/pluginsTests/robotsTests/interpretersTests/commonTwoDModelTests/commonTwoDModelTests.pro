@@ -18,7 +18,9 @@ SOURCES += \
 
 # Support classes
 HEADERS += \
-	support/testTimeline.h \
+	$$PWD/support/testTimeline.h \
+	$$PWD/support/testObject.h \
 
 SOURCES += \
-	support/testTimeline.cpp \
+	$$PWD/support/testTimeline.cpp \
+	$$PWD/support/testObject.cpp \

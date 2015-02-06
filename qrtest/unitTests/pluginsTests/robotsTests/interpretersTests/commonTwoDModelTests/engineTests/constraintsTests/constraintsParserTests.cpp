@@ -20,6 +20,8 @@ void ConstraintsParserTests::SetUp()
 	mVariables.clear();
 	mObjects.clear();
 	mTimeline.setTimestamp(0);
+
+	mObjects["testObject"] = &mTestObject;
 }
 
 TEST_F(ConstraintsParserTests, emptyXmlTest)
@@ -27,7 +29,6 @@ TEST_F(ConstraintsParserTests, emptyXmlTest)
 	ASSERT_TRUE(mParser.parse(QString()));
 	ASSERT_TRUE(mEvents.isEmpty());
 	ASSERT_TRUE(mVariables.isEmpty());
-	ASSERT_TRUE(mObjects.isEmpty());
 }
 
 TEST_F(ConstraintsParserTests, noTimeLimitErrorTest)
@@ -177,4 +178,59 @@ TEST_F(ConstraintsParserTests, noGlueErrorTest)
 	ASSERT_FALSE(mParser.parse(xml));
 	qDebug() << mParser.errors();
 	ASSERT_EQ(mParser.errors().count(), 1);
+}
+
+TEST_F(ConstraintsParserTests, equalityTest)
+{
+	auto testSign = [this](const QString &sign, const QString &type) {
+		mEvents.clear();
+		const QString xml = QString(
+				"<constraints>"\
+				"	<timelimit value=\"2000\"/>"\
+				"	<event id=\"event\" settedUpInitially=\"true\">"\
+				"		<condition>"\
+				"			<%1>"\
+				"				<objectState objectId=\"testObject\" property=\"%2Property\"/>"\
+				"				<%2 value=\"100\"/>"\
+				"			</%1>"\
+				"		</condition>"\
+				"		<trigger>"\
+				"			<success/>"
+				"		</trigger>"\
+				"	</event>"\
+				"</constraints>").arg(sign, type);
+		ASSERT_TRUE(mParser.parse(xml));
+		ASSERT_TRUE(mEvents.count() == 2);
+		Event * const event = mEvents["event"];
+		ASSERT_NE(event, nullptr);
+
+		bool eventFired = false;
+		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
+
+		event->check();
+		ASSERT_TRUE(eventFired);
+	};
+
+	mTestObject.setIntProperty(100);
+	testSign("equals", "int");
+	mTestObject.setIntProperty(101);
+	testSign("notEqual", "int");
+
+	mTestObject.setIntProperty(1000);
+	testSign("greater", "int");
+	testSign("notLess", "int");
+
+	mTestObject.setDoubleProperty(99.1);
+	testSign("less", "double");
+	mTestObject.setDoubleProperty(100.0);
+	testSign("notGreater", "double");
+
+	mTestObject.setStringProperty("100");
+	testSign("equals", "string");
+	mTestObject.setStringProperty("string value");
+	testSign("notEquals", "string");
+	mTestObject.setStringProperty("10");
+	testSign("less", "string");
+	mTestObject.setStringProperty("99");
+	testSign("greater", "string");
 }

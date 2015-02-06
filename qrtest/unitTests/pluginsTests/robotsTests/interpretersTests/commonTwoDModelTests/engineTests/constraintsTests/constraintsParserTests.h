@@ -5,6 +5,7 @@
 
 #include <src/engine/constraints/details/constraintsParser.h>
 #include "support/testTimeline.h"
+#include "support/testObject.h"
 
 namespace qrTest {
 namespace robotsTests {
@@ -22,6 +23,7 @@ protected:
 	twoDModel::constraints::details::Events mEvents;
 	twoDModel::constraints::details::Variables mVariables;
 	twoDModel::constraints::details::Objects mObjects;
+	TestObject mTestObject;
 	TestTimeline mTimeline;
 	twoDModel::constraints::details::ConstraintsParser mParser;
 };
