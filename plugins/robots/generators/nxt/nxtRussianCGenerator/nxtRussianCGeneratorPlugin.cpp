@@ -50,6 +50,7 @@ generatorBase::MasterGeneratorBase *NxtRussianCGeneratorPlugin::masterGenerator(
 {
 	return new NxtRussianCMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mParserErrorReporter
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()

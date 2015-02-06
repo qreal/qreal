@@ -28,7 +28,7 @@ DraggableElement::DraggableElement(
 		MainWindow &mainWindow
 		, PaletteElement const &data
 		, bool iconsOnly
-		, EditorManagerInterface &editorManagerProxy
+		, EditorManagerInterface const &editorManagerProxy
 		, QWidget *parent
 		)
 	: QWidget(parent)
@@ -113,7 +113,7 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 	QAction *action = static_cast<QAction *>(sender());
 	Id id = action->data().value<Id>();
 	PropertiesDialog *propDialog = new PropertiesDialog(mEditorManagerProxy
-			, mMainWindow.models()->mutableLogicalRepoApi(), id, &mMainWindow);
+			, mMainWindow.models().mutableLogicalRepoApi(), id, &mMainWindow);
 	propDialog->setModal(true);
 	propDialog->show();
 }
@@ -157,10 +157,10 @@ void DraggableElement::deleteElement()
 	mEditorManagerProxy.deleteElement(mDeletedElementId);
 	/// @todo: Maybe we do not need to remove elements if we can restore them?
 	/// We can make elements grayscaled by disabling corresponding element in palette.
-	IdList const logicalIdList = mMainWindow.models()->logicalRepoApi().logicalElements(mDeletedElementId.type());
+	IdList const logicalIdList = mMainWindow.models().logicalRepoApi().logicalElements(mDeletedElementId.type());
 	for (Id const &logicalId : logicalIdList) {
-		QModelIndex const index = mMainWindow.models()->logicalModelAssistApi().indexById(logicalId);
-		mMainWindow.models()->logicalModel()->removeRow(index.row(), index.parent());
+		QModelIndex const index = mMainWindow.models().logicalModelAssistApi().indexById(logicalId);
+		mMainWindow.models().logicalModel()->removeRow(index.row(), index.parent());
 	}
 
 	mMainWindow.loadPlugins();

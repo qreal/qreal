@@ -83,6 +83,7 @@ generatorBase::MasterGeneratorBase *TrikQtsGeneratorPlugin::masterGenerator()
 {
 	return new TrikQtsMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
+			, *mParserErrorReporter
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()
@@ -139,8 +140,7 @@ void TrikQtsGeneratorPlugin::stopRobot()
 
 	mCommunicator->runDirectCommand(
 			"brick.system(\"killall aplay\"); \n"
-			"brick.system(\"killall vlc\"); \n"
-			"brick.system(\"killall rover-cv\");"
+			"brick.system(\"killall vlc\");"
 			, true
 			);
 }

@@ -2,7 +2,7 @@ TEMPLATE = lib
 CONFIG += plugin
 CONFIG += c++11
 
-DESTDIR = ../../../../bin/plugins/tools/
+DESTDIR = ../../../../bin/
 TARGET = robots-interpreter-core
 
 OBJECTS_DIR = .obj

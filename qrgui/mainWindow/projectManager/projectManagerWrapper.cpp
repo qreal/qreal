@@ -1,0 +1,268 @@
+#include "projectManagerWrapper.h"
+
+#include <QtWidgets/QMessageBox>
+
+#include <qrkernel/logging.h>
+#include <qrutils/outFile.h>
+#include <qrutils/qRealFileDialog.h>
+
+#include "mainWindow/mainWindow.h"
+
+#include <models/models.h>
+#include <editor/editorViewScene.h>
+#include <editor/editorView.h>
+#include <dialogs/projectManagement/suggestToCreateDiagramDialog.h>
+
+using namespace qReal;
+using namespace utils;
+
+ProjectManagerWrapper::ProjectManagerWrapper(MainWindow *mainWindow, TextManagerInterface *textManager)
+	: ProjectManager(mainWindow->models())
+	, mMainWindow(mainWindow)
+	, mTextManager(textManager)
+	, mVersionsConverter(*mMainWindow)
+{
+	setSaveFilePath();
+}
+
+bool ProjectManagerWrapper::suggestToSaveChangesOrCancel()
+{
+	if (!mUnsavedIndicator) {
+		return true;
+	}
+
+	switch (suggestToSaveOrCancelMessage()) {
+	case QMessageBox::DestructiveRole:
+		return true;
+	case QMessageBox::RejectRole:
+		return false;
+	} // QMessageBox::AcceptRole
+
+	return saveOrSuggestToSaveAs();
+}
+
+int ProjectManagerWrapper::suggestToSaveOrCancelMessage()
+{
+	QMessageBox offerSave(mMainWindow);
+	offerSave.setWindowTitle(tr("Save"));
+	offerSave.addButton(tr("&Save"), QMessageBox::AcceptRole);
+	offerSave.addButton(tr("&Cancel"), QMessageBox::RejectRole);
+	offerSave.addButton(tr("&Discard"), QMessageBox::DestructiveRole);
+	offerSave.setText(tr("Do you want to save current project?"));
+	return offerSave.exec();
+}
+
+void ProjectManagerWrapper::showMessage(const QString &title, const QString &message) const
+{
+	QMessageBox::information(mMainWindow, title, message);
+}
+
+bool ProjectManagerWrapper::askQuestion(const QString &title, const QString &question) const
+{
+	return QMessageBox::question(mMainWindow, title, question) == QMessageBox::Yes;
+}
+
+bool ProjectManagerWrapper::open(const QString &fileName)
+{
+	QString const dequotedFileName = (fileName.startsWith("'") && fileName.endsWith("'"))
+			|| (fileName.startsWith("\"") && fileName.endsWith("\""))
+					? fileName.mid(1, fileName.length() - 2)
+					: fileName;
+
+	QFileInfo const fileInfo(dequotedFileName);
+
+	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
+			return false;
+		}
+
+		return openProject(dequotedFileName);
+	} else {
+		mMainWindow->closeStartTab();
+		mTextManager->showInTextEditor(fileInfo, text::Languages::pickByExtension(fileInfo.suffix()));
+	}
+
+	return true;
+}
+
+QString ProjectManagerWrapper::textFileFilters() const
+{
+	QStringList result;
+	for (text::LanguageInfo const &language : text::Languages::knownLanguages()) {
+		result << QString("%1 (*.%2)").arg(language.extensionDescription, language.extension);
+	}
+
+	return result.join(";;");
+}
+
+bool ProjectManagerWrapper::checkVersions()
+{
+	return mVersionsConverter.validateCurrentProject();
+}
+
+void ProjectManagerWrapper::refreshApplicationStateAfterSave()
+{
+	if (!mAutosaver.isAutosave(mSaveFilePath)) {
+		refreshApplicationStateAfterSaveOrOpen();
+		mMainWindow->controller()->projectSaved();
+		setUnsavedIndicator(false);
+	}
+
+	mAutosaver.removeTemp();
+}
+
+void ProjectManagerWrapper::refreshApplicationStateAfterOpen()
+{
+	mMainWindow->closeStartTab();
+	mMainWindow->propertyModel().setSourceModels(mMainWindow->models().logicalModel()
+			, mMainWindow->models().graphicalModel());
+	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models().graphicalModel());
+	mMainWindow->logicalModelExplorer()->setModel(mMainWindow->models().logicalModel());
+
+	/// @todo Crashes metamodeling on fly.
+	mMainWindow->openFirstDiagram();
+
+	refreshApplicationStateAfterSaveOrOpen();
+}
+
+void ProjectManagerWrapper::refreshApplicationStateAfterSaveOrOpen()
+{
+	refreshWindowTitleAccordingToSaveFile();
+	if (!mAutosaver.isTempFile(mSaveFilePath)) {
+		mMainWindow->refreshRecentProjectsList(mAutosaver.originalFile(mSaveFilePath));
+	}
+}
+
+void ProjectManagerWrapper::refreshWindowTitleAccordingToSaveFile()
+{
+	QString const windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
+	QString const saveFile = mAutosaver.isTempFile(mSaveFilePath) ? tr("Unsaved project") : mSaveFilePath;
+	mMainWindow->setWindowTitle(windowTitle + " " + saveFile);
+	refreshTitleModifiedSuffix();
+}
+
+void ProjectManagerWrapper::refreshTitleModifiedSuffix()
+{
+	QString const modifiedSuffix = tr(" [modified]");
+	if (mUnsavedIndicator && !mMainWindow->windowTitle().endsWith(modifiedSuffix)) {
+		mMainWindow->setWindowTitle(mMainWindow->windowTitle() + modifiedSuffix);
+	}
+}
+
+bool ProjectManagerWrapper::openNewWithDiagram()
+{
+	if (!openEmptyWithSuggestToSaveChanges()) {
+		return false;
+	}
+
+	suggestToCreateDiagram(false);
+	return true;
+}
+
+void ProjectManagerWrapper::suggestToCreateDiagram(bool isClosable)
+{
+	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
+	if (theOnlyDiagram != Id()) {
+		Id const editor = mMainWindow->editorManager().editors()[0];
+		mMainWindow->createDiagram(mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram));
+	} else {
+		SuggestToCreateDiagramDialog suggestDialog(mMainWindow->editorManager(), mMainWindow, isClosable);
+		connect(&suggestDialog, &SuggestToCreateDiagramDialog::diagramSelected
+				, mMainWindow, &MainWindow::createDiagram);
+		suggestDialog.exec();
+	}
+}
+
+void ProjectManagerWrapper::close()
+{
+	if (mMainWindow->propertyEditor()->model()) {
+		static_cast<PropertyEditorModel *>(mMainWindow->propertyEditor()->model())->clearModelIndexes();
+	}
+	mMainWindow->graphicalModelExplorer()->setModel(nullptr);
+	mMainWindow->logicalModelExplorer()->setModel(nullptr);
+
+	if (mMainWindow->getCurrentTab()) {
+		static_cast<EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearScene();
+	}
+	mMainWindow->closeAllTabs();
+	mMainWindow->setWindowTitle(mMainWindow->toolManager().customizer()->windowTitle());
+
+	ProjectManager::close();
+}
+
+void ProjectManagerWrapper::save()
+{
+	mMainWindow->editorManagerProxy().saveMetamodel("");
+	ProjectManager::save();
+}
+
+bool ProjectManagerWrapper::saveOrSuggestToSaveAs()
+{
+	if (mTextManager->saveText(false)) {
+		return true;
+	}
+
+	if (mSaveFilePath == mAutosaver.tempFilePath()
+			|| mSaveFilePath == mMainWindow->editorManagerProxy().saveMetamodelFilePath()) {
+		return suggestToSaveAs();
+	}
+
+	return ProjectManager::saveOrSuggestToSaveAs();
+}
+
+void ProjectManagerWrapper::setUnsavedIndicator(bool isUnsaved)
+{
+	ProjectManager::setUnsavedIndicator(isUnsaved);
+	refreshWindowTitleAccordingToSaveFile();
+}
+
+bool ProjectManagerWrapper::suggestToSaveAs()
+{
+	if (mTextManager->saveText(true)) {
+		return true;
+	}
+
+	if (mMainWindow->editorManagerProxy().isInterpretationMode()) {
+		QString const newMetamodelFileName = saveFileName(tr("Select file to save current metamodel to"));
+		if (newMetamodelFileName.isEmpty()) {
+			return false;
+		}
+		mMainWindow->editorManagerProxy().saveMetamodel(newMetamodelFileName);
+	}
+
+	return ProjectManager::suggestToSaveAs();
+}
+
+QString ProjectManagerWrapper::openFileName(const QString &dialogWindowTitle) const
+{
+	const QString pathToExamples = mMainWindow->toolManager().customizer()->examplesDirectory();
+	const QString defaultDirectory = pathToExamples.isEmpty()
+			? QFileInfo(mSaveFilePath).absoluteDir().absolutePath()
+			: pathToExamples;
+	QString filter = tr("QReal Save File (*.qrs)") + ";;";
+	QString const extensions = textFileFilters();
+
+	filter += (extensions.isEmpty() ? "" : extensions + ";;") + tr("All files (*.*)");
+
+	QString fileName = QRealFileDialog::getOpenFileName("OpenQRSProject", mMainWindow, dialogWindowTitle
+			, defaultDirectory, filter);
+
+	if (!fileName.isEmpty() && !QFile::exists(fileName)) {
+		fileNotFoundMessage(fileName);
+		fileName = openFileName(dialogWindowTitle);
+	}
+
+	return fileName;
+}
+
+QString ProjectManagerWrapper::saveFileName(const QString &dialogWindowTitle) const
+{
+	QString fileName = QRealFileDialog::getSaveFileName("SaveQRSProject", mMainWindow, dialogWindowTitle
+			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
+
+	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
+		fileName += ".qrs";
+	}
+
+	return fileName;
+}

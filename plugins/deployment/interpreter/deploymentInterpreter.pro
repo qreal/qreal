@@ -12,7 +12,7 @@ INCLUDEPATH += \
 	$$PWD/../../../qrgui/ \
 	$$PWD/../../../qrtext/include/ \
 
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog
+LIBS += -L../../../bin -lqrkernel -lqrutils -lqrgui-preferences-dialog -lqrgui-tool-plugin-interface -lqrtext
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/deploymentInterpreter_ru.ts
 
@@ -41,7 +41,3 @@ SOURCES += \
 	$$PWD/blocks/uploadToGoogleDriveBlock.cpp \
 	$$PWD/blocks/updateDownloadsCounterBlock.cpp \
 	$$PWD/blocks/uploadToGoogleSiteBlock.cpp \
-
-# qrgui includes
-HEADERS +=  \
-	$$PWD/../../../qrgui/mainWindow/projectManager/projectManagementInterface.h \

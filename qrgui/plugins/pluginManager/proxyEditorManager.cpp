@@ -142,12 +142,6 @@ QStringList ProxyEditorManager::propertiesWithDefaultValues(Id const &id) const
 	return mProxiedEditorManager->propertiesWithDefaultValues(id);
 }
 
-IdList ProxyEditorManager::checkNeededPlugins(LogicalModelAssistInterface const &logicalApi
-		, GraphicalModelAssistInterface const &graphicalApi) const
-{
-	return mProxiedEditorManager->checkNeededPlugins(logicalApi, graphicalApi);
-}
-
 bool ProxyEditorManager::hasElement(Id const &element) const
 {
 	return mProxiedEditorManager->hasElement(element);

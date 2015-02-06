@@ -28,7 +28,7 @@ class COMMON_TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlI
 
 public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel);
+	explicit TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel);
 
 	~TwoDModelEngineFacade();
 

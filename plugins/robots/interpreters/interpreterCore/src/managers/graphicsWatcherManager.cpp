@@ -1,4 +1,4 @@
-#include "graphicsWatcherManager.h"
+#include "interpreterCore/managers/graphicsWatcherManager.h"
 
 using namespace interpreterCore;
 using namespace utils;

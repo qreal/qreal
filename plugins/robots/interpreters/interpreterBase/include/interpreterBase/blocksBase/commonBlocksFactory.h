@@ -21,7 +21,6 @@ public:
 
 	qReal::interpretation::BlockInterface *block(qReal::Id const &element) override;
 
-	/// Does not take ownership.
 	void configure(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, interpreterBase::robotModel::RobotModelManagerInterface &robotModelManager

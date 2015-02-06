@@ -4,6 +4,7 @@
 
 #include <qrutils/inFile.h>
 #include <qrutils/nameNormalizer.h>
+#include <qrutils/parserErrorReporter.h>
 #include <qrgui/textEditor/qscintillaTextEdit.h>
 
 using namespace generatorBase;
@@ -15,6 +16,10 @@ using namespace utils;
 int const maxTimestampsDifference = 3000;
 
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
+{
+}
+
+RobotsGeneratorPluginBase::~RobotsGeneratorPluginBase()
 {
 }
 
@@ -111,6 +116,9 @@ void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator
 	mProjectManager = &configurator.projectManager();
 	mRobotModelManager = &robotModelManager;
 	mTextLanguage = &textLanguage;
+
+	mParserErrorReporter.reset(new ParserErrorReporter(textLanguage, *mMainWindowInterface->errorReporter()
+			, configurator.logicalModelApi().editorManagerInterface()));
 
 	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
 			, this, SLOT(regenerateCode(qReal::Id, QFileInfo, QFileInfo)));

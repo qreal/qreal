@@ -20,12 +20,14 @@ MasterGeneratorBase::MasterGeneratorBase(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
+		, const utils::ParserErrorReporter &parserErrorReporter
 		, Id const &diagramId)
 	: mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
 	, mTextLanguage(textLanguage)
 	, mDiagram(diagramId)
+	, mParserErrorReporter(parserErrorReporter)
 {
 }
 
@@ -136,7 +138,7 @@ QString MasterGeneratorBase::generate(QString const &indentString)
 
 lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
 {
-	return new lua::LuaProcessor(mErrorReporter, mTextLanguage, this);
+	return new lua::LuaProcessor(mErrorReporter, mTextLanguage, mParserErrorReporter, this);
 }
 
 void MasterGeneratorBase::beforeGeneration()

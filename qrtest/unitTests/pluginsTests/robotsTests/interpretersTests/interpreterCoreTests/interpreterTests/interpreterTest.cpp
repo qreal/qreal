@@ -3,7 +3,7 @@
 #include <QtCore/QCoreApplication>
 
 #include <qrtext/lua/luaToolbox.h>
-#include "src/interpreter/interpreter.h"
+#include "interpreterCore/interpreter/interpreter.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 

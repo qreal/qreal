@@ -12,7 +12,7 @@ namespace models {
 class QRGUI_MODELS_EXPORT Models
 {
 public:
-	Models(QString const &workingCopy, EditorManagerInterface &editorManager);
+	Models(QString const &workingCopy, EditorManagerInterface const &editorManager);
 	~Models();
 
 	QAbstractItemModel *graphicalModel() const;

@@ -22,7 +22,7 @@ public:
 	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface);
 	virtual ~LogicalModelAssistApi();
 
-	EditorManagerInterface const &editorManagerInterface() const;
+	const EditorManagerInterface &editorManagerInterface() const override;
 
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const override;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() override;

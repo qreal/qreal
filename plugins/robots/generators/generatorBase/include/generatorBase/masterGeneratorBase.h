@@ -10,6 +10,10 @@
 #include "controlFlowGeneratorBase.h"
 #include "templateParametrizedEntity.h"
 
+namespace utils {
+class ParserErrorReporter;
+}
+
 namespace qrtext {
 class LanguageToolboxInterface;
 }
@@ -34,6 +38,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
+			, const utils::ParserErrorReporter &parserErrorReporter
 			, qReal::Id const &diagramId);
 
 	void setProjectDir(QFileInfo const &fileInfo);
@@ -76,6 +81,7 @@ protected:
 	QString mProjectName;
 	QString mProjectDir;
 	int mCurInitialNodeNumber;
+	const utils::ParserErrorReporter &mParserErrorReporter;
 };
 
 }

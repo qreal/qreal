@@ -1,4 +1,4 @@
-#include "paletteUpdateManager.h"
+#include "interpreterCore/managers/paletteUpdateManager.h"
 
 using namespace interpreterCore;
 using namespace interpreterBase;

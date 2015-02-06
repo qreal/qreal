@@ -1,7 +1,7 @@
 #include "commonTwoDModel/engine/twoDModelEngineFacade.h"
 
+#include "commonTwoDModel/engine/view/d2ModelWidget.h"
 #include "model/model.h"
-#include "view/d2ModelWidget.h"
 #include "twoDModelEngineApi.h"
 
 using namespace twoDModel::engine;
