@@ -59,7 +59,7 @@ TEST_F(ConstraintsParserTests, timeLimitConstraintTest)
 			"	<timelimit value=\"1000\"/>"\
 			"</constraints>";
 	ASSERT_TRUE(mParser.parse(xml));
-	ASSERT_TRUE(mEvents.count() == 1);
+	ASSERT_EQ(mEvents.count(), 1);
 	Event * const event = mEvents.values()[0];
 	ASSERT_NE(event, nullptr);
 
@@ -95,7 +95,7 @@ TEST_F(ConstraintsParserTests, timerWithoutDropTest)
 			"	</event>"\
 			"</constraints>";
 	ASSERT_TRUE(mParser.parse(xml));
-	ASSERT_TRUE(mEvents.count() == 2);
+	ASSERT_EQ(mEvents.count(), 2);
 	Event * const event = mEvents["event"];
 	ASSERT_NE(event, nullptr);
 
@@ -136,7 +136,7 @@ TEST_F(ConstraintsParserTests, timerWithDropTest)
 			"	</event>"\
 			"</constraints>";
 	ASSERT_TRUE(mParser.parse(xml));
-	ASSERT_TRUE(mEvents.count() == 2);
+	ASSERT_EQ(mEvents.count(), 2);
 	Event * const event = mEvents["event"];
 	ASSERT_NE(event, nullptr);
 
@@ -201,7 +201,7 @@ TEST_F(ConstraintsParserTests, comparisonTest)
 				"	</event>"\
 				"</constraints>").arg(sign, type);
 		ASSERT_TRUE(mParser.parse(xml));
-		ASSERT_TRUE(mEvents.count() == 2);
+		ASSERT_EQ(mEvents.count(), 2);
 		Event * const event = mEvents["event"];
 		ASSERT_NE(event, nullptr);
 
@@ -251,7 +251,7 @@ TEST_F(ConstraintsParserTests, constraintTagAndTypeOfTagTest)
 				"	</constraint>"\
 				"</constraints>").arg(checkOnce ? "true" : "false", objectId, type);
 		ASSERT_TRUE(mParser.parse(xml));
-		ASSERT_TRUE(mEvents.count() == 2);
+		ASSERT_EQ(mEvents.count(), 2);
 		Event * const event = mEvents["constraint"];
 		ASSERT_NE(event, nullptr);
 
@@ -282,6 +282,53 @@ TEST_F(ConstraintsParserTests, forgottenFailMessageErrorTest)
 	ASSERT_FALSE(mParser.parse(xml));
 	qDebug() << mParser.errors();
 	ASSERT_EQ(mParser.errors().count(), 1);
+}
+
+TEST_F(ConstraintsParserTests, setVariableTest)
+{
+	auto testCase = [this](const QString &value) {
+		mEvents.clear();
+		mVariables.clear();
+		mTimeline.setTimestamp(0);
+		const QString xml = QString(
+				"<constraints>"\
+				"	<timelimit value=\"2000\"/>"\
+				"	<event id=\"event\" settedUpInitially=\"true\">"\
+				"		<condition>"\
+				"			<timer timeout=\"1\"/>"\
+				"		</condition>"\
+				"		<trigger>"\
+				"			<setVariable name=\"x\" value=\"%1\"/>"
+				"		</trigger>"\
+				"	</event>"\
+				"</constraints>").arg(value);
+		ASSERT_TRUE(mParser.parse(xml));
+		ASSERT_EQ(mEvents.count(), 2);
+		Event * const event = mEvents["event"];
+		ASSERT_NE(event, nullptr);
+
+		bool eventFired = false;
+		QObject::connect(event, &Event::fired, [&eventFired]() { eventFired = true; });
+
+		mTimeline.setTimestamp(1);
+		event->check();
+		ASSERT_TRUE(eventFired);
+	};
+
+	testCase("100500");
+	ASSERT_TRUE(mVariables.contains("x"));
+	ASSERT_EQ(mVariables["x"].type(), QVariant::Int);
+	ASSERT_EQ(mVariables["x"].toInt(), 100500);
+
+	testCase("100500.2");
+	ASSERT_TRUE(mVariables.contains("x"));
+	ASSERT_EQ(mVariables["x"].type(), QVariant::Double);
+	ASSERT_EQ(mVariables["x"].toDouble(), 100500.2);
+
+	testCase("abc");
+	ASSERT_TRUE(mVariables.contains("x"));
+	ASSERT_EQ(mVariables["x"].type(), QVariant::String);
+	ASSERT_EQ(mVariables["x"].toString(), "abc");
 }
 
 /// @todo: Add inside tag testcases

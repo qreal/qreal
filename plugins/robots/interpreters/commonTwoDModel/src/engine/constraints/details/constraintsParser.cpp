@@ -395,7 +395,7 @@ Trigger ConstraintsParser::parseTriggerTag(const QDomElement &element)
 
 Trigger ConstraintsParser::parseTriggerContents(const QDomElement &element)
 {
-	const QString tag = element.tagName();
+	const QString tag = element.tagName().toLower();
 
 	if (tag == "fail") {
 		return parseFailTag(element);
@@ -609,15 +609,19 @@ bool ConstraintsParser::boolAttribute(const QDomElement &element, const QString 
 
 QVariant ConstraintsParser::bestVariant(const QString &value) const
 {
-	QVariant result = value;
+	bool ok;
 
-	if (result.canConvert(QMetaType::Int)) {
-		result.convert(QMetaType::Int);
-	} else if (result.canConvert(QMetaType::Double)) {
-		result.convert(QMetaType::Double);
+	const int intValue = value.toInt(&ok);
+	if (ok) {
+		return intValue;
 	}
 
-	return result;
+	const qreal doubleValue = value.toDouble(&ok);
+	if (ok) {
+		return doubleValue;
+	}
+
+	return value;
 }
 
 bool ConstraintsParser::addToEvents(Event * const event)
