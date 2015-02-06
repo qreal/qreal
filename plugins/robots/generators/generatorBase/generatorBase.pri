@@ -53,6 +53,7 @@ HEADERS += \
 HEADERS += \
 	$$PWD/src/readableControlFlowGenerator.h \
 	$$PWD/src/gotoControlFlowGenerator.h \
+	$$PWD/src/threadsValidator.h \
 	$$PWD/src/rules/semanticTransformationRule.h \
 	$$PWD/src/rules/simpleRules/simpleBlockRuleBase.h \
 	$$PWD/src/rules/simpleRules/simpleUnvisitedRule.h \
@@ -81,6 +82,7 @@ SOURCES += \
 	$$PWD/src/gotoControlFlowGenerator.cpp \
 	$$PWD/src/robotsDiagramVisitor.cpp \
 	$$PWD/src/primaryControlFlowValidator.cpp \
+	$$PWD/src/threadsValidator.cpp \
 	$$PWD/src/generatorFactoryBase.cpp \
 	$$PWD/src/templateParametrizedEntity.cpp \
 	$$PWD/src/parts/variables.cpp \

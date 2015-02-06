@@ -34,7 +34,7 @@ ControlFlowGeneratorBase::~ControlFlowGeneratorBase()
 
 bool ControlFlowGeneratorBase::preGenerationCheck()
 {
-	return mValidator->validate();
+	return mValidator->validate(mThreadId);
 }
 
 semantics::SemanticTree *ControlFlowGeneratorBase::generate(qReal::Id const &initialNode, const QString &threadId)
@@ -44,6 +44,7 @@ semantics::SemanticTree *ControlFlowGeneratorBase::generate(qReal::Id const &ini
 	// If initial node is non-null then pregeneration check was already performed;
 	if (initialNode.isNull() && !preGenerationCheck()) {
 		mSemanticTree = nullptr;
+		mErrorsOccured = true;
 		return nullptr;
 	}
 

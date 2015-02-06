@@ -25,7 +25,7 @@ public:
 
 	/// Validates diagram with id specified in constructor. Returns 'true' if
 	/// diagram is correct, 'false' otherwise
-	bool validate();
+	bool validate(const QString &threadId);
 
 	/// Returns id of the only node with initial semantics on diagram. The result
 	/// is ready only after validation process was successfully finished.
@@ -52,9 +52,9 @@ private:
 	void visitConditional(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitLoop(qReal::Id const &id, QList<LinkInfo> const &links) override;
 	void visitSwitch(qReal::Id const &id, QList<LinkInfo> const &links) override;
-	void visitFork(qReal::Id const &id, QList<LinkInfo> &links) override;
-	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
 	void visitUnknown(qReal::Id const &id, QList<LinkInfo> const &links) override;
+	void visitFork(const qReal::Id &id, QList<LinkInfo> &links) override;
+	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
 
 	qrRepo::RepoApi const &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;

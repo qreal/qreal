@@ -1,5 +1,7 @@
 #include "generatorBase/primaryControlFlowValidator.h"
 
+#include "src/threadsValidator.h"
+
 using namespace generatorBase;
 using namespace qReal;
 
@@ -20,7 +22,7 @@ PrimaryControlFlowValidator::PrimaryControlFlowValidator(
 {
 }
 
-bool PrimaryControlFlowValidator::validate()
+bool PrimaryControlFlowValidator::validate(const QString &threadId)
 {
 	mIfBranches.clear();
 	mLoopBranches.clear();
@@ -31,8 +33,13 @@ bool PrimaryControlFlowValidator::validate()
 		return false;
 	}
 
-	mErrorsOccured = false;
-	startSearch(mInitialNode);
+	ThreadsValidator threadsValidator(mRepo, mCustomizer, mErrorReporter);
+	if (threadsValidator.validate(mInitialNode, threadId)) {
+		mErrorsOccured = false;
+		startSearch(mInitialNode);
+	} else {
+		mErrorsOccured = true;
+	}
 
 	return !mErrorsOccured;
 }
@@ -211,40 +218,23 @@ void PrimaryControlFlowValidator::visitSwitch(Id const &id
 	}
 }
 
-void PrimaryControlFlowValidator::visitFork(Id const &id, QList<LinkInfo> &links)
-{
-	if (links.size() < 2) {
-		error(QObject::tr("Fork block must have at least TWO outgoing links"), id);
-		return;
-	}
-
-	for (LinkInfo const &link : links) {
-		checkForConnected(link);
-	}
-}
-
-void PrimaryControlFlowValidator::visitJoin(const Id &id, QList<LinkInfo> &links)
-{
-	if (links.size() != 1) {
-		error(QObject::tr("Join block must have exactly one outgoing link"), id);
-		return;
-	}
-
-	if (guardOf(links[0].linkId) != threadIdGuard) {
-		error(QObject::tr("Incorrect guard type: must be thread id"), id);
-		return;
-	}
-
-	// check thread id
-
-	checkForConnected(links[0]);
-}
-
 void PrimaryControlFlowValidator::visitUnknown(Id const &id
 		, QList<LinkInfo> const &links)
 {
 	Q_UNUSED(links)
 	error(QObject::tr("Unknown block type"), id);
+}
+
+void PrimaryControlFlowValidator::visitFork(const Id &id, QList<LinkInfo> &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
+}
+
+void PrimaryControlFlowValidator::visitJoin(const Id &id, QList<LinkInfo> &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
 }
 
 void PrimaryControlFlowValidator::error(QString const &message, qReal::Id const &id)
