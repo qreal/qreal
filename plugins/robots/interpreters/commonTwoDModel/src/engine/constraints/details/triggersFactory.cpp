@@ -10,6 +10,11 @@ TriggersFactory::TriggersFactory(Events &events, Variables &variables)
 {
 }
 
+Trigger TriggersFactory::doNothing() const
+{
+	return [](){};
+}
+
 #include <QDebug>
 Trigger TriggersFactory::fail(const QString &message) const
 {

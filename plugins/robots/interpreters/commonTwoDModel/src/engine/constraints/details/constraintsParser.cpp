@@ -96,7 +96,7 @@ Event *ConstraintsParser::parseConstraint(const QDomElement &constraint)
 
 Event *ConstraintsParser::parseEventTag(const QDomElement &element)
 {
-	if (!assertChildrenCount(element, 2)) {
+	if (!assertChildrenExactly(element, 2)) {
 		return nullptr;
 	}
 
@@ -148,12 +148,11 @@ Event *ConstraintsParser::parseConstraintTag(const QDomElement &element)
 	// Constraint is just an event with fail trigger.
 	// Check-once constraint is an event with 0 timeout forcing to drop.
 
-	if (!assertChildrenCount(element, 1)) {
+	if (!assertChildrenExactly(element, 1)) {
 		return nullptr;
 	}
 
-	if (!element.hasAttribute("failMessage")) {
-		error(QObject::tr("\"Constraint\" tag must have \"failMessage\" attribute."));
+	if (!assertHasAttribute(element, "failMessage")) {
 		return nullptr;
 	}
 
@@ -207,29 +206,84 @@ Event *ConstraintsParser::parseTimeLimitTag(const QDomElement &element)
 	return event;
 }
 
-Condition ConstraintsParser::parseConditionsTag(const QDomElement &element) const
+Condition ConstraintsParser::parseConditionsTag(const QDomElement &element)
+{
+	if (!assertChildrenMoreThan(element, 0) || !assertHasAttribute(element, "glue")) {
+		return mConditionsFactory.constant(true);
+	}
+
+	const QString glueAttribute = element.attribute("glue").toLower();
+	Glue glue;
+	if (glueAttribute == "and") {
+		glue = Glue::And;
+	} else if (glueAttribute == "or") {
+		glue = Glue::Or;
+	} else {
+		error(QObject::tr("\"Glue\" attribute must have value \"and\" or \"or\"."));
+		return mConditionsFactory.constant(true);
+	}
+
+	QList<Condition> conditions;
+	for (QDomElement condition = element.firstChildElement()
+			; !condition.isNull()
+			; condition = condition.nextSiblingElement())
+	{
+		if (!assertTagName(condition, "condition")) {
+			return mConditionsFactory.constant(true);
+		}
+
+		conditions << parseConditionsTag(condition);
+	}
+
+	return mConditionsFactory.combined(conditions, glue);
+}
+
+Condition ConstraintsParser::parseConditionTag(const QDomElement &element)
+{
+	if (!assertChildrenExactly(element, 1)) {
+		return mConditionsFactory.constant(true);
+	}
+
+	return parseConditionContents(element);
+}
+
+Condition ConstraintsParser::parseConditionContents(const QDomElement &element)
 {
 
 }
 
-Condition ConstraintsParser::parseConditionTag(const QDomElement &element) const
+Trigger ConstraintsParser::parseTriggersTag(const QDomElement &element)
 {
+	if (!assertChildrenMoreThan(element, 0)) {
+		return mTriggersFactory.doNothing();
+	}
 
+	QList<Trigger> triggers;
+	for (QDomElement trigger = element.firstChildElement()
+			; !trigger.isNull()
+			; trigger = trigger.nextSiblingElement())
+	{
+		if (!assertTagName(trigger, "trigger")) {
+			return mTriggersFactory.doNothing();
+		}
+
+		triggers << parseTriggerTag(trigger);
+	}
+
+	return mTriggersFactory.combined(triggers);
 }
 
-Condition ConstraintsParser::parseConditionContents(const QDomElement &element) const
+Trigger ConstraintsParser::parseTriggerTag(const QDomElement &element)
 {
+	if (!assertChildrenExactly(element, 1)) {
+		return mTriggersFactory.doNothing();
+	}
 
+	return parseTriggerContents(element);
 }
 
-Trigger ConstraintsParser::parseTriggersTag(const QDomElement &element) const
+Trigger ConstraintsParser::parseTriggerContents(const QDomElement &element)
 {
-
-}
-
-Trigger ConstraintsParser::parseTriggerTag(const QDomElement &element) const
-{
-
 }
 
 QString ConstraintsParser::id(const QDomElement &element) const
@@ -241,6 +295,10 @@ QString ConstraintsParser::id(const QDomElement &element) const
 
 int ConstraintsParser::intAttribute(const QDomElement &element, const QString &attributeName, int defaultValue)
 {
+	if (!assertHasAttribute(element, "value")) {
+		return 0;
+	}
+
 	QString const attributeValue = element.attribute(attributeName);
 	bool ok = false;
 	const int result = attributeValue.toInt(&ok);
@@ -268,11 +326,41 @@ bool ConstraintsParser::addToEvents(Event * const event)
 	return true;
 }
 
-bool ConstraintsParser::assertChildrenCount(const QDomElement &element, int count)
+bool ConstraintsParser::assertChildrenExactly(const QDomElement &element, int count)
 {
 	if (element.childNodes().count() != count) {
 		return error(QObject::tr("%1 tag must have exactly %2 child tag(s)")
 				.arg(element.tagName(), QString::number(count)));
+	}
+
+	return true;
+}
+
+bool ConstraintsParser::assertChildrenMoreThan(const QDomElement &element, int count)
+{
+	if (element.childNodes().count() <= count) {
+		return error(QObject::tr("%1 tag must have at least %2 child tag(s)")
+				.arg(element.tagName(), QString::number(count + 1)));
+	}
+
+	return true;
+}
+
+bool ConstraintsParser::assertHasAttribute(const QDomElement &element, const QString &attribute)
+{
+	if (!element.hasAttribute(attribute)) {
+		error(QObject::tr("\"%1\" tag must have \"%2\" attribute.").arg(element.tagName(), attribute));
+		return false;
+	}
+
+	return true;
+}
+
+bool ConstraintsParser::assertTagName(const QDomElement &element, const QString &nameInLowerCase)
+{
+	if (element.tagName().toLower() != nameInLowerCase) {
+		error(QObject::tr("Expected \"%1\" tag, got \"%2\".").arg(nameInLowerCase, element.tagName()));
+		return false;
 	}
 
 	return true;

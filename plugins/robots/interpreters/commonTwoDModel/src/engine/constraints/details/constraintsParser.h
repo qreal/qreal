@@ -30,18 +30,22 @@ private:
 	Event *parseConstraintTag(const QDomElement &element);
 	Event *parseTimeLimitTag(const QDomElement &element);
 
-	Condition parseConditionsTag(const QDomElement &element) const;
-	Condition parseConditionTag(const QDomElement &element) const;
-	Condition parseConditionContents(const QDomElement &element) const;
+	Condition parseConditionsTag(const QDomElement &element);
+	Condition parseConditionTag(const QDomElement &element);
+	Condition parseConditionContents(const QDomElement &element);
 
-	Trigger parseTriggersTag(const QDomElement &element) const;
-	Trigger parseTriggerTag(const QDomElement &element) const;
+	Trigger parseTriggersTag(const QDomElement &element);
+	Trigger parseTriggerTag(const QDomElement &element);
+	Trigger parseTriggerContents(const QDomElement &element);
 
 	QString id(const QDomElement &element) const;
 	int intAttribute(const QDomElement &element, QString const &attributeName, int defaultValue = -1);
 
 	bool addToEvents(Event * const event);
-	bool assertChildrenCount(const QDomElement &element, int count);
+	bool assertChildrenExactly(const QDomElement &element, int count);
+	bool assertChildrenMoreThan(const QDomElement &element, int count);
+	bool assertHasAttribute(const QDomElement &element, const QString &attribute);
+	bool assertTagName(const QDomElement &element, const QString &nameInLowerCase);
 
 	bool error(const QString &message);
 

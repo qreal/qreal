@@ -11,6 +11,7 @@ class TriggersFactory
 public:
 	TriggersFactory(Events &events, Variables &variables);
 
+	Trigger doNothing() const;
 	Trigger combined(const QList<Trigger> &triggers) const;
 
 	Trigger fail(const QString &message) const;
