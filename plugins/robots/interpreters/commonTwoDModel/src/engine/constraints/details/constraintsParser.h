@@ -23,7 +23,7 @@ public:
 	QStringList errors() const;
 
 private:
-	void parseConstraints(const QDomElement &constraints);
+	bool parseConstraints(const QDomElement &constraints);
 	Event *parseConstraint(const QDomElement &constraint);
 
 	Event *parseEventTag(const QDomElement &element);

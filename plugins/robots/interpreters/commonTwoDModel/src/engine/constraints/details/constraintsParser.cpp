@@ -47,10 +47,10 @@ bool ConstraintsParser::parse(const QString &constraintsXml)
 		return false;
 	}
 
-	return true;
+	return parseConstraints(document.documentElement());
 }
 
-void ConstraintsParser::parseConstraints(const QDomElement &constraints)
+bool ConstraintsParser::parseConstraints(const QDomElement &constraints)
 {
 	int timelimitTagsCount = 0;
 	for (QDomElement constraint = constraints.firstChildElement()
@@ -58,7 +58,7 @@ void ConstraintsParser::parseConstraints(const QDomElement &constraints)
 			; constraint = constraint.nextSiblingElement())
 	{
 		if (!addToEvents(parseConstraint(constraint))) {
-			return;
+			return false;
 		}
 
 		if (constraint.tagName().toLower() == "timelimit") {
@@ -68,11 +68,15 @@ void ConstraintsParser::parseConstraints(const QDomElement &constraints)
 
 	if (timelimitTagsCount == 0) {
 		error(QObject::tr("There must be a \"timelimit\" constraint."));
+		return false;
 	}
 
 	if (timelimitTagsCount > 1) {
 		error(QObject::tr("There must be only one \"timelimit\" tag."));
+		return false;
 	}
+
+	return true;
 }
 
 Event *ConstraintsParser::parseConstraint(const QDomElement &constraint)

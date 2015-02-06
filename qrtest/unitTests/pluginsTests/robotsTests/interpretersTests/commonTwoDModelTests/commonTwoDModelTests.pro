@@ -15,3 +15,10 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/engineTests/constraintsTests/constraintsParserTests.cpp \
+
+# Support classes
+HEADERS += \
+	support/testTimeline.h \
+
+SOURCES += \
+	support/testTimeline.cpp \
